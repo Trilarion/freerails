@@ -22,10 +22,12 @@ import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
 
 /**
- * This class ...
+ * This class provides methods that generate a path to a target as a series of 
+ * PositionOnTrack objects encoded as ints.  
  *
- * 28-Nov-2002
+ * 
  * @author Luke Lindsay
+ * 28-Nov-2002
  */
 public class TrainPathFinder
 	implements FreerailsIntIterator, FreerailsSerializable {
@@ -176,7 +178,7 @@ public class TrainPathFinder
 	}
 
 	/**
-	 * @return an int representing... ?
+	 * @return a PositionOnTrack packed into an int
 	 */
 	public int nextInt() {
 
