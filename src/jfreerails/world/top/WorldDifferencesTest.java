@@ -132,6 +132,22 @@ public class WorldDifferencesTest extends TestCase {
         worldDiff.set(KEY.STATIONS, 0, station2, player1.getPrincipal());
 
         worldDiff.add(KEY.STATIONS, station1, player1.getPrincipal());
+        
+        
+    }
+    
+    public void testUsingNullElements(){
+    	 WorldImpl underlyingWorld = new WorldImpl(10, 10);    	
+    	 underlyingWorld.addPlayer(player0);    	 
+    	 StationModel station0 = new StationModel();
+         StationModel station1 = null;
+         underlyingWorld.add(KEY.STATIONS, station0, player0.getPrincipal());
+         underlyingWorld.add(KEY.STATIONS, station1, player0.getPrincipal());         
+         WorldDifferences worldDiff = new WorldDifferences(underlyingWorld);
+         assertEquals(station0, worldDiff.get(KEY.STATIONS, 0, player0.getPrincipal()) );   
+         assertEquals(station1, worldDiff.get(KEY.STATIONS, 1, player0.getPrincipal()) );
+         worldDiff.set(KEY.STATIONS, 0, station1, player0.getPrincipal());
+         worldDiff.set(KEY.STATIONS, 1, station0, player0.getPrincipal()); 
     }
 
     public void testItem() {

@@ -163,7 +163,7 @@ public class WorldDifferences implements World {
     }
 
     public void set(ITEM item, FreerailsSerializable element) {
-        if (element.equals(this.underlyingWorld.get(item))) {
+        if (equal(element, underlyingWorld.get(item))) {
             //Case 1: the item is restored to the same value as the underlying world object.		
             if (this.listDifferences.containsKey(item)) {
                 this.listDifferences.remove(item);
@@ -181,7 +181,7 @@ public class WorldDifferences implements World {
                 getPlayerID(principal), index);
 
         if (underlyingWorld.boundsContain(key, index, principal) &&
-                element.equals(underlyingWorld.get(key, index, principal))) {
+        		equal(element, underlyingWorld.get(key, index, principal))) {
             //Case 1: the element is restored to the same value as the underlying world object.
             if (this.listDifferences.containsKey(diffKey)) {
                 this.listDifferences.remove(diffKey);
@@ -196,7 +196,7 @@ public class WorldDifferences implements World {
         DiffKey diffKey = new DiffKey(KeyType.LIST, key.getKeyID(), index);
 
         if (underlyingWorld.boundsContain(key, index) &&
-                element.equals(underlyingWorld.get(key, index))) {
+        		equal(element, underlyingWorld.get(key, index))) {
             //Case 1: the element is restored to the same value as the underlying world object.	
             if (this.listDifferences.containsKey(diffKey)) {
                 this.listDifferences.remove(diffKey);
@@ -279,7 +279,7 @@ public class WorldDifferences implements World {
                 return index;
             }
 
-            if (underlyingElement.equals(element)) {
+            if (equal(underlyingElement, element)) {
                 return index;
             }
         }
@@ -374,7 +374,7 @@ public class WorldDifferences implements World {
     public void setTile(int x, int y, FreerailsSerializable tile) {
         Point p = new Point(x, y);
 
-        if (underlyingWorld.getTile(x, y).equals(tile)) {
+        if (equal(underlyingWorld.getTile(x, y), tile)) {
             if (this.mapDifferences.containsKey(p)) {
                 this.mapDifferences.remove(p);
 
@@ -601,5 +601,15 @@ public class WorldDifferences implements World {
 	public int getID(FreerailsPrincipal p) {
 	
 		return getPlayerID(p);
+	}
+
+	/** Returns true if the objects are equal or both null, otherwise returns false.  Does
+	 * not throw null pointer exceptions when either of the objects is null.	
+	 */
+	private static boolean equal(FreerailsSerializable a, FreerailsSerializable b){
+		if(null == a || null == b){
+			return null == a && null == b;
+		}
+		return a.equals(b);		
 	}
 }
