@@ -44,8 +44,13 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
     	 Iterator it = modes.iterator();
     	 while (it.hasNext()) {
         	MyDisplayMode mode = (MyDisplayMode)it.next();
-        	DisplayMode displayMode = mode.displayMode;
-        	if(displayMode.getWidth() < width || displayMode.getHeight() < height || displayMode.getBitDepth() < bitdepth){
+        	DisplayMode displayMode = mode.displayMode;        	
+        	final boolean tooNarrow = displayMode.getWidth() < width;
+        	final boolean tooShort = displayMode.getHeight() < height;
+        	/* Note, displayMode.getBitDepth() may return DisplayMode.BIT_DEPTH_MULTI, which is -1.*/
+        	final boolean tooFewColours = (displayMode.getBitDepth() < bitdepth) && 
+							(displayMode.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI);
+			if(tooNarrow || tooShort || tooFewColours){
         		it.remove();
         	}
         }
