@@ -1,5 +1,9 @@
+Mon Dec 24 18:30:00 2001  Alexander Opitz <opi@le-bit.de>:
+o Generate WorldMap
+o add WorldMap* to BaseApplication
 Sun Dec 23 21:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o make it compileable
+o change my e-mail address
 Mon Oct 08 20:55:00 2001  Rivo Laks <rivolaks@hot.ee>:
 o Added methods to pause and stop game to GameController
 o Added GameState enum and getState() to GameController

@@ -10,7 +10,7 @@
  *----------------------------------------------------------------------*/
 
 #ifndef GAME_VERSION
-#define GAME_VERSION	"0.0.7"
+#define GAME_VERSION	"0.0.7+"
 #endif
 
 #include "GameApplication.h"

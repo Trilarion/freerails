@@ -7,6 +7,8 @@
 
 #define WRAPPERTYPE_BASE 1
 
+#include "WorldMap.h"
+
 class GameMainWindow;
 
 /** Base class for application creation
@@ -34,6 +36,9 @@ public:
       * will exit
       */
     virtual void setMainWindow(GameMainWindow* mw) = 0;
+    
+protected:
+    WorldMap* worldMap;
 };
 
 #endif

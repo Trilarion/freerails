@@ -48,7 +48,7 @@ int result;
       pGlobalApp->Quit();
       return 0;
     }
-    mapView=new GameMapView(&mw, 0, 0, 650, 600 /* ,WorldMap */);
+    mapView=new GameMapView(&mw, 0, 0, 650, 600 , worldMap);
     panel=new GamePanel(&mw, 650, 0, 150, 600 /* ,WorldMap */);
     mapView->Show();
     panel->Show();
