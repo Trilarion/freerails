@@ -8,6 +8,8 @@
 #define WRAPPERTYPE_BASE 1
 
 #include "WorldMap.h"
+#include "Engine.h"
+#include "Client.h"
 
 class GameMainWindow;
 
@@ -37,8 +39,16 @@ public:
       */
     virtual void setMainWindow(GameMainWindow* mw) = 0;
     
+    virtual void initSingleGame() {};
+    virtual void initClientGame() {};
+    virtual void initServerGame() {};
+    
 protected:
     WorldMap* worldMap;
+    Engine* engine;
+    Player* playerSelf;
+    Client* client;
+//  Server* server;
 };
 
 #endif
