@@ -25,10 +25,15 @@ public class StationModel implements FreerailsSerializable {
 		this.y =y;
 		
 	}
+	
 	public StationModel(){
 		this.name="No name";
 		x=0;
 		y=0;	
+	}
+	
+	public String getStationName(){
+		return name;
 	}
 	
 	public ProductionAtEngineShop getProduction() {
