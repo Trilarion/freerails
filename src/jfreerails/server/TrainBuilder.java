@@ -1,20 +1,26 @@
 package jfreerails.server;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.controller.pathfinder.RandomPathFinder;
 import jfreerails.move.AddCargoBundleMove;
 import jfreerails.move.AddTrainMove;
+import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
+import jfreerails.move.RemoveTrainMove;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.station.ProductionAtEngineShop;
+import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -41,13 +47,99 @@ import jfreerails.world.train.TrainPositionOnMap;
  *
  */
 public class TrainBuilder implements ServerAutomaton {
-    private MoveReceiver moveReceiver;
+    public ArrayList getTrainMovers() {
+        return trainMovers;
+    }
+
+    public void setTrainMovers(ArrayList trainMovers) {
+        this.trainMovers = trainMovers;
+    }
+
+    private transient MoveReceiver moveReceiver;
+    private ArrayList trainMovers = new ArrayList();
 
     public TrainBuilder(MoveReceiver mr) {
         moveReceiver = mr;
 
         if (null == mr) {
             throw new NullPointerException();
+        }
+    }
+
+    public TrainBuilder(MoveReceiver mr, ArrayList trainMovers) {
+        moveReceiver = mr;
+
+        if (null == mr) {
+            throw new NullPointerException();
+        }
+
+        this.trainMovers = trainMovers;
+    }
+
+    private void addTrainMover(TrainMover m) {
+        trainMovers.add(m);
+    }
+
+    void moveTrains(ReadOnlyWorld world) {
+        int deltaDistance = 5;
+
+        Iterator i = trainMovers.iterator();
+
+        while (i.hasNext()) {
+            Object o = i.next();
+            TrainMover trainMover = (TrainMover)o;
+
+            try {
+                trainMover.update(deltaDistance, moveReceiver);
+            } catch (IllegalStateException e) {
+                //Thrown when track under train is removed.
+                // (1) Remove the train mover..
+                i.remove();
+
+                // (2) Remove the train.
+                int trainID = trainMover.getTrainNumber();
+                FreerailsPrincipal principal = trainMover.getPrincipal();
+                TrainModel train = (TrainModel)world.get(KEY.TRAINS, trainID,
+                        principal);
+                Move removeTrainMove = RemoveTrainMove.getInstance(trainID,
+                        principal, world);
+                moveReceiver.processMove(removeTrainMove);
+            }
+        }
+    }
+
+    /** Iterator over the stations
+     * and build trains at any that have their production
+     * field set.
+     *
+     */
+    void buildTrains(ReadOnlyWorld world) {
+        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
+            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
+
+            for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {
+                StationModel station = (StationModel)world.get(KEY.STATIONS, i,
+                        principal);
+
+                if (null != station && null != station.getProduction()) {
+                    ProductionAtEngineShop[] production = station.getProduction();
+                    Point p = new Point(station.x, station.y);
+
+                    for (int j = 0; j < production.length; j++) {
+                        TrainMover trainMover = this.buildTrain(production[j].getEngineType(),
+                                production[j].getWagonTypes(), p, principal,
+                                world);
+
+                        //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
+                        TrainPathFinder tpf = trainMover.getTrainPathFinder();
+                        this.addTrainMover(trainMover);
+                    }
+
+                    ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(production,
+                            new ProductionAtEngineShop[0], i, principal);
+                    moveReceiver.processMove(move);
+                }
+            }
         }
     }
 
@@ -191,5 +283,12 @@ public class TrainBuilder implements ServerAutomaton {
 
     public void initAutomaton(MoveReceiver mr) {
         moveReceiver = mr;
+
+        Iterator it = trainMovers.iterator();
+
+        while (it.hasNext()) {
+            TrainMover tm = (TrainMover)it.next();
+            tm.initAutomaton(mr);
+        }
     }
 }

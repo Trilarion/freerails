@@ -22,7 +22,7 @@ import jfreerails.world.train.TrainPathIterator;
  * TODO make TrainMover stateless.
  *
  */
-public class TrainMover implements FreerailsServerSerializable {
+public class TrainMover implements FreerailsServerSerializable, ServerAutomaton {
     private final PathWalker walker;
     private final int trainNumber;
     private final ReadOnlyWorld w;
@@ -101,5 +101,9 @@ public class TrainMover implements FreerailsServerSerializable {
 
     public TrainPathFinder getTrainPathFinder() {
         return trainPathFinder;
+    }
+
+    public void initAutomaton(MoveReceiver mr) {
+        trainPathFinder.initAutomaton(mr);
     }
 }
