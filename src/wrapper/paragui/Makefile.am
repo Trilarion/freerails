@@ -23,7 +23,7 @@ libwrapper_a_SOURCES = GameApplication.cpp \
     pgspriteobject.cpp \
     pgspritebase.cpp \
     pgframehandler.cpp \
-    pgnethandler.cpp \
+    pgnethandler.cpp
 
 #    TrainFrame.cpp \
 #    pgframeapplicationhandler.cpp 
