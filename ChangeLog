@@ -1,3 +1,6 @@
+Apr 30, 2004 6:30:56 PM Luke
+	o Applied Jan Tozicka's patch
+		-Implements 927165 (Quick start option)
 Apr 21, 2004 1:46:57 AM Luke
 	o Fix DialogueBoxTester
 	o Tweak build.xml
