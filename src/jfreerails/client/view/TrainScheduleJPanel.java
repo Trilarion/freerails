@@ -375,6 +375,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
             public void actionPerformed(ActionEvent evt) {
                 sendUpdateMove(selectStationJPanel1.generateNewSchedule());
                 selectStationJPopupMenu.setVisible(false);
+                listModel.fireRefresh();
+                
             }
         };
         this.selectStationJPanel1.setup(mr, vl, actionListener);
@@ -577,32 +579,32 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addStationJButton;
-    private javax.swing.JMenu addWagonJMenu;
-    private javax.swing.JMenuItem autoConsistJMenuItem;
-    private javax.swing.JMenu changeConsistJMenu;
-    private javax.swing.JMenuItem changeStation;
-    private javax.swing.JMenuItem dontWaitJMenuItem;
-    private javax.swing.JPopupMenu editOrderJPopupMenu;
-    private javax.swing.JMenuItem engineOnlyJMenuItem;
-    private javax.swing.JMenuItem gotoStationJMenuItem;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JMenuItem noChangeJMenuItem;
-    private javax.swing.JList orders;
-    private javax.swing.JButton priorityOrdersJButton;
-    private javax.swing.JMenuItem pullUpJMenuItem;
-    private javax.swing.JMenuItem pushDownJMenuItem;
-    private javax.swing.JMenuItem removeAllJMenuItem;
-    private javax.swing.JMenuItem removeLastJMenuItem;
-    private javax.swing.JMenuItem removeStationJMenuItem;
-    private javax.swing.JMenu removeWagonsJMenu;
-    private jfreerails.client.view.SelectStationJPanel selectStationJPanel1;
-    private javax.swing.JPopupMenu selectStationJPopupMenu;
-    private jfreerails.client.view.TrainOrderJPanel trainOrderJPanel1;
-    private javax.swing.JMenu waitJMenu;
-    private javax.swing.JMenuItem waitUntilFullJMenuItem;
+    javax.swing.JButton addStationJButton;
+    javax.swing.JMenu addWagonJMenu;
+    javax.swing.JMenuItem autoConsistJMenuItem;
+    javax.swing.JMenu changeConsistJMenu;
+    javax.swing.JMenuItem changeStation;
+    javax.swing.JMenuItem dontWaitJMenuItem;
+    javax.swing.JPopupMenu editOrderJPopupMenu;
+    javax.swing.JMenuItem engineOnlyJMenuItem;
+    javax.swing.JMenuItem gotoStationJMenuItem;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JSeparator jSeparator1;
+    javax.swing.JSeparator jSeparator2;
+    javax.swing.JMenuItem noChangeJMenuItem;
+    javax.swing.JList orders;
+    javax.swing.JButton priorityOrdersJButton;
+    javax.swing.JMenuItem pullUpJMenuItem;
+    javax.swing.JMenuItem pushDownJMenuItem;
+    javax.swing.JMenuItem removeAllJMenuItem;
+    javax.swing.JMenuItem removeLastJMenuItem;
+    javax.swing.JMenuItem removeStationJMenuItem;
+    javax.swing.JMenu removeWagonsJMenu;
+    jfreerails.client.view.SelectStationJPanel selectStationJPanel1;
+    javax.swing.JPopupMenu selectStationJPopupMenu;
+    jfreerails.client.view.TrainOrderJPanel trainOrderJPanel1;
+    javax.swing.JMenu waitJMenu;
+    javax.swing.JMenuItem waitUntilFullJMenuItem;
     // End of variables declaration//GEN-END:variables
     
 }

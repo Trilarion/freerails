@@ -45,7 +45,7 @@ import jfreerails.world.train.TrainOrdersModel;
 public class DialogueBoxTester extends javax.swing.JFrame {
     
     private static final Player TEST_PLAYER = new Player("test player",
-    (new Player("test player")).getPublicKey(), 0);
+            (new Player("test player")).getPublicKey(), 0);
     private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
     
     
@@ -63,17 +63,21 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         }
     };
     
-    private UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(w);
+    private final UntriedMoveReceiver dummyReceiver;;
     
     private TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
     
     /** Creates new form TestGlassPanelMethod. */
     private DialogueBoxTester() {
         
+        w = new WorldImpl(200, 200);
+        
+        dummyReceiver = new SimpleMoveReciever(w);
+        
         modelRoot = new ModelRootImpl();
         modelRoot.setMoveFork(new MoveChainFork());
         modelRoot.setMoveReceiver(this.dummyReceiver);
-        w = new WorldImpl(200, 200);
+        
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
@@ -103,20 +107,20 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         DemandAtStation demand = new DemandAtStation(demandArray);
         bristol = new StationModel(bristol, demand);
         w.add(
-        KEY.STATIONS,
-        bristol, TEST_PRINCIPAL);
+                KEY.STATIONS,
+                bristol, TEST_PRINCIPAL);
         w.add(
-        KEY.STATIONS,
-        new StationModel(50, 100, "Bath", numberOfCargoTypes, 0), TEST_PRINCIPAL);
+                KEY.STATIONS,
+                new StationModel(50, 100, "Bath", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         w.add(
-        KEY.STATIONS,
-        new StationModel(40, 10, "Cardiff", numberOfCargoTypes, 0), TEST_PRINCIPAL);
+                KEY.STATIONS,
+                new StationModel(40, 10, "Cardiff", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         w.add(
-        KEY.STATIONS,
-        new StationModel(100, 10, "London", numberOfCargoTypes, 0), TEST_PRINCIPAL);
+                KEY.STATIONS,
+                new StationModel(100, 10, "London", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         w.add(
-        KEY.STATIONS,
-        new StationModel(90, 50, "Swansea", numberOfCargoTypes, 0), TEST_PRINCIPAL);
+                KEY.STATIONS,
+                new StationModel(90, 50, "Swansea", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         //Set up cargo bundle, for the purpose of this test code all the trains can share the
         //same one.
         MutableCargoBundle cb = new MutableCargoBundle();
@@ -129,35 +133,35 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         
         MutableSchedule schedule = new MutableSchedule();
         TrainOrdersModel order =
-        new TrainOrdersModel(0, new int[] { 0, 0, 0 }, false, false);
-        TrainOrdersModel order2 =
-        new TrainOrdersModel(1, new int[] { 1, 2, 0, 0,0 }, true, false);
-        TrainOrdersModel order3 =
-        new TrainOrdersModel(2, null, true, false);
-        schedule.setOrder(0, order);
-        schedule.setOrder(1, order2);
-        
-        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 },  scheduleID), TEST_PRINCIPAL);
-        schedule.setOrder(2, order2);
-        schedule.setOrder(3, order3);
-        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 },  scheduleID), TEST_PRINCIPAL);
-        schedule.setOrder(4, order2);
-        schedule.setOrderToGoto(3);
-        schedule.setPriorityOrders(order);
-        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 },  scheduleID), TEST_PRINCIPAL);
-        
-        
-        final MyGlassPanel glassPanel = new MyGlassPanel();
-        dialogueBoxController.setup(modelRoot, vl);
-        initComponents();
-        
-        glassPanel.setSize(800, 600);
-        this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
-        this.setSize(640, 480);
-        
+                new TrainOrdersModel(0, new int[] { 0, 0, 0 }, false, false);
+                TrainOrdersModel order2 =
+                        new TrainOrdersModel(1, new int[] { 1, 2, 0, 0,0 }, true, false);
+                        TrainOrdersModel order3 =
+                                new TrainOrdersModel(2, null, true, false);
+                        schedule.setOrder(0, order);
+                        schedule.setOrder(1, order2);
+                        
+                        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
+                        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 },  scheduleID), TEST_PRINCIPAL);
+                        schedule.setOrder(2, order2);
+                        schedule.setOrder(3, order3);
+                        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
+                        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 },  scheduleID), TEST_PRINCIPAL);
+                        schedule.setOrder(4, order2);
+                        schedule.setOrderToGoto(3);
+                        schedule.setPriorityOrders(order);
+                        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
+                        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 },  scheduleID), TEST_PRINCIPAL);
+                        
+                        
+                        final MyGlassPanel glassPanel = new MyGlassPanel();
+                        dialogueBoxController.setup(modelRoot, vl);
+                        initComponents();
+                        
+                        glassPanel.setSize(800, 600);
+                        this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
+                        this.setSize(640, 480);
+                        
     }
     
     /** This method is called from within the constructor to
@@ -402,20 +406,20 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         }
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem newspaper;
-    private javax.swing.JMenuItem selectEngine;
-    private javax.swing.JMenuItem selectTrainOrders;
-    private javax.swing.JMenuItem selectWagons;
-    private javax.swing.JMenu show;
-    private javax.swing.JMenuItem showCargoWaitingAndDemand;
-    private javax.swing.JMenuItem showControls;
-    private javax.swing.JMenuItem showJavaSystemProperties;
-    private javax.swing.JMenuItem showNetworthGraph;
-    private javax.swing.JMenuItem showStationInfo;
-    private javax.swing.JMenuItem showTerrainInfo;
-    private javax.swing.JMenuItem showTrainList;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JMenuBar jMenuBar1;
+    javax.swing.JMenuItem newspaper;
+    javax.swing.JMenuItem selectEngine;
+    javax.swing.JMenuItem selectTrainOrders;
+    javax.swing.JMenuItem selectWagons;
+    javax.swing.JMenu show;
+    javax.swing.JMenuItem showCargoWaitingAndDemand;
+    javax.swing.JMenuItem showControls;
+    javax.swing.JMenuItem showJavaSystemProperties;
+    javax.swing.JMenuItem showNetworthGraph;
+    javax.swing.JMenuItem showStationInfo;
+    javax.swing.JMenuItem showTerrainInfo;
+    javax.swing.JMenuItem showTrainList;
     // End of variables declaration//GEN-END:variables
     
 }

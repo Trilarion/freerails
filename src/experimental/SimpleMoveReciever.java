@@ -23,6 +23,7 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
 
     public SimpleMoveReciever(World w) {
         this.w = w;
+        if(null ==w ) throw new NullPointerException();
     }
 
     public MoveStatus tryDoMove(Move move) {

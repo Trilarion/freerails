@@ -45,7 +45,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         java.awt.GridBagConstraints gridBagConstraints;
 
         newTrainScheduleJPanel1 = new jfreerails.client.view.TrainScheduleJPanel();
-        trainDetailsJPanel1 = new jfreerails.client.view.TrainDetailsJPanel();
+        trainDetailsJPanel1 = new TrainDescriptionJPanel();
         previousJButton = new javax.swing.JButton();
         nextJButton = new javax.swing.JButton();
         trainListJButton = new javax.swing.JButton();
@@ -188,12 +188,12 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeJButton;
-    private jfreerails.client.view.TrainScheduleJPanel newTrainScheduleJPanel1;
-    private javax.swing.JButton nextJButton;
-    private javax.swing.JButton previousJButton;
-    private jfreerails.client.view.TrainDetailsJPanel trainDetailsJPanel1;
-    private javax.swing.JButton trainListJButton;
+    javax.swing.JButton closeJButton;
+    jfreerails.client.view.TrainScheduleJPanel newTrainScheduleJPanel1;
+    javax.swing.JButton nextJButton;
+    javax.swing.JButton previousJButton;
+    jfreerails.client.view.TrainDescriptionJPanel trainDetailsJPanel1;
+    javax.swing.JButton trainListJButton;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -21,7 +21,7 @@ import jfreerails.world.train.TrainModel;
  *
  * @author  Luke Lindsay
  */
-public class TrainDetailsJPanel extends javax.swing.JPanel implements View, WorldListListener {
+public class TrainDescriptionJPanel extends javax.swing.JPanel implements View, WorldListListener {
     
     
     private ReadOnlyWorld w;
@@ -36,7 +36,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
     private int bundleID = -1;
     
     
-    public TrainDetailsJPanel() {
+    public TrainDescriptionJPanel() {
         initComponents();
     }
     
