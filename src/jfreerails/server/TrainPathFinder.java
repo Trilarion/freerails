@@ -19,16 +19,15 @@ import jfreerails.world.train.TrainModel;
  * 28-Nov-2002
  * @author Luke Lindsay
  */
-public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializable {
+public class TrainPathFinder
+	implements FreerailsIntIterator, FreerailsSerializable {
 
-	
-	
 	public static final int NOT_AT_STATION = -1;
 
 	private final int trainId;
 
 	private final World world;
-	
+
 	FlatTrackExplorer trackExplorer;
 
 	SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
@@ -42,7 +41,7 @@ public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializa
 		this.trackExplorer = tx;
 		this.trainId = trainNumber;
 		this.world = w;
-		
+
 		updateTarget();
 	}
 
@@ -61,7 +60,9 @@ public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializa
 		station = (StationModel) world.get(KEY.STATIONS, stationNumber);
 		if (null == station) {
 			System.out.println(
-				"null == station, train " + trainId + " doesn't know where to go next!");
+				"null == station, train "
+					+ trainId
+					+ " doesn't know where to go next!");
 		} else {
 			//this.targetX = station.x;
 			//this.targetY = station.y;
@@ -72,7 +73,8 @@ public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializa
 		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId);
 		Schedule schedule = train.getSchedule();
 		int stationNumber = schedule.getStationToGoto();
-		StationModel station = (StationModel) world.get(KEY.STATIONS, stationNumber);
+		StationModel station =
+			(StationModel) world.get(KEY.STATIONS, stationNumber);
 		return new Point(station.x, station.y);
 	}
 
@@ -83,7 +85,7 @@ public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializa
 		int stationNumber = schedule.getStationToGoto();
 		station = (StationModel) world.get(KEY.STATIONS, stationNumber);
 		int[] wagonsToAdd = schedule.getWagonsToAdd();
-		if(null != wagonsToAdd){
+		if (null != wagonsToAdd) {
 			train.addWagons(wagonsToAdd);
 		}
 	}
@@ -92,8 +94,9 @@ public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializa
 		System.out.println("Train " + trainId + " is at station " + stationId);
 		//train is at a station so do the cargo processing
 
-		DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId,stationId,world);
-				
+		DropOffAndPickupCargoMoveGenerator transfer =
+			new DropOffAndPickupCargoMoveGenerator(trainId, stationId, world);
+
 		Move m = transfer.generateMove();
 		m.doMove(this.world);
 	}
@@ -103,27 +106,34 @@ public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializa
 		//loop thru the station list to check if train is at the same Point as a station
 		for (int i = 0; i < world.size(KEY.STATIONS); i++) {
 			StationModel tempPoint = (StationModel) world.get(KEY.STATIONS, i);
-			if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
+			if (null != tempPoint
+				&& (x == tempPoint.x)
+				&& (y == tempPoint.y)) {
 				return i; //train is at the station at location tempPoint
 			}
 		}
-		return -1; //there are no stations that exist where the train is currently
+		return -1;
+		//there are no stations that exist where the train is currently
 	}
 
 	public int nextInt() {
 
-		PositionOnTrack tempP = new PositionOnTrack(trackExplorer.getPosition());
+		PositionOnTrack tempP =
+			new PositionOnTrack(trackExplorer.getPosition());
 		Point targetPoint = getTarget();
-		
-		int stationNumber=getStationNumber(tempP.getX(), tempP.getY());
-		if(NOT_AT_STATION != stationNumber ){
-			loadAndUnloadCargo(stationNumber);
-		}
-		
+
 		if (tempP.getX() == targetPoint.x && tempP.getY() == targetPoint.y) {
+			//One of the things updateTarget() does is change the train consist, so
+			//it should be called before loadAndUnloadCargo(stationNumber)
 			updateTarget();
 			targetPoint = getTarget();
 		}
+
+		int stationNumber = getStationNumber(tempP.getX(), tempP.getY());
+		if (NOT_AT_STATION != stationNumber) {
+			loadAndUnloadCargo(stationNumber);
+		}
+
 		int currentPosition = tempP.getOpposite().toInt();
 
 		PositionOnTrack[] t =
@@ -140,7 +150,8 @@ public class TrainPathFinder implements FreerailsIntIterator, FreerailsSerializa
 			targets[i] = target;
 		}
 
-		FlatTrackExplorer tempExplorer = new FlatTrackExplorer(trackExplorer.getWorld(), tempP);
+		FlatTrackExplorer tempExplorer =
+			new FlatTrackExplorer(trackExplorer.getWorld(), tempP);
 		int next = pathFinder.findpath(currentPosition, targets, tempExplorer);
 		if (next == SimpleAStarPathFinder.PATH_NOT_FOUND) {
 			trackExplorer.nextEdge();

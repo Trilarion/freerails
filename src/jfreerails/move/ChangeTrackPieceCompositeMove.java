@@ -93,6 +93,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 			newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule);
 			oldTrackPiece = NullTrackPiece.getInstance();
 		}
+		
 		return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
 	}
 
@@ -121,6 +122,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 			newTrackPiece = NullTrackPiece.getInstance();
 			oldTrackPiece = NullTrackPiece.getInstance();
 		}
+		
+		
 		ChangeTrackPieceMove m = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
 		
 		//If we are removing a station, we also need to remove the station from the staiton list.

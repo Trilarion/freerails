@@ -37,7 +37,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		return trackPieceAfter;
 	}
 
-	public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point p) {
+	public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point p) {		
+		
 		trackPieceBefore = before;
 		trackPieceAfter = after;
 		location = new Point(p);

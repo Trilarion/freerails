@@ -18,9 +18,15 @@ final public class EngineType implements FreerailsSerializable {
 
 	private final Money price;
 
+	private final Money maintenance;
+
 	private boolean available = false; //Are we allowed to build it?	
 
 	private final int maxSpeed; //speed in mph
+
+	public Money getMaintenance() {
+		return maintenance;
+	}
 
 	public String getEngineTypeName() {
 		return engineTypeName;
@@ -53,6 +59,20 @@ final public class EngineType implements FreerailsSerializable {
 		powerAtDrawbar = power;
 		price = m;
 		this.maxSpeed = speed;
+		this.maintenance = new Money(0);
+	} 
+
+	public EngineType(
+		String name,
+		int power,
+		Money m,
+		int speed,
+		Money maintenance) {
+		engineTypeName = name;
+		powerAtDrawbar = power;
+		price = m;
+		this.maxSpeed = speed;
+		this.maintenance = maintenance;
 	}
 
 }

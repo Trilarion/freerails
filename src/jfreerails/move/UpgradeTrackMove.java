@@ -10,7 +10,6 @@ import java.awt.Rectangle;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.common.Money;
 import jfreerails.world.track.TrackPiece;
-import jfreerails.world.track.TrackRule;
 
 /**
  * This CompositeMove changes the track type at a point
@@ -27,11 +26,11 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
 	}
 	
 	public static UpgradeTrackMove generateMove(TrackPiece before, TrackPiece after, Point p){
-		ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
-		TrackRule typeAfter = m.getNewTrackPiece().getTrackRule();
-		Money cost = typeAfter.getPrice();
-		AddTransactionMove addTransactionMove = new AddTransactionMove(0, new Bill(cost));
-		return new UpgradeTrackMove(m, addTransactionMove);
+		ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);	
+		Money oldPieceCost = before.getTrackRule().getPrice();
+		Money newPieceCost = after.getTrackRule().getPrice();
+		Money cost = new Money(oldPieceCost.getAmount() - newPieceCost.getAmount());		
+		return new UpgradeTrackMove(m, new AddTransactionMove(0, new Bill(cost)));
 	}
 
 	public Rectangle getUpdatedTiles() {

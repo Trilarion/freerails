@@ -1,9 +1,9 @@
-Freerails Java - version 0.1.6
+Freerails Java - version 0.1.7
 
 What's new:
-o	Trains pickup and drop off cargo.
-o	'No change' option added to train orders.
- 
+o	Payments for delivering cargo.
+o	Charges for building track.
+
 Getting it, either:
 
  	Check-out the jfreerails module from the CVS.

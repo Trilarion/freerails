@@ -1,3 +1,10 @@
+02-Aug-2003 22:16:33 Luke
+	o Increased the number of resource tiles that are placed
+	around cities.
+	o Fixed bug where cargo was added to trains before wagons
+	were changed.
+01-Aug-2003 20:57:10 Luke
+	o Fixed failure in DropOffAndPickupCargoMoveGeneratorTest.	
 30-Jul-2003 21:51:56 Luke
 	o The player gets paid for delivering cargo, simply
 	$1,000 per unit of cargo for now.
