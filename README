@@ -1,11 +1,7 @@
-Freerails Java - version 0.0.9
+Freerails Java - version 0.1.0
 
 What's new:
--  Trains!  They don't move yet.  Hit F7 when the cursor 
-   is over the track to build one.
--  There is now a 'runtests' task in the ant script build.xml
-	that runs all of the junit tests.
-
+-	Moving trains (Press F7 with the cursor over the track)
  
 Getting it, either:
 
@@ -18,12 +14,12 @@ Requires: JDK 1.4, which can be downloaded from:
 http://java.sun.com/j2se/1.4/
 
 To run the binary distribution
-	type: java -jar jFreeRails-20020929-bin.jar
+	type: java -jar jFreeRails-XXXXXXX-bin.jar
 
 
 To compile and run the source distribution:
 (1) Extract the source files from the jar
-	jar -xf jFreeRails-20020929-src.jar
+	jar -xf jFreeRails-XXXXXXX-src.jar
 (2)	To compile, either 
 	(i) go to the directory src, and type: javac jfreerails/RunFreerails.java
 or	

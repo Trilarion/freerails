@@ -3,14 +3,20 @@
  <description>
   The aim of the FreeRails project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.
  </description>
- <property name="src" location="src"/>
+ 
+  
+ <target name="init" depends="properties">
+  <tstamp/>
+  <property name="src" location="src"/>
  <property name="build" location="build"/>
  <property name="dist"  location="dist"/>	
   <property name="doc"  location="doc"/>
- <target name="init" depends="properties">
+ </target>
+ 
+ <target name="mkdirs" depends="init">
   <tstamp/>
   <mkdir dir="${build}"/>
-  
+  <mkdir dir="${dist}/lib"/> 
 
  </target>
  
@@ -69,12 +75,11 @@
 
 
 
- <target name="bindist" depends="compile" description="Generate binary distribution"> <mkdir
-  dir="${dist}/lib"/> <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
+ <target name="bindist" depends="compile" description="Generate binary distribution"> <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
   <manifest> <attribute name="Main-Class" value="jfreerails.RunFreerails"/> </manifest> </jar> </target>
 
  <target name="srcdist" depends="init" description="Generate source distribution">
-  <mkdir dir="${dist}/lib"/>
+  
   <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-src.jar" basedir=".">
   <include name="src/**/*.java"/>
     <include name="build.xml"/>
@@ -123,20 +128,19 @@
   	</javadoc>
   </target>
   
-  <target name="jar_doc" depends="init, world_javadoc">  	
-  	<jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-javadoc.jar"
-       basedir="."       
-       includes="${doc}/**"     
-  	/>  		   
+  <target name="jar_doc" depends="mkdirs, world_javadoc, init">    
+  	<jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-javadoc.jar" basedir="."> 
+  	 <include name="doc/**/*"/>
+  	 </jar>      
+       
   </target>	
   
-    
+    <target name="all_dist" depends="jar_doc, bindist, srcdist" description="Create binary, source, and javadoc jars">  
+ 
+   </target>	
   
   <!-- Requires that NetComponents.jar is in ant/lib -->
-  <target name="upload" depends="jar_doc, bindist, srcdist" description="Upload source, binary, and javadocs jar files to sourcforge">
-  
-  
-
+  <target name="upload" depends="all_dist" description="Upload source, binary, and javadocs jar files to sourcforge">  
   <ftp server="upload.sourceforge.net"
        userid="anonymous"
        password="me@myorg.com"

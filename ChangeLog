@@ -1,3 +1,5 @@
+06-Nov-2002 20:24:10 Luke Lindsay 
+   oFixed 'jar_doc' task in build.xml
 05-Nov-2002 22:53:11 Luke Lindsay 
    o Moving trains: the class ServerGameEngine
    has a list of TrainMover objects, which control the 
