@@ -9,11 +9,11 @@ MyGameApplication::MyGameApplication(int argc, char *argv[]):GameApplication(arg
   Player pl("me");
   cerr << "Name: " << pl.getName() << endl;
   cerr << "Adress: " << &pl << endl;
-  GameElement element(&pl, "foo");
+/*  GameElement element(&pl, "foo");
   element.setPlayer(&pl);
   cerr << "Adress: " << element.getPlayer() << endl;
   pl.addGameElement(&element);
-
+*/
 
 }
 
