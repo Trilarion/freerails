@@ -73,13 +73,14 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         
         selectionSet = new HashMap<TrackRule.TrackCategories, Integer>();
         
-        //Remove any existing buttons.
+      
         
         trackButtonGroup = new javax.swing.ButtonGroup();
         bridgeButtonGroup = new javax.swing.ButtonGroup();
         stationButtonGroup = new javax.swing.ButtonGroup();
         tunnelButtonGroup = new javax.swing.ButtonGroup();
-        
+      
+        //Remove any existing buttons.
         bridgesJPanel.removeAll();
         stationsJPanel.removeAll();
         trackJPanel.removeAll();
@@ -167,6 +168,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         
         //Default to add track.
         addTrackActionPerformed(null);
+        buildModeButtonGroup.setSelected(addTrack.getModel() ,true);
         setBuildTrackStrategy();
         
         //Make the buttons non-focusable

@@ -28,6 +28,7 @@ import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.ReadOnlyWorld;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_STATION;
 
 
 /**
@@ -37,41 +38,53 @@ import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
  * @author Luke
  */
 public class UserInputOnMapController extends KeyAdapter {
-	private static final String JFREERAILS_CLIENT_SOUNDS_BUILDTRACK_WAV = "/jfreerails/client/sounds/buildtrack.wav";
-
-	private static final Logger logger = Logger
-			.getLogger(UserInputOnMapController.class.getName());
-
-	private StationTypesPopup stationTypesPopup;
-
-	private BuildIndustryJPopupMenu buildIndustryJPopupMenu = new BuildIndustryJPopupMenu();
-
-	private MapViewJComponent mapView;
-
-	private TrackMoveProducer trackBuilder;
-
-	private DialogueBoxController dialogueBoxController;
-
-	private final ModelRoot modelRoot;
-
-	private final ActionRoot actionRoot;
-
-	private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
-
-	private BuildTrackController buildTrack;
-
-	private SoundManager soundManager = SoundManager.getSoundManager();
-
-	private boolean ignoreDragging = false;
-
-	public UserInputOnMapController(ModelRoot mr, ActionRoot ar) {
-		modelRoot = mr;
-		actionRoot = ar;
-	}
 
 	private class CursorMouseAdapter extends MouseInputAdapter {
 
 		private boolean pressedInside = false;
+
+		public void mouseDragged(MouseEvent evt) {
+			
+			if( ignoreDragging) return;
+			if(!buildTrack()) return;
+			
+			if (SwingUtilities.isLeftMouseButton(evt) && pressedInside) {
+
+				setIgnoreKeyEvents(true);
+				int x = evt.getX();
+				int y = evt.getY();
+
+				float scale = mapView.getScale();
+				Dimension tileSize = new Dimension((int) scale, (int) scale);
+				int tileX = x / tileSize.width;
+				int tileY = y / tileSize.height;
+
+				/*
+				 * See the javadoc for JComponent.setAutoscrolls(boolean
+				 * autoscrolls)
+				 */
+				assert mapView.getAutoscrolls();
+
+				// Scroll view if necessary.
+				if (!mapView.getVisibleRect().contains(x, y)) {
+					/*
+					 * Making the rectangle we scroll to 2 tiles wide and
+					 * centred on x, y means that we scroll at least one tile.
+					 * This stops painfully slow scrolling in full screen mode
+					 * when the mouse cannot be dragged far from the view port
+					 * since it hits the screen edge.
+					 */
+					Rectangle r = new Rectangle(x - tileSize.width, y
+							- tileSize.height, 2 * tileSize.width,
+							2 * tileSize.height);
+					mapView.scrollRectToVisible(r);
+				}
+
+				buildTrack.setProposedTrack(getCursorPosition(), new Point(
+						tileX, tileY), trackBuilder);
+				mapView.requestFocus();
+			}
+		}
 
 		public void mousePressed(MouseEvent evt) {
 			if (SwingUtilities.isLeftMouseButton(evt)) {
@@ -108,53 +121,6 @@ public class UserInputOnMapController extends KeyAdapter {
 			}
 		}
 
-		public void mouseDragged(MouseEvent evt) {
-			/*
-			 * Fix for bug [ 972866 ] Build track by dragging - only when build
-			 * track selected
-			 */
-			boolean trackBuildingOn = trackBuilder.getTrackBuilderMode() != IGNORE_TRACK;
-			trackBuildingOn = trackBuildingOn
-					&& (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
-			if (SwingUtilities.isLeftMouseButton(evt) && pressedInside
-					&& trackBuildingOn && !ignoreDragging) {
-
-				setIgnoreKeyEvents(true);
-				int x = evt.getX();
-				int y = evt.getY();
-
-				float scale = mapView.getScale();
-				Dimension tileSize = new Dimension((int) scale, (int) scale);
-				int tileX = x / tileSize.width;
-				int tileY = y / tileSize.height;
-
-				/*
-				 * See the javadoc for JComponent.setAutoscrolls(boolean
-				 * autoscrolls)
-				 */
-				assert mapView.getAutoscrolls();
-
-				// Scroll view if necessary.
-				if (!mapView.getVisibleRect().contains(x, y)) {
-					/*
-					 * Making the rectangle we scroll to 2 tiles wide and
-					 * centered on x, y means that we scroll at least one tile.
-					 * This stops painfully slow scrolling in full screen mode
-					 * when the mouse cannot be dragged far from the viewport
-					 * since it hits the screen edge.
-					 */
-					Rectangle r = new Rectangle(x - tileSize.width, y
-							- tileSize.height, 2 * tileSize.width,
-							2 * tileSize.height);
-					mapView.scrollRectToVisible(r);
-				}
-
-				buildTrack.setProposedTrack(getCursorPosition(), new Point(
-						tileX, tileY), trackBuilder);
-				mapView.requestFocus();
-			}
-		}
-
 		public void mouseReleased(MouseEvent evt) {
 
 			if (SwingUtilities.isLeftMouseButton(evt)) {
@@ -164,7 +130,7 @@ public class UserInputOnMapController extends KeyAdapter {
 				if (pressedInside && buildTrack.isBuilding()
 						&& buildTrack.isBuildTrackSuccessful()) {
 					// Fix for bug [ 997088 ]
-					// Is current posisition different from original position?
+					// Is current position different from original position?
 					int x = evt.getX();
 					int y = evt.getY();
 					float scale = mapView.getScale();
@@ -186,61 +152,58 @@ public class UserInputOnMapController extends KeyAdapter {
 			}
 		}
 	}
+	private static final String JFREERAILS_CLIENT_SOUNDS_BUILDTRACK_WAV = "/jfreerails/client/sounds/buildtrack.wav";
 
-	private void cursorOneTileMove(Point oldPosition, OneTileMoveVector vector) {
-		boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
+	private static final Logger logger = Logger
+			.getLogger(UserInputOnMapController.class.getName());
 
-		if (null != trackBuilder && b) {
-			trackBuilder.setBuildTrackStrategy(getBts());
-			MoveStatus ms = trackBuilder.buildTrack(oldPosition, vector);
+	private final ActionRoot actionRoot;
 
-			if (ms.ok) {
-				setCursorMessage("");
-				playAppropriateSound();
-			} else {
-				setCursorMessage(ms.message);
-			}
+	private BuildIndustryJPopupMenu buildIndustryJPopupMenu = new BuildIndustryJPopupMenu();
 
-		} else {
-			logger.warning("No track builder available!");
-		}
+	private BuildTrackController buildTrack;
+
+	private DialogueBoxController dialogueBoxController;
+
+	private boolean ignoreDragging = false;
+
+	private MapViewJComponent mapView;
+
+	private final ModelRoot modelRoot;
+
+	private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
+
+	private SoundManager soundManager = SoundManager.getSoundManager();
+
+	private StationTypesPopup stationTypesPopup;
+
+	private TrackMoveProducer trackBuilder;
+
+	public UserInputOnMapController(ModelRoot mr, ActionRoot ar) {
+		modelRoot = mr;
+		actionRoot = ar;
 	}
-
-	private void playAppropriateSound() {
-		switch (trackBuilder.getTrackBuilderMode()) {
-		case BUILD_TRACK:
-		case UPGRADE_TRACK:
-			soundManager.playSound(JFREERAILS_CLIENT_SOUNDS_BUILDTRACK_WAV, 0);
-			break;
-		case REMOVE_TRACK:
-			soundManager.playSound("/jfreerails/client/sounds/removetrack.wav",
-					0);
-			break;
-		default:
-		// do nothing
-		}
-	}
-
-	public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
-			StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
-			FreerailsCursor cursor, BuildTrackController buildTrack) {
-		this.dialogueBoxController = dbc;
-		this.mapView = mv;
-		this.stationTypesPopup = stPopup;
-		this.trackBuilder = trackBuilder;
-		this.buildTrack = buildTrack;
-		buildIndustryJPopupMenu.setup(mr, null, null);
-
+	
+	private boolean buildTrack(){
 		/*
-		 * We attempt to remove listeners before adding them to prevent them
-		 * being added several times.
+		 * Fix for bug [ 972866 ] Build track by dragging - only when build
+		 * track selected
 		 */
-		mapView.removeMouseListener(mouseInputAdapter);
-		mapView.addMouseListener(mouseInputAdapter);
-		mapView.removeMouseMotionListener(mouseInputAdapter);
-		mapView.addMouseMotionListener(mouseInputAdapter);
-		mapView.removeKeyListener(this);
-		mapView.addKeyListener(this);
+		TrackMoveProducer.BuildMode trackBuilderMode = trackBuilder.getTrackBuilderMode();
+		if (trackBuilderMode == IGNORE_TRACK) return false;
+		if (trackBuilderMode == BUILD_STATION) return false;			
+		Object cursorMode = modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE);
+		if (!ModelRoot.Value.BUILD_TRACK_CURSOR_MODE.equals(cursorMode)) return false;
+		return true;
+	}
+
+	private void cancelProposedBuild() {
+		ignoreDragging = true;
+		buildTrack.hide();
+		StationBuildModel sbm = actionRoot.getStationBuildModel();
+		sbm.getStationCancelAction().actionPerformed(
+				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+		setIgnoreKeyEvents(false);
 	}
 
 	private void cursorJumped(Point to) {
@@ -257,6 +220,34 @@ public class UserInputOnMapController extends KeyAdapter {
 		// }
 	}
 
+	private void cursorOneTileMove(Point oldPosition, OneTileMoveVector vector) {		
+		
+		if(null == trackBuilder){
+			logger.warning("No track builder available!");
+			return;
+		}
+		
+		if (buildTrack()) {
+			trackBuilder.setBuildTrackStrategy(getBts());
+			MoveStatus ms = trackBuilder.buildTrack(oldPosition, vector);
+
+			if (ms.ok) {
+				setCursorMessage("");
+				playAppropriateSound();
+			} else {
+				setCursorMessage(ms.message);
+			}
+		} 
+	}
+
+	private BuildTrackStrategy getBts() {
+		BuildTrackStrategy bts = (BuildTrackStrategy) modelRoot
+				.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
+		if (null == bts)
+			throw new NullPointerException();
+		return bts;
+	}
+
 	private Point getCursorPosition() {
 		Point point = (Point) modelRoot
 				.getProperty(ModelRoot.Property.CURSOR_POSITION);
@@ -267,14 +258,9 @@ public class UserInputOnMapController extends KeyAdapter {
 		return point;
 	}
 
-	private void setCursorPosition(Point p) {
-		// Make a defensive copy.
-		Point point = new Point(p);
-		modelRoot.setProperty(Property.CURSOR_POSITION, point);
-	}
-
-	private void setCursorMessage(String s) {
-		modelRoot.setProperty(Property.CURSOR_MESSAGE, s);
+	private boolean isIgnoreKeyEvents() {
+		Boolean b = (Boolean) modelRoot.getProperty(Property.IGNORE_KEY_EVENTS);
+		return b.booleanValue();
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -393,26 +379,6 @@ public class UserInputOnMapController extends KeyAdapter {
 		}
 	}
 
-	private void cancelProposedBuild() {
-		ignoreDragging = true;
-		buildTrack.hide();
-		StationBuildModel sbm = actionRoot.getStationBuildModel();
-		sbm.getStationCancelAction().actionPerformed(
-				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
-		setIgnoreKeyEvents(false);
-	}
-
-	private void moveCursorJump(Point tryThisPoint) {
-		setCursorMessage("");
-
-		if (legalRectangleContains(tryThisPoint)) {
-			setCursorPosition(tryThisPoint);
-			cursorJumped(tryThisPoint);
-		} else {
-			this.setCursorMessage("Illegal cursor position!");
-		}
-	}
-
 	/**
 	 * Checks whether specified point is in legal rectangle.
 	 * 
@@ -427,6 +393,17 @@ public class UserInputOnMapController extends KeyAdapter {
 		Rectangle legalRectangle = new Rectangle(0, 0, width, height);
 
 		return legalRectangle.contains(tryThisPoint);
+	}
+
+	private void moveCursorJump(Point tryThisPoint) {
+		setCursorMessage("");
+
+		if (legalRectangleContains(tryThisPoint)) {
+			setCursorPosition(tryThisPoint);
+			cursorJumped(tryThisPoint);
+		} else {
+			this.setCursorMessage("Illegal cursor position!");
+		}
 	}
 
 	private void moveCursorOneTile(OneTileMoveVector v) {
@@ -445,12 +422,29 @@ public class UserInputOnMapController extends KeyAdapter {
 		}
 	}
 
-	private BuildTrackStrategy getBts() {
-		BuildTrackStrategy bts = (BuildTrackStrategy) modelRoot
-				.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
-		if (null == bts)
-			throw new NullPointerException();
-		return bts;
+	private void playAppropriateSound() {
+		switch (trackBuilder.getTrackBuilderMode()) {
+		case BUILD_TRACK:
+		case UPGRADE_TRACK:
+			soundManager.playSound(JFREERAILS_CLIENT_SOUNDS_BUILDTRACK_WAV, 0);
+			break;
+		case REMOVE_TRACK:
+			soundManager.playSound("/jfreerails/client/sounds/removetrack.wav",
+					0);
+			break;
+		default:
+		// do nothing
+		}
+	}
+
+	private void setCursorMessage(String s) {
+		modelRoot.setProperty(Property.CURSOR_MESSAGE, s);
+	}
+
+	private void setCursorPosition(Point p) {
+		// Make a defensive copy.
+		Point point = new Point(p);
+		modelRoot.setProperty(Property.CURSOR_POSITION, point);
 	}
 
 	private void setIgnoreKeyEvents(boolean ignoreKeyEvents) {
@@ -458,8 +452,25 @@ public class UserInputOnMapController extends KeyAdapter {
 				.valueOf(ignoreKeyEvents));
 	}
 
-	private boolean isIgnoreKeyEvents() {
-		Boolean b = (Boolean) modelRoot.getProperty(Property.IGNORE_KEY_EVENTS);
-		return b.booleanValue();
+	public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
+			StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
+			FreerailsCursor cursor, BuildTrackController buildTrack) {
+		this.dialogueBoxController = dbc;
+		this.mapView = mv;
+		this.stationTypesPopup = stPopup;
+		this.trackBuilder = trackBuilder;
+		this.buildTrack = buildTrack;
+		buildIndustryJPopupMenu.setup(mr, null, null);
+
+		/*
+		 * We attempt to remove listeners before adding them to prevent them
+		 * being added several times.
+		 */
+		mapView.removeMouseListener(mouseInputAdapter);
+		mapView.addMouseListener(mouseInputAdapter);
+		mapView.removeMouseMotionListener(mouseInputAdapter);
+		mapView.addMouseMotionListener(mouseInputAdapter);
+		mapView.removeKeyListener(this);
+		mapView.addKeyListener(this);
 	}
 }
