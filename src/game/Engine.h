@@ -23,6 +23,10 @@ public:
   void sendMsg(Message* msg); // send a message to the engines MessageQueue
   bool haveMsg();             // is true if the engine have a message for you
   Message* getMsg();          // get the message for you, is NULL if there is no Message
+  
+  int canBuildTrack(int x, int y, int type, int dir); // return the monay is needed to build
+						      // or -1 for not buildable
+  WorldMap* getWorldMap() {return worldMap;};
 
 private:
 

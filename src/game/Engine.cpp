@@ -96,3 +96,12 @@ void Engine::pauseGame() {
       // Server.sendAll("Game paused");
   }
 }
+
+int Engine::canBuildTrack(int x, int y, int type, int dir) {
+
+  MapField* field=worldMap->getMapField(x,y);
+  
+  if (worldMap->isMapFieldOcean(x,y)) return -1;
+
+  return 0;
+}
