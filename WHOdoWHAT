@@ -4,7 +4,9 @@
 # what you do. Or better go on http://sourceforge.net/projects/freerails in
 # the Task section and make/change your tasks which you do.
 #
-Thu Jul 15 03:00:00 2001  Alexander Opitz <opi@sputnik.de>:
-o Trackbuild controll (70% compleate)
-o Stationbuild controll (20% complete)
+Mon Jul 30 16:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o Trackbuild controll (100% compleate)
+o Stationbuild controll (100% complete)
+o waite for bugs :-)
+o Trainbuild controll (0% complete)
 o 32x32 --> 30x30 changes only for 16bit color (50% complete)

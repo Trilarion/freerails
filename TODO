@@ -6,5 +6,6 @@ TODO:
 =====
 
 - clean up freecraft engine (menu system, ...)
-- do control of building the map elements (at first Tracks and Station)
+- do control of building the map elements (train, cities)
+- let genmap work better
 - make 30x30 tileset available in all color deapth

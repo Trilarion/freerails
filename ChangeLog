@@ -1,3 +1,7 @@
+Mon Jul 30 16:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o Include menu patch from Rivo
+o finalize Stationbuildsystem and Trackbuildsystem (possible that there are bugs)
+o release 0.0.6
 Sat Jul 28 14:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o Build station to the end of a track or on a 2 direction track.
 o Take the right image.
