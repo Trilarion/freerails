@@ -7,7 +7,8 @@ import junit.framework.TestCase;
 
 
 /**
- *
+ *  Test cases that use FreerailsGameServer <b>and</b> connect
+ * over the Internet should extend this class  .
  *  @author Luke
  *
  */

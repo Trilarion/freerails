@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 
 /**
- *
+ *  Testcases that use EchoGameServer should extend this class.
  *  @author Luke
  *
  */

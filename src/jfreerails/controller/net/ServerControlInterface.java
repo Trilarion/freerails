@@ -5,7 +5,8 @@ package jfreerails.controller.net;
 
 
 /**
- *
+ *  Defines the methods that a client can call on the server using a ServerCommand.
+ * @see ServerCommand
  *  @author Luke
  *
  */

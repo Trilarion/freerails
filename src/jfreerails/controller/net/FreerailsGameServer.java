@@ -19,6 +19,12 @@ import jfreerails.world.top.WorldImpl;
 
 
 /**
+ * When executed by a thread, this class does the following: reads and executes moves and commands received from connected clients; sends moves and commands to
+ * connected clients.
+ *
+ * @see InetConnectionAccepter
+ * @see Connection2Client
+ *
  * @author Luke
  *
  */

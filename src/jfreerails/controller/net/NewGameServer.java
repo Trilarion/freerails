@@ -7,7 +7,7 @@ import jfreerails.util.GameModel;
 
 
 /**
- *
+ *  Defines a server that can accept connections to clients.
  *  @author Luke
  *
  */

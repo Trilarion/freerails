@@ -7,7 +7,10 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- *
+ *  An instance of this class is returned to the client (the server) when a ServerCommand (ClientCommand)
+ * is executed by the server (the client).
+ * @see ClientCommand
+ * @see ServerCommand
  *  @author Luke
  *
  */
@@ -28,14 +31,17 @@ public class CommandStatus implements FreerailsSerializable {
         this.successful = successful;
     }
 
+    /** Returns the id of the command whose status this object stores.*/
     public int getId() {
         return id;
     }
 
+    /** Returns the reason the command failed, may be null.*/
     public String getReason() {
         return reason;
     }
 
+    /** True if the command was successfully executed.*/
     public boolean isSuccessful() {
         return successful;
     }

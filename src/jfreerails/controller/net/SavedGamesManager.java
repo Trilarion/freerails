@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 
 /**
- *  This interface defines methods that let the server load and save game states, and
+ *  Defines methods that let the server load and save game states, and
  * get blank maps for new games.
  *
  *  @author Luke

@@ -5,7 +5,7 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- *
+ *   Lets a client send messages to the server over the Internet.
  *  @author Luke
  *
  */

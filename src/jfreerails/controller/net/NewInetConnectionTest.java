@@ -5,7 +5,7 @@ package jfreerails.controller.net;
 
 
 /**
- *
+ *  Junit test for NewInetConnection.
  *  @author Luke
  *
  */

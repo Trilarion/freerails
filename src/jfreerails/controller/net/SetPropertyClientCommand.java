@@ -7,7 +7,8 @@ import java.io.Serializable;
 
 
 /**
- *
+ *  A ClientCommand that lets the server set a property (for example, the list
+ * of saved games available) on a client.
  *  @author Luke
  *
  */

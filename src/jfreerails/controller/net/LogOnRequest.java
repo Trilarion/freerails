@@ -7,7 +7,8 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- *
+ *  A client sends an instance of this class to the server when it
+ *  wishes to log on.
  *  @author Luke
  *
  */

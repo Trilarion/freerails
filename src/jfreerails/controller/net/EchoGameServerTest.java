@@ -5,28 +5,15 @@ package jfreerails.controller.net;
 
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
-import junit.framework.TestCase;
 
 
 /**
- *
+ *  JUnit test for EchoGameServer.
  *  @author Luke
  *
  */
-public class EchoGameServerTest extends TestCase {
-    InetConnectionAccepter server;
-    EchoGameServer echoGameServer;
-    final int port = 6666;
-    final String ipAddress = "127.0.0.1";
-
-    protected void setUp() throws Exception {
-        echoGameServer = EchoGameServer.startServer();
-        server = new InetConnectionAccepter(port, echoGameServer);
-
-        Thread serverThread = new Thread(server);
-        serverThread.start();
-    }
-
+public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
+    /** Tests connecting to an EchoGameServer using instances of InetConnection2Server.*/
     public void testConnecting() {
         try {
             assertEquals(0, echoGameServer.countOpenConnections());
@@ -45,9 +32,5 @@ public class EchoGameServerTest extends TestCase {
             e.printStackTrace();
             fail();
         }
-    }
-
-    protected void tearDown() throws Exception {
-        server.stop();
     }
 }

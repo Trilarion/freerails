@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 
 /**
- *
+ *  Junit test for FreerailsGameServer - tests logging on.
  *  @author Luke
  *
  */

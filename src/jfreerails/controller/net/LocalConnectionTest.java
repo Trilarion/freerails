@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for NewLocalConnection.
  * @author Luke
  *
  */

@@ -16,7 +16,7 @@ import jfreerails.world.top.World;
 
 
 /**
- *
+ *  A client for FreerailsGameServer.
  *  @author Luke
  *
  */

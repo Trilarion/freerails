@@ -26,6 +26,9 @@ public class EchoGameServer implements NewGameServer, Runnable {
     private EchoGameServer() {
     }
 
+    /** Creates an EchoGameServer, starts it in a new Thread,
+     *  and waits for its status to change to isOpen before returning.
+     */
     public static EchoGameServer startServer() {
         EchoGameServer server = new EchoGameServer();
         Thread t = new Thread(server);

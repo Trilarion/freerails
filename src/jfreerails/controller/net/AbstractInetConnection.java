@@ -11,6 +11,8 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
+ * This class has the code that is shared by the client and server versions of InetConnection.
+ *
  * @author Luke
  */
 abstract class AbstractInetConnection implements Runnable {

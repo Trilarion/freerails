@@ -14,6 +14,8 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
+ * Provides methods send objects over the Internet, and connect and disconnect gracefully.
+ *
  * @author Luke
  *
  */
