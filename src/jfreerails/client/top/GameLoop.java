@@ -112,7 +112,12 @@ final public class GameLoop implements Runnable {
 
 				}
 			}
-			Thread.yield();
+			
+			//XXX HACK to give the network thread time to work.
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {				
+			}
 		}
 	}
 
