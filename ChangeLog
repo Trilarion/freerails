@@ -1,9 +1,12 @@
+Jun 14, 2004 Luke
+	Bugs fixed:
+	o 948671 Map City Overlays incorrect
 Jun 13, 2004 Luke
 	Bugs fixed:
 	o 948651 IP Address input should be checked immediately. 
 	o 948649 Dialogue Box Behavior 
 	o 967668 No supply & demand at new station
-	o 948672 Large numbers of active trains slows performance 
+	o 948672 Large numbers of active trains slows performance 	
 Jun 12, 2004 Luke
 	Bugs Fixed: 
 	o 967667 Cannot close multilple dialogue boxes.
