@@ -1,6 +1,8 @@
 Jun 15, 2004 Luke
 	Bugs fixed:	
 	o 972869 Crash when track under train removed.
+	o 972867 Signal towers do nothing
+		I've removed them!
 Jun 14, 2004 Luke
 	Bugs fixed:
 	o 948668 Building Station on Curve - Cursor changes function 	

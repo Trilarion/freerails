@@ -201,33 +201,7 @@
             </TrackPieceTemplate>
          </ListOfTrackPieceTemplates>
       </TrackType>
-
-      <TrackType type="signal tower" X="9" Y="8" signalTower="true" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000006" price="25000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="Urban" />
-
-            <TerrainType name="Country" />
-
-            <TerrainType name="Special" />
-            <TerrainType name="Industry" />
-            
-            <TerrainType name="Resource" />
-         </CanOnlyBuildOnTheseTerrainTypes>
-
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
+    
 
       <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" station="true" stationRadius="1" maxConsecuativePieces="-1" RGBvalue="000007" price="50000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
