@@ -189,10 +189,14 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     private void assertRemoveTrackSuceeds(Point p, OneTileMoveVector v) {
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(p,
-                v, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
-        MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
-        assertEquals(true, status.isOk());
+        try {
+            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(p,
+                    v, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
+            MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+            assertEquals(true, status.isOk());
+        } catch (Exception e) {
+            fail();
+        }
     }
 
     public void testMove() {

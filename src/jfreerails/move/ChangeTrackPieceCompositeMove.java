@@ -54,7 +54,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
         Point from, OneTileMoveVector direction, ReadOnlyWorld w,
-        FreerailsPrincipal principal) {
+        FreerailsPrincipal principal) throws Exception {
         TrackMove a;
         TrackMove b;
 
@@ -98,7 +98,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     //utility method.
     private static TrackMove getRemoveTrackChangeTrackPieceMove(Point p,
         OneTileMoveVector direction, ReadOnlyWorld w,
-        FreerailsPrincipal principal) {
+        FreerailsPrincipal principal) throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -118,7 +118,9 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                     newTrackPiece = NullTrackPiece.getInstance();
                 }
             } else {
-                newTrackPiece = NullTrackPiece.getInstance();
+                //There is no track to remove.
+                //Fix for bug [ 948670 ] Removing non-existant track
+                throw new Exception();
             }
         } else {
             newTrackPiece = NullTrackPiece.getInstance();
