@@ -22,8 +22,8 @@ class FileConnection: public Connection {
   /**  */
   ~FileConnection();
   
-  int write(void* data, int len);
-  int read(void* buf, int maxlen);
+  int writeTo(void* data, int len);
+  int readFrom(void* buf, int maxlen);
   
   void open(char* filename, Mode stat); 
 

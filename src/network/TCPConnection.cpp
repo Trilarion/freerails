@@ -2,7 +2,13 @@
  * $Id$
  */
 
+#include <errno.h>
+
 #include "TCPConnection.h"
+
+
+/* extern int errno; */
+
 
 TCPConnection::TCPConnection():Connection() {
 
@@ -70,6 +76,7 @@ void TCPConnection::listen(int port) {
   if (socketID <= 0)
   {
     state=ERROR;
+
     error=OTHER;
     return;
   } // no socket
@@ -113,10 +120,16 @@ void TCPConnection::close() {
   state=IDLE;
 }
 
-int TCPConnection::write(void* data, int len) {
+int TCPConnection::writeTo(void* data, int len) {
+  int n;
 
   if (state==OPEN)
   {
+    if ((n=write(socketID,data,len))<=0){
+      /* error=XXXX unable to write to socket 
+	 TODO: search for errors in errno */
+      return -1;
+    }
     return 0;
   } else
   {
@@ -125,10 +138,17 @@ int TCPConnection::write(void* data, int len) {
   }
 }
 
-int TCPConnection::read(void* buf, int maxlen) {
+int TCPConnection::readFrom(void* buf, int maxlen) {
+  int n;
 
   if (state==OPEN)
   {
+    if((n=read(socketID,buf,maxlen))<=0){
+      /* error=XXXXX unable to read from socket 
+	 TODO: search for errors in errno */
+      return -1;
+    }
+
     return 0;
   } else
   {

@@ -49,7 +49,7 @@ void FileConnection::close() {
   state=IDLE;
 }
 
-int FileConnection::write(void* data, int len) {
+int FileConnection::writeTo(void* data, int len) {
   error=NONE;
 
   if(mode!=READ){
@@ -76,7 +76,7 @@ int FileConnection::write(void* data, int len) {
   }
 }
 
-int FileConnection::read(void* buf, int maxlen) {
+int FileConnection::readFrom(void* buf, int maxlen) {
   
   if(mode==READ){
     if (state==OPEN){

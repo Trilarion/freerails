@@ -13,6 +13,8 @@
 
 #include "Connection.h"
 
+//extern ssize_t write(int fd,const void *buf,size_t count);
+
 const int MAXCONNECTIONS = 5;
 
 class TCPConnection: public Connection {
@@ -24,8 +26,8 @@ public:
     /**  */
     ~TCPConnection();
     
-    int write(void* data, int len);
-    int read(void* buf, int maxlen);
+    int writeTo(void* data, int len);
+    int readFrom(void* buf, int maxlen);
     
     void open(char* host, int port);
     void listen(int port);
