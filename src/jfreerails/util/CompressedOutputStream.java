@@ -12,7 +12,7 @@ import java.util.zip.Deflater;
  * guarantee that flush sends out all the data written so far, which 
  * leads to deadlocks in request-response-based protocols.
  * 
-* @author Patrice Espié
+* @author Patrice Espie
 * Licensing: LGPL
 */
 public class CompressedOutputStream extends FilterOutputStream {

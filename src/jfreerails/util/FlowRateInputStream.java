@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 /**
 *  A FilterInputStream that measures flow rate.
-* @author Patrice Espié
+* @author Patrice Espie
 * Licensing: LGPL
 */
 public class FlowRateInputStream extends FilterInputStream implements Runnable {

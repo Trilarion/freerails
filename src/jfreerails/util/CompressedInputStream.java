@@ -9,7 +9,7 @@ import java.util.zip.Inflater;
 /**
  * A FilterInputStream for reading compressed data from a network connection.
  * 
- * @author Patrice Espié Licensing: LGPL
+ * @author Patrice Espie Licensing: LGPL
  * @see CompressedOutputStream
  */
 public class CompressedInputStream extends FilterInputStream {
