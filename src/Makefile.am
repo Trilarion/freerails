@@ -1,1 +1,1 @@
-SUBDIRS = controllers elements map wrapper network main
+SUBDIRS = controllers elements map wrapper network game main
