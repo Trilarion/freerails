@@ -16,6 +16,7 @@ import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.util.StringTokenizer;
 
+import jfreerails.client.common.Stats;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import jfreerails.client.renderer.MapRenderer;
@@ -31,6 +32,8 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     implements CursorEventListener {
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
     
+    private Stats paintStats = new Stats("MapViewJComponent paint");
+
     /** The length of the array is the number of lines.  
      * This is necessary since Graphics.drawString(..)  doesn't know about newline characters*/
     private String[] userMessage = new String[0];
@@ -194,16 +197,17 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
     */
     protected void paintComponent(java.awt.Graphics g) {
+	paintStats.enter();
         super.paintComponent(g);
-
+/* no need to do this again
         java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
         java.awt.Rectangle r = this.getVisibleRect();
 
         mapView.paintRect(g2, r);
-
+*/
         if (null != mapCursor) {
-            mapCursor.cursorRenderer.paintCursor(g2,
+            mapCursor.cursorRenderer.paintCursor(g,
                 new java.awt.Dimension(30, 30));
         }
 
@@ -215,6 +219,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
             	g.drawString(this.userMessage[i], 50+visRect.x, 50+visRect.y+i*20);
             }
         }
+	paintStats.exit();
     }
 
     public MapViewJComponentConcrete() {

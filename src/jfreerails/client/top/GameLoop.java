@@ -49,12 +49,27 @@ final public class GameLoop implements Runnable, MultiLockedRegion {
 
         long nextModelUpdateDue = System.currentTimeMillis();
 
+        /*
+         * Reduce this threads priority to avoid starvation of the input thread
+         * on Windows.
+         */
+        try {
+            Thread.currentThread().setPriority(Thread.NORM_PRIORITY - 1);
+        } catch (SecurityException e) {
+            System.err.println("Couldn't lower priority of redraw thread");
+        }
+
         while (gameNotDone) {
             frameStartTime = System.currentTimeMillis();
 
             if (!screenHandler.isMinimised()) {
                 seq.grabAllLocks(this);
 
+                /*
+                 * Flush all redraws in the underlying toolkit.  This reduces
+                 * X11 lag when there isn't much happening, but is expensive
+                 * under Windows
+                 */
                 Toolkit.getDefaultToolkit().sync();
 
                 if (LIMIT_FRAME_RATE) {
