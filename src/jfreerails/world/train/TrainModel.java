@@ -28,17 +28,17 @@ public class TrainModel implements FreerailsSerializable{
         
     }
     
-	/*public TrainModel(int engine, int[] wagons, TrainPositionOnMap p, Schedule s){
+	public TrainModel(int engine, int[] wagons, TrainPositionOnMap p, Schedule s){
 			this.engineType = engine;
 			this.wagonTypes=wagons;
 			trainposition=p;
 			this.schedule=s;
       
-	}*/
+	}
 		
-    /*public TrainModel(int engine){
+    public TrainModel(int engine){
 	this.engineType = engine;  
-    }*/
+    }
     
     public Schedule getSchedule(){
         return this.schedule;
