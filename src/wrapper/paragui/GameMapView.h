@@ -28,7 +28,7 @@ class GameMapView: public PG_GradientWidget {
     
     SDL_Surface* sdlimage;
     
-    SDL_Surface* getMapImage(MapField::FieldType type);
+    SDL_Surface* getMapImage(int x, int y);
 
 };
 
