@@ -32,10 +32,11 @@ import jfreerails.world.top.World;
  * @author Luke Lindsay 05-Nov-2002
  *
  */
-public class ServerGameEngine implements GameModel, Runnable, ServerControlInterface {
+public class ServerGameEngine
+	implements GameModel, Runnable, ServerControlInterface {
 
 	World world;
-	
+
 	private GameServer gameServer;
 
 	/* some stats for monitoring sim speed */
@@ -58,7 +59,7 @@ public class ServerGameEngine implements GameModel, Runnable, ServerControlInter
 	 */
 	private int ticksSinceUpdate = 0;
 
-	private long frameStartTime;	
+	private long frameStartTime;
 	private long nextModelUpdateDue = System.currentTimeMillis();
 	private long baseTime = System.currentTimeMillis();
 	/**
@@ -91,25 +92,25 @@ public class ServerGameEngine implements GameModel, Runnable, ServerControlInter
 		}
 	}
 
-
 	public ServerGameEngine(World w, GameServer o, MoveReceiver r) {
 		this.world = w;
 		mutex = o;
 		gameServer = o;
 		receiver = r;
 		setupGame();
+		CalcSupplyAtStations calcSupplyAtStations = new CalcSupplyAtStations(w);
 	}
 
 	public void run() {
-			Thread.currentThread().setName("JFreerails server");
-			/*
-			 * bump this threads priority
-       */
-			Thread.currentThread().setPriority(Thread.currentThread().getPriority() +
-1);
-	    while (keepRunning) {
-		    update();
-	    }
+		Thread.currentThread().setName("JFreerails server");
+		/*
+		 * bump this threads priority
+		*/
+		Thread.currentThread().setPriority(
+			Thread.currentThread().getPriority() + 1);
+		while (keepRunning) {
+			update();
+		}
 	}
 
 	private void setupGame() {
@@ -121,91 +122,90 @@ public class ServerGameEngine implements GameModel, Runnable, ServerControlInter
 	}
 
 	public void infrequentUpdate() {
-	    CalcSupplyAtStations cSAS = new CalcSupplyAtStations(world);
-	    cSAS.doProcessing();
+		CalcSupplyAtStations cSAS = new CalcSupplyAtStations(world);
+		cSAS.doProcessing();
 	}
-	
+
 	private long lastFrameTime = 0;
 
 	/**
 	 * This is the main server update method, which does all the
 	 * "simulation".
 	 * TODO improve scheduling
-         * Each tick scheduled to start at baseTime + 1000 * n / fps 
+	     * Each tick scheduled to start at baseTime + 1000 * n / fps 
 	 */
 	public void update() {
-		if (targetTicksPerSecond > 0) {			
+		if (targetTicksPerSecond > 0) {
 			synchronized (mutex) {
 				if (targetTicksPerSecond > 0) {
 					//Note, targetTicksPerSecond can get set to 0 while we are waiting for the mutex.  If
 					// we continue when targetTicksPerSecond == 0 we get a 'java.lang.ArithmeticException: / by zero'
 					// in the code below.						
-				
-				
-				buildTrains();
-				//update the time first, since other updates might need to know the current time.
-				updateGameTime();	
 
-				//now do the other updates
-				moveTrains();
+					buildTrains();
+					//update the time first, since other updates might need to know the current time.
+					updateGameTime();
 
-				//Check whether we have just started a new year..
-				GameTime time = (GameTime) world.get(ITEM.TIME);
-				GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
-				int currentYear = calendar.getYear(time.getTime());
-				if (this.currentYearLastTick != currentYear) {
-					this.currentYearLastTick = currentYear;
-					newYear();
-				}
+					//now do the other updates
+					moveTrains();
 
-				if (ticksSinceUpdate % aLongTime == 0) {
-					infrequentUpdate();
-				}
-
-				statUpdates++;
-				n++;
-				frameStartTime = System.currentTimeMillis();
-				if (statUpdates == 100) {
-					statUpdates = 0;
-
-					int updatesPerSec = (int) (100000L /
-						(frameStartTime
-						 - statLastTimestamp));
-
-					if (statLastTimestamp > 0) {
-					    System.out.println("Updates per sec " +
-						    updatesPerSec);
+					//Check whether we have just started a new year..
+					GameTime time = (GameTime) world.get(ITEM.TIME);
+					GameCalendar calendar =
+						(GameCalendar) world.get(ITEM.CALENDAR);
+					int currentYear = calendar.getYear(time.getTime());
+					if (this.currentYearLastTick != currentYear) {
+						this.currentYearLastTick = currentYear;
+						newYear();
 					}
-					statLastTimestamp = frameStartTime;
-					baseTime = frameStartTime;
-					n = 0;
+
+					if (ticksSinceUpdate % aLongTime == 0) {
+						infrequentUpdate();
+					}
+
+					statUpdates++;
+					n++;
+					frameStartTime = System.currentTimeMillis();
+					if (statUpdates == 100) {
+						statUpdates = 0;
+
+						int updatesPerSec =
+							(int) (100000L
+								/ (frameStartTime - statLastTimestamp));
+
+						if (statLastTimestamp > 0) {
+							System.out.println(
+								"Updates per sec " + updatesPerSec);
+						}
+						statLastTimestamp = frameStartTime;
+						baseTime = frameStartTime;
+						n = 0;
+					}
+					nextModelUpdateDue =
+						baseTime + (1000 * n) / targetTicksPerSecond;
+					int delay = (int) (nextModelUpdateDue - frameStartTime);
+					mutex.notifyAll();
+					try {
+						if (delay > 0) {
+							mutex.wait(delay);
+						} else {
+							mutex.wait(1);
+						}
+					} catch (InterruptedException e) {
+						// do nothing
+					}
 				}
-				nextModelUpdateDue = baseTime + (1000 * n) /
-					targetTicksPerSecond;
-				int delay = (int) (nextModelUpdateDue -
-					frameStartTime);
-				mutex.notifyAll();
-				try {
-				    if (delay > 0) {
-					mutex.wait(delay);
-				    } else {
-					mutex.wait(1);
-				    }
-				} catch (InterruptedException e) {
-				    // do nothing
-				}
-			}
-			ticksSinceUpdate++;
+				ticksSinceUpdate++;
 			}
 		} else {
-		    nextModelUpdateDue = frameStartTime;
-		    try {
-		    	//When the game is frozen we don't want to be spinning in a loop.
+			nextModelUpdateDue = frameStartTime;
+			try {
+				//When the game is frozen we don't want to be spinning in a loop.
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
-				
+
 			}
-		}		
+		}
 	}
 
 	private void addCargoToStations() {
@@ -307,9 +307,9 @@ public class ServerGameEngine implements GameModel, Runnable, ServerControlInter
 		}
 
 	}
-	
+
 	public void newGame(String mapName) {
-	    newGame(OldWorldImpl.createWorldFromMapFile(mapName));
+		newGame(OldWorldImpl.createWorldFromMapFile(mapName));
 	}
 
 	public void newGame(World w) {

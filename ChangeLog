@@ -1,8 +1,15 @@
+28-Aug-2003 23:00:00 Luke
+	o Made train speed decrease with no of wagons.
+	o Made fare increase with distacne travelled.
+	o Made CalcSupplyAtStations implement WorldListListener so
+	that when a new station is added, its supply and demand is
+	calculated by the server.
+	o 
 25-Aug-2003 23:00:00 Luke
 	o Added new Train orders dialogue.
 	o Made changes to train consist and schedule
 	use the Moves instead of changing the DB directly.
-	o Lots of other chages/fixes.
+	o Lots of other changes/fixes.
 23-Aug-2003 15:45:00 Luke
 	o Removed cruft from the experiemental package.
 	o Added a simple train list dialogue, accessible via the display menu.

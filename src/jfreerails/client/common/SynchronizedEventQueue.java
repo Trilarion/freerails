@@ -22,9 +22,7 @@ final public class SynchronizedEventQueue extends EventQueue {
 			super.dispatchEvent(event);
         }
     }
-	/**
-	 * @return
-	 */
+	
 	public Object getMutex() {
 		return mutex;
 	}

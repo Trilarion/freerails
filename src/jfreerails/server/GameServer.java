@@ -2,12 +2,14 @@ package jfreerails.server;
 
 import java.util.Vector;
 
+import jfreerails.controller.CalcSupplyAtStations;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.world.top.World;
+import jfreerails.world.top.WorldListListener;
 
 /**
  * This implements a game server and keeps track of connections to clients and
@@ -34,6 +36,8 @@ public class GameServer {
 	world = OldWorldImpl.createWorldFromMapFile(mapName);
 	MoveExecuter.init(world, moveChainFork);
 	gameEngine = new ServerGameEngine(world, this, moveChainFork); 
+	WorldListListener listener = new CalcSupplyAtStations(world);
+	moveChainFork.addListListener(listener);
 	/**
 	 * start the server thread
 	 */
