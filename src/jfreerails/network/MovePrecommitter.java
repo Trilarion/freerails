@@ -58,6 +58,7 @@ public class MovePrecommitter {
     }
 
     void fromServer(Move m) {
+    	logger.finest("Move from server: " + m.toString());
         rollBackPrecommittedMoves();
 
         MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
@@ -75,17 +76,19 @@ public class MovePrecommitter {
             Move m = (Move)precomitted.removeFirst();
 
             if (!ms.ok) {
-                logger.fine("Move rejected by server: " + ms.message);
+                logger.info("Move rejected by server: " + ms.message);
 
                 MoveStatus undoStatus = m.undoMove(w, Player.AUTHORITATIVE);
 
                 if (!undoStatus.ok) {
                     throw new IllegalStateException();
                 }
+            }else{
+            	logger.finest("Move accepted by server: " + m.toString());
             }
         } else {
-            if (!ms.ok) {
-                //clear the blockage,
+            if (!ms.ok) {                
+            	logger.fine("Clear the blockage " + ms.message);
                 uncomitted.removeFirst();
                 precommitMoves();
             } else {
@@ -107,6 +110,7 @@ public class MovePrecommitter {
         PreMove pm = (PreMove)uncomitted.removeFirst();
 
         if (pms.ms.ok) {
+        	logger.finest("PreMove accepted by server: " + pms.toString());
             Move m = pm.generateMove(w);
             MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
 
@@ -114,7 +118,7 @@ public class MovePrecommitter {
                 throw new IllegalStateException();
             }
         } else {
-            logger.fine("PreMove rejected by server: " + pms.ms.message);
+            logger.info("PreMove rejected by server: " + pms.ms.message);
         }
 
         precommitMoves();

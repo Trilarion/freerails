@@ -48,9 +48,13 @@ public class SoundManager implements ModelRootListener {
     private SoundManager() {
     }
 
-    private void addClip(String s)
+    public void addClip(String s)
         throws IOException, UnsupportedAudioFileException, 
             LineUnavailableException {
+    	if (samples.containsKey(s)) {
+            return;
+        }
+    	
         URL url = getClass().getResource(s);
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(loadStream(
                     url.openStream()));

@@ -5,8 +5,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
+import jfreerails.client.common.SoundManager;
 import jfreerails.client.renderer.ChequeredTileRenderer;
 import jfreerails.client.renderer.ForestStyleTileRenderer;
 import jfreerails.client.renderer.RiverStyleTileRenderer;
@@ -43,11 +48,38 @@ public class ViewListsImpl implements ViewLists {
         tiles = loadNewTileViewList(w, pm);
 
         trackPieceViewList = loadTrackViews(w, pm);
-
-        //engine views
-        //sideOnTrainTrainView = addTrainViews(pm);
+        
         trainImages = new TrainImages(w, imageManager, pm);
+        
+        preloadSounds(pm);
+        
     }
+
+	private void preloadSounds(FreerailsProgressMonitor pm) {
+		//Pre-load sounds..
+        String[] soundsFiles = {"/jfreerails/client/sounds/buildtrack.wav",
+        		"/jfreerails/client/sounds/cash.wav",
+        		"/jfreerails/client/sounds/removetrack.wav",
+        		"/jfreerails/client/sounds/whistle.wav"};
+		pm.setMessage("Loading sounds");
+		pm.setMax(soundsFiles.length);
+		SoundManager sm = SoundManager.getSoundManager();
+		for(int i = 0; i < soundsFiles.length; i++){
+        	try {
+				sm.addClip(soundsFiles[i]);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			pm.setValue(i+1);
+        }
+	}
 
     private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
         FreerailsProgressMonitor pm) throws IOException {
