@@ -1,3 +1,6 @@
+Mon Aug 06 14:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+o starting to implement element train
+o change version to 0.0.6+
 Mon Jul 30 16:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o Include menu patch from Rivo
 o finalize Stationbuildsystem and Trackbuildsystem (possible that there are bugs)

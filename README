@@ -1,6 +1,6 @@
-===============
-FreeRails v0.06
-===============
+================
+FreeRails v0.0.7
+================
 
 Welcome to FreeRails!
 
@@ -43,9 +43,9 @@ Rules.make is.
 Playing the game:
 =================
 
-Nothing realy to play yet. You can only set stations and tracks but it doesn't
-lock very nice. See the last ChangeLog entries for more information about what
-does function.
+Nothing realy to play yet. You can set stations and tracks and then build
+trains and let them drive to an other station. (It must be a direct connection!)
+See the last ChangeLog entries for more information about what does function.
 
 
 And finally:

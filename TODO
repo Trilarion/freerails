@@ -6,6 +6,7 @@ TODO:
 =====
 
 - clean up freecraft engine (menu system, ...)
-- do control of building the map elements (train, cities)
-- let genmap work better
+- do control of building the map elements (cities, industrie)
+- let genmap work better (include cities, industrie in generation)
+- make the Controller: TrainController, StationController, CityController, GameController, ...
 - make 30x30 tileset available in all color deapth
