@@ -53,6 +53,9 @@ PARAGUI_CALLBACK(GamePanel::clickBuildButton) {
       case GamePanel::BuildStation:
         mapView->setMouseType(GameMapView::buildStation);
       break;
+      case GamePanel::BuildTrain:
+        mapView->setMouseType(GameMapView::buildTrain);
+      break;
     }
     Update();
   } else {
@@ -117,9 +120,9 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   stationButton->SetToggle(true);
   stationButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
 
-  trainButton=new PG_Button(this,GamePanel::BuildStation,PG_Rect(65,400,25,25));
+  trainButton=new PG_Button(this,GamePanel::BuildTrain,PG_Rect(65,400,25,25));
   trainButton->SetIcon("graphics/ui/buttons/build_train.png",
-			 "graphics/ui/buttons/build_train.png");
+		       "graphics/ui/buttons/build_train.png");
   trainButton->SetToggle(true);
   trainButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
   
@@ -182,7 +185,33 @@ void GamePanel::addStation(Station* station)
   }
   stationList->AddWidget(button);
   image=new PG_Image(button,point,"graphics/ui/buttons/build_station.png");
-  image->Show();
-  button->Show();
+  image->SetVisible(true);
+  stationList->Update();
   stationListSize++;
+}
+
+void GamePanel::addTrain(Train* train)
+{
+  PG_Point point;
+  PG_Image* image;
+  PG_Button* button;
+  point.x=0; point.y=0;
+/*  switch(train->getType())
+  {
+    case Train::coal:
+    case Train::oil:
+    case Train::elektro:
+    case Train::magnet:
+      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),station->getName().c_str());
+      button->SetFontSize(11);
+    break;
+  }
+*/
+  button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"");
+  button->SetFontSize(11);
+  trainList->AddWidget(button);
+  image=new PG_Image(button,point,"graphics/ui/buttons/build_train.png");
+  image->SetVisible(true);
+  trainList->Update();
+  trainListSize++;
 }

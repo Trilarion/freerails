@@ -7,6 +7,7 @@
 #define __TRAINCONTROLLER_H_
 
 #include "Controller.h"
+#include "Station.h"
 #include "Train.h"
 #include "TrainInfo.h"
 #include "WorldMap.h"

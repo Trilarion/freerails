@@ -19,17 +19,19 @@
 #include "GuiEngine.h"
 #include "Message.h"
 #include "Station.h"
+#include "Train.h"
 
 class GamePanel: public PG_ThemeWidget, public PG_EventObject {
 
   public:
-    enum WidgetID {ViewStations = 10000, ViewTrains, BuildTrack, BuildStation };
+    enum WidgetID {ViewStations = 10000, ViewTrains, BuildTrack, BuildStation, BuildTrain };
     /**  */
     GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _engine, GameMapView* _mapView);
     /**  */
     ~GamePanel();
     
     void addStation(Station* station);
+    void addTrain(Train* train);
 
   private:
   

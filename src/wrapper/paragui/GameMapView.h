@@ -23,7 +23,7 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
   public:
   
     enum MouseType {normal=0,
-                    buildTrack=10, buildStation, buildSignal};
+                    buildTrack=10, buildStation, buildTrain};
     /**  */
     GameMapView(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine);
     /**  */
@@ -35,6 +35,7 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
   private:
     SDL_Surface* tilesImage;
     SDL_Surface* trackImage;
+    SDL_Surface* trainImage;
     
     PG_ScrollBar* verticalScrollBar;
     PG_ScrollBar* horizontalScrollBar;
@@ -56,6 +57,7 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
 
     void drawStationPixmap(int mapX, int mapY, Station* station);
     void drawTrackPixmap(int mapX, int mapY, Track* track);
+    void drawTrainPixmap(int mapX, int mapY);
     void drawPixmap(SDL_Surface* pixmap, int tilesetX, int tilesetY, int mapX, int mapY);
     void drawTilesPixmap(int tilesetPosX, int tilesetPosY, int mapX, int mapY);
     

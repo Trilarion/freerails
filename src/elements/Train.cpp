@@ -4,8 +4,8 @@
 
 #include "Train.h"
 
-Train::Train(TrainInfo* _info, Player* _player)
-     : GameElement(_player, idTrain)
+Train::Train(unsigned int _posX, unsigned int _posY, TrainInfo* _info, Player* _player)
+     : GamePosElement(_posX, _posY, _player, idTrain)
 {
   info = _info;
 }

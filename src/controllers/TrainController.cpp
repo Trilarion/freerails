@@ -24,11 +24,16 @@ GameElement* TrainController::CreateElement(Serializer* _serializer)
 bool TrainController::canBuildElement(GameElement* _element)
 {
   Train* train = (Train*)_element;
-  return false; //testBuildElement(train->getPosX(), train->getPosY());
+  return testBuildElement(train->getPosX(), train->getPosY());
 }
 
 bool TrainController::testBuildElement(int x, int y)
 {
+  Station* station = worldMap->getMapField(x,y)->getStation();
+  if (station!=NULL)
+  {
+    if (station->getSize()!=Station::Signal) return true;
+  }
   return false;
 }
 
@@ -44,6 +49,7 @@ void TrainController::removeGameElement(long int _elementID)
 
 void TrainController::trainDoBuild(Train* train)
 {
-//  std::cerr << "Build: x, y: " << x << ":" << y << std::endl;
+  std::cerr << "BuildTrain: x, y: " << train->getPosX() << ":" << train->getPosY() << std::endl;
+  Controller::addGameElement(train);
 }
 

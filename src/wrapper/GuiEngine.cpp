@@ -38,6 +38,7 @@ void GuiEngine::initialize(Player *_player){
   player=_player;
   stationController=(StationController *)engine->getControllerDispatcher()->getController(GameElement::idStation);
   trackController=(TrackController *)engine->getControllerDispatcher()->getController(GameElement::idTrack);
+  trainController=(TrainController *)engine->getControllerDispatcher()->getController(GameElement::idTrain);
   
   nameExtensions.push_back("Station");
   nameExtensions.push_back("Junction");
@@ -82,6 +83,27 @@ bool GuiEngine::buildTrack(int x, int y, int dir){
     
   GameElement* new_element = new Track(x,y,player,dir);
   if (trackController->canBuildElement(new_element))
+    {
+      Message *msg=new Message(Message::addElement,1,(void *)new_element,player);
+      sendMsg(msg);
+      return true;
+    }else
+      return false;
+    
+}
+
+bool GuiEngine::testBuildTrain(int x, int y){
+    
+  GameElement* new_element = new Train(x,y,NULL,player);
+  return trainController->canBuildElement(new_element);
+
+}
+
+
+bool GuiEngine::buildTrain(int x, int y){
+    
+  GameElement* new_element = new Train(x,y,NULL,player);
+  if (trainController->canBuildElement(new_element))
     {
       Message *msg=new Message(Message::addElement,1,(void *)new_element,player);
       sendMsg(msg);

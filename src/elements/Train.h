@@ -13,15 +13,15 @@
 
 #include "Wagon.h"
 #include "TrainInfo.h"
-#include "GameElement.h"
+#include "GamePosElement.h"
 
-class Train : public GameElement
+class Train : public GamePosElement
 {
   public:
     /** Constructs train with characteristics given by @ref info
       * Note that you cannot set info to something else later
       */
-    Train(TrainInfo* _info, Player* _player);
+    Train(unsigned int _posX, unsigned int _posY, TrainInfo* _info, Player* _player);
     ~Train();
     /** Adds wagon to this train */
     void addWagon(Wagon* wagon);

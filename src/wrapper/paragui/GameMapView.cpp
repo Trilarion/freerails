@@ -20,6 +20,7 @@ Base2DMapView(_guiEngine) {
   SetBackgroundBlend(0);
   tilesImage=IMG_Load("data/graphics/tilesets/default/terrain_tiles.png");
   trackImage=IMG_Load("data/graphics/tilesets/default/track_tiles.png");
+  trainImage=IMG_Load("data/graphics/ui/buttons/build_train.png");
   
   imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,w,h,32,0,0,0,0);
 
@@ -523,6 +524,10 @@ void GameMapView::drawTilesPixmap(int tilesetPosX, int tilesetPosY, int mapX, in
   drawPixmap(tilesImage, tilesetPosX*30, tilesetPosY*30, mapX, mapY);
 }
 
+void GameMapView::drawTrainPixmap(int mapX, int mapY) {
+  drawPixmap(trainImage, 0, 0, mapX, mapY);
+}
+
 void GameMapView::setMouseType(MouseType type) {
 
   mouseType=type;
@@ -556,6 +561,9 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
         guiEngine->buildTrack(mapx,mapy,dir);
 	guiEngine->getOtherConnectionSide(&mapx,&mapy,&dir);
 	guiEngine->buildTrack(mapx,mapy,dir);
+      break;
+      case buildTrain:
+        guiEngine->buildTrain(mapx,mapy);
       break;
     default:
       return false;
@@ -654,18 +662,22 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       if(guiEngine->testBuildStation(mapx,mapy)){
 	drawStationPixmap(mapx, mapy, new Station(mapx,mapy, NULL, "", stationType, NULL));
       }
-      break;
+    break;
     case buildTrack:
       if(guiEngine->testBuildTrack(mapx,mapy,dir)){
         showTrack(mapx,mapy,dir);
 	guiEngine->getOtherConnectionSide(&mapx,&mapy,&dir);
 	showTrack(mapx,mapy,dir);
       }
-     
-      break;
+    break;
+    case buildTrain:
+      if(guiEngine->testBuildTrain(mapx,mapy)){
+	drawTrainPixmap(mapx, mapy);
+      }
+    break;
     default:
       return false;
-      break;
+    break;
   }
 
   Update();

@@ -54,6 +54,9 @@ class GuiEngine{
   
   bool testBuildTrack(int x, int y, int dir);
   bool buildTrack(int x, int y, int dir);
+
+  bool testBuildTrain(int x, int y);
+  bool buildTrain(int x, int y);
   
   void getOtherConnectionSide(unsigned int* x, unsigned int* y, int* dir) {trackController->getOtherConnectionSide(x,y,dir);}
   City* getNearestCity(int x, int y);
@@ -65,6 +68,7 @@ class GuiEngine{
   Engine *engine;
   TrackController* trackController;
   StationController* stationController;
+  TrainController* trainController;
   Player *player;
   
   std::vector<std::string> nameExtensions;
