@@ -5,15 +5,22 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.JComponent;
+import javax.swing.JList;
 
 import jfreerails.client.common.JFrameMinimumSizeEnforcer;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.ViewListsImpl;
+import jfreerails.client.view.CallBacks;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MapCursor;
+import jfreerails.client.view.NewTrainScheduleJPanel;
+import jfreerails.client.view.TrainDialogueJPanel;
+import jfreerails.client.view.TrainOrdersListModel;
 import jfreerails.client.view.TrainViewJList;
 import jfreerails.controller.MoveChainFork;
+import jfreerails.move.*;
+import jfreerails.move.MoveStatus;
 import jfreerails.server.NewTileSetFactoryImpl;
 import jfreerails.server.TileSetFactory;
 import jfreerails.server.WagonAndEngineTypesFactory;
@@ -24,312 +31,372 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
-import jfreerails.world.train.Schedule;
+import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
 /**
- * This class lets you test dialogue boxes without running the whole game. 
+ * This class lets you test dialogue boxes without running the whole game.
  * @author  lindsal8
  *
  */
-public class DialogueBoxTester extends javax.swing.JFrame {
+public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
+    
+    private final DialogueBoxController dialogueBoxController;
+    
+    private Random randy = new Random(System.currentTimeMillis());
+    
+    private World w;
+    
+    private ViewLists vl;
+    
+    TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
+           
+    /** Creates new form TestGlassPanelMethod */
+    public DialogueBoxTester() {
+        
+        dialogueBoxController = new DialogueBoxController(this);
+        w = new WorldImpl();
+        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
+        TileSetFactory tileFactory = new NewTileSetFactoryImpl();
+        tileFactory.addTerrainTileTypesList(w);
+        wetf.addTypesToWorld(w);
+        int numberOfCargoTypes = w.size(KEY.CARGO_TYPES);
+        
+        w.add(
+        KEY.STATIONS,
+        new StationModel(10, 10, "Bristol", numberOfCargoTypes, 0));
+        w.add(
+        KEY.STATIONS,
+        new StationModel(10, 10, "Bath", numberOfCargoTypes, 0));
+        w.add(
+        KEY.STATIONS,
+        new StationModel(10, 10, "Cardiff", numberOfCargoTypes, 0));
+        w.add(
+        KEY.STATIONS,
+        new StationModel(10, 10, "London", numberOfCargoTypes, 0));
+        w.add(
+        KEY.STATIONS,
+        new StationModel(10, 10, "Swansea", numberOfCargoTypes, 0));
+        //Set up cargo bundle, for the purpose of this test code all the trains can share the
+        //same one.
+        CargoBundle cb = new CargoBundleImpl();
+        cb.setAmount(new CargoBatch(0, 10, 10, 8, 0), 10);
+        cb.setAmount(new CargoBatch(0, 10, 10, 9, 0), 10);
+        cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 10);
+        cb.setAmount(new CargoBatch(3, 10, 10, 9, 0), 10);
+        cb.setAmount(new CargoBatch(5, 10, 10, 9, 0), 10);
+        w.add(KEY.CARGO_BUNDLES, cb);
+        
+        MutableSchedule schedule = new MutableSchedule();
+        TrainOrdersModel order =
+        new TrainOrdersModel(0, new int[] { 0, 0, 0 }, false);
+        TrainOrdersModel order2 =
+        new TrainOrdersModel(0, new int[] { 1, 2, 0, 0,0 }, true);
+        TrainOrdersModel order3 =
+        new TrainOrdersModel(0, null, true);
+        
+        schedule.setOrder(0, order);
+        schedule.setOrder(1, order);
+        schedule.setOrder(2, order2);
+        schedule.setOrder(3, order3);
+        schedule.setOrder(4, order2);
+        schedule.setOrderToGoto(3);
+        schedule.setPriorityOrders(order);
+        
+        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
+        
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID));
+        
+        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, scheduleID));
+        
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID));
+        
+        try {
+            vl = new ViewListsImpl(w); //new ViewListsImpl();
+            
+            final MyGlassPanel glassPanel = new MyGlassPanel();
+            dialogueBoxController.setup(
+            w,
+            vl,
+            new MoveChainFork(),
+            MapCursor.NULL_MAP_CURSOR);
+            initComponents();
+            
+            glassPanel.setSize(800, 600);
+            //this.setGlassPane(glassPanel);
+            this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 400));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //pack();
+    }
+    
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the FormEditor.
+     */
+    private void initComponents() {//GEN-BEGIN:initComponents
+        jLabel1 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        show = new javax.swing.JMenu();
+        newspaper = new javax.swing.JMenuItem();
+        selectEngine = new javax.swing.JMenuItem();
+        selectWagons = new javax.swing.JMenuItem();
+        selectTrainOrders = new javax.swing.JMenuItem();
+        showControls = new javax.swing.JMenuItem();
+        showTerrainInfo = new javax.swing.JMenuItem();
+        showStationInfo = new javax.swing.JMenuItem();
+        showTrainConsist = new javax.swing.JMenuItem();
+        showTrainList = new javax.swing.JMenuItem();
+        showNewTrainOrdersJMenuItem = new javax.swing.JMenuItem();
+        trainScheduleJMenuItem = new javax.swing.JMenuItem();
 
-	private final DialogueBoxController dialogueBoxController;
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                exitForm(evt);
+            }
+        });
 
-	private Random randy = new Random(System.currentTimeMillis());
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/data/south_america.png")));
+        getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
 
-	private World w;
+        show.setText("Show");
+        newspaper.setText("Newspaper");
+        newspaper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newspaperActionPerformed(evt);
+            }
+        });
 
-	private ViewLists vl;
+        show.add(newspaper);
 
-	/** Creates new form TestGlassPanelMethod */
-	public DialogueBoxTester() {
+        selectEngine.setText("Select Engine");
+        selectEngine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectEngineActionPerformed(evt);
+            }
+        });
 
-		dialogueBoxController = new DialogueBoxController(this);
-		w = new WorldImpl();
-		WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-		TileSetFactory tileFactory = new NewTileSetFactoryImpl();
-		tileFactory.addTerrainTileTypesList(w);
-		wetf.addTypesToWorld(w);
-		int numberOfCargoTypes = w.size(KEY.CARGO_TYPES);
+        show.add(selectEngine);
 
-		w.add(
-			KEY.STATIONS,
-			new StationModel(10, 10, "Bristol", numberOfCargoTypes, 0));
-		w.add(
-			KEY.STATIONS,
-			new StationModel(10, 10, "Bath", numberOfCargoTypes, 0));
-		w.add(
-			KEY.STATIONS,
-			new StationModel(10, 10, "Cardiff", numberOfCargoTypes, 0));
-		w.add(
-			KEY.STATIONS,
-			new StationModel(10, 10, "London", numberOfCargoTypes, 0));
-		w.add(
-			KEY.STATIONS,
-			new StationModel(10, 10, "Swansea", numberOfCargoTypes, 0));
-		//Set up cargo bundle, for the purpose of this test code all the trains can share the
-		//same one.
-		CargoBundle cb = new CargoBundleImpl();
-		cb.setAmount(new CargoBatch(0, 10, 10, 8, 0), 10);
-		cb.setAmount(new CargoBatch(0, 10, 10, 9, 0), 10);
-		cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 10);
-		cb.setAmount(new CargoBatch(3, 10, 10, 9, 0), 10);
-		cb.setAmount(new CargoBatch(5, 10, 10, 9, 0), 10);
-		w.add(KEY.CARGO_BUNDLES, cb);
+        selectWagons.setText("Select Wagons");
+        selectWagons.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectWagonsActionPerformed(evt);
+            }
+        });
 
-		Schedule schedule = new Schedule();
-		TrainOrdersModel order =
-			new TrainOrdersModel(0, new int[] { 0, 0, 0 }, false);
-		schedule.setOrder(0, order);
-		schedule.setOrder(1, order);
-		schedule.setOrder(2, order);
-		schedule.setOrder(3, order);
-		schedule.setOrder(4, order);
-	
-		w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, schedule));
+        show.add(selectWagons);
 
-		w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, schedule));
+        selectTrainOrders.setText("Train Orders");
+        selectTrainOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectTrainOrdersActionPerformed(evt);
+            }
+        });
 
-		w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, schedule));
+        show.add(selectTrainOrders);
 
-		try {
-			vl = new ViewListsImpl(w); //new ViewListsImpl();
+        showControls.setText("Show game controls");
+        showControls.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showControlsActionPerformed(evt);
+            }
+        });
 
-			final MyGlassPanel glassPanel = new MyGlassPanel();
-			dialogueBoxController.setup(
-				w,
-				vl,
-				new MoveChainFork(),
-				MapCursor.NULL_MAP_CURSOR);
-			initComponents();
+        show.add(showControls);
 
-			glassPanel.setSize(800, 600);
-			//this.setGlassPane(glassPanel);
-			this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 400));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//pack();
-	}
+        showTerrainInfo.setText("Show Terrain Info");
+        showTerrainInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showTerrainInfoActionPerformed(evt);
+            }
+        });
 
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the FormEditor.
-	 */
-	private void initComponents() { //GEN-BEGIN:initComponents
-		jLabel1 = new javax.swing.JLabel();
-		jMenuBar1 = new javax.swing.JMenuBar();
-		show = new javax.swing.JMenu();
-		newspaper = new javax.swing.JMenuItem();
-		selectEngine = new javax.swing.JMenuItem();
-		selectWagons = new javax.swing.JMenuItem();
-		selectTrainOrders = new javax.swing.JMenuItem();
-		showControls = new javax.swing.JMenuItem();
-		showTerrainInfo = new javax.swing.JMenuItem();
-		showStationInfo = new javax.swing.JMenuItem();
-		showTrainConsist = new javax.swing.JMenuItem();
-		showTrainList = new javax.swing.JMenuItem();
+        show.add(showTerrainInfo);
 
-		addWindowListener(new java.awt.event.WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent evt) {
-				exitForm(evt);
-			}
-		});
+        showStationInfo.setText("Show Station Info");
+        showStationInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showStationInfoActionPerformed(evt);
+            }
+        });
 
-		jLabel1.setIcon(
-			new javax.swing.ImageIcon(
-				getClass().getResource("/jfreerails/data/south_america.png")));
-		getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
+        show.add(showStationInfo);
 
-		show.setText("Show");
-		newspaper.setText("Newspaper");
-		newspaper.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				newspaperActionPerformed(evt);
-			}
-		});
+        showTrainConsist.setText("Train Consist");
+        showTrainConsist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showTrainConsistActionPerformed(evt);
+            }
+        });
 
-		show.add(newspaper);
+        show.add(showTrainConsist);
 
-		selectEngine.setText("Select Engine");
-		selectEngine.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				selectEngineActionPerformed(evt);
-			}
-		});
+        showTrainList.setText("Train List");
+        showTrainList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showTrainListActionPerformed(evt);
+            }
+        });
 
-		show.add(selectEngine);
+        show.add(showTrainList);
 
-		selectWagons.setText("Select Wagons");
-		selectWagons.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				selectWagonsActionPerformed(evt);
-			}
-		});
+        showNewTrainOrdersJMenuItem.setText("New  train orders");
+        showNewTrainOrdersJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showNewTrainOrdersJMenuItemActionPerformed(evt);
+            }
+        });
 
-		show.add(selectWagons);
+        show.add(showNewTrainOrdersJMenuItem);
 
-		selectTrainOrders.setText("Train Orders");
-		selectTrainOrders
-			.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				selectTrainOrdersActionPerformed(evt);
-			}
-		});
+        trainScheduleJMenuItem.setText("Train Schedule");
+        trainScheduleJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trainScheduleJMenuItemActionPerformed(evt);
+            }
+        });
 
-		show.add(selectTrainOrders);
+        show.add(trainScheduleJMenuItem);
 
-		showControls.setText("Show game controls");
-		showControls.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				showControlsActionPerformed(evt);
-			}
-		});
+        jMenuBar1.add(show);
 
-		show.add(showControls);
+        setJMenuBar(jMenuBar1);
 
-		showTerrainInfo.setText("Show Terrain Info");
-		showTerrainInfo.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				showTerrainInfoActionPerformed(evt);
-			}
-		});
-
-		show.add(showTerrainInfo);
-
-		showStationInfo.setText("Show Station Info");
-		showStationInfo.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				showStationInfoActionPerformed(evt);
-			}
-		});
-
-		show.add(showStationInfo);
-
-		showTrainConsist.setText("Train Consist");
-		showTrainConsist
-			.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				showTrainConsistActionPerformed(evt);
-			}
-		});
-
-		show.add(showTrainConsist);
-
-		showTrainList.setText("Item");
-		showTrainList.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				showTrainListActionPerformed(evt);
-			}
-		});
-
-		show.add(showTrainList);
-
-		jMenuBar1.add(show);
-
-		setJMenuBar(jMenuBar1);
-
-	} //GEN-END:initComponents
-
-	private void showTrainListActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_showTrainListActionPerformed		
-		dialogueBoxController. showTrainList();
-	} //GEN-LAST:event_showTrainListActionPerformed
-
-	private void showTrainConsistActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_showTrainConsistActionPerformed
-		// Add your handling code here:
-		//TrainView
-		int trainNumber = randy.nextInt(w.size(KEY.TRAINS) - 1);
-		JComponent trainView = new TrainViewJList(w, vl, trainNumber);
-		dialogueBoxController.showContent(trainView);
+    }//GEN-END:initComponents
+    
+    private void trainScheduleJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainScheduleJMenuItemActionPerformed
+        // Add your handling code here:
+        NewTrainScheduleJPanel tsp = new NewTrainScheduleJPanel();
+        tsp.setup(w, vl, null);
+        tsp.display(0);
+        dialogueBoxController.showContent(tsp);
+    }//GEN-LAST:event_trainScheduleJMenuItemActionPerformed
+    
+    private void showNewTrainOrdersJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showNewTrainOrdersJMenuItemActionPerformed
+        // Add your handling code here:
+        JList list = new JList();
+        jfreerails.client.view.TrainOrderJPanel trainOrderJPanel = new  jfreerails.client.view.TrainOrderJPanel();
+        trainOrderJPanel.setup(w, vl, null);
+        list.setCellRenderer(trainOrderJPanel);
+        TrainOrdersListModel listModel = new TrainOrdersListModel(w, 0);
+        list.setModel(listModel);
+        list.setFixedCellWidth(250);
+        dialogueBoxController.showContent(list);
+        
+    }//GEN-LAST:event_showNewTrainOrdersJMenuItemActionPerformed
+    
+    private void showTrainListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTrainListActionPerformed
+        // Add your handling code here:
+        dialogueBoxController.showTrainList();
+    }//GEN-LAST:event_showTrainListActionPerformed
+    
+    
+    
+	private void showTrainConsistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTrainConsistActionPerformed
+            // Add your handling code here:
+            //TrainView
+            int trainNumber = randy.nextInt(w.size(KEY.TRAINS) - 1);
+            JComponent trainView = new TrainViewJList(w, vl, trainNumber);
+            dialogueBoxController.showContent(trainView);
 	} //GEN-LAST:event_showTrainConsistActionPerformed
-
-	private void showStationInfoActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_showStationInfoActionPerformed
-		// Add your handling code here:
-		int stationNumber = randy.nextInt(w.size(KEY.STATIONS) - 1);
-		dialogueBoxController.showStationInfo(stationNumber);
+        
+	private void showStationInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showStationInfoActionPerformed
+            // Add your handling code here:
+            int stationNumber = randy.nextInt(w.size(KEY.STATIONS) - 1);
+            dialogueBoxController.showStationInfo(stationNumber);
 	} //GEN-LAST:event_showStationInfoActionPerformed
-
-	private void showTerrainInfoActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_showTerrainInfoActionPerformed
-		// Add your handling code here:
-		int terrainType = randy.nextInt(w.size(KEY.TERRAIN_TYPES) - 1);
-		dialogueBoxController.showTerrainInfo(terrainType);
+        
+	private void showTerrainInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTerrainInfoActionPerformed
+            // Add your handling code here:
+            int terrainType = randy.nextInt(w.size(KEY.TERRAIN_TYPES) - 1);
+            dialogueBoxController.showTerrainInfo(terrainType);
 	} //GEN-LAST:event_showTerrainInfoActionPerformed
-
-	private void showControlsActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_showControlsActionPerformed
-		// Add your handling code here:
-		dialogueBoxController.showGameControls();
+        
+	private void showControlsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showControlsActionPerformed
+            // Add your handling code here:
+            dialogueBoxController.showGameControls();
 	} //GEN-LAST:event_showControlsActionPerformed
-
-	private void selectTrainOrdersActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_selectTrainOrdersActionPerformed
-		// Add your handling code here:
-		dialogueBoxController.showTrainOrders();
+        
+	private void selectTrainOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTrainOrdersActionPerformed
+            // Add your handling code here:
+            trainDialogueJPanel.setup(w, vl, this);
+            trainDialogueJPanel.display(0);
+            dialogueBoxController.showContent(trainDialogueJPanel);
 	} //GEN-LAST:event_selectTrainOrdersActionPerformed
-
-	private void selectWagonsActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_selectWagonsActionPerformed
-		// Add your handling code here:
-		dialogueBoxController.showSelectWagons();
+        
+	private void selectWagonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectWagonsActionPerformed
+            // Add your handling code here:
+            dialogueBoxController.showSelectWagons();
 	} //GEN-LAST:event_selectWagonsActionPerformed
-
-	private void selectEngineActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_selectEngineActionPerformed
-		// Add your handling code here:
-		dialogueBoxController.showSelectEngine();
+        
+	private void selectEngineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectEngineActionPerformed
+            // Add your handling code here:
+            dialogueBoxController.showSelectEngine();
 	} //GEN-LAST:event_selectEngineActionPerformed
-
-	private void newspaperActionPerformed(
-		java.awt.event.ActionEvent evt) {
-		//GEN-FIRST:event_newspaperActionPerformed
-		// Add your handling code here:
-		dialogueBoxController.showNewspaper("New headline!");
+        
+	private void newspaperActionPerformed(java.awt.event.ActionEvent evt) {	//GEN-FIRST:event_newspaperActionPerformed
+            // Add your handling code here:
+            dialogueBoxController.showNewspaper("New headline!");
 	} //GEN-LAST:event_newspaperActionPerformed
-
-	/** Exit the Application */
-	private void exitForm(
-		java.awt.event.WindowEvent evt) { //GEN-FIRST:event_exitForm
-		System.exit(0);
+        
+        /** Exit the Application */
+	private void exitForm(java.awt.event.WindowEvent evt) { //GEN-FIRST:event_exitForm
+            System.exit(0);
 	} //GEN-LAST:event_exitForm
-
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		DialogueBoxTester test = new DialogueBoxTester();
-
-		test.setSize(new Dimension(640, 400));
-		test.show();
-	}
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JMenuBar jMenuBar1;
-	private javax.swing.JMenuItem newspaper;
-	private javax.swing.JMenuItem selectEngine;
-	private javax.swing.JMenuItem selectTrainOrders;
-	private javax.swing.JMenuItem selectWagons;
-	private javax.swing.JMenu show;
-	private javax.swing.JMenuItem showControls;
-	private javax.swing.JMenuItem showStationInfo;
-	private javax.swing.JMenuItem showTerrainInfo;
-	private javax.swing.JMenuItem showTrainConsist;
-	private javax.swing.JMenuItem showTrainList;
-	// End of variables declaration//GEN-END:variables
-
+        
+        /**
+         * @param args the command line arguments
+         */
+        public static void main(String args[]) {
+            DialogueBoxTester test = new DialogueBoxTester();
+            
+            test.setSize(new Dimension(640, 400));
+            test.show();
+        }
+        
+        public void closeDialogue() {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        
+        public void moveCursor(int x, int y) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        
+        public void processMove(Move m) {
+            MoveStatus ms = m.doMove(w);
+            if(!ms.ok){
+                throw new IllegalArgumentException(ms.message);
+            }
+            if(m instanceof ListMove){
+                ListMove lm = (ListMove)m;
+                trainDialogueJPanel.listUpdated(lm.getKey(), lm.getIndex());
+            }
+            
+        }
+        
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem newspaper;
+    private javax.swing.JMenuItem selectEngine;
+    private javax.swing.JMenuItem selectTrainOrders;
+    private javax.swing.JMenuItem selectWagons;
+    private javax.swing.JMenu show;
+    private javax.swing.JMenuItem showControls;
+    private javax.swing.JMenuItem showNewTrainOrdersJMenuItem;
+    private javax.swing.JMenuItem showStationInfo;
+    private javax.swing.JMenuItem showTerrainInfo;
+    private javax.swing.JMenuItem showTrainConsist;
+    private javax.swing.JMenuItem showTrainList;
+    private javax.swing.JMenuItem trainScheduleJMenuItem;
+    // End of variables declaration//GEN-END:variables
+    
 }

@@ -43,6 +43,8 @@ public class KEY implements FreerailsSerializable {
 	
 	/** The cargo waiting at stations or carried by trains. */
 	public static final KEY CARGO_BUNDLES = new KEY();
+	
+	public static final KEY TRAIN_SCHEDULES = new KEY();
 			
 	//END OF KEYS		
 	
@@ -66,6 +68,10 @@ public class KEY implements FreerailsSerializable {
 	
 	private Object readResolve() throws ObjectStreamException {
 		return keys[this.keyNumber];
+	}
+
+	public String toString() {
+		return String.valueOf(getKeyNumber());
 	}
 
 }

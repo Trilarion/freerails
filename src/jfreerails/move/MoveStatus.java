@@ -33,6 +33,13 @@ final public class MoveStatus {
 	}
 	
 	public static MoveStatus moveFailed(String reason){
+		
+		//Next 2 lines are just for debuging.
+		//It lets us see where moves are failing.
+		Exception e = new Exception();
+		e.printStackTrace();
+		
+		
 		return new MoveStatus(false, reason);
 	}
 

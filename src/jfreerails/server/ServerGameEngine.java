@@ -86,7 +86,9 @@ public class ServerGameEngine implements GameModel, Runnable, ServerControlInter
 	}
 
 	public void setTargetTicksPerSecond(int targetTicksPerSecond) {
-		this.targetTicksPerSecond = targetTicksPerSecond;
+		synchronized (mutex) {
+			this.targetTicksPerSecond = targetTicksPerSecond;
+		}
 	}
 
 
@@ -132,8 +134,14 @@ public class ServerGameEngine implements GameModel, Runnable, ServerControlInter
          * Each tick scheduled to start at baseTime + 1000 * n / fps 
 	 */
 	public void update() {
-		if (targetTicksPerSecond > 0) {
+		if (targetTicksPerSecond > 0) {			
 			synchronized (mutex) {
+				if (targetTicksPerSecond > 0) {
+					//Note, targetTicksPerSecond can get set to 0 while we are waiting for the mutex.  If
+					// we continue when targetTicksPerSecond == 0 we get a 'java.lang.ArithmeticException: / by zero'
+					// in the code below.						
+				
+				
 				buildTrains();
 				//update the time first, since other updates might need to know the current time.
 				updateGameTime();	
@@ -188,8 +196,15 @@ public class ServerGameEngine implements GameModel, Runnable, ServerControlInter
 				}
 			}
 			ticksSinceUpdate++;
+			}
 		} else {
 		    nextModelUpdateDue = frameStartTime;
+		    try {
+		    	//When the game is frozen we don't want to be spinning in a loop.
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				
+			}
 		}		
 	}
 

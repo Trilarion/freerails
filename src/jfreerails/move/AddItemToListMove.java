@@ -97,4 +97,17 @@ public class AddItemToListMove implements ListMove {
 	public FreerailsSerializable getAfter() {
 		return item;
 	}
+	
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer( this.getClass().getName() );
+		sb.append("\nlist=");
+		sb.append(listKey.toString());
+		sb.append("\n index =");
+		sb.append(this.index);
+		sb.append("\n item =");
+		sb.append(this.item.toString());
+		return sb.toString();
+	}
+
 }

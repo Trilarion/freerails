@@ -141,7 +141,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		TrainModel train = (TrainModel) w.get(KEY.TRAINS, 0);
 		int[] wagons = new int[] { 0, 0, 2, 2 };
 		//2 wagons for cargo type 0; 2 wagons for cargo type 2.
-		train.addWagons(wagons);
+		train = addWagons(wagons);
 
 		//Set cargo on train.
 		getCargoOnTrain().setAmount(this.cargoType0FromStation2, 30);
@@ -191,7 +191,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		//Add 2 wagons for cargo type 0 and 1 for cargo type 1 to train.
 		int[] wagons = new int[] { 0, 0, 1, 1 };
 		TrainModel train = (TrainModel) w.get(KEY.TRAINS, 0);
-		train.addWagons(wagons);
+		train = addWagons(wagons);
 
 		//Add quantities of cargo type 0 and 2 to the train.
 		getCargoOnTrain().setAmount(this.cargoType0FromStation2, 50);
@@ -288,9 +288,14 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 	}
 
 	private void removeAllWagonsFromTrain() {
+		addWagons(new int[] {});
+	}
+	
+	private TrainModel addWagons(int[] wagons){
 		TrainModel train = (TrainModel) w.get(KEY.TRAINS, 0);
-		train.addWagons(new int[] {
-		});
+		TrainModel newTrain = train.getNewInstance(train.getEngineType(), wagons);
+		w.set(KEY.TRAINS, 0, newTrain);
+		return newTrain;
 	}
 
 	private void stopAtStation() {

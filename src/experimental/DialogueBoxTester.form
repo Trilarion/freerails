@@ -75,10 +75,26 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="showTrainList">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Item"/>
+                <Property name="text" type="java.lang.String" value="Train List"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTrainListActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="showNewTrainOrdersJMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="New  train orders"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showNewTrainOrdersJMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="trainScheduleJMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Train Schedule"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trainScheduleJMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

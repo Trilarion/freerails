@@ -6,6 +6,8 @@
 
 package jfreerails.world.train;
 
+import java.util.Arrays;
+
 import jfreerails.world.common.FreerailsSerializable;
 
 /**
@@ -13,6 +15,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author  Luke
  */
 public class TrainOrdersModel implements FreerailsSerializable {
+    
+    public static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
     
     public final boolean waitUntilFull;
     
@@ -24,6 +28,10 @@ public class TrainOrdersModel implements FreerailsSerializable {
     
     /** Creates a new instance of TrainOrders */
     public TrainOrdersModel(int station, int[] newConsist, boolean wait) {
+        
+        //If there are no wagons, set wait = false.
+        wait = (null == newConsist || 0 == newConsist.length) ? false : wait;
+        
         waitUntilFull=wait;
         consist= newConsist;
         this.station = station;
@@ -44,4 +52,24 @@ public class TrainOrdersModel implements FreerailsSerializable {
     public boolean getWaitUntilFull() {
 	return waitUntilFull;
     }
+        
+    public boolean orderHasWagons(){
+        return null != consist && 0 < consist.length;
+    }
+    
+    public boolean hasLessThanMaxiumNumberOfWagons(){
+        return null == consist || consist.length < MAXIMUM_NUMBER_OF_WAGONS;
+    }
+	
+	public boolean equals(Object obj) {
+		if(obj instanceof TrainOrdersModel){
+			TrainOrdersModel test = (TrainOrdersModel)obj;
+			return this.waitUntilFull == test.waitUntilFull
+			&& this.station == test.station
+			&& Arrays.equals(this.consist, test.consist);
+		}else{
+			return false;
+		}
+	}
+
 }

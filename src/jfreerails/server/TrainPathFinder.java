@@ -2,8 +2,11 @@ package jfreerails.server;
 
 import java.awt.Point;
 
+import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.controller.pathfinder.SimpleAStarPathFinder;
+import jfreerails.move.ChangeTrainMove;
+import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.Move;
 import jfreerails.util.FreerailsIntIterator;
 import jfreerails.world.common.FreerailsSerializable;
@@ -11,6 +14,8 @@ import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
+import jfreerails.world.train.ImmutableSchedule;
+import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
 
@@ -51,11 +56,18 @@ public class TrainPathFinder
 
 	/** updates the targetX and targetY values based on the train's schedule */
 	private void updateTarget() {
-		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId);
-		Schedule schedule = train.getSchedule();
+		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId);		
+		int scheduleID = train.getScheduleID();
+		ImmutableSchedule currentSchedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES, scheduleID);			
+		MutableSchedule schedule = new MutableSchedule(currentSchedule);
 		StationModel station = null;
-		scheduledStop();
+		scheduledStop();					
 		schedule.gotoNextStaton();
+		ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
+		
+		ChangeTrainScheduleMove move= new ChangeTrainScheduleMove(scheduleID,currentSchedule, newSchedule);
+		MoveExecuter.getMoveExecuter().processMove(move);
+		
 		int stationNumber = schedule.getStationToGoto();
 		station = (StationModel) world.get(KEY.STATIONS, stationNumber);
 		if (null == station) {
@@ -68,10 +80,11 @@ public class TrainPathFinder
 			//this.targetY = station.y;
 		}
 	}
+	
 
 	private Point getTarget() {
 		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId);
-		Schedule schedule = train.getSchedule();
+		Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID());
 		int stationNumber = schedule.getStationToGoto();
 		StationModel station =
 			(StationModel) world.get(KEY.STATIONS, stationNumber);
@@ -80,13 +93,15 @@ public class TrainPathFinder
 
 	private void scheduledStop() {
 		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId);
-		Schedule schedule = train.getSchedule();
+		Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID());
 		StationModel station = null;
 		int stationNumber = schedule.getStationToGoto();
 		station = (StationModel) world.get(KEY.STATIONS, stationNumber);
 		int[] wagonsToAdd = schedule.getWagonsToAdd();
 		if (null != wagonsToAdd) {
-			train.addWagons(wagonsToAdd);
+			int engine = train.getEngineType();
+			Move m = ChangeTrainMove.generateMove(this.trainId, train, engine, wagonsToAdd);
+			MoveExecuter.getMoveExecuter().processMove(m);
 		}
 	}
 

@@ -47,12 +47,12 @@ public class DialogueBoxController {
 	private MyGlassPanel glassPanel;
 	private NewsPaperJPanel newspaper;
 	private SelectWagonsJPanel selectWagons;
-	private TrainScheduleJPanel trainScheduleJPanel;
+	//private TrainScheduleJPanel trainScheduleJPanel;
 	private GameControlsJPanel showControls;
 	private TerrainInfoJPanel terrainInfo;
 	private StationInfoJPanel stationInfo;
 	private JList trainList = new JList();
-
+	private TrainDialogueJPanel trainDialogueJPanel;
 	private ReadOnlyWorld world;
 	private ViewLists viewLists;
 
@@ -65,6 +65,20 @@ public class DialogueBoxController {
 	private ActionListener closeCurrentDialogue = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			closeContent();
+		}
+	};
+
+	private CallBacks callbacks = new CallBacks() {
+		public void closeDialogue() {
+			closeContent();
+		}
+
+		public void moveCursor(int x, int y) {
+			// TODO Auto-generated method stub			
+		}
+
+		public void processMove(Move m) {
+			MoveExecuter.getMoveExecuter().processMove(m);
 		}
 	};
 
@@ -126,9 +140,9 @@ public class DialogueBoxController {
 		showControls.setup(w, vl, this.closeCurrentDialogue);
 
 		//Set up train orders dialogue
-		trainScheduleJPanel = new TrainScheduleJPanel();
-		trainScheduleJPanel.setup(w, vl);
-		moveChainFork.add(trainScheduleJPanel);
+		//trainScheduleJPanel = new TrainScheduleJPanel();
+		//trainScheduleJPanel.setup(w, vl);
+		//moveChainFork.add(trainScheduleJPanel);
 
 		//Set up select engine dialogue.
 		selectEngine = new SelectEngineJPanel(this);
@@ -171,6 +185,10 @@ public class DialogueBoxController {
 			}
 
 		});
+
+		trainDialogueJPanel = new TrainDialogueJPanel();
+		trainDialogueJPanel.setup(world, viewLists, callbacks);
+		moveChainFork.addListListener(trainDialogueJPanel);
 	}
 
 	public void showNewspaper(String headline) {
@@ -184,8 +202,8 @@ public class DialogueBoxController {
 			System.out.println(
 				"Cannot show train orders since there are no trains!");
 		} else {
-			trainScheduleJPanel.displayFirst();
-			showContent(trainScheduleJPanel);
+			trainDialogueJPanel.display(0);
+			this.showContent(trainDialogueJPanel);
 		}
 	}
 
@@ -234,7 +252,7 @@ public class DialogueBoxController {
 	public void showTrainList() {
 		if (world.size(KEY.TRAINS) > 0) {
 			trainList.setModel(new World2ListModelAdapter(world, KEY.TRAINS));
-			TrainViewJPanel trainView = 
+			TrainViewJPanel trainView =
 				new TrainViewJPanel(world, viewLists, 0);
 			trainList.setCellRenderer(trainView);
 			trainView.setHeight(50);
