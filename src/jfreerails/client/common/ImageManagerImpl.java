@@ -12,6 +12,7 @@ import java.awt.Transparency;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -55,8 +56,15 @@ public class ImageManagerImpl implements ImageManager {
 		if(imageHashMap.containsKey(relativeFilename)){
 			return (Image)imageHashMap.get(relativeFilename);
 		}
-		File f = new File(pathToReadFrom+File.separator+relativeFilename);
-		Image tempImage = ImageIO.read(f);
+		//File f = new File(pathToReadFrom+File.separator+relativeFilename);
+		String read = pathToReadFrom+relativeFilename;		
+		read = read.replace('\\', '/');
+		URL url = ImageManagerImpl.class.getResource(read);
+		if(null == url){
+			System.out.println(read);
+			throw new IOException("Couldn't find: "+read);
+		}
+		Image tempImage = ImageIO.read(url);
 		Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getWidth(null), Transparency.BITMASK);
 		Graphics g = compatibleImage.getGraphics();
 		g.drawImage(tempImage, 0, 0, null);
