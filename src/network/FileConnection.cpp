@@ -105,6 +105,7 @@ int FileConnection::read(void* buf, int maxlen) {
 }
 
 
-bool FileConnection::endOfFile(){
-//  return file->ios::eof();  /* we could throw an exception if something goes wrong */
+bool FileConnection::endOfFile()
+{
+  return false; //file->ios::eof();  /* we could throw an exception if something goes wrong */
 }

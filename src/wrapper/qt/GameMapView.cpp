@@ -9,6 +9,10 @@
 #include "GameMainWindow.h"
 #include "GameMapView.h"
 #include "GameWidget.h"
+#include "Message.h"
+#include "stationcontroller.h"
+#include "Track.h"
+#include "trackcontroller.h"
 
 GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent, const char* name)
            : QCanvasView((QCanvas*)_map, parent->getWidget(), name,
@@ -16,7 +20,10 @@ GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent,
 {
   engine = _engine;
   map = _map;
+  setFrameShape(QFrame::NoFrame);
+  setBackgroundMode(Qt::NoBackground);
   resize(parent->getWidget()->width() - 176, parent->getWidget()->height());
+  
 
   bool status;
   
@@ -36,6 +43,7 @@ GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent,
   mouseButton = none;
   oldMousePos.setX(0);
   oldMousePos.setY(0);
+  bShowGrid = false;
 }
 
 GameMapView::~GameMapView()
@@ -50,8 +58,6 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
   if (field == NULL)
     return;
   MapField::FieldType type = field->getType();
-
-//  qDebug("Pos. %i, %i hat Feldtyp %i", x, y, int(type));
     
   int xpos=0;
   int ox, oy;
@@ -111,11 +117,22 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
       ox = 13 * 30;
       oy = 7 * 30;
   }
-//  qDebug("offset in Tiles.png is %i, %i", ox, oy);
   
   bitBlt(pixPaint, 0, 0, pixTiles, ox, oy, 30, 30, Qt::CopyROP, true);
 
-  #warning complete me: tracks and stations missing
+  Track *trk;
+  trk = field->getTrack();
+  if (trk != NULL)
+  {
+    int tracktileX, tracktileY, i;
+    for(i=0;i<5;i++)
+    {
+      trk->getTrackTile(i, &tracktileX, &tracktileY);
+      if (tracktileX >= 0)
+        bitBlt(pixPaint, 0, 0, pixTrack, tracktileX, tracktileY, 30, 30, Qt::CopyROP, false);
+    }
+  }
+  #warning complete me: stations missing
 }
 
 int GameMapView::getPixmapPos(int x, int y, MapField::FieldType type)
@@ -220,8 +237,6 @@ int GameMapView::get3DPixmapPos(int x, int y, MapField::FieldType type)
 
 void GameMapView::contentsMousePressEvent(QMouseEvent* e)
 {
-  qDebug("mouse pressed at: %i, %i", e->x(), e->y());
-
   if(e->button() == Qt::LeftButton)
   {
     mouseButton = left;
@@ -235,32 +250,13 @@ void GameMapView::contentsMousePressEvent(QMouseEvent* e)
   }
 }
 
-void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
+void GameMapView::contentsMouseReleaseEvent(QMouseEvent *)
 {
-  qDebug("mouse released at: %i, %i", e->x(), e->y());
-
-  QPixmap pixPaint;
-  QPainter *p;
-
-  p= new QPainter();
-  CHECK_PTR(p);
-  
-  pixPaint.resize(30, 30);
-
-  getMapPixmap(&pixPaint, oldMousePos.x(), oldMousePos.y());
-  p->begin(this);
-  p->drawPixmap(oldMousePos.x() * 30, oldMousePos.y() * 30, pixPaint);
-  p->end();
-
-  delete p;
-
   mouseButton = none;
 }
 
 void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
 {
-  qDebug("mouse moved to: %i, %i", e->x(), e->y());
-
   if(mouseButton == right)
   {
     QPoint diff = e->pos() - oldMousePos2;
@@ -289,141 +285,44 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
 
   if(mouseButton == left)
   {
-    int x, y, x1, y1, x2, y2;
-    int offx, offy;
-    int dir, dir2, helpx, helpy;
-
-    offx = contentsX();
-    offy = contentsY();
-
-    offx /= 30;
-    offy /= 30;
-    
-    x1 = e->x() - offx * 30;
-    y1 = e->y() - offy * 30;
-
-    x = x1 / 30;
-    y = y1 / 30;
-    
-    helpx = x * 30;
-    helpx = x1 - helpx;
-    helpy = y * 30;
-    helpy = y1 - helpy;
-
-    if(helpx < 10)
-    {
-      if(helpy < 10)
-      {
-        dir = 8;
-      }
-      else
-      {
-        if(helpy < 20)
-        {
-          dir = 7;
-        }
-        else
-        {
-          dir = 6;
-        }
-      }
-    }
-    else
-    {
-      if(helpx < 20)
-      {
-        if(helpy < 10)
-        {
-          dir = 1;
-        }
-        else
-        {
-          if(helpy < 20)
-          {
-            dir = 1;
-          }
-          else
-          {
-            dir = 5;
-          }
-        }
-      }
-      else
-      {
-        if(helpy < 10)
-        {
-          dir = 2;
-        }
-        else
-        {
-          if(helpy < 20)
-          {
-            dir = 3;
-          }
-          else
-          {
-            dir = 4;
-          }
-        }
-      }
-    }
-
-    if(dir < 5)
-      dir2 = dir + 4;
-    else
-      dir2 = dir - 4;
-
-    y2 = y;
-    x2 = x;
-
-    switch(dir)
-    {
-      case 1:
-        y2--;
-        break;
-      case 2:
-        y2--;
-        x2++;
-        break;
-      case 3:
-        x2++;
-        break;
-      case 4:
-        y2++;
-        x2++;
-        break;
-      case 5:
-        y2++;
-        break;
-      case 6:
-        y2++;
-        x2--;
-        break;
-      case 7:
-        x2--;
-        break;
-      case 8:
-        y2--;
-        x2--;
-        break;
-    }
-
-    regenerateTile(x, y);
+    Message *msg;
+    int x, y;
 
     #warning complete me
     switch(mouseType)
     {
       case buildStation:
-        showTrack(x, y, offx, offy, 20 * 30 + 15, 26 * 30 + 15);
+      {
+        struct station_data *trd;
+        trd = new struct station_data;
+        x = oldMousePos.x();
+        y = oldMousePos.y();
+        trd->field_pos_x = x;
+        trd->field_pos_y = y;
+        trd->player = NULL;
+        msg = new Message(Message::addElement, GameElement::idStation, (void *)trd);
+        engine->sendMsg(msg);
+        oldMousePos = e->pos();
+        #warning fix me
+        repaintContents(x - 45, y - 45, 90, 90, false);
         break;
+      }
       case buildTrack:
-//        if(engine->canBuildTrack(x, y, 1, dir) >= 0)
-//        {
-          showTrack(x, y, offx, offy, (dir - 1) * 60 + 15, 15);
-//          if(engine->canBuildTrack(x2, y2, 1, dir2) >= 0)
-            showTrack(x2, y2, offx, offy, (dir2 - 1) * 60 + 15, 15);
-//        }
+      {
+        struct track_data *trd;
+        trd = new struct track_data;
+        x = oldMousePos.x();
+        y = oldMousePos.y();
+        trd->field_pos_x = x;
+        trd->field_pos_y = y;
+        trd->player = NULL;
+        msg = new Message(Message::addElement, GameElement::idTrack, (void *)trd);
+        engine->sendMsg(msg);
+        oldMousePos = e->pos();
+        #warning fix me
+        repaintContents(x - 45, y - 45, 90, 90, false);
         break;
+      }
       default:
         break;
     }     
@@ -432,7 +331,16 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
 
 void GameMapView::setMouseType(MouseType type)
 {
+  bool bRepaint = false;
+  if ((type == buildTrack) || (type == buildStation))
+    bRepaint = true;
   mouseType = type;
+  if (bRepaint != bShowGrid)
+  {
+    bShowGrid = bRepaint;
+    qDebug("repaint /w build ...");
+    repaintContents(false);
+  }
 }
 
 void GameMapView::drawContents(QPainter *p, int cx, int cy, int cw, int ch)
@@ -465,52 +373,11 @@ void GameMapView::drawContents(QPainter *p, int cx, int cy, int cw, int ch)
       getMapPixmap(&pixPaint, x, y);
       qDebug("zeichne bei: %i, %i", x * 30, y * 30);
       p->drawPixmap(x * 30, y * 30, pixPaint);
+      if (bShowGrid)
+      {
+        p->setPen(Qt::darkGray);
+        p->drawLine(x * 30 + 29, y * 30, x * 30 + 29, y * 30 + 29);
+        p->drawLine(x * 30, y * 30 + 29, x * 30 + 29, y * 30 + 29);
+      }
     }
-}
-
-void GameMapView::regenerateTile(int x, int y)
-{
-  int i, ii;
-  int nx, ny;
-
-  QPixmap pixPaint;
-  QPainter p(this);
-
-  pixPaint.resize(30, 30);
-
-  for(i=-1;i<=1;i++)
-  {
-    nx = oldMousePos.x() + i;
-    for(ii=-1;ii<=1;ii++)
-    {
-      ny = oldMousePos.y() + ii;
-      getMapPixmap(&pixPaint, nx, ny);
-      p.drawPixmap(nx * 30, ny * 30, pixPaint);
-    }
-  }
-  oldMousePos.setX(x);
-  oldMousePos.setY(y);
-}
-
-void GameMapView::showTrack(int x, int y, int offsetX, int offsetY, int tracktileX, int tracktileY)
-{
-  QPixmap pixPaint;
-  QPainter *p;
-  qDebug("in showTrack pos: %i, %i     tile: %i, %i", x, y, tracktileX, tracktileY);
-
-  p = new QPainter();
-  CHECK_PTR(p);
-  p->begin(viewport());
-
-  pixPaint.resize(30, 30);
-  qDebug("in showTrack pos: %i, %i     tile: %i, %i", x, y, tracktileX, tracktileY);
-  bitBlt(&pixPaint, 0, 0, pixTrack, tracktileX, tracktileY, 30, 30, Qt::CopyROP, false);
-  if(pixPaint.isNull())
-    qDebug("keine Pixmap geladen");
-
-  p->drawPixmap(x * 30, y * 30, pixPaint);
-//  p->drawPixmap((x - offsetX) * 30, (y - offsetY) * 30, pixPaint);
-  p->end();
-
-  delete p;
 }

@@ -1,8 +1,8 @@
 noinst_LIBRARIES = libcontrollers.a
 
-INCLUDES = -I$(srcdir)/../elements -I$(srcdir) -I$(srcdir)/../network
+INCLUDES = -I$(top_srcdir)/src/elements -I$(srcdir) -I$(top_srcdir)/src/network \
+  -I$(top_srcdir)/src/map
 
 libcontrollers_a_SOURCES = GameController.cpp \
-	GameInfo.cpp \
-	Controller.cpp \
-	PlayerController.cpp
+  GameInfo.cpp Controller.cpp \
+  PlayerController.cpp trackcontroller.cpp stationcontroller.cpp

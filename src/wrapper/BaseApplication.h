@@ -37,7 +37,7 @@ public:
     /** Should make @ref mw 'main widget' - when user closes it, app
       * will exit
       */
-    virtual void setMainWindow(GameMainWindow* mw) {};
+    virtual void setMainWindow(GameMainWindow*) {};
     
     virtual void initSingleGame(const std::string, int, int, int) {};
     virtual void initClientGame(const std::string) {};

@@ -114,6 +114,9 @@ class GameController
     /** Returns vector containing pointers to all players */
     std::vector<Player*> getPlayers() { return players; };
 
+    // return a pointer to worldmap
+    WorldMap* getWorldMap() {return map;};
+
   private:
     // TODO: set capacity()'s
     std::vector<Player*> players;

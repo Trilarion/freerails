@@ -4,14 +4,17 @@
 
 #include "BaseDialog.h"
 
-BaseDialog::BaseDialog() {
+BaseDialog::BaseDialog()
+{
 
 }
 
-BaseDialog::~BaseDialog() {
+BaseDialog::~BaseDialog()
+{
 
 }
 
-int BaseDialog::show() {
-
+int BaseDialog::show()
+{
+  return 0;
 }

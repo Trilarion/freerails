@@ -2,12 +2,11 @@
  * $Id$
  */
 
-//#include <stdio.h>
-//#include <unistd.h>
-//#include <iostream>
+#include <pthread.h>
+#include <unistd.h>
 
 #include <qapplication.h>
-#include <qlabel.h>
+#include <qlabel.h>                               
 #include <qpixmap.h>
 #include <qstring.h>
 
@@ -28,6 +27,32 @@ GameApplication::~GameApplication()
 {
   if(splash)
     delete splash;
+}
+
+void* GameApplication::runEngine(void*)
+{
+  #warning complete me
+  qDebug("runEngine gestartet");
+  int play_time = 0;
+  int ctr = 1000;
+  qDebug("this in runEngine: 0x%08x", int(this));
+  qDebug("engine in runEngine: 0x%08x", int(engine));
+//  while(1){usleep(1000000);}
+  qDebug("status in runEngine: %i", int(engine->getGameState()));
+  while (engine->getGameState() < Engine::Stopping)
+  {
+    ctr++;
+    if (ctr > 1000)
+    {
+      ctr = 0;
+      qDebug("in Schleife von runEngine");
+    }
+    engine->checkNet();
+    engine->checkNext(play_time);
+    usleep(10500);      // wait for 10.5 ms
+    play_time += 11;
+  }
+  return 0;
 }
 
 int GameApplication::run()
@@ -91,7 +116,24 @@ int GameApplication::run()
     mW->setEngine(engine);
     mW->constructPlayField();
 
-    return application->exec();
+    pthread_t ttid_cmd;
+    void *thr_func;
+    void *data;
+    thr_func = (void*)&GameApplication::runEngine;
+    data = this;
+    pthread_create(&ttid_cmd, NULL, thr_func, (void*)data);
+    pthread_detach(ttid_cmd);
+    Engine::GameState state = Engine::Running;
+    Message* msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+    qDebug("sende Nachricht an Engine");
+    engine->sendMsg(msg);
+    qDebug("Nachricht gesendet");
+    application->exec();
+    qDebug("Spiel beendet");
+    state = Engine::Stopping;
+    msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+    engine->sendMsg(msg);
+    pthread_cancel(ttid_cmd);
   }
   return 1;
 }

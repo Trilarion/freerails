@@ -54,6 +54,7 @@ class GameApplication : public BaseApplication
       * This is obsolete. We use applicaton->setMainWidget() instead!
       */
     void setMainWindow(GameMainWindow* mw);
+    void* runEngine(void*);
 
   private:
     QApplication* application;

@@ -4,13 +4,7 @@
 
 #include "Player.h"
 
-Player::Player() : GameElement(this, 1)
-{
-  name = "";
-  type = HUMAN;
-}
-
-Player::Player(std::string _name, Type _type) : GameElement(this, 1)
+Player::Player(std::string _name, Type _type) : GameElement(this, idPlayer)
 {
   name = _name;
   type = _type;
@@ -29,10 +23,20 @@ void Player::serialize(Serializer* _serializer)
 
 }
 
-void Player::deserialize(Serializer* _serializer) {
-
+void Player::deserialize(Serializer* _serializer)
+{
   GameElement::deserialize(_serializer);
   *_serializer >> name;
   *_serializer >> (int &)type;
+}
 
+double Player::getMoney()
+{
+  return money;
+}
+
+double Player::incMoney(double _money)
+{
+  money += money;
+  return money;
 }

@@ -3,22 +3,22 @@
 
 #include "Message.h"
 
-Message::Message(int _type, long int _msgID, void* _data) {
-
-  type=_type;
-  msgID=_msgID;
-  data=_data;
-  player=NULL;
+Message::Message(MsgTypes _msgID, GameElement::TypeID _typeID, void* _data)
+{
+  typeID = _typeID;
+  msgID = _msgID;
+  data = _data;
+  player = NULL;
 }
 
-Message::Message(int _type, long int _msgID, void* _data, Player* _player) {
-
-  type=_type;
-  msgID=_msgID;
-  data=_data;
-  player=_player;
+Message::Message(MsgTypes _msgID, GameElement::TypeID _typeID, void* _data, Player* _player)
+{
+  typeID = _typeID;
+  msgID = _msgID;
+  data = _data;
+  player = _player;
 }
 
-Message::~Message() {
-
+Message::~Message()
+{
 }

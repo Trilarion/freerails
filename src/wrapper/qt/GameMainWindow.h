@@ -44,6 +44,8 @@ class GameMainWindow : public BaseMainWindow
       */
     void constructPlayField();
     void setEngine(Engine *_engine);
+
+    void exitGame();
     
   private:
     QWidget *widget;

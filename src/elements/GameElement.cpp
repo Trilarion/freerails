@@ -4,33 +4,36 @@
 
 #include "GameElement.h"
 
-GameElement::GameElement(Player* _player, int _typeID) {
+GameElement::GameElement(Player* _player, TypeID _typeID)
+{
   player = _player;
   typeID = _typeID;
 }
 
-GameElement::~GameElement() {
+GameElement::~GameElement()
+{
 }
 
-void GameElement::serialize(Serializer* _serializer) {
-
+void GameElement::serialize(Serializer* _serializer)
+{
   *_serializer << elementID;
-
 }
 
-void GameElement::deserialize(Serializer* _serializer) {
-
+void GameElement::deserialize(Serializer* _serializer)
+{
   *_serializer >> (idtype &)elementID;
-
 }
 
-void GameElement::setPlayer(Player* p) {
+void GameElement::setPlayer(Player* p)
+{
   player = p;
 }
 
-Player* GameElement::getPlayer() {
+Player* GameElement::getPlayer()
+{
   return player;
 }
 
-void GameElement::update() {
+void GameElement::update()
+{
 }

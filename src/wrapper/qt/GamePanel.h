@@ -52,6 +52,8 @@ class GamePanel : public QWidget
     Engine *engine;
     GameMapView *mapView;
 
+    bool build_is_on;
+
   private slots:
     void slotTabTrain();
     void slotTabBuild();
@@ -61,7 +63,6 @@ class GamePanel : public QWidget
     void handler_station();
     void handler_exit();
 
-    bool build_is_on;
 };
 
 

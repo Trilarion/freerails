@@ -18,6 +18,8 @@ public:
   virtual ~PlayerController();
   
   GameElement* CreateElement(Serializer* _serializer);
+
+  bool canBuildElement(void *, int *, int *, int *) {return true; };
   
 private:
 

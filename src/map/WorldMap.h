@@ -36,7 +36,6 @@ private:
   std::vector<MapField *> mapFields;
   int height;
   int width;
-//  MapInfo* mapInfo;
 };
 
 #endif // __WORLDMAP_H__

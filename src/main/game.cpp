@@ -41,7 +41,8 @@ void MyGameApplication::initSingleGame(const std::string name, int playFieldWidt
   }
 }
 
-void MyGameApplication::initServerGame(const std::string name, int playFieldWidth, int playFieldHeight, int numberOfAi) {
+void MyGameApplication::initServerGame(const std::string name, int playFieldWidth, int playFieldHeight, int /*numberOfAi*/)
+{
   std::cerr << "ServerGame" << std::endl;
   playerSelf=new Player(name,Player::HUMAN);
   if(playFieldWidth == -1)

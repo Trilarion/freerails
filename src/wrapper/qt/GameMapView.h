@@ -36,7 +36,7 @@ class GameMapView : public QCanvasView
 
   protected:
     void contentsMousePressEvent(QMouseEvent *e);
-    void contentsMouseReleaseEvent(QMouseEvent *e);
+    void contentsMouseReleaseEvent(QMouseEvent *);
     void contentsMouseMoveEvent(QMouseEvent *e);
     
   private:
@@ -44,9 +44,6 @@ class GameMapView : public QCanvasView
     int getPixmapPos(int x, int y, MapField::FieldType type);
     int getRiverPixmapPos(int x, int y);
     int get3DPixmapPos(int x, int y, MapField::FieldType type);
-
-    void regenerateTile(int x, int y);
-    void showTrack(int x, int y, int offsetX, int offsetY, int tracktileX, int tracktileY);
 
     MouseType mouseType;
     Engine *engine;
@@ -58,6 +55,8 @@ class GameMapView : public QCanvasView
 
     QPoint oldMousePos;
     QPoint oldMousePos2;
+
+    bool bShowGrid;
 };
 
 #endif // __GAMEMAPVIEW_H__

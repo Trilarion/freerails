@@ -7,7 +7,7 @@
 #include "GameController.h"
 
 Wagon::Wagon(GameController* c, WagonType ty, Player* p) :
-    GameElement(p, 4),
+    GameElement(p, idWagon),
     type(ty)
 {
 }

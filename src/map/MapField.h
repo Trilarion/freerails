@@ -32,6 +32,8 @@ public:
   void setTrack(Track* _track) { track=_track; };
   Track* getTrack() { return track; };
 
+  bool isWater();
+
 private:
   FieldType type;
   unsigned short cost;

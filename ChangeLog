@@ -1,3 +1,5 @@
+Mon Sep 23 20:15:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o add first steps of logic for building tracks and stations
 Sat Sep 21 08:45:00 2002  Alexander Opitz <opi@le-bit.de>:
 o using a better scroll/map widget in paraGUI (needs not so much memory)
 Wed Sep 18 01:15:00 2002  Alexander Opitz <opi@le-bit.de>:

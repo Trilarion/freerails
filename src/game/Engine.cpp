@@ -1,11 +1,13 @@
 /** $Id$
   */
-
-#include "Engine.h"
 #include <iostream>
 
-Engine::Engine(WorldMap* _worldMap, Player* _player) {
+#include "Engine.h"
+#include "stationcontroller.h"
+#include "trackcontroller.h"
 
+Engine::Engine(WorldMap* _worldMap, Player* _player)
+{
   worldMap = _worldMap;
   isSingle = true;
   isClient = false;
@@ -13,11 +15,14 @@ Engine::Engine(WorldMap* _worldMap, Player* _player) {
   
   Init(_player);
 
+  trackControl = new TrackController(_worldMap);
+  stationControl = new StationController(_worldMap);
+  
   std::cerr << "engine(alone) inited" << std::endl;
 }
 
-Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server) {
-
+Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server)
+{
   gameState = Initializing;
 
   worldMap = _worldMap;
@@ -31,8 +36,8 @@ Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server) {
    std::cerr << "engine(Server) inited" << std::endl;
 }
 
-Engine::Engine(Player* _player, Client* _client) {
-
+Engine::Engine(Player* _player, Client* _client)
+{
   gameState = Initializing;
 
   worldMap = NULL;
@@ -46,12 +51,12 @@ Engine::Engine(Player* _player, Client* _client) {
    std::cerr << "engine(Client) inited" << std::endl;
 }
 
-void Engine::Init(Player* _player) {
-
+void Engine::Init(Player* _player)
+{
   lastmsec = 0;
   frame = 0;
-  gui2engine=new MessageQueue();
-  engine2gui=new MessageQueue();
+  gui2engine = new MessageQueue();
+  engine2gui = new MessageQueue();
 
   controllerDispatcher = new ControllerDispatcher();
   
@@ -61,20 +66,21 @@ void Engine::Init(Player* _player) {
 
   gameState = Waiting;
 
-  gameCon=new GameController("default",1900,1,1);
+  gameCon = new GameController("default", 1900, 1, 1);
 }
 
-Engine::~Engine() {
+Engine::~Engine()
+{
 
 }
 
-void Engine::sendMsg(Message* msg) {
-
+void Engine::sendMsg(Message* msg)
+{
   gui2engine->addMsg(msg);
 }
 
-bool Engine::haveMsg() {
-
+bool Engine::haveMsg()
+{
   return engine2gui->hasMoreElements();
 }
 
@@ -100,7 +106,7 @@ void Engine::checkNext(int msec) {
     { lastmsec=msec;
       frame++;
       process();
-      std::cerr << frame << std::endl;
+//      std::cerr << frame << std::endl;
     }
   }
   while (gui2engine->hasMoreElements()) {
@@ -118,60 +124,87 @@ void Engine::process() {
 
 }
 
-void Engine::processMsg(Message* msg) {
-
-  switch (msg->getType()) {
-    case Message::addElement: addElementToGame(msg);
-    case Message::stateOfGame: changeStateOfGame(msg);
+void Engine::processMsg(Message* msg)
+{
+  switch (msg->getMsgID())
+  {
+    case Message::addElement:
+      addElementToGame(msg);
+      if (msg->getData() != NULL)
+        delete (track_data*)msg->getData();
+      break;
+    case Message::stateOfGame:
+      changeStateOfGame(msg);
+      break;
+    default:
+      break;
   }
 }
 
-void Engine::addElementToGame(Message* msg) {
-
-  GameElement* element = (GameElement *)msg->getData();
-  Controller* elementController = controllerDispatcher->getController(element->getTypeID());
-  if (isServer) {
-    if (elementController->canBuildElement(element)) {
-      elementController->addGameElement(element);
-      Message* msg = new Message(Message::addElement, 0, element);
-      SendAll(msg);
-    }
-  } else {
-    elementController->addGameElement(element);
+void Engine::addElementToGame(Message* msg)
+{
+  #warning correct this
+  switch (msg->getType())
+  {
+    case GameElement::idStation:
+      stationControl->addGameElement(msg->getData());
+      break;
+    case GameElement::idTrack:
+      trackControl->addGameElement(msg->getData());
+      break;
+    default:
+//  GameElement* element = (GameElement *)msg->getData();
+//  Controller* elementController = controllerDispatcher->getController(element->getTypeID());
+//  if (isServer)
+//  {
+////    if (elementController->canBuildElement(element)) {
+////      elementController->addGameElement(element);
+////      Message* msg = new Message(Message::addElement, 0, element);
+////      SendAll(msg);
+////    }
+//  }
+//  else
+//  {
+//  //  elementController->addGameElement(element);
+//  }
+    break;
   }
 }
 
-void Engine::changeStateOfGame(Message* msg) {
-
+void Engine::changeStateOfGame(Message* msg)
+{
   GameState state = *(GameState *)msg->getData();
-  Message* Msg = new Message(Message::stateOfGame,0,&state);
-  if (gameState==Waiting && state==Running)
+  Message* Msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+  if ((gameState == Waiting) && (state == Running))
   {
-    gameState=state;
+    gameState = state;
     SendAll(Msg);
   }
-  if (gameState==Running && state==Pausing)
+  if ((gameState == Running) && (state == Pausing))
   {
-    gameState=state;
+    gameState = state;
     SendAll(Msg);
   }
-  if (gameState==Pausing && state==Running)
+  if ((gameState == Pausing) && (state == Running))
   {
-    gameState=state;
+    gameState = state;
     SendAll(Msg);
   }
-  if ((gameState==Pausing || gameState==Running) && state==Stopping)
+  if (((gameState == Pausing) || (gameState == Running)) && (state == Stopping))
   {
-    gameState=state;
+    gameState = state;
     SendAll(Msg);
   }
 }
 
-void Engine::SendAll(Message* msg) {
-
-  if (isServer) {
+void Engine::SendAll(Message* msg)
+{
+  if (isServer)
+  {
     // Server
-  } else {
+  }
+  else
+  {
     engine2gui->addMsg(msg);
   }
 }

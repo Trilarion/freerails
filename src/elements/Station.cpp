@@ -20,35 +20,45 @@
 #include "GameController.h"
 
 Station::Station(GameController* c, Player* p, char* n, Size s, char* t, StationAddon* sA)
-       : GameElement(p, 2) {
+       : GameElement(p, idStation)
+{
   size = s;
   name = n;
   stationAddon = sA;
 
   year = 1900;  // Clean up
 }
-Station::~Station(){
+
+Station::~Station()
+{
 }
 
-void Station::addAddon(std::string addon) {
+void Station::addAddon(std::string addon)
+{
   // Not testing if addon is legal, should be OK ??
   addons[addon] = true;
 
 }
 
-void Station::removeAddon(std::string addon) {
+void Station::removeAddon(std::string addon)
+{
   // Not testing if addon is legal, should be OK ??
   addons[addon] = false;
 }
 
-bool Station::hasAddon(std::string addon) {
-  if(addons.count(addon) == 0) return false;
-  else return addons[addon];
+bool Station::hasAddon(std::string addon)
+{
+  if(addons.count(addon) == 0)
+    return false;
+  else
+    return addons[addon];
 }
 
-std::map<std::string, bool> Station::giveAddons() {
+std::map<std::string, bool> Station::giveAddons()
+{
   std::vector<std::string> availAddons = stationAddon->getAvailable(year);
   for(unsigned int i = 0; i != availAddons.size(); i++)
-    if(addons.count(availAddons[i]) == 0) addons[availAddons[i]] == false;
+    if(addons.count(availAddons[i]) == 0)
+      addons[availAddons[i]] == false;
   return addons;
 }

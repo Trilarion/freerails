@@ -4,8 +4,8 @@
 
 #include "MapField.h"
 
-MapField::MapField(FieldType _type, unsigned short _cost, unsigned short _height) {
-
+MapField::MapField(FieldType _type, unsigned short _cost, unsigned short _height)
+{
   type = _type;
   cost = _cost;
   height = _height;
@@ -13,6 +13,20 @@ MapField::MapField(FieldType _type, unsigned short _cost, unsigned short _height
   track = NULL;
 }
 
-MapField::~MapField() {
+MapField::~MapField()
+{
 }
 
+bool MapField::isWater()
+{
+  bool status = false;
+
+  // return true, if water is on field
+  if (type == ocean)
+    status = true;
+  if (type == river)
+    status = true;
+  if (type == bog)
+    status = true;
+  return status;
+}

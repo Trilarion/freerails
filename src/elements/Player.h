@@ -18,10 +18,9 @@ class Player : public GameElement
     enum Type {NATUR=0, AI, HUMAN};
     /** Constructor
       * @param n: name of this player */
-    Player();
     Player(std::string _name, Type _type);
     /** Destructor */
-    virtual ~Player();
+    ~Player();
 
     /** Serialization */
     void serialize(Serializer* _serializer);
@@ -37,10 +36,16 @@ class Player : public GameElement
     /** Sets the type of the player */
     void setType(Type _type) {type = _type;};
 
+    // get amount of money for player
+    double getMoney();
+    // change amount of money for player
+    double incMoney(double _money);
+    
   private:
     /** Name of the player */
     std::string name;
     Type type;
+    double money;
 };
 
 #endif // __PLAYER_H__

@@ -33,7 +33,7 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   return map;
 }
 
-void MapGenerator::generateHeight(WorldMap* worldMap)
+void MapGenerator::generateHeight(WorldMap* /* worldMap */)
 {
 }
 

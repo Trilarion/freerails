@@ -9,29 +9,42 @@
 #include "GameElement.h"
 #include "Serializer.h"
 
-class Controller {
-public:
+class WoldMap;
 
-  /** Constructor */
-  Controller(int _typeID);
-  /** Destructor */
-  virtual ~Controller();
-  
-  void addGameElement(GameElement* _element);
-  void removeGameElement(long int _elementID);
-  GameElement* getGameElement(long int _elementID);
-  
-  int getTypeID() {return typeID;};
-  
-  virtual GameElement* CreateElement(Serializer* _serializer) {return NULL;};
-  virtual bool canBuildElement(GameElement*) {return false;};
+class Controller
+{
+  public:
 
-private:
+    /** Constructor */
+    Controller(WorldMap *_map, GameElement::TypeID _typeID);
+    /** Destructor */
+    virtual ~Controller();
 
-  int typeID;
+    void addGameElement(GameElement* _element);
+    void removeGameElement(long int _elementID);
+    GameElement* getGameElement(long int _elementID);
+
+    GameElement::TypeID getTypeID() {return typeID;};
+ 
+    // create an element
+    virtual GameElement* CreateElement(Serializer* _serializer) = 0;
+
+    // can a specific element be build
+    virtual bool canBuildElement(void *, int *, int *, int *) = 0;
+
+  protected:
+    // compute direction inner field of a given point relative to center of field
+    int computeDirection(int x, int y);
+
+    GameController *controller;
+    WorldMap *worldMap;
+        
+  private:
+
+    GameElement::TypeID typeID;
+
+    std::map<long int, GameElement*> elementMap;
   
-  std::map<long int, GameElement*> elementMap;
-
 };
 
 #endif // __CONTROLLER_H__

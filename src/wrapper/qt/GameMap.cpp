@@ -6,7 +6,7 @@
 #include "GameMainWindow.h"
 #include "GameMap.h"
 
-GameMap::GameMap(Engine *_engine, GameMainWindow* parent, const char* name)
+GameMap::GameMap(Engine *_engine, GameMainWindow */*parent*/, const char */*name*/)
        : QCanvas(_engine->getWorldMap()->getWidth() * 30, _engine->getWorldMap()->getHeight() * 30)
 {
   engine = _engine;
