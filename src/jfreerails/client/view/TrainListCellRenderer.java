@@ -32,7 +32,7 @@ import jfreerails.world.train.TrainOrdersModel;
  *  This JPanel displays an engine and a number of wagons.
  * @author  Luke Lindsay
  */
-public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
+public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer,
     WorldListListener {
     private ReadOnlyWorld w;
     private ViewLists vl;
@@ -58,11 +58,11 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
                                                                              .get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
 
-    public TrainViewJPanel() {
+    public TrainListCellRenderer() {
         this.setOpaque(false);
     }
 
-    public TrainViewJPanel(ModelRoot mr, ViewLists vl) {
+    public TrainListCellRenderer(ModelRoot mr, ViewLists vl) {
         setup(mr, vl, null);
         this.setBackground(backgoundColor);
     }

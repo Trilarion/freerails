@@ -18,7 +18,7 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 /**
- * JPanel that didplays a list of trains, used for the train list window and the train list tab.
+ * JPanel that didplays a list of trains, used for the train list window and the train roster tab.
  * @author  Luke
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {
@@ -131,8 +131,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
         world = mr.getWorld();
         jList1.setModel(new World2ListModelAdapter(mr.getWorld(), KEY.TRAINS, mr.getPrincipal()));
-        TrainViewJPanel trainView =
-        new TrainViewJPanel(mr, vl);
+        TrainListCellRenderer trainView =
+        new TrainListCellRenderer(mr, vl);
         jList1.setCellRenderer(trainView);
         trainView.setHeight(trainViewHeight);
         ActionListener[] oldListeners = closeJButton.getActionListeners();

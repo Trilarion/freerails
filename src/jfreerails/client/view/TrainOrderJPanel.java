@@ -35,6 +35,9 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
     
     private final Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
     
+    private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
+
+    
     
     public TrainOrderJPanel() {
         initComponents();
@@ -50,7 +53,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         java.awt.GridBagConstraints gridBagConstraints;
 
         gotoIcon = new javax.swing.JLabel();
-        consistChangeJPanel = new TrainViewJPanel();
+        consistChangeJPanel = new TrainListCellRenderer();
         noChangeJLabel = new javax.swing.JLabel();
         stationNameJLabel = new javax.swing.JLabel();
         ordersJLabel = new javax.swing.JLabel();
@@ -100,7 +103,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
     
     public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
         this.w = mr.getWorld();
-        TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
+        TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
         trainViewJPanel.setup(mr, vl, null);
         this.principal = mr.getPrincipal();
@@ -120,12 +123,17 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         String waitUntilFull  = trainOrders.order.waitUntilFull ? "Wait until full" : "";
         this.ordersJLabel.setText(waitUntilFull);
         
-        //Set selected
-        if(isSelected){
-            this.setBackground(selectedColor);
-        }else{
-            this.setBackground(backgoundColor);
-        }
+        //Set selected        
+        if (isSelected) {
+    		if(list.isFocusOwner()){
+    			setBackground(selectedColor);
+    		}else{
+    			setBackground(selectedColorNotFocused);
+    		}
+    	} else {
+    		setBackground(backgoundColor);
+    	}
+        
         
         //Set goto status.
         switch (trainOrders.gotoStatus){
@@ -144,7 +152,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         this.gotoIcon.setPreferredSize(new Dimension(20, 20));
         
         //Set consist
-        TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
+        TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer)consistChangeJPanel;
         trainViewJPanel.display(trainOrders.trainNumber, index);
         
         //Show priority orders.
@@ -172,11 +180,11 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel consistChangeJPanel;
-    private javax.swing.JLabel gotoIcon;
-    private javax.swing.JLabel noChangeJLabel;
-    private javax.swing.JLabel ordersJLabel;
-    private javax.swing.JLabel stationNameJLabel;
+    javax.swing.JPanel consistChangeJPanel;
+    javax.swing.JLabel gotoIcon;
+    javax.swing.JLabel noChangeJLabel;
+    javax.swing.JLabel ordersJLabel;
+    javax.swing.JLabel stationNameJLabel;
     // End of variables declaration//GEN-END:variables
     
 }

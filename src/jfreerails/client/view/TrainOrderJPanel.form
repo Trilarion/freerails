@@ -9,7 +9,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="gotoIcon">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/jfreerails/client/graphics/selected_arrow.png"/>
         </Property>
       </Properties>
@@ -21,7 +21,7 @@
     </Component>
     <Container class="javax.swing.JPanel" name="consistChangeJPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new TrainViewJPanel();"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new TrainListCellRenderer();"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

@@ -49,7 +49,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View, 
         java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel1 = new javax.swing.JLabel();
-        trainViewJPanel1 = new jfreerails.client.view.TrainViewJPanel();
+        trainViewJPanel1 = new jfreerails.client.view.TrainListCellRenderer();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -146,7 +146,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View, 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private jfreerails.client.view.TrainViewJPanel trainViewJPanel1;
+    private jfreerails.client.view.TrainListCellRenderer trainViewJPanel1;
     // End of variables declaration//GEN-END:variables
     
 }
