@@ -22,12 +22,12 @@ import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.TrainModel;
 
 public class DropOffAndPickupCargoMoveGenerator {
 
-	private World w;
+	private ReadOnlyWorld w;
 
 	private TrainModel train;
 	private int trainId;
@@ -52,7 +52,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 	public DropOffAndPickupCargoMoveGenerator(
 		int trainNo,
 		int stationNo,
-		World world) {
+		ReadOnlyWorld world) {
 		trainId = trainNo;
 		stationId = stationNo;
 		w = world;

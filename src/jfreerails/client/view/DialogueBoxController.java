@@ -21,7 +21,7 @@ import javax.swing.border.LineBorder;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.MoveExecuter;
+import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.world.station.ProductionAtEngineShop;
@@ -55,6 +55,7 @@ public class DialogueBoxController {
 	private TrainDialogueJPanel trainDialogueJPanel;
 	private ReadOnlyWorld world;
 	private ViewLists viewLists;
+	private UntriedMoveReceiver moveReceiver;
 
 	private Component defaultFocusOwner = null;
 
@@ -78,7 +79,7 @@ public class DialogueBoxController {
 		}
 
 		public void processMove(Move m) {
-			MoveExecuter.getMoveExecuter().processMove(m);
+			moveReceiver.processMove(m);
 		}
 	};
 
@@ -109,7 +110,10 @@ public class DialogueBoxController {
 		ReadOnlyWorld w,
 		ViewLists vl,
 		MoveChainFork moveChainFork,
+		UntriedMoveReceiver mr,
 		MapCursor mapCursor) {
+		
+		moveReceiver = mr;
 
 		if (w == null)
 			throw new NullPointerException();
@@ -179,7 +183,7 @@ public class DialogueBoxController {
 							before,
 							after,
 							wi.getIndex());
-					MoveExecuter.getMoveExecuter().processMove(m);
+					moveReceiver.processMove(m);
 				}
 				closeContent();
 			}

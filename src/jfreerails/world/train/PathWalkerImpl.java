@@ -9,6 +9,9 @@ public class PathWalkerImpl implements PathWalker {
 
 	FreerailsPathIterator it;
 
+	/**
+	 * current segment of the path we are on
+	 */
 	IntLine currentSegment = new IntLine();
 
 	double distanceAlongCurrentSegment = 0;
@@ -19,6 +22,10 @@ public class PathWalkerImpl implements PathWalker {
 		it = i;
 	}
 
+	/**
+	 * @return true if we still have more of the current segment, or more
+	 * segments left.
+	 */
 	public boolean canStepForward() {
 		if (currentSegment.getLength() > distanceAlongCurrentSegment) {
 			return true;
@@ -29,10 +36,17 @@ public class PathWalkerImpl implements PathWalker {
 		}
 	}
 
+	/**
+	 * Specify the distance this PathWalker is to progress along the current
+	 * step.
+	 */
 	public void stepForward(double distance) {
 		distanceOfThisStepRemaining += distance;
 	}
 
+	/**
+	 * @return true if there is still some distance to go along this path
+	 */
 	public boolean hasNext() {
 		if (0 == distanceOfThisStepRemaining) {
 			return false;

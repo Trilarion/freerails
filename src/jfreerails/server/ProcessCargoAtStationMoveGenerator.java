@@ -13,7 +13,7 @@ import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.common.Money;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /** This class Generates Moves that pay the player for delivering the cargo.
  * 
@@ -22,7 +22,7 @@ import jfreerails.world.top.World;
  */
 public class ProcessCargoAtStationMoveGenerator {
 	
-	public static AddTransactionMove processCargo(World w, CargoBundle cargoBundle, int stationID){			
+	public static AddTransactionMove processCargo(ReadOnlyWorld w, CargoBundle cargoBundle, int stationID){			
 		StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID);		
 		Iterator batches = cargoBundle.cargoBatchIterator();
 		int amountOfCargo = 0;

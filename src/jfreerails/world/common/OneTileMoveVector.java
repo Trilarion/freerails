@@ -9,7 +9,9 @@ package jfreerails.world.common;
 import java.awt.Point;
 import java.io.ObjectStreamException;
 
-/** This class represents a movement from a tile to any one of the surrounding eight tiles.
+/**
+ * This class represents a movement from a tile to any one of the surrounding
+ * eight tiles.
 */
 
 final public class OneTileMoveVector
@@ -39,8 +41,16 @@ final public class OneTileMoveVector
 	/** North West    */
 	public static final OneTileMoveVector NORTH_WEST;
 
+	/**
+	 * A 3x3 array of OneTileMoveVectors, representing vectors to eight
+	 * adjacent tiles plus a zero-distance vector.
+	 */
 	private static OneTileMoveVector[][] vectors;
 
+	/**
+	 * Another array of OneTileMoveVectors representing the 8 compass
+	 * directions going clockwise from North
+	 */
 	private static OneTileMoveVector[] list;
 
 	static {
@@ -97,7 +107,6 @@ final public class OneTileMoveVector
 	* opposite to that the current one.
 	* @return A oneTileMoveVector.
 	*/
-
 	public OneTileMoveVector getOpposite() {
 		return getInstance(this.deltaX * -1, this.deltaY * -1);
 	}
@@ -114,7 +123,6 @@ final public class OneTileMoveVector
 	/** Returns the name of the vector.  E.g. "north-east"
 	* @return the name.
 	*/
-
 	public String toString() {
 		String name;
 		switch (deltaY) {
@@ -180,6 +188,8 @@ final public class OneTileMoveVector
 	 *Pass values for delta X and Y: they must be in the range -1 to 1 and cannot both be equal to 0.
 	* @param x Tile coordinate.
 	* @param y Tile coordinate
+	* @param t an integer representing the track template this vector
+	* corresponds to.
 	*/
 	private OneTileMoveVector(int x, int y, int t) {
 
@@ -229,9 +239,19 @@ final public class OneTileMoveVector
 	public int getTemplate() {
 		return template;
 	}
+
+	/**
+	 * @return a copy of the list of 8 OneTileMoveVectors going clockwise
+	 * from North.
+	 */
 	public static OneTileMoveVector[] getList() {
 		return (OneTileMoveVector[]) list.clone(); //defensive copy.
 	}
+
+	/**
+	 * @return the length of this vector. Each tile is 100 units x 100
+	 * units.
+	 */
 	public int getLength() {
 		return length;
 	}
@@ -246,6 +266,10 @@ final public class OneTileMoveVector
 		return 2 * Math.PI / 8 * i;
 	}
 
+	/**
+	 * @return a number representing the compass point this vector
+	 * indicates, with 0 representing North, 1 NorthEast, 2 East and so on.
+	 */
 	public int getNumber(){
 		int i=0;
 		while(this!=list[i]){
@@ -258,6 +282,10 @@ final public class OneTileMoveVector
     	return OneTileMoveVector.getInstance(this.deltaX, this.deltaY);
     }
 
+    /**
+     * @return the OneTileMoveVector nearest in orientation to the specified dx,
+     * dy
+     */
     public static OneTileMoveVector getNearestVector(int dx, int dy){
         if(0==dx*dy){
             if(dx>0){
@@ -314,6 +342,9 @@ final public class OneTileMoveVector
 
     }
     
+    /**
+     * @return an integer representing this vector ???
+     */
     public int getNewTemplateNumber(){
     	return 1 << this.getNumber();
     }

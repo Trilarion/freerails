@@ -19,6 +19,7 @@ import jfreerails.client.view.TrainDialogueJPanel;
 import jfreerails.client.view.TrainOrdersListModel;
 import jfreerails.client.view.TrainViewJList;
 import jfreerails.controller.MoveChainFork;
+import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.*;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.NewTileSetFactoryImpl;
@@ -49,6 +50,22 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     private World w;
     
     private ViewLists vl;
+
+    private UntriedMoveReceiver dummyReceiver = new UntriedMoveReceiver() {
+	public MoveStatus tryDoMove(Move move) {
+	    return MoveStatus.MOVE_OK;
+	}
+
+	public MoveStatus tryUndoMove(Move move) {
+	    return MoveStatus.MOVE_OK;
+	}
+
+	public void undoLastMove() {
+	}
+
+	public void processMove(Move move) {
+	}
+    };
     
     TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
     
@@ -118,6 +135,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
             w,
             vl,
             new MoveChainFork(),
+	    dummyReceiver,
             MapCursor.NULL_MAP_CURSOR);
             initComponents();
             

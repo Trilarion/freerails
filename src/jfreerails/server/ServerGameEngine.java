@@ -15,7 +15,9 @@ import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.TrainMover;
+import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.ChangeTrainPositionMove;
+import jfreerails.move.TimeTickMove;
 import jfreerails.move.WorldChangedEvent;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
@@ -116,7 +118,8 @@ public class ServerGameEngine
 
 	private void setupGame() {
 		gameServer.setWorld(world);
-		tb = new TrainBuilder(world, this);
+		tb = new TrainBuilder(world, this,
+			MoveExecuter.getMoveExecuter());
 		nextModelUpdateDue = System.currentTimeMillis();
 		System.out.println("sending new world changed event");
 		receiver.processMove(new WorldChangedEvent());
@@ -228,18 +231,21 @@ public class ServerGameEngine
 	 *
 	 */
 	private void buildTrains() {
-		for (int i = 0; i < world.size(KEY.STATIONS); i++) {
-			StationModel station = (StationModel) world.get(KEY.STATIONS, i);
-			if (null != station && null != station.getProduction()) {
-				ProductionAtEngineShop production = station.getProduction();
-				Point p = new Point(station.x, station.y);
-				tb.buildTrain(
-					production.getEngineType(),
-					production.getWagonTypes(),
-					p);
-				station.setProduction(null);
-			}
+	    for (int i = 0; i < world.size(KEY.STATIONS); i++) {
+		StationModel station = (StationModel) world.get(KEY.STATIONS, i);
+		if (null != station && null != station.getProduction()) {
+		    ProductionAtEngineShop production = station.getProduction();
+		    Point p = new Point(station.x, station.y);
+		    tb.buildTrain(
+			    production.getEngineType(),
+			    production.getWagonTypes(),
+			    p);
+
+		    MoveExecuter.getMoveExecuter().processMove(new
+			    ChangeProductionAtEngineShopMove(production,
+				null, i));
 		}
+	    }
 	}
 
 	private void moveTrains() {
@@ -259,10 +265,7 @@ public class ServerGameEngine
 	}
 
 	private void updateGameTime() {
-		GameTime gt = (GameTime) world.get(ITEM.TIME);
-		int time = gt.getTime();
-		time += 1;
-		world.set(ITEM.TIME, new GameTime(time));
+	    MoveExecuter.getMoveExecuter().processMove(TimeTickMove.getMove(world));
 	}
 
 	public void addTrainMover(TrainMover m) {
@@ -279,8 +282,10 @@ public class ServerGameEngine
 			GZIPOutputStream zipout = new GZIPOutputStream(out);
 
 			ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
-			objectOut.writeObject(trainMovers);
-			objectOut.writeObject(getWorld());
+			synchronized (mutex) {
+			    objectOut.writeObject(trainMovers);
+			    objectOut.writeObject(getWorld());
+			}
 			objectOut.flush();
 			objectOut.close();
 
@@ -298,15 +303,20 @@ public class ServerGameEngine
 			FileInputStream in = new FileInputStream("freerails.sav");
 			GZIPInputStream zipin = new GZIPInputStream(in);
 			ObjectInputStream objectIn = new ObjectInputStream(zipin);
-
-			this.trainMovers = (ArrayList) objectIn.readObject();
-
-			this.world = (World) objectIn.readObject();
+			synchronized (mutex) {
+			    this.trainMovers = (ArrayList)
+				objectIn.readObject();
+			    this.world = (World) objectIn.readObject();
+			}
 			setupGame();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
+	}
+
+	public String[] getMapNames() {
+	    return OldWorldImpl.getMapNames();
 	}
 
 	public void newGame(String mapName) {

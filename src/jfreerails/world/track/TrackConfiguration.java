@@ -8,6 +8,12 @@ import jfreerails.world.common.FlatTrackTemplate;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.Rotation;
 
+/**
+ * An instance of this class represents one of the possible track configurations
+ * in a map square - the cobinations of directions in which track can be
+ * laid. Instances of this class cannot be created and must be obtained via the
+ * static methods herein.
+ */
 final public class TrackConfiguration implements FlatTrackTemplate {
 	
 	private static final ArrayList flatTrackConfigurations = new ArrayList(512);
@@ -46,10 +52,16 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		return (TrackConfiguration) (flatTrackConfigurations.get(i));
 	}
 
+	/**
+	 * Not implemented.
+	 */
 	public static TrackConfiguration getFlatInstance(OneTileMoveVector v) {
 		return null;
 	}
 
+	/**
+	 * @return the superposition of two track templates
+	 */
 	public static TrackConfiguration add(FlatTrackTemplate c, FlatTrackTemplate v) {
 		/*
 		int x=v.getX()+1;
@@ -62,6 +74,10 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		return getFlatInstance(newTemplate);
 	}
 
+	/**
+	 * @return the TrackConfiguration representing the track section c minus
+	 * the track sections represented by v.
+	 */
 	public static TrackConfiguration subtract(FlatTrackTemplate c, FlatTrackTemplate v) {
 		/*
 		int x=v.getX()+1;
@@ -97,6 +113,9 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		}
 	}
 
+	/**
+	 * @return an int representing this track configuration.
+	 */
 	public int getTemplate() {
 		return configuration;
 	}

@@ -23,6 +23,13 @@ public class TrainModel implements FreerailsSerializable {
 	public  TrainModel getNewInstance(int newEngine, int[] newWagons){
 		return new TrainModel(newEngine, newWagons, this.getPosition(),  this.getScheduleID(), this.getCargoBundleNumber());		
 	}
+
+	/**
+	 * Constructor for a new train.
+	 * @param engine type of the engine
+	 * @param wagons array of wagon types
+	 * @param p initial position of the train on the map.
+	 */
 	public TrainModel(
 		int engine,
 		int[] wagons,

@@ -7,6 +7,8 @@ import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JToggleButton;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 /**
  * Provides a mapping from a set of ButtonModels or a ComboBoxModel to a set of
@@ -40,6 +42,21 @@ public class ActionAdapter extends DefaultComboBoxModel {
 	for (int i = 0; i < actions.length; i++) {
 	    buttonModels.add(new MappedButtonModel(actions[i]));
 	    addElement(actions[i].getValue(Action.NAME));
+	}
+    }
+
+    /**
+     * @param actions An array of the actions to be used. The ComboBoxModel
+     * objects are taken from the NAME property of the Action. The ButtonModel
+     * icons are obtained from the SMALL_ICON property.
+     * @param selected Index of the default selected action.
+     */
+    public ActionAdapter(Action[] actions, int selected) {
+	this(actions);
+	for (int i = 0; i < buttonModels.size(); i++) {
+	    MappedButtonModel bm = (MappedButtonModel) buttonModels.get(i);
+	    ((MappedButtonModel) buttonModels.get(i)).setSelected(i ==
+		 selected);
 	}
     }
 
@@ -87,7 +104,8 @@ public class ActionAdapter extends DefaultComboBoxModel {
 	}
     }
 
-    public class MappedButtonModel extends JToggleButton.ToggleButtonModel {
+    public class MappedButtonModel extends JToggleButton.ToggleButtonModel
+	implements PropertyChangeListener{
 	/**
 	 * The NAME of the Action to which this ButtonModel is mapped
 	 */
@@ -95,6 +113,8 @@ public class ActionAdapter extends DefaultComboBoxModel {
 	
 	public MappedButtonModel(Action action) {
 	    actionName = (String) action.getValue(Action.NAME);
+	    action.addPropertyChangeListener(this);
+	    setEnabled(action.isEnabled());
 	}
 	
 	public void setSelected(boolean b) {
@@ -103,6 +123,10 @@ public class ActionAdapter extends DefaultComboBoxModel {
 		if (b)
 		    ActionAdapter.this.setSelectedItem(actionName);
 	    }
+	}
+
+	public void propertyChange(PropertyChangeEvent e) {
+	    setEnabled(((Action) e.getSource()).isEnabled());
 	}
     }
 }

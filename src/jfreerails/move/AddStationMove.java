@@ -5,7 +5,6 @@
 package jfreerails.move;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.Money;
@@ -21,7 +20,7 @@ import jfreerails.world.track.TrackRule;
  * @author Luke
  * 
  */
-public class AddStationMove extends CompositeMove implements TrackMove {
+public class AddStationMove extends CompositeMove {
 		
 
 	protected AddStationMove(Move[] moves){
@@ -41,9 +40,4 @@ public class AddStationMove extends CompositeMove implements TrackMove {
 		return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
 	}
 	
-	public Rectangle getUpdatedTiles() {
-		//We know we there is a TrackMove in position 0 in the moves array since we put it there;
-		TrackMove tm = (TrackMove)this.getMove(0);
-		return tm.getUpdatedTiles();
-	}
 }

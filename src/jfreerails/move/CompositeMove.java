@@ -11,19 +11,21 @@ import jfreerails.world.top.World;
  * 
  * This Move may be subclassed to create a move composed of a number of
  * component Moves where atomicity of the move is required.
+ * This class defines a number of methods which may not be subclassed - all
+ * changes must be encapsulated as sub-moves of this move.
  */
 public class CompositeMove implements Move {
 
-	private final Move[] moves;
+	private Move[] moves;
 	
 	/**
 	 * This method lets sub classes look at the moves.
 	 */
-	protected Move getMove(int i){
+	protected final Move getMove(int i){
 		return moves[i];
 	}	
 
-	public Move[] getMoves() {
+	public final Move[] getMoves() {
 	    return moves;
 	}
 	    
@@ -54,8 +56,8 @@ public class CompositeMove implements Move {
 		return ms;
 	}
 
-	public MoveStatus doMove(World w) {
-		MoveStatus ms = null;
+	public final MoveStatus doMove(World w) {
+		MoveStatus ms = MoveStatus.MOVE_OK;
 		for (int i = 0; i < moves.length; i++) {
 			ms = moves[i].doMove(w);
 			if (!ms.ok) {
@@ -67,8 +69,8 @@ public class CompositeMove implements Move {
 		return ms;
 	}
 
-	public MoveStatus undoMove(World w) {
-		MoveStatus ms = null;
+	public final MoveStatus undoMove(World w) {
+		MoveStatus ms = MoveStatus.MOVE_OK;
 		for (int i = moves.length - 1; i >= 0; i--) {
 			ms = moves[i].undoMove(w);
 			if (!ms.ok) {
@@ -80,7 +82,7 @@ public class CompositeMove implements Move {
 		return ms;
 	}
 
-	private void undoMoves(World w, int number) {
+	private final void undoMoves(World w, int number) {
 		for (int i = number; i >= 0; i--) {
 			MoveStatus ms = moves[i].undoMove(w);
 			if (!ms.ok) {
@@ -89,7 +91,7 @@ public class CompositeMove implements Move {
 		}
 	}
 
-	private void redoMoves(World w, int number) {
+	private final void redoMoves(World w, int number) {
 		for (int i = number; i < moves.length; i++) {
 			MoveStatus ms = moves[i].doMove(w);
 			if (!ms.ok) {
@@ -98,7 +100,7 @@ public class CompositeMove implements Move {
 		}
 	}
 
-	public boolean equals(Object o) {
+	public final boolean equals(Object o) {
 		if (o instanceof CompositeMove) {
 			CompositeMove test = (CompositeMove) o;
 			if (this.moves.length != test.moves.length) {
@@ -115,7 +117,4 @@ public class CompositeMove implements Move {
 			return false;
 		}
 	}
-	
-	
-	
 }

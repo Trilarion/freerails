@@ -2,22 +2,26 @@ package jfreerails.server;
 
 import java.awt.Point;
 
-import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.TrainMover;
+import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
+import jfreerails.move.AddCargoBundleMove;
 import jfreerails.move.AddTrainMove;
+import jfreerails.move.CompositeMove;
+import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.train.EngineType;
+import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
@@ -29,15 +33,23 @@ import jfreerails.world.train.TrainPathIterator;
  */
 public class TrainBuilder {
 
-	private World world;
+	private ReadOnlyWorld world;
 	private ServerGameEngine gameEngine;
 	private int trainId;
+	private UncommittedMoveReceiver moveReceiver;
 
-	public TrainBuilder(World w, ServerGameEngine gm) {
+	public TrainBuilder(ReadOnlyWorld w, ServerGameEngine gm,
+		UncommittedMoveReceiver mr) {
 		this.world = w;
 		this.gameEngine = gm;
+		moveReceiver = mr;
 	}
 
+	/**
+	 * @param engineTypeNumber type of the engine
+	 * @param wagons array of wagon types
+	 * @param p point at which to add train on map.
+	 */
 	public void buildTrain(int engineTypeNumber, int[] wagons, Point p) {
 
 		FreerailsTile tile = (FreerailsTile) world.getTile(p.x, p.y);
@@ -61,8 +73,9 @@ public class TrainBuilder {
 			s.setOrderToGoto(0);
 
 			CargoBundle cb = new CargoBundleImpl();
-			world.add(KEY.CARGO_BUNDLES, cb);
-			int cargoBundleNumber = world.size(KEY.CARGO_BUNDLES) - 1;
+			int cargoBundleNumber = world.size(KEY.CARGO_BUNDLES);
+			Move addCargoBundleMove = new
+				AddCargoBundleMove(cargoBundleNumber, cb);
 			int scheduleNumber = world.size(KEY.TRAIN_SCHEDULES);
 
 			TrainModel train =
@@ -76,39 +89,63 @@ public class TrainBuilder {
 			EngineType engineType =
 				(EngineType) world.get(KEY.ENGINE_TYPES, engineTypeNumber);
 			int trainNumber = world.size(KEY.TRAINS);
-			AddTrainMove move =
-				AddTrainMove.generateMove(
-					trainNumber,
-					train,
-					engineType.getPrice(),
-					s.toImmutableSchedule());
+			
+			ImmutableSchedule is = s.toImmutableSchedule();
 
-			MoveExecuter.getMoveExecuter().processMove(move);
+			/* create a composite move so that they are executed
+			 * atomically */
+			/* TODO FIXME need to figure out what to do if the above
+			 * step fails! */
 
 			this.trainId = trainNumber;
+		TrainPathFinder tpf = getPathToFollow(p, world,
+		trainNumber);
+		
+		Move m = tpf.initTarget(train, is);
 
-			TrainMover trainMover =
-				new TrainMover(
-					getPathToFollow(p, world, trainNumber),
-					getPathToFollow(p, world, trainNumber),
-					world,
-					trainNumber);
+		AddTrainMove move =
+		    AddTrainMove.generateMove(
+			    trainNumber,
+			    train,
+			    engineType.getPrice(),
+			    is);
+
+		Move compositeMove = new CompositeMove(new Move[]
+			{addCargoBundleMove, move, m});
+
+		/*
+		 * can't set the trains initial position yet because
+		 * TrainPathFinder.nextInt() requires that the train exists
+		 * in the world DB. I don't want to have special-case
+		 * handling for moves which must be performed differently on
+		 * the client than the server.
+		 */
+		moveReceiver.processMove(compositeMove);
+
+		FreerailsPathIterator from = new TrainPathIterator(tpf); 
+		
+		tpf = getPathToFollow(p, world,
+			trainNumber);
+
+		tpf.initTarget(train, is);
+
+		FreerailsPathIterator to = new TrainPathIterator(tpf);
+
+		TrainMover trainMover =
+		    new TrainMover( to, world, trainNumber);
+		    
+
+		/*
+		 * call setInitialTrainPosition before processing the move so
+		 * that the trains position is initialised on the client
+		 * This means that the trains position is indeterminate for a
+		 * period in the client (yuk!) 
+		 */    
+		Move positionMove = trainMover.setInitialTrainPosition(train,
+		from);
+		moveReceiver.processMove(positionMove);
 
 			gameEngine.addTrainMover(trainMover);
-			//FreerailsPathIterator it = getPath(p);
-			//PathWalker pw = new PathWalkerImpl(it);
-
-			//pw.stepForward(400); 	
-
-			//TrainPosition s = TrainPosition.createInSameDirectionAsPath(pw);
-
-			/*
-			int x = p.x * 30 + 15;
-			int y = p.y * 30 + 15;
-			
-			s.moveHead(x, y);
-			s.moveTail(x - 400, y - 400);
-			*/
 
 			System.out.println("Built train at: " + p.x + ", " + p.y);
 		} else {
@@ -116,25 +153,20 @@ public class TrainBuilder {
 		}
 	}
 
-	public FreerailsPathIterator getPathToFollow(
-		Point p,
-		World w,
-		int trainNumber) {
+	/**
+	 * @return a path iterator describing the path the train is to follow.
+	 * @param p the point at which the path iterator starts.
+	 */
+	public TrainPathFinder getPathToFollow(
+		Point p, ReadOnlyWorld w, int trainNumber) {
 
 		PositionOnTrack pot =
 			FlatTrackExplorer.getPossiblePositions(world, p)[0];
 
-		//NewFlatTrackExplorer explorer =new NewFlatTrackExplorer(world.getMap(), pot);
 		FlatTrackExplorer explorer = new FlatTrackExplorer(pot, world);
-		//FlatTrackExplorer explorer = new FlatTrackExplorer(pot, world, trainId);
 
 		FreerailsPathIterator it;
 
-		it =
-			new TrainPathIterator(
-				new TrainPathFinder(explorer, w, trainNumber));
-
-		return it;
-
+		return new TrainPathFinder(explorer, w, trainNumber);
 	}
 }

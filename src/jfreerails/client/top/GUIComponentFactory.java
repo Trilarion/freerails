@@ -9,7 +9,7 @@ import javax.swing.JTabbedPane;
 
 public interface GUIComponentFactory {
 
-	JFrame createClientJFrame();
+	JFrame createClientJFrame(String title);
 
 	JPanel createOverviewMap();
 

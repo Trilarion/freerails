@@ -3,6 +3,7 @@ package jfreerails.move;
 import jfreerails.world.common.*;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainModel;
@@ -43,11 +44,9 @@ public class ChangeTrainPositionMove implements Move {
 		};
 	}
 
-	public static ChangeTrainPositionMove generate(
-		World w,
-		FreerailsPathIterator nextPathSection,
-		int trainNumber) {
-
+	public static ChangeTrainPositionMove generate(ReadOnlyWorld w,
+		FreerailsPathIterator nextPathSection, int trainNumber) {
+		
 		if (!nextPathSection.hasNext()) {
 			return getNullMove(trainNumber);
 		}

@@ -31,5 +31,10 @@ public interface ServerControlInterface {
 
     public void saveGame();
 
+    /**
+     * Retrieve a list of map names for use with newGame()
+     */
+    public String[] getMapNames();
+
     public void setTargetTicksPerSecond(int ticksPerSecond);
 }

@@ -154,7 +154,7 @@ public class SimpleComponentFactoryImpl2 implements jfreerails.client.top.GUICom
 		}
 	}
 	
-	public JFrame createClientJFrame(){
+	public JFrame createClientJFrame(String title){
 		return new JFrame();	
 	}
         

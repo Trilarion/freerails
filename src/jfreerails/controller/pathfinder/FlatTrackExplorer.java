@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 
@@ -17,11 +17,11 @@ public  class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable 
 
 	boolean beforeFirst = true;	
 
-	private World w;
+	private ReadOnlyWorld w;
 
 	private int currentStation; //stores the index number of a station if a train is currently at a station
 
-	public World getWorld() {
+	public ReadOnlyWorld getWorld() {
 		return w;
 	}
 	
@@ -109,14 +109,14 @@ public  class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable 
 		}
 	}
 
-	public FlatTrackExplorer(World world, PositionOnTrack p) {
+	public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) {
 		w = world;
 		this.currentPosition = new PositionOnTrack(p.getX(), p.getY(), p.getDirection());
 	}
 
 	/******************************************************************************************/
 	//scott bennett 15/03/03
-	public FlatTrackExplorer(PositionOnTrack p, World world) {
+	public FlatTrackExplorer(PositionOnTrack p, ReadOnlyWorld world) {
 		this.currentPosition = new PositionOnTrack(p.getX(), p.getY(), p.getDirection());
 		this.w = world;
 	}
@@ -125,7 +125,14 @@ public  class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable 
 	/******************************************************************************************/
 	
 
-	public static PositionOnTrack[] getPossiblePositions(World w, Point p) {
+	/**
+	 * @return an array of PositionOnTrack objects describing the set of
+	 * possible orientations at this position (heading towards the center of
+	 * the tile)
+	 * @param p location of track to consider.
+	 */
+	public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
+		Point p) {
 		TrackPiece tp = (TrackPiece)w.getTile(p.x, p.y);
 		TrackConfiguration conf = tp.getTrackConfiguration();
 		OneTileMoveVector[] vectors = OneTileMoveVector.getList();

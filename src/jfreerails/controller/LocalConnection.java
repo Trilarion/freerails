@@ -11,6 +11,7 @@ public class LocalConnection implements ConnectionToServer {
     private MoveReceiver moveReceiver;
     private LocalConnection peer;
     private World world;
+    private ConnectionListener connectionListener;
     
     /**
      * Indicates whether the connection should forward moves the the remote side
@@ -23,8 +24,20 @@ public class LocalConnection implements ConnectionToServer {
      */
     private Object mutex;
 
+    public void flush() {
+	// do nothing
+    }
+
     public Object getMutex() {
 	return mutex;
+    }
+
+    public void addConnectionListener(ConnectionListener l) {
+	connectionListener = l;
+    }
+
+    public void removeConnectionListener(ConnectionListener l) {
+	connectionListener = null;
     }
 
     public void addMoveReceiver(MoveReceiver m) {
@@ -72,7 +85,8 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     protected void sendMove(Move move) {
-	moveReceiver.processMove(move);
+	if (moveReceiver != null)
+	    moveReceiver.processMove(move);
     }
     
     /**
@@ -99,6 +113,8 @@ public class LocalConnection implements ConnectionToServer {
     protected void disconnect() {
 	sendMoves = false;
 	this.peer = null;
+	if (connectionListener != null)
+	    connectionListener.connectionClosed(this);
     }
 
     public World loadWorldFromServer() {
@@ -118,6 +134,8 @@ public class LocalConnection implements ConnectionToServer {
 	world = null;
 	mutex = null;
 	peer.disconnect();
+	if (connectionListener != null)
+	    connectionListener.connectionClosed(this);
     }
 
     /**

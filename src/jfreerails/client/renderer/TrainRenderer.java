@@ -31,6 +31,14 @@ public class TrainRenderer {
 
 		TrainPositionOnMap s = train.getPosition();
 		
+		/* 
+		 * XXX HACK !!
+		 * really our position ought to be defined at all times, but
+		 * this is a workaround until we can fix movement
+		 */
+		if (s == null)
+		    return;
+		
 		FreerailsPathIterator it = s.path();
 
 		PathWalker pw = new PathWalkerImpl(it);

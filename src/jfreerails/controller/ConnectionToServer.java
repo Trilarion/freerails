@@ -1,5 +1,7 @@
 package jfreerails.controller;
 
+import java.io.IOException;
+
 import jfreerails.world.top.World;
 
 /**
@@ -21,7 +23,7 @@ public interface ConnectionToServer extends UncommittedMoveReceiver {
 
     public void removeMoveReceiver(MoveReceiver moveReceiver);
 
-    public World loadWorldFromServer();
+    public World loadWorldFromServer() throws IOException;
 
     /**
      * close the connection to the remote peer
@@ -31,8 +33,14 @@ public interface ConnectionToServer extends UncommittedMoveReceiver {
     /**
      * connect to the remote peer
      */
-    public void open();
+    public void open() throws IOException;
     
+    public void addConnectionListener(ConnectionListener l);
+
+    public void removeConnectionListener(ConnectionListener l);
+
+    public void flush();
+     
     /*
      * TODO
      * proposed interface:

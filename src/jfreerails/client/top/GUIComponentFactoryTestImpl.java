@@ -62,7 +62,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         return cashjLabel;
     }
     
-    public JFrame createClientJFrame() {
+    public JFrame createClientJFrame(String title) {
         return null;
     }
     

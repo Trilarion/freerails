@@ -35,6 +35,14 @@ public class OldWorldImpl {
 		trackSetFactory.addTrackRules(w);
 	}
 
+	/**
+	 * TODO This would be better implemented in a config file, or better
+	 * still dynamically determined by scanning the directory.
+	 */
+	public static String[] getMapNames() {
+	    return new String[] {"south_america", "small_south_america"};
+	}
+
 	public static World createWorldFromMapFile(String mapName, FreerailsProgressMonitor pm) {
 		
 		pm.setMessage("Setting up world.");

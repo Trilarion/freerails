@@ -1,6 +1,10 @@
 package jfreerails.world.common;
 
-
+/**
+ * Represents a position on the track as a direction in one of 8 compass points
+ * and a coordinate representing the displacement from the centre of a track
+ * tile.
+ */
 public final class PositionOnTrack implements FreerailsSerializable{
 
 	public static final int BITS_FOR_COORINATE = 14;
@@ -47,6 +51,9 @@ public final class PositionOnTrack implements FreerailsSerializable{
 		return direction;
 	}
 
+	/**
+	 * @return an integer representing this PositionOnTrack object
+	 */
 	public int toInt() {
 		int i = 0;
 		i = i | x;
@@ -117,6 +124,10 @@ public final class PositionOnTrack implements FreerailsSerializable{
 		this.y = y;
 	}
 	
+	/**
+	 * @return the position on the track which is in the opposite direction
+	 * and displacement.
+	 */
 	public PositionOnTrack getOpposite(){
 		int newX = this.getX()-this.direction.deltaX;
 		int newY = this.getY()-this.direction.deltaY;
