@@ -10,8 +10,6 @@
 #include "GameModeSelector.h"
 
 
-class QHBoxLayout;
-class QVBoxLayout;
 class QWidget;
 
 class Engine;
@@ -46,13 +44,9 @@ class GameMainWindow : public BaseMainWindow
       */
     void constructPlayField();
     void setEngine(Engine *_engine);
-
-    void resizeEvent(QResizeEvent *);
     
   private:
     QWidget *widget;
-    QVBoxLayout *layout;
-    QHBoxLayout *layout_h;
     GameMenuBar *menubar;
     GameMap *map;
     GameMapView *mapview;

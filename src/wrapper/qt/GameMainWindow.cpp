@@ -2,8 +2,6 @@
  * $Id$
  */
 
-#include <iostream>
-
 #include <qwidget.h>
 
 #include "GameMainWindow.h"
@@ -16,6 +14,7 @@ GameMainWindow::GameMainWindow(int x, int y, int w, int h) :
     BaseMainWindow(x, y, w, h)
 {
   widget = new QWidget(0, "MainWindow");
+  CHECK_PTR(widget);
   widget->setGeometry(x, y, w, h);
   widget->show();
 }
@@ -54,13 +53,14 @@ void GameMainWindow::constructPlayField()
 
   panel = new GamePanel(engine, mapview, this);
   CHECK_PTR(panel);
-  panel->move(widget->width() - 150, 0);
+  panel->move(widget->width() - 176, 0);
 
   mapview->show();
   panel->show();
 }
 
-void GameMainWindow::resizeEvent(QResizeEvent *)
-{
-  panel->move(widget->width() - 150, 0);
-}
+//void GameMainWindow::resizeEvent(QResizeEvent *)
+//{
+//  map->resize(widget()->width() - 176, widget()->height());
+//  panel->move(widget->width() - 176, 0);
+//}

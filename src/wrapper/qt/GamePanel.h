@@ -12,6 +12,7 @@ class GameMainWindow;
 class GameMapView;
 
 class QToolButton;
+class QWidgetStack;
 
 class GamePanel : public QWidget
 {
@@ -24,22 +25,43 @@ class GamePanel : public QWidget
     
   private:
     void releaseAllButtons();
+    void setupWdgMessages();
     void setupButtons();
+    void setupWstTrainBuild();
+
+    void setupPanelTrain();
+    void setupPanelBuild();
+    
     void showPanel();
 
+    QToolButton *btnTabTrain;
+    QToolButton *btnTabBuild;
+    
     QToolButton *btnTrack;
     QToolButton *btnStation;
     QToolButton *btnPause;
     QToolButton *btnExit;
 
+    QWidget *wdgMessages;
+    QWidget *wdgTrain;
+    QWidget *wdgBuild;
+    QWidget *panelTrain;
+    QWidget *panelBuild;
+    QWidgetStack *wstTrainBuild;
+
     Engine *engine;
     GameMapView *mapView;
 
   private slots:
+    void slotTabTrain();
+    void slotTabBuild();
+    
     void handler_pause();
     void handler_track();
     void handler_station();
     void handler_exit();
+
+    bool build_is_on;
 };
 
 

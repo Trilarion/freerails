@@ -46,7 +46,7 @@ int GameApplication::run()
   mW->setCaption("Freerails");
 
   //setMainWindow(mW);
-  application->setMainWidget(mW->getWidget());
+  application->setMainWidget((QWidget*)mW->getWidget());
   hideSplash();
 
   // Show dialog menu for game mode
@@ -104,5 +104,5 @@ void GameApplication::hideSplash()
 // It crashed, too, but don't know why
 void GameApplication::setMainWindow(GameMainWindow* mw)
 {
-  application->setMainWidget(mw->getWidget());
+  application->setMainWidget((QWidget*)mw->getWidget());
 }

@@ -10,19 +10,22 @@
 #include "GameApplication.h"
 #include "GameWidget.h"
 
-#include <qwidget.h>
 #include <qdialog.h>
 
-class GameDialog: public GameWidget {
-
+class GameDialog: public GameWidget
+{
+//    Q_OBJECT
+    
   public:
     /**  */
-    GameDialog(GameWidget* parent, int x, int y, int w, int h, char* title);
     GameDialog(GameMainWindow* parent, int x, int y, int w, int h, char* title);
     /**  */
     ~GameDialog();
 
     void show();
+
+  private:
+    QDialog *dlg;
     
 };
 

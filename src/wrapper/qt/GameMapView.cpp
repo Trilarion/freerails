@@ -8,13 +8,15 @@
 #include "Engine.h"
 #include "GameMainWindow.h"
 #include "GameMapView.h"
+#include "GameWidget.h"
 
 GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent, const char* name)
-           : QCanvasView((QCanvas*)_map, parent->getWidget(), name)
+           : QCanvasView((QCanvas*)_map, parent->getWidget(), name,
+               Qt::WStyle_Customize | Qt::WStyle_NoBorder)
 {
   engine = _engine;
   map = _map;
-  resize(parent->getWidget()->width() - 150, parent->getWidget()->height());
+  resize(parent->getWidget()->width() - 176, parent->getWidget()->height());
 
   bool status;
   
