@@ -22,7 +22,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 final public class SpecialTileRenderer extends AbstractTileRenderer {
 
-	private TileRenderer parentTileView;
+	final private TileRenderer parentTileView;
 
 	public SpecialTileRenderer(
 		ImageSplitter imageSplitter,
@@ -50,8 +50,8 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 			System.err.println("parent tileView==null");
 		}
 		java.awt.Image icon = this.getIcon(mapX, mapX, w);
-		if (null != icon) {
-			g.drawImage(icon, renderX, renderX, null);
+		if (null != icon) {			
+			g.drawImage(icon, renderX, renderY, null);
 
 		} else {
 			System.err.println("special tileView icon==null");
@@ -63,11 +63,12 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 		return 0;
 	}
 
-	public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel)
+	public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, TileRenderer parentTileView)
 		throws IOException {
 		super(tileModel, rgbValues);
 		this.tileIcons = new Image[1];
 		this.tileIcons[0] = imageManager.getImage(generateFilename());
+		this.parentTileView = parentTileView;
 	}
 
 	public void dumpImages(ImageManager imageManager) {

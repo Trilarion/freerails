@@ -1,3 +1,5 @@
+Nov 30, 2003 2:27:01 PM Luke
+	o Fixed bug 839376 (Harbours are not painted properly)
 Nov 30, 2003 1:24:28 AM Luke
 	o Fixed bug 839336 (Removing station train heading to causes Exception) 
 Nov 29, 2003 9:46:07 PM Luke
