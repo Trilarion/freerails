@@ -1,3 +1,5 @@
+Thu Feb 14 02:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add read methods and >> operators in Serializable ... hope I've done it right.
 Wed Feb 13 16:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o Add << operator in Serializable
 Mon Feb 11 13:45:00 2002  Alexander Opitz <opi@le-bit.de>:
