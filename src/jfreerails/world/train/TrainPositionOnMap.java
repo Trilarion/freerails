@@ -116,7 +116,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 			path.nextSegment(line);
 			int sumOfSquares =
 				(line.x1 - line.x2) * (line.x1 - line.x2)
-					+ (line.y1 - line.y2) * (line.x1 - line.x2);
+					+ (line.y1 - line.y2) * (line.y1 - line.y2);
 			distance += Math.sqrt((double) sumOfSquares);
 		}
 		return distance;

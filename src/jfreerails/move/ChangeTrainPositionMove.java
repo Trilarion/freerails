@@ -1,6 +1,6 @@
 package jfreerails.move;
 
-import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.*;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
@@ -21,7 +21,12 @@ public class ChangeTrainPositionMove implements Move {
 
 	final int trainPositionNumber;
 
-	public ChangeTrainPositionMove(TrainPositionOnMap pieceToAdd, TrainPositionOnMap pieceToRemove, int trainNumber, boolean addToHead, boolean addToTail) {
+	public ChangeTrainPositionMove(
+		TrainPositionOnMap pieceToAdd,
+		TrainPositionOnMap pieceToRemove,
+		int trainNumber,
+		boolean addToHead,
+		boolean addToTail) {
 		this.addToHead = addToHead;
 		this.addToTail = addToTail;
 		this.changeToHead = pieceToAdd;
@@ -38,13 +43,16 @@ public class ChangeTrainPositionMove implements Move {
 		};
 	}
 
-	public static ChangeTrainPositionMove generate(World w, FreerailsPathIterator nextPathSection, int trainNumber) {
-		
-		if(!nextPathSection.hasNext()){
+	public static ChangeTrainPositionMove generate(
+		World w,
+		FreerailsPathIterator nextPathSection,
+		int trainNumber) {
+
+		if (!nextPathSection.hasNext()) {
 			return getNullMove(trainNumber);
 		}
 
-		TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
+		TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber);
 
 		TrainPositionOnMap currentPosition = train.getPosition();
 
@@ -52,7 +60,23 @@ public class ChangeTrainPositionMove implements Move {
 
 		bitToAdd = getBitToAdd(nextPathSection);
 
-		
+		//We need to check that adding this piece will not make the train shorter.  E.g.
+		//when a train turns around.
+		TrainPositionOnMap tpom = currentPosition.addToHead(bitToAdd);
+		double bitToAddDistance = bitToAdd.calulateDistance();
+		double currentPositionDistance = currentPosition.calulateDistance();
+		double combinedDistance = tpom.calulateDistance();
+		if (bitToAddDistance + currentPositionDistance > combinedDistance) {			
+			FreerailsPathIterator temp = currentPosition.path();
+			IntLine line = new IntLine();
+			temp.nextSegment(line);
+			int x = line.x1;
+			int y = line.y1;
+			TrainPositionOnMap extraBit =
+				TrainPositionOnMap.createInstance(new int[] { x, x, x }, new int[] { y, y, y });
+			bitToAdd = bitToAdd.addToTail(extraBit);
+		}
+
 		intermediate = currentPosition.addToHead(bitToAdd);
 
 		double currentLength = (double) train.getLength();
@@ -60,10 +84,11 @@ public class ChangeTrainPositionMove implements Move {
 		bitToRemove = getBitToRemove(intermediate, currentLength);
 
 		return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber, true, false);
-
 	}
 
-	static TrainPositionOnMap getBitToRemove(TrainPositionOnMap intermediate, double currentLength) {
+	static TrainPositionOnMap getBitToRemove(
+		TrainPositionOnMap intermediate,
+		double currentLength) {
 		TrainPositionOnMap newPosition;
 		TrainPositionOnMap bitToRemove;
 		PathWalker pathWalker;
@@ -72,7 +97,6 @@ public class ChangeTrainPositionMove implements Move {
 		pathWalker.stepForward((int) currentLength);
 
 		newPosition = TrainPositionOnMap.createInSameDirectionAsPath(pathWalker);
-		//System.out.println("newPosition " + newPosition);
 
 		bitToRemove = intermediate.removeFromHead(newPosition);
 		return bitToRemove;
@@ -164,7 +188,7 @@ public class ChangeTrainPositionMove implements Move {
 			localAddToTail = !this.addToTail;
 		}
 
-		TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainPositionNumber);
+		TrainModel train = (TrainModel) w.get(KEY.TRAINS, this.trainPositionNumber);
 		TrainPositionOnMap oldTrainPosition = train.getPosition();
 		TrainPositionOnMap intermediatePosition, newTrainPosition;
 
