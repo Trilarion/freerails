@@ -15,10 +15,10 @@ class Player : public GameElement
 {
   public:
 
-    enum Type {NATUR=0, AI, HUMAN};
+    enum PlayerType {NATUR=0, AI, HUMAN};
     /** Constructor
       * @param n: name of this player */
-    Player(std::string _name, Type _type);
+    Player(std::string _name, PlayerType _playerType);
     /** Destructor */
     ~Player();
 
@@ -32,9 +32,9 @@ class Player : public GameElement
     void setName(std::string _name) {name = _name;};
 
     /** Gets the type of the player */
-    Type getType() {return type;};
+    PlayerType getType() {return playerType;};
     /** Sets the type of the player */
-    void setType(Type _type) {type = _type;};
+    void setType(PlayerType _playerType) {playerType = _playerType;};
 
     // get amount of money for player
     double getMoney();
@@ -44,7 +44,7 @@ class Player : public GameElement
   private:
     /** Name of the player */
     std::string name;
-    Type type;
+    PlayerType playerType;
     double money;
 };
 
