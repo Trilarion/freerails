@@ -12,4 +12,5 @@ libelements_a_SOURCES = GameElement.cpp \
     Train.cpp \
     TrainInfo.cpp \
     Wagon.cpp \
-    Track.cpp DoubleTrack.cpp
+    Track.cpp DoubleTrack.cpp \
+    City.cpp

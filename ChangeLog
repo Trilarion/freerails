@@ -1,3 +1,6 @@
+Sat May 10 02:15:00 2003  Alexander Opitz <opi@le-bit.de>:
+o Elements   : Add first City Element.
+o Controllers: Add small CityController who do nothing yet.
 Fri May 09 01:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o QT     : Updated to API changes so does it compiles again
 o Wrapper: Remove SDL.h and Size from Base2DMapView, cause it isn't

@@ -12,7 +12,7 @@ class Player;
 class GameElement : public Serializeable
 {
   public:
-    enum TypeID { idNone = 0, idPlayer, idStation, idTrain, idWagon, idTrack };
+    enum TypeID { idNone = 0, idPlayer, idStation, idTrain, idWagon, idTrack, idCity };
     typedef long unsigned int ElementID;
     /** Constructor
       * @param _player: Player who own this element
