@@ -2,8 +2,6 @@
  * $Id$
  */
 
-#include <errno.h>
-
 #include "TCPConnection.h"
 
 
@@ -67,6 +65,9 @@ void TCPConnection::open(char* host, int port) {
   {
     state=OPEN;
   }
+
+  ::fcntl(socketID, F_SETFL, O_NONBLOCK);
+  
 }
 
 void TCPConnection::listen(int port) {
@@ -99,7 +100,7 @@ void TCPConnection::listen(int port) {
     return;
   }
   stat = ::listen(socketID, MAXCONNECTIONS);
-  
+
   if (stat!=0)
   {
     state=ERROR;
@@ -108,6 +109,23 @@ void TCPConnection::listen(int port) {
   {
     state=LISTENING;
   }
+
+  ::fcntl(socketID, F_SETFL, O_NONBLOCK);
+}
+
+int TCPConnection::accept() {
+
+  struct sockaddr_in m_addr;
+  socklen_t len = sizeof(m_addr);
+  memset (&m_addr, 0, sizeof(m_addr));
+  
+/*  m_addr.sin_family=AF_INET;
+  m_addr.sin_port = port;
+  m_addr.sin_addr.s_addr = INADDR_ANY;
+*/
+  int newSockID = ::accept( socketID, (sockaddr *) &m_addr, &len);
+
+  return newSockID;
 }
 
 void TCPConnection::close() {

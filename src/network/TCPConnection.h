@@ -10,6 +10,8 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
 
 #include "Connection.h"
 
@@ -31,6 +33,7 @@ public:
     
     void open(char* host, int port);
     void listen(int port);
+    int accept();
     void close();
 
  private:

@@ -10,7 +10,7 @@ class Server: public TCPConnection {
 
 public:
 
-    Server();
+    Server(int port);
     /**  */
     ~Server();
     

@@ -18,6 +18,7 @@ public:
 private:
 
     void listen(int port);
+    int accept();
     
 };
 
