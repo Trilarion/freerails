@@ -20,7 +20,7 @@ package jfreerails.world.terrain;
 final public class TileTypeImpl extends java.lang.Object implements TerrainType {
 
     private final int rgb;
-
+	private final String terrainCategory;
     private final String terrainType;
 
     /**
@@ -38,8 +38,13 @@ final public class TileTypeImpl extends java.lang.Object implements TerrainType 
     *@param  terrainType  The name of this terrain type. E.g. forest.
     */
 
-    public TileTypeImpl( int rgb, java.lang.String terrainType ) {
+	public String getTerrainCategory() {
+		return terrainCategory;
+	}
+
+    public TileTypeImpl( int rgb, String terrainCategory, java.lang.String terrainType ) {
         this.terrainType = terrainType;
+        this.terrainCategory = terrainCategory;
         this.rgb = rgb;
     }
 
