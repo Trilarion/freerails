@@ -1,11 +1,14 @@
 package jfreerails.client.top;
 
+import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.DisplayMode;
 import java.io.IOException;
 import java.net.InetAddress;
 
 import javax.swing.JFrame;
 
+import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.MapCursor;
@@ -44,6 +47,14 @@ public class GUIClient extends Client {
 	private GUIClient(ConnectionToServer server, int mode, DisplayMode dm,
 		String title, FreerailsProgressMonitor pm)
 	    throws IOException {
+		/* set up the synchronized event queue if not already done */
+		EventQueue eventQueue = Toolkit.getDefaultToolkit().
+		    getSystemEventQueue();
+		if (! (Toolkit.getDefaultToolkit().getSystemEventQueue()
+			    instanceof SynchronizedEventQueue)) {
+		    eventQueue.push(new SynchronizedEventQueue());
+		}
+
 		modelRoot = new ModelRoot();
 		receiver = new ConnectionAdapter(modelRoot);
 		moveChainFork = new MoveChainFork();
@@ -73,7 +84,7 @@ public class GUIClient extends Client {
 
 
 		System.out.println("creating gameloop");
-		GameLoop gameLoop = new GameLoop(screenHandler, receiver.getMutex());
+		GameLoop gameLoop = new GameLoop(screenHandler);
 		Thread t = new Thread(gameLoop);
 		t.start();
 

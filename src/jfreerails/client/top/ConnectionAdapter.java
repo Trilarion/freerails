@@ -1,8 +1,11 @@
 package jfreerails.client.top;
 
 import java.io.IOException;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import jfreerails.client.view.ModelRoot;
+import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.controller.CompositeMoveSplitter;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
@@ -109,9 +112,16 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     public void setConnection(ConnectionToServer c) throws IOException {
+	EventQueue eventQueue = Toolkit.getDefaultToolkit().
+	    getSystemEventQueue();
 	if (connection != null) {
 	    closeConnection();
 	    connection.removeMoveReceiver(worldUpdater);
+	    if ((mutex != null)) {
+		SynchronizedEventQueue synchronizedEventQueue =
+		    (SynchronizedEventQueue) eventQueue;
+		synchronizedEventQueue.removeMutex(mutex);
+	    }
 	}
 	connection = c;
 	connection.open();
@@ -123,6 +133,10 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 	    /* mutex = some other object */
 	    mutex = new Integer (0);
 	}
+
+	/* add our mutex to the AWT event queue's mutex list */
+	((SynchronizedEventQueue) eventQueue).addMutex(mutex);
+
 	/* don't allow other events to update until we've downloaded our copy of
 	 * the World */
 	synchronized(mutex) {

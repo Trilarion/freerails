@@ -1,20 +1,19 @@
 package jfreerails.client.top;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 
+import jfreerails.client.common.MultiLockedRegion;
+import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.common.RepaintManagerForActiveRendering;
 import jfreerails.client.common.ScreenHandler;
-import jfreerails.client.common.SynchronizedEventQueue;
 
 /**
  * This thread updates the GUI Client window.
  * 
  */
-
-final public class GameLoop implements Runnable {
+final public class GameLoop implements Runnable, MultiLockedRegion {
 
 	final static boolean LIMIT_FRAME_RATE = false;
 
@@ -24,103 +23,82 @@ final public class GameLoop implements Runnable {
 
 	final static int TARGET_FPS = 30;
 
-	private final Object mutex;
-
 	FPScounter fPScounter;
+
+	private long frameStartTime;
 
 	public GameLoop(ScreenHandler s) {
 		screenHandler = s;
-		mutex = new Object();
 	}
 
-	public GameLoop(ScreenHandler s, Object mutex) {
-		this.mutex = mutex;
-		screenHandler = s;
+	public void multiLockedCallback() {
+	    Graphics g = screenHandler.getDrawGraphics();
+
+	    try {
+
+		screenHandler.frame.paintComponents(g);
+
+		fPScounter.updateFPSCounter(frameStartTime, g);
+
+	    } finally {
+		g.dispose();
+	    }
+	    screenHandler.swapScreens();
 	}
 
-	public void run() {
+    public void run() {
+	SynchronizedEventQueue seq = (SynchronizedEventQueue)
+	    Toolkit.getDefaultToolkit().getSystemEventQueue();
 
-		RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
-		RepaintManagerForActiveRendering.setAsCurrentManager();
+	RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
+	RepaintManagerForActiveRendering.setAsCurrentManager();
 
-		Toolkit awtToolkit = Toolkit.getDefaultToolkit();
+	fPScounter = new FPScounter();
 
-		EventQueue eventQueue = awtToolkit.getSystemEventQueue();
+	long nextModelUpdateDue = System.currentTimeMillis();
 
-		SynchronizedEventQueue synchronizedEventQueue;
+	while (gameNotDone) {
 
-		if (eventQueue instanceof SynchronizedEventQueue) {
-			synchronizedEventQueue = (SynchronizedEventQueue) eventQueue;
-			if (synchronizedEventQueue.getMutex() != this.mutex) {
-				throw new IllegalStateException();
-			}
-		} else {
-			synchronizedEventQueue = new SynchronizedEventQueue(this.mutex);
-			eventQueue.push(synchronizedEventQueue);
-		}
+	    frameStartTime = System.currentTimeMillis();
 
-		fPScounter = new FPScounter();
+	    if (!screenHandler.isMinimised()) {
 
-		long frameStartTime;
+		seq.grabAllLocks(this);
 
-		long nextModelUpdateDue = System.currentTimeMillis();
+		Toolkit.getDefaultToolkit().sync();
 
-		while (gameNotDone) {
+		if (LIMIT_FRAME_RATE) {
+		    long deltatime =
+			System.currentTimeMillis() - frameStartTime;
 
-			frameStartTime = System.currentTimeMillis();
-
-			if (!screenHandler.isMinimised()) {
-
-				synchronized (mutex) {
-
-					Graphics g = screenHandler.getDrawGraphics();
-
-					try {
-
-						screenHandler.frame.paintComponents(g);
-
-						fPScounter.updateFPSCounter(frameStartTime, g);
-
-					} finally {
-						g.dispose();
-					}
-					screenHandler.swapScreens();
-				}
-				Toolkit.getDefaultToolkit().sync();
-
-				if (LIMIT_FRAME_RATE) {
-					long deltatime =
-						System.currentTimeMillis() - frameStartTime;
-
-					while (deltatime < (1000 / TARGET_FPS)) {
-						try {
-							long sleeptime = (1000 / TARGET_FPS) - deltatime;
-							Thread.sleep(sleeptime);
-
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						deltatime = System.currentTimeMillis() - frameStartTime;
-					}
-				}
-			} else {
-				try {
-					//The window is minimised
-					Thread.sleep(200);
-
-				} catch (Exception e) {
-
-				}
-			}
-			
-			//XXX HACK to give the network thread time to work.
+		    while (deltatime < (1000 / TARGET_FPS)) {
 			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {				
-			}
-		}
-	}
+			    long sleeptime = (1000 / TARGET_FPS) - deltatime;
+			    Thread.sleep(sleeptime);
 
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+			deltatime = System.currentTimeMillis() - frameStartTime;
+		    }
+		}
+	    } else {
+		try {
+		    //The window is minimised
+		    Thread.sleep(200);
+
+		} catch (Exception e) {
+
+		}
+	    }
+
+	    //XXX HACK to give the network thread time to work.
+	    try {
+		Thread.sleep(5);
+	    } catch (InterruptedException e) {				
+	    }
+	}
+    }
 }
 
 final class FPScounter {
