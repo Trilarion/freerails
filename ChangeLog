@@ -1,3 +1,5 @@
+Sun Dec 23 21:00:00 2001  Alexander Opitz <opi@le-bit.de>:
+o make it compileable
 Mon Oct 08 20:55:00 2001  Rivo Laks <rivolaks@hot.ee>:
 o Added methods to pause and stop game to GameController
 o Added GameState enum and getState() to GameController
@@ -7,26 +9,26 @@ o Added GameController and GameInfo classes (not very functional)
 o Added rtti() method to GameElement and all elements
 o Added registerSelf() method to GameElement
 o GameElement's constuctor now has pointer to GameController in arguments
-Sat Sep 29 18:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Sat Sep 29 18:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o change in MapField defines to an enum
 o update some Makefile.in's
-Thu Sep 27 02:10:00 2001  Alexander Opitz <opi@sputnik.de>:
+Thu Sep 27 02:10:00 2001  Alexander Opitz <opi@le-bit.de>:
 o add Track.h and Track.cpp without functionality.
 o some changes in FieldMap to activate Track
 o small writing corection in WorldMap
-Wed Sep 26 02:15:00 2001  Alexander Opitz <opi@sputnik.de>:
+Wed Sep 26 02:15:00 2001  Alexander Opitz <opi@le-bit.de>:
 o add FiedTypes definitions in MapField
 o add first unfunctionell MapGenerator
 o the API of MapGenerator will change in the next time
-Mon Sep 24 14:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Sep 24 14:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o make WorldMap function
 o small changes in UML
-Fri Sep 21 19:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Sep 21 19:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o update MapField to ground needings
 o add WorldMap
-Thu Sep 18 12:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Thu Sep 18 12:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o add MapField to cvs
-Wed Sep 12 11:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Wed Sep 12 11:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Thinking about NewYork City and the world. I can't say this in english so some
   sentences follow in german.
   
@@ -61,19 +63,19 @@ o Fixed circular dependency with Player and GameElement
 o Updated i18n.h to work with configure
 o Changed lots of things in Qt wrapper to work with configure
 o Added GameModeSelector
-Fri Aug 31 13:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Aug 31 13:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o change wagon to Wagon and make it inherited from GameElement
 Thu Aug 30 21:30:00 2001  Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>
 o Added GameElement and Player
-Tue Aug 28 12:35:00 2001  Alexander Opitz <opi@sputnik.de>:
+Tue Aug 28 12:35:00 2001  Alexander Opitz <opi@le-bit.de>:
 o add buttons to the panel
-Tue Aug 28 02:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Tue Aug 28 02:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o add GamePanel and GameMapView ground element in paraGUI
 o let GameModeSelectDialog work better in paragui
 o Make loop around the Game in paragui
-Mon Aug 27 21:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Aug 27 21:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o clean up in paragui the GameModeSelectDialog()
-Fri Aug 24 23:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Aug 24 23:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Let paragui version work again (after changes cause of Qt version
 o panel implementation comes in the next days
 o claen up main.cpp
@@ -85,11 +87,11 @@ o Added the GameModeSelectDialog in Qt
 o Small change in main.cpp
 o Small changes in Rules.make
 o Use of moc in Qt's Makefile
-Mon Aug 20 23:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Aug 20 23:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o remove some unused .c and .h files
 o add in paraGUI the GameModeSelectDialog
 o edit main.cpp for example use of GameModeSelectDialog
-Mon Aug 20 02:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Aug 20 02:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Add GameMainWindow in paraGUI (nothing inside), cause I don't need it yet
 o make paraGUI compatible to rivo's API
 o need setCaption() in GameApplication!!
@@ -106,68 +108,68 @@ o Added i18n support
 o Added wrapperType() method to BaseApplication and wrappers
 o Changed Rules.make a bit
 o Implemented very first version of element wagon
-Fri Aug 13 04:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Aug 13 04:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o add GameDialog ground functions in paraGUI and Qt
-Fri Aug 10 15:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Aug 10 15:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o add GameWidget ground functions in paraGUI and Qt
-Fri Aug 10 13:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Aug 10 13:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o reorgenice wrapper directory and Makefiles (incl. Rules.make)
 o WrapperBase -> BaseApplication
-Fri Aug 10 01:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Aug 10 01:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o starting porting to C++
 o starting to make the wrapper's
-Mon Aug 06 14:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Aug 06 14:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o starting to implement element train
 o change version to 0.0.6+
-Mon Jul 30 16:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Jul 30 16:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Include menu patch from Rivo
 o finalize Stationbuildsystem and Trackbuildsystem (possible that there are bugs)
 o release 0.0.6
-Sat Jul 28 14:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Sat Jul 28 14:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Build station to the end of a track or on a 2 direction track.
 o Take the right image.
-Wed Jul 25 00:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Wed Jul 25 00:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o correct WaterOnMap function in map.c
 o Don't build station on Water
 o Give hint, why track can't build via ScreenMessage
 o add Element station (but not ready yet!)
-Tue Jul 17 13:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Tue Jul 17 13:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o more changes in the new trackbuild system
 o trackbuild doesn't function rightly!!! (Don't reject false connections,
     don't connect all tracks together)
-Sun Jul 15 03:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Sun Jul 15 03:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o first changes for new trackbuild system
 o trackbuild doesn't function at the moment becouse not ready
-Mon Jul 09 17:15:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Jul 09 17:15:00 2001  Alexander Opitz <opi@le-bit.de>:
 o change from 32x32 Tileset to 30x30 Tileset
 o make tracks in one tileset and not in different files
 o change version to 0.0.5+
-Fri Jul 06 12:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Fri Jul 06 12:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o some minor changes
 o release the version 0.0.5
-Wed Jul 04 13:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Wed Jul 04 13:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o remove the clone directory and move the files to common or game
 o changes in player.h and player.c
-Tue Jul 03 13:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Tue Jul 03 13:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o change some files to point to the right graphic
 o add some forgotten png's to cvs
 o make the png's binary
-Thu Jun 28 14:15:00 2001  Alexander Opitz <opi@sputnik.de>:
+Thu Jun 28 14:15:00 2001  Alexander Opitz <opi@le-bit.de>:
 o publish all in the cvs
 o change in cvs to version 0.0.5
-Wed Jun 27 12:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Wed Jun 27 12:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Building Track
 o Info Panel
-Mon Jun 25 12:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Jun 25 12:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Release 0.0.4
 o Building Station
-Mon Jun 25 01:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Jun 25 01:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o rewriting of panel and button UI-elements
-Thu Jun 14 16:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Thu Jun 14 16:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Release 0.0.3
 o Do a better genmap
 o add some more elements to field record
-Mon Jun 11 16:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Mon Jun 11 16:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Release 0.0.2
-Thu Jun 09 16:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+Thu Jun 09 16:00:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Startpoint
