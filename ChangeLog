@@ -1,3 +1,5 @@
+04-Jul-2002 22:24:41 Luke Lindsay <lindsal49@hotmail.com>:
+	o Rotate method added to OneTileMoveVector
 21 - Jun - 02 19 : 21 : 08 Luke Lindsay < lindsal49 @ hotmail.com > :
 	o Fullscreen mode
 	o GameLoop, jfreerails now uses active, rather than passive, rendering.

@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import jfreerails.move.status.MoveStatus;
-import jfreerails.type.LegalTrackConfigurations;
+import jfreerails.world.flat.LegalTrackConfigurations;
 import jfreerails.world.std_track.TrackPiece;
 import jfreerails.world.std_track.TrackTileMap;
 

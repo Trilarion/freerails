@@ -8,12 +8,12 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.misc.OneTileMoveVector;
 import jfreerails.move.status.MoveStatus;
 import jfreerails.type.TrackRule;
+import jfreerails.world.flat.OneTileMoveVector;
+import jfreerails.world.flat.TrackConfiguration;
 import jfreerails.world.std_track.NullTrackPiece;
 import jfreerails.world.std_track.NullTrackType;
-import jfreerails.world.std_track.TrackConfiguration;
 import jfreerails.world.std_track.TrackPiece;
 import jfreerails.world.std_track.TrackTileMap;
 
@@ -22,8 +22,10 @@ import jfreerails.world.std_track.TrackTileMap;
  * @author  lindsal
  * @version
  */
-public final class ChangeTrackPieceCompositeMove implements NewTrackMove, MapUpdateMove{
+public final class ChangeTrackPieceCompositeMove
+	implements NewTrackMove, MapUpdateMove {
 
+	
 	private final ChangeTrackPieceMove moveA, moveB;
 
 	/** Creates new ChangeTrackPieceCompositeMove */
@@ -72,7 +74,12 @@ public final class ChangeTrackPieceCompositeMove implements NewTrackMove, MapUpd
 
 		ChangeTrackPieceMove a, b;
 
-		a = getBuildTrackChangeTrackPieceMove(from, direction, trackRule, trackTileMap);
+		a =
+			getBuildTrackChangeTrackPieceMove(
+				from,
+				direction,
+				trackRule,
+				trackTileMap);
 		b =
 			getBuildTrackChangeTrackPieceMove(
 				direction.createRelocatedPoint(from),
@@ -111,15 +118,19 @@ public final class ChangeTrackPieceCompositeMove implements NewTrackMove, MapUpd
 			oldTrackPiece = trackTileMap.getTrackPiece(p);
 			if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
 				TrackConfiguration trackConfiguration =
-					TrackConfiguration.getInstanceWithVectorAdded(
+					TrackConfiguration.add(
 						oldTrackPiece.getTrackConfiguration(),
 						direction);
-				newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration);
+				newTrackPiece =
+					oldTrackPiece.getTrackRule().getTrackPiece(
+						trackConfiguration);
 			} else {
-				newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule);
+				newTrackPiece =
+					getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule);
 			}
 		} else {
-			newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule);
+			newTrackPiece =
+				getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule);
 			oldTrackPiece = NullTrackPiece.getInstance();
 		}
 		return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
@@ -137,11 +148,14 @@ public final class ChangeTrackPieceCompositeMove implements NewTrackMove, MapUpd
 			oldTrackPiece = trackTileMap.getTrackPiece(p);
 			if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
 				TrackConfiguration trackConfiguration =
-					TrackConfiguration.getInstanceWithVectorRemoved(
+					TrackConfiguration.subtract(
 						oldTrackPiece.getTrackConfiguration(),
 						direction);
-				if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
-					newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration);
+				if (trackConfiguration
+					!= TrackConfiguration.getFlatInstance("000010000")) {
+					newTrackPiece =
+						oldTrackPiece.getTrackRule().getTrackPiece(
+							trackConfiguration);
 				} else {
 					newTrackPiece = NullTrackPiece.getInstance();
 				}
@@ -161,19 +175,19 @@ public final class ChangeTrackPieceCompositeMove implements NewTrackMove, MapUpd
 		TrackConfiguration simplestConfig =
 			TrackConfiguration.getFlatInstance("000010000");
 		TrackConfiguration trackConfiguration =
-			TrackConfiguration.getInstanceWithVectorAdded(simplestConfig, direction);
+			TrackConfiguration.add(simplestConfig, direction);
 		return trackRule.getTrackPiece(trackConfiguration);
 	}
-	
-	public Rectangle getUpdatedTiles(){
+
+	public Rectangle getUpdatedTiles() {
 		int x, y, width, height;
 		Point p = moveA.getLocation();
-		x=p.x-1;
-		y=p.y-1;
-		width=3;
-		height=3;
-		return new Rectangle(x,y,width, height);
-		
+		x = p.x - 1;
+		y = p.y - 1;
+		width = 3;
+		height = 3;
+		return new Rectangle(x, y, width, height);
+
 	}
 
 }

@@ -13,10 +13,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import jfreerails.list.TrackRuleList;
-import jfreerails.misc.OneTileMoveVector;
 import jfreerails.move.status.MoveStatus;
 import jfreerails.type.TrackRule;
 import jfreerails.unittest.fixture.MapFixtureFactory;
+import jfreerails.world.flat.OneTileMoveVector;
 import jfreerails.world.std_track.NullTrackPiece;
 import jfreerails.world.std_track.TrackTileMap;
 import jfreerails.world.std_track.TrackTileMapImpl;

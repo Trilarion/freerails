@@ -12,7 +12,7 @@ import java.awt.Point;
 
 import jfreerails.move.status.MoveStatus;
 import jfreerails.unittest.fixture.MapFixtureFactory;
-import jfreerails.world.std_track.TrackConfiguration;
+import jfreerails.world.flat.TrackConfiguration;
 import jfreerails.world.std_track.TrackPiece;
 import jfreerails.world.std_track.TrackTileMapImpl;
 import jfreerails.world.std_track.TrackTileMap;
