@@ -1,3 +1,5 @@
+Mon Jan 28 24:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o Start Engine as thread in SDL+ParaGUI
 Thu Jan 24 14:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o Bug in PG_Button is solved, please use ParaGUI 1.0.0beta 2 or later.
 o Engine have a small canBuildTrack check. It ignore direction and type jet.
