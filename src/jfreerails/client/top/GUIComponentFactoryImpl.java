@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
-
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -18,7 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;

@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Vector;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.SKEY;
@@ -22,12 +23,27 @@ import jfreerails.world.track.FreerailsTile;
  * @author Luke
  *
  */
+/**
+ * Updated 23rd Jan 2004 by Scott Bennett <scott@scottbennett.net>
+ *
+ * Implemented Terrain Randomisation to randomly position the terrain types
+ * for each tile on the map.
+ */
 public class MapFactory {
+    /*
+     * create a vector to keep track of what terrain types to 'clump'
+     */
+    private static Vector countryTypes = new Vector();
+    private static Vector non_countryTypes = new Vector();
+    private static WorldImpl world;
+
     public static void setupMap(URL map_url, WorldImpl w,
         FreerailsProgressMonitor pm) {
         //Setup progress monitor..
         pm.setMessage("Setting up map.");
         pm.setValue(0);
+
+        world = w;
 
         Image mapImage = (new javax.swing.ImageIcon(map_url)).getImage();
         Rectangle mapRect = new java.awt.Rectangle(0, 0,
@@ -47,6 +63,32 @@ public class MapFactory {
             rgb2TerrainType.put(new Integer(tilemodel.getRGB()), new Integer(i));
         }
 
+        TerrainType terrainTypeTile;
+
+        for (int c = 0; c < w.size(SKEY.TERRAIN_TYPES); c++) {
+            terrainTypeTile = (TerrainType)w.get(SKEY.TERRAIN_TYPES, c);
+
+            if (terrainTypeTile.getTerrainCategory().equals("Country")) {
+                if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {
+                    countryTypes.add(new Integer(c));
+                }
+            }
+
+            if (terrainTypeTile.getTerrainCategory().equals("Ocean") ||
+                    terrainTypeTile.getTerrainCategory().equals("River") ||
+                    terrainTypeTile.getTerrainCategory().equals("Hill")) {
+                non_countryTypes.add(new Integer(c));
+            }
+        }
+
+        TerrainRandomiser terrainRandomiser = new TerrainRandomiser(countryTypes,
+                non_countryTypes);
+
+        /*
+         * create vector to keep track of terrain randomisation 'clumping'
+         */
+        Vector locations = new Vector();
+
         for (int x = 0; x < mapRect.width; x++) {
             pm.setValue(x);
 
@@ -61,9 +103,46 @@ public class MapFactory {
                         " at location " + x + ", " + y);
                 }
 
-                tile = new FreerailsTile(type.intValue());
+                tile = new FreerailsTile(terrainRandomiser.getNewType(
+                            type.intValue()));
+
+                if (countryTypes.contains(
+                            new Integer(tile.getTerrainTypeNumber()))) {
+                    locations.add(new RandomTerrainValue(x, y,
+                            tile.getTerrainTypeNumber()));
+                }
+
                 w.setTile(x, y, tile);
             }
+        }
+
+        for (int i = 0; i < locations.size(); i++) {
+            RandomTerrainValue rtv = (RandomTerrainValue)locations.elementAt(i);
+            FreerailsTile tile = new FreerailsTile(rtv.getType());
+
+            int x = rtv.getX();
+            int y = rtv.getY();
+            int val = 3;
+
+            double prob = 0.75;
+
+            if (w.boundsContain(x - val, y - val) &&
+                    w.boundsContain(x + val, y + val)) {
+                for (int m = x - val; m < x + val; m++) {
+                    for (int n = y - val; n < y + val; n++) {
+                        if (Math.random() > prob) {
+                            setTile(m, n, tile);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void setTile(int x, int y, FreerailsTile tile) {
+        if (!non_countryTypes.contains(
+                    new Integer(world.getTile(x, y).getTerrainTypeNumber()))) {
+            world.setTile(x, y, tile);
         }
     }
 }

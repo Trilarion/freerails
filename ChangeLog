@@ -1,3 +1,5 @@
+Mar 6, 2004 12:39:54 PM Luke
+	o Added Scott Bennett's terrain randomisation patch. 
 Mar 6, 2004 12:10:49 AM Luke
 	o Remove 'never read' local variables.
 	o Fixed bug 910135 Trains jump when game un paused 
