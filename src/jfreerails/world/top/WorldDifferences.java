@@ -86,7 +86,7 @@ public class WorldDifferences implements World {
         }
 
         public DiffKey(int keyType, int a) {
-            this(keyType, a, -1, -2);
+            this(keyType, a, -2, -3);
         }
 
         public boolean equals(Object arg0) {
@@ -317,6 +317,15 @@ public class WorldDifferences implements World {
             listDifferences.remove(lengthKey);
         } else {
             listDifferences.put(lengthKey, new Integer(newLength));
+        }
+        
+        /* If the element to be reomoved is stored in the list differences hashmap we 
+         * need to remove it.
+         */
+        DiffKey elementKey = new DiffKey(LIST, key.getKeyNumber(), getPlayerNumber(principal), index);
+
+        if (this.listDifferences.containsKey(elementKey)) {
+        	listDifferences.remove(elementKey);
         }
 
         return elementRemoved;
