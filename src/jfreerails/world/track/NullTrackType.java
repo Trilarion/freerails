@@ -72,5 +72,9 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 	public TrackPiece getTrackPiece(TrackConfiguration config) {
 		throw new java.lang.UnsupportedOperationException("Method not implemented yet!");
 	}
+	
+	public boolean isStation(){
+		return false;
+	}
 
 }

@@ -13,6 +13,8 @@ import jfreerails.world.misc.FreerailsSerializable;
 public interface TrackRule extends FreerailsSerializable {
 
 	boolean canBuildOnThisTerrainType(String TerrainType);
+	
+	boolean isStation();
 
 	int getRuleNumber();
 

@@ -55,7 +55,7 @@ final public class TrackMoveProducer {
 		this.moveReceiver = moveReceiver;
 	}
 
-	public boolean performAction(Point from, OneTileMoveVector trackVector) {
+	public boolean buildTrack(Point from, OneTileMoveVector trackVector) {
 
 		if (trackBuilderMode == BUILD_TRACK) {
 			//trackBuilder.buildTrack(from, trackVector, trackRule);
@@ -92,7 +92,7 @@ final public class TrackMoveProducer {
 		}
 
 	}
-	public boolean doTrackBuilderAction(Point point) {
+	public boolean upgradeTrack(Point point) {
 
 		if (trackBuilderMode == UPGRADE_TRACK) {
 			upgradeTrack(point, trackRule);
@@ -115,26 +115,25 @@ final public class TrackMoveProducer {
 		TextMessageHandler.sendMessage(
 			trackRuleList.getTrackRule(trackRuleNumber).getTypeName());
 	}
+	
+	public int getTrackRule(){
+		return this.trackRule.getRuleNumber();
+	}
+	
+	
+	public void setTrackBuilderMode(int i){
+		if(BUILD_TRACK!=i && REMOVE_TRACK!=i && UPGRADE_TRACK!=i){
+			throw new IllegalArgumentException();	
+		}else{
+			trackBuilderMode=i;
+		}
+	}
+	
+	public int getTrackBuilderMode(){
+		return trackBuilderMode;
+	}
 
-	/**
-	 *  Sets the trackBuilderToBUILD_TRACK attribute of the TrackBuilder object
-	 */
-	public void setTrackBuilderToBUILD_TRACK() {
-		trackBuilderMode = BUILD_TRACK;
-	}
-	/**
-	 *  Sets the trackBuilderToREMOVE_TRACK attribute of the TrackBuilder object
-	 */
-	public void setTrackBuilderToREMOVE_TRACK() {
-		trackBuilderMode = REMOVE_TRACK;
-	}
-	/**
-	 *  Sets the trackBuilderToUPGRADE_TRACK attribute of the TrackBuilder
-	 *  object
-	 */
-	public void setTrackBuilderToUPGRADE_TRACK() {
-		trackBuilderMode = UPGRADE_TRACK;
-	}
+	
 
 	public TrackMoveProducer(TrackRuleList trackRuleList) {
 		if (trackRuleList == null) {

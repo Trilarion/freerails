@@ -12,9 +12,9 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import javax.swing.SwingUtilities;
-
 import jfreerails.client.event.CursorEvent;
 import jfreerails.client.event.CursorEventListener;
+import jfreerails.client.menu.StationTypesPopup;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.TrainBuilder;
 
@@ -29,8 +29,10 @@ final public class MapViewJComponentConcrete
 	implements CursorEventListener {
 
 	private TrackMoveProducer trackBuilder;
-	
+
 	private TrainBuilder trainBuilder;
+
+	private StationTypesPopup stationTypesPopup;
 
 	private FreerailsCursor cursor;
 
@@ -71,28 +73,41 @@ final public class MapViewJComponentConcrete
 		this.addMouseListener(new MapViewJComponentMouseAdapter());
 	}
 
-	public void setup(MapView mv, TrackMoveProducer trackBuilder, TrainBuilder tb) {
-		super.mapView=mv;
-		this.trainBuilder=tb;
+	public void setup(
+		MapView mv,
+		TrackMoveProducer trackBuilder,
+		TrainBuilder tb,
+		StationTypesPopup stPopup) {
+		super.mapView = mv;
+		this.trainBuilder = tb;
+		this.stationTypesPopup = stPopup;
 		this.setBorder(null);
 		this.trackBuilder = trackBuilder;
-		
+
 		this.removeKeyListener(this.cursor);
-		
+
 		this.cursor = new FreerailsCursor(mv);
 		cursor.addCursorEventListener(this);
-		
-		
+
 		this.addKeyListener(cursor);
 	}
 
-	public void setup(MapView mv){
-		super.mapView=mv;
+	public void setup(MapView mv) {
+		super.mapView = mv;
 	}
 
 	public void cursorJumped(CursorEvent ce) {
 
-		trackBuilder.doTrackBuilderAction(ce.newPosition);
+		trackBuilder.upgradeTrack(ce.newPosition);
+		//repaintMap(ce);
+
+		reactToCursorMovement(ce);
+
+	}
+	/* The map is repainted in reponse to moves being received
+	 using the class MapViewMoveReceiver.
+	
+	public void repaintMap(CursorEvent ce) {
 
 		Point tile = new Point();
 		for (tile.x = ce.newPosition.x - 1;
@@ -104,15 +119,14 @@ final public class MapViewJComponentConcrete
 				mapView.refreshTile(tile.x, tile.y);
 			}
 		}
-
-		reactToCursorMovement(ce);
-
 	}
-
+	*/
+	
+	
 	public void cursorOneTileMove(CursorEvent ce) {
 		if (null != trackBuilder) {
 
-			trackBuilder.performAction(ce.oldPosition, ce.vector);
+			trackBuilder.buildTrack(ce.oldPosition, ce.vector);
 			Point tile = new Point();
 			for (tile.x = ce.oldPosition.x - 1;
 				tile.x < ce.oldPosition.x + 2;
@@ -131,14 +145,22 @@ final public class MapViewJComponentConcrete
 	}
 
 	public void cursorKeyPressed(CursorEvent ce) {
-		if(ce.keyEvent.getKeyCode()==KeyEvent.VK_F7){
+		if (ce.keyEvent.getKeyCode() == KeyEvent.VK_F7) {
 			System.out.println("Build train");
 			trainBuilder.buildTrain(ce.newPosition);
+		} else if (ce.keyEvent.getKeyCode() == KeyEvent.VK_F8) {
+			System.out.println("Build station");
+			float scale = mapView.getScale();
+			Point tile = new Point(ce.newPosition);	//defensive copy.
+			Dimension tileSize = new Dimension((int) scale, (int) scale);
+			int x =tile.x*tileSize.width;
+			int y =tile.y*tileSize.height;
+			stationTypesPopup.show(this, x,y, tile);
+			//stationBuilder.buildStation(ce.newPosition);
+			//repaintMap(ce);
 		}
 		reactToCursorMovement(ce);
 	}
-
-	
 
 	private void reactToCursorMovement(CursorEvent ce) {
 		float scale = mapView.getScale();
@@ -167,14 +189,12 @@ final public class MapViewJComponentConcrete
 			tileSize.width * 3,
 			tileSize.height * 3);
 	}
-	
+
 	public float getScale() {
 		return mapView.getScale();
 
 	}
-	
 
-	
 	public void paintTile(Graphics g, int tileX, int tileY) {
 	}
 
@@ -195,5 +215,4 @@ final public class MapViewJComponentConcrete
 	public void paintRect(Graphics g, Rectangle visibleRect) {
 	}
 
-	
 }

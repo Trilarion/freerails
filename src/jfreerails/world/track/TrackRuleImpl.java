@@ -96,5 +96,9 @@ implements TrackRule {
     public boolean trackPieceIsLegal(TrackConfiguration config) {
         return legalConfigurations.trackConfigurationIsLegal(config);
     }
+    
+    public boolean isStation(){
+    	return properties.isStation();
+    }
 
 }

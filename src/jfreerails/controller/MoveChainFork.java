@@ -1,5 +1,7 @@
 package jfreerails.controller;
 
+import java.util.ArrayList;
+
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 
@@ -9,11 +11,16 @@ import jfreerails.move.MoveStatus;
  */
 final public class MoveChainFork implements MoveReceiver {
 	
-	private final MoveReceiver primary, secondary;
+	private final ArrayList moveReceivers = new ArrayList(); 
 	
-	public MoveChainFork(MoveReceiver a, MoveReceiver b){
-		this.primary=a;
-		this.secondary=b;	
+	private final MoveReceiver primary;
+	
+	public MoveChainFork(MoveReceiver primaryReceiver){
+		this.primary=primaryReceiver;		
+	}
+	
+	public void add(MoveReceiver moveReceiver){
+		moveReceivers.add(moveReceiver);	
 	}
 
 	/*
@@ -21,7 +28,10 @@ final public class MoveChainFork implements MoveReceiver {
 	 */
 	public MoveStatus processMove(Move move) {
 		MoveStatus ms=primary.processMove(move);
-		secondary.processMove(move);
+		for(int i=0;i<moveReceivers.size();i++){
+				MoveReceiver m = (MoveReceiver)moveReceivers.get(i);
+				m.processMove(move);
+		}
 		return ms;
 	}
 

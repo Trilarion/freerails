@@ -1,3 +1,13 @@
+09-Nov-2002 01:13:47 Luke Lindsay 
+   o Changes to how the mainmap's buffer gets refreshed.
+   Instead of the refresh being driven by the cursor moving,
+   it is now driven by moves being received.  This means that 
+   it it will refresh even if the moves are generate by another 
+   player.
+08-Nov-2002 23:05:39 Luke Lindsay 
+   o Stations can be built by pressing F8.
+   o The station types no longer appear with the track
+   types on the build menu.
 06-Nov-2002 20:24:10 Luke Lindsay 
    oFixed 'jar_doc' task in build.xml
 05-Nov-2002 22:53:11 Luke Lindsay 
