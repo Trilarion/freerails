@@ -8,10 +8,10 @@ MyGameApplication::~MyGameApplication() {
 
 }
 
-void MyGameApplication::InitGame() {
+void MyGameApplication::initGame() {
 
 }
 
-void MyGameApplication::AskUser() {
+void MyGameApplication::askUser() {
 
 }

@@ -5,8 +5,7 @@ THINGS TO DO
 TODO:
 =====
 
-- write the WrapperBase, WrapperParaGUI and WrapperQt
-- porting the existing thinks like map
-- do control of building the map elements (cities, industrie)
+- write the Wrappers elements (like BaseButton, BaseSlider, ...)
+- porting the existing thinks (like map, elements, ...)
 - let genmap work better (include cities, industrie in generation)
-- make the Controller: TrainController, StationController, CityController, GameController, ...
+- Make the controller's in the elements classes

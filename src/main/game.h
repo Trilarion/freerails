@@ -14,6 +14,8 @@
 #endif
 
 #include "GameApplication.h"
+#include "GameWidget.h"
+
 class MyGameApplication : public GameApplication {
 
 public:
@@ -23,8 +25,8 @@ public:
     /**  */
     ~MyGameApplication();
     
-    void InitGame();
-    void AskUser();
+    void initGame();
+    void askUser();
 
 };
 

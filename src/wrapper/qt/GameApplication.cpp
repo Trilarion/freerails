@@ -12,11 +12,11 @@ GameApplication::~GameApplication() {
   delete widget;
 }
 
-void GameApplication::Run() {
+void GameApplication::run() {
   application->exec();
 }
 
-bool GameApplication::InitScreen(int x, int y, int w, int h) {
+bool GameApplication::initScreen(int x, int y, int w, int h) {
   widget = new QWidget();
   widget->setGeometry(x,y,w,h);
   application->setMainWidget(widget);
@@ -24,6 +24,6 @@ bool GameApplication::InitScreen(int x, int y, int w, int h) {
   return true;
 }
 
-void GameApplication::SetCaption(const char *title) {
+void GameApplication::setCaption(const char *title) {
     widget->setCaption(title);
 }

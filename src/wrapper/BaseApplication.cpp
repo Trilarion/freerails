@@ -12,14 +12,14 @@ BaseApplication::~BaseApplication() {
 
 }
 
-bool BaseApplication::InitScreen(int x, int y, int w, int h) {
+bool BaseApplication::initScreen(int x, int y, int w, int h) {
 
 }
 
-void BaseApplication::SetCaption(const char *title) {
+void BaseApplication::setCaption(const char *title) {
 
 }
 
-void BaseApplication::Run() {
+void BaseApplication::run() {
 
 }

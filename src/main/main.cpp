@@ -1,17 +1,14 @@
 #include "game.h"
-#include "BaseApplication.h"
 
-//#include <pgwidgetlist.h>
-
-void Splash(GameApplication* app) {
-/*  PG_GradientWidget splash(NULL, PG_Rect(100,100,600,400));
+void Splash(MyGameApplication* app) {
+  GameWidget splash(app, 100,100,600,400);
   char file[]="data/graphics/ui/title.png";
-  splash.SetBackground(file,BKMODE_STRETCH);
-  splash.SetBackgroundBlend(0);
-  splash.Show();
-  app->InitGame();
-  SDL_Delay(2000);
-  splash.Hide();*/
+/*  splash.SetBackground(file,BKMODE_STRETCH);
+  splash.SetBackgroundBlend(0);*/
+  splash.show();
+  app->initGame();
+//  SDL_Delay(2000);
+  splash.hide();
 }
 
 int main(int argc, char *argv[])
@@ -23,17 +20,17 @@ int main(int argc, char *argv[])
   // construct the application object
   MyGameApplication app(argc,argv);
 
-  if(!app.InitScreen(0,0,800,600)){
+  if(!app.initScreen(0,0,800,600)){
     printf("Resolution not supported\n");
     exit(-1);
   }
 
-  app.SetCaption(versionString);
+  app.setCaption(versionString);
 
   Splash(&app);
   
-  app.AskUser();    
-  app.Run();
+  app.askUser();    
+  app.run();
 
   return EXIT_SUCCESS;
 }

@@ -18,9 +18,9 @@ public:
     /**  */
     ~GameApplication();
 
-    bool InitScreen(int x, int y, int w, int h);
-    void SetCaption(const char *title);
-    void Run();
+    bool initScreen(int x, int y, int w, int h);
+    void setCaption(const char *title);
+    void run();
 
 private:
     struct PG_Application* pGlobalApp;

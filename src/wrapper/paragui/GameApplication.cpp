@@ -31,14 +31,14 @@ GameApplication::~GameApplication() {
     delete pGlobalApp;
 }
 
-void GameApplication::Run() {
+void GameApplication::run() {
   pGlobalApp->Run();
 }
 
-bool GameApplication::InitScreen(int x, int y, int w, int h) {
+bool GameApplication::initScreen(int x, int y, int w, int h) {
   return pGlobalApp->InitScreen(w,h,screenDepth,screenFlags);
 }
 
-void GameApplication::SetCaption(const char *title) {
+void GameApplication::setCaption(const char *title) {
   pGlobalApp->SetCaption(title,NULL);
 }

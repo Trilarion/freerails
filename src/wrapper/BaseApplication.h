@@ -13,9 +13,9 @@ public:
     /**  */
     ~BaseApplication();
 
-    virtual bool InitScreen(int x, int y, int w, int h);
-    virtual void SetCaption(const char *title);
-    virtual void Run();
+    virtual bool initScreen(int x, int y, int w, int h);
+    virtual void setCaption(const char *title);
+    virtual void run();
 
 };
 

@@ -4,13 +4,27 @@ FreeRails v0.0.7
 
 Welcome to FreeRails!
 
+=========
+IMPORTAND
+=========
+
+We are on porting the source from C to C++ so it can be, that you can't compile
+the cvs.
+Please do NOT mass us up with this problems!!! This can happen while porting.
+
+=========
+IMPORTAND
+=========
+
+We use now other libraries! For compiling, please look at the Rules.make file.
+
 
 Web site:
 =========
 
 FreeRails web site is here:
 
-  http://freerails.sourcevorge.net/
+  http://freerails.sourceforge.net/
 
 We invite you to visit. You can get the latest FreeRails news, releases
 and patches, find out about the FreeRails mailing lists.
@@ -24,13 +38,35 @@ you may copy this program (including source) freely, but see the
 COPYING file for full details.
 
 
+Requirements
+============
+
+Cause of that we don't want to redefine the wheel we use libraries. You have
+two possibilities.
+
+1. you use SDL >= 1.2.0 (with SDL_ttf and SDL_image) and paraGUI >= 0.7.0
+2. you use Qt >= 2.0
+
+Where to get:
+
+SDL:
+    http://www.libsdl.org
+paraGUI:
+    http://www.bms-austria.com/projects/paragui
+Qt:
+    http://www.trolltech.com
+
+Don't forget to take a look in the Licence of the libraries you use.
+
+
 Compiling and installing:
 =========================
 
-Change the Rules.make file to what you want (X11 or SDL are supported).
+Change the Rules.make file to what you want (SDL with paraGUI or Qt).
 Only type make in the directory where the Rules.make is.
 If you get errors feel free and write to the mailinglist or in the buglist on
 http://sourceforge.net/projects/freerails .
+There is no install possibilities at the moment.
 
 
 Starting a new game:

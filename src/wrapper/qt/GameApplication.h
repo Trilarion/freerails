@@ -19,10 +19,13 @@ public:
     /**  */
     ~GameApplication();
 
-    bool InitScreen(int x, int y, int w, int h);
-    void SetCaption(const char *title);
-    void Run();
-    
+    bool initScreen(int x, int y, int w, int h);
+    void setCaption(const char *title);
+    void run();
+
+    /* ONLY for internal use */
+    QWidget* getWidget() {return widget;};
+
 private:
     QApplication* application;
     QWidget* widget;
