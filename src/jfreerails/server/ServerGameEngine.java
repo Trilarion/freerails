@@ -42,10 +42,6 @@ public class ServerGameEngine implements GameModel, Runnable {
     private final AuthoritativeMoveExecuter moveExecuter;
     private final QueuedMoveReceiver queuedMoveReceiver;
     private World world;
-
-    /* some stats for monitoring sim speed */
-    private int statUpdates = 0;
-    private long statLastTimestamp = 0;
     private final MoveChainFork moveChainFork;
     private CalcSupplyAtStations calcSupplyAtStations;
     TrainBuilder tb;
@@ -67,14 +63,7 @@ public class ServerGameEngine implements GameModel, Runnable {
      * Number of ticks since the last time we did an infrequent update
      */
     private int ticksSinceUpdate = 0;
-    private long frameStartTime;
     private long nextModelUpdateDue = System.currentTimeMillis();
-    private long baseTime = System.currentTimeMillis();
-
-    /**
-     * number of ticks since baseTime
-     */
-    private int n;
     ArrayList trainMovers = new ArrayList();
     private int currentYearLastTick = -1;
     private boolean keepRunning = true;
@@ -182,23 +171,23 @@ public class ServerGameEngine implements GameModel, Runnable {
      * </ol>
      */
     public synchronized void update() {
-        if (targetTicksPerSecond > 0) {
-            queuedMoveReceiver.executeOutstandingMoves();
+        long frameStartTime = System.currentTimeMillis();
 
-            /*
-             * start of server world update
-             */
-            //update the time first, since other updates might need
-            //to know the current time.
+        /* First do the things that need doing whether or not the game is paused.
+
+                /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
+                * without first calling moveExecuter.executeOutstandingMoves()
+                */
+        buildTrains();
+        queuedMoveReceiver.executeOutstandingMoves();
+
+        if (targetTicksPerSecond > 0) {
+            /* Update the time first, since other updates might need
+            to know the current time.*/
             updateGameTime();
 
             //now do the other updates
             moveTrains();
-
-            /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
-             * without first calling moveExecuter.executeOutstandingMoves()
-             */
-            buildTrains();
 
             //Check whether we have just started a new year..
             GameTime time = (GameTime)world.get(ITEM.TIME);
@@ -214,34 +203,9 @@ public class ServerGameEngine implements GameModel, Runnable {
                 infrequentUpdate();
             }
 
-            /*
-             * all world updates done... now schedule next tick
-             */
-            statUpdates++;
-            n++;
-            frameStartTime = System.currentTimeMillis();
-
-            if (statUpdates == 100) {
-                /* every 100 ticks, calculate some stats and reset
-                 * the base time */
-                statUpdates = 0;
-
-                int updatesPerSec = (int)(100000L / (frameStartTime -
-                    statLastTimestamp));
-
-                if (statLastTimestamp > 0) {
-                    //	System.out.println(
-                    //		"Updates per sec " + updatesPerSec);
-                }
-
-                statLastTimestamp = frameStartTime;
-
-                baseTime = frameStartTime;
-                n = 0;
-            }
-
             /* calculate "ideal world" time for next tick */
-            nextModelUpdateDue = baseTime + (1000 * n) / targetTicksPerSecond;
+            nextModelUpdateDue = nextModelUpdateDue +
+                (1000 / targetTicksPerSecond);
 
             int delay = (int)(nextModelUpdateDue - frameStartTime);
 
@@ -261,15 +225,6 @@ public class ServerGameEngine implements GameModel, Runnable {
 
             ticksSinceUpdate++;
         } else {
-            /*
-             * even when game is paused, we should still check for moves
-             * submitted by players due to execution of ServerCommands on the
-             * server
-             */
-            queuedMoveReceiver.executeOutstandingMoves();
-            // desired tick rate was 0
-            nextModelUpdateDue = frameStartTime;
-
             try {
                 //When the game is frozen we don't want to be spinning in a
                 //loop.
@@ -277,6 +232,8 @@ public class ServerGameEngine implements GameModel, Runnable {
             } catch (InterruptedException e) {
                 // do nothing
             }
+
+            nextModelUpdateDue = System.currentTimeMillis();
         }
     }
 
