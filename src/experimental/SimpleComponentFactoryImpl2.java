@@ -57,6 +57,11 @@ public class SimpleComponentFactoryImpl2
 
         return displayMenu;
     }
+    
+    public JMenu createBrokerMenu() {
+        JMenu brokerMenu = new JMenu("Broker");
+        return brokerMenu;
+    }
 
     private void addOverviewmapzoomMenuItem(JMenu displayMenu, final float scale) {
         String menuItemName = "Set overview map scale=" + scale;

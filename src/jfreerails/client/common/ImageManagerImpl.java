@@ -105,6 +105,9 @@ public class ImageManagerImpl implements ImageManager {
         }
 
         Image tempImage = ImageIO.read(url);
+        if (null == tempImage) {
+            throw new IOException("Couldn't find: " + read);
+        }
         Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(
                     null), tempImage.getHeight(null), Transparency.TRANSLUCENT);
         Graphics g = compatibleImage.getGraphics();
