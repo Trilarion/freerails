@@ -28,8 +28,8 @@ public:
     /**  */
     ~TCPConnection();
     
-    int writeTo(void* data, int len);
-    int readFrom(void* buf, int maxlen);
+    int write(void* data, int len);
+    int read(void* buf, int maxlen);
     
     void open(char* host, int port);
     void listen(int port);

@@ -138,12 +138,12 @@ void TCPConnection::close() {
   state=IDLE;
 }
 
-int TCPConnection::writeTo(void* data, int len) {
+int TCPConnection::write(void* data, int len) {
   int n;
 
   if (state==OPEN)
   {
-    if ((n=write(socketID,data,len))<=0){
+    if ((n=::write(socketID,data,len))<=0){
       /* error=XXXX unable to write to socket 
 	 TODO: search for errors in errno */
       return -1;
@@ -156,12 +156,12 @@ int TCPConnection::writeTo(void* data, int len) {
   }
 }
 
-int TCPConnection::readFrom(void* buf, int maxlen) {
+int TCPConnection::read(void* buf, int maxlen) {
   int n;
 
   if (state==OPEN)
   {
-    if((n=read(socketID,buf,maxlen))<=0){
+    if((n=::read(socketID,buf,maxlen))<=0){
       /* error=XXXXX unable to read from socket 
 	 TODO: search for errors in errno */
       return -1;

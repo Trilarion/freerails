@@ -16,8 +16,8 @@ public:
     /**  */
     ~Connection();
     
-    virtual int writeTo(void* data, int len){};
-    virtual int readFrom(void* buf, int maxlen){};
+    virtual int write(void* data, int len){};
+    virtual int read(void* buf, int maxlen){};
     
     virtual void open(char* c, int i);
     virtual void close();
