@@ -1,3 +1,7 @@
+Wed Jan 15 02:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o canBuildElement in TrackController should now be ready
+o the ParaGUI Client now shows on which Field you can build a Track
+o hope, Goncalo will add his GUIEngine
 Thu Jan 02 12:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Use new canBuildElement also in paraGUI Client, so now it works again
 Tue Dec 31 20:00:00 2002  Alexander Opitz <opi@le-bit.de>:
