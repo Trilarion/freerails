@@ -203,6 +203,8 @@ public class DialogueBoxController implements WorldListListener {
         modelRoot.addListListener(trainDialogueJPanel);
         trainDialogueJPanel.setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
         trainDialogueJPanel.setCancelButtonActionListener(this.closeCurrentDialogue);
+        
+        
     }
 
     public void showNewspaper(String headline) {
@@ -426,13 +428,16 @@ public class DialogueBoxController implements WorldListListener {
         boolean rightPrincipal = principal.equals(this.modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
-        	this.showTrainOrders(index);
+        	this.showTrainOrders(index);        	
         } else if (KEY.STATIONS == key && rightPrincipal) {
-            this.showStationInfo(index);
+            this.showStationInfo(index);            
         }
     }
 
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
         //do nothing
     }
+    
+   
+    
 }

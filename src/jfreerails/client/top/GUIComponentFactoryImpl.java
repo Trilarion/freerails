@@ -43,6 +43,7 @@ import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.world.common.GameSpeed;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
@@ -51,6 +52,7 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldIterator;
+import jfreerails.world.top.WorldListListener;
 import jfreerails.world.top.WorldMapListener;
 
 
@@ -59,7 +61,7 @@ import jfreerails.world.top.WorldMapListener;
  * @author Luke
  */
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
-    WorldMapListener {
+    WorldMapListener, WorldListListener {
     private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
     private final ModelRoot modelRoot;
     private final ActionRoot actionRoot;
@@ -88,6 +90,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private final ClientJFrame clientJFrame;
     private UserMessageGenerator userMessageGenerator;
     private ActionAdapter speedActions;
+    private JMenuItem trainOrdersJMenuItem;
+    private JMenuItem trainListJMenuItem;
+    private JMenuItem stationInfoJMenuItem;
 
     public GUIComponentFactoryImpl(ModelRoot mr, ActionRoot ar) {
         modelRoot = mr;
@@ -145,6 +150,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         viewLists = vl;
         world = w;
         modelRoot.addMapListener(this);
+        modelRoot.addListListener(this);
 
         if (!vl.validate(world)) {
             throw new IllegalArgumentException("The specified" +
@@ -189,6 +195,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
         speedActions.setSelectedItem(actionName);
         userMessageGenerator.logSpeed();
+
+        /* Count stations and trains to determine if we need to display the station and
+         * train menu items and tabs.3
+         */
+        countStations();
+        countTrains();
     }
 
     public JPanel createOverviewMap() {
@@ -207,21 +219,21 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         displayMenu = new JMenu("Display");
         displayMenu.setMnemonic(68);
 
-        JMenuItem trainOrdersJMenuItem = new JMenuItem("Train Orders");
+        trainOrdersJMenuItem = new JMenuItem("Train Orders");
         trainOrdersJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     dialogueBoxController.showTrainOrders();
                 }
             });
 
-        JMenuItem stationInfoJMenuItem = new JMenuItem("Station Info");
+        stationInfoJMenuItem = new JMenuItem("Station Info");
         stationInfoJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     dialogueBoxController.showStationInfo(0);
                 }
             });
 
-        JMenuItem trainListJMenuItem = new JMenuItem("Train List");
+        trainListJMenuItem = new JMenuItem("Train List");
         trainListJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     dialogueBoxController.showTrainList();
@@ -484,5 +496,60 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 overviewMap.refreshTile(tile.x, tile.y);
             }
         }
+    }
+
+    private void countStations() {
+        NonNullElements stations = new NonNullElements(KEY.STATIONS,
+                modelRoot.getWorld(), modelRoot.getPrincipal());
+        boolean enabled;
+
+        if (stations.size() > 0) {
+            enabled = true;
+        } else {
+            enabled = false;
+        }
+
+        this.trainsJTabPane.setStationTabEnabled(enabled);
+        this.stationInfoJMenuItem.setEnabled(enabled);
+    }
+
+    private void countTrains() {
+        NonNullElements trains = new NonNullElements(KEY.TRAINS,
+                modelRoot.getWorld(), modelRoot.getPrincipal());
+        boolean enabled;
+
+        if (trains.size() > 0) {
+            enabled = true;
+        } else {
+            enabled = false;
+        }
+
+        this.trainsJTabPane.setTrainTabEnabled(enabled);
+        this.trainListJMenuItem.setEnabled(enabled);
+        this.trainOrdersJMenuItem.setEnabled(enabled);
+    }
+
+    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
+        boolean rightPrincipal = principal.equals(this.modelRoot.getPrincipal());
+
+        if (KEY.TRAINS == key && rightPrincipal) {
+            countTrains();
+        } else if (KEY.STATIONS == key && rightPrincipal) {
+            countStations();
+        }
+    }
+
+    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
+        boolean rightPrincipal = principal.equals(this.modelRoot.getPrincipal());
+
+        if (KEY.TRAINS == key && rightPrincipal) {
+            countTrains();
+        } else if (KEY.STATIONS == key && rightPrincipal) {
+            countStations();
+        }
+    }
+
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
+        //do nothing
     }
 }
