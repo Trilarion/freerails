@@ -1,4 +1,4 @@
-package jfreerails.server;
+package jfreerails.move;
 
 import java.awt.Rectangle;
 import java.util.Vector;

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.PreMove;
+import jfreerails.move.PreMoveStatus;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsSerializable;
@@ -189,6 +191,13 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         } else if (message instanceof MoveStatus) {
             MoveStatus ms = (MoveStatus)message;
             committer.fromServer(ms);
+        } else if (message instanceof PreMove) {
+            PreMove pm = (PreMove)message;
+            Move m = committer.fromServer(pm);
+            moveFork.processMove(m);
+        } else if (message instanceof PreMoveStatus) {
+            PreMoveStatus pms = (PreMoveStatus)message;
+            committer.fromServer(pms);
         } else {
             logger.fine(message.toString());
         }
@@ -212,5 +221,11 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     public void sendCommand(ServerCommand c) {
         write(c);
+    }
+
+    public void processPreMove(PreMove pm) {
+        Move m = committer.toServer(pm);
+        moveFork.processMove(m);
+        write(pm);
     }
 }

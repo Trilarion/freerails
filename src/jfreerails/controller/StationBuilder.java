@@ -2,10 +2,7 @@ package jfreerails.controller;
 
 import java.awt.Point;
 import java.util.logging.Logger;
-import jfreerails.move.AddStationMove;
-import jfreerails.move.ChangeTrackPieceCompositeMove;
-import jfreerails.move.ChangeTrackPieceMove;
-import jfreerails.move.Move;
+import jfreerails.move.AddStationPreMove;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -13,8 +10,6 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
-import jfreerails.world.track.TrackPiece;
-import jfreerails.world.track.TrackPieceImpl;
 import jfreerails.world.track.TrackRule;
 
 
@@ -68,56 +63,63 @@ public class StationBuilder {
 
         //Only build a station if there is track at the specified point.
         if (canBuiltStationHere(p)) {
-            String cityName;
-            String stationName;
-
-            TrackPiece before = (TrackPiece)world.getTile(p.x, p.y);
-            TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES,
-                    this.ruleNumber);
-
             FreerailsPrincipal principal = executor.getPrincipal();
-            int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
-            TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
-                    trackRule, owner);
-            ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,
-                    after, p);
+            AddStationPreMove preMove = AddStationPreMove.newStation(p,
+                    this.ruleNumber, principal);
+            MoveStatus status = executor.doPreMove(preMove);
 
-            //Check whether we can upgrade the track to a station here.
-            MoveStatus statusa = executor.tryDoMove(upgradeTrackMove);
+            return status;
 
-            if (!statusa.ok) {
-                logger.warning("Cannot upgrade this track to a station!");
-
-                return statusa;
-            }
-
-            Move move;
-
-            if (!oldTile.getTrackRule().isStation()) {
-                //There isn't already a station here, we need to pick a name and add an entry
-                //to the station list.
-                CalcNearestCity cNC = new CalcNearestCity(world, p.x, p.y);
-                cityName = cNC.findNearestCity();
-
-                VerifyStationName vSN = new VerifyStationName(world, cityName);
-                stationName = vSN.getName();
-
-                if (stationName == null) {
-                    //there are no cities, this should never happen
-                    stationName = "Central Station";
-                }
-
-                //check the terrain to see if we can build a station on it...
-                move = AddStationMove.generateMove(world, stationName, p,
-                        upgradeTrackMove, principal);
-
-                move = transactionsGenerator.addTransactions(move);
-            } else {
-                //Upgrade an existing station.
-                move = AddStationMove.upgradeStation(upgradeTrackMove);
-            }
-
-            return executor.doMove(move);
+            //            String cityName;
+            //            String stationName;
+            //
+            //            TrackPiece before = (TrackPiece)world.getTile(p.x, p.y);
+            //            TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES,
+            //                    this.ruleNumber);
+            //
+            //            FreerailsPrincipal principal = executor.getPrincipal();
+            //            int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
+            //            TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
+            //                    trackRule, owner);
+            //            ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,
+            //                    after, p);
+            //
+            //            //Check whether we can upgrade the track to a station here.
+            //            MoveStatus statusa = executor.tryDoMove(upgradeTrackMove);
+            //
+            //            if (!statusa.ok) {
+            //                logger.warning("Cannot upgrade this track to a station!");
+            //
+            //                return statusa;
+            //            }
+            //
+            //            Move move;
+            //
+            //            if (!oldTile.getTrackRule().isStation()) {
+            //                //There isn't already a station here, we need to pick a name and add an entry
+            //                //to the station list.
+            //                CalcNearestCity cNC = new CalcNearestCity(world, p.x, p.y);
+            //                cityName = cNC.findNearestCity();
+            //
+            //                VerifyStationName vSN = new VerifyStationName(world, cityName);
+            //                stationName = vSN.getName();
+            //
+            //                if (stationName == null) {
+            //                    //there are no cities, this should never happen
+            //                    stationName = "Central Station";
+            //                }
+            //
+            //                //check the terrain to see if we can build a station on it...
+            //                move = AddStationMove.generateMove(world, stationName, p,
+            //                        upgradeTrackMove, principal);
+            //
+            //                move = transactionsGenerator.addTransactions(move);
+            //            } else {
+            //                //Upgrade an existing station.
+            //                move = AddStationMove.upgradeStation(upgradeTrackMove);
+            //            }
+            //
+            //            return executor.doMove(move);
         } else {
             String message = "Can't build station since there is no track here!";
             logger.warning(message);

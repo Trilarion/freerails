@@ -2,6 +2,7 @@ package jfreerails.server;
 
 import java.util.Vector;
 import jfreerails.controller.CargoElementObject;
+import jfreerails.move.CalcCargoSupplyRateAtStation;
 import jfreerails.move.ChangeStationMove;
 import jfreerails.move.Move;
 import jfreerails.network.MoveReceiver;

@@ -5,6 +5,7 @@ package jfreerails.controller;
 
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.PreMove;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -16,6 +17,8 @@ import jfreerails.world.top.ReadOnlyWorld;
  */
 public interface MoveExecutor {
     MoveStatus doMove(Move m);
+
+    MoveStatus doPreMove(PreMove pm);
 
     MoveStatus tryDoMove(Move m);
 

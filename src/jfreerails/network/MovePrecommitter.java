@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.logging.Logger;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.PreMove;
+import jfreerails.move.PreMoveStatus;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
 
@@ -23,31 +25,34 @@ import jfreerails.world.top.World;
  *
  */
 public class MovePrecommitter {
+    private class PreMoveAndMove {
+        final Move m;
+        final PreMove pm;
+
+        PreMoveAndMove(PreMove preMove, Move move) {
+            m = move;
+            pm = preMove;
+        }
+    }
+
     private static final Logger logger = Logger.getLogger(MovePrecommitter.class.getName());
-    private final World w;
-
-    /** List of moves that have been sent to the server but not
-     * executed on the local world object.
-     */
-    final LinkedList uncomittedMoves;
-
-    /** List of moves that have been sent to the server and
-     * executed on the local world object.
-     */
-    final LinkedList precomittedMoves;
 
     /** Whether the first move on the uncommitted list failed to go through on the last try.*/
     boolean blocked = false;
 
+    /** List of moves that have been sent to the server and
+     * executed on the local world object.
+     */
+    final LinkedList precomitted = new LinkedList();
+
+    /** List of moves that have been sent to the server but not
+     * executed on the local world object.
+     */
+    final LinkedList uncomitted = new LinkedList();
+    private final World w;
+
     MovePrecommitter(World w) {
         this.w = w;
-        precomittedMoves = new LinkedList();
-        uncomittedMoves = new LinkedList();
-    }
-
-    void toServer(Move m) {
-        uncomittedMoves.addLast(m);
-        precommitMoves();
     }
 
     void fromServer(Move m) {
@@ -60,28 +65,12 @@ public class MovePrecommitter {
         }
     }
 
-    /** Undoes each of the precommitted moves and puts them back on the
-     * uncommitted list.
-     */
-    private void rollBackPrecommittedMoves() {
-        while (precomittedMoves.size() > 0) {
-            Move m = (Move)precomittedMoves.removeLast();
-            MoveStatus ms = m.undoMove(w, Player.AUTHORITATIVE);
-
-            if (!ms.ok) {
-                throw new IllegalStateException(ms.message);
-            }
-
-            uncomittedMoves.addFirst(m);
-        }
-    }
-
     /** Indicates that the server has processed a move we sent.*/
     void fromServer(MoveStatus ms) {
         precommitMoves();
 
-        if (precomittedMoves.size() > 0) {
-            Move m = (Move)precomittedMoves.removeFirst();
+        if (precomitted.size() > 0) {
+            Move m = (Move)precomitted.removeFirst();
 
             if (!ms.ok) {
                 logger.fine("Move rejected by server: " + ms.message);
@@ -95,7 +84,7 @@ public class MovePrecommitter {
         } else {
             if (!ms.ok) {
                 //clear the blockage,
-                uncomittedMoves.removeFirst();
+                uncomitted.removeFirst();
                 precommitMoves();
             } else {
                 throw new IllegalStateException();
@@ -103,19 +92,110 @@ public class MovePrecommitter {
         }
     }
 
+    Move fromServer(PreMove pm) {
+        Move generatedMove = pm.generateMove(w);
+        fromServer(generatedMove);
+
+        return generatedMove;
+    }
+
+    void fromServer(PreMoveStatus pms) {
+        rollBackPrecommittedMoves();
+
+        PreMove pm = (PreMove)uncomitted.removeFirst();
+
+        if (pms.ms.ok) {
+            Move m = pm.generateMove(w);
+            MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+
+            if (!ms.ok) {
+                throw new IllegalStateException();
+            }
+        } else {
+            logger.fine("PreMove rejected by server: " + pms.ms.message);
+        }
+
+        precommitMoves();
+    }
+
     void precommitMoves() {
         blocked = false;
 
-        while (uncomittedMoves.size() > 0 && !blocked) {
-            Move m = (Move)uncomittedMoves.getFirst();
-            MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+        while (uncomitted.size() > 0 && !blocked) {
+            Object first = uncomitted.getFirst();
 
-            if (ms.ok) {
-                uncomittedMoves.removeFirst();
-                precomittedMoves.addLast(m);
-            } else {
-                blocked = true;
+            if (first instanceof Move) {
+                Move m = (Move)first;
+                MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+
+                if (ms.ok) {
+                    uncomitted.removeFirst();
+                    precomitted.addLast(m);
+                } else {
+                    blocked = true;
+                }
+            } else if (first instanceof PreMove) {
+                PreMove pm = (PreMove)first;
+                Move m = pm.generateMove(w);
+                MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+
+                if (ms.ok) {
+                    uncomitted.removeFirst();
+
+                    PreMoveAndMove pmam = new PreMoveAndMove(pm, m);
+                    precomitted.addLast(pmam);
+                } else {
+                    blocked = true;
+                }
             }
+        }
+    }
+
+    /** Undoes each of the precommitted moves and puts them back on the
+     * uncommitted list.
+     */
+    private void rollBackPrecommittedMoves() {
+        while (precomitted.size() > 0) {
+            Object last = precomitted.removeLast();
+            Move move2undo;
+            Object obj2add2uncomitted;
+
+            if (last instanceof Move) {
+                move2undo = (Move)last;
+                obj2add2uncomitted = move2undo;
+            } else if (last instanceof PreMoveAndMove) {
+                PreMoveAndMove pmam = (PreMoveAndMove)last;
+                move2undo = pmam.m;
+                obj2add2uncomitted = pmam.pm;
+            } else {
+                throw new IllegalStateException();
+            }
+
+            MoveStatus ms = move2undo.undoMove(w, Player.AUTHORITATIVE);
+
+            if (!ms.ok) {
+                throw new IllegalStateException(ms.message);
+            }
+
+            uncomitted.addFirst(obj2add2uncomitted);
+        }
+    }
+
+    void toServer(Move m) {
+        uncomitted.addLast(m);
+        precommitMoves();
+    }
+
+    Move toServer(PreMove pm) {
+        uncomitted.addLast(pm);
+        precommitMoves();
+
+        if (blocked) {
+            return pm.generateMove(w);
+        } else {
+            PreMoveAndMove pmam = (PreMoveAndMove)precomitted.getLast();
+
+            return pmam.m;
         }
     }
 }

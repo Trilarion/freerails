@@ -6,7 +6,10 @@ package jfreerails.network;
 
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.PreMove;
+import jfreerails.move.PreMoveStatus;
 import jfreerails.move.TimeTickMove;
+import jfreerails.move.TimeTickPreMove;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
@@ -43,15 +46,15 @@ public class MovePrecommitterTest extends TestCase {
         /* The move m should now have been precommitted.*/
         assertEquals(newTime, getTime());
         assertFalse(committer.blocked);
-        assertEquals(0, committer.uncomittedMoves.size());
-        assertEquals(1, committer.precomittedMoves.size());
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(1, committer.precomitted.size());
 
         committer.fromServer(ms);
 
         /* The move m should now be full committed.*/
         assertFalse(committer.blocked);
-        assertEquals(0, committer.uncomittedMoves.size());
-        assertEquals(0, committer.precomittedMoves.size());
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
         assertEquals(newTime, getTime());
     }
 
@@ -70,15 +73,15 @@ public class MovePrecommitterTest extends TestCase {
         /* The move m should now have been precommitted.*/
         assertEquals(newTime, getTime());
         assertFalse(committer.blocked);
-        assertEquals(0, committer.uncomittedMoves.size());
-        assertEquals(1, committer.precomittedMoves.size());
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(1, committer.precomitted.size());
 
         committer.fromServer(m);
         assertFalse(m.tryDoMove(w, Player.AUTHORITATIVE).ok);
 
         /* The move m should now be full committed.*/
-        assertEquals(1, committer.uncomittedMoves.size());
-        assertEquals(0, committer.precomittedMoves.size());
+        assertEquals(1, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
 
         assertEquals(newTime, getTime());
 
@@ -88,8 +91,8 @@ public class MovePrecommitterTest extends TestCase {
          * fails to go through.
          */
         assertTrue(committer.blocked);
-        assertEquals(1, committer.uncomittedMoves.size());
-        assertEquals(0, committer.precomittedMoves.size());
+        assertEquals(1, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
 
         Move m2 = new TimeTickMove(newTime, oldtime);
         committer.fromServer(m2);
@@ -97,8 +100,8 @@ public class MovePrecommitterTest extends TestCase {
         committer.fromServer(ms);
         assertEquals(newTime, getTime());
         assertFalse(committer.blocked);
-        assertEquals(0, committer.uncomittedMoves.size());
-        assertEquals(0, committer.precomittedMoves.size());
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
     }
 
     /** Test test rejection 1.*/
@@ -116,16 +119,16 @@ public class MovePrecommitterTest extends TestCase {
         /* The move m should now have been precommitted.*/
         assertEquals(newTime, getTime());
         assertFalse(committer.blocked);
-        assertEquals(0, committer.uncomittedMoves.size());
-        assertEquals(1, committer.precomittedMoves.size());
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(1, committer.precomitted.size());
 
         /* Now, suppose the server rejected the move..*/
         MoveStatus rejection = MoveStatus.moveFailed("Rejected!");
         committer.fromServer(rejection);
         assertEquals(oldtime, getTime());
         assertFalse(committer.blocked);
-        assertEquals(0, committer.uncomittedMoves.size());
-        assertEquals(0, committer.precomittedMoves.size());
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
     }
 
     /** Test test rejection 2.*/
@@ -141,13 +144,57 @@ public class MovePrecommitterTest extends TestCase {
 
         committer.toServer(m);
         assertTrue(committer.blocked);
-        assertEquals(1, committer.uncomittedMoves.size());
-        assertEquals(0, committer.precomittedMoves.size());
+        assertEquals(1, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
 
         committer.fromServer(ms);
         assertFalse(committer.blocked);
-        assertEquals(0, committer.uncomittedMoves.size());
-        assertEquals(0, committer.precomittedMoves.size());
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
+    }
+
+    public void testPreMoves1() {
+        PreMove pm = new TimeTickPreMove();
+        GameTime oldtime = getTime();
+        GameTime newTime = oldtime.nextTick();
+        committer.fromServer(pm);
+        assertEquals(newTime, getTime());
+    }
+
+    public void testPreMoves2() {
+        PreMove pm = new TimeTickPreMove();
+        GameTime oldtime = getTime();
+        GameTime newTime = oldtime.nextTick();
+
+        //Send a premove to the server.
+        committer.toServer(pm);
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(1, committer.precomitted.size());
+        assertEquals(newTime, getTime());
+
+        //The server accepts it..
+        committer.fromServer(PreMoveStatus.PRE_MOVE_OK);
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
+        assertEquals(newTime, getTime());
+    }
+
+    public void testPreMoves3() {
+        PreMove pm = new TimeTickPreMove();
+        GameTime oldtime = getTime();
+        GameTime newTime = oldtime.nextTick();
+
+        //Send a premove to the server.
+        committer.toServer(pm);
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(1, committer.precomitted.size());
+        assertEquals(newTime, getTime());
+
+        //The server rejects it.
+        committer.fromServer(PreMoveStatus.failed("failed"));
+        assertEquals(0, committer.uncomitted.size());
+        assertEquals(0, committer.precomitted.size());
+        assertEquals(oldtime, getTime());
     }
 
     private GameTime getTime() {

@@ -6,6 +6,7 @@ package experimental;
 
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.PreMove;
 import jfreerails.network.UntriedMoveReceiver;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
@@ -27,5 +28,9 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
 
     public void processMove(Move move) {
         move.doMove(w, Player.AUTHORITATIVE);
+    }
+
+    public void processPreMove(PreMove pm) {
+        processMove(pm.generateMove(w));
     }
 }

@@ -1,7 +1,8 @@
 Oct 18, 2004 Luke
 	RFEs Implemented:
 	o  1048913	Option to turn off sound
-	Bugs Fixed:
+	Bugs:
+	o Work on 1046399	No supply and demand at new stations
 Oct 17, 2004 Luke
 	RFEs Implemented:
  	o 972863	Launcher: progress bar should be on new page
