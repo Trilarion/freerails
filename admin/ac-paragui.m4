@@ -217,6 +217,13 @@ AC_DEFUN(AM_FREERAILS_PARAGUI,
     AC_MSG_ERROR([SDL_image headers not found!])
   fi
 
+  dnl Check for FreeType
+  have_freetype=no
+  AC_CHECK_LIB(ttf, TT_Init_FreeType, have_freetype=yes)
+  if test $have_freetype = "no"; then
+    AC_MSG_ERROR([FreeType library not found])
+  fi
+
   dnl Finally, check for ParaGUI
   AM_PATH_PARAGUI($PARAGUI_MINVERSION, paragui_found=yes, paragui_found=no)
   if test $paragui_found = "no"; then
