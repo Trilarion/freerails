@@ -26,15 +26,17 @@ import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.TrackMoveProducer;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_STATION;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
-import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_STATION;
+import jfreerails.world.common.Money;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
 import static jfreerails.world.track.TrackRule.TrackCategories.track;
+
 
 
 
@@ -83,11 +85,13 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         
         //Add the new set of buttons.
         ReadOnlyWorld world = mr.getWorld();
+        
         for(int i = 0; i < world.size(SKEY.TRACK_RULES); i++){
             JToggleButton toggleButton = new JToggleButton();
             final Integer ruleID = new Integer(i);
             TrackRule rule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
             TrackRule.TrackCategories category = rule.getCategory();
+            Money price = null;
             switch (category){
                 case track:
                     trackButtonGroup.add(toggleButton);
@@ -98,7 +102,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                             setBuildTrackStrategy();
                         }
                     });
-                    
+                    price = rule.getPrice();
                     trackJPanel.add(toggleButton);
                     
                     break;
@@ -113,6 +117,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     });
                     
                     bridgesJPanel.add(toggleButton);
+                    price = rule.getFixedCost();
                     break;
                 case  tunnel:
                     
@@ -125,7 +130,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                             
                         }
                     });
-                    
+                    price = rule.getPrice();
                     tunnelsJPanel.add(toggleButton);
                     break;
                 case station:
@@ -143,10 +148,11 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     });
                     
                     stationsJPanel.add(toggleButton);
+                    price = rule.getFixedCost();
                     break;
             }
             toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
-            String tooltip = rule.getTypeName()+ ", "+rule.getPrice().toString();
+            String tooltip = rule.getTypeName()+ " $"+price.toString();
             toggleButton.setToolTipText(tooltip);
             if(!selectionSet.containsKey(category)){
                 selectionSet.put(category, new Integer(i));
