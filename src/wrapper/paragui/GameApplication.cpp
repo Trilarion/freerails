@@ -4,6 +4,8 @@
 
 #include "GameApplication.h"
 
+#include <SDL_thread.h>
+
 #include "Client.h"
 #include "Message.h"
 
@@ -26,10 +28,9 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
     screenFlags = SDL_SWSURFACE | SDL_HWPALETTE;
   }
 
-  pGlobalApp = new PG_Application2();
+  pGlobalApp = new PG_Application();
   pGlobalApp->LoadTheme(theme);
   pGlobalApp->InitScreen(800,600,screenDepth,screenFlags);
-  pGlobalApp->EnableAppIdleCalls(true);
 
   cerr << "networking" << endl;
 
@@ -47,9 +48,13 @@ GameApplication::~GameApplication() {
     delete pGlobalApp;
 }
 
-void PG_Application2::eventIdle()
+int GameApplication::runEngine(void* data)
 {
-  engine->checkNext(SDL_GetTicks());
+  GameApplication* object = static_cast<GameApplication*>(data);
+  while (1) {
+    object->engine->checkNext(SDL_GetTicks());
+    SDL_Delay(10);
+  }
 }
 
 int GameApplication::run() {
@@ -94,10 +99,11 @@ int result;
       panel->Show();
       netView->Show();
     }
-    pGlobalApp->setEngine(engine);
+    SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
     Message* msg=new Message(Message::startGame,NULL);
     engine->sendMsg(msg);
     pGlobalApp->Run();
+//    SDL_WaitThread(thread2, NULL);
     msg=new Message(Message::stopGame,NULL);
     engine->sendMsg(msg);
     if (engine!=NULL) { delete engine; engine=NULL; }
