@@ -17,6 +17,8 @@
 #include "GameWidget.h"
 #include "GameDialog.h"
 
+#include <string>
+
 class MyGameApplication : public GameApplication {
 
 public:
