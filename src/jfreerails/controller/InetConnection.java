@@ -50,6 +50,8 @@ Runnable {
     private ConnectionListener connectionListener;
 
     private boolean isOpen = false;
+    
+    private boolean worldNotYetLoaded = true;
 
     private Sender sender;
 
@@ -160,18 +162,30 @@ Runnable {
 	/**
 	 * don't read anything until the world has been loaded
 	 */
-	if (mutex == null) {
-	    synchronized (objectInputStream) {
-		try {
-		    objectInputStream.wait();
-		} catch (InterruptedException e) {
-		    //ignore
+//	if (mutex == null) {
+//	    synchronized (objectInputStream) {
+//		try {
+//		    objectInputStream.wait();
+//		} catch (InterruptedException e) {
+//		    //ignore
+//			e.printStackTrace();
+//		}
+//	    }
+//	}else{
+//		System.out.println("mutex != null");		
+//	}
+    
+    while(worldNotYetLoaded && null == mutex){    	
+    	try {
+			Thread.sleep(100);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-	    }
-	}
+    }
 	try {
 	    System.out.println("Starting receiving socket thread");
-	    while (isOpen) {
+	    while (isOpen) {	    
 		try {
 		    Object o = objectInputStream.readObject();
 		    if (o instanceof ServerCommand) {
@@ -280,7 +294,7 @@ Runnable {
 	setState(ConnectionState.INITIALISING);
 	send(new LoadWorldCommand());
 	sender.flush();
-	synchronized (objectInputStream) {
+	
 	    try {
 		while (true) {
 		    Object o = objectInputStream.readObject();
@@ -301,8 +315,8 @@ Runnable {
 		System.out.println("Received unknown class instead of world " + e);
 		throw new IOException(e.toString());
 	    }
-	    objectInputStream.notify();
-	}
+		worldNotYetLoaded = false;
+	
 	return world;
     }
 

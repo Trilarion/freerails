@@ -5,7 +5,7 @@
 package jfreerails.server;
 
 import jfreerails.controller.FreerailsServerSerializable;
-import jfreerails.controller.MoveExecuter;
+import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoBatch;
@@ -26,9 +26,11 @@ import jfreerails.world.top.World;
 public class CargoAtStationsGenerator implements FreerailsServerSerializable{
 	
 	public static final int UNITS_OF_CARGO_PER_WAGON = 40;
+	
+	private final MoveReceiver moveReceiver;
 
-	public CargoAtStationsGenerator(){
-		
+	public CargoAtStationsGenerator(MoveReceiver moveExecuter){
+		moveReceiver = moveExecuter;
 	}
 
 	public void update(World w) {
@@ -49,7 +51,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable{
 				}
 			}
 			Move m = new ChangeCargoBundleMove(before, after, station.getCargoBundleNumber());
-			MoveExecuter.getMoveExecuter().processMove(m);
+			moveReceiver.processMove(m);
 		}
 	}
 }

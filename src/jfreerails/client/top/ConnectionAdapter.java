@@ -142,13 +142,12 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 	synchronized(mutex) {
 	    connection.addMoveReceiver(worldUpdater);
 	    if (connection instanceof InetConnection) {
-		Thread receiveThread = new Thread((InetConnection) connection);
+		Thread receiveThread = new Thread((InetConnection) connection, "InetConnection");
 		receiveThread.start();
 	    }
 	    world = connection.loadWorldFromServer();
-	    if (! (connection instanceof LocalConnection)) {
-		MoveExecuter.init(world, moveReceiver, mutex);
-		moveExecuter = MoveExecuter.getMoveExecuter();
+	    if (! (connection instanceof LocalConnection)) {		
+		MoveExecuter moveExecuter = new MoveExecuter(world, moveReceiver, mutex);
 		worldUpdater.setMoveReceiver(moveExecuter);
 	    }
 	}

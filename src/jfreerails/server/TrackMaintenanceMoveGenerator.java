@@ -4,7 +4,7 @@
  */
 package jfreerails.server;
 
-import jfreerails.controller.MoveExecuter;
+import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
 import jfreerails.world.accounts.AddItemTransaction;
@@ -24,6 +24,12 @@ import jfreerails.world.track.TrackRule;
  *
  */
 public class TrackMaintenanceMoveGenerator {
+	
+	private final MoveReceiver moveReceiver;
+	
+	public TrackMaintenanceMoveGenerator(MoveReceiver mr){
+		this.moveReceiver = mr;  		
+	}
 	
 	public static AddTransactionMove generateMove(World w){
 		int [] track  = calulateNumberOfEachTrackType(w);
@@ -52,9 +58,9 @@ public class TrackMaintenanceMoveGenerator {
 		return unitsOfTrack;
 	}
 	
-	public static void update(World w){		
+	public void update(World w){		
 		Move m = generateMove(w);
-		MoveExecuter.getMoveExecuter().processMove(m);		
+		moveReceiver.processMove(m);		
 	}
 
 }

@@ -2,8 +2,8 @@ package jfreerails.server;
 
 import java.awt.Point;
 
+import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.TrainMover;
-import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.move.AddCargoBundleMove;
 import jfreerails.move.AddTrainMove;
@@ -27,7 +27,10 @@ import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
 import jfreerails.world.train.TrainPathIterator;
 
-/**
+/** This class generates the move that adds a train to the game world and sets its initial position.  Note, the client
+ * should not use this class to build trains, instead it should request that a train gets built by setting production 
+ * at an engine shop.
+ * 
  * @author Luke Lindsay 13-Oct-2002
  *
  */
@@ -36,13 +39,16 @@ public class TrainBuilder {
 	private ReadOnlyWorld world;
 	private ServerGameEngine gameEngine;
 	private int trainId;
-	private UncommittedMoveReceiver moveReceiver;
+	private MoveReceiver moveReceiver;
 
 	public TrainBuilder(ReadOnlyWorld w, ServerGameEngine gm,
-		UncommittedMoveReceiver mr) {
+		MoveReceiver mr) {
 		this.world = w;
 		this.gameEngine = gm;
 		moveReceiver = mr;
+		if (null == mr){
+			throw new NullPointerException();
+		}
 	}
 
 	/**
@@ -167,6 +173,6 @@ public class TrainBuilder {
 
 		FreerailsPathIterator it;
 
-		return new TrainPathFinder(explorer, w, trainNumber);
+		return new TrainPathFinder(explorer, w, trainNumber, moveReceiver);
 	}
 }

@@ -3,7 +3,7 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.Vector;
 
-import jfreerails.controller.MoveExecuter;
+import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.controller.pathfinder.SimpleAStarPathFinder;
 import jfreerails.move.ChangeTrainMove;
@@ -37,6 +37,8 @@ public class TrainPathFinder
 	private final int trainId;
 
 	private final ReadOnlyWorld world;
+	
+	private final MoveReceiver moveReceiver;
 
 	FlatTrackExplorer trackExplorer;
 
@@ -53,7 +55,8 @@ public class TrainPathFinder
 	 * @param tx the track explorer this pathfinder is to use.
 	 */
 	public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w, int
-		trainNumber) {
+		trainNumber, MoveReceiver mr) {
+		this.moveReceiver = mr;
 		this.trackExplorer = tx;
 		this.trainId = trainNumber;
 		this.world = w;
@@ -105,7 +108,7 @@ public class TrainPathFinder
 		ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
 		
 		ChangeTrainScheduleMove move= new ChangeTrainScheduleMove(scheduleID,currentSchedule, newSchedule);
-		MoveExecuter.getMoveExecuter().processMove(move);
+		moveReceiver.processMove(move);
 		
 		int stationNumber = schedule.getStationToGoto();
 		station = (StationModel) world.get(KEY.STATIONS, stationNumber);
@@ -143,7 +146,7 @@ public class TrainPathFinder
 		if (null != wagonsToAdd) {
 			int engine = train.getEngineType();
 			Move m = ChangeTrainMove.generateMove(this.trainId, train, engine, wagonsToAdd);
-			MoveExecuter.getMoveExecuter().processMove(m);
+			moveReceiver.processMove(m);
 		}
 	}
 
@@ -155,7 +158,7 @@ public class TrainPathFinder
 			new DropOffAndPickupCargoMoveGenerator(trainId, stationId, world);
 
 		Move m = transfer.generateMove();
-		MoveExecuter.getMoveExecuter().processMove(m);
+		moveReceiver.processMove(m);
 	}
 
 	/**

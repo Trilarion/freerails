@@ -11,7 +11,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import jfreerails.controller.CalcSupplyAtStations;
-import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.TrainMover;
@@ -104,6 +103,7 @@ public class ServerGameEngine
 		receiver = r;
 		setupGame();
 		CalcSupplyAtStations calcSupplyAtStations = new CalcSupplyAtStations(w);
+		
 	}
 
 	public void run() {
@@ -122,7 +122,7 @@ public class ServerGameEngine
 	private void setupGame() {
 		gameServer.setWorld(world);
 		tb = new TrainBuilder(world, this,
-			MoveExecuter.getMoveExecuter());
+		gameServer.getMoveExecuter());
 		nextModelUpdateDue = System.currentTimeMillis();
 		System.out.println("sending new world changed event");
 		receiver.processMove(new WorldChangedEvent());
@@ -263,9 +263,10 @@ public class ServerGameEngine
 
 	/** This is called at the start of each new year. */
 	private void newYear() {
-		TrackMaintenanceMoveGenerator.update(world);
+		TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(this.gameServer.getMoveExecuter());		
+		tmmg.update(world);
 		CargoAtStationsGenerator cargoAtStationsGenerator =
-			new CargoAtStationsGenerator();
+			new CargoAtStationsGenerator(this.gameServer.getMoveExecuter());
 		cargoAtStationsGenerator.update(world);
 	}
 
@@ -285,7 +286,7 @@ public class ServerGameEngine
 			    production.getWagonTypes(),
 			    p);
 
-		    MoveExecuter.getMoveExecuter().processMove(new
+			this.gameServer.getMoveExecuter().processMove(new
 			    ChangeProductionAtEngineShopMove(production,
 				null, i));
 		}
@@ -304,12 +305,12 @@ public class ServerGameEngine
 			Object o = i.next();
 			TrainMover trainMover = (TrainMover) o;
 			m = trainMover.update(deltaDistance);
-			MoveExecuter.getMoveExecuter().processMove(m);
+			this.gameServer.getMoveExecuter().processMove(m);
 		}
 	}
 
 	private void updateGameTime() {
-	    MoveExecuter.getMoveExecuter().processMove(TimeTickMove.getMove(world));
+		this.gameServer.getMoveExecuter().processMove(TimeTickMove.getMove(world));
 	}
 
 	public void addTrainMover(TrainMover m) {

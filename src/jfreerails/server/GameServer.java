@@ -33,6 +33,7 @@ public class GameServer implements ConnectionListener {
     private MoveChainFork moveChainFork;
     private InetConnection serverSocket;
     private FreerailsProgressMonitor pm;
+    private MoveExecuter moveExecuter;
 
     /**
      * The connections that this server has
@@ -59,9 +60,8 @@ public class GameServer implements ConnectionListener {
 		    try {
 			ConnectionToServer c = serverSocket.accept();
 			c.addConnectionListener(GameServer.this);
-			moveChainFork.add(c);
-			MoveExecuter executer = MoveExecuter.getMoveExecuter();
-			c.addMoveReceiver(executer);
+			moveChainFork.add(c);		
+			c.addMoveReceiver(moveExecuter);
 			synchronized (connections) {
 			    connections.add(c);
 			}
@@ -91,7 +91,7 @@ public class GameServer implements ConnectionListener {
     public GameServer(String mapName, FreerailsProgressMonitor pm) {
 	moveChainFork = new MoveChainFork();
 	world = OldWorldImpl.createWorldFromMapFile(mapName, pm);
-	MoveExecuter.init(world, moveChainFork, this);
+	moveExecuter = new MoveExecuter(world, moveChainFork, this);
 	gameEngine = new ServerGameEngine(world, this, moveChainFork); 
 	WorldListListener listener = new CalcSupplyAtStations(world);
 	moveChainFork.addListListener(listener);
@@ -120,9 +120,8 @@ public class GameServer implements ConnectionListener {
     public LocalConnection getLocalConnection() {
 	synchronized (connections) {
 	    LocalConnection connection = new LocalConnection(world, this);
-	    moveChainFork.add(connection);
-	    MoveExecuter executer = MoveExecuter.getMoveExecuter();
-	    connection.addMoveReceiver(executer);
+	    moveChainFork.add(connection);	    
+	    connection.addMoveReceiver(moveExecuter);
 	    connections.add(connection);
 	    tableModel.addRow(connection, "Local connection");
 	    connection.addConnectionListener(this);
@@ -137,15 +136,15 @@ public class GameServer implements ConnectionListener {
     void setWorld(World w) {
 	synchronized (connections) {
 	    world = w;
-	    MoveExecuter oldExecuter = MoveExecuter.getMoveExecuter();
-	    MoveExecuter.init(world, moveChainFork, this);
+	    MoveExecuter oldExecuter = moveExecuter;
+		moveExecuter = new MoveExecuter(world, moveChainFork, this);
 	    for (int i = 0; i < connections.size(); i++) {
 		ConnectionToServer c = (ConnectionToServer) connections.get(i);
 		if (c instanceof LocalConnection) {
 		    ((LocalConnection) c).setWorld(world);
 		    ((LocalConnection) c).removeMoveReceiver(oldExecuter);
 		    ((LocalConnection)
-		     c).addMoveReceiver(MoveExecuter.getMoveExecuter());
+		     c).addMoveReceiver(moveExecuter);
 		}
 	    }
 	    if (serverSocket != null)
@@ -196,4 +195,11 @@ public class GameServer implements ConnectionListener {
     public TableModel getClientConnectionTableModel() {
 	return tableModel;
     }
+	/**
+	 * @return Returns the moveExecuter.
+	 */
+	public MoveExecuter getMoveExecuter() {
+		return moveExecuter;
+	}
+
 }
