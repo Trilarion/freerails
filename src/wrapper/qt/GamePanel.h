@@ -28,6 +28,7 @@ class GamePanel : public QWidget
     void setupWdgMessages();
     void setupButtons();
     void setupWstTrainBuild();
+    void setupWdgMiniMap();
 
     void setupPanelTrain();
     void setupPanelBuild();
@@ -42,6 +43,7 @@ class GamePanel : public QWidget
     QToolButton *btnPause;
     QToolButton *btnExit;
 
+    QWidget *wdgMiniMap;
     QWidget *wdgMessages;
     QWidget *wdgTrain;
     QWidget *wdgBuild;

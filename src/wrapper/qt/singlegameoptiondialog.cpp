@@ -24,7 +24,7 @@
 #include "singlegameoptiondialog.h"
 
 SingleGameOptionDialog::SingleGameOptionDialog(GameMainWindow *parent)
-  : QDialog(parent->getWidget(), 0, true,
+  : QDialog((QWidget*)parent->getWidget(), 0, true,
       Qt::WStyle_Customize | Qt::WStyle_NoBorder)
 {
   initDialog();

@@ -5,27 +5,33 @@
 #ifndef __GAMEWIDGET_H__
 #define __GAMEWIDGET_H__
 
+#include "qwidget.h"
+
 #include "GameMainWindow.h"
 #include "BaseWidget.h"
 
 class QResizeEvent;
 class QWidget;
 
-class GameWidget : public BaseWidget
+class GameWidget : public BaseWidget, QWidget
 {
   public:
     /**  */
-    GameWidget(int x, int y, int w, int h, GameMainWindow* parent, const char *name = 0);
+    GameWidget(GameMainWindow* _parent = 0, const char *name = 0);
     /**  */
     ~GameWidget();
 
     void show();
     void hide();
     void resizeEvent(QResizeEvent *e);
-    QWidget *getWidget() {return widget;}
+    void setGeometry(int x, int y, int w, int h);
+    void setCaption(const char *name);
+
+    int width() { return QWidget::width(); };
+    int height() { return QWidget::height(); };
 
   private:
-    QWidget *widget;
+    GameMainWindow* parent;
 };
 
 #endif

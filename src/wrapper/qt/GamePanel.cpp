@@ -10,8 +10,9 @@
 #include "GameMainWindow.h"
 #include "GameMapView.h"
 #include "GamePanel.h"
+#include "GameWidget.h"
 
-GamePanel::GamePanel(Engine *_engine, GameMapView *_mapView, GameMainWindow* parent, const char* name) : QWidget(parent->getWidget(), name)
+GamePanel::GamePanel(Engine *_engine, GameMapView *_mapView, GameMainWindow* parent, const char* name) : QWidget((QWidget*)parent->getWidget(), name)
 {
   engine = _engine;
   mapView = _mapView;
@@ -19,6 +20,7 @@ GamePanel::GamePanel(Engine *_engine, GameMapView *_mapView, GameMainWindow* par
   resize(176, parent->getWidget()->height());
   setFixedWidth(176);
 
+  setupWdgMiniMap();
   setupWdgMessages();
   setupWstTrainBuild();
   setupButtons();
@@ -28,6 +30,15 @@ GamePanel::~GamePanel()
 {
 }
 
+void GamePanel::setupWdgMiniMap()
+{
+  wdgMessages = new QWidget(this);
+  CHECK_PTR(wdgMessages);
+  wdgMessages->resize(176, 144);
+  wdgMessages->setBackgroundMode(Qt::NoBackground);
+  wdgMessages->move(0, 0);
+}
+
 void GamePanel::setupWdgMessages()
 {
   wdgMessages = new QWidget(this);
@@ -35,7 +46,7 @@ void GamePanel::setupWdgMessages()
   wdgMessages->resize(176, 144);
   wdgMessages->setBackgroundMode(Qt::FixedPixmap);
   wdgMessages->setBackgroundPixmap(QPixmap("data/graphics/ui/panel.png"));
-  wdgMessages->move(0, height() - 444);
+  wdgMessages->move(0, 144);
 }
 
 void GamePanel::setupButtons()
@@ -64,7 +75,7 @@ void GamePanel::setupButtons()
   btnTabTrain->resize(88, 50);
   btnTabTrain->setToggleButton(true);
   btnTabTrain->setIconSet(iconSet_tt);
-  btnTabTrain->move(0, height() - 300);
+  btnTabTrain->move(0, 288);
   btnTabTrain->setOn(false);
 
   btnTabBuild = new QToolButton(this);
@@ -72,7 +83,7 @@ void GamePanel::setupButtons()
   btnTabBuild->resize(88, 50);
   btnTabBuild->setToggleButton(true);
   btnTabBuild->setIconSet(iconSet_tb);
-  btnTabBuild->move(88, height() - 300);
+  btnTabBuild->move(88, 288);
   btnTabBuild->setOn(true);
   build_is_on = true;
   wstTrainBuild->raiseWidget(2);
@@ -85,21 +96,21 @@ void GamePanel::setupWstTrainBuild()
 {
   wstTrainBuild = new QWidgetStack(this);
   CHECK_PTR(wstTrainBuild);
-  wstTrainBuild->setFixedSize(176, 250);
+  wstTrainBuild->setFixedSize(176, height() - 338);
 
   setupPanelTrain();
   setupPanelBuild();
   wstTrainBuild->addWidget(panelTrain, 1);
   wstTrainBuild->addWidget(panelBuild, 2);
 
-  wstTrainBuild->move(0, height() - 250);
+  wstTrainBuild->move(0, 338);
 }
 
 void GamePanel::setupPanelTrain()
 {
   panelTrain = new QWidget(wstTrainBuild);
   CHECK_PTR(panelTrain);
-  panelTrain->setFixedSize(176, 250);
+  panelTrain->setFixedSize(176, height() - 338);
   panelTrain->setBackgroundMode(Qt::FixedPixmap);
   panelTrain->setBackgroundPixmap(QPixmap("data/graphics/ui/panel_train.png"));
 }
@@ -108,7 +119,7 @@ void GamePanel::setupPanelBuild()
 {
   panelBuild = new QWidget(wstTrainBuild);
   CHECK_PTR(panelBuild);
-  panelBuild->setFixedSize(176, 250);
+  panelBuild->setFixedSize(176, height() - 338);
   panelBuild->setBackgroundMode(Qt::FixedPixmap);
   panelBuild->setBackgroundPixmap(QPixmap("data/graphics/ui/panel_train.png"));
 
@@ -143,13 +154,13 @@ void GamePanel::setupPanelBuild()
   CHECK_PTR(btnPause);
   btnPause->resize(125, 25);
   btnPause->setText("Pause");
-  btnPause->move(5, 190);
+  btnPause->move(5, panelBuild->height() - 60);
 
   btnExit = new QToolButton(panelBuild);
   CHECK_PTR(btnExit);
   btnExit->resize(125, 25);
   btnExit->setText("Exit");
-  btnExit->move(5, 220);
+  btnExit->move(5, panelBuild->height() - 30);
 
   connect(btnTrack, SIGNAL(clicked()), SLOT(handler_track()));
   connect(btnStation, SIGNAL(clicked()), SLOT(handler_station()));
@@ -221,7 +232,6 @@ void GamePanel::handler_exit()
 {
   #warning complete me
 //  parent()->exitGame();
-  exit(0);
 }
 
 void GamePanel::releaseAllButtons()

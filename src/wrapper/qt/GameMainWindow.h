@@ -9,14 +9,12 @@
 #include "BaseMainWindow.h"
 #include "GameModeSelector.h"
 
-
-class QWidget;
-
 class Engine;
 class GameMenuBar;
 class GameMap;
 class GameMapView;
 class GamePanel;
+class GameWidget;
 
 /** GameMainWindow class manages main window
  */
@@ -31,14 +29,15 @@ class GameMainWindow : public BaseMainWindow
     virtual ~GameMainWindow();
     /** Sets caption of MainWindow to @ref caption */
     void setCaption(const char* caption);
-    /** Returns MainWindow's widget
-      * For internal use only !
-      */
-    QWidget* getWidget() { return widget; };
+
+    //return main widget
+    GameWidget* getWidget() { return widget; };
+
     /** Displays little 'dialog' inside itself and lets user select
       * Game mode - Single player, multiplayer or exit
       */
     GameModeSelector::GameMode askGameMode();
+
     /** Constructs 'playfield'
       * Playfield consists of map, panel and buttons
       */
@@ -46,9 +45,11 @@ class GameMainWindow : public BaseMainWindow
     void setEngine(Engine *_engine);
 
     void exitGame();
+
+    void resize(int w, int h);
     
   private:
-    QWidget *widget;
+    GameWidget *widget;
     GameMenuBar *menubar;
     GameMap *map;
     GameMapView *mapview;

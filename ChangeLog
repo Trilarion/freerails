@@ -1,3 +1,6 @@
+Fri Oct 04 23:00:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o change qt-wrapper
+  now we can change size of mainwindow with effect for childs
 Wed Oct 02 00:30:00 2002  Alexander Opitz <opi@le-bit.de>:
 o code clean up 2nd day
   rename files trackcontroller, stationcontroller -> TrackController, StationController

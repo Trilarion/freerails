@@ -13,7 +13,7 @@
 #include "i18n.h"
 
 GameModeSelector::GameModeSelector(GameMainWindow* parent)
-    : QDialog(parent->getWidget(), 0, true,
+    : QDialog((QWidget*)parent->getWidget(), 0, true,
       Qt::WStyle_Customize | Qt::WStyle_NoBorder)
 {
   setBackgroundMode(Qt::FixedPixmap);

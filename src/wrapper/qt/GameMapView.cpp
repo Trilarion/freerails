@@ -15,13 +15,15 @@
 #include "trackcontroller.h"
 
 GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent, const char* name)
-           : QCanvasView((QCanvas*)_map, parent->getWidget(), name,
+           : QCanvasView((QCanvas*)_map, (QWidget*)parent->getWidget(), name,
                Qt::WStyle_Customize | Qt::WStyle_NoBorder)
 {
   engine = _engine;
   map = _map;
   setFrameShape(QFrame::NoFrame);
   setBackgroundMode(Qt::NoBackground);
+  setVScrollBarMode(QScrollView::AlwaysOff);
+  setHScrollBarMode(QScrollView::AlwaysOff);
   resize(parent->getWidget()->width() - 176, parent->getWidget()->height());
   
 
@@ -112,6 +114,22 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
       xpos = get3DPixmapPos(x, y, MapField::mountain);
       ox = (8 + xpos) * 30;
       oy = 6 * 30;
+      break;
+    case MapField::village:
+      ox = 3 * 30;
+      oy = 7 * 30;
+      break;
+    case MapField::farm:
+      ox = 6 * 30;
+      oy = 7 * 30;
+      break;
+    case MapField::industrie:
+      ox = 5 * 30;
+      oy = 7 * 30;
+      break;
+    case MapField::resource:
+      ox = 10 * 30;
+      oy = 7 * 30;
       break;
     default:
       ox = 13 * 30;
@@ -240,6 +258,7 @@ void GameMapView::contentsMousePressEvent(QMouseEvent* e)
   if(e->button() == Qt::LeftButton)
   {
     mouseButton = left;
+    oldMousePos = e->pos();
     #warning complete me
   }
 
@@ -250,8 +269,55 @@ void GameMapView::contentsMousePressEvent(QMouseEvent* e)
   }
 }
 
-void GameMapView::contentsMouseReleaseEvent(QMouseEvent *)
+void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
 {
+
+  qDebug("in MouseReleaseEvent");
+  if(mouseButton == left)
+  {
+    Message *msg;
+    int x, y;
+
+    x = oldMousePos.x();
+    y = oldMousePos.y();
+
+    qDebug("old (%d,%d)    new (%d,%d)", x, y, e->x(), e->y());
+    if ((x == e->x()) && (y == e->y()))
+    {
+      #warning complete me
+      switch(mouseType)
+      {
+        case buildStation:
+        {
+          struct station_data *trd;
+          trd = new struct station_data;
+          trd->field_pos_x = x;
+          trd->field_pos_y = y;
+          trd->player = NULL;
+          msg = new Message(Message::addElement, GameElement::idStation, (void *)trd);
+          engine->sendMsg(msg);
+          #warning fix me
+          repaintContents(x - 45, y - 45, 90, 90, false);
+          break;
+        }
+        case buildTrack:
+        {
+          struct track_data *trd;
+          trd = new struct track_data;
+          trd->field_pos_x = x;
+          trd->field_pos_y = y;
+          trd->player = NULL;
+          msg = new Message(Message::addElement, GameElement::idTrack, (void *)trd);
+          engine->sendMsg(msg);
+          #warning fix me
+          repaintContents(x - 45, y - 45, 90, 90, false);
+          break;
+        }
+        default:
+          break;
+      }
+    }
+  }
   mouseButton = none;
 }
 

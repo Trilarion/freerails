@@ -19,6 +19,8 @@ class BaseMainWindow
     virtual ~BaseMainWindow();
     /** Should set mainwindow's caption to @ref caption */
     virtual void setCaption(const char* caption) = 0;
+
+  private:
 };
 
 #endif

@@ -69,61 +69,64 @@ int GameApplication::run()
   application->processEvents();
   hideSplash();
 
-  // Show dialog menu for game mode
-  GameModeSelector::GameMode mode = mW->askGameMode();
-  qDebug("mW->askGameMode() result=%i\n", (int)mode);
-
-  // Show mainwindow
-  application->processEvents();
-
-  // If user wants to quit, then quit
-  if(mode == GameModeSelector::Quit)
+  while(1)
   {
-    application->exit(0);
-    exit(0);
-  }
+    // Show dialog menu for game mode
+    GameModeSelector::GameMode mode = mW->askGameMode();
+    qDebug("mW->askGameMode() result=%i\n", (int)mode);
 
-  #warning complete me
-  QString tmp_name;
-  int tmp_width, tmp_height;
-  int status;
-  SingleGameOptionDialog *sgoDlg = new SingleGameOptionDialog(mW);
-  status = sgoDlg->exec();
-  if (status == QDialog::Accepted)
-  {
-    tmp_name = sgoDlg->getName();
-    tmp_width = sgoDlg->getWidth();
-    tmp_height = sgoDlg->getHeight();
-  }
-  delete sgoDlg;
+    // Show mainwindow
+    application->processEvents();
 
-  if (status == QDialog::Accepted)
-  {  
-    initSingleGame(std::string(tmp_name), tmp_width, tmp_height, 0);
+    // If user wants to quit, then quit
+    if(mode == GameModeSelector::Quit)
+    {
+      application->exit(0);
+      break;
+    }
 
-    engine = new Engine(worldMap, playerSelf);
-    CHECK_PTR(engine);
+    #warning complete me
+    QString tmp_name;
+    int tmp_width, tmp_height;
+    int status;
+    SingleGameOptionDialog *sgoDlg = new SingleGameOptionDialog(mW);
+    status = sgoDlg->exec();
+    if (status == QDialog::Accepted)
+    {
+      tmp_name = sgoDlg->getName();
+      tmp_width = sgoDlg->getWidth();
+      tmp_height = sgoDlg->getHeight();
+    }
+    delete sgoDlg;
+
+    if (status == QDialog::Accepted)
+    {
+      initSingleGame(std::string(tmp_name), tmp_width, tmp_height, 0);
+
+      engine = new Engine(worldMap, playerSelf);
+      CHECK_PTR(engine);
 
 
-    // Construct playfield (map, panel, buttons)
-    mW->setEngine(engine);
-    mW->constructPlayField();
+      // Construct playfield (map, panel, buttons)
+      mW->setEngine(engine);
+      mW->constructPlayField();
 
-    pthread_t ttid_cmd;
-    qDebug("this in run: 0x%08x", int(this));
-    pthread_create(&ttid_cmd, NULL, &runEngine, (void*)this);
-    pthread_detach(ttid_cmd);
-    Engine::GameState state = Engine::Running;
-    Message* msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
-    qDebug("sende Nachricht an Engine");
-    engine->sendMsg(msg);
-    qDebug("Nachricht gesendet");
-    application->exec();
-    qDebug("Spiel beendet");
-    state = Engine::Stopping;
-    msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
-    engine->sendMsg(msg);
-    pthread_cancel(ttid_cmd);
+      pthread_t ttid_cmd;
+      qDebug("this in run: 0x%08x", int(this));
+      pthread_create(&ttid_cmd, NULL, &runEngine, (void*)this);
+      pthread_detach(ttid_cmd);
+      Engine::GameState state = Engine::Running;
+      Message* msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+      qDebug("sende Nachricht an Engine");
+      engine->sendMsg(msg);
+      qDebug("Nachricht gesendet");
+      application->exec();
+      qDebug("Spiel beendet");
+      state = Engine::Stopping;
+      msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+      engine->sendMsg(msg);
+      pthread_cancel(ttid_cmd);
+    }
   }
   return 1;
 }

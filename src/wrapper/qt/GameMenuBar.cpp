@@ -10,7 +10,7 @@
 
 
 GameMenuBar::GameMenuBar(GameMainWindow* parent, const char* name)
-           : QWidget(parent->getWidget(), name)
+           : QWidget((QWidget*)parent->getWidget(), name)
 {
   setFixedWidth(50);
   initDone = false;

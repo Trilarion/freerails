@@ -5,9 +5,9 @@
 #ifndef __BASEWIDGET_H__
 #define __BASEWIDGET_H__
 
-class BaseWidget {
-
-public:
+class BaseWidget
+{
+  public:
     /**  */
     BaseWidget();
     /**  */
@@ -15,7 +15,6 @@ public:
 
     void show();
     void hide();
-
 };
 
 #endif
