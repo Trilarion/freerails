@@ -1,6 +1,7 @@
-Freerails Java - version 0.1.1
+Freerails Java - version 0.1.1+
 
 What's new:
+-	No longer requires fastUtil.jar 
 -	Build stations by pressing F8
 -	Trains now use a simple A* pathfinder:
 	press 't' with the cursor over the track
@@ -14,10 +15,8 @@ or
 
 
 Requires: 
-(1) JDK 1.4, which can be downloaded from:
+JDK 1.4, which can be downloaded from:
 http://java.sun.com/j2se/1.4/
-(2) fastUtil.jar, which can be downloaded from:
-http://gongolo.usr.dsi.unimi.it/~vigna/fastUtil/
 
 To run the binary distribution
 

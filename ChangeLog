@@ -1,3 +1,8 @@
+04-Dec-2002 21:36:42 Luke Lindsay
+	o The classes from the fastUtils libary that are needed by
+	jfreerails have been added to the jfreerails source tree, so
+	you no longer need fastUtils.jar on the classpath to compile and
+	run jfreerails.
 01-Dec-2002 15:53:02 Luke Lindsay
 	o Prepare for release.
 01-Dec-2002 00:02:25 Luke Lindsay

@@ -76,7 +76,7 @@
       </junit>
    </target>
 
-   <target name="bindist" depends="compile" description="Generate binary distribution">
+   <target name="bindist" depends="compile, mkdirs" description="Generate binary distribution">
       <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
          <manifest>
             <attribute name="Main-Class" value="jfreerails.RunFreerails" />
@@ -104,7 +104,7 @@
       </jar>
    </target>
 
-   <target name="clean" description="Clean up build and distribution">
+   <target name="clean" description="Clean up build and distribution" depends="init">
       <delete dir="${build}" />
 
       <delete dir="${dist}" />
