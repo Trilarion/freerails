@@ -27,8 +27,7 @@ public class RemoveStationMove extends RemoveItemFromListMove implements TrackMo
 		StationModel station,
 		ChangeTrackPieceMove removeTrackMove) {
 		super(KEY.STATIONS, index, station);
-		trackMove = removeTrackMove;
-		System.out.println(this.toString());
+		trackMove = removeTrackMove;		
 	}
 
 	static RemoveStationMove getInstance(ReadOnlyWorld w, ChangeTrackPieceMove removeTrackMove) {

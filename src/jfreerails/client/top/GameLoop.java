@@ -94,7 +94,7 @@ final public class GameLoop implements Runnable, MultiLockedRegion {
 
 	    //XXX HACK to give the network thread time to work.
 	    try {
-		Thread.sleep(5);
+		Thread.sleep(2);
 	    } catch (InterruptedException e) {				
 	    }
 	}

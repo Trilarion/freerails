@@ -20,7 +20,7 @@ public class TimeTickMove implements Move {
 	if (((GameTime) w.get(ITEM.TIME)).equals(oldTime))
 	    return MoveStatus.MOVE_OK;
 	else {
-	    System.out.println ("oldTime = " + oldTime.getTime() + " <=> "
+	    System.err.println ("oldTime = " + oldTime.getTime() + " <=> "
 	    + "currentTime " + ((GameTime) w.get(ITEM.TIME)).getTime()); 
 	    return MoveStatus.MOVE_FAILED;
 	}

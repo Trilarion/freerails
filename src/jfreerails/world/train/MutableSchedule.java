@@ -65,8 +65,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
     /**
      * Removes the order at the specified position
      */
-    public void removeOrder(int orderNumber){
-        System.out.println("Removing order " + orderNumber);
+    public void removeOrder(int orderNumber){       
         if(PRIORITY_ORDERS == orderNumber && hasPriorityOrders){
             //If we are removing the prority stop.
             hasPriorityOrders = false;
@@ -112,8 +111,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
         addOrder(orders.size(), order);
     }
     
-    public void setOrder(int orderNumber, TrainOrdersModel order){
-        System.out.println("Setting order " + orderNumber + ":" + order);
+    public void setOrder(int orderNumber, TrainOrdersModel order){        
         if (orderNumber >= orders.size()) {
             orders.add(order);
         } else {
@@ -130,8 +128,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
         return nextScheduledOrder;
     }
     
-    public void setOrderToGoto(int i){
-        System.out.println("Set order to go to " + i);
+    public void setOrderToGoto(int i){        
         if( i < 0 || i >= orders.size()){
             throw new IllegalArgumentException(String.valueOf(i));
         }
@@ -155,8 +152,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
      * and the goto station is not changed.
      */
     public void gotoNextStaton(){
-        System.out.println("Going to next station, current is " + nextScheduledOrder +
-        " size is " + orders.size());
+        
         if (hasPriorityOrders) {
             if(nextScheduledOrder != PRIORITY_ORDERS) {
                 removeOrder(PRIORITY_ORDERS);
@@ -216,8 +212,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
     }
     
     public boolean canAddOrder(){
-        int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1 : MAXIMUM_NUMBER_OF_ORDER; 
-        System.out.println(getNumOrders());
+        int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1 : MAXIMUM_NUMBER_OF_ORDER;         
         return max > getNumOrders();
     }
     

@@ -131,7 +131,7 @@ public class LocalConnection implements ConnectionToServer {
     public void open() {
 	peer.connect(this);
 	mutex = peer.mutex;
-	System.out.println("got mutex from remote side: " + mutex);
+	
 	world = peer.world;
 	setState(ConnectionState.WAITING);
 	peer.setState(ConnectionState.WAITING);

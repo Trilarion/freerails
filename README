@@ -1,9 +1,12 @@
-Freerails Java - version 0.1.8
+Freerails Java - version 0.1.9
 
 What's new:
-o	Further improved train orders dialogue.
-o	You can start several clients.
-o	Display mode options dialogue.
+o	Network play.
+o	Cities have better distribution of industry, resource, and city tiles.
+o	More cities.
+o	progress bar to show whats happening while the game is loading.
+o	'Build' tab that letters you select track and station types.
+
 Getting it, either:
 
  	Check-out the jfreerails module from the CVS.

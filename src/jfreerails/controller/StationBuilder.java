@@ -69,7 +69,7 @@ public class StationBuilder {
 				
 			//Check whether we can upgrade the track to a station here.
 			if(!moveReceiver.tryDoMove(upgradeTrackMove).ok){
-				System.out.println("Cannot upgrade this track to a station!");
+				System.err.println("Cannot upgrade this track to a station!");
 				return;
 			}
 									
@@ -98,7 +98,7 @@ public class StationBuilder {
 			}
 
 		} else {
-			System.out.println(
+			System.err.println(
 				"Can't build station since there is no track here!");
 		}
 

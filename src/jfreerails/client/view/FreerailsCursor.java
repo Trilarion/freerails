@@ -111,7 +111,7 @@ final public class FreerailsCursor implements KeyListener, MapCursor  {
 				break;
 			
 			case KeyEvent.VK_ENTER :
-				System.out.println("Send moves to server");
+				
 
 			default :
 				fireOffCursorKeyPressed(keyEvent, cursorMapPosition);

@@ -101,7 +101,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 		java.awt.event.KeyEvent evt) { //GEN-FIRST:event_formKeyPressed
 		// Add your handling code here:
 		this.setVerifyInputWhenFocusTarget(false);
-		System.out.println("Key pressed");
+		
 	} //GEN-LAST:event_formKeyPressed
 
 	public void paint(Graphics g) {

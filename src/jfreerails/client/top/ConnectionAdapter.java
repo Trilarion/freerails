@@ -54,7 +54,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 
 	public void processMove(Move move) {
 	    if (move instanceof WorldChangedEvent) {
-		System.out.println("received world changed event");
+		
 		try {
 		    setConnection(connection);
 		} catch (IOException e) {

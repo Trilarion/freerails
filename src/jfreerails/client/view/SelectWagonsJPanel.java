@@ -177,7 +177,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 		if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
 			addwagon();
 		} else {
-			System.out.println(evt.getKeyCode());
+			
 		}
 
 	} //GEN-LAST:event_wagonTypesJListKeyTyped

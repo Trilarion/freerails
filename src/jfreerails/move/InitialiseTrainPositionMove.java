@@ -56,7 +56,7 @@ public class InitialiseTrainPositionMove implements Move {
     private void setTrainPosition(World w, TrainPositionOnMap p) {
 	TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNo);
 	train.setPosition(p);
-	System.out.println("set train position to " + p);
+	
     }
 
     private TrainPositionOnMap getTrainPosition(World w) {

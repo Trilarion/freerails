@@ -194,7 +194,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 				int typeNumber = tt.getTerrainTypeNumber();
 				TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
 				if(null == tr){					
-					System.out.println("No tile renderer for "+typeNumber);
+					System.err.println("No tile renderer for "+typeNumber);
 				}else{
 				
 				tr.renderTile(

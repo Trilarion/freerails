@@ -87,7 +87,7 @@ final public class TrackPieceRendererList {
 				trackRule.getLegalConfigurationsIterator();
 			TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
 			if (null == trackPieceView) {
-				System.out.println(
+				System.err.println(
 					"No track piece view for the following track type: "
 						+ trackRule.getTypeName());
 				return false;
@@ -99,7 +99,7 @@ final public class TrackPieceRendererList {
 					Image img =
 						trackPieceView.getTrackPieceIcon(trackGraphicsNo);
 					if (null == img) {
-						System.out.println(
+						System.err.println(
 							"No track piece image for the following track type: "
 								+ trackRule.getTypeName()
 								+ ", with configuration: "

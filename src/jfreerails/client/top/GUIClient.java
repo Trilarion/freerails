@@ -83,7 +83,7 @@ public class GUIClient extends Client {
 		moveChainFork.add(gUIComponentFactory);
 
 
-		System.out.println("creating gameloop");
+		
 		GameLoop gameLoop = new GameLoop(screenHandler);
 		Thread t = new Thread(gameLoop);
 		t.start();

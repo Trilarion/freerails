@@ -153,9 +153,9 @@ public class TrainBuilder {
 
 			gameEngine.addTrainMover(trainMover);
 
-			System.out.println("Built train at: " + p.x + ", " + p.y);
+			
 		} else {
-			System.out.println("No track here so cannot build train");
+			System.err.println("No track here so cannot build train");
 		}
 	}
 

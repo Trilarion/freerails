@@ -34,7 +34,7 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 
     public void validate() {
     super.validate();
-    System.out.println("TrackBuildJPanel size " + getHeight());
+    
     }
 
     /**
@@ -42,20 +42,13 @@ class TrackBuildJPanel extends javax.swing.JPanel {
      */
     private ComponentAdapter sizeListener = new ComponentAdapter () {
 	public void componentResized(ComponentEvent e) {
-	    System.out.println("resetting size");
-	    System.out.println("current size is " +
-	    trackBuildModesPanel.getSize());
+	   
 	    /* determine max number of cols */
 	    Dimension d = trackBuildModesSP.getViewport().getSize();
 	    int numCols = (int) (d.getWidth() / (widthOfButton + 5));
 	    int numRows = numberOfButtons / numCols + 1;
 	    d.setSize(d.getWidth(), numRows * (widthOfButton + 5));
 	    trackBuildModesPanel.setPreferredSize(d);
-	    System.out.println("numcols = " + numCols + " numRows = " +
-	    numRows);
-	    System.out.println("new preferred size is " + d);
-	    System.out.println("reading back.." + 
-	    trackBuildModesPanel.getPreferredSize());
 	    trackBuildModesPanel.revalidate();
 	}
     };

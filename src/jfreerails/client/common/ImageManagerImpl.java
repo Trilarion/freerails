@@ -66,7 +66,7 @@ public class ImageManagerImpl implements ImageManager {
 			
 			throw new IOException("Couldn't find: "+read);
 		}
-		//System.out.println(url);
+		
 		Image tempImage = ImageIO.read(url);
 		Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.TRANSLUCENT);
 		Graphics g = compatibleImage.getGraphics();
@@ -111,7 +111,7 @@ public class ImageManagerImpl implements ImageManager {
 			path.mkdirs();
 			
 			ImageIO.write(i,"png", f);
-			//System.out.println("Wrote: "+relativeFilename+" as "+f.toString());
+			
 		}else{
 			throw new NoSuchElementException(relativeFilename);
 		}		

@@ -82,15 +82,14 @@ Runnable {
 	    try {
 		objectOutputStream.writeObject(s);
 	    } catch (SocketException e) {
-		System.out.println ("caught a SocketException " + e);
+		e.printStackTrace();
 		/*
 		 * call disconnect instead of close, since we can't send a
 		 * CloseConnectionCommand
 		 */
 		InetConnection.this.disconnect();
 	    } catch (IOException e) {
-		System.out.println ("caught IOException sending " +
-			"object " + e);
+	    	e.printStackTrace();
 	    }
 	}
 
@@ -109,22 +108,18 @@ Runnable {
 	    try {
 		objectOutputStream.flush();
 	    } catch (IOException e) {
-		System.out.println("Caught an IOException whilst flushing the " +
-			"output stream " + e);
+	    	e.printStackTrace();		
 	    }
 	    try {
 		objectOutputStream.close();
 	    } catch (IOException e) {
-		System.out.println("Caught an IOException whilst closing the " +
-			"output stream " + e);
+		e.printStackTrace();
 	    }
 	    try {
 		sendQueue.close();
 	    } catch (IOException e) {
-		System.out.println("Caught an IOException whilst closing the " +
-			"send queue " + e);
-	    }
-	    System.out.println("Send queue closed.");
+		e.printStackTrace();
+	    }	   
 	}
     }
 
@@ -161,39 +156,26 @@ Runnable {
     public void run() {
 	/**
 	 * don't read anything until the world has been loaded
-	 */
-//	if (mutex == null) {
-//	    synchronized (objectInputStream) {
-//		try {
-//		    objectInputStream.wait();
-//		} catch (InterruptedException e) {
-//		    //ignore
-//			e.printStackTrace();
-//		}
-//	    }
-//	}else{
-//		System.out.println("mutex != null");		
-//	}
-    
-    while(worldNotYetLoaded && null == mutex){    	
-    	try {
-			Thread.sleep(100);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+	 */	
+	if (worldNotYetLoaded && mutex == null) {
+		while(worldNotYetLoaded){			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-    }
-	try {
-	    System.out.println("Starting receiving socket thread");
+	}
+	    
+	try {	    
 	    while (isOpen) {	    
 		try {
 		    Object o = objectInputStream.readObject();
 		    if (o instanceof ServerCommand) {
 			processServerCommand((ServerCommand) o);
 		    } else if ((o instanceof Move) && (moveReceiver != null)) {
-			if (! (o instanceof TimeTickMove ) && 
-			! (o instanceof jfreerails.move.ChangeTrainPositionMove)) 
-			    System.out.println("Received move " + o);
+			
 			moveReceiver.processMove((Move) o);
 		    } else {
 			System.out.println("Invalid class sent in stream");
@@ -209,7 +191,12 @@ Runnable {
 		} catch (OptionalDataException e) {
 		    System.out.println("OptionalDataException received " + e);
 		}
-	    }
+		try{
+			//Give the other threads some time to work.
+		Thread.sleep(10);
+	    } catch (InterruptedException e) {		
+		}
+	}
 	} catch (IOException e) {
 	    System.out.println("IOException occurred " + e);
 	}
@@ -294,7 +281,7 @@ Runnable {
 	setState(ConnectionState.INITIALISING);
 	send(new LoadWorldCommand());
 	sender.flush();
-	
+	synchronized(objectInputStream){
 	    try {
 		while (true) {
 		    Object o = objectInputStream.readObject();
@@ -316,8 +303,9 @@ Runnable {
 		throw new IOException(e.toString());
 	    }
 		worldNotYetLoaded = false;
-	
+		objectInputStream.notify();
 	return world;
+    }
     }
 
     /**

@@ -69,13 +69,13 @@ public class MyGlassPanel extends javax.swing.JPanel {
 
   private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
 // Add your handling code here:
-      System.out.println("Glass panel mouse pressed");
+   
     
   }//GEN-LAST:event_formMousePressed
 
   private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
 // Add your handling code here:
-       System.out.println("Glass panel key pressed");
+      
   }//GEN-LAST:event_formKeyPressed
 
     public void showContent(JComponent panel){

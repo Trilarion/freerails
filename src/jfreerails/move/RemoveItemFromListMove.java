@@ -81,8 +81,7 @@ public  class RemoveItemFromListMove implements ListMove {
 	public MoveStatus doMove(World w) {
 		MoveStatus ms = tryDoMove(w);
 		if (ms.isOk()) {
-			w.set(listKey, index, null);
-			System.out.println("index=" + index + "set to null");
+			w.set(listKey, index, null);			
 		}
 		return ms;
 	}

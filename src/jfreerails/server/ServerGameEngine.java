@@ -124,7 +124,7 @@ public class ServerGameEngine
 		tb = new TrainBuilder(world, this,
 		gameServer.getMoveExecuter());
 		nextModelUpdateDue = System.currentTimeMillis();
-		System.out.println("sending new world changed event");
+		
 		receiver.processMove(new WorldChangedEvent());
 	}
 

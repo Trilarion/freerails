@@ -50,7 +50,7 @@ public class UserInputOnMapController implements CursorEventListener {
 			}
 
 		} else {
-			System.out.println("No track builder available!");
+			System.err.println("No track builder available!");
 		}
 	}
 
@@ -106,7 +106,7 @@ public class UserInputOnMapController implements CursorEventListener {
 			break;
 		    }
 		case KeyEvent.VK_BACK_SPACE :
-		    System.out.println("Undo last move");
+		    
 		    trackMoveExecutor.undoLastMove();
 		    break;
 		case KeyEvent.VK_I :

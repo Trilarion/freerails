@@ -85,7 +85,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     }    
     
     public void setTerrainType(int typeNumber){
-        System.out.println("terrain type is " + typeNumber);
+        
         terrainType=typeNumber;
         TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES, typeNumber);
       
@@ -127,10 +127,10 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         String labelString = "<html>" + row + tableString + "</html>";
         terrainDescription.setText(labelString);
         terrainName.setText(type. getDisplayName());
-        System.out.println(type.getDisplayName());
+        
         Image tileIcon = vl.getTileViewList().getTileViewWithNumber(typeNumber).getIcon();
         terrainImage.setIcon(new ImageIcon(tileIcon));
-        System.out.println("invalidated");
+        
         repaint();
     }
     

@@ -64,10 +64,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 		processTrainBundle(); //ie. unload train / dropoff cargo
 		processStationBundle(); //ie. load train / pickup cargo
 
-		//test output
-		System.out.println(
-			"train and station bundles have been processed, now do the move\n");
-
+		
 	}
 
 	public Move generateMove() {
@@ -155,13 +152,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 	public void processStationBundle() {
 
-		//test output
-		System.out.println(
-			"train #"
-				+ trainId
-				+ " has "
-				+ train.getNumberOfWagons()
-				+ " wagons");
+		
 
 		int[] spaceAvailable = getSpaceAvailableOnTrain();
 
@@ -181,8 +172,6 @@ public class DropOffAndPickupCargoMoveGenerator {
 		for (int j=0; j<train.getNumberOfWagons(); j++) {
 			CargoType wagonCargoType = (CargoType)w.get(KEY.CARGO_TYPES,train.getWagon(j));
 			
-			//test output
-			System.out.println("train #" + trainId + " has a " + wagonCargoType.getCategory() + " wagon for wagon #" + j);
 				
 			//for each cargo type, compare wagon category with cargo waiting at station
 			for (int k=0; k<w.size(KEY.CARGO_TYPES); k++) {
@@ -194,9 +183,6 @@ public class DropOffAndPickupCargoMoveGenerator {
 					//check if there is any cargo of this type waiting	
 					if (stationBefore.getAmount(k) > 0) {
 						
-						//test output 
-						//System.out.println(stationBefore.getAmount(k) + " wagons of " + wagonCargoType.getCategory() + " available for pickup");
-						System.out.println(stationAfter.getAmount(k) + " wagons of " + wagonCargoType.getCategory() + " available for pickup");
 						//transfer cargo to the current wagon
 						transferCargo(k);
 					}

@@ -173,7 +173,7 @@ public class GUIComponentFactoryImpl
 
 		buildMenu.setup(world, modelRoot);
 		mainMapScrollPane1.setViewportView(this.mapViewJComponent);
-		System.out.println("Viewport was set");
+		
 		((OverviewMapJComponent) overviewMapContainer).setup(overviewMap);
 
 		datejLabel.setup(world, null, null);
@@ -382,8 +382,7 @@ public class GUIComponentFactoryImpl
 	}
 
 	public void processMove(Move m) {
-		if (m instanceof WorldChangedEvent) {
-		    System.out.println("reinitialising stuff");
+		if (m instanceof WorldChangedEvent) {		   
 			worldModelChanged();
 		}
 	}

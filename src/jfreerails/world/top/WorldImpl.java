@@ -119,8 +119,6 @@ public class WorldImpl implements World {
 				for(int x = 0 ; x < this.getMapWidth() ; x++){
 					for(int y = 0 ; y < this.getMapHeight(); y++){
 						if(!getTile(x, y).equals(test.getTile(x, y))){
-							System.out.println(getTile(x, y));
-							System.out.println(test.getTile(x, y));
 							return false;
 						}
 					}

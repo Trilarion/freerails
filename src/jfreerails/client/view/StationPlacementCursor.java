@@ -53,8 +53,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
 	    /* attempt to build */
 	    stationBuildModel.getStationBuildAction().actionPerformed(new
 		    ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
-	} else if (button == MouseEvent.BUTTON3) {
-	    System.out.println("Button2 pressed!");
+	} else if (button == MouseEvent.BUTTON3) {	    
 	    /* cancel the build */
 	    stationBuildModel.getStationCancelAction().actionPerformed(new
 	    ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));

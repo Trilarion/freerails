@@ -25,7 +25,7 @@ public class BuildJPane extends javax.swing.JPanel {
 
     public void validate () {
 	super.validate();
-	System.out.println("BuildJPane size " + getHeight());
+	
     }
 
     /** Creates new form BuildJPane */

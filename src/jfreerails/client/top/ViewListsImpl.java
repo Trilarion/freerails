@@ -126,7 +126,7 @@ public class ViewListsImpl implements ViewLists {
 			} catch (IOException io) {
 				// If the image is missing, we generate it.
 
-				System.out.println("No tile renderer for " + t.getTerrainTypeName());
+				System.err.println("No tile renderer for " + t.getTerrainTypeName());
 				String filename = StandardTileRenderer.generateFilename(t.getTerrainTypeName());
 				Image image = QuickRGBTileRendererList.createImageFor(t);
 				imageManager.setImage(filename, image);

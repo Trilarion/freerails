@@ -113,7 +113,7 @@ public class TrainPathFinder
 		int stationNumber = schedule.getStationToGoto();
 		station = (StationModel) world.get(KEY.STATIONS, stationNumber);
 		if (null == station) {
-			System.out.println(
+			System.err.println(
 				"null == station, train "
 					+ trainId
 					+ " doesn't know where to go next!");
@@ -151,7 +151,6 @@ public class TrainPathFinder
 	}
 
 	private void loadAndUnloadCargo(int stationId) {
-		System.out.println("Train " + trainId + " is at station " + stationId);
 		//train is at a station so do the cargo processing
 
 		DropOffAndPickupCargoMoveGenerator transfer =
@@ -210,8 +209,7 @@ public class TrainPathFinder
 		int[] targets = new int[t.length];
 		for (int i = 0; i < t.length; i++) {
 			int target = t[i].getOpposite().toInt();
-			if (target == currentPosition) {
-				System.out.println("Reached target!");
+			if (target == currentPosition) {				
 				updateTarget();
 			}
 			targets[i] = target;

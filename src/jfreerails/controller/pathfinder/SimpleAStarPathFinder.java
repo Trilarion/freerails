@@ -37,16 +37,14 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 		//initialize the closed list
 		closedList.clear();
 
-		//System.out.println("\n\nNew search");
-
+		
 		//put the starting node on the open list (you can leave its f at zero)
 		for (int i = 0; i < targets.length; i++) {
 			//PositionOnTrack p = new PositionOnTrack(targets[i]);
-			//System.out.println("Adding "+p.toString()+" with f = 0 to open list.");
+			
 			openList.put(targets[i], 0);
 			openKeys.add(targets[i]);
-			if(targets[i]==currentPosition){
-				//System.out.println("Already at target!");	
+			if(targets[i]==currentPosition){					
 				return PATH_NOT_FOUND;
 			}
 		}
@@ -120,11 +118,10 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 
 			//push q on the closed list
 			//PositionOnTrack p = new PositionOnTrack(q);
-			//System.out.println("Adding "+p.toString()+" with f = "+f+" to closed list.");
-			closedList.put(q, f);
+				closedList.put(q, f);
 
 		}
-		//System.out.println("Path not found");
+		
 		return PATH_NOT_FOUND;
 	}
 

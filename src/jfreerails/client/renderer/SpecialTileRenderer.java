@@ -47,14 +47,14 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 		if (parentTileView != null) {
 			parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
 		} else {
-			System.out.println("parent tileView==null");
+			System.err.println("parent tileView==null");
 		}
 		java.awt.Image icon = this.getIcon(mapX, mapX, w);
 		if (null != icon) {
 			g.drawImage(icon, renderX, renderX, null);
 
 		} else {
-			System.out.println("special tileView icon==null");
+			System.err.println("special tileView icon==null");
 		}
 
 	}

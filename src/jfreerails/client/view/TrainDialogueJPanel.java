@@ -85,7 +85,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
         if(wi.previous()){
             display(wi.getIndex());
         }else{
-            System.out.println("Couldn't get previous");
+            System.err.println("Couldn't get previous");
         }
     }//GEN-LAST:event_previousJButtonActionPerformed
     
@@ -94,7 +94,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
         if(wi.next()){
             display(wi.getIndex());
         }else{
-            System.out.println("Couldn't get next");
+            System.err.println("Couldn't get next");
         }
     }//GEN-LAST:event_nextJButtonActionPerformed
     

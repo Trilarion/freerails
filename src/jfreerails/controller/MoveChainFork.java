@@ -25,13 +25,11 @@ final public class MoveChainFork implements MoveReceiver {
 
 	
 
-	public void remove(MoveReceiver moveReceiver) {
-		System.out.println("MoveReceiver.remove(" + moveReceiver + ")");
+	public void remove(MoveReceiver moveReceiver) {		
 		moveReceivers.remove(moveReceiver);
 	}
 
-	public void add(MoveReceiver moveReceiver) {
-		System.out.println("MoveReceiver.add(" + moveReceiver + ")");
+	public void add(MoveReceiver moveReceiver) {		
 		moveReceivers.add(moveReceiver);
 	}
 

@@ -115,7 +115,7 @@ public class ChangeTrainPositionMove implements Move {
 		bitToAdd =
 			TrainPosition.createInOppositeDirectionToPath(nextPathSection);
 	
-		//System.out.println(bitToAdd.toString());
+		
 	
 		intermediate = TrainPosition.add(currentPosition, bitToAdd);
 	
@@ -145,7 +145,7 @@ public class ChangeTrainPositionMove implements Move {
 	
 		}
 	
-		//System.out.println(bitToRemove.toString());
+		
 	
 		return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber);
 	}
@@ -197,9 +197,7 @@ public class ChangeTrainPositionMove implements Move {
 				return MoveStatus.MOVE_FAILED;
 			}
 			intermediatePosition = oldTrainPosition.addToHead(changeToHead);
-			//System.out.println(
-			//	"intermediatePosition=" + intermediatePosition.toString());
-
+			
 			if (localAddToTail) {
 				if (!intermediatePosition.canAddToTail(changeToTail)) {
 					return MoveStatus.MOVE_FAILED;
@@ -211,9 +209,7 @@ public class ChangeTrainPositionMove implements Move {
 				}
 				newTrainPosition = intermediatePosition.removeFromTail(changeToTail);
 			}
-			//System.out.println(
-			//	"newTrainPosition=" + newTrainPosition.toString());
-		} else {
+				} else {
 			if (localAddToTail) {
 				if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
 					return MoveStatus.MOVE_FAILED;
@@ -225,16 +221,12 @@ public class ChangeTrainPositionMove implements Move {
 				}
 				intermediatePosition = oldTrainPosition.removeFromTail(changeToTail);
 			}
-			//System.out.println(
-			//	"intermediatePosition=" + intermediatePosition.toString());
-
+			
 			if (!intermediatePosition.canRemoveFromHead(changeToHead)) {
 				return MoveStatus.MOVE_FAILED;
 			}
 			newTrainPosition = intermediatePosition.removeFromHead(changeToHead);
-			//System.out.println(
-			//	"newTrainPosition=" + newTrainPosition.toString());
-		}
+				}
 		if (updateTrainPosition) {
 			train.setPosition(newTrainPosition);
 		}

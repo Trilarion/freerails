@@ -73,14 +73,13 @@ public class GameServer implements ConnectionListener {
 			if (e instanceof SocketException) {
 			    throw (SocketException) e;
 			} else {
-			    System.out.println("Caught an IOException whilst " +
-				    "trying to accept an incoming connection" + e);
+			    e.printStackTrace();			    
 			}
 		    }
 		}
 	    } catch (SocketException e) {
 		/* The socket was probably closed, exit */
-		System.out.println("Server socket closed??? - Exiting");
+		
 	    }
 	}
     }
@@ -99,7 +98,7 @@ public class GameServer implements ConnectionListener {
 	try {
 	    serverSocket = new InetConnection(world, this);
 	} catch (IOException e) {
-	    System.out.println("Couldn't open the server socket!!!" + e);
+	    System.err.println("Couldn't open the server socket!!!" + e);
 	    throw new RuntimeException (e);
 	}
 	

@@ -220,7 +220,7 @@ public class DialogueBoxController {
 			modelRoot.getUserMessageLogger().println("Can't" +
 			" build train since there are no stations");
 		} else {
-			System.out.println("showSelectEngine()");
+			
 			showContent(selectEngine);
 		}
 	}
@@ -253,7 +253,7 @@ public class DialogueBoxController {
 			stationInfo.setStation(stationNumber);
 			showContent(stationInfo);
 		} catch (NoSuchElementException e) {
-			System.out.println("Station " + stationNumber + " does not exist!");
+			System.err.println("Station " + stationNumber + " does not exist!");
 		}
 	}
 
