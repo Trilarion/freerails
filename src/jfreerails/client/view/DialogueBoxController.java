@@ -42,6 +42,7 @@ public class DialogueBoxController {
 	private NewsPaperJPanel newspaper;
 	private SelectWagonsJPanel selectWagons;
 	private TrainScheduleJPanel trainSchedule;
+        private GameControlsJPanel showControls;
 
 	private World w;
 
@@ -75,6 +76,10 @@ public class DialogueBoxController {
 		glassPanel.setVisible(false);
 
 		//Setup the various dialogue boxes.
+                
+                // setup the 'show controls' dialogue
+                showControls = new GameControlsJPanel();
+                showControls.setup(w, vl, this.closeCurrentDialogue);
 
 		//Set up train orders dialogue
 		trainSchedule = new TrainScheduleJPanel();
@@ -156,6 +161,11 @@ public class DialogueBoxController {
 			showContent(selectEngine);
 		}
 	}
+        
+        public void showGameControls(){
+            System.out.println("showGameControls");
+            showContent(this.showControls);
+        }
 
 	public void showSelectWagons() {
 		System.out.println("showSelectWagons");
@@ -188,4 +198,5 @@ public class DialogueBoxController {
 		this.defaultFocusOwner = defaultFocusOwner;
 	}
 
+        
 }

@@ -13,7 +13,7 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
-import jfreerails.world.train.Schedule;
+import jfreerails.world.train.*;
 /**
  *
  * @author  Luke
@@ -24,7 +24,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
     
     private WorldIterator wi;
     
-  
+    private TrainOrders gotoStation;
+    
+    
     /** Creates new form TrainScheduleJPanel */
     public TrainScheduleJPanel() {
         initComponents();
@@ -65,7 +67,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         heading.setFont(new java.awt.Font("Dialog", 1, 14));
         heading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         heading.setText("TRAIN ORDERS #10000");
-        heading.setName("null");
         heading.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel1.add(heading);
 
@@ -197,7 +198,22 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         if(evt.getKeyCode()==KeyEvent.VK_UP){
             this.trainOrders4.requestFocus();
         }
+        if(evt.getKeyCode()==KeyEvent.VK_G){
+            setGotoStation(trainOrders5);
+        }
+        
     }//GEN-LAST:event_trainOrders5KeyPressed
+    
+    private void setGotoStation(TrainOrders orders){
+        
+        if(null!=gotoStation){
+            gotoStation.setGotoStation(false);
+        }
+        gotoStation = orders;
+        orders.setGotoStation(true);
+        orders.repaint();
+        
+    }
     
     private void trainOrders4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_trainOrders4KeyPressed
         // Add your handling code here:
@@ -206,6 +222,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         }
         if(evt.getKeyCode()==KeyEvent.VK_DOWN){
             this.trainOrders5.requestFocus();
+        }
+        if(evt.getKeyCode()==KeyEvent.VK_G){
+            setGotoStation(trainOrders4);
         }
     }//GEN-LAST:event_trainOrders4KeyPressed
     
@@ -217,6 +236,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         if(evt.getKeyCode()==KeyEvent.VK_DOWN){
             this.trainOrders4.requestFocus();
         }
+        if(evt.getKeyCode()==KeyEvent.VK_G){
+            setGotoStation(trainOrders3);
+        }
     }//GEN-LAST:event_trainOrders3KeyPressed
     
     private void trainOrders2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_trainOrders2KeyPressed
@@ -227,12 +249,18 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         if(evt.getKeyCode()==KeyEvent.VK_DOWN){
             this.trainOrders3.requestFocus();
         }
+        if(evt.getKeyCode()==KeyEvent.VK_G){
+            setGotoStation(trainOrders2);
+        }
     }//GEN-LAST:event_trainOrders2KeyPressed
     
     private void trainOrders1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_trainOrders1KeyPressed
         // Add your handling code here:
         if(evt.getKeyCode()==KeyEvent.VK_DOWN){
             this.trainOrders2.requestFocus();
+        }
+        if(evt.getKeyCode()==KeyEvent.VK_G){
+            setGotoStation(trainOrders1);
         }
     }//GEN-LAST:event_trainOrders1KeyPressed
     
@@ -256,7 +284,33 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         trainOrders3.display(trainNumber, 2);
         trainOrders4.display(trainNumber, 3);
         trainOrders5.display(trainNumber, 4);
-              
+        
+        TrainModel train = (TrainModel)wi.getElement();
+        Schedule schedule = train.getSchedule();
+        switch(schedule.getOrderToGoto()){
+            case 0: {
+                this.setGotoStation(trainOrders1);
+                break;
+            }
+            case 1: {
+                this.setGotoStation(trainOrders2);
+                break;
+            }
+            case 2: {
+                this.setGotoStation(trainOrders3);
+                break;
+            }
+            case 3: {
+                this.setGotoStation(trainOrders4);
+                break;
+            }
+            case 4: {
+                this.setGotoStation(trainOrders5);
+                break;
+            }
+        }
+        
+        
         if(wi.getRowNumber()>0){
             this.previous.setEnabled(true);
         }else{
@@ -273,28 +327,27 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
     }
     
     public void displayFirst(){
-        wi = new NonNullElements(KEY.TRAINS, w);  
-        if(wi.next()){  
-			display();    
+        wi = new NonNullElements(KEY.TRAINS, w);
+        if(wi.next()){
+            display();
         }else{
-        	System.out.println("No trains to display!");
-        }
-        
-        
+            System.out.println("No trains to display!");
+        }                
     }
     
     public Schedule getNewSchedule(){
-		Schedule newSchedule = new Schedule();
-		newSchedule.setOrder(0, this.trainOrders1.getNewOrders());
-		newSchedule.setOrder(1, this.trainOrders2.getNewOrders());
-		newSchedule.setOrder(2, this.trainOrders3.getNewOrders());
-		newSchedule.setOrder(3, this.trainOrders4.getNewOrders());
-		newSchedule.setOrder(4, this.trainOrders5.getNewOrders());
-    	return newSchedule;
+        Schedule newSchedule = new Schedule();
+        newSchedule.setOrder(0, this.trainOrders1.getNewOrders());
+        newSchedule.setOrder(1, this.trainOrders2.getNewOrders());
+        newSchedule.setOrder(2, this.trainOrders3.getNewOrders());
+        newSchedule.setOrder(3, this.trainOrders4.getNewOrders());
+        newSchedule.setOrder(4, this.trainOrders5.getNewOrders());
+        newSchedule.setOrderToGoto(this.gotoStation.orderNo);
+        return newSchedule;
     }
     
     public int getTrainNumber(){
-    	return this.wi.getIndex();
+        return this.wi.getIndex();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

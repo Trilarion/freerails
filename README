@@ -1,9 +1,13 @@
-Freerails Java - version 0.1.3
+Freerails Java - version 0.1.4
 
 What's new:
-o	You can choose the type of engine and wagons that
-	a train has.
-o	Trains are built at stations.	
+o City Names 
+o Random City Tile positioning.
+o Cities are now no longer related to the image map. Positions are determined
+	by the data in the south_america_cities.xml file.
+o Station names based on nearby city
+o Editable train schedules.
+o 'Show controls' dialogue accessible via game menu	
  
 Getting it, either:
 

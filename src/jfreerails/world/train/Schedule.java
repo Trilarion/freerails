@@ -24,8 +24,8 @@ public class Schedule implements FreerailsSerializable {
     private int stationToGoto=1;
     
     public Schedule(){
-    	
-    }        
+        
+    }
     
     public void removeOrder(int orderNumber){
         if(PRIORITY_ORDERS == orderNumber){
@@ -48,23 +48,35 @@ public class Schedule implements FreerailsSerializable {
     public TrainOrdersModel getOrder(int i){
         return orders[i];
     }
-        
+    
+    /** Returns the number of the order the train is currently carry out. */
+    public int getOrderToGoto(){
+        return stationToGoto;
+    }
+    
+    public void setOrderToGoto(int i){
+        if(i<0 || i > MAX_NUMBER_OF_ORDERS){
+            throw new IllegalArgumentException(String.valueOf(i));
+        }
+        stationToGoto = i;
+    }
+    
     /** Returns the station number of the next station the train is scheduled to stop at. */
-	public int getStationToGoto() {
-		return orders[stationToGoto].getStationNumber();
-	}
-	
-	/** Returns the wagons to add at the next scheduled stop. */
-	public int[] getWagonsToAdd(){
-		return orders[stationToGoto].getConsist();
-	}
-
-	public void gotoNextStaton(){		
-		stationToGoto++;
-		if(MAX_NUMBER_OF_ORDERS<stationToGoto){
-			stationToGoto=1;
-		}
-	}
-
+    public int getStationToGoto() {
+        return orders[stationToGoto].getStationNumber();
+    }
+    
+    /** Returns the wagons to add at the next scheduled stop. */
+    public int[] getWagonsToAdd(){
+        return orders[stationToGoto].getConsist();
+    }
+    
+    public void gotoNextStaton(){
+        stationToGoto++;
+        if(MAX_NUMBER_OF_ORDERS<stationToGoto){
+            stationToGoto=1;
+        }
+    }
+    
 }
 

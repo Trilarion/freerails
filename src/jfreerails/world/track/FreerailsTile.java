@@ -89,5 +89,8 @@ public class FreerailsTile
 	public String getTypeName(){
 		return terrainType.getTerrainTypeName();
 	}
+	public int terrainRgb() {
+		return terrainType.getRGB();
+	}
 
 }

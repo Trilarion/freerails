@@ -94,7 +94,7 @@ public abstract class AbstractTileRenderer  implements TileRenderer {
         if( ( ( x < w.getMapWidth() ) && ( x >= 0 ) ) && ( y < w.getMapHeight() ) && ( y >= 0 ) ) {
             for( int  i = 0;i < rgbValues.length;i++ ) {
             	TerrainTile tt = (TerrainTile)w.getTile(x, y);
-                if( tt.getRGB() == rgbValues[ i ] ) {
+                if( tt.terrainRgb() == rgbValues[ i ] ) {
                     match = 0;
 
                 //A match
