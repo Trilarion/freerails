@@ -42,6 +42,10 @@
   and then deserialised and executed on a server. To achieve this, they refer 
   to items in the game world via either their coorinates, e.g. tile 10,50, or 
   their position in a list, e.g. train #4.</p>
+<p>(2) They are undoable. To achieve this, they need to store the information 
+  necessary to undo the change. E.g. a change-terrain-type move might store the 
+  tile coorindates, the terrain type before the change and the terrain type after 
+  the change.</p>
 <p>&nbsp;</p>
 </body>
 </html>
