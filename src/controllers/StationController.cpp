@@ -87,16 +87,13 @@ bool StationController::testBuildElement(int x, int y)
   return true;
 }
 
-void StationController::addGameElement(void *_data)
+void StationController::addGameElement(GameElement* _element)
 {
-  int x, y, dir;
-
-  if(!(canBuildElement((GameElement*) _data)))
-    return;
-  stationDoBuild(x, y);
+  Station* station = (Station*)_element;
+  stationDoBuild(station->getPosX(), station->getPosY(), station->getSize());
 }
 
-void StationController::removeGameElement(void */*_data*/)
+void StationController::removeGameElement(long int _elementID)
 {
 }
 
@@ -133,7 +130,7 @@ bool StationController::connectIsBuildable(unsigned int connect)
   return status;
 }
 
-void StationController::stationDoBuild(int x, int y)
+void StationController::stationDoBuild(int x, int y, int size)
 {
   MapField *field;
   Track *track;
@@ -154,13 +151,4 @@ void StationController::stationDoBuild(int x, int y)
   #warning complete me
   connect |= TrackIsBlocked;
   track->setConnect(connect);
-//    PlayerMoneyDecrement(ThisPlayer,1000);
 }
-
-//void TrackBuildDrawPanelInfo() {
-//
-//    DrawText(PanelInfo.Box.X+2,PanelInfo.Box.Y+2,SmallFont,"Build: Track");
-//    DrawText(PanelInfo.Box.X+2,PanelInfo.Box.Y+17,SmallFont,"Cost: 1.000 $");
-//    DrawText(PanelInfo.Box.X+2,PanelInfo.Box.Y+32,SmallFont,"Monthly Cost: 1.000 $");
-//
-//}

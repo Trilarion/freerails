@@ -18,16 +18,30 @@
 #include "Station.h"
 
 Station::Station(unsigned int _posX, unsigned int _posY, Player* _player, 
-                 char* _name, Size _size, char* t, StationAddon* sA)
+                 std::string _name, Size _size, StationAddon* sA)
        : GamePosElement(_posX, _posY, _player, idStation)
 {
-  size = _size;
   name = _name;
+  size = _size;
   stationAddon = sA;
 }
 
 Station::~Station()
 {
+}
+
+void Station::serialize(Serializer* _serializer)
+{
+  GamePosElement::serialize(_serializer);
+  *_serializer << (const std::string)name;
+  *_serializer << size;
+}
+
+void Station::deserialize(Serializer* _serializer)
+{
+  GamePosElement::deserialize(_serializer);
+  *_serializer >> name;
+  *_serializer >> (int &)size;
 }
 
 void Station::addAddon(std::string addon)

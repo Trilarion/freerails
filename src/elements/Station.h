@@ -45,12 +45,24 @@ public:
     * @param _player Owner (Human or AI \b not Nature!)
     * @param _name Name
     * @param _size The Size of the Station
-    * @param t Tileset location ??
     * @param sA The common StationAddon
     */
-  Station(unsigned int _posX, unsigned int _posY, Player* _player, char* _name, Size _size, char* t, StationAddon* sA);
+  Station(unsigned int _posX, unsigned int _posY, Player* _player, std::string _name, Size _size, StationAddon* sA);
   /** Destructor */
   ~Station();
+  
+  /** Serialization */
+  void serialize(Serializer* _serializer);
+  void deserialize(Serializer* _serializer);
+  
+  // Name
+  std::string getName() {return name;};
+  void setName(std::string _name) {name = _name;};
+
+  // Size
+  Size getSize() {return size;};
+  void setSize(Size _size) {size = _size;};
+
   /** Adds a station addon
     * @warning There can only be one type of each addon
     * @param addon Addon to the station */
@@ -66,15 +78,12 @@ public:
     * @return Map with addon as key, true if build as value */
   std::map<std::string, bool> giveAddons();
 
-  /** Return type of element (RTTI_STATION) */
-  virtual int rtti() { return RTTI_STATION; };
-
 
 private:
-  char* name;
+  std::string name;
+  Size size;
   /** The singleton with addon info */
   StationAddon* stationAddon;
-  Size size;
   /** Vector containing all the possible station addons
     * @warning They don't have to be available right now, but may be eventually */
   std::vector<std::string> allAddons;

@@ -21,7 +21,7 @@
 #define STATIONCONTROLLER_H
 
 #include "Controller.h"
-#include "Track.h"
+#include "Station.h"
 #include "WorldMap.h"
 
 /**This class is handling build and remove of stations.
@@ -36,13 +36,13 @@ class StationController : public Controller
 
     GameElement* CreateElement(Serializer* _serializer);
     bool canBuildElement(GameElement* _element);
-    void addGameElement(void *_data);
-    void removeGameElement(void *_data);
+    void addGameElement(GameElement* _element);
+    void removeGameElement(long int _elementID);
 
   private:
     bool testBuildElement(int x, int y);
     bool connectIsBuildable(unsigned int connect);
-    void stationDoBuild(int x, int y);
+    void stationDoBuild(int x, int y, int size);
 
 };
 

@@ -1,3 +1,6 @@
+Tue Apr 22 13:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o Some cleanup in Station and StationController
+o But Stations can not test&build to map
 Tue Apr 22 12:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Use Base2DMapView in QT Client
 Tue Apr 22 02:00:00 2003  Alexander Opitz <opi@le-bit.de>:

@@ -19,12 +19,12 @@ Track::~Track()
 
 void Track::serialize(Serializer* _serializer)
 {
-  GameElement::serialize(_serializer);
+  GamePosElement::serialize(_serializer);
   *_serializer << connect;
 }
 
 void Track::deserialize(Serializer* _serializer)
 {
-  GameElement::serialize(_serializer);
+  GamePosElement::serialize(_serializer);
   *_serializer >> (unsigned int &) connect;
 }
