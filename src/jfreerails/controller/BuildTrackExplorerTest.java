@@ -2,7 +2,7 @@
  * Created on Sep 3, 2004
  *
  */
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 import java.awt.Point;
 import jfreerails.move.ChangeTrackPieceCompositeMove;

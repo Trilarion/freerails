@@ -1,4 +1,4 @@
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 
 /** This interface lets the caller explorer a graph while hiding the

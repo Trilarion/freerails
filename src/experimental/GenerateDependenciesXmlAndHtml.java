@@ -56,7 +56,8 @@ public class GenerateDependenciesXmlAndHtml {
 		add(basePackages);
 		add("jfreerails/world/**/*");
 		add("jfreerails/move/**/*");	
-		add(new String[] {"jfreerails/network/*", "jfreerails/controller/*", "jfreerails/controller/pathfinder/*"});		
+		add("jfreerails/controller/*");
+		add("jfreerails/network/*");
 		add(new String[] {"jfreerails/server/**/*", "jfreerails/client/**/*"});		
 		add("jfreerails/launcher/**/*");
 		add("jfreerails/experimental/**/*");
@@ -78,7 +79,8 @@ public class GenerateDependenciesXmlAndHtml {
 		add(basePackages);
 		add("jfreerails/world/**/*");
 		add("jfreerails/move/**/*");
-		add(new String[] {"jfreerails/network/*", "jfreerails/controller/*", "jfreerails/controller/pathfinder/*"});
+		add("jfreerails/controller/*");
+		add("jfreerails/network/*");
 		add("jfreerails/server/common/*");
 		add("jfreerails/server/parser/*");
 		add("jfreerails/server/*");			
@@ -88,7 +90,8 @@ public class GenerateDependenciesXmlAndHtml {
 		add(basePackages);
 		add("jfreerails/world/**/*");		
 		add("jfreerails/move/**/*");	
-		add(new String[] {"jfreerails/network/*", "jfreerails/controller/*", "jfreerails/controller/pathfinder/*"});
+		add("jfreerails/controller/*");
+		add("jfreerails/network/*");
 		add("jfreerails/client/common/*");
 		add("jfreerails/client/renderer/*");
 		add("jfreerails/client/view/*");			
@@ -162,7 +165,7 @@ public class GenerateDependenciesXmlAndHtml {
 		//Add the compile target.
 		xmlWriter.write("\n\t<target description=\"Build everything except JUnit test-classes\" name=\"compile\">\n");
 		xmlWriter.write("\t\t<mkdir dir=\"build\" />\n");
-		xmlWriter.write("\t\t<javac destdir=\"build\" fork=\"true\" srcdir=\"src\" source=\"1.4\">\n");
+		xmlWriter.write("\t\t<javac destdir=\"build\" fork=\"true\" srcdir=\"src\" source=\"1.5\">\n");
 		xmlWriter.write("\t\t\t<exclude name=\"**/*Test.java\" />\n");
 		xmlWriter.write("\t\t </javac>\n");
 		xmlWriter.write("\t</target>\n");
@@ -213,7 +216,7 @@ public class GenerateDependenciesXmlAndHtml {
 			xmlWriter.write("\t\t</fileset>\n");
 			xmlWriter.write("\t\t</copy>\n");					
 					
-			xmlWriter.write("\t\t<javac fork=\"true\" srcdir=\"temp\" source=\"1.4\" classpath=\"dependencies\">\n");					
+			xmlWriter.write("\t\t<javac fork=\"true\" srcdir=\"temp\" source=\"1.5\" classpath=\"dependencies\">\n");					
 			//Include the files we are going to compile.					
 			xmlWriter.write("\t\t\t<include name=\""+packageNames[i]+".java\" />\n");		
 																						

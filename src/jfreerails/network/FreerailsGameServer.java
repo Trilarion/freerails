@@ -11,10 +11,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Logger;
+
+import jfreerails.controller.PreMove;
+import jfreerails.controller.PreMoveStatus;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
-import jfreerails.move.PreMoveStatus;
 import jfreerails.world.accounts.BondTransaction;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;

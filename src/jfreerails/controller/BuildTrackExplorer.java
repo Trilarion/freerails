@@ -2,12 +2,11 @@
  * Created on Aug 22, 2004
  *
  */
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 import java.awt.Point;
 import java.util.NoSuchElementException;
 
-import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.terrain.TileTypeImpl;

@@ -4,12 +4,12 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.PreMove;
+import jfreerails.controller.PreMoveStatus;
+import jfreerails.controller.TimeTickPreMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
-import jfreerails.move.PreMoveStatus;
 import jfreerails.move.TimeTickMove;
-import jfreerails.move.TimeTickPreMove;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;

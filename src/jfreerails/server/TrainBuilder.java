@@ -3,8 +3,9 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import jfreerails.controller.pathfinder.FlatTrackExplorer;
-import jfreerails.controller.pathfinder.RandomPathFinder;
+
+import jfreerails.controller.FlatTrackExplorer;
+import jfreerails.controller.RandomPathFinder;
 import jfreerails.move.AddCargoBundleMove;
 import jfreerails.move.AddTrainMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;

@@ -2,11 +2,17 @@
  * Created on 19-Oct-2004
  *
  */
-package jfreerails.move;
+package jfreerails.controller;
 
 import java.awt.Point;
-import jfreerails.controller.CalcNearestCity;
-import jfreerails.controller.VerifyStationName;
+
+import jfreerails.move.AddItemToListMove;
+import jfreerails.move.AddStationMove;
+import jfreerails.move.ChangeTrackPieceCompositeMove;
+import jfreerails.move.ChangeTrackPieceMove;
+import jfreerails.move.CompositeMove;
+import jfreerails.move.Move;
+import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;

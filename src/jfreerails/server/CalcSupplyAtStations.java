@@ -1,6 +1,6 @@
 package jfreerails.server;
 
-import jfreerails.move.CalcCargoSupplyRateAtStation;
+import jfreerails.controller.CalcCargoSupplyRateAtStation;
 import jfreerails.move.ChangeStationMove;
 import jfreerails.move.Move;
 import jfreerails.network.MoveReceiver;

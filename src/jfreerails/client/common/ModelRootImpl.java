@@ -4,10 +4,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jfreerails.controller.PreMove;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
 import jfreerails.network.MoveChainFork;
 import jfreerails.network.MoveReceiver;
 import jfreerails.network.ServerCommand;

@@ -3,8 +3,9 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.Vector;
 import java.util.logging.Logger;
-import jfreerails.controller.pathfinder.FlatTrackExplorer;
-import jfreerails.controller.pathfinder.SimpleAStarPathFinder;
+
+import jfreerails.controller.FlatTrackExplorer;
+import jfreerails.controller.SimpleAStarPathFinder;
 import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;

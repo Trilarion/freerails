@@ -1,4 +1,4 @@
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;

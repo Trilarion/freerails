@@ -3,12 +3,12 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.PreMove;
+import jfreerails.controller.PreMoveStatus;
+import jfreerails.controller.TimeTickPreMove;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
-import jfreerails.move.PreMoveStatus;
-import jfreerails.move.TimeTickPreMove;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;

@@ -1,4 +1,4 @@
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 import java.awt.Point;
 import java.util.NoSuchElementException;

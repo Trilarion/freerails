@@ -6,10 +6,11 @@ package jfreerails.network;
 
 import java.util.LinkedList;
 import java.util.logging.Logger;
+
+import jfreerails.controller.PreMove;
+import jfreerails.controller.PreMoveStatus;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
-import jfreerails.move.PreMoveStatus;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
 

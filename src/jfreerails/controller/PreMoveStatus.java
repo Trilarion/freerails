@@ -1,5 +1,6 @@
-package jfreerails.move;
+package jfreerails.controller;
 
+import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsSerializable;
 
 

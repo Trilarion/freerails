@@ -1,9 +1,8 @@
-package jfreerails.move;
+package jfreerails.controller;
 
 import java.awt.Rectangle;
 import java.util.Vector;
 import java.util.logging.Logger;
-import jfreerails.controller.CargoElementObject;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;

@@ -1,4 +1,4 @@
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 import it.unimi.dsi.fastUtil.Int2IntHashMap;
 import it.unimi.dsi.fastUtil.IntHashSet;

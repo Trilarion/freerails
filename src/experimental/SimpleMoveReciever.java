@@ -4,9 +4,9 @@
  */
 package experimental;
 
+import jfreerails.controller.PreMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
 import jfreerails.network.UntriedMoveReceiver;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;

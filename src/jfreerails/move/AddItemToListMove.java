@@ -40,7 +40,7 @@ public class AddItemToListMove implements ListMove {
         return listKey;
     }
 
-    AddItemToListMove(KEY key, int i, FreerailsSerializable item,
+    public AddItemToListMove(KEY key, int i, FreerailsSerializable item,
         FreerailsPrincipal p) {
         this.listKey = key;
         this.index = i;

@@ -2,14 +2,13 @@
  * Created on Sep 4, 2004
  *
  */
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.util.IntArray;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;

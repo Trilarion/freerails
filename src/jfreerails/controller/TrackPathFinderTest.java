@@ -2,12 +2,11 @@
  * Created on Sep 4, 2004
  *
  */
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 import java.awt.Point;
 import java.util.List;
 
-import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;

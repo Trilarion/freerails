@@ -2,7 +2,7 @@
  * Created on Sep 4, 2004
  *
  */
-package jfreerails.controller.pathfinder;
+package jfreerails.controller;
 
 
 /**

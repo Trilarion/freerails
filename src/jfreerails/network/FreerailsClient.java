@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import jfreerails.controller.PreMove;
+import jfreerails.controller.PreMoveStatus;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
-import jfreerails.move.PreMoveStatus;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsSerializable;

@@ -1,8 +1,8 @@
 package jfreerails.network;
 
+import jfreerails.controller.PreMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.PreMove;
 
 
 /** Lets the caller test moves.

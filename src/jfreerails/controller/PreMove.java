@@ -2,8 +2,9 @@
  * Created on 13-Oct-2004
  *
  */
-package jfreerails.move;
+package jfreerails.controller;
 
+import jfreerails.move.Move;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.top.ReadOnlyWorld;
 

@@ -2,7 +2,7 @@ package jfreerails.controller;
 
 import java.awt.Point;
 import java.util.logging.Logger;
-import jfreerails.move.AddStationPreMove;
+
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.world.player.FreerailsPrincipal;

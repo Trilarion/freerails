@@ -2,8 +2,10 @@
  * Created on 18-Oct-2004
  *
  */
-package jfreerails.move;
+package jfreerails.controller;
 
+import jfreerails.move.Move;
+import jfreerails.move.TimeTickMove;
 import jfreerails.world.top.ReadOnlyWorld;
 
 
