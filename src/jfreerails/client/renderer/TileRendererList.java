@@ -1,6 +1,6 @@
 package jfreerails.client.renderer;
-import jfreerails.world.top.ReadOnlyWorld;
 
+import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
@@ -9,24 +9,19 @@ import jfreerails.world.top.ReadOnlyWorld;
 *@author     Luke Lindsay
 *     09 October 2001
 */
-
 public interface TileRendererList {
+    TileRenderer getTileViewWithNumber(int i);
 
-	TileRenderer getTileViewWithNumber(int i);
+    //boolean TestRGBValue(int rgb);
+    boolean TestTileViewNumber();
 
-	//boolean TestRGBValue(int rgb);
+    int getLength();
 
-	boolean TestTileViewNumber();
+    //Iterator getIterator();
+    //TileRenderer getTileViewWithRGBValue(int rgb);
 
-	int getLength();
-
-	//Iterator getIterator();
-
-	//TileRenderer getTileViewWithRGBValue(int rgb);
-
-	/** Checks whether this tile view list has tile views for all
-	 * the terrain types in the specifed list.
-	 */
-
-	boolean validate(ReadOnlyWorld world);
+    /** Checks whether this tile view list has tile views for all
+     * the terrain types in the specifed list.
+     */
+    boolean validate(ReadOnlyWorld world);
 }

@@ -1,5 +1,6 @@
 package jfreerails.client.common;
 
+
 /**
  * This interface allows messages to be sent to the user (not debug messages).
  * TODO implement a better message logger than the default (i.e. one with a nice
@@ -11,5 +12,5 @@ public interface UserMessageLogger {
     /**
      * prints a message and terminates it with a newline
      */
-    public void println (String s);
+    public void println(String s);
 }

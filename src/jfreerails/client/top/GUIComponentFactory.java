@@ -7,28 +7,27 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 
+
 public interface GUIComponentFactory {
+    JFrame createClientJFrame(String title);
 
-	JFrame createClientJFrame(String title);
+    JPanel createOverviewMap();
 
-	JPanel createOverviewMap();
+    JTabbedPane createTrainsJTabPane();
 
-	JTabbedPane createTrainsJTabPane();
+    JScrollPane createMainMap();
 
-	JScrollPane createMainMap();
+    JLabel createMessagePanel();
 
-	JLabel createMessagePanel();
+    JLabel createCashJLabel();
 
-	JLabel createCashJLabel();
+    JLabel createDateJLabel();
 
-	JLabel createDateJLabel();
+    JMenu createBuildMenu();
 
-	JMenu createBuildMenu();
+    JMenu createGameMenu();
 
-	JMenu createGameMenu();
+    JMenu createDisplayMenu();
 
-	JMenu createDisplayMenu();
-
-	JMenu createHelpMenu();
-
+    JMenu createHelpMenu();
 }

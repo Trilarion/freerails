@@ -1,13 +1,7 @@
-
-
-
-
-
-
-/*		 
+/*
  * fastUtil 1.3: Fast & compact specialized hash-based utility classes for Java
  *
- * Copyright (C) 2002 Sebastiano Vigna 
+ * Copyright (C) 2002 Sebastiano Vigna
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -24,34 +18,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package it.unimi.dsi.fastUtil;
 
 import java.util.Iterator;
+
 
 /** An object that iterates through a collection whose items have a
  * fixed primitive type; provides an additional method to reduce type juggling.
  *
  * @see Iterator
  */
-
-public interface IntIterator  extends Iterator {
-
-
+public interface IntIterator extends Iterator {
     /**
-	  * Returns the next element as a primitive type.
-	  *
-	  * @return the next element from the collection.
+          * Returns the next element as a primitive type.
+          *
+          * @return the next element from the collection.
      * @see Iterator#next()
-	  */
-
-    int  nextInt ();
-
-
+          */
+    int nextInt();
 }
 
 // Local Variables:
 // mode: java
 // End:
-
-

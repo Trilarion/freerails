@@ -1,8 +1,9 @@
 package jfreerails.world.track;
-import java.util.Iterator;
 
+import java.util.Iterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
+
 
 /**
 *  Description of the Interface
@@ -10,36 +11,33 @@ import jfreerails.world.common.Money;
 *@author     Luke Lindsay
 *     09 October 2001
 */
-
 public interface TrackRule extends FreerailsSerializable {
+    boolean canBuildOnThisTerrainType(String TerrainType);
 
-	boolean canBuildOnThisTerrainType(String TerrainType);
-	
-	boolean isStation();
-	
-	Money getPrice();
-	
-	Money getMaintenanceCost();
-	
-	int getStationRadius();
+    boolean isStation();
 
-	int getRuleNumber();
+    Money getPrice();
 
-	String getTypeName();
+    Money getMaintenanceCost();
 
-	boolean testTrackPieceLegality(int trackTemplateToTest);
+    int getStationRadius();
 
-	boolean trackPieceIsLegal(TrackConfiguration config);
+    int getRuleNumber();
 
-	int getMaximumConsecutivePieces();
+    String getTypeName();
 
-	jfreerails.world.common.OneTileMoveVector[] getLegalRoutes(
-		jfreerails.world.common.OneTileMoveVector directionComingFrom);
+    boolean testTrackPieceLegality(int trackTemplateToTest);
 
-	boolean isDoubleTrackEnabled();
+    boolean trackPieceIsLegal(TrackConfiguration config);
 
-	Iterator getLegalConfigurationsIterator();
+    int getMaximumConsecutivePieces();
 
-	TrackPiece getTrackPiece(TrackConfiguration config);
+    jfreerails.world.common.OneTileMoveVector[] getLegalRoutes(
+        jfreerails.world.common.OneTileMoveVector directionComingFrom);
 
+    boolean isDoubleTrackEnabled();
+
+    Iterator getLegalConfigurationsIterator();
+
+    TrackPiece getTrackPiece(TrackConfiguration config);
 }

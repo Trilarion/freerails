@@ -3,95 +3,96 @@
  *
  * Created on 23 January 2002, 23:13
  */
-
 package jfreerails.world.track;
+
 import java.io.ObjectStreamException;
 import java.util.Iterator;
-
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
+
+
 /**
  *
  * @author  lindsal
  */
 final public class NullTrackType implements jfreerails.world.track.TrackRule {
+    public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
+    private static final NullTrackType nullTrackType = new NullTrackType();
 
-	public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
+    /** Creates new NullTrackType */
+    private NullTrackType() {
+    }
 
-	private static final NullTrackType nullTrackType = new NullTrackType();
+    private Object readResolve() throws ObjectStreamException {
+        return nullTrackType;
+    }
 
-	/** Creates new NullTrackType */
-	private NullTrackType() {
-	}
+    public static NullTrackType getInstance() {
+        return nullTrackType;
+    }
 
-	private Object readResolve() throws ObjectStreamException {
-		return nullTrackType;
-	}
+    public boolean canBuildOnThisTerrainType(String TerrainType) {
+        return true; //No track is possible anywhere.
+    }
 
-	public static NullTrackType getInstance() {
-		return nullTrackType;
-	}
+    public jfreerails.world.common.OneTileMoveVector[] getLegalRoutes(
+        jfreerails.world.common.OneTileMoveVector directionComingFrom) {
+        return new OneTileMoveVector[0];
+    }
 
-	public boolean canBuildOnThisTerrainType(String TerrainType) {
-		return true; //No track is possible anywhere.
-	}
+    public int getMaximumConsecutivePieces() {
+        return -1;
+    }
 
-	public jfreerails.world.common.OneTileMoveVector[] getLegalRoutes(
-		jfreerails.world.common.OneTileMoveVector directionComingFrom) {
-		return new OneTileMoveVector[0];
-	}
+    public int getRuleNumber() {
+        return NULL_TRACK_TYPE_RULE_NUMBER;
+    }
 
-	public int getMaximumConsecutivePieces() {
-		return -1;
-	}
+    public String getTypeName() {
+        return "NullTrackType";
+    }
 
-	public int getRuleNumber() {
-		return NULL_TRACK_TYPE_RULE_NUMBER;
-	}
+    public boolean isDoubleTrackEnabled() {
+        return false;
+    }
 
-	public String getTypeName() {
-		return "NullTrackType";
-	}
+    public boolean testTrackPieceLegality(int trackTemplateToTest) {
+        if (trackTemplateToTest != 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-	public boolean isDoubleTrackEnabled() {
-		return false;
-	}
+    public boolean trackPieceIsLegal(TrackConfiguration config) {
+        return testTrackPieceLegality(config.getTrackGraphicsNumber());
+    }
 
-	public boolean testTrackPieceLegality(int trackTemplateToTest) {
-		if (trackTemplateToTest != 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	public boolean trackPieceIsLegal(TrackConfiguration config) {
-		return testTrackPieceLegality(config.getTrackGraphicsNumber());
-	}
-	public Iterator getLegalConfigurationsIterator() {
-		throw new UnsupportedOperationException("Method not implemented yet!");
-	}
-	public TrackPiece getTrackPiece(TrackConfiguration config) {
-		throw new UnsupportedOperationException("Method not implemented yet!");
-	}
-	
-	public boolean isStation(){
-		return false;
-	}
+    public Iterator getLegalConfigurationsIterator() {
+        throw new UnsupportedOperationException("Method not implemented yet!");
+    }
 
-	public boolean equals(Object o) {
-		return o == this;
-	}
+    public TrackPiece getTrackPiece(TrackConfiguration config) {
+        throw new UnsupportedOperationException("Method not implemented yet!");
+    }
 
-	public int getStationRadius() {		
-		return 0;
-	}
+    public boolean isStation() {
+        return false;
+    }
 
-	public Money getPrice() {		
-		return new Money(0);
-	}
+    public boolean equals(Object o) {
+        return o == this;
+    }
 
-	public Money getMaintenanceCost() {
-		return new Money(0);
-	}
+    public int getStationRadius() {
+        return 0;
+    }
 
+    public Money getPrice() {
+        return new Money(0);
+    }
+
+    public Money getMaintenanceCost() {
+        return new Money(0);
+    }
 }

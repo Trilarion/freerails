@@ -4,53 +4,51 @@ import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
+
 public class SimplePathIteratorImplTest extends TestCase {
+    /** @param arg0
+     */
+    public SimplePathIteratorImplTest(String arg0) {
+        super(arg0);
+    }
 
-	/** @param arg0 
-	 */
-	public SimplePathIteratorImplTest(String arg0) {
-		super(arg0);
-	}
+    /** @param args
+     */
+    public static void main(String[] args) {
+        junit.textui.TestRunner.run(SimplePathIteratorImplTest.class);
+    }
 
-	/** @param args 
-	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(SimplePathIteratorImplTest.class);
-	}
+    public void testHasNext() {
+        int[] xpoints = {0, 100};
+        int[] ypoints = {0, 0};
 
-	public void testHasNext() {
-		int[] xpoints = { 0, 100 };
-		int[] ypoints = { 0, 0 };
-
-		FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
-		assertTrue(it.hasNext());
-		it.nextSegment(new IntLine(0, 0, 0, 0));
-		assertTrue(!it.hasNext());
-	}
-
-	public void testNextSegment() {
-
-		int[] xpoints = { 1, 2, 3 };
-		int[] ypoints = { 4, 5, 6 };
-
-		FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
-		assertTrue(it.hasNext());
-        
-        IntLine line=new IntLine(0, 0, 0, 0);
-		it.nextSegment(line);
-        assertLineEquals(1,4,2,5, line);
-		assertTrue(it.hasNext());
-        it.nextSegment(line);
-        assertLineEquals(2,5,3,6, line);
+        FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
+        assertTrue(it.hasNext());
+        it.nextSegment(new IntLine(0, 0, 0, 0));
         assertTrue(!it.hasNext());
+    }
 
-	}
-    
-    /** @param x1 
-     * @param y1 
-     * @param x2 
-     * @param y2 
-     * @param line 
+    public void testNextSegment() {
+        int[] xpoints = {1, 2, 3};
+        int[] ypoints = {4, 5, 6};
+
+        FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
+        assertTrue(it.hasNext());
+
+        IntLine line = new IntLine(0, 0, 0, 0);
+        it.nextSegment(line);
+        assertLineEquals(1, 4, 2, 5, line);
+        assertTrue(it.hasNext());
+        it.nextSegment(line);
+        assertLineEquals(2, 5, 3, 6, line);
+        assertTrue(!it.hasNext());
+    }
+
+    /** @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @param line
      */
     private void assertLineEquals(int x1, int y1, int x2, int y2, IntLine line) {
         assertEquals(x1, line.x1);
@@ -58,5 +56,4 @@ public class SimplePathIteratorImplTest extends TestCase {
         assertEquals(y1, line.y1);
         assertEquals(y2, line.y2);
     }
-
 }

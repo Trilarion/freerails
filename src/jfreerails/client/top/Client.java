@@ -4,6 +4,7 @@ import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.world.top.ReadOnlyWorld;
 
+
 /**
  * Represents an instance of a jfreerails client. It provides access to common
  * services which implementations make use of. Objects within the client
@@ -17,32 +18,32 @@ import jfreerails.world.top.ReadOnlyWorld;
 public abstract class Client {
     protected MoveChainFork moveChainFork;
     protected ConnectionAdapter receiver;
-    
+
     /**
      * @return A receiver with which moves may be tried out and submitted
      */
     public UntriedMoveReceiver getReceiver() {
-	return receiver;
+        return receiver;
     }
 
     /**
      * @return  A MoveChainFork to which classes may subscrive to receive Moves
      */
     public MoveChainFork getMoveChainFork() {
-	return moveChainFork;
+        return moveChainFork;
     }
 
     /**
      * @return A read-only copy of the world
      */
     public ReadOnlyWorld getWorld() {
-	return receiver.world;
+        return receiver.world;
     }
 
     /**
      * Returns a mutex to the clients local DB
      */
     public Object getMutex() {
-	return receiver.mutex;
+        return receiver.mutex;
     }
 }

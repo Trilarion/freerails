@@ -1,5 +1,7 @@
 package jfreerails.server.common;
+
 import jfreerails.world.top.World;
+
 
 /**
 *  Description of the Interface
@@ -7,10 +9,6 @@ import jfreerails.world.top.World;
 *@author     Luke Lindsay
 *     09 October 2001
 */
-
 public interface TrackSetFactory {
-
-
-	void addTrackRules(World w);
-
+    void addTrackRules(World w);
 }

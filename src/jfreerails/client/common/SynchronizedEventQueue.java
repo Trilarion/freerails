@@ -1,9 +1,9 @@
 package jfreerails.client.common;
 
 import java.util.Vector;
-
 import java.awt.AWTEvent;
 import java.awt.EventQueue;
+
 
 /**
  * This event queue is synchronized on all objects which are handed to it via
@@ -11,31 +11,28 @@ import java.awt.EventQueue;
  * @author Luke
  *
  */
-final public class SynchronizedEventQueue extends EventQueue implements
-MultiLockedRegion {
-   
-   private Object[] mutexCache = new Object[0];
-
+final public class SynchronizedEventQueue extends EventQueue
+    implements MultiLockedRegion {
+    private Object[] mutexCache = new Object[0];
     private Vector mutexes = new Vector();
-    
     private AWTEvent event;
 
     public void addMutex(Object mutex) {
-	synchronized (mutexes) {
-	    mutexes.add(mutex);
-	    mutexCache = mutexes.toArray();
-	}
+        synchronized (mutexes) {
+            mutexes.add(mutex);
+            mutexCache = mutexes.toArray();
+        }
     }
 
     public void removeMutex(Object mutex) {
-	synchronized (mutexes) {
-	    mutexes.remove(mutex);
-	    mutexCache = mutexes.toArray();
-	}
+        synchronized (mutexes) {
+            mutexes.remove(mutex);
+            mutexCache = mutexes.toArray();
+        }
     }
 
     public void multiLockedCallback() {
-	    super.dispatchEvent(event);
+        super.dispatchEvent(event);
     }
 
     /**
@@ -45,26 +42,26 @@ MultiLockedRegion {
      * protected.
      */
     public void grabAllLocks(MultiLockedRegion mlr) {
-	synchronized (mutexes) {
-	    dispatchEventImpl(mlr, 0);
-	}
+        synchronized (mutexes) {
+            dispatchEventImpl(mlr, 0);
+        }
     }
 
     private void dispatchEventImpl(MultiLockedRegion mlr, int i) {
-	if (i < mutexCache.length) {
-	    synchronized (mutexCache[i]) {
-		dispatchEventImpl(mlr, i + 1);
-	    }
-	} else {
-	    /* we got all the mutexes */
-	    mlr.multiLockedCallback();
-	}
+        if (i < mutexCache.length) {
+            synchronized (mutexCache[i]) {
+                dispatchEventImpl(mlr, i + 1);
+            }
+        } else {
+            /* we got all the mutexes */
+            mlr.multiLockedCallback();
+        }
     }
 
     protected void dispatchEvent(AWTEvent aEvent) {
         synchronized (mutexes) {
-	    event = aEvent;
-	    dispatchEventImpl(this, 0);
+            event = aEvent;
+            dispatchEventImpl(this, 0);
         }
     }
 }

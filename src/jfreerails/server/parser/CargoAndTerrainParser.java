@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
+
 /**
  * The class reads XML documents according to specified DTD and
  * translates all related events into RulesHandler events.
@@ -29,56 +30,57 @@ import org.xml.sax.XMLReader;
  *
  */
 public class CargoAndTerrainParser implements ContentHandler {
-    
     private java.lang.StringBuffer buffer;
-    
     private CargoAndTerrainHandler handler;
-    
     private java.util.Stack context;
-    
     private EntityResolver resolver;
-    
+
     /**
      * Creates a parser instance.
      * @param handler handler interface implementation (never <code>null</code>
      * @param resolver SAX entity resolver implementation or <code>null</code>.
      * It is recommended that it could be able to resolve at least the DTD.
      */
-    public CargoAndTerrainParser(final CargoAndTerrainHandler handler, final EntityResolver resolver) {
+    public CargoAndTerrainParser(final CargoAndTerrainHandler handler,
+        final EntityResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
         context = new java.util.Stack();
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
     public final void setDocumentLocator(Locator locator) {
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
     public final void startDocument() throws SAXException {
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
     public final void endDocument() throws SAXException {
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void startElement(java.lang.String ns, java.lang.String name, java.lang.String qname, Attributes attrs) throws SAXException {
+    public final void startElement(java.lang.String ns, java.lang.String name,
+        java.lang.String qname, Attributes attrs) throws SAXException {
         dispatch(true);
-        context.push(new Object[] {qname, new org.xml.sax.helpers.AttributesImpl(attrs)});
+        context.push(new Object[] {
+                qname, new org.xml.sax.helpers.AttributesImpl(attrs)
+            });
+
         if ("Converts".equals(name)) {
             handler.handle_Converts(attrs);
         } else if ("Tile".equals(name)) {
@@ -97,14 +99,16 @@ public class CargoAndTerrainParser implements ContentHandler {
             handler.handle_Produces(attrs);
         }
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void endElement(java.lang.String ns, java.lang.String name, java.lang.String qname) throws SAXException {
+    public final void endElement(java.lang.String ns, java.lang.String name,
+        java.lang.String qname) throws SAXException {
         dispatch(false);
         context.pop();
+
         if ("Tile".equals(name)) {
             handler.end_Tile();
         } else if ("Cargo_Types".equals(name)) {
@@ -115,59 +119,68 @@ public class CargoAndTerrainParser implements ContentHandler {
             handler.end_Types();
         }
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void characters(char[] chars, int start, int len) throws SAXException {
+    public final void characters(char[] chars, int start, int len)
+        throws SAXException {
         buffer.append(chars, start, len);
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void ignorableWhitespace(char[] chars, int start, int len) throws SAXException {
+    public final void ignorableWhitespace(char[] chars, int start, int len)
+        throws SAXException {
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void processingInstruction(java.lang.String target, java.lang.String data) throws SAXException {
+    public final void processingInstruction(java.lang.String target,
+        java.lang.String data) throws SAXException {
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void startPrefixMapping(final java.lang.String prefix, final java.lang.String uri) throws SAXException {
+    public final void startPrefixMapping(final java.lang.String prefix,
+        final java.lang.String uri) throws SAXException {
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void endPrefixMapping(final java.lang.String prefix) throws SAXException {
+    public final void endPrefixMapping(final java.lang.String prefix)
+        throws SAXException {
     }
-    
+
     /**
      * This SAX interface method is implemented by the parser.
      *
      */
-    public final void skippedEntity(java.lang.String name) throws SAXException {
+    public final void skippedEntity(java.lang.String name)
+        throws SAXException {
     }
-    
-    private void dispatch(final boolean fireOnlyIfMixed) throws SAXException {
-        if (fireOnlyIfMixed && buffer.length() == 0) return; //skip it
-        
-        Object[] ctx = (Object[]) context.peek();
-        String here = (String) ctx[0];
-        Attributes attrs = (Attributes) ctx[1];
+
+    private void dispatch(final boolean fireOnlyIfMixed)
+        throws SAXException {
+        if (fireOnlyIfMixed && buffer.length() == 0) {
+            return; //skip it
+        }
+
+        Object[] ctx = (Object[])context.peek();
+        String here = (String)ctx[0];
+        Attributes attrs = (Attributes)ctx[1];
         buffer.delete(0, buffer.length());
     }
-    
+
     /**
      * The recognizer entry method taking an InputSource.
      * @param input InputSource to be parsed.
@@ -177,10 +190,12 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      *
      */
-    public void parse(final InputSource input) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+    public void parse(final InputSource input)
+        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
+            java.io.IOException {
         parse(input, this);
     }
-    
+
     /**
      * The recognizer entry method taking a URL.
      * @param url URL source to be parsed.
@@ -190,10 +205,12 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      *
      */
-    public void parse(final java.net.URL url) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+    public void parse(final java.net.URL url)
+        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
+            java.io.IOException {
         parse(new InputSource(url.toExternalForm()), this);
     }
-    
+
     /**
      * The recognizer entry method taking an Inputsource.
      * @param input InputSource to be parsed.
@@ -203,10 +220,13 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      *
      */
-    public static void parse(final InputSource input, final CargoAndTerrainHandler handler) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+    public static void parse(final InputSource input,
+        final CargoAndTerrainHandler handler)
+        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
+            java.io.IOException {
         parse(input, new CargoAndTerrainParser(handler, null));
     }
-    
+
     /**
      * The recognizer entry method taking a URL.
      * @param url URL source to be parsed.
@@ -216,21 +236,32 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      *
      */
-    public static void parse(final java.net.URL url, final CargoAndTerrainHandler handler) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+    public static void parse(final java.net.URL url,
+        final CargoAndTerrainHandler handler)
+        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
+            java.io.IOException {
         parse(new InputSource(url.toExternalForm()), handler);
     }
-    
-    private static void parse(final InputSource input, final CargoAndTerrainParser recognizer) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+
+    private static void parse(final InputSource input,
+        final CargoAndTerrainParser recognizer)
+        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
+            java.io.IOException {
         javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory.newInstance();
-        factory.setValidating(true);  //the code was generated according DTD
-        factory.setNamespaceAware(true);  //the code was generated according DTD
+        factory.setValidating(true); //the code was generated according DTD
+        factory.setNamespaceAware(true); //the code was generated according DTD
+
         XMLReader parser = factory.newSAXParser().getXMLReader();
         parser.setContentHandler(recognizer);
         parser.setErrorHandler(recognizer.getDefaultErrorHandler());
-        if (recognizer.resolver != null) parser.setEntityResolver(recognizer.resolver);
+
+        if (recognizer.resolver != null) {
+            parser.setEntityResolver(recognizer.resolver);
+        }
+
         parser.parse(input);
     }
-    
+
     /**
      * Creates default error handler used by this parser.
      * @return org.xml.sax.ErrorHandler implementation
@@ -238,21 +269,24 @@ public class CargoAndTerrainParser implements ContentHandler {
      */
     protected ErrorHandler getDefaultErrorHandler() {
         return new ErrorHandler() {
-            public void error(SAXParseException ex) throws SAXException  {
-                if (context.isEmpty()) System.err.println("Missing DOCTYPE.");
-                throw ex;
-            }
-            
-            public void fatalError(SAXParseException ex) throws SAXException {
-                throw ex;
-            }
-            
-            public void warning(SAXParseException ex) throws SAXException {
-                // ignore
-            }
-        };
-        
-    }
-    
-}
+                public void error(SAXParseException ex)
+                    throws SAXException {
+                    if (context.isEmpty()) {
+                        System.err.println("Missing DOCTYPE.");
+                    }
 
+                    throw ex;
+                }
+
+                public void fatalError(SAXParseException ex)
+                    throws SAXException {
+                    throw ex;
+                }
+
+                public void warning(SAXParseException ex)
+                    throws SAXException {
+                    // ignore
+                }
+            };
+    }
+}

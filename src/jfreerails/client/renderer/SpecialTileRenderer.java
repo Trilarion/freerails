@@ -1,4 +1,3 @@
-
 /*
 * SpecialTileView.java
 *
@@ -9,76 +8,67 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageSplitter;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
+
 /**
 *
 * @author  Luke Lindsay
 */
-
 final public class SpecialTileRenderer extends AbstractTileRenderer {
+    final private TileRenderer parentTileView;
 
-	final private TileRenderer parentTileView;
+    public SpecialTileRenderer(ImageSplitter imageSplitter, int[] rgbValues,
+        TerrainType tileModel, TileRenderer parentTileView) {
+        super(tileModel, rgbValues);
+        imageSplitter.setTransparencyToTRANSLUCENT();
+        tileIcons = new java.awt.Image[1];
+        tileIcons[0] = imageSplitter.getTileFromSubGrid(0, 0);
+        this.parentTileView = parentTileView;
+    }
 
-	public SpecialTileRenderer(
-		ImageSplitter imageSplitter,
-		int[] rgbValues,
-		TerrainType tileModel,
-		TileRenderer parentTileView) {
-		super(tileModel, rgbValues);
-		imageSplitter.setTransparencyToTRANSLUCENT();
-		tileIcons = new java.awt.Image[1];
-		tileIcons[0] = imageSplitter.getTileFromSubGrid(0, 0);				
-		this.parentTileView = parentTileView;
-	}
+    public void renderTile(java.awt.Graphics g, int renderX, int renderY,
+        int mapX, int mapY, ReadOnlyWorld w) {
+        if (parentTileView != null) {
+            parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
+        } else {
+            System.err.println("parent tileView==null");
+        }
 
-	public void renderTile(
-		java.awt.Graphics g,
-		int renderX,
-		int renderY,
-		int mapX,
-		int mapY,
-		ReadOnlyWorld w) {
+        java.awt.Image icon = this.getIcon(mapX, mapX, w);
 
-		if (parentTileView != null) {
-			parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
-		} else {
-			System.err.println("parent tileView==null");
-		}
-		java.awt.Image icon = this.getIcon(mapX, mapX, w);
-		if (null != icon) {			
-			g.drawImage(icon, renderX, renderY, null);
+        if (null != icon) {
+            g.drawImage(icon, renderX, renderY, null);
+        } else {
+            System.err.println("special tileView icon==null");
+        }
+    }
 
-		} else {
-			System.err.println("special tileView icon==null");
-		}
+    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+        return 0;
+    }
 
-	}
+    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
+        TerrainType tileModel, TileRenderer parentTileView)
+        throws IOException {
+        super(tileModel, rgbValues);
+        this.tileIcons = new Image[1];
+        this.tileIcons[0] = imageManager.getImage(generateFilename());
+        this.parentTileView = parentTileView;
+    }
 
-	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-		return 0;
-	}
+    public void dumpImages(ImageManager imageManager) {
+        imageManager.setImage(generateFilename(), this.tileIcons[0]);
+    }
 
-	public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, TileRenderer parentTileView)
-		throws IOException {
-		super(tileModel, rgbValues);
-		this.tileIcons = new Image[1];
-		this.tileIcons[0] = imageManager.getImage(generateFilename());
-		this.parentTileView = parentTileView;
-	}
+    private String generateFilename() {
+        return "terrain" + File.separator + this.getTerrainType() + ".png";
+    }
 
-	public void dumpImages(ImageManager imageManager) {
-		imageManager.setImage(generateFilename(), this.tileIcons[0]);
-	}
-	private String generateFilename() {
-		return "terrain" + File.separator + this.getTerrainType() + ".png";
-	}
-
-	protected String generateFileNameNumber(int i) {
-		throw new UnsupportedOperationException();
-	}
+    protected String generateFileNameNumber(int i) {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -7,12 +7,11 @@ package jfreerails.world.accounts;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
 
+
 /**
  * @author Luke Lindsay
  *
  */
-public interface Transaction extends FreerailsSerializable {		
-	
-	Money getValue();
-		
+public interface Transaction extends FreerailsSerializable {
+    Money getValue();
 }

@@ -2,139 +2,136 @@ package jfreerails.world.station;
 
 import jfreerails.world.common.FreerailsSerializable;
 
-/** 
+
+/**
  * This class represents a station.
- * 
+ *
  * @author Luke
  *
  */
-
 public class StationModel implements FreerailsSerializable {
+    public int x;
+    public int y;
+    private final String name;
+    private SupplyAtStation supply;
+    private DemandAtStation demand;
+    private ConvertedAtStation converted;
+    private int cargoBundleNumber;
 
-	public int x;
-	public int y;
+    /** What this station is building. */
+    private ProductionAtEngineShop production;
 
-	private final String name;
+    public ConvertedAtStation getConverted() {
+        return converted;
+    }
 
-	private SupplyAtStation supply;
+    public void setConverted(ConvertedAtStation converted) {
+        this.converted = converted;
+    }
 
-	private DemandAtStation demand;
+    public StationModel(int x, int y, String stationName,
+        int numberOfCargoTypes, int cargoBundle) {
+        this.name = stationName;
+        this.x = x;
+        this.y = y;
 
-	private ConvertedAtStation converted;
+        supply = new SupplyAtStation(new int[numberOfCargoTypes]);
+        demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
+        converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
+        cargoBundleNumber = cargoBundle;
+    }
 
-	private int cargoBundleNumber;
+    public StationModel() {
+        this.name = "No name";
+        x = 0;
+        y = 0;
+    }
 
-	/** What this station is building. */
-	private ProductionAtEngineShop production;
+    public String getStationName() {
+        return name;
+    }
 
-	public ConvertedAtStation getConverted() {
-		return converted;
-	}
+    public int getStationX() {
+        return x;
+    }
 
-	public void setConverted(ConvertedAtStation converted) {
-		this.converted = converted;
-	}
+    public int getStationY() {
+        return y;
+    }
 
-	public StationModel(
-		int x,
-		int y,
-		String stationName,
-		int numberOfCargoTypes,
-		int cargoBundle) {
-		this.name = stationName;
-		this.x = x;
-		this.y = y;
+    public ProductionAtEngineShop getProduction() {
+        return production;
+    }
 
-		supply = new SupplyAtStation(new int[numberOfCargoTypes]);
-		demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
-		converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
-		cargoBundleNumber = cargoBundle;
+    public void setProduction(ProductionAtEngineShop production) {
+        this.production = production;
+    }
 
-	}
+    public DemandAtStation getDemand() {
+        return demand;
+    }
 
-	public StationModel() {
-		this.name = "No name";
-		x = 0;
-		y = 0;
-	}
+    public SupplyAtStation getSupply() {
+        return supply;
+    }
 
-	public String getStationName() {
-		return name;
-	}
+    public int getWaiting() {
+        return cargoBundleNumber;
+    }
 
-	public int getStationX() {
-		return x;
-	}
+    public void setDemand(DemandAtStation demand) {
+        this.demand = demand;
+    }
 
-	public int getStationY() {
-		return y;
-	}
+    public void setSupply(SupplyAtStation supply) {
+        this.supply = supply;
+    }
 
-	public ProductionAtEngineShop getProduction() {
-		return production;
-	}
+    public void setWaiting(int waiting) {
+        this.cargoBundleNumber = waiting;
+    }
 
-	public void setProduction(ProductionAtEngineShop production) {
-		this.production = production;
-	}
+    public int getCargoBundleNumber() {
+        return cargoBundleNumber;
+    }
 
-	public DemandAtStation getDemand() {
-		return demand;
-	}
+    public boolean equals(Object o) {
+        if (o instanceof StationModel) {
+            StationModel test = (StationModel)o;
 
-	public SupplyAtStation getSupply() {
-		return supply;
-	}
+            if (this.cargoBundleNumber != test.cargoBundleNumber) {
+                return false;
+            }
 
-	public int getWaiting() {
-		return cargoBundleNumber;
-	}
+            if (!this.demand.equals(test.demand)) {
+                return false;
+            }
 
-	public void setDemand(DemandAtStation demand) {
-		this.demand = demand;
-	}
+            if (!this.converted.equals(test.converted)) {
+                return false;
+            }
 
-	public void setSupply(SupplyAtStation supply) {
-		this.supply = supply;
-	}
+            if (!this.name.equals(test.name)) {
+                return false;
+            }
 
-	public void setWaiting(int waiting) {
-		this.cargoBundleNumber = waiting;
-	}
+            if (!(this.production == null ? test.production == null
+                                              : this.production.equals(
+                        test.production))) {
+                return false;
+            }
 
-	public int getCargoBundleNumber() {
-		return cargoBundleNumber;
-	}
-	public boolean equals(Object o) {
-		if (o instanceof StationModel) {
-			StationModel test = (StationModel) o;
-			if (this.cargoBundleNumber != test.cargoBundleNumber) {
-				return false;
-			}
-			if (!this.demand.equals(test.demand)) {
-				return false;
-			}
-			if (!this.converted.equals(test.converted)) {
-				return false;
-			}
-			if (!this.name.equals(test.name)) {
-				return false;
-			}
-			if (!(this.production == null
-				? test.production == null
-				: this.production.equals(test.production))) {
-				return false;
-			}
-			if (!this.supply.equals(test.supply)) {
-				return false;
-			}
-			if (this.x != test.x || this.y != test.y) {
-				return false;
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
+            if (!this.supply.equals(test.supply)) {
+                return false;
+            }
 
+            if (this.x != test.x || this.y != test.y) {
+                return false;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

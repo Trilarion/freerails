@@ -3,15 +3,16 @@
  *
  * Created on 01 June 2003, 17:30
  */
-
 package jfreerails.client.top;
+
 import javax.swing.*;
+
+
 /**
  *
  * @author  Luke
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
-    
     private javax.swing.JLabel datejLabel;
     private javax.swing.JLabel cashjLabel;
     private javax.swing.JTabbedPane trainsJPanel;
@@ -24,13 +25,11 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JLabel messageJLabel;
     private javax.swing.JMenuBar jMenuBar1;
-    
-    
-    
+
     /** Creates a new instance of GUIComponentFactoryTestImpl */
     public GUIComponentFactoryTestImpl() {
-         javax.swing.JPanel mainmapjPanel;
-        
+        javax.swing.JPanel mainmapjPanel;
+
         trainsJPanel = new javax.swing.JTabbedPane();
         datejLabel = new javax.swing.JLabel();
         mapOverview = new javax.swing.JPanel();
@@ -43,7 +42,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         buildMenu = new javax.swing.JMenu();
         displayMenu = new javax.swing.JMenu();
         helpMenu = new javax.swing.JMenu();
-        
+
         trainsJPanel.setBackground(new java.awt.Color(255, 51, 51));
         datejLabel.setText("Jun, 1840");
         mapOverview.setBackground(new java.awt.Color(0, 204, 255));
@@ -53,49 +52,48 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         mainMapView.setViewportView(mainmapjPanel);
         messageJLabel.setText("message");
     }
-    
+
     public JMenu createBuildMenu() {
         return buildMenu;
     }
-    
+
     public JLabel createCashJLabel() {
         return cashjLabel;
     }
-    
+
     public JFrame createClientJFrame(String title) {
         return null;
     }
-    
+
     public JLabel createDateJLabel() {
         return datejLabel;
     }
-    
+
     public JMenu createDisplayMenu() {
         return displayMenu;
     }
-    
+
     public JMenu createGameMenu() {
         return gameMenu;
     }
-    
+
     public JMenu createHelpMenu() {
         return helpMenu;
     }
-    
+
     public JScrollPane createMainMap() {
         return mainMapView;
     }
-    
+
     public JLabel createMessagePanel() {
         return messageJLabel;
     }
-    
+
     public JPanel createOverviewMap() {
         return mapOverview;
     }
-    
+
     public JTabbedPane createTrainsJTabPane() {
         return trainsJPanel;
     }
-    
 }

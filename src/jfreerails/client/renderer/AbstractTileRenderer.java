@@ -1,141 +1,128 @@
-
 /*
 * TileView.java
 *
 * Created on 04 July 2001, 07:01
 */
 package jfreerails.client.renderer;
+
 import java.awt.Image;
 import java.io.File;
-
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
+
 /**
 *  This class encapsulates the visible properties of a tile.
 * @author  Luke Lindsay
 */
-
 public abstract class AbstractTileRenderer implements TileRenderer {
+    protected final int[] typeNumbers;
+    protected TileIconSelector tileIconSelector;
+    protected Image[] tileIcons;
+    protected final TerrainType tileModel;
+    protected int rgb;
+    protected int tileWidth;
+    protected int tileHeight;
 
-	protected final int[] typeNumbers;
+    public AbstractTileRenderer(TerrainType t, int[] rgbValues) {
+        tileModel = t;
+        this.typeNumbers = rgbValues;
 
-	protected TileIconSelector tileIconSelector;
+        if (null == t) {
+            throw new NullPointerException();
+        }
 
-	protected Image[] tileIcons;
+        if (null == rgbValues) {
+            throw new NullPointerException();
+        }
+    }
 
-	protected final TerrainType tileModel;
+    public void renderTile(java.awt.Graphics g, int screenX, int screenY,
+        int mapX, int mapY, ReadOnlyWorld w) {
+        Image icon = this.getIcon(mapX, mapY, w);
 
-	protected int rgb;
+        if (null != icon) {
+            g.drawImage(icon, screenX, screenY, null);
+        }
+    }
 
-	protected int tileWidth;
+    public int getRGB() {
+        return tileModel.getRGB();
+    }
 
-	protected int tileHeight;
-	
-	public AbstractTileRenderer(TerrainType t, int[] rgbValues){
-		tileModel = t;
-		this.typeNumbers = rgbValues;
-		if(null == t){
-			throw new NullPointerException();
-		}
-		if(null == rgbValues){
-			throw new NullPointerException();
-		}
-	}
-	
-	
+    public int getTileWidth() {
+        return tileWidth;
+    }
 
-	public void renderTile(
-		java.awt.Graphics g,
-		int screenX,
-		int screenY,
-		int mapX,
-		int mapY,
-		ReadOnlyWorld w) {
-		Image icon = this.getIcon(mapX, mapY, w);
-		if (null != icon) {
-			g.drawImage(icon, screenX, screenY, null);
-		}
+    public int getTileHeight() {
+        return tileHeight;
+    }
 
-	}
+    public Image getIcon() {
+        return tileIcons[0];
+    }
 
-	public int getRGB() {
-		return tileModel.getRGB();
-	}
+    public String getTerrainType() {
+        return tileModel.getTerrainTypeName();
+    }
 
-	public int getTileWidth() {
-		return tileWidth;
-	}
+    public Image getIcon(int x, int y, ReadOnlyWorld w) {
+        int tile = selectTileIcon(x, y, w);
 
-	public int getTileHeight() {
-		return tileHeight;
-	}
+        if (tileIcons[tile] != null) {
+            return tileIcons[tile];
+        } else {
+            throw new NullPointerException(
+                "Error in TileView.getIcon: icon no. " + tile + "==null");
+        }
+    }
 
-	public Image getIcon() {
-		return tileIcons[0];
-	}
+    /*The terrain types that are treated as the same.  E.g. for terrain type
+    river; ocean, ports, and other rivers are treated as the same terrain type.
+    */
+    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+        return 0;
+    }
 
-	public String getTerrainType() {
-		return tileModel.getTerrainTypeName();
-	}
+    public void setTileSize(int height, int width) {
+        tileHeight = height;
+        tileWidth = width;
+    }
 
-	public Image getIcon(int x, int y, ReadOnlyWorld w) {
-		int tile = selectTileIcon(x, y, w);
-		
-		if (tileIcons[tile] != null) {
-			return tileIcons[tile];
-		} else {
-			throw new NullPointerException(
-				"Error in TileView.getIcon: icon no. " + tile + "==null");
-		}
-	}
+    protected int checkTile(int x, int y, ReadOnlyWorld w) {
+        int match = 0;
 
-	/*The terrain types that are treated as the same.  E.g. for terrain type
-	river; ocean, ports, and other rivers are treated as the same terrain type.
-	*/
+        if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight()) &&
+                (y >= 0)) {
+            for (int i = 0; i < typeNumbers.length; i++) {
+                TerrainTile tt = (TerrainTile)w.getTile(x, y);
 
-	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-		return 0;
-	}
+                if (tt.getTerrainTypeNumber() == typeNumbers[i]) {
+                    match = 1;
 
-	public void setTileSize(int height, int width) {
-		tileHeight = height;
-		tileWidth = width;
-	}
+                    //A match
+                }
+            }
+        } else {
+            match = 1; //A match
 
-	protected int checkTile(int x, int y, ReadOnlyWorld w) {
-		int match = 0;
+            /*If the tile we are checking is off the map, let it be a match.
+            This stops coast appearing where the ocean meets the map edge.
+            */
+        }
 
-		
-		if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight()) && (y >= 0)) {
-			for (int i = 0; i < typeNumbers.length; i++) {
-				TerrainTile tt = (TerrainTile) w.getTile(x, y);
-				if (tt.getTerrainTypeNumber() == typeNumbers[i]) {
-					match = 1;
+        return match;
+    }
 
-					//A match
-				}
-			}
-		} else {
-			match = 1; //A match
+    abstract public void dumpImages(ImageManager imageManager);
 
-			/*If the tile we are checking is off the map, let it be a match.
-			This stops coast appearing where the ocean meets the map edge.
-			*/
-		}
-		return match;
-	}
+    protected String generateRelativeFileName(int i) {
+        //String binaryNumber = BinaryNumberFormatter.format(number, digits);
+        return "terrain" + File.separator + this.getTerrainType() + "_" +
+        generateFileNameNumber(i) + ".png";
+    }
 
-	abstract public void dumpImages(ImageManager imageManager);
-		
-	
-	protected String generateRelativeFileName(int i){
-		//String binaryNumber = BinaryNumberFormatter.format(number, digits);
-		return  "terrain" + File.separator + this.getTerrainType() + "_" +generateFileNameNumber(i)+".png";	
-	}	
-	
-	protected abstract String generateFileNameNumber(int i);
-	
+    protected abstract String generateFileNameNumber(int i);
 }

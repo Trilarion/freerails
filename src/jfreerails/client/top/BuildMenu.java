@@ -6,73 +6,65 @@
 package jfreerails.client.top;
 
 import java.util.Enumeration;
-
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JRadioButtonMenuItem;
-
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.TrackBuildModel;
 import jfreerails.world.top.ReadOnlyWorld;
 
+
 /**
 *
 * @author  Luke Lindsay
 */
-
 final public class BuildMenu extends javax.swing.JMenu {
+    private ButtonGroup buttonGroup;
+    private ButtonGroup buttonGroup2;
+    private TrackBuildModel trackBuildModel;
 
-	private ButtonGroup buttonGroup;
-	private ButtonGroup buttonGroup2;
+    /** Creates new BuildMenu */
+    public BuildMenu() {
+        super();
+    }
 
-	private TrackBuildModel trackBuildModel;
+    public void setup(ReadOnlyWorld w, ModelRoot modelRoot) {
+        this.removeAll();
+        this.setText("Build");
+        buttonGroup = new ButtonGroup();
+        trackBuildModel = modelRoot.getTrackBuildModel();
 
-	/** Creates new BuildMenu */
+        ActionAdapter actionAdapter = trackBuildModel.getBuildModeActionAdapter();
 
-	public BuildMenu() {
-		super();
-	}
+        Enumeration e = actionAdapter.getActions();
+        Enumeration buttonModels = actionAdapter.getButtonModels();
 
-	public void setup(ReadOnlyWorld w, ModelRoot modelRoot) {
+        while (e.hasMoreElements()) {
+            Action action = (Action)e.nextElement();
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(action);
+            menuItem.setModel((ButtonModel)buttonModels.nextElement());
+            buttonGroup.add(menuItem);
+            add(menuItem);
+        }
 
-		this.removeAll();
-		this.setText("Build");
-		buttonGroup = new ButtonGroup();
-		trackBuildModel = modelRoot.getTrackBuildModel();
-		ActionAdapter actionAdapter = 
-		    trackBuildModel.getBuildModeActionAdapter();
-		
-		Enumeration e = actionAdapter.getActions();
-		Enumeration buttonModels = actionAdapter.getButtonModels();
+        buttonGroup2 = new ButtonGroup();
 
-		while (e.hasMoreElements()) {
-		    Action action = (Action) e.nextElement();
-		    JRadioButtonMenuItem menuItem = new
-			JRadioButtonMenuItem(action);
-		    menuItem.setModel((ButtonModel) buttonModels.nextElement());
-		    buttonGroup.add(menuItem);
-		    add(menuItem);
-					}
+        this.addSeparator();
 
-		buttonGroup2 = new ButtonGroup();
-        
-		this.addSeparator();
+        actionAdapter = trackBuildModel.getTrackRuleAdapter();
 
-		actionAdapter = trackBuildModel.getTrackRuleAdapter();
+        e = actionAdapter.getActions();
+        buttonModels = actionAdapter.getButtonModels();
 
-		e = actionAdapter.getActions();
-		buttonModels = actionAdapter.getButtonModels();
-
-		while (e.hasMoreElements()) {
-		    Action action = (Action) e.nextElement();
-		    JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(action);
-		    menuItem.setIcon(null);
-		    menuItem.setModel((ButtonModel) buttonModels.nextElement());
-		    buttonGroup2.add(menuItem);
-		    add(menuItem);
-		}
-
-	}
+        while (e.hasMoreElements()) {
+            Action action = (Action)e.nextElement();
+            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(action);
+            menuItem.setIcon(null);
+            menuItem.setModel((ButtonModel)buttonModels.nextElement());
+            buttonGroup2.add(menuItem);
+            add(menuItem);
+        }
+    }
 }

@@ -10,7 +10,6 @@ package jfreerails.server.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
@@ -18,162 +17,169 @@ import jfreerails.world.terrain.Production;
 import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
+    private final World world;
 
-	private final World world;
+    //ArrayList cargoTypes = new ArrayList();
+    //ArrayList terrainTypes = new ArrayList();
+    HashMap cargoName2cargoTypeNumber = new HashMap();
+    HashSet rgbValuesAlreadyUsed = new HashSet();
 
-	//ArrayList cargoTypes = new ArrayList();
-	//ArrayList terrainTypes = new ArrayList();
-	HashMap cargoName2cargoTypeNumber = new HashMap();
-	HashSet rgbValuesAlreadyUsed = new HashSet();
-			
-	//Parsing variables for Tile
-	String tileID;
-	String tileCategory;
-	int tileRGB;
-	int tileROW;	
-	ArrayList typeConsumes = new ArrayList();
-	ArrayList typeProduces = new ArrayList();
-	ArrayList typeConverts = new ArrayList();
-	
-	public CargoAndTerrainHandlerImpl(World w){
-		world = w;
-	}
-		
-	public void handle_Converts(final Attributes meta) throws SAXException {
-	
-		String inputCargo = meta.getValue("input");
-		String outputCargo = meta.getValue("output");
+    //Parsing variables for Tile
+    String tileID;
+    String tileCategory;
+    int tileRGB;
+    int tileROW;
+    ArrayList typeConsumes = new ArrayList();
+    ArrayList typeProduces = new ArrayList();
+    ArrayList typeConverts = new ArrayList();
 
-		int input = string2CargoNumber(inputCargo);
-		int output = string2CargoNumber(outputCargo);
-		Conversion conversion = new Conversion(input, output);
-		typeConverts.add(conversion);
-	}
+    public CargoAndTerrainHandlerImpl(World w) {
+        world = w;
+    }
 
-	public void start_Tile(final Attributes meta) throws SAXException {
+    public void handle_Converts(final Attributes meta)
+        throws SAXException {
+        String inputCargo = meta.getValue("input");
+        String outputCargo = meta.getValue("output");
 
-		typeConsumes.clear();
-		typeProduces.clear();
-		typeConverts.clear();
+        int input = string2CargoNumber(inputCargo);
+        int output = string2CargoNumber(outputCargo);
+        Conversion conversion = new Conversion(input, output);
+        typeConverts.add(conversion);
+    }
 
-		tileID = meta.getValue("id");
-		tileCategory = meta.getValue("Category");
-		String rgbString = meta.getValue("rgb");				
-		tileRGB = string2RGBValue(rgbString);
-		
-		//Check if another type is already using this rgb value..
-		Integer rgbInteger = new Integer(tileRGB);
-		if(rgbValuesAlreadyUsed.contains(rgbInteger)){
-			throw new SAXException(tileID+" can't using rgb value "+rgbString+" because it is being used by another tile type!");
-		}else{
-			rgbValuesAlreadyUsed.add(rgbInteger);
-		}
-				
-		tileROW = Integer.parseInt(meta.getValue("right-of-way"));
+    public void start_Tile(final Attributes meta) throws SAXException {
+        typeConsumes.clear();
+        typeProduces.clear();
+        typeConverts.clear();
 
-	}
+        tileID = meta.getValue("id");
+        tileCategory = meta.getValue("Category");
 
-	public void end_Tile() throws SAXException {
-		
-		Consumption[] consumes = new Consumption[typeConsumes.size()];
-		for (int i = 0; i < typeConsumes.size(); i++) {
-			consumes[i] = (Consumption) typeConsumes.get(i);
-		}
-		
-		Production[] produces = new Production[typeProduces.size()];
-		for (int i = 0; i < typeProduces.size(); i++) {
-			produces[i] = (Production) typeProduces.get(i);
-		}
-		
-		Conversion[] converts = new Conversion[typeConverts.size()];
-		for (int i = 0; i < typeConverts.size(); i++) {
-			converts[i] = (Conversion) typeConverts.get(i);
-		}
-		
-		TileTypeImpl tileType = new TileTypeImpl(tileRGB,tileCategory, tileID, tileROW, produces, consumes, converts);
-		
-		world.add(KEY.TERRAIN_TYPES, tileType);		
-	}
+        String rgbString = meta.getValue("rgb");
+        tileRGB = string2RGBValue(rgbString);
 
-	public void handle_Cargo(final Attributes meta) throws SAXException {
+        //Check if another type is already using this rgb value..
+        Integer rgbInteger = new Integer(tileRGB);
 
-		String cargoID= meta.getValue("id");
-		String cargoCategory = meta.getValue("Category");
-		int unitWeight=Integer.parseInt(meta.getValue("unitWeight"));
-		CargoType cargoType = new CargoType(unitWeight, cargoID, cargoCategory);
-		
-		int cargoNumber = world.size(KEY.CARGO_TYPES);
-		cargoName2cargoTypeNumber.put(cargoID, new Integer(cargoNumber));
-		world.add(KEY.CARGO_TYPES, cargoType);		
-	}
+        if (rgbValuesAlreadyUsed.contains(rgbInteger)) {
+            throw new SAXException(tileID + " can't using rgb value " +
+                rgbString + " because it is being used by another tile type!");
+        } else {
+            rgbValuesAlreadyUsed.add(rgbInteger);
+        }
 
-	public void start_Cargo_Types(final Attributes meta) throws SAXException {
-		//no need to do anything here.
-	}
+        tileROW = Integer.parseInt(meta.getValue("right-of-way"));
+    }
 
-	public void end_Cargo_Types() throws SAXException {
-		//no need to do anything here.
-	}
+    public void end_Tile() throws SAXException {
+        Consumption[] consumes = new Consumption[typeConsumes.size()];
 
-	public void start_Terrain_Types(final Attributes meta) throws SAXException {
-		//no need to do anything here.
-	}
+        for (int i = 0; i < typeConsumes.size(); i++) {
+            consumes[i] = (Consumption)typeConsumes.get(i);
+        }
 
-	public void end_Terrain_Types() throws SAXException {
-		//no need to do anything here.
-	}
+        Production[] produces = new Production[typeProduces.size()];
 
-	public void start_Types(final Attributes meta) throws SAXException {
-		//no need to do anything here.
-	}
+        for (int i = 0; i < typeProduces.size(); i++) {
+            produces[i] = (Production)typeProduces.get(i);
+        }
 
-	public void end_Types() throws SAXException {
-		//no need to do anything here.
-	}
+        Conversion[] converts = new Conversion[typeConverts.size()];
 
-	public void handle_Consumes(final Attributes meta) throws SAXException {
-		
-		int cargoConsumed = string2CargoNumber(meta.getValue("Cargo"));
-		String prerequisisteString = meta.getValue("Prerequisiste");
-		
-		//"Prerequisiste" is an optional attribute, so may be null. 
-		int prerequisisteForConsumption = (null == prerequisisteString ? 1 : Integer.parseInt(prerequisisteString));
-		Consumption consumption = new Consumption(cargoConsumed, prerequisisteForConsumption);
-		typeConsumes.add(consumption);
-	}
+        for (int i = 0; i < typeConverts.size(); i++) {
+            converts[i] = (Conversion)typeConverts.get(i);
+        }
 
-	public void handle_Produces(final Attributes meta) throws SAXException {
-	
-		int cargoProduced = string2CargoNumber(meta.getValue("Cargo"));
-		int rateOfProduction = Integer.parseInt(meta.getValue("Rate"));
-		Production production = new Production(cargoProduced, rateOfProduction);
-		typeProduces.add(production);
-	}
+        TileTypeImpl tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
+                tileROW, produces, consumes, converts);
 
-	private int string2RGBValue(String temp_number) {
-		int rgb = (int) Integer.parseInt(temp_number, 16);
+        world.add(KEY.TERRAIN_TYPES, tileType);
+    }
 
-		/*
-		*  We need to change the format of the rgb value to the same one as used
-		*  by the the BufferedImage that stores the map.  See jfreerails.common.Map
-		*/
-		rgb = new java.awt.Color(rgb).getRGB();
-		return rgb;
-	}
-	
-	/** Returns the index number of the cargo with the specified name. */
-	private int string2CargoNumber(String cargoName) throws SAXException {
-		if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
-			Integer integer = (Integer) cargoName2cargoTypeNumber.get(cargoName);
-			return integer.intValue();
-		} else {
-			throw new SAXException("Unknown cargo type: " + cargoName);
-		}
-	}
+    public void handle_Cargo(final Attributes meta) throws SAXException {
+        String cargoID = meta.getValue("id");
+        String cargoCategory = meta.getValue("Category");
+        int unitWeight = Integer.parseInt(meta.getValue("unitWeight"));
+        CargoType cargoType = new CargoType(unitWeight, cargoID, cargoCategory);
 
+        int cargoNumber = world.size(KEY.CARGO_TYPES);
+        cargoName2cargoTypeNumber.put(cargoID, new Integer(cargoNumber));
+        world.add(KEY.CARGO_TYPES, cargoType);
+    }
+
+    public void start_Cargo_Types(final Attributes meta)
+        throws SAXException {
+        //no need to do anything here.
+    }
+
+    public void end_Cargo_Types() throws SAXException {
+        //no need to do anything here.
+    }
+
+    public void start_Terrain_Types(final Attributes meta)
+        throws SAXException {
+        //no need to do anything here.
+    }
+
+    public void end_Terrain_Types() throws SAXException {
+        //no need to do anything here.
+    }
+
+    public void start_Types(final Attributes meta) throws SAXException {
+        //no need to do anything here.
+    }
+
+    public void end_Types() throws SAXException {
+        //no need to do anything here.
+    }
+
+    public void handle_Consumes(final Attributes meta)
+        throws SAXException {
+        int cargoConsumed = string2CargoNumber(meta.getValue("Cargo"));
+        String prerequisisteString = meta.getValue("Prerequisiste");
+
+        //"Prerequisiste" is an optional attribute, so may be null. 
+        int prerequisisteForConsumption = (null == prerequisisteString ? 1
+                                                                       : Integer.parseInt(prerequisisteString));
+        Consumption consumption = new Consumption(cargoConsumed,
+                prerequisisteForConsumption);
+        typeConsumes.add(consumption);
+    }
+
+    public void handle_Produces(final Attributes meta)
+        throws SAXException {
+        int cargoProduced = string2CargoNumber(meta.getValue("Cargo"));
+        int rateOfProduction = Integer.parseInt(meta.getValue("Rate"));
+        Production production = new Production(cargoProduced, rateOfProduction);
+        typeProduces.add(production);
+    }
+
+    private int string2RGBValue(String temp_number) {
+        int rgb = (int)Integer.parseInt(temp_number, 16);
+
+        /*
+        *  We need to change the format of the rgb value to the same one as used
+        *  by the the BufferedImage that stores the map.  See jfreerails.common.Map
+        */
+        rgb = new java.awt.Color(rgb).getRGB();
+
+        return rgb;
+    }
+
+    /** Returns the index number of the cargo with the specified name. */
+    private int string2CargoNumber(String cargoName) throws SAXException {
+        if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
+            Integer integer = (Integer)cargoName2cargoTypeNumber.get(cargoName);
+
+            return integer.intValue();
+        } else {
+            throw new SAXException("Unknown cargo type: " + cargoName);
+        }
+    }
 }

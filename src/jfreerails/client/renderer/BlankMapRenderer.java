@@ -5,52 +5,49 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+
 public class BlankMapRenderer implements MapRenderer {
-	
-	private final float scale;
+    private final float scale;
 
-	public BlankMapRenderer(float s){
-		scale=s;		
-	}
+    public BlankMapRenderer(float s) {
+        scale = s;
+    }
 
-	public float getScale() {
-		return scale;
-	}
+    public float getScale() {
+        return scale;
+    }
 
-	public Dimension getMapSizeInPixels() {
-		int height=(int)(400*scale);
-        int width=(int)(400*scale);
-        return new Dimension(height,width);
-	}
+    public Dimension getMapSizeInPixels() {
+        int height = (int)(400 * scale);
+        int width = (int)(400 * scale);
 
-	public void paintTile(Graphics g, int tileX, int tileY) {
-		paintRect(g,null);
-	}
+        return new Dimension(height, width);
+    }
 
-	public void paintRectangleOfTiles(
-		Graphics g,
-		int x,
-		int y,
-		int width,
-		int height) {
-			paintRect(g,null);
-	}
+    public void paintTile(Graphics g, int tileX, int tileY) {
+        paintRect(g, null);
+    }
 
-	public void refreshTile(int x, int y) {
-	}
+    public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
+        int height) {
+        paintRect(g, null);
+    }
 
-	public void refreshRectangleOfTiles(int x, int y, int width, int height) {
-	}
+    public void refreshTile(int x, int y) {
+    }
 
-	public void paintRect(Graphics g, Rectangle visibleRect) {
-		g.setColor(Color.darkGray);
-        g.fillRect(0, 0, (int)(scale*400), (int)(scale*400));
+    public void refreshRectangleOfTiles(int x, int y, int width, int height) {
+    }
+
+    public void paintRect(Graphics g, Rectangle visibleRect) {
+        g.setColor(Color.darkGray);
+        g.fillRect(0, 0, (int)(scale * 400), (int)(scale * 400));
         g.setColor(Color.blue);
-        int x=(int)(100*scale);
-        int y=(int)(100*scale);
-        int height=(int)(200*scale);
-        int width=(int)(200*scale);
+
+        int x = (int)(100 * scale);
+        int y = (int)(100 * scale);
+        int height = (int)(200 * scale);
+        int width = (int)(200 * scale);
         g.fillRect(x, y, height, width);
-	}
-	
+    }
 }

@@ -1,6 +1,6 @@
 package jfreerails.server.common;
-import jfreerails.world.top.World;
 
+import jfreerails.world.top.World;
 
 
 /**
@@ -9,10 +9,6 @@ import jfreerails.world.top.World;
 *@author     Luke Lindsay
 *     09 October 2001
 */
-
-
 public interface TileSetFactory {
-	
-     void addTerrainTileTypesList(World w);
-     
+    void addTerrainTileTypesList(World w);
 }

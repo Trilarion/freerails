@@ -3,6 +3,7 @@ package jfreerails.world.top;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.track.FreerailsTile;
 
+
 /** <p>This interface defines a unified set of methods to access the elements
  * that make up the game world.  One can think of it as a specific-purpose
  * Collection.  Game world elements are either placed on a 2D grid - the map -
@@ -23,23 +24,23 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
     /** Returns the element mapped to the specified item.
      */
     FreerailsSerializable get(ITEM item);
-    
+
     /** Returns the element at the specified position in the specified list.
      */
     FreerailsSerializable get(KEY key, int index);
-    
+
     /** Returns the number of elements in the specified list.
      */
     int size(KEY key);
-    
+
     /** Returns the width of the map in tiles.
      */
     int getMapWidth();
-    
+
     /** Returns the height of the map in tiles.
      */
     int getMapHeight();
-    
+
     /** Returns the tile at the specified position on the map.
      */
     FreerailsTile getTile(int x, int y);
@@ -48,4 +49,3 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
 
     boolean boundsContain(KEY k, int index);
 }
-

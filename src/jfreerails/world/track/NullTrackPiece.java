@@ -3,7 +3,6 @@
  *
  * Created on 23 January 2002, 21:31
  */
-
 package jfreerails.world.track;
 
 import java.io.ObjectStreamException;
@@ -14,22 +13,19 @@ import java.io.ObjectStreamException;
  * @author  lindsal
  */
 final public class NullTrackPiece implements TrackPiece {
-
-    private static final TrackPiece nullTrackPiece=new NullTrackPiece();
+    private static final TrackPiece nullTrackPiece = new NullTrackPiece();
 
     /** Creates new NullTrackPiece */
     private NullTrackPiece() {
     }
 
-    public static TrackPiece getInstance(){
+    public static TrackPiece getInstance() {
         return nullTrackPiece;
     }
-
 
     public int getRGB() {
         return 0;
     }
-
 
     public int getTrackGraphicNumber() {
         return 0;
@@ -44,11 +40,10 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     private Object readResolve() throws ObjectStreamException {
-    	return nullTrackPiece;
+        return nullTrackPiece;
     }
 
-	public boolean equals(Object o) {
-		return o == this;
-	}
-
+    public boolean equals(Object o) {
+        return o == this;
+    }
 }

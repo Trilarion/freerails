@@ -1,6 +1,6 @@
 package jfreerails.controller;
-import java.awt.Point;
 
+import java.awt.Point;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.UpgradeTrackMove;
@@ -11,143 +11,130 @@ import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
 
-
 final public class TrackMoveProducer {
+    private TrackRule trackRule;
+    private ReadOnlyWorld w;
+    private MoveReceiver moveReceiver;
+    public final static int BUILD_TRACK = 1;
+    public final static int REMOVE_TRACK = 2;
+    public final static int UPGRADE_TRACK = 3;
 
+    /* Don't build any track */
+    public final static int IGNORE_TRACK = 4;
+    private int trackBuilderMode = BUILD_TRACK;
 
-	private TrackRule trackRule;
+    /** This generates the transactions - the charge - for the track being built.*/
+    private TrackMoveTransactionsGenerator transactionsGenerator;
 
-	private ReadOnlyWorld w;
+    public MoveReceiver getMoveReceiver() {
+        return moveReceiver;
+    }
 
-	private MoveReceiver moveReceiver;
+    public void setMoveReceiver(MoveReceiver moveReceiver) {
+        this.moveReceiver = moveReceiver;
+    }
 
-	public final static int BUILD_TRACK = 1;
+    public boolean buildTrack(Point from, OneTileMoveVector trackVector) {
+        if (trackBuilderMode == BUILD_TRACK) {
+            //trackBuilder.buildTrack(from, trackVector, trackRule);
+            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
+                    trackVector, trackRule, w);
 
-	public final static int REMOVE_TRACK = 2;
+            moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 
-	public final static int UPGRADE_TRACK = 3;
+            return true;
+        }
 
-	/* Don't build any track */
-	public final static int IGNORE_TRACK = 4;
+        if (trackBuilderMode == REMOVE_TRACK) {
+            //trackBuilder.removeTrack(from, trackVector);
+            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from,
+                    trackVector, w);
+            moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 
-	private int trackBuilderMode = BUILD_TRACK;
-	
-	/** This generates the transactions - the charge - for the track being built.*/
-	private TrackMoveTransactionsGenerator transactionsGenerator;
+            return true;
+        }
 
-	public MoveReceiver getMoveReceiver() {
-		return moveReceiver;
-	}
+        if (trackBuilderMode == UPGRADE_TRACK) {
+            Point point = new Point(from.x + trackVector.getDx(),
+                    from.y + trackVector.getDy());
+            upgradeTrack(point, trackRule);
 
-	public void setMoveReceiver(MoveReceiver moveReceiver) {
-		this.moveReceiver = moveReceiver;
-	}
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public boolean buildTrack(Point from, OneTileMoveVector trackVector) {
+    public boolean upgradeTrack(Point point) {
+        if (trackBuilderMode == UPGRADE_TRACK) {
+            upgradeTrack(point, trackRule);
 
-		if (trackBuilderMode == BUILD_TRACK) {
-			//trackBuilder.buildTrack(from, trackVector, trackRule);
-			ChangeTrackPieceCompositeMove move =
-				ChangeTrackPieceCompositeMove.generateBuildTrackMove(
-					from,
-					trackVector,
-					trackRule,
-					w);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-			moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-			return true;
-		}
-		if (trackBuilderMode == REMOVE_TRACK) {
-			//trackBuilder.removeTrack(from, trackVector);
-			ChangeTrackPieceCompositeMove move =
-				ChangeTrackPieceCompositeMove.generateRemoveTrackMove(
-					from,
-					trackVector,
-					w);
-			moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-			return true;
-		}
-		if (trackBuilderMode == UPGRADE_TRACK) {
-			Point point =
-				new Point(from.x + trackVector.getDx(), from.y + trackVector.getDy());
-			upgradeTrack(point, trackRule);
+    /**
+     *  Sets the current track rule. E.g. there are different rules governing
+     *  the track-configurations that are legal for double and single track.
+     *
+     *@param  trackRuleNumber  The new trackRule value
+     */
+    public void setTrackRule(int trackRuleNumber) {
+        this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, trackRuleNumber);
+        TextMessageHandler.sendMessage(trackRule.getTypeName());
+    }
 
-			return true;
-		} else {
-			return false;
-		}
+    public int getTrackRule() {
+        return this.trackRule.getRuleNumber();
+    }
 
-	}
-	public boolean upgradeTrack(Point point) {
+    public void setTrackBuilderMode(int i) {
+        switch (i) {
+        case BUILD_TRACK:
+        case REMOVE_TRACK:
+        case UPGRADE_TRACK:
+        case IGNORE_TRACK:
+            trackBuilderMode = i;
 
-		if (trackBuilderMode == UPGRADE_TRACK) {
-			upgradeTrack(point, trackRule);
+            break;
 
-			return true;
-		} else {
-			return false;
-		}
+        default:
+            throw new IllegalArgumentException();
+        }
+    }
 
-	}
-	/**
-	 *  Sets the current track rule. E.g. there are different rules governing
-	 *  the track-configurations that are legal for double and single track.
-	 *
-	 *@param  trackRuleNumber  The new trackRule value
-	 */
+    public int getTrackBuilderMode() {
+        return trackBuilderMode;
+    }
 
-	public void setTrackRule(int trackRuleNumber) {
-		this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, trackRuleNumber);
-		TextMessageHandler.sendMessage(trackRule.getTypeName());
-	}
-	
-	public int getTrackRule(){
-		return this.trackRule.getRuleNumber();
-	}
-	
-	
-	public void setTrackBuilderMode(int i){
-		switch (i) {
-			case BUILD_TRACK:
-			case REMOVE_TRACK:
-			case UPGRADE_TRACK:
-			case IGNORE_TRACK:
-			trackBuilderMode=i;
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
-	}
-	
-	public int getTrackBuilderMode(){
-		return trackBuilderMode;
-	}
+    public TrackMoveProducer(ReadOnlyWorld world) {
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world);
 
-	public TrackMoveProducer(ReadOnlyWorld world) {
-		transactionsGenerator = new TrackMoveTransactionsGenerator(world);
-		if (world == null) {
-			throw new java.lang.NullPointerException(
-				"Tried to create new TrackBuilder, but world==null");
-		}
-		this.w = world;
-	}
-	
-	public TrackMoveProducer(ReadOnlyWorld  world, MoveReceiver moveReceiver) {
-		if (null == world||null==moveReceiver) {
-			throw new NullPointerException();
-		}
-		this.moveReceiver=moveReceiver;
-		this.w = world;		
-		this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
-		transactionsGenerator = new TrackMoveTransactionsGenerator(world);
-	}
-	
-	private void upgradeTrack(Point point, TrackRule trackRule) {
+        if (world == null) {
+            throw new java.lang.NullPointerException(
+                "Tried to create new TrackBuilder, but world==null");
+        }
 
-		TrackPiece before=(TrackPiece)w.getTile(point.x, point.y);
-		TrackPiece after=trackRule.getTrackPiece(before.getTrackConfiguration());
-		Move move = UpgradeTrackMove.generateMove( before, after, point);		
-		moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-	}
+        this.w = world;
+    }
 
+    public TrackMoveProducer(ReadOnlyWorld world, MoveReceiver moveReceiver) {
+        if (null == world || null == moveReceiver) {
+            throw new NullPointerException();
+        }
+
+        this.moveReceiver = moveReceiver;
+        this.w = world;
+        this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world);
+    }
+
+    private void upgradeTrack(Point point, TrackRule trackRule) {
+        TrackPiece before = (TrackPiece)w.getTile(point.x, point.y);
+        TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration());
+        Move move = UpgradeTrackMove.generateMove(before, after, point);
+        moveReceiver.processMove(transactionsGenerator.addTransactions(move));
+    }
 }

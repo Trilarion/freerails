@@ -2,6 +2,7 @@ package jfreerails.controller;
 
 import javax.swing.table.TableModel;
 
+
 /**
  * This class exposes controls for a single game running on the server rather
  * than changes to the game being played.

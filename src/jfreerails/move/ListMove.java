@@ -3,11 +3,11 @@ package jfreerails.move;
 import jfreerails.world.top.KEY;
 import jfreerails.world.common.FreerailsSerializable;
 
+
 /**
  * This interface provides information about changes to the lists in the World database.
  */
 public interface ListMove extends Move {
-
     /**
      * @return the type of object which was changed
      */

@@ -8,11 +8,10 @@
 package jfreerails.server.parser;
 
 import java.io.IOException;
-
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
 
 /**
  * The class reads XML documents according to specified DTD and
@@ -25,11 +24,8 @@ import org.xml.sax.SAXException;
  * <p><b>Warning:</b> the class is machine generated. DO NOT MODIFY</p>
  */
 final public class Track_TilesParser implements org.xml.sax.ContentHandler {
-
     private java.lang.StringBuffer buffer;
-
     private Track_TilesParslet parslet;
-
     private Track_TilesHandler handler;
 
     /**
@@ -37,7 +33,8 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      */
     private java.util.Stack context;
 
-    public Track_TilesParser(final Track_TilesHandler handler, final Track_TilesParslet parslet) {
+    public Track_TilesParser(final Track_TilesHandler handler,
+        final Track_TilesParslet parslet) {
         this.parslet = parslet;
         this.handler = handler;
         buffer = new StringBuffer(111);
@@ -53,9 +50,14 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     public void endDocument() throws SAXException {
     }
 
-    public void startElement(java.lang.String ns, java.lang.String name, java.lang.String qname, org.xml.sax.Attributes attrs) throws SAXException {
+    public void startElement(java.lang.String ns, java.lang.String name,
+        java.lang.String qname, org.xml.sax.Attributes attrs)
+        throws SAXException {
         dispatch(true);
-        context.push(new Object[] {qname, new org.xml.sax.helpers.AttributesImpl(attrs)});
+        context.push(new Object[] {
+                qname, new org.xml.sax.helpers.AttributesImpl(attrs)
+            });
+
         if ("CanOnlyBuildOnTheseTerrainTypes".equals(qname)) {
             handler.start_CanOnlyBuildOnTheseTerrainTypes(attrs);
         } else if ("ListOfTrackPieceTemplates".equals(qname)) {
@@ -79,9 +81,11 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
         }
     }
 
-    public void endElement(java.lang.String ns, java.lang.String name, java.lang.String qname) throws SAXException {
+    public void endElement(java.lang.String ns, java.lang.String name,
+        java.lang.String qname) throws SAXException {
         dispatch(false);
         context.pop();
+
         if ("CanOnlyBuildOnTheseTerrainTypes".equals(qname)) {
             handler.end_CanOnlyBuildOnTheseTerrainTypes();
         } else if ("ListOfTrackPieceTemplates".equals(qname)) {
@@ -101,31 +105,39 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
         }
     }
 
-    public void characters(char[] chars, int start, int len) throws SAXException {
+    public void characters(char[] chars, int start, int len)
+        throws SAXException {
         buffer.append(chars, start, len);
     }
 
-    public void ignorableWhitespace(char[] chars, int start, int len) throws SAXException {
+    public void ignorableWhitespace(char[] chars, int start, int len)
+        throws SAXException {
     }
 
-    public void processingInstruction(java.lang.String target, java.lang.String data) throws SAXException {
+    public void processingInstruction(java.lang.String target,
+        java.lang.String data) throws SAXException {
     }
 
-    public void startPrefixMapping(final java.lang.String prefix, final java.lang.String uri) throws SAXException {
+    public void startPrefixMapping(final java.lang.String prefix,
+        final java.lang.String uri) throws SAXException {
     }
 
-    public void endPrefixMapping(final java.lang.String prefix) throws SAXException {
+    public void endPrefixMapping(final java.lang.String prefix)
+        throws SAXException {
     }
 
     public void skippedEntity(java.lang.String name) throws SAXException {
     }
 
-    private void dispatch(final boolean fireOnlyIfMixed) throws SAXException {
-        if (fireOnlyIfMixed && buffer.length() == 0) return; //skip it
+    private void dispatch(final boolean fireOnlyIfMixed)
+        throws SAXException {
+        if (fireOnlyIfMixed && buffer.length() == 0) {
+            return; //skip it
+        }
 
-        Object[] ctx = (Object[]) context.peek();
-        String here = (String) ctx[0];
-        org.xml.sax.Attributes attrs = (org.xml.sax.Attributes) ctx[1];
+        Object[] ctx = (Object[])context.peek();
+        String here = (String)ctx[0];
+        org.xml.sax.Attributes attrs = (org.xml.sax.Attributes)ctx[1];
         buffer.delete(0, buffer.length());
     }
 
@@ -137,7 +149,8 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
-    public void parse(final InputSource input) throws SAXException, ParserConfigurationException, IOException {
+    public void parse(final InputSource input)
+        throws SAXException, ParserConfigurationException, IOException {
         parse(input, this);
     }
 
@@ -149,7 +162,8 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
-    public void parse(final java.net.URL url) throws SAXException, ParserConfigurationException, IOException {
+    public void parse(final java.net.URL url)
+        throws SAXException, ParserConfigurationException, IOException {
         parse(new InputSource(url.toExternalForm()), this);
     }
 
@@ -161,7 +175,9 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
-    public static void parse(final InputSource input, final Track_TilesHandler handler, final Track_TilesParslet parslet) throws SAXException, ParserConfigurationException, IOException {
+    public static void parse(final InputSource input,
+        final Track_TilesHandler handler, final Track_TilesParslet parslet)
+        throws SAXException, ParserConfigurationException, IOException {
         parse(input, new Track_TilesParser(handler, parslet));
     }
 
@@ -173,14 +189,19 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
      * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
-    public static void parse(final java.net.URL url, final Track_TilesHandler handler, final Track_TilesParslet parslet) throws SAXException, ParserConfigurationException, IOException {
+    public static void parse(final java.net.URL url,
+        final Track_TilesHandler handler, final Track_TilesParslet parslet)
+        throws SAXException, ParserConfigurationException, IOException {
         parse(new InputSource(url.toExternalForm()), handler, parslet);
     }
 
-    private static void parse(final InputSource input, final Track_TilesParser recognizer) throws SAXException, ParserConfigurationException, IOException {
+    private static void parse(final InputSource input,
+        final Track_TilesParser recognizer)
+        throws SAXException, ParserConfigurationException, IOException {
         javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory.newInstance();
-        factory.setValidating(true);  //the code was generated according DTD
-        factory.setNamespaceAware(false);  //the code was generated according DTD
+        factory.setValidating(true); //the code was generated according DTD
+        factory.setNamespaceAware(false); //the code was generated according DTD
+
         org.xml.sax.XMLReader parser = factory.newSAXParser().getXMLReader();
         parser.setContentHandler(recognizer);
         parser.setErrorHandler(recognizer.getDefaultErrorHandler());
@@ -189,21 +210,24 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
 
     private org.xml.sax.ErrorHandler getDefaultErrorHandler() {
         return new org.xml.sax.ErrorHandler() {
-            public void error(org.xml.sax.SAXParseException ex) throws SAXException  {
-                if (context.isEmpty()) System.err.println("Missing DOCTYPE.");
-                throw ex;
-            }
+                public void error(org.xml.sax.SAXParseException ex)
+                    throws SAXException {
+                    if (context.isEmpty()) {
+                        System.err.println("Missing DOCTYPE.");
+                    }
 
-            public void fatalError(org.xml.sax.SAXParseException ex) throws SAXException {
-                throw ex;
-            }
+                    throw ex;
+                }
 
-            public void warning(org.xml.sax.SAXParseException ex) throws SAXException {
-                // ignore
-            }
-        };
+                public void fatalError(org.xml.sax.SAXParseException ex)
+                    throws SAXException {
+                    throw ex;
+                }
 
+                public void warning(org.xml.sax.SAXParseException ex)
+                    throws SAXException {
+                    // ignore
+                }
+            };
     }
-
 }
-

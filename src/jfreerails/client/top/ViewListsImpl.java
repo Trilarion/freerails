@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.renderer.ChequeredTileRenderer;
@@ -24,252 +23,244 @@ import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 
+
 public class ViewListsImpl implements ViewLists {
+    private final TileRendererList tiles;
+    private final TrackPieceRendererList trackPieceViewList;
+    private final SideOnTrainTrainViewImages sideOnTrainTrainView;
+    private final TrainImages trainImages;
+    private final ImageManager imageManager;
 
-	private final TileRendererList tiles;
-	private final TrackPieceRendererList trackPieceViewList;
+    public ViewListsImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+        throws IOException {
+        URL out = ViewListsImpl.class.getResource("/experimental");
+        URL in = ViewListsImpl.class.getResource("/jfreerails/client/graphics");
 
-	private final SideOnTrainTrainViewImages sideOnTrainTrainView;
+        imageManager = new ImageManagerImpl("/jfreerails/client/graphics/",
+                out.getPath());
 
-	private final TrainImages trainImages;
+        //tiles = new QuickRGBTileRendererList(w);
+        tiles = loadNewTileViewList(w, pm);
 
-	private final ImageManager imageManager;
+        trackPieceViewList = loadTrackViews(w, pm);
 
-	public ViewListsImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
-		throws IOException {
+        //engine views
+        sideOnTrainTrainView = addTrainViews(pm);
 
-		URL out = ViewListsImpl.class.getResource("/experimental");
-		URL in = ViewListsImpl.class.getResource("/jfreerails/client/graphics");
+        trainImages = new TrainImages(w, imageManager, pm);
+    }
 
-		imageManager =
-			new ImageManagerImpl("/jfreerails/client/graphics/", out.getPath());
+    public TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
+        FreerailsProgressMonitor pm) throws IOException {
+        return new TrackPieceRendererList(w, imageManager, pm);
+    }
 
-		//tiles = new QuickRGBTileRendererList(w);
-		tiles = loadNewTileViewList(w, pm);
+    private static SideOnTrainTrainViewImages addTrainViews(
+        FreerailsProgressMonitor pm) {
+        //wagon views
+        Image tempImage = null;
 
-		trackPieceViewList = loadTrackViews(w, pm);
+        //		Setup progress monitor..
+        pm.setMessage("Loading train images.");
+        pm.setMax(2);
+        pm.setValue(0);
 
-		//engine views
+        SideOnTrainTrainViewImages sideOnTrainTrainView = new SideOnTrainTrainViewImages(5,
+                3);
+        URL wagon = ViewListsImpl.class.getResource(
+                "/jfreerails/data/wagon_151x100.png");
+        pm.setValue(1);
+        tempImage = (new javax.swing.ImageIcon(wagon)).getImage();
+        sideOnTrainTrainView.setWagonImage(0, tempImage);
+        sideOnTrainTrainView.setWagonImage(1, tempImage);
+        sideOnTrainTrainView.setWagonImage(2, tempImage);
+        sideOnTrainTrainView.setWagonImage(3, tempImage);
+        sideOnTrainTrainView.setWagonImage(4, tempImage);
 
-		sideOnTrainTrainView = addTrainViews(pm);
+        URL engine = ViewListsImpl.class.getResource(
+                "/jfreerails/data/engine_350x100.png");
+        pm.setValue(2);
+        tempImage = (new javax.swing.ImageIcon(engine)).getImage();
+        sideOnTrainTrainView.setEngineImage(0, tempImage);
+        sideOnTrainTrainView.setEngineImage(1, tempImage);
+        sideOnTrainTrainView.setEngineImage(2, tempImage);
 
-		trainImages = new TrainImages(w, imageManager, pm);
-	}
+        return sideOnTrainTrainView;
+    }
 
-	public TrackPieceRendererList loadTrackViews(
-		ReadOnlyWorld w,
-		FreerailsProgressMonitor pm)
-		throws IOException {
-		return new TrackPieceRendererList(w, imageManager, pm);
-	}
+    public TileRendererList loadNewTileViewList(ReadOnlyWorld w,
+        FreerailsProgressMonitor pm) throws IOException {
+        ArrayList tileRenderers = new ArrayList();
 
-	private static SideOnTrainTrainViewImages addTrainViews(FreerailsProgressMonitor pm) {
-		//wagon views
-		Image tempImage = null;
+        //Setup progress monitor..
+        pm.setMessage("Loading terrain graphics.");
 
-		//		Setup progress monitor..
-		pm.setMessage("Loading train images.");
-		pm.setMax(2);
-		pm.setValue(0);
+        int numberOfTypes = w.size(KEY.TERRAIN_TYPES);
+        pm.setMax(numberOfTypes);
 
-		SideOnTrainTrainViewImages sideOnTrainTrainView =
-			new SideOnTrainTrainViewImages(5, 3);
-		URL wagon =
-			ViewListsImpl.class.getResource(
-				"/jfreerails/data/wagon_151x100.png");
-		pm.setValue(1);
-		tempImage = (new javax.swing.ImageIcon(wagon)).getImage();
-		sideOnTrainTrainView.setWagonImage(0, tempImage);
-		sideOnTrainTrainView.setWagonImage(1, tempImage);
-		sideOnTrainTrainView.setWagonImage(2, tempImage);
-		sideOnTrainTrainView.setWagonImage(3, tempImage);
-		sideOnTrainTrainView.setWagonImage(4, tempImage);
-		URL engine =
-			ViewListsImpl.class.getResource(
-				"/jfreerails/data/engine_350x100.png");
-		pm.setValue(2);
-		tempImage = (new javax.swing.ImageIcon(engine)).getImage();
-		sideOnTrainTrainView.setEngineImage(0, tempImage);
-		sideOnTrainTrainView.setEngineImage(1, tempImage);
-		sideOnTrainTrainView.setEngineImage(2, tempImage);
-		return sideOnTrainTrainView;
-	}
+        int progress = 0;
+        pm.setValue(progress);
 
-	public TileRendererList loadNewTileViewList(
-		ReadOnlyWorld w,
-		FreerailsProgressMonitor pm)
-		throws IOException {
-		ArrayList tileRenderers = new ArrayList();
+        for (int i = 0; i < numberOfTypes; i++) {
+            TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
+            int[] typesTreatedAsTheSame = new int[] {i};
 
-		//Setup progress monitor..
-		pm.setMessage("Loading terrain graphics.");
-		int numberOfTypes = w.size(KEY.TERRAIN_TYPES);
-		pm.setMax(numberOfTypes);
-		int progress = 0;
-		pm.setValue(progress);
+            TileRenderer tr = null;
+            Integer rgb = new Integer(t.getRGB());
+            pm.setValue(++progress);
 
-		for (int i = 0; i < numberOfTypes; i++) {
+            try {
+                //XXX hack to make rivers flow into ocean and habours & occean
+                // treate habours as the same type.
+                String thisTerrainCategory = t.getTerrainCategory();
 
-			TerrainType t = (TerrainType) w.get(KEY.TERRAIN_TYPES, i);
-			int[] typesTreatedAsTheSame = new int[] { i };
+                if (thisTerrainCategory.equalsIgnoreCase("River") ||
+                        thisTerrainCategory.equalsIgnoreCase("Ocean")) {
+                    //Count number of types with category "water"
+                    int count = 0;
 
-			TileRenderer tr = null;
-			Integer rgb = new Integer(t.getRGB());
-			pm.setValue(++progress);
-			try {
-				//XXX hack to make rivers flow into ocean and habours & occean
-				// treate habours as the same type.
-				String thisTerrainCategory = t.getTerrainCategory();
-				if (thisTerrainCategory.equalsIgnoreCase("River")
-					|| thisTerrainCategory.equalsIgnoreCase("Ocean")) {
-					//Count number of types with category "water"
-					int count = 0;
-					for (int j = 0; j < numberOfTypes; j++) {
-						TerrainType t2 =
-							(TerrainType) w.get(KEY.TERRAIN_TYPES, j);
-						String terrainCategory = t2.getTerrainCategory();
-						if (terrainCategory.equalsIgnoreCase("Ocean")
-							|| terrainCategory.equalsIgnoreCase(
-								thisTerrainCategory)) {
-							count++;
-						}
-					}
-					typesTreatedAsTheSame = new int[count];
-					count = 0;
-					for (int j = 0; j < numberOfTypes; j++) {
-						TerrainType t2 =
-							(TerrainType) w.get(KEY.TERRAIN_TYPES, j);
-						String terrainCategory = t2.getTerrainCategory();
-						if (terrainCategory.equalsIgnoreCase("Ocean")
-							|| terrainCategory.equalsIgnoreCase(
-								thisTerrainCategory)) {
-							typesTreatedAsTheSame[count] = j;
-							count++;
-						}
-					}
-				}
+                    for (int j = 0; j < numberOfTypes; j++) {
+                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+                        String terrainCategory = t2.getTerrainCategory();
 
-				tr =
-					new RiverStyleTileRenderer(
-						imageManager,
-						typesTreatedAsTheSame,
-						t);
-				tileRenderers.add(tr);
-				continue;
-			} catch (IOException io) {
-			}
-			try {
-				tr =
-					new ForestStyleTileRenderer(
-						imageManager,
-						typesTreatedAsTheSame,
-						t);
-				tileRenderers.add(tr);
-				continue;
-			} catch (IOException io) {
-			}
-			try {
-				tr =
-					new ChequeredTileRenderer(
-						imageManager,
-						typesTreatedAsTheSame,
-						t);
-				tileRenderers.add(tr);
-				continue;
-			} catch (IOException io) {
-			}
-			try {
-				tr =
-					new StandardTileRenderer(
-						imageManager,
-						typesTreatedAsTheSame,
-						t);
-				tileRenderers.add(tr);
-				continue;
-			} catch (IOException io) {
-				// If the image is missing, we generate it.
+                        if (terrainCategory.equalsIgnoreCase("Ocean") ||
+                                terrainCategory.equalsIgnoreCase(
+                                    thisTerrainCategory)) {
+                            count++;
+                        }
+                    }
 
-				System.err.println(
-					"No tile renderer for " + t.getTerrainTypeName());
-				String filename =
-					StandardTileRenderer.generateFilename(
-						t.getTerrainTypeName());
-				Image image = QuickRGBTileRendererList.createImageFor(t);
-				imageManager.setImage(filename, image);
-				//generatedImages.setImage(filename, image);
-				try {
+                    typesTreatedAsTheSame = new int[count];
+                    count = 0;
 
-					tr =
-						new StandardTileRenderer(
-							imageManager,
-							typesTreatedAsTheSame,
-							t);
-					tileRenderers.add(tr);
-					continue;
-				} catch (IOException io2) {
-					io2.printStackTrace();
-					throw new IllegalStateException();
-				}
-			}
+                    for (int j = 0; j < numberOfTypes; j++) {
+                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+                        String terrainCategory = t2.getTerrainCategory();
 
-		}
+                        if (terrainCategory.equalsIgnoreCase("Ocean") ||
+                                terrainCategory.equalsIgnoreCase(
+                                    thisTerrainCategory)) {
+                            typesTreatedAsTheSame[count] = j;
+                            count++;
+                        }
+                    }
+                }
 
-		//XXXX add special tile renderer for habours
-		TileRenderer occeanTileRenderer = null;
-		for (int j = 0; j < numberOfTypes; j++) {
-			TerrainType t2 = (TerrainType) w.get(KEY.TERRAIN_TYPES, j);
-			String terrainName = t2.getTerrainTypeName();
-			if (terrainName.equalsIgnoreCase("Ocean")) {
-				occeanTileRenderer = (TileRenderer) tileRenderers.get(j);
-				break;
-			}
-		}
-		for (int j = 0; j < numberOfTypes; j++) {
-			TerrainType t2 = (TerrainType) w.get(KEY.TERRAIN_TYPES, j);
-			String terrainName = t2.getTerrainTypeName();
-			if (terrainName.equalsIgnoreCase("Harbour")) {
-				TerrainType t = (TerrainType) w.get(KEY.TERRAIN_TYPES, j);
-				TileRenderer tr =
-					new SpecialTileRenderer(
-						imageManager,
-						new int[] { j },
-						t,
-						occeanTileRenderer);
-				tileRenderers.set(j, tr);
+                tr = new RiverStyleTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-				occeanTileRenderer = (TileRenderer) tileRenderers.get(j);
-				break;
-			}
-		}
+                continue;
+            } catch (IOException io) {
+            }
 
-		return new TileRendererListImpl(tileRenderers);
-	}
+            try {
+                tr = new ForestStyleTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-	public TileRendererList getTileViewList() {
-		return this.tiles;
-	}
+                continue;
+            } catch (IOException io) {
+            }
 
-	public TrackPieceRendererList getTrackPieceViewList() {
-		return this.trackPieceViewList;
-	}
+            try {
+                tr = new ChequeredTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-	public boolean validate(ReadOnlyWorld w) {
-		boolean okSoFar = true;
-		if (!this.tiles.validate(w)) {
-			okSoFar = false;
-		}
-		if (!this.trackPieceViewList.validate(w)) {
-			okSoFar = false;
-		}
-		return okSoFar;
-	}
+                continue;
+            } catch (IOException io) {
+            }
 
-	public SideOnTrainTrainViewImages getSideOnTrainTrainViewImages() {
-		return sideOnTrainTrainView;
-	}
+            try {
+                tr = new StandardTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-	public TrainImages getTrainImages() {
-		return trainImages;
-	}
+                continue;
+            } catch (IOException io) {
+                // If the image is missing, we generate it.
+                System.err.println("No tile renderer for " +
+                    t.getTerrainTypeName());
 
+                String filename = StandardTileRenderer.generateFilename(t.getTerrainTypeName());
+                Image image = QuickRGBTileRendererList.createImageFor(t);
+                imageManager.setImage(filename, image);
+
+                //generatedImages.setImage(filename, image);
+                try {
+                    tr = new StandardTileRenderer(imageManager,
+                            typesTreatedAsTheSame, t);
+                    tileRenderers.add(tr);
+
+                    continue;
+                } catch (IOException io2) {
+                    io2.printStackTrace();
+                    throw new IllegalStateException();
+                }
+            }
+        }
+
+        //XXXX add special tile renderer for habours
+        TileRenderer occeanTileRenderer = null;
+
+        for (int j = 0; j < numberOfTypes; j++) {
+            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+            String terrainName = t2.getTerrainTypeName();
+
+            if (terrainName.equalsIgnoreCase("Ocean")) {
+                occeanTileRenderer = (TileRenderer)tileRenderers.get(j);
+
+                break;
+            }
+        }
+
+        for (int j = 0; j < numberOfTypes; j++) {
+            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+            String terrainName = t2.getTerrainTypeName();
+
+            if (terrainName.equalsIgnoreCase("Harbour")) {
+                TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+                TileRenderer tr = new SpecialTileRenderer(imageManager,
+                        new int[] {j}, t, occeanTileRenderer);
+                tileRenderers.set(j, tr);
+
+                occeanTileRenderer = (TileRenderer)tileRenderers.get(j);
+
+                break;
+            }
+        }
+
+        return new TileRendererListImpl(tileRenderers);
+    }
+
+    public TileRendererList getTileViewList() {
+        return this.tiles;
+    }
+
+    public TrackPieceRendererList getTrackPieceViewList() {
+        return this.trackPieceViewList;
+    }
+
+    public boolean validate(ReadOnlyWorld w) {
+        boolean okSoFar = true;
+
+        if (!this.tiles.validate(w)) {
+            okSoFar = false;
+        }
+
+        if (!this.trackPieceViewList.validate(w)) {
+            okSoFar = false;
+        }
+
+        return okSoFar;
+    }
+
+    public SideOnTrainTrainViewImages getSideOnTrainTrainViewImages() {
+        return sideOnTrainTrainView;
+    }
+
+    public TrainImages getTrainImages() {
+        return trainImages;
+    }
 }

@@ -1,6 +1,6 @@
 package jfreerails.client.renderer;
-import java.awt.Image;
 
+import java.awt.Image;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -11,31 +11,24 @@ import jfreerails.world.top.ReadOnlyWorld;
 *@author     Luke Lindsay
 *     09 October 2001
 */
-
 public interface TileRenderer {
+    int selectTileIcon(int x, int y, ReadOnlyWorld w);
 
-	 int selectTileIcon(int x, int y, ReadOnlyWorld w);
+    int getRGB();
 
-	 int getRGB();
+    int getTileWidth();
 
-	 int getTileWidth();
+    int getTileHeight();
 
-	 int getTileHeight();
+    Image getIcon(int x, int y, ReadOnlyWorld w);
 
-	 Image getIcon(int x, int y, ReadOnlyWorld w);
+    Image getIcon();
 
-	 Image getIcon();
+    void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX,
+        int mapY, ReadOnlyWorld w);
 
-	 void renderTile(
-		java.awt.Graphics g,
-		int renderX,
-		int renderY,
-		int mapX,
-		int mapY,
-		ReadOnlyWorld w);
+    String getTerrainType();
 
-	 String getTerrainType();
-	 
-	 /** Adds the images this TileRenderer uses to the specified ImageManager. */
-	 void dumpImages(ImageManager imageManager);
+    /** Adds the images this TileRenderer uses to the specified ImageManager. */
+    void dumpImages(ImageManager imageManager);
 }

@@ -521,7 +521,7 @@
    <!-- You can download jalopy from: http://jalopy.sourceforge.net/  -->
    <target name="format" depends="compile" description="formats the source code files using jalopy">    
    	<taskdef name="jalopy" classname="de.hunsicker.jalopy.plugin.ant.AntPlugin"/>
-    <jalopy convention="jalopy_code_convention.xml">
+    <jalopy convention="freerails_code_convention.xml">
       <fileset dir="${src}">
         <include name="**/*.java" />
         <!-- Exclude forms since formatting may break the protected code regions. -->

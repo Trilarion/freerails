@@ -4,11 +4,13 @@
  */
 package jfreerails.world.top;
 
+
 /**
  * @author Luke Lindsay
  *
  */
 public interface WorldListListener {
-	void listUpdated(KEY key, int index);
-	void itemAdded(KEY key, int index);
+    void listUpdated(KEY key, int index);
+
+    void itemAdded(KEY key, int index);
 }

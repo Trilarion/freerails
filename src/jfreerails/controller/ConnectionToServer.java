@@ -1,8 +1,8 @@
 package jfreerails.controller;
 
 import java.io.IOException;
-
 import jfreerails.world.top.World;
+
 
 /**
  * This interface represents a connection between a server and a client. This class
@@ -34,57 +34,56 @@ public interface ConnectionToServer extends UncommittedMoveReceiver {
      * connect to the remote peer
      */
     public void open() throws IOException;
-    
+
     public void addConnectionListener(ConnectionListener l);
 
     public void removeConnectionListener(ConnectionListener l);
 
     public void flush();
-     
-     public static class ConnectionState {
-	private String state;
-     
-	/**
-	 * Waiting - connection has been opened, but client has not been
-	 * initialised with the World DB.
-	 */
-	public static final ConnectionState WAITING = new
-	ConnectionState("Waiting");
 
-	/**
-	 * Initialising - client has requested world, but it has not been sent
-	 * yet.
-	 */
-	public static final ConnectionState INITIALISING = new
-	ConnectionState("Initialising");
+    public static class ConnectionState {
+        private String state;
 
-	/**
-	 * Ready - client has received world and is ready to receive moves.
-	 */
-	public static final ConnectionState READY = new
-	ConnectionState("Ready");
+        /**
+         * Waiting - connection has been opened, but client has not been
+         * initialised with the World DB.
+         */
+        public static final ConnectionState WAITING = new ConnectionState(
+                "Waiting");
 
-	/**
-	 * Closing - a CloseConnectionCommand has been sent, but the connection
-	 * is not yet closed.
-	 */
-	public static final ConnectionState CLOSING = new
-	ConnectionState("Closing");
+        /**
+         * Initialising - client has requested world, but it has not been sent
+         * yet.
+         */
+        public static final ConnectionState INITIALISING = new ConnectionState(
+                "Initialising");
 
-	/**
-	 * Closed - the connection is closed.
-	 */
-	public static final ConnectionState CLOSED = new
-	ConnectionState("Closed");
+        /**
+         * Ready - client has received world and is ready to receive moves.
+         */
+        public static final ConnectionState READY = new ConnectionState("Ready");
 
-	private ConnectionState(String aState) {
-	    state = aState;
-	}
+        /**
+         * Closing - a CloseConnectionCommand has been sent, but the connection
+         * is not yet closed.
+         */
+        public static final ConnectionState CLOSING = new ConnectionState(
+                "Closing");
 
-	public String toString() {
-	    return state;
-	}
-     }
+        /**
+         * Closed - the connection is closed.
+         */
+        public static final ConnectionState CLOSED = new ConnectionState(
+                "Closed");
+
+        private ConnectionState(String aState) {
+            state = aState;
+        }
+
+        public String toString() {
+            return state;
+        }
+    }
 
     /**
      * @return the current state of this connection

@@ -1,40 +1,7 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*		 
+/*
  * fastUtil 1.3: Fast & compact specialized hash-based utility classes for Java
  *
- * Copyright (C) 2002 Sebastiano Vigna 
+ * Copyright (C) 2002 Sebastiano Vigna
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -51,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package it.unimi.dsi.fastUtil;
 
 import java.util.Set;
@@ -59,22 +25,27 @@ import java.util.Set;
 
 /**  An abstract class providing basic methods for sets implementing a type-specific interface.
  */
-
-public abstract class IntAbstractSet  extends IntAbstractCollection  implements Cloneable, IntSet  {
-	 
+public abstract class IntAbstractSet extends IntAbstractCollection
+    implements Cloneable, IntSet {
     public boolean equals(Object o) {
-		  if (o == this) return true;
-		  if (!(o instanceof Set)) return false;
+        if (o == this) {
+            return true;
+        }
 
-		  Set s = (Set) o;
-		  if (s.size() != size()) return false;
-		  return containsAll(s);
+        if (!(o instanceof Set)) {
+            return false;
+        }
+
+        Set s = (Set)o;
+
+        if (s.size() != size()) {
+            return false;
+        }
+
+        return containsAll(s);
     }
-
 }
 
 // Local Variables:
 // mode: java
 // End:
-
-

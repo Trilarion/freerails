@@ -6,14 +6,14 @@ package jfreerails.move;
 import jfreerails.world.top.KEY;
 import jfreerails.world.train.ImmutableSchedule;
 
+
 /**This Move changes a train's schedule.
  * @author Luke Lindsay
  *
 */
 public class ChangeTrainScheduleMove extends ChangeItemInListMove {
-	
-	public ChangeTrainScheduleMove(int id, ImmutableSchedule before, ImmutableSchedule after){
-		super(KEY.TRAIN_SCHEDULES, id, before, after);
-	}
-
+    public ChangeTrainScheduleMove(int id, ImmutableSchedule before,
+        ImmutableSchedule after) {
+        super(KEY.TRAIN_SCHEDULES, id, before, after);
+    }
 }

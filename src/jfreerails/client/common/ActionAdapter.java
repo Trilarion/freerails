@@ -3,12 +3,12 @@ package jfreerails.client.common;
 import java.awt.event.ActionEvent;
 import java.util.Enumeration;
 import java.util.Vector;
-
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JToggleButton;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+
 
 /**
  * Provides a mapping from a set of ButtonModels or a ComboBoxModel to a set of
@@ -24,7 +24,6 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * The set of actions which each button / menu item correspond to
      */
     private Action[] actions;
-
     private boolean initialised = false;
 
     /**
@@ -38,14 +37,16 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * icons are obtained from the SMALL_ICON property.
      */
     public ActionAdapter(Action[] actions) {
-	super();
-	this.actions = actions;
-	buttonModels = new Vector();
-	for (int i = 0; i < actions.length; i++) {
-	    buttonModels.add(new MappedButtonModel(actions[i]));
-	    addElement(actions[i].getValue(Action.NAME));
-	}
-	initialised = true;
+        super();
+        this.actions = actions;
+        buttonModels = new Vector();
+
+        for (int i = 0; i < actions.length; i++) {
+            buttonModels.add(new MappedButtonModel(actions[i]));
+            addElement(actions[i].getValue(Action.NAME));
+        }
+
+        initialised = true;
     }
 
     /**
@@ -55,90 +56,96 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * @param selected Index of the default selected action.
      */
     public ActionAdapter(Action[] actions, int selected) {
-	this(actions);
-	for (int i = 0; i < buttonModels.size(); i++) {
-	    MappedButtonModel bm = (MappedButtonModel) buttonModels.get(i);
-	    ((MappedButtonModel) buttonModels.get(i)).setSelected(i ==
-		 selected);
-	}
+        this(actions);
+
+        for (int i = 0; i < buttonModels.size(); i++) {
+            MappedButtonModel bm = (MappedButtonModel)buttonModels.get(i);
+            ((MappedButtonModel)buttonModels.get(i)).setSelected(i == selected);
+        }
     }
 
     /**
      * @return an enumeration of Action
      */
     public Enumeration getActions() {
-	return new Enumeration() {
-	    private int i = 0;
+        return new Enumeration() {
+                private int i = 0;
 
-	    public boolean hasMoreElements() {
-		return (i < actions.length);
-	    }
+                public boolean hasMoreElements() {
+                    return (i < actions.length);
+                }
 
-	    public Object nextElement() {
-		return actions[i++];
-	    }
-	};
+                public Object nextElement() {
+                    return actions[i++];
+                }
+            };
     }
-    
+
     /**
      * @return an enumeration of MappedButtonModel
      */
     public Enumeration getButtonModels() {
-	return buttonModels.elements();
+        return buttonModels.elements();
     }
 
     /**
      * @param item The NAME of the Action selected
      */
     public void setSelectedItem(Object item) {
-	// only set the item if not already selected
-	if ((item != null) && item.equals(getSelectedItem()))
-	    return;
+        // only set the item if not already selected
+        if ((item != null) && item.equals(getSelectedItem())) {
+            return;
+        }
 
-	super.setSelectedItem(item);
-	
-	// stop addElement from triggering actions
-	if (! initialised)
-	    return;
+        super.setSelectedItem(item);
 
-	for (int i = 0; i < buttonModels.size(); i++) {
-	    MappedButtonModel bm = (MappedButtonModel) buttonModels.get(i);
-	    if (bm.actionName.equals(item)) {
-		bm.setSelected(true);
-	    }
-	}
-	for (int i = 0; i < actions.length; i++) {
-	    if (actions[i].getValue(Action.NAME).equals(item)) {
-		actions[i].actionPerformed(new ActionEvent(this,
-		ActionEvent.ACTION_PERFORMED,
-		(String) actions[i].getValue(Action.ACTION_COMMAND_KEY)));
-	    }
-	}
+        // stop addElement from triggering actions
+        if (!initialised) {
+            return;
+        }
+
+        for (int i = 0; i < buttonModels.size(); i++) {
+            MappedButtonModel bm = (MappedButtonModel)buttonModels.get(i);
+
+            if (bm.actionName.equals(item)) {
+                bm.setSelected(true);
+            }
+        }
+
+        for (int i = 0; i < actions.length; i++) {
+            if (actions[i].getValue(Action.NAME).equals(item)) {
+                actions[i].actionPerformed(new ActionEvent(this,
+                        ActionEvent.ACTION_PERFORMED,
+                        (String)actions[i].getValue(Action.ACTION_COMMAND_KEY)));
+            }
+        }
     }
 
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel
-	implements PropertyChangeListener{
-	/**
-	 * The NAME of the Action to which this ButtonModel is mapped
-	 */
-	public final String actionName;
-	
-	public MappedButtonModel(Action action) {
-	    actionName = (String) action.getValue(Action.NAME);
-	    action.addPropertyChangeListener(this);
-	    setEnabled(action.isEnabled());
-	}
-	
-	public void setSelected(boolean b) {
-	    if (isSelected() != b) {
-		super.setSelected(b);
-		if (b)
-		    ActionAdapter.this.setSelectedItem(actionName);
-	    }
-	}
+        implements PropertyChangeListener {
+        /**
+         * The NAME of the Action to which this ButtonModel is mapped
+         */
+        public final String actionName;
 
-	public void propertyChange(PropertyChangeEvent e) {
-	    setEnabled(((Action) e.getSource()).isEnabled());
-	}
+        public MappedButtonModel(Action action) {
+            actionName = (String)action.getValue(Action.NAME);
+            action.addPropertyChangeListener(this);
+            setEnabled(action.isEnabled());
+        }
+
+        public void setSelected(boolean b) {
+            if (isSelected() != b) {
+                super.setSelected(b);
+
+                if (b) {
+                    ActionAdapter.this.setSelectedItem(actionName);
+                }
+            }
+        }
+
+        public void propertyChange(PropertyChangeEvent e) {
+            setEnabled(((Action)e.getSource()).isEnabled());
+        }
     }
 }

@@ -1,48 +1,47 @@
 package jfreerails.world.track;
 
 final public class TrackPieceImpl implements TrackPiece {
+    private final TrackConfiguration configuration;
+    private final TrackRule trackType;
 
-	private final TrackConfiguration configuration;
+    public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c,
+        TrackRule type) {
+        configuration = c;
+        trackType = type;
+    }
 
-	private final TrackRule trackType;
+    public int getRGB() {
+        return 0;
+    }
 
-	public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c, TrackRule type) {
-		configuration = c;
-		trackType = type;
+    public int getTrackGraphicNumber() {
+        return configuration.getTrackGraphicsNumber();
+    }
 
-	}
-	public int getRGB() {
-		return 0;
-	}
+    public int getTrackTypeNumber() {
+        return trackType.getRuleNumber();
+    }
 
-	public int getTrackGraphicNumber() {
-		return configuration.getTrackGraphicsNumber();
-	}
+    public TrackRule getTrackRule() {
+        return trackType;
+    }
 
-	public int getTrackTypeNumber() {
-		return trackType.getRuleNumber();
-	}
+    public TrackConfiguration getTrackConfiguration() {
+        return configuration;
+    }
 
-	public TrackRule getTrackRule() {
-		return trackType;
-	}
+    public boolean equals(Object o) {
+        if (o instanceof TrackPieceImpl) {
+            TrackPieceImpl trackPieceImpl = (TrackPieceImpl)o;
 
-	public TrackConfiguration getTrackConfiguration() {
-		return configuration;
-	}
-
-	public boolean equals(Object o) {
-		if (o instanceof TrackPieceImpl) {
-			TrackPieceImpl trackPieceImpl = (TrackPieceImpl) o;
-			if (configuration.equals(trackPieceImpl.getTrackConfiguration())
-				&& trackType.equals(trackPieceImpl.getTrackRule())) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
+            if (configuration.equals(trackPieceImpl.getTrackConfiguration()) &&
+                    trackType.equals(trackPieceImpl.getTrackRule())) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

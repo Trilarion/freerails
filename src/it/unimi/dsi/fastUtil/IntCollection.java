@@ -1,40 +1,7 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*		 
+/*
  * fastUtil 1.3: Fast & compact specialized hash-based utility classes for Java
  *
- * Copyright (C) 2002 Sebastiano Vigna 
+ * Copyright (C) 2002 Sebastiano Vigna
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -51,10 +18,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package it.unimi.dsi.fastUtil;
 
 import java.util.Collection;
+
 
 /** A collection of fixed type items; provides some additional methods
  * that use polymorphism to reduce type juggling.
@@ -64,55 +31,43 @@ import java.util.Collection;
  *
  * @see Collection
  */
+public interface IntCollection extends Collection {
+    /**
+          * @see Collection#contains(Object)
+     */
+    boolean contains(int key);
 
-public interface IntCollection  extends Collection {
+    /** Returns a primitive type array containing the items of this collection.
+     * @return a primitive type array containing the items of this collection.
+     * @see Collection#toArray()
+     */
+    int[] toIntArray();
 
+    /** Builds a primitive type array containing the items of this collection.
+     * @param a if this array is big enough, it will be used to store the collection.
+     * @return a primitive type array containing the items of this collection.
+     * @see Collection#toArray(Object[])
+     */
+    int[] toIntArray(int[] a);
 
+    /** Builds a primitive type array containing the items of this collection.
+     * @param a if this array is big enough, it will be used to store the collection.
+     * @return a primitive type array containing the items of this collection.
+     * @see Collection#toArray(Object[])
+     */
+    int[] toArray(int[] a);
 
     /**
-	  * @see Collection#contains(Object)
+          * @see Collection#add(Object)
      */
-    boolean contains(int  key);
-
-
-	 /** Returns a primitive type array containing the items of this collection. 
-	  * @return a primitive type array containing the items of this collection.
-	  * @see Collection#toArray()
-	  */
-    int [] toIntArray ();
-
-	 /** Builds a primitive type array containing the items of this collection. 
-	  * @param a if this array is big enough, it will be used to store the collection.
-	  * @return a primitive type array containing the items of this collection.
-	  * @see Collection#toArray(Object[])
-	  */
-    int [] toIntArray (int  a[]);
-
-	 /** Builds a primitive type array containing the items of this collection. 
-	  * @param a if this array is big enough, it will be used to store the collection.
-	  * @return a primitive type array containing the items of this collection.
-	  * @see Collection#toArray(Object[])
-	  */
-    int [] toArray(int  a[]);
-
+    boolean add(int key);
 
     /**
-	  * @see Collection#add(Object)
+          * @see Collection#remove(Object)
      */
-    boolean add(int  key);
-
-
-    /**
-	  * @see Collection#remove(Object)
-     */
-    boolean remove(int  key);
-
-
-
+    boolean remove(int key);
 }
 
 // Local Variables:
 // mode: java
 // End:
-
-
