@@ -97,7 +97,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     public void processTrainBundle() {
-        Iterator batches = trainAfter.cargoBatchIterator();
+        Iterator batches = trainAfter.getCopy().cargoBatchIterator();
 
         StationModel station = (StationModel)w.get(KEY.STATIONS, stationId,
                 principal);
@@ -126,8 +126,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                             station.x, station.y, 0, stationId);
                     stationAfter.addCargo(newCargoBatch, amount);
                 }
-
-                batches.remove();
+                trainAfter.setAmount(cb, 0);                
             }
         }
 
@@ -213,7 +212,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         if (0 == amountToTransfer) {
             return;
         } else {
-            Iterator batches = from.cargoBatchIterator();
+            Iterator batches = from.getCopy().cargoBatchIterator();
             int amountTransferedSoFar = 0;
 
             while (batches.hasNext() &&
@@ -226,7 +225,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
                     if (amount < amountToTransfer - amountTransferedSoFar) {
                         amountOfThisBatchToTransfer = amount;
-                        batches.remove();
+                        from.setAmount(cb, 0);
                     } else {
                         amountOfThisBatchToTransfer = amountToTransfer -
                             amountTransferedSoFar;
