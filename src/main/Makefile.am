@@ -9,7 +9,8 @@ freerails_LDFLAGS = $(SDL_LIBS) $(PARAGUI_LIBS) -lSDL_ttf -lSDL_image
 endif
 
 INCLUDES = $(WRAPPERINC) -I$(srcdir) -I$(top_srcdir)/src/wrapper \
-    -I$(top_srcdir)/src/wrapper/$(WRAPPER) -I$(top_srcdir) -I$(top_srcdir)/src/elements
+	   -I$(top_srcdir)/src/wrapper/$(WRAPPER) -I$(top_srcdir) \
+	   -I$(top_srcdir)/src/elements -I$(top_srcdir)/src/controllers
 
 bin_PROGRAMS = freerails
 
