@@ -8,6 +8,8 @@ package jfreerails.world.common;
 import java.awt.Point;
 import java.io.ObjectStreamException;
 
+import jfreerails.util.Utils;
+
 
 /**
  * This class represents a movement from a tile to any one of the surrounding
@@ -17,7 +19,9 @@ import java.io.ObjectStreamException;
 final public class OneTileMoveVector implements FlatTrackTemplate {
     private static final long serialVersionUID = 3256444698640921912L;
 
-	public static final int TILE_DIAMETER = 100;
+	public static final int TILE_DIAMETER = 30;
+	
+	public static final int TILE_DIAGONAL = Utils.hypotenuse(TILE_DIAMETER, TILE_DIAMETER);
 
     /** North.   */
     public static final OneTileMoveVector NORTH;
@@ -221,11 +225,8 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
     private OneTileMoveVector(int x, int y, int t) {
         deltaX = x;
         deltaY = y;
-        flatTrackTemplate = t;
-
-        int sumOfSquares = (x * x * TILE_DIAMETER * TILE_DIAMETER +
-            y * y * TILE_DIAMETER * TILE_DIAMETER);
-        length = (int)Math.sqrt(sumOfSquares);
+        flatTrackTemplate = t;        
+        length = (x * y) == 0 ? TILE_DIAMETER : TILE_DIAGONAL;
     }
 
     public static OneTileMoveVector getInstance(int number) {

@@ -13,8 +13,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.StringTokenizer;
 
-import jfreerails.world.top.KEY;
-
 /**
  * A bunch of static methods.
  * 
@@ -58,7 +56,7 @@ public class Utils {
 	}
 
 	public static String findConstantFieldName(Object o) {
-		Field[] fields = KEY.class.getFields();
+		Field[] fields = o.getClass().getFields();
 		for (int i = 0; i < fields.length; i++) {
 			int modifiers = fields[i].getModifiers();
 
@@ -93,4 +91,9 @@ public class Utils {
 		return (-b + Math.sqrt(disc)) / (2 * a);
 
 	}	
+	
+	public static int hypotenuse(int a, int b){
+		double d = Math.hypot(a, b);
+		return (int)Math.round(d);
+	}
 }

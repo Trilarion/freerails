@@ -35,6 +35,8 @@ import jfreerails.world.common.GameTime;
  * 
  */
 public class SpeedAgainstTime implements FreerailsSerializable {
+	
+	public static final SpeedAgainstTime STOPPED = new SpeedAgainstTime(new GameTime[]{GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD}, new int[]{0, 0});
 
 	private static final long serialVersionUID = 3618423722025891641L;
 

@@ -59,8 +59,8 @@ public class TrackConfigurationTest extends TestCase {
     public void testGetLength() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("010010000");
         TrackConfiguration b = TrackConfiguration.getFlatInstance("010010010");
-        assertEquals(100, a.getLength());
-        assertEquals(200, b.getLength());
+        assertEquals(30, a.getLength());
+        assertEquals(60, b.getLength());
     }
 
     public void testSubtract() {

@@ -8,7 +8,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class TrainModel implements FreerailsSerializable {
-    private static final int WAGON_LENGTH = 32;
+    private static final int WAGON_LENGTH = 24;
 	private static final long serialVersionUID = 3545235825756812339L;
 	public static final int MAX_NUMBER_OF_WAGONS = 6;
 	public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS) * WAGON_LENGTH;

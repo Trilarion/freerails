@@ -40,6 +40,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
         autoConsist = auto;
     }
 
+    /** @return either (1) an array of cargo type ids or (2) null to represent 'no change'.*/
     public /*=const */ int[] getConsist() {
         return this.consist;
     }

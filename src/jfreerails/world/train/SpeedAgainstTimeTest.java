@@ -75,6 +75,21 @@ public class SpeedAgainstTimeTest extends TestCase {
 		assertEquals(15, sat.getSpeed(new GameTime(5)));
 	}
 	
+	public void testStopped(){
+		SpeedAgainstTime stopped = SpeedAgainstTime.STOPPED;
+		assertEquals(0, stopped.getSpeed(new GameTime(0)));
+		assertEquals(0, stopped.getSpeed(new GameTime(10)));
+		assertEquals(0, stopped.getSpeed(new GameTime(5)));
+		
+		assertEquals(0, stopped.getAcceleration(new GameTime(10)));
+		assertEquals(0, stopped.getAcceleration(new GameTime(11)));
+		assertEquals(0, stopped.getAcceleration(new GameTime(14)));
+		
+		assertEquals(0, stopped.getDistance(new GameTime(6)));
+		assertEquals(0, stopped.getDistance(new GameTime(12)));
+		
+	}
+	
 	public void testGetDistanceAndGetTime(){		
 		GameTime[] times = new GameTime[] { new GameTime(0), new GameTime(10), new GameTime(15) };
 		int[] speeds = new int[]{ 10, 20, 10 };
