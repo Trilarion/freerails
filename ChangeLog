@@ -1,3 +1,7 @@
+Mar 6, 2004 12:10:49 AM Luke
+	o Remove 'never read' local variables.
+	o Fixed bug 910135 Trains jump when game un paused 
+	o Fixed bug 891360 Trains don't get built while game is paused 
 Mar 5, 2004 8:16:50 PM Luke
 	o Applied Jan Tozicka's patch for bug 900039 (No clear indication game is paused).
 Mar 4, 2004 7:38:53 PM Luke

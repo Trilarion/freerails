@@ -51,9 +51,6 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         expected = new int[] {0, 0, 0}; //No track has been built yet.
         assertTrue(Arrays.equals(expected, actual));
 
-        int quantity = 10;
-
-        AddItemTransaction t;
         addTrack(0, 10);
 
         actual = ChangeTrackPieceCompositeMove.calulateNumberOfEachTrackType(w,

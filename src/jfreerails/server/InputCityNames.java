@@ -18,14 +18,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 
 public class InputCityNames {
-    private World world;
-
-    public InputCityNames(World w, URL filename) throws SAXException {
-        world = w;
-
+    public static void readCityNames(World w, URL filename)
+        throws SAXException {
         InputSource is = new InputSource(filename.toString());
 
-        DefaultHandler handler = new CitySAXParser(world);
+        DefaultHandler handler = new CitySAXParser(w);
         SAXParserFactory factory = SAXParserFactory.newInstance();
 
         try {

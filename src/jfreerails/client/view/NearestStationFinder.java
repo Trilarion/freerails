@@ -66,7 +66,6 @@ public class NearestStationFinder {
             int deltaX = station.x - currentStation.x;
             int deltaY = station.y - currentStation.y;
             int distanceSquared = deltaX * deltaX + deltaY * deltaY;
-            OneTileMoveVector directionOfStation;
             boolean closer = distanceSquared < distanceToClosestSquared;
             boolean notTheSameStation = startStation != it.getIndex();
             boolean inRightDirection = isInRightDirection(direction, deltaX,

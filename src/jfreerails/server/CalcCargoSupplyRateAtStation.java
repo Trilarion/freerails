@@ -9,7 +9,6 @@ package jfreerails.server;
 
 import java.util.Vector;
 import jfreerails.controller.CargoElementObject;
-import jfreerails.world.cargo.CargoType;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.terrain.Consumption;
@@ -58,9 +57,6 @@ public class CalcCargoSupplyRateAtStation {
         //get the correct list of cargoes from the world object
         CargoElementObject tempCargoElement;
 
-        //CargoType cT;
-        int type;
-
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
             //cT = (CargoType) w.get(SKEY.CARGO_TYPES, i);
             tempCargoElement = new CargoElementObject(0, i);
@@ -92,8 +88,6 @@ public class CalcCargoSupplyRateAtStation {
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
             if (demand[i] >= PREREQUISITE_FOR_DEMAND) {
                 demandboolean[i] = true;
-
-                CargoType ct = (CargoType)w.get(SKEY.CARGO_TYPES, i);
             }
         }
 

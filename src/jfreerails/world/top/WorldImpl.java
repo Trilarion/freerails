@@ -343,7 +343,7 @@ public class WorldImpl implements World {
 
     public boolean isPlayer(FreerailsPrincipal p) {
         try {
-            int i = this.getPlayerIndex(p);
+            this.getPlayerIndex(p);
 
             return true;
         } catch (ArrayIndexOutOfBoundsException e) {

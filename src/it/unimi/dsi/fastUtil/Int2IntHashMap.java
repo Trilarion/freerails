@@ -885,9 +885,6 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
 
     private void readObject(java.io.ObjectInputStream s)
         throws IOException, ClassNotFoundException {
-        int key;
-        int value;
-
         s.defaultReadObject();
         this.n = primes[p];
 
@@ -908,9 +905,7 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
         Int2IntMap m;
         Map t;
         Random r = new Random();
-        Object o;
         long v;
-        long fm;
         long ct;
 
         for (int k = 0; k < 10; k++) {

@@ -63,11 +63,6 @@ public class TrainMoverTest extends TestCase {
     public void testUpdate() {
         setUp();
 
-        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
-
-        TrainPositionOnMap pos = t.getPosition();
-
         ChangeTrainPositionMove m = trainMover.update(30);
 
         m.doMove(w, Player.AUTHORITATIVE);

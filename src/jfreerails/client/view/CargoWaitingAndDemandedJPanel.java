@@ -119,7 +119,6 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     public void display(int newStationID){
         StationModel station = (StationModel)world.get(KEY.STATIONS, newStationID, principal);
         this.stationName.setText(station.getStationName());
-        int cargoBundleIndex = station.getCargoBundleNumber();
         final CargoBundle cargoWaiting =
         (CargoBundle) world.get(
         KEY.CARGO_BUNDLES,

@@ -72,11 +72,8 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     }
 
     public void testProductionAtEngineShopEquals() {
-        ProductionAtEngineShop a;
         ProductionAtEngineShop b;
         ProductionAtEngineShop c;
-        ProductionAtEngineShop d;
-        a = null;
         b = new ProductionAtEngineShop(engineType, wagons);
         c = new ProductionAtEngineShop(engineType, wagons);
         assertEquals(c, b);

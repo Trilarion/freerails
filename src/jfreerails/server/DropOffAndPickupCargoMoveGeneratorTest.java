@@ -78,10 +78,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         //cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 2);
         cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 80);
 
-        //Get the station from the world object.
-        StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
-
         assertEquals("There shouldn't be any cargo at the station yet",
             emptyCargoBundle, getCargoAtStation());
         assertEquals("There shouldn't be any cargo on the train yet",
@@ -125,13 +121,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * already has and the type of wagons it has when it is picking up cargo.
      */
     public void testPickUpCargo3() {
-        //Set wagons on train.
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
         int[] wagons = new int[] {0, 0, 2, 2};
 
         //2 wagons for cargo type 0; 2 wagons for cargo type 2.
-        train = addWagons(wagons);
+        addWagons(wagons);
 
         //Set cargo on train.
         getCargoOnTrain().setAmount(this.cargoType0FromStation2, 30);
@@ -182,9 +175,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         //Add 2 wagons for cargo type 0 and 1 for cargo type 1 to train.
         int[] wagons = new int[] {0, 0, 1, 1};
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
-        train = addWagons(wagons);
+        addWagons(wagons);
 
         //Add quantities of cargo type 0 and 2 to the train.
         getCargoOnTrain().setAmount(this.cargoType0FromStation2, 50);

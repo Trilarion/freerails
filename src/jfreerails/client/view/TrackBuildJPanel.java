@@ -64,9 +64,6 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 	    // Stations get built in the station pane
 	    TrackRuleButton button = new TrackRuleButton((Action) e.nextElement());
 	    button.setModel((ButtonModel) enumButtonModels.nextElement());
-	    Dimension d = button.getSize();
-	    Dimension s = trackBuildModesPanel.getSize();
-	    int columns = (int) (s.getWidth() / d.getWidth());
 	    buttonGroup.add(button);
 	    trackBuildModesPanel.add(button);
 	    numberOfButtons++;

@@ -49,7 +49,6 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
-        TrackConfiguration oldConfig;
         TrackConfiguration newConfig;
         TrackMove move;
         MoveStatus moveStatus;
@@ -100,13 +99,6 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
     public void testTryUndoMove() {
         setUp();
-
-        TrackPiece oldTrackPiece;
-        TrackPiece newTrackPiece;
-        TrackConfiguration oldConfig;
-        TrackConfiguration newConfig;
-        TrackMove move;
-        MoveStatus moveStatus;
     }
 
     public void testDoMove() {
@@ -114,10 +106,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
-        TrackConfiguration oldConfig;
         TrackConfiguration newConfig;
-        TrackMove move;
-        MoveStatus moveStatus;
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
@@ -143,28 +132,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
             getWorld().getTile(0, 0).getTrackConfiguration());
     }
 
-    public void testUndoMove() {
-        //Exactly like testDoMove() v
-        setUp();
-
-        TrackPiece oldTrackPiece;
-        TrackPiece newTrackPiece;
-        TrackConfiguration oldConfig;
-        TrackConfiguration newConfig;
-        TrackMove move;
-        MoveStatus moveStatus;
-
-        //Try building the simplest piece of track.
-        newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
-
-        //  assertMoveDoMoveIsOk(oldTrackPiece, newConfig);
-    }
-
     public void testMove() {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
-        TrackConfiguration oldConfig;
         TrackConfiguration newConfig;
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);

@@ -13,12 +13,11 @@ import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerCommand;
 import jfreerails.controller.ServerControlInterface;
+import jfreerails.controller.SpeedChangedCommand;
 import jfreerails.controller.WorldChangedCommand;
 import jfreerails.util.FreerailsProgressMonitor;
-import jfreerails.controller.SpeedChangedCommand;
 
 
 /**
@@ -162,7 +161,6 @@ class ServerGameController implements ServerControlInterface,
      */
     private synchronized void transferClients(ServerGameEngine newGame) {
         Vector localConnections = new Vector();
-        MoveReceiver oldExecuter = gameEngine.getMoveExecuter();
 
         for (int i = 0; i < connections.size(); i++) {
             ConnectionToServer c = (ConnectionToServer)connections.get(i);

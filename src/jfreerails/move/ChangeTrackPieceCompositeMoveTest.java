@@ -197,9 +197,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
     public void testMove() {
         Point pointA = new Point(0, 0);
-        Point pointB = new Point(1, 1);
-        Point pointC = new Point(1, 0);
-
         TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA,

@@ -79,18 +79,16 @@ public class TrainPositionOnMapTest extends TestCase {
      * Test for TrainPosition createInstance(int[], int[])
      */
     public void testCreateInstanceIArrayIArray() {
-        TrainPositionOnMap a;
-
         try {
-            a = TrainPositionOnMap.createInstance(new int[] {40, 30, 20, 10},
-                    new int[] {44, 33, 22, 11});
+            TrainPositionOnMap.createInstance(new int[] {40, 30, 20, 10},
+                new int[] {44, 33, 22, 11});
         } catch (Exception e) {
             assertTrue(false);
         }
 
         try {
-            a = TrainPositionOnMap.createInstance(new int[] {40, 30, 20},
-                    new int[] {44, 33, 22, 11});
+            TrainPositionOnMap.createInstance(new int[] {40, 30, 20},
+                new int[] {44, 33, 22, 11});
             assertTrue(false);
         } catch (Exception e) {
         }
@@ -209,10 +207,8 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap b;
         TrainPositionOnMap c;
         TrainPositionOnMap d;
-        TrainPositionOnMap e;
         TrainPositionOnMap f;
         TrainPositionOnMap g;
-        TrainPositionOnMap h;
         TrainPositionOnMap i;
         TrainPositionOnMap j;
         a = TrainPositionOnMap.createInstance(new int[] {10, 20},
@@ -240,7 +236,6 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        TrainPositionOnMap d;
         a = TrainPositionOnMap.createInstance(new int[] {10, 20},
                 new int[] {11, 22});
         b = TrainPositionOnMap.createInstance(new int[] {20, 30},
@@ -263,10 +258,8 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap b;
         TrainPositionOnMap c;
         TrainPositionOnMap d;
-        TrainPositionOnMap e;
         TrainPositionOnMap f;
         TrainPositionOnMap g;
-        TrainPositionOnMap h;
         TrainPositionOnMap i;
         TrainPositionOnMap j;
         a = TrainPositionOnMap.createInstance(new int[] {10, 20},
@@ -294,7 +287,6 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        TrainPositionOnMap d;
         a = TrainPositionOnMap.createInstance(new int[] {10, 20},
                 new int[] {11, 22});
         b = TrainPositionOnMap.createInstance(new int[] {20, 30},
@@ -312,36 +304,10 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(!a.canAddToTail(c));
     }
 
-    public void testRemoveFromHead() {
-        TrainPositionOnMap a;
-        TrainPositionOnMap b;
-        TrainPositionOnMap c;
-        TrainPositionOnMap d;
-        TrainPositionOnMap e;
-        TrainPositionOnMap f;
-        TrainPositionOnMap g;
-        TrainPositionOnMap h;
-        TrainPositionOnMap i;
-        TrainPositionOnMap j;
-        TrainPositionOnMap k;
-        a = TrainPositionOnMap.createInstance(new int[] {10, 20, 40, 50, 60},
-                new int[] {11, 22, 44, 55, 66});
-        b = TrainPositionOnMap.createInstance(new int[] {10, 20, 30},
-                new int[] {11, 22, 33});
-        c = TrainPositionOnMap.createInstance(new int[] {48, 50, 60},
-                new int[] {49, 55, 66});
-
-        d = TrainPositionOnMap.createInstance(new int[] {30, 40, 50, 60},
-                new int[] {33, 44, 55, 66});
-        e = TrainPositionOnMap.createInstance(new int[] {10, 20, 40, 48},
-                new int[] {11, 22, 44, 49});
-    }
-
     public void testCanRemoveFromHead() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        TrainPositionOnMap d;
         a = TrainPositionOnMap.createInstance(new int[] {10, 20, 40, 50},
                 new int[] {11, 22, 44, 55});
         b = TrainPositionOnMap.createInstance(new int[] {10, 20, 30},
@@ -361,25 +327,15 @@ public class TrainPositionOnMapTest extends TestCase {
 
     public void testRemoveFromTail() {
         TrainPositionOnMap a;
-        TrainPositionOnMap b;
         TrainPositionOnMap c;
-        TrainPositionOnMap d;
         TrainPositionOnMap e;
         TrainPositionOnMap f;
-        TrainPositionOnMap g;
-        TrainPositionOnMap h;
-        TrainPositionOnMap i;
-        TrainPositionOnMap j;
-        TrainPositionOnMap k;
         a = TrainPositionOnMap.createInstance(new int[] {10, 20, 40, 50, 60},
                 new int[] {11, 22, 44, 55, 66});
-        b = TrainPositionOnMap.createInstance(new int[] {10, 20, 30},
-                new int[] {11, 22, 33});
+
         c = TrainPositionOnMap.createInstance(new int[] {48, 50, 60},
                 new int[] {49, 55, 66});
 
-        d = TrainPositionOnMap.createInstance(new int[] {30, 40, 50, 60},
-                new int[] {33, 44, 55, 66});
         e = TrainPositionOnMap.createInstance(new int[] {10, 20, 40, 48},
                 new int[] {11, 22, 44, 49});
 
@@ -391,7 +347,6 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        TrainPositionOnMap d;
         a = TrainPositionOnMap.createInstance(new int[] {10, 20, 40, 50},
                 new int[] {11, 22, 44, 55});
         b = TrainPositionOnMap.createInstance(new int[] {10, 20, 30},

@@ -128,7 +128,6 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         try{
-            int lastSelectedStationId = this.selectedStationID;
             OneTileMoveVector v = OneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
             //now find nearest station in direction of the vector.
             NearestStationFinder stationFinder = new NearestStationFinder(this.world, this.principal);

@@ -134,13 +134,11 @@ public class TrainBuilder {
             /* Undo the move so that all the moves can be sent to the client as one
              * composite move.
              */
-
             //compositeMove.undoMove(world);
-            Move compositeMovePlusPositionMove = new CompositeMove(new Move[] {
-                        addCargoBundleMove, addTrainMove, setupScheduleMove,
-                        positionMove
-                    });
-
+            //            Move compositeMovePlusPositionMove = new CompositeMove(new Move[] {
+            //                        addCargoBundleMove, addTrainMove, setupScheduleMove,
+            //                        positionMove
+            //                    });
             //moveReceiver.processMove(compositeMovePlusPositionMove);  
             moveReceiver.processMove(positionMove);
 
@@ -160,8 +158,6 @@ public class TrainBuilder {
         PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(world, p)[0];
 
         FlatTrackExplorer explorer = new FlatTrackExplorer(pot, world);
-
-        FreerailsPathIterator it;
 
         TrainPathFinder tpf = new TrainPathFinder(explorer, w, trainNumber,
                 moveReceiver, principal);

@@ -49,8 +49,6 @@ public class SimpleComponentFactoryImpl2
     public JMenu createDisplayMenu() {
         JMenu displayMenu = new JMenu("Display");
 
-        final float scale = 5;
-
         addMainmapzoomMenuItem(displayMenu, 5);
         addMainmapzoomMenuItem(displayMenu, 10);
 

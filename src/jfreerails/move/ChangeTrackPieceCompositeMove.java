@@ -9,7 +9,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
-import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.GameRules;
@@ -52,8 +51,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                 principal);
         b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(
                     from), direction.getOpposite(), trackRule, w, principal);
-
-        Money price = new Money(trackRule.getPrice().getAmount() * 2);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }

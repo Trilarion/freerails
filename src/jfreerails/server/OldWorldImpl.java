@@ -47,10 +47,6 @@ public class OldWorldImpl {
 
         int progess = 0;
 
-        //Load the xml file specifying terrain types.
-        URL tiles_xml_url = OldWorldImpl.class.getResource(
-                "/jfreerails/data/terrain_tiles.xml");
-
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         pm.setValue(++progess);
 
@@ -85,12 +81,12 @@ public class OldWorldImpl {
                 mapName + "_cities.xml");
 
         try {
-            InputCityNames r = new InputCityNames(w, cities_xml_url);
+            InputCityNames.readCityNames(w, cities_xml_url);
         } catch (SAXException e) {
         }
 
         //Randomly position the city tiles
-        CityTilePositioner ctp = new CityTilePositioner(w);
+        CityTilePositioner.positionCityTiles(w);
 
         //Set the time..
         w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));

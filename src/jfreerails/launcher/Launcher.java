@@ -73,7 +73,7 @@ FreerailsProgressMonitor {
 	ServerStatusPanel ssp = (ServerStatusPanel) wizardPages[3];
 
 	boolean recover = false;
-	int port, mode;
+	int mode;
 	GameServer gs = new GameServer();
 	GUIClient gc;
 	Player p;
@@ -227,10 +227,6 @@ FreerailsProgressMonitor {
     public Launcher() {
         initComponents();
 
-	/*
-	 * Add the necessary wizard panes
-	 */
-	CardLayout cl = (CardLayout) jPanel1.getLayout();
 	wizardPages[0] = new LauncherPanel1(this);
 	wizardPages[1] = new MapSelectionPanel(this);
 	wizardPages[2] = new ClientOptionsJPanel(this);

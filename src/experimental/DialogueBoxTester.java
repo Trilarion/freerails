@@ -356,7 +356,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         CargoWaitingAndDemandedJPanel panel = new CargoWaitingAndDemandedJPanel();
         panel.setup(modelRoot, closeCurrentDialogue);
         int newStationID = randy.nextInt(w.size(KEY.STATIONS, TEST_PRINCIPAL) - 1);
-        panel.display(0);
+        panel.display(newStationID);
         dialogueBoxController.showContent(panel);
     }//GEN-LAST:event_showCargoWaitingAndDemandActionPerformed
     

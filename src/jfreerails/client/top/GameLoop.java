@@ -78,8 +78,6 @@ final public class GameLoop implements Runnable {
 
         fPScounter = new FPScounter();
 
-        long nextModelUpdateDue = System.currentTimeMillis();
-
         /*
          * Reduce this threads priority to avoid starvation of the input thread
          * on Windows.

@@ -576,9 +576,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         IntSet m;
         Set t;
         Random r = new Random();
-        Object o;
         long v;
-        long fm;
         long ct;
 
         for (int k = 0; k < 10; k++) {

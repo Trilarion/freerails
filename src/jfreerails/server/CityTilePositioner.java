@@ -34,7 +34,11 @@ public class CityTilePositioner {
     private ArrayList industryTerrainTypes;
     private ArrayList resourceTerrainTypes;
 
-    public CityTilePositioner(World world) {
+    public static void positionCityTiles(World w) {
+        new CityTilePositioner(w);
+    }
+
+    private CityTilePositioner(World world) {
         this.w = world;
         urbanTerrainTypes = new ArrayList();
         industryTerrainTypes = new ArrayList();

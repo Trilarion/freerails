@@ -256,7 +256,6 @@ public class Player implements FreerailsSerializable {
      * same signature.
      */
     public boolean verify(Player player, byte[] signature) {
-        byte[] encoded;
         assert privateData != null;
         assert player != null;
         assert java.util.Arrays.equals(player.publicKey.getEncoded(),

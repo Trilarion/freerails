@@ -1,7 +1,6 @@
 package jfreerails.client.renderer;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import jfreerails.world.common.FreerailsPathIterator;
@@ -41,8 +40,6 @@ public class TrainRenderer {
         FreerailsPathIterator it = s.path();
 
         PathWalker pw = new PathWalkerImpl(it);
-
-        Graphics2D g2 = (Graphics2D)g;
 
         //renderer engine.
         renderWagon(g, pw, train.getEngineType(), true);

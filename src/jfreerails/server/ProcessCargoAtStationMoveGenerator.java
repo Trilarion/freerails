@@ -27,7 +27,6 @@ public class ProcessCargoAtStationMoveGenerator {
         StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
                 p);
         Iterator batches = cargoBundle.cargoBatchIterator();
-        int amountOfCargo = 0;
         double amount = 0;
 
         while (batches.hasNext()) {

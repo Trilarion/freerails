@@ -66,7 +66,6 @@ public class UserMessageGenerator implements MoveReceiver {
                         world, playerPrincipal);
 
                 int trainNumber = -1;
-                int statonNumber = -1;
                 String stationName = "No station";
 
                 while (trains.next()) {
@@ -83,7 +82,6 @@ public class UserMessageGenerator implements MoveReceiver {
                     StationModel station = (StationModel)stations.getElement();
 
                     if (station.getCargoBundleNumber() == stationCargoBundle) {
-                        statonNumber = stations.getRowNumber();
                         stationName = station.getStationName();
 
                         break;

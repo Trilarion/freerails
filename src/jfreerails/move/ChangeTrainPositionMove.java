@@ -60,7 +60,6 @@ public class ChangeTrainPositionMove implements Move {
 
         TrainPositionOnMap bitToAdd;
         TrainPositionOnMap intermediate;
-        TrainPositionOnMap newPosition;
         TrainPositionOnMap bitToRemove;
 
         bitToAdd = getBitToAdd(nextPathSection);

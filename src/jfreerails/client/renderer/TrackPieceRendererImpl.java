@@ -42,7 +42,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
         for (int i = 0; i < 512; i++) {
             if (trackRule.testTrackPieceLegality(i)) {
-                TrackConfiguration config = TrackConfiguration.getFlatInstance(i);
                 String fileName = generateFilename(i);
                 trackPieceIcons[i] = imageManager.getImage(fileName);
             }

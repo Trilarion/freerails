@@ -32,8 +32,6 @@ public class ViewListsImpl implements ViewLists {
     public ViewListsImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
         throws IOException {
         URL out = ViewListsImpl.class.getResource("/experimental");
-        URL in = ViewListsImpl.class.getResource("/jfreerails/client/graphics");
-
         imageManager = new ImageManagerImpl("/jfreerails/client/graphics/",
                 out.getPath());
         tiles = loadNewTileViewList(w, pm);
@@ -68,7 +66,6 @@ public class ViewListsImpl implements ViewLists {
             int[] typesTreatedAsTheSame = new int[] {i};
 
             TileRenderer tr = null;
-            Integer rgb = new Integer(t.getRGB());
             pm.setValue(++progress);
 
             try {

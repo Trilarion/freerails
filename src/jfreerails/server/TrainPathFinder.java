@@ -63,10 +63,6 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         Vector moves = new Vector();
         int scheduleID = train.getScheduleID();
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
-        StationModel station = null;
-        int stationNumber = schedule.getStationToGoto();
-        station = (StationModel)world.get(KEY.STATIONS, stationNumber, principal);
-
         int[] wagonsToAdd = schedule.getWagonsToAdd();
 
         if (null != wagonsToAdd) {
@@ -148,10 +144,6 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
                 principal);
         Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
                 train.getScheduleID(), principal);
-        StationModel station = null;
-        int stationNumber = schedule.getStationToGoto();
-        station = (StationModel)world.get(KEY.STATIONS, stationNumber, principal);
-
         int[] wagonsToAdd = schedule.getWagonsToAdd();
 
         if (null != wagonsToAdd) {

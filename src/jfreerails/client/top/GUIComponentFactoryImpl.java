@@ -33,11 +33,9 @@ import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.ModelRootListener;
 import jfreerails.client.view.OverviewMapJComponent;
 import jfreerails.client.view.ServerControlModel;
-import jfreerails.client.view.StationPlacementCursor;
 import jfreerails.client.view.TrainsJTabPane;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.StationBuilder;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -119,9 +117,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         MoveReceiver mainmapMoveReceiver = new MapViewMoveReceiver(overviewMap);
         moveFork.addSplitMoveReceiver(mainmapMoveReceiver);
 
-        StationBuilder sb = new StationBuilder(receiver, w,
-                modelRoot.getPlayerPrincipal());
-
+        //Never read!
+        //StationBuilder sb = new StationBuilder(receiver, w,
+        //        modelRoot.getPlayerPrincipal());
         stationTypesPopup.setup(modelRoot, mainMap.getStationRadius());
 
         mapViewJComponent.setup(mainMap, w);
@@ -149,8 +147,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         dialogueBoxController.setup(world, vl, modelRoot.getMoveChainFork(),
             modelRoot.getReceiver(), mapCursor);
 
-        StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(modelRoot,
-                mainMap.getStationRadius(), mapViewJComponent);
+        //Never read!
+        //StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(modelRoot,
+        //        mainMap.getStationRadius(), mapViewJComponent);
         modelRoot.setUserMessageLogger(this.mapViewJComponent);
 
         userMessageGenerator = new UserMessageGenerator(this.modelRoot);
@@ -222,7 +221,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                     newGameJMenu.removeAll();
 
                     Enumeration actions = sc.getMapNames().getActions();
-                    ButtonGroup bg = new ButtonGroup();
 
                     while (actions.hasMoreElements()) {
                         JMenuItem mi = new JMenuItem((Action)actions.nextElement());

@@ -4,7 +4,6 @@ import jfreerails.world.accounts.Receipt;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
-import jfreerails.world.player.PlayerPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 
@@ -25,7 +24,6 @@ public class AddPlayerMove implements Move, ServerMove {
          */
         Player player2add = new Player(player.getName(), player.getPublicKey(),
                 w.getNumberOfPlayers());
-        PlayerPrincipal tmpPlayer = new PlayerPrincipal(w.getNumberOfPlayers());
 
         return new AddPlayerMove(player2add);
     }
