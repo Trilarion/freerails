@@ -52,7 +52,7 @@ public class CalcNearestCity {
         return null;
     }
 
-    public double getDistance(int cityX, int cityY) {
+    private double getDistance(int cityX, int cityY) {
         double distance = 0;
         double a = (this.x - cityX) * (this.x - cityX);
         double b = (this.y - cityY) * (this.y - cityY);

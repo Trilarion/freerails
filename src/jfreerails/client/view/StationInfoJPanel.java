@@ -39,8 +39,7 @@ implements MoveReceiver, View {
 	private ReadOnlyWorld w;
     private ModelRoot modelRoot;
     private WorldIterator wi;
-    private boolean ignoreMoves = true;
-    private MapCursor mapCursor = MapCursor.NULL_MAP_CURSOR;
+    private boolean ignoreMoves = true; 
     
     /**
      * The index of the cargoBundle associated with this station
@@ -139,7 +138,7 @@ implements MoveReceiver, View {
             new Point(
             ((StationModel) wi.getElement()).getStationX(),
             ((StationModel) wi.getElement()).getStationY());
-            getMapCursor().tryMoveCursor(p);
+            this.modelRoot.setProperty(ModelRoot.CURSOR_POSITION, p);
             
             display();
         } else {
@@ -156,7 +155,7 @@ implements MoveReceiver, View {
             new Point(
             ((StationModel) wi.getElement()).getStationX(),
             ((StationModel) wi.getElement()).getStationY());
-            getMapCursor().tryMoveCursor(p);
+            this.modelRoot.setProperty(ModelRoot.CURSOR_POSITION, p);
             display();
         } else {
             throw new IllegalStateException();
@@ -311,17 +310,7 @@ implements MoveReceiver, View {
     private javax.swing.JButton previousStation;
     // End of variables declaration//GEN-END:variables
     
-    
-    public MapCursor getMapCursor() {
-        return mapCursor;
-    }
-    
-    public void setMapCursor(MapCursor cursor) {
-        if(null == cursor){
-            throw new NullPointerException();
-        }
-        mapCursor = cursor;
-    }
+              
 	    
     private FreerailsSerializable lastCargoBundle = null;
 	

@@ -27,7 +27,6 @@ import jfreerails.client.view.DateJLabel;
 import jfreerails.client.view.DetailMapView;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MainMapAndOverviewMapMediator;
-import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.MapViewJComponentConcrete;
 import jfreerails.client.view.MapViewMoveReceiver;
 import jfreerails.client.view.ModelRoot;
@@ -39,11 +38,11 @@ import jfreerails.client.view.TrainsJTabPane;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
-import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.Move;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.top.ITEM;
+import jfreerails.world.top.ReadOnlyWorld;
 
 
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
@@ -126,15 +125,15 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         stationTypesPopup.setup(modelRoot, mainMap.getStationRadius());
 
-        mapViewJComponent.setup(mainMap, w);
-        modelRoot.setCursor(mapViewJComponent.getMapCursor());
+        mapViewJComponent.setup(mainMap, modelRoot);
 
         //setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
         userInputOnMapController.setup(mapViewJComponent,
             modelRoot.getTrackMoveProducer(), stationTypesPopup,
-            this.modelRoot, dialogueBoxController, receiver);
+            this.modelRoot, dialogueBoxController, receiver,
+            mapViewJComponent.getMapCursor());
 
         buildMenu.setup(world, modelRoot);
         mainMapScrollPane1.setViewportView(this.mapViewJComponent);
@@ -145,11 +144,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         cashjLabel.setup(modelRoot, null);
         trainsJTabPane.setup(world, vl, modelRoot);
 
-        MapCursor mapCursor = modelRoot.getCursor();
-        mapCursor.addCursorEventListener(trainsJTabPane);
-        trainsJTabPane.setMapCursor(mapCursor);
         dialogueBoxController.setup(world, vl, modelRoot.getMoveChainFork(),
-            modelRoot.getReceiver(), mapCursor);
+            modelRoot.getReceiver());
 
         StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(modelRoot,
                 mainMap.getStationRadius(), mapViewJComponent);

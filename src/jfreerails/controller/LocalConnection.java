@@ -21,8 +21,8 @@ public class LocalConnection implements ConnectionToServer {
     private ConnectionState state = ConnectionState.CLOSED;
 
     /**
- * Indicates whether the connection should forward moves the the remote side
- */
+    * Indicates whether the connection should forward moves the the remote side
+    */
     private boolean sendMoves = false;
 
     public void flush() {
@@ -55,26 +55,16 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
- * TODO get rid of this
- * @deprecated
- */
-    public void undoLastMove() {
-        if (sendMoves) {
-            //peer.sendUndoLastMove();
-        }
-    }
-
-    /**
- * This constructor is called by the server
- */
+    * This constructor is called by the server
+    */
     public LocalConnection(World w) {
         world = w;
         setState(ConnectionState.WAITING);
     }
 
     /**
- * This constructor is called by the client
- */
+    * This constructor is called by the client
+    */
     public LocalConnection(LocalConnection peer) {
         this.peer = peer;
     }
@@ -86,9 +76,9 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
- * This is called by the client connection object on the servers connection
- * object
- */
+    * This is called by the client connection object on the servers connection
+    * object
+    */
     protected boolean connect(LocalConnection peer) {
         this.peer = peer;
         sendMoves = true;
@@ -97,9 +87,9 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
- * This is called by the client connection object on the servers connection
- * object
- */
+    * This is called by the client connection object on the servers connection
+    * object
+    */
     protected void disconnect() {
         sendMoves = false;
         this.peer = null;
@@ -133,7 +123,7 @@ public class LocalConnection implements ConnectionToServer {
         sendMoves = true;
 
         /* set the state on the server connection to say that the client is
- * ready to receive moves */
+        * ready to receive moves */
         setState(ConnectionState.READY);
         peer.setState(ConnectionState.READY);
 
@@ -161,8 +151,8 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
- * Called by the server
- */
+    * Called by the server
+    */
     public void setWorld(World w) {
         world = w;
     }
@@ -186,8 +176,8 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
- * send a server command to the remote peer
- */
+    * send a server command to the remote peer
+    */
     public void sendCommand(ServerCommand s) {
         peer.sendServerCommand(s);
     }

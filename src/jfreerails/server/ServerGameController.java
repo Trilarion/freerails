@@ -133,19 +133,6 @@ class ServerGameController implements ServerControlInterface,
     }
 
     /**
-     * Sends a server commamnd to all connections
-     * @param serverCommand
-     */
-    public void sendToAllConections(ServerCommand serverCommand) {
-        for (int i = 0; i < connections.size(); i++) {
-            ConnectionToServer c = (ConnectionToServer)connections.get(i);
-
-            c.sendCommand(serverCommand);
-            c.flush();
-        }
-    }
-
-    /**
      * stop the current game and transfer the current local connections to a
      * new game running the specified map.
      */

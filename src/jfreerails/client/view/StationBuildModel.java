@@ -136,7 +136,7 @@ public class StationBuildModel {
 		if(!ms.isOk()){
 			message = ms.message;			
 		}
-		modelRoot.getCursor().setMessage(message);
+		modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, message);		
 	    setEnabled(false);		
 	}
     }

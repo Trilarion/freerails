@@ -14,12 +14,15 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.StringTokenizer;
+
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
+
 import jfreerails.client.common.Stats;
 import jfreerails.client.renderer.MapRenderer;
-import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
@@ -28,7 +31,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  *
  */
 final public class MapViewJComponentConcrete extends MapViewJComponent
-    implements CursorEventListener {
+    implements PropertyChangeListener {
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
     private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
     private Stats paintStats = new Stats("MapViewJComponent paint");
@@ -101,15 +104,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         private Point tiledelta = new Point();
 
         public void mousePressed(MouseEvent evt) {
-            if (SwingUtilities.isLeftMouseButton(evt)) {
-                int x = evt.getX();
-                int y = evt.getY();
-                float scale = getScale();
-                Dimension tileSize = new Dimension((int)scale, (int)scale);
-                mapCursor.tryMoveCursor(new Point(x / tileSize.width,
-                        y / tileSize.height));
-                MapViewJComponentConcrete.this.requestFocus();
-            }
+            /* Note, moving the cursor using the mouse is now handled in UserInputOnMapController */
 
             if (SwingUtilities.isRightMouseButton(evt)) {
                 MapViewJComponentConcrete.this.setCursor(Cursor.getPredefinedCursor((LINEAR_ACCEL > 0)
@@ -181,38 +176,13 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         }
     }
 
-    /*
-    final private class MapViewJComponentMouseAdapter
-            extends java.awt.event.MouseAdapter {
-
-            public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
-                    if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-                            int x = mouseEvent.getX();
-                            int y = mouseEvent.getY();
-                            float scale = mapView.getScale();
-                            Dimension tileSize = new Dimension((int) scale, (int) scale);
-                            cursor.TryMoveCursor(
-                                    new java.awt.Point(
-                                            x / tileSize.width,
-                                            y / tileSize.height));
-                            MapViewJComponentConcrete.this.requestFocus();
-                    }
-            }
-    }
-    */
+  
     protected void paintComponent(java.awt.Graphics g) {
         paintStats.enter();
         super.paintComponent(g);
 
-        /* no need to do this again
-                java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-
-                java.awt.Rectangle r = this.getVisibleRect();
-
-                mapView.paintRect(g2, r);
-        */
         if (null != mapCursor) {
-            mapCursor.cursorRenderer.paintCursor(g,
+            mapCursor.paintCursor(g,
                 new java.awt.Dimension(30, 30));
         }
 
@@ -250,79 +220,50 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         this.addMouseMotionListener(mva);
     }
 
-    public void setup(MapRenderer mv, ReadOnlyWorld w) {
+    public void setup(MapRenderer mv, ModelRoot mr) {
         super.setMapView(mv);
 
         this.setBorder(null);
 
         this.removeKeyListener(this.mapCursor);
 
-        this.mapCursor = new FreerailsCursor(mv);
-
-        mapCursor.addCursorEventListener(this);
-
+        this.mapCursor = new FreerailsCursor(mv, mr);
+   
+        mr.addPropertyChangeListener(this);
         this.addKeyListener(mapCursor);
     }
 
     public void setup(MapRenderer mv) {
         super.setMapView(mv);
-    }
+    }      
 
-    public void cursorJumped(CursorEvent ce) {
-        //repaintMap(ce);
-        reactToCursorMovement(ce);
-    }
-
-    /* The map is repainted in reponse to moves being received
-     using the class MapViewMoveReceiver.
-
-    public void repaintMap(CursorEvent ce) {
-
-            Point tile = new Point();
-            for (tile.x = ce.newPosition.x - 1;
-                    tile.x < ce.newPosition.x + 2;
-                    tile.x++) {
-                    for (tile.y = ce.newPosition.y - 1;
-                            tile.y < ce.newPosition.y + 2;
-                            tile.y++) {
-                            mapView.refreshTile(tile.x, tile.y);
-                    }
-            }
-    }
-    */
-    public void cursorOneTileMove(CursorEvent ce) {
-        reactToCursorMovement(ce);
-    }
-
-    public void cursorKeyPressed(CursorEvent ce) {
-        reactToCursorMovement(ce);
-    }
-
-    private void reactToCursorMovement(CursorEvent ce) {
-        float scale = getMapView().getScale();
+    private void react2curorMove(Point newPoint, Point oldPoint) {
+		float scale = getMapView().getScale();
         Dimension tileSize = new Dimension((int)scale, (int)scale);
         Rectangle vr = this.getVisibleRect();
         Rectangle rectangleSurroundingCursor = new Rectangle(0, 0, 1, 1);
-        rectangleSurroundingCursor.setLocation((ce.newPosition.x - 1) * tileSize.width,
-            (ce.newPosition.y - 1) * tileSize.height);
+       
+		rectangleSurroundingCursor.setLocation((newPoint.x - 1) * tileSize.width,
+            (newPoint.y - 1) * tileSize.height);
         rectangleSurroundingCursor.setSize(tileSize.width * 3,
             tileSize.height * 3);
 
         if (!(vr.contains(rectangleSurroundingCursor))) {
-            int x = ce.newPosition.x * tileSize.width - vr.width / 2;
-            int y = ce.newPosition.y * tileSize.height - vr.height / 2;
+            int x = newPoint.x * tileSize.width - vr.width / 2;
+            int y = newPoint.y * tileSize.height - vr.height / 2;
             this.scrollRectToVisible(new Rectangle(x, y, vr.width, vr.height));
         }
 
-        this.repaint((ce.newPosition.x - 1) * tileSize.width,
-            (ce.newPosition.y - 1) * tileSize.height, tileSize.width * 3,
+        this.repaint((newPoint.x - 1) * tileSize.width,
+            (newPoint.y - 1) * tileSize.height, tileSize.width * 3,
             tileSize.height * 3);
-        this.repaint((ce.oldPosition.x - 1) * tileSize.width,
-            (ce.oldPosition.y - 1) * tileSize.height, tileSize.width * 3,
+       
+		this.repaint((oldPoint.x - 1) * tileSize.width,
+            (oldPoint.y - 1) * tileSize.height, tileSize.width * 3,
             tileSize.height * 3);
-    }
+	}
 
-    public void paintTile(Graphics g, int tileX, int tileY) {
+	public void paintTile(Graphics g, int tileX, int tileY) {
     }
 
     public void refreshTile(int x, int y) {
@@ -357,4 +298,18 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     public void hideMessage() {
         message = null;
     }
+    
+     /** Checks whether the specfied PropertyChangeEvent was triggered by the cursor moving
+      * and if so, scrolls the map if necessary.
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(ModelRoot.CURSOR_POSITION)) {
+			Point newPoint = (Point) evt.getNewValue();
+			Point oldPoint = (Point) evt.getOldValue();
+			if(null == oldPoint){
+				oldPoint = new Point();
+			}
+			react2curorMove(newPoint, oldPoint);
+		}
+	}
 }

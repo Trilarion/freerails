@@ -183,12 +183,6 @@ public class ServerControlModel {
         return targetTicksPerSecondActions;
     }
 
-    public void setTargetTicksPerSecond(int ticksPerSecond) {
-      if (serverInterface != null) {
-        serverInterface.setTargetTicksPerSecond(ticksPerSecond);
-      }
-    }
-
     /**
      * Returns human readable string description of <code>tickPerSecond</code> number.
      * Looks for <code>tickPerSecond</code> in <code>targetTicksPerSecondActions</code>.

@@ -168,7 +168,7 @@
 		<java fork="true" jar="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" />
 	</target>
 
-	<target depends="mkdirs, init" name="javadoc">
+	<target depends="mkdirs, init" name="javadoc" description="Generate javadoc">
 		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.4" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />
@@ -265,7 +265,7 @@
 		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz" tarfile="website.tar.gz" />
 	</target>
 
-	<target name="deploy_website" depends="zip_website">
+	<target name="deploy_website" depends="zip_website" description="Upload webiste to sourceforge">
 		<echo message="Usage: ant -Du=me -Dp=mypassword deploy_website" />
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir=".">

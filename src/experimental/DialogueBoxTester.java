@@ -16,7 +16,6 @@ import jfreerails.client.top.ViewListsImpl;
 import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.HtmlJPanel;
-import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.SelectStationJPanel;
 import jfreerails.client.view.ShowJavaProperties;
@@ -80,11 +79,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 	    return MoveStatus.MOVE_OK;
 	}
 
-	public MoveStatus tryUndoMove(Move move) {
-	    return MoveStatus.MOVE_OK;
-	}
-
-	public void undoLastMove() {
+        public void undoLastMove() {
 	}
 
 	public void processMove(Move move) {
@@ -175,8 +170,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 		w,
 		vl,
 		new MoveChainFork(),
-		dummyReceiver,
-		MapCursor.NULL_MAP_CURSOR);
+		dummyReceiver);
 	initComponents();
 
 	glassPanel.setSize(800, 600);

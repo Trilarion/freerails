@@ -62,13 +62,6 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         this.setBackground(backgoundColor);
     }
 
-    /** Creates a new instance of TrainView */
-    public TrainViewJPanel(ModelRoot mr, int trainNumber) {
-        setup(mr, null);
-        display(trainNumber);
-        this.setBackground(backgoundColor);
-    }
-
     public void setCenterTrain(boolean b) {
         this.centerTrain = b;
     }

@@ -125,10 +125,6 @@ public class InetConnection implements ConnectionToServer {
         }
     }
 
-    public void undoLastMove() {
-        /* TODO implement this */
-    }
-
     public void addMoveReceiver(SourcedMoveReceiver m) {
         dispatcher.addMoveReceiver(m);
     }

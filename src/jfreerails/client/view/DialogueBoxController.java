@@ -90,7 +90,7 @@ public class DialogueBoxController implements WorldListListener{
     }
 
     public void setup(ReadOnlyWorld w, ViewLists vl,
-        MoveChainFork moveChainFork, UntriedMoveReceiver mr, MapCursor mapCursor) {
+        MoveChainFork moveChainFork, UntriedMoveReceiver mr) {
         moveReceiver = mr;
         moveChainFork.addListListener(this);  //When a new train gets built, we show the train info etc
 
@@ -102,9 +102,7 @@ public class DialogueBoxController implements WorldListListener{
 
         if (moveChainFork == null)
             throw new NullPointerException();
-
-        if (mapCursor == null)
-            throw new NullPointerException();
+        
 
         this.world = w;
 
@@ -116,8 +114,7 @@ public class DialogueBoxController implements WorldListListener{
         // setup the supply and demand at station dialogue.
         stationInfo = new StationInfoJPanel();
         stationInfo.setup(modelRoot, this.closeCurrentDialogue);
-        moveChainFork.addSplitMoveReceiver(stationInfo);       
-        stationInfo.setMapCursor(mapCursor);
+        moveChainFork.addSplitMoveReceiver(stationInfo);               
 
         // setup the 'show controls' dialogue
         showControls = new HtmlJPanel(DialogueBoxController.class.getResource(

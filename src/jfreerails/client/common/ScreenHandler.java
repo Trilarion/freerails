@@ -20,10 +20,10 @@ final public class ScreenHandler {
     public static final int WINDOWED_MODE = 1;
     public static final int FIXED_SIZE_WINDOWED_MODE = 2;
     public final JFrame frame;
-    BufferStrategy bufferStrategy;
-    DisplayMode displayMode;
+    private BufferStrategy bufferStrategy;
+    private DisplayMode displayMode;
     private final int mode;
-    boolean isInUse = false;
+    private boolean isInUse = false;
 
     /** Whether the window is minimised */
     private boolean isMinimised = false;

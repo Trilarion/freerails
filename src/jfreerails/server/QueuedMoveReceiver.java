@@ -44,10 +44,4 @@ class QueuedMoveReceiver implements SourcedMoveReceiver {
             moveExecuter.processMove(move, (FreerailsPrincipal)principals[i]);
         }
     }
-
-    /**
-     * TODO this should pop moves off the queue.
-     */
-    public void undoLastMove() {
-    }
 }

@@ -22,11 +22,8 @@ public class TrainFixture {
     TrainMover trainMover;
     ArrayList points = new ArrayList();
     World w = new WorldImpl(0, 0);
-    AuthoritativeMoveExecuter moveExecuter;
 
     public TrainFixture() {
-        moveExecuter = new AuthoritativeMoveExecuter(w, null);
-
         points.add(new Point(0, 0));
         points.add(new Point(80, 80));
         points.add(new Point(150, 100));

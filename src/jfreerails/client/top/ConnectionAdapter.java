@@ -67,13 +67,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
     public class WorldUpdater implements SourcedMoveReceiver {
         private MoveReceiver moveReceiver;
 
-        /**
-         * TODO get rid of this
-         */
-        public synchronized void undoLastMove() {
-            // do nothing
-        }
-
         public synchronized void processMove(Move move, ConnectionToServer c) {
             processMove(move);
         }
@@ -114,13 +107,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
          * return move.tryDoMove(world, move.getPrincipal());
          */
         return move.tryDoMove(world, Player.AUTHORITATIVE);
-    }
-
-    public synchronized MoveStatus tryUndoMove(Move move) {
-        /* TODO
-         * return move.tryUndoMove(world, move.getPrincipal());
-         */
-        return move.tryUndoMove(world, Player.AUTHORITATIVE);
     }
 
     private void closeConnection() {

@@ -226,10 +226,6 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
         }
     }
 
-    public void undoLastMove() {
-        assert false : "attempted to undo move in client on return from server";
-    }
-
     /**
      * Forwards moves after execution. This implementation forwards all
      * successful moves submitted. Subclasses may choose to override this to
