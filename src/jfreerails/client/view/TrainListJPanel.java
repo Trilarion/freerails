@@ -15,6 +15,7 @@ import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 /**
  * JPanel that didplays a list of trains, used for the train list window and the train list tab.
@@ -196,10 +197,13 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     
     public void paint(Graphics g) {
         if(null!=world){
-            int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
+        	NonNullElements trains = new NonNullElements(KEY.TRAINS, world, principal);
+            int newNumberOfTrains = trains.size();
             if(newNumberOfTrains != this.lastNumberOfTrains){
                 jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
-                jList1.setSelectedIndex(0);
+                if(newNumberOfTrains > 0){
+                	jList1.setSelectedIndex(0);
+                }
                 lastNumberOfTrains = newNumberOfTrains;
             }
         }
