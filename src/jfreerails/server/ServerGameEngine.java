@@ -16,6 +16,8 @@ import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerCommand;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
+import jfreerails.move.Move;
+import jfreerails.move.RemoveTrainMove;
 import jfreerails.move.TimeTickMove;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
@@ -29,6 +31,7 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
+import jfreerails.world.train.TrainModel;
 
 
 /**
@@ -309,7 +312,23 @@ public class ServerGameEngine implements GameModel, Runnable {
         while (i.hasNext()) {
             Object o = i.next();
             TrainMover trainMover = (TrainMover)o;
-            trainMover.update(deltaDistance, moveExecuter);
+
+            try {
+                trainMover.update(deltaDistance, moveExecuter);
+            } catch (IllegalStateException e) {
+                //Thrown when track under train is removed.
+                // (1) Remove the train mover..
+                i.remove();
+
+                // (2) Remove the train.
+                int trainID = trainMover.getTrainNumber();
+                FreerailsPrincipal principal = trainMover.getPrincipal();
+                TrainModel train = (TrainModel)world.get(KEY.TRAINS, trainID,
+                        principal);
+                Move removeTrainMove = RemoveTrainMove.getInstance(trainID,
+                        principal, world);
+                moveExecuter.processMove(removeTrainMove);
+            }
         }
     }
 

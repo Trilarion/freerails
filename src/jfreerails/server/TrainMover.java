@@ -53,6 +53,14 @@ public class TrainMover implements FreerailsServerSerializable {
         return walker;
     }
 
+    public int getTrainNumber() {
+        return trainNumber;
+    }
+
+    public FreerailsPrincipal getPrincipal() {
+        return principal;
+    }
+
     public void update(int distanceTravelled, MoveReceiver moveReceiver) {
         if (walker.canStepForward()) {
             double distanceTravelledAsDouble = distanceTravelled;

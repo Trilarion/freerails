@@ -122,6 +122,14 @@ final public class GameLoop implements Runnable {
                             if (SHOWFPS) {
                                 fPScounter.updateFPSCounter(frameStartTime, g);
                             }
+                        } catch (RuntimeException re) {
+                            /* We are not expecting a RuntimeException here.
+                            * If something goes wrong, lets kill the game straight
+                            * away to avoid hard-to-track-down bugs.
+                            */
+                            logger.severe("Unexpected exception, quitting..");
+                            re.printStackTrace();
+                            System.exit(1);
                         } finally {
                             g.dispose();
                         }

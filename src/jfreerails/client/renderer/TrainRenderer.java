@@ -26,6 +26,11 @@ public class TrainRenderer {
     }
 
     public void paintTrain(Graphics g, TrainModel train) {
+        //If the train has been removeed, it will be null!
+        if (train == null) {
+            return;
+        }
+
         TrainPositionOnMap s = train.getPosition();
 
         /*
