@@ -42,10 +42,7 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
 GameMapView::~GameMapView() {
 
   cerr << "Blob" << endl;
-  delete view;
-  cerr << "Blab" << endl;
   delete WidgetList;
-  cerr << "Blib" << endl;
   delete sdlimage;
   cerr << "Blub" << endl;
 
