@@ -157,12 +157,19 @@ class Dispatcher implements Runnable {
                 processNextObject();
             }
         } catch (IOException e) {
-            System.out.println("IOException occurred " + e);
+            System.err.println("IOException occurred " + e);
 
             if (e instanceof EOFException) {
                 //remote side probably disconnected abruptly               
                 this.connection.disconnect();
             }
+
+            /*
+             * If something goes wrong, lets kill the application straight
+             * away to avoid hard-to-track-down bugs.
+             */
+            System.err.println("About to quit..");
+            System.exit(1);
         }
     }
 

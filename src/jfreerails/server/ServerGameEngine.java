@@ -117,16 +117,26 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     public void run() {
-        Thread.currentThread().setName("JFreerails server");
+        try {
+            Thread.currentThread().setName("JFreerails server");
 
-        /*
-         * bump this threads priority so we always gain control.
-        */
-        Thread.currentThread().setPriority(Thread.currentThread().getPriority() +
-            1);
+            /*
+             * bump this threads priority so we always gain control.
+            */
+            Thread.currentThread().setPriority(Thread.currentThread()
+                                                     .getPriority() + 1);
 
-        while (keepRunning) {
-            update();
+            while (keepRunning) {
+                update();
+            }
+        } catch (Exception e) {
+            /*
+            * If something goes wrong, lets kill the game straight
+            * away to avoid hard-to-track-down bugs.
+            */
+            System.err.print("Unexpected exception, quitting..");
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 

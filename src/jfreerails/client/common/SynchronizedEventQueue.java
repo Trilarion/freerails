@@ -34,7 +34,17 @@ final public class SynchronizedEventQueue extends EventQueue {
 
     protected void dispatchEvent(AWTEvent aEvent) {
         synchronized (MUTEX) {
-            super.dispatchEvent(aEvent);
+            try {
+                super.dispatchEvent(aEvent);
+            } catch (Exception e) {
+                /*
+                * If something goes wrong, lets kill the game straight
+                * away to avoid hard-to-track-down bugs.
+                */
+                System.err.print("Unexpected exception, quitting..");
+                e.printStackTrace();
+                System.exit(1);
+            }
         }
     }
 }

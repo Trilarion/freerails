@@ -1,3 +1,7 @@
+Jun 5, 2004 Luke
+	Bugs Fixed: 
+	o 967129 Main map white on 1.5.0 beta 2 
+	o 941743 Build train dialog closes without building train.
 May 31, 2004 Luke
 	Bugs Fixed: 
 	o 948653 Crash after loading a saved game when one is not available.	
