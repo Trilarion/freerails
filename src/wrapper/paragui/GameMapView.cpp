@@ -17,8 +17,8 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
   PG_Point p;
   
-  oldViewPos.x=0;
-  oldViewPos.y=0;
+  viewPos.x=0;
+  viewPos.y=0;
   
   SetBackgroundBlend(0);
   tilesImage=IMG_Load("data/graphics/tilesets/default/terrain_tiles.png");
@@ -40,8 +40,8 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   horizontalScrollBar->SetPageSize(w);
   horizontalScrollBar->SetLineSize(30);
   mouseType=0;
-  mouseOldX=0;
-  mouseOldY=0;
+  mouseOldMapX=0;
+  mouseOldMapY=0;
 }
 
 GameMapView::~GameMapView() {
@@ -265,8 +265,8 @@ void GameMapView::setMouseType(MouseType type) {
 
 void GameMapView::eventMouseLeave() {
 
-//  getMapImage(imageSurface,mouseOldX,mouseOldY);
-//  view->Update();
+  regenerateTile(mouseOldX,mouseOldY);
+  view->Update();
 }
 
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
@@ -279,15 +279,16 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
   return false;
 }
 
-void GameMapView::regenerateTile(int x, int y) {
-
-  for (int i=-1;i<=1;i++) {
-    for (int ii=-1;ii<=1;ii++) {
-//      getMapImage(imageSurface,mouseOldX+i,mouseOldY+ii);
+void GameMapView::regenerateTile(int x, int y)
+{
+  // Not the cleanest :-)
+  for (int y1=-1;y1<=1;y1++)
+  {
+    for (int x1=-1;x1<=1;x1++)
+    {
+      getMapImage(imageSurface, -(viewPos.x), -(viewPos.y), x+x1, y+y1);
     }
   }
-  mouseOldX=x;
-  mouseOldY=y;
 }
 
 void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
@@ -297,8 +298,8 @@ void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
   rectSRC.h=30;
   rectSRC.x=tilesetX;
   rectSRC.y=tilesetY;
-  rectDST.x=x*30;
-  rectDST.y=y*30;
+  rectDST.x=x*30-viewPos.x;
+  rectDST.y=y*30-viewPos.y;
   rectDST.w=rectSRC.w;
   rectDST.h=rectSRC.h;
   SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
@@ -306,19 +307,22 @@ void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
 
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
-  int x,y, x2, y2;
-  int dir, dir2, helpx, helpy;
+  unsigned int x,y;
+  int dir, helpx, helpy;
   
-  x = (oldViewPos.x + motion->x) / 30;
-  y = (oldViewPos.y + motion->y) / 30;
+  regenerateTile(mouseOldMapX,mouseOldMapY);
+
+  x = motion->x + viewPos.x;  // realScreenPosX
+  y = motion->y + viewPos.y;  // realScreenPosY
   
-  x = motion->x / 30;
-  y = motion->y / 30;
-  helpx=x*30;
-  helpx=motion->x-helpx;
-  helpy=y*30;
-  helpy=motion->y-helpy;
-  
+  // Should be replaced with function in upper class
+  // All calculations are for a 30x30 tileset
+  helpx=x % 30;// for calculate the direction on the tile
+  helpy=y % 30;
+  x = x / 30;  // realMapPosX
+  y = y / 30;  // realMapPosY
+
+  // now calculate direction
   if (helpx<10) {
     if (helpy<10) { dir=8; }
     else if (helpy<20) { dir=7; }
@@ -334,31 +338,11 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
     else if (helpy<20) { dir=3; }
     else dir=4;
   };
-  
-  if (dir<5) dir2=dir+4;
-    else dir2=dir-4;
-    
-  switch (dir) {
-    case 1: y2=y-1; x2=x;
-    break;
-    case 2: y2=y-1; x2=x+1;
-    break;
-    case 3: y2=y; x2=x+1;
-    break;
-    case 4: y2=y+1; x2=x+1;
-    break;
-    case 5: y2=y+1; x2=x;
-    break;
-    case 6: y2=y+1; x2=x-1;
-    break;
-    case 7: y2=y; x2=x-1;
-    break;
-    case 8: y2=y-1; x2=x-1;
-    break;
-  }
+  // End of to be replace
 
-//  regenerateTile(x,y);
   GameElement* new_element;
+  mouseOldMapX = x;
+  mouseOldMapY = y;
 
   switch (mouseType) {
   
@@ -376,10 +360,8 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       if (trackcontroller->canBuildElement(new_element))
       {
         showTrack(x,y,(dir-1)*2*30+15,0*30+15);
-//	if (engine->canBuildTrack(x2,y2,1,dir2)>=0)
-//	{
-//	  showTrack(x2,y2,(dir2-1)*2*30+15,0*30+15);
-//	}
+	trackcontroller->getOtherConnectionSide(&x,&y,&dir);
+        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
       }
       break;
     default:
@@ -423,17 +405,17 @@ bool GameMapView::eventScrollPos(int id, PG_Widget* widget, unsigned long data) 
 
 void GameMapView::moveXto(unsigned long pos) {
 
-  redrawMap(pos, oldViewPos.y, Width(), Height());
+  redrawMap(pos, viewPos.y, Width(), Height());
   // TODO: Don't need full redraw any time
-  oldViewPos.x = pos;
+  viewPos.x = pos;
 
 }
 
 void GameMapView::moveYto(unsigned long pos) {
 
-  redrawMap(oldViewPos.x, pos, Width(), Height());
+  redrawMap(viewPos.x, pos, Width(), Height());
   // TODO: Don't need full redraw any time
-  oldViewPos.y = pos;
+  viewPos.y = pos;
 
 }
 

@@ -46,10 +46,11 @@ class GameMapView: public PG_ThemeWidget {
     SDL_Surface* imageSurface;
     PG_Image* view;
     int mouseType;
-    int mouseOldX;
-    int mouseOldY;
+
+    int mouseOldMapX;
+    int mouseOldMapY;
     
-    PG_Point oldViewPos;
+    PG_Point viewPos;
     
     TrackController* trackcontroller;
     StationController* stationcontroller;
