@@ -165,7 +165,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             /* Now try sending some moves. */
             Player player0 = client0.getWorld().getPlayer(0);
             FreerailsPrincipal principal0 = player0.getPrincipal();
-            Transaction t = new Receipt(new Money(100), Transaction.MISC_INCOME);
+            Transaction t = new Receipt(new Money(100), Transaction.Category.MISC_INCOME);
             Move move = new AddTransactionMove(principal0, t);
             World copyOfWorld = client0.getWorld().defensiveCopy();
             assertEquals(copyOfWorld, client0.getWorld());

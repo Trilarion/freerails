@@ -19,7 +19,7 @@ public class DeliverCargoReceipt extends Receipt {
 
     public DeliverCargoReceipt(Money m, int quantity, int stationId,
         CargoBatch cb) {
-        super(m, CARGO_DELIVERY);
+        super(m, Category.CARGO_DELIVERY);
         m_stationId = stationId;
         m_quantity = quantity;
         m_cb = cb;

@@ -31,7 +31,7 @@ public class AddTrainMove extends CompositeMove {
         Move m3 = new AddItemToListMove(KEY.TRAIN_POSITIONS, i, null, p);
         int quantity = 1;
         int engineType = train.getEngineType();
-        Transaction transaction = new AddItemTransaction(Transaction.TRAIN,
+        Transaction transaction = new AddItemTransaction(Transaction.Category.TRAIN,
                 engineType, quantity, new Money(-price.getAmount()));
         AddTransactionMove transactionMove = new AddTransactionMove(p,
                 transaction);

@@ -36,7 +36,7 @@ public class TrainMaintenanceMoveGenerator {
         int numberOfTrains = trains.size();
         long amount = numberOfTrains * 5000;
         Transaction t = new Bill(new Money(amount),
-                Transaction.TRAIN_MAINTENANCE);
+                Transaction.Category.TRAIN_MAINTENANCE);
 
         return new AddTransactionMove(principal, t);
     }

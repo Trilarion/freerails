@@ -14,12 +14,25 @@ import jfreerails.world.common.Money;
  *
  */
 public class AddItemTransaction implements Transaction {
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("AddItemTransaction ");
+		sb.append(m_category);
+		sb.append(", type ");
+		sb.append(m_type);
+		sb.append(", quantity ");
+		sb.append(m_quantity);
+		sb.append(", amount ");
+		sb.append(m_amount);
+		return super.toString();
+	}
     /** For example track. */
-    private final int m_category;
+    private final Category m_category;
 
     public int hashCode() {
         int result;
-        result = m_category;
+        result = m_category.hashCode();
         result = 29 * result + m_type;
         result = 29 * result + m_quantity;
         result = 29 * result + m_amount.hashCode();
@@ -45,14 +58,14 @@ public class AddItemTransaction implements Transaction {
 		return false;
     }
 
-    public AddItemTransaction(int category, int type, int quantity, Money amount) {
+    public AddItemTransaction(Category category, int type, int quantity, Money amount) {
         m_category = category;
         m_type = type;
         m_quantity = quantity;
         m_amount = amount;
     }
 
-    public int getCategory() {
+    public Category getCategory() {
         return m_category;
     }
 

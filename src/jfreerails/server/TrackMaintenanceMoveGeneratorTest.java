@@ -71,7 +71,7 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
 
     /** Utility method to add the specifed number of units of the specified track type. */
     private void addTrack(int trackType, int quantity) {
-        AddItemTransaction t = new AddItemTransaction(Transaction.TRACK,
+        AddItemTransaction t = new AddItemTransaction(Transaction.Category.TRACK,
                 trackType, quantity, new Money(trackType));
         w.addTransaction(t, MapFixtureFactory.TEST_PRINCIPAL);
     }

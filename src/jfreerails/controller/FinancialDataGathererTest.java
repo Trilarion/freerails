@@ -81,7 +81,7 @@ public class FinancialDataGathererTest extends TestCase {
                 player.getPrincipal());
         assertEquals(0, fdg.treasuryStock());
 
-        Transaction t = new AddItemTransaction(Transaction.STOCK, 0,
+        Transaction t = new AddItemTransaction(Transaction.Category.ISSUE_STOCK, 0,
                 FinancialMoveProducer.SHARE_BUNDLE_SIZE, new Money(0));
         w.addTransaction(t, player.getPrincipal());
         fdg = new FinancialDataGatherer(w, player.getPrincipal());

@@ -22,7 +22,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new Receipt(new Money(100), Transaction.MISC_INCOME);
+        Transaction t = new Receipt(new Money(100), Transaction.Category.MISC_INCOME);
         Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t);
         assertTryMoveIsOk(m);
         assertTryUndoMoveFails(m);
@@ -46,7 +46,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new Bill(new Money(100), Transaction.MISC_INCOME);
+        Transaction t = new Bill(new Money(100), Transaction.Category.MISC_INCOME);
         Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t,
                 true);
 

@@ -15,6 +15,7 @@ import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
+import static jfreerails.world.accounts.Transaction.Category.*;
 
 
 /** This class calculates the cost of a series of track moves.  The
@@ -140,7 +141,7 @@ public class TrackMoveTransactionsGenerator {
                 TrackRule rule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
                 Money total = new Money(-m.getAmount() * numberAdded / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-                Transaction t = new AddItemTransaction(Transaction.TRACK,
+                Transaction t = new AddItemTransaction(TRACK,
                         i, numberAdded, total);
                 transactions.add(t);
             }
@@ -156,7 +157,7 @@ public class TrackMoveTransactionsGenerator {
                 //You only get half the money back.
                 total = new Money(total.getAmount() / 2);
 
-                Transaction t = new AddItemTransaction(Transaction.TRACK,
+                Transaction t = new AddItemTransaction(TRACK,
                         i, -numberRemoved, total);
                 transactions.add(t);
             }

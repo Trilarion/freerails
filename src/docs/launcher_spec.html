@@ -11,7 +11,7 @@
 <BODY LANG="en-US" DIR="LTR">
 <H2>Launcher</H2>
 <P><B>Panel 1: Select Game Type</B></P>
-<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<TABLE>
 	<COL WIDTH=128*>
 	<COL WIDTH=128*>
 	<TR VALIGN=TOP>
@@ -60,7 +60,7 @@
 <P><IMG SRC="LauncherPanel1.png" NAME="Graphic1" ALIGN=LEFT WIDTH=408 HEIGHT=389 BORDER=0><BR CLEAR=LEFT><BR><BR>
 </P>
 <P>Panel 2: Select Map (and server details)</P>
-<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<TABLE>
 	<COL WIDTH=128*>
 	<COL WIDTH=128*>
 	<TR VALIGN=TOP>
@@ -100,80 +100,50 @@
 </P>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>
-<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
-	<COL WIDTH=85*>
-	<COL WIDTH=85*>
-	<COL WIDTH=85*>
-	<THEAD>
-		<TR VALIGN=TOP>
-			<TH WIDTH=33%>
-				<P>Condition</P>
-			</TH>
-			<TH WIDTH=33%>
-				<P>Message or result</P>
-			</TH>
-			<TH WIDTH=33%>
-				<P>When checked</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>No saved game available.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>The item &ldquo;Load a saved game&rdquo; should be disabled</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>When the panel is created.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>Port field does not contain a number between, inclusive 0 and
-				65535</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;A valid port value is between between 0 and 65535.&rdquo;
-				and disable &ldquo;next&rdquo; button.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>As text is entered.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>&ldquo;Start a new map&rdquo; is selected but no map is
-				selected.&rdquo;</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;Select a map&rdquo;. The next button should be
-				disabled.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>When the radio button selection changes and when the selected
-				map in the map list changes.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>Can't start server on specified port</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>Use the message from the exception. The next button should
-				still be enabled.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>When the next button is pressed.</P>
-			</TD>
-		</TR>
-	</TBODY>
+<TABLE>
+  <COL WIDTH=85*>
+  <COL WIDTH=85*>
+  <COL WIDTH=85*>
+  <THEAD>
+    <TR VALIGN=TOP> 
+      <TH WIDTH=33%> <P align="left">Condition</P></TH>
+      <TH WIDTH=33%> <P align="left">Message or result</P></TH>
+      <TH WIDTH=33%> <P align="left">When checked</P></TH>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>No saved game available.</P></TD>
+      <TD WIDTH=33%> <P>The item &quot;Load a saved game&quot; should be disabled</P></TD>
+      <TD WIDTH=33%> <P>When the panel is created.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>Port field does not contain a number between, inclusive 
+          0 and 65535</P></TD>
+      <TD WIDTH=33%> <P>&quot;A valid port value is between between 0 and 65535.&quot; 
+          and disable &quot;next&quot; button.</P></TD>
+      <TD WIDTH=33%> <P>As text is entered.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>&quot; Start a new map&quot;  is selected but no map is 
+          selected.&quot; </P></TD>
+      <TD WIDTH=33%> <P>&quot;Select a map&quot;. The &quot;next&quot; button 
+          should be disabled.</P></TD>
+      <TD WIDTH=33%> <P>When the radio button selection changes and when the selected 
+          map in the map list changes.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>Can't start server on specified port</P></TD>
+      <TD WIDTH=33%> <P>Use the message from the exception. The next button should 
+          still be enabled.</P></TD>
+      <TD WIDTH=33%> <P>When the next button is pressed.</P></TD>
+    </TR>
+  </TBODY>
 </TABLE>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>
 <P><B>Panel 3: Client details (and remote server details).</B></P>
-<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<TABLE>
 	<COL WIDTH=128*>
 	<COL WIDTH=128*>
 	<TR VALIGN=TOP>
@@ -213,97 +183,56 @@
 </P>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>
-<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
-	<COL WIDTH=85*>
-	<COL WIDTH=85*>
-	<COL WIDTH=85*>
-	<THEAD>
-		<TR VALIGN=TOP>
-			<TH WIDTH=33%>
-				<P>Condition</P>
-			</TH>
-			<TH WIDTH=33%>
-				<P>Message or result</P>
-			</TH>
-			<TH WIDTH=33%>
-				<P>When checked</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>The &ldquo;Player name&rdquo; field is empty.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;Enter a player name&rdquo; and disable &ldquo;next&rdquo;
-				button.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>As text is entered.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>Port field does not contain a number between, inclusive 0 and
-				65535</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;A valid port value is between between 0 and 65535.&rdquo;
-				and disable &ldquo;next&rdquo; button.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>As text is entered.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>&ldquo;Full screen&rdquo; is selected but no map is selected.&rdquo;</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;Select a display mode&rdquo;. The next button should be
-				disabled.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>When the radio button selection changes and when the selected
-				display-mode in the display-mode list changes.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>The &ldquo;IP address&rdquo; field is empty.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;Enter the address of the server&rdquo; and disable
-				&ldquo;next&rdquo; button.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>As text is entered.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>Can't resolve host.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;Can't resolve host.&rdquo;</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>When next button is pressed.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=33%>
-				<P>Can't connect to server.</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>&ldquo;Can't connect to server.&rdquo;</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>When next button is pressed.</P>
-			</TD>
-		</TR>
-	</TBODY>
+<TABLE>
+  <COL WIDTH=85*>
+  <COL WIDTH=85*>
+  <COL WIDTH=85*>
+  <THEAD>
+    <TR VALIGN=TOP> 
+      <TH WIDTH=33%> <P align="left">Condition</P></TH>
+      <TH WIDTH=33%> <P align="left">Message or result</P></TH>
+      <TH WIDTH=33%> <P align="left">When checked</P></TH>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>The &quot; Player name&quot; field is empty.</P></TD>
+      <TD WIDTH=33%> <P>&quot; Enter a player name&quot; and disable &quot; next&quot; 
+          button.</P></TD>
+      <TD WIDTH=33%> <P>As text is entered.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>Port field does not contain a number between, inclusive 
+          0 and 65535</P></TD>
+      <TD WIDTH=33%> <P>&quot; A valid port value is between between 0 and 65535.&quot; 
+          and disable &quot; next&quot; button.</P></TD>
+      <TD WIDTH=33%> <P>As text is entered.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>&quot; Full screen&quot; is selected but no map is selected.&quot; 
+        </P></TD>
+      <TD WIDTH=33%> <P>&quot; Select a display mode&quot; . The next button should 
+          be disabled.</P></TD>
+      <TD WIDTH=33%> <P>When the radio button selection changes and when the selected 
+          display-mode in the display-mode list changes.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>The &quot; IP address&quot; field is empty.</P></TD>
+      <TD WIDTH=33%> <P>&quot; Enter the address of the server&quot; and disable 
+          &quot; next&quot; button.</P></TD>
+      <TD WIDTH=33%> <P>As text is entered.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>Can't resolve host.</P></TD>
+      <TD WIDTH=33%> <P>&quot;Can't resolve host.&quot; </P></TD>
+      <TD WIDTH=33%> <P>When next button is pressed.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=33%> <P>Can't connect to server.</P></TD>
+      <TD WIDTH=33%> <P>&quot; Can't connect to server.&quot; </P></TD>
+      <TD WIDTH=33%> <P>When next button is pressed.</P></TD>
+    </TR>
+  </TBODY>
 </TABLE>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>

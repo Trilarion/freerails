@@ -41,7 +41,7 @@ public class InterestChargeMoveGenerator {
         }
 
         Transaction t = new Bill(new Money(interestDue),
-                Transaction.INTEREST_CHARGE);
+                Transaction.Category.INTEREST_CHARGE);
 
         return new AddTransactionMove(principal, t);
     }

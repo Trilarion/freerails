@@ -16,7 +16,7 @@ import jfreerails.world.common.Money;
  */
 public class IssueStockTransaction extends AddItemTransaction {
     private IssueStockTransaction(int quantity, Money amount) {
-        super(Transaction.ISSUE_STOCK, Transaction.ISSUE_STOCK, quantity, amount);
+        super(Transaction.Category.ISSUE_STOCK, -1, quantity, amount);
     }
 
     public static IssueStockTransaction issueStock(int quantity,

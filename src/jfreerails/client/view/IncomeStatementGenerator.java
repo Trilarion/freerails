@@ -5,6 +5,7 @@ package jfreerails.client.view;
 
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.accounts.Transaction;
+import static jfreerails.world.accounts.Transaction.Category.*;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
@@ -62,10 +63,10 @@ public class IncomeStatementGenerator {
         bulkFreightTotal = calRevenue("Bulk_Freight");
 
         //Expenses.
-        interestTotal = calTotal(Transaction.INTEREST_CHARGE);
-        trainMaintenanceTotal = calTotal(Transaction.TRAIN_MAINTENANCE);
-        trackMaintenanceTotal = calTotal(Transaction.TRACK_MAINTENANCE);
-        stationMaintenanceTotal = calTotal(Transaction.STATION_MAINTENANCE);
+        interestTotal = calTotal(INTEREST_CHARGE);
+        trainMaintenanceTotal = calTotal(TRAIN_MAINTENANCE);
+        trackMaintenanceTotal = calTotal(TRACK_MAINTENANCE);
+        stationMaintenanceTotal = calTotal(STATION_MAINTENANCE);
 
         /* Note, expenses are stored as negative values so we just add everything up.*/
         long profit = mailTotal.getAmount() + passengersTotal.getAmount() +
@@ -90,10 +91,10 @@ public class IncomeStatementGenerator {
         bulkFreightYtd = calRevenue("Bulk_Freight");
 
         //Expenses.
-        interestYtd = calTotal(Transaction.INTEREST_CHARGE);
-        trainMaintenanceYtd = calTotal(Transaction.TRAIN_MAINTENANCE);
-        trackMaintenanceYtd = calTotal(Transaction.TRACK_MAINTENANCE);
-        stationMaintenanceYtd = calTotal(Transaction.STATION_MAINTENANCE);
+        interestYtd = calTotal(INTEREST_CHARGE);
+        trainMaintenanceYtd = calTotal(TRAIN_MAINTENANCE);
+        trackMaintenanceYtd = calTotal(TRACK_MAINTENANCE);
+        stationMaintenanceYtd = calTotal(STATION_MAINTENANCE);
 
         /* Note, expenses are stored as negative values so we just add everything up.*/
         profit = mailYtd.getAmount() + passengersYtd.getAmount() +
@@ -128,7 +129,7 @@ public class IncomeStatementGenerator {
         return new Money(amount);
     }
 
-    private Money calTotal(int transactionCategory) {
+    private Money calTotal(Transaction.Category transactionCategory) {
         long amount = 0;
 
         for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {

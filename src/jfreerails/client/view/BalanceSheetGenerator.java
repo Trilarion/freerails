@@ -15,6 +15,7 @@ import jfreerails.world.top.SKEY;
 import jfreerails.world.top.TransactionAggregator;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
+import static jfreerails.world.accounts.Transaction.Category.*;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so
@@ -24,9 +25,7 @@ import jfreerails.world.track.TrackRule;
  *  
  */
 public class BalanceSheetGenerator {
-    public static final int TRACK = 0;
-
-    public static final int STATIONS = 1;
+  
 
     GameTime from;
 
@@ -94,14 +93,14 @@ public class BalanceSheetGenerator {
 
         aggregator.setTimes(totalTimeInteval);
 
-        aggregator.setCategory(Transaction.TRAIN);
+        aggregator.setCategory(TRAIN);
         rollingStockTotal = aggregator.calculateValue();
         
-        aggregator.setCategory(Transaction.INDUSTRIES);
+        aggregator.setCategory(INDUSTRIES);
         industriesTotal = aggregator.calculateValue();
-        aggregator.setCategory(Transaction.BOND);
+        aggregator.setCategory(BOND);
         loansTotal = aggregator.calculateValue();
-        aggregator.setCategory(Transaction.ISSUE_STOCK);
+        aggregator.setCategory(ISSUE_STOCK);
         equityTotal = aggregator.calculateValue();
 
         long profit = operatingFundsTotal.getAmount() + trackTotal.getAmount()
@@ -129,15 +128,15 @@ public class BalanceSheetGenerator {
         trackYtd = calTrackTotal(TRACK, w, principal, startOfYear);
         stationsYtd = calTrackTotal(STATIONS, w, principal, startOfYear);
 
-        aggregator.setCategory(Transaction.TRAIN);
+        aggregator.setCategory(TRAIN);
         rollingStockYtd = aggregator.calculateValue();
         
-        aggregator.setCategory(Transaction.INDUSTRIES);
+        aggregator.setCategory(INDUSTRIES);
         industriesYtd = aggregator.calculateValue();
         
-        aggregator.setCategory(Transaction.BOND);
+        aggregator.setCategory(BOND);
         loansYtd = aggregator.calculateValue();
-        aggregator.setCategory(Transaction.ISSUE_STOCK);
+        aggregator.setCategory(ISSUE_STOCK);
         equityYtd = aggregator.calculateValue();
 
         profit = operatingFundsYtd.getAmount() + trackYtd.getAmount()
@@ -146,12 +145,12 @@ public class BalanceSheetGenerator {
         profitYtd = new Money(profit);
     }
 
-    public static Money calTrackTotal(int category, ReadOnlyWorld w,
+    public static Money calTrackTotal(Transaction.Category category, ReadOnlyWorld w,
             FreerailsPrincipal principal, GameTime startTime) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
 
-        aggregator.setCategory(Transaction.TRACK);
+        aggregator.setCategory(TRACK);
         long amount = 0;
 
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {

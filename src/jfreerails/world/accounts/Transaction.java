@@ -15,22 +15,11 @@ import jfreerails.world.common.Money;
  *
  */
 public interface Transaction extends FreerailsSerializable {
-    /* Transaction categories.*/
-    public static final int TRACK = 0;
-    public static final int CARGO_DELIVERY = 1;
-    public static final int TRACK_MAINTENANCE = 2;
-    public static final int TRAIN_MAINTENANCE = 3;
-    public static final int STATION_MAINTENANCE = 4;
-    public static final int TRAIN = 5;
-    public static final int MISC_INCOME = 6;
-    public static final int INTEREST_CHARGE = 7;
-    public static final int BOND = 8;
-    public static final int ISSUE_STOCK = 9;
-    public static final int INDUSTRIES = 10;
-    public static final int STOCK = 9;
+    
+	public enum Category{TRACK, CARGO_DELIVERY, TRACK_MAINTENANCE, TRAIN_MAINTENANCE, STATION_MAINTENANCE, TRAIN, MISC_INCOME, INTEREST_CHARGE, BOND, ISSUE_STOCK, INDUSTRIES, STATIONS};	  
 
     /** Positive means credit. */
     Money getValue();
 
-    int getCategory();
+    Category getCategory();
 }

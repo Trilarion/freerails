@@ -9,6 +9,7 @@ import jfreerails.move.Move;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
+import static jfreerails.world.accounts.Transaction.Category.*;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ItemsTransactionAggregator;
@@ -33,17 +34,15 @@ public class TrackMaintenanceMoveGenerator {
     }
 
     public static AddTransactionMove generateMove(World w,
-        FreerailsPrincipal principal, int category) {
-        if (Transaction.TRACK_MAINTENANCE != category &&
-                Transaction.STATION_MAINTENANCE != category) {
+        FreerailsPrincipal principal, Transaction.Category category) {
+        if (TRACK_MAINTENANCE != category &&
+                STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }
-
-        //int[] track = ItemsTransactionAggregator.calulateNumberOfEachTrackType(w,
-        //        principal, 0);
+        
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w,
                 principal);
-        aggregator.setCategory(Transaction.TRACK);
+        aggregator.setCategory(TRACK);
 
         long amount = 0;
 
@@ -52,7 +51,7 @@ public class TrackMaintenanceMoveGenerator {
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
             //Is the track type the category we are interested in?
-            boolean rightType = Transaction.TRACK_MAINTENANCE == category
+            boolean rightType = TRACK_MAINTENANCE == category
                 ? !trackRule.isStation() : trackRule.isStation();
 
             if (rightType) {
@@ -69,10 +68,10 @@ public class TrackMaintenanceMoveGenerator {
     public void update(World w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
-            Move m = generateMove(w, principal, Transaction.TRACK_MAINTENANCE);
+            Move m = generateMove(w, principal, TRACK_MAINTENANCE);
             moveReceiver.processMove(m);
 
-            m = generateMove(w, principal, Transaction.STATION_MAINTENANCE);
+            m = generateMove(w, principal, STATION_MAINTENANCE);
             moveReceiver.processMove(m);
         }
     }

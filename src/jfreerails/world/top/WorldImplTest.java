@@ -64,7 +64,7 @@ public class WorldImplTest extends TestCase {
         original.addPlayer(player);
         assertEquals("The copies should be logically equal.", original, copy);
 
-        Transaction t = new Receipt(new Money(100), Transaction.MISC_INCOME);
+        Transaction t = new Receipt(new Money(100), Transaction.Category.MISC_INCOME);
         copy.addTransaction(t, player.getPrincipal());
         assertEquals(new Money(100),
             copy.getCurrentBalance(player.getPrincipal()));

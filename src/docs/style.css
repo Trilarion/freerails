@@ -1,6 +1,13 @@
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	width: 600px;
+	
+
+}
+table {
+	border: 1px solid #000000;
+	width: 700px;
+	margin: 10px;
+	padding: 10px;
 
 }
 

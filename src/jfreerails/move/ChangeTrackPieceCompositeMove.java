@@ -170,7 +170,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         FreerailsPrincipal principal) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world,
                 principal);
-        aggregator.setCategory(Transaction.TRACK);
+        aggregator.setCategory(Transaction.Category.TRACK);
 
         return aggregator.calculateQuantity() > 0;
     }

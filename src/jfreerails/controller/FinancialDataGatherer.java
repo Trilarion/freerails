@@ -42,7 +42,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
                 bonds += ait.getQuantity();
             } else {
                 //If it is a change in treasury stock.
-                if (ait.getCategory() == Transaction.STOCK &&
+                if (ait.getCategory() == Transaction.Category.ISSUE_STOCK &&
                         ait.getType() == playerID) {
                     treasuryStock += ait.getQuantity();
                 }
