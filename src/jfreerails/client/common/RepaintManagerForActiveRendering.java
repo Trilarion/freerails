@@ -54,8 +54,7 @@ final class RepaintManagerForActiveRendering extends RepaintManager {
 	}
 	
 	public boolean hasDifferentAncester(JComponent aComponent){
-		if(aComponent.getTopLevelAncestor() != null && aComponent.getTopLevelAncestor() != frame){
-			System.out.println("hasDifferentAncester");
+		if(aComponent.getTopLevelAncestor() != null && aComponent.getTopLevelAncestor() != frame){			
 			return true;
 		}else{
 			return false;
