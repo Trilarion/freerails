@@ -31,11 +31,13 @@ import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
+import jfreerails.util.Utils;
 import jfreerails.world.common.Money;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
 import static jfreerails.world.track.TrackRule.TrackCategories.track;
+
 
 
 
@@ -152,7 +154,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     break;
             }
             toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
-            String tooltip = rule.getTypeName()+ " $"+price.toString();
+            String tooltip = Utils.capitalizeEveryWord(rule.getTypeName())+ " $"+price.toString();
             toggleButton.setToolTipText(tooltip);
             if(!selectionSet.containsKey(category)){
                 selectionSet.put(category, new Integer(i));

@@ -61,7 +61,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
     /**
      * <p>
-     * Tests whether we can build track in the direction specifed by
+     * Tests whether we can build track in the direction specified by
      * m_direction.
      * </p>
      *
@@ -182,7 +182,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             return false;
         }
 
-        /* Set the using existing track.  We do this becuase a path that uses existing track
+        /* Set the using existing track.  We do this because a path that uses existing track
          * is cheaper to build.
          */
         m_usingExistingTrack = trackAlreadyPresent1.contains(goingTo);
@@ -220,18 +220,24 @@ public class BuildTrackExplorer implements GraphExplorer {
 		int cost = DISTANCE_COST * length;
 		
 		if (!m_usingExistingTrack) {
-			int x = m_currentPosition.getX();
-			int y = m_currentPosition.getY();
-			TrackRule ruleA = getAppropriateTrackRule(x, y);
-			TrackRule ruleB = getAppropriateTrackRule(x+ edgeDirection.deltaX, y+edgeDirection.deltaY);
+			int[] x = {m_currentPosition.getX(), m_currentPosition.getX()+ edgeDirection.deltaX};
+			int[] y = {m_currentPosition.getY(), m_currentPosition.getY() + edgeDirection.deltaY};
+			TrackRule ruleA = getAppropriateTrackRule(x[0], y[0]);
+			TrackRule ruleB = getAppropriateTrackRule(x[1], y[1]);
 			/* If there is a station at either of the points, don't include its
-			 * price in the cost calulation since it has already been paid.  Otherwise,
+			 * price in the cost calculation since it has already been paid.  Otherwise,
 			 * add the cost of building the track.
 			 */
-			long priceA = ruleA.isStation() ? 0 : ruleA.getPrice().getAmount();    			    			
-			long priceB = ruleB.isStation() ? 0 : ruleB.getPrice().getAmount();  
+			long priceA = ruleA.getPrice().getAmount();    			    			
+			long priceB = ruleB.getPrice().getAmount();  
 			cost += length*(priceA + priceB);
-		   
+			//Add fixed cost if tile b does not have the desired track type.
+			FreerailsTile a = (FreerailsTile)m_world.getTile(x[0], y[0]);
+			TrackRule currentRuleA = a.getTrackRule();
+			if(!currentRuleA.equals(priceA)){
+				assert( !currentRuleA.isStation()); //We shouldn't be upgrading a station. 
+				cost+= ruleA.getFixedCost().getAmount() * OneTileMoveVector.TILE_DIAMETER;
+			}
 		}                        			
 		return cost;
     }

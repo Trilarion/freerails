@@ -6,7 +6,6 @@
 
 package jfreerails.client.top;
 
-import javax.swing.JPanel;
 
 
 /**
@@ -24,8 +23,7 @@ public class ClientJFrame extends javax.swing.JFrame {
     
     private void setup(GUIComponentFactory gcf) {
         this.gUIComponentFactory=gcf;
-        initComponents();
-        //jSplitPane1.resetToPreferredSizes();
+        initComponents();       
         gUIComponentFactory.createDateJLabel();
     }
     
@@ -38,8 +36,8 @@ public class ClientJFrame extends javax.swing.JFrame {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
-        
-		rhsjPanel = new JPanel();
+
+        rhsjPanel = new javax.swing.JPanel();
         mapOverview = gUIComponentFactory.createOverviewMap();
         trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
 
@@ -52,6 +50,7 @@ public class ClientJFrame extends javax.swing.JFrame {
         gameMenu = gUIComponentFactory.createGameMenu();
         buildMenu = gUIComponentFactory.createBuildMenu();
         displayMenu = gUIComponentFactory.createDisplayMenu();
+        reportsMenu = gUIComponentFactory.createReportsMenu();
         helpMenu = gUIComponentFactory.createHelpMenu();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -120,6 +119,9 @@ public class ClientJFrame extends javax.swing.JFrame {
         displayMenu.setText("Display");
         jMenuBar1.add(displayMenu);
 
+        reportsMenu.setText("Reports");
+        jMenuBar1.add(reportsMenu);
+
         helpMenu.setText("Help");
         jMenuBar1.add(helpMenu);
 
@@ -139,19 +141,20 @@ public class ClientJFrame extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu buildMenu;
-    private javax.swing.JLabel cashjLabel;
-    private javax.swing.JLabel datejLabel;
-    private javax.swing.JMenu displayMenu;
-    private javax.swing.JMenu gameMenu;
-    private javax.swing.JMenu helpMenu;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel lhsjPanel;
-    private javax.swing.JScrollPane mainMapView;
-    private javax.swing.JPanel mapOverview;
-    private javax.swing.JPanel rhsjPanel;
-    private javax.swing.JPanel statusjPanel;
-    private javax.swing.JTabbedPane trainsJTabPane1;
+    javax.swing.JMenu buildMenu;
+    javax.swing.JLabel cashjLabel;
+    javax.swing.JLabel datejLabel;
+    javax.swing.JMenu displayMenu;
+    javax.swing.JMenu gameMenu;
+    javax.swing.JMenu helpMenu;
+    javax.swing.JMenuBar jMenuBar1;
+    javax.swing.JPanel lhsjPanel;
+    javax.swing.JScrollPane mainMapView;
+    javax.swing.JPanel mapOverview;
+    javax.swing.JMenu reportsMenu;
+    javax.swing.JPanel rhsjPanel;
+    javax.swing.JPanel statusjPanel;
+    javax.swing.JTabbedPane trainsJTabPane1;
     // End of variables declaration//GEN-END:variables
     
 }

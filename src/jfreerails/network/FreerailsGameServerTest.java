@@ -59,6 +59,8 @@ public class FreerailsGameServerTest extends TestCase {
         assertFalse("Player 0 has logged off, but the password is wrong.",
             response.isSuccessful());
     }
+    
+   
 
     protected void setUp() throws Exception {
         server = new FreerailsGameServer(new SavedGamesManager4UnitTests());

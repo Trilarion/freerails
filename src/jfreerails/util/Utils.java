@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.StringTokenizer;
 
 
 /**
@@ -33,10 +34,22 @@ public class Utils {
         try {
             o = (Serializable)objectIn.readObject();
         } catch (ClassNotFoundException e) {
-            //Should never happend.
+            //Should never happen.
             throw new IllegalStateException();
         }
 
         return o;
     }
+    
+    public static String capitalizeEveryWord(String str) {
+        StringBuffer result = new StringBuffer();        
+        StringTokenizer tok = new StringTokenizer(str);
+            
+        while (tok.hasMoreTokens()) {
+            String token = tok.nextToken().toLowerCase();
+            result.append(Character.toUpperCase(token.charAt(0)) + token.substring(1) + " ");
+        }                
+        return result.toString().trim();
+    }
+
 }

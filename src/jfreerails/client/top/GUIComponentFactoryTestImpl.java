@@ -18,32 +18,32 @@ import javax.swing.JTabbedPane;
  * @author  Luke
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
-    private final javax.swing.JLabel datejLabel;
-    private final javax.swing.JLabel cashjLabel;
-    private final javax.swing.JTabbedPane trainsJPanel;
-    private final javax.swing.JMenu displayMenu;
-    private final javax.swing.JScrollPane mainMapView;
-    private final javax.swing.JMenu buildMenu;
-    private final javax.swing.JMenu gameMenu;
-    private final javax.swing.JPanel mapOverview;
-    private final javax.swing.JMenu helpMenu;
-    private final javax.swing.JLabel messageJLabel;
+    private final JLabel datejLabel;
+    private final JLabel cashjLabel;
+    private final JTabbedPane trainsJPanel;
+    private final JMenu displayMenu;
+    private final JScrollPane mainMapView;
+    private final JMenu buildMenu;
+    private final JMenu gameMenu;
+    private final JPanel mapOverview;
+    private final JMenu helpMenu;
+    private final JLabel messageJLabel;
 
     /** Creates a new instance of GUIComponentFactoryTestImpl. */
     public GUIComponentFactoryTestImpl() {
-        javax.swing.JPanel mainmapjPanel;
+        JPanel mainmapjPanel;
 
-        trainsJPanel = new javax.swing.JTabbedPane();
-        datejLabel = new javax.swing.JLabel();
-        mapOverview = new javax.swing.JPanel();
-        cashjLabel = new javax.swing.JLabel();
-        mainMapView = new javax.swing.JScrollPane();
-        mainmapjPanel = new javax.swing.JPanel();
-        messageJLabel = new javax.swing.JLabel();
-        gameMenu = new javax.swing.JMenu();
-        buildMenu = new javax.swing.JMenu();
-        displayMenu = new javax.swing.JMenu();
-        helpMenu = new javax.swing.JMenu();
+        trainsJPanel = new JTabbedPane();
+        datejLabel = new JLabel();
+        mapOverview = new JPanel();
+        cashjLabel = new JLabel();
+        mainMapView = new JScrollPane();
+        mainmapjPanel = new JPanel();
+        messageJLabel = new JLabel();
+        gameMenu = new JMenu();
+        buildMenu = new JMenu();
+        displayMenu = new JMenu();
+        helpMenu = new JMenu();
 
         trainsJPanel.setBackground(new java.awt.Color(255, 51, 51));
         datejLabel.setText("Jun, 1840");
@@ -53,6 +53,10 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         mainmapjPanel.setBackground(new java.awt.Color(153, 244, 51));
         mainMapView.setViewportView(mainmapjPanel);
         messageJLabel.setText("message");
+    }
+    
+    public JMenu createReportsMenu(){
+        return new JMenu("Reports");
     }
 
     public JMenu createBuildMenu() {

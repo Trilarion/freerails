@@ -23,6 +23,8 @@ public interface GUIComponentFactory {
     JLabel createDateJLabel();
 
     JMenu createBuildMenu();
+    
+    JMenu createReportsMenu();
 
     JMenu createGameMenu();
 

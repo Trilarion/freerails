@@ -138,6 +138,18 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         World w = client0.getWorld();
         assertNotNull(w.getPlayer(0));
         assertNotNull(w.getPlayer(1));
+        
+        
+        /*
+         * Now check that attempts to log on by new players are rejected.
+         */
+        
+        assertEquals(2, server.countOpenConnections());
+        FreerailsClient client = new FreerailsClient();
+        LogOnResponse response = client.connect(server, "Late player", "password");
+        assertFalse(response.isSuccessful());
+        assertEquals(2, server.countOpenConnections());
+
     }
 
     /** Tests sending moves between client and server. */
@@ -262,5 +274,9 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             e.printStackTrace();
             fail();
         }
+    }
+    
+    public void testLoadingGame(){
+    	
     }
 }

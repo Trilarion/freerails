@@ -152,4 +152,9 @@ public class SimpleComponentFactoryImpl2
     public JTabbedPane createTrainsJTabPane() {
         return null;
     }
+
+	public JMenu createReportsMenu() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
