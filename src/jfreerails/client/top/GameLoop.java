@@ -111,19 +111,21 @@ final public class GameLoop implements Runnable {
                         model.update();
                     }
 
-                    Graphics g = screenHandler.getDrawGraphics();
+                    if (screenHandler.isInUse()) {
+                        Graphics g = screenHandler.getDrawGraphics();
 
-                    try {
-                        screenHandler.frame.paintComponents(g);
+                        try {
+                            screenHandler.frame.paintComponents(g);
 
-                        if (SHOWFPS) {
-                            fPScounter.updateFPSCounter(frameStartTime, g);
+                            if (SHOWFPS) {
+                                fPScounter.updateFPSCounter(frameStartTime, g);
+                            }
+                        } finally {
+                            g.dispose();
                         }
-                    } finally {
-                        g.dispose();
-                    }
 
-                    screenHandler.swapScreens();
+                        screenHandler.swapScreens();
+                    }
                 }
 
                 if (LIMIT_FRAME_RATE) {

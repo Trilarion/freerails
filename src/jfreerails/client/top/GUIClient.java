@@ -59,6 +59,9 @@ public class GUIClient extends Client {
             /* this causes the world to be loaded and the ViewLists to be
              * initialised */
             getReceiver().setConnection(server);
+
+            //Show the frame and set full screen mode if necessary.
+            screenHandler.apply();
         } catch (GeneralSecurityException e) {
             server.close();
             throw e;

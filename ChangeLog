@@ -1,3 +1,7 @@
+Mar 13, 2004 3:45:44 PM Luke
+	o Fixed various bugs where exceptions were getting thrown.
+	o Stopped the client window getting displayed before the world
+	is loaded from the server.
 Mar 13, 2004 3:50:51 AM Luke
 	o Implemented 910126 (Train list on RHS panel)
 	o Started 915303 (Icons for buttons and tabs) - the

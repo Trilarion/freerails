@@ -108,8 +108,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         } catch (IOException e) {            
             e.printStackTrace();
         }
-        modelRoot.setWorld(w, dummyReceiver, vl);
-		modelRoot.setPlayerPrincipal(TEST_PLAYER.getPrincipal());
+        modelRoot.setup(w, dummyReceiver, vl, TEST_PLAYER.getPrincipal());		
         dialogueBoxController = new DialogueBoxController(this, modelRoot);
         dialogueBoxController.setDefaultFocusOwner(this);
         

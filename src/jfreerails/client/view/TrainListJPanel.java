@@ -143,6 +143,20 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         return jList1.getSelectedIndex();
     }
     
+    /** When the train list is shown on a tab we don't want the buttons.*/
+    void removeButtons(){
+		this.removeAll();
+		
+		java.awt.GridBagConstraints gridBagConstraints;			 
+		setLayout(new java.awt.GridBagLayout());
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.weighty = 1.0;
+		add(jScrollPane1, gridBagConstraints);
+    	
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeJButton;
     private javax.swing.JList jList1;
@@ -153,9 +167,9 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 	private int trainViewHeight= 50;
     
 	
-	public void setVisible(boolean aFlag) {
-		if(aFlag){
-			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
+	public void setVisible(boolean aFlag) {		
+		if(aFlag  && null != world){
+			//jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
 		}
 		super.setVisible(aFlag);
 	}
@@ -164,13 +178,17 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 		this.trainViewHeight = trainViewHeight;
 	}
 	
-	protected void paintComponent(Graphics g) {
-		int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
-		if(newNumberOfTrains != this.lastNumberOfTrains){
-			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
-			lastNumberOfTrains = newNumberOfTrains;
-		}		
-		super.paintComponent(g);
+	public void paint(Graphics g) {
+		if(null!=world){
+			int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
+			if(newNumberOfTrains != this.lastNumberOfTrains){
+				jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
+				lastNumberOfTrains = newNumberOfTrains;
+				System.out.println("New train");				
+			}					
+		}	
+		super.paint(g);
+		
 	}
 
 }

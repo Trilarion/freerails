@@ -24,13 +24,13 @@ public class WorldImpl implements World {
             "jfreerails.world.top.WorldImpl.debug") != null);
 
     /**
- * An array of ArrayList indexed by keyNumber.
- * If the key is shared, then the ArrayList consists of instances of the
- * class corresponding to the KEY type. Otherwise, the ArrayList is
- * indexed by Player index, and contains instances of ArrayList
- * which themselves contain instances of the class corresponding to the
- * KEY type.
- */
+     * An array of ArrayList indexed by keyNumber.
+     * If the key is shared, then the ArrayList consists of instances of the
+     * class corresponding to the KEY type. Otherwise, the ArrayList is
+     * indexed by Player index, and contains instances of ArrayList
+     * which themselves contain instances of the class corresponding to the
+     * KEY type.
+     */
     private final ArrayList players = new ArrayList();
     private final ArrayList bankAccounts = new ArrayList();
     private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
@@ -258,11 +258,15 @@ public class WorldImpl implements World {
     }
 
     /**
- * @param player Player to add
- * @param p principal who is adding
- * @return index of the player
- */
+     * @param player Player to add
+     * @param p principal who is adding
+     * @return index of the player
+     */
     public int addPlayer(Player player, FreerailsPrincipal p) {
+        if (null == player) {
+            throw new NullPointerException();
+        }
+
         players.add(player);
         bankAccounts.add(new BankAccount());
 

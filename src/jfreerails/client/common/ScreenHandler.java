@@ -22,6 +22,8 @@ final public class ScreenHandler {
     public final JFrame frame;
     BufferStrategy bufferStrategy;
     DisplayMode displayMode;
+    private final int mode;
+    boolean isInUse = false;
 
     /** Whether the window is minimised */
     private boolean isMinimised = false;
@@ -29,12 +31,12 @@ final public class ScreenHandler {
     public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
         this.displayMode = displayMode;
         frame = f;
-        apply(f, mode);
+        this.mode = mode;
     }
 
     public ScreenHandler(JFrame f, int mode) {
         frame = f;
-        apply(f, mode);
+        this.mode = mode;
     }
 
     public static void goFullScreen(JFrame frame, DisplayMode displayMode) {
@@ -66,10 +68,10 @@ final public class ScreenHandler {
         frame.validate();
     }
 
-    public void apply(JFrame f, int mode) {
+    public void apply() {
         switch (mode) {
         case FULL_SCREEN: {
-            goFullScreen(f, displayMode);
+            goFullScreen(frame, displayMode);
 
             break;
         }
@@ -109,13 +111,13 @@ final public class ScreenHandler {
 
         createBufferStrategy();
 
-        f.addComponentListener(new java.awt.event.ComponentAdapter() {
+        frame.addComponentListener(new java.awt.event.ComponentAdapter() {
                 public void componentResized(java.awt.event.ComponentEvent evt) {
                     createBufferStrategy();
                 }
             });
 
-        f.addWindowListener(new WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter() {
                 public void windowIconified(WindowEvent e) {
                     isMinimised = true;
                 }
@@ -124,6 +126,7 @@ final public class ScreenHandler {
                     isMinimised = false;
                 }
             });
+        isInUse = true;
     }
 
     private void createBufferStrategy() {
@@ -190,5 +193,9 @@ final public class ScreenHandler {
 
     public boolean isMinimised() {
         return isMinimised;
+    }
+
+    public boolean isInUse() {
+        return isInUse;
     }
 }
