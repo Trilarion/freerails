@@ -1,3 +1,12 @@
+07-Aug-2003 23:26:02 Luke
+	o Applied Robert Tuck's patches to:
+	(i) 	Stop the Terrain Info panel from setting its preferred size to
+	a fixed value.
+	(ii) 	Fix the issue with starting a new map and being unable to lay
+	track.
+	(iii) 	Update remaining classes to use MoveExecuter.
+	(iv) 	Add the station info panel to the tab plane.
+	(v)		Add the train info/orders panel to the tab plane.
 06-Aug-2003 20:54:47 Luke
 	o Applied Robert Tuck's patch to stop the splitpane divider
 	getting focus when you press F8.

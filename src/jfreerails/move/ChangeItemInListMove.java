@@ -14,13 +14,21 @@ import jfreerails.world.top.World;
  * @author Luke
  * 
  */
-public abstract class ChangeItemInListMove implements Move {
+public abstract class ChangeItemInListMove implements ListMove {
 
 	final KEY listKey;
 
 	final int index;
 
 	private final FreerailsSerializable before, after;
+
+	public int getIndex() {
+	    return index;
+	}
+
+	public KEY getKey() {
+	    return listKey;
+	}
 
 	protected ChangeItemInListMove(
 		KEY k,
@@ -98,11 +106,11 @@ public abstract class ChangeItemInListMove implements Move {
 		}
 	}
 
-	FreerailsSerializable getAfter() {
+	public FreerailsSerializable getAfter() {
 		return after;
 	}
 
-	FreerailsSerializable getBefore() {
+	public FreerailsSerializable getBefore() {
 		return before;
 	}
 

@@ -32,10 +32,14 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View {
 
         setLayout(new java.awt.BorderLayout());
 
-        sideOnTrainViewJPanel1.setPreferredSize(new java.awt.Dimension(300, 80));
+        setPreferredSize(new java.awt.Dimension(250, 97));
+        sideOnTrainViewJPanel1.setPreferredSize(new java.awt.Dimension(250, 80));
         add(sideOnTrainViewJPanel1, java.awt.BorderLayout.NORTH);
 
-        jLabel1.setText("Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.");
+        jLabel1.setText("<html><head></head><body>Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.</body></html>");
+        jLabel1.setMinimumSize(new java.awt.Dimension(250, 17));
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         add(jLabel1, java.awt.BorderLayout.SOUTH);
 
     }//GEN-END:initComponents

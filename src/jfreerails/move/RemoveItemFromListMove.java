@@ -13,13 +13,21 @@ import jfreerails.world.top.World;
  * @author Luke
  * 
  */
-public  class RemoveItemFromListMove implements Move {
+public  class RemoveItemFromListMove implements ListMove {
 
 	private final FreerailsSerializable item;
 
 	private final KEY listKey;
 
 	private final int index;
+
+	public int getIndex() {
+	    return index;
+	}
+
+	public KEY getKey() {
+	    return listKey;
+	}
 
 	protected RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item) {
 		this.item = item;
@@ -90,7 +98,7 @@ public  class RemoveItemFromListMove implements Move {
 	public boolean equals(Object o) {
 		if (o instanceof RemoveItemFromListMove) {
 			RemoveItemFromListMove test = (RemoveItemFromListMove) o;
-			if (!this.item.equals(test.getItem())) {
+			if (!this.item.equals(test.getBefore())) {
 				return false;
 			}
 			if (this.index != test.index) {
@@ -105,7 +113,11 @@ public  class RemoveItemFromListMove implements Move {
 		}
 	}
 
-	FreerailsSerializable getItem() {
+	public FreerailsSerializable getBefore() {
 		return item;
+	}
+
+	public FreerailsSerializable getAfter() {
+	    return null;
 	}
 }

@@ -97,7 +97,7 @@ public class DialogueBoxController {
 
 		// setup the supply and demand at station dialogue.
 		stationInfo = new StationInfoJPanel();
-		stationInfo.setup(w, vl, this.closeCurrentDialogue);
+		stationInfo.setup(w, vl);
 
 		// setup the 'show controls' dialogue
 		showControls = new GameControlsJPanel();
@@ -105,7 +105,7 @@ public class DialogueBoxController {
 
 		//Set up train orders dialogue
 		trainScheduleJPanel = new TrainScheduleJPanel();
-		trainScheduleJPanel.setup(w, vl, this.closeCurrentDialogue);
+		trainScheduleJPanel.setup(w, vl);
 
 		//Set up select engine dialogue.
 		selectEngine = new SelectEngineJPanel(this);
@@ -200,8 +200,11 @@ public class DialogueBoxController {
 
 	public void showStationInfo(int stationNumber) {
 		try{		
+			/* XXX FIXME This is the wrong place for this!!! 
+			 * This needs to be done somewhere on the server side */
 			CalcSupplyAtStations cSAS = new CalcSupplyAtStations(w);
 			cSAS.doProcessing();
+
 			stationInfo.setStation(stationNumber);
 			showContent(stationInfo);
 		}catch (NoSuchElementException e){
@@ -211,8 +214,7 @@ public class DialogueBoxController {
 
 	public void showContent(JComponent component) {
 	    JComponent contentPanel;
-	    if (! (component instanceof View) /* || component instanceof
-	    TrainScheduleJPanel */) {
+	    if (! (component instanceof View)) {
 		contentPanel = new javax.swing.JPanel();
 		contentPanel.setLayout(new java.awt.GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();

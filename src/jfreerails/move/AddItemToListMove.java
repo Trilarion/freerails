@@ -14,7 +14,7 @@ import jfreerails.world.top.World;
  * @author Luke
  * 
  */
-public class AddItemToListMove implements Move {
+public class AddItemToListMove implements ListMove {
 
 	final KEY listKey;
 
@@ -22,14 +22,18 @@ public class AddItemToListMove implements Move {
 
 	private final FreerailsSerializable item;
 
+	public int getIndex() {
+	    return index;
+	}
+
+	public KEY getKey() {
+	    return listKey;
+	}
+	
 	protected AddItemToListMove(KEY key, int i, FreerailsSerializable item) {
 		this.listKey = key;
 		this.index = i;
 		this.item = item;
-	}
-
-	public int getIndex() {
-		return index;
 	}
 
 	public MoveStatus tryDoMove(World w) {
@@ -71,7 +75,7 @@ public class AddItemToListMove implements Move {
 	public boolean equals(Object o) {
 		if (o instanceof AddItemToListMove) {
 			AddItemToListMove test = (AddItemToListMove) o;
-			if (!this.item.equals(test.getItem() )){
+			if (!this.item.equals(test.getAfter() )){
 				return false;	
 			}				
 			if(this.index != test.index){
@@ -86,8 +90,11 @@ public class AddItemToListMove implements Move {
 		}
 	}
 
-	FreerailsSerializable getItem() {
-		return item;
+	public FreerailsSerializable getBefore() {
+	    return null;
 	}
 
+	public FreerailsSerializable getAfter() {
+		return item;
+	}
 }

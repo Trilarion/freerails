@@ -41,6 +41,8 @@ public class ClientJFrame extends javax.swing.JFrame {
     jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, im);
     
     jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
+	jSplitPane1.revalidate();
+	jSplitPane1.resetToPreferredSizes();
 	
     }
     

@@ -64,13 +64,7 @@ final public class MoveChainFork implements MoveReceiver {
 	    if (move instanceof CompositeMove) {
 		Move[] moves = ((CompositeMove) move).getMoves();
 		for (int i = 0; i < moves.length; i++) {
-		    if (primary != null)
-			primary.processMove(moves[i]);
-
-		    for(int j = 0; j < moveReceivers.size(); j++){
-			MoveReceiver m = (MoveReceiver)moveReceivers.get(j);
-			m.processMove(moves[i]);
-		    }
+		    processMove(moves[i]);
 		}
 	    }
 		return ms;

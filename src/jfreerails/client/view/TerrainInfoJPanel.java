@@ -49,7 +49,6 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        setPreferredSize(new java.awt.Dimension(250, 300));
         terrainImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/terrain/City_0.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 4);
@@ -68,7 +67,6 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         terrainDescription.setFont(new java.awt.Font("Dialog", 0, 12));
         terrainDescription.setText("<html>\n<p>Right-of-Way costs X per mile. </p>\n<table width=\"75%\" >\n  <tr> \n    <td><strong>Supplies:</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail </td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td>Passangers</td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td> <strong>Demands</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td><strong>Converts</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Livestock to Food</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Steel to Goods</td>\n    <td>&nbsp;</td>\n  </tr>\n</table>\n</html>");
         terrainDescription.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        terrainDescription.setPreferredSize(new java.awt.Dimension(150, 224));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
