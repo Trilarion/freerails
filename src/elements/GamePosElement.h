@@ -23,6 +23,9 @@ class GamePosElement : public GameElement
     /** Serialization */
     void serialize(Serializer* _serializer);
     void deserialize(Serializer* _serializer);
+    
+    unsigned int getPosX() {return posX;};
+    unsigned int getPosY() {return posY;};
 
   private:
 
