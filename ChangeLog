@@ -1,4 +1,6 @@
-Thu Jan 06 15:15:00 2002  Alexander Opitz <opi@le-bit.de>:
+Mon Jan 07 14:45:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add the view element for communication in the paraGUI design.
+Sun Jan 06 15:15:00 2002  Alexander Opitz <opi@le-bit.de>:
 o clean up the network directory
 Thu Jan 02 23:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o I've forget to update the ChangeLog file

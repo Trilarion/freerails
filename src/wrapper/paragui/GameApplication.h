@@ -8,6 +8,7 @@
 #include "GameMainWindow.h"
 #include "GameModeSelectDialog.h"
 #include "GameMapView.h"
+#include "GameNetView.h"
 #include "GamePanel.h"
 #include "SDL.h"
 
@@ -40,6 +41,7 @@ private:
     int screenDepth;
     PG_GradientWidget* splash;
     GameMapView* mapView;
+    GameNetView* netView;
     GamePanel* panel;
 };
 

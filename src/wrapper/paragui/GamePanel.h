@@ -11,6 +11,9 @@
 #include <pgbutton.h>
 #include <pgrect.h>
 
+#include <pglineedit.h>
+#include <pgrichedit.h>
+
 class GamePanel: public PG_GradientWidget {
 
   public:

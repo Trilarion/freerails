@@ -29,6 +29,7 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
 }
 
 GameApplication::~GameApplication() {
+
     delete pGlobalApp;
 }
 
@@ -48,11 +49,15 @@ int result;
       pGlobalApp->Quit();
       return 0;
     }
-    mapView=new GameMapView(&mw, 0, 0, 650, 600 , worldMap);
+    mapView=new GameMapView(&mw, 0, 0, 650, 450 , worldMap);
+    netView=new GameNetView(&mw, 0, 450, 650, 150);
     panel=new GamePanel(&mw, 650, 0, 150, 600 /* ,WorldMap */);
     mapView->Show();
+    netView->Show();
     panel->Show();
     pGlobalApp->Run();
+    delete mapView;
+    delete panel;
   }
 }
 
