@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import jfreerails.client.renderer.BlankMapRenderer;
@@ -116,7 +117,7 @@ public class SimpleComponentFactoryImpl2 implements jfreerails.client.top.GUICom
 		displayMenu.add(menuItem);
 	}
 
-	public JComponent createMainMap() {
+	public JScrollPane createMainMap() {
 		if (null == this.mainMap) {
 			//this.mainMap = new MapJPanel();
 			this.mainMap = new MapViewJComponentConcrete();
@@ -127,7 +128,7 @@ public class SimpleComponentFactoryImpl2 implements jfreerails.client.top.GUICom
 		return mainMapScrollPane1;
 	}
 
-	public JComponent createOverviewMap() {
+	public JPanel createOverviewMap() {
 		if (null == this.overviewMap) {
 			//this.overviewMap = new OverviewMapJPanel();
 			this.overviewMap = new OverviewMapJComponent(r);
@@ -153,5 +154,21 @@ public class SimpleComponentFactoryImpl2 implements jfreerails.client.top.GUICom
 	public JFrame createClientJFrame(){
 		return new JFrame();	
 	}
+        
+        public JLabel createCashJLabel() {
+            return null;
+        }        
+        
+        public JLabel createDateJLabel() {
+            return null;
+        }        
 
+        public JMenu createHelpMenu() {
+            return null;
+        }
+        
+        public JPanel createTrainsJPanel() {
+            return null;
+        }
+        
 }

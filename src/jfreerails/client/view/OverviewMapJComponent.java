@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import jfreerails.client.renderer.BlankMapRenderer;
 import jfreerails.client.renderer.MapRenderer;
 
-public class OverviewMapJComponent extends JComponent {
+public class OverviewMapJComponent extends JPanel {
 
 	protected MapRenderer mapView=new BlankMapRenderer(0.4F);
 

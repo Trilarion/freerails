@@ -1,3 +1,6 @@
+01-Jun-2003 18:45:42 Luke
+	o Rewrote  ClientJFrame using Netbean's GUI editor.
+	o Added JLabels to show the date and available cash to ClientJFrame. 
 31-May-2003 23:58:04 Luke
 	o Pressing backspace now undoes building/removing track.
 31-May-2003 21:28:30 Luke

@@ -66,7 +66,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 				loopCounter++;
 				if (8 < loopCounter) {
 					throw new IllegalStateException();
-					//This should never happen.
+					//This should never happen..  ..but it does happen when you removed the track from under a train.
 				}
 			}
 

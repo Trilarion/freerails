@@ -137,8 +137,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 		return trackRule.getTrackPiece(trackConfiguration);
 	}
 
-	public Rectangle getUpdatedTiles() {
-		System.out.println(updatedTiles);
+	public Rectangle getUpdatedTiles() {	
 		return updatedTiles;
 	}
 

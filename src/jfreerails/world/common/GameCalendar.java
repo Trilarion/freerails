@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 /** This class converts time meansured in ticks since the game began into time represented 
  * as <i>Month, Year</i> and <i>hour:minute</i>. 
  */
-final public class GameCalendar {
+final public class GameCalendar implements FreerailsSerializable {
 	
 	private static DecimalFormat decimalFormat = new DecimalFormat("00");
 	
@@ -17,6 +17,7 @@ final public class GameCalendar {
     	int i = startYear + (ticks/ticksPerYear);
         return String.valueOf(i);
     }
+    
 	/** Returns the time of day as a string, note that a year is made
 	 * up of a representative day, so 1st June is equilavent to 12 noon.	
 	 */
@@ -88,6 +89,19 @@ final public class GameCalendar {
 	public GameCalendar(int ticksPerYear, int startYear){
 		this.ticksPerYear=ticksPerYear;
 		this.startYear=startYear;
+	}
+	
+	public boolean equals(Object o) {		
+		if(o instanceof GameCalendar){
+			GameCalendar test = (GameCalendar)o;
+			if(this.startYear != test.startYear || this.ticksPerYear!=test.ticksPerYear){
+				return false;
+			}else{
+				return true;
+			}
+		}else{		
+			return false;
+		}
 	}
 		
 

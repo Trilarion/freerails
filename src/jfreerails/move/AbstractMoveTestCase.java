@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import jfreerails.world.common.GameCalendar;
+import jfreerails.world.common.GameTime;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
@@ -29,6 +32,9 @@ public abstract class AbstractMoveTestCase extends TestCase {
 	protected void setUp() {
 		hasSetupBeenCalled = true;
 		world = new WorldImpl();
+		//		Set the time..
+		world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
+		world.set(ITEM.TIME, new GameTime(0));
 	}
 
 	abstract public void testMove();

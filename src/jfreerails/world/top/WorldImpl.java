@@ -3,14 +3,13 @@ package jfreerails.world.top;
 import java.util.ArrayList;
 
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.GameCalendar;
 import jfreerails.world.track.FreerailsTile;
 
 public class WorldImpl implements World {
-	
-	private GameCalendar time;
-
+		
 	private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
+	
+	private final FreerailsSerializable[] items = new FreerailsSerializable[ITEM.getNumberOfKeys()];
 
 	private FreerailsTile[][] map;
 
@@ -98,15 +97,7 @@ public class WorldImpl implements World {
 		int index = size - 1;
 		return (FreerailsSerializable)lists[key.getKeyNumber()].remove(index);
 	}
-
-	public GameCalendar getGameTime() {		
-		return time;
-	}
-
-	public void setGameTime(GameCalendar t) {
-		this.time = t;		
-	}
-	
+		
 	public boolean equals(Object o) {		
 		if(o instanceof WorldImpl){
 			WorldImpl test = (WorldImpl)o;
@@ -134,11 +125,30 @@ public class WorldImpl implements World {
 					}
 				}
 			}
+			if(this.items.length != test.items.length){
+				return false;
+			}else{
+				for(int i = 0; i < this.items.length ; i ++){
+					//Some of the elements in the items array might be null, so we check for this before
+					//calling equals to avoid NullPointerExceptions.
+					if(!(null == items[i] ? null==test.items[i] : items[i].equals(test.items[i]))){
+						return false;
+					}
+				}
+			}
 			//phew!
 			return true;			
 		}else{		
 			return false;
 		}
+	}
+
+	public FreerailsSerializable get(ITEM item) {		
+		return items[item.getKeyNumber()];
+	}
+
+	public void set(ITEM item, FreerailsSerializable element) {
+		items[item.getKeyNumber()]=element;		
 	}
 
 }

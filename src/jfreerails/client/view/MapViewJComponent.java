@@ -10,7 +10,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
 import jfreerails.client.renderer.BlankMapRenderer;
@@ -22,7 +22,7 @@ import jfreerails.client.renderer.MapRenderer;
  */
 
 public abstract class MapViewJComponent
-	extends JComponent
+	extends JPanel
 	implements Scrollable, MapRenderer {
 
 	/**
