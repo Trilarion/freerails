@@ -3,8 +3,6 @@
 #include <iostream>
 
 #include "Engine.h"
-#include "stationcontroller.h"
-#include "trackcontroller.h"
 
 Engine::Engine(WorldMap* _worldMap, Player* _player)
 {
@@ -13,11 +11,11 @@ Engine::Engine(WorldMap* _worldMap, Player* _player)
   isClient = false;
   isServer = false;
   
-  Init(_player);
+  Init(_player, _worldMap);
 
-  trackControl = new TrackController(_worldMap);
+/*  trackControl = new TrackController(_worldMap);
   stationControl = new StationController(_worldMap);
-  
+*/
   std::cerr << "engine(alone) inited" << std::endl;
 }
 
@@ -31,7 +29,7 @@ Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server)
   isClient = false;
   isServer = true;
   
-  Init(_player);
+  Init(_player, _worldMap);
   
    std::cerr << "engine(Server) inited" << std::endl;
 }
@@ -46,12 +44,12 @@ Engine::Engine(Player* _player, Client* _client)
   isClient = true;
   isServer = false;
   
-  Init(_player);
+//  Init(_player, _worldMap); // Must be done Later!
   
    std::cerr << "engine(Client) inited" << std::endl;
 }
 
-void Engine::Init(Player* _player)
+void Engine::Init(Player* _player, WorldMap* _worldMap)
 {
   lastmsec = 0;
   frame = 0;
@@ -61,6 +59,12 @@ void Engine::Init(Player* _player)
   controllerDispatcher = new ControllerDispatcher();
   
   controllerDispatcher->addController(new PlayerController());
+
+//  trackControl = new TrackController(_worldMap);
+//  stationControl = new StationController(_worldMap);
+
+  controllerDispatcher->addController(new TrackController(_worldMap));
+  controllerDispatcher->addController(new StationController(_worldMap));
   
   controllerDispatcher->getController(GameElement::idPlayer)->addGameElement(_player);
 

@@ -25,6 +25,11 @@ size_t Serializer::write_int(int i) {
   return myConnection->write(&i, sizeof(int));
 }
 
+size_t Serializer::write_int_unsigned(int unsigned i) {
+
+  return myConnection->write(&i, sizeof(int));
+}
+
 size_t Serializer::write_short(short s) {
 
   return myConnection->write(&s, sizeof(short));
@@ -63,6 +68,11 @@ size_t Serializer::read_long_unsigned(long unsigned& l) {
 }
 
 size_t Serializer::read_int(int& i) {
+
+  return myConnection->read(&i, sizeof(int));
+}
+
+size_t Serializer::read_int_unsigned(int unsigned& i) {
 
   return myConnection->read(&i, sizeof(int));
 }
@@ -116,6 +126,12 @@ const Serializer& Serializer::operator << (int i) {
   return *this;
 }
 
+const Serializer& Serializer::operator << (int unsigned i) {
+
+  write_int_unsigned(i);
+  return *this;
+}
+
 const Serializer& Serializer::operator << (short s) {
 
   write_short(s);
@@ -153,6 +169,12 @@ const Serializer& Serializer::operator >> (long unsigned& l) {
 const Serializer& Serializer::operator >> (int& i) {
 
   read_int(i);
+  return *this;
+}
+
+const Serializer& Serializer::operator >> (int unsigned& i) {
+
+  read_int_unsigned(i);
   return *this;
 }
 

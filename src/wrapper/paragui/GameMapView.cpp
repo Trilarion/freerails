@@ -13,6 +13,7 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
   engine=_engine;
   trackcontroller = (TrackController *)engine->getControllerDispatcher()->getController(GameElement::idTrack);
+
   PG_Point p;
   
   oldViewPos.x=0;
@@ -323,11 +324,9 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       cerr << "BuildStation" << endl;
       break;
     case buildTrack:
-    
       cerr << "BuildTrack" << endl;
-
 // TODO      
-/*      if (trackcontroller->canBuildElement(x,y,dir))
+      if (trackcontroller->canBuildElement(x,y,dir))
       {
 //        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
 //	if (engine->canBuildTrack(x2,y2,1,dir2)>=0)
@@ -335,7 +334,7 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 //	  showTrack(x2,y2,(dir2-1)*2*30+15,0*30+15);
 //	}
       }
-*/      break;
+      break;
     default:
       return false;
       break;

@@ -1,5 +1,5 @@
 /***************************************************************************
-                          trackcontroller.h  -  description
+                          stationcontroller.h  -  description
                              -------------------
     begin                : Don Sep 19 2002
     copyright            : (C) 2002 by Frank Schmischke
@@ -14,49 +14,43 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+/** $Id$
+ */
 
-#ifndef TRACKCONTROLLER_H
-#define TRACKCONTROLLER_H
+#ifndef STATIONCONTROLLER_H
+#define STATIONCONTROLLER_H
 
 #include "Controller.h"
 #include "Track.h"
 #include "WorldMap.h"
 
-/**This class is handling build and remove of tracks.
+/**This class is handling build and remove of stations.
   *@author frank
   */
 
-class GameElement;
-class Serializer;
-class WorldMap;
-
-typedef struct track_data
+typedef struct station_data
 {
   int field_pos_x;
   int field_pos_y;
   Player *player;
 };
 
-class TrackController : public Controller
+class StationController : public Controller
 {
-  enum TrackType { Normal = 0, Bridge };
-  
   public: 
-    TrackController(WorldMap *_map);
-    ~TrackController();
+    StationController(WorldMap *_map);
+    ~StationController();
 
     GameElement* CreateElement(Serializer* _serializer);
-    bool canBuildElement(int x, int y, int dir);
+    bool canBuildElement(int x, int y, int d);
     void addGameElement(void *_data);
     void removeGameElement(void *_data);
 
   private:
-    bool testBuildElement(int x, int y, int dir);
+    bool testBuildElement(int x, int y);
     bool connectIsBuildable(unsigned int connect);
-    unsigned int doConnect(unsigned int connect, int dir);
-    void trackUpdate(int x, int y, int dir);
-    void trackDoBuild(int x, int y, int dir);
-//    void setCorner(int x, int y);
+    void stationDoBuild(int x, int y);
+
 };
 
 #endif

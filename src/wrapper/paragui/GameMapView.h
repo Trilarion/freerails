@@ -9,14 +9,13 @@
 #include "WorldMap.h"
 #include "Engine.h"
 #include "MapField.h"
+#include "TrackController.h"
 
 #include <paragui_types.h>
 #include <pgthemewidget.h>
 #include <pgrect.h>
 #include <pgimage.h>
 #include <pgscrollbar.h>
-
-class TrackController;
 
 class GameMapView: public PG_ThemeWidget {
 

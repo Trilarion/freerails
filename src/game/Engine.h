@@ -10,6 +10,8 @@
 #include "WorldMap.h"
 #include "Player.h"
 #include "GameController.h"
+#include "TrackController.h"
+#include "StationController.h"
 #include "MessageQueue.h"
 #include "Client.h"
 #include "Server.h"
@@ -58,7 +60,7 @@ class Engine
 
     void processMsg(Message* msg); // processes one given message
 
-    void Init(Player* _player);  // Initialize the Engine
+    void Init(Player* _player, WorldMap* _worldMap);  // Initialize the Engine
 
     void SendAll(Message* msg);  // sends msg to all, if not isServer then all is only the GUI
 

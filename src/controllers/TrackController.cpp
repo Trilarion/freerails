@@ -15,10 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "GameElement.h"
 #include "TrackController.h"
-#include "WorldMap.h"
-#include "Track.h"
 
 TrackController::TrackController(WorldMap *_map) : Controller(_map, GameElement::idTrack)
 {
