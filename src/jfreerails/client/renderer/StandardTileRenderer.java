@@ -48,5 +48,8 @@ final public class StandardTileRenderer extends jfreerails.client.renderer.Abstr
 	public static String generateFilename(String typeName) {
 		return "terrain" + File.separator + typeName + ".png";
 	}
+	protected String generateFileNameNumber(int i) {
+		throw new UnsupportedOperationException();
+	}
 
 }

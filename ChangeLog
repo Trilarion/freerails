@@ -1,3 +1,7 @@
+10-May-2003 00:02:13 Luke
+	o Rejig track and terrain graphics filenames following discussion
+	on mailing list.
+	o Generated side-on and overhead train graphics.
 05-May-2003 23:02:28 Luke
 	o Added station info dialogue.
 	o Fixed some bugs related to loading games and

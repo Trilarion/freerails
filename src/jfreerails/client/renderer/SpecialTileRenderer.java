@@ -76,4 +76,8 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 	private String generateFilename() {
 		return "terrain" + File.separator + this.getTerrainType() + ".png";
 	}
+
+	protected String generateFileNameNumber(int i) {
+		throw new UnsupportedOperationException();
+	}
 }

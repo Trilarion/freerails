@@ -8,7 +8,6 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.File;
 
-import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.terrain.TerrainType;
@@ -132,8 +131,11 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 	abstract public void dumpImages(ImageManager imageManager);
 		
 	
-	protected String generateRelativeFileName(int number, int digits){
-		String binaryNumber = BinaryNumberFormatter.format(number, digits);
-		return  "terrain" + File.separator + this.getTerrainType() + "_" +binaryNumber+".png";	
+	protected String generateRelativeFileName(int i){
+		//String binaryNumber = BinaryNumberFormatter.format(number, digits);
+		return  "terrain" + File.separator + this.getTerrainType() + "_" +generateFileNameNumber(i)+".png";	
 	}	
+	
+	protected abstract String generateFileNameNumber(int i);
+	
 }

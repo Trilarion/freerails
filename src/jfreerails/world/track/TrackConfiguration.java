@@ -16,10 +16,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		for (int i = 0; i < 512; i++) {
 			flatTrackConfigurations.add(i, new TrackConfiguration(i));
 		}
-	}
-
-	
-
+	}	
 
 	private final int configuration;
 	//private TrackSectionVector[] vectors;
@@ -84,7 +81,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 				newTrackConfiguration = add(newTrackConfiguration, list[i].getRotatedInstance(r));
 			}
 		}
-
 		return newTrackConfiguration;
 	}
 
@@ -110,6 +106,17 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 
 	public int hashCode() {
 		return configuration;
+	}
+
+	public int getNewTemplateNumber() {
+		int newTemplate = 0;
+		OneTileMoveVector[] vectors = OneTileMoveVector.getList();
+		for (int i = 0; i < vectors.length ; i ++){
+			if(this.contains(vectors[i])){
+				newTemplate = newTemplate | vectors[i].getNewTemplateNumber();
+			}
+		}
+		return newTemplate;
 	}
 
 }

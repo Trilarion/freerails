@@ -9,6 +9,7 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 
+import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.World;
@@ -46,7 +47,7 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
 		super(tileModel, rgbValues);
 		this.tileIcons = new Image[16];
 		for (int i = 0; i < this.tileIcons.length; i++) {
-			String fileName = generateRelativeFileName(i, 4);
+			String fileName = generateRelativeFileName(i);
 			this.tileIcons[i] = imageManager.getImage(fileName);
 		}
 	}
@@ -57,14 +58,16 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
 			iconNumber = iconNumber << 1;
 			iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
 		}
-		return iconNumber;
-		//return 0;
+		return iconNumber;		
 	}
 
 	public void dumpImages(ImageManager imageManager) {
-		for (int i = 0; i < this.tileIcons.length; i++) {
-			String fileName = generateRelativeFileName(i, 4);
-			imageManager.setImage(fileName, this.tileIcons[i]);
+		for (int i = 0; i < this.tileIcons.length; i++) {									
+			imageManager.setImage(generateRelativeFileName(i), this.tileIcons[i]);
 		}
 	}
+
+	protected String generateFileNameNumber(int i) {
+		return BinaryNumberFormatter.formatWithLowBitOnLeft(i, 4);		
+	}		
 }

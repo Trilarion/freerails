@@ -73,5 +73,12 @@ public class OneTileMoveVectorTest extends TestCase {
 		OneTileMoveVector v2 = OneTileMoveVector.getNearestVector(dx, dy);
 		assertEquals(v, v2);
 	}
+	
+	public void testGetNewTemplateNumber(){
+		
+		assertEquals(OneTileMoveVector.NORTH.getNewTemplateNumber(), 1);
+		assertEquals(OneTileMoveVector.NORTH_EAST.getNewTemplateNumber(), 2);
+		assertEquals(OneTileMoveVector.EAST.getNewTemplateNumber(), 4);
+	}
 
 }

@@ -1,14 +1,4 @@
 
-/*
-*  TrackPieceView.java
-*
-*  Created on 20 July 2001, 17:46
-*/
-
-/**
-*@author     Luke Lindsay
-*
-*/
 package jfreerails.client.renderer;
 
 import java.awt.Image;
@@ -16,9 +6,10 @@ import java.io.File;
 
 import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
+import jfreerails.world.track.TrackConfiguration;
 
 /**
-*  Description of the Class
+*  This class renders a track piece.
 *
 *@author     Luke Lindsay
 *     09 October 2001
@@ -30,16 +21,7 @@ final public  class TrackPieceRendererImpl implements TrackPieceRenderer {
 	
 	private final String typeName;
 
-	/**
-	*  Description of the Method
-	*
-	*@param  trackTemplate           Description of Parameter
-	*@param  g                       Description of Parameter
-	*@param  x                       Description of Parameter
-	*@param  y                       Description of Parameter
-	*@param  tileSize                Description of Parameter
-	*@exception  FreerailsException  Description of Exception
-	*/
+	
 
 	public void drawTrackPieceIcon(
 		int trackTemplate,
@@ -109,14 +91,7 @@ final public  class TrackPieceRendererImpl implements TrackPieceRenderer {
 		}
 	}
 
-	/**
-	*  Gets the trackPieceIcon attribute of the TrackPieceView object
-	*
-	*@param  trackTemplate           Description of Parameter
-	*@return                         The trackPieceIcon value
-	*@exception  FreerailsException  Description of Exception
-	*/
-
+	
 	public Image getTrackPieceIcon(int trackTemplate) {
 		if ((trackTemplate > 511) || (trackTemplate < 0)) {
 			throw new java.lang.IllegalArgumentException(
@@ -129,12 +104,14 @@ final public  class TrackPieceRendererImpl implements TrackPieceRenderer {
 
 	public void dumpImages(ImageManager imageManager) {
 		String relativeFileNameBase = "track" + File.separator + this.getTrackTypeName();
+		
 		for (int i = 0 ; i < 512 ; i++){
 			if(trackPieceIcons[i] != null){
-				String fileName = relativeFileNameBase+"_"+BinaryNumberFormatter.format(i, 9)+".png";	
+				int newTemplate = TrackConfiguration.getFlatInstance(i).getNewTemplateNumber();
+				String fileName = relativeFileNameBase+"_"+BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8)+".png";	
 				imageManager.setImage(fileName,trackPieceIcons[i]);							
 			}			
-		}		
+		}			
 	}
 
 	public String getTrackTypeName() {		

@@ -6,17 +6,10 @@
 */
 package jfreerails.world.common;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.io.ObjectStreamException;
 
-
-/**
-*
-* @author  Luke Lindsay
-*/
-
-/** This class encapsulates movements from a tile to any one of the surrounding eight tiles.
+/** This class represents a movement from a tile to any one of the surrounding eight tiles.
 */
 
 final public class OneTileMoveVector
@@ -242,9 +235,7 @@ final public class OneTileMoveVector
 	public int getLength() {
 		return length;
 	}
-	public Point getPosition(int distanceTravelled, Dimension tileSize) {
-		return null;
-	}
+	
 	public double getDirection() {
 
 		int i = 0;
@@ -321,6 +312,10 @@ final public class OneTileMoveVector
             }
         }
 
+    }
+    
+    public int getNewTemplateNumber(){
+    	return 1 << this.getNumber();
     }
 
 }

@@ -9,6 +9,7 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 
+import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageSplitter;
 import jfreerails.world.terrain.TerrainType;
@@ -51,7 +52,7 @@ final public class ForestStyleTileRenderer
 		super(tileModel, rgbValues);
 		this.tileIcons = new Image[4];
 		for (int i = 0; i < this.tileIcons.length; i++) {
-			String fileName = generateRelativeFileName(i, 2);
+			String fileName = generateRelativeFileName(i);
 			this.tileIcons[i] = imageManager.getImage(fileName);
 		}
 
@@ -69,8 +70,12 @@ final public class ForestStyleTileRenderer
 
 	public void dumpImages(ImageManager imageManager) {
 		for (int i = 0; i < this.tileIcons.length; i++) {
-			String fileName = generateRelativeFileName(i, 2);
+			String fileName = generateRelativeFileName(i);
 			imageManager.setImage(fileName, this.tileIcons[i]);
 		}
+	}
+
+	protected String generateFileNameNumber(int i) {
+		return BinaryNumberFormatter.format(i, 2);
 	}
 }
