@@ -1,3 +1,6 @@
+Apr 21, 2004 1:46:57 AM Luke
+	o Fix DialogueBoxTester
+	o Tweak build.xml
 Apr 11, 2004 2:56:23 AM Luke
 	o Added some javadoc comments.
 	o Added hashcode methods to classes that override equals.
