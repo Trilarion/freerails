@@ -340,8 +340,7 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
             } else {
                 return NORTH_WEST;
             }
-        }
-        else if (gradient > D) {
+        } else if (gradient > D) {
             if (dx > 0) {
                 return EAST;
             } else {

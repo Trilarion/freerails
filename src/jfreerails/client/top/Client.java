@@ -42,6 +42,7 @@ public abstract class Client {
 
     /**
      * Returns a mutex to the clients local DB
+     * @deprecated
      */
     public Object getMutex() {
         return receiver.mutex;

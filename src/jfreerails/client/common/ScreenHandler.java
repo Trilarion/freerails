@@ -103,7 +103,8 @@ final public class ScreenHandler {
             break;
         }
 
-        default:throw new IllegalArgumentException(String.valueOf(mode));
+        default:
+            throw new IllegalArgumentException(String.valueOf(mode));
         }
 
         createBufferStrategy();

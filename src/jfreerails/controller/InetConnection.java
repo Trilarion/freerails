@@ -267,6 +267,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
      * The state of this socket is always WAITING.
      * @throws IOException if the socket couldn't be created.
      * @throws SecurityException if we're not allowed to create the socket.
+     * @deprecated
      */
     public InetConnection(World w, Object mutex, int port)
         throws IOException {
@@ -282,6 +283,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
 
     /**
      * called when an incoming connection is attempted
+     * @deprecated
      */
     private InetConnection(Socket acceptedConnection, World w, Object mutex)
         throws IOException {
@@ -314,6 +316,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
      * Called by the server to accept client connections.
      * @throws IOException if an IO error occurred.
      * @return The new connection, or null if the socket is closed.
+     * @deprecated
      */
     public ConnectionToServer accept() throws IOException {
         return new InetConnection(serverSocket.accept(), world, mutex);

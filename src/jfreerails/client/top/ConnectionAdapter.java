@@ -172,6 +172,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
         moveReceiver = new CompositeMoveSplitter(m);
     }
 
+    /**
+     * @deprecated
+     */
     public Object getMutex() {
         return mutex;
     }

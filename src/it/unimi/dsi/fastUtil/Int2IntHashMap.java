@@ -485,7 +485,6 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
                             Int2IntHashMap.this.clear();
                         }
                     };
-
         }
 
         return entries;
@@ -600,7 +599,6 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
                             Int2IntHashMap.this.clear();
                         }
                     };
-
         }
 
         return keys;
@@ -695,7 +693,6 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
                             Int2IntHashMap.this.clear();
                         }
                     };
-
         }
 
         return values;

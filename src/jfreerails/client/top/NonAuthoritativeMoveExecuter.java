@@ -21,6 +21,9 @@ import jfreerails.world.top.World;
 public class NonAuthoritativeMoveExecuter extends MoveExecuter {
     private PendingQueue pendingQueue = new PendingQueue();
 
+    /**
+     * @deprecated
+     */
     public NonAuthoritativeMoveExecuter(World w, MoveReceiver mr, Object mutex) {
         super(w, mr, mutex);
     }

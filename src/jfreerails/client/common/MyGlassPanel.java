@@ -56,23 +56,23 @@ public class MyGlassPanel extends javax.swing.JPanel {
         gridBagConstraints1.gridy = 1;
         add(contentPanel, gridBagConstraints1);
     }
-     //GEN-END:initComponents
 
+    //GEN-END:initComponents
     private void formMouseMoved(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_formMouseMoved
         // Add your handling code here:
     }
-     //GEN-LAST:event_formMouseMoved
 
+    //GEN-LAST:event_formMouseMoved
     private void formMousePressed(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_formMousePressed
         // Add your handling code here:
     }
-     //GEN-LAST:event_formMousePressed
 
+    //GEN-LAST:event_formMousePressed
     private void formKeyPressed(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_formKeyPressed
         // Add your handling code here:
     }
-     //GEN-LAST:event_formKeyPressed
 
+    //GEN-LAST:event_formKeyPressed
     public void showContent(JComponent panel) {
         this.remove(contentPanel);
         contentPanel = panel;

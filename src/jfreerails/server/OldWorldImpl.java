@@ -84,9 +84,8 @@ public class OldWorldImpl {
         MapFactory.setupMap(map_url, w, pm);
 
         //Load the city names
-        URL cities_xml_url = //OldWorldImpl.class.getResource("/jfreerails/data/south_america_cities.xml");
-            OldWorldImpl.class.getResource("/jfreerails/data/" + mapName +
-                "_cities.xml");
+        URL cities_xml_url = OldWorldImpl.class.getResource("/jfreerails/data/" +
+                mapName + "_cities.xml");
 
         try {
             InputCityNames r = new InputCityNames(w, cities_xml_url);

@@ -17,6 +17,9 @@ final public class SynchronizedEventQueue extends EventQueue
     private Vector mutexes = new Vector();
     private AWTEvent event;
 
+    /**
+     * @deprecated
+     */
     public void addMutex(Object mutex) {
         synchronized (mutexes) {
             mutexes.add(mutex);
@@ -24,6 +27,9 @@ final public class SynchronizedEventQueue extends EventQueue
         }
     }
 
+    /**
+    * @deprecated
+    */
     public void removeMutex(Object mutex) {
         synchronized (mutexes) {
             mutexes.remove(mutex);

@@ -85,7 +85,8 @@ public class StationNamesRenderer implements Painter {
             g.draw(new Rectangle(rectX + 1, rectY + 1, rectWidth - 3,
                     rectHeight - 3));
         }
-         //end FOR loop
+
+        //end FOR loop
     }
-     //paint method
+    //paint method
 }

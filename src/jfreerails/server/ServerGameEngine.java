@@ -410,6 +410,8 @@ public class ServerGameEngine implements GameModel, Runnable {
     /**
      * return the mutex that must be acquired by local clients before
      * accessing the World.
+     *
+     * @deprecated
      */
     public Object getGameMutex() {
         return mutex;

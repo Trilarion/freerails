@@ -30,6 +30,9 @@ public class LocalConnection implements ConnectionToServer {
         // do nothing
     }
 
+    /**
+     * @deprecated
+     */
     public Object getMutex() {
         return mutex;
     }
@@ -75,6 +78,7 @@ public class LocalConnection implements ConnectionToServer {
 
     /**
      * This constructor is called by the server
+     * @deprecated
      */
     public LocalConnection(World w, Object mutex) {
         world = w;
@@ -177,6 +181,9 @@ public class LocalConnection implements ConnectionToServer {
         }
     }
 
+    /**
+     * @deprecated
+     */
     public void setMutex(Object mutex) {
         this.mutex = mutex;
     }
