@@ -5,23 +5,19 @@
 #ifndef __CLIENT_H__
 #define __CLIENT_H__
 
-#ifdef USE_QT
-#include "QTSocket.h"
+#include "TCPConnection.h"
 
-class Client: public QTSocket {
-#endif
-
-#ifdef USE_PARAGUI
-#include "SDLSocket.h"
-
-class Client: public SDLSocket {
-#endif
+class Client: public TCPConnection {
 
 public:
 
     Client();
     /**  */
     ~Client();
+    
+private:
+
+    void listen(int port);
     
 };
 
