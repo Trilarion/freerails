@@ -5,6 +5,7 @@ Jun 12, 2004 Luke
 	o 967666 Selected fullscreen resolution ignored.
 	o 967713 FPS counter obscures build menu
 	o 967660 Debug text sent to console 
+	o 948679 Delete/Rebuild single section of track doesn't cost anything 
 Jun 9, 2004 Luke 
 	Bugs Fixed: 
 	o 967673 Crash when building track close to edge of map 
