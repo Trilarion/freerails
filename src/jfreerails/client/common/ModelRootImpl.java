@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.PreMove;
@@ -54,7 +55,9 @@ public final class ModelRootImpl implements ModelRoot {
         properties.put(Property.CURSOR_MODE, Value.BUILD_TRACK_CURSOR_MODE);
         properties.put(Property.PREVIOUS_CURSOR_MODE, Value.BUILD_TRACK_CURSOR_MODE);
         properties.put(Property.SERVER, "server details not set!");
-        properties.put(Property.PLAY_SOUNDS, Boolean.TRUE);        
+        properties.put(Property.PLAY_SOUNDS, Boolean.TRUE);
+        properties.put(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
+        properties.put(Property.TRACK_BUILDER_MODE, new Integer(TrackMoveProducer.BUILD_TRACK));       
         addPropertyChangeListener(SoundManager.getSoundManager());
     }
 

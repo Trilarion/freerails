@@ -33,9 +33,12 @@ public class RHSJTabPane extends JTabbedPane
 
 
     public RHSJTabPane() {
+    	/* Dont accept keyboard focus since we want to leave it with the main map view.*/
+    	setFocusable(false);
+    	
     	ImageIcon trainListIcon;
     	ImageIcon buildTrackIcon;
-    	ImageIcon stationInfoIcon;
+    	ImageIcon stationInfoIcon;    	
     	    	
         /* set up trainsJTabbedPane */
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);

@@ -53,6 +53,7 @@ public class StationRadiusRenderer implements Painter {
         if (! modelRoot.is(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE)) {
             modelRoot.setProperty(Property.PREVIOUS_CURSOR_MODE, modelRoot.getProperty(Property.CURSOR_MODE));
             modelRoot.setProperty(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE);
+            modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.TRUE);
         }
     }
 
@@ -62,6 +63,7 @@ public class StationRadiusRenderer implements Painter {
         assert !lastCursorMode.equals(ModelRoot.Value.PLACE_STATION_CURSOR_MODE);
 
         modelRoot.setProperty(ModelRoot.Property.CURSOR_MODE, lastCursorMode);
+        modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
     }
 
     public void paint(Graphics2D g) {

@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.event.MouseInputAdapter;
+
 import jfreerails.client.renderer.StationRadiusRenderer;
 
 
@@ -28,7 +30,7 @@ import jfreerails.client.renderer.StationRadiusRenderer;
  * TODO scroll the area when the mouse hovers at the edge of the map.
  * @author rob
  */
-public class StationPlacementCursor extends MouseInputAdapter {
+public class StationPlacementCursor extends MouseInputAdapter  {
 	private boolean buildEnabled;
     private final MapViewJComponent mapView;
     private final StationRadiusRenderer stationRadiusRenderer;
@@ -110,16 +112,19 @@ public class StationPlacementCursor extends MouseInputAdapter {
         stationRadiusRenderer = srr;
         buildEnabled = stationBuildModel.getStationBuildAction().isEnabled();
 
-        if (buildEnabled) {
+        if (buildEnabled) {        	
             mapView.addMouseListener(this);
             mapView.addMouseMotionListener(this);
             stationRadiusRenderer.show();
-        } else {
-            stationRadiusRenderer.hide();
+        } else {        	
+            stationRadiusRenderer.hide();            
             mapView.removeMouseListener(this);
             mapView.removeMouseMotionListener(this);
         }
 
         stationBuildModel.getStationBuildAction().addPropertyChangeListener(buildActionListener);
     }
+    
+    
+
 }

@@ -1,5 +1,6 @@
 package jfreerails.client.renderer;
 
+import jfreerails.client.common.ImageManager;
 import jfreerails.world.top.ReadOnlyWorld;
 
 
@@ -14,4 +15,6 @@ public interface ViewLists {
     TrainImages getTrainImages();
 
     boolean validate(ReadOnlyWorld world);
+    
+    ImageManager getImageManager();
 }

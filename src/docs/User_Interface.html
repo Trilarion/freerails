@@ -5,14 +5,14 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Win32)">
 	<META NAME="CREATED" CONTENT="20041212;16102096">
-	<META NAME="CHANGED" CONTENT="20041214;3274751">
+	<META NAME="CHANGED" CONTENT="20041217;22480819">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H2>User Interface</H2>
 <P>The main window has a menu bar, the world view, the minimap, and a
 tabpane. 
 </P>
-<P><IMG SRC="User_Interface_html_657a0cd6.gif" NAME="Frame1" ALT="Frame1" ALIGN=BOTTOM WIDTH=641 HEIGHT=496 BORDER=0></P>
+<P><IMG SRC="MainWindow.png" NAME="Frame1" ALT="Frame1" ALIGN=BOTTOM WIDTH=641 HEIGHT=496 BORDER=0></P>
 <P>The GUI components should display properly when the main window is
 640 * 480 pixels or bigger. The table below shows the dimensions of
 the components in terms of the width (W) and height of the main
@@ -72,7 +72,8 @@ bars, tabs, menus etc.</P>
 	</TBODY>
 </TABLE>
 <P><BR>Pressing the tab key toggles keyboard focus between the world
-view window and the tabpane.</P>
+view window and the tabpane's content. The tabs do not accept
+keyboard focus when clicked.</P>
 <H4>The menu bar</H4>
 <TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
 	<COL WIDTH=128*>
@@ -657,12 +658,18 @@ and screenshot below).</P>
 </P>
 <P><IMG SRC="BuildTab.png" NAME="Graphic1" ALIGN=LEFT WIDTH=300 HEIGHT=265 BORDER=0><BR CLEAR=LEFT><BR><BR>
 </P>
+<P>The Build tab should not accept keyboard focus when the mouse is
+click on it. This is because doing so would cause the world view
+window to lose focus which is annoying when you are building track
+using the keyboard.</P>
 <P>When a new game is started or a game is loaded, the build mode
 should default to 'build track' with single track, wooden trestle
 bridges, and tunnels selected. 
 </P>
 <H4>The Cursor</H4>
-<P>The cursor can be in one of the following modes.</P>
+<P>The cursor can be in one of the following modes.  The cursor
+should only be visible if the world view has keyboard focus.  The
+cursor's appearance should indicate which mode it is in.</P>
 <H4>Place station mode</H4>
 <UL>
 	<LI><P>The cursor gets put into place-station-mode when the player
@@ -681,7 +688,10 @@ bridges, and tunnels selected.
 </UL>
 <H4>Build track mode</H4>
 <UL>
-	<LI><P>Track can be built by dragging the mouse</P>
+	<LI><P>Track can be built by dragging the mouse (moving the mouse
+	with the LMB down). As the mouse is dragged, the proposed track is
+	shown. Releasing the LMB builds the track. Pressing the RMB or Esc
+	cancels any proposed track.</P>
 	<LI><P>Track can be built by pressing the number pad keys.</P>
 </UL>
 <H4>Remove track mode</H4>

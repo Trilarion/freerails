@@ -1,3 +1,9 @@
+Dec 18, 2004 Luke
+	RFEs Implemented:
+	o 1055501	Automatically build bridges & tunnels
+	o 931570	Improve Cursor
+	o 915941	Bridge types GUI
+	o 915940	Tunnels options GUI
 Dec 15, 2004 Luke
 	o More on track build system.  Its almost complete.
 Dec 14, 2004 Luke

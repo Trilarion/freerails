@@ -226,4 +226,8 @@ public class ViewListsImpl implements ViewLists {
     public TrainImages getTrainImages() {
         return trainImages;
     }
+
+	public ImageManager getImageManager() {		
+		return imageManager;
+	}
 }

@@ -202,28 +202,28 @@ public class BuildTrackExplorer implements GraphExplorer {
 		return rule;
 	}
 
+    /** Calculates a cost figure incorporating the distance and the cost of any new track.*/ 
 	public int getEdgeCost() {
         if (m_beforeFirst) {
             throw new IllegalStateException();
         } else {
             OneTileMoveVector edgeDirection = OneTileMoveVector.getInstance(m_direction -
                     1);
-
-            int length = edgeDirection.getLength();
-
-            //Using existing track is cheaper.
-            if (m_usingExistingTrack) {
-                length = length / 2;
-            }
+            int length = edgeDirection.getLength();                       
+            final int DISTANCE_COST = 10000;  //Same as the cost of standard track.           
+            int cost = DISTANCE_COST * length;
             
-            int x = m_currentPosition.getX();
-			int y = m_currentPosition.getY();
-			TrackRule ruleA = getAppropriateTrackRule(x, y);
-			TrackRule ruleB = getAppropriateTrackRule(x+ edgeDirection.deltaX, y+edgeDirection.deltaY);
-			
-			long price = ruleA.getPrice().getAmount() + ruleB.getPrice().getAmount();  
-			long cost =  length*price;
-            return (int)cost;
+            if (!m_usingExistingTrack) {
+            	int x = m_currentPosition.getX();
+    			int y = m_currentPosition.getY();
+    			TrackRule ruleA = getAppropriateTrackRule(x, y);
+    			TrackRule ruleB = getAppropriateTrackRule(x+ edgeDirection.deltaX, y+edgeDirection.deltaY);
+    			
+    			long price = ruleA.getPrice().getAmount() + ruleB.getPrice().getAmount();  
+    			cost += length*price;
+               
+            }                        			
+            return cost;
         }
     }
 

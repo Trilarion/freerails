@@ -1,7 +1,7 @@
 /**
-*
-* Created on 01 August 2001, 06:02
-*/
+ *
+ * Created on 01 August 2001, 06:02
+ */
 package jfreerails.client.view;
 
 import java.awt.BasicStroke;
@@ -9,85 +9,115 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
+import java.io.IOException;
+
+import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ModelRoot;
+import jfreerails.controller.TrackMoveProducer;
 
-
-/** Paints the cursor on the map, note the cursor's position is stored on the ModelRoot
- * under the key CURSOR_POSITION.
+/**
+ * Paints the cursor on the map, note the cursor's position is stored on the
+ * ModelRoot under the key CURSOR_POSITION.
+ * 
  * @author Luke
  */
-final public class FreerailsCursor implements KeyListener {
-    private int blinkValue = 1;
-    private BasicStroke stroke = new BasicStroke(3);
-    private final ModelRoot modelRoot;
+final public class FreerailsCursor {
+	private int blinkValue = 1;
 
-    /** Paints the cursor.  The method calculates position to paint it based on the
-    * tile size and the cursor's map position.
-    * @param g The graphics object to paint the cursor on.
-    * @param tileSize The dimensions of a tile.
-    */
-    public void paintCursor(Graphics g, Dimension tileSize) {
-        Graphics2D g2 = (Graphics2D)g;
+	private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
 
-        //First draw the cursor.
-        g2.setStroke(stroke);
+	private final ModelRoot modelRoot;
 
-        if (1 == blinkValue) {
-            g2.setColor(java.awt.Color.white); //The colour of the cursor
-        } else {
-            g2.setColor(java.awt.Color.black);
-        }
+	private BasicStroke stroke = new BasicStroke(3);
 
-        Point cursorMapPosition = (Point)modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
-        int x = cursorMapPosition.x * tileSize.width;
-        int y = cursorMapPosition.y * tileSize.height;
-        g2.drawRect(x, y, tileSize.width, tileSize.height);
+	/**
+	 * Creates a new FreerailsCursor.
+	 * 
+	 * @throws IOException
+	 */
+	public FreerailsCursor(ModelRoot mr, ImageManager im) throws IOException {
+		this.modelRoot = mr;
+		modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
+		buildTrack = im.getImage("/cursor/buildtrack.png");
+		upgradeTrack = im.getImage("/cursor/upgradetrack.png");
+		removeTrack = im.getImage("/cursor/removetrack.png");
+		infoMode = im.getImage("/cursor/infomode.png");
+	}
 
-        //Second, draw a message below the cursor if appropriate.
-        String message = (String)modelRoot.getProperty(ModelRoot.Property.CURSOR_MESSAGE);
+	/**
+	 * Paints the cursor. The method calculates position to paint it based on
+	 * the tile size and the cursor's map position.
+	 * 
+	 * @param g
+	 *            The graphics object to paint the cursor on.
+	 * @param tileSize
+	 *            The dimensions of a tile.
+	 */
+	public void paintCursor(Graphics g, Dimension tileSize) {
+		Graphics2D g2 = (Graphics2D) g;
 
-        if (null != message && !message.equals("")) {
-            int fontSize = 12;
-            Font font = new Font("Arial", 0, fontSize);
-            FontRenderContext frc = g2.getFontRenderContext();
-            TextLayout layout = new TextLayout(message, font, frc);
+		// First draw the cursor.
+		// g2.setStroke(stroke);
 
-            //We want the message to be centered below the cursor.
-            float visibleAdvance = layout.getVisibleAdvance();
-            float textX = (x + (tileSize.width / 2) - (visibleAdvance / 2));
-            float textY = y + tileSize.height + fontSize + 5;
-            g.setColor(java.awt.Color.white);
-            layout.draw(g2, textX, textY);
-        }
-    }
+		// if (1 == blinkValue) {
+		// g2.setColor(java.awt.Color.white); //The colour of the cursor
+		// } else {
+		// g2.setColor(java.awt.Color.black);
+		// }
 
-    /** Use this method rather than KeyTyped to process keyboard input.
-    * @param keyEvent The key pressed.
-    */
-    public void keyPressed(KeyEvent keyEvent) {
-    }
+		Integer trackBuilderMode = (Integer) modelRoot
+				.getProperty(ModelRoot.Property.TRACK_BUILDER_MODE);
 
-    /** Empty method, needed to implement the KeyListener interface.
-    * @param keyEvent The key typed.
-    */
-    public void keyTyped(KeyEvent keyEvent) {
-    }
+		Point cursorMapPosition = (Point) modelRoot
+				.getProperty(ModelRoot.Property.CURSOR_POSITION);
+		int x = cursorMapPosition.x * tileSize.width;
+		int y = cursorMapPosition.y * tileSize.height;
+		// g2.drawRect(x, y, tileSize.width, tileSize.height);
 
-    /** Use keyPressed instead of this method.
-    * @param keyEvent the key pressed
-    */
-    public void keyReleased(KeyEvent keyEvent) {
-    }
+		Image cursor = null;
+		switch (trackBuilderMode.intValue()) {
+		case TrackMoveProducer.BUILD_TRACK:
+			cursor = buildTrack;
+			break;
+		case TrackMoveProducer.REMOVE_TRACK:
+			cursor = removeTrack;
+			break;
+		case TrackMoveProducer.UPGRADE_TRACK:
+			cursor = upgradeTrack;
+			break;
+		case TrackMoveProducer.IGNORE_TRACK:
+			cursor = infoMode;
+			break;
+		}
+		Boolean b = (Boolean)modelRoot.getProperty(ModelRoot.Property.IGNORE_KEY_EVENTS);
+		long time = System.currentTimeMillis();
+		boolean show = ((time / 500) % 2) == 0;
+		if (show && !b.booleanValue()) {
+			g.drawImage(cursor, x, y, null);
+		}
 
-    /** Creates a new FreerailsCursor.
-    */
-    public FreerailsCursor(ModelRoot mr) {
-        this.modelRoot = mr;
-        modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
-    }
+		// Second, draw a message below the cursor if appropriate.
+		String message = (String) modelRoot
+				.getProperty(ModelRoot.Property.CURSOR_MESSAGE);
+
+		if (null != message && !message.equals("")) {
+			int fontSize = 12;
+			Font font = new Font("Arial", 0, fontSize);
+			FontRenderContext frc = g2.getFontRenderContext();
+			TextLayout layout = new TextLayout(message, font, frc);
+
+			// We want the message to be centered below the cursor.
+			float visibleAdvance = layout.getVisibleAdvance();
+			float textX = (x + (tileSize.width / 2) - (visibleAdvance / 2));
+			float textY = y + tileSize.height + fontSize + 5;
+			g.setColor(java.awt.Color.white);
+			layout.draw(g2, textX, textY);
+		}
+	}
+
+	
 }

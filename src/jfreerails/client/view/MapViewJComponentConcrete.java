@@ -14,11 +14,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
+import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
@@ -178,7 +180,8 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     protected void paintComponent(java.awt.Graphics g) {       
         super.paintComponent(g);
 
-        if (null != mapCursor) {
+       
+        if (null != mapCursor  && this.isFocusOwner()) {
             mapCursor.paintCursor(g, new java.awt.Dimension(30, 30));
         }
 
@@ -214,17 +217,17 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         this.addMouseMotionListener(mva);
     }
 
-    public void setup(MapRenderer mv, ModelRootImpl mr) {
+    public void setup(MapRenderer mv, ModelRootImpl mr, ImageManager im) throws IOException {
         super.setMapView(mv);
 
         this.setBorder(null);
 
-        this.removeKeyListener(this.mapCursor);
+     
 
-        this.mapCursor = new FreerailsCursor(mr);
+        this.mapCursor = new FreerailsCursor(mr, im);
 
         mr.addPropertyChangeListener(this);
-        this.addKeyListener(mapCursor);
+     
     }
 
     public void setup(MapRenderer mv) {

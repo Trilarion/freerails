@@ -31,6 +31,7 @@ import jfreerails.world.track.TrackRule;
 
 /** This class draws the track being build.
  * @author MystiqueAgent
+ * @author Luke
  * */
 public class BuildTrackRenderer implements Painter {
     private static final int BIG_DOT_WIDTH = 12;
@@ -66,12 +67,13 @@ public class BuildTrackRenderer implements Painter {
 
     private MoveStatus buildTrack(Point point, OneTileMoveVector vector) {
     	FreerailsTile tileA = (FreerailsTile)worldDifferences.getTile(point.x, point.y);
-    	int trackTypeAID = getBts().getRule(tileA.getTerrainTypeID());
+    	BuildTrackStrategy bts = getBts();
+		int trackTypeAID = bts.getRule(tileA.getTerrainTypeID());
         TrackRule trackRuleA = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
         		trackTypeAID);
         
         FreerailsTile tileB = (FreerailsTile)worldDifferences.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
-    	int trackTypeBID = getBts().getRule(tileB.getTerrainTypeID());
+    	int trackTypeBID = bts.getRule(tileB.getTerrainTypeID());
         TrackRule trackRuleB = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
         		trackTypeBID);
         
@@ -133,6 +135,12 @@ public class BuildTrackRenderer implements Painter {
         return proposedTrack;
     }
 
+	private BuildTrackStrategy getBts() {
+		BuildTrackStrategy btss = (BuildTrackStrategy)modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
+		if(null == btss) throw new NullPointerException();
+		return btss;
+	}
+
     private Point getCursorPosition() {
         Point point = (Point)modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
 
@@ -153,6 +161,7 @@ public class BuildTrackRenderer implements Painter {
 //        return intValue;
 //    }
 
+    /** Hides and cancels any proposed track.*/ 
     public void hide() {
         this.show = false;
         m_targetPoint = null;
@@ -188,6 +197,10 @@ public class BuildTrackRenderer implements Painter {
 
         MoveStatus ms = null;
         int piecesOfNewTrack = 0;
+        
+        if(null != trackBuilder){
+        	trackBuilder.setBuildTrackStrategy(getBts());
+        }
 
         for (Iterator iter = track.iterator(); iter.hasNext();) {
             Point point = (Point)iter.next();
@@ -318,6 +331,10 @@ public class BuildTrackRenderer implements Painter {
         this.isBuildTrackSuccessful = false;
     }
 
+	private void setBts(BuildTrackStrategy bts) {
+		modelRoot.setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);		
+	}
+
     private void setCursorMessage(String s) {
         modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, s);
     }
@@ -363,7 +380,8 @@ public class BuildTrackRenderer implements Painter {
 
         try {
           
-			trackPathFinder.setupSearch(startPoint, endPoint, getBts());
+			BuildTrackStrategy bts = getBts();
+			trackPathFinder.setupSearch(startPoint, endPoint, bts);
         } catch (PathNotFoundException e) {
             setCursorMessage(e.getMessage());
 
@@ -423,14 +441,4 @@ public class BuildTrackRenderer implements Painter {
 
         return actPoint;
     }
-
-	private void setBts(BuildTrackStrategy bts) {
-		modelRoot.setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);		
-	}
-
-	private BuildTrackStrategy getBts() {
-		BuildTrackStrategy btss = (BuildTrackStrategy)modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
-		if(null == btss) throw new NullPointerException();
-		return btss;
-	}
 }

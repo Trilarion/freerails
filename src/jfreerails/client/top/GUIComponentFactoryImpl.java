@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -103,7 +104,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     public GUIComponentFactoryImpl(ModelRootImpl mr, ActionRoot ar) {
         modelRoot = mr;
         actionRoot = ar;
-        userInputOnMapController = new UserInputOnMapController(modelRoot);
+        userInputOnMapController = new UserInputOnMapController(modelRoot, ar);
         buildMenu = new jfreerails.client.top.BuildMenu();
         mapViewJComponent = new MapViewJComponentConcrete();
         mainMapScrollPane1 = new JScrollPane();
@@ -171,8 +172,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
 
         stationTypesPopup.setup(actionRoot, mainMap.getStationRadius());
-
-        mapViewJComponent.setup(mainMap, modelRoot);
+        
+        try{
+        	mapViewJComponent.setup(mainMap, modelRoot, viewLists.getImageManager());
+        }catch (IOException e){
+        	e.printStackTrace();
+        }
+        
 
         //setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);

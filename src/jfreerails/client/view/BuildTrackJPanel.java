@@ -444,6 +444,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     
     private void setTrackBuilderMode(int mode){
     	trackMoveProducer.setTrackBuilderMode(mode);
+    	modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, new Integer(mode));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
