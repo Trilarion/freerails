@@ -30,7 +30,6 @@ public class TimeTickMove implements Move {
         } else {
             String string = "oldTime = " + oldTime.getTime() + " <=> " +
                 "currentTime " + ((GameTime)w.get(ITEM.TIME)).getTime();
-            System.err.println(string);
 
             return MoveStatus.moveFailed(string);
         }

@@ -7,6 +7,7 @@
 package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
@@ -22,6 +23,9 @@ import jfreerails.world.top.WorldListListener;
  * @author  Luke Lindsay
  */
 public class TrainDialogueJPanel extends javax.swing.JPanel implements View, WorldListListener {
+	
+	private static final Logger logger = Logger
+			.getLogger(TrainDialogueJPanel.class.getName()); 
     
     private WorldIterator wi;
     private ReadOnlyWorld w;
@@ -112,7 +116,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         if(wi.previous()){
             display(wi.getIndex());
         }else{
-            System.err.println("Couldn't get previous");
+        	logger.warning("Couldn't get previous");
         }
     }//GEN-LAST:event_previousJButtonActionPerformed
     
@@ -121,7 +125,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         if(wi.next()){
             display(wi.getIndex());
         }else{
-            System.err.println("Couldn't get next");
+        	logger.warning("Couldn't get next");
         }
     }//GEN-LAST:event_nextJButtonActionPerformed
     

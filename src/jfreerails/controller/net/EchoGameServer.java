@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
+import java.util.logging.Logger;
 import jfreerails.world.common.FreerailsSerializable;
 
 
@@ -17,6 +18,7 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class EchoGameServer implements NewGameServer, Runnable {
+    private static final Logger logger = Logger.getLogger(EchoGameServer.class.getName());
     private final Vector connections = new Vector();
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private final LinkedList messsages2send = new LinkedList();
@@ -107,7 +109,7 @@ public class EchoGameServer implements NewGameServer, Runnable {
             try {
                 connection.writeToClient(m);
                 connection.flush();
-                System.out.println("Sent ok: " + m);
+                logger.fine("Sent ok: " + m);
             } catch (IOException e) {
                 try {
                     if (connection.isOpen()) {

@@ -3,6 +3,7 @@ package jfreerails.client.top;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.util.logging.Logger;
 import jfreerails.client.common.RepaintManagerForActiveRendering;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.common.SynchronizedEventQueue;
@@ -15,6 +16,7 @@ import jfreerails.util.GameModel;
  */
 final public class GameLoop implements Runnable {
     /** Whether to display the FPS counter on the top left of the screen.*/
+    private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
     private static final boolean SHOWFPS = (System.getProperty("SHOWFPS") != null);
     private final static boolean LIMIT_FRAME_RATE = false;
     private boolean gameNotDone = false;
@@ -86,7 +88,7 @@ final public class GameLoop implements Runnable {
         try {
             Thread.currentThread().setPriority(Thread.NORM_PRIORITY - 1);
         } catch (SecurityException e) {
-            System.err.println("Couldn't lower priority of redraw thread");
+            logger.warning("Couldn't lower priority of redraw thread");
         }
 
         while (true) {

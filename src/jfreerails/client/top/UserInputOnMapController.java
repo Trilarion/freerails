@@ -6,22 +6,24 @@ import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.BuildTrackRenderer;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.client.renderer.BuildTrackRenderer;
-import jfreerails.client.common.ModelRoot;
 
 
 /** Handles key presses and mouse movements on the map - responsible for moving the cursor etc.
  * @author Luke
  */
 public class UserInputOnMapController extends KeyAdapter {
+    private static final Logger logger = Logger.getLogger(UserInputOnMapController.class.getName());
     private StationTypesPopup stationTypesPopup;
     private MapViewJComponent mapView;
     private TrackMoveProducer trackBuilder;
@@ -59,7 +61,6 @@ public class UserInputOnMapController extends KeyAdapter {
         }
 
         public void mouseDragged(MouseEvent evt) {
-            //            System.err.println("mouseDragged()");
             if (SwingUtilities.isLeftMouseButton(evt) && pressedInside) {
                 int x = evt.getX();
                 int y = evt.getY();
@@ -79,7 +80,6 @@ public class UserInputOnMapController extends KeyAdapter {
         }
 
         public void mouseReleased(MouseEvent evt) {
-            //            System.err.println("mouseReleased()");
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 // build a railroad from x,y to current cursor position
                 if (pressedInside && buildTrack.isBuilding()) {
@@ -114,7 +114,7 @@ public class UserInputOnMapController extends KeyAdapter {
             //                }
             //            }
         } else {
-            System.err.println("No track builder available!");
+            logger.warning("No track builder available!");
         }
     }
 

@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
@@ -22,8 +23,7 @@ import jfreerails.world.track.FreerailsTile;
  *
  */
 public class WorldImpl implements World {
-    private static final boolean debug = (System.getProperty(
-            "jfreerails.world.top.WorldImpl.debug") != null);
+    private static final Logger logger = Logger.getLogger(WorldImpl.class.getName());
 
     public int hashCode() {
         int result;
@@ -99,10 +99,8 @@ public class WorldImpl implements World {
 
     public void set(KEY key, int index, FreerailsSerializable element,
         FreerailsPrincipal p) {
-        if (debug) {
-            System.err.println("Setting " + element + " of type " + key +
-                " at index " + index + " for " + p);
-        }
+        logger.finer("Setting " + element + " of type " + key + " at index " +
+            index + " for " + p);
 
         ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).set(index,
             element);
@@ -115,10 +113,7 @@ public class WorldImpl implements World {
     }
 
     public int add(KEY key, FreerailsSerializable element, FreerailsPrincipal p) {
-        if (debug) {
-            System.err.println("Adding " + element + " to " + key + " for " +
-                p);
-        }
+        logger.finer("Adding " + element + " to " + key + " for " + p);
 
         //        if (key == KEY.PLAYERS) {
         //            return addPlayer((Player)element, p);
@@ -188,9 +183,7 @@ public class WorldImpl implements World {
     }
 
     public FreerailsSerializable removeLast(KEY key, FreerailsPrincipal p) {
-        if (debug) {
-            System.err.println("Removing last " + key + " for " + p);
-        }
+        logger.finer("Removing last " + key + " for " + p);
 
         int size;
         size = ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).size();

@@ -1,6 +1,7 @@
 package jfreerails.server;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.move.AddPlayerMove;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -13,6 +14,7 @@ import jfreerails.world.top.World;
  * @author rob
  */
 class IdentityProvider {
+    private static final Logger logger = Logger.getLogger(IdentityProvider.class.getName());
     private final AuthoritativeMoveExecuter moveExecuter;
 
     /**
@@ -36,7 +38,7 @@ class IdentityProvider {
      */
     public synchronized boolean addConnection(ConnectionToServer c,
         Player player, byte[] signature) {
-        System.err.println("Authenticating player " + player.getName());
+        logger.fine("Authenticating player " + player.getName());
 
         World w = serverGameEngine.getWorld();
 
@@ -48,7 +50,7 @@ class IdentityProvider {
                 /* this player already exists */
                 /* is this identity already connected ? */
                 if (principals.containsValue(p)) {
-                    System.err.println("Player " + p.getName() + " is already" +
+                    logger.fine("Player " + p.getName() + " is already" +
                         " connected");
 
                     return false;
@@ -56,10 +58,10 @@ class IdentityProvider {
 
                 /* is this player the same as the one which previously
                  * connected under the same name? */
-                System.out.println("Verifying player " + p + " with " + player);
+                logger.fine("Verifying player " + p + " with " + player);
 
                 if (!p.verify(player, signature)) {
-                    System.err.println("Couldn't verify signature of player " +
+                    logger.fine("Couldn't verify signature of player " +
                         p.getName());
 
                     return false;
@@ -72,7 +74,7 @@ class IdentityProvider {
         }
 
         /* this player does not already exist */
-        System.err.println("Adding player " + player.getName() + " to " +
+        logger.fine("Adding player " + player.getName() + " to " +
             serverGameEngine.getWorld());
 
         AddPlayerMove m = AddPlayerMove.generateMove(serverGameEngine.getWorld(),
@@ -86,7 +88,7 @@ class IdentityProvider {
         /*
          * get the newly created player-with-principal
          */
-        System.err.println("checking " + w);
+        logger.fine("checking " + w);
         player = w.getPlayer(w.getNumberOfPlayers() - 1);
         assert (w != null);
 

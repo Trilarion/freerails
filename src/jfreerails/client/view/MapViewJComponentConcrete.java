@@ -17,10 +17,11 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.StringTokenizer;
+
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
+
 import jfreerails.client.common.ModelRoot;
-import jfreerails.client.common.Stats;
 import jfreerails.client.renderer.MapRenderer;
 
 
@@ -33,8 +34,7 @@ import jfreerails.client.renderer.MapRenderer;
 final public class MapViewJComponentConcrete extends MapViewJComponent
     implements PropertyChangeListener {
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
-    private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
-    private final Stats paintStats = new Stats("MapViewJComponent paint");
+    private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);   
 
     /** The length of the array is the number of lines.
      * This is necessary since Graphics.drawString(..)  doesn't know about newline characters*/
@@ -175,8 +175,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         }
     }
 
-    protected void paintComponent(java.awt.Graphics g) {
-        paintStats.enter();
+    protected void paintComponent(java.awt.Graphics g) {       
         super.paintComponent(g);
 
         if (null != mapCursor) {
@@ -204,9 +203,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
             g.drawString(message,
                 (int)(visRect.x + (visRect.getWidth() - msgWidth) / 2),
                 (int)(visRect.y + (visRect.getHeight() - msgHeight) / 2));
-        }
-
-        paintStats.exit();
+        }      
     }
 
     public MapViewJComponentConcrete() {

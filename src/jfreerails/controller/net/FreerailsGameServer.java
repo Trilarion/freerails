@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.logging.Logger;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsSerializable;
@@ -23,6 +24,7 @@ import jfreerails.world.top.WorldImpl;
  */
 public class FreerailsGameServer implements ServerControlInterface,
     NewGameServer, Runnable {
+    private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private boolean newPlayersAllowed = true;
     private ArrayList players = new ArrayList();
@@ -146,24 +148,23 @@ public class FreerailsGameServer implements ServerControlInterface,
 
         send2All(command);
 
-        System.err.println("newGame");
+        logger.fine("newGame");
     }
 
     public synchronized void addConnection(Connection2Client connection) {
-        System.err.println("Adding connection..");
-        System.err.println("Waiting for logon details..");
+        logger.fine("Adding connection..");
+        logger.fine("Waiting for logon details..");
 
         try {
             LogOnRequest request = (LogOnRequest)connection.waitForObjectFromClient();
-            System.err.println("Trying to logon player: " +
-                request.getUsername());
+            logger.fine("Trying to logon player: " + request.getUsername());
 
             LogOnResponse response = this.logon(request);
             connection.writeToClient(response);
             connection.flush();
 
             if (response.isSuccessful()) {
-                System.err.println("Logon successful");
+                logger.fine("Logon successful");
 
                 synchronized (acceptedConnections) {
                     acceptedConnections.put(new Integer(
@@ -292,7 +293,7 @@ public class FreerailsGameServer implements ServerControlInterface,
                         if (messages[i] instanceof ServerCommand) {
                             ServerCommand command = (ServerCommand)messages[i];
                             CommandStatus status = command.execute(this);
-                            System.err.println(command);
+                            logger.fine(command.toString());
                             connection.writeToClient(status);
                         } else if (messages[i] instanceof CommandStatus) {
                             CommandStatus commandStatus = (CommandStatus)messages[i];
@@ -304,11 +305,10 @@ public class FreerailsGameServer implements ServerControlInterface,
                                  * version.
                                  */
                                 this.confirmedPlayers.add(playerID);
-                                System.err.println("Confirmed player " +
-                                    playerID);
+                                logger.fine("Confirmed player " + playerID);
                             }
 
-                            System.err.println(messages[i]);
+                            logger.fine(messages[i].toString());
                         } else if (messages[i] instanceof Move) {
                             Move move = (Move)messages[i];
                             FreerailsPrincipal principal = world.getPlayer(playerID.intValue())
@@ -323,7 +323,7 @@ public class FreerailsGameServer implements ServerControlInterface,
                                 connection.writeToClient(status);
                             }
                         } else {
-                            System.err.println(messages[i]);
+                            logger.fine(messages[i].toString());
                         }
                     }
 
@@ -343,8 +343,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     boolean isConfirmed(int player) {
-        System.err.println("confirmedPlayers.size()=" +
-            confirmedPlayers.size());
+        logger.fine("confirmedPlayers.size()=" + confirmedPlayers.size());
 
         boolean isConfirmed = confirmedPlayers.contains(new Integer(player));
 

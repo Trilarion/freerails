@@ -15,10 +15,10 @@ import java.util.logging.Logger;
  */
 public class TestLogging {
     public static void main(String[] args) {
-        System.out.println("Logging properties file: " +
+        Logger logger1 = Logger.getLogger(TestLogging.class.getName());
+        logger1.info("Logging properties file: " +
             System.getProperty("java.util.logging.config.file"));
 
-        Logger logger1 = Logger.getLogger(TestLogging.class.getName());
         logger1.severe("Hello severe logging");
         logger1.warning("Hello warning logging");
         logger1.info("Hello info logging");

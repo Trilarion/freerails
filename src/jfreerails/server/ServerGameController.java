@@ -5,6 +5,7 @@ package jfreerails.server;
 
 import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.table.TableModel;
 import jfreerails.controller.AddPlayerCommand;
 import jfreerails.controller.AddPlayerResponseCommand;
@@ -26,6 +27,8 @@ import jfreerails.util.FreerailsProgressMonitor;
  */
 class ServerGameController implements ServerControlInterface,
     ConnectionListener {
+    private static final Logger logger = Logger.getLogger(ServerGameController.class.getName());
+
     /**
     * The connections that this server has.
     */
@@ -45,7 +48,7 @@ class ServerGameController implements ServerControlInterface,
                 serverSocket = new InetConnection(engine.getWorld(),
                         InetConnection.SERVER_PORT);
             } catch (IOException e) {
-                System.err.println("Couldn't open the server socket!!!" + e);
+                logger.warning("Couldn't open the server socket!!!" + e);
                 throw new RuntimeException(e);
             }
 
@@ -218,8 +221,8 @@ class ServerGameController implements ServerControlInterface,
             AddPlayerCommand apc = (AddPlayerCommand)s;
 
             synchronized (this) {
-                System.out.println("Received request to authenticate player" +
-                    " " + apc.getPlayer());
+                logger.fine("Received request to authenticate player" + " " +
+                    apc.getPlayer());
 
                 if (!gameEngine.getIdentityProvider().addConnection(c,
                             apc.getPlayer(), apc.getSignature())) {

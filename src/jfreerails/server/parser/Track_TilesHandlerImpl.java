@@ -28,7 +28,6 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
     protected ArrayList ruleList;
     protected jfreerails.world.track.TrackRuleProperties trackRuleProperties;
     protected jfreerails.world.track.LegalTrackConfigurations legalTrackConfigurations;
-    public static final boolean DEBUG = false;
     protected ArrayList legalTemplates;
     protected java.util.HashSet terrainTypes;
     protected LegalTrackPlacement legalTrackPlacement;
@@ -57,22 +56,13 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
 
     public void start_ListOfLegalRoutesAcrossNode(final Attributes meta)
         throws SAXException {
-        if (DEBUG) {
-            System.err.println("start_ListOfLegalRoutesAcrossNode: " + meta);
-        }
     }
 
     public void end_ListOfLegalRoutesAcrossNode() throws SAXException {
-        if (DEBUG) {
-            System.err.println("end_ListOfLegalRoutesAcrossNode()");
-        }
     }
 
     public void handle_LegalRouteAcrossNode(final Attributes meta)
         throws SAXException {
-        if (DEBUG) {
-            System.err.println("handle_LegalRouteAcrossNode: " + meta);
-        }
     }
 
     public void start_CannotBuildOnTheseTerrainTypes(final Attributes meta)
@@ -143,15 +133,9 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
     }
 
     public void start_Tiles(final Attributes meta) throws SAXException {
-        if (DEBUG) {
-            System.err.println("start_Tiles: " + meta);
-        }
     }
 
     public void end_Tiles() throws SAXException {
-        if (DEBUG) {
-            System.err.println("end_Tiles()");
-        }
     }
 
     public void start_TrackPieceTemplate(final Attributes meta)

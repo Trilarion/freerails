@@ -437,7 +437,7 @@ FreerailsProgressMonitor {
                     setNextEnabled(false);
             }
         }catch (Exception e){
-            System.err.println("Unexpected exception, can't recover");
+        	logger.severe("Unexpected exception, can't recover");
             e.printStackTrace();
             System.exit(1);
         }

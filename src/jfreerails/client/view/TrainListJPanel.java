@@ -151,7 +151,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     
     private ActionListener showTrainDetails = new ActionListener(){
         public void actionPerformed(ActionEvent arg0) {
-            System.out.println(jList1.getSelectedIndex());
+           
         }
     };
     

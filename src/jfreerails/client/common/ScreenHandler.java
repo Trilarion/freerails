@@ -85,9 +85,9 @@ final public class ScreenHandler {
             //Some of the dialogue boxes do not get layed out properly if they are smaller than their
             //minimum size.  JFrameMinimumSizeEnforcer increases the size of the Jframe when its size falls
             //below the specified size.
-            frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 450));
+            frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
 
-            frame.setSize(640, 450);
+            frame.setSize(640, 480);
             frame.show();
 
             break;

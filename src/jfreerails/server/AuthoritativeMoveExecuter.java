@@ -1,6 +1,7 @@
 package jfreerails.server;
 
 import java.util.LinkedList;
+import java.util.logging.Logger;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
@@ -16,6 +17,7 @@ import jfreerails.world.top.World;
  * @author rob
  */
 class AuthoritativeMoveExecuter implements MoveReceiver {
+    private static final Logger logger = Logger.getLogger(AuthoritativeMoveExecuter.class.getName());
     private static final int MAX_UNDOS = 10;
     private final World world;
     private final MoveReceiver moveReceiver;
@@ -87,7 +89,7 @@ class AuthoritativeMoveExecuter implements MoveReceiver {
             ms = m.undoMove(world, Player.AUTHORITATIVE);
 
             if (ms != MoveStatus.MOVE_OK) {
-                System.err.println("Couldn't undo move!");
+                logger.warning("Couldn't undo move!");
 
                 /* push it back on the stack to prevent further
                  * out-of-order undos */
@@ -96,7 +98,7 @@ class AuthoritativeMoveExecuter implements MoveReceiver {
 
             forwardMove(m, ms);
         } else {
-            System.err.println("No moves on stack.");
+            logger.warning("No moves on stack.");
         }
     }
 }

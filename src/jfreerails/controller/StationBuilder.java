@@ -1,12 +1,13 @@
 package jfreerails.controller;
 
 import java.awt.Point;
-import jfreerails.move.*;
+import java.util.logging.Logger;
 import jfreerails.move.AddStationMove;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -26,6 +27,7 @@ import jfreerails.world.track.TrackRule;
  *
  */
 public class StationBuilder {
+    private static final Logger logger = Logger.getLogger(StationBuilder.class.getName());
     private int ruleNumber;
     private final TrackMoveTransactionsGenerator transactionsGenerator;
     private final MoveExecutor executor;
@@ -83,7 +85,7 @@ public class StationBuilder {
             MoveStatus statusa = executor.tryDoMove(upgradeTrackMove);
 
             if (!statusa.ok) {
-                System.err.println("Cannot upgrade this track to a station!");
+                logger.warning("Cannot upgrade this track to a station!");
 
                 return statusa;
             }
@@ -117,7 +119,7 @@ public class StationBuilder {
             return executor.doMove(move);
         } else {
             String message = "Can't build station since there is no track here!";
-            System.err.println(message);
+            logger.warning(message);
 
             return MoveStatus.moveFailed(message);
         }

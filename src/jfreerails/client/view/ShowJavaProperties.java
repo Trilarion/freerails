@@ -5,6 +5,7 @@ package jfreerails.client.view;
 
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 
 /**
@@ -13,8 +14,10 @@ import java.util.Properties;
  *
  */
 public class ShowJavaProperties {
+	private static final Logger logger = Logger
+			.getLogger(ShowJavaProperties.class.getName()); 
     public static void main(String[] args) {
-        System.out.println(getPropertiesHtmlString());
+    	logger.info(getPropertiesHtmlString());
     }
 
     public static String getPropertiesHtmlString() {

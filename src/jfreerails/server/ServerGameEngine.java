@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import jfreerails.controller.MoveChainFork;
@@ -37,6 +38,8 @@ import jfreerails.world.top.World;
  *
  */
 public class ServerGameEngine implements GameModel, Runnable {
+    private static final Logger logger = Logger.getLogger(ServerGameEngine.class.getName());
+
     /**
     * Objects that run as part of the server should use this object as the
     * destination for moves, rather than queuedMoveReceiver.
@@ -132,7 +135,7 @@ public class ServerGameEngine implements GameModel, Runnable {
             * If something goes wrong, lets kill the game straight
             * away to avoid hard-to-track-down bugs.
             */
-            System.err.print("Unexpected exception, quitting..");
+            logger.severe("Unexpected exception, quitting..");
             e.printStackTrace();
             System.exit(1);
         }
@@ -317,7 +320,7 @@ public class ServerGameEngine implements GameModel, Runnable {
 
     public synchronized void saveGame() {
         try {
-            System.out.print("Saving game..  ");
+            logger.info("Saving game..  ");
 
             FileOutputStream out = new FileOutputStream(ServerCommand.FREERAILS_SAV);
             GZIPOutputStream zipout = new GZIPOutputStream(out);
@@ -340,7 +343,7 @@ public class ServerGameEngine implements GameModel, Runnable {
             objectOut.flush();
             objectOut.close();
 
-            System.out.println("done.");
+            logger.fine("done.");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -353,7 +356,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         ServerGameEngine engine = null;
 
         try {
-            System.out.print("Loading game..  ");
+            logger.info("Loading game..  ");
 
             FileInputStream in = new FileInputStream(ServerCommand.FREERAILS_SAV);
             GZIPInputStream zipin = new GZIPInputStream(in);

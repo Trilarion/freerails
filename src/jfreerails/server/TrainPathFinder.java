@@ -2,6 +2,7 @@ package jfreerails.server;
 
 import java.awt.Point;
 import java.util.Vector;
+import java.util.logging.Logger;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.controller.pathfinder.SimpleAStarPathFinder;
@@ -36,6 +37,7 @@ import jfreerails.world.train.WagonType;
  * @author Luke Lindsay 28-Nov-2002
  */
 public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
+    private static final Logger logger = Logger.getLogger(TrainPathFinder.class.getName());
     private static final int NOT_AT_STATION = -1;
     private final int trainId;
     private final ReadOnlyWorld world;
@@ -131,7 +133,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
                     principal);
 
             if (null == station) {
-                System.err.println("null == station, train " + trainId +
+                logger.warning("null == station, train " + trainId +
                     " doesn't know where to go next!");
             }
         }

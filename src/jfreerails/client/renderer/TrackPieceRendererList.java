@@ -8,6 +8,7 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 import jfreerails.client.common.ImageManager;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -21,6 +22,7 @@ import jfreerails.world.track.TrackRule;
  * @author Luke
  */
 final public class TrackPieceRendererList {
+    private static final Logger logger = Logger.getLogger(TrackPieceRendererList.class.getName());
     private final TrackPieceRenderer[] trackPieceViewArray;
 
     public TrackPieceRenderer getTrackPieceView(int i) {
@@ -59,7 +61,7 @@ final public class TrackPieceRendererList {
             TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
 
             if (null == trackPieceView) {
-                System.err.println(
+                logger.warning(
                     "No track piece view for the following track type: " +
                     trackRule.getTypeName());
 
@@ -71,7 +73,7 @@ final public class TrackPieceRendererList {
                     Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
 
                     if (null == img) {
-                        System.err.println(
+                        logger.warning(
                             "No track piece image for the following track type: " +
                             trackRule.getTypeName() + ", with configuration: " +
                             trackGraphicsNo);

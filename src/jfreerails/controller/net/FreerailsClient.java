@@ -6,6 +6,7 @@ package jfreerails.controller.net;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.util.GameModel;
@@ -20,6 +21,7 @@ import jfreerails.world.top.World;
  *
  */
 public class FreerailsClient implements ClientControlInterface, GameModel {
+    private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     private Connection2Server connection2Server;
     private final HashMap properties = new HashMap();
     private World world;
@@ -150,7 +152,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel {
         if (message instanceof ClientCommand) {
             ClientCommand command = (ClientCommand)message;
             CommandStatus status = command.execute(this);
-            System.err.println(command);
+            logger.fine(command.toString());
             connection2Server.writeToServer(status);
         } else if (message instanceof Move) {
             Move m = (Move)message;
@@ -160,7 +162,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel {
                 throw new IllegalStateException(status.message);
             }
         } else {
-            System.err.println(message);
+            logger.fine(message.toString());
         }
     }
 

@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.renderer.ChequeredTileRenderer;
@@ -28,6 +29,7 @@ import jfreerails.world.top.SKEY;
  * @author Luke
  */
 public class ViewListsImpl implements ViewLists {
+    private static final Logger logger = Logger.getLogger(ViewListsImpl.class.getName());
     private final TileRendererList tiles;
     private final TrackPieceRendererList trackPieceViewList;
     private final TrainImages trainImages;
@@ -145,7 +147,7 @@ public class ViewListsImpl implements ViewLists {
                 continue;
             } catch (IOException io) {
                 // If the image is missing, we generate it.
-                System.err.println("No tile renderer for " +
+                logger.warning("No tile renderer for " +
                     t.getTerrainTypeName());
 
                 String filename = StandardTileRenderer.generateFilename(t.getTerrainTypeName());

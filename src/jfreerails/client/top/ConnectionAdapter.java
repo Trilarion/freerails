@@ -2,6 +2,7 @@ package jfreerails.client.top;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.logging.Logger;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.AddPlayerCommand;
@@ -29,6 +30,7 @@ import jfreerails.world.top.World;
  */
 public class ConnectionAdapter implements UntriedMoveReceiver,
     ConnectionListener {
+    private static final Logger logger = Logger.getLogger(ConnectionAdapter.class.getName());
     private NonAuthoritativeMoveExecuter moveExecuter;
     private final ModelRoot modelRoot;
     private final Player player;
@@ -117,7 +119,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
 
         synchronized (authMutex) {
             if (!authenticated) {
-                System.out.println("Waiting for authentication");
+                logger.fine("Waiting for authentication");
 
                 try {
                     authMutex.wait();
@@ -193,7 +195,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             int playerID = principal.getId();
 
             while (world.getNumberOfPlayers() <= playerID) {
-                System.out.println("Size of players list is " +
+                logger.fine("Size of players list is " +
                     world.getNumberOfPlayers());
                 moveExecuter.update();
             }
@@ -240,12 +242,12 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
                 authenticated = !((AddPlayerResponseCommand)s).isRejected();
 
                 if (authenticated) {
-                    System.out.println("Player was authenticated");
+                    logger.fine("Player was authenticated");
 
                     FreerailsPrincipal principal = ((AddPlayerResponseCommand)s).getPrincipal();
                     playerConfirmed((PlayerPrincipal)principal);
                 } else {
-                    System.out.println("Authentication was rejected");
+                    logger.fine("Authentication was rejected");
                 }
 
                 authMutex.notify();

@@ -4,9 +4,12 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.logging.Logger;
 
 
 public class FlowRateInputStream extends FilterInputStream implements Runnable {
+    private static final Logger logger = Logger.getLogger(FlowRateInputStream.class.getName());
+
     public FlowRateInputStream(InputStream in, String streamName) {
         this(in, streamName, 60, 1000);
     }
@@ -52,15 +55,16 @@ public class FlowRateInputStream extends FilterInputStream implements Runnable {
             }
         } while (running);
 
-        System.out.println(String.valueOf(String.valueOf(
-                    (new StringBuffer("Stream ")).append(streamName)
-                     .append(": Open duration = ")
-                     .append((double)(System.currentTimeMillis() -
+        logger.info(String.valueOf(String.valueOf((new StringBuffer("Stream ")).append(
+                        streamName).append(": Open duration = ")
+                                                   .append((double)(System.currentTimeMillis() -
                         openTimeMillis) / 1000D).append(", Byte received = ")
-                     .append(totalByteReceived).append(" (")
-                     .append((int)((double)totalByteReceived / 1024D))
-                     .append(" Ko), overall flow rate = ").append(overallRate())
-                     .append(" Ko/s"))));
+                                                   .append(totalByteReceived)
+                                                   .append(" (")
+                                                   .append((int)((double)totalByteReceived / 1024D))
+                                                   .append(" Ko), overall flow rate = ")
+                                                   .append(overallRate())
+                                                   .append(" Ko/s"))));
     }
 
     public int read() throws IOException {
@@ -126,7 +130,7 @@ public class FlowRateInputStream extends FilterInputStream implements Runnable {
                     nbUsed = Math.min(byteReceived.length, nbUsed + 1);
 
                     if (showTrace) {
-                        System.out.println(String.valueOf(String.valueOf(
+                        logger.info(String.valueOf(String.valueOf(
                                     (new StringBuffer("Stream ")).append(
                                         streamName).append(": Open duration = ")
                                      .append((double)(System.currentTimeMillis() -

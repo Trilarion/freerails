@@ -1,5 +1,6 @@
 package jfreerails.server.parser;
 
+import java.util.logging.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
@@ -23,6 +24,7 @@ import org.xml.sax.XMLReader;
  * @author  Luke
  */
 public class CargoAndTerrainParser implements ContentHandler {
+    private static final Logger logger = Logger.getLogger(CargoAndTerrainParser.class.getName());
     private java.lang.StringBuffer buffer;
     private CargoAndTerrainHandler handler;
     private java.util.Stack context;
@@ -261,7 +263,7 @@ public class CargoAndTerrainParser implements ContentHandler {
                 public void error(SAXParseException ex)
                     throws SAXException {
                     if (context.isEmpty()) {
-                        System.err.println("Missing DOCTYPE.");
+                        logger.severe("Missing DOCTYPE.");
                     }
 
                     throw ex;

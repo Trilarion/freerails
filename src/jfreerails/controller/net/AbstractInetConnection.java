@@ -6,6 +6,7 @@ package jfreerails.controller.net;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 import jfreerails.world.common.FreerailsSerializable;
 
 
@@ -13,6 +14,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 abstract class AbstractInetConnection implements Runnable {
+    private static final Logger logger = Logger.getLogger(AbstractInetConnection.class.getName());
     private final NewSychronizedQueue inbound = new NewSychronizedQueue();
     private final NewInetConnection inetConnection;
     private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(false);
@@ -31,8 +33,7 @@ abstract class AbstractInetConnection implements Runnable {
     }
 
     public void disconnect() throws IOException {
-        //(new Exception()).printStackTrace();
-        System.err.println(this + "Initiating shutdown..");
+        logger.fine(this + "Initiating shutdown..");
         shutdownOutput();
 
         long waitUntil = System.currentTimeMillis() + timeout;
@@ -55,7 +56,7 @@ abstract class AbstractInetConnection implements Runnable {
             }
         }
 
-        System.err.println(this + "Finished shutdown!! --status=" +
+        logger.fine(this + "Finished shutdown!! --status=" +
             String.valueOf(status.isOpen()));
     }
 
@@ -84,7 +85,7 @@ abstract class AbstractInetConnection implements Runnable {
             e.printStackTrace();
         }
 
-        System.err.println(this + "Recipricating shutdown..");
+        logger.fine(this + "Recipricating shutdown..");
         shutDownInput();
         readerThreadStatus.close();
     }
@@ -100,7 +101,7 @@ abstract class AbstractInetConnection implements Runnable {
     private synchronized void shutDownInput() {
         try {
             inetConnection.shutdownInput();
-            System.err.println(this + "Shut down input.");
+            logger.fine(this + "Shut down input.");
 
             if (status.isOpen()) {
                 shutdownOutput();
@@ -117,7 +118,7 @@ abstract class AbstractInetConnection implements Runnable {
 
         status.close();
         inetConnection.shutdownOutput();
-        System.err.println(this + "Shut down output.");
+        logger.fine(this + "Shut down output.");
     }
 
     abstract String getThreadName();

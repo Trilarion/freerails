@@ -10,12 +10,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+import java.util.logging.Logger;
 import jfreerails.controller.ConnectionToServer.ConnectionState;
 import jfreerails.move.Move;
 import jfreerails.world.top.World;
 
 
 class Dispatcher implements Runnable {
+    private static final Logger logger = Logger.getLogger(Dispatcher.class.getName());
     private final InetConnection connection;
 
     Dispatcher(InetConnection connection) {
@@ -45,16 +47,16 @@ class Dispatcher implements Runnable {
 
                     break;
                 } else {
-                    System.err.println("Received garbage whilst loading world:" +
+                    logger.warning("Received garbage whilst loading world:" +
                         o);
                 }
             }
         } catch (ObjectStreamException e) {
-            System.out.println("Caught object stream exception whilst loading " +
+            logger.warning("Caught object stream exception whilst loading " +
                 "world");
             throw new IOException(e.toString());
         } catch (ClassNotFoundException e) {
-            System.out.println("Received unknown class instead of world " + e);
+            logger.warning("Received unknown class instead of world " + e);
             throw new IOException(e.toString());
         }
 
@@ -64,16 +66,15 @@ class Dispatcher implements Runnable {
          * wake up any thread waiting
          */
         notifyAll();
-        System.out.println("World received from server");
+        logger.fine("World received from server");
     }
 
     private void processServerCommand(ServerCommand c) {
         if (c instanceof CloseConnectionCommand) {
-            System.out.println("CloseConnectionCommand received");
-            //Can cause deadlock!
+            logger.fine("CloseConnectionCommand received");
             this.connection.disconnect();
         } else if (c instanceof LoadWorldCommand) {
-            System.out.println("LoadWorldCommand received");
+            logger.fine("LoadWorldCommand received");
             this.connection.setState(ConnectionState.INITIALISING);
 
             /*
@@ -131,19 +132,18 @@ class Dispatcher implements Runnable {
             } else if ((o instanceof Move) && (moveReceiver != null)) {
                 moveReceiver.processMove((Move)o);
             } else {
-                System.out.println("Invalid class sent in stream");
+                logger.fine("Invalid class sent in stream");
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("Unrecognisable command received by " +
-                "server!");
+            logger.fine("Unrecognisable command received by " + "server!");
         } catch (InvalidClassException e) {
-            System.out.println("Invalid class exception received " + e);
+            logger.fine("Invalid class exception received " + e);
         } catch (StreamCorruptedException e) {
-            System.out.println("StreamCorruptedException received " + e);
+            logger.fine("StreamCorruptedException received " + e);
             e.printStackTrace();
             throw new RuntimeException(e);
         } catch (OptionalDataException e) {
-            System.out.println("OptionalDataException received " + e);
+            logger.fine("OptionalDataException received " + e);
         }
     }
 
@@ -157,7 +157,7 @@ class Dispatcher implements Runnable {
                 processNextObject();
             }
         } catch (IOException e) {
-            System.err.println("IOException occurred " + e);
+            logger.warning("IOException occurred " + e.toString());
 
             if (e instanceof EOFException) {
                 //remote side probably disconnected abruptly               
@@ -168,7 +168,7 @@ class Dispatcher implements Runnable {
              * If something goes wrong, lets kill the application straight
              * away to avoid hard-to-track-down bugs.
              */
-            System.err.println("About to quit..");
+            logger.warning("About to quit..");
             System.exit(1);
         }
     }
@@ -192,7 +192,7 @@ class Dispatcher implements Runnable {
                 objectInputStream.close();
             }
         } catch (IOException e) {
-            System.out.println("Caught an IOException disconnecting " + e);
+            logger.fine("Caught an IOException disconnecting " + e);
         }
 
         worldNotYetLoaded = true;

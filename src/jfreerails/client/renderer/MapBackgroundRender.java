@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.logging.Logger;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
 import jfreerails.world.terrain.TerrainTile;
@@ -26,6 +27,8 @@ import jfreerails.world.track.TrackPiece;
  * @version 1
  */
 final public class MapBackgroundRender implements MapLayerRenderer {
+    private static final Logger logger = Logger.getLogger(MapBackgroundRender.class.getName());
+
     /** The terrain layer.
      */
     private final TerrainLayer terrainLayer;
@@ -144,7 +147,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
 
                 if (null == tr) {
-                    System.err.println("No tile renderer for " + typeNumber);
+                    logger.warning("No tile renderer for " + typeNumber);
                 } else {
                     tr.renderTile(g, screenX, screenY, tile.x, tile.y, w);
                 }

@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.logging.Logger;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.Move;
 import jfreerails.move.TimeTickMove;
@@ -21,6 +22,8 @@ import jfreerails.world.top.World;
  * @author rob
  */
 public class InetConnection implements ConnectionToServer {
+    private static final Logger logger = Logger.getLogger(InetConnection.class.getName());
+
     /**
     * The socket which clients should connect to.
     */
@@ -64,8 +67,7 @@ public class InetConnection implements ConnectionToServer {
     public InetConnection(World w, int port) throws IOException {
         world = w;
         this.mutex = new Object();
-        System.out.println("Server listening for new connections on port " +
-            port);
+        logger.fine("Server listening for new connections on port " + port);
         serverSocket = new ServerSocket();
         serverSocket.setReuseAddress(false);
         serverSocket.bind(new InetSocketAddress(port));
@@ -80,7 +82,7 @@ public class InetConnection implements ConnectionToServer {
         this.mutex = mutex;
         world = w;
         socket = acceptedConnection;
-        System.out.println("accepted incoming client connection from " +
+        logger.fine("accepted incoming client connection from " +
             socket.getRemoteSocketAddress());
         sender = new Sender(this.socket.getOutputStream());
         dispatcher = new Dispatcher(this);
@@ -169,7 +171,7 @@ public class InetConnection implements ConnectionToServer {
                 setState(ConnectionState.CLOSED);
                 serverSocket.close();
             } catch (IOException e) {
-                System.out.println("Caught an IOException whilst closing the " +
+                logger.fine("Caught an IOException whilst closing the " +
                     "server socket " + e);
             }
         } else {
@@ -179,7 +181,7 @@ public class InetConnection implements ConnectionToServer {
             disconnect();
         }
 
-        System.out.println("Connection to remote peer closed");
+        logger.fine("Connection to remote peer closed");
     }
 
     void send(FreerailsSerializable s) {
@@ -207,7 +209,7 @@ public class InetConnection implements ConnectionToServer {
         socket = new Socket(serverAddress, SERVER_PORT);
         sender = new Sender(this.socket.getOutputStream());
         dispatcher.open();
-        System.out.println("Successfully opened connection to remote peer");
+        logger.fine("Successfully opened connection to remote peer");
         setState(ConnectionState.WAITING);
     }
 
@@ -222,7 +224,7 @@ public class InetConnection implements ConnectionToServer {
         synchronized (dispatcher) {
             synchronized (this) {
                 try {
-                    System.out.println("disconnecting from remote peer!");
+                    logger.fine("disconnecting from remote peer!");
                     setState(ConnectionState.CLOSED);
 
                     if (dispatcher != null) {
@@ -241,8 +243,7 @@ public class InetConnection implements ConnectionToServer {
 
                     socket = null;
                 } catch (IOException e) {
-                    System.out.println("Caught an IOException disconnecting " +
-                        e);
+                    logger.fine("Caught an IOException disconnecting " + e);
                 }
 
                 if (connectionListener != null) {

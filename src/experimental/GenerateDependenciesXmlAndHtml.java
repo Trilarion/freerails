@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  *  This class generates an ant script that checks the dependencies between packages 
@@ -18,6 +19,8 @@ import java.util.Date;
  *
  */
 public class GenerateDependenciesXmlAndHtml {
+	private static final Logger logger = Logger
+			.getLogger(GenerateDependenciesXmlAndHtml.class.getName()); 
 
 	private PrintWriter xmlWriter;
 	private PrintWriter htmlWriter;
@@ -97,9 +100,10 @@ public class GenerateDependenciesXmlAndHtml {
 		finish();
 		xmlWriter.flush();
 		htmlWriter.flush();
-		System.out.println(sig);
-		System.out.println("Wrote "+xmlFile);
-		System.out.println("Wrote "+htmlFile);
+		
+		logger.info(sig);
+		logger.info("Wrote "+xmlFile);
+		logger.info("Wrote "+htmlFile);
 	}
 	
 	private void start(){

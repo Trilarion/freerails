@@ -33,7 +33,6 @@ public class ChangeGameSpeedMove implements Move {
             String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " +
                 "currentSpeed " +
                 ((GameSpeed)w.get(ITEM.GAME_SPEED)).getSpeed();
-            System.err.println(string);
 
             return MoveStatus.moveFailed(string);
         }

@@ -33,6 +33,9 @@
   Note, the GUI classes created with the NetBeans GUI editor are excluded from 
   this format target. This is because Jalopy breaks the protected regions. These 
   files can be formatted using the default formatting scheme in NetBeans.</p>
+<p>(10) Use logging instead of <code>System.out</code> or <code>System.err for 
+  debug messages. Each class should have its own logger, e.g.</code></p>
+<p><code>private static final Logger logger = Logger.getLogger(SomeClass.class.getName());</code></p>
 <p><strong>Submitting Patches</strong></p>
 <p>(1) Run CVS diff with output in 'unified' format. (You can do this in Eclipse 
   by selecting <em>Team -&gt; Create Patch</em>.)</p>

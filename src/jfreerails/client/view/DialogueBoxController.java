@@ -11,12 +11,15 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.border.LineBorder;
+
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
@@ -42,6 +45,8 @@ import jfreerails.world.track.FreerailsTile;
  * @author  lindsal8
  */
 public class DialogueBoxController implements WorldListListener {
+	private static final Logger logger = Logger
+			.getLogger(DialogueBoxController.class.getName()); 
     private final JButton closeButton = new JButton("Close");
     private SelectEngineJPanel selectEngine;
     private final MyGlassPanel glassPanel;
@@ -279,7 +284,7 @@ public class DialogueBoxController implements WorldListListener {
             stationInfo.setStation(stationNumber);
             showContent(stationInfo);
         } catch (NoSuchElementException e) {
-            System.err.println("Station " + stationNumber + " does not exist!");
+        	logger.warning("Station " + stationNumber + " does not exist!");
         }
     }
 

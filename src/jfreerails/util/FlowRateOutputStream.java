@@ -4,6 +4,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.logging.Logger;
 
 
 /**
@@ -11,6 +12,8 @@ import java.text.DecimalFormat;
 * Licensing: LGPL
 */
 public class FlowRateOutputStream extends FilterOutputStream implements Runnable {
+    private static final Logger logger = Logger.getLogger(FlowRateOutputStream.class.getName());
+
     public FlowRateOutputStream(OutputStream out, String streamName) {
         this(out, streamName, 60, 1000);
     }
@@ -56,15 +59,16 @@ public class FlowRateOutputStream extends FilterOutputStream implements Runnable
             }
         } while (running);
 
-        System.out.println(String.valueOf(String.valueOf(
-                    (new StringBuffer("Stream ")).append(streamName)
-                     .append(": Open duration = ")
-                     .append((double)(System.currentTimeMillis() -
+        logger.info(String.valueOf(String.valueOf((new StringBuffer("Stream ")).append(
+                        streamName).append(": Open duration = ")
+                                                   .append((double)(System.currentTimeMillis() -
                         openTimeMillis) / 1000D).append(", Byte sent = ")
-                     .append(totalByteSent).append(" (")
-                     .append((int)((double)totalByteSent / 1024D))
-                     .append(" Ko), overall flow rate = ")
-                     .append(overallRateString()).append(" Ko/s"))));
+                                                   .append(totalByteSent)
+                                                   .append(" (")
+                                                   .append((int)((double)totalByteSent / 1024D))
+                                                   .append(" Ko), overall flow rate = ")
+                                                   .append(overallRateString())
+                                                   .append(" Ko/s"))));
     }
 
     public void write(byte[] b) throws IOException {
@@ -135,7 +139,7 @@ public class FlowRateOutputStream extends FilterOutputStream implements Runnable
                     nbUsed = Math.min(byteSent.length, nbUsed + 1);
 
                     if (showTrace) {
-                        System.out.println(String.valueOf(String.valueOf(
+                        logger.info(String.valueOf(String.valueOf(
                                     (new StringBuffer("Stream ")).append(
                                         streamName).append(": Open duration = ")
                                      .append((double)(System.currentTimeMillis() -

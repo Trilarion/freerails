@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
@@ -25,7 +26,8 @@ import jfreerails.client.renderer.ViewLists;
  */
 public class HtmlJPanel extends javax.swing.JPanel implements View {
     
-    
+    private static final Logger logger = Logger.getLogger(HtmlJPanel.class
+			.getName()); 
     HtmlJPanel(){
         initComponents();
     }
@@ -102,7 +104,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
             return text;
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(htmlUrl);
+            logger.warning(htmlUrl.toString());
             return "Couldn't read: "+htmlUrl;
         }
     }

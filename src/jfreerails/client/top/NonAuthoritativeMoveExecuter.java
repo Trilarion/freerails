@@ -2,6 +2,7 @@ package jfreerails.client.top;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.SychronizedQueue;
@@ -36,6 +37,7 @@ import jfreerails.world.top.World;
  * @author rtuck99@users.sourceforge.net
  */
 public class NonAuthoritativeMoveExecuter implements MoveReceiver, GameModel {
+    private static final Logger logger = Logger.getLogger(NonAuthoritativeMoveExecuter.class.getName());
     private final PendingQueue pendingQueue = new PendingQueue();
     private final ModelRoot modelRoot;
     private final MoveReceiver moveReceiver;
@@ -52,10 +54,6 @@ public class NonAuthoritativeMoveExecuter implements MoveReceiver, GameModel {
     }
 
     public void processMove(Move move) {
-        if (move instanceof jfreerails.move.AddTrainMove) {
-            System.err.println("adding train move " + move);
-        }
-
         sychronizedQueue.write(move);
     }
 
@@ -105,7 +103,7 @@ public class NonAuthoritativeMoveExecuter implements MoveReceiver, GameModel {
                 ms = attempted.tryUndoMove(world, Player.AUTHORITATIVE);
 
                 if (ms == MoveStatus.MOVE_OK) {
-                    System.err.println("undoing " + attempted.toString());
+                    logger.warning("undoing " + attempted.toString());
                     attempted.undoMove(world, Player.AUTHORITATIVE);
                     rejectedMoves.remove(i);
                     forwardMove(new UndoMove(attempted), ms);
@@ -179,10 +177,8 @@ public class NonAuthoritativeMoveExecuter implements MoveReceiver, GameModel {
                 ms = move.doMove(world, Player.AUTHORITATIVE);
 
                 if (ms != MoveStatus.MOVE_OK) {
-                    if (debug) {
-                        System.out.println("Move " + move + " rejected " +
-                            "because " + ms.toString());
-                    }
+                    logger.fine("Move " + move + " rejected " + "because " +
+                        ms.toString());
 
                     /* move could not be committed because of
                      * a pre-commited move yet to be rejected by the server */
@@ -228,7 +224,7 @@ public class NonAuthoritativeMoveExecuter implements MoveReceiver, GameModel {
      */
     private void forwardMove(Move move, MoveStatus status) {
         if (status != MoveStatus.MOVE_OK) {
-            System.err.println("Couldn't commit move: " + status.message);
+            logger.warning("Couldn't commit move: " + status.message);
 
             return;
         }
