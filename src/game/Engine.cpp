@@ -89,7 +89,7 @@ Message* Engine::getMsg() {
 
 void Engine::checkNet() {
   if (isServer) {
-      // Server.check();
+    server->check();
   } else
   if (isClient) {
     //Client.check();

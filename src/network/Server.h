@@ -15,11 +15,12 @@ public:
     ~Server();
     
     int getCount() {return count;};
+    void check();
     
 private:
-
-    void connect(char* host, int port);
-
+    
+    /* void connect(char* host, int port); */
+    
     int count;
     
 };

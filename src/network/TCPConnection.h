@@ -36,7 +36,7 @@ public:
     int accept();
     void close();
 
- private:
+ protected:
     int socketID;
 
 };

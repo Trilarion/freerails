@@ -85,6 +85,7 @@ int GameApplication::run() {
     }
     GameDataSelectDialog dataDialog(&mw, 200, 100, 400, 300, "Choos game Data", result);
     result=dataDialog.show();
+    
     // get Player Name
     if (result==1) {  // Single Player
       initSingleGame(dataDialog.getName(), dataDialog.getWidth(), dataDialog.getHeight(), 0);
@@ -107,7 +108,7 @@ int GameApplication::run() {
       mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
-
+      
       mapView->Show();
       panel->Show();
       netView->Show();
@@ -119,6 +120,10 @@ int GameApplication::run() {
       Server* server=new Server(30000);
       engine=new Engine(worldMap, playerSelf, server);
 */
+      Client* client=new Client();
+      
+      /* client->open(host, port);*/
+
       mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);

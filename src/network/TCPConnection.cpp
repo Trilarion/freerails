@@ -4,7 +4,8 @@
 
 #include "TCPConnection.h"
 
-
+#include <iostream>
+#include <stdio.h>
 /* extern int errno; */
 
 
@@ -13,7 +14,7 @@ TCPConnection::TCPConnection():Connection() {
 }
 
 TCPConnection::TCPConnection(int _socketID):Connection() {
-
+  
   socketID=_socketID;
   
 }
@@ -71,7 +72,7 @@ void TCPConnection::open(char* host, int port) {
 }
 
 void TCPConnection::listen(int port) {
-
+  
   socketID = socket (AF_INET, SOCK_STREAM, 0);
   
   if (socketID <= 0)
@@ -85,20 +86,21 @@ void TCPConnection::listen(int port) {
   state = CONNECTING;
 
   struct sockaddr_in m_addr;
-  memset (&m_addr, 0, sizeof(m_addr));
+  memset (&m_addr, '\0', sizeof(m_addr));
   
   m_addr.sin_family=AF_INET;
-  m_addr.sin_port = port;
+  m_addr.sin_port = htons(port);
   m_addr.sin_addr.s_addr = INADDR_ANY;
   
-  int stat = ::bind( socketID, (sockaddr *) &m_addr, sizeof(m_addr));
-  
+  int stat = ::bind( socketID, (struct sockaddr *) &m_addr, sizeof(m_addr));
+
   if (stat!=0)
   {
     state=ERROR;
     error=OTHER; // TODO: read problem from errno!
     return;
   }
+
   stat = ::listen(socketID, MAXCONNECTIONS);
 
   if (stat!=0)
@@ -107,9 +109,9 @@ void TCPConnection::listen(int port) {
     error=OTHER; // TODO: read problem from errno!
   } else
   {
+    cout << "SERVER LISTENING on PORT " << port << endl;
     state=LISTENING;
   }
-
   ::fcntl(socketID, F_SETFL, O_NONBLOCK);
 }
 
@@ -117,16 +119,26 @@ int TCPConnection::accept() {
 
   struct sockaddr_in m_addr;
   socklen_t len = sizeof(m_addr);
-  memset (&m_addr, 0, sizeof(m_addr));
   
-/*  m_addr.sin_family=AF_INET;
-  m_addr.sin_port = port;
-  m_addr.sin_addr.s_addr = INADDR_ANY;
-*/
-  int newSockID = ::accept( socketID, (sockaddr *) &m_addr, &len);
+  memset (&m_addr, 0, sizeof(m_addr));
+
+  /*  m_addr.sin_family=AF_INET;
+      m_addr.sin_port = port;
+      m_addr.sin_addr.s_addr = INADDR_ANY;
+  */
+  
+  int newSockID = ::accept( socketID, (struct sockaddr *) &m_addr, &len);
+
+  /* test */
+#warning FIX ME -- network code will not work WITH this
+  state=OPEN;
+  ::write(newSockID,"Freerails Server...disconnecting\n",33);
+  ::close(newSockID);
+  /* end of test */
 
   return newSockID;
 }
+
 
 void TCPConnection::close() {
 

@@ -8,18 +8,18 @@
 #include "TCPConnection.h"
 
 class Client: public TCPConnection {
-
-public:
-
-    Client();
-    /**  */
-    ~Client();
-    
-private:
-
-    void listen(int port);
-    int accept();
-    
+  
+ public:
+  
+  Client();
+  /**  */
+  ~Client();
+  
+ private:
+  
+  /* void listen(int port); */
+  /* int accept(); */
+  
 };
 
 #endif
