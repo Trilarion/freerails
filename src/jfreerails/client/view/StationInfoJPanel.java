@@ -136,7 +136,7 @@ public class StationInfoJPanel extends javax.swing.JPanel implements View {
         for(int i = 0 ; i < w.size(KEY.CARGO_TYPES) ; i++){         
             CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, i);
             table +="<tr><td>"+cargoType.getDisplayName()+"</td>";
-            String demanded = (station.getDemand().isCargoDemanded(stationNumber) ? "Yes" : "No");
+            String demanded = (station.getDemand().isCargoDemanded(i) ? "Yes" : "No");
             table +="<td>"+demanded+ "</td>";            
             int amountWaiting = station.getWaiting().getAmountWeighting(i);
             String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting) : "&nbsp;";

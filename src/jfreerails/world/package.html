@@ -6,6 +6,20 @@
 </head>
 
 <body>
-Provides classes that make up the gameworld. 
+<p>The <code>jfreerails&#46world&#46*</code> packages provide the classes that make up 
+  the game-world, the classes in these packages will be used by the client and 
+  the server. If at some stage there is a C/C++ version of freerails that works 
+  with the java version, then there will need to be C/C++ and java versions of 
+  these classes. </p>
+<p><strong>Properties of the classes</strong></p>
+<p>(1) The classes need to be serializable so that the game state can be sent 
+  over a network from the server to the client when the game starts and so that 
+  game states can be loaded and saved to disk. To achieve this, they should implement 
+  <code>jfreerails.world.common.FreerailsSerializable.</code></p>
+<p>(2) The classes should override the equals method to test for logical equality. 
+  I.e. two objects are the same if their fields have the same values. Logical 
+  equality should survive serialization: i.e. if object A is serialized and then 
+  deserialized as B, then A.equals(B) should return true. The rationale for this 
+  is that it allows us to detect when things go wrong.</p>
 </body>
 </html>

@@ -8,6 +8,7 @@ package jfreerails.client.view;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.NoSuchElementException;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -201,8 +202,12 @@ public class DialogueBoxController {
 	}
 
 	public void showStationInfo(int stationNumber) {
-		stationInfo.setStation(stationNumber);
-		showContent(stationInfo);
+		try{		
+			stationInfo.setStation(stationNumber);
+			showContent(stationInfo);
+		}catch (NoSuchElementException e){
+			System.out.println("Station "+stationNumber+" does not exist!");
+		}
 	}
 
 	public void showContent(JComponent component) {
