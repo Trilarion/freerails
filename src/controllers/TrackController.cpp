@@ -29,9 +29,10 @@ GameElement* TrackController::CreateElement(Serializer* _serializer)
 {
 }
 
-bool TrackController::canBuildElement(int x, int y, int dir)
+bool TrackController::canBuildElement(GameElement* _element)
 {
-  if (!testBuildElement(x,y,dir))
+  return false;
+/*  if (!testBuildElement(x,y,dir))
   {
     return false;
   }
@@ -76,6 +77,7 @@ bool TrackController::canBuildElement(int x, int y, int dir)
       break;
   };
   return testBuildElement(x,y,dir);
+*/
 }
 
 bool TrackController::testBuildElement(int x, int y, int dir)

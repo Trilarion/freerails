@@ -39,7 +39,7 @@ class TrackController : public Controller
     ~TrackController();
 
     GameElement* CreateElement(Serializer* _serializer);
-    bool canBuildElement(int x, int y, int dir);
+    bool canBuildElement(GameElement* _element);
     void addGameElement(void *_data);
     void removeGameElement(void *_data);
 

@@ -30,7 +30,7 @@ class Controller
     virtual GameElement* CreateElement(Serializer* _serializer) = 0;
 
     // can a specific element be build
-    virtual bool canBuildElement(int, int, int) = 0;
+    virtual bool canBuildElement(GameElement* _element) = 0;
 
   protected:
     // compute direction inner field of a given point relative to center of field

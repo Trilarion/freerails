@@ -153,22 +153,15 @@ void Engine::addElementToGame(Message* msg)
   if (elementController==NULL)
   {
     std::cerr << "\nNo Controller found for Type: "<< element->getTypeID() <<"\n";
-//  if (isServer)
-//  {
-//    if (elementController->canBuildElement(element))
-//    {
   } else
   {
+    if (elementController->canBuildElement(element))
+    {
       elementController->addGameElement(element);
       Message* msgBack = new Message(Message::addElement, 0, element);
       SendAll(msgBack);
+    }
   }
-//    }
-//  }
-//  else
-//  {
-//    elementController->addGameElement(element);
-//  }
 }
 
 void Engine::changeStateOfGame(Message* msg)

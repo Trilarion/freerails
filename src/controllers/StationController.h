@@ -35,7 +35,7 @@ class StationController : public Controller
     ~StationController();
 
     GameElement* CreateElement(Serializer* _serializer);
-    bool canBuildElement(int x, int y, int d);
+    bool canBuildElement(GameElement* _element);
     void addGameElement(void *_data);
     void removeGameElement(void *_data);
 

@@ -19,7 +19,7 @@ public:
   
   GameElement* CreateElement(Serializer* _serializer);
 
-  bool canBuildElement(int, int, int) {return true; };
+  bool canBuildElement(GameElement* _element) {return true; };
   
 private:
 

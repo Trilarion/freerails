@@ -31,7 +31,7 @@ GameElement* StationController::CreateElement(Serializer* _serializer)
 {
 }
 
-bool StationController::canBuildElement(int x, int y, int d)
+bool StationController::canBuildElement(GameElement* _element)
 {
 /*  int x, y;
   int x1, y1;
@@ -53,8 +53,10 @@ bool StationController::canBuildElement(int x, int y, int d)
 //    SetMessage("You have not enough Money to build track there!");
 //    return 0;
 //  }
-*/
+
   return testBuildElement(x, y);
+*/
+  return false;
 }
 
 bool StationController::testBuildElement(int x, int y)
@@ -89,7 +91,7 @@ void StationController::addGameElement(void *_data)
 {
   int x, y, dir;
 
-  if(!(canBuildElement(x, y, dir)))
+  if(!(canBuildElement((GameElement*) _data)))
     return;
   stationDoBuild(x, y);
 }
