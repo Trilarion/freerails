@@ -1,3 +1,8 @@
+Sun Sep 30 14:00:00 2001  Rivo Laks <rivolaks@hot.ee>:
+o Added GameController and GameInfo classes (not very functional)
+o Added rtti() method to GameElement and all elements
+o Added registerSelf() method to GameElement
+o GameElement's constuctor now has pointer to GameController in arguments
 Sat Sep 29 18:30:00 2001  Alexander Opitz <opi@sputnik.de>:
 o change in MapField defines to an enum
 o update some Makefile.in's
