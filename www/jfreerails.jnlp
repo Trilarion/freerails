@@ -16,7 +16,7 @@
       <all-permissions/>
   </security> 
   <resources> 
-     <j2se version="1.4+" initial-heap-size="64m" max-heap-size="256m"/>        
+     <j2se version="1.5+" initial-heap-size="64m" max-heap-size="256m"/>        
     <jar href="signed_jfreerails.jar"/> 
   </resources> 
   <application-desc main-class="jfreerails.launcher.Launcher"/> 
