@@ -26,7 +26,9 @@ public:
     /**  */
     ~MyGameApplication();
     
-    void initGame();
+    void initSingleGame();
+    void initClientGame();
+    void initServerGame();
 
 };
 
