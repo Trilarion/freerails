@@ -1,4 +1,8 @@
 15-Jun_2003 23:17:00 Luke
+	o Improved the train oders dialogue to show
+	the current train consist and what cargo the
+	train is carrying.
+15-Jun_2003 23:17:00 Luke
 	o Fixed a load of problems with station building.
 	-stations can now only be built on the track
 	-building a station on a station now upgrades the

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.0" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
-  <SyntheticProperties>
-    <SyntheticProperty name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,44,0,0,1,-112"/>
-  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,88,0,0,2,59"/>
+  </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
     <Property name="axis" type="int" value="1"/>
@@ -13,15 +13,13 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="heading">
+        <Component class="jfreerails.client.view.TrainDetailsJPanel" name="trainDetailsJPanel1">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Dialog" size="14" style="1"/>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[178, 150]"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="TRAIN ORDERS #10000"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[300, 30]"/>
+              <Dimension value="[400, 100]"/>
             </Property>
           </Properties>
         </Component>
@@ -51,11 +49,9 @@
       </SubComponents>
     </Container>
     <Component class="jfreerails.client.view.TrainOrders" name="trainOrders1">
-
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="trainOrders1KeyPressed"/>
       </Events>
-
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="trainOrders1.setOrderID(&quot;P&quot;);"/>
       </AuxValues>
@@ -84,41 +80,33 @@
       </SubComponents>
     </Container>
     <Component class="jfreerails.client.view.TrainOrders" name="trainOrders2">
-
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="trainOrders2KeyPressed"/>
       </Events>
-
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="trainOrders2.setOrderID(&quot;1.&quot;);"/>
       </AuxValues>
     </Component>
     <Component class="jfreerails.client.view.TrainOrders" name="trainOrders3">
-
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="trainOrders3KeyPressed"/>
       </Events>
-
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="trainOrders3.setOrderID(&quot;2.&quot;);"/>
       </AuxValues>
     </Component>
     <Component class="jfreerails.client.view.TrainOrders" name="trainOrders4">
-
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="trainOrders4KeyPressed"/>
       </Events>
-
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="trainOrders4.setOrderID(&quot;3.&quot;);"/>
       </AuxValues>
     </Component>
     <Component class="jfreerails.client.view.TrainOrders" name="trainOrders5">
-
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="trainOrders5KeyPressed"/>
       </Events>
-
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="trainOrders5.setOrderID(&quot;4.&quot;);"/>
       </AuxValues>
@@ -132,7 +120,6 @@
             <Property name="text" type="java.lang.String" value="&lt;- previous"/>
             <Property name="actionCommand" type="java.lang.String" value="previous"/>
           </Properties>
-
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="previousActionPerformed"/>
           </Events>
@@ -141,7 +128,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="next -&gt;"/>
           </Properties>
-
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextActionPerformed"/>
           </Events>
@@ -150,7 +136,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Done"/>
           </Properties>
-
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="doneActionPerformed"/>
           </Events>

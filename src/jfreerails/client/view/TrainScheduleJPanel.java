@@ -40,7 +40,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         jPanel1 = new javax.swing.JPanel();
-        heading = new javax.swing.JLabel();
+        trainDetailsJPanel1 = new jfreerails.client.view.TrainDetailsJPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
@@ -64,11 +64,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        heading.setFont(new java.awt.Font("Dialog", 1, 14));
-        heading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        heading.setText("TRAIN ORDERS #10000");
-        heading.setPreferredSize(new java.awt.Dimension(300, 30));
-        jPanel1.add(heading);
+        trainDetailsJPanel1.setMinimumSize(new java.awt.Dimension(178, 150));
+        trainDetailsJPanel1.setPreferredSize(new java.awt.Dimension(400, 100));
+        jPanel1.add(trainDetailsJPanel1);
 
         add(jPanel1);
 
@@ -272,6 +270,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         trainOrders4.setup(w, vl);
         trainOrders5.setup(w, vl);
         this.done.addActionListener(submitButtonCallBack);
+        this.trainDetailsJPanel1.setup(w, vl, null);
         displayFirst();
     }
     
@@ -322,7 +321,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         }else{
             this.next.setEnabled(false);
         }
-        this.heading.setText("TRAIN ORDERS #"+(wi.getRowNumber()+1));
+       // this.heading.setText("TRAIN ORDERS #"+(wi.getRowNumber()+1));
+        this.trainDetailsJPanel1.displayTrain(wi.getIndex());
+        
         this.repaint();
     }
     
@@ -349,23 +350,23 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel12;
-    private jfreerails.client.view.TrainOrders trainOrders1;
     private javax.swing.JButton done;
-    private javax.swing.JButton next;
-    private javax.swing.JButton previous;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private jfreerails.client.view.TrainOrders trainOrders5;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton next;
+    private javax.swing.JButton previous;
+    private jfreerails.client.view.TrainDetailsJPanel trainDetailsJPanel1;
+    private jfreerails.client.view.TrainOrders trainOrders1;
     private jfreerails.client.view.TrainOrders trainOrders2;
-    private javax.swing.JPanel jPanel1;
     private jfreerails.client.view.TrainOrders trainOrders3;
-    private javax.swing.JLabel jLabel22;
     private jfreerails.client.view.TrainOrders trainOrders4;
-    private javax.swing.JLabel heading;
+    private jfreerails.client.view.TrainOrders trainOrders5;
     // End of variables declaration//GEN-END:variables
     
 }
