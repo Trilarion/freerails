@@ -15,12 +15,13 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-/** 
+
+/**
  * This class is responsible for loading and playing sounds.  Samples are read into a byte arrays so that
- * they don't need to be loaded from disk each time they are played.  When a sample is played, the rate at which 
+ * they don't need to be loaded from disk each time they are played.  When a sample is played, the rate at which
  * it is played back is varied randomly so that it does not always sound the same.
  *
- *  @author Luke  
+ *  @author Luke
  *
  */
 public class SoundManager {

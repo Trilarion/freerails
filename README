@@ -1,65 +1,21 @@
 Freerails Java - build @version@
 
-
 Bugs Fixed:
-	
-o 972869 Crash when track under train removed.
-o 972867 Signal towers do nothing
-o 972864 Deselect place-station-mode when track selected
-o 948668 Building Station on Curve - Cursor changes function 	
-o 948671 Map City Overlays incorrect
-o 967675 No trains/stations but train & station menus selectable
-o 972738 Crash when station removed
-o 967662 Bottom of terrain info tab cut off in 640*480 res.
-o 972869 Crash when track under train removed.
-o 948651 IP Address input should be checked immediately. 
-o 948649 Dialogue Box Behavior 
-o 967668 No supply & demand at new station
-o 948672 Large numbers of active trains slows performance 	
-o 967667 Cannot close multilple dialogue boxes.
-o 967664 Fullscreen res. below 640x480 16bit selectable.
-o 967666 Selected fullscreen resolution ignored.
-o 967713 FPS counter obscures build menu
-o 967660 Debug text sent to console 
-o 948679 Delete/Rebuild single section of track doesn't cost anything 
-o 967673 Crash when building track close to edge of map 
-o 967677 OutOfMemoryError after starting several new games
-o 967129 Main map white on 1.5.0 beta 2 
-o 967214 EchoGameServerTest hangs 
-o 948653 Crash after loading a saved game when one is not available.	
-o 948665 "Show Details" on Train List doesn't work if no train is selected.
-o 948659 Dialogue Box Behavior not deterministic
-o 948663 Extra Close Button on Station List tab
-o 948661 No Formal Specification (see /src/docs/jfreerails_1_0_functional_specification.html)	
-o 948656 Non Movable Dialogue Boxes	
-o 948666 Crash when Building Train with Money < 0 and only one station
-o 948655 Can't see consist when there are more than 6 wagons
-o 948675 Can't upgrade station types
-o 948680 No way to tell sphere of influence for a station type
-o 948676 Waiting list is cut off 
-o 948673 Cost of Building track/stations not shown 
-o 948670 Removing non-existant track
-o 948654 Locomotive graphic backwards
-o 910902 Game speed not stored on world object
-o 891452 2 servers same port, no error message
-o 868555 Undo move by pressing backspace doesn't work
-o 910132 Too easy to make money!  
+o 972866 Build track by dragging - only when build track selected
+o 984510 jfreerails.world.player.player; local class incompatible
+o 979831 Stacktraces printed out when running unit tests 	
 
 
 Features implemented:
 
-o 915960 Logging 
-o 915957 Build track by dragging mouse, partially complete (Thanks Jan Tozicka)		
-o 927165 Quick start option(Thanks Jan Tozicka)
+o 915943 Sounds!
 
 
 Changes not in tracker
 
-o Fix bug in SimpleAStarPathFinder spotted by Jan Tozicka.
-o Added some javadoc comments.
-o Added hashcode methods to classes that override equals.
-o Code cleanup
-o Let track be built on terrain of category 'Industry' and 'Resource'
+o Apply Vincenzo Di Massa's station distance patch.
+o Fixed DisplayModesComboBoxModels.removeDisplayModesBelow(.) so 
+that it does not remove display modes when displayMode.getBitDepth() returns DisplayMode.BIT_DEPTH_MULTI
 
 
 Getting it, either:
