@@ -85,26 +85,22 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   SetBackgroundBlend(0);
   stationViewButton=new PG_Button(this,GamePanel::ViewStations,PG_Rect(2,200,79,20),"Stations");
   stationViewButton->SetToggle(true);
+  stationViewButton->SetPressed(true);
   stationViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
 
   trainViewButton=new PG_Button(this,GamePanel::ViewTrains,PG_Rect(82,200,68,20),"Trains");
   trainViewButton->SetToggle(true);
-  trainViewButton->SetPressed(true);
   trainViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
   
-  stationList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
-  stationList->EnableScrollBar(true, PG_SB_VERTICAL);
-  stationList->SetTransparency(0);
-  
-  new PG_Label(stationList, PG_Rect(0,0,300,20), "Stations");
-
   trainList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
   trainList->EnableScrollBar(true, PG_SB_VERTICAL);
   trainList->SetTransparency(0);
   trainList->SetVisible(false);
 
-  new PG_Label(trainList, PG_Rect(0,0,100,20), "Trains");
-
+  stationList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
+  stationList->EnableScrollBar(true, PG_SB_VERTICAL);
+  stationList->SetTransparency(0);
+  
   trackButton=new PG_Button(this,GamePanel::BuildTrack,PG_Rect(5,400,25,25));
   trackButton->SetIcon("graphics/ui/buttons/build_track_up.png",
 			"graphics/ui/buttons/build_track_down.png");
@@ -153,4 +149,19 @@ void GamePanel::releaseAllBuildButtons(PG_Button* button) {
 void GamePanel::releaseAllViewButtons(PG_Button* button) {
   if (button!=stationViewButton) stationViewButton->SetPressed(false);
   if (button!=trainViewButton) trainViewButton->SetPressed(false);
+}
+
+void GamePanel::addStation(Station* station)
+{
+  switch(station->getSize())
+  {
+    case Station::Signal:
+    break;
+    case Station::Small:
+    break;
+    case Station::Medium:
+    break;
+    case Station::Big:
+    break;
+  }
 }

@@ -1,4 +1,10 @@
-Thu May 16 11:15:00 2003  Alexander Opitz <opi@le-bit.de>:
+Sat May 17 03:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Scroll City Names like the map under them
+           (Stupid impl, but MoveWidget seems to buggy)
+	   Read Messages from Server and call Panel
+	   (Later it should fill the stationList/trainList)
+
+Fri May 16 11:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Show City Names under the City
 o Map    : Generate City Names from count
 Thu May 16 03:15:00 2003  Alexander Opitz <opi@le-bit.de>:

@@ -18,6 +18,7 @@
 
 #include "GuiEngine.h"
 #include "Message.h"
+#include "Station.h"
 
 class GamePanel: public PG_ThemeWidget, public PG_EventObject {
 
@@ -27,6 +28,8 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _engine, GameMapView* _mapView);
     /**  */
     ~GamePanel();
+    
+    void addStation(Station* station);
 
   private:
   

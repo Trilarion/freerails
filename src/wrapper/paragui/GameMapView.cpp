@@ -26,6 +26,7 @@ Base2DMapView(_guiEngine) {
   p.x=0;
   p.y=0;
   view=new PG_Image(this, p, imageSurface, false);
+//  blind=new PG_Widget(this,PG_Rect(0,0,guiEngine->getWorldMap()->getWidth()*30,guiEngine->getWorldMap()->getHeight()*30));
   redrawMap(0,0,w,h);
   verticalScrollBar = new PG_ScrollBar(this,200/*ID*/,PG_Rect(w-15,0,15,h-15),PG_SB_VERTICAL);
   horizontalScrollBar = new PG_ScrollBar(this,201/*ID*/,PG_Rect(0,h-15,w-15,15),PG_SB_HORIZONTAL);
@@ -41,11 +42,12 @@ Base2DMapView(_guiEngine) {
   mouseOldMapX=0;
   mouseOldMapY=0;
   
+  writeCities();
+  
   std::vector<City*> cities = guiEngine->getAllCities();
   std::vector<City*>::iterator it;
   for (it = cities.begin(); it != cities.end(); ++it)
   {
-    std::cerr << (*it)->getPosX() << (*it)->getName() << (*it)->getPosY() << std::endl;
     // Set the City Name Labels
     int x = (*it)->getPosX();
     int y = (*it)->getPosY();
@@ -703,17 +705,21 @@ bool GameMapView::eventScrollPos(int id, PG_Widget* widget, unsigned long data) 
 void GameMapView::moveXto(unsigned long pos) {
 
   redrawMap(pos, viewPos.y, Width(), Height());
+  view->RemoveAllChilds();
+  writeCities();
+  // TODO: Find a better scrolling, exspecialy for the city names
   // TODO: Don't need full redraw any time
   viewPos.x = pos;
-
 }
 
 void GameMapView::moveYto(unsigned long pos) {
 
   redrawMap(viewPos.x, pos, Width(), Height());
+  view->RemoveAllChilds();
+  writeCities();
+  // TODO: Find a better scrolling, exspecialy for the city names
   // TODO: Don't need full redraw any time
   viewPos.y = pos;
-
 }
 
 void GameMapView::redrawMap(int x, int y, int w, int h) {
@@ -746,4 +752,19 @@ void GameMapView::redrawMap(int x, int y, int w, int h) {
     }
   }
   view->Update(true);
+}
+
+void GameMapView::writeCities() {
+
+  std::vector<City*> cities = guiEngine->getAllCities();
+  std::vector<City*>::iterator it;
+  for (it = cities.begin(); it != cities.end(); ++it)
+  {
+    // Set the City Name Labels
+    int x = (*it)->getPosX();
+    int y = (*it)->getPosY();
+    PG_Label* l = new PG_Label(view, PG_Rect(x*30-30-viewPos.x,y*30+30-viewPos.y,90,20),(*it)->getName().c_str());
+    l->SetAlignment(PG_TA_CENTER);
+    l->Show();
+  }
 }

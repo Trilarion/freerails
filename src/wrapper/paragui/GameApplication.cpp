@@ -148,7 +148,7 @@ int GameApplication::run() {
     }
     if (result>0)
     {
-      timer = new GameTimerWidget(guiEngine);
+      timer = new GameTimerWidget(guiEngine, panel);
 
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 

@@ -41,6 +41,7 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     
     SDL_Surface* imageSurface;
     PG_Image* view;
+    PG_Widget* blind;
     MouseType mouseType;
     Station::Size stationType;
 
@@ -71,6 +72,7 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     void moveXto(unsigned long data);
     void moveYto(unsigned long data);
     
+    void writeCities();
     void redrawMap(int x, int y, int w, int h);
 
 };
