@@ -1,5 +1,6 @@
 package jfreerails.client.top;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -111,7 +112,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         //create the main and overview maps
         mainMap = new DetailMapView(world, viewLists);
-        overviewMap = new ZoomedOutMapRenderer(world);
+
+        Dimension maxSize = new Dimension(200, 200);
+        overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
 
         //init the move handlers
         MoveReceiver overviewmapMoveReceiver = new MapViewMoveReceiver(mainMap);

@@ -1,3 +1,6 @@
+Apr 7, 2004 8:18:36 PM Luke
+	o Implemented  930716 (Scale overview map) by
+	incorporating code from Railz.
 Apr 6, 2004 6:28:50 PM Luke
 	o Fix selection of track type and build mode that was broken by 
 	the gamespeed patch.
