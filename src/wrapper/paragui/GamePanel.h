@@ -21,6 +21,7 @@
 class GamePanel: public PG_ThemeWidget, public PG_EventObject {
 
   public:
+    enum WidgetID {ViewStations = 10000, ViewTrains, BuildTrack, BuildStation };
     /**  */
     GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _engine, GameMapView* _mapView);
     /**  */
@@ -29,11 +30,15 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
   private:
   
     PARAGUI_CALLBACK(pause_handler);
-    PARAGUI_CALLBACK(clickTrackButton);
-    PARAGUI_CALLBACK(clickStationButton);
+    PARAGUI_CALLBACK(clickViewButton);
+    PARAGUI_CALLBACK(clickBuildButton);
     PARAGUI_CALLBACK(clickStationSelect);
     
-    void releaseAllButtons(PG_Button* button);
+    void releaseAllViewButtons(PG_Button* button);
+    void releaseAllBuildButtons(PG_Button* button);
+
+    PG_Button* stationViewButton;
+    PG_Button* trainViewButton;
 
     PG_Button* trackButton;
     PG_Button* stationButton;
