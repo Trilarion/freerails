@@ -108,9 +108,12 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         int numberOfCargoTypes = w.size(SKEY.CARGO_TYPES);
         StationModel bristol = new StationModel(10, 10, "Bristol", numberOfCargoTypes, 0);
         boolean [] demandArray = new boolean [numberOfCargoTypes];
-        demandArray[0] = true;
-        demandArray[2] = true;
-        demandArray[3] = true;
+        
+        //Make the stations demand all cargo..
+        for(int i = 0 ; i < demandArray.length; i++){
+            demandArray[i]=true;
+        }
+        
         DemandAtStation demand = new DemandAtStation(demandArray);
         bristol = new StationModel(bristol, demand);
         w.add(

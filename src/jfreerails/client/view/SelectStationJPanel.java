@@ -95,7 +95,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         });
 
         cargoWaitingAndDemandedJPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
-        cargoWaitingAndDemandedJPanel1.setPreferredSize(new java.awt.Dimension(150, 300));
+        cargoWaitingAndDemandedJPanel1.setPreferredSize(new java.awt.Dimension(165, 300));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
