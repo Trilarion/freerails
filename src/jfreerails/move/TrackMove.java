@@ -2,7 +2,7 @@
 package jfreerails.move;
 
 
-public interface TrackMove extends Move{
+public interface TrackMove extends MapUpdateMove{
 	  
 
 }

@@ -41,7 +41,7 @@ public class WorldImpl implements World {
 	}
 
 	public void set(KEY key, int index, FreerailsSerializable element) {
-		lists[key.getKeyNumber()].get(index);
+		lists[key.getKeyNumber()].set(index, element);
 	}
 
 	public void add(KEY key, FreerailsSerializable element) {

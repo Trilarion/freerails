@@ -139,7 +139,7 @@ public class FlatTrackExplorer implements Explorer, FreerailsSerializable {
 		//loop thru the station list to check if train is at the same Point as a station
 		for (int i=0; i<w.size(KEY.STATIONS); i++) {
 			StationModel tempPoint = (StationModel)w.get(KEY.STATIONS, i);
-			if ( (this.currentPosition.getX() == tempPoint.x ) && (this.currentPosition.getY() == tempPoint.y ) ) {
+			if ( null!= tempPoint && (this.currentPosition.getX() == tempPoint.x ) && (this.currentPosition.getY() == tempPoint.y ) ) {
 				this.currentStation = i;
 				return true; //train is at this station at location tempPoint
 			}

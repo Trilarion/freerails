@@ -1,3 +1,8 @@
+16-Apr-2003 00:48:02 Luke
+	o Added NonNullElements WorldIterator which iterates over non-null elements
+	o Stations now get removed when you remove the track beneath them
+	o Station name renderer and train building and pathfinding classes
+	updated to handle null values for stations gracefully.  
 10-Apr-2003 16:50:00 Scott
 	o Added City Names 
 	o Added Random City Tile positioning.

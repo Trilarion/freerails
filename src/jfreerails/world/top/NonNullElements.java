@@ -7,7 +7,7 @@ package jfreerails.world.top;
 import jfreerails.world.common.FreerailsSerializable;
 
 /**
- * Iterates over the elements of one of the lists on the world object only
+ * Iterates over one of the lists on the world object only
  * returning non null elements.
  * 
  * @author Luke
@@ -19,9 +19,9 @@ public class NonNullElements implements WorldIterator {
 
 	private final World w;
 
-	int index = -1;
+	int index = BEFORE_FIRST;
 
-	int row = -1;
+	int row = BEFORE_FIRST;
 
 	public NonNullElements(KEY k, World world) {
 		key = k;
@@ -35,7 +35,7 @@ public class NonNullElements implements WorldIterator {
 			if (nextIndex >= w.size(key)) {
 				return false;
 			}
-		} while (null != w.get(key, nextIndex));
+		} while (null == w.get(key, nextIndex));
 		row++;
 		index = nextIndex;
 		return true;

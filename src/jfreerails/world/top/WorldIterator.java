@@ -15,6 +15,8 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 public interface WorldIterator {
 	
+	public static final int BEFORE_FIRST = -1;
+	
 	/**Moves the cursor down one row from its current position.	 	
 	 */
 	boolean next();

@@ -10,15 +10,17 @@ package jfreerails.client.renderer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.font.TextLayout;
-import java.awt.font.FontRenderContext;
-//import java.awt.geom.RoundRectangle2D;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+
 import jfreerails.client.common.Painter;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
+import jfreerails.world.top.WorldIterator;
 
 public class StationNamesRenderer implements Painter {
 
@@ -56,9 +58,10 @@ public class StationNamesRenderer implements Painter {
 		TextLayout layout;
 		
 		//draw station names onto map
-	  	for (int i=0; i<w.size(KEY.STATIONS); i++) {
-	
-		  	tempStation = (StationModel)w.get(KEY.STATIONS, i);
+		WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
+		while(wi.next()){	//loop over non null stations
+			
+			tempStation = (StationModel)wi.getElement();
 	
 		  	stationName = tempStation.getStationName();
 		  	positionX = (tempStation.getStationX() * 30) + 15;

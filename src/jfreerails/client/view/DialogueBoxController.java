@@ -19,7 +19,9 @@ import jfreerails.move.MoveStatus;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
+import jfreerails.world.top.WorldIterator;
 /**
  *
  * @author  lindsal8 
@@ -50,7 +52,6 @@ public class DialogueBoxController {
 		});
 		glassPanel.setVisible(false);
 
-
 		//Setup the various dialogue boxes.
 		selectEngine = new SelectEngineJPanel(this);
 		selectEngine.setup(w, vl, new ActionListener() {
@@ -71,18 +72,25 @@ public class DialogueBoxController {
 		selectWagons.setup(w, vl, new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				StationModel station = (StationModel) w.get(KEY.STATIONS, 0);
-				ProductionAtEngineShop before = station.getProduction();
-				int engineType = selectEngine.getEngineType();
-				int[] wagonTypes = selectWagons.getWagons();
-				ProductionAtEngineShop after = new ProductionAtEngineShop(engineType, wagonTypes);
+				WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
+				if (wi.next()) { 
 
-				Move m = new ChangeProductionAtEngineShopMove(before, after, 0);
-				MoveStatus ms = m.doMove(w);
-				if (!ms.ok) {
-					System.out.println("Couldn't change production at station: " + ms.toString());
-				} else {
-					System.out.println("Production at station changed.");
+					StationModel station  = (StationModel) wi.getElement();
+					
+					ProductionAtEngineShop before = station.getProduction();
+					int engineType = selectEngine.getEngineType();
+					int[] wagonTypes = selectWagons.getWagons();
+					ProductionAtEngineShop after =
+						new ProductionAtEngineShop(engineType, wagonTypes);
+
+					Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex());
+					MoveStatus ms = m.doMove(w);
+					if (!ms.ok) {
+						System.out.println(
+							"Couldn't change production at station: " + ms.toString());
+					} else {
+						System.out.println("Production at station changed.");
+					}
 				}
 				closeCurrentDialogue();
 			}
@@ -102,7 +110,8 @@ public class DialogueBoxController {
 	}
 
 	public void showSelectEngine() {
-		if (w.size(KEY.STATIONS) == 0) {
+		WorldIterator wi = new NonNullElements(KEY.STATIONS, w);								
+		if (!wi.next()) {
 			System.out.println("Can't build train since there are no stations");
 		} else {
 			System.out.println("showSelectEngine()");
