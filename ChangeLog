@@ -1,3 +1,8 @@
+Tue Jan 15 14:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add Message and MessageQueue classes
+o add Messaging functions to the engine, so we can later easiely Threading the engine
+o add Makefiles in src/game
+o update Makefiles and config.in to using src/game
 Mon Jan 14 15:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o Add the engine
 o clean src/main/game.cpp and add init functions.
