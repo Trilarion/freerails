@@ -1,6 +1,6 @@
 package jfreerails.world.terrain;
 
-import experimental.FreerailsSerializable;
+import jfreerails.misc.FreerailsSerializable;
 
 public interface TerrainType extends FreerailsSerializable {
     

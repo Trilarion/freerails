@@ -1,3 +1,5 @@
+08-Sep-2002 22:11:24 Luke Lindsay <lindsal49@hotmail.com>:
+	o Wrote 'Snake' class that represents a train position.
 26-Aug-2002 19:51:35 Luke Lindsay <lindsal49@hotmail.com>:
 	o Games can now be loaded and saved.	 
 	o New games can be started.
