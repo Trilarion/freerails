@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h2>AI</h2>
+<p>Disclaimer - the notes below are very incomplete. It might make sense to do 
+  something simpler for the first version of the AI.</p>
+<h4>Deciding which cities should be connected to each other</h4>
+<p>Create a table of the distances between cities. E.g.</p>
+<table width="405">
+  <tr>
+    <td>&nbsp;</td>
+    <td>City A</td>
+    <td>City B</td>
+    <td>City C</td>
+    <td>City D</td>
+  </tr>
+  <tr>
+    <td>City A</td>
+    <td>x</td>
+    <td>20km</td>
+    <td>30km</td>
+    <td>25km</td>
+  </tr>
+  <tr>
+    <td>City B</td>
+    <td>20km</td>
+    <td>x</td>
+    <td>35km</td>
+    <td>15km</td>
+  </tr>
+  <tr>
+    <td>City C</td>
+    <td>30km</td>
+    <td>35km</td>
+    <td>x</td>
+    <td>40km</td>
+  </tr>
+  <tr>
+    <td>City D</td>
+    <td>25km</td>
+    <td>15km</td>
+    <td>40km</td>
+    <td>x</td>
+  </tr>
+</table>
+<p>For every pair of cities i, j {</p>
+<blockquote> 
+  <p> For every city k where i != k and j !=k{</p>
+  <blockquote>
+    <p>Let A = the distance between i and j.</p>
+    <p>Let B = the distance between i and k.</p>
+    <p>Let C = the distance between k and j.</p>
+    <p>If (A &lt; B and A &lt; C) then remove the value at i, j from the table.</p>
+  </blockquote>
+  <p>}</p>
+</blockquote>
+<p>}</p>
+<p>We can now construct a graph from the values remaining in the table. It will 
+  have the following properties. First, every city is connected to its nearest 
+  neighbour. Second, we can get from any city to any other city. Third, <em>not 
+  too much</em> track will be wasted.</p>
+<h4>Deciding the order in which to connect cities </h4>
+<p>Lets assume the profitability of a line between 2 cities, A and B is given 
+  by the following condition.</p>
+<p>Profitability = (Cargo supplied by A and demanded by B + Cargo supplied by 
+  B and demanded by A) / Distance between A and B.</p>
+<p class="note">Implementation Note: a natural way to analyze supply and demand 
+  and cargo conversions would be using matrix algebra. E.g. supply and demand 
+  at a station could be represented by n * 1 matrices and cargo converted by an 
+  n * n matrix (where n is the number of cargo types). There is a public domain 
+  java matrix package available <a href="http|//math.nist.gov/javanumerics/jama/">here</a>.</p>
+<p>The simplest strategy for building track would be starting with most profitable 
+  connection. Note, that on the first move, we can pick any connection, but on 
+  subsequent moves, we are restricted to connections involving at least one city 
+  we have already connected to. Call this restricted set of connections S. A reasonable 
+  strategy for subsequent moves would be repeatedly picking the most profitable 
+  connection from S.</p>
+<p>A more sophisticated strategy would take into account the restriction that 
+  new track must connect to existing track when picking the first pair of cities 
+  to connect. We could approach the problem as follows. Assume we build one connection 
+  per year and the game continues until we have built all possible connections. 
+  Suppose our payoff for building a connection is the profitability of the connection 
+  times the number of years remaining. For simplicity, assume that once we have 
+  built the first connection, we revert to just picking the most profitable connection 
+  from S as before. Now, we can solve the problem of which connection to start 
+  with by comparing the payoff over the complete game for each of the possible 
+  starts. </p>
+<p>Obviously, to formally solve the problem above, we would need to consider strategies 
+  other than picking the most profitable connection from S for moves after the 
+  first one. However, unless the number of cities is relatively small this would 
+  likely take a long time to solve. What is more, we have not even considered 
+  what other players may be doing, so even if we could formally solve the problem 
+  above, we would still have a lot of work to do.</p>
+<p>&nbsp;</p>
+</body>
+</html>

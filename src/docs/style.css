@@ -20,3 +20,12 @@ th {
 }.planned {
 	color: #CC3366;
 }
+.note {
+	border: 1px solid #000000;
+	margin: 20px;
+	padding: 20px;
+	width: 700px;
+
+
+
+}
