@@ -77,7 +77,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         return new RemoveStationMove(moves);
     }
 
-    public Rectangle getUpdatedTiles() {
+    public /*=const*/ Rectangle getUpdatedTiles() {
         TrackMove tm = (TrackMove)getMove(0);
 
         return tm.getUpdatedTiles();

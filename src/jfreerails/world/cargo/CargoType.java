@@ -27,11 +27,11 @@ final public class CargoType implements FreerailsSerializable {
         return this.name.replace('_', ' ');
     }
 
-    public CargoType(int weight, String name, String category) {
-        getCategoryNumber(category); //Check for invalid category
-        this.unitWeight = weight;
-        this.category = category;
-        this.name = name;
+    public CargoType(int weight, String s, String cat) {
+        getCategoryNumber(cat); //Check for invalid category
+        unitWeight = weight;
+        category = cat;
+        name = s;
     }
 
     public String getCategory() {

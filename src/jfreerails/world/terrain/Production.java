@@ -17,9 +17,9 @@ public class Production implements FreerailsSerializable {
     /** The number of units per year (40 units = 1 car load). */
     private final int rate;
 
-    public Production(int type, int rate) {
-        this.cargoType = type;
-        this.rate = rate;
+    public Production(int type, int r) {
+        cargoType = type;
+        rate = r;
     }
 
     public int getCargoType() {

@@ -41,16 +41,15 @@ final public class EngineType implements FreerailsSerializable {
         engineTypeName = name;
         powerAtDrawbar = power;
         price = m;
-        this.maxSpeed = speed;
-        this.maintenance = new Money(0);
+        maxSpeed = speed;
+        maintenance = new Money(0);
     }
 
-    public EngineType(String name, int power, Money m, int speed,
-        Money maintenance) {
+    public EngineType(String name, int power, Money m, int speed, Money maint) {
         engineTypeName = name;
         powerAtDrawbar = power;
         price = m;
-        this.maxSpeed = speed;
-        this.maintenance = maintenance;
+        maxSpeed = speed;
+        maintenance = maint;
     }
 }

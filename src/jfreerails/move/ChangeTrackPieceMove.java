@@ -27,7 +27,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private final TrackPiece trackPieceAfter;
     private final Point location;
 
-    public Point getLocation() {
+    public /*=const*/ Point getLocation() {
         return location;
     }
 
@@ -179,8 +179,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         }
     }
 
-    private boolean noDiagonalTrackConflicts(Point point, int trackTemplate,
-        World w) {
+    private boolean noDiagonalTrackConflicts( /*=const*/
+        Point point, int trackTemplate, World w) {
         /*This method is needs replacing.  It only deals with flat track pieces, and
          *is rather hard to make sense of.  LL
          */
@@ -222,7 +222,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         }
     }
 
-    public Rectangle getUpdatedTiles() {
+    public /*=const*/ Rectangle getUpdatedTiles() {
         //If we are building or removing a station, 
         //we need to repaint/remove the station radius 
         //that appears on the map.

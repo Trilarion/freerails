@@ -7,8 +7,8 @@
 package jfreerails.client.view;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -97,7 +97,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         for(int i = 0 ; i < train.getNumberOfWagons() ; i++ ){
             //this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
         }
-        CargoBundle cb = (CargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleNumber(), principal);
+        ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleNumber(), principal);
         String s="Train #"+trainNumber+": ";
         int numberOfTypesInBundle = 0;
         for (int i = 0 ; i < w.size(SKEY.CARGO_TYPES) ; i ++){

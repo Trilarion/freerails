@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.util.GameModel;
+import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
@@ -88,7 +89,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel {
         }
     }
 
-    public void setGameModel(FreerailsSerializable world) {
+    public void setGameModel(FreerailsMutableSerializable world) {
         this.world = (World)world;
     }
 

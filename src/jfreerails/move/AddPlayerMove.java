@@ -15,7 +15,7 @@ public class AddPlayerMove implements Move, ServerMove {
     private final Player player2add;
 
     private AddPlayerMove(Player p) {
-        this.player2add = p;
+        player2add = p;
     }
 
     public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {

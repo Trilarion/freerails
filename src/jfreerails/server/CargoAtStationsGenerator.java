@@ -10,7 +10,8 @@ import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.cargo.MutableCargoBundle;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -45,10 +46,10 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
             while (nonNullStations.next()) {
                 StationModel station = (StationModel)nonNullStations.getElement();
                 SupplyAtStation supply = station.getSupply();
-                CargoBundle cargoBundle = (CargoBundle)w.get(KEY.CARGO_BUNDLES,
+                ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
                         station.getCargoBundleNumber(), principal);
-                CargoBundle before = cargoBundle.getCopy();
-                CargoBundle after = cargoBundle.getCopy();
+                MutableCargoBundle before = cargoBundle.toCargoBundleImpl();
+                MutableCargoBundle after = cargoBundle.toCargoBundleImpl();
                 int stationNumber = nonNullStations.getIndex();
 
                 /* Get the iterator from a copy to avoid a
@@ -56,7 +57,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                  * gets set to zero and the CargoBatch removed from
                  * the cargo bundle. LL
                  */
-                Iterator it = after.getCopy().cargoBatchIterator();
+                Iterator it = after.toImmutableCargoBundle().cargoBatchIterator();
 
                 while (it.hasNext()) {
                     CargoBatch cb = (CargoBatch)it.next();
@@ -87,7 +88,8 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                     }
                 }
 
-                Move m = new ChangeCargoBundleMove(before, after,
+                Move m = new ChangeCargoBundleMove(before.toImmutableCargoBundle(),
+                        after.toImmutableCargoBundle(),
                         station.getCargoBundleNumber(), principal);
                 moveReceiver.processMove(m);
             }

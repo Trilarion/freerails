@@ -7,9 +7,9 @@ package jfreerails.server;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.CargoBundle;
-import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
@@ -34,12 +34,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
             0, 2);
     private final CargoBatch cargoType0FromStation0 = new CargoBatch(0, 0, 0,
             0, 0);
-    private CargoBundle emptyCargoBundle;
 
     protected void setUp() throws Exception {
-        //Set up an empty cargobundle
-        emptyCargoBundle = new CargoBundleImpl();
-
         //Set up the world object with three cargo types, one station, and one train.
         w = new WorldImpl();
 
@@ -54,7 +50,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int x = 10;
         int y = 10;
         int stationCargoBundleId = w.add(KEY.CARGO_BUNDLES,
-                new CargoBundleImpl(), MapFixtureFactory.TEST_PRINCIPAL);
+                ImmutableCargoBundle.EMPTY_BUNDLE,
+                MapFixtureFactory.TEST_PRINCIPAL);
         String stationName = "Station 1";
         StationModel station = new StationModel(x, y, stationName,
                 w.size(SKEY.CARGO_TYPES), stationCargoBundleId);
@@ -62,7 +59,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         //Set up train
         int trainCargoBundleId = w.add(KEY.CARGO_BUNDLES,
-                new CargoBundleImpl(), MapFixtureFactory.TEST_PRINCIPAL);
+                ImmutableCargoBundle.EMPTY_BUNDLE,
+                MapFixtureFactory.TEST_PRINCIPAL);
 
         //3 wagons to carry cargo type 0.
         int[] wagons = new int[] {0, 0, 0};
@@ -73,48 +71,50 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     /** Tests picking up cargo from a station. */
     public void testPickUpCargo1() {
         //Set up the variables for this test.
-        CargoBundle cargoBundleWith2CarloadsOfCargo0 = new CargoBundleImpl();
+        MutableCargoBundle cargoBundleWith2CarloadsOfCargo0 = new MutableCargoBundle();
 
         //cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 2);
         cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 80);
 
         assertEquals("There shouldn't be any cargo at the station yet",
-            emptyCargoBundle, getCargoAtStation());
+            ImmutableCargoBundle.EMPTY_BUNDLE, getCargoAtStation());
         assertEquals("There shouldn't be any cargo on the train yet",
-            emptyCargoBundle, getCargoOnTrain());
+            ImmutableCargoBundle.EMPTY_BUNDLE, getCargoOnTrain());
 
         //Now add 2 carloads of cargo type 0 to the station.
         //getCargoAtStation().setAmount(cargoType0FromStation2, 2);
-        getCargoAtStation().setAmount(cargoType0FromStation2, 80);
+        setCargoAtStation(cargoType0FromStation2, 80);
 
         //The train should pick up this cargo, since it has three wagons capable of carrying cargo type 0.
         stopAtStation();
 
         //The train should now have the two car loads of cargo and there should be no cargo at the station.
         assertEquals("There should no longer be any cargo at the station",
-            emptyCargoBundle, getCargoAtStation());
+            ImmutableCargoBundle.EMPTY_BUNDLE, getCargoAtStation());
         assertEquals("The train should now have the two car loads of cargo",
-            cargoBundleWith2CarloadsOfCargo0, getCargoOnTrain());
+            cargoBundleWith2CarloadsOfCargo0.toImmutableCargoBundle(),
+            getCargoOnTrain());
     }
 
     /** Tests picking up cargo when the there is too much cargo at the station for the train to carry.*/
     public void testPickUpCargo2() {
-        getCargoAtStation().setAmount(this.cargoType0FromStation2, 200);
+        setCargoAtStation(this.cargoType0FromStation2, 200);
 
         stopAtStation();
 
         //The train has 3 wagons, each wagon carries 40 units of cargo, so
         //the train should pickup 120 units of cargo.
-        CargoBundle expectedOnTrain = new CargoBundleImpl();
+        MutableCargoBundle expectedOnTrain = new MutableCargoBundle();
         expectedOnTrain.setAmount(this.cargoType0FromStation2, 120);
 
         //The remaining 80 units of cargo should be left at the station.
-        CargoBundle expectedAtStation = new CargoBundleImpl();
+        MutableCargoBundle expectedAtStation = new MutableCargoBundle();
         expectedAtStation.setAmount(this.cargoType0FromStation2, 80);
 
         //Test the expected values against the actuals..
-        assertEquals(expectedOnTrain, getCargoOnTrain());
-        assertEquals(expectedAtStation, getCargoAtStation());
+        assertEquals(expectedOnTrain.toImmutableCargoBundle(), getCargoOnTrain());
+        assertEquals(expectedAtStation.toImmutableCargoBundle(),
+            getCargoAtStation());
     }
 
     /** Tests that a train takes into account how much cargo it
@@ -127,10 +127,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         addWagons(wagons);
 
         //Set cargo on train.
-        getCargoOnTrain().setAmount(this.cargoType0FromStation2, 30);
+        setCargoOnTrain(this.cargoType0FromStation2, 30);
 
         //Set cargo at station.
-        getCargoAtStation().setAmount(this.cargoType0FromStation0, 110);
+        setCargoAtStation(this.cargoType0FromStation0, 110);
 
         //Check that station does not demand cargo type 0.
         StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
@@ -143,15 +143,16 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         /* The train has 2 wagons for cargo type 0 but had 30 units of
          * cargo type 0 before stopping so it can only pick up 50 units.
          */
-        CargoBundle expectedAtStation = new CargoBundleImpl();
+        MutableCargoBundle expectedAtStation = new MutableCargoBundle();
         expectedAtStation.setAmount(cargoType0FromStation0, 60);
 
-        CargoBundle expectedOnTrain = new CargoBundleImpl();
+        MutableCargoBundle expectedOnTrain = new MutableCargoBundle();
         expectedOnTrain.setAmount(this.cargoType0FromStation2, 30);
         expectedOnTrain.setAmount(this.cargoType0FromStation0, 50);
 
-        assertEquals(expectedAtStation, getCargoAtStation());
-        assertEquals(expectedOnTrain, getCargoOnTrain());
+        assertEquals(expectedAtStation.toImmutableCargoBundle(),
+            getCargoAtStation());
+        assertEquals(expectedOnTrain.toImmutableCargoBundle(), getCargoOnTrain());
     }
 
     /** Tests that a train drops of cargo that a station demands and does not drop off cargo that is not
@@ -178,8 +179,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         addWagons(wagons);
 
         //Add quantities of cargo type 0 and 2 to the train.
-        getCargoOnTrain().setAmount(this.cargoType0FromStation2, 50);
-        getCargoOnTrain().setAmount(this.cargoType1FromStation2, 40);
+        setCargoOnTrain(this.cargoType0FromStation2, 50);
+        setCargoOnTrain(this.cargoType1FromStation2, 40);
 
         stopAtStation();
 
@@ -187,11 +188,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
          * station demands it but not the 40 units of cargo type 1 which is does not
          * demand.
          */
-        CargoBundle expectedOnTrain = new CargoBundleImpl();
+        MutableCargoBundle expectedOnTrain = new MutableCargoBundle();
         expectedOnTrain.setAmount(this.cargoType1FromStation2, 40);
 
-        assertEquals(expectedOnTrain, getCargoOnTrain());
-        assertEquals(emptyCargoBundle, getCargoAtStation());
+        assertEquals(expectedOnTrain.toImmutableCargoBundle(), getCargoOnTrain());
+        assertEquals(ImmutableCargoBundle.EMPTY_BUNDLE, getCargoAtStation());
 
         //Now remove the wagons from the train.
         removeAllWagonsFromTrain();
@@ -202,28 +203,29 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
          * ths station does not demand it, it is added to the cargo waiting at
          * the station.
          */
-        CargoBundle expectedAtStation = new CargoBundleImpl();
+        MutableCargoBundle expectedAtStation = new MutableCargoBundle();
         expectedAtStation.setAmount(this.cargoType1FromStation2, 40);
 
-        assertEquals(expectedAtStation, getCargoAtStation());
-        assertEquals(emptyCargoBundle, getCargoOnTrain());
+        assertEquals(expectedAtStation.toImmutableCargoBundle(),
+            getCargoAtStation());
+        assertEquals(ImmutableCargoBundle.EMPTY_BUNDLE, getCargoOnTrain());
     }
 
     /** Tests that a train does not drop cargo off at its station of origin unless it has to.*/
     public void testDontDropOffCargo() {
         //Set station to
-        getCargoOnTrain().setAmount(cargoType0FromStation0, 50);
-        getCargoOnTrain().setAmount(cargoType0FromStation2, 50);
+        setCargoOnTrain(cargoType0FromStation0, 50);
+        setCargoOnTrain(cargoType0FromStation2, 50);
 
         stopAtStation();
 
         //The train shouldn't have dropped anything off.
-        CargoBundle expectedOnTrain = new CargoBundleImpl();
+        MutableCargoBundle expectedOnTrain = new MutableCargoBundle();
         expectedOnTrain.setAmount(cargoType0FromStation0, 50);
         expectedOnTrain.setAmount(cargoType0FromStation2, 50);
 
-        assertEquals(expectedOnTrain, getCargoOnTrain());
-        assertEquals(emptyCargoBundle, getCargoAtStation());
+        assertEquals(expectedOnTrain.toImmutableCargoBundle(), getCargoOnTrain());
+        assertEquals(ImmutableCargoBundle.EMPTY_BUNDLE, getCargoAtStation());
 
         //Now remove the wagons from the train.
         removeAllWagonsFromTrain();
@@ -233,12 +235,13 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         /*The train now has no wagons, so must drop off the cargo whether the
         station demands it or not.  Since the station does not demand it, the
         cargo should get added to the cargo waiting at the station. */
-        CargoBundle expectedAtStaton = new CargoBundleImpl();
+        MutableCargoBundle expectedAtStaton = new MutableCargoBundle();
         expectedAtStaton.setAmount(cargoType0FromStation0, 50);
         expectedAtStaton.setAmount(cargoType0FromStation2, 50);
 
-        assertEquals(expectedAtStaton, getCargoAtStation());
-        assertEquals(emptyCargoBundle, getCargoOnTrain());
+        assertEquals(expectedAtStaton.toImmutableCargoBundle(),
+            getCargoAtStation());
+        assertEquals(ImmutableCargoBundle.EMPTY_BUNDLE, getCargoOnTrain());
     }
 
     /**  Tests that a train drops off any cargo before picking
@@ -246,8 +249,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      */
     public void testPickUpAndDropOffSameCargoType() {
         //Set cargo at station and on train.
-        getCargoOnTrain().setAmount(this.cargoType0FromStation2, 120);
-        getCargoAtStation().setAmount(this.cargoType0FromStation0, 200);
+        setCargoOnTrain(this.cargoType0FromStation2, 120);
+        setCargoAtStation(this.cargoType0FromStation0, 200);
 
         //Set station to demand cargo 0.
         StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
@@ -261,14 +264,15 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         assertTrue(station.getDemand().isCargoDemanded(0));
         stopAtStation();
 
-        CargoBundle expectedOnTrain = new CargoBundleImpl();
+        MutableCargoBundle expectedOnTrain = new MutableCargoBundle();
         expectedOnTrain.setAmount(this.cargoType0FromStation0, 120);
 
-        CargoBundle expectedAtStation = new CargoBundleImpl();
+        MutableCargoBundle expectedAtStation = new MutableCargoBundle();
         expectedAtStation.setAmount(this.cargoType0FromStation0, 80);
 
-        assertEquals(expectedAtStation, getCargoAtStation());
-        assertEquals(expectedOnTrain, getCargoOnTrain());
+        assertEquals(expectedAtStation.toImmutableCargoBundle(),
+            getCargoAtStation());
+        assertEquals(expectedOnTrain.toImmutableCargoBundle(), getCargoOnTrain());
     }
 
     private void removeAllWagonsFromTrain() {
@@ -287,27 +291,45 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 0, w, MapFixtureFactory.TEST_PRINCIPAL, false);
         Move m = moveGenerator.generateMove();
         MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
-        assertTrue(ms.isOk());
+        assertEquals(MoveStatus.MOVE_OK, ms);
     }
 
     /** Retrieves the cargo bundle that is waiting at the station from the world object.*/
-    private CargoBundle getCargoAtStation() {
+    private ImmutableCargoBundle getCargoAtStation() {
         StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        CargoBundle cargoAtStation = (CargoBundle)w.get(KEY.CARGO_BUNDLES,
+        ImmutableCargoBundle cargoAtStation = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
                 station.getCargoBundleNumber(), MapFixtureFactory.TEST_PRINCIPAL);
 
         return cargoAtStation;
     }
 
     /** Retrieves the cargo bundle that the train is carrying from the world object. */
-    private CargoBundle getCargoOnTrain() {
+    private ImmutableCargoBundle getCargoOnTrain() {
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        CargoBundle cargoOnTrain = (CargoBundle)w.get(KEY.CARGO_BUNDLES,
+        ImmutableCargoBundle cargoOnTrain = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
                 train.getCargoBundleNumber(), MapFixtureFactory.TEST_PRINCIPAL);
 
         return cargoOnTrain;
+    }
+
+    private void setCargoAtStation(CargoBatch cb, int amount) {
+        StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
+                MapFixtureFactory.TEST_PRINCIPAL);
+        MutableCargoBundle bundle = getCargoAtStation().toCargoBundleImpl();
+        bundle.setAmount(cb, amount);
+        w.set(KEY.CARGO_BUNDLES, station.getCargoBundleNumber(),
+            bundle.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
+    }
+
+    private void setCargoOnTrain(CargoBatch cb, int amount) {
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
+                MapFixtureFactory.TEST_PRINCIPAL);
+        MutableCargoBundle bundle = getCargoOnTrain().toCargoBundleImpl();
+        bundle.setAmount(cb, amount);
+        w.set(KEY.CARGO_BUNDLES, train.getCargoBundleNumber(),
+            bundle.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
     }
 
     public static void main(java.lang.String[] args) {

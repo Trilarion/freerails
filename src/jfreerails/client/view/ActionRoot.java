@@ -28,7 +28,7 @@ public class ActionRoot {
     private StationBuildModel stationBuildModel;
     private DialogueBoxController dialogueBoxController = null;
     private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
-    private final ServerControlModel serverControls = new ServerControlModel(null);
+    private final ServerControlModel serverControls = new ServerControlModel(null, null);
 
     private class BuildTrainDialogAction extends AbstractAction {
         public BuildTrainDialogAction() {
@@ -48,6 +48,7 @@ public class ActionRoot {
      *  Call this method when a new game is started or a game is loaded.
      */
     public void setup(ModelRoot modelRoot, ViewLists vl) {
+    	serverControls.setModelRoot(modelRoot);
         if (!modelRoot.hasBeenSetup)
             throw new IllegalStateException();
 

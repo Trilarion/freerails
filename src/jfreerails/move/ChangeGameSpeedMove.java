@@ -14,16 +14,18 @@ import jfreerails.world.top.World;
  *
  */
 public class ChangeGameSpeedMove implements Move {
-    private GameSpeed oldSpeed = null;
-    private GameSpeed newSpeed = null;
+    private final GameSpeed oldSpeed;
+    private final GameSpeed newSpeed;
 
     public static ChangeGameSpeedMove getMove(ReadOnlyWorld w,
         GameSpeed newGameSpeed) {
-        ChangeGameSpeedMove changeGameSpeedMove = new ChangeGameSpeedMove();
-        changeGameSpeedMove.oldSpeed = (GameSpeed)w.get(ITEM.GAME_SPEED);
-        changeGameSpeedMove.newSpeed = newGameSpeed;
+        return new ChangeGameSpeedMove((GameSpeed)w.get(ITEM.GAME_SPEED),
+            newGameSpeed);
+    }
 
-        return changeGameSpeedMove;
+    private ChangeGameSpeedMove(GameSpeed before, GameSpeed after) {
+        oldSpeed = before;
+        newSpeed = after;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

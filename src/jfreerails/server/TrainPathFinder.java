@@ -11,7 +11,7 @@ import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.util.FreerailsIntIterator;
-import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.PositionOnTrack;
@@ -329,7 +329,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     private boolean isTrainFull() {
         TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
                 principal);
-        CargoBundle bundleOnTrain = (CargoBundle)world.get(KEY.CARGO_BUNDLES,
+        ImmutableCargoBundle bundleOnTrain = (ImmutableCargoBundle)world.get(KEY.CARGO_BUNDLES,
                 train.getCargoBundleNumber(), principal);
 
         //This array will store the amount of space available on the train for each cargo type.

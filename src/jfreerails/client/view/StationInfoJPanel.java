@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -196,8 +196,8 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
             FreerailsTile tile = w.getTile(station.x, station.y);
             String stationTypeName = tile.getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleNumber();
-            CargoBundle cargoWaiting =
-            (CargoBundle) w.get(
+            ImmutableCargoBundle cargoWaiting =
+            (ImmutableCargoBundle) w.get(
             KEY.CARGO_BUNDLES,
             station.getCargoBundleNumber(), modelRoot.getPrincipal());
             String title =

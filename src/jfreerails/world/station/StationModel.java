@@ -93,7 +93,8 @@ public class StationModel implements FreerailsSerializable {
         return (ProductionAtEngineShop[])production.clone();
     }
 
-    public StationModel(StationModel s, ProductionAtEngineShop[] production) {
+    public StationModel(StationModel s, /*=const*/
+        ProductionAtEngineShop[] production) {
         this.production = production;
         this.demand = s.demand;
         this.cargoBundleNumber = s.cargoBundleNumber;

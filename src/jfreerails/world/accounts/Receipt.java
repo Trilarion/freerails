@@ -14,38 +14,38 @@ import jfreerails.world.common.Money;
  *
  */
 public class Receipt implements Transaction {
-    private final Money amount;
-    private final int category;
+    private final Money m_amount;
+    private final int m_category;
 
     public Receipt(Money m, int category) {
-        this.amount = m;
-        this.category = category;
+        m_amount = m;
+        m_category = category;
     }
 
     public int hashCode() {
         int result;
-        result = amount.hashCode();
-        result = 29 * result + category;
+        result = m_amount.hashCode();
+        result = 29 * result + m_category;
 
         return result;
     }
 
     public Money getValue() {
-        return amount;
+        return m_amount;
     }
 
     public boolean equals(Object o) {
         if (o instanceof Receipt) {
             Receipt test = (Receipt)o;
 
-            return test.amount.equals(this.amount) &&
-            category == test.category;
+            return test.m_amount.equals(m_amount) &&
+            m_category == test.m_category;
         } else {
             return false;
         }
     }
 
     public int getCategory() {
-        return category;
+        return m_category;
     }
 }

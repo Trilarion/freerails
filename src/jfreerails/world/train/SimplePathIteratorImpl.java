@@ -10,13 +10,15 @@ import jfreerails.world.common.IntLine;
  * @author Luke
  */
 public class SimplePathIteratorImpl implements FreerailsPathIterator {
-    private final int[] x;
-    private final int[] y;
+    private final /*=const */ int[] x;
+    private final /*=const */ int[] y;
     private int position = 0;
 
-    public SimplePathIteratorImpl(int[] xpoints, int[] ypoints) {
-        x = (int[])xpoints.clone();
-        y = (int[])ypoints.clone(); //defensive copy.
+    public SimplePathIteratorImpl( /*=const */
+        int[] xpoints, /*=const */
+        int[] ypoints) {
+        x = xpoints;
+        y = ypoints; //defensive copy.
 
         if (x.length != y.length) {
             throw new IllegalArgumentException(

@@ -12,7 +12,6 @@ import jfreerails.world.common.IntLine;
  */
 public class PathWalkerImpl implements PathWalker {
     private final FreerailsPathIterator it;
-    private final Thread t;
 
     /**
      * current segment of the path we are on.
@@ -26,7 +25,6 @@ public class PathWalkerImpl implements PathWalker {
 
     public PathWalkerImpl(FreerailsPathIterator i) {
         it = i;
-        t = Thread.currentThread();
     }
 
     /**

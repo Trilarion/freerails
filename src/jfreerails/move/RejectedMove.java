@@ -11,7 +11,7 @@ import jfreerails.world.top.World;
  * @author rob
  */
 public class RejectedMove implements Move {
-    private final Move attemptedMove;
+    private final Move m_attemptedMove;
     private final MoveStatus moveStatus;
 
     /**
@@ -19,7 +19,7 @@ public class RejectedMove implements Move {
      * @param result the result of attempting to process the move
      */
     public RejectedMove(Move attemptedMove, MoveStatus result) {
-        this.attemptedMove = attemptedMove;
+        m_attemptedMove = attemptedMove;
         moveStatus = result;
     }
 
@@ -50,6 +50,6 @@ public class RejectedMove implements Move {
      * @return the move that was attempted by the server
      */
     public Move getAttemptedMove() {
-        return attemptedMove;
+        return m_attemptedMove;
     }
 }

@@ -20,9 +20,9 @@ public class Consumption implements FreerailsSerializable {
      */
     private final int prerequisite;
 
-    public Consumption(int cargoType, int prerequisite) {
-        this.cargoType = cargoType;
-        this.prerequisite = prerequisite; //default value.
+    public Consumption(int ct, int pq) {
+        cargoType = ct;
+        prerequisite = pq; //default value.
     }
 
     public int getCargoType() {

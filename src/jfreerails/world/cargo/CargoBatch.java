@@ -15,12 +15,12 @@ public class CargoBatch implements FreerailsSerializable {
     private final int stationOfOrigin;
     private final long timeCreated;
 
-    public CargoBatch(int type, int x, int y, long time, int stationOfOrigin) {
+    public CargoBatch(int type, int x, int y, long time, int origin) {
         cargoType = type;
         sourceX = x;
         sourceY = y;
         timeCreated = time;
-        this.stationOfOrigin = stationOfOrigin;
+        stationOfOrigin = origin;
     }
 
     public int getStationOfOrigin() {

@@ -18,7 +18,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author  lindsal
  */
 public final class LegalTrackPlacement implements FreerailsSerializable {
-    private final HashSet terrainTypes = new HashSet();
+    /** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
+    private final /*=mutable*/ HashSet terrainTypes = new HashSet();
     private final PlacementRule placementRule;
 
     public int hashCode() {
@@ -68,7 +69,7 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
             LegalTrackPlacement test = (LegalTrackPlacement)o;
 
             if (this.placementRule.equals(test.getPlacementRule()) &&
-                    this.getTerrainTypes().equals(test.getTerrainTypes())) {
+                    this.terrainTypes.equals(test.terrainTypes)) {
                 return true;
             } else {
                 return false;
@@ -80,9 +81,5 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
 
     public PlacementRule getPlacementRule() {
         return placementRule;
-    }
-
-    public HashSet getTerrainTypes() {
-        return terrainTypes;
     }
 }

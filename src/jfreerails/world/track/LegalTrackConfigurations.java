@@ -26,7 +26,8 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         return result;
     }
 
-    private final HashSet legalTrackConfigurationsHashSet = new HashSet();
+    /** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
+    private final /*=mutable*/ HashSet legalTrackConfigurationsHashSet = new HashSet();
 
     public LegalTrackConfigurations(int max,
         ArrayList legalTrackTemplatesArrayList) {
@@ -59,7 +60,8 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer.getRotations(trackTemplate);
 
         for (int k = 0; k < rotationsOfTrackTemplate.length; k++) {
-            TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(rotationsOfTrackTemplate[k]);
+            int i = rotationsOfTrackTemplate[k];
+            Object trackConfiguration = TrackConfiguration.getFlatInstance(i);
 
             if (!legalTrackConfigurationsHashSet.contains(trackConfiguration)) {
                 legalTrackConfigurationsHashSet.add(trackConfiguration);
@@ -82,7 +84,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 
             if (this.maximumConsecutivePieces == test.getMaximumConsecutivePieces() &&
                     this.legalTrackConfigurationsHashSet.equals(
-                        test.getLegalTrackConfigurationsHashSet())) {
+                        test.legalTrackConfigurationsHashSet)) {
                 return true;
             } else {
                 return false;
@@ -90,9 +92,5 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         } else {
             return false;
         }
-    }
-
-    private HashSet getLegalTrackConfigurationsHashSet() {
-        return legalTrackConfigurationsHashSet;
     }
 }

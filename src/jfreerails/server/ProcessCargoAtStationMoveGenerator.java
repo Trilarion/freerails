@@ -9,7 +9,7 @@ import java.util.Iterator;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -29,10 +29,10 @@ public class ProcessCargoAtStationMoveGenerator {
     private final static int MAGIC_NUMBER = 75;
 
     public static ArrayList processCargo(ReadOnlyWorld w,
-        CargoBundle cargoBundle, int stationID, FreerailsPrincipal p) {
+        MutableCargoBundle bundle, int stationID, FreerailsPrincipal p) {
         StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
                 p);
-        Iterator batches = cargoBundle.cargoBatchIterator();
+        Iterator batches = bundle.cargoBatchIterator();
 
         ArrayList moves = new ArrayList();
 
@@ -43,7 +43,7 @@ public class ProcessCargoAtStationMoveGenerator {
                 (batch.getSourceY() - thisStation.y) * (batch.getSourceY() -
                 thisStation.y);
             double dist = Math.sqrt(distanceSquared);
-            int quantity = cargoBundle.getAmount(batch);
+            int quantity = bundle.getAmount(batch);
 
             double amount = quantity * Math.log(dist) * MAGIC_NUMBER;
             Money money = new Money((long)amount);

@@ -1,6 +1,7 @@
 package jfreerails.controller;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -10,7 +11,6 @@ import java.util.logging.Logger;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.Move;
 import jfreerails.move.TimeTickMove;
-import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.top.World;
 
 
@@ -184,7 +184,7 @@ public class InetConnection implements ConnectionToServer {
         logger.fine("Connection to remote peer closed");
     }
 
-    void send(FreerailsSerializable s) {
+    void send(Serializable s) {
         if (sender != null) {
             try {
                 sender.send(s);

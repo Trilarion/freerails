@@ -6,7 +6,6 @@
 package jfreerails.world.train;
 
 import java.util.Vector;
-import jfreerails.world.common.FreerailsSerializable;
 
 
 /** This class represents a train's schedule.  That is, which stations that the
@@ -14,7 +13,7 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  * @author  lindsal
  */
-public class MutableSchedule implements FreerailsSerializable, Schedule {
+public class MutableSchedule implements Schedule {
     /**
      * Vector of TrainOrdersModel.
      */
@@ -153,7 +152,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
     }
 
     /** Returns the wagons to add at the next scheduled stop. */
-    public int[] getWagonsToAdd() {
+    public /*=const*/ int[] getWagonsToAdd() {
         return ((TrainOrdersModel)orders.get(nextScheduledOrder)).getConsist();
     }
 
@@ -178,7 +177,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
         }
     }
 
-    public boolean hasPriorityOrders() {
+    public /*=const*/ boolean hasPriorityOrders() {
         return this.hasPriorityOrders;
     }
 

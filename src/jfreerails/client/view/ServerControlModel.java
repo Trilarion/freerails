@@ -9,8 +9,11 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import jfreerails.client.common.ActionAdapter;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.controller.ServerCommand;
 import jfreerails.controller.ServerControlInterface;
+import jfreerails.move.ChangeGameSpeedMove;
+import jfreerails.world.common.GameSpeed;
 
 
 /**
@@ -19,7 +22,11 @@ import jfreerails.controller.ServerControlInterface;
  */
 public class ServerControlModel {
     private ServerControlInterface serverInterface;
+    private ModelRoot modelRoot;
 
+	public void setModelRoot(ModelRoot modelRoot) {
+		this.modelRoot = modelRoot;
+	}
     private class NewGameAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
             if (serverInterface != null) {
@@ -79,15 +86,15 @@ public class ServerControlModel {
         final int speed;
 
         public void actionPerformed(ActionEvent e) {
-            if (serverInterface != null) {
+        	 int speed2set = speed;
                 if (speed == 0) { // pausing/unpausing
 
-                    int newSpeed = -1 * serverInterface.getTargetTicksPerSecond();
-                    serverInterface.setTargetTicksPerSecond(newSpeed);
-                } else {
-                    serverInterface.setTargetTicksPerSecond(speed);
-                }
-            }
+                    speed2set = -1 * serverInterface.getTargetTicksPerSecond();
+
+                } 
+                modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(),
+                        new GameSpeed(speed2set)));
+            
         }
 
         public SetTargetTicksPerSecondAction(String name, int speed) {
@@ -138,7 +145,7 @@ public class ServerControlModel {
         Enumeration e = targetTicksPerSecondActions.getActions();
         targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
 
-        while (e.hasMoreElements()) {
+        while (e.hasMoreElements()) {        	
             ((Action)e.nextElement()).setEnabled(enabled);
         }
 
@@ -161,8 +168,9 @@ public class ServerControlModel {
         //        serverInterface.setTargetTicksPerSecond(((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed());
     }
 
-    public ServerControlModel(ServerControlInterface i) {
+    public ServerControlModel(ServerControlInterface i, ModelRoot mr) {
         setServerControlInterface(i);
+        this.modelRoot = mr;
     }
 
     /**

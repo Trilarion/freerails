@@ -14,8 +14,8 @@ import javax.swing.table.TableModel;
 
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -146,8 +146,8 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     public void display(int newStationID){
         StationModel station = (StationModel)world.get(KEY.STATIONS, newStationID, principal);
         this.stationName.setText(station.getStationName());
-        final CargoBundle cargoWaiting =
-        (CargoBundle) world.get(
+        final ImmutableCargoBundle cargoWaiting =
+        (ImmutableCargoBundle) world.get(
         KEY.CARGO_BUNDLES,
         station.getCargoBundleNumber(), principal);
         

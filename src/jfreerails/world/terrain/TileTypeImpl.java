@@ -8,6 +8,7 @@ package jfreerails.world.terrain;
 
 /**
 * Represents a type of terrain.
+* Note, this class has been annotated for use with ConstJava.
 *
 *  @author     Luke Lindsay
 *     16 August 2001
@@ -90,20 +91,20 @@ final public class TileTypeImpl implements TerrainType {
         return rightOfWay;
     }
 
-    public Consumption[] getConsumption() {
+    public /*=const*/ Consumption[] getConsumption() {
         return consumption;
     }
 
-    public Conversion[] getConversion() {
+    public /*=const*/ Conversion[] getConversion() {
         return conversion;
     }
 
-    public Production[] getProduction() {
+    public /*=const*/ Production[] getProduction() {
         return production;
     }
 
     /** Returns the name, replacing any underscores with spaces. */
     public String getDisplayName() {
-        return this.terrainType.replace('_', ' ');
+        return terrainType.replace('_', ' ');
     }
 }

@@ -17,19 +17,23 @@ import jfreerails.world.common.OneTileMoveVector;
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
-    private static final ArrayList flatTrackConfigurations = new ArrayList(512);
+    private static final ArrayList flatTrackConfigurations = setupConfigurations();
 
-    static {
+    private static ArrayList setupConfigurations() {
+        ArrayList configurations = new ArrayList(512);
+
         for (int i = 0; i < 512; i++) {
-            flatTrackConfigurations.add(i, new TrackConfiguration(i));
+            configurations.add(i, new TrackConfiguration(i));
         }
+
+        return configurations;
     }
 
-    private final int configuration;
+    private final int m_configuration;
     private final int length;
 
-    private TrackConfiguration(int template) {
-        configuration = template;
+    private TrackConfiguration(int configuration) {
+        m_configuration = configuration;
 
         //Calculate length.
         int tempLength = 0;
@@ -45,11 +49,11 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     private Object readResolve() throws ObjectStreamException {
-        return TrackConfiguration.getFlatInstance(this.configuration);
+        return TrackConfiguration.getFlatInstance(this.m_configuration);
     }
 
     public int getTrackGraphicsNumber() {
-        return configuration;
+        return m_configuration;
     }
 
     public Iterator getPossibleConfigurationsIterator() {
@@ -60,8 +64,8 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return (TrackConfiguration)(flatTrackConfigurations.get(i));
     }
 
-    public static TrackConfiguration getFlatInstance(String template) {
-        int i = TrackConfiguration.stringTemplate2Int(template);
+    public static TrackConfiguration getFlatInstance(String trackTemplate) {
+        int i = TrackConfiguration.stringTemplate2Int(trackTemplate);
 
         return (TrackConfiguration)(flatTrackConfigurations.get(i));
     }
@@ -107,13 +111,13 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     public boolean contains(FlatTrackTemplate ftt) {
-        int template = ftt.getTemplate();
+        int trackTemplate = ftt.getTemplate();
 
-        return contains(template);
+        return contains(trackTemplate);
     }
 
-    public boolean contains(int template) {
-        if ((template | this.configuration) == this.configuration) {
+    public boolean contains(int trackTemplate) {
+        if ((trackTemplate | this.m_configuration) == this.m_configuration) {
             return true;
         } else {
             return false;
@@ -124,7 +128,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
      * @return an int representing this track configuration.
      */
     public int getTemplate() {
-        return configuration;
+        return m_configuration;
     }
 
     public boolean equals(Object o) {
@@ -132,7 +136,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     public int hashCode() {
-        return configuration;
+        return m_configuration;
     }
 
     public int getNewTemplateNumber() {

@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="bindist" name="jFreeRails">
+
+	<description>The aim of the FreeRails project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.</description>
+
+
+
+	<target name="init">
+		<tstamp />
+
+		<property location="src" name="src" />
+
+		<property location="build" name="build" />
+
+		<property location="dist" name="dist" />
+
+		<property location="www/javadoc" name="doc" />
+
+		<property location="temp" name="temp" />
+	</target>
+
+	<target depends="init" description="Make build directories" name="mkdirs">
+		<tstamp />
+
+		<mkdir dir="${build}" />
+
+		<mkdir dir="${dist}/lib" />
+
+		<mkdir dir="${dist}/latest" />
+
+		<mkdir dir="${doc}" />
+
+	</target>
+
+	<target depends="init" description="Copy data files" name="copydata">
+		<copy todir="${build}/jfreerails">
+			<fileset dir="${src}/jfreerails">
+				<include name="**/*.xml" />
+
+				<include name="**/*.png" />
+
+				<include name="**/*.dtd" />
+
+				<include name="**/*.gif" />
+				<include name="client/view/game_controls.html" />
+				<include name="**/*.htm" />
+				<include name="**/*.wav" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build}">
+			<fileset dir=".">
+				<include name="README" />
+
+				<include name="ChangeLog" />
+
+				<include name="logging.properties" />
+			</fileset>
+		</copy>
+
+		<replace file="${build}/README" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		<replace file="${build}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+
+	</target>
+
+	<target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
+		<javac destdir="${build}" fork="true" source="1.4" srcdir="${src}">
+			<exclude name="**/*Test.java" />
+			<exclude name="**/*TestCase.java" />
+		</javac>
+	</target>
+
+	<target depends="copydata" description="Build everything including JUnit    test-classes. Include debugging symbols" name="debugcompile">
+		<javac debug="true" destdir="${build}" fork="true" source="1.4" srcdir="${src}" />
+	</target>
+
+	<target depends="debugcompile" description="Run all junit tests" name="runtests">
+		<junit haltonfailure="yes" printsummary="yes">
+			<classpath>
+				<pathelement location="${build}" />
+
+				<pathelement path="${java.class.path}" />
+			</classpath>
+
+			<formatter type="brief" usefile="no" />
+
+			<batchtest fork="yes">
+				<fileset dir="${build}">
+					<include name="**/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target depends="compile, mkdirs" description="Generate binary distribution" name="bindist">
+		<property name="bin.dist" value="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" />
+		<jar basedir="${build}" destfile="${bin.dist}">
+			<manifest>
+				<attribute name="Main-Class" value="jfreerails.launcher.Launcher" />
+			</manifest>
+		</jar>
+		<!-- Replace current latest with the jar file we have just created. -->
+		<delete>
+			<fileset dir="${dist}/latest/" includes="jFreeRails-*-bin.jar" />
+		</delete>
+		<copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" todir="${dist}/latest" />
+		<copy file="${bin.dist}" tofile="www/signed_jfreerails.jar" />
+	</target>
+
+	<target depends="mkdirs" description="Generate source distribution" name="srcdist">
+		<jar basedir="." destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar">
+			<include name="src/**/*.java" />
+
+			<include name="src/**/*.html" />
+
+			<include name="src/**/*.form" />
+
+			<include name="build.xml" />
+
+			<include name="src/jfreerails/**/*.xml" />
+
+			<include name="src/**/*.png" />
+
+			<include name="src/**/*.wav" />
+
+			<include name="src/**/*.dtd" />
+
+			<include name="src/**/*.gif" />
+
+			<include name="README" />
+
+			<include name="TODO" />
+
+			<include name="ChangeLog" />
+		</jar>
+
+		<!-- Replace current latest with the jar file we have just created. -->
+		<delete>
+			<fileset dir="${dist}/latest/" includes="jFreeRails-*-src.jar" />
+		</delete>
+		<copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar" todir="${dist}/latest" />
+	</target>
+
+	<target depends="init" description="Clean up build and distribution" name="clean">
+		<delete dir="${build}" />
+
+		<delete dir="${dist}/latest" />
+
+		<delete dir="${doc}" />
+
+		<delete dir="${temp}" />
+
+		<!-- also delete any .class etc under the src directory -->
+		<delete>
+			<fileset dir="${src}" defaultexcludes="no">
+				<include name="**/*.class" />
+				<include name="**/.nbattrs" />
+				<include name="**/.ucd" />
+				<include name="**/*.java~" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target depends="mkdirs, compile" description="Test run based on compile" name="run">
+		<java classname="jfreerails.launcher.Launcher" fork="true">
+			<classpath>
+				<pathelement path="${build}" />
+			</classpath>
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+
+		</java>
+	</target>
+
+	<target depends="bindist" description="Test run based on bindist" name="rundist">
+		<java fork="true" jar="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" />
+	</target>
+
+	<target depends="mkdirs" name="javadoc" description="Generate javadoc">
+		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.4" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
+			<fileset defaultexcludes="yes" dir="${src}">
+				<include name="**/*.java" />
+				<exclude name="**/*Test.java" />
+			</fileset>
+		</javadoc>
+		<!-- now copy the html	-->
+		<copy todir="${doc}">
+			<fileset dir="${src}">
+				<include name="**/*.html" />
+				<include name="**/*.htm" />
+
+				<!--Don't copy these since the javadoc tool processes them -->
+				<exclude name="**/overview.html" />
+				<exclude name="**/package.html" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target depends="javadoc" description="Jar up javadoc" name="jar_doc">
+		<jar basedir="www" destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar">
+			<include name="javadoc/**/*" />
+		</jar>
+		<!-- Replace current latest with the jar file we have just created. -->
+		<delete>
+			<fileset dir="${dist}/latest/" includes="jFreeRails-*-javadoc.jar" />
+		</delete>
+		<copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar" todir="${dist}/latest" />
+	</target>
+
+	<target depends="jar_doc, bindist, srcdist" description="Create binary, source, and javadoc jars" name="all_dist">
+	</target>
+
+	<!-- Requires that NetComponents.jar is in ant/lib -->
+	<target depends="all_dist" description="Upload source, binary, and javadocs jar files to sourcforge" name="upload">
+		<ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous">
+			<fileset dir="${dist}/latest">
+				<include name="*.jar" />
+			</fileset>
+		</ftp>
+	</target>
+
+
+	<!-- You can download jalopy from: http://jalopy.sourceforge.net/  -->
+	<target depends="compile" description="formats the source code files using jalopy" name="format">
+		<taskdef classname="de.hunsicker.jalopy.plugin.ant.AntPlugin" name="jalopy" />
+		<jalopy convention="freerails_code_convention.xml" history="file" historymethod="adler32">
+			<fileset dir="${src}">
+				<include name="**/*.java" />
+				<!-- Exclude forms since formatting may break the protected code regions. -->
+				<exclude name="**/*Form.java" />
+				<exclude name="jfreerails/client/view/**" />
+				<exclude name="jfreerails/launcher/**" />
+				<exclude name="**/ProgressJPanel.java" />
+				<exclude name="**/RunFreerailsJFrame.java" />
+				<exclude name="**/StartUpOptionsJPanel.java" />
+				<exclude name="**/ClientJFrame.java" />
+				<exclude name="**/DialogueBoxTester.java" />
+
+				<!-- Exclude GenerateDependenciesXmlAndHtml since line splitting makes it less readable. -->
+				<exclude name="**/GenerateDependenciesXmlAndHtml.java" />
+			</fileset>
+		</jalopy>
+	</target>
+
+	<target name="zip_website" depends="signjar">
+		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz" tarfile="website.tar.gz" />
+	</target>
+
+	<target name="deploy_website" depends="zip_website" description="Upload webiste to sourceforge">
+		<echo message="Usage: ant -Du=me -Dp=mypassword deploy_website" />
+		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
+			<fileset dir=".">
+
+				<include name="website.tar.gz" />
+			</fileset>
+		</scp>
+	</target>
+
+	<target name="upload_screenshots">
+		<echo message="Usage: ant -Du=me -Dp=mypassword upload_screenshots" />
+		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
+			<fileset dir="www">
+<<<<<<< build.xml
+
+				<include name="screenshots/**" />
+=======
+			
+				<include name="screenshots/**"/>
+>>>>>>> 1.40
+			</fileset>
+		</scp>
+	</target>
+
+	<target name="signjar" description="Sign the jar file so it can be used with webstart">
+		<!-- Not the proper way to do it but it works -->
+		<exec executable="C:\Dev\key\sign_jfreerails.bat" />
+	</target>
+
+	<!-- Requires anstatic.jar in the working directory. -->
+
+	<target name="ConstJava" depends="init" description="ConstJava based mutablility checking.">
+		<delete dir="ConstJava" />
+
+		<mkdir dir="ConstJava" />
+
+		<copy todir="ConstJava">
+			<mapper type="glob" from="*.java" to="*.javax" />
+
+			<fileset dir="${src}">
+				<include name="jfreerails/util/*.java" />
+
+				<include name="jfreerails/world/common/*.java" />
+
+				<include name="jfreerails/world/terrain/*.java" />
+				<include name="jfreerails/world/cargo/*.java" />
+				<include name="jfreerails/world/train/*.java" />
+				<include name="jfreerails/world/train/*.java" />
+				<include name="jfreerails/world/station/*.java" />
+				<include name="jfreerails/world/track/*.java" />
+				<include name="jfreerails/world/accounts/*.java" />
+				<include name="jfreerails/world/player/*.java" />
+				<include name="jfreerails/world/top/*.java" />
+				<include name="jfreerails/move/*.java" />
+
+
+				<exclude name="**/*Test.java" />
+				<exclude name="**/*TestCase.java" />
+
+			</fileset>
+		</copy>
+
+		<!-- Comment out asserts since ConstJava doesn't seem to support them. -->
+		<replace dir="ConstJava">
+			<replacefilter token="assert " value="//assert " />
+			<replacefilter token="assert(" value="//assert(" />
+			<include name="**/*.javax" />
+		</replace>
+
+
+		<!-- Tags classes as immutable, mutable classes must be explicitly excluded.-->
+		<replace dir="ConstJava">
+			<replacefilter token=" class " value=" const class " />
+			<replacefilter token="interface" value="const interface" />
+
+			<include name="jfreerails/world/common/*" />
+			<exclude name="jfreerails/world/common/FreerailsPathIterator*" />
+
+			<exclude name="jfreerails/world/common/PositionOnTrack.javax" />
+			<exclude name="jfreerails/world/common/FreerailsMutableSerializable.javax" />
+
+			<include name="jfreerails/world/terrain/*" />
+
+			<include name="jfreerails/world/cargo/*" />
+			<exclude name="jfreerails/world/cargo/MutableCargoBundle.javax" />
+
+			<include name="jfreerails/world/train/*" />
+			<exclude name="jfreerails/world/train/Schedule.javax" />
+			<exclude name="jfreerails/world/train/MutableSchedule.javax" />
+			<exclude name="jfreerails/world/train/PathWalker*" />
+			<exclude name="jfreerails/world/train/TrainPathIterator.javax" />
+			<exclude name="jfreerails/world/train/SimplePathIteratorImpl.javax" />
+
+
+			<include name="jfreerails/world/station/*.javax" />
+			<include name="jfreerails/world/track/*.javax" />
+			<include name="jfreerails/world/accounts/*.javax" />
+			<!-- bank account is mutable! -->
+			<exclude name="jfreerails/world/accounts/BankAccount.javax" />
+
+
+			<include name="jfreerails/world/player/*.javax" />
+
+			<include name="jfreerails/world/top/*.javax" />
+
+
+			<exclude name="jfreerails/world/top/World*" />
+			<exclude name="jfreerails/world/top/NonNullElements.javax" />
+			<exclude name="jfreerails/world/top/TransactionAggregator.javax" />
+			<exclude name="jfreerails/world/top/ItemsTransactionAggregator.javax" />
+			<exclude name="jfreerails/world/top/ReadOnlyWorld.javax" />
+
+
+			<include name="jfreerails/move/*.javax" />
+			<exclude name="jfreerails/move/TrackMoveTransactionsGenerator.javax" />
+
+
+		</replace>
+		<java classname="anstatic.TypeCheck" fork="true" dir="ConstJava">
+			<arg value="jfreerails/util/*.javax" />
+			<arg value="jfreerails/world/common/*.javax" />
+			<arg value="jfreerails/world/terrain/*.javax" />
+			<arg value="jfreerails/world/cargo/*.javax" />
+			<arg value="jfreerails/world/train/*.javax" />
+			<arg value="jfreerails/world/station/*.javax" />
+			<arg value="jfreerails/world/track/*.javax" />
+			<arg value="jfreerails/world/accounts/*.javax" />
+			<arg value="jfreerails/world/player/*.javax" />
+			<arg value="jfreerails/world/top/*.javax" />
+			<arg value="jfreerails/move/*.javax" />
+
+			<classpath>
+				<pathelement location="ConstJava" />
+				<pathelement path="anstatic.jar" />
+			</classpath>
+		</java>
+		
+		<delete dir="ConstJava" />
+
+	</target>
+
+
+</project>

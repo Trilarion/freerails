@@ -4,7 +4,7 @@
  */
 package jfreerails.move;
 
-import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -29,7 +29,7 @@ public class RemoveTrainMove extends CompositeMove {
         ImmutableSchedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
                 scheduleId, p);
         int cargoBundleId = train.getCargoBundleNumber();
-        CargoBundle cargoBundle = (CargoBundle)world.get(KEY.CARGO_BUNDLES,
+        ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle)world.get(KEY.CARGO_BUNDLES,
                 cargoBundleId, p);
         Move removeTrain = new RemoveItemFromListMove(KEY.TRAINS, index, train,
                 p);

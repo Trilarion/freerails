@@ -68,19 +68,19 @@ import jfreerails.world.common.IntLine;
  *
  */
 public class TrainPositionOnMap implements FreerailsSerializable {
-    private final int[] xpoints;
-    private final int[] ypoints;
+    private final int[] m_xpoints;
+    private final int[] m_ypoints;
 
     public int hashCode() {
         int result = 0;
 
         //TODO is there are danger of overflow here?
-        for (int i = 0; i < xpoints.length; i++) {
-            result = 29 * result + xpoints[i];
+        for (int i = 0; i < m_xpoints.length; i++) {
+            result = 29 * result + m_xpoints[i];
         }
 
-        for (int i = 0; i < ypoints.length; i++) {
-            result = 29 * result + ypoints[i];
+        for (int i = 0; i < m_ypoints.length; i++) {
+            result = 29 * result + m_ypoints[i];
         }
 
         return result;
@@ -149,54 +149,56 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     public int getLength() {
-        return xpoints.length;
+        return m_xpoints.length;
     }
 
     public int getX(int position) {
-        return xpoints[position];
+        return m_xpoints[position];
     }
 
     public int getY(int position) {
-        return ypoints[position];
+        return m_ypoints[position];
     }
 
     public FreerailsPathIterator path() {
-        return new SimplePathIteratorImpl(this.xpoints, this.ypoints);
+        return new SimplePathIteratorImpl(this.m_xpoints, this.m_ypoints);
     }
 
     public FreerailsPathIterator reversePath() {
-        int length = xpoints.length;
+        int length = m_xpoints.length;
         int[] reversed_xpoints = new int[length];
         int[] reversed_ypoints = new int[length];
 
         for (int i = 0; i < length; i++) {
-            reversed_xpoints[i] = xpoints[length - i - 1];
-            reversed_ypoints[i] = ypoints[length - i - 1];
+            reversed_xpoints[i] = m_xpoints[length - i - 1];
+            reversed_ypoints[i] = m_ypoints[length - i - 1];
         }
 
         return new SimplePathIteratorImpl(reversed_xpoints, reversed_ypoints);
     }
 
     public TrainPositionOnMap reverse() {
-        int length = xpoints.length;
+        int length = m_xpoints.length;
         int[] reversed_xpoints = new int[length];
         int[] reversed_ypoints = new int[length];
 
         for (int i = 0; i < length; i++) {
-            reversed_xpoints[i] = xpoints[length - i - 1];
-            reversed_ypoints[i] = ypoints[length - i - 1];
+            reversed_xpoints[i] = m_xpoints[length - i - 1];
+            reversed_ypoints[i] = m_ypoints[length - i - 1];
         }
 
         return new TrainPositionOnMap(reversed_xpoints, reversed_ypoints);
     }
 
-    private TrainPositionOnMap(int[] xpoints, int[] ypoints) {
+    private TrainPositionOnMap( /*=const*/
+        int[] xpoints, /*=const*/
+        int[] ypoints) {
         if (xpoints.length != ypoints.length) {
             throw new IllegalArgumentException();
         }
 
-        this.xpoints = xpoints;
-        this.ypoints = ypoints;
+        m_xpoints = xpoints;
+        m_ypoints = ypoints;
     }
 
     public static TrainPositionOnMap createInstance(int[] xpoints, int[] ypoints) {
@@ -432,11 +434,11 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         StringBuffer sb = new StringBuffer();
         sb.append("TrainPosition {");
 
-        for (int i = 0; i < xpoints.length; i++) {
+        for (int i = 0; i < m_xpoints.length; i++) {
             sb.append("(");
-            sb.append(xpoints[i]);
+            sb.append(m_xpoints[i]);
             sb.append(", ");
-            sb.append(ypoints[i]);
+            sb.append(m_ypoints[i]);
             sb.append("), ");
         }
 

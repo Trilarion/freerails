@@ -15,57 +15,57 @@ import jfreerails.world.common.Money;
  */
 public class AddItemTransaction implements Transaction {
     /** For example track. */
-    private final int category;
+    private final int m_category;
 
     public int hashCode() {
         int result;
-        result = category;
-        result = 29 * result + type;
-        result = 29 * result + quantity;
-        result = 29 * result + amount.hashCode();
+        result = m_category;
+        result = 29 * result + m_type;
+        result = 29 * result + m_quantity;
+        result = 29 * result + m_amount.hashCode();
 
         return result;
     }
 
     /** For example, standard track. */
-    private final int type;
+    private final int m_type;
 
     /** For example, 4 tiles. */
-    private final int quantity;
-    private final Money amount;
+    private final int m_quantity;
+    private final Money m_amount;
 
     public boolean equals(Object obj) {
         if (obj instanceof AddItemTransaction) {
             AddItemTransaction test = (AddItemTransaction)obj;
 
-            return this.amount.equals(test.amount) &&
-            this.category == test.category && this.type == test.type &&
-            this.quantity == test.quantity;
+            return this.m_amount.equals(test.m_amount) &&
+            m_category == test.m_category && m_type == test.m_type &&
+            m_quantity == test.m_quantity;
         } else {
             return false;
         }
     }
 
     public AddItemTransaction(int category, int type, int quantity, Money amount) {
-        this.category = category;
-        this.type = type;
-        this.quantity = quantity;
-        this.amount = amount;
+        m_category = category;
+        m_type = type;
+        m_quantity = quantity;
+        m_amount = amount;
     }
 
     public int getCategory() {
-        return category;
+        return m_category;
     }
 
     public int getQuantity() {
-        return quantity;
+        return m_quantity;
     }
 
     public int getType() {
-        return type;
+        return m_type;
     }
 
     public Money getValue() {
-        return amount;
+        return m_amount;
     }
 }

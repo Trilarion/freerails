@@ -111,7 +111,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement)value;
         
         //Set station name
-        int stationNumber = trainOrders.order.station;
+        int stationNumber = trainOrders.order.m_station;
         StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber, principal);
         String stationName = station.getStationName();
         this.stationNameJLabel.setText(stationName);

@@ -78,7 +78,7 @@ public class TrackMoveTransactionsGenerator {
             CompositeMove cm = (CompositeMove)move;
             cm.getMoves();
 
-            Move[] moves = cm.getMoves();
+            /*=const*/ Move[] moves = cm.getMoves();
 
             for (int i = 0; i < moves.length; i++) {
                 unpackMove(moves[i]);

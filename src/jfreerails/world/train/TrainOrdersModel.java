@@ -17,12 +17,12 @@ public class TrainOrdersModel implements FreerailsSerializable {
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
     public final boolean waitUntilFull;
     public final int[] consist; //The wagon types to add; if null, then no change.
-    public final int station; //The number of the station to goto.
+    public final int m_station; //The number of the station to goto.
 
     public int hashCode() {
         int result;
         result = (waitUntilFull ? 1 : 0);
-        result = 29 * result + station;
+        result = 29 * result + m_station;
 
         return result;
     }
@@ -33,15 +33,15 @@ public class TrainOrdersModel implements FreerailsSerializable {
 
         waitUntilFull = wait;
         consist = newConsist;
-        this.station = station;
+        m_station = station;
     }
 
-    public int[] getConsist() {
+    public /*=const */ int[] getConsist() {
         return this.consist;
     }
 
     public int getStationNumber() {
-        return station;
+        return m_station;
     }
 
     public boolean isNoConsistChange() {
@@ -65,7 +65,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
             TrainOrdersModel test = (TrainOrdersModel)obj;
 
             return this.waitUntilFull == test.waitUntilFull &&
-            this.station == test.station &&
+            this.m_station == test.m_station &&
             Arrays.equals(this.consist, test.consist);
         } else {
             return false;

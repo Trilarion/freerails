@@ -19,34 +19,37 @@ import jfreerails.world.top.World;
  *  @author Luke
  */
 public class CompositeMove implements Move {
-    private final Move[] moves;
+    private final Move[] m_moves;
 
     /**
      * This method lets sub classes look at the moves.
      */
     final Move getMove(int i) {
-        return moves[i];
+        return m_moves[i];
     }
 
     public int hashCode() {
         //This will do for now.
-        return moves.length;
+        return m_moves.length;
     }
 
-    public final Move[] getMoves() {
-        return moves;
+    public final /*=const*/ Move[] getMoves() {
+        return m_moves;
     }
 
     CompositeMove(ArrayList movesArrayList) {
-        moves = new Move[movesArrayList.size()];
+        //I have used a temporary variable here to stop ConstJava complaining, LL
+        Move[] moves = new Move[movesArrayList.size()];
 
         for (int i = 0; i < movesArrayList.size(); i++) {
             moves[i] = (Move)movesArrayList.get(i);
         }
+
+        m_moves = moves;
     }
 
     public CompositeMove(Move[] moves) {
-        this.moves = moves;
+        this.m_moves = moves;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -58,7 +61,7 @@ public class CompositeMove implements Move {
 
         if (ms.ok) {
             //We just wanted to see if we could do them so we undo them again.
-            undoMoves(w, moves.length - 1, p);
+            undoMoves(w, m_moves.length - 1, p);
         }
 
         //If its not ok, then doMove would have undone the moves so we don't need to undo them.
@@ -82,8 +85,8 @@ public class CompositeMove implements Move {
             return ms;
         }
 
-        for (int i = 0; i < moves.length; i++) {
-            ms = moves[i].doMove(w, p);
+        for (int i = 0; i < m_moves.length; i++) {
+            ms = m_moves[i].doMove(w, p);
 
             if (!ms.ok) {
                 //Undo any moves we have already done.
@@ -99,8 +102,8 @@ public class CompositeMove implements Move {
     public final MoveStatus undoMove(World w, FreerailsPrincipal p) {
         MoveStatus ms = MoveStatus.MOVE_OK;
 
-        for (int i = moves.length - 1; i >= 0; i--) {
-            ms = moves[i].undoMove(w, p);
+        for (int i = m_moves.length - 1; i >= 0; i--) {
+            ms = m_moves[i].undoMove(w, p);
 
             if (!ms.ok) {
                 //Redo any moves we have already undone.
@@ -115,7 +118,7 @@ public class CompositeMove implements Move {
 
     private final void undoMoves(World w, int number, FreerailsPrincipal p) {
         for (int i = number; i >= 0; i--) {
-            MoveStatus ms = moves[i].undoMove(w, p);
+            MoveStatus ms = m_moves[i].undoMove(w, p);
 
             if (!ms.ok) {
                 throw new IllegalStateException(ms.message);
@@ -124,8 +127,8 @@ public class CompositeMove implements Move {
     }
 
     private final void redoMoves(World w, int number, FreerailsPrincipal p) {
-        for (int i = number; i < moves.length; i++) {
-            MoveStatus ms = moves[i].doMove(w, p);
+        for (int i = number; i < m_moves.length; i++) {
+            MoveStatus ms = m_moves[i].doMove(w, p);
 
             if (!ms.ok) {
                 throw new IllegalStateException(ms.message);
@@ -137,11 +140,11 @@ public class CompositeMove implements Move {
         if (o instanceof CompositeMove) {
             CompositeMove test = (CompositeMove)o;
 
-            if (this.moves.length != test.moves.length) {
+            if (this.m_moves.length != test.m_moves.length) {
                 return false;
             } else {
-                for (int i = 0; i < this.moves.length; i++) {
-                    if (!this.moves[i].equals(test.moves[i])) {
+                for (int i = 0; i < this.m_moves.length; i++) {
+                    if (!this.m_moves[i].equals(test.m_moves[i])) {
                         return false;
                     }
                 }
@@ -162,8 +165,8 @@ public class CompositeMove implements Move {
     public final String toString() {
         String s = "";
 
-        for (int i = 0; i < moves.length; i++) {
-            s += moves[i].toString() + ((i > 0) ? ", " : "");
+        for (int i = 0; i < m_moves.length; i++) {
+            s += m_moves[i].toString() + ((i > 0) ? ", " : "");
         }
 
         return s;

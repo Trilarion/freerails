@@ -1,7 +1,7 @@
 package jfreerails.world.train;
 
+import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsPathIterator;
-import jfreerails.world.common.FreerailsSerializable;
 
 
 /** This interface lets the caller retrieve a path broken into
@@ -10,7 +10,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * a train travels during an given time inteval.
  * @author Luke
  */
-public interface PathWalker extends FreerailsPathIterator, FreerailsSerializable {
+public interface PathWalker extends FreerailsPathIterator,
+    FreerailsMutableSerializable {
     /** Returns true if we have not reached the end of the path.
      */
     boolean canStepForward();

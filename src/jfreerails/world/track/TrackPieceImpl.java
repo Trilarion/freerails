@@ -1,5 +1,6 @@
 package jfreerails.world.track;
 
+
 /**
  * Represents the track on a tile.
  * @author Luke
@@ -22,7 +23,7 @@ final public class TrackPieceImpl implements TrackPiece {
         TrackRule type, int owner) {
         configuration = c;
         trackType = type;
-        this.ownerID = owner;
+        ownerID = owner;
     }
 
     public int getTrackGraphicNumber() {

@@ -6,8 +6,8 @@ import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
 import jfreerails.move.TransferCargoAtStationMove;
 import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.CargoBundle;
-import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.cargo.MutableCargoBundle;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
@@ -35,10 +35,10 @@ public class DropOffAndPickupCargoMoveGenerator {
     private int trainBundleId;
     private final int stationId;
     private int stationBundleId;
-    private CargoBundle stationAfter;
-    private CargoBundle stationBefore;
-    private CargoBundle trainAfter;
-    private CargoBundle trainBefore;
+    private MutableCargoBundle stationAfter;
+    private MutableCargoBundle stationBefore;
+    private MutableCargoBundle trainAfter;
+    private MutableCargoBundle trainBefore;
     private ArrayList moves;
     private final FreerailsPrincipal principal;
     private boolean waitingForFullLoad;
@@ -67,10 +67,11 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     public Move generateMove() {
         //The methods that calculate the before and after bundles could be called from here.
-        ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore,
-                stationAfter, stationBundleId, principal);
-        ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore,
-                trainAfter, trainBundleId, principal);
+        ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore.toImmutableCargoBundle(),
+                stationAfter.toImmutableCargoBundle(), stationBundleId,
+                principal);
+        ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore.toImmutableCargoBundle(),
+                trainAfter.toImmutableCargoBundle(), trainBundleId, principal);
 
         moves.add(TransferCargoAtStationMove.CHANGE_AT_STATION_INDEX,
             changeAtStation);
@@ -87,25 +88,26 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     private void getBundles() {
         trainBundleId = ((TrainModel)w.get(KEY.TRAINS, trainId, principal)).getCargoBundleNumber();
-        trainBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId,
-                principal)).getCopy();
-        trainAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId,
-                principal)).getCopy();
+        trainBefore = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
+                trainBundleId, principal)).toCargoBundleImpl();
+        trainAfter = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
+                trainBundleId, principal)).toCargoBundleImpl();
         stationBundleId = ((StationModel)w.get(KEY.STATIONS, stationId,
                 principal)).getCargoBundleNumber();
-        stationAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId,
-                principal)).getCopy();
-        stationBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId,
-                principal)).getCopy();
+        stationAfter = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
+                stationBundleId, principal)).toCargoBundleImpl();
+        stationBefore = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
+                stationBundleId, principal)).toCargoBundleImpl();
     }
 
     private void processTrainBundle() {
-        Iterator batches = trainAfter.getCopy().cargoBatchIterator();
+        Iterator batches = trainAfter.toImmutableCargoBundle()
+                                     .cargoBatchIterator();
 
         StationModel station = (StationModel)w.get(KEY.STATIONS, stationId,
                 principal);
 
-        CargoBundle cargoDroppedOff = new CargoBundleImpl();
+        MutableCargoBundle cargoDroppedOff = new MutableCargoBundle();
 
         //Unload the cargo that the station demands
         while (batches.hasNext()) {
@@ -212,11 +214,11 @@ public class DropOffAndPickupCargoMoveGenerator {
      * Move the specified quantity of the specifed cargotype from one bundle to another.
      */
     private static void transferCargo(int cargoTypeToTransfer,
-        int amountToTransfer, CargoBundle from, CargoBundle to) {
+        int amountToTransfer, MutableCargoBundle from, MutableCargoBundle to) {
         if (0 == amountToTransfer) {
             return;
         } else {
-            Iterator batches = from.getCopy().cargoBatchIterator();
+            Iterator batches = from.toImmutableCargoBundle().cargoBatchIterator();
             int amountTransferedSoFar = 0;
 
             while (batches.hasNext() &&

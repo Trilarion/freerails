@@ -5,7 +5,7 @@
 package jfreerails.world.accounts;
 
 import java.util.ArrayList;
-import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 
@@ -15,7 +15,7 @@ import jfreerails.world.common.Money;
  * @author Luke Lindsay
  *
  */
-public class BankAccount implements FreerailsSerializable {
+public class BankAccount implements FreerailsMutableSerializable {
     private final ArrayList transactions = new ArrayList();
     private final ArrayList transactionsTimeStamps = new ArrayList();
     private Money currentBalance = new Money(0);

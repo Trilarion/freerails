@@ -1,6 +1,7 @@
 package jfreerails.world.top;
 
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
@@ -38,64 +39,83 @@ import jfreerails.world.track.FreerailsTile;
   add a new class or change the interface of the World class when a new list is
   added. Instead one can just add a new entry to the class KEY.</p>
 <p>Code that loops through lists should handle null values gracefully</p>
+
+* Note, this class has been annotated for use with ConstJava.
  * @author Luke
  * @author Rob
  */
-public interface ReadOnlyWorld extends FreerailsSerializable {
+public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     /**
      * Returns the element mapped to the specified item.
      */
-    FreerailsSerializable get(ITEM item);
+
+    /*=const*/ FreerailsSerializable get( /*=const*/
+        ITEM item) /*=const*/;
 
     /**
      * Returns the element at the specified position in the specified list.
      */
-    FreerailsSerializable get(SKEY key, int index);
+
+    /*=const*/ FreerailsSerializable get( /*=const*/
+        SKEY key, int index) /*=const*/;
 
     /**
      * Returns the element at the specified position in the specified list.
      */
-    FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p);
+
+    /*=const*/ FreerailsSerializable get( /*=const*/
+        KEY key, int index, /*=const*/
+        FreerailsPrincipal p) /*=const*/;
 
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(SKEY key);
+    int size( /*=const*/
+        SKEY key) /*=const*/;
 
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(KEY key, FreerailsPrincipal p);
+    int size(KEY key, /*=const*/
+        FreerailsPrincipal p) /*=const*/;
 
     /** Returns the width of the map in tiles.
      */
-    int getMapWidth();
+    int getMapWidth() /*=const*/;
 
     /** Returns the height of the map in tiles.
      */
-    int getMapHeight();
+    int getMapHeight() /*=const*/;
 
-    int getNumberOfPlayers();
+    int getNumberOfPlayers() /*=const*/;
 
-    boolean isPlayer(FreerailsPrincipal p);
+    boolean isPlayer(FreerailsPrincipal p) /*=const*/;
 
-    Player getPlayer(int i);
+    /*=const*/ Player getPlayer(int i) /*=const*/;
 
     /** Returns the tile at the specified position on the map.
      */
-    FreerailsTile getTile(int x, int y);
 
-    boolean boundsContain(int x, int y);
+    /*=const*/ FreerailsTile getTile(int x, int y) /*=const*/;
 
-    boolean boundsContain(SKEY k, int index);
+    boolean boundsContain(int x, int y) /*=const*/;
 
-    boolean boundsContain(KEY k, int index, FreerailsPrincipal p);
+    boolean boundsContain( /*=const*/
+        SKEY k, int index) /*=const*/;
 
-    Transaction getTransaction(int i, FreerailsPrincipal p);
+    boolean boundsContain( /*=const*/
+        KEY k, int index, /*=const*/
+        FreerailsPrincipal p) /*=const*/;
 
-    GameTime getTransactionTimeStamp(int i, FreerailsPrincipal p);
+    /*=const*/ Transaction getTransaction(int i, /*=const*/
+        FreerailsPrincipal p) /*=const*/;
 
-    Money getCurrentBalance(FreerailsPrincipal p);
+    /*=const*/ GameTime getTransactionTimeStamp(int i, /*=const*/
+        FreerailsPrincipal p) /*=const*/;
 
-    int getNumberOfTransactions(FreerailsPrincipal p);
+    /*=const*/ Money getCurrentBalance( /*=const*/
+        FreerailsPrincipal p) /*=const*/;
+
+    int getNumberOfTransactions( /*=const*/
+        FreerailsPrincipal p) /*=const*/;
 }

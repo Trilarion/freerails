@@ -5,8 +5,7 @@
 package jfreerails.move;
 
 import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.CargoBundle;
-import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
 
@@ -18,15 +17,15 @@ import jfreerails.world.top.MapFixtureFactory;
  */
 public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
     public void testMove() {
-        CargoBundle bundleA;
-        CargoBundle bundleB;
-        bundleA = new CargoBundleImpl();
-        bundleB = new CargoBundleImpl();
+        MutableCargoBundle bundleA;
+        MutableCargoBundle bundleB;
+        bundleA = new MutableCargoBundle();
+        bundleB = new MutableCargoBundle();
         bundleA.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
         bundleB.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move m = new AddCargoBundleMove(0, bundleA,
+        Move m = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(),
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertDoMoveIsOk(m);
         assertEquals(getWorld().size(KEY.CARGO_BUNDLES,

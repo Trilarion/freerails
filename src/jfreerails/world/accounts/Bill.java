@@ -13,22 +13,22 @@ import jfreerails.world.common.Money;
  *
  */
 public class Bill implements Transaction {
-    private final Money amount;
-    private final int category;
+    private final Money m_amount;
+    private final int m_category;
 
     public Bill(Money amount, int category) {
-        this.amount = new Money(-amount.getAmount());
-        this.category = category;
+        m_amount = new Money(-amount.getAmount());
+        m_category = category;
     }
 
     public Money getValue() {
-        return amount;
+        return m_amount;
     }
 
     public int hashCode() {
         int result;
-        result = amount.hashCode();
-        result = 29 * result + category;
+        result = m_amount.hashCode();
+        result = 29 * result + m_category;
 
         return result;
     }
@@ -37,14 +37,14 @@ public class Bill implements Transaction {
         if (o instanceof Bill) {
             Bill test = (Bill)o;
 
-            return test.amount.equals(this.amount) &&
-            category == test.category;
+            return test.m_amount.equals(m_amount) &&
+            m_category == test.m_category;
         } else {
             return false;
         }
     }
 
     public int getCategory() {
-        return category;
+        return m_category;
     }
 }

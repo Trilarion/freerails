@@ -17,65 +17,66 @@ import jfreerails.world.top.World;
  *
  */
 public abstract class ChangeItemInListMove implements ListMove {
-    private final KEY listKey;
-    private final int index;
-    private final FreerailsSerializable before;
-    private final FreerailsSerializable after;
-    private final FreerailsPrincipal principal;
+    private final KEY m_listKey;
+    private final int m_index;
+    private final FreerailsSerializable m_before;
+    private final FreerailsSerializable m_after;
+    private final FreerailsPrincipal m_principal;
 
     public int getIndex() {
-        return index;
+        return m_index;
     }
 
     public int hashCode() {
         int result;
-        result = listKey.hashCode();
-        result = 29 * result + index;
-        result = 29 * result + (before != null ? before.hashCode() : 0);
-        result = 29 * result + (after != null ? after.hashCode() : 0);
-        result = 29 * result + principal.hashCode();
+        result = m_listKey.hashCode();
+        result = 29 * result + m_index;
+        result = 29 * result + (m_before != null ? m_before.hashCode() : 0);
+        result = 29 * result + (m_after != null ? m_after.hashCode() : 0);
+        result = 29 * result + m_principal.hashCode();
 
         return result;
     }
 
     public KEY getKey() {
-        return listKey;
+        return m_listKey;
     }
 
     protected ChangeItemInListMove(KEY k, int index,
         FreerailsSerializable before, FreerailsSerializable after,
         FreerailsPrincipal p) {
-        this.before = before;
-        this.after = after;
-        this.index = index;
-        this.listKey = k;
-        this.principal = p;
+        m_before = before;
+        m_after = after;
+        m_index = index;
+        m_listKey = k;
+        m_principal = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return tryMove(this.after, this.before, w);
+        return tryMove(m_after, m_before, w);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return tryMove(this.before, this.after, w);
+        return tryMove(m_before, m_after, w);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        return move(this.after, this.before, w);
+        return move(m_after, m_before, w);
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        return move(this.before, this.after, w);
+        return move(m_before, m_after, w);
     }
 
     protected MoveStatus tryMove(FreerailsSerializable to,
         FreerailsSerializable from, World w) {
-        if (index >= w.size(this.listKey, principal)) {
-            return MoveStatus.moveFailed("w.size(this.listKey) is " +
-                w.size(this.listKey, principal) + " but index is " + index);
+        if (m_index >= w.size(m_listKey, m_principal)) {
+            return MoveStatus.moveFailed("w.size(listKey) is " +
+                w.size(m_listKey, m_principal) + " but index is " + m_index);
         }
 
-        FreerailsSerializable item2change = w.get(listKey, index, principal);
+        FreerailsSerializable item2change = w.get(m_listKey, m_index,
+                m_principal);
 
         if (null == item2change) {
             if (null == from) {
@@ -98,7 +99,7 @@ public abstract class ChangeItemInListMove implements ListMove {
         MoveStatus ms = tryMove(to, from, w);
 
         if (ms.ok) {
-            w.set(this.listKey, index, to, principal);
+            w.set(m_listKey, m_index, to, m_principal);
         }
 
         return ms;
@@ -108,19 +109,19 @@ public abstract class ChangeItemInListMove implements ListMove {
         if (o instanceof ChangeItemInListMove) {
             ChangeItemInListMove test = (ChangeItemInListMove)o;
 
-            if (!this.before.equals(test.getBefore())) {
+            if (!m_before.equals(test.getBefore())) {
                 return false;
             }
 
-            if (!this.after.equals(test.getAfter())) {
+            if (!m_after.equals(test.getAfter())) {
                 return false;
             }
 
-            if (this.index != test.index) {
+            if (m_index != test.m_index) {
                 return false;
             }
 
-            if (this.listKey != test.listKey) {
+            if (m_listKey != test.m_listKey) {
                 return false;
             }
 
@@ -131,14 +132,14 @@ public abstract class ChangeItemInListMove implements ListMove {
     }
 
     public FreerailsSerializable getAfter() {
-        return after;
+        return m_after;
     }
 
     public FreerailsSerializable getBefore() {
-        return before;
+        return m_before;
     }
 
     public FreerailsPrincipal getPrincipal() {
-        return principal;
+        return m_principal;
     }
 }

@@ -150,7 +150,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         return new TrackPieceImpl(trackConfiguration, trackRule, owner);
     }
 
-    public Rectangle getUpdatedTiles() {
+    public /*=const*/ Rectangle getUpdatedTiles() {
         return updatedTiles;
     }
 

@@ -18,10 +18,10 @@ public class CityModel implements FreerailsSerializable {
     private final int x;
     private final int y;
 
-    public CityModel(String name, int x, int y) {
-        this.name = name;
-        this.x = x;
-        this.y = y;
+    public CityModel(String s, int xx, int yy) {
+        name = s;
+        x = xx;
+        y = yy;
     }
 
     public String getCityName() {

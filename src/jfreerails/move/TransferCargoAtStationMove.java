@@ -18,11 +18,11 @@ import jfreerails.world.player.Player;
 public class TransferCargoAtStationMove extends CompositeMove {
     public static final int CHANGE_ON_TRAIN_INDEX = 1;
     public static final int CHANGE_AT_STATION_INDEX = 0;
-    private final boolean waitingForFullLoad;
+    private final boolean m_waitingForFullLoad;
 
     private TransferCargoAtStationMove(Move[] moves, boolean waiting) {
         super(moves);
-        this.waitingForFullLoad = waiting;
+        m_waitingForFullLoad = waiting;
     }
 
     public static TransferCargoAtStationMove generateMove(
@@ -43,7 +43,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     public Money getRevenue() {
-        Move[] moves = super.getMoves();
+        /*=const*/ Move[] moves = super.getMoves();
         long amount = CHANGE_AT_STATION_INDEX;
 
         for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
@@ -58,7 +58,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     public int getQuantityOfCargo(int cargoType) {
-        Move[] moves = super.getMoves();
+        /*=const*/ Move[] moves = super.getMoves();
         int quantity = CHANGE_AT_STATION_INDEX;
 
         for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
@@ -78,7 +78,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
 
     /** The player who is getting paid for the delivery.*/
     public FreerailsPrincipal getPrincipal() {
-        Move[] moves = super.getMoves();
+        /*=const*/ Move[] moves = super.getMoves();
 
         for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
             if (moves[i] instanceof AddTransactionMove) {
@@ -93,10 +93,10 @@ public class TransferCargoAtStationMove extends CompositeMove {
 
     public TransferCargoAtStationMove(ArrayList movesArrayList, boolean waiting) {
         super(movesArrayList);
-        this.waitingForFullLoad = waiting;
+        this.m_waitingForFullLoad = waiting;
     }
 
     public boolean isWaitingForFullLoad() {
-        return waitingForFullLoad;
+        return m_waitingForFullLoad;
     }
 }

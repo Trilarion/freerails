@@ -13,8 +13,7 @@ import jfreerails.move.CompositeMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
 import jfreerails.move.RemoveTrainMove;
-import jfreerails.world.cargo.CargoBundle;
-import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.PositionOnTrack;
@@ -162,10 +161,9 @@ public class TrainBuilder implements ServerAutomaton {
 
         if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != tr.getRuleNumber()) {
             /* Create the move that sets up the train's cargo bundle.*/
-            CargoBundle cb = new CargoBundleImpl();
             int cargoBundleId = world.size(KEY.CARGO_BUNDLES, principal);
-            Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleId, cb,
-                    principal);
+            Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleId,
+                    ImmutableCargoBundle.EMPTY_BUNDLE, principal);
 
             /* Create the train model object.*/
             int scheduleId = world.size(KEY.TRAIN_SCHEDULES, principal);

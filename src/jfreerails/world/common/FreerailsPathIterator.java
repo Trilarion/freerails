@@ -8,7 +8,7 @@ package jfreerails.world.common;
  * that represent the track.
  * @author luke
  */
-public interface FreerailsPathIterator extends FreerailsSerializable {
+public interface FreerailsPathIterator extends FreerailsMutableSerializable {
     /** Tests whether the path has another segment.
      */
     boolean hasNext();

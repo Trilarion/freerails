@@ -4,7 +4,7 @@
 package jfreerails.controller.net;
 
 import java.io.Serializable;
-import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.FreerailsMutableSerializable;
 
 
 /**
@@ -19,7 +19,7 @@ public interface ClientControlInterface {
     public static final String SAVED_GAMES = "SAVED_GAMES";
 
     /** Called when a new game is started or a game is loaded.*/
-    void setGameModel(FreerailsSerializable world);
+    void setGameModel(FreerailsMutableSerializable world);
 
     /** Sets a property, for example, the list of saved games.*/
     void setProperty(String propertyName, Serializable value);

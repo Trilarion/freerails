@@ -5,6 +5,8 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /** Defines the methods to access the properties of a type of terrains.
+ * Note, this interface has been annotated for use with ConstJava.
+ *
  * @author Luke
  */
 public interface TerrainType extends FreerailsSerializable {
@@ -16,24 +18,24 @@ public interface TerrainType extends FreerailsSerializable {
 
     int getRGB();
 
-    Production[] getProduction();
+    /*=const*/ Production[] getProduction();
 
-    Consumption[] getConsumption();
+    /*=const*/ Consumption[] getConsumption();
 
-    Conversion[] getConversion();
+    /*=const*/ Conversion[] getConversion();
 
     String getDisplayName();
 
     static final TerrainType NULL = (new TerrainType() {
-            public Production[] getProduction() {
+            public /*=const*/ Production[] getProduction() {
                 return new Production[0];
             }
 
-            public Consumption[] getConsumption() {
+            public /*=const*/ Consumption[] getConsumption() {
                 return new Consumption[0];
             }
 
-            public Conversion[] getConversion() {
+            public /*=const*/ Conversion[] getConversion() {
                 return new Conversion[0];
             }
 

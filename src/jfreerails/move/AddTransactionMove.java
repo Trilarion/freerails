@@ -39,16 +39,16 @@ public class AddTransactionMove implements Move {
             throw new NullPointerException();
         }
 
-        this.principal = account;
-        this.transaction = t;
+        principal = account;
+        transaction = t;
         constrained = false;
     }
 
     public AddTransactionMove(FreerailsPrincipal account, Transaction t,
-        boolean constrained) {
-        this.principal = account;
-        this.transaction = t;
-        this.constrained = constrained;
+        boolean constrain) {
+        principal = account;
+        transaction = t;
+        constrained = constrain;
 
         if (null == t) {
             throw new NullPointerException();

@@ -12,9 +12,9 @@ import jfreerails.world.track.FreerailsTile;
 
 
 public class MapDiffMove implements Move, MapUpdateMove {
-    private final ArrayList points;
-    private final ArrayList before;
-    private final ArrayList after;
+    private /*=mutable*/ final ArrayList points;
+    private /*=mutable*/ final ArrayList before;
+    private /*=mutable*/ final ArrayList after;
     private final Rectangle updateTiles;
 
     public MapDiffMove(ReadOnlyWorld world, WorldDifferences diffs) {
@@ -37,8 +37,8 @@ public class MapDiffMove implements Move, MapUpdateMove {
             after.add(newTile);
         }
 
-        Rectangle mapRect = updateTiles = new Rectangle(0, 0,
-                    world.getMapWidth(), world.getMapHeight());
+        updateTiles = new Rectangle(0, 0, world.getMapWidth(),
+                world.getMapHeight());
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -125,7 +125,7 @@ public class MapDiffMove implements Move, MapUpdateMove {
         return points.size();
     }
 
-    public Rectangle getUpdatedTiles() {
+    public /*=const*/ Rectangle getUpdatedTiles() {
         return updateTiles;
     }
 }

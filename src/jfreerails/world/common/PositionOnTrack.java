@@ -2,12 +2,12 @@ package jfreerails.world.common;
 
 
 /**
- * Represents a position on the track as a direction in one of 8 compass points
+ * A <b>mutable</b> class that represents a position on the track as a direction in one of 8 compass points
  * and a coordinate representing the displacement from the centre of a track
  * tile.
  * @author Luke
  */
-public final class PositionOnTrack implements FreerailsSerializable {
+public final class PositionOnTrack implements FreerailsMutableSerializable {
     private static final int BITS_FOR_COORINATE = 14;
     private static final int BITS_FOR_DIRECTION = 3;
     public static final int MAX_COORINATE = (1 << BITS_FOR_COORINATE) - 1;

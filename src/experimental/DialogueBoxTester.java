@@ -24,8 +24,7 @@ import jfreerails.server.NewTileSetFactoryImpl;
 import jfreerails.server.common.TileSetFactory;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.CargoBundle;
-import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.DemandAtStation;
@@ -131,13 +130,13 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         new StationModel(90, 50, "Swansea", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         //Set up cargo bundle, for the purpose of this test code all the trains can share the
         //same one.
-        CargoBundle cb = new CargoBundleImpl();
+        MutableCargoBundle cb = new MutableCargoBundle();
         cb.setAmount(new CargoBatch(0, 10, 10, 8, 0), 80);
         cb.setAmount(new CargoBatch(0, 10, 10, 9, 0), 60);
         cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 140);
         cb.setAmount(new CargoBatch(3, 10, 10, 9, 0), 180);
         cb.setAmount(new CargoBatch(5, 10, 10, 9, 0), 10);
-        w.add(KEY.CARGO_BUNDLES, cb, TEST_PRINCIPAL);
+        w.add(KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle(), TEST_PRINCIPAL);
         
         MutableSchedule schedule = new MutableSchedule();
         TrainOrdersModel order =

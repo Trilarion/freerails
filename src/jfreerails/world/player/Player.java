@@ -41,22 +41,22 @@ public class Player implements FreerailsSerializable {
 
     private static class WorldPrincipal extends FreerailsPrincipal {
         private static final long serialVersionUID = 1;
-        private final String name;
+        private final String m_name;
 
         public WorldPrincipal(String name) {
-            this.name = name;
+            m_name = name;
         }
 
         public String getName() {
-            return name;
+            return m_name;
         }
 
         public String toString() {
-            return name;
+            return m_name;
         }
 
         public int hashCode() {
-            return name.hashCode();
+            return m_name.hashCode();
         }
 
         public boolean equals(Object o) {
@@ -64,7 +64,7 @@ public class Player implements FreerailsSerializable {
                 return false;
             }
 
-            return (name.equals(((WorldPrincipal)o).name));
+            return (m_name.equals(((WorldPrincipal)o).m_name));
         }
     }
 
@@ -73,7 +73,7 @@ public class Player implements FreerailsSerializable {
     /**
      * Salt used to ensure signatures are always unique.
      */
-    private int salt;
+    private /*=mutable*/ int salt;
 
     /**
      * This Principal can be granted all permissions.
@@ -96,7 +96,7 @@ public class Player implements FreerailsSerializable {
      * use. Instead, when the client needs to save their session they should
      * call saveSession().
      */
-    private transient PrivateData privateData;
+    private /*=mutable*/ transient PrivateData privateData;
 
     /**
      * This is the clients public key.
@@ -121,7 +121,7 @@ public class Player implements FreerailsSerializable {
          * record of "salt" used for previous connections. This is held by the
          * server.
          */
-        final HashSet salts = new HashSet();
+        final /*=mutable*/ HashSet salts = new HashSet();
 
         PrivateData(PrivateKey key) {
             privateKey = key;
@@ -252,8 +252,10 @@ public class Player implements FreerailsSerializable {
     public boolean verify(Player player, byte[] signature) {
         assert privateData != null;
         assert player != null;
-        assert java.util.Arrays.equals(player.publicKey.getEncoded(),
-            publicKey.getEncoded());
+
+        boolean arraysEquals = java.util.Arrays.equals(player.publicKey.getEncoded(),
+                publicKey.getEncoded());
+        assert arraysEquals;
 
         if (privateData.salts.contains(new Integer(player.salt))) {
             logger.warning("Player " + player + " attempted to connect " +

@@ -13,27 +13,27 @@ import jfreerails.world.common.Money;
  *
  */
 public class DeliverCargoReceipt extends Receipt {
-    private final CargoBatch cb;
-    private final int quantity;
-    private final int stationId;
+    private final CargoBatch m_cb;
+    private final int m_quantity;
+    private final int m_stationId;
 
     public DeliverCargoReceipt(Money m, int quantity, int stationId,
         CargoBatch cb) {
         super(m, CARGO_DELIVERY);
-        this.stationId = stationId;
-        this.quantity = quantity;
-        this.cb = cb;
+        m_stationId = stationId;
+        m_quantity = quantity;
+        m_cb = cb;
     }
 
     public CargoBatch getCb() {
-        return cb;
+        return m_cb;
     }
 
     public int getQuantity() {
-        return quantity;
+        return m_quantity;
     }
 
     public int getStationId() {
-        return stationId;
+        return m_stationId;
     }
 }
