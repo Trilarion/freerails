@@ -31,7 +31,7 @@ void Server::check(){
   
   retval=select(socketID+1,&setfd,NULL,NULL,&tv);
   if(FD_ISSET(socketID,&setfd)){
-    cout << "NEW CONNECTION" << endl;
+    std::cout << "NEW CONNECTION" << std::endl;
     accept();
     
   }else{

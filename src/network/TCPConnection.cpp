@@ -109,7 +109,7 @@ void TCPConnection::listen(int port) {
     error=OTHER; // TODO: read problem from errno!
   } else
   {
-    cout << "SERVER LISTENING on PORT " << port << endl;
+    std::cout << "SERVER LISTENING on PORT " << port << std::endl;
     state=LISTENING;
   }
   ::fcntl(socketID, F_SETFL, O_NONBLOCK);
