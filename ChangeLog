@@ -1,3 +1,6 @@
+13-Oct-2002 20:24:18 Luke Lindsay <lindsal49@hotmail.com>:
+	o Add a task to build.xml that runs all junit tests.
+	o Change build.xml to work under Eclipse.
 29-Sep-2002 20:24:18 Luke Lindsay <lindsal49@hotmail.com>:
     o Reorganised package structure.
     o Changed files that were incorredtly added to the cvs as binaries to text

@@ -5,11 +5,16 @@
  </description>
  <property name="src" location="src"/>
  <property name="build" location="build"/>
- <property name="dist"  location="dist"/>
-
- <target name="init">
+ <property name="dist"  location="dist"/>	
+ <target name="init" depends="properties">
   <tstamp/>
   <mkdir dir="${build}"/>
+  
+
+ </target>
+ 
+ <target name="properties" if="eclipse.running">
+	<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>		   	
  </target>
 
  <target name="copydata" depends="init" description="Copy data files">
@@ -31,14 +36,37 @@
  </target>
 
  <target name="compile" depends="copydata" description="Build everything except JUnit test-classes">
-  <javac srcdir="${src}" destdir="${build}">
+  <javac srcdir="${src}" destdir="${build}" fork="true">
    <exclude name="**/*Test.java"/>
   </javac>
  </target>
 
  <target name="debugcompile" depends="copydata" description="Build everything including JUnit test-classes">
-  <javac srcdir="${src}" destdir="${build}"/>
+  <javac srcdir="${src}" destdir="${build}" fork="true"/>
  </target>
+ 
+  <target name="runtests" depends="debugcompile" description="Run all junit tests"> 
+ 
+	 <junit printsummary="yes" haltonfailure="yes">	 
+	 
+  <classpath>
+    <pathelement location="${build}" />
+    <pathelement path="${java.class.path}" />
+  </classpath>
+ 	
+	
+	  	<formatter type="brief" usefile="no"/>  	
+	  	
+	
+	  <batchtest fork="yes">
+	    <fileset dir="${build}">
+	      <include name="**/*Test.class"/>	  
+	    </fileset>
+	  </batchtest>
+	</junit>
+  </target>
+
+
 
  <target name="bindist" depends="compile" description="Generate binary distribution"> <mkdir
   dir="${dist}/lib"/> <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
