@@ -11,7 +11,6 @@ import java.awt.Rectangle;
 import jfreerails.misc.OneTileMoveVector;
 import jfreerails.move.status.MoveStatus;
 import jfreerails.type.TrackRule;
-import jfreerails.world.std_track.*;
 import jfreerails.world.std_track.NullTrackPiece;
 import jfreerails.world.std_track.NullTrackType;
 import jfreerails.world.std_track.TrackConfiguration;
