@@ -5,7 +5,7 @@ THINGS TO DO
 TODO:
 =====
 
-- write the Wrappers elements (like BaseButton, BaseSlider, ...)
+- write the Wrappers and WrappersAPI
 - porting the existing thinks (like map, elements, ...)
 - let genmap work better (include cities, industrie in generation)
 - Make the controller's in the elements classes

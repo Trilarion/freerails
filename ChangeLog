@@ -1,3 +1,7 @@
+Mon Aug 20 23:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+o remove some unused .c and .h files
+o add in paraGUI the GameModeSelectDialog
+o edit main.cpp for example use of GameModeSelectDialog
 Mon Aug 20 02:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o Add GameMainWindow in paraGUI (nothing inside), cause I don't need it yet
 o make paraGUI compatible to rivo's API
