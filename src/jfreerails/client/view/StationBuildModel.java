@@ -13,9 +13,8 @@ import javax.swing.ImageIcon;
 
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
-import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.StationBuilder;
-import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.move.MoveStatus;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
@@ -51,20 +50,19 @@ public class StationBuildModel {
 
     private StationBuildAction stationBuildAction = new StationBuildAction();
 
-    private StationCancelAction stationCancelAction = new StationCancelAction();
-    
-    private ReadOnlyWorld world;
+    private StationCancelAction stationCancelAction = new StationCancelAction();       
 
     private StationBuilder stationBuilder;
+    
+    private ModelRoot modelRoot;
  
-    public StationBuildModel(StationBuilder sb, ReadOnlyWorld
-	    world, ViewLists vl) {
-	stationBuilder = sb;
-	this.world = world;
+    public StationBuildModel(StationBuilder sb, ModelRoot mr) {
+	stationBuilder = sb;	
+	modelRoot = mr;
 	TrackPieceRendererList trackPieceRendererList =
-	    vl.getTrackPieceViewList();
-	for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-	    TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
+		modelRoot.getViewLists().getTrackPieceViewList();
+	for (int i = 0; i < modelRoot.getWorld().size(SKEY.TRACK_RULES); i++) {
+	    TrackRule trackRule = (TrackRule)modelRoot.getWorld().get(SKEY.TRACK_RULES, i);
 	    if (trackRule.isStation()) {
 		TrackPieceRenderer renderer =
 		    trackPieceRendererList.getTrackPieceView(i);
@@ -93,7 +91,7 @@ public class StationBuildModel {
 	public void actionPerformed(
 		java.awt.event.ActionEvent actionEvent) {
 	    stationBuilder.setStationType(actionId);
-	    TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
+	    TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(SKEY.TRACK_RULES,
 		    actionId);
 	    //Show the relevant station radius when the station type's menu item
 	    //gets focus.
@@ -131,9 +129,14 @@ public class StationBuildModel {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-	    stationBuilder.buildStation((Point)
+		MoveStatus ms =  stationBuilder.buildStation((Point)
 		    stationBuildAction.getValue(
 			StationBuildAction.STATION_POSITION_KEY));
+		String message = null;
+		if(!ms.isOk()){
+			message = ms.message;			
+		}
+		modelRoot.getCursor().setMessage(message);
 	    setEnabled(false);		
 	}
     }

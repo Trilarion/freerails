@@ -14,6 +14,7 @@ import jfreerails.move.AddStationMove;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.Move;
+import jfreerails.move.MoveStatus;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -55,7 +56,7 @@ public class StationBuilder {
         return !oldTile.getTrackRule().equals(NullTrackType.getInstance());
     }
 
-    public void buildStation(Point p) {
+    public MoveStatus buildStation(Point p) {
         FreerailsTile oldTile = w.getTile(p.x, p.y);
 
         //Only build a station if there is track at the specified point.
@@ -74,11 +75,15 @@ public class StationBuilder {
                     after, p);
 
             //Check whether we can upgrade the track to a station here.
-            if (!moveReceiver.tryDoMove(upgradeTrackMove).ok) {
+            MoveStatus statusa = moveReceiver.tryDoMove(upgradeTrackMove);
+
+            if (!statusa.ok) {
                 System.err.println("Cannot upgrade this track to a station!");
 
-                return;
+                return statusa;
             }
+
+            Move move;
 
             if (!oldTile.getTrackRule().isStation()) {
                 //There isn't already a station here, we need to pick a name and add an entry
@@ -95,18 +100,28 @@ public class StationBuilder {
                 }
 
                 //check the terrain to see if we can build a station on it...
-                Move m = AddStationMove.generateMove(w, stationName, p,
+                move = AddStationMove.generateMove(w, stationName, p,
                         upgradeTrackMove, principal);
 
-                this.moveReceiver.processMove(transactionsGenerator.addTransactions(
-                        m));
+                move = transactionsGenerator.addTransactions(move);
             } else {
                 //Upgrade an existing station.
-                this.moveReceiver.processMove(upgradeTrackMove);
+                move = AddStationMove.upgradeStation(upgradeTrackMove);
             }
+
+            MoveStatus status = moveReceiver.tryDoMove(move);
+
+            if (status.isOk()) {
+                this.moveReceiver.processMove(move);
+            } else {
+            }
+
+            return status;
         } else {
-            System.err.println(
-                "Can't build station since there is no track here!");
+            String message = "Can't build station since there is no track here!";
+            System.err.println(message);
+
+            return MoveStatus.moveFailed(message);
         }
     }
 

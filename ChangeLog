@@ -1,3 +1,6 @@
+Apr 6, 2004 1:28:44 AM Luke
+	o Implemented 915945 (Stations should not overlap)
+	o Increased the quality of scaled images returned by ImageManagerImpl
 Apr 5, 2004 10:42:20 PM Luke
 	o Implemented 915952 (Boxes showing cargo waiting at stations) 
 Apr 5, 2004 6:04:01 PM Luke
