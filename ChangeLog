@@ -1,3 +1,10 @@
+06-Aug-2003 20:54:47 Luke
+	o Applied Robert Tuck's patch to stop the splitpane divider
+	getting focus when you press F8.
+	o Added the field 'constrained' to AddTransactionMove.  When 
+	this is set to true, the move will fail if you don't have enough
+	cash.
+	o Made the building and upgrading track cash constrained. 
 04-Aug-2003 22:35:08 Luke
 	o Added 5 patches contributed by Robert Tuck
 	(i)		Changes to build.xml

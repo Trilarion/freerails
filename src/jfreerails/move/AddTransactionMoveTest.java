@@ -5,6 +5,7 @@
 package jfreerails.move;
 
 import jfreerails.world.accounts.BankAccount;
+import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
@@ -32,5 +33,18 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
 		assertEqualsSurvivesSerialisation(m);
 		
 		assertOkAndRepeatable(m);
+	}
+	
+	public void testConstrainedMove() {
+		BankAccount account = (BankAccount)world.get(KEY.BANK_ACCOUNTS, 0);
+		assertEquals(new Money(0), account.getCurrentBalance());
+		Transaction t = new Bill(new Money(100));
+		Move m = new AddTransactionMove(0, t, true);
+		
+		//This move should fail since there is no money in the account and 
+		//it is constrained is set to true.
+		assertTryMoveFails(m);
+		
+	
 	}
 }

@@ -189,4 +189,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 			return false;
 		}
 	}
+	
+	
 }

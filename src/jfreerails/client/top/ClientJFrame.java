@@ -6,6 +6,11 @@
 
 package jfreerails.client.top;
 
+import java.awt.event.KeyEvent;
+import javax.swing.InputMap;
+import javax.swing.KeyStroke;
+import javax.swing.JSplitPane;
+
 /**
  *
  * @author  Luke
@@ -23,13 +28,19 @@ public class ClientJFrame extends javax.swing.JFrame {
     }
     
     public void setup() {
-    System.out.println("preferred size is " +
-    ((javax.swing.Scrollable)
-    mainMapView.getViewport().getView()).getPreferredScrollableViewportSize());
-    System.out.println("preferred size is " + mainMapView.getPreferredSize());
-    System.out.println("preferred size is " + jSplitPane1.getPreferredSize());
 	jSplitPane1.revalidate();
         jSplitPane1.resetToPreferredSizes();
+
+    /* Hack to stop F8 grabbing the focus of the SplitPane (see javadoc for
+     * JSplitPane Key assignments */
+    InputMap im = jSplitPane1.getInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW);
+    im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
+    jSplitPane1.setInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW, im);
+    im = jSplitPane1.getInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
+    jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, im);
+    
+    jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
 	
     }
     

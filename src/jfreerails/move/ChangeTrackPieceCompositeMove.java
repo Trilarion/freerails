@@ -51,7 +51,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 				trackRule,
 				w);
 		Money price = new Money(trackRule.getPrice().getAmount()*2);
-		AddTransactionMove ta = new AddTransactionMove(0, new Bill(price)); 
+		AddTransactionMove ta = new AddTransactionMove(0, new Bill(price), true); 
 		return new ChangeTrackPieceCompositeMove(a, b, ta);
 	}
 

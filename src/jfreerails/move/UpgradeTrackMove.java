@@ -30,7 +30,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
 		Money oldPieceCost = before.getTrackRule().getPrice();
 		Money newPieceCost = after.getTrackRule().getPrice();
 		Money cost = new Money(oldPieceCost.getAmount() - newPieceCost.getAmount());		
-		return new UpgradeTrackMove(m, new AddTransactionMove(0, new Bill(cost)));
+		return new UpgradeTrackMove(m, new AddTransactionMove(0, new Bill(cost), true));
 	}
 
 	public Rectangle getUpdatedTiles() {

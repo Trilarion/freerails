@@ -71,10 +71,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(), world.getTile(0, 5).getTrackConfiguration());
         assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(), world.getTile(1, 5).getTrackConfiguration());
                      
-        //Try to remove non existent track piece
         
-        assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(), world.getTile(0, 5).getTrackConfiguration()  );
-        assertRemoveTrackFails(new Point(0, 5), east);
                 
     }
     
