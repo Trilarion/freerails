@@ -5,9 +5,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import jfreerails.move.status.MoveStatus;
-import jfreerails.tile.TrackPiece;
-import jfreerails.tile.TrackTileMap;
 import jfreerails.type.LegalTrackConfigurations;
+import jfreerails.world.std_track.*;
+import jfreerails.world.std_track.TrackPiece;
+import jfreerails.world.std_track.TrackTileMap;
 
 final public class ChangeTrackPieceMove implements NewTrackMove, MapUpdateMove {
 

@@ -10,12 +10,13 @@ import java.awt.Rectangle;
 
 import jfreerails.misc.OneTileMoveVector;
 import jfreerails.move.status.MoveStatus;
-import jfreerails.tile.NullTrackPiece;
-import jfreerails.tile.NullTrackType;
-import jfreerails.tile.TrackConfiguration;
-import jfreerails.tile.TrackPiece;
-import jfreerails.tile.TrackTileMap;
 import jfreerails.type.TrackRule;
+import jfreerails.world.std_track.*;
+import jfreerails.world.std_track.NullTrackPiece;
+import jfreerails.world.std_track.NullTrackType;
+import jfreerails.world.std_track.TrackConfiguration;
+import jfreerails.world.std_track.TrackPiece;
+import jfreerails.world.std_track.TrackTileMap;
 
 /**
  *

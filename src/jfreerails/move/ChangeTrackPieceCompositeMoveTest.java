@@ -15,11 +15,12 @@ import java.awt.Point;
 import jfreerails.list.TrackRuleList;
 import jfreerails.misc.OneTileMoveVector;
 import jfreerails.move.status.MoveStatus;
-import jfreerails.tile.NullTrackPiece;
-import jfreerails.tile.TrackTileMap;
-import jfreerails.tile.TrackTileMapImpl;
 import jfreerails.type.TrackRule;
 import jfreerails.unittest.fixture.MapFixtureFactory;
+import jfreerails.world.std_track.*;
+import jfreerails.world.std_track.NullTrackPiece;
+import jfreerails.world.std_track.TrackTileMap;
+import jfreerails.world.std_track.TrackTileMapImpl;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -39,7 +40,7 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
     }
     
     public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
+    	        junit.textui.TestRunner.run(suite());
     }
     
     public static Test suite() {

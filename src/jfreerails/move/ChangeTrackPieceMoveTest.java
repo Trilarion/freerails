@@ -11,19 +11,22 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import jfreerails.move.status.MoveStatus;
-import jfreerails.tile.TrackConfiguration;
-import jfreerails.tile.TrackPiece;
-import jfreerails.tile.TrackTileMapImpl;
 import jfreerails.unittest.fixture.MapFixtureFactory;
+import jfreerails.world.std_track.*;
+import jfreerails.world.std_track.TrackConfiguration;
+import jfreerails.world.std_track.TrackPiece;
+import jfreerails.world.std_track.TrackTileMapImpl;
+
 /**
  *
  * @author lindsal
  */
+
 public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
     jfreerails.list.TrackRuleList trackRules;
-    jfreerails.tile.TrackTileMap map;
+    jfreerails.world.std_track.TrackTileMap map;
     
-    public ChangeTrackPieceMoveTest(java.lang.String testName) {
+    public ChangeTrackPieceMoveTest(String testName) {
         super(testName);
     }
     
@@ -85,7 +88,11 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
     }
     
     public void  testTryUndoMove(){
-        
+        setUp();
+        TrackPiece oldTrackPiece, newTrackPiece;
+        TrackConfiguration oldConfig, newConfig;
+        NewTrackMove move;
+        MoveStatus moveStatus;
     }
     
     public void testDoMove(){
@@ -99,16 +106,47 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
         newConfig=TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece=map.getTrackPiece(new Point(0,0));
         newTrackPiece=trackRules.getTrackRule(0).getTrackPiece(newConfig);
-        move=new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, new Point(0,0));
-        moveStatus=move.doMove(map);
-        assertNotNull(moveStatus);
-        assertEquals(true, moveStatus.isOk());
-        assertEquals(newTrackPiece, map.getTrackPiece(new Point(0,0) ));
+        
+        assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
+    }
+
+	protected void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
+		
+		NewTrackMove move;
+		MoveStatus moveStatus;
+		
+		move=new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, new Point(0,0));
+		moveStatus=move.doMove(map);
+		assertNotNull(moveStatus);
+		assertEquals(true, moveStatus.isOk());
+		assertEquals(newTrackPiece, map.getTrackPiece(new Point(0,0) ));
+		
+	}
+    
+    public void testUndoMove(){
+    	
+    	//Exactly like testDoMove() v
+    	setUp();
+        TrackPiece oldTrackPiece, newTrackPiece;
+        TrackConfiguration oldConfig, newConfig;
+        NewTrackMove move;
+        MoveStatus moveStatus;
+        
+        //Try building the simplest piece of track.
+        newConfig=TrackConfiguration.getFlatInstance("000010000");
+        oldTrackPiece=map.getTrackPiece(new Point(0,0));
+        
+        
+      //  assertMoveDoMoveIsOk(oldTrackPiece, newConfig);
         
     }
     
-    public void testUndoMove(){
-        
+   private void assertTryMoveIsOK(NewTrackMove move, boolean undo, String testDescription){
+    	
+    }
+    
+   private void assertExecuteMoveIsOK(NewTrackMove move, boolean undo, String testDescription){
+    	
     }
     
 }
