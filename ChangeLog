@@ -1,3 +1,9 @@
+Thu Oct 10 12:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o rechange Message Class back to have a msgID and not GameElement::Type
+o msgID must later the next unique number to the last Message so thet the engine knows
+  which message must process after which ... it's later needed in a TCP/IP environment.
+o Change in wrappers all sending Messages to use msgID = 0 at the moment.
+o Change Controller glitches in Engine.
 Tue Oct 08 23:30:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o add new class DoubleTrack
 Sat Oct 05 20:20:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
