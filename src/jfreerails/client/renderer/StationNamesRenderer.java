@@ -7,12 +7,14 @@
 
 package jfreerails.client.renderer;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextLayout;
 import java.awt.font.FontRenderContext;
+//import java.awt.geom.RoundRectangle2D;
 import java.awt.Graphics2D;
-
+import java.awt.Rectangle;
 import jfreerails.client.common.Painter;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -59,8 +61,8 @@ public class StationNamesRenderer implements Painter {
 		  	tempStation = (StationModel)w.get(KEY.STATIONS, i);
 	
 		  	stationName = tempStation.getStationName();
-		  	positionX = tempStation.getStationX() * 30;
-		  	positionY = tempStation.getStationY() * 30;
+		  	positionX = (tempStation.getStationX() * 30) + 15;
+		  	positionY = (tempStation.getStationY() * 30) + 30;
 	
 			layout = new TextLayout(stationName, font, frc);
 			visibleAdvance = layout.getVisibleAdvance();
@@ -78,6 +80,11 @@ public class StationNamesRenderer implements Painter {
 			
 			g.setColor(textColor);
 			layout.draw(g,textX,textY);
+			
+			g.setStroke(new BasicStroke(1.0f));
+				//draw a border 1 pixel inside the edges of the rectangle
+			g.draw(new Rectangle(rectX+1,rectY+1,rectWidth-3,rectHeight-3));
+			//g.draw(new RoundRectangle2D.Double(rectX+1,rectY+1,rectWidth-3,rectHeight-3,3,3));
 			
 	  	} //end FOR loop
 	  	
