@@ -1,3 +1,5 @@
+Mar 5, 2004 8:16:50 PM Luke
+	o Applied Jan Tozicka's patch for bug 900039 (No clear indication game is paused).
 Mar 4, 2004 7:38:53 PM Luke
 	o Minor changes to coding guidelines.
 	o Fixed stale serialVersionUID problem in jfreerails.world.player.Player

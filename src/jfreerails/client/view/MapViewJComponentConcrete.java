@@ -15,10 +15,9 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.util.StringTokenizer;
-
-import jfreerails.client.common.Stats;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
+import jfreerails.client.common.Stats;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -31,12 +30,17 @@ import jfreerails.world.top.ReadOnlyWorld;
 final public class MapViewJComponentConcrete extends MapViewJComponent
     implements CursorEventListener {
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
-    
+    private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
     private Stats paintStats = new Stats("MapViewJComponent paint");
 
-    /** The length of the array is the number of lines.  
+    /** The length of the array is the number of lines.
      * This is necessary since Graphics.drawString(..)  doesn't know about newline characters*/
     private String[] userMessage = new String[0];
+
+    /**
+     * Message that will appear in the middle of the screen in <code>LARGE_MESSAGE_FONT</code>.
+     */
+    private String message = null;
 
     /** Time at which to stop displaying the current user message. */
     private long displayMessageUntil = 0;
@@ -197,29 +201,45 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
     */
     protected void paintComponent(java.awt.Graphics g) {
-	paintStats.enter();
+        paintStats.enter();
         super.paintComponent(g);
-/* no need to do this again
-        java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-        java.awt.Rectangle r = this.getVisibleRect();
+        /* no need to do this again
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-        mapView.paintRect(g2, r);
-*/
+                java.awt.Rectangle r = this.getVisibleRect();
+
+                mapView.paintRect(g2, r);
+        */
         if (null != mapCursor) {
             mapCursor.cursorRenderer.paintCursor(g,
                 new java.awt.Dimension(30, 30));
         }
 
         if (System.currentTimeMillis() < this.displayMessageUntil) {
-        	Rectangle visRect = this.getVisibleRect();
+            Rectangle visRect = this.getVisibleRect();
             g.setColor(Color.WHITE);
             g.setFont(USER_MESSAGE_FONT);
-            for (int i = 0 ; i < userMessage.length ; i++){
-            	g.drawString(this.userMessage[i], 50+visRect.x, 50+visRect.y+i*20);
+
+            for (int i = 0; i < userMessage.length; i++) {
+                g.drawString(this.userMessage[i], 50 + visRect.x,
+                    50 + visRect.y + i * 20);
             }
         }
-	paintStats.exit();
+
+        if (message != null) {
+            Rectangle visRect = this.getVisibleRect();
+            g.setColor(Color.lightGray);
+            g.setFont(LARGE_MESSAGE_FONT);
+
+            int msgWidth = g.getFontMetrics(LARGE_MESSAGE_FONT).stringWidth(message);
+            int msgHeight = g.getFontMetrics(LARGE_MESSAGE_FONT).getHeight();
+            g.drawString(message,
+                (int)(visRect.x + (visRect.getWidth() - msgWidth) / 2),
+                (int)(visRect.y + (visRect.getHeight() - msgHeight) / 2));
+        }
+
+        paintStats.exit();
     }
 
     public MapViewJComponentConcrete() {
@@ -316,15 +336,25 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     public void println(String s) {
-    	StringTokenizer st = new StringTokenizer(s, "\n");
+        StringTokenizer st = new StringTokenizer(s, "\n");
         this.userMessage = new String[st.countTokens()];
+
         int i = 0;
-        while(st.hasMoreTokens()){
-			userMessage[i]=st.nextToken();
-			i++;
+
+        while (st.hasMoreTokens()) {
+            userMessage[i] = st.nextToken();
+            i++;
         }
 
         //Display the message for 5 seconds.
         displayMessageUntil = System.currentTimeMillis() + 1000 * 5;
+    }
+
+    public void showMessage(String message) {
+        this.message = message;
+    }
+
+    public void hideMessage() {
+        message = null;
     }
 }
