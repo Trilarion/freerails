@@ -19,6 +19,7 @@ import java.io.IOException;
  * @author Rob
  */
 public final class FileUtils {
+    private static final String version = "0.2.4";
     public static final String DATA_TYPE_PLAYER_SPECIFIC = "Player";
 
     /**
@@ -63,7 +64,7 @@ public final class FileUtils {
     private static File keysToFile(String dataType, String dataKey,
         String fileName) {
         /* the user's home directory is in the user.home system property */
-        String path = ".jfreerails" + File.separator + "client" +
+        String path = ".jfreerails" + version + File.separator + "client" +
             File.separator + dataType + File.separator + dataKey +
             File.separator + fileName;
         path = System.getProperty("user.home") + File.separator + path;
