@@ -37,6 +37,8 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
   p.y=0;
   view=new PG_Image(this, p, imageSurface);
   WidgetList->AddWidget(view);
+  
+  mouseType=0;
 }
 
 GameMapView::~GameMapView() {
@@ -205,4 +207,14 @@ int GameMapView::get3DImagePos(int x, int y, MapField::FieldType type)
   }
 
   return xpos;
+}
+
+void GameMapView::setMouseType(MouseType type) {
+
+  mouseType=type;;
+}
+
+void GameMapView::eventMouseEnter() {
+
+  cerr << mouseType << endl;
 }

@@ -6,6 +6,7 @@
 #define __GAMEPANEL_H__
 
 #include "GameMainWindow.h"
+#include "GameMapView.h"
 
 #include <pggradientwidget.h>
 #include <pgbutton.h>
@@ -23,18 +24,23 @@ class GamePanel: public PG_GradientWidget, public PG_EventObject {
 
   public:
     /**  */
-    GamePanel(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine);
+    GamePanel(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine, GameMapView* _mapView);
     /**  */
     ~GamePanel();
 
   private:
   
     PARAGUI_CALLBACK(pause_handler);
+    PARAGUI_CALLBACK(clickTrackButton);
+    PARAGUI_CALLBACK(clickStationButton);
+    
+    void releaseAllButtons(PG_Button* button);
 
     PG_Button* trackButton;
     PG_Button* stationButton;
     PG_Button* pauseButton;
     Engine* engine;
+    GameMapView* mapView;
 };
 
 #endif

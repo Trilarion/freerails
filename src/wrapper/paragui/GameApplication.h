@@ -12,6 +12,8 @@
 #include "GamePanel.h"
 #include "SDL.h"
 
+#include "Message.h"
+
 
 #include <pgapplication.h>
 #include <pggradientwidget.h>

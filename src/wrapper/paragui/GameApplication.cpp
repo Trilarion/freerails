@@ -74,7 +74,7 @@ int result;
       initSingleGame();
       engine=new Engine(worldMap, playerSelf);
       mapView=new GameMapView(&mw, 0, 0, 650, 600 , worldMap);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, engine);
+      panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
       mapView->Show();
       panel->Show();
     }
@@ -87,7 +87,7 @@ int result;
       // engine=new Engine(worldMap);
 
       mapView=new GameMapView(&mw, 0, 0, 650, 450 , worldMap);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, engine);
+      panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
 
       mapView->Show();
@@ -98,7 +98,7 @@ int result;
     Message* msg=new Message(Message::startGame,NULL);
     engine->sendMsg(msg);
     pGlobalApp->Run();
-    Message* msg=new Message(Message::stopGame,NULL);
+    msg=new Message(Message::stopGame,NULL);
     engine->sendMsg(msg);
     if (engine!=NULL) { delete engine; engine=NULL; }
     if (mapView!=NULL) { delete mapView; engine=NULL; }
