@@ -26,6 +26,7 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   generateBog(map);
   generateMountain(map);
   generateCities(map);
+  generateFarm(map);
   generateResources(map);
   generateIndustrie(map);
 
