@@ -4,7 +4,7 @@
  */
 package jfreerails.world.terrain;
 
-import jfreerails.world.tilemap.Tile;
+import jfreerails.world.common.Tile;
 
 /**
  * @version 	1.0

@@ -1,5 +1,5 @@
 package jfreerails.world.track;
-import jfreerails.world.tilemap.Tile;
+import jfreerails.world.common.Tile;
 
 public interface TrackPiece extends Tile {
     int getTrackGraphicNumber();    

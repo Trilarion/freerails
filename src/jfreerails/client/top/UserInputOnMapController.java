@@ -4,9 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 
-import jfreerails.client.event.CursorEvent;
-import jfreerails.client.event.CursorEventListener;
-import jfreerails.client.menu.StationTypesPopup;
+import jfreerails.client.view.CursorEvent;
+import jfreerails.client.view.CursorEventListener;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;

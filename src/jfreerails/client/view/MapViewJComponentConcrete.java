@@ -17,8 +17,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
-import jfreerails.client.event.CursorEvent;
-import jfreerails.client.event.CursorEventListener;
 import jfreerails.client.renderer.MapRenderer;
 
 /**

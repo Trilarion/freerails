@@ -12,8 +12,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import jfreerails.client.event.CursorEvent;
-import jfreerails.client.event.CursorEventListener;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.world.common.OneTileMoveVector;
 
