@@ -15,20 +15,20 @@ class Message
                     stateOfGame };
 
     /** Constructor */
-    Message(MsgTypes _msgID, GameElement::TypeID _typeID, void* _data);
-    Message(MsgTypes _msgID, GameElement::TypeID _typeID, void* _data, Player* _player);
+    Message(MsgTypes _msgType, long int _msgID, void* _data);
+    Message(MsgTypes _msgType, long int _msgID, void* _data, Player* _player);
     /** Destructor */
     virtual ~Message();
 
-    GameElement::TypeID getType() { return typeID; };
-    MsgTypes getMsgID() { return msgID;};
+    MsgTypes getMsgType() { return msgType;};
+    long int getMsgID() { return msgID; };
     void* getData() { return data;};
     Player* getPlayer() { return player;};
 
   private:
 
-    GameElement::TypeID typeID;
-    MsgTypes msgID;
+    MsgTypes msgType;
+    long int msgID;
     void* data;
     Player* player;
 };

@@ -85,8 +85,8 @@ class Engine
 
     ControllerDispatcher* controllerDispatcher;  // Holds the controllerDispatcher
 
-    TrackController *trackControl;
-    StationController *stationControl;
+//    TrackController *trackControl;
+//    StationController *stationControl;
 
 
 

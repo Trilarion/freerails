@@ -3,17 +3,17 @@
 
 #include "Message.h"
 
-Message::Message(MsgTypes _msgID, GameElement::TypeID _typeID, void* _data)
+Message::Message(MsgTypes _msgType, long int _msgID, void* _data)
 {
-  typeID = _typeID;
+  msgType = _msgType;
   msgID = _msgID;
   data = _data;
   player = NULL;
 }
 
-Message::Message(MsgTypes _msgID, GameElement::TypeID _typeID, void* _data, Player* _player)
+Message::Message(MsgTypes _msgType, long int _msgID, void* _data, Player* _player)
 {
-  typeID = _typeID;
+  msgType = _msgType;
   msgID = _msgID;
   data = _data;
   player = _player;

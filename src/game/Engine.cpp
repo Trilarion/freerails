@@ -148,7 +148,7 @@ void Engine::processMsg(Message* msg)
 void Engine::addElementToGame(Message* msg)
 {
   #warning correct this
-  switch (msg->getType())
+/*  switch (msg->getType())
   {
     case GameElement::idStation:
       stationControl->addGameElement(msg->getData());
@@ -157,22 +157,25 @@ void Engine::addElementToGame(Message* msg)
       trackControl->addGameElement(msg->getData());
       break;
     default:
-//  GameElement* element = (GameElement *)msg->getData();
-//  Controller* elementController = controllerDispatcher->getController(element->getTypeID());
+*/
+  GameElement* element = (GameElement *)msg->getData();
+  Controller* elementController = controllerDispatcher->getController(element->getTypeID());
 //  if (isServer)
 //  {
-////    if (elementController->canBuildElement(element)) {
-////      elementController->addGameElement(element);
-////      Message* msg = new Message(Message::addElement, 0, element);
-////      SendAll(msg);
-////    }
+//    if (elementController->canBuildElement(element)) {
+      elementController->addGameElement(element);
+cerr << "3" << endl;
+//      Message* msg = new Message(Message::addElement, 0, element);
+//      SendAll(msg);
+//    }
 //  }
 //  else
 //  {
 //  //  elementController->addGameElement(element);
 //  }
-    break;
+/*    break;
   }
+*/
 }
 
 void Engine::changeStateOfGame(Message* msg)
