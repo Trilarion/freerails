@@ -19,7 +19,7 @@ public class BuildTrackStrategy {
     
     private final int[] rules;
     
-    public static BuildTrackStrategy getSinceRuleInstance(int trackTypeID, ReadOnlyWorld w){
+    public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, ReadOnlyWorld w){
     	 int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
          int[] newRules = new int[noTerrainTypes];
           for(int i = 0; i < noTerrainTypes; i++){
@@ -30,6 +30,11 @@ public class BuildTrackStrategy {
          return new BuildTrackStrategy(newRules);
     	
     }
+    
+    public static BuildTrackStrategy getMultipleRuleInstance(ArrayList<Integer> ruleIDs, ReadOnlyWorld w){   	
+        int[] rulesArray = generateRules(ruleIDs, w);
+		return new BuildTrackStrategy(rulesArray);   	
+   }
     
     public static BuildTrackStrategy getDefault(ReadOnlyWorld w){
     	ArrayList<Integer> allowable = new ArrayList<Integer>();

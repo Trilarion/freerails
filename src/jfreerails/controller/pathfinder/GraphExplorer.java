@@ -21,8 +21,8 @@ public interface GraphExplorer {
     /** Returns the vertex that is connected to the current vertex by the current edge. */
     int getVertexConnectedByEdge();
 
-    /** Returns the length of the current edge.        */
-    int getEdgeLength();
+    /** Returns the cost of the current edge.        */
+    int getEdgeCost();
 
     boolean hasNextEdge();
 

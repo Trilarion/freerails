@@ -85,7 +85,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
         return currentBranch.toInt();
     }
 
-    public int getEdgeLength() {
+    public int getEdgeCost() {
         return currentBranch.getDirection().getLength();
     }
 

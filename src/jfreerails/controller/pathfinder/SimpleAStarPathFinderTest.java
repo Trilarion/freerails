@@ -65,7 +65,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
         map.nextEdge();
         assertTrue(!map.hasNextEdge());
         assertEquals(1, map.getVertexConnectedByEdge());
-        assertEquals(11, map.getEdgeLength());
+        assertEquals(11, map.getEdgeCost());
         map.moveForward();
         assertEquals(1, map.getPosition());
         assertTrue(map.hasNextEdge());
@@ -132,7 +132,7 @@ class Map implements GraphExplorer {
         return nodes[position].edges[branch];
     }
 
-    public int getEdgeLength() {
+    public int getEdgeCost() {
         return nodes[position].distances[branch];
     }
 

@@ -43,14 +43,14 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
-        Point from, OneTileMoveVector direction, TrackRule trackRule,
+        Point from, OneTileMoveVector direction, TrackRule ruleA, TrackRule ruleB,
         ReadOnlyWorld w, FreerailsPrincipal principal) {
         ChangeTrackPieceMove a;
         ChangeTrackPieceMove b;
-        a = getBuildTrackChangeTrackPieceMove(from, direction, trackRule, w,
+        a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, w,
                 principal);
         b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(
-                    from), direction.getOpposite(), trackRule, w, principal);
+                    from), direction.getOpposite(), ruleB, w, principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }

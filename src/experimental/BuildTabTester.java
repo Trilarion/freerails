@@ -57,7 +57,7 @@ public class BuildTabTester {
         
         JFrame frame = new JFrame();
         BuildTrackJPanel bt = new BuildTrackJPanel();
-        bt.setup(mr, null, null);
+        bt.setup(mr, null, null, null);
         
         frame.add(bt);
         frame.setSize(400, 600);

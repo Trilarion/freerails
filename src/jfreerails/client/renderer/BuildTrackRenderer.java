@@ -49,8 +49,7 @@ public class BuildTrackRenderer implements Painter {
     private final Dimension tileSize = new Dimension(30, 30);
     private TrackPathFinder trackPathFinder;
     private TrackPieceRendererList trackPieceViewList;
-    private WorldDifferences worldDifferences;
-	private BuildTrackStrategy bts;
+    private WorldDifferences worldDifferences;	
 
     /**
      * BuildTrackRenderer
@@ -62,17 +61,23 @@ public class BuildTrackRenderer implements Painter {
         worldDifferences = new WorldDifferences(readOnlyWorld);
         this.trackPieceViewList = trackPieceViewList;
         realWorld = readOnlyWorld;
-        trackPathFinder = new TrackPathFinder(readOnlyWorld);
-        bts = BuildTrackStrategy.getDefault(realWorld);
+        trackPathFinder = new TrackPathFinder(readOnlyWorld);       
     }
 
     private MoveStatus buildTrack(Point point, OneTileMoveVector vector) {
-    	FreerailsTile tile = (FreerailsTile)worldDifferences.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
-    	int trackTypeID = bts.getRule(tile.getTerrainTypeID());
-        TrackRule trackRule = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
-        		trackTypeID);
+    	FreerailsTile tileA = (FreerailsTile)worldDifferences.getTile(point.x, point.y);
+    	int trackTypeAID = getBts().getRule(tileA.getTerrainTypeID());
+        TrackRule trackRuleA = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
+        		trackTypeAID);
+        
+        FreerailsTile tileB = (FreerailsTile)worldDifferences.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
+    	int trackTypeBID = getBts().getRule(tileB.getTerrainTypeID());
+        TrackRule trackRuleB = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
+        		trackTypeBID);
+        
+        
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point,
-                vector, trackRule, worldDifferences, principal);
+                vector, trackRuleA, trackRuleB,worldDifferences, principal);
 
         return move.doMove(worldDifferences, principal);
     }
@@ -358,7 +363,7 @@ public class BuildTrackRenderer implements Painter {
 
         try {
           
-			trackPathFinder.setupSearch(startPoint, endPoint, bts);
+			trackPathFinder.setupSearch(startPoint, endPoint, getBts());
         } catch (PathNotFoundException e) {
             setCursorMessage(e.getMessage());
 
@@ -418,4 +423,14 @@ public class BuildTrackRenderer implements Painter {
 
         return actPoint;
     }
+
+	private void setBts(BuildTrackStrategy bts) {
+		modelRoot.setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);		
+	}
+
+	private BuildTrackStrategy getBts() {
+		BuildTrackStrategy btss = (BuildTrackStrategy)modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
+		if(null == btss) throw new NullPointerException();
+		return btss;
+	}
 }

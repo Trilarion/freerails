@@ -16,6 +16,7 @@ import jfreerails.client.renderer.BuildTrackRenderer;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
+import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
@@ -136,6 +137,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
     private void cursorOneTileMove(Point oldPosition, OneTileMoveVector vector) {
         if (null != trackBuilder) {
+        	trackBuilder.setBuildTrackStrategy(getBts());
             MoveStatus ms = trackBuilder.buildTrack(oldPosition, vector);
 
             if (ms.ok) {
@@ -354,4 +356,10 @@ public class UserInputOnMapController extends KeyAdapter {
             this.setCursorMessage("Illegal cursor position!");
         }
     }
+    
+    private BuildTrackStrategy getBts() {
+		BuildTrackStrategy bts = (BuildTrackStrategy)modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
+		if(null == bts) throw new NullPointerException();
+		return bts;
+	}
 }

@@ -27,8 +27,7 @@ public class RHSJTabPane extends JTabbedPane
     private final StationInfoJPanel stationInfoPanel;
     private final TrainListJPanel trainListPanel;
     private final BuildTrackJPanel buildTrackPanel;
-    private ReadOnlyWorld world;
-    private final BuildJPane buildJPane;    
+    private ReadOnlyWorld world;     
     private int stationInfoIndex;
     private int trainListIndex;
 
@@ -66,10 +65,9 @@ public class RHSJTabPane extends JTabbedPane
 //        addTab(null, stationInfoIcon, stationInfoJScrollPane, "Station Info");
 //        this.stationInfoIndex= this.getTabCount()-1;
 
-        buildJPane = new BuildJPane();
-        trainListPanel.setTrainViewHeight(20);
-        addTab(null, buildTrackIcon, buildJPane, "Build Track");
-        addTab(null, buildTrackIcon, buildTrackPanel, "New Build Track");
+       
+        trainListPanel.setTrainViewHeight(20);       
+        addTab(null, buildTrackIcon, buildTrackPanel, "Build Track");
         addTab(null, trainListIcon, trainListPanel, "Train List");
         this.trainListIndex= this.getTabCount()-1;
         
@@ -82,8 +80,7 @@ public class RHSJTabPane extends JTabbedPane
         final ModelRootImpl modelRoot) {
         world = modelRoot.getWorld();
         terrainInfoPanel.setup(world, vl);
-        stationInfoPanel.setup(modelRoot, vl, null);
-        buildJPane.setup(actionRoot, vl, modelRoot);
+        stationInfoPanel.setup(modelRoot, vl, null);        
 
         ActionListener showTrain = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -96,7 +93,7 @@ public class RHSJTabPane extends JTabbedPane
         trainListPanel.setup(modelRoot, vl, null);
         modelRoot.addPropertyChangeListener(this);
         
-        buildTrackPanel.setup(modelRoot, vl, null);
+        buildTrackPanel.setup(modelRoot, actionRoot, vl, null);
     }
 
     /** Updates the Terrain Info Panel if the specfied PropertyChangeEvent

@@ -35,7 +35,7 @@ public class TrackPathFinderTest extends TestCase {
 
     public void testGeneratePath() {
         try {
-        	BuildTrackStrategy bts = BuildTrackStrategy.getSinceRuleInstance(0, world);
+        	BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(0, world);
         	
             TrackPathFinder pathFinder = new TrackPathFinder(world);
             List l = pathFinder.generatePath(new Point(0, 0), new Point(0, 5), bts);

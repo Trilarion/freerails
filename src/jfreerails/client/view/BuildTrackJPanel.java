@@ -7,10 +7,16 @@
 package jfreerails.client.view;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
@@ -18,28 +24,42 @@ import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.BuildTrackStrategy;
+import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
-import java.util.HashMap;
 
 /**
  * A JPanel that presents toggle buttons that let the player select the build mode (build track, upgrade track, build
  * station, bulloze, and info mode) and select the track/bridge/station type to use.
  * @author  Luke
  */
-public class BuildTrackJPanel extends javax.swing.JPanel implements View {
+public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     
     private final ImageManager imageManager = new ImageManagerImpl("/jfreerails/client/graphics/");
+    private HashMap<TrackRule.TrackCategories, Integer> selectionSet;
+    private ModelRoot modelRoot;
+    private TrackMoveProducer trackMoveProducer;
+    
+    
+    private StationBuildModel stationBuildModel;
+    
     
     /** Creates new form BuildTrackJPanel */
     public BuildTrackJPanel() {
         initComponents();
     }
     
-    public void setup(ModelRoot mr, ViewLists vl, ActionListener al){
+    public void setup(ModelRoot mr, ActionRoot ar, ViewLists vl, ActionListener al){
+    	
+    	
+    	modelRoot = mr;
+    	stationBuildModel = ar.getStationBuildModel();        
+    	trackMoveProducer = ar.getTrackMoveProducer();
+    	if(null == trackMoveProducer) throw new NullPointerException();
         
-        HashMap<TrackRule.TrackCategories, TrackRule> selectionSet = new HashMap<TrackRule.TrackCategories, TrackRule>();
+        selectionSet = new HashMap<TrackRule.TrackCategories, Integer>();
         
         //Remove any existing buttons.
         
@@ -54,10 +74,11 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
         tunnelsJPanel.removeAll();
         
         //Add the new set of buttons.
-        ReadOnlyWorld ro = mr.getWorld();
-        for(int i = 0; i < ro.size(SKEY.TRACK_RULES); i++){
+        ReadOnlyWorld world = mr.getWorld();
+        for(int i = 0; i < world.size(SKEY.TRACK_RULES); i++){
             JToggleButton toggleButton = new JToggleButton();
-            TrackRule rule = (TrackRule)ro.get(SKEY.TRACK_RULES, i);
+            final Integer ruleID = new Integer(i);
+            TrackRule rule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
             TrackRule.TrackCategories category = rule.getCategory();
             switch (category.ordinal()){
                 case 0:
@@ -65,7 +86,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                            
+                            selectionSet.put(TrackRule.TrackCategories.track, ruleID);
+                            setBuildTrackStrategy();
                         }
                     });
                     
@@ -77,7 +99,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                            
+                            selectionSet.put(TrackRule.TrackCategories.bridge, ruleID);
+                            setBuildTrackStrategy();
                         }
                     });
                     
@@ -89,6 +112,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            selectionSet.put(TrackRule.TrackCategories.tunnel, ruleID);
+                            setBuildTrackStrategy();
                             
                         }
                     });
@@ -98,11 +123,14 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
                 case 3:
                     
                     stationButtonGroup.add(toggleButton);
+                                        
+                    toggleButton.setAction(stationBuildModel.getStationChooseAction(ruleID));
+                    
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     
                     toggleButton.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                            
+                            selectionSet.put(TrackRule.TrackCategories.station, ruleID);
                         }
                     });
                     
@@ -111,7 +139,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
             }
             toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
             if(!selectionSet.containsKey(category)){
-                selectionSet.put(category, rule);
+                selectionSet.put(category, new Integer(i));
                 toggleButton.setSelected(true);
             }
             
@@ -121,6 +149,22 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
         
         //Default to add track.
         addTrackActionPerformed(null);
+        setBuildTrackStrategy();
+        
+        //Make the buttons non-focusable
+        setFocusableFalse(bridgeButtonGroup);
+        setFocusableFalse(trackButtonGroup);
+        setFocusableFalse(tunnelButtonGroup);
+        setFocusableFalse(stationButtonGroup);
+        setFocusableFalse(buildModeButtonGroup);               
+        
+    }
+    
+    /** Calls setFocusable(false) for each button in the button group.*/
+    private void setFocusableFalse(ButtonGroup bg){
+        for (Enumeration<AbstractButton> buttons = bg.getElements() ; buttons.hasMoreElements() ;) {
+            buttons.nextElement().setFocusable(false);
+        }
     }
     
     private void addNoTunnelsButton(){
@@ -130,7 +174,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
         toggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
+                selectionSet.put(TrackRule.TrackCategories.tunnel, null);
+                setBuildTrackStrategy();
             }
         });
         
@@ -144,7 +189,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
         toggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
+                selectionSet.put(TrackRule.TrackCategories.bridge, null);
+                setBuildTrackStrategy();
             }
         });
         
@@ -199,11 +245,13 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
 
         setLayout(new java.awt.GridBagLayout());
 
+        setFocusable(false);
         buildModeJPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
 
         buildModeButtonGroup.add(addTrack);
         addTrack.setIcon(getIcon("build track"));
         addTrack.setSelected(true);
+        addTrack.setFocusable(false);
         addTrack.setPreferredSize(new java.awt.Dimension(36, 36));
         addTrack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +263,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
 
         buildModeButtonGroup.add(upgradeTrack);
         upgradeTrack.setIcon(getIcon("upgrade track"));
+        upgradeTrack.setFocusable(false);
         upgradeTrack.setPreferredSize(new java.awt.Dimension(36, 36));
         upgradeTrack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,6 +275,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
 
         buildModeButtonGroup.add(addStation);
         addStation.setIcon(getIcon("build stations"));
+        addStation.setFocusable(false);
         addStation.setPreferredSize(new java.awt.Dimension(36, 36));
         addStation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,6 +287,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
 
         buildModeButtonGroup.add(bulldoze);
         bulldoze.setIcon(getIcon("bulldozer"));
+        bulldoze.setFocusable(false);
         bulldoze.setPreferredSize(new java.awt.Dimension(36, 36));
         bulldoze.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -248,6 +299,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
 
         buildModeButtonGroup.add(viewMode);
         viewMode.setIcon(getIcon("turn_off"));
+        viewMode.setFocusable(false);
         viewMode.setPreferredSize(new java.awt.Dimension(36, 36));
         viewMode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -333,30 +385,38 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
 
     }//GEN-END:initComponents
     
-    private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModeActionPerformed
-        // TODO add your handling code here:
+    private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModeActionPerformed        
         setVisible(false, false, false, false);
+        cancelStationPlacement();
+        setTrackBuilderMode(TrackMoveProducer.IGNORE_TRACK);        
     }//GEN-LAST:event_viewModeActionPerformed
     
     private void bulldozeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulldozeActionPerformed
-        // TODO add your handling code here:
+        
         setVisible(false, false, false, false);
+        cancelStationPlacement();
+        setTrackBuilderMode(TrackMoveProducer.REMOVE_TRACK);  
     }//GEN-LAST:event_bulldozeActionPerformed
     
     private void addStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStationActionPerformed
-        // TODO add your handling code here:
+        
         setVisible(false, false, false, true);
         
     }//GEN-LAST:event_addStationActionPerformed
     
     private void upgradeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upgradeTrackActionPerformed
-        // TODO add your handling code here:
+        
         setVisible(true, true, false, false);
+        cancelStationPlacement();
+        setTrackBuilderMode(TrackMoveProducer.UPGRADE_TRACK); 
+        
     }//GEN-LAST:event_upgradeTrackActionPerformed
     
     private void addTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTrackActionPerformed
-        // TODO add your handling code here:
+        
         setVisible(true, true, true, false);
+        cancelStationPlacement();
+        setTrackBuilderMode(TrackMoveProducer.BUILD_TRACK); 
     }//GEN-LAST:event_addTrackActionPerformed
     
     private void setVisible(boolean track, boolean bridges, boolean tunnels, boolean stations){
@@ -364,6 +424,26 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements View {
         bridgesJPanel.setVisible(bridges);
         tunnelsJPanel.setVisible(tunnels);
         stationsJPanel.setVisible(stations);
+    }
+    
+    private void setBuildTrackStrategy(){
+        ArrayList<Integer> ruleIDs = new ArrayList<Integer>();
+        ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.track));
+        ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.bridge));
+        ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.tunnel));
+        BuildTrackStrategy bts = BuildTrackStrategy.getMultipleRuleInstance(ruleIDs, modelRoot.getWorld());
+        modelRoot.setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);
+    }
+    
+    private void cancelStationPlacement() {
+		//Cancel build station mode..
+		stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(
+		        this,
+		        ActionEvent.ACTION_PERFORMED, ""));
+	}
+    
+    private void setTrackBuilderMode(int mode){
+    	trackMoveProducer.setTrackBuilderMode(mode);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

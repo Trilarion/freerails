@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
-import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -39,7 +38,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     private final Point m_target;       
     private BuildTrackStrategy m_buildTrackStrategy;
     private boolean m_usingExistingTrack = false;
-    private final ReadOnlyWorld m_world;
+    private final ReadOnlyWorld m_world;    
 
     public BuildTrackExplorer(ReadOnlyWorld w) {
         this(w, null, new Point(0, 0));
@@ -104,51 +103,32 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         if (!m_world.boundsContain(newX, newY)) {
             return false;
-        }
-
-        //Check that we can build track on the tile.
-        FreerailsTile newTile = (FreerailsTile)m_world.getTile(newX, newY);
-        int terrainTypeNumber = newTile.getTerrainTypeID();
-        TileTypeImpl terrainType = (TileTypeImpl)m_world.get(SKEY.TERRAIN_TYPES,
-                terrainTypeNumber);
-        TerrainType.Category category = terrainType.getCategory();
-
-        int trackRuleID = m_buildTrackStrategy.getRule(terrainTypeNumber);
-        if(trackRuleID == -1){
-        	return false; //Can't build on this terrain!
-        }
-        
-        TrackRule defaultRule = (TrackRule)m_world.get(SKEY.TRACK_RULES,
-        		trackRuleID);
-        FreerailsTile nextTile = (FreerailsTile)m_world.getTile(newX, newY);
-        TrackConfiguration trackAlreadyPresent2 = nextTile.getTrackConfiguration();
-
+        }                
+       
         TrackRule rule4nextTile;
         TrackRule rule4lastTile;
 
-        if (nextTile.getTrackRule().equals(NullTrackType.getInstance())) {
-            rule4nextTile = defaultRule;
-
-            if (!defaultRule.canBuildOnThisTerrainType(category)) {
-                return false;
-            }
-        } else {
-            rule4nextTile = nextTile.getTrackRule();
+        //Determine the track rule for the next tile.
+        final FreerailsTile nextTile = (FreerailsTile)m_world.getTile(newX, newY);
+        rule4nextTile = getAppropriateTrackRule(newX, newY);
+        
+        if(null == rule4nextTile){
+        	return false; //We can't build track on the tile.
         }
 
+        rule4lastTile = getAppropriateTrackRule(currentX, currentY);
+               
+        if(null == rule4lastTile){
+        	return false; //We can't build track on the tile.
+        }
+        //Determine the track rule for the current tile.
         FreerailsTile currentTile = (FreerailsTile)m_world.getTile(currentX,
-                currentY);
+                currentY);       
 
-        if (currentTile.getTrackRule().equals(NullTrackType.getInstance())) {
-            rule4lastTile = defaultRule;
-        } else {
-            rule4lastTile = currentTile.getTrackRule();
-        }
-
-        //Check for illegal track configurations on the tile we are
-        // leaving.
-        TrackConfiguration trackAlreadyPresent = currentTile.getTrackConfiguration();
-        TrackConfiguration fromConfig = trackAlreadyPresent;
+        //Check for illegal track configurations.
+        final TrackConfiguration trackAlreadyPresent1 = currentTile.getTrackConfiguration();
+        final TrackConfiguration trackAlreadyPresent2 = nextTile.getTrackConfiguration();
+        TrackConfiguration fromConfig = trackAlreadyPresent1;
 
         fromConfig = TrackConfiguration.add(fromConfig, opposite2current);
         fromConfig = TrackConfiguration.add(fromConfig, TILE_CENTER);
@@ -193,15 +173,36 @@ public class BuildTrackExplorer implements GraphExplorer {
             return false;
         }
 
-        /* Set the using existing track track.  We do this becuase a path that uses existing track
+        /* Set the using existing track.  We do this becuase a path that uses existing track
          * is cheaper to build.
          */
-        m_usingExistingTrack = trackAlreadyPresent.contains(goingTo);
+        m_usingExistingTrack = trackAlreadyPresent1.contains(goingTo);
 
         return true;
     }
 
-    public int getEdgeLength() {
+    private TrackRule getAppropriateTrackRule(int x, int y) {
+    	 final FreerailsTile tile = (FreerailsTile)m_world.getTile(x, y);
+		TrackRule rule;
+		if (tile.getTrackRule().equals(NullTrackType.getInstance())) {           
+            int terrainTypeID = tile.getTerrainTypeID();
+            TileTypeImpl terrainType = (TileTypeImpl)m_world.get(SKEY.TERRAIN_TYPES,
+                    terrainTypeID);            
+
+            int trackRuleID = m_buildTrackStrategy.getRule(terrainTypeID);
+            if(trackRuleID == -1){
+            	return null; //Can't build on this terrain!
+            }
+            rule = (TrackRule)m_world.get(SKEY.TRACK_RULES,
+            		trackRuleID);
+
+        } else {
+           rule = tile.getTrackRule();
+        }
+		return rule;
+	}
+
+	public int getEdgeCost() {
         if (m_beforeFirst) {
             throw new IllegalStateException();
         } else {
@@ -214,8 +215,15 @@ public class BuildTrackExplorer implements GraphExplorer {
             if (m_usingExistingTrack) {
                 length = length / 2;
             }
-
-            return length;
+            
+            int x = m_currentPosition.getX();
+			int y = m_currentPosition.getY();
+			TrackRule ruleA = getAppropriateTrackRule(x, y);
+			TrackRule ruleB = getAppropriateTrackRule(x+ edgeDirection.deltaX, y+edgeDirection.deltaY);
+			
+			long price = ruleA.getPrice().getAmount() + ruleB.getPrice().getAmount();  
+			long cost =  length*price;
+            return (int)cost;
         }
     }
 
@@ -285,6 +293,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 		return m_buildTrackStrategy;
 	}
 	public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
+		if(null == trackStrategy) throw new NullPointerException();
 		m_buildTrackStrategy = trackStrategy;
 	}
 }

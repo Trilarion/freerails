@@ -173,7 +173,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private void assertBuildTrackFails(Point p, OneTileMoveVector v,
         TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p,
-                v, rule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
+                v, rule, rule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
         MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(false, status.isOk());
     }
@@ -181,7 +181,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private void assertBuildTrackSuceeds(Point p, OneTileMoveVector v,
         TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p,
-                v, rule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
+                v, rule, rule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
 
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
         MoveStatus status = moveAndTransaction.doMove(getWorld(),
@@ -205,7 +205,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA,
-                southeast, trackRule, getWorld(),
+                southeast, trackRule, trackRule, getWorld(),
                 MapFixtureFactory.TEST_PRINCIPAL);
 
         assertEqualsSurvivesSerialisation(move);

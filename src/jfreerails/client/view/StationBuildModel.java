@@ -5,6 +5,7 @@ package jfreerails.client.view;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -55,6 +56,7 @@ public class StationBuildModel {
     private final StationCancelAction stationCancelAction = new StationCancelAction();
     private final StationBuilder stationBuilder;
     private final ModelRoot modelRoot;
+    private final HashMap<Integer, Action> id2Action = new HashMap<Integer, Action>(); 
 
     public StationBuildModel(StationBuilder sb, ViewLists vl, ModelRoot mr) {
         stationBuilder = sb;
@@ -77,8 +79,13 @@ public class StationBuildModel {
                 action.putValue(Action.SMALL_ICON,
                     new ImageIcon(renderer.getTrackPieceIcon(trackTemplate)));
                 stationChooseActions.add(action);
+                id2Action.put(new Integer(i), action);
             }
         }
+    }
+    
+    public Action getStationChooseAction(Integer ruleID ){
+    	return id2Action.get(ruleID);
     }
 
     public Action[] getStationChooseActions() {

@@ -164,7 +164,7 @@ public class BuildTrackExplorerTest extends TestCase {
     private void buildTrack(int x, int y, OneTileMoveVector direction) {
         TrackRule rule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Point(
-                    x, y), direction, rule, world,
+                    x, y), direction, rule, rule, world,
                 MapFixtureFactory.TEST_PRINCIPAL);
         MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.ok);

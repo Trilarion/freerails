@@ -97,7 +97,7 @@ public class SimpleAStarPathFinder implements FreerailsSerializable,
 
                 int successor = explorer.getVertexConnectedByEdge();
 
-                int successorF = f + explorer.getEdgeLength();
+                int successorF = f + explorer.getEdgeCost();
 
                 //for now, let successor.h=0
                 //successor.g = q.g + distance between successor and q
