@@ -152,6 +152,7 @@ public class DialogueBoxController {
 
 		//Set up select engine dialogue.
 		selectEngine = new SelectEngineJPanel();
+		selectEngine.setCancelButtonActionListener(this.closeCurrentDialogue);
 		selectEngine.setup(w, vl, new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
