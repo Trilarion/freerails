@@ -1,0 +1,15 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	width: 600px;
+
+}
+
+td {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+th {
+	font-family: Arial, Helvetica, sans-serif;
+}.planned {
+	color: #CC3366;
+}

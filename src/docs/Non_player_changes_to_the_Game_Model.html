@@ -6,77 +6,56 @@
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.1  (Win32)">
 	<META NAME="CREATED" CONTENT="20041212;16052853">
 	<META NAME="CHANGED" CONTENT="20041212;16075135">
+<link href="style.css" rel="stylesheet" type="text/css">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H2>Non player changes to the Game Model</H2>
-<H4>City Growth and Decay</H4>
-<P>As time passes, Urban, Industry, and Resource tiles are added and
-removed from cities. Example, a factory tile will relocate from New
-York to Boston if Boston's utiltiy gain exceeds New york's utility
-loss. Utilities are caluculated as follows. The routine that updates
-cities should run once per month.</P>
+<H4 class="planned">City Growth and Decay</H4>
+<P class="planned">As time passes, Urban, Industry, and Resource tiles are added 
+  and removed from cities. Example, a factory tile will relocate from New York 
+  to Boston if Boston's utiltiy gain exceeds New york's utility loss. Utilities 
+  are caluculated as follows. The routine that updates cities should run once 
+  per month.</P>
 <TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
-	<COL WIDTH=128*>
-	<COL WIDTH=64*>
-	<COL WIDTH=64*>
-	<THEAD>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Category</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Utility</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Motivation</P>
-			</TD>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Industry</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Number of Urban Tiles / (1+Number of Industry Tiles)^2</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Urban tiles supply labour to industries. There are decreasing
-				returns to scale.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Resource</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>(Units of Resource Picked Up + c) / (1 + Number of Resource
-				Tiles)</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Resources grow when they are exploited. There are decreasing
-				returns to scale.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Urban</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Units of demanded cargo delivered &ndash; k * Number of Urban
-				Tiles/(1+Number of Industry Tiles)</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Urban tiles value employment and delivery of cargo but are
-				adverse to overcrowding.</P>
-			</TD>
-		</TR>
-	</TBODY>
+  <COL WIDTH=128*>
+  <COL WIDTH=64*>
+  <COL WIDTH=64*>
+  <THEAD>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=50%> <P class="planned">Category</P></TD>
+      <TD WIDTH=25%> <P class="planned">Utility</P></TD>
+      <TD WIDTH=25%> <P class="planned">Motivation</P></TD>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=50%> <P class="planned">Industry</P></TD>
+      <TD WIDTH=25%> <P class="planned">Number of Urban Tiles / (1+Number of Industry 
+          Tiles)^2</P></TD>
+      <TD WIDTH=25%> <P class="planned">Urban tiles supply labour to industries. 
+          There are decreasing returns to scale.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=50%> <P class="planned">Resource</P></TD>
+      <TD WIDTH=25%> <P class="planned">(Units of Resource Picked Up + c) / (1 
+          + Number of Resource Tiles)</P></TD>
+      <TD WIDTH=25%> <P class="planned">Resources grow when they are exploited. 
+          There are decreasing returns to scale.</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=50%> <P class="planned">Urban</P></TD>
+      <TD WIDTH=25%> <P class="planned">Units of demanded cargo delivered &ndash; 
+          k * Number of Urban Tiles/(1+Number of Industry Tiles)</P></TD>
+      <TD WIDTH=25%> <P class="planned">Urban tiles value employment and delivery 
+          of cargo but are adverse to overcrowding.</P></TD>
+    </TR>
+  </TBODY>
 </TABLE>
-<P><BR><BR>
+<P class="planned"><BR>
+  <BR>
 </P>
-<P>Industries owned by Railroads do not enter the utility
-calculations, so when you build an industry, it stays put!</P>
+<P class="planned">Industries owned by Railroads do not enter the utility calculations, 
+  so when you build an industry, it stays put!</P>
 <H4>Payments for delivering cargo</H4>
 <H4>Addition and removal of cargo to stations</H4>
 </BODY>

@@ -49,6 +49,7 @@
 				<include name="**/*.gif" />
 				<include name="**/*.htm" />
 				<include name="**/*.html" />
+				<include name="**/*.css" />
 				<include name="**/*.wav" />
 			</fileset>
 		</copy>
@@ -58,6 +59,7 @@
 				<include name="**/*.png" />
 				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
+				<include name="**/*.css" />
 				<exclude name="javadoc/**/*" />
 			</fileset>
 		</copy>
@@ -128,7 +130,6 @@
 			<fileset dir="${dist}/latest/" includes="jfreerails-*.zip" />
 		</delete>
 		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" todir="${dist}/latest" />
-		<copy file="${bin.dist}" tofile="www/signed_jfreerails.jar" />
 	</target>
 
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
@@ -164,6 +165,8 @@
 
 		<delete dir="${datafiles}" />
 
+		<delete file="website.tar.gz"/>
+
 		<!-- also delete any .class etc under the src directory -->
 		<delete>
 			<fileset dir="${src}" defaultexcludes="no">
@@ -173,6 +176,11 @@
 				<include name="**/*.java~" />
 				<include name="**/Thumbs.db" />
 			</fileset>
+			<fileset dir="www" defaultexcludes="no">
+				<include name="*.jar" />
+				<include name="**/Thumbs.db" />
+			</fileset>
+
 		</delete>
 	</target>
 
@@ -201,6 +209,7 @@
 		<copy todir="${doc}">
 			<fileset dir="${src}">
 				<include name="**/*.html" />
+				<include name="**/*.css" />
 				<include name="**/*.htm" />
 
 				<!--Copy the images used by the functional specification but don't copy all the tile graphics etc.-->
@@ -241,15 +250,15 @@
 	</target>
 
 
-	<target name="webdist" depends="signjar">
-		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz" tarfile="website.tar.gz" />
+	<target name="webdist" depends="signjar, javadoc">
+		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz, **/Thumbs.db" tarfile="website.tar.gz" />
 	</target>
 
 
 
 
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
-	<target name="deploysite" description="Upload website to sourceforge" depends="webdist">
+	<target name="deploysite" description="Upload website to sourceforge" depends="webdist, check_username_and_password">
 
 		<fail unless="u" message="Usage: ant -Du=me -Dp=mypassword target" />
 		<fail unless="p" message="Usage: ant -Du=me -Dp=mypassword target" />
@@ -264,15 +273,14 @@
 	</target>
 
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
-	<target name="updatesite" description="Uploads modified files to website, skips javadoc.">
-		<fail unless="u" message="Usage: ant -Du=me -Dp=mypassword target" />
-		<fail unless="p" message="Usage: ant -Du=me -Dp=mypassword target" />
+	<target name="updatesite" description="Uploads modified files to website, skips javadoc." depends="check_username_and_password">
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir="www">
 				<include name="**/*.html" />
+				<include name="**/*.css" />
 				<include name="**/*.png" />
 				<include name="**/*.jnpl" />
-				<include name="**/*.jar" />
+				<include name="signed_jfreerails.jar" />
 				<exclude name="javadoc/**/*" />
 				<modified />
 			</fileset>
@@ -280,13 +288,17 @@
 	</target>
 
 
-	<target name="signjar" description="Sign the jar file so it can be used with webstart">
+	<target name="signjar" depends="bindist" description="Sign the jar file so it can be used with webstart">
 		<!-- To generate key, use the following:
 		keytool -keystore freerailsKeyStore -genkey -alias Freerails-Developers -keypass friend -storepass friend
 		-->
-		<signjar jar="www/signed_jfreerails.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
+		<signjar jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" signedjar="www/signed_jfreerails.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
 	</target>
 
+	<target name="check_username_and_password">
+		<input  message="Please enter username:" addproperty="u" />
+		<input  message="Please enter password:" addproperty="p" />
+	</target>
 
 
 	<target name="devdist" description="Zips up development environment." depends="clean">

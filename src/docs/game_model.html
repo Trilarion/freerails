@@ -6,6 +6,7 @@
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.1  (Win32)">
 	<META NAME="CREATED" CONTENT="20041212;16040982">
 	<META NAME="CHANGED" CONTENT="20041212;16051298">
+<link href="style.css" rel="stylesheet" type="text/css">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H2>Game Model</H2>
@@ -14,12 +15,11 @@
 travelling at an average speed of 10 mph will make two (and a bit)
 200 mile trips in a year.</P>
 <H4>Map</H4>
-<P>Two maps will be available. A map of south America &ndash; used
-for proper games &ndash; and a small map &ndash; used for a tutorial.
-The maps are divided into square tiles. Tiles are 10 miles across.
-Rather than let the scale vary between maps of different sized
-regions, different sized maps should be used.</P>
-<P>The exact shape of mountain ranges and the distribution of terrain
+<P>Two maps will be available. A map of south America - used for proper games 
+  -and a small map - used for a tutorial. The maps are divided into square tiles. 
+  Tiles are 10 miles across. Rather than let the scale vary between maps of different 
+  sized regions, different sized maps should be used.</P>
+<P class="planned">The exact shape of mountain ranges and the distribution of terrain
 types will vary between games.</P>
 <H4>Terrain</H4>
 <TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
@@ -34,7 +34,7 @@ types will vary between games.</P>
 			etc.</P>
 		</TD>
 	</TR>
-	<TR VALIGN=TOP>
+	<TR VALIGN=TOP class="planned">
 		<TD WIDTH=50%>
 			<P>Right-of-way cost</P>
 		</TD>
@@ -84,10 +84,10 @@ types will vary between games.</P>
 </TABLE>
 <P><BR><BR>
 </P>
-<H4>Terrain Heights</H4>
-<P>Different terrain types will have different heights, I'll call
-this the type-height. The height of a tile will be the weighted
-average of the type-heights of the surrounding tiles.</P>
+<H4 class="planned">Terrain Heights</H4>
+<P class="planned">Different terrain types will have different heights, I'll call 
+  this the type-height. The height of a tile will be the weighted average of the 
+  type-heights of the surrounding tiles.</P>
 <H4>Cargo</H4>
 <P>There are a number of cargo types, e.g. Mail, Passengers,
 Livestock etc. Cargo types fall into one of the following categories:
@@ -95,9 +95,9 @@ Mail, Passengers, Fast Freight, Slow Freight, Bulk Freight. Mail is
 the most sensitive to speed of delivery; Bulk Freight is the least. 
 </P>
 <H4>Cities</H4>
-<P>Cities of random size are added at predefined locations on the map
-when the game starts. As time passes, cities grow and shrink
-depending the amount of cargo picked up and delivered.</P>
+<P>Cities of random size are added at predefined locations on the map when the 
+  game starts.<span class="planned"> As time passes, cities grow and shrink depending 
+  the amount of cargo picked up and delivered.</span></P>
 <H4>Track</H4>
 <P>There are a number of track types, e.g. standard track, double
 track, tunnel etc. A tile can only have track of one type.</P>
@@ -122,9 +122,9 @@ to stop people getting stuck without any trains since you need trains
 to make money.)</P>
 <P>Trains can be scheduled to stop at 2 or more stations.</P>
 <H4>Engines</H4>
-<P>Types of engine are available when you start the game, three other
-types become available later.</P>
-<P>A train's engine can be upgraded.</P>
+<P>Two types of engine are available when you start the game. <span class="planned">Three 
+  other types become available later.</span></P>
+<P class="planned">A train's engine can be upgraded.</P>
 <H4>Wagons</H4>
 <P>There is one wagon type for each cargo type. A wagon can carry 40
 units of cargo. Wagons are free and can be added at any station
@@ -133,173 +133,108 @@ units of cargo. Wagons are free and can be added at any station
 <P>The stations a train stops at and whether it changes its wagons
 when it stops are governed by a train's schedule.</P>
 <H4>Train movement</H4>
-<P>The more wagons a train is pulling, the slower it moves. The
-greater the amount of cargo, the slower the train. The gradient of
-the track also affects speed. When trains arrive at a station it
-stops for a few moments to load and unload cargo. Trains stop
-instantly (this is a simplication so we don't need to look ahead) but
-speed up slowly.</P>
+<P>The more wagons a train is pulling, the slower it moves.<span class="planned"> 
+  The greater the amount of cargo, the slower the train. The gradient of the track 
+  also affects speed.</span> When trains arrive at a station it stops for a few 
+  moments to load and unload cargo. Trains stop instantly (this is a simplication 
+  so we don't need to look ahead)<span class="planned"> but speed up slowly.</span></P>
 <H4>Stations</H4>
-<P>Supply and demand at a station is determined by the tile types
-withing the station's sphere-of-influence. Different station types
-have different sized spheres-of-influence. The spheres-of-influence
-of two stations cannot overlap.</P>
-<H4>The Economy 
-</H4>
-<P>The economy alternates between 5 states.</P>
+<P>Supply and demand at a station is determined by the tile types within the station's 
+  sphere-of-influence. Different station types have different sized spheres-of-influence. 
+  The spheres-of-influence of two stations cannot overlap.</P>
+<H4 class="planned">The Economy </H4>
+<P class="planned">The economy alternates between 5 states.</P>
 <TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
-	<COL WIDTH=43*>
-	<COL WIDTH=43*>
-	<COL WIDTH=43*>
-	<COL WIDTH=43*>
-	<COL WIDTH=85*>
-	<THEAD>
-		<TR VALIGN=TOP>
-			<TH WIDTH=17%>
-				<P>Economic Climate</P>
-			</TH>
-			<TH WIDTH=17%>
-				<P>Base interest rate</P>
-			</TH>
-			<TH WIDTH=17%>
-				<P>Worsens to</P>
-			</TH>
-			<TH WIDTH=17%>
-				<P>Improves to</P>
-			</TH>
-			<TH WIDTH=33%>
-				<P>Effect on track price</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Boom</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>2%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Panic</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>N/A</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P ALIGN=LEFT>+33%</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Prosperity</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>3%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Boom</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P ALIGN=LEFT>+17%</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Moderation</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>4%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Prosperity</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>No change</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>5%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Panic</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Moderation</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>-17%</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Panic</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>6%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>N/A</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>-33%</P>
-			</TD>
-		</TR>
-	</TBODY>
+  <COL WIDTH=43*>
+  <COL WIDTH=43*>
+  <COL WIDTH=43*>
+  <COL WIDTH=43*>
+  <COL WIDTH=85*>
+  <THEAD>
+    <TR VALIGN=TOP> 
+      <TH WIDTH=17%> <P class="planned">Economic Climate</P></TH>
+      <TH WIDTH=17%> <P class="planned">Base interest rate</P></TH>
+      <TH WIDTH=17%> <P class="planned">Worsens to</P></TH>
+      <TH WIDTH=17%> <P class="planned">Improves to</P></TH>
+      <TH WIDTH=33%> <P class="planned">Effect on track price</P></TH>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=17%> <P class="planned">Boom</P></TD>
+      <TD WIDTH=17%> <P ALIGN=LEFT class="planned">2%</P></TD>
+      <TD WIDTH=17%> <P class="planned">Panic</P></TD>
+      <TD WIDTH=17%> <P class="planned">N/A</P></TD>
+      <TD WIDTH=33%> <P ALIGN=LEFT class="planned">+33%</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=17%> <P class="planned">Prosperity</P></TD>
+      <TD WIDTH=17%> <P ALIGN=LEFT class="planned">3%</P></TD>
+      <TD WIDTH=17%> <P class="planned">Recession</P></TD>
+      <TD WIDTH=17%> <P class="planned">Boom</P></TD>
+      <TD WIDTH=33%> <P ALIGN=LEFT class="planned">+17%</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=17%> <P class="planned">Moderation</P></TD>
+      <TD WIDTH=17%> <P ALIGN=LEFT class="planned">4%</P></TD>
+      <TD WIDTH=17%> <P class="planned">Recession</P></TD>
+      <TD WIDTH=17%> <P class="planned">Prosperity</P></TD>
+      <TD WIDTH=33%> <P class="planned">No change</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=17%> <P class="planned">Recession</P></TD>
+      <TD WIDTH=17%> <P ALIGN=LEFT class="planned">5%</P></TD>
+      <TD WIDTH=17%> <P class="planned">Panic</P></TD>
+      <TD WIDTH=17%> <P class="planned">Moderation</P></TD>
+      <TD WIDTH=33%> <P class="planned">-17%</P></TD>
+    </TR>
+    <TR VALIGN=TOP> 
+      <TD WIDTH=17%> <P class="planned">Panic</P></TD>
+      <TD WIDTH=17%> <P ALIGN=LEFT class="planned">6%</P></TD>
+      <TD WIDTH=17%> <P class="planned">N/A</P></TD>
+      <TD WIDTH=17%> <P class="planned">Recession</P></TD>
+      <TD WIDTH=33%> <P class="planned">-33%</P></TD>
+    </TR>
+  </TBODY>
 </TABLE>
-<P STYLE="margin-bottom: 0cm"><BR>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<H4>Stock and Bonds</H4>
-<P STYLE="margin-bottom: 0cm">The value of a bonds is $500k.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
+<H4 class="planned">Stock and Bonds</H4>
+<P class="planned" STYLE="margin-bottom: 0cm">The value of a bonds is $500k.</P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">The interest rate for new bonds = (base
-interest rate) + (number of outstanding bonds). Bonds can only be
-issued if this figure is &lt;= 7. 
+<P class="planned" STYLE="margin-bottom: 0cm">The interest rate for new bonds 
+  = (base interest rate) + (number of outstanding bonds). Bonds can only be issued 
+  if this figure is &lt;= 7. </P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm"><BR>
+<P class="planned" STYLE="margin-bottom: 0cm">New railroads issue 1,000,000 shares 
+  at $5 per share.</P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">New railroads issue 1,000,000 shares at
-$5 per share.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
+<P class="planned" STYLE="margin-bottom: 0cm">Shares are traded in 10,000 share 
+  bundles.</P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">Shares are traded in 10,000 share
-bundles.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
+<P class="planned" STYLE="margin-bottom: 0cm">If the share price is &gt;$100 at 
+  the end of the year, stocks are split 2 for 1.</P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">If the share price is &gt;$100 at the
-end of the year, stocks are split 2 for 1.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
+<P class="planned" STYLE="margin-bottom: 0cm">Stock price = [Net worth + stock 
+  stockholder equity + 5 * profit last year] / [ shares owned by public + 0.5 
+  shares owned by other players]</P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">Stock price = [Net worth + stock
-stockholder equity + 5 * profit last year] / [ shares owned by public
-+ 0.5 shares owned by other players]</P>
-<P STYLE="margin-bottom: 0cm"><BR>
+<P class="planned" STYLE="margin-bottom: 0cm">Let profit last year = 100,000 in 
+  the first year.</P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">Let profit last year = 100,000 in the
-first year.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
+<P class="planned" STYLE="margin-bottom: 0cm">When a player buys or sells shares, 
+  the price used is the price calculate <I>after</I> the shares have changed hands.</P>
+<P class="planned" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">When a player buys or sells shares, the
-price used is the price calculate <I>after</I> the shares have
-changed hands.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">A transaction fee $25,000 applies each
-time a bond is issued or repaid and each time a bundle of shares is
-bought or sold.</P>
+<P class="planned" STYLE="margin-bottom: 0cm">A transaction fee $25,000 applies 
+  each time a bond is issued or repaid and each time a bundle of shares is bought 
+  or sold.</P>
 </BODY>
 </HTML>
