@@ -1,3 +1,6 @@
+26-Nov-2002 00:17:15 Luke Lindsay
+	o Wrote NewFlatTrackExplorer and NewFlatTrackExplorerTest, 
+	in preparation for writing a pathfinder.
 24-Nov-2002 23:19:10 Luke Lindsay
 	o Rewrote PositionOnTrack and added PositionOnTrackTest.
 	track positions can now be store as a single int.
