@@ -1,23 +1,22 @@
 package jfreerails.client.top;
 
-import java.io.IOException;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.io.IOException;
 
-import jfreerails.client.view.ModelRoot;
 import jfreerails.client.common.SynchronizedEventQueue;
+import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.CompositeMoveSplitter;
-import jfreerails.controller.InetConnection;
-import jfreerails.controller.LocalConnection;
 import jfreerails.controller.ConnectionToServer;
-import jfreerails.controller.UntriedMoveReceiver;
+import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.world.top.World;
+import jfreerails.controller.UntriedMoveReceiver;
+import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TimeTickMove;
 import jfreerails.move.WorldChangedEvent;
-import jfreerails.move.Move;
+import jfreerails.world.top.World;
 
 /**
  * This class receives moves from the client. This class tries out moves on the
@@ -141,10 +140,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 	 * the World */
 	synchronized(mutex) {
 	    connection.addMoveReceiver(worldUpdater);
-	    if (connection instanceof InetConnection) {
-		Thread receiveThread = new Thread((InetConnection) connection, "InetConnection");
-		receiveThread.start();
-	    }
 	    world = connection.loadWorldFromServer();
 	    if (! (connection instanceof LocalConnection)) {		
 		MoveExecuter moveExecuter = new MoveExecuter(world, moveReceiver, mutex);

@@ -67,8 +67,6 @@ public class GameServer implements ConnectionListener {
 			}
 			tableModel.addRow (c,
 				((InetConnection) c).getRemoteAddress().toString());
-			Thread thread = new Thread((InetConnection) c);
-			thread.start();
 		    } catch (IOException e) {
 			if (e instanceof SocketException) {
 			    throw (SocketException) e;

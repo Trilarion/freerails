@@ -25,8 +25,7 @@ import jfreerails.world.top.World;
  * only used once on the server (attempts to reconnect cause the socket to spawn
  * another instance).
  */
-public class InetConnection extends Socket implements ConnectionToServer,
-Runnable {
+public class InetConnection extends Socket implements ConnectionToServer {
     /**
      * The socket which clients should connect to.
      * TODO determine this 'scientifically'
@@ -37,19 +36,16 @@ Runnable {
 
     private InetAddress serverAddress;
 
-    private ObjectInputStream objectInputStream;
-
     private Object mutex;
 
     private ServerSocket serverSocket;
     private Socket socket;
     
-    private MoveReceiver moveReceiver;
     private World world;
 
     private ConnectionListener connectionListener;
 
-    private boolean isOpen = false;
+    private Dispatcher dispatcher;
     
     private boolean worldNotYetLoaded = true;
 
@@ -75,10 +71,6 @@ Runnable {
 	}
 
 	public synchronized void send(Serializable s) {
-	    if (! isOpen) {
-		return;
-	    }
-		
 	    try {
 		objectOutputStream.writeObject(s);
 	    } catch (SocketException e) {
@@ -131,71 +123,141 @@ Runnable {
 	connectionListener = null;
     }
 
-    private void processServerCommand(ServerCommand c) {
-	if (c instanceof CloseConnectionCommand) {
-	    disconnect();
-	} else if (c instanceof LoadWorldCommand) {
-	    setState(ConnectionState.INITIALISING);
-	    /*
-	     * TODO in the future, queue up moves from the server whilst
-	     * the client gets a copy of the World, for now just have a
-	     * crude lock
-	     */
-	    synchronized (mutex) {
-		send(world);
-		flush();
-	    }
-	    setState(ConnectionState.READY);
-	}
-    }
+    private class Dispatcher implements Runnable {
+	private MoveReceiver moveReceiver;
+	private ObjectInputStream objectInputStream;
+	private boolean worldNotYetLoaded = true;
 
-    /**
-     * Entry point for the thread dispatching incoming Moves from the remote
-     * side. Processes any moves waiting.
-     */
-    public void run() {
-	/**
-	 * don't read anything until the world has been loaded
-	 */	
-	if (worldNotYetLoaded && mutex == null) {
-		while(worldNotYetLoaded){			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+	public synchronized void addMoveReceiver(MoveReceiver m) {
+	    moveReceiver = m;
 	}
-	    
-	try {	    
-	    while (isOpen) {	    
-		try {
+
+	public synchronized void removeMoveReceiver(MoveReceiver m) {
+	    moveReceiver = null;
+	}
+
+	public synchronized void receiveWorld() throws IOException {
+	    try {
+		while (true) {
 		    Object o = objectInputStream.readObject();
-		    if (o instanceof ServerCommand) {
-			processServerCommand((ServerCommand) o);
-		    } else if ((o instanceof Move) && (moveReceiver != null)) {
-			
-			moveReceiver.processMove((Move) o);
+		    if (o instanceof World) {
+			world = (World) o;
+			setState(ConnectionState.READY);
+			break;
 		    } else {
-			System.out.println("Invalid class sent in stream");
+			System.out.println("Received garbage whilst loading world:" +
+				o );
 		    }
-		} catch (ClassNotFoundException e) {
-		    System.out.println("Unrecognisable command received by "
-				+ "server!");
-		} catch (InvalidClassException e) {
-		    System.out.println("Invalid class exception received " + e);
-		} catch (StreamCorruptedException e) {
-		    System.out.println("StreamCorruptedException received " +
-		    e);
-		} catch (OptionalDataException e) {
-		    System.out.println("OptionalDataException received " + e);
-		}	
+		}
+	    }  catch (ObjectStreamException e) {
+		System.out.println("Caught object stream exception whilst loading "
+			+ "world");
+		throw new IOException(e.toString());
+	    } catch (ClassNotFoundException e) {
+		System.out.println("Received unknown class instead of world " + e);
+		throw new IOException(e.toString());
+	    }
+	    worldNotYetLoaded = false;
+	    /*
+	     * wake up any thread waiting
+	     */
+	    notify();
+	    System.out.println("World received from server");
 	}
-	} catch (IOException e) {
-	    System.out.println("IOException occurred " + e);
+
+	private void processServerCommand(ServerCommand c) {
+	    if (c instanceof CloseConnectionCommand) {
+		System.out.println("CloseConnectionCommand received");
+		disconnect();
+	    } else if (c instanceof LoadWorldCommand) {
+		System.out.println("LoadWorldCommand received");
+		setState(ConnectionState.INITIALISING);
+		/*
+		 * TODO in the future, queue up moves from the server whilst
+		 * the client gets a copy of the World, for now just have a
+		 * crude lock
+		 */
+		synchronized (mutex) {
+		    send(world);
+		    flush();
+		}
+		setState(ConnectionState.READY);
+	    }
 	}
-	System.out.println("Client receive stream closed");
+
+	private synchronized void processNextObject() throws IOException {
+	    while ((objectInputStream == null) ||
+		    ((mutex == null) && worldNotYetLoaded)) {
+		/*
+		 * if we are closed, or if we are open and the world is not yet
+		 * loaded, then wait until the world has been
+		 * loaded. Test mutex to see if we are in a client + therefore
+		 * require the world to be loaded.
+		 */
+		try {
+		    wait();
+		} catch (InterruptedException e) {
+		    /* ignore */
+		}
+	    }
+	    try {
+		Object o;
+		o = objectInputStream.readObject();
+		if (o instanceof ServerCommand) {
+		    processServerCommand((ServerCommand) o);
+		} else if ((o instanceof Move) && (moveReceiver != null)) {
+
+		    moveReceiver.processMove((Move) o);
+		} else {
+		    System.out.println("Invalid class sent in stream");
+		}
+	    } catch (ClassNotFoundException e) {
+		System.out.println("Unrecognisable command received by "
+			+ "server!");
+	    } catch (InvalidClassException e) {
+		System.out.println("Invalid class exception received " + e);
+	    } catch (StreamCorruptedException e) {
+		System.out.println("StreamCorruptedException received " +
+			e);
+		e.printStackTrace();
+		throw new RuntimeException (e);
+	    } catch (OptionalDataException e) {
+		System.out.println("OptionalDataException received " + e);
+	    }
+	}
+
+	/**
+	 * Entry point for the thread dispatching incoming Moves from the remote
+	 * side. Processes any moves waiting.
+	 */
+	public void run() {
+	    try {	    
+		while (true) {
+		    processNextObject();
+		}
+	    } catch (IOException e) {
+		System.out.println("IOException occurred " + e);
+	    }
+	}
+
+	public synchronized void open() throws IOException {
+	    worldNotYetLoaded = true;
+	    objectInputStream = new ObjectInputStream(socket.getInputStream());
+	    /*
+	     * wake up the thread if it's waiting for the connection to open
+	     */
+	    notify();
+	}
+
+	public synchronized void close() {
+	    try {
+		objectInputStream.close();
+	    } catch (IOException e) {
+		System.out.println("Caught an IOException disconnecting " + e);
+	    }
+	    worldNotYetLoaded = true;
+	    objectInputStream = null;
+	}
     }
 
     /**
@@ -224,9 +286,10 @@ Runnable {
 	System.out.println("accepted incoming client connection from " +
 		socket.getRemoteSocketAddress());
 	sender = new Sender();
-	objectInputStream = new ObjectInputStream(socket.getInputStream());
-	System.out.println("got ObjectInputStream");
-	isOpen = true;
+	dispatcher = new Dispatcher();
+	Thread receiveThread = new Thread(dispatcher, "InetConnection");
+	receiveThread.start();
+	dispatcher.open();
 	setState(ConnectionState.WAITING);
     }
 
@@ -235,6 +298,9 @@ Runnable {
      */
     public InetConnection(InetAddress serverAddress) {
 	this.serverAddress = serverAddress;
+	dispatcher = new Dispatcher();
+	Thread receiveThread = new Thread(dispatcher, "InetConnection");
+	receiveThread.start();
     }
 
     /**
@@ -258,11 +324,11 @@ Runnable {
     }
 
     public void addMoveReceiver(MoveReceiver m) {
-	moveReceiver = m;
+	dispatcher.addMoveReceiver(m);
     }
 
     public void removeMoveReceiver(MoveReceiver m) {
-	moveReceiver = null;
+	dispatcher.removeMoveReceiver(m);
     }
 
     public void flush() {
@@ -276,31 +342,8 @@ Runnable {
 	setState(ConnectionState.INITIALISING);
 	send(new LoadWorldCommand());
 	sender.flush();
-	synchronized(objectInputStream){
-	    try {
-		while (true) {
-		    Object o = objectInputStream.readObject();
-		    if (o instanceof World) {
-			world = (World) o;
-			setState(ConnectionState.READY);
-			break;
-		    } else {
-			System.out.println("Received garbage whilst loading world:" +
-				o );
-		    }
-		}
-	    }  catch (ObjectStreamException e) {
-		System.out.println("Caught object stream exception whilst loading "
-			+ "world");
-		throw new IOException(e.toString());
-	    } catch (ClassNotFoundException e) {
-		System.out.println("Received unknown class instead of world " + e);
-		throw new IOException(e.toString());
-	    }
-		worldNotYetLoaded = false;
-		objectInputStream.notify();
+	dispatcher.receiveWorld();
 	return world;
-    }
     }
 
     /**
@@ -325,10 +368,12 @@ Runnable {
 	    flush();
 	    disconnect();
 	} 
+	System.out.println("Connection to remote peer closed");
     }
 
     private void send(FreerailsSerializable s) {
-	sender.send(s);
+	if (sender != null)
+	    sender.send(s);
     }
 
     /**
@@ -337,9 +382,8 @@ Runnable {
     public void open() throws IOException {
 	socket = new Socket(serverAddress, SERVER_PORT);
 	sender = new Sender();
-	objectInputStream = new ObjectInputStream(socket.getInputStream());
+	dispatcher.open();
 	System.out.println("Successfully opened connection to remote peer");
-	isOpen = true;
 	setState(ConnectionState.WAITING);
     }
     
@@ -350,10 +394,10 @@ Runnable {
     private void disconnect() {
 	try {
 	    System.out.println("disconnecting from remote peer!");
-	    isOpen = false;
 	    setState(ConnectionState.CLOSED);
-	    objectInputStream.close();
+	    dispatcher.close();
 	    sender.close();
+	    sender = null;
 	    socket.close();
 	} catch (IOException e) {
 	    System.out.println("Caught an IOException disconnecting " + e);
