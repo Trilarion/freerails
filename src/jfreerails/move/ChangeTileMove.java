@@ -82,7 +82,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
         return ms;
     }
 
-    public Rectangle getUpdatedTiles() {
+    public /*=const*/ Rectangle getUpdatedTiles() {
         Rectangle r = new Rectangle(m_x, m_y, 1, 1);
 
         return r;
