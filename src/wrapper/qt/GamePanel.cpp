@@ -6,15 +6,15 @@
 #include <qtoolbutton.h>
 #include <qwidgetstack.h>
 
-#include "Engine.h"
+#include "GuiEngine.h"
 #include "GameMainWindow.h"
 #include "GameMapView.h"
 #include "GamePanel.h"
 #include "GameWidget.h"
 
-GamePanel::GamePanel(Engine *_engine, GameMapView *_mapView, GameMainWindow* parent, const char* name) : QWidget((QWidget*)parent->getWidget(), name)
+GamePanel::GamePanel(GuiEngine *_guiEngine, GameMapView *_mapView, GameMainWindow* parent, const char* name) : QWidget((QWidget*)parent->getWidget(), name)
 {
-  engine = _engine;
+  guiEngine = _guiEngine;
   mapView = _mapView;
   mainWindow = parent;
   
@@ -202,9 +202,13 @@ void GamePanel::slotTabBuild()
 
 void GamePanel::handler_pause()
 {
-  Engine::GameState state = Engine::Pausing;
+  /*
+  engine::GameState state = Engine::Pausing;
   Message *msg = new Message(Message::stateOfGame, 0, &state);
   engine->sendMsg(msg);
+  */
+  guiEngine->changeGameState(GuiEngine::Pausing);
+  
 }
 
 void GamePanel::handler_track()

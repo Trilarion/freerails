@@ -43,9 +43,9 @@ void GameMainWindow::resize(int w, int h)
   }
 }
 
-void GameMainWindow::setEngine(Engine *_engine)
+void GameMainWindow::setGuiEngine(GuiEngine *_guiEngine)
 {
-  engine = _engine;
+  guiEngine = _guiEngine;
 }
 
 GameModeSelector::GameMode GameMainWindow::askGameMode()
@@ -59,13 +59,13 @@ GameModeSelector::GameMode GameMainWindow::askGameMode()
 
 void GameMainWindow::constructPlayField()
 {
-  map = new GameMap(engine, this);
+  map = new GameMap(guiEngine, this);
   CHECK_PTR(map);
   
-  mapview = new GameMapView(engine, map, this);
+  mapview = new GameMapView(guiEngine, map, this);
   CHECK_PTR(mapview);
 
-  panel = new GamePanel(engine, mapview, this);
+  panel = new GamePanel(guiEngine, mapview, this);
   CHECK_PTR(panel);
   panel->move(widget->width() - 176, 0);
 

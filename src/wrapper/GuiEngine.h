@@ -10,6 +10,7 @@
 #include "MapField.h"
 #include "TrackController.h"
 #include "StationController.h"
+#include "Message.h"
 
 /* #include "Message.h" */
 
@@ -24,10 +25,14 @@ class GuiEngine{
   GuiEngine(Player* _player, int w, int h, char *server, int port); // For a Client game
   ~GuiEngine();
   
-  inline Player * getPlayer(){return player;};
+  inline Player* getPlayer(){return player;};
 
   inline void checkNet(){engine->checkNet();};
   inline void checkNext(int msec){engine->checkNext(msec);}; // This is the function wich will called from ParaGUI or Qt by there timer
+
+  bool haveMsg();
+  Message* getMsg();
+
   
   inline WorldMap* getWorldMap() {return engine->getWorldMap();};  
   inline GameState getGameState(){return ((GameState)engine->getGameState());};

@@ -1,4 +1,6 @@
-Wed Jan 15 02:30:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
+Fri Jan 24 15:42:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
+o the QT GUI is also working with the GuiEngine.
+Wed Jan 22 00:30:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
 o GUIEngine added
 o It is possible to create a server. it doesn't respond to any requests.
   in fact it receives and closes connections.

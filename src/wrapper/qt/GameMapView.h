@@ -13,7 +13,7 @@
 class QPainter;
 class QPixmap;
 
-class Engine;
+class GuiEngine;
 class GameMainWindow;
 class GameMap;
 
@@ -35,7 +35,7 @@ class GameMapView : public QCanvasView
     enum MouseButton {none = 0, left, middle, right};
     
     /** Constructor */
-    GameMapView(Engine *_engine, GameMap *_map, GameMainWindow  *parent, const char *name = 0);
+    GameMapView(GuiEngine *_guiEngine, GameMap *_map, GameMainWindow  *parent, const char *name = 0);
     /** Destructor */
     ~GameMapView();
     /** Event mouse pressed */
@@ -57,7 +57,7 @@ class GameMapView : public QCanvasView
     struct field_data *fldData;
     
     MouseType mouseType;
-    Engine *engine;
+    GuiEngine *guiEngine;
     GameMap *map;
     QPixmap *pixTiles;
     QPixmap *pixTrack;

@@ -8,7 +8,7 @@
 #include <qcanvas.h>
 #include <qpixmap.h>
 
-class Engine;
+class GuiEngine;
 class GameMainWindow;
 
 class GameMap : public QCanvas
@@ -16,12 +16,12 @@ class GameMap : public QCanvas
     Q_OBJECT
   public:
     /** Constrcutor */
-    GameMap(Engine *_engine, GameMainWindow *parent, const char* name = 0);
+    GameMap(GuiEngine *_guiEngine, GameMainWindow *parent, const char* name = 0);
     /** Destructor */
     ~GameMap();
 
   private:
-    Engine *engine;
+    GuiEngine *guiEngine;
 
     QPixmap pixmap;
 };

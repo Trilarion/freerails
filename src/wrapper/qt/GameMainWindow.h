@@ -9,7 +9,7 @@
 #include "BaseMainWindow.h"
 #include "GameModeSelector.h"
 
-class Engine;
+class GuiEngine;
 class GameMenuBar;
 class GameMap;
 class GameMapView;
@@ -42,7 +42,7 @@ class GameMainWindow : public BaseMainWindow
       * Playfield consists of map, panel and buttons
       */
     void constructPlayField();
-    void setEngine(Engine *_engine);
+    void setGuiEngine(GuiEngine *_guiEngine);
 
     void exitGame();
 
@@ -55,7 +55,7 @@ class GameMainWindow : public BaseMainWindow
     GameMapView *mapview;
     GamePanel *panel;
 
-    Engine *engine;
+    GuiEngine *guiEngine;
 };
 
 #endif

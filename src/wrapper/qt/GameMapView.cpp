@@ -5,7 +5,7 @@
 #include <qpainter.h>
 #include <qpixmap.h>
 
-#include "Engine.h"
+#include "GuiEngine.h"
 #include "GameMainWindow.h"
 #include "GameMapView.h"
 #include "GameWidget.h"
@@ -15,11 +15,11 @@
 #include "Station.h"
 #include "TrackController.h"
 
-GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent, const char* name)
+GameMapView::GameMapView(GuiEngine *_guiEngine, GameMap *_map, GameMainWindow* parent, const char* name)
            : QCanvasView((QCanvas*)_map, (QWidget*)parent->getWidget(), name,
                Qt::WStyle_Customize | Qt::WStyle_NoBorder)
 {
-  engine = _engine;
+  guiEngine = _guiEngine;
   map = _map;
   setFrameShape(QFrame::NoFrame);
   setBackgroundMode(Qt::NoBackground);
@@ -49,8 +49,8 @@ GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent,
   bShowGrid = false;
 
   int i1, i2, w, h;
-  w = engine->getWorldMap()->getWidth();
-  h = engine->getWorldMap()->getHeight();
+  w = guiEngine->getWorldMap()->getWidth();
+  h = guiEngine->getWorldMap()->getHeight();
   fldData = new field_data[h * w];
   CHECK_PTR(fldData);
 
@@ -69,7 +69,7 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
   int element_offset;
   int ox, oy, i;
 
-  element_offset = y * engine->getWorldMap()->getWidth() + x;
+  element_offset = y * guiEngine->getWorldMap()->getWidth() + x;
 
   ox = fldData[element_offset].field_x;
   oy = fldData[element_offset].field_y;
@@ -89,19 +89,19 @@ int GameMapView::getPixmapPos(int x, int y, MapField::FieldType type)
   MapField* field;
   int xpos=0;
 
-  field = engine->getWorldMap()->getMapField(x, y - 1);
+  field = guiEngine->getWorldMap()->getMapField(x, y - 1);
   if ((field != NULL) && (field->getType() != type))
     xpos++;
 
-  field = engine->getWorldMap()->getMapField(x + 1, y);
+  field = guiEngine->getWorldMap()->getMapField(x + 1, y);
   if ((field != NULL) && (field->getType() != type))
     xpos += 2;
 
-  field = engine->getWorldMap()->getMapField(x, y + 1);
+  field = guiEngine->getWorldMap()->getMapField(x, y + 1);
   if ((field != NULL) && (field->getType() != type))
     xpos += 4;
 
-  field = engine->getWorldMap()->getMapField(x - 1, y);
+  field = guiEngine->getWorldMap()->getMapField(x - 1, y);
   if ((field != NULL) && (field->getType() != type))
     xpos += 8;
 
@@ -113,19 +113,19 @@ int GameMapView::getRiverPixmapPos(int x, int y)
   MapField* field;
   int xpos=0;
 
-  field = engine->getWorldMap()->getMapField(x, y - 1);
+  field = guiEngine->getWorldMap()->getMapField(x, y - 1);
   if ((field != NULL) && (field->getType() != MapField::river) && (field->getType() != MapField::ocean))
     xpos++;
 
-  field = engine->getWorldMap()->getMapField(x + 1, y);
+  field = guiEngine->getWorldMap()->getMapField(x + 1, y);
   if ((field != NULL) && (field->getType() != MapField::river) && (field->getType() != MapField::ocean))
     xpos += 2;
 
-  field = engine->getWorldMap()->getMapField(x, y + 1);
+  field = guiEngine->getWorldMap()->getMapField(x, y + 1);
   if ((field != NULL) && (field->getType() != MapField::river) && (field->getType() != MapField::ocean))
     xpos += 4;
 
-  field = engine->getWorldMap()->getMapField(x - 1, y);
+  field = guiEngine->getWorldMap()->getMapField(x - 1, y);
   if ((field != NULL) && (field->getType() != MapField::river) && (field->getType() != MapField::ocean))
     xpos += 8;
 
@@ -138,8 +138,8 @@ int GameMapView::get3DPixmapPos(int x, int y, MapField::FieldType type)
   MapField* fieldRight;
   int xpos=0;
 
-  fieldLeft = engine->getWorldMap()->getMapField(x - 1, y);
-  fieldRight = engine->getWorldMap()->getMapField(x + 1, y);
+  fieldLeft = guiEngine->getWorldMap()->getMapField(x - 1, y);
+  fieldRight = guiEngine->getWorldMap()->getMapField(x + 1, y);
   
   if ((fieldLeft != NULL) && (fieldRight != NULL))
   {
@@ -188,7 +188,7 @@ void GameMapView::updatePixmapPos(int x, int y)
 {
   MapField *field;
 
-  field = engine->getWorldMap()->getMapField(x, y);
+  field = guiEngine->getWorldMap()->getMapField(x, y);
   if (field == NULL)
     return;
   MapField::FieldType type = field->getType();
@@ -271,7 +271,7 @@ void GameMapView::updatePixmapPos(int x, int y)
   
   int element_offset, i;
 
-  element_offset = y * engine->getWorldMap()->getWidth() + x;
+  element_offset = y * guiEngine->getWorldMap()->getWidth() + x;
   fldData[element_offset].field_x = ox;
   fldData[element_offset].field_y = oy;
 
@@ -326,16 +326,23 @@ void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
       {
         case buildStation:
         {
+	  /*
 	  Station* new_station = new Station(x, y, NULL, "", Station::Small, "", NULL);
           msg = new Message(Message::addElement, 0, (void *)new_station);
-          engine->sendMsg(msg);
+          guiEngine->sendMsg(msg);
+	  */
+	  guiEngine->buildStation(x,y);
+
           break;
         }
         case buildTrack:
         {
+	  /*
           Track* new_track = new Track(x,y,NULL,0);
           msg = new Message(Message::addElement, 0, (void *)new_track);
-          engine->sendMsg(msg);
+          guiEngine->sendMsg(msg);
+	  */
+	  guiEngine->buildTrack(x,y,0);
           break;
         }
         default:
@@ -437,13 +444,13 @@ void GameMapView::drawContents(QPainter *p, int cx, int cy, int cw, int ch)
   x2 = cw / 30;
   x2++;
   x2 += x1;
-  if(x2 < engine->getWorldMap()->getWidth())
+  if(x2 < guiEngine->getWorldMap()->getWidth())
     x2++;
 
   y2 = ch / 30;
   y2++;
   y2 += y1;
-  if(y2 < engine->getWorldMap()->getHeight())
+  if(y2 < guiEngine->getWorldMap()->getHeight())
     y2++;
 
   for(x=x1;x<x2;x++)

@@ -10,7 +10,7 @@
 #include <qpixmap.h>
 #include <qstring.h>
 
-#include "Engine.h"
+#include "GuiEngine.h"
 #include "GameApplication.h"
 #include "GameMainWindow.h"
 #include "singlegameoptiondialog.h"
@@ -37,12 +37,12 @@ void* runEngine(void *data)
   qDebug("runEngine gestartet");
   int play_time = 0;
   qDebug("this in runEngine: 0x%08x", int(object));
-  qDebug("status in runEngine: %i", int(object->getEngine()->getGameState()));
-  while (object->getEngine()->getGameState() < Engine::Stopping)
+  qDebug("status in runEngine: %i", int(object->getGuiEngine()->getGameState()));
+  while (object->getGuiEngine()->getGameState() < GuiEngine::Stopping)
   {
     object->retrieveMessage();
-    object->getEngine()->checkNet();
-    object->getEngine()->checkNext(play_time);
+    object->getGuiEngine()->checkNet();
+    object->getGuiEngine()->checkNext(play_time);
     usleep(10500);      // wait for 10.5 ms
     play_time += 11;
   }
@@ -102,29 +102,37 @@ int GameApplication::run()
     {
       initSingleGame(tmp_name, tmp_width, tmp_height, 0);
 
-      engine = new Engine(worldMap, playerSelf);
-      CHECK_PTR(engine);
+      /* engine = new Engine(worldMap, playerSelf); */
+      guiEngine=new GuiEngine(playerSelf, tmp_width, tmp_height);
+      CHECK_PTR(guiEngine);
 
 
       // Construct playfield (map, panel, buttons)
-      mW->setEngine(engine);
+      mW->setGuiEngine(guiEngine);
       mW->constructPlayField();
 
       pthread_t ttid_cmd;
       qDebug("this in run: 0x%08x", int(this));
       pthread_create(&ttid_cmd, NULL, &runEngine, (void*)this);
       pthread_detach(ttid_cmd);
+ 
+      guiEngine->changeGameState(GuiEngine::Running);
+      /*
       Engine::GameState state = Engine::Running;
       Message* msg = new Message(Message::stateOfGame, 0, &state);
       qDebug("sende Nachricht an Engine");
       engine->sendMsg(msg);
+      */
       qDebug("Nachricht gesendet");
       application->exec();
       delete mW;
       qDebug("Spiel beendet");
+      guiEngine->changeGameState(GuiEngine::Stopping);
+      /*
       state = Engine::Stopping;
       msg = new Message(Message::stateOfGame, 0, &state);
       engine->sendMsg(msg);
+      */
       pthread_cancel(ttid_cmd);
     }
   }
@@ -160,9 +168,9 @@ void GameApplication::retrieveMessage()
   Message *msg;
 
 //  qDebug("in retrieveMessage");  
-  while(engine->haveMsg())
+  while(getGuiEngine()->haveMsg())
   {
-    msg = engine->getMsg();
+    msg = getGuiEngine()->getMsg();
     qDebug("MsgType is %d", int(msg->getMsgType()));
     qDebug("MsgID is %ld", msg->getMsgID());
   }

@@ -96,3 +96,17 @@ void GuiEngine::changeGameState(GuiEngine::GameState _state){
   sendMsg(msg);
   
 }
+
+
+bool GuiEngine::haveMsg(){
+
+  return engine->haveMsg();
+
+}
+
+
+Message* GuiEngine::getMsg(){
+
+  return engine->getMsg();
+
+}

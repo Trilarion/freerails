@@ -2,14 +2,14 @@
   * Map class (handling and viewing)
   */
 
-#include "Engine.h"
+#include "GuiEngine.h"
 #include "GameMainWindow.h"
 #include "GameMap.h"
 
-GameMap::GameMap(Engine *_engine, GameMainWindow */*parent*/, const char */*name*/)
-       : QCanvas(_engine->getWorldMap()->getWidth() * 30, _engine->getWorldMap()->getHeight() * 30)
+GameMap::GameMap(GuiEngine *_guiEngine, GameMainWindow */*parent*/, const char */*name*/)
+       : QCanvas(_guiEngine->getWorldMap()->getWidth() * 30, _guiEngine->getWorldMap()->getHeight() * 30)
 {
-  engine = _engine;
+  guiEngine = _guiEngine;
 }
 
 GameMap::~GameMap()

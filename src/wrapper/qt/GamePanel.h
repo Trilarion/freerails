@@ -7,7 +7,7 @@
 
 #include <qwidget.h>
 
-class Engine;
+class GuiEngine;
 class GameMainWindow;
 class GameMapView;
 
@@ -19,7 +19,7 @@ class GamePanel : public QWidget
     Q_OBJECT
   public:
     /** Constructor */
-    GamePanel(Engine *_engine, GameMapView *_mapView, GameMainWindow* parent, const char* name = 0);
+    GamePanel(GuiEngine *_guiEngine, GameMapView *_mapView, GameMainWindow* parent, const char* name = 0);
     /** Destructor */
     ~GamePanel();
     
@@ -51,7 +51,7 @@ class GamePanel : public QWidget
     QWidget *panelBuild;
     QWidgetStack *wstTrainBuild;
 
-    Engine *engine;
+    GuiEngine *guiEngine;
     GameMapView *mapView;
     GameMainWindow *mainWindow;
 
