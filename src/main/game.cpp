@@ -3,17 +3,18 @@
 
 #include "Player.h"
 #include "GameElement.h"
+#include "Train.h"
 
 MyGameApplication::MyGameApplication(int argc, char *argv[]):GameApplication(argc, argv) {
   // Some rather silly demonstration code:
+  GameController controll("default",1900,1,1);
   Player pl("me");
   cerr << "Name: " << pl.getName() << endl;
   cerr << "Adress: " << &pl << endl;
-/*  GameElement element(&pl, "foo");
-  element.setPlayer(&pl);
-  cerr << "Adress: " << element.getPlayer() << endl;
-  pl.addGameElement(&element);
-*/
+  Train train(&controll,NULL, &pl);
+  train.setPlayer(&pl);
+  cerr << "Adress: " << train.getPlayer() << endl;
+  pl.addGameElement(&train);
 
 }
 
