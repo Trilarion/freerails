@@ -60,8 +60,7 @@ final public class ScreenHandler {
 		bufferStrategy = frame.getBufferStrategy();
 
 		setRepaintOffAndDisableDoubleBuffering(frame);
-		System.out.println("Created new BufferStrategy");
-		System.out.println(frame.getSize().toString());
+		
 	}
 
 	public Graphics getDrawGraphics() {

@@ -330,9 +330,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
         wi = new NonNullElements(KEY.TRAINS, w);
         if(wi.next()){
             display();
-        }else{
-            System.out.println("No trains to display!");
-        }                
+        }              
     }
     
     public Schedule getNewSchedule(){

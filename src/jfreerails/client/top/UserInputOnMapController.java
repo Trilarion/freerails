@@ -74,7 +74,7 @@ public class UserInputOnMapController implements CursorEventListener {
 				}
 			case KeyEvent.VK_F8 :
 				{
-					System.out.println("Build station");
+					
 					float scale = mapView.getScale();
 					Point tile = new Point(ce.newPosition); //defensive copy.
 					Dimension tileSize = new Dimension((int) scale, (int) scale);
@@ -94,7 +94,7 @@ public class UserInputOnMapController implements CursorEventListener {
 	}
 
 	private void buildTrain(CursorEvent ce) {
-		System.out.println("Build train");
+		
 		dialogueBoxController.showSelectEngine();
 		//trainBuilder.buildTrain(ce.newPosition);
 	}

@@ -178,12 +178,12 @@ public class DialogueBoxController {
 	}
 
 	public void showGameControls() {
-		System.out.println("showGameControls");
+		
 		showContent(this.showControls);
 	}
 
 	public void showSelectWagons() {
-		System.out.println("showSelectWagons");
+		
 		selectWagons.resetSelectedWagons();
 		showContent(selectWagons);
 	}

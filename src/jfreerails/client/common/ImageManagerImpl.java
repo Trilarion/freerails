@@ -61,9 +61,10 @@ public class ImageManagerImpl implements ImageManager {
 		read = read.replace(File.separatorChar, '/');
 		URL url = ImageManagerImpl.class.getResource(read);
 		if(null == url){
-			System.out.println(read);
+			
 			throw new IOException("Couldn't find: "+read);
 		}
+		System.out.println(url);
 		Image tempImage = ImageIO.read(url);
 		Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getWidth(null), Transparency.BITMASK);
 		Graphics g = compatibleImage.getGraphics();

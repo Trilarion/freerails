@@ -66,7 +66,7 @@ public class StationBuilder {
 		
 		w.add(KEY.STATIONS, new StationModel(p.x, p.y, stationName, w.size(KEY.CARGO_TYPES)));	
 		
-		System.out.println(stationName + " built at (" + (int)p.getX() + "," + (int)p.getY() + ")");		
+				
 	}
 	
 	public World getWorld(){
