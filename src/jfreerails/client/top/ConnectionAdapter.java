@@ -1,7 +1,6 @@
 package jfreerails.client.top;
 
 import java.io.IOException;
-import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.LocalConnection;
@@ -31,11 +30,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     UncommittedMoveReceiver uncommittedReceiver;
     MoveReceiver moveReceiver;
     World world;
-
-    /**
-     * The mutex that controls access to the local DB
-     */
-    Object mutex;
 
     public ConnectionAdapter(ModelRoot mr) {
         modelRoot = mr;
@@ -73,15 +67,11 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
                 connection.flush();
             }
 
-            synchronized (mutex) {
-                moveReceiver.processMove(move);
-            }
+            moveReceiver.processMove(move);
         }
 
         public void setMoveReceiver(MoveReceiver moveReceiver) {
-            synchronized (mutex) {
-                this.moveReceiver = moveReceiver;
-            }
+            this.moveReceiver = moveReceiver;
         }
     }
 
@@ -103,15 +93,11 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     public MoveStatus tryDoMove(Move move) {
-        synchronized (mutex) {
-            return move.tryDoMove(world);
-        }
+        return move.tryDoMove(world);
     }
 
     public MoveStatus tryUndoMove(Move move) {
-        synchronized (mutex) {
-            return move.tryUndoMove(world);
-        }
+        return move.tryUndoMove(world);
     }
 
     private void closeConnection() {
@@ -120,8 +106,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
         modelRoot.getUserMessageLogger().println("Connection to server closed");
     }
 
-    public void setConnection(ConnectionToServer c) throws IOException {
-        //SynchronizedEventQueue eventQueue = SynchronizedEventQueue.getInstance();
+    public synchronized void setConnection(ConnectionToServer c)
+        throws IOException {
         if (connection != null) {
             closeConnection();
             connection.removeMoveReceiver(worldUpdater);
@@ -131,30 +117,26 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
         connection.open();
 
         if (connection instanceof LocalConnection) {
-            mutex = ((LocalConnection)connection).getMutex();
             worldUpdater.setMoveReceiver(moveReceiver);
-        } else {
-            /* mutex = some other object */
-            mutex = new Integer(0);
         }
 
         /* don't allow other events to update until we've downloaded our copy of
          * the World */
-        synchronized (mutex) {
-            connection.addMoveReceiver(worldUpdater);
-            world = connection.loadWorldFromServer();
-            modelRoot.setWorld(world);
+        //synchronized (mutex) {
+        connection.addMoveReceiver(worldUpdater);
+        world = connection.loadWorldFromServer();
+        modelRoot.setWorld(world);
 
-            //  if (!(connection instanceof LocalConnection)) {
-            moveExecuter = new NonAuthoritativeMoveExecuter(world,
-                    moveReceiver, mutex, modelRoot);
-            worldUpdater.setMoveReceiver(moveExecuter);
-            uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
-            ((NonAuthoritativeMoveExecuter.PendingQueue)uncommittedReceiver).addMoveReceiver(connection);
-            //  } else {
-            //      uncommittedReceiver = connection;
-            //  }
-        }
+        //  if (!(connection instanceof LocalConnection)) {
+        moveExecuter = new NonAuthoritativeMoveExecuter(world, moveReceiver,
+                modelRoot);
+        worldUpdater.setMoveReceiver(moveExecuter);
+        uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
+        ((NonAuthoritativeMoveExecuter.PendingQueue)uncommittedReceiver).addMoveReceiver(connection);
+        //  } else {
+        //      uncommittedReceiver = connection;
+        //  }
+        // }
     }
 
     public void setMoveReceiver(MoveReceiver m) {
@@ -162,13 +144,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
         //I don't want moves split at this stage since I want to be able
         //to listen for composite moves.
         moveReceiver = m;
-    }
-
-    /**
-     * @deprecated
-     */
-    public Object getMutex() {
-        return mutex;
     }
 
     public GameModel getModel() {

@@ -41,14 +41,6 @@ public abstract class Client {
         return receiver.world;
     }
 
-    /**
-     * Returns a mutex to the clients local DB
-     * @deprecated
-     */
-    public Object getMutex() {
-        return receiver.mutex;
-    }
-
     public GameModel getModel() {
         return this.receiver.getModel();
     }

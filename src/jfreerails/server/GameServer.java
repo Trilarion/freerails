@@ -82,8 +82,7 @@ public class GameServer {
          */
         public LocalConnection getLocalConnection() {
             synchronized (connections) {
-                LocalConnection connection = new LocalConnection(gameEngine.getWorld(),
-                        gameEngine.getGameMutex());
+                LocalConnection connection = new LocalConnection(gameEngine.getWorld());
                 addConnection(connection);
 
                 return connection;
@@ -123,7 +122,6 @@ public class GameServer {
                 } else if (c instanceof LocalConnection) {
                     ((LocalConnection)c).setWorld(gameEngine.getWorld());
                     tableModel.addRow(c, "Local connection");
-                    ((LocalConnection)c).setMutex(gameEngine.getGameMutex());
                 }
             }
         }

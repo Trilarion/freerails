@@ -20,21 +20,8 @@ public class LocalConnection implements ConnectionToServer {
      */
     private boolean sendMoves = false;
 
-    /**
-     * This object is used to hold a lock whilst the servers World is being
-     * updated. Clients should acquire this lock whilst accessing the World.
-     */
-    private Object mutex;
-
     public void flush() {
         // do nothing
-    }
-
-    /**
-     * @deprecated
-     */
-    public Object getMutex() {
-        return mutex;
     }
 
     public void addConnectionListener(ConnectionListener l) {
@@ -78,11 +65,9 @@ public class LocalConnection implements ConnectionToServer {
 
     /**
      * This constructor is called by the server
-     * @deprecated
      */
-    public LocalConnection(World w, Object mutex) {
+    public LocalConnection(World w) {
         world = w;
-        this.mutex = mutex;
         setState(ConnectionState.WAITING);
     }
 
@@ -143,8 +128,6 @@ public class LocalConnection implements ConnectionToServer {
 
     public void open() {
         peer.connect(this);
-        mutex = peer.mutex;
-
         world = peer.world;
         setState(ConnectionState.WAITING);
         peer.setState(ConnectionState.WAITING);
@@ -153,7 +136,6 @@ public class LocalConnection implements ConnectionToServer {
     public void close() {
         sendMoves = false;
         world = null;
-        mutex = null;
         peer.disconnect();
         setState(ConnectionState.CLOSED);
 
@@ -179,12 +161,5 @@ public class LocalConnection implements ConnectionToServer {
         if (connectionListener != null) {
             connectionListener.connectionStateChanged(this);
         }
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setMutex(Object mutex) {
-        this.mutex = mutex;
     }
 }

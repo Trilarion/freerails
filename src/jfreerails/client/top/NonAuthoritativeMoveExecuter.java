@@ -26,10 +26,7 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
     private PendingQueue pendingQueue = new PendingQueue();
     private ModelRoot modelRoot;
 
-    /**
-     * @deprecated
-     */
-    public NonAuthoritativeMoveExecuter(World w, MoveReceiver mr, Object mutex,
+    public NonAuthoritativeMoveExecuter(World w, MoveReceiver mr,
         ModelRoot modelRoot) {
         super(w, mr);
         this.modelRoot = modelRoot;
