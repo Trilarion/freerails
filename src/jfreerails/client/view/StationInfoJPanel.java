@@ -37,8 +37,7 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
     
     private ReadOnlyWorld w;
     private ModelRoot modelRoot;
-    private WorldIterator wi;
-    private boolean ignoreMoves = true;
+    private WorldIterator wi;   
     
     /**
      * The index of the cargoBundle associated with this station.
@@ -249,11 +248,11 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
     
     private final ComponentAdapter componentListener = new ComponentAdapter() {
         public void componentHidden(ComponentEvent e) {
-            ignoreMoves = true;
+           
         }
         
         public void componentShown(ComponentEvent e) {
-            ignoreMoves = false;
+           
             int i = wi.getIndex();
             wi.reset();
             if (i != WorldIterator.BEFORE_FIRST) {
@@ -282,7 +281,7 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
     }
     
     private void reactToUpdate(KEY key, int changedIndex, boolean isAddition){
-        if(ignoreMoves){
+        if(!isVisible()){
             return;
         }
         
@@ -296,22 +295,17 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
         } else if (key == KEY.STATIONS) {
             wi.reset();
             if (currentIndex != WorldIterator.BEFORE_FIRST) {
-                wi.gotoIndex(currentIndex);
+                wi.gotoIndex(currentIndex);                
             }
             if (isAddition && wi.getIndex() == WorldIterator.BEFORE_FIRST) {
                 if (wi.next()) {
                     display();
                 }
             }
-            /* not sure about the following
-            if (changedIndex < currentIndex) {
-                previousStation.setEnabled(lm.getBefore() != null);
-            } else if (changedIndex > currentIndex) {
-                nextStation.setEnabled(lm.getAfter() != null);
-            } else {
-                display();
-            }
-             */
+          
+            if(currentIndex == changedIndex){
+            	 display();
+            }                     
         }
         return;
         
