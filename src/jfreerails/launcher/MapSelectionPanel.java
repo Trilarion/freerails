@@ -17,7 +17,7 @@ import javax.swing.event.*;
  * @author rtuck99@users.sourceforge.net
  */
 class MapSelectionPanel extends javax.swing.JPanel {
-    private final Launcher owner;
+    private final LauncherInterface owner;
     
     private static final int LOAD_SAVED_GAME = 0;
     static final int START_NEW_MAP = 1;
@@ -39,7 +39,7 @@ class MapSelectionPanel extends javax.swing.JPanel {
     }
     
     
-    MapSelectionPanel(Launcher owner) {
+    MapSelectionPanel(LauncherInterface owner) {
         this.owner = owner;
         
         initComponents();

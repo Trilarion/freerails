@@ -15,9 +15,9 @@ import javax.swing.table.TableModel;
  * @author  rtuck99@users.sourceforge.net
  */
 class ServerStatusPanel extends javax.swing.JPanel {
-    private final Launcher owner;
+    private final LauncherInterface owner;
     
-    ServerStatusPanel(Launcher owner) {
+    ServerStatusPanel(LauncherInterface owner) {
         this.owner = owner;
         initComponents();
         owner.setNextEnabled(true);

@@ -30,7 +30,7 @@ import jfreerails.world.player.Player;
  * @author  rtuck99@users.sourceforge.net
  */
 public class Launcher extends javax.swing.JFrame implements
-FreerailsProgressMonitor {
+FreerailsProgressMonitor, LauncherInterface {
     private static final Logger logger = Logger.getLogger(Launcher.class.getName());
     private static String QUICKSTART = "-quickstart";
     private static final int GAME_SPEED_SLOW = 10;
@@ -49,11 +49,11 @@ FreerailsProgressMonitor {
         jProgressBar1.setMaximum(max);
     }
     
-    void setInfoText(String text) {
+    public void setInfoText(String text) {
         infoLabel.setText(text);
     }
     
-    void setNextEnabled(boolean enabled) {
+    public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
         if (nextIsStart) {
             nextButton.setText("Start");

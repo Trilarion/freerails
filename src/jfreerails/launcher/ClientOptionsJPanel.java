@@ -22,7 +22,7 @@ import javax.swing.event.*;
  */
 class ClientOptionsJPanel extends javax.swing.JPanel {
     private static final Logger logger = Logger.getLogger(ClientOptionsJPanel.class.getName());
-    private final Launcher owner;
+    private final LauncherInterface owner;
     
     String getPlayerName() {
         return playerName.getText();
@@ -124,7 +124,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         this.jPanel4.setVisible(b);
     }
     
-    public ClientOptionsJPanel(Launcher owner) {
+    public ClientOptionsJPanel(LauncherInterface owner) {
         this.owner = owner;
         initComponents();
         listModel = new DisplayModesComboBoxModels();

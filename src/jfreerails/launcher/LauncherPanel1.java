@@ -20,7 +20,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     static final int MODE_JOIN_NETWORK_GAME = 2;
     static final int MODE_SERVER_ONLY = 3;
     
-    private final Launcher owner;
+    private final LauncherInterface owner;
     
     private final ButtonModel[] buttonModels = new ButtonModel[4];
     
@@ -59,7 +59,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         owner.setNextEnabled(isValid);
     }
     
-    public LauncherPanel1(Launcher owner) {
+    public LauncherPanel1(LauncherInterface owner) {
         initComponents();
         this.owner = owner;
         
