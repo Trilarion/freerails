@@ -10,6 +10,8 @@
 #include <pgapplication.h>
 #include <pgwidgetlist.h>
 
+#define WRAPPERTYPE_PARAGUI 2 
+
 class GameApplication : public BaseApplication {
 
 public:
@@ -21,6 +23,7 @@ public:
     bool initScreen(int x, int y, int w, int h);
     void setCaption(const char *title);
     void run();
+    int wrapperType() { return WRAPPERTYPE_PARAGUI; };
 
 private:
     struct PG_Application* pGlobalApp;

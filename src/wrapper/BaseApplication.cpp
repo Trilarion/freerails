@@ -23,3 +23,7 @@ void BaseApplication::setCaption(const char *title) {
 void BaseApplication::run() {
 
 }
+
+int BaseApplication::wrapperType() {
+  return WRAPPERTYPE_BASE;
+}

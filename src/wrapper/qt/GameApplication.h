@@ -11,6 +11,8 @@
 #include "stdlib.h"
 #include "stdio.h"
 
+#define WRAPPERTYPE_QT 2
+
 class GameApplication : public BaseApplication {
 
 public:
@@ -22,6 +24,7 @@ public:
     bool initScreen(int x, int y, int w, int h);
     void setCaption(const char *title);
     void run();
+	int wrapperType() { return WRAPPERTYPE_QT; };
 
     /* ONLY for internal use */
     QWidget* getWidget() {return widget;};
