@@ -36,8 +36,8 @@ final public class MoveStatus {
 		
 		//Next 2 lines are just for debuging.
 		//It lets us see where moves are failing.
-		Exception e = new Exception();
-		e.printStackTrace();
+		//Exception e = new Exception();
+		//e.printStackTrace();
 		
 		
 		return new MoveStatus(false, reason);

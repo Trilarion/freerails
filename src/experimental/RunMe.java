@@ -15,20 +15,23 @@ import jfreerails.client.common.ScreenHandler;
  */
 public class RunMe {
 
-    /** Creates new RunMe */
-    public RunMe() {
-    }
+	/** Creates new RunMe */
+	public RunMe() {
+	}
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main (String args[]) {
-       JFrame jFrame = new jfreerails.client.top.ClientJFrame(new SimpleComponentFactoryImpl2());
-       //jFrame.show();
-       ScreenHandler screenHandler = new ScreenHandler(jFrame, false);
-        GameLoop gameLoop = new GameLoop(screenHandler);
-        Thread t = new Thread(gameLoop);
-        t.start();
-    }
+	/**
+	* @param args the command line arguments
+	*/
+	public static void main(String args[]) {
+		JFrame jFrame =
+			new jfreerails.client.top.ClientJFrame(
+				new SimpleComponentFactoryImpl2());
+		//jFrame.show();
+		ScreenHandler screenHandler =
+			new ScreenHandler(jFrame, ScreenHandler.WINDOWED_MODE, null);
+		GameLoop gameLoop = new GameLoop(screenHandler);
+		Thread t = new Thread(gameLoop);
+		t.start();
+	}
 
 }

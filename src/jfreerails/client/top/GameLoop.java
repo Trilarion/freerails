@@ -23,19 +23,19 @@ final public class GameLoop implements Runnable {
 	final ScreenHandler screenHandler;
 
 	final static int TARGET_FPS = 30;
-	
+
 	private final Object mutex;
 
 	FPScounter fPScounter;
 
 	public GameLoop(ScreenHandler s) {
-	    screenHandler = s;
+		screenHandler = s;
 		mutex = new Object();
 	}
 
 	public GameLoop(ScreenHandler s, Object mutex) {
-	    this.mutex = mutex;
-	    screenHandler = s;
+		this.mutex = mutex;
+		screenHandler = s;
 	}
 
 	public void run() {
@@ -45,20 +45,19 @@ final public class GameLoop implements Runnable {
 
 		Toolkit awtToolkit = Toolkit.getDefaultToolkit();
 
-		EventQueue eventQueue = awtToolkit.getSystemEventQueue();	
+		EventQueue eventQueue = awtToolkit.getSystemEventQueue();
 
 		SynchronizedEventQueue synchronizedEventQueue;
-		
-		if(eventQueue instanceof SynchronizedEventQueue){
-			synchronizedEventQueue = (SynchronizedEventQueue)eventQueue;
-			if(synchronizedEventQueue.getMutex() != this.mutex){
+
+		if (eventQueue instanceof SynchronizedEventQueue) {
+			synchronizedEventQueue = (SynchronizedEventQueue) eventQueue;
+			if (synchronizedEventQueue.getMutex() != this.mutex) {
 				throw new IllegalStateException();
 			}
-		}else{
+		} else {
 			synchronizedEventQueue = new SynchronizedEventQueue(this.mutex);
 			eventQueue.push(synchronizedEventQueue);
 		}
-		
 
 		fPScounter = new FPScounter();
 
@@ -70,37 +69,50 @@ final public class GameLoop implements Runnable {
 
 			frameStartTime = System.currentTimeMillis();
 
-			synchronized (mutex) {
-				
-				Graphics g = screenHandler.getDrawGraphics();
+			if (!screenHandler.isMinimised()) {
 
-				try {
+				synchronized (mutex) {
 
-					screenHandler.frame.paintComponents(g);
+					Graphics g = screenHandler.getDrawGraphics();
 
-					fPScounter.updateFPSCounter(frameStartTime, g);
-
-				} finally {
-					g.dispose();
-				}
-				screenHandler.swapScreens();
-			}
-			Toolkit.getDefaultToolkit().sync();
-
-			if (LIMIT_FRAME_RATE) {
-				long deltatime = System.currentTimeMillis() - frameStartTime;
-
-				while (deltatime < (1000 / TARGET_FPS)) {
 					try {
-						long sleeptime = (1000 / TARGET_FPS) - deltatime;
-						Thread.sleep(sleeptime);
 
-					} catch (Exception e) {
-						e.printStackTrace();
+						screenHandler.frame.paintComponents(g);
+
+						fPScounter.updateFPSCounter(frameStartTime, g);
+
+					} finally {
+						g.dispose();
 					}
-					deltatime = System.currentTimeMillis() - frameStartTime;
+					screenHandler.swapScreens();
+				}
+				Toolkit.getDefaultToolkit().sync();
+
+				if (LIMIT_FRAME_RATE) {
+					long deltatime =
+						System.currentTimeMillis() - frameStartTime;
+
+					while (deltatime < (1000 / TARGET_FPS)) {
+						try {
+							long sleeptime = (1000 / TARGET_FPS) - deltatime;
+							Thread.sleep(sleeptime);
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						deltatime = System.currentTimeMillis() - frameStartTime;
+					}
+				}
+			} else {
+				try {
+					//The window is minimised
+					Thread.sleep(200);
+
+				} catch (Exception e) {
+
 				}
 			}
+			Thread.yield();
 		}
 	}
 

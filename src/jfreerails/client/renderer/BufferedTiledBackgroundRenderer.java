@@ -119,7 +119,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
 				newVisibleRectectangle.y,
 				null);
 			bufferRect.setBounds(newVisibleRectectangle);
-		} while (backgroundBuffer.contentsLost() && iterations <10);
+		} while (backgroundBuffer.contentsLost() );
 
 	}
 

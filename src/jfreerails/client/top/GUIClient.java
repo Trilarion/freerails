@@ -1,5 +1,6 @@
 package jfreerails.client.top;
 
+import java.awt.DisplayMode;
 import java.io.IOException;
 import javax.swing.JFrame;
 
@@ -34,36 +35,38 @@ public class GUIClient extends Client {
 	 * sets up a connnection with a local server. Currently this is the only
 	 * form of connection supported
 	 */
-	public GUIClient(
-		LocalConnection server,
-		boolean fullscreen,
-		boolean nogameloop)
-		throws IOException {
+	public GUIClient(LocalConnection server, int mode, DisplayMode dm) throws IOException {
 		receiver = new ConnectionAdapter();
 		ConnectionToServer connection = new LocalConnection(server);
 		receiver.setConnection(connection);
 		moveChainFork = new MoveChainFork();
 		receiver.setMoveReceiver(moveChainFork);
+		
+		
+		GUIComponentFactoryImpl gUIComponentFactory =
+					new GUIComponentFactoryImpl();
+		JFrame client = gUIComponentFactory.createClientJFrame();
+		
+		
+		//We want to setup the screen handler before creating the view lists since the 
+		//ViewListsImpl creates images that are compatible with the current display settings 
+		//and the screen handler may change the display settings.
+		ScreenHandler screenHandler= new ScreenHandler(client, mode, dm);
+		
 		ViewLists viewLists = new ViewListsImpl(receiver.world);
 		if (!viewLists.validate(receiver.world)) {
 			throw new IllegalArgumentException();
 		}
-		GUIComponentFactoryImpl gUIComponentFactory =
-			new GUIComponentFactoryImpl();
+		
 		gUIComponentFactory.setup(viewLists, this);
 		moveChainFork.add(gUIComponentFactory);
-		JFrame client = gUIComponentFactory.createClientJFrame();
+		
+		
+		System.out.println("creating gameloop");
+		GameLoop gameLoop = new GameLoop(screenHandler, server.getMutex());
+		Thread t = new Thread(gameLoop);
+		t.start();
 
-		if (nogameloop) {
-			client.setSize(740, 500);
-			client.show();
-		} else {
-			ScreenHandler screenHandler = new ScreenHandler(client, fullscreen);
-			System.out.println("creating gameloop");
-			GameLoop gameLoop = new GameLoop(screenHandler, server.getMutex());
-			Thread t = new Thread(gameLoop);
-			t.start();
-		}
 	}
 
 	/**

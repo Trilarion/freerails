@@ -1,3 +1,5 @@
+03-Sep-2003 21:50:00 Luke
+	o Added GUI to select display mode and number of clients.
 28-Aug-2003 23:00:00 Luke
 	o Made train speed decrease with no of wagons.
 	o Made fare increase with distacne travelled.

@@ -71,8 +71,8 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         add(stationNameJLabel, gridBagConstraints);
 
         ordersJLabel.setText("wait until full / don't wait");
@@ -80,8 +80,8 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipadx = 6;
-        gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 5);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 5);
         add(ordersJLabel, gridBagConstraints);
 
     }//GEN-END:initComponents
@@ -133,7 +133,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
          
          //Set consist
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
-        trainViewJPanel.display(0, index);
+        trainViewJPanel.display(trainOrders.trainNumber, index);
         
         //Show priority orders.
         if(trainOrders.isPriorityOrder){

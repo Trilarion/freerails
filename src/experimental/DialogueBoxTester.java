@@ -50,7 +50,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     private ViewLists vl;
     
     TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
-           
+    
     /** Creates new form TestGlassPanelMethod */
     public DialogueBoxTester() {
         
@@ -93,22 +93,20 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
         TrainOrdersModel order2 =
         new TrainOrdersModel(0, new int[] { 1, 2, 0, 0,0 }, true);
         TrainOrdersModel order3 =
-        new TrainOrdersModel(0, null, true);
-        
+        new TrainOrdersModel(0, null, true);        
         schedule.setOrder(0, order);
         schedule.setOrder(1, order);
+        
+        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());        
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID));        
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
+        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
+        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
-        schedule.setPriorityOrders(order);
-        
-        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
-        
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID));
-        
-        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, scheduleID));
-        
+        schedule.setPriorityOrders(order);        
+        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
         w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID));
         
         try {

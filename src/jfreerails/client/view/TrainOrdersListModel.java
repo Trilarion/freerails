@@ -32,10 +32,12 @@ public class TrainOrdersListModel extends AbstractListModel {
         public final boolean isPriorityOrder; 
         public final int gotoStatus;
         public final TrainOrdersModel order;
-        public TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrdersModel order){
+        public final int trainNumber;
+        public TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrdersModel order, int trainNumber){
             this.isPriorityOrder = isPriorityOrder; 
             this.gotoStatus = gotoStatus;
-            this.order = order;           
+            this.order = order;      
+            this.trainNumber = trainNumber;
         }
     }
     
@@ -67,7 +69,7 @@ public class TrainOrdersListModel extends AbstractListModel {
        
         boolean isPriorityOrders = 0 == index && s.hasPriorityOrders();
         TrainOrdersModel order =  getSchedule().getOrder(index);
-        return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order);
+        return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order, trainNumber);
     }
     
     public int getSize() {

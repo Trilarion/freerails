@@ -7,7 +7,6 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.controller.CalcSupplyAtStations;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.Money;
 import jfreerails.world.station.StationModel;

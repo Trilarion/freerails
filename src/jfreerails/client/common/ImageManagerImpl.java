@@ -68,7 +68,7 @@ public class ImageManagerImpl implements ImageManager {
 		}
 		//System.out.println(url);
 		Image tempImage = ImageIO.read(url);
-		Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
+		Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.TRANSLUCENT);
 		Graphics g = compatibleImage.getGraphics();
 		g.drawImage(tempImage, 0, 0, null);
 		imageHashMap.put(relativeFilename, compatibleImage);
