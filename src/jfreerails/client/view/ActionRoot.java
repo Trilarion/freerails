@@ -54,10 +54,10 @@ public class ActionRoot {
         ReadOnlyWorld world = modelRoot.getWorld();
 
         if (world.size(SKEY.TRACK_RULES) > 0) {
-            trackMoveProducer = new TrackMoveProducer(modelRoot);
-            trackBuildModel = new TrackBuildModel(trackMoveProducer, world, vl, this);
+            trackMoveProducer = new TrackMoveProducer(modelRoot);           
             stationBuildModel = new StationBuildModel(new StationBuilder(
                         modelRoot), vl, modelRoot);
+            trackBuildModel = new TrackBuildModel(trackMoveProducer, world, vl, stationBuildModel);
         }
     }
 

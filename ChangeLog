@@ -1,3 +1,5 @@
+Jul 21, 2004 Luke	
+	o Remove some circular dependencies.
 Jul 07, 2004 Luke	
 	o Fixed problem with unit tests in jfreerails.controller.net
 Jul 07, 2004 Luke	
