@@ -19,10 +19,10 @@ public:
   
   void addController(Controller* _controller);
   
-  Controller* getController(int _typeID);
+  Controller* getController(GameElement::TypeID _typeID);
 private:
 
-  std::map<int,Controller*> controllerMap;
+  std::map<GameElement::TypeID,Controller*> controllerMap;
 
 };
 

@@ -62,7 +62,7 @@ void Engine::Init(Player* _player)
   
   controllerDispatcher->addController(new PlayerController());
   
-  controllerDispatcher->getController(1)->addGameElement(_player);
+  controllerDispatcher->getController(GameElement::idPlayer)->addGameElement(_player);
 
   gameState = Waiting;
 
