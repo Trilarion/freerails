@@ -41,10 +41,12 @@ public class StationPlacementCursor extends MouseInputAdapter {
     private float scale;
     
     public void mouseMoved(MouseEvent e) {
+    	if(stationBuildModel.isPositionFollowsMouse()){
 	Point p = e.getPoint();
 	Point mapCoord = new Point((int) (p.x / scale), (int) (p.y / scale));
 	stationBuildModel.getStationBuildAction().putValue(StationBuildModel.
 		StationBuildAction.STATION_POSITION_KEY, mapCoord);
+    	}
     }
 
     public void mouseClicked(MouseEvent e) {

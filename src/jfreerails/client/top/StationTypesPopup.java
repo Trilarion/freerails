@@ -122,6 +122,15 @@ public class StationTypesPopup extends JPopupMenu {
 
 	public void show(Component invoker, int x, int y, Point tile) {
 		tileToBuildStationOn = tile;
-		super.show(invoker, x, y);
+		
+		
+		super.show(invoker, x, y);		
 	}
+		
+	public void setVisible(boolean b) {
+		//If this popup is visible, we don't want the station's position to follow the mouse.
+		stationBuildModel.setPositionFollowsMouse(!b);
+		super.setVisible(b);
+	}
+
 }

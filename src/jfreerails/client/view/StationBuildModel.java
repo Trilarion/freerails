@@ -42,6 +42,11 @@ public class StationBuildModel {
      * Actions which represent stations which can be built
      */
     private Vector stationChooseActions = new Vector();
+    
+    /**
+     * Whether the station's position can should change when the mouse moves.
+     */
+    private boolean positionFollowsMouse = true;
 
     private StationBuildAction stationBuildAction = new StationBuildAction();
 
@@ -145,5 +150,14 @@ public class StationBuildModel {
     public StationBuildAction getStationBuildAction() {
 	return stationBuildAction;
     }
+		
+	public boolean isPositionFollowsMouse() {
+		return positionFollowsMouse;
+	}
+
+	public void setPositionFollowsMouse(boolean positionFollowsMouse) {
+		this.positionFollowsMouse = positionFollowsMouse;
+	}
+
 }
 
