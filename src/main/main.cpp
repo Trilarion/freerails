@@ -4,14 +4,8 @@
 
 #include "game.h"
 #include "i18n.h"
-#include "GameMainWindow.h"
-#include "GameModeSelectDialog.h"
-#include "GameMap.h"
 #include <stdio.h>
 #include <unistd.h>
-
-#include <qvbox.h>
-
 
 int main(int argc, char *argv[])
 {
@@ -24,5 +18,5 @@ int main(int argc, char *argv[])
   // construct the application object
   MyGameApplication app(argc,argv);
 
-  return app.run();;
+  return app.run();
 }

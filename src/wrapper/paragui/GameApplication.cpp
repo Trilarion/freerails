@@ -34,6 +34,13 @@ GameApplication::~GameApplication() {
 }
 
 int GameApplication::run() {
+
+  showSplash();
+  sleep(1);
+  setCaption("FreeRails");
+  hideSplash();
+  GameMainWindow mw( 0, 0, 800, 600);
+  GameModeSelectDialog dialog(&mw, 250, 150, 300, 200, "Choose game mode");
   pGlobalApp->Run();
   return 0;
 }

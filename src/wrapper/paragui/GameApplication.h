@@ -6,11 +6,14 @@
 #define __GAMEAPPLICATION_H__
 #include "BaseApplication.h"
 #include "GameMainWindow.h"
+#include "GameModeSelectDialog.h"
 #include "SDL.h"
 
 
 #include <pgapplication.h>
 #include <pggradientwidget.h>
+
+#include <unistd.h>
 
 #define WRAPPERTYPE_PARAGUI 2 
 
