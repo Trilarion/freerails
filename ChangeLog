@@ -1,3 +1,6 @@
+Sat Oct 12 04:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add city and slum to field Type
+o add viewing of new FieldTypes (farm, village, industrie, resource, ...) in ParaGUI Client
 Thu Oct 10 22:08:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o some micro-changes for qt-wrapper
   now back to SelectDialog after quittting game will work right
