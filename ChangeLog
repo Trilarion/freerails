@@ -1,3 +1,7 @@
+Fri Aug 24 23:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+o Let paragui version work again (after changes cause of Qt version
+o panel implementation comes in the next days
+o claen up main.cpp
 Thu Aug 23 21:00:00 2001 Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>
 o Removed in main.cpp and moved it to GameApplication
 o Added GamePanel, GameMenuBar, GameMap, GameMapView
