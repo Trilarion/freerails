@@ -20,7 +20,7 @@ void MapGenerator::generateWorld(WorldMap* map, ControllerDispatcher* disp) {
   generateRiver(map);
   generateOcean(map);
   generateWood(map);
-  generateDessert(map);
+  generateDesert(map);
   generateJungle(map);
   generateBog(map);
   generateMountain(map);
@@ -134,7 +134,7 @@ void MapGenerator::generateWood(WorldMap* worldMap)
   }
 }
 
-void MapGenerator::generateDessert(WorldMap* worldMap)
+void MapGenerator::generateDesert(WorldMap* worldMap)
 {
   int x, y;
   int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
@@ -142,10 +142,10 @@ void MapGenerator::generateDessert(WorldMap* worldMap)
   {
     if (generateStartPoint(worldMap, &x, &y))
     {
-       worldMap->getMapField(x,y)->setType(MapField::dessert);
+       worldMap->getMapField(x,y)->setType(MapField::desert);
        for (int ii=0; ii<3; ii++)
        {
-         generateFieldOfType(worldMap,x,y,MapField::dessert);
+         generateFieldOfType(worldMap,x,y,MapField::desert);
        }
     }
   }

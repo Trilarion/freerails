@@ -11,7 +11,7 @@
 
 class MapField {
 public:
-  enum FieldType { grass=0, wood, dessert, jungle, bog, river, ocean,
+  enum FieldType { grass=0, wood, desert, jungle, bog, river, ocean,
                    foothills, hills, mountain,
                    village, city, slum,
 		   smallvillage, smallcity, smallslum,

@@ -23,7 +23,7 @@ private:
   void generateRiver(WorldMap* worldMap);
   void generateOcean(WorldMap* worldMap);
   void generateWood(WorldMap* worldMap);
-  void generateDessert(WorldMap* worldMap);
+  void generateDesert(WorldMap* worldMap);
   void generateJungle(WorldMap* worldMap);
   void generateBog(WorldMap* worldMap);
   void generateMountain(WorldMap* worldMap);
