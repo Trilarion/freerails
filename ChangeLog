@@ -1,5 +1,10 @@
 May 31, 2004 Luke
-	o Fix for 948656 Non Movable Dialogue Boxes
+	Bugs Fixed: 	
+	o 948659 Dialogue Box Behavior not deterministic
+	o 948663 Extra Close Button on Station List tab
+	o 948661 No Formal Specification
+	 see /src/docs/jfreerails_1_0_functional_specification.html
+	o 948656 Non Movable Dialogue Boxes
 		-made dialogue boxes movable
 		-added option to show/hide station names, spheres of influence, and cargo waiting.
 May 30, 2004 Luke

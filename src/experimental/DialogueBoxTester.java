@@ -3,7 +3,6 @@ package experimental;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Random;
 
 import jfreerails.client.common.JFrameMinimumSizeEnforcer;
 import jfreerails.client.common.ModelRoot;
@@ -51,9 +50,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
     
     
-    private final DialogueBoxController dialogueBoxController;
-    
-    private Random randy = new Random(System.currentTimeMillis());
+    private final DialogueBoxController dialogueBoxController;        
     
     private World w;
     
@@ -326,7 +323,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         // Add your handling code here:
         CargoWaitingAndDemandedJPanel panel = new CargoWaitingAndDemandedJPanel();
         panel.setup(modelRoot, vl, closeCurrentDialogue);
-        int newStationID = randy.nextInt(w.size(KEY.STATIONS, TEST_PRINCIPAL) - 1);
+        int newStationID = 0;
         panel.display(newStationID);
         dialogueBoxController.showContent(panel);
     }//GEN-LAST:event_showCargoWaitingAndDemandActionPerformed
@@ -340,13 +337,13 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     
 	private void showStationInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showStationInfoActionPerformed
             // Add your handling code here:
-            int stationNumber = randy.nextInt(w.size(KEY.STATIONS, TEST_PRINCIPAL) - 1);
+            int stationNumber = 0;
             dialogueBoxController.showStationInfo(stationNumber);
 	} //GEN-LAST:event_showStationInfoActionPerformed
         
 	private void showTerrainInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTerrainInfoActionPerformed
             // Add your handling code here:
-            int terrainType = randy.nextInt(w.size(SKEY.TERRAIN_TYPES) - 1);
+            int terrainType = 0;
             dialogueBoxController.showTerrainInfo(terrainType);
 	} //GEN-LAST:event_showTerrainInfoActionPerformed
         
