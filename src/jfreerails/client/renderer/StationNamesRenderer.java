@@ -87,7 +87,6 @@ public class StationNamesRenderer implements Painter {
 			g.setStroke(new BasicStroke(1.0f));
 				//draw a border 1 pixel inside the edges of the rectangle
 			g.draw(new Rectangle(rectX+1,rectY+1,rectWidth-3,rectHeight-3));
-			//g.draw(new RoundRectangle2D.Double(rectX+1,rectY+1,rectWidth-3,rectHeight-3,3,3));
 			
 	  	} //end FOR loop
 	  	
