@@ -24,15 +24,15 @@ Track::~Track()
 {
 }
 
-void Track::setConnect(unsigned short _con)
+void Track::setConnect(unsigned int _con)
 {
   connect = _con;
   int xp, yp;
-  unsigned short c;
+  unsigned int c;
 
-  c = connect & 0x00ff;   // we are intersted in trackdirection only
+  c = connect & 0x000000ff;   // we are intersted in trackdirection only
 
-  if (connect & (TrackIsStation | TrackIsBridge | TrackIsSignal))
+  if (connect & (TrackIsStation | TrackIsBridge | TrackIsTunnel | TrackIsSignal))
   {
     #warning complete me
     switch (c)
@@ -89,20 +89,43 @@ void Track::setConnect(unsigned short _con)
         xp = -1;
         yp = -1;
     }
-    if (connect & TrackIsBridge)
+    if (!(connect & TrackIsTunnel))
     {
-      #warning complete me (missing wood, stone, steel)
-      yp += 2;
-    }
-    else
-    {
-      if (connect & TrackIsStation)
+      if (connect & TrackIsBridge)
       {
-        #warning complete me (missing depot, station, terminal)
-        yp += 10;
+        if (connect & TrackIsBridgeWood)
+        {
+          yp += 2;
+        }
+        else
+        {
+          if (connect & TrackIsBridgeSteel)
+            yp += 4;
+          else
+            yp += 6;
+        }
       }
       else
-        yp += 8;
+      {
+        if (connect & TrackIsStation)
+        {
+          if (connect & TrackIsStationDepot)
+          {
+            yp += 8;
+          }
+          else
+          {
+            if (connect & TrackIsStationStation)
+              yp += 10;
+            else
+              yp += 12;
+          }
+        }
+        else
+        {
+          yp += 6;        // signal
+        }
+      }
     }
   }
   else
@@ -363,7 +386,10 @@ void Track::setConnect(unsigned short _con)
       default:
         xp = -1;
         yp = -1;
+        break;
     }
+    if ((connect & TrackIsDouble) && (yp != -1))
+      yp += 9;
   }
   offset_x[0] = xp * 60 + 15;
   offset_y[0] = yp * 60 + 15;

@@ -12,23 +12,34 @@
 class GameController;
 class Player;
 
-#define TrackGoNorth            0x0001
-#define TrackGoNorthEast        0x0002
-#define TrackGoEast             0x0004
-#define TrackGoSouthEast        0x0008
-#define TrackGoSouth            0x0010
-#define TrackGoSouthWest        0x0020
-#define TrackGoWest             0x0040
-#define TrackGoNorthWest        0x0080
+#define TrackGoNorth            0x00000001
+#define TrackGoNorthEast        0x00000002
+#define TrackGoEast             0x00000004
+#define TrackGoSouthEast        0x00000008
+#define TrackGoSouth            0x00000010
+#define TrackGoSouthWest        0x00000020
+#define TrackGoWest             0x00000040
+#define TrackGoNorthWest        0x00000080
 
-#define TrackIsStation          0x0100
-#define TrackIsBridge           0x0200
-#define TrackIsSignal           0x0400
+#define TrackIsStationDepot     0x00000100
+#define TrackIsStationStation   0x00000200
+#define TrackIsStationTerminal  0x00000400
+#define TrackIsStation          0x00000700
 
-#define TrackHasCornerNorthEast 0x1000
-#define TrackHasCornerSouthEast 0x2000
-#define TrackHasCornerSouthWest 0x4000
-#define TrackHasCornerNorthWest 0x8000
+#define TrackIsBridgeWood       0x00010000
+#define TrackIsBridgeSteel      0x00020000
+#define TrackIsBridgeStone      0x00040000
+#define TrackIsBridge           0x00070000
+
+#define TrackIsTunnel           0x00100000
+#define TrackIsSignal           0x00200000
+
+#define TrackIsDouble           0x01000000
+
+#define TrackHasCornerNorthEast 0x10000000
+#define TrackHasCornerSouthEast 0x20000000
+#define TrackHasCornerSouthWest 0x40000000
+#define TrackHasCornerNorthWest 0x80000000
 
 class Track : public GameElement
 {
@@ -37,16 +48,16 @@ class Track : public GameElement
     Track(GameController* _controller, Player* _player);
     ~Track();
 
-    unsigned short getConnect() { return connect; };
-    void setConnect(unsigned short _con);
+    unsigned int getConnect() { return connect; };
+    void setConnect(unsigned int _con);
 
     void getTrackTile(int i, int *x, int *y);
 
   private:
     GameController *controller;
                            
-    unsigned short connect;   // connection at this field
-    int offset_x[5];          // offset for track.png
+    unsigned int connect;   // connection at this field
+    int offset_x[5];        // offset for track.png
     int offset_y[5];
 };
 
