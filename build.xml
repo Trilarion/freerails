@@ -278,6 +278,7 @@
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir="www">
 				<include name="**/*.html" />
+				<include name="**/*.shtml" />
 				<include name="**/*.css" />
 				<include name="**/*.png" />
 				<include name="**/*.jnpl" />

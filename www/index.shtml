@@ -9,14 +9,24 @@
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H1>Freerails</H1>
+<P> 
+  <!--#config timefmt="%d  %B  %Y" -->
+  Last updated 
+  <!--#echo var="LAST_MODIFIED" -->
+</P>
+
+ 
 <P>Freerails is a real time multi player strategy game where players compete to 
   build the most powerful railroad empire. It is written in java. Development 
   is not yet complete.</P>
-<P>&nbsp;</P>
+
 <P><IMG SRC="screenshots/jfreerails_0_2_6_320x240.png" NAME="Graphic1" ALIGN=BOTTOM WIDTH=320 HEIGHT=240 BORDER=0></P>
-<P><A HREF="jfreerails.jnlp">Click here</A> (~1.5MB) to play jfreerails 0.2.6 
-  using <A HREF="http://java.sun.com/products/javawebstart/index.jsp">Java webstart</A>. 
-  (Requires <A HREF="http://java.sun.com/j2se/">Java 1.5</A>) </P>
+<P><A HREF="jfreerails.jnlp">Play now</A> 
+Updated  <!--#config timefmt="%d  %b"   -->  <!--#flastmod file="signed_jfreerails.jar" -->. 
+  Size 
+  <!--#fsize file="signed_jfreerails.jar"-->. 
+  Requires <A HREF="http://java.sun.com/j2se/1.5.0/download.jsp">Java 1.5</A> 
+</P>
 <P>If you are interested in getting involved in the Freerails project, post a 
   message to the mailing list. Before writing any code, have a look at the <a href="javadoc/docs/coding_guidelines.html">coding 
   guidelines</a>.</P>
@@ -25,7 +35,7 @@
   page</A><BR>
   <A HREF="http://sourceforge.net/project/showfiles.php?group_id=9495">Download</A><BR>
   <A HREF="http://sourceforge.net/mail/?group_id=9495">Mailing List</A><BR>
-  <A HREF="http://cvs.sourceforge.net/viewcvs.py/freerails/jfreerails/ChangeLog?view=markup">Change 
+  <A HREF="http://cvs.sourceforge.net/viewcvs.py/*checkout*/freerails/jfreerails/ChangeLog">Change 
   Log</A><BR>
   <A HREF="http://sourceforge.net/cvs/?group_id=9495">CVS</A><BR>
   <A HREF="http://sourceforge.net/tracker/?atid=109495&amp;group_id=9495&amp;func=browse">Bugs</A><BR>
@@ -33,8 +43,8 @@
   Requests</A><BR>
   <A HREF="javadoc/index.html">JFreerails Javadoc</A><BR>
    <A HREF="javadoc/docs/jfreerails_1_0_functional_specification.html">Functional Specification</A><BR>
-  <A HREF="screenshots/index.html">Screenshots</A></P>
-<P>&nbsp;</P>
+  <A HREF="screenshots/index.shtml">Screenshots</A></P>
+
 <P><A HREF="http://sourceforge.net/"><IMG SRC="http://sourceforge.net/sflogo.php?group_id=9495&amp;type=1" NAME="Graphic2" ALT="SourceForge Logo" ALIGN=BOTTOM BORDER=0></A> 
 </P>
 </BODY>

@@ -1,4 +1,8 @@
-Jan 04, 2005 Luke
+Feb 05, 2005 Luke
+	Update website to use SSI
+	Work on new train movement classes
+	Added AI page to functional spec.
+Feb 04, 2005 Luke
 	Add new train movement classes.
 Jan 27, 2005 Luke
 	Added toString() to KEY classes.
