@@ -18,6 +18,8 @@
       <Cargo id="Export_Goods" Category="Slow_Freight" unitWeight="5" />
 
       <Cargo id="Petroleum" Category="Bulk_Freight" unitWeight="8" />
+      
+      <Cargo id="Oil" Category="Bulk_Freight" unitWeight="8" />
 
       <Cargo id="Wood" Category="Bulk_Freight" unitWeight="8" />
 
@@ -25,7 +27,7 @@
    </Cargo_Types>
 
    <Terrain_Types>
-      <Tile id="City" Category="Urban" rgb="ef901c" right-of-way="0">
+      <Tile id="City" Category="Urban" rgb="ef901e" right-of-way="0">
          <Produces Cargo="Mail" Rate="1" />
 
          <Produces Cargo="Passengers" Rate="2" />
@@ -43,10 +45,12 @@
          <Converts input="Wood" output="Export_Goods" />
 
          <Converts input="Sugar" output="Export_Goods" />
+         
+         <Converts input="Petroleum" output="Export_Goods" />
       </Tile>
 
       <Tile id="Refinery" Category="Urban" rgb="7" right-of-way="0">
-         <Converts input="Petroleum" output="Export_Goods" />
+         <Converts input="Oil" output="Petroleum" />
       </Tile>
 
       <Tile id="slums" Category="Urban" rgb="0" right-of-way="0"/>
@@ -103,11 +107,11 @@
          <Produces Cargo="Grain" Rate="4" />
       </Tile>
 
-      <Tile id="Resource" Category="Urban" rgb="ef901d" right-of-way="0">
-         <Produces Cargo="Petroleum" Rate="4" />
+      <Tile id="Oil_Well" Category="Urban" rgb="ef901d" right-of-way="0">
+         <Produces Cargo="Oil" Rate="4" />
       </Tile>
 
-      <Tile id="Lumber_Mill" Category="Urban" rgb="ef901e" right-of-way="0">
+      <Tile id="Lumber_Mill" Category="Urban" rgb="ef901c" right-of-way="0">
          <Produces Cargo="Wood" Rate="4" />
       </Tile>
 

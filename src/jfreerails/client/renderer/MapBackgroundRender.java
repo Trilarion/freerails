@@ -191,11 +191,10 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 					
 				TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);	
 
-				int rgb = tt.terrainRgb();
-				TileRenderer tr = tiles.getTileViewWithRGBValue(rgb);
-				if(null == tr){
-					
-					System.out.println("No tile renderer for "+tt.getTypeName());
+				int typeNumber = tt.getTerrainTypeNumber();
+				TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
+				if(null == tr){					
+					System.out.println("No tile renderer for "+typeNumber);
 				}else{
 				
 				tr.renderTile(

@@ -1,9 +1,11 @@
+05-May-2003 00:47:52 Luke
+	o Added terrain info dialogue.
 03-May-2003 13:39:59 Luke
 	o Fixed river drawing bug.
 02-May-2003 00:19:53 Luke
 	o The terrain graphics now get loaded correctly although
 	there is a bug in the code that picks the right image
-	for rivers and otehr types that are drawn in the same way.
+	for rivers and other types that are drawn in the same way.
 01-May-2003 00:39:49 Luke
 	o Split up track and terrain images.
 28-Apr-2003 22:18:03 Luke

@@ -13,7 +13,7 @@ import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 
 
-public class FlatTrackExplorer implements Explorer, FreerailsSerializable {
+public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 
 	PositionOnTrack currentPosition = new PositionOnTrack(0, 0, OneTileMoveVector.NORTH);
 	PositionOnTrack currentBranch = new PositionOnTrack(0, 0, OneTileMoveVector.NORTH);
@@ -41,12 +41,12 @@ public class FlatTrackExplorer implements Explorer, FreerailsSerializable {
 	}
 
 	public void moveForward() {
-		this.setPosition(this.getBranchPosition());
+		this.setPosition(this.getVertexConnectedByEdge());
 	}
 
-	public void nextBranch() {
+	public void nextEdge() {
 
-		if (!hasNextBranch()) {
+		if (!hasNextEdge()) {
 			throw new NoSuchElementException();
 		} else {
 			OneTileMoveVector v = this.getFirstVectorToTry();
@@ -89,17 +89,17 @@ public class FlatTrackExplorer implements Explorer, FreerailsSerializable {
 	}
 
 	
-	public int getBranchPosition() {
+	public int getVertexConnectedByEdge() {
 		return currentBranch.toInt();
 	}
 
 	
-	public int getBranchLength() {
+	public int getEdgeLength() {
 		return currentBranch.getDirection().getLength();
 	}
 
 	
-	public boolean hasNextBranch() {
+	public boolean hasNextEdge() {
 
 		if (beforeFirst) {
 			//We can always go back the way we have come, so if we are before the first

@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.LegalTrackConfigurations;
@@ -91,7 +90,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 			return moveStatus;
 		} else {
 			FreerailsTile oldTile = (FreerailsTile) w.getTile(location.x, location.y);
-			TerrainType terrain = oldTile.getTerrainType();
+			int terrain = oldTile.getTerrainTypeNumber();
 			FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece);
 			w.setTile(location.x, location.y, newTile);
 			return moveStatus;

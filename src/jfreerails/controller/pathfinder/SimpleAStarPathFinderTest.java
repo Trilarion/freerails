@@ -58,24 +58,24 @@ public class SimpleAStarPathFinderTest extends TestCase {
 	public void testExplorer() {
 		setUp();
 		assertEquals(0, map.getPosition());
-		assertTrue(map.hasNextBranch());
-		map.nextBranch();
-		assertTrue(!map.hasNextBranch());
-		assertEquals(1, map.getBranchPosition());
-		assertEquals(11, map.getBranchLength());
+		assertTrue(map.hasNextEdge());
+		map.nextEdge();
+		assertTrue(!map.hasNextEdge());
+		assertEquals(1, map.getVertexConnectedByEdge());
+		assertEquals(11, map.getEdgeLength());
 		map.moveForward();
 		assertEquals(1, map.getPosition());
-		assertTrue(map.hasNextBranch());
-		map.nextBranch();
-		assertEquals(0, map.getBranchPosition());
+		assertTrue(map.hasNextEdge());
+		map.nextEdge();
+		assertEquals(0, map.getVertexConnectedByEdge());
 
 		//now try jumping to a different position.
 
 		map.setPosition(2);
 		assertEquals(2, map.getPosition());
-		assertTrue(map.hasNextBranch());
-		map.nextBranch();
-		assertEquals(5, map.getBranchPosition());
+		assertTrue(map.hasNextEdge());
+		map.nextEdge();
+		assertEquals(5, map.getVertexConnectedByEdge());
 
 	}
 
@@ -95,7 +95,7 @@ class Node {
 
 }
 
-class Map implements Explorer {
+class Map implements GraphExplorer {
 
 	//draw the graph on a piece of paper to see it.
 	Node[] nodes =
@@ -121,23 +121,23 @@ class Map implements Explorer {
 		return this.position;
 	}
 
-	public void nextBranch() {
-		if (hasNextBranch()) {
+	public void nextEdge() {
+		if (hasNextEdge()) {
 			branch++;
 		} else {
 			throw new NoSuchElementException();
 		}
 	}
 
-	public int getBranchPosition() {
+	public int getVertexConnectedByEdge() {
 		return nodes[position].edges[branch];
 	}
 
-	public int getBranchLength() {
+	public int getEdgeLength() {
 		return nodes[position].distances[branch];
 	}
 
-	public boolean hasNextBranch() {
+	public boolean hasNextEdge() {
 		if (nodes[position].edges.length > (branch + 1)) {
 			return true;
 		} else {
@@ -146,7 +146,7 @@ class Map implements Explorer {
 	}
 
 	public void moveForward() {
-		this.setPosition(this.getBranchPosition());
+		this.setPosition(this.getVertexConnectedByEdge());
 	}
 	public boolean isAtStation() {
 		return false;

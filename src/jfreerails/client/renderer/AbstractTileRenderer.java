@@ -21,7 +21,7 @@ import jfreerails.world.top.World;
 
 public abstract class AbstractTileRenderer implements TileRenderer {
 
-	protected final int[] rgbValues;
+	protected final int[] typeNumbers;
 
 	protected TileIconSelector tileIconSelector;
 
@@ -37,7 +37,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 	
 	public AbstractTileRenderer(TerrainType t, int[] rgbValues){
 		tileModel = t;
-		this.rgbValues = rgbValues;
+		this.typeNumbers = rgbValues;
 		if(null == t){
 			throw new NullPointerException();
 		}
@@ -111,9 +111,9 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
 		
 		if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight()) && (y >= 0)) {
-			for (int i = 0; i < rgbValues.length; i++) {
+			for (int i = 0; i < typeNumbers.length; i++) {
 				TerrainTile tt = (TerrainTile) w.getTile(x, y);
-				if (tt.terrainRgb() == rgbValues[i]) {
+				if (tt.getTerrainTypeNumber() == typeNumbers[i]) {
 					match = 1;
 
 					//A match

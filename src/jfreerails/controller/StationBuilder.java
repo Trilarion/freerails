@@ -64,7 +64,7 @@ public class StationBuilder {
 				
 		//check the terrain to see if we can build a station on it...
 		
-		w.add(KEY.STATIONS, new StationModel(p.x, p.y, stationName));	
+		w.add(KEY.STATIONS, new StationModel(p.x, p.y, stationName, w.size(KEY.CARGO_TYPES)));	
 		
 		System.out.println(stationName + " built at (" + (int)p.getX() + "," + (int)p.getY() + ")");		
 	}

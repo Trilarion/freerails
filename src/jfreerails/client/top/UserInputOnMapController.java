@@ -84,7 +84,12 @@ public class UserInputOnMapController implements CursorEventListener {
 					break;
 
 				}
-			
+                    case KeyEvent.VK_I :
+                    {
+                        System.out.println("Show terrain info");                        
+                        dialogueBoxController.showTerrainInfo(ce.newPosition.x, ce.newPosition.y);
+                        break;
+                    }			
 		}
 	}
 

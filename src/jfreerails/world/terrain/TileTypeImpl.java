@@ -14,7 +14,7 @@ package jfreerails.world.terrain;
 *@version    1.0
 */
 
-final public class TileTypeImpl implements TerrainType {
+final public class TileTypeImpl implements TerrainType { 
 
 	private final int rgb;
 	private final String terrainCategory;
@@ -80,4 +80,24 @@ final public class TileTypeImpl implements TerrainType {
 		}
 	}
 
+        public int getRightOfWay() {
+            return rightOfWay;
+        }
+        
+        public Consumption[] getConsumption() {
+            return consumption;
+        }
+        
+        public Conversion[] getConversion() {
+            return conversion;
+        }
+        
+        public Production[] getProduction() {
+            return production;
+        }
+              
+         /** Returns the name, replacing any underscores with spaces. */
+        public String getDisplayName(){
+            return this.terrainType.replace('_', ' ');
+        }
 }

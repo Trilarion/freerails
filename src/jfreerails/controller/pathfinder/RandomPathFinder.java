@@ -23,7 +23,7 @@ public class RandomPathFinder implements FreerailsPathIterator {
 
 
 	public boolean hasNext() {
-		return trackExplorer.hasNextBranch();
+		return trackExplorer.hasNextEdge();
 	}
 
 
@@ -31,7 +31,7 @@ public class RandomPathFinder implements FreerailsPathIterator {
 		p1.setValuesFromInt(trackExplorer.getPosition());
 		line.x1=p1.getX()*tileSize+tileSize/2;
 		line.y1=p1.getY()*tileSize+tileSize/2;
-		trackExplorer.nextBranch();
+		trackExplorer.nextEdge();
 		trackExplorer.moveForward();
 		p2.setValuesFromInt(trackExplorer.getPosition());
 		line.x2=p2.getX()*tileSize+tileSize/2;

@@ -3,25 +3,25 @@ package jfreerails.world.track;
 
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.terrain.TerrainTile;
-import jfreerails.world.terrain.TerrainType;
 
 
 public class FreerailsTile
 	implements TrackPiece, TerrainTile, FreerailsSerializable {
 
-	public static final FreerailsTile NULL = new FreerailsTile(TerrainType.NULL);
+	public static final FreerailsTile NULL = new FreerailsTile(0);
 
 	private final TrackPiece trackPiece;
 
-	private final TerrainType terrainType;
+	private  int terrainType;
 
-	public FreerailsTile(TerrainType terrainType) {
+	public FreerailsTile(int terrainType) {
 		this.terrainType = terrainType;
 		this.trackPiece = NullTrackPiece.getInstance();
 
 	}
+	
 	public FreerailsTile(
-		TerrainType terrainType,
+		int terrainType,
 		TrackPiece trackPiece) {		
 		this.terrainType = terrainType;
 		this.trackPiece = trackPiece;
@@ -38,13 +38,13 @@ public class FreerailsTile
 	/*
 	 * @see Tile#getRGB()
 	 */
-	public int getRGB() {
-		if(trackPiece== NullTrackPiece.getInstance()){
-			return terrainType.getRGB();
-		}else{
-			return 0;
-		}
-	}
+//	public int getRGB() {
+//		if(trackPiece== NullTrackPiece.getInstance()){
+//			return terrainType.getRGB();
+//		}else{
+//			return 0;
+//		}
+//	}
 
 	/*
 	 * @see TrackPiece#getTrackRule()
@@ -63,25 +63,25 @@ public class FreerailsTile
 	/*
 	 * @see TerrainType#getTerrainType()
 	 */
-	public TerrainType getTerrainType() {
-		return terrainType;
-	}
+//	public TerrainType getTerrainType() {
+//		return terrainType;
+//	}
 	
-	public String getTerrainCategory() {
-		return terrainType.getTerrainCategory();
-	}
+//	public String getTerrainCategory() {
+//		return terrainType.getTerrainCategory();
+//	}
 	
-	public int terrainRgb() {
-		return terrainType.getRGB();
-	}
+//	public int terrainRgb() {
+//		return terrainType.getRGB();
+//	}
 
 	public boolean equals(Object o) {
 		if(o instanceof FreerailsTile){
 			FreerailsTile test = (FreerailsTile)o;
 			
 			boolean trackPieceFieldsEqual = (this.trackPiece.equals(test.getTrackPiece()));
-			System.out.println(this.terrainType.getClass());
-			boolean terrainTypeFieldsEqual = (this.terrainType.equals(test.getTerrainType() ));
+			
+			boolean terrainTypeFieldsEqual = (terrainType == test.getTerrainTypeNumber());
 			if(trackPieceFieldsEqual && terrainTypeFieldsEqual ){
 				return true;
 			}else{
@@ -95,14 +95,7 @@ public class FreerailsTile
 	public TrackPiece getTrackPiece() {
 		return trackPiece;
 	}
-	public int getTerrainTypeNumber() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	public String getTypeName() {
-		
-		return this.terrainType.getTerrainTypeName();
-	}
-		
-	
+	public int getTerrainTypeNumber() {		
+		return terrainType;
+	}	
 }

@@ -25,7 +25,7 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 	public int findpath(
 		int currentPosition,
 		int[] targets,
-		Explorer explorer) {
+		GraphExplorer explorer) {
 			
 		int bestPath = PATH_NOT_FOUND; //the best path so far
 		int bestPathF = Integer.MAX_VALUE;	
@@ -68,11 +68,11 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 			explorer.setPosition(q);
 
 			//for each successor
-			while (explorer.hasNextBranch()) {
-				explorer.nextBranch();
-				int successor = explorer.getBranchPosition();
+			while (explorer.hasNextEdge()) {
+				explorer.nextEdge();
+				int successor = explorer.getVertexConnectedByEdge();
 				
-				int successorF = f + explorer.getBranchLength();
+				int successorF = f + explorer.getEdgeLength();
 				//for now, let successor.h=0
 
 				//successor.g = q.g + distance between successor and q

@@ -1,17 +1,12 @@
-/*
- * (c) Copyright 2001 MyCorporation.
- * All Rights Reserved.
- */
+
 package jfreerails.world.terrain;
 
-import jfreerails.world.common.Tile;
 
 /**
- * @version 	1.0
+ * Defines the interface of a terrain tile.
  */
-public interface TerrainTile extends Tile {
-	String getTypeName();
+public interface TerrainTile {
+	
 	int getTerrainTypeNumber();
-	int terrainRgb();
-
+	
 }

@@ -10,6 +10,8 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
 import jfreerails.world.terrain.TerrainTile;
+import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
 
@@ -70,7 +72,9 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 //		} else {
 //			rgb = terrainMap.
 			TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);
-			rgb = tt.getRGB();
+			int typeNumber = tt.getTerrainTypeNumber();
+			TerrainType terrainType = (TerrainType)w.get(KEY.TERRAIN_TYPES, typeNumber);
+			rgb = terrainType.getRGB();
 		//}
 
 		mapImage.setRGB(tile.x, tile.y, rgb);

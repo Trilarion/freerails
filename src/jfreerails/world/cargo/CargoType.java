@@ -25,6 +25,11 @@ final public class CargoType implements FreerailsSerializable {
 	public String getName() {
 		return name;
 	}
+        
+        /** Returns the name, replacing any underscores with spaces. */
+        public String getDisplayName(){
+            return this.name.replace('_', ' ');
+        }
 
 	public CargoType(int weight, String name, String category) {
 		this.unitWeight = weight;

@@ -16,11 +16,11 @@ public class TrainPathIntIterator implements FreerailsIntIterator {
 	}
 	
 	public boolean hasNextInt(){
-		return trackExplorer.hasNextBranch();
+		return trackExplorer.hasNextEdge();
 	}
 	
 	public int nextInt(){
-		trackExplorer.nextBranch();
+		trackExplorer.nextEdge();
 		trackExplorer.moveForward();
 		return trackExplorer.getPosition();
 	}		
