@@ -10,6 +10,7 @@ import java.io.OptionalDataException;
 import java.io.Serializable;
 import java.io.StreamCorruptedException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -266,12 +267,14 @@ public class InetConnection extends Socket implements ConnectionToServer {
      * @throws IOException if the socket couldn't be created.
      * @throws SecurityException if we're not allowed to create the socket.
      */
-    public InetConnection(World w, Object mutex) throws IOException {
+    public InetConnection(World w, Object mutex, int port) throws IOException {
 	world = w;
 	this.mutex = mutex;
 	System.out.println("Server listening for new connections on port " +
-		SERVER_PORT);
-	serverSocket = new ServerSocket(SERVER_PORT);
+		port);
+	serverSocket = new ServerSocket();
+	serverSocket.setReuseAddress(true);
+	serverSocket.bind(new InetSocketAddress(port));
 	setState(ConnectionState.WAITING);
     }
 

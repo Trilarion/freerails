@@ -7,17 +7,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import jfreerails.controller.CalcSupplyAtStations;
+import jfreerails.controller.MoveChainFork;
+import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.TrainMover;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.TimeTickMove;
-import jfreerails.move.WorldChangedEvent;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.GameCalendar;
@@ -35,20 +36,26 @@ import jfreerails.world.top.World;
  *
  */
 public class ServerGameEngine
-	implements GameModel, Runnable, ServerControlInterface {
+	implements GameModel, Runnable {
 
 	World world;
 
-	private GameServer gameServer;
+	private MoveExecuter moveExecuter;
 
 	/* some stats for monitoring sim speed */
 	private int statUpdates = 0;
 	private long statLastTimestamp = 0;
-	private MoveReceiver receiver;
+	private MoveChainFork moveChainFork;
+	private CalcSupplyAtStations calcSupplyAtStations;
 
 	TrainBuilder tb;
 
-	private int targetTicksPerSecond = 30;
+	private int targetTicksPerSecond = 0;
+
+	/**
+	 * List of the ServerAutomaton objects connected to this game
+	 */
+	private Vector serverAutomata;
 
 	/**
 	 * Number of ticks which is A Long Time for infrequently updated things.
@@ -96,14 +103,39 @@ public class ServerGameEngine
 	    }
 	}
 
-	public ServerGameEngine(World w, GameServer o, MoveReceiver r) {
+	/**
+	 * Start a game on a new instance of a named map
+	 */
+	public ServerGameEngine(String mapName, FreerailsProgressMonitor pm) {
+		this(new ArrayList(),
+			OldWorldImpl.createWorldFromMapFile(mapName, pm),
+			new Vector());
+	}
+
+	/**
+	 * Starts a game with the specified world state
+	 * @param trainMovers ArrayList of TrainMover objects.
+	 * @param serverAutomata Vector of ServerAutomaton representing internal
+	 * clients of this game.
+	 */
+	private ServerGameEngine(ArrayList trainMovers, World w, Vector
+		serverAutomata) {
 		this.world = w;
-		mutex = o;
-		gameServer = o;
-		receiver = r;
-		setupGame();
-		CalcSupplyAtStations calcSupplyAtStations = new CalcSupplyAtStations(w);
-		
+		this.serverAutomata = serverAutomata;
+		mutex = new Integer(1);
+		this.trainMovers = trainMovers;
+		calcSupplyAtStations = new CalcSupplyAtStations(w);
+		moveChainFork = new MoveChainFork();
+		moveChainFork.addListListener(calcSupplyAtStations);
+		moveExecuter = new AuthoritativeMoveExecuter(world,
+			moveChainFork, mutex);
+		tb = new TrainBuilder(world, this, moveExecuter);
+
+		for (int i = 0; i < serverAutomata.size(); i++)
+		    ((ServerAutomaton) serverAutomata.get(i)).
+			initAutomaton(moveExecuter);
+
+		nextModelUpdateDue = System.currentTimeMillis();
 	}
 
 	public void run() {
@@ -119,18 +151,15 @@ public class ServerGameEngine
 		}
 	}
 
-	private void setupGame() {
-		gameServer.setWorld(world);
-		tb = new TrainBuilder(world, this,
-		gameServer.getMoveExecuter());
-		nextModelUpdateDue = System.currentTimeMillis();
-		
-		receiver.processMove(new WorldChangedEvent());
+	/**
+	 * Exit the game loop
+	 */
+	public void stop() {
+	    keepRunning = false;
 	}
 
 	public void infrequentUpdate() {
-		CalcSupplyAtStations cSAS = new CalcSupplyAtStations(world);
-		cSAS.doProcessing();
+		calcSupplyAtStations.doProcessing();
 	}
 
 	private long lastFrameTime = 0;
@@ -215,8 +244,8 @@ public class ServerGameEngine
 				       / (frameStartTime - statLastTimestamp));
 
 			    if (statLastTimestamp > 0) {
-				System.out.println(
-					"Updates per sec " + updatesPerSec);
+			//	System.out.println(
+			//		"Updates per sec " + updatesPerSec);
 			    }
 			    statLastTimestamp = frameStartTime;
 
@@ -263,10 +292,10 @@ public class ServerGameEngine
 
 	/** This is called at the start of each new year. */
 	private void newYear() {
-		TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(this.gameServer.getMoveExecuter());		
+		TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(getMoveExecuter());		
 		tmmg.update(world);
 		CargoAtStationsGenerator cargoAtStationsGenerator =
-			new CargoAtStationsGenerator(this.gameServer.getMoveExecuter());
+			new CargoAtStationsGenerator(getMoveExecuter());
 		cargoAtStationsGenerator.update(world);
 	}
 
@@ -286,7 +315,7 @@ public class ServerGameEngine
 			    production.getWagonTypes(),
 			    p);
 
-			this.gameServer.getMoveExecuter().processMove(new
+			getMoveExecuter().processMove(new
 			    ChangeProductionAtEngineShopMove(production,
 				null, i));
 		}
@@ -305,17 +334,16 @@ public class ServerGameEngine
 			Object o = i.next();
 			TrainMover trainMover = (TrainMover) o;
 			m = trainMover.update(deltaDistance);
-			this.gameServer.getMoveExecuter().processMove(m);
+			getMoveExecuter().processMove(m);
 		}
 	}
 
 	private void updateGameTime() {
-		this.gameServer.getMoveExecuter().processMove(TimeTickMove.getMove(world));
+		getMoveExecuter().processMove(TimeTickMove.getMove(world));
 	}
 
 	public void addTrainMover(TrainMover m) {
 		trainMovers.add(m);
-
 	}
 
 	public void saveGame() {
@@ -330,6 +358,7 @@ public class ServerGameEngine
 			synchronized (mutex) {
 			    objectOut.writeObject(trainMovers);
 			    objectOut.writeObject(getWorld());
+			    objectOut.writeObject(serverAutomata);
 			}
 			objectOut.flush();
 			objectOut.close();
@@ -340,40 +369,26 @@ public class ServerGameEngine
 		}
 	}
 
-	public void loadGame() {
-
+	/**
+	 * load a game from a saved position
+	 */
+	public static ServerGameEngine loadGame() {
+	    ServerGameEngine engine = null;
 		try {
-
 			System.out.print("Loading game..  ");
 			FileInputStream in = new FileInputStream("freerails.sav");
 			GZIPInputStream zipin = new GZIPInputStream(in);
 			ObjectInputStream objectIn = new ObjectInputStream(zipin);
-			synchronized (mutex) {
-			    this.trainMovers = (ArrayList)
-				objectIn.readObject();
-			    this.world = (World) objectIn.readObject();
-			}
-			setupGame();
+			ArrayList trainMovers = (ArrayList)
+			    objectIn.readObject();
+			World world = (World) objectIn.readObject();
+			Vector serverAutomata = (Vector) objectIn.readObject();
+			engine = new ServerGameEngine(trainMovers, world,
+				serverAutomata);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
-	}
-
-	public String[] getMapNames() {
-	    return OldWorldImpl.getMapNames();
-	}
-
-	public void newGame(String mapName) {
-		newGame(OldWorldImpl.createWorldFromMapFile(mapName, FreerailsProgressMonitor.NULL_INSTANCE));
-	}
-
-	public void newGame(World w) {
-
-		this.world = w;
-
-		trainMovers = new ArrayList();
-		setupGame();
+		return engine;
 	}
 
 	/**
@@ -384,4 +399,34 @@ public class ServerGameEngine
 		return world;
 	}
 
+	/**
+	 * @return Returns a moveReceiver - moves are submitted to the
+	 * ServerGameEngine via this.
+	 */
+	public MoveReceiver getMoveExecuter() {
+		return moveExecuter;
+	}
+
+	/**
+	 * @return The MoveChainFork to which clients of this server may attach
+	 */
+	public MoveChainFork getMoveChainFork() {
+	    return moveChainFork;
+	}
+
+	/**
+	 * return the mutex that must be acquired by local clients before
+	 * accessing the World.
+	 */
+	public Object getGameMutex() {
+	    return mutex;
+	}
+	
+	public void addServerAutomaton(ServerAutomaton sa) {
+	    serverAutomata.add(sa);
+	}
+
+	public void removeServerAutomaton(ServerAutomaton sa) {
+	    serverAutomata.remove(sa);
+	}
 }

@@ -173,6 +173,8 @@ public class TrainBuilder {
 
 		FreerailsPathIterator it;
 
-		return new TrainPathFinder(explorer, w, trainNumber, moveReceiver);
+		TrainPathFinder tpf = new TrainPathFinder(explorer, w, trainNumber, moveReceiver);
+		gameEngine.addServerAutomaton(tpf);
+		return tpf;
 	}
 }

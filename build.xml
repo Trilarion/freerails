@@ -60,14 +60,15 @@
    </target>
 
    <target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
-      <javac destdir="${build}" fork="true" srcdir="${src}">
+      <javac destdir="${build}" fork="true" srcdir="${src}" source="1.4">
          <exclude name="**/*Test.java" />
          <exclude name="**/*TestCase.java" />         
       </javac>
    </target>
 
-   <target depends="copydata" description="Build everything including JUnit test-classes. Include debugging symbols" name="debugcompile">
-      <javac destdir="${build}" fork="true" srcdir="${src}" debug="true" />
+   <target depends="copydata" description="Build everything including JUnit
+   test-classes. Include debugging symbols" name="debugcompile">
+      <javac destdir="${build}" fork="true" srcdir="${src}" debug="true"  source="1.4"/>
    </target>
 
    <target depends="debugcompile" description="Run all junit tests" name="runtests">
@@ -250,7 +251,8 @@
             
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/common/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/common/*.java"
+			srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />     
             	  
        <!-- Check dependencies for jfreerails.world.terrain.*  -->     
@@ -262,7 +264,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/terrain/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/terrain/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.track.*  -->     
@@ -275,7 +277,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/track/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/track/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.cargo.*  -->     
@@ -287,7 +289,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/cargo/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/cargo/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.train.*  -->     
@@ -301,7 +303,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/train/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/train/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.city.*  -->     
@@ -315,7 +317,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/city/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/city/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" /> 
       
       
@@ -329,7 +331,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/station/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/station/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" /> 
       
       
@@ -343,7 +345,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/world/**/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/world/**/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />     
       
       <!-- Check dependencies for jfreerails.accounts.*  -->     
@@ -357,7 +359,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/accounts/**/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/accounts/**/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />     
       
       
@@ -372,7 +374,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/move/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/move/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />        
       
       <!-- Check dependencies for jfreerails.controller.*  -->     
@@ -388,7 +390,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/controller/**/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/controller/**/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />    
       
       <!-- Check dependencies for jfreerails.server.*  -->     
@@ -405,7 +407,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/server/**/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/server/**/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />    
       
       
@@ -423,7 +425,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/client/**/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/client/**/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />    
       
       <!-- Check dependencies for jfreerails.client.common.*  -->     
@@ -440,7 +442,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/client/common/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/client/common/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />   
       
      <!-- Check dependencies for jfreerails.client.renderer.*  -->     
@@ -458,7 +460,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/client/renderer/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/client/renderer/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />   
       
        <!-- Check dependencies for jfreerails.client.event.*  -->     
@@ -475,7 +477,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/client/event/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/client/event/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />   
       
       <!-- Check dependencies for jfreerails.client.menu.*  -->     
@@ -492,7 +494,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/client/menu/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/client/menu/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />   
       
        <!-- Check dependencies for jfreerails.client.view.*  -->     
@@ -511,7 +513,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac fork="true" includes="jfreerails/client/view/*.java" srcdir="${temp}"/>
+      <javac fork="true" includes="jfreerails/client/view/*.java" srcdir="${temp}" source="1.4"/>
       <delete dir="${temp}" />  
 
    </target>

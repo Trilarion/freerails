@@ -1,31 +1,34 @@
-/**
- *
- *
- *
- *
- *
- */
-
 package jfreerails.move;
 
+import jfreerails.world.common.FreerailsSerializable;
+
 /**
- *
- *
- *
+ * XXX DO NOT TEST == AGAINST MOVE_FAILED XXX
+ * 
  * @author lindsal
  */
-
-final public class MoveStatus {
-
+final public class MoveStatus implements FreerailsSerializable {
 	public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
 
-	public static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
-
-	public static final MoveStatus MOVE_RECEIVED = new MoveStatus(false, "Move received");
+	/**
+	 * Not public - only instances of Move should need to access this.
+	 */
+	static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
 
 	public final boolean ok;
 
 	public final String message;
+
+	/**
+	 * Avoid creating a duplicate when deserializing.
+	 */
+	private Object readResolve() {
+	    if (ok) {
+		return MOVE_OK;
+	    } else {
+		return this;
+	    }
+	}
 
 	private MoveStatus(boolean ok, String mess) {
 		this.ok = ok;
@@ -49,5 +52,4 @@ final public class MoveStatus {
 	public String toString() {
 		return message;
 	}
-
 }

@@ -163,4 +163,8 @@ public class LocalConnection implements ConnectionToServer {
 	if (connectionListener != null)
 	    connectionListener.connectionStateChanged(this);
     }
+
+    public void setMutex(Object mutex) {
+	this.mutex = mutex;
+    }
 }

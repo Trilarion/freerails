@@ -11,6 +11,7 @@ import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
+import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
@@ -23,11 +24,15 @@ import jfreerails.world.top.World;
  * world if necessary, and passes them to the connection.
  */
 public class ConnectionAdapter implements UntriedMoveReceiver {
-
     private MoveExecuter moveExecuter;
     private ModelRoot modelRoot;
 
     ConnectionToServer connection;
+
+    /**
+     * we forward outbound moves from the client to this.
+     */
+    UncommittedMoveReceiver uncommittedReceiver;
     MoveReceiver moveReceiver;
     World world;
     /**
@@ -51,6 +56,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     public class WorldUpdater implements MoveReceiver {
 	private MoveReceiver moveReceiver;
 
+	/**
+	 * Processes inbound moves from the server
+	 */
 	public void processMove(Move move) {
 	    if (move instanceof WorldChangedEvent) {
 		
@@ -82,14 +90,18 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 
     private WorldUpdater worldUpdater = new WorldUpdater();
 
+    /**
+     * Processes outbound moves to the server
+     */
     public void processMove(Move move) {
-	if (connection != null)
-	    connection.processMove(move);
+	if (uncommittedReceiver != null) {
+	    uncommittedReceiver.processMove(move);
+	}
     }
 
     public void undoLastMove() {
-	if (connection != null)
-	    connection.undoLastMove();
+	if (uncommittedReceiver != null)
+	    uncommittedReceiver.undoLastMove();
     }
 
     public MoveStatus tryDoMove(Move move) {
@@ -142,8 +154,15 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 	    connection.addMoveReceiver(worldUpdater);
 	    world = connection.loadWorldFromServer();
 	    if (! (connection instanceof LocalConnection)) {		
-		MoveExecuter moveExecuter = new MoveExecuter(world, moveReceiver, mutex);
+		NonAuthoritativeMoveExecuter moveExecuter = new
+		    NonAuthoritativeMoveExecuter(world, moveReceiver, mutex);
 		worldUpdater.setMoveReceiver(moveExecuter);
+		uncommittedReceiver =
+		    moveExecuter.getUncommittedMoveReceiver();
+		((NonAuthoritativeMoveExecuter.PendingQueue)
+		 uncommittedReceiver).addMoveReceiver(connection);
+	    } else {
+		uncommittedReceiver = connection;
 	    }
 	}
     }

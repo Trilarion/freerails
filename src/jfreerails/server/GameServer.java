@@ -1,72 +1,251 @@
 package jfreerails.server;
 
-import java.util.Vector;
-
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import jfreerails.controller.CalcSupplyAtStations;
-import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.ConnectionListener;
+import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.MoveExecuter;
+import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerControlInterface;
+import jfreerails.move.WorldChangedEvent;
 import jfreerails.util.FreerailsProgressMonitor;
-import jfreerails.world.top.World;
-import jfreerails.world.top.WorldListListener;
 
 /**
- * This implements a game server and keeps track of connections to clients and
- * suchlike.
+ * This implements a game server. A game server may host a number of independent
+ * games all being played simultaneously.
  *
  * @author lindsal
+ * @author rtuck99@users.sourceforge.net
  */
 
-public class GameServer implements ConnectionListener {
-    private World world;
-    private ServerGameEngine gameEngine;
-    private MoveChainFork moveChainFork;
-    private InetConnection serverSocket;
+public class GameServer {
     private FreerailsProgressMonitor pm;
-    private MoveExecuter moveExecuter;
 
     /**
-     * The connections that this server has
+     * The set of games which this server is serving. Vector of
+     * ServerGameController.
      */
-    private Vector connections = new Vector();
+    private Vector gameControllers = new Vector();
 
-    public void connectionClosed(ConnectionToServer c) {
-	synchronized (connections) {
-	    if (! (c instanceof LocalConnection)) {
-		tableModel.removeRow(c);
-		connections.remove(c);
-		moveChainFork.remove(c);
+    /**
+     * associates an instance of ServerGameEngine with a set of game controls.
+     * Manages connectivity to the ServerGameEngine.
+     */
+    private class ServerGameController implements ServerControlInterface,
+    ConnectionListener {
+	/**
+	 * The connections that this server has
+	 */
+	private Vector connections = new Vector();
+
+	private MoveChainFork moveChainFork;
+	private InetConnection serverSocket;
+	private ServerGameEngine gameEngine;
+
+	private ClientConnectionTableModel tableModel = new
+	    ClientConnectionTableModel(connections);
+
+	/**
+	 * Port number the game is available on
+	 */
+	private int port;
+	
+	public ServerGameController(ServerGameEngine engine, int port) {
+	    moveChainFork = engine.getMoveChainFork();
+	    gameEngine = engine;
+	    this.port = port;
+
+	    if (port != 0) {
+		/* Open our server socket */
+		try {
+		    serverSocket = new InetConnection(engine.getWorld(),
+			    gameEngine.getGameMutex(), InetConnection.SERVER_PORT);
+		} catch (IOException e) {
+		    System.err.println("Couldn't open the server socket!!!" + e);
+		    throw new RuntimeException (e);
+		}
+
+		Thread thread = new Thread(new InetGameServer(serverSocket, this));
+		thread.start();
+	    }
+	    startGame();
+	}
+	
+	/**
+	 * return a brand new local connection.
+	 */
+	public LocalConnection getLocalConnection() {
+	    synchronized (connections) {
+		LocalConnection connection = new
+		    LocalConnection(gameEngine.getWorld(), gameEngine.getGameMutex());
+		addConnection(connection);
+		return connection;
 	    }
 	}
+
+	public void connectionClosed(ConnectionToServer c) {
+	    synchronized (connections) {
+		if (! (c instanceof LocalConnection)) {
+		    tableModel.removeRow(c);
+		    connections.remove(c);
+		    moveChainFork.remove(c);
+		}
+	    }
+	}
+
+	private void removeConnection(ConnectionToServer c) {
+	    synchronized (connections) {
+		tableModel.removeRow(c);
+		moveChainFork.remove(c);
+		connections.remove(c);
+		c.removeMoveReceiver(gameEngine.getMoveExecuter());
+		c.removeConnectionListener(this);
+	    }
+	}
+
+	private void addConnection(ConnectionToServer c) {
+	    synchronized (connections) {
+		c.addConnectionListener(this);
+		c.addMoveReceiver(gameEngine.getMoveExecuter());
+		connections.add(c);
+		moveChainFork.add(c);		
+		if (c instanceof InetConnection) {
+		    tableModel.addRow (c,
+			    ((InetConnection) c).getRemoteAddress().toString());
+		} else if (c instanceof LocalConnection) {
+		    ((LocalConnection) c).setWorld(gameEngine.getWorld());
+		    tableModel.addRow(c, "Local connection");
+		    ((LocalConnection) c).setMutex(gameEngine.getGameMutex());
+		}
+	    }	
+	}
+
+	/**
+	 * Starts the server thread.
+	 * TODO control of whether clients can issue moves prior to the thread being
+	 * started.
+	 */
+	private void startGame() {
+	    Thread thread = new Thread(gameEngine);
+	    thread.start();
+	}
+
+	/**
+	 * Create a new ServerGameEngine instance and transfer all clients of
+	 * this game to the new one.
+	 */
+	public void loadGame() {
+	    /* open a new controller */
+	    ServerGameEngine newGame = ServerGameEngine.loadGame();
+
+	    transferClients(newGame);
+	    startGame();
+	}
+
+	public void saveGame() {
+	    gameEngine.saveGame();
+	}
+
+	public String[] getMapNames() {
+	    return GameServer.this.getMapNames();
+	}
+
+	public void setTargetTicksPerSecond(int ticksPerSecond) {
+	    gameEngine.setTargetTicksPerSecond(ticksPerSecond);
+	}
+
+	/**
+	 * stop the current game and transfer the current local connections to a
+	 * new game running the specified map.
+	 */
+	public void newGame(String mapName) {
+	    ServerGameEngine newGame = new ServerGameEngine(mapName,
+		    FreerailsProgressMonitor.NULL_INSTANCE);
+	    transferClients(newGame);	
+
+	    startGame();
+	}
+	
+	/**
+	 * transfer all clients of this game to the new game
+	 */
+	private void transferClients(ServerGameEngine newGame) {
+	    Vector localConnections = new Vector();
+	    MoveReceiver oldExecuter = gameEngine.getMoveExecuter();
+	    synchronized (connections) {
+		Iterator i = connections.iterator();
+		while (i.hasNext()) {
+		    ConnectionToServer c = (ConnectionToServer) i.next();
+		    /* Local connections must be transferred manually - remote
+		     * connections are sent a WorldChangedEvent later */
+		    if (c instanceof LocalConnection) {
+			i.remove();
+			localConnections.add(c);
+		    }
+		}
+		gameEngine.stop();
+		newGame.setTargetTicksPerSecond(gameEngine.getTargetTicksPerSecond());
+		gameEngine = newGame;
+		moveChainFork = newGame.getMoveChainFork();
+		serverSocket.setWorld(gameEngine.getWorld());
+		while (! localConnections.isEmpty()) {
+		    LocalConnection lc = (LocalConnection)
+			localConnections.remove(0);
+			addConnection(lc);
+			lc.processMove(new WorldChangedEvent());
+		}
+		/* send all remaining clients notification that this game is
+		 * about to end */
+		for (i = connections.iterator(); i.hasNext();) {
+		    ConnectionToServer c = (ConnectionToServer) i.next();
+		    if (! (c instanceof LocalConnection)) {
+			c.processMove(new WorldChangedEvent());
+			c.flush();
+		    }
+		}
+	    }
+	}
+
+	public TableModel getClientConnectionTableModel() {
+	    return tableModel;
+	}
+
+	public void connectionStateChanged(ConnectionToServer c) {
+	    tableModel.stateChanged(c);
+	}
     }
-    
+
+    public LocalConnection getLocalConnection(ServerControlInterface i) {
+	return ((ServerGameController) i).getLocalConnection();
+    }
+
     /**
      * Sits in a loop and accepts incoming connections over the network
      */
     private class InetGameServer implements Runnable {
+	private InetConnection serverSocket;
+	private ServerGameController sgc;
+
+	public InetGameServer(InetConnection serverSocket, ServerGameController
+		sgc) {
+	    this.serverSocket = serverSocket;
+	    this.sgc = sgc;
+	}
+
 	public void run() {
 	    try {
 		while (true) {
 		    try {
 			ConnectionToServer c = serverSocket.accept();
-			c.addConnectionListener(GameServer.this);
-			moveChainFork.add(c);		
-			c.addMoveReceiver(moveExecuter);
-			synchronized (connections) {
-			    connections.add(c);
-			}
-			tableModel.addRow (c,
-				((InetConnection) c).getRemoteAddress().toString());
+			sgc.addConnection(c);
 		    } catch (IOException e) {
 			if (e instanceof SocketException) {
 			    throw (SocketException) e;
@@ -83,74 +262,27 @@ public class GameServer implements ConnectionListener {
     }
     
     /**
-     * starts the server running initialised from a new map
+     * starts the server and creates a new ServerGameEngine running initialised
+     * from a new map, accepting connections on the default port.
      */
-    public GameServer(String mapName, FreerailsProgressMonitor pm) {
-	moveChainFork = new MoveChainFork();
-	world = OldWorldImpl.createWorldFromMapFile(mapName, pm);
-	moveExecuter = new MoveExecuter(world, moveChainFork, this);
-	gameEngine = new ServerGameEngine(world, this, moveChainFork); 
-	WorldListListener listener = new CalcSupplyAtStations(world);
-	moveChainFork.addListListener(listener);
-	/* Open our server socket */
-	try {
-	    serverSocket = new InetConnection(world, this);
-	} catch (IOException e) {
-	    System.err.println("Couldn't open the server socket!!!" + e);
-	    throw new RuntimeException (e);
-	}
-	
-	Thread thread = new Thread(new InetGameServer());
-	thread.start();
+    public ServerControlInterface getNewGame(String mapName,
+	    FreerailsProgressMonitor pm) {
+	ServerGameEngine gameEngine = new ServerGameEngine(mapName, pm); 
+	ServerGameController sgc = new ServerGameController(gameEngine,
+		InetConnection.SERVER_PORT /* TODO */);
+	gameControllers.add(sgc);
+	return sgc;
     }
     
     /**
-     * Starts the server thread.
-     * TODO control of whether clients can issue moves prior to the thread being
-     * started.
+     * Load a saved game
      */
-    public void startGame() {
-	Thread thread = new Thread(gameEngine);
-	thread.start();
-    }
-
-    public LocalConnection getLocalConnection() {
-	synchronized (connections) {
-	    LocalConnection connection = new LocalConnection(world, this);
-	    moveChainFork.add(connection);	    
-	    connection.addMoveReceiver(moveExecuter);
-	    connections.add(connection);
-	    tableModel.addRow(connection, "Local connection");
-	    connection.addConnectionListener(this);
-	    return connection;
-	}
-    }
-
-    public ServerControlInterface getServerControls() {
-	return gameEngine;
-    }
-
-    void setWorld(World w) {
-	synchronized (connections) {
-	    world = w;
-	    MoveExecuter oldExecuter = moveExecuter;
-		moveExecuter = new MoveExecuter(world, moveChainFork, this);
-	    for (int i = 0; i < connections.size(); i++) {
-		ConnectionToServer c = (ConnectionToServer) connections.get(i);
-		if (c instanceof LocalConnection) {
-		    ((LocalConnection) c).setWorld(world);
-		    ((LocalConnection) c).removeMoveReceiver(oldExecuter);
-		    ((LocalConnection)
-		     c).addMoveReceiver(moveExecuter);
-		}
-	    }
-	    if (serverSocket != null)
-		serverSocket.setWorld(world);
-	}
-    }
-
-    public void connectionStateChanged(ConnectionToServer c) {
-	tableModel.stateChanged(c);
+    public ServerControlInterface getSavedGame(FreerailsProgressMonitor pm) {
+	ServerGameEngine gameEngine = ServerGameEngine.loadGame();
+	ServerGameController sgc = new ServerGameController(gameEngine,
+		InetConnection.SERVER_PORT /* TODO */);
+	gameControllers.add(sgc);
+	return sgc;
     }
 
     /**
@@ -159,8 +291,14 @@ public class GameServer implements ConnectionListener {
      * <ol>
      */
     private class ClientConnectionTableModel extends DefaultTableModel {
-	public ClientConnectionTableModel() {
+	/**
+	 * reference to ServerGameController's connections
+	 */
+	private Vector connections;
+
+	public ClientConnectionTableModel(Vector connections) {
 	    super(new String[]{"Client address", "State"}, 0);
+	    this.connections = connections;
 	}
 
 	public void addRow(ConnectionToServer c, String address) {
@@ -186,17 +324,10 @@ public class GameServer implements ConnectionListener {
 	}
     }
 
-    private ClientConnectionTableModel tableModel = new
-	ClientConnectionTableModel();
-
-    public TableModel getClientConnectionTableModel() {
-	return tableModel;
+    /**
+     * @return a list of possible map names that could be used to start a game
+     */
+    public String[] getMapNames() {
+	return OldWorldImpl.getMapNames();
     }
-	/**
-	 * @return Returns the moveExecuter.
-	 */
-	public MoveExecuter getMoveExecuter() {
-		return moveExecuter;
-	}
-
 }

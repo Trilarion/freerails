@@ -25,6 +25,8 @@ public class ActionAdapter extends DefaultComboBoxModel {
      */
     private Action[] actions;
 
+    private boolean initialised = false;
+
     /**
      * The set of MappedButtonModels corresponding to the actions
      */
@@ -43,6 +45,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
 	    buttonModels.add(new MappedButtonModel(actions[i]));
 	    addElement(actions[i].getValue(Action.NAME));
 	}
+	initialised = true;
     }
 
     /**
@@ -88,7 +91,16 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * @param item The NAME of the Action selected
      */
     public void setSelectedItem(Object item) {
+	// only set the item if not already selected
+	if ((item != null) && item.equals(getSelectedItem()))
+	    return;
+
 	super.setSelectedItem(item);
+	
+	// stop addElement from triggering actions
+	if (! initialised)
+	    return;
+
 	for (int i = 0; i < buttonModels.size(); i++) {
 	    MappedButtonModel bm = (MappedButtonModel) buttonModels.get(i);
 	    if (bm.actionName.equals(item)) {

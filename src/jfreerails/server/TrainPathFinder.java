@@ -11,7 +11,7 @@ import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.util.FreerailsIntIterator;
-import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.server.ServerAutomaton;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -30,7 +30,7 @@ import jfreerails.world.train.TrainModel;
  * 28-Nov-2002
  */
 public class TrainPathFinder
-	implements FreerailsIntIterator, FreerailsSerializable {
+	implements FreerailsIntIterator, ServerAutomaton {
 
 	public static final int NOT_AT_STATION = -1;
 
@@ -38,7 +38,7 @@ public class TrainPathFinder
 
 	private final ReadOnlyWorld world;
 	
-	private final MoveReceiver moveReceiver;
+	private transient MoveReceiver moveReceiver;
 
 	FlatTrackExplorer trackExplorer;
 
@@ -234,6 +234,10 @@ public class TrainPathFinder
 			trackExplorer.setPosition(nextPosition);
 			return nextPosition;
 		}
+	}
+	
+	public void initAutomaton (MoveReceiver mr) {
+		    moveReceiver = mr;
 	}
 
 }
