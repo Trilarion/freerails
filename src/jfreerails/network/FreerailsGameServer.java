@@ -298,7 +298,14 @@ public class FreerailsGameServer implements ServerControlInterface,
 
     private void removeConnection(Integer id) throws IOException {
         Connection2Client connection = (Connection2Client)acceptedConnections.get(id);
-        connection.disconnect();
+
+        /* Fix for bug 1047439        Shutting down remote client crashes server
+         * We get an IllegalStateException if we try to disconnect a
+         * connection that is not open.
+         */
+        if (connection.isOpen()) {
+            connection.disconnect();
+        }
 
         String userName = (String)players.get(id.intValue());
         this.currentlyLoggedOn.remove(userName);
