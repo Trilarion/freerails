@@ -6,8 +6,8 @@ freerails_LDFLAGS = $(QT_LDFLAGS) -lqt
 freerails_DEPENDENCIES = ../wrapper/libwrapperbase.a ../elements/libelements.a \
     ../map/libmap.a ../controllers/libcontrollers.a ../wrapper/qt/libwrapper_qt.a \
     ../network/libnetwork.a
-freerails_LDADD = ../wrapper/libwrapperbase.a ../elements/libelements.a \
-    ../map/libmap.a ../controllers/libcontrollers.a ../wrapper/qt/libwrapper_qt.a \
+freerails_LDADD = ../wrapper/qt/libwrapper_qt.a ../elements/libelements.a \
+    ../map/libmap.a ../controllers/libcontrollers.a  ../wrapper/libwrapperbase.a\
     ../network/libnetwork.a
 endif
 
