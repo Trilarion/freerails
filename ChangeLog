@@ -1,3 +1,7 @@
+Wed Oct 02 00:30:00 2002  Alexander Opitz <opi@le-bit.de>:
+o code clean up 2nd day
+  rename files trackcontroller, stationcontroller -> TrackController, StationController
+  paragui should compile, QT is broken ... hope to get it tomorrow
 Tue Oct 01 01:30:00 2002  Alexander Opitz <opi@le-bit.de>:
 o code clean up ... start splitting working away from elements.
   Elements are only holders, they have no logic.
