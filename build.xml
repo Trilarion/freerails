@@ -35,7 +35,11 @@
 
  <target name="bindist" depends="compile" description="Generate binary distribution">
   <mkdir dir="${dist}/lib"/>
-  <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}"/>
+  <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
+   <manifest>
+    <attribute name="Main-Class" value="jfreerails.RunFreerails"/>
+   </manifest>
+  </jar>
  </target>
 
  <target name="srcdist" depends="init" description="Generate source distribution">
@@ -54,5 +58,9 @@
     <pathelement path="${build}"/>
    </classpath>
   </java>
+ </target>
+
+ <target name="rundist" depends="bindist" description="Test run based on bindist">
+  <java jar="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" fork="true"/>
  </target>
 </project>
