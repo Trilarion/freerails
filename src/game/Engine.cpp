@@ -128,7 +128,7 @@ void Engine::process()
 void Engine::processMsg(Message* msg)
 {
   std::cerr << "\nin processMsg(Message*)\n";
-  switch (msg->getMsgID())
+  switch (msg->getMsgType())
   {
     case Message::addElement:
       addElementToGame(msg);
