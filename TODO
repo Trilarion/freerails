@@ -5,6 +5,6 @@ THINGS TO DO
 TODO:
 =====
 
-- clean up freecraft engine.
+- clean up freecraft engine (menu system, ...)
 - do control of building the map elements (at first Tracks and Station)
-- make it possible to use the tilesets from Luke
+- make 30x30 tileset available in all color deapth
