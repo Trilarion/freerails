@@ -3,6 +3,8 @@
     
    <description>The aim of the FreeRails project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.</description>
 
+
+
    <target depends="properties" name="init">
       <tstamp />
 
@@ -140,6 +142,11 @@
       <delete dir="${doc}" />
 
       <delete dir="${temp}" />
+            
+      <!-- also delete any class files under the src directory -->      
+      <delete>
+    	<fileset dir="${src}" includes="**/*.class"/>
+  	 </delete>             
    </target>
 
    <target depends="mkdirs, compile" description="Test run based on compile" name="run">
@@ -508,4 +515,23 @@
       <delete dir="${temp}" />  
 
    </target>
+   
+   <!-- You can download jalopy from: http://jalopy.sourceforge.net/  -->
+   <target name="format" depends="compile" description="formats the source code files using jalopy">    
+   	<taskdef name="jalopy" classname="de.hunsicker.jalopy.plugin.ant.AntPlugin"/>
+    <jalopy convention="jalopy_code_convention.xml">
+      <fileset dir="${src}">
+        <include name="**/*.java" />
+        <!-- Exclude forms since formatting may break the protected code regions. -->
+         <exclude name="**/*Form.java" />                  
+         <exclude name="jfreerails/client/view/**" />       
+         <exclude name="**/ProgressJPanel.java" />
+         <exclude name="**/RunFreerailsJFrame.java" />
+	     <exclude name="**/StartUpOptionsJPanel.java" />
+         <exclude name="**/ClientJFrame.java" />         
+         <exclude name="**/DialogueBoxTester.java" />                           
+      </fileset>
+    </jalopy>
+  </target>
+   
 </project>

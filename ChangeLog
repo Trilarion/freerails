@@ -1,3 +1,6 @@
+Nov 29, 2003 9:46:07 PM Luke
+	o Fix bug839392(After F8 to build station, position still follows mouse)
+	o Added jalopy 'format' target to build.xml
 Nov 18, 2003 11:36:38 PM Luke
 	o Applied Robert Tuck's patch to fix the bug that occurred with 1 local client 
 	and 1 networked client in a 2nd VM.
