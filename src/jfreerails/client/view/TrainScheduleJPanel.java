@@ -28,7 +28,7 @@ import jfreerails.world.train.TrainOrdersModel;
  *  This JPanel displays a train's schedule and provides controls that let you edit it.
  * @author  Luke Lindsay
  */
-public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, WorldListListener {
+public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {
     
     private ReadOnlyWorld w;
     
@@ -42,7 +42,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
     
     private FreerailsPrincipal principal;
     
-    private CallBacks callbacks = CallBacks.NULL_INSTANCE;
+    private ModelRoot modelRoot;        
     
     /** Creates new form TrainScheduleJPanel */
     public TrainScheduleJPanel() {
@@ -353,11 +353,11 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
         orders.setSelectedIndex(i-1);
     }//GEN-LAST:event_pullUpJMenuItemActionPerformed
     
-    public void setup(ModelRoot mr, CallBacks cb) {
+    public void setup(ModelRoot mr, ActionListener al) {
         this.w =mr.getWorld();
         this.vl = mr.getViewLists();
         trainOrderJPanel1.setup(mr, null);
-        this.callbacks = cb;
+        this.modelRoot = mr;
 		principal = mr.getPlayerPrincipal();
         
         //This actionListener is fired by the select station popup when a stion is selected.
@@ -513,7 +513,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
         ImmutableSchedule before = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID, principal);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move m = new ChangeTrainScheduleMove(scheduleID, before, after);
-        this.callbacks.processMove(m);
+        this.modelRoot.getReceiver().processMove(m);        
     }
     
     public void listUpdated(KEY key, int index) {

@@ -69,13 +69,7 @@ public class DialogueBoxController {
             closeContent();
         }
     };
-    
-    private CallBacks callbacks = new CallBacks() {
-        public void processMove(Move m) {
-            moveReceiver.processMove(m);
-        }
-    };
-    
+       
     /** Creates new DialogueBoxController */
     
     public DialogueBoxController(JFrame frame, ModelRoot mr) {
@@ -196,7 +190,7 @@ public class DialogueBoxController {
         });
         
         trainDialogueJPanel = new TrainDialogueJPanel();
-        trainDialogueJPanel.setup(modelRoot, callbacks);
+        trainDialogueJPanel.setup(modelRoot, this.closeCurrentDialogue);
         moveChainFork.addListListener(trainDialogueJPanel);
         trainDialogueJPanel.setTrainDetailsButtonActionListener( new ActionListener() {            
             public void actionPerformed(ActionEvent arg0) {
@@ -302,7 +296,7 @@ public class DialogueBoxController {
     
     public void showContent(JComponent component) {
         JComponent contentPanel;
-        if (!(component instanceof View) && !(component instanceof NewView)) {
+        if (!(component instanceof View)) {
             contentPanel = new javax.swing.JPanel();
             contentPanel.setLayout(new java.awt.GridBagLayout());
             GridBagConstraints constraints = new GridBagConstraints();

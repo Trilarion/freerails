@@ -13,7 +13,6 @@ import jfreerails.client.common.JFrameMinimumSizeEnforcer;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.ViewListsImpl;
-import jfreerails.client.view.CallBacks;
 import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MapCursor;
@@ -50,7 +49,7 @@ import jfreerails.world.train.TrainOrdersModel;
  * @author  lindsal8
  *
  */
-public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
+public class DialogueBoxTester extends javax.swing.JFrame {
 
     
     private final DialogueBoxController dialogueBoxController;
@@ -91,20 +90,21 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     /** Creates new form TestGlassPanelMethod */
     public DialogueBoxTester() {
         
-	ModelRoot mr = new ModelRoot();
+    	modelRoot = new ModelRoot();
+    	modelRoot.setMoveReceiver(this.dummyReceiver);
         w = new WorldImpl();       
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
         wetf.addTypesToWorld(w);
-        
+        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
         try {
             vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {            
             e.printStackTrace();
         }
-        mr.setWorld(w, dummyReceiver, vl);
-        dialogueBoxController = new DialogueBoxController(this, mr);
+        modelRoot.setWorld(w, dummyReceiver, vl);
+        dialogueBoxController = new DialogueBoxController(this, modelRoot);
         
         int numberOfCargoTypes = w.size(SKEY.CARGO_TYPES);
         StationModel bristol = new StationModel(10, 10, "Bristol", numberOfCargoTypes, 0);
@@ -351,7 +351,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     private void trainScheduleJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainScheduleJMenuItemActionPerformed
         // Add your handling code here:
         TrainScheduleJPanel tsp = new TrainScheduleJPanel();
-        tsp.setup(modelRoot, this);
+        tsp.setup(modelRoot, null);
         tsp.display(0);
         dialogueBoxController.showContent(tsp);
     }//GEN-LAST:event_trainScheduleJMenuItemActionPerformed
@@ -403,7 +403,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
         
 	private void selectTrainOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTrainOrdersActionPerformed
             // Add your handling code here:
-            trainDialogueJPanel.setup(modelRoot, this);
+            trainDialogueJPanel.setup(modelRoot, null);
             trainDialogueJPanel.display(0);
             dialogueBoxController.showContent(trainDialogueJPanel);
 	} //GEN-LAST:event_selectTrainOrdersActionPerformed

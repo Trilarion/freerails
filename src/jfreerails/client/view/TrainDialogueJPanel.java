@@ -6,17 +6,20 @@
 
 package jfreerails.client.view;
 
+import java.awt.event.ActionListener;
+
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
+import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
-import jfreerails.world.top.*;
-import java.awt.event.ActionListener;
 
 /**
  *
  * @author  Luke Lindsay
  */
-public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, WorldListListener {
+public class TrainDialogueJPanel extends javax.swing.JPanel implements View, WorldListListener {
     
     private WorldIterator wi;
     private ReadOnlyWorld w;
@@ -119,8 +122,8 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
         }
     }//GEN-LAST:event_nextJButtonActionPerformed
     
-    public void setup(ModelRoot mr, CallBacks cb) {
-        newTrainScheduleJPanel1.setup(mr, cb);
+    public void setup(ModelRoot mr, ActionListener al) {
+        newTrainScheduleJPanel1.setup(mr, al);
         trainDetailsJPanel1.setup(mr, null);
         this.principal = mr.getPlayerPrincipal();
         this.w = mr.getWorld();
