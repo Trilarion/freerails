@@ -8,7 +8,6 @@ import jfreerails.world.tilemap.Tile;
 
 /**
  * @version 	1.0
- * @author
  */
 public interface TerrainTile extends Tile {
 	String getTypeName();

@@ -5,9 +5,9 @@ import jfreerails.world.train.Schedule;
 
 
 /**
- * Represents ...
- * 
- * @see OtherClasses
+ *
+ *
+ *
  * @author lindsal
  */
 
@@ -17,7 +17,7 @@ final public class ChangeTrainScheduleMove {
 
     private final Schedule newSchedule;
 
-  
+
 
     public Schedule getOldSchedule() {
         return oldSchedule;
@@ -26,7 +26,7 @@ final public class ChangeTrainScheduleMove {
     public Schedule getNewSchedule() {
         return newSchedule;
     }
-    
+
     public ChangeTrainScheduleMove(Schedule before, Schedule after){
     	oldSchedule=before;
     	newSchedule=after;

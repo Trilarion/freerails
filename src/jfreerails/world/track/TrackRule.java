@@ -7,7 +7,7 @@ import jfreerails.world.misc.FreerailsSerializable;
 *  Description of the Interface
 *
 *@author     Luke Lindsay
-*@created    09 October 2001
+*     09 October 2001
 */
 
 public interface TrackRule extends FreerailsSerializable {

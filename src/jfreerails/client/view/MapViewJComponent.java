@@ -15,8 +15,7 @@ import javax.swing.Scrollable;
 
 /**
  *@author     Luke Lindsay
- *@created    01 November 2001
- *@version
+ *     01 November 2001
  */
 
 public abstract class MapViewJComponent
@@ -29,8 +28,8 @@ public abstract class MapViewJComponent
 	protected MapView mapView=new BlankMapView(10);
 
 	public MapViewJComponent() {
-	}	
-		
+	}
+
 	/*
 	public void setMapView(MapView mapView) {
 		this.mapView = mapView;
@@ -121,7 +120,7 @@ public abstract class MapViewJComponent
 		visRect.x = (int) (tile.x * scale - (visRect.width / 2));
 		visRect.y = (int) (tile.y * scale - (visRect.height / 2));
 		this.scrollRectToVisible(visRect);
-		
+
 	}
 	/*
 	public boolean isWrappedVertically() {

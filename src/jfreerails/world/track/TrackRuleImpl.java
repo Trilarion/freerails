@@ -19,20 +19,20 @@ import jfreerails.world.terrain.TerrainType;
  *  tunnels).
  *
  *@author     Luke Lindsay
- *@created    09 October 2001
- *@vercsion    0.1
+ *    09 October 2001
+ *@version    0.1
  */
 
 final public class TrackRuleImpl
 extends java.lang.Object
 implements TrackRule {
-    
+
     private final TrackRuleProperties properties;
-    
+
     private final LegalTrackConfigurations legalConfigurations;
-    
+
     private final LegalTrackPlacement legalTrackPlacement;
-    
+
         /*
          *  Track templates are 9 bit values, so there are 512 possible templates.
          *  If legalTrackTemplate[x]==true, then x is a legal track-template.
@@ -41,8 +41,8 @@ implements TrackRule {
          *  111
          *  000
          *  This represents a horizontal straight.
-         */       
-    
+         */
+
     public TrackRuleImpl(TrackRuleProperties p, LegalTrackConfigurations lc, LegalTrackPlacement ltp){
         if(null==p||null==lc||null==ltp){
             throw new java.lang.IllegalArgumentException();
@@ -51,28 +51,28 @@ implements TrackRule {
         legalConfigurations=lc;
         legalTrackPlacement=ltp;
     }
-    
-    
+
+
     public boolean testTrackPieceLegality(int trackTemplateToTest) {
         TrackConfiguration trackConfiguration=TrackConfiguration.getFlatInstance(trackTemplateToTest);
-        
+
         return legalConfigurations.trackConfigurationIsLegal(trackConfiguration);
     }
-    
-    
-    
+
+
+
     public OneTileMoveVector[] getLegalRoutes(OneTileMoveVector directionComingFrom) {
-        
+
         //TODO add code..
         return null;
     }
-    
-    
+
+
     public boolean canBuildOnThisTerrainType(String TerrainType) {
-        
+
         return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
     }
-    
+
     public boolean isDoubleTrackEnabled() {
         return properties.isDoubleTrackEnabled();
     }
@@ -88,13 +88,13 @@ implements TrackRule {
     public Iterator getLegalConfigurationsIterator(){
        return legalConfigurations.getLegalConfigurationsIterator();
     }
-    
+
     public  TrackPiece getTrackPiece(TrackConfiguration config) {
-        return new TrackPieceImpl(config, this);           
+        return new TrackPieceImpl(config, this);
     }
-    
+
     public boolean trackPieceIsLegal(TrackConfiguration config) {
         return legalConfigurations.trackConfigurationIsLegal(config);
     }
-    
+
 }

@@ -10,7 +10,7 @@ import java.util.Iterator;
 final public class TrackConfiguration implements FlatTrackTemplate {
 
 	/**
-	 * @associates TrackConfiguration 
+	 *  TrackConfiguration
 	 */
 	private static final ArrayList flatTrackConfigurations = new ArrayList(512);
 
@@ -46,7 +46,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		return trackGraphicNumber;
 	}
 
-	
+
 	private final int configuration;
 	//private TrackSectionVector[] vectors;
 

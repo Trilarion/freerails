@@ -29,7 +29,7 @@ final public class FreerailsCursor implements KeyListener  {
 		new jfreerails.client.view.FreerailsCursor.CursorRenderer();
 
 	/**
-	 * @associates CursorEventListener 
+	 *  CursorEventListener
 	 */
 	protected java.util.Vector listeners = new java.util.Vector();
 
@@ -119,7 +119,7 @@ final public class FreerailsCursor implements KeyListener  {
 				break;
 			case KeyEvent.VK_ENTER :
 				System.out.println("Send moves to server");
-							
+
 			default :
 				fireOffCursorKeyPressed(keyEvent, cursorMapPosition);
 		}

@@ -6,6 +6,7 @@
  <property name="src" location="src"/>
  <property name="build" location="build"/>
  <property name="dist"  location="dist"/>	
+  <property name="doc"  location="doc"/>
  <target name="init" depends="properties">
   <tstamp/>
   <mkdir dir="${build}"/>
@@ -89,6 +90,7 @@
  <target name="clean" description="Clean up build and distribution">
   <delete dir="${build}"/>
   <delete dir="${dist}"/>
+  <delete dir="${doc}"/>
  </target>
 
  <target name="run" depends="compile" description="Test run based on compile">
@@ -102,4 +104,52 @@
  <target name="rundist" depends="bindist" description="Test run based on bindist">
   <java jar="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" fork="true"/>
  </target>
+ 
+ <target name="world_javadoc" >
+ 	<javadoc 
+           destdir="${doc}"
+           author="true"
+           version="true"
+           use="true"
+           windowtitle="Freerails World API">
+
+    <fileset dir="${src}" defaultexcludes="yes">
+      <include name="jfreerails/util/**" />
+      <include name="jfreerails/world/**" />
+      <exclude name="**/*Test.java" />
+    </fileset>
+
+    
+  	</javadoc>
+  </target>
+  
+  <target name="jar_doc" depends="init, world_javadoc">  	
+  	<jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-javadoc.jar"
+       basedir="."       
+       includes="${doc}/**"     
+  	/>  		   
+  </target>	
+  
+    
+  
+  <!-- Requires that NetComponents.jar is in ant/lib -->
+  <target name="upload" depends="jar_doc, bindist, srcdist" description="Upload source, binary, and javadocs jar files to sourcforge">
+  
+  
+
+  <ftp server="upload.sourceforge.net"
+       userid="anonymous"
+       password="me@myorg.com"
+       remotedir="/incoming"
+       binary="yes"
+       >
+    <fileset dir="${dist}/lib">
+    	<include name="*.jar"/> 
+    </fileset>
+  </ftp>
+
+
+  
+   </target>	
+  	
 </project>

@@ -26,6 +26,11 @@ public class TrainModel implements FreerailsSerializable{
         trainposition=p;
     }
     
+    public int getLength(){
+    	return (1+numberOfWagons)*10;  //Engine + wagons.
+    }
+    	
+    
     public boolean canAddWagon(){
     	return numberOfWagons < MAX_NUMBER_OF_WAGONS;
     }

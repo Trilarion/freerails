@@ -12,7 +12,6 @@ import jfreerails.world.misc.OneTileMoveVector;
 /**
  *
  * @author  lindsal
- * @version 
  */
 final public class NullTrackType implements jfreerails.world.track.TrackRule {
 

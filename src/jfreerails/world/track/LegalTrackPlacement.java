@@ -14,14 +14,13 @@ import jfreerails.world.misc.FreerailsSerializable;
 /**
  *
  * @author  lindsal
- * @version 
  */
-public final class LegalTrackPlacement implements FreerailsSerializable {    
+public final class LegalTrackPlacement implements FreerailsSerializable {
     /**
-     * @associates Object 
+     *  Object
      */
     private final HashSet terrainTypes = new HashSet();
-    
+
     private final PlacementRule placementRule;
 
     /** Creates new LegalTrackPlacement */
@@ -30,7 +29,7 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
         Iterator iterator=types.iterator();
         while(iterator.hasNext()){
             String typeName=(String)(iterator.next());
-            terrainTypes.add(typeName);       
+            terrainTypes.add(typeName);
         }
     }
     public boolean canBuildOnThisTerrain(String terrainType){
@@ -38,28 +37,28 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
             return terrainTypes.contains(terrainType);
         }else{
             return !terrainTypes.contains(terrainType);
-        }  
+        }
     }
-    
+
     final public static  class PlacementRule implements FreerailsSerializable {
-    	
+
     	private int i;
-        
+
         private PlacementRule(int i){
         	this.i=i;
         }
-        
-        private Object readResolve() throws ObjectStreamException {		
-        	
+
+        private Object readResolve() throws ObjectStreamException {
+
         	if(i==1){
         		return ONLY_ON_THESE;
         	}else{
         		return ANYWHERE_EXCEPT_ON_THESE;
-        	}    	
+        	}
     	}
-                
+
         public static final PlacementRule ONLY_ON_THESE=new PlacementRule(1);
-        
+
         public static final PlacementRule ANYWHERE_EXCEPT_ON_THESE=new PlacementRule(2);
     }
 

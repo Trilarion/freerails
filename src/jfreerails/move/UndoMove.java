@@ -2,9 +2,9 @@ package jfreerails.move;
 import jfreerails.world.World;
 
 /**
- * Represents ...
- * 
- * @see OtherClasses
+ *
+ *
+ *
  * @author lindsal
  */
 

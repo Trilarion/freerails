@@ -1,3 +1,7 @@
+28-Oct-2002 23:52:39 Luke Lindsay 
+   o Fix javadoc warnings
+   o Add 'upload to sourceforge' task to build.xml
+   o Add world_javadoc task to build xml.
 27-Oct-2002 21:54:46 Luke Lindsay 
    oWrote ChangeTrainPositionMove and ChangeTrainPositionTest
 27-Oct-2002 01:09:22 Luke Lindsay 

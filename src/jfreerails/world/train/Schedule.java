@@ -9,7 +9,6 @@ package jfreerails.world.train;
 /**
  *
  * @author  lindsal
- * @version 
  */
 public interface Schedule {
 
