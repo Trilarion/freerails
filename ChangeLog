@@ -1,6 +1,9 @@
+Sat Jul 28 14:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o Build station to the end of a track or on a 2 direction track.
+o Take the right image.
 Wed Jul 25 00:30:00 2001  Alexander Opitz <opi@sputnik.de>:
 o correct WaterOnMap function in map.c
-o Don't build track on Water
+o Don't build station on Water
 o Give hint, why track can't build via ScreenMessage
 o add Element station (but not ready yet!)
 Tue Jul 17 13:30:00 2001  Alexander Opitz <opi@sputnik.de>:
