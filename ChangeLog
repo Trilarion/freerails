@@ -1,6 +1,8 @@
 Jun 12, 2004 Luke
 	Bugs Fixed: 
 	o 967667 Cannot close multilple dialogue boxes.
+	o 967664 Fullscreen res. below 640x480 16bit selectable.
+	o 967666 Selected fullscreen resolution ignored.
 Jun 9, 2004 Luke 
 	Bugs Fixed: 
 	o 967673 Crash when building track close to edge of map 

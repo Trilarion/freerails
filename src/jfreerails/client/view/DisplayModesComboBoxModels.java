@@ -8,6 +8,8 @@ package jfreerails.client.view;
 import java.awt.DisplayMode;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -18,7 +20,7 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                                   .getDefaultScreenDevice()
                                                                                   .getDefaultConfiguration();
-    private final MyDisplayMode[] modes;
+    private final ArrayList modes = new ArrayList();
     private MyDisplayMode selection;
 
     public DisplayModesComboBoxModels() {
@@ -27,12 +29,25 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
         selection = new MyDisplayMode(currentMode);
 
         DisplayMode[] displayModes = defaultConfiguration.getDevice()
-                                                         .getDisplayModes();
-        modes = new MyDisplayMode[displayModes.length];
-
+                                                         .getDisplayModes();        
         for (int i = 0; i < displayModes.length; i++) {
-            modes[i] = new MyDisplayMode(displayModes[i]);
+        	MyDisplayMode mode = new MyDisplayMode(displayModes[i]);
+        	modes.add(mode);
         }
+    }
+    /** Permanently removes from the list in this object any display modes with width, height, or bitdepth below the
+     * specified values.
+     */
+    public void removeDisplayModesBelow(int width, int height, int bitdepth){
+    	 Iterator it = modes.iterator();
+    	 while (it.hasNext()) {
+        	MyDisplayMode mode = (MyDisplayMode)it.next();
+        	DisplayMode displayMode = mode.displayMode;
+        	if(displayMode.getWidth() < width || displayMode.getHeight() < height || displayMode.getBitDepth() < bitdepth){
+        		it.remove();
+        	}
+        }
+    	
     }
 
     public Object getSelectedItem() {
@@ -47,11 +62,11 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
     }
 
     public Object getElementAt(int index) {
-        return modes[index];
+        return modes.get(index);
     }
 
     public int getSize() {
-        return modes.length;
+        return modes.size();
     }
 
     public void removeListDataListener(javax.swing.event.ListDataListener l) {

@@ -7,6 +7,7 @@
 package jfreerails.launcher;
 
 import java.awt.DisplayMode;
+import java.util.logging.Logger;
 
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.view.DisplayModesComboBoxModels;
@@ -18,14 +19,17 @@ import jfreerails.client.view.MyDisplayMode;
  * @author  rtuck99@users.sourceforge.net
  */
 class ClientOptionsJPanel extends javax.swing.JPanel {
+	private static final Logger logger = Logger.getLogger(ClientOptionsJPanel.class.getName()); 
     private final Launcher owner;
     
     String getPlayerName() {
         return playerName.getText();
     }
     
-    DisplayMode getDisplayMode() {
-        return ((MyDisplayMode) listModel.getSelectedItem()).displayMode;
+    DisplayMode getDisplayMode() {    	
+    	MyDisplayMode displayMode = ((MyDisplayMode) jList1.getSelectedValue());
+        logger.fine("The selected display mode is "+displayMode.toString());
+		return displayMode.displayMode;
     }
     
     int getScreenMode(){
@@ -43,6 +47,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
     public void setControlsEnabled(boolean enabled) {
         windowedButton.setEnabled(enabled);
         fullScreenButton.setEnabled(enabled);
+        fixedSizeButton.setEnabled(enabled);
         if (fullScreenButton.isSelected()) {
             jList1.setEnabled(enabled);
         }
@@ -67,6 +72,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         this.owner = owner;
         initComponents();
         listModel = new DisplayModesComboBoxModels();
+        listModel.removeDisplayModesBelow(640, 480, 16);
         jList1.setModel(listModel);
         jList1.setSelectedIndex(0);
         validateSettings();
