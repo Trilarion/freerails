@@ -14,11 +14,18 @@
 
  <target name="copydata" depends="init" description="Copy data files">
   <copy todir="${build}/jfreerails/data">
-   <fileset dir="${src}/jfreerails/data"/>
+   <fileset dir="${src}/jfreerails/data">
+    <include name="*.xml"/>
+    <include name="*.png"/>
+    <include name="*.dtd"/>
+    </fileset>
+   	
   </copy>
   <copy todir="${build}">
-   <fileset dir=".">
-    <include name="Readme"/>
+    <fileset dir=".">
+     <include name="README"/>
+     <include name="TODO"/>
+     <include name="ChangeLog"/>
    </fileset>
   </copy>
  </target>
@@ -33,18 +40,22 @@
   <javac srcdir="${src}" destdir="${build}"/>
  </target>
 
- <target name="bindist" depends="compile" description="Generate binary distribution">
-  <mkdir dir="${dist}/lib"/>
-  <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
-   <manifest>
-    <attribute name="Main-Class" value="jfreerails.RunFreerails"/>
-   </manifest>
-  </jar>
- </target>
+ <target name="bindist" depends="compile" description="Generate binary distribution"> <mkdir
+  dir="${dist}/lib"/> <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
+  <manifest> <attribute name="Main-Class" value="jfreerails.RunFreerails"/> </manifest> </jar> </target>
 
  <target name="srcdist" depends="init" description="Generate source distribution">
   <mkdir dir="${dist}/lib"/>
-  <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-src.jar" basedir="${src}"/>
+  <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-src.jar" basedir=".">
+  <include name="src/**/*.java"/>
+    <include name="build.xml"/>
+    <include name="src/jfreerails/data/*.xml"/>
+    <include name="src/jfreerails/data/*.png"/>
+    <include name="src/jfreerails/data/*.dtd"/>
+    <include name="README"/>
+    <include name="TODO"/>
+    <include name="ChangeLog"/>
+  </jar>
  </target>
 
  <target name="clean" description="Clean up build and distribution">
