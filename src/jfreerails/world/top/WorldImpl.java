@@ -249,6 +249,11 @@ public class WorldImpl implements World {
                 }
             }
 
+            /* Compare bank accounts.*/
+            if (!this.bankAccounts.equals(test.bankAccounts)) {
+                return false;
+            }
+
             //phew!
             return true;
         } else {
@@ -287,7 +292,9 @@ public class WorldImpl implements World {
 
     private int getPlayerIndex(FreerailsPrincipal p) {
         for (int i = 0; i < players.size(); i++) {
-            if (p.equals(((Player)(players.get(i))).getPrincipal())) {
+            Player player = ((Player)(players.get(i)));
+
+            if (p.equals(player.getPrincipal())) {
                 return i;
             }
         }
