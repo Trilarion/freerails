@@ -17,6 +17,7 @@ import jfreerails.client.event.CursorEventListener;
 import jfreerails.client.menu.StationTypesPopup;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.TrainBuilder;
+import jfreerails.misc.TrainPathFinder;
 
 /**
  *
@@ -158,6 +159,12 @@ final public class MapViewJComponentConcrete
 			stationTypesPopup.show(this, x,y, tile);
 			//stationBuilder.buildStation(ce.newPosition);
 			//repaintMap(ce);
+		} else if (ce.keyEvent.getKeyCode() == KeyEvent.VK_T){
+		
+			TrainPathFinder.setTarget(ce.newPosition.x, ce.newPosition.y);
+			System.out.println("The target for the train pathfinder is now: "+ce.newPosition.x+", "+ce.newPosition.y);
+				
+			
 		}
 		reactToCursorMovement(ce);
 	}

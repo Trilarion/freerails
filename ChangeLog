@@ -1,3 +1,11 @@
+01-Dec-2002 00:02:25 Luke Lindsay
+	o The trains no longer all move at the same speed.
+30-Nov-2002 23:00:36 Luke Lindsay
+	o Load, save, and new game now work again.
+30-Nov-2002 20:45:18 Luke Lindsay
+	o The path finder now controls train movement.  Press
+	t with the cursor over the track and all the trains will
+	head for that point on the track.
 27-Nov-2002 23:45:40 Luke Lindsay
 	o Wrote SimpleAStarPathFinder and a unit test for it.
 	It seems to work.  The next step is use it together with 

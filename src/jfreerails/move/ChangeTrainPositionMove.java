@@ -19,12 +19,7 @@ public class ChangeTrainPositionMove {
 
 	final int trainPositionNumber;
 
-	public ChangeTrainPositionMove(
-		TrainPosition pieceToAdd,
-		TrainPosition pieceToRemove,
-		int trainNumber,
-		boolean addToHead,
-		boolean addToTail) {
+	public ChangeTrainPositionMove(TrainPosition pieceToAdd, TrainPosition pieceToRemove, int trainNumber, boolean addToHead, boolean addToTail) {
 		this.addToHead = addToHead;
 		this.addToTail = addToTail;
 		this.changeToHead = pieceToAdd;
@@ -32,15 +27,24 @@ public class ChangeTrainPositionMove {
 		this.trainPositionNumber = trainNumber;
 	}
 
+	public static ChangeTrainPositionMove getNullMove(int trainNumber) {
+		return new ChangeTrainPositionMove(null, null, trainNumber, false, false) {
+			MoveStatus move(TrainList tl, boolean updateTrainPosition, boolean isDoMove) {
+				return MoveStatus.MOVE_ACCEPTED;
+			}
 
-	public static ChangeTrainPositionMove generate(
-		TrainList list,
-		FreerailsPathIterator nextPathSection,
-		int trainNumber) {
-			
-		TrainModel train = 	list.getTrain(trainNumber);
-			
-		TrainPosition currentPosition=train.getPosition();	
+		};
+	}
+
+	public static ChangeTrainPositionMove generate(TrainList list, FreerailsPathIterator nextPathSection, int trainNumber) {
+		
+		if(!nextPathSection.hasNext()){
+			return getNullMove(trainNumber);
+		}
+
+		TrainModel train = list.getTrain(trainNumber);
+
+		TrainPosition currentPosition = train.getPosition();
 
 		TrainPosition bitToAdd, intermediate, newPosition, bitToRemove;
 
@@ -54,35 +58,27 @@ public class ChangeTrainPositionMove {
 
 		//System.out.println("intermediate "+intermediate.toString());
 
-		double currentLength = (double)train.getLength();
+		double currentLength = (double) train.getLength();
 
 		bitToRemove = getBitToRemove(intermediate, currentLength);
 
 		//System.out.println("bitToRemove "+bitToRemove.toString());
 
-		return new ChangeTrainPositionMove(
-			bitToAdd,
-			bitToRemove,
-			trainNumber,
-			true,
-			false);
+		return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber, true, false);
 
 	}
 
-	static TrainPosition getBitToRemove(
-		TrainPosition intermediate,
-		double currentLength) {
+	static TrainPosition getBitToRemove(TrainPosition intermediate, double currentLength) {
 		TrainPosition newPosition;
 		TrainPosition bitToRemove;
 		PathWalker pathWalker;
 		pathWalker = new PathWalkerImpl(intermediate.path());
 
 		pathWalker.stepForward((int) currentLength);
-		
 
 		newPosition = TrainPosition.createInSameDirectionAsPath(pathWalker);
 		//System.out.println("newPosition " + newPosition);
-		
+
 		bitToRemove = intermediate.removeFromHead(newPosition);
 		return bitToRemove;
 	}
@@ -161,10 +157,7 @@ public class ChangeTrainPositionMove {
 		return move(tl, updateTrainPosition, isDoMove);
 	}
 
-	MoveStatus move(
-		TrainList tl,
-		boolean updateTrainPosition,
-		boolean isDoMove) {
+	MoveStatus move(TrainList tl, boolean updateTrainPosition, boolean isDoMove) {
 
 		boolean localAddToHead, localAddToTail;
 
@@ -198,8 +191,7 @@ public class ChangeTrainPositionMove {
 				if (!intermediatePosition.canRemoveFromTail(changeToTail)) {
 					return MoveStatus.MOVE_REJECTED;
 				}
-				newTrainPosition =
-					intermediatePosition.removeFromTail(changeToTail);
+				newTrainPosition = intermediatePosition.removeFromTail(changeToTail);
 			}
 			//System.out.println(
 			//	"newTrainPosition=" + newTrainPosition.toString());
@@ -213,8 +205,7 @@ public class ChangeTrainPositionMove {
 				if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
 					return MoveStatus.MOVE_REJECTED;
 				}
-				intermediatePosition =
-					oldTrainPosition.removeFromTail(changeToTail);
+				intermediatePosition = oldTrainPosition.removeFromTail(changeToTail);
 			}
 			//System.out.println(
 			//	"intermediatePosition=" + intermediatePosition.toString());
@@ -222,8 +213,7 @@ public class ChangeTrainPositionMove {
 			if (!intermediatePosition.canRemoveFromHead(changeToHead)) {
 				return MoveStatus.MOVE_REJECTED;
 			}
-			newTrainPosition =
-				intermediatePosition.removeFromHead(changeToHead);
+			newTrainPosition = intermediatePosition.removeFromHead(changeToHead);
 			//System.out.println(
 			//	"newTrainPosition=" + newTrainPosition.toString());
 		}

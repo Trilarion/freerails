@@ -1,6 +1,7 @@
 package jfreerails.world.train;
 
 import jfreerails.world.misc.FreerailsPathIterator;
+import jfreerails.world.misc.FreerailsSerializable;
 
 
 /** This interface lets the caller retrieve a path broken into
@@ -8,7 +9,7 @@ import jfreerails.world.misc.FreerailsPathIterator;
  * E.g. it could be used to get the sub section of a path that
  * a train travels during an given time inteval.
  */
-public interface PathWalker extends FreerailsPathIterator  {
+public interface PathWalker extends FreerailsPathIterator, FreerailsSerializable  {
 
 	/** Returns true if we have not reached the end of the path.
 	 */
