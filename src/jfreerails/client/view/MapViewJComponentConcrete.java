@@ -19,7 +19,7 @@ import jfreerails.client.renderer.MapRenderer;
 /**
  *
  * @author  Luke Lindsay
- * @version
+ * 
  */
 
 final public class MapViewJComponentConcrete

@@ -12,7 +12,7 @@ import java.awt.Transparency;
 /**
  *
  * @author  lindsal8
- * @version
+ * 
  */
 public class SideOnTrainTrainViewImages {
     

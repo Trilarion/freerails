@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 /**
  *
  * @author  lindsal8
- * @version 
+ * 
  */
 public class MyGlassPanel extends javax.swing.JPanel {
 

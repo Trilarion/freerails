@@ -1,3 +1,5 @@
+12-Jan-2003 21:50:04 Luke
+	o Fixed javadoc errors.
 12-Jan-2003 05:11:47 Luke
 	o Major refactoring
 	o added ant target, check_dependencies, to check that the dependencies

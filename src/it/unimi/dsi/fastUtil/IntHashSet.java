@@ -67,8 +67,8 @@ import java.util.Set;
 
 
 /**  A type-specific hash set with with a very fast, small-footprint implementation.
- * @see Hash
- * @see HashCommon
+ * 
+ * 
  */
 
 public final class IntHashSet  extends IntAbstractSet  implements Serializable, Cloneable, Hash, IntSet  {

@@ -19,7 +19,7 @@ import jfreerails.world.train.EngineType;
 /**
  *
  * @author  lindsal8
- * @version
+ * 
  */
 public class SelectEngineJPanel extends javax.swing.JPanel {
     DialogueBoxController dialogueBoxController;

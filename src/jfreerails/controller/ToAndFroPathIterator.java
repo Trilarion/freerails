@@ -29,9 +29,7 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
 
 	}
 
-	/**
-	 * @see jfreerails.world.common.FreerailsPathIterator#hasNext()
-	 */
+	
 	public boolean hasNext() {
 		if (list.size() < 2) {
 			return false;
@@ -40,9 +38,7 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
 		}
 	}
 
-	/**
-	 * @see jfreerails.world.common.FreerailsPathIterator#nextSegment(jfreerails.world.misc.IntLine)
-	 */
+	
 	public void nextSegment(IntLine line) {
 		if (this.hasNext()) {
 			if (!path.hasNext()) {

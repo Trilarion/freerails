@@ -13,8 +13,6 @@ import java.awt.Image;
  * intentionally does nothing.  Its methods are called when
  * drawing tiles with no track.
  * 
- * @version 	1.0
- * @author
  */
 final public class NullTrackPieceRenderer implements TrackPieceRenderer {
 

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+
+  @(#)package.html	1.60 98/01/27
+
+  Copyright 1998 Sun Microsystems, Inc. 901 San Antonio Road, 
+  Palo Alto, California, 94303, U.S.A.  All Rights Reserved.
+
+  This software is the confidential and proprietary information of Sun
+  Microsystems, Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered into
+  with Sun.
+
+  CopyrightVersion 1.2
+
+-->
+</head>
+<body bgcolor="white">
+<p>Provides classes that encapsulate changes to the game world. The classes implement 
+  the GoF command pattern, and they are referred to as 'moves'. They implement 
+  the following interface:</p>
+
+<pre><code><font size="2">public interface Move {
+
+	MoveStatus tryDoMove(World w);
+
+	MoveStatus tryUndoMove(World w);
+
+	MoveStatus doMove(World w);
+
+	MoveStatus undoMove(World w);
+
+}
+</font></code></pre>
+<p>&nbsp;</p>
+<p>They have the following properties:</p>
+<p>(1) The changes they encapsulate are stored in an address space independent 
+  way, so that a move generated a client can be serialised, sent over a network, 
+  and then deserialised and executed on a server. To achieve this, they refer 
+  to items in the game world via either their coorinates, e.g. tile 10,50, or 
+  their position in a list, e.g. train #4.</p>
+<p>&nbsp;</p>
+</body>
+</html>

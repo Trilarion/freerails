@@ -7,7 +7,7 @@ import jfreerails.move.MoveStatus;
 
 /**
  * @version 	1.0
- * @author
+ * 
  */
 final public class MoveChainFork implements MoveReceiver {
 	

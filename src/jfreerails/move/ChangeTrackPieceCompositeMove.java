@@ -20,7 +20,7 @@ import jfreerails.world.track.TrackRule;
 /**
  *
  * @author  lindsal
- * @version
+ * 
  */
 public final class ChangeTrackPieceCompositeMove
 	implements NewTrackMove, MapUpdateMove {

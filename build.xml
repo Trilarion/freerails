@@ -129,7 +129,7 @@
    </target>
 
    <target name="javadoc" depends="mkdirs, init">
-      <javadoc destdir="${doc}" author="true" version="true" use="true" windowtitle="Freerails World API">
+      <javadoc destdir="${doc}" author="true" version="true"  overview="${src}/overview.html" Private="true"  use="true" windowtitle="JFreerails API - build ${DSTAMP}">
          <fileset dir="${src}" defaultexcludes="yes">
             <include name="**/*java" />
 
@@ -138,16 +138,7 @@
       </javadoc>
    </target>
 
-   <target name="move_javadoc" depends="mkdirs, init">
-      <javadoc destdir="${doc}" author="true" version="true" use="true" Overview="true" windowtitle="Freerails World API - build ${DSTAMP}">
-         <fileset dir="${src}" defaultexcludes="yes">
-            <include name="jfreerails/move/*.java" />
-
-            <exclude name="**/*Test.java" />
-         </fileset>
-      </javadoc>
-   </target>
-
+  
    <target name="jar_doc" depends="javadoc">
       <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-javadoc.jar" basedir=".">
          <include name="doc/**/*" />

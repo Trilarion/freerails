@@ -10,8 +10,7 @@ import javax.swing.JPanel;
 import jfreerails.client.common.MyGlassPanel;
 /**
  *
- * @author  lindsal8
- * @version 
+ * @author  lindsal8 
  */
 public class DialogueBoxController extends java.lang.Object {
 

@@ -24,16 +24,12 @@ public class TrainPathIterator implements FreerailsPathIterator {
 		p2.setValuesFromInt(intIterator.nextInt());
 	}
 
-	/**
-	 * @see jfreerails.world.common.FreerailsPathIterator#hasNext()
-	 */
+	
 	public boolean hasNext() {
 		return intIterator.hasNextInt();
 	}
 
-	/**
-	 * @see jfreerails.world.common.FreerailsPathIterator#nextSegment(jfreerails.world.misc.IntLine)
-	 */
+	
 	public void nextSegment(IntLine line) {
 		p1.setValuesFromInt(p2.toInt());
 		line.x1 = p1.getX() * tileSize + tileSize / 2;

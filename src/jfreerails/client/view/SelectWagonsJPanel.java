@@ -23,7 +23,7 @@ import jfreerails.world.train.WagonType;
 /**
  *
  * @author  lindsal8
- * @version 
+ * 
  */
 public class SelectWagonsJPanel extends javax.swing.JPanel {
     

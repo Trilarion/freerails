@@ -90,8 +90,6 @@ import java.util.Set;
 
 
 /** A type-specific hash map with a very fast, small-footprint implementation.
- * @see Hash
- * @see HashCommon
  */
 
 public final class Int2IntHashMap  extends Int2IntAbstractMap  implements Serializable, Cloneable, Hash, Int2IntMap  {
