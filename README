@@ -9,11 +9,6 @@ What's new:
 	the rectangle to scroll it.
 *Lots of refactoring and changes to the architecture.	
 
-New bugs:
-
-*Habours don't get painted anymore.
-*...
-
 
 Getting it, either:
 
@@ -31,7 +26,7 @@ http://java.sun.com/xml/download.html
 
 
 To compile and run:
-(1)	Go to the directory below /jfreerails 
+(1)	Go to the directory src
 (2)	To compile, type: javac jfreerails/RunFreerails.java
 (3)	To run, type: java jfreerails/RunFreerails
 	

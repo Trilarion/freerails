@@ -1,33 +1,20 @@
-/*
- * Created by IntelliJ IDEA.
- * User: lindsal
- * Date: Jan 14, 2002
- * Time: 4:10:53 PM
- * To change template for new interface use 
- * Code Style | Class Templates options (Tools | IDE Options).
- */
 package jfreerails.world.cargo;
 
-import jfreerails.type.CargoType;
-import jfreerails.world.station.*;
-import jfreerails.world.station.StationModel;
+import java.awt.Point;
 
-import java.awt.*;
+import jfreerails.type.CargoType;
+import jfreerails.world.station.StationModel;
+import jfreerails.world.std_cargo.*;
 
 public interface CargoBatch {
-    Point getPointOfOrigin();
+	
+	public Point getPointOfOrigin();
 
-    StationModel getStationOfOrigin();
+	public String getPlaceOfOrigin();
 
-    CargoType getCargoType();
+	public CargoType getCargoType();
 
-    CompositeCargoBundle getCargoBundle();
+	public CompositeCargoBundle getCargoBundle();
 
-    /**
-     * Does ...
-     *
-     * @return A boolean with ...
-     */
-
-    boolean hasTravelled();
+	boolean hasTravelled();
 }

@@ -1,16 +1,18 @@
 package jfreerails.world.cargo;
 
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
+
 import jfreerails.type.CargoType;
+
 public interface CargoBundle {
-    Vector getCargoBatch();
+	Vector getCargoBatch();
 
-    Iterator getCargoBatchIterator();
+	Iterator getCargoBatchIterator();
 
-    CargoType getCargoType();
+	CargoType getCargoType();
 
-    int getTotalAmount();
+	int getTotalAmount();
 
-    int getTotalWeight();
+	int getTotalWeight();
 }
