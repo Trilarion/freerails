@@ -3,6 +3,7 @@
  */
 
 #include "Train.h"
+#include <iostream>
 
 Train::Train(unsigned int _posX, unsigned int _posY, TrainInfo* _info, Player* _player)
      : GamePosElement(_posX, _posY, _player, idTrain)

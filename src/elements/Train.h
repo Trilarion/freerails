@@ -25,6 +25,7 @@ class Train : public GamePosElement
     ~Train();
     /** Adds wagon to this train */
     void addWagon(Wagon* wagon);
+    std::vector<Wagon*> getWagons() { return wagons; };
     /** Returns info object of this train. Note that you cannot set info to
       * something else
       */

@@ -1,3 +1,7 @@
+Sat Aug 23 03:15:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: TrainFrame now paints wagons
+o Element: add getWagons() to Train
+
 Fri Aug 22 04:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: clean up and small fixing of TrainFrame
 
