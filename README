@@ -1,5 +1,5 @@
 ===============
-FreeRails v0.04
+FreeRails v0.05
 ===============
 
 Welcome to FreeRails!
@@ -27,19 +27,20 @@ COPYING file for full details.
 Compiling and installing:
 =========================
 
-Nothing to compile and install yet.
+Only type make in the directory where the Rules.make is.
+If you get errors feel free and write to the mailinglist.
 
 
 Starting a new game:
 ====================
 
-Nothing to compile and install --> nothing to start!
+start the compiled file in the directory where the Rules.make is.
 
 
 Playing the game:
 =================
 
-Nothing to start --> nothing to play!
+Nothing realy to play yet.
 
 
 And finally:
@@ -48,5 +49,6 @@ And finally:
 Have fun to help!
 
                                    -- The FreeRails team.
+
 
 ## $Id$
