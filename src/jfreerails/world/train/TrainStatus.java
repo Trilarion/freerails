@@ -12,8 +12,27 @@ import jfreerails.world.common.GameTime;
  *
  */
 public final class TrainStatus implements FreerailsSerializable {
-	
-	private static final long serialVersionUID = 3545233652419081264L;
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TrainStatus)) return false;
+
+        final TrainStatus trainStatus = (TrainStatus) o;
+
+        if (!dontUpdateUntil.equals(trainStatus.dontUpdateUntil)) return false;
+        if (!status.equals(trainStatus.status)) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = dontUpdateUntil.hashCode();
+        result = 29 * result + status.hashCode();
+        return result;
+    }
+
+    private static final long serialVersionUID = 3545233652419081264L;
 
 	public enum Status {STOPPED_AT_SIGNAL, WAITING_FOR_FULL_LOAD, LOADING_AND_UNLOADING, MOVING};
 	
