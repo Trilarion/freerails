@@ -36,7 +36,5 @@ public class InputCityNames {
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         }
-
-        System.out.println("\nLoading XML " + filename);
     }
 }

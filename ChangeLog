@@ -1,3 +1,5 @@
+Mar 3, 2004 10:02:11 PM Luke
+	o Apply Scott Bennett's removal_of_Loading_text patch.
 Mar 3, 2004 1:25:27 AM Luke
 	o Implemented Request 905446 Track should be continuous 
 	o Implemented Request 905444 Multi player support: different track 
