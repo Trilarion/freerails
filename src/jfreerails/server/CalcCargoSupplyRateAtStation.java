@@ -1,10 +1,3 @@
-/**
- * @author Scott Bennett
- * Created: 9th May 2003
- *
- * This class probes the tiles adjacent to a station for what cargo they supply
- * and then returns a vector of these cargo rates
- */
 package jfreerails.server;
 
 import java.util.Vector;
@@ -21,6 +14,13 @@ import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackRule;
 
 
+/**
+ * This class probes the tiles adjacent to a station for what cargo they supply, demand, and convert
+ * and then returns a vector of these rates.
+ *
+ * @author Scott Bennett
+ * Created: 9th May 2003
+ */
 public class CalcCargoSupplyRateAtStation {
     /** The threshold that demand for a cargo must exceed before the station demands the cargo */
     private static final int PREREQUISITE_FOR_DEMAND = 16;

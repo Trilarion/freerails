@@ -1,3 +1,6 @@
+Apr 5, 2004 6:04:01 PM Luke
+	o Fixed 910134 Demand for mail and passengers
+	o Updated javadoc comments in jfreerails.server.parser.
 Apr 4, 2004 4:16:21 PM Luke
 	o Implemented 927152 Show change station popup when add station is clicked 
 Apr 3, 2004 12:18:18 AM Luke

@@ -32,8 +32,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      */
     private java.util.Stack context;
 
-    public Track_TilesParser(final Track_TilesHandler handler,
-        final Track_TilesParslet parslet) {
+    public Track_TilesParser(final Track_TilesHandler handler) {
         this.handler = handler;
         buffer = new StringBuffer(111);
         context = new java.util.Stack();
@@ -171,9 +170,9 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
      */
     public static void parse(final InputSource input,
-        final Track_TilesHandler handler, final Track_TilesParslet parslet)
+        final Track_TilesHandler handler)
         throws SAXException, ParserConfigurationException, IOException {
-        parse(input, new Track_TilesParser(handler, parslet));
+        parse(input, new Track_TilesParser(handler));
     }
 
     /**
@@ -184,9 +183,9 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
      */
     public static void parse(final java.net.URL url,
-        final Track_TilesHandler handler, final Track_TilesParslet parslet)
+        final Track_TilesHandler handler)
         throws SAXException, ParserConfigurationException, IOException {
-        parse(new InputSource(url.toExternalForm()), handler, parslet);
+        parse(new InputSource(url.toExternalForm()), handler);
     }
 
     private static void parse(final InputSource input,

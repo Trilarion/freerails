@@ -1,12 +1,3 @@
-/**
- * @author Scott Bennett
- * Created: 19th May 2003
- *
- * This class loops through all of the known stations and recalculates
- * the cargoes that they supply.
- *
- * FIXME This class should really be in the jfreerails.server package.
- */
 package jfreerails.server;
 
 import java.util.Vector;
@@ -24,6 +15,13 @@ import jfreerails.world.top.World;
 import jfreerails.world.top.WorldListListener;
 
 
+/**
+ * This class loops through all of the known stations and recalculates
+ * the cargoes that they supply, demand, and convert.
+ *
+ * @author Scott Bennett
+ * Created: 19th May 2003
+ */
 public class CalcSupplyAtStations implements WorldListListener {
     private World w;
     private MoveReceiver moveReceiver;
@@ -69,7 +67,7 @@ public class CalcSupplyAtStations implements WorldListListener {
      *
      * Process each existing station, updating what is supplied to it
      *
-     * @param station A StationModel ojbect to be processed
+     * @param station A StationModel object to be processed
      *
      */
     public StationModel calculations(StationModel station) {

@@ -9,7 +9,8 @@ import jfreerails.world.top.WorldImpl;
 
 
 /**
- *
+ * The main method on this classes uses CargoAndTerrainParser to the parse cargo and terrain types xml file - use
+ * it to test the parser and xml file work togther.
  * @author  Luke
  */
 public class RunTypesParser {
@@ -17,9 +18,9 @@ public class RunTypesParser {
         try {
             java.net.URL url = RunTypesParser.class.getResource(
                     "/jfreerails/data/cargo_and_terrain.xml");
-
             CargoAndTerrainParser.parse(url,
                 new CargoAndTerrainHandlerImpl(new WorldImpl()));
+            System.out.println("It worked");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -20,7 +20,7 @@ import org.xml.sax.XMLReader;
 
 /**
  * The class reads XML documents according to specified DTD and
- * translates all related events into RulesHandler events.
+ * translates all related events into CargoAndTerrainHandler events.
  * <p>Usage sample:
  * <pre>
  *    RulesParser parser = new RulesParser(...);
