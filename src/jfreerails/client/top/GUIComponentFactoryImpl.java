@@ -39,8 +39,11 @@ import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.world.top.ReadOnlyWorld;
-import javax.swing.JCheckBoxMenuItem;
-
+import jfreerails.move.ChangeGameSpeedMove;
+import jfreerails.move.Move;
+import jfreerails.world.common.GameSpeed;
+import jfreerails.world.top.ITEM;
+//PAUSE Check Box   import javax.swing.JCheckBoxMenuItem;
 
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
     ModelRootListener {
@@ -69,6 +72,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     Rectangle r = new Rectangle(10, 10, 10, 10);
     ClientJFrame clientJFrame;
     UserMessageGenerator userMessageGenerator;
+
+    ActionAdapter speedActions;
 
     public GUIComponentFactoryImpl(ModelRoot mr) {
         modelRoot = mr;
@@ -153,6 +158,45 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         userMessageGenerator = new UserMessageGenerator(this.modelRoot);
         moveFork.add(userMessageGenerator);
+
+        int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
+
+        // selecting action radio button
+        for (Enumeration enum = speedActions.getActions(); enum.hasMoreElements();) {
+          Action action = (Action) enum.nextElement();
+          if (action.equals(new Integer (gameSpeed))) {
+            String actionName = (String) action.getValue(action.NAME);
+            speedActions.setSelectedItem(actionName);
+          }
+        }
+
+        /**
+         *  @todo FIX ME   -- is there better possibility to pritne the same text as in UserMessageGenerator.processMove ?
+         *                    maybe: to add logSpeed(int) into MessageLogger ?
+         */
+        if (gameSpeed <= 0) {
+            modelRoot.getUserMessageLogger().showMessage("Game is paused.");
+        } else {
+            modelRoot.getUserMessageLogger().hideMessage();
+            String gameSpeedDesc = modelRoot.getServerControls().getGameSpeedDesc(gameSpeed);
+            modelRoot.getUserMessageLogger().println("Game speed: " + gameSpeedDesc);
+        }
+
+        moveFork.addSplitMoveReceiver(new MoveReceiver() {
+                     public void processMove(Move move) {
+          if (move instanceof ChangeGameSpeedMove) {
+            ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
+            for (Enumeration enum = speedActions.getActions(); enum.hasMoreElements();) {
+              Action action = (Action) enum.nextElement();
+              String actionName = (String) action.getValue(action.NAME);
+              if (actionName.equals(modelRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed())))
+                 speedActions.setSelectedItem(actionName);
+                 break;
+            }
+          }
+        }
+        });
+
     }
 
     public JPanel createOverviewMap() {
@@ -265,14 +309,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         //Set up the gamespeed submenu.
         JMenu gameSpeedSubMenu = new JMenu("Game Speed");
 
+/* PAUSE CheckBox
         final JCheckBoxMenuItem speedMI = new JCheckBoxMenuItem(sc.getPauseAction());
-
-        //        mi.setModel((ButtonModel)buttonModels.nextElement());
+//        mi.setModel((ButtonModel)buttonModels.nextElement());
         gameSpeedSubMenu.add(speedMI);
-
+*/
         ButtonGroup group = new ButtonGroup();
 
-        ActionAdapter speedActions = sc.getSetTargetTickPerSecondActions();
+        speedActions = sc.getSetTargetTickPerSecondActions();
 
         Enumeration buttonModels = speedActions.getButtonModels();
         Enumeration actions = speedActions.getActions();
@@ -280,14 +324,16 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         while (buttonModels.hasMoreElements()) {
             JRadioButtonMenuItem mi = new JRadioButtonMenuItem((Action)actions.nextElement());
             mi.setModel((ButtonModel)buttonModels.nextElement());
+/* PAUSE CheckBox
             mi.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        if (speedMI.isSelected()) {
-                            // paused => unchecking the pause checkBox
-                            speedMI.setSelected(false);
-                        }
-                    }
-                });
+              public void actionPerformed(ActionEvent e) {
+                if (speedMI.isSelected()) {
+                  // paused => unchecking the pause checkBox
+                  speedMI.setSelected(false);
+                }
+              }
+            });
+*/
             group.add(mi);
             gameSpeedSubMenu.add(mi);
         }

@@ -111,7 +111,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
                 bm.setSelected(true);
             }
         }
-
+/* commented to remove double action on item change
         for (int i = 0; i < actions.length; i++) {
             if (actions[i].getValue(Action.NAME).equals(item)) {
                 actions[i].actionPerformed(new ActionEvent(this,
@@ -119,6 +119,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
                         (String)actions[i].getValue(Action.ACTION_COMMAND_KEY)));
             }
         }
+*/
     }
 
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel

@@ -70,6 +70,11 @@ public class ChangeGameSpeedMove implements Move {
         return status;
     }
 
+    public int getNewSpeed() {
+      return newSpeed.getSpeed();
+    }
+
+
     public String toString() {
         return "ChangeGameSpeedMove: " + oldSpeed + "=>" + newSpeed;
     }
