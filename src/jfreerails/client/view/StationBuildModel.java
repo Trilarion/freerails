@@ -99,7 +99,7 @@ public class StationBuildModel {
             this.actionId = actionId;
         }
 
-        public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+        public void actionPerformed(ActionEvent e) {
             stationBuilder.setStationType(actionId);
 
             TrackRule trackRule = (TrackRule)modelRoot.getWorld().get(SKEY.TRACK_RULES,
@@ -115,7 +115,11 @@ public class StationBuildModel {
 
     private class StationCancelAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
+        	
+			boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) ==  ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
+        	if(b){
             stationBuildAction.setEnabled(false);
+        	}
         }
     }
 
@@ -145,7 +149,10 @@ public class StationBuildModel {
             String message = null;
 
             if (ms.isOk()) {
-            	setEnabled(false);
+            	boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) ==  ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
+            	if(b){
+                setEnabled(false);
+            	}            	
             }else{
             	message = ms.message;            	
             }

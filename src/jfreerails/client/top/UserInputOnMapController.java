@@ -111,7 +111,8 @@ public class UserInputOnMapController extends KeyAdapter {
 			 * track selected
 			 */
 			boolean trackBuildingOn = trackBuilder.getTrackBuilderMode() != TrackMoveProducer.IGNORE_TRACK;
-
+			trackBuildingOn = trackBuildingOn && 
+			(modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) ==  ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 			if (SwingUtilities.isLeftMouseButton(evt) && pressedInside
 					&& trackBuildingOn && !ignoreDragging) {
 				
@@ -184,7 +185,10 @@ public class UserInputOnMapController extends KeyAdapter {
 	}
 
 	private void cursorOneTileMove(Point oldPosition, OneTileMoveVector vector) {
-		if (null != trackBuilder) {
+		boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) ==  ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
+    	
+		
+		if (null != trackBuilder && b) {
 			trackBuilder.setBuildTrackStrategy(getBts());
 			MoveStatus ms = trackBuilder.buildTrack(oldPosition, vector);
 

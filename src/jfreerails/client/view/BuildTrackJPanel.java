@@ -80,8 +80,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
             final Integer ruleID = new Integer(i);
             TrackRule rule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
             TrackRule.TrackCategories category = rule.getCategory();
-            switch (category.ordinal()){
-                case 0:
+            switch (category){
+                case track:
                     trackButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(new java.awt.event.ActionListener() {
@@ -94,7 +94,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     trackJPanel.add(toggleButton);
                     
                     break;
-                case 1:
+                case bridge:
                     bridgeButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +106,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     
                     bridgesJPanel.add(toggleButton);
                     break;
-                case  2:
+                case  tunnel:
                     
                     tunnelButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
@@ -120,7 +120,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     
                     tunnelsJPanel.add(toggleButton);
                     break;
-                case 3:
+                case station:
                     
                     stationButtonGroup.add(toggleButton);
                                         
@@ -408,6 +408,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private void addStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStationActionPerformed
         
         setVisible(false, false, false, true);
+        int ruleID = selectionSet.get(TrackRule.TrackCategories.station);
+        stationBuildModel.getStationChooseAction(ruleID).actionPerformed(null);
         
     }//GEN-LAST:event_addStationActionPerformed
     
