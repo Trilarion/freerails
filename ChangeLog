@@ -1,3 +1,5 @@
+Thu Jan 10 13:20:00 2002  Alexander Opitz <opi@le-bit.de>:
+o all ground networking wrapper should be ready.
 Wed Jan 09 15:15:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add send/receive to the network wrappers
 o the sdl_net wrapper sends at first a integer of the length of the package
