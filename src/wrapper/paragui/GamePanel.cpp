@@ -27,13 +27,16 @@ PARAGUI_CALLBACK(GamePanel::clickViewButton) {
   releaseAllViewButtons(button);
   switch (id)
   {
-    case GamePanel::BuildTrack:
-      mapView->setMouseType(GameMapView::buildTrack);
+    case GamePanel::ViewStations:
+      trainList->SetVisible(false);
+      stationList->SetVisible(true);
     break;
-    case GamePanel::BuildStation:
-      mapView->setMouseType(GameMapView::buildStation);
+    case GamePanel::ViewTrains:
+      stationList->SetVisible(false);
+      trainList->SetVisible(true);
     break;
   }
+  button->SetPressed(true);
   Update();
 }
 
@@ -59,7 +62,6 @@ PARAGUI_CALLBACK(GamePanel::clickBuildButton) {
 
 PARAGUI_CALLBACK(GamePanel::clickStationSelect) {
 
-  std::cerr << data << ":" << id << std::endl;
   switch (id)
   {
     case 4:
@@ -88,6 +90,20 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   trainViewButton=new PG_Button(this,GamePanel::ViewTrains,PG_Rect(82,200,68,20),"Trains");
   trainViewButton->SetToggle(true);
   trainViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
+  
+  stationList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
+  stationList->EnableScrollBar(true, PG_SB_VERTICAL);
+  stationList->SetTransparency(0);
+  stationList->SetDirtyUpdate(false);
+  
+  new PG_Label(stationList, PG_Rect(0,0,300,20), "Stations 12345678901234567890");
+
+  trainList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
+  trainList->EnableScrollBar(true, PG_SB_VERTICAL);
+  trainList->SetTransparency(0);
+  trainList->SetVisible(false);
+
+  new PG_Label(trainList, PG_Rect(0,0,100,20), "Trains");
 
   trackButton=new PG_Button(this,GamePanel::BuildTrack,PG_Rect(5,400,25,25));
   trackButton->SetIcon("graphics/ui/buttons/build_track_up.png",

@@ -12,6 +12,7 @@
 #include <pgradiobutton.h>
 #include <pgbutton.h>
 #include <pgrect.h>
+#include <pgwidgetlist.h>
 
 #include <pgeventobject.h>
 
@@ -39,6 +40,9 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
 
     PG_Button* stationViewButton;
     PG_Button* trainViewButton;
+    
+    PG_WidgetList* stationList;
+    PG_WidgetList* trainList;
 
     PG_Button* trackButton;
     PG_Button* stationButton;
