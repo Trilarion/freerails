@@ -25,6 +25,10 @@ public:
     if (y < 0 || y > height) return;
     mapFields[y*width+x]=_mapField;
   }
+  
+  int getWidth() { return width;}
+
+  int getHeight() { return height;}
 
 private:
   std::vector<MapField *> mapFields;
