@@ -1,3 +1,8 @@
+Tue Aug 14 23:30:00 2001  Rivo Laks <rivolaks@hot.ee>:
+o Added i18n support
+o Added wrapperType() method to BaseApplication and wrappers
+o Changed Rules.make a bit
+o Implemented very first version of element wagon
 Fri Aug 13 04:30:00 2001  Alexander Opitz <opi@sputnik.de>:
 o add GameDialog ground functions in paraGUI and Qt
 Fri Aug 10 15:00:00 2001  Alexander Opitz <opi@sputnik.de>:
