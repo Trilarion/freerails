@@ -5,7 +5,6 @@
 package jfreerails.server;
 
 import java.util.Iterator;
-
 import jfreerails.move.AddTransactionMove;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.cargo.CargoBatch;
@@ -38,7 +37,8 @@ public class ProcessCargoAtStationMoveGenerator {
             amount += cargoBundle.getAmount(batch) * dist * 10;
         }
 
-		DeliverCargoReceipt receipt = new DeliverCargoReceipt(new Money((long)amount), cargoBundle);
+        DeliverCargoReceipt receipt = new DeliverCargoReceipt(new Money(
+                    (long)amount), cargoBundle);
 
         return new AddTransactionMove(0, receipt);
     }

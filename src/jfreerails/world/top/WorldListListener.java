@@ -13,4 +13,6 @@ public interface WorldListListener {
     void listUpdated(KEY key, int index);
 
     void itemAdded(KEY key, int index);
+
+    void itemRemoved(KEY key, int index);
 }

@@ -129,9 +129,10 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
     }
     
     public void itemAdded(KEY key, int index) {
-        
     }
-    
+
+    public void itemRemoved(KEY key, int index) {
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jfreerails.client.view.NewTrainScheduleJPanel newTrainScheduleJPanel1;

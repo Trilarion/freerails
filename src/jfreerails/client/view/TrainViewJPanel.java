@@ -186,5 +186,9 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
 	public void itemAdded(KEY key, int index) {
 		
 	}
+
+	public void itemRemoved(KEY key, int index) {
+
+	}
     
 }

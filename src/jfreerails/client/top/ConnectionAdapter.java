@@ -157,7 +157,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 
             if (!(connection instanceof LocalConnection)) {
                 NonAuthoritativeMoveExecuter moveExecuter = new NonAuthoritativeMoveExecuter(world,
-                        moveReceiver, mutex);
+                        moveReceiver, mutex, modelRoot);
                 worldUpdater.setMoveReceiver(moveExecuter);
                 uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
                 ((NonAuthoritativeMoveExecuter.PendingQueue)uncommittedReceiver).addMoveReceiver(connection);
@@ -168,9 +168,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     public void setMoveReceiver(MoveReceiver m) {
-		//moveReceiver = new CompositeMoveSplitter(m);
-    	//I don't want moves split at this stage since I want to be able
-    	//to listen of composite moves.
+        //moveReceiver = new CompositeMoveSplitter(m);
+        //I don't want moves split at this stage since I want to be able
+        //to listen of composite moves.
         moveReceiver = m;
     }
 

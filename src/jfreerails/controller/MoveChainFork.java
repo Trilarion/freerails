@@ -3,8 +3,11 @@ package jfreerails.controller;
 import java.util.ArrayList;
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.ChangeItemInListMove;
+import jfreerails.move.RemoveItemFromListMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
+import jfreerails.move.UndoneMove;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
 
 
@@ -55,7 +58,8 @@ final public class MoveChainFork implements MoveReceiver {
             MoveReceiver m = (MoveReceiver)moveReceivers.get(i);
             m.processMove(move);
         }
-		splitMove(move);
+
+        splitMove(move);
     }
 
     private void splitMove(Move move) {
@@ -72,18 +76,49 @@ final public class MoveChainFork implements MoveReceiver {
             }
 
             if (move instanceof AddItemToListMove) {
-                for (int i = 0; i < listListeners.size(); i++) {
-                    AddItemToListMove mm = (AddItemToListMove)move;
-                    WorldListListener l = (WorldListListener)listListeners.get(i);
-                    l.itemAdded(mm.getKey(), mm.getIndex());
-                }
+                AddItemToListMove mm = (AddItemToListMove)move;
+                sendItemAdded(mm.getKey(), mm.getIndex());
             } else if (move instanceof ChangeItemInListMove) {
-                for (int i = 0; i < listListeners.size(); i++) {
+                ChangeItemInListMove mm = (ChangeItemInListMove)move;
+                sendListUpdated(mm.getKey(), mm.getIndex());
+            } else if (move instanceof RemoveItemFromListMove) {
+                RemoveItemFromListMove mm = (RemoveItemFromListMove)move;
+                sendItemRemoved(mm.getKey(), mm.getIndex());
+            } else if (move instanceof UndoneMove) {
+                Move m = ((UndoneMove)move).getUndoneMove();
+
+                if (m instanceof AddItemToListMove) {
+                    AddItemToListMove mm = (AddItemToListMove)m;
+                    sendItemRemoved(mm.getKey(), mm.getIndex());
+                } else if (m instanceof RemoveItemFromListMove) {
+                    RemoveItemFromListMove mm = (RemoveItemFromListMove)m;
+                    sendItemAdded(mm.getKey(), mm.getIndex());
+                } else if (move instanceof ChangeItemInListMove) {
                     ChangeItemInListMove mm = (ChangeItemInListMove)move;
-                    WorldListListener l = (WorldListListener)listListeners.get(i);
-                    l.listUpdated(mm.getKey(), mm.getIndex());
+                    sendListUpdated(mm.getKey(), mm.getIndex());
                 }
             }
+        }
+    }
+
+    private void sendItemAdded(KEY key, int index) {
+        for (int i = 0; i < listListeners.size(); i++) {
+            WorldListListener l = (WorldListListener)listListeners.get(i);
+            l.itemAdded(key, index);
+        }
+    }
+
+    private void sendItemRemoved(KEY key, int index) {
+        for (int i = 0; i < listListeners.size(); i++) {
+            WorldListListener l = (WorldListListener)listListeners.get(i);
+            l.itemRemoved(key, index);
+        }
+    }
+
+    private void sendListUpdated(KEY key, int index) {
+        for (int i = 0; i < listListeners.size(); i++) {
+            WorldListListener l = (WorldListListener)listListeners.get(i);
+            l.listUpdated(key, index);
         }
     }
 }

@@ -28,20 +28,20 @@ public class TransferCargoAtStationMove extends CompositeMove {
                 changeAtStation, changeOnTrain, payment
             });
     }
-    
-    public ChangeCargoBundleMove getChangeAtStation(){
-    	return (ChangeCargoBundleMove)super.getMoves()[0];
+
+    public ChangeCargoBundleMove getChangeAtStation() {
+        return (ChangeCargoBundleMove)super.getMoves()[0];
     }
-    
-	public ChangeCargoBundleMove getChangeOnTrain(){
-		return (ChangeCargoBundleMove)super.getMoves()[1];
-	}
-	
-	public AddTransactionMove getPayment(){
-		if(super.getMoves().length < 3){
-			return null;
-		}else{		
-			return (AddTransactionMove)super.getMoves()[2];
-		}
-	}
+
+    public ChangeCargoBundleMove getChangeOnTrain() {
+        return (ChangeCargoBundleMove)super.getMoves()[1];
+    }
+
+    public AddTransactionMove getPayment() {
+        if (super.getMoves().length < 3) {
+            return null;
+        } else {
+            return (AddTransactionMove)super.getMoves()[2];
+        }
+    }
 }

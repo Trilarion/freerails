@@ -142,4 +142,14 @@ public class CompositeMove implements Move {
             return false;
         }
     }
+
+    public final String toString() {
+        String s = "";
+
+        for (int i = 0; i < moves.length; i++) {
+            s += moves[i].toString() + ((i > 0) ? ", " : "");
+        }
+
+        return s;
+    }
 }

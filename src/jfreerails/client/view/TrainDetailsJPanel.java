@@ -132,6 +132,10 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
 	public void itemAdded(KEY key, int index) {
 		trainViewJPanel1.itemAdded(key, index);
 	}
+
+	public void itemRemoved(KEY key, int index) {
+	    trainViewJPanel1.itemRemoved(key, index);
+	}
                 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
