@@ -3,6 +3,7 @@ Jun 15, 2004 Luke
 	o 972869 Crash when track under train removed.
 	o 972867 Signal towers do nothing
 		I've removed them!
+	o 972864 Deselect place-station-mode when track selected
 Jun 14, 2004 Luke
 	Bugs fixed:
 	o 948668 Building Station on Curve - Cursor changes function 	

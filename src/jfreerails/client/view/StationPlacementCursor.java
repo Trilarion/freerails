@@ -29,7 +29,7 @@ import jfreerails.client.renderer.StationRadiusRenderer;
  * @author rob
  */
 public class StationPlacementCursor extends MouseInputAdapter {
-    private boolean buildEnabled;
+	private boolean buildEnabled;
     private final MapViewJComponent mapView;
     private final StationRadiusRenderer stationRadiusRenderer;
     private final StationBuildModel stationBuildModel;

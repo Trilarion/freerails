@@ -55,7 +55,7 @@ public class ActionRoot {
 
         if (world.size(SKEY.TRACK_RULES) > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
-            trackBuildModel = new TrackBuildModel(trackMoveProducer, world, vl);
+            trackBuildModel = new TrackBuildModel(trackMoveProducer, world, vl, this);
             stationBuildModel = new StationBuildModel(new StationBuilder(
                         modelRoot), vl, modelRoot);
         }

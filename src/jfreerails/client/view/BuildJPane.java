@@ -75,6 +75,9 @@ public class BuildJPane extends javax.swing.JPanel {
             add(currentPanel, gbc);
             ((TrackBuildJPanel) currentPanel).setup(vl, actionRoot);
             revalidate();
+            actionRoot.getStationBuildModel().getStationCancelAction().actionPerformed(new ActionEvent(
+                    this,
+                    ActionEvent.ACTION_PERFORMED, ""));
         } else if (s.equals("Station")) {
             currentPanel = new StationBuildJPanel();
             GridBagConstraints gbc = new GridBagConstraints();

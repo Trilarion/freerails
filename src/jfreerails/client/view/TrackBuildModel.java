@@ -32,6 +32,7 @@ public class TrackBuildModel {
     private final TrackMoveProducer trackMoveProducer;
     private final ViewLists viewLists;
     private final ReadOnlyWorld world;
+    private final ActionRoot actionRoot;
 
     public ActionAdapter getBuildModeActionAdapter() {
         return buildModeAdapter;
@@ -51,6 +52,7 @@ public class TrackBuildModel {
         }
 
         public void actionPerformed(ActionEvent e) {
+        	 cancelStationPlacement();
             if (!(e.getSource() instanceof ActionAdapter))
                 return;
 
@@ -84,18 +86,24 @@ public class TrackBuildModel {
         }
 
         public void actionPerformed(ActionEvent e) {
+        	 //Cancel build station mode..
+        	 cancelStationPlacement();
+            
+            //Not sure why the following is here, LL
             if (!(e.getSource() instanceof ActionAdapter))
                 return;
 
             trackMoveProducer.setTrackRule(actionId);
+           
         }
     }
 
     public TrackBuildModel(TrackMoveProducer tmp, ReadOnlyWorld world,
-        ViewLists vl) {
+        ViewLists vl, ActionRoot actionRoot) {
         this.world = world;
         viewLists = vl;
         trackMoveProducer = tmp;
+        this.actionRoot = actionRoot;
 
         /* set up build modes */
         BuildModeAction[] actions = new BuildModeAction[] {
@@ -122,4 +130,11 @@ public class TrackBuildModel {
         trackRuleAdapter = new ActionAdapter((Action[])actionsVector.toArray(
                     new Action[0]));
     }
+
+	private void cancelStationPlacement() {
+		//Cancel build station mode..
+		actionRoot.getStationBuildModel().getStationCancelAction().actionPerformed(new ActionEvent(
+		        this,
+		        ActionEvent.ACTION_PERFORMED, ""));
+	}
 }
