@@ -10,8 +10,8 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
 /**
- * This class encapsulates a change in what is being built 
- * at an engine shop.  When a client wants to build a train, it
+ * This Move changes in what is being built 
+ * at an engine shop - when a client wants to build a train, it
  * should send an instance of this class to the server.
  *  
  * @author Luke

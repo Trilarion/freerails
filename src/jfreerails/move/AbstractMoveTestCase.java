@@ -14,7 +14,7 @@ import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 /**
- * All move TestCases for moves should extend this class.
+ * All TestCases for moves should extend this class.
  * 
  * @author Luke
  * 

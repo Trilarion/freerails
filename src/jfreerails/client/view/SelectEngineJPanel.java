@@ -189,8 +189,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 		okjButton.addActionListener(submitButtonCallBack);
 	}
 	/** Returns the number of the currently selected engine type.
-	 * 
-	 * @return
+	 * 	 
 	 */
 	public int getEngineType(){		
 		return jList1.getSelectedIndex();	

@@ -13,7 +13,7 @@ import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
 
 /**
- * This class removes a station from the station list and from the map.
+ * This Move removes a station from the station list and from the map.
  * @author Luke
  * 
  */

@@ -10,8 +10,7 @@ import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.LegalTrackConfigurations;
 import jfreerails.world.track.TrackPiece;
 /**
- * This class represents the change that occurs when track 
- * is added to a tile, or the track on a tile is upgraded or removed.
+ * This Move adds, removes, or upgrades the track on a single tile. 
  * @author Luke
  *
  */

@@ -23,9 +23,7 @@ public class UserInputOnMapController implements CursorEventListener {
 
 	private DialogueBoxController dialogueBoxController;
 
-	/**
-	 * @see jfreerails.client.event.CursorEventListener#cursorOneTileMove(jfreerails.client.event.CursorEvent)
-	 */
+	
 	public void cursorOneTileMove(CursorEvent ce) {
 		if (null != trackBuilder) {
 
@@ -60,16 +58,12 @@ public class UserInputOnMapController implements CursorEventListener {
 
 	}
 
-	/**
-	 * @see jfreerails.client.event.CursorEventListener#cursorJumped(jfreerails.client.event.CursorEvent)
-	 */
+	
 	public void cursorJumped(CursorEvent ce) {
 		trackBuilder.upgradeTrack(ce.newPosition);
 	}
 
-	/**
-	 * @see jfreerails.client.event.CursorEventListener#cursorKeyPressed(jfreerails.client.event.CursorEvent)
-	 */
+	
 	public void cursorKeyPressed(CursorEvent ce) {
 
 		switch (ce.keyEvent.getKeyCode()) {

@@ -9,6 +9,7 @@ import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPositionOnMap;
 
 /**
+ * This Move changes the position of a train.
  * @author Luke Lindsay 22-Oct-2002
  *
  */

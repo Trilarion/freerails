@@ -17,9 +17,7 @@ import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
 /**
- * This class represents the change that occurs when track between two tiles is 
- * built, removed, or upgraded. 
- * 
+ * This Move changes adds, removes, or upgrades the track between two tiles.
  * @author  lindsal
  * 
  */
