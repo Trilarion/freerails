@@ -16,6 +16,7 @@ import jfreerails.client.view.HtmlJPanel;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.ShowJavaProperties;
 import jfreerails.client.view.TrainDialogueJPanel;
+import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.ListMove;
 import jfreerails.move.Move;
@@ -84,7 +85,8 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     /** Creates new form TestGlassPanelMethod */
     private DialogueBoxTester() {
         
-        modelRoot = new ModelRoot();      
+        modelRoot = new ModelRoot();    
+        modelRoot.setMoveFork(new MoveChainFork());
         modelRoot.setMoveReceiver(this.dummyReceiver);
         w = new WorldImpl(200, 200);
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
@@ -305,8 +307,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     
     private void showJavaSystemPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showJavaSystemPropertiesActionPerformed
         // Add your handling code here:
-        String s = ShowJavaProperties.getPropertiesHtmlString();
-        System.out.println(s);
+        String s = ShowJavaProperties.getPropertiesHtmlString();      
         HtmlJPanel htmlPanel = new HtmlJPanel(s);
         htmlPanel.setup(modelRoot, closeCurrentDialogue);
         dialogueBoxController.showContent(htmlPanel);
