@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -19,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import jfreerails.client.common.ActionAdapter;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.renderer.ZoomedOutMapRenderer;
@@ -30,7 +32,6 @@ import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MainMapAndOverviewMapMediator;
 import jfreerails.client.view.MapViewJComponentConcrete;
 import jfreerails.client.view.MapViewMoveReceiver;
-import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.OverviewMapJComponent;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationPlacementCursor;
@@ -110,7 +111,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
         }
 
         //create the main and overview maps
-        mainMap = new DetailMapView(world, viewLists);
+        mainMap = new DetailMapView(world, viewLists, modelRoot);
 
         Dimension maxSize = new Dimension(200, 200);
         overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
@@ -135,11 +136,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
 
         ((OverviewMapJComponent)overviewMapContainer).setup(overviewMap);
 
-        datejLabel.setup(modelRoot, null);
-        cashjLabel.setup(modelRoot, null);
-        trainsJTabPane.setup(actionRoot, modelRoot);
+        datejLabel.setup(modelRoot, vl, null);
+        cashjLabel.setup(modelRoot, vl, null);
+        trainsJTabPane.setup(actionRoot, vl, modelRoot);
 
-        dialogueBoxController.setup(modelRoot);
+        dialogueBoxController.setup(modelRoot, vl);
 
         StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(actionRoot,
                 mainMap.getStationRadius(), mapViewJComponent);
@@ -217,6 +218,42 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
         displayMenu.add(trainOrdersJMenuItem);
         displayMenu.add(stationInfoJMenuItem);
         displayMenu.add(trainListJMenuItem);
+
+        displayMenu.addSeparator();
+
+        //Add menu items to control what gets displayed on the map.
+        final JCheckBoxMenuItem showCargoMenuItem = new JCheckBoxMenuItem("Show cargo at stations",
+                true);
+        displayMenu.add(showCargoMenuItem);
+        showCargoMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    modelRoot.setProperty(ModelRoot.SHOW_CARGO_AT_STATIONS,
+                        new Boolean(showCargoMenuItem.isSelected()));
+                    mapViewJComponent.refreshAll();
+                }
+            });
+
+        final JCheckBoxMenuItem showStationNamesMenuItem = new JCheckBoxMenuItem("Show station names",
+                true);
+        displayMenu.add(showStationNamesMenuItem);
+        showStationNamesMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    modelRoot.setProperty(ModelRoot.SHOW_STATION_NAMES,
+                        new Boolean(showStationNamesMenuItem.isSelected()));
+                    mapViewJComponent.refreshAll();
+                }
+            });
+
+        final JCheckBoxMenuItem showStationBordersMenuItem = new JCheckBoxMenuItem("Show sphere-of-influence around stations",
+                true);
+        displayMenu.add(showStationBordersMenuItem);
+        showStationBordersMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    modelRoot.setProperty(ModelRoot.SHOW_STATION_BORDERS,
+                        new Boolean(showStationBordersMenuItem.isSelected()));
+                    mapViewJComponent.refreshAll();
+                }
+            });
 
         return displayMenu;
     }

@@ -18,5 +18,7 @@ public interface MapLayerRenderer {
 
     void refreshTile(int x, int y);
 
+    void refreshAll();
+
     void paintRect(Graphics g, Rectangle visibleRect);
 }

@@ -13,6 +13,9 @@ import java.awt.Transparency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
+
 
 /**
  * A JPanel that displays a newspaper headline.
@@ -98,7 +101,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
         this.headline.setText(s);
     }
 
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
         this.callBack = submitButtonCallBack;
         this.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mousePressed(java.awt.event.MouseEvent evt) {

@@ -6,6 +6,9 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
+
 
 /**
  * Defines a standard method to initiate GUI components that need access to the ModelRoot.
@@ -14,5 +17,5 @@ import java.awt.event.ActionListener;
  *
  */
 public interface View {
-    void setup(ModelRoot modelRoot, ActionListener submitButtonCallBack);
+    void setup(ModelRoot modelRoot, ViewLists vl, ActionListener submitButtonCallBack);
 }

@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.security.GeneralSecurityException;
 import javax.swing.JFrame;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.ActionRoot;
-import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
@@ -114,8 +114,8 @@ public class GUIClient extends Client {
 
     public void setup(ReadOnlyWorld world, UntriedMoveReceiver receiver,
         ViewLists vl, FreerailsPrincipal p) {
-        modelRoot.setup(world, vl, p);
-        actionRoot.setup(modelRoot);
+        modelRoot.setup(world, p);
+        actionRoot.setup(modelRoot, vl);
         factory.setup(vl, world);
     }
 }

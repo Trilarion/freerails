@@ -8,6 +8,8 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -123,9 +125,9 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         }
     }//GEN-LAST:event_nextJButtonActionPerformed
     
-    public void setup(ModelRoot mr, ActionListener al) {
-        newTrainScheduleJPanel1.setup(mr, al);
-        trainDetailsJPanel1.setup(mr, al);
+    public void setup(ModelRoot mr,  ViewLists vl, ActionListener al) {
+        newTrainScheduleJPanel1.setup(mr, vl, al);
+        trainDetailsJPanel1.setup(mr, vl, al);
         this.setCancelButtonActionListener(al);
         this.principal = mr.getPrincipal();
         this.w = mr.getWorld();

@@ -21,7 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.TrainImages;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.TrainModel;
@@ -43,6 +45,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     private int engineType = 0;
     
     private ModelRoot modelRoot;
+    
+    private ViewLists vl;
     
     
     public SelectWagonsJPanel() {
@@ -220,7 +224,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         for (int i = this.wagons.size()-1; i >= 0; i--) {  //Count down so we paint the wagon at the end of the train first.
             
             Integer type = (Integer)wagons.get(i);
-            Image image = modelRoot.getViewLists().getTrainImages().getSideOnWagonImage(type.intValue());
+            Image image = vl.getTrainImages().getSideOnWagonImage(type.intValue());
             int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
@@ -229,7 +233,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         
         //paint the engine
         if(-1 != this.engineType){ //If an engine is selected.
-            Image image = modelRoot.getViewLists().getTrainImages().getSideOnEngineImage(this.engineType);
+            Image image = vl.getTrainImages().getSideOnEngineImage(this.engineType);
             int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
@@ -285,12 +289,13 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         }
     }
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr, ViewLists vl, ActionListener submitButtonCallBack) {
         this.modelRoot = mr;
         World2ListModelAdapter w2lma = new World2ListModelAdapter(mr.getWorld(),
         SKEY.CARGO_TYPES);
         this.wagonTypesJList.setModel(w2lma);
-        TrainImages trainImages = mr.getViewLists().getTrainImages();
+        this.vl = vl;
+        TrainImages trainImages = vl.getTrainImages();
         WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma,
         trainImages);
         this.wagonTypesJList.setCellRenderer(wagonCellRenderer);

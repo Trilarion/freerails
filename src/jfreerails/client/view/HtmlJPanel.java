@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
+
 /**
  *  This JPanel displays a HTML document read from a URL.
  * @author  Luke
@@ -80,7 +83,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
     }//GEN-END:initComponents
     
-    public void setup(ModelRoot m, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot m,  ViewLists vl, ActionListener submitButtonCallBack) {
         this.done.addActionListener(submitButtonCallBack);
     }
     

@@ -7,6 +7,7 @@ package jfreerails.client.common;
  * GUI front-end).
  * TODO future functionality could involve in-game chat, different colours,
  * smilies etc. For now just have simple text messages.
+ *
  */
 public interface UserMessageLogger {
     /**

@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.EngineType;
@@ -145,10 +146,10 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         }
     }
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
         
         jList1.setModel(new World2ListModelAdapter(mr.getWorld(), SKEY.ENGINE_TYPES));
-        jList1.setCellRenderer(new TrainCellRenderer(mr.getViewLists()));
+        jList1.setCellRenderer(new TrainCellRenderer(vl));
         okjButton.addActionListener(submitButtonCallBack);
     }
     

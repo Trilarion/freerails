@@ -10,6 +10,9 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -24,9 +27,9 @@ public class TrainViewJList extends JList implements View, ListCellRenderer {
     private final WagonView wagonView;
     private FreerailsPrincipal principal;
 
-    public TrainViewJList(ModelRoot mr, int trainNumber) {
+    public TrainViewJList(ModelRoot mr,  ViewLists vl, int trainNumber) {
         wagonView = new WagonView();
-        setup(mr, null);
+        setup(mr, vl, null);
         this.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
         this.setVisibleRowCount(1);
 
@@ -43,9 +46,9 @@ public class TrainViewJList extends JList implements View, ListCellRenderer {
         this.setModel(trainConsistListModel);
     }
 
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
         this.w = mr.getWorld();
-        wagonView.setup(mr, null);
+        wagonView.setup(mr, vl, null);
         principal = mr.getPrincipal();
     }
 

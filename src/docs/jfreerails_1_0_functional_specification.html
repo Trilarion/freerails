@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20040509;23115157">
+	<META NAME="CHANGED" CONTENT="20040531;1462863">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1 ALIGN=CENTER>JFreerails 1.0 
+</H1>
+<H2 ALIGN=CENTER>Functional Specification</H2>
+<P ALIGN=CENTER>Luke Lindsay</P>
+<H2>Overview</H2>
+<P>FreeRails is real time multi player strategy game where players
+compete to build the most powerful railroad empire. 
+</P>
+<P>This spec is incomplete and what is here will be revised several
+times before it is finalized.</P>
+<P>This spec does not discuss in detail how features will be
+implemented.</P>
+<H2>Scenarios</H2>
+<P>In designing software, it helps to imagine a few real life stories
+of how actual (stereotypical) people would use it. We'll look at
+three scenarios.</P>
+<H4>Scenario 1: Jeff.</H4>
+<P>Aged  38, splits his time between contract web development work
+and (real) surfing (i.e. He's an aging hippy).  Playered RT1,
+disliked RT2 and RT3. Sceptical about the quality of OS software.</P>
+<H4>Scenario 2: Andy.</H4>
+<P>Young programmer, 19, rides a moped.  First language not English. 
+Never played RT1 but has played RT2 and RT3.  When software doesn't
+work or works in a way he doesn't expect, he is quick to blame the
+software. Wants to get involved in the development of jfreerails and
+to write is own AI.</P>
+<H4>Scenario 3: Claudia.</H4>
+<P>Smartest of the three.  Recently left university and started
+working for the government (as an economist).  Never played any of
+the RT games before.  Wants something to play on her computer to
+distract her from her research.</P>
+<H2>Non Goals</H2>
+<P>This version will <I>not</I> support the following:</P>
+<P>Realism &ndash; its a game not a simulation..</P>
+<P>Customisablity</P>
+<P>Advanced graphics: 
+</P>
+<P>Performance</P>
+<P>Cheat proof: don't play it with your house-mate who keeps stealing
+your milk</P>
+<P><BR><BR>
+</P>
+<H2>Game Model</H2>
+<H4>Map</H4>
+<P>Two maps will be available. A map of south america &ndash; used
+for proper games &ndash; and a small map &ndash; used for the
+tutorial.  The maps are divided into square tiles.</P>
+<H4>Terrain</H4>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=128*>
+	<COL WIDTH=128*>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Terrain type</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Each tile on the map has a 'terrain type' e.g. Farm, desert
+			etc.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Right-of-way cost</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Before you build track on a square, you need to purchase the
+			right of way.  Different terrain types have different ROW costs.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Category</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>All terrain types fall into one of the following categories:
+			Urban, River, Ocean, Hill, Country, Special, Industry, or
+			Resource.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Cargo production</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Some types of terrain produce cargo (of one or more types),
+			e.g. A Cattle Ranch produces livestock.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Cargo consumption</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Some types of terrain consume cargo, e.g 'City' tiles consume
+			'Food'.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Cargo conversion</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Some types of terrain convert one type of cargo to another,
+			e.g. A Stock-Yard [vegetarians might want to stop reading..] 
+			converts livestock to food.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H4>Cargo</H4>
+<P>Categories, 
+</P>
+<H4>Cities</H4>
+<P>Initial placement.  Growth.</P>
+<H4>Track</H4>
+<P>One tile, one track type.</P>
+<P>Constrained by cash.  Cost of building track.  Legal
+configurations.  Legal placement.  Must connect to existing track.</P>
+<P>Upgrading.</P>
+<P>Removing &ndash; get some money back.</P>
+<P>Maintenance</P>
+<P>Double and single. Stations considered double.  
+</P>
+<P>Legal routes.</P>
+<H4>Trains</H4>
+<P>Must build track and stations first.</P>
+<P>Max  6 wagons</P>
+<P>Building not contrained by cash</P>
+<P>Schedule &ndash; max number, orders,</P>
+<H4>Engines</H4>
+<P>5 Engines. Two available initially, other three become available
+later.</P>
+<P>Engines can be replaced.</P>
+<H4>Wagons</H4>
+<P>One wagon per cargo type.  Capacity 40 units of cargo.  Wagons are
+free and can be added at any station.</P>
+<H4>Train Schedules</H4>
+<P>What happens when a station on the schedule is removed?</P>
+<H4>Train movement</H4>
+<P>Speed, loading and uploading.  Time taken to change consist.</P>
+<H4>Stations</H4>
+<P>Radius.  Frequency cargo is added and removed.  Units of cargo.  
+</P>
+<H4>Bank Accounts</H4>
+<H2>GUI</H2>
+<P LANG="en-GB" ALIGN=LEFT>jfreerails_1_0_functional_specification</P>
+<P ALIGN=LEFT><BR><BR>
+</P>
+<P ALIGN=LEFT><A NAME="DDE_LINK1"></A><BR><BR>
+</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -291,8 +293,8 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         }
     }
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
-        cargoWaitingAndDemandedJPanel1.setup(mr,  null);
+    public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
+        cargoWaitingAndDemandedJPanel1.setup(mr,vl,  null);
         this.world = mr.getWorld();
         this.submitButtonCallBack = submitButtonCallBack;
         principal = mr.getPrincipal();

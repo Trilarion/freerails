@@ -12,6 +12,8 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -136,7 +138,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
     }//GEN-END:initComponents
     
-    public void setup(ModelRoot model, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot model, ViewLists vl, ActionListener submitButtonCallBack) {
         this.world = model.getWorld();
         this.principal = model.getPrincipal();
     }

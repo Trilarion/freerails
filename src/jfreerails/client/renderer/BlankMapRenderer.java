@@ -45,4 +45,8 @@ public class BlankMapRenderer implements MapRenderer {
         int width = (int)(200 * scale);
         g.fillRect(x, y, height, width);
     }
+
+    public void refreshAll() {
+        //do nothing
+    }
 }

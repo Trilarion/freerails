@@ -10,9 +10,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionListener;
+
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -56,8 +60,8 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         this.setOpaque(false);
     }
 
-    public TrainViewJPanel(ModelRoot mr) {
-        setup(mr, null);
+    public TrainViewJPanel(ModelRoot mr, ViewLists vl) {
+        setup(mr,vl, null);
         this.setBackground(backgoundColor);
     }
 
@@ -124,10 +128,10 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         this.setPreferredSize(new Dimension(width, height));
     }
 
-    public void setup(ModelRoot mr,
-        java.awt.event.ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr, ViewLists vl, 
+       ActionListener submitButtonCallBack) {
         this.w = mr.getWorld();
-        this.vl = mr.getViewLists();
+        this.vl = vl;
         this.principal = mr.getPrincipal();
     }
 

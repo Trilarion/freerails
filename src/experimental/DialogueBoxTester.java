@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import jfreerails.client.common.JFrameMinimumSizeEnforcer;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.ViewListsImpl;
@@ -13,7 +14,6 @@ import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.HtmlJPanel;
-import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.ShowJavaProperties;
 import jfreerails.client.view.TrainDialogueJPanel;
 import jfreerails.controller.MoveChainFork;
@@ -99,9 +99,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        modelRoot.setup(w, vl, TEST_PLAYER.getPrincipal());
+        modelRoot.setup(w, TEST_PLAYER.getPrincipal());
         ActionRoot actionRoot = new ActionRoot();
-        actionRoot.setup(modelRoot);
+        actionRoot.setup(modelRoot, vl);
         dialogueBoxController = new DialogueBoxController(this, modelRoot, actionRoot);
         dialogueBoxController.setDefaultFocusOwner(this);
         
@@ -165,7 +165,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         
         
         final MyGlassPanel glassPanel = new MyGlassPanel();
-        dialogueBoxController.setup(modelRoot);
+        dialogueBoxController.setup(modelRoot, vl);
         initComponents();
         
         glassPanel.setSize(800, 600);
@@ -312,7 +312,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         // Add your handling code here:
         String s = ShowJavaProperties.getPropertiesHtmlString();      
         HtmlJPanel htmlPanel = new HtmlJPanel(s);
-        htmlPanel.setup(modelRoot, closeCurrentDialogue);
+        htmlPanel.setup(modelRoot, vl, closeCurrentDialogue);
         dialogueBoxController.showContent(htmlPanel);
     }//GEN-LAST:event_showJavaSystemPropertiesActionPerformed
     
@@ -325,7 +325,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private void showCargoWaitingAndDemandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCargoWaitingAndDemandActionPerformed
         // Add your handling code here:
         CargoWaitingAndDemandedJPanel panel = new CargoWaitingAndDemandedJPanel();
-        panel.setup(modelRoot, closeCurrentDialogue);
+        panel.setup(modelRoot, vl, closeCurrentDialogue);
         int newStationID = randy.nextInt(w.size(KEY.STATIONS, TEST_PRINCIPAL) - 1);
         panel.display(newStationID);
         dialogueBoxController.showContent(panel);
@@ -357,7 +357,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         
 	private void selectTrainOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTrainOrdersActionPerformed
             // Add your handling code here:
-            trainDialogueJPanel.setup(modelRoot, closeCurrentDialogue);
+            trainDialogueJPanel.setup(modelRoot, vl, closeCurrentDialogue);
             trainDialogueJPanel.display(0);
             dialogueBoxController.showContent(trainDialogueJPanel);
 	} //GEN-LAST:event_selectTrainOrdersActionPerformed

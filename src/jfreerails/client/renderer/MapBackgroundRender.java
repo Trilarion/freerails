@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -116,6 +117,9 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             this.trackPieceViewList = trackPieceViewList;
             this.w = world;
         }
+
+        public void refreshAll() {
+        }
     }
 
     /**
@@ -186,14 +190,18 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             this.w = world;
             this.tiles = tiles;
         }
+
+        public void refreshAll() {
+        }
     }
 
-    public MapBackgroundRender(ReadOnlyWorld w, ViewLists vl) {
+    public MapBackgroundRender(ReadOnlyWorld w, ViewLists vl,
+        ModelRoot modelRoot) {
         trackLayer = new TrackLayer(w, vl.getTrackPieceViewList());
         terrainLayer = new TerrainLayer(w, vl.getTileViewList());
         mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
         cityNames = new CityNamesRenderer(w);
-        stationNames = new StationNamesRenderer(w);
+        stationNames = new StationNamesRenderer(w, modelRoot);
     }
 
     public void paintTile(Graphics g, int x, int y) {
@@ -228,5 +236,10 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     public void refreshTile(int x, int y) {
+        //Do nothing
+    }
+
+    public void refreshAll() {
+        //Do nothing
     }
 }

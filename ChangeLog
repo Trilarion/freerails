@@ -1,3 +1,7 @@
+May 31, 2004 Luke
+	o Fix for 948656 Non Movable Dialogue Boxes
+		-made dialogue boxes movable
+		-added option to show/hide station names, spheres of influence, and cargo waiting.
 May 30, 2004 Luke
 	Bugs Fixed: 
 	o 948666 Crash when Building Train with Money < 0 and only one station

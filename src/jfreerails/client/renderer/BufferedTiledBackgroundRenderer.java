@@ -123,6 +123,10 @@ public abstract class BufferedTiledBackgroundRenderer
         paintBufferRectangle(0, 0, bufferRect.width, bufferRect.height);
     }
 
+    public void refreshAll() {
+        refreshBackground();
+    }
+
     private void setbackgroundBuffer(int w, int h) {
         //backgroundBuffer = defaultConfiguration.createCompatibleImage(w, h);
         backgroundBuffer = defaultConfiguration.createCompatibleVolatileImage(w,

@@ -8,6 +8,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
+
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.StationBuilder;
 import jfreerails.controller.TrackMoveProducer;
@@ -45,7 +48,7 @@ public class ActionRoot {
     /**
      *  Call this method when a new game is started or a game is loaded.
      */
-    public void setup(ModelRoot modelRoot) {
+    public void setup(ModelRoot modelRoot, ViewLists vl) {
         if (!modelRoot.hasBeenSetup)
             throw new IllegalStateException();
 
@@ -54,9 +57,9 @@ public class ActionRoot {
         if (world.size(SKEY.TRACK_RULES) > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
             trackBuildModel = new TrackBuildModel(trackMoveProducer, world,
-                    modelRoot.getViewLists());
+                    vl);
             stationBuildModel = new StationBuildModel(new StationBuilder(
-                        modelRoot), modelRoot);
+                        modelRoot),vl,  modelRoot);
         }
     }
 

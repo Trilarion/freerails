@@ -5,6 +5,8 @@
  */
 
 package jfreerails.client.view;
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -73,9 +75,9 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
 
     }//GEN-END:initComponents
     
-    public void setup(ModelRoot mr, java.awt.event.ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr,  ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
         
-        this.trainViewJPanel1.setup(mr, submitButtonCallBack);
+        this.trainViewJPanel1.setup(mr, vl, submitButtonCallBack);
         trainViewJPanel1.setHeight(30);
         trainViewJPanel1.setCenterTrain(true);
         this.w = mr.getWorld();

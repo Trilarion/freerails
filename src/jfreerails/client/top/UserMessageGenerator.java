@@ -4,8 +4,8 @@
 package jfreerails.client.top;
 
 import java.text.DecimalFormat;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.view.ActionRoot;
-import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.Move;

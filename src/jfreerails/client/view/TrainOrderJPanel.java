@@ -13,6 +13,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -96,11 +98,11 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
 
     }//GEN-END:initComponents
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
         this.w = mr.getWorld();
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
-        trainViewJPanel.setup(mr, null);
+        trainViewJPanel.setup(mr, vl, null);
         this.principal = mr.getPrincipal();
         
     }

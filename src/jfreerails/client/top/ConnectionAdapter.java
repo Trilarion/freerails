@@ -2,8 +2,8 @@ package jfreerails.client.top;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.AddPlayerCommand;
 import jfreerails.controller.AddPlayerResponseCommand;
 import jfreerails.controller.ConnectionListener;

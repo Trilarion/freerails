@@ -2,7 +2,7 @@ package jfreerails.client.top;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import jfreerails.client.view.ModelRoot;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.SychronizedQueue;
 import jfreerails.move.Move;

@@ -12,6 +12,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
+
 /**
  * Displays the "Build" Tab.
  * @author  bob
@@ -21,6 +24,7 @@ public class BuildJPane extends javax.swing.JPanel {
     private ActionRoot actionRoot;
     private JPanel currentPanel;
     private ModelRoot modelRoot;
+    private ViewLists vl;
     
     public void validate() {
         super.validate();
@@ -33,9 +37,10 @@ public class BuildJPane extends javax.swing.JPanel {
         setupComponents();
     }
     
-    public void setup(ActionRoot actionRoot, ModelRoot modelRoot) {
+    public void setup(ActionRoot actionRoot, ViewLists vl, ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
         this.actionRoot = actionRoot;
+        this.vl = vl;
         setBuildPanel("Track");
     }
     
@@ -68,7 +73,7 @@ public class BuildJPane extends javax.swing.JPanel {
             gbc.weightx = gbc.weighty = 1.0;
             
             add(currentPanel, gbc);
-            ((TrackBuildJPanel) currentPanel).setup(modelRoot.getViewLists(), actionRoot);
+            ((TrackBuildJPanel) currentPanel).setup(vl, actionRoot);
             revalidate();
         } else if (s.equals("Station")) {
             currentPanel = new StationBuildJPanel();

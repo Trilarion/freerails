@@ -13,6 +13,8 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 
+import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.FreerailsSerializable;
@@ -160,7 +162,7 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
         
 	} //GEN-LAST:event_nextStationActionPerformed
     
-    public void setup(ModelRoot mr, ActionListener al) {
+    public void setup(ModelRoot mr,  ViewLists vl, ActionListener al) {
         this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr.getPrincipal());
         addComponentListener(componentListener);
         this.w = mr.getWorld();

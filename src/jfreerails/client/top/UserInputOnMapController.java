@@ -11,12 +11,12 @@ import javax.swing.event.MouseInputAdapter;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
-import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
 import java.util.List;
 import java.util.*;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.BuildTrackRenderer;
 
 
@@ -110,13 +110,13 @@ public class UserInputOnMapController extends KeyAdapter {
 
             Point tile = new Point();
 
-            for (tile.x = oldPosition.x - 1; tile.x < oldPosition.x + 2;
-                    tile.x++) {
-                for (tile.y = oldPosition.y - 1; tile.y < oldPosition.y + 2;
-                        tile.y++) {
-                    mapView.refreshTile(tile.x, tile.y);
-                }
-            }
+            //            for (tile.x = oldPosition.x - 1; tile.x < oldPosition.x + 2;
+            //                    tile.x++) {
+            //                for (tile.y = oldPosition.y - 1; tile.y < oldPosition.y + 2;
+            //                        tile.y++) {
+            //                    mapView.refreshTile(tile.x, tile.y);
+            //                }
+            //            }
         } else {
             System.err.println("No track builder available!");
         }

@@ -15,6 +15,8 @@ import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 
+import jfreerails.client.common.ModelRoot;
+
 
 /** Paints the cursor on the map, note the cursor's position is stored on the ModelRoot
  * under the key CURSOR_POSITION.

@@ -189,4 +189,8 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     public void refreshTile(int x, int y) {
         refreshTile(new Point(x, y));
     }
+
+    public void refreshAll() {
+        refresh();
+    }
 }

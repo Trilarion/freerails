@@ -11,8 +11,10 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.StationBuilder;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.top.SKEY;
@@ -54,12 +56,11 @@ public class StationBuildModel {
     private final StationBuilder stationBuilder;
     private final ModelRoot modelRoot;
 
-    public StationBuildModel(StationBuilder sb, ModelRoot mr) {
+    public StationBuildModel(StationBuilder sb,  ViewLists vl, ModelRoot mr) {
         stationBuilder = sb;
         modelRoot = mr;
 
-        TrackPieceRendererList trackPieceRendererList = modelRoot.getViewLists()
-                                                                 .getTrackPieceViewList();
+        TrackPieceRendererList trackPieceRendererList = vl.getTrackPieceViewList();
 
         for (int i = 0; i < modelRoot.getWorld().size(SKEY.TRACK_RULES); i++) {
             TrackRule trackRule = (TrackRule)modelRoot.getWorld().get(SKEY.TRACK_RULES,
