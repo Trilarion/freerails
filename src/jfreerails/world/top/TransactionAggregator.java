@@ -112,6 +112,9 @@ public abstract class TransactionAggregator {
         }
     }
 
+    /** Creates a new array with the specified length to store monetary totals and sets the
+     * running total to zero.  Subclasses that aggregate other quantities
+     * should override this method and create the appropriate arrays.*/
     protected void setTotalsArrayLength(int length) {
         monetaryTotals = new Money[length];
         runningTotal = 0;
@@ -122,6 +125,7 @@ public abstract class TransactionAggregator {
         runningTotal += t.getValue().getAmount();
     }
 
+    /** Stores the current running total in the totals array at the specified position.*/
     protected void storeRunningTotal(int timeIndex) {
         monetaryTotals[timeIndex] = new Money(runningTotal);
     }

@@ -103,7 +103,7 @@ FreerailsProgressMonitor, LauncherInterface {
                     
                     mode = cop.getScreenMode();
                                         
-                    client = new GUIClient(cop.getPlayerName(), this, mode);
+                    client = new GUIClient(cop.getPlayerName(), this, mode, cop.getDisplayMode());
                     server = initServer();
                     client.connect(server, cop.getPlayerName(), "password");
                     
@@ -140,7 +140,7 @@ FreerailsProgressMonitor, LauncherInterface {
                         throw new NullPointerException("Couldn't resolve hostname.");
                     }
                     String playerName = cop.getPlayerName();
-                    client = new GUIClient(playerName, this, mode);
+                    client = new GUIClient(playerName, this, mode, cop.getDisplayMode());
                     
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
@@ -354,7 +354,7 @@ FreerailsProgressMonitor, LauncherInterface {
      * @param quickstart boolean
      */
     public void start(boolean quickstart) {
-        show();
+    	setVisible(true);
         if (quickstart) {
             startGame();           
         }
@@ -578,7 +578,7 @@ FreerailsProgressMonitor, LauncherInterface {
                             int mode = cop.getScreenMode();                                        
                                                                                    
                             prepare2HostNetworkGame(msp.getServerPort());
-                            client = new GUIClient(cop.getPlayerName(), this, mode); 
+                            client = new GUIClient(cop.getPlayerName(), this, mode, cop.getDisplayMode()); 
                             client.connect(server, cop.getPlayerName(), "password");
                         }
                     }else{
@@ -598,7 +598,7 @@ FreerailsProgressMonitor, LauncherInterface {
                     }else{
                         /*Start a stand alone server.*/
                         startThread(server);
-                        hide();
+                        setVisible(false);                        
                     }
                     setNextEnabled(false);
                     break;
@@ -627,7 +627,7 @@ FreerailsProgressMonitor, LauncherInterface {
     // End of variables declaration//GEN-END:variables
     
     public void finished() {
-        hide();
+    	setVisible(false);
         
     }
     

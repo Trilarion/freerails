@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import jfreerails.world.accounts.BankAccount;
+import jfreerails.world.accounts.EconomicClimate;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameCalendar;
@@ -48,18 +49,19 @@ public class WorldImpl implements World {
     private FreerailsSerializable[][] map;
 
     public WorldImpl() {
-        setupTime();
+        setupItems();
         this.setupMap(0, 0);
         this.setupLists();
     }
 
-    private void setupTime() {
+    private void setupItems() {
         this.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         this.set(ITEM.TIME, new GameTime(0));
+        this.set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
     }
 
     public WorldImpl(int mapWidth, int mapHeight) {
-        setupTime();
+        setupItems();
         this.setupMap(mapWidth, mapHeight);
         this.setupLists();
     }

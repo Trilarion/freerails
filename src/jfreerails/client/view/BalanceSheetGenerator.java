@@ -102,7 +102,7 @@ public class BalanceSheetGenerator {
         industriesTotal = aggregator.calculateValue();
         aggregator.setCategory(Transaction.BOND);
         loansTotal = aggregator.calculateValue();
-        aggregator.setCategory(Transaction.EQUITY);
+        aggregator.setCategory(Transaction.ISSUE_STOCK);
         equityTotal = aggregator.calculateValue();
 
         long profit = operatingFundsTotal.getAmount() + trackTotal.getAmount()
@@ -138,7 +138,7 @@ public class BalanceSheetGenerator {
         
         aggregator.setCategory(Transaction.BOND);
         loansYtd = aggregator.calculateValue();
-        aggregator.setCategory(Transaction.EQUITY);
+        aggregator.setCategory(Transaction.ISSUE_STOCK);
         equityYtd = aggregator.calculateValue();
 
         profit = operatingFundsYtd.getAmount() + trackYtd.getAmount()

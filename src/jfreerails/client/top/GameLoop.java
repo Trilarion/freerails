@@ -27,6 +27,7 @@ final public class GameLoop implements Runnable {
     private final GameModel[] model;
     private final Integer loopMonitor = new Integer(0);
 
+    //PerformanceStats stats = new PerformanceStats();
     public GameLoop(ScreenHandler s) {
         screenHandler = s;
         model = new GameModel[0];
@@ -99,6 +100,7 @@ final public class GameLoop implements Runnable {
             }
 
             while (true) {
+                //stats.record();
                 frameStartTime = System.currentTimeMillis();
 
                 /*

@@ -129,9 +129,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                     if (move instanceof ChangeGameSpeedMove) {
                         ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove)move;
 
-                        for (Enumeration enum = speedActions.getActions();
-                                enum.hasMoreElements();) {
-                            Action action = (Action)enum.nextElement();
+                        for (Enumeration actionsEnum = speedActions.getActions();
+                                actionsEnum.hasMoreElements();) {
+                            Action action = (Action)actionsEnum.nextElement();
                             String actionName = (String)action.getValue(Action.NAME);
 
                             if (actionName.equals(actionRoot.getServerControls()

@@ -25,8 +25,9 @@ public interface Transaction extends FreerailsSerializable {
     public static final int MISC_INCOME = 6;
     public static final int INTEREST_CHARGE = 7;
     public static final int BOND = 8;
-    public static final int EQUITY = 9;
+    public static final int ISSUE_STOCK = 9;
     public static final int INDUSTRIES = 10;
+    public static final int STOCK = 9;
 
     /** Positive means credit. */
     Money getValue();

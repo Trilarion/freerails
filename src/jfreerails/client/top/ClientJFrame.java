@@ -134,7 +134,7 @@ public class ClientJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitForm
 
     public static void main(String args[]) {
-        new ClientJFrame(new GUIComponentFactoryTestImpl()).show();
+        new ClientJFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
     }
     
     

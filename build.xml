@@ -157,6 +157,7 @@
 				<include name="**/.nbattrs" />
 				<include name="**/.ucd" />
 				<include name="**/*.java~" />
+				<include name="**/Thumbs.db" />
 			</fileset>
 		</delete>
 	</target>
@@ -382,6 +383,28 @@
 		<delete dir="ConstJava" />
 
 	</target>
+	
+	<target name = "zip_dev" description="Zips up development environment." depends ="clean">
+		<delete file="dev_jfreerails.zip"/>
+	 <zip destfile="dev_jfreerails.zip" defaultexcludes="no">
+	 	
+	 	<fileset dir="." defaultexcludes="no">
+
+	 		<exclude name="**/*.class" />
+	 		<exclude name="**/*.gz" />
+	 		<exclude name="**/*.zip" />
+	 		<exclude name="**/*.jar" />
+	 		<exclude name="www/javadoc/**" />
+	 		<exclude name="dev_jfreerails/**" />
+	 		<exclude name="dist/**" />
+	 		<exclude name="eclipsebuild/**" />
+	 		<exclude name="build/**" />
+	 		<exclude name="**/.nbattrs" />	 		
+	 		<exclude name="**/Thumbs.db" />
+	 				</fileset>
+	  
+	  </zip>
+		</target>
 
 
 </project>

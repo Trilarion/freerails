@@ -13,7 +13,7 @@ import jfreerails.world.top.World;
 
 
 /**
- * The class pre-commits moves we intend to send to the server and either fully commits or undoes 
+ * The class pre-commits moves we intend to send to the server and either fully commits or undoes
  * them depending on the server's response. Note, this class does not actually send
  * or receive moves, instead you should call <code>toServer(.)</code> when a move has been sent
  * to the server and <code>fromServer(.)</code> when a Move or MoveStatus has been received from

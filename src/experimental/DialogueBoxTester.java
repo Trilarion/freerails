@@ -387,7 +387,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
          */
         public static void main(String args[]) {
             DialogueBoxTester test = new DialogueBoxTester();
-            test.show();
+            test.setVisible(true);
         }
         
         

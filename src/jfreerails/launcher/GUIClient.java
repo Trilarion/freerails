@@ -4,6 +4,7 @@
  */
 package jfreerails.launcher;
 
+import java.awt.DisplayMode;
 import java.io.IOException;
 import javax.swing.JFrame;
 import jfreerails.client.common.ModelRootImpl;
@@ -39,7 +40,7 @@ public class GUIClient extends FreerailsClient
     private final String name;
     private final FreerailsProgressMonitor monitor;
 
-    public GUIClient(String name, FreerailsProgressMonitor fm, int screenMode)
+    public GUIClient(String name, FreerailsProgressMonitor fm, int screenMode, DisplayMode dm)
         throws IOException {
         this.name = name;
         this.monitor = null == fm ? this : fm;
@@ -54,7 +55,9 @@ public class GUIClient extends FreerailsClient
         factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);
 
         JFrame createClientJFrame = factory.createClientJFrame(name);
-        screenHandler = new ScreenHandler(createClientJFrame, screenMode);
+       
+        	screenHandler= new ScreenHandler(createClientJFrame, screenMode, dm);
+       
     }
 
     void start() {
@@ -88,7 +91,7 @@ public class GUIClient extends FreerailsClient
     public static void main(String[] args) {
         try {
             GUIClient client = new GUIClient("Test", null,
-                    ScreenHandler.WINDOWED_MODE);
+                    ScreenHandler.WINDOWED_MODE, null);
             client.start();
         } catch (IOException e) {
             e.printStackTrace();

@@ -29,9 +29,13 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
     }
     
     DisplayMode getDisplayMode() {
-        MyDisplayMode displayMode = ((MyDisplayMode) jList1.getSelectedValue());
-        logger.fine("The selected display mode is "+displayMode.toString());
-        return displayMode.displayMode;
+    	if(this.fullScreenButton.isSelected()){
+	        MyDisplayMode displayMode = ((MyDisplayMode) jList1.getSelectedValue());
+	        logger.fine("The selected display mode is "+displayMode.toString());
+	        return displayMode.displayMode;
+    	}else{
+    		return null;
+    	}
     }
     InetSocketAddress getRemoteServerAddress() {
         String portStr = remotePort.getText();
