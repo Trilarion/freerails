@@ -8,7 +8,6 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.Iterator;
-
 import jfreerails.client.common.ImageManager;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.top.KEY;

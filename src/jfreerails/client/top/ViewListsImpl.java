@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.renderer.ChequeredTileRenderer;

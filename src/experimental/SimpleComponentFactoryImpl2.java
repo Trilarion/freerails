@@ -8,14 +8,12 @@ package experimental;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-
 import jfreerails.client.renderer.BlankMapRenderer;
 import jfreerails.client.view.MainMapAndOverviewMapMediator;
 import jfreerails.client.view.MapViewJComponentConcrete;

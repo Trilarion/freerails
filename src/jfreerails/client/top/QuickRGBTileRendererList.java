@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.HashMap;
-
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.TileRenderer;
 import jfreerails.client.renderer.TileRendererList;
