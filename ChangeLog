@@ -1,3 +1,6 @@
+18-Oct-2003 00:36:59 Luke
+	o Applied Robert Tuck's patch adding comments to ServerGameEngine.
+	o Other javadoc updates.
 13-Oct-2003 21:59:01 Luke
 	o Applied Robert Tuck's network patch.
 06-Oct-2003 23:45:23 Luke
