@@ -1,6 +1,8 @@
 May 28, 2004Luke
 	Bugs Fixed: 
 	o 948655 Can't see consist when there are more than 6 wagons
+	o 948675 Can't upgrade station types
+	o 948680 No way to tell sphere of influence for a station type
 May 27, 2004 PM Luke
 	Bugs Fixed:
 	o 948676 Waiting list is cut off 
