@@ -1,9 +1,9 @@
 ## $Id$
 # Please before you make changes in a area, look at this file and write what 
 # you will do in next time. Then commit the file to cvs so everybody can see
-# what you do.
+# what you do. Or better go on http://sourceforge.net/projects/freerails in
+# the Task section and make/change your tasks which you do.
 #
-Thu Jul 03 13:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+Thu Jul 06 11:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o Trackbuild controll
 o Stationbuild controll
-o player.h

@@ -12,7 +12,7 @@ FreeRails web site is here:
 
   http://freerails.sourcevorge.net/
 
-We invite you to visit.  You can get the latest FreeRails news, releases
+We invite you to visit. You can get the latest FreeRails news, releases
 and patches, find out about the FreeRails mailing lists.
 
 
@@ -27,26 +27,31 @@ COPYING file for full details.
 Compiling and installing:
 =========================
 
+Change the Rules.make file to what you want (X11 or SDL are supported).
 Only type make in the directory where the Rules.make is.
-If you get errors feel free and write to the mailinglist.
+If you get errors feel free and write to the mailinglist or in the buglist on
+http://sourceforge.net/projects/freerails .
 
 
 Starting a new game:
 ====================
 
-start the compiled file in the directory where the Rules.make is.
+start under your X11 environment with "game" in the directory where the
+Rules.make is.
 
 
 Playing the game:
 =================
 
-Nothing realy to play yet.
+Nothing realy to play yet. You can only set stations and tracks but it doesn't
+lock very nice.
 
 
 And finally:
 ============
 
-Have fun to help!
+Have fun to help us in developing!
+
 
                                    -- The FreeRails team.
 

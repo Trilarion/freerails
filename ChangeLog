@@ -1,3 +1,6 @@
+Thu Jul 06 12:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o some minor changes
+o release the version 0.0.5
 Thu Jul 04 13:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o remove the clone directory and move the files to common or game
 o changes in player.h and player.c
