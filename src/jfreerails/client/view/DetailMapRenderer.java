@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
+import jfreerails.client.renderer.BuildTrackController;
 import jfreerails.client.renderer.MapBackgroundRender;
 import jfreerails.client.renderer.MapLayerRenderer;
 import jfreerails.client.renderer.MapRenderer;
@@ -27,7 +28,8 @@ public class DetailMapRenderer implements MapRenderer {
     private final Dimension mapSizeInPixels;
     private final OverHeadTrainView trainsview;
     private final StationRadiusRenderer stationRadius;
-    private final BuildTrackRenderer buildTrack;
+    private final BuildTrackRenderer buildTrackRenderer;
+    private final BuildTrackController buildTrackController ;
     private final Painter stationBoxes;
 
     public DetailMapRenderer(ReadOnlyWorld world, ViewLists vl,
@@ -48,16 +50,17 @@ public class DetailMapRenderer implements MapRenderer {
                 world.getMapHeight());
         mapSizeInPixels = new Dimension(mapSize.width * 30, mapSize.height * 30);
         stationRadius = new StationRadiusRenderer(modelRoot);
-        buildTrack = new BuildTrackRenderer(world, vl.getTrackPieceViewList());
-        stationBoxes = new StationBoxRenderer(world, vl, modelRoot);
+        buildTrackRenderer = new BuildTrackRenderer(vl.getTrackPieceViewList(), modelRoot);
+        buildTrackController = new BuildTrackController(world, modelRoot);
+        stationBoxes = new StationBoxRenderer(world, vl, modelRoot);       
     }
 
     public StationRadiusRenderer getStationRadius() {
         return stationRadius;
     }
 
-    public BuildTrackRenderer getBuildTrack() {
-        return buildTrack;
+    public BuildTrackController getBuildTrackController() {
+        return buildTrackController;
     }
 
     public float getScale() {
@@ -74,7 +77,7 @@ public class DetailMapRenderer implements MapRenderer {
         stationRadius.paint((Graphics2D)g);
         stationBoxes.paint((Graphics2D)g);
 
-        buildTrack.paint((Graphics2D)g);
+        buildTrackRenderer.paint((Graphics2D)g);
     }
 
     public void refreshTile(int x, int y) {
@@ -86,7 +89,7 @@ public class DetailMapRenderer implements MapRenderer {
         trainsview.paint((Graphics2D)g);
         stationRadius.paint((Graphics2D)g);
         stationBoxes.paint((Graphics2D)g);
-        buildTrack.paint((Graphics2D)g);
+        buildTrackRenderer.paint((Graphics2D)g);
     }
 
     public void refreshAll() {

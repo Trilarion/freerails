@@ -13,9 +13,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
 import jfreerails.client.common.ModelRoot;
-import static jfreerails.client.common.ModelRoot.*;
 import jfreerails.client.common.SoundManager;
-import jfreerails.client.renderer.BuildTrackRenderer;
+import jfreerails.client.common.ModelRoot.Property;
+import jfreerails.client.renderer.BuildTrackController;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
@@ -54,7 +54,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
 	private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
 
-	private BuildTrackRenderer buildTrack;
+	private BuildTrackController buildTrack;
 
 	private SoundManager soundManager = SoundManager.getSoundManager();
 
@@ -92,8 +92,7 @@ public class UserInputOnMapController extends KeyAdapter {
 				boolean isBuildTrackModeSet = trackBuilder
 						.getTrackBuilderMode() == TrackMoveProducer.BUILD_TRACK;
 
-				if (isBuildTrackModeSet) {
-					buildTrack.setup(modelRoot);
+				if (isBuildTrackModeSet) {					
 					buildTrack.show();
 				}
 			} else if (SwingUtilities.isRightMouseButton(evt)) {
@@ -214,7 +213,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
 	public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
 			StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
-			FreerailsCursor cursor, BuildTrackRenderer buildTrack) {
+			FreerailsCursor cursor, BuildTrackController buildTrack) {
 		this.dialogueBoxController = dbc;
 		this.mapView = mv;
 		this.stationTypesPopup = stPopup;

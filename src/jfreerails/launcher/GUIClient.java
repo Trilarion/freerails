@@ -37,7 +37,7 @@ public class GUIClient extends FreerailsClient
 implements FreerailsProgressMonitor {
 	
 	protected void clientUpdates() {
-		factory.getBuildTrackRenderer().update();
+		factory.getBuildTrackController().update();
 	}
     private ScreenHandler screenHandler;
     private ModelRootImpl modelRoot;

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.logging.Logger;
+
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -23,10 +24,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
 import jfreerails.client.common.ActionAdapter;
-import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRoot;
-import jfreerails.client.renderer.BuildTrackRenderer;
+import jfreerails.client.common.ModelRootImpl;
+import jfreerails.client.renderer.BuildTrackController;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.renderer.ZoomedOutMapRenderer;
@@ -187,7 +189,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         userInputOnMapController.setup(mapViewJComponent,
             actionRoot.getTrackMoveProducer(), stationTypesPopup,
             this.modelRoot, dialogueBoxController,
-            mapViewJComponent.getMapCursor(), getBuildTrackRenderer());
+            mapViewJComponent.getMapCursor(), getBuildTrackController());
 
         buildMenu.setup(actionRoot);
         mainMapScrollPane1.setViewportView(this.mapViewJComponent);
@@ -220,8 +222,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         clientJFrame.setTitle(name + " - " + serverDetails + " - JFreerails");
     }
 	
-	public BuildTrackRenderer getBuildTrackRenderer() {
-		return mainMap.getBuildTrack();
+	public BuildTrackController getBuildTrackController() {
+		return mainMap.getBuildTrackController();
 	}
 
     public JPanel createOverviewMap() {
