@@ -13,7 +13,7 @@ WorldMap::WorldMap(int _width, int _height) {
   
   for (int y=0; y < height; y++) {
     for (int x=0; x < width; x++) {
-      mapFields[y*width+x]=new MapField(FieldTypeGras,0,0);
+      mapFields[y*width+x]=new MapField(FieldTypeGrass,0,0);
     }
   }  
 

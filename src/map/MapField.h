@@ -6,7 +6,7 @@
 #define __MAPFIELD_H__
 
 #include "../elements/GameElement.h"
-//#include "../elements/Track.h"
+#include "../elements/Track.h"
 
 #define FieldTypeGrass		 0
 #define FieldTypeDesert		 1
@@ -36,15 +36,15 @@ public:
   void setElement(GameElement* _element) { element=_element; };
   GameElement* getElement() { return element; };
   
-//  void setTrack(Track* _track) { track=_track; };
-//  Track* getTrack() { return track; };
+  void setTrack(Track* _track) { track=_track; };
+  Track* getTrack() { return track; };
 
 private:
   unsigned short type;
   unsigned short cost;
   unsigned short height;
   GameElement* element;
-//  Track* track;
+  Track* track;
 };
 
 #endif // __MAPFIELD_H__

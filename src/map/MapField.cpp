@@ -10,7 +10,7 @@ MapField::MapField(unsigned short _type, unsigned short _cost, unsigned short _h
   cost = _cost;
   height = _height;
   element = NULL;
-//  Track = NULL;
+  track = NULL;
 }
 
 MapField::~MapField() {
