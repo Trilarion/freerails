@@ -36,4 +36,5 @@ public class SimplePathIteratorImpl implements FreerailsPathIterator {
 	public boolean hasNext() {
 		return (position + 1) < x.length;
 	}
+	
 }
