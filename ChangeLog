@@ -1,3 +1,7 @@
+Thu Aug 28 02:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o add GamePanel and GameMapView ground element in paraGUI
+o let GameModeSelectDialog work better in paragui
+o Make loop around the Game in paragui
 Mon Aug 27 21:30:00 2001  Alexander Opitz <opi@sputnik.de>:
 o clean up in paragui the GameModeSelectDialog()
 Fri Aug 24 23:30:00 2001  Alexander Opitz <opi@sputnik.de>:

@@ -5,9 +5,7 @@
 #ifndef __GAMEMODESELECTDIALOG_H__
 #define __GAMEMODESELECTDIALOG_H__
 
-#include "GameApplication.h"
-
-#include "BaseDialog.h"
+#include "GameMainWindow.h"
 
 #include <pgwidget.h>
 #include <pgwindow.h>

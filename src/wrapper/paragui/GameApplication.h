@@ -7,6 +7,8 @@
 #include "BaseApplication.h"
 #include "GameMainWindow.h"
 #include "GameModeSelectDialog.h"
+#include "GameMapView.h"
+#include "GamePanel.h"
 #include "SDL.h"
 
 
@@ -37,6 +39,8 @@ private:
     Uint32 screenFlags;
     int screenDepth;
     PG_GradientWidget* splash;
+    GameMapView* mapView;
+    GamePanel* panel;
 };
 
 #endif

@@ -29,7 +29,7 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
 }
 
 GameApplication::~GameApplication() {
-    if (pGlobalApp) delete pGlobalApp;
+    delete pGlobalApp;
 }
 
 int GameApplication::run() {
@@ -48,6 +48,10 @@ int result;
       pGlobalApp->Quit();
       return 0;
     }
+    mapView=new GameMapView(&mw, 0, 0, 650, 600 /* ,WorldMap */);
+    panel=new GamePanel(&mw, 650, 0, 150, 600 /* ,WorldMap */);
+    mapView->Show();
+    panel->Show();
     pGlobalApp->Run();
   }
 }
@@ -65,6 +69,7 @@ void GameApplication::showSplash() {
   char file[]="data/graphics/ui/title.png";
   splash->SetBackground(file,BKMODE_STRETCH);
   splash->SetBackgroundBlend(0);
+  splash->SetFadeSteps(20);
   splash->Show();
 }
 
