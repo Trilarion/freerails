@@ -138,6 +138,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     break;
             }
             toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
+            String tooltip = rule.getTypeName()+ ", "+rule.getPrice().toString();
+            toggleButton.setToolTipText(tooltip);
             if(!selectionSet.containsKey(category)){
                 selectionSet.put(category, new Integer(i));
                 toggleButton.setSelected(true);
@@ -170,7 +172,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private void addNoTunnelsButton(){
         JToggleButton toggleButton = new JToggleButton();
         tunnelButtonGroup.add(toggleButton);
-        toggleButton.setIcon(getIcon("turn_off"));
+        toggleButton.setIcon(getIcon("no_tunnels"));
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
         toggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,14 +180,14 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                 setBuildTrackStrategy();
             }
         });
-        
+        toggleButton.setToolTipText("Don't build tunnels");
         tunnelsJPanel.add(toggleButton);
     }
     
     private void addNoBridgesButton(){
         JToggleButton toggleButton = new JToggleButton();
         bridgeButtonGroup.add(toggleButton);
-        toggleButton.setIcon(getIcon("turn_off"));
+        toggleButton.setIcon(getIcon("no_bridges"));
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
         toggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,7 +195,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                 setBuildTrackStrategy();
             }
         });
-        
+        toggleButton.setToolTipText("Don't build bridges");
         bridgesJPanel.add(toggleButton);
     }
     
@@ -251,6 +253,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         buildModeButtonGroup.add(addTrack);
         addTrack.setIcon(getIcon("build track"));
         addTrack.setSelected(true);
+        addTrack.setToolTipText("Build Track");
         addTrack.setFocusable(false);
         addTrack.setPreferredSize(new java.awt.Dimension(36, 36));
         addTrack.addActionListener(new java.awt.event.ActionListener() {
@@ -263,6 +266,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
         buildModeButtonGroup.add(upgradeTrack);
         upgradeTrack.setIcon(getIcon("upgrade track"));
+        upgradeTrack.setToolTipText("Upgrade Track");
         upgradeTrack.setFocusable(false);
         upgradeTrack.setPreferredSize(new java.awt.Dimension(36, 36));
         upgradeTrack.addActionListener(new java.awt.event.ActionListener() {
@@ -275,6 +279,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
         buildModeButtonGroup.add(addStation);
         addStation.setIcon(getIcon("build stations"));
+        addStation.setToolTipText("Build Station");
         addStation.setFocusable(false);
         addStation.setPreferredSize(new java.awt.Dimension(36, 36));
         addStation.addActionListener(new java.awt.event.ActionListener() {
@@ -287,6 +292,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
         buildModeButtonGroup.add(bulldoze);
         bulldoze.setIcon(getIcon("bulldozer"));
+        bulldoze.setToolTipText("Remove Track");
         bulldoze.setFocusable(false);
         bulldoze.setPreferredSize(new java.awt.Dimension(36, 36));
         bulldoze.addActionListener(new java.awt.event.ActionListener() {
@@ -298,7 +304,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         buildModeJPanel.add(bulldoze);
 
         buildModeButtonGroup.add(viewMode);
-        viewMode.setIcon(getIcon("turn_off"));
+        viewMode.setIcon(getIcon("eye"));
+        viewMode.setToolTipText("Don't build anything");
         viewMode.setFocusable(false);
         viewMode.setPreferredSize(new java.awt.Dimension(36, 36));
         viewMode.addActionListener(new java.awt.event.ActionListener() {
@@ -384,13 +391,13 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         add(spacer, gridBagConstraints);
 
     }//GEN-END:initComponents
-    
-    private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModeActionPerformed        
+
+    private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModeActionPerformed
         setVisible(false, false, false, false);
         cancelStationPlacement();
         setTrackBuilderMode(TrackMoveProducer.IGNORE_TRACK);        
     }//GEN-LAST:event_viewModeActionPerformed
-    
+                                            
     private void bulldozeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulldozeActionPerformed
         
         setVisible(false, false, false, false);

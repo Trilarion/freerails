@@ -12,7 +12,7 @@ import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
 import junit.framework.TestCase;
 
-public class TrackPathFinderTest2 extends TestCase {
+public class TrackBuildingTest extends TestCase {
 
 	World w;
 
