@@ -16,16 +16,19 @@ import java.awt.*;
 public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCellRenderer{
     
     jfreerails.world.top.ReadOnlyWorld w;
-    java.awt.Color defaultBackground;
-    
     
     ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/selected_arrow.png"));
     ImageIcon gotoAfterPriorityOrders = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/deselected_arrow.png"));
     ImageIcon dontGoto = null;
+    
+    private Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
+    
+    private Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
+    
     /** Creates new form TrainOrderJPanel */
     public TrainOrderJPanel() {
         initComponents();
-        defaultBackground = this.getBackground();
+        this.setBackground(backgoundColor);
     }
     
     /** This method is called from within the constructor to
@@ -84,14 +87,14 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         add(ordersJLabel, gridBagConstraints);
 
     }//GEN-END:initComponents
-
+    
     public void setup(jfreerails.world.top.ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
         this.w = w;
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
         trainViewJPanel.setup(w, vl, null);
         
-    }    
+    }
     
     public java.awt.Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement)value;
@@ -108,9 +111,9 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         
         //Set selected
         if(isSelected){
-            this.setBackground(java.awt.Color.YELLOW);
+            this.setBackground(selectedColor);
         }else{
-            this.setBackground(defaultBackground);
+            this.setBackground(backgoundColor);
         }
         
         //Set goto status.
@@ -126,10 +129,10 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
                 break;
             default:
                 throw new IllegalArgumentException(String.valueOf(trainOrders.gotoStatus));
-        }       
-         this.gotoIcon.setPreferredSize(new Dimension(20, 20));
-         
-         //Set consist
+        }
+        this.gotoIcon.setPreferredSize(new Dimension(20, 20));
+        
+        //Set consist
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.display(trainOrders.trainNumber, index);
         
@@ -137,10 +140,10 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         if(trainOrders.isPriorityOrder){
             //Write the station name in upper case
             String s = this.stationNameJLabel.getText();
-            this.stationNameJLabel.setText(s + " (Priority Orders)");         
+            this.stationNameJLabel.setText(s + " (Priority Orders)");
         }
         
-        //Check for 'No change' 
+        //Check for 'No change'
         if(null == trainOrders.order.consist){
             this.noChangeJLabel.setText("No Change");
         }else{
@@ -151,7 +154,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         //this.sectionTitleJLabel.setText("trainOrders.sectionTitle");
         
         return this;
-    }    
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel consistChangeJPanel;

@@ -34,10 +34,10 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     
     private int trainNumber=-1;
     
-	private int scheduleOrderNumber;
-	
-	private int scheduleID=-1;
-
+    private int scheduleOrderNumber;
+    
+    private int scheduleID=-1;
+    
     private int height = 100;
     
     private Image[] images = new Image[0];
@@ -52,6 +52,12 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     
     private int trainWidth = 0;
     
+    boolean selected = false;
+    
+    private Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
+    
+    private Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
+    
     public TrainViewJPanel() {
         this.setOpaque(false);
     }
@@ -60,15 +66,15 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     public TrainViewJPanel(ReadOnlyWorld w, ViewLists vl, int trainNumber) {
         setup(w, vl, null);
         display(trainNumber);
-        this.setBackground(Color.GRAY);
+        this.setBackground(backgoundColor);
     }
     
     public void setCenterTrain(boolean b){
         this.centerTrain = b;
     }
-
+    
     public void display(int trainNumber) {
-		showingOrder = false;
+        showingOrder = false;
         this.trainNumber = trainNumber;
         TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber);
         
@@ -89,12 +95,12 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     }
     
     public void display(int trainNumber, int scheduleOrderNumber) {
-		showingOrder = true;
+        showingOrder = true;
         this.trainNumber = trainNumber;
         this.scheduleOrderNumber = scheduleOrderNumber;
         TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber);
-		this.scheduleID = train.getScheduleID();
-		ImmutableSchedule s = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID);
+        this.scheduleID = train.getScheduleID();
+        ImmutableSchedule s = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID);
         TrainOrdersModel order = s.getOrder(scheduleOrderNumber);
         
         //Set up the array of images.
@@ -140,6 +146,14 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     boolean isSelected,
     boolean cellHasFocus) {
         display(index);
+        if(selected != isSelected){
+            selected = isSelected;
+            if(selected){
+                setBackground(selectedColor);
+            }else{
+                setBackground(backgoundColor);
+            }
+        }
         return this;
     }
     
@@ -152,7 +166,7 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     }
     
     protected void paintComponent(Graphics g) {
-        
+        super.paintComponent(g);
         int x = 0;
         if(this.centerTrain){
             x = (this.getWidth() - this.trainWidth) /2;
@@ -165,24 +179,24 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     }
     
     
-	public void listUpdated(KEY key, int index) {		
-		if(showingOrder){
-			if(KEY.TRAIN_SCHEDULES == key && this.scheduleID == index){			
-				this.display(this.trainNumber, this.scheduleOrderNumber);	
-			}
-		}else{
-			if(KEY.TRAINS == key && this.trainNumber == index){	
-				this.display(this.trainNumber);
-			}
-		}				
-	}
-
-	public void itemAdded(KEY key, int index) {
-		
-	}
-
-	public void itemRemoved(KEY key, int index) {
-
-	}
+    public void listUpdated(KEY key, int index) {
+        if(showingOrder){
+            if(KEY.TRAIN_SCHEDULES == key && this.scheduleID == index){
+                this.display(this.trainNumber, this.scheduleOrderNumber);
+            }
+        }else{
+            if(KEY.TRAINS == key && this.trainNumber == index){
+                this.display(this.trainNumber);
+            }
+        }
+    }
+    
+    public void itemAdded(KEY key, int index) {
+        
+    }
+    
+    public void itemRemoved(KEY key, int index) {
+        
+    }
     
 }
