@@ -21,7 +21,7 @@ import jfreerails.world.top.World;
 
 public abstract class AbstractTileRenderer implements TileRenderer {
 
-	protected int[] rgbValues;
+	protected final int[] rgbValues;
 
 	protected TileIconSelector tileIconSelector;
 
@@ -35,12 +35,18 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
 	protected int tileHeight;
 	
-	public AbstractTileRenderer(TerrainType t){
+	public AbstractTileRenderer(TerrainType t, int[] rgbValues){
 		tileModel = t;
+		this.rgbValues = rgbValues;
 		if(null == t){
 			throw new NullPointerException();
 		}
+		if(null == rgbValues){
+			throw new NullPointerException();
+		}
 	}
+	
+	
 
 	public void renderTile(
 		java.awt.Graphics g,
@@ -78,6 +84,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
 	public Image getIcon(int x, int y, World w) {
 		int tile = selectTileIcon(x, y, w);
+		
 		if (tileIcons[tile] != null) {
 			return tileIcons[tile];
 		} else {
@@ -122,49 +129,11 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 		return match;
 	}
 
-	public void dumpImages(ImageManager imageManager) {
-		String relativeFileNameBase = "terrain" + File.separator + this.getTerrainType();
-		switch (this.tileIcons.length) {
-			case 1 :
-				{
-					imageManager.setImage(relativeFileNameBase+".png", this.tileIcons[0]);
-					break;
-				}
-			case 2 :
-				{
-					for (int i = 0; i < this.tileIcons.length; i++) {
-						String fileName =
-							relativeFileNameBase + "_" + BinaryNumberFormatter.format(i, 1)+".png";
-						imageManager.setImage(fileName, this.tileIcons[i]);
-
-					}
-					break;
-				}
-			case 4 :
-				{
-					for (int i = 0; i < this.tileIcons.length; i++) {
-						String fileName =
-							relativeFileNameBase + "_" + BinaryNumberFormatter.format(i, 2)+".png";
-						imageManager.setImage(fileName, this.tileIcons[i]);
-
-					}
-					break;
-				}
-			case 16 :
-				{
-					for (int i = 0; i < this.tileIcons.length; i++) {
-						String fileName =
-							relativeFileNameBase + "_" + BinaryNumberFormatter.format(i, 4)+".png";
-						imageManager.setImage(fileName, this.tileIcons[i]);
-					}
-					break;
-				}
-			default :
-				{
-					throw new IllegalArgumentException(String.valueOf(this.tileIcons.length));
-				}
-
-		}
-
-	}
+	abstract public void dumpImages(ImageManager imageManager);
+		
+	
+	protected String generateRelativeFileName(int number, int digits){
+		String binaryNumber = BinaryNumberFormatter.format(number, digits);
+		return  "terrain" + File.separator + this.getTerrainType() + "_" +binaryNumber+".png";	
+	}	
 }

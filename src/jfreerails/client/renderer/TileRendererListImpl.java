@@ -52,8 +52,16 @@ final public class TileRendererListImpl implements TileRendererList {
 			tileArrayList.add(it.next());
 		}
 	}
+	
+	public TileRendererListImpl(){
+		
+	}
+	
+	public void add(TileRenderer tr){
+		tileArrayList.add(tr);
+	}
 
-	public java.util.Iterator getIterator() {
+	public Iterator getIterator() {
 		return tiles.values().iterator();
 	}
 

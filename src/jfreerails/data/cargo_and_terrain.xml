@@ -25,7 +25,7 @@
    </Cargo_Types>
 
    <Terrain_Types>
-      <Tile id="City" Category="Urban" rgb="fcfc48" right-of-way="0">
+      <Tile id="City" Category="Urban" rgb="ef901c" right-of-way="0">
          <Produces Cargo="Mail" Rate="1" />
 
          <Produces Cargo="Passengers" Rate="2" />
@@ -37,7 +37,7 @@
          <Consumes Cargo="Food" Prerequisite="2" />
       </Tile>
 
-      <Tile id="Factory" Category="Urban" rgb="0000b4" right-of-way="1000">
+      <Tile id="Factory" Category="Urban" rgb="0000b7" right-of-way="1000">
          <Converts input="Coffee" output="Export_Goods" />
 
          <Converts input="Wood" output="Export_Goods" />
@@ -65,7 +65,7 @@
 
       <Tile id="Desert" Category="Country" rgb="b42400" right-of-way="0"/>
 
-      <Tile id="Ocean" Category="Water" rgb="0000b7" right-of-way="0"/>
+      <Tile id="Ocean" Category="Water" rgb="0000b4" right-of-way="0"/>
 
       <Tile id="Harbour" Category="Water" rgb="1eead2" right-of-way="0">
          <Produces Cargo="Mail" Rate="1" />
@@ -99,11 +99,11 @@
          <Produces Cargo="Livestock" Rate="4" />
       </Tile>
 
-      <Tile id="Grain_Elevator" Category="Urban" rgb="ef901c" right-of-way="0">
+      <Tile id="Grain_Elevator" Category="Urban" rgb="fcfc48" right-of-way="0">
          <Produces Cargo="Grain" Rate="4" />
       </Tile>
 
-      <Tile id="Oil_Well" Category="Urban" rgb="ef901d" right-of-way="0">
+      <Tile id="Resource" Category="Urban" rgb="ef901d" right-of-way="0">
          <Produces Cargo="Petroleum" Rate="4" />
       </Tile>
 

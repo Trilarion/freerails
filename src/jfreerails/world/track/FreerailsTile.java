@@ -99,6 +99,10 @@ public class FreerailsTile
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	public String getTypeName() {
+		
+		return this.terrainType.getTerrainTypeName();
+	}
 		
 	
 }

@@ -6,6 +6,12 @@
 */
 package jfreerails.client.renderer;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import jfreerails.client.common.ImageManager;
+import jfreerails.client.common.ImageSplitter;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.World;
 
@@ -19,16 +25,14 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 	private TileRenderer parentTileView;
 
 	public SpecialTileRenderer(
-		jfreerails.client.common.ImageSplitter imageSplitter,
+		ImageSplitter imageSplitter,
 		int[] rgbValues,
 		TerrainType tileModel,
 		TileRenderer parentTileView) {
-			super(tileModel);
+		super(tileModel, rgbValues);
 		imageSplitter.setTransparencyToTRANSLUCENT();
 		tileIcons = new java.awt.Image[1];
-		tileIcons[0] = imageSplitter.getTileFromSubGrid(0, 0);
-		this.rgbValues = rgbValues;
-		// this.tileModel = tileModel;?????????? TODO fix something here!
+		tileIcons[0] = imageSplitter.getTileFromSubGrid(0, 0);				
 		this.parentTileView = parentTileView;
 	}
 
@@ -57,5 +61,19 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 
 	public int selectTileIcon(int x, int y, World w) {
 		return 0;
+	}
+
+	public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel)
+		throws IOException {
+		super(tileModel, rgbValues);
+		this.tileIcons = new Image[1];
+		this.tileIcons[0] = imageManager.getImage(generateFilename());
+	}
+
+	public void dumpImages(ImageManager imageManager) {
+		imageManager.setImage(generateFilename(), this.tileIcons[0]);
+	}
+	private String generateFilename() {
+		return "terrain" + File.separator + this.getTerrainType() + ".png";
 	}
 }

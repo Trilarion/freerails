@@ -10,7 +10,7 @@ import jfreerails.world.common.Tile;
  * @version 	1.0
  */
 public interface TerrainTile extends Tile {
-	//String getTypeName();
+	String getTypeName();
 	int getTerrainTypeNumber();
 	int terrainRgb();
 
