@@ -13,10 +13,10 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, WorldMap* _worldMap):
+GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine):
 PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
 
-  worldMap=_worldMap;
+  engine=_engine;
   WidgetList = new PG_WidgetList(this, PG_Rect(0,0,w,h));
   WidgetList->EnableScrollBar(true, PG_SB_VERTICAL);
   WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
@@ -25,10 +25,10 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
   tilesImage=IMG_Load("data/graphics/tiles.png");
   trackImage=IMG_Load("data/graphics/track.png");
   
-  imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,worldMap->getWidth()*30,worldMap->getHeight()*30,32,0,0,0,0);
-  for (int y=0;y<worldMap->getHeight();y++)
+  imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,engine->getWorldMap()->getWidth()*30,engine->getWorldMap()->getHeight()*30,32,0,0,0,0);
+  for (int y=0;y<engine->getWorldMap()->getHeight();y++)
   {
-    for (int x=0;x<worldMap->getWidth();x++)
+    for (int x=0;x<engine->getWorldMap()->getWidth();x++)
     {
       getMapImage(imageSurface,x,y);
     }
@@ -59,7 +59,9 @@ void GameMapView::getMapImage(SDL_Surface* surface, int x, int y) {
   SDL_Rect rectSRC;
   rectSRC.w=30;
   rectSRC.h=30;
-  MapField::FieldType type=worldMap->getMapField(x,y)->getType();
+  MapField* field = engine->getWorldMap()->getMapField(x,y);
+  if (field==NULL) return;
+  MapField::FieldType type=field->getType();
   MapField* otherField;
   int xpos=0;
   switch (type)
@@ -151,13 +153,13 @@ int GameMapView::getImagePos(int x, int y, MapField::FieldType type)
   MapField* field;
   int xpos=0;
   
-  field=worldMap->getMapField(x,y-1);
+  field=engine->getWorldMap()->getMapField(x,y-1);
   if (field!=NULL && field->getType()!=type) xpos+=1;
-  field=worldMap->getMapField(x+1,y);
+  field=engine->getWorldMap()->getMapField(x+1,y);
   if (field!=NULL && field->getType()!=type) xpos+=2;
-  field=worldMap->getMapField(x,y+1);
+  field=engine->getWorldMap()->getMapField(x,y+1);
   if (field!=NULL && field->getType()!=type) xpos+=4;
-  field=worldMap->getMapField(x-1,y);
+  field=engine->getWorldMap()->getMapField(x-1,y);
   if (field!=NULL && field->getType()!=type) xpos+=8;
 
   return xpos;
@@ -168,13 +170,13 @@ int GameMapView::getRiverImagePos(int x, int y)
   MapField* field;
   int xpos=0;
   
-  field=worldMap->getMapField(x,y-1);
+  field=engine->getWorldMap()->getMapField(x,y-1);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=1;
-  field=worldMap->getMapField(x+1,y);
+  field=engine->getWorldMap()->getMapField(x+1,y);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=2;
-  field=worldMap->getMapField(x,y+1);
+  field=engine->getWorldMap()->getMapField(x,y+1);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=4;
-  field=worldMap->getMapField(x-1,y);
+  field=engine->getWorldMap()->getMapField(x-1,y);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=8;
 
   return xpos;
@@ -186,8 +188,8 @@ int GameMapView::get3DImagePos(int x, int y, MapField::FieldType type)
   MapField* fieldRight;
   int xpos=0;
   
-  fieldLeft=worldMap->getMapField(x-1,y);
-  fieldRight=worldMap->getMapField(x+1,y);
+  fieldLeft=engine->getWorldMap()->getMapField(x-1,y);
+  fieldRight=engine->getWorldMap()->getMapField(x+1,y);
   if (fieldLeft!=NULL && fieldRight!=NULL)
   {
     if (fieldLeft->getType()==type && fieldRight->getType()==type)
@@ -235,41 +237,103 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
   return false;
 }
 
-bool GameMapView::isOnNewTile(const SDL_MouseMotionEvent* motion) {
+void GameMapView::regenerateTile(int x, int y) {
 
-  int x = motion->x / 30;
-  int y = motion->y / 30;
-  if ((x==mouseOldX) && (y==mouseOldY)) return false;
-  getMapImage(imageSurface,mouseOldX,mouseOldY);
+  for (int i=-1;i<=1;i++) {
+    for (int ii=-1;ii<=1;ii++) {
+      getMapImage(imageSurface,mouseOldX+i,mouseOldY+ii);
+    }
+  }
   mouseOldX=x;
   mouseOldY=y;
-  return true;
 }
+
+void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
+
+  SDL_Rect rectSRC, rectDST;
+  rectSRC.w=30;
+  rectSRC.h=30;
+  rectSRC.x=tilesetX;
+  rectSRC.y=tilesetY;
+  rectDST.x=x*30;
+  rectDST.y=y*30;
+  rectDST.w=rectSRC.w;
+  rectDST.h=rectSRC.h;
+  SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
+}
+
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
-  int x,y;
-  SDL_Rect rectSRC, rectDST;
-  if (isOnNewTile(motion)) {
-    rectSRC.w=30;
-    rectSRC.h=30;
-    x = motion->x / 30;
-    y = motion->y / 30;
-    if (mouseType==buildStation) {
-      // canBuild(Station,x,y);
-      rectSRC.x=20*30+15;
-      rectSRC.y=26*30+15;
-    }
-    if (mouseType==buildTrack) {
-      // canBuild(Track,x,y);
-      rectSRC.x=0*30+15;
-      rectSRC.y=0*30+15;
-    }
-    rectDST.x=x*30;
-    rectDST.y=y*30;
-    rectDST.w=rectSRC.w;
-    rectDST.h=rectSRC.h;
-    SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
-    Update();
+  int x,y, x2, y2;
+  int dir, dir2, helpx, helpy;
+  x = motion->x / 30;
+  y = motion->y / 30;
+  helpx=x*30;
+  helpx=motion->x-helpx;
+  helpy=y*30;
+  helpy=motion->y-helpy;
+  
+  if (helpx<10) {
+    if (helpy<10) { dir=8; }
+    else if (helpy<20) { dir=7; }
+    else dir=6;
+  } else
+  if (helpx<20) {
+    if (helpy<10) { dir=1; }
+    else if (helpy<20) { dir=1; }
+    else dir=5;
+  } else
+  {
+    if (helpy<10) { dir=2; }
+    else if (helpy<20) { dir=3; }
+    else dir=4;
+  };
+  
+  if (dir<5) dir2=dir+4;
+    else dir2=dir-4;
+    
+  switch (dir) {
+    case 1: y2=y-1; x2=x;
+    break;
+    case 2: y2=y-1; x2=x+1;
+    break;
+    case 3: y2=y; x2=x+1;
+    break;
+    case 4: y2=y+1; x2=x+1;
+    break;
+    case 5: y2=y+1; x2=x;
+    break;
+    case 6: y2=y+1; x2=x-1;
+    break;
+    case 7: y2=y; x2=x-1;
+    break;
+    case 8: y2=y-1; x2=x-1;
+    break;
   }
-  return false;
+
+  regenerateTile(x,y);
+  
+  switch (mouseType) {
+  
+    case buildStation:
+  // canBuild(Station,x,y);
+      showTrack(x,y,20*30+15,26*30+15);
+      break;
+    case buildTrack:
+      
+      if (engine->canBuildTrack(x,y,1,dir)>=0)
+      {
+        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
+	if (engine->canBuildTrack(x2,y2,1,dir2)>=0)
+	{
+	  showTrack(x2,y2,(dir2-1)*2*30+15,0*30+15);
+	}
+      }
+      break;
+    default:
+      return false;
+      break;
+  }
+  Update();
+  return true;
 }
