@@ -4,7 +4,6 @@
  */
 package jfreerails.world.cargo;
 
-import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -23,7 +22,7 @@ public class CargoBundleImpl implements CargoBundle {
         Iterator it = this.cargoBatchIterator();
 
         while (it.hasNext()) {
-            CargoBatch cb = (CargoBatch)((Entry) it.next()).getKey();
+            CargoBatch cb = (CargoBatch)it.next();
             s += this.getAmount(cb) + " units of cargo type " +
             cb.getCargoType() + "\n";
         }
@@ -50,7 +49,7 @@ public class CargoBundleImpl implements CargoBundle {
         int amount = 0;
 
         while (it.hasNext()) {
-            CargoBatch cb = (CargoBatch)((Entry) it.next()).getKey();
+            CargoBatch cb = (CargoBatch)it.next();
 
             if (cb.getCargoType() == cargoType) {
                 amount += getAmount(cb);
@@ -83,7 +82,7 @@ public class CargoBundleImpl implements CargoBundle {
     }
 
     public Iterator cargoBatchIterator() {
-        return hashMap.entrySet().iterator();
+        return hashMap.keySet().iterator();
     }
 
     public boolean equals(Object o) {
