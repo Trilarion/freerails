@@ -126,8 +126,7 @@
 		</jar>
 		<!-- Replace current latest with the jar file we have just created. -->
 		<delete>
-			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />
-			<fileset dir="${dist}/latest/" includes="jfreerails-*.zip" />
+			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />			
 		</delete>
 		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" todir="${dist}/latest" />
 	</target>
