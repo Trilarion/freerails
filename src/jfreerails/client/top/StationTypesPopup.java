@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -12,9 +13,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.StationRadiusRenderer;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.StationBuildModel;
+import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.TrackRule;
 
 
 /**
@@ -28,15 +33,17 @@ public class StationTypesPopup extends JPopupMenu {
     private StationRadiusRenderer stationRadiusRenderer;
     private PopupMenuListener popupMenuListener;
     private StationBuildModel stationBuildModel;
+    private ModelRoot modelRoot;
 
     public StationTypesPopup() {
     }
 
     public boolean canBuiltStationHere(Point p) {
-        stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY,
-            p);
+    	stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY,
+                p);
 
-        return stationBuildModel.canBuildStationHere();
+        FreerailsTile tile = (FreerailsTile)modelRoot.getWorld().getTile(p.x, p.y);
+        return tile.getTrackRule().getCategory() != TrackRule.TrackCategories.non;
     }
 
     private class StationBuildMenuItem extends JMenuItem {
@@ -45,7 +52,8 @@ public class StationTypesPopup extends JPopupMenu {
         }
     }
 
-    public void setup(ActionRoot actionRoot, StationRadiusRenderer srr) {
+    public void setup(ModelRoot mr, ActionRoot actionRoot, StationRadiusRenderer srr) {
+    	modelRoot = mr;
         stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
         this.removeAll();

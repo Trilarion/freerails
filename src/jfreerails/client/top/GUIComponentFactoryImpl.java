@@ -174,7 +174,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         Dimension maxSize = new Dimension(200, 200);
         overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
 
-        stationTypesPopup.setup(actionRoot, mainMap.getStationRadius());
+        stationTypesPopup.setup(modelRoot, actionRoot, mainMap.getStationRadius());
         
       
         	mapViewJComponent.setup(mainMap, modelRoot, viewLists.getImageManager());
