@@ -17,7 +17,7 @@ public class Schedule {
     
     public static final int PRIORITY_ORDERS=0;
     
-    private final TrainOrders[] orders = new TrainOrders[MAX_NUMBER_OF_ORDERS+1];
+    private final TrainOrdersModel[] orders = new TrainOrdersModel[MAX_NUMBER_OF_ORDERS+1];
     
     int stationToGoto=1;
     
@@ -35,7 +35,7 @@ public class Schedule {
         }
     }
     
-    public void setOrder(int orderNumber, TrainOrders order){
+    public void setOrder(int orderNumber, TrainOrdersModel order){
         
     }
     

@@ -1,6 +1,6 @@
 package jfreerails.world.train;
 
-import jfreerails.util.IntIterator;
+import jfreerails.util.FreerailsIntIterator;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.common.PositionOnTrack;
@@ -12,14 +12,14 @@ import jfreerails.world.common.PositionOnTrack;
  */
 public class TrainPathIterator implements FreerailsPathIterator {
 
-	IntIterator intIterator;
+	FreerailsIntIterator intIterator;
 
 	PositionOnTrack p1 = new PositionOnTrack();
 	PositionOnTrack p2 = new PositionOnTrack();
 
 	static final int tileSize = 30;
 
-	public TrainPathIterator(IntIterator i) {
+	public TrainPathIterator(FreerailsIntIterator i) {
 		intIterator = i;
 		p2.setValuesFromInt(intIterator.nextInt());
 	}

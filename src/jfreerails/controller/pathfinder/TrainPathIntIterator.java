@@ -1,13 +1,13 @@
 package jfreerails.controller.pathfinder;
 
-import jfreerails.util.IntIterator;
+import jfreerails.util.FreerailsIntIterator;
 
 /**
  * 30-Nov-2002
  * @author Luke Lindsay
  *
  */
-public class TrainPathIntIterator implements IntIterator {
+public class TrainPathIntIterator implements FreerailsIntIterator {
 	
 	public FlatTrackExplorer trackExplorer;
 	
