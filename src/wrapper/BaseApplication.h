@@ -40,8 +40,8 @@ public:
     virtual void setMainWindow(GameMainWindow* mw) {};
     
     virtual void initSingleGame(const std::string, int, int, int) {};
-    virtual void initClientGame() {};
-    virtual void initServerGame() {};
+    virtual void initClientGame(const std::string) {};
+    virtual void initServerGame(const std::string, int, int, int) {};
     
 protected:
     GameMainWindow* mW;

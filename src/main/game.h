@@ -34,8 +34,8 @@ public:
     //     playFieldWidth = -1 mean we will play a scenario,
     //     where playFieldHeight is the number of scenario
     void initSingleGame(const std::string name, int playFieldWidth, int playFieldHeight, int numberOfAi);
-    void initClientGame();
-    void initServerGame();
+    void initClientGame(const std::string name);
+    void initServerGame(const std::string name, int playFieldWidth, int playFieldHeight, int numberOfAi);
 
 };
 
