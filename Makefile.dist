@@ -1,0 +1,45 @@
+default: all
+
+dist:
+	@echo "This file is to make it easier for you to create all you need"
+	@echo "Creating acinclude.m4"
+	cat acinclude.m4.in ac-qt.m4 libtool.m4.in >acinclude.m4
+	@echo "Creating aclocal.m4"
+	aclocal
+	@echo "Creating config.h.in"
+	autoheader
+# use --include-deps, if you want to release the stuff. Don't use it for
+# yourself
+#	automake --include-deps
+	@echo "Creating makefiles"
+	automake
+	@echo "Creating configure"
+	autoconf
+	touch stamp-h.in
+	LIST=`find ./po -name "*.po"`; \
+	for i in $$LIST; do \
+	 file2=`echo $$i | sed -e "s#\.po#\.gmo#"`; \
+	 msgfmt -o $$file2 $$i; \
+	done 
+
+all: Makefile.in configure
+
+Makefile.in: aclocal.m4 config.h.in
+	@echo "Creating Makefile.in's"
+	@automake
+
+config.h.in: aclocal.m4
+	@echo "Creating config.h.in"
+	@autoheader
+
+configure: aclocal.m4 config.h.in
+	@echo "Creating configure"
+	@autoconf
+
+aclocal.m4: acinclude.m4
+	@echo "Creating aclocal.m4"
+	@aclocal
+
+acinclude.m4: admin/acinclude.m4.in admin/ac-qt.m4 admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in
+	@echo "Creating acinclude.m4"
+	@cat admin/acinclude.m4.in admin/ac-qt.m4 admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in >acinclude.m4
