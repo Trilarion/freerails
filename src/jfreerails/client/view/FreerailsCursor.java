@@ -64,7 +64,7 @@ final public class FreerailsCursor {
 		Graphics2D g2 = (Graphics2D) g;
 		
 
-		Integer trackBuilderMode = (Integer) modelRoot
+		TrackMoveProducer.BuildMode buildMode = (TrackMoveProducer.BuildMode) modelRoot
 				.getProperty(ModelRoot.Property.TRACK_BUILDER_MODE);
 
 		Point cursorMapPosition = (Point) modelRoot
@@ -80,20 +80,24 @@ final public class FreerailsCursor {
 		int y = cursorMapPosition.y * tileSize.height;
 		
 		Image cursor = null;
-		switch (trackBuilderMode.intValue()) {
-		case TrackMoveProducer.BUILD_TRACK:
+		switch (buildMode) {
+		case BUILD_TRACK:
 			cursor = buildTrack;
 			break;
-		case TrackMoveProducer.REMOVE_TRACK:
+		case REMOVE_TRACK:
 			cursor = removeTrack;
 			break;
-		case TrackMoveProducer.UPGRADE_TRACK:
+		case UPGRADE_TRACK:
 			cursor = upgradeTrack;
 			break;
-		case TrackMoveProducer.IGNORE_TRACK:
+		case IGNORE_TRACK:
 			cursor = infoMode;
 			break;
+		case BUILD_STATION:
+			cursor = buildTrack;
+			break;
 		}
+		
 		Boolean b = (Boolean)modelRoot.getProperty(ModelRoot.Property.IGNORE_KEY_EVENTS);
 		long time = System.currentTimeMillis() - timeArrived;
 		boolean show = ((time / 500) % 2) == 0;

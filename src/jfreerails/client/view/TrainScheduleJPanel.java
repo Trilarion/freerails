@@ -268,7 +268,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     
     private void ordersKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ordersKeyPressed
         switch(evt.getKeyCode()){
-            case KeyEvent.VK_P:{
+            case KeyEvent.VK_O:{
                 //Add priority orders
                 priorityOrdersJButtonActionPerformed(null);
                 break;
@@ -475,7 +475,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s  = getSchedule();
         addStationJButton.setEnabled(s.canAddOrder());
         
-        //Only one set of prority orders are allowed.
+        //Only one set of priority orders are allowed.
         priorityOrdersJButton.setEnabled(!s.hasPriorityOrders());
     }
     
@@ -543,10 +543,10 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
-        //If autoconsit is set do nothing
+        //If auto-consist is set do nothing
         if(oldOrders.autoConsist)
             return;
-        //If nochange is set do nothing
+        //If no-change is set do nothing
         if(oldOrders.consist == null)
             return;
         boolean autoConsist = false;

@@ -19,7 +19,7 @@ import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 
 /**
- * JPanel that displays info on a train, composed of a {@link TrainScheduleJPanel} and {@link TrainDetailsJPanel}.
+ * JPanel that displays info on a train; it is composed of a {@link TrainScheduleJPanel} and {@link TrainDescriptionJPanel}.
  * @author  Luke Lindsay
  */
 public class TrainDialogueJPanel extends javax.swing.JPanel implements View, WorldListListener {

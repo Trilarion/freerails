@@ -94,23 +94,24 @@ public class SoundManager implements ModelRootListener {
                 }
 
                 Sample sample = samples.get(s);
-
-                //Add a random component to the sample rate so that the samples 
-                //don't always sound the same.
-                float frameRate = (1 + (r.nextFloat() - 0.5f) / 3) * sample.format.getFrameRate();
-
-                //Make sure the frameRate is a sensible value, i.e.  between 4 kHz and 48 kHz.
-                frameRate = Math.min(frameRate, 48000f);
-                frameRate = Math.max(frameRate, 4000f);
-
-                AudioFormat format = new AudioFormat(sample.format.getEncoding(),
-                        sample.format.getSampleRate(),
-                        sample.format.getSampleSizeInBits(),
-                        sample.format.getChannels(),
-                        sample.format.getFrameSize(), frameRate,
-                        sample.format.isBigEndian());
+                
+// The code below is commented out as a fix for bug 1103632	(Sound on Linux).
+//                //Add a random component to the sample rate so that the samples 
+//                //don't always sound the same.
+//                float frameRate = (1 + (r.nextFloat() - 0.5f) / 3) * sample.format.getFrameRate();
+//
+//                //Make sure the frameRate is a sensible value, i.e.  between 4 kHz and 48 kHz.
+//                frameRate = Math.min(frameRate, 48000f);
+//                frameRate = Math.max(frameRate, 4000f);
+//
+//                AudioFormat format = new AudioFormat(sample.format.getEncoding(),
+//                        sample.format.getSampleRate(),
+//                        sample.format.getSampleSizeInBits(),
+//                        sample.format.getChannels(),
+//                        sample.format.getFrameSize(), frameRate,
+//                        sample.format.isBigEndian());
                 Clip clip = (Clip)AudioSystem.getLine(sample.info);
-                clip.open(format, sample.audio, 0, sample.size);
+                clip.open(sample.format, sample.audio, 0, sample.size);
                 clip.loop(loops);
             } catch (LineUnavailableException e) {
                 logger.warning(e.getMessage());

@@ -26,13 +26,21 @@ import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.TrackMoveProducer;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_STATION;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
+import static jfreerails.world.track.TrackRule.TrackCategories.track;
+
+
 
 /**
  * A JPanel that presents toggle buttons that let the player select the build mode (build track, upgrade track, build
- * station, bulloze, and info mode) and select the track/bridge/station type to use.
+ * station, bulldoze, and info mode) and select the track/bridge/station type to use.
  * @author  Luke
  */
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
@@ -395,21 +403,20 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModeActionPerformed
         setVisible(false, false, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(TrackMoveProducer.IGNORE_TRACK);        
+        setTrackBuilderMode(IGNORE_TRACK);        
     }//GEN-LAST:event_viewModeActionPerformed
                                             
     private void bulldozeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulldozeActionPerformed
         
         setVisible(false, false, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(TrackMoveProducer.REMOVE_TRACK);  
+        setTrackBuilderMode(REMOVE_TRACK);  
     }//GEN-LAST:event_bulldozeActionPerformed
     
     private void addStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStationActionPerformed
         
-        setVisible(false, false, false, true);
-        int ruleID = selectionSet.get(TrackRule.TrackCategories.station);
-        stationBuildModel.getStationChooseAction(ruleID).actionPerformed(null);
+        setVisible(false, false, false, true);       
+        setTrackBuilderMode(BUILD_STATION); 
         
     }//GEN-LAST:event_addStationActionPerformed
     
@@ -417,7 +424,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         
         setVisible(true, true, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(TrackMoveProducer.UPGRADE_TRACK); 
+        setTrackBuilderMode(UPGRADE_TRACK); 
         
     }//GEN-LAST:event_upgradeTrackActionPerformed
     
@@ -425,7 +432,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         
         setVisible(true, true, true, false);
         cancelStationPlacement();
-        setTrackBuilderMode(TrackMoveProducer.BUILD_TRACK); 
+        setTrackBuilderMode(BUILD_TRACK); 
     }//GEN-LAST:event_addTrackActionPerformed
     
     private void setVisible(boolean track, boolean bridges, boolean tunnels, boolean stations){
@@ -451,9 +458,9 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 		        ActionEvent.ACTION_PERFORMED, ""));
 	}
     
-    private void setTrackBuilderMode(int mode){
+    private void setTrackBuilderMode(TrackMoveProducer.BuildMode mode){
     	trackMoveProducer.setTrackBuilderMode(mode);
-    	modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, new Integer(mode));
+    	modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

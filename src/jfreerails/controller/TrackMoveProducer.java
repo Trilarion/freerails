@@ -33,17 +33,18 @@ final public class TrackMoveProducer {
 	private final MoveExecutor executor;
 	
 	//TODO Replace ints with enum.
+	public enum BuildMode{BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION};
+	
+//	public final static int BUILD_TRACK = 1;
+//
+//	public final static int REMOVE_TRACK = 2;
+//
+//	public final static int UPGRADE_TRACK = 3;
+//
+//	/* Don't build any track */
+//	public final static int IGNORE_TRACK = 4;
 
-	public final static int BUILD_TRACK = 1;
-
-	public final static int REMOVE_TRACK = 2;
-
-	public final static int UPGRADE_TRACK = 3;
-
-	/* Don't build any track */
-	public final static int IGNORE_TRACK = 4;
-
-	private int trackBuilderMode = BUILD_TRACK;
+	private BuildMode buildMode = BuildMode.BUILD_TRACK;
 
 	private final Stack<Move> moveStack = new Stack<Move>();
 
@@ -74,7 +75,7 @@ final public class TrackMoveProducer {
 		
 		ReadOnlyWorld w = executor.getWorld();
 		FreerailsPrincipal principal = executor.getPrincipal();
-		switch (trackBuilderMode) {
+		switch (buildMode) {
 		case IGNORE_TRACK: {
 			return MoveStatus.MOVE_OK;
 		}
@@ -103,7 +104,7 @@ final public class TrackMoveProducer {
 			break;
 
 		}
-		assert (trackBuilderMode == BUILD_TRACK || trackBuilderMode == UPGRADE_TRACK);
+		assert (buildMode == BuildMode.BUILD_TRACK || buildMode == BuildMode.UPGRADE_TRACK);
 
 		int[] ruleIDs = new int[2];
 		TrackRule[] rules = new TrackRule[2];
@@ -126,7 +127,7 @@ final public class TrackMoveProducer {
 			rules[i] = (TrackRule) w.get(SKEY.TRACK_RULES, ruleIDs[i]);
 		}				
 
-		switch (trackBuilderMode) {
+		switch (buildMode) {
 		case UPGRADE_TRACK: {
 			//upgrade the from tile if necessary.			
 			FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
@@ -156,14 +157,14 @@ final public class TrackMoveProducer {
 			return sendMove(moveAndTransaction);
 		}	
 		default:
-			throw new IllegalArgumentException(String.valueOf(trackBuilderMode));
+			throw new IllegalArgumentException(String.valueOf(buildMode));
 		}
 
 		
 	}
 
 	public MoveStatus upgradeTrack(Point point) {
-		if (trackBuilderMode == UPGRADE_TRACK) {
+		if (buildMode == BuildMode.UPGRADE_TRACK) {
 			ReadOnlyWorld w = executor.getWorld();
 			FreerailsTile tile = (FreerailsTile) w.getTile(point.x, point.y);
 			int tt = tile.getTerrainTypeID();
@@ -175,19 +176,8 @@ final public class TrackMoveProducer {
 
 	
 
-	public void setTrackBuilderMode(int i) {
-		switch (i) {
-		case BUILD_TRACK:
-		case REMOVE_TRACK:
-		case UPGRADE_TRACK:
-		case IGNORE_TRACK:
-			trackBuilderMode = i;
-
-			break;
-
-		default:
-			throw new IllegalArgumentException();
-		}
+	public void setTrackBuilderMode(BuildMode i) {
+		buildMode = i;
 	}
 
 	public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world) {
@@ -254,7 +244,7 @@ final public class TrackMoveProducer {
 	}
 
 	/**
-	 * Moves are only undoable if no game time has passed since they they were
+	 * Moves are only un-doable if no game time has passed since they they were
 	 * executed. This method clears the move stack if the moves were added to
 	 * the stack at a time other than the current time.
 	 */
@@ -268,8 +258,8 @@ final public class TrackMoveProducer {
 		}
 	}
 
-	public int getTrackBuilderMode() {
-		return trackBuilderMode;
+	public BuildMode getTrackBuilderMode() {
+		return buildMode;
 	}
 
 	private MoveStatus sendMove(Move m) {

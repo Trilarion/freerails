@@ -15,6 +15,11 @@ import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.TrackMoveProducer;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_STATION;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackConfiguration;
@@ -37,7 +42,7 @@ public class TrackBuildModel {
     private final ViewLists viewLists;
     private final ReadOnlyWorld world;
     private final StationBuildModel stationBuildModel;
-    private final HashMap<Integer, Action> buildModeActionsHM = new HashMap<Integer, Action>(); 
+    private final HashMap<TrackMoveProducer.BuildMode, Action> buildModeActionsHM = new HashMap<TrackMoveProducer.BuildMode, Action>(); 
   
     public ActionAdapter getBuildModeActionAdapter() {
         return buildModeAdapter;
@@ -48,12 +53,12 @@ public class TrackBuildModel {
     }
 
     private class BuildModeAction extends AbstractAction {
-        private final int actionId;
+        private final TrackMoveProducer.BuildMode mode;
 
-        private BuildModeAction(int actionId, String name) {
+        private BuildModeAction(TrackMoveProducer.BuildMode mode, String name) {
             putValue(NAME, name);
             putValue(ACTION_COMMAND_KEY, name);
-            this.actionId = actionId;
+            this.mode = mode;
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -61,7 +66,7 @@ public class TrackBuildModel {
             if (!(e.getSource() instanceof ActionAdapter))
                 return;
 
-            trackMoveProducer.setTrackBuilderMode(actionId);
+            trackMoveProducer.setTrackBuilderMode(mode);
         }
     }
 
@@ -116,19 +121,20 @@ public class TrackBuildModel {
         this.stationBuildModel = stationBuildModel;
 
         BuildModeAction[] buildModeActions = new BuildModeAction[] {
-		                new BuildModeAction(TrackMoveProducer.BUILD_TRACK, "Build Track"),
-		                new BuildModeAction(TrackMoveProducer.REMOVE_TRACK,
+		                new BuildModeAction(BUILD_TRACK, "Build Track"),
+		                new BuildModeAction(REMOVE_TRACK,
 		                    "Remove Track"),
-		                new BuildModeAction(TrackMoveProducer.UPGRADE_TRACK,
+		                new BuildModeAction(UPGRADE_TRACK,
 		                    "Upgrade Track"),
-		                new BuildModeAction(TrackMoveProducer.IGNORE_TRACK, "View Mode")
+		                new BuildModeAction(IGNORE_TRACK, "View Mode"),
+		                new BuildModeAction(BUILD_STATION, "Build station")
 		            };
 		buildModeAdapter = new ActionAdapter(buildModeActions);
 
-		buildModeActionsHM.put(new Integer(TrackMoveProducer.BUILD_TRACK), buildModeActions[0]);
-		buildModeActionsHM.put(new Integer(TrackMoveProducer.REMOVE_TRACK), buildModeActions[1]);
-		buildModeActionsHM.put(new Integer(TrackMoveProducer.UPGRADE_TRACK), buildModeActions[2]);
-		buildModeActionsHM.put(new Integer(TrackMoveProducer.IGNORE_TRACK), buildModeActions[3]);
+		buildModeActionsHM.put(BUILD_TRACK, buildModeActions[0]);
+		buildModeActionsHM.put(REMOVE_TRACK, buildModeActions[1]);
+		buildModeActionsHM.put(UPGRADE_TRACK, buildModeActions[2]);
+		buildModeActionsHM.put(IGNORE_TRACK, buildModeActions[3]);
 		
         /* set up track actions */
         Vector<Action> actionsVector = new Vector<Action>();

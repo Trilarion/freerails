@@ -116,10 +116,7 @@ public class StationBuildModel {
     private class StationCancelAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
         	
-			boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) ==  ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
-        	if(b){
-            stationBuildAction.setEnabled(false);
-        	}
+        	stationBuildAction.setEnabled(false);
         }
     }
 
@@ -149,10 +146,7 @@ public class StationBuildModel {
             String message = null;
 
             if (ms.isOk()) {
-            	boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) ==  ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
-            	if(b){
-                setEnabled(false);
-            	}            	
+            	stationBuildAction.setEnabled(false);         	
             }else{
             	message = ms.message;            	
             }

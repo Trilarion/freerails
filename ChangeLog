@@ -1,3 +1,8 @@
+Jan 17, 2005 Luke
+	Bugs fixed:
+	o 1103634	'P' sets priority orders
+	o 1103633	Build station mode
+	o 1103632	Sound on Linux
 Jan 14, 2005 Luke
 	o Updated build.xml
 	o Minor javadoc updates
