@@ -90,4 +90,8 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         }
 		return false;
     }
+	
+	public boolean autoConsist() {
+		return m_orders[getOrderToGoto()].autoConsist;
+	}
 }

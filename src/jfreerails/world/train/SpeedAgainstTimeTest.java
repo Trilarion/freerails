@@ -90,6 +90,38 @@ public class SpeedAgainstTimeTest extends TestCase {
 		
 	}
 	
+	public void testSubSection(){
+		GameTime[] times = new GameTime[] { new GameTime(0), new GameTime(10), new GameTime(15) };
+		int[] speeds = new int[]{ 10, 20, 10 };
+		SpeedAgainstTime sat = new SpeedAgainstTime(times, speeds);
+		SpeedAgainstTime sub1 = sat.subSection(new GameTime(0),  new GameTime(15) );
+		assertEquals(sat, sub1);
+		SpeedAgainstTime sub2 = sat.subSection(new GameTime(0),  new GameTime(10) );
+		assertFalse(sat.equals(sub2));
+		assertFalse(sub1.equals(sub2));
+		times = new GameTime[] { new GameTime(0), new GameTime(10) };
+		speeds = new int[]{ 10, 20};
+		SpeedAgainstTime expected2 = new SpeedAgainstTime(times, speeds);
+		assertEquals(sub2, expected2);
+	}
+	
+	public void testEquals(){
+		GameTime[] times = new GameTime[] { new GameTime(0), new GameTime(10), new GameTime(15) };
+		int[] speeds = new int[]{ 10, 20, 10 };
+		SpeedAgainstTime sat0 = new SpeedAgainstTime(times, speeds);
+		SpeedAgainstTime sat1 = new SpeedAgainstTime(times, speeds);
+		assertEquals(sat0, sat0);
+		assertEquals(sat0, sat1);
+		
+		times = new GameTime[] { new GameTime(0), new GameTime(10), new GameTime(15) };
+		speeds = new int[]{ 10, 20, 11 };
+		
+		SpeedAgainstTime sat3 = new SpeedAgainstTime(times, speeds);
+		assertFalse(sat0.equals(sat3));
+		
+		
+	}
+	
 	public void testGetDistanceAndGetTime(){		
 		GameTime[] times = new GameTime[] { new GameTime(0), new GameTime(10), new GameTime(15) };
 		int[] speeds = new int[]{ 10, 20, 10 };

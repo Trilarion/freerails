@@ -9,8 +9,12 @@ import java.util.List;
 
 import jfreerails.move.Move;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.train.SpeedAgainstTime;
+import jfreerails.world.train.TrainMotion;
 
 /**
  * Generates moves for changes in train position and stops at stations.
@@ -46,5 +50,34 @@ public class MoveTrainPreMove implements PreMove {
 		
 		return null;
 	}
+	
+	TrainMotion nextMotion(ReadOnlyWorld w, OneTileMoveVector v, GameTime t){
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+		KEY k = ta.getLastKEY();
+		TrainMotion lastMotion = (TrainMotion)w.get(k, trainID, principal);		
+		int u = lastMotion.getSpeed(t);
+		int s = v.getLength();
+		int wagons = ta.getTrain().getNumberOfWagons();
+		int a0 = acceleration(wagons);
+		int v1 = topSpeed(wagons);
+		int t0 = t.getTime();
+		int t1 = ((v1  - u) / a0) + t0;
+		GameTime[] times = {t, new GameTime(t1), GameTime.END_OF_THE_WORLD};
+		int[] speed = {u, v1, v1};
+		SpeedAgainstTime speeds = new SpeedAgainstTime(times, speed);
+		GameTime end = speeds.getTime(s);
+		
+		return null;
+	}
+	
+	int acceleration(int wagons){
+		return 1;
+	}
+	
+	int topSpeed(int wagons){
+		return 100 / wagons;
+	}
+	
+	
 
 }

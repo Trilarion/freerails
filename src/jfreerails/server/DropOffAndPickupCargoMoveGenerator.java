@@ -101,8 +101,6 @@ public class DropOffAndPickupCargoMoveGenerator {
         if (autoConsist) {
             ArrayList<WagonLoad> wagonsAvailable = new ArrayList<WagonLoad> ();
 
-//            TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
-//                    principal);
             assert(train.equals(world.get(KEY.TRAINS, this.trainId,
                     principal)));
             Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,

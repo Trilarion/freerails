@@ -4,6 +4,7 @@
  */
 package jfreerails.server;
 
+import java.awt.Point;
 import java.util.logging.Logger;
 
 import jfreerails.move.ChangeTrainMove;
@@ -31,8 +32,11 @@ import jfreerails.world.train.WagonType;
  * 
  */
 public class TrainStopsHandler implements ServerAutomaton {
+
 	private static final Logger logger = Logger
 			.getLogger(TrainStopsHandler.class.getName());
+
+	private static final int NOT_AT_STATION = -1;
 
 	private static final long serialVersionUID = 3257567287094882872L;
 
@@ -50,11 +54,27 @@ public class TrainStopsHandler implements ServerAutomaton {
 
 	private final ReadOnlyWorld world;
 
-	public TrainStopsHandler(int id, FreerailsPrincipal p, ReadOnlyWorld w, MoveReceiver mr) {
+	public TrainStopsHandler(int id, FreerailsPrincipal p, ReadOnlyWorld w,
+			MoveReceiver mr) {
 		trainId = id;
 		principal = p;
 		world = w;
 		moveReceiver = mr;
+	}
+
+	Point arrivesAtPoint(int x, int y) {
+		Point targetPoint = getTarget();
+
+		if (x == targetPoint.x && y == targetPoint.y) {
+			updateTarget();
+			targetPoint = getTarget();
+		} else {
+			int stationNumber = getStationID(x, y);
+			if (NOT_AT_STATION != stationNumber) {
+				loadAndUnloadCargo(stationNumber, false, false);
+			}
+		}
+		return targetPoint;
 	}
 
 	/**
@@ -77,11 +97,29 @@ public class TrainStopsHandler implements ServerAutomaton {
 		// there are no stations that exist where the train is currently
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see jfreerails.server.ServerAutomaton#initAutomaton(jfreerails.network.MoveReceiver)
+	/**
+	 * @return the location of the station the train is currently heading
+	 *         towards.
 	 */
+	Point getTarget() {
+		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId,
+				principal);
+		int scheduleID = train.getScheduleID();
+		ImmutableSchedule schedule = (ImmutableSchedule) world.get(
+				KEY.TRAIN_SCHEDULES, scheduleID, principal);
+		int stationNumber = schedule.getStationToGoto();
+
+		if (-1 == stationNumber) {
+			// There are no stations on the schedule.
+			return new Point(0, 0);
+		}
+
+		StationModel station = (StationModel) world.get(KEY.STATIONS,
+				stationNumber, principal);
+
+		return new Point(station.x, station.y);
+	}
+	
 	public void initAutomaton(MoveReceiver mr) {
 		moveReceiver = mr;
 
@@ -177,15 +215,19 @@ public class TrainStopsHandler implements ServerAutomaton {
 	}
 
 	private void scheduledStop() {
+
 		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId,
 				principal);
 		Schedule schedule = (ImmutableSchedule) world.get(KEY.TRAIN_SCHEDULES,
 				train.getScheduleID(), principal);
+
 		int[] wagonsToAdd = schedule.getWagonsToAdd();
 
 		// Loading and unloading cargo takes time, so we make the train wait for
 		// a few ticks.
 		makeTrainWait(50);
+
+		boolean autoConsist = schedule.autoConsist();
 
 		if (null != wagonsToAdd) {
 			int engine = train.getEngineType();
@@ -193,6 +235,8 @@ public class TrainStopsHandler implements ServerAutomaton {
 					wagonsToAdd, principal);
 			moveReceiver.processMove(m);
 		}
+		updateSchedule();
+		loadAndUnloadCargo(schedule.getStationToGoto(), true, autoConsist);
 	}
 
 	void updateSchedule() {
@@ -232,7 +276,6 @@ public class TrainStopsHandler implements ServerAutomaton {
 	 */
 	void updateTarget() {
 		scheduledStop();
-		this.updateSchedule();
 	}
 
 }

@@ -37,6 +37,7 @@ public class TrainAccessor {
 		return id;
 	}
 		
+		
 	public TrainMotion findCurrentMotion(GameTime time) {
 		int t = time.getTime();
 		TrainMotion motionA, motionB;
@@ -74,6 +75,18 @@ public class TrainAccessor {
 			return KEY.TRAIN_MOTION1;
 		}
 		return KEY.TRAIN_MOTION2;		
+	}
+	
+	public KEY getLastKEY(){
+		TrainMotion motionA, motionB;
+		motionA = (TrainMotion)w.get(KEY.TRAIN_MOTION1, id, p);
+		motionB = (TrainMotion)w.get(KEY.TRAIN_MOTION2, id, p);		
+		int startA = motionA.getStart().getTime();
+		int startB = motionB.getStart().getTime();
+		if(startA < startB){
+			return KEY.TRAIN_MOTION2;
+		}
+		return KEY.TRAIN_MOTION1;		
 	}
 	
 	public TrainModel getTrain(){

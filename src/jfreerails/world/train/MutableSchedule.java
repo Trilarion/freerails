@@ -263,4 +263,9 @@ public class MutableSchedule implements Schedule {
             }
         }
     }
+
+	
+	public boolean autoConsist() {	
+		 return orders.get(nextScheduledOrder).autoConsist;
+	}
 }

@@ -26,6 +26,9 @@ public interface Schedule {
     /** Returns the wagons to add at the next scheduled stop. */
 
     /*=const*/ int[] getWagonsToAdd() /*=const*/;
+    
+    /** Returns the value for the autoconsist flag at the next scheduled stop. */
+    boolean autoConsist();
 
     boolean hasPriorityOrders() /*=const*/;
 

@@ -4,11 +4,11 @@
  */
 package jfreerails.world.train;
 
+import java.util.Arrays;
+
 import jfreerails.util.Utils;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
-
-import java.util.Arrays;
 
 /**
  * <p>
@@ -37,30 +37,14 @@ import java.util.Arrays;
  * 
  */
 public class SpeedAgainstTime implements FreerailsSerializable {
+
+	private static final long serialVersionUID = 3618423722025891641L;
 	
 	public static final SpeedAgainstTime STOPPED = new SpeedAgainstTime(new GameTime[]{GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD}, new int[]{0, 0});
 
-	private static final long serialVersionUID = 3618423722025891641L;
-
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SpeedAgainstTime)) return false;
-
-        final SpeedAgainstTime speedAgainstTime = (SpeedAgainstTime) o;
-
-        if (!Arrays.equals(speeds, speedAgainstTime.speeds)) return false;
-        if (!Arrays.equals(times, speedAgainstTime.times)) return false;
-
-        return true;
-    }
-
-    public int hashCode() {
-        return 0;
-    }
+	private final int[] speeds;
 
     private final GameTime[] times;
-
-	private final int[] speeds;
 
 	/**
 	 * @param times
@@ -99,6 +83,18 @@ public class SpeedAgainstTime implements FreerailsSerializable {
 		this.speeds = speeds;
 	}
 
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SpeedAgainstTime)) return false;
+
+        final SpeedAgainstTime speedAgainstTime = (SpeedAgainstTime) o;
+
+        if (!Arrays.equals(speeds, speedAgainstTime.speeds)) return false;
+        if (!Arrays.equals(times, speedAgainstTime.times)) return false;
+
+        return true;
+    }
+
 	public int getAcceleration(GameTime t) {
 		for (int i = 1; i < times.length; i++) {
 			int start = times[i - 1].getTime();
@@ -107,26 +103,6 @@ public class SpeedAgainstTime implements FreerailsSerializable {
 				int dSpeed = speeds[i] - speeds[i - 1];
 				int dt = end - start;
 				return dSpeed / dt;
-			}
-		}
-		throw new IllegalArgumentException(String.valueOf(t));
-	}
-
-	public int getSpeed(GameTime t) {
-		int time = t.getTime();
-		for (int i = 1; i < times.length; i++) {
-			int start = times[i - 1].getTime();
-			int end = times[i].getTime();						
-			
-			if(time == start) return speeds[i-1];
-			if(time == end) return speeds[i];
-			
-			if (start < time && end >= time) {
-				int dSpeed = speeds[i] - speeds[i - 1];
-				int dt = end - start;
-				int speed = speeds[i-1];
-				speed += dSpeed * (time - start) / dt;
-				return speed;
 			}
 		}
 		throw new IllegalArgumentException(String.valueOf(t));
@@ -154,6 +130,34 @@ public class SpeedAgainstTime implements FreerailsSerializable {
 			}
 		}		
 		throw new IllegalArgumentException(String.valueOf(t));
+	}
+
+	public GameTime getEnd() {
+		return times[times.length - 1];
+	}
+
+	public int getSpeed(GameTime t) {
+		int time = t.getTime();
+		for (int i = 1; i < times.length; i++) {
+			int start = times[i - 1].getTime();
+			int end = times[i].getTime();						
+			
+			if(time == start) return speeds[i-1];
+			if(time == end) return speeds[i];
+			
+			if (start < time && end >= time) {
+				int dSpeed = speeds[i] - speeds[i - 1];
+				int dt = end - start;
+				int speed = speeds[i-1];
+				speed += dSpeed * (time - start) / dt;
+				return speed;
+			}
+		}
+		throw new IllegalArgumentException(String.valueOf(t));
+	}
+
+	public GameTime getStart() {
+		return times[0];
 	}
 	
 	public GameTime getTime(int distance){
@@ -183,12 +187,37 @@ public class SpeedAgainstTime implements FreerailsSerializable {
 		
 	}
 
-	public GameTime getStart() {
-		return times[0];
-	}
+    public int hashCode() {
+        return speeds.length;
+    }
+	
+	public SpeedAgainstTime subSection(GameTime from, GameTime to){
+		int arraySize = 2; //the minimum size.
+		for(int i = 0; i < times.length; i++){
+			int t = times[i].getTime();
+			if(t > from.getTime() && t < to.getTime()){
+				arraySize++;
+			}
+		}
+		
+		GameTime[] newTimes = new GameTime[arraySize];
+		int[] newSpeeds = new int [arraySize];
 
-	public GameTime getEnd() {
-		return times[times.length - 1];
+		newTimes[0]= from;
+		newTimes[arraySize-1]= to;
+		newSpeeds[0] = getSpeed(from);
+		newSpeeds[arraySize-1] = getSpeed(to);
+		int j = 1;
+		for(int i = 0; i < times.length; i++){
+			int t = times[i].getTime();
+			if(t > from.getTime() && t < to.getTime()){
+				newTimes[j]= times[i];				
+				newSpeeds[j] = speeds[j];				
+				j++;
+			}
+		}
+		
+		return new SpeedAgainstTime(newTimes, newSpeeds);
 	}
 
 }
