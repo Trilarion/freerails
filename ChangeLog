@@ -1,9 +1,12 @@
+Tue Dec 31 12:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o let QT not crash on startup
+o go to using QT3.1.0
 Tue Oct 15 21:06:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o some changes for qt-client to receive messages from Engine
-Son Oct 14 19:10:00 2002  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
+Mon Oct 14 19:10:00 2002  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
 o server is receiving connections. does nothing with them.
 o changed PARAGUI code to check the connections in server mode.
-Son Oct 13 00:22:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+Sun Oct 13 00:22:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o add cache for pixmap-positions in qt-client
 Sat Oct 12 04:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add city and slum to field Type
