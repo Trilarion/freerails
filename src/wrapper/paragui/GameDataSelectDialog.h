@@ -12,7 +12,9 @@
 #include <pgrect.h>
 #include <pgrectlist.h>
 #include <pgdropdown.h>
+#include <pgradiobutton.h>
 #include <pgspinnerbox.h>
+#include <pgmaskedit.h>
 
 class GameDataSelectDialog: public PG_Window {
 
@@ -34,11 +36,16 @@ class GameDataSelectDialog: public PG_Window {
 
     bool eventButtonClick(int id, PG_Widget* widget);
     int buttonflag;
+    int type;
     PG_DropDown* name;
     PG_SpinnerBox* width;
     PG_SpinnerBox* height;
+    PG_MaskEdit* ip_adress;
+    PG_MaskEdit* port;
     PG_Button* ok;
     PG_Button* back;
+    PG_RadioButton* radio_server;
+    PG_RadioButton* radio_client;
 };
 
 #endif
