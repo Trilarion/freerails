@@ -1,9 +1,10 @@
-Freerails Java - version 0.0.7
+Freerails Java - version 0.0.8
 
 What's new:
- Games can now be loaded and saved.	 
- New games can be started.
-
+ build.xml file
+ train demo
+ (Run "experimental.RunTrainDemo.java" to see it).
+ 
 Getting it, either:
 
  	Check-out the jfreerails module from the CVS.
@@ -14,12 +15,20 @@ or
 Requires: JDK 1.4, which can be downloaded from:
 http://java.sun.com/j2se/1.4/
 
+To run the binary distribution
+	type: java -jar jFreeRails-20020929-bin.jar
 
-To compile and run:
-(1)	Go to the directory src
-(2)	To compile, type: javac jfreerails/RunFreerails.java
-(3)	To run in   (i) windowed mode, type: java jfreerails/RunFreerails
-		(ii) fullscreen mode, type: java jfreerails/RunFreerails fullscreen
+
+To compile and run the source distribution:
+(1) Extract the source files from the jar
+	jar -xf jFreeRails-20020929-src.jar
+(2)	To compile, either 
+	(i) go to the directory src, and type: javac jfreerails/RunFreerails.java
+or	
+ 	(ii) use the build.xml file and Ant version 1.5.
+(3)	To run in   
+	(i) windowed mode, type: java jfreerails/RunFreerails
+	(ii) fullscreen mode, type: java jfreerails/RunFreerails fullscreen
 				
 For more information, see:
 http://sourceforge.net/projects/freerails/

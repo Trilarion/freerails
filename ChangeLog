@@ -1,3 +1,10 @@
+29-Sep-2002 20:24:18 Luke Lindsay <lindsal49@hotmail.com>:
+    o Reorganised package structure.
+    o Changed files that were incorredtly added to the cvs as binaries to text
+    o Small changes to build.xml so that the ChangeLog, TODO, and build.xml files
+    are included in distributions.
+    o Changed DOMLoader so that it works correctly when reading 
+    files from a jar archive.
 24-Sep-2002 23:49:14 Luke Lindsay <lindsal49@hotmail.com>:
     o Updated TrainDemo, it now draws wagons rather than lines.
 23-Sep-2002 23:35:30 Luke Lindsay <lindsal49@hotmail.com>:
