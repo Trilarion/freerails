@@ -47,8 +47,9 @@ public class DialogueBoxController {
 	private MyGlassPanel glassPanel;
 	private NewsPaperJPanel newspaper;
 	private SelectWagonsJPanel selectWagons;
-	//private TrainScheduleJPanel trainScheduleJPanel;
-	private GameControlsJPanel showControls;
+	private HtmlJPanel showControls;
+        private HtmlJPanel about;
+        private HtmlJPanel how2play;
 	private TerrainInfoJPanel terrainInfo;
 	private StationInfoJPanel stationInfo;
 	private JList trainList = new JList();
@@ -143,8 +144,14 @@ public class DialogueBoxController {
 		stationInfo.setMapCursor(mapCursor);
 
 		// setup the 'show controls' dialogue
-		showControls = new GameControlsJPanel();
+		showControls = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/game_controls.html"));
 		showControls.setup(w, vl, this.closeCurrentDialogue);
+                
+                about = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/about.htm"));
+		about.setup(w, vl, this.closeCurrentDialogue);
+                
+                how2play = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/how_to_play.htm"));
+		how2play.setup(w, vl, this.closeCurrentDialogue);
 
 		//Set up train orders dialogue
 		//trainScheduleJPanel = new TrainScheduleJPanel();
@@ -230,6 +237,14 @@ public class DialogueBoxController {
 	public void showGameControls() {
 
 		showContent(this.showControls);
+	}
+        
+        public void showAbout() {
+		showContent(this.about);
+	}
+        
+        public void showHow2Play() {
+		showContent(this.how2play);
 	}
 
 	public void showSelectWagons() {

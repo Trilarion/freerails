@@ -1,3 +1,7 @@
+Feb 16, 2004 9:49:53 PM Luke
+	o Add new select station popup to train orders dialogue (fixes bug 891427).
+	o Add 'About' dialogue (fixes bug 891377)
+	o Add 'How to play' dialogue (fixes bug 891371)
 Feb 6, 2004 12:23:44 AM Luke
 	o Apply Robert Tuck's patch to fix bug 880496 (User stuck after connection refused)
 Feb 5, 2004 12:09:19 AM Luke

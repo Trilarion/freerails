@@ -6,7 +6,10 @@
 package jfreerails.world.common;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.io.ObjectStreamException;
+import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -49,6 +52,7 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
      * directions going clockwise from North
      */
     private static OneTileMoveVector[] list;
+    private static HashMap keycode2vector = new HashMap();
 
     static {
         int t = 1;
@@ -84,6 +88,27 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
         list[5] = SOUTH_WEST;
         list[6] = WEST;
         list[7] = NORTH_WEST;
+
+        //Set up key mappings...
+        //Num pad with num lock on
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD1), SOUTH_WEST);
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD2), SOUTH);
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD3), SOUTH_EAST);
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD4), WEST);
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD6), EAST);
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD7), NORTH_WEST);
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD8), NORTH);
+        keycode2vector.put(new Integer(KeyEvent.VK_NUMPAD9), NORTH_EAST);
+
+        //Num pad with num lock off       
+        keycode2vector.put(new Integer(KeyEvent.VK_END), SOUTH_WEST);
+        keycode2vector.put(new Integer(KeyEvent.VK_DOWN), SOUTH);
+        keycode2vector.put(new Integer(KeyEvent.VK_PAGE_DOWN), SOUTH_EAST);
+        keycode2vector.put(new Integer(KeyEvent.VK_LEFT), WEST);
+        keycode2vector.put(new Integer(KeyEvent.VK_RIGHT), EAST);
+        keycode2vector.put(new Integer(KeyEvent.VK_HOME), NORTH_WEST);
+        keycode2vector.put(new Integer(KeyEvent.VK_UP), NORTH);
+        keycode2vector.put(new Integer(KeyEvent.VK_PAGE_UP), NORTH_EAST);
     }
 
     /** The X and Y components of the vector.    */
@@ -210,6 +235,18 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
 
     public static OneTileMoveVector getInstance(int number) {
         return list[number];
+    }
+
+    /** Returns the OneTileMoveVector that is mapped to the specified keycode.*/
+    public static OneTileMoveVector getInstanceMappedToKey(int keycode)
+        throws NoSuchElementException {
+        Integer integer = new Integer(keycode);
+
+        if (!keycode2vector.containsKey(integer)) {
+            throw new NoSuchElementException(String.valueOf(keycode));
+        }
+
+        return (OneTileMoveVector)keycode2vector.get(integer);
     }
 
     public static OneTileMoveVector getInstance(int x, int y) {

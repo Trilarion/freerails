@@ -1,6 +1,7 @@
 package experimental;
 
 import java.awt.Dimension;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.Random;
 
@@ -12,10 +13,12 @@ import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.ViewListsImpl;
 import jfreerails.client.view.CallBacks;
+import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.NewTrainScheduleJPanel;
+import jfreerails.client.view.SelectStationJPanel;
 import jfreerails.client.view.TrainDialogueJPanel;
 import jfreerails.client.view.TrainOrdersListModel;
 import jfreerails.client.view.TrainViewJList;
@@ -30,6 +33,7 @@ import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
@@ -52,7 +56,13 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     private World w;
     
     private ViewLists vl;
-
+    
+    private ActionListener closeCurrentDialogue = new ActionListener() {
+        public void actionPerformed(ActionEvent arg0) {
+            dialogueBoxController.closeContent();
+        }
+    };
+    
     private UntriedMoveReceiver dummyReceiver = new UntriedMoveReceiver() {
 	public MoveStatus tryDoMove(Move move) {
 	    return MoveStatus.MOVE_OK;
@@ -76,44 +86,50 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     public DialogueBoxTester() {
         
 	ModelRoot mr = new ModelRoot();
-        w = new WorldImpl();
-		//MapFixtureFactory.generateTrackRuleList(w);
-	try {
-	    vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	mr.setWorld(w, dummyReceiver, vl);
-        dialogueBoxController = new DialogueBoxController(this, mr);
+        w = new WorldImpl();       
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
         wetf.addTypesToWorld(w);
-        int numberOfCargoTypes = w.size(KEY.CARGO_TYPES);
         
+        try {
+            vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
+        } catch (IOException e) {            
+            e.printStackTrace();
+        }
+        mr.setWorld(w, dummyReceiver, vl);
+        dialogueBoxController = new DialogueBoxController(this, mr);
+        
+        int numberOfCargoTypes = w.size(KEY.CARGO_TYPES);
+        StationModel bristol = new StationModel(10, 10, "Bristol", numberOfCargoTypes, 0);
+        boolean [] demandArray = new boolean [numberOfCargoTypes];
+        demandArray[0] = true;
+        demandArray[2] = true;
+        demandArray[3] = true;
+        DemandAtStation demand = new DemandAtStation(demandArray);
+        bristol = new StationModel(bristol, demand);
         w.add(
         KEY.STATIONS,
-        new StationModel(10, 10, "Bristol", numberOfCargoTypes, 0));
+        bristol);
         w.add(
         KEY.STATIONS,
-        new StationModel(10, 10, "Bath", numberOfCargoTypes, 0));
+        new StationModel(50, 100, "Bath", numberOfCargoTypes, 0));
         w.add(
         KEY.STATIONS,
-        new StationModel(10, 10, "Cardiff", numberOfCargoTypes, 0));
+        new StationModel(40, 10, "Cardiff", numberOfCargoTypes, 0));
         w.add(
         KEY.STATIONS,
-        new StationModel(10, 10, "London", numberOfCargoTypes, 0));
+        new StationModel(100, 10, "London", numberOfCargoTypes, 0));
         w.add(
         KEY.STATIONS,
-        new StationModel(10, 10, "Swansea", numberOfCargoTypes, 0));
+        new StationModel(90, 50, "Swansea", numberOfCargoTypes, 0));
         //Set up cargo bundle, for the purpose of this test code all the trains can share the
         //same one.
         CargoBundle cb = new CargoBundleImpl();
-        cb.setAmount(new CargoBatch(0, 10, 10, 8, 0), 10);
-        cb.setAmount(new CargoBatch(0, 10, 10, 9, 0), 10);
-        cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 10);
-        cb.setAmount(new CargoBatch(3, 10, 10, 9, 0), 10);
+        cb.setAmount(new CargoBatch(0, 10, 10, 8, 0), 80);
+        cb.setAmount(new CargoBatch(0, 10, 10, 9, 0), 60);
+        cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 140);
+        cb.setAmount(new CargoBatch(3, 10, 10, 9, 0), 180);
         cb.setAmount(new CargoBatch(5, 10, 10, 9, 0), 10);
         w.add(KEY.CARGO_BUNDLES, cb);
         
@@ -121,21 +137,21 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
         TrainOrdersModel order =
         new TrainOrdersModel(0, new int[] { 0, 0, 0 }, false);
         TrainOrdersModel order2 =
-        new TrainOrdersModel(0, new int[] { 1, 2, 0, 0,0 }, true);
+        new TrainOrdersModel(1, new int[] { 1, 2, 0, 0,0 }, true);
         TrainOrdersModel order3 =
-        new TrainOrdersModel(0, null, true);        
+        new TrainOrdersModel(2, null, true);
         schedule.setOrder(0, order);
-        schedule.setOrder(1, order);
+        schedule.setOrder(1, order2);
         
-        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());        
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID));        
+        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
         scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
         w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
-        schedule.setPriorityOrders(order);        
+        schedule.setPriorityOrders(order);
         scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
         w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID));
         
@@ -150,9 +166,8 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
 	initComponents();
 
 	glassPanel.setSize(800, 600);
-	//this.setGlassPane(glassPanel);
 	this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 400));
-	//pack();
+
     }
     
     /** This method is called from within the constructor to
@@ -175,6 +190,8 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
         showTrainList = new javax.swing.JMenuItem();
         showNewTrainOrdersJMenuItem = new javax.swing.JMenuItem();
         trainScheduleJMenuItem = new javax.swing.JMenuItem();
+        showSelectStation = new javax.swing.JMenuItem();
+        showCargoWaitingAndDemand = new javax.swing.JMenuItem();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -285,11 +302,45 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
 
         show.add(trainScheduleJMenuItem);
 
+        showSelectStation.setText("Select Station From Map");
+        showSelectStation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showSelectStationActionPerformed(evt);
+            }
+        });
+
+        show.add(showSelectStation);
+
+        showCargoWaitingAndDemand.setText("Cargo waiting & demand");
+        showCargoWaitingAndDemand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showCargoWaitingAndDemandActionPerformed(evt);
+            }
+        });
+
+        show.add(showCargoWaitingAndDemand);
+
         jMenuBar1.add(show);
 
         setJMenuBar(jMenuBar1);
 
     }//GEN-END:initComponents
+    
+    private void showCargoWaitingAndDemandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCargoWaitingAndDemandActionPerformed
+        // Add your handling code here:
+        CargoWaitingAndDemandedJPanel panel = new CargoWaitingAndDemandedJPanel();
+        panel.setup(w, vl, closeCurrentDialogue);
+        int newStationID = randy.nextInt(w.size(KEY.STATIONS) - 1);
+        panel.display(0);
+        dialogueBoxController.showContent(panel);
+    }//GEN-LAST:event_showCargoWaitingAndDemandActionPerformed
+    
+    private void showSelectStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showSelectStationActionPerformed
+        // Add your handling code here:
+        SelectStationJPanel selectStation = new SelectStationJPanel();
+        selectStation.setup(w, vl, closeCurrentDialogue);
+        dialogueBoxController.showContent(selectStation);
+    }//GEN-LAST:event_showSelectStationActionPerformed
     
     private void trainScheduleJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainScheduleJMenuItemActionPerformed
         // Add your handling code here:
@@ -413,8 +464,10 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     private javax.swing.JMenuItem selectTrainOrders;
     private javax.swing.JMenuItem selectWagons;
     private javax.swing.JMenu show;
+    private javax.swing.JMenuItem showCargoWaitingAndDemand;
     private javax.swing.JMenuItem showControls;
     private javax.swing.JMenuItem showNewTrainOrdersJMenuItem;
+    private javax.swing.JMenuItem showSelectStation;
     private javax.swing.JMenuItem showStationInfo;
     private javax.swing.JMenuItem showTerrainInfo;
     private javax.swing.JMenuItem showTrainConsist;

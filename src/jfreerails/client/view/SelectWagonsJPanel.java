@@ -117,9 +117,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         jPanel1.add(jScrollPane1, gridBagConstraints);
 
         okjButton.setText("OK");
@@ -132,8 +132,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         jPanel1.add(okjButton, gridBagConstraints);
 
         clearjButton.setText("Clear");
@@ -147,8 +147,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         jPanel1.add(clearjButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -220,9 +220,12 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 	}
 
 	//paint the engine		
-	Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
-	int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
-	g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);					
+	if(-1 != this.engineType){ //If an engine is selected.
+		Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
+		int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
+		g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
+	}	
+		
 	this.paintChildren(g);
     }
 

@@ -265,7 +265,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         //Set up the gamespeed submenu.
         ButtonGroup group = new ButtonGroup();
         ActionAdapter speedActions = sc.getSetTargetTickPerSecondActions();
-        JMenu gameSpeedSubMenu = new JMenu("Game Speed...");
+        JMenu gameSpeedSubMenu = new JMenu("Game Speed");
 
         Enumeration buttonModels = speedActions.getButtonModels();
         Enumeration actions = speedActions.getActions();
@@ -316,6 +316,20 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     public JMenu createHelpMenu() {
         helpMenu = new javax.swing.JMenu("Help");
 
+        JMenuItem about = new JMenuItem("About");
+        about.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dialogueBoxController.showAbout();
+                }
+            });
+
+        JMenuItem how2play = new JMenuItem("Getting started");
+        how2play.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dialogueBoxController.showHow2Play();
+                }
+            });
+
         JMenuItem showControls = new JMenuItem("Show game controls");
         showControls.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,6 +338,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
             });
 
         helpMenu.add(showControls);
+        helpMenu.add(how2play);
+        helpMenu.add(about);
 
         return helpMenu;
     }
