@@ -3,12 +3,15 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
 import jfreerails.controller.FlatTrackExplorer;
 import jfreerails.controller.RandomPathFinder;
 import jfreerails.move.AddCargoBundleMove;
 import jfreerails.move.AddTrainMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
+import jfreerails.move.ChangeTrainMove;
+import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
@@ -131,7 +134,7 @@ public class TrainBuilder implements ServerAutomaton {
             ImmutableSchedule is = generateInitialSchedule(principal, world,
                     autoSchedule);
             int trainId = world.size(KEY.TRAINS, principal);
-            Move setupScheduleMove = TrainPathFinder.initTarget(train, trainId,
+            Move setupScheduleMove = TrainBuilder.initTarget(train, trainId,
                     is, principal);
 
             /* Create the move that sets the train's initial position.*/
@@ -278,4 +281,31 @@ public class TrainBuilder implements ServerAutomaton {
             }
         }
     }
+
+	/**
+	 * @return a move that initialises the trains schedule.
+	 */
+	public static Move initTarget(TrainModel train, int trainID,
+	    ImmutableSchedule currentSchedule, FreerailsPrincipal principal) {
+	    Vector<Move> moves = new Vector<Move>();
+	    int scheduleID = train.getScheduleID();
+	    MutableSchedule schedule = new MutableSchedule(currentSchedule);
+	    int[] wagonsToAdd = schedule.getWagonsToAdd();
+	
+	    if (null != wagonsToAdd) {
+	        int engine = train.getEngineType();
+	        ChangeTrainMove move = ChangeTrainMove.generateMove(trainID, train,
+	                engine, wagonsToAdd, principal);
+	        moves.add(move);
+	    }
+	
+	    schedule.gotoNextStaton();
+	
+	    ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
+	    ChangeTrainScheduleMove move = new ChangeTrainScheduleMove(scheduleID,
+	            currentSchedule, newSchedule, principal);
+	    moves.add(move);
+	
+	    return new CompositeMove(moves.toArray(new Move[1]));
+	}
 }
