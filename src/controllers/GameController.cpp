@@ -51,31 +51,6 @@ bool GameController::init(char* name, short int year, short int month,
   return true;
 }
 
-idtype GameController::addElement(GameElement* e)
-{
-  // TODO: Check if action is valid
-  // Maybe bad id generation possibility, but it's faster than to search for
-  //  first unused id
-  idtype newid = ++lastid;
-  idmap[newid] = e;
-  if(e->rtti() == RTTI_STATION)
-    stations.push_back((Station*)e);
-  else
-    elements.push_back(e);
-  return newid;
-}
-
-void GameController::removeElement(idtype id)
-{
-  // TODO: Check if action is valid
-  GameElement* e = idmap[id];
-  idmap.erase(id);
-  if(e->rtti() == RTTI_STATION)
-    stations.erase((Station**)e);
-  else
-    elements.erase((GameElement**)e);
-}
-
 bool GameController::addPlayer(Player* p)
 {
   // TODO: Check if action is valid ??

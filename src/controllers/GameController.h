@@ -1,6 +1,7 @@
 /*
  * $Id$
  * GameController class
+ * !!!!!!!!!!!!!! Will be removed laterly!!!!!!!!!!!!!
  */
 
 #ifndef __GAMECONTROLLER_H__
@@ -87,16 +88,6 @@ class GameController
       * current year etc.
       */
     GameInfo* getStartInfo() { return startinfo; };
-
-    /** Adds element to the game
-      * It does not update the map immediately
-      * It returns ID given to element or 0 when error occures
-      */
-    idtype addElement(GameElement* e);
-    /** Removes element from the game
-      * Like @ref addElement(), it does not update the map
-      */
-    void removeElement(idtype id);
 
     /** Starts the game. To start the game, GameController must be initialized.
       * If it isn't, then this method returns false immediately. If everything
