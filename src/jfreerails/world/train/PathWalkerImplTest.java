@@ -1,11 +1,11 @@
 package jfreerails.world.train;
 
-import jfreerails.world.misc.IntLine;
-import jfreerails.world.misc.FreerailsPathIterator;
-import jfreerails.world.misc.FreerailsPathIteratorImpl;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import jfreerails.world.misc.FreerailsPathIterator;
+import jfreerails.world.misc.FreerailsPathIteratorImpl;
+import jfreerails.world.misc.IntLine;
 import junit.framework.TestCase;
 
 public class PathWalkerImplTest extends TestCase {

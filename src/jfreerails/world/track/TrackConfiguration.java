@@ -1,11 +1,12 @@
 package jfreerails.world.track;
 
-import jfreerails.world.misc.FlatTrackTemplate;
-import jfreerails.world.misc.OneTileMoveVector;
-import jfreerails.world.misc.Rotation;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import jfreerails.world.misc.FlatTrackTemplate;
+import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.misc.Rotation;
 
 final public class TrackConfiguration implements FlatTrackTemplate {
 

@@ -8,12 +8,12 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.world.track.TrackRule;
 import jfreerails.world.misc.OneTileMoveVector;
-import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.NullTrackType;
+import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
+import jfreerails.world.track.TrackRule;
 import jfreerails.world.track.TrackTileMap;
 
 /**

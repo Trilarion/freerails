@@ -8,11 +8,6 @@
  */
 package jfreerails.world.train;
 
-import java.awt.Color;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Vector;
 
 
 public class WagonType {

@@ -12,13 +12,13 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.track.MapFixtureFactory;
+import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.track.TrackRuleList;
-import jfreerails.world.misc.OneTileMoveVector;
-import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackTileMap;
 import jfreerails.world.track.TrackTileMapImpl;
-import jfreerails.world.track.MapFixtureFactory;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -10,11 +10,10 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import jfreerails.world.track.MapFixtureFactory;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackTileMapImpl;
-import jfreerails.world.track.TrackTileMap;
-import jfreerails.world.track.MapFixtureFactory;
 
 /**
  *

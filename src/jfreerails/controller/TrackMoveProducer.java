@@ -2,14 +2,14 @@
 package jfreerails.controller;
 import java.awt.Point;
 
+import jfreerails.misc.TextMessageHandler;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.MoveStatus;
+import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.track.TrackRuleList;
-import jfreerails.world.misc.OneTileMoveVector;
-import jfreerails.misc.TextMessageHandler;
-import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackTileMap;
 
 /**

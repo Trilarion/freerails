@@ -11,10 +11,9 @@ package jfreerails.world.track;
 
 import jfreerails.world.misc.OneTileMoveVector;
 import jfreerails.world.misc.Rotation;
-import junit.framework.TestSuite;
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 /**
  *
  * @author lindsal
