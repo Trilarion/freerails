@@ -77,6 +77,12 @@ public class UserInputOnMapController extends KeyAdapter {
                     isBuildTrackModeSet) {
                 int x = evt.getX();
                 int y = evt.getY();
+
+                //Scroll view if necessary.
+                if (!mapView.getVisibleRect().contains(x, y)) {
+                    mapView.scrollRectToVisible(new Rectangle(x, y, 1, 1));
+                }
+
                 float scale = mapView.getScale();
                 Dimension tileSize = new Dimension((int)scale, (int)scale);
                 int tileX = x / tileSize.width;

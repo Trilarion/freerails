@@ -24,6 +24,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     private MapRenderer mapView = new BlankMapRenderer(10);
 
     public MapViewJComponent() {
+    	this.setAutoscrolls(true);
     }
 
     public float getScale() {
