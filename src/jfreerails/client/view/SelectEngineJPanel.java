@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.renderer.SideOnTrainTrainViewImages;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
@@ -166,19 +165,14 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 					+ engine.getPrice().toString()
 					+ (isSelected ? "</strong>" : "")
 					+ "</body></html>";
-			label.setText(text);
-			label.setIcon(
-				new ImageIcon(
-					viewLists.getSideOnTrainTrainViewImages().getEngineImage(
-						index,
-						SideOnTrainTrainViewImages.HEIGHT_50_PIXELS)));
-			/*
-			 if(isSelected){
-			     label.setBorder(new javax.swing.border.LineBorder(java.awt.Color.black, 4));
-			 }else{
-			     label.setBorder(new javax.swing.border.LineBorder(java.awt.Color.white, 4));
-			 }
-			 */
+			label.setText(text);			
+			Image image = viewLists.getTrainImages().getSideOnEngineImage(index);
+			int height = image.getHeight(null);
+			int width = image.getWidth(null);
+			int scale = height/50;
+			ImageIcon icon = new ImageIcon(image.getScaledInstance(width/scale, height/scale, Image.SCALE_FAST));			
+			label.setIcon(icon);
+			
 			return label;
 		}
 	}

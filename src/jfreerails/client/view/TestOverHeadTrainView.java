@@ -7,6 +7,7 @@ import java.awt.Stroke;
 
 import jfreerails.client.common.Painter;
 import jfreerails.client.renderer.TrainRenderer;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.train.TrainModel;
@@ -14,13 +15,13 @@ import jfreerails.world.train.TrainModel;
 
 public class TestOverHeadTrainView implements Painter {
 	
-	TrainRenderer trainPainter=new TrainRenderer();
+	final TrainRenderer trainPainter;
 
 	World w;
 
-	public TestOverHeadTrainView(World world) {
+	public TestOverHeadTrainView(World world, ViewLists vl) {
 		this.w = world;
-		
+		trainPainter = new TrainRenderer(vl.getTrainImages());
 	}
 
 	public void paint(Graphics2D g) {

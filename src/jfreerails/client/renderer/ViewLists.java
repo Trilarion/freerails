@@ -8,7 +8,7 @@ public interface ViewLists {
 	TileRendererList getTileViewList();
 	TrackPieceRendererList getTrackPieceViewList();
 	SideOnTrainTrainViewImages getSideOnTrainTrainViewImages();
-
+	TrainImages getTrainImages();
 	boolean validate(World world);
 
 }

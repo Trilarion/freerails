@@ -21,12 +21,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.renderer.SideOnTrainTrainViewImages;
+import jfreerails.client.renderer.TrainImages;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.cargo.CargoType;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.train.TrainModel;
-import jfreerails.world.train.WagonType;
 /**
  * This JPanel lets the user add wagons to a train.
  * 
@@ -200,26 +200,27 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 		g.drawImage(this.stationView, 0, 0, null);
 
 		int x = 0;
-
-		final int wagonHeight = SideOnTrainTrainViewImages.HEIGHT_50_PIXELS;
-
+		
 		int y = 330;
 
-		Image image;
+		
 
+		final int SCALED_IMAGE_HEIGHT = 50;
 		//paint the wagons
-		for (int i = 0; i < this.wagons.size(); i++) {
+		for (int i = this.wagons.size()-1; i >= 0; i--) {  //Count down so we paint the wagon at the end of the train first. 
+			
 			Integer type = (Integer)wagons.get(i);
-			image = viewLists.getSideOnTrainTrainViewImages().getWagonImage(type.intValue(), wagonHeight);
-			g.drawImage(image, x, y, null);
-			x += image.getWidth(null);			
+			Image image = viewLists.getTrainImages().getSideOnWagonImage(type.intValue());
+			int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
+			
+			g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
+			x += scaledWidth;			
 		}
 
-		//paint the engine
-		image = this.viewLists.getSideOnTrainTrainViewImages().getEngineImage(this.engineType, wagonHeight);
-		g.drawImage(image, x, y, null);
-		x += image.getWidth(null);
-
+		//paint the engine		
+		Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
+		int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
+		g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);					
 		this.paintChildren(g);
 	}
 
@@ -234,10 +235,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
 		Image tempImage;
 		JLabel label;
-		SideOnTrainTrainViewImages sideOnTrainTrainView;
+		TrainImages trainImages;
 
-		public WagonCellRenderer(SideOnTrainTrainViewImages s) {
-			sideOnTrainTrainView = s;
+		public WagonCellRenderer(TrainImages s) {
+			trainImages = s;
 
 			label = new JLabel(); //"text", new ImageIcon( tempImage ), SwingConstants.LEFT );
 
@@ -247,11 +248,16 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 		int index, /* cell index*/
 		boolean isSelected, /* is the cell selected*/
 		boolean cellHasFocus) /* the list and the cell have the focus*/ {
-			WagonType wagon = (WagonType) value;
+			CargoType cargoType = (CargoType) value;
 			label.setFont(new java.awt.Font("Dialog", 0, 12));
-			String text = "<html><body>" + (isSelected ? "<strong>" : "") + wagon.getName() + (isSelected ? "</strong>" : "") + "</body></html>";
+			String text = "<html><body>" + (isSelected ? "<strong>" : "") + cargoType.getDisplayName() + (isSelected ? "</strong>" : "&nbsp;&nbsp;&nbsp;&nbsp;"/*padding to stop word wrap due to greater wodth of strong font*/) + "</body></html>";
 			label.setText(text);
-			label.setIcon(new ImageIcon(sideOnTrainTrainView.getWagonImage(index, SideOnTrainTrainViewImages.HEIGHT_25_PIXELS)));
+			Image image = trainImages.getSideOnWagonImage(index);
+			int height = image.getHeight(null);
+			int width = image.getWidth(null);
+			int scale = height/10;
+			ImageIcon icon = new ImageIcon(image.getScaledInstance(width/scale, height/scale, Image.SCALE_FAST));			
+			label.setIcon(icon);
 			return label;
 		}
 	}
@@ -259,8 +265,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 	public void setup(World world, ViewLists vl, ActionListener submitButtonCallBack) {
 		this.viewLists = vl;
 		this.w = world;
-		this.wagonTypesJList.setModel(new World2ListModelAdapter(w, KEY.WAGON_TYPES) );
-		this.wagonTypesJList.setCellRenderer(new WagonCellRenderer(viewLists.getSideOnTrainTrainViewImages()));
+		this.wagonTypesJList.setModel(new World2ListModelAdapter(w, KEY.CARGO_TYPES) );
+		this.wagonTypesJList.setCellRenderer(new WagonCellRenderer(viewLists.getTrainImages()));
 		this.okjButton.addActionListener(submitButtonCallBack);
 	}
 	public int getEngineType() {

@@ -23,9 +23,9 @@ import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
-import jfreerails.world.top.*;
-import jfreerails.world.track.*;
+import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
 
@@ -185,6 +185,7 @@ public class DialogueBoxController {
 	public void showSelectWagons() {
 		
 		selectWagons.resetSelectedWagons();
+		selectWagons.setEngineType(selectEngine.getEngineType());
 		showContent(selectWagons);
 	}
 

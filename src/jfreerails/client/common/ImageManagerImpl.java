@@ -29,6 +29,8 @@ public class ImageManagerImpl implements ImageManager {
 	
 	private HashMap imageHashMap = new HashMap();
 	
+	private HashMap scaledImagesHashMap = new HashMap();
+	
 	private GraphicsConfiguration defaultConfiguration =
 			GraphicsEnvironment
 				.getLocalGraphicsEnvironment()
@@ -66,7 +68,7 @@ public class ImageManagerImpl implements ImageManager {
 		}
 		//System.out.println(url);
 		Image tempImage = ImageIO.read(url);
-		Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getWidth(null), Transparency.BITMASK);
+		Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
 		Graphics g = compatibleImage.getGraphics();
 		g.drawImage(tempImage, 0, 0, null);
 		imageHashMap.put(relativeFilename, compatibleImage);
@@ -124,4 +126,23 @@ public class ImageManagerImpl implements ImageManager {
 		}
 	}
 
+
+	public Image getScaledImage(String relativeFilename, int height)throws IOException{
+		Image i = getImage( relativeFilename);
+		String hashKey = relativeFilename+height;
+		if(this.scaledImagesHashMap.containsKey(hashKey)){
+			return (Image)scaledImagesHashMap.get(hashKey);
+		}else{
+			if(i.getHeight(null)==height){				
+				return i;
+			}else{
+				int width = (i.getWidth(null) * height)/i.getHeight(null);
+				Image compatibleImage = defaultConfiguration.createCompatibleImage(i.getWidth(null), i.getWidth(null), Transparency.BITMASK);
+				Graphics g = compatibleImage.getGraphics();
+				g.drawImage(i, 0, 0, width, height, null);
+				scaledImagesHashMap.put(hashKey, compatibleImage);
+				return compatibleImage;
+			}
+		}		
+	}
 }

@@ -2,6 +2,7 @@ package jfreerails.client.renderer;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 
 import jfreerails.world.common.FreerailsPathIterator;
@@ -11,7 +12,6 @@ import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPositionOnMap;
-import jfreerails.world.train.WagonType;
 
 /**
  * This class draws a train from an overhead view.
@@ -21,20 +21,10 @@ import jfreerails.world.train.WagonType;
  */
 public class TrainRenderer {
 
-	WagonRenderer localTrainView = new WagonRenderer();
+	private final TrainImages trainImages;	
 
-	int[] trains =
-		{
-			WagonType.SLOW_FREIGHT,
-			WagonType.BULK_FREIGHT,
-			WagonType.FAST_FREIGHT,
-			WagonType.PASSENGER,
-			WagonType.PASSENGER,
-			WagonType.MAIL,
-			WagonType.ENGINE };
-
-	public TrainRenderer() {
-		localTrainView.setViewPerspective(ViewPerspective.OVERHEAD);
+	public TrainRenderer(TrainImages trainImages) {
+		this.trainImages = trainImages;
 	}
 
 	public void paintTrain(Graphics g, TrainModel train) {
@@ -48,65 +38,45 @@ public class TrainRenderer {
 		Graphics2D g2 = (Graphics2D) g;
 
 		//renderer engine.
-		localTrainView.setTrainTypes(WagonType.ENGINE);
-		renderWagon(g, pw);
+		
+		renderWagon(g, pw, train.getEngineType(), true);
 		
 		//renderer wagons.				
-		for (int i = 0; i < train.getNumberOfWagons(); i++) {
-			
-			int wagonType = train.getWagon(i);
-			
-			// TODO: remove this hardcoded stuff
-			switch (wagonType){
-				case 0:
-					localTrainView.setTrainTypes(WagonType.MAIL);
-					break;
-				case 1:
-					localTrainView.setTrainTypes(WagonType.PASSENGER);
-					break;
-				case 2:
-					localTrainView.setTrainTypes(WagonType.FAST_FREIGHT);
-					break;
-				case 3:
-					localTrainView.setTrainTypes(WagonType.SLOW_FREIGHT);
-					break;
-				case 4:
-					localTrainView.setTrainTypes(WagonType.BULK_FREIGHT);
-					break;
-				default:
-					throw new IllegalArgumentException(String.valueOf(wagonType));
-			}
-			
-			renderWagon(g, pw);
+		for (int i = 0; i < train.getNumberOfWagons(); i++) {			
+			int wagonType = train.getWagon(i);									
+			renderWagon(g, pw, wagonType, false);
 		}
 	}
 
-	private void renderWagon(Graphics g, PathWalker pw) {
+	private void renderWagon(Graphics g, PathWalker pw, int type, boolean engine) {
 		IntLine wagon = new IntLine();
 		
 		IntLine line = new IntLine();
-		
-		
-		
+						
 		pw.stepForward(16);
 		boolean firstIteration = true;
-		while (pw.hasNext()) {
-		
+		while (pw.hasNext()) {		
 			pw.nextSegment(line);
 			if (firstIteration) {
 				wagon.x1 = line.x1;
 				wagon.y1 = line.y1;
 				firstIteration = false;
-			}
-		
+			}		
 		}
 		wagon.x2 = line.x2;
 		wagon.y2 = line.y2;
 		OneTileMoveVector v =
-			OneTileMoveVector.getNearestVector(wagon.x2 - wagon.x1, wagon.y2 - wagon.y1);
-		localTrainView.setDirection(v);
+			OneTileMoveVector.getNearestVector(wagon.x2 - wagon.x1, wagon.y2 - wagon.y1);	
 		Point p = new Point((wagon.x2 + wagon.x1) / 2, (wagon.y2 + wagon.y1) / 2);
-		localTrainView.rendererTrain(g, p);
+		
+		Image image;
+		if(engine){
+			image = trainImages.getOverheadEngineImage(type, v.getNumber());
+		}else{
+			image = trainImages.getOverheadWagonImage(type, v.getNumber());
+		}
+				
+		g.drawImage(image, p.x - 15, p.y - 15, null);
 		
 		//The gap between wagons
 		pw.stepForward(8);

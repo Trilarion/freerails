@@ -27,4 +27,6 @@ public interface ImageManager {
 	void writeImage(String relativeFilename) throws IOException;
 	
 	void writeAllImages() throws IOException;
+	
+	Image getScaledImage(String relativeFilename, int height) throws IOException;
 }

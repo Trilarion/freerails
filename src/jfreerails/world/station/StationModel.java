@@ -1,10 +1,6 @@
 package jfreerails.world.station;
 
-import java.io.*;
-import java.util.Vector;
-
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.top.World;
 
 /** 
  * This class represents a station.
@@ -15,7 +11,6 @@ import jfreerails.world.top.World;
 
 public class StationModel implements FreerailsSerializable {
 	
-	private World w;
 	public int x;
 	public int y;
 	
@@ -30,25 +25,21 @@ public class StationModel implements FreerailsSerializable {
 	/** What this station is building. */
 	private ProductionAtEngineShop production;
 	
-	/** Current supply values from adjacent tiles*/
-	private Vector supp;
-	
-	public StationModel(World world, int x, int y, String stationName, int numberOfCargoTypes) {
-		this.w = world;
+	public StationModel(int x, int y, String stationName, int numberOfCargoTypes) {
+		this.name = stationName;
 		this.x = x;
 		this.y = y;
-		this.name = stationName;
 		
-		supply = new SupplyAtStation(w,x,y,new int[numberOfCargoTypes]);
+		supply = new SupplyAtStation(new int[numberOfCargoTypes]);
 		demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
 		waiting = new CargoWaitingAtStation(new int[numberOfCargoTypes]);
 		
-	}	
+	}
 	
 	public StationModel() {
 		this.name = "No name";
 		x = 0;
-		y = 0;		  
+		y = 0;	
 	}
 	
 	public String getStationName() {
@@ -95,6 +86,4 @@ public class StationModel implements FreerailsSerializable {
 		this.waiting = waiting;
 	}
 
-	
-	
 }

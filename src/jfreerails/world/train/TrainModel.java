@@ -77,4 +77,8 @@ public class TrainModel implements FreerailsSerializable{
 		this.schedule = schedule;
 	}
 
+	public int getEngineType() {
+		return engineType;
+	}
+
 }

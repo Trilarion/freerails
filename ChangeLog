@@ -1,8 +1,11 @@
+18-May-2003 20:16:40 Luke
+	o Uses the new engine and wagon images on the
+	select wagon, select engine, and train info dialogue boxes. 
 18-May-2003 00:52:00 Scott
 	o The cargo supplied to a station can now be viewed from the menu,
 	although some more work is needed.
 16-May-2003 22:51:07 Luke
-	o Now loads tile sized track images instead of grapping
+	o Now loads tile sized track images instead of grabbing
 	them from the big image.
 12-May-2003 00:16:25 Luke
 	o Now prints out the time it takes to startup.
