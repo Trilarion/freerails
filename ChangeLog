@@ -1,4 +1,6 @@
 May 24, 2004 PM Luke
+	o Bug fixes for jfreerails.world.top.WorldDifferences
+May 24, 2004 PM Luke
 	o Added class jfreerails.world.top.WorldDifferences  - may be useful for RFE 915957!
 May 10, 2004 11:09:17 PM Luke
 	o Applied Jan Tozicka's first patch for 915957 (Build track by dragging mouse)

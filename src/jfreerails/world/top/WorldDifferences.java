@@ -179,7 +179,8 @@ public class WorldDifferences implements World {
         DiffKey diffKey = new DiffKey(LIST, key.getKeyNumber(),
                 getPlayerNumber(principal), index);
 
-        if (element.equals(underlyingWorld.get(key, index, principal))) {
+        if (underlyingWorld.boundsContain(key, index, principal) &&
+                element.equals(underlyingWorld.get(key, index, principal))) {
             //Case 1: the element is restored to the same value as the underlying world object.
             if (this.listDifferences.containsKey(diffKey)) {
                 this.listDifferences.remove(diffKey);
@@ -193,7 +194,8 @@ public class WorldDifferences implements World {
     public void set(SKEY key, int index, FreerailsSerializable element) {
         DiffKey diffKey = new DiffKey(LIST, key.getKeyNumber(), index);
 
-        if (element.equals(underlyingWorld.get(key, index))) {
+        if (underlyingWorld.boundsContain(key, index) &&
+                element.equals(underlyingWorld.get(key, index))) {
             //Case 1: the element is restored to the same value as the underlying world object.	
             if (this.listDifferences.containsKey(diffKey)) {
                 this.listDifferences.remove(diffKey);
@@ -206,8 +208,9 @@ public class WorldDifferences implements World {
 
     public int add(KEY key, FreerailsSerializable element,
         FreerailsPrincipal principal) {
+        int playerNumber = getPlayerNumber(principal);
         DiffKey lengthKey = new DiffKey(LIST_LENGTH, key.getKeyNumber(),
-                getPlayerNumber(principal));
+                playerNumber);
         int index;
         int newLength;
         int underLyingSize;
@@ -215,7 +218,7 @@ public class WorldDifferences implements World {
         if (underlyingWorld.isPlayer(principal)) {
             underLyingSize = underlyingWorld.size(key, principal);
         } else {
-            underLyingSize = -1;
+            underLyingSize = Integer.MIN_VALUE;
         }
 
         if (listDifferences.containsKey(lengthKey)) {
@@ -234,7 +237,7 @@ public class WorldDifferences implements World {
         }
 
         DiffKey elementKey = new DiffKey(LIST, key.getKeyNumber(),
-                getPlayerNumber(principal), index);
+                playerNumber, index);
         assert !this.listDifferences.containsKey(elementKey);
         listDifferences.put(elementKey, element);
 
@@ -287,8 +290,9 @@ public class WorldDifferences implements World {
 
     public FreerailsSerializable removeLast(KEY key,
         FreerailsPrincipal principal) {
+        int playerNumber = getPlayerNumber(principal);
         DiffKey lengthKey = new DiffKey(LIST_LENGTH, key.getKeyNumber(),
-                getPlayerNumber(principal));
+                playerNumber);
         int index;
         int newLength;
         int underLyingSize;
@@ -318,14 +322,15 @@ public class WorldDifferences implements World {
         } else {
             listDifferences.put(lengthKey, new Integer(newLength));
         }
-        
-        /* If the element to be reomoved is stored in the list differences hashmap we 
+
+        /* If the element to be reomoved is stored in the list differences hashmap we
          * need to remove it.
          */
-        DiffKey elementKey = new DiffKey(LIST, key.getKeyNumber(), getPlayerNumber(principal), index);
+        DiffKey elementKey = new DiffKey(LIST, key.getKeyNumber(),
+                playerNumber, index);
 
         if (this.listDifferences.containsKey(elementKey)) {
-        	listDifferences.remove(elementKey);
+            listDifferences.remove(elementKey);
         }
 
         return elementRemoved;

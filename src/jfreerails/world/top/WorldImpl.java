@@ -167,7 +167,9 @@ public class WorldImpl implements World {
     }
 
     public boolean boundsContain(KEY k, int index, FreerailsPrincipal p) {
-        if (index >= 0 && index < this.size(k, p)) {
+        if (!isPlayer(p)) {
+            return false;
+        } else if (index >= 0 && index < this.size(k, p)) {
             return true;
         } else {
             return false;

@@ -91,7 +91,7 @@ public class WorldDifferencesTest extends TestCase {
         WorldDifferences worldDiff = new WorldDifferences(underlyingWorld);
         assertEquals(0, worldDiff.numberOfNonMapDifferences());
 
-        //First for an existing player
+        //First, for an existing player
         assertEquals(1, worldDiff.size(KEY.STATIONS, player0.getPrincipal()));
 
         FreerailsSerializable fs = worldDiff.get(KEY.STATIONS, 0,
@@ -110,27 +110,27 @@ public class WorldDifferencesTest extends TestCase {
         worldDiff.set(KEY.STATIONS, 0, station2, player0.getPrincipal());
         fs = worldDiff.get(KEY.STATIONS, 0, player0.getPrincipal());
         assertEquals(station2, fs);
-       
+
         //Remove both stations.
         fs = worldDiff.removeLast(KEY.STATIONS, player0.getPrincipal());
         assertEquals(station1, fs);
         fs = worldDiff.removeLast(KEY.STATIONS, player0.getPrincipal());
         assertEquals(station2, fs);
         assertEquals(0, worldDiff.size(KEY.STATIONS, player0.getPrincipal()));
-        
+
         //Add a station again.
         int i = worldDiff.add(KEY.STATIONS, station1, player0.getPrincipal());
         assertEquals(0, i);
         assertEquals(1, worldDiff.size(KEY.STATIONS, player0.getPrincipal()));
 
-        //Second for a new player
+        //Second, for a new player
         worldDiff.addPlayer(player1);
         assertEquals(0, worldDiff.size(KEY.STATIONS, player1.getPrincipal()));
         worldDiff.add(KEY.STATIONS, station1, player1.getPrincipal());
         assertEquals(1, worldDiff.size(KEY.STATIONS, player1.getPrincipal()));
-        fs = worldDiff.removeLast(KEY.STATIONS, player1.getPrincipal());
-        assertEquals(station1, fs);
-        
+
+        worldDiff.set(KEY.STATIONS, 0, station2, player1.getPrincipal());
+
         worldDiff.add(KEY.STATIONS, station1, player1.getPrincipal());
     }
 
