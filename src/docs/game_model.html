@@ -9,7 +9,7 @@
 <link href="style.css" rel="stylesheet" type="text/css">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
-<H2>Game Model</H2>
+<H1>Game Model</H1>
 <p>Last modifled @lastModified@ </p>
 <H4>Time</H4>
 <P>Each year is a representative day. So, for instance, a train
@@ -150,6 +150,52 @@ wagons. You can build trains even if you have cash &lt; 0. (This is
 to stop people getting stuck without any trains since you need trains
 to make money.)</P>
 <P>Trains can be scheduled to stop at 2 or more stations.</P>
+<P>The pseudo code below describes the behaviour of trains.</P>
+
+<pre class="code">
+if(train is moving){
+   if(train has  reached a new tile){
+      if (there is a station here){
+         unload cargo demanded by station
+         if(this is a scheduled stop){
+            if(consist needs changing){
+               upload cargo that won't fit after changing consist
+               change consist
+            }
+         }
+         load cargo
+         setStatus(stoppedAtStation)
+         departTime = currentTime + stopTime
+      }else{
+         start moving to next tile
+      }
+   }else{
+      keep moving
+   }
+} else if(train is at station){
+   if(waiting for full load){
+      load any cargo
+      if(full){
+         update next station on schedule
+         if(currentTime > departTime){
+            setStatus(moving)
+            start moving to next tile
+         }   
+      }
+   }else{
+      if(currentTime > departTime){
+         if(this was a scheduled stop){
+            update next station on schedule
+         }
+         setStatus(moving)
+         start moving to next tile
+      }         
+   }   
+}
+
+</pre>
+
+
 <h4 class="planned">Track Contention</h4>
 <P class="planned">On single (double) track, only one (two) train(s) can move 
   on a tile at a time. Trains 'book' the next tile they want to enter. A train 
