@@ -64,7 +64,9 @@ public class InetConnectionAccepter implements Runnable {
     public synchronized void stop() throws IOException {
         this.keepRunning.close();
         serverSocket.close();
-        gameServer.stop();
+
+        //Commented out since it causes execeptions to be thrown, fixes bug 979831         
+        //gameServer.stop();
     }
 
     private boolean isKeepRunning() {

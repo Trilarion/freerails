@@ -1,3 +1,6 @@
+Jun 25, 2004 Luke
+	Bugs fixed:	
+ 	o 979831 Stacktraces printed out when running unit tests 
 Jun 17, 2004 Luke
 	o Apply Vincenzo Di Massa's station distance patch.
 	o Fixed DisplayModesComboBoxModels.removeDisplayModesBelow(.) so 
