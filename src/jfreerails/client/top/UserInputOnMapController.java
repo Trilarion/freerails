@@ -25,6 +25,7 @@ import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
  * Handles key presses and mouse movements on the map - responsible for moving
@@ -411,12 +412,10 @@ public class UserInputOnMapController extends KeyAdapter {
 	 * @return boolean
 	 */
 	private boolean legalRectangleContains(Point tryThisPoint) {
-		float tileSize = mapView.getScale();
-		Dimension mapSizeInPixels = mapView.getMapSizeInPixels();
-		int maxX = (int) (mapSizeInPixels.width / tileSize) - 2;
-		int maxY = (int) (mapSizeInPixels.height / tileSize) - 2;
-		Rectangle legalRectangle; // The set of legal cursor positions.
-		legalRectangle = new Rectangle(1, 1, maxX, maxY);
+		ReadOnlyWorld world = modelRoot.getWorld();
+		int width = world.getMapWidth();
+		int height = world.getMapHeight();
+		Rectangle legalRectangle = new Rectangle(0, 0, width, height);
 
 		return legalRectangle.contains(tryThisPoint);
 	}
