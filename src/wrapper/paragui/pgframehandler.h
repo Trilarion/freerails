@@ -32,6 +32,7 @@ public:
 	virtual void DrawBackground(SDL_Surface *surface){};
 	
 	virtual void UpdateBackground(int x, int y) {};
+	virtual void UpdateTiles(int x, int y) {};
 	
 	void SetMouseOver(bool over){ mouse_over = over; };
 	void SetBackgroundColor(Uint32 background);

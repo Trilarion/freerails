@@ -37,15 +37,19 @@ void GameNetHandler::addings(GameElement* element)
     switch(element->getTypeID())
     {
       case GameElement::idStation:
+std::cerr << "Add Station" << std::endl;
         panel->addStation((Station*)element);
+	mw->getApp()->GetFrameHandler()->UpdateTiles(((Station*)element)->getPosX(),((Station*)element)->getPosY());
       break;
       case GameElement::idTrain:
+std::cerr << "Add Train" << std::endl;
         panel->addTrain((Train*)element);
 //	framehandler->AddFrameObject(new TrainFrame(guiEngine->getWorldMap(),(Train*)element));
       break;
     case GameElement::idTrack:
-std::cerr << "Add Track" << std::endl;
-	mw->getApp()->GetFrameHandler()->UpdateBackground(((Train*)element)->getPosX(),((Train*)element)->getPosY());
+std::cerr << "Add Track start" << (Train*)element << ":" << ((Train*)element)->getPosX() << ":" << ((Train*)element)->getPosY() << std::endl;
+	mw->getApp()->GetFrameHandler()->UpdateTiles(((Train*)element)->getPosX(),((Train*)element)->getPosY());
+std::cerr << "Add Track end" << std::endl;
 	break;
     }
   }

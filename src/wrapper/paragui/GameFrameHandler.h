@@ -33,9 +33,12 @@ public:
 	*/
 	void DrawBackground(SDL_Surface *surface);
 	void UpdateBackground(int x, int y);
+	void UpdateTiles(int x, int y);
+	
+	std::string bit2str(int bitfield, int count);
 
-  int bigframe(int x, int y, int start, MapField::FieldType type);
-  int smallframe(int x, int y, int start, MapField::FieldType type);
+  std::string bigframe(int x, int y, MapField::FieldType type);
+  std::string smallframe(int x, int y, MapField::FieldType type);
   void drawMapPixmap(int x, int y);
   void drawMapTrack(int x, int y);
 

@@ -1,3 +1,6 @@
+Thu Oct 16 02:40:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Add back station building
+
 Wed Oct 01 21:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: New Draw System, but not all is yet checked in
            Tracks/Trains/Stations are not shown up to yet. Will be the next.

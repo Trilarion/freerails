@@ -192,6 +192,7 @@ void GamePanel::addStation(Station* station)
     case Station::Big:
       button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),station->getName().c_str());
       button->SetFontSize(11);
+      button->SetTransparency(128,128,240);
     break;
   }
   stationList->AddWidget(button);
@@ -220,6 +221,7 @@ void GamePanel::addTrain(Train* train)
 */
   button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"");
   button->SetFontSize(11);
+  button->SetTransparency(128,128,240);
   trainList->AddWidget(button);
   image=new PG_Image(button,point,"graphics/ui/buttons/build_train.png");
   image->SetVisible(true);

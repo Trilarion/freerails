@@ -133,10 +133,9 @@ int GameApplication::run() {
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 
       pGlobalApp->SetFrameHandler(new GameFrameHandler(pGlobalApp, guiEngine->getWorldMap()));
-      pGlobalApp->SetNetHandler(new GameNetHandler(NULL, guiEngine, NULL, NULL));
       mw.getWidget()->setGuiEngine(guiEngine);
-
       panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine);
+      pGlobalApp->SetNetHandler(new GameNetHandler(NULL, guiEngine, panel, NULL));
       pGlobalApp->SetFPSLabel(new PG_Label(panel, PG_Rect(0,0,120,20), "FPS"));
       panel->Show();
 

@@ -10,14 +10,14 @@
 #include "GameElement.h"
 #include "GamePosElement.h"
 
-#define TrackGoNorth            0x00000001
-#define TrackGoNorthEast        0x00000002
-#define TrackGoEast             0x00000004
-#define TrackGoSouthEast        0x00000008
-#define TrackGoSouth            0x00000010
-#define TrackGoSouthWest        0x00000020
-#define TrackGoWest             0x00000040
-#define TrackGoNorthWest        0x00000080
+#define TrackGoNorth            0x00000080
+#define TrackGoNorthEast        0x00000040
+#define TrackGoEast             0x00000020
+#define TrackGoSouthEast        0x00000010
+#define TrackGoSouth            0x00000008
+#define TrackGoSouthWest        0x00000004
+#define TrackGoWest             0x00000002
+#define TrackGoNorthWest        0x00000001
 
 #define TrackIsBlocked          0x00000100  //Means there is a Station, Signal, Bridge etc.
 					    //which blocks to add more directions.

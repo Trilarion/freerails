@@ -17,11 +17,12 @@ Base2DMapView(NULL) {
   selectedY = 0;
   app=_app;
   selectedbase = new PG_SpriteBase();
-  selectedbase->init("data/graphics/ui/cursors");
+  selectedbase->LoadDirectory("data/graphics/ui/cursors");
   selectedsprite = new PG_SpriteObject();
   selectedsprite->init(selectedbase);
+  selectedsprite->startAnim();
   selectedsprite->set(0,0);
-  selectedsprite->setSpeed(20);
+  selectedsprite->setSpeed(1);
 }
 
 GameMapView::~GameMapView() {
@@ -66,11 +67,7 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 	break;
     case buildTrack:
 	if(adjacentTile(mapx, mapy, &dir)){
-	    if(guiEngine->buildTrack(selectedX,selectedY,dir)) {
-		unsigned int mx,my;
-		guiEngine->getOtherConnectionSide(&mx,&my,&dir);
-		guiEngine->buildTrack(mx,my,dir);
-	    }
+	    guiEngine->buildTrack(selectedX,selectedY,dir);
 	}
 	break;
     case buildTrain:
