@@ -1,3 +1,7 @@
+Tue Oct 01 01:30:00 2002  Alexander Opitz <opi@le-bit.de>:
+o code clean up ... start splitting working away from elements.
+  Elements are only holders, they have no logic.
+  breaks everything what worked up to yet.
 Mon Sep 30 00:40:00 2002  Alexander Opitz <opi@le-bit.de>:
 o change to use GameElement::TypeID in src/game
 o start using canBuildElement on mouse move over map in paraGUI
