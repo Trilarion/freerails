@@ -1,8 +1,10 @@
+Wed Sep 26 02:15:00 2001  Alexander Opitz <opi@sputnik.de>:
+o add FiedTypes definitions in MapField
+o add first unfunctionell MapGenerator
+o the API of MapGenerator will change in the next time
 Mon Sep 24 14:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o make WorldMap function
 o small changes in UML
-Sun Sep 23 17:40:00 2001  Rivo Laks <rivolaks@hot.ee>:
-o Added automake stuff for src/map directory
 Fri Sep 21 19:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o update MapField to ground needings
 o add WorldMap

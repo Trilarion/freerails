@@ -8,6 +8,15 @@
 #include "../elements/GameElement.h"
 //#include "../elements/Track.h"
 
+#define FieldTypeGrass		 0
+#define FieldTypeDesert		 1
+#define FieldTypeJungle		 2
+#define FieldTypeRiver		10
+#define FieldTypeOcean		11
+#define FieldTypeFootHills	20
+#define FieldTypeHills		21
+#define FieldTypeMountain	22
+
 class MapField {
 public:
   /** Constructor */
