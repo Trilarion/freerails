@@ -1,3 +1,6 @@
+Feb 21, 2004 2:14:47 AM Luke
+	o Fix 891359 - Javadoc package dependencies out of date
+	o Tidy up javadoc
 Feb 20, 2004 6:34:03 PM Luke
 	o Fix 839371 - Goods & livestock wagons appear the same on train orders
 Feb 20, 2004 12:31:15 PM Luke

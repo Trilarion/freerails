@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.MoveReceiver;
+import jfreerails.controller.SychronizedQueue;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
@@ -13,7 +14,6 @@ import jfreerails.move.UndoneMove;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.top.World;
 import jfreerails.util.GameModel;
-import jfreerails.util.SychronizedQueue;
 
 
 /**

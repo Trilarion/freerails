@@ -8,7 +8,7 @@
  */
 package jfreerails.controller;
 
-import jfreerails.world.city.CityModel;
+import jfreerails.world.terrain.CityModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 

@@ -10,9 +10,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import jfreerails.client.common.Painter;
+import jfreerails.world.terrain.CityModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.city.CityModel;
 
 
 public class CityNamesRenderer implements Painter {
