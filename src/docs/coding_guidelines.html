@@ -25,7 +25,7 @@
 <p>(1) Generally follow the <a href="http://java.sun.com/docs/codeconv/">sun java 
   coding converions</a>.</p>
 <p>(2) Run all unit tests after making changes to see whether anything has broken. 
-  You can do this using the <strong>test</strong><a href="http://ant.apache.org/" target="_blank">Ant</a> 
+  You can do this using the <strong>test </strong><a href="http://ant.apache.org/" target="_blank">Ant</a> 
   target.</p>
 <p>(3) Check the <strong>javadoc</strong> Ant target runs without errors or warnings.</p>
 <p>(4) Javadoc comments. Add a couple of sentences saying what the class does 
@@ -42,14 +42,32 @@
   debug messages. Each class should have its own logger, e.g.</code></p>
 <p><code>private static final Logger logger = Logger.getLogger(SomeClass.class.getName());</code></p>
 <p><strong>Submitting Patches</strong></p>
-<p>(1) Run CVS diff with output in 'unified' format. (You can do this in Eclipse 
+<p>(1) Small patches that fix one thing, add one feature, or clean up one aspect 
+  of the code are generally the easiest to manage.</p>
+<p>(2) Run CVS diff with output in 'unified' format. (You can do this in Eclipse 
   by selecting <em>Team -&gt; Create Patch</em>.)</p>
-<p>(2) Submit patches using the <a href="http://sourceforge.net/tracker/?func=browse&group_id=9495&atid=309495" target="_blank">patch</a> 
+<p>(3) Check list:</p>
+<blockquote> 
+  <p> (A) Is there patch against the lastest code in CVS? I.e. if you do a fresh 
+    CVS checkout of the jfreerails module, does the patch apply correctly.</p>
+  <p>(B) If you have create new files, are they included in the patch? Look at 
+    the -N option.</p>
+  <p>(C) Are binary files excluded from the diff file? Any new or modified binary 
+    files, *.png, *.wav etc, should be included separately.</p>
+  <p>(D) Do the following Ant targets work without warnings or errors when the 
+    patch is applied against a fresh CVS checkout?</p>
+  <blockquote>
+    <p><code><strong>ant compile</strong></code><br>
+      <strong><code>ant test</code></strong><br>
+      <strong><code>ant run</code></strong><br>
+      <strong><code>ant -f checkdep.xml</code></strong><br>
+      <strong><code>ant javadoc</code></strong></p>
+  </blockquote>
+  <p>(E) Does the patch have a meaningful filename? E.g. <code>bug910902_patch1.diff</code>.</p>
+</blockquote>
+<p>(4) Submit patches using the <a href="http://sourceforge.net/tracker/?func=browse&group_id=9495&atid=309495" target="_blank">patch</a> 
   or <a href="http://sourceforge.net/tracker/?group_id=9495&atid=109495" target="_blank">bug</a> 
   tracker on the freerails sourceforge page.</p>
-<p>(3) Give the patch a meaningful filename (e.g. <code>bug910902_patch1.diff</code>).</p>
-<p>(4) Small patches that fix one thing, add one feature, or clean up one aspect 
-  of the code are generally the easiest to manage.</p>
 <p><strong>Books</strong></p>
 <p>I've found the following useful.</p>
 <p><a href="http://java.sun.com/docs/books/effective/" target="_blank">Effective Java</a> (sample 
