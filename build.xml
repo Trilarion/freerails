@@ -60,6 +60,7 @@
    <target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
       <javac destdir="${build}" fork="true" srcdir="${src}">
          <exclude name="**/*Test.java" />
+         <exclude name="**/*TestCase.java" />         
       </javac>
    </target>
 
@@ -157,7 +158,7 @@
       <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
          <fileset defaultexcludes="yes" dir="${src}">
             <include name="**/*.java" />
-            <exclude name="**/*Test.java" />
+            <exclude name="**/*Test.java" />             
          </fileset>
       </javadoc>
 	   <!-- now copy the html	-->
@@ -206,6 +207,7 @@
             <include name="jfreerails/util/*.java" />
             <include name="it/unimi/dsi/fastUtil/*.java" />
             <exclude name="**/*Test.java" />
+             <exclude name="**/*TestCase.java" /> 
          </fileset>
       </copy>
      </target>
@@ -238,6 +240,7 @@
          <fileset dir="${src}">
             <include name="jfreerails/world/common/*.java" />
             <exclude name="**/*Test.java" />
+            
          </fileset>
       </copy>
       <javac fork="true" includes="jfreerails/world/common/*.java" srcdir="${temp}"/>
