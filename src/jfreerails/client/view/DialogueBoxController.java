@@ -71,15 +71,13 @@ public class DialogueBoxController implements WorldListListener {
         };
 
     private final ActionListener selectEngineActionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                closeContent();
+            public void actionPerformed(ActionEvent arg0) {                
                 showSelectWagons();
             }
         };
 
     private final ActionListener trainDetailsButtonActionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                closeContent();
+            public void actionPerformed(ActionEvent arg0) {             
                 showTrainList();
             }
         };
@@ -106,8 +104,7 @@ public class DialogueBoxController implements WorldListListener {
                 closeContent();
             }
         };
-
-    private JInternalFrame dialogueJInternalFrame;
+	private JInternalFrame dialogueJInternalFrame;
 
     public DialogueBoxController(JFrame frame, ModelRoot mr, ActionRoot ar) {
         this.frame = frame;
@@ -145,6 +142,7 @@ public class DialogueBoxController implements WorldListListener {
         selectWagons = new SelectWagonsJPanel();
         selectEngine = new SelectEngineJPanel();
         trainDialogueJPanel = new TrainDialogueJPanel();
+       
     }
 
     /** Called when a new game is started or a game is loaded.
@@ -313,8 +311,9 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     public void showContent(JComponent component) {
+    	closeContent();
         JComponent contentPanel;
-
+        
         if (!(component instanceof View)) {
             contentPanel = new javax.swing.JPanel();
             contentPanel.setLayout(new java.awt.GridBagLayout());
@@ -335,7 +334,7 @@ public class DialogueBoxController implements WorldListListener {
         }
 
         dialogueJInternalFrame = new JInternalFrame();
-        dialogueJInternalFrame.setFrameIcon(null);
+		dialogueJInternalFrame.setFrameIcon(null);      
         dialogueJInternalFrame.getContentPane().add(contentPanel);
         dialogueJInternalFrame.pack();
 
@@ -364,12 +363,16 @@ public class DialogueBoxController implements WorldListListener {
 
         frame.getLayeredPane().add(dialogueJInternalFrame,
             JLayeredPane.MODAL_LAYER);
-
-        dialogueJInternalFrame.show();
+        
+        dialogueJInternalFrame.setVisible(true);
     }
 
     public void closeContent() {
-        dialogueJInternalFrame.setVisible(false);
+    	if(null != dialogueJInternalFrame){
+    		dialogueJInternalFrame.setVisible(false);
+    		frame.getLayeredPane().remove(dialogueJInternalFrame);    		   
+    		dialogueJInternalFrame.dispose();    		
+    	}
 
         if (null != defaultFocusOwner) {
             defaultFocusOwner.requestFocus();

@@ -1,3 +1,6 @@
+Jun 12, 2004 Luke
+	Bugs Fixed: 
+	o 967667 Cannot close multilple dialogue boxes.
 Jun 9, 2004 Luke 
 	Bugs Fixed: 
 	o 967673 Crash when building track close to edge of map 
