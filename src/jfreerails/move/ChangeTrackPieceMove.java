@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.LegalTrackConfigurations;
@@ -58,7 +60,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 				"Unexpected track piece found at location: " + location.x + " ," + location.y);
 		}
 
-		//Check that oldTrackPiece is not hte same as newTrackPiece
+		//Check that oldTrackPiece is not the same as newTrackPiece
 		if ((oldTrackPiece.getTrackConfiguration() == newTrackPiece.getTrackConfiguration())
 			&& (oldTrackPiece.getTrackRule() == newTrackPiece.getTrackRule())) {
 			return MoveStatus.moveFailed(
@@ -75,6 +77,11 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		if (!(noDiagonalTrackConflicts(location, oldTrackPiece.getTrackGraphicNumber(), w)
 			&& noDiagonalTrackConflicts(location, newTrackPiece.getTrackGraphicNumber(), w))) {
 			return MoveStatus.moveFailed("Illegal track configuration - diagonal conflict");
+		}
+		int terrainType = w.getTile(location.x, location.y).getTerrainTypeNumber();
+		TerrainType tt = (TerrainType)w.get(KEY.TERRAIN_TYPES, terrainType);
+		if(!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getTerrainCategory())){
+			return MoveStatus.moveFailed("Cann't build track on water!");
 		}
 		return MoveStatus.MOVE_OK;
 	}

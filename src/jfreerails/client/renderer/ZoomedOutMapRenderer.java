@@ -9,21 +9,19 @@ import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
-import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
+import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.NullTrackPiece;
 
-
-
+/** This class draws the voerview map.	*/
 
 final public class ZoomedOutMapRenderer implements MapRenderer {
 
-
 	private World w;
 
-	private BufferedImage mapImage;//, scaledMapImage;
-
+	private BufferedImage mapImage; //, scaledMapImage;
 
 	protected GraphicsConfiguration defaultConfiguration =
 		GraphicsEnvironment
@@ -33,23 +31,17 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 
 	public ZoomedOutMapRenderer(World world) {
 		this.w = world;
-		this.refresh();		
+		this.refresh();
 		//mapImage.setRGB(0, 0, mapWidth, mapHeight, rgbArrary, 0, mapWidth);
 
-		
 	}
 
-	
-	
 	/*
 	 * @see NewMapView#getScale()
 	 */
 	public float getScale() {
 		return 1;
 	}
-
-	
-	
 
 	/*
 	 * @see NewMapView#paintRect(Graphics, Rectangle)
@@ -58,28 +50,23 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 		g.drawImage(mapImage, 0, 0, null);
 	}
 
-	
-
 	/*
 	 * @see NewMapView#refreshTile(Point)
 	 */
 	public void refreshTile(Point tile) {
 
 		int rgb;
-//		TrackNode node = trackSystem.getTrackNode(tile);
-//		if (node != null) {
-//			rgb = node.getRGB();
-//		} else {
-//			rgb = terrainMap.
-			TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);
+
+		FreerailsTile tt = w.getTile(tile.x, tile.y);
+		if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
+
 			int typeNumber = tt.getTerrainTypeNumber();
-			TerrainType terrainType = (TerrainType)w.get(KEY.TERRAIN_TYPES, typeNumber);
+			TerrainType terrainType = (TerrainType) w.get(KEY.TERRAIN_TYPES, typeNumber);
 			rgb = terrainType.getRGB();
-		//}
-
-		mapImage.setRGB(tile.x, tile.y, rgb);
-
-		//mapImage.setRGB(tile.x, tile.y, 0);
+			mapImage.setRGB(tile.x, tile.y, rgb);
+		} else {
+			mapImage.setRGB(tile.x, tile.y, 0);
+		}
 	}
 
 	/*
@@ -89,10 +76,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 		int mapWidth = w.getMapWidth();
 		int mapHeight = w.getMapHeight();
 		mapImage =
-			defaultConfiguration.createCompatibleImage(
-				mapWidth,
-				mapHeight,
-				Transparency.OPAQUE);
+			defaultConfiguration.createCompatibleImage(mapWidth, mapHeight, Transparency.OPAQUE);
 
 		//int[] rgbArrary=new int[mapWidth*mapWidth];
 
@@ -106,38 +90,31 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 		}
 	}
 
-	
-
 	/*
 	 * @see NewMapView#getMapSizeInPixels()
 	 */
 	public Dimension getMapSizeInPixels() {
 		return new Dimension(w.getMapWidth(), w.getMapHeight());
 	}
-	
+
 	public void paintTile(Graphics g, int tileX, int tileY) {
 		g.drawImage(mapImage, 0, 0, null);
 	}
 
-	public void paintRectangleOfTiles(
-		Graphics g,
-		int x,
-		int y,
-		int width,
-		int height) {
-			g.drawImage(mapImage, 0, 0, null);
+	public void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
+		g.drawImage(mapImage, 0, 0, null);
 	}
 
 	public void refreshTile(int x, int y) {
-		refreshTile(new Point(x,y));
+		refreshTile(new Point(x, y));
 	}
 
 	public void refreshRectangleOfTiles(int x, int y, int width, int height) {
-		for (int xx=x;xx<x+width;xx++){
-			for(int yy=y;yy<y+height;yy++){
-				refreshTile(new Point (xx,yy));
+		for (int xx = x; xx < x + width; xx++) {
+			for (int yy = y; yy < y + height; yy++) {
+				refreshTile(new Point(xx, yy));
 			}
-		}				
+		}
 	}
 
 }

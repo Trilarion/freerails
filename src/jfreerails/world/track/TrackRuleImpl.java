@@ -22,96 +22,96 @@ import jfreerails.world.common.OneTileMoveVector;
  *@version    0.1
  */
 
-final public class TrackRuleImpl
-extends java.lang.Object
-implements TrackRule {
+final public class TrackRuleImpl implements TrackRule {
 
-    private final TrackRuleProperties properties;
+	private final TrackRuleProperties properties;
 
-    private final LegalTrackConfigurations legalConfigurations;
+	private final LegalTrackConfigurations legalConfigurations;
 
-    private final LegalTrackPlacement legalTrackPlacement;
+	private final LegalTrackPlacement legalTrackPlacement;
 
-        /*
-         *  Track templates are 9 bit values, so there are 512 possible templates.
-         *  If legalTrackTemplate[x]==true, then x is a legal track-template.
-         *  Example:
-         *  000
-         *  111
-         *  000
-         *  This represents a horizontal straight.
-         */
+	/*
+	 *  Track templates are 9 bit values, so there are 512 possible templates.
+	 *  If legalTrackTemplate[x]==true, then x is a legal track-template.
+	 *  Example:
+	 *  000
+	 *  111
+	 *  000
+	 *  This represents a horizontal straight.
+	 */
 
-    public TrackRuleImpl(TrackRuleProperties p, LegalTrackConfigurations lc, LegalTrackPlacement ltp){
-        if(null==p||null==lc||null==ltp){
-            throw new java.lang.IllegalArgumentException();
-        }
-        properties=p;
-        legalConfigurations=lc;
-        legalTrackPlacement=ltp;
-    }
+	public TrackRuleImpl(
+		TrackRuleProperties p,
+		LegalTrackConfigurations lc,
+		LegalTrackPlacement ltp) {
+		if (null == p || null == lc || null == ltp) {
+			throw new java.lang.IllegalArgumentException();
+		}
+		properties = p;
+		legalConfigurations = lc;
+		legalTrackPlacement = ltp;
+	}
 
+	public boolean testTrackPieceLegality(int trackTemplateToTest) {
+		TrackConfiguration trackConfiguration =
+			TrackConfiguration.getFlatInstance(trackTemplateToTest);
 
-    public boolean testTrackPieceLegality(int trackTemplateToTest) {
-        TrackConfiguration trackConfiguration=TrackConfiguration.getFlatInstance(trackTemplateToTest);
+		return legalConfigurations.trackConfigurationIsLegal(trackConfiguration);
+	}
 
-        return legalConfigurations.trackConfigurationIsLegal(trackConfiguration);
-    }
+	public OneTileMoveVector[] getLegalRoutes(OneTileMoveVector directionComingFrom) {
 
+		//TODO add code..
+		return null;
+	}
 
+	public boolean canBuildOnThisTerrainType(String TerrainType) {
 
-    public OneTileMoveVector[] getLegalRoutes(OneTileMoveVector directionComingFrom) {
+		return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
+	}
 
-        //TODO add code..
-        return null;
-    }
+	public boolean isDoubleTrackEnabled() {
+		return properties.isDoubleTrackEnabled();
+	}
+	public String getTypeName() {
+		return properties.getTypeName();
+	}
+	public int getMaximumConsecutivePieces() {
+		return legalConfigurations.getMaximumConsecutivePieces();
+	}
+	public int getRuleNumber() {
+		return properties.getRuleNumber();
+	}
+	public Iterator getLegalConfigurationsIterator() {
+		return legalConfigurations.getLegalConfigurationsIterator();
+	}
 
+	public TrackPiece getTrackPiece(TrackConfiguration config) {
+		return new TrackPieceImpl(config, this);
+	}
 
-    public boolean canBuildOnThisTerrainType(String TerrainType) {
+	public boolean trackPieceIsLegal(TrackConfiguration config) {
+		return legalConfigurations.trackConfigurationIsLegal(config);
+	}
 
-        return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
-    }
-
-    public boolean isDoubleTrackEnabled() {
-        return properties.isDoubleTrackEnabled();
-    }
-    public String getTypeName() {
-        return properties.getTypeName();
-    }
-    public int getMaximumConsecutivePieces() {
-        return legalConfigurations.getMaximumConsecutivePieces();
-    }
-    public int getRuleNumber() {
-        return properties.getRuleNumber();
-    }
-    public Iterator getLegalConfigurationsIterator(){
-       return legalConfigurations.getLegalConfigurationsIterator();
-    }
-
-    public  TrackPiece getTrackPiece(TrackConfiguration config) {
-        return new TrackPieceImpl(config, this);
-    }
-
-    public boolean trackPieceIsLegal(TrackConfiguration config) {
-        return legalConfigurations.trackConfigurationIsLegal(config);
-    }
-    
-    public boolean isStation(){
-    	return properties.isStation();
-    }
+	public boolean isStation() {
+		return properties.isStation();
+	}
 
 	public boolean equals(Object o) {
-		if(o instanceof TrackRuleImpl){
-			TrackRuleImpl trackRuleImpl = (TrackRuleImpl)o;
+		if (o instanceof TrackRuleImpl) {
+			TrackRuleImpl trackRuleImpl = (TrackRuleImpl) o;
 			boolean propertiesFieldsEqual = this.properties.equals(trackRuleImpl.getProperties());
-			boolean legalConfigurationsEqual = this.legalConfigurations.equals(trackRuleImpl.getLegalConfigurations());
-			boolean legalTrackPlacementEqual = this.legalTrackPlacement.equals(trackRuleImpl.getLegalTrackPlacement());
-			if(propertiesFieldsEqual && legalConfigurationsEqual && legalTrackPlacementEqual){
+			boolean legalConfigurationsEqual =
+				this.legalConfigurations.equals(trackRuleImpl.getLegalConfigurations());
+			boolean legalTrackPlacementEqual =
+				this.legalTrackPlacement.equals(trackRuleImpl.getLegalTrackPlacement());
+			if (propertiesFieldsEqual && legalConfigurationsEqual && legalTrackPlacementEqual) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
 	}

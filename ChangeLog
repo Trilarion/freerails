@@ -1,3 +1,7 @@
+11-May-2003 20:24:44 Luke
+	o Track is shown on the overview map again.
+	o Rules about on what terrain track can be built have been added,
+	this is driven by terrain category.	
 10-May-2003 00:02:13 Luke
 	o Rejig track and terrain graphics filenames following discussion
 	on mailing list.

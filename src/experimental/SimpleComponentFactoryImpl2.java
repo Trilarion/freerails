@@ -20,14 +20,14 @@ import javax.swing.JScrollPane;
 import jfreerails.client.renderer.BlankMapRenderer;
 import jfreerails.client.view.MainMapAndOverviewMapMediator;
 import jfreerails.client.view.MapViewJComponentConcrete;
-import jfreerails.client.view.NewOverviewMapJComponent;
+import jfreerails.client.view.OverviewMapJComponent;
 /**
  *
  * @author  Luke Lindsay
  */
 public class SimpleComponentFactoryImpl2 implements jfreerails.client.top.GUIComponentFactory {
 
-	NewOverviewMapJComponent overviewMap;
+	OverviewMapJComponent overviewMap;
 	JScrollPane mainMapScrollPane1;
 	MapViewJComponentConcrete mainMap;
 	JComponent messagePanel;
@@ -130,7 +130,7 @@ public class SimpleComponentFactoryImpl2 implements jfreerails.client.top.GUICom
 	public JComponent createOverviewMap() {
 		if (null == this.overviewMap) {
 			//this.overviewMap = new OverviewMapJPanel();
-			this.overviewMap = new NewOverviewMapJComponent(r);
+			this.overviewMap = new OverviewMapJComponent(r);
 			this.overviewMap.setup(new BlankMapRenderer(0.4F));
 			addMainMapAndOverviewMapMediatorIfNecessary();
 		}

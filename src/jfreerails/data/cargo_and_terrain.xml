@@ -69,9 +69,9 @@
 
       <Tile id="Desert" Category="Country" rgb="b42400" right-of-way="0"/>
 
-      <Tile id="Ocean" Category="Water" rgb="0000b4" right-of-way="0"/>
+      <Tile id="Ocean" Category="Ocean" rgb="0000b4" right-of-way="0"/>
 
-      <Tile id="Harbour" Category="Water" rgb="1eead2" right-of-way="0">
+      <Tile id="Harbour" Category="Ocean" rgb="1eead2" right-of-way="0">
          <Produces Cargo="Mail" Rate="1" />
 
          <Produces Cargo="Passengers" Rate="1" />
@@ -119,9 +119,9 @@
          <Produces Cargo="Sugar" Rate="3" />
       </Tile>
 
-      <Tile id="River" Category="Water" rgb="0048d8" right-of-way="0"/>
+      <Tile id="River" Category="River" rgb="0048d8" right-of-way="0"/>
 
-      <Tile id="Landing" Category="Water" rgb="0048d9" right-of-way="0">
+      <Tile id="Landing" Category="River" rgb="0048d9" right-of-way="0">
          <Consumes Cargo="Grain" />
 
          <Consumes Cargo="Coffee" />
@@ -137,11 +137,11 @@
 
       <Tile id="Jungle" Category="Country" rgb="4890fc" right-of-way="0"/>
 
-      <Tile id="Hills" Category="Country" rgb="b4b4b4" right-of-way="0"/>
+      <Tile id="Hills" Category="Hill" rgb="b4b4b4" right-of-way="0"/>
 
-      <Tile id="Foothills" Category="Country" rgb="90d8fc" right-of-way="0"/>
+      <Tile id="Foothills" Category="Hill" rgb="90d8fc" right-of-way="0"/>
 
-      <Tile id="Mountain" Category="Country" rgb="ffffff" right-of-way="0"/>
+      <Tile id="Mountain" Category="Hill" rgb="ffffff" right-of-way="0"/>
    </Terrain_Types>
 </Types>
 
