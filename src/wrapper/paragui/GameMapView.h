@@ -11,12 +11,12 @@
 #include "MapField.h"
 
 #include <paragui_types.h>
-#include <pggradientwidget.h>
+#include <pgthemewidget.h>
 #include <pgrect.h>
 #include <pgimage.h>
 #include <pgwidgetlist.h>
 
-class GameMapView: public PG_GradientWidget {
+class GameMapView: public PG_ThemeWidget {
 
   public:
   

@@ -14,7 +14,7 @@
 #include "SDL_image.h"
 
 GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine):
-PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
+PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
   engine=_engine;
   WidgetList = new PG_WidgetList(this, PG_Rect(0,0,w,h));
@@ -36,9 +36,9 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
 
   p.x=0;
   p.y=0;
-  view=new PG_Image(this, p, imageSurface);
+  view=new PG_Image(this, p, imageSurface, false);
   WidgetList->AddWidget(view);
-  
+  cerr << view->GetName() << endl;
   mouseType=0;
   mouseOldX=0;
   mouseOldY=0;
@@ -46,8 +46,8 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
 
 GameMapView::~GameMapView() {
 
+//  imageSurface=NULL;
   cerr << "Blob" << endl;
-  imageSurface=NULL;
   delete WidgetList;
   delete tilesImage;
   delete trackImage;
@@ -56,6 +56,7 @@ GameMapView::~GameMapView() {
 }
 
 void GameMapView::getMapImage(SDL_Surface* surface, int x, int y) {
+
   SDL_Rect rectSRC;
   rectSRC.w=30;
   rectSRC.h=30;

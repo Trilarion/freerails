@@ -12,6 +12,8 @@
 GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, argv) {
 
   char theme[20];
+  std::string replay;
+
   strcpy(theme, "default");
 
   screenFlags = SDL_SWSURFACE;
@@ -35,8 +37,12 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
   cerr << "networking" << endl;
 
   Client* client=new Client();
-  client->connect("localhost",9999);
-  client->send(theme,strlen(theme));
+  client->open("localhost",30000);
+/*  *client << "Testmessage";
+  
+  *client >> replay;
+*/
+  cerr << replay << endl;
   
   mapView=NULL;
   netView=NULL;
@@ -52,6 +58,7 @@ int GameApplication::runEngine(void* data)
 {
   GameApplication* object = static_cast<GameApplication*>(data);
   while (1) {
+    object->engine->checkNet();
     object->engine->checkNext(SDL_GetTicks());
     SDL_Delay(10);
   }
@@ -83,13 +90,17 @@ int result;
       mapView->Show();
       panel->Show();
     }
-    if (result==2) {  // Multi Player
+    if (result==2) {  
+      // Multi Player
+      // TODO
       // show modal Network dialog
       // get Network settings
-      // get Network/Clientsocket
       // initServerGame() or initClientGame()
+      initServerGame();
+      // get Network/Clientsocket
+      Server* server=new Server();
       // start engine Client or Server
-      // engine=new Engine(worldMap);
+      engine=new Engine(worldMap, playerSelf, server);
 
       mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
@@ -122,7 +133,7 @@ void GameApplication::setCaption(const char *title) {
 }
 
 void GameApplication::showSplash() {
-  splash = new PG_GradientWidget(NULL, PG_Rect(100,100,600,400));
+  splash = new PG_ThemeWidget(NULL, PG_Rect(100,100,600,400));
   char file[]="data/graphics/ui/title.png";
   splash->SetBackground(file,BKMODE_STRETCH);
   splash->SetBackgroundBlend(0);

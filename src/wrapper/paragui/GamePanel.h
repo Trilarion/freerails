@@ -8,7 +8,7 @@
 #include "GameMainWindow.h"
 #include "GameMapView.h"
 
-#include <pggradientwidget.h>
+#include <pgthemewidget.h>
 #include <pgbutton.h>
 #include <pgrect.h>
 
@@ -17,7 +17,7 @@
 #include "Engine.h"
 #include "Message.h"
 
-class GamePanel: public PG_GradientWidget, public PG_EventObject {
+class GamePanel: public PG_ThemeWidget, public PG_EventObject {
 
   public:
     /**  */

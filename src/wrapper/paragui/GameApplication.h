@@ -16,7 +16,7 @@
 
 
 #include <pgapplication.h>
-#include <pggradientwidget.h>
+#include <pgthemewidget.h>
 
 #include <unistd.h>
 
@@ -42,7 +42,7 @@ private:
     struct PG_Application* pGlobalApp;
     Uint32 screenFlags;
     int screenDepth;
-    PG_GradientWidget* splash;
+    PG_ThemeWidget* splash;
     GameMapView* mapView;
     GameNetView* netView;
     GamePanel* panel;

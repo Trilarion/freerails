@@ -7,13 +7,13 @@
 
 #include "GameMainWindow.h"
 
-#include <pggradientwidget.h>
+#include <pgthemewidget.h>
 #include <pgrect.h>
 
 #include <pglineedit.h>
 #include <pgrichedit.h>
 
-class GameNetView: public PG_GradientWidget {
+class GameNetView: public PG_ThemeWidget {
 
   public:
     /**  */

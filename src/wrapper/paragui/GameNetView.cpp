@@ -5,7 +5,7 @@
 #include "GameNetView.h"
 
 GameNetView::GameNetView(GameMainWindow* parent, int x, int y, int w, int h):
-PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
+PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 //  SetBackgroundBlend(0);
 			 
   richedit=new PG_RichEdit(this, PG_Rect(0,0,w,h-30));
