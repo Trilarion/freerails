@@ -1,3 +1,8 @@
+Wed Jan 16 02:14:00 2002  Alexander Opitz <opi@le-bit.de>:
+o Add some Message types
+o Add in Engine reaction on some MessageTypes
+o Add Pause Button in ParaGUI with function
+  Yes realy it can pause the game and so on :-)
 Tue Jan 15 14:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add Message and MessageQueue classes
 o add Messaging functions to the engine, so we can later easiely Threading the engine
