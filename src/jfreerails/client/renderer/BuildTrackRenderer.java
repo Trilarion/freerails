@@ -29,8 +29,12 @@ import jfreerails.world.track.TrackRule;
 
 
 /** This class draws the track being build.
+ * 
  * @author MystiqueAgent
  * @author Luke
+ * 
+ * TODO Split into two classes: one which displays any proposed track and one that provides methods to change 
+ * the proposed track and save it to the real world.
  * */
 public class BuildTrackRenderer implements Painter {
     private static final int BIG_DOT_WIDTH = 12;
@@ -64,33 +68,15 @@ public class BuildTrackRenderer implements Painter {
         m_trackPathFinder = new TrackPathFinder(readOnlyWorld);       
     }
 
-    private MoveStatus buildTrack(Point point, OneTileMoveVector vector) {
-    	FreerailsTile tileA = (FreerailsTile)m_worldDiffs.getTile(point.x, point.y);
-    	BuildTrackStrategy bts = getBts();
-		int trackTypeAID = bts.getRule(tileA.getTerrainTypeID());
-        TrackRule trackRuleA = (TrackRule)m_worldDiffs.get(SKEY.TRACK_RULES,
-        		trackTypeAID);
-        
-        FreerailsTile tileB = (FreerailsTile)m_worldDiffs.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
-    	int trackTypeBID = bts.getRule(tileB.getTerrainTypeID());
-        TrackRule trackRuleB = (TrackRule)m_worldDiffs.get(SKEY.TRACK_RULES,
-        		trackTypeBID);
-        
-        
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point,
-                vector, trackRuleA, trackRuleB,m_worldDiffs, m_principal);
-
-        return move.doMove(m_worldDiffs, m_principal);
-    }
-
    
-
+    /** Utility method that gets the BuildTrackStrategy from the model root.*/
 	private BuildTrackStrategy getBts() {
 		BuildTrackStrategy btss = (BuildTrackStrategy)m_modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
 		if(null == btss) throw new NullPointerException();
 		return btss;
 	}
 
+	/** Utility method taht gets the cursor position from the model root.*/
     private Point getCursorPosition() {
         Point point = (Point)m_modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
 
@@ -104,12 +90,6 @@ public class BuildTrackRenderer implements Painter {
         return point;
     }
 
-//    private int getTrackRule() {
-//        Integer trackType = (Integer)modelRoot.getProperty(ModelRoot.SELECTED_TRACK_TYPE);
-//        int intValue = trackType.intValue();
-//
-//        return intValue;
-//    }
 
     /** Hides and cancels any proposed track.*/ 
     public void hide() {
@@ -132,6 +112,7 @@ public class BuildTrackRenderer implements Painter {
         return m_isBuildTrackSuccessful;
     }
 
+    /** Moves cursor which causes track to be built on the worldDiff object.*/
     private void moveCursorMoreTiles(List track) {
         moveCursorMoreTiles(track, null);
     }
@@ -180,7 +161,7 @@ public class BuildTrackRenderer implements Painter {
             if (trackBuilder != null) {
                 ms = trackBuilder.buildTrack(oldPosition, vector);
             } else {
-                ms = buildTrack(oldPosition, vector);
+                ms = planBuildingTrack(oldPosition, vector);
             }
 
             if (ms.ok) {
@@ -216,6 +197,7 @@ public class BuildTrackRenderer implements Painter {
         return ms;
     }
 
+    /** Paints the proposed track and dots to distinguish the proposed track from any existing track.*/
     public void paint(Graphics2D g) {
         //update search for path if necessay.
         if (m_trackPathFinder.getStatus() == IncrementalPathFinder.SEARCH_PAUSED) {
@@ -273,18 +255,43 @@ public class BuildTrackRenderer implements Painter {
         }
     }
 
+    /** Attempts to building track from the specifed point in the specified direction
+     * on the worldDiff object.    
+     */
+    private MoveStatus planBuildingTrack(Point point, OneTileMoveVector vector) {
+    	FreerailsTile tileA = (FreerailsTile)m_worldDiffs.getTile(point.x, point.y);
+    	BuildTrackStrategy bts = getBts();
+		int trackTypeAID = bts.getRule(tileA.getTerrainTypeID());
+        TrackRule trackRuleA = (TrackRule)m_worldDiffs.get(SKEY.TRACK_RULES,
+        		trackTypeAID);
+        
+        FreerailsTile tileB = (FreerailsTile)m_worldDiffs.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
+    	int trackTypeBID = bts.getRule(tileB.getTerrainTypeID());
+        TrackRule trackRuleB = (TrackRule)m_worldDiffs.get(SKEY.TRACK_RULES,
+        		trackTypeBID);
+        
+        
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point,
+                vector, trackRuleA, trackRuleB,m_worldDiffs, m_principal);
+
+        return move.doMove(m_worldDiffs, m_principal);
+    }
+
+    /** Cancels any proposed track and resets the pathfinder.*/
     private void reset() {
         m_worldDiffs.reset();
         m_trackPathFinder.abandonSearch();
         this.m_builtTrack.clear();
         this.m_isBuildTrackSuccessful = false;
     }
-
+    
+    /** Utility method the sets the CURSOR_MESSAGE property on the model root.*/
 	private void setCursorMessage(String s) {
         m_modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, s);
     }
 
-    public void setTrack(Point startPoint, Point endPoint) {
+	/** Sets the proposed track.*/
+    public void setProposedTrack(Point startPoint, Point endPoint) {
         assert m_setUp;
 
         /*If we have just found the route between the two points, don't
@@ -330,6 +337,7 @@ public class BuildTrackRenderer implements Painter {
         updateSearch();
     }
 
+    /** Called when the model root has changed.*/
     public void setup(ModelRoot modelRoot) {
         if (m_setUp) {
             return;
@@ -340,10 +348,12 @@ public class BuildTrackRenderer implements Painter {
         m_principal = modelRoot.getPrincipal();
     }
 
+    /** Sets the m_show field to true.*/
     public void show() {
         this.m_show = true;
     }
 
+    /** Updates the search, if the search is completed, the proposed track is shown.*/
     private void updateSearch() {
         try {
             m_trackPathFinder.search(100);
@@ -361,7 +371,7 @@ public class BuildTrackRenderer implements Painter {
     }
 
     /**
-     * saves track into real world
+     * Saves track into real world
      */
     public Point updateWorld(TrackMoveProducer trackBuilder) {
         Point actPoint = getCursorPosition();
