@@ -46,7 +46,7 @@ public class IncomeStatementGenerator {
 		passengersTotal = calRevenue("Passengers");
 		fastFreightTotal = calRevenue("Fast_Freight");
 		slowFreightTotal = calRevenue("Slow_Freight");
-		bulkFreightTotal = calRevenue("Slow_Freight");
+		bulkFreightTotal = calRevenue("Bulk_Freight");
 		
 		//Expenses.
 		interestTotal = calTotal(Transaction.INTEREST_CHARGE);
@@ -74,7 +74,7 @@ public class IncomeStatementGenerator {
 		passengersYtd = calRevenue("Passengers");
 		fastFreightYtd = calRevenue("Fast_Freight");
 		slowFreightYtd = calRevenue("Slow_Freight");
-		bulkFreightYtd = calRevenue("Slow_Freight");
+		bulkFreightYtd = calRevenue("Bulk_Freight");
 		
 		//Expenses.
 		interestYtd = calTotal(Transaction.INTEREST_CHARGE);
