@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.accounts.BondTransaction;
@@ -33,9 +32,8 @@ import jfreerails.world.top.World;
  */
 public class FreerailsGameServer implements ServerControlInterface,
     NewGameServer, Runnable {
-	
-	/** Used as a property name for property change events.*/
-	public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
+    /** Used as a property name for property change events.*/
+    public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
     private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private final SavedGamesManager savedGamesManager;
@@ -206,7 +204,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     public synchronized void addConnection(Connection2Client connection) {
-    	String[] before = getPlayerNames();
+        String[] before = getPlayerNames();
         logger.fine("Adding connection..");
         logger.fine("Waiting for logon details..");
 
@@ -235,13 +233,25 @@ public class FreerailsGameServer implements ServerControlInterface,
                         savedGamesManager.getSaveGameNames());
                 connection.writeToClient(setMaps);
                 connection.writeToClient(setSaveGames);
+
                 //no need to flush since it is done in
                 // sendListOfConnectedPlayers2Clients()
 
+                /* If there is a game in progress, we need to
+                 * send the client a copy of the world object.
+                 */
+                if (null != serverGameModel && null != getWorld()) {
+                    SetWorldClientCommand command = new SetWorldClientCommand(confirmationID,
+                            getWorld());
+                    connection.writeToClient(command);
+                }
+
                 /* Send to all clients. */
                 sendListOfConnectedPlayers2Clients();
+
                 String[] after = getPlayerNames();
-                propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
+                propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS",
+                    before, after);
             } else {
                 connection.disconnect();
             }
@@ -307,7 +317,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     private void removeConnection(Integer id) throws IOException {
-    	String[] before = getPlayerNames();
+        String[] before = getPlayerNames();
         Connection2Client connection = (Connection2Client)acceptedConnections.get(id);
 
         /* Fix for bug 1047439        Shutting down remote client crashes server
@@ -319,9 +329,11 @@ public class FreerailsGameServer implements ServerControlInterface,
         }
 
         String userName = (String)players.get(id.intValue());
-        this.currentlyLoggedOn.remove(userName);       
+        this.currentlyLoggedOn.remove(userName);
+
         String[] after = getPlayerNames();
-        propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
+        propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before,
+            after);
     }
 
     public synchronized int countOpenConnections() {
@@ -358,9 +370,10 @@ public class FreerailsGameServer implements ServerControlInterface,
 
     /**
      * Updates the game model, then reads and deals with the outstanding messages
-     * from each of the connected clients.
+     * from each of the connected clients.  This method is synchronized to prevent moves
+     * being sent out while addConnection(.) is executing.
      */
-    public void update() {
+    public synchronized void update() {
         if (null != serverGameModel) {
             serverGameModel.update();
         }
@@ -461,7 +474,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     private World getWorld() {
         return serverGameModel.getWorld();
     }
-    
+
     public void addPropertyChangeListener(PropertyChangeListener l) {
         propertyChangeSupport.addPropertyChangeListener(l);
     }
