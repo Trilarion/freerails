@@ -5,7 +5,6 @@
 package jfreerails.move;
 
 import java.awt.Point;
-
 import jfreerails.world.player.Player;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
@@ -19,7 +18,7 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test case for TrackMoveTransactionsGenerator.
- * 
+ *
  * @author Luke Lindsay
  *
  */

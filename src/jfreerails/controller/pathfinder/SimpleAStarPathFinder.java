@@ -68,7 +68,7 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
                 //successor.f = successor.g + successor.h
                 if (successor == currentPosition) {
                     //if successor is the goal, we have found a path, but not necessarily the shorest.
-                    if(bestPathF > successorF){
+                    if (bestPathF > successorF) {
                         bestPath = q;
                         bestPathF = successorF;
                     }

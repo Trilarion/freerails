@@ -9,8 +9,8 @@ public class SpeedChangedCommand extends ServerCommand {
     private int ticksPerSecond;
 
     /**
- * Creates a command informing about actual game speed.
- */
+    * Creates a command informing about actual game speed.
+    */
     public SpeedChangedCommand(int ticksPerSecond) {
         this.ticksPerSecond = ticksPerSecond;
     }

@@ -22,8 +22,8 @@ import jfreerails.world.top.World;
  */
 public class InetConnection implements ConnectionToServer {
     /**
- * The socket which clients should connect to.
- */
+    * The socket which clients should connect to.
+    */
     public static final int SERVER_PORT = 55000;
     private ConnectionState state = ConnectionState.CLOSED;
     private InetAddress serverAddress;
@@ -44,9 +44,9 @@ public class InetConnection implements ConnectionToServer {
             connectionListener = l;
 
             /*
- * wake up the dispatcher if it is waiting for the
- * connectionListener to be activated
- */
+            * wake up the dispatcher if it is waiting for the
+            * connectionListener to be activated
+            */
             dispatcher.notifyAll();
         }
     }
@@ -56,11 +56,11 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Constructor called by the server.
- * The state of this socket is always WAITING.
- * @throws IOException if the socket couldn't be created.
- * @throws SecurityException if we're not allowed to create the socket.
- */
+    * Constructor called by the server.
+    * The state of this socket is always WAITING.
+    * @throws IOException if the socket couldn't be created.
+    * @throws SecurityException if we're not allowed to create the socket.
+    */
     public InetConnection(World w, int port) throws IOException {
         world = w;
         this.mutex = new Object();
@@ -73,8 +73,8 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Called when an incoming connection is attempted.
- */
+    * Called when an incoming connection is attempted.
+    */
     private InetConnection(Socket acceptedConnection, World w, Object mutex)
         throws IOException {
         this.mutex = mutex;
@@ -92,8 +92,8 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Called by the client to create a new connection.
- */
+    * Called by the client to create a new connection.
+    */
     public InetConnection(InetAddress serverAddress) {
         this.serverAddress = serverAddress;
         this.mutex = null;
@@ -104,10 +104,10 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Called by the server to accept client connections.
- * @throws IOException if an IO error occurred.
- * @return The new connection, or null if the socket is closed.
- */
+    * Called by the server to accept client connections.
+    * @throws IOException if an IO error occurred.
+    * @return The new connection, or null if the socket is closed.
+    */
     public ConnectionToServer accept() throws IOException {
         return new InetConnection(serverSocket.accept(), world, mutex);
     }
@@ -141,8 +141,8 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Called by the client to get a copy of the world.
- */
+    * Called by the client to get a copy of the world.
+    */
     public World loadWorldFromServer() throws IOException {
         setState(ConnectionState.INITIALISING);
         sendCommand(new LoadWorldCommand());
@@ -153,9 +153,9 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Closes the socket. Called by either client or server. Notifies the
- * remote side and then calls disconnect().
- */
+    * Closes the socket. Called by either client or server. Notifies the
+    * remote side and then calls disconnect().
+    */
     public synchronized void close() {
         if (state == ConnectionState.CLOSED) {
             return;
@@ -163,8 +163,8 @@ public class InetConnection implements ConnectionToServer {
 
         if (serverSocket != null) {
             /*
- * If we are the parent server socket, close it.
- */
+            * If we are the parent server socket, close it.
+            */
             try {
                 setState(ConnectionState.CLOSED);
                 serverSocket.close();
@@ -190,9 +190,9 @@ public class InetConnection implements ConnectionToServer {
                 e.printStackTrace();
 
                 /*
- * call disconnect instead of close, since we can't send a
- * CloseConnectionCommand
- */
+                * call disconnect instead of close, since we can't send a
+                * CloseConnectionCommand
+                */
                 disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -201,8 +201,8 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Connect to the remote peer.
- */
+    * Connect to the remote peer.
+    */
     public void open() throws IOException {
         socket = new Socket(serverAddress, SERVER_PORT);
         sender = new Sender(this.socket.getOutputStream());
@@ -212,13 +212,13 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Actually closes the connection. Notifies the local side that the
- * connection has been disconnected.
- */
+    * Actually closes the connection. Notifies the local side that the
+    * connection has been disconnected.
+    */
     void disconnect() {
         /* To allow this method to be called without risk of deadlock from synchronized methods in the dispatcher,
-* we must acquire the lock on the dispatcher before locking on this object.
-*/
+        * we must acquire the lock on the dispatcher before locking on this object.
+        */
         synchronized (dispatcher) {
             synchronized (this) {
                 try {
@@ -253,8 +253,8 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
- * Called by the server when a new world has been loaded.
- */
+    * Called by the server when a new world has been loaded.
+    */
     public void setWorld(World w) {
         world = w;
     }

@@ -5,7 +5,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 
-/** Since there is no setMinimum size method on JFrame, we use 
+/** Since there is no setMinimum size method on JFrame, we use
  * an instance of this class to do the job.
  *
  * @author Luke

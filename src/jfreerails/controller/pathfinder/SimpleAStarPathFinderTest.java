@@ -97,7 +97,6 @@ class Node {
 }
 
 class Map implements GraphExplorer {
-    
     //Look at SimpleAStarPathFinderTest.svg to see it 
     private final Node[] nodes = new Node[] {
             new Node(new int[] {1}, new int[] {11}), //0

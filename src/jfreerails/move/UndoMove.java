@@ -12,8 +12,8 @@ public class UndoMove implements Move {
     private Move move2undo;
 
     /**
- * @param move The move that was undone
- */
+    * @param move The move that was undone
+    */
     public UndoMove(Move move) {
         if (move instanceof UndoMove) {
             throw new IllegalArgumentException();
