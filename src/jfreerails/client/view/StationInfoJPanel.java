@@ -295,7 +295,11 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
         } else if (key == KEY.STATIONS) {
             wi.reset();
             if (currentIndex != WorldIterator.BEFORE_FIRST) {
-                wi.gotoIndex(currentIndex);                
+            	if(currentIndex < wi.size()){
+            		wi.gotoIndex(currentIndex);  
+            	}else{
+            		currentIndex = WorldIterator.BEFORE_FIRST;
+            	}
             }
             if (isAddition && wi.getIndex() == WorldIterator.BEFORE_FIRST) {
                 if (wi.next()) {
@@ -303,7 +307,7 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
                 }
             }
           
-            if(currentIndex == changedIndex){
+            if(currentIndex == changedIndex || currentIndex == WorldIterator.BEFORE_FIRST){
             	 display();
             }                     
         }

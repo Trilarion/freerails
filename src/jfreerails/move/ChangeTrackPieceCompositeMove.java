@@ -183,17 +183,23 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
         if (mustConnectToExistingTrack(w)) {
             if (hasAnyTrackBeenBuilt(w, this.builder)) {
-                ChangeTrackPieceMove a = (ChangeTrackPieceMove)super.getMove(0);
-                ChangeTrackPieceMove b = (ChangeTrackPieceMove)super.getMove(0);
-                int ruleBeforeA = a.trackPieceBefore.getTrackRule()
-                                                    .getRuleNumber();
-                int ruleBeforeB = b.trackPieceBefore.getTrackRule()
-                                                    .getRuleNumber();
+                try {
+                    ChangeTrackPieceMove a = (ChangeTrackPieceMove)super.getMove(0);
+                    ChangeTrackPieceMove b = (ChangeTrackPieceMove)super.getMove(1);
+                    int ruleBeforeA = a.trackPieceBefore.getTrackRule()
+                                                        .getRuleNumber();
+                    int ruleBeforeB = b.trackPieceBefore.getTrackRule()
+                                                        .getRuleNumber();
 
-                if (ruleBeforeA == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER &&
-                        ruleBeforeB == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                    return MoveStatus.moveFailed(
-                        "Must connect to existing track");
+                    if (ruleBeforeA == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER &&
+                            ruleBeforeB == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+                        return MoveStatus.moveFailed(
+                            "Must connect to existing track");
+                    }
+                } catch (ClassCastException e) {
+                    //It was not the type of move we expected.
+                    //We end up here when we are removing a station.
+                    return MoveStatus.MOVE_OK;
                 }
             }
         }
