@@ -30,7 +30,13 @@ final public class FreerailsCursor {
 	private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
 
 	private final ModelRoot modelRoot;
-
+	
+	/** The location of the cursor last time paintCursor(.) was called.*/
+	private Point lastCursorPosition = new Point();
+	
+	/** The time in ms the cursor arrived at its current position.*/
+	private long timeArrived = 0;
+	
 	/**
 	 * Creates a new FreerailsCursor.
 	 * 
@@ -63,6 +69,13 @@ final public class FreerailsCursor {
 
 		Point cursorMapPosition = (Point) modelRoot
 				.getProperty(ModelRoot.Property.CURSOR_POSITION);
+		
+		/* Has the cursor moved since we last painted it?*/
+		if(!cursorMapPosition.equals(lastCursorPosition)){
+			lastCursorPosition = new Point(cursorMapPosition);
+			timeArrived = System.currentTimeMillis();
+		}
+		
 		int x = cursorMapPosition.x * tileSize.width;
 		int y = cursorMapPosition.y * tileSize.height;
 		
@@ -82,7 +95,7 @@ final public class FreerailsCursor {
 			break;
 		}
 		Boolean b = (Boolean)modelRoot.getProperty(ModelRoot.Property.IGNORE_KEY_EVENTS);
-		long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis() - timeArrived;
 		boolean show = ((time / 500) % 2) == 0;
 		if (show && !b.booleanValue()) {
 			g.drawImage(cursor, x, y, null);
@@ -106,7 +119,7 @@ final public class FreerailsCursor {
 			layout.draw(g2, textX, textY);
 		}
 		
-//		Draw a big white dot at the target point.
+		//Draw a big white dot at the target point.
         Point targetPoint = (Point)modelRoot.getProperty(ModelRoot.Property.THINKING_POINT);
 		if (null != targetPoint) {
             time = System.currentTimeMillis();

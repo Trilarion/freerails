@@ -71,55 +71,67 @@ final public class TrackMoveProducer {
 	}
 
 	public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
-		if(trackBuilderMode ==  IGNORE_TRACK){
+		
+		ReadOnlyWorld w = executor.getWorld();
+		FreerailsPrincipal principal = executor.getPrincipal();
+		switch (trackBuilderMode) {
+		case IGNORE_TRACK: {
 			return MoveStatus.MOVE_OK;
 		}
-		ReadOnlyWorld w = executor.getWorld();
+		case REMOVE_TRACK: {
+			try {
+				ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
+						.generateRemoveTrackMove(from, trackVector, w,
+								principal);
 
-		int ruleAID, ruleBID;
-		TrackRule ruleA, ruleB;
-		{
-			int x = from.x;
-			int y = from.y;
+				Move moveAndTransaction = transactionsGenerator
+						.addTransactions(move);
+
+				return sendMove(moveAndTransaction);
+			} catch (Exception e) {
+				// thrown when there is no track to remove.
+				// Fix for bug [ 948670 ] Removing non-existant track
+				return MoveStatus.moveFailed("No track to remove.");
+			}
+		}
+		case BUILD_TRACK:
+		case UPGRADE_TRACK:
+			/*
+			 * Do nothing yet since we need to work out what type of track to
+			 * build.
+			 */
+			break;
+
+		}
+		assert (trackBuilderMode == BUILD_TRACK || trackBuilderMode == UPGRADE_TRACK);
+
+		int[] ruleIDs = new int[2];
+		TrackRule[] rules = new TrackRule[2];
+		int[] xs = { from.x, from.x + trackVector.deltaX};
+		int[] ys = {from.y, from.y + trackVector.deltaY};
+		for(int i = 0; i < ruleIDs.length ; i++){
+			int x = xs[i];
+			int y = ys[i];
 			FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
 			int tt = tile.getTerrainTypeID();
-			ruleAID = buildTrackStrategy.getRule(tt);
+			ruleIDs[i] = buildTrackStrategy.getRule(tt);
 
-			if (ruleAID == -1) {
+			if (ruleIDs[i] == -1) {
 				TerrainType terrainType = (TerrainType) w.get(
 						SKEY.TERRAIN_TYPES, tt);
-				return MoveStatus
-						.moveFailed("Non of the selected track types can be built on "
-								+ terrainType.getDisplayName());
+				String message = "Non of the selected track types can be built on "
+								+ terrainType.getDisplayName();
+				return MoveStatus.moveFailed(message);
 			}
-			ruleA = (TrackRule) w.get(SKEY.TRACK_RULES, ruleAID);
-		}
-		
+			rules[i] = (TrackRule) w.get(SKEY.TRACK_RULES, ruleIDs[i]);
+		}				
 
-		{
-			int x = from.x + trackVector.deltaX;
-			int y = from.y + trackVector.deltaY;
-			FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
-			int tt = tile.getTerrainTypeID();
-			ruleBID = buildTrackStrategy.getRule(tt);
-
-			if (ruleBID == -1) {
-				TerrainType terrainType = (TerrainType) w.get(
-						SKEY.TERRAIN_TYPES, tt);
-				return MoveStatus
-						.moveFailed("Non of the selected track types can be built on "
-								+ terrainType.getDisplayName());
-			}
-			ruleB = (TrackRule) w.get(SKEY.TRACK_RULES, ruleBID);
-		}
-
-		
-		
-		if (trackBuilderMode == UPGRADE_TRACK) {
+		switch (trackBuilderMode) {
+		case UPGRADE_TRACK: {
 			//upgrade the from tile if necessary.			
 			FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
-			if(tileA.getTrackTypeID() != ruleAID){
-				MoveStatus ms = upgradeTrack(new Point(from), ruleAID);
+			if(tileA.getTrackTypeID() != ruleIDs[0]){
+				MoveStatus ms = upgradeTrack(new Point(from), ruleIDs[0]);
 				if(!ms.ok){
 					return ms;
 				}				
@@ -127,49 +139,27 @@ final public class TrackMoveProducer {
 			Point point = new Point(from.x + trackVector.getDx(), from.y
 					+ trackVector.getDy());					
 			FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
-			if(tileB.getTrackTypeID() != ruleBID){
-				MoveStatus ms = upgradeTrack(point, ruleBID);
+			if(tileB.getTrackTypeID() != ruleIDs[1]){
+				MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
 				if(!ms.ok){
 					return ms;
 				}				
 			}					
-			return MoveStatus.MOVE_OK;
+			return MoveStatus.MOVE_OK;			
 		}
-
-		ChangeTrackPieceCompositeMove move = null;
-
-		FreerailsPrincipal principal = executor.getPrincipal();
-
-		switch (trackBuilderMode) {
 		case BUILD_TRACK: {
-			move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
-					trackVector, ruleA, ruleB, w, principal);
+			ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
+					trackVector, rules[0], rules[1], w, principal);
 
-			break;
-		}
+			Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
-		case REMOVE_TRACK: {
-			try {
-				move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(
-						from, trackVector, w, principal);
-			} catch (Exception e) {
-				// thrown when there is no track to remove.
-				// Fix for bug [ 948670 ] Removing non-existant track
-				return MoveStatus.moveFailed("No track to remove.");
-			}
-
-			break;
-		}
-
-		
-
+			return sendMove(moveAndTransaction);
+		}	
 		default:
 			throw new IllegalArgumentException(String.valueOf(trackBuilderMode));
 		}
 
-		Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-
-		return sendMove(moveAndTransaction);
+		
 	}
 
 	public MoveStatus upgradeTrack(Point point) {
