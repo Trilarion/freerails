@@ -6,12 +6,10 @@
 #ifndef __I18N_H__
 #define __I18N_H__
 
+#include "config.h"
+
 #define LOCALEDIR "/usr/local/share/locale"
 void i18n_init();
-
-// !!! If you don't want to enable NLS or if your system does not have
-//    locale.h file, then comment next line
-#define ENABLE_NLS 1
 
 #ifdef ENABLE_NLS
 #include <libintl.h>
