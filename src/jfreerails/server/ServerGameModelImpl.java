@@ -15,10 +15,8 @@ import jfreerails.network.ServerGameModel;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.GameTime;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldDifferences;
 
@@ -55,18 +53,6 @@ public class ServerGameModelImpl implements ServerGameModel {
         this.serverAutomata = serverAutomata;
         this.trainMovers = trainMovers;
         nextModelUpdateDue = System.currentTimeMillis();
-    }
-
-    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-        calcSupplyAtStations.listUpdated(key, index, principal);
-    }
-
-    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
-        calcSupplyAtStations.itemAdded(key, index, principal);
-    }
-
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-        calcSupplyAtStations.itemRemoved(key, index, principal);
     }
 
     /** This is called on the last tick of each year. */

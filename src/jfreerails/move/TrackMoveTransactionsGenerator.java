@@ -50,7 +50,7 @@ public class TrackMoveTransactionsGenerator {
         principal = p;
     }
 
-    public Move addTransactions(Move move) {
+    public CompositeMove addTransactions(Move move) {
         int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
         trackAdded = new int[numberOfTrackTypes];
         trackRemoved = new int[numberOfTrackTypes];

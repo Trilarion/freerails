@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import jfreerails.controller.CargoElementObject;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
+import jfreerails.world.station.StationModel;
+import jfreerails.world.station.SupplyAtStation;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
 import jfreerails.world.terrain.Production;
@@ -21,6 +23,7 @@ import jfreerails.world.track.TrackRule;
  * and then returns a vector of these rates.
  *
  * @author Scott Bennett
+ * @author Luke
  * Created: 9th May 2003
  */
 public class CalcCargoSupplyRateAtStation {
@@ -28,66 +31,41 @@ public class CalcCargoSupplyRateAtStation {
 
     /** The threshold that demand for a cargo must exceed before the station demands the cargo. */
     private static final int PREREQUISITE_FOR_DEMAND = 16;
+    private final int[] converts;
+    private final int[] demand;
+    private final Vector supplies;
     private final ReadOnlyWorld w;
     private int x;
     private int y;
-    private final Vector supplies;
-    private final int[] demand;
-    private final int[] converts;
+    private int stationRadius;
 
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
+    /** Call this constructor if the station does not exist yet.
+     * @param trackRuleNo the station type.
+     */
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y,
+        int trackRuleNo) {
         this.w = world;
         this.x = X;
         this.y = Y;
 
+        TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNo);
+        stationRadius = trackRule.getStationRadius();
+
         supplies = new Vector();
-        PopulateSuppliesVector();
+        populateSuppliesVector();
 
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
         demand = new int[numCargoTypes];
         converts = ConvertedAtStation.emptyConversionArray(numCargoTypes);
     }
 
-    private void PopulateSuppliesVector() {
-        //fill supplies vector with 0 values for all cargo types
-        //get the correct list of cargoes from the world object
-        CargoElementObject tempCargoElement;
-
-        for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
-            //cT = (CargoType) w.get(SKEY.CARGO_TYPES, i);
-            tempCargoElement = new CargoElementObject(0, i);
-            supplies.add(tempCargoElement);
-        }
+    /** Call this constructor if the station already exists.*/
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
+        this(world, X, Y, findTrackRule(X, Y, world));
     }
 
-    public Vector ScanAdjacentTiles() {
-        //Find the station radius.
-        FreerailsTile tile = (FreerailsTile)w.getTile(this.x, this.y);
-        TrackRule trackRule = tile.getTrackRule();
-        int stationRadius = trackRule.getStationRadius();
-        int stationDiameter = stationRadius * 2 + 1;
-
-        Rectangle stationRadiusRect = new Rectangle(x - stationRadius,
-                y - stationRadius, stationDiameter, stationDiameter);
-        Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(),
-                w.getMapHeight());
-        Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
-        logger.fine("stationRadiusRect=" + stationRadiusRect);
-        logger.fine("mapRect=" + mapRect);
-        logger.fine("tiles2scan=" + tiles2scan);
-
-        //Look at the terrain type of each tile and retrieve the cargo supplied.
-        //The station radius determines how many tiles each side we look at.
-        for (int i = tiles2scan.x; i < (tiles2scan.x + tiles2scan.width);
-                i++) {
-            for (int j = tiles2scan.y; j < (tiles2scan.y + tiles2scan.height);
-                    j++) {
-                incrementSupplyAndDemand(i, j);
-            }
-        }
-
-        //return the supplied cargo rates
-        return supplies;
+    public ConvertedAtStation getConversion() {
+        return new ConvertedAtStation(this.converts);
     }
 
     public DemandAtStation getDemand() {
@@ -100,10 +78,6 @@ public class CalcCargoSupplyRateAtStation {
         }
 
         return new DemandAtStation(demandboolean);
-    }
-
-    public ConvertedAtStation getConversion() {
-        return new ConvertedAtStation(this.converts);
     }
 
     private void incrementSupplyAndDemand(int i, int j) {
@@ -148,6 +122,51 @@ public class CalcCargoSupplyRateAtStation {
         }
     }
 
+    private void populateSuppliesVector() {
+        //fill supplies vector with 0 values for all cargo types
+        //get the correct list of cargoes from the world object
+        CargoElementObject tempCargoElement;
+
+        for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
+            //cT = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+            tempCargoElement = new CargoElementObject(0, i);
+            supplies.add(tempCargoElement);
+        }
+    }
+
+    public Vector scanAdjacentTiles() {
+        int stationDiameter = stationRadius * 2 + 1;
+
+        Rectangle stationRadiusRect = new Rectangle(x - stationRadius,
+                y - stationRadius, stationDiameter, stationDiameter);
+        Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(),
+                w.getMapHeight());
+        Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
+        logger.fine("stationRadiusRect=" + stationRadiusRect);
+        logger.fine("mapRect=" + mapRect);
+        logger.fine("tiles2scan=" + tiles2scan);
+
+        //Look at the terrain type of each tile and retrieve the cargo supplied.
+        //The station radius determines how many tiles each side we look at.
+        for (int i = tiles2scan.x; i < (tiles2scan.x + tiles2scan.width);
+                i++) {
+            for (int j = tiles2scan.y; j < (tiles2scan.y + tiles2scan.height);
+                    j++) {
+                incrementSupplyAndDemand(i, j);
+            }
+        }
+
+        //return the supplied cargo rates
+        return supplies;
+    }
+
+    private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
+        FreerailsTile tile = (FreerailsTile)w.getTile(xx, yy);
+        int ruleNumber = tile.getTrackRule().getRuleNumber();
+
+        return ruleNumber;
+    }
+
     private void updateSupplyRate(int type, int rate) {
         //loop through supplies vector and increment the cargo values as required
         for (int n = 0; n < supplies.size(); n++) {
@@ -161,5 +180,35 @@ public class CalcCargoSupplyRateAtStation {
                 break; //no need to go through the rest if we've found a match
             }
         }
+    }
+
+    /**
+     *
+     * Process each existing station, updating what is supplied to it.
+     *
+     * @param station A StationModel object to be processed
+     *
+     */
+    public StationModel calculations(StationModel station) {
+        int x = station.getStationX();
+        int y = station.getStationY();
+
+        Vector supply = new Vector();
+        int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];
+
+        supply = scanAdjacentTiles();
+
+        //grab the supply rates from the vector
+        for (int i = 0; i < supply.size(); i++) {
+            cargoSupplied[i] = ((CargoElementObject)supply.elementAt(i)).getRate();
+        }
+
+        //set the supply rates for the current station	
+        SupplyAtStation supplyAtStation = new SupplyAtStation(cargoSupplied);
+        station = new StationModel(station, supplyAtStation);
+        station = new StationModel(station, getDemand());
+        station = new StationModel(station, getConversion());
+
+        return station;
     }
 }

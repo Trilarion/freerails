@@ -8,6 +8,8 @@ import java.awt.Point;
 import jfreerails.controller.CalcNearestCity;
 import jfreerails.controller.VerifyStationName;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.station.StationModel;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
@@ -62,7 +64,7 @@ public class AddStationPreMove implements PreMove {
         ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,
                 after, p);
 
-        Move move;
+        CompositeMove move;
 
         if (!oldTile.getTrackRule().isStation()) {
             //There isn't already a station here, we need to pick a name and add an entry
@@ -81,7 +83,7 @@ public class AddStationPreMove implements PreMove {
             //check the terrain to see if we can build a station on it...
             move = AddStationMove.generateMove(world, stationName, p,
                     upgradeTrackMove, principal);
-
+            move = addSupplyAndDemand(move, world);
             move = transactionsGenerator.addTransactions(move);
         } else {
             //Upgrade an existing station.
@@ -89,5 +91,28 @@ public class AddStationPreMove implements PreMove {
         }
 
         return move;
+    }
+
+    private CompositeMove addSupplyAndDemand(CompositeMove m, ReadOnlyWorld w) {
+        Move[] moves = m.getMoves();
+
+        for (int i = 0; i < moves.length; i++) {
+            if (moves[i] instanceof AddItemToListMove) {
+                AddItemToListMove move = (AddItemToListMove)moves[i];
+
+                if (move.getKey().equals(KEY.STATIONS)) {
+                    StationModel station = (StationModel)move.getAfter();
+                    CalcCargoSupplyRateAtStation supplyRate;
+                    supplyRate = new CalcCargoSupplyRateAtStation(w, station.x,
+                            station.y, ruleNumber);
+
+                    StationModel stationAfter = supplyRate.calculations(station);
+                    moves[i] = new AddItemToListMove(move.getKey(),
+                            move.getIndex(), stationAfter, move.getPrincipal());
+                }
+            }
+        }
+
+        return new CompositeMove(moves);
     }
 }

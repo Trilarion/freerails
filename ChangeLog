@@ -1,3 +1,6 @@
+Oct 19, 2004 Luke	
+	Bugs Fixed:
+	o 1046399	No supply and demand at new stations
 Oct 18, 2004 Luke
 	RFEs Implemented:
 	o  1048913	Option to turn off sound
