@@ -10,12 +10,11 @@ public interface TerrainType extends FreerailsSerializable {
 	String getTerrainCategory();
 	int getRGB();
 
-	
 	static final TerrainType NULL = (new TerrainType() {
 
 		public String getTerrainTypeName() {
 				// TODO Auto-generated method stub
-			return null;
+	return null;
 		}
 
 		public String getTerrainCategory() {

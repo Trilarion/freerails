@@ -7,8 +7,7 @@
 package jfreerails.world.terrain;
 
 /**
-*  This class encapsulates the non-visual properites of a terrain tile. E.g.
-*  its type-name, its right-of-way cost.
+*	This class represents a type of terrain
 *
 *@author     Luke Lindsay
 *     16 August 2001
@@ -20,30 +19,43 @@ final public class TileTypeImpl implements TerrainType {
 	private final int rgb;
 	private final String terrainCategory;
 	private final String terrainType;
-
-	/**
-	*@return    The name of this terrain type.
-	*/
+	private final int rightOfWay;
+	private final Production[] production;
+	private final Consumption[] consumption;
+	private final Conversion[] conversion;
 
 	public String getTerrainTypeName() {
 		return terrainType;
 	}
 
-	/**
-	*  Creates new Tile
-	*
-	*@param  rgb          The RGB value to be mapped to this terrain type.
-	*@param  terrainType  The name of this terrain type. E.g. forest.
-	*/
-
 	public String getTerrainCategory() {
 		return terrainCategory;
 	}
 
-	public TileTypeImpl(int rgb, String terrainCategory, java.lang.String terrainType) {
+	public TileTypeImpl(int rgb, String terrainCategory, String terrainType, int rightOfWay) {
 		this.terrainType = terrainType;
 		this.terrainCategory = terrainCategory;
 		this.rgb = rgb;
+		this.rightOfWay = rightOfWay;
+		production = new Production[0];
+		consumption = new Consumption[0];
+		conversion = new Conversion[0];
+	}
+	public TileTypeImpl(
+		int rgb,
+		String terrainCategory,
+		String terrainType,
+		int rightOfWay,
+		Production[] production,
+		Consumption[] consumption,
+		Conversion[] conversion) {
+		this.terrainType = terrainType;
+		this.terrainCategory = terrainCategory;
+		this.rgb = rgb;
+		this.rightOfWay = rightOfWay;
+		this.production = production;
+		this.consumption = consumption;
+		this.conversion = conversion;
 	}
 
 	/**

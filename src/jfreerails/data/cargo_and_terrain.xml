@@ -1,0 +1,143 @@
+<!DOCTYPE Types SYSTEM "cargo_and_terrain.dtd">
+<Types>
+   <Cargo_Types>
+      <Cargo id="Mail" Category="Mail" unitWeight="1" />
+
+      <Cargo id="Passengers" Category="Passengers" unitWeight="2" />
+
+      <Cargo id="Food" Category="Fast_Freight" unitWeight="2" />
+
+      <Cargo id="Livestock" Category="Fast_Freight" unitWeight="3" />
+
+      <Cargo id="Mfg._Goods" Category="Fast_Freight" unitWeight="3" />
+
+      <Cargo id="Grain" Category="Slow_Freight" unitWeight="5" />
+
+      <Cargo id="Coffee" Category="Slow_Freight" unitWeight="5" />
+
+      <Cargo id="Export_Goods" Category="Slow_Freight" unitWeight="5" />
+
+      <Cargo id="Petroleum" Category="Bulk_Freight" unitWeight="8" />
+
+      <Cargo id="Wood" Category="Bulk_Freight" unitWeight="8" />
+
+      <Cargo id="Sugar" Category="Bulk_Freight" unitWeight="8" />
+   </Cargo_Types>
+
+   <Terrain_Types>
+      <Tile id="City" Category="Urban" rgb="fcfc48" right-of-way="0">
+         <Produces Cargo="Mail" Rate="1" />
+
+         <Produces Cargo="Passengers" Rate="2" />
+
+         <Consumes Cargo="Mail" Prerequisite="2" />
+
+         <Consumes Cargo="Mfg._Goods" Prerequisite="2" />
+
+         <Consumes Cargo="Food" Prerequisite="2" />
+      </Tile>
+
+      <Tile id="Factory" Category="Urban" rgb="0000b4" right-of-way="1000">
+         <Converts input="Coffee" output="Export_Goods" />
+
+         <Converts input="Wood" output="Export_Goods" />
+
+         <Converts input="Sugar" output="Export_Goods" />
+      </Tile>
+
+      <Tile id="Refinery" Category="Urban" rgb="7" right-of-way="0">
+         <Converts input="Petroleum" output="Export_Goods" />
+      </Tile>
+
+      <Tile id="slums" Category="Urban" rgb="0" right-of-way="0"/>
+
+      <Tile id="Village" Category="Urban" rgb="d86c48" right-of-way="0">
+         <Produces Cargo="Mail" Rate="1" />
+
+         <Produces Cargo="Passengers" Rate="1" />
+
+         <Consumes Cargo="Mfg._Goods" Prerequisite="4" />
+      </Tile>
+
+      <Tile id="Clear" Category="Country" rgb="00b400" right-of-way="0"/>
+
+      <Tile id="Farm" Category="Special" rgb="48fc48" right-of-way="0"/>
+
+      <Tile id="Desert" Category="Country" rgb="b42400" right-of-way="0"/>
+
+      <Tile id="Ocean" Category="Water" rgb="0000b7" right-of-way="0"/>
+
+      <Tile id="Harbour" Category="Water" rgb="1eead2" right-of-way="0">
+         <Produces Cargo="Mail" Rate="1" />
+
+         <Produces Cargo="Passengers" Rate="1" />
+
+         <Produces Cargo="Mfg._Goods" Rate="4" />
+
+         <Converts input="Grain" output="Food" />
+
+         <Converts input="Export_Goods" output="Export_Goods" />
+
+         <Consumes Cargo="Grain" />
+
+         <Consumes Cargo="Coffee" />
+
+         <Consumes Cargo="Wood" />
+
+         <Consumes Cargo="Sugar" />
+      </Tile>
+
+      <Tile id="Stock-Yard" Category="Urban" rgb="3" right-of-way="0">
+         <Converts input="Livestock" output="Food" />
+      </Tile>
+
+      <Tile id="Food_Proc._Plant" Category="Urban" rgb="5" right-of-way="0">
+         <Converts input="Grain" output="Food" />
+      </Tile>
+
+      <Tile id="Cattle_Ranch" Category="Urban" rgb="4" right-of-way="0">
+         <Produces Cargo="Livestock" Rate="4" />
+      </Tile>
+
+      <Tile id="Grain_Elevator" Category="Urban" rgb="ef901c" right-of-way="0">
+         <Produces Cargo="Grain" Rate="4" />
+      </Tile>
+
+      <Tile id="Oil_Well" Category="Urban" rgb="ef901d" right-of-way="0">
+         <Produces Cargo="Petroleum" Rate="4" />
+      </Tile>
+
+      <Tile id="Lumber_Mill" Category="Urban" rgb="ef901e" right-of-way="0">
+         <Produces Cargo="Wood" Rate="4" />
+      </Tile>
+
+      <Tile id="Sugar_Plant." Category="Urban" rgb="ef901f" right-of-way="0">
+         <Produces Cargo="Sugar" Rate="3" />
+      </Tile>
+
+      <Tile id="River" Category="Water" rgb="0048d8" right-of-way="0"/>
+
+      <Tile id="Landing" Category="Water" rgb="0048d9" right-of-way="0">
+         <Consumes Cargo="Grain" />
+
+         <Consumes Cargo="Coffee" />
+
+         <Consumes Cargo="Export_Goods" />
+
+         <Consumes Cargo="Wood" />
+
+         <Consumes Cargo="Sugar" />
+      </Tile>
+
+      <Tile id="Terminal" Category="Special" rgb="40" right-of-way="0"/>
+
+      <Tile id="Jungle" Category="Country" rgb="4890fc" right-of-way="0"/>
+
+      <Tile id="Hills" Category="Country" rgb="b4b4b4" right-of-way="0"/>
+
+      <Tile id="Foothills" Category="Country" rgb="90d8fc" right-of-way="0"/>
+
+      <Tile id="Mountain" Category="Country" rgb="ffffff" right-of-way="0"/>
+   </Terrain_Types>
+</Types>
+
