@@ -36,13 +36,25 @@ public:
     void setMainWindow(GameMainWindow* mw);
 
 private:
-    struct PG_Application* pGlobalApp;
+    struct PG_Application2* pGlobalApp;
     Uint32 screenFlags;
     int screenDepth;
     PG_GradientWidget* splash;
     GameMapView* mapView;
     GameNetView* netView;
     GamePanel* panel;
+};
+
+class PG_Application2: public PG_Application {
+
+public:
+  void setEngine(Engine* _engine) {
+    engine=_engine;
+  };
+  virtual void eventIdle();
+private:
+  Engine* engine;
+
 };
 
 #endif
