@@ -30,7 +30,7 @@ void PG_FrameHandler::AddFrameObject(PG_FrameObject* object)
 
 bool PG_FrameHandler::RemoveFrameObject(PG_FrameObject* object)
 {
-  vector<PG_FrameObject*>::iterator it;
+  std::vector<PG_FrameObject*>::iterator it;
   for (it=my_frameobjects.begin(); it!=my_frameobjects.end(); ++it)
   {
     if (object==*it)
@@ -54,7 +54,7 @@ bool PG_FrameHandler::DeleteFrameObject(PG_FrameObject* object)
 
 void PG_FrameHandler::NextFrame(SDL_Surface *surface)
 {
-  vector<PG_FrameObject*>::iterator it;
+  std::vector<PG_FrameObject*>::iterator it;
   for (it=my_frameobjects.begin(); it!=my_frameobjects.end(); ++it)
   {
     (*it)->NextFrame(surface, my_background);

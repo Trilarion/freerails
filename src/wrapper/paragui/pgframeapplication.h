@@ -41,7 +41,8 @@ public:
 	Run the modal message pump. This function will exit when the main window was closed.
 	Every Time it calls the NextFrame function of the PG_FrameHandler Class.
 	*/
-	static int RunEventLoop(void* data);
+	void RunEventLoop();
+//	int RunEventLoopThread(void* data);
 
 	static void SetFrameHandler(PG_FrameHandler* framehandler);
 	static PG_FrameHandler* GetFrameHandler();

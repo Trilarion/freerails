@@ -36,21 +36,25 @@ PG_Label* PG_FrameApplication::GetFPSLabel() {
   return my_fpslabel;
 }
 
+int RunEventLoopThread(void* data) {
+	static_cast<PG_FrameApplication*>(data)->RunEventLoop();
+	return 0;
+}
+
 /**  */
 SDL_Thread* PG_FrameApplication::Run(bool threaded) {
 #ifndef WIN32
 	if(threaded) {
-		SDL_Thread* thrd = SDL_CreateThread(PG_Application::RunEventLoop, this);
+		SDL_Thread* thrd = SDL_CreateThread(RunEventLoopThread, this);
 		return thrd;
 	}
 #endif
-	RunEventLoop(this);
+	RunEventLoop();
 	return NULL;
 }
 
 /** Event processing loop */
-int PG_FrameApplication::RunEventLoop(void* data) {
-	PG_FrameApplication* object = static_cast<PG_FrameApplication*>(data);
+void PG_FrameApplication::RunEventLoop() {
 	SDL_Event event;
 	Uint32 then, now, frames;
 	SDL_Surface *screen = PG_Application::GetScreen();
@@ -58,7 +62,6 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 	SetBulkMode();
 	
 	my_quitEventLoop = false;
-	assert(data);
 
 	FlushEventQueue();
 
@@ -69,7 +72,7 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 		
                 my_nethandler->checkNet();
 		if (SDL_PollEvent(&event)) {
-		  processed = object->PumpIntoEventQueue(&event);
+		  processed = PumpIntoEventQueue(&event);
 		}
 		++frames;
 		now = SDL_GetTicks();
@@ -88,7 +91,6 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 		PG_Widget::BulkBlit();
 	        SDL_Flip(screen);
 	}
-	return -1;
 }
 
 bool PG_FrameApplication::eventQuit(int id, PG_MessageObject* widget, unsigned long data) {

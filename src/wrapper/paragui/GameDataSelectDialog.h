@@ -27,8 +27,8 @@ class GameDataSelectDialog: public PG_Window {
     int show();
     
     std::string getName() {return std::string(name->GetText());};
-    int getPort() {return atoi(port->GetText());};
-    char *getIpAddress() {return strtok((char *)ip_address->GetText(),"_");};
+    int getPort() {return atoi(port->GetText().c_str());};
+    char *getIpAddress() {return strtok((char *)ip_address->GetText().c_str(),"_");};
     
     int getWidth() {return width->GetValue();};
     int getHeight() {return height->GetValue();};

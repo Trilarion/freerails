@@ -67,6 +67,8 @@ int GameApplication::runEngine(void* data)
 int GameApplication::run() {
 
   int result;
+  char file[]="data/graphics/splash_screen.jpg";
+  pGlobalApp->SetBackground(file);
   
   showSplash();
   setCaption("FreeRails");
@@ -156,13 +158,13 @@ bool GameApplication::initScreen(int x, int y, int w, int h) {
 }
 
 void GameApplication::setCaption(const char *title) {
-  pGlobalApp->SetCaption(title,NULL);
+//  pGlobalApp->SetCaption(title,NULL);
 }
 
 void GameApplication::showSplash() {
   splash = new PG_ThemeWidget(NULL, PG_Rect(100,100,600,400));
-  char file[]="data/graphics/ui/title.png";
-  splash->SetBackground(file,BKMODE_STRETCH);
+  char file[]="data/graphics/splash_screen.jpg";
+  splash->SetBackground(file, PG_Draw::STRETCH);
   splash->SetBackgroundBlend(0);
   splash->SetFadeSteps(20);
   splash->Show();

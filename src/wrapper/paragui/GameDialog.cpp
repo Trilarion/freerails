@@ -4,22 +4,23 @@
 
 #include "GameDialog.h"
 
+/*
 PARAGUI_CALLBACK(handle_dialog_close) {
   GameDialog* dialog = (GameDialog*)clientdata;
   dialog->setButtonflag(-1);
   return true;
-}
+}*/
 
 GameDialog::GameDialog(GameWidget* parent, int x, int y, int w, int h, char* titel) {
-  widget=new PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,true);
+  widget=new PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel);//,true);
   buttonflag=0;
-  widget->SetEventCallback(MSG_WINDOWCLOSE,handle_dialog_close,this);
+//  widget->SetEventCallback(MSG_WINDOWCLOSE,handle_dialog_close,this);
 }
 
 GameDialog::GameDialog(GameApplication* parent, int x, int y, int w, int h, char* titel) {
-  widget=new PG_Window(NULL, PG_Rect(x,y,w,h),titel,true);
+  widget=new PG_Window(NULL, PG_Rect(x,y,w,h),titel);//,true);
   buttonflag=0;
-  widget->SetEventCallback(MSG_WINDOWCLOSE,handle_dialog_close,this);
+//  widget->SetEventCallback(MSG_WINDOWCLOSE,handle_dialog_close,this);
 }
 
 GameDialog::~GameDialog() {

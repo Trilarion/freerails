@@ -65,7 +65,7 @@ public:
 	bool DeleteFrameObject(PG_FrameObject* object);
 
 protected:
-        vector<PG_FrameObject*> my_frameobjects;
+        std::vector<PG_FrameObject*> my_frameobjects;
 	SDL_Surface* my_appsurface;
 	PG_FrameApplication* my_app;
 	Uint32 my_background;

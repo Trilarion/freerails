@@ -11,7 +11,7 @@
 #include "MapField.h"
 #include "Base2DMapView.h"
 
-#include <paragui_types.h>
+//#include <paragui_types.h>
 #include <pgimage.h>
 #include <pglabel.h>
 #include <pgrect.h>

@@ -4,7 +4,7 @@
 
 #include "GamePanel.h"
 
-PARAGUI_CALLBACK(GamePanel::pause_handler) {
+/*PARAGUI_CALLBACK(GamePanel::pause_handler) {
 
   switch (guiEngine->getGameState())
   {
@@ -85,7 +85,7 @@ PARAGUI_CALLBACK(GamePanel::clickStationSelect) {
       my_parent->getWidget()->setStationType(Station::Big);
     break;
   }
-}
+}*/
 
 
 GamePanel::GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine):
@@ -95,17 +95,17 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
 
   SetBackgroundBlend(255);
   SetTransparency(128);
-  stationViewButton=new PG_Button(this,GamePanel::ViewStations,PG_Rect(2,200,79,20),"Stations");
+  stationViewButton=new PG_Button(this, /*GamePanel::ViewStations,*/PG_Rect(2,200,79,20),"Stations");
   stationViewButton->SetToggle(true);
   stationViewButton->SetPressed(true);
-  stationViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
+//  stationViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
 
-  trainViewButton=new PG_Button(this,GamePanel::ViewTrains,PG_Rect(82,200,68,20),"Trains");
+  trainViewButton=new PG_Button(this, /*GamePanel::ViewTrains,*/PG_Rect(82,200,68,20),"Trains");
   trainViewButton->SetToggle(true);
-  trainViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
+//  trainViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
   
   trainList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
-  trainList->EnableScrollBar(true, PG_SB_VERTICAL);
+  trainList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
   trainList->SetTransparency(128);
   trainList->SetBackgroundBlend(255);
   trainList->SetVisible(false);
@@ -113,46 +113,46 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
   trainListSize=0;
 
   stationList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
-  stationList->EnableScrollBar(true, PG_SB_VERTICAL);
+  stationList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
   stationList->SetTransparency(128);
   stationList->SetBackgroundBlend(255);
   stationList->SetDirtyUpdate(false);
   stationListSize=0;
   
-  trackButton=new PG_Button(this,GamePanel::BuildTrack,PG_Rect(5,400,25,25));
+  trackButton=new PG_Button(this, /*GamePanel::BuildTrack,*/PG_Rect(5,400,25,25));
   trackButton->SetIcon("graphics/ui/buttons/build_track.png",
 			"graphics/ui/buttons/build_track.png");
   trackButton->SetToggle(true);
-  trackButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
+//  trackButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
 
-  stationButton=new PG_Button(this,GamePanel::BuildStation,PG_Rect(35,400,25,25));
+  stationButton=new PG_Button(this, /*GamePanel::BuildStation,*/PG_Rect(35,400,25,25));
   stationButton->SetIcon("graphics/ui/buttons/build_station.png",
 			 "graphics/ui/buttons/build_station.png");
   stationButton->SetToggle(true);
-  stationButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
+//  stationButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
 
-  trainButton=new PG_Button(this,GamePanel::BuildTrain,PG_Rect(65,400,25,25));
+  trainButton=new PG_Button(this, /*GamePanel::BuildTrain,*/PG_Rect(65,400,25,25));
   trainButton->SetIcon("graphics/ui/buttons/build_train.png",
 		       "graphics/ui/buttons/build_train.png");
   trainButton->SetToggle(true);
-  trainButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
+//  trainButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
   
-  stationSignal=new PG_RadioButton(this, 4, PG_Rect(5, 430, 150, 20), "Signal Tower");
-  stationSmall=new PG_RadioButton(this, 5, PG_Rect(5, 450, 150, 20), "Depot", stationSignal);
-  stationMedium=new PG_RadioButton(this, 6, PG_Rect(5, 470, 150, 20), "Station", stationSignal);
-  stationBig=new PG_RadioButton(this, 7, PG_Rect(5, 490, 150, 20), "Terminal", stationSignal);
+  stationSignal=new PG_RadioButton(this, PG_Rect(5, 430, 150, 20), "Signal Tower");
+  stationSmall=new PG_RadioButton(this, PG_Rect(5, 450, 150, 20), "Depot", stationSignal);
+  stationMedium=new PG_RadioButton(this, PG_Rect(5, 470, 150, 20), "Station", stationSignal);
+  stationBig=new PG_RadioButton(this, PG_Rect(5, 490, 150, 20), "Terminal", stationSignal);
 
-  stationSignal->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
-  stationSmall->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
-  stationMedium->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
-  stationBig->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
+//  stationSignal->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
+//  stationSmall->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
+//  stationMedium->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
+//  stationBig->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
 
-  pauseButton=new PG_Button(this,3,PG_Rect(5,510,125,25),"PAUSE");
+  pauseButton=new PG_Button(this, PG_Rect(5,510,125,25),"PAUSE");
   pauseButton->SetToggle(true);
-  pauseButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::pause_handler);
+//  pauseButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::pause_handler);
 
-  quitButton=new PG_Button(this,4,PG_Rect(5,540,125,25),"QUIT");
-  quitButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::quit_handler);
+  quitButton=new PG_Button(this, PG_Rect(5,540,125,25),"QUIT",PG_Button::CANCEL);
+//  quitButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::quit_handler);
 }
 
 GamePanel::~GamePanel() {
@@ -190,12 +190,12 @@ void GamePanel::addStation(Station* station)
     case Station::Small:
     case Station::Medium:
     case Station::Big:
-      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),station->getName().c_str());
+      button=new PG_Button(NULL, PG_Rect(0,0,150,30),station->getName().c_str());
       button->SetFontSize(11);
       button->SetTransparency(128,128,240);
     break;
   }
-  stationList->AddWidget(button);
+  stationList->AddChild(button);
   image=new PG_Image(button,point,"graphics/ui/buttons/build_station.png");
   image->SetVisible(true);
   stationList->Update();
@@ -219,10 +219,10 @@ void GamePanel::addTrain(Train* train)
     break;
   }
 */
-  button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"");
+  button=new PG_Button(NULL, PG_Rect(0,0,150,30),"");
   button->SetFontSize(11);
   button->SetTransparency(128,128,240);
-  trainList->AddWidget(button);
+  trainList->AddChild(button);
   image=new PG_Image(button,point,"graphics/ui/buttons/build_train.png");
   image->SetVisible(true);
   trainList->Update();

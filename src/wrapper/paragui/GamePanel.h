@@ -14,14 +14,14 @@
 #include <pgrect.h>
 #include <pgwidgetlist.h>
 
-#include <pgeventobject.h>
+//#include <pgeventobject.h>
 
 #include "GuiEngine.h"
 #include "Message.h"
 #include "Station.h"
 #include "Train.h"
 
-class GamePanel: public PG_ThemeWidget, public PG_EventObject {
+class GamePanel: public PG_ThemeWidget {//, public PG_EventObject {
 
   public:
     enum WidgetID {ViewStations = 10000, ViewTrains, BuildTrack, BuildStation, BuildTrain };
@@ -39,12 +39,12 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     
   private:
   
-    PARAGUI_CALLBACK(pause_handler);
+/*    PARAGUI_CALLBACK(pause_handler);
     PARAGUI_CALLBACK(quit_handler);
     PARAGUI_CALLBACK(clickViewButton);
     PARAGUI_CALLBACK(clickBuildButton);
     PARAGUI_CALLBACK(clickStationSelect);
-    
+*/
     void releaseAllViewButtons(PG_Button* button);
     void releaseAllBuildButtons(PG_Button* button);
 

@@ -5,10 +5,10 @@
 #include "GameDataSelectDialog.h"
 
 GameDataSelectDialog::GameDataSelectDialog(GameMainWindow* parent, int x, int y, int w, int h, char* titel, int _type):
-PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,0, "Window") {
+PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel) {
 
   type = _type;
-  name=new PG_DropDown(this, 10, PG_Rect(10,30,240,20));
+  name=new PG_DropDown(this, PG_Rect(10,30,240,20));
   name->SetIndent(5);
   name->SetText("Your Name");
   name->AddItem("Thomas Cook");
@@ -28,15 +28,15 @@ PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,0, "Window") {
   height->SetMinValue(30);
   height->SetMaxValue(1000);
 
-  ok=new PG_Button(this, type, PG_Rect(10,260,180,20), "OK");
-  back=new PG_Button(this, -1, PG_Rect(210,260,180,20), "Cancel");
+  ok=new PG_Button(this, PG_Rect(10,260,180,20), "OK", PG_Button::OK);
+  back=new PG_Button(this, PG_Rect(210,260,180,20), "Cancel", PG_Button::CANCEL);
   buttonflag=1; /* Single Player */
   
   if (type>1)
   {
     buttonflag=2; /* MULTIPLAYER SERVER */
-    radio_server = new PG_RadioButton(this, 20, PG_Rect(10, 60, 240, 20), "Be a server");
-    radio_client = new PG_RadioButton(this, 21, PG_Rect(10, 90, 240, 20), "Be a client", radio_server);
+    radio_server = new PG_RadioButton(this, PG_Rect(10, 60, 240, 20), "Be a server");
+    radio_client = new PG_RadioButton(this, PG_Rect(10, 90, 240, 20), "Be a client", radio_server);
     ip_address = new PG_MaskEdit(this, PG_Rect(10,120,240,20));
     ip_address->SetMask("########################");
     port = new PG_MaskEdit(this, PG_Rect(260,120,100,20));
@@ -73,13 +73,13 @@ bool GameDataSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
   if(widget==back) {
     //Set Buttonflag to ButtonID
     buttonflag=id;
-    SendMessage(this, MSG_MODALQUIT, 0, 0);
+//    SendMessage(this, MSG_MODALQUIT, 0, 0);
     return true;
   } else if (widget==ok){
     std::cerr << getName() << std::endl;
     //TODO test if name != "" ist
     /*    buttonflag=id; */
-    SendMessage(this, MSG_MODALQUIT, 0, 0);
+//    SendMessage(this, MSG_MODALQUIT, 0, 0);
     return true;
   } else if (widget==radio_server){
     if (radio_server->GetPressed()){
