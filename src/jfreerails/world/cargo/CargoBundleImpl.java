@@ -65,6 +65,7 @@ public class CargoBundleImpl implements CargoBundle {
 	public Iterator cargoBatchIterator() {		
 		return hashMap.keySet().iterator();
 	}	
+	
 	public boolean equals(Object o) {		
 		if(o instanceof CargoBundleImpl){
 			CargoBundleImpl test = (CargoBundleImpl)o;
