@@ -139,18 +139,19 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
   
   bitBlt(pixPaint, 0, 0, pixTiles, ox, oy, 30, 30, Qt::CopyROP, true);
 
-  Track *trk;
+/*  Track *trk;
   trk = field->getTrack();
   if (trk != NULL)
   {
     int tracktileX, tracktileY, i;
     for(i=0;i<5;i++)
     {
-      trk->getTrackTile(i, &tracktileX, &tracktileY);
-      if (tracktileX >= 0)
-        bitBlt(pixPaint, 0, 0, pixTrack, tracktileX, tracktileY, 30, 30, Qt::CopyROP, false);
+//      trk->getTrackTile(i, &tracktileX, &tracktileY);
+//      if (tracktileX >= 0)
+//        bitBlt(pixPaint, 0, 0, pixTrack, tracktileX, tracktileY, 30, 30, Qt::CopyROP, false);
     }
   }
+*/
 }
 
 int GameMapView::getPixmapPos(int x, int y, MapField::FieldType type)
