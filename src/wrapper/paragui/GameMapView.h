@@ -9,7 +9,11 @@
 #include "WorldMap.h"
 #include "Engine.h"
 #include "MapField.h"
+
 #include "TrackController.h"
+#include "StationController.h"
+#include "Track.h"
+#include "Station.h"
 
 #include <paragui_types.h>
 #include <pgthemewidget.h>
@@ -48,6 +52,7 @@ class GameMapView: public PG_ThemeWidget {
     PG_Point oldViewPos;
     
     TrackController* trackcontroller;
+    StationController* stationcontroller;
     
     void getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y);
     int getImagePos(int x, int y, MapField::FieldType type);

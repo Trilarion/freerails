@@ -1,3 +1,5 @@
+Thu Jan 02 12:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o Use new canBuildElement also in paraGUI Client, so now it works again
 Tue Dec 31 20:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o Change Parameters of canBuildTrack in the Controllers
 Tue Dec 31 19:30:00 2002  Alexander Opitz <opi@le-bit.de>:

@@ -13,6 +13,7 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
   engine=_engine;
   trackcontroller = (TrackController *)engine->getControllerDispatcher()->getController(GameElement::idTrack);
+  stationcontroller = (StationController *)engine->getControllerDispatcher()->getController(GameElement::idStation);
 
   PG_Point p;
   
@@ -357,20 +358,24 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   }
 
 //  regenerateTile(x,y);
-  
+  GameElement* new_element;
+
   switch (mouseType) {
   
     case buildStation:
-  // canBuild(Station,x,y);
-      showTrack(x,y,20*30+15,26*30+15);
       cerr << "BuildStation" << endl;
+      new_element = new Station(x,y,NULL,"",Station::Small,NULL,NULL);
+      if (stationcontroller -> canBuildElement(new_element))
+      {
+        showTrack(x,y,20*30+15,26*30+15);
+      }
       break;
     case buildTrack:
       cerr << "BuildTrack" << endl;
-// TODO      
-      if (trackcontroller->canBuildElement(x,y,dir))
+      new_element = new Track(x,y,NULL,dir);
+      if (trackcontroller->canBuildElement(new_element))
       {
-//        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
+        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
 //	if (engine->canBuildTrack(x2,y2,1,dir2)>=0)
 //	{
 //	  showTrack(x2,y2,(dir2-1)*2*30+15,0*30+15);
@@ -381,6 +386,7 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       return false;
       break;
   }
+  if (new_element!=NULL) delete new_element;
   Update();
   return true;
 }
