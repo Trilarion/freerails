@@ -41,7 +41,7 @@ final public class SynchronizedEventQueue extends EventQueue {
                 * If something goes wrong, lets kill the game straight
                 * away to avoid hard-to-track-down bugs.
                 */
-                System.err.print("Unexpected exception, quitting..");
+                System.err.println("Unexpected exception, quitting..");
                 e.printStackTrace();
                 System.exit(1);
             }

@@ -422,6 +422,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         Point tile = new Point();
         logger.fine("TilesChanged = " + tilesChanged);
 
+        // Fix for bug 967673 (Crash when building track close to edge of map). 
+        Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(),
+                world.getMapHeight());
+        tilesChanged = tilesChanged.intersection(mapRect);
+
         for (tile.x = tilesChanged.x;
                 tile.x < (tilesChanged.x + tilesChanged.width); tile.x++) {
             for (tile.y = tilesChanged.y;
