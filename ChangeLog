@@ -1,3 +1,6 @@
+16-May-2003 22:51:07 Luke
+	o Now loads tile sized track images instead of grapping
+	them from the big image.
 12-May-2003 00:16:25 Luke
 	o Now prints out the time it takes to startup.
 11-May-2003 20:24:44 Luke
