@@ -31,6 +31,8 @@ final public class TrackMoveProducer {
 	private BuildTrackStrategy buildTrackStrategy;
 	
 	private final MoveExecutor executor;
+	
+	//TODO Replace ints with enum.
 
 	public final static int BUILD_TRACK = 1;
 
@@ -114,10 +116,24 @@ final public class TrackMoveProducer {
 		
 		
 		if (trackBuilderMode == UPGRADE_TRACK) {
+			//upgrade the from tile if necessary.			
+			FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
+			if(tileA.getTrackTypeID() != ruleAID){
+				MoveStatus ms = upgradeTrack(new Point(from), ruleAID);
+				if(!ms.ok){
+					return ms;
+				}				
+			}
 			Point point = new Point(from.x + trackVector.getDx(), from.y
-					+ trackVector.getDy());
-
-			return upgradeTrack(point, ruleBID);
+					+ trackVector.getDy());					
+			FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
+			if(tileB.getTrackTypeID() != ruleBID){
+				MoveStatus ms = upgradeTrack(point, ruleBID);
+				if(!ms.ok){
+					return ms;
+				}				
+			}					
+			return MoveStatus.MOVE_OK;
 		}
 
 		ChangeTrackPieceCompositeMove move = null;

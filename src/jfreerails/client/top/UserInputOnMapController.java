@@ -109,10 +109,10 @@ public class UserInputOnMapController extends KeyAdapter {
 			 * Fix for bug [ 972866 ] Build track by dragging - only when build
 			 * track selected
 			 */
-			boolean isBuildTrackModeSet = trackBuilder.getTrackBuilderMode() == TrackMoveProducer.BUILD_TRACK;
+			boolean trackBuildingOn = trackBuilder.getTrackBuilderMode() != TrackMoveProducer.IGNORE_TRACK;
 
 			if (SwingUtilities.isLeftMouseButton(evt) && pressedInside
-					&& isBuildTrackModeSet && !ignoreDragging) {
+					&& trackBuildingOn && !ignoreDragging) {
 				
 				setIgnoreKeyEvents(true);
 				int x = evt.getX();
@@ -145,7 +145,7 @@ public class UserInputOnMapController extends KeyAdapter {
 				}
 
 				buildTrack.setProposedTrack(getCursorPosition(),
-						new Point(tileX, tileY));
+						new Point(tileX, tileY), trackBuilder);
 				mapView.requestFocus();
 			}
 		}
@@ -234,16 +234,16 @@ public class UserInputOnMapController extends KeyAdapter {
 	}
 
 	private void cursorJumped(Point to) {
-		if (trackBuilder.getTrackBuilderMode() == TrackMoveProducer.UPGRADE_TRACK) {
-			MoveStatus ms = trackBuilder.upgradeTrack(to);
-
-			if (ms.ok) {
-				setCursorMessage("");
-				playAppropriateSound();
-			} else {
-				setCursorMessage(ms.message);
-			}
-		}
+//		if (trackBuilder.getTrackBuilderMode() == TrackMoveProducer.UPGRADE_TRACK) {
+//			MoveStatus ms = trackBuilder.upgradeTrack(to);
+//
+//			if (ms.ok) {
+//				setCursorMessage("");
+//				playAppropriateSound();
+//			} else {
+//				setCursorMessage(ms.message);
+//			}
+//		}
 	}
 
 	private Point getCursorPosition() {

@@ -1,3 +1,6 @@
+Jan 09, 2005 Luke
+	Bugs fixed:
+	o 1087432	Can't remove or upgrade track using mouse
 Jan 04, 2005 Luke
 	Bugs fixed:
 	o 1087437	java properties window should word wrap.
