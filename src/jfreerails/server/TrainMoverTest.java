@@ -1,6 +1,7 @@
 package jfreerails.server;
 
-import jfreerails.move.ChangeTrainPositionMove;
+import jfreerails.controller.MoveReceiver;
+import jfreerails.move.Move;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
@@ -16,7 +17,7 @@ import junit.framework.TestCase;
  * @author Luke Lindsay 30-Oct-2002
  *
  */
-public class TrainMoverTest extends TestCase {
+public class TrainMoverTest extends TestCase implements MoveReceiver {
     TrainMover trainMover;
     World w;
 
@@ -62,9 +63,10 @@ public class TrainMoverTest extends TestCase {
 
     public void testUpdate() {
         setUp();
+        trainMover.update(30, this);
+    }
 
-        ChangeTrainPositionMove m = trainMover.update(30);
-
-        m.doMove(w, Player.AUTHORITATIVE);
+    public void processMove(Move move) {
+        move.doMove(w, Player.AUTHORITATIVE);
     }
 }

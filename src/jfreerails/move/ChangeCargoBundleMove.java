@@ -18,6 +18,7 @@ import jfreerails.world.top.KEY;
 public class ChangeCargoBundleMove extends ChangeItemInListMove {
     public ChangeCargoBundleMove(CargoBundle before, CargoBundle after,
         int bundleNumber, FreerailsPrincipal p) {
-        super(KEY.CARGO_BUNDLES, bundleNumber, before.getCopy(), after.getCopy(), p);
+        super(KEY.CARGO_BUNDLES, bundleNumber, before.getCopy(),
+            after.getCopy(), p);
     }
 }

@@ -1,3 +1,6 @@
+Apr 1, 2004 8:16:48 PM Luke
+	o Made trains stop for a couple of seconds at stations.
+	o 915947 Implement ‘wait until full’.
 Apr 1, 2004 12:38:47 AM Luke
 	o Implemented
 		910138 After building a train display train orders 

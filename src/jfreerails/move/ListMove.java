@@ -28,8 +28,6 @@ public interface ListMove extends Move {
      * @return the index of the item which changed.
      */
     int getIndex();
-    
+
     FreerailsPrincipal getPrincipal();
-    
-    
 }

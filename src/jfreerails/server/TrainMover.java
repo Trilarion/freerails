@@ -1,6 +1,7 @@
 package jfreerails.server;
 
 import jfreerails.controller.FreerailsServerSerializable;
+import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
@@ -64,13 +65,16 @@ public class TrainMover implements FreerailsServerSerializable {
         return walker;
     }
 
-    public ChangeTrainPositionMove update(int distanceTravelled) {
-        double distanceTravelledAsDouble = distanceTravelled;
-        double distance = distanceTravelledAsDouble * getTrainSpeed();
-        walker.stepForward(distance);
+    public void update(int distanceTravelled, MoveReceiver moveReceiver) {
+        if (walker.canStepForward()) {
+            double distanceTravelledAsDouble = distanceTravelled;
+            double distance = distanceTravelledAsDouble * getTrainSpeed();
+            walker.stepForward(distance);
 
-        return ChangeTrainPositionMove.generate(w, walker, trainNumber,
-            principal);
+            Move m = ChangeTrainPositionMove.generate(w, walker, trainNumber,
+                    principal);
+            moveReceiver.processMove(m);
+        }
     }
 
     public double getTrainSpeed() {
