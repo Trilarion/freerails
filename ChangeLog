@@ -1,3 +1,7 @@
+Tue Jul 16 16:45:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add "std::" where needed
+o add missing new lines on the end of some files
+o this helps to get lesser error warnings on some systems
 Tue Mar 26 11:40:00 2002  Alexander Opitz <opi@le-bit.de>:
 o clean up cvs
 o add Class Controller, PlayerController, ControllerDispatcher
