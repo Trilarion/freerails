@@ -15,6 +15,7 @@ import jfreerails.world.station.SupplyAtStation;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
+import jfreerails.world.train.WagonType;
 
 
 /**
@@ -25,7 +26,6 @@ import jfreerails.world.top.World;
  *
  */
 public class CargoAtStationsGenerator implements FreerailsServerSerializable {
-    public static final int UNITS_OF_CARGO_PER_WAGON = 40;
     private final MoveReceiver moveReceiver;
 
     public CargoAtStationsGenerator(MoveReceiver moveExecuter) {
@@ -52,7 +52,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                             stationNumber);
                     int amountAlready = before.getAmount(cb);
                     after.setAmount(cb,
-                        (amountSupplied * UNITS_OF_CARGO_PER_WAGON) +
+                        (amountSupplied * WagonType.UNITS_OF_CARGO_PER_WAGON) +
                         amountAlready);
                 }
             }

@@ -1,3 +1,5 @@
+Dec 17, 2003 11:33:14 PM Luke
+	o Move UNITS_OF_CARGO_PER_WAGON constant to WagonType.
 Dec 17, 2003 5:50:09 PM Luke
 	o Applied Robert Tuck's patch to fix apparent network lag.
 	o Tweaked 'format' ant target so that it does not format files that are up to date.

@@ -14,6 +14,7 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.TrainModel;
+import jfreerails.world.train.WagonType;
 
 
 /**
@@ -173,7 +174,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         for (int j = 0; j < train.getNumberOfWagons(); j++) {
             int cargoType = train.getWagon(j);
 
-            spaceAvailable[cargoType] += CargoAtStationsGenerator.UNITS_OF_CARGO_PER_WAGON;
+            spaceAvailable[cargoType] += WagonType.UNITS_OF_CARGO_PER_WAGON;
         }
 
         //Second, subtract the space taken up by cargo that the train is already carrying.
