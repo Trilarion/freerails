@@ -131,11 +131,11 @@ int GameApplication::run() {
     {
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
       Engine::GameState state = Engine::Running;
-      Message* msg=new Message(Message::stateOfGame,GameElement::idNone,&state);
+      Message* msg=new Message(Message::stateOfGame, 0,&state);
       engine->sendMsg(msg);
       pGlobalApp->Run();
       state = Engine::Stopping;
-      msg=new Message(Message::stateOfGame,GameElement::idNone,&state);
+      msg=new Message(Message::stateOfGame, 0,&state);
       engine->sendMsg(msg);
       SDL_WaitThread(thread2, NULL);
       if (engine!=NULL) { delete engine; engine=NULL; }

@@ -295,7 +295,7 @@ void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
           trd->field_pos_x = x;
           trd->field_pos_y = y;
           trd->player = NULL;
-          msg = new Message(Message::addElement, GameElement::idStation, (void *)trd);
+          msg = new Message(Message::addElement, 0, (void *)trd);
           engine->sendMsg(msg);
           #warning fix me
           repaintContents(x - 45, y - 45, 90, 90, false);
@@ -308,7 +308,7 @@ void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
           trd->field_pos_x = x;
           trd->field_pos_y = y;
           trd->player = NULL;
-          msg = new Message(Message::addElement, GameElement::idTrack, (void *)trd);
+          msg = new Message(Message::addElement, 0, (void *)trd);
           engine->sendMsg(msg);
           #warning fix me
           repaintContents(x - 45, y - 45, 90, 90, false);
@@ -351,7 +351,7 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
         trd->field_pos_x = x;
         trd->field_pos_y = y;
         trd->player = NULL;
-        msg = new Message(Message::addElement, GameElement::idStation, (void *)trd);
+        msg = new Message(Message::addElement, 0, (void *)trd);
         engine->sendMsg(msg);
         oldMousePos = e->pos();
         #warning fix me
@@ -367,7 +367,7 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
         trd->field_pos_x = x;
         trd->field_pos_y = y;
         trd->player = NULL;
-        msg = new Message(Message::addElement, GameElement::idTrack, (void *)trd);
+        msg = new Message(Message::addElement, 0, (void *)trd);
         engine->sendMsg(msg);
         oldMousePos = e->pos();
         #warning fix me

@@ -116,14 +116,14 @@ int GameApplication::run()
       pthread_create(&ttid_cmd, NULL, &runEngine, (void*)this);
       pthread_detach(ttid_cmd);
       Engine::GameState state = Engine::Running;
-      Message* msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+      Message* msg = new Message(Message::stateOfGame, 0, &state);
       qDebug("sende Nachricht an Engine");
       engine->sendMsg(msg);
       qDebug("Nachricht gesendet");
       application->exec();
       qDebug("Spiel beendet");
       state = Engine::Stopping;
-      msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+      msg = new Message(Message::stateOfGame, 0, &state);
       engine->sendMsg(msg);
       pthread_cancel(ttid_cmd);
     }

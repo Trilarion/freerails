@@ -202,7 +202,7 @@ void GamePanel::slotTabBuild()
 void GamePanel::handler_pause()
 {
   Engine::GameState state = Engine::Pausing;
-  Message *msg = new Message(Message::stateOfGame, GameElement::idNone, &state);
+  Message *msg = new Message(Message::stateOfGame, 0, &state);
   engine->sendMsg(msg);
 }
 
