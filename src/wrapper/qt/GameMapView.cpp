@@ -116,6 +116,7 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
     default:
       ox = 13 * 30;
       oy = 7 * 30;
+      break;
   }
   
   bitBlt(pixPaint, 0, 0, pixTiles, ox, oy, 30, 30, Qt::CopyROP, true);
@@ -132,7 +133,6 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
         bitBlt(pixPaint, 0, 0, pixTrack, tracktileX, tracktileY, 30, 30, Qt::CopyROP, false);
     }
   }
-  #warning complete me: stations missing
 }
 
 int GameMapView::getPixmapPos(int x, int y, MapField::FieldType type)
@@ -260,22 +260,6 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
   if(mouseButton == right)
   {
     QPoint diff = e->pos() - oldMousePos2;
-//    if(diff.x() > 0)
-//    {
-//    }
-//    else
-//    {
-//      if(contentsX() == 0)
-//        diff.setX(0);
-//    }
-//    if(diff.y() > 0)
-//    {
-//    }
-//    else
-//    {
-//      if(contentsY() == 0)
-//        diff.setY(0);
-//    }
     if(!diff.isNull())
     {
       scrollBy(diff.x(), diff.y());
@@ -338,7 +322,6 @@ void GameMapView::setMouseType(MouseType type)
   if (bRepaint != bShowGrid)
   {
     bShowGrid = bRepaint;
-    qDebug("repaint /w build ...");
     repaintContents(false);
   }
 }
@@ -347,7 +330,7 @@ void GameMapView::drawContents(QPainter *p, int cx, int cy, int cw, int ch)
 {
   QPixmap pixPaint;
 
-  qDebug("zu zeichnender Bereich:  %i, %i  -  %i, %i", cx, cy, cw, ch);
+//  qDebug("zu zeichnender Bereich:  %i, %i  -  %i, %i", cx, cy, cw, ch);
   pixPaint.resize(30, 30);
 
   int x, y;
@@ -371,7 +354,7 @@ void GameMapView::drawContents(QPainter *p, int cx, int cy, int cw, int ch)
     for(y=y1;y<y2;y++)
     {
       getMapPixmap(&pixPaint, x, y);
-      qDebug("zeichne bei: %i, %i", x * 30, y * 30);
+//      qDebug("zeichne bei: %i, %i", x * 30, y * 30);
       p->drawPixmap(x * 30, y * 30, pixPaint);
       if (bShowGrid)
       {

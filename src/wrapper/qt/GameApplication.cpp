@@ -29,26 +29,19 @@ GameApplication::~GameApplication()
     delete splash;
 }
 
-void* GameApplication::runEngine(void*)
+void* runEngine(void *data)
 {
   #warning complete me
+  GameApplication *object;
+  object = static_cast<GameApplication*>(data);    
   qDebug("runEngine gestartet");
   int play_time = 0;
-  int ctr = 1000;
-  qDebug("this in runEngine: 0x%08x", int(this));
-  qDebug("engine in runEngine: 0x%08x", int(engine));
-//  while(1){usleep(1000000);}
-  qDebug("status in runEngine: %i", int(engine->getGameState()));
-  while (engine->getGameState() < Engine::Stopping)
+  qDebug("this in runEngine: 0x%08x", int(object));
+  qDebug("status in runEngine: %i", int(object->getEngine()->getGameState()));
+  while (object->getEngine()->getGameState() < Engine::Stopping)
   {
-    ctr++;
-    if (ctr > 1000)
-    {
-      ctr = 0;
-      qDebug("in Schleife von runEngine");
-    }
-    engine->checkNet();
-    engine->checkNext(play_time);
+    object->getEngine()->checkNet();
+    object->getEngine()->checkNext(play_time);
     usleep(10500);      // wait for 10.5 ms
     play_time += 11;
   }
@@ -117,11 +110,8 @@ int GameApplication::run()
     mW->constructPlayField();
 
     pthread_t ttid_cmd;
-    void *thr_func;
-    void *data;
-    thr_func = (void*)&GameApplication::runEngine;
-    data = this;
-    pthread_create(&ttid_cmd, NULL, thr_func, (void*)data);
+    qDebug("this in run: 0x%08x", int(this));
+    pthread_create(&ttid_cmd, NULL, &runEngine, (void*)this);
     pthread_detach(ttid_cmd);
     Engine::GameState state = Engine::Running;
     Message* msg = new Message(Message::stateOfGame, GameElement::idNone, &state);

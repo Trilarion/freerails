@@ -42,6 +42,8 @@ public:
     virtual void initSingleGame(const std::string, int, int, int) {};
     virtual void initClientGame(const std::string) {};
     virtual void initServerGame(const std::string, int, int, int) {};
+
+    Engine* getEngine() { return engine; };
     
 protected:
     GameMainWindow* mW;
