@@ -1,3 +1,6 @@
+Feb 17, 2004 1:22:31 AM Luke
+	o Apply move infrastructure patch.
+	o Apply OSX work around.
 Feb 16, 2004 9:49:53 PM Luke
 	o Add new select station popup to train orders dialogue (fixes bug 891427).
 	o Add 'About' dialogue (fixes bug 891377)
