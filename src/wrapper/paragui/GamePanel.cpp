@@ -96,10 +96,12 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   trainList->EnableScrollBar(true, PG_SB_VERTICAL);
   trainList->SetTransparency(0);
   trainList->SetVisible(false);
+  trainListSize=0;
 
   stationList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
   stationList->EnableScrollBar(true, PG_SB_VERTICAL);
   stationList->SetTransparency(0);
+  stationListSize=0;
   
   trackButton=new PG_Button(this,GamePanel::BuildTrack,PG_Rect(5,400,25,25));
   trackButton->SetIcon("graphics/ui/buttons/build_track_up.png",
@@ -153,15 +155,27 @@ void GamePanel::releaseAllViewButtons(PG_Button* button) {
 
 void GamePanel::addStation(Station* station)
 {
+  PG_Point point;
+  PG_Image* image;
+  point.x=0; point.y=stationListSize*30;
   switch(station->getSize())
   {
     case Station::Signal:
     break;
     case Station::Small:
+      image=new PG_Image(stationList,point,"graphics/ui/buttons/build_station_up.png");
+      image->Show();
+      stationListSize++;
     break;
     case Station::Medium:
+      image=new PG_Image(stationList,point,"graphics/ui/buttons/build_station_up.png");
+      image->Show();
+      stationListSize++;
     break;
     case Station::Big:
+      image=new PG_Image(stationList,point,"graphics/ui/buttons/build_station_up.png");
+      image->Show();
+      stationListSize++;
     break;
   }
 }

@@ -46,6 +46,9 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     
     PG_WidgetList* stationList;
     PG_WidgetList* trainList;
+    
+    int stationListSize;
+    int trainListSize;
 
     PG_Button* trackButton;
     PG_Button* stationButton;
