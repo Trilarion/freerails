@@ -44,10 +44,8 @@ public class UserInputOnMapController extends KeyAdapter {
         private int y;
         private boolean pressedInside = false;
 
-        //        private List proposedTrack;
         public void mousePressed(MouseEvent evt) {
             if (SwingUtilities.isLeftMouseButton(evt)) {
-                buildTrack.setup(modelRoot);
                 x = evt.getX();
                 y = evt.getY();
 
@@ -59,12 +57,23 @@ public class UserInputOnMapController extends KeyAdapter {
 
                 mapView.requestFocus();
                 pressedInside = true;
-                buildTrack.show();
+
+                /* Fix for bug [ 972866 ] Build track by dragging - only when build track selected */
+                boolean isBuildTrackModeSet = trackBuilder.getTrackBuilderMode() == TrackMoveProducer.BUILD_TRACK;
+
+                if (isBuildTrackModeSet) {
+                    buildTrack.setup(modelRoot);
+                    buildTrack.show();
+                }
             }
         }
 
         public void mouseDragged(MouseEvent evt) {
-            if (SwingUtilities.isLeftMouseButton(evt) && pressedInside) {
+            /* Fix for bug [ 972866 ] Build track by dragging - only when build track selected */
+            boolean isBuildTrackModeSet = trackBuilder.getTrackBuilderMode() == TrackMoveProducer.BUILD_TRACK;
+
+            if (SwingUtilities.isLeftMouseButton(evt) && pressedInside &&
+                    isBuildTrackModeSet) {
                 int x = evt.getX();
                 int y = evt.getY();
                 float scale = mapView.getScale();
@@ -72,13 +81,8 @@ public class UserInputOnMapController extends KeyAdapter {
                 int tileX = x / tileSize.width;
                 int tileY = y / tileSize.height;
 
-                //                proposedTrack = createProposedTrack(new Point(tileX, tileY));
                 buildTrack.setTrack(getCursorPosition(), new Point(tileX, tileY));
                 mapView.requestFocus();
-
-                /** @todo  show created/show track but not send it to other players
-                 * ??? How ???
-                 */
             }
         }
 
