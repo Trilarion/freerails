@@ -100,4 +100,32 @@ implements TrackRule {
     	return properties.isStation();
     }
 
+	public boolean equals(Object o) {
+		if(o instanceof TrackRuleImpl){
+			TrackRuleImpl trackRuleImpl = (TrackRuleImpl)o;
+			boolean propertiesFieldsEqual = this.properties.equals(trackRuleImpl.getProperties());
+			boolean legalConfigurationsEqual = this.legalConfigurations.equals(trackRuleImpl.getLegalConfigurations());
+			boolean legalTrackPlacementEqual = this.legalTrackPlacement.equals(trackRuleImpl.getLegalTrackPlacement());
+			if(propertiesFieldsEqual && legalConfigurationsEqual && legalTrackPlacementEqual){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+
+	public LegalTrackConfigurations getLegalConfigurations() {
+		return legalConfigurations;
+	}
+
+	public LegalTrackPlacement getLegalTrackPlacement() {
+		return legalTrackPlacement;
+	}
+
+	public TrackRuleProperties getProperties() {
+		return properties;
+	}
+
 }

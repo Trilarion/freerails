@@ -9,10 +9,7 @@ import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.Rotation;
 
 final public class TrackConfiguration implements FlatTrackTemplate {
-
-	/**
-	 *  TrackConfiguration
-	 */
+	
 	private static final ArrayList flatTrackConfigurations = new ArrayList(512);
 
 	static {
@@ -107,4 +104,12 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 	public int getTemplate() {
 		return configuration;
 	}
+	public boolean equals(Object o) {
+		return o == this;		
+	}
+
+	public int hashCode() {
+		return configuration;
+	}
+
 }

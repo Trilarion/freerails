@@ -29,11 +29,11 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
 	protected void setUp() {
 		super.setUp();
-		w.add(KEY.STATIONS, new StationModel());
-		w.add(KEY.STATIONS, new StationModel());
-		w.add(KEY.STATIONS, new StationModel());
+		world.add(KEY.STATIONS, new StationModel());
+		world.add(KEY.STATIONS, new StationModel());
+		world.add(KEY.STATIONS, new StationModel());
 		WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-		wetf.addTypesToWorld(w);	
+		wetf.addTypesToWorld(world);	
 		engineType = 0;
 		wagonType = 0;
 		wagons = new int[] {wagonType, wagonType};
@@ -63,6 +63,9 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 						
 		//It should not be repeatable.
 		assertOkButNotRepeatable(m);
+		
+		
+		assertEqualsSurvivesSerialisation(m);
 				
 	}	
 	

@@ -18,11 +18,11 @@ import jfreerails.world.track.TrackPiece;
 
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
-	private final TrackPiece oldTrackPiece;
+	 final TrackPiece oldTrackPiece;
 
-	private final TrackPiece newTrackPiece;
+	 final TrackPiece newTrackPiece;
 
-	private final Point location;
+	 final Point location;
 
 	public Point getLocation() {
 		return location;
@@ -149,5 +149,21 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		return new Rectangle(x, y, width, height);
 
 	}
+	
 
+	public boolean equals(Object o) {
+		if( o instanceof ChangeTrackPieceMove){
+			ChangeTrackPieceMove m = (ChangeTrackPieceMove)o;
+			boolean fieldPointEqual = this.location.equals(m.location);
+			boolean fieldoldTrackPieceEqual = this.oldTrackPiece.equals(m.oldTrackPiece);
+			boolean fieldnewTrackPieceEqual = this.newTrackPiece.equals(m.newTrackPiece);
+			if(fieldPointEqual && fieldoldTrackPieceEqual && fieldnewTrackPieceEqual){
+				return true;
+			}else{
+				return false;				
+			}
+		}else{
+			return false;
+		}
+	}
 }

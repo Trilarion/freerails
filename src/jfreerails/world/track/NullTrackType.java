@@ -77,4 +77,8 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 		return false;
 	}
 
+	public boolean equals(Object o) {
+		return o == this;
+	}
+
 }

@@ -47,4 +47,8 @@ final public class NullTrackPiece implements TrackPiece {
     	return nullTrackPiece;
     }
 
+	public boolean equals(Object o) {
+		return o == this;
+	}
+
 }

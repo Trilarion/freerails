@@ -1,5 +1,6 @@
 package jfreerails.move;
 
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.top.World;
 
 /**
@@ -9,7 +10,7 @@ import jfreerails.world.top.World;
  * @author lindsal
  */
 
-public interface Move {
+public interface Move extends FreerailsSerializable {
 
 	MoveStatus tryDoMove(World w);
 
