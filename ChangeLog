@@ -1,14 +1,9 @@
-Sat Feb 16 19:23:00 2002  Luke Lindsay <lindsal49@hotmail.com>:
-o CVS directory structure changed.
-Sat Feb 16 15:00:00 2002  Luke Lindsay <lindsal49@hotmail.com>:
+Sat Feb 16 22:48:00 2002 Luke Lindsay <lindsal49@hotmail.com>:
+o Unrecoverable FreerailsExceptions replaced with standard uncheck exceptions.
+Sat Feb 16 19:42:00 2002 Luke Lindsay <lindsal49@hotmail.com>:
+o Changed CVS directory structure.
+Sat Feb 16 15:00:00 2002 Luke Lindsay <lindsal49@hotmail.com>:
 o This ChangeLog started!
-
-
-
-
-
-
-
 
 
 
