@@ -177,7 +177,7 @@
      to depend on, the compile will fail.
      -->               
 
-   <target name="check_dependencies" depends="compile" description="Tests whether dependencies between packages conform to the rules defined in this target">
+   <target name="checkdep" depends="compile" description="Tests whether dependencies between packages conform to the rules defined in this target">
 
 	  <!-- Check dependencies for jfreerails.world.common.*  -->     
       <mkdir dir="${temp}" />

@@ -1,10 +1,18 @@
+10-Mar-2003 17:52:45 Luke
+	o Fixed bug [ 684596 ] ant build failed
+10-Mar-2003 17:22:16 Luke
+	o Added the MapViewJComponentMouseAdapter in MapViewJComponentConcrete.java 
+	contributed by Karl-Heinz Pennemann - it scrolls the mainmap while 
+	pressing the second mouse button.
+10-Mar-2003 17:20:43 Luke
+	o Added mnemonics contributed by Scott Bennett
 24-Jan-2003 23:51:21 Luke
 	o Release refactorings.
 12-Jan-2003 21:50:04 Luke
 	o Fixed javadoc errors.
 12-Jan-2003 05:11:47 Luke
 	o Major refactoring
-	o added ant target, check_dependencies, to check that the dependencies
+	o added ant target, checkdep, to check that the dependencies
 	betweem packages are in order.  What it does is copy the java files from 
 	a package together with the java files from all the packages that it
 	is allowed to depend on to a temporary directory.  It then compiles the 
