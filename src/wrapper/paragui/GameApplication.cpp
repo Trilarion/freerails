@@ -79,7 +79,7 @@ int GameApplication::run() {
     GameModeSelectDialog dialog(&mw, 250, 150, 300, 200, "Choose game mode");
     result=dialog.show();
     std::cout << "Result=" << result << std::endl;
-    if (result==-1) {  // Quit
+    if (result==PG_Button::CANCEL) {  // Quit
       pGlobalApp->Quit();
       return 0;
     }
