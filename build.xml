@@ -128,7 +128,7 @@
       <javadoc destdir="${doc}" author="true" version="true" use="true" windowtitle="Freerails World API">
          <fileset dir="${src}" defaultexcludes="yes">
             <include name="jfreerails/util/**" />
-
+			<include name="jfreerails/misc/**" />
             <include name="jfreerails/world/**" />
 
             <exclude name="**/*Test.java" />
