@@ -286,8 +286,8 @@
 		<echo message="Usage: ant -Du=me -Dp=mypassword upload_screenshots" />
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir="www">
-				<include name="*.jnlp" />
-				<!--<include name="screenshots/**"/> 	 -->
+			
+				<include name="screenshots/**"/>
 			</fileset>
 		</scp>
 	</target>
