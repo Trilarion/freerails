@@ -1,7 +1,9 @@
 package jfreerails.client.renderer;
 import java.util.Iterator;
 
-import jfreerails.world.terrain.TerrainTileTypesList;
+import jfreerails.world.top.World;
+
+
 
 /**
 *  Description of the Interface
@@ -28,5 +30,5 @@ public interface TileRendererList {
 	 * the terrain types in the specifed list.
 	 */
 
-	boolean validate(TerrainTileTypesList terrainTypes);
+	boolean validate(World world);
 }

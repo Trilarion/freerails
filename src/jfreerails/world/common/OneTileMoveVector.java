@@ -20,7 +20,7 @@ import java.io.ObjectStreamException;
 */
 
 final public class OneTileMoveVector
-	implements FlatTrackTemplate, TrackSectionVector  {
+	implements FlatTrackTemplate {
 
 	/** North   */
 	public static final OneTileMoveVector NORTH;

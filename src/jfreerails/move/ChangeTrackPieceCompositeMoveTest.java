@@ -9,16 +9,15 @@
 
 package jfreerails.move;
 
-import java.awt.Dimension;
 import java.awt.Point;
 
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.top.WorldBean;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
+import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.MapFixtureFactory;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackRule;
-import jfreerails.world.track.TrackRuleList;
-import jfreerails.world.track.TrackTileMapImpl;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -29,8 +28,7 @@ import junit.framework.TestSuite;
  */
 public class ChangeTrackPieceCompositeMoveTest extends TestCase {
     
-	WorldBean world;
-    TrackRuleList trackRuleList;
+	World world;   
     
     public ChangeTrackPieceCompositeMoveTest(java.lang.String testName) {
         super(testName);
@@ -47,16 +45,15 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
     }
     
     protected void setUp(){
-         trackRuleList=MapFixtureFactory.generateTrackRuleList();       
-         world= new WorldBean();
-		world.setTrackMap(new TrackTileMapImpl(new Dimension(10,10)));
+		world = new WorldImpl(10,10);
+		MapFixtureFactory.generateTrackRuleList(world);         
     }
     
     public void testRemoveTrack() {
         OneTileMoveVector east = OneTileMoveVector.EAST;
         OneTileMoveVector west = OneTileMoveVector.WEST;
         
-        TrackRule trackRule = trackRuleList.getTrackRule(0);
+        TrackRule trackRule = (TrackRule)world.get(KEY.TRACK_RULES, 0);
         
         assertBuildTrackSuceeds(new Point(0, 5), east, trackRule);
         
@@ -70,17 +67,14 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         //Remove only track piece built.
         
         assertRemoveTrackSuceeds(new Point(0, 5), east);
-        assertTrue(NullTrackPiece.getInstance() == world.getTrackMap().getTrackPiece(new Point(0, 5)));
-        assertTrue(NullTrackPiece.getInstance() == world.getTrackMap().getTrackPiece(new Point(1, 5)));
-        
-        
-        
+        assertEquals(NullTrackPiece.getInstance(), world.getMapElement(0, 5));
+        assertEquals(NullTrackPiece.getInstance(), world.getMapElement(1, 5));
+                     
         //Try to remove non existent track piece
         
-        assertTrue(NullTrackPiece.getInstance() == world.getTrackMap().getTrackPiece(new Point(0, 5)));
+        assertEquals(NullTrackPiece.getInstance(), world.getMapElement(0, 5)  );
         assertRemoveTrackFails(new Point(0, 5), east);
-        
-        
+                
     }
     
     public void testBuildTrack() {
@@ -93,7 +87,7 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         OneTileMoveVector south = OneTileMoveVector.SOUTH;
         OneTileMoveVector west = OneTileMoveVector.WEST;
         
-        TrackRule trackRule = trackRuleList.getTrackRule(0);
+        TrackRule trackRule = (TrackRule)world.get(KEY.TRACK_RULES, 0);
         
         //First track piece built
         assertBuildTrackSuceeds(pointA, southeast, trackRule);
@@ -126,7 +120,7 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         assertBuildTrackFails(
         new Point(2, 0),
         northeast,
-        trackRuleList.getTrackRule(1));
+		(TrackRule)world.get(KEY.TRACK_RULES,1));
         
         //Implement these tests later.
         //Not allowed on this terrain type, to existing track.

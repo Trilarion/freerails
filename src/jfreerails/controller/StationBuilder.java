@@ -2,10 +2,10 @@ package jfreerails.controller;
 
 import java.awt.Point;
 
+import jfreerails.world.station.StationModel;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.TrackRule;
-import jfreerails.world.track.TrackRuleList;
-import jfreerails.world.station.StationList;
 
 /**
  * @author Luke Lindsay 08-Nov-2002
@@ -15,9 +15,8 @@ public class StationBuilder {
 	
 	TrackMoveProducer trackMoveProducer;
 	
-	TrackRuleList trackRuleList;
-	StationList stationList;
-
+	World w;
+	
 	int ruleNumber;
 
 	/*public StationBuilder(TrackMoveProducer tmp, TrackRuleList rules){
@@ -34,18 +33,14 @@ public class StationBuilder {
 
 	public StationBuilder(TrackMoveProducer tmp, World w) {
 		this.trackMoveProducer = tmp;
-		
-		this.trackRuleList = w.getTrackRuleList();
+				
 		TrackRule trackRule;
 		int i=-1;
 		do {
 			i++;
-			trackRule=trackRuleList.getTrackRule(i);						
+			trackRule=(TrackRule)w.get(KEY.TRACK_RULES, i);						
 		} while(!trackRule.isStation());
-		ruleNumber=i;
-		
-		stationList = w.getStationList();
-
+		ruleNumber=i;		
 	}
 	
 	
@@ -56,23 +51,24 @@ public class StationBuilder {
 		trackMoveProducer.setTrackRule(this.ruleNumber);
 		trackMoveProducer.upgradeTrack(p);
 		trackMoveProducer.setTrackRule(oldTrackRule);
-		trackMoveProducer.setTrackBuilderMode(oldMode);		
-		stationList.addStation(p);
+		trackMoveProducer.setTrackBuilderMode(oldMode);	
+		w.add(KEY.STATIONS, new StationModel(p.x, p.y));	
+		
 
 		//added by Scott Bennett for testing 14/03/03
-		Point q;
-		System.out.println("stationList.size() is " + stationList.size());
-		for (int i=0; i<stationList.size(); i++) {
-			q = stationList.getStation(i);
-			System.out.println("station #" + i + " is at (" + q.getX() + "," + q.getY() + ")");
+		StationModel q;
+		System.out.println("stationList.size() is " + w.size(KEY.STATIONS));
+		for (int i=0; i<w.size(KEY.STATIONS); i++) {
+			q = (StationModel)w.get(KEY.STATIONS, i);
+			System.out.println("station #" + i + " is at (" + q.x + "," + q.y + ")");
 		}
 		//added by Scott Bennett for testing 12/03/03
 		System.out.println("StationBuilder: Station built at (" + p.getX() + "," + p.getY() + ")");
 		
 	}
 	
-	public TrackRuleList getTrackRuleList(){
-		return trackRuleList;
+	public World getWorld(){
+		return w;
 	}
 	
 	public void setStationType(int ruleNumber){

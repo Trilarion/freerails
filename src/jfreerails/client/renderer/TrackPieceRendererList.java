@@ -9,10 +9,11 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
-import jfreerails.world.track.TrackRuleList;
 
 final public class TrackPieceRendererList {
 
@@ -53,11 +54,11 @@ final public class TrackPieceRendererList {
 		}
 	}
 
-	public boolean validate(TrackRuleList trackRuleList) {
+	public boolean validate(World w) {
 
 		boolean okSoFar = true;
-		for (int i = 0; i < trackRuleList.getLength(); i++) {
-			TrackRule trackRule = trackRuleList.getTrackRule(i);
+		for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
+			TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
 			Iterator legalConfigurationsIterator =
 				trackRule.getLegalConfigurationsIterator();
 			TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);

@@ -1,9 +1,10 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
-import jfreerails.world.train.TrainList;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPosition;
 
@@ -29,20 +30,20 @@ public class ChangeTrainPositionMove {
 
 	public static ChangeTrainPositionMove getNullMove(int trainNumber) {
 		return new ChangeTrainPositionMove(null, null, trainNumber, false, false) {
-			MoveStatus move(TrainList tl, boolean updateTrainPosition, boolean isDoMove) {
+			MoveStatus move(World w, boolean updateTrainPosition, boolean isDoMove) {
 				return MoveStatus.MOVE_ACCEPTED;
 			}
 
 		};
 	}
 
-	public static ChangeTrainPositionMove generate(TrainList list, FreerailsPathIterator nextPathSection, int trainNumber) {
+	public static ChangeTrainPositionMove generate(World w, FreerailsPathIterator nextPathSection, int trainNumber) {
 		
 		if(!nextPathSection.hasNext()){
 			return getNullMove(trainNumber);
 		}
 
-		TrainModel train = list.getTrain(trainNumber);
+		TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
 
 		TrainPosition currentPosition = train.getPosition();
 
@@ -133,31 +134,31 @@ public class ChangeTrainPositionMove {
 	}
 	*/
 
-	public MoveStatus doMove(TrainList tl) {
+	public MoveStatus doMove(World w) {
 		boolean updateTrainPosition = true;
 		boolean isDoMove = true;
-		return move(tl, updateTrainPosition, isDoMove);
+		return move(w, updateTrainPosition, isDoMove);
 	}
 
-	public MoveStatus undoMove(TrainList tl) {
+	public MoveStatus undoMove(World w) {
 		boolean updateTrainPosition = true;
 		boolean isDoMove = false;
-		return move(tl, updateTrainPosition, isDoMove);
+		return move(w, updateTrainPosition, isDoMove);
 	}
 
-	public MoveStatus tryDoMove(TrainList tl) {
+	public MoveStatus tryDoMove(World w) {
 		boolean updateTrainPosition = false;
 		boolean isDoMove = true;
-		return move(tl, updateTrainPosition, isDoMove);
+		return move(w, updateTrainPosition, isDoMove);
 	}
 
-	public MoveStatus tryUndoMove(TrainList tl) {
+	public MoveStatus tryUndoMove(World w) {
 		boolean updateTrainPosition = false;
 		boolean isDoMove = false;
-		return move(tl, updateTrainPosition, isDoMove);
+		return move(w, updateTrainPosition, isDoMove);
 	}
 
-	MoveStatus move(TrainList tl, boolean updateTrainPosition, boolean isDoMove) {
+	MoveStatus move(World w, boolean updateTrainPosition, boolean isDoMove) {
 
 		boolean localAddToHead, localAddToTail;
 
@@ -169,7 +170,7 @@ public class ChangeTrainPositionMove {
 			localAddToTail = !this.addToTail;
 		}
 
-		TrainModel train = tl.getTrain(this.trainPositionNumber);
+		TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainPositionNumber);
 		TrainPosition oldTrainPosition = train.getPosition();
 		TrainPosition intermediatePosition, newTrainPosition;
 

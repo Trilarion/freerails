@@ -6,6 +6,7 @@ import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
@@ -103,7 +104,7 @@ final public class TrackMoveProducer {
 	 */
 
 	public void setTrackRule(int trackRuleNumber) {
-		this.trackRule = w.getTrackRuleList().getTrackRule(trackRuleNumber);
+		this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, trackRuleNumber);
 		TextMessageHandler.sendMessage(trackRule.getTypeName());
 	}
 	
@@ -141,14 +142,12 @@ final public class TrackMoveProducer {
 			throw new NullPointerException();
 		}
 		this.moveReceiver=moveReceiver;
-		this.w = world;
-		
-		this.trackRule = w.getTrackRuleList().getTrackRule(0);
-
+		this.w = world;		
+		this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
 	}
 	private void upgradeTrack(Point point, TrackRule trackRule) {
 
-		TrackPiece before=w.getTrackMap().getTrackPiece(point);
+		TrackPiece before=(TrackPiece)w.getMapElement(point.x, point.y);
 		TrackPiece after=trackRule.getTrackPiece(before.getTrackConfiguration());
 		ChangeTrackPieceMove move = new ChangeTrackPieceMove( before, after, point);
 		MoveStatus moveStatus = moveReceiver.processMove(move);

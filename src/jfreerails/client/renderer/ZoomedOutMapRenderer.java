@@ -9,16 +9,16 @@ import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
-import jfreerails.world.terrain.TerrainMap;
-import jfreerails.world.track.TrackAndTerrainTileMap;
-import jfreerails.world.track.TrackMap;
+import jfreerails.world.terrain.TerrainTile;
+import jfreerails.world.top.World;
+
+
+
 
 final public class ZoomedOutMapRenderer implements MapRenderer {
 
 
-	private TerrainMap terrainMap;
-
-	private TrackMap trackSystem;
+	private World w;
 
 	private BufferedImage mapImage;//, scaledMapImage;
 
@@ -29,9 +29,8 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 			.getDefaultScreenDevice()
 			.getDefaultConfiguration();
 
-	public ZoomedOutMapRenderer(TrackAndTerrainTileMap map) {
-		this.terrainMap = map;
-		this.trackSystem = map;
+	public ZoomedOutMapRenderer(World world) {
+		this.w = world;
 		this.refresh();		
 		//mapImage.setRGB(0, 0, mapWidth, mapHeight, rgbArrary, 0, mapWidth);
 
@@ -70,7 +69,8 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 //			rgb = node.getRGB();
 //		} else {
 //			rgb = terrainMap.
-			rgb = trackSystem.getRGB(tile);
+			TerrainTile tt = (TerrainTile)w.getMapElement(tile.x, tile.y);
+			rgb = tt.getRGB();
 		//}
 
 		mapImage.setRGB(tile.x, tile.y, rgb);
@@ -82,8 +82,8 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 	 * @see NewMapView#refresh()
 	 */
 	public void refresh() {
-		int mapWidth = terrainMap.getWidth();
-		int mapHeight = terrainMap.getHeight();
+		int mapWidth = w.getMapWidth();
+		int mapHeight = w.getMapHeight();
 		mapImage =
 			defaultConfiguration.createCompatibleImage(
 				mapWidth,
@@ -108,7 +108,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 	 * @see NewMapView#getMapSizeInPixels()
 	 */
 	public Dimension getMapSizeInPixels() {
-		return new Dimension(terrainMap.getWidth(), terrainMap.getHeight());
+		return new Dimension(w.getMapWidth(), w.getMapHeight());
 	}
 	
 	public void paintTile(Graphics g, int tileX, int tileY) {

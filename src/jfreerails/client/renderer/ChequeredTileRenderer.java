@@ -7,6 +7,7 @@
 package jfreerails.client.renderer;
 
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.World;
 
 /**
 *
@@ -16,7 +17,7 @@ import jfreerails.world.terrain.TerrainType;
 
 final public class ChequeredTileRenderer extends jfreerails.client.renderer.AbstractTileRenderer {
 
-    public int selectTileIcon( int x, int y, jfreerails.world.terrain.TerrainMap map ) {
+    public int selectTileIcon( int x, int y, World w ) {
         return ( x + y ) % 2;
     }
 

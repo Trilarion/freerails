@@ -7,6 +7,7 @@
 package jfreerails.client.renderer;
 
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.World;
 
 /**
 *
@@ -39,10 +40,10 @@ final public class ForestStyleTileRenderer extends jfreerails.client.renderer.Ab
         super.tileModel = tileModel;
     }
 
-    public int selectTileIcon( int x, int y, jfreerails.world.terrain.TerrainMap map ) {
+    public int selectTileIcon( int x, int y, World w ) {
         int  iconNumber = 0;
         for( int  i = 0;i < 2;i++ ) {
-            iconNumber = iconNumber | checkTile( x + X_LOOK_AT[ i ], y + Y_LOOK_AT[ i ], map );
+            iconNumber = iconNumber | checkTile( x + X_LOOK_AT[ i ], y + Y_LOOK_AT[ i ], w );
             iconNumber = iconNumber << 1;
         }
         iconNumber = iconNumber >> 1;

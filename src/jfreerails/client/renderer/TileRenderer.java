@@ -1,7 +1,9 @@
 package jfreerails.client.renderer;
 import java.awt.Image;
 
-import jfreerails.world.terrain.TerrainMap;
+import jfreerails.world.top.World;
+
+
 
 /**
 *  Description of the Interface
@@ -12,7 +14,7 @@ import jfreerails.world.terrain.TerrainMap;
 
 public interface TileRenderer {
 
-	 int selectTileIcon(int x, int y, TerrainMap map);
+	 int selectTileIcon(int x, int y, World w);
 
 	 int getRGB();
 
@@ -20,7 +22,7 @@ public interface TileRenderer {
 
 	 int getTileHeight();
 
-	 Image getIcon(int x, int y, TerrainMap map);
+	 Image getIcon(int x, int y, World w);
 
 	 Image getIcon();
 
@@ -30,7 +32,7 @@ public interface TileRenderer {
 		int renderY,
 		int mapX,
 		int mapY,
-		TerrainMap map);
+		World w);
 
 	 String getTerrainType();
 }

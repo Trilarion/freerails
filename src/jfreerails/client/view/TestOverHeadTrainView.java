@@ -5,14 +5,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-import jfreerails.client.common.GameJFrame;
 import jfreerails.client.common.Painter;
 import jfreerails.client.renderer.TrainRenderer;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
-import jfreerails.world.train.TrainList;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPosition;
 
@@ -21,25 +21,11 @@ public class TestOverHeadTrainView implements Painter {
 	
 	TrainRenderer trainPainter=new TrainRenderer();
 
-	TrainList trainList = new TrainList();
+	World w;
 
-	public TestOverHeadTrainView() {
-		addtrainsTotrainlist(trainList);
-
-	}
-
-	public static void addtrainsTotrainlist(TrainList trains) {
+	public TestOverHeadTrainView(World world) {
+		this.w = world;
 		
-	}
-	
-	public TestOverHeadTrainView(TrainList tl) {
-		this.trainList = tl;
-	}
-
-	public static void main(String[] args) {
-
-		GameJFrame f = new GameJFrame(new TestOverHeadTrainView());
-		f.startGameLoop();
 	}
 
 	public void paint(Graphics2D g) {
@@ -48,9 +34,9 @@ public class TestOverHeadTrainView implements Painter {
 		g.setStroke(new BasicStroke(10));
 		Stroke st;
 
-		for (int i = 0; i < trainList.size(); i++) {
+		for (int i = 0; i < w.size(KEY.TRAINS); i++) {
 
-			TrainModel train = trainList.getTrain(i);
+			TrainModel train = (TrainModel)w.get(KEY.TRAINS, i);
 			TrainPosition s = train.getPosition();
 			IntLine line = new IntLine();
 			FreerailsPathIterator it = s.path();

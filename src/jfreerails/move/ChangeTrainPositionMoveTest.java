@@ -1,7 +1,9 @@
 package jfreerails.move;
 
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
+import jfreerails.world.top.WorldImpl;
 import jfreerails.world.train.EngineModel;
-import jfreerails.world.train.TrainList;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPosition;
 import junit.framework.TestCase;
@@ -12,7 +14,7 @@ import junit.framework.TestCase;
  */
 public class ChangeTrainPositionMoveTest extends TestCase {
 	
-	public TrainList trainList;
+	public World w;
 
 	/**
 	 * Constructor for ChangeTrainPositionMoveTest.
@@ -30,11 +32,14 @@ public class ChangeTrainPositionMoveTest extends TestCase {
 
 	public void testDoMove() {
 		setUp();
-		TrainPosition oldPosition = this.trainList.getTrain(0).getPosition();
+		TrainModel t = (TrainModel)this.w.get(KEY.TRAINS, 0);
+		TrainPosition oldPosition = t.getPosition();
 		assertEquals(FIXTURE1_BEFORE_MOVE1, oldPosition);
-		MoveStatus status = MOVE1.doMove(this.trainList);
+		MoveStatus status = MOVE1.doMove(this.w);
 		assertTrue(status.ok);
-		TrainPosition newPosition = this.trainList.getTrain(0).getPosition();
+		
+		t = (TrainModel)this.w.get(KEY.TRAINS,0);
+		TrainPosition newPosition = t.getPosition();
 		assertEquals(FIXTURE1_AFTER_MOVE1, newPosition);
 	}
 
@@ -43,7 +48,7 @@ public class ChangeTrainPositionMoveTest extends TestCase {
 
 	public void testTryDoMove() {
 		setUp();
-		MoveStatus status = MOVE1.tryDoMove(this.trainList);
+		MoveStatus status = MOVE1.tryDoMove(this.w);
 		assertTrue(status.ok);
 		
 	}
@@ -52,9 +57,9 @@ public class ChangeTrainPositionMoveTest extends TestCase {
 	}
 	
 	protected void setUp(){
-		this.trainList = new TrainList();
-		TrainModel train1 = new TrainModel(new EngineModel(), FIXTURE1_BEFORE_MOVE1);	
-		trainList.addTrain(train1);		
+		w = new WorldImpl(1,1);
+		TrainModel train1 = new TrainModel(new EngineModel(), FIXTURE1_BEFORE_MOVE1);
+		w.add(KEY.TRAINS, train1);			
 	}
 	
 

@@ -5,8 +5,9 @@
 * Created on 20 August 2001, 15:41
 */
 package jfreerails.client.renderer;
-import jfreerails.world.terrain.TerrainMap;
+
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.World;
 
 /**
 *
@@ -36,14 +37,14 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 		int renderY,
 		int mapX,
 		int mapY,
-		TerrainMap map) {
+		World w) {
 
 		if (parentTileView != null) {
-			parentTileView.renderTile(g, renderX, renderY, mapX, mapY, map);
+			parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
 		} else {
 			System.out.println("parent tileView==null");
 		}
-		java.awt.Image icon = this.getIcon(mapX, mapX, map);
+		java.awt.Image icon = this.getIcon(mapX, mapX, w);
 		if (null != icon) {
 			g.drawImage(icon, renderX, renderX, null);
 
@@ -53,7 +54,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 
 	}
 
-	public int selectTileIcon(int x, int y, TerrainMap map) {
+	public int selectTileIcon(int x, int y, World w) {
 		return 0;
 	}
 }

@@ -11,9 +11,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.world.terrain.TerrainMap;
-import jfreerails.world.track.TrackAndTerrainTileMap;
-import jfreerails.world.track.TrackMap;
+import jfreerails.world.terrain.TerrainTile;
+import jfreerails.world.top.World;
+import jfreerails.world.track.TrackPiece;
+
 
 /** This class encapsulates the objects that make-up and paint the background
  * of the map view. At present it is composed of two layers: the terrain layer
@@ -52,7 +53,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
 	final public class TrackLayer implements MapLayerRenderer {
 
-		private TrackMap trackMap;
+		private World w;
 
 		private TrackPieceRendererList trackPieceViewList;
 
@@ -88,9 +89,13 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 						&& (tile.x < mapSize.width)
 						&& (tile.y >= 0)
 						&& (tile.y < mapSize.height)) {
-						int graphicsNumber =
-							trackMap.getTrackGraphicNumber(tile);
-						int ruleNumber = trackMap.getTrackTypeNumber(tile);
+						
+							
+						TrackPiece tp = (TrackPiece)w.getMapElement(tile.x, tile.y);	
+						
+						int graphicsNumber = tp.getTrackGraphicNumber();
+													
+						int ruleNumber = tp.getTrackRule().getRuleNumber();
 						jfreerails.client.renderer
 							.TrackPieceRenderer trackPieceView =
 							trackPieceViewList.getTrackPieceView(ruleNumber);
@@ -147,10 +152,10 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 		 */
 
 		public TrackLayer(
-			TrackMap trackMap,
+			World world,
 			TrackPieceRendererList trackPieceViewList) {
 			this.trackPieceViewList = trackPieceViewList;
-			this.trackMap = trackMap;
+			this.w = world;
 		}
 	}
 
@@ -165,7 +170,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
 		private TileRendererList tiles;
 
-		private TerrainMap terrainMap;
+		private World w;
 
 
 
@@ -183,14 +188,16 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 				&& (tile.x < mapSize.width)
 				&& (tile.y >= 0)
 				&& (tile.y < mapSize.height)) {
-				int rgb = terrainMap.getTerrainTileType(tile.x, tile.y);
+					
+				TerrainTile tt = (TerrainTile)w.getMapElement(tile.x, tile.y);	
+				int rgb = tt.getRGB();
 				tiles.getTileViewWithRGBValue(rgb).renderTile(
 					g,
 					screenX,
 					screenY,
 					tile.x,
 					tile.y,
-					terrainMap);
+					w);
 			}
 		}
 
@@ -243,8 +250,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
 
 
-		public TerrainLayer(TerrainMap terrainMap, TileRendererList tiles) {
-			this.terrainMap = terrainMap;
+		public TerrainLayer(World world, TileRendererList tiles) {
+			this.w = world;
 			this.tiles = tiles;
 		}
 	}
@@ -259,12 +266,12 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 	 */
 
 	public MapBackgroundRender(
-		TrackAndTerrainTileMap map,
+		World w,
 		TileRendererList tiles,
 		TrackPieceRendererList trackPieceViewList) {
-		trackLayer = new TrackLayer(map, trackPieceViewList);
-		terrainLayer = new TerrainLayer(map, tiles);
-		mapSize = new Dimension(map.getWidth(), map.getHeight());
+		trackLayer = new TrackLayer(w, trackPieceViewList);
+		terrainLayer = new TerrainLayer(w, tiles);
+		mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
 	}
 
 	/** Paints a rectangle of the map on the specified

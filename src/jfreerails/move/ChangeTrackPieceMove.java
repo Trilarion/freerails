@@ -6,8 +6,13 @@ import java.awt.Rectangle;
 
 import jfreerails.world.top.World;
 import jfreerails.world.track.LegalTrackConfigurations;
-import jfreerails.world.track.TrackMap;
 import jfreerails.world.track.TrackPiece;
+/**
+ * This class represents the change that occurs when track 
+ * is added to a tile, or the track on a tile is upgraded or removed.
+ * @author Luke
+ *
+ */
 
 final public class ChangeTrackPieceMove
 	implements NewTrackMove, MapUpdateMove {
@@ -38,10 +43,10 @@ final public class ChangeTrackPieceMove
 
 	public MoveStatus tryDoMove(World w) {
 
-		TrackMap trackTileMap = w.getTrackMap();
+		
 
 		//Check that location is on the map.
-		if (!trackTileMap.boundsContain(location)) {
+		if (!w.boundsContain(location.x ,location.y)) {
 			return new MoveStatus(
 				false,
 				"Tried to build track outside the map.");
@@ -49,8 +54,7 @@ final public class ChangeTrackPieceMove
 
 		//Check that the current track piece at this.location is
 		//the same as this.oldTrackPiece.
-		TrackPiece currentTrackPieceAtLocation =
-			trackTileMap.getTrackPiece(location);
+		TrackPiece currentTrackPieceAtLocation = (TrackPiece)w.getMapElement(location.x ,location.y);
 
 		if ((currentTrackPieceAtLocation.getTrackConfiguration()
 			!= oldTrackPiece.getTrackConfiguration())
@@ -84,11 +88,11 @@ final public class ChangeTrackPieceMove
 		//Check for diagonal conflicts.
 		if (!(noDiagonalTrackConflicts(location,
 			oldTrackPiece.getTrackGraphicNumber(),
-			trackTileMap)
+			w)
 			&& noDiagonalTrackConflicts(
 				location,
 				newTrackPiece.getTrackGraphicNumber(),
-				trackTileMap))) {
+				w))) {
 			return new MoveStatus(
 				false,
 				"Illegal track configuration - diagonal conflict");
@@ -99,19 +103,17 @@ final public class ChangeTrackPieceMove
 
 	public MoveStatus tryUndoMove(World w) {
 
-		TrackMap trackTileMap = w.getTrackMap();
 		return MoveStatus.MOVE_RECEIVED;
 
 	}
 
 	public MoveStatus doMove(World w) {
-
-		TrackMap trackTileMap = w.getTrackMap();
+		
 		MoveStatus moveStatus = tryDoMove(w);
 		if (!moveStatus.isOk()) {
 			return moveStatus;
 		} else {
-			trackTileMap.setTrackPiece(location, newTrackPiece);
+			w.setMapElment(location.x, location.y, newTrackPiece);			
 			return moveStatus;
 		}
 
@@ -119,14 +121,13 @@ final public class ChangeTrackPieceMove
 
 	public MoveStatus undoMove(World w) {
 
-		TrackMap trackTileMap = w.getTrackMap();
 		return MoveStatus.MOVE_RECEIVED;
 
 	}
 	private boolean noDiagonalTrackConflicts(
 		Point point,
 		int trackTemplate,
-		TrackMap trackTileMap) {
+		World w) {
 		/*This method is needs replacing.  It only deals with flat track pieces, and
 		 *is rather hard to make sense of.  LL
 		 */
@@ -136,19 +137,17 @@ final public class ChangeTrackPieceMove
 		int cornersTemplate =
 			LegalTrackConfigurations.stringTemplate2Int("101000101");
 		trackTemplate = trackTemplate & cornersTemplate;
-		Dimension mapSize = trackTileMap.getMapSize();
+		Dimension mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
 		//Avoid array-out-of-bounds exceptions.
-		if (point.y > 0) {
-			trackTemplateAbove =
-				trackTileMap.getTrackGraphicNumber(
-					new Point(point.x, point.y - 1));
+		if (point.y > 0) {			
+			TrackPiece tp = (TrackPiece)w.getMapElement(point.x, point.y-1);
+			trackTemplateAbove = tp.getTrackGraphicNumber();				
 		} else {
 			trackTemplateAbove = 0;
 		}
-		if ((point.y + 1) < mapSize.height) {
-			trackTemplateBelow =
-				trackTileMap.getTrackGraphicNumber(
-					new Point(point.x, point.y + 1));
+		if ((point.y + 1) < mapSize.height) {			
+			TrackPiece tp = (TrackPiece)w.getMapElement(point.x, point.y+1);
+			trackTemplateBelow = tp.getTrackGraphicNumber();	
 		} else {
 			trackTemplateBelow = 0;
 		}

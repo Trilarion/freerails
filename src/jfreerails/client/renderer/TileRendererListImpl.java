@@ -6,10 +6,10 @@
 */
 package jfreerails.client.renderer;
 import java.util.HashMap;
-import java.util.Iterator;
 
-import jfreerails.world.terrain.TerrainTileTypesList;
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
 
 /**
 *@author           Luke Lindsay
@@ -49,11 +49,11 @@ final public class TileRendererListImpl implements TileRendererList {
 		return tiles.values().iterator();
 	}
 
-	public boolean validate(TerrainTileTypesList terrainTypes) {
-		Iterator iterator = terrainTypes.getIterator();
+	public boolean validate(World w) {
+		
 		boolean okSoFar = true;
-		while (iterator.hasNext()) {
-			TerrainType terrainType = (TerrainType) iterator.next();
+		for(int i = 0; i < w.size(KEY.TERRAIN_TYPES); i++){
+			TerrainType terrainType = (TerrainType) w.get(KEY.TERRAIN_TYPES, i);
 			if (!tiles.containsKey(new Integer(terrainType.getRGB()))) {
 				okSoFar= false;
 				System.out.println("No tile view for the following tile type: "+terrainType.getTerrainTypeName());

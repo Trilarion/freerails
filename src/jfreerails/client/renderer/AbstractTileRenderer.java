@@ -7,8 +7,9 @@
 package jfreerails.client.renderer;
 import java.awt.Image;
 
-import jfreerails.world.terrain.TerrainMap;
+import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.World;
 
 
 /**
@@ -33,8 +34,8 @@ public abstract class AbstractTileRenderer  implements TileRenderer {
 
     protected  int tileHeight;
 
-    public void renderTile( java.awt.Graphics g, int screenX, int screenY, int mapX, int mapY, TerrainMap map ) {
-        Image  icon = this.getIcon( mapX, mapY, map );
+    public void renderTile( java.awt.Graphics g, int screenX, int screenY, int mapX, int mapY, World w ) {
+        Image  icon = this.getIcon( mapX, mapY, w );
             if( null != icon ) {
                 g.drawImage( icon, screenX, screenY, null );
             }
@@ -61,8 +62,8 @@ public abstract class AbstractTileRenderer  implements TileRenderer {
         return tileModel.getTerrainTypeName();
     }
 
-    public Image getIcon( int x, int y, TerrainMap map )  {
-        int  tile = selectTileIcon( x, y, map );
+    public Image getIcon( int x, int y, World w )  {
+        int  tile = selectTileIcon( x, y, w );
         if( tileIcons[ tile ] != null ) {
             return tileIcons[ tile ];
         }
@@ -75,7 +76,7 @@ public abstract class AbstractTileRenderer  implements TileRenderer {
     river; ocean, ports, and other rivers are treated as the same terrain type.
     */
 
-    public int selectTileIcon( int x, int y, TerrainMap map ) {
+    public int selectTileIcon( int x, int y, World w ) {
         return 0;
     }
 
@@ -84,15 +85,16 @@ public abstract class AbstractTileRenderer  implements TileRenderer {
         tileWidth = width;
     }
 
-    protected int checkTile( int x, int y, TerrainMap map ) {
+    protected int checkTile( int x, int y, World w ) {
         int  match = 1;
 
         /*0==match!  (0 is assigned to match because of the way the tiles are set up
         *in the image from which they are grabbed.)
         */
-        if( ( ( x < map.getWidth() ) && ( x >= 0 ) ) && ( y < map.getHeight() ) && ( y >= 0 ) ) {
+        if( ( ( x < w.getMapWidth() ) && ( x >= 0 ) ) && ( y < w.getMapHeight() ) && ( y >= 0 ) ) {
             for( int  i = 0;i < rgbValues.length;i++ ) {
-                if( map.getTerrainTileType( x, y ) == rgbValues[ i ] ) {
+            	TerrainTile tt = (TerrainTile)w.getMapElement(x, y);
+                if( tt.getRGB() == rgbValues[ i ] ) {
                     match = 0;
 
                 //A match

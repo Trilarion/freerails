@@ -7,6 +7,7 @@
 package jfreerails.client.renderer;
 
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.World;
 
 /**
 *
@@ -36,11 +37,11 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
         super.tileModel = tileModel;
     }
 
-    public int selectTileIcon( int x, int y, jfreerails.world.terrain.TerrainMap map ) {
+    public int selectTileIcon( int x, int y, World w ) {
         int  iconNumber = 0;
         for( int  i = 0;i < 4;i++ ) {
             iconNumber = iconNumber << 1;
-            iconNumber = iconNumber | checkTile( x + X_LOOK_AT[ i ], y + Y_LOOK_AT[ i ], map );
+            iconNumber = iconNumber | checkTile( x + X_LOOK_AT[ i ], y + Y_LOOK_AT[ i ], w );
         }
         return iconNumber;
     }
