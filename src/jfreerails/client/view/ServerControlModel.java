@@ -134,9 +134,6 @@ public class ServerControlModel {
             new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1), 
             new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),
             new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3), // by MystiqueAgent: added keyEvent parameter
-
-            /* TODO one day we will make turbo faster :) */
-            new SetTargetTicksPerSecondAction("Turbo", 50)
         };
     private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(speedActions,
             0);

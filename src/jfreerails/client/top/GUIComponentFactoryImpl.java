@@ -370,15 +370,16 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         JMenuItem loadGameJMenuItem = new JMenuItem(sc.getLoadGameAction());
 
-        JMenuItem newspaperJMenuItem = new JMenuItem("Newspaper");
-        newspaperJMenuItem.setMnemonic(78);
+        //Fix bug 1102806	Newspaper does nothing, so hide it.
+       // JMenuItem newspaperJMenuItem = new JMenuItem("Newspaper");
+       // newspaperJMenuItem.setMnemonic(78);
 
-        newspaperJMenuItem.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dialogueBoxController.showNewspaper("Headline");
-                    //glassPanel.setVisible(true);
-                }
-            });
+//        newspaperJMenuItem.addActionListener(new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    dialogueBoxController.showNewspaper("Headline");
+//                    //glassPanel.setVisible(true);
+//                }
+//            });
 
         JMenuItem incomeStatementJMenuItem = new JMenuItem("Income Statement");
         incomeStatementJMenuItem.addActionListener(new ActionListener() {
@@ -419,7 +420,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         gameMenu.add(balanceSheetJMenuItem);
         gameMenu.add(incomeStatementJMenuItem);
         gameMenu.add(gameSpeedSubMenu);
-        gameMenu.add(newspaperJMenuItem);
+       // gameMenu.add(newspaperJMenuItem);
         gameMenu.addSeparator();
         gameMenu.add(quitJMenuItem);
 
