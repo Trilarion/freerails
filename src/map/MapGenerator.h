@@ -25,7 +25,8 @@ private:
   void generateJungle(WorldMap* worldMap);
   void generateBog(WorldMap* worldMap);
   void generateMountain(WorldMap* worldMap);
-
+  void generateHeight(WorldMap* worldMap);
+  bool generateStartPoint(WorldMap* worldMap, int* x, int* y);
 };
 
 #endif // __MAPGENERATOR_H__

@@ -16,6 +16,7 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   WorldMap* map;
   map = new WorldMap(width, height);
   
+  generateHeight(map);
   generateRiver(map);
   generateOcean(map);
   generateWood(map);
@@ -31,18 +32,38 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   return map;
 }
 
+void MapGenerator::generateHeight(WorldMap* worldMap)
+{
+}
+
+bool MapGenerator::generateStartPoint(WorldMap* worldMap, int* x, int* y)
+{
+  for (int i; i < 10; i++)
+  { *x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
+    *y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
+    if (worldMap->getMapField(*x,*y)->getType()==MapField::grass)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
 void MapGenerator::generateRiver(WorldMap* worldMap)
 {
   int x, y;
   int howmuch=20;
   for (int i=0; i<howmuch; i++)
   {
-    x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
-    
-    if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+    if (generateStartPoint(worldMap, &x, &y))
     {
        worldMap->getMapField(x,y)->setType(MapField::river);
+       int dir=(int) (4.0*rand()/(RAND_MAX+1.0));
+       do {
+       x--;
+       if (x>=0 || y >=0 || x<worldMap->getWidth() || y<worldMap->getHeight()) break;
+       worldMap->getMapField(x,y)->setType(MapField::river);
+       } while (x>=0 && y >=0 && x<worldMap->getWidth() && y<worldMap->getHeight());
     }
   }
 }
