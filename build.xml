@@ -58,6 +58,10 @@
             <include name="ChangeLog"/>
          </fileset>
       </copy>
+      
+      <replace file="${build}/README" token="@version@" value="${DSTAMP}-${TSTAMP}"/>
+      <replace file="${build}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}"/>
+      
    </target>
 
    <target depends="copydata" description="Build everything except JUnit test-classes" name="compile">

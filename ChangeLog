@@ -1,3 +1,7 @@
+Mar 4, 2004 7:38:53 PM Luke
+	o Minor changes to coding guidelines.
+	o Fixed stale serialVersionUID problem in jfreerails.world.player.Player
+	o Made ant script insert build id into README and about.htm
 Mar 3, 2004 10:02:11 PM Luke
 	o Apply Scott Bennett's removal_of_Loading_text patch.
 Mar 3, 2004 1:25:27 AM Luke

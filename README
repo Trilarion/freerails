@@ -1,4 +1,4 @@
-Freerails Java - version 0.2.1
+Freerails Java - build @version@
 
 What's new:
 o	Bug fixes
@@ -17,12 +17,12 @@ http://java.sun.com/j2se/
 
 To run the binary distribution
 
-	type: java -jar jFreeRails-XXXXXXX-bin.jar
+	type: java -jar jFreeRails-@version@-bin.jar
 
 
 To compile and run the source distribution:
 (1) Extract the source files from the jar
-	jar -xf jFreeRails-XXXXXXX-src.jar
+	jar -xf jFreeRails-@version@-src.jar
 (2)	To compile, either 
 	(i) go to the directory src, and type: javac -source 1.4 jfreerails/launcher/Launcher.java
 or	
