@@ -46,6 +46,8 @@ class GuiEngine{
   bool testBuildTrack(int x, int y, int dir);
   bool buildTrack(int x, int y, int dir);
   
+  void getOtherConnectionSide(unsigned int* x, unsigned int* y, int* dir) {trackController->getOtherConnectionSide(x,y,dir);}
+  
  private:
   
   Engine *engine;

@@ -303,7 +303,6 @@ void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
   SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
 }
 
-
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
   unsigned int x,y;
@@ -354,10 +353,8 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       cerr << "BuildTrack" << endl;
       if(guiEngine->testBuildTrack(x,y,dir)){
         showTrack(x,y,(dir-1)*2*30+15,0*30+15);
-	/*
-	  trackcontroller->getOtherConnectionSide(&x,&y,&dir);
-	  showTrack(x,y,(dir-1)*2*30+15,0*30+15);
-	*/
+	guiEngine->getOtherConnectionSide(&x,&y,&dir);
+	showTrack(x,y,(dir-1)*2*30+15,0*30+15);
       }
      
       break;
