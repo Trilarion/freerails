@@ -86,8 +86,7 @@ FreerailsProgressMonitor {
 		    sci = gs.getSavedGame(this, 0);
 		}
 		sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);  //Set initial game speed to slow.
-		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
-		    ScreenHandler.FULL_SCREEN;
+		mode = cop.getScreenMode();
 		try {
 		    p = getPlayer(cop.getPlayerName());
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
@@ -116,8 +115,7 @@ FreerailsProgressMonitor {
 		} else {
 		    sci = gs.getSavedGame(this, lp.getServerPort());
 		}
-		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
-		    ScreenHandler.FULL_SCREEN;
+		mode = cop.getScreenMode();
 		try {
 		    p = getPlayer(cop.getPlayerName());
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
@@ -144,8 +142,7 @@ FreerailsProgressMonitor {
 		setNextEnabled(false);
 		break;
 	    case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
-		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
-		    ScreenHandler.FULL_SCREEN;
+		mode = cop.getScreenMode();
 		try {
 		    p = getPlayer(cop.getPlayerName());
 		    gc = new

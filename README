@@ -56,6 +56,9 @@ Requires:
 JDK 1.4.2 or later, which can be downloaded from:
 http://java.sun.com/j2se/
 
+Webstart link:
+http://freerails.sourceforge.net/jfreerails.jnlp
+
 To run the binary distribution
 
 	type: java -jar jFreeRails-@version@-bin.jar

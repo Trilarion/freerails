@@ -1,3 +1,7 @@
+Mar 8, 2004 11:39:01 PM Luke
+	o Readded 640x480 fixed size windows mode.  It is useful
+	for taking screen shots and making sure the dialogue boxes
+	work in 640x480 fullscreen mode.
 Mar 6, 2004 12:39:54 PM Luke
 	o Added Scott Bennett's terrain randomisation patch. 
 Mar 6, 2004 12:10:49 AM Luke

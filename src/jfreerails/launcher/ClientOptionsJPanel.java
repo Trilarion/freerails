@@ -10,7 +10,7 @@ import java.awt.DisplayMode;
 
 import jfreerails.client.view.DisplayModesComboBoxModels;
 import jfreerails.client.view.MyDisplayMode;
-
+import jfreerails.client.common.ScreenHandler;
 /**
  *
  * @author  rtuck99@users.sourceforge.net
@@ -26,8 +26,16 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
 	return ((MyDisplayMode) listModel.getSelectedItem()).displayMode;
     }
 
-    boolean isWindowed() {
-	return windowedButton.isSelected();
+    int getScreenMode(){
+        if(this.fullScreenButton.isSelected()){
+            return ScreenHandler.FULL_SCREEN;
+        }else if(this.windowedButton.isSelected()){
+            return ScreenHandler.WINDOWED_MODE;
+        }else if(this.fixedSizeButton.isSelected()){
+            return ScreenHandler.FIXED_SIZE_WINDOWED_MODE;
+        }else{
+            throw new IllegalStateException();
+        }
     }
 
     public void setControlsEnabled(boolean enabled) {
@@ -78,6 +86,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         jList1 = new javax.swing.JList();
         jPanel2 = new javax.swing.JPanel();
         windowedButton = new javax.swing.JRadioButton();
+        fixedSizeButton = new javax.swing.JRadioButton();
         fullScreenButton = new javax.swing.JRadioButton();
 
         setLayout(new java.awt.BorderLayout());
@@ -128,6 +137,10 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         buttonGroup1.add(windowedButton);
         jPanel2.add(windowedButton);
 
+        fixedSizeButton.setText("Windowed (fixed size 640*480)");
+        buttonGroup1.add(fixedSizeButton);
+        jPanel2.add(fixedSizeButton);
+
         fullScreenButton.setText("Full screen");
         buttonGroup1.add(fullScreenButton);
         fullScreenButton.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -163,6 +176,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JRadioButton fixedSizeButton;
     private javax.swing.JRadioButton fullScreenButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
