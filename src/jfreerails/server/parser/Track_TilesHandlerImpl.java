@@ -119,7 +119,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
         int price = Integer.parseInt(priceString);
 
         String maintenanceString = meta.getValue("maintenance");
-        int maintenance = Integer.parseInt(priceString);
+        int maintenance = Integer.parseInt(maintenanceString);
 
         trackRuleProperties = new TrackRuleProperties(rGBvalue,
                 enableDoubleTrack, typeName, ruleNumber, isStation,

@@ -3,6 +3,7 @@ package jfreerails.controller;
 import java.util.ArrayList;
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.ChangeItemInListMove;
+import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.world.top.WorldListListener;
 
@@ -15,6 +16,7 @@ import jfreerails.world.top.WorldListListener;
  */
 final public class MoveChainFork implements MoveReceiver {
     private final ArrayList moveReceivers = new ArrayList();
+    private final ArrayList splitMoveReceivers = new ArrayList();
     private final ArrayList listListeners = new ArrayList();
 
     public MoveChainFork() {
@@ -27,6 +29,14 @@ final public class MoveChainFork implements MoveReceiver {
 
     public void add(MoveReceiver moveReceiver) {
         moveReceivers.add(moveReceiver);
+    }
+
+    public void removeSplitMoveReceiver(MoveReceiver moveReceiver) {
+        splitMoveReceivers.remove(moveReceiver);
+    }
+
+    public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
+        splitMoveReceivers.add(moveReceiver);
     }
 
     public void removeListListener(WorldListListener listener) {
@@ -45,18 +55,34 @@ final public class MoveChainFork implements MoveReceiver {
             MoveReceiver m = (MoveReceiver)moveReceivers.get(i);
             m.processMove(move);
         }
+		splitMove(move);
+    }
 
-        if (move instanceof AddItemToListMove) {
-            for (int i = 0; i < listListeners.size(); i++) {
-                AddItemToListMove mm = (AddItemToListMove)move;
-                WorldListListener l = (WorldListListener)listListeners.get(i);
-                l.itemAdded(mm.getKey(), mm.getIndex());
+    private void splitMove(Move move) {
+        if (move instanceof CompositeMove) {
+            Move[] moves = ((CompositeMove)move).getMoves();
+
+            for (int i = 0; i < moves.length; i++) {
+                splitMove(moves[i]);
             }
-        } else if (move instanceof ChangeItemInListMove) {
-            for (int i = 0; i < listListeners.size(); i++) {
-                ChangeItemInListMove mm = (ChangeItemInListMove)move;
-                WorldListListener l = (WorldListListener)listListeners.get(i);
-                l.listUpdated(mm.getKey(), mm.getIndex());
+        } else {
+            for (int i = 0; i < splitMoveReceivers.size(); i++) {
+                MoveReceiver m = (MoveReceiver)splitMoveReceivers.get(i);
+                m.processMove(move);
+            }
+
+            if (move instanceof AddItemToListMove) {
+                for (int i = 0; i < listListeners.size(); i++) {
+                    AddItemToListMove mm = (AddItemToListMove)move;
+                    WorldListListener l = (WorldListListener)listListeners.get(i);
+                    l.itemAdded(mm.getKey(), mm.getIndex());
+                }
+            } else if (move instanceof ChangeItemInListMove) {
+                for (int i = 0; i < listListeners.size(); i++) {
+                    ChangeItemInListMove mm = (ChangeItemInListMove)move;
+                    WorldListListener l = (WorldListListener)listListeners.get(i);
+                    l.listUpdated(mm.getKey(), mm.getIndex());
+                }
             }
         }
     }

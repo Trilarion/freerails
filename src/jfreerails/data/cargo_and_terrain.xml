@@ -33,6 +33,8 @@
          <Produces Cargo="Passengers" Rate="4" />
 
          <Consumes Cargo="Mail" Prerequisite="2" />
+         
+          <Consumes Cargo="Passengers" Prerequisite="2" />
 
          <Consumes Cargo="Mfg._Goods" Prerequisite="2" />
 
@@ -42,15 +44,19 @@
       <Tile id="Refinery" Category="Industry" rgb="7" right-of-way="0">
          <Converts input="Oil" output="Petroleum" />
       </Tile>
-
+<!-- Don't include slums for now, LL
       <Tile id="slums" Category="Urban" rgb="0" right-of-way="0"/>
-
+-->
       <Tile id="Village" Category="Urban" rgb="d86c48" right-of-way="0">
          <Produces Cargo="Mail" Rate="1" />
 
          <Produces Cargo="Passengers" Rate="1" />
 
          <Consumes Cargo="Mfg._Goods" Prerequisite="4" />
+         
+         <Consumes Cargo="Mail" Prerequisite="4" />
+         
+         <Consumes Cargo="Passengers" Prerequisite="4" />
       </Tile>
       
       <Tile id="Factory" Category="Industry" rgb="0000b7" right-of-way="1000">

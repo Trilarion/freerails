@@ -74,6 +74,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     DetailMapView mainMap;
     Rectangle r = new Rectangle(10, 10, 10, 10);
     ClientJFrame clientJFrame;
+	UserMessageGenerator userMessageGenerator;
 
     public GUIComponentFactoryImpl(GUIClient c) {
         client = c;
@@ -125,10 +126,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         MoveReceiver overviewmapMoveReceiver = new MapViewMoveReceiver(mainMap);
 
         MoveChainFork moveFork = client.getMoveChainFork();
-        moveFork.add(overviewmapMoveReceiver);
+        moveFork.addSplitMoveReceiver(overviewmapMoveReceiver);
 
         MoveReceiver mainmapMoveReceiver = new MapViewMoveReceiver(overviewMap);
-        moveFork.add(mainmapMoveReceiver);
+        moveFork.addSplitMoveReceiver(mainmapMoveReceiver);
 
         StationBuilder sb = new StationBuilder(receiver, client.getWorld());
 
@@ -160,6 +161,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
             client.getReceiver(), mapCursor);
         stationPlacementCursor = new StationPlacementCursor(modelRoot,
                 mainMap.getStationRadius(), mapViewJComponent);
+		modelRoot.setUserMessageLogger(this.mapViewJComponent);
+		
+		userMessageGenerator = new UserMessageGenerator(this.modelRoot, world);
+		moveFork.add(userMessageGenerator);
+		
     }
 
     public JPanel createOverviewMap() {

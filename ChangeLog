@@ -1,3 +1,7 @@
+Dec 13, 2003 10:09:04 PM Luke
+	o Fixed bug: passengers are now demanded by cities and villages.
+	o Fixed bug: track maintenance cost is no longer equal to the build cost.
+	o Fixed bug 839366 (No feedback when trains arrive)
 Dec 12, 2003 9:57:38 PM Luke
 	o Add Robert Tuck's new train graphics.
 Dec 8, 2003 12:29:41 AM Luke

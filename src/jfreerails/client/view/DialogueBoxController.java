@@ -138,7 +138,7 @@ public class DialogueBoxController {
 		// setup the supply and demand at station dialogue.
 		stationInfo = new StationInfoJPanel();
 		stationInfo.setup(w, vl);
-		moveChainFork.add(stationInfo);
+		moveChainFork.addSplitMoveReceiver(stationInfo);
 		stationInfo.setMapCursor(mapCursor);
 
 		// setup the 'show controls' dialogue

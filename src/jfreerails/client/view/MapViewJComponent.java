@@ -13,6 +13,7 @@ import java.awt.Rectangle;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
+import jfreerails.client.common.UserMessageLogger;
 import jfreerails.client.renderer.BlankMapRenderer;
 import jfreerails.client.renderer.MapRenderer;
 
@@ -23,7 +24,7 @@ import jfreerails.client.renderer.MapRenderer;
 
 public abstract class MapViewJComponent
 	extends JPanel
-	implements Scrollable, MapRenderer {
+	implements Scrollable, MapRenderer, UserMessageLogger {
 
 	/**
 	 *  Description of the Field

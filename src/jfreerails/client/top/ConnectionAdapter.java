@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.view.ModelRoot;
-import jfreerails.controller.CompositeMoveSplitter;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveExecuter;
@@ -169,7 +168,10 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     public void setMoveReceiver(MoveReceiver m) {
-        moveReceiver = new CompositeMoveSplitter(m);
+		//moveReceiver = new CompositeMoveSplitter(m);
+    	//I don't want moves split at this stage since I want to be able
+    	//to listen of composite moves.
+        moveReceiver = m;
     }
 
     /**
