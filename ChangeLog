@@ -5,6 +5,7 @@ Jan 13, 2005 Luke
 	o 1099095 Remove track not cancelled
 	o 1099093 Upgrade track starting at station fails
 	o 1099083 Remove train, then click train list-> Exception
+	o 1099091 Station placement cursor wrong colour	
 Jan 09, 2005 Luke
 	Bugs fixed:
 	o 1087432	Can't remove or upgrade track using mouse

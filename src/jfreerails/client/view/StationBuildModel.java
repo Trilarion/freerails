@@ -158,7 +158,7 @@ public class StationBuildModel {
     public boolean canBuildStationHere() {
         Point p = (Point)stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
 
-        return stationBuilder.canBuildStationHere(p);
+        return stationBuilder.tryBuildingStation(p).ok;
     }
 
     public Action getStationCancelAction() {

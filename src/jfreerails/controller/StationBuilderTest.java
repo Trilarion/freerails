@@ -41,8 +41,8 @@ public class StationBuilderTest extends TestCase {
 		OneTileMoveVector[] track = {EAST, EAST, EAST};
 		MoveStatus ms = trackBuilder.buildTrack(new Point(10,10), track);
 		assertTrue(ms.ok);
-		assertTrue(stationBuilder.canBuildStationHere(new Point(10,10)));
-		assertTrue(stationBuilder.canBuildStationHere(new Point(13,10)));
+		assertTrue(stationBuilder.tryBuildingStation(new Point(10,10)).ok);
+		assertTrue(stationBuilder.tryBuildingStation(new Point(13,10)).ok);
 		MoveStatus ms1 = stationBuilder.buildStation(new Point(10,10));
 		assertTrue(ms1.ok);
 		
