@@ -28,16 +28,16 @@ final public class ForestStyleTileRenderer extends jfreerails.client.renderer.Ab
     /** Creates new ForestStyleTileView */
 
     public ForestStyleTileRenderer( jfreerails.client.common.ImageSplitter imageSplitter, int[] rgbValues, TerrainType tileModel )  {
+        super(tileModel);
         imageSplitter.setTransparencyToOPAQUE();
         tileIcons = new java.awt.Image[ 4 ];
 
         //Grap them in this order so that they display correctly :)
-        tileIcons[ 0 ] = imageSplitter.getTileFromSubGrid( 0 + 2, 0 );
-        tileIcons[ 1 ] = imageSplitter.getTileFromSubGrid( 0 + 3, 0 );
-        tileIcons[ 2 ] = imageSplitter.getTileFromSubGrid( 0 + 1, 0 );
-        tileIcons[ 3 ] = imageSplitter.getTileFromSubGrid( 0, 0 );
-        super.rgbValues = rgbValues;
-        super.tileModel = tileModel;
+        tileIcons[ 0 ] = imageSplitter.getTileFromSubGrid( 0 , 0 );
+        tileIcons[ 1 ] = imageSplitter.getTileFromSubGrid( 1, 0 );
+        tileIcons[ 2 ] = imageSplitter.getTileFromSubGrid( 3, 0 );
+        tileIcons[ 3 ] = imageSplitter.getTileFromSubGrid( 2, 0 );
+        super.rgbValues = rgbValues;       
     }
 
     public int selectTileIcon( int x, int y, World w ) {

@@ -19,10 +19,11 @@ final public class StandardTileRenderer extends jfreerails.client.renderer.Abstr
     /** Creates new StandardTileIconSelecter */
 
     public StandardTileRenderer( jfreerails.client.common.ImageSplitter imageSplitter, int[] rgbValues, TerrainType tileModel )  {
+		super(tileModel);
         imageSplitter.setTransparencyToOPAQUE();
         tileIcons = new java.awt.Image[ 1 ];
         tileIcons[ 0 ] = imageSplitter.getTileFromSubGrid( 0, 0 );
         super.rgbValues = rgbValues;
-        super.tileModel = tileModel;
+        
     }
 }

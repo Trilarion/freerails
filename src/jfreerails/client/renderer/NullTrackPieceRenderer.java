@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import jfreerails.client.common.ImageManager;
+
 /**
  * This class implements the TrackPieceView interface, but
  * intentionally does nothing.  Its methods are called when
@@ -39,6 +41,15 @@ final public class NullTrackPieceRenderer implements TrackPieceRenderer {
 		Dimension tileSize)
 		 {
 		 	//Draw nothing since there no track here.
+	}
+
+	public void dumpImages(ImageManager imageManager) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getTrackTypeName() {		
+		return "Null track Piece";
 	}
 
 }

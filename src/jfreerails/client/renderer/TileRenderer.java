@@ -1,8 +1,8 @@
 package jfreerails.client.renderer;
 import java.awt.Image;
 
+import jfreerails.client.common.ImageManager;
 import jfreerails.world.top.World;
-
 
 
 /**
@@ -35,4 +35,7 @@ public interface TileRenderer {
 		World w);
 
 	 String getTerrainType();
+	 
+	 /** Adds the images this TileRenderer uses to the specified ImageManager. */
+	 void dumpImages(ImageManager imageManager);
 }

@@ -12,6 +12,10 @@
 package jfreerails.client.renderer;
 
 import java.awt.Image;
+import java.io.File;
+
+import jfreerails.client.common.BinaryNumberFormatter;
+import jfreerails.client.common.ImageManager;
 
 /**
 *  Description of the Class
@@ -20,9 +24,11 @@ import java.awt.Image;
 *     09 October 2001
 */
 
-final public class TrackPieceRendererImpl implements TrackPieceRenderer {
+final public  class TrackPieceRendererImpl implements TrackPieceRenderer {
 
 	Image[] trackPieceIcons = new Image[512];
+	
+	private final String typeName;
 
 	/**
 	*  Description of the Method
@@ -64,8 +70,9 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
 	public TrackPieceRendererImpl(
 		int[] trackTemplatesPrototypes,
-		jfreerails.client.common.ImageSplitter trackImageSplitter) {
+		jfreerails.client.common.ImageSplitter trackImageSplitter, String name) {
 		trackImageSplitter.setTransparencyToTRANSLUCENT();
+		typeName = name;
 
 		//Since track tiles have transparent regions.
 		for (int i = 0; i < trackTemplatesPrototypes.length; i++) {
@@ -118,5 +125,19 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 					+ ", it should be in the range 0-511");
 		}
 		return trackPieceIcons[trackTemplate];
+	}
+
+	public void dumpImages(ImageManager imageManager) {
+		String relativeFileNameBase = "track" + File.separator + this.getTrackTypeName();
+		for (int i = 0 ; i < 512 ; i++){
+			if(trackPieceIcons[i] != null){
+				String fileName = relativeFileNameBase+"_"+BinaryNumberFormatter.format(i, 9)+".png";	
+				imageManager.setImage(fileName,trackPieceIcons[i]);							
+			}			
+		}		
+	}
+
+	public String getTrackTypeName() {		
+		return typeName;
 	}
 }

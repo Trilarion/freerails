@@ -23,6 +23,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 		int[] rgbValues,
 		TerrainType tileModel,
 		TileRenderer parentTileView) {
+			super(tileModel);
 		imageSplitter.setTransparencyToTRANSLUCENT();
 		tileIcons = new java.awt.Image[1];
 		tileIcons[0] = imageSplitter.getTileFromSubGrid(0, 0);

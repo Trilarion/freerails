@@ -29,15 +29,15 @@
    </target>
 
    <target name="copydata" depends="init" description="Copy data files">
-      <copy todir="${build}/jfreerails/data">
-         <fileset dir="${src}/jfreerails/data">
-            <include name="*.xml" />
+      <copy todir="${build}/jfreerails">
+         <fileset dir="${src}/jfreerails">
+            <include name="**/*.xml" />
 
-            <include name="*.png" />
+            <include name="**/*.png" />
 
-            <include name="*.dtd" />
+            <include name="**/*.dtd" />
             
-             <include name="*.gif" />
+             <include name="**/*.gif" />
          </fileset>
       </copy>
 
@@ -96,13 +96,13 @@
 
          <include name="build.xml" />
 
-         <include name="src/jfreerails/data/*.xml" />
+         <include name="src/jfreerails/**/*.xml" />
 
-         <include name="src/jfreerails/data/*.png" />
+         <include name="src/**/*.png" />
 
-         <include name="src/jfreerails/data/*.dtd" />
+         <include name="src/**/*.dtd" />
          
-         <include name="src/jfreerails/data/*.gif" />
+         <include name="src/**/*.gif" />
 
          <include name="README" />
 

@@ -24,12 +24,14 @@ final public class ChequeredTileRenderer extends jfreerails.client.renderer.Abst
     /** Creates new ChequeredTileView */
 
     public ChequeredTileRenderer( jfreerails.client.common.ImageSplitter imageSplitter, int[] rgbValues, TerrainType tileModel )  {
+    	super(tileModel);
         imageSplitter.setTransparencyToOPAQUE();
         tileIcons = new java.awt.Image[ 2 ];
         for( int  i = 0;i < tileIcons.length;i++ ) {
             tileIcons[ i ] = imageSplitter.getTileFromSubGrid( 0 + i, 0 );
         }
-        super.rgbValues = rgbValues;
-        super.tileModel = tileModel;
+        super.rgbValues = rgbValues;       
     }
+
+	
 }

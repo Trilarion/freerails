@@ -28,13 +28,15 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
     /** Creates new RiverStyleTileView */
 
     public RiverStyleTileRenderer( jfreerails.client.common.ImageSplitter imageSplitter, int[] rgbValues, TerrainType tileModel )  {
+    	super(tileModel);
         imageSplitter.setTransparencyToOPAQUE();
         tileIcons = new java.awt.Image[ 16 ];
         for( int  i = 0;i < tileIcons.length;i++ ) {
-            tileIcons[ i ] = imageSplitter.getTileFromSubGrid( 0 + i, 0 );
+        	int icon = (~i) & 15;
+            tileIcons[i] = imageSplitter.getTileFromSubGrid(15 -i, 0 );
         }
         super.rgbValues = rgbValues;
-        super.tileModel = tileModel;
+      
     }
 
     public int selectTileIcon( int x, int y, World w ) {

@@ -5,7 +5,9 @@
 *  Created on 08 August 2001, 17:11
 */
 package jfreerails.client.renderer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
@@ -20,13 +22,15 @@ import jfreerails.world.top.World;
 final public class TileRendererListImpl implements TileRendererList {
 
 	private HashMap tiles;
+	
+	private ArrayList tileArrayList = new ArrayList();
 
 	public TileRenderer getTileViewWithRGBValue(int rgb) {
 		return (TileRenderer) tiles.get(new Integer(rgb));
 	}
 
-	public TileRenderer getTileViewWithNumber() {
-		return null;
+	public TileRenderer getTileViewWithNumber(int i) {
+		return (TileRenderer)tileArrayList.get(i);
 	}
 
 	public int getLength() {
@@ -43,6 +47,10 @@ final public class TileRendererListImpl implements TileRendererList {
 
 	public TileRendererListImpl(HashMap t) {
 		tiles = t;
+		Iterator it = tiles.values().iterator();
+		while(it.hasNext()){
+			tileArrayList.add(it.next());
+		}
 	}
 
 	public java.util.Iterator getIterator() {

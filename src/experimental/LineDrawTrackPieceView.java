@@ -8,6 +8,8 @@ package experimental;
 
 import java.awt.Graphics2D;
 
+import jfreerails.client.common.ImageManager;
+
 /**
 *
 * @author  Luke Lindsay
@@ -69,4 +71,14 @@ public class LineDrawTrackPieceView implements jfreerails.client.renderer.TrackP
             }
         }
     }
+
+	public void dumpImages(ImageManager imageManager) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getTrackTypeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

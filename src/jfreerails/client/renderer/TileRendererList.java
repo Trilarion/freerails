@@ -14,7 +14,7 @@ import jfreerails.world.top.World;
 
 public interface TileRendererList {
 
-	TileRenderer getTileViewWithNumber();
+	TileRenderer getTileViewWithNumber(int i);
 
 	boolean TestRGBValue(int rgb);
 

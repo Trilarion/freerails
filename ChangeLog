@@ -1,3 +1,5 @@
+01-May-2003 00:39:49 Luke
+	o Split up track and terrain images.
 28-Apr-2003 22:18:03 Luke
 	o Integrate new terrain and cargo xml into game.
 	Temporarily lost terrain graphics.
