@@ -131,9 +131,10 @@ void Engine::processMsg(Message* msg)
   switch (msg->getMsgType())
   {
     case Message::addElement:
+      std::cerr << "\nadd element\n";
       addElementToGame(msg);
       if (msg->getData() != NULL)
-        delete (track_data*)msg->getData();
+        delete (GameElement*)msg->getData();
       break;
     case Message::stateOfGame:
       std::cerr << "change state of the game";
@@ -149,13 +150,19 @@ void Engine::addElementToGame(Message* msg)
   #warning correct me ... I need the place to put the element on map!
   GameElement* element = (GameElement *)msg->getData();
   Controller* elementController = controllerDispatcher->getController(element->getTypeID());
+  if (elementController==NULL)
+  {
+    std::cerr << "\nNo Controller found for Type: "<< element->getTypeID() <<"\n";
 //  if (isServer)
 //  {
 //    if (elementController->canBuildElement(element))
 //    {
+  } else
+  {
       elementController->addGameElement(element);
       Message* msgBack = new Message(Message::addElement, 0, element);
       SendAll(msgBack);
+  }
 //    }
 //  }
 //  else

@@ -28,13 +28,6 @@
   *@author frank
   */
 
-typedef struct station_data
-{
-  int field_pos_x;
-  int field_pos_y;
-  Player *player;
-};
-
 class StationController : public Controller
 {
   public: 

@@ -308,7 +308,7 @@ void TrackController::trackUpdate(int x, int y, int dir)
   if (track == NULL )
   {
     #warning complete me
-    track = new Track(0, NULL);
+    track = new Track(x, y, NULL, 0);
     field->setTrack(track);
   }
   connect = track->getConnect();
@@ -330,7 +330,7 @@ void TrackController::trackDoBuild(int x,int y, int dir)
   if (track == NULL )
   {
     #warning complete me
-    track = new Track(0, NULL);
+    track = new Track(x, y, NULL, 0);
     field->setTrack(track);
   }
   connect = doConnect(track->getConnect(), dir);

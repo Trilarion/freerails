@@ -30,13 +30,6 @@ class GameElement;
 class Serializer;
 class WorldMap;
 
-typedef struct track_data
-{
-  int field_pos_x;
-  int field_pos_y;
-  Player *player;
-};
-
 class TrackController : public Controller
 {
   enum TrackType { Normal = 0, Bridge };
