@@ -18,6 +18,7 @@ import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.FreerailsTile;
 
 /**
+ * This class has a static method that converts an image file into a map. 
  * @author Luke
  * 
  */

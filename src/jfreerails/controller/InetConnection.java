@@ -190,12 +190,7 @@ Runnable {
 		    e);
 		} catch (OptionalDataException e) {
 		    System.out.println("OptionalDataException received " + e);
-		}
-		try{
-			//Give the other threads some time to work.
-		Thread.sleep(10);
-	    } catch (InterruptedException e) {		
-		}
+		}	
 	}
 	} catch (IOException e) {
 	    System.out.println("IOException occurred " + e);

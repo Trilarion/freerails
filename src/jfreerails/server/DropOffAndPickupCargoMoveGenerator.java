@@ -1,11 +1,4 @@
-/**
- * Class to transfer cargo between train and the stations it stops at - it also 
- * handles cargo converions that occur when cargo is dropped off. 
- * 
- * @author Scott Bennett
- * Date Created: 4 June 2003
- * 
- */
+
 
 package jfreerails.server;
 
@@ -24,6 +17,15 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.TrainModel;
+
+/**
+ * This class generates moves that transfer cargo between train and the stations it stops at - it also 
+ * handles cargo converions that occur when cargo is dropped off. 
+ * 
+ * @author Scott Bennett
+ * Date Created: 4 June 2003
+ * 
+ */
 
 public class DropOffAndPickupCargoMoveGenerator {
 

@@ -7,12 +7,13 @@ package jfreerails.move;
 import jfreerails.world.top.World;
 
 /**
- * @author Luke
  * 
  * This Move may be subclassed to create a move composed of a number of
  * component Moves where atomicity of the move is required.
  * This class defines a number of methods which may not be subclassed - all
  * changes must be encapsulated as sub-moves of this move.
+ * 
+ *  @author Luke
  */
 public class CompositeMove implements Move {
 

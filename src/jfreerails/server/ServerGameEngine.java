@@ -30,7 +30,7 @@ import jfreerails.world.top.World;
 
 /**
  *
- * This class takes care of the world simulation - i.e. "non-player" activities.
+ * This class takes care of the world simulation - for instance "non-player" activities.
  * @author Luke Lindsay 05-Nov-2002
  *
  */

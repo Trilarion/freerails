@@ -45,7 +45,7 @@ public interface Move extends FreerailsSerializable {
 	 */
 	MoveStatus doMove(World w);
 
-	/** If <code>doMove</code> has just be executed on the 
+	/** If <code>doMove</code> has just been executed on the 
 	 * specified world object, calling this method changes the
 	 * state of the world object back to how it was before <code>doMove</code>
 	 * was called. 	 	 

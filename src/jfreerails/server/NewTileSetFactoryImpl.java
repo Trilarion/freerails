@@ -5,12 +5,15 @@
 package jfreerails.server;
 
 
+import jfreerails.server.common.*;
 import jfreerails.server.parser.CargoAndTerrainHandlerImpl;
 import jfreerails.server.parser.CargoAndTerrainParser;
 import jfreerails.server.parser.RunTypesParser;
 import jfreerails.world.top.World;
 
 /**
+ * This class adds cargo and terrain types defined in an XML file to a World object.
+ * 
  * @author Luke
  * 
  */

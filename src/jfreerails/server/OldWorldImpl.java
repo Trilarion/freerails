@@ -19,6 +19,8 @@ import jfreerails.world.top.WorldImpl;
 
 import org.xml.sax.SAXException;
 
+/** This class sets up a World object.*/
+
 public class OldWorldImpl {
 
 	private World w;
