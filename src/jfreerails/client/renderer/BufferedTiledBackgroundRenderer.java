@@ -29,9 +29,9 @@ public abstract class BufferedTiledBackgroundRenderer
      *  graphics configuration. Such images can be drawn to the screen quickly
      *  since no conversion is needed.
      */
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                                  .getDefaultScreenDevice()
-                                                                                  .getDefaultConfiguration();
+    private final GraphicsConfiguration defaultConfig = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                           .getDefaultScreenDevice()
+                                                                           .getDefaultConfiguration();
 
     /**
      *  Used to draw on the backbuffer.
@@ -69,11 +69,7 @@ public abstract class BufferedTiledBackgroundRenderer
      */
     public void paintRect(Graphics outputGraphics,
         Rectangle newVisibleRectectangle) {
-        int iterations = 0;
-
         do {
-            iterations++;
-
             /*
              *  If this is the first call to the paint method or the component has just been resized,
              *  we need to create a new backgroundBuffer.
@@ -86,13 +82,13 @@ public abstract class BufferedTiledBackgroundRenderer
             }
 
             //	Test if image is lost and restore it.
-            int valCode = backgroundBuffer.validate(defaultConfiguration);
+            int valCode = backgroundBuffer.validate(defaultConfig);
 
-            // No need to check for IMAGE_RESTORED since we are
-            // going to re-render the image anyway.
             if (valCode == VolatileImage.IMAGE_INCOMPATIBLE) {
                 setbackgroundBuffer(newVisibleRectectangle.width,
                     newVisibleRectectangle.height);
+            } else if (valCode == VolatileImage.IMAGE_RESTORED) {
+                this.refreshBackground();
             }
 
             /*
@@ -128,9 +124,13 @@ public abstract class BufferedTiledBackgroundRenderer
     }
 
     private void setbackgroundBuffer(int w, int h) {
-        //backgroundBuffer = defaultConfiguration.createCompatibleImage(w, h);
-        backgroundBuffer = defaultConfiguration.createCompatibleVolatileImage(w,
-                h);
+        //Releases VRAM used by backgroundBuffer. 
+        if (backgroundBuffer != null) {
+            backgroundBuffer.flush();
+        }
+
+        //Create new backgroundBuffer.
+        backgroundBuffer = defaultConfig.createCompatibleVolatileImage(w, h);
         bufferRect.height = backgroundBuffer.getHeight(null);
         bufferRect.width = backgroundBuffer.getWidth(null);
 
