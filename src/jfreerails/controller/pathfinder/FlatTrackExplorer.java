@@ -78,7 +78,7 @@ public class FlatTrackExplorer implements Explorer, FreerailsSerializable {
 			/*****************************************************************/
 			boolean trainOnStation = isAtStation();
 			if (isAtStation()) {
-				System.out.println("train is at station #" + this.currentStation);
+				//System.out.println("train is at station #" + this.currentStation);
 			}
 			/*****************************************************************/
 			
