@@ -1,3 +1,8 @@
+Wed Oct 01 21:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: New Draw System, but not all is yet checked in
+           Tracks/Trains/Stations are not shown up to yet. Will be the next.
+	   But firstly I need another way to load the images.
+
 Sat Aug 23 03:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: TrainFrame now paints wagons
 o Element: add getWagons() to Train

@@ -22,7 +22,7 @@ AM_INIT_AUTOMAKE
 dnl Perform program name transformation
 AC_CHECK_COMPILERS
 AC_PROG_RANLIB
-AC_PROG_LIBTOOL
+dnl AC_PROG_LIBTOOL
 
 AC_PREFIX_DEFAULT(/usr/local)
 if test "x$prefix" = "xNONE"; then
