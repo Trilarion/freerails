@@ -1,3 +1,9 @@
+30-Jul-2003 21:51:56 Luke
+	o The player gets paid for delivering cargo, simply
+	$1,000 per unit of cargo for now.
+	See jfreerails.server.ProcessCargoAtStationMoveGenerator
+	o Fixed bug where 40 times too much cargo was being
+	produced by changing figues in cargo_and_terrain.xml	
 27-Jul-2003 17:27:19 Luke
 	o Got DropOffAndPickupCargoMoveGeneratorTest running 
 	without failures.

@@ -10,11 +10,13 @@ package jfreerails.server;
 
 import java.util.Iterator;
 
+import jfreerails.move.AddTransactionMove;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
 import jfreerails.move.TransferCargoAtStationMove;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
@@ -35,6 +37,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 	private CargoBundle stationBefore;
 	private CargoBundle trainAfter;
 	private CargoBundle trainBefore;
+	
+	private AddTransactionMove payment;
 
 	/**
 	 * Contructor
@@ -75,7 +79,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 			new ChangeCargoBundleMove(trainBefore, trainAfter, trainBundleId);
 		return TransferCargoAtStationMove.generateMove(
 			changeAtStation,
-			changeOnTrain);
+			changeOnTrain,
+			payment);
 	}
 
 	public void getBundles() {
@@ -100,6 +105,9 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 		StationModel station = (StationModel) w.get(KEY.STATIONS, stationId);
 
+
+		CargoBundle cargoDroppedOff = new CargoBundleImpl();
+
 		//Unload the cargo that the station demands
 		while (batches.hasNext()) {
 
@@ -110,6 +118,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 				&& (stationId != cb.getStationOfOrigin())) {
 				//cargo is demanded, so:
 				//		pay train owner...
+				
+				cargoDroppedOff.addCargo(cb, trainAfter.getAmount(cb));
 				System.out.println(
 					w.get(KEY.CARGO_TYPES, cb.getCargoType())
 						+ " was delivered by train #"
@@ -117,6 +127,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 				batches.remove();
 			}			
 		}
+		
+		payment = ProcessCargoAtStationMoveGenerator.processCargo(w, cargoDroppedOff, this.stationId);
 		
 		//Unload the cargo that there isn't space for on the train regardless of whether the station
 		// demands it.

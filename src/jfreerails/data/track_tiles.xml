@@ -2,7 +2,7 @@
 <!--This file species the track (and station) types, and the legal track configurations for each of these types.-->
 <Tiles>
    <TrackSet X="0" Y="0" Height="60" Width="60" Class="Track">
-      <TrackType type="standard track" X="0" Y="0" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000000" price="10000">
+      <TrackType type="standard track" X="0" Y="0" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000000" price="10000" maintenance="1000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -68,7 +68,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="double track" X="0" Y="15" signalTower="false" doubleTrack="true" station="false" maxConsecuativePieces="-1" RGBvalue="000001" price="20000">
+      <TrackType type="double track" X="0" Y="15" signalTower="false" doubleTrack="true" station="false" maxConsecuativePieces="-1" RGBvalue="000001" price="20000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -116,7 +116,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="tunnel" X="9" Y="0" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000002" price="40000">
+      <TrackType type="tunnel" X="9" Y="0" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000002" price="40000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Hill" />
          </CanOnlyBuildOnTheseTerrainTypes>
@@ -136,7 +136,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="wooden trestle bridge" X="9" Y="2" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000003" price="50000">
+      <TrackType type="wooden trestle bridge" X="9" Y="2" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000003" price="50000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="River" />
          </CanOnlyBuildOnTheseTerrainTypes>
@@ -156,7 +156,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="steel girder bridge" X="9" Y="4" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000004" price="100000">
+      <TrackType type="steel girder bridge" X="9" Y="4" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000004" price="100000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="River" />
          </CanOnlyBuildOnTheseTerrainTypes>
@@ -176,7 +176,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="stone masonry bridge" X="9" Y="6" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000005" price="200000">
+      <TrackType type="stone masonry bridge" X="9" Y="6" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000005" price="200000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="River" />
          </CanOnlyBuildOnTheseTerrainTypes>
@@ -196,7 +196,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="signal tower" X="9" Y="8" signalTower="true" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000006" price="25000">
+      <TrackType type="signal tower" X="9" Y="8" signalTower="true" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000006" price="25000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -220,7 +220,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" station="true" stationRadius="1" maxConsecuativePieces="-1" RGBvalue="000007" price="50000">
+      <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" station="true" stationRadius="1" maxConsecuativePieces="-1" RGBvalue="000007" price="50000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -244,7 +244,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008" price="100000">
+      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008" price="100000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -268,7 +268,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009" price="200000">
+      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009" price="200000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -292,7 +292,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="ferry-boat route" X="0" Y="9" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000010" price="15000">
+      <TrackType type="ferry-boat route" X="0" Y="9" signalTower="false" doubleTrack="false" station="false" maxConsecuativePieces="-1" RGBvalue="000010" price="15000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Ocean" />
          </CanOnlyBuildOnTheseTerrainTypes>
