@@ -1,3 +1,6 @@
+18-May-2003 00:52:00 Scott
+	o The cargo supplied to a station can now be viewed from the menu,
+	although some more work is needed.
 16-May-2003 22:51:07 Luke
 	o Now loads tile sized track images instead of grapping
 	them from the big image.
