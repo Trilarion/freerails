@@ -8,11 +8,6 @@ FileConnection::FileConnection():Connection() {
 
 }
 
-FileConnection::FileConnection(int _socketID):Connection() {
-
-  socketID=_socketID;
-  
-}
 
 FileConnection::~FileConnection() {
 
@@ -27,10 +22,10 @@ void FileConnection::open(char* filename, Mode stat) {
   if(stat==READ){
     file=new fstream(filename,fstream::in);
   }else if(stat==OVERWRITE){
-    file=new fstream(filename,fstream::trunc);
+    file=new fstream(filename,fstream::app|fstream::trunc);
   }else if(stat==BACKUP){
     /* TODO: RENAME OLD FILE */
-    file=new fstream(filename,fstream::out);
+    file=new fstream(filename,fstream::app|fstream::trunc);
   }else if(stat==APPEND)
     file=new fstream(filename,fstream::app);
   else{
@@ -82,7 +77,7 @@ int FileConnection::write(void* data, int len) {
 }
 
 int FileConnection::read(void* buf, int maxlen) {
-
+  
   if(mode==READ){
     if (state==OPEN){
       if(file->ios::good()){     /* Check if stream is good for i/o operations. */

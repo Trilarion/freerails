@@ -18,8 +18,7 @@ class FileConnection: public Connection {
  public:
 
   FileConnection();
-  /* int _socketID??*/
-  FileConnection(int _socketID);
+
   /**  */
   ~FileConnection();
   

@@ -16,8 +16,8 @@ public:
     /**  */
     ~Connection();
     
-    int write(void* data, int len);
-    int read(void* buf, int maxlen);
+    virtual int write(void* data, int len){};
+    virtual int read(void* buf, int maxlen){};
     
     virtual void open(char* c, int i);
     virtual void close();
@@ -29,7 +29,7 @@ protected:
 
     State state;
     Error error;
-    int socketID;
+    
 };
 
 #endif

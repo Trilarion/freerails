@@ -31,6 +31,9 @@ public:
     void listen(int port);
     void close();
 
+ private:
+    int socketID;
+
 };
 
 #endif
