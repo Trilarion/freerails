@@ -1,7 +1,7 @@
 Freerails Java - version 0.0.8
 
 What's new:
- build.xml file
+ build.xml file, thanks to JonLS 
  train demo
  (Run "experimental.RunTrainDemo.java" to see it).
  
