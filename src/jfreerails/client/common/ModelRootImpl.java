@@ -50,7 +50,7 @@ public final class ModelRootImpl implements ModelRoot {
         properties.put(SHOW_STATION_BORDERS, Boolean.TRUE);
         properties.put(CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
         properties.put(PREVIOUS_CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
-        properties.put(SERVER, "server details not set!");               
+        properties.put(SERVER, "server details not set!");
         properties.put(PLAY_SOUNDS, Boolean.TRUE);
         addPropertyChangeListener(SoundManager.getSoundManager());
     }

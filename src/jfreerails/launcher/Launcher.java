@@ -470,6 +470,7 @@ LauncherInterface {
             
             switch (currentPage) {
                 case 0:
+                	msp.validateInput();
                     /* Initial game selection page */
                     switch (panel.getMode()) {
                         case LauncherPanel1.MODE_SERVER_ONLY:

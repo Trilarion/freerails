@@ -284,14 +284,14 @@ public class UserInputOnMapController extends KeyAdapter {
         }
 
         case KeyEvent.VK_BACK_SPACE:
-        	logger.info("Undo building track currently not implemented.");
-//
-//            MoveStatus ms = trackBuilder.undoLastTrackMove();
-//
-//            if (!ms.isOk()) {
-//                setCursorMessage(ms.message);
-//            }
+            logger.info("Undo building track currently not implemented.");
 
+            //
+            //            MoveStatus ms = trackBuilder.undoLastTrackMove();
+            //
+            //            if (!ms.isOk()) {
+            //                setCursorMessage(ms.message);
+            //            }
             break;
 
         case KeyEvent.VK_I: {
