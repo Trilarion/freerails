@@ -2,40 +2,65 @@ Freerails Java - build @version@
 
 
 Bugs Fixed:
-
-910134 Demand for mail and passengers
-910902 Gamespeed (Applied Jan Tozicka's 2 patches)
-910130 Placement of harbours
+	
+o 972869 Crash when track under train removed.
+o 972867 Signal towers do nothing
+o 972864 Deselect place-station-mode when track selected
+o 948668 Building Station on Curve - Cursor changes function 	
+o 948671 Map City Overlays incorrect
+o 967675 No trains/stations but train & station menus selectable
+o 972738 Crash when station removed
+o 967662 Bottom of terrain info tab cut off in 640*480 res.
+o 972869 Crash when track under train removed.
+o 948651 IP Address input should be checked immediately. 
+o 948649 Dialogue Box Behavior 
+o 967668 No supply & demand at new station
+o 948672 Large numbers of active trains slows performance 	
+o 967667 Cannot close multilple dialogue boxes.
+o 967664 Fullscreen res. below 640x480 16bit selectable.
+o 967666 Selected fullscreen resolution ignored.
+o 967713 FPS counter obscures build menu
+o 967660 Debug text sent to console 
+o 948679 Delete/Rebuild single section of track doesn't cost anything 
+o 967673 Crash when building track close to edge of map 
+o 967677 OutOfMemoryError after starting several new games
+o 967129 Main map white on 1.5.0 beta 2 
+o 967214 EchoGameServerTest hangs 
+o 948653 Crash after loading a saved game when one is not available.	
+o 948665 "Show Details" on Train List doesn't work if no train is selected.
+o 948659 Dialogue Box Behavior not deterministic
+o 948663 Extra Close Button on Station List tab
+o 948661 No Formal Specification (see /src/docs/jfreerails_1_0_functional_specification.html)	
+o 948656 Non Movable Dialogue Boxes	
+o 948666 Crash when Building Train with Money < 0 and only one station
+o 948655 Can't see consist when there are more than 6 wagons
+o 948675 Can't upgrade station types
+o 948680 No way to tell sphere of influence for a station type
+o 948676 Waiting list is cut off 
+o 948673 Cost of Building track/stations not shown 
+o 948670 Removing non-existant track
+o 948654 Locomotive graphic backwards
+o 910902 Game speed not stored on world object
+o 891452 2 servers same port, no error message
+o 868555 Undo move by pressing backspace doesn't work
+o 910132 Too easy to make money!  
 
 
 Features implemented:
 
-930716 Scale overview map (incorporating code from Railz)
-915945 Stations should not overlap
-915952 Boxes showing cargo waiting at stations
-927152 Show change station popup when add station is clicked 
-915947 Implement ‘wait until full’
-910138 After building a train display train orders 
-910143 After building station show supply and demand
-915949 Balance sheet
-915948 Income statement
-910123 Add/remove cargo to cities more frequently.
-910126 Train list on RHS panel
-915303 Icons for tabs (still need to do icons for buttons)
+o 915960 Logging 
+o 915957 Build track by dragging mouse, partially complete (Thanks Jan Tozicka)		
+o 927165 Quick start option(Thanks Jan Tozicka)
 
 
 Changes not in tracker
 
-Fix selection of track type and build mode that was broken by the gamespeed patch.
-Increased the quality of scaled images returned by ImageManagerImpl
-Updated javadoc comments in jfreerails.server.parser.
-Made trains stop for a couple of seconds at stations.
-Fixed bug where an exception was thrown if you moved the cursor when 'View Mode' was selected on the build menu.
-Updated coding guidelines
-Added 'Show java properties' to about menu.
-Stopped the client window getting displayed before the world is loaded from the server.
-Increased client performance.  93FPS to 111FPS on my machine.
-Readded 640x480 fixed size windowed mode.
+o Fix bug in SimpleAStarPathFinder spotted by Jan Tozicka.
+o Added some javadoc comments.
+o Added hashcode methods to classes that override equals.
+o Code cleanup
+o Let track be built on terrain of category 'Industry' and 'Resource'
+
 
 Getting it, either:
 
