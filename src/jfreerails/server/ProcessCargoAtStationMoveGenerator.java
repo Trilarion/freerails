@@ -34,7 +34,7 @@ public class ProcessCargoAtStationMoveGenerator {
                 thisStation.x) * (batch.getSourceY() - thisStation.y) * (batch.getSourceY() -
                 thisStation.y);
             double dist = Math.sqrt(distanceSquared);
-            amount += cargoBundle.getAmount(batch) * dist * 10;
+            amount += cargoBundle.getAmount(batch) * Math.log(dist) * 100;
         }
 
         DeliverCargoReceipt receipt = new DeliverCargoReceipt(new Money(

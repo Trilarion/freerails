@@ -7,7 +7,6 @@ import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.LegalTrackConfigurations;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
@@ -77,8 +76,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         //Check that oldTrackPiece is not the same as newTrackPiece
         if ((oldTrackPiece.getTrackConfiguration() == newTrackPiece.getTrackConfiguration()) &&
                 (oldTrackPiece.getTrackRule() == newTrackPiece.getTrackRule())) {
-            return MoveStatus.moveFailed(
-                "Tried to replace a one track piece with another identical one.");
+            return MoveStatus.moveFailed("Already track here!");
         }
 
         //Check for illegal track configurations.

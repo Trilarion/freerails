@@ -22,6 +22,7 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.train.WagonType;
 
 /** This JPanel displays the supply and demand at a station.
  *
@@ -201,12 +202,12 @@ implements MoveReceiver {
                 int amountSupplied = station.getSupply().getSupply(i);
                 String supply =
                 (amountSupplied > 0)
-                ? String.valueOf(amountSupplied)
+                ? String.valueOf(amountSupplied/WagonType.UNITS_OF_CARGO_PER_WAGON)
                 : "&nbsp;";
                 int amountWaiting = cargoWaiting.getAmount(i);
                 String waiting =
                 (amountWaiting > 0)
-                ? String.valueOf(amountWaiting)
+                ? String.valueOf(amountWaiting/WagonType.UNITS_OF_CARGO_PER_WAGON)
                 : "&nbsp;";
                 
                 //build the html

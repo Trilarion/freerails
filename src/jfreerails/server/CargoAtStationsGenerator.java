@@ -4,6 +4,7 @@
  */
 package jfreerails.server;
 
+import java.util.Iterator;
 import jfreerails.controller.FreerailsServerSerializable;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeCargoBundleMove;
@@ -15,7 +16,6 @@ import jfreerails.world.station.SupplyAtStation;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
-import jfreerails.world.train.WagonType;
 
 
 /**
@@ -44,16 +44,26 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
             CargoBundle after = cargoBundle.getCopy();
             int stationNumber = nonNullStations.getIndex();
 
+            /* Let the cargo have a half life of one year, so half the existing cargo wastes away.*/
+            Iterator it = after.cargoBatchIterator();
+
+            while (it.hasNext()) {
+                CargoBatch cb = (CargoBatch)it.next();
+                int amount = after.getAmount(cb);
+
+                if (amount > 0) {
+                    after.setAmount(cb, amount / 2);
+                }
+            }
+
             for (int i = 0; i < w.size(KEY.CARGO_TYPES); i++) {
                 int amountSupplied = supply.getSupply(i);
 
                 if (amountSupplied > 0) {
                     CargoBatch cb = new CargoBatch(i, station.x, station.y, 0,
                             stationNumber);
-                    int amountAlready = before.getAmount(cb);
-                    after.setAmount(cb,
-                        (amountSupplied * WagonType.UNITS_OF_CARGO_PER_WAGON) +
-                        amountAlready);
+                    int amountAlready = after.getAmount(cb);
+                    after.setAmount(cb, amountSupplied + amountAlready);
                 }
             }
 

@@ -17,6 +17,7 @@ import jfreerails.world.terrain.Production;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.train.WagonType;
 
 /** This JPanel shows information on a terrain type.
  *
@@ -102,7 +103,8 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                 for(int i = 0; i < cargosProduced ; i++){
                     Production p = type.getProduction()[i];
                     CargoType c = (CargoType)w.get(KEY.CARGO_TYPES, p.getCargoType());
-                    tableString += "<tr> <td>"+c.getDisplayName()+" </td><td>"+p.getRate()+"</td></tr>";
+                    String supply = String.valueOf(p.getRate()/WagonType.UNITS_OF_CARGO_PER_WAGON);
+                    tableString += "<tr> <td>"+c.getDisplayName()+" </td><td>"+supply+"</td></tr>";
                 }
             }
             if(cargosConsumed>0){

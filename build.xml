@@ -163,7 +163,7 @@
    </target>
 
    <target depends="mkdirs, init" name="javadoc">
-      <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
+      <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" use="true" source="1.4" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
          <fileset defaultexcludes="yes" dir="${src}">
             <include name="**/*.java" />
             <exclude name="**/*Test.java" />             

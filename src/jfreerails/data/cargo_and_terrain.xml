@@ -28,9 +28,9 @@
 
    <Terrain_Types>
       <Tile id="City" Category="Urban" rgb="ef901e" right-of-way="0">
-         <Produces Cargo="Mail" Rate="1" />
+         <Produces Cargo="Mail" Rate="40" />
 
-         <Produces Cargo="Passengers" Rate="4" />
+         <Produces Cargo="Passengers" Rate="80" />
 
          <Consumes Cargo="Mail" Prerequisite="2" />
          
@@ -48,9 +48,9 @@
       <Tile id="slums" Category="Urban" rgb="0" right-of-way="0"/>
 -->
       <Tile id="Village" Category="Urban" rgb="d86c48" right-of-way="0">
-         <Produces Cargo="Mail" Rate="1" />
+         <Produces Cargo="Mail" Rate="10" />
 
-         <Produces Cargo="Passengers" Rate="1" />
+         <Produces Cargo="Passengers" Rate="40" />
 
          <Consumes Cargo="Mfg._Goods" Prerequisite="4" />
          
@@ -78,11 +78,11 @@
       <Tile id="Ocean" Category="Ocean" rgb="0000b4" right-of-way="0"/>
 
       <Tile id="Harbour" Category="Ocean" rgb="1eead2" right-of-way="0">
-         <Produces Cargo="Mail" Rate="1" />
+         <Produces Cargo="Mail" Rate="40" />
 
-         <Produces Cargo="Passengers" Rate="1" />
+         <Produces Cargo="Passengers" Rate="40" />
 
-         <Produces Cargo="Mfg._Goods" Rate="4" />
+         <Produces Cargo="Mfg._Goods" Rate="160" />
 
          <Converts input="Grain" output="Food" />
 
@@ -106,23 +106,23 @@
       </Tile>
 
       <Tile id="Cattle_Ranch" Category="Resource" rgb="4" right-of-way="0">
-         <Produces Cargo="Livestock" Rate="4" />
+         <Produces Cargo="Livestock" Rate="160" />
       </Tile>
 
       <Tile id="Grain_Elevator" Category="Resource" rgb="fcfc48" right-of-way="0">
-         <Produces Cargo="Grain" Rate="4" />
+         <Produces Cargo="Grain" Rate="160" />
       </Tile>
 
       <Tile id="Oil_Well" Category="Resource" rgb="ef901d" right-of-way="0">
-         <Produces Cargo="Oil" Rate="4" />
+         <Produces Cargo="Oil" Rate="160" />
       </Tile>
 
       <Tile id="Lumber_Mill" Category="Resource" rgb="ef901c" right-of-way="0">
-         <Produces Cargo="Wood" Rate="4" />
+         <Produces Cargo="Wood" Rate="160" />
       </Tile>
 
       <Tile id="Sugar_Plant." Category="Resource" rgb="ef901f" right-of-way="0">
-         <Produces Cargo="Sugar" Rate="4" />
+         <Produces Cargo="Sugar" Rate="160" />
       </Tile>
 
       <Tile id="River" Category="River" rgb="0048d8" right-of-way="0"/>
