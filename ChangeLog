@@ -1,3 +1,9 @@
+Thu Jan 02 23:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o I've forget to update the ChangeLog file
+o finished the ground map generation in MapGenerator, some thinks are a
+  little bit to hard coded and not the best way.
+o paragui/GameMapView can view the WorldMap inclusive scrolling,
+  but it isn't the finest way. To much Memory usage and take to long time.
 Mon Dec 24 18:30:00 2001  Alexander Opitz <opi@le-bit.de>:
 o Generate WorldMap
 o add WorldMap* to BaseApplication
