@@ -1,13 +1,11 @@
-Freerails Java - version 0.1.4
+Freerails Java - version 0.1.5
 
 What's new:
-o City Names 
-o Random City Tile positioning.
-o Cities are now no longer related to the image map. Positions are determined
-	by the data in the south_america_cities.xml file.
-o Station names based on nearby city
-o Editable train schedules.
-o 'Show controls' dialogue accessible via game menu	
+o	Cargo types read from xml file.
+o	Terrain info dialogue box press 'i' on a tile.
+o	Station info dialogue box, shows supply and demand.
+o	Train graphics are read from a files rather
+	than generated on the fly.
  
 Getting it, either:
 

@@ -1,3 +1,7 @@
+31-May-2003 16:26:35 Luke
+	o Cargo gets added to stations based on what they supply,
+	currently this is triggered by the 'Add cargo to stations' item
+	on the game menu.
 19-May-2003 04:02:00 Scott
 	o Fixed the problem and deviation from the design ;-) of the station
 	cargo calculations, there's now a temporary menu item on the display menu.

@@ -81,15 +81,15 @@
    </target>
 
    <target name="bindist" depends="compile, mkdirs" description="Generate binary distribution">
-      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" basedir="${build}">
+      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" basedir="${build}">
          <manifest>
             <attribute name="Main-Class" value="jfreerails.RunFreerails" />
          </manifest>
       </jar>
    </target>
 
-   <target name="srcdist" depends="init" description="Generate source distribution">
-      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-src.jar" basedir=".">
+   <target name="srcdist" depends="mkdirs" description="Generate source distribution">
+      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar" basedir=".">
          <include name="src/**/*.java" />
          
          <include name="src/**/*.html" />
@@ -131,7 +131,7 @@
    </target>
 
    <target name="rundist" depends="bindist" description="Test run based on bindist">
-      <java jar="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" fork="true" />
+      <java jar="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" fork="true" />
    </target>
 
    <target name="javadoc" depends="mkdirs, init">
@@ -156,7 +156,7 @@
 
   <!--  depends="javadoc" -->
    <target name="jar_doc" depends="javadoc" description="Jar up javadoc">
-      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-javadoc.jar" basedir=".">
+      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar" basedir=".">
          <include name="javadoc/**/*" />
       </jar>
    </target>
