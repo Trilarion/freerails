@@ -1,3 +1,5 @@
+Tue Sep 17 01:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o start replacing PG_WidgetList with a real MapView in paragui
 Mon Sep 16 22:50:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o add some decoration to qt-panel
 o change autogen.sh to work
