@@ -1,3 +1,6 @@
+Mar 9, 2004 1:11:50 AM Luke
+	o Increase client performance.  93FPS to 111FPS on my machine.
+	Note, I get much higher FPS when the client and server are in different JVMs. 
 Mar 8, 2004 11:39:01 PM Luke
 	o Readded 640x480 fixed size windows mode.  It is useful
 	for taking screen shots and making sure the dialogue boxes

@@ -25,8 +25,9 @@ import javax.swing.RepaintManager;
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {
     /** The JFrame(s) that are being actively rendered in the game loop(s). */
-    private static HashSet componetsBEingActivleyRenderered = new HashSet();
+    private static HashSet activelyRendereredComponents = new HashSet();
     private static RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
+    private static long numRepaintRequests = 0;
 
     public static void setAsCurrentManager() {
         RepaintManager.setCurrentManager(instance);
@@ -39,28 +40,36 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         int h) {
         if (hasDifferentAncester(c)) {
             super.addDirtyRegion(c, x, y, w, h);
+        } else {
+            numRepaintRequests++;
         }
     }
 
     public static synchronized void addJFrame(JFrame f) {
-        componetsBEingActivleyRenderered.add(f);
+        activelyRendereredComponents.add(f);
     }
 
     public synchronized void addInvalidComponent(JComponent invalidComponent) {
         if (hasDifferentAncester(invalidComponent)) {
             super.addInvalidComponent(invalidComponent);
+        } else {
+            numRepaintRequests++;
         }
     }
 
     public void markCompletelyClean(JComponent aComponent) {
         if (hasDifferentAncester(aComponent)) {
             super.markCompletelyClean(aComponent);
+        } else {
+            numRepaintRequests++;
         }
     }
 
     public void markCompletelyDirty(JComponent aComponent) {
         if (hasDifferentAncester(aComponent)) {
             super.markCompletelyDirty(aComponent);
+        } else {
+            numRepaintRequests++;
         }
     }
 
@@ -68,10 +77,14 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         Container topLevelAncestor = aComponent.getTopLevelAncestor();
 
         if (null == topLevelAncestor ||
-                componetsBEingActivleyRenderered.contains(topLevelAncestor)) {
+                activelyRendereredComponents.contains(topLevelAncestor)) {
             return false;
         } else {
             return true;
         }
+    }
+
+    public static long getNumRepaintRequests() {
+        return numRepaintRequests;
     }
 }

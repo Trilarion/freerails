@@ -7,8 +7,10 @@ package jfreerails.client.renderer;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import jfreerails.client.common.Painter;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackPiece;
@@ -32,6 +34,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     protected TrackLayer trackLayer;
     private Dimension tileSize = new Dimension(30, 30);
     private Dimension mapSize;
+    private final Painter cityNames;
+    private final Painter stationNames;
 
     /*Used to avoid having to create a new rectangle for each call to
      *the paint methods.
@@ -189,11 +193,15 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         trackLayer = new TrackLayer(w, trackPieceViewList);
         terrainLayer = new TerrainLayer(w, tiles);
         mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
+        cityNames = new CityNamesRenderer(w);
+        stationNames = new StationNamesRenderer(w);
     }
 
     public void paintTile(Graphics g, int x, int y) {
         terrainLayer.paintTile(g, x, y);
         trackLayer.paintTile(g, x, y);
+        cityNames.paint((Graphics2D)g);
+        stationNames.paint((Graphics2D)g);
     }
 
     public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -208,12 +216,16 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         int height = (clipRectangle.height) / tileHeight + 2;
 
         paintRectangleOfTiles(g, x, y, width, height);
+        cityNames.paint((Graphics2D)g);
+        stationNames.paint((Graphics2D)g);
     }
 
     private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
         int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, x, y, width, height);
+        cityNames.paint((Graphics2D)g);
+        stationNames.paint((Graphics2D)g);
     }
 
     public void refreshTile(int x, int y) {

@@ -8,16 +8,15 @@ package jfreerails.launcher;
 
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.io.IOException;
 import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.GeneralSecurityException;
 
 import jfreerails.client.common.FileUtils;
-import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GUIClient;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.server.GameServer;

@@ -6,10 +6,8 @@
 
 package jfreerails.client.top;
 
-import java.awt.event.KeyEvent;
-import javax.swing.InputMap;
-import javax.swing.KeyStroke;
-import javax.swing.JSplitPane;
+import javax.swing.JPanel;
+
 
 /**
  *
@@ -20,36 +18,22 @@ public class ClientJFrame extends javax.swing.JFrame {
     private GUIComponentFactory gUIComponentFactory;
     
     public ClientJFrame(){
-    	
+        
     }
     
     /** Creates new form ClientJFrame */
     public ClientJFrame(GUIComponentFactory gcf) {
-       	setup(gcf);
+        setup(gcf);
     }
-
-	public void setup(GUIComponentFactory gcf) {
-		 this.gUIComponentFactory=gcf;
-		    initComponents();
-		    //jSplitPane1.resetToPreferredSizes();
-		    gUIComponentFactory.createDateJLabel();
-	}
     
-    public void setup() {
-	jSplitPane1.revalidate();
-        jSplitPane1.resetToPreferredSizes();
-
-    /* Hack to stop F8 grabbing the focus of the SplitPane (see javadoc for
-     * JSplitPane Key assignments */
-    InputMap im = jSplitPane1.getInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW);
-    im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
-    jSplitPane1.setInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW, im);
-    im = jSplitPane1.getInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);   
-    jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
-	jSplitPane1.revalidate();
-	jSplitPane1.resetToPreferredSizes();
-	
+    public void setup(GUIComponentFactory gcf) {
+        this.gUIComponentFactory=gcf;
+        initComponents();
+        //jSplitPane1.resetToPreferredSizes();
+        gUIComponentFactory.createDateJLabel();
     }
+    
+    
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -58,9 +42,8 @@ public class ClientJFrame extends javax.swing.JFrame {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
-
-        jSplitPane1 = new javax.swing.JSplitPane();
-        rhsjPanel = new javax.swing.JPanel();
+        
+		rhsjPanel = new JPanel();
         mapOverview = gUIComponentFactory.createOverviewMap();
         trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
 
@@ -83,7 +66,6 @@ public class ClientJFrame extends javax.swing.JFrame {
             }
         });
 
-        jSplitPane1.setResizeWeight(0.8);
         rhsjPanel.setLayout(new java.awt.GridBagLayout());
 
         rhsjPanel.add(mapOverview, new java.awt.GridBagConstraints());
@@ -95,7 +77,12 @@ public class ClientJFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         rhsjPanel.add(trainsJTabPane1, gridBagConstraints);
 
-        jSplitPane1.setRightComponent(rhsjPanel);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(rhsjPanel, gridBagConstraints);
 
         lhsjPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -120,15 +107,13 @@ public class ClientJFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         lhsjPanel.add(statusjPanel, gridBagConstraints);
 
-        jSplitPane1.setLeftComponent(lhsjPanel);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jSplitPane1, gridBagConstraints);
+        getContentPane().add(lhsjPanel, gridBagConstraints);
 
         gameMenu.setText("Game");
         jMenuBar1.add(gameMenu);
@@ -168,7 +153,6 @@ public class ClientJFrame extends javax.swing.JFrame {
     private javax.swing.JMenu gameMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel lhsjPanel;
     private javax.swing.JScrollPane mainMapView;
     private javax.swing.JPanel mapOverview;

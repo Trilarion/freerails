@@ -98,8 +98,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         UntriedMoveReceiver receiver = modelRoot.getReceiver();
 
-        clientJFrame.setup();
-
         if (!vl.validate(world)) {
             throw new IllegalArgumentException("The specified" +
                 " ViewLists are not comaptible with the clients" + "world!");

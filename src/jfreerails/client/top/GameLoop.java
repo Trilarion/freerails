@@ -14,6 +14,8 @@ import jfreerails.util.GameModel;
  *
  */
 final public class GameLoop implements Runnable {
+    /** Whether to display the FPS counter on the top left of the screen.*/
+    private static final boolean SHOWFPS = (System.getProperty("SHOWFPS") != null);
     final static boolean LIMIT_FRAME_RATE = false;
     boolean gameNotDone = false;
     final ScreenHandler screenHandler;
@@ -72,7 +74,6 @@ final public class GameLoop implements Runnable {
 
     public void run() {
         gameNotDone = true;
-        //SynchronizedEventQueue seq = SynchronizedEventQueue.getInstance();
         RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
         RepaintManagerForActiveRendering.setAsCurrentManager();
 
@@ -115,7 +116,9 @@ final public class GameLoop implements Runnable {
                     try {
                         screenHandler.frame.paintComponents(g);
 
-                        fPScounter.updateFPSCounter(frameStartTime, g);
+                        if (SHOWFPS) {
+                            fPScounter.updateFPSCounter(frameStartTime, g);
+                        }
                     } finally {
                         g.dispose();
                     }

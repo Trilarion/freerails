@@ -27,14 +27,14 @@ public class DateJLabel extends JLabel implements View {
 		this.setText("          ");	
 	}
 
-	public void paint(Graphics g) {
+	protected void paintComponent(Graphics g) {
 		if (null != w) {
 			GameTime time = (GameTime) w.get(ITEM.TIME);
 			GameCalendar gameCalendar = (GameCalendar) w.get(ITEM.CALENDAR);
 			String s = gameCalendar.getYearAndMonth(time.getTime());
 			super.setText(s);
 		}
-		super.paint(g);
+		super.paintComponent(g);
 	}
 
 	public void setup(ModelRoot model, ActionListener submitButtonCallBack) {
