@@ -1,5 +1,6 @@
 package jfreerails.world.station;
 
+import java.util.Arrays;
 import jfreerails.world.common.FreerailsSerializable;
 
 
@@ -19,7 +20,7 @@ public class StationModel implements FreerailsSerializable {
     private final int cargoBundleNumber;
 
     /** What this station is building. */
-    private final ProductionAtEngineShop production;
+    private final ProductionAtEngineShop[] production;
 
     public ConvertedAtStation getConverted() {
         return converted;
@@ -34,8 +35,7 @@ public class StationModel implements FreerailsSerializable {
         result = 29 * result + (demand != null ? demand.hashCode() : 0);
         result = 29 * result + (converted != null ? converted.hashCode() : 0);
         result = 29 * result + cargoBundleNumber;
-        result = 29 * result +
-            (production != null ? production.hashCode() : 0);
+        result = 29 * result + production.length;
 
         return result;
     }
@@ -58,7 +58,7 @@ public class StationModel implements FreerailsSerializable {
         this.name = stationName;
         this.x = x;
         this.y = y;
-        production = null;
+        production = new ProductionAtEngineShop[0];
 
         supply = new SupplyAtStation(new int[numberOfCargoTypes]);
         demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
@@ -73,7 +73,7 @@ public class StationModel implements FreerailsSerializable {
         this.demand = new DemandAtStation(new boolean[0]);
         this.supply = new SupplyAtStation(new int[0]);
         this.converted = new ConvertedAtStation(new int[0]);
-        production = null;
+        production = new ProductionAtEngineShop[0];
         this.cargoBundleNumber = 0;
     }
 
@@ -89,11 +89,11 @@ public class StationModel implements FreerailsSerializable {
         return y;
     }
 
-    public ProductionAtEngineShop getProduction() {
-        return production;
+    public ProductionAtEngineShop[] getProduction() {
+        return (ProductionAtEngineShop[])production.clone();
     }
 
-    public StationModel(StationModel s, ProductionAtEngineShop production) {
+    public StationModel(StationModel s, ProductionAtEngineShop[] production) {
         this.production = production;
         this.demand = s.demand;
         this.cargoBundleNumber = s.cargoBundleNumber;
@@ -161,9 +161,7 @@ public class StationModel implements FreerailsSerializable {
                 return false;
             }
 
-            if (!(this.production == null ? test.production == null
-                                              : this.production.equals(
-                        test.production))) {
+            if (!Arrays.equals(this.production, test.production)) {
                 return false;
             }
 

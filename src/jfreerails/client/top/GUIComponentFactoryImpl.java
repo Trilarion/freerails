@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+import java.util.Random;
 import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -39,10 +40,17 @@ import jfreerails.client.view.StationPlacementCursor;
 import jfreerails.client.view.TrainsJTabPane;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeGameSpeedMove;
+import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.world.common.GameSpeed;
+import jfreerails.world.station.ProductionAtEngineShop;
+import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
+import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldMapListener;
 
 
@@ -354,6 +362,46 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         gameMenu.add(newspaperJMenuItem);
         gameMenu.addSeparator();
         gameMenu.add(quitJMenuItem);
+
+        /** For testing.*/
+        final ActionListener build200trains = new ActionListener() {
+                public void actionPerformed(ActionEvent arg0) {
+                    WorldIterator wi = new NonNullElements(KEY.STATIONS,
+                            modelRoot.getWorld(), modelRoot.getPrincipal());
+
+                    if (wi.next()) {
+                        Random randy = new Random();
+                        StationModel station = (StationModel)wi.getElement();
+
+                        ProductionAtEngineShop[] before = station.getProduction();
+                        int numberOfEngineTypes = modelRoot.getWorld().size(SKEY.ENGINE_TYPES) -
+                            1;
+                        int numberOfcargoTypes = modelRoot.getWorld().size(SKEY.CARGO_TYPES) -
+                            1;
+                        ProductionAtEngineShop[] after = new ProductionAtEngineShop[200];
+
+                        for (int i = 0; i < after.length; i++) {
+                            int engineType = randy.nextInt(numberOfEngineTypes);
+                            int[] wagonTypes = new int[] {
+                                    randy.nextInt(numberOfcargoTypes),
+                                    randy.nextInt(numberOfcargoTypes),
+                                    randy.nextInt(numberOfcargoTypes)
+                                };
+                            ProductionAtEngineShop paes = new ProductionAtEngineShop(engineType,
+                                    wagonTypes);
+                            after[i] = paes;
+                        }
+
+                        Move m = new ChangeProductionAtEngineShopMove(before,
+                                after, wi.getIndex(), modelRoot.getPrincipal());
+                        modelRoot.doMove(m);
+                    }
+                }
+            };
+
+        JMenuItem build200TrainsMenuItem = new JMenuItem("Build 200 trains!");
+        build200TrainsMenuItem.addActionListener(build200trains);
+        gameMenu.add(build200TrainsMenuItem);
 
         return gameMenu;
     }

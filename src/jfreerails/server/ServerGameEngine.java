@@ -280,18 +280,21 @@ public class ServerGameEngine implements GameModel, Runnable {
                         principal);
 
                 if (null != station && null != station.getProduction()) {
-                    ProductionAtEngineShop production = station.getProduction();
+                    ProductionAtEngineShop[] production = station.getProduction();
                     Point p = new Point(station.x, station.y);
-                    TrainMover trainMover = tb.buildTrain(production.getEngineType(),
-                            production.getWagonTypes(), p, principal);
 
-                    //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
-                    TrainPathFinder tpf = trainMover.getTrainPathFinder();
-                    this.addServerAutomaton(tpf);
-                    this.addTrainMover(trainMover);
+                    for (int j = 0; j < production.length; j++) {
+                        TrainMover trainMover = tb.buildTrain(production[j].getEngineType(),
+                                production[j].getWagonTypes(), p, principal);
+
+                        //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
+                        TrainPathFinder tpf = trainMover.getTrainPathFinder();
+                        this.addServerAutomaton(tpf);
+                        this.addTrainMover(trainMover);
+                    }
 
                     ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(production,
-                            null, i, principal);
+                            new ProductionAtEngineShop[0], i, principal);
                     moveExecuter.processMove(move);
                 }
             }

@@ -17,8 +17,8 @@ import jfreerails.world.top.WagonAndEngineTypesFactory;
  *
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
-    private ProductionAtEngineShop before;
-    private ProductionAtEngineShop after;
+    private ProductionAtEngineShop[] before;
+    private ProductionAtEngineShop[] after;
     private int engineType;
     private int wagonType;
     private int[] wagons;
@@ -37,11 +37,13 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         engineType = 0;
         wagonType = 0;
         wagons = new int[] {wagonType, wagonType};
-        after = new ProductionAtEngineShop(engineType, wagons);
+        after = new ProductionAtEngineShop[] {
+                new ProductionAtEngineShop(engineType, wagons)
+            };
     }
 
     public void testMove() {
-        before = null;
+        before = new ProductionAtEngineShop[0];
 
         ChangeProductionAtEngineShopMove m;
 

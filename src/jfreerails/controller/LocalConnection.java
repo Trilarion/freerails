@@ -1,10 +1,5 @@
 package jfreerails.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import jfreerails.move.Move;
 import jfreerails.world.top.World;
 
@@ -48,10 +43,7 @@ public class LocalConnection implements ConnectionToServer {
 
     public void processMove(Move move) {
         if (sendMoves) {
-            /* XXX HACK HACK HACK */
-            /* until issues with world object mutability are resolved */
-            Move m = (Move)defensiveCopy(move);
-            peer.sendMove(m);
+            peer.sendMove(move);
         }
     }
 
@@ -98,26 +90,25 @@ public class LocalConnection implements ConnectionToServer {
         }
     }
 
-    private Serializable defensiveCopy(Serializable s) {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ObjectOutputStream objectOut = new ObjectOutputStream(out);
-            objectOut.writeObject(s);
-            objectOut.flush();
-
-            byte[] bytes = out.toByteArray();
-
-            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-            ObjectInputStream objectIn = new ObjectInputStream(in);
-            Object o = objectIn.readObject();
-
-            return (Serializable)o;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e.getMessage());
-        }
-    }
-
+    //    private Serializable defensiveCopy(Serializable s) {
+    //        try {
+    //            ByteArrayOutputStream out = new ByteArrayOutputStream();
+    //            ObjectOutputStream objectOut = new ObjectOutputStream(out);
+    //            objectOut.writeObject(s);
+    //            objectOut.flush();
+    //
+    //            byte[] bytes = out.toByteArray();
+    //
+    //            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+    //            ObjectInputStream objectIn = new ObjectInputStream(in);
+    //            Object o = objectIn.readObject();
+    //
+    //            return (Serializable)o;
+    //        } catch (Exception e) {
+    //            e.printStackTrace();
+    //            throw new IllegalStateException(e.getMessage());
+    //        }
+    //    }
     public World loadWorldFromServer() {
         sendMoves = true;
 
@@ -129,7 +120,7 @@ public class LocalConnection implements ConnectionToServer {
         assert peer.world != null;
 
         /* create a copy of the world */
-        return (World)defensiveCopy(peer.world);
+        return peer.world.defensiveCopy();
     }
 
     public void open() {

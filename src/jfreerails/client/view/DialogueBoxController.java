@@ -95,11 +95,11 @@ public class DialogueBoxController implements WorldListListener {
                 if (wi.next()) {
                     StationModel station = (StationModel)wi.getElement();
 
-                    ProductionAtEngineShop before = station.getProduction();
+                    ProductionAtEngineShop[] before = station.getProduction();
                     int engineType = selectEngine.getEngineType();
                     int[] wagonTypes = selectWagons.getWagons();
-                    ProductionAtEngineShop after = new ProductionAtEngineShop(engineType,
-                            wagonTypes);
+                    ProductionAtEngineShop[] after = new ProductionAtEngineShop[]{new ProductionAtEngineShop(engineType,
+                            wagonTypes)};
 
                     Move m = new ChangeProductionAtEngineShopMove(before,
                             after, wi.getIndex(), modelRoot.getPrincipal());
@@ -109,6 +109,8 @@ public class DialogueBoxController implements WorldListListener {
                 closeContent();
             }
         };
+        
+        
 	private JInternalFrame dialogueJInternalFrame;
 
     public DialogueBoxController(JFrame frame, ModelRoot mr, ActionRoot ar) {
@@ -424,7 +426,7 @@ public class DialogueBoxController implements WorldListListener {
         boolean rightPrincipal = principal.equals(this.modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
-            this.showTrainOrders(index);
+           // this.showTrainOrders(index);
         } else if (KEY.STATIONS == key && rightPrincipal) {
             this.showStationInfo(index);
         }

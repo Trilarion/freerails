@@ -4,6 +4,7 @@
  */
 package jfreerails.move;
 
+import java.util.Arrays;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
@@ -20,25 +21,26 @@ import jfreerails.world.top.World;
  *
  */
 public class ChangeProductionAtEngineShopMove implements Move {
-    private final ProductionAtEngineShop before;
-    private final ProductionAtEngineShop after;
+    private final ProductionAtEngineShop[] before;
+    private final ProductionAtEngineShop[] after;
     private final int stationNumber;
     private final FreerailsPrincipal principal;
 
     public int hashCode() {
         int result;
-        result = (before != null ? before.hashCode() : 0);
-        result = 29 * result + (after != null ? after.hashCode() : 0);
+        result = before.length;
+        result = 29 * result + after.length;
         result = 29 * result + stationNumber;
         result = 29 * result + principal.hashCode();
 
         return result;
     }
 
-    public ChangeProductionAtEngineShopMove(ProductionAtEngineShop b,
-        ProductionAtEngineShop a, int station, FreerailsPrincipal p) {
-        this.before = b;
-        this.after = a;
+    public ChangeProductionAtEngineShopMove(ProductionAtEngineShop[] b,
+        ProductionAtEngineShop[] a, int station, FreerailsPrincipal p) {
+        this.before = (ProductionAtEngineShop[])b.clone();
+        this.after = (ProductionAtEngineShop[])a.clone();
+        ;
         this.stationNumber = station;
         this.principal = p;
     }
@@ -47,7 +49,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return tryMove(w, before);
     }
 
-    private MoveStatus tryMove(World w, ProductionAtEngineShop stateA) {
+    private MoveStatus tryMove(World w, ProductionAtEngineShop[] stateA) {
         //Check that the specified station exists.
         if (!w.boundsContain(KEY.STATIONS, this.stationNumber, principal)) {
             return MoveStatus.moveFailed(this.stationNumber + " " + principal);
@@ -70,7 +72,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
                     principal);
             }
         } else {
-            if (station.getProduction().equals(stateA)) {
+            if (Arrays.equals(station.getProduction(), (stateA))) {
                 return MoveStatus.MOVE_OK;
             } else {
                 return MoveStatus.moveFailed(this.stationNumber + " " +
@@ -113,10 +115,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
         if (o instanceof ChangeProductionAtEngineShopMove) {
             ChangeProductionAtEngineShopMove arg = (ChangeProductionAtEngineShopMove)o;
             boolean stationNumbersEqual = (this.stationNumber == arg.stationNumber);
-            boolean beforeFieldsEqual = (before == null ? arg.before == null
-                                                        : before.equals(arg.before));
-            boolean afterFieldsEqual = (after == null ? arg.after == null
-                                                      : after.equals(arg.after));
+            boolean beforeFieldsEqual = Arrays.equals(this.before, arg.before);
+            boolean afterFieldsEqual = Arrays.equals(this.after, arg.after);
 
             if (stationNumbersEqual && beforeFieldsEqual && afterFieldsEqual) {
                 return true;
