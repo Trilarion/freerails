@@ -15,8 +15,8 @@ import javax.swing.SwingUtilities;
 
 import jfreerails.client.event.CursorEvent;
 import jfreerails.client.event.CursorEventListener;
-import jfreerails.move.receiver.TrackMoveProducer;
-import jfreerails.move.receiver.TrainBuilder;
+import jfreerails.controller.TrackMoveProducer;
+import jfreerails.controller.TrainBuilder;
 
 /**
  *

@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import jfreerails.move.MapUpdateMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.receiver.MoveReceiver;
+import jfreerails.controller.MoveReceiver;
 
 public class MapViewMoveReceiver implements MoveReceiver {
 

@@ -32,6 +32,7 @@ public class ChangeTrainPositionMove {
 		this.trainPositionNumber = trainNumber;
 	}
 
+
 	public static ChangeTrainPositionMove generate(
 		TrainList list,
 		FreerailsPathIterator nextPathSection,
