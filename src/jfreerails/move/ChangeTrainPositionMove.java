@@ -51,19 +51,12 @@ public class ChangeTrainPositionMove {
 
 		bitToAdd = getBitToAdd(nextPathSection);
 
-		//System.out.println("currentPosition "+currentPosition.toString());
-
-		//System.out.println("bitToAdd "+bitToAdd.toString());
-
+		
 		intermediate = currentPosition.addToHead(bitToAdd);
-
-		//System.out.println("intermediate "+intermediate.toString());
 
 		double currentLength = (double) train.getLength();
 
 		bitToRemove = getBitToRemove(intermediate, currentLength);
-
-		//System.out.println("bitToRemove "+bitToRemove.toString());
 
 		return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber, true, false);
 

@@ -13,11 +13,14 @@ import java.awt.Image;
 import java.awt.Transparency;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import java.util.ArrayList;
+
 import jfreerails.client.renderer.SideOnTrainTrainViewImages;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.KEY;
@@ -50,8 +53,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 	/** Creates new form SelectWagonsJPanel */
 	public SelectWagonsJPanel() {
 		initComponents();
-		Image tempImage = (new javax.swing.ImageIcon(getClass().getResource("/jfreerails/data/station.gif"))).getImage();
-
+		URL url = SelectWagonsJPanel.class.getResource("/jfreerails/data/station.gif");
+		Image tempImage = (new javax.swing.ImageIcon(url)).getImage();
+		
 		stationView = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
 
 		Graphics g = stationView.getGraphics();
