@@ -68,7 +68,7 @@ int GameApplication::run()
     mW->setCaption("Freerails");
 
     //setMainWindow(mW);
-    application->setMainWidget((QWidget*)mW->getWidget());
+    application->setMainWidget((QWidget *)mW->getWidget());
     application->processEvents();
     // Show dialog menu for game mode
     GameModeSelector::GameMode mode = mW->askGameMode();
@@ -100,7 +100,7 @@ int GameApplication::run()
 
     if (status == QDialog::Accepted)
     {
-      initSingleGame(std::string(tmp_name), tmp_width, tmp_height, 0);
+      initSingleGame(tmp_name, tmp_width, tmp_height, 0);
 
       engine = new Engine(worldMap, playerSelf);
       CHECK_PTR(engine);

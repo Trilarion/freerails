@@ -5,9 +5,9 @@
 #include "GameWidget.h"
 
 GameWidget::GameWidget(GameMainWindow* _parent, const char *name) :
-  BaseWidget(), QWidget(0, name)
+  QWidget(0, name), BaseWidget()
 {
-  parent = _parent;
+//  parent = _parent;
 }
 
 GameWidget::~GameWidget()
@@ -34,7 +34,7 @@ void GameWidget::setCaption(const char *name)
 {
   QWidget::setCaption(name);
 }
-
+/*
 void GameWidget::resizeEvent(QResizeEvent *e)
 {
   qDebug("(GameWidget) neue Größe %dx%d", e->size().width(), e->size().height());
@@ -57,3 +57,4 @@ void GameWidget::resizeEvent(QResizeEvent *e)
     }
   }
 }
+*/
