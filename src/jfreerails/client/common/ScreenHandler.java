@@ -12,7 +12,6 @@ import java.awt.image.BufferStrategy;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import jfreerails.client.view.MyDisplayMode;
 
 
 /**

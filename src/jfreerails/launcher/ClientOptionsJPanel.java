@@ -9,9 +9,9 @@ package jfreerails.launcher;
 import java.awt.DisplayMode;
 import java.util.logging.Logger;
 
+import jfreerails.client.common.MyDisplayMode;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.view.DisplayModesComboBoxModels;
-import jfreerails.client.view.MyDisplayMode;
 /**
  * The  Launcher panel that lets you choose fullscreen or windowed mode and the
  * screen resolution etc.
