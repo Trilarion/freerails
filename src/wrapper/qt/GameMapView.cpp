@@ -22,13 +22,13 @@ GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent,
   
   pixTiles = new QPixmap();
   CHECK_PTR(pixTiles);
-  status = pixTiles->load("/usr/local/share/freerails/terrain_tiles.png");
+  status = pixTiles->load("data/graphics/tilesets/default/terrain_tiles.png");
   if(!status)
     qDebug("konnte terrain_tiles.png nicht laden");
     
   pixTrack = new QPixmap();
   CHECK_PTR(pixTrack);
-  status = pixTrack->load("/usr/local/share/freerails/track_tiles.png");
+  status = pixTrack->load("data/graphics/tilesets/default/track_tiles.png");
   if(!status)
     qDebug("konnte track_tiles.png nicht laden");
 

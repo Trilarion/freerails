@@ -17,7 +17,7 @@ GameModeSelector::GameModeSelector(GameMainWindow* parent)
       Qt::WStyle_Customize | Qt::WStyle_NoBorder)
 {
   setBackgroundMode(Qt::FixedPixmap);
-  QPixmap pixBackground("/usr/local/share/freerails/menu_background.png");
+  QPixmap pixBackground("data/graphics/ui/menu_background.png");
   setPaletteBackgroundPixmap(pixBackground);
   setFixedSize(pixBackground.size());
   layout = new QVBoxLayout(this);

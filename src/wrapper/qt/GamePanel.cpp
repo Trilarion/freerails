@@ -34,7 +34,7 @@ void GamePanel::setupWdgMessages()
   CHECK_PTR(wdgMessages);
   wdgMessages->resize(176, 144);
   wdgMessages->setBackgroundMode(Qt::FixedPixmap);
-  wdgMessages->setBackgroundPixmap(QPixmap("/usr/local/share/freerails/panel.png"));
+  wdgMessages->setBackgroundPixmap(QPixmap("data/graphics/ui/panel.png"));
   wdgMessages->move(0, height() - 444);
 }
 
@@ -48,12 +48,12 @@ void GamePanel::setupButtons()
 
   QPixmap pixmap, pix_t;
   pix_t.resize(88, 50);
-  pixmap.load("/usr/local/share/freerails/panel_build_on.png");
+  pixmap.load("data/graphics/ui/panel_build_on.png");
   bitBlt(&pix_t, 0, 0, &pixmap, 0, 0, 88, 50);
   iconSet_tt.setPixmap(pix_t, QIconSet::Small, QIconSet::Normal, QIconSet::Off);
   bitBlt(&pix_t, 0, 0, &pixmap, 88, 0, 88, 50);
   iconSet_tb.setPixmap(pix_t, QIconSet::Small, QIconSet::Normal, QIconSet::On);
-  pixmap.load("/usr/local/share/freerails/panel_train_on.png");
+  pixmap.load("data/graphics/ui/panel_train_on.png");
   bitBlt(&pix_t, 0, 0, &pixmap, 0, 0, 88, 50);
   iconSet_tt.setPixmap(pix_t, QIconSet::Small, QIconSet::Normal, QIconSet::On);
   bitBlt(&pix_t, 0, 0, &pixmap, 88, 0, 88, 50);
@@ -101,7 +101,7 @@ void GamePanel::setupPanelTrain()
   CHECK_PTR(panelTrain);
   panelTrain->setFixedSize(176, 250);
   panelTrain->setBackgroundMode(Qt::FixedPixmap);
-  panelTrain->setBackgroundPixmap(QPixmap("/usr/local/share/freerails/panel_train.png"));
+  panelTrain->setBackgroundPixmap(QPixmap("data/graphics/ui/panel_train.png"));
 }
 
 void GamePanel::setupPanelBuild()
@@ -110,7 +110,7 @@ void GamePanel::setupPanelBuild()
   CHECK_PTR(panelBuild);
   panelBuild->setFixedSize(176, 250);
   panelBuild->setBackgroundMode(Qt::FixedPixmap);
-  panelBuild->setBackgroundPixmap(QPixmap("/usr/local/share/freerails/panel_train.png"));
+  panelBuild->setBackgroundPixmap(QPixmap("data/graphics/ui/panel_train.png"));
 
   QIconSet iconSet_t;
   QIconSet iconSet_s;
@@ -118,10 +118,10 @@ void GamePanel::setupPanelBuild()
   iconSet_t.setIconSize(QIconSet::Small, QSize(25,25));
   iconSet_s.setIconSize(QIconSet::Small, QSize(25,25));
 
-  iconSet_t.setPixmap("/usr/local/share/freerails/build_track_down.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
-  iconSet_t.setPixmap("/usr/local/share/freerails/build_track_up.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
-  iconSet_s.setPixmap("/usr/local/share/freerails/build_station_down.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
-  iconSet_s.setPixmap("/usr/local/share/freerails/build_station_up.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
+  iconSet_t.setPixmap("data/graphics/ui/buttons/build_track_down.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
+  iconSet_t.setPixmap("data/graphics/ui/buttons/build_track_up.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
+  iconSet_s.setPixmap("data/graphics/ui/buttons/build_station_down.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
+  iconSet_s.setPixmap("data/graphics/ui/buttons/build_station_up.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
 
   btnTrack = new QToolButton(panelBuild);
   CHECK_PTR(btnTrack);
@@ -220,6 +220,7 @@ void GamePanel::handler_station()
 void GamePanel::handler_exit()
 {
   #warning complete me
+//  parent()->exitGame();
   exit(0);
 }
 

@@ -16,4 +16,4 @@ libwrapper_a_SOURCES = \
     GameMenuBar.cpp \
     GameModeSelector.cpp \
     GamePanel.cpp \
-    GameWidget.cpp 
+    GameWidget.cpp singlegameoptiondialog.cpp

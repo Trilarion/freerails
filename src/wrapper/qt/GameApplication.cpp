@@ -14,6 +14,7 @@
 #include "Engine.h"
 #include "GameApplication.h"
 #include "GameMainWindow.h"
+#include "singlegameoptiondialog.h"
 
 GameApplication::GameApplication(int argc, char *argv[]) :
     BaseApplication(argc, argv)
@@ -65,17 +66,34 @@ int GameApplication::run()
   }
 
   #warning complete me
-  initSingleGame(std::string("frank"), 1000, 1000, 0);
-  
-  engine = new Engine(worldMap, playerSelf);
-  CHECK_PTR(engine);
+  QString tmp_name;
+  int tmp_width, tmp_height;
+  int status;
+  SingleGameOptionDialog *sgoDlg = new SingleGameOptionDialog(mW);
+  status = sgoDlg->exec();
+  if (status == QDialog::Accepted)
+  {
+    tmp_name = sgoDlg->getName();
+    tmp_width = sgoDlg->getWidth();
+    tmp_height = sgoDlg->getHeight();
+  }
+  delete sgoDlg;
 
- 
-  // Construct playfield (map, panel, buttons)
-  mW->setEngine(engine);
-  mW->constructPlayField();
-  
-  return application->exec();
+  if (status == QDialog::Accepted)
+  {  
+    initSingleGame(std::string(tmp_name), tmp_width, tmp_height, 0);
+
+    engine = new Engine(worldMap, playerSelf);
+    CHECK_PTR(engine);
+
+
+    // Construct playfield (map, panel, buttons)
+    mW->setEngine(engine);
+    mW->constructPlayField();
+
+    return application->exec();
+  }
+  return 1;
 }
 
 void GameApplication::showSplash()
@@ -86,7 +104,7 @@ void GameApplication::showSplash()
       Qt::WStyle_StaysOnTop);
   splash->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
   // New, better and probably a bit smaller splashscreen picture wanted!
-  splash->setPixmap(QPixmap(QString("/usr/local/share/freerails/title.png")));
+  splash->setPixmap(QPixmap(QString("data/graphics/ui/title.png")));
   splash->adjustSize();
   splash->move((QApplication::desktop()->width() - splash->width()) / 2,
       (QApplication::desktop()->height() - splash->height()) / 2);
