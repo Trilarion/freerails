@@ -44,6 +44,7 @@ bool StationController::testBuildElement(int x, int y)
 
   field = worldMap->getMapField(x, y);
   if (field == NULL) return false;
+  if (field->getStation()!=NULL) return false;
   track = field->getTrack();
   if (track != NULL )
   {
@@ -114,5 +115,5 @@ void StationController::stationDoBuild(int x, int y, int size)
   #warning complete me
   connect |= TrackIsBlocked;
   track->setConnect(connect);
-  field->setElement(new Station(x,y, NULL, "", (Station::Size)size, NULL));
+  field->setStation(new Station(x,y, NULL, "", (Station::Size)size, NULL));
 }

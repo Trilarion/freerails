@@ -10,6 +10,7 @@ MapField::MapField(FieldType _type, unsigned short _cost, unsigned short _height
   cost = _cost;
   height = _height;
   element = NULL;
+  station = NULL;
   track = NULL;
 }
 

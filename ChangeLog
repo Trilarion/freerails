@@ -1,3 +1,6 @@
+Mon May 12 11:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o Map/Controllers/ParaGUI: Station is now is a own element on MapField.
+o ParaGUI: Panel.
 Sat May 10 02:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Elements   : Add first City Element.
 o Controllers: Add small CityController who do nothing yet.

@@ -180,15 +180,19 @@ void GameMapView::drawElementsPixmap(int mapX, int mapY) {
   MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
   if (field==NULL) return;
   GameElement* element = field->getElement();
-  if (element==NULL) return;
-  
-  switch (element->getTypeID())
-  {
-    case (GameElement::idStation):
-      drawStationPixmap(mapX, mapY, (Station*) element);
-    break;
+  if (element!=NULL)
+  {  
+    switch (element->getTypeID())
+    {
+      case (GameElement::idStation):
+        drawStationPixmap(mapX, mapY, (Station*) element);
+      break;
 // others like industrie there
+    }
   }
+  
+  Station* station = field->getStation();
+  if (station!=NULL) drawStationPixmap(mapX, mapY, station);
 }
 
 void GameMapView::drawTrackPixmap(int mapX, int mapY) {

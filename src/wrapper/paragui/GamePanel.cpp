@@ -89,14 +89,14 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
   trainViewButton=new PG_Button(this,GamePanel::ViewTrains,PG_Rect(82,200,68,20),"Trains");
   trainViewButton->SetToggle(true);
+  trainViewButton->SetPressed(true);
   trainViewButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickViewButton);
   
   stationList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
   stationList->EnableScrollBar(true, PG_SB_VERTICAL);
   stationList->SetTransparency(0);
-  stationList->SetDirtyUpdate(false);
   
-  new PG_Label(stationList, PG_Rect(0,0,300,20), "Stations 12345678901234567890");
+  new PG_Label(stationList, PG_Rect(0,0,300,20), "Stations");
 
   trainList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
   trainList->EnableScrollBar(true, PG_SB_VERTICAL);

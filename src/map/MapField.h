@@ -6,6 +6,7 @@
 #define __MAPFIELD_H__
 
 #include "GameElement.h"
+#include "Station.h"
 #include "Track.h"
 
 class MapField {
@@ -31,6 +32,9 @@ public:
   
   void setElement(GameElement* _element) { element=_element; };
   GameElement* getElement() { return element; };
+
+  void setStation(Station* _station) { station=_station; };
+  Station* getStation() { return station; };
   
   void setTrack(Track* _track) { track=_track; };
   Track* getTrack() { return track; };
@@ -42,6 +46,7 @@ private:
   unsigned short cost;
   unsigned short height;
   GameElement* element;
+  Station* station;
   Track* track;
 };
 
