@@ -237,7 +237,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         TrackRule trackRuleBefore = this.trackPieceBefore.getTrackRule();
 
-        if (trackRuleAfter.isStation()) {
+        if (trackRuleBefore.isStation()) {
             radius = Math.max(radius, trackRuleBefore.getStationRadius());
         }
 
