@@ -14,12 +14,13 @@ public class NewInetConnectionTest extends AbstractEchoGameServerTestCase {
         try {
             assertEquals(0, echoGameServer.countOpenConnections());
 
-            NewInetConnection connection = new NewInetConnection(ipAddress, port);
+            NewInetConnection connection = new NewInetConnection(ipAddress,
+                    server.getLocalPort());
             connection.open();
             assertEquals(1, echoGameServer.countOpenConnections());
 
             NewInetConnection connection2 = new NewInetConnection(ipAddress,
-                    port);
+                    server.getLocalPort());
             connection2.open();
             assertEquals(2, echoGameServer.countOpenConnections());
         } catch (Exception e) {

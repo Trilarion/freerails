@@ -72,4 +72,8 @@ public class InetConnectionAccepter implements Runnable {
     private boolean isKeepRunning() {
         return keepRunning.isOpen();
     }
+
+    public int getLocalPort() {
+        return serverSocket.getLocalPort();
+    }
 }

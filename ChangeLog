@@ -1,4 +1,6 @@
 Jul 07, 2004 Luke	
+	o Fixed problem with unit tests in jfreerails.controller.net
+Jul 07, 2004 Luke	
 	Bugs fixed:	
 	o 972866 Build track by dragging - only when build track selected
 Jul 06, 2004 Luke

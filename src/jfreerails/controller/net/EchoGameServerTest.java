@@ -19,9 +19,9 @@ public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
             assertEquals(0, echoGameServer.countOpenConnections());
 
             InetConnection2Server con1 = new InetConnection2Server(ipAddress,
-                    port);
+                    server.getLocalPort());
             InetConnection2Server con2 = new InetConnection2Server(ipAddress,
-                    port);
+                    server.getLocalPort());
             assertEquals(2, echoGameServer.countOpenConnections());
             con1.writeToServer(new Money(99));
             con1.flush();

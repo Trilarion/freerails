@@ -12,14 +12,21 @@ import junit.framework.TestCase;
  *
  */
 public class AbstractEchoGameServerTestCase extends TestCase {
-    private InetConnectionAccepter server;
+    InetConnectionAccepter server;
     EchoGameServer echoGameServer;
-    final int port = 6666;
     final String ipAddress = "127.0.0.1";
 
     protected synchronized void setUp() throws Exception {
         echoGameServer = EchoGameServer.startServer();
-        server = new InetConnectionAccepter(port, echoGameServer);
+
+        /* There was a problem that occurred intermittenly
+         * when the unit tests were run as a batch.  I think
+         * it was to do with reusing ports in quick succession.
+         * Passing 0 as the port allow us to listen on an unspecified
+         * port whose number we obtain by calling getLocalPort().  This
+         * making this change, the problem has not occurred.
+         */
+        server = new InetConnectionAccepter(0, echoGameServer);
 
         Thread serverThread = new Thread(server);
         serverThread.start();
