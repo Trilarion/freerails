@@ -44,6 +44,7 @@
 				<include name="**/*.gif" />
 				<include name="client/view/game_controls.html" />
 				<include name="**/*.htm" />
+				<include name="**/*.wav" />
 			</fileset>
 		</copy>
 
@@ -119,6 +120,8 @@
 			<include name="src/jfreerails/**/*.xml" />
 
 			<include name="src/**/*.png" />
+			
+			<include name="src/**/*.wav" />
 
 			<include name="src/**/*.dtd" />
 

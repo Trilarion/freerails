@@ -186,7 +186,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         timeLoadingFinished = new GameTime(currentTime.getTime() + ticks);
     }
 
-    private void loadAndUnloadCargo(int stationId) {
+    private void loadAndUnloadCargo(int stationId, boolean waiting) {
         /* We only want to generate a move if the station's cargo bundle is
          * not the last one we looked at.
          */
@@ -199,7 +199,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         if (currentCargoBundleAtStation != this.lastCargoBundleAtStation) {
             //train is at a station so do the cargo processing
             DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId,
-                    stationId, world, principal);
+                    stationId, world, principal, waiting);
             Move m = transfer.generateMove();
             moveReceiver.processMove(m);
             this.lastCargoBundleAtStation = currentCargoBundleAtStation;
@@ -244,7 +244,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         int stationNumber = getStationNumber(tempP.getX(), tempP.getY());
 
         if (NOT_AT_STATION != stationNumber) {
-            loadAndUnloadCargo(stationNumber);
+            loadAndUnloadCargo(stationNumber, false);
         }
 
         int currentPosition = tempP.getOpposite().toInt();
@@ -313,7 +313,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
                 return false;
             } else {
                 /*Add any cargo that is waiting.*/
-                loadAndUnloadCargo(schedule.getStationToGoto());
+                loadAndUnloadCargo(schedule.getStationToGoto(), true);
 
                 if (isTrainFull()) {
                     updateSchedule();

@@ -284,7 +284,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     private void stopAtStation() {
         DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(0,
-                0, w, MapFixtureFactory.TEST_PRINCIPAL);
+                0, w, MapFixtureFactory.TEST_PRINCIPAL, false);
         Move m = moveGenerator.generateMove();
         MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
         assertTrue(ms.isOk());

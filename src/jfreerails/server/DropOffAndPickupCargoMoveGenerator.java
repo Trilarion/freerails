@@ -41,6 +41,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     private CargoBundle trainBefore;
     private ArrayList moves;
     private final FreerailsPrincipal principal;
+    private boolean waitingForFullLoad;
 
     /**
      * Contructor.
@@ -49,11 +50,12 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param world The world object
      */
     public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo,
-        ReadOnlyWorld world, FreerailsPrincipal p) {
+        ReadOnlyWorld world, FreerailsPrincipal p, boolean waiting) {
         principal = p;
         trainId = trainNo;
         stationId = stationNo;
         w = world;
+        this.waitingForFullLoad = waiting;
 
         train = (TrainModel)w.get(KEY.TRAINS, trainId, principal);
 
@@ -75,7 +77,8 @@ public class DropOffAndPickupCargoMoveGenerator {
         moves.add(TransferCargoAtStationMove.CHANGE_ON_TRAIN_INDEX,
             changeOnTrain);
 
-        TransferCargoAtStationMove move = new TransferCargoAtStationMove(moves);
+        TransferCargoAtStationMove move = new TransferCargoAtStationMove(moves,
+                waitingForFullLoad);
         assert move.getChangeAtStation() == changeAtStation;
         assert move.getChangeOnTrain() == changeOnTrain;
 

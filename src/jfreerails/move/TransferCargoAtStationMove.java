@@ -18,17 +18,20 @@ import jfreerails.world.player.Player;
 public class TransferCargoAtStationMove extends CompositeMove {
     public static final int CHANGE_ON_TRAIN_INDEX = 1;
     public static final int CHANGE_AT_STATION_INDEX = 0;
+    private final boolean waitingForFullLoad;
 
-    private TransferCargoAtStationMove(Move[] moves) {
+    private TransferCargoAtStationMove(Move[] moves, boolean waiting) {
         super(moves);
+        this.waitingForFullLoad = waiting;
     }
 
     public static TransferCargoAtStationMove generateMove(
         ChangeCargoBundleMove changeAtStation,
-        ChangeCargoBundleMove changeOnTrain, CompositeMove payment) {
+        ChangeCargoBundleMove changeOnTrain, CompositeMove payment,
+        boolean waiting) {
         return new TransferCargoAtStationMove(new Move[] {
                 changeAtStation, changeOnTrain, payment
-            });
+            }, waiting);
     }
 
     public ChangeCargoBundleMove getChangeAtStation() {
@@ -88,7 +91,12 @@ public class TransferCargoAtStationMove extends CompositeMove {
         return Player.NOBODY;
     }
 
-    public TransferCargoAtStationMove(ArrayList movesArrayList) {
+    public TransferCargoAtStationMove(ArrayList movesArrayList, boolean waiting) {
         super(movesArrayList);
+        this.waitingForFullLoad = waiting;
+    }
+
+    public boolean isWaitingForFullLoad() {
+        return waitingForFullLoad;
     }
 }

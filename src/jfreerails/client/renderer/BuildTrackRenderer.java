@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
+import jfreerails.client.common.SoundManager;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.MoveStatus;
@@ -25,18 +26,14 @@ import jfreerails.world.track.TrackRule;
  * */
 public class BuildTrackRenderer implements Painter {
     private final Dimension tileSize = new Dimension(30, 30);
-
-    //    private int x;
-    //    private int y;
     private boolean show = false;
     private WorldDifferences worldDifferences;
     private TrackPieceRendererList trackPieceViewList;
-
-    //  private UserInputOnMapController owner;
     private ModelRoot modelRoot;
     private boolean settedUp = false;
     private List builtTrack;
     private FreerailsPrincipal principal;
+    private SoundManager soundManager = SoundManager.getSoundManager();
 
     /**
      * BuildTrackRenderer
@@ -205,6 +202,14 @@ public class BuildTrackRenderer implements Painter {
             }
 
             oldPosition = point;
+        }
+
+        //If track has actually been built, play the build track sound.
+        if (trackBuilder != null) {
+            if (trackBuilder.getTrackBuilderMode() == TrackMoveProducer.BUILD_TRACK) {
+                this.soundManager.playSound("/jfreerails/client/sounds/buildtrack.wav",
+                    0);
+            }
         }
     }
 

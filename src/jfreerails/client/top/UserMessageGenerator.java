@@ -5,6 +5,7 @@ package jfreerails.client.top;
 
 import java.text.DecimalFormat;
 import jfreerails.client.common.ModelRoot;
+import jfreerails.client.common.SoundManager;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeGameSpeedMove;
@@ -25,15 +26,17 @@ import jfreerails.world.train.TrainModel;
 
 
 /**
- * This class inspects incoming moves and generates a user message if appropriate.
- * It could also be used to trigger sounds.
- *  @author Luke
+ * This class inspects incoming moves and generates a user message if
+ * appropriate. It could also be used to trigger sounds.
+ *
+ * @author Luke
  *
  */
 public class UserMessageGenerator implements MoveReceiver {
     private ModelRoot modelRoot;
     private ActionRoot actionRoot;
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");
+    private SoundManager soundManager = SoundManager.getSoundManager();
 
     public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
         if (null == mr || null == actionRoot) {
@@ -103,7 +106,31 @@ public class UserMessageGenerator implements MoveReceiver {
                 }
 
                 message += "$" + formatter.format(revenue);
+
+                //Play the sound of cash coming in. The greater the
+                // revenue,
+                //the more loops of the sample we play.
+                int loops = (int)revenue / 4000;
+
+                try {
+                    soundManager.playSound("/jfreerails/client/sounds/cash.wav",
+                        loops);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 modelRoot.setProperty(ModelRoot.QUICK_MESSAGE, message);
+            } else {
+                //If there is no revenue and we are not waiting for a full
+                // load, whistle!
+                if (!transferCargoAtStationMove.isWaitingForFullLoad()) {
+                    try {
+                        soundManager.playSound("/jfreerails/client/sounds/whistle.wav",
+                            0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } else if (move instanceof ChangeGameSpeedMove) {
             logSpeed();
@@ -117,9 +144,9 @@ public class UserMessageGenerator implements MoveReceiver {
         if (gameSpeed <= 0) {
             modelRoot.setProperty(ModelRoot.PERMANENT_MESSAGE, "Game is paused.");
 
-            /* Also hide any other message.  It looks silly if it says
-             * "Game is paused." and "Game speed: fast" on screen at the same
-             * time!
+            /*
+             * Also hide any other message. It looks silly if it says "Game is
+             * paused." and "Game speed: fast" on screen at the same time!
              */
             modelRoot.setProperty(ModelRoot.QUICK_MESSAGE, "");
         } else {
