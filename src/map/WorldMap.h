@@ -10,12 +10,26 @@
 class WorldMap {
 public:
   /** Constructor */
-  WorldMap();
+  WorldMap(int width, int height);
   /** Destructor */
   virtual ~WorldMap();
   
+  MapField* getMapField(int x, int y) {
+    if (x < 0 || x > width) return NULL;
+    if (y < 0 || y > height) return NULL;
+    return mapFields[y*width+x];
+  }
+  
+  void setMapField(int x, int y, MapField* _mapField) {
+    if (x < 0 || x > width) return;
+    if (y < 0 || y > height) return;
+    mapFields[y*width+x]=_mapField;
+  }
+
 private:
-  MapField* mapFields;
+  std::vector<MapField *> mapFields;
+  int height;
+  int width;
 //  MapInfo* mapInfo;
 };
 

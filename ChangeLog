@@ -1,3 +1,6 @@
+Mon Sep 24 14:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o make WorldMap function
+o small changes in UML
 Fri Sep 21 19:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o update MapField to ground needings
 o add WorldMap
