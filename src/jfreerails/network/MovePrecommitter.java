@@ -69,7 +69,7 @@ public class MovePrecommitter {
             MoveStatus ms = m.undoMove(w, Player.AUTHORITATIVE);
 
             if (!ms.ok) {
-                throw new IllegalStateException();
+                throw new IllegalStateException(ms.message);
             }
 
             uncomittedMoves.addFirst(m);
