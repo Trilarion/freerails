@@ -28,7 +28,7 @@ class GameElement : public Serializeable
 
     /** Return type of element */
     idtype getElementID() {return elementID;};
-    int getTypeID() {return typeID;};
+    TypeID getTypeID() {return typeID;};
 
     /** Changes the owner of this element */
     void setPlayer(Player* p);
