@@ -16,6 +16,7 @@ GamePanel::GamePanel(Engine *_engine, GameMapView *_mapView, GameMainWindow* par
 {
   engine = _engine;
   mapView = _mapView;
+  mainWindow = parent;
   
   resize(176, parent->getWidget()->height());
   setFixedWidth(176);
@@ -230,8 +231,7 @@ void GamePanel::handler_station()
 
 void GamePanel::handler_exit()
 {
-  #warning complete me
-//  parent()->exitGame();
+  mainWindow->exitGame();
 }
 
 void GamePanel::releaseAllButtons()

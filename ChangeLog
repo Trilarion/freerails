@@ -1,3 +1,6 @@
+Thu Oct 10 22:08:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o some micro-changes for qt-wrapper
+  now back to SelectDialog after quittting game will work right
 Thu Oct 10 12:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o rechange Message Class back to have a msgID and not GameElement::Type
 o msgID must later the next unique number to the last Message so thet the engine knows

@@ -22,7 +22,8 @@ GameMainWindow::GameMainWindow(int x, int y, int w, int h) :
 
 GameMainWindow::~GameMainWindow()
 {
-  delete widget;
+  if(widget)
+    delete widget;
 }
 
 void GameMainWindow::setCaption(const char* caption)
@@ -74,4 +75,7 @@ void GameMainWindow::constructPlayField()
 
 void GameMainWindow::exitGame()
 {
+  qDebug("quit current game");
+  delete widget;
+  widget = 0;
 }

@@ -53,6 +53,7 @@ class GamePanel : public QWidget
 
     Engine *engine;
     GameMapView *mapView;
+    GameMainWindow *mainWindow;
 
     bool build_is_on;
 

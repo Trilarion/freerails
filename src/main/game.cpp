@@ -10,8 +10,8 @@
 #include "WorldMap.h"
 #include "MapGenerator.h"
 
-MyGameApplication::MyGameApplication(int argc, char *argv[]):GameApplication(argc, argv) {
-
+MyGameApplication::MyGameApplication(int argc, char *argv[]) : GameApplication(argc, argv)
+{
   worldMap=NULL;
   // Some rather silly demonstration code:
 /*  GameController controll("default",1900,1,1);
@@ -44,7 +44,7 @@ void MyGameApplication::initSingleGame(const std::string name, int playFieldWidt
 void MyGameApplication::initServerGame(const std::string name, int playFieldWidth, int playFieldHeight, int /*numberOfAi*/)
 {
   std::cerr << "ServerGame" << std::endl;
-  playerSelf=new Player(name,Player::HUMAN);
+  playerSelf = new Player(name,Player::HUMAN);
   if(playFieldWidth == -1)
   {
     // we will play a scenario
@@ -55,7 +55,8 @@ void MyGameApplication::initServerGame(const std::string name, int playFieldWidt
   }
 }
 
-void MyGameApplication::initClientGame(const std::string name) {
+void MyGameApplication::initClientGame(const std::string name)
+{
   std::cerr << "ClientGame" << std::endl;
-  playerSelf=new Player(name,Player::HUMAN);
+  playerSelf = new Player(name,Player::HUMAN);
 }

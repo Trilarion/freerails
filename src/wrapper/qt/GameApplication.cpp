@@ -58,19 +58,17 @@ int GameApplication::run()
   hideSplash();
   application->processEvents();
 
-  // FIXME: should be done in constructor with parameters from argc, argv
-  mW = new GameMainWindow(0, 0, 800, 600);
-
-  // FIXME: versionstring for caption
-  mW->setCaption("Freerails");
-
-  //setMainWindow(mW);
-  application->setMainWidget((QWidget*)mW->getWidget());
-  application->processEvents();
-  hideSplash();
-
   while(1)
   {
+    // FIXME: should be done in constructor with parameters from argc, argv
+    mW = new GameMainWindow(0, 0, 800, 600);
+
+    // FIXME: versionstring for caption
+    mW->setCaption("Freerails");
+
+    //setMainWindow(mW);
+    application->setMainWidget((QWidget*)mW->getWidget());
+    application->processEvents();
     // Show dialog menu for game mode
     GameModeSelector::GameMode mode = mW->askGameMode();
     qDebug("mW->askGameMode() result=%i\n", (int)mode);
@@ -121,6 +119,7 @@ int GameApplication::run()
       engine->sendMsg(msg);
       qDebug("Nachricht gesendet");
       application->exec();
+      delete mW;
       qDebug("Spiel beendet");
       state = Engine::Stopping;
       msg = new Message(Message::stateOfGame, 0, &state);
