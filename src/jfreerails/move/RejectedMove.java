@@ -30,19 +30,19 @@ public class RejectedMove implements Move {
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return MoveStatus.MOVE_FAILED;
+        return MoveStatus.moveFailed(this.getClass().getName());
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return MoveStatus.MOVE_FAILED;
+        return MoveStatus.moveFailed(this.getClass().getName());
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        return MoveStatus.MOVE_FAILED;
+        return MoveStatus.moveFailed(this.getClass().getName());
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        return MoveStatus.MOVE_FAILED;
+        return MoveStatus.moveFailed(this.getClass().getName());
     }
 
     /**

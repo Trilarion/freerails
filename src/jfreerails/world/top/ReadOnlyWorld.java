@@ -1,6 +1,8 @@
 package jfreerails.world.top;
 
+import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.track.FreerailsTile;
@@ -58,6 +60,8 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
 
     int getNumberOfPlayers();
 
+    boolean isPlayer(FreerailsPrincipal p);
+
     Player getPlayer(int i);
 
     /** Returns the tile at the specified position on the map.
@@ -69,4 +73,10 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
     boolean boundsContain(SKEY k, int index);
 
     boolean boundsContain(KEY k, int index, FreerailsPrincipal p);
+
+    Transaction getTransaction(int i, FreerailsPrincipal p);
+
+    Money getCurrentBalance(FreerailsPrincipal p);
+
+    int getNumberOfTransactions(FreerailsPrincipal p);
 }

@@ -6,7 +6,6 @@ package jfreerails.server;
 
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
@@ -68,8 +67,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int[] wagons = new int[] {0, 0, 0};
         TrainModel train = new TrainModel(wagons, trainCargoBundleId);
         w.add(KEY.TRAINS, train, Player.TEST_PRINCIPAL);
-
-        w.add(KEY.BANK_ACCOUNTS, new BankAccount(), Player.TEST_PRINCIPAL);
     }
 
     /** Tests picking up cargo from a station. */

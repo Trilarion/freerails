@@ -15,9 +15,9 @@ import junit.framework.TestCase;
  */
 public class KEYTest extends TestCase {
     public void testGetNumberOfKeys() {
-        //There were 10 keys when a wrote this test,
+        //There were 4 keys when a wrote this test,
         //but I expect the number to increase.
-        assertTrue(KEY.getNumberOfKeys() > 4);
+        assertTrue(KEY.getNumberOfKeys() >= 4);
     }
 
     public void testThatAllTheFieldsDefinedInKEYAreInstancesOFKEY() {

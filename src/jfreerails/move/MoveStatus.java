@@ -4,18 +4,12 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- * XXX DO NOT TEST == AGAINST MOVE_FAILED XXX
  *
  * @author lindsal
  */
 final public class MoveStatus implements FreerailsSerializable {
     public static final MoveStatus MOVE_OK = new MoveStatus(true,
             "Move accepted");
-
-    /**
-     * Not public - only instances of Move should need to access this.
-     */
-    static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
     public final boolean ok;
     public final String message;
 

@@ -8,12 +8,10 @@ import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
 import jfreerails.world.accounts.AddItemTransaction;
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.TrackRule;
@@ -50,16 +48,15 @@ public class TrackMaintenanceMoveGenerator {
 
         Transaction t = new Bill(new Money(amount));
 
-        return new AddTransactionMove(0, t);
+        return new AddTransactionMove(Player.TEST_PRINCIPAL, t);
     }
 
     public static int[] calulateNumberOfEachTrackType(World w) {
         int[] unitsOfTrack = new int[w.size(SKEY.TRACK_RULES)];
-        BankAccount account = (BankAccount)w.get(KEY.BANK_ACCOUNTS, 0,
-                Player.TEST_PRINCIPAL);
 
-        for (int i = 0; i < account.size(); i++) {
-            Transaction t = account.getTransaction(i);
+        for (int i = 0; i < w.getNumberOfTransactions(Player.TEST_PRINCIPAL);
+                i++) {
+            Transaction t = w.getTransaction(i, Player.TEST_PRINCIPAL);
 
             if (t instanceof AddItemTransaction) {
                 AddItemTransaction addItemTransaction = (AddItemTransaction)t;

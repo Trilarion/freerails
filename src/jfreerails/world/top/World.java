@@ -1,5 +1,6 @@
 package jfreerails.world.top;
 
+import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
@@ -71,6 +72,17 @@ public interface World extends ReadOnlyWorld {
     void setTile(int x, int y, FreerailsTile tile);
 
     int addPlayer(Player player, FreerailsPrincipal p);
+
+    /**
+     * Adds the specified transaction to the specified principal's bank account.
+     */
+    void addTransaction(Transaction t, FreerailsPrincipal p);
+
+    /**
+     * Removes and returns the last transaction added the the specified principal's bank account.  This method is
+     * only here so that moves that add transactions can be undone.
+     */
+    Transaction removeLastTransaction(FreerailsPrincipal p);
 
     /**
     * Returns a copy of this world object - making changes to this copy will not change this object.

@@ -40,14 +40,16 @@ public class ChangeProductionAtEngineShopMove implements Move {
         //Check that the specified station exists.
         if (!w.boundsContain(KEY.STATIONS, this.stationNumber,
                     Player.TEST_PRINCIPAL)) {
-            return MoveStatus.MOVE_FAILED;
+            return MoveStatus.moveFailed(this.stationNumber + " " +
+                Player.TEST_PRINCIPAL);
         }
 
         StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber,
                 Player.TEST_PRINCIPAL);
 
         if (null == station) {
-            return MoveStatus.MOVE_FAILED;
+            return MoveStatus.moveFailed(this.stationNumber + " " +
+                Player.TEST_PRINCIPAL + " is does null");
         }
 
         //Check that the station is building what we expect.					
@@ -55,13 +57,15 @@ public class ChangeProductionAtEngineShopMove implements Move {
             if (null == stateA) {
                 return MoveStatus.MOVE_OK;
             } else {
-                return MoveStatus.MOVE_FAILED;
+                return MoveStatus.moveFailed(this.stationNumber + " " +
+                    Player.TEST_PRINCIPAL);
             }
         } else {
             if (station.getProduction().equals(stateA)) {
                 return MoveStatus.MOVE_OK;
             } else {
-                return MoveStatus.MOVE_FAILED;
+                return MoveStatus.moveFailed(this.stationNumber + " " +
+                    Player.TEST_PRINCIPAL);
             }
         }
     }

@@ -7,10 +7,8 @@
 package jfreerails.move;
 
 import java.awt.Point;
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
@@ -43,8 +41,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         super.setHasSetupBeenCalled(true);
         setWorld(new WorldImpl(10, 10));
         getWorld().addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
-        getWorld().add(KEY.BANK_ACCOUNTS, new BankAccount(),
-            Player.TEST_PRINCIPAL);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }
 

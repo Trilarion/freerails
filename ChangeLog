@@ -1,3 +1,7 @@
+Mar 1, 2004 10:33:52 PM Luke
+	o Implemented [ 905441 ] Multi player support: different bank accounts
+	Note, presently some of the dialogue boxes are not working.  This will
+	be fixed as adding multi player support continues.
 Feb 27, 2004 1:03:38 PM Luke
 	o Some fixes for DialogueBoxTester.
 Feb 27, 2004 1:44:54 AM Luke

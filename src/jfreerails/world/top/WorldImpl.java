@@ -5,7 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import jfreerails.world.accounts.BankAccount;
+import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.track.FreerailsTile;
@@ -16,14 +19,15 @@ public class WorldImpl implements World {
             "jfreerails.world.top.WorldImpl.debug") != null);
 
     /**
-     * An array of ArrayList indexed by keyNumber.
-     * If the key is shared, then the ArrayList consists of instances of the
-     * class corresponding to the KEY type. Otherwise, the ArrayList is
-     * indexed by Player index, and contains instances of ArrayList
-     * which themselves contain instances of the class corresponding to the
-     * KEY type.
-     */
+ * An array of ArrayList indexed by keyNumber.
+ * If the key is shared, then the ArrayList consists of instances of the
+ * class corresponding to the KEY type. Otherwise, the ArrayList is
+ * indexed by Player index, and contains instances of ArrayList
+ * which themselves contain instances of the class corresponding to the
+ * KEY type.
+ */
     private final ArrayList players = new ArrayList();
+    private final ArrayList bankAccounts = new ArrayList();
     private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
     private final ArrayList[] sharedLists = new ArrayList[SKEY.getNumberOfKeys()];
     private final FreerailsSerializable[] items = new FreerailsSerializable[ITEM.getNumberOfKeys()];
@@ -249,12 +253,13 @@ public class WorldImpl implements World {
     }
 
     /**
-     * @param player Player to add
-     * @param p principal who is adding
-     * @return index of the player
-     */
+ * @param player Player to add
+ * @param p principal who is adding
+ * @return index of the player
+ */
     public int addPlayer(Player player, FreerailsPrincipal p) {
         players.add(player);
+        bankAccounts.add(new BankAccount());
 
         int index = players.size() - 1;
 
@@ -303,5 +308,41 @@ public class WorldImpl implements World {
 
     public Player getPlayer(int i) {
         return (Player)players.get(i);
+    }
+
+    public void addTransaction(Transaction t, FreerailsPrincipal p) {
+        getBankAccount(p).addTransaction(t);
+    }
+
+    public Transaction removeLastTransaction(FreerailsPrincipal p) {
+        return getBankAccount(p).removeLastTransaction();
+    }
+
+    public Transaction getTransaction(int i, FreerailsPrincipal p) {
+        return getBankAccount(p).getTransaction(i);
+    }
+
+    public Money getCurrentBalance(FreerailsPrincipal p) {
+        return getBankAccount(p).getCurrentBalance();
+    }
+
+    public int getNumberOfTransactions(FreerailsPrincipal p) {
+        return getBankAccount(p).size();
+    }
+
+    private BankAccount getBankAccount(FreerailsPrincipal p) {
+        int index = this.getPlayerIndex(p);
+
+        return (BankAccount)bankAccounts.get(index);
+    }
+
+    public boolean isPlayer(FreerailsPrincipal p) {
+        try {
+            int i = this.getPlayerIndex(p);
+
+            return true;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
     }
 }

@@ -42,6 +42,6 @@ public class ProcessCargoAtStationMoveGenerator {
         DeliverCargoReceipt receipt = new DeliverCargoReceipt(new Money(
                     (long)amount), cargoBundle);
 
-        return new AddTransactionMove(0, receipt);
+        return new AddTransactionMove(Player.TEST_PRINCIPAL, receipt);
     }
 }

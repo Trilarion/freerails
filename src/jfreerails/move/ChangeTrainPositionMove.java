@@ -160,20 +160,23 @@ public class ChangeTrainPositionMove implements Move {
 
         if (localAddToHead) {
             if (!oldTrainPosition.canAddToHead(changeToHead)) {
-                return MoveStatus.MOVE_FAILED;
+                return MoveStatus.moveFailed(
+                    "!oldTrainPosition.canAddToHead(changeToHead)");
             }
 
             intermediatePosition = oldTrainPosition.addToHead(changeToHead);
 
             if (localAddToTail) {
                 if (!intermediatePosition.canAddToTail(changeToTail)) {
-                    return MoveStatus.MOVE_FAILED;
+                    return MoveStatus.moveFailed(
+                        "!intermediatePosition.canAddToTail(changeToTail)");
                 }
 
                 newTrainPosition = intermediatePosition.addToTail(changeToTail);
             } else {
                 if (!intermediatePosition.canRemoveFromTail(changeToTail)) {
-                    return MoveStatus.MOVE_FAILED;
+                    return MoveStatus.moveFailed(
+                        "!intermediatePosition.canRemoveFromTail(changeToTail)");
                 }
 
                 newTrainPosition = intermediatePosition.removeFromTail(changeToTail);
@@ -181,20 +184,23 @@ public class ChangeTrainPositionMove implements Move {
         } else {
             if (localAddToTail) {
                 if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
-                    return MoveStatus.MOVE_FAILED;
+                    return MoveStatus.moveFailed(
+                        "!oldTrainPosition.canRemoveFromTail(changeToTail)");
                 }
 
                 intermediatePosition = oldTrainPosition.addToTail(changeToTail);
             } else {
                 if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
-                    return MoveStatus.MOVE_FAILED;
+                    return MoveStatus.moveFailed(
+                        "!oldTrainPosition.canRemoveFromTail(changeToTail)");
                 }
 
                 intermediatePosition = oldTrainPosition.removeFromTail(changeToTail);
             }
 
             if (!intermediatePosition.canRemoveFromHead(changeToHead)) {
-                return MoveStatus.MOVE_FAILED;
+                return MoveStatus.moveFailed(
+                    "!intermediatePosition.canRemoveFromHead(changeToHead)");
             }
 
             newTrainPosition = intermediatePosition.removeFromHead(changeToHead);

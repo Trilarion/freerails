@@ -23,6 +23,7 @@ import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -166,7 +167,7 @@ public class DialogueBoxController {
         selectWagons.setup(modelRoot, new ActionListener() {
             
             public void actionPerformed(ActionEvent arg0) {
-                WorldIterator wi = new NonNullElements(KEY.STATIONS, finalROW, modelRoot.getPlayerPrincipal());
+                WorldIterator wi = new NonNullElements(KEY.STATIONS, finalROW, Player.TEST_PRINCIPAL);
                 if (wi.next()) {
                     
                     StationModel station = (StationModel) wi.getElement();
@@ -208,7 +209,7 @@ public class DialogueBoxController {
     }
     
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElements(KEY.TRAINS, world, modelRoot.getPlayerPrincipal());
+        WorldIterator wi = new NonNullElements(KEY.TRAINS, world, Player.TEST_PRINCIPAL);
         if (!wi.next()) {
             modelRoot.getUserMessageLogger().println("Cannot" +
             " show train orders since there are no" +
@@ -220,7 +221,7 @@ public class DialogueBoxController {
     }
     
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, world, modelRoot.getPlayerPrincipal());
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, world, Player.TEST_PRINCIPAL);
         if (!wi.next()) {
             modelRoot.getUserMessageLogger().println("Can't" +
             " build train since there are no stations");
@@ -271,7 +272,7 @@ public class DialogueBoxController {
     }
     
     public void showTrainList() {
-        if (world.size(KEY.TRAINS, this.modelRoot.getPlayerPrincipal()) > 0) {
+        if (world.size(KEY.TRAINS, Player.TEST_PRINCIPAL) > 0) {
 			final TrainListJPanel trainList = new TrainListJPanel();		
 					trainList.setup(modelRoot, closeCurrentDialogue);
 					trainList.setShowTrainDetailsActionListener(new ActionListener(){
@@ -340,9 +341,9 @@ public class DialogueBoxController {
     public void showStationOrTerrainInfo(int x, int y) {
         FreerailsTile tile = world.getTile(x, y);
         if (tile.getTrackRule().isStation()) {
-            for (int i = 0; i < world.size(KEY.STATIONS, this.modelRoot.getPlayerPrincipal()); i++) {
+            for (int i = 0; i < world.size(KEY.STATIONS, Player.TEST_PRINCIPAL); i++) {
                 StationModel station =
-                (StationModel) world.get(KEY.STATIONS, i, this.modelRoot.getPlayerPrincipal());
+                (StationModel) world.get(KEY.STATIONS, i, Player.TEST_PRINCIPAL);
                 if (null != station && station.x == x && station.y == y) {
                     this.showStationInfo(i);
                     return;

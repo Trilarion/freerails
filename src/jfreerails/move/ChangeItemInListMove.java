@@ -70,7 +70,7 @@ public abstract class ChangeItemInListMove implements ListMove {
             if (null == from) {
                 return MoveStatus.MOVE_OK;
             } else {
-                return MoveStatus.MOVE_FAILED;
+                return MoveStatus.moveFailed("Expected null but found " + from);
             }
         } else {
             if (!from.equals(item2change)) {

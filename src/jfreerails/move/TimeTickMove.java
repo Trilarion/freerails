@@ -23,39 +23,43 @@ public class TimeTickMove implements Move {
         if (((GameTime)w.get(ITEM.TIME)).equals(oldTime)) {
             return MoveStatus.MOVE_OK;
         } else {
-            System.err.println("oldTime = " + oldTime.getTime() + " <=> " +
-                "currentTime " + ((GameTime)w.get(ITEM.TIME)).getTime());
+            String string = "oldTime = " + oldTime.getTime() + " <=> " +
+                "currentTime " + ((GameTime)w.get(ITEM.TIME)).getTime();
+            System.err.println(string);
 
-            return MoveStatus.MOVE_FAILED;
+            return MoveStatus.moveFailed(string);
         }
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        if (((GameTime)w.get(ITEM.TIME)).equals(newTime)) {
+        GameTime time = ((GameTime)w.get(ITEM.TIME));
+
+        if (time.equals(newTime)) {
             return MoveStatus.MOVE_OK;
         } else {
-            return MoveStatus.MOVE_FAILED;
+            return MoveStatus.moveFailed("Expected " + newTime + ", found " +
+                time);
         }
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        if (tryDoMove(w, p).equals(MoveStatus.MOVE_OK)) {
-            w.set(ITEM.TIME, newTime);
+        MoveStatus status = tryDoMove(w, p);
 
-            return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.MOVE_FAILED;
+        if (status.ok) {
+            w.set(ITEM.TIME, newTime);
         }
+
+        return status;
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        if (tryUndoMove(w, p).equals(MoveStatus.MOVE_OK)) {
-            w.set(ITEM.TIME, oldTime);
+        MoveStatus status = tryUndoMove(w, p);
 
-            return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.MOVE_FAILED;
+        if (status.isOk()) {
+            w.set(ITEM.TIME, oldTime);
         }
+
+        return status;
     }
 
     public String toString() {

@@ -4,13 +4,11 @@
  */
 package jfreerails.move;
 
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.KEY;
 
 
 /**
@@ -19,31 +17,35 @@ import jfreerails.world.top.KEY;
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
     public void testMove() {
-        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0,
-                Player.TEST_PRINCIPAL);
-        assertEquals(new Money(0), account.getCurrentBalance());
+        Money currentBalance = getWorld().getCurrentBalance(Player.TEST_PRINCIPAL);
+        assertEquals(new Money(0), currentBalance);
 
         Transaction t = new Receipt(new Money(100));
-        Move m = new AddTransactionMove(0, t);
+        Move m = new AddTransactionMove(Player.TEST_PRINCIPAL, t);
         assertTryMoveIsOk(m);
         assertTryUndoMoveFails(m);
         assertDoMoveIsOk(m);
-        assertEquals(new Money(100), account.getCurrentBalance());
+        currentBalance = getWorld().getCurrentBalance(Player.TEST_PRINCIPAL);
+        assertEquals(new Money(100), currentBalance);
 
-        Move m2 = new AddTransactionMove(5, t);
-        assertTryMoveFails(m2);
+        final Player PLAYER_WITHOUT_ACCOUNT = new Player("PLAYER_WITHOUT_ACCOUNT",
+                (new Player("PLAYER_WITHOUT_ACCOUNT")).getPublicKey(), 4);
+
         assertEqualsSurvivesSerialisation(m);
+
+        Move m2 = new AddTransactionMove(PLAYER_WITHOUT_ACCOUNT.getPrincipal(),
+                t);
+        assertTryMoveFails(m2);
 
         assertOkAndRepeatable(m);
     }
 
     public void testConstrainedMove() {
-        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0,
-                Player.TEST_PRINCIPAL);
-        assertEquals(new Money(0), account.getCurrentBalance());
+        Money currentBalance = getWorld().getCurrentBalance(Player.TEST_PRINCIPAL);
+        assertEquals(new Money(0), currentBalance);
 
         Transaction t = new Bill(new Money(100));
-        Move m = new AddTransactionMove(0, t, true);
+        Move m = new AddTransactionMove(Player.TEST_PRINCIPAL, t, true);
 
         //This move should fail since there is no money in the account and 
         //it is constrained is set to true.

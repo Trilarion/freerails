@@ -5,14 +5,12 @@ import jfreerails.server.common.TileSetFactory;
 import jfreerails.server.common.TrackSetFactory;
 import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.util.FreerailsProgressMonitor;
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
@@ -101,11 +99,10 @@ public class OldWorldImpl {
         w.set(ITEM.TIME, new GameTime(0));
 
         //Set up bank account with initial balance of 1000,000.
-        BankAccount bankAccount = new BankAccount();
         Receipt initialCredit = new Receipt(new Money(1000000));
-        bankAccount.addTransaction(initialCredit);
+
         w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
-        w.add(KEY.BANK_ACCOUNTS, bankAccount, Player.TEST_PRINCIPAL);
+        w.addTransaction(initialCredit, Player.TEST_PLAYER.getPrincipal());
 
         return w;
     }

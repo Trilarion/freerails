@@ -26,7 +26,7 @@ public class InitialiseTrainPositionMove implements Move {
         if (getTrainPosition(w) == null) {
             return MoveStatus.MOVE_OK;
         } else {
-            return MoveStatus.MOVE_FAILED;
+            return MoveStatus.moveFailed("The train already has a position.");
         }
     }
 
@@ -34,28 +34,29 @@ public class InitialiseTrainPositionMove implements Move {
         if (newPosition.equals(getTrainPosition(w))) {
             return MoveStatus.MOVE_OK;
         } else {
-            return MoveStatus.MOVE_FAILED;
+            return MoveStatus.moveFailed(
+                "The train did not have the expected position.");
         }
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        if (tryDoMove(w, p) == MoveStatus.MOVE_OK) {
-            setTrainPosition(w, newPosition);
+        MoveStatus status = tryDoMove(w, p);
 
-            return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.MOVE_FAILED;
+        if (status.isOk()) {
+            setTrainPosition(w, newPosition);
         }
+
+        return status;
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        if (tryUndoMove(w, p) == MoveStatus.MOVE_OK) {
-            setTrainPosition(w, null);
+        MoveStatus status = tryUndoMove(w, p);
 
-            return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.MOVE_FAILED;
+        if (status.isOk()) {
+            setTrainPosition(w, null);
         }
+
+        return status;
     }
 
     private void setTrainPosition(World w, TrainPositionOnMap p) {

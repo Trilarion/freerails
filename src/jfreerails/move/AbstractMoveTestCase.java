@@ -9,12 +9,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
@@ -38,8 +36,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
         getWorld().set(ITEM.TIME, new GameTime(0));
 
         getWorld().addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
-        getWorld().add(KEY.BANK_ACCOUNTS, new BankAccount(),
-            Player.TEST_PRINCIPAL);
     }
 
     abstract public void testMove();

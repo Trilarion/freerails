@@ -9,10 +9,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 
 /**
@@ -38,8 +36,7 @@ public class CashJLabel extends JLabel implements View {
 	
 	public void paint(Graphics g) {
 		if(null != w){
-			BankAccount account = (BankAccount)w.get(KEY.BANK_ACCOUNTS, 0, principal);
-			Money m = account.getCurrentBalance();
+			Money m = w.getCurrentBalance(principal);
 			String s = m.toString();			
 			this.setText(s);			
 		}
