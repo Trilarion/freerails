@@ -18,6 +18,6 @@ INCLUDES = $(all_includes) -I$(top_srcdir)/src/wrapper/$(WRAPPER) \
     -I$(top_srcdir)/src/elements -I$(top_srcdir)/src/controllers \
     -I$(top_srcdir)/src/network -I$(top_srcdir)/src/game
 
-freerails_SOURCES = i18n.cpp \
-    main.cpp \
-    game.cpp
+freerails_SOURCES = game.cpp \
+    i18n.cpp \
+    main.cpp

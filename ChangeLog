@@ -1,3 +1,6 @@
+Wed Sep 18 23:15:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o add SingleGameOptionDialog (for write name, select width & heigh of WorldMap)
+o modify src/main/makefile.am to work well with ./configure --enable-final
 Wed Sep 18 01:15:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add GameDataSelectDialog (for write name, select width & heigh of WorldMap)
 o change params of initServerGame and initClientGame
