@@ -4,6 +4,7 @@
 # what you do. Or better go on http://sourceforge.net/projects/freerails in
 # the Task section and make/change your tasks which you do.
 #
-Thu Jul 09 11:00:00 2001  Alexander Opitz <opi@sputnik.de>:
-o Trackbuild controll
+Thu Jul 15 03:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o Trackbuild controll (15% compleate)
 o Stationbuild controll
+o 32x32 --> 30x30 changes only for 16bit color
