@@ -12,7 +12,6 @@ import java.util.Iterator;
 
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
-import jfreerails.move.MoveStatus;
 import jfreerails.move.TransferCargoAtStationMove;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
@@ -29,17 +28,21 @@ public class DropOffAndPickupCargoMoveGenerator {
 	private TrainModel train;
 	private int trainId;
 	private int trainBundleId;
-	//private CargoBundle trainBundle;
 	
 	private int stationId;
 	private int stationBundleId;
-	//private CargoBundle stationBundle;
 	
 	private CargoBundle stationAfter;
 	private CargoBundle stationBefore;
 	private CargoBundle trainAfter;
 	private CargoBundle trainBefore;
 	
+	/**
+	 * Contructor
+	 * @param trainNo ID of the train
+	 * @param stationNo ID of the station
+	 * @param world The world object
+	 */
 	public DropOffAndPickupCargoMoveGenerator(int trainNo ,int stationNo, World world) {
 		trainId = trainNo;
 		stationId = stationNo;
@@ -87,30 +90,20 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 			CargoBatch cb = (CargoBatch)batches.next();
 
-			if ( station.getDemand().isCargoDemanded(cb.getCargoType()) ) {
+			//if the cargo is demanded and its not from this station originally...
+			if ( (station.getDemand().isCargoDemanded(cb.getCargoType()) ) && (stationId != cb.getStationOfOrigin()) ) {
 				//cargo is demanded, so:
 				//		pay train owner...
 				System.out.println(w.get(KEY.CARGO_TYPES,cb.getCargoType()) + " was delivered by train #" + trainId);	
 			}
 					
+			//remove the cargo from the train anyway, regardless of demand or origin
 			batches.remove();	
 		}			
 	}
 	
-	/*
-	public void refreshBeforeAfterBundles() {
-		getBundles();
-		stationBefore = stationBundle.getCopy();
-		stationAfter = stationBundle.getCopy();
-		trainBefore = trainBundle.getCopy();
-		trainAfter = trainBundle.getCopy();
-	}
-	*/
-	
 	
 	public void processStationBundle() {
-			
-		//refreshBeforeAfterBundles();
 										
 		//test output
 		System.out.println("train #" + trainId + " has " + train.getNumberOfWagons() + " wagons");
@@ -140,13 +133,14 @@ public class DropOffAndPickupCargoMoveGenerator {
 					}
 				}
 			}
-			//LL, is it ok to comment out this line?
-			//doCargoTransferMove();	
-			//refreshBeforeAfterBundles();
+			
 		}
 	}
 	
-	
+	/**
+	 * Move cargo from station to train
+	 * @param cargoTypeToTransfer The ID of the cargo type thats being transferred
+	 */
 	public void transferCargo(int cargoTypeToTransfer) {
 		Iterator batches = stationAfter.cargoBatchIterator();
 		int amount = 0;
@@ -187,12 +181,18 @@ public class DropOffAndPickupCargoMoveGenerator {
 		if (!TRANSFER_NOT_DONE) {
 			//transfer was done, the original batch was removed,
 			//		now put the replacement batch in stationBundle
-			stationAfter.setAmount(replacementBatch,amount-1);
+			stationAfter.setAmount(replacementBatch,amount-40);
 		}
 		
 	}
 	
-	
+	/**
+	 * Do the transfer
+	 * @param cb The cargo batch being transferred
+	 * @param stationBatch The ID for the station's batch
+	 * @param cargoTransferType The ID for the cargo type
+	 * @return boolean
+	 */
 	public boolean transferIfTheSameType(CargoBatch cb,int stationBatch, int cargoTransferType) {
 		
 		if (stationBatch == cargoTransferType) {
@@ -200,7 +200,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 			int currentAmount = trainAfter.getAmount(cb);
 			//put new batch on the train
-			trainAfter.setAmount(cb,currentAmount+1);
+			trainAfter.setAmount(cb,currentAmount+40);
 
 			return true;
 		}
@@ -208,20 +208,4 @@ public class DropOffAndPickupCargoMoveGenerator {
 		return false;
 	}
 	
-	
-	/*public void doCargoTransferMove() {
-		//move cargo from station
-	  	ChangeCargoBundleMove fromStation = new ChangeCargoBundleMove(stationBefore,
-	  																  stationAfter,
-	  																  stationBundleId
-	  																  );
-	  	MoveStatus stationMS = fromStation.doMove(w);
-
-	  	//move cargo to train
-	  	ChangeCargoBundleMove toTrain = new ChangeCargoBundleMove(trainBefore,
-	  															  trainAfter,
-	  															  trainBundleId
-	  															  );
-	  	MoveStatus trainMS = toTrain.doMove(w);	
-	}*/
 }

@@ -76,7 +76,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		//Set up the variables for this test.		
 
 		CargoBundle cargoBundleWith2CarloadsOfCargo0 = new CargoBundleImpl();
-		cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 2);
+		//cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 2);
+		cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 80);
 
 		//Get the station from the world object.
 		StationModel station = (StationModel) w.get(KEY.STATIONS, 0);
@@ -91,7 +92,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 			getCargoOnTrain());
 
 		//Now add 2 carloads of cargo type 0 to the station.				
-		getCargoAtStation().setAmount(cargoType0FromStation2, 2);
+		//getCargoAtStation().setAmount(cargoType0FromStation2, 2);
+		getCargoAtStation().setAmount(cargoType0FromStation2, 80);
 
 		//The train should pick up this cargo, since it has three wagons capable of carrying cargo type 0.
 		stopAtStation();
