@@ -10,7 +10,7 @@
 
 GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine):
 PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget"),
-Base2DMapView(x,y,w,h,_guiEngine) {
+Base2DMapView(_guiEngine) {
 
   PG_Point p;
   
