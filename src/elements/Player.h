@@ -6,28 +6,40 @@
 #define __PLAYER_H__
 
 #include <vector>
+#include <string>
 
-class GameElement;
+#include "GameElement.h"
+#include "Serializer.h"
 
-class Player {
+class Player : public GameElement {
 public:
+
+  enum Type {NATUR=0, AI, HUMAN};
   /** Constructor
     * @param n: name of this player */
-  Player(char* n);
+  Player();
+  Player(string _name, Type _type);
   /** Destructor */
   virtual ~Player();
+  
+  /** Serialization */
+  void serialize(Serializer* _serializer);
+  void deserialize(Serializer* _serializer);
+
   /** Gets the name of the player */
-  char* getName();
-  /** Adds a gameElement
-    * @param element: GameElement to add */
-  void addGameElement(GameElement* element);
+  string getName() {return name;};
+  /** Sets the name of the player */
+  void setName(string _name) {name = _name;};
+
+  /** Gets the type of the player */
+  Type getType() {return type;};
+  /** Sets the type of the player */
+  void setType(Type _type) {type = _type;};
 
 private:
   /** Name of the player */
-  char* name;
-  /** Vector of GameElements* */
-  vector<GameElement*> elements;
-
+  string name;
+  Type type;
 };
 
 #endif // __PLAYER_H__

@@ -1,20 +1,33 @@
-/** $Id
+/** $Id$
   * Base class for the players (Human, AI, Nature)
   */
 
 #include "Player.h"
 
-Player::Player(char* n) {
-  name = n;
+Player::Player():GameElement(this, 1) {
+
+}
+
+Player::Player(string _name, Type _type):GameElement(this, 1) {
+  name = _name;
+  type = _type;
 }
 
 Player::~Player() {
 }
 
-inline char* Player::getName() {
-  return name;
+void Player::serialize(Serializer* _serializer) {
+
+  GameElement::serialize(_serializer);
+  *_serializer << (const string)name;
+  *_serializer << type;
+
 }
 
-void Player::addGameElement(GameElement* element) {
-  elements.push_back(element);
+void Player::deserialize(Serializer* _serializer) {
+
+  GameElement::deserialize(_serializer);
+  *_serializer >> name;
+  *_serializer >> (int &)type;
+
 }

@@ -4,17 +4,24 @@
 
 #include "GameElement.h"
 
-#include "Player.h"
-
-GameElement::GameElement(GameController* c, Player* p, char* filename) {
-  player = p;
-  tileset = filename;
-  controller = c;
-  registered = false;
-  id = 0;
+GameElement::GameElement(Player* _player, int _typeID) {
+  player = _player;
+  typeID = _typeID;
 }
 
 GameElement::~GameElement() {
+}
+
+void GameElement::serialize(Serializer* _serializer) {
+
+  *_serializer << elementID;
+
+}
+
+void GameElement::deserialize(Serializer* _serializer) {
+
+  *_serializer >> (idtype &)elementID;
+
 }
 
 void GameElement::setPlayer(Player* p) {
@@ -26,21 +33,4 @@ Player* GameElement::getPlayer() {
 }
 
 void GameElement::update() {
-}
-
-bool GameElement::registerSelf() {
-  // Return immidiately if element is already registered
-  if(registered == true)
-    return false;
-  id = controller->addElement(this);
-  if(id == 0)
-  {
-    // error
-    return false;
-  }
-  else
-  {
-    registered = true;
-    return true;
-  }
 }
