@@ -5,8 +5,8 @@ THINGS TO DO
 TODO:
 =====
 
-- clean up freecraft engine (menu system, ...)
+- write the WrapperBase, WrapperParaGUI and WrapperQt
+- porting the existing thinks like map
 - do control of building the map elements (cities, industrie)
 - let genmap work better (include cities, industrie in generation)
 - make the Controller: TrainController, StationController, CityController, GameController, ...
-- make 30x30 tileset available in all color deapth
