@@ -9,7 +9,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.StringTokenizer;
+
+import jfreerails.world.top.KEY;
 
 
 /**
@@ -50,6 +54,26 @@ public class Utils {
             result.append(Character.toUpperCase(token.charAt(0)) + token.substring(1) + " ");
         }                
         return result.toString().trim();
+    }
+    
+    public static String findConstantFieldName(Object o){
+    	Field[] fields = KEY.class.getFields();
+        for (int i = 0; i < fields.length; i++) {            
+            int modifiers = fields[i].getModifiers();
+           
+            try {
+                if (Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)) {
+                    Object o2 = fields[i].get(null);
+                    if(o2.equals(o)){
+                    	return fields[i].getName();
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException();
+            }
+        }
+    	
+    	return null;
     }
 
 }

@@ -1,4 +1,6 @@
 Jan 27, 2005 Luke
+	Added toString() to KEY classes.
+Jan 27, 2005 Luke
 	Added serialVersionUID field to serializable classes.
 Jan 26, 2005 Luke
     Bugs Fixed:

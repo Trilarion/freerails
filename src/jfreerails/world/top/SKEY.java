@@ -1,6 +1,8 @@
 package jfreerails.world.top;
 
 import java.io.ObjectStreamException;
+
+import jfreerails.util.Utils;
 import jfreerails.world.common.FreerailsSerializable;
 
 
@@ -12,31 +14,35 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class SKEY implements FreerailsSerializable {
-    private static final long serialVersionUID = 3257847679739506737L;
+    public static final SKEY CARGO_TYPES = new SKEY();
+    public static final SKEY CITIES = new SKEY();
+    public static final SKEY ENGINE_TYPES = new SKEY();
 
 	/** Maps key numbers to KEYs. */
     private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
 
-    //START OF KEYS
-    public static final SKEY TERRAIN_TYPES = new SKEY();
-    public static final SKEY WAGON_TYPES = new SKEY();
-    public static final SKEY CARGO_TYPES = new SKEY();
-    public static final SKEY CITIES = new SKEY();
-    public static final SKEY ENGINE_TYPES = new SKEY();
-    public static final SKEY TRACK_RULES = new SKEY();
-
     //END OF SKEYS		
     private static int numberOfKeys;
+    private static final long serialVersionUID = 3257847679739506737L;
+
+    //START OF KEYS
+    public static final SKEY TERRAIN_TYPES = new SKEY();
+    public static final SKEY TRACK_RULES = new SKEY();
+    public static final SKEY WAGON_TYPES = new SKEY();
+
+    static SKEY getKey(int keyNum) {
+        return keys[keyNum];
+    }
+
+    static int getNumberOfKeys() {
+        return SKEY.class.getFields().length;
+    }
     private final int keyNumber;
 
     private SKEY() {
         this.keyNumber = numberOfKeys;
         keys[keyNumber] = this;
         numberOfKeys++;
-    }
-
-    static int getNumberOfKeys() {
-        return SKEY.class.getFields().length;
     }
 
     int getKeyID() {
@@ -48,10 +54,6 @@ public class SKEY implements FreerailsSerializable {
     }
 
     public String toString() {
-        return String.valueOf(getKeyID());
-    }
-
-    static SKEY getKey(int keyNum) {
-        return keys[keyNum];
+    	return Utils.findConstantFieldName(this);
     }
 }

@@ -50,4 +50,9 @@ public class KEYTest extends TestCase {
             }
         }
     }
+    
+    public void testToString(){
+    	
+    	assertEquals("Key.toString() should return the field name", "TRAINS", KEY.TRAINS.toString());    	
+    }
 }
