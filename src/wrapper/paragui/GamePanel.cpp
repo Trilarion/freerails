@@ -51,6 +51,7 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
 
   pauseButton=new PG_Button(this,3,PG_Rect(5,430,125,25),"PAUSE");
   pauseButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::pause_handler);
+  
   engine=_engine;
   mapView=_mapView;
 }

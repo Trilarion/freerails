@@ -12,9 +12,6 @@
 #include <pgbutton.h>
 #include <pgrect.h>
 
-#include <pglineedit.h>
-#include <pgrichedit.h>
-
 #include <pgeventobject.h>
 
 #include "Engine.h"

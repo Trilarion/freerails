@@ -22,9 +22,10 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
   WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
   PG_Point p;
   SetBackgroundBlend(0);
-  sdlimage=IMG_Load("data/graphics/tiles.png");
+  tilesImage=IMG_Load("data/graphics/tiles.png");
+  trackImage=IMG_Load("data/graphics/track.png");
   
-  SDL_Surface* imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,worldMap->getWidth()*30,worldMap->getHeight()*30,32,0,0,0,0);
+  imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,worldMap->getWidth()*30,worldMap->getHeight()*30,32,0,0,0,0);
   for (int y=0;y<worldMap->getHeight();y++)
   {
     for (int x=0;x<worldMap->getWidth();x++)
@@ -39,13 +40,17 @@ PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
   WidgetList->AddWidget(view);
   
   mouseType=0;
+  mouseOldX=0;
+  mouseOldY=0;
 }
 
 GameMapView::~GameMapView() {
 
   cerr << "Blob" << endl;
+  imageSurface=NULL;
   delete WidgetList;
-  delete sdlimage;
+  delete tilesImage;
+  delete trackImage;
   cerr << "Blub" << endl;
 
 }
@@ -138,7 +143,7 @@ void GameMapView::getMapImage(SDL_Surface* surface, int x, int y) {
   rectDST.y=y*30;
   rectDST.w=rectSRC.w;
   rectDST.h=rectSRC.h;
-  SDL_BlitSurface(sdlimage, &rectSRC, surface, &rectDST);
+  SDL_BlitSurface(tilesImage, &rectSRC, surface, &rectDST);
 }
 
 int GameMapView::getImagePos(int x, int y, MapField::FieldType type)
@@ -211,10 +216,60 @@ int GameMapView::get3DImagePos(int x, int y, MapField::FieldType type)
 
 void GameMapView::setMouseType(MouseType type) {
 
-  mouseType=type;;
+  mouseType=type;
 }
 
-void GameMapView::eventMouseEnter() {
+void GameMapView::eventMouseLeave() {
 
-  cerr << mouseType << endl;
+  getMapImage(imageSurface,mouseOldX,mouseOldY);
+  Update();
+}
+
+bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
+
+  if (button->button==SDL_BUTTON_LEFT) {
+    int x = button->x;
+    int y = button->y;
+    // doBuild(what,x,y);
+  }
+  return false;
+}
+
+bool GameMapView::isOnNewTile(const SDL_MouseMotionEvent* motion) {
+
+  int x = motion->x / 30;
+  int y = motion->y / 30;
+  if ((x==mouseOldX) && (y==mouseOldY)) return false;
+  getMapImage(imageSurface,mouseOldX,mouseOldY);
+  mouseOldX=x;
+  mouseOldY=y;
+  return true;
+}
+bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
+
+  int x,y;
+  SDL_Rect rectSRC, rectDST;
+  if (isOnNewTile(motion)) {
+    rectSRC.w=30;
+    rectSRC.h=30;
+    x = motion->x / 30;
+    y = motion->y / 30;
+    if (mouseType==buildStation) {
+      // canBuild(Station,x,y);
+      rectSRC.x=20*30+15;
+      rectSRC.y=26*30+15;
+    }
+    if (mouseType==buildTrack) {
+      // canBuild(Track,x,y);
+      rectSRC.x=0*30+15;
+      rectSRC.y=0*30+15;
+    }
+    rectDST.x=x*30;
+    rectDST.y=y*30;
+    rectDST.w=rectSRC.w;
+    rectDST.h=rectSRC.h;
+    SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
+    Update();
+  }
+  return false;
 }
