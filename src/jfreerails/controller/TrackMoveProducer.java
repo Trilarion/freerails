@@ -15,16 +15,12 @@ import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
 
+/** Provides methods that generate moves that build, upgrade, and remove track.
+ * @author Luke
+ */
 final public class TrackMoveProducer {
     private TrackRule trackRule;
-    private ReadOnlyWorld w;
-
-    /**
- * The principal on behalf of which this TrackMoveProducer is producing
- * moves
- */
-    private FreerailsPrincipal principal;
-    private UntriedMoveReceiver moveTester;
+    private final MoveExecutor executor;
     public final static int BUILD_TRACK = 1;
     public final static int REMOVE_TRACK = 2;
     public final static int UPGRADE_TRACK = 3;
@@ -32,12 +28,12 @@ final public class TrackMoveProducer {
     /* Don't build any track */
     public final static int IGNORE_TRACK = 4;
     private int trackBuilderMode = BUILD_TRACK;
-    public Stack moveStack = new Stack();
+    private final Stack moveStack = new Stack();
 
     /**
- * This generates the transactions - the charge - for the track being built.
- */
-    private TrackMoveTransactionsGenerator transactionsGenerator;
+    * This generates the transactions - the charge - for the track being built.
+    */
+    private final TrackMoveTransactionsGenerator transactionsGenerator;
 
     public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
         if (trackBuilderMode == UPGRADE_TRACK) {
@@ -49,10 +45,13 @@ final public class TrackMoveProducer {
 
         ChangeTrackPieceCompositeMove move = null;
 
+        FreerailsPrincipal principal = executor.getPrincipal();
+        ReadOnlyWorld w = executor.getWorld();
+
         switch (trackBuilderMode) {
         case BUILD_TRACK: {
             move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
-                    trackVector, trackRule, w, this.principal);
+                    trackVector, trackRule, w, principal);
 
             break;
         }
@@ -86,13 +85,14 @@ final public class TrackMoveProducer {
     }
 
     /**
- * Sets the current track rule. E.g. there are different rules governing the
- * track-configurations that are legal for double and single track.
- *
- * @param trackRuleNumber
- *            The new trackRule value
- */
+    * Sets the current track rule. E.g. there are different rules governing the
+    * track-configurations that are legal for double and single track.
+    *
+    * @param trackRuleNumber
+    *            The new trackRule value
+    */
     public void setTrackRule(int trackRuleNumber) {
+        ReadOnlyWorld w = executor.getWorld();
         this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNumber);
     }
 
@@ -111,27 +111,22 @@ final public class TrackMoveProducer {
         }
     }
 
-    /**
- * @param p
- *            the principal which this TrackMoveProducer generates moves for
- */
-    public TrackMoveProducer(ReadOnlyWorld world,
-        UntriedMoveReceiver moveReceiver, FreerailsPrincipal p) {
-        if (null == world || null == moveReceiver) {
-            throw new NullPointerException();
-        }
+    public TrackMoveProducer(MoveExecutor executor) {
+        this.executor = executor;
 
-        this.moveTester = moveReceiver;
-        this.w = world;
-        this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, 0);
-        principal = p;
+        ReadOnlyWorld world = executor.getWorld();
+        this.trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
+
+        FreerailsPrincipal principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world,
                 principal);
     }
 
     private MoveStatus upgradeTrack(Point point, TrackRule trackRule) {
-        TrackPiece before = (TrackPiece)w.getTile(point.x, point.y);
-        int owner = ChangeTrackPieceCompositeMove.getOwner(this.principal, w);
+        ReadOnlyWorld w = executor.getWorld();
+        TrackPiece before = w.getTile(point.x, point.y);
+        FreerailsPrincipal principal = executor.getPrincipal();
+        int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
         TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration(),
                 owner);
 
@@ -150,8 +145,7 @@ final public class TrackMoveProducer {
         if (moveStack.size() > 0) {
             Move m = (Move)moveStack.pop();
             UndoMove undoMove = new UndoMove(m);
-            MoveStatus ms = moveTester.tryDoMove(undoMove);
-            moveTester.processMove(undoMove);
+            MoveStatus ms = executor.doMove(undoMove);
 
             if (!ms.ok) {
                 return MoveStatus.moveFailed("Can not undo building track!");
@@ -168,10 +162,9 @@ final public class TrackMoveProducer {
     }
 
     private MoveStatus sendMove(Move m) {
-        MoveStatus ms = moveTester.tryDoMove(m);
+        MoveStatus ms = executor.doMove(m);
 
         if (ms.isOk()) {
-            moveTester.processMove(m);
             moveStack.add(m);
         }
 

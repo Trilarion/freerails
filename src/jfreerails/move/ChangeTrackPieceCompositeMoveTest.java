@@ -26,15 +26,16 @@ import junit.framework.TestSuite;
 
 
 /**
+ *  JUnit test.
+ * @author Luke
  *
- * @author lindsal
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
-    OneTileMoveVector southeast = OneTileMoveVector.SOUTH_EAST;
-    OneTileMoveVector east = OneTileMoveVector.EAST;
-    OneTileMoveVector northeast = OneTileMoveVector.NORTH_EAST;
-    OneTileMoveVector south = OneTileMoveVector.SOUTH;
-    OneTileMoveVector west = OneTileMoveVector.WEST;
+    final OneTileMoveVector southeast = OneTileMoveVector.SOUTH_EAST;
+    final OneTileMoveVector east = OneTileMoveVector.EAST;
+    final OneTileMoveVector northeast = OneTileMoveVector.NORTH_EAST;
+    final OneTileMoveVector south = OneTileMoveVector.SOUTH;
+    final OneTileMoveVector west = OneTileMoveVector.WEST;
     TrackMoveTransactionsGenerator transactionsGenerator;
 
     public ChangeTrackPieceCompositeMoveTest(java.lang.String testName) {

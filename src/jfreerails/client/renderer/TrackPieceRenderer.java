@@ -5,7 +5,7 @@ import jfreerails.client.common.ImageManager;
 
 
 /**
-*  Description of the Interface
+* Draws an icon to represent a track piece.
 *
 *@author     Luke Lindsay
 *     09 October 2001

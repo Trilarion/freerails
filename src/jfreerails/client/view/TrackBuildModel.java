@@ -17,7 +17,8 @@ import jfreerails.world.track.TrackRule;
 
 
 /**
- * provides the models for the TrackMoveProducer build mode
+ * Provides the models for the TrackMoveProducer build mode.
+ * @author rob
  */
 public class TrackBuildModel {
     /*
@@ -25,11 +26,11 @@ public class TrackBuildModel {
      */
     private static final int trackTemplate = TrackConfiguration.getFlatInstance(0x111)
                                                                .getTemplate();
-    private ActionAdapter buildModeAdapter;
-    private ActionAdapter trackRuleAdapter;
-    private TrackMoveProducer trackMoveProducer;
-    private ViewLists viewLists;
-    private ReadOnlyWorld world;
+    private final ActionAdapter buildModeAdapter;
+    private final ActionAdapter trackRuleAdapter;
+    private final TrackMoveProducer trackMoveProducer;
+    private final ViewLists viewLists;
+    private final ReadOnlyWorld world;
 
     public ActionAdapter getBuildModeActionAdapter() {
         return buildModeAdapter;
@@ -40,7 +41,7 @@ public class TrackBuildModel {
     }
 
     private class BuildModeAction extends AbstractAction {
-        private int actionId;
+        private final int actionId;
 
         private BuildModeAction(int actionId, String name) {
             putValue(NAME, name);
@@ -57,7 +58,7 @@ public class TrackBuildModel {
     }
 
     private class TrackRuleAction extends AbstractAction {
-        private int actionId;
+        private final int actionId;
 
         private TrackRuleAction(int actionId, String name) {
             TrackPieceRendererList trackPieceRendererList = viewLists.getTrackPieceViewList();

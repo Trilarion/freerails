@@ -12,6 +12,8 @@ import jfreerails.world.common.OneTileMoveVector;
  * in a map square - the cobinations of directions in which track can be
  * laid. Instances of this class cannot be created and must be obtained via the
  * static methods herein.
+ *
+ * @author Luke
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
     private static final ArrayList flatTrackConfigurations = new ArrayList(512);

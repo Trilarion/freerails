@@ -25,11 +25,21 @@ public class RemoveItemFromListMove implements ListMove {
         return index;
     }
 
+    public int hashCode() {
+        int result;
+        result = (item != null ? item.hashCode() : 0);
+        result = 29 * result + listKey.hashCode();
+        result = 29 * result + index;
+        result = 29 * result + principal.hashCode();
+
+        return result;
+    }
+
     public KEY getKey() {
         return listKey;
     }
 
-    protected RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item,
+    RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item,
         FreerailsPrincipal p) {
         this.item = item;
         this.listKey = k;

@@ -9,12 +9,22 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
+ * A Schedule that is immutable.
  * @author Luke Lindsay
  *
  */
 public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private final TrainOrdersModel[] orders;
     private final int nextScheduledOrder;
+
+    public int hashCode() {
+        int result;
+        result = nextScheduledOrder;
+        result = 29 * result + (hasPriorityOrders ? 1 : 0);
+
+        return result;
+    }
+
     private final boolean hasPriorityOrders;
 
     public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,

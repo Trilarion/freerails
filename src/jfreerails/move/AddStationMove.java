@@ -27,7 +27,7 @@ import jfreerails.world.track.TrackRule;
  *
  */
 public class AddStationMove extends CompositeMove {
-    protected AddStationMove(Move[] moves) {
+    private AddStationMove(Move[] moves) {
         super(moves);
     }
 

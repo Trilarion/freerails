@@ -27,7 +27,7 @@ public class CashJLabel extends JLabel implements View {
 
     public void setup(ModelRoot model, ActionListener submitButtonCallBack) {
         this.w = model.getWorld();
-        principal = model.getPlayerPrincipal();
+        principal = model.getPrincipal();
     }
 
     protected void paintComponent(Graphics g) {

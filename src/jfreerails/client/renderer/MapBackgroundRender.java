@@ -27,13 +27,13 @@ import jfreerails.world.track.TrackPiece;
 final public class MapBackgroundRender implements MapLayerRenderer {
     /** The terrain layer.
      */
-    protected TerrainLayer terrainLayer;
+    private final TerrainLayer terrainLayer;
 
     /** The track layer.
      */
-    protected TrackLayer trackLayer;
-    private Dimension tileSize = new Dimension(30, 30);
-    private Dimension mapSize;
+    private final TrackLayer trackLayer;
+    private final Dimension tileSize = new Dimension(30, 30);
+    private final Dimension mapSize;
     private final Painter cityNames;
     private final Painter stationNames;
 
@@ -49,8 +49,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
      *     21 September 2001
      */
     final public class TrackLayer implements MapLayerRenderer {
-        private ReadOnlyWorld w;
-        private TrackPieceRendererList trackPieceViewList;
+        private final ReadOnlyWorld w;
+        private final TrackPieceRendererList trackPieceViewList;
 
         /** Paints a rectangle of tiles onto the supplied
          * graphics context.
@@ -76,7 +76,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                         tile.y++) {
                     if ((tile.x >= 0) && (tile.x < mapSize.width) &&
                             (tile.y >= 0) && (tile.y < mapSize.height)) {
-                        TrackPiece tp = (TrackPiece)w.getTile(tile.x, tile.y);
+                        TrackPiece tp = w.getTile(tile.x, tile.y);
 
                         int graphicsNumber = tp.getTrackGraphicNumber();
 
@@ -125,8 +125,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
      *     21 September 2001
      */
     final public class TerrainLayer implements MapLayerRenderer {
-        private TileRendererList tiles;
-        private ReadOnlyWorld w;
+        private final TileRendererList tiles;
+        private final ReadOnlyWorld w;
 
         public void paintTile(Graphics g, Point tile) {
             int screenX = tileSize.width * tile.x;
@@ -134,7 +134,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
             if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) &&
                     (tile.y < mapSize.height)) {
-                TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);
+                TerrainTile tt = w.getTile(tile.x, tile.y);
 
                 int typeNumber = tt.getTerrainTypeNumber();
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);

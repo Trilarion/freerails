@@ -16,10 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
 import jfreerails.client.common.ImageManager;
-import jfreerails.client.renderer.SideOnViewImageSize;
 import jfreerails.client.renderer.TrainImages;
-import jfreerails.client.renderer.TrainTypeRenderer;
-import jfreerails.client.renderer.ViewPerspective;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -28,24 +25,24 @@ import jfreerails.world.train.WagonType;
 
 
 public class WagonRenderer {
-    HashMap typeColors = new HashMap();
+    private HashMap typeColors = new HashMap();
     private static GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                                    .getDefaultScreenDevice()
                                                                                    .getDefaultConfiguration();
-    private ViewPerspective viewPerspective = ViewPerspective.OVERHEAD;
+    private experimental.ViewPerspective viewPerspective = experimental.ViewPerspective.OVERHEAD;
     private int trainType = WagonType.PASSENGER;
-    private SideOnViewImageSize sideOnViewSize = SideOnViewImageSize.TINY;
+    private SideOnViewImageSize sideOnViewSize = new SideOnViewImageSize(10);
     private OneTileMoveVector direction = OneTileMoveVector.NORTH;
-    BufferedImage[][] trains;
+    private BufferedImage[][] trains;
 
     private void rendererTrainWithoutBuffer(Graphics g, Point p) {
-        TrainTypeRenderer ttv = (TrainTypeRenderer)typeColors.get(new Integer(
+        experimental.TrainTypeRenderer ttv = (experimental.TrainTypeRenderer)typeColors.get(new Integer(
                     trainType));
         Color c = ttv.getColor();
 
         g.setColor(c);
 
-        if (ViewPerspective.OVERHEAD == viewPerspective) {
+        if (experimental.ViewPerspective.OVERHEAD == viewPerspective) {
             Graphics2D g2 = (Graphics2D)g.create();
             g2.rotate(direction.getDirection(), p.x, p.y);
             g2.fillRect(p.x - 5, p.y - 10, 10, 20);
@@ -96,22 +93,22 @@ public class WagonRenderer {
 
     public WagonRenderer() {
         typeColors.put(new Integer(WagonType.MAIL),
-            new TrainTypeRenderer(Color.WHITE));
+            new experimental.TrainTypeRenderer(Color.WHITE));
 
         typeColors.put(new Integer(WagonType.PASSENGER),
-            new TrainTypeRenderer(Color.BLUE));
+            new experimental.TrainTypeRenderer(Color.BLUE));
 
         typeColors.put(new Integer(WagonType.FAST_FREIGHT),
-            new TrainTypeRenderer(Color.YELLOW));
+            new experimental.TrainTypeRenderer(Color.YELLOW));
 
         typeColors.put(new Integer(WagonType.SLOW_FREIGHT),
-            new TrainTypeRenderer(new Color(128, 0, 0)));
+            new experimental.TrainTypeRenderer(new Color(128, 0, 0)));
 
         typeColors.put(new Integer(WagonType.BULK_FREIGHT),
-            new TrainTypeRenderer(Color.BLACK));
+            new experimental.TrainTypeRenderer(Color.BLACK));
 
         typeColors.put(new Integer(WagonType.ENGINE),
-            new TrainTypeRenderer(Color.LIGHT_GRAY));
+            new experimental.TrainTypeRenderer(Color.LIGHT_GRAY));
         setup();
     }
 
@@ -140,7 +137,7 @@ public class WagonRenderer {
                 ".png";
             File file = new File("src/jfreerails/data/trains/" + fileName);
 
-            RenderedImage image = (RenderedImage)wagonRenderer.trains[type][vectors[i].getNumber()];
+            RenderedImage image = wagonRenderer.trains[type][vectors[i].getNumber()];
             ImageIO.write(image, "PNG", file);
         }
     }
@@ -149,7 +146,7 @@ public class WagonRenderer {
         Image image = defaultConfiguration.createCompatibleImage(200, 100,
                 Transparency.BITMASK);
         Graphics g = image.getGraphics();
-        TrainTypeRenderer ttv = (TrainTypeRenderer)typeColors.get(new Integer(
+        experimental.TrainTypeRenderer ttv = (experimental.TrainTypeRenderer)typeColors.get(new Integer(
                     type));
         Color c = ttv.getColor();
         g.setColor(c);

@@ -18,9 +18,9 @@ import jfreerails.world.track.TrackRuleProperties;
  *
  */
 public class MapFixtureFactory {
-    public int w = 10;
-    public int h = 10;
-    public World world = new WorldImpl(w, h);
+    private int w = 10;
+    private int h = 10;
+    private World world = new WorldImpl(w, h);
 
     /** Only subclasses should use these constants.*/
     public static final Player TEST_PLAYER = new Player("test player",

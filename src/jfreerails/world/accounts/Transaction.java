@@ -9,6 +9,8 @@ import jfreerails.world.common.Money;
 
 
 /**
+ * A Transaction is a change in a player's bank balance and/or assets.
+ *
  * @author Luke Lindsay
  *
  */

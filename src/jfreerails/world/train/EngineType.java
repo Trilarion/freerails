@@ -25,9 +25,6 @@ final public class EngineType implements FreerailsSerializable {
         return engineTypeName;
     }
 
-    public void setAvailable(boolean b) {
-    }
-
     public int getPowerAtDrawbar() {
         return powerAtDrawbar;
     }
@@ -38,9 +35,6 @@ final public class EngineType implements FreerailsSerializable {
 
     public int getMaxSpeed() {
         return maxSpeed;
-    }
-
-    public void getRatedTrainSpeedAtGrade(int speed, int grade) {
     }
 
     public EngineType(String name, int power, Money m, int speed) {

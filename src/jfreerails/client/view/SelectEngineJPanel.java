@@ -25,7 +25,7 @@ import jfreerails.world.train.EngineType;
  */
 public class SelectEngineJPanel extends javax.swing.JPanel implements View {
     
-    /** Creates new form SelectEngineJPanel */
+    
     public SelectEngineJPanel() {
         initComponents();
         jList1ValueChanged(null); //Disable the ok button if no engine type is selected.
@@ -101,8 +101,8 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
     
     final private class TrainCellRenderer implements ListCellRenderer {
         
-        JLabel label;
-        ViewLists viewLists;
+        final JLabel label;
+        final ViewLists viewLists;
         
         public TrainCellRenderer(ViewLists vl) {
             
@@ -152,9 +152,9 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         okjButton.addActionListener(submitButtonCallBack);
     }
     
-    /** Removes any existing ActionListener listeners from the cancel button, then 
+    /** Removes any existing ActionListener listeners from the cancel button, then
      *adds the specifed one.
-     */ 
+     */
     void setCancelButtonActionListener(ActionListener l){
         ActionListener[] oldListeners = canceljButton.getActionListeners();
         for(int i = 0; i < oldListeners.length; i++){

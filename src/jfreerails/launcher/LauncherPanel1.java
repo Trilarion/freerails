@@ -11,7 +11,7 @@ import java.net.InetSocketAddress;
 import javax.swing.ButtonModel;
 
 /**
- *
+ * The first launcher panel, lets you choose 'single player', 'start network game' etc.
  * @author rtuck99@users.sourceforge.net
  */
 final class LauncherPanel1 extends javax.swing.JPanel {
@@ -20,9 +20,9 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     static final int MODE_JOIN_NETWORK_GAME = 2;
     static final int MODE_SERVER_ONLY = 3;
     
-    private Launcher owner;
+    private final Launcher owner;
     
-    ButtonModel[] buttonModels = new ButtonModel[4];
+    private final ButtonModel[] buttonModels = new ButtonModel[4];
     
     int getMode() {
         for (int i = 0; i < buttonModels.length; i++) {
@@ -95,8 +95,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         owner.setInfoText(infoText);
         owner.setNextEnabled(isValid);
     }
-    
-    /** Creates new form LauncherPanel1 */
+
     public LauncherPanel1(Launcher owner) {
         initComponents();
         this.owner = owner;

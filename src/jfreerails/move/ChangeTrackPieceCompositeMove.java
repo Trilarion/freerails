@@ -15,7 +15,6 @@ import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
-import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
@@ -33,7 +32,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     private final Rectangle updatedTiles;
     private final FreerailsPrincipal builder;
 
-    /** Creates new ChangeTrackPieceCompositeMove */
     private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b,
         FreerailsPrincipal fp) {
         super(new Move[] {a, b});
@@ -77,7 +75,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         int owner = getOwner(principle, w);
 
         if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = ((FreerailsTile)w.getTile(p.x, p.y)).getTrackPiece();
+            oldTrackPiece = w.getTile(p.x, p.y).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(),
@@ -105,7 +103,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         TrackPiece newTrackPiece;
 
         if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = (TrackPiece)w.getTile(p.x, p.y);
+            oldTrackPiece = w.getTile(p.x, p.y);
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(),
@@ -164,7 +162,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     /** Returns true if some track has been built.*/
-    protected static boolean hasAnyTrackBeenBuilt(ReadOnlyWorld world,
+    static boolean hasAnyTrackBeenBuilt(ReadOnlyWorld world,
         FreerailsPrincipal principal) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world,
                 principal);
@@ -174,7 +172,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         return aggregator.calulateQuantity() > 0;
     }
 
-    protected static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {
+    private static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {
         GameRules rules = (GameRules)world.get(ITEM.GAME_RULES);
 
         return rules.isMustConnect2ExistingTrack();

@@ -8,7 +8,8 @@ import jfreerails.world.top.World;
 
 
 /**
- * Adds a player to the world
+ * Adds a player to the world.
+ * @author Luke
  */
 public class AddPlayerMove implements Move, ServerMove {
     private final Player player2add;

@@ -5,6 +5,9 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 
 
+/** JUnit test for OneTileMoveVector.
+ * @author Luke
+ */
 public class OneTileMoveVectorTest extends TestCase {
     final OneTileMoveVector n = OneTileMoveVector.NORTH;
     final OneTileMoveVector ne = OneTileMoveVector.NORTH_EAST;

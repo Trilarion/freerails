@@ -1,33 +1,46 @@
 package jfreerails.controller;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.ChangeItemInListMove;
 import jfreerails.move.CompositeMove;
+import jfreerails.move.MapUpdateMove;
 import jfreerails.move.Move;
 import jfreerails.move.RemoveItemFromListMove;
 import jfreerails.move.UndoMove;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
+import jfreerails.world.top.WorldMapListener;
 
 
 /**
- * @version         1.0
  *
  * A central point at which a client may register to receive moves which have
  * been committed.
+ * @author Luke
+ * @author rob
  */
 final public class MoveChainFork implements MoveReceiver {
     private final ArrayList moveReceivers = new ArrayList();
     private final ArrayList splitMoveReceivers = new ArrayList();
     private final ArrayList listListeners = new ArrayList();
+    private final ArrayList mapListeners = new ArrayList();
 
     public MoveChainFork() {
         // do nothing
     }
 
-    public void remove(MoveReceiver moveReceiver) {
+    public void addMapListener(WorldMapListener l) {
+        mapListeners.add(l);
+    }
+
+    public void removeMapListener(WorldMapListener l) {
+        mapListeners.remove(l);
+    }
+
+    public void removeCompleteMoveReceiver(MoveReceiver moveReceiver) {
         if (null == moveReceiver) {
             throw new NullPointerException();
         }
@@ -35,7 +48,7 @@ final public class MoveChainFork implements MoveReceiver {
         moveReceivers.remove(moveReceiver);
     }
 
-    public void add(MoveReceiver moveReceiver) {
+    public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
         if (null == moveReceiver) {
             throw new NullPointerException();
         }
@@ -59,9 +72,6 @@ final public class MoveChainFork implements MoveReceiver {
         listListeners.add(listener);
     }
 
-    /*
-     * @see MoveReceiver#processMove(Move)
-     */
     public void processMove(Move move) {
         for (int i = 0; i < moveReceivers.size(); i++) {
             MoveReceiver m = (MoveReceiver)moveReceivers.get(i);
@@ -98,22 +108,17 @@ final public class MoveChainFork implements MoveReceiver {
             } else if (move instanceof RemoveItemFromListMove) {
                 RemoveItemFromListMove mm = (RemoveItemFromListMove)move;
                 sendItemRemoved(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof UndoMove) {
-                Move m = ((UndoMove)move).getUndoneMove();
-
-                if (m instanceof AddItemToListMove) {
-                    AddItemToListMove mm = (AddItemToListMove)m;
-                    sendItemRemoved(mm.getKey(), mm.getIndex(),
-                        mm.getPrincipal());
-                } else if (m instanceof RemoveItemFromListMove) {
-                    RemoveItemFromListMove mm = (RemoveItemFromListMove)m;
-                    sendItemAdded(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-                } else if (move instanceof ChangeItemInListMove) {
-                    ChangeItemInListMove mm = (ChangeItemInListMove)move;
-                    sendListUpdated(mm.getKey(), mm.getIndex(),
-                        mm.getPrincipal());
-                }
+            } else if (move instanceof MapUpdateMove) {
+                Rectangle r = ((MapUpdateMove)move).getUpdatedTiles();
+                sendMapUpdated(r);
             }
+        }
+    }
+
+    private void sendMapUpdated(Rectangle r) {
+        for (int i = 0; i < mapListeners.size(); i++) {
+            WorldMapListener l = (WorldMapListener)mapListeners.get(i);
+            l.tilesChanged(r);
         }
     }
 

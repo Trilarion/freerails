@@ -4,6 +4,9 @@ import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 
+/** Junit test.
+ * @author Luke
+ */
 public class IntLineTest extends TestCase {
     public IntLineTest(String arg0) {
         super(arg0);

@@ -17,7 +17,7 @@ public class GameServer {
      * The set of games which this server is serving. Vector of
      * ServerGameController.
      */
-    private Vector gameControllers = new Vector();
+    private final Vector gameControllers = new Vector();
 
     /**
      * starts the server and creates a new ServerGameEngine running initialised
@@ -33,12 +33,11 @@ public class GameServer {
     }
 
     /**
-     * Load a saved game
+     * Load a saved game.
      * @param port port number on which to accept incoming connections, or 0 for
      * no network connections.
      */
-    public ServerControlInterface getSavedGame(FreerailsProgressMonitor pm,
-        int port) {
+    public ServerControlInterface getSavedGame(int port) {
         ServerGameEngine gameEngine = ServerGameEngine.loadGame();
         ServerGameController sgc = new ServerGameController(gameEngine, port);
         gameControllers.add(sgc);

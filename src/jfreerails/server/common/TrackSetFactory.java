@@ -4,7 +4,7 @@ import jfreerails.world.top.World;
 
 
 /**
-*  Description of the Interface
+*  Defines a standard method to add track types to the world objects.
 *
 *@author     Luke Lindsay
 *     09 October 2001

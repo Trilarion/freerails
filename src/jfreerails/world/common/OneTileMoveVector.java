@@ -15,44 +15,45 @@ import java.util.NoSuchElementException;
 /**
  * This class represents a movement from a tile to any one of the surrounding
  * eight tiles.
+ * @author Luke
 */
 final public class OneTileMoveVector implements FlatTrackTemplate {
-    /** North   */
+    /** North.   */
     public static final OneTileMoveVector NORTH;
 
-    /** West    */
+    /** West.    */
     public static final OneTileMoveVector WEST;
 
-    /** South East    */
+    /** South East.    */
     public static final OneTileMoveVector SOUTH_EAST;
 
-    /** North-East    */
+    /** North-East.    */
     public static final OneTileMoveVector NORTH_EAST;
 
-    /** East    */
+    /** East.    */
     public static final OneTileMoveVector EAST;
 
-    /** South    */
+    /** South.    */
     public static final OneTileMoveVector SOUTH;
 
-    /** South West    */
+    /** South West.    */
     public static final OneTileMoveVector SOUTH_WEST;
 
-    /** North West    */
+    /** North West.    */
     public static final OneTileMoveVector NORTH_WEST;
 
     /**
      * A 3x3 array of OneTileMoveVectors, representing vectors to eight
      * adjacent tiles plus a zero-distance vector.
      */
-    private static OneTileMoveVector[][] vectors;
+    private static final OneTileMoveVector[][] vectors;
 
     /**
      * Another array of OneTileMoveVectors representing the 8 compass
-     * directions going clockwise from North
+     * directions going clockwise from North.
      */
     private static OneTileMoveVector[] list;
-    private static HashMap keycode2vector = new HashMap();
+    private static final HashMap keycode2vector = new HashMap();
 
     static {
         int t = 1;

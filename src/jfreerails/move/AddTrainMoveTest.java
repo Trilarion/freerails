@@ -12,6 +12,7 @@ import jfreerails.world.train.TrainOrdersModel;
 
 
 /**
+ *  JUnit test.
  * @author Luke Lindsay
  *
  */

@@ -20,7 +20,7 @@ import javax.swing.JToggleButton;
 import jfreerails.client.renderer.ViewLists;
 
 /**
- *
+ * JPanel shown on the RHS that lets you pick a track type.
  * @author  bob
  */
 class TrackBuildJPanel extends javax.swing.JPanel {
@@ -28,78 +28,80 @@ class TrackBuildJPanel extends javax.swing.JPanel {
     private int widthOfButton = 30;
     private ButtonGroup buttonGroup;
     private TrackBuildModel buildModel;
-
-    public void validate() {
-    super.validate();
     
+    public void validate() {
+        super.validate();
+        
     }
-
+    
     /**
      * Workaround for completely broken FlowLayout behaviour.
      */
-    private ComponentAdapter sizeListener = new ComponentAdapter () {
-	public void componentResized(ComponentEvent e) {
-	   
-	    /* determine max number of cols */
-	    Dimension d = trackBuildModesSP.getViewport().getSize();
-	    int numCols = (int) (d.getWidth() / (widthOfButton + 5));
-	    if (numCols < 1) {
-		numCols = 1;
-	    }
-	    int numRows = numberOfButtons / numCols + 1;
-	    d.setSize(d.getWidth(), numRows * (widthOfButton + 5));
-	    trackBuildModesPanel.setPreferredSize(d);
-	    trackBuildModesPanel.revalidate();
-	}
+    private final ComponentAdapter sizeListener = new ComponentAdapter() {
+        public void componentResized(ComponentEvent e) {
+            
+            /* determine max number of cols */
+            Dimension d = trackBuildModesSP.getViewport().getSize();
+            int numCols = (int) (d.getWidth() / (widthOfButton + 5));
+            if (numCols < 1) {
+                numCols = 1;
+            }
+            int numRows = numberOfButtons / numCols + 1;
+            d.setSize(d.getWidth(), numRows * (widthOfButton + 5));
+            trackBuildModesPanel.setPreferredSize(d);
+            trackBuildModesPanel.revalidate();
+        }
     };
-
-    void setup(ViewLists vl, ModelRoot modelRoot) {
-	 // GridBagConstraints gbc = new GridBagConstraints();
+    
+    void setup(ViewLists vl, ActionRoot actionRoot) {
+        assert vl != null;
+        assert actionRoot != null;
+        
         buttonGroup = new ButtonGroup();
-	buildModel = modelRoot.getTrackBuildModel();
-	trackModeCB.setModel(buildModel.getBuildModeActionAdapter());
-	Enumeration e = buildModel.getTrackRuleAdapter().getActions();
-	Enumeration enumButtonModels = buildModel.getTrackRuleAdapter().getButtonModels();
-	while (e.hasMoreElements()) {
-	    // Stations get built in the station pane
-	    TrackRuleButton button = new TrackRuleButton((Action) e.nextElement());
-	    button.setModel((ButtonModel) enumButtonModels.nextElement());
-	    buttonGroup.add(button);
-	    trackBuildModesPanel.add(button);
-	    numberOfButtons++;
-	    /* this is OK since all buttons are same width */
-	    widthOfButton = (int) button.getPreferredSize().getWidth();
-	}
-	trackBuildModesPanel.revalidate();
+        buildModel = actionRoot.getTrackBuildModel();
+        trackModeCB.setModel(buildModel.getBuildModeActionAdapter());
+        Enumeration e = buildModel.getTrackRuleAdapter().getActions();
+        Enumeration enumButtonModels = buildModel.getTrackRuleAdapter().getButtonModels();
+        while (e.hasMoreElements()) {
+            // Stations get built in the station pane
+            TrackRuleButton button = new TrackRuleButton((Action) e.nextElement());
+            button.setModel((ButtonModel) enumButtonModels.nextElement());
+            buttonGroup.add(button);
+            trackBuildModesPanel.add(button);
+            numberOfButtons++;
+            /* this is OK since all buttons are same width */
+            widthOfButton = (int) button.getPreferredSize().getWidth();
+        }
+        trackBuildModesPanel.revalidate();
     }
-
+    
     private void setupTrackComponents() {
-	/*
-	 * setup the "mode" combo box
-	 */
-
-	trackBuildModesSP.setViewportView(trackBuildModesPanel);
-	trackBuildModesSP.addComponentListener(sizeListener);
+        /*
+         * setup the "mode" combo box
+         */
+        
+        trackBuildModesSP.setViewportView(trackBuildModesPanel);
+        trackBuildModesSP.addComponentListener(sizeListener);
     }
-
-    /** Creates new form JPanel */
+    
+    
     public TrackBuildJPanel() {
         initComponents();
-	setupTrackComponents();
+        setupTrackComponents();
     }
     
     /**
      * represents a track rule - contains a small icon representing the track
-     * and a text label
+     * and a text label.
      */
     private class TrackRuleButton extends JToggleButton {
-	public TrackRuleButton(Action a) {
-	    super(a);
-	    setMargin(new Insets(0,0,0,0));
-	    setText(null);
-	}
+        public TrackRuleButton(Action a) {
+            super(a);
+            setMargin(new Insets(0,0,0,0));
+            setText(null);
+        }
     }
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

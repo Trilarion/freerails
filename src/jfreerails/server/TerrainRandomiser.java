@@ -1,3 +1,8 @@
+package jfreerails.server;
+
+import java.util.Vector;
+
+
 /**
  * Class to randomly select a terrain type for a terrain tile.
  *
@@ -5,10 +10,7 @@
  *
  * @author Scott Bennett <me@scottbennett.net>
  * Created on 23rd Jan 2004
- */
-
-/*
- * The Terrain Types are:
+ The Terrain Types are:
       0) City (Urban)
       1) Refinery (Industry)
       2) Village (Urban)
@@ -33,23 +35,12 @@
      21) Foothills (Hill)
      22) Mountain (Hill)
  */
-package jfreerails.server;
-
-
-//import java.util.Set;
-import java.util.Vector;
-
-
 public class TerrainRandomiser {
-    private Vector terrainTypes;
-    private Vector non_terrainTypes;
-
-    //private Set terrainTypes;
-    //private Set non_terrainTypes;
+    private final Vector terrainTypes;
+    private final Vector non_terrainTypes;
     private final double CLEAR_PERCENTAGE = 0.98; //ie. % of map that is clear (on avg.)
 
     public TerrainRandomiser(Vector num, Vector num2) {
-        //public TerrainRandomiser(Vector num, Set num2) {
         terrainTypes = num;
         non_terrainTypes = num2;
     }
@@ -64,8 +55,7 @@ public class TerrainRandomiser {
             if (Math.random() < CLEAR_PERCENTAGE) {
                 //make the tile Clear
                 return 4;
-            }
-            else {
+            } else {
                 value = Math.random();
 
                 /*

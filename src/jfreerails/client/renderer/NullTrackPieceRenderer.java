@@ -14,7 +14,7 @@ import jfreerails.client.common.ImageManager;
  * This class implements the TrackPieceView interface, but
  * intentionally does nothing.  Its methods are called when
  * drawing tiles with no track.
- *
+ * @author Luke
  */
 final public class NullTrackPieceRenderer implements TrackPieceRenderer {
     public static final NullTrackPieceRenderer instance = new NullTrackPieceRenderer();

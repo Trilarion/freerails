@@ -4,13 +4,13 @@ import jfreerails.world.player.Player;
 
 
 /**
- * Sent by the client to request that a player be added to the world
- *
+ * Sent by the client to request that a player be added to the world.
+ * @author rob
  * TODO server specific password
  */
 public class AddPlayerCommand extends ServerCommand {
-    private Player player;
-    private byte[] signature;
+    private final Player player;
+    private final byte[] signature;
 
     /**
      * @param signature signature of the Player object with the client's

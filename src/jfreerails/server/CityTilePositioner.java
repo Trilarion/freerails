@@ -1,20 +1,3 @@
-/**
- * @author Scott Bennett
- * Date: 7th April 2003
- *
- * Class to randomly position the city tiles on the game map, within a 5x5 tile
- * area around a city. A random number of between 1 and 6 tiles are initially
- * chosen with the idea to have these increase over the period of a game.
- */
-
-/*
- * Updated 2nd November 2003 by Scott Bennett
- *
- * Class now randomly positions 1-6 urban tiles, 0-2 industry tiles and 0-2
- * resource tiles within the 5x5 grid that is a city. Subtypes of each of these
- * categories are randomly chosen also. The maximums for these categories
- * are currently hard-coded, another solution would be preferable i think.
- */
 package jfreerails.server;
 
 import java.util.ArrayList;
@@ -25,14 +8,28 @@ import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 
 
+/**
+ * Class to randomly position the city tiles on the game map, within a 5x5 tile
+ * area around a city. A random number of between 1 and 6 tiles are initially
+ * chosen with the idea to have these increase over the period of a game.
+ * @author Scott Bennett
+ * Date: 7th April 2003
+ *
+ * Updated 2nd November 2003 by Scott Bennett
+ *
+ * Class now randomly positions 1-6 urban tiles, 0-2 industry tiles and 0-2
+ * resource tiles within the 5x5 grid that is a city. Subtypes of each of these
+ * categories are randomly chosen also. The maximums for these categories
+ * are currently hard-coded, another solution would be preferable i think.
+ */
 public class CityTilePositioner {
-    private World w;
-    private double PROBABILITY_MULTIPLIER = 0.04; //Represents a 1/25 probability, ie. 1 tile, based on a 5x5 city
+    private final World w;
+    private final double PROBABILITY_MULTIPLIER = 0.04; //Represents a 1/25 probability, ie. 1 tile, based on a 5x5 city
     private TerrainType type;
     private FreerailsTile tile;
-    private ArrayList urbanTerrainTypes;
-    private ArrayList industryTerrainTypes;
-    private ArrayList resourceTerrainTypes;
+    private final ArrayList urbanTerrainTypes;
+    private final ArrayList industryTerrainTypes;
+    private final ArrayList resourceTerrainTypes;
 
     public static void positionCityTiles(World w) {
         new CityTilePositioner(w);
@@ -61,7 +58,7 @@ public class CityTilePositioner {
         //hard-coded limits at the moment (urban, industry, resource)
     }
 
-    public void doTilePositioning(int urbMax, int indMax, int resMax) {
+    private void doTilePositioning(int urbMax, int indMax, int resMax) {
         for (int i = 0; i < w.size(SKEY.CITIES); i++) {
             CityModel tempCity = (CityModel)w.get(SKEY.CITIES, i);
 
@@ -72,7 +69,7 @@ public class CityTilePositioner {
         }
     }
 
-    public int calcNumberOfInitialTiles(int max) {
+    private int calcNumberOfInitialTiles(int max) {
         int max_tiles = max;
         double low = 0;
         double high;
@@ -91,7 +88,7 @@ public class CityTilePositioner {
         return 1;
     }
 
-    public int randomSelector(int max, double randValue) {
+    private int randomSelector(int max, double randValue) {
         double low = 0;
         double high;
 
@@ -108,14 +105,14 @@ public class CityTilePositioner {
         return 1;
     }
 
-    public String getCategoryForTile(int x, int y) {
+    private String getCategoryForTile(int x, int y) {
         int tileTypeNumber = w.getTile(x, y).getTerrainTypeNumber();
         String category = ((TerrainType)w.get(SKEY.TERRAIN_TYPES, tileTypeNumber)).getTerrainCategory();
 
         return category;
     }
 
-    public void calculateAndPositionTiles(int x, int y, int urbNo, int indNo,
+    private void calculateAndPositionTiles(int x, int y, int urbNo, int indNo,
         int resNo) {
         int cityX = x;
         int cityY = y;
@@ -125,7 +122,7 @@ public class CityTilePositioner {
 
         ArrayList industriesNotAtCity = new ArrayList(this.industryTerrainTypes);
 
-        double tileProbability = (double)PROBABILITY_MULTIPLIER * (urbanTiles +
+        double tileProbability = PROBABILITY_MULTIPLIER * (urbanTiles +
             industryTiles + resourceTiles);
 
         /*

@@ -25,6 +25,15 @@ public class AddTransactionMove implements Move {
         return transaction;
     }
 
+    public int hashCode() {
+        int result;
+        result = transaction.hashCode();
+        result = 29 * result + principal.hashCode();
+        result = 29 * result + (constrained ? 1 : 0);
+
+        return result;
+    }
+
     public AddTransactionMove(FreerailsPrincipal account, Transaction t) {
         if (null == t) {
             throw new NullPointerException();

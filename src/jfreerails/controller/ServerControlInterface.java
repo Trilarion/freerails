@@ -38,7 +38,7 @@ public interface ServerControlInterface {
     public void quitGame();
 
     /**
-     * Retrieve a list of map names for use with newGame()
+     * Retrieve a list of map names for use with newGame().
      */
     public String[] getMapNames();
 

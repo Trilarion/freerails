@@ -23,12 +23,12 @@ import jfreerails.world.top.WorldListListener;
  * Created: 19th May 2003
  */
 public class CalcSupplyAtStations implements WorldListListener {
-    private World w;
-    private MoveReceiver moveReceiver;
+    private final World w;
+    private final MoveReceiver moveReceiver;
 
     /**
      *
-     * Constructor, currently called from GUIComponentFactory
+     * Constructor, currently called from GUIComponentFactory.
      *
      * @param world The World object that contains all about the game world
      *
@@ -40,7 +40,7 @@ public class CalcSupplyAtStations implements WorldListListener {
 
     /**
      *
-     * Loop through each known station, call calculations method
+     * Loop through each known station, call calculations method.
      *
      */
     public void doProcessing() {
@@ -65,12 +65,12 @@ public class CalcSupplyAtStations implements WorldListListener {
 
     /**
      *
-     * Process each existing station, updating what is supplied to it
+     * Process each existing station, updating what is supplied to it.
      *
      * @param station A StationModel object to be processed
      *
      */
-    public StationModel calculations(StationModel station) {
+    private StationModel calculations(StationModel station) {
         int x = station.getStationX();
         int y = station.getStationY();
 

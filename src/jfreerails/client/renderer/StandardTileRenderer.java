@@ -13,7 +13,7 @@ import jfreerails.world.terrain.TerrainType;
 
 
 /**
-*
+* Paints a tile for which there only one tile icon.
 * @author  Luke Lindsay
 */
 final public class StandardTileRenderer

@@ -7,7 +7,7 @@ package jfreerails.client.common;
 
 
 /**
- *
+ * Used to generate filenames for track and terrain images.
  * @author  Luke
  */
 public class BinaryNumberFormatter {

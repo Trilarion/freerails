@@ -43,7 +43,7 @@ public interface WorldIterator {
      */
     int getRowNumber();
 
-    /** Returns the number of rows */
+    /** Returns the number of rows. */
     int size();
 
     /** Moves the cursor to the specified index. */

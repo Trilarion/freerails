@@ -19,6 +19,10 @@ public class CargoBundleImpl implements CargoBundle {
     private final HashMap hashMap;
     private int updateID = 0;
 
+    public int hashCode() {
+        return hashMap.size();
+    }
+
     public String toString() {
         String s = "CargoBundle {\n";
         Iterator it = this.cargoBatchIterator();
@@ -42,7 +46,7 @@ public class CargoBundleImpl implements CargoBundle {
         hashMap = hm;
     }
 
-    protected HashMap getHashMap() {
+    private HashMap getHashMap() {
         return hashMap;
     }
 
@@ -99,7 +103,7 @@ public class CargoBundleImpl implements CargoBundle {
              * about it straight away.
              */
         return new Iterator() {
-                int updateIDAtCreation = updateID;
+                final int updateIDAtCreation = updateID;
 
                 public void remove() {
                     throw new UnsupportedOperationException(

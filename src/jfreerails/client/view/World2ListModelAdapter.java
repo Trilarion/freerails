@@ -54,11 +54,10 @@ public class World2ListModelAdapter implements ListModel {
 
         if (null == w)
             throw new NullPointerException();
-        
+
         //Check that the principal exists.
-        if(!world.isPlayer(p))
-        	throw new IllegalArgumentException(p.getName());
-        	        
+        if (!world.isPlayer(p))
+            throw new IllegalArgumentException(p.getName());
     }
 
     public int getSize() {

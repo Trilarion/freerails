@@ -2,7 +2,7 @@ package jfreerails.util;
 
 
 /**
- * 30-Nov-2002
+ * Returns a series of ints.
  * @author Luke Lindsay
  *
  */

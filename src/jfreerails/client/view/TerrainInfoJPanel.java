@@ -26,10 +26,10 @@ import jfreerails.world.train.WagonType;
 public class TerrainInfoJPanel extends javax.swing.JPanel {
     
     private ViewLists vl;
-
+    
     private ReadOnlyWorld w;
     
-    /** Creates new form TerrainInfoJPanel */
+    
     public TerrainInfoJPanel() {
         initComponents();
     }
@@ -77,16 +77,16 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         add(terrainDescription, gridBagConstraints);
 
     }//GEN-END:initComponents
-
+    
     public void setup(ReadOnlyWorld w, ViewLists vl) {
         this.w = w;
         this.vl = vl;
-    }    
+    }
     
     public void setTerrainType(int typeNumber){
-
+        
         TerrainType type = (TerrainType)w.get(SKEY.TERRAIN_TYPES, typeNumber);
-      
+        
         String row = "<p>Right-of-Way costs $"+type.getRightOfWay()+" per mile. </p>";
         String tableString = "";
         int cargosProduced = type.getProduction().length;
@@ -110,7 +110,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                     Consumption p = type.getConsumption()[i];
                     CargoType c = (CargoType)w.get(SKEY.CARGO_TYPES, p.getCargoType());
                     tableString += "<tr> <td>"+c.getDisplayName()+" </td><td>&nbsp;</td></tr>";
-                }                
+                }
             }
             if(cargosConverted != 0){
                 tableString += "<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>";
@@ -119,7 +119,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                     CargoType input = (CargoType)w.get(SKEY.CARGO_TYPES, p.getInput());
                     CargoType output = (CargoType)w.get(SKEY.CARGO_TYPES, p.getOutput());
                     tableString += "<tr> <td colspan=\"2\">"+input.getDisplayName()+" to "+output.getDisplayName()+"</td></tr>";
-                }                    
+                }
             }
             tableString += "</table> ";
         }

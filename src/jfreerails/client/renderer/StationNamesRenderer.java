@@ -1,9 +1,3 @@
-/**@author Scott Bennett
- * Date: 14th April 2003
- *
- * Class to render the station names on the game map. Names are retrieved
- * from the KEY.STATIONS object.
- */
 package jfreerails.client.renderer;
 
 import java.awt.BasicStroke;
@@ -22,11 +16,18 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 
 
+/**
+ *
+ * Class to render the station names on the game map. Names are retrieved
+ * from the KEY.STATIONS object.
+ * Date: 14th April 2003
+ * @author Scott Bennett
+ */
 public class StationNamesRenderer implements Painter {
-    private ReadOnlyWorld w;
-    private int fontSize;
-    private Color bgColor;
-    private Color textColor;
+    private final ReadOnlyWorld w;
+    private final int fontSize;
+    private final Color bgColor;
+    private final Color textColor;
 
     public StationNamesRenderer(ReadOnlyWorld world) {
         this.w = world;
@@ -72,13 +73,13 @@ public class StationNamesRenderer implements Painter {
 
                 rectWidth = (int)(visibleAdvance * 1.2);
                 rectHeight = (int)(fontSize * 1.5);
-                rectX = (int)(positionX - (rectWidth / 2));
+                rectX = (positionX - (rectWidth / 2));
                 rectY = positionY;
 
                 g.setColor(bgColor);
                 g.fillRect(rectX, rectY, rectWidth, rectHeight);
 
-                textX = (float)(positionX - (visibleAdvance / 2));
+                textX = (positionX - (visibleAdvance / 2));
                 textY = positionY + fontSize + 1;
 
                 g.setColor(textColor);

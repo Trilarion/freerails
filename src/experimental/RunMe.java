@@ -6,8 +6,8 @@
 package experimental;
 
 import javax.swing.JFrame;
-import jfreerails.client.top.GameLoop;
 import jfreerails.client.common.ScreenHandler;
+import jfreerails.client.top.GameLoop;
 
 
 /**

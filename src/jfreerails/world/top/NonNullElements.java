@@ -21,9 +21,9 @@ public class NonNullElements implements WorldIterator {
     private final SKEY skey;
     private final ReadOnlyWorld w;
     private final FreerailsPrincipal principal;
-    int index = BEFORE_FIRST;
-    int row = BEFORE_FIRST;
-    int size = -1;
+    private int index = BEFORE_FIRST;
+    private int row = BEFORE_FIRST;
+    private int size = -1;
 
     public NonNullElements(SKEY k, ReadOnlyWorld world) {
         if (null == k) {

@@ -17,7 +17,7 @@ import junit.framework.TestSuite;
 
 
 /**
- *
+ *  JUnit test.
  * @author lindsal
  */
 public class LegalTrackConfigurationsTest extends TestCase {

@@ -25,7 +25,7 @@ public class InterestChargeMoveGenerator {
         this.moveReceiver = mr;
     }
 
-    public static AddTransactionMove generateMove(World w,
+    private static AddTransactionMove generateMove(World w,
         FreerailsPrincipal principal) {
         long interestDue = 0;
 

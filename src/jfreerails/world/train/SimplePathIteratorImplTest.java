@@ -5,15 +5,14 @@ import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 
+/** Junit test.
+ * @author Luke
+ */
 public class SimplePathIteratorImplTest extends TestCase {
-    /** @param arg0
-     */
     public SimplePathIteratorImplTest(String arg0) {
         super(arg0);
     }
 
-    /** @param args
-     */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(SimplePathIteratorImplTest.class);
     }
@@ -44,12 +43,6 @@ public class SimplePathIteratorImplTest extends TestCase {
         assertTrue(!it.hasNext());
     }
 
-    /** @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @param line
-     */
     private void assertLineEquals(int x1, int y1, int x2, int y2, IntLine line) {
         assertEquals(x1, line.x1);
         assertEquals(x2, line.x2);

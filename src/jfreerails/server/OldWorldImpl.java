@@ -6,6 +6,7 @@ import jfreerails.server.common.TrackSetFactory;
 import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.common.GameCalendar;
+import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
@@ -13,10 +14,11 @@ import jfreerails.world.top.WagonAndEngineTypesFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import org.xml.sax.SAXException;
-import jfreerails.world.common.GameSpeed;
 
 
-/** This class sets up a World object.*/
+/** This class sets up a World object.
+ * @author luke
+ * */
 public class OldWorldImpl {
     private World w;
 

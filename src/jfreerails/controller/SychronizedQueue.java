@@ -8,12 +8,13 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
+ *  Intended to let objects be safely passed between threads.
  *
  *  @author Luke
  *
  */
 public class SychronizedQueue {
-    private LinkedList queue = new LinkedList();
+    private final LinkedList queue = new LinkedList();
 
     public synchronized void write(FreerailsSerializable f) {
         queue.add(f);

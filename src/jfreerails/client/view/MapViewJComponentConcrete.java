@@ -17,16 +17,15 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.StringTokenizer;
-
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
-
 import jfreerails.client.common.Stats;
 import jfreerails.client.renderer.MapRenderer;
 
 
 /**
- *
+ * Displays the map, the cursor, and user messages (which are stored on the ModelRoot under the keys
+ * QUICK_MESSAGE and PERMANENT_MESSAGE).
  * @author  Luke Lindsay
  *
  */
@@ -34,7 +33,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     implements PropertyChangeListener {
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
     private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
-    private Stats paintStats = new Stats("MapViewJComponent paint");
+    private final Stats paintStats = new Stats("MapViewJComponent paint");
 
     /** The length of the array is the number of lines.
      * This is necessary since Graphics.drawString(..)  doesn't know about newline characters*/
@@ -65,7 +64,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     private final int GRANULARITY = 2 * LINEAR_ACCEL;
 
     /**
-    * A {@link Robot} to compensate mouse cursor movement
+    * A {@link Robot} to compensate mouse cursor movement.
     */
     private static Robot robot;
 
@@ -87,13 +86,13 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     final private class MapViewJComponentMouseAdapter extends MouseInputAdapter {
         /**
         * Screen location of the mouse cursor, when the second mouse button was
-        * pressed
+        * pressed.
         */
         private Point screenLocation = new Point();
         private Point lastMouseLocation = new Point();
 
         /**
-        * A variable to sum up relative mouse movement
+        * A variable to sum up relative mouse movement.
         */
         private Point sigmadelta = new Point();
 
@@ -105,7 +104,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 
         public void mousePressed(MouseEvent evt) {
             /* Note, moving the cursor using the mouse is now handled in UserInputOnMapController */
-
             if (SwingUtilities.isRightMouseButton(evt)) {
                 MapViewJComponentConcrete.this.setCursor(Cursor.getPredefinedCursor((LINEAR_ACCEL > 0)
                         ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
@@ -131,10 +129,10 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
                 sigmadelta.y += evt.getY() - lastMouseLocation.y;
 
                 int tileSize = (int)getScale();
-                tiledelta.x = (int)(sigmadelta.x * GRANULARITY) / tileSize;
-                tiledelta.y = (int)(sigmadelta.y * GRANULARITY) / tileSize;
-                tiledelta.x = (int)((tiledelta.x * tileSize) / GRANULARITY) * LINEAR_ACCEL;
-                tiledelta.y = (int)((tiledelta.y * tileSize) / GRANULARITY) * LINEAR_ACCEL;
+                tiledelta.x = (sigmadelta.x * GRANULARITY) / tileSize;
+                tiledelta.y = (sigmadelta.y * GRANULARITY) / tileSize;
+                tiledelta.x = ((tiledelta.x * tileSize) / GRANULARITY) * LINEAR_ACCEL;
+                tiledelta.y = ((tiledelta.y * tileSize) / GRANULARITY) * LINEAR_ACCEL;
 
                 Rectangle vr = MapViewJComponentConcrete.this.getVisibleRect();
                 Rectangle bounds = MapViewJComponentConcrete.this.getBounds();
@@ -176,14 +174,12 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         }
     }
 
-  
     protected void paintComponent(java.awt.Graphics g) {
         paintStats.enter();
         super.paintComponent(g);
 
         if (null != mapCursor) {
-            mapCursor.paintCursor(g,
-                new java.awt.Dimension(30, 30));
+            mapCursor.paintCursor(g, new java.awt.Dimension(30, 30));
         }
 
         if (System.currentTimeMillis() < this.displayMessageUntil) {
@@ -227,23 +223,23 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 
         this.removeKeyListener(this.mapCursor);
 
-        this.mapCursor = new FreerailsCursor(mv, mr);
-   
+        this.mapCursor = new FreerailsCursor(mr);
+
         mr.addPropertyChangeListener(this);
         this.addKeyListener(mapCursor);
     }
 
     public void setup(MapRenderer mv) {
         super.setMapView(mv);
-    }      
+    }
 
     private void react2curorMove(Point newPoint, Point oldPoint) {
-		float scale = getMapView().getScale();
+        float scale = getMapView().getScale();
         Dimension tileSize = new Dimension((int)scale, (int)scale);
         Rectangle vr = this.getVisibleRect();
         Rectangle rectangleSurroundingCursor = new Rectangle(0, 0, 1, 1);
-       
-		rectangleSurroundingCursor.setLocation((newPoint.x - 1) * tileSize.width,
+
+        rectangleSurroundingCursor.setLocation((newPoint.x - 1) * tileSize.width,
             (newPoint.y - 1) * tileSize.height);
         rectangleSurroundingCursor.setSize(tileSize.width * 3,
             tileSize.height * 3);
@@ -257,13 +253,13 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         this.repaint((newPoint.x - 1) * tileSize.width,
             (newPoint.y - 1) * tileSize.height, tileSize.width * 3,
             tileSize.height * 3);
-       
-		this.repaint((oldPoint.x - 1) * tileSize.width,
+
+        this.repaint((oldPoint.x - 1) * tileSize.width,
             (oldPoint.y - 1) * tileSize.height, tileSize.width * 3,
             tileSize.height * 3);
-	}
+    }
 
-	public void paintTile(Graphics g, int tileX, int tileY) {
+    public void paintTile(Graphics g, int tileX, int tileY) {
     }
 
     public void refreshTile(int x, int y) {
@@ -276,7 +272,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         return mapCursor;
     }
 
-    public void println(String s) {
+    private void println(String s) {
         StringTokenizer st = new StringTokenizer(s, "\n");
         this.userMessage = new String[st.countTokens()];
 
@@ -291,25 +287,34 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         displayMessageUntil = System.currentTimeMillis() + 1000 * 5;
     }
 
-    public void showMessage(String message) {
-        this.message = message;
-    }
-
-    public void hideMessage() {
-        message = null;
-    }
-    
-     /** Checks whether the specfied PropertyChangeEvent was triggered by the cursor moving
-      * and if so, scrolls the map if necessary.
-     */
+    /** Checks what triggered the specfied PropertyChangeEvent and reacts as follows.
+     * <p>(1) If it was ModelRoot.CURSOR_POSITION, scrolls the map if necessary.</p>
+     * <p>(2) If it was ModelRoot.QUICK_MESSAGE, display or hide the message as appropriate.</p>
+     * <p>(3) If it was ModelRoot.PERMANENT_MESSAGE, display or hide the message as appropriate.</p>
+    */
     public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(ModelRoot.CURSOR_POSITION)) {
-			Point newPoint = (Point) evt.getNewValue();
-			Point oldPoint = (Point) evt.getOldValue();
-			if(null == oldPoint){
-				oldPoint = new Point();
-			}
-			react2curorMove(newPoint, oldPoint);
-		}
-	}
+        String propertyName = evt.getPropertyName();
+
+        if (propertyName.equals(ModelRoot.CURSOR_POSITION)) {
+            Point newPoint = (Point)evt.getNewValue();
+            Point oldPoint = (Point)evt.getOldValue();
+
+            if (null == oldPoint) {
+                oldPoint = new Point();
+            }
+
+            react2curorMove(newPoint, oldPoint);
+        } else if (propertyName.equals(ModelRoot.QUICK_MESSAGE)) {
+            String newMessage = (String)evt.getNewValue();
+
+            if (null != newMessage) {
+                println(newMessage);
+            } else {
+                //Its null, so stop displaying whatever we where displaying.
+                displayMessageUntil = Long.MIN_VALUE;
+            }
+        } else if (propertyName.equals(ModelRoot.PERMANENT_MESSAGE)) {
+            message = (String)evt.getNewValue();
+        }
+    }
 }

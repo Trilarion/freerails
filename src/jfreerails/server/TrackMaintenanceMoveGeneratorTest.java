@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for TrackMaintenanceMoveGenerator.
  * @author Luke Lindsay
  *
  */

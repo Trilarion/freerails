@@ -21,15 +21,15 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.WagonType;
 /**
- *
+ * A JPanel that displays the cargo waiting and demanded at a station - used on the select station popup window.
  * @author  Luke
  */
 public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements View {
     
     private ReadOnlyWorld world;
-    private FreerailsPrincipal principal;  
-
-    /** Creates new form CargoWaitingAndDemandedJPanel */
+    private FreerailsPrincipal principal;
+    
+    
     public CargoWaitingAndDemandedJPanel() {
         initComponents();
     }
@@ -113,7 +113,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     
     public void setup(ModelRoot model, ActionListener submitButtonCallBack) {
         this.world = model.getWorld();
-        this.principal = model.getPlayerPrincipal();
+        this.principal = model.getPrincipal();
     }
     
     public void display(int newStationID){
@@ -129,22 +129,22 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         final ArrayList quantityWaiting = new ArrayList();
         final Vector typeDemanded = new Vector();
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
-              CargoType cargoType = (CargoType)world.get(SKEY.CARGO_TYPES, i);
-              int amountWaiting = cargoWaiting.getAmount(i);
-              
-              if(0 !=amountWaiting){
-                   typeWaiting.add(cargoType.getDisplayName());
-                   int carloads = amountWaiting / WagonType.UNITS_OF_CARGO_PER_WAGON;
-                   quantityWaiting.add(new Integer(carloads));
-              }
-              if(station.getDemand().isCargoDemanded(i)){
-                  typeDemanded.add(cargoType.getDisplayName());
-              }
+            CargoType cargoType = (CargoType)world.get(SKEY.CARGO_TYPES, i);
+            int amountWaiting = cargoWaiting.getAmount(i);
+            
+            if(0 !=amountWaiting){
+                typeWaiting.add(cargoType.getDisplayName());
+                int carloads = amountWaiting / WagonType.UNITS_OF_CARGO_PER_WAGON;
+                quantityWaiting.add(new Integer(carloads));
+            }
+            if(station.getDemand().isCargoDemanded(i)){
+                typeDemanded.add(cargoType.getDisplayName());
+            }
         }
-       
-        /* The table shows the cargo waiting at the station.  First column is cargo type; second 
+        
+        /* The table shows the cargo waiting at the station.  First column is cargo type; second
          column is quantity in carloads.*/
-        TableModel tableModel = new AbstractTableModel() {                        
+        TableModel tableModel = new AbstractTableModel() {
             
             public int getRowCount(){
                 return typeWaiting.size();
@@ -163,7 +163,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         this.waitingJTable.setModel(tableModel);
         
         /* The list shows the cargo demanded by the station.*/
-        this.demandsJList.setListData(typeDemanded);    
+        this.demandsJList.setListData(typeDemanded);
         
         this.invalidate();
     }

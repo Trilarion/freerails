@@ -14,6 +14,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * represent an authorititative server, or a another game entity such as a
  * corporation. All entities which may own game world objects must be
  * represented by a principal.
+ * @author rob
  */
 public abstract class FreerailsPrincipal implements Principal,
     FreerailsSerializable {

@@ -10,6 +10,8 @@ import jfreerails.world.player.FreerailsPrincipal;
 
 
 /**
+ *
+ * Adds up the value of transactions.
  * @author Luke
  *
  */

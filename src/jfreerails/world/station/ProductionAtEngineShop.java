@@ -23,6 +23,10 @@ public class ProductionAtEngineShop implements FreerailsSerializable {
         wagonTypes = wagons;
     }
 
+    public int hashCode() {
+        return engineType;
+    }
+
     public int getEngineType() {
         return engineType;
     }
@@ -61,9 +65,6 @@ public class ProductionAtEngineShop implements FreerailsSerializable {
         return true;
     }
 
-    /**
-     *
-     */
     public String toString() {
         return "engine type: " + this.engineType + ", with " +
         wagonTypes.length + "wagons";

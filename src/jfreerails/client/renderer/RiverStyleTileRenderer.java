@@ -14,7 +14,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
-*
+* Selects a tile icon to use based on the type of the tiles to the
+ * North, East, South and West.
 * @author  Luke Lindsay
 */
 final public class RiverStyleTileRenderer

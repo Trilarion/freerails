@@ -10,8 +10,6 @@ import jfreerails.controller.ConnectionListener;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerCommand;
-import jfreerails.controller.SourcedMoveReceiver;
-import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.controller.WorldChangedCommand;
 import jfreerails.move.Move;
@@ -27,34 +25,35 @@ import jfreerails.world.top.World;
 /**
  * This class receives moves from the client. This class tries out moves on the
  * world if necessary, and passes them to the connection.
+ * @author rob
  */
 public class ConnectionAdapter implements UntriedMoveReceiver,
     ConnectionListener {
     private NonAuthoritativeMoveExecuter moveExecuter;
-    private ModelRoot modelRoot;
-    private Player player;
-    ConnectionToServer connection;
-    private Object authMutex = new Integer(1);
+    private final ModelRoot modelRoot;
+    private final Player player;
+    private ConnectionToServer connection;
+    private final Object authMutex = new Integer(1);
     private boolean authenticated;
-    private GUIClient guiClient;
+    private final GUIClient guiClient;
 
     /**
      * The GameLoop providing the move execution thread for this
-     * ConnectionAdapter's Move Executer
+     * ConnectionAdapter's Move Executer.
      */
     private GameLoop gameLoop;
 
     /**
      * we forward outbound moves from the client to this.
      */
-    UncommittedMoveReceiver uncommittedReceiver;
-    MoveReceiver moveReceiver;
-    World world;
-    private FreerailsProgressMonitor progressMonitor;
+    private MoveReceiver uncommittedReceiver;
+    private MoveReceiver moveReceiver;
+    private World world;
+    private final FreerailsProgressMonitor progressMonitor;
 
-    public ConnectionAdapter(ModelRoot mr, Player player,
-        FreerailsProgressMonitor pm, GUIClient gc) {
-        modelRoot = mr;
+    public ConnectionAdapter(Player player, FreerailsProgressMonitor pm,
+        GUIClient gc) {
+        modelRoot = gc.getModelRoot();
         this.player = player;
         this.progressMonitor = pm;
         guiClient = gc;
@@ -64,15 +63,11 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
      * This class receives moves from the connection and passes them on to a
      * MoveReceiver.
      */
-    public class WorldUpdater implements SourcedMoveReceiver {
+    public class WorldUpdater implements MoveReceiver {
         private MoveReceiver moveReceiver;
 
-        public synchronized void processMove(Move move, ConnectionToServer c) {
-            processMove(move);
-        }
-
         /**
-         * Processes inbound moves from the server
+         * Processes inbound moves from the server.
          */
         public synchronized void processMove(Move move) {
             if (move instanceof TimeTickMove) {
@@ -91,10 +86,10 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
         }
     }
 
-    private WorldUpdater worldUpdater = new WorldUpdater();
+    private final WorldUpdater worldUpdater = new WorldUpdater();
 
     /**
-     * Processes outbound moves to the server
+     * Processes outbound moves to the server.
      */
     public synchronized void processMove(Move move) {
         if (uncommittedReceiver != null) {
@@ -112,7 +107,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
     private void closeConnection() {
         connection.close();
         connection.removeMoveReceiver(worldUpdater);
-        modelRoot.getUserMessageLogger().println("Connection to server closed");
+        modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+            "Connection to server closed");
     }
 
     public synchronized void setConnection(ConnectionToServer c)
@@ -152,7 +148,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
         if (connection != null) {
             closeConnection();
             connection.removeMoveReceiver(worldUpdater);
-            connection.removeConnectionListener(this);
+            connection.removeConnectionListener();
         }
 
         /* grab the lock on the WorldUpdater in order to prevent any moves from
@@ -177,8 +173,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
         gameLoop = new GameLoop(guiClient.getScreenHandler(), moveExecuter);
 
         /* attempt to authenticate the player */
-        modelRoot.getUserMessageLogger().println("Attempting to " +
-            "authenticate " + player.getName() + " with server");
+        modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+            "Attempting to " + "authenticate " + player.getName() +
+            " with server");
         authenticated = false;
         connection.sendCommand(new AddPlayerCommand(player, player.sign()));
     }
@@ -206,19 +203,19 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             ViewLists viewLists = new ViewListsImpl(world, progressMonitor);
 
             if (!viewLists.validate(world)) {
-                modelRoot.getUserMessageLogger().println("Couldn't validate " +
-                    "viewLists!");
+                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                    "Couldn't validate " + "viewLists!");
             }
 
-            modelRoot.setup(world, this, viewLists, principal);
+            guiClient.setup(world, this, viewLists, principal);
 
             /* start the game loop */
             String threadName = "JFreerails client: " + guiClient.getTitle();
             Thread t = new Thread(gameLoop, threadName);
             t.start();
         } catch (IOException e) {
-            modelRoot.getUserMessageLogger().println("Couldn't set up " +
-                "view Lists");
+            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                "Couldn't set up " + "view Lists");
         }
     }
 
@@ -257,12 +254,12 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             try {
                 setConnectionImpl(c);
             } catch (IOException e) {
-                modelRoot.getUserMessageLogger().println("Unable to open" +
-                    " remote connection");
+                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                    "Unable to open" + " remote connection");
                 closeConnection();
             } catch (GeneralSecurityException e) {
-                modelRoot.getUserMessageLogger().println("Unable to " +
-                    "authenticate with server: " + e.toString());
+                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                    "Unable to " + "authenticate with server: " + e.toString());
             }
         }
     }

@@ -17,6 +17,9 @@ import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
 
 
+/** A list of TrackPieceRenderers.
+ * @author Luke
+ */
 final public class TrackPieceRendererList {
     private final TrackPieceRenderer[] trackPieceViewArray;
 

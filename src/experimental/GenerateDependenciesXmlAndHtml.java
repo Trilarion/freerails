@@ -22,8 +22,8 @@ public class GenerateDependenciesXmlAndHtml {
 	private PrintWriter xmlWriter;
 	private PrintWriter htmlWriter;
 	private ArrayList packages = new ArrayList();
-	boolean started = false;
-	boolean startedBlock = false;
+	private boolean started = false;
+	private boolean startedBlock = false;
 	private String sig;
 
 	public static void main(String[] args) {
@@ -34,7 +34,7 @@ public class GenerateDependenciesXmlAndHtml {
 		}
 	}
 	
-	public GenerateDependenciesXmlAndHtml(String xmlFilename, String htmlFilename) throws FileNotFoundException{
+	private GenerateDependenciesXmlAndHtml(String xmlFilename, String htmlFilename) throws FileNotFoundException{
 		
 		Date d = new Date();
 		sig = this.getClass().getName()+" on "+d;
@@ -102,7 +102,7 @@ public class GenerateDependenciesXmlAndHtml {
 		System.out.println("Wrote "+htmlFile);
 	}
 	
-	public void start(){
+	private void start(){
 		assert !started;
 		
 		startXml();
@@ -116,7 +116,7 @@ public class GenerateDependenciesXmlAndHtml {
 		started = true;
 	}
 	
-	public void startBlock(String blockName){
+	private void startBlock(String blockName){
 		assert started;
 		assert !startedBlock;
 		startedBlock = true;
@@ -127,7 +127,7 @@ public class GenerateDependenciesXmlAndHtml {
 		xmlWriter.write("\t\t<mkdir dir=\"dependencies\" />\n");		
 	}
 	
-	public void endBlock(){
+	private void endBlock(){
 		assert started;
 		assert startedBlock;
 		
@@ -169,11 +169,11 @@ public class GenerateDependenciesXmlAndHtml {
 		
 	}
 
-	public void add(String packageName){
+	private void add(String packageName){
 		add(new String[]{packageName});
 	}		
 	
-	public void add(String[] packageNames){
+	private void add(String[] packageNames){
 		assert started;
 		assert startedBlock;
 		
@@ -247,7 +247,7 @@ public class GenerateDependenciesXmlAndHtml {
 		return s.matches("(([a-zA-Z]*)/)*\\*") || s.matches("(([a-zA-Z]*)/)*\\*\\*/\\*");		
 	}
 
-	public void finish(){
+	private void finish(){
 		assert started;
 		assert !startedBlock;
 		//finish the file.

@@ -12,6 +12,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
+ * Provides methods that find the nearest station in a given direction, used by the
+ * select station popup window.
  * @author Luke
  *
  */
@@ -19,7 +21,7 @@ public class NearestStationFinder {
     public static final int NOT_FOUND = Integer.MIN_VALUE;
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
-    final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
+    private final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
 
     public NearestStationFinder(ReadOnlyWorld w, FreerailsPrincipal player) {
         world = w;

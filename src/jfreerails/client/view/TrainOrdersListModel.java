@@ -16,13 +16,13 @@ import jfreerails.world.train.TrainOrdersModel;
 
 
 /**
- *
+ * AbstractListModel used by {@link TrainScheduleJPanel} to display the orders making up a train schedule.
  * @author  Luke Lindsay
  */
 public class TrainOrdersListModel extends AbstractListModel {
-    private int trainNumber;
-    private ReadOnlyWorld w;
-    private FreerailsPrincipal principal;
+    private final int trainNumber;
+    private final ReadOnlyWorld w;
+    private final FreerailsPrincipal principal;
     public static final int DONT_GOTO = 0;
     public static final int GOTO_NOW = 1;
     public static final int GOTO_AFTER_PRIORITY_ORDERS = 2;
@@ -44,7 +44,6 @@ public class TrainOrdersListModel extends AbstractListModel {
         }
     }
 
-    /** Creates a new instance of TrainOrdersListModel */
     public TrainOrdersListModel(ReadOnlyWorld w, int trainNumber,
         FreerailsPrincipal p) {
         this.trainNumber = trainNumber;

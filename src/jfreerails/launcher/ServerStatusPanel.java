@@ -9,13 +9,14 @@ package jfreerails.launcher;
 import javax.swing.table.TableModel;
 
 /**
+ * The Launcher panel that shows the clients that are connected to
+ * the server.
  *
  * @author  rtuck99@users.sourceforge.net
  */
 class ServerStatusPanel extends javax.swing.JPanel {
-    private Launcher owner;
+    private final Launcher owner;
 
-    /** Creates new form ServerStatusPanel */
     ServerStatusPanel(Launcher owner) {
 	this.owner = owner;
         initComponents();

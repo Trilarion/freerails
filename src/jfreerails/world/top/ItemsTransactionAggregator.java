@@ -12,6 +12,8 @@ import jfreerails.world.player.FreerailsPrincipal;
 
 
 /**
+ * Adds up the number of assets.
+ *
  * @author Luke
  *
  */

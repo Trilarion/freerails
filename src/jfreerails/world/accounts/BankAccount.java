@@ -11,6 +11,7 @@ import jfreerails.world.common.Money;
 
 
 /**
+ * Stores a series of {@link Transaction} objects.
  * @author Luke Lindsay
  *
  */
@@ -20,6 +21,10 @@ public class BankAccount implements FreerailsSerializable {
     private Money currentBalance = new Money(0);
 
     public BankAccount() {
+    }
+
+    public int hashCode() {
+        return transactions.size();
     }
 
     public Money getCurrentBalance() {

@@ -13,6 +13,7 @@ import jfreerails.client.common.JFrameMinimumSizeEnforcer;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.ViewListsImpl;
+import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.HtmlJPanel;
@@ -23,7 +24,6 @@ import jfreerails.client.view.TrainDialogueJPanel;
 import jfreerails.client.view.TrainOrdersListModel;
 import jfreerails.client.view.TrainScheduleJPanel;
 import jfreerails.client.view.TrainViewJList;
-import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.ListMove;
 import jfreerails.move.Move;
@@ -87,10 +87,10 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 	}
     };
     
-    TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
+    private TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
     
     /** Creates new form TestGlassPanelMethod */
-    public DialogueBoxTester() {
+    private DialogueBoxTester() {
         
     	modelRoot = new ModelRoot();
     	modelRoot.setMoveReceiver(this.dummyReceiver);
@@ -105,8 +105,10 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         } catch (IOException e) {            
             e.printStackTrace();
         }
-        modelRoot.setup(w, dummyReceiver, vl, TEST_PLAYER.getPrincipal());		
-        dialogueBoxController = new DialogueBoxController(this, modelRoot);
+        modelRoot.setup(w, vl, TEST_PLAYER.getPrincipal());
+        ActionRoot actionRoot = new ActionRoot();
+        actionRoot.setup(modelRoot);
+        dialogueBoxController = new DialogueBoxController(this, modelRoot, actionRoot);
         dialogueBoxController.setDefaultFocusOwner(this);
         
         int numberOfCargoTypes = w.size(SKEY.CARGO_TYPES);
@@ -166,11 +168,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         
             
 	final MyGlassPanel glassPanel = new MyGlassPanel();
-	dialogueBoxController.setup(
-		w,
-		vl,
-		new MoveChainFork(),
-		dummyReceiver);
+	dialogueBoxController.setup(modelRoot);		
 	initComponents();
 
 	glassPanel.setSize(800, 600);

@@ -8,12 +8,12 @@ import jfreerails.world.common.FreerailsSerializable;
 import junit.framework.TestCase;
 
 
-/**
+/**    Junit test.
  * @author Luke
  *
  */
 public class WorldImplTest extends TestCase {
-    FreerailsSerializable fs = new FreerailsSerializable() {
+    private final FreerailsSerializable fs = new FreerailsSerializable() {
         };
 
     public void testGet() {

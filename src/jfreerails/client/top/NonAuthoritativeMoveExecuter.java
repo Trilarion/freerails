@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.SychronizedQueue;
-import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.RejectedMove;
@@ -36,14 +35,13 @@ import jfreerails.world.top.World;
  *
  * @author rtuck99@users.sourceforge.net
  */
-public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
-    GameModel {
-    private PendingQueue pendingQueue = new PendingQueue();
-    private ModelRoot modelRoot;
-    private MoveReceiver moveReceiver;
-    private World world;
+public class NonAuthoritativeMoveExecuter implements MoveReceiver, GameModel {
+    private final PendingQueue pendingQueue = new PendingQueue();
+    private final ModelRoot modelRoot;
+    private final MoveReceiver moveReceiver;
+    private final World world;
     private final SychronizedQueue sychronizedQueue = new SychronizedQueue();
-    static final boolean debug = (System.getProperty(
+    private static final boolean debug = (System.getProperty(
             "jfreerails.move.NonAuthoritativeMoveExecuter.debug") != null);
 
     public NonAuthoritativeMoveExecuter(World w, MoveReceiver mr,
@@ -53,9 +51,6 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
         world = w;
     }
 
-    /**
-     * @see MoveReceiver#processMove(Move)
-     */
     public void processMove(Move move) {
         if (move instanceof jfreerails.move.AddTrainMove) {
             System.err.println("adding train move " + move);
@@ -81,18 +76,18 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
      * pre-committed. New moves are added at the end, and removed from the front
      * when committed.
      */
-    public UncommittedMoveReceiver getUncommittedMoveReceiver() {
+    public MoveReceiver getUncommittedMoveReceiver() {
         return pendingQueue;
     }
 
-    public class PendingQueue implements UncommittedMoveReceiver {
+    public class PendingQueue implements MoveReceiver {
         /**
-         * synchronize access to this list of unverified moves
+         * synchronize access to this list of unverified moves.
          */
-        private LinkedList pendingMoves = new LinkedList();
-        private ArrayList rejectedMoves = new ArrayList();
-        private LinkedList approvedMoves = new LinkedList();
-        private UncommittedMoveReceiver moveReceiver;
+        private final LinkedList pendingMoves = new LinkedList();
+        private final ArrayList rejectedMoves = new ArrayList();
+        private final LinkedList approvedMoves = new LinkedList();
+        private MoveReceiver moveReceiver;
 
         private boolean undoMoves() {
             int n = 0;
@@ -119,15 +114,15 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
             }
 
             if (n > 0) {
-                modelRoot.getUserMessageLogger().println("Undid " + n +
-                    " moves rejected by " + "server!");
+                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                    "Undid " + n + " moves rejected by " + "server!");
             }
 
             return (n > 0);
         }
 
         /**
-         * Called when a move is accepted or rejected by the server
+         * Called when a move is accepted or rejected by the server.
          */
         private synchronized void moveCommitted(Move move) {
             MoveStatus ms;
@@ -201,7 +196,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
         }
 
         /**
-         * pre-commits a move sent from the client
+         * Pre-commits a move sent from the client.
          */
         public synchronized void processMove(Move move) {
             if (moveReceiver != null) {
@@ -219,7 +214,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
             }
         }
 
-        public synchronized void addMoveReceiver(UncommittedMoveReceiver mr) {
+        public synchronized void addMoveReceiver(MoveReceiver mr) {
             if (moveReceiver == null) {
                 moveReceiver = mr;
             }

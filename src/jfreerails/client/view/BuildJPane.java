@@ -7,11 +7,10 @@
 package jfreerails.client.view;
 
 import java.awt.GridBagConstraints;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
+import java.awt.event.ActionListener;
 
-import jfreerails.client.renderer.ViewLists;
+import javax.swing.JPanel;
 
 /**
  * Displays the "Build" Tab.
@@ -19,72 +18,72 @@ import jfreerails.client.renderer.ViewLists;
  */
 public class BuildJPane extends javax.swing.JPanel {
     
-    private ViewLists viewLists;
+    private ActionRoot actionRoot;
     private JPanel currentPanel;
     private ModelRoot modelRoot;
-
-    public void validate () {
-	super.validate();
-	
-    }
-
-    /** Creates new form BuildJPane */
-    public BuildJPane() {
-        initComponents();
-	setupComponents();
+    
+    public void validate() {
+        super.validate();
+        
     }
     
-    public void setup(ViewLists vl, ModelRoot modelRoot) {
-	this.modelRoot = modelRoot;
-	viewLists = vl;
-	setBuildPanel("Track");
+    
+    public BuildJPane() {
+        initComponents();
+        setupComponents();
+    }
+    
+    public void setup(ActionRoot actionRoot, ModelRoot modelRoot) {
+        this.modelRoot = modelRoot;
+        this.actionRoot = actionRoot;
+        setBuildPanel("Track");
     }
     
     private void setupComponents() {
-	/*
-	 * setup the "Build" combobox
-	 */
-	buildCB.addItem("Track");
-	buildCB.addItem("Station");
-	buildCB.addActionListener(comboBoxActionListener);
+        /*
+         * setup the "Build" combobox
+         */
+        buildCB.addItem("Track");
+        buildCB.addItem("Station");
+        buildCB.addActionListener(comboBoxActionListener);
     }
-
-    private ActionListener comboBoxActionListener = new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	    String s = (String) buildCB.getSelectedItem();
-	    setBuildPanel(s);
-	}
+    
+    private final ActionListener comboBoxActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            String s = (String) buildCB.getSelectedItem();
+            setBuildPanel(s);
+        }
     };
     
     private void setBuildPanel(String s) {
-	/* TODO */
-	if (currentPanel != null) {
-	    remove(currentPanel);
-	}
-	if (s.equals("Track")) {
-		currentPanel = new TrackBuildJPanel();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = gbc.weighty = 1.0;
-
-		add(currentPanel, gbc);
-		((TrackBuildJPanel) currentPanel).setup(viewLists, modelRoot);
-		revalidate();
-	} else if (s.equals("Station")) {
-	    currentPanel = new StationBuildJPanel();
-	    GridBagConstraints gbc = new GridBagConstraints();
-	    gbc.gridx = 0;
-	    gbc.fill = GridBagConstraints.BOTH;
-	    gbc.weightx = gbc.weighty = 1.0;
-
-	    add(currentPanel, gbc);
-	    ((StationBuildJPanel) currentPanel).setup(viewLists, modelRoot);
-	    revalidate();
-	}
+        /* TODO */
+        if (currentPanel != null) {
+            remove(currentPanel);
+        }
+        if (s.equals("Track")) {
+            currentPanel = new TrackBuildJPanel();
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.weightx = gbc.weighty = 1.0;
+            
+            add(currentPanel, gbc);
+            ((TrackBuildJPanel) currentPanel).setup(modelRoot.getViewLists(), actionRoot);
+            revalidate();
+        } else if (s.equals("Station")) {
+            currentPanel = new StationBuildJPanel();
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.weightx = gbc.weighty = 1.0;
+            
+            add(currentPanel, gbc);
+            ((StationBuildJPanel) currentPanel).setup(actionRoot);
+            revalidate();
+        }
     }
-
-
+    
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

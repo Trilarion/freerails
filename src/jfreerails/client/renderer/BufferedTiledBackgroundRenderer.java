@@ -29,14 +29,14 @@ public abstract class BufferedTiledBackgroundRenderer
      *  graphics configuration. Such images can be drawn to the screen quickly
      *  since no conversion is needed.
      */
-    protected GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                              .getDefaultScreenDevice()
-                                                                              .getDefaultConfiguration();
+    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                                  .getDefaultScreenDevice()
+                                                                                  .getDefaultConfiguration();
 
     /**
-     *  Used to draw on the backbuffer
+     *  Used to draw on the backbuffer.
      */
-    protected Graphics bg;
+    Graphics bg;
 
     /**
      * Used to draw on the backbuffer. It is translated so that to its users,
@@ -45,18 +45,18 @@ public abstract class BufferedTiledBackgroundRenderer
      *
      *  translatedBg equals bg.translate(-bufferRect.x , -bufferRect.y);
      */
-    protected Graphics translatedBg;
+    private Graphics translatedBg;
 
     /**
      *  The bounds and location of the map region that is stored in the
-     *  offscreen Image backgraoundBuffer
+     *  offscreen Image backgraoundBuffer.
      */
-    protected Rectangle bufferRect = new Rectangle();
+    final Rectangle bufferRect = new Rectangle();
 
     /**
-     *  An offscreen image storing the background of a region of the map
+     *  An offscreen image storing the background of a region of the map.
      */
-    protected VolatileImage backgroundBuffer;
+    VolatileImage backgroundBuffer;
 
     /**
      *  Updates the backbuffer as necessay, then draws it on to the Graphics
@@ -119,11 +119,11 @@ public abstract class BufferedTiledBackgroundRenderer
         } while (backgroundBuffer.contentsLost());
     }
 
-    protected void refreshBackground() {
+    private void refreshBackground() {
         paintBufferRectangle(0, 0, bufferRect.width, bufferRect.height);
     }
 
-    protected void setbackgroundBuffer(int w, int h) {
+    private void setbackgroundBuffer(int w, int h) {
         //backgroundBuffer = defaultConfiguration.createCompatibleImage(w, h);
         backgroundBuffer = defaultConfiguration.createCompatibleVolatileImage(w,
                 h);
@@ -149,13 +149,7 @@ public abstract class BufferedTiledBackgroundRenderer
     protected abstract void paintBufferRectangle(int x, int y, int width,
         int height);
 
-    /**
-     *  Description of the Method
-     *
-     *@param  dx  Description of Parameter
-     *@param  dy  Description of Parameter
-     */
-    protected void scrollbackgroundBuffer(int dx, int dy) {
+    private void scrollbackgroundBuffer(int dx, int dy) {
         int copyWidth = bufferRect.width;
         int copyHeight = bufferRect.height;
         int copySourceX = 0;

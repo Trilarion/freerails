@@ -4,12 +4,14 @@ import jfreerails.util.FreerailsIntIterator;
 
 
 /**
- * 30-Nov-2002
+ * FlatTrackExplorer to FreerailsIntIterator adapter.
+ *
  * @author Luke Lindsay
+ *  30-Nov-2002.
  *
  */
 public class TrainPathIntIterator implements FreerailsIntIterator {
-    public FlatTrackExplorer trackExplorer;
+    private final FlatTrackExplorer trackExplorer;
 
     public TrainPathIntIterator(FlatTrackExplorer t) {
         trackExplorer = t;

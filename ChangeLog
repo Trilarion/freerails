@@ -1,3 +1,8 @@
+Apr 11, 2004 2:56:23 AM Luke
+	o Added some javadoc comments.
+	o Added hashcode methods to classes that override equals.
+	o Code cleanup
+	o Let track be built on terrain of category 'Industry' and 'Resource'
 Apr 9, 2004 11:42:12 PM Luke
 	o Fixed bug 891452 (2 servers same port, no error message) 
 	o Fixed bug 868555 (Undo move by pressing backspace doesn't work)

@@ -17,12 +17,14 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for FlatTrackExplorer.
+ *
  * 24-Nov-2002
  * @author Luke Lindsay
  *
  */
 public class FlatTrackExplorerTest extends TestCase {
-    WorldImpl world;
+    private WorldImpl world;
 
     public FlatTrackExplorerTest(String arg0) {
         super(arg0);

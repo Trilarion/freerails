@@ -8,20 +8,21 @@ import jfreerails.world.common.IntLine;
 
 
 /**
+ * Returns a path that goes forwards and backwards along the path passed to its constructor.
  * @author Luke Lindsay 30-Oct-2002
  *
  */
 public class ToAndFroPathIterator implements FreerailsPathIterator {
-    FreerailsPathIterator path;
-    boolean forwards = true;
-    List list;
+    private FreerailsPathIterator path;
+    private boolean forwards = true;
+    private final List list;
 
     public ToAndFroPathIterator(List l) {
         list = l;
         nextIterator();
     }
 
-    public void nextIterator() {
+    private void nextIterator() {
         path = new FreerailsPathIteratorImpl(list, forwards);
     }
 

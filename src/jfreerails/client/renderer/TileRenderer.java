@@ -6,10 +6,10 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
-*  Description of the Interface
+*  Draws an icon to represent a tile.
 *
 *@author     Luke Lindsay
-*     09 October 2001
+*
 */
 public interface TileRenderer {
     Image getDefaultIcon();

@@ -18,31 +18,31 @@ import jfreerails.world.top.World;
  *
  * @author lindsal
  */
-public interface ConnectionToServer extends UncommittedMoveReceiver {
-    public void addMoveReceiver(SourcedMoveReceiver moveReceiver);
+public interface ConnectionToServer extends MoveReceiver {
+    public void addMoveReceiver(MoveReceiver moveReceiver);
 
-    public void removeMoveReceiver(SourcedMoveReceiver moveReceiver);
+    public void removeMoveReceiver(MoveReceiver moveReceiver);
 
     public World loadWorldFromServer() throws IOException;
 
     /**
-     * close the connection to the remote peer
+     * Close the connection to the remote peer.
      */
     public void close();
 
     /**
-     * connect to the remote peer
+     * Connect to the remote peer.
      */
     public void open() throws IOException;
 
     public void addConnectionListener(ConnectionListener l);
 
-    public void removeConnectionListener(ConnectionListener l);
+    public void removeConnectionListener();
 
     public void flush();
 
     public static class ConnectionState {
-        private String state;
+        private final String state;
 
         /**
          * Waiting - connection has been opened, but client has not been

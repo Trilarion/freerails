@@ -9,6 +9,8 @@ import java.io.ObjectStreamException;
 
 
 /**
+ * A track piece that doesn't exist - using this avoids needing to check against null
+ * before calling the methods on a track piece.
  *
  * @author  lindsal
  */
@@ -16,7 +18,6 @@ final public class NullTrackPiece implements TrackPiece {
     private static final TrackPiece nullTrackPiece = new NullTrackPiece();
     private static final int NO_OWNER = Integer.MIN_VALUE;
 
-    /** Creates new NullTrackPiece */
     private NullTrackPiece() {
     }
 
@@ -42,6 +43,10 @@ final public class NullTrackPiece implements TrackPiece {
 
     public boolean equals(Object o) {
         return o == this;
+    }
+
+    public int hashCode() {
+        return 777;
     }
 
     public int getOwnerID() {

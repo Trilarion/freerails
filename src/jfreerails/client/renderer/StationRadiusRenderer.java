@@ -6,27 +6,29 @@ import java.awt.Graphics2D;
 import jfreerails.client.common.Painter;
 
 
-/** This class draws the radius of a station on the map */
+/** This class draws the radius of a station on the map.
+ * @author Luke
+ * */
 public class StationRadiusRenderer implements Painter {
     /**
-     * Border colour to use when placement is OK
+     * Border colour to use when placement is OK.
      */
     public static final Color COLOR_OK = Color.WHITE;
 
     /**
-     * Border colour to use when placement is not allowed
+     * Border colour to use when placement is not allowed.
      */
     public static final Color COLOR_CANNOT_BUILD = Color.RED;
 
     /**
-     * Colour of the highlighted border
+     * Colour of the highlighted border.
      */
     private Color borderColor = COLOR_OK;
-    static final int tileSize = 30;
-    int radius = 2;
-    int x;
-    int y;
-    boolean show = false;
+    private static final int tileSize = 30;
+    private int radius = 2;
+    private int x;
+    private int y;
+    private boolean show = false;
 
     public void setBorderColor(Color c) {
         borderColor = c;

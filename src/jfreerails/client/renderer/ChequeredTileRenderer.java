@@ -13,7 +13,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
-*
+* Paints 2 variations of a tile icon a chequered pattern.
 * @author  Luke Lindsay
 */
 final public class ChequeredTileRenderer extends AbstractTileRenderer {

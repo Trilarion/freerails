@@ -23,13 +23,13 @@ import jfreerails.world.top.SKEY;
  *
  */
 public class QuickRGBTileRendererList implements TileRendererList {
-    private int[] rgbValues;
-    private Image[] images;
-    private HashMap rgb2index = new HashMap();
-    private SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
-    private static java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                                                     .getDefaultScreenDevice()
-                                                                                                     .getDefaultConfiguration();
+    private final int[] rgbValues;
+    private final Image[] images;
+    private final HashMap rgb2index = new HashMap();
+    private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
+    private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                                                           .getDefaultScreenDevice()
+                                                                                                           .getDefaultConfiguration();
 
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
         int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);

@@ -5,15 +5,20 @@ import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
 
 
+/**
+ * PathWalker that walks the path exposed by a FreerailsPathIterator.
+ *
+ * @author Luke
+ */
 public class PathWalkerImpl implements PathWalker {
-    FreerailsPathIterator it;
+    private final FreerailsPathIterator it;
 
     /**
-     * current segment of the path we are on
+     * current segment of the path we are on.
      */
-    IntLine currentSegment = new IntLine();
-    double distanceAlongCurrentSegment = 0;
-    double distanceOfThisStepRemaining = 0;
+    private final IntLine currentSegment = new IntLine();
+    private double distanceAlongCurrentSegment = 0;
+    private double distanceOfThisStepRemaining = 0;
 
     public PathWalkerImpl(FreerailsPathIterator i) {
         it = i;
@@ -80,7 +85,7 @@ public class PathWalkerImpl implements PathWalker {
         return;
     }
 
-    public void endInMiddleOfSegment(IntLine line) {
+    private void endInMiddleOfSegment(IntLine line) {
         distanceAlongCurrentSegment += distanceOfThisStepRemaining;
         distanceOfThisStepRemaining = 0;
         line.x2 = getCoorinateOnSegment(distanceAlongCurrentSegment,
@@ -89,7 +94,7 @@ public class PathWalkerImpl implements PathWalker {
                 currentSegment.y1, currentSegment.y2);
     }
 
-    public void endAtSegmentEnd(IntLine line,
+    private void endAtSegmentEnd(IntLine line,
         double remainingDistanceAlongCurrentSegment) {
         line.x2 = this.currentSegment.x2;
         line.y2 = this.currentSegment.y2;

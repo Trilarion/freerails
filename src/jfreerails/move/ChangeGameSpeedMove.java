@@ -1,15 +1,16 @@
 package jfreerails.move;
 
+import jfreerails.world.common.GameSpeed;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
-import jfreerails.world.common.GameSpeed;
 
 
 /**
  *
  *  Changes the game speed item on the world object.
+ * @author  Jan Tozicka
  *
  */
 public class ChangeGameSpeedMove implements Move {
@@ -26,7 +27,7 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (((GameSpeed)w.get(ITEM.GAME_SPEED)).equals(oldSpeed)) {
+        if (w.get(ITEM.GAME_SPEED).equals(oldSpeed)) {
             return MoveStatus.MOVE_OK;
         } else {
             String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " +

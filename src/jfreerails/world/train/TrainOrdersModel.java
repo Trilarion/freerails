@@ -14,12 +14,19 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author  Luke
  */
 public class TrainOrdersModel implements FreerailsSerializable {
-    public static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
+    private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
     public final boolean waitUntilFull;
     public final int[] consist; //The wagon types to add; if null, then no change.
     public final int station; //The number of the station to goto.
 
-    /** Creates a new instance of TrainOrders */
+    public int hashCode() {
+        int result;
+        result = (waitUntilFull ? 1 : 0);
+        result = 29 * result + station;
+
+        return result;
+    }
+
     public TrainOrdersModel(int station, int[] newConsist, boolean wait) {
         //If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.length) ? false : wait;

@@ -5,8 +5,8 @@
  */
 package jfreerails.world.train;
 
-import jfreerails.world.common.FreerailsSerializable;
 import java.util.Vector;
+import jfreerails.world.common.FreerailsSerializable;
 
 
 /** This class represents a train's schedule.  That is, which stations that the
@@ -16,7 +16,7 @@ import java.util.Vector;
  */
 public class MutableSchedule implements FreerailsSerializable, Schedule {
     /**
-     * Vector of TrainOrdersModel
+     * Vector of TrainOrdersModel.
      */
     private final Vector orders = new Vector();
     private int nextScheduledOrder = 0;
@@ -62,7 +62,7 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
     }
 
     /**
-     * Removes the order at the specified position
+     * Removes the order at the specified position.
      */
     public void removeOrder(int orderNumber) {
         if (PRIORITY_ORDERS == orderNumber && hasPriorityOrders) {

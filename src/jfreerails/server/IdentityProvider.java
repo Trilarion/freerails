@@ -9,7 +9,8 @@ import jfreerails.world.top.World;
 
 
 /**
- * Provides a method by which a Principal may be obtained
+ * Provides a method by which a Principal may be obtained.
+ * @author rob
  */
 class IdentityProvider {
     private final AuthoritativeMoveExecuter moveExecuter;
@@ -18,8 +19,8 @@ class IdentityProvider {
      * A HashMap in which the keys are instances of ConnectionToServer and the
      * values are FreerailsPrincipals.
      */
-    private HashMap principals = new HashMap();
-    private ServerGameEngine serverGameEngine;
+    private final HashMap principals = new HashMap();
+    private final ServerGameEngine serverGameEngine;
 
     public IdentityProvider(ServerGameEngine s, AuthoritativeMoveExecuter me) {
         serverGameEngine = s;
@@ -95,7 +96,7 @@ class IdentityProvider {
     }
 
     /**
-     * Dissociate all players with this connection
+     * Dissociate all players with this connection.
      */
     public synchronized void removeConnection(ConnectionToServer c) {
         principals.remove(c);

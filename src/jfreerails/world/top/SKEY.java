@@ -9,10 +9,11 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  * <p>It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)</p>
+ * @author Luke
  */
 public class SKEY implements FreerailsSerializable {
-    /** Maps key numbers to KEYs */
-    private static SKEY[] keys = new SKEY[getNumberOfKeys()];
+    /** Maps key numbers to KEYs. */
+    private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
 
     //START OF KEYS
     public static final SKEY TERRAIN_TYPES = new SKEY();

@@ -18,11 +18,11 @@ import jfreerails.world.top.ReadOnlyWorld;
 * @author  Luke Lindsay
 */
 public abstract class AbstractTileRenderer implements TileRenderer {
-    protected final int[] typeNumbers;
+    private final int[] typeNumbers;
     private Image[] tileIcons;
-    protected final TerrainType tileModel;
+    private final TerrainType tileModel;
 
-    public AbstractTileRenderer(TerrainType t, int[] rgbValues) {
+    AbstractTileRenderer(TerrainType t, int[] rgbValues) {
         tileModel = t;
         this.typeNumbers = rgbValues;
 
@@ -48,14 +48,14 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         return getTileIcons()[0];
     }
 
-    public String getTerrainType() {
+    String getTerrainType() {
         return tileModel.getTerrainTypeName();
     }
 
     /** Returns an icon for the tile at x,y, which may depend on the terrain types of
      * of the surrounding tiles.
      */
-    public Image getIcon(int x, int y, ReadOnlyWorld w) {
+    Image getIcon(int x, int y, ReadOnlyWorld w) {
         int tile = selectTileIcon(x, y, w);
 
         if (getTileIcons()[tile] != null) {
@@ -66,17 +66,17 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         }
     }
 
-    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+    int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         return 0;
     }
 
-    protected int checkTile(int x, int y, ReadOnlyWorld w) {
+    int checkTile(int x, int y, ReadOnlyWorld w) {
         int match = 0;
 
         if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight()) &&
                 (y >= 0)) {
             for (int i = 0; i < typeNumbers.length; i++) {
-                TerrainTile tt = (TerrainTile)w.getTile(x, y);
+                TerrainTile tt = w.getTile(x, y);
 
                 if (tt.getTerrainTypeNumber() == typeNumbers[i]) {
                     match = 1;
@@ -97,18 +97,18 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     abstract public void dumpImages(ImageManager imageManager);
 
-    protected String generateRelativeFileName(int i) {
+    String generateRelativeFileName(int i) {
         return "terrain" + File.separator + this.getTerrainType() + "_" +
         generateFileNameNumber(i) + ".png";
     }
 
     protected abstract String generateFileNameNumber(int i);
 
-    protected void setTileIcons(Image[] tileIcons) {
+    void setTileIcons(Image[] tileIcons) {
         this.tileIcons = tileIcons;
     }
 
-    protected Image[] getTileIcons() {
+    Image[] getTileIcons() {
         return tileIcons;
     }
 }

@@ -10,11 +10,12 @@ import jfreerails.controller.InetConnection;
 
 
 /**
- * Sits in a loop and accepts incoming connections over the network
+ * Sits in a loop and accepts incoming connections over the network.
+ * @author rob
  */
 class InetGameServer implements Runnable {
-    private InetConnection serverSocket;
-    private ServerGameController sgc;
+    private final InetConnection serverSocket;
+    private final ServerGameController sgc;
 
     public InetGameServer(InetConnection serverSocket, ServerGameController sgc) {
         this.serverSocket = serverSocket;

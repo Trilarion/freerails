@@ -1,12 +1,13 @@
 package jfreerails.move;
 
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
-import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
  * This interface provides information about changes to the lists in the World database.
+ * @author rob?
  */
 public interface ListMove extends Move {
     /**

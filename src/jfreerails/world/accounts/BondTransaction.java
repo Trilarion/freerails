@@ -6,6 +6,11 @@ package jfreerails.world.accounts;
 import jfreerails.world.common.Money;
 
 
+/**
+ * A Transaction that adds or removes a Bonds.
+ * @author Luke
+ *
+ */
 public class BondTransaction extends AddItemTransaction {
     public static final Money BOND_VALUE = new Money(500000);
 

@@ -4,13 +4,27 @@ import java.util.Arrays;
 import jfreerails.world.common.FreerailsSerializable;
 
 
+/** Represents a trains.
+ * @author Luke
+ */
 public class TrainModel implements FreerailsSerializable {
     public static final int MAX_NUMBER_OF_WAGONS = 10;
     private int scheduleID;
-    TrainPositionOnMap trainposition;
-    int engineType = 0;
-    final int[] wagonTypes;
+    private TrainPositionOnMap trainposition;
+    private int engineType = 0;
+    private final int[] wagonTypes;
     private int cargoBundleNumber;
+
+    public int hashCode() {
+        int result;
+        result = scheduleID;
+        result = 29 * result +
+            (trainposition != null ? trainposition.hashCode() : 0);
+        result = 29 * result + engineType;
+        result = 29 * result + cargoBundleNumber;
+
+        return result;
+    }
 
     public TrainModel getNewInstance(int newEngine, int[] newWagons) {
         return new TrainModel(newEngine, newWagons, this.getPosition(),

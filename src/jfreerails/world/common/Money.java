@@ -3,12 +3,19 @@ package jfreerails.world.common;
 import java.text.DecimalFormat;
 
 
+/** Represents an amount of Money.
+ * @author Luke
+ */
 final public class Money implements FreerailsSerializable {
-    private static DecimalFormat df = new DecimalFormat("#,###");
+    private static final DecimalFormat df = new DecimalFormat("#,###");
     private final long amount;
 
     public long getAmount() {
         return amount;
+    }
+
+    public int hashCode() {
+        return (int)(amount ^ (amount >>> 32));
     }
 
     public String toString() {

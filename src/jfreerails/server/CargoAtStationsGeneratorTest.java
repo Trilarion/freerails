@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 
 /**
- *
+ * JUnit test for CargoAtStationsGenerator.
  *  @author Luke
  *
  */

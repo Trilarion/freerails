@@ -29,11 +29,11 @@ import jfreerails.world.train.WagonType;
  *
  */
 public class DropOffAndPickupCargoMoveGenerator {
-    private ReadOnlyWorld w;
-    private TrainModel train;
-    private int trainId;
+    private final ReadOnlyWorld w;
+    private final TrainModel train;
+    private final int trainId;
     private int trainBundleId;
-    private int stationId;
+    private final int stationId;
     private int stationBundleId;
     private CargoBundle stationAfter;
     private CargoBundle stationBefore;
@@ -43,7 +43,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     private final FreerailsPrincipal principal;
 
     /**
-     * Contructor
+     * Contructor.
      * @param trainNo ID of the train
      * @param stationNo ID of the station
      * @param world The world object
@@ -82,7 +82,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         return move;
     }
 
-    public void getBundles() {
+    private void getBundles() {
         trainBundleId = ((TrainModel)w.get(KEY.TRAINS, trainId, principal)).getCargoBundleNumber();
         trainBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId,
                 principal)).getCopy();
@@ -96,7 +96,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                 principal)).getCopy();
     }
 
-    public void processTrainBundle() {
+    private void processTrainBundle() {
         Iterator batches = trainAfter.getCopy().cargoBatchIterator();
 
         StationModel station = (StationModel)w.get(KEY.STATIONS, stationId,
@@ -148,7 +148,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
     }
 
-    public void processStationBundle() {
+    private void processStationBundle() {
         int[] spaceAvailable = getSpaceAvailableOnTrain();
 
         //Third, transfer cargo from the station to the train subject to the space available on the train.
@@ -208,7 +208,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     /**
      * Move the specified quantity of the specifed cargotype from one bundle to another.
      */
-    public static void transferCargo(int cargoTypeToTransfer,
+    private static void transferCargo(int cargoTypeToTransfer,
         int amountToTransfer, CargoBundle from, CargoBundle to) {
         if (0 == amountToTransfer) {
             return;

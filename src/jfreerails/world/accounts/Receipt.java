@@ -8,6 +8,8 @@ import jfreerails.world.common.Money;
 
 
 /**
+ * A credit.
+ *
  * @author Luke Lindsay
  *
  */
@@ -18,6 +20,14 @@ public class Receipt implements Transaction {
     public Receipt(Money m, int category) {
         this.amount = m;
         this.category = category;
+    }
+
+    public int hashCode() {
+        int result;
+        result = amount.hashCode();
+        result = 29 * result + category;
+
+        return result;
     }
 
     public Money getValue() {

@@ -5,26 +5,31 @@
  */
 package jfreerails.client.top;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 
 
 /**
- *
+ * Implementation of GUIComponentFactory that returns 'blank' components - used for
+ * testing the layout of ClientJFrame.
  * @author  Luke
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
-    private javax.swing.JLabel datejLabel;
-    private javax.swing.JLabel cashjLabel;
-    private javax.swing.JTabbedPane trainsJPanel;
-    private javax.swing.JMenu displayMenu;
-    private javax.swing.JScrollPane mainMapView;
-    private javax.swing.JMenu buildMenu;
-    private javax.swing.JMenu gameMenu;
-    private javax.swing.JPanel mapOverview;
-    private javax.swing.JMenu helpMenu;
-    private javax.swing.JLabel messageJLabel;
+    private final javax.swing.JLabel datejLabel;
+    private final javax.swing.JLabel cashjLabel;
+    private final javax.swing.JTabbedPane trainsJPanel;
+    private final javax.swing.JMenu displayMenu;
+    private final javax.swing.JScrollPane mainMapView;
+    private final javax.swing.JMenu buildMenu;
+    private final javax.swing.JMenu gameMenu;
+    private final javax.swing.JPanel mapOverview;
+    private final javax.swing.JMenu helpMenu;
+    private final javax.swing.JLabel messageJLabel;
 
-    /** Creates a new instance of GUIComponentFactoryTestImpl */
+    /** Creates a new instance of GUIComponentFactoryTestImpl. */
     public GUIComponentFactoryTestImpl() {
         javax.swing.JPanel mainmapjPanel;
 

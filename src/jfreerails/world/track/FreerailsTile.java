@@ -4,15 +4,26 @@ import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.terrain.TerrainTile;
 
 
+/** A tile on the map.
+ * @author Luke
+ */
 public class FreerailsTile implements TrackPiece, TerrainTile,
     FreerailsSerializable {
     public static final FreerailsTile NULL = new FreerailsTile(0);
     private final TrackPiece trackPiece;
-    private int terrainType;
+    private final int terrainType;
 
     public FreerailsTile(int terrainType) {
         this.terrainType = terrainType;
         this.trackPiece = NullTrackPiece.getInstance();
+    }
+
+    public int hashCode() {
+        int result;
+        result = (trackPiece != null ? trackPiece.hashCode() : 0);
+        result = 29 * result + terrainType;
+
+        return result;
     }
 
     public FreerailsTile(int terrainType, TrackPiece trackPiece) {

@@ -38,6 +38,8 @@ import jfreerails.world.track.FreerailsTile;
   add a new class or change the interface of the World class when a new list is
   added. Instead one can just add a new entry to the class KEY.</p>
 <p>Code that loops through lists should handle null values gracefully</p>
+ * @author Luke
+ * @author Rob
  */
 public interface ReadOnlyWorld extends FreerailsSerializable {
     /**

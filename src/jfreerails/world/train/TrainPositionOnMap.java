@@ -69,6 +69,21 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     private final int[] xpoints;
     private final int[] ypoints;
 
+    public int hashCode() {
+        int result = 0;
+
+        //TODO is there are danger of overflow here?
+        for (int i = 0; i < xpoints.length; i++) {
+            result = 29 * result + xpoints[i];
+        }
+
+        for (int i = 0; i < ypoints.length; i++) {
+            result = 29 * result + ypoints[i];
+        }
+
+        return result;
+    }
+
     public boolean equals(Object o) {
         if (null == o) {
             return false;
@@ -583,9 +598,5 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         sb.append("}");
 
         return sb.toString();
-    }
-
-    public boolean hasBeenBuilt() {
-        return true;
     }
 }

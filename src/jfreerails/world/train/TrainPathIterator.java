@@ -7,15 +7,16 @@ import jfreerails.world.common.PositionOnTrack;
 
 
 /**
- * 30-Nov-2002
+ * Exposes the path of a train.
+ * TODO needs better comment
  * @author Luke Lindsay
  *
  */
 public class TrainPathIterator implements FreerailsPathIterator {
-    FreerailsIntIterator intIterator;
-    PositionOnTrack p1 = new PositionOnTrack();
-    PositionOnTrack p2 = new PositionOnTrack();
-    static final int tileSize = 30;
+    private final FreerailsIntIterator intIterator;
+    private final PositionOnTrack p1 = new PositionOnTrack();
+    private final PositionOnTrack p2 = new PositionOnTrack();
+    private static final int tileSize = 30;
 
     public TrainPathIterator(FreerailsIntIterator i) {
         intIterator = i;

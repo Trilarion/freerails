@@ -13,13 +13,13 @@ import jfreerails.world.train.TrainPositionOnMap;
 import junit.framework.TestCase;
 
 
-/**
+/**    JUnit test for TrainMover.
  * @author Luke Lindsay 30-Oct-2002
  *
  */
 public class TrainMoverTest extends TestCase implements MoveReceiver {
-    TrainMover trainMover;
-    World w;
+    private TrainMover trainMover;
+    private World w;
 
     /**
      * Constructor for TrainMoverTest.

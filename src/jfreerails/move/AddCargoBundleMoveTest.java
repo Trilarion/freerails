@@ -12,6 +12,7 @@ import jfreerails.world.top.MapFixtureFactory;
 
 
 /**
+ * JUnit test.
  * @author Luke
  *
  */

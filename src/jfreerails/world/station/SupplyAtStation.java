@@ -3,7 +3,9 @@ package jfreerails.world.station;
 import jfreerails.world.common.FreerailsSerializable;
 
 
-/** This class represents the supply at a station. */
+/** This class represents the supply at a station.
+ * @author Luke
+ */
 public class SupplyAtStation implements FreerailsSerializable {
     private final int[] supply;
 
@@ -16,6 +18,16 @@ public class SupplyAtStation implements FreerailsSerializable {
      */
     public int getSupply(int cargoType) {
         return supply[cargoType];
+    }
+
+    public int hashCode() {
+        int result = 0;
+
+        for (int i = 0; i < supply.length; i++) {
+            result = 29 * result + supply[i];
+        }
+
+        return result;
     }
 
     public boolean equals(Object o) {

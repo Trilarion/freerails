@@ -12,14 +12,14 @@ import jfreerails.world.common.OneTileMoveVector;
 
 
 /**
- *
+ * The type of a Null track piece.
+ * TODO maybe it would be simplier to get rid of this and jsut check against null!
  * @author  lindsal
  */
 final public class NullTrackType implements jfreerails.world.track.TrackRule {
     public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
     private static final NullTrackType nullTrackType = new NullTrackType();
 
-    /** Creates new NullTrackType */
     private NullTrackType() {
     }
 
@@ -78,6 +78,10 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 
     public boolean equals(Object o) {
         return o == this;
+    }
+
+    public int hashCode() {
+        return 666;
     }
 
     public int getStationRadius() {

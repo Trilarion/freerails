@@ -23,11 +23,11 @@ import jfreerails.world.train.TrainPositionOnMap;
  *
  */
 public class TrainMover implements FreerailsServerSerializable {
-    final PathWalker walker;
-    final int trainNumber;
-    final ReadOnlyWorld w;
-    final TrainPathFinder trainPathFinder;
-    final FreerailsPrincipal principal;
+    private final PathWalker walker;
+    private final int trainNumber;
+    private final ReadOnlyWorld w;
+    private final TrainPathFinder trainPathFinder;
+    private final FreerailsPrincipal principal;
 
     public TrainMover(FreerailsPathIterator to, ReadOnlyWorld world,
         int trainNo, FreerailsPrincipal p) {
@@ -77,7 +77,7 @@ public class TrainMover implements FreerailsServerSerializable {
         }
     }
 
-    public double getTrainSpeed() {
+    private double getTrainSpeed() {
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         int trainLength = train.getNumberOfWagons();
 

@@ -28,11 +28,11 @@ import jfreerails.client.view.OverviewMapJComponent;
  */
 public class SimpleComponentFactoryImpl2
     implements jfreerails.client.top.GUIComponentFactory {
-    OverviewMapJComponent overviewMap;
-    JScrollPane mainMapScrollPane1;
-    MapViewJComponentConcrete mainMap;
-    MainMapAndOverviewMapMediator mediator;
-    Rectangle r = new Rectangle();
+    private OverviewMapJComponent overviewMap;
+    private JScrollPane mainMapScrollPane1;
+    private MapViewJComponentConcrete mainMap;
+    private MainMapAndOverviewMapMediator mediator;
+    private Rectangle r = new Rectangle();
 
     /** Creates new SimpleComponentFactoryImpl */
     public SimpleComponentFactoryImpl2() {
@@ -58,7 +58,7 @@ public class SimpleComponentFactoryImpl2
         return displayMenu;
     }
 
-    void addOverviewmapzoomMenuItem(JMenu displayMenu, final float scale) {
+    private void addOverviewmapzoomMenuItem(JMenu displayMenu, final float scale) {
         String menuItemName = "Set overview map scale=" + scale;
         JMenuItem menuItem = new JMenuItem(menuItemName);
         menuItem.addActionListener(new ActionListener() {
@@ -69,7 +69,7 @@ public class SimpleComponentFactoryImpl2
         displayMenu.add(menuItem);
     }
 
-    void addMainmapzoomMenuItem(JMenu displayMenu, final float scale) {
+    private void addMainmapzoomMenuItem(JMenu displayMenu, final float scale) {
         String menuItemName = "Set main map scale=" + scale;
         JMenuItem menuItem = new JMenuItem(menuItemName);
         menuItem.addActionListener(new ActionListener() {
@@ -128,7 +128,7 @@ public class SimpleComponentFactoryImpl2
         // return new TestPanel();
     }
 
-    void addMainMapAndOverviewMapMediatorIfNecessary() {
+    private void addMainMapAndOverviewMapMediatorIfNecessary() {
         if (this.mainMap != null && this.overviewMap != null &&
                 null == this.mediator) {
             //Rectangle r = this.overviewMap.getMainMapVisibleRect();

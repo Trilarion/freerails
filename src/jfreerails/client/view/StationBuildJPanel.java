@@ -11,31 +11,29 @@ import java.awt.Insets;
 import javax.swing.Action;
 import javax.swing.JButton;
 
-import jfreerails.client.renderer.ViewLists;
-
 /**
- *
+ * JPanel shown on the RHS that lets you pick a staton type.
  * @author  bob
  */
 class StationBuildJPanel extends javax.swing.JPanel {
     
     private int numberOfButtons = 0;
-
-    /** Creates new form JPanel */
+    
+    
     public StationBuildJPanel() {
         initComponents();
     }
     
-    void setup(ViewLists vl, ModelRoot modelRoot) {
-	StationBuildModel stationBuildModel = modelRoot.getStationBuildModel();
-	Action[] actions = stationBuildModel.getStationChooseActions();
-	for (int i = 0; i < actions.length; i++) {
-	    StationButton button = new StationButton(actions[i]);
-	    stationTypesjPanel1.add(button);
-	    numberOfButtons++;
-	}
+    void setup(ActionRoot actionRoot) {
+        StationBuildModel stationBuildModel = actionRoot.getStationBuildModel();
+        Action[] actions = stationBuildModel.getStationChooseActions();
+        for (int i = 0; i < actions.length; i++) {
+            StationButton button = new StationButton(actions[i]);
+            stationTypesjPanel1.add(button);
+            numberOfButtons++;
+        }
     }
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -55,15 +53,15 @@ class StationBuildJPanel extends javax.swing.JPanel {
     }//GEN-END:initComponents
     
     /**
-     * represents a track rule - contains a small icon representing the track
-     * and a text label
+     * Represents a track rule - contains a small icon representing the track
+     * and a text label.
      */
     private class StationButton extends JButton {
-	public StationButton(Action a) {
-	    super(a);
-	    setMargin(new Insets(0,0,0,0));
-	    setText(null);
-	}
+        public StationButton(Action a) {
+            super(a);
+            setMargin(new Insets(0,0,0,0));
+            setText(null);
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

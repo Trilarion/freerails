@@ -36,13 +36,13 @@ import jfreerails.world.train.WagonType;
  * @author Luke Lindsay 28-Nov-2002
  */
 public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
-    public static final int NOT_AT_STATION = -1;
+    private static final int NOT_AT_STATION = -1;
     private final int trainId;
     private final ReadOnlyWorld world;
     private transient MoveReceiver moveReceiver;
-    FlatTrackExplorer trackExplorer;
-    SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
-    final FreerailsPrincipal principal;
+    private final FlatTrackExplorer trackExplorer;
+    private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
+    private final FreerailsPrincipal principal;
     private GameTime timeLoadingFinished = new GameTime(0);
     private boolean waiting4FullLoad = false;
     private FreerailsSerializable lastCargoBundleAtStation = null;
@@ -207,7 +207,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
      * @return the number of the station the train is currently at, or -1 if no
      *         current station.
      */
-    public int getStationNumber(int x, int y) {
+    private int getStationNumber(int x, int y) {
         //loop thru the station list to check if train is at the same Point as
         // a station
         for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {

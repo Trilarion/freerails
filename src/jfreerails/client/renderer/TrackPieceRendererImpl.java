@@ -18,7 +18,7 @@ import jfreerails.world.track.TrackRule;
 *     09 October 2001
 */
 final public class TrackPieceRendererImpl implements TrackPieceRenderer {
-    Image[] trackPieceIcons = new Image[512];
+    private final Image[] trackPieceIcons = new Image[512];
     private final String typeName;
 
     public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g,

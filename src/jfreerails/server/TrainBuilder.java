@@ -37,8 +37,8 @@ import jfreerails.world.train.TrainPathIterator;
  *
  */
 public class TrainBuilder {
-    private World world;
-    private MoveReceiver moveReceiver;
+    private final World world;
+    private final MoveReceiver moveReceiver;
 
     public TrainBuilder(World w, MoveReceiver mr) {
         this.world = w;
@@ -49,7 +49,7 @@ public class TrainBuilder {
         }
     }
 
-    /** Warning, this method assumes that no other threads are accessing the world object!
+    /** Warning, this method assumes that no other threads are accessing the world object.
      *
      * @param engineTypeNumber type of the engine
      * @param wagons array of wagon types
@@ -59,7 +59,7 @@ public class TrainBuilder {
      */
     public TrainMover buildTrain(int engineTypeNumber, int[] wagons, Point p,
         FreerailsPrincipal principal) {
-        FreerailsTile tile = (FreerailsTile)world.getTile(p.x, p.y);
+        FreerailsTile tile = world.getTile(p.x, p.y);
 
         TrackRule tr = tile.getTrackRule();
 
@@ -153,7 +153,7 @@ public class TrainBuilder {
      * @return a path iterator describing the path the train is to follow.
      * @param p the point at which the path iterator starts.
      */
-    public TrainPathFinder getPathToFollow(Point p, ReadOnlyWorld w,
+    private TrainPathFinder getPathToFollow(Point p, ReadOnlyWorld w,
         int trainNumber, FreerailsPrincipal principal) {
         PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(world, p)[0];
 

@@ -17,14 +17,25 @@ import jfreerails.world.top.World;
  *
  */
 public abstract class ChangeItemInListMove implements ListMove {
-    final KEY listKey;
-    final int index;
+    private final KEY listKey;
+    private final int index;
     private final FreerailsSerializable before;
     private final FreerailsSerializable after;
-    final FreerailsPrincipal principal;
+    private final FreerailsPrincipal principal;
 
     public int getIndex() {
         return index;
+    }
+
+    public int hashCode() {
+        int result;
+        result = listKey.hashCode();
+        result = 29 * result + index;
+        result = 29 * result + (before != null ? before.hashCode() : 0);
+        result = 29 * result + (after != null ? after.hashCode() : 0);
+        result = 29 * result + principal.hashCode();
+
+        return result;
     }
 
     public KEY getKey() {

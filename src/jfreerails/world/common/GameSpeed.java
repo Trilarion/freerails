@@ -39,4 +39,8 @@ public class GameSpeed implements FreerailsSerializable {
             return false;
         }
     }
+
+    public int hashCode() {
+        return speed;
+    }
 }

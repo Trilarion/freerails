@@ -17,12 +17,21 @@ import jfreerails.world.top.World;
  *
  */
 public class AddItemToSharedListMove implements Move {
-    final SKEY listKey;
-    final int index;
-    protected final FreerailsSerializable item;
+    private final SKEY listKey;
+    private final int index;
+    private final FreerailsSerializable item;
 
     public int getIndex() {
         return index;
+    }
+
+    public int hashCode() {
+        int result;
+        result = listKey.hashCode();
+        result = 29 * result + index;
+        result = 29 * result + (item != null ? item.hashCode() : 0);
+
+        return result;
     }
 
     public SKEY getKey() {

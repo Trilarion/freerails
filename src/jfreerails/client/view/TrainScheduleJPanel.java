@@ -38,7 +38,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     
     private ModelRoot modelRoot;
     
-    /** Creates new form TrainScheduleJPanel */
     public TrainScheduleJPanel() {
         initComponents();
     }
@@ -353,7 +352,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     
     public void display(int newTrainNumber){
         this.trainNumber = newTrainNumber;
-        FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+        FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld w = modelRoot.getWorld();
         TrainModel train = (TrainModel) w.get(KEY.TRAINS, newTrainNumber, principal);
         this.scheduleID = train.getScheduleID();
@@ -373,7 +372,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }
     
     private MutableSchedule getSchedule(){
-        FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+        FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld w = modelRoot.getWorld();
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         ImmutableSchedule immutableSchedule = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), principal);
@@ -409,7 +408,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         }
     }
     
-    public void noChange(){
+    private void noChange(){
         TrainOrdersModel oldOrders, newOrders;
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
@@ -419,7 +418,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         sendUpdateMove(s);
     }
     
-    public void setWaitUntilFull(boolean b){
+    private void setWaitUntilFull(boolean b){
         TrainOrdersModel oldOrders, newOrders;
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
@@ -429,7 +428,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         sendUpdateMove(s);
     }
     
-    public void  addWagon(int wagonTypeNumber){
+    private void  addWagon(int wagonTypeNumber){
         TrainOrdersModel oldOrders, newOrders;
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
@@ -453,7 +452,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         sendUpdateMove(s);
     }
     
-    public void removeAllWagons(){
+    private void removeAllWagons(){
         TrainOrdersModel oldOrders, newOrders;
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
@@ -463,7 +462,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         sendUpdateMove(s);
     }
     
-    public void removeLastWagon(){
+    private void removeLastWagon(){
         TrainOrdersModel oldOrders, newOrders;
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
@@ -483,14 +482,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }
     
     private void sendUpdateMove(MutableSchedule mutableSchedule ){
-        FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+        FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld w = modelRoot.getWorld();
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainNumber, principal);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule before = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID, principal);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move m = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
-        this.modelRoot.getReceiver().processMove(m);
+        this.modelRoot.doMove(m);
     }
     
     public void listUpdated(KEY key, int index, FreerailsPrincipal p) {

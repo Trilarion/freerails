@@ -1,9 +1,13 @@
 package jfreerails.server;
 
+
+/** Stores a location and terrian type.
+ * @author Scott?
+ */
 public class RandomTerrainValue {
-    private int x;
-    private int y;
-    private int terrainType;
+    private final int x;
+    private final int y;
+    private final int terrainType;
 
     public RandomTerrainValue(int x, int y, int tt) {
         this.x = x;

@@ -9,10 +9,11 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  * <p>It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)</p>
+ * @author Luke
  */
 public class ITEM implements FreerailsSerializable {
-    /** Maps key numbers to KEYs */
-    private static ITEM[] keys = new ITEM[getNumberOfKeys()];
+    /** Maps key numbers to KEYs. */
+    private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
 
     //START OF KEYS
     public static final ITEM TIME = new ITEM();

@@ -28,7 +28,7 @@ final public class SquareTileBackgroundRenderer
         mapView.paintRect(gg, bufferRect);
     }
 
-    public SquareTileBackgroundRenderer(MapLayerRenderer mv, float _scale) {
+    public SquareTileBackgroundRenderer(MapLayerRenderer mv) {
         if (null == mv) {
             throw new NullPointerException();
         }

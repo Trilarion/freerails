@@ -1,6 +1,6 @@
 package jfreerails.client.common;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 
 /**This class formats and integer as a binary number with a specified number of digits.
@@ -34,15 +34,5 @@ public class BinaryNumberFormatterTest extends TestCase {
             assertTrue(false);
         } catch (IllegalArgumentException e) {
         }
-    }
-
-    public static Test suite() {
-        TestSuite testSuite = new TestSuite(BinaryNumberFormatterTest.class);
-
-        return testSuite;
-    }
-
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
     }
 }

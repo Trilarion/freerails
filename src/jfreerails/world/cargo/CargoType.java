@@ -3,12 +3,14 @@ package jfreerails.world.cargo;
 import jfreerails.world.common.FreerailsSerializable;
 
 
-/** This class represents a type of cargo */
+/** Represents a type of cargo.
+ * @author luke
+ */
 final public class CargoType implements FreerailsSerializable {
     private final int unitWeight;
     private final String category;
     private final String name;
-    private static String[] categories = new String[] {
+    private static final String[] categories = new String[] {
             "Mail", "Passengers", "Fast_Freight", "Slow_Freight", "Bulk_Freight"
         };
 

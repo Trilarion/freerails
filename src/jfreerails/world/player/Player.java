@@ -69,30 +69,30 @@ public class Player implements FreerailsSerializable {
     private FreerailsPrincipal principal;
 
     /**
-     * salt used to ensure signatures are always unique
+     * Salt used to ensure signatures are always unique.
      */
     private int salt;
 
     /**
-     * This Principal can be granted all permissions
+     * This Principal can be granted all permissions.
      */
     public static final FreerailsPrincipal AUTHORITATIVE = new WorldPrincipal(
             "Authoritative Server");
 
     /**
-     * This Principal has no permissions
+     * This Principal has no permissions.
      */
     public static final FreerailsPrincipal NOBODY = new WorldPrincipal("Nobody");
 
     /**
-     * name of the player
+     * Name of the player.
      */
-    public String name;
+    private final String name;
 
     /**
      * Private data (eg private keys) that should not be serialized in normal
      * use. Instead, when the client needs to save their session they should
-     * call saveSession()
+     * call saveSession().
      */
     private transient PrivateData privateData;
 
@@ -119,14 +119,14 @@ public class Player implements FreerailsSerializable {
          * record of "salt" used for previous connections. This is held by the
          * server.
          */
-        HashSet salts = new HashSet();
+        final HashSet salts = new HashSet();
 
         PrivateData(PrivateKey key) {
             privateKey = key;
         }
 
         /**
-         * Default constructor called on server
+         * Default constructor called on server.
          */
         PrivateData() {
             privateKey = null;
@@ -134,7 +134,7 @@ public class Player implements FreerailsSerializable {
     }
 
     /**
-     * Used by the client to generate a player with a particular name
+     * Used by the client to generate a player with a particular name.
      */
     public Player(String name) {
         this.name = name;

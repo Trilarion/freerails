@@ -11,11 +11,12 @@ import junit.framework.TestCase;
 
 
 /**
- * @author Luke Lindsay 03-Nov-2002
+ *  JUnit test.
+ * @author Luke
  *
  */
 public class ChangeTrainPositionMoveTest extends TestCase {
-    public World w;
+    private World w;
 
     /**
      * Constructor for ChangeTrainPositionMoveTest.
@@ -71,15 +72,15 @@ public class ChangeTrainPositionMoveTest extends TestCase {
         w.add(KEY.TRAINS, train1, MapFixtureFactory.TEST_PRINCIPAL);
     }
 
-    public static final ChangeTrainPositionMove MOVE1 = new ChangeTrainPositionMove(TrainPositionOnMap.createInstance(
+    private static final ChangeTrainPositionMove MOVE1 = new ChangeTrainPositionMove(TrainPositionOnMap.createInstance(
                 new int[] {0, 10}, new int[] {1, 11}),
             TrainPositionOnMap.createInstance(new int[] {37, 40},
                 new int[] {38, 44}), 0, true, false,
             MapFixtureFactory.TEST_PRINCIPAL);
-    public static final TrainPositionOnMap FIXTURE1_BEFORE_MOVE1 = TrainPositionOnMap.createInstance(new int[] {
+    private static final TrainPositionOnMap FIXTURE1_BEFORE_MOVE1 = TrainPositionOnMap.createInstance(new int[] {
                 10, 30, 40
             }, new int[] {11, 33, 44});
-    public static final TrainPositionOnMap FIXTURE1_AFTER_MOVE1 = TrainPositionOnMap.createInstance(new int[] {
+    private static final TrainPositionOnMap FIXTURE1_AFTER_MOVE1 = TrainPositionOnMap.createInstance(new int[] {
                 0, 30, 37
             }, new int[] {1, 33, 38});
 }

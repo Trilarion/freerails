@@ -1,9 +1,3 @@
-/**
- * @author Scott Bennett
- * Date: 31st March 2003
- *
- * Class that calls the object to input the City names and co-ords from an xml file.
- */
 package jfreerails.server;
 
 import java.io.IOException;
@@ -17,6 +11,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 
+/**
+ * Class that calls the object to input the City names and co-ords from an xml file.
+ * @author Scott Bennett
+ * Date: 31st March 2003
+ */
 public class InputCityNames {
     public static void readCityNames(World w, URL filename)
         throws SAXException {

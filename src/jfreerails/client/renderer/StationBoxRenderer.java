@@ -25,8 +25,8 @@ public class StationBoxRenderer implements Painter {
     private static final int WAGON_IMAGE_HEIGHT = 10;
     private static final int SPACING = 3;
     private static final int MAX_WIDTH = 80;
-    private ReadOnlyWorld w;
-    private Color bgColor;
+    private final ReadOnlyWorld w;
+    private final Color bgColor;
     private final ViewLists vl;
     private final int wagonImageWidth;
 

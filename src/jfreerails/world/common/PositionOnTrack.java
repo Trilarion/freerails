@@ -5,13 +5,24 @@ package jfreerails.world.common;
  * Represents a position on the track as a direction in one of 8 compass points
  * and a coordinate representing the displacement from the centre of a track
  * tile.
+ * @author Luke
  */
 public final class PositionOnTrack implements FreerailsSerializable {
-    public static final int BITS_FOR_COORINATE = 14;
-    public static final int BITS_FOR_DIRECTION = 3;
+    private static final int BITS_FOR_COORINATE = 14;
+    private static final int BITS_FOR_DIRECTION = 3;
     public static final int MAX_COORINATE = (1 << BITS_FOR_COORINATE) - 1;
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;
     private int x = 0;
+
+    public int hashCode() {
+        int result;
+        result = x;
+        result = 29 * result + y;
+        result = 29 * result + direction.hashCode();
+
+        return result;
+    }
+
     private int y = 0;
     private OneTileMoveVector direction = OneTileMoveVector.NORTH;
 

@@ -6,6 +6,9 @@ import java.util.Iterator;
 import jfreerails.world.common.FreerailsSerializable;
 
 
+/** Stores the legal track configuations for a type of track.
+ * @author Luke.
+ */
 final public class LegalTrackConfigurations implements FreerailsSerializable {
     public int getMaximumConsecutivePieces() {
         return maximumConsecutivePieces;
@@ -13,12 +16,16 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 
     private final int maximumConsecutivePieces;
 
-    //final private int[][] legalRoutesAcrossNodeTemplates;
-    //private final boolean[] legalTrackTemplates = new boolean[512];
+    public int hashCode() {
+        int result;
+        result = maximumConsecutivePieces;
+        result = 29 * result +
+            (legalTrackConfigurationsHashSet != null
+            ? legalTrackConfigurationsHashSet.hashCode() : 0);
 
-    /**
-     *  TrackConfiguration
-     */
+        return result;
+    }
+
     private final HashSet legalTrackConfigurationsHashSet = new HashSet();
 
     public LegalTrackConfigurations(int max,
@@ -85,7 +92,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         }
     }
 
-    public HashSet getLegalTrackConfigurationsHashSet() {
+    private HashSet getLegalTrackConfigurationsHashSet() {
         return legalTrackConfigurationsHashSet;
     }
 }

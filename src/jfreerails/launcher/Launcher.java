@@ -31,8 +31,8 @@ import jfreerails.world.player.Player;
 public class Launcher extends javax.swing.JFrame implements
 FreerailsProgressMonitor {
     private static final int GAME_SPEED_SLOW = 10;
-    private Component[] wizardPages = new Component[4];
-    int currentPage = 0;
+    private final Component[] wizardPages = new Component[4];
+    private int currentPage = 0;
     
     public void setMessage(String s) {
         setInfoText(s);
@@ -74,15 +74,15 @@ FreerailsProgressMonitor {
         boolean recover = false;
         int mode;
         GameServer gs = new GameServer();
-        GUIClient gc;
         Player p;
         CardLayout cl = (CardLayout) jPanel1.getLayout();
+        GUIClient gc;
         switch (lp.getMode()) {
             case LauncherPanel1.MODE_SINGLE_PLAYER:
                 if (msp.getMapAction() == MapSelectionPanel.START_NEW_MAP) {
                     sci = gs.getNewGame(msp.getMapName(), this, 0);
                 } else {
-                    sci = gs.getSavedGame(this, 0);
+                    sci = gs.getSavedGame(0);
                 }
                 sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);  //Set initial game speed to slow.
                 mode = cop.getScreenMode();
@@ -112,7 +112,7 @@ FreerailsProgressMonitor {
                     sci = gs.getNewGame(msp.getMapName(), this,
                     lp.getServerPort());
                 } else {
-                    sci = gs.getSavedGame(this, lp.getServerPort());
+                    sci = gs.getSavedGame(lp.getServerPort());
                 }
                 mode = cop.getScreenMode();
                 try {
@@ -169,7 +169,7 @@ FreerailsProgressMonitor {
                     sci = gs.getNewGame(msp.getMapName(), this,
                     lp.getServerPort());
                 } else {
-                    sci = gs.getSavedGame(this, lp.getServerPort());
+                    sci = gs.getSavedGame(lp.getServerPort());
                 }
                 ssp.setTableModel(sci.getClientConnectionTableModel());
                 nextIsStart = true;
@@ -219,7 +219,7 @@ FreerailsProgressMonitor {
         launcher.show();
     }
     
-    /** Creates new form Launcher */
+
     public Launcher() {
         initComponents();
         
@@ -408,7 +408,7 @@ FreerailsProgressMonitor {
         }
     }//GEN-LAST:event_nextButtonActionPerformed
     
-    /** Exit the Application */
+    /** Exit the Application. */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         System.exit(0);
     }//GEN-LAST:event_exitForm

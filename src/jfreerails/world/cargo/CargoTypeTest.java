@@ -6,7 +6,7 @@ package jfreerails.world.cargo;
 import junit.framework.TestCase;
 
 
-/**
+/** JUnit test for CargoType.
  *
  *  @author Luke
  *

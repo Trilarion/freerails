@@ -23,6 +23,10 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 
 
+/** Implemenatation of ViewLists whose constructor loads graphics and provides feed back
+ * using a FreerailsProgressMonitor.
+ * @author Luke
+ */
 public class ViewListsImpl implements ViewLists {
     private final TileRendererList tiles;
     private final TrackPieceRendererList trackPieceViewList;
@@ -43,12 +47,12 @@ public class ViewListsImpl implements ViewLists {
         trainImages = new TrainImages(w, imageManager, pm);
     }
 
-    public TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
+    private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
         FreerailsProgressMonitor pm) throws IOException {
         return new TrackPieceRendererList(w, imageManager, pm);
     }
 
-    public TileRendererList loadNewTileViewList(ReadOnlyWorld w,
+    private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
         FreerailsProgressMonitor pm) throws IOException {
         ArrayList tileRenderers = new ArrayList();
 

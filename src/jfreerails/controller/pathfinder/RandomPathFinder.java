@@ -6,14 +6,16 @@ import jfreerails.world.common.PositionOnTrack;
 
 
 /**
- * @author Luke Lindsay 13-Oct-2002
+ * Returns a random path along the track.
+ * @author Luke Lindsay
+ * 13-Oct-2002
  *
  */
 public class RandomPathFinder implements FreerailsPathIterator {
-    FlatTrackExplorer trackExplorer;
-    PositionOnTrack p1 = new PositionOnTrack();
-    PositionOnTrack p2 = new PositionOnTrack();
-    static final int tileSize = 30;
+    private final FlatTrackExplorer trackExplorer;
+    private final PositionOnTrack p1 = new PositionOnTrack();
+    private final PositionOnTrack p2 = new PositionOnTrack();
+    private static final int tileSize = 30;
 
     public RandomPathFinder(FlatTrackExplorer tx) {
         trackExplorer = tx;

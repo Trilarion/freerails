@@ -17,6 +17,16 @@ public class AddItemTransaction implements Transaction {
     /** For example track. */
     private final int category;
 
+    public int hashCode() {
+        int result;
+        result = category;
+        result = 29 * result + type;
+        result = 29 * result + quantity;
+        result = 29 * result + amount.hashCode();
+
+        return result;
+    }
+
     /** For example, standard track. */
     private final int type;
 

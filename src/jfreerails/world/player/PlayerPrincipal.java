@@ -1,5 +1,10 @@
 package jfreerails.world.player;
 
+
+/**
+ * FreerailsPrincipal that is a player in the game.
+ * @author rob
+ */
 public class PlayerPrincipal extends FreerailsPrincipal {
     private final int id;
 

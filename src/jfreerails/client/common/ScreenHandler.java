@@ -6,14 +6,16 @@ import java.awt.DisplayMode;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.awt.event.*;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 
 /**
- * @version         1.0
+ * Handles going into fullscreen mode and setting buffer strategy etc.
+ * @author Luke
  */
 final public class ScreenHandler {
     public static final int FULL_SCREEN = 0;
@@ -25,7 +27,7 @@ final public class ScreenHandler {
     private final int mode;
     private boolean isInUse = false;
 
-    /** Whether the window is minimised */
+    /** Whether the window is minimised. */
     private boolean isMinimised = false;
 
     public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
@@ -39,15 +41,15 @@ final public class ScreenHandler {
         this.mode = mode;
     }
 
-    public static void goFullScreen(JFrame frame, DisplayMode displayMode) {
+    private static void goFullScreen(JFrame frame, DisplayMode displayMode) {
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                    .getDefaultScreenDevice();
         setRepaintOffAndDisableDoubleBuffering(frame);
 
         /* We need to make the frame not displayable before calling
-         * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
-         * will get thrown.
-         */
+ * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
+ * will get thrown.
+ */
         if (frame.isDisplayable()) {
             frame.dispose();
         }
@@ -90,9 +92,9 @@ final public class ScreenHandler {
 
         case FIXED_SIZE_WINDOWED_MODE: {
             /* We need to make the frame not displayable before calling
-            * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
-            * will get thrown.
-            */
+* setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
+* will get thrown.
+*/
             if (frame.isDisplayable()) {
                 frame.dispose();
             }
@@ -140,18 +142,16 @@ final public class ScreenHandler {
         return bufferStrategy.getDrawGraphics();
     }
 
-    public boolean swapScreens() {
+    public void swapScreens() {
         boolean done = false;
 
         if (!bufferStrategy.contentsLost()) {
             bufferStrategy.show();
             done = true;
         }
-
-        return done;
     }
 
-    public static void setRepaintOffAndDisableDoubleBuffering(Component c) {
+    private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
         c.setIgnoreRepaint(true);
 
         //Since we are using a buffer strategy we don't want Swing

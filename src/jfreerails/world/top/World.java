@@ -17,6 +17,8 @@ import jfreerails.world.track.FreerailsTile;
  * element from a list, you should set it to null, e.g. </p>
  * <p><CODE>world.set(KEY.TRAINS, 5, null, player);</CODE></P>
  * <p>Code that loops through lists should handle null values gracefully</p>
+ * @author Luke
+ * @author rob
  */
 public interface World extends ReadOnlyWorld {
     /**

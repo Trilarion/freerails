@@ -5,11 +5,20 @@ import java.text.DecimalFormat;
 
 /** This class converts time meansured in ticks since the game began into time represented
  * as <i>Month, Year</i> and <i>hour:minute</i>.
+ * @author Luke
  */
 final public class GameCalendar implements FreerailsSerializable {
-    private static DecimalFormat decimalFormat = new DecimalFormat("00");
+    private static final DecimalFormat decimalFormat = new DecimalFormat("00");
     private final int ticksPerYear;
     private final int startYear;
+
+    public int hashCode() {
+        int result;
+        result = ticksPerYear;
+        result = 29 * result + startYear;
+
+        return result;
+    }
 
     public String getYearAsString(int ticks) {
         int i = getYear(ticks);

@@ -51,7 +51,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     
     private FreerailsPrincipal principal;
     
-    /** Creates new form SelectStationJPanel */
+    
     public SelectStationJPanel() {
         initComponents();
     }
@@ -295,7 +295,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         cargoWaitingAndDemandedJPanel1.setup(mr,  null);
         this.world = mr.getWorld();
         this.submitButtonCallBack = submitButtonCallBack;
-        principal = mr.getPlayerPrincipal();
+        principal = mr.getPrincipal();
     }
     
     public MutableSchedule generateNewSchedule(){

@@ -4,7 +4,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
-*  Description of the Interface
+*  A list of TileRenderers.
 *
 *@author     Luke Lindsay
 *     09 October 2001

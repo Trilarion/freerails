@@ -22,14 +22,14 @@ import jfreerails.world.track.TrackRule;
  * Created: 9th May 2003
  */
 public class CalcCargoSupplyRateAtStation {
-    /** The threshold that demand for a cargo must exceed before the station demands the cargo */
+    /** The threshold that demand for a cargo must exceed before the station demands the cargo. */
     private static final int PREREQUISITE_FOR_DEMAND = 16;
-    private ReadOnlyWorld w;
+    private final ReadOnlyWorld w;
     private int x;
     private int y;
-    Vector supplies;
-    private int[] demand;
-    private int[] converts;
+    private final Vector supplies;
+    private final int[] demand;
+    private final int[] converts;
 
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
         this.w = world;
@@ -52,7 +52,7 @@ public class CalcCargoSupplyRateAtStation {
         converts = ConvertedAtStation.emptyConversionArray(numCargoTypes);
     }
 
-    public void PopulateSuppliesVector() {
+    private void PopulateSuppliesVector() {
         //fill supplies vector with 0 values for all cargo types
         //get the correct list of cargoes from the world object
         CargoElementObject tempCargoElement;

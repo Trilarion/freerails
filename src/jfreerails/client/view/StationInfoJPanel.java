@@ -11,10 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import jfreerails.controller.MoveReceiver;
-import jfreerails.move.AddItemToListMove;
-import jfreerails.move.ListMove;
-import jfreerails.move.Move;
+import javax.swing.JPanel;
+
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.FreerailsSerializable;
@@ -25,6 +23,7 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldIterator;
+import jfreerails.world.top.WorldListListener;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.train.WagonType;
 
@@ -32,21 +31,19 @@ import jfreerails.world.train.WagonType;
  *
  * @author  Luke
  */
-public class StationInfoJPanel
-extends javax.swing.JPanel
-implements MoveReceiver, View {
-	
-	private ReadOnlyWorld w;
+public class StationInfoJPanel extends JPanel implements View, WorldListListener {
+    
+    private ReadOnlyWorld w;
     private ModelRoot modelRoot;
     private WorldIterator wi;
-    private boolean ignoreMoves = true; 
+    private boolean ignoreMoves = true;
     
     /**
-     * The index of the cargoBundle associated with this station
+     * The index of the cargoBundle associated with this station.
      */
     private int cargoBundleIndex;
     
-    /** Creates new form StationInfoJPanel */
+    
     public StationInfoJPanel() {
         initComponents();
     }
@@ -75,10 +72,10 @@ implements MoveReceiver, View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 8);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 8);
         add(jLabel1, gridBagConstraints);
 
         nextStation.setText("next ->");
@@ -93,9 +90,9 @@ implements MoveReceiver, View {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         add(nextStation, gridBagConstraints);
 
         previousStation.setText("<- previous");
@@ -110,9 +107,9 @@ implements MoveReceiver, View {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         add(previousStation, gridBagConstraints);
 
         close.setText("close");
@@ -123,8 +120,8 @@ implements MoveReceiver, View {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         add(close, gridBagConstraints);
 
     }//GEN-END:initComponents
@@ -163,8 +160,8 @@ implements MoveReceiver, View {
         
 	} //GEN-LAST:event_nextStationActionPerformed
     
-    public void setup(ModelRoot mr, ActionListener al) {        
-        this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr.getPlayerPrincipal());
+    public void setup(ModelRoot mr, ActionListener al) {
+        this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr.getPrincipal());
         addComponentListener(componentListener);
         this.w = mr.getWorld();
         this.modelRoot = mr;
@@ -176,7 +173,7 @@ implements MoveReceiver, View {
         display();
     }
     
-    public void display() {
+    private void display() {
         
         if (wi.getRowNumber() > 0) {
             this.previousStation.setEnabled(true);
@@ -194,14 +191,14 @@ implements MoveReceiver, View {
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             StationModel station =
-            (StationModel) w.get(KEY.STATIONS, stationNumber, modelRoot.getPlayerPrincipal());
+            (StationModel) w.get(KEY.STATIONS, stationNumber, modelRoot.getPrincipal());
             FreerailsTile tile = w.getTile(station.x, station.y);
             String stationTypeName = tile.getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleNumber();
             CargoBundle cargoWaiting =
             (CargoBundle) w.get(
             KEY.CARGO_BUNDLES,
-            station.getCargoBundleNumber(), modelRoot.getPlayerPrincipal());
+            station.getCargoBundleNumber(), modelRoot.getPrincipal());
             String title =
             "<h2 align=\"center\">"
             + station.getStationName()
@@ -248,7 +245,7 @@ implements MoveReceiver, View {
         this.repaint();
     }
     
-    ComponentAdapter componentListener = new ComponentAdapter() {
+    private final ComponentAdapter componentListener = new ComponentAdapter() {
         public void componentHidden(ComponentEvent e) {
             ignoreMoves = true;
         }
@@ -264,17 +261,30 @@ implements MoveReceiver, View {
         }
     };
     
-    public void processMove(Move move) {
+    
+    private FreerailsSerializable lastCargoBundle = null;
+    
+    protected void paintComponent(Graphics g) {
+        /* We need to update if the cargo bundle has changed.*/
+        FreerailsPrincipal playerPrincipal = this.modelRoot.getPrincipal();
+        
+        /* Avoid a array out of bounds exception when there are no stations and the stations tab is visible.*/
+        if(w.boundsContain(KEY.CARGO_BUNDLES, cargoBundleIndex, playerPrincipal)){
+            FreerailsSerializable currentCargoBundle = w.get(KEY.CARGO_BUNDLES, this.cargoBundleIndex, playerPrincipal);
+            if(lastCargoBundle != currentCargoBundle){
+                this.display();
+                lastCargoBundle = currentCargoBundle;
+            }
+        }
+        super.paintComponent(g);
+    }
+    
+    private void reactToUpdate(KEY key, int changedIndex, boolean isAddition){
         if(ignoreMoves){
             return;
         }
-        if (!(move instanceof ListMove)) {
-            return;
-        }
-        ListMove lm = (ListMove) move;
+        
         int currentIndex = wi.getIndex();
-        int changedIndex = lm.getIndex();
-        KEY key = lm.getKey();
         if (key == KEY.CARGO_BUNDLES) {
             if (changedIndex == cargoBundleIndex) {
                 /* update our cargo bundle */
@@ -286,12 +296,12 @@ implements MoveReceiver, View {
             if (currentIndex != WorldIterator.BEFORE_FIRST) {
                 wi.gotoIndex(currentIndex);
             }
-            if (lm instanceof AddItemToListMove
-            && wi.getIndex() == WorldIterator.BEFORE_FIRST) {
+            if (isAddition && wi.getIndex() == WorldIterator.BEFORE_FIRST) {
                 if (wi.next()) {
                     display();
                 }
             }
+            /* not sure about the following
             if (changedIndex < currentIndex) {
                 previousStation.setEnabled(lm.getBefore() != null);
             } else if (changedIndex > currentIndex) {
@@ -299,9 +309,26 @@ implements MoveReceiver, View {
             } else {
                 display();
             }
+             */
         }
         return;
+        
     }
+    
+    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
+        reactToUpdate(key, index, false);
+        
+    }
+    
+    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
+        reactToUpdate(key, index, true);
+    }
+    
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
+        reactToUpdate(key, index, false);
+    }
+    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton close;
@@ -310,21 +337,6 @@ implements MoveReceiver, View {
     private javax.swing.JButton previousStation;
     // End of variables declaration//GEN-END:variables
     
-              
-	    
-    private FreerailsSerializable lastCargoBundle = null;
-	
-	protected void paintComponent(Graphics g) {
-		/* We need to update if the cargo bundle has changed.*/
-		FreerailsPrincipal playerPrincipal = this.modelRoot.getPlayerPrincipal();
-		
-		/* Avoid a array out of bounds exception when there are no stations and the stations tab is visible.*/
-		if(w.boundsContain(KEY.CARGO_BUNDLES, cargoBundleIndex, playerPrincipal)){
-			FreerailsSerializable currentCargoBundle = w.get(KEY.CARGO_BUNDLES, this.cargoBundleIndex, playerPrincipal);
-			if(lastCargoBundle != currentCargoBundle){
-				this.display();
-			}
-		}
-		super.paintComponent(g);
-	}
+    
+    
 }

@@ -25,8 +25,8 @@ import javax.swing.RepaintManager;
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {
     /** The JFrame(s) that are being actively rendered in the game loop(s). */
-    private static HashSet activelyRendereredComponents = new HashSet();
-    private static RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
+    private static final HashSet activelyRendereredComponents = new HashSet();
+    private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
     private static long numRepaintRequests = 0;
 
     public static void setAsCurrentManager() {
@@ -73,7 +73,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         }
     }
 
-    public boolean hasDifferentAncester(JComponent aComponent) {
+    private boolean hasDifferentAncester(JComponent aComponent) {
         Container topLevelAncestor = aComponent.getTopLevelAncestor();
 
         if (null == topLevelAncestor ||

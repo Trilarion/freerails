@@ -136,7 +136,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /** This method asserts that if we serialise then deserialise the
      * specified move, the specified move is equal to the deserialised move.
      * The assertion depends on the move being serialisable and the equals method
-     * being implemented correctly.
+     * being implemented correctly.  Also checks that the hashcode does not change.
      *
      * @param m
      */
@@ -147,6 +147,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
         try {
             Object o = cloneBySerialisation(m);
             assertEquals(m, o);
+            assertEquals("The hashcodes should be the same!", m.hashCode(),
+                o.hashCode());
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -205,7 +207,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
             hasSetupBeenCalled());
     }
 
-    public AbstractMoveTestCase() {
+    AbstractMoveTestCase() {
     }
 
     public AbstractMoveTestCase(String str) {

@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 
 
 /**
+ * Lets the caller access a series of Points as a series of IntLines.
  *
  * @author  Luke Lindsay
  */
@@ -36,8 +37,8 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     }
 
     private final boolean forwards;
-    int position;
-    List points;
+    private int position;
+    private final List points;
 
     public boolean hasNext() {
         if (forwards) {

@@ -21,10 +21,9 @@ import jfreerails.world.top.ReadOnlyWorld;
 public class TrainViewJList extends JList implements View, ListCellRenderer {
     private ReadOnlyWorld w;
     private TrainConsistListModel trainConsistListModel;
-    private WagonView wagonView;
+    private final WagonView wagonView;
     private FreerailsPrincipal principal;
 
-    /** Creates a new instance of TrainView */
     public TrainViewJList(ModelRoot mr, int trainNumber) {
         wagonView = new WagonView();
         setup(mr, null);
@@ -38,7 +37,7 @@ public class TrainViewJList extends JList implements View, ListCellRenderer {
         this.setBackground(Color.GRAY);
     }
 
-    public void display(int trainNumber) {
+    private void display(int trainNumber) {
         trainConsistListModel = new TrainConsistListModel(w, trainNumber,
                 principal);
         this.setModel(trainConsistListModel);
@@ -47,7 +46,7 @@ public class TrainViewJList extends JList implements View, ListCellRenderer {
     public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
         this.w = mr.getWorld();
         wagonView.setup(mr, null);
-        principal = mr.getPlayerPrincipal();
+        principal = mr.getPrincipal();
     }
 
     public Component getListCellRendererComponent(JList list, Object value,

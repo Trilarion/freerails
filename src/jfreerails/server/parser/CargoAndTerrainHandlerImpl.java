@@ -158,7 +158,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     }
 
     private int string2RGBValue(String temp_number) {
-        int rgb = (int)Integer.parseInt(temp_number, 16);
+        int rgb = Integer.parseInt(temp_number, 16);
 
         /*
         *  We need to change the format of the rgb value to the same one as used

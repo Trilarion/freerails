@@ -8,6 +8,7 @@ import jfreerails.world.common.Money;
 
 
 /**
+ * For example, the cost of buying a trains.
  * @author Luke Lindsay
  *
  */
@@ -22,6 +23,14 @@ public class Bill implements Transaction {
 
     public Money getValue() {
         return amount;
+    }
+
+    public int hashCode() {
+        int result;
+        result = amount.hashCode();
+        result = 29 * result + category;
+
+        return result;
     }
 
     public boolean equals(Object o) {

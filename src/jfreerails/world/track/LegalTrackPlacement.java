@@ -21,7 +21,10 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     private final HashSet terrainTypes = new HashSet();
     private final PlacementRule placementRule;
 
-    /** Creates new LegalTrackPlacement */
+    public int hashCode() {
+        return (placementRule != null ? placementRule.hashCode() : 0);
+    }
+
     public LegalTrackPlacement(HashSet types, PlacementRule placementRule) {
         this.placementRule = placementRule;
 
@@ -42,7 +45,7 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     }
 
     final public static class PlacementRule implements FreerailsSerializable {
-        private int i;
+        private final int i;
 
         private PlacementRule(int i) {
             this.i = i;

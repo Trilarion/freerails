@@ -12,22 +12,21 @@ import java.awt.Transparency;
 
 
 /**
- *
- * @author  lindsal8
+ * Stores side on train images.
+ * @author  Luke
  *
  */
 public class SideOnTrainTrainViewImages {
-    private java.awt.GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                                     .getDefaultScreenDevice()
-                                                                                     .getDefaultConfiguration();
-    public static final int HEIGHT_100_PIXELS = 0;
-    public static final int HEIGHT_50_PIXELS = 1;
-    public static final int HEIGHT_25_PIXELS = 2;
-    public static final int HEIGHT_10_PIXELS = 3;
-    Image[][] engines;
-    Image[][] wagons;
+    private final java.awt.GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                                           .getDefaultScreenDevice()
+                                                                                           .getDefaultConfiguration();
+    private static final int HEIGHT_100_PIXELS = 0;
+    private static final int HEIGHT_50_PIXELS = 1;
+    private static final int HEIGHT_25_PIXELS = 2;
+    private static final int HEIGHT_10_PIXELS = 3;
+    private final Image[][] engines;
+    private final Image[][] wagons;
 
-    /** Creates new SideOnTrainTrainView */
     public SideOnTrainTrainViewImages(int numberOfWagonTypes,
         int numberOfEngineTypes) {
         engines = new Image[numberOfEngineTypes][4];

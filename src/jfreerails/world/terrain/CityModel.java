@@ -10,10 +10,13 @@ package jfreerails.world.terrain;
 import jfreerails.world.common.FreerailsSerializable;
 
 
+/** A city.
+ * @author Luke
+ */
 public class CityModel implements FreerailsSerializable {
-    private String name;
-    private int x;
-    private int y;
+    private final String name;
+    private final int x;
+    private final int y;
 
     public CityModel(String name, int x, int y) {
         this.name = name;

@@ -22,15 +22,15 @@ class Dispatcher implements Runnable {
         this.connection = connection;
     }
 
-    private SourcedMoveReceiver moveReceiver;
+    private MoveReceiver moveReceiver;
     private ObjectInputStream objectInputStream;
     private boolean worldNotYetLoaded = true;
 
-    public synchronized void addMoveReceiver(SourcedMoveReceiver m) {
+    public synchronized void addMoveReceiver(MoveReceiver m) {
         moveReceiver = m;
     }
 
-    public synchronized void removeMoveReceiver(SourcedMoveReceiver m) {
+    public synchronized void removeMoveReceiver() {
         moveReceiver = null;
     }
 
@@ -129,7 +129,7 @@ class Dispatcher implements Runnable {
             if (o instanceof ServerCommand) {
                 processServerCommand((ServerCommand)o);
             } else if ((o instanceof Move) && (moveReceiver != null)) {
-                moveReceiver.processMove((Move)o, this.connection);
+                moveReceiver.processMove((Move)o);
             } else {
                 System.out.println("Invalid class sent in stream");
             }

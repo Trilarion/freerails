@@ -6,6 +6,7 @@ package jfreerails.world.common;
  * path a train takes across a section of track be
  * retrieved without revealing the underlying objects
  * that represent the track.
+ * @author luke
  */
 public interface FreerailsPathIterator extends FreerailsSerializable {
     /** Tests whether the path has another segment.

@@ -10,6 +10,8 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test.
+ *
  * @author Luke
  *
  */

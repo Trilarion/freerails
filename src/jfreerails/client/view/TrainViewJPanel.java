@@ -46,17 +46,16 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
      */
     private boolean centerTrain = false;
     private int trainWidth = 0;
-    boolean selected = false;
-    private Color backgoundColor = (java.awt.Color)javax.swing.UIManager.getDefaults()
-                                                                        .get("List.background");
-    private Color selectedColor = (java.awt.Color)javax.swing.UIManager.getDefaults()
-                                                                       .get("List.selectionBackground");
+    private boolean selected = false;
+    private final Color backgoundColor = (java.awt.Color)javax.swing.UIManager.getDefaults()
+                                                                              .get("List.background");
+    private final Color selectedColor = (java.awt.Color)javax.swing.UIManager.getDefaults()
+                                                                             .get("List.selectionBackground");
 
     public TrainViewJPanel() {
         this.setOpaque(false);
     }
 
-    /** Creates a new instance of TrainView */
     public TrainViewJPanel(ModelRoot mr) {
         setup(mr, null);
         this.setBackground(backgoundColor);
@@ -129,7 +128,7 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         java.awt.event.ActionListener submitButtonCallBack) {
         this.w = mr.getWorld();
         this.vl = mr.getViewLists();
-        this.principal = mr.getPlayerPrincipal();
+        this.principal = mr.getPrincipal();
     }
 
     public Component getListCellRendererComponent(JList list, Object value,

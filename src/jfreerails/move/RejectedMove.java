@@ -8,10 +8,11 @@ import jfreerails.world.top.World;
  * Specifies a move that has been rejected (ie not executed) by the
  * MoveExecuter. This move has already been attempted and thus all attempts to
  * try/perform the move will fail.
+ * @author rob
  */
 public class RejectedMove implements Move {
-    private Move attemptedMove;
-    private MoveStatus moveStatus;
+    private final Move attemptedMove;
+    private final MoveStatus moveStatus;
 
     /**
      * @param attemptedMove the move that failed to complete successfully

@@ -12,17 +12,18 @@ import jfreerails.world.top.World;
 /**
  * This class implements a local connection to a server contained within the
  * same JVM.
+ * @author rob
  */
 public class LocalConnection implements ConnectionToServer {
-    private SourcedMoveReceiver moveReceiver;
+    private MoveReceiver moveReceiver;
     private LocalConnection peer;
     private World world;
     private ConnectionListener connectionListener;
     private ConnectionState state = ConnectionState.CLOSED;
 
     /**
-    * Indicates whether the connection should forward moves the the remote side
-    */
+* Indicates whether the connection should forward moves the the remote side.
+*/
     private boolean sendMoves = false;
 
     public void flush() {
@@ -33,15 +34,15 @@ public class LocalConnection implements ConnectionToServer {
         connectionListener = l;
     }
 
-    public void removeConnectionListener(ConnectionListener l) {
+    public void removeConnectionListener() {
         connectionListener = null;
     }
 
-    public void addMoveReceiver(SourcedMoveReceiver m) {
+    public void addMoveReceiver(MoveReceiver m) {
         moveReceiver = m;
     }
 
-    public void removeMoveReceiver(SourcedMoveReceiver m) {
+    public void removeMoveReceiver(MoveReceiver m) {
         moveReceiver = null;
     }
 
@@ -55,42 +56,40 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
-    * This constructor is called by the server
-    */
+* This constructor is called by the server.
+*/
     public LocalConnection(World w) {
         world = w;
         setState(ConnectionState.WAITING);
     }
 
     /**
-    * This constructor is called by the client
-    */
+* This constructor is called by the client.
+*/
     public LocalConnection(LocalConnection peer) {
         this.peer = peer;
     }
 
-    protected void sendMove(Move move) {
+    private void sendMove(Move move) {
         if (moveReceiver != null) {
-            moveReceiver.processMove(move, this);
+            moveReceiver.processMove(move);
         }
     }
 
     /**
-    * This is called by the client connection object on the servers connection
-    * object
-    */
-    protected boolean connect(LocalConnection peer) {
+* This is called by the client connection object on the servers connection
+* object.
+*/
+    private void connect(LocalConnection peer) {
         this.peer = peer;
         sendMoves = true;
-
-        return true;
     }
 
     /**
-    * This is called by the client connection object on the servers connection
-    * object
-    */
-    protected void disconnect() {
+* This is called by the client connection object on the servers connection
+* object.
+*/
+    private void disconnect() {
         sendMoves = false;
         this.peer = null;
 
@@ -123,7 +122,7 @@ public class LocalConnection implements ConnectionToServer {
         sendMoves = true;
 
         /* set the state on the server connection to say that the client is
-        * ready to receive moves */
+* ready to receive moves */
         setState(ConnectionState.READY);
         peer.setState(ConnectionState.READY);
 
@@ -151,8 +150,8 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
-    * Called by the server
-    */
+* Called by the server.
+*/
     public void setWorld(World w) {
         world = w;
     }
@@ -176,8 +175,8 @@ public class LocalConnection implements ConnectionToServer {
     }
 
     /**
-    * send a server command to the remote peer
-    */
+* Send a server command to the remote peer.
+*/
     public void sendCommand(ServerCommand s) {
         peer.sendServerCommand(s);
     }

@@ -13,18 +13,20 @@ import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
-import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
 
 
+/** Handles key presses and mouse movements on the map - responsible for moving the cursor etc.
+ * @author Luke
+ */
 public class UserInputOnMapController extends KeyAdapter {
     private StationTypesPopup stationTypesPopup;
     private MapViewJComponent mapView;
     private TrackMoveProducer trackBuilder;
     private DialogueBoxController dialogueBoxController;
-    private ModelRoot modelRoot;
-    private MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
+    private final ModelRoot modelRoot;
+    private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
 
     public UserInputOnMapController(ModelRoot mr) {
         modelRoot = mr;
@@ -43,7 +45,7 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
-    public void cursorOneTileMove(Point oldPosition, OneTileMoveVector vector) {
+    private void cursorOneTileMove(Point oldPosition, OneTileMoveVector vector) {
         if (null != trackBuilder) {
             MoveStatus ms = trackBuilder.buildTrack(oldPosition, vector);
 
@@ -69,16 +71,22 @@ public class UserInputOnMapController extends KeyAdapter {
 
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
         StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
-        UncommittedMoveReceiver tx, FreerailsCursor cursor) {
+        FreerailsCursor cursor) {
         this.dialogueBoxController = dbc;
         this.mapView = mv;
         this.stationTypesPopup = stPopup;
         this.trackBuilder = trackBuilder;
+
+        /* We attempt to remove listeners before adding them to
+         * prevent them being added several times.
+         */
+        mapView.removeMouseListener(mouseInputAdapter);
         mapView.addMouseListener(mouseInputAdapter);
+        mapView.removeKeyListener(this);
         mapView.addKeyListener(this);
     }
 
-    public void cursorJumped(Point to) {
+    private void cursorJumped(Point to) {
         if (trackBuilder.getTrackBuilderMode() == TrackMoveProducer.UPGRADE_TRACK) {
             MoveStatus ms = trackBuilder.upgradeTrack(to);
 
@@ -162,8 +170,8 @@ public class UserInputOnMapController extends KeyAdapter {
                 int y = cursorPosition.y * tileSize.height;
                 stationTypesPopup.showMenu(mapView, x, y, cursorPosition);
             } else {
-                modelRoot.getUserMessageLogger().println("Can't" +
-                    " build station here!");
+                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                    "Can't" + " build station here!");
             }
 
             break;
@@ -194,7 +202,7 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
-    public void tryMoveCursor(Point tryThisPoint) {
+    private void tryMoveCursor(Point tryThisPoint) {
         setCursorMessage(null);
 
         Point oldCursorMapPosition = getCursorPosition();

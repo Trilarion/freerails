@@ -1,11 +1,3 @@
-/**
- * @author Scott Bennett
- *
- * Date: 12th April 2003
- *
- * Class to find the nearest city and return that name, so that a train station
- * can be named appropriately.
- */
 package jfreerails.controller;
 
 import jfreerails.world.terrain.CityModel;
@@ -13,10 +5,18 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 
 
+/**
+ *
+ *
+ * Class to find the nearest city and return that name, so that a station
+ * can be named appropriately.
+ * Date: 12th April 2003
+ * @author Scott Bennett
+ */
 public class CalcNearestCity {
-    private int x;
-    private int y;
-    private ReadOnlyWorld w;
+    private final int x;
+    private final int y;
+    private final ReadOnlyWorld w;
 
     public CalcNearestCity(ReadOnlyWorld world, int x, int y) {
         this.w = world;

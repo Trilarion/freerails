@@ -4,9 +4,26 @@ import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
 
 
+/** Stores some of the properties of a track type.
+ *@author Luke
+ */
 final public class TrackRuleProperties implements FreerailsSerializable {
     public String getTypeName() {
         return typeName;
+    }
+
+    public int hashCode() {
+        int result;
+        result = rGBvalue;
+        result = 29 * result + number;
+        result = 29 * result + (enableDoubleTrack ? 1 : 0);
+        result = 29 * result + typeName.hashCode();
+        result = 29 * result + (isStation ? 1 : 0);
+        result = 29 * result + stationRadius;
+        result = 29 * result + price.hashCode();
+        result = 29 * result + maintenanceCost.hashCode();
+
+        return result;
     }
 
     public int getRuleNumber() {
@@ -72,11 +89,11 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         return enableDoubleTrack;
     }
 
-    public int getNumber() {
+    private int getNumber() {
         return number;
     }
 
-    public int getRGBvalue() {
+    private int getRGBvalue() {
         return rGBvalue;
     }
 }

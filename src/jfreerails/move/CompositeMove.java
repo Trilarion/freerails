@@ -19,20 +19,25 @@ import jfreerails.world.top.World;
  *  @author Luke
  */
 public class CompositeMove implements Move {
-    private Move[] moves;
+    private final Move[] moves;
 
     /**
      * This method lets sub classes look at the moves.
      */
-    protected final Move getMove(int i) {
+    final Move getMove(int i) {
         return moves[i];
+    }
+
+    public int hashCode() {
+        //This will do for now.
+        return moves.length;
     }
 
     public final Move[] getMoves() {
         return moves;
     }
 
-    public CompositeMove(ArrayList movesArrayList) {
+    CompositeMove(ArrayList movesArrayList) {
         moves = new Move[movesArrayList.size()];
 
         for (int i = 0; i < movesArrayList.size(); i++) {
@@ -150,7 +155,7 @@ public class CompositeMove implements Move {
 
     /** Subclasses may override this method to perform tests which pass or fail depending on the
      * combination of moves making up this composite move. */
-    protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
+    MoveStatus compositeTest(World w, FreerailsPrincipal p) {
         return MoveStatus.MOVE_OK;
     }
 

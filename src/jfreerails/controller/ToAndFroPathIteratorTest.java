@@ -9,14 +9,11 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for ToAndFroPathIteratorTest.
  * @author Luke Lindsay 30-Oct-2002
  *
  */
 public class ToAndFroPathIteratorTest extends TestCase {
-    /**
-     * Constructor for ToAndFroPathIteratorTest.
-     * @param arg0
-     */
     public ToAndFroPathIteratorTest(String arg0) {
         super(arg0);
     }

@@ -31,12 +31,12 @@ import javax.imageio.ImageIO;
 public class ImageManagerImpl implements ImageManager {
     private String pathToReadFrom;
     private String pathToWriteTo;
-    private HashMap imageHashMap = new HashMap();
-    private HashMap scaledImagesHashMap = new HashMap();
-    private RenderingHints renderingHints;
-    private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                            .getDefaultScreenDevice()
-                                                                            .getDefaultConfiguration();
+    private final HashMap imageHashMap = new HashMap();
+    private final HashMap scaledImagesHashMap = new HashMap();
+    private final RenderingHints renderingHints;
+    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                                  .getDefaultScreenDevice()
+                                                                                  .getDefaultConfiguration();
 
     public ImageManagerImpl(String readpath, String writePath) {
         pathToReadFrom = readpath;

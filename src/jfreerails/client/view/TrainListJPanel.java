@@ -15,18 +15,18 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 /**
- *
+ * JPanel that diaplays a trainlist, used for the train list window and the train list tab.
  * @author  Luke
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {
-	
-	private ReadOnlyWorld world;
-	
-	private FreerailsPrincipal principal;
-	
-	private int lastNumberOfTrains = -1;
     
-    /** Creates new form TrainListJPanel */
+    private ReadOnlyWorld world;
+    
+    private FreerailsPrincipal principal;
+    
+    private int lastNumberOfTrains = -1;
+    
+    /** Creates new form TrainListJPanel. */
     public TrainListJPanel() {
         initComponents();
         
@@ -92,18 +92,18 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         add(jScrollPane1, gridBagConstraints);
 
     }//GEN-END:initComponents
-
+    
     private void showDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDetailsActionPerformed
-       showTrainDetails.actionPerformed(evt);
+        showTrainDetails.actionPerformed(evt);
     }//GEN-LAST:event_showDetailsActionPerformed
-
+    
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // Add your handling code here:
         if(evt.getClickCount()==2){
             showTrainDetails.actionPerformed(null);
         }
     }//GEN-LAST:event_jList1MouseClicked
-
+    
     private void jList1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
         // Add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
@@ -111,24 +111,24 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
     }//GEN-LAST:event_jList1KeyPressed
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {  
-		world = mr.getWorld();
-        jList1.setModel(new World2ListModelAdapter(mr.getWorld(), KEY.TRAINS, mr.getPlayerPrincipal()));
+    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+        world = mr.getWorld();
+        jList1.setModel(new World2ListModelAdapter(mr.getWorld(), KEY.TRAINS, mr.getPrincipal()));
         TrainViewJPanel trainView =
         new TrainViewJPanel(mr);
-        jList1.setCellRenderer(trainView);       
-		trainView.setHeight(trainViewHeight);               
+        jList1.setCellRenderer(trainView);
+        trainView.setHeight(trainViewHeight);
         ActionListener[] oldListeners = closeJButton.getActionListeners();
         for(int i = 0; i < oldListeners.length; i ++){
             closeJButton.removeActionListener(oldListeners[i]);
         }
         closeJButton.addActionListener(submitButtonCallBack);
-		principal = mr.getPlayerPrincipal();
+        principal = mr.getPrincipal();
     }
     
-    void setShowTrainDetailsActionListener(ActionListener l){        
-       showTrainDetails = l;
-       
+    void setShowTrainDetailsActionListener(ActionListener l){
+        showTrainDetails = l;
+        
     }
     
     
@@ -136,7 +136,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     private ActionListener showTrainDetails = new ActionListener(){
         public void actionPerformed(ActionEvent arg0) {
             System.out.println(jList1.getSelectedIndex());
-	}
+        }
     };
     
     int getSelectedTrainID(){
@@ -145,16 +145,16 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     
     /** When the train list is shown on a tab we don't want the buttons.*/
     void removeButtons(){
-		this.removeAll();
-		
-		java.awt.GridBagConstraints gridBagConstraints;			 
-		setLayout(new java.awt.GridBagLayout());
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.weighty = 1.0;
-		add(jScrollPane1, gridBagConstraints);
-    	
+        this.removeAll();
+        
+        java.awt.GridBagConstraints gridBagConstraints;
+        setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jScrollPane1, gridBagConstraints);
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -163,31 +163,31 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton showDetails;
     // End of variables declaration//GEN-END:variables
-
-	private int trainViewHeight= 50;
     
-	
-	public void setVisible(boolean aFlag) {		
-		if(aFlag  && null != world){
-			//jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
-		}
-		super.setVisible(aFlag);
-	}
-	
-	public void setTrainViewHeight(int trainViewHeight) {
-		this.trainViewHeight = trainViewHeight;
-	}
-	
-	public void paint(Graphics g) {
-		if(null!=world){
-			int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
-			if(newNumberOfTrains != this.lastNumberOfTrains){
-				jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
-				lastNumberOfTrains = newNumberOfTrains;								
-			}					
-		}	
-		super.paint(g);
-		
-	}
-
+    private int trainViewHeight= 50;
+    
+    
+    public void setVisible(boolean aFlag) {
+        if(aFlag  && null != world){
+            //jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
+        }
+        super.setVisible(aFlag);
+    }
+    
+    public void setTrainViewHeight(int trainViewHeight) {
+        this.trainViewHeight = trainViewHeight;
+    }
+    
+    public void paint(Graphics g) {
+        if(null!=world){
+            int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
+            if(newNumberOfTrains != this.lastNumberOfTrains){
+                jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
+                lastNumberOfTrains = newNumberOfTrains;
+            }
+        }
+        super.paint(g);
+        
+    }
+    
 }

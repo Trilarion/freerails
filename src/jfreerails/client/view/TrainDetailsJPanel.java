@@ -19,9 +19,9 @@ import jfreerails.world.train.TrainModel;
  * @author  Luke Lindsay
  */
 public class TrainDetailsJPanel extends javax.swing.JPanel implements View, WorldListListener {
-
-
-    private ReadOnlyWorld w;    
+    
+    
+    private ReadOnlyWorld w;
     
     private FreerailsPrincipal principal;
     
@@ -32,7 +32,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
      */
     private int bundleID = -1;
     
-    /** Creates new form TrainDetailsJPanel */
+    
     public TrainDetailsJPanel() {
         initComponents();
     }
@@ -72,29 +72,26 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         add(trainViewJPanel1, gridBagConstraints);
 
     }//GEN-END:initComponents
-
+    
     public void setup(ModelRoot mr, java.awt.event.ActionListener submitButtonCallBack) {
-	
-       // this.sideOnTrainViewJPanel1.setup(w, vl, null);
-       // this.sideOnTrainViewJPanel1.setShowEngine(true);
-       // this.sideOnTrainViewJPanel1.scaledImageHeight=30;
+        
         this.trainViewJPanel1.setup(mr, submitButtonCallBack);
         trainViewJPanel1.setHeight(30);
-         trainViewJPanel1.setCenterTrain(true);
+        trainViewJPanel1.setCenterTrain(true);
         this.w = mr.getWorld();
-		principal = mr.getPlayerPrincipal();
-    }    
+        principal = mr.getPrincipal();
+    }
     
     public void displayTrain(int trainNumber){
-    	
-    	this.trainNumber = trainNumber;
+        
+        this.trainNumber = trainNumber;
         
         trainViewJPanel1.display(trainNumber);
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         
         this.bundleID = train.getCargoBundleNumber();
         
-
+        
         for(int i = 0 ; i < train.getNumberOfWagons() ; i++ ){
             //this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
         }
@@ -110,7 +107,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
                     s+="; ";
                 }
                 numberOfTypesInBundle++;
-               
+                
                 s+= cargoTypeName+" ("+amount+")";
             }
         }
@@ -120,27 +117,27 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         s+=".";
         this.jLabel1.setText(s);
     }
+    
+    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         
-	public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
-		
-		if(KEY.TRAINS == key && index == trainNumber){
-			//The train has been updated.
-			this.displayTrain(this.trainNumber);
-		}else if(KEY.CARGO_BUNDLES == key && index == bundleID){ 
-			//The train's cargo has changed.
-			this.displayTrain(this.trainNumber);
-		}			
-		trainViewJPanel1.listUpdated(key, index,p);
-	}
-
-	public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
-		trainViewJPanel1.itemAdded(key, index,p);
-	}
-
-	public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
-	    trainViewJPanel1.itemRemoved(key, index,p);
-	}
-                
+        if(KEY.TRAINS == key && index == trainNumber){
+            //The train has been updated.
+            this.displayTrain(this.trainNumber);
+        }else if(KEY.CARGO_BUNDLES == key && index == bundleID){
+            //The train's cargo has changed.
+            this.displayTrain(this.trainNumber);
+        }
+        trainViewJPanel1.listUpdated(key, index,p);
+    }
+    
+    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
+        trainViewJPanel1.itemAdded(key, index,p);
+    }
+    
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
+        trainViewJPanel1.itemRemoved(key, index,p);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private jfreerails.client.view.TrainViewJPanel trainViewJPanel1;

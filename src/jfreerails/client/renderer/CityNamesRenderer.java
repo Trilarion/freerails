@@ -15,8 +15,11 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 
 
+/** Paints the city names on the map.
+ * @author Scott
+ */
 public class CityNamesRenderer implements Painter {
-    private ReadOnlyWorld w;
+    private final ReadOnlyWorld w;
 
     public CityNamesRenderer(ReadOnlyWorld world) {
         this.w = world;

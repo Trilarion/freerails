@@ -20,7 +20,8 @@
  */
 package it.unimi.dsi.fastUtil;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /** An abstract class providing basic methods for collections implementing a type-specific interface.

@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 
 /**
+ * Junit test for GameCalendar.
  * @author Luke
  *
  */

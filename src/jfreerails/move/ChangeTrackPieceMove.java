@@ -24,11 +24,21 @@ import jfreerails.world.track.TrackRule;
  */
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     final TrackPiece trackPieceBefore;
-    final TrackPiece trackPieceAfter;
-    final Point location;
+    private final TrackPiece trackPieceAfter;
+    private final Point location;
 
     public Point getLocation() {
         return location;
+    }
+
+    public int hashCode() {
+        int result;
+        result = (trackPieceBefore != null ? trackPieceBefore.hashCode() : 0);
+        result = 29 * result +
+            (trackPieceAfter != null ? trackPieceAfter.hashCode() : 0);
+        result = 29 * result + location.hashCode();
+
+        return result;
     }
 
     public TrackPiece getOldTrackPiece() {
@@ -77,8 +87,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         //Check that the current track piece at this.location is
         //the same as this.oldTrackPiece.
-        TrackPiece currentTrackPieceAtLocation = ((FreerailsTile)w.getTile(location.x,
-                location.y)).getTrackPiece();
+        TrackPiece currentTrackPieceAtLocation = w.getTile(location.x,
+                location.y).getTrackPiece();
 
         TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
         TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();
@@ -150,7 +160,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
     private void move(World w, TrackPiece oldTrackPiece,
         TrackPiece newTrackPiece) {
-        FreerailsTile oldTile = (FreerailsTile)w.getTile(location.x, location.y);
+        //FIXME why is oldTrackPiece not used???
+        FreerailsTile oldTile = w.getTile(location.x, location.y);
         int terrain = oldTile.getTerrainTypeNumber();
         FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece);
         w.setTile(location.x, location.y, newTile);
@@ -184,14 +195,14 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         //Avoid array-out-of-bounds exceptions.
         if (point.y > 0) {
-            TrackPiece tp = (TrackPiece)w.getTile(point.x, point.y - 1);
+            TrackPiece tp = w.getTile(point.x, point.y - 1);
             trackTemplateAbove = tp.getTrackGraphicNumber();
         } else {
             trackTemplateAbove = 0;
         }
 
         if ((point.y + 1) < mapSize.height) {
-            TrackPiece tp = (TrackPiece)w.getTile(point.x, point.y + 1);
+            TrackPiece tp = w.getTile(point.x, point.y + 1);
             trackTemplateBelow = tp.getTrackGraphicNumber();
         } else {
             trackTemplateBelow = 0;

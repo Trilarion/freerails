@@ -15,8 +15,8 @@ import jfreerails.client.common.ImageManager;
 */
 public class LineDrawTrackPieceView
     implements jfreerails.client.renderer.TrackPieceRenderer {
-    int[] xx = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
-    int[] yy = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
+    private int[] xx = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+    private int[] yy = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
 
     public java.awt.Image getTrackPieceIcon(int trackTemplate) {
         return null;

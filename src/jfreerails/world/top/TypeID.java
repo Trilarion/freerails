@@ -14,7 +14,6 @@ public class TypeID {
     private final int id;
     private final SKEY key;
 
-    /** Creates a new instance of TypeID */
     public TypeID(int id, SKEY key) {
         this.id = id;
         this.key = key;

@@ -1,9 +1,22 @@
 package jfreerails.world.track;
 
+/**
+ * Represents the track on a tile.
+ * @author Luke
+ */
 final public class TrackPieceImpl implements TrackPiece {
     private final TrackConfiguration configuration;
     private final TrackRule trackType;
     private final int ownerID;
+
+    public int hashCode() {
+        int result;
+        result = configuration.hashCode();
+        result = 29 * result + trackType.hashCode();
+        result = 29 * result + ownerID;
+
+        return result;
+    }
 
     public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c,
         TrackRule type, int owner) {

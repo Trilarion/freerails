@@ -9,13 +9,14 @@ package jfreerails.launcher;
 import jfreerails.server.GameServer;
 
 /**
- *
+ * The Launcher panel that lets you load a game or start a new game with a choice
+ * of maps.
  * @author rtuck99@users.sourceforge.net
  */
 class MapSelectionPanel extends javax.swing.JPanel {
-    private Launcher owner;
+    private final Launcher owner;
 
-    static final int LOAD_SAVED_GAME = 0;
+    private static final int LOAD_SAVED_GAME = 0;
     static final int START_NEW_MAP = 1;
 
     int getMapAction() {
@@ -30,7 +31,7 @@ class MapSelectionPanel extends javax.swing.JPanel {
 	return (String) jList1.getSelectedValue();
     }
 
-    /** Creates new form JPanel */
+
     MapSelectionPanel(Launcher owner) {
 	this.owner = owner;
 

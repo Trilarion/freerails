@@ -9,12 +9,11 @@ import javax.swing.JComponent;
 
 
 /**
- *
+ * A transparent JPanel that catches key presses and mouse clicks.
  * @author  lindsal8
  *
  */
 public class MyGlassPanel extends javax.swing.JPanel {
-    /** Creates new form MyGlassPanel */
     public MyGlassPanel() {
         initComponents();
     }

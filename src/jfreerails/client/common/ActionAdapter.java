@@ -18,24 +18,26 @@ import javax.swing.JToggleButton;
  * to a ButtonGroup. Listeners should listen for changes to the model and not to
  * any events from UI components, although UI components may call setAction() in
  * order to receive property change updates and to set icons etc.
+ *  @author Rob
  */
 public class ActionAdapter extends DefaultComboBoxModel {
     /**
-     * The set of actions which each button / menu item correspond to
+     * The set of actions which each button / menu item correspond to.
      */
-    private Action[] actions;
+    private final Action[] actions;
     private boolean initialised = false;
     private boolean performActionOnSetSelectedItem = true;
 
     /**
-     * The set of MappedButtonModels corresponding to the actions
+     * The set of MappedButtonModels corresponding to the actions.
      */
-    private Vector buttonModels;
+    private final Vector buttonModels;
 
     /**
-     * @param actions An array of the actions to be used. The ComboBoxModel
+     * An array of the actions to be used. The ComboBoxModel
      * objects are taken from the NAME property of the Action. The ButtonModel
      * icons are obtained from the SMALL_ICON property.
+     * @param actions
      */
     public ActionAdapter(Action[] actions) {
         super();
@@ -128,7 +130,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel
         implements PropertyChangeListener {
         /**
-         * The NAME of the Action to which this ButtonModel is mapped
+         * The NAME of the Action to which this ButtonModel is mapped.
          */
         public final String actionName;
 
@@ -151,10 +153,6 @@ public class ActionAdapter extends DefaultComboBoxModel {
         public void propertyChange(PropertyChangeEvent e) {
             setEnabled(((Action)e.getSource()).isEnabled());
         }
-    }
-
-    public boolean isPerformActionOnSetSelectedItem() {
-        return performActionOnSetSelectedItem;
     }
 
     public void setPerformActionOnSetSelectedItem(

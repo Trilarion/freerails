@@ -13,7 +13,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import jfreerails.client.renderer.StationRadiusRenderer;
-import jfreerails.client.view.ModelRoot;
+import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.StationBuildModel;
 
 
@@ -24,9 +24,9 @@ import jfreerails.client.view.StationBuildModel;
  *
  */
 public class StationTypesPopup extends JPopupMenu {
-    Point tileToBuildStationOn;
-    StationRadiusRenderer stationRadiusRenderer;
-    PopupMenuListener popupMenuListener;
+    private Point tileToBuildStationOn;
+    private StationRadiusRenderer stationRadiusRenderer;
+    private PopupMenuListener popupMenuListener;
     private StationBuildModel stationBuildModel;
 
     public StationTypesPopup() {
@@ -45,8 +45,8 @@ public class StationTypesPopup extends JPopupMenu {
         }
     }
 
-    public void setup(ModelRoot modelRoot, StationRadiusRenderer srr) {
-        stationBuildModel = modelRoot.getStationBuildModel();
+    public void setup(ActionRoot actionRoot, StationRadiusRenderer srr) {
+        stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
         this.removeAll();
         this.removePopupMenuListener(popupMenuListener);

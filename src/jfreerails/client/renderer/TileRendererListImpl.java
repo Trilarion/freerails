@@ -11,11 +11,12 @@ import jfreerails.world.top.SKEY;
 
 
 /**
-*@author           Luke Lindsay
+ * A list of TileRenderers stored in an array and created from a ArrayList.
+*@author Luke Lindsay
 *           09 October 2001
 */
 final public class TileRendererListImpl implements TileRendererList {
-    private TileRenderer[] tiles;
+    private final TileRenderer[] tiles;
 
     public TileRenderer getTileViewWithNumber(int i) {
         return tiles[i];

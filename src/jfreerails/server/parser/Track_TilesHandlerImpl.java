@@ -90,7 +90,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
         throws SAXException {
         int rGBvalue;
         String rgbString = meta.getValue("RGBvalue");
-        rGBvalue = (int)Integer.parseInt(rgbString, 16);
+        rGBvalue = Integer.parseInt(rgbString, 16);
 
         /*
          *  We need to change the format of the rgb value to the same one as used
@@ -105,14 +105,13 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
                                            .booleanValue();
         String typeName = meta.getValue("type");
         int ruleNumber = ruleList.size();
-        maxConsequ = (int)Integer.parseInt(meta.getValue(
-                    "maxConsecuativePieces"));
+        maxConsequ = Integer.parseInt(meta.getValue("maxConsecuativePieces"));
 
         String stationRadiusString = meta.getValue("stationRadius");
         int stationRadius;
 
         if (null != stationRadiusString) {
-            stationRadius = (int)Integer.parseInt(stationRadiusString);
+            stationRadius = Integer.parseInt(stationRadiusString);
         } else {
             stationRadius = 0;
         }
@@ -129,7 +128,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
     }
 
     public void end_TrackType() throws SAXException {
-        ruleList.add((Object)(new jfreerails.world.track.TrackRuleImpl(
+        ruleList.add((new jfreerails.world.track.TrackRuleImpl(
                 trackRuleProperties, legalTrackConfigurations,
                 legalTrackPlacement)));
 

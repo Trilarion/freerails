@@ -11,13 +11,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JRadioButtonMenuItem;
 import jfreerails.client.common.ActionAdapter;
-import jfreerails.client.view.ModelRoot;
+import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.TrackBuildModel;
-import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
-*
+* The menu that lets you select a track type.
 * @author  Luke Lindsay
 */
 final public class BuildMenu extends javax.swing.JMenu {
@@ -25,16 +24,15 @@ final public class BuildMenu extends javax.swing.JMenu {
     private ButtonGroup buttonGroup2;
     private TrackBuildModel trackBuildModel;
 
-    /** Creates new BuildMenu */
     public BuildMenu() {
         super();
     }
 
-    public void setup(ReadOnlyWorld w, ModelRoot modelRoot) {
+    public void setup(ActionRoot actionRoot) {
         this.removeAll();
         this.setText("Build");
         buttonGroup = new ButtonGroup();
-        trackBuildModel = modelRoot.getTrackBuildModel();
+        trackBuildModel = actionRoot.getTrackBuildModel();
 
         ActionAdapter actionAdapter = trackBuildModel.getBuildModeActionAdapter();
 
@@ -68,6 +66,6 @@ final public class BuildMenu extends javax.swing.JMenu {
         }
 
         addSeparator();
-        add(modelRoot.getBuildTrainDialogAction());
+        add(actionRoot.getBuildTrainDialogAction());
     }
 }

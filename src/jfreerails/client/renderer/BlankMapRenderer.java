@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 
+/** Used for testing the Map view components without setting up any map data.
+ * @author Luke
+ */
 public class BlankMapRenderer implements MapRenderer {
     private final float scale;
 

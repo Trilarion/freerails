@@ -3,8 +3,12 @@ package jfreerails.world.station;
 import jfreerails.world.common.FreerailsSerializable;
 
 
+/**
+ * Records which cargos are converted to other cargos at a station.
+ * @author Luke
+ */
 public class ConvertedAtStation implements FreerailsSerializable {
-    public static final int NOT_CONVERTED = Integer.MIN_VALUE;
+    private static final int NOT_CONVERTED = Integer.MIN_VALUE;
     private final int[] convertedTo;
 
     public ConvertedAtStation(int[] convertedTo) {
@@ -37,6 +41,16 @@ public class ConvertedAtStation implements FreerailsSerializable {
 
     public int getConversion(int cargoNumber) {
         return convertedTo[cargoNumber];
+    }
+
+    public int hashCode() {
+        int result = 0;
+
+        for (int i = 0; i < convertedTo.length; i++) {
+            result = 29 * result + convertedTo[i];
+        }
+
+        return result;
     }
 
     public boolean equals(Object o) {

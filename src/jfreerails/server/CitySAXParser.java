@@ -1,10 +1,3 @@
-/**
- * @author Scott Bennett
- * Date: 31st March 2003
- *
- * Class to parse an xml file that contains city names and co-ords.
- * Upon reading in the data, its stored in KEY.CITIES.
- */
 package jfreerails.server;
 
 import java.util.Vector;
@@ -16,9 +9,16 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 
+/**
+ *
+ * Class to parse an xml file that contains city names and co-ords.
+ * Upon reading in the data, its stored in KEY.CITIES.
+ * @author Scott Bennett
+ * Date: 31st March 2003
+ */
 public class CitySAXParser extends DefaultHandler {
-    private Vector cities;
-    private World world;
+    private final Vector cities;
+    private final World world;
 
     public CitySAXParser(World w) throws SAXException {
         world = w;

@@ -10,14 +10,15 @@ import jfreerails.world.top.MapFixtureFactory;
 
 
 /**
+ *  JUnit test.
  * @author Luke
  *
  */
 public class CompositeMoveTest extends AbstractMoveTestCase {
-    StationModel station1 = new StationModel(1, 1, "station1", 10, 0);
-    StationModel station2 = new StationModel(2, 3, "station2", 10, 0);
-    StationModel station3 = new StationModel(3, 3, "station3", 10, 0);
-    StationModel station4 = new StationModel(4, 4, "station4", 10, 0);
+    final StationModel station1 = new StationModel(1, 1, "station1", 10, 0);
+    final StationModel station2 = new StationModel(2, 3, "station2", 10, 0);
+    final StationModel station3 = new StationModel(3, 3, "station3", 10, 0);
+    final StationModel station4 = new StationModel(4, 4, "station4", 10, 0);
 
     public void testMove() {
         Move[] moves = new Move[4];

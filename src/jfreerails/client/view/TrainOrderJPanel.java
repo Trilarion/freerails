@@ -17,23 +17,23 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 /**
- *
+ * ListCellRenderer that displays a train order.
  * @author  Luke Lindsay
  */
 public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCellRenderer{
     
-    jfreerails.world.top.ReadOnlyWorld w;
+    private jfreerails.world.top.ReadOnlyWorld w;
     private FreerailsPrincipal principal;
     
-    ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/selected_arrow.png"));
-    ImageIcon gotoAfterPriorityOrders = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/deselected_arrow.png"));
-    ImageIcon dontGoto = null;
+    private final ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/selected_arrow.png"));
+    private final ImageIcon gotoAfterPriorityOrders = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/deselected_arrow.png"));
+    private final ImageIcon dontGoto = null;
     
-    private Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
+    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
     
-    private Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
+    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
     
-    /** Creates new form TrainOrderJPanel */
+    
     public TrainOrderJPanel() {
         initComponents();
         this.setBackground(backgoundColor);
@@ -101,7 +101,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
         trainViewJPanel.setup(mr, null);
-        this.principal = mr.getPlayerPrincipal();
+        this.principal = mr.getPrincipal();
         
     }
     

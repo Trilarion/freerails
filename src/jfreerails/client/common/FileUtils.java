@@ -2,8 +2,8 @@ package jfreerails.client.common;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 
@@ -16,6 +16,7 @@ import java.io.IOException;
  * <li>User-specific data (e.g. UI preferences)
  * <li>TODO session-specific data
  * </ul>
+ * @author Rob
  */
 public final class FileUtils {
     public static final String DATA_TYPE_PLAYER_SPECIFIC = "Player";

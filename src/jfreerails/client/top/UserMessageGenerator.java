@@ -4,6 +4,7 @@
 package jfreerails.client.top;
 
 import java.text.DecimalFormat;
+import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeGameSpeedMove;
@@ -30,14 +31,16 @@ import jfreerails.world.train.TrainModel;
  *
  */
 public class UserMessageGenerator implements MoveReceiver {
-    ModelRoot modelRoot;
-    DecimalFormat formatter = new DecimalFormat("#,###,###");
+    private ModelRoot modelRoot;
+    private ActionRoot actionRoot;
+    private final DecimalFormat formatter = new DecimalFormat("#,###,###");
 
-    public UserMessageGenerator(ModelRoot mr) {
-        if (null == mr) {
+    public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
+        if (null == mr || null == actionRoot) {
             throw new NullPointerException();
         }
 
+        this.actionRoot = actionRoot;
         this.modelRoot = mr;
     }
 
@@ -46,7 +49,7 @@ public class UserMessageGenerator implements MoveReceiver {
         if (move instanceof TransferCargoAtStationMove) {
             TransferCargoAtStationMove transferCargoAtStationMove = (TransferCargoAtStationMove)move;
             long revenue = transferCargoAtStationMove.getRevenue().getAmount();
-            FreerailsPrincipal playerPrincipal = modelRoot.getPlayerPrincipal();
+            FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
             boolean positiveRevenue = 0 < revenue;
             boolean isRightPlayer = transferCargoAtStationMove.getPrincipal()
                                                               .equals(playerPrincipal);
@@ -100,7 +103,7 @@ public class UserMessageGenerator implements MoveReceiver {
                 }
 
                 message += "$" + formatter.format(revenue);
-                modelRoot.getUserMessageLogger().println(message);
+                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE, message);
             }
         } else if (move instanceof ChangeGameSpeedMove) {
             logSpeed();
@@ -112,20 +115,20 @@ public class UserMessageGenerator implements MoveReceiver {
         int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
 
         if (gameSpeed <= 0) {
-            modelRoot.getUserMessageLogger().showMessage("Game is paused.");
+            modelRoot.setProperty(ModelRoot.PERMANENT_MESSAGE, "Game is paused.");
 
             /* Also hide any other message.  It looks silly if it says
              * "Game is paused." and "Game speed: fast" on screen at the same
              * time!
              */
-            modelRoot.getUserMessageLogger().println("");
+            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE, "");
         } else {
-            modelRoot.getUserMessageLogger().hideMessage();
+            modelRoot.setProperty(ModelRoot.PERMANENT_MESSAGE, null);
 
-            String gameSpeedDesc = modelRoot.getServerControls()
-                                            .getGameSpeedDesc(gameSpeed);
-            modelRoot.getUserMessageLogger().println("Game speed: " +
-                gameSpeedDesc);
+            String gameSpeedDesc = actionRoot.getServerControls()
+                                             .getGameSpeedDesc(gameSpeed);
+            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                "Game speed: " + gameSpeedDesc);
         }
     }
 }

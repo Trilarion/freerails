@@ -1,15 +1,14 @@
-/**
- *
- * @author Scott Bennett
- * Date: 14 May 2003
- *
- * Small data object to store the rate of supply of a cargo
- */
 package jfreerails.controller;
 
+
+/**
+ * Small data object to store the rate of supply of a cargo.
+ * @author Scott Bennett
+ * Date: 14 May 2003
+ */
 public class CargoElementObject {
     private int rate;
-    private int type;
+    private final int type;
 
     public CargoElementObject(int rate, int type) {
         this.rate = rate;

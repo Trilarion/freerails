@@ -18,16 +18,16 @@ import jfreerails.client.common.RepaintManagerForActiveRendering;
  *
  */
 public class BufferedJPanel extends JPanel {
-    protected GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                              .getDefaultScreenDevice()
-                                                                              .getDefaultConfiguration();
+    private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                            .getDefaultScreenDevice()
+                                                                            .getDefaultConfiguration();
     private Image buffer;
     private Dimension bufferSize;
-    boolean bufferNeedsPainting = true;
+    private boolean bufferNeedsPainting = true;
     private long lastEventsDispatched = 0;
-    long bufferRepaints;
-    long bufferUsed;
-    long paints;
+    private long bufferRepaints;
+    private long bufferUsed;
+    private long paints;
 
     protected void paintComponent(Graphics g) {
         if (null == buffer) {

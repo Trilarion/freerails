@@ -8,7 +8,8 @@ import jfreerails.world.train.TrainPositionOnMap;
 
 
 /**
- * Initialises the trains position
+ * Initialises the trains position.
+ * @author Luke
  */
 public class InitialiseTrainPositionMove implements Move {
     private final TrainPositionOnMap newPosition;

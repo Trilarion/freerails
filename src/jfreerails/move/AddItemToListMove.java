@@ -17,20 +17,30 @@ import jfreerails.world.top.World;
  *
  */
 public class AddItemToListMove implements ListMove {
-    final KEY listKey;
-    final int index;
-    final FreerailsPrincipal principal;
-    protected final FreerailsSerializable item;
+    private final KEY listKey;
+    private final int index;
+    private final FreerailsPrincipal principal;
+    private final FreerailsSerializable item;
 
     public int getIndex() {
         return index;
+    }
+
+    public int hashCode() {
+        int result;
+        result = listKey.hashCode();
+        result = 29 * result + index;
+        result = 29 * result + principal.hashCode();
+        result = 29 * result + (item != null ? item.hashCode() : 0);
+
+        return result;
     }
 
     public KEY getKey() {
         return listKey;
     }
 
-    protected AddItemToListMove(KEY key, int i, FreerailsSerializable item,
+    AddItemToListMove(KEY key, int i, FreerailsSerializable item,
         FreerailsPrincipal p) {
         this.listKey = key;
         this.index = i;

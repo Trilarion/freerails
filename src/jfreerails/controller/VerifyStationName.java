@@ -1,12 +1,3 @@
-/**
- * @author Scott Bennett
- *
- * Date: 12th April 2003
- *
- * Class to verify that the chosen name for a station hasn't already been taken by another station. If the name
- * has been used, a minor alteration in the name is required, by adding perhaps "Junction" or "Siding" to the name.
- *
- */
 package jfreerails.controller;
 
 import java.util.Vector;
@@ -18,10 +9,19 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 
 
+/**
+ * Class to verify that the chosen name for a station hasn't already been taken by another station. If the name
+ * has been used, a minor alteration in the name is required, by adding perhaps "Junction" or "Siding" to the name.
+ *
+ * @author Scott Bennett
+ *
+ * Date: 12th April 2003
+ *
+ */
 public class VerifyStationName {
-    private ReadOnlyWorld w;
-    private String nameToVerify;
-    private Vector stationAlternatives;
+    private final ReadOnlyWorld w;
+    private final String nameToVerify;
+    private final Vector stationAlternatives;
 
     public VerifyStationName(ReadOnlyWorld world, String name) {
         this.w = world;
@@ -74,7 +74,7 @@ public class VerifyStationName {
         }
     }
 
-    public boolean checkStationExists(String name) {
+    private boolean checkStationExists(String name) {
         String testName = name;
         StationModel tempStation;
 

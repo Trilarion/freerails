@@ -209,7 +209,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         assertEquals(emptyCargoBundle, getCargoOnTrain());
     }
 
-    /** Tests that a train does not drop cargo off at its station of origin unless it has to*/
+    /** Tests that a train does not drop cargo off at its station of origin unless it has to.*/
     public void testDontDropOffCargo() {
         //Set station to
         getCargoOnTrain().setAmount(cargoType0FromStation0, 50);
@@ -275,13 +275,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         addWagons(new int[] {});
     }
 
-    private TrainModel addWagons(int[] wagons) {
+    private void addWagons(int[] wagons) {
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
         TrainModel newTrain = train.getNewInstance(train.getEngineType(), wagons);
         w.set(KEY.TRAINS, 0, newTrain, MapFixtureFactory.TEST_PRINCIPAL);
-
-        return newTrain;
     }
 
     private void stopAtStation() {
@@ -302,7 +300,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         return cargoAtStation;
     }
 
-    /** Retrieves the cargo bundle that the train is carrying from the world object */
+    /** Retrieves the cargo bundle that the train is carrying from the world object. */
     private CargoBundle getCargoOnTrain() {
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
@@ -316,7 +314,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         junit.textui.TestRunner.run(suite());
     }
 
-    public static junit.framework.Test suite() {
+    private static junit.framework.Test suite() {
         junit.framework.TestSuite testSuite = new junit.framework.TestSuite(DropOffAndPickupCargoMoveGeneratorTest.class);
 
         return testSuite;

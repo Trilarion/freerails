@@ -30,7 +30,7 @@ public class TrainMaintenanceMoveGenerator {
         this.moveReceiver = mr;
     }
 
-    public static AddTransactionMove generateMove(World w,
+    private static AddTransactionMove generateMove(World w,
         FreerailsPrincipal principal) {
         NonNullElements trains = new NonNullElements(KEY.TRAINS, w, principal);
         int numberOfTrains = trains.size();

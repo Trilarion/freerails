@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 /**
- * 30-Nov-2002
+ * Tags classes that the server may need to save but which won't be sent to clients.
  * @author Luke Lindsay
  *
  */

@@ -3,12 +3,23 @@ package jfreerails.world.common;
 
 /**
  * This class defines a straight line between two points. Units are arbitrary.
+ * @author Luke
  */
 public class IntLine implements FreerailsSerializable {
     public int x1;
     public int x2;
     public int y1;
     public int y2;
+
+    public int hashCode() {
+        int result;
+        result = x1;
+        result = 29 * result + x2;
+        result = 29 * result + y1;
+        result = 29 * result + y2;
+
+        return result;
+    }
 
     /**
      * @return the length of the line
@@ -33,7 +44,7 @@ public class IntLine implements FreerailsSerializable {
     }
 
     /**
-     * Default constructor - defines a dot at 0,0
+     * Default constructor - defines a dot at 0,0.
      */
     public IntLine() {
     }

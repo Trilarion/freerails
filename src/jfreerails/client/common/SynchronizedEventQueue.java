@@ -15,10 +15,10 @@ import java.awt.Toolkit;
  */
 final public class SynchronizedEventQueue extends EventQueue {
     public static final Object MUTEX = new Object();
-    private static SynchronizedEventQueue instance = new SynchronizedEventQueue();
+    private static final SynchronizedEventQueue instance = new SynchronizedEventQueue();
     private static boolean alreadyInUse = false;
 
-    /** Enforce singleton property */
+    /** Enforce singleton property. */
     private SynchronizedEventQueue() {
     }
 

@@ -14,7 +14,7 @@ import jfreerails.world.common.FreerailsSerializable;
 public class Production implements FreerailsSerializable {
     private final int cargoType;
 
-    /** The number of units per year (40 units = 1 car load) */
+    /** The number of units per year (40 units = 1 car load). */
     private final int rate;
 
     public Production(int type, int rate) {

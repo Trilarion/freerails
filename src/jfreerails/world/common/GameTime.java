@@ -17,6 +17,10 @@ public class GameTime implements FreerailsSerializable {
         return "GameTime:" + String.valueOf(time);
     }
 
+    public int hashCode() {
+        return time;
+    }
+
     public GameTime(int l) {
         this.time = l;
     }

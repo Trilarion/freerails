@@ -7,7 +7,7 @@ import jfreerails.world.common.OneTileMoveVector;
 
 
 /**
-*  Description of the Interface
+* Defines methods to access the properties of a track type.
 *
 *@author     Luke Lindsay
 *     09 October 2001

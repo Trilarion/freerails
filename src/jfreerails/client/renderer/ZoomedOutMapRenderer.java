@@ -50,9 +50,9 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     private BufferedImage mapImage;
     private final AffineTransform affineTransform;
     private Graphics2D mapGraphics;
-    protected GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                              .getDefaultScreenDevice()
-                                                                              .getDefaultConfiguration();
+    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                                                                  .getDefaultScreenDevice()
+                                                                                  .getDefaultConfiguration();
 
     public static ZoomedOutMapRenderer getInstance(ReadOnlyWorld world,
         Dimension maxSize) {
@@ -74,7 +74,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
             world.getMapWidth(), world.getMapHeight());
     }
 
-    public ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
+    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
         int mapX, int mapY, int mapWidth, int mapHeight) {
         w = world;
         this.mapWidth = mapWidth;
@@ -98,10 +98,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
         g.drawImage(mapImage, 0, 0, null);
     }
 
-    /**
-     * @param tile
-     *            map coords of tile to draw
-     */
     private void refreshTile(Point tile) {
         int rgb;
         FreerailsTile tt = w.getTile(tile.x, tile.y);
@@ -128,7 +124,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     /**
-     * redraw the whole map onto a new buffer
+     * Redraw the whole map onto a new buffer.
      */
     private void refresh() {
         /* free up memory used by the old image */

@@ -26,6 +26,15 @@ final public class TrackRuleImpl implements TrackRule {
     private final LegalTrackConfigurations legalConfigurations;
     private final LegalTrackPlacement legalTrackPlacement;
 
+    public int hashCode() {
+        int result;
+        result = properties.hashCode();
+        result = 29 * result + legalConfigurations.hashCode();
+        result = 29 * result + legalTrackPlacement.hashCode();
+
+        return result;
+    }
+
     /*
      *  Track templates are 9 bit values, so there are 512 possible templates.
      *  If legalTrackTemplate[x]==true, then x is a legal track-template.

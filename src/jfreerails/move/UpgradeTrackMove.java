@@ -18,7 +18,7 @@ import jfreerails.world.track.TrackPiece;
  *
  */
 public class UpgradeTrackMove extends CompositeMove implements TrackMove {
-    public UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
+    private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
         super(new Move[] {trackMove});
     }
 

@@ -11,10 +11,9 @@ import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.SourcedMoveReceiver;
+import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
-import jfreerails.move.Move;
 import jfreerails.move.TimeTickMove;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
@@ -39,27 +38,27 @@ import jfreerails.world.top.World;
 public class ServerGameEngine implements GameModel, Runnable {
     /**
      * Objects that run as part of the server should use this object as the
-     * destination for moves, rather than queuedMoveReceiver
+     * destination for moves, rather than queuedMoveReceiver.
      */
     private final AuthoritativeMoveExecuter moveExecuter;
     private final QueuedMoveReceiver queuedMoveReceiver;
-    private World world;
+    private final World world;
     private final MoveChainFork moveChainFork;
-    private CalcSupplyAtStations calcSupplyAtStations;
-    TrainBuilder tb;
-    private IdentityProvider identityProvider;
+    private final CalcSupplyAtStations calcSupplyAtStations;
+    private final TrainBuilder tb;
+    private final IdentityProvider identityProvider;
 
     /**
-     * List of the ServerAutomaton objects connected to this game
+     * List of the ServerAutomaton objects connected to this game.
      */
-    private Vector serverAutomata;
+    private final Vector serverAutomata;
 
     /**
-     * Number of ticks since the last time we did an infrequent update
+     * Number of ticks since the last time we did an infrequent update.
      */
     private int ticksSinceUpdate = 0;
     private long nextModelUpdateDue = System.currentTimeMillis();
-    ArrayList trainMovers = new ArrayList();
+    private ArrayList trainMovers = new ArrayList();
     private int currentYearLastTick = -1;
     private int currentMonthLastTick = -1;
     private boolean keepRunning = true;
@@ -74,7 +73,7 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     /**
-     * Start a game on a new instance of a named map
+     * Start a game on a new instance of a named map.
      */
     public ServerGameEngine(String mapName, FreerailsProgressMonitor pm) {
         this(new ArrayList(), OldWorldImpl.createWorldFromMapFile(mapName, pm),
@@ -82,7 +81,7 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     /**
-     * Starts a game with the specified world state
+     * Starts a game with the specified world state.
      * @param trainMovers ArrayList of TrainMover objects.
      * @param serverAutomata Vector of ServerAutomaton representing internal
      * clients of this game.
@@ -129,7 +128,7 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     /**
-     * Exit the game loop
+     * Exit the game loop.
      */
     public void stop() {
         keepRunning = false;
@@ -288,8 +287,6 @@ public class ServerGameEngine implements GameModel, Runnable {
     private void moveTrains() {
         int deltaDistance = 5;
 
-        Move m = null;
-
         Iterator i = trainMovers.iterator();
 
         while (i.hasNext()) {
@@ -303,7 +300,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         moveExecuter.processMove(TimeTickMove.getMove(world));
     }
 
-    public void addTrainMover(TrainMover m) {
+    private void addTrainMover(TrainMover m) {
         trainMovers.add(m);
     }
 
@@ -338,7 +335,7 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     /**
-     * load a game from a saved position
+     * Load a game.
      */
     public static ServerGameEngine loadGame() {
         ServerGameEngine engine = null;
@@ -381,7 +378,7 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @return Returns a moveReceiver - moves are submitted from clients to the
      * ServerGameEngine via this.
      */
-    public SourcedMoveReceiver getMoveExecuter() {
+    public MoveReceiver getMoveExecuter() {
         return queuedMoveReceiver;
     }
 

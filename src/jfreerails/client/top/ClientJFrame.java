@@ -10,23 +10,19 @@ import javax.swing.JPanel;
 
 
 /**
- *
+ *  The JFrame that you see while you are playing the game.
  * @author  Luke
  */
 public class ClientJFrame extends javax.swing.JFrame {
     
     private GUIComponentFactory gUIComponentFactory;
-    
-    public ClientJFrame(){
-        
-    }
-    
-    /** Creates new form ClientJFrame */
+
+    /** Creates new form ClientJFrame. */
     public ClientJFrame(GUIComponentFactory gcf) {
         setup(gcf);
     }
     
-    public void setup(GUIComponentFactory gcf) {
+    private void setup(GUIComponentFactory gcf) {
         this.gUIComponentFactory=gcf;
         initComponents();
         //jSplitPane1.resetToPreferredSizes();
@@ -132,14 +128,11 @@ public class ClientJFrame extends javax.swing.JFrame {
         pack();
     }//GEN-END:initComponents
     
-    /** Exit the Application */
+    /** Exit the Application. */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         System.exit(0);
     }//GEN-LAST:event_exitForm
-    
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         new ClientJFrame(new GUIComponentFactoryTestImpl()).show();
     }

@@ -22,7 +22,7 @@ public class ChangeTrainPositionMove implements Move {
     private final TrainPositionOnMap changeToTail;
     private final boolean addToHead;
     private final boolean addToTail;
-    final int trainPositionNumber;
+    private final int trainPositionNumber;
     private final FreerailsPrincipal principal;
 
     public ChangeTrainPositionMove(TrainPositionOnMap pieceToAdd,
@@ -142,7 +142,8 @@ public class ChangeTrainPositionMove implements Move {
         return move(w, updateTrainPosition, isDoMove);
     }
 
-    MoveStatus move(World w, boolean updateTrainPosition, boolean isDoMove) {
+    private MoveStatus move(World w, boolean updateTrainPosition,
+        boolean isDoMove) {
         boolean localAddToHead;
         boolean localAddToTail;
 

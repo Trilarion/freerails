@@ -7,6 +7,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 
+/**
+ * Defines methods that create the GUI components used by the game.
+ * @author Luke
+ */
 public interface GUIComponentFactory {
     JPanel createOverviewMap();
 

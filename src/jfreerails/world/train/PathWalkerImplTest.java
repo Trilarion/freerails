@@ -8,6 +8,9 @@ import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 
+/** JUnit test.
+ * @author Luke
+ */
 public class PathWalkerImplTest extends TestCase {
     FreerailsPathIterator it;
     PathWalker pw;
@@ -119,21 +122,6 @@ public class PathWalkerImplTest extends TestCase {
         pw = new PathWalkerImpl(it2);
         pw.stepForward(100);
         assertTrue(!pw.hasNext());
-    }
-
-    public void testStepForward() {
-    }
-
-    /*
-     * Test for FreerailsPathIterator stepForward()
-     */
-    public void testNextSegment() {
-    }
-
-    /*
-     * Test for FreerailsPathIterator stepForward(int)
-     */
-    public void testStepForwardI() {
     }
 
     public void setup() {

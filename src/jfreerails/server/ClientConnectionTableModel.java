@@ -13,9 +13,11 @@ import jfreerails.world.player.Player;
  * Table model which represents currently connected clients.
  * Connection states are described as follows:
  * <ol>
+ * @author rob
+ *  @author Luke
  */
 class ClientConnectionTableModel extends DefaultTableModel {
-    private ServerGameController gameController;
+    private final ServerGameController gameController;
 
     public ClientConnectionTableModel(ServerGameController sgc) {
         super(new String[] {"Client address", "State", "Player"}, 0);

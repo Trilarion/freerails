@@ -6,6 +6,7 @@ package jfreerails.world.train;
 
 
 /**
+ * Defines methods to access a train's Schdule.
  * @author Luke Lindsay
  *
  */

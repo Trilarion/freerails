@@ -14,7 +14,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
-*
+* Looks to see whether the tiles to the left and right of the same type
+ * when deciding which tile icon to use.
 * @author  Luke Lindsay
 */
 final public class ForestStyleTileRenderer

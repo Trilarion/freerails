@@ -10,7 +10,7 @@ import jfreerails.world.top.World;
 /**
  *
  *  Changes the time item on the world object.
- *
+ * @author rob
  */
 public class TimeTickMove implements Move {
     private GameTime oldTime = null;
@@ -25,7 +25,7 @@ public class TimeTickMove implements Move {
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (((GameTime)w.get(ITEM.TIME)).equals(oldTime)) {
+        if (w.get(ITEM.TIME).equals(oldTime)) {
             return MoveStatus.MOVE_OK;
         } else {
             String string = "oldTime = " + oldTime.getTime() + " <=> " +

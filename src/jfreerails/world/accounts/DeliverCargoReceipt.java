@@ -8,7 +8,7 @@ import jfreerails.world.common.Money;
 
 
 /**
- *
+ *  A credit for delivering cargo.
  *  @author Luke
  *
  */

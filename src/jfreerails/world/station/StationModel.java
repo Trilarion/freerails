@@ -25,6 +25,21 @@ public class StationModel implements FreerailsSerializable {
         return converted;
     }
 
+    public int hashCode() {
+        int result;
+        result = x;
+        result = 29 * result + y;
+        result = 29 * result + (name != null ? name.hashCode() : 0);
+        result = 29 * result + (supply != null ? supply.hashCode() : 0);
+        result = 29 * result + (demand != null ? demand.hashCode() : 0);
+        result = 29 * result + (converted != null ? converted.hashCode() : 0);
+        result = 29 * result + cargoBundleNumber;
+        result = 29 * result +
+            (production != null ? production.hashCode() : 0);
+
+        return result;
+    }
+
     public StationModel(StationModel s, ConvertedAtStation converted) {
         this.converted = converted;
 

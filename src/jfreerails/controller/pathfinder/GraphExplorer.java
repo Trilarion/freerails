@@ -21,7 +21,7 @@ public interface GraphExplorer {
     /** Returns the vertex that is connected to the current vertex by the current edge. */
     int getVertexConnectedByEdge();
 
-    /** Returns the length of the current edge        */
+    /** Returns the length of the current edge.        */
     int getEdgeLength();
 
     boolean hasNextEdge();

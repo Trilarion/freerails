@@ -16,7 +16,7 @@ import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 
 /**
- *
+ * JPanel that displays info on a train, composed of a {@link TrainScheduleJPanel} and {@link TrainDetailsJPanel}.
  * @author  Luke Lindsay
  */
 public class TrainDialogueJPanel extends javax.swing.JPanel implements View, WorldListListener {
@@ -25,7 +25,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     private ReadOnlyWorld w;
     private FreerailsPrincipal principal;
     
-    /** Creates new form TrainDialogueJPanel */
+    
     public TrainDialogueJPanel() {
         initComponents();
     }
@@ -126,7 +126,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         newTrainScheduleJPanel1.setup(mr, al);
         trainDetailsJPanel1.setup(mr, al);
         this.setCancelButtonActionListener(al);
-        this.principal = mr.getPlayerPrincipal();
+        this.principal = mr.getPrincipal();
         this.w = mr.getWorld();
     }
     
@@ -156,11 +156,11 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     
     public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
     }
-
+    
     public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
     }
     
-     
+    
     void setTrainDetailsButtonActionListener(ActionListener l){
         ActionListener[] oldListeners = trainListJButton.getActionListeners();
         for(int i = 0; i < oldListeners.length; i++){
@@ -169,9 +169,9 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         this.trainListJButton.addActionListener(l);
     }
     
-     /** Removes any existing ActionListener listeners from the cancel button, then 
+    /** Removes any existing ActionListener listeners from the cancel button, then
      *adds the specifed one.
-     */ 
+     */
     void setCancelButtonActionListener(ActionListener l){
         ActionListener[] oldListeners = closeJButton.getActionListeners();
         for(int i = 0; i < oldListeners.length; i++){

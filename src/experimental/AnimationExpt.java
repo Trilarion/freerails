@@ -3,8 +3,8 @@ package experimental;
 import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import jfreerails.client.top.GameLoop;
 import jfreerails.client.common.ScreenHandler;
+import jfreerails.client.top.GameLoop;
 
 
 /** This class tests that the game loop and screen handler are working correctly.  All it does is display

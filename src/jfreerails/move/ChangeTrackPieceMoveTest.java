@@ -19,8 +19,9 @@ import jfreerails.world.track.TrackRule;
 
 
 /**
+ *  JUnit test.
+ * @author Luke
  *
- * @author lindsal
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     public ChangeTrackPieceMoveTest(String testName) {
@@ -55,7 +56,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
+        oldTrackPiece = getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig, 0);
@@ -110,7 +111,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
+        oldTrackPiece = getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig, 0);
@@ -137,7 +138,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
+        oldTrackPiece = getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig, 0);

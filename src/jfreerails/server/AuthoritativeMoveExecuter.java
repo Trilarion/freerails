@@ -2,7 +2,6 @@ package jfreerails.server;
 
 import java.util.LinkedList;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.RejectedMove;
@@ -14,11 +13,12 @@ import jfreerails.world.top.World;
 /**
  * A move executer which has the authority to reject moves
  * outright.
+ * @author rob
  */
-class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
+class AuthoritativeMoveExecuter implements MoveReceiver {
     private static final int MAX_UNDOS = 10;
-    protected final World world;
-    protected final MoveReceiver moveReceiver;
+    private final World world;
+    private final MoveReceiver moveReceiver;
     private final LinkedList moveStack = new LinkedList();
 
     public AuthoritativeMoveExecuter(World w, MoveReceiver mr) {
@@ -65,9 +65,6 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
         forwardMove(move, ms);
     }
 
-    /**
-     * @see MoveReceiver#processMove(Move)
-     */
     public void processMove(Move move) {
         /* TODO
         processMove(move, move.getPrincipal());

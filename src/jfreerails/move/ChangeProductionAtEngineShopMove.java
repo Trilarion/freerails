@@ -20,10 +20,20 @@ import jfreerails.world.top.World;
  *
  */
 public class ChangeProductionAtEngineShopMove implements Move {
-    final ProductionAtEngineShop before;
-    final ProductionAtEngineShop after;
-    final int stationNumber;
-    final FreerailsPrincipal principal;
+    private final ProductionAtEngineShop before;
+    private final ProductionAtEngineShop after;
+    private final int stationNumber;
+    private final FreerailsPrincipal principal;
+
+    public int hashCode() {
+        int result;
+        result = (before != null ? before.hashCode() : 0);
+        result = 29 * result + (after != null ? after.hashCode() : 0);
+        result = 29 * result + stationNumber;
+        result = 29 * result + principal.hashCode();
+
+        return result;
+    }
 
     public ChangeProductionAtEngineShopMove(ProductionAtEngineShop b,
         ProductionAtEngineShop a, int station, FreerailsPrincipal p) {

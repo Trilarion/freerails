@@ -1,10 +1,10 @@
 package jfreerails.client.view;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.awt.Point;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.event.MouseInputAdapter;
 import jfreerails.client.renderer.StationRadiusRenderer;
 
@@ -26,13 +26,14 @@ import jfreerails.client.renderer.StationRadiusRenderer;
  * When the StationBuildAction is no longer enabled, the owner reverts to the
  * regular cursor type.
  * TODO scroll the area when the mouse hovers at the edge of the map.
+ * @author rob
  */
 public class StationPlacementCursor extends MouseInputAdapter {
     private boolean buildEnabled;
-    private MapViewJComponent mapView;
-    private StationRadiusRenderer stationRadiusRenderer;
-    private StationBuildModel stationBuildModel;
-    private float scale;
+    private final MapViewJComponent mapView;
+    private final StationRadiusRenderer stationRadiusRenderer;
+    private final StationBuildModel stationBuildModel;
+    private final float scale;
 
     public void mouseMoved(MouseEvent e) {
         if (stationBuildModel.isPositionFollowsMouse()) {
@@ -65,7 +66,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
         stationRadiusRenderer.hide();
     }
 
-    private PropertyChangeListener buildActionListener = new PropertyChangeListener() {
+    private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent e) {
                 if (e.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
                     /* update the renderer pos */
@@ -101,11 +102,11 @@ public class StationPlacementCursor extends MouseInputAdapter {
             }
         };
 
-    public StationPlacementCursor(ModelRoot mr, StationRadiusRenderer srr,
-        MapViewJComponent mapView) {
+    public StationPlacementCursor(ActionRoot actionRoot,
+        StationRadiusRenderer srr, MapViewJComponent mapView) {
         scale = mapView.getScale();
         this.mapView = mapView;
-        stationBuildModel = mr.getStationBuildModel();
+        stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
         buildEnabled = stationBuildModel.getStationBuildAction().isEnabled();
 

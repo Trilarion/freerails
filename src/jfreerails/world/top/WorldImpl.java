@@ -25,14 +25,21 @@ public class WorldImpl implements World {
     private static final boolean debug = (System.getProperty(
             "jfreerails.world.top.WorldImpl.debug") != null);
 
+    public int hashCode() {
+        int result;
+        result = players.size();
+
+        return result;
+    }
+
     /**
- * An array of ArrayList indexed by keyNumber.
- * If the key is shared, then the ArrayList consists of instances of the
- * class corresponding to the KEY type. Otherwise, the ArrayList is
- * indexed by Player index, and contains instances of ArrayList
- * which themselves contain instances of the class corresponding to the
- * KEY type.
- */
+    * An array of ArrayList indexed by keyNumber.
+    * If the key is shared, then the ArrayList consists of instances of the
+    * class corresponding to the KEY type. Otherwise, the ArrayList is
+    * indexed by Player index, and contains instances of ArrayList
+    * which themselves contain instances of the class corresponding to the
+    * KEY type.
+    */
     private final ArrayList players = new ArrayList();
     private final ArrayList bankAccounts = new ArrayList();
     private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
@@ -67,7 +74,7 @@ public class WorldImpl implements World {
         }
     }
 
-    public void setupLists() {
+    private void setupLists() {
         for (int i = 0; i < lists.length; i++) {
             lists[i] = new ArrayList();
         }
@@ -250,26 +257,17 @@ public class WorldImpl implements World {
     }
 
     public FreerailsSerializable get(ITEM item) {
-        return get(item, Player.NOBODY);
-    }
-
-    public FreerailsSerializable get(ITEM item, FreerailsPrincipal p) {
         return items[item.getKeyNumber()];
     }
 
     public void set(ITEM item, FreerailsSerializable element) {
-        set(item, element, Player.NOBODY);
-    }
-
-    public void set(ITEM item, FreerailsSerializable element,
-        FreerailsPrincipal p) {
         items[item.getKeyNumber()] = element;
     }
 
     /**
- * @param player Player to add    
- * @return index of the player
- */
+    * @param player Player to add
+    * @return index of the player
+    */
     public int addPlayer(Player player) {
         if (null == player) {
             throw new NullPointerException();

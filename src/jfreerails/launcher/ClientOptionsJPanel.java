@@ -8,15 +8,17 @@ package jfreerails.launcher;
 
 import java.awt.DisplayMode;
 
+import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.view.DisplayModesComboBoxModels;
 import jfreerails.client.view.MyDisplayMode;
-import jfreerails.client.common.ScreenHandler;
 /**
+ * The  Launcher panel that lets you choose fullscreen or windowed mode and the
+ * screen resolution etc.
  *
  * @author  rtuck99@users.sourceforge.net
  */
 class ClientOptionsJPanel extends javax.swing.JPanel {
-    private Launcher owner;
+    private final Launcher owner;
     
     String getPlayerName() {
         return playerName.getText();
@@ -59,9 +61,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         owner.setNextEnabled(isValid);
     }
     
-    private DisplayModesComboBoxModels listModel;
-    
-    /** Creates new form ClientOptionsJPanel */
+    private final DisplayModesComboBoxModels listModel;
+
     public ClientOptionsJPanel(Launcher owner) {
         this.owner = owner;
         initComponents();

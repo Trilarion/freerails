@@ -5,13 +5,14 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for SimpleAStarPathFinder.
  * 27-Nov-2002
  * @author Luke Lindsay
  *
  */
 public class SimpleAStarPathFinderTest extends TestCase {
-    Map map;
-    SimpleAStarPathFinder pathFinder;
+    private Map map;
+    private SimpleAStarPathFinder pathFinder;
 
     /**
      * Constructor for SimpleAStarPathFinderTest.
@@ -94,7 +95,7 @@ class Node {
 
 class Map implements GraphExplorer {
     //draw the graph on a piece of paper to see it.
-    Node[] nodes = new Node[] {
+    private final Node[] nodes = new Node[] {
             new Node(new int[] {1}, new int[] {11}), //0
             new Node(new int[] {0, 5}, new int[] {11, 4}), //1
             new Node(new int[] {5, 3, 4}, new int[] {5, 10, 12}), //2
@@ -104,8 +105,8 @@ class Map implements GraphExplorer {
             new Node(new int[] {5, 7}, new int[] {3, 4}), //6
             new Node(new int[] {6}, new int[] {4}), //7
         };
-    int position = 0;
-    int branch = -1;
+    private int position = 0;
+    private int branch = -1;
 
     public void setPosition(int i) {
         this.position = i;

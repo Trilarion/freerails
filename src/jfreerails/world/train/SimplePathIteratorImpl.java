@@ -5,11 +5,14 @@ import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
 
 
+/**
+ * Exposes a path stored as an array of x points and an array of y points.
+ * @author Luke
+ */
 public class SimplePathIteratorImpl implements FreerailsPathIterator {
-    boolean hasNext = true;
-    int[] x;
-    int[] y;
-    int position = 0;
+    private final int[] x;
+    private final int[] y;
+    private int position = 0;
 
     public SimplePathIteratorImpl(int[] xpoints, int[] ypoints) {
         x = (int[])xpoints.clone();

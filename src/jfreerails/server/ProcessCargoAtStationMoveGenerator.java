@@ -26,7 +26,7 @@ public class ProcessCargoAtStationMoveGenerator {
     /** Determines how much the player gets for delivering cargo.
      * Changeed from 100 to 75 to fix bug 910132 (Too easy to make money!)
      */
-    final static int MAGIC_NUMBER = 75;
+    private final static int MAGIC_NUMBER = 75;
 
     public static ArrayList processCargo(ReadOnlyWorld w,
         CargoBundle cargoBundle, int stationID, FreerailsPrincipal p) {
