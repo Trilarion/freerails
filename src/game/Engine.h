@@ -7,6 +7,7 @@
 #include "WorldMap.h"
 #include "Player.h"
 #include "GameController.h"
+#include "MessageQueue.h"
 
 class Engine {
 public:
@@ -20,10 +21,17 @@ public:
                             // The function will check the time and connections and let then play all :-)
 			    
   void startGame();  // starts the Game and sends out to all clients (if network/server mode)
+  
+  void sendMsg(Message* msg);
+  bool haveMsg();
+  Message* getMsg();
 
 private:
 
   void process();
+  
+  MessageQueue* gui2engine;
+  MessageQueue* engine2gui;
 
   WorldMap* worldMap;
   bool isClient;
