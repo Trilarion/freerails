@@ -58,8 +58,13 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 			 "graphics/ui/buttons/build_station_down.png");
   stationButton->SetToggle(true);
   stationButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationButton);
+  
+  stationSignal=new PG_RadioButton(this, 4, PG_Rect(5, 430, 150, 20), "Signal Tower");
+  stationSmall=new PG_RadioButton(this, 5, PG_Rect(5, 450, 150, 20), "Depot", stationSignal);
+  stationMedium=new PG_RadioButton(this, 6, PG_Rect(5, 470, 150, 20), "Station", stationSignal);
+  stationBig=new PG_RadioButton(this, 7, PG_Rect(5, 490, 150, 20), "Terminal", stationSignal);
 
-  pauseButton=new PG_Button(this,3,PG_Rect(5,530,125,25),"PAUSE");
+  pauseButton=new PG_Button(this,3,PG_Rect(5,510,125,25),"PAUSE");
   pauseButton->SetToggle(true);
   pauseButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::pause_handler);
   

@@ -9,6 +9,7 @@
 #include "GameMapView.h"
 
 #include <pgthemewidget.h>
+#include <pgradiobutton.h>
 #include <pgbutton.h>
 #include <pgrect.h>
 
@@ -36,6 +37,13 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     PG_Button* trackButton;
     PG_Button* stationButton;
     PG_Button* pauseButton;
+    
+    PG_RadioButton* stationSignal;
+    PG_RadioButton* stationSmall;
+    PG_RadioButton* stationMedium;
+    PG_RadioButton* stationBig;
+    
+    
     GuiEngine* guiEngine;
     GameMapView* mapView;
 };
