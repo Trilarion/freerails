@@ -25,7 +25,7 @@ public class CashJLabel extends JLabel implements View {
 	private ReadOnlyWorld w;
 
 	public CashJLabel(){
-		this.setText("CASH NOT SET!");
+		this.setText("         ");
 	}
 
 	public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {

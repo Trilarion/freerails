@@ -31,9 +31,7 @@ To compile and run the source distribution:
 	(i) go to the directory src, and type: javac jfreerails/RunFreerails.java
 or	
  	(ii) use the build.xml file and Ant version 1.5.
-(3)	To run in   
-	(i) windowed mode, type: java jfreerails/RunFreerails
-	(ii) fullscreen mode, type: java jfreerails/RunFreerails fullscreen
+(3)	To run, type: java jfreerails/RunFreerails
 				
 For more information, see:
 http://sourceforge.net/projects/freerails/

@@ -25,7 +25,7 @@ public class DateJLabel extends JLabel implements View {
 	private ReadOnlyWorld w;
 	
 	public DateJLabel(){
-		this.setText("DATE NOT SET!");	
+		this.setText("          ");	
 	}
 
 	public void paint(Graphics g) {

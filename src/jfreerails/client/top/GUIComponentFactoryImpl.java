@@ -130,7 +130,7 @@ public class GUIComponentFactoryImpl
 		MoveReceiver overviewmapMoveReceiver = new MapViewMoveReceiver(mainMap);
 
 		MoveChainFork moveFork = client.getMoveChainFork();
-		moveFork.setPrimaryReceiver(overviewmapMoveReceiver);
+		moveFork.add(overviewmapMoveReceiver);		
 
 		MoveReceiver mainmapMoveReceiver = new MapViewMoveReceiver(overviewMap);
 		moveFork.add(mainmapMoveReceiver);

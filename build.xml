@@ -23,6 +23,9 @@
       <mkdir dir="${build}" />
 
       <mkdir dir="${dist}/lib" />
+      
+      <mkdir dir="${dist}/latest" />
+      
    </target>
 
    <target if="eclipse.running" name="properties">
@@ -88,6 +91,12 @@
             <attribute name="Main-Class" value="jfreerails.RunFreerails" />
          </manifest>
       </jar>
+      <!-- Replace current latest with the jar file we have just created. -->
+      	<delete >      		
+      		<fileset dir="${dist}/latest/" includes ="jFreeRails-*-bin.jar"/>      		
+      	</delete>      	      
+      <copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" todir="${dist}/latest"/>      
+      
    </target>
 
    <target depends="mkdirs" description="Generate source distribution" name="srcdist">
@@ -95,6 +104,8 @@
          <include name="src/**/*.java" />
          
          <include name="src/**/*.html" />
+         
+         <include name="src/**/*.form" />
 
          <include name="build.xml" />
 
@@ -112,12 +123,18 @@
 
          <include name="ChangeLog" />
       </jar>
+      
+       <!-- Replace current latest with the jar file we have just created. -->
+      	<delete >      		
+      		<fileset dir="${dist}/latest/" includes ="jFreeRails-*-src.jar"/>      		
+      	</delete>      	      
+      <copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar" todir="${dist}/latest"/>      
    </target>
 
    <target depends="init" description="Clean up build and distribution" name="clean">
       <delete dir="${build}" />
 
-      <delete dir="${dist}" />
+      <delete dir="${dist}/latest" />
 
       <delete dir="${doc}" />
 
@@ -149,18 +166,23 @@
             <include name="**/*.html" />
 			<include name="**/*.htm" />
 			
-			<!--Don't copy these since the javadoc tool processes with them -->
+			<!--Don't copy these since the javadoc tool processes them -->
             <exclude name="**/overview.html" /> 
 			<exclude name="**/package.html" />      
          </fileset>
       </copy>
    </target>
 
-  <!--  depends="javadoc" -->
+  
    <target depends="javadoc" description="Jar up javadoc" name="jar_doc">
       <jar basedir="." destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar">
          <include name="javadoc/**/*" />
       </jar>
+      <!-- Replace current latest with the jar file we have just created. -->
+      <delete >      		
+      		<fileset dir="${dist}/latest/" includes ="jFreeRails-*-javadoc.jar"/>      		
+      	</delete>      	      
+      <copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar" todir="${dist}/latest"/>            
    </target>
 
    <target depends="jar_doc, bindist, srcdist" description="Create binary, source, and javadoc jars" name="all_dist">
@@ -169,7 +191,7 @@
 <!-- Requires that NetComponents.jar is in ant/lib -->
    <target depends="all_dist" description="Upload source, binary, and javadocs jar files to sourcforge" name="upload">
       <ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous">
-         <fileset dir="${dist}/lib">
+         <fileset dir="${dist}/latest">
             <include name="*.jar" />
          </fileset>
       </ftp>

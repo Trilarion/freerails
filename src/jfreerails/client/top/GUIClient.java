@@ -1,16 +1,16 @@
 package jfreerails.client.top;
 
-import java.awt.DisplayMode;
 import java.io.IOException;
+
 import javax.swing.JFrame;
 
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.MapCursor;
-import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
+import jfreerails.controller.ServerControlInterface;
 
 /**
  * This class implements a GUI-driven client to be used by human players.
@@ -19,9 +19,11 @@ import jfreerails.controller.MoveChainFork;
  * maps etc?). Currently we will do this over the local connection only, by
  * the client having access to a ServerControlInterface object
  */
-public class GUIClient extends Client {
+public class GUIClient extends Client  {
 	private MapCursor cursor = null;
-	protected ServerControlInterface serverControls;
+	protected ServerControlInterface serverControls;	
+	private Object mutex;
+	private GUIComponentFactoryImpl gUIComponentFactory = new GUIComponentFactoryImpl();
 
 	public void setCursor(MapCursor c) {
 		cursor = c;
@@ -35,38 +37,32 @@ public class GUIClient extends Client {
 	 * sets up a connnection with a local server. Currently this is the only
 	 * form of connection supported
 	 */
-	public GUIClient(LocalConnection server, int mode, DisplayMode dm) throws IOException {
+	public GUIClient(LocalConnection server) throws IOException {
+		mutex = server.getMutex();
 		receiver = new ConnectionAdapter();
 		ConnectionToServer connection = new LocalConnection(server);
 		receiver.setConnection(connection);
 		moveChainFork = new MoveChainFork();
-		receiver.setMoveReceiver(moveChainFork);
-		
-		
-		GUIComponentFactoryImpl gUIComponentFactory =
-					new GUIComponentFactoryImpl();
-		JFrame client = gUIComponentFactory.createClientJFrame();
-		
-		
-		//We want to setup the screen handler before creating the view lists since the 
-		//ViewListsImpl creates images that are compatible with the current display settings 
-		//and the screen handler may change the display settings.
-		ScreenHandler screenHandler= new ScreenHandler(client, mode, dm);
-		
-		ViewLists viewLists = new ViewListsImpl(receiver.world);
+		receiver.setMoveReceiver(moveChainFork);												
+		moveChainFork.add(gUIComponentFactory);					
+	}
+	
+	public JFrame getClientJFrame(){
+		return gUIComponentFactory.createClientJFrame();
+	}	
+
+	public void setViewLists(ViewLists viewLists) {
 		if (!viewLists.validate(receiver.world)) {
 			throw new IllegalArgumentException();
-		}
-		
+		}		
 		gUIComponentFactory.setup(viewLists, this);
-		moveChainFork.add(gUIComponentFactory);
-		
-		
+	}
+
+	public void start(ScreenHandler screenHandler) {
 		System.out.println("creating gameloop");
-		GameLoop gameLoop = new GameLoop(screenHandler, server.getMutex());
+		GameLoop gameLoop = new GameLoop(screenHandler, mutex);
 		Thread t = new Thread(gameLoop);
 		t.start();
-
 	}
 
 	/**
@@ -80,5 +76,4 @@ public class GUIClient extends Client {
 	public void setServerControls(ServerControlInterface controls) {
 		serverControls = controls;
 	}
-
 }

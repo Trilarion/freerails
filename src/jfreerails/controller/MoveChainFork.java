@@ -17,17 +17,13 @@ final public class MoveChainFork implements MoveReceiver {
 
 	private final ArrayList moveReceivers = new ArrayList();
 
-	private final ArrayList listListeners = new ArrayList();
-
-	private MoveReceiver primary;
+	private final ArrayList listListeners = new ArrayList();	
 
 	public MoveChainFork() {
 		// do nothing
 	}
 
-	public void setPrimaryReceiver(MoveReceiver primaryReceiver) {
-		primary = primaryReceiver;
-	}
+	
 
 	public void remove(MoveReceiver moveReceiver) {
 		System.out.println("MoveReceiver.remove(" + moveReceiver + ")");
@@ -51,10 +47,7 @@ final public class MoveChainFork implements MoveReceiver {
 	 * @see MoveReceiver#processMove(Move)
 	 */
 	public void processMove(Move move) {
-		if (primary != null) {
-			primary.processMove(move);
-		}
-
+		
 		for (int i = 0; i < moveReceivers.size(); i++) {
 			MoveReceiver m = (MoveReceiver) moveReceivers.get(i);
 			m.processMove(move);
