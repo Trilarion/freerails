@@ -33,10 +33,9 @@ public class CityNamesRenderer implements Painter {
 		for (int i=0; i<w.size(KEY.CITIES); i++) {
 			
 			CityModel tempCity = (CityModel)w.get(KEY.CITIES, i);
-			
-			//g2d.drawString(tempCity.getCityName(),tempCity.getCityX()*tileSize.width,tempCity.getCityY()*tileSize.width+10);
 			g.drawString(tempCity.getCityName(),tempCity.getCityX()*30,tempCity.getCityY()*30+10);
 		}
+		
 	}
 	
 }
