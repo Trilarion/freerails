@@ -15,14 +15,14 @@ public:
   virtual ~WorldMap();
   
   MapField* getMapField(int x, int y) {
-    if (x < 0 || x > width) return NULL;
-    if (y < 0 || y > height) return NULL;
+    if (x < 0 || x > width-1) return NULL;
+    if (y < 0 || y > height-1) return NULL;
     return mapFields[y*width+x];
   }
   
   void setMapField(int x, int y, MapField* _mapField) {
-    if (x < 0 || x > width) return;
-    if (y < 0 || y > height) return;
+    if (x < 0 || x > width-1) return;
+    if (y < 0 || y > height-1) return;
     mapFields[y*width+x]=_mapField;
   }
   
