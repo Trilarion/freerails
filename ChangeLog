@@ -1,3 +1,8 @@
+10-Apr-2003 16:50:00 Scott
+	o Added City Names 
+	o Added Random City Tile positioning.
+	o Cities are now no longer related to the image map. Positions are determined
+	by the data in the south_america_cities.xml file.
 04-Apr-2003 21:20:46 Luke
 	o Simple train schedules, set the 4 points on the 
 	track that trains will travel between by pressing F1 - F4
