@@ -1,3 +1,5 @@
+03-Nov-2002 22:35:52 Luke Lindsay 
+   o Improvements to TrainPosition and ChangeTrainPositionMove classes
 28-Oct-2002 23:52:39 Luke Lindsay 
    o Fix javadoc warnings
    o Add 'upload to sourceforge' task to build.xml

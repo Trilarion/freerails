@@ -17,7 +17,7 @@ public class TrainModel implements FreerailsSerializable{
     
     WagonModel[] wagons = new  WagonModel[MAX_NUMBER_OF_WAGONS];
     
-    int numberOfWagons = 0;
+    int numberOfWagons = 10;
     
     
     
@@ -25,9 +25,13 @@ public class TrainModel implements FreerailsSerializable{
         engine=e;
         trainposition=p;
     }
+    public TrainModel(EngineModel e){
+        engine=e;
+        
+    }
     
     public int getLength(){
-    	return (1+numberOfWagons)*10;  //Engine + wagons.
+    	return (1+numberOfWagons)*32;  //Engine + wagons.
     }
     	
     
