@@ -39,7 +39,7 @@ public class MapFixtureFactory2 {
 
 	private static World generateWorld() {
 		World world = new WorldImpl(25, 25);
-		TileSetFactory tileFactory = new NewTileSetFactoryImpl();
+		TileSetFactory tileFactory = new TileSetFactoryImpl();
 
 		WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
 

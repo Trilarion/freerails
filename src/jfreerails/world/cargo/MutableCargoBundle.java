@@ -97,7 +97,7 @@ public class MutableCargoBundle {
              * mean that if the cargo bundle gets changed while the iterator is in use, you will know
              * about it straight away.
              */
-        return new Iterator() {
+        return new Iterator<CargoBatch>() {
                 final int updateIDAtCreation = updateID;
 
                 public void remove() {

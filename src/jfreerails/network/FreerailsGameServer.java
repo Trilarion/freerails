@@ -34,7 +34,7 @@ import jfreerails.world.top.World;
  *
  */
 public class FreerailsGameServer implements ServerControlInterface,
-    NewGameServer, Runnable {
+    GameServer, Runnable {
     /** Used as a property name for property change events.*/
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
     private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
@@ -58,7 +58,7 @@ public class FreerailsGameServer implements ServerControlInterface,
         }
     }
 
-    private HashMap<Integer, Connection2Client> acceptedConnections = new HashMap<Integer, Connection2Client>();
+    private HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<NameAndPassword, Connection2Client>();
     private int commandID = 0;
 
     /**
@@ -68,21 +68,20 @@ public class FreerailsGameServer implements ServerControlInterface,
     private int confirmationID = Integer.MIN_VALUE; /*Don't default 0 to avoid mistaken confirmations.*/
 
     /**
-     * The players who have cofirmed that they have received the last copy of
+     * The players who have confirmed that they have received the last copy of
      * the world object sent.
      */
-    private HashSet<Integer> confirmedPlayers = new HashSet<Integer>();
+    private HashSet<NameAndPassword> confirmedPlayers = new HashSet<NameAndPassword>();
 
-    /* Contains the usernames of the players who are currently logged on.*/
-    private HashSet<String> currentlyLoggedOn = new HashSet<String>();
-    private HashMap<String, Integer> id2username = new HashMap<String, Integer>();
+    /* Contains the user names of the players who are currently logged on.*/
+    private HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<NameAndPassword>();   
     private boolean newPlayersAllowed = true;
-    private ArrayList<String> players = new ArrayList<String>();
+    private ArrayList<NameAndPassword> players = new ArrayList<NameAndPassword>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final SavedGamesManager savedGamesManager;
     private ServerGameModel serverGameModel = new SimpleServerGameModel();
     private final SynchronizedFlag status = new SynchronizedFlag(false);
-    private HashMap<String, String> username2password = new HashMap<String, String>();
+  
 
     public FreerailsGameServer(SavedGamesManager gamesManager) {
         this.savedGamesManager = gamesManager;
@@ -91,22 +90,21 @@ public class FreerailsGameServer implements ServerControlInterface,
     public synchronized void addConnection(Connection2Client connection) {
         String[] before = getPlayerNames();
         logger.fine("Adding connection..");
-        logger.fine("Waiting for logon details..");
+        logger.fine("Waiting for login details..");
 
         try {
             LogOnRequest request = (LogOnRequest)connection.waitForObjectFromClient();
-            logger.fine("Trying to logon player: " + request.getUsername());
+            logger.fine("Trying to login player: " + request.getUsername());
 
             LogOnResponse response = this.logon(request);
             connection.writeToClient(response);
             connection.flush();
-
+            NameAndPassword p = new NameAndPassword(request.getUsername(), request.getPassword());
             if (response.isSuccessful()) {
-                logger.fine("Logon successful");
+                logger.fine("Login successful");
 
                 synchronized (acceptedConnections) {
-                    acceptedConnections.put(new Integer(
-                            response.getPlayerID()), connection);
+                    acceptedConnections.put(p, connection);
                 }
 
                 /* Just send to the new client. */
@@ -180,7 +178,7 @@ public class FreerailsGameServer implements ServerControlInterface,
         String[] playerNames = new String[players.size()];
 
         for (int i = 0; i < players.size(); i++) {
-            playerNames[i] = players.get(i);
+            playerNames[i] = players.get(i).username;
         }
 
         return playerNames;
@@ -193,7 +191,8 @@ public class FreerailsGameServer implements ServerControlInterface,
     boolean isConfirmed(int player) {
         logger.fine("confirmedPlayers.size()=" + confirmedPlayers.size());
 
-        boolean isConfirmed = confirmedPlayers.contains(new Integer(player));
+        
+        boolean isConfirmed = confirmedPlayers.contains(players.get(player));
 
         return isConfirmed;
     }
@@ -201,68 +200,84 @@ public class FreerailsGameServer implements ServerControlInterface,
     public boolean isNewPlayersAllowed() {
         return newPlayersAllowed;
     }
+    
+    private boolean isPlayer(String username){
+    	for(NameAndPassword p : players){
+    		if(p.username.equals(username)) return true;
+    	}
+    	return false;
+    }
 
     public void loadgame(String saveGameName) throws IOException{
         logger.info("load game " + saveGameName);
+        newPlayersAllowed = false;
+        confirmedPlayers.clear();
 
         ServerGameModel loadedGame;
       
         loadedGame = (ServerGameModel)savedGamesManager.loadGame(saveGameName);
+        String[] passwords = loadedGame.getPasswords();
+        World w = loadedGame.getWorld();
+        assert passwords.length == w.getNumberOfPlayers();
+        ArrayList<NameAndPassword > newPlayers = new ArrayList<NameAndPassword>();
+        for(int i = 0; i < passwords.length; i++){
+        	Player player = w.getPlayer(i);
+        	NameAndPassword nap = new NameAndPassword(player.getName(), passwords[i]);
+        	newPlayers.add(nap);
+        }
+        /* Remove any currently logged on players who are not participants
+         * in the game we are loading.
+         */
+        for(NameAndPassword nap : players){
+        	if(!newPlayers.contains(nap) && currentlyLoggedOn.contains(nap)){
+        		removeConnection(nap);
+        	}
+        }
+        players = newPlayers;
         setServerGameModel(loadedGame);
         sendWorldUpdatedCommand();       
     }
 
     public void logoff(int player) {
-        String username = players.get(player);
-        currentlyLoggedOn.remove(username);
+        NameAndPassword np = players.get(player);
+        currentlyLoggedOn.remove(np);
     }
 
-    public LogOnResponse logon(LogOnRequest lor) {
-        String username = lor.getUsername();
-        boolean isReturningPlayer = username2password.containsKey(username);
+    public LogOnResponse logon(LogOnRequest lor) {                
+        NameAndPassword p = new NameAndPassword(lor.getUsername(), lor.getPassword());
+        boolean isReturningPlayer = isPlayer(lor.getUsername());
 
         if (!this.newPlayersAllowed && !isReturningPlayer) {
-            return LogOnResponse.rejected("New logons not allowed.");
+            return LogOnResponse.rejected("New logins not allowed.");
         }
 
-        if (currentlyLoggedOn.contains(username)) {
+        if (currentlyLoggedOn.contains(p)) {
             return LogOnResponse.rejected("Already logged on.");
-        }
-
-        int id;
+        }       
 
         if (isReturningPlayer) {
-            Integer idInteger = id2username.get(username);
-            id = idInteger.intValue();
-
-            /* Check the password. */
-            String correctPassword = username2password.get(username);
-
-            if (!correctPassword.equals(lor.getPassword())) {
+           if (!players.contains(p)) {
                 return LogOnResponse.rejected("Incorrect password.");
-            }
-        } else {
-            id = players.size();
-            players.add(username);
-            username2password.put(username, lor.getPassword());
-            id2username.put(username, new Integer(id));
+            }           
+        } else {           
+            players.add(p);            
         }
-
-        currentlyLoggedOn.add(username);
-
-        return LogOnResponse.accepted(id);
+        currentlyLoggedOn.add(p);
+        return LogOnResponse.accepted(players.indexOf(p));
     }
 
     public void newGame(String mapName) {
-        this.newPlayersAllowed = false;
+        newPlayersAllowed = false;
         confirmedPlayers.clear();
 
         try {
             World world = (World)savedGamesManager.newMap(mapName);
 
+            String[] passwords = new String[players.size()];
+            
             /* Add players to world. */
             for (int i = 0; i < players.size(); i++) {
-                String name = players.get(i);
+                String name = players.get(i).username;
                 Player p = new Player(name, null, i); //public key set to null!
                 int index = world.addPlayer(p);
 
@@ -271,9 +286,10 @@ public class FreerailsGameServer implements ServerControlInterface,
                 world.addTransaction(BondTransaction.issueBond(5),
                     p.getPrincipal());
                 assert i == index;
+                passwords[i] = players.get(i).password;
             }
 
-            serverGameModel.setWorld(world);
+            serverGameModel.setWorld(world, passwords);
             setServerGameModel(serverGameModel);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -285,9 +301,9 @@ public class FreerailsGameServer implements ServerControlInterface,
         logger.fine("newGame");
     }
 
-    private void removeConnection(Integer id) throws IOException {
+    private void removeConnection(NameAndPassword p) throws IOException {
         String[] before = getPlayerNames();
-        Connection2Client connection = acceptedConnections.get(id);
+        Connection2Client connection = acceptedConnections.get(p);
 
         /* Fix for bug 1047439        Shutting down remote client crashes server
          * We get an IllegalStateException if we try to disconnect a
@@ -297,8 +313,8 @@ public class FreerailsGameServer implements ServerControlInterface,
             connection.disconnect();
         }
 
-        String userName = players.get(id.intValue());
-        this.currentlyLoggedOn.remove(userName);
+     
+        this.currentlyLoggedOn.remove(p);
 
         String[] after = getPlayerNames();
         propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before,
@@ -315,8 +331,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     public void savegame(String saveGameName) {
-        System.err.println("save game as " + saveGameName);
-
+    	logger.info("save game as " + saveGameName);        
         try {
             savedGamesManager.saveGame(serverGameModel, saveGameName);
         } catch (IOException e) {
@@ -332,11 +347,11 @@ public class FreerailsGameServer implements ServerControlInterface,
     /** Sends the specified message to all connections except the specified one.*/
     private void send2AllExcept(Connection2Client dontSend2,
         FreerailsSerializable message) {
-        Iterator it = acceptedConnections.keySet().iterator();
+        Iterator<NameAndPassword> it = acceptedConnections.keySet().iterator();
 
         while (it.hasNext()) {
-            Integer id = (Integer)it.next();
-            Connection2Client connection = acceptedConnections.get(id);
+        	NameAndPassword p = it.next();
+            Connection2Client connection = acceptedConnections.get(p);
 
             if (dontSend2 != connection) {
                 try {
@@ -347,7 +362,7 @@ public class FreerailsGameServer implements ServerControlInterface,
                         e.printStackTrace();
 
                         try {
-                            removeConnection(id);
+                            removeConnection(p);
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
@@ -418,10 +433,10 @@ public class FreerailsGameServer implements ServerControlInterface,
         }
 
         try {
-            Iterator it = acceptedConnections.keySet().iterator();
+            Iterator<NameAndPassword> it = acceptedConnections.keySet().iterator();
             while (it.hasNext()) {
-                Integer playerID = (Integer)it.next();
-                Connection2Client connection = acceptedConnections.get(playerID);
+            	NameAndPassword player = it.next();
+                Connection2Client connection = acceptedConnections.get(player);
 
                 if (connection.isOpen()) {
                     FreerailsSerializable[] messages = connection.readFromClient();
@@ -441,15 +456,15 @@ public class FreerailsGameServer implements ServerControlInterface,
                                  * updated their world object to the current
                                  * version.
                                  */
-                                this.confirmedPlayers.add(playerID);
-                                logger.fine("Confirmed player " + playerID);
+                                this.confirmedPlayers.add(player);
+                                logger.fine("Confirmed player " + player);
                             }
 
                             logger.fine(messages[i].toString());
                         } else if (messages[i] instanceof Move ||
                                 messages[i] instanceof PreMove) {
-                            Player player = getWorld().getPlayer(playerID.intValue());
-                            FreerailsPrincipal principal = player.getPrincipal();
+                            Player player2 = getWorld().getPlayer(players.indexOf(player));
+                            FreerailsPrincipal principal = player2.getPrincipal();
 
                             Move move;
                             boolean isMove = messages[i] instanceof Move;
@@ -485,7 +500,7 @@ public class FreerailsGameServer implements ServerControlInterface,
                     connection.flush();
                 } else {
                     /* Remove connection.*/
-                    this.removeConnection(playerID);
+                    this.removeConnection(player);
                 }
             }
         } catch (IOException e) {

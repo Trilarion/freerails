@@ -18,9 +18,9 @@ import junit.framework.TestCase;
 public class LocalConnectionTest extends TestCase {
     private static class Server implements Runnable {
         private boolean keepGoing = true;
-        private final NewLocalConnection connection;
+        private final LocalConnection connection;
 
-        public Server(NewLocalConnection l) {
+        public Server(LocalConnection l) {
             connection = l;
         }
 
@@ -45,7 +45,7 @@ public class LocalConnectionTest extends TestCase {
         }
     }
 
-    private NewLocalConnection localConnection;
+    private LocalConnection localConnection;
     private final FreerailsSerializable[] EmptyArray = new FreerailsSerializable[0];
     private Server server;
 
@@ -120,7 +120,7 @@ public class LocalConnectionTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-        localConnection = new NewLocalConnection();
+        localConnection = new LocalConnection();
         server = new Server(this.localConnection);
 
         Thread t = new Thread(server);

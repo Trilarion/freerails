@@ -17,7 +17,7 @@ import jfreerails.world.top.World;
  * @author Luke
  *
  */
-public class NewTileSetFactoryImpl implements TileSetFactory {
+public class TileSetFactoryImpl implements TileSetFactory {
     public void addTerrainTileTypesList(World w) {
         try {
             java.net.URL url = RunTypesParser.class.getResource(

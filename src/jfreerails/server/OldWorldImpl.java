@@ -27,7 +27,7 @@ public class OldWorldImpl {
 
         int progess = 0;
 
-        TileSetFactory tileFactory = new NewTileSetFactoryImpl();
+        TileSetFactory tileFactory = new TileSetFactoryImpl();
         pm.setValue(++progess);
 
         WorldImpl w = new WorldImpl();
@@ -65,7 +65,7 @@ public class OldWorldImpl {
         }
 
         //Randomly position the city tiles
-        NewCityTilePositioner ctp = new NewCityTilePositioner(w);
+        CityTilePositioner ctp = new CityTilePositioner(w);
         ctp.initCities();
 
         //Set the time..

@@ -17,7 +17,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  *
  */
-public class EchoGameServer implements NewGameServer, Runnable {
+public class EchoGameServer implements GameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class.getName());
     private final Vector<Connection2Client> connections = new Vector<Connection2Client>();
     private final SynchronizedFlag status = new SynchronizedFlag(false);

@@ -128,7 +128,7 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
     }
 
     public Iterator<CargoBatch> cargoBatchIterator() {
-        return new Iterator() {
+        return new Iterator<CargoBatch>() {
                 int index = 0;
 
                 public void remove() {

@@ -20,7 +20,7 @@ public class InetConnectionAccepter implements Runnable {
 
     public static void main(String[] args) {
         try {
-            NewGameServer echoGameServer = EchoGameServer.startServer();
+            GameServer echoGameServer = EchoGameServer.startServer();
             InetConnectionAccepter accepter = new InetConnectionAccepter(6666,
                     echoGameServer);
             Thread t = new Thread(accepter);
@@ -30,11 +30,11 @@ public class InetConnectionAccepter implements Runnable {
         }
     }
 
-    private final NewGameServer gameServer;
+    private final GameServer gameServer;
     private final SynchronizedFlag keepRunning = new SynchronizedFlag(true);
     private final ServerSocket serverSocket;
 
-    public InetConnectionAccepter(int port, NewGameServer gameServer)
+    public InetConnectionAccepter(int port, GameServer gameServer)
         throws IOException {
         this.gameServer = gameServer;
         serverSocket = new ServerSocket(port);
@@ -74,7 +74,7 @@ public class InetConnectionAccepter implements Runnable {
         this.keepRunning.close();
         serverSocket.close();
 
-        //Commented out since it causes execeptions to be thrown, fixes bug 979831         
+        //Commented out since it causes exceptions to be thrown, fixes bug 979831         
         //gameServer.stop();
     }
 

@@ -67,8 +67,8 @@ types will vary between games.</P>
 			<P>Cargo consumption</P>
 		</TD>
 		<TD WIDTH=50%>
-			<P>Some types of terrain consume cargo, e.g 'City' tiles consume
-			'Food'.</P>
+			<P>Some types of terrain consume cargo, e.g. 'City' tiles consume 
+        'Food'.</P>
 		</TD>
 	</TR>
 	<TR VALIGN=TOP>
@@ -112,8 +112,36 @@ type Y is less than the cost of building track of type Y but more
 than the cost of Y less the cost of X.</P>
 <P>Track can be removed. When you remove track you get some money
 back.</P>
-<P>Different track types have different maintenance costs. The
-maintenance cost must be paid once per year.</P>
+<P>Different track types have different maintenance costs. The maintenance cost 
+  must be paid once per year.</P>
+<h4 class="planned">Bridges</h4>
+<table class="planned">
+  <tr>
+    <td>&nbsp;</td>
+    <td>Price</td>
+    <td>Train Speed</td>
+    <td>Track Type</td>
+  </tr>
+  <tr>
+    <td>Wooden Trestle</td>
+    <td>$50,000</td>
+    <td>slow</td>
+    <td>single</td>
+  </tr>
+  <tr>
+    <td>Iron Grider</td>
+    <td>$200,000</td>
+    <td>fast</td>
+    <td>single</td>
+  </tr>
+  <tr>
+    <td>Stone Masonry</td>
+    <td>$400,000</td>
+    <td>fast</td>
+    <td>double</td>
+  </tr>
+</table>
+<P>&nbsp;</P>
 <H4>Trains</H4>
 <P>Once you have built some track and a station you can build a
 train. You get a choice of engines and the option to add up to 6
@@ -121,14 +149,20 @@ wagons. You can build trains even if you have cash &lt; 0. (This is
 to stop people getting stuck without any trains since you need trains
 to make money.)</P>
 <P>Trains can be scheduled to stop at 2 or more stations.</P>
+<h4 class="planned">Track Contention</h4>
+<P class="planned">On single (double) track, only one (two) train(s) can move 
+  on a tile at a time. Trains 'book' the next tile they want to enter. A train 
+  enters a tile when it is first in the queue of trains who have booked the tile 
+  and there is space on the tile for the train to move. Gridlock can never occur 
+  because when trains stop moving they do not block other trains.</P>
 <H4>Engines</H4>
 <P>Two types of engine are available when you start the game. <span class="planned">Three 
   other types become available later.</span></P>
 <P class="planned">A train's engine can be upgraded.</P>
 <H4>Wagons</H4>
-<P>There is one wagon type for each cargo type. A wagon can carry 40
-units of cargo. Wagons are free and can be added at any station
-(since moving emtpy wagons about would be boring).</P>
+<P>There is one wagon type for each cargo type. A wagon can carry 40 units of 
+  cargo. Wagons are free and can be added at any station (since moving empty wagons 
+  about would be boring).</P>
 <H4>Train Schedules</H4>
 <P>The stations a train stops at and whether it changes its wagons
 when it stops are governed by a train's schedule.</P>
@@ -136,12 +170,46 @@ when it stops are governed by a train's schedule.</P>
 <P>The more wagons a train is pulling, the slower it moves.<span class="planned"> 
   The greater the amount of cargo, the slower the train. The gradient of the track 
   also affects speed.</span> When trains arrive at a station it stops for a few 
-  moments to load and unload cargo. Trains stop instantly (this is a simplication 
+  moments to load and unload cargo. Trains stop instantly (this is a simplification 
   so we don't need to look ahead)<span class="planned"> but speed up slowly.</span></P>
 <H4>Stations</H4>
 <P>Supply and demand at a station is determined by the tile types within the station's 
   sphere-of-influence. Different station types have different sized spheres-of-influence. 
   The spheres-of-influence of two stations cannot overlap.</P>
+<H4>Station Improvements</H4>
+<table>
+  <tr>
+    <td>Improvement type</td>
+    <td>Effect </td>
+    <td>Price</td>
+  </tr>
+  <tr>
+    <td>Engine Shop</td>
+    <td>Lets new trains be built at station</td>
+    <td>$100,000</td>
+  </tr>
+  <tr>
+    <td>Switching yard</td>
+    <td>Cuts time taken the change wagons by 75%</td>
+    <td>$50,000</td>
+  </tr>
+  <tr>
+    <td>Maintenance shop</td>
+    <td>Cuts yearly maintenance of trains that stop at station by 75%</td>
+    <td>$25,000</td>
+  </tr>
+  <tr>
+    <td class="planned">Cargo Storage</td>
+    <td>Prevents a certain cargo from wasting away.</td>
+    <td>Variable</td>
+  </tr>
+  <tr>
+    <td>Revenue booster</td>
+    <td>Increases revenue from a cargo t by X%</td>
+    <td>Variable</td>
+  </tr>
+</table>
+<H4>&nbsp;</H4>
 <H4 class="planned">The Economy </H4>
 <P class="planned">The economy alternates between 5 states.</P>
 <TABLE WIDTH=100%>
@@ -236,5 +304,16 @@ when it stops are governed by a train's schedule.</P>
 <P class="planned" STYLE="margin-bottom: 0cm">A transaction fee $25,000 applies 
   each time a bond is issued or repaid and each time a bundle of shares is bought 
   or sold.</P>
+<P class="planned" STYLE="margin-bottom: 0cm">Competition between Railroads</P>
+<P class="planned" STYLE="margin-bottom: 0cm">You can take over a rival by buying 
+  over 50% of its stock. When you have done this, you have indirect control over 
+  the other railroad. You can transfer money between the two railroads, tell the 
+  other railroad where to build track to next, and tell the other railroad to 
+  repay its bonds.</P>
+<P class="planned" STYLE="margin-bottom: 0cm">If you go on to buy 100% of the 
+  stock, you have the option to merge the with the other railroad. If you do this, 
+  you gain complete control over the other railroad. I.e. the other railroad's 
+  track, trains, and stations are added to your railroad. Once a merger has taken 
+  place, there is no way to undo it.</P>
 </BODY>
 </HTML>

@@ -76,13 +76,13 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * Connects this client to a local server.
      */
-    public final LogOnResponse connect(NewGameServer server, String username,
+    public final LogOnResponse connect(GameServer server, String username,
         String password) {
         try {
             LogOnRequest request = new LogOnRequest(username, password);
-            connection2Server = new NewLocalConnection();
+            connection2Server = new LocalConnection();
             connection2Server.writeToServer(request);
-            server.addConnection((NewLocalConnection)connection2Server);
+            server.addConnection((LocalConnection)connection2Server);
 
             LogOnResponse response = (LogOnResponse)connection2Server.waitForObjectFromServer();
 

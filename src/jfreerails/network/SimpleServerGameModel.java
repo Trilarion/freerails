@@ -19,9 +19,11 @@ import jfreerails.world.top.World;
  */
 public class SimpleServerGameModel implements ServerGameModel {
     private World w;
+    private String[] passwords;
 
-    public void setWorld(World w) {
+    public void setWorld(World w,  String[] passwords) {
         this.w = w;
+        this.passwords = passwords.clone();
     }
 
     public World getWorld() {
@@ -45,4 +47,9 @@ public class SimpleServerGameModel implements ServerGameModel {
 
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
     }
+
+	public String[] getPasswords() {
+		return passwords.clone();
+	}
+	
 }

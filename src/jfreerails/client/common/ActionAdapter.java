@@ -69,15 +69,15 @@ public class ActionAdapter extends DefaultComboBoxModel {
     /**
      * @return an enumeration of Action
      */
-    public Enumeration getActions() {
-        return new Enumeration() {
+    public Enumeration<Action> getActions() {
+        return new Enumeration<Action>() {
                 private int i = 0;
 
                 public boolean hasMoreElements() {
                     return (i < actions.length);
                 }
 
-                public Object nextElement() {
+                public Action nextElement() {
                     return actions[i++];
                 }
             };

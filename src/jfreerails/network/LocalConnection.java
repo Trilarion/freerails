@@ -13,9 +13,9 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  *
  */
-public class NewLocalConnection implements Connection2Client, Connection2Server {
-    private final NewSychronizedQueue fromServer = new NewSychronizedQueue();
-    private final NewSychronizedQueue fromClient = new NewSychronizedQueue();
+public class LocalConnection implements Connection2Client, Connection2Server {
+    private final SychronizedQueue fromServer = new SychronizedQueue();
+    private final SychronizedQueue fromClient = new SychronizedQueue();
     private final SynchronizedFlag status = new SynchronizedFlag(true);
 
     public FreerailsSerializable[] readFromClient() throws IOException {

@@ -19,7 +19,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  *
  */
-class NewInetConnection {
+class InetConnection {
     private final Socket socket;
 
     //Note compression commented out since it was causing junit tests to fail.  Not
@@ -30,11 +30,11 @@ class NewInetConnection {
     private ObjectInputStream objectInputStream;
     private static final String CONNECTION_OPEN = "CONNECTION_OPEN";
 
-    NewInetConnection(Socket acceptedConnection) throws IOException {
+    InetConnection(Socket acceptedConnection) throws IOException {
         socket = acceptedConnection;
     }
 
-    NewInetConnection(String s, int port) throws IOException {
+    InetConnection(String s, int port) throws IOException {
         this(new Socket(s, port));
     }
 

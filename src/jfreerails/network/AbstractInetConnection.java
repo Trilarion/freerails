@@ -17,20 +17,20 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 abstract class AbstractInetConnection implements Runnable {
     private static final Logger logger = Logger.getLogger(AbstractInetConnection.class.getName());
-    private final NewSychronizedQueue inbound = new NewSychronizedQueue();
-    private final NewInetConnection inetConnection;
+    private final SychronizedQueue inbound = new SychronizedQueue();
+    private final InetConnection inetConnection;
     private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(false);
     private final SynchronizedFlag status = new SynchronizedFlag(true);
     private int timeout = 1000 * 5; //5 seconds.
 
     public AbstractInetConnection(Socket s) throws IOException {
-        inetConnection = new NewInetConnection(s);
+        inetConnection = new InetConnection(s);
         open();
     }
 
     public AbstractInetConnection(String ip, int port)
         throws IOException {
-        inetConnection = new NewInetConnection(ip, port);
+        inetConnection = new InetConnection(ip, port);
         open();
     }
 

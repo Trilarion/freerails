@@ -30,7 +30,7 @@ class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
         if (loadMapButton.isSelected()) {
             return LOAD_SAVED_GAME;
         }
-		return START_NEW_MAP;
+        return START_NEW_MAP;
     }
     
     void setServerPortPanelVisible(boolean b){

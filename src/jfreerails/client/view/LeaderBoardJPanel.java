@@ -83,7 +83,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 			playersList.setRequestFocusEnabled(false);
 			playersList.setEnabled(true);
 			
-			Collections.sort(values);			
+			Collections.<PlayerDetails>sort(values);			
 			playersList.setListData(values);
 		}
 		return playersList;

@@ -10,6 +10,8 @@ import java.awt.DisplayMode;
 import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -27,6 +29,7 @@ import jfreerails.client.view.DisplayModesComboBoxModels;
 class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
     private static final Logger logger = Logger.getLogger(ClientOptionsJPanel.class.getName());
     private final LauncherInterface owner;
+    private String[] names;
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final DocumentListener documentListener = new DocumentListener(){
         public void insertUpdate(DocumentEvent e) {
@@ -41,8 +44,41 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
         
     };
     
+    /** If the user has opted to load a game, we need to
+     *limit the list of players to participants in the game
+     *we are loading.  Otherwise, any player name is OK.  Either,
+     *pass in a array of names or null if any name is OK.
+     */
+    void limitPlayerNames(String [] n){
+        this.names = n;
+        if(names == null){
+            playerName.setVisible(true);
+            playerNames.setVisible(false);
+            playerName.setEditable(true);
+        }else{
+        	if(names.length ==1){
+        		playerName.setVisible(true);
+                playerNames.setVisible(false);
+                playerName.setText(n[0]);
+                playerName.setEditable(false);
+        	}else{
+        		playerName.setVisible(false);
+        		playerNames.setVisible(true);
+        		ComboBoxModel model = new DefaultComboBoxModel(names);
+        		playerNames.setModel(model);
+        	}
+        }
+        this.revalidate();
+    }
+    
     String getPlayerName() {
-        return playerName.getText();
+        if(playerName.isVisible()){
+            return playerName.getText();
+        }
+        int index = playerNames.getSelectedIndex();
+        if(index < 0) return null; //no selection.
+        return names[index];
+        
     }
     
     DisplayMode getDisplayMode() {
@@ -51,7 +87,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
             logger.fine("The selected display mode is "+displayMode.toString());
             return displayMode.displayMode;
         }
-		return null;
+        return null;
     }
     InetSocketAddress getRemoteServerAddress() {
         String portStr = remotePort.getText();
@@ -67,7 +103,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
         InetSocketAddress address;
         try {
             address = new InetSocketAddress
-            (remoteIP.getText(), port);
+                    (remoteIP.getText(), port);
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -183,6 +219,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         playerName = new javax.swing.JTextField();
+        playerNames = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         remoteIP = new javax.swing.JTextField();
@@ -214,6 +251,9 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
         playerName.setColumns(12);
         playerName.setText( System.getProperty("user.name"));
         jPanel3.add(playerName);
+
+        playerNames.setToolTipText("Select a player from the saved game.");
+        jPanel3.add(playerNames);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -340,6 +380,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
     javax.swing.JPanel jPanel4;
     javax.swing.JScrollPane jScrollPane1;
     javax.swing.JTextField playerName;
+    javax.swing.JComboBox playerNames;
     javax.swing.JTextField remoteIP;
     javax.swing.JTextField remotePort;
     javax.swing.JPanel spacer;

@@ -82,7 +82,9 @@ LauncherInterface {
                     mode = cop.getScreenMode();
                     
                     client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
-                    initServer();
+                    if(isNewGame()){
+                    	initServer();
+                    }
                     client.connect(server, cop.getPlayerName(), "password");
                     
                     setServerGameModel();
@@ -195,14 +197,22 @@ LauncherInterface {
     }
     
     private void setServerGameModel() throws IOException {
-        MapSelectionPanel msp2 = (MapSelectionPanel) wizardPages[1];
-        if (msp2.getMapAction() == MapSelectionPanel.START_NEW_MAP) {
+        
+        ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
+		if (isNewGame()) {       
+			MapSelectionPanel msp2 = (MapSelectionPanel) wizardPages[1];
             server.newGame(msp2.getMapName());
-        } else {
-            server.loadgame(ServerControlInterface.FREERAILS_SAV);
-            
+            cop.limitPlayerNames(null);
+        } else {        	
+        	//Do nothing since the server is already set up.              
         }
     }
+    
+    private boolean isNewGame(){
+    	MapSelectionPanel msp2 = (MapSelectionPanel) wizardPages[1];
+        
+       return msp2.getMapAction() == MapSelectionPanel.START_NEW_MAP;
+    }        
     
     /** Starts the client and server in the same thread.*/
     private static void startThread(final FreerailsGameServer server, final GUIClient client) {
@@ -224,8 +234,8 @@ LauncherInterface {
             
         };
         try{
-        Thread t = new Thread(run, "Client + server main loop");
-        t.start();
+            Thread t = new Thread(run, "Client + server main loop");
+            t.start();
         }catch (Exception e){
             exit(e);
         }
@@ -233,7 +243,7 @@ LauncherInterface {
     
     /** Starts the client in a new thread.*/
     private static void startThread(final GUIClient client) {
-    	
+        
         Runnable run = new Runnable(){
             
             public void run() {
@@ -256,8 +266,8 @@ LauncherInterface {
             
         };
         try{
-        Thread t = new Thread(run, "Client main loop");
-        t.start();
+            Thread t = new Thread(run, "Client main loop");
+            t.start();
         }catch (Exception e){
             exit(e);
         }
@@ -265,7 +275,7 @@ LauncherInterface {
     
     /** Starts the server in a new thread.*/
     private static void startThread(final FreerailsGameServer server) {
-    	
+        
         
         Runnable r = new Runnable(){
             
@@ -288,10 +298,10 @@ LauncherInterface {
             
         };
         try{
-        
-        Thread t = new Thread(r, "FreerailsGameServer");
-        t.start();
-    	}catch (Exception e){
+            
+            Thread t = new Thread(r, "FreerailsGameServer");
+            t.start();
+        }catch (Exception e){
             exit(e);
         }
     }
@@ -308,7 +318,7 @@ LauncherInterface {
         ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
         cp.server = server;
         server.addPropertyChangeListener(cp);
-        cp.updateListOfPlayers();       
+        cp.updateListOfPlayers();
     }
     
     /**
@@ -348,7 +358,9 @@ LauncherInterface {
     
     /** Starts a thread listening for new connections.*/
     private void prepare2HostNetworkGame(int port) throws IOException{
-       initServer();
+    	if(isNewGame()){
+    		initServer();
+    	}
         InetConnectionAccepter accepter = new InetConnectionAccepter(port, server);
         /* Note, the thread's name gets set in the run method so there is no point setting it here.*/
         Thread t = new Thread(accepter);
@@ -528,6 +540,7 @@ LauncherInterface {
                             currentPage = 2;
                             msp.setServerPortPanelVisible(false);
                             cop.setRemoteServerPanelVisible(true);
+                            cop.limitPlayerNames(null);
                             break;
                     }
                     prevButton.setEnabled(true);
@@ -546,12 +559,22 @@ LauncherInterface {
                             }
                         }
                     } else {
+                    	if(isNewGame()){                    		                           
+                    		cop.limitPlayerNames(null);                                                                                       		
+                    	}else{
+                    		initServer();
+                    		server.loadgame(ServerControlInterface.FREERAILS_SAV);
+                            String[] playernames = server.getPlayerNames();
+                        	cop.limitPlayerNames(playernames);          
+                    	}
+                    	
                         nextIsStart = true;
                         prevButton.setEnabled(true);
                         setNextEnabled(true);
                         currentPage++;
                         cl.next(jPanel1);
                     }
+                    
                     break;
                 case 2:
                     /* display mode selection */

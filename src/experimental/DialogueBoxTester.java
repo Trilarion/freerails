@@ -20,7 +20,7 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.network.MoveChainFork;
 import jfreerails.network.UntriedMoveReceiver;
-import jfreerails.server.NewTileSetFactoryImpl;
+import jfreerails.server.TileSetFactoryImpl;
 import jfreerails.server.common.TileSetFactory;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoBatch;
@@ -79,7 +79,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         modelRoot.setMoveReceiver(this.dummyReceiver);
         
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        TileSetFactory tileFactory = new NewTileSetFactoryImpl();
+        TileSetFactory tileFactory = new TileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
         wetf.addTypesToWorld(w);
         w.addPlayer(TEST_PLAYER);

@@ -15,14 +15,14 @@ import jfreerails.world.top.World;
  * @author Luke
  *
  */
-public class NewCityTilePositioner {
+public class CityTilePositioner {
     Random random = new Random();
     ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<TerrainType> ();
     ArrayList<TerrainType>  industryTerrainTypes = new ArrayList<TerrainType> ();
     ArrayList<TerrainType>  resourceTerrainTypes = new ArrayList<TerrainType> ();
     World w;
 
-    public NewCityTilePositioner(World w) {
+    public CityTilePositioner(World w) {
         this.w = w;
 
         //get the different types of Urban/Industry/Resource terrain

@@ -13,7 +13,7 @@ import jfreerails.world.common.FreerailsSerializable;
  *  @author Luke
  *
  */
-public class NewSychronizedQueue {
+public class SychronizedQueue {
     private final LinkedList<FreerailsSerializable> queue = new LinkedList<FreerailsSerializable>();
 
     public synchronized void write(FreerailsSerializable f) {

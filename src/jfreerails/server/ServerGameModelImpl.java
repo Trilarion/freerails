@@ -32,6 +32,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     private transient CalcSupplyAtStations calcSupplyAtStations;
     private TrainBuilder tb;
     private final ArrayList<TrainMover> trainMovers;
+    private String [] passwords;
 
     /**
      * List of the ServerAutomaton objects connected to this game.
@@ -70,7 +71,7 @@ public class ServerGameModelImpl implements ServerGameModel {
 
         //Grow cities.
         WorldDifferences wd = new WorldDifferences(world);
-        NewCityTilePositioner ctp = new NewCityTilePositioner(wd);
+        CityTilePositioner ctp = new CityTilePositioner(wd);
         ctp.growCities();
 
         MapDiffMove move = new MapDiffMove(world, wd);
@@ -188,11 +189,16 @@ public class ServerGameModelImpl implements ServerGameModel {
 
     public World getWorld() {
         return world;
-    }
+    }   
 
-    public void setWorld(World world) {
-        this.world = world;
-        this.trainMovers.clear();
-        this.serverAutomata.clear();
-    }
+	public void setWorld(World w, String[] passwords) {
+		 this.world = w;
+	     this.trainMovers.clear();
+	     this.serverAutomata.clear();
+	     this.passwords = passwords.clone();		
+	}
+
+	public String[] getPasswords() {		
+		return passwords.clone();
+	}
 }

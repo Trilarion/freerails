@@ -11,7 +11,7 @@ import jfreerails.util.GameModel;
  *  @author Luke
  *
  */
-public interface NewGameServer extends GameModel {
+public interface GameServer extends GameModel {
     void addConnection(Connection2Client connection);
 
     int countOpenConnections();
