@@ -21,7 +21,6 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.train.TrainModel;
-//import jfreerails.world.train.WagonType;
 
 public class DropOffAndPickupCargoMoveGenerator {
 	
@@ -36,10 +35,10 @@ public class DropOffAndPickupCargoMoveGenerator {
 	private int stationBundleId;
 	//private CargoBundle stationBundle;
 	
+	private CargoBundle stationAfter;
 	private CargoBundle stationBefore;
-	private	CargoBundle stationAfter;
-	private	CargoBundle trainBefore;
-	private	CargoBundle trainAfter;
+	private CargoBundle trainAfter;
+	private CargoBundle trainBefore;
 	
 	public DropOffAndPickupCargoMoveGenerator(int trainNo ,int stationNo, World world) {
 		trainId = trainNo;
@@ -50,38 +49,24 @@ public class DropOffAndPickupCargoMoveGenerator {
 		
 		getBundles();
 		
-		/*showWagonTypes();
-		showCargoTypes();*/
-		
 		processTrainBundle(); //ie. unload train / dropoff cargo
 		processStationBundle(); //ie. load train / pickup cargo
 		
+		//test output
+		System.out.println("train and station bundles have been processed, now do the move\n");
+		
 	}
 	
-	public Move generateMove(){
-		
+	
+	public Move generateMove(){	
 		//The methods that calculate the before and after bundles could be called from here.
 		
 		ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore, stationAfter, stationBundleId);
 		ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore, trainAfter, trainBundleId);
 		return TransferCargoAtStationMove.generateMove(changeAtStation, changeOnTrain);
 	}	
-	/*public void showWagonTypes() {
-		for (int i=0; i<w.size(KEY.WAGON_TYPES); i++) {
-			WagonType wagonType = (WagonType) w.get(KEY.WAGON_TYPES,i);
-			System.out.println(wagonType.getName());
-		}
-	}*/
 	
-	
-	/*public void showCargoTypes() {
-		for (int i=0; i<w.size(KEY.CARGO_TYPES); i++) {
-			CargoType cargo = (CargoType)w.get(KEY.CARGO_TYPES,i);
-			System.out.println(cargo.getName());
-		}
-	}*/
-	
-	
+		
 	public void getBundles(){
 		trainBundleId = ((TrainModel)w.get(KEY.TRAINS,trainId)).getCargoBundleNumber(); 
 		trainBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId)).getCopy();		
@@ -104,18 +89,12 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 			if ( station.getDemand().isCargoDemanded(cb.getCargoType()) ) {
 				//cargo is demanded, so:
-				//	pay train owner...
+				//		pay train owner...
 				System.out.println(w.get(KEY.CARGO_TYPES,cb.getCargoType()) + " was delivered by train #" + trainId);	
 			}
 					
 			batches.remove();	
-		}		
-		
-		//for each cargo batch in the train bundle:
-		//	if station demands that cargo type
-		//		pay owner of train, remove batch from train bundle
-		//	else
-		//		remove batch from train bundle
+		}			
 	}
 	
 	/*
@@ -136,7 +115,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 		//test output
 		System.out.println("train #" + trainId + " has " + train.getNumberOfWagons() + " wagons");
 		
-		//see what can be put in a train's wagons
+		//loop through each wagon, see what can be put in them
 		for (int j=0; j<train.getNumberOfWagons(); j++) {
 			CargoType wagonCargoType = (CargoType)w.get(KEY.CARGO_TYPES,train.getWagon(j));
 			
@@ -154,8 +133,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 					if (stationBefore.getAmount(k) > 0) {
 						
 						//test output 
-						System.out.println(stationBefore.getAmount(k) + " wagons of " + wagonCargoType.getCategory() + " available for pickup");
-						
+						//System.out.println(stationBefore.getAmount(k) + " wagons of " + wagonCargoType.getCategory() + " available for pickup");
+						System.out.println(stationAfter.getAmount(k) + " wagons of " + wagonCargoType.getCategory() + " available for pickup");
 						//transfer cargo to the current wagon
 						transferCargo(k);
 					}
@@ -166,6 +145,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 			//refreshBeforeAfterBundles();
 		}
 	}
+	
 	
 	public void transferCargo(int cargoTypeToTransfer) {
 		Iterator batches = stationAfter.cargoBatchIterator();
@@ -179,7 +159,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 			amount = stationAfter.getAmount(cb);
 			
 			if ( transferIfTheSameType(cb, cb.getCargoType(),cargoTypeToTransfer) ) {
-				//cargo was transferred into wagon
+				//cargo types are the same so ... 
+				//	cargo was transferred into wagon
 				
 				//test output
 				System.out.println("transferring a wagon of cargo " + cargoTypeToTransfer +
@@ -195,7 +176,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 				}
 				else {
 					//there was only one wagon load in the batch, 
-					//	which has now been transferred, so delete batch
+					//		which has now been transferred, so delete batch
 					batches.remove();
 				}			 
 				
@@ -205,7 +186,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 		
 		if (!TRANSFER_NOT_DONE) {
 			//transfer was done, the original batch was removed,
-			//	now put the replacement batch in stationBundle
+			//		now put the replacement batch in stationBundle
 			stationAfter.setAmount(replacementBatch,amount-1);
 		}
 		
@@ -213,13 +194,13 @@ public class DropOffAndPickupCargoMoveGenerator {
 	
 	
 	public boolean transferIfTheSameType(CargoBatch cb,int stationBatch, int cargoTransferType) {
-
+		
 		if (stationBatch == cargoTransferType) {
 			//transfer a wagon load of this batch to train
 
-		
+			int currentAmount = trainAfter.getAmount(cb);
 			//put new batch on the train
-			trainAfter.setAmount(cb,1);
+			trainAfter.setAmount(cb,currentAmount+1);
 
 			return true;
 		}
@@ -228,7 +209,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 	}
 	
 	
-	public void doCargoTransferMove() {
+	/*public void doCargoTransferMove() {
 		//move cargo from station
 	  	ChangeCargoBundleMove fromStation = new ChangeCargoBundleMove(stationBefore,
 	  																  stationAfter,
@@ -242,5 +223,5 @@ public class DropOffAndPickupCargoMoveGenerator {
 	  															  trainBundleId
 	  															  );
 	  	MoveStatus trainMS = toTrain.doMove(w);	
-	}
+	}*/
 }
