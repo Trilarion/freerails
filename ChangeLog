@@ -1,3 +1,7 @@
+Mon Oct 08 20:55:00 2001  Rivo Laks <rivolaks@hot.ee>:
+o Added methods to pause and stop game to GameController
+o Added GameState enum and getState() to GameController
+o Fixed some bugs in GameInfo
 Sun Sep 30 14:00:00 2001  Rivo Laks <rivolaks@hot.ee>:
 o Added GameController and GameInfo classes (not very functional)
 o Added rtti() method to GameElement and all elements
