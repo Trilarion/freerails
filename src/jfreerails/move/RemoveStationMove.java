@@ -17,7 +17,7 @@ import jfreerails.world.top.WorldIterator;
  * @author Luke
  * 
  */
-public class RemoveStationMove extends AbstractRemoveItemFromListMove implements TrackMove {
+public class RemoveStationMove extends RemoveItemFromListMove implements TrackMove {
 
 	private final ChangeTrackPieceMove trackMove; //this move removes the station from the map.
 

@@ -17,6 +17,18 @@ public class CargoBundleImpl implements CargoBundle {
 
 	private final HashMap hashMap;
 	
+
+	public String toString() {
+		String s = "CargoBundle {\n";
+		Iterator it = this.cargoBatchIterator();
+		while (it.hasNext()){
+			CargoBatch cb = (CargoBatch)it.next();
+			s+= this.getAmount(cb)+" units of cargo type "+cb.getCargoType()+"\n";
+		}
+		s+="}";
+		return s;
+	}
+
 	public CargoBundleImpl(){
 		hashMap = new HashMap();
 	}

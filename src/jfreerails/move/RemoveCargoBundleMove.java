@@ -12,7 +12,7 @@ import jfreerails.world.top.KEY;
  * @author Luke
  * 
  */
-public class RemoveCargoBundleMove extends AbstractRemoveItemFromListMove {
+public class RemoveCargoBundleMove extends RemoveItemFromListMove {
 	
 	public RemoveCargoBundleMove(int i, CargoBundle item) {
 		super(KEY.CARGO_BUNDLES, i, item);		

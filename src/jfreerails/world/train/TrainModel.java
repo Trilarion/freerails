@@ -24,16 +24,19 @@ public class TrainModel implements FreerailsSerializable{
         this.wagonTypes=wagons;
         trainposition=p;
         this.schedule=s;
-        this.cargoBundleNumber = BundleId;
-        
+        this.cargoBundleNumber = BundleId;        
+    }
+    
+    public TrainModel(int[] wagons, int BundleId ){		
+		this.wagonTypes=wagons;				
+		this.cargoBundleNumber = BundleId;    	
     }
     
 	public TrainModel(int engine, int[] wagons, TrainPositionOnMap p, Schedule s){
 			this.engineType = engine;
 			this.wagonTypes=wagons;
 			trainposition=p;
-			this.schedule=s;
-      
+			this.schedule=s;      
 	}
 		
     public TrainModel(int engine){

@@ -19,8 +19,8 @@ public class ChangeCargoBundleMoveTest extends AbstractMoveTestCase {
 		CargoBundle before, after;
 		before = new CargoBundleImpl();
 		after = new CargoBundleImpl();
-		before.setAmount(new CargoBatch(1, 2, 3, 4), 5);
-		after.setAmount(new CargoBatch(1, 2, 3, 4), 8);
+		before.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
+		after.setAmount(new CargoBatch(1, 2, 3, 4, 0), 8);
 		
 		
 		Move m = new ChangeCargoBundleMove(before, after, 0);

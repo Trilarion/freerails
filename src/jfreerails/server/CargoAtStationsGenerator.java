@@ -38,10 +38,11 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable{
 			CargoBundle cargoBundle = (CargoBundle)w.get(KEY.CARGO_BUNDLES, station.getCargoBundleNumber());
 			CargoBundle before = cargoBundle.getCopy();
 			CargoBundle after = cargoBundle.getCopy();
+			int stationNumber = nonNullStations.getIndex();
 			for(int i = 0 ; i < w.size(KEY.CARGO_TYPES); i ++){
 				int amountSupplied = supply.getSupply(i);
 				if(amountSupplied>0){
-					CargoBatch cb = new CargoBatch(i, station.x, station.y, 0);
+					CargoBatch cb = new CargoBatch(i, station.x, station.y, 0, stationNumber);
 					int amountAlready = before.getAmount(cb);
 					after.setAmount(cb, amountSupplied + amountAlready);
 				}

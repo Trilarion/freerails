@@ -35,9 +35,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
 		number=n;
 		isStation=station;		
 	}
-	/**
-	 * @return
-	 */
+	
 	public int getStationRadius() {
 		return stationRadius;
 	}

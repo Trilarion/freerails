@@ -13,14 +13,21 @@ public class CargoBatch implements FreerailsSerializable {
 	private final int cargoType;
 
 	private final int sourceX, sourceY;
+	
+	private final int stationOfOrigin;
 
 	private final long timeCreated;
 
-	public CargoBatch(int type, int x, int y, long time) {
+	public CargoBatch(int type, int x, int y, long time, int stationOfOrigin) {
 		cargoType = type;
 		sourceX = x;
 		sourceY = y;
 		timeCreated = time;
+		this.stationOfOrigin = stationOfOrigin;
+	}
+
+	public int getStationOfOrigin() {
+		return stationOfOrigin;
 	}
 
 	public int getCargoType() {
@@ -45,7 +52,8 @@ public class CargoBatch implements FreerailsSerializable {
 			if (test.getCargoType() == this.cargoType
 				&& test.getSourceX() == this.sourceX
 				&& test.sourceY == this.sourceY
-				&& test.timeCreated == this.timeCreated) {
+				&& test.timeCreated == this.timeCreated
+				&& test.stationOfOrigin == this.stationOfOrigin) {
 				return true;
 			} else {
 				return false;
@@ -60,6 +68,7 @@ public class CargoBatch implements FreerailsSerializable {
 		result = 37 * result + this.cargoType;
 		result = 37 * result + this.sourceX;
 		result = 37 * result + this.sourceY;
+		result = 37 * result + this.stationOfOrigin;
 		result = 37 * result + (int)(this.timeCreated^(this.timeCreated>>>32));
 		return result;
 	}

@@ -30,11 +30,11 @@ public class DropOffAndPickupCargoMoveGenerator {
 	private TrainModel train;
 	private int trainId;
 	private int trainBundleId;
-	private CargoBundle trainBundle;
+	//private CargoBundle trainBundle;
 	
 	private int stationId;
 	private int stationBundleId;
-	private CargoBundle stationBundle;
+	//private CargoBundle stationBundle;
 	
 	private CargoBundle stationBefore;
 	private	CargoBundle stationAfter;
@@ -62,7 +62,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 		
 		//The methods that calculate the before and after bundles could be called from here.
 		
-		ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore, stationAfter, trainBundleId);
+		ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore, stationAfter, stationBundleId);
 		ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore, trainAfter, trainBundleId);
 		return TransferCargoAtStationMove.generateMove(changeAtStation, changeOnTrain);
 	}	
@@ -84,16 +84,15 @@ public class DropOffAndPickupCargoMoveGenerator {
 	
 	public void getBundles(){
 		trainBundleId = ((TrainModel)w.get(KEY.TRAINS,trainId)).getCargoBundleNumber(); 
-		trainBundle = (CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId);
-		
+		trainBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId)).getCopy();		
+		trainAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId)).getCopy();
 		stationBundleId = ((StationModel)w.get(KEY.STATIONS,stationId)).getCargoBundleNumber();
-		stationBundle = (CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId);	
+		stationAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId)).getCopy();
+		stationBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId)).getCopy();	
 	}
 	
 	
-	public void processTrainBundle() {
-		
-		refreshBeforeAfterBundles();
+	public void processTrainBundle() {				
 		
 		Iterator batches = trainAfter.cargoBatchIterator();
 
@@ -119,7 +118,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 		//		remove batch from train bundle
 	}
 	
-	
+	/*
 	public void refreshBeforeAfterBundles() {
 		getBundles();
 		stationBefore = stationBundle.getCopy();
@@ -127,11 +126,12 @@ public class DropOffAndPickupCargoMoveGenerator {
 		trainBefore = trainBundle.getCopy();
 		trainAfter = trainBundle.getCopy();
 	}
+	*/
 	
 	
 	public void processStationBundle() {
 			
-		refreshBeforeAfterBundles();
+		//refreshBeforeAfterBundles();
 										
 		//test output
 		System.out.println("train #" + trainId + " has " + train.getNumberOfWagons() + " wagons");
@@ -163,7 +163,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 			}
 			//LL, is it ok to comment out this line?
 			//doCargoTransferMove();	
-			refreshBeforeAfterBundles();
+			//refreshBeforeAfterBundles();
 		}
 	}
 	
@@ -188,12 +188,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 				//we need to decrement the value of amount by 1
 				if (amount > 1) {
 					//create a replacement batch
-					replacementBatch = new CargoBatch(cargoTypeToTransfer, 
-													  cb.getSourceX(), 
-					  								  cb.getSourceY(), 
-													  cb.getTimeCreated() 
-													  );
-				
+					//Since CargoBatch is immutable, there is no need to create a copy, LL
+					replacementBatch = cb; 
 					//remove the current batch	
 					batches.remove();														
 				}
@@ -221,15 +217,9 @@ public class DropOffAndPickupCargoMoveGenerator {
 		if (stationBatch == cargoTransferType) {
 			//transfer a wagon load of this batch to train
 
-			//create new cargo batch to add to the train bundle
-			CargoBatch cargoBatch = new CargoBatch(cargoTransferType, 
-												   cb.getSourceX(), 
-												   cb.getSourceY(), 
-												   cb.getTimeCreated() 
-												   );
-
+		
 			//put new batch on the train
-			trainAfter.setAmount(cargoBatch,1);
+			trainAfter.setAmount(cb,1);
 
 			return true;
 		}

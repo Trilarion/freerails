@@ -1,4 +1,3 @@
-
 package jfreerails.controller;
 import java.awt.Point;
 

@@ -14,10 +14,10 @@ public class GameCalenderTest extends TestCase {
 
 	public void testGetYear(){
 		GameCalendar gc = new GameCalendar(10, 1900);
-		assertEquals("1900", gc.getYear(0));
-		assertEquals("1900", gc.getYear(5));
-		assertEquals("1901", gc.getYear(10));
-		assertEquals("1950", gc.getYear(505));			
+		assertEquals("1900", gc.getYearAsString(0));
+		assertEquals("1900", gc.getYearAsString(5));
+		assertEquals("1901", gc.getYearAsString(10));
+		assertEquals("1950", gc.getYearAsString(505));			
 	}
 	
 	public void testGetTimeOfDay(){

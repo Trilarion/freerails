@@ -20,6 +20,7 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.server.CalcSupplyAtStations;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -43,7 +44,7 @@ public class DialogueBoxController {
 	private MyGlassPanel glassPanel;
 	private NewsPaperJPanel newspaper;
 	private SelectWagonsJPanel selectWagons;
-	private TrainScheduleJPanel trainSchedule;
+	private TrainScheduleJPanel trainScheduleJPanel;
 	private GameControlsJPanel showControls;
 	private TerrainInfoJPanel terrainInfo;
 	private StationInfoJPanel stationInfo;
@@ -99,11 +100,11 @@ public class DialogueBoxController {
 		showControls.setup(w, vl, this.closeCurrentDialogue);
 
 		//Set up train orders dialogue
-		trainSchedule = new TrainScheduleJPanel();
-		trainSchedule.setup(w, vl, new ActionListener() {
+		trainScheduleJPanel = new TrainScheduleJPanel();
+		trainScheduleJPanel.setup(w, vl, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int trainNumber = trainSchedule.getTrainNumber();
-				Schedule schedule = trainSchedule.getNewSchedule();
+				int trainNumber = trainScheduleJPanel.getTrainNumber();
+				Schedule schedule = trainScheduleJPanel.getNewSchedule();
 				TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber);
 				train.setSchedule(schedule);
 				closeContent();
@@ -163,8 +164,8 @@ public class DialogueBoxController {
 		if (!wi.next()) {
 			System.out.println("Cannot show train orders since there are no trains!");
 		} else {
-			trainSchedule.displayFirst();
-			showContent(trainSchedule);
+			trainScheduleJPanel.displayFirst();
+			showContent(trainScheduleJPanel);
 		}
 	}
 
@@ -203,6 +204,8 @@ public class DialogueBoxController {
 
 	public void showStationInfo(int stationNumber) {
 		try{		
+			CalcSupplyAtStations cSAS = new CalcSupplyAtStations(w);
+			cSAS.doProcessing();
 			stationInfo.setStation(stationNumber);
 			showContent(stationInfo);
 		}catch (NoSuchElementException e){

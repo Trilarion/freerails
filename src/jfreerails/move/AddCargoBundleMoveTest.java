@@ -19,8 +19,8 @@ public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
 		CargoBundle bundleA, bundleB;
 		bundleA = new CargoBundleImpl();
 		bundleB = new CargoBundleImpl();
-		bundleA.setAmount(new CargoBatch(1, 2, 3, 4), 5);
-		bundleB.setAmount(new CargoBatch(1, 2, 3, 4), 5);
+		bundleA.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
+		bundleB.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
 		assertEquals(bundleA, bundleB);
 		
 		Move m = new AddCargoBundleMove(0,bundleA);

@@ -13,11 +13,15 @@ final public class GameCalendar implements FreerailsSerializable {
     
     private final int startYear;
    
-    public String getYear(int ticks) {
-    	int i = startYear + (ticks/ticksPerYear);
+    public String getYearAsString(int ticks) {
+    	int i = getYear(ticks);
         return String.valueOf(i);
     }
     
+	public int getYear(int ticks) {
+		return startYear + (ticks/ticksPerYear);
+	}
+
 	/** Returns the time of day as a string, note that a year is made
 	 * up of a representative day, so 1st June is equilavent to 12 noon.	
 	 */
@@ -31,7 +35,7 @@ final public class GameCalendar implements FreerailsSerializable {
 
     public String getYearAndMonth(int i) {
     	int ticksPerMonth = ticksPerYear / 12;
-    	int month = (i % ticksPerYear) / ticksPerMonth;
+    	int month = getMonth(i, ticksPerMonth);
     	String monthAbrev = null;
     	switch (month){
     		case 0:{
@@ -83,8 +87,12 @@ final public class GameCalendar implements FreerailsSerializable {
 				break;
 			}						    			
     	}
-    	return monthAbrev + " " + getYear(i);
+    	return monthAbrev + " " + getYearAsString(i);
     }
+
+	public int getMonth(int i, int ticksPerMonth) {
+		return (i % ticksPerYear) / ticksPerMonth;
+	}
 
 	public GameCalendar(int ticksPerYear, int startYear){
 		this.ticksPerYear=ticksPerYear;

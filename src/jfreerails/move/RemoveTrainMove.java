@@ -12,7 +12,7 @@ import jfreerails.world.train.TrainModel;
  * @author Luke
  * 
  */
-public class RemoveTrainMove extends AbstractRemoveItemFromListMove {
+public class RemoveTrainMove extends RemoveItemFromListMove {
 	public RemoveTrainMove(int index, TrainModel train){
 		super(KEY.TRAINS, index, train);	
 	}

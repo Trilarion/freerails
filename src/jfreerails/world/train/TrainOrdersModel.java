@@ -34,4 +34,9 @@ public class TrainOrdersModel implements FreerailsSerializable {
     public int getStationNumber(){
         return station;
     }    
+    
+    public boolean isNoConsistChange(){
+    	return null==consist;	
+    }
+    
 }

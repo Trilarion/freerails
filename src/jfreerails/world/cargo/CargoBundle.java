@@ -36,7 +36,7 @@ import jfreerails.world.common.FreerailsSerializable;
 public interface CargoBundle extends FreerailsSerializable {	
 	int getAmount(int cargoType);
 	int getAmount(CargoBatch cb);
-	void setAmount(CargoBatch cb, int cargoType);
+	void setAmount(CargoBatch cb, int amount);
 	boolean contains(CargoBatch cb);
 	Iterator cargoBatchIterator();
 	CargoBundle getCopy();
