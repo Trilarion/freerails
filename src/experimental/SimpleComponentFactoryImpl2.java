@@ -24,6 +24,8 @@ import jfreerails.client.view.MainMapAndOverviewMapMediator;
 import jfreerails.client.view.MapViewJComponentConcrete;
 import jfreerails.client.view.OverviewMapJComponent;
 /**
+ *	This GUIComponentFactory creates simple components that can be used to test the layout of the client jFrame without
+ *running the whole game.
  *
  * @author  Luke Lindsay
  */

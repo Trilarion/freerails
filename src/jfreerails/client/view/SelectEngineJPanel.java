@@ -115,10 +115,10 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 	} //GEN-LAST:event_jList1ValueChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton okjButton;
     private javax.swing.JButton canceljButton;
     private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton okjButton;
     // End of variables declaration//GEN-END:variables
 
 	final private class TrainCellRenderer implements ListCellRenderer {

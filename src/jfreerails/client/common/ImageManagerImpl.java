@@ -126,7 +126,7 @@ public class ImageManagerImpl implements ImageManager {
 		}
 	}
 
-
+        /** Returns the specified image scaled so that its height is equal to the specified height. */
 	public Image getScaledImage(String relativeFilename, int height)throws IOException{
 		Image i = getImage( relativeFilename);
 		String hashKey = relativeFilename+height;
@@ -137,7 +137,7 @@ public class ImageManagerImpl implements ImageManager {
 				return i;
 			}else{
 				int width = (i.getWidth(null) * height)/i.getHeight(null);
-				Image compatibleImage = defaultConfiguration.createCompatibleImage(i.getWidth(null), i.getWidth(null), Transparency.BITMASK);
+				Image compatibleImage = defaultConfiguration.createCompatibleImage(width, height, Transparency.BITMASK);
 				Graphics g = compatibleImage.getGraphics();
 				g.drawImage(i, 0, 0, width, height, null);
 				scaledImagesHashMap.put(hashKey, compatibleImage);

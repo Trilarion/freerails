@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.border.LineBorder;
 
 import jfreerails.client.common.MyGlassPanel;
@@ -50,9 +51,10 @@ public class DialogueBoxController {
 	private GameControlsJPanel showControls;
 	private TerrainInfoJPanel terrainInfo;
 	private StationInfoJPanel stationInfo;
-
+	private JList trainList = new JList();
 
 	private ReadOnlyWorld world;
+	private ViewLists viewLists;
 
 	private Component defaultFocusOwner = null;
 
@@ -77,7 +79,9 @@ public class DialogueBoxController {
 		glassPanel.setVisible(false);
 
 		//We need to resize the glass panel when its parent resizes.
-		frame.getLayeredPane().addComponentListener(new java.awt.event.ComponentAdapter() {
+		frame
+			.getLayeredPane()
+			.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent evt) {
 				glassPanel.setSize(glassPanel.getParent().getSize());
 				glassPanel.revalidate();
@@ -87,14 +91,23 @@ public class DialogueBoxController {
 		closeButton.addActionListener(closeCurrentDialogue);
 	}
 
-	public void setup(ReadOnlyWorld  w, ViewLists vl, MoveChainFork moveChainFork, MapCursor mapCursor) {
-		
-		if(w==null) throw new NullPointerException();
-		if(vl==null) throw new NullPointerException();
-		if(moveChainFork==null) throw new NullPointerException();
-		if(mapCursor==null) throw new NullPointerException();
-		
+	public void setup(
+		ReadOnlyWorld w,
+		ViewLists vl,
+		MoveChainFork moveChainFork,
+		MapCursor mapCursor) {
+
+		if (w == null)
+			throw new NullPointerException();
+		if (vl == null)
+			throw new NullPointerException();
+		if (moveChainFork == null)
+			throw new NullPointerException();
+		if (mapCursor == null)
+			throw new NullPointerException();
+
 		this.world = w;
+		viewLists = vl;
 
 		//Setup the various dialogue boxes.
 
@@ -107,7 +120,6 @@ public class DialogueBoxController {
 		stationInfo.setup(w, vl);
 		moveChainFork.add(stationInfo);
 		stationInfo.setMapCursor(mapCursor);
-		
 
 		// setup the 'show controls' dialogue
 		showControls = new GameControlsJPanel();
@@ -131,8 +143,9 @@ public class DialogueBoxController {
 		newspaper.setup(w, vl, closeCurrentDialogue);
 
 		selectWagons = new SelectWagonsJPanel();
-		
-		final ReadOnlyWorld finalROW = this.world; //So that inner class can reference it.
+
+		final ReadOnlyWorld finalROW = this.world;
+		//So that inner class can reference it.
 		selectWagons.setup(w, vl, new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
@@ -147,7 +160,11 @@ public class DialogueBoxController {
 					ProductionAtEngineShop after =
 						new ProductionAtEngineShop(engineType, wagonTypes);
 
-					Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex());
+					Move m =
+						new ChangeProductionAtEngineShopMove(
+							before,
+							after,
+							wi.getIndex());
 					MoveExecuter.getMoveExecuter().processMove(m);
 				}
 				closeContent();
@@ -164,7 +181,8 @@ public class DialogueBoxController {
 	public void showTrainOrders() {
 		WorldIterator wi = new NonNullElements(KEY.TRAINS, world);
 		if (!wi.next()) {
-			System.out.println("Cannot show train orders since there are no trains!");
+			System.out.println(
+				"Cannot show train orders since there are no trains!");
 		} else {
 			trainScheduleJPanel.displayFirst();
 			showContent(trainScheduleJPanel);
@@ -182,12 +200,12 @@ public class DialogueBoxController {
 	}
 
 	public void showGameControls() {
-		
+
 		showContent(this.showControls);
 	}
 
 	public void showSelectWagons() {
-		
+
 		selectWagons.resetSelectedWagons();
 		selectWagons.setEngineType(selectEngine.getEngineType());
 		showContent(selectWagons);
@@ -205,41 +223,54 @@ public class DialogueBoxController {
 	}
 
 	public void showStationInfo(int stationNumber) {
-		try{		
+		try {
 			stationInfo.setStation(stationNumber);
 			showContent(stationInfo);
-		}catch (NoSuchElementException e){
-			System.out.println("Station "+stationNumber+" does not exist!");
+		} catch (NoSuchElementException e) {
+			System.out.println("Station " + stationNumber + " does not exist!");
+		}
+	}
+
+	public void showTrainList() {
+		if (world.size(KEY.TRAINS) > 0) {
+			trainList.setModel(new World2ListModelAdapter(world, KEY.TRAINS));
+			TrainViewJPanel trainView = 
+				new TrainViewJPanel(world, viewLists, 0);
+			trainList.setCellRenderer(trainView);
+			trainView.setHeight(50);
+			showContent(trainList);
+		} else {
+			System.out.println("There are no trains to display!");
 		}
 	}
 
 	public void showContent(JComponent component) {
-	    JComponent contentPanel;
-	    if (! (component instanceof View)) {
-		contentPanel = new javax.swing.JPanel();
-		contentPanel.setLayout(new java.awt.GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
-		contentPanel.add(component, constraints);
+		JComponent contentPanel;
+		if (!(component instanceof View)) {
+			contentPanel = new javax.swing.JPanel();
+			contentPanel.setLayout(new java.awt.GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.weightx = 1.0;
+			constraints.weighty = 1.0;
+			contentPanel.add(component, constraints);
 
-		constraints = new GridBagConstraints();
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		contentPanel.add(closeButton, constraints);
-	    } else {
-		contentPanel = component;
-	    }
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			contentPanel.add(closeButton, constraints);
+		} else {
+			contentPanel = component;
+		}
 
-	    contentPanel.setBorder(defaultBorder);
+		contentPanel.setBorder(defaultBorder);
 		//		if(!glassPanel.isVisible()){
 		//			KeyboardFocusManager keyboardFocusManager =
 		//			KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		//			lastFocusOwner = keyboardFocusManager.getFocusOwner();
 		//		}
-	    glassPanel.showContent(contentPanel);
+		glassPanel.showContent(contentPanel);
 		glassPanel.validate();
 		glassPanel.setVisible(true);
 	}
@@ -257,20 +288,22 @@ public class DialogueBoxController {
 	public void setDefaultFocusOwner(Component defaultFocusOwner) {
 		this.defaultFocusOwner = defaultFocusOwner;
 	}
-	
-	public void showStationOrTerrainInfo(int x, int y){
-		FreerailsTile tile = world.getTile(x,y);
-		if(tile.getTrackRule().isStation()){
-			 for(int i = 0 ; i < world.size(KEY.STATIONS); i++){
-			 	StationModel station = (StationModel)world.get(KEY.STATIONS, i);
-			 	if(null!=station && station.x == x && station.y==y){
-			 		this.showStationInfo(i);
-			 		return;
-			 	}
-			 }	
-			 throw new IllegalStateException("Could find station at "+x+", "+y);
-		}else{
-			this.showTerrainInfo(x, y);			
+
+	public void showStationOrTerrainInfo(int x, int y) {
+		FreerailsTile tile = world.getTile(x, y);
+		if (tile.getTrackRule().isStation()) {
+			for (int i = 0; i < world.size(KEY.STATIONS); i++) {
+				StationModel station =
+					(StationModel) world.get(KEY.STATIONS, i);
+				if (null != station && station.x == x && station.y == y) {
+					this.showStationInfo(i);
+					return;
+				}
+			}
+			throw new IllegalStateException(
+				"Could find station at " + x + ", " + y);
+		} else {
+			this.showTerrainInfo(x, y);
 		}
 	}
 

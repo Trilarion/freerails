@@ -199,6 +199,14 @@ public class GUIComponentFactoryImpl
 				dialogueBoxController.showStationInfo(0);
 			}
 		});
+		
+		JMenuItem trainListJMenuItem = new JMenuItem("Train List");
+		trainListJMenuItem.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dialogueBoxController.showTrainList();
+					}
+		});
+		
 		//		I've moved the processing to the menu item above, LL		
 		//		JMenuItem stationInfoCalculations = new JMenuItem("Calculate Station Info");
 		//		stationInfoCalculations.addActionListener(new ActionListener() {
@@ -210,6 +218,7 @@ public class GUIComponentFactoryImpl
 
 		displayMenu.add(trainOrdersJMenuItem);
 		displayMenu.add(stationInfoJMenuItem);
+		displayMenu.add(trainListJMenuItem);
 		//displayMenu.add(stationInfoCalculations);
 
 		return displayMenu;

@@ -1,3 +1,8 @@
+23-Aug-2003 15:45:00 Luke
+	o Removed cruft from the experiemental package.
+	o Added a simple train list dialogue, accessible via the display menu.
+	o Made the engine images have transparent backgrounds and flipped them 
+	horizontally.
 19-Aug-2003 00:59:00 Luke
 	o Applied Robert Tuck's patches that separated the
 	client and server and allow you to start up two clients
