@@ -58,49 +58,64 @@ SDL_Surface* GameMapView::getMapImage(int x, int y) {
     }
     case MapField::dessert:
     {
-      otherField=worldMap->getMapField(x,y-1);
-      if (otherField!=NULL && otherField->getType()!=MapField::dessert) xpos+=1;
-      otherField=worldMap->getMapField(x+1,y);
-      if (otherField!=NULL && otherField->getType()!=MapField::dessert) xpos+=2;
-      otherField=worldMap->getMapField(x,y+1);
-      if (otherField!=NULL && otherField->getType()!=MapField::dessert) xpos+=4;
-      otherField=worldMap->getMapField(x-1,y);
-      if (otherField!=NULL && otherField->getType()!=MapField::dessert) xpos+=8;
+      xpos=getImagePos(x,y,MapField::dessert);
       rectSRC.x=xpos*30;
       rectSRC.y=1*30;
       break;
     }
+    case MapField::river:
+    {
+      xpos=getRiverImagePos(x,y);
+      rectSRC.x=xpos*30;
+      rectSRC.y=4*30;
+      break;
+    }
+    case MapField::ocean:
+    {
+      xpos=getImagePos(x,y,MapField::ocean);
+      rectSRC.x=xpos*30;
+      rectSRC.y=5*30;
+      break;
+    }
     case MapField::bog:
     {
-      otherField=worldMap->getMapField(x,y-1);
-      if (otherField!=NULL && otherField->getType()!=MapField::bog) xpos+=1;
-      otherField=worldMap->getMapField(x+1,y);
-      if (otherField!=NULL && otherField->getType()!=MapField::bog) xpos+=2;
-      otherField=worldMap->getMapField(x,y+1);
-      if (otherField!=NULL && otherField->getType()!=MapField::bog) xpos+=4;
-      otherField=worldMap->getMapField(x-1,y);
-      if (otherField!=NULL && otherField->getType()!=MapField::bog) xpos+=8;
+      xpos=getImagePos(x,y,MapField::bog);
       rectSRC.x=xpos*30;
       rectSRC.y=2*30;
       break;
     }
     case MapField::jungle:
     {
-      otherField=worldMap->getMapField(x,y-1);
-      if (otherField!=NULL && otherField->getType()!=MapField::jungle) xpos+=1;
-      otherField=worldMap->getMapField(x+1,y);
-      if (otherField!=NULL && otherField->getType()!=MapField::jungle) xpos+=2;
-      otherField=worldMap->getMapField(x,y+1);
-      if (otherField!=NULL && otherField->getType()!=MapField::jungle) xpos+=4;
-      otherField=worldMap->getMapField(x-1,y);
-      if (otherField!=NULL && otherField->getType()!=MapField::jungle) xpos+=8;
+      xpos=getImagePos(x,y,MapField::jungle);
       rectSRC.x=xpos*30;
       rectSRC.y=3*30;
       break;
     }
     case MapField::wood:
     {
-      rectSRC.x=13*30;
+      xpos=get3DImagePos(x,y,MapField::wood);
+      rectSRC.x=(12+xpos)*30;
+      rectSRC.y=6*30;
+      break;
+    }
+    case MapField::foothills:
+    {
+      xpos=get3DImagePos(x,y,MapField::foothills);
+      rectSRC.x=(0+xpos)*30;
+      rectSRC.y=6*30;
+      break;
+    }
+    case MapField::hills:
+    {
+      xpos=get3DImagePos(x,y,MapField::hills);
+      rectSRC.x=(4+xpos)*30;
+      rectSRC.y=6*30;
+      break;
+    }
+    case MapField::mountain:
+    {
+      xpos=get3DImagePos(x,y,MapField::mountain);
+      rectSRC.x=(8+xpos)*30;
       rectSRC.y=6*30;
       break;
     }
@@ -117,4 +132,72 @@ SDL_Surface* GameMapView::getMapImage(int x, int y) {
   rectDST.h=rectSRC.h;
   SDL_BlitSurface(sdlimage, &rectSRC, surface, &rectDST);
   return surface;
+}
+
+int GameMapView::getImagePos(int x, int y, MapField::FieldType type)
+{
+  MapField* field;
+  int xpos=0;
+  
+  field=worldMap->getMapField(x,y-1);
+  if (field!=NULL && field->getType()!=type) xpos+=1;
+  field=worldMap->getMapField(x+1,y);
+  if (field!=NULL && field->getType()!=type) xpos+=2;
+  field=worldMap->getMapField(x,y+1);
+  if (field!=NULL && field->getType()!=type) xpos+=4;
+  field=worldMap->getMapField(x-1,y);
+  if (field!=NULL && field->getType()!=type) xpos+=8;
+
+  return xpos;
+}
+
+int GameMapView::getRiverImagePos(int x, int y)
+{
+  MapField* field;
+  int xpos=0;
+  
+  field=worldMap->getMapField(x,y-1);
+  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=1;
+  field=worldMap->getMapField(x+1,y);
+  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=2;
+  field=worldMap->getMapField(x,y+1);
+  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=4;
+  field=worldMap->getMapField(x-1,y);
+  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=8;
+
+  return xpos;
+}
+
+int GameMapView::get3DImagePos(int x, int y, MapField::FieldType type)
+{
+  MapField* fieldLeft;
+  MapField* fieldRight;
+  int xpos=0;
+  
+  fieldLeft=worldMap->getMapField(x-1,y);
+  fieldRight=worldMap->getMapField(x+1,y);
+  if (fieldLeft!=NULL && fieldRight!=NULL)
+  {
+    if (fieldLeft->getType()==type && fieldRight->getType()==type)
+    { xpos=2;
+    } else
+    if (fieldRight->getType()==type)
+    { xpos=1;
+    } else
+    if (fieldLeft->getType()==type)
+    { xpos=3;
+    } 
+  } else
+  if (fieldLeft==NULL)
+  { if (fieldRight->getType()==type)
+    { xpos=2;
+    } else xpos=3;
+  } else
+  if (fieldRight==NULL)
+  { if (fieldLeft->getType()==type)
+    { xpos=2;
+    } else xpos=1;
+  }
+
+  return xpos;
 }
