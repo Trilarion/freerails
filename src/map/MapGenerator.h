@@ -27,6 +27,7 @@ private:
   void generateMountain(WorldMap* worldMap);
   void generateHeight(WorldMap* worldMap);
   bool generateStartPoint(WorldMap* worldMap, int* x, int* y);
+  void generateFieldOfType(WorldMap* worldMap, int x, int y, MapField::FieldType type);
 };
 
 #endif // __MAPGENERATOR_H__

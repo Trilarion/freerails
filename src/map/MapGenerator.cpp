@@ -17,6 +17,7 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   map = new WorldMap(width, height);
   
   generateHeight(map);
+  generateOcean(map);
   generateRiver(map);
   generateOcean(map);
   generateWood(map);
@@ -38,7 +39,7 @@ void MapGenerator::generateHeight(WorldMap* worldMap)
 
 bool MapGenerator::generateStartPoint(WorldMap* worldMap, int* x, int* y)
 {
-  for (int i; i < 10; i++)
+  for (int i=0; i < 10; i++)
   { *x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
     *y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
     if (worldMap->getMapField(*x,*y)->getType()==MapField::grass)
@@ -52,7 +53,7 @@ bool MapGenerator::generateStartPoint(WorldMap* worldMap, int* x, int* y)
 void MapGenerator::generateRiver(WorldMap* worldMap)
 {
   int x, y;
-  int howmuch=20;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/100;
   for (int i=0; i<howmuch; i++)
   {
     if (generateStartPoint(worldMap, &x, &y))
@@ -60,9 +61,17 @@ void MapGenerator::generateRiver(WorldMap* worldMap)
        worldMap->getMapField(x,y)->setType(MapField::river);
        int dir=(int) (4.0*rand()/(RAND_MAX+1.0));
        do {
-       x--;
-       if (x>=0 || y >=0 || x<worldMap->getWidth() || y<worldMap->getHeight()) break;
-       worldMap->getMapField(x,y)->setType(MapField::river);
+         switch (dir)
+	 {
+	   case 0: x--; break;
+	   case 1: y--; break;
+	   case 2: x++; break;
+	   case 3: y++; break;
+	 }
+         if (x<0 || y <0 || x>=worldMap->getWidth() || y>=worldMap->getHeight()) break; // go out of the map
+	 if (worldMap->getMapField(x,y)->getType()==MapField::river) break; // go in another river
+	 if (worldMap->getMapField(x,y)->getType()==MapField::ocean) break; // go in an ocean
+         worldMap->getMapField(x,y)->setType(MapField::river);
        } while (x>=0 && y >=0 && x<worldMap->getWidth() && y<worldMap->getHeight());
     }
   }
@@ -71,32 +80,54 @@ void MapGenerator::generateRiver(WorldMap* worldMap)
 void MapGenerator::generateOcean(WorldMap* worldMap)
 {
   int x, y;
-  int howmuch=20;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
   for (int i=0; i<howmuch; i++)
   {
-    x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
-    
-    if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+    if (generateStartPoint(worldMap, &x, &y))
     {
        worldMap->getMapField(x,y)->setType(MapField::ocean);
+       for (int ii=0; ii<3; ii++)
+       {
+         generateFieldOfType(worldMap,x,y,MapField::ocean);
+       }
     }
   }
 }
 
+void MapGenerator::generateFieldOfType(WorldMap* worldMap,int x,int y,MapField::FieldType type)
+{
+  int dir=(int) (5.0*rand()/(RAND_MAX+1.0));
+  switch (dir)
+  {
+    case 0: x--; break;
+    case 1: y--; break;
+    case 2: x++; break;
+    case 3: y++; break;
+    case 4: return;
+  }
+  if (x<0 || y <0 || x>=worldMap->getWidth() || y>=worldMap->getHeight()) return; // go out of the map
+  if (worldMap->getMapField(x,y)->getType()==type) return;
+  if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+  {
+    worldMap->getMapField(x,y)->setType(type);
+    generateFieldOfType(worldMap,x,y,type);
+  }
+  generateFieldOfType(worldMap,x,y,type);
+}
 
 void MapGenerator::generateWood(WorldMap* worldMap)
 {
   int x, y;
-  int howmuch=20;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
   for (int i=0; i<howmuch; i++)
   {
-    x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
-    
-    if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+    if (generateStartPoint(worldMap, &x, &y))
     {
        worldMap->getMapField(x,y)->setType(MapField::wood);
+       for (int ii=0; ii<3; ii++)
+       {
+         generateFieldOfType(worldMap,x,y,MapField::wood);
+       }
     }
   }
 }
@@ -104,15 +135,16 @@ void MapGenerator::generateWood(WorldMap* worldMap)
 void MapGenerator::generateDessert(WorldMap* worldMap)
 {
   int x, y;
-  int howmuch=20;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
   for (int i=0; i<howmuch; i++)
   {
-    x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
-    
-    if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+    if (generateStartPoint(worldMap, &x, &y))
     {
-      worldMap->getMapField(x,y)->setType(MapField::dessert);
+       worldMap->getMapField(x,y)->setType(MapField::dessert);
+       for (int ii=0; ii<3; ii++)
+       {
+         generateFieldOfType(worldMap,x,y,MapField::dessert);
+       }
     }
   }
 }
@@ -120,15 +152,16 @@ void MapGenerator::generateDessert(WorldMap* worldMap)
 void MapGenerator::generateJungle(WorldMap* worldMap)
 {
   int x, y;
-  int howmuch=20;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
   for (int i=0; i<howmuch; i++)
   {
-    x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
-    
-    if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+    if (generateStartPoint(worldMap, &x, &y))
     {
-      worldMap->getMapField(x,y)->setType(MapField::jungle);
+       worldMap->getMapField(x,y)->setType(MapField::jungle);
+       for (int ii=0; ii<3; ii++)
+       {
+         generateFieldOfType(worldMap,x,y,MapField::jungle);
+       }
     }
   }
 }
@@ -136,15 +169,16 @@ void MapGenerator::generateJungle(WorldMap* worldMap)
 void MapGenerator::generateBog(WorldMap* worldMap)
 {
   int x, y;
-  int howmuch=50;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
   for (int i=0; i<howmuch; i++)
   {
-    x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
-    
-    if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+    if (generateStartPoint(worldMap, &x, &y))
     {
-      worldMap->getMapField(x,y)->setType(MapField::bog);
+       worldMap->getMapField(x,y)->setType(MapField::bog);
+       for (int ii=0; ii<2; ii++)
+       {
+         generateFieldOfType(worldMap,x,y,MapField::bog);
+       }
     }
   }
 }
@@ -152,27 +186,30 @@ void MapGenerator::generateBog(WorldMap* worldMap)
 void MapGenerator::generateMountain(WorldMap* worldMap)
 {
   int x, y, z;
-  int howmuch=50;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
   for (int i=0; i<howmuch; i++)
   {
-    x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
     z=(int) (3.0*rand()/(RAND_MAX+1.0));
-    
-    if (worldMap->getMapField(x,y)->getType()==MapField::grass)
+    if (generateStartPoint(worldMap, &x, &y))
     {
+      MapField::FieldType type;
       switch(z)
       {
         case 0:
-          worldMap->getMapField(x,y)->setType(MapField::hills);
+          type=MapField::hills;
 	  break;
 	case 1:
-          worldMap->getMapField(x,y)->setType(MapField::foothills);
+          type=MapField::foothills;
 	  break;
 	case 2:
-          worldMap->getMapField(x,y)->setType(MapField::mountain);
+          type=MapField::mountain;
 	  break;
       }
+       worldMap->getMapField(x,y)->setType(type);
+       for (int ii=0; ii<2; ii++)
+       {
+         generateFieldOfType(worldMap,x,y,type);
+       }
     }
   }
 }
