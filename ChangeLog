@@ -1,3 +1,6 @@
+Sat Sep 29 18:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+o change in MapField defines to an enum
+o update some Makefile.in's
 Thu Sep 27 02:10:00 2001  Alexander Opitz <opi@sputnik.de>:
 o add Track.h and Track.cpp without functionality.
 o some changes in FieldMap to activate Track
