@@ -40,7 +40,6 @@ public class InetConnection extends Socket implements ConnectionToServer {
     private World world;
     private ConnectionListener connectionListener;
     private Dispatcher dispatcher;
-    private boolean worldNotYetLoaded = true;
     private Sender sender;
 
     public InetAddress getRemoteAddress() {

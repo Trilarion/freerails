@@ -22,19 +22,6 @@ final public class RiverStyleTileRenderer
     private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
     private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
 
-    /** Creates new RiverStyleTileView */
-    public RiverStyleTileRenderer(
-        jfreerails.client.common.ImageSplitter imageSplitter, int[] rgbValues,
-        TerrainType tileModel) {
-        super(tileModel, rgbValues);
-        imageSplitter.setTransparencyToOPAQUE();
-        setTileIcons(new java.awt.Image[16]);
-
-        for (int i = 0; i < getTileIcons().length; i++) {
-            getTileIcons()[i] = imageSplitter.getTileFromSubGrid(15 - i, 0);
-        }
-    }
-
     public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);

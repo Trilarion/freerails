@@ -4,9 +4,7 @@ import java.awt.DisplayMode;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.GeneralSecurityException;
-
 import javax.swing.JFrame;
-
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.view.ModelRoot;
@@ -27,7 +25,6 @@ import jfreerails.world.player.Player;
  * the client having access to a ServerControlInterface object
  */
 public class GUIClient extends Client {
-    private GUIComponentFactoryImpl gUIComponentFactory;
     private ScreenHandler screenHandler;
     private String title;
     private ModelRoot modelRoot;

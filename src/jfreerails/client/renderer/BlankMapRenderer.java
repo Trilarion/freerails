@@ -28,11 +28,6 @@ public class BlankMapRenderer implements MapRenderer {
         paintRect(g, null);
     }
 
-    public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-        int height) {
-        paintRect(g, null);
-    }
-
     public void refreshTile(int x, int y) {
     }
 

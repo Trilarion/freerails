@@ -35,8 +35,6 @@ public interface TrackRule extends FreerailsSerializable {
     jfreerails.world.common.OneTileMoveVector[] getLegalRoutes(
         jfreerails.world.common.OneTileMoveVector directionComingFrom);
 
-    boolean isDoubleTrackEnabled();
-
     Iterator getLegalConfigurationsIterator();
 
     TrackPiece getTrackPiece(TrackConfiguration config);

@@ -33,47 +33,62 @@ import javax.swing.event.MouseInputAdapter;
 
 public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
 
-	private final JComponent overviewMapJPanel;
-	private final JViewport viewport;
-	private final JComponent mainMap;
-	//  private final Rectangle lastVisRect=new Rectangle();
-	private final Rectangle currentVisRect;
+	private  JComponent overviewMapJPanel;
+	private  JViewport viewport;
+	private  JComponent mainMap;
+	private  Rectangle currentVisRect;
 
 	private Point lastMouseLocation = new Point();
 
 	boolean inside = false;
 	boolean draggingAndStartedInside = false;
 
+    public MainMapAndOverviewMapMediator(){
+
+    }
+
 	public MainMapAndOverviewMapMediator(
 		JComponent omv,
 		JViewport v,
 		JComponent mm,
 		Rectangle rect) {
-		currentVisRect = rect;
+        setup( omv,
+		 v,
+		 mm,
+		 rect);
 
-		overviewMapJPanel = omv;
-		viewport = v;
-		mainMap = mm;
+    }
 
-		overviewMapJPanel.addMouseMotionListener(this);
-		overviewMapJPanel.addMouseListener(this);
-		viewport.addChangeListener(new javax.swing.event.ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				updateObservedRect();
-			}
-		});
-		
-		overviewMapJPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-               updateObservedRect();
-            }
-            public void componentShown(java.awt.event.ComponentEvent evt) {
+    public void setup(
+		JComponent omv,
+		JViewport v,
+		JComponent mm,
+		Rectangle rect) {
+        currentVisRect = rect;
+
+        overviewMapJPanel = omv;
+        viewport = v;
+        mainMap = mm;
+
+        overviewMapJPanel.addMouseMotionListener(this);
+        overviewMapJPanel.addMouseListener(this);
+        viewport.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
                 updateObservedRect();
             }
         });
-	}
 
-	public void mouseMoved(MouseEvent evt) {
+        overviewMapJPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+    public void componentResized(java.awt.event.ComponentEvent evt) {
+    updateObservedRect();
+    }
+    public void componentShown(java.awt.event.ComponentEvent evt) {
+    updateObservedRect();
+    }
+    });
+    }
+
+    public void mouseMoved(MouseEvent evt) {
 
 		lastMouseLocation.x = evt.getX();
 		lastMouseLocation.y = evt.getY();

@@ -84,10 +84,6 @@ final public class TrackMoveProducer {
         this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, trackRuleNumber);
     }
 
-    public int getTrackRule() {
-        return this.trackRule.getRuleNumber();
-    }
-
     public void setTrackBuilderMode(int i) {
         switch (i) {
         case BUILD_TRACK:
@@ -101,10 +97,6 @@ final public class TrackMoveProducer {
         default:
             throw new IllegalArgumentException();
         }
-    }
-
-    public int getTrackBuilderMode() {
-        return trackBuilderMode;
     }
 
     /**

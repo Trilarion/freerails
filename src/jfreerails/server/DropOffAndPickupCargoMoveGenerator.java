@@ -220,26 +220,4 @@ public class DropOffAndPickupCargoMoveGenerator {
             }
         }
     }
-
-    /**
-     * Do the transfer
-     * @param cb The cargo batch being transferred
-     * @param stationBatch The ID for the station's batch
-     * @param cargoTransferType The ID for the cargo type
-     * @return boolean
-     */
-    public boolean transferIfTheSameType(CargoBatch cb, int stationBatch,
-        int cargoTransferType) {
-        if (stationBatch == cargoTransferType) {
-            //transfer a wagon load of this batch to train
-            int currentAmount = trainAfter.getAmount(cb);
-
-            //put new batch on the train
-            trainAfter.setAmount(cb, currentAmount + 40);
-
-            return true;
-        }
-
-        return false;
-    }
 }

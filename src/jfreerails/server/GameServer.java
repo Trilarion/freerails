@@ -29,8 +29,6 @@ import jfreerails.util.FreerailsProgressMonitor;
  * @author rtuck99@users.sourceforge.net
  */
 public class GameServer {
-    private FreerailsProgressMonitor pm;
-
     /**
      * The set of games which this server is serving. Vector of
      * ServerGameController.
@@ -53,15 +51,9 @@ public class GameServer {
         private ClientConnectionTableModel tableModel = new ClientConnectionTableModel(connections,
                 this);
 
-        /**
-         * Port number the game is available on
-         */
-        private int port;
-
         public ServerGameController(ServerGameEngine engine, int port) {
             moveChainFork = engine.getMoveChainFork();
             gameEngine = engine;
-            this.port = port;
 
             if (port != 0) {
                 /* Open our server socket */
@@ -268,10 +260,6 @@ public class GameServer {
                 }
             }
         }
-    }
-
-    public LocalConnection getLocalConnection(ServerControlInterface i) {
-        return ((ServerGameController)i).getLocalConnection();
     }
 
     /**

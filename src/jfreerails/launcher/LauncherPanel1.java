@@ -6,8 +6,8 @@
 
 package jfreerails.launcher;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
+
 import javax.swing.ButtonModel;
 
 /**
@@ -20,7 +20,6 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     static final int MODE_JOIN_NETWORK_GAME = 2;
     static final int MODE_SERVER_ONLY = 3;
 
-    private InetAddress remoteAddress;
     private Launcher owner;
 
     ButtonModel[] buttonModels = new ButtonModel[4];

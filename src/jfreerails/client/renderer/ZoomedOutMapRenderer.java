@@ -92,20 +92,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
         g.drawImage(mapImage, 0, 0, null);
     }
 
-    public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-        int height) {
-        g.drawImage(mapImage, 0, 0, null);
-    }
-
     public void refreshTile(int x, int y) {
         refreshTile(new Point(x, y));
-    }
-
-    public void refreshRectangleOfTiles(int x, int y, int width, int height) {
-        for (int xx = x; xx < x + width; xx++) {
-            for (int yy = y; yy < y + height; yy++) {
-                refreshTile(new Point(xx, yy));
-            }
-        }
     }
 }

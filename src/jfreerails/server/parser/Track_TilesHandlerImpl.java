@@ -26,7 +26,6 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
     protected jfreerails.world.track.TrackRuleProperties trackRuleProperties;
     protected jfreerails.world.track.LegalTrackConfigurations legalTrackConfigurations;
     public static final boolean DEBUG = false;
-    protected World w;
     protected ArrayList legalTemplates;
     protected java.util.HashSet terrainTypes;
     protected LegalTrackPlacement legalTrackPlacement;

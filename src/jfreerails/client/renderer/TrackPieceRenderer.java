@@ -18,6 +18,4 @@ public interface TrackPieceRenderer {
 
     /** Adds the images this TileRenderer uses to the specified ImageManager. */
     void dumpImages(ImageManager imageManager);
-
-    String getTrackTypeName();
 }

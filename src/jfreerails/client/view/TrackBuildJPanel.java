@@ -18,17 +18,14 @@ import javax.swing.ButtonModel;
 import javax.swing.JToggleButton;
 
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.world.track.TrackConfiguration;
 
 /**
  *
  * @author  bob
  */
 class TrackBuildJPanel extends javax.swing.JPanel {
-    private ViewLists viewLists;
     private int numberOfButtons = 0;
     private int widthOfButton = 30;
-    private TrackRuleButton currentButton = null;
     private ButtonGroup buttonGroup;
     private TrackBuildModel buildModel;
 
@@ -55,24 +52,10 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 	    trackBuildModesPanel.revalidate();
 	}
     };
-    
-    /*
-     * 100 010 001 = 0x111
-     */
-    private static final int trackTemplate =
-	TrackConfiguration.getFlatInstance(0x111).getTemplate();
-
-    private void setTrackRule(TrackRuleButton b) {
-	if (currentButton != null) {
-	    currentButton.setSelected(false);
-	    currentButton = b;
-	}
-    }
 
     void setup(ViewLists vl, ModelRoot modelRoot) {
 	 // GridBagConstraints gbc = new GridBagConstraints();
-	viewLists = vl;
-	buttonGroup = new ButtonGroup();
+        buttonGroup = new ButtonGroup();
 	buildModel = modelRoot.getTrackBuildModel();
 	trackModeCB.setModel(buildModel.getBuildModeActionAdapter());
 	Enumeration e = buildModel.getTrackRuleAdapter().getActions();

@@ -23,9 +23,7 @@ class QueuedMoveReceiver implements SourcedMoveReceiver {
         identityProvider = p;
     }
 
-    /**
-     * @see MoveReceiver#processMove(Move)
-     */
+    
     public void processMove(Move move) {
         moveQueue.write(move);
         principalQueue.write(Player.NOBODY);

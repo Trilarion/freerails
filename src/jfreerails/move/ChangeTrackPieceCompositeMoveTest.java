@@ -109,12 +109,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         //Not allowed on this terrain type, from existing track.
         assertBuildTrackFails(new Point(2, 0), northeast,
             (TrackRule)getWorld().get(KEY.TRACK_RULES, 1));
-
-        //Implement these tests later.
-        //Not allowed on this terrain type, to existing track.
-        //assertBuildTrackFails(new Point(3, 0), west, trackRuleList.getTrackRule(1));
-        //Not allowed on this terrain type, first track piece built.
-        //assertBuildTrackFails(new Point(3, 1), east, trackRuleList.getTrackRule(1));
     }
 
     private void assertBuildTrackFails(Point p, OneTileMoveVector v,
@@ -131,13 +125,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 v, rule, getWorld());
         MoveStatus status = move.doMove(getWorld());
         assertEquals(true, status.isOk());
-    }
-
-    private void assertRemoveTrackFails(Point p, OneTileMoveVector v) {
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(p,
-                v, getWorld());
-        MoveStatus status = move.doMove(getWorld());
-        assertEquals(false, status.isOk());
     }
 
     private void assertRemoveTrackSuceeds(Point p, OneTileMoveVector v) {

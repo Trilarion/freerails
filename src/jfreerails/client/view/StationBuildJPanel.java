@@ -21,7 +21,6 @@ import jfreerails.client.renderer.ViewLists;
 class StationBuildJPanel extends javax.swing.JPanel {
     
     private int numberOfButtons = 0;
-    private int widthOfButton = 30;
 
     /** Creates new form JPanel */
     public StationBuildJPanel() {
@@ -38,8 +37,6 @@ class StationBuildJPanel extends javax.swing.JPanel {
 	    int columns = (int) (s.getWidth() / d.getWidth());
 	    stationTypesjPanel1.add(button);
 	    numberOfButtons++;
-	    /* this is OK since all buttons are same width */
-	    widthOfButton = (int) button.getPreferredSize().getWidth();
 	}
     }
 

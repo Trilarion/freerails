@@ -26,9 +26,7 @@ import jfreerails.world.top.TypeID;
  * @author  Luke Lindsay
  */
 public class WagonView extends JLabel implements View, ListCellRenderer {
-    
-    private ReadOnlyWorld w;
-    
+
     private ViewLists vl;
     
     /** The height in pixels to display the images at */
@@ -40,7 +38,6 @@ public class WagonView extends JLabel implements View, ListCellRenderer {
     
     public void setup(ReadOnlyWorld w, ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
         this.vl = vl;
-        this.w = w;
     }
     
     public java.awt.Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -62,8 +59,5 @@ public class WagonView extends JLabel implements View, ListCellRenderer {
     public int getHeight(){
         return height;
     }
-    
-    public void setHeight(int h){
-        this.height = h;
-    }    
+
 }

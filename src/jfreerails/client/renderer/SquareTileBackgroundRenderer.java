@@ -20,8 +20,6 @@ import java.awt.Graphics;
 final public class SquareTileBackgroundRenderer
     extends BufferedTiledBackgroundRenderer {
     private MapLayerRenderer mapView;
-    private final float scale;
-    private final float scaleAsInt;
 
     protected void paintBufferRectangle(int x, int y, int width, int height) {
         Graphics gg = bg.create();
@@ -31,18 +29,11 @@ final public class SquareTileBackgroundRenderer
     }
 
     public SquareTileBackgroundRenderer(MapLayerRenderer mv, float _scale) {
-        this.scale = _scale;
-        scaleAsInt = (int)scale;
         this.mapView = mv;
     }
 
     public void paintTile(Graphics g, int tileX, int tileY) {
         mapView.paintTile(g, tileX, tileY);
-    }
-
-    public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-        int height) {
-        mapView.paintRectangleOfTiles(g, x, y, width, height);
     }
 
     public void refreshTile(int x, int y) {

@@ -8,8 +8,6 @@ public interface ViewLists {
 
     TrackPieceRendererList getTrackPieceViewList();
 
-    SideOnTrainTrainViewImages getSideOnTrainTrainViewImages();
-
     TrainImages getTrainImages();
 
     boolean validate(ReadOnlyWorld world);

@@ -16,7 +16,6 @@ import java.awt.*;
 public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCellRenderer{
     
     jfreerails.world.top.ReadOnlyWorld w;
-    jfreerails.client.renderer.ViewLists vl;
     java.awt.Color defaultBackground;
     
     
@@ -88,7 +87,6 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
 
     public void setup(jfreerails.world.top.ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
         this.w = w;
-        this.vl = vl;
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
         trainViewJPanel.setup(w, vl, null);

@@ -46,10 +46,6 @@ public class AddItemTransaction implements Transaction {
         this.amount = amount;
     }
 
-    public static int getTRACK() {
-        return TRACK;
-    }
-
     public int getCategory() {
         return category;
     }

@@ -6,7 +6,6 @@ import jfreerails.world.common.FreerailsSerializable;
 
 public class TrainModel implements FreerailsSerializable {
     public static final int MAX_NUMBER_OF_WAGONS = 10;
-    public static final int DISTANCE_BETWEEN_WAGONS = 5;
     private int scheduleID;
     TrainPositionOnMap trainposition;
     int engineType = 0;

@@ -431,20 +431,9 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
             test.setSize(new Dimension(640, 400));
             test.show();
         }
-        
-        public void closeDialogue() {
-            // TODO Auto-generated method stub
-            
-        }
-        
-        
-        public void moveCursor(int x, int y) {
-            // TODO Auto-generated method stub
-            
-        }
-        
-        
-        public void processMove(Move m) {
+
+
+    public void processMove(Move m) {
             MoveStatus ms = m.doMove(w);
             if(!ms.ok){
                 throw new IllegalArgumentException(ms.message);

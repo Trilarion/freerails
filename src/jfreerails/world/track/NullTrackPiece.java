@@ -23,10 +23,6 @@ final public class NullTrackPiece implements TrackPiece {
         return nullTrackPiece;
     }
 
-    public int getRGB() {
-        return 0;
-    }
-
     public int getTrackGraphicNumber() {
         return 0;
     }

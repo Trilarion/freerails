@@ -1,7 +1,5 @@
 package jfreerails.world.player;
 
-
-
 public class PlayerPrincipal extends FreerailsPrincipal {
     private final int id;
 

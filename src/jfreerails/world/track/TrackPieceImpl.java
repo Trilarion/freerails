@@ -10,16 +10,8 @@ final public class TrackPieceImpl implements TrackPiece {
         trackType = type;
     }
 
-    public int getRGB() {
-        return 0;
-    }
-
     public int getTrackGraphicNumber() {
         return configuration.getTrackGraphicsNumber();
-    }
-
-    public int getTrackTypeNumber() {
-        return trackType.getRuleNumber();
     }
 
     public TrackRule getTrackRule() {

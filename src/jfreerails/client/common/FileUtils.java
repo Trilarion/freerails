@@ -19,8 +19,6 @@ import java.io.IOException;
  */
 public final class FileUtils {
     public static final String DATA_TYPE_PLAYER_SPECIFIC = "Player";
-    public static final String DATA_TYPE_USER_SPECIFIC = "User";
-    public static final String DATA_TYPE_SESSION_SPECIFIC = "Session";
 
     /**
      * @param dataType one of DATA_TYPE_XXX

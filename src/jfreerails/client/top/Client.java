@@ -13,25 +13,11 @@ public abstract class Client {
     private MoveChainFork moveChainFork;
     private ConnectionAdapter receiver;
 
-    /**
-     * Player that this client represents
-     */
-    protected Player player;
-
     protected Client(Player p) {
-        player = p;
     }
 
     public ConnectionAdapter getReceiver() {
         return receiver;
-    }
-
-    /**
-     * @return the player initialised by the client with the clients private
-     * key
-     */
-    public Player getPlayer() {
-        return player;
     }
 
     protected void setMoveChainFork(MoveChainFork moveChainFork) {

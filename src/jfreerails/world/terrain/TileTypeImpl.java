@@ -30,15 +30,6 @@ final public class TileTypeImpl implements TerrainType {
         return terrainCategory;
     }
 
-    /*public TileTypeImpl(int rgb, String terrainCategory, String terrainType, int rightOfWay) {
-            this.terrainType = terrainType;
-            this.terrainCategory = terrainCategory;
-            this.rgb = rgb;
-            this.rightOfWay = rightOfWay;
-            production = new Production[0];
-            consumption = new Consumption[0];
-            conversion = new Conversion[0];
-    }*/
     public TileTypeImpl(int rgb, String terrainCategory, String terrainType,
         int rightOfWay, Production[] production, Consumption[] consumption,
         Conversion[] conversion) {

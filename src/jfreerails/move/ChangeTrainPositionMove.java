@@ -248,28 +248,6 @@ public class ChangeTrainPositionMove implements Move {
         return MoveStatus.MOVE_OK;
     }
 
-    /*
-    MoveStatus tryMove(
-            TrainList tl,
-            TrainPosition toAdd,
-            TrainPosition toRemove) {
-
-
-            TrainModel train = tl.getTrain(this.trainPositionNumber);
-            TrainPosition currentPosition = train.getPosition();
-            boolean canBeRemoved =
-                    TrainPosition.canBeRemoved(currentPosition, toRemove);
-            boolean canBeAdded = TrainPosition.canBeAdded(currentPosition, toAdd);
-
-            if (canBeRemoved && canBeAdded) {
-                    return MoveStatus.MOVE_ACCEPTED;
-            } else {
-                    return MoveStatus.MOVE_REJECTED;
-            }
-
-            return null;
-    }
-    */
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("ChangeTrainPositionMove:\n");

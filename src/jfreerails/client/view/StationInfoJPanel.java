@@ -31,8 +31,7 @@ import jfreerails.world.train.WagonType;
 public class StationInfoJPanel
 extends javax.swing.JPanel
 implements MoveReceiver {
-    
-    private ViewLists vl;
+
     private ReadOnlyWorld w;
     private WorldIterator wi;
     private boolean ignoreMoves = true;
@@ -148,7 +147,6 @@ implements MoveReceiver {
 	} //GEN-LAST:event_nextStationActionPerformed
     
     public void setup(ReadOnlyWorld w, ViewLists vl) {
-        this.vl = vl;
         this.w = w;
         this.wi = new NonNullElements(KEY.STATIONS, w);
         addComponentListener(componentListener);

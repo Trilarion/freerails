@@ -94,7 +94,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             paintRectangleOfTiles(g, new Rectangle(tileX, tileY, 1, 1));
         }
 
-        public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
+        private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
             int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
@@ -107,10 +107,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                 "Method not yet implemented.");
         }
 
-        /** Creates a new tracklayer.
-         * @param trackMap Description of the Parameter
-         * @param trackPieceViewList Description of the Parameter
-         */
         public TrackLayer(ReadOnlyWorld world,
             TrackPieceRendererList trackPieceViewList) {
             this.trackPieceViewList = trackPieceViewList;
@@ -128,12 +124,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         private TileRendererList tiles;
         private ReadOnlyWorld w;
 
-        /** Paints the specified tile onto the supplied
-         * graphics context.
-         * @param x x coordinate
-         * @param y y coordinate.
-         * @param g The graphics context
-         */
         public void paintTile(Graphics g, Point tile) {
             int screenX = tileSize.width * tile.x;
             int screenY = tileSize.height * tile.y;
@@ -180,7 +170,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             paintTile(g, new Point(tileX, tileY));
         }
 
-        public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
+        private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
             int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
@@ -194,14 +184,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
     }
 
-    /** Creates new BackgroundMapView
-     *
-     * @param map                 The non-visual map object.
-     * @param tiles               An object holding a list of tileView objects,
-     *     which represent the visual properites of terrain tiles.
-     * @param trackPieceViewList The object holding the set of objects
-     *     representing the visual properties of track-pieces.
-     */
     public MapBackgroundRender(ReadOnlyWorld w, TileRendererList tiles,
         TrackPieceRendererList trackPieceViewList) {
         trackLayer = new TrackLayer(w, trackPieceViewList);
@@ -209,37 +191,12 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
     }
 
-    /** Paints a rectangle of the map on the specified
-     * graphics context.
-     * @param g Description of the Parameter
-     * @param tilesToPaint Description of the Parameter
-     */
-
-    /*
-    public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
-            terrainLayer.paintRectangleOfTiles(g, tilesToPaint);
-            trackLayer.paintRectangleOfTiles(g, tilesToPaint);
-    }
-    */
-    /*
-    public void refreshRectangleOfTiles(
-            Graphics g,
-            int x,
-            int y,
-            int width,
-            int height) {
-            terrainLayer.refreshRectangleOfTiles(g, x, y, width, height);
-            trackLayer.refreshRectangleOfTiles(g, x, y, width, height);
-    }
-    */
     public void paintTile(Graphics g, int x, int y) {
         terrainLayer.paintTile(g, x, y);
         trackLayer.paintTile(g, x, y);
     }
 
     public void paintRect(Graphics g, Rectangle visibleRect) {
-        //Dimension tileSize = getTileSize();
-        //Dimension mapSize = getMapSizeInTiles();
         int tileWidth = 30;
         int tileHeight = 30;
 
@@ -253,7 +210,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         paintRectangleOfTiles(g, x, y, width, height);
     }
 
-    public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
+    private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
         int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, x, y, width, height);

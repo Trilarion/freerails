@@ -54,14 +54,6 @@ public class TrainFixture {
         return new ToAndFroPathIterator(points);
     }
 
-    /**
-     * Returns the points.
-     * @return ArrayList
-     */
-    public ArrayList getPoints() {
-        return points;
-    }
-
     public World getWorld() {
         return w;
     }

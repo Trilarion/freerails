@@ -18,16 +18,6 @@ import jfreerails.world.terrain.TerrainType;
 */
 final public class StandardTileRenderer
     extends jfreerails.client.renderer.AbstractTileRenderer {
-    /** Creates new StandardTileIconSelecter */
-    public StandardTileRenderer(
-        jfreerails.client.common.ImageSplitter imageSplitter, int[] rgbValues,
-        TerrainType tileModel) {
-        super(tileModel, rgbValues);
-        imageSplitter.setTransparencyToOPAQUE();
-        setTileIcons(new java.awt.Image[1]);
-        getTileIcons()[0] = imageSplitter.getTileFromSubGrid(0, 0);
-    }
-
     public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);

@@ -104,10 +104,6 @@ public class StationBuilder {
         }
     }
 
-    public ReadOnlyWorld getWorld() {
-        return w;
-    }
-
     public void setStationType(int ruleNumber) {
         this.ruleNumber = ruleNumber;
     }

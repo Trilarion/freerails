@@ -28,18 +28,6 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
     }
 
     /*
-     * @see Tile#getRGB()
-     */
-
-    //	public int getRGB() {
-    //		if(trackPiece== NullTrackPiece.getInstance()){
-    //			return terrainType.getRGB();
-    //		}else{
-    //			return 0;
-    //		}
-    //	}
-
-    /*
      * @see TrackPiece#getTrackRule()
      */
     public TrackRule getTrackRule() {
@@ -53,19 +41,6 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
         return trackPiece.getTrackConfiguration();
     }
 
-    /*
-     * @see TerrainType#getTerrainType()
-     */
-
-    //	public TerrainType getTerrainType() {
-    //		return terrainType;
-    //	}
-    //	public String getTerrainCategory() {
-    //		return terrainType.getTerrainCategory();
-    //	}
-    //	public int terrainRgb() {
-    //		return terrainType.getRGB();
-    //	}
     public boolean equals(Object o) {
         if (o instanceof FreerailsTile) {
             FreerailsTile test = (FreerailsTile)o;

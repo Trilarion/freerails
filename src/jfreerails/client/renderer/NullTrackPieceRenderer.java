@@ -40,8 +40,4 @@ final public class NullTrackPieceRenderer implements TrackPieceRenderer {
     public void dumpImages(ImageManager imageManager) {
         // TODO Auto-generated method stub
     }
-
-    public String getTrackTypeName() {
-        return "Null track Piece";
-    }
 }

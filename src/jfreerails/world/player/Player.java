@@ -16,7 +16,6 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.util.Arrays;
 import java.util.HashSet;
-
 import jfreerails.world.common.FreerailsSerializable;
 
 

@@ -5,11 +5,6 @@ import jfreerails.world.common.FreerailsSerializable;
 
 /** This class represents a type of cargo */
 final public class CargoType implements FreerailsSerializable {
-    public static final String MAIL = "Mail";
-    public static final String PASSENGERS = "Passengers";
-    public static final String FAST_FREIGHT = "Fast_Freight";
-    public static final String SLOW_FREIGHT = "Slow_Freight";
-    public static final String BULK_FREIGHT = "Bulk_Freight";
     private final int unitWeight;
     private final String category;
     private final String name;

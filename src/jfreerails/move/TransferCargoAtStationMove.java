@@ -15,14 +15,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
 
     public static TransferCargoAtStationMove generateMove(
         ChangeCargoBundleMove changeAtStation,
-        ChangeCargoBundleMove changeOnTrain) {
-        return new TransferCargoAtStationMove(new Move[] {
-                changeAtStation, changeOnTrain
-            });
-    }
-
-    public static TransferCargoAtStationMove generateMove(
-        ChangeCargoBundleMove changeAtStation,
         ChangeCargoBundleMove changeOnTrain, AddTransactionMove payment) {
         return new TransferCargoAtStationMove(new Move[] {
                 changeAtStation, changeOnTrain, payment

@@ -1,6 +1,5 @@
 package jfreerails.server;
 
-import java.util.ArrayList;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.top.KEY;
@@ -16,7 +15,6 @@ import junit.framework.TestCase;
  *
  */
 public class TrainMoverTest extends TestCase {
-    ArrayList points;
     TrainMover trainMover;
     World w;
 
@@ -30,8 +28,6 @@ public class TrainMoverTest extends TestCase {
 
     protected void setUp() {
         TrainFixture trainFixture = new TrainFixture();
-
-        points = trainFixture.getPoints();
 
         trainMover = trainFixture.getTrainMover();
 

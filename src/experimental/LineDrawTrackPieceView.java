@@ -22,9 +22,6 @@ public class LineDrawTrackPieceView
         return null;
     }
 
-    public LineDrawTrackPieceView() {
-    }
-
     public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g,
         int x, int y, java.awt.Dimension tileSize) {
         Graphics2D g2 = (Graphics2D)g;
@@ -47,10 +44,5 @@ public class LineDrawTrackPieceView
 
     public void dumpImages(ImageManager imageManager) {
         // TODO Auto-generated method stub
-    }
-
-    public String getTrackTypeName() {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

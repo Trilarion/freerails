@@ -9,7 +9,6 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import jfreerails.client.common.ImageManager;
-import jfreerails.client.common.ImageSplitter;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -21,15 +20,6 @@ import jfreerails.world.top.ReadOnlyWorld;
 final public class SpecialTileRenderer extends AbstractTileRenderer {
     final private TileRenderer parentTileView;
 
-    public SpecialTileRenderer(ImageSplitter imageSplitter, int[] rgbValues,
-        TerrainType tileModel, TileRenderer parentTileView) {
-        super(tileModel, rgbValues);
-        imageSplitter.setTransparencyToTRANSLUCENT();
-        setTileIcons(new java.awt.Image[1]);
-        getTileIcons()[0] = imageSplitter.getTileFromSubGrid(0, 0);
-        this.parentTileView = parentTileView;
-    }
-
     public void renderTile(java.awt.Graphics g, int renderX, int renderY,
         int mapX, int mapY, ReadOnlyWorld w) {
         if (parentTileView != null) {
@@ -38,7 +28,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
             System.err.println("parent tileView==null");
         }
 
-        java.awt.Image icon = this.getIcon(mapX, mapX, w);
+        Image icon = this.getIcon(mapX, mapX, w);
 
         if (null != icon) {
             g.drawImage(icon, renderX, renderY, null);

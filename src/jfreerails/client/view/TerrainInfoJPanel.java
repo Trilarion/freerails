@@ -26,9 +26,7 @@ import jfreerails.world.train.WagonType;
 public class TerrainInfoJPanel extends javax.swing.JPanel {
     
     private ViewLists vl;
-    
-    private int terrainType=0;
-    
+
     private ReadOnlyWorld w;
     
     /** Creates new form TerrainInfoJPanel */
@@ -86,8 +84,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     }    
     
     public void setTerrainType(int typeNumber){
-        
-        terrainType=typeNumber;
+
         TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES, typeNumber);
       
         String row = "<p>Right-of-Way costs $"+type.getRightOfWay()+" per mile. </p>";

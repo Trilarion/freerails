@@ -93,7 +93,6 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
         private ArrayList rejectedMoves = new ArrayList();
         private LinkedList approvedMoves = new LinkedList();
         private UncommittedMoveReceiver moveReceiver;
-        int count = 0;
 
         private boolean undoMoves() {
             int n = 0;
@@ -246,10 +245,6 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
             if (moveReceiver == null) {
                 moveReceiver = mr;
             }
-        }
-
-        public synchronized void removeMoveReceiver(UncommittedMoveReceiver mr) {
-            moveReceiver = null;
         }
     }
 

@@ -18,12 +18,8 @@ import jfreerails.world.top.World;
  *
  */
 public class NewTileSetFactoryImpl implements TileSetFactory {
-    World world;
-
     public void addTerrainTileTypesList(World w) {
         try {
-            world = w;
-
             java.net.URL url = RunTypesParser.class.getResource(
                     "/jfreerails/data/cargo_and_terrain.xml");
 

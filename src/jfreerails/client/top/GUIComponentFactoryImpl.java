@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
-
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -18,7 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
@@ -56,20 +54,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      */
     private TrainsJTabPane trainsJTabPane;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JLabel messageJLabel;
     private final DialogueBoxController dialogueBoxController;
     private ViewLists viewLists;
-
-    // private GUIClient client;
     private ReadOnlyWorld world;
-    private MainMapAndOverviewMapMediator mediator;
-    MapCursor cursor;
     UserInputOnMapController userInputOnMapController;
     StationTypesPopup stationTypesPopup;
     BuildMenu buildMenu;
     JMenu displayMenu;
     JPanel overviewMapContainer;
-    JScrollPane mainMapContainer;
     MapViewJComponentConcrete mapViewJComponent;
     private JScrollPane mainMapScrollPane1;
     MapRenderer overviewMap;
@@ -86,17 +78,15 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         mainMapScrollPane1 = new JScrollPane();
         overviewMapContainer = new OverviewMapJComponent(r);
         stationTypesPopup = new StationTypesPopup();
-        this.mediator = new MainMapAndOverviewMapMediator(overviewMapContainer,
-                mainMapScrollPane1.getViewport(), mapViewJComponent, r);
 
-        //glassPanel = new MyGlassPanel();
-        //glassPanel.showContent(new NewsPaperJPanel());
-        //clientJFrame.setGlassPane(glassPanel);
+        MainMapAndOverviewMapMediator mediator = new MainMapAndOverviewMapMediator();
+        mediator.setup(overviewMapContainer, mainMapScrollPane1.getViewport(),
+            mapViewJComponent, r);
+
         trainsJTabPane = new TrainsJTabPane();
         datejLabel = new DateJLabel();
 
         cashjLabel = new CashJLabel();
-        messageJLabel = new javax.swing.JLabel("Message");
 
         clientJFrame = new ClientJFrame(this);
         dialogueBoxController = new DialogueBoxController(clientJFrame,
@@ -136,7 +126,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         mapViewJComponent.setup(mainMap, w);
         modelRoot.setCursor(mapViewJComponent.getMapCursor());
-        this.cursor = modelRoot.getCursor();
+
         //setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
@@ -289,21 +279,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         return gameMenu;
     }
 
-    private void addMainMapAndOverviewMapMediatorIfNecessary() {
-        //if (this.mainMapContainer != null
-        //	&& this.overviewMapContainer != null
-        //	&& null == this.mediator) {
-        //	//Rectangle r = this.overviewMapContainer.getMainMapVisibleRect();
-        //
-        //}
-    }
-
     ViewLists getViewLists() {
         return modelRoot.getViewLists();
-    }
-
-    ReadOnlyWorld getAddTrackRules() {
-        return this.world;
     }
 
     public JFrame createClientJFrame(String title) {
@@ -349,10 +326,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     public JLabel createCashJLabel() {
         return cashjLabel;
-    }
-
-    public JLabel createMessagePanel() {
-        return messageJLabel;
     }
 
     public JLabel createDateJLabel() {

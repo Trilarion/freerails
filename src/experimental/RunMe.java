@@ -15,10 +15,6 @@ import jfreerails.client.common.ScreenHandler;
  * @author  Luke Lindsay
  */
 public class RunMe {
-    /** Creates new RunMe */
-    public RunMe() {
-    }
-
     /**
     * @param args the command line arguments
     */

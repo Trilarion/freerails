@@ -62,10 +62,6 @@ final public class TrackRuleImpl implements TrackRule {
         return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
     }
 
-    public boolean isDoubleTrackEnabled() {
-        return properties.isDoubleTrackEnabled();
-    }
-
     public String getTypeName() {
         return properties.getTypeName();
     }

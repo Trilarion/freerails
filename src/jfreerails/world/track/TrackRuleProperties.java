@@ -9,10 +9,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         return typeName;
     }
 
-    public boolean isDoubleTrackEnabled() {
-        return false;
-    }
-
     public int getRuleNumber() {
         return number;
     }

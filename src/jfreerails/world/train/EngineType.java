@@ -15,7 +15,6 @@ final public class EngineType implements FreerailsSerializable {
     private final int powerAtDrawbar;
     private final Money price;
     private final Money maintenance;
-    private boolean available = false; //Are we allowed to build it?	
     private final int maxSpeed; //speed in mph
 
     public Money getMaintenance() {
@@ -26,12 +25,7 @@ final public class EngineType implements FreerailsSerializable {
         return engineTypeName;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
-
     public void setAvailable(boolean b) {
-        this.available = b;
     }
 
     public int getPowerAtDrawbar() {

@@ -52,10 +52,6 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
         return "NullTrackType";
     }
 
-    public boolean isDoubleTrackEnabled() {
-        return false;
-    }
-
     public boolean testTrackPieceLegality(int trackTemplateToTest) {
         if (trackTemplateToTest != 0) {
             return false;

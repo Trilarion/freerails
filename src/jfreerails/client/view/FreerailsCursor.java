@@ -79,10 +79,6 @@ final public class FreerailsCursor implements KeyListener, MapCursor {
         }
     }
 
-    public void blinkCursor() {
-        blinkValue = -blinkValue;
-    }
-
     /** Use this method rather than KeyTyped to process keyboard input.
     * @param keyEvent The key pressed.
     */
@@ -184,10 +180,6 @@ final public class FreerailsCursor implements KeyListener, MapCursor {
 
     public void addCursorEventListener(CursorEventListener l) {
         listeners.addElement(l);
-    }
-
-    public void removeCursorEventListener(CursorEventListener l) {
-        listeners.removeElement(l);
     }
 
     private void moveCursor(OneTileMoveVector v) {

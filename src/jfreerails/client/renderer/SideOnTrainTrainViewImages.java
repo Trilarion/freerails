@@ -57,12 +57,4 @@ public class SideOnTrainTrainViewImages {
 
         return result;
     }
-
-    public Image getEngineImage(int type, int height) {
-        return engines[type][height];
-    }
-
-    public Image getWagonImage(int type, int height) {
-        return wagons[type][height];
-    }
 }

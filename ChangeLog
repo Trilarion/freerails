@@ -1,3 +1,6 @@
+Feb 18, 2004 1:12:22 AM Luke
+	o Removed unreachable code.
+	o Fix build.xml
 Feb 17, 2004 1:22:31 AM Luke
 	o Apply move infrastructure patch.
 	o Apply OSX work around.

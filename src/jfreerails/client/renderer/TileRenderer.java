@@ -12,18 +12,10 @@ import jfreerails.world.top.ReadOnlyWorld;
 *     09 October 2001
 */
 public interface TileRenderer {
-    int selectTileIcon(int x, int y, ReadOnlyWorld w);
-
-    int getRGB();
-
-    Image getIcon(int x, int y, ReadOnlyWorld w);
-
     Image getDefaultIcon();
 
     void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX,
         int mapY, ReadOnlyWorld w);
-
-    String getTerrainType();
 
     /** Adds the images this TileRenderer uses to the specified ImageManager. */
     void dumpImages(ImageManager imageManager);

@@ -1,6 +1,5 @@
 package jfreerails.server;
 
-import java.util.Random;
 import jfreerails.controller.FreerailsServerSerializable;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.InitialiseTrainPositionMove;
@@ -22,19 +21,11 @@ import jfreerails.world.train.TrainPositionOnMap;
  *
  */
 public class TrainMover implements FreerailsServerSerializable {
-    //final FreerailsPathIterator path;
-    static Random rand = new Random(System.currentTimeMillis());
     final PathWalker walker;
     final int trainNumber;
     final ReadOnlyWorld w;
     final TrainPathFinder trainPathFinder;
 
-    /**
-     * Constructor.
-     * @param from TrainPathIterator describing initial train position.
-     * @param to TrainPathIterator - not sure why we need this second
-     * parameter since it is initialised with the same info as the 1st....
-     */
     public TrainMover(FreerailsPathIterator to, ReadOnlyWorld world, int trainNo) {
         this.trainNumber = trainNo;
         this.w = world;

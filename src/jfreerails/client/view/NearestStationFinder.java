@@ -28,7 +28,6 @@ public class NearestStationFinder {
 	public int findNearestStation(int x, int y) {
 		//Find nearest station.
 		int distanceToClosestSquared = Integer.MAX_VALUE;
-		final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
 
 		NonNullElements it = new NonNullElements(KEY.STATIONS, world);
 		int nearestStation = NOT_FOUND;

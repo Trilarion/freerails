@@ -21,10 +21,8 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     private javax.swing.JMenu buildMenu;
     private javax.swing.JMenu gameMenu;
     private javax.swing.JPanel mapOverview;
-    private javax.swing.JPanel rhsjPanel;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JLabel messageJLabel;
-    private javax.swing.JMenuBar jMenuBar1;
 
     /** Creates a new instance of GUIComponentFactoryTestImpl */
     public GUIComponentFactoryTestImpl() {
@@ -37,7 +35,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         mainMapView = new javax.swing.JScrollPane();
         mainmapjPanel = new javax.swing.JPanel();
         messageJLabel = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
         gameMenu = new javax.swing.JMenu();
         buildMenu = new javax.swing.JMenu();
         displayMenu = new javax.swing.JMenu();
@@ -61,10 +58,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         return cashjLabel;
     }
 
-    public JFrame createClientJFrame(String title) {
-        return null;
-    }
-
     public JLabel createDateJLabel() {
         return datejLabel;
     }
@@ -83,10 +76,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
 
     public JScrollPane createMainMap() {
         return mainMapView;
-    }
-
-    public JLabel createMessagePanel() {
-        return messageJLabel;
     }
 
     public JPanel createOverviewMap() {

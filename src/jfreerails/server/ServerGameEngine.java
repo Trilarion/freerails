@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
@@ -78,7 +77,6 @@ public class ServerGameEngine implements GameModel, Runnable {
     private int n;
     ArrayList trainMovers = new ArrayList();
     private int currentYearLastTick = -1;
-    private int yearCargoLastAddedToStations = -1;
     private boolean keepRunning = true;
 
     public int getTargetTicksPerSecond() {
@@ -156,8 +154,6 @@ public class ServerGameEngine implements GameModel, Runnable {
     public void infrequentUpdate() {
         calcSupplyAtStations.doProcessing();
     }
-
-    private long lastFrameTime = 0;
 
     /**
      * This is the main server update method, which does all the
@@ -282,10 +278,6 @@ public class ServerGameEngine implements GameModel, Runnable {
                 // do nothing
             }
         }
-    }
-
-    private void addCargoToStations() {
-        //Add cargo to stations at the start of each new year.
     }
 
     /** This is called at the start of each new year. */

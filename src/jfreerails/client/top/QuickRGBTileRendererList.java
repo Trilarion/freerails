@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.HashMap;
-import java.util.Iterator;
+
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.TileRenderer;
 import jfreerails.client.renderer.TileRendererList;
@@ -60,23 +60,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
         throw new UnsupportedOperationException();
     }
 
-    public boolean TestRGBValue(int rgb) {
-        return rgb2index.containsKey(new Integer(rgb));
-    }
-
-    public boolean TestTileViewNumber() {
-        return false;
-    }
-
-    public int getLength() {
-        return rgbValues.length;
-    }
-
-    public Iterator getIterator() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public TileRenderer getTileViewWithRGBValue(int rgb) {
         Integer i = (Integer)rgb2index.get(new Integer(rgb));
         this.simpleTileRenderer.setImage(images[i.intValue()]);
@@ -102,11 +85,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
             return 0;
         }
 
-        public int getRGB() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
         public int getTileWidth() {
             return 30;
         }
@@ -126,11 +104,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
         public void renderTile(Graphics g, int renderX, int renderY, int mapX,
             int mapY, ReadOnlyWorld w) {
             g.drawImage(i, renderX, renderY, null);
-        }
-
-        public String getTerrainType() {
-            // TODO Auto-generated method stub
-            return null;
         }
 
         public void dumpImages(ImageManager imageManager) {

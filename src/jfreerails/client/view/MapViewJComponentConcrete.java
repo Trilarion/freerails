@@ -305,10 +305,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     public void paintTile(Graphics g, int tileX, int tileY) {
     }
 
-    public void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-        int height) {
-    }
-
     public void refreshTile(int x, int y) {
     }
 

@@ -8,7 +8,6 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 import jfreerails.client.common.ImageManager;
-import jfreerails.client.common.ImageSplitter;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -20,18 +19,6 @@ import jfreerails.world.top.ReadOnlyWorld;
 final public class ChequeredTileRenderer extends AbstractTileRenderer {
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         return (x + y) % 2;
-    }
-
-    /** Creates new ChequeredTileView */
-    public ChequeredTileRenderer(ImageSplitter imageSplitter, int[] rgbValues,
-        TerrainType tileModel) {
-        super(tileModel, rgbValues);
-        imageSplitter.setTransparencyToOPAQUE();
-        super.setTileIcons(new java.awt.Image[2]);
-
-        for (int i = 0; i < getTileIcons().length; i++) {
-            getTileIcons()[i] = imageSplitter.getTileFromSubGrid(i, 0);
-        }
     }
 
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,

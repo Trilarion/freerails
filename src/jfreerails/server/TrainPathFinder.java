@@ -36,9 +36,6 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     private transient MoveReceiver moveReceiver;
     FlatTrackExplorer trackExplorer;
     SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
-    PositionOnTrack p1 = new PositionOnTrack();
-    PositionOnTrack p2 = new PositionOnTrack();
-    static final int TILE_SIZE = 30;
 
     /**
      * Constructor.

@@ -64,13 +64,6 @@ public interface ConnectionToServer extends UncommittedMoveReceiver {
         public static final ConnectionState READY = new ConnectionState("Ready");
 
         /**
-         * Closing - a CloseConnectionCommand has been sent, but the connection
-         * is not yet closed.
-         */
-        public static final ConnectionState CLOSING = new ConnectionState(
-                "Closing");
-
-        /**
          * Closed - the connection is closed.
          */
         public static final ConnectionState CLOSED = new ConnectionState(

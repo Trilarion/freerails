@@ -7,8 +7,8 @@ package jfreerails.client.renderer;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
+
 import jfreerails.client.common.ImageManager;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.top.KEY;
@@ -21,39 +21,11 @@ import jfreerails.world.track.TrackRule;
 final public class TrackPieceRendererList {
     private final TrackPieceRenderer[] trackPieceViewArray;
 
-    public TrackPieceRenderer[] getTrackPieceViewArray() {
-        return trackPieceViewArray;
-    }
-
     public TrackPieceRenderer getTrackPieceView(int i) {
         if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER == i) {
             return NullTrackPieceRenderer.instance;
         } else {
             return trackPieceViewArray[i];
-        }
-    }
-
-    /** Creates new TrackPieceViewList */
-    public TrackPieceRendererList(TrackPieceRenderer[] trackPieceViews) {
-        trackPieceViewArray = new TrackPieceRenderer[trackPieceViews.length];
-
-        for (int i = 0; i < trackPieceViews.length; i++) {
-            TrackPieceRenderer trackPieceView = trackPieceViews[i];
-
-            if (null == trackPieceView) {
-                throw new java.lang.IllegalArgumentException();
-            }
-
-            trackPieceViewArray[i] = trackPieceView;
-        }
-    }
-
-    public TrackPieceRendererList(ArrayList trackPieceViewArrayList) {
-        trackPieceViewArray = new TrackPieceRenderer[trackPieceViewArrayList.size()];
-
-        for (int i = 0; i < trackPieceViewArrayList.size(); i++) {
-            TrackPieceRenderer trackPieceView = (TrackPieceRenderer)(trackPieceViewArrayList.get(i));
-            trackPieceViewArray[i] = trackPieceView;
         }
     }
 

@@ -8,9 +8,7 @@ import jfreerails.world.player.FreerailsPrincipal;
  * was rejected or accepted.
  */
 public class AddPlayerResponseCommand extends ServerCommand {
-    private AddPlayerCommand rejectedCommand;
     private boolean rejected;
-    private String reason;
     private FreerailsPrincipal principal;
 
     /**
@@ -26,21 +24,11 @@ public class AddPlayerResponseCommand extends ServerCommand {
      * The request was rejected
      */
     public AddPlayerResponseCommand(AddPlayerCommand c, String reason) {
-        rejectedCommand = c;
-        this.reason = reason;
         rejected = true;
     }
 
     public FreerailsPrincipal getPrincipal() {
         return principal;
-    }
-
-    public AddPlayerCommand getRejectedCommand() {
-        return rejectedCommand;
-    }
-
-    public String getReason() {
-        return reason;
     }
 
     public boolean isRejected() {

@@ -23,10 +23,6 @@ import java.awt.Point;
 * @version 1.0
 */
 public class EightRotationsOfTrackPieceProducer extends java.lang.Object {
-    /** Creates new LegalTrackPieceProducer */
-    public EightRotationsOfTrackPieceProducer() {
-    }
-
     /** The method that returns the rotations.
     * @param trackBlueprint A 9bit value that serves as the template.
     * @return An array of 8 9-bit values that have been generated

@@ -33,9 +33,7 @@ import jfreerails.world.train.TrainOrdersModel;
 public class SelectStationJPanel extends javax.swing.JPanel implements View {
     
     private ReadOnlyWorld world;
-    
-    private ViewLists vl;
-    
+
     private ActionListener submitButtonCallBack;
     
     private int selectedStationID = 0;
@@ -304,18 +302,13 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
         cargoWaitingAndDemandedJPanel1.setup(w, vl,  null);
         this.world = w;
-        this.vl = vl;
         this.submitButtonCallBack = submitButtonCallBack;
     }
     
     public int getSelectedStationID(){
         return this.selectedStationID;
     }
-    
-    public void setSelectedStationID(int i){
-        this.selectedStationID = i;
-    }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jfreerails.client.view.CargoWaitingAndDemandedJPanel cargoWaitingAndDemandedJPanel1;
     private javax.swing.JLabel jLabel1;

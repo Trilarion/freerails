@@ -37,9 +37,7 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
 	private int scheduleOrderNumber;
 	
 	private int scheduleID=-1;
-    
-    private TrainConsistListModel trainConsistListModel;
-    
+
     private int height = 100;
     
     private Image[] images = new Image[0];
@@ -63,17 +61,12 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
         setup(w, vl, null);
         display(trainNumber);
         this.setBackground(Color.GRAY);
-        //wagonView.setHeight(140);
     }
     
     public void setCenterTrain(boolean b){
         this.centerTrain = b;
     }
-    
-    public boolean getCenterTrain(){
-        return this.centerTrain;
-    }
-    
+
     public void display(int trainNumber) {
 		showingOrder = false;
         this.trainNumber = trainNumber;
@@ -98,6 +91,7 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
     public void display(int trainNumber, int scheduleOrderNumber) {
 		showingOrder = true;
         this.trainNumber = trainNumber;
+        this.scheduleOrderNumber = scheduleOrderNumber;
         TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber);
 		this.scheduleID = train.getScheduleID();
 		ImmutableSchedule s = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID);

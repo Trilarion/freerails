@@ -89,8 +89,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         
         this.bundleID = train.getCargoBundleNumber();
         
-        //this.sideOnTrainViewJPanel1.setEngineType(train.getEngineType());
-        //sideOnTrainViewJPanel1.removeAllWagons();
+
         for(int i = 0 ; i < train.getNumberOfWagons() ; i++ ){
             //this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
         }

@@ -19,10 +19,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 */
 public abstract class AbstractTileRenderer implements TileRenderer {
     protected final int[] typeNumbers;
-    protected TileIconSelector tileIconSelector;
     private Image[] tileIcons;
     protected final TerrainType tileModel;
-    protected int rgb;
 
     public AbstractTileRenderer(TerrainType t, int[] rgbValues) {
         tileModel = t;
@@ -44,10 +42,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         if (null != icon) {
             g.drawImage(icon, screenX, screenY, null);
         }
-    }
-
-    public int getRGB() {
-        return tileModel.getRGB();
     }
 
     public Image getDefaultIcon() {
@@ -72,9 +66,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         }
     }
 
-    /*The terrain types that are treated as the same.  E.g. for terrain type
-    river; ocean, ports, and other rivers are treated as the same terrain type.
-    */
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         return 0;
     }
@@ -107,7 +98,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     abstract public void dumpImages(ImageManager imageManager);
 
     protected String generateRelativeFileName(int i) {
-        //String binaryNumber = BinaryNumberFormatter.format(number, digits);
         return "terrain" + File.separator + this.getTerrainType() + "_" +
         generateFileNameNumber(i) + ".png";
     }

@@ -119,26 +119,14 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
 	final private class TrainCellRenderer implements ListCellRenderer {
 
-		Image tempImage;
-		JLabel label;
+        JLabel label;
 		ViewLists viewLists;
 
 		public TrainCellRenderer(ViewLists vl) {
-			/*
-			sideOnTrainTrainView = new SideOnTrainTrainViewImages(0, 3);
-			tempImage =
-				(new javax
-					.swing
-					.ImageIcon(getClass().getResource("/jfreerails/data/engine_350x100.PNG")))
-					.getImage();
-			sideOnTrainTrainView.setEngineImage(0, tempImage);
-			sideOnTrainTrainView.setEngineImage(1, tempImage);
-			sideOnTrainTrainView.setEngineImage(2, tempImage);
-			*/
+
 			viewLists = vl;
 
-			label = new JLabel(); //"text", new ImageIcon( tempImage ), SwingConstants.LEFT );
-
+			label = new JLabel();
 		}
 
 		public Component getListCellRendererComponent(

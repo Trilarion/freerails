@@ -44,7 +44,8 @@
             <include name="**/*.dtd"/>
             
              <include name="**/*.gif"/>
-             <include name="client/view/game_controls.html"/>
+             <include name="client/view/game_controls.html"/>             
+             <include name="**/*.htm"/>
          </fileset>
       </copy>
 

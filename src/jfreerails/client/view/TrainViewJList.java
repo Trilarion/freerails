@@ -21,11 +21,7 @@ public class TrainViewJList extends JList implements View, ListCellRenderer {
 
 	private ReadOnlyWorld w;
 
-	private ViewLists vl;
-
-	private int trainNumber;
-
-	private TrainConsistListModel trainConsistListModel;
+    private TrainConsistListModel trainConsistListModel;
 
 	private WagonView wagonView;
 
@@ -42,12 +38,10 @@ public class TrainViewJList extends JList implements View, ListCellRenderer {
 		this.setCellRenderer(wagonView);
 
 		this.setBackground(Color.GRAY);
-		//wagonView.setHeight(140);
 	}
 
 	public void display(int trainNumber) {
-		this.trainNumber = trainNumber;
-		trainConsistListModel = new TrainConsistListModel(w, trainNumber);
+        trainConsistListModel = new TrainConsistListModel(w, trainNumber);
 		this.setModel(trainConsistListModel);
 	}
 
@@ -56,8 +50,7 @@ public class TrainViewJList extends JList implements View, ListCellRenderer {
 		ViewLists vl,
 		java.awt.event.ActionListener submitButtonCallBack) {
 		this.w = w;
-		this.vl = vl;
-		wagonView.setup(w, vl, null);
+        wagonView.setup(w, vl, null);
 	}
 
 	public Component getListCellRendererComponent(

@@ -35,46 +35,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         }
     }
 
-    /**
-    *  Creates new TrackPieceView
-    *
-    *@param  trackTemplatesPrototypes  int's representing the legal track pieces.
-    *@param  trackImageSplitter        Source of track icons
-    *@exception  FreerailsException    Description of Exception
-    */
-    public TrackPieceRendererImpl(int[] trackTemplatesPrototypes,
-        jfreerails.client.common.ImageSplitter trackImageSplitter, String name) {
-        trackImageSplitter.setTransparencyToTRANSLUCENT();
-        typeName = name;
-
-        //Since track tiles have transparent regions.
-        for (int i = 0; i < trackTemplatesPrototypes.length; i++) {
-            /*
-            *  Check for invalid parameters.
-            */
-            if ((trackTemplatesPrototypes[i] > 511) ||
-                    (trackTemplatesPrototypes[i] < 0)) {
-                throw new java.lang.IllegalArgumentException("trackTemplate = " +
-                    trackTemplatesPrototypes[i] +
-                    ", it should be in the range 0-511");
-            }
-
-            /*
-            *  Grab the images for those track pieces that are legal.
-            */
-            for (int j = 0; j < trackTemplatesPrototypes.length; j++) {
-                int[] rotationsOfTrackTemplate = jfreerails.world.track.EightRotationsOfTrackPieceProducer.getRotations(trackTemplatesPrototypes[j]);
-
-                for (int k = 0; k < rotationsOfTrackTemplate.length; k++) {
-                    if (trackPieceIcons[rotationsOfTrackTemplate[k]] == null) {
-                        trackPieceIcons[rotationsOfTrackTemplate[k]] = trackImageSplitter.getTileFromSubGrid(k,
-                                j);
-                    }
-                }
-            }
-        }
-    }
-
     public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
         int typeNumber) throws IOException {
         TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, typeNumber);
@@ -119,7 +79,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         return fileName;
     }
 
-    public String getTrackTypeName() {
+    private String getTrackTypeName() {
         return typeName;
     }
 }

@@ -17,7 +17,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     public static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
     public final boolean waitUntilFull;
     public final int[] consist; //The wagon types to add; if null, then no change.
-    public static final int NO_STATION = -1;
     public final int station; //The number of the station to goto.
 
     /** Creates a new instance of TrainOrders */

@@ -26,13 +26,7 @@ import jfreerails.world.train.WagonType;
 public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements View {
     
     private ReadOnlyWorld world;
-    
-    private ViewLists vl;
-    
-    private ActionListener submitButtonCallBack;
-    
-    private int stationID = 0;
-    
+
     /** Creates new form CargoWaitingAndDemandedJPanel */
     public CargoWaitingAndDemandedJPanel() {
         initComponents();
@@ -117,12 +111,9 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     
     public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
         this.world = w;
-        this.vl = vl;
-        this.submitButtonCallBack = submitButtonCallBack;
     }
     
     public void display(int newStationID){
-        stationID = newStationID;
         StationModel station = (StationModel)world.get(KEY.STATIONS, newStationID);
         this.stationName.setText(station.getStationName());
         int cargoBundleIndex = station.getCargoBundleNumber();

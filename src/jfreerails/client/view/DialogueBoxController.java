@@ -72,14 +72,6 @@ public class DialogueBoxController {
 	};
 
 	private CallBacks callbacks = new CallBacks() {
-		public void closeDialogue() {
-			closeContent();
-		}
-
-		public void moveCursor(int x, int y) {
-			// TODO Auto-generated method stub			
-		}
-
 		public void processMove(Move m) {
 			moveReceiver.processMove(m);
 		}

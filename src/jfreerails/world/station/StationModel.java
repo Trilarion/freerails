@@ -62,17 +62,6 @@ public class StationModel implements FreerailsSerializable {
         this.cargoBundleNumber = 0;
     }
 
-    public StationModel(StationModel s) {
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.converted = s.converted;
-        this.demand = s.demand;
-        this.name = s.name;
-        this.production = s.production;
-        this.supply = s.supply;
-        this.x = s.x;
-        this.y = s.y;
-    }
-
     public String getStationName() {
         return name;
     }
@@ -106,10 +95,6 @@ public class StationModel implements FreerailsSerializable {
 
     public SupplyAtStation getSupply() {
         return supply;
-    }
-
-    public int getWaiting() {
-        return cargoBundleNumber;
     }
 
     public StationModel(StationModel s, DemandAtStation demand) {

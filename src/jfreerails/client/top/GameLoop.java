@@ -21,7 +21,7 @@ final public class GameLoop implements Runnable {
     FPScounter fPScounter;
     private long frameStartTime;
     private final GameModel model;
-    private Integer loopMonitor = new Integer(0);  
+    private Integer loopMonitor = new Integer(0);
 
     public GameLoop(ScreenHandler s) {
         screenHandler = s;

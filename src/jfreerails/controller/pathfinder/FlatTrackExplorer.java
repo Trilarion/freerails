@@ -17,7 +17,6 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             OneTileMoveVector.NORTH);
     boolean beforeFirst = true;
     private ReadOnlyWorld w;
-    private int currentStation; //stores the index number of a station if a train is currently at a station
 
     public ReadOnlyWorld getWorld() {
         return w;

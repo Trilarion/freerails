@@ -83,12 +83,6 @@ public class BuildJPane extends javax.swing.JPanel {
 	    revalidate();
 	}
     }
-    
-    private void setupStationComponents() {
-	/*
-	 * setup the station panel
-	 */
-    }
 
 
     /** This method is called from within the constructor to

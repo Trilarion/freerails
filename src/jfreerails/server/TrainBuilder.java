@@ -36,7 +36,6 @@ import jfreerails.world.train.TrainPathIterator;
  */
 public class TrainBuilder {
     private World world;
-    private int trainId;
     private MoveReceiver moveReceiver;
 
     public TrainBuilder(World w, MoveReceiver mr) {
@@ -92,8 +91,6 @@ public class TrainBuilder {
              * atomically */
             /* TODO FIXME need to figure out what to do if the above
              * step fails! */
-            this.trainId = trainNumber;
-
             TrainPathFinder tpf = getPathToFollow(p, world, trainNumber);
 
             Move setupScheduleMove = tpf.initTarget(train, is);

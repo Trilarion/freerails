@@ -9,7 +9,6 @@ import java.awt.Image;
 import java.io.IOException;
 import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
-import jfreerails.client.common.ImageSplitter;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -22,20 +21,6 @@ final public class ForestStyleTileRenderer
     extends jfreerails.client.renderer.AbstractTileRenderer {
     private static final int[] X_LOOK_AT = {-1, 1};
     private static final int[] Y_LOOK_AT = {0, 0};
-
-    /** Creates new ForestStyleTileView */
-    public ForestStyleTileRenderer(ImageSplitter imageSplitter,
-        int[] rgbValues, TerrainType tileModel) {
-        super(tileModel, rgbValues);
-        imageSplitter.setTransparencyToOPAQUE();
-        setTileIcons(new java.awt.Image[4]);
-
-        //Grap them in this order so that they display correctly :)
-        getTileIcons()[0] = imageSplitter.getTileFromSubGrid(0, 0);
-        getTileIcons()[1] = imageSplitter.getTileFromSubGrid(1, 0);
-        getTileIcons()[2] = imageSplitter.getTileFromSubGrid(3, 0);
-        getTileIcons()[3] = imageSplitter.getTileFromSubGrid(2, 0);
-    }
 
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
