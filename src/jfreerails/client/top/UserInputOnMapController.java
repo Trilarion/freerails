@@ -78,15 +78,27 @@ public class UserInputOnMapController extends KeyAdapter {
                 int x = evt.getX();
                 int y = evt.getY();
 
-                //Scroll view if necessary.
-                if (!mapView.getVisibleRect().contains(x, y)) {
-                    mapView.scrollRectToVisible(new Rectangle(x, y, 1, 1));
-                }
-
                 float scale = mapView.getScale();
                 Dimension tileSize = new Dimension((int)scale, (int)scale);
                 int tileX = x / tileSize.width;
                 int tileY = y / tileSize.height;
+
+                /* See the javadoc for JComponent.setAutoscrolls(boolean autoscrolls) */
+                assert mapView.getAutoscrolls();
+
+                //Scroll view if necessary.
+                if (!mapView.getVisibleRect().contains(x, y)) {
+                    /*
+                     * Making the rectangle we scroll to 2 tiles wide and centered on x, y means that
+                     * we scroll at least one tile.  This stops painfully slow scrolling in full screen
+                     * mode when the mouse cannot be dragged far from the viewport since it hits the screen
+                     * edge.
+                     */
+                    Rectangle r = new Rectangle(x - tileSize.width,
+                            y - tileSize.height, 2 * tileSize.width,
+                            2 * tileSize.height);
+                    mapView.scrollRectToVisible(r);
+                }
 
                 buildTrack.setTrack(getCursorPosition(), new Point(tileX, tileY));
                 mapView.requestFocus();
