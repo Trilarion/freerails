@@ -638,58 +638,58 @@ Nov 3, 2003 10:02:54 PM Luke
 13-Oct-2002 22:30:30 Luke Lindsay 
    o Added trains!  They don't move yet.  Hit F7 when the cursor 
    is over the track to build one.
-13-Oct-2002 00:24:18 Luke Lindsay <lindsal49@hotmail.com>:
+13-Oct-2002 00:24:18 Luke Lindsay :
 	o Add a task to build.xml that runs all junit tests.
 	o Change build.xml to work under Eclipse.
-29-Sep-2002 20:24:18 Luke Lindsay <lindsal49@hotmail.com>:
+29-Sep-2002 20:24:18 Luke Lindsay :
     o Reorganised package structure.
     o Changed files that were incorredtly added to the cvs as binaries to text
     o Small changes to build.xml so that the ChangeLog, TODO, and build.xml files
     are included in distributions.
     o Changed DOMLoader so that it works correctly when reading 
     files from a jar archive.
-24-Sep-2002 23:49:14 Luke Lindsay <lindsal49@hotmail.com>:
+24-Sep-2002 23:49:14 Luke Lindsay :
     o Updated TrainDemo, it now draws wagons rather than lines.
-23-Sep-2002 23:35:30 Luke Lindsay <lindsal49@hotmail.com>:
+23-Sep-2002 23:35:30 Luke Lindsay :
     o Wrote a simple demo, TrainDemo, to try out using FreerailsPathIterator
     and PathWalker to move trains along a track.  To see it in action, run: 
     experimental.RunTrainDemo
-22-Sep-2002 23:47:07 Luke Lindsay <lindsal49@hotmail.com>:
+22-Sep-2002 23:47:07 Luke Lindsay :
     o wrote PathWalkerImpl and PathWalkerImplTest
-19-Sep-2002 00:03:59 Luke Lindsay <lindsal49@hotmail.com>:
+19-Sep-2002 00:03:59 Luke Lindsay :
     o wrote SimplePathIteratorImpl and SimplePathIteratorImplTest
     o removed the method: 
     boolean canStepForward(int distance) 
     from the interface PathWalker so that looking ahead is not required.
-16-Sep-2002 21:37:46 Luke Lindsay <lindsal49@hotmail.com>:
+16-Sep-2002 21:37:46 Luke Lindsay :
 	o build.xml written by JonLS added.  (Sorry, I 
 	forgot to add it to the change log earlier.)
-16-Sep-2002 21:36:50 Luke Lindsay <lindsal49@hotmail.com>:
+16-Sep-2002 21:36:50 Luke Lindsay :
 	o Updated and commented FreerailsPathIterator and PathWalker interfaces.
-08-Sep-2002 22:11:24 Luke Lindsay <lindsal49@hotmail.com>:
+08-Sep-2002 22:11:24 Luke Lindsay :
 	o Wrote 'Snake' class that represents a train position.
-26-Aug-2002 19:51:35 Luke Lindsay <lindsal49@hotmail.com>:
+26-Aug-2002 19:51:35 Luke Lindsay :
 	o Games can now be loaded and saved.	 
 	o New games can be started.
-18-Aug-2002 00:26:35 Luke Lindsay <lindsal49@hotmail.com>:
+18-Aug-2002 00:26:35 Luke Lindsay :
 	o More work on active rendering fixes for linux.	
-28-Jul-2002 17:18:32 Luke Lindsay <lindsal49@hotmail.com>:
+28-Jul-2002 17:18:32 Luke Lindsay :
 	o Partially fixed active rendering under linux.	
-04-Jul-2002 22:24:41 Luke Lindsay <lindsal49@hotmail.com>:
+04-Jul-2002 22:24:41 Luke Lindsay :
 	o Rotate method added to OneTileMoveVector
-21 - Jun - 02 19 : 21 : 08 Luke Lindsay < lindsal49 @ hotmail.com > :
+21 - Jun - 02 19 : 21 : 08 Luke Lindsay:
 	o Fullscreen mode
 	o GameLoop, jfreerails now uses active, rather than passive, rendering.
 	o Work on separating the model and view.
 	o Tilesets can be validated against rulesets - ViewLists.validate(Type t)  	
 	o FPS counter added.
-04-Mar-2002 21:57:23 Luke Lindsay <lindsal49@hotmail.com>:
+04-Mar-2002 21:57:23 Luke Lindsay :
 	o Rearrange dependancies in jfreerails.world...
-02-Mar-2002 19:02:48 Luke Lindsay <lindsal49@hotmail.com>:
+02-Mar-2002 19:02:48 Luke Lindsay :
 	o Reorganisation of package structure.
-Sat Feb 16 22:48:00 2002 Luke Lindsay <lindsal49@hotmail.com>:
+Sat Feb 16 22:48:00 2002 Luke Lindsay :
 	o Unrecoverable FreerailsExceptions replaced with standard unchecked exceptions.
-Sat Feb 16 19:42:00 2002 Luke Lindsay <lindsal49@hotmail.com>:
+Sat Feb 16 19:42:00 2002 Luke Lindsay :
 	o Changed CVS directory structure.
-Sat Feb 16 15:00:00 2002 Luke Lindsay <lindsal49@hotmail.com>:
+Sat Feb 16 15:00:00 2002 Luke Lindsay :
 	o This ChangeLog started!
