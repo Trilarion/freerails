@@ -31,8 +31,5 @@ public interface GraphExplorer {
 	 */
 	void moveForward();
 
-	/***********************************/
-	//scott bennett 15/03/03
-	boolean isAtStation();
-	/***********************************/
+	
 }

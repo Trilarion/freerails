@@ -6,14 +6,11 @@ import java.util.NoSuchElementException;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
-import jfreerails.world.station.StationModel;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 
-
-public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
+public  class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 
 	PositionOnTrack currentPosition = new PositionOnTrack(0, 0, OneTileMoveVector.NORTH);
 	PositionOnTrack currentBranch = new PositionOnTrack(0, 0, OneTileMoveVector.NORTH);
@@ -73,14 +70,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 			OneTileMoveVector branchDirection = OneTileMoveVector.getInstance(i);
 			this.currentBranch.setDirection(branchDirection);
 			int x = this.currentPosition.getX() + branchDirection.deltaX;
-			int y = this.currentPosition.getY() + branchDirection.deltaY;
-			
-			/*****************************************************************/
-			boolean trainOnStation = isAtStation();
-			if (isAtStation()) {
-				//System.out.println("train is at station #" + this.currentStation);
-			}
-			/*****************************************************************/
+			int y = this.currentPosition.getY() + branchDirection.deltaY;			
 			
 			this.currentBranch.setX(x);
 			this.currentBranch.setY(y);
@@ -134,19 +124,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 		this.w = world;
 	}
 
-	public boolean isAtStation() {
-		
-		//loop thru the station list to check if train is at the same Point as a station
-		for (int i=0; i<w.size(KEY.STATIONS); i++) {
-			StationModel tempPoint = (StationModel)w.get(KEY.STATIONS, i);
-			if ( null!= tempPoint && (this.currentPosition.getX() == tempPoint.x ) && (this.currentPosition.getY() == tempPoint.y ) ) {
-				this.currentStation = i;
-				return true; //train is at this station at location tempPoint
-			}
-		}
-
-		return false; 	//there are no stations that exist where the train is currently
-	}
+	
 	/******************************************************************************************/
 	
 
