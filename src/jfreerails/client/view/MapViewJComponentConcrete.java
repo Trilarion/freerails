@@ -287,11 +287,6 @@ final public class MapViewJComponentConcrete
 			tileSize.height * 3);
 	}
 
-	public float getScale() {
-		return mapView.getScale();
-
-	}
-
 	public void paintTile(Graphics g, int tileX, int tileY) {
 	}
 

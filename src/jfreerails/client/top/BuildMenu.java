@@ -4,11 +4,18 @@
 * Created on 30 July 2001, 06:49
 */
 package jfreerails.client.top;
-import jfreerails.controller.TrackMoveProducer;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.track.TrackRule;
 
+import java.util.Enumeration;
+
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.JRadioButtonMenuItem;
+
+import jfreerails.client.common.ActionAdapter;
+import jfreerails.client.view.ModelRoot;
+import jfreerails.client.view.TrackBuildModel;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
 *
@@ -17,7 +24,10 @@ import jfreerails.world.track.TrackRule;
 
 final public class BuildMenu extends javax.swing.JMenu {
 
-	private TrackMoveProducer trackBuilder;
+	private ButtonGroup buttonGroup;
+	private ButtonGroup buttonGroup2;
+
+	private TrackBuildModel trackBuildModel;
 
 	/** Creates new BuildMenu */
 
@@ -25,95 +35,44 @@ final public class BuildMenu extends javax.swing.JMenu {
 		super();
 	}
 
-	public void setup(ReadOnlyWorld w, TrackMoveProducer tb) {
+	public void setup(ReadOnlyWorld w, ModelRoot modelRoot) {
 
 		this.removeAll();
-		this.trackBuilder = tb;
 		this.setText("Build");
-		javax.swing.ButtonGroup trackTypesGroup = new javax.swing.ButtonGroup();
-		javax.swing.ButtonGroup buildRemoveOrUpgrade =
-			new javax.swing.ButtonGroup();
+		buttonGroup = new ButtonGroup();
+		trackBuildModel = modelRoot.getTrackBuildModel();
+		ActionAdapter actionAdapter = 
+		    trackBuildModel.getBuildModeActionAdapter();
+		
+		Enumeration e = actionAdapter.getActions();
+		Enumeration buttonModels = actionAdapter.getButtonModels();
 
-		javax.swing.JRadioButtonMenuItem ignoreTrackMenuItem =
-			new javax.swing.JRadioButtonMenuItem("Info Mode");
-		ignoreTrackMenuItem
-			.addActionListener(new java.awt.event.ActionListener() {
-
-					public void actionPerformed(
-						java.awt.event.ActionEvent actionEvent) {
-					System.out.println("ignore track");
-					trackBuilder.setTrackBuilderMode(TrackMoveProducer.IGNORE_TRACK);
+		while (e.hasMoreElements()) {
+		    Action action = (Action) e.nextElement();
+		    JRadioButtonMenuItem menuItem = new
+			JRadioButtonMenuItem(action);
+		    menuItem.setModel((ButtonModel) buttonModels.nextElement());
+		    buttonGroup.add(menuItem);
+		    add(menuItem);
 					}
-					});
-		buildRemoveOrUpgrade.add(ignoreTrackMenuItem);
-		this.add(ignoreTrackMenuItem);
 
-		javax.swing.JRadioButtonMenuItem buildTrackMenuItem =
-			new javax.swing.JRadioButtonMenuItem("Build Track");
-		buildTrackMenuItem
-			.addActionListener(new java.awt.event.ActionListener() {
-
-			public void actionPerformed(
-				java.awt.event.ActionEvent actionEvent) {
-				System.out.println("build track");
-				trackBuilder.setTrackBuilderMode(TrackMoveProducer.BUILD_TRACK);
-			}
-		});
-
-		/*Set build track as the default*/
-		buildTrackMenuItem.setSelected(true);
-		trackBuilder.setTrackBuilderMode(TrackMoveProducer.BUILD_TRACK);
-		buildRemoveOrUpgrade.add(buildTrackMenuItem);
-		this.add(buildTrackMenuItem);
-		javax.swing.JRadioButtonMenuItem RemoveTrackMenuItem =
-			new javax.swing.JRadioButtonMenuItem("Remove Track");
-		RemoveTrackMenuItem
-			.addActionListener(new java.awt.event.ActionListener() {
-
-			public void actionPerformed(
-				java.awt.event.ActionEvent actionEvent) {
-				System.out.println("remove track");
-				trackBuilder.setTrackBuilderMode(TrackMoveProducer.REMOVE_TRACK);
-			}
-		});
-		buildRemoveOrUpgrade.add(RemoveTrackMenuItem);
-		this.add(RemoveTrackMenuItem);
-		javax.swing.JRadioButtonMenuItem upgradeTrackMenuItem =
-			new javax.swing.JRadioButtonMenuItem("Upgrade Track");
-		upgradeTrackMenuItem
-			.addActionListener(new java.awt.event.ActionListener() {
-
-			public void actionPerformed(
-				java.awt.event.ActionEvent actionEvent) {
-				System.out.println("upgrade track");
-				trackBuilder.setTrackBuilderMode(TrackMoveProducer.UPGRADE_TRACK);
-			}
-		});
-		buildRemoveOrUpgrade.add(upgradeTrackMenuItem);
+		buttonGroup2 = new ButtonGroup();
         
-		this.add(upgradeTrackMenuItem);
 		this.addSeparator();
-		for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
-			final int trackRuleNumber = i;
-			TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
-			if (!trackRule.isStation()) { //Stations get built by pressing F8
-				String trackType = trackRule.getTypeName();
-				javax.swing.JRadioButtonMenuItem rbMenuItem =
-					new javax.swing.JRadioButtonMenuItem("Build " + trackType);
-				rbMenuItem
-					.addActionListener(new java.awt.event.ActionListener() {
 
-					public void actionPerformed(
-						java.awt.event.ActionEvent actionEvent) {
-						trackBuilder.setTrackRule(trackRuleNumber);
-					}
-				});
-				if (0 == i) {
-					rbMenuItem.setSelected(true);
-				}
-				trackTypesGroup.add(rbMenuItem);
-				this.add(rbMenuItem);
-			}
+		actionAdapter = trackBuildModel.getTrackRuleAdapter();
+
+		e = actionAdapter.getActions();
+		buttonModels = actionAdapter.getButtonModels();
+
+		while (e.hasMoreElements()) {
+		    Action action = (Action) e.nextElement();
+		    JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(action);
+		    menuItem.setIcon(null);
+		    menuItem.setModel((ButtonModel) buttonModels.nextElement());
+		    buttonGroup2.add(menuItem);
+		    add(menuItem);
 		}
+
 	}
 }

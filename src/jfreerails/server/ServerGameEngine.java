@@ -17,6 +17,7 @@ import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.TrainMover;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.WorldChangedEvent;
+import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
@@ -309,7 +310,7 @@ public class ServerGameEngine
 	}
 
 	public void newGame(String mapName) {
-		newGame(OldWorldImpl.createWorldFromMapFile(mapName));
+		newGame(OldWorldImpl.createWorldFromMapFile(mapName, FreerailsProgressMonitor.NULL_INSTANCE));
 	}
 
 	public void newGame(World w) {

@@ -8,6 +8,7 @@ import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.ServerControlInterface;
+import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldListListener;
 
@@ -22,6 +23,7 @@ public class GameServer {
 	private World world;
 	private ServerGameEngine gameEngine;
 	private MoveChainFork moveChainFork;
+	private FreerailsProgressMonitor pm;
 
 	/**
 	 * The connections that this server has
@@ -31,9 +33,9 @@ public class GameServer {
 	/**
 	 * starts the server running initialised from a new map
 	 */
-	public GameServer(String mapName) {
+	public GameServer(String mapName, FreerailsProgressMonitor pm) {
 		moveChainFork = new MoveChainFork();
-		world = OldWorldImpl.createWorldFromMapFile(mapName);
+		world = OldWorldImpl.createWorldFromMapFile(mapName, pm);
 		MoveExecuter.init(world, moveChainFork);
 		gameEngine = new ServerGameEngine(world, this, moveChainFork);
 		WorldListListener listener = new CalcSupplyAtStations(world);

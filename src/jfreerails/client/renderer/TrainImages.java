@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.io.IOException;
 
 import jfreerails.client.common.ImageManager;
+import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -32,11 +33,18 @@ public class TrainImages {
     private final ImageManager imageManager;
     private final ReadOnlyWorld w;
     
-    public TrainImages(ReadOnlyWorld w, ImageManager imageManager) throws IOException {
+    public TrainImages(ReadOnlyWorld w, ImageManager imageManager, FreerailsProgressMonitor pm) throws IOException {
         this.w = w;
         this.imageManager = imageManager;
-        final int numberOfWagonTypes = w.size(KEY.CARGO_TYPES);
+        final int numberOfWagonTypes = w.size(KEY.CARGO_TYPES);                        
         final int numberOfEngineTypes = w.size(KEY.ENGINE_TYPES);
+        
+        //Setup progress monitor..
+		pm.setMessage("Loading train images.");
+		pm.setMax(numberOfWagonTypes + numberOfEngineTypes);
+		int progress = 0;
+		pm.setValue(progress);
+        
         sideOnWagonImages = new Image[numberOfWagonTypes];
         overheadWagonImages = new Image[numberOfWagonTypes][8];
         sideOnEngineImages = new Image[numberOfEngineTypes];
@@ -51,6 +59,7 @@ public class TrainImages {
                 WagonRenderer.generateOverheadFilename(cargoType.getName(), direction);
                 overheadWagonImages[i][direction] = imageManager.getImage(overheadOnFileName);
             }
+			pm.setValue(++progress);
         }
         
         for (int i = 0; i < numberOfEngineTypes; i++) {
@@ -62,6 +71,7 @@ public class TrainImages {
                 WagonRenderer.generateOverheadFilename(engineType.getEngineTypeName(), direction);
                 overheadEngineImages[i][direction] = imageManager.getImage(overheadOnFileName);
             }
+			pm.setValue(++progress);
         }
     }
     

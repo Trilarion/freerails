@@ -2,7 +2,11 @@ package jfreerails.client.top;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.ChangeEvent;
@@ -11,10 +15,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import jfreerails.client.renderer.StationRadiusRenderer;
-import jfreerails.controller.StationBuilder;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.track.TrackRule;
+import jfreerails.client.view.ModelRoot;
+import jfreerails.client.view.StationBuildModel;
 
 /**
  * This JPopupMenu displays the list of station types that
@@ -26,24 +28,31 @@ public class StationTypesPopup extends JPopupMenu {
 
 	Point tileToBuildStationOn;
 
-	StationBuilder stationBuilder;
-
 	StationRadiusRenderer stationRadiusRenderer;
 
 	PopupMenuListener popupMenuListener;
+
+	private StationBuildModel stationBuildModel;
 
 	public StationTypesPopup() {
 
 	}
 	
 	public boolean canBuiltStationHere(Point p){
-		return stationBuilder.canBuiltStationHere(p);
+	    stationBuildModel.getStationBuildAction().putValue(
+	    StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
+	    return stationBuildModel.canBuildStationHere();
 	}
 
-	public void setup(StationBuilder sb, StationRadiusRenderer srr) {
-		stationBuilder = sb;
+	private class StationBuildMenuItem extends JMenuItem {
+	    public void configurePropertiesFromAction(Action a) {
+		super.configurePropertiesFromAction(a);
+	    }
+	}
+
+	public void setup(ModelRoot modelRoot, StationRadiusRenderer srr) {
+	    stationBuildModel = modelRoot.getStationBuildModel();
 		stationRadiusRenderer = srr;
-		ReadOnlyWorld w = sb.getWorld();
 		this.removeAll();
 		this.removePopupMenuListener(popupMenuListener);
 		popupMenuListener = new PopupMenuListener() {
@@ -51,49 +60,64 @@ public class StationTypesPopup extends JPopupMenu {
 			}
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 				stationRadiusRenderer.hide();
+		    stationBuildModel.getStationCancelAction().
+			actionPerformed(new ActionEvent(StationTypesPopup.this,
+			ActionEvent.ACTION_PERFORMED, ""));
 			}
 
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				stationRadiusRenderer.show();
 				stationRadiusRenderer.setPosition(
 					tileToBuildStationOn.x,
 					tileToBuildStationOn.y);
-
+		    stationBuildModel.getStationBuildAction().putValue(
+			    StationBuildModel.StationBuildAction.
+			    STATION_POSITION_KEY, tileToBuildStationOn);
 			}
 		};
 		this.addPopupMenuListener(popupMenuListener);
 
-		for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
-			final int trackRuleNumber = i;
-			final TrackRule trackRule = (TrackRule) w.get(KEY.TRACK_RULES, i);
-			if (trackRule.isStation()) {
-				String trackType = trackRule.getTypeName();
-				final JMenuItem rbMenuItem =
-					new JMenuItem("Build " + trackType);
-				rbMenuItem
-					.addActionListener(new java.awt.event.ActionListener() {
-
-					public void actionPerformed(
-						java.awt.event.ActionEvent actionEvent) {
-						stationBuilder.setStationType(trackRuleNumber);
-						stationBuilder.buildStation(tileToBuildStationOn);
-					}
-				});
-
-				//Show the relevant station radius when the station type's menu item gets focus.
+	    final Action[] stationChooseActions =
+		stationBuildModel.getStationChooseActions();
+	    for (int i = 0; i < stationChooseActions.length; i++) {
+		final StationBuildMenuItem rbMenuItem =
+		    new StationBuildMenuItem();
+		final int index = i;   
+		rbMenuItem.configurePropertiesFromAction(stationChooseActions[i]);
+		rbMenuItem.setIcon(null);
+		//Show the relevant station radius when the station type's
+		//menu item gets focus.
 				rbMenuItem.addChangeListener(new ChangeListener() {
-
+		private boolean armed = false;
 					public void stateChanged(ChangeEvent e) {
-						if (rbMenuItem.isArmed()) {
-							stationRadiusRenderer.setRadius(
-								trackRule.getStationRadius());
+			if (rbMenuItem.isArmed() && (rbMenuItem.isArmed() !=
+			armed)) {
+			    stationChooseActions[index].actionPerformed(new
+				ActionEvent(rbMenuItem,
+				    ActionEvent.ACTION_PERFORMED, ""));
 						}
+			armed = rbMenuItem.isArmed();
 					}
 				});
-				this.add(rbMenuItem);
+		rbMenuItem.addActionListener(stationBuildModel.getStationBuildAction());    
+		add(rbMenuItem);
 			}
+	    stationBuildModel.getStationBuildAction().addPropertyChangeListener(
+		new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent e) {
+		    if (e.getPropertyName().equals(StationBuildModel.
+			StationBuildAction.STATION_RADIUS_KEY))
+		    {
+			int newRadius = ((Integer)e.getNewValue()).
+			    intValue();
+			stationRadiusRenderer.setRadius(newRadius);
 		}
-
+		    if (stationBuildModel.getStationBuildAction().isEnabled()) {
+			stationRadiusRenderer.show();
+		    } else {
+			stationRadiusRenderer.hide();
+		    }
+		}
+	    });
 	}
 
 	public void show(Component invoker, int x, int y, Point tile) {

@@ -27,48 +27,55 @@ final public class ScreenHandler {
 
 	BufferStrategy bufferStrategy;
 
-	private DisplayMode displayMode = null;
+	DisplayMode displayMode;
 
 	/** Whether the window is minimised */
 	private boolean isMinimised = false;
 
-	public ScreenHandler(JFrame f, int mode, DisplayMode dm) {
+	public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
+		this.displayMode = displayMode;
 		frame = f;
-                this.displayMode = dm;
 		apply(f, mode);
 	}
 
-	
+	public ScreenHandler(JFrame f, int mode) {
+		frame = f;
+		apply(f, mode);
+	}
+
+	public static void goFullScreen(JFrame frame, DisplayMode displayMode) {
+		GraphicsDevice device =
+			GraphicsEnvironment
+				.getLocalGraphicsEnvironment()
+				.getDefaultScreenDevice();
+		setRepaintOffAndDisableDoubleBuffering(frame);
+
+		/* We need to make the frame not displayable before calling
+		 * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
+		 * will get thrown.
+		 */
+		if (frame.isDisplayable()) {
+			frame.dispose();
+		}
+		frame.setUndecorated(true);
+		device.setFullScreenWindow(frame);
+		if (device.isDisplayChangeSupported()) {
+			if (null == displayMode) {
+				displayMode = getBestDisplayMode(device);
+			}
+			if (null != displayMode) {
+				device.setDisplayMode(displayMode);
+			}
+		}
+		frame.validate();
+	}
 
 	public void apply(JFrame f, int mode) {
 		switch (mode) {
 
 			case FULL_SCREEN :
 				{
-					GraphicsDevice device =
-						GraphicsEnvironment
-							.getLocalGraphicsEnvironment()
-							.getDefaultScreenDevice();
-					setRepaintOffAndDisableDoubleBuffering(frame);
-
-					/* We need to make the frame not displayable before calling
-					 * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
-					 * will get thrown.
-					 */
-					if (frame.isDisplayable()) {
-						frame.dispose();
-					}
-					frame.setUndecorated(true);
-					device.setFullScreenWindow(frame);
-					if (device.isDisplayChangeSupported()) {
-						if (null == displayMode) {
-							displayMode = getBestDisplayMode(device);
-						}
-						if (null != displayMode) {
-							device.setDisplayMode(displayMode);
-						}
-					}
-					frame.validate();
+					goFullScreen(f, displayMode);
 					break;
 				}
 			case WINDOWED_MODE :
@@ -190,13 +197,4 @@ final public class ScreenHandler {
 	public boolean isMinimised() {
 		return isMinimised;
 	}
-
-	public DisplayMode getDisplayMode() {
-		return displayMode;
-	}
-
-	public void setDisplayMode(DisplayMode mode) {
-		displayMode = mode;
-	}
-
 }

@@ -24,6 +24,7 @@ import jfreerails.move.MoveStatus;
 import jfreerails.server.NewTileSetFactoryImpl;
 import jfreerails.server.TileSetFactory;
 import jfreerails.server.WagonAndEngineTypesFactory;
+import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
@@ -110,7 +111,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
         w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID));
         
         try {
-            vl = new ViewListsImpl(w); //new ViewListsImpl();
+            vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE); //new ViewListsImpl();
             
             final MyGlassPanel glassPanel = new MyGlassPanel();
             dialogueBoxController.setup(

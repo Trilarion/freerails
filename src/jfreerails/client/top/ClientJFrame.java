@@ -19,13 +19,21 @@ public class ClientJFrame extends javax.swing.JFrame {
     
     private GUIComponentFactory gUIComponentFactory;
     
+    public ClientJFrame(){
+    	
+    }
+    
     /** Creates new form ClientJFrame */
     public ClientJFrame(GUIComponentFactory gcf) {
-        this.gUIComponentFactory=gcf;
-        initComponents();
-        //jSplitPane1.resetToPreferredSizes();
-        gUIComponentFactory.createDateJLabel();
+       	setup(gcf);
     }
+
+	public void setup(GUIComponentFactory gcf) {
+		 this.gUIComponentFactory=gcf;
+		    initComponents();
+		    //jSplitPane1.resetToPreferredSizes();
+		    gUIComponentFactory.createDateJLabel();
+	}
     
     public void setup() {
 	jSplitPane1.revalidate();
@@ -36,10 +44,7 @@ public class ClientJFrame extends javax.swing.JFrame {
     InputMap im = jSplitPane1.getInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW);
     im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
     jSplitPane1.setInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW, im);
-    im = jSplitPane1.getInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
-    jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, im);
-    
+    im = jSplitPane1.getInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);   
     jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
 	jSplitPane1.revalidate();
 	jSplitPane1.resetToPreferredSizes();
@@ -55,13 +60,15 @@ public class ClientJFrame extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
-        mainMapView = gUIComponentFactory.createMainMap();
         rhsjPanel = new javax.swing.JPanel();
-        datejLabel = gUIComponentFactory.createDateJLabel();
         mapOverview = gUIComponentFactory.createOverviewMap();
-        cashjLabel = gUIComponentFactory.createCashJLabel();
         trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
 
+        lhsjPanel = new javax.swing.JPanel();
+        mainMapView = gUIComponentFactory.createMainMap();
+        statusjPanel = new javax.swing.JPanel();
+        datejLabel = gUIComponentFactory.createDateJLabel();
+        cashjLabel = gUIComponentFactory.createCashJLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         gameMenu = gUIComponentFactory.createGameMenu();
         buildMenu = gUIComponentFactory.createBuildMenu();
@@ -77,24 +84,9 @@ public class ClientJFrame extends javax.swing.JFrame {
         });
 
         jSplitPane1.setResizeWeight(0.8);
-        mainMapView.setAlignmentX(0.0F);
-        mainMapView.setAlignmentY(0.0F);
-        mainMapView.setPreferredSize(null);
-        jSplitPane1.setLeftComponent(mainMapView);
-
         rhsjPanel.setLayout(new java.awt.GridBagLayout());
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        rhsjPanel.add(datejLabel, gridBagConstraints);
-
         rhsjPanel.add(mapOverview, new java.awt.GridBagConstraints());
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        rhsjPanel.add(cashjLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
@@ -104,6 +96,31 @@ public class ClientJFrame extends javax.swing.JFrame {
         rhsjPanel.add(trainsJTabPane1, gridBagConstraints);
 
         jSplitPane1.setRightComponent(rhsjPanel);
+
+        lhsjPanel.setLayout(new java.awt.GridBagLayout());
+
+        mainMapView.setAlignmentX(0.0F);
+        mainMapView.setAlignmentY(0.0F);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        lhsjPanel.add(mainMapView, gridBagConstraints);
+
+        statusjPanel.add(datejLabel);
+
+        statusjPanel.add(cashjLabel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        lhsjPanel.add(statusjPanel, gridBagConstraints);
+
+        jSplitPane1.setLeftComponent(lhsjPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -152,9 +169,11 @@ public class ClientJFrame extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JPanel lhsjPanel;
     private javax.swing.JScrollPane mainMapView;
     private javax.swing.JPanel mapOverview;
     private javax.swing.JPanel rhsjPanel;
+    private javax.swing.JPanel statusjPanel;
     private javax.swing.JTabbedPane trainsJTabPane1;
     // End of variables declaration//GEN-END:variables
     

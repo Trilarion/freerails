@@ -1,3 +1,8 @@
+12-Sep-2003 21:00:00 Luke
+	o Add Robert Tuck's 'build' tab patch.
+07-Sep-2003 22:00:00 Luke
+	o Added progess bar to show what is happening while 
+	the game is loading.
 03-Sep-2003 21:50:00 Luke
 	o Added GUI to select display mode and number of clients.
 28-Aug-2003 23:00:00 Luke

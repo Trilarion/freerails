@@ -18,6 +18,7 @@ import jfreerails.client.renderer.TileRendererListImpl;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.TrainImages;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -33,7 +34,7 @@ public class ViewListsImpl implements ViewLists {
 
 	private final ImageManager imageManager;
 
-	public ViewListsImpl(ReadOnlyWorld w) throws IOException {
+	public ViewListsImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm) throws IOException {
 
 		URL out = ViewListsImpl.class.getResource("/experimental");
 		URL in = ViewListsImpl.class.getResource("/jfreerails/client/graphics");
@@ -41,28 +42,33 @@ public class ViewListsImpl implements ViewLists {
 		imageManager = new ImageManagerImpl("/jfreerails/client/graphics/", out.getPath());
 
 		//tiles = new QuickRGBTileRendererList(w);
-		tiles = loadNewTileViewList(w);
+		tiles = loadNewTileViewList(w, pm);
 
-		trackPieceViewList = loadTrackViews(w);
+		trackPieceViewList = loadTrackViews(w, pm);
 
 		//engine views
 
-		sideOnTrainTrainView = addTrainViews();
+		sideOnTrainTrainView = addTrainViews(pm);
 
-		trainImages = new TrainImages(w, imageManager);
+		trainImages = new TrainImages(w, imageManager, pm);
 	}
 	
-	public TrackPieceRendererList loadTrackViews(ReadOnlyWorld w) throws IOException {		
-		return new TrackPieceRendererList(w, imageManager);
+	public TrackPieceRendererList loadTrackViews(ReadOnlyWorld w, FreerailsProgressMonitor pm) throws IOException {		
+		return new TrackPieceRendererList(w, imageManager, pm);
 	}
 
-	private static SideOnTrainTrainViewImages addTrainViews() {
+	private static SideOnTrainTrainViewImages addTrainViews(FreerailsProgressMonitor pm) {
 		//wagon views
 		Image tempImage = null;
+		
+		//		Setup progress monitor..
+		pm.setMessage("Loading train images.");
+		pm.setMax(2);		
+	  	pm.setValue(0);
 
 		SideOnTrainTrainViewImages sideOnTrainTrainView = new SideOnTrainTrainViewImages(5, 3);
 		URL wagon = ViewListsImpl.class.getResource("/jfreerails/data/wagon_151x100.png");
-		System.out.println(wagon);
+		pm.setValue(1);
 		tempImage = (new javax.swing.ImageIcon(wagon)).getImage();
 		sideOnTrainTrainView.setWagonImage(0, tempImage);
 		sideOnTrainTrainView.setWagonImage(1, tempImage);
@@ -70,7 +76,7 @@ public class ViewListsImpl implements ViewLists {
 		sideOnTrainTrainView.setWagonImage(3, tempImage);
 		sideOnTrainTrainView.setWagonImage(4, tempImage);
 		URL engine = ViewListsImpl.class.getResource("/jfreerails/data/engine_350x100.png");
-		System.out.println(engine);
+		pm.setValue(2);
 		tempImage = (new javax.swing.ImageIcon(engine)).getImage();
 		sideOnTrainTrainView.setEngineImage(0, tempImage);
 		sideOnTrainTrainView.setEngineImage(1, tempImage);
@@ -78,16 +84,23 @@ public class ViewListsImpl implements ViewLists {
 		return sideOnTrainTrainView;
 	}
 
-	public TileRendererList loadNewTileViewList(ReadOnlyWorld w) throws IOException {
+	public TileRendererList loadNewTileViewList(ReadOnlyWorld w, FreerailsProgressMonitor pm) throws IOException {
 		ArrayList tileRenderers = new ArrayList();
 		
+		//Setup progress monitor..
+		pm.setMessage("Loading terrain graphics.");
+		pm.setMax(w.size(KEY.TERRAIN_TYPES));
+		int progress = 0;
+		pm.setValue(progress);
+		
 		for (int i = 0; i < w.size(KEY.TERRAIN_TYPES); i++) {
-
+			
 			TerrainType t = (TerrainType) w.get(KEY.TERRAIN_TYPES, i);
 			int[] typesTreatedAsTheSame = new int[] { i };
 
 			TileRenderer tr = null;
 			Integer rgb = new Integer(t.getRGB());
+			pm.setValue(++progress);
 			try {
 				tr = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, t);
 				tileRenderers.add(tr);
@@ -128,6 +141,7 @@ public class ViewListsImpl implements ViewLists {
 					throw new IllegalStateException();
 				}
 			}
+			
 
 		}
 		return new TileRendererListImpl(tileRenderers);

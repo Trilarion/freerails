@@ -33,6 +33,11 @@ public abstract class MapViewJComponent
 	public MapViewJComponent() {
 	}
 
+	public float getScale() {
+		return mapView.getScale();
+
+	}
+
 	/*
 	public void setMapView(MapView mapView) {
 		this.mapView = mapView;

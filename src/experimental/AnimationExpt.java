@@ -28,7 +28,7 @@ public class AnimationExpt extends JComponent {
     public static void main(String[] args) {
         JFrame f = new JFrame();
         f.getContentPane().add(new AnimationExpt());      
-        ScreenHandler screenHandler=new ScreenHandler(f, ScreenHandler.WINDOWED_MODE, null);
+        ScreenHandler screenHandler=new ScreenHandler(f, ScreenHandler.WINDOWED_MODE);
         GameLoop gameLoop=new GameLoop(screenHandler);
         Thread t=new Thread(gameLoop);
         t.start();

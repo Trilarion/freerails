@@ -19,11 +19,11 @@ import jfreerails.controller.ServerControlInterface;
  * maps etc?). Currently we will do this over the local connection only, by
  * the client having access to a ServerControlInterface object
  */
-public class GUIClient extends Client  {
+public class GUIClient extends Client {
 	private MapCursor cursor = null;
-	protected ServerControlInterface serverControls;	
+	protected ServerControlInterface serverControls;
 	private Object mutex;
-	private GUIComponentFactoryImpl gUIComponentFactory = new GUIComponentFactoryImpl();
+	private GUIComponentFactoryImpl gUIComponentFactory;
 
 	public void setCursor(MapCursor c) {
 		cursor = c;
@@ -38,23 +38,28 @@ public class GUIClient extends Client  {
 	 * form of connection supported
 	 */
 	public GUIClient(LocalConnection server) throws IOException {
+		gUIComponentFactory = new GUIComponentFactoryImpl();
+		init(server);
+	}	
+
+	private void init(LocalConnection server) {
 		mutex = server.getMutex();
 		receiver = new ConnectionAdapter();
 		ConnectionToServer connection = new LocalConnection(server);
 		receiver.setConnection(connection);
 		moveChainFork = new MoveChainFork();
-		receiver.setMoveReceiver(moveChainFork);												
-		moveChainFork.add(gUIComponentFactory);					
+		receiver.setMoveReceiver(moveChainFork);
+		moveChainFork.add(gUIComponentFactory);
 	}
-	
-	public JFrame getClientJFrame(){
+
+	public JFrame getClientJFrame() {
 		return gUIComponentFactory.createClientJFrame();
-	}	
+	}
 
 	public void setViewLists(ViewLists viewLists) {
 		if (!viewLists.validate(receiver.world)) {
 			throw new IllegalArgumentException();
-		}		
+		}
 		gUIComponentFactory.setup(viewLists, this);
 	}
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import jfreerails.client.common.ImageManager;
+import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.NullTrackType;
@@ -48,20 +49,32 @@ final public class TrackPieceRendererList {
 
 	}
 	public TrackPieceRendererList(ArrayList trackPieceViewArrayList) {
-		trackPieceViewArray = new TrackPieceRenderer[trackPieceViewArrayList.size()];
+		trackPieceViewArray =
+			new TrackPieceRenderer[trackPieceViewArrayList.size()];
 		for (int i = 0; i < trackPieceViewArrayList.size(); i++) {
 			TrackPieceRenderer trackPieceView =
 				(TrackPieceRenderer) (trackPieceViewArrayList.get(i));
 			trackPieceViewArray[i] = trackPieceView;
 		}
 	}
-	
-	public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager) throws IOException{
-		
+
+	public TrackPieceRendererList(
+		ReadOnlyWorld w,
+		ImageManager imageManager,
+		FreerailsProgressMonitor pm)
+		throws IOException {
+		//		Setup progress monitor..
+		pm.setMessage("Loading track graphics.");
+		pm.setMax(w.size(KEY.TRACK_RULES));
+		int progress = 0;
+		pm.setValue(progress);
+
 		int numberOfTrackTypes = w.size(KEY.TRACK_RULES);
 		trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
-		for (int i = 0 ; i < numberOfTrackTypes ; i++){
-			trackPieceViewArray[i]=new TrackPieceRendererImpl(w, imageManager, i);		
+		for (int i = 0; i < numberOfTrackTypes; i++) {
+			trackPieceViewArray[i] =
+				new TrackPieceRendererImpl(w, imageManager, i);
+			pm.setValue(++progress);
 		}
 	}
 
@@ -69,25 +82,30 @@ final public class TrackPieceRendererList {
 
 		boolean okSoFar = true;
 		for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
-			TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
+			TrackRule trackRule = (TrackRule) w.get(KEY.TRACK_RULES, i);
 			Iterator legalConfigurationsIterator =
 				trackRule.getLegalConfigurationsIterator();
 			TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
 			if (null == trackPieceView) {
 				System.out.println(
-					"No track piece view for the following track type: " + trackRule.getTypeName());
+					"No track piece view for the following track type: "
+						+ trackRule.getTypeName());
 				return false;
 			} else {
 				while (legalConfigurationsIterator.hasNext()) {
-					TrackConfiguration trackConfig=
+					TrackConfiguration trackConfig =
 						(TrackConfiguration) legalConfigurationsIterator.next();
-						int trackGraphicsNo=trackConfig.getTrackGraphicsNumber();
-						Image img=trackPieceView.getTrackPieceIcon(trackGraphicsNo);
-						if(null==img){
-							System.out.println(
-					"No track piece image for the following track type: " + trackRule.getTypeName()+", with configuration: "+trackGraphicsNo);
-							okSoFar=false;
-						}
+					int trackGraphicsNo = trackConfig.getTrackGraphicsNumber();
+					Image img =
+						trackPieceView.getTrackPieceIcon(trackGraphicsNo);
+					if (null == img) {
+						System.out.println(
+							"No track piece image for the following track type: "
+								+ trackRule.getTypeName()
+								+ ", with configuration: "
+								+ trackGraphicsNo);
+						okSoFar = false;
+					}
 
 				}
 			}

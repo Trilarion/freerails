@@ -25,13 +25,14 @@ import jfreerails.client.view.MainMapAndOverviewMapMediator;
 import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.MapViewJComponentConcrete;
 import jfreerails.client.view.MapViewMoveReceiver;
+import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.OverviewMapJComponent;
+import jfreerails.client.view.StationPlacementCursor;
 import jfreerails.client.view.TrainsJTabPane;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.StationBuilder;
-import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.WorldChangedEvent;
@@ -40,6 +41,9 @@ import jfreerails.world.top.ReadOnlyWorld;
 public class GUIComponentFactoryImpl
 	implements GUIComponentFactory, MoveReceiver {
 
+	private ModelRoot modelRoot;
+	private StationPlacementCursor stationPlacementCursor;
+	
 	private DateJLabel datejLabel;
 	private CashJLabel cashjLabel;
 
@@ -67,14 +71,13 @@ public class GUIComponentFactoryImpl
 	JPanel overviewMapContainer;
 	JScrollPane mainMapContainer;
 	MapViewJComponentConcrete mapViewJComponent;
-	TrackMoveProducer trackBuilder;
 	private JScrollPane mainMapScrollPane1;
 	MapRenderer overviewMap;
 	DetailMapView mainMap;
 
 	Rectangle r = new Rectangle(10, 10, 10, 10);
 
-	JFrame clientJFrame;
+	ClientJFrame clientJFrame;
 
 	public GUIComponentFactoryImpl() {
 		userInputOnMapController = new UserInputOnMapController();
@@ -107,11 +110,16 @@ public class GUIComponentFactoryImpl
 	}
 
 	public void setup(ViewLists vl, GUIClient c) {
-		
-		
 		viewLists = vl;
 		client = c;
 		world = client.getWorld();
+
+		UntriedMoveReceiver receiver = client.getReceiver();
+		/* create the models */
+		modelRoot = new ModelRoot(world, receiver, viewLists);
+
+		clientJFrame.setup();
+
 		if (!vl.validate(world)) {
 			throw new IllegalArgumentException(
 				"The specified"
@@ -135,12 +143,9 @@ public class GUIComponentFactoryImpl
 		MoveReceiver mainmapMoveReceiver = new MapViewMoveReceiver(overviewMap);
 		moveFork.add(mainmapMoveReceiver);
 
-		UntriedMoveReceiver receiver = client.getReceiver();
-
-		trackBuilder = new TrackMoveProducer(world, receiver);
 		StationBuilder sb = new StationBuilder(receiver, client.getWorld());
 
-		stationTypesPopup.setup(sb, mainMap.getStationRadius());
+		stationTypesPopup.setup(modelRoot, mainMap.getStationRadius());
 
 		mapViewJComponent.setup(mainMap, client.getWorld());
 		client.setCursor(mapViewJComponent.getMapCursor());
@@ -151,24 +156,26 @@ public class GUIComponentFactoryImpl
 
 		userInputOnMapController.setup(
 			mapViewJComponent,
-			trackBuilder,
+			modelRoot.getTrackMoveProducer(),
 			stationTypesPopup,
 			client,
 			dialogueBoxController,
 			receiver);
 
-		buildMenu.setup(world, trackBuilder);
+		buildMenu.setup(world, modelRoot);
 		mainMapScrollPane1.setViewportView(this.mapViewJComponent);
 		System.out.println("Viewport was set");
 		((OverviewMapJComponent) overviewMapContainer).setup(overviewMap);
 
 		datejLabel.setup(world, null, null);
 		cashjLabel.setup(world, null, null);
-		trainsJTabPane.setup(world, vl);
+		trainsJTabPane.setup(world, vl, modelRoot);
 		MapCursor mapCursor = c.getCursor();
 		mapCursor.addCursorEventListener(trainsJTabPane);
 		trainsJTabPane.setMapCursor(mapCursor);		
 		dialogueBoxController.setup(world, vl, client.moveChainFork, mapCursor);
+		stationPlacementCursor = new StationPlacementCursor(modelRoot,
+		mainMap.getStationRadius(), mapViewJComponent);
 	}
 
 	public JPanel createOverviewMap() {
