@@ -104,7 +104,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
         add(okjButton, gridBagConstraints1);
         
         
-        clearjButton.setLabel("Clear");
+        clearjButton.setText("Clear");
         clearjButton.setText("jButton1");
         clearjButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

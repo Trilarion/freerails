@@ -6,26 +6,19 @@ import jfreerails.misc.TextMessageHandler;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.MoveStatus;
+import jfreerails.world.World;
 import jfreerails.world.misc.OneTileMoveVector;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
-import jfreerails.world.track.TrackRuleList;
-import jfreerails.world.track.TrackTileMap;
 
-/**
- *
- *
- *
- * @author lindsal
- */
+
 
 final public class TrackMoveProducer {
 
-	private TrackRuleList trackRuleList;
 
 	private TrackRule trackRule;
 
-	private TrackTileMap trackSystem;
+	private World w;
 
 	private MoveReceiver moveReceiver;
 
@@ -64,7 +57,7 @@ final public class TrackMoveProducer {
 					from,
 					trackVector,
 					trackRule,
-					trackSystem);
+					w);
 
 			MoveStatus moveStatus = moveReceiver.processMove(move);
 			TextMessageHandler.sendMessage(moveStatus.message);
@@ -76,7 +69,7 @@ final public class TrackMoveProducer {
 				ChangeTrackPieceCompositeMove.generateRemoveTrackMove(
 					from,
 					trackVector,
-					trackSystem);
+					w);
 			MoveStatus moveStatus = moveReceiver.processMove(move);
 			TextMessageHandler.sendMessage(moveStatus.message);
 			return true;
@@ -111,9 +104,8 @@ final public class TrackMoveProducer {
 	 */
 
 	public void setTrackRule(int trackRuleNumber) {
-		this.trackRule = trackRuleList.getTrackRule(trackRuleNumber);
-		TextMessageHandler.sendMessage(
-			trackRuleList.getTrackRule(trackRuleNumber).getTypeName());
+		this.trackRule = w.getTrackRuleList().getTrackRule(trackRuleNumber);
+		TextMessageHandler.sendMessage(trackRule.getTypeName());
 	}
 	
 	public int getTrackRule(){
@@ -135,35 +127,29 @@ final public class TrackMoveProducer {
 
 	
 
-	public TrackMoveProducer(TrackRuleList trackRuleList) {
-		if (trackRuleList == null) {
+	public TrackMoveProducer(World world) {
+		if (world == null) {
 			throw new java.lang.NullPointerException(
-				"Tried to create new TrackBuilder, but trackRule==null");
+				"Tried to create new TrackBuilder, but world==null");
 		}
-		this.trackRuleList = trackRuleList;
+		this.w = world;
 	}
 
-	/**
-	 *  Creates new TrackBuilder
-	 *
-	 *@param  map                     Description of the Parameter
-	 *@param  trackRuleList           Description of the Parameter
+	
 
-	 */
-
-	public TrackMoveProducer(TrackTileMap trackSys, MoveReceiver moveReceiver) {
-		if (null == trackSys||null==moveReceiver) {
-			throw new NullPointerException("Null pointer passed to TrackMoveProducer(TrackSystem trackSys)");
+	public TrackMoveProducer(World  world, MoveReceiver moveReceiver) {
+		if (null == world||null==moveReceiver) {
+			throw new NullPointerException();
 		}
 		this.moveReceiver=moveReceiver;
-		this.trackSystem = trackSys;
-		this.trackRuleList = trackSys.getTrackRuleList();
-		this.trackRule = trackRuleList.getTrackRule(0);
+		this.w = world;
+		
+		this.trackRule = w.getTrackRuleList().getTrackRule(0);
 
 	}
 	private void upgradeTrack(Point point, TrackRule trackRule) {
 
-		TrackPiece before=trackSystem.getTrackPiece(point);
+		TrackPiece before=w.getTrackMap().getTrackPiece(point);
 		TrackPiece after=trackRule.getTrackPiece(before.getTrackConfiguration());
 		ChangeTrackPieceMove move = new ChangeTrackPieceMove( before, after, point);
 		MoveStatus moveStatus = moveReceiver.processMove(move);

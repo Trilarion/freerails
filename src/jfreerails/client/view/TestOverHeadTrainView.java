@@ -15,7 +15,6 @@ import jfreerails.world.train.TrainList;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPosition;
 
-import experimental.TrainPainter;
 
 public class TestOverHeadTrainView implements Painter {
 	

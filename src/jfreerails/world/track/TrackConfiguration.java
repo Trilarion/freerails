@@ -21,31 +21,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		}
 	}
 
-	/** Returns a 9-bit value specifying  the track configuration, and
-	 * hence the appropriate icon, for the track at this node.  E.g.
-	 * the binary representation of a vertical straight would be:
-	 * 010
-	 * 010
-	 * 010 i.e. 010010010
-	 * @param railsList The rail list that is used ot generate the track
-	 * graphic number.
-	 * @return The track graphic number.
-	 */
-	public static int getTrackGraphicNumber(TrackSection[][] railsList) {
-		int trackGraphicNumber = 0;
-		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 3; x++) {
-				if (1 == x && 1 == y) {
-					trackGraphicNumber = trackGraphicNumber | (1 << (3 * y + x));
-				} else {
-					if (null != railsList[x][y]) {
-						trackGraphicNumber = trackGraphicNumber | (1 << (3 * y + x));
-					}
-				}
-			}
-		}
-		return trackGraphicNumber;
-	}
+	
 
 
 	private final int configuration;

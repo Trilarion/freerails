@@ -10,6 +10,7 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import jfreerails.world.WorldBean;
 import jfreerails.world.track.MapFixtureFactory;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
@@ -21,9 +22,9 @@ import jfreerails.world.track.TrackTileMapImpl;
  */
 
 public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
-    jfreerails.world.track.TrackRuleList trackRules;
-    jfreerails.world.track.TrackTileMap map;
-    
+   	
+   	WorldBean world;
+   	
     public ChangeTrackPieceMoveTest(String testName) {
         super(testName);
     }
@@ -38,8 +39,10 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
     }
     
     protected void setUp(){
-        trackRules=MapFixtureFactory.generateTrackRuleList();
-        map=new TrackTileMapImpl(new Dimension(20,20));
+           
+        world = new WorldBean();
+        world.setTrackRuleList(MapFixtureFactory.generateTrackRuleList());
+        world.setTrackMap(new TrackTileMapImpl(new Dimension(20,20)));
     }
     
     public void testTryDoMove(){
@@ -51,36 +54,36 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
         
         //Try building the simplest piece of track.
         newConfig=TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece=map.getTrackPiece(new Point(0,0));
-        newTrackPiece=trackRules.getTrackRule(0).getTrackPiece(newConfig);
+        oldTrackPiece=world.getTrackMap().getTrackPiece(new Point(0,0));
+        newTrackPiece=world.getTrackRuleList().getTrackRule(0).getTrackPiece(newConfig);
         move=new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, new Point(0,0));
-        moveStatus=move.tryDoMove(map);
+        moveStatus=move.tryDoMove(world);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
         
         //As above but with newTrackPiece and oldTrackPiece in the wrong order, should fail.
         move=new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, new Point(0,0));
-        moveStatus=move.tryDoMove(map);
+        moveStatus=move.tryDoMove(world);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
         
         //Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece, should fail.
         move=new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece, new Point(0,0));
-        moveStatus=move.tryDoMove(map);
+        moveStatus=move.tryDoMove(world);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
         
         //Try buildingtrack outside the map.
         move=new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, new Point(100,0));
-        moveStatus=move.tryDoMove(map);
+        moveStatus=move.tryDoMove(world);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
         
         //Try building an illegal track configuration.
         newConfig=TrackConfiguration.getFlatInstance("000011111");
-        newTrackPiece=trackRules.getTrackRule(0).getTrackPiece(newConfig);
+        newTrackPiece=world.getTrackRuleList().getTrackRule(0).getTrackPiece(newConfig);
         move=new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, new Point(0,0));
-        moveStatus=move.tryDoMove(map);
+        moveStatus=move.tryDoMove(world);
         assertEquals(false, moveStatus.isOk());
         
     }
@@ -102,8 +105,8 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
         
         //Try building the simplest piece of track.
         newConfig=TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece=map.getTrackPiece(new Point(0,0));
-        newTrackPiece=trackRules.getTrackRule(0).getTrackPiece(newConfig);
+        oldTrackPiece=world.getTrackMap().getTrackPiece(new Point(0,0));
+        newTrackPiece=world.getTrackRuleList().getTrackRule(0).getTrackPiece(newConfig);
         
         assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
     }
@@ -114,10 +117,10 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
 		MoveStatus moveStatus;
 		
 		move=new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, new Point(0,0));
-		moveStatus=move.doMove(map);
+		moveStatus=move.doMove(world);
 		assertNotNull(moveStatus);
 		assertEquals(true, moveStatus.isOk());
-		assertEquals(newTrackPiece, map.getTrackPiece(new Point(0,0) ));
+		assertEquals(newTrackPiece, world.getTrackMap().getTrackPiece(new Point(0,0) ));
 		
 	}
     
@@ -132,7 +135,7 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
         
         //Try building the simplest piece of track.
         newConfig=TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece=map.getTrackPiece(new Point(0,0));
+        oldTrackPiece=world.getTrackMap().getTrackPiece(new Point(0,0));
         
         
       //  assertMoveDoMoveIsOk(oldTrackPiece, newConfig);

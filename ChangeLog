@@ -1,3 +1,8 @@
+11-Jan-2003 02:44:16 Luke
+	o Refactoring and removing dead code.
+10-Jan-2003 23:52:01 Luke
+	o Added package.html to jfreerails.moves
+	o refactoring to simplify the move classes.
 22-Dec-2002 20:47:51 Luke Lindsay
 	o Added 'Newspaper' option to 'game' menu to test drawing on 
 	the glass panel.  The same technique can be used for dialogue boxes.

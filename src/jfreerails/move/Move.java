@@ -1,8 +1,6 @@
 package jfreerails.move;
 
-
-
-
+import jfreerails.world.World;
 
 /**
  * Defining operations expected of ...
@@ -13,8 +11,12 @@ package jfreerails.move;
 
 public interface Move {
 
+	MoveStatus tryDoMove(World w);
 
+	MoveStatus tryUndoMove(World w);
 
+	MoveStatus doMove(World w);
+
+	MoveStatus undoMove(World w);
 
 }
-

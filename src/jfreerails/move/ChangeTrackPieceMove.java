@@ -4,11 +4,13 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import jfreerails.world.World;
 import jfreerails.world.track.LegalTrackConfigurations;
 import jfreerails.world.track.TrackPiece;
-import jfreerails.world.track.TrackTileMap;
+import jfreerails.world.track.TrackMap;
 
-final public class ChangeTrackPieceMove implements NewTrackMove, MapUpdateMove {
+final public class ChangeTrackPieceMove
+	implements NewTrackMove, MapUpdateMove {
 
 	private final TrackPiece oldTrackPiece;
 
@@ -34,22 +36,32 @@ final public class ChangeTrackPieceMove implements NewTrackMove, MapUpdateMove {
 		location = new Point(p);
 	}
 
-	public MoveStatus tryDoMove(TrackTileMap trackTileMap) {
+	public MoveStatus tryDoMove(World w) {
+
+		TrackMap trackTileMap = w.getTrackMap();
+
 		//Check that location is on the map.
 		if (!trackTileMap.boundsContain(location)) {
-			return new MoveStatus(false, "Tried to build track outside the map.");
+			return new MoveStatus(
+				false,
+				"Tried to build track outside the map.");
 		}
 
 		//Check that the current track piece at this.location is
 		//the same as this.oldTrackPiece.
-		TrackPiece currentTrackPieceAtLocation = trackTileMap.getTrackPiece(location);
+		TrackPiece currentTrackPieceAtLocation =
+			trackTileMap.getTrackPiece(location);
 
 		if ((currentTrackPieceAtLocation.getTrackConfiguration()
 			!= oldTrackPiece.getTrackConfiguration())
-			|| (currentTrackPieceAtLocation.getTrackRule() != oldTrackPiece.getTrackRule())) {
+			|| (currentTrackPieceAtLocation.getTrackRule()
+				!= oldTrackPiece.getTrackRule())) {
 			return new MoveStatus(
 				false,
-				"Unexpected track piece found at location: " + location.x + " ," + location.y);
+				"Unexpected track piece found at location: "
+					+ location.x
+					+ " ,"
+					+ location.y);
 		}
 
 		//Check that oldTrackPiece is not hte same as newTrackPiece
@@ -77,19 +89,25 @@ final public class ChangeTrackPieceMove implements NewTrackMove, MapUpdateMove {
 				location,
 				newTrackPiece.getTrackGraphicNumber(),
 				trackTileMap))) {
-			return new MoveStatus(false, "Illegal track configuration - diagonal conflict");
+			return new MoveStatus(
+				false,
+				"Illegal track configuration - diagonal conflict");
 		}
 
 		return MoveStatus.MOVE_ACCEPTED;
 	}
 
-	public MoveStatus tryUndoMove(TrackTileMap trackTileMap) {
+	public MoveStatus tryUndoMove(World w) {
+
+		TrackMap trackTileMap = w.getTrackMap();
 		return MoveStatus.MOVE_RECEIVED;
 
 	}
 
-	public MoveStatus doMove(TrackTileMap trackTileMap) {
-		MoveStatus moveStatus = tryDoMove(trackTileMap);
+	public MoveStatus doMove(World w) {
+
+		TrackMap trackTileMap = w.getTrackMap();
+		MoveStatus moveStatus = tryDoMove(w);
 		if (!moveStatus.isOk()) {
 			return moveStatus;
 		} else {
@@ -99,39 +117,45 @@ final public class ChangeTrackPieceMove implements NewTrackMove, MapUpdateMove {
 
 	}
 
-	public MoveStatus undoMove(TrackTileMap trackTileMap) {
+	public MoveStatus undoMove(World w) {
+
+		TrackMap trackTileMap = w.getTrackMap();
 		return MoveStatus.MOVE_RECEIVED;
 
 	}
 	private boolean noDiagonalTrackConflicts(
 		Point point,
 		int trackTemplate,
-		TrackTileMap trackTileMap) {
+		TrackMap trackTileMap) {
 		/*This method is needs replacing.  It only deals with flat track pieces, and
 		 *is rather hard to make sense of.  LL
 		 */
 		//int trackTemplate = (1 << (3 * (1 + tv.getY()) + (1 + tv.getX())));
 		int trackTemplateAbove;
 		int trackTemplateBelow;
-		int cornersTemplate = LegalTrackConfigurations.stringTemplate2Int("101000101");
+		int cornersTemplate =
+			LegalTrackConfigurations.stringTemplate2Int("101000101");
 		trackTemplate = trackTemplate & cornersTemplate;
 		Dimension mapSize = trackTileMap.getMapSize();
 		//Avoid array-out-of-bounds exceptions.
 		if (point.y > 0) {
 			trackTemplateAbove =
-				trackTileMap.getTrackGraphicNumber(new Point(point.x, point.y - 1));
+				trackTileMap.getTrackGraphicNumber(
+					new Point(point.x, point.y - 1));
 		} else {
 			trackTemplateAbove = 0;
 		}
 		if ((point.y + 1) < mapSize.height) {
 			trackTemplateBelow =
-				trackTileMap.getTrackGraphicNumber(new Point(point.x, point.y + 1));
+				trackTileMap.getTrackGraphicNumber(
+					new Point(point.x, point.y + 1));
 		} else {
 			trackTemplateBelow = 0;
 		}
 		trackTemplateAbove = trackTemplateAbove >> 6;
 		trackTemplateBelow = trackTemplateBelow << 6;
-		trackTemplate = trackTemplate & (trackTemplateAbove | trackTemplateBelow);
+		trackTemplate =
+			trackTemplate & (trackTemplateAbove | trackTemplateBelow);
 		if (trackTemplate != 0) {
 			return false;
 			//There is a clash.
@@ -140,15 +164,15 @@ final public class ChangeTrackPieceMove implements NewTrackMove, MapUpdateMove {
 			//Things are ok.
 		}
 	}
-	public Rectangle getUpdatedTiles(){
+	public Rectangle getUpdatedTiles() {
 		int x, y, width, height;
-		
-		x=location.x-1;
-		y=location.y-1;
-		width=3;
-		height=3;
-		return new Rectangle(x,y,width, height);
-		
+
+		x = location.x - 1;
+		y = location.y - 1;
+		width = 3;
+		height = 3;
+		return new Rectangle(x, y, width, height);
+
 	}
-	
+
 }

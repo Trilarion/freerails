@@ -12,12 +12,12 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import jfreerails.world.WorldBean;
 import jfreerails.world.misc.OneTileMoveVector;
 import jfreerails.world.track.MapFixtureFactory;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.track.TrackRuleList;
-import jfreerails.world.track.TrackTileMap;
 import jfreerails.world.track.TrackTileMapImpl;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -29,7 +29,7 @@ import junit.framework.TestSuite;
  */
 public class ChangeTrackPieceCompositeMoveTest extends TestCase {
     
-    TrackTileMap trackTileMap;
+	WorldBean world;
     TrackRuleList trackRuleList;
     
     public ChangeTrackPieceCompositeMoveTest(java.lang.String testName) {
@@ -45,9 +45,11 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         TestSuite testSuite = new TestSuite(ChangeTrackPieceCompositeMoveTest.class);
         return testSuite;
     }
-     protected void setUp(){
+    
+    protected void setUp(){
          trackRuleList=MapFixtureFactory.generateTrackRuleList();       
-         trackTileMap=new TrackTileMapImpl(new Dimension(10,10));
+         world= new WorldBean();
+		world.setTrackMap(new TrackTileMapImpl(new Dimension(10,10)));
     }
     
     public void testRemoveTrack() {
@@ -68,14 +70,14 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         //Remove only track piece built.
         
         assertRemoveTrackSuceeds(new Point(0, 5), east);
-        assertTrue(NullTrackPiece.getInstance() == trackTileMap.getTrackPiece(new Point(0, 5)));
-        assertTrue(NullTrackPiece.getInstance() == trackTileMap.getTrackPiece(new Point(1, 5)));
+        assertTrue(NullTrackPiece.getInstance() == world.getTrackMap().getTrackPiece(new Point(0, 5)));
+        assertTrue(NullTrackPiece.getInstance() == world.getTrackMap().getTrackPiece(new Point(1, 5)));
         
         
         
         //Try to remove non existent track piece
         
-        assertTrue(NullTrackPiece.getInstance() == trackTileMap.getTrackPiece(new Point(0, 5)));
+        assertTrue(NullTrackPiece.getInstance() == world.getTrackMap().getTrackPiece(new Point(0, 5)));
         assertRemoveTrackFails(new Point(0, 5), east);
         
         
@@ -135,26 +137,26 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
     }
     
     private void assertBuildTrackFails(Point p, OneTileMoveVector v, TrackRule rule){
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove( p,  v,  rule, trackTileMap);
-        MoveStatus status=move.doMove(trackTileMap);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove( p,  v,  rule, world);
+        MoveStatus status=move.doMove(world);
         assertEquals(false, status.isOk());
       
     }
     
     private void assertBuildTrackSuceeds(Point p, OneTileMoveVector v, TrackRule rule){
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove( p,  v,  rule, trackTileMap);
-        MoveStatus status=move.doMove(trackTileMap);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove( p,  v,  rule, world);
+        MoveStatus status=move.doMove(world);
         assertEquals(true, status.isOk());
     }
     private void assertRemoveTrackFails(Point p, OneTileMoveVector v){
-         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove( p,  v, trackTileMap);
-        MoveStatus status=move.doMove(trackTileMap);
+         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove( p,  v, world);
+        MoveStatus status=move.doMove(world);
         assertEquals(false, status.isOk());
     }
     
     private void assertRemoveTrackSuceeds(Point p, OneTileMoveVector v){
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove( p,  v, trackTileMap);
-        MoveStatus status=move.doMove(trackTileMap);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove( p,  v, world);
+        MoveStatus status=move.doMove(world);
         assertEquals(true, status.isOk());
     }
     
