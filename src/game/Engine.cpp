@@ -14,10 +14,7 @@ Engine::Engine(Player* _player, int w, int h)
   isClient = false;
   isServer = false;
 
-  /* Serializer Was Created...right .. Static member of Connection.
-     so we just have to grab it... */
-  Connection con;
-  serializer = con.getSerializer();
+  serializer = new Serializer();
   
   Init(_player, worldMap);
 
@@ -33,11 +30,9 @@ Engine::Engine(Player* _player, int w, int h, int port)
   worldMap = MapGenerator().generateWorld(w, h);
 
 
-  
+  serializer = new Serializer();
   server=new Server(port);
 
-  /* OH WELL ... HARD DECISION */
-  serializer = server->getSerializer();
   /* server=_server; */
   isSingle = false;
   isClient = false;
@@ -56,11 +51,9 @@ Engine::Engine(Player* _player, int w, int h, char *server, int port)
   
   worldMap = NULL;
 
+  serializer=new Serializer();
   client=new Client();
-
-  /* OH WELL ... HARD DECISION */
-  serializer = client->getSerializer();
-
+  
   client->open(server,port);
   FreeRailsLog("CLIENT GAME INIT ENGINE: %i",client->getState());
   client->joinGame(_player, serializer);

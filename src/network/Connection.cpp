@@ -6,8 +6,6 @@
 #include "Connection.h"
 
 
-Serializer *Connection::serializer=new Serializer();
-
 Connection::Connection() {
 
   error=NONE;
