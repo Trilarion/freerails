@@ -1,3 +1,5 @@
+Thu Sep 26 23:10:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o update for autoconf 2.54 and automake 1.7
 Thu Sep 24 12:30:00 2002  Alexander Opitz <opi@le-bit.de>:
 o using TypeID in messages from paraGUI client
 Mon Sep 23 20:15:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
@@ -14,7 +16,7 @@ o modify src/main/makefile.am to work well with ./configure --enable-final
 Wed Sep 18 01:15:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add GameDataSelectDialog (for write name, select width & heigh of WorldMap)
 o change params of initServerGame and initClientGame
-Thu Sep 17 21:10:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+Tue Sep 17 21:10:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o update of scrolling in qt-wrapper
 Tue Sep 17 01:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o start replacing PG_WidgetList with a real MapView in paragui

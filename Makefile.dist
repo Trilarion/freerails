@@ -11,7 +11,7 @@ dist:
 	@echo "Creating makefiles"
 	@automake --foreign --include-deps
 	@echo "*** Postprocessing Makefile templates"
-	@perl admin/am_edit
+#	@perl admin/am_edit
 	@echo "Creating configure"
 	autoconf
 	LIST=`find ./po -name "*.po"`; \
