@@ -13,6 +13,7 @@ import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.TransactionAggregator;
+import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
 
 
@@ -123,7 +124,7 @@ public class BalanceSheetGenerator {
 
             if (rightType) {
                 aggregator.setType(i);
-                amount += trackValue * aggregator.calulateQuantity();
+                amount += trackValue * aggregator.calulateQuantity() / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE;
             }
         }
 

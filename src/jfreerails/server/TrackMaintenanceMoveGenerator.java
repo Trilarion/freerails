@@ -14,6 +14,7 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
+import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
 
 
@@ -57,7 +58,7 @@ public class TrackMaintenanceMoveGenerator {
 
             if (rightType) {
                 aggregator.setType(i);
-                amount += maintenanceCost * aggregator.calulateQuantity();
+                amount += maintenanceCost * aggregator.calulateQuantity() / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE;
             }
         }
 
