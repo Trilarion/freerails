@@ -62,8 +62,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(closeJButton, gridBagConstraints);
 
         showDetails.setText("Show details");
@@ -76,8 +76,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(showDetails, gridBagConstraints);
 
     }//GEN-END:initComponents

@@ -33,7 +33,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        newTrainScheduleJPanel1 = new jfreerails.client.view.NewTrainScheduleJPanel();
+        newTrainScheduleJPanel1 = new jfreerails.client.view.TrainScheduleJPanel();
         trainDetailsJPanel1 = new jfreerails.client.view.TrainDetailsJPanel();
         previousJButton = new javax.swing.JButton();
         nextJButton = new javax.swing.JButton();
@@ -175,7 +175,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeJButton;
-    private jfreerails.client.view.NewTrainScheduleJPanel newTrainScheduleJPanel1;
+    private jfreerails.client.view.TrainScheduleJPanel newTrainScheduleJPanel1;
     private javax.swing.JButton nextJButton;
     private javax.swing.JButton previousJButton;
     private jfreerails.client.view.TrainDetailsJPanel trainDetailsJPanel1;

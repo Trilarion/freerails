@@ -18,7 +18,7 @@ import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.ModelRoot;
-import jfreerails.client.view.NewTrainScheduleJPanel;
+import jfreerails.client.view.TrainScheduleJPanel;
 import jfreerails.client.view.SelectStationJPanel;
 import jfreerails.client.view.TrainDialogueJPanel;
 import jfreerails.client.view.TrainOrdersListModel;
@@ -345,7 +345,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     
     private void trainScheduleJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainScheduleJMenuItemActionPerformed
         // Add your handling code here:
-        NewTrainScheduleJPanel tsp = new NewTrainScheduleJPanel();
+        TrainScheduleJPanel tsp = new TrainScheduleJPanel();
         tsp.setup(w, vl, this);
         tsp.display(0);
         dialogueBoxController.showContent(tsp);

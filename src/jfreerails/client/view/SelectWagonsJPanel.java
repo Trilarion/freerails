@@ -79,8 +79,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         setLayout(new java.awt.GridBagLayout());
 
         setBackground(new java.awt.Color(0, 255, 51));
-        setMinimumSize(new java.awt.Dimension(640, 400));
         setPreferredSize(new java.awt.Dimension(620, 380));
+        setMinimumSize(new java.awt.Dimension(640, 400));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setMaximumSize(new java.awt.Dimension(100, 100));
