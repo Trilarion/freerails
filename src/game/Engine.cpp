@@ -9,15 +9,17 @@
 /* single player */
 Engine::Engine(Player* _player, int w, int h)
 {
-  worldMap = MapGenerator().generateWorld(w, h);
+  gameState = Initializing;
+  worldMap = new WorldMap(w, h);
+  serializer = new Serializer();
+
   isSingle = true;
   isClient = false;
   isServer = false;
-
-  serializer = new Serializer();
   
   Init(_player, worldMap);
 
+  MapGenerator().generateWorld(worldMap, controllerDispatcher);
   std::cerr << "engine(alone) inited" << std::endl;
 }
 
@@ -27,20 +29,18 @@ Engine::Engine(Player* _player, int w, int h, int port)
 {
   gameState = Initializing;
 
-  worldMap = MapGenerator().generateWorld(w, h);
-
-
+  worldMap = new WorldMap(w, h);
   serializer = new Serializer();
   server=new Server(port);
 
-  /* server=_server; */
   isSingle = false;
   isClient = false;
   isServer = true;
   
   Init(_player, worldMap);
   
-   std::cerr << "engine(Server) inited" << std::endl;
+  MapGenerator().generateWorld(worldMap, controllerDispatcher);
+  std::cerr << "engine(Server) inited" << std::endl;
 }
 
 
@@ -81,6 +81,8 @@ void Engine::Init(Player* _player, WorldMap* _worldMap)
   controllerDispatcher = new ControllerDispatcher();
   
   controllerDispatcher->addController(new PlayerController());
+
+  controllerDispatcher->addController(new CityController(_worldMap));
 
   controllerDispatcher->addController(new TrackController(_worldMap));
   controllerDispatcher->addController(new StationController(_worldMap));

@@ -12,10 +12,11 @@
 #include "Base2DMapView.h"
 
 #include <paragui_types.h>
-#include <pgthemewidget.h>
-#include <pgrect.h>
 #include <pgimage.h>
+#include <pglabel.h>
+#include <pgrect.h>
 #include <pgscrollbar.h>
+#include <pgthemewidget.h>
 
 class GameMapView: public PG_ThemeWidget, Base2DMapView {
 

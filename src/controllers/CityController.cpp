@@ -3,12 +3,12 @@
 
 #include "CityController.h"
 
-CityController::CityController (): Controller(NULL, GameElement::idCity)
+CityController::CityController(WorldMap* _map): Controller(_map, GameElement::idCity)
 {
 
 }
 
-CityController::~CityController ()
+CityController::~CityController()
 {
 
 }

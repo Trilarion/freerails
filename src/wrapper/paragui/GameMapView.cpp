@@ -40,6 +40,8 @@ Base2DMapView(_guiEngine) {
   stationType=Station::Signal;
   mouseOldMapX=0;
   mouseOldMapY=0;
+  
+  new PG_Label(view, PG_Rect(10,10,100,20),"Try?");
 }
 
 GameMapView::~GameMapView() {
@@ -123,24 +125,46 @@ void GameMapView::drawMapPixmap(int mapX, int mapY) {
 /* 
   This are normaly no map type
   They should be a gameElement.
-*/    case MapField::village:
+*/
+    case MapField::smallvillage:
     {
       // What village?
-      tilesetPosX=0;
+      tilesetPosX=1;
+      tilesetPosY=7;
+      break;
+    }
+    case MapField::village:
+    {
+      // What village?
+      tilesetPosX=1;
       tilesetPosY=8;
       break;
     }
-    case MapField::city:
+    case MapField::smallcity:
     {
       // What city?
       tilesetPosX=2;
       tilesetPosY=7;
       break;
     }
+    case MapField::city:
+    {
+      // What city?
+      tilesetPosX=2;
+      tilesetPosY=8;
+      break;
+    }
+    case MapField::smallslum:
+    {
+      // What Slum?
+      tilesetPosX=3;
+      tilesetPosY=7;
+      break;
+    }
     case MapField::slum:
     {
       // What Slum?
-      tilesetPosX=2;
+      tilesetPosX=3;
       tilesetPosY=8;
       break;
     }

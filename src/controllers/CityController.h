@@ -8,12 +8,13 @@
 #include "GameElement.h"
 #include "Serializer.h"
 #include "City.h"
+#include "WorldMap.h"
 
 class CityController : public Controller {
 public:
 
   /** Constructor */
-  CityController();
+  CityController(WorldMap* _worldMap);
   /** Destructor */
   virtual ~CityController();
   

@@ -1,6 +1,12 @@
+Thu May 15 11:15:00 2003  Alexander Opitz <opi@le-bit.de>:
+o Controller: Add CityController
+o Map       : Let give me a full ControllerDispatcher, so that the generated
+              Tiles (like city) can also add to Controller.
+o ParaGUI   : Correct some positions of city images. Hope they are correct.
+
 Mon May 12 11:00:00 2003  Alexander Opitz <opi@le-bit.de>:
-o Map/Controllers/ParaGUI: Station is now is a own element on MapField.
-o ParaGUI: Panel.
+o Map/Controllers/ParaGUI: Station is now a own member element on MapField.
+o ParaGUI                : Panel.
 Sat May 10 02:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Elements   : Add first City Element.
 o Controllers: Add small CityController who do nothing yet.

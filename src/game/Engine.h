@@ -9,6 +9,7 @@
 
 #include "WorldMap.h"
 #include "Player.h"
+#include "CityController.h"
 #include "GameController.h"
 #include "TrackController.h"
 #include "StationController.h"

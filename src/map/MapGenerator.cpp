@@ -3,6 +3,7 @@
   */
 
 #include "MapGenerator.h"
+#include <iostream>
 
 MapGenerator::MapGenerator() {
 
@@ -11,11 +12,8 @@ MapGenerator::MapGenerator() {
 MapGenerator::~MapGenerator() {
 }
 
-WorldMap* MapGenerator::generateWorld(int width, int height) {
+void MapGenerator::generateWorld(WorldMap* map, ControllerDispatcher* disp) {
 
-  WorldMap* map;
-  map = new WorldMap(width, height);
-  
   generateHeight(map);
   generateOcean(map);
   generateRiver(map);
@@ -25,7 +23,7 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   generateJungle(map);
   generateBog(map);
   generateMountain(map);
-  generateCities(map);
+  generateCities(map, disp);
   generateFarm(map);
   generateResources(map);
   generateIndustrie(map);
@@ -33,8 +31,6 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   // some code for setting:
   // desert, jungle, ice, river, ocean, hills, mountains, ...
   // trees, citys/villages/slums, coal-mine, harbour, farm, ...
-  
-  return map;
 }
 
 void MapGenerator::generateHeight(WorldMap* /* worldMap */)
@@ -219,20 +215,30 @@ void MapGenerator::generateMountain(WorldMap* worldMap)
   }
 }
 
-void MapGenerator::generateCities(WorldMap* worldMap)
+void MapGenerator::generateCities(WorldMap* worldMap, ControllerDispatcher* disp)
 {
-  int x, y;
-  int i, ii;
-  int howmuch = worldMap->getWidth() * worldMap->getHeight() / 500;
-  for (i=0; i<howmuch; i++)
+  int x, y, z;
+  int howmuch = worldMap->getWidth() * worldMap->getHeight() / 100;
+  for (int i=0; i<howmuch; i++)
   {
     if (generateStartPoint(worldMap, &x, &y))
     {
-       worldMap->getMapField(x, y)->setType(MapField::village);
-       for (ii=0; ii<3; ii++)
-       {
-         generateFieldOfType(worldMap, x, y, MapField::village);
-       }
+      disp->getController(GameElement::idCity)->addGameElement(new City(x,y,"A"));
+      z=(int) (3.0*rand()/(RAND_MAX+1.0));
+      MapField::FieldType type;
+      switch(z)
+      {
+        case 0:
+          type=MapField::village;
+	  break;
+	case 1:
+          type=MapField::city;
+	  break;
+	case 2:
+          type=MapField::slum;
+	  break;
+      }
+      worldMap->getMapField(x,y)->setType(type);
     }
   }
 }
