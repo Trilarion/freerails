@@ -1,3 +1,5 @@
+Sat Sep 21 08:45:00 2002  Alexander Opitz <opi@le-bit.de>:
+o using a better scroll/map widget in paraGUI (needs not so much memory)
 Wed Sep 18 01:15:00 2002  Alexander Opitz <opi@le-bit.de>:
 o in GameDataSelectDialog let deside for Server/Client Game.
 o enter ip and port for ClientGame.
