@@ -33,8 +33,7 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
 		super(tileModel, rgbValues);
 		imageSplitter.setTransparencyToOPAQUE();
 		tileIcons = new java.awt.Image[16];
-		for (int i = 0; i < tileIcons.length; i++) {
-			int icon = (~i) & 15;
+		for (int i = 0; i < tileIcons.length; i++) {			
 			tileIcons[i] = imageSplitter.getTileFromSubGrid(15 - i, 0);
 		}
 	}
@@ -45,7 +44,7 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
 		TerrainType tileModel)
 		throws IOException {
 		super(tileModel, rgbValues);
-		this.tileIcons = new Image[8];
+		this.tileIcons = new Image[16];
 		for (int i = 0; i < this.tileIcons.length; i++) {
 			String fileName = generateRelativeFileName(i, 4);
 			this.tileIcons[i] = imageManager.getImage(fileName);
@@ -58,8 +57,8 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
 			iconNumber = iconNumber << 1;
 			iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
 		}
-		//return iconNumber;
-		return 0;
+		return iconNumber;
+		//return 0;
 	}
 
 	public void dumpImages(ImageManager imageManager) {

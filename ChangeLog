@@ -1,3 +1,5 @@
+03-May-2003 13:39:59 Luke
+	o Fixed river drawing bug.
 02-May-2003 00:19:53 Luke
 	o The terrain graphics now get loaded correctly although
 	there is a bug in the code that picks the right image

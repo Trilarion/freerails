@@ -85,9 +85,7 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 					bestPathF = successorF;
 					
 				}
-
 				
-
 				if (openList.containsKey(successor)
 					&& openList.get(successor) < successorF) {
 					//if a node with the same position as successor is in the OPEN list \
