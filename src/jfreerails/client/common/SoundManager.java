@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -25,7 +26,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *
  */
 public class SoundManager {
+    private static final Logger logger = Logger.getLogger(SoundManager.class.getName());
     Random r = new Random();
+    private static boolean enableSounds = true;
     private static final SoundManager instance = new SoundManager();
 
     private static class Sample {
@@ -98,20 +101,24 @@ public class SoundManager {
             Clip clip = (Clip)AudioSystem.getLine(sample.info);
             clip.open(format, sample.audio, 0, sample.size);
             clip.loop(loops);
+        } catch (LineUnavailableException e) {
+            logger.warning(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
+        SoundManager soundPlayer = getSoundManager();
+        soundPlayer.playSound("/jfreerails/client/sounds/cash.wav", 10);
+
         try {
-            SoundManager soundPlayer = getSoundManager();
-            soundPlayer.playSound("/jfreerails/client/sounds/cash.wav", 10);
             Thread.sleep(40);
-            soundPlayer.playSound("/jfreerails/client/sounds/cash.wav", 10);
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        soundPlayer.playSound("/jfreerails/client/sounds/cash.wav", 10);
     }
 
     public static SoundManager getSoundManager() {
