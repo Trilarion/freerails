@@ -3,12 +3,15 @@
  */
 package jfreerails.network;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Logger;
+
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.accounts.BondTransaction;
@@ -30,6 +33,9 @@ import jfreerails.world.top.World;
  */
 public class FreerailsGameServer implements ServerControlInterface,
     NewGameServer, Runnable {
+	
+	/** Used as a property name for property change events.*/
+	public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
     private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private final SavedGamesManager savedGamesManager;
@@ -38,6 +44,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     private HashMap username2password = new HashMap();
     private HashMap id2username = new HashMap();
     private ServerGameModel serverGameModel = new SimpleServerGameModel();
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     /* Contains the usernames of the players who are currently logged on.*/
     private HashSet currentlyLoggedOn = new HashSet();
@@ -199,6 +206,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     public synchronized void addConnection(Connection2Client connection) {
+    	String[] before = getPlayerNames();
         logger.fine("Adding connection..");
         logger.fine("Waiting for logon details..");
 
@@ -232,6 +240,8 @@ public class FreerailsGameServer implements ServerControlInterface,
 
                 /* Send to all clients. */
                 sendListOfConnectedPlayers2Clients();
+                String[] after = getPlayerNames();
+                propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
             } else {
                 connection.disconnect();
             }
@@ -297,6 +307,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     private void removeConnection(Integer id) throws IOException {
+    	String[] before = getPlayerNames();
         Connection2Client connection = (Connection2Client)acceptedConnections.get(id);
 
         /* Fix for bug 1047439        Shutting down remote client crashes server
@@ -308,7 +319,9 @@ public class FreerailsGameServer implements ServerControlInterface,
         }
 
         String userName = (String)players.get(id.intValue());
-        this.currentlyLoggedOn.remove(userName);
+        this.currentlyLoggedOn.remove(userName);       
+        String[] after = getPlayerNames();
+        propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
     }
 
     public synchronized int countOpenConnections() {
@@ -447,5 +460,13 @@ public class FreerailsGameServer implements ServerControlInterface,
 
     private World getWorld() {
         return serverGameModel.getWorld();
+    }
+    
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        propertyChangeSupport.addPropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 }

@@ -24,19 +24,19 @@
       <SubComponents>
         <Component class="javax.swing.JRadioButton" name="loadMapButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Load a saved game"/>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buttonGroup1"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Load a saved game"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="newMapButton">
           <Properties>
-            <Property name="selected" type="boolean" value="true"/>
-            <Property name="text" type="java.lang.String" value="Start a new map"/>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buttonGroup1"/>
             </Property>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Start a new map"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="newMapButtonStateChanged"/>

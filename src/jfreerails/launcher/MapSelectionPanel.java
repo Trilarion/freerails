@@ -109,13 +109,13 @@ class MapSelectionPanel extends javax.swing.JPanel {
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
 
-        loadMapButton.setText("Load a saved game");
         buttonGroup1.add(loadMapButton);
+        loadMapButton.setText("Load a saved game");
         jPanel2.add(loadMapButton);
 
+        buttonGroup1.add(newMapButton);
         newMapButton.setSelected(true);
         newMapButton.setText("Start a new map");
-        buttonGroup1.add(newMapButton);
         newMapButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 newMapButtonStateChanged(evt);
@@ -187,17 +187,17 @@ class MapSelectionPanel extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JList jList1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton loadMapButton;
-    private javax.swing.JRadioButton newMapButton;
-    private javax.swing.JTextField serverPort;
-    private javax.swing.JLabel serverPortErrorMessage;
+    javax.swing.ButtonGroup buttonGroup1;
+    javax.swing.JLabel jLabel3;
+    javax.swing.JList jList1;
+    javax.swing.JPanel jPanel1;
+    javax.swing.JPanel jPanel2;
+    javax.swing.JPanel jPanel3;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JRadioButton loadMapButton;
+    javax.swing.JRadioButton newMapButton;
+    javax.swing.JTextField serverPort;
+    javax.swing.JLabel serverPortErrorMessage;
     // End of variables declaration//GEN-END:variables
     
 }

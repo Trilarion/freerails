@@ -284,7 +284,8 @@ FreerailsProgressMonitor, LauncherInterface {
          */
         ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
         cp.server = server;
-        
+        server.addPropertyChangeListener(cp);
+        cp.updateListOfPlayers();
         return server;
     }
     
