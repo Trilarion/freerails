@@ -18,6 +18,11 @@ public:
 
 private:
 
+  void generateWood(WorldMap* worldMap);
+  void generateDessert(WorldMap* worldMap);
+  void generateJungle(WorldMap* worldMap);
+  void generateBog(WorldMap* worldMap);
+
 };
 
 #endif // __MAPGENERATOR_H__
