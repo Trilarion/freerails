@@ -1,3 +1,9 @@
+21 - Jun - 02 19 : 21 : 08 Luke Lindsay < lindsal49 @ hotmail.com > :
+	o Fullscreen mode
+	o GameLoop, jfreerails now uses active, rather than passive, rendering.
+	o Work on separating the model and view.
+	o Tilesets can be validated against rulesets - ViewLists.validate(Type t)  	
+	o FPS counter added.
 04-Mar-2002 21:57:23 Luke Lindsay <lindsal49@hotmail.com>:
 	o Rearrange dependancies in jfreerails.world...
 02-Mar-2002 19:02:48 Luke Lindsay <lindsal49@hotmail.com>:

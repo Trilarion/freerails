@@ -1,14 +1,8 @@
-Freerails Java - version 0.0.5 
+Freerails Java - version 0.0.6
 
 What's new:
-*Overview map
-*Scrolling UI: 
-	-mainmap: right click to center, right button drag
-	to scroll
-	-overview map: click to center the mainmap or drag
-	the rectangle to scroll it.
-*Lots of refactoring and changes to the architecture.	
-
+*	Full screen mode.
+*	FPS counter.
 
 Getting it, either:
 
@@ -28,8 +22,9 @@ http://java.sun.com/xml/download.html
 To compile and run:
 (1)	Go to the directory src
 (2)	To compile, type: javac jfreerails/RunFreerails.java
-(3)	To run, type: java jfreerails/RunFreerails
-	
+(3)	To run in   (i) windowed mode, type: java jfreerails/RunFreerails
+				(ii) fullscreen mode, type: java jfreerails/RunFreerails fullscreen
+				
 For more information, see:
 http://sourceforge.net/projects/freerails/
 or
