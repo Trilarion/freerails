@@ -4,8 +4,12 @@
 
 #include "GameWidget.h"
 
+GameWidget::GameWidget() {
+
+}
+
 GameWidget::GameWidget(GameWidget* parent, int x, int y, int w, int h) {
-  widget= new PG_Widget(parent->getWidget(),PG_Rect(x,y,w,h));
+    widget= new PG_Widget(parent->getWidget(),PG_Rect(x,y,w,h));
 }
 
 GameWidget::GameWidget(GameApplication* parent, int x, int y, int w, int h) {

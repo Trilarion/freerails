@@ -29,7 +29,12 @@ int main(int argc, char *argv[])
 
   Splash(&app);
   
-  app.askUser();    
+  GameDialog dialog(&app, 10,10,300,300, "Spielart wählen");
+
+  dialog.show();
+
+  printf("choose\n");
+
   app.run();
 
   return EXIT_SUCCESS;

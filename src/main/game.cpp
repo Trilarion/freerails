@@ -11,7 +11,3 @@ MyGameApplication::~MyGameApplication() {
 void MyGameApplication::initGame() {
 
 }
-
-void MyGameApplication::askUser() {
-
-}

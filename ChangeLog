@@ -1,3 +1,5 @@
+Fri Aug 13 04:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+o add GameDialog ground functions in paraGUI and Qt
 Fri Aug 10 15:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o add GameWidget ground functions in paraGUI and Qt
 Fri Aug 10 13:00:00 2001  Alexander Opitz <opi@sputnik.de>:

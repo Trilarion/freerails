@@ -15,6 +15,7 @@
 
 #include "GameApplication.h"
 #include "GameWidget.h"
+#include "GameDialog.h"
 
 class MyGameApplication : public GameApplication {
 
@@ -26,7 +27,6 @@ public:
     ~MyGameApplication();
     
     void initGame();
-    void askUser();
 
 };
 

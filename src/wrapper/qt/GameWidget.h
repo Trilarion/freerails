@@ -13,6 +13,7 @@ class GameWidget {
 
   public:
     /**  */
+    GameWidget();
     GameWidget(GameWidget* parent, int x, int y, int w, int h);
     GameWidget(GameApplication* parent, int x, int y, int w, int h);
     /**  */

@@ -4,6 +4,9 @@
 
 #include "GameWidget.h"
 
+GameWidget::GameWidget() {
+}
+
 GameWidget::GameWidget(GameWidget* parent, int x, int y, int w, int h) {
   widget= new QWidget(parent->getWidget());
   widget->setGeometry(x,y,w,h);

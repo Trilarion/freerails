@@ -5,15 +5,18 @@
 #ifndef __GAMEWIDGET_H__
 #define __GAMEWIDGET_H__
 
-#include <pgwidget.h>
-#include <pgrect.h>
+#include "BaseWidget.h"
 
 #include "GameApplication.h"
 
-class GameWidget {
+#include <pgwidget.h>
+#include <pgrect.h>
+
+class GameWidget : public BaseWidget {
 
   public:
     /**  */
+    GameWidget();
     GameWidget(GameWidget* parent, int x, int y, int w, int h);
     GameWidget(GameApplication* parent, int x, int y, int w, int h);
     /**  */

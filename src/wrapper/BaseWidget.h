@@ -13,8 +13,8 @@ public:
     /**  */
     ~BaseWidget();
 
-    virtual void show();
-    virtual void hide();
+    void show();
+    void hide();
 
 };
 
