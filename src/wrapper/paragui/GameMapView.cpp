@@ -236,8 +236,102 @@ void GameMapView::regenerateTile(int x, int y)
   }
 }
 
-void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
+void GameMapView::showTrack(int x, int y, unsigned int dir) {
+# warning Clean up code
+  int tilesetX=(dir-1)*2*30+15;
+  int tilesetY=0*30+15;
+  SDL_Rect rectSRC, rectDST;
+  rectSRC.w=30;
+  rectSRC.h=30;
+  rectSRC.x=tilesetX;
+  rectSRC.y=tilesetY;
+  rectDST.x=x*30-viewPos.x;
+  rectDST.y=y*30-viewPos.y;
+  rectDST.w=rectSRC.w;
+  rectDST.h=rectSRC.h;
+  SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
+  switch (dir)
+  {
+    case 1:
+     return;
+    break;
+    case 2:
+      x++;
+      tilesetX=3*30+15;
+      tilesetY=2*30+15;
+    break;
+    case 3:
+     return;
+    break;
+    case 4:
+      x++;
+      tilesetX=7*30+15;
+      tilesetY=0*30+15;
+    break;
+    case 5:
+     return;
+    break;
+    case 6:
+      x--;
+      tilesetX=2*30+15;
+      tilesetY=1*30+15;
+    break;
+    case 7:
+     return;
+    break;
+    case 8:
+      x--;
+      tilesetX=5*30+15;
+      tilesetY=2*30+15;
+    break;
+  }
+  rectSRC.w=30;
+  rectSRC.h=30;
+  rectSRC.x=tilesetX;
+  rectSRC.y=tilesetY;
+  rectDST.x=x*30-viewPos.x;
+  rectDST.y=y*30-viewPos.y;
+  rectDST.w=rectSRC.w;
+  rectDST.h=rectSRC.h;
+  SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
+}
 
+void GameMapView::showStation(int x, int y) {
+# warning Clean up code
+  int tilesetX, tilesetY;
+  MapField* field = guiEngine->getWorldMap()->getMapField(x,y);
+  if (field == NULL) return;
+  Track* track = field->getTrack();
+  if (track==NULL) return;
+  unsigned int connect = track->getConnect();
+  
+  switch (connect)
+  {
+    case TrackGoNorth:
+    case TrackGoSouth:
+    case TrackGoNorth | TrackGoSouth:
+      tilesetX=18*30+15;
+      tilesetY=26*30+15;
+    break;
+    case TrackGoNorthEast:
+    case TrackGoSouthWest:
+    case TrackGoNorthEast | TrackGoSouthWest:
+      tilesetX=20*30+15;
+      tilesetY=26*30+15;
+    break;
+    case TrackGoEast:
+    case TrackGoWest:
+    case TrackGoEast | TrackGoWest:
+      tilesetX=22*30+15;
+      tilesetY=26*30+15;
+    break;
+    case TrackGoNorthWest:
+    case TrackGoSouthEast:
+    case TrackGoNorthWest | TrackGoSouthEast:
+      tilesetX=24*30+15;
+      tilesetY=26*30+15;
+    break;
+  }
   SDL_Rect rectSRC, rectDST;
   rectSRC.w=30;
   rectSRC.h=30;
@@ -270,14 +364,14 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   
     case buildStation:
       if(guiEngine->testBuildStation(mapx,mapy)){
-	showTrack(mapx,mapy,20*30+15,26*30+15);
+	showStation(mapx, mapy);
       }
       break;
     case buildTrack:
       if(guiEngine->testBuildTrack(mapx,mapy,dir)){
-        showTrack(mapx,mapy,(dir-1)*2*30+15,0*30+15);
+        showTrack(mapx,mapy,dir);
 	guiEngine->getOtherConnectionSide(&mapx,&mapy,&dir);
-	showTrack(mapx,mapy,(dir-1)*2*30+15,0*30+15);
+	showTrack(mapx,mapy,dir);
       }
      
       break;

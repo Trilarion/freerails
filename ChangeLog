@@ -1,3 +1,8 @@
+Wed Apr 23 03:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o cleanup in StationController (stationDoBuild not ready yet)
+o show TrackConners in ParaGUI Client
+o show Station on Buildable points with buildable direction in ParaGUI Client
+o ParaGUI GamePanel setMouseType bugfix
 Tue Apr 22 13:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Some cleanup in Station and StationController
 o But Stations can not test&build to map

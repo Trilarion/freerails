@@ -52,7 +52,8 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     void getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y);
     
     void regenerateTile(int x, int y); // x and y are the position of the tile on which the mouse is now.
-    void showTrack(int x, int y,int tracktileX, int tracktileY);
+    void showTrack(int x, int y, unsigned int dir);
+    void showStation(int x, int y);
 
     void eventMouseLeave();
     bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);

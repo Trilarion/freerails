@@ -23,7 +23,7 @@ PARAGUI_CALLBACK(GamePanel::clickTrackButton) {
 
 PARAGUI_CALLBACK(GamePanel::clickStationButton) {
 
-  if (trackButton->GetPressed()) {
+  if (stationButton->GetPressed()) {
     releaseAllButtons(stationButton);
     mapView->setMouseType(GameMapView::buildStation);
     Update();
