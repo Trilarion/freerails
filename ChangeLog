@@ -1,3 +1,10 @@
+Fri Aug 31 22:30:00 2001  Rivo Laks <rivolaks@hot.ee>:
+o Added automake/autoconf support
+o Added elements Train and TrainInfo
+o Fixed circular dependency with Player and GameElement
+o Updated i18n.h to work with configure
+o Changed lots of things in Qt wrapper to work with configure
+o Added GameModeSelector
 Fri Aug 31 13:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o change wagon to Wagon and make it inherited from GameElement
 Thu Aug 30 21:30:00 2001  Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>
