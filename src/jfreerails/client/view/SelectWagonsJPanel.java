@@ -77,8 +77,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         setLayout(new java.awt.GridBagLayout());
 
         setBackground(new java.awt.Color(0, 255, 51));
-        setPreferredSize(new java.awt.Dimension(620, 380));
         setMinimumSize(new java.awt.Dimension(640, 400));
+        setPreferredSize(new java.awt.Dimension(620, 380));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setMaximumSize(new java.awt.Dimension(100, 100));
@@ -139,11 +139,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 70;
-        gridBagConstraints.ipady = -720;
+        gridBagConstraints.insets = new java.awt.Insets(10, 400, 100, 10);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.insets = new java.awt.Insets(40, 430, 0, 0);
         add(jPanel1, gridBagConstraints);
 
     }//GEN-END:initComponents
@@ -186,7 +183,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         //paint the background
         g.drawImage(this.stationView, 0, 0, null);
         
-        int x = 0;
+        int x = this.getWidth();
         
         int y = 330;
         
@@ -199,15 +196,16 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
             Integer type = (Integer)wagons.get(i);
             Image image = modelRoot.getViewLists().getTrainImages().getSideOnWagonImage(type.intValue());
             int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
-            
+            x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
-            x += scaledWidth;
+          
         }
         
         //paint the engine
         if(-1 != this.engineType){ //If an engine is selected.
             Image image = modelRoot.getViewLists().getTrainImages().getSideOnEngineImage(this.engineType);
             int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);
+            x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
         }
         
