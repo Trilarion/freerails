@@ -1,5 +1,11 @@
 /*
  * $Id$
+ *
+ * Need's rewrite, cause so we need to much memory!
+ * I've choosen a WidgetList cause of the scroll functionality, but we should implement
+ * our own Widget with 2 PG_ScrollBar's.
+ * This reduce Memory usage (at the moment 53MByte by 100x100 GameWorld)
+ *
  */
 
 #include "GameMapView.h"
@@ -9,40 +15,43 @@
 
 GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, WorldMap* _worldMap):
 PG_GradientWidget(parent->getWidget(), PG_Rect(x,y,w,h), "GradientWidget") {
+
+  worldMap=_worldMap;
+  WidgetList = new PG_WidgetList(this, PG_Rect(0,0,w,h));
+  WidgetList->EnableScrollBar(true, PG_SB_VERTICAL);
+  WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
   PG_Point p;
   SetBackgroundBlend(0);
-  worldMap=_worldMap;
   sdlimage=IMG_Load("data/graphics/tiles.png");
-  imageField.resize(worldMap->getWidth()*worldMap->getHeight());
+  
+  SDL_Surface* imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,worldMap->getWidth()*30,worldMap->getHeight()*30,32,0,0,0,0);
   for (int y=0;y<worldMap->getHeight();y++)
   {
     for (int x=0;x<worldMap->getWidth();x++)
     {
-      p.x=(x*30)+1;
-      p.y=(y*30)+1;
-      SDL_Surface* imageSurface=getMapImage(x,y);
-      imageField[x+(y*worldMap->getWidth())]=new PG_Image(this, p, imageSurface,"GradientWidget");
+      getMapImage(imageSurface,x,y);
     }
   }
+
+  p.x=0;
+  p.y=0;
+  view=new PG_Image(this, p, imageSurface);
+  WidgetList->AddWidget(view);
 }
 
 GameMapView::~GameMapView() {
 
   cerr << "Blob" << endl;
-  for (int y=0;y<worldMap->getHeight();y++)
-  {
-    for (int x=0;x<worldMap->getWidth();x++)
-    {
-      delete imageField[x+(y*worldMap->getWidth())];
-    }
-  }
+  delete view;
+  cerr << "Blab" << endl;
+  delete WidgetList;
+  cerr << "Blib" << endl;
   delete sdlimage;
   cerr << "Blub" << endl;
 
 }
 
-SDL_Surface* GameMapView::getMapImage(int x, int y) {
-  SDL_Surface* surface=SDL_CreateRGBSurface(SDL_SWSURFACE,32,32,32,0,0,0,0);
+void GameMapView::getMapImage(SDL_Surface* surface, int x, int y) {
   SDL_Rect rectSRC;
   rectSRC.w=30;
   rectSRC.h=30;
@@ -126,12 +135,11 @@ SDL_Surface* GameMapView::getMapImage(int x, int y) {
     }
   }
   SDL_Rect rectDST;
-  rectDST.x=0;
-  rectDST.y=0;
+  rectDST.x=x*30;
+  rectDST.y=y*30;
   rectDST.w=rectSRC.w;
   rectDST.h=rectSRC.h;
   SDL_BlitSurface(sdlimage, &rectSRC, surface, &rectDST);
-  return surface;
 }
 
 int GameMapView::getImagePos(int x, int y, MapField::FieldType type)

@@ -13,6 +13,7 @@
 #include <pggradientwidget.h>
 #include <pgrect.h>
 #include <pgimage.h>
+#include <pgwidgetlist.h>
 
 class GameMapView: public PG_GradientWidget {
 
@@ -24,11 +25,12 @@ class GameMapView: public PG_GradientWidget {
 
   private:
     WorldMap* worldMap;
-    std::vector<PG_Image *> imageField;
     
     SDL_Surface* sdlimage;
+    PG_WidgetList* WidgetList;
+    PG_Image* view;
     
-    SDL_Surface* getMapImage(int x, int y);
+    void getMapImage(SDL_Surface* surface,int x, int y);
     int getImagePos(int x, int y, MapField::FieldType type);
     int getRiverImagePos(int x, int y);
     int get3DImagePos(int x, int y, MapField::FieldType type);
