@@ -1,6 +1,6 @@
 SUBDIRS = $(WRAPPER)
 
-INCLUDES = 
+INCLUDES = -I$(top_srcdir)/src/map -I$(top_srcdir)/src/elements -I$(top_srcdir)/src/controllers
 
 noinst_LIBRARIES = libwrapperbase.a
 
