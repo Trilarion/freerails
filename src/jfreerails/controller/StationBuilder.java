@@ -77,7 +77,8 @@ public class StationBuilder {
 
             FreerailsPrincipal principal = executor.getPrincipal();
             int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
-            TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner);
+            TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
+                    trackRule, owner);
             ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,
                     after, p);
 

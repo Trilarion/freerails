@@ -145,7 +145,9 @@ final public class TrackMoveProducer {
         TrackPiece before = w.getTile(point.x, point.y);
         FreerailsPrincipal principal = executor.getPrincipal();
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
-        TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule,owner);
+        TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
+                trackRule, owner);
+
         /* We don't want to 'upgrade' a station to track. See bug 874416. */
         if (before.getTrackRule().isStation()) {
             return MoveStatus.moveFailed("No need to upgrade track at station.");

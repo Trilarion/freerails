@@ -81,8 +81,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(),
                         direction);
-                newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner);
-                
+                newTrackPiece = new TrackPieceImpl(trackConfiguration,
+                        oldTrackPiece.getTrackRule(), owner);
             } else {
                 newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction,
                         trackRule, owner);
@@ -113,7 +113,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                 if (trackConfiguration != TrackConfiguration.getFlatInstance(
                             "000010000")) {
                     int owner = getOwner(principal, w);
-                    newTrackPiece =  new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner);                    
+                    newTrackPiece = new TrackPieceImpl(trackConfiguration,
+                            oldTrackPiece.getTrackRule(), owner);
                 } else {
                     newTrackPiece = NullTrackPiece.getInstance();
                 }

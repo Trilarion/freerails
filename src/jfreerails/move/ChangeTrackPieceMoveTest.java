@@ -60,7 +60,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         oldTrackPiece = getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
-        
+
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
