@@ -12,6 +12,7 @@ import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
+import jfreerails.move.PreMoveException;
 import jfreerails.move.RemoveTrainMove;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.cargo.ImmutableCargoBundle;
@@ -79,7 +80,7 @@ public class TrainBuilder implements ServerAutomaton {
 
             try {
                 trainMover.update(deltaDistance, moveReceiver);
-            } catch (IllegalStateException e) {
+            } catch (PreMoveException e) {
                 //Thrown when track under train is removed.
                 // (1) Remove the train mover..
                 i.remove();

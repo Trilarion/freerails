@@ -59,8 +59,7 @@ public class FlatTrackExplorerTest extends TestCase {
     public void testGetFirstVectorToTry() {
         setUp();
 
-        PositionOnTrack p = new PositionOnTrack(10, 10,
-                OneTileMoveVector.SOUTH_WEST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.SOUTH_WEST);
         FlatTrackExplorer fte = new FlatTrackExplorer(world, p);
         OneTileMoveVector v = fte.getFirstVectorToTry();
         assertEquals(OneTileMoveVector.EAST, v);
@@ -74,25 +73,24 @@ public class FlatTrackExplorerTest extends TestCase {
 
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = new PositionOnTrack(10, 10,
-                OneTileMoveVector.SOUTH_WEST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.SOUTH_WEST);
         fte = new FlatTrackExplorer(world, p);
 
         //There should be 3 branches.
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
         p.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(OneTileMoveVector.EAST, p.getDirection());
+        assertEquals(OneTileMoveVector.EAST, p.cameFrom());
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
 
         p.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(OneTileMoveVector.WEST, p.getDirection());
+        assertEquals(OneTileMoveVector.WEST, p.cameFrom());
 
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
         p.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(OneTileMoveVector.NORTH_EAST, p.getDirection());
+        assertEquals(OneTileMoveVector.NORTH_EAST, p.cameFrom());
         assertTrue(!fte.hasNextEdge());
     }
 
@@ -104,7 +102,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = new PositionOnTrack(10, 10, OneTileMoveVector.EAST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.EAST);
         fte = new FlatTrackExplorer(world, p);
 
         PositionOnTrack pos = new PositionOnTrack(fte.getPosition());
@@ -113,7 +111,7 @@ public class FlatTrackExplorerTest extends TestCase {
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
         pos.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(OneTileMoveVector.NORTH_EAST, pos.getDirection());
+        assertEquals(OneTileMoveVector.NORTH_EAST, pos.cameFrom());
         assertEquals(11, pos.getX());
         assertEquals(9, pos.getY());
 
@@ -128,7 +126,7 @@ public class FlatTrackExplorerTest extends TestCase {
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
         assertEquals(OneTileMoveVector.SOUTH_WEST,
-            fte.currentBranch.getDirection());
+            fte.currentBranch.cameFrom());
         assertTrue(!fte.hasNextEdge());
         fte.moveForward();
         pos.setValuesFromInt(fte.getPosition());
@@ -140,7 +138,7 @@ public class FlatTrackExplorerTest extends TestCase {
         setUp();
 
         FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-                new PositionOnTrack(10, 10, OneTileMoveVector.EAST));
+                PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.EAST));
         assertTrue(explorer.hasNextEdge());
     }
 
@@ -160,7 +158,7 @@ public class FlatTrackExplorerTest extends TestCase {
         HashSet directions2 = new HashSet();
 
         for (int i = 0; i < positions.length; i++) {
-            directions2.add(positions[i].getDirection());
+            directions2.add(positions[i].cameFrom());
         }
 
         assertEquals(directions, directions2);

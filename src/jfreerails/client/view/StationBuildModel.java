@@ -39,7 +39,7 @@ public class StationBuildModel {
     /*
      * 100 010 001 = 0x111
      */
-    private static final int trackTemplate = TrackConfiguration.getFlatInstance(0x111)
+    private static final int trackTemplate = TrackConfiguration.from9bitTemplate(0x111)
                                                                .get9bitTemplate();
 
     /**
@@ -158,7 +158,7 @@ public class StationBuildModel {
     public boolean canBuildStationHere() {
         Point p = (Point)stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
 
-        return stationBuilder.canBuiltStationHere(p);
+        return stationBuilder.canBuildStationHere(p);
     }
 
     public Action getStationCancelAction() {

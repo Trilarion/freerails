@@ -12,7 +12,7 @@ package jfreerails.controller;
  */
 public interface IncrementalPathFinder {
     public static final int PATH_NOT_FOUND = Integer.MIN_VALUE;
-    public static final int PATH_FOUND = Integer.MIN_VALUE + 1;
+    public final int PATH_FOUND = Integer.MIN_VALUE + 1;
     public static final int SEARCH_PAUSED = Integer.MIN_VALUE + 2;
     public static final int SEARCH_NOT_STARTED = Integer.MIN_VALUE + 3;
 

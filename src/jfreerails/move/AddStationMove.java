@@ -60,12 +60,11 @@ public class AddStationMove extends CompositeMove {
         return new AddStationMove(new Move[] {upgradeTrackMove});
     }
 
-    protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
+    protected static MoveStatus check4overlap(World w, ChangeTrackPieceMove upgradeTrackMove) {
         /* Fix for 915945 (Stations should not overlap)
          * Check that there is not another station whose radius overlaps with
          * the one we are building.
-         */
-        ChangeTrackPieceMove upgradeTrackMove = (ChangeTrackPieceMove)getMove(0);
+         */        
         TrackRule thisStationType = upgradeTrackMove.getNewTrackPiece()
                                                     .getTrackRule();
         assert thisStationType.isStation();

@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
@@ -31,6 +32,8 @@ import jfreerails.world.train.TrainOrdersModel;
  * @author  Luke Lindsay
  */
 public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {
+	
+	private static final Logger logger = Logger.getLogger(TrainScheduleJPanel.class.getName());
     
     private int trainNumber = -1;
     
@@ -292,14 +295,22 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     
     private void priorityOrdersJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priorityOrdersJButtonActionPerformed
         MutableSchedule s = getSchedule();
-        s.setPriorityOrders(new TrainOrdersModel(0, null, false, false));
-        showSelectStation(s, Schedule.PRIORITY_ORDERS);
+        try{
+        	s.setPriorityOrders(new TrainOrdersModel(getFirstStationID(), null, false, false));//TODO fix bug
+        	showSelectStation(s, Schedule.PRIORITY_ORDERS);
+        }catch (NoSuchElementException e){
+        	logger.warning("No stations exist so can't add station to schedule!");
+        }
     }//GEN-LAST:event_priorityOrdersJButtonActionPerformed
     
     private void addStationJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStationJButtonActionPerformed
         MutableSchedule s = getSchedule();
-        int newOrderNumber = s.addOrder(new TrainOrdersModel(0, null, false, false));
-        showSelectStation(s, newOrderNumber);
+        try{
+        	int newOrderNumber = s.addOrder(new TrainOrdersModel(getFirstStationID(), null, false, false)); //TODO fix bug
+        	showSelectStation(s, newOrderNumber);
+        }catch (NoSuchElementException e){
+        	logger.warning("No stations exist so can't add station to schedule!");
+        }
     }//GEN-LAST:event_addStationJButtonActionPerformed
     
     private void removeStationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeStationJMenuItemActionPerformed
@@ -396,6 +407,19 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         ImmutableSchedule immutableSchedule = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), principal);
         return new MutableSchedule(immutableSchedule);
+    }
+    
+    /** Since stations can be removed, we should not assume that station 0 exists: this method
+     * returns the id of the first station that exists.
+     * 
+     */
+    private int getFirstStationID(){
+    	 NonNullElements stations = new NonNullElements(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
+    	 if(stations.next()){
+    	 	return stations.getIndex();
+    	 }else{
+    	 	throw new NoSuchElementException();
+    	 }
     }
     
     private void setupWagonsPopup() {

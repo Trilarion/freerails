@@ -12,30 +12,10 @@ import jfreerails.world.common.Money;
  */
 final public class EngineType implements FreerailsSerializable {
     private final String engineTypeName;
-    private final int powerAtDrawbar;
-    private final Money price;
     private final Money maintenance;
     private final int maxSpeed; //speed in mph
-
-    public Money getMaintenance() {
-        return maintenance;
-    }
-
-    public String getEngineTypeName() {
-        return engineTypeName;
-    }
-
-    public int getPowerAtDrawbar() {
-        return powerAtDrawbar;
-    }
-
-    public Money getPrice() {
-        return price;
-    }
-
-    public int getMaxSpeed() {
-        return maxSpeed;
-    }
+    private final int powerAtDrawbar;
+    private final Money price;
 
     public EngineType(String name, int power, Money m, int speed) {
         engineTypeName = name;
@@ -52,4 +32,53 @@ final public class EngineType implements FreerailsSerializable {
         maxSpeed = speed;
         maintenance = maint;
     }
+
+
+	public boolean equals(Object obj) {		
+		if (!(obj instanceof EngineType)) return false;
+		EngineType other = (EngineType)obj;
+		return engineTypeName.equals(other.engineTypeName)
+		
+	   && powerAtDrawbar == other.powerAtDrawbar
+		&&  price.equals(other.price)
+		&&  maintenance.equals(other.maintenance)
+		&& maxSpeed == other.maxSpeed;
+		
+	}
+
+    public String getEngineTypeName() {
+        return engineTypeName;
+    }
+    
+    public Money getMaintenance() {
+        return maintenance;
+    }
+
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public int getPowerAtDrawbar() {
+        return powerAtDrawbar;
+    }
+
+    public Money getPrice() {
+        return price;
+    }
+	
+	public int hashCode() {
+		
+	        int result;
+	        result = powerAtDrawbar;
+	        result = 29 * result + engineTypeName.hashCode();
+	        result = 29 * result + price.hashCode();
+	        result = 29 * result + maintenance.hashCode();
+	        result = 29 * result + maxSpeed;
+	        return result;
+	   
+	}
+	
+	public String toString() {		
+		return engineTypeName;
+	}
 }

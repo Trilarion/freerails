@@ -316,16 +316,18 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
     }
     
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-        reactToUpdate(key, index, false);
-        
+    	if(modelRoot.getPrincipal().equals(principal))
+    		reactToUpdate(key, index, false);    	
     }
     
     public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
-        reactToUpdate(key, index, true);
+    	if(modelRoot.getPrincipal().equals(principal))
+    		reactToUpdate(key, index, true);
     }
     
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-        reactToUpdate(key, index, false);
+    	if(modelRoot.getPrincipal().equals(principal))
+    		reactToUpdate(key, index, false);
     }
     
     void removeCloseButton(){

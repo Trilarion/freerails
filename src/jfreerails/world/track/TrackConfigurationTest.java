@@ -19,9 +19,6 @@ import junit.framework.TestSuite;
  * @author lindsal
  */
 public class TrackConfigurationTest extends TestCase {
-    public TrackConfigurationTest(java.lang.String testName) {
-        super(testName);
-    }
 
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -32,6 +29,9 @@ public class TrackConfigurationTest extends TestCase {
 
         return suite;
     }
+    public TrackConfigurationTest(java.lang.String testName) {
+        super(testName);
+    }
 
     public void testAdd() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
@@ -39,6 +39,21 @@ public class TrackConfigurationTest extends TestCase {
                 OneTileMoveVector.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("100010000"), b);
         assertEquals(false, a == b);
+    }
+    
+    public void testGet8And9bitTemplate(){
+    	for(int i =0; i < 512; i++){
+    		TrackConfiguration tc = TrackConfiguration.from9bitTemplate(i);
+    		assertEquals(i, tc.get9bitTemplate());
+    	}
+    	for(OneTileMoveVector v : OneTileMoveVector.getList()){
+    		TrackConfiguration tc = TrackConfiguration.getFlatInstance(v);
+    		assertEquals(v.get9bitTemplate(), tc.get9bitTemplate());
+    		assertEquals(v.get8bitTemplate(), tc.get8bitTemplate());
+    		TrackConfiguration tc2 = TrackConfiguration.from9bitTemplate(v.get9bitTemplate());
+    		assertEquals(tc, tc2);
+    	}
+    	
     }
 
     public void testGetLength() {
@@ -69,7 +84,7 @@ public class TrackConfigurationTest extends TestCase {
         HashSet strings = new HashSet();
 
         for (int i = 0; i < 512; i++) {
-            TrackConfiguration test = TrackConfiguration.getFlatInstance(i);
+            TrackConfiguration test = TrackConfiguration.from9bitTemplate(i);
             String toString = test.toString();
 
             if (strings.contains(toString)) {

@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.imageio.ImageIO;
+
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.TrainImages;
 import jfreerails.world.cargo.CargoType;

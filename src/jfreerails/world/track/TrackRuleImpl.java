@@ -20,7 +20,6 @@ import jfreerails.world.terrain.TerrainType;
  *
  *@author     Luke Lindsay
  *    09 October 2001
- *@version    0.1
  */
 final public class TrackRuleImpl implements TrackRule {
     private final LegalTrackConfigurations legalConfigurations;
@@ -51,6 +50,21 @@ final public class TrackRuleImpl implements TrackRule {
         return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
     }
 
+	/** If the specified object is a track rule, comparison is by category then price.*/
+	public int compareTo(Object arg0) {
+		if(arg0 instanceof TrackRule){
+			TrackRule otherRule = (TrackRule)arg0;
+			int comp = otherRule.getCategory().compareTo(getCategory());
+			if(comp != 0){
+				return -comp;
+			}else{
+				long dPrice = this.properties.getPrice().getAmount() - otherRule.getPrice().getAmount() ;
+				return (int)dPrice;
+			}
+		}		
+		return 0;
+	}
+
     public boolean equals(Object o) {
         if (o instanceof TrackRuleImpl) {
             TrackRuleImpl trackRuleImpl = (TrackRuleImpl)o;
@@ -69,11 +83,15 @@ final public class TrackRuleImpl implements TrackRule {
         }
     }
 
+	public TrackRule.TrackCategories getCategory() {		
+		return properties.getCategory();
+	}
+
     public LegalTrackConfigurations getLegalConfigurations() {
         return legalConfigurations;
     }
 
-    public Iterator getLegalConfigurationsIterator() {
+    public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
         return legalConfigurations.getLegalConfigurationsIterator();
     }
 
@@ -127,7 +145,7 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     public boolean testTrackPieceLegality(int trackTemplateToTest) {
-        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(trackTemplateToTest);
+        TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(trackTemplateToTest);
 
         return legalConfigurations.trackConfigurationIsLegal(trackConfiguration);
     }
@@ -139,22 +157,9 @@ final public class TrackRuleImpl implements TrackRule {
         return legalConfigurations.trackConfigurationIsLegal(config);
     }
 
-	public TrackRule.TrackCategories getCategory() {		
-		return properties.getCategory();
-	}
-
-	/** If the specified object is a track rule, comparison is by category then price.*/
-	public int compareTo(Object arg0) {
-		if(arg0 instanceof TrackRule){
-			TrackRule otherRule = (TrackRule)arg0;
-			int comp = otherRule.getCategory().compareTo(getCategory());
-			if(comp != 0){
-				return -comp;
-			}else{
-				long dPrice = this.properties.getPrice().getAmount() - otherRule.getPrice().getAmount() ;
-				return (int)dPrice;
-			}
-		}		
-		return 0;
+	
+	public boolean isDouble() {
+	
+		return properties.isEnableDoubleTrack();
 	}
 }

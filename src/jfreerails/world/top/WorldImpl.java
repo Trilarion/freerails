@@ -369,4 +369,10 @@ public class WorldImpl implements World {
     public GameTime getTransactionTimeStamp(int i, FreerailsPrincipal p) {
         return getBankAccount(p).getTimeStamp(i);
     }
+
+	
+	public int getID(FreerailsPrincipal p) {
+		
+		return this.getPlayerIndex(p);
+	}
 }

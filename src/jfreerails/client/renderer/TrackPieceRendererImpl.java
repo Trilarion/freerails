@@ -42,7 +42,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
         for (int i = 0; i < 512; i++) {
             if (trackRule.testTrackPieceLegality(i)) {
-                String fileName = generateFilename(i);
+                String fileName = generateFilename(i, getTrackTypeName());
                 trackPieceIcons[i] = imageManager.getImage(fileName);
             }
         }
@@ -60,16 +60,16 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     public void dumpImages(ImageManager imageManager) {
         for (int i = 0; i < 512; i++) {
             if (trackPieceIcons[i] != null) {
-                String fileName = generateFilename(i);
+                String fileName = generateFilename(i, getTrackTypeName());
                 imageManager.setImage(fileName, trackPieceIcons[i]);
             }
         }
     }
 
-    private String generateFilename(int i) {
-        String relativeFileNameBase = "track" + File.separator +
-            this.getTrackTypeName();
-        int newTemplate = TrackConfiguration.getFlatInstance(i).get8bitTemplate();
+    public static String generateFilename(int i, String trackTypeName ) {        
+		String relativeFileNameBase = "track" + File.separator +
+            trackTypeName;
+        int newTemplate = TrackConfiguration.from9bitTemplate(i).get8bitTemplate();
         String fileName = relativeFileNameBase + "_" +
             BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8) +
             ".png";

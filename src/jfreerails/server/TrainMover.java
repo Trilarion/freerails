@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.logging.Logger;
 import jfreerails.controller.FreerailsServerSerializable;
 import jfreerails.move.ChangeTrainPositionMove;
+import jfreerails.move.PreMoveException;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -65,20 +66,21 @@ public class TrainMover implements FreerailsServerSerializable, ServerAutomaton 
         return principal;
     }
 
-    public void update(int distanceTravelled, MoveReceiver moveReceiver) {
+    public void update(int distanceTravelled, MoveReceiver moveReceiver) throws PreMoveException {
         if (walker.canStepForward()) {
             double distanceTravelledAsDouble = distanceTravelled;
             double distance = distanceTravelledAsDouble * getTrainSpeed();
             walker.stepForward(distance);
 
             checkTrainPosition();
-
+          
             ChangeTrainPositionMove m = ChangeTrainPositionMove.generate(w,
                     walker, trainNumber, principal);
 
             moveReceiver.processMove(m);
             head = m.newHead();
             checkTrainPosition();
+            
         }
     }
 

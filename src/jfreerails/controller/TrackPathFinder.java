@@ -30,6 +30,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class.getName());
     private SimpleAStarPathFinder m_pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld m_world;
+    private Point m_startPoint,  m_targetPoint;
 
     public TrackPathFinder(ReadOnlyWorld world) {
         m_world = world;
@@ -39,11 +40,11 @@ public class TrackPathFinder implements IncrementalPathFinder {
         m_pathFinder.abandonSearch();
     }
 
-    private List convertPath2Points(IntArray path) {
+    private List<Point> convertPath2Points(IntArray path) {
         int loopCount = 0;
 
         PositionOnTrack progress = new PositionOnTrack();
-        List proposedTrack = new ArrayList();
+        List<Point> proposedTrack = new ArrayList<Point>();
 
         Point p;
         Point lastp;
@@ -91,9 +92,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
             targetInts = new int[possibleDirections.size()];
 
             for (int i = 0; i < targetInts.length; i++) {
-                OneTileMoveVector direction = (OneTileMoveVector)possibleDirections.get(i);
-                PositionOnTrack targetPot = new PositionOnTrack(targetPoint.x,
-                        targetPoint.y, direction);
+                OneTileMoveVector direction = (OneTileMoveVector)possibleDirections.get(i);               
+                PositionOnTrack targetPot = PositionOnTrack.createFacing(targetPoint.x, targetPoint.y, direction);
                 targetInts[i] = targetPot.toInt();
             }
         } else {
@@ -101,8 +101,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
             targetInts = new int[8];
 
             for (int i = 0; i < 8; i++) {
-                PositionOnTrack targetPot = new PositionOnTrack(targetPoint.x,
-                        targetPoint.y, OneTileMoveVector.getInstance(i));
+                PositionOnTrack targetPot = PositionOnTrack.createComingFrom(targetPoint.x, targetPoint.y, OneTileMoveVector.getInstance(i));
                 targetInts[i] = targetPot.toInt();
             }
         }
@@ -126,10 +125,30 @@ public class TrackPathFinder implements IncrementalPathFinder {
         return m_pathFinder.getStatus();
     }
 
-    public List retrievePath() {
+    public List<Point> pathAsPoints() {
         IntArray path = m_pathFinder.retrievePath();
 
         return convertPath2Points(path);
+    }
+    
+    public OneTileMoveVector[] pathAsVectors() {
+        IntArray path = m_pathFinder.retrievePath();
+        int size = path.size();
+		OneTileMoveVector[] vectors = new  OneTileMoveVector[size];
+        PositionOnTrack progress = new PositionOnTrack();
+       
+        int x = m_startPoint.x;
+        int y = m_startPoint.y;
+        for (int i = 0; i < size; i++) {
+            progress.setValuesFromInt(path.get(i));
+            int x2 = progress.getX();
+			int y2 = progress.getY();
+			vectors[i] = OneTileMoveVector.getInstance(x2 - x, y2 -y);
+            x = x2;
+            y = y2;
+        }
+        return vectors;
+
     }
 
     public void search(long maxDuration) throws PathNotFoundException {
@@ -140,10 +159,10 @@ public class TrackPathFinder implements IncrementalPathFinder {
         BuildTrackStrategy bts) throws PathNotFoundException {
         logger.fine("Find track path from " + startPoint + " to " +
             targetPoint);
-
-        PositionOnTrack[] pots = FlatTrackExplorer.getPossiblePositions(m_world,
-                startPoint);
-
+        
+        m_startPoint = startPoint;
+        m_targetPoint = targetPoint;
+       
         int[] targetInts = findTargets(targetPoint);
         int[] startInts = findTargets(startPoint);
 

@@ -5,6 +5,7 @@
 package jfreerails.controller;
 
 import java.awt.Point;
+import java.util.NoSuchElementException;
 
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.AddStationMove;
@@ -75,16 +76,18 @@ public class AddStationPreMove implements PreMove {
         if (!oldTile.getTrackRule().isStation()) {
             //There isn't already a station here, we need to pick a name and add an entry
             //to the station list.
-            CalcNearestCity cNC = new CalcNearestCity(world, p.x, p.y);
-            cityName = cNC.findNearestCity();
-
-            VerifyStationName vSN = new VerifyStationName(world, cityName);
-            stationName = vSN.getName();
-
-            if (stationName == null) {
-                //there are no cities, this should never happen
-                stationName = "Central Station";
-            }
+        	CalcNearestCity cNC = new CalcNearestCity(world, p.x, p.y);
+        	try{
+        		cityName = cNC.findNearestCity();
+        		
+        		VerifyStationName vSN = new VerifyStationName(world, cityName);
+        		stationName = vSN.getName();
+        		
+        	}catch(NoSuchElementException e){
+        		//there are no cities, this should never happen during a proper game.  However
+        		//some of the unit tests create stations when there are no cities.
+        		stationName = "Central Station #"+world.size(KEY.STATIONS, principal);
+        	}
 
             //check the terrain to see if we can build a station on it...
             move = AddStationMove.generateMove(world, stationName, p,

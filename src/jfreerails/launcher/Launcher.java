@@ -99,19 +99,38 @@ LauncherInterface {
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setNextEnabled(true);
+                        currentPage = 1;
+                        cl.show(jPanel1, "1");
                         return;
                     }
                 }
                 startThread(server, client);
                 break;
             case LauncherPanel1.MODE_START_NETWORK_GAME:
-                setServerGameModel();
-                currentPage = 3;
-                String[] playerNames = server.getPlayerNames();
-                playerNames = playerNames.length == 0 ? new String[]{"No players are connected."}:playerNames;
-                cp.setListOfPlayers(playerNames);
-                cl.show(jPanel1, "3");
-                setNextEnabled(false);
+            	//LL: I don't think this code ever executes now that there is a connected players screen.
+            	try{
+	                setServerGameModel();
+	                currentPage = 3;
+	                String[] playerNames = server.getPlayerNames();
+	                playerNames = playerNames.length == 0 ? new String[]{"No players are connected."}:playerNames;
+	                cp.setListOfPlayers(playerNames);
+	                cl.show(jPanel1, "3");
+	                setNextEnabled(false);
+            	} catch (IOException e) {
+            		//We end up here if an Exception was thrown when loading a saved game. 
+                    setInfoText(e.getMessage(), Launcher.WARNING);
+                    recover = true;
+                } 
+                finally {
+                    if (recover) {
+                        cop.setControlsEnabled(true);
+                        prevButton.setEnabled(true);
+                        setNextEnabled(true);
+                        currentPage = 1;
+                        cl.show(jPanel1, "1");
+                        return;
+                    }
+                }
                 
                 break;
             case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
@@ -180,7 +199,7 @@ LauncherInterface {
         }//End of switch statement
     }
     
-    private void setServerGameModel() {
+    private void setServerGameModel() throws IOException {
         MapSelectionPanel msp2 = (MapSelectionPanel) wizardPages[1];
         if (msp2.getMapAction() == MapSelectionPanel.START_NEW_MAP) {
             server.newGame(msp2.getMapName());
@@ -545,18 +564,33 @@ LauncherInterface {
                     }
                     break;
                 case 3:
-                    /* Connection status screen */
-                    prevButton.setEnabled(false);
-                    setServerGameModel();
-                    if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {                        
-                        startThread(server, client);                        
-                        cl.show(jPanel1, "4");
-                    }else{
-                        /*Start a stand alone server.*/
-                        startThread(server);
-                        setVisible(false);
-                    }
-                    setNextEnabled(false);
+                	boolean recover = false;
+                	try{
+                		/* Connection status screen */
+                		prevButton.setEnabled(false);
+                		setServerGameModel();//TODO catch exception
+                		if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {                        
+                			startThread(server, client);                        
+                			cl.show(jPanel1, "4");
+                		}else{
+                			/*Start a stand alone server.*/
+                			startThread(server);
+                			setVisible(false);
+                		}
+                		setNextEnabled(false);
+                	} catch (IOException e) {
+                		setInfoText(e.getMessage(), Launcher.WARNING);
+                		recover = true;
+                	} finally {
+                		if (recover) {
+                			cop.setControlsEnabled(true);
+                			prevButton.setEnabled(true);
+                			setNextEnabled(true);
+                			currentPage = 1;
+                			cl.show(jPanel1, "1");
+                			return;
+                		}
+            }
                     break;
                 default:
                     throw new IllegalArgumentException(String.valueOf(currentPage));

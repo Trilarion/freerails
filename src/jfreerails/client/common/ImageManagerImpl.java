@@ -18,6 +18,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 
 
@@ -29,6 +31,7 @@ import javax.imageio.ImageIO;
  *
  */
 public class ImageManagerImpl implements ImageManager {
+	 private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
     private String pathToReadFrom;
     private String pathToWriteTo;
     private final HashMap imageHashMap = new HashMap();
@@ -117,6 +120,9 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     public void writeImage(String relativeFilename) throws IOException {
+    	
+    	if(null == pathToWriteTo) throw new NullPointerException("null == pathToWriteTo");
+    	
         relativeFilename = relativeFilename.replace(' ', '_');
 
         File f = new File(pathToWriteTo + File.separator + relativeFilename);
@@ -128,6 +134,7 @@ public class ImageManagerImpl implements ImageManager {
             path.mkdirs();
 
             ImageIO.write(i, "png", f);
+            logger.info("Writing "+f);
         } else {
             throw new NoSuchElementException(relativeFilename);
         }
@@ -141,6 +148,8 @@ public class ImageManagerImpl implements ImageManager {
             writeImage(s);
         }
     }
+    
+    
 
     /** Returns the specified image scaled so that its height is equal to the specified height. */
     public Image getScaledImage(String relativeFilename, int height)
@@ -155,8 +164,7 @@ public class ImageManagerImpl implements ImageManager {
                 return i;
             } else {
                 int width = (i.getWidth(null) * height) / i.getHeight(null);
-                Image compatibleImage = defaultConfiguration.createCompatibleImage(width,
-                        height, Transparency.TRANSLUCENT);
+                Image compatibleImage = newBlankImage(height, width);
                 Graphics2D g = (Graphics2D)compatibleImage.getGraphics();
                 g.setRenderingHints(this.renderingHints);
                 g.drawImage(i, 0, 0, width, height, null);
@@ -166,4 +174,11 @@ public class ImageManagerImpl implements ImageManager {
             }
         }
     }
+
+	
+	public Image newBlankImage(int height, int width) {
+		Image compatibleImage = defaultConfiguration.createCompatibleImage(width,
+		        height, Transparency.TRANSLUCENT);
+		return compatibleImage;
+	}
 }

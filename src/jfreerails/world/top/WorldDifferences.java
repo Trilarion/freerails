@@ -608,4 +608,10 @@ public class WorldDifferences implements World {
             return account;
         }
     }
+
+	
+	public int getID(FreerailsPrincipal p) {
+	
+		return getPlayerID(p);
+	}
 }

@@ -221,13 +221,13 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
         return list[number];
     }
 
-    public static OneTileMoveVector getInstance(int x, int y) {
-        if ((((x < -1) || (x > 1)) || ((y < -1) || (y > 1))) ||
-                ((x == 0) && (y == 0))) {
-            throw new IllegalArgumentException(x + " and " + y +
+    public static OneTileMoveVector getInstance(int dx, int dy) {
+        if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1))) ||
+                ((dx == 0) && (dy == 0))) {
+            throw new IllegalArgumentException(dx + " and " + dy +
                 ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
         } else {
-            return vectors[x + 1][y + 1];
+            return vectors[dx + 1][dy + 1];
         }
     }
 

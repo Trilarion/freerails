@@ -62,7 +62,7 @@ public class MovePrecommitter {
         MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
 
         if (!ms.ok) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(ms.message);
         }
     }
 

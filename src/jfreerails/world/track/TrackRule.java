@@ -23,6 +23,8 @@ public interface TrackRule extends FreerailsSerializable, Comparable {
     boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType);
 
     boolean isStation();
+    
+    boolean isDouble();
 
     Money getPrice();
 
@@ -32,7 +34,7 @@ public interface TrackRule extends FreerailsSerializable, Comparable {
 
     String getTypeName();
 
-    boolean testTrackPieceLegality(int trackTemplateToTest);
+    boolean testTrackPieceLegality(int a9bitTemplate);
 
     boolean trackPieceIsLegal(TrackConfiguration config);
 
@@ -40,5 +42,5 @@ public interface TrackRule extends FreerailsSerializable, Comparable {
 
     OneTileMoveVector[] getLegalRoutes(OneTileMoveVector directionComingFrom);
 
-    Iterator getLegalConfigurationsIterator();
+    Iterator<TrackConfiguration> getLegalConfigurationsIterator();
 }

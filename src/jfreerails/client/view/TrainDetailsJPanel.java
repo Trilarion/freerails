@@ -122,10 +122,10 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
     
     public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         
-        if(KEY.TRAINS == key && index == trainNumber){
+        if(KEY.TRAINS == key && index == trainNumber && principal.equals(p)){
             //The train has been updated.
             this.displayTrain(this.trainNumber);
-        }else if(KEY.CARGO_BUNDLES == key && index == bundleID){
+        }else if(KEY.CARGO_BUNDLES == key && index == bundleID && principal.equals(p)){
             //The train's cargo has changed.
             this.displayTrain(this.trainNumber);
         }

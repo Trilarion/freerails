@@ -3,10 +3,10 @@ package jfreerails.controller;
 import java.awt.Point;
 import java.util.Stack;
 
-import jfreerails.move.*;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.move.UndoMove;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.GameTime;
@@ -17,6 +17,7 @@ import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackPieceImpl;
 import jfreerails.world.track.TrackRule;
@@ -28,8 +29,7 @@ import jfreerails.world.track.TrackRule;
  */
 final public class TrackMoveProducer {
 	private BuildTrackStrategy buildTrackStrategy;
-
-	// private TrackRule trackRule;
+	
 	private final MoveExecutor executor;
 
 	public final static int BUILD_TRACK = 1;
@@ -51,6 +51,22 @@ final public class TrackMoveProducer {
 	 * This generates the transactions - the charge - for the track being built.
 	 */
 	private final TrackMoveTransactionsGenerator transactionsGenerator;
+	
+	public MoveStatus buildTrack(Point from, OneTileMoveVector[] path){		
+		MoveStatus returnValue = MoveStatus.MOVE_OK;	
+		int x = from.x;
+		int y = from.y;
+		for(int i = 0; i < path.length; i++){
+			
+			returnValue = buildTrack(new Point(x, y), path[i]);			
+			x+= path[i].deltaX;
+			y+= path[i].deltaY;
+			if(!returnValue.ok){
+				return returnValue;
+			}
+		}
+		return returnValue;
+	}
 
 	public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
 		ReadOnlyWorld w = executor.getWorld();
@@ -200,6 +216,12 @@ final public class TrackMoveProducer {
 	private MoveStatus upgradeTrack(Point point, int trackRuleID) {
 		ReadOnlyWorld w = executor.getWorld();
 		TrackPiece before = (TrackPiece) w.getTile(point.x, point.y);
+		/* Check whether there is track here.*/
+		if(before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER){
+			return MoveStatus
+			.moveFailed("No track to upgrade.");
+		}
+		 
 		FreerailsPrincipal principal = executor.getPrincipal();
 		int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
 		TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleID);

@@ -16,6 +16,9 @@ import java.io.IOException;
  *
  */
 public interface ImageManager {
+	
+	Image newBlankImage(int height, int width);
+	
     void setPathToReadFrom(String s);
 
     void setPathToWriteTo(String s);

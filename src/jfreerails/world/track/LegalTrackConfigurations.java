@@ -10,24 +10,11 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke.
  */
 final public class LegalTrackConfigurations implements FreerailsSerializable {
-    public int getMaximumConsecutivePieces() {
-        return maximumConsecutivePieces;
-    }
-
-    private final int maximumConsecutivePieces;
-
-    public int hashCode() {
-        int result;
-        result = maximumConsecutivePieces;
-        result = 29 * result +
-            (legalTrackConfigurationsHashSet != null
-            ? legalTrackConfigurationsHashSet.hashCode() : 0);
-
-        return result;
-    }
 
     /** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
-    private final /*=mutable*/ HashSet legalTrackConfigurationsHashSet = new HashSet();
+    private final /*=mutable*/ HashSet<TrackConfiguration> legalConfigs = new HashSet<TrackConfiguration>();
+
+    private final int maximumConsecutivePieces;
 
     public LegalTrackConfigurations(int max,
         ArrayList legalTrackTemplatesArrayList) {
@@ -48,6 +35,39 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         }
     }
 
+    public boolean equals(Object o) {
+        if (o instanceof LegalTrackConfigurations) {
+            LegalTrackConfigurations test = (LegalTrackConfigurations)o;
+
+            if (this.maximumConsecutivePieces == test.getMaximumConsecutivePieces() &&
+                    this.legalConfigs.equals(
+                        test.legalConfigs)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
+        return legalConfigs.iterator();
+    }
+    public int getMaximumConsecutivePieces() {
+        return maximumConsecutivePieces;
+    }
+
+    public int hashCode() {
+        int result;
+        result = maximumConsecutivePieces;
+        result = 29 * result +
+            (legalConfigs != null
+            ? legalConfigs.hashCode() : 0);
+
+        return result;
+    }
+
     private void processTemplate(String trackTemplateString) {
         int trackTemplate = (int)Integer.parseInt(trackTemplateString, 2);
 
@@ -61,36 +81,16 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 
         for (int k = 0; k < rotationsOfTrackTemplate.length; k++) {
             int i = rotationsOfTrackTemplate[k];
-            Object trackConfiguration = TrackConfiguration.getFlatInstance(i);
+            TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(i);
 
-            if (!legalTrackConfigurationsHashSet.contains(trackConfiguration)) {
-                legalTrackConfigurationsHashSet.add(trackConfiguration);
+            if (!legalConfigs.contains(trackConfiguration)) {
+                legalConfigs.add(trackConfiguration);
             }
         }
     }
 
     public boolean trackConfigurationIsLegal(
         TrackConfiguration trackConfiguration) {
-        return legalTrackConfigurationsHashSet.contains(trackConfiguration);
-    }
-
-    public Iterator getLegalConfigurationsIterator() {
-        return legalTrackConfigurationsHashSet.iterator();
-    }
-
-    public boolean equals(Object o) {
-        if (o instanceof LegalTrackConfigurations) {
-            LegalTrackConfigurations test = (LegalTrackConfigurations)o;
-
-            if (this.maximumConsecutivePieces == test.getMaximumConsecutivePieces() &&
-                    this.legalTrackConfigurationsHashSet.equals(
-                        test.legalTrackConfigurationsHashSet)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return legalConfigs.contains(trackConfiguration);
     }
 }

@@ -23,7 +23,8 @@ public class ShowJavaProperties {
     public static String getPropertiesHtmlString() {
         Properties p = System.getProperties();
         StringBuffer sb = new StringBuffer();
-        sb.append("<html><h3>Java System Properties</h3><table>\n");
+        /*  We set the width of the table so that its text word-wraps.*/
+        sb.append("<html><h3>Java System Properties</h3><table width =\"500\" >\n");
 
         Enumeration keys = p.keys();
 

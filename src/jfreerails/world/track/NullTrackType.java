@@ -103,4 +103,10 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	
+	public boolean isDouble() {
+		
+		return false;
+	}
 }

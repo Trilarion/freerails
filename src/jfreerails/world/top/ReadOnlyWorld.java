@@ -116,4 +116,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     int getNumberOfTransactions( /*=const*/
         FreerailsPrincipal p) /*=const*/;
+    
+    int getID(FreerailsPrincipal p);
 }

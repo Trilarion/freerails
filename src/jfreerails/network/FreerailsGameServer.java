@@ -202,19 +202,14 @@ public class FreerailsGameServer implements ServerControlInterface,
         return newPlayersAllowed;
     }
 
-    public void loadgame(String saveGameName) {
+    public void loadgame(String saveGameName) throws IOException{
         logger.info("load game " + saveGameName);
 
         ServerGameModel loadedGame;
-
-        try {
-            loadedGame = (ServerGameModel)savedGamesManager.loadGame(saveGameName);
-            setServerGameModel(loadedGame);
-            sendWorldUpdatedCommand();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+      
+        loadedGame = (ServerGameModel)savedGamesManager.loadGame(saveGameName);
+        setServerGameModel(loadedGame);
+        sendWorldUpdatedCommand();       
     }
 
     public void logoff(int player) {

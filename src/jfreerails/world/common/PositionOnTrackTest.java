@@ -37,17 +37,17 @@ public class PositionOnTrackTest extends TestCase {
     }
 
     public void testToInt() {
-        PositionOnTrack p1 = new PositionOnTrack(10, 20, OneTileMoveVector.NORTH);
-        PositionOnTrack p2 = new PositionOnTrack(10, 30, OneTileMoveVector.NORTH);
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
+        PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 30, OneTileMoveVector.NORTH);
 
         assertTrue(p1.toInt() != p2.toInt());
     }
 
     public void testSetValuesFromInt() {
-        PositionOnTrack p1 = new PositionOnTrack(10, 20, OneTileMoveVector.NORTH);
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
 
         int i = p1.toInt();
-        PositionOnTrack p2 = new PositionOnTrack(60, 70, OneTileMoveVector.EAST);
+        PositionOnTrack p2 = PositionOnTrack.createComingFrom(60, 70, OneTileMoveVector.EAST);
         assertTrue(!p1.equals(p2));
         p2.setValuesFromInt(i);
 
@@ -55,8 +55,7 @@ public class PositionOnTrackTest extends TestCase {
 
         OneTileMoveVector v = OneTileMoveVector.getInstance(7); //7 is the maximum vector number.
 
-        p1 = new PositionOnTrack(PositionOnTrack.MAX_COORINATE,
-                PositionOnTrack.MAX_COORINATE, v);
+        p1 = PositionOnTrack.createComingFrom(PositionOnTrack.MAX_COORINATE, PositionOnTrack.MAX_COORINATE, v);
 
         i = p1.toInt();
     }
@@ -65,19 +64,19 @@ public class PositionOnTrackTest extends TestCase {
      * Test for boolean equals(Object)
      */
     public void testEqualsObject() {
-        PositionOnTrack p1 = new PositionOnTrack(10, 20, OneTileMoveVector.NORTH);
-        PositionOnTrack p2 = new PositionOnTrack(10, 20, OneTileMoveVector.NORTH);
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
+        PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
         assertEquals(p1, p2);
 
-        p1 = new PositionOnTrack(10, 50, OneTileMoveVector.NORTH);
-        p2 = new PositionOnTrack(10, 20, OneTileMoveVector.NORTH);
+        p1 = PositionOnTrack.createComingFrom(10, 50, OneTileMoveVector.NORTH);
+        p2 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
 
         assertTrue(!p1.equals(p2));
     }
 
     private void assertNoException(int x, int y, OneTileMoveVector v) {
         try {
-            new PositionOnTrack(x, y, v);
+            PositionOnTrack.createComingFrom(x, y, v);
         } catch (Exception e) {
             assertTrue(false);
         }
@@ -85,18 +84,18 @@ public class PositionOnTrackTest extends TestCase {
 
     private void assertException(int x, int y, OneTileMoveVector v) {
         try {
-            new PositionOnTrack(x, y, v);
+            PositionOnTrack.createComingFrom(x, y, v);
             assertTrue(false);
         } catch (Exception e) {
         }
     }
 
     public void testGetOpposite() {
-        PositionOnTrack p1 = new PositionOnTrack(10, 10, OneTileMoveVector.NORTH);
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.NORTH);
         PositionOnTrack p2 = p1.getOpposite();
         assertNotNull(p2);
 
-        PositionOnTrack p3 = new PositionOnTrack(10, 11, OneTileMoveVector.SOUTH);
+        PositionOnTrack p3 = PositionOnTrack.createComingFrom(10, 11, OneTileMoveVector.SOUTH);
         assertEquals(p3, p2);
     }
 }

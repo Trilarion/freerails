@@ -1,5 +1,7 @@
 package jfreerails.controller;
 
+import java.util.NoSuchElementException;
+
 import jfreerails.world.terrain.CityModel;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -49,7 +51,7 @@ public class CalcNearestCity {
             return cityName;
         }
 
-        return null;
+        throw new NoSuchElementException();
     }
 
     private double getDistance(int cityX, int cityY) {

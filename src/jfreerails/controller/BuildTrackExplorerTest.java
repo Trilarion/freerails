@@ -46,7 +46,7 @@ public class BuildTrackExplorerTest extends TestCase {
         PositionOnTrack start;
 
         //Test starting in the middle of the map.
-        start = new PositionOnTrack(10, 10, OneTileMoveVector.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world);
         explorer.setPosition(start.toInt());
@@ -59,7 +59,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         //Test starting in the top left of the map.
-        start = new PositionOnTrack(0, 0, OneTileMoveVector.SOUTH_EAST);
+        start = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.SOUTH_EAST);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(OneTileMoveVector.EAST, 1, 0, explorer);
         assertNextVertexIs(OneTileMoveVector.SOUTH_EAST, 1, 1, explorer);
@@ -67,7 +67,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         //Test starting in the bottom right of the map.
-        start = new PositionOnTrack(19, 19, OneTileMoveVector.NORTH_WEST);
+        start = PositionOnTrack.createComingFrom(19, 19, OneTileMoveVector.NORTH_WEST);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(OneTileMoveVector.NORTH, 19, 18, explorer);
         assertNextVertexIs(OneTileMoveVector.WEST, 18, 19, explorer);
@@ -98,7 +98,7 @@ public class BuildTrackExplorerTest extends TestCase {
         PositionOnTrack start;
 
         //Test starting in the middle of the map.
-        start = new PositionOnTrack(10, 10, OneTileMoveVector.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world);
         explorer.setPosition(start.toInt());
@@ -123,8 +123,7 @@ public class BuildTrackExplorerTest extends TestCase {
         }
 
         //If we enter 10, 10 from the south, we should be able to build track S & SW.
-        PositionOnTrack start = new PositionOnTrack(10, 10,
-                OneTileMoveVector.SOUTH);
+        PositionOnTrack start = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.SOUTH);
         BuildTrackExplorer explorer = new BuildTrackExplorer(world);
         explorer.setPosition(start.toInt());
         //SE is going along existing track
@@ -134,7 +133,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         //If we enter 10, 11 from the north, we should be able to build track N, E, W, & NW.
-        start = new PositionOnTrack(10, 11, OneTileMoveVector.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 11, OneTileMoveVector.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(OneTileMoveVector.NORTH, 10, 10, explorer);
         assertNextVertexIs(OneTileMoveVector.EAST, 11, 11, explorer);
@@ -143,7 +142,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         //If we enter 10, 12 from the north, we also should be able to build track N, E, W, & NW.
-        start = new PositionOnTrack(10, 12, OneTileMoveVector.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 12, OneTileMoveVector.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(OneTileMoveVector.NORTH, 10, 11, explorer);
         assertNextVertexIs(OneTileMoveVector.EAST, 11, 12, explorer);
@@ -158,7 +157,7 @@ public class BuildTrackExplorerTest extends TestCase {
         explorer.nextEdge();
 
         PositionOnTrack pos = new PositionOnTrack(explorer.getVertexConnectedByEdge());
-        assertEquals(new PositionOnTrack(x, y, oneTileMoveVector), pos);
+        assertEquals(PositionOnTrack.createComingFrom(x, y, oneTileMoveVector), pos);
     }
 
     private void buildTrack(int x, int y, OneTileMoveVector direction) {

@@ -45,56 +45,55 @@ public class StationBoxRenderer implements Painter {
     }
 
     public void paint(Graphics2D g) {
-        Boolean showCargoWaiting = (Boolean)modelRoot.getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
-
-        if (showCargoWaiting.booleanValue()) {
-            for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-                FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
-
-                WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                        principal);
-
-                while (wi.next()) { //loop over non null stations
-
-                    StationModel station = (StationModel)wi.getElement();
-                    int positionX = (station.getStationX() * 30) + 15;
-                    int positionY = (station.getStationY() * 30) + 60;
-                    g.setColor(bgColor);
-                    g.fillRect(positionX, positionY, MAX_WIDTH,
-                        5 * (WAGON_IMAGE_HEIGHT + SPACING));
-                    g.setColor(Color.WHITE);
-                    g.setStroke(new BasicStroke(1f));
-                    g.drawRect(positionX, positionY, MAX_WIDTH,
-                        5 * (WAGON_IMAGE_HEIGHT + SPACING));
-
-                    ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                            station.getCargoBundleID(), principal);
-
-                    for (int category = 0;
-                            category < CargoType.getNumberOfCategories();
-                            category++) {
-                        int[] carsLoads = calculateCarLoads(cb, category);
-                        int alternateWidth = (MAX_WIDTH - 2 * SPACING) / (carsLoads.length +
-                            1);
-                        int xOffsetPerWagon = Math.min(wagonImageWidth,
-                                alternateWidth);
-
-                        for (int car = 0; car < carsLoads.length; car++) {
-                            int x = positionX + (car * xOffsetPerWagon) +
-                                SPACING;
-                            int y = positionY +
-                                (category * (WAGON_IMAGE_HEIGHT + SPACING));
-                            int cargoType = carsLoads[car];
-                            Image wagonImage = vl.getTrainImages()
-                                                 .getSideOnWagonImage(cargoType,
-                                    WAGON_IMAGE_HEIGHT);
-                            g.drawImage(wagonImage, x, y, null);
-                        }
-                    }
-                }
-            }
-        }
+    	Boolean showCargoWaiting = (Boolean)modelRoot.getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
+    	
+    	if (showCargoWaiting.booleanValue()) {
+    		/* We only show the station boxes for the current player.*/
+    		FreerailsPrincipal principal = modelRoot.getPrincipal();
+    		WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
+    				principal);
+    		
+    		while (wi.next()) { //loop over non null stations
+    			
+    			StationModel station = (StationModel)wi.getElement();
+    			int positionX = (station.getStationX() * 30) + 15;
+    			int positionY = (station.getStationY() * 30) + 60;
+    			g.setColor(bgColor);
+    			g.fillRect(positionX, positionY, MAX_WIDTH,
+    					5 * (WAGON_IMAGE_HEIGHT + SPACING));
+    			g.setColor(Color.WHITE);
+    			g.setStroke(new BasicStroke(1f));
+    			g.drawRect(positionX, positionY, MAX_WIDTH,
+    					5 * (WAGON_IMAGE_HEIGHT + SPACING));
+    			
+    			ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
+    					station.getCargoBundleID(), principal);
+    			
+    			for (int category = 0;
+    			category < CargoType.getNumberOfCategories();
+    			category++) {
+    				int[] carsLoads = calculateCarLoads(cb, category);
+    				int alternateWidth = (MAX_WIDTH - 2 * SPACING) / (carsLoads.length +
+    						1);
+    				int xOffsetPerWagon = Math.min(wagonImageWidth,
+    						alternateWidth);
+    				
+    				for (int car = 0; car < carsLoads.length; car++) {
+    					int x = positionX + (car * xOffsetPerWagon) +
+						SPACING;
+    					int y = positionY +
+						(category * (WAGON_IMAGE_HEIGHT + SPACING));
+    					int cargoType = carsLoads[car];
+    					Image wagonImage = vl.getTrainImages()
+						.getSideOnWagonImage(cargoType,
+								WAGON_IMAGE_HEIGHT);
+    					g.drawImage(wagonImage, x, y, null);
+    				}
+    			}
+    		}
+    	}
     }
+
 
     /**
         * The length of the returned array is the number of complete carloads of

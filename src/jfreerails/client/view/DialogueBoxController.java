@@ -33,6 +33,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.TrackRule;
 import static jfreerails.client.common.ModelRoot.Property;
 
 /**This class is responsible for displaying dialogue boxes, adding borders to them as appropriate, and
@@ -408,12 +409,15 @@ public class DialogueBoxController implements WorldListListener {
     public void showStationOrTerrainInfo(int x, int y) {
         FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
 
-        if (tile.getTrackRule().isStation()) {
-            for (int i = 0;
-                    i < world.size(KEY.STATIONS, modelRoot.getPrincipal());
+        TrackRule trackRule = tile.getTrackRule();
+        FreerailsPrincipal principal = modelRoot.getPrincipal();
+		if (trackRule.isStation() && tile.getOwnerID() == world.getID(principal)) {
+           
+			for (int i = 0;
+                    i < world.size(KEY.STATIONS, principal);
                     i++) {
                 StationModel station = (StationModel)world.get(KEY.STATIONS, i,
-                        modelRoot.getPrincipal());
+                        principal);
 
                 if (null != station && station.x == x && station.y == y) {
                     this.showStationInfo(i);
@@ -422,7 +426,7 @@ public class DialogueBoxController implements WorldListListener {
                 }
             }
 
-            throw new IllegalStateException("Could find station at " + x +
+            throw new IllegalStateException("Couldn't find station at " + x +
                 ", " + y);
         } else {
             this.showTerrainInfo(x, y);

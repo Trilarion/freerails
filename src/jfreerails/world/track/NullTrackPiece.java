@@ -34,7 +34,7 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     public TrackConfiguration getTrackConfiguration() {
-        return TrackConfiguration.getFlatInstance(0);
+        return TrackConfiguration.from9bitTemplate(0);
     }
 
     private Object readResolve() throws ObjectStreamException {

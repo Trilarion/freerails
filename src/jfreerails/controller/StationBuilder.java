@@ -1,6 +1,7 @@
 package jfreerails.controller;
 
 import java.awt.Point;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import jfreerails.move.MoveStatus;
@@ -49,7 +50,7 @@ public class StationBuilder {
                 principal);
     }
 
-    public boolean canBuiltStationHere(Point p) {
+    public boolean canBuildStationHere(Point p) {
         ReadOnlyWorld world = executor.getWorld();
         FreerailsTile oldTile = (FreerailsTile)world.getTile(p.x, p.y);
         TrackRule oldTrackRule = oldTile.getTrackRule();
@@ -62,7 +63,7 @@ public class StationBuilder {
         FreerailsTile oldTile = (FreerailsTile)world.getTile(p.x, p.y);
 
         //Only build a station if there is track at the specified point.
-        if (canBuiltStationHere(p)) {
+        if (canBuildStationHere(p)) {
             FreerailsPrincipal principal = executor.getPrincipal();
             AddStationPreMove preMove = AddStationPreMove.newStation(p,
                     this.ruleNumber, principal);
@@ -131,4 +132,16 @@ public class StationBuilder {
     public void setStationType(int ruleNumber) {
         this.ruleNumber = ruleNumber;
     }
+    
+    int getTrackTypeID(String string){
+    	ReadOnlyWorld w = executor.getWorld();
+		for(int i = 0 ; i < w.size(SKEY.TRACK_RULES); i++){
+			TrackRule r = (TrackRule)w.get(SKEY.TRACK_RULES, i);
+			
+			if(string.equals(r.getTypeName())){
+				return i;
+			}
+		}
+		throw new NoSuchElementException();
+	}
 }

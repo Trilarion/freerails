@@ -29,10 +29,8 @@ public class BuildTrackExplorer implements GraphExplorer {
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance(
             "000010000");
     private boolean m_beforeFirst = true;
-    final PositionOnTrack m_currentBranch = new PositionOnTrack(0, 0,
-            OneTileMoveVector.NORTH);
-    final private PositionOnTrack m_currentPosition = new PositionOnTrack(0, 0,
-            OneTileMoveVector.NORTH);
+    final PositionOnTrack m_currentBranch = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.NORTH);
+    final private PositionOnTrack m_currentPosition = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.NORTH);
     private int m_direction = 0;
     private final Point m_target;       
     private BuildTrackStrategy m_buildTrackStrategy;
@@ -51,7 +49,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         if (null == start) {
             pos = new PositionOnTrack();
         } else {
-            pos = new PositionOnTrack(start.x, start.y, OneTileMoveVector.NORTH);
+            pos = PositionOnTrack.createComingFrom(start.x, start.y, OneTileMoveVector.NORTH);
         }
 
         m_currentPosition.setValuesFromInt(pos.toInt());
@@ -79,7 +77,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      */
     private boolean canBuildTrack() {
         //Check that we are not doubling back on ourselves.
-        OneTileMoveVector opposite2current = m_currentPosition.getDirection()
+        OneTileMoveVector opposite2current = m_currentPosition.cameFrom()
                                                               .getOpposite();
         int currentX = m_currentPosition.getX();
         int currentY = m_currentPosition.getY();
@@ -217,9 +215,13 @@ public class BuildTrackExplorer implements GraphExplorer {
     			int y = m_currentPosition.getY();
     			TrackRule ruleA = getAppropriateTrackRule(x, y);
     			TrackRule ruleB = getAppropriateTrackRule(x+ edgeDirection.deltaX, y+edgeDirection.deltaY);
-    			
-    			long price = ruleA.getPrice().getAmount() + ruleB.getPrice().getAmount();  
-    			cost += length*price;
+    			/* If there is a station at either of the points, don't include its
+    			 * price in the cost calulation since it has already been paid.  Otherwise,
+    			 * add the cost of building the track.
+    			 */
+    			long priceA = ruleA.isStation() ? 0 : ruleA.getPrice().getAmount();    			    			
+    			long priceB = ruleB.isStation() ? 0 : ruleB.getPrice().getAmount();  
+    			cost += length*(priceA + priceB);
                
             }                        			
             return cost;

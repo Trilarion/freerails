@@ -55,6 +55,7 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
                                                                               .get("List.background");
     private final Color selectedColor = (java.awt.Color)javax.swing.UIManager.getDefaults()
                                                                              .get("List.selectionBackground");
+    private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
 
     public TrainViewJPanel() {
         this.setOpaque(false);
@@ -143,7 +144,11 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
             selected = isSelected;
 
             if (selected) {
-                setBackground(selectedColor);
+            	if(list.isFocusOwner()){
+            		setBackground(selectedColor);
+            	}else{
+            		setBackground(selectedColorNotFocused);
+            	}
             } else {
                 setBackground(backgoundColor);
             }

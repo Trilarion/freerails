@@ -15,10 +15,8 @@ import jfreerails.world.track.TrackPiece;
  * @author Luke
  */
 public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
-    private PositionOnTrack currentPosition = new PositionOnTrack(0, 0,
-            OneTileMoveVector.NORTH);
-    final PositionOnTrack currentBranch = new PositionOnTrack(0, 0,
-            OneTileMoveVector.NORTH);
+    private PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.NORTH);
+    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.NORTH);
     private boolean beforeFirst = true;
     private final ReadOnlyWorld w;
 
@@ -86,7 +84,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
     }
 
     public int getEdgeCost() {
-        return currentBranch.getDirection().getLength();
+        return currentBranch.cameFrom().getLength();
     }
 
     public boolean hasNextEdge() {
@@ -98,8 +96,8 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             //Since we can always go back the way we have come, if the direction of 
             //current branch is not equal to the opposite of the current direction,
             //there must be another branch.
-            OneTileMoveVector currentBranchDirection = this.currentBranch.getDirection();
-            OneTileMoveVector oppositeToCurrentDirection = this.currentPosition.getDirection()
+            OneTileMoveVector currentBranchDirection = this.currentBranch.cameFrom();
+            OneTileMoveVector oppositeToCurrentDirection = this.currentPosition.cameFrom()
                                                                                .getOpposite();
 
             if (oppositeToCurrentDirection.getID() == currentBranchDirection.getID()) {
@@ -112,16 +110,14 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 
     public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) {
         w = world;
-        this.currentPosition = new PositionOnTrack(p.getX(), p.getY(),
-                p.getDirection());
+        this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p.getY(), p.cameFrom());
     }
 
     /******************************************************************************************/
 
     //scott bennett 15/03/03
     public FlatTrackExplorer(PositionOnTrack p, ReadOnlyWorld world) {
-        this.currentPosition = new PositionOnTrack(p.getX(), p.getY(),
-                p.getDirection());
+        this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p.getY(), p.cameFrom());
         this.w = world;
     }
 
@@ -152,8 +148,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 
         for (int i = 0; i < vectors.length; i++) {
             if (conf.contains(vectors[i].get9bitTemplate())) {
-                possiblePositions[n] = new PositionOnTrack(p.x, p.y,
-                        vectors[i].getOpposite());
+                possiblePositions[n] = PositionOnTrack.createComingFrom(p.x, p.y, vectors[i].getOpposite());
                 n++;
             }
         }
@@ -165,7 +160,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
         if (beforeFirst) {
             //Return the vector that is 45 degrees clockwise from the oppposite 
             //of the current position.
-            OneTileMoveVector v = this.currentPosition.getDirection();
+            OneTileMoveVector v = this.currentPosition.cameFrom();
             v = v.getOpposite();
 
             int i = v.getID();
@@ -177,7 +172,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
         } else {
             //Return the vector that is 45 degrees clockwise from the direction  
             //of the current branch.
-            OneTileMoveVector v = this.currentBranch.getDirection();
+            OneTileMoveVector v = this.currentBranch.cameFrom();
             int i = v.getID();
             i++;
             i = i % 8;

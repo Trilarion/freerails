@@ -4,7 +4,7 @@ package jfreerails.world.common;
 /**
  * A <b>mutable</b> class that stores the coordinates of the tile on entity is standing on
  * and the direction in which the entity is facing (usually the direction the entity
- * as just been moving), it provides methods to encode and decode its field
+ * as just been moving - the opposite to the direction it came from), it provides methods to encode and decode its field
  * values to and from a single int.
  *
  * @author Luke
@@ -14,21 +14,28 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     private static final int BITS_FOR_DIRECTION = 3;
     public static final int MAX_COORINATE = (1 << BITS_FOR_COORINATE) - 1;
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;
+    /** The direction from which we entered the tile.*/
+    private OneTileMoveVector direction = OneTileMoveVector.NORTH;
     private int x = 0;
 
-    public int hashCode() {
-        int result;
-        result = x;
-        result = 29 * result + y;
-        result = 29 * result + direction.hashCode();
+    private int y = 0;
 
-        return result;
+    public static PositionOnTrack createComingFrom(int x, int y, OneTileMoveVector direction) {
+		return new PositionOnTrack(x, y, direction);
+	}
+    
+    public static PositionOnTrack createFacing(int x, int y, OneTileMoveVector direction) {
+		return new PositionOnTrack(x, y, direction.getOpposite());
+	}
+
+	public PositionOnTrack() {
     }
 
-    private int y = 0;
-    private OneTileMoveVector direction = OneTileMoveVector.NORTH;
+    public PositionOnTrack(int i) {
+        this.setValuesFromInt(i);
+    }
 
-    public PositionOnTrack(int x, int y, OneTileMoveVector direction) {
+    private PositionOnTrack(int x, int y, OneTileMoveVector direction) {
         if (x > MAX_COORINATE || x < 0) {
             throw new IllegalArgumentException("x=" + x);
         }
@@ -43,11 +50,49 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         this.direction = direction;
     }
 
-    public PositionOnTrack(int i) {
-        this.setValuesFromInt(i);
+    public boolean equals(Object o) {
+        if (null == o) {
+            return false;
+        }
+
+        if (o instanceof PositionOnTrack) {
+            PositionOnTrack other = (PositionOnTrack)o;
+
+            if (other.cameFrom() == this.cameFrom() &&
+                    other.getX() == this.getX() && other.getY() == this.getY()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
-    public PositionOnTrack() {
+    /**
+     * @return The direction the entity came from.
+     */
+    public OneTileMoveVector cameFrom() {
+        return direction;
+    }
+    
+    /**
+     * @return The direction the entity is facing. 
+     */
+    public OneTileMoveVector facing() {
+        return direction.getOpposite();
+    }
+
+    /**
+     * @return the position on the track which is in the opposite direction
+     * and displacement.
+     */
+    public PositionOnTrack getOpposite() {
+        int newX = this.getX() - this.direction.deltaX;
+        int newY = this.getY() - this.direction.deltaY;
+        OneTileMoveVector newDirection = this.direction.getOpposite();
+
+        return createComingFrom(newX, newY, newDirection);
     }
 
     public int getX() {
@@ -58,24 +103,21 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return y;
     }
 
-    public OneTileMoveVector getDirection() {
-        return direction;
+    public int hashCode() {
+        int result;
+        result = x;
+        result = 29 * result + y;
+        result = 29 * result + direction.hashCode();
+
+        return result;
     }
 
     /**
-     * @return an integer representing this PositionOnTrack object
+     * Sets the direction.
+     * @param direction The direction to set
      */
-    public int toInt() {
-        int i = x;
-
-        int shiftedY = y << BITS_FOR_COORINATE;
-        i = i | shiftedY;
-
-        int directionAsInt = direction.getID();
-        int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORINATE));
-        i = i | shiftedDirection;
-
-        return i;
+    public void setDirection(OneTileMoveVector direction) {
+        this.direction = direction;
     }
 
     public void setValuesFromInt(int i) {
@@ -87,40 +129,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         int shiftedDirection = i & (MAX_DIRECTION << (2 * BITS_FOR_COORINATE));
         int directionAsInt = shiftedDirection >> (2 * BITS_FOR_COORINATE);
         direction = OneTileMoveVector.getInstance(directionAsInt);
-    }
-
-    public boolean equals(Object o) {
-        if (null == o) {
-            return false;
-        }
-
-        if (o instanceof PositionOnTrack) {
-            PositionOnTrack other = (PositionOnTrack)o;
-
-            if (other.getDirection() == this.getDirection() &&
-                    other.getX() == this.getX() && other.getY() == this.getY()) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public String toString() {
-        String s = "PositionOnTrack: " + x + ", " + y + ", " +
-            direction.toString();
-
-        return s;
-    }
-
-    /**
-     * Sets the direction.
-     * @param direction The direction to set
-     */
-    public void setDirection(OneTileMoveVector direction) {
-        this.direction = direction;
     }
 
     /**
@@ -140,14 +148,25 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     * @return the position on the track which is in the opposite direction
-     * and displacement.
+     * @return an integer representing this PositionOnTrack object
      */
-    public PositionOnTrack getOpposite() {
-        int newX = this.getX() - this.direction.deltaX;
-        int newY = this.getY() - this.direction.deltaY;
-        OneTileMoveVector newDirection = this.direction.getOpposite();
+    public int toInt() {
+        int i = x;
 
-        return new PositionOnTrack(newX, newY, newDirection);
+        int shiftedY = y << BITS_FOR_COORINATE;
+        i = i | shiftedY;
+
+        int directionAsInt = direction.getID();
+        int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORINATE));
+        i = i | shiftedDirection;
+
+        return i;
+    }
+
+    public String toString() {
+        String s = "PositionOnTrack: " + x + ", " + y + ", " +
+            direction.toString();
+
+        return s;
     }
 }

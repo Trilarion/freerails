@@ -137,6 +137,12 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
             return MoveStatus.moveFailed("Can't build " + thisTrackType +
                 " on " + terrainCategory);
         }
+        
+        //Check 4 overlapping stations.
+        if(newTrackPiece.getTrackRule().isStation()){
+        	MoveStatus ms = AddStationMove.check4overlap(w, this);
+        	if(!ms.ok) return ms;
+        }
 
         return MoveStatus.MOVE_OK;
     }

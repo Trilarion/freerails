@@ -1,6 +1,7 @@
 package jfreerails.server;
 
 import jfreerails.move.Move;
+import jfreerails.move.PreMoveException;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.player.Player;
@@ -57,7 +58,11 @@ public class TrainMoverTest extends TestCase implements MoveReceiver {
 
     public void testUpdate() {
         setUp();
-        trainMover.update(30, this);
+        try{
+        	trainMover.update(30, this);
+        }catch (PreMoveException e){
+        	fail();
+        }
     }
 
     public void processMove(Move move) {
