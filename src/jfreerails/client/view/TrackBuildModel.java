@@ -1,10 +1,13 @@
 package jfreerails.client.view;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
@@ -70,9 +73,18 @@ public class TrackBuildModel {
                     actionId);
             int ruleNumber = trackRule.getRuleNumber();
             TrackPieceRenderer renderer = trackPieceRendererList.getTrackPieceView(ruleNumber);
-            putValue(SMALL_ICON,
-                new ImageIcon(renderer.getTrackPieceIcon(trackTemplate)));
-            putValue(SHORT_DESCRIPTION, trackRule.getTypeName());
+            
+            /* create a scaled image */
+    	    Image unscaledImage =
+    		renderer.getTrackPieceIcon(trackTemplate);
+    	    Image scaledImage = unscaledImage.getScaledInstance
+    		(unscaledImage.getWidth(null) * 3 / 4, unscaledImage.getHeight(null) *
+    		 3 / 4, Image.SCALE_SMOOTH);
+
+    	    putValue(SMALL_ICON, new ImageIcon(scaledImage));
+                putValue(SHORT_DESCRIPTION, trackRule.getTypeName() + " \n $" +
+    		    trackRule.getPrice());
+                                   
         }
 
         public void actionPerformed(ActionEvent e) {

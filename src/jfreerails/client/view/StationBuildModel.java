@@ -6,9 +6,11 @@ package jfreerails.client.view;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.controller.StationBuilder;
@@ -67,8 +69,10 @@ public class StationBuildModel {
                 TrackPieceRenderer renderer = trackPieceRendererList.getTrackPieceView(i);
                 StationChooseAction action = new StationChooseAction(i);
                 String trackType = trackRule.getTypeName();
-                action.putValue(Action.SHORT_DESCRIPTION, trackType);
-                action.putValue(Action.NAME, "Build " + trackType);
+                action.putValue(Action.SHORT_DESCRIPTION, trackType+ " \n $" +
+            		    trackRule.getPrice());
+                action.putValue(Action.NAME, "Build " + trackType);                               
+                
                 action.putValue(Action.SMALL_ICON,
                     new ImageIcon(renderer.getTrackPieceIcon(trackTemplate)));
                 stationChooseActions.add(action);
