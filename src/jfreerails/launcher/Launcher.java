@@ -61,8 +61,7 @@ LauncherInterface {
     
     
     
-    private void startGame() {
-        //jProgressBar1.setVisible(true);
+    private void startGame() {    
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "4");
         
@@ -373,11 +372,14 @@ LauncherInterface {
 
         jPanel1.setLayout(new java.awt.CardLayout());
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(420, 300));
+        jPanel1.setPreferredSize(new java.awt.Dimension(400, 300));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         getContentPane().add(jPanel1, gridBagConstraints);
 
         nextButton.setText("Next...");
@@ -389,7 +391,7 @@ LauncherInterface {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(nextButton, gridBagConstraints);
@@ -404,7 +406,7 @@ LauncherInterface {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
@@ -412,14 +414,16 @@ LauncherInterface {
 
         infoLabel.setText("Error messages go here!");
         infoLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        infoLabel.setMinimumSize(new java.awt.Dimension(114, 20));
-        infoLabel.setPreferredSize(new java.awt.Dimension(114, 40));
+        infoLabel.setMinimumSize(new java.awt.Dimension(20, 20));
+        infoLabel.setPreferredSize(new java.awt.Dimension(20, 20));
+        infoLabel.setVerifyInputWhenFocusTarget(false);
         infoLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(infoLabel, gridBagConstraints);
 
@@ -536,9 +540,9 @@ LauncherInterface {
                     /* Connection status screen */
                     prevButton.setEnabled(false);
                     setServerGameModel();
-                    if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
-                        
-                        startThread(server, client);
+                    if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {                        
+                        startThread(server, client);                        
+                        cl.show(jPanel1, "4");
                     }else{
                         /*Start a stand alone server.*/
                         startThread(server);
