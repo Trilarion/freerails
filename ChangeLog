@@ -1,3 +1,5 @@
+Sun Sep 15 18:25:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o makes QT-wrapper show map 
 Fri Sep 13 12:45:00 2002  Alexander Opitz <opi@le-bit.de>:
 o some code clean ups to compile with gcc3.x.x (like missing std::
   forgotten last lines and so on.)
