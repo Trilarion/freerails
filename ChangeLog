@@ -1,3 +1,7 @@
+04-Apr-2003 21:20:46 Luke
+	o Simple train schedules, set the 4 points on the 
+	track that trains will travel between by pressing F1 - F4
+	over the track.
 04-Apr-2003 00:22:05 Luke
 	o Added package comments for javadoc.
 22-Mar-2003 19:26:26 Luke
