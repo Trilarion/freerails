@@ -1,3 +1,5 @@
+22-Sep-2002 23:47:07 Luke Lindsay <lindsal49@hotmail.com>:
+    o wrote PathWalkerImpl and PathWalkerImplTest
 19-Sep-2002 00:03:59 Luke Lindsay <lindsal49@hotmail.com>:
     o wrote SimplePathIteratorImpl and SimplePathIteratorImplTest
     o removed the method: 
