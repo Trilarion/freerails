@@ -129,10 +129,15 @@ public class TrainPathFinder
 	 */
 	private Point getTarget() {
 		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId);
-		Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID());
+		int scheduleID = train.getScheduleID();
+		ImmutableSchedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES, scheduleID);
 		int stationNumber = schedule.getStationToGoto();
+		if(-1 == stationNumber){
+			//There are no stations on the schedule.
+			return new Point(0, 0);
+		}
 		StationModel station =
-			(StationModel) world.get(KEY.STATIONS, stationNumber);
+			(StationModel) world.get(KEY.STATIONS, stationNumber);		
 		return new Point(station.x, station.y);
 	}
 

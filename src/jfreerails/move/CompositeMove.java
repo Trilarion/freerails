@@ -4,6 +4,8 @@
  */
 package jfreerails.move;
 
+import java.util.ArrayList;
+
 import jfreerails.world.top.World;
 
 /**
@@ -28,6 +30,13 @@ public class CompositeMove implements Move {
 
 	public final Move[] getMoves() {
 	    return moves;
+	}
+	
+	public CompositeMove(ArrayList movesArrayList) {
+		moves = new Move[movesArrayList.size()];
+		for(int i = 0 ; i < movesArrayList.size(); i++){
+			moves[i] = (Move)movesArrayList.get(i);
+		}
 	}
 	    
 	public CompositeMove(Move[] moves) {

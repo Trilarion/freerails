@@ -1,5 +1,7 @@
+Nov 30, 2003 1:24:28 AM Luke
+	o Fixed bug 839336 (Removing station train heading to causes Exception) 
 Nov 29, 2003 9:46:07 PM Luke
-	o Fix bug839392(After F8 to build station, position still follows mouse)
+	o Fixed bug 839392(After F8 to build station, position still follows mouse)
 	o Added jalopy 'format' target to build.xml
 Nov 18, 2003 11:36:38 PM Luke
 	o Applied Robert Tuck's patch to fix the bug that occurred with 1 local client 

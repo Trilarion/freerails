@@ -38,7 +38,12 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 	}
 
 	public int getStationToGoto() {
-		return orders[getOrderToGoto()].getStationNumber();
+		int orderToGoto = getOrderToGoto();
+		if(-1 == orderToGoto){
+			return -1;
+		}else{
+			return orders[orderToGoto].getStationNumber();
+		}
 	}
 
 	public int[] getWagonsToAdd() {
@@ -55,6 +60,16 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 
 	public int getNextScheduledOrder() {
 		return this.nextScheduledOrder;
+	}
+	
+	public boolean stopsAtStation(int stationNumber){
+		for(int i=0; i < this.getNumOrders(); i ++){
+			TrainOrdersModel order = this.getOrder(i);
+			if(order.getStationNumber() == stationNumber){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	

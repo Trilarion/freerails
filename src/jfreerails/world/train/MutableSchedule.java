@@ -224,5 +224,17 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
 	public int getNextScheduledOrder() {		
 		return this.nextScheduledOrder;
 	}
+	
+	public void removeAllStopsAtStation(int stationNumber){
+		int i = 0;
+		while (i < this.getNumOrders()){
+			TrainOrdersModel order = this.getOrder(i);
+			if(order.getStationNumber() == stationNumber){
+				this.removeOrder(i);
+			}else{
+				i++;
+			}
+		}
+	}
 }
 
