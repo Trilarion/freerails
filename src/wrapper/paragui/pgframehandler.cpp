@@ -6,6 +6,7 @@ PG_FrameHandler::PG_FrameHandler(PG_FrameApplication* app)
 {
   my_app=app;
   my_appsurface=app->GetScreen();
+  mouse_over=true;
 }
 
 PG_FrameHandler::~PG_FrameHandler()

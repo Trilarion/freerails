@@ -21,6 +21,11 @@ PARAGUI_CALLBACK(GamePanel::pause_handler) {
   }
 }
 
+PARAGUI_CALLBACK(GamePanel::quit_handler) {
+std::cerr << "call quit" << std::endl;
+  my_parent->getApp()->Quit();
+}
+
 PARAGUI_CALLBACK(GamePanel::clickViewButton) {
 
   PG_Button* button = (PG_Button*)widget;
@@ -48,18 +53,18 @@ PARAGUI_CALLBACK(GamePanel::clickBuildButton) {
     switch (id)
     {
       case GamePanel::BuildTrack:
-        mapView->setMouseType(GameMapView::buildTrack);
+        my_parent->getWidget()->setMouseType(GameMapView::buildTrack);
       break;
       case GamePanel::BuildStation:
-        mapView->setMouseType(GameMapView::buildStation);
+        my_parent->getWidget()->setMouseType(GameMapView::buildStation);
       break;
       case GamePanel::BuildTrain:
-        mapView->setMouseType(GameMapView::buildTrain);
+        my_parent->getWidget()->setMouseType(GameMapView::buildTrain);
       break;
     }
     Update();
   } else {
-    mapView->setMouseType(GameMapView::normal);
+    my_parent->getWidget()->setMouseType(GameMapView::normal);
   }
 }
 
@@ -68,24 +73,28 @@ PARAGUI_CALLBACK(GamePanel::clickStationSelect) {
   switch (id)
   {
     case 4:
-      mapView->setStationType(Station::Signal);
+      my_parent->getWidget()->setStationType(Station::Signal);
     break;
     case 5:
-      mapView->setStationType(Station::Small);
+      my_parent->getWidget()->setStationType(Station::Small);
     break;
     case 6:
-      mapView->setStationType(Station::Medium);
+      my_parent->getWidget()->setStationType(Station::Medium);
     break;
     case 7:
-      mapView->setStationType(Station::Big);
+      my_parent->getWidget()->setStationType(Station::Big);
     break;
   }
 }
 
 
-GamePanel::GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine, GameMapView* _mapView):
-PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
-  SetBackgroundBlend(0);
+GamePanel::GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine):
+PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
+  my_parent = parent;
+  guiEngine=_guiEngine;
+
+  SetBackgroundBlend(255);
+  SetTransparency(128);
   stationViewButton=new PG_Button(this,GamePanel::ViewStations,PG_Rect(2,200,79,20),"Stations");
   stationViewButton->SetToggle(true);
   stationViewButton->SetPressed(true);
@@ -97,14 +106,16 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   
   trainList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
   trainList->EnableScrollBar(true, PG_SB_VERTICAL);
-  trainList->SetTransparency(0);
+  trainList->SetTransparency(128);
+  trainList->SetBackgroundBlend(255);
   trainList->SetVisible(false);
   trainList->SetDirtyUpdate(false);
   trainListSize=0;
 
   stationList=new PG_WidgetList(this, PG_Rect(2,225,146, 170));
   stationList->EnableScrollBar(true, PG_SB_VERTICAL);
-  stationList->SetTransparency(0);
+  stationList->SetTransparency(128);
+  stationList->SetBackgroundBlend(255);
   stationList->SetDirtyUpdate(false);
   stationListSize=0;
   
@@ -139,9 +150,9 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   pauseButton=new PG_Button(this,3,PG_Rect(5,510,125,25),"PAUSE");
   pauseButton->SetToggle(true);
   pauseButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::pause_handler);
-  
-  guiEngine=_guiEngine;
-  mapView=_mapView;
+
+  quitButton=new PG_Button(this,4,PG_Rect(5,540,125,25),"QUIT");
+  quitButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::quit_handler);
 }
 
 GamePanel::~GamePanel() {

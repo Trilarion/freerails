@@ -12,11 +12,13 @@
 
 #include "pgapplication.h"
 #include "pgframehandler.h"
+#include "pgnethandler.h"
 #include "pglabel.h"
 
 #include <SDL.h>
 
 class PG_FrameHandler;
+class PG_NetHandler;
 
 class PG_FrameApplication : public PG_Application  {
 public:
@@ -44,11 +46,18 @@ public:
 	static void SetFrameHandler(PG_FrameHandler* framehandler);
 	static PG_FrameHandler* GetFrameHandler();
 
+	static void SetNetHandler(PG_NetHandler* nethandler);
+	static PG_NetHandler* GetNetHandler();
+
 	static void SetFPSLabel(PG_Label* fpslabel);
 	static PG_Label* GetFPSLabel();
 
+protected:
+	bool eventQuit(int id, PG_MessageObject* widget, unsigned long data);
+	
 private:
         static PG_FrameHandler* my_framehandler;
+        static PG_NetHandler* my_nethandler;
         static PG_Label* my_fpslabel;
 	
 	PG_FrameApplication(const PG_FrameApplication&);

@@ -8,701 +8,57 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine):
-PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget"),
-Base2DMapView(_guiEngine) {
-
-  PG_Point p;
-  
+GameMapView::GameMapView(PG_FrameApplication* _app, int x, int y, int w, int h):
+PG_Widget(NULL, PG_Rect(x,y,w,h)),
+Base2DMapView(NULL) {
   viewPos.x=0;
   viewPos.y=0;
-  
-  SetBackgroundBlend(0);
-  tilesImage=IMG_Load("data/graphics/tilesets/default/terrain_tiles.png");
-  trackImage=IMG_Load("data/graphics/tilesets/default/track_tiles.png");
-  trainImage=IMG_Load("data/graphics/ui/buttons/build_train.png");
-  
-  imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,w,h,32,0,0,0,0);
-//  parent->getApp()->SetFrameSurface(imageSurface);
-//  parent->getApp()->SetFrameWidget(this);
-
-  p.x=0;
-  p.y=0;
-  view=new PG_Image(this, p, imageSurface, false);
-//  blind=new PG_Widget(this,PG_Rect(0,0,guiEngine->getWorldMap()->getWidth()*30,guiEngine->getWorldMap()->getHeight()*30));
-  redrawMap(0,0,w,h);
-  verticalScrollBar = new PG_ScrollBar(this,200/*ID*/,PG_Rect(w-15,0,15,h-15),PG_SB_VERTICAL);
-  horizontalScrollBar = new PG_ScrollBar(this,201/*ID*/,PG_Rect(0,h-15,w-15,15),PG_SB_HORIZONTAL);
-  
-  verticalScrollBar->SetRange(0,(guiEngine->getWorldMap()->getHeight()*30)-h);
-  verticalScrollBar->SetPageSize(h);
-  verticalScrollBar->SetLineSize(30);
-  horizontalScrollBar->SetRange(0,(guiEngine->getWorldMap()->getWidth()*30)-w);
-  horizontalScrollBar->SetPageSize(w);
-  horizontalScrollBar->SetLineSize(30);
-  mouseType=normal;
-  stationType=Station::Signal;
-  mouseOldMapX=0;
-  mouseOldMapY=0;
-  
-  writeCities();
-  
-  std::vector<City*> cities = guiEngine->getAllCities();
-  std::vector<City*>::iterator it;
-  for (it = cities.begin(); it != cities.end(); ++it)
-  {
-    // Set the City Name Labels
-    int x = (*it)->getPosX();
-    int y = (*it)->getPosY();
-    PG_Label* l = new PG_Label(view, PG_Rect(x*30-30,y*30+30,90,20),(*it)->getName().c_str());
-    l->SetAlignment(PG_TA_CENTER);
-  }
-
-  selected = false;
-  selectedX = -1;
-  selectedY = -1;
-
+  selectedX = 0;
+  selectedY = 0;
+  app=_app;
+  selectedbase = new PG_SpriteBase();
+  selectedbase->init("data/graphics/ui/cursors");
+  selectedsprite = new PG_SpriteObject();
+  selectedsprite->init(selectedbase);
+  selectedsprite->set(0,0);
+  selectedsprite->setSpeed(20);
 }
 
 GameMapView::~GameMapView() {
-
-  cerr << "Blob" << endl;
-  delete tilesImage;
-  delete trackImage;
-  delete imageSurface;
-  cerr << "Blub" << endl;
-
 }
 
-void GameMapView::drawMapPixmap(int mapX, int mapY) {
-
-  int tilesetPosX, tilesetPosY;
-
-  MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
-  if (field==NULL) return;
-  MapField::FieldType type=field->getType();
-  
-  switch (type)
-  { case MapField::grass:
-    {
-      tilesetPosX=0;
-      tilesetPosY=0;
-      break;
-    }
-    case MapField::dessert:
-    {
-      tilesetPosX=getPixmapPos(mapX,mapY,MapField::dessert);
-      tilesetPosY=1;
-      break;
-    }
-    case MapField::river:
-    {
-      tilesetPosX=getRiverPixmapPos(mapX,mapY);
-      tilesetPosY=4;
-      break;
-    }
-    case MapField::ocean:
-    {
-      tilesetPosX=getPixmapPos(mapX,mapY,MapField::ocean);
-      tilesetPosY=5;
-      break;
-    }
-    case MapField::bog:
-    {
-      tilesetPosX=getPixmapPos(mapX,mapY,MapField::bog);
-      tilesetPosY=2;
-      break;
-    }
-    case MapField::jungle:
-    {
-      tilesetPosX=getPixmapPos(mapX,mapY,MapField::jungle);
-      tilesetPosY=3;
-      break;
-    }
-    case MapField::wood:
-    {
-      tilesetPosX=get3DPixmapPos(mapX,mapY,MapField::wood);
-      tilesetPosY=6;
-      break;
-    }
-    case MapField::foothills:
-    {
-      tilesetPosX=get3DPixmapPos(mapX,mapY,MapField::foothills);
-      tilesetPosY=6;
-      break;
-    }
-    case MapField::hills:
-    {
-      tilesetPosX=4+get3DPixmapPos(mapX,mapY,MapField::hills);
-      tilesetPosY=6;
-      break;
-    }
-    case MapField::mountain:
-    {
-      tilesetPosX=8+get3DPixmapPos(x,y,MapField::mountain);
-      tilesetPosY=6;
-      break;
-    }
-/* 
-  This are normaly no map type
-  They should be a gameElement.
-*/
-    case MapField::smallvillage:
-    {
-      // What village?
-      tilesetPosX=1;
-      tilesetPosY=7;
-      break;
-    }
-    case MapField::village:
-    {
-      // What village?
-      tilesetPosX=1;
-      tilesetPosY=8;
-      break;
-    }
-    case MapField::smallcity:
-    {
-      // What city?
-      tilesetPosX=2;
-      tilesetPosY=7;
-      break;
-    }
-    case MapField::city:
-    {
-      // What city?
-      tilesetPosX=2;
-      tilesetPosY=8;
-      break;
-    }
-    case MapField::smallslum:
-    {
-      // What Slum?
-      tilesetPosX=3;
-      tilesetPosY=7;
-      break;
-    }
-    case MapField::slum:
-    {
-      // What Slum?
-      tilesetPosX=3;
-      tilesetPosY=8;
-      break;
-    }
-    case MapField::resource:
-    {
-      // What Resource?
-      tilesetPosX=8;
-      tilesetPosY=8;
-      break;
-    }
-    case MapField::industrie:
-    {
-      // What Industrie?
-      tilesetPosX=5;
-      tilesetPosY=8;
-      break;
-    }
-    case MapField::farm:
-    {
-      // What Farm? Have we more then 1?
-      tilesetPosX=6;
-      tilesetPosY=7;
-      break;
-    }
-
-    default:
-    {
-      tilesetPosX=13;
-      tilesetPosY=7;
-    }
-  }
-  drawTilesPixmap(tilesetPosX,tilesetPosY,mapX,mapY);
-}
-
-void GameMapView::drawElementsPixmap(int mapX, int mapY) {
-
-  MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
-  if (field==NULL) return;
-  GameElement* element = field->getElement();
-  if (element!=NULL)
-  {  
-    switch (element->getTypeID())
-    {
-      case (GameElement::idStation):
-        drawStationPixmap(mapX, mapY, (Station*) element);
-      break;
-// others like industrie there
-    }
-  }
-  
-  Station* station = field->getStation();
-  if (station!=NULL) drawStationPixmap(mapX, mapY, station);
-}
-
-void GameMapView::drawTrackPixmap(int mapX, int mapY) {
-
-  MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
-  if (field == NULL) return;
-  Track* track = field->getTrack();
-  if (track == NULL) return;
-  drawTrackPixmap(mapX, mapY, track);  
-}
-
-void GameMapView::drawStationPixmap(int mapX, int mapY, Station* station) {
-  int tilesetX, tilesetY;
-  MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
-  if (field == NULL) return;
-  Track* track = field->getTrack();
-  if (track==NULL) return;
-  unsigned int connect = track->getConnect();
-  int sizepos = 0;
-  switch (station->getSize())
-  {
-    case Station::Signal:
-    break;
-    case Station::Small:
-      sizepos=4;
-    break;
-    case Station::Medium:
-      sizepos=8;
-    break;
-    case Station::Big:
-      sizepos=12;
-    break;
-  }
-  connect |= TrackIsBlocked;
-  switch (connect ^ TrackIsBlocked)
-  {
-    case TrackGoNorth:
-      tilesetX=18*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoSouth:
-      tilesetX=26*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoNorth | TrackGoSouth:
-      tilesetX=18*30+15;
-      tilesetY=(18+sizepos)*30+15;
-    break;
-    case TrackGoNorthEast:
-      tilesetX=20*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoSouthWest:
-      tilesetX=28*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoNorthEast | TrackGoSouthWest:
-      tilesetX=20*30+15;
-      tilesetY=(18+sizepos)*30+15;
-    break;
-    case TrackGoEast:
-      tilesetX=22*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoWest:
-      tilesetX=30*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoEast | TrackGoWest:
-      tilesetX=22*30+15;
-      tilesetY=(18+sizepos)*30+15;
-    break;
-    case TrackGoNorthWest:
-      tilesetX=32*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoSouthEast:
-      tilesetX=24*30+15;
-      tilesetY=(16+sizepos)*30+15;
-    break;
-    case TrackGoNorthWest | TrackGoSouthEast:
-      tilesetX=24*30+15;
-      tilesetY=(18+sizepos)*30+15;
-    break;
-  }
-  drawPixmap(trackImage, tilesetX, tilesetY, mapX, mapY);
-}
-
-
-void GameMapView::drawTrackPixmap(int mapX, int mapY, Track* track) {
-
-  int tilesetX, tilesetY;
-
-  switch (track->getConnect())
-  {
-    case TrackGoNorth:
-      tilesetX=(0)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-    case TrackGoNorthEast:
-      tilesetX=(1)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-    case TrackGoEast:
-      tilesetX=(2)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-    case TrackGoSouthEast:
-      tilesetX=(3)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-    case TrackGoSouth:
-      tilesetX=(4)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-    case TrackGoSouthWest:
-      tilesetX=(5)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-    case TrackGoWest:
-      tilesetX=(6)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-    case TrackGoNorthWest:
-      tilesetX=(7)*2*30+15;
-      tilesetY=0*30+15;
-    break;
-
-    case TrackGoNorth|TrackGoSouth:
-      tilesetX=(0)*2*30+15;
-      tilesetY=2*30+15;
-    break;
-    case TrackGoNorthEast|TrackGoSouthWest:
-      tilesetX=(1)*2*30+15;
-      tilesetY=2*30+15;
-    break;
-    case TrackGoEast|TrackGoWest:
-      tilesetX=(2)*2*30+15;
-      tilesetY=2*30+15;
-    break;
-    case TrackGoSouthEast|TrackGoNorthWest:
-      tilesetX=(3)*2*30+15;
-      tilesetY=2*30+15;
-    break;
-
-    case TrackGoNorth|TrackGoSouthEast:
-      tilesetX=(0)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-    case TrackGoSouth|TrackGoNorthEast:
-      tilesetX=(1)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-    case TrackGoEast|TrackGoSouthWest:
-      tilesetX=(2)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-    case TrackGoWest|TrackGoSouthEast:
-      tilesetX=(3)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-    case TrackGoSouth|TrackGoNorthWest:
-      tilesetX=(4)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-    case TrackGoNorth|TrackGoSouthWest:
-      tilesetX=(5)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-    case TrackGoWest|TrackGoNorthEast:
-      tilesetX=(6)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-    case TrackGoEast|TrackGoNorthWest:
-      tilesetX=(7)*2*30+15;
-      tilesetY=4*30+15;
-    break;
-
-    case TrackGoNorth|TrackGoSouth|TrackGoSouthEast:
-      tilesetX=(0)*2*30+15;
-      tilesetY=6*30+15;
-    break;
-    case TrackGoSouth|TrackGoNorthEast|TrackGoSouthWest:
-      tilesetX=(1)*2*30+15;
-      tilesetY=6*30+15;
-    break;
-    
-  case TrackGoEast|TrackGoWest|TrackGoSouthWest:
-      tilesetX=(2)*2*30+15;
-      tilesetY=6*30+15;
-      break;
-    case TrackGoWest|TrackGoSouthEast|TrackGoNorthWest:
-      tilesetX=(3)*2*30+15;
-      tilesetY=6*30+15;
-    break;
-    case TrackGoNorth|TrackGoSouth|TrackGoNorthWest:
-      tilesetX=(4)*2*30+15;
-      tilesetY=6*30+15;
-    break;
-    case TrackGoNorth|TrackGoNorthEast|TrackGoSouthWest:
-      tilesetX=(5)*2*30+15;
-      tilesetY=6*30+15;
-    break;
-    case TrackGoEast|TrackGoWest|TrackGoNorthEast:
-      tilesetX=(6)*2*30+15;
-      tilesetY=6*30+15;
-    break;
-    case TrackGoEast|TrackGoSouthEast|TrackGoNorthWest:
-      tilesetX=(7)*2*30+15;
-      tilesetY=6*30+15;
-    break;
-
-    case TrackGoNorth|TrackGoSouth|TrackGoSouthWest:
-      tilesetX=(0)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoWest|TrackGoNorthEast|TrackGoSouthWest:
-      tilesetX=(1)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoEast|TrackGoWest|TrackGoNorthWest:
-      tilesetX=(2)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoNorth|TrackGoSouthEast|TrackGoNorthWest:
-      tilesetX=(3)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoNorth|TrackGoSouth|TrackGoNorthEast:
-      tilesetX=(4)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoEast|TrackGoNorthEast|TrackGoSouthWest:
-      tilesetX=(5)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoEast|TrackGoWest|TrackGoSouthEast:
-      tilesetX=(6)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoSouth|TrackGoSouthEast|TrackGoNorthWest:
-      tilesetX=(7)*2*30+15;
-      tilesetY=8*30+15;
-    break;
-    case TrackGoNorth|TrackGoEast|TrackGoSouth|TrackGoWest:
-      tilesetX=(0)*2*30+15;
-      tilesetY=10*30+15;
-    break;
-  case TrackGoNorthEast|TrackGoSouthEast|TrackGoSouthWest|TrackGoNorthWest:
-      tilesetX=(1)*2*30+15;
-      tilesetY=10*30+15;
-      break;
-     
-  case TrackGoNorth|TrackGoEast:
-      tilesetX=(0)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-  case TrackGoNorth|TrackGoWest:
-      tilesetX=(6)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-  case TrackGoSouth|TrackGoEast:
-      tilesetX=(2)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-  case TrackGoSouth|TrackGoWest:
-      tilesetX=(4)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-  case TrackGoNorth|TrackGoEast|TrackGoWest:
-      tilesetX=(0)*2*30+15;
-      tilesetY=16*30+15;
-      break;
-  case TrackGoSouth|TrackGoEast|TrackGoWest:
-      tilesetX=(4)*2*30+15;
-      tilesetY=16*30+15;
-      break;
-  case TrackGoNorth|TrackGoSouth|TrackGoWest:
-      tilesetX=(6)*2*30+15;
-      tilesetY=16*30+15;
-      break;
-  case TrackGoNorth|TrackGoSouth|TrackGoEast:
-      tilesetX=(2)*2*30+15;
-      tilesetY=16*30+15;
-      break;
-
-  case TrackGoNorthEast|TrackGoSouthEast:
-      tilesetX=(1)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-  case TrackGoNorthWest|TrackGoSouthWest:
-      tilesetX=(5)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-  case TrackGoSouthWest|TrackGoSouthEast:
-      tilesetX=(3)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-  case TrackGoNorthWest|TrackGoNorthEast:
-      tilesetX=(7)*2*30+15;
-      tilesetY=12*30+15;
-      break;
-
-  case TrackGoNorthEast|TrackGoNorth:
-      tilesetX=(0)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-  case TrackGoNorthEast|TrackGoEast:
-      tilesetX=(1)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-  case TrackGoSouthEast|TrackGoEast:
-      tilesetX=(2)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-  case TrackGoSouthEast|TrackGoSouth:
-      tilesetX=(3)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-  case TrackGoSouthWest|TrackGoSouth:
-      tilesetX=(4)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-  case TrackGoSouthWest|TrackGoWest:
-      tilesetX=(5)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-  case TrackGoNorthWest|TrackGoWest:
-      tilesetX=(6)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-  case TrackGoNorthWest|TrackGoNorth:
-      tilesetX=(7)*2*30+15;
-      tilesetY=14*30+15;
-      break;
-
-    default:
-      tilesetX=(7)*2*30+15;
-      tilesetY=2*30+15;
-    break;
-  }
-  drawPixmap(trackImage, tilesetX, tilesetY, mapX, mapY);
-
-  
-  if (track->getConnect() & TrackGoNorthEast)
-  {
-    drawPixmap(trackImage, 3*30+15, 2*30+15, mapX+1, mapY);
-  }
-  if (track->getConnect() & TrackGoSouthEast)
-  {
-    drawPixmap(trackImage, 7*30+15, 0*30+15, mapX+1, mapY);
-  }
-  if (track->getConnect() & TrackGoSouthWest)
-  {
-    drawPixmap(trackImage, 2*30+15, 1*30+15, mapX-1, mapY);
-  }
-  if (track->getConnect() & TrackGoNorthWest)
-  {
-    drawPixmap(trackImage, 5*30+15, 2*30+15, mapX-1, mapY);
-  }
-  
-}
-
-void GameMapView::drawPixmap(SDL_Surface* pixmap, int tilesetX, int tilesetY, int mapX, int mapY) {
-  SDL_Rect rectSRC, rectDST;
-  rectSRC.w=30;
-  rectSRC.h=30;
-  rectSRC.x=tilesetX;
-  rectSRC.y=tilesetY;
-  rectDST.x=mapX*30-viewPos.x;
-  rectDST.y=mapY*30-viewPos.y;
-  rectDST.w=rectSRC.w;
-  rectDST.h=rectSRC.h;
-  SDL_BlitSurface(pixmap, &rectSRC, imageSurface, &rectDST);
-}
-
-void GameMapView::drawTilesPixmap(int tilesetPosX, int tilesetPosY, int mapX, int mapY) {
-  drawPixmap(tilesImage, tilesetPosX*30, tilesetPosY*30, mapX, mapY);
-}
-
-void GameMapView::drawSelected(int mapX, int mapY) {
-
-    if(!selected)
-	return;
-    
-    selected = false;
-    regenerateTile(selectedX, selectedY);
-    selected = true;
-
-    selectedX = mapX;
-    selectedY = mapY;
-
-    int viewX = selectedX * 30 - viewPos.x;
-    int viewY = selectedY * 30 - viewPos.y;
-
-    /*
-    std::cout << "view: " << viewPos.x <<   " " << viewPos.y << std::endl;
-    std::cout << "view: " << viewX <<   " " << viewY << std::endl;
-    */
-    if((viewX < 0) || (viewX > 630) ||
-       (viewY < 0) || (viewY > 600))
-	return;
-
-    /* std::cout << "DRAWING SELECTED" << std::endl; */
-
-    /* vertical line */
-    SDL_Rect r;
-    r.x = viewX;
-    r.y = viewY;
-    r.w = 1;
-    r.h = 30;
-    SDL_FillRect(imageSurface, &r, 0);
-
-    /* vertical line */
-    r.x = viewX + 30;
-    r.y = viewY;
-    r.w = 1;
-    r.h = 30;
-    SDL_FillRect(imageSurface, &r, 0);
-
-    /* horizontal line */
-    r.x = viewX;
-    r.y = viewY;
-    r.w = 30;
-    r.h = 1;
-    SDL_FillRect(imageSurface, &r, 0);
-
-    /* horizontal line */
-    r.x = viewX;
-    r.y = viewY + 30;
-    r.w = 30;
-    r.h = 1;
-    SDL_FillRect(imageSurface, &r, 0);
-
-}
-
-void GameMapView::drawTrainPixmap(int mapX, int mapY) {
-  drawPixmap(trainImage, 0, 0, mapX, mapY);
+void GameMapView::setGuiEngine(GuiEngine* _guiEngine) {
+  guiEngine=_guiEngine;
+  app->GetFrameHandler()->AddSprite(selectedsprite);
 }
 
 void GameMapView::setMouseType(MouseType type) {
-
   mouseType=type;
 }
 
 void GameMapView::setStationType(Station::Size type) {
-
   stationType=type;
 }
 
 void GameMapView::eventMouseLeave() {
+  std::cerr << "leave map" << std::endl;
+  PG_Widget::eventMouseLeave();
+}
 
-    /*  regenerateTile(mouseOldMapX,mouseOldMapY); */
+void GameMapView::eventMouseEnter() {
+  std::cerr << "enter map" << std::endl;
+  PG_Widget::eventMouseEnter();
 }
 
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
+  std::cerr << "mouse down map" << std::endl;
+
 
   if (button->button==SDL_BUTTON_LEFT) {
 
     unsigned int mapx, mapy;
     int dir;  
     screen2map(button->x+viewPos.x, button->y+viewPos.y, &mapx, &mapy, &dir);
-
-    selected = true;
-
     switch (mouseType) {
 	
     case buildStation:
@@ -710,9 +66,6 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 	break;
     case buildTrack:
 	if(adjacentTile(mapx, mapy, &dir)){
-	    /* std::cout << "ADJACENT TILE " << 
-		selectedX << " " << selectedY << "    " <<
-		mapx << " " << mapy << std::endl; */
 	    if(guiEngine->buildTrack(selectedX,selectedY,dir)) {
 		unsigned int mx,my;
 		guiEngine->getOtherConnectionSide(&mx,&my,&dir);
@@ -724,234 +77,23 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
         guiEngine->buildTrain(mapx,mapy);
 	break;
     default:
-	drawSelected(mapx, mapy);
-	return false;
-	break;
+    break;
     }
     drawSelected(mapx, mapy);
+    return true;
   }
   return false;
 }
 
-void GameMapView::regenerateTile(int x, int y)
-{
-  // Not the cleanest :-)
-  
-  // First Map && Buildings
-  for (int y1=-1;y1<=1;y1++)
-  {
-    for (int x1=-1;x1<=1;x1++)
-    {
-      drawMapPixmap(x+x1, y+y1);
-      drawElementsPixmap(x+x1, y+y1);
-    }
-  }
-
-  // Then the Tracks
-  for (int y1=-2;y1<=2;y1++)
-  {
-    for (int x1=-2;x1<=2;x1++)
-    {
-      drawTrackPixmap(x+x1, y+y1);
-    }
-  }
-
-  if(selected)
-      drawSelected(selectedX, selectedY);
-  
-}
-
-void GameMapView::showTrack(int x, int y, unsigned int dir) {
-# warning Clean up code
-  int tilesetX=(dir-1)*2*30+15;
-  int tilesetY=0*30+15;
-  drawPixmap(trackImage, tilesetX, tilesetY, x, y);
-  switch (dir)
-  {
-    case 1:
-     return;
-    break;
-    case 2:
-      x++;
-      tilesetX=3*30+15;
-      tilesetY=2*30+15;
-    break;
-    case 3:
-     return;
-    break;
-    case 4:
-      x++;
-      tilesetX=7*30+15;
-      tilesetY=0*30+15;
-    break;
-    case 5:
-     return;
-    break;
-    case 6:
-      x--;
-      tilesetX=2*30+15;
-      tilesetY=1*30+15;
-    break;
-    case 7:
-     return;
-    break;
-    case 8:
-      x--;
-      tilesetX=5*30+15;
-      tilesetY=2*30+15;
-    break;
-  }
-  drawPixmap(trackImage, tilesetX, tilesetY, x, y);
-}
 
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
-  unsigned int mousex, mousey;
-  unsigned int mapx, mapy;
-  int dir;
-  
-  /* regenerateTile(mouseOldMapX,mouseOldMapY); */
-  /*
-  mousex = motion->x + viewPos.x;  // realScreenPosX
-  mousey = motion->y + viewPos.y;  // realScreenPosY
-  
-  screen2map(mousex, mousey, &mapx, &mapy, &dir);
-
-  mouseOldMapX = mapx;
-  mouseOldMapY = mapy;
-
-  switch (mouseType) {
-  
-    case buildStation:
-      if(guiEngine->testBuildStation(mapx,mapy)){
-	drawStationPixmap(mapx, mapy, new Station(mapx,mapy, NULL, "", stationType, NULL));
-      }
-    break;
-    case buildTrack:
-      if(guiEngine->testBuildTrack(mapx,mapy,dir)){
-        showTrack(mapx,mapy,dir);
-	guiEngine->getOtherConnectionSide(&mapx,&mapy,&dir);
-	showTrack(mapx,mapy,dir);
-      }
-    break;
-    case buildTrain:
-      if(guiEngine->testBuildTrain(mapx,mapy)){
-	drawTrainPixmap(mapx, mapy);
-      }
-    break;
-    default:
-      return false;
-    break;
-  }
-  */
+  std::cerr << "mouse move map" << std::endl;
   return true;
-}
-
-bool GameMapView::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
-
-  if (id == 200)
-  {
-    moveYto(data);
-    return true;
-  }
-  if (id == 201)
-  {
-    moveXto(data);
-    return true;
-  }
-  return false;  
-}
-
-bool GameMapView::eventScrollPos(int id, PG_Widget* widget, unsigned long data) {
-
-  if (id == 200)
-  {
-    moveYto(data);
-    return true;
-  }
-  if (id == 201)
-  {
-    moveXto(data);
-    return true;
-  }
-  return false;  
-}
-
-void GameMapView::moveXto(unsigned long pos) {
-
-  redrawMap(pos, viewPos.y, Width(), Height());
-  view->RemoveAllChilds();
-  writeCities();
-  // TODO: Find a better scrolling, exspecialy for the city names
-  // TODO: Don't need full redraw any time
-  viewPos.x = pos;
-}
-
-void GameMapView::moveYto(unsigned long pos) {
-
-  redrawMap(viewPos.x, pos, Width(), Height());
-  view->RemoveAllChilds();
-  writeCities();
-  // TODO: Find a better scrolling, exspecialy for the city names
-  // TODO: Don't need full redraw any time
-  viewPos.y = pos;
-}
-
-void GameMapView::redrawMap(int x, int y, int w, int h) {
-
-  int countX = (w / 30)+1;
-  int countY = (h / 30)+1;
-  
-  int startXmap = (x / 30);
-  int startYmap = (y / 30);
-  
-  int startXsurface = - (x);
-  int startYsurface = - (y);
-
-  std::cout << "REDRAWING" << std::endl; 
-
-  // First Map & Buildings  
-  for (int y1=0;y1<=countY;y1++)
-  {
-    for (int x1=0;x1<=countX;x1++)
-    {
-      drawMapPixmap(x1+startXmap, y1+startYmap);
-      drawElementsPixmap(x1+startXmap, y1+startYmap);
-    }
-  }
-  
-  // Then tracks
-  for (int y1=0;y1<=countY;y1++)
-  {
-    for (int x1=0;x1<=countX;x1++)
-    {
-      drawTrackPixmap(x1+startXmap, y1+startYmap);
-    }
-  }
-  
-  if(selected)
-      drawSelected(selectedX, selectedY);
-  
-}
-
-void GameMapView::writeCities() {
-
-  std::vector<City*> cities = guiEngine->getAllCities();
-  std::vector<City*>::iterator it;
-  for (it = cities.begin(); it != cities.end(); ++it)
-  {
-    // Set the City Name Labels
-    int x = (*it)->getPosX();
-    int y = (*it)->getPosY();
-    PG_Label* l = new PG_Label(view, PG_Rect(x*30-30-viewPos.x,y*30+30-viewPos.y,90,20),(*it)->getName().c_str());
-    l->SetAlignment(PG_TA_CENTER);
-    l->Show();
-  }
 }
 
 bool GameMapView::adjacentTile(int mapX, int mapY, int *dir) {
 
-    if(selected){
 	int x = selectedX - mapX;
 	int y = selectedY - mapY;
 
@@ -982,6 +124,15 @@ bool GameMapView::adjacentTile(int mapX, int mapY, int *dir) {
 	    }
 	    return true;
 	}
-    }
     return false;
+}
+
+void GameMapView::drawSelected(int mapX, int mapY) {
+
+    selectedX = mapX;
+    selectedY = mapY;
+
+    int viewX = selectedX * 30 - viewPos.x;
+    int viewY = selectedY * 30 - viewPos.y;
+    selectedsprite->set(viewX, viewY);
 }

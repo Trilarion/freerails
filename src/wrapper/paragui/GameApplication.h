@@ -8,15 +8,12 @@
 #include "GameDataSelectDialog.h"
 #include "GameMainWindow.h"
 #include "GameModeSelectDialog.h"
-#include "GameMapView.h"
 #include "GameNetView.h"
 #include "GamePanel.h"
-#include "GameTimerWidget.h"
 
 #include "SDL.h"
 
 #include "Message.h"
-/* #include "Engine.h" */
 
 
 #include <pgapplication.h>
@@ -48,11 +45,8 @@ private:
     Uint32 screenFlags;
     int screenDepth;
     PG_ThemeWidget* splash;
-    GameMapView* mapView;
     GameNetView* netView;
     GamePanel* panel;
-    GameTimerWidget* timer;
-    /* Engine* engine; */
 };
 
 #endif

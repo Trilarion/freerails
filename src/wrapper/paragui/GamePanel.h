@@ -6,11 +6,11 @@
 #define __GAMEPANEL_H__
 
 #include "GameMainWindow.h"
-#include "GameMapView.h"
 
 #include <pgthemewidget.h>
 #include <pgradiobutton.h>
 #include <pgbutton.h>
+#include <pgimage.h>
 #include <pgrect.h>
 #include <pgwidgetlist.h>
 
@@ -26,16 +26,21 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
   public:
     enum WidgetID {ViewStations = 10000, ViewTrains, BuildTrack, BuildStation, BuildTrain };
     /**  */
-    GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _engine, GameMapView* _mapView);
+    GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _engine);
     /**  */
     ~GamePanel();
     
     void addStation(Station* station);
     void addTrain(Train* train);
-
+    
+    bool eventMouseMotion(const SDL_MouseMotionEvent* motion) { return true;};
+    bool eventMouseButtonDown(const SDL_MouseButtonEvent* button) { return true;};
+    bool eventMouseButtonUp(const SDL_MouseButtonEvent* button) { return true;};
+    
   private:
   
     PARAGUI_CALLBACK(pause_handler);
+    PARAGUI_CALLBACK(quit_handler);
     PARAGUI_CALLBACK(clickViewButton);
     PARAGUI_CALLBACK(clickBuildButton);
     PARAGUI_CALLBACK(clickStationSelect);
@@ -56,6 +61,7 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     PG_Button* stationButton;
     PG_Button* trainButton;
     PG_Button* pauseButton;
+    PG_Button* quitButton;
     
     PG_RadioButton* stationSignal;
     PG_RadioButton* stationSmall;
@@ -64,7 +70,7 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     
     
     GuiEngine* guiEngine;
-    GameMapView* mapView;
+    GameMainWindow* my_parent;
 };
 
 #endif

@@ -12,7 +12,6 @@
 #include "pgmessageobject.h"
 #include "pgframeapplication.h"
 #include "pgframeobject.h"
-
 #include <vector>
 #include <SDL.h>
 
@@ -33,8 +32,12 @@ public:
 	/**
 	The NextFrame function is called from PG_FrameApplication
 	*/
-	virtual void NextFrame(){};
+	virtual void NextFrame(SDL_Surface *surface){};
+	virtual void DrawBackground(SDL_Surface *surface){};
 	
+	virtual void UpdateBackground(int x, int y) {};
+	
+	void SetMouseOver(bool over){ mouse_over = over; };
 	void SetBackgroundColor(Uint32 background);
 	Uint32 GetBackgroundColor();
 	
@@ -64,6 +67,7 @@ protected:
 	SDL_Surface* my_appsurface;
 	PG_FrameApplication* my_app;
 	Uint32 my_background;
+	bool mouse_over;
 };
 
 #endif // PG_FRAMEHANDLER_H

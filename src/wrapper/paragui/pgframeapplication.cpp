@@ -2,6 +2,7 @@
 #include <cassert>
 
 PG_FrameHandler*  PG_FrameApplication::my_framehandler=NULL;
+PG_NetHandler*  PG_FrameApplication::my_nethandler=NULL;
 PG_Label*  PG_FrameApplication::my_fpslabel=NULL;
 
 PG_FrameApplication::PG_FrameApplication()
@@ -17,6 +18,14 @@ void PG_FrameApplication::SetFrameHandler(PG_FrameHandler* framehandler) {
 
 PG_FrameHandler* PG_FrameApplication::GetFrameHandler() {
   return my_framehandler;
+}
+
+void PG_FrameApplication::SetNetHandler(PG_NetHandler* nethandler) {
+  my_nethandler=nethandler;
+}
+
+PG_NetHandler* PG_FrameApplication::GetNetHandler() {
+  return my_nethandler;
 }
 
 void PG_FrameApplication::SetFPSLabel(PG_Label* fpslabel) {
@@ -44,6 +53,9 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 	PG_FrameApplication* object = static_cast<PG_FrameApplication*>(data);
 	SDL_Event event;
 	Uint32 then, now, frames;
+	SDL_Surface *screen = PG_Application::GetScreen();
+	DisableDirtyUpdates(true);
+	SetBulkMode();
 	
 	my_quitEventLoop = false;
 	assert(data);
@@ -52,14 +64,13 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 
 	frames = 0;
 	then = SDL_GetTicks();
+	bool processed=false;
 	while(!my_quitEventLoop) {
 		
+                my_nethandler->checkNet();
 		if (SDL_PollEvent(&event)) {
-		  object->PumpIntoEventQueue(&event);
+		  processed = object->PumpIntoEventQueue(&event);
 		}
-		LockScreen();
-		my_framehandler->NextFrame();
-
 		++frames;
 		now = SDL_GetTicks();
 		if ( now > then+1000 ) {
@@ -67,15 +78,21 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 				{
 				  my_fpslabel->SetTextFormat("%3.2f FPS", ((double)frames*1000)/(now-then));
 				}
-
 				if((now-then) > 1000) {
 					then = now;
 					frames=0;
 				}
 		}
-	        SDL_Flip(PG_Application::GetScreen());
-		DrawCursor();
-		UnlockScreen();
+                my_framehandler->DrawBackground(screen);
+		my_framehandler->NextFrame(screen);
+		PG_Widget::BulkBlit();
+	        SDL_Flip(screen);
 	}
 	return -1;
+}
+
+bool PG_FrameApplication::eventQuit(int id, PG_MessageObject* widget, unsigned long data) {
+
+    SetBulkMode(false);
+    PG_Application::eventQuit(id, widget, data);
 }

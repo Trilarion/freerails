@@ -10,12 +10,14 @@
 #include <pgrect.h>
 
 #include "BaseMainWindow.h"
+#include "GameMapView.h"
 #include "pgframeapplication.h"
 
 #include <iostream>
 
 /* GameMainWindow class manages main window
  */
+class GameMapView;
 class GameMainWindow : public BaseMainWindow
 {
   public:
@@ -30,10 +32,10 @@ class GameMainWindow : public BaseMainWindow
     /** Returns MainWindow's widget
       * For internal use only !
       */
-    PG_Widget* getWidget() { return widget; };
+    GameMapView* getWidget() { return widget; };
     PG_FrameApplication* getApp() { return app; };
   private:
-    PG_Widget* widget;
+    GameMapView* widget;
     PG_FrameApplication* app;
 };
 

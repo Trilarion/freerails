@@ -15,6 +15,15 @@ libwrapper_a_SOURCES = GameApplication.cpp \
     GameModeSelectDialog.cpp \
     GamePanel.cpp \
     GameWidget.cpp \
-    GameTimerWidget.cpp \
-    TrainFrame.cpp \
-    pgframeapplication.cpp pgframehandler.cpp pgframewidgethandler.cpp pgframeapplicationhandler.cpp pgframeobject.cpp
+    GameNetHandler.cpp \
+    GameFrameHandler.cpp \
+ \
+    pgframeapplication.cpp \
+    pgframeobject.cpp \
+    pgspriteobject.cpp \
+    pgspritebase.cpp \
+    pgframehandler.cpp \
+    pgnethandler.cpp \
+
+#    TrainFrame.cpp \
+#    pgframeapplicationhandler.cpp 

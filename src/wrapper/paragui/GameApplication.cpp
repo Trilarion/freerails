@@ -11,6 +11,7 @@
 
 
 #include "pgframewidgethandler.h"
+#include "GameNetHandler.h"
 #include "pgframeobject.h"
 
 GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, argv) {
@@ -46,7 +47,6 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
 */
   std::cerr << replay << std::endl;
   
-  mapView=NULL;
   netView=NULL;
   panel=NULL;
 }
@@ -93,11 +93,6 @@ int GameApplication::run() {
     if (result==1) {  // Single Player
       initSingleGame(dataDialog.getName(), dataDialog.getWidth(), dataDialog.getHeight(), 0);
       guiEngine=new GuiEngine(playerSelf, dataDialog.getWidth(), dataDialog.getHeight());
-      mapView=new GameMapView(&mw, 0, 0, 650, 600 , guiEngine);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
-      pGlobalApp->SetFPSLabel(new PG_Label(panel, PG_Rect(0,0,120,20), "FPS"));
-      mapView->Show();
-      panel->Show();
     } else
     if (result==2) {  
       // Multi Player Server
@@ -108,13 +103,8 @@ int GameApplication::run() {
       
       // start engine Server
       guiEngine=new GuiEngine(playerSelf, dataDialog.getWidth(), dataDialog.getHeight(), 30000);
-      
-      mapView=new GameMapView(&mw, 0, 0, 650, 450 , guiEngine);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
+
       netView=new GameNetView(&mw, 0, 450, 650, 150);
-      
-      mapView->Show();
-      panel->Show();
       netView->Show();
     } else
     if (result==3) {
@@ -135,34 +125,32 @@ int GameApplication::run() {
 			      dataDialog.getIpAddress(), dataDialog.getPort());
 
             
-      mapView=new GameMapView(&mw, 0, 0, 650, 450 , guiEngine);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
       
       std::cout << " Why not..." << std::endl;
-      
-      mapView->Show();
-      panel->Show();
+
       netView->Show();
       
       std::cout << " WHAAA" << std::endl;
     }
     if (result>0)
     {
-      timer = new GameTimerWidget(&mw, guiEngine, panel, mapView);
-
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 
+      pGlobalApp->SetFrameHandler(new PG_FrameWidgetHandler(pGlobalApp, guiEngine->getWorldMap()));
+      pGlobalApp->SetNetHandler(new GameNetHandler(NULL, guiEngine, NULL, NULL));
+      mw.getWidget()->setGuiEngine(guiEngine);
+
+      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine);
+      pGlobalApp->SetFPSLabel(new PG_Label(panel, PG_Rect(0,0,120,20), "FPS"));
+      panel->Show();
+
       guiEngine->changeGameState(GuiEngine::Running);
-      pGlobalApp->SetFrameHandler(new PG_FrameWidgetHandler(pGlobalApp, mapView));
       pGlobalApp->Run();
-      
       guiEngine->changeGameState(GuiEngine::Stopping);
       
       SDL_WaitThread(thread2, NULL);
-      if (timer!=NULL) { delete timer; timer=NULL; }
       if (guiEngine!=NULL) { delete guiEngine; guiEngine=NULL; }
-      if (mapView!=NULL) { delete mapView; mapView=NULL; }
       if (netView!=NULL) { delete netView; netView=NULL; }
       if (panel!=NULL) { delete panel; panel=NULL; }
     }
