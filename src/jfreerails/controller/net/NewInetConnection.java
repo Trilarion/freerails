@@ -10,8 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.zip.DeflaterOutputStream;
-import java.util.zip.InflaterInputStream;
 import jfreerails.world.common.FreerailsSerializable;
 
 
@@ -21,8 +19,11 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 class NewInetConnection {
     private final Socket socket;
-    private DeflaterOutputStream deflaterOutputStream;
-    private InflaterInputStream inflaterInputStream;
+
+    //Note compression commented out since it was causing junit tests to fail.  Not
+    //sure why. LL
+    //private DeflaterOutputStream deflaterOutputStream;
+    //private InflaterInputStream inflaterInputStream;
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
     private static final String CONNECTION_OPEN = "CONNECTION_OPEN";
@@ -42,14 +43,18 @@ class NewInetConnection {
     synchronized void open() throws IOException {
         OutputStream outputStream = socket.getOutputStream();
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-        deflaterOutputStream = new DeflaterOutputStream(outputStream);
-        objectOutputStream = new ObjectOutputStream(deflaterOutputStream);
+
+        //deflaterOutputStream = new DeflaterOutputStream(outputStream);
+        //objectOutputStream = new ObjectOutputStream(deflaterOutputStream);
+        objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
         objectOutputStream.writeObject(CONNECTION_OPEN);
         objectOutputStream.flush();
 
         InputStream inputStream = socket.getInputStream();
-        inflaterInputStream = new InflaterInputStream(inputStream);
-        objectInputStream = new ObjectInputStream(inflaterInputStream);
+
+        // inflaterInputStream = new InflaterInputStream(inputStream);
+        // objectInputStream = new ObjectInputStream(inflaterInputStream);
+        objectInputStream = new ObjectInputStream(inputStream);
 
         try {
             String s = (String)objectInputStream.readObject();
@@ -83,9 +88,9 @@ class NewInetConnection {
 
     synchronized void flush() throws IOException {
         objectOutputStream.flush();
-        deflaterOutputStream.flush();
-        deflaterOutputStream.finish();
-        deflaterOutputStream.flush();
+        //deflaterOutputStream.flush();
+        // deflaterOutputStream.finish();
+        // deflaterOutputStream.flush();
     }
 
     synchronized void shutdownOutput() throws IOException {
