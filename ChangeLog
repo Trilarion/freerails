@@ -1,3 +1,9 @@
+Sat Aug 18 18:00:00 2001  Rivo Laks <rivolaks@hot.ee>:
+o Added *MainWindow wrapper classes for mainwindow creation
+o Remove initScreen() and setCaption() from BaseApplication
+o Added showSplash() and hideSplash() to BaseApplication
+o removed Splash() function from main.cpp
+o Updated main.cpp and Qt wrapper
 Tue Aug 14 23:30:00 2001  Rivo Laks <rivolaks@hot.ee>:
 o Added i18n support
 o Added wrapperType() method to BaseApplication and wrappers
