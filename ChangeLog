@@ -1,3 +1,5 @@
+Tue Sep 04 18:30:00 2001 Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>
+o Added Station and StationAddon class
 Sun Sep 02 12:25:00 2001  Rivo Laks <rivolaks@hot.ee>:
 o Added FreeType check to admin/ac-paragui.m4
 o Rebuilt acinclude.m4, aclocal.m4 and configure
