@@ -78,6 +78,11 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
                 jList1KeyPressed(evt);
             }
         });
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
+        });
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jList1MouseClicked(evt);
@@ -94,6 +99,15 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         add(jScrollPane1, gridBagConstraints);
 
     }//GEN-END:initComponents
+
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+       //if a train is selected, enable the 'show details' button.
+        if(jList1.getSelectedIndex() != -1){
+            this.showDetails.setEnabled(true);
+        }else{
+             this.showDetails.setEnabled(false);
+        }
+    }//GEN-LAST:event_jList1ValueChanged
     
     private void showDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDetailsActionPerformed
         showTrainDetails.actionPerformed(evt);
@@ -185,6 +199,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
             int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
             if(newNumberOfTrains != this.lastNumberOfTrains){
                 jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
+                jList1.setSelectedIndex(0);
                 lastNumberOfTrains = newNumberOfTrains;
             }
         }

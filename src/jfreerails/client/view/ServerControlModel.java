@@ -8,6 +8,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.controller.ServerControlInterface;
+import jfreerails.server.ServerGameEngine;
 
 
 /**
@@ -51,6 +52,7 @@ public class ServerControlModel {
         public LoadGameAction() {
             putValue(NAME, "Load Game");
             putValue(MNEMONIC_KEY, new Integer(76));
+           
         }
     }
 
@@ -60,6 +62,7 @@ public class ServerControlModel {
         public void actionPerformed(ActionEvent e) {
             if (serverInterface != null) {
                 serverInterface.saveGame();
+                loadGameAction.setEnabled(true);
             }
         }
 
@@ -124,7 +127,11 @@ public class ServerControlModel {
         serverInterface = i;
 
         boolean enabled = (serverInterface != null);
-        loadGameAction.setEnabled(enabled);
+        
+        //Check that there is a file to load..
+        boolean canLoadGame = ServerGameEngine.isSaveGameAvailable();
+               
+        loadGameAction.setEnabled(enabled && canLoadGame);
         saveGameAction.setEnabled(enabled);
 
         Enumeration e = targetTicksPerSecondActions.getActions();

@@ -7,6 +7,7 @@
 package jfreerails.launcher;
 
 import jfreerails.server.GameServer;
+import jfreerails.server.ServerGameEngine;
 
 /**
  * The Launcher panel that lets you load a game or start a new game with a choice
@@ -42,6 +43,7 @@ class MapSelectionPanel extends javax.swing.JPanel {
 	jList1.setSelectedIndex(0);
 
 	owner.setNextEnabled(true);
+	this.loadMapButton.setEnabled(ServerGameEngine.isSaveGameAvailable());
     }
     
     /** This method is called from within the constructor to

@@ -1,5 +1,6 @@
 May 31, 2004 Luke
-	Bugs Fixed: 	
+	Bugs Fixed: 
+	o 948653 Crash after loading a saved game when one is not available.	
 	o 948659 Dialogue Box Behavior not deterministic
 	o 948663 Extra Close Button on Station List tab
 	o 948661 No Formal Specification
