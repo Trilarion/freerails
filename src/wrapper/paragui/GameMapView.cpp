@@ -23,6 +23,8 @@ Base2DMapView(_guiEngine) {
   trainImage=IMG_Load("data/graphics/ui/buttons/build_train.png");
   
   imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,w,h,32,0,0,0,0);
+//  parent->getApp()->SetFrameSurface(imageSurface);
+//  parent->getApp()->SetFrameWidget(this);
 
   p.x=0;
   p.y=0;

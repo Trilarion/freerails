@@ -20,6 +20,7 @@
 
 
 #include <pgapplication.h>
+#include <pgframeapplication.h>
 #include <pgthemewidget.h>
 
 #include <unistd.h>
@@ -43,7 +44,7 @@ public:
     static int runEngine(void* data);
 
 private:
-    struct PG_Application* pGlobalApp;
+    struct PG_FrameApplication* pGlobalApp;
     Uint32 screenFlags;
     int screenDepth;
     PG_ThemeWidget* splash;

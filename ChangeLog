@@ -1,7 +1,11 @@
+Sun Jun 01 01:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Add pgframe* to CVS ... this will later be in ParGUI (1.0.5 maybe)
+
 Wed May 21 12:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Controller: TrainController Impl, testBuildElement
 o ParaGUI   : show Train on buildable fields, show in trainList after build
 o GUIEngine : add test and build functions for train
+
 
 Wed May 21 02:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Controller: Add TrainController sceleton

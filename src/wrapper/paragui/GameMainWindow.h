@@ -10,6 +10,7 @@
 #include <pgrect.h>
 
 #include "BaseMainWindow.h"
+#include "pgframeapplication.h"
 
 #include <iostream>
 
@@ -21,7 +22,7 @@ class GameMainWindow : public BaseMainWindow
     /** Creates new MainWindow to position @ref x, @ref y
       * Width and height are set by @ref w and @ref h
       */
-    GameMainWindow(int x, int y, int w, int h);
+    GameMainWindow(int x, int y, int w, int h, PG_FrameApplication* _app);
     /** Destroys MainWindow */
     ~GameMainWindow();
     /** Sets caption of MainWindow to @ref caption */
@@ -30,8 +31,10 @@ class GameMainWindow : public BaseMainWindow
       * For internal use only !
       */
     PG_Widget* getWidget() { return widget; };
+    PG_FrameApplication* getApp() { return app; };
   private:
     PG_Widget* widget;
+    PG_FrameApplication* app;
 };
 
 #endif

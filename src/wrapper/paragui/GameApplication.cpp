@@ -9,6 +9,10 @@
 #include "Client.h"
 #include "Message.h"
 
+
+#include "pgframewidgethandler.h"
+#include "pgframeobject.h"
+
 GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, argv) {
 
   char theme[20];
@@ -16,8 +20,8 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
 
   strcpy(theme, "default");
 
-  screenFlags = SDL_SWSURFACE;
-  screenDepth = 0;
+  screenFlags = SDL_SWSURFACE|SDL_DOUBLEBUF|SDL_ANYFORMAT;
+  screenDepth = 16;
 
   for(int c=1; c<argc; c++) {
     if(argv[c][0] != '-') { strcpy(theme, argv[c]); }
@@ -26,11 +30,7 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
     if(strcmp(argv[c], "-bpp") == 0) { screenDepth = atoi(argv[++c]); }
   }
 
-  if (!(screenFlags&SDL_FULLSCREEN)) {
-    screenFlags = SDL_SWSURFACE | SDL_HWPALETTE;
-  }
-
-  pGlobalApp = new PG_Application();
+  pGlobalApp = new PG_FrameApplication();
   pGlobalApp->LoadTheme(theme);
   pGlobalApp->InitScreen(800,600,screenDepth,screenFlags);
   
@@ -78,7 +78,7 @@ int GameApplication::run() {
   sleep(1);
   hideSplash();
   while (1) {
-    GameMainWindow mw( 0, 0, 800, 600);
+    GameMainWindow mw( 0, 0, 800, 600, pGlobalApp);
     GameModeSelectDialog dialog(&mw, 250, 150, 300, 200, "Choose game mode");
     result=dialog.show();
     std::cout << "Result=" << result << std::endl;
@@ -95,6 +95,7 @@ int GameApplication::run() {
       guiEngine=new GuiEngine(playerSelf, dataDialog.getWidth(), dataDialog.getHeight());
       mapView=new GameMapView(&mw, 0, 0, 650, 600 , guiEngine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
+      pGlobalApp->SetFPSLabel(new PG_Label(panel, PG_Rect(0,0,120,20), "FPS"));
       mapView->Show();
       panel->Show();
     } else
@@ -153,7 +154,8 @@ int GameApplication::run() {
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 
       guiEngine->changeGameState(GuiEngine::Running);
-      
+      pGlobalApp->SetFrameHandler(new PG_FrameWidgetHandler(pGlobalApp, mapView));
+//      pGlobalApp->GetFrameHandler()->AddFrameObject(new PG_FrameObject());
       pGlobalApp->Run();
       
       guiEngine->changeGameState(GuiEngine::Stopping);
