@@ -1,3 +1,11 @@
+Mon Feb 11 13:45:00 2002  Alexander Opitz <opi@le-bit.de>:
+o Add Serializable
+o Add new network stuff, which make it easier for Serialize, but is not
+  jet full implemented. FileConnection have nothing, TCPConnection can not
+  read/write, Server has no functions. Client should be ready.
+o remove libSDL_net and qt network wrapper, correct all Makefile.in's and
+  Makefile.am's
+o correct /wrapper/paragui files to be ParaGUI 1.0 beta 3 compliant
 Mon Jan 28 24:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o Start Engine as thread in SDL+ParaGUI
 Thu Jan 24 14:00:00 2002  Alexander Opitz <opi@le-bit.de>:
