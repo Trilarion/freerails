@@ -1,3 +1,6 @@
+Tue Apr 29 20:15:00 2003  Alexander Opitz <opi@le-bit.de>:
+o make ParaGUI ready for 0.0.8
+o remove showStation in ParaGUI, showTrack should be the next, dir -> connect
 Tue Apr 29 01:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o update to build and View Stations.
 o ParaGUI Client needs a bit clean up for the View. The Show* are for deletion.

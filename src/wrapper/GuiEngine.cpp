@@ -46,14 +46,14 @@ void GuiEngine::initialize(Player *_player){
 
 bool GuiEngine::testBuildStation(int x, int y){
     
-  GameElement* new_element = new Station(x,y,NULL,"",Station::Small,NULL);
+  GameElement* new_element = new Station(x,y,player,"",Station::Small,NULL);
   return stationController->canBuildElement(new_element);
 
 }
 
 bool GuiEngine::buildStation(int x, int y){
     
-  GameElement* new_element = new Station(x,y,NULL,"",Station::Small,NULL);
+  GameElement* new_element = new Station(x,y,player,"",Station::Small,NULL);
   if (stationController -> canBuildElement(new_element))
     {
       Message *msg=new Message(Message::addElement,1,(void *)new_element,player);
@@ -67,7 +67,7 @@ bool GuiEngine::buildStation(int x, int y){
 
 bool GuiEngine::testBuildTrack(int x, int y, int dir){
     
-  GameElement* new_element = new Track(x,y,NULL,dir);
+  GameElement* new_element = new Track(x,y,player,dir);
   return trackController->canBuildElement(new_element);
 
 }
@@ -75,7 +75,7 @@ bool GuiEngine::testBuildTrack(int x, int y, int dir){
 
 bool GuiEngine::buildTrack(int x, int y, int dir){
     
-  GameElement* new_element = new Track(x,y,NULL,dir);
+  GameElement* new_element = new Track(x,y,player,dir);
   if (trackController->canBuildElement(new_element))
     {
       Message *msg=new Message(Message::addElement,1,(void *)new_element,player);

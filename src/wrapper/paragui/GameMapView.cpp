@@ -207,7 +207,7 @@ void GameMapView::drawStationPixmap(int mapX, int mapY, Station* station) {
   Track* track = field->getTrack();
   if (track==NULL) return;
   unsigned int connect = track->getConnect();
-  
+  connect |= TrackIsBlocked;
   switch (connect ^ TrackIsBlocked)
   {
     case TrackGoNorth:
@@ -461,7 +461,7 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 
     unsigned int mapx, mapy;
     int dir;  
-    screen2map(button->x, button->y, &mapx, &mapy, &dir);
+    screen2map(button->x+viewPos.x, button->y+viewPos.y, &mapx, &mapy, &dir);
 
     switch (mouseType) {
   
@@ -548,45 +548,6 @@ void GameMapView::showTrack(int x, int y, unsigned int dir) {
   drawPixmap(trackImage, tilesetX, tilesetY, x, y);
 }
 
-void GameMapView::showStation(int x, int y) {
-# warning Clean up code
-  int tilesetX, tilesetY;
-  MapField* field = guiEngine->getWorldMap()->getMapField(x,y);
-  if (field == NULL) return;
-  Track* track = field->getTrack();
-  if (track==NULL) return;
-  unsigned int connect = track->getConnect();
-  
-  switch (connect)
-  {
-    case TrackGoNorth:
-    case TrackGoSouth:
-    case TrackGoNorth | TrackGoSouth:
-      tilesetX=18*30+15;
-      tilesetY=26*30+15;
-    break;
-    case TrackGoNorthEast:
-    case TrackGoSouthWest:
-    case TrackGoNorthEast | TrackGoSouthWest:
-      tilesetX=20*30+15;
-      tilesetY=26*30+15;
-    break;
-    case TrackGoEast:
-    case TrackGoWest:
-    case TrackGoEast | TrackGoWest:
-      tilesetX=22*30+15;
-      tilesetY=26*30+15;
-    break;
-    case TrackGoNorthWest:
-    case TrackGoSouthEast:
-    case TrackGoNorthWest | TrackGoSouthEast:
-      tilesetX=24*30+15;
-      tilesetY=26*30+15;
-    break;
-  }
-  drawPixmap(trackImage, tilesetX, tilesetY, x, y);
-}
-
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
   unsigned int mousex, mousey;
@@ -607,7 +568,7 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   
     case buildStation:
       if(guiEngine->testBuildStation(mapx,mapy)){
-	showStation(mapx, mapy);
+	drawStationPixmap(mapx, mapy, NULL);
       }
       break;
     case buildTrack:
@@ -690,6 +651,7 @@ void GameMapView::redrawMap(int x, int y, int w, int h) {
     for (int x1=0;x1<=countX;x1++)
     {
       drawMapPixmap(x1+startXmap, y1+startYmap);
+      drawElementsPixmap(x1+startXmap, y1+startYmap);
     }
   }
   
