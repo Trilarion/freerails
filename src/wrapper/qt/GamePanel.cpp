@@ -130,10 +130,10 @@ void GamePanel::setupPanelBuild()
   iconSet_t.setIconSize(QIconSet::Small, QSize(25,25));
   iconSet_s.setIconSize(QIconSet::Small, QSize(25,25));
 
-  iconSet_t.setPixmap("data/graphics/ui/buttons/build_track_down.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
-  iconSet_t.setPixmap("data/graphics/ui/buttons/build_track_up.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
-  iconSet_s.setPixmap("data/graphics/ui/buttons/build_station_down.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
-  iconSet_s.setPixmap("data/graphics/ui/buttons/build_station_up.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
+  iconSet_t.setPixmap("data/graphics/ui/buttons/build_track.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
+  iconSet_t.setPixmap("data/graphics/ui/buttons/build_track.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
+  iconSet_s.setPixmap("data/graphics/ui/buttons/build_station.png", QIconSet::Small, QIconSet::Normal, QIconSet::On);
+  iconSet_s.setPixmap("data/graphics/ui/buttons/build_station.png", QIconSet::Small, QIconSet::Normal, QIconSet::Off);
 
   btnTrack = new QToolButton(panelBuild);
   CHECK_PTR(btnTrack);
