@@ -10,6 +10,8 @@
 #include "GameModeSelectDialog.h"
 #include "GameNetView.h"
 #include "GamePanel.h"
+#include "GameFrameHandler.h"
+#include "GameNetHandler.h"
 
 #include "SDL.h"
 

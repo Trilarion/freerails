@@ -18,8 +18,8 @@
 #include <pgscrollbar.h>
 #include <pgthemewidget.h>
 #include <pgframeapplication.h>
-#include <PG_SpriteBase.h>
-#include <PG_SpriteObject.h>
+#include <pgspritebase.h>
+#include <pgspriteobject.h>
 
 
 class GameMapView: public PG_Widget, Base2DMapView {

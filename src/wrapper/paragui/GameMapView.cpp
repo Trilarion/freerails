@@ -29,7 +29,7 @@ GameMapView::~GameMapView() {
 
 void GameMapView::setGuiEngine(GuiEngine* _guiEngine) {
   guiEngine=_guiEngine;
-  app->GetFrameHandler()->AddSprite(selectedsprite);
+  app->GetFrameHandler()->AddFrameObject(selectedsprite);
 }
 
 void GameMapView::setMouseType(MouseType type) {

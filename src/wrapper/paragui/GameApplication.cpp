@@ -9,11 +9,6 @@
 #include "Client.h"
 #include "Message.h"
 
-
-#include "pgframewidgethandler.h"
-#include "GameNetHandler.h"
-#include "pgframeobject.h"
-
 GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, argv) {
 
   char theme[20];
@@ -137,7 +132,7 @@ int GameApplication::run() {
     {
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 
-      pGlobalApp->SetFrameHandler(new PG_FrameWidgetHandler(pGlobalApp, guiEngine->getWorldMap()));
+      pGlobalApp->SetFrameHandler(new GameFrameHandler(pGlobalApp, guiEngine->getWorldMap()));
       pGlobalApp->SetNetHandler(new GameNetHandler(NULL, guiEngine, NULL, NULL));
       mw.getWidget()->setGuiEngine(guiEngine);
 

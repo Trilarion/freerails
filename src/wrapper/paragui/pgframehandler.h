@@ -29,10 +29,6 @@ public:
 	*/
 	virtual ~PG_FrameHandler();
 
-	/**
-	The NextFrame function is called from PG_FrameApplication
-	*/
-	virtual void NextFrame(SDL_Surface *surface){};
 	virtual void DrawBackground(SDL_Surface *surface){};
 	
 	virtual void UpdateBackground(int x, int y) {};
@@ -41,6 +37,11 @@ public:
 	void SetBackgroundColor(Uint32 background);
 	Uint32 GetBackgroundColor();
 	
+	/**
+	The NextFrame function is called from PG_FrameApplication
+	*/
+	void NextFrame(SDL_Surface *surface);
+
 	/**
 	Add a new PG_FrameObject, that should be called on next Frame
 	@param object Pointer to the PG_FrameObject that should be added
