@@ -10,7 +10,7 @@ package jfreerails.server.parser;
 import java.util.ArrayList;
 
 
-import jfreerails.server.TrackSetFactory;
+import jfreerails.server.common.TrackSetFactory;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.LegalTrackPlacement;

@@ -210,6 +210,19 @@
       </copy>
      </target>
      
+     <!-- Useful for running code metrics and audits without unit tests distorting the results. -->
+     <target depends="mkdirs, init" description="Copies all *.java except *Test.java to dist/src_excluding_tests" name="copy_src_excluding_tests">
+		<delete dir="${dist}/src_excluding_tests" />
+		<mkdir dir="${dist}/src_excluding_tests" />
+      <copy todir="${dist}/src_excluding_tests">
+         <fileset dir="${src}">
+            <include name="**/*.java" />            
+            <exclude name="**/*Test.java" />
+            <exclude name="**/*TestCase.java" />
+         </fileset>
+      </copy>
+     </target>
+     
      
      <!-- The checkdep target tests the dependencies of packages.  It does this by copying the contents of the package 
      in question together with the contents of the packages it is allowed to depend on to a tempory directory, then compiling
