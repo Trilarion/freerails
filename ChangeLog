@@ -1,3 +1,5 @@
+Apr 5, 2004 10:42:20 PM Luke
+	o Implemented 915952 (Boxes showing cargo waiting at stations) 
 Apr 5, 2004 6:04:01 PM Luke
 	o Fixed 910134 Demand for mail and passengers
 	o Updated javadoc comments in jfreerails.server.parser.

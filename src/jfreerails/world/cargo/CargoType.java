@@ -1,6 +1,5 @@
 package jfreerails.world.cargo;
 
-import java.util.HashSet;
 import jfreerails.world.common.FreerailsSerializable;
 
 
@@ -9,15 +8,9 @@ final public class CargoType implements FreerailsSerializable {
     private final int unitWeight;
     private final String category;
     private final String name;
-    private static HashSet categories = new HashSet();
-
-    static {
-        categories.add("Mail");
-        categories.add("Passengers");
-        categories.add("Fast_Freight");
-        categories.add("Slow_Freight");
-        categories.add("Bulk_Freight");
-    }
+    private static String[] categories = new String[] {
+            "Mail", "Passengers", "Fast_Freight", "Slow_Freight", "Bulk_Freight"
+        };
 
     public int getUnitWeight() {
         return unitWeight;
@@ -33,10 +26,7 @@ final public class CargoType implements FreerailsSerializable {
     }
 
     public CargoType(int weight, String name, String category) {
-        if (!categories.contains(category)) {
-            throw new IllegalArgumentException(category);
-        }
-
+        getCategoryNumber(category); //Check for invalid category
         this.unitWeight = weight;
         this.category = category;
         this.name = name;
@@ -44,5 +34,23 @@ final public class CargoType implements FreerailsSerializable {
 
     public String getCategory() {
         return category;
+    }
+
+    public int getCategoryNumber() {
+        return getCategoryNumber(this.category);
+    }
+
+    public static int getNumberOfCategories() {
+        return categories.length;
+    }
+
+    public static int getCategoryNumber(String categoryName) {
+        for (int i = 0; i < categories.length; i++) {
+            if (categoryName.equals(categories[i])) {
+                return i;
+            }
+        }
+
+        throw new IllegalArgumentException(categoryName);
     }
 }

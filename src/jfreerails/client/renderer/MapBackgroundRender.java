@@ -188,10 +188,9 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
     }
 
-    public MapBackgroundRender(ReadOnlyWorld w, TileRendererList tiles,
-        TrackPieceRendererList trackPieceViewList) {
-        trackLayer = new TrackLayer(w, trackPieceViewList);
-        terrainLayer = new TerrainLayer(w, tiles);
+    public MapBackgroundRender(ReadOnlyWorld w, ViewLists vl) {
+        trackLayer = new TrackLayer(w, vl.getTrackPieceViewList());
+        terrainLayer = new TerrainLayer(w, vl.getTileViewList());
         mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
         cityNames = new CityNamesRenderer(w);
         stationNames = new StationNamesRenderer(w);

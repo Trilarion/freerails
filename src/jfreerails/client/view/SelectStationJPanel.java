@@ -21,10 +21,7 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
-import jfreerails.world.train.Schedule;
-import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
-import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
 /**
  * This JPanel lets the user select a stations from a map and add it to a train
