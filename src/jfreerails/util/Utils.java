@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 
 /**
- *
+ *  A bunch of static methods.
  *  @author Luke
  *
  */

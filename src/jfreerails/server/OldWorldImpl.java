@@ -2,7 +2,6 @@ package jfreerails.server;
 
 import java.net.URL;
 import jfreerails.server.common.TileSetFactory;
-import jfreerails.server.common.TrackSetFactory;
 import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.common.GameCalendar;
@@ -20,20 +19,6 @@ import org.xml.sax.SAXException;
  * @author luke
  * */
 public class OldWorldImpl {
-    private World w;
-
-    public OldWorldImpl(TileSetFactory tileFactory,
-        TrackSetFactory trackSetFactory, World world) {
-        if (null == tileFactory || null == trackSetFactory || null == world) {
-            throw new java.lang.NullPointerException(
-                "Null pointer passed to WorldImpl constructor");
-        }
-
-        this.w = world;
-        tileFactory.addTerrainTileTypesList(w);
-        trackSetFactory.addTrackRules(w);
-    }
-
     public static World createWorldFromMapFile(String mapName,
         FreerailsProgressMonitor pm) {
         pm.setMessage("Setting up world.");

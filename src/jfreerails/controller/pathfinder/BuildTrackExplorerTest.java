@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for BuildTrackExplorer.
  * @author Luke
  *
  */

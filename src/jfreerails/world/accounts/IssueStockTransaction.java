@@ -8,6 +8,9 @@ import jfreerails.world.common.Money;
 
 
 /**
+ * A transaction that occurs when a new company is founded or when a company issues
+ * additional shares.
+ *
  * @author Luke
  *
  */

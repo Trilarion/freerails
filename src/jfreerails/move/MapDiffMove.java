@@ -11,6 +11,9 @@ import jfreerails.world.top.WorldDifferences;
 import jfreerails.world.track.FreerailsTile;
 
 
+/** A move that makes a number of changes to the map.
+ * @author Luke
+  */
 public class MapDiffMove implements Move, MapUpdateMove {
     private /*=mutable*/ final ArrayList points;
     private /*=mutable*/ final ArrayList before;

@@ -79,27 +79,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
             throw new IllegalStateException();
         }
     }
-    
-    boolean validateRemoteAddress(){
-        
-        boolean isValid = true;
-        //Validate the port.
-        try{
-            int port = Integer.parseInt(this.remotePort.getText());
-            if(port >= 0 && port <= 65535){
-                this.portErrorMessage.setText("");
-            }else{
-                throw new Exception();
-            }
-        }catch(Exception e){
-            isValid = false;
-            this.portErrorMessage.setText("A valid port value is between 0 and 65535.");
-        }
-        //Validate the IPAddress.
-        return isValid;
-        
-    }
-    
+
     public void setControlsEnabled(boolean enabled) {
         windowedButton.setEnabled(enabled);
         fullScreenButton.setEnabled(enabled);
@@ -167,17 +147,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         portErrorMessage.setText("A valid port value is between 0 and 65535.");
         return false;
     }
-    
-    private void validateIP(){
-        String host = this.remoteIP.getText();
-        try{
-            InetAddress address = InetAddress.getByName(host);
-            ipErrorMessage.setText("");
-        }catch(Exception e){
-            ipErrorMessage.setText("IP address for "+host+" could be found");
-        }
-    }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

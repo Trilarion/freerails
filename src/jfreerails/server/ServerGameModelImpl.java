@@ -45,10 +45,6 @@ public class ServerGameModelImpl implements ServerGameModel {
     private transient long nextModelUpdateDue;
     private transient MoveReceiver moveExecuter;
 
-    public int getTargetTicksPerSecond() {
-        return ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
-    }
-
     public ServerGameModelImpl() {
         this(new ArrayList(), null, new Vector());
     }
@@ -71,10 +67,6 @@ public class ServerGameModelImpl implements ServerGameModel {
 
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
         calcSupplyAtStations.itemRemoved(key, index, principal);
-    }
-
-    private void addServerAutomaton(ServerAutomaton sa) {
-        serverAutomata.add(sa);
     }
 
     /** This is called on the last tick of each year. */

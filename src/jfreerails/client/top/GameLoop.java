@@ -42,39 +42,6 @@ final public class GameLoop implements Runnable {
         }
     }
 
-    /**
-    * Stops the game loop.
-    * Blocks until the loop is stopped.
-    * Do not call this from inside the event loop!
-    */
-    public void stop() {
-        synchronized (loopMonitor) {
-            if (gameNotDone == false) {
-                return;
-            }
-
-            gameNotDone = false;
-
-            if (Thread.holdsLock(SynchronizedEventQueue.MUTEX)) {
-                /*
-                * we might be executing in the event queue so give up the
-                * mutex temporarily to allow the loop to exit
-                */
-                try {
-                    SynchronizedEventQueue.MUTEX.wait();
-                } catch (InterruptedException e) {
-                    assert false;
-                }
-            }
-
-            try {
-                loopMonitor.wait();
-            } catch (InterruptedException e) {
-                assert false;
-            }
-        }
-    }
-
     public void run() {
         try {
             SynchronizedEventQueue.use();
@@ -184,10 +151,6 @@ final public class GameLoop implements Runnable {
             e.printStackTrace();
             System.exit(1);
         }
-    }
-
-    public void setSHOWFPS(boolean showfps) {
-        SHOWFPS = showfps;
     }
 }
 

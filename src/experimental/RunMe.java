@@ -11,13 +11,10 @@ import jfreerails.client.top.GameLoop;
 
 
 /**
- *
+ * Tests that ClientJFrame and ScreenHandler work together.
  * @author  Luke Lindsay
  */
 public class RunMe {
-    /**
-    * @param args the command line arguments
-    */
     public static void main(String[] args) {
         JFrame jFrame = new jfreerails.client.top.ClientJFrame(new SimpleComponentFactoryImpl2());
 

@@ -7,6 +7,8 @@ package jfreerails.client.view;
 import java.awt.Color;
 
 /**
+ * Stores a list of colours to use to represent different players.
+ *
  * @author Luke
  *
  */

@@ -49,7 +49,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
     
     
-    private final DialogueBoxController dialogueBoxController;        
+    private final DialogueBoxController dialogueBoxController;
     
     private World w;
     
@@ -67,10 +67,10 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     
     private TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
     
-    /** Creates new form TestGlassPanelMethod */
+    /** Creates new form TestGlassPanelMethod. */
     private DialogueBoxTester() {
         
-        modelRoot = new ModelRootImpl();    
+        modelRoot = new ModelRootImpl();
         modelRoot.setMoveFork(new MoveChainFork());
         modelRoot.setMoveReceiver(this.dummyReceiver);
         w = new WorldImpl(200, 200);
@@ -303,14 +303,14 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         setJMenuBar(jMenuBar1);
 
     }//GEN-END:initComponents
-
+    
     private void showNetworthGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showNetworthGraphActionPerformed
-        dialogueBoxController.showNetworthGraph();      
+        dialogueBoxController.showNetworthGraph();
     }//GEN-LAST:event_showNetworthGraphActionPerformed
     
     private void showJavaSystemPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showJavaSystemPropertiesActionPerformed
         // Add your handling code here:
-        String s = ShowJavaProperties.getPropertiesHtmlString();      
+        String s = ShowJavaProperties.getPropertiesHtmlString();
         HtmlJPanel htmlPanel = new HtmlJPanel(s);
         htmlPanel.setup(modelRoot, vl, closeCurrentDialogue);
         dialogueBoxController.showContent(htmlPanel);
@@ -342,49 +342,47 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             // Add your handling code here:
             int stationNumber = 0;
             dialogueBoxController.showStationInfo(stationNumber);
-	} //GEN-LAST:event_showStationInfoActionPerformed
+	}//GEN-LAST:event_showStationInfoActionPerformed
         
 	private void showTerrainInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTerrainInfoActionPerformed
             // Add your handling code here:
             int terrainType = 0;
             dialogueBoxController.showTerrainInfo(terrainType);
-	} //GEN-LAST:event_showTerrainInfoActionPerformed
+	}//GEN-LAST:event_showTerrainInfoActionPerformed
         
 	private void showControlsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showControlsActionPerformed
             // Add your handling code here:
             dialogueBoxController.showGameControls();
-	} //GEN-LAST:event_showControlsActionPerformed
+	}//GEN-LAST:event_showControlsActionPerformed
         
 	private void selectTrainOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTrainOrdersActionPerformed
             // Add your handling code here:
             trainDialogueJPanel.setup(modelRoot, vl, closeCurrentDialogue);
             trainDialogueJPanel.display(0);
             dialogueBoxController.showContent(trainDialogueJPanel);
-	} //GEN-LAST:event_selectTrainOrdersActionPerformed
+	}//GEN-LAST:event_selectTrainOrdersActionPerformed
         
 	private void selectWagonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectWagonsActionPerformed
             // Add your handling code here:
             dialogueBoxController.showSelectWagons();
-	} //GEN-LAST:event_selectWagonsActionPerformed
+	}//GEN-LAST:event_selectWagonsActionPerformed
         
 	private void selectEngineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectEngineActionPerformed
             // Add your handling code here:
             dialogueBoxController.showSelectEngine();
-	} //GEN-LAST:event_selectEngineActionPerformed
+	}//GEN-LAST:event_selectEngineActionPerformed
         
 	private void newspaperActionPerformed(java.awt.event.ActionEvent evt) {	//GEN-FIRST:event_newspaperActionPerformed
             // Add your handling code here:
             dialogueBoxController.showNewspaper("New headline!");
-	} //GEN-LAST:event_newspaperActionPerformed
+	}//GEN-LAST:event_newspaperActionPerformed
         
-        /** Exit the Application */
-	private void exitForm(java.awt.event.WindowEvent evt) { //GEN-FIRST:event_exitForm
+        /** Exit the Application. */
+	private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
             System.exit(0);
-	} //GEN-LAST:event_exitForm
+	}//GEN-LAST:event_exitForm
         
-        /**
-         * @param args the command line arguments
-         */
+        
         public static void main(String args[]) {
             DialogueBoxTester test = new DialogueBoxTester();
             test.setVisible(true);

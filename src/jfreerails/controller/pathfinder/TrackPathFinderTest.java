@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for TrackPathFinder.
  * @author Luke
  *
  */

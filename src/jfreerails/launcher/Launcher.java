@@ -8,16 +8,10 @@ package jfreerails.launcher;
 
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
-import jfreerails.client.common.FileUtils;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
 import jfreerails.network.FreerailsGameServer;
@@ -42,7 +36,6 @@ public class Launcher extends javax.swing.JFrame implements
 FreerailsProgressMonitor, LauncherInterface {
     private static final Logger logger = Logger.getLogger(Launcher.class.getName());
     private static String QUICKSTART = "-quickstart";
-    private static final int GAME_SPEED_SLOW = 10;
     private final Component[] wizardPages = new Component[4];
     private int currentPage = 0;
     private FreerailsGameServer server;
@@ -293,38 +286,7 @@ FreerailsProgressMonitor, LauncherInterface {
         
         return server;
     }
-    
-    private Player getPlayer(String name) throws IOException {
-        Player p;
-        
-        try {
-            FileInputStream fis =
-            FileUtils.openForReading(FileUtils.DATA_TYPE_PLAYER_SPECIFIC,
-            name, "keyPair");
-            setInfoText("Loading saved player keys");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            p = (Player) ois.readObject();
-            p.loadSession(ois);
-        } catch (FileNotFoundException e) {
-            p = new Player(name);
-            // save both public and private key for future use
-            FileOutputStream fos =
-            FileUtils.openForWriting(FileUtils.DATA_TYPE_PLAYER_SPECIFIC,
-            name, "keyPair");
-            setInfoText("Saving player keys");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(p);
-            p.saveSession(oos);
-        } catch (ClassNotFoundException e) {
-            setInfoText("Player KeyPair was corrupted!");
-            throw new IOException(e.getMessage());
-        } catch (IOException e) {
-            setInfoText("Player KeyPair was corrupted!");
-            throw e;
-        }
-        return p;
-    }
-    
+
     /**
      * Runs the game.
      */

@@ -27,6 +27,7 @@ import jfreerails.world.top.World;
 
 
 /**
+ * A swing freerails client.
  * @author Luke
  *
  */

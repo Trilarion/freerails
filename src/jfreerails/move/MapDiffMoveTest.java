@@ -5,6 +5,10 @@ import jfreerails.world.top.WorldDifferences;
 import jfreerails.world.track.FreerailsTile;
 
 
+/**
+ * JUnit test for MapDiffMove.
+ * @author Luke
+ */
 public class MapDiffMoveTest extends AbstractMoveTestCase {
     public void testMove() {
         World world2 = this.getWorld();

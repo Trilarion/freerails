@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 
 
 /**
+ * JUnit test for FinancialDataGatherer.
  * @author Luke
  *
  */

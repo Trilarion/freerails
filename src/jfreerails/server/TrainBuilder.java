@@ -50,20 +50,8 @@ public class TrainBuilder implements ServerAutomaton {
         return trainMovers;
     }
 
-    public void setTrainMovers(ArrayList trainMovers) {
-        this.trainMovers = trainMovers;
-    }
-
     private transient MoveReceiver moveReceiver;
     private ArrayList trainMovers = new ArrayList();
-
-    public TrainBuilder(MoveReceiver mr) {
-        moveReceiver = mr;
-
-        if (null == mr) {
-            throw new NullPointerException();
-        }
-    }
 
     public TrainBuilder(MoveReceiver mr, ArrayList trainMovers) {
         moveReceiver = mr;

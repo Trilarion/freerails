@@ -1,7 +1,9 @@
 Freerails Java - build @version@
 
 Bugs Fixed:
-
+o 998314	GUI freezes when unpausing the game	
+o 997092	"Audio device unavailable" exception
+o 997088	IllegalArgumentException in OneTileMoveVector.getInstance
 
 Features implemented:
 o 931581 Build Industry.
@@ -10,6 +12,8 @@ o 915955 Automatic Schedules.
 o 931597 Graph showing total profits over time.
 o 915957 Build track by dragging mouse.	
 o 932630 Change speed from network clients.
+o 927144 Overhead train graphics
+o 910124 City growth
 
 Changes not in tracker
 o Added ConstJava ant target

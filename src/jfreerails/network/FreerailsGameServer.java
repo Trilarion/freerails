@@ -127,7 +127,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     public void loadgame(String saveGameName) {
-        System.err.println("load game " + saveGameName);
+        logger.info("load game " + saveGameName);
 
         ServerGameModel loadedGame;
 
@@ -153,14 +153,13 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     public void stopGame() {
-        System.err.println("Stop game.");
+        logger.info("Stop game.");
     }
 
     public void newGame(String mapName) {
         this.newPlayersAllowed = false;
         confirmedPlayers.clear();
 
-        //world = new WorldImpl(10, 10);
         try {
             World world = (World)savedGamesManager.newMap(mapName);
 
@@ -431,7 +430,7 @@ public class FreerailsGameServer implements ServerControlInterface,
                     if (ms.ok) {
                         send2All(move);
                     } else {
-                        System.err.println(ms.message);
+                        logger.warning(ms.message);
                     }
                 }
             };

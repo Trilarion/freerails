@@ -37,7 +37,6 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * An array of the actions to be used. The ComboBoxModel
      * objects are taken from the NAME property of the Action. The ButtonModel
      * icons are obtained from the SMALL_ICON property.
-     * @param actions
      */
     public ActionAdapter(Action[] actions) {
         super();

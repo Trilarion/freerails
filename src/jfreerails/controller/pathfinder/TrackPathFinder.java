@@ -20,6 +20,8 @@ import jfreerails.world.track.TrackRule;
 
 
 /**
+ * Finds the best route to build track between two points.
+ *
  * @author Luke
  *
  */

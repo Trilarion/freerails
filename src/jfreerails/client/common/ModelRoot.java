@@ -12,6 +12,8 @@ import jfreerails.world.top.WorldMapListener;
 
 
 /**
+ * Defines methods and constants that GUI classes can use to access shared data.
+ *
  * @author Luke
  *
  */

@@ -18,7 +18,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.border.LineBorder;
 
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRoot;
@@ -63,10 +62,7 @@ public class DialogueBoxController implements WorldListListener {
     private ReadOnlyWorld world;
     private ModelRootImpl modelRoot;
     private ViewLists vl;
-    private Component defaultFocusOwner = null;
-    private final LineBorder defaultBorder = new LineBorder(new java.awt.Color(
-                0, 0, 0), 3);
-    //private final ActionRoot actionRoot;
+    private Component defaultFocusOwner = null;    
     private final JFrame frame;
 
     /** Use this ActionListener to close a dialogue without performing any other action. */

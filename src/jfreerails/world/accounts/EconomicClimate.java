@@ -8,6 +8,8 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
+ * Represents the state of the economy.
+ *
  * @author Luke
  *
  */
@@ -28,6 +30,37 @@ public class EconomicClimate implements FreerailsSerializable {
     }
 
     private final int baseInterestRate;
+
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof EconomicClimate)) {
+            return false;
+        }
+
+        final EconomicClimate economicClimate = (EconomicClimate)o;
+
+        if (baseInterestRate != economicClimate.baseInterestRate) {
+            return false;
+        }
+
+        if (name != null ? !name.equals(economicClimate.name)
+                             : economicClimate.name != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = (name != null ? name.hashCode() : 0);
+        result = 29 * result + baseInterestRate;
+
+        return result;
+    }
 
     private EconomicClimate(int r, String s) {
         baseInterestRate = r;
