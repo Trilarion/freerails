@@ -37,7 +37,7 @@ class GameController;
 class Station : public GamePosElement  {
 public:
   /** Size */
-  enum Size {Small = 0, Medium, Big};
+  enum Size {Signal = 0, Small, Medium, Big};
 
 
   /** Constructor

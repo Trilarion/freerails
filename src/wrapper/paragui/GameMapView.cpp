@@ -207,32 +207,71 @@ void GameMapView::drawStationPixmap(int mapX, int mapY, Station* station) {
   Track* track = field->getTrack();
   if (track==NULL) return;
   unsigned int connect = track->getConnect();
+  int sizepos = 0;
+  switch (station->getSize())
+  {
+    case Station::Signal:
+    break;
+    case Station::Small:
+      sizepos=4;
+    break;
+    case Station::Medium:
+      sizepos=8;
+    break;
+    case Station::Big:
+      sizepos=12;
+    break;
+  }
   connect |= TrackIsBlocked;
   switch (connect ^ TrackIsBlocked)
   {
     case TrackGoNorth:
+      tilesetX=18*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoSouth:
+      tilesetX=26*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoNorth | TrackGoSouth:
       tilesetX=18*30+15;
-      tilesetY=26*30+15;
+      tilesetY=(18+sizepos)*30+15;
     break;
     case TrackGoNorthEast:
+      tilesetX=20*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoSouthWest:
+      tilesetX=28*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoNorthEast | TrackGoSouthWest:
       tilesetX=20*30+15;
-      tilesetY=26*30+15;
+      tilesetY=(18+sizepos)*30+15;
     break;
     case TrackGoEast:
+      tilesetX=22*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoWest:
+      tilesetX=30*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoEast | TrackGoWest:
       tilesetX=22*30+15;
-      tilesetY=26*30+15;
+      tilesetY=(18+sizepos)*30+15;
     break;
     case TrackGoNorthWest:
+      tilesetX=32*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoSouthEast:
+      tilesetX=24*30+15;
+      tilesetY=(16+sizepos)*30+15;
+    break;
     case TrackGoNorthWest | TrackGoSouthEast:
       tilesetX=24*30+15;
-      tilesetY=26*30+15;
+      tilesetY=(18+sizepos)*30+15;
     break;
   }
   drawPixmap(trackImage, tilesetX, tilesetY, mapX, mapY);
@@ -568,7 +607,7 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   
     case buildStation:
       if(guiEngine->testBuildStation(mapx,mapy)){
-	drawStationPixmap(mapx, mapy, NULL);
+	drawStationPixmap(mapx, mapy, new Station(mapx,mapy, NULL, "", Station::Big, NULL));
       }
       break;
     case buildTrack:

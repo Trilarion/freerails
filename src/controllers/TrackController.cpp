@@ -126,12 +126,11 @@ void TrackController::removeGameElement(long int _elementID)
 
 bool TrackController::connectIsBuildable(unsigned int connect)
 {
-  int c = connect;// & 0x000000ff;
   bool status;
 
   if (connect & (TrackIsBlocked))
   {
-    switch (c)
+    switch (connect ^ TrackIsBlocked)
     {
       case TrackGoNorth:
       case TrackGoNorth | TrackGoSouth:
@@ -154,7 +153,7 @@ bool TrackController::connectIsBuildable(unsigned int connect)
   }
   else
   {
-    switch (c)
+    switch (connect)
     {
       case TrackGoNorth:
       case TrackGoNorthEast:

@@ -11,12 +11,10 @@ PARAGUI_CALLBACK(GamePanel::pause_handler) {
     case GuiEngine::Pausing:
       guiEngine->changeGameState(GuiEngine::Running);
       pauseButton->SetPressed(false);
-std::cerr<<"Was Pausing" << std::endl;
     break;
     case GuiEngine::Running:
       guiEngine->changeGameState(GuiEngine::Pausing);
       pauseButton->SetPressed(true);
-std::cerr<<"Was Running" << std::endl;
     break;
     default:
     break;
@@ -61,7 +59,7 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   stationButton->SetToggle(true);
   stationButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationButton);
 
-  pauseButton=new PG_Button(this,3,PG_Rect(5,430,125,25),"PAUSE");
+  pauseButton=new PG_Button(this,3,PG_Rect(5,530,125,25),"PAUSE");
   pauseButton->SetToggle(true);
   pauseButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::pause_handler);
   
