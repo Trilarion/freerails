@@ -73,7 +73,7 @@ int result;
     if (result==1) {  // Single Player
       initSingleGame();
       engine=new Engine(worldMap, playerSelf);
-      mapView=new GameMapView(&mw, 0, 0, 650, 600 , worldMap);
+      mapView=new GameMapView(&mw, 0, 0, 650, 600 , engine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
       mapView->Show();
       panel->Show();
@@ -86,7 +86,7 @@ int result;
       // start engine Client or Server
       // engine=new Engine(worldMap);
 
-      mapView=new GameMapView(&mw, 0, 0, 650, 450 , worldMap);
+      mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
 
