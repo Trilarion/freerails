@@ -6,6 +6,7 @@
 
 package jfreerails.client.view;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,6 +23,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 	private ReadOnlyWorld world;
 	
 	private FreerailsPrincipal principal;
+	
+	private int lastNumberOfTrains = -1;
     
     /** Creates new form TrainListJPanel */
     public TrainListJPanel() {
@@ -37,29 +40,14 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jList1 = new javax.swing.JList();
         closeJButton = new javax.swing.JButton();
         showDetails = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
 
         setLayout(new java.awt.GridBagLayout());
 
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jList1KeyPressed(evt);
-            }
-        });
-        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList1MouseClicked(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        add(jList1, gridBagConstraints);
-
+        setPreferredSize(new java.awt.Dimension(400, 300));
         closeJButton.setText("Close");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -81,6 +69,27 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(showDetails, gridBagConstraints);
+
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jList1KeyPressed(evt);
+            }
+        });
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(jList1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jScrollPane1, gridBagConstraints);
 
     }//GEN-END:initComponents
 
@@ -107,8 +116,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         jList1.setModel(new World2ListModelAdapter(mr.getWorld(), KEY.TRAINS, mr.getPlayerPrincipal()));
         TrainViewJPanel trainView =
         new TrainViewJPanel(mr);
-        jList1.setCellRenderer(trainView);
-        trainView.setHeight(50);               
+        jList1.setCellRenderer(trainView);       
+		trainView.setHeight(trainViewHeight);               
         ActionListener[] oldListeners = closeJButton.getActionListeners();
         for(int i = 0; i < oldListeners.length; i ++){
             closeJButton.removeActionListener(oldListeners[i]);
@@ -137,8 +146,11 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeJButton;
     private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton showDetails;
     // End of variables declaration//GEN-END:variables
+
+	private int trainViewHeight= 50;
     
 	
 	public void setVisible(boolean aFlag) {
@@ -146,6 +158,19 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
 		}
 		super.setVisible(aFlag);
+	}
+	
+	public void setTrainViewHeight(int trainViewHeight) {
+		this.trainViewHeight = trainViewHeight;
+	}
+	
+	protected void paintComponent(Graphics g) {
+		int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
+		if(newNumberOfTrains != this.lastNumberOfTrains){
+			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
+			lastNumberOfTrains = newNumberOfTrains;
+		}		
+		super.paintComponent(g);
 	}
 
 }

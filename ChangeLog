@@ -1,3 +1,7 @@
+Mar 13, 2004 3:50:51 AM Luke
+	o Implemented 910126 (Train list on RHS panel)
+	o Started 915303 (Icons for buttons and tabs) - the
+	tabs on the RHS now have icons instead of titles.
 Mar 12, 2004 8:37:12 PM Luke
 	o Apply Jan Tozicka's patch for 910902 (Game speed not stored on world object).
 Mar 9, 2004 1:11:50 AM Luke
