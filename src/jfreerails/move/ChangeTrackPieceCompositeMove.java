@@ -9,7 +9,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import jfreerails.move.status.MoveStatus;
-import jfreerails.type.TrackRule;
+import jfreerails.world.type.TrackRule;
 import jfreerails.world.flat.OneTileMoveVector;
 import jfreerails.world.flat.TrackConfiguration;
 import jfreerails.world.std_track.NullTrackPiece;

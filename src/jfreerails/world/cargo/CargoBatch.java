@@ -2,7 +2,7 @@ package jfreerails.world.cargo;
 
 import java.awt.Point;
 
-import jfreerails.type.CargoType;
+import jfreerails.world.type.CargoType;
 
 public interface CargoBatch {
 	
