@@ -5,6 +5,7 @@
 #ifndef __GAMEAPPLICATION_H__
 #define __GAMEAPPLICATION_H__
 #include "BaseApplication.h"
+#include "GameDataSelectDialog.h"
 #include "GameMainWindow.h"
 #include "GameModeSelectDialog.h"
 #include "GameMapView.h"

@@ -21,12 +21,11 @@ class GameModeSelectDialog: public PG_Window {
     ~GameModeSelectDialog();
 
     int show();
-    bool eventButtonClick(int id, PG_Widget* widget);
 
   private:
 
+    bool eventButtonClick(int id, PG_Widget* widget);
     int buttonflag;
-    int WaitForEvent();
     PG_Button* single;
     PG_Button* multi;
     PG_Button* quit;

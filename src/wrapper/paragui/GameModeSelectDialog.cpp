@@ -23,42 +23,19 @@ int GameModeSelectDialog::show() {
   buttonflag=0;
 
   Show();
-  int i = WaitForEvent();
+  RunModal();
   Hide();
-  return i;
+  return buttonflag;
 }
 
 //Event?
 bool GameModeSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
-	//Button clicked?
-	if(widget==single || widget==multi || widget==quit) {
-		//Set Buttonflag to ButtonID
-		buttonflag=id;
-		return true;
-	}
-	return false;
-}
-
-int GameModeSelectDialog::WaitForEvent() {
-
-  int help;
-  SDL_Event event;
-  
-  while(!buttonflag){
-    SDL_WaitEvent(&event);
-    PG_RectList* childlist = GetChildList();
-    if(childlist) {
-      PG_RectList::iterator i = childlist->begin();
-      while(i != childlist->end()) {
-        (*i)->ProcessEvent(&event);
-        i++;
-      }
-    }
-    Update();
+  //Button clicked?
+  if(widget==single || widget==multi || widget==quit) {
+    //Set Buttonflag to ButtonID
+    buttonflag=id;
+    SendMessage(this, MSG_MODALQUIT, 0, 0);
+    return true;
   }
-  
-  help = buttonflag;
-  buttonflag=0;
-  while(SDL_PollEvent(&event));
-  return help;
+  return false;
 }

@@ -63,11 +63,13 @@ int GameApplication::runEngine(void* data)
     object->engine->checkNext(SDL_GetTicks());
     SDL_Delay(10);
   }
+  return 0;
 }
 
 int GameApplication::run() {
 
-int result;
+  int result;
+  
   showSplash();
   setCaption("FreeRails");
   sleep(1);
@@ -81,26 +83,25 @@ int result;
       pGlobalApp->Quit();
       return 0;
     }
-    // Ask for Playername
+    GameDataSelectDialog dataDialog(&mw, 200, 100, 400, 300, "Choos game Data", result);
+    result=dataDialog.show();
     // get Player Name
     if (result==1) {  // Single Player
-      initSingleGame(std::string("me"), 30, 30, 0);
+      initSingleGame(dataDialog.getName(), dataDialog.getWidth(), dataDialog.getHeight(), 0);
       engine=new Engine(worldMap, playerSelf);
       mapView=new GameMapView(&mw, 0, 0, 650, 600 , engine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
       mapView->Show();
       panel->Show();
-    }
+    } else
     if (result==2) {  
-      // Multi Player
+      // Multi Player Server
       // TODO
-      // show modal Network dialog
       // get Network settings
-      // initServerGame() or initClientGame()
-      initServerGame();
-      // get Network/Clientsocket
+      initServerGame(dataDialog.getName(), dataDialog.getWidth(), dataDialog.getHeight(), 0);
+      // get Network
       Server* server=new Server(30000);
-      // start engine Client or Server
+      // start engine Server
       engine=new Engine(worldMap, playerSelf, server);
 
       mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
@@ -110,20 +111,38 @@ int result;
       mapView->Show();
       panel->Show();
       netView->Show();
+    } else
+    if (result==3) {
+      // Multi Player Client
+      initClientGame(dataDialog.getName());
+/*    Need's change to client
+      Server* server=new Server(30000);
+      engine=new Engine(worldMap, playerSelf, server);
+*/
+      mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
+      panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
+      netView=new GameNetView(&mw, 0, 450, 650, 150);
+
+      mapView->Show();
+      panel->Show();
+      netView->Show();
     }
-    SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
-    Engine::GameState state = Engine::Running;
-    Message* msg=new Message(Message::stateOfGame,0,&state);
-    engine->sendMsg(msg);
-    pGlobalApp->Run();
-    state = Engine::Stopping;
-    msg=new Message(Message::stateOfGame,0,&state);
-    engine->sendMsg(msg);
-    SDL_WaitThread(thread2, NULL);
-    if (engine!=NULL) { delete engine; engine=NULL; }
-    if (mapView!=NULL) { delete mapView; mapView=NULL; }
-    if (netView!=NULL) { delete netView; netView=NULL; }
-    if (panel!=NULL) { delete panel; panel=NULL; }
+    if (result>0)
+    {
+      SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
+      Engine::GameState state = Engine::Running;
+      Message* msg=new Message(Message::stateOfGame,0,&state);
+      engine->sendMsg(msg);
+      pGlobalApp->Run();
+      state = Engine::Stopping;
+      msg=new Message(Message::stateOfGame,0,&state);
+      engine->sendMsg(msg);
+      SDL_WaitThread(thread2, NULL);
+      if (engine!=NULL) { delete engine; engine=NULL; }
+      if (mapView!=NULL) { delete mapView; mapView=NULL; }
+      if (netView!=NULL) { delete netView; netView=NULL; }
+      if (panel!=NULL) { delete panel; panel=NULL; }
+    }
   }
 }
 
