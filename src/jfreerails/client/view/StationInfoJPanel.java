@@ -330,6 +330,9 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
         reactToUpdate(key, index, false);
     }
     
+    void removeCloseButton(){
+    	this.remove(close);
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
