@@ -90,6 +90,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
 	private JMenu helpMenu;
 
+	private JMenu brokerMenu;
+
 	private boolean isSetup = false;
 
 	private JMenuItem leaderBoardJMenuItem;
@@ -123,6 +125,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 	private JMenuItem trainListJMenuItem;
 
 	private JMenuItem trainOrdersJMenuItem;
+
+	private JMenuItem callBrokerJMenuItem;
 
 	/**
 	 * This is the panel at the bottom right of the screen.
@@ -235,6 +239,21 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
 	public JLabel createDateJLabel() {
 		return datejLabel;
+	}
+
+	public JMenu createBrokerMenu() {
+		brokerMenu = new JMenu("Broker");
+
+		callBrokerJMenuItem = new JMenuItem("Call Broker");
+		callBrokerJMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialogueBoxController.showBrokerScreen();
+			}
+		});
+
+		brokerMenu.add(callBrokerJMenuItem);
+
+		return brokerMenu;
 	}
 
 	public JMenu createDisplayMenu() {

@@ -28,6 +28,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     private final JPanel mapOverview;
     private final JMenu helpMenu;
     private final JLabel messageJLabel;
+    private final JMenu brokerMenu;
 
     /** Creates a new instance of GUIComponentFactoryTestImpl. */
     public GUIComponentFactoryTestImpl() {
@@ -44,6 +45,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         buildMenu = new JMenu();
         displayMenu = new JMenu();
         helpMenu = new JMenu();
+        brokerMenu = new JMenu();
 
         trainsJPanel.setBackground(new java.awt.Color(255, 51, 51));
         datejLabel.setText("Jun, 1840");
@@ -93,5 +95,9 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
 
     public JTabbedPane createTrainsJTabPane() {
         return trainsJPanel;
+    }
+    
+    public JMenu createBrokerMenu() {
+        return brokerMenu;
     }
 }

@@ -50,6 +50,7 @@ public class ClientJFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         gameMenu = gUIComponentFactory.createGameMenu();
         buildMenu = gUIComponentFactory.createBuildMenu();
+        BrokerMenu1 = gUIComponentFactory.createBrokerMenu();
         displayMenu = gUIComponentFactory.createDisplayMenu();
         reportsMenu = gUIComponentFactory.createReportsMenu();
         helpMenu = gUIComponentFactory.createHelpMenu();
@@ -117,6 +118,9 @@ public class ClientJFrame extends javax.swing.JFrame {
         buildMenu.setText("Build");
         jMenuBar1.add(buildMenu);
 
+        BrokerMenu1.setText("Broker");
+        jMenuBar1.add(BrokerMenu1);
+
         displayMenu.setText("Display");
         jMenuBar1.add(displayMenu);
 
@@ -142,20 +146,21 @@ public class ClientJFrame extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JMenu buildMenu;
-    javax.swing.JLabel cashjLabel;
-    javax.swing.JLabel datejLabel;
-    javax.swing.JMenu displayMenu;
-    javax.swing.JMenu gameMenu;
-    javax.swing.JMenu helpMenu;
-    javax.swing.JMenuBar jMenuBar1;
-    javax.swing.JPanel lhsjPanel;
-    javax.swing.JScrollPane mainMapView;
-    javax.swing.JPanel mapOverview;
-    javax.swing.JMenu reportsMenu;
-    javax.swing.JPanel rhsjPanel;
-    javax.swing.JPanel statusjPanel;
-    javax.swing.JTabbedPane trainsJTabPane1;
+    private javax.swing.JMenu BrokerMenu1;
+    private javax.swing.JMenu buildMenu;
+    private javax.swing.JLabel cashjLabel;
+    private javax.swing.JLabel datejLabel;
+    private javax.swing.JMenu displayMenu;
+    private javax.swing.JMenu gameMenu;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel lhsjPanel;
+    private javax.swing.JScrollPane mainMapView;
+    private javax.swing.JPanel mapOverview;
+    private javax.swing.JMenu reportsMenu;
+    private javax.swing.JPanel rhsjPanel;
+    private javax.swing.JPanel statusjPanel;
+    private javax.swing.JTabbedPane trainsJTabPane1;
     // End of variables declaration//GEN-END:variables
     
 }

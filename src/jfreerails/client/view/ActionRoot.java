@@ -17,85 +17,91 @@ import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 
-
 /**
  * Provides access to Actions change the game state and the GUI.
- *  @author Luke
- *
+ * 
+ * @author Luke
+ * 
  */
 public class ActionRoot {
-    private TrackBuildModel trackBuildModel;
-    private TrackMoveProducer trackMoveProducer;
-    private StationBuildModel stationBuildModel;
-    private DialogueBoxController dialogueBoxController = null;
-    private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
-    private final ServerControlModel serverControls = new ServerControlModel( null);
 
-    private class BuildTrainDialogAction extends AbstractAction {
-        private static final long serialVersionUID = 3257853173002416948L;
+	private class BuildTrainDialogAction extends AbstractAction {
+		private static final long serialVersionUID = 3257853173002416948L;
 
 		public BuildTrainDialogAction() {
-            super("Build Train");
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
-            putValue(SHORT_DESCRIPTION, "Build a new train");
-        }
+			super("Build Train");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
+			putValue(SHORT_DESCRIPTION, "Build a new train");
+		}
 
-        public void actionPerformed(ActionEvent e) {
-            if (dialogueBoxController != null) {
-                dialogueBoxController.showSelectEngine();
-            }
-        }
-    }
+		public void actionPerformed(ActionEvent e) {
+			if (dialogueBoxController != null) {
+				dialogueBoxController.showSelectEngine();
+			}
+		}
+	}
 
-    /**
-     *  Call this method when a new game is started or a game is loaded.
-     */
-    public void setup(ModelRootImpl modelRoot, ViewLists vl) {
-    	serverControls.setModelRoot(modelRoot);
-        if (!modelRoot.hasBeenSetup)
-            throw new IllegalStateException();
+	private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
 
-        ReadOnlyWorld world = modelRoot.getWorld();
+	private DialogueBoxController dialogueBoxController = null;
 
-        if (world.size(SKEY.TRACK_RULES) > 0) {
-            trackMoveProducer = new TrackMoveProducer(modelRoot);           
-            stationBuildModel = new StationBuildModel(new StationBuilder(
-                        modelRoot), vl, modelRoot);
-            trackBuildModel = new TrackBuildModel(trackMoveProducer, modelRoot, vl, stationBuildModel);
-        }
-    }
+	private final ServerControlModel serverControls = new ServerControlModel(
+			null);
 
-    public DialogueBoxController getDialogueBoxController() {
-        return dialogueBoxController;
-    }
+	private StationBuildModel stationBuildModel;
+	private TrackBuildModel trackBuildModel;
 
-    public TrackBuildModel getTrackBuildModel() {
-        return trackBuildModel;
-    }
+	private TrackMoveProducer trackMoveProducer;
 
-    public StationBuildModel getStationBuildModel() {
-        return stationBuildModel;
-    }
+	public ActionRoot() {
+	}
 
-    public Action getBuildTrainDialogAction() {
-        return buildTrainDialogAction;
-    }
+	public Action getBuildTrainDialogAction() {
+		return buildTrainDialogAction;
+	}
 
-    public TrackMoveProducer getTrackMoveProducer() {
-        return trackMoveProducer;
-    }
+	public DialogueBoxController getDialogueBoxController() {
+		return dialogueBoxController;
+	}
 
-    public ActionRoot() {
-    }
+	public ServerControlModel getServerControls() {
+		return serverControls;
+	}
 
-    public void setDialogueBoxController(
-        DialogueBoxController dialogueBoxController) {
-        this.dialogueBoxController = dialogueBoxController;
-    }
+	public StationBuildModel getStationBuildModel() {
+		return stationBuildModel;
+	}
 
-    public ServerControlModel getServerControls() {
-        return serverControls;
-    }
+	public TrackBuildModel getTrackBuildModel() {
+		return trackBuildModel;
+	}
 
-    
+	public TrackMoveProducer getTrackMoveProducer() {
+		return trackMoveProducer;
+	}
+
+	public void setDialogueBoxController(
+			DialogueBoxController dialogueBoxController) {
+		this.dialogueBoxController = dialogueBoxController;
+	}
+
+	/**
+	 * Call this method when a new game is started or a game is loaded.
+	 */
+	public void setup(ModelRootImpl modelRoot, ViewLists vl) {
+		serverControls.setModelRoot(modelRoot);
+		if (!modelRoot.hasBeenSetup)
+			throw new IllegalStateException();
+
+		ReadOnlyWorld world = modelRoot.getWorld();
+
+		if (world.size(SKEY.TRACK_RULES) > 0) {
+			trackMoveProducer = new TrackMoveProducer(modelRoot);
+			stationBuildModel = new StationBuildModel(new StationBuilder(
+					modelRoot), vl, modelRoot);
+			trackBuildModel = new TrackBuildModel(trackMoveProducer, modelRoot,
+					vl, stationBuildModel);
+		}
+	}
+
 }

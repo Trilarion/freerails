@@ -31,4 +31,6 @@ public interface GUIComponentFactory {
     JMenu createDisplayMenu();
 
     JMenu createHelpMenu();
+    
+    JMenu createBrokerMenu();
 }
