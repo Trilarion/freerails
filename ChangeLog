@@ -1,3 +1,10 @@
+Tue May 20 01:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI   : Show Station's a bit better
+o Controller: Small corrections in StationController
+o Graphics  : fixed station image
+o Wrapper   : GuiEngine trys different station names
+o 0.0.9     : releasing
+
 Mon May 19 14:45:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI   : Some corrections.
 o Controller: Small station corrections

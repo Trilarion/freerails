@@ -1,5 +1,5 @@
 ================
-FreeRails v0.0.8
+FreeRails v0.0.9
 ================
 
 Welcome to FreeRails!
@@ -11,7 +11,15 @@ IMPORTAND
 We using 2 different libraries to display.
 
 1.) Qt 3.1.x (3.1.1)
-2.) libSDL 1.2.x (1.2.5) with paraGUI 1.0.2 (1.0.3)
+2.) libSDL 1.2.x (1.2.5) with ParaGUI 1.0.2 (1.0.3)
+
+=========
+IMPORTAND
+=========
+
+There are bugs in ParaGUI up to 1.0.4Beta1 ... if you want nice working
+panels on right side, then search for my patch in the ParaGUI mailing list
+or wait for ParaGUI 1.0.4 final.
 
 See requirements.
 
@@ -94,7 +102,7 @@ as parameter or you can use "-f" for fullscreen view.
 Playing the game:
 =================
 
-The down described possibilities are gone while porting from C to C++
+The down described possibilities are partly gone while porting from C to C++
 
 Nothing realy to play yet. You can set stations and tracks and then build
 trains and let them drive to an other station. (It must be a direct connection!)

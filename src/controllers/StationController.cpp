@@ -115,5 +115,5 @@ void StationController::stationDoBuild(Station* station)
   connect |= TrackIsBlocked;
   track->setConnect(connect);
   field->setStation(station);
-  std::cerr << station->getSize() << std::endl;
+  Controller::addGameElement(station);
 }

@@ -174,13 +174,10 @@ void GamePanel::addStation(Station* station)
       return;
     break;
     case Station::Small:
-      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"Depot");
-    break;
     case Station::Medium:
-      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"Station");
-    break;
     case Station::Big:
-      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"Terminal");
+      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),station->getName().c_str());
+      button->SetFontSize(11);
     break;
   }
   stationList->AddWidget(button);

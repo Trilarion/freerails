@@ -5,17 +5,9 @@
 #define __MESSAGEQUEUE_H__
 
 #include "Message.h"
-#include <vector>
+#include <queue>
 
-class MsgElement {
-
-public:
-  Message* Msg;
-  MsgElement* next;
-
-};
-
-class MessageQueue {
+class MessageQueue: public std::queue<Message*> {
 public:
 
   /** Constructor */
@@ -26,11 +18,6 @@ public:
   bool hasMoreElements();
   void addMsg(Message* msg);
   Message* getMsg();
-  
-private:
-
-  MsgElement* first;
-  MsgElement* last;
 
 };
 

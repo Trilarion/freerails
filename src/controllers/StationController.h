@@ -24,6 +24,8 @@
 #include "Station.h"
 #include "WorldMap.h"
 
+#include <string>
+
 /**This class is handling build and remove of stations.
   *@author frank
   */

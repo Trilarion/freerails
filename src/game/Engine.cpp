@@ -162,12 +162,12 @@ void Engine::processMsg(Message* msg)
       case Message::addElement:
         std::cerr << "\nadd element\n";
         addElementToGame(msg);
-	if (msg->getData() != NULL) delete (GameElement*)msg->getData();
+//	if (msg->getData() != NULL) delete (GameElement*)msg->getData();
       break;
       case Message::stateOfGame:
         std::cerr << "change state of the game";
         changeStateOfGame(msg);
-	if (msg->getData() != NULL) delete (GameState *)msg->getData();
+//	if (msg->getData() != NULL) delete (GameState *)msg->getData();
       break;
       default:
       break;
@@ -193,6 +193,7 @@ void Engine::addElementToGame(Message* msg)
     if (elementController->canBuildElement(element))
     {
       elementController->addGameElement(element);
+      
       Message* msgBack = new Message(Message::addElement, 0, element);
       SendAll(msgBack);
     }

@@ -19,6 +19,7 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
 
 
@@ -55,6 +56,7 @@ class GuiEngine{
   bool buildTrack(int x, int y, int dir);
   
   void getOtherConnectionSide(unsigned int* x, unsigned int* y, int* dir) {trackController->getOtherConnectionSide(x,y,dir);}
+  City* getNearestCity(int x, int y);
   
   std::vector<City*> getAllCities();
   
@@ -64,8 +66,12 @@ class GuiEngine{
   TrackController* trackController;
   StationController* stationController;
   Player *player;
+  
+  std::vector<std::string> nameExtensions;
 
   void initialize(Player *_player);
+  std::string getStationName(std::string cityName);
+  bool stationNameExists(std::string _name);
   inline void sendMsg(Message *msg){engine->sendMsg(msg);};
 
 };
