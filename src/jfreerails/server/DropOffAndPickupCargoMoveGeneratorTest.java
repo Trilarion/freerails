@@ -43,12 +43,12 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         //Set up the world object with three cargo types, one station, and one train.
         w = new WorldImpl();
 
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
         //set up the cargo types.
         w.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", "Mail"));
         w.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers", "Passengers"));
-        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", "Goods"));
+        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", "Fast_Freight"));
 
         //Set up station
         int x = 10;

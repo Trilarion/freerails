@@ -1,7 +1,7 @@
 package jfreerails.server;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import jfreerails.move.AddTransactionMove;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
 import jfreerails.move.TransferCargoAtStationMove;
@@ -24,6 +24,7 @@ import jfreerails.world.train.WagonType;
  * handles cargo converions that occur when cargo is dropped off.
  *
  * @author Scott Bennett
+ * @author Luke Lindsay
  * Date Created: 4 June 2003
  *
  */
@@ -38,7 +39,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     private CargoBundle stationBefore;
     private CargoBundle trainAfter;
     private CargoBundle trainBefore;
-    private AddTransactionMove payment;
+    private ArrayList moves;
     private final FreerailsPrincipal principal;
 
     /**
@@ -69,8 +70,16 @@ public class DropOffAndPickupCargoMoveGenerator {
         ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore,
                 trainAfter, trainBundleId, principal);
 
-        return TransferCargoAtStationMove.generateMove(changeAtStation,
-            changeOnTrain, payment);
+        moves.add(TransferCargoAtStationMove.CHANGE_AT_STATION_INDEX,
+            changeAtStation);
+        moves.add(TransferCargoAtStationMove.CHANGE_ON_TRAIN_INDEX,
+            changeOnTrain);
+
+        TransferCargoAtStationMove move = new TransferCargoAtStationMove(moves);
+        assert move.getChangeAtStation() == changeAtStation;
+        assert move.getChangeOnTrain() == changeOnTrain;
+
+        return move;
     }
 
     public void getBundles() {
@@ -122,7 +131,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             }
         }
 
-        payment = ProcessCargoAtStationMoveGenerator.processCargo(w,
+        moves = ProcessCargoAtStationMoveGenerator.processCargo(w,
                 cargoDroppedOff, this.stationId, principal);
 
         //Unload the cargo that there isn't space for on the train regardless of whether the station

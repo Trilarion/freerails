@@ -104,7 +104,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
         wetf.addTypesToWorld(w);
-        w.addPlayer(TEST_PLAYER, Player.AUTHORITATIVE);
+        w.addPlayer(TEST_PLAYER);
         try {
             vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {            

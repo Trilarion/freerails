@@ -14,7 +14,6 @@ import org.xml.sax.SAXException;
 public interface CargoAndTerrainHandler {
     /**
      * An empty element event handling method.
-     * @param data value or null
      *
      */
     public void handle_Converts(final Attributes meta)
@@ -35,7 +34,6 @@ public interface CargoAndTerrainHandler {
 
     /**
      * An empty element event handling method.
-     * @param data value or null
      *
      */
     public void handle_Cargo(final Attributes meta) throws SAXException;
@@ -83,7 +81,6 @@ public interface CargoAndTerrainHandler {
 
     /**
      * An empty element event handling method.
-     * @param data value or null
      *
      */
     public void handle_Consumes(final Attributes meta)
@@ -91,7 +88,6 @@ public interface CargoAndTerrainHandler {
 
     /**
      * An empty element event handling method.
-     * @param data value or null
      *
      */
     public void handle_Produces(final Attributes meta)

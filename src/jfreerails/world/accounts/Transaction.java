@@ -13,5 +13,19 @@ import jfreerails.world.common.Money;
  *
  */
 public interface Transaction extends FreerailsSerializable {
+    /* Transaction categories.*/
+    public static final int TRACK = 0;
+    public static final int CARGO_DELIVERY = 1;
+    public static final int TRACK_MAINTENANCE = 2;
+    public static final int TRAIN_MAINTENANCE = 3;
+    public static final int STATION_MAINTENANCE = 4;
+    public static final int NEW_TRAIN = 5;
+    public static final int MISC_INCOME = 6;
+    public static final int INTEREST_CHARGE = 7;
+    public static final int BOND = 8;
+
+    /** Positive means credit. */
     Money getValue();
+
+    int getCategory();
 }

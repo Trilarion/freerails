@@ -36,7 +36,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
         getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
         getWorld().set(ITEM.TIME, new GameTime(0));
 
-        getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+        getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
     }
 
     abstract public void testMove();

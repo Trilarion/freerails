@@ -33,7 +33,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
     protected void setUp() {
         world = new WorldImpl(20, 20);
-        world.addPlayer(testPlayer, Player.AUTHORITATIVE);
+        world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
 

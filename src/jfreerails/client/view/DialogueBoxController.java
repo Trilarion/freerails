@@ -224,6 +224,12 @@ public class DialogueBoxController {
     public void showGameControls() {
         showContent(this.showControls);
     }
+    
+    public void showIncomeStatement(){
+		IncomeStatementHtmlJPanel bs = new IncomeStatementHtmlJPanel();
+		bs.setup(this.modelRoot, this.closeCurrentDialogue);
+		this.showContent(bs);
+    }
 
     public void showAbout() {
         showContent(this.about);

@@ -148,9 +148,15 @@
 
       <delete dir="${temp}"/>
             
-      <!-- also delete any class files under the src directory -->      
+      <!-- also delete any .class etc under the src directory -->      
       <delete>
-    	<fileset dir="${src}" includes="**/*.class"/>
+    	<fileset dir="${src}">
+    		<include name="**/*.class"/>
+    		<include name="**/*.java~"/>
+    		<include name="**/*.java#"/>
+    		<include name="**/.nbattrs"/>
+ 		 	<include name="**/.ucd"/>
+    	</fileset>
   	 </delete>             
    </target>
 

@@ -4,6 +4,7 @@
  */
 package jfreerails.server;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.world.accounts.DeliverCargoReceipt;
@@ -22,12 +23,13 @@ import jfreerails.world.top.ReadOnlyWorld;
  *
  */
 public class ProcessCargoAtStationMoveGenerator {
-    public static AddTransactionMove processCargo(ReadOnlyWorld w,
+    public static ArrayList processCargo(ReadOnlyWorld w,
         CargoBundle cargoBundle, int stationID, FreerailsPrincipal p) {
         StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
                 p);
         Iterator batches = cargoBundle.cargoBatchIterator();
-        double amount = 0;
+
+        ArrayList moves = new ArrayList();
 
         while (batches.hasNext()) {
             CargoBatch batch = (CargoBatch)batches.next();
@@ -35,12 +37,14 @@ public class ProcessCargoAtStationMoveGenerator {
                 thisStation.x) * (batch.getSourceY() - thisStation.y) * (batch.getSourceY() -
                 thisStation.y);
             double dist = Math.sqrt(distanceSquared);
-            amount += cargoBundle.getAmount(batch) * Math.log(dist) * 100;
+            int quantity = cargoBundle.getAmount(batch);
+            double amount = quantity * Math.log(dist) * 100;
+            Money money = new Money((long)amount);
+            DeliverCargoReceipt receipt = new DeliverCargoReceipt(money,
+                    quantity, stationID, batch);
+            moves.add(new AddTransactionMove(p, receipt));
         }
 
-        DeliverCargoReceipt receipt = new DeliverCargoReceipt(new Money(
-                    (long)amount), cargoBundle);
-
-        return new AddTransactionMove(p, receipt);
+        return moves;
     }
 }

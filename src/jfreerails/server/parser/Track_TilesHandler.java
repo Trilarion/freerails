@@ -50,7 +50,6 @@ public interface Track_TilesHandler {
 
     /**
      * An empty element event handling method.
-     * @param data value or null
      */
     void handle_LegalRouteAcrossNode(final Attributes meta)
         throws SAXException;
@@ -80,7 +79,6 @@ public interface Track_TilesHandler {
 
     /**
      * An empty element event handling method.
-     * @param data value or null
      */
     void handle_TerrainType(final Attributes meta) throws SAXException;
 

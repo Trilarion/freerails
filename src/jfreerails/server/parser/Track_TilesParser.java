@@ -25,7 +25,6 @@ import org.xml.sax.SAXException;
  */
 final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     private java.lang.StringBuffer buffer;
-    private Track_TilesParslet parslet;
     private Track_TilesHandler handler;
 
     /**
@@ -35,7 +34,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
 
     public Track_TilesParser(final Track_TilesHandler handler,
         final Track_TilesParslet parslet) {
-        this.parslet = parslet;
         this.handler = handler;
         buffer = new StringBuffer(111);
         context = new java.util.Stack();
@@ -147,7 +145,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws java.io.IOException on I/O error.
      * @throws SAXException propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
     public void parse(final InputSource input)
         throws SAXException, ParserConfigurationException, IOException {
@@ -160,7 +157,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws java.io.IOException on I/O error.
      * @throws SAXException propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
     public void parse(final java.net.URL url)
         throws SAXException, ParserConfigurationException, IOException {
@@ -173,7 +169,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws java.io.IOException on I/O error.
      * @throws SAXException propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
     public static void parse(final InputSource input,
         final Track_TilesHandler handler, final Track_TilesParslet parslet)
@@ -187,7 +182,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws java.io.IOException on I/O error.
      * @throws SAXException propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
      */
     public static void parse(final java.net.URL url,
         final Track_TilesHandler handler, final Track_TilesParslet parslet)

@@ -3,7 +3,7 @@
  */
 package jfreerails.world.accounts;
 
-import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.common.Money;
 
 
@@ -13,14 +13,27 @@ import jfreerails.world.common.Money;
  *
  */
 public class DeliverCargoReceipt extends Receipt {
-    private final CargoBundle cargoDelivered;
+    private final CargoBatch cb;
+    private final int quantity;
+    private final int stationId;
 
-    public DeliverCargoReceipt(Money m, CargoBundle cb) {
-        super(m);
-        cargoDelivered = cb;
+    public DeliverCargoReceipt(Money m, int quantity, int stationId,
+        CargoBatch cb) {
+        super(m, CARGO_DELIVERY);
+        this.stationId = stationId;
+        this.quantity = quantity;
+        this.cb = cb;
     }
 
-    public CargoBundle getCargoDelivered() {
-        return cargoDelivered;
+    public CargoBatch getCb() {
+        return cb;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public int getStationId() {
+        return stationId;
     }
 }

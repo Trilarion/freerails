@@ -13,9 +13,11 @@ import jfreerails.world.common.Money;
  */
 public class Receipt implements Transaction {
     private final Money amount;
+    private final int category;
 
-    public Receipt(Money m) {
+    public Receipt(Money m, int category) {
         this.amount = m;
+        this.category = category;
     }
 
     public Money getValue() {
@@ -26,9 +28,14 @@ public class Receipt implements Transaction {
         if (o instanceof Receipt) {
             Receipt test = (Receipt)o;
 
-            return test.amount.equals(this.amount);
+            return test.amount.equals(this.amount) &&
+            category == test.category;
         } else {
             return false;
         }
+    }
+
+    public int getCategory() {
+        return category;
     }
 }

@@ -86,7 +86,6 @@ public class IntArray extends ArrayBase {
      * Set the backing array. This method is used by the type-agnostic base
      * class code to set the array used for type-specific storage.
      *
-     * @param backing array object
      */
     protected final void setArray(Object array) {
         m_baseArray = (int[])array;

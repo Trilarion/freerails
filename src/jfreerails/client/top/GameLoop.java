@@ -40,10 +40,10 @@ final public class GameLoop implements Runnable {
     }
 
     /**
-     * Stops the game loop.
-     * Blocks until the loop is stopped.
-     * Do not call this from inside the event loop!
-     */
+ * Stops the game loop.
+ * Blocks until the loop is stopped.
+ * Do not call this from inside the event loop!
+ */
     public void stop() {
         synchronized (loopMonitor) {
             if (gameNotDone == false) {
@@ -54,9 +54,9 @@ final public class GameLoop implements Runnable {
 
             if (Thread.holdsLock(SynchronizedEventQueue.MUTEX)) {
                 /*
-                 * we might be executing in the event queue so give up the
-                 * mutex temporarily to allow the loop to exit
-                 */
+ * we might be executing in the event queue so give up the
+ * mutex temporarily to allow the loop to exit
+ */
                 try {
                     SynchronizedEventQueue.MUTEX.wait();
                 } catch (InterruptedException e) {
@@ -80,9 +80,9 @@ final public class GameLoop implements Runnable {
         fPScounter = new FPScounter();
 
         /*
-         * Reduce this threads priority to avoid starvation of the input thread
-         * on Windows.
-         */
+ * Reduce this threads priority to avoid starvation of the input thread
+ * on Windows.
+ */
         try {
             Thread.currentThread().setPriority(Thread.NORM_PRIORITY - 1);
         } catch (SecurityException e) {
@@ -94,10 +94,10 @@ final public class GameLoop implements Runnable {
 
             if (!screenHandler.isMinimised()) {
                 /*
-                 * Flush all redraws in the underlying toolkit.  This reduces
-                 * X11 lag when there isn't much happening, but is expensive
-                 * under Windows
-                 */
+ * Flush all redraws in the underlying toolkit.  This reduces
+ * X11 lag when there isn't much happening, but is expensive
+ * under Windows
+ */
                 Toolkit.getDefaultToolkit().sync();
 
                 synchronized (SynchronizedEventQueue.MUTEX) {

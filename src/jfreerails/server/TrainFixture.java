@@ -32,7 +32,7 @@ public class TrainFixture {
         points.add(new Point(150, 100));
 
         TrainModel train = new TrainModel(0);
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
         w.add(KEY.TRAINS, train, MapFixtureFactory.TEST_PRINCIPAL);
 
         if (null == w.get(KEY.TRAINS, 0, MapFixtureFactory.TEST_PRINCIPAL)) {

@@ -2,6 +2,7 @@ package jfreerails.world.top;
 
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
@@ -89,6 +90,8 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
     boolean boundsContain(KEY k, int index, FreerailsPrincipal p);
 
     Transaction getTransaction(int i, FreerailsPrincipal p);
+
+    GameTime getTransactionTimeStamp(int i, FreerailsPrincipal p);
 
     Money getCurrentBalance(FreerailsPrincipal p);
 

@@ -34,7 +34,7 @@ public class TrainMoverTest extends TestCase {
         trainMover = trainFixture.getTrainMover();
 
         w = trainFixture.getWorld();
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
     }
 
     public void testTrainMover() {

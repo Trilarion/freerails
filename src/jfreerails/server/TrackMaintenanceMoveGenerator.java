@@ -32,7 +32,12 @@ public class TrackMaintenanceMoveGenerator {
     }
 
     public static AddTransactionMove generateMove(World w,
-        FreerailsPrincipal principal) {
+        FreerailsPrincipal principal, int category) {
+        if (Transaction.TRACK_MAINTENANCE != category &&
+                Transaction.STATION_MAINTENANCE != category) {
+            throw new IllegalArgumentException(String.valueOf(category));
+        }
+
         int[] track = ChangeTrackPieceCompositeMove.calulateNumberOfEachTrackType(w,
                 principal);
         long amount = 0;
@@ -41,14 +46,16 @@ public class TrackMaintenanceMoveGenerator {
             TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
-            if (track[i] > 0) {
-                //                            System.out.println(track[i] + " " + trackRule.getTypeName() +
-                //                                " maintenance cost of " + maintenanceCost * track[i]);
+            //Is the track type the category we are interested in?
+            boolean rightType = Transaction.TRACK_MAINTENANCE == category
+                ? !trackRule.isStation() : trackRule.isStation();
+
+            if (track[i] > 0 && rightType) {
                 amount += maintenanceCost * track[i];
             }
         }
 
-        Transaction t = new Bill(new Money(amount));
+        Transaction t = new Bill(new Money(amount), category);
 
         return new AddTransactionMove(principal, t);
     }
@@ -56,7 +63,10 @@ public class TrackMaintenanceMoveGenerator {
     public void update(World w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
-            Move m = generateMove(w, principal);
+            Move m = generateMove(w, principal, Transaction.TRACK_MAINTENANCE);
+            moveReceiver.processMove(m);
+
+            m = generateMove(w, principal, Transaction.STATION_MAINTENANCE);
             moveReceiver.processMove(m);
         }
     }

@@ -26,10 +26,6 @@ public class KEY implements FreerailsSerializable {
     private static int numberOfKeys;
     private final int keyNumber;
 
-    /**
-     * @param shared Whether the objects are common to all Principals in the
-     * game
-     */
     private KEY() {
         this.keyNumber = numberOfKeys;
         keys[keyNumber] = this;

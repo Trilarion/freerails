@@ -143,15 +143,6 @@ public class PathWalkerImplTest extends TestCase {
         pw = new PathWalkerImpl(it);
     }
 
-    private void assertNextSegmentEquals(int x1, int y1, int x2, int y2) {
-        IntLine line = new IntLine();
-        pw.nextSegment(line);
-        assertEquals(x1, line.x1);
-        assertEquals(x2, line.x2);
-        assertEquals(y1, line.y1);
-        assertEquals(y2, line.y2);
-    }
-
     private void assertLineEquals(int x1, int y1, int x2, int y2, IntLine line) {
         assertEquals(x1, line.x1);
         assertEquals(x2, line.x2);

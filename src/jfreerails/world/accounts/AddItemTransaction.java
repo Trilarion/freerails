@@ -14,9 +14,6 @@ import jfreerails.world.common.Money;
  *
  */
 public class AddItemTransaction implements Transaction {
-    /** Constants to specify the category. */
-    public static final int TRACK = 0;
-
     /** For example track. */
     private final int category;
 

@@ -159,7 +159,6 @@ public class Player implements FreerailsSerializable {
     /**
      * Used by the server to generate a player with a particular name and public
      * key.
-     * @param serverPrivateKey the server's private key used to generate the
      * @param publicKey the client's public key.
      * certificate.
      */
@@ -233,20 +232,6 @@ public class Player implements FreerailsSerializable {
         byte[] b = sig.sign();
 
         return b;
-    }
-
-    private String dump(byte[] b) {
-        String s = "";
-
-        for (int i = 0; i < b.length; i++) {
-            s += Integer.toString(b[i], 16);
-
-            if (i > 0) {
-                s += ", ";
-            }
-        }
-
-        return s;
     }
 
     /**

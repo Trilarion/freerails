@@ -71,7 +71,7 @@ public interface World extends ReadOnlyWorld {
      */
     void setTile(int x, int y, FreerailsTile tile);
 
-    int addPlayer(Player player, FreerailsPrincipal p);
+    int addPlayer(Player player);
 
     /**
      * Adds the specified transaction to the specified principal's bank account.

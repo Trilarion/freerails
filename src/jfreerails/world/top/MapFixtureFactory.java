@@ -1,6 +1,7 @@
 package jfreerails.world.top;
 
 import java.util.HashSet;
+import jfreerails.world.cargo.CargoType;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
@@ -86,5 +87,14 @@ public class MapFixtureFactory {
         //We need this since when we built track, the terrain type gets check to see if we can
         //built track on it and an exception is thrown if terrain type 0 does not exist.
         world.add(SKEY.TERRAIN_TYPES, TerrainType.NULL);
+    }
+
+    /** Adds hard coded cargo types.*/
+    public static void generateCargoTypesList(World world) {
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", "Mail"));
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers", "Passengers"));
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", "Fast_Freight"));
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Steel", "Slow_Freight"));
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Coal", "Bulk_Freight"));
     }
 }

@@ -10,23 +10,39 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 /**
  *  This JPanel displays a HTML document read from a URL.
  * @author  Luke
  */
 public class HtmlJPanel extends javax.swing.JPanel implements View {
-        
+	
+	
+    protected HtmlJPanel(){
+		initComponents();
+    }
     
     /** Creates new form HtmlJPanel */
     public HtmlJPanel(URL url) {        
         initComponents();
-		loadText(url);
+        htmlJLabel.setText(loadText(url));
     }
+    
+    public HtmlJPanel(URL url, HashMap context) {        
+        initComponents();
+        String template = loadText(url);
+        String populatedTemplate = populateTokens(template, context);
+        htmlJLabel.setText(populatedTemplate);
+    }
+    
 	public HtmlJPanel(String html) {        
-		   initComponents();
-		   this.htmlJLabel.setText(html);
+		initComponents();
+		this.htmlJLabel.setText(html);
 	}
     
     /** This method is called from within the constructor to
@@ -69,7 +85,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     }
     
     /** Load the help text from file.  */
-    private void loadText(final URL htmlUrl) {
+    protected String loadText(final URL htmlUrl) {
         try {            
             InputStream in = htmlUrl.openStream();
             BufferedReader br =
@@ -80,12 +96,43 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
             while ((line = br.readLine()) != null) {
                 text = text + line;
             }
-            this.htmlJLabel.setText(text);
+            return text;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(htmlUrl);
-            this.htmlJLabel.setText("Couldn't read: "+htmlUrl);
+            return "Couldn't read: "+htmlUrl;
         }
+    }
+    
+    protected void setHtml(String s){
+		htmlJLabel.setText(s);
+    }
+       
+    protected static String populateTokens(String template, Object context){
+    	StringTokenizer tokenizer = new StringTokenizer(template, "$");
+    	String output = "";
+    	
+    	while(tokenizer.hasMoreTokens()){
+    		output += tokenizer.nextToken();
+    		if(tokenizer.hasMoreTokens()){
+    			String token = tokenizer.nextToken();
+    			String value;
+    			if(context instanceof HashMap){
+    				value = (String)((HashMap)context).get(token);
+    			}else{
+    				try {
+						Field field = context.getClass().getField(token);
+						value = field.get(context).toString();						
+					} catch (Exception e) {						
+						e.printStackTrace();
+						throw new NoSuchElementException(token);
+					}     				
+    			}    			
+    			output+=value;
+    		}
+    	}
+    	
+    	return output;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

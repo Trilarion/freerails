@@ -64,7 +64,7 @@ public class ChangeTrainPositionMoveTest extends TestCase {
 
     protected void setUp() {
         w = new WorldImpl(1, 1);
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
         TrainModel train1 = new TrainModel(0, new int[] {},
                 FIXTURE1_BEFORE_MOVE1, 0);

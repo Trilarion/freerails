@@ -6,13 +6,12 @@ package jfreerails.client.top;
 import java.text.DecimalFormat;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.move.AddTransactionMove;
+import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.Move;
 import jfreerails.move.TransferCargoAtStationMove;
-import jfreerails.world.accounts.DeliverCargoReceipt;
-import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.GameCalendar;
+import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -22,8 +21,6 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.TrainModel;
-import jfreerails.move.ChangeGameSpeedMove;
-import jfreerails.world.common.GameSpeed;
 
 
 /**
@@ -48,15 +45,13 @@ public class UserMessageGenerator implements MoveReceiver {
         //Check whether it is a train arriving at a station.
         if (move instanceof TransferCargoAtStationMove) {
             TransferCargoAtStationMove transferCargoAtStationMove = (TransferCargoAtStationMove)move;
-
-            AddTransactionMove addTransactionMove = transferCargoAtStationMove.getPayment();
-            DeliverCargoReceipt deliverCargoReceipt = (DeliverCargoReceipt)addTransactionMove.getTransaction();
-            long revenue = deliverCargoReceipt.getValue().getAmount();
-
+            long revenue = transferCargoAtStationMove.getRevenue().getAmount();
             FreerailsPrincipal playerPrincipal = modelRoot.getPlayerPrincipal();
-            FreerailsPrincipal transactionPrincipal = addTransactionMove.getPrincipal();
+            boolean positiveRevenue = 0 < revenue;
+            boolean isRightPlayer = transferCargoAtStationMove.getPrincipal()
+                                                              .equals(playerPrincipal);
 
-            if (0 < revenue && playerPrincipal.equals(transactionPrincipal)) {
+            if (positiveRevenue && isRightPlayer) {
                 ReadOnlyWorld world = modelRoot.getWorld();
                 int trainCargoBundle = transferCargoAtStationMove.getChangeOnTrain()
                                                                  .getIndex();
@@ -90,15 +85,13 @@ public class UserMessageGenerator implements MoveReceiver {
                     }
                 }
 
-                CargoBundle cb = deliverCargoReceipt.getCargoDelivered();
-
                 GameTime gt = (GameTime)world.get(ITEM.TIME);
                 GameCalendar gc = (GameCalendar)world.get(ITEM.CALENDAR);
                 String message = gc.getTimeOfDay(gt.getTime()) + "  Train #" +
                     trainNumber + " arrives at " + stationName + "\n";
 
                 for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
-                    int amount = cb.getAmount(i);
+                    int amount = transferCargoAtStationMove.getQuantityOfCargo(i);
 
                     if (amount > 0) {
                         CargoType ct = (CargoType)world.get(SKEY.CARGO_TYPES, i);

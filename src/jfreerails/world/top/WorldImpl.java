@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
@@ -24,13 +25,13 @@ public class WorldImpl implements World {
             "jfreerails.world.top.WorldImpl.debug") != null);
 
     /**
-     * An array of ArrayList indexed by keyNumber.
-     * If the key is shared, then the ArrayList consists of instances of the
-     * class corresponding to the KEY type. Otherwise, the ArrayList is
-     * indexed by Player index, and contains instances of ArrayList
-     * which themselves contain instances of the class corresponding to the
-     * KEY type.
-     */
+ * An array of ArrayList indexed by keyNumber.
+ * If the key is shared, then the ArrayList consists of instances of the
+ * class corresponding to the KEY type. Otherwise, the ArrayList is
+ * indexed by Player index, and contains instances of ArrayList
+ * which themselves contain instances of the class corresponding to the
+ * KEY type.
+ */
     private final ArrayList players = new ArrayList();
     private final ArrayList bankAccounts = new ArrayList();
     private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
@@ -258,11 +259,10 @@ public class WorldImpl implements World {
     }
 
     /**
-     * @param player Player to add
-     * @param p principal who is adding
-     * @return index of the player
-     */
-    public int addPlayer(Player player, FreerailsPrincipal p) {
+ * @param player Player to add    
+ * @return index of the player
+ */
+    public int addPlayer(Player player) {
         if (null == player) {
             throw new NullPointerException();
         }
@@ -320,7 +320,8 @@ public class WorldImpl implements World {
     }
 
     public void addTransaction(Transaction t, FreerailsPrincipal p) {
-        getBankAccount(p).addTransaction(t);
+        GameTime time = (GameTime)this.get(ITEM.TIME);
+        getBankAccount(p).addTransaction(t, time);
     }
 
     public Transaction removeLastTransaction(FreerailsPrincipal p) {
@@ -353,5 +354,9 @@ public class WorldImpl implements World {
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
+    }
+
+    public GameTime getTransactionTimeStamp(int i, FreerailsPrincipal p) {
+        return getBankAccount(p).getTimeStamp(i);
     }
 }

@@ -91,7 +91,6 @@ public abstract class GrowableBase {
      * class code to set the array used for type-specific storage by the
      * child class.
      *
-     * @param backing array object
      */
     protected abstract void setArray(Object array);
 

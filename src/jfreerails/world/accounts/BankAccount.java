@@ -6,6 +6,7 @@ package jfreerails.world.accounts;
 
 import java.util.ArrayList;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 
 
@@ -15,6 +16,7 @@ import jfreerails.world.common.Money;
  */
 public class BankAccount implements FreerailsSerializable {
     private final ArrayList transactions = new ArrayList();
+    private final ArrayList transactionsTimeStamps = new ArrayList();
     private Money currentBalance = new Money(0);
 
     public BankAccount() {
@@ -28,8 +30,9 @@ public class BankAccount implements FreerailsSerializable {
         return transactions.size();
     }
 
-    public void addTransaction(Transaction t) {
+    public void addTransaction(Transaction t, GameTime time) {
         transactions.add(t);
+        transactionsTimeStamps.add(time);
         this.currentBalance = new Money(currentBalance.getAmount() +
                 t.getValue().getAmount());
     }
@@ -37,6 +40,7 @@ public class BankAccount implements FreerailsSerializable {
     public Transaction removeLastTransaction() {
         int last = transactions.size() - 1;
         Transaction t = (Transaction)transactions.remove(last);
+        transactionsTimeStamps.remove(last);
         this.currentBalance = new Money(currentBalance.getAmount() -
                 t.getValue().getAmount());
 
@@ -45,6 +49,10 @@ public class BankAccount implements FreerailsSerializable {
 
     public Transaction getTransaction(int i) {
         return (Transaction)transactions.get(i);
+    }
+
+    public GameTime getTimeStamp(int transactionsId) {
+        return (GameTime)transactionsTimeStamps.get(transactionsId);
     }
 
     public boolean equals(Object o) {

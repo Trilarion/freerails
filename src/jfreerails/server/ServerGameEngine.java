@@ -86,8 +86,6 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @param trainMovers ArrayList of TrainMover objects.
      * @param serverAutomata Vector of ServerAutomaton representing internal
      * clients of this game.
-     * @param p an IdentityProvider which correlates a ConnectionToServer
-     * object with a Principal.
      */
     private ServerGameEngine(ArrayList trainMovers, World w,
         Vector serverAutomata) {
@@ -239,6 +237,12 @@ public class ServerGameEngine implements GameModel, Runnable {
     private void newYear() {
         TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(moveExecuter);
         tmmg.update(world);
+
+        TrainMaintenanceMoveGenerator trainMaintenanceMoveGenerator = new TrainMaintenanceMoveGenerator(moveExecuter);
+        trainMaintenanceMoveGenerator.update(world);
+
+        InterestChargeMoveGenerator interestChargeMoveGenerator = new InterestChargeMoveGenerator(moveExecuter);
+        interestChargeMoveGenerator.update(world);
     }
 
     /** This is called at the start of each new month. */
