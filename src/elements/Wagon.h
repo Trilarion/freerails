@@ -6,7 +6,6 @@
 #define __WAGON_H__
 
 #include "GameElement.h"
-#include "Player.h"
 
 class GameController;
 

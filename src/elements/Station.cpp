@@ -17,16 +17,13 @@
 
 #include "Station.h"
 
-#include "GameController.h"
-
-Station::Station(GameController* c, Player* p, char* n, Size s, char* t, StationAddon* sA)
-       : GameElement(p, idStation)
+Station::Station(unsigned int _posX, unsigned int _posY, Player* _player, 
+                 char* _name, Size _size, char* t, StationAddon* sA)
+       : GamePosElement(_posX, _posY, _player, idStation)
 {
-  size = s;
-  name = n;
+  size = _size;
+  name = _name;
   stationAddon = sA;
-
-  year = 1900;  // Clean up
 }
 
 Station::~Station()
@@ -37,7 +34,6 @@ void Station::addAddon(std::string addon)
 {
   // Not testing if addon is legal, should be OK ??
   addons[addon] = true;
-
 }
 
 void Station::removeAddon(std::string addon)
@@ -54,6 +50,7 @@ bool Station::hasAddon(std::string addon)
     return addons[addon];
 }
 
+/*
 std::map<std::string, bool> Station::giveAddons()
 {
   std::vector<std::string> availAddons = stationAddon->getAvailable(year);
@@ -62,3 +59,4 @@ std::map<std::string, bool> Station::giveAddons()
       addons[availAddons[i]] == false;
   return addons;
 }
+*/

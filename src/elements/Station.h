@@ -19,7 +19,7 @@
 #define __STATION_H__
 
 #include "GameElement.h"
-#include "Player.h"
+#include "GamePosElement.h"
 #include "StationAddon.h"
 #include <map>
 #include <vector>
@@ -34,21 +34,21 @@ class GameController;
   * @author Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>
   * $Id$
   */
-class Station : public GameElement  {
+class Station : public GamePosElement  {
 public:
   /** Size */
   enum Size {Small = 0, Medium, Big};
 
 
   /** Constructor
-    * @param c Controller of game
-    * @param p Owner (Human or AI \b not Nature!)
-    * @param n Name
-    * @param t Tileset location
-    * @param a All StationAddons in the game (available or not)
+    * @param _posX, _posY Position of Station
+    * @param _player Owner (Human or AI \b not Nature!)
+    * @param _name Name
+    * @param _size The Size of the Station
+    * @param t Tileset location ??
     * @param sA The common StationAddon
     */
-  Station(GameController* c, Player* p, char* n, Size s, char* t, StationAddon* sA);
+  Station(unsigned int _posX, unsigned int _posY, Player* _player, char* _name, Size _size, char* t, StationAddon* sA);
   /** Destructor */
   ~Station();
   /** Adds a station addon
@@ -66,10 +66,6 @@ public:
     * @return Map with addon as key, true if build as value */
   std::map<std::string, bool> giveAddons();
 
-  /** The current year
-    * @warning Just temporary, must be done with the GameController??
-    * @todo Clean up this interface */
-  unsigned int year;
   /** Return type of element (RTTI_STATION) */
   virtual int rtti() { return RTTI_STATION; };
 

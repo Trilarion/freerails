@@ -5,8 +5,9 @@
 #ifndef __GAMEELEMENT_H__
 #define __GAMEELEMENT_H__
 
-#include "GameController.h"
 #include "Serializeable.h"
+
+#include "GameController.h"
 
 class Player;
 

@@ -7,7 +7,8 @@
 #include "Player.h"
 #include "Track.h"
 
-Track::Track(unsigned int _connect, Player* _player) : GameElement(_player, idTrack)
+Track::Track(unsigned int _posX, unsigned int _posY, Player* _player, unsigned int _connect)
+     : GamePosElement(_posX, _posY, _player, idTrack)
 {
   connect = _connect;
 }

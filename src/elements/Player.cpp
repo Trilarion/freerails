@@ -4,7 +4,8 @@
 
 #include "Player.h"
 
-Player::Player(std::string _name, PlayerType _playerType) : GameElement(this, idPlayer)
+Player::Player(std::string _name, PlayerType _playerType) 
+      : GameElement(this, idPlayer)
 {
   name = _name;
   playerType = _playerType;

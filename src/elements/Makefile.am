@@ -5,6 +5,7 @@ noinst_LIBRARIES = libelements.a
 INCLUDES = -I$(srcdir) -I$(srcdir)/../controllers -I$(srcdir)/../network
 
 libelements_a_SOURCES = GameElement.cpp \
+    GamePosElement.cpp \
     Player.cpp \
     Station.cpp \
     StationAddon.cpp \

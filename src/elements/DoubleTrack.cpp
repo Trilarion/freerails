@@ -17,8 +17,8 @@
 
 #include "DoubleTrack.h"
 
-DoubleTrack::DoubleTrack(unsigned int connect, Player* _player) :
-  Track(connect, _player)
+DoubleTrack::DoubleTrack(unsigned int _connect, Player* _player) :
+  Track(0,0, _player, _connect)
 {
 }
 

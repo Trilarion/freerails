@@ -8,8 +8,7 @@
 #define __TRACK_H__
 
 #include "GameElement.h"
-
-class GameController;
+#include "GamePosElement.h"
 
 #define TrackGoNorth            0x00000001
 #define TrackGoNorthEast        0x00000002
@@ -23,11 +22,11 @@ class GameController;
 #define TrackIsBlocked          0x00000100  //Means there is a Station, Signal, Bridge etc.
 					    //which blocks to add more directions.
 
-class Track : public GameElement
+class Track : public GamePosElement
 {
   public:
     /** Constructs a track */
-    Track(unsigned int _connect, Player* _player);
+    Track(unsigned int _posX, unsigned int _posY, Player* _player, unsigned int _connect);
     ~Track();
     
     /** Serialization */

@@ -27,7 +27,7 @@
 class DoubleTrack : public Track
 {
   public: 
-    DoubleTrack(unsigned int connect, Player* _player);
+    DoubleTrack(unsigned int _connect, Player* _player);
     ~DoubleTrack();
 };
 
