@@ -16,7 +16,11 @@ public class MyGlassPanel extends javax.swing.JPanel {
     /** Creates new form MyGlassPanel */
     public MyGlassPanel() {
         initComponents ();
+        
+        
     }
+    
+   
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -82,10 +86,13 @@ public class MyGlassPanel extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints1 = new java.awt.GridBagConstraints();
         gridBagConstraints1.gridx = 2;
         gridBagConstraints1.gridy = 1;
-        add(contentPanel, gridBagConstraints1);      
+        add(contentPanel, gridBagConstraints1);   
+		 
         this.revalidate();
         this.requestFocus();
     }
+    
+   
     
     public void closeContent(){
 		

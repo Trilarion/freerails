@@ -11,6 +11,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+
 /**
  * @version 	1.0
  */
@@ -35,7 +36,13 @@ final public class ScreenHandler {
 			}
 			frame.validate();
 		} else {
-			frame.setSize(640, 400);
+			//Some of the dialogue boxes do not get layed out properly if they are smaller than their
+			//minimum size.  JFrameMinimumSizeEnforcer increases the size of the Jframe when its size falls
+			//below the specified size.
+			frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 450));
+			
+			
+			frame.setSize(640, 450);
 			frame.show();
 		}
 

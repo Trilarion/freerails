@@ -52,7 +52,9 @@ public class StationBuilder {
 		trackMoveProducer.upgradeTrack(p);
 		trackMoveProducer.setTrackRule(oldTrackRule);
 		trackMoveProducer.setTrackBuilderMode(oldMode);	
-		w.add(KEY.STATIONS, new StationModel(p.x, p.y));	
+		
+		String stationName = "Station "+w.size(KEY.STATIONS);
+		w.add(KEY.STATIONS, new StationModel(p.x, p.y, stationName));	
 		
 
 		//added by Scott Bennett for testing 14/03/03
