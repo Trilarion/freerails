@@ -12,6 +12,7 @@ import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
 
@@ -26,15 +27,16 @@ import jfreerails.world.track.TrackRule;
 public class BuildTrackExplorer implements GraphExplorer {
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance(
             "000010000");
-    final private PositionOnTrack m_currentPosition = new PositionOnTrack(0, 0,
-            OneTileMoveVector.NORTH);
+    private boolean m_beforeFirst = true;
     final PositionOnTrack m_currentBranch = new PositionOnTrack(0, 0,
             OneTileMoveVector.NORTH);
-    private boolean m_usingExistingTrack = false;
-    private boolean m_beforeFirst = true;
-    private final ReadOnlyWorld m_world;
+    final private PositionOnTrack m_currentPosition = new PositionOnTrack(0, 0,
+            OneTileMoveVector.NORTH);
     private int m_direction = 0;
     private final Point m_target;
+    private int m_trackRule = 0;
+    private boolean m_usingExistingTrack = false;
+    private final ReadOnlyWorld m_world;
 
     public BuildTrackExplorer(ReadOnlyWorld w) {
         this(w, null, new Point(0, 0));
@@ -54,77 +56,6 @@ public class BuildTrackExplorer implements GraphExplorer {
         m_currentPosition.setValuesFromInt(pos.toInt());
         m_direction = 0;
         m_target = target;
-    }
-
-    public void setPosition(int vertex) {
-        m_currentPosition.setValuesFromInt(vertex);
-        m_direction = 0;
-    }
-
-    public int getPosition() {
-        return m_currentPosition.toInt();
-    }
-
-    public void nextEdge() {
-        if (!hasNextEdge()) {
-            throw new NoSuchElementException();
-        } else {
-            //The direction we are moving relative to the current position.
-            OneTileMoveVector direction = OneTileMoveVector.getInstance(m_direction);
-
-            m_currentBranch.setDirection(direction);
-            m_currentBranch.setX(m_currentPosition.getX() + direction.getDx());
-            m_currentBranch.setY(m_currentPosition.getY() + direction.getDy());
-
-            m_direction++;
-            m_beforeFirst = false;
-        }
-    }
-
-    public int getVertexConnectedByEdge() {
-        if (m_beforeFirst) {
-            throw new IllegalStateException();
-        } else {
-            return m_currentBranch.toInt();
-        }
-    }
-
-    public int getEdgeLength() {
-        if (m_beforeFirst) {
-            throw new IllegalStateException();
-        } else {
-            OneTileMoveVector edgeDirection = OneTileMoveVector.getInstance(m_direction -
-                    1);
-
-            int length = edgeDirection.getLength();
-
-            //Using existing track is cheaper.
-            if (m_usingExistingTrack) {
-                length = length / 2;
-            }
-
-            return length;
-        }
-    }
-
-    public boolean hasNextEdge() {
-        while (m_direction < 8) {
-            if (canBuildTrack()) {
-                return true;
-            }
-
-            m_direction++;
-        }
-
-        return false;
-    }
-
-    public void moveForward() {
-        if (m_beforeFirst) {
-            throw new IllegalStateException();
-        } else {
-            setPosition(this.getVertexConnectedByEdge());
-        }
     }
 
     /**
@@ -178,17 +109,35 @@ public class BuildTrackExplorer implements GraphExplorer {
                 terrainTypeNumber);
         String category = terrainType.getTerrainCategory();
 
-        //Always use track type 0 for now.
-        TrackRule rule = (TrackRule)m_world.get(SKEY.TRACK_RULES, 0);
+        TrackRule defaultRule = (TrackRule)m_world.get(SKEY.TRACK_RULES,
+                m_trackRule);
+        FreerailsTile nextTile = (FreerailsTile)m_world.getTile(newX, newY);
+        TrackConfiguration trackAlreadyPresent2 = nextTile.getTrackConfiguration();
 
-        if (!rule.canBuildOnThisTerrainType(category)) {
-            return false;
+        TrackRule rule4nextTile;
+        TrackRule rule4lastTile;
+
+        if (nextTile.getTrackRule().equals(NullTrackType.getInstance())) {
+            rule4nextTile = defaultRule;
+
+            if (!defaultRule.canBuildOnThisTerrainType(category)) {
+                return false;
+            }
+        } else {
+            rule4nextTile = nextTile.getTrackRule();
+        }
+
+        FreerailsTile currentTile = (FreerailsTile)m_world.getTile(currentX,
+                currentY);
+
+        if (currentTile.getTrackRule().equals(NullTrackType.getInstance())) {
+            rule4lastTile = defaultRule;
+        } else {
+            rule4lastTile = currentTile.getTrackRule();
         }
 
         //Check for illegal track configurations on the tile we are
         // leaving.
-        FreerailsTile currentTile = (FreerailsTile)m_world.getTile(currentX,
-                currentY);
         TrackConfiguration trackAlreadyPresent = currentTile.getTrackConfiguration();
         TrackConfiguration fromConfig = trackAlreadyPresent;
 
@@ -198,7 +147,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         OneTileMoveVector goingTo = OneTileMoveVector.getInstance(m_direction);
         fromConfig = TrackConfiguration.add(fromConfig, goingTo);
 
-        if (!rule.trackPieceIsLegal(fromConfig)) {
+        if (!rule4lastTile.trackPieceIsLegal(fromConfig)) {
             return false;
         }
 
@@ -223,8 +172,6 @@ public class BuildTrackExplorer implements GraphExplorer {
         }
 
         //Check for illegal track configurations on the tile we are entering.
-        FreerailsTile nextTile = (FreerailsTile)m_world.getTile(newX, newY);
-        TrackConfiguration trackAlreadyPresent2 = nextTile.getTrackConfiguration();
         TrackConfiguration fromConfig2 = trackAlreadyPresent2;
 
         fromConfig2 = TrackConfiguration.add(fromConfig2, TILE_CENTER);
@@ -233,7 +180,7 @@ public class BuildTrackExplorer implements GraphExplorer {
                                                        .getOpposite();
         fromConfig2 = TrackConfiguration.add(fromConfig2, goingBack);
 
-        if (!rule.trackPieceIsLegal(fromConfig2)) {
+        if (!rule4nextTile.trackPieceIsLegal(fromConfig2)) {
             return false;
         }
 
@@ -245,11 +192,90 @@ public class BuildTrackExplorer implements GraphExplorer {
         return true;
     }
 
+    public int getEdgeLength() {
+        if (m_beforeFirst) {
+            throw new IllegalStateException();
+        } else {
+            OneTileMoveVector edgeDirection = OneTileMoveVector.getInstance(m_direction -
+                    1);
+
+            int length = edgeDirection.getLength();
+
+            //Using existing track is cheaper.
+            if (m_usingExistingTrack) {
+                length = length / 2;
+            }
+
+            return length;
+        }
+    }
+
     public int getH() {
         int xDistance = (m_target.x - m_currentPosition.getX()) * OneTileMoveVector.TILE_DIAMETER;
         int yDistance = (m_target.y - m_currentPosition.getY()) * OneTileMoveVector.TILE_DIAMETER;
         int sumOfSquares = (xDistance * xDistance + yDistance * yDistance);
 
         return (int)Math.sqrt((double)sumOfSquares);
+    }
+
+    public int getPosition() {
+        return m_currentPosition.toInt();
+    }
+
+    public int getTrackRule() {
+        return m_trackRule;
+    }
+
+    public int getVertexConnectedByEdge() {
+        if (m_beforeFirst) {
+            throw new IllegalStateException();
+        } else {
+            return m_currentBranch.toInt();
+        }
+    }
+
+    public boolean hasNextEdge() {
+        while (m_direction < 8) {
+            if (canBuildTrack()) {
+                return true;
+            }
+
+            m_direction++;
+        }
+
+        return false;
+    }
+
+    public void moveForward() {
+        if (m_beforeFirst) {
+            throw new IllegalStateException();
+        } else {
+            setPosition(this.getVertexConnectedByEdge());
+        }
+    }
+
+    public void nextEdge() {
+        if (!hasNextEdge()) {
+            throw new NoSuchElementException();
+        } else {
+            //The direction we are moving relative to the current position.
+            OneTileMoveVector direction = OneTileMoveVector.getInstance(m_direction);
+
+            m_currentBranch.setDirection(direction);
+            m_currentBranch.setX(m_currentPosition.getX() + direction.getDx());
+            m_currentBranch.setY(m_currentPosition.getY() + direction.getDy());
+
+            m_direction++;
+            m_beforeFirst = false;
+        }
+    }
+
+    public void setPosition(int vertex) {
+        m_currentPosition.setValuesFromInt(vertex);
+        m_direction = 0;
+    }
+
+    public void setTrackRule(int trackRule) {
+        this.m_trackRule = trackRule;
     }
 }

@@ -56,6 +56,7 @@ public final class ModelRootImpl implements ModelRoot {
         properties.put(PREVIOUS_CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
         properties.put(SERVER, "server details not set!");
         properties.put(PLAY_SOUNDS, Boolean.TRUE);
+        properties.put(SELECTED_TRACK_TYPE, new Integer(0));
         addPropertyChangeListener(SoundManager.getSoundManager());
     }
 

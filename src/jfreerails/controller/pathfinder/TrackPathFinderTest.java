@@ -34,14 +34,14 @@ public class TrackPathFinderTest extends TestCase {
     public void testGeneratePath() {
         try {
             TrackPathFinder pathFinder = new TrackPathFinder(world);
-            List l = pathFinder.generatePath(new Point(0, 0), new Point(0, 5));
+            List l = pathFinder.generatePath(new Point(0, 0), new Point(0, 5), 0);
             assertEquals(5, l.size());
 
             List list2 = pathFinder.generatePath(new Point(5, 5),
-                    new Point(5, 10));
+                    new Point(5, 10), 0);
             assertEquals(5, list2.size());
 
-            list2 = pathFinder.generatePath(new Point(5, 10), new Point(5, 5));
+            list2 = pathFinder.generatePath(new Point(5, 10), new Point(5, 5), 0);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {
             fail();

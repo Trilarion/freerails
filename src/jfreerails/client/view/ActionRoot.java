@@ -59,7 +59,7 @@ public class ActionRoot {
             trackMoveProducer = new TrackMoveProducer(modelRoot);           
             stationBuildModel = new StationBuildModel(new StationBuilder(
                         modelRoot), vl, modelRoot);
-            trackBuildModel = new TrackBuildModel(trackMoveProducer, world, vl, stationBuildModel);
+            trackBuildModel = new TrackBuildModel(trackMoveProducer, modelRoot, vl, stationBuildModel);
         }
     }
 

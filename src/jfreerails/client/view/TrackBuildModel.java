@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import jfreerails.client.common.ActionAdapter;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.ViewLists;
@@ -33,6 +34,7 @@ public class TrackBuildModel {
     private final ViewLists viewLists;
     private final ReadOnlyWorld world;
     private final StationBuildModel stationBuildModel;
+    private final ModelRoot modelRoot;
 
     public ActionAdapter getBuildModeActionAdapter() {
         return buildModeAdapter;
@@ -94,13 +96,15 @@ public class TrackBuildModel {
                 return;
 
             trackMoveProducer.setTrackRule(actionId);
+            modelRoot.setProperty(ModelRoot.SELECTED_TRACK_TYPE, new Integer(actionId));
            
         }
     }
 
-    public TrackBuildModel(TrackMoveProducer tmp, ReadOnlyWorld world,
+    public TrackBuildModel(TrackMoveProducer tmp, ModelRoot modelRoot,
         ViewLists vl, StationBuildModel stationBuildModel) {
-        this.world = world;
+    	this.modelRoot = modelRoot;
+        this.world = modelRoot.getWorld();
         viewLists = vl;
         trackMoveProducer = tmp;
         this.stationBuildModel = stationBuildModel;

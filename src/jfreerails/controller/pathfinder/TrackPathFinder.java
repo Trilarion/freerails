@@ -27,37 +27,15 @@ import jfreerails.world.track.TrackRule;
  */
 public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class.getName());
-    private final ReadOnlyWorld m_world;
     private SimpleAStarPathFinder m_pathFinder = new SimpleAStarPathFinder();
+    private final ReadOnlyWorld m_world;
 
     public TrackPathFinder(ReadOnlyWorld world) {
         m_world = world;
     }
 
-    public int getStatus() {
-        return m_pathFinder.getStatus();
-    }
-
-    public List generatePath(Point startPoint, Point targetPoint)
-        throws PathNotFoundException {
-        setupSearch(startPoint, targetPoint);
-        m_pathFinder.search(-1);
-
-        IntArray path = m_pathFinder.retrievePath();
-
-        List proposedTrack = convertPath2Points(path);
-
-        return proposedTrack;
-    }
-
-    public void search(long maxDuration) throws PathNotFoundException {
-        m_pathFinder.search(maxDuration);
-    }
-
-    public List retrievePath() {
-        IntArray path = m_pathFinder.retrievePath();
-
-        return convertPath2Points(path);
+    public void abandonSearch() {
+        m_pathFinder.abandonSearch();
     }
 
     private List convertPath2Points(IntArray path) {
@@ -77,23 +55,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
         }
 
         return proposedTrack;
-    }
-
-    public void setupSearch(Point startPoint, Point targetPoint)
-        throws PathNotFoundException {
-        logger.fine("Find track path from " + startPoint + " to " +
-            targetPoint);
-
-        PositionOnTrack[] pots = FlatTrackExplorer.getPossiblePositions(m_world,
-                startPoint);
-
-        int[] targetInts = findTargets(targetPoint);
-        int[] startInts = findTargets(startPoint);
-
-        BuildTrackExplorer explorer = new BuildTrackExplorer(m_world,
-                startPoint, targetPoint);
-
-        m_pathFinder.setupSearch(startInts, targetInts, explorer);
     }
 
     private int[] findTargets(Point targetPoint) {
@@ -148,7 +109,47 @@ public class TrackPathFinder implements IncrementalPathFinder {
         return targetInts;
     }
 
-    public void abandonSearch() {
-        m_pathFinder.abandonSearch();
+    public List generatePath(Point startPoint, Point targetPoint,
+        int trackRuleNumber) throws PathNotFoundException {
+        setupSearch(startPoint, targetPoint, trackRuleNumber);
+        m_pathFinder.search(-1);
+
+        IntArray path = m_pathFinder.retrievePath();
+
+        List proposedTrack = convertPath2Points(path);
+
+        return proposedTrack;
+    }
+
+    public int getStatus() {
+        return m_pathFinder.getStatus();
+    }
+
+    public List retrievePath() {
+        IntArray path = m_pathFinder.retrievePath();
+
+        return convertPath2Points(path);
+    }
+
+    public void search(long maxDuration) throws PathNotFoundException {
+        m_pathFinder.search(maxDuration);
+    }
+
+    public void setupSearch(Point startPoint, Point targetPoint,
+        int trackRuleNumber) throws PathNotFoundException {
+        logger.fine("Find track path from " + startPoint + " to " +
+            targetPoint);
+
+        PositionOnTrack[] pots = FlatTrackExplorer.getPossiblePositions(m_world,
+                startPoint);
+
+        int[] targetInts = findTargets(targetPoint);
+        int[] startInts = findTargets(startPoint);
+
+        BuildTrackExplorer explorer = new BuildTrackExplorer(m_world,
+                startPoint, targetPoint);
+        explorer.setTrackRule(trackRuleNumber);
+
+        m_pathFinder.setupSearch(startInts, targetInts, explorer);
     }
 }

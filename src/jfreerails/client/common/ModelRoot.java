@@ -31,6 +31,7 @@ public interface ModelRoot extends MoveExecutor, ServerCommandReceiver {
     public static final String SHOW_STATION_BORDERS = "SHOW_STATION_BORDERS";
     public static final String SERVER = "SERVER";
     public static final String PLAY_SOUNDS = "PLAY_SOUNDS";
+    public static final String SELECTED_TRACK_TYPE = "SELECTED_TRACK_TYPE";
 
     void setProperty(String property, Object newValue);
 

@@ -32,28 +32,23 @@ import jfreerails.world.track.TrackRule;
  * @author MystiqueAgent
  * */
 public class BuildTrackRenderer implements Painter {
-    private static final int SMALL_DOT_WIDTH = 6;
     private static final int BIG_DOT_WIDTH = 12;
     private static final Logger logger = Logger.getLogger(BuildTrackRenderer.class.getName());
-    private final Dimension tileSize = new Dimension(30, 30);
-    private boolean show = false;
-    private WorldDifferences worldDifferences;
-    private TrackPieceRendererList trackPieceViewList;
-    private ModelRoot modelRoot;
-    private boolean settedUp = false;
+    private static final int SMALL_DOT_WIDTH = 6;
     private List builtTrack = new ArrayList();
-    private FreerailsPrincipal principal;
-    private SoundManager soundManager = SoundManager.getSoundManager();
-    private ReadOnlyWorld realWorld;
-    private TrackPathFinder trackPathFinder;
     private boolean isBuildTrackSuccessful = false;
-    private Point m_targetPoint;
     private Point m_startPoint;
-
-    /** Returns true if all the track pieces can be successfully built.*/
-    public boolean isBuildTrackSuccessful() {
-        return isBuildTrackSuccessful;
-    }
+    private Point m_targetPoint;
+    private ModelRoot modelRoot;
+    private FreerailsPrincipal principal;
+    private ReadOnlyWorld realWorld;
+    private boolean setUp = false;
+    private boolean show = false;
+    private SoundManager soundManager = SoundManager.getSoundManager();
+    private final Dimension tileSize = new Dimension(30, 30);
+    private TrackPathFinder trackPathFinder;
+    private TrackPieceRendererList trackPieceViewList;
+    private WorldDifferences worldDifferences;
 
     /**
      * BuildTrackRenderer
@@ -68,171 +63,13 @@ public class BuildTrackRenderer implements Painter {
         trackPathFinder = new TrackPathFinder(readOnlyWorld);
     }
 
-    public void setup(ModelRoot modelRoot) {
-        if (settedUp) {
-            return;
-        }
+    private MoveStatus buildTrack(Point point, OneTileMoveVector vector) {
+        TrackRule trackRule = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
+                getTrackRule());
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point,
+                vector, trackRule, worldDifferences, principal);
 
-        settedUp = true;
-        this.modelRoot = modelRoot;
-        principal = modelRoot.getPrincipal();
-    }
-
-    public void show() {
-        this.show = true;
-    }
-
-    public void hide() {
-        this.show = false;
-        m_targetPoint = null;
-        reset();
-    }
-
-    private void reset() {
-        worldDifferences.reset();
-        trackPathFinder.abandonSearch();
-        this.builtTrack.clear();
-        this.isBuildTrackSuccessful = false;
-    }
-
-    public void setTrack(Point startPoint, Point endPoint) {
-        assert settedUp;
-
-        /*If we have just found the route between the two points, don't
-         * waste time doing it again.
-         */
-        if (null != m_targetPoint && null != m_startPoint &&
-                m_targetPoint.equals(endPoint) &&
-                m_startPoint.equals(startPoint) &&
-                trackPathFinder.getStatus() != IncrementalPathFinder.SEARCH_NOT_STARTED) {
-            return;
-        }
-
-        worldDifferences.reset();
-        builtTrack.clear();
-
-        if (startPoint.equals(endPoint)) {
-            hide();
-
-            return;
-        }
-
-        /* Check both points are on the map.*/
-        if (!realWorld.boundsContain(startPoint.x, startPoint.y) ||
-                !realWorld.boundsContain(endPoint.x, endPoint.y)) {
-            hide();
-
-            return;
-        }
-
-        m_targetPoint = new Point(endPoint);
-        m_startPoint = new Point(startPoint);
-
-        //builtTrack = createProposedTrack(startPoint, endPoint);
-        try {
-            trackPathFinder.setupSearch(startPoint, endPoint);
-            //builtTrack = trackPathFinder.generatePath(startPoint, endPoint);
-        } catch (PathNotFoundException e) {
-            setCursorMessage(e.getMessage());
-
-            return;
-        }
-
-        updateSearch();
-    }
-
-    private void updateSearch() {
-        try {
-            trackPathFinder.search(100);
-        } catch (PathNotFoundException e) {
-            setCursorMessage(e.getMessage());
-
-            return;
-        }
-
-        if (trackPathFinder.getStatus() == SimpleAStarPathFinder.PATH_FOUND) {
-            builtTrack = trackPathFinder.retrievePath();
-            moveCursorMoreTiles(builtTrack);
-            show();
-        }
-    }
-
-    public void paint(Graphics2D g) {
-        //update search for path if necessay.
-        if (trackPathFinder.getStatus() == SimpleAStarPathFinder.SEARCH_PAUSED) {
-            updateSearch();
-        }
-
-        if (show) {
-            for (Iterator iter = worldDifferences.getMapDifferences();
-                    iter.hasNext();) {
-                Point point = (Point)iter.next();
-
-                //                FreerailsTile tile = worldDifferences.getTile(point.x, point.y);
-                //                paintRectangleOfTiles(g, new Rectangle(tileX, tileY, 1, 1));
-                TrackPiece tp = (TrackPiece)worldDifferences.getTile(point.x,
-                        point.y);
-
-                int graphicsNumber = tp.getTrackGraphicNumber();
-
-                int ruleNumber = tp.getTrackRule().getRuleNumber();
-                jfreerails.client.renderer.TrackPieceRenderer trackPieceView = trackPieceViewList.getTrackPieceView(ruleNumber);
-                trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x,
-                    point.y, tileSize);
-            }
-
-            //Draw while small dots for each tile on the path.
-            for (Iterator iter = builtTrack.iterator(); iter.hasNext();) {
-                Point p = (Point)iter.next();
-                int x = p.x * tileSize.width +
-                    (tileSize.width - SMALL_DOT_WIDTH) / 2;
-                int y = p.y * tileSize.width +
-                    (tileSize.height - SMALL_DOT_WIDTH) / 2;
-                g.setColor(Color.WHITE);
-                g.fillOval(x, y, SMALL_DOT_WIDTH, SMALL_DOT_WIDTH);
-            }
-        }
-
-        //Draw a big white dot at the target point.
-        if (null != m_targetPoint) {
-            long time = System.currentTimeMillis();
-            int dotSize;
-
-            if ((time % 500) > 250) {
-                dotSize = BIG_DOT_WIDTH;
-            } else {
-                dotSize = SMALL_DOT_WIDTH;
-            }
-
-            g.setColor(Color.WHITE);
-
-            int x = m_targetPoint.x * tileSize.width +
-                (tileSize.width - dotSize) / 2;
-            int y = m_targetPoint.y * tileSize.width +
-                (tileSize.height - dotSize) / 2;
-            g.fillOval(x, y, dotSize, dotSize);
-        }
-    }
-
-    /**
-     * saves track into real world
-     */
-    public Point updateWorld(TrackMoveProducer trackBuilder) {
-        Point actPoint = getCursorPosition();
-
-        if (builtTrack.size() > 0) {
-            MoveStatus ms = moveCursorMoreTiles(builtTrack, trackBuilder);
-
-            /* Note, reset() will have been called if ms.ok == false */
-            if (ms.ok) {
-                actPoint = (Point)builtTrack.get(builtTrack.size() - 1);
-                builtTrack = new ArrayList();
-            }
-        }
-
-        hide();
-
-        return actPoint;
+        return move.doMove(worldDifferences, principal);
     }
 
     /**
@@ -284,6 +121,46 @@ public class BuildTrackRenderer implements Painter {
         }
 
         return proposedTrack;
+    }
+
+    private Point getCursorPosition() {
+        Point point = (Point)modelRoot.getProperty(ModelRoot.CURSOR_POSITION);
+
+        //Check for null & make a defensive copy
+        point = null == point ? new Point() : new Point(point);
+
+        if (!modelRoot.getWorld().boundsContain(point.x, point.y)) {
+            throw new IllegalStateException(String.valueOf(point));
+        }
+
+        return point;
+    }
+
+    private int getTrackRule() {
+        Integer trackType = (Integer)modelRoot.getProperty(ModelRoot.SELECTED_TRACK_TYPE);
+        int intValue = trackType.intValue();
+
+        return intValue;
+    }
+
+    public void hide() {
+        this.show = false;
+        m_targetPoint = null;
+        reset();
+    }
+
+    /**
+     * returns <code>true</code> if the track is being build - it is iff the build track is shown
+     *
+     * @return boolean
+     */
+    public boolean isBuilding() {
+        return show;
+    }
+
+    /** Returns true if all the track pieces can be successfully built.*/
+    public boolean isBuildTrackSuccessful() {
+        return isBuildTrackSuccessful;
     }
 
     private void moveCursorMoreTiles(List track) {
@@ -367,35 +244,72 @@ public class BuildTrackRenderer implements Painter {
         return ms;
     }
 
-    private MoveStatus buildTrack(Point point, OneTileMoveVector vector) {
-        TrackRule trackRule = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
-                0);
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point,
-                vector, trackRule, worldDifferences, principal);
-
-        return move.doMove(worldDifferences, principal);
-    }
-
-    /**
-     * returns <code>true</code> if the track is being build - it is iff the build track is shown
-     *
-     * @return boolean
-     */
-    public boolean isBuilding() {
-        return show;
-    }
-
-    private Point getCursorPosition() {
-        Point point = (Point)modelRoot.getProperty(ModelRoot.CURSOR_POSITION);
-
-        //Check for null & make a defensive copy
-        point = null == point ? new Point() : new Point(point);
-
-        if (!modelRoot.getWorld().boundsContain(point.x, point.y)) {
-            throw new IllegalStateException(String.valueOf(point));
+    public void paint(Graphics2D g) {
+        //update search for path if necessay.
+        if (trackPathFinder.getStatus() == SimpleAStarPathFinder.SEARCH_PAUSED) {
+            updateSearch();
         }
 
-        return point;
+        if (show) {
+            for (Iterator iter = worldDifferences.getMapDifferences();
+                    iter.hasNext();) {
+                Point point = (Point)iter.next();
+
+                //                FreerailsTile tile = worldDifferences.getTile(point.x, point.y);
+                //                paintRectangleOfTiles(g, new Rectangle(tileX, tileY, 1, 1));
+                TrackPiece tp = (TrackPiece)worldDifferences.getTile(point.x,
+                        point.y);
+
+                int graphicsNumber = tp.getTrackGraphicNumber();
+
+                int ruleNumber = tp.getTrackRule().getRuleNumber();
+                jfreerails.client.renderer.TrackPieceRenderer trackPieceView = trackPieceViewList.getTrackPieceView(ruleNumber);
+                trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x,
+                    point.y, tileSize);
+            }
+
+            //Draw while small dots for each tile on the path.
+            for (Iterator iter = builtTrack.iterator(); iter.hasNext();) {
+                Point p = (Point)iter.next();
+                int x = p.x * tileSize.width +
+                    (tileSize.width - SMALL_DOT_WIDTH) / 2;
+                int y = p.y * tileSize.width +
+                    (tileSize.height - SMALL_DOT_WIDTH) / 2;
+                g.setColor(Color.WHITE);
+                g.fillOval(x, y, SMALL_DOT_WIDTH, SMALL_DOT_WIDTH);
+            }
+        }
+
+        //Draw a big white dot at the target point.
+        if (null != m_targetPoint) {
+            long time = System.currentTimeMillis();
+            int dotSize;
+
+            if ((time % 500) > 250) {
+                dotSize = BIG_DOT_WIDTH;
+            } else {
+                dotSize = SMALL_DOT_WIDTH;
+            }
+
+            g.setColor(Color.WHITE);
+
+            int x = m_targetPoint.x * tileSize.width +
+                (tileSize.width - dotSize) / 2;
+            int y = m_targetPoint.y * tileSize.width +
+                (tileSize.height - dotSize) / 2;
+            g.fillOval(x, y, dotSize, dotSize);
+        }
+    }
+
+    private void reset() {
+        worldDifferences.reset();
+        trackPathFinder.abandonSearch();
+        this.builtTrack.clear();
+        this.isBuildTrackSuccessful = false;
+    }
+
+    private void setCursorMessage(String s) {
+        modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, s);
     }
 
     private void setCursorPosition(Point p) {
@@ -404,7 +318,99 @@ public class BuildTrackRenderer implements Painter {
         modelRoot.setProperty(ModelRoot.CURSOR_POSITION, point);
     }
 
-    private void setCursorMessage(String s) {
-        modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, s);
+    public void setTrack(Point startPoint, Point endPoint) {
+        assert setUp;
+
+        /*If we have just found the route between the two points, don't
+         * waste time doing it again.
+         */
+        if (null != m_targetPoint && null != m_startPoint &&
+                m_targetPoint.equals(endPoint) &&
+                m_startPoint.equals(startPoint) &&
+                trackPathFinder.getStatus() != IncrementalPathFinder.SEARCH_NOT_STARTED) {
+            return;
+        }
+
+        worldDifferences.reset();
+        builtTrack.clear();
+
+        if (startPoint.equals(endPoint)) {
+            hide();
+
+            return;
+        }
+
+        /* Check both points are on the map.*/
+        if (!realWorld.boundsContain(startPoint.x, startPoint.y) ||
+                !realWorld.boundsContain(endPoint.x, endPoint.y)) {
+            hide();
+
+            return;
+        }
+
+        m_targetPoint = new Point(endPoint);
+        m_startPoint = new Point(startPoint);
+
+        try {
+            int intValue = getTrackRule();
+            trackPathFinder.setupSearch(startPoint, endPoint, intValue);
+        } catch (PathNotFoundException e) {
+            setCursorMessage(e.getMessage());
+
+            return;
+        }
+
+        updateSearch();
+    }
+
+    public void setup(ModelRoot modelRoot) {
+        if (setUp) {
+            return;
+        }
+
+        setUp = true;
+        this.modelRoot = modelRoot;
+        principal = modelRoot.getPrincipal();
+    }
+
+    public void show() {
+        this.show = true;
+    }
+
+    private void updateSearch() {
+        try {
+            trackPathFinder.search(100);
+        } catch (PathNotFoundException e) {
+            setCursorMessage(e.getMessage());
+
+            return;
+        }
+
+        if (trackPathFinder.getStatus() == SimpleAStarPathFinder.PATH_FOUND) {
+            builtTrack = trackPathFinder.retrievePath();
+            moveCursorMoreTiles(builtTrack);
+            show();
+        }
+    }
+
+    /**
+     * saves track into real world
+     */
+    public Point updateWorld(TrackMoveProducer trackBuilder) {
+        Point actPoint = getCursorPosition();
+
+        if (builtTrack.size() > 0) {
+            MoveStatus ms = moveCursorMoreTiles(builtTrack, trackBuilder);
+
+            /* Note, reset() will have been called if ms.ok == false */
+            if (ms.ok) {
+                actPoint = (Point)builtTrack.get(builtTrack.size() - 1);
+                builtTrack = new ArrayList();
+            }
+        }
+
+        hide();
+
+        return actPoint;
     }
 }
