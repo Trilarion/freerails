@@ -6,6 +6,7 @@ package jfreerails.move;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -143,22 +144,40 @@ public abstract class AbstractMoveTestCase extends TestCase {
 		assertEquals("Reflexivity violated: the move does not equal itself", m ,m);
 		try {
 
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			ObjectOutputStream objectOut = new ObjectOutputStream(out);
-			objectOut.writeObject(m);
-			objectOut.flush();
-
-			byte[] bytes = out.toByteArray();
-
-			ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-			ObjectInputStream objectIn = new ObjectInputStream(in);
-			Object o = objectIn.readObject();
+			Object o = cloneBySerialisation(m);
 			assertEquals(m, o);
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertTrue(false);
 		}
 
+	}
+	
+	protected void assertDoThenUndoLeavesWorldUnchanged(Move m){		
+		try {
+			World copyOfWorldBefore = (World)cloneBySerialisation(world);
+			assertEquals("The world objects equals method did not survive serialization!", copyOfWorldBefore, world);
+			assertTrue(m.doMove(world).ok);
+			assertTrue(m.undoMove(world).ok);
+			assertEquals(copyOfWorldBefore, world);
+		} catch (Exception e) {			
+			e.printStackTrace();
+			assertTrue(false);			
+		}		
+	}
+
+	public Object cloneBySerialisation(Object m) throws IOException, ClassNotFoundException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ObjectOutputStream objectOut = new ObjectOutputStream(out);
+		objectOut.writeObject(m);
+		objectOut.flush();
+		
+		byte[] bytes = out.toByteArray();
+		
+		ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+		ObjectInputStream objectIn = new ObjectInputStream(in);
+		Object o = objectIn.readObject();
+		return o;
 	}
 
 	protected void assertOkAndRepeatable(Move m) {

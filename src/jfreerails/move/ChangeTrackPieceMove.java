@@ -55,7 +55,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
 		//Check that the current track piece at this.location is
 		//the same as this.oldTrackPiece.
-		TrackPiece currentTrackPieceAtLocation = (TrackPiece) w.getTile(location.x, location.y);
+		
+		TrackPiece currentTrackPieceAtLocation = ((FreerailsTile) w.getTile(location.x, location.y)).getTrackPiece();
 
 		TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
 		TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();

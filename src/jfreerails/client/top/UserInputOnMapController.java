@@ -9,6 +9,7 @@ import jfreerails.client.view.CursorEventListener;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
+import jfreerails.controller.TrackMoveExecutor;
 import jfreerails.controller.TrackMoveProducer;
 
 public class UserInputOnMapController implements CursorEventListener {
@@ -23,7 +24,8 @@ public class UserInputOnMapController implements CursorEventListener {
 
 	private DialogueBoxController dialogueBoxController;
 
-	
+	private TrackMoveExecutor trackMoveExecutor;
+
 	public void cursorOneTileMove(CursorEvent ce) {
 		if (null != trackBuilder) {
 
@@ -45,7 +47,9 @@ public class UserInputOnMapController implements CursorEventListener {
 		TrackMoveProducer trackBuilder,
 		StationTypesPopup stPopup,
 		FreerailsCursor fc,
-		DialogueBoxController dbc) {
+		DialogueBoxController dbc,
+		TrackMoveExecutor tx) {
+		trackMoveExecutor = tx;
 		this.dialogueBoxController = dbc;
 		this.mapView = mv;
 		this.stationTypesPopup = stPopup;
@@ -58,12 +62,10 @@ public class UserInputOnMapController implements CursorEventListener {
 
 	}
 
-	
 	public void cursorJumped(CursorEvent ce) {
 		trackBuilder.upgradeTrack(ce.newPosition);
 	}
 
-	
 	public void cursorKeyPressed(CursorEvent ce) {
 
 		switch (ce.keyEvent.getKeyCode()) {
@@ -74,7 +76,7 @@ public class UserInputOnMapController implements CursorEventListener {
 				}
 			case KeyEvent.VK_F8 :
 				{
-					
+
 					float scale = mapView.getScale();
 					Point tile = new Point(ce.newPosition); //defensive copy.
 					Dimension tileSize = new Dimension((int) scale, (int) scale);
@@ -84,17 +86,21 @@ public class UserInputOnMapController implements CursorEventListener {
 					break;
 
 				}
-                    case KeyEvent.VK_I :
-                    {
-                        System.out.println("Show terrain info");                        
-                        dialogueBoxController.showTerrainInfo(ce.newPosition.x, ce.newPosition.y);
-                        break;
-                    }			
+			case KeyEvent.VK_BACK_SPACE :
+				System.out.println("Undo last move");
+				trackMoveExecutor.undoLastMove();
+				break;
+			case KeyEvent.VK_I :
+				{
+					System.out.println("Show terrain info");
+					dialogueBoxController.showTerrainInfo(ce.newPosition.x, ce.newPosition.y);
+					break;
+				}
 		}
 	}
 
 	private void buildTrain(CursorEvent ce) {
-		
+
 		dialogueBoxController.showSelectEngine();
 		//trainBuilder.buildTrain(ce.newPosition);
 	}

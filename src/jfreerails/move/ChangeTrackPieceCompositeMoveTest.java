@@ -169,6 +169,11 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 		
 		assertEqualsSurvivesSerialisation(move);
 		assertOkButNotRepeatable(move);
+		
+		setUp();
+		assertDoThenUndoLeavesWorldUnchanged(move);		
 	}
+	
+	
     
 }

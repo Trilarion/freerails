@@ -109,9 +109,7 @@ final public class FreerailsCursor implements KeyListener  {
 			case KeyEvent.VK_NUMPAD9 :
 				moveCursor(OneTileMoveVector.NORTH_EAST);
 				break;
-			case KeyEvent.VK_BACK_SPACE :
-				System.out.println("Undo last move");
-				break;
+			
 			case KeyEvent.VK_ENTER :
 				System.out.println("Send moves to server");
 

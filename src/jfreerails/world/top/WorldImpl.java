@@ -106,5 +106,39 @@ public class WorldImpl implements World {
 	public void setGameTime(GameCalendar t) {
 		this.time = t;		
 	}
+	
+	public boolean equals(Object o) {		
+		if(o instanceof WorldImpl){
+			WorldImpl test = (WorldImpl)o;
+			
+			if(lists.length != test.lists.length){
+				return false;
+			}else{
+				for(int i = 0 ; i < lists.length ; i++){
+					if(!lists[i].equals(test.lists[i])){
+						return false;
+					}
+				}
+			}
+			
+			if((this.getMapWidth() != test.getMapWidth()) || (this.getMapHeight() != test.getMapHeight())){
+				return false;
+			}else{
+				for(int x = 0 ; x < this.getMapWidth() ; x++){
+					for(int y = 0 ; y < this.getMapHeight(); y++){
+						if(!getTile(x, y).equals(test.getTile(x, y))){
+							System.out.println(getTile(x, y));
+							System.out.println(test.getTile(x, y));
+							return false;
+						}
+					}
+				}
+			}
+			//phew!
+			return true;			
+		}else{		
+			return false;
+		}
+	}
 
 }

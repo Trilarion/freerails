@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.World;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
@@ -28,8 +29,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 	/** Creates new ChangeTrackPieceCompositeMove */
 	public ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b) {
 		super(new Move[]{a, b});
-		updatedTiles = a.getUpdatedTiles();
-		
+		updatedTiles = a.getUpdatedTiles().union(b.getUpdatedTiles());						
 	}
 
 	public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
@@ -77,7 +77,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 		TrackPiece oldTrackPiece, newTrackPiece;
 
 		if (w.boundsContain(p.x, p.y)) {
-			oldTrackPiece = (TrackPiece) w.getTile(p.x, p.y);
+			oldTrackPiece = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
 			if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
 				TrackConfiguration trackConfiguration =
 					TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
@@ -138,6 +138,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 	}
 
 	public Rectangle getUpdatedTiles() {
+		System.out.println(updatedTiles);
 		return updatedTiles;
 	}
 

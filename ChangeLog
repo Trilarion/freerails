@@ -1,3 +1,5 @@
+31-May-2003 23:58:04 Luke
+	o Pressing backspace now undoes building/removing track.
 31-May-2003 21:28:30 Luke
 	o Make build track moves undoable.
 31-May-2003 16:26:35 Luke

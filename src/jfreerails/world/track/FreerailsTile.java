@@ -79,7 +79,7 @@ public class FreerailsTile
 		if(o instanceof FreerailsTile){
 			FreerailsTile test = (FreerailsTile)o;
 			
-			boolean trackPieceFieldsEqual = (this.trackPiece.equals(test.getTrackPiece()));
+			boolean trackPieceFieldsEqual = (this.trackPiece.equals(test.trackPiece));
 			
 			boolean terrainTypeFieldsEqual = (terrainType == test.getTerrainTypeNumber());
 			if(trackPieceFieldsEqual && terrainTypeFieldsEqual ){
@@ -92,10 +92,16 @@ public class FreerailsTile
 		}		
 	}
 
-	public TrackPiece getTrackPiece() {
-		return trackPiece;
-	}
+	
 	public int getTerrainTypeNumber() {		
 		return terrainType;
 	}	
+	public String toString() {
+		return "trackPiece="+trackPiece.toString()+" and terrainType is "+terrainType;
+	}
+
+	public TrackPiece getTrackPiece() {
+		return trackPiece;
+	}
+
 }
