@@ -1,3 +1,6 @@
+Wed Apr 30 02:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: repair Pause handling
+o Engine : Don't accept Msg's in Pause mode if they are not gameState Msg's.
 Tue Apr 29 20:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o make ParaGUI ready for 0.0.8
 o remove showStation in ParaGUI, showTrack should be the next, dir -> connect

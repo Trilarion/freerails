@@ -144,7 +144,7 @@ void Engine::checkNext(int msec)
 
 void Engine::process()
 {
-  /*  std::cerr << "."; */
+  std::cerr << ".";
   if(isServer)
   {
   }
@@ -153,20 +153,29 @@ void Engine::process()
 void Engine::processMsg(Message* msg)
 {
   std::cerr << "\nin processMsg(Message*)\n";
-  switch (msg->getMsgType())
+  if (gameState == Running)
   {
-    case Message::addElement:
-      std::cerr << "\nadd element\n";
-      addElementToGame(msg);
-      if (msg->getData() != NULL)
-        delete (GameElement*)msg->getData();
+    switch (msg->getMsgType())
+    {
+      case Message::addElement:
+        std::cerr << "\nadd element\n";
+        addElementToGame(msg);
+	if (msg->getData() != NULL) delete (GameElement*)msg->getData();
       break;
-    case Message::stateOfGame:
-      std::cerr << "change state of the game";
+      case Message::stateOfGame:
+        std::cerr << "change state of the game";
+        changeStateOfGame(msg);
+	if (msg->getData() != NULL) delete (GameState *)msg->getData();
+      break;
+      default:
+      break;
+    }
+  } else
+  {
+    if (msg->getMsgType()==Message::stateOfGame)
+    {
       changeStateOfGame(msg);
-      break;
-    default:
-      break;
+    }
   }
 }
 
