@@ -33,14 +33,68 @@
 
 
 		<mkdir dir="${doc}" />
-                <mkdir dir="${datafiles}" />
+		<mkdir dir="${datafiles}" />
+
+	</target>
+	<!-- Sets last modified date in html files.-->
+	<target name="lastmod" depends="mkdirs">
+		<copy todir="${doc}" preservelastmodified="true" overwrite="true">
+					<fileset dir="${src}">
+						<include name="**/*.html" />
+						<include name="**/*.css" />
+						<include name="**/*.htm" />
+
+						<!--Copy the images used by the functional specification but don't copy all the tile graphics etc.-->
+						<include name="docs/*.png" />
+
+
+						<!--Don't copy these since the javadoc tool processes them -->
+						<exclude name="**/overview.html" />
+						<exclude name="**/package.html" />
+					</fileset>
+				</copy>
+				<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		
+		
+		<taskdef resource="net/sf/antcontrib/antlib.xml" />
+		<for param="file">
+			<fileset dir="${doc}/docs">
+				<include name="**/*.html" />
+				<include name="**/*.htm" />
+				
+			</fileset>
+
+			<sequential>
+				<script language="jython">
+					<![CDATA[
+from java.io import File
+from java.util import Date
+from java.text import SimpleDateFormat
+					
+file = File("@{file}")
+
+if file.lastModified() == 0:
+	project.setProperty("date", "unknown" )					
+else:
+	date = Date(file.lastModified())				
+	sdf = SimpleDateFormat("dd MMM yyyy") 				
+	project.setProperty("date", sdf.format(date) )					
+]]>
+				</script>
+				<echo>@{file}  ${date}</echo>
+				
+				<replace file="@{file}" token="@lastModified@" value="${date}"/>
+						
+			</sequential>
+
+		</for>
 
 	</target>
 
 	<!-- Used by other targets, copies data files to a temporary directory. -->
 	<target name="data2temp" depends="mkdirs">
-            
-		
+
+
 		<copy todir="${datafiles}/src">
 			<fileset dir="${src}">
 				<include name="**/*.xml" />
@@ -127,7 +181,7 @@
 		</jar>
 		<!-- Replace current latest with the jar file we have just created. -->
 		<delete>
-			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />			
+			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />
 		</delete>
 		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" todir="${dist}/latest" />
 	</target>
@@ -165,7 +219,7 @@
 
 		<delete dir="${datafiles}" />
 
-		<delete file="website.tar.gz"/>
+		<delete file="website.tar.gz" />
 
 		<!-- also delete any .class etc under the src directory -->
 		<delete>
@@ -205,7 +259,7 @@
 				<exclude name="**/*Test.java" />
 			</fileset>
 		</javadoc>
-		<!-- now copy the html	-->
+		
 		<copy todir="${doc}">
 			<fileset dir="${src}">
 				<include name="**/*.html" />
@@ -240,7 +294,7 @@
 	</target>
 
 	<!-- depends=""-->
-	<target name="upload"  depends="alldist" description="Upload source, binary, and javadocs jar files to sourcforge">
+	<target name="upload" depends="alldist" description="Upload source, binary, and javadocs jar files to sourcforge">
 		<ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous" verbose="yes">
 			<fileset dir="${dist}/latest">
 				<include name="jfreerails-${DSTAMP}-${TSTAMP}.jar" />
@@ -283,7 +337,10 @@
 				<include name="**/*.png" />
 				<include name="**/*.jnpl" />
 				<exclude name="signed_jfreerails.jar" />
-				<exclude name="javadoc/**/*" />
+				<exclude name="javadoc/jfreerails/**/*" />
+				<exclude name="javadoc/experimental/**/*" />
+				<exclude name="javadoc/experimental/**/*" />
+				<exclude name="javadoc/it/**/*" />
 				<modified />
 			</fileset>
 		</scp>
@@ -298,8 +355,8 @@
 	</target>
 
 	<target name="check_username_and_password">
-		<input  message="Please enter username:" addproperty="u" />
-		<input  message="Please enter password:" addproperty="p" />
+		<input message="Please enter username:" addproperty="u" />
+		<input message="Please enter password:" addproperty="p" />
 	</target>
 
 

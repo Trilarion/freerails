@@ -23,7 +23,16 @@ public class PathOnTiles implements FreerailsSerializable{
 	private final Point start;
 	private final OneTileMoveVector[] vectors;	
 	
+	/** 
+	 * @throws NullPointerException if null == start
+	 * @throws NullPointerException if null == vectors
+	 * @throws NullPointerException if null == vectors[i] for any i;
+	 */
 	public PathOnTiles(Point start, OneTileMoveVector[] vectors){
+		if(null == start) throw new NullPointerException();
+		for (int i = 0; i < vectors.length; i++) {
+			if(null == vectors[i]) throw new NullPointerException();
+		}
 		this.start = start;
 		this.vectors = vectors;		
 	}
