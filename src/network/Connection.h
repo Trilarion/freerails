@@ -5,10 +5,6 @@
 #ifndef __CONNECTION_H__
 #define __CONNECTION_H__
 
-/* #include "Serializer.h" */
-
-
-class Serializer;
 
 class Connection {
 
@@ -31,11 +27,9 @@ public:
     
     State getState() {return state;};
     Error getError() {return error;};
-    inline Serializer *getSerializer(){return serializer;};
     
 protected:
 
-    static Serializer *serializer;
 
     State state;
     Error error;

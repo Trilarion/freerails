@@ -2,7 +2,6 @@
  * $Id$
  */
 
-#include "Serializer.h"
 #include "Connection.h"
 
 
