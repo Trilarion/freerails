@@ -18,6 +18,7 @@ import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.TrackPathFinder;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.MoveStatus;
+import jfreerails.util.GameModel;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -36,15 +37,16 @@ import jfreerails.world.track.TrackRule;
  * TODO Split into two classes: one which displays any proposed track and one that provides methods to change 
  * the proposed track and save it to the real world.
  * */
-public class BuildTrackRenderer implements Painter {
-    private static final int BIG_DOT_WIDTH = 12;
+public class BuildTrackRenderer implements Painter, GameModel {
+    public static final int BIG_DOT_WIDTH = 12;
     private static final Logger LOGGER = Logger.getLogger(BuildTrackRenderer.class.getName());
-    private static final int SMALL_DOT_WIDTH = 6;
+    public static final int SMALL_DOT_WIDTH = 6;
     private List<Point> m_builtTrack = new ArrayList<Point>();
     private boolean m_isBuildTrackSuccessful = false;
     private ModelRoot m_modelRoot;
     private FreerailsPrincipal m_principal;
     private ReadOnlyWorld m_realWorld;
+    private WorldDifferences m_worldDiffs;
     private boolean m_setUp = false;
     private boolean m_show = false;
     private SoundManager m_soundManager = SoundManager.getSoundManager();
@@ -52,8 +54,7 @@ public class BuildTrackRenderer implements Painter {
     private Point m_targetPoint;
     private final Dimension m_tileSize = new Dimension(30, 30);
     private TrackPathFinder m_trackPathFinder;
-    private TrackPieceRendererList m_trackPieceViewList;
-    private WorldDifferences m_worldDiffs;	
+    private TrackPieceRendererList m_trackPieceViewList;    
 
     /**
      * BuildTrackRenderer
@@ -62,7 +63,8 @@ public class BuildTrackRenderer implements Painter {
      */
     public BuildTrackRenderer(ReadOnlyWorld readOnlyWorld,
         TrackPieceRendererList trackPieceViewList) {
-        m_worldDiffs = new WorldDifferences(readOnlyWorld);
+    	m_worldDiffs = new WorldDifferences(readOnlyWorld);
+      
         this.m_trackPieceViewList = trackPieceViewList;
         m_realWorld = readOnlyWorld;
         m_trackPathFinder = new TrackPathFinder(readOnlyWorld);       
@@ -93,8 +95,8 @@ public class BuildTrackRenderer implements Painter {
 
     /** Hides and cancels any proposed track.*/ 
     public void hide() {
-        this.m_show = false;
-        m_targetPoint = null;
+        this.setM_show(false);
+        setTargetPoint(null);
         reset();
     }
 
@@ -104,7 +106,7 @@ public class BuildTrackRenderer implements Painter {
      * @return boolean
      */
     public boolean isBuilding() {
-        return m_show;
+        return isM_show();
     }
 
     /** Returns true if all the track pieces can be successfully built.*/
@@ -199,19 +201,15 @@ public class BuildTrackRenderer implements Painter {
 
     /** Paints the proposed track and dots to distinguish the proposed track from any existing track.*/
     public void paint(Graphics2D g) {
-        //update search for path if necessay.
-        if (m_trackPathFinder.getStatus() == IncrementalPathFinder.SEARCH_PAUSED) {
-            updateSearch();
-        }
+        
 
-        if (m_show) {
-            for (Iterator iter = m_worldDiffs.getMapDifferences();
+        
+        WorldDifferences worldDiffs = getWorldDiffs();
+        if(null != worldDiffs){
+			for (Iterator iter = worldDiffs.getMapDifferences();
                     iter.hasNext();) {
-                Point point = (Point)iter.next();
-
-                //                FreerailsTile tile = worldDifferences.getTile(point.x, point.y);
-                //                paintRectangleOfTiles(g, new Rectangle(tileX, tileY, 1, 1));
-                TrackPiece tp = (TrackPiece)m_worldDiffs.getTile(point.x,
+                Point point = (Point)iter.next();               
+                TrackPiece tp = (TrackPiece)worldDiffs.getTile(point.x,
                         point.y);
 
                 int graphicsNumber = tp.getTrackGraphicID();
@@ -222,8 +220,9 @@ public class BuildTrackRenderer implements Painter {
                     point.y, m_tileSize);
             }
 
-            //Draw while small dots for each tile on the path.
-            for (Iterator<Point> iter = m_builtTrack.iterator(); iter.hasNext();) {
+            //Draw small dots for each tile on the path.           
+			for (Iterator<Point> iter = worldDiffs.getMapDifferences();
+            iter.hasNext();){
                 Point p = iter.next();
                 int x = p.x * m_tileSize.width +
                     (m_tileSize.width - SMALL_DOT_WIDTH) / 2;
@@ -234,52 +233,34 @@ public class BuildTrackRenderer implements Painter {
             }
         }
 
-        //Draw a big white dot at the target point.
-        if (null != m_targetPoint) {
-            long time = System.currentTimeMillis();
-            int dotSize;
-
-            if ((time % 500) > 250) {
-                dotSize = BIG_DOT_WIDTH;
-            } else {
-                dotSize = SMALL_DOT_WIDTH;
-            }
-
-            g.setColor(Color.WHITE);
-
-            int x = m_targetPoint.x * m_tileSize.width +
-                (m_tileSize.width - dotSize) / 2;
-            int y = m_targetPoint.y * m_tileSize.width +
-                (m_tileSize.height - dotSize) / 2;
-            g.fillOval(x, y, dotSize, dotSize);
-        }
     }
 
     /** Attempts to building track from the specifed point in the specified direction
      * on the worldDiff object.    
      */
     private MoveStatus planBuildingTrack(Point point, OneTileMoveVector vector) {
-    	FreerailsTile tileA = (FreerailsTile)m_worldDiffs.getTile(point.x, point.y);
+    	WorldDifferences worldDiffs = m_worldDiffs;
+		FreerailsTile tileA = (FreerailsTile)worldDiffs.getTile(point.x, point.y);
     	BuildTrackStrategy bts = getBts();
 		int trackTypeAID = bts.getRule(tileA.getTerrainTypeID());
-        TrackRule trackRuleA = (TrackRule)m_worldDiffs.get(SKEY.TRACK_RULES,
+        TrackRule trackRuleA = (TrackRule)worldDiffs.get(SKEY.TRACK_RULES,
         		trackTypeAID);
         
-        FreerailsTile tileB = (FreerailsTile)m_worldDiffs.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
+        FreerailsTile tileB = (FreerailsTile)worldDiffs.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
     	int trackTypeBID = bts.getRule(tileB.getTerrainTypeID());
-        TrackRule trackRuleB = (TrackRule)m_worldDiffs.get(SKEY.TRACK_RULES,
+        TrackRule trackRuleB = (TrackRule)worldDiffs.get(SKEY.TRACK_RULES,
         		trackTypeBID);
         
         
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point,
-                vector, trackRuleA, trackRuleB,m_worldDiffs, m_principal);
+                vector, trackRuleA, trackRuleB,worldDiffs, m_principal);
 
-        return move.doMove(m_worldDiffs, m_principal);
+        return move.doMove(worldDiffs, m_principal);
     }
 
     /** Cancels any proposed track and resets the pathfinder.*/
     private void reset() {
-        m_worldDiffs.reset();
+    	m_worldDiffs.reset();
         m_trackPathFinder.abandonSearch();
         this.m_builtTrack.clear();
         this.m_isBuildTrackSuccessful = false;
@@ -298,7 +279,7 @@ public class BuildTrackRenderer implements Painter {
          * waste time doing it again.
          */
         if (null != m_targetPoint && null != m_startPoint &&
-                m_targetPoint.equals(endPoint) &&
+        		m_targetPoint.equals(endPoint) &&
                 m_startPoint.equals(startPoint) &&
                 m_trackPathFinder.getStatus() != IncrementalPathFinder.SEARCH_NOT_STARTED) {
             return;
@@ -321,7 +302,7 @@ public class BuildTrackRenderer implements Painter {
             return;
         }
 
-        m_targetPoint = new Point(endPoint);
+        setTargetPoint(new Point(endPoint));
         m_startPoint = new Point(startPoint);
 
         try {
@@ -346,11 +327,12 @@ public class BuildTrackRenderer implements Painter {
         m_setUp = true;
         this.m_modelRoot = modelRoot;
         m_principal = modelRoot.getPrincipal();
+        setworldDiffs(m_worldDiffs);
     }
 
     /** Sets the m_show field to true.*/
     public void show() {
-        this.m_show = true;
+        this.setM_show(true);
     }
 
     /** Updates the search, if the search is completed, the proposed track is shown.*/
@@ -390,4 +372,60 @@ public class BuildTrackRenderer implements Painter {
 
         return actPoint;
     }
+
+
+	
+	private void setworldDiffs(WorldDifferences worldDiffs) {
+		m_modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);		
+	}
+
+	
+	private WorldDifferences getWorldDiffs() {
+		if(m_modelRoot == null){
+			return null;
+		}
+		return (WorldDifferences)m_modelRoot.getProperty(ModelRoot.Property.PROPOSED_TRACK);
+	}
+
+
+	
+	private void setM_show(boolean show) {
+		if(show == m_show){
+			return;
+		}
+		if(show){
+			setworldDiffs(m_worldDiffs);
+		}else{
+			setworldDiffs(null);
+		}
+		this.m_show = show;
+	}
+
+
+	/**
+	 * @return Returns the m_show.
+	 */
+	private boolean isM_show() {
+		return m_show;
+	}
+
+
+	/**
+	 * @param newTargetPoint The m_targetPoint to set.
+	 */
+	private void setTargetPoint(Point newTargetPoint) {
+		this.m_targetPoint = newTargetPoint;
+		Point p = null == newTargetPoint ? null : new Point(newTargetPoint);
+		m_modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, p);		
+	}
+
+
+	
+	public void update() {
+		//update search for path if necessay.
+        if (m_trackPathFinder.getStatus() == IncrementalPathFinder.SEARCH_PAUSED) {
+            updateSearch();
+        }		
+	}
+	
 }

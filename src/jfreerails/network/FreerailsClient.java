@@ -171,12 +171,21 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             }
 
             connection2Server.flush();
+            clientUpdates();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
     }
 
+    /** Empty method called by update(), subclasses should override this
+     * method instead of overriding update().
+     *
+     */ 
+    protected void clientUpdates(){
+    	
+    }
+    
     /** Processes a message received from the server.*/
     final void processMessage(FreerailsSerializable message)
         throws IOException {

@@ -88,9 +88,7 @@ public class StationPlacementCursor extends MouseInputAdapter  {
        
     }
 
-	/**
-	 * @param mapView
-	 */
+	
 	private void init() {
 		if (buildEnabled) {        	
             mapView.addMouseListener(this);

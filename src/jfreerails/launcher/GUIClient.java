@@ -35,6 +35,10 @@ import jfreerails.world.top.World;
  */
 public class GUIClient extends FreerailsClient
 implements FreerailsProgressMonitor {
+	
+	protected void clientUpdates() {
+		factory.getBuildTrackRenderer().update();
+	}
     private ScreenHandler screenHandler;
     private ModelRootImpl modelRoot;
     private ActionRoot actionRoot;

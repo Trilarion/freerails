@@ -63,11 +63,7 @@ public class AddStationMove extends CompositeMove {
     }
 
     /** This method may be called under 3 possible conditions: (1) when a station is getting built, (2) 
-     * when a station is getting upgraded, (3) when a staton is getting removed.
-     * @param w
-     * @param location
-     * @param trackPiece
-     * @return
+     * when a station is getting upgraded, (3) when a staton is getting removed.    
      */
     protected static MoveStatus check4overlap(World w, Point location, TrackPiece trackPiece) {
         /* Fix for 915945 (Stations should not overlap)

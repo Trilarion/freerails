@@ -4,6 +4,7 @@
  */
 package jfreerails.client.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ModelRoot;
+import jfreerails.client.renderer.BuildTrackRenderer;
 import jfreerails.controller.TrackMoveProducer;
 
 /**
@@ -54,15 +56,7 @@ final public class FreerailsCursor {
 	 */
 	public void paintCursor(Graphics g, Dimension tileSize) {
 		Graphics2D g2 = (Graphics2D) g;
-
-		// First draw the cursor.
-		// g2.setStroke(stroke);
-
-		// if (1 == blinkValue) {
-		// g2.setColor(java.awt.Color.white); //The colour of the cursor
-		// } else {
-		// g2.setColor(java.awt.Color.black);
-		// }
+		
 
 		Integer trackBuilderMode = (Integer) modelRoot
 				.getProperty(ModelRoot.Property.TRACK_BUILDER_MODE);
@@ -71,8 +65,7 @@ final public class FreerailsCursor {
 				.getProperty(ModelRoot.Property.CURSOR_POSITION);
 		int x = cursorMapPosition.x * tileSize.width;
 		int y = cursorMapPosition.y * tileSize.height;
-		// g2.drawRect(x, y, tileSize.width, tileSize.height);
-
+		
 		Image cursor = null;
 		switch (trackBuilderMode.intValue()) {
 		case TrackMoveProducer.BUILD_TRACK:
@@ -112,7 +105,28 @@ final public class FreerailsCursor {
 			g.setColor(java.awt.Color.white);
 			layout.draw(g2, textX, textY);
 		}
-	}
+		
+//		Draw a big white dot at the target point.
+        Point targetPoint = (Point)modelRoot.getProperty(ModelRoot.Property.THINKING_POINT);
+		if (null != targetPoint) {
+            time = System.currentTimeMillis();
+            int dotSize;
+
+            if ((time % 500) > 250) {
+                dotSize = BuildTrackRenderer.BIG_DOT_WIDTH;
+            } else {
+                dotSize = BuildTrackRenderer.SMALL_DOT_WIDTH;
+            }
+
+            g.setColor(Color.WHITE);
+
+            x = targetPoint.x * tileSize.width +
+                (tileSize.width - dotSize) / 2;
+            y = targetPoint.y * tileSize.width +
+                (tileSize.height - dotSize) / 2;
+            g.fillOval(x, y, dotSize, dotSize);
+        }
+	}		
 
 	
 }

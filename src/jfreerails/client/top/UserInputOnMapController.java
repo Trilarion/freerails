@@ -145,7 +145,7 @@ public class UserInputOnMapController extends KeyAdapter {
 					mapView.scrollRectToVisible(r);
 				}
 
-				buildTrack.setTrack(getCursorPosition(),
+				buildTrack.setProposedTrack(getCursorPosition(),
 						new Point(tileX, tileY));
 				mapView.requestFocus();
 			}

@@ -148,7 +148,7 @@ public class WorldDifferences implements World {
     /** The iterator returns instances of java.awt.Point that store the
      * coordinates of tiles that are different to the underlying world object.
      */
-    public Iterator getMapDifferences() {
+    public Iterator<Point> getMapDifferences() {
         return mapDifferences.keySet().iterator();
     }
 
