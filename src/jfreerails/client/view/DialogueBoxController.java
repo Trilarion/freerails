@@ -47,6 +47,7 @@ public class DialogueBoxController {
     private HtmlJPanel showControls;
     private HtmlJPanel about;
     private HtmlJPanel how2play;
+    private HtmlJPanel javaProperties;
     private TerrainInfoJPanel terrainInfo;
     private StationInfoJPanel stationInfo;
     private TrainDialogueJPanel trainDialogueJPanel;
@@ -127,6 +128,9 @@ public class DialogueBoxController {
         how2play = new HtmlJPanel(DialogueBoxController.class.getResource(
                     "/jfreerails/client/view/how_to_play.htm"));
         how2play.setup(this.modelRoot, this.closeCurrentDialogue);
+        
+		javaProperties = new HtmlJPanel(ShowJavaProperties.getPropertiesHtmlString());
+		javaProperties.setup(this.modelRoot, this.closeCurrentDialogue);
 
         //Set up train orders dialogue
         //trainScheduleJPanel = new TrainScheduleJPanel();
@@ -227,6 +231,10 @@ public class DialogueBoxController {
 
     public void showHow2Play() {
         showContent(this.how2play);
+    }
+    
+    public void showJavaProperties() {
+		showContent(javaProperties);
     }
 
     public void showSelectWagons() {

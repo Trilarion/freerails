@@ -325,8 +325,16 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 }
             });
 
+        JMenuItem showJavaProperties = new JMenuItem("Show Java Properties");
+        showJavaProperties.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dialogueBoxController.showJavaProperties();
+                }
+            });
+
         helpMenu.add(showControls);
         helpMenu.add(how2play);
+        helpMenu.add(showJavaProperties);
         helpMenu.add(about);
 
         return helpMenu;

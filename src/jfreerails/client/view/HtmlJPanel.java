@@ -1,5 +1,5 @@
 /*
- * GameControlsJPanel.java
+ * HtmlJPanel.java
  *
  * Created on 19 April 2003, 16:41
  */
@@ -17,14 +17,17 @@ import java.net.URL;
  * @author  Luke
  */
 public class HtmlJPanel extends javax.swing.JPanel implements View {
+        
     
-    private final URL htmlUrl;
-    
-    /** Creates new form GameControlsJPanel */
-    public HtmlJPanel(URL url) {
-        this.htmlUrl = url;
+    /** Creates new form HtmlJPanel */
+    public HtmlJPanel(URL url) {        
         initComponents();
+		loadText(url);
     }
+	public HtmlJPanel(String html) {        
+		   initComponents();
+		   this.htmlJLabel.setText(html);
+	}
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -36,11 +39,11 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         htmlJLabel = new javax.swing.JLabel();
-        loadText();
         done = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
+        setMinimumSize(new java.awt.Dimension(400, 300));
         htmlJLabel.setFont(new java.awt.Font("Dialog", 0, 12));
         htmlJLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jScrollPane1.setViewportView(htmlJLabel);
@@ -66,7 +69,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     }
     
     /** Load the help text from file.  */
-    public void loadText() {
+    private void loadText(final URL htmlUrl) {
         try {            
             InputStream in = htmlUrl.openStream();
             BufferedReader br =

@@ -15,9 +15,11 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.ViewListsImpl;
 import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
+import jfreerails.client.view.HtmlJPanel;
 import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.SelectStationJPanel;
+import jfreerails.client.view.ShowJavaProperties;
 import jfreerails.client.view.TrainDialogueJPanel;
 import jfreerails.client.view.TrainOrdersListModel;
 import jfreerails.client.view.TrainScheduleJPanel;
@@ -204,6 +206,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         trainScheduleJMenuItem = new javax.swing.JMenuItem();
         showSelectStation = new javax.swing.JMenuItem();
         showCargoWaitingAndDemand = new javax.swing.JMenuItem();
+        showJavaSystemProperties = new javax.swing.JMenuItem();
 
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -338,11 +341,29 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         show.add(showCargoWaitingAndDemand);
 
+        showJavaSystemProperties.setText("Java System Properties");
+        showJavaSystemProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showJavaSystemPropertiesActionPerformed(evt);
+            }
+        });
+
+        show.add(showJavaSystemProperties);
+
         jMenuBar1.add(show);
 
         setJMenuBar(jMenuBar1);
 
     }//GEN-END:initComponents
+
+    private void showJavaSystemPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showJavaSystemPropertiesActionPerformed
+        // Add your handling code here:
+        String s = ShowJavaProperties.getPropertiesHtmlString();
+        System.out.println(s);
+        HtmlJPanel htmlPanel = new HtmlJPanel(s);
+       htmlPanel.setup(modelRoot, closeCurrentDialogue);
+        dialogueBoxController.showContent(htmlPanel);
+    }//GEN-LAST:event_showJavaSystemPropertiesActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if(java.awt.event.KeyEvent.VK_ESCAPE == evt.getKeyCode()){
@@ -479,6 +500,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private javax.swing.JMenu show;
     private javax.swing.JMenuItem showCargoWaitingAndDemand;
     private javax.swing.JMenuItem showControls;
+    private javax.swing.JMenuItem showJavaSystemProperties;
     private javax.swing.JMenuItem showNewTrainOrdersJMenuItem;
     private javax.swing.JMenuItem showSelectStation;
     private javax.swing.JMenuItem showStationInfo;
