@@ -5,13 +5,14 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.1  (Win32)">
 	<META NAME="CREATED" CONTENT="20040509;23115157">
-	<META NAME="CHANGED" CONTENT="20041016;134346">
+	<META NAME="CHANGED" CONTENT="20041123;15491696">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H1 ALIGN=CENTER>JFreerails 1.0 
 </H1>
 <H2 ALIGN=CENTER>Functional Specification</H2>
 <P ALIGN=CENTER>Luke Lindsay</P>
+<P ALIGN=CENTER>last updated <SDFIELD TYPE=DATETIME SDNUM="2057;1033;MMM D, YYYY">Nov 23, 2004</SDFIELD></P>
 <H2>Overview</H2>
 <P>FreeRails a is real time multi player strategy game where players
 compete to build the most powerful railroad empire. 
@@ -417,6 +418,93 @@ calculations, so when you build an industry, it stays put!</P>
 <H2>User Interface</H2>
 <H4>Main map</H4>
 <P>...</P>
+<H4>Build Tab</H4>
+<H4>There are 5 build modes (see the table and screenshot below).</H4>
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
+	<COL WIDTH=64*>
+	<COL WIDTH=64*>
+	<COL WIDTH=128*>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TH WIDTH=25%>
+				<P>Build mode</P>
+			</TH>
+			<TH WIDTH=25%>
+				<P>Options visible when mode is selected</P>
+			</TH>
+			<TH WIDTH=50%>
+				<P>Action</P>
+			</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+		<TR VALIGN=TOP>
+			<TD WIDTH=25%>
+				<P>build track</P>
+			</TD>
+			<TD WIDTH=25%>
+				<P>Track type, bridges, and tunnels.</P>
+			</TD>
+			<TD WIDTH=50%>
+				<P>When the cursor is moved, track is built. On clear terrain,
+				the selected track type is built. On rivers, the selected bridge
+				type is built (if a bridge type is selected.) On hills and
+				mountains, tunnel is built if build tunnls is selected.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=25%>
+				<P>upgrade track</P>
+			</TD>
+			<TD WIDTH=25%>
+				<P>Track type and bridges</P>
+			</TD>
+			<TD WIDTH=50%>
+				<P>Track and bridges are upgraded to the selected type when the
+				cursor enters a tile.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=25%>
+				<P>build station</P>
+			</TD>
+			<TD WIDTH=25%>
+				<P>Stations</P>
+			</TD>
+			<TD WIDTH=50%>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=25%>
+				<P>bulldoze</P>
+			</TD>
+			<TD WIDTH=25%>
+				<P>None</P>
+			</TD>
+			<TD WIDTH=50%>
+				<P>When the cursor moves from a tile to a neigbouring tile, any
+				track connecting the two tiles is removed.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=25%>
+				<P>off</P>
+			</TD>
+			<TD WIDTH=25%>
+				<P>None</P>
+			</TD>
+			<TD WIDTH=50%>
+				<P>Nothing is built or removed when the cursor moves.</P>
+			</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<P><BR><BR>
+</P>
+<P><IMG SRC="build_track_options.png" NAME="Graphic1" ALIGN=LEFT WIDTH=323 HEIGHT=574 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
 <H4>Cursor</H4>
 <P>The cursor can be in one of the following modes.</P>
 <H4>Place station mode</H4>
@@ -449,7 +537,7 @@ calculations, so when you build an industry, it stays put!</P>
 <H4>Overview map</H4>
 <H4>RHS tabs</H4>
 <H4>Broker screen</H4>
-<H4><A HREF="launcher_spec.html"><B>Launcher</B></A></H4>
+<H4><A HREF="launcher_spec.html">Launcher</A></H4>
 <H2><BR><BR>
 </H2>
 </BODY>

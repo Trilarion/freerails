@@ -1,6 +1,7 @@
 package jfreerails.world.track;
 
 import java.util.Iterator;
+
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
@@ -12,7 +13,12 @@ import jfreerails.world.common.OneTileMoveVector;
 *@author     Luke Lindsay
 *     09 October 2001
 */
-public interface TrackRule extends FreerailsSerializable {
+public interface TrackRule extends FreerailsSerializable, Comparable {
+	
+	public enum TrackCategories{track,  bridge, tunnel, station};
+	
+	TrackCategories getCategory();
+	
     boolean canBuildOnThisTerrainType(String TerrainType);
 
     boolean isStation();

@@ -49,6 +49,10 @@ public class ImageManagerImpl implements ImageManager {
         renderingHints.put(RenderingHints.KEY_INTERPOLATION,
             RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     }
+    
+     public ImageManagerImpl(String readpath) {
+         this(readpath, null);
+     }
 
     public void setPathToReadFrom(String s) {
         pathToReadFrom = s;

@@ -59,7 +59,7 @@ public class MapFixtureFactory {
         legalTrackConfigurations[0] = new LegalTrackConfigurations(-1,
                 trackTemplates0);
         trackRuleProperties[0] = new TrackRuleProperties(1, false, "type0", 0,
-                false, 0, 0, 10);
+        		TrackRule.TrackCategories.track, 0, 0, 10);
         legalTrackPlacement[0] = new LegalTrackPlacement(cannotBuildOnTheseTerrainTypes,
                 LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         trackRulesArray[0] = new TrackRuleImpl(trackRuleProperties[0],
@@ -70,7 +70,7 @@ public class MapFixtureFactory {
         legalTrackConfigurations[1] = new LegalTrackConfigurations(-1,
                 trackTemplates1);
         trackRuleProperties[1] = new TrackRuleProperties(2, false, "type1", 1,
-                false, 0, 0, 20);
+        		TrackRule.TrackCategories.track, 0, 0, 20);
 
         legalTrackPlacement[1] = new LegalTrackPlacement(cannotBuildOnTheseTerrainTypes,
                 LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
@@ -79,7 +79,7 @@ public class MapFixtureFactory {
 
         //3rd track type..
         trackRuleProperties[2] = new TrackRuleProperties(3, false, "type2", 2,
-                false, 0, 0, 30);
+        		TrackRule.TrackCategories.track, 0, 0, 30);
 
         String[] trackTemplates2 = {"000010000"};
         legalTrackConfigurations[2] = new LegalTrackConfigurations(-1,

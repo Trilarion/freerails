@@ -95,4 +95,14 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
     public Money getMaintenanceCost() {
         return new Money(0);
     }
+
+	public jfreerails.world.track.TrackRule.TrackCategories getCategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
