@@ -1,3 +1,9 @@
+Mon Jan 14 15:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o Add the engine
+o clean src/main/game.cpp and add init functions.
+o initiate an engine in src/wrapper/paragui and call in every eventIdle
+o commit some of Rivo's new Makefiles.am Makefiles.in
+o update src/wrapper/BaseApplication
 Thu Jan 10 13:20:00 2002  Alexander Opitz <opi@le-bit.de>:
 o all ground networking wrapper should be ready.
 Wed Jan 09 15:15:00 2002  Alexander Opitz <opi@le-bit.de>:
