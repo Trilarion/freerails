@@ -11,12 +11,8 @@ or
 	Download a package from the sourceforge page.
 
 
-Recommended: JDK 1.4 (beta), which can be downloaded from:
+Requires: JDK 1.4 (beta), which can be downloaded from:
 http://java.sun.com/j2se/1.4/
-
-Alternatively, to compile and run under JDK 1.3, you will need an XML addon,  
-which can be downloaded, if necessary, from:
-http://java.sun.com/xml/download.html
 
 
 To compile and run:
