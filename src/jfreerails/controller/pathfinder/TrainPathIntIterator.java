@@ -9,9 +9,9 @@ import jfreerails.util.IntIterator;
  */
 public class TrainPathIntIterator implements IntIterator {
 	
-	public NewFlatTrackExplorer trackExplorer;
+	public FlatTrackExplorer trackExplorer;
 	
-	public TrainPathIntIterator(NewFlatTrackExplorer t){
+	public TrainPathIntIterator(FlatTrackExplorer t){
 		trackExplorer = t;		
 	}
 	

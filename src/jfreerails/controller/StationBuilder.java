@@ -31,9 +31,9 @@ public class StationBuilder {
 		ruleNumber=i;
 	}*/
 
-	public StationBuilder(TrackMoveProducer tmp, World w) {
+	public StationBuilder(TrackMoveProducer tmp, World world) {
 		this.trackMoveProducer = tmp;
-				
+		this.w=world;		
 		TrackRule trackRule;
 		int i=-1;
 		do {

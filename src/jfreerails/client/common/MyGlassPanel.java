@@ -66,7 +66,7 @@ public class MyGlassPanel extends javax.swing.JPanel {
   private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
 // Add your handling code here:
       System.out.println("Glass panel mouse pressed");
-      closeContent();
+     closeContent();
   }//GEN-LAST:event_formMousePressed
 
   private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -75,19 +75,21 @@ public class MyGlassPanel extends javax.swing.JPanel {
   }//GEN-LAST:event_formKeyPressed
 
     public void showContent(JPanel panel){
-        this.remove(contentPanel);
-        
+    	
+        this.remove(contentPanel);		
         contentPanel = panel;
         
         java.awt.GridBagConstraints gridBagConstraints1 = new java.awt.GridBagConstraints();
         gridBagConstraints1.gridx = 2;
         gridBagConstraints1.gridy = 1;
         add(contentPanel, gridBagConstraints1);      
-        this.validate();
-        
+        this.revalidate();
+        this.requestFocus();
     }
     
     public void closeContent(){
+		
+		
         this.setVisible(false);
     }
     

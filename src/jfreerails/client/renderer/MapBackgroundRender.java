@@ -190,7 +190,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 				&& (tile.y < mapSize.height)) {
 					
 				TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);	
-				int rgb = tt.getRGB();
+				int rgb = tt.getTerrainType().getRGB();
 				tiles.getTileViewWithRGBValue(rgb).renderTile(
 					g,
 					screenX,

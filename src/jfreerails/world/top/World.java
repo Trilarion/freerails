@@ -1,6 +1,7 @@
 package jfreerails.world.top;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.track.FreerailsTile;
 
 /** <p>This interface defines a unified set of methods to access the elements that make
  * up the game world.  One can think of it as a specific-purpose Collection.
@@ -51,11 +52,13 @@ public interface World extends FreerailsSerializable {
     
     /** Replaces the tile at the specified position on the map with the specified tile.
      */
-    void setTile(int x, int y, FreerailsSerializable tile);
+    void setTile(int x, int y, FreerailsTile tile);
     
     /** Returns the tile at the specified position on the map.
      */
-    FreerailsSerializable getTile(int x, int y);
+	FreerailsTile getTile(int x, int y);
     
 	boolean boundsContain(int x, int y);
+	
+	boolean boundsContain(KEY k, int index);
 }

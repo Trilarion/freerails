@@ -3,7 +3,7 @@ import java.text.DecimalFormat;
 
 
 
-final public class Money {
+final public class Money implements FreerailsSerializable {
     
     private static DecimalFormat df= new DecimalFormat("#,###"); 
     

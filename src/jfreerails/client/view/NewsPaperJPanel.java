@@ -8,12 +8,17 @@ package jfreerails.client.view;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Transparency;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.top.World;
 /**
  *
  * @author  lindsal8
  * 
  */
-public class NewsPaperJPanel extends javax.swing.JPanel {
+public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     
     private java.awt.GraphicsConfiguration defaultConfiguration =
     java
@@ -22,6 +27,8 @@ public class NewsPaperJPanel extends javax.swing.JPanel {
     .getLocalGraphicsEnvironment()
     .getDefaultScreenDevice()
     .getDefaultConfiguration();
+    
+    private ActionListener callBack;
     
     Image pieceOfNewspaper;
     /** Creates new form NewsPaperJPanel */
@@ -98,6 +105,16 @@ public class NewsPaperJPanel extends javax.swing.JPanel {
   
   public void setHeadline(String s){
     this.headline.setText(s);
+  }
+  
+  public void setup(World w, ViewLists vl, ActionListener submitButtonCallBack) {
+      this.callBack = submitButtonCallBack;
+        this.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                callBack.actionPerformed(new ActionEvent(this, 0, null));
+            }
+        });
+           
   }
   
   // Variables declaration - do not modify//GEN-BEGIN:variables

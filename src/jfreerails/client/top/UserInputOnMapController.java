@@ -7,16 +7,15 @@ import java.awt.event.KeyEvent;
 import jfreerails.client.event.CursorEvent;
 import jfreerails.client.event.CursorEventListener;
 import jfreerails.client.menu.StationTypesPopup;
+import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
 import jfreerails.controller.TrackMoveProducer;
-import jfreerails.controller.TrainBuilder;
 import jfreerails.controller.pathfinder.TrainPathFinder;
 
 public class UserInputOnMapController implements CursorEventListener {
 
-	private TrainBuilder trainBuilder;
-
+	
 	private StationTypesPopup stationTypesPopup;
 
 	private MapViewJComponent mapView;
@@ -24,6 +23,9 @@ public class UserInputOnMapController implements CursorEventListener {
 	private TrackMoveProducer trackBuilder;
 	
 	private FreerailsCursor cursor;
+	
+	private DialogueBoxController dialogueBoxController;
+
 
 	/**
 	 * @see jfreerails.client.event.CursorEventListener#cursorOneTileMove(jfreerails.client.event.CursorEvent)
@@ -51,10 +53,11 @@ public class UserInputOnMapController implements CursorEventListener {
 	public void setup(
 	MapViewJComponent mv,
 			TrackMoveProducer trackBuilder,
-			TrainBuilder tb,
-			StationTypesPopup stPopup, FreerailsCursor fc) {
-			this.mapView = mv;
-			this.trainBuilder = tb;
+			
+			StationTypesPopup stPopup, FreerailsCursor fc,
+			DialogueBoxController dbc){
+			this.dialogueBoxController=dbc;
+			this.mapView = mv;			
 			this.stationTypesPopup = stPopup;
 			
 			this.trackBuilder = trackBuilder;
@@ -78,8 +81,7 @@ public class UserInputOnMapController implements CursorEventListener {
 	 */
 	public void cursorKeyPressed(CursorEvent ce) {
 		if (ce.keyEvent.getKeyCode() == KeyEvent.VK_F7) {
-			System.out.println("Build train");
-			trainBuilder.buildTrain(ce.newPosition);
+			buildTrain(ce);
 		} else if (ce.keyEvent.getKeyCode() == KeyEvent.VK_F8) {
 			System.out.println("Build station");
 			float scale = mapView.getScale();
@@ -101,5 +103,12 @@ public class UserInputOnMapController implements CursorEventListener {
 
 		}
 	}
+
+	private void buildTrain(CursorEvent ce) {
+		System.out.println("Build train");
+		dialogueBoxController.showSelectEngine();
+		//trainBuilder.buildTrain(ce.newPosition);
+	}
+
 
 }

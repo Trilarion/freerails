@@ -24,7 +24,7 @@ import jfreerails.world.track.TrackRule;
  * 
  */
 public final class ChangeTrackPieceCompositeMove
-	implements NewTrackMove, MapUpdateMove {
+	implements TrackMove, MapUpdateMove {
 
 	private final ChangeTrackPieceMove moveA, moveB;
 

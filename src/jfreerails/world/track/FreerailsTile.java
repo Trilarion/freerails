@@ -9,6 +9,19 @@ import jfreerails.world.terrain.TerrainType;
 public class FreerailsTile
 	implements TrackPiece, TerrainTile, FreerailsSerializable {
 
+	public static final FreerailsTile NULL = new FreerailsTile(new TerrainType(){
+
+		public String getTerrainTypeName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public int getRGB() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+		
+	});
 
 	private final TrackPiece trackPiece;
 

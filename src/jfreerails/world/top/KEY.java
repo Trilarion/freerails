@@ -29,6 +29,8 @@ public class KEY {
 	public static final KEY STATIONS = new KEY();
 	
 	public static final KEY TERRAIN_TYPES = new KEY();
+	
+	public static final KEY WAGON_TYPES = new KEY();
 			
 	//END OF KEYS
 	

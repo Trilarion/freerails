@@ -1,8 +1,6 @@
 
 package jfreerails.world.train;
 
-import java.util.NoSuchElementException;
-
 import jfreerails.world.common.FreerailsSerializable;
 
 public class TrainModel implements FreerailsSerializable{
@@ -11,69 +9,61 @@ public class TrainModel implements FreerailsSerializable{
     
     public static final int DISTANCE_BETWEEN_WAGONS=5;
     
-    TrainPosition trainposition;
+    TrainPositionOnMap trainposition;    
     
-    EngineModel engine;
+    int engineType = 0; 
+           
+    int[] wagonTypes = new int[]{0, 1, 2};
+   
     
-    WagonModel[] wagons = new  WagonModel[MAX_NUMBER_OF_WAGONS];
-    
-    int numberOfWagons = 10;
-    
-    
-    
-    public TrainModel(EngineModel e, TrainPosition p){
-        engine=e;
+    public TrainModel(int engine, int[] wagons, TrainPositionOnMap p){
+        this.engineType = engine;
+        this.wagonTypes=wagons;
         trainposition=p;
     }
-    public TrainModel(EngineModel e){
-        engine=e;
-        
+    public TrainModel(int engine){
+		this.engineType = engine;  
     }
     
     public int getLength(){
-        return (1+numberOfWagons)*32;  //Engine + wagons.
+        return (1+wagonTypes.length)*32;  //Engine + wagons.
     }
     
     
     public boolean canAddWagon(){
-        return numberOfWagons < MAX_NUMBER_OF_WAGONS;
+        return wagonTypes.length < MAX_NUMBER_OF_WAGONS;
     }
     
     public int getNumberOfWagons(){
-        return numberOfWagons;
+        return wagonTypes.length;
     }
     
-    public WagonModel getWagon(int i){
-        if(i<=numberOfWagons){
-            return wagons[i];
-        }else{
-            throw new NoSuchElementException();
-        }
+    public int getWagon(int i){      
+        return wagonTypes[i];        
     }
     
-    public void addWagon(WagonModel w){
+    public void addWagon(int wagonType){
         if(canAddWagon()){
-            wagons[numberOfWagons]=w;
-            numberOfWagons++;
+            int oldlength = wagonTypes.length;
+            int[] newWagons = new int[oldlength + 1];
+            for(int i=0; i<oldlength; i++){
+                newWagons[i]=wagonTypes[i];
+            }
+            newWagons[oldlength] = wagonType;
+            wagonTypes = newWagons;
         }else{
             throw new IllegalStateException("Cannot add wagon");
         }
     }
     
-    public TrainPosition getPosition(){
+    public TrainPositionOnMap getPosition(){
         return  trainposition;
     }
     
-    public  void setPosition(TrainPosition s){
+    public  void setPosition(TrainPositionOnMap s){
         trainposition=s;
     }
     
-    public EngineModel getEngine(){
-        return engine;
-    }
     
-    public void setEngine( EngineModel e){
-        this.engine=e;
-    }
     
 }

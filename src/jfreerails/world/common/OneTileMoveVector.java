@@ -151,6 +151,36 @@ final public class OneTileMoveVector
 		}
 		return name;
 	}
+	
+	public String toAbrvString() {
+			String name;
+			switch (deltaY) {
+				case 1 :
+					name = "s";
+					break;
+
+				case -1 :
+					name = "n";
+					break;
+
+				default :
+					name = "";
+					break;
+			}
+			switch (deltaX) {
+				case 1 :
+					name += "e";
+					break;
+
+				case -1 :
+					name += "w";
+					break;
+
+				default :
+					break;
+			}
+			return name;
+		}
 
 	/** Create a new OneTileMoveVector.
 	 *N.B Private constuctor to enforce enum property, use getInstance(x,y) instead.

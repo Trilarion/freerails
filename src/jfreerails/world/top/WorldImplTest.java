@@ -24,8 +24,8 @@ public class WorldImplTest extends TestCase {
 	}
 	
 	public void testConstructor(){
-		
-	}
-	
-
+		World w  = new WorldImpl();
+		assertEquals("The width should be zero", 0, w.getMapWidth());
+		assertEquals("The height should be zero", 0, w.getMapHeight());	
+	}	
 }

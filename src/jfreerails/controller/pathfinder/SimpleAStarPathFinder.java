@@ -4,9 +4,10 @@ import it.unimi.dsi.fastUtil.Int2IntHashMap;
 import it.unimi.dsi.fastUtil.IntHashSet;
 import it.unimi.dsi.fastUtil.IntIterator;
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.PositionOnTrack;
 
-/**
+
+/**	A simple A* pathfinder implementation.  It uses int's to avoid the cost of
+ * object creation and garbage collection. 
  * 26-Nov-2002
  * @author Luke Lindsay
  *
@@ -40,7 +41,7 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 
 		//put the starting node on the open list (you can leave its f at zero)
 		for (int i = 0; i < targets.length; i++) {
-			PositionOnTrack p = new PositionOnTrack(targets[i]);
+			//PositionOnTrack p = new PositionOnTrack(targets[i]);
 			//System.out.println("Adding "+p.toString()+" with f = 0 to open list.");
 			openList.put(targets[i], 0);
 			openKeys.add(targets[i]);
@@ -82,8 +83,7 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 					//if successor is the goal, we have found a path, but not necessarily the shorest.
 					bestPath = q;
 					bestPathF = successorF;
-					PositionOnTrack p = new PositionOnTrack(q);
-					//System.out.println("We have found a path - "+p.toString()+" with f = "+bestPathF);
+					
 				}
 
 				
@@ -102,8 +102,7 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 					continue;
 				} else {
 					//otherwise, add the node to the open list
-					PositionOnTrack p = new PositionOnTrack(successor);
-					//System.out.println("Adding "+p.toString()+" with f = " +successorF+" to open list.");
+					
 					openList.put(successor, successorF);
 					openKeys.add(successor);
 				}
@@ -116,15 +115,13 @@ public class SimpleAStarPathFinder implements FreerailsSerializable {
 					//if the F value for the best path we have found so far is
 					//less than that of the node with the smallest F value on 
 					//the open list, then the best path so far is the shortest path.
-					
-					PositionOnTrack p = new PositionOnTrack(bestPath);
-					//System.out.println("Best path is  "+p.toString()+" with f = "+bestPathF);
+										
 					return bestPath;
 				}
 			}
 
 			//push q on the closed list
-			PositionOnTrack p = new PositionOnTrack(q);
+			//PositionOnTrack p = new PositionOnTrack(q);
 			//System.out.println("Adding "+p.toString()+" with f = "+f+" to closed list.");
 			closedList.put(q, f);
 

@@ -11,11 +11,11 @@ package jfreerails.move;
 
 import java.awt.Point;
 
+import jfreerails.MapFixtureFactory;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
-import jfreerails.world.track.MapFixtureFactory;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackRule;
 import junit.framework.Test;
@@ -67,12 +67,12 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         //Remove only track piece built.
         
         assertRemoveTrackSuceeds(new Point(0, 5), east);
-        assertEquals(NullTrackPiece.getInstance(), world.getTile(0, 5));
-        assertEquals(NullTrackPiece.getInstance(), world.getTile(1, 5));
+        assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(), world.getTile(0, 5).getTrackConfiguration());
+        assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(), world.getTile(1, 5).getTrackConfiguration());
                      
         //Try to remove non existent track piece
         
-        assertEquals(NullTrackPiece.getInstance(), world.getTile(0, 5)  );
+        assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(), world.getTile(0, 5).getTrackConfiguration()  );
         assertRemoveTrackFails(new Point(0, 5), east);
                 
     }

@@ -13,7 +13,7 @@ import java.io.ObjectStreamException;
  *
  * @author  lindsal
  */
-final public class NullTrackPiece implements jfreerails.world.track.TrackPiece {
+final public class NullTrackPiece implements TrackPiece {
 
     private static final TrackPiece nullTrackPiece=new NullTrackPiece();
 
