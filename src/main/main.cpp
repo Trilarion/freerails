@@ -1,4 +1,9 @@
+/*
+ * $Id$
+ */
+
 #include "game.h"
+#include "i18n.h"
 
 void Splash(MyGameApplication* app) {
   GameWidget splash(app, 100,100,600,400);
@@ -13,6 +18,8 @@ void Splash(MyGameApplication* app) {
 
 int main(int argc, char *argv[])
 {
+  i18n_init();
+
   char versionString[50];
 
   strcpy(versionString,"FreeRails v"GAME_VERSION"");
