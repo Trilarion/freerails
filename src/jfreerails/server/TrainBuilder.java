@@ -2,10 +2,10 @@ package jfreerails.server;
 
 import java.awt.Point;
 
-
-
 import jfreerails.controller.TrainMover;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
+import jfreerails.move.AddTrainMove;
+import jfreerails.move.MoveStatus;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.FreerailsPathIterator;
@@ -17,6 +17,7 @@ import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackRule;
+import jfreerails.world.train.EngineType;
 import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
@@ -37,7 +38,7 @@ public class TrainBuilder {
 		this.gameEngine = gm;
 	}
 
-	public void buildTrain(int engineType, int[]wagons, Point p) {
+	public void buildTrain(int engineTypeNumber, int[]wagons, Point p) {
 		
 		FreerailsTile tile = (FreerailsTile)world.getTile(p.x, p.y); 
 		
@@ -58,17 +59,24 @@ public class TrainBuilder {
 				TrainOrdersModel orders = new TrainOrdersModel(wi.getIndex(), null, false);
 				s.setOrder(i, orders);
 			}									
-
 			
 			CargoBundle cb = new CargoBundleImpl();
 			world.add(KEY.CARGO_BUNDLES, cb);
 			int cargoBundleNumber = world.size(KEY.CARGO_BUNDLES) - 1;
 			
-			TrainModel train = new TrainModel(engineType, wagons, null, s, cargoBundleNumber);
+			TrainModel train = new TrainModel(engineTypeNumber, wagons, null, s, cargoBundleNumber);
 
-			world.add(KEY.TRAINS, train);
+			EngineType engineType = (EngineType)world.get(KEY.ENGINE_TYPES, engineTypeNumber);
+			int trainNumber = world.size(KEY.TRAINS);
+			AddTrainMove move = AddTrainMove.generateMove(trainNumber, train, engineType.getPrice());
 
-			int trainNumber = world.size(KEY.TRAINS) - 1;
+			MoveStatus ms = move.doMove(world);
+			
+			if(!ms.ok){
+				System.out.println("Build train move failed");
+			}
+
+
 			this.trainId = trainNumber;
 
 			TrainMover trainMover =

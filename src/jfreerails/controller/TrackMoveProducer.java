@@ -2,8 +2,9 @@ package jfreerails.controller;
 import java.awt.Point;
 
 import jfreerails.move.ChangeTrackPieceCompositeMove;
-import jfreerails.move.ChangeTrackPieceMove;
+import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
@@ -114,8 +115,6 @@ final public class TrackMoveProducer {
 		return trackBuilderMode;
 	}
 
-	
-
 	public TrackMoveProducer(World world) {
 		if (world == null) {
 			throw new java.lang.NullPointerException(
@@ -123,9 +122,7 @@ final public class TrackMoveProducer {
 		}
 		this.w = world;
 	}
-
 	
-
 	public TrackMoveProducer(World  world, MoveReceiver moveReceiver) {
 		if (null == world||null==moveReceiver) {
 			throw new NullPointerException();
@@ -134,11 +131,12 @@ final public class TrackMoveProducer {
 		this.w = world;		
 		this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
 	}
+	
 	private void upgradeTrack(Point point, TrackRule trackRule) {
 
 		TrackPiece before=(TrackPiece)w.getTile(point.x, point.y);
 		TrackPiece after=trackRule.getTrackPiece(before.getTrackConfiguration());
-		ChangeTrackPieceMove move = new ChangeTrackPieceMove( before, after, point);
+		Move move = UpgradeTrackMove.generateMove( before, after, point);		
 		MoveStatus moveStatus = moveReceiver.processMove(move);
 			TextMessageHandler.sendMessage(moveStatus.message);
 	}

@@ -1,3 +1,11 @@
+21-Jul-2003 23:48:47 Luke
+	o The player now gets charged for:
+		-building stations
+		-building trains
+		-upgrading track
+	o The text for the 'Game controls' dialogue
+	box is now read in from a file rather than
+	hard coded into the java.
 08-Jul-2003 19:55:14 Luke
 	o Added initial balance of 1,000,000.
 	o Added prices to the track types defined in track_tiles.xml

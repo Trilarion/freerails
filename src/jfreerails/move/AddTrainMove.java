@@ -4,18 +4,25 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.accounts.Bill;
+import jfreerails.world.common.Money;
 import jfreerails.world.top.KEY;
 import jfreerails.world.train.TrainModel;
 
 /**
- * This Move adds a train to the train list.
+ * This CompositeMove adds a train to the train list and charges the player for it.
  * @author Luke
  * 
  */
-public class AddTrainMove extends AddItemToListMove {
+public class AddTrainMove extends CompositeMove {
 
-	public AddTrainMove(int i, TrainModel train){		
-		super(KEY.TRAINS, i, train);
+	private AddTrainMove(Move[] moves) {
+		super(moves);		
 	}
 
+	public static AddTrainMove generateMove(int i, TrainModel train, Money price){		
+		Move m = new AddItemToListMove(KEY.TRAINS, i, train);		
+		AddTransactionMove transactionMove = new AddTransactionMove(0 , new Bill(price));
+		return new AddTrainMove(new Move[]{m, transactionMove}); 
+	}		
 }

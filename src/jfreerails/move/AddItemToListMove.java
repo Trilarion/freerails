@@ -28,6 +28,10 @@ public class AddItemToListMove implements Move {
 		this.item = item;
 	}
 
+	public int getIndex() {
+		return index;
+	}
+
 	public MoveStatus tryDoMove(World w) {
 		if (w.size(listKey) != index) {
 			return MoveStatus.moveFailed(
