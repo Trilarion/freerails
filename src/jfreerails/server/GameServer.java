@@ -267,13 +267,14 @@ public class GameServer {
 
     /**
      * starts the server and creates a new ServerGameEngine running initialised
-     * from a new map, accepting connections on the default port.
+     * from a new map.
+     * @param port port number on which to accept incoming connections, or 0 for
+     * no network connections.
      */
     public ServerControlInterface getNewGame(String mapName,
-        FreerailsProgressMonitor pm) {
+        FreerailsProgressMonitor pm, int port) {
         ServerGameEngine gameEngine = new ServerGameEngine(mapName, pm);
-        ServerGameController sgc = new ServerGameController(gameEngine,
-                InetConnection.SERVER_PORT /* TODO */);
+        ServerGameController sgc = new ServerGameController(gameEngine, port);
         gameControllers.add(sgc);
 
         return sgc;
@@ -281,11 +282,13 @@ public class GameServer {
 
     /**
      * Load a saved game
+     * @param port port number on which to accept incoming connections, or 0 for
+     * no network connections.
      */
-    public ServerControlInterface getSavedGame(FreerailsProgressMonitor pm) {
+    public ServerControlInterface getSavedGame(FreerailsProgressMonitor pm,
+        int port) {
         ServerGameEngine gameEngine = ServerGameEngine.loadGame();
-        ServerGameController sgc = new ServerGameController(gameEngine,
-                InetConnection.SERVER_PORT /* TODO */);
+        ServerGameController sgc = new ServerGameController(gameEngine, port);
         gameControllers.add(sgc);
 
         return sgc;
@@ -334,7 +337,7 @@ public class GameServer {
     /**
      * @return a list of possible map names that could be used to start a game
      */
-    public String[] getMapNames() {
+    public static String[] getMapNames() {
         return OldWorldImpl.getMapNames();
     }
 }

@@ -24,10 +24,10 @@ To compile and run the source distribution:
 (1) Extract the source files from the jar
 	jar -xf jFreeRails-XXXXXXX-src.jar
 (2)	To compile, either 
-	(i) go to the directory src, and type: javac jfreerails/RunFreerails.java
+	(i) go to the directory src, and type: javac jfreerails/launcher/Launcher.java
 or	
  	(ii) use the build.xml file and Ant version 1.5.
-(3)	To run, type: java jfreerails/RunFreerails
+(3)	To run, type: java jfreerails/launcher/Launcher
 				
 For more information, see:
 http://sourceforge.net/projects/freerails/
