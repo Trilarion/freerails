@@ -66,7 +66,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
 	}
 
 	public void processMove(Move move) {
-		move.doMove(w);
+		move.doMove(w);		
 	}
     };
     
