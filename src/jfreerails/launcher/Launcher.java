@@ -87,7 +87,7 @@ LauncherInterface {
                     mode = cop.getScreenMode();
                     
                     client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
-                    server = initServer();
+                    initServer();
                     client.connect(server, cop.getPlayerName(), "password");
                     
                     setServerGameModel();
@@ -173,7 +173,7 @@ LauncherInterface {
                 break;
             case LauncherPanel1.MODE_SERVER_ONLY:
                 if(msp.validateInput()){
-                    server = initServer();
+                    initServer();
                     try {
                         setServerGameModel();
                         
@@ -287,9 +287,9 @@ LauncherInterface {
         t.start();
     }
     
-    private FreerailsGameServer initServer() {
+    private void initServer() {
         SavedGamesManager gamesManager = new SavedGamesManagerImpl();
-        FreerailsGameServer server = new FreerailsGameServer(gamesManager);
+        server = new FreerailsGameServer(gamesManager);
         ServerGameModelImpl serverGameModel = new ServerGameModelImpl();
         server.setServerGameModel(serverGameModel);
         
@@ -299,8 +299,7 @@ LauncherInterface {
         ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
         cp.server = server;
         server.addPropertyChangeListener(cp);
-        cp.updateListOfPlayers();
-        return server;
+        cp.updateListOfPlayers();       
     }
     
     /**
@@ -340,7 +339,7 @@ LauncherInterface {
     
     /** Starts a thread listening for new connections.*/
     private void prepare2HostNetworkGame(int port) throws IOException{
-        server = initServer();
+       initServer();
         InetConnectionAccepter accepter = new InetConnectionAccepter(port, server);
         /* Note, the thread's name gets set in the run method so there is no point setting it here.*/
         Thread t = new Thread(accepter);

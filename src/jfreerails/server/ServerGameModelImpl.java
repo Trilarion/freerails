@@ -171,16 +171,16 @@ public class ServerGameModelImpl implements ServerGameModel {
         }
     }
 
-    public void init(MoveReceiver moveExecuter) {
-        this.moveExecuter = moveExecuter;
-        tb = new TrainBuilder(moveExecuter, trainMovers);
-        calcSupplyAtStations = new CalcSupplyAtStations(world, moveExecuter);
+    public void init(MoveReceiver newMoveExecuter) {
+        this.moveExecuter = newMoveExecuter;
+        tb = new TrainBuilder(newMoveExecuter, trainMovers);
+        calcSupplyAtStations = new CalcSupplyAtStations(world, newMoveExecuter);
 
         for (int i = 0; i < serverAutomata.size(); i++) {
-            ((ServerAutomaton)serverAutomata.get(i)).initAutomaton(moveExecuter);
+            ((ServerAutomaton)serverAutomata.get(i)).initAutomaton(newMoveExecuter);
         }
 
-        tb.initAutomaton(moveExecuter);
+        tb.initAutomaton(newMoveExecuter);
         nextModelUpdateDue = System.currentTimeMillis();
     }
 

@@ -188,10 +188,7 @@ public class CalcCargoSupplyRateAtStation {
      * @param station A StationModel object to be processed
      *
      */
-    public StationModel calculations(StationModel station) {
-        int x = station.getStationX();
-        int y = station.getStationY();
-
+    public StationModel calculations(StationModel station) {       
         Vector supply = new Vector();
         int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];
 

@@ -40,15 +40,15 @@ public class SimpleAStarPathFinder implements FreerailsSerializable,
         return path;
     }
 
-    public IntArray findpath(int currentPosition, int[] targets,
-        GraphExplorer explorer) throws PathNotFoundException {
-        return findpath(new int[] {currentPosition}, targets, explorer);
-    }
+//    public IntArray findpath(int currentPosition, int[] targets,
+//        GraphExplorer explorer) throws PathNotFoundException {
+//        return findpath(new int[] {currentPosition}, targets, explorer);
+//    }
 
     public int findstep(int currentPosition, int[] targets,
-        GraphExplorer explorer) {
+        GraphExplorer tempExplorer) {
         try {
-            return findpath(new int[] {currentPosition}, targets, explorer).get(0);
+            return findpath(new int[] {currentPosition}, targets, tempExplorer).get(0);
         } catch (PathNotFoundException e) {
             return PATH_NOT_FOUND;
         }

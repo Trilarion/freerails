@@ -172,10 +172,10 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         }
     }//GEN-LAST:event_formMouseMoved
     
-    public void display(MutableSchedule schedule, int orderNumber){
-        this.schedule = schedule;
+    public void display(MutableSchedule newSchedule, int orderNumber){
+        this.schedule = newSchedule;
         this.selectedOrderNumber = orderNumber;
-        TrainOrdersModel order = schedule.getOrder(selectedOrderNumber);
+        TrainOrdersModel order = newSchedule.getOrder(selectedOrderNumber);
         this.selectedStationID = order.getStationID();
         
         //Set the text on the title JLabel.

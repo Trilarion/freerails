@@ -84,12 +84,12 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         principal = mr.getPrincipal();
     }
     
-    public void displayTrain(int trainNumber){
+    public void displayTrain(int newTrainNumber){
         
-        this.trainNumber = trainNumber;
+        this.trainNumber = newTrainNumber;
         
-        trainViewJPanel1.display(trainNumber);
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
+        trainViewJPanel1.display(newTrainNumber);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, newTrainNumber, principal);
         
         this.bundleID = train.getCargoBundleID();
         
@@ -98,7 +98,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
             //this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
         }
         ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleID(), principal);
-        String s="Train #"+trainNumber+": ";
+        String s="Train #"+newTrainNumber+": ";
         int numberOfTypesInBundle = 0;
         for (int i = 0 ; i < w.size(SKEY.CARGO_TYPES) ; i ++){
             int amount = cb.getAmount(i);

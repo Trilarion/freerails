@@ -539,7 +539,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld w = modelRoot.getWorld();
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainNumber, principal);
-        int scheduleID = train.getScheduleID();
+       // int scheduleID = train.getScheduleID();
+        assert(scheduleID == train.getScheduleID());
         ImmutableSchedule before = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID, principal);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move m = new ChangeTrainScheduleMove(scheduleID, before, after, principal);

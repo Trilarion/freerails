@@ -12,7 +12,7 @@ import junit.framework.TestCase;
  *  @author Luke
  *
  */
-public class AbstractFreerailsServerTestCase extends TestCase {
+public abstract class AbstractFreerailsServerTestCase extends TestCase {
     private InetConnectionAccepter connectionAccepter;
     FreerailsGameServer server;
     static final int port = 6666;

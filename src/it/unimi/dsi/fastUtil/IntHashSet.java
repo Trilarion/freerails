@@ -38,22 +38,22 @@ import java.util.Set;
 public final class IntHashSet extends IntAbstractSet implements Serializable,
     Cloneable, Hash, IntSet {
     /** The array of keys. */
-    private transient int[] key;
+    private transient int[] m_key;
 
     /** The array of occupancy states. */
-    private transient byte[] state;
+    private transient byte[] m_state;
 
     /** The acceptable load factor. */
-    private final float f;
+    private final float m_f;
 
     /** Index into the prime list, giving the current table size. */
-    private int p;
+    private int m_p;
 
     /** Table size. Must be the p-th item of {@link Hash#primes}. */
-    private transient int n;
+    private transient int m_n;
 
     /** Number of entries in the set. */
-    private int count;
+    private int m_count;
 
     /** Creates a new hash set.
      *
@@ -81,11 +81,11 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         }
 
         //System.err.println("Allocation dimension: " + primes[l]);
-        this.f = f;
-        this.n = primes[l];
-        p = l;
-        key = new int[this.n];
-        state = new byte[this.n];
+        this.m_f = f;
+        this.m_n = primes[l];
+        m_p = l;
+        m_key = new int[this.m_n];
+        m_state = new byte[this.m_n];
     }
 
     /** Creates a new hash set with {@link Hash#DEFAULT_LOAD_FACTOR} as load factor.
@@ -168,14 +168,14 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         final int k2i = ((int)(k)) & 0x7FFFFFFF;
 
         // The primary hash, a.k.a. starting point.
-        int h1 = k2i % n;
+        int h1 = k2i % m_n;
         final int s = h1;
 
         // The secondary hash.
-        final int h2 = (k2i % (n - 2)) + 1;
+        final int h2 = (k2i % (m_n - 2)) + 1;
 
         while (state[h1] == OCCUPIED && !((key[h1]) == (k))) {
-            h1 = (h1 + h2) % n; // There's always a non-OCCUPIED entry.
+            h1 = (h1 + h2) % m_n; // There's always a non-OCCUPIED entry.
         }
 
         if (state[h1] == FREE) {
@@ -191,7 +191,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
 
         /** See the comments in the documentation of the interface Hash. */
         while (state[h1] != FREE && !((key[h1]) == (k))) {
-            if ((h1 = (h1 + h2) % n) == s) {
+            if ((h1 = (h1 + h2) % m_n) == s) {
                 return i;
             }
         }
@@ -214,15 +214,15 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         final int k2i = ((int)(k)) & 0x7FFFFFFF;
 
         // The primary hash, a.k.a. starting point.
-        int h1 = k2i % n;
+        int h1 = k2i % m_n;
         final int s = h1;
 
         // The secondary hash.
-        final int h2 = (k2i % (n - 2)) + 1;
+        final int h2 = (k2i % (m_n - 2)) + 1;
 
         /** See the comments in the documentation of the interface Hash. */
         while (state[h1] != FREE && !((key[h1]) == (k))) {
-            if ((h1 = (h1 + h2) % n) == s) {
+            if ((h1 = (h1 + h2) % m_n) == s) {
                 return -1;
             }
         }
@@ -231,9 +231,9 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
     }
 
     public boolean add(final Object ok) {
-        final int[] key = this.key;
+        final int[] key = this.m_key;
         final int k = (((Integer)(ok)).intValue());
-        final byte[] state = this.state;
+        final byte[] state = this.m_state;
 
         final int i = findInsertionPoint(k, key, state);
 
@@ -244,16 +244,16 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         state[i] = OCCUPIED;
         key[i] = k;
 
-        if (++count >= n * f) {
-            rehash(Math.min(p + 16, primes.length - 1)); // Table too filled, let's rehash
+        if (++m_count >= m_n * m_f) {
+            rehash(Math.min(m_p + 16, primes.length - 1)); // Table too filled, let's rehash
         }
 
         return true;
     }
 
     public boolean add(final int k) {
-        final int[] key = this.key;
-        final byte[] state = this.state;
+        final int[] key = this.m_key;
+        final byte[] state = this.m_state;
 
         final int i = findInsertionPoint(k, key, state);
 
@@ -264,17 +264,17 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         state[i] = OCCUPIED;
         key[i] = k;
 
-        if (++count >= n * f) {
-            rehash(Math.min(p + 16, primes.length - 1)); // Table too filled, let's rehash
+        if (++m_count >= m_n * m_f) {
+            rehash(Math.min(m_p + 16, primes.length - 1)); // Table too filled, let's rehash
         }
 
         return true;
     }
 
     public boolean remove(final Object ok) {
-        final byte[] state = this.state;
+        final byte[] state = this.m_state;
 
-        final int i = findKey((((Integer)(ok)).intValue()), key, state);
+        final int i = findKey((((Integer)(ok)).intValue()), m_key, state);
 
         if (i < 0) {
             return false;
@@ -282,33 +282,33 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
 
         state[i] = REMOVED;
 
-        count--;
+        m_count--;
 
         return true;
     }
 
     public void clear() {
-        this.count = 0;
-        Arrays.fill(state, FREE);
+        this.m_count = 0;
+        Arrays.fill(m_state, FREE);
     }
 
     /* We override the method in the type-specific {@link AbstractCollection}
             with a faster version without iterators. */
     public int[] toIntArray(final int[] a) {
-        final int[] key = this.key;
+        final int[] key = this.m_key;
         final int[] result;
-        final byte[] state = this.state;
+        final byte[] state = this.m_state;
         int i;
         int j;
         int pos = 0;
 
-        if (a == null || a.length < count) {
-            result = new int[count];
+        if (a == null || a.length < m_count) {
+            result = new int[m_count];
         } else {
             result = a;
         }
 
-        i = count;
+        i = m_count;
         j = 0;
 
         while (i-- != 0) {
@@ -330,11 +330,11 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         return new IntIterator() {
                 int pos = 0;
                 int last = -1;
-                int c = count;
+                int c = m_count;
 
                 {
-                    final byte[] state = IntHashSet.this.state;
-                    final int n = IntHashSet.this.n;
+                    final byte[] state = IntHashSet.this.m_state;
+                    final int n = IntHashSet.this.m_n;
 
                     if (c != 0) {
                         while (pos < n && state[pos] != OCCUPIED) {
@@ -344,19 +344,19 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
                 }
 
                 public boolean hasNext() {
-                    return c != 0 && pos < n;
+                    return c != 0 && pos < m_n;
                 }
 
                 public int nextInt() {
                     int retVal;
-                    final byte[] state = IntHashSet.this.state;
-                    final int n = IntHashSet.this.n;
+                    final byte[] state = IntHashSet.this.m_state;
+                    final int n = IntHashSet.this.m_n;
 
                     if (!hasNext()) {
                         throw new NoSuchElementException();
                     }
 
-                    retVal = key[last = pos];
+                    retVal = m_key[last = pos];
 
                     if (--c != 0) {
                         do {
@@ -369,14 +369,14 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
 
                 public Object next() {
                     Object retVal;
-                    final byte[] state = IntHashSet.this.state;
-                    final int n = IntHashSet.this.n;
+                    final byte[] state = IntHashSet.this.m_state;
+                    final int n = IntHashSet.this.m_n;
 
                     if (!hasNext()) {
                         throw new NoSuchElementException();
                     }
 
-                    retVal = (new Integer(key[last = pos]));
+                    retVal = (new Integer(m_key[last = pos]));
 
                     if (--c != 0) {
                         do {
@@ -392,9 +392,9 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
                         throw new IllegalStateException();
                     }
 
-                    state[last] = REMOVED;
+                    m_state[last] = REMOVED;
 
-                    count--;
+                    m_count--;
                 }
             };
     }
@@ -409,7 +409,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
      */
     public boolean rehash() {
         try {
-            rehash(p);
+            rehash(m_p);
         } catch (OutOfMemoryError cantDoIt) {
             return false;
         }
@@ -422,7 +422,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
      */
     private void rehash(final int newP) {
         int i = 0;
-        int j = count;
+        int j = m_count;
         int k2i;
         int h1;
         int h2;
@@ -431,9 +431,9 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         int k;
 
         final int newN = primes[newP];
-        final int[] key = this.key;
+        final int[] key = this.m_key;
         final int[] newKey = new int[newN];
-        final byte[] state = this.state;
+        final byte[] state = this.m_state;
         final byte[] newState = new byte[newN];
 
         while (j-- != 0) {
@@ -456,38 +456,38 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
             i++;
         }
 
-        this.n = newN;
-        this.p = newP;
-        this.key = newKey;
-        this.state = newState;
+        this.m_n = newN;
+        this.m_p = newP;
+        this.m_key = newKey;
+        this.m_state = newState;
     }
 
     public int size() {
-        return count;
+        return m_count;
     }
 
     public boolean isEmpty() {
-        return count == 0;
+        return m_count == 0;
     }
 
     public boolean contains(final Object ok) {
-        return findKey((((Integer)(ok)).intValue()), key, state) >= 0;
+        return findKey((((Integer)(ok)).intValue()), m_key, m_state) >= 0;
     }
 
     public boolean contains(final int k) {
-        return findKey(k, key, state) >= 0;
+        return findKey(k, m_key, m_state) >= 0;
     }
 
     public boolean remove(final int k) {
-        final int i = findKey(k, key, state);
+        final int i = findKey(k, m_key, m_state);
 
         if (i < 0) {
             return false;
         }
 
-        state[i] = REMOVED;
+        m_state[i] = REMOVED;
 
-        count--;
+        m_count--;
 
         return true;
     }
@@ -504,8 +504,8 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
             throw new InternalError();
         }
 
-        c.key = (int[])key.clone();
-        c.state = (byte[])state.clone();
+        c.m_key = (int[])m_key.clone();
+        c.m_state = (byte[])m_state.clone();
 
         return c;
     }
@@ -522,14 +522,14 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
     public int hashCode() {
         int h = 0;
         int i = 0;
-        int j = count;
+        int j = m_count;
 
         while (j-- != 0) {
-            while (state[i] != OCCUPIED) {
+            while (m_state[i] != OCCUPIED) {
                 i++;
             }
 
-            h += ((int)(key[i]));
+            h += ((int)(m_key[i]));
             i++;
         }
 
@@ -538,10 +538,10 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
 
     private void writeObject(java.io.ObjectOutputStream s)
         throws IOException {
-        final int[] key = this.key;
-        final byte[] state = this.state;
+        final int[] key = this.m_key;
+        final byte[] state = this.m_state;
         int i = 0;
-        int j = count;
+        int j = m_count;
 
         s.defaultWriteObject();
 
@@ -558,13 +558,13 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
     private void readObject(java.io.ObjectInputStream s)
         throws IOException, ClassNotFoundException {
         s.defaultReadObject();
-        this.n = primes[p];
+        this.m_n = primes[m_p];
 
-        this.key = new int[n];
-        this.state = new byte[n];
+        this.m_key = new int[m_n];
+        this.m_state = new byte[m_n];
 
-        int count = this.count;
-        this.count = 0;
+        int count = this.m_count;
+        this.m_count = 0;
 
         while (count-- != 0) {
             add(s.readInt());
@@ -857,7 +857,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
         int x;
 
         /* Now we torture-test the hash table. This part is implemented only for integers and longs. */
-        int p = m.n;
+        int p = m.m_n;
 
         for (int i = 0; i < p; i++) {
             for (int j = 0; j < 20; j++) {

@@ -70,11 +70,11 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         this.centerTrain = b;
     }
 
-    public void display(int trainNumber) {
+    public void display(int newTrainID) {
         showingOrder = false;
-        this.trainNumber = trainNumber;
+        this.trainNumber = newTrainID;
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, newTrainID, principal);
 
         //Set up the array of images.
         images = new Image[1 + train.getNumberOfWagons()];
@@ -89,17 +89,17 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         resetPreferredSize();
     }
 
-    public void display(int trainNumber, int scheduleOrderNumber) {
+    public void display(int newTrainID, int newScheduleOrderID) {
         showingOrder = true;
-        this.trainNumber = trainNumber;
-        this.scheduleOrderNumber = scheduleOrderNumber;
+        this.trainNumber = newTrainID;
+        this.scheduleOrderNumber = newScheduleOrderID;
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, newTrainID, principal);
         this.scheduleID = train.getScheduleID();
 
         ImmutableSchedule s = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES,
                 scheduleID, principal);
-        TrainOrdersModel order = s.getOrder(scheduleOrderNumber);
+        TrainOrdersModel order = s.getOrder(newScheduleOrderID);
 
         //Set up the array of images.
         if (null != order.consist) {

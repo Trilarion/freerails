@@ -431,9 +431,9 @@ public class FreerailsGameServer implements ServerControlInterface,
                     for (int i = 0; i < messages.length; i++) {
                         if (messages[i] instanceof ServerCommand) {
                             ServerCommand command = (ServerCommand)messages[i];
-                            CommandStatus status = command.execute(this);
+                            CommandStatus cStatus = command.execute(this);
                             logger.fine(command.toString());
-                            connection.writeToClient(status);
+                            connection.writeToClient(cStatus);
                         } else if (messages[i] instanceof CommandStatus) {
                             CommandStatus commandStatus = (CommandStatus)messages[i];
 
@@ -463,10 +463,10 @@ public class FreerailsGameServer implements ServerControlInterface,
                                 move = pm.generateMove(getWorld());
                             }
 
-                            MoveStatus status = move.tryDoMove(this.getWorld(),
+                            MoveStatus mStatus = move.tryDoMove(this.getWorld(),
                                     principal);
 
-                            if (status.isOk()) {
+                            if (mStatus.isOk()) {
                                 move.doMove(getWorld(), principal);
 
                                 /* We don't send the move to the client that submitted it.*/
@@ -474,10 +474,10 @@ public class FreerailsGameServer implements ServerControlInterface,
                             }
 
                             if (isMove) {
-                                connection.writeToClient(status);
+                                connection.writeToClient(mStatus);
                             } else {
                                 connection.writeToClient(PreMoveStatus.fromMoveStatus(
-                                        status));
+                                        mStatus));
                             }
                         } else {
                             logger.fine(messages[i].toString());

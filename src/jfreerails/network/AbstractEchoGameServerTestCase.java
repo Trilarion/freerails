@@ -11,7 +11,7 @@ import junit.framework.TestCase;
  *  @author Luke
  *
  */
-public class AbstractEchoGameServerTestCase extends TestCase {
+public abstract class AbstractEchoGameServerTestCase extends TestCase {
     InetConnectionAccepter server;
     EchoGameServer echoGameServer;
     final String ipAddress = "127.0.0.1";

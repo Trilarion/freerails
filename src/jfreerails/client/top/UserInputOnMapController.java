@@ -70,17 +70,14 @@ public class UserInputOnMapController extends KeyAdapter {
 	}
 
 	private class CursorMouseAdapter extends MouseInputAdapter {
-		private int x;
-
-		private int y;
-
+		
 		private boolean pressedInside = false;
 
 		public void mousePressed(MouseEvent evt) {
 			if (SwingUtilities.isLeftMouseButton(evt)) {
 				ignoreDragging = false;
-				x = evt.getX();
-				y = evt.getY();
+				int x = evt.getX();
+				int y = evt.getY();
 
 				float scale = mapView.getScale();
 				Dimension tileSize = new Dimension((int) scale, (int) scale);
