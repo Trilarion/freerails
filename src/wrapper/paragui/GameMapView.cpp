@@ -1,11 +1,6 @@
 /*
  * $Id$
  *
- * Need's rewrite, cause so we need to much memory!
- * I've choosen a WidgetList cause of the scroll functionality, but we should implement
- * our own Widget with 2 PG_ScrollBar's.
- * This reduce Memory usage (at the moment 53MByte by 100x100 GameWorld)
- *
  */
 
 #include "GameMapView.h"
@@ -19,24 +14,28 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   engine=_engine;
   PG_Point p;
   
+  oldViewPos.x=0;
+  oldViewPos.y=0;
+  
   SetBackgroundBlend(0);
   tilesImage=IMG_Load("data/graphics/tilesets/default/terrain_tiles.png");
   trackImage=IMG_Load("data/graphics/tilesets/default/track_tiles.png");
   
-  imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,engine->getWorldMap()->getWidth()*30,engine->getWorldMap()->getHeight()*30,32,0,0,0,0);
-  for (int y=0;y<engine->getWorldMap()->getHeight();y++)
-  {
-    for (int x=0;x<engine->getWorldMap()->getWidth();x++)
-    {
-      getMapImage(imageSurface,x,y);
-    }
-  }
+  imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,w,h,32,0,0,0,0);
 
   p.x=0;
   p.y=0;
   view=new PG_Image(this, p, imageSurface, false);
+  redrawMap(0,0,w,h);
   verticalScrollBar = new PG_ScrollBar(this,200/*ID*/,PG_Rect(w-15,0,15,h-15),PG_SB_VERTICAL);
   horizontalScrollBar = new PG_ScrollBar(this,201/*ID*/,PG_Rect(0,h-15,w-15,15),PG_SB_HORIZONTAL);
+  
+  verticalScrollBar->SetRange(0,(engine->getWorldMap()->getHeight()*30)-h);
+  verticalScrollBar->SetPageSize(h);
+  verticalScrollBar->SetLineSize(30);
+  horizontalScrollBar->SetRange(0,(engine->getWorldMap()->getWidth()*30)-w);
+  horizontalScrollBar->SetPageSize(w);
+  horizontalScrollBar->SetLineSize(30);
   mouseType=0;
   mouseOldX=0;
   mouseOldY=0;
@@ -44,15 +43,15 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
 GameMapView::~GameMapView() {
 
-//  imageSurface=NULL;
   cerr << "Blob" << endl;
   delete tilesImage;
   delete trackImage;
+  delete imageSurface;
   cerr << "Blub" << endl;
 
 }
 
-void GameMapView::getMapImage(SDL_Surface* surface, int x, int y) {
+void GameMapView::getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y) {
 
   SDL_Rect rectSRC;
   rectSRC.w=30;
@@ -139,8 +138,8 @@ void GameMapView::getMapImage(SDL_Surface* surface, int x, int y) {
     }
   }
   SDL_Rect rectDST;
-  rectDST.x=x*30;
-  rectDST.y=y*30;
+  rectDST.x=x*30+offsetX;
+  rectDST.y=y*30+offsetY;
   rectDST.w=rectSRC.w;
   rectDST.h=rectSRC.h;
   SDL_BlitSurface(tilesImage, &rectSRC, surface, &rectDST);
@@ -221,8 +220,8 @@ void GameMapView::setMouseType(MouseType type) {
 
 void GameMapView::eventMouseLeave() {
 
-  getMapImage(imageSurface,mouseOldX,mouseOldY);
-  Update();
+//  getMapImage(imageSurface,mouseOldX,mouseOldY);
+  view->Update();
 }
 
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
@@ -239,7 +238,7 @@ void GameMapView::regenerateTile(int x, int y) {
 
   for (int i=-1;i<=1;i++) {
     for (int ii=-1;ii<=1;ii++) {
-      getMapImage(imageSurface,mouseOldX+i,mouseOldY+ii);
+//      getMapImage(imageSurface,mouseOldX+i,mouseOldY+ii);
     }
   }
   mouseOldX=x;
@@ -335,4 +334,71 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   }
   Update();
   return true;
+}
+
+bool GameMapView::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
+
+  if (id == 200)
+  {
+    moveYto(data);
+    return true;
+  }
+  if (id == 201)
+  {
+    moveXto(data);
+    return true;
+  }
+  return false;  
+}
+
+bool GameMapView::eventScrollPos(int id, PG_Widget* widget, unsigned long data) {
+
+  if (id == 200)
+  {
+    moveYto(data);
+    return true;
+  }
+  if (id == 201)
+  {
+    moveXto(data);
+    return true;
+  }
+  return false;  
+}
+
+void GameMapView::moveXto(unsigned long pos) {
+
+  redrawMap(pos, oldViewPos.y, Width(), Height());
+  // TODO: Don't need full redraw any time
+  oldViewPos.x = pos;
+
+}
+
+void GameMapView::moveYto(unsigned long pos) {
+
+  redrawMap(oldViewPos.x, pos, Width(), Height());
+  // TODO: Don't need full redraw any time
+  oldViewPos.y = pos;
+
+}
+
+void GameMapView::redrawMap(int x, int y, int w, int h) {
+
+  int countX = (w / 30)+1;
+  int countY = (h / 30)+1;
+  
+  int startXmap = (x / 30);
+  int startYmap = (y / 30);
+  
+  int startXsurface = - (x);
+  int startYsurface = - (y);
+  
+  for (int y1=0;y1<=countY;y1++)
+  {
+    for (int x1=0;x1<=countX;x1++)
+    {
+      getMapImage(imageSurface,startXsurface, startYsurface, x1+startXmap, y1+startYmap);
+    }
+  }
+  view->Update(true);
 }

@@ -15,7 +15,6 @@
 #include <pgrect.h>
 #include <pgimage.h>
 #include <pgscrollbar.h>
-#include <pgwidgetlist.h>
 
 class GameMapView: public PG_ThemeWidget {
 
@@ -40,13 +39,14 @@ class GameMapView: public PG_ThemeWidget {
     PG_ScrollBar* horizontalScrollBar;
     
     SDL_Surface* imageSurface;
-//    PG_WidgetList* WidgetList;
     PG_Image* view;
     int mouseType;
     int mouseOldX;
     int mouseOldY;
     
-    void getMapImage(SDL_Surface* surface,int x, int y);
+    PG_Point oldViewPos;
+    
+    void getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y);
     int getImagePos(int x, int y, MapField::FieldType type);
     int getRiverImagePos(int x, int y);
     int get3DImagePos(int x, int y, MapField::FieldType type);
@@ -57,6 +57,14 @@ class GameMapView: public PG_ThemeWidget {
     void eventMouseLeave();
     bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
     bool eventMouseMotion(const SDL_MouseMotionEvent* motion);
+
+    bool eventScrollPos(int id, PG_Widget* widget,unsigned long data);
+    bool eventScrollTrack(int id, PG_Widget* widget,unsigned long data);
+    
+    void moveXto(unsigned long data);
+    void moveYto(unsigned long data);
+    
+    void redrawMap(int x, int y, int w, int h);
 
 };
 
