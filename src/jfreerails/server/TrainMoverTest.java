@@ -1,7 +1,7 @@
 package jfreerails.server;
 
-import jfreerails.controller.MoveReceiver;
 import jfreerails.move.Move;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;

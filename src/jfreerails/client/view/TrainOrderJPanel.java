@@ -156,7 +156,11 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         
         //Check for 'No change'
         if(null == trainOrders.order.consist){
-            this.noChangeJLabel.setText("No Change");
+            if(trainOrders.order.autoConsist){
+                 this.noChangeJLabel.setText("Select wagons automatically");
+            }else{
+                this.noChangeJLabel.setText("No Change");
+            }
         }else{
             this.noChangeJLabel.setText(null);
         }

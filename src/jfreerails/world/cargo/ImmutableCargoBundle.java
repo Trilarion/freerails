@@ -35,7 +35,19 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 public class ImmutableCargoBundle implements FreerailsSerializable {
     public String toString() {
-        return toCargoBundleImpl().toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append("CargoBundle {\n");
+
+        for (int i = 0; i < m_batches.length; i++) {
+            sb.append(m_amounts[i]);
+            sb.append(" units of cargo type ");
+            sb.append(m_batches[i]);
+            sb.append("\n");
+        }
+
+        sb.append("}");
+
+        return sb.toString();
     }
 
     public boolean equals(Object arg0) {
@@ -134,15 +146,5 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
                     return o;
                 }
             };
-    }
-
-    public MutableCargoBundle toCargoBundleImpl() {
-        MutableCargoBundle cargoBundleImpl = new MutableCargoBundle();
-
-        for (int i = 0; i < m_batches.length; i++) {
-            cargoBundleImpl.addCargo(m_batches[i], m_amounts[i]);
-        }
-
-        return cargoBundleImpl;
     }
 }

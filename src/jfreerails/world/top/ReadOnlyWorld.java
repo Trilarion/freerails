@@ -7,7 +7,6 @@ import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
-import jfreerails.world.track.FreerailsTile;
 
 
 /**
@@ -95,8 +94,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /** Returns the tile at the specified position on the map.
      */
-
-    /*=const*/ FreerailsTile getTile(int x, int y) /*=const*/;
+    FreerailsSerializable getTile(int x, int y) /*=const*/;
 
     boolean boundsContain(int x, int y) /*=const*/;
 

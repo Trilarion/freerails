@@ -88,6 +88,10 @@ public class TrainModel implements FreerailsSerializable {
         return m_scheduleID;
     }
 
+    public int[] getConsist() {
+        return (int[])m_wagonTypes.clone();
+    }
+
     public boolean equals(Object obj) {
         if (obj instanceof TrainModel) {
             TrainModel test = (TrainModel)obj;

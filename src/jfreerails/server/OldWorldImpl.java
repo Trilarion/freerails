@@ -34,14 +34,6 @@ public class OldWorldImpl {
         trackSetFactory.addTrackRules(w);
     }
 
-    /**
-     * TODO This would be better implemented in a config file, or better
-     * still dynamically determined by scanning the directory.
-     */
-    public static String[] getMapNames() {
-        return new String[] {"south_america", "small_south_america"};
-    }
-
     public static World createWorldFromMapFile(String mapName,
         FreerailsProgressMonitor pm) {
         pm.setMessage("Setting up world.");
@@ -53,7 +45,6 @@ public class OldWorldImpl {
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         pm.setValue(++progess);
 
-        //	new jfreerails.TileSetFactoryImpl(tiles_xml_url);
         WorldImpl w = new WorldImpl();
         pm.setValue(++progess);
 
@@ -99,7 +90,7 @@ public class OldWorldImpl {
         w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 
         /* Note, money used to get added to player accounts here, now
-         * it is done when players are added.
+         * it is done when players are added. See AddPlayerMove
          */
         return w;
     }

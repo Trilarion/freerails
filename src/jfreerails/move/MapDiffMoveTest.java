@@ -10,7 +10,7 @@ public class MapDiffMoveTest extends AbstractMoveTestCase {
         World world2 = this.getWorld();
         WorldDifferences worldDiff = new WorldDifferences(world2);
 
-        FreerailsTile tile = world2.getTile(2, 2);
+        FreerailsTile tile = (FreerailsTile)world2.getTile(2, 2);
         assertNotNull(tile);
         assertEquals(tile, worldDiff.getTile(2, 2));
 

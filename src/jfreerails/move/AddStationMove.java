@@ -70,7 +70,8 @@ public class AddStationMove extends CompositeMove {
 
             while (wi.next()) {
                 StationModel station = (StationModel)wi.getElement();
-                FreerailsTile tile = w.getTile(station.x, station.y);
+                FreerailsTile tile = (FreerailsTile)w.getTile(station.x,
+                        station.y);
                 TrackRule otherStationType = tile.getTrackRule();
                 assert otherStationType.isStation();
 

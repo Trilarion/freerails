@@ -1,13 +1,16 @@
 package jfreerails.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import jfreerails.move.ChangeCargoBundleMove;
+import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.Move;
 import jfreerails.move.TransferCargoAtStationMove;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.cargo.ImmutableCargoBundle;
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
@@ -15,7 +18,10 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
+import jfreerails.world.train.ImmutableSchedule;
+import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
+import jfreerails.world.train.TrainOrdersModel;
 import jfreerails.world.train.WagonType;
 
 
@@ -42,6 +48,28 @@ public class DropOffAndPickupCargoMoveGenerator {
     private ArrayList moves;
     private final FreerailsPrincipal principal;
     private boolean waitingForFullLoad;
+    private boolean m_autoConsist;
+    private int[] consist = new int[0];
+
+    private static class WagonLoad implements Comparable {
+        final int quantity;
+        final int cargoType;
+
+        public int compareTo(Object o) {
+            if (o instanceof WagonLoad) {
+                WagonLoad test = (WagonLoad)o;
+
+                return quantity - test.quantity;
+            }
+
+            return 0;
+        }
+
+        WagonLoad(int q, int t) {
+            quantity = q;
+            cargoType = t;
+        }
+    }
 
     /**
      * Contructor.
@@ -50,18 +78,65 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param world The world object
      */
     public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo,
-        ReadOnlyWorld world, FreerailsPrincipal p, boolean waiting) {
+        ReadOnlyWorld world, FreerailsPrincipal p, boolean waiting,
+        boolean autoConsist) {
         principal = p;
         trainId = trainNo;
         stationId = stationNo;
         w = world;
+        m_autoConsist = autoConsist;
         this.waitingForFullLoad = waiting;
 
         train = (TrainModel)w.get(KEY.TRAINS, trainId, principal);
-
+        consist = train.getConsist();
         getBundles();
 
-        processTrainBundle(); //ie. unload train / dropoff cargo
+        processTrainBundle(); //ie. unload train / dropoff cargo         
+
+        if (autoConsist) {
+            ArrayList wagonsAvailable = new ArrayList();
+
+            TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
+                    principal);
+            Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
+                    train.getScheduleID(), principal);
+            TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
+
+            int nextStationId = order.m_station;
+
+            StationModel stationModel = (StationModel)w.get(KEY.STATIONS,
+                    nextStationId, principal);
+            DemandAtStation demand = stationModel.getDemand();
+
+            for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
+                //If this cargo is demanded at the next scheduled station.
+                if (demand.isCargoDemanded(i)) {
+                    int amount = stationAfter.getAmount(i);
+
+                    while (amount > 0) {
+                        int amount2remove = Math.min(amount,
+                                WagonType.UNITS_OF_CARGO_PER_WAGON);
+                        amount -= amount2remove;
+
+                        //Don't bother with less than half a wagon load.
+                        if (amount2remove * 2 > WagonType.UNITS_OF_CARGO_PER_WAGON) {
+                            wagonsAvailable.add(new WagonLoad(amount2remove, i));
+                        }
+                    }
+                }
+            }
+
+            Collections.sort(wagonsAvailable);
+
+            int numWagons2add = Math.min(wagonsAvailable.size(), 3);
+            consist = new int[numWagons2add];
+
+            for (int i = 0; i < numWagons2add; i++) {
+                WagonLoad wagonload = (WagonLoad)wagonsAvailable.get(i);
+                consist[i] = wagonload.cargoType;
+            }
+        }
+
         processStationBundle(); //ie. load train / pickup cargo
     }
 
@@ -78,8 +153,16 @@ public class DropOffAndPickupCargoMoveGenerator {
         moves.add(TransferCargoAtStationMove.CHANGE_ON_TRAIN_INDEX,
             changeOnTrain);
 
+        if (m_autoConsist) {
+            int engine = train.getEngineType();
+            Move m = ChangeTrainMove.generateMove(this.trainId, train, engine,
+                    consist, principal);
+            moves.add(m);
+        }
+
         TransferCargoAtStationMove move = new TransferCargoAtStationMove(moves,
                 waitingForFullLoad);
+
         assert move.getChangeAtStation() == changeAtStation;
         assert move.getChangeOnTrain() == changeOnTrain;
 
@@ -87,26 +170,31 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     private void getBundles() {
-        trainBundleId = ((TrainModel)w.get(KEY.TRAINS, trainId, principal)).getCargoBundleNumber();
-        trainBefore = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                trainBundleId, principal)).toCargoBundleImpl();
-        trainAfter = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                trainBundleId, principal)).toCargoBundleImpl();
-        stationBundleId = ((StationModel)w.get(KEY.STATIONS, stationId,
-                principal)).getCargoBundleNumber();
-        stationAfter = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                stationBundleId, principal)).toCargoBundleImpl();
-        stationBefore = ((ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                stationBundleId, principal)).toCargoBundleImpl();
+        TrainModel trainModel = ((TrainModel)w.get(KEY.TRAINS, trainId,
+                principal));
+        trainBundleId = trainModel.getCargoBundleNumber();
+        trainBefore = getCopyOfBundle(trainBundleId);
+        trainAfter = getCopyOfBundle(trainBundleId);
+
+        StationModel stationModel = ((StationModel)w.get(KEY.STATIONS,
+                stationId, principal));
+        stationBundleId = stationModel.getCargoBundleNumber();
+        stationAfter = getCopyOfBundle(stationBundleId);
+        stationBefore = getCopyOfBundle(stationBundleId);
+    }
+
+    private MutableCargoBundle getCopyOfBundle(int id) {
+        FreerailsSerializable fs = w.get(KEY.CARGO_BUNDLES, id, principal);
+        ImmutableCargoBundle ibundle = (ImmutableCargoBundle)fs;
+
+        return new MutableCargoBundle(ibundle);
     }
 
     private void processTrainBundle() {
         Iterator batches = trainAfter.toImmutableCargoBundle()
                                      .cargoBatchIterator();
-
         StationModel station = (StationModel)w.get(KEY.STATIONS, stationId,
                 principal);
-
         MutableCargoBundle cargoDroppedOff = new MutableCargoBundle();
 
         //Unload the cargo that the station demands
@@ -163,31 +251,6 @@ public class DropOffAndPickupCargoMoveGenerator {
                     stationAfter.getAmount(cargoType));
             transferCargo(cargoType, amount2transfer, stationAfter, trainAfter);
         }
-
-        /*
-        //loop through each wagon, see what can be put in them
-        for (int j=0; j<train.getNumberOfWagons(); j++) {
-                CargoType wagonCargoType = (CargoType)w.get(SKEY.CARGO_TYPES,train.getWagon(j));
-
-
-                //for each cargo type, compare wagon category with cargo waiting at station
-                for (int k=0; k<w.size(SKEY.CARGO_TYPES); k++) {
-                        CargoType cargoType = (CargoType)w.get(SKEY.CARGO_TYPES,k);
-
-                        //compare cargo types wagon can carry, to cargo waiting type
-                        if (wagonCargoType.getCategory().equals(cargoType.getCategory())) {
-
-                                //check if there is any cargo of this type waiting
-                                if (stationBefore.getAmount(k) > 0) {
-
-                                        //transfer cargo to the current wagon
-                                        transferCargo(k);
-                                }
-                        }
-                }
-
-        }
-        */
     }
 
     private int[] getSpaceAvailableOnTrain() {
@@ -195,8 +258,8 @@ public class DropOffAndPickupCargoMoveGenerator {
         int[] spaceAvailable = new int[w.size(SKEY.CARGO_TYPES)];
 
         //First calculate the train's total capacity.
-        for (int j = 0; j < train.getNumberOfWagons(); j++) {
-            int cargoType = train.getWagon(j);
+        for (int j = 0; j < consist.length; j++) {
+            int cargoType = consist[j];
 
             spaceAvailable[cargoType] += WagonType.UNITS_OF_CARGO_PER_WAGON;
         }

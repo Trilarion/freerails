@@ -2,6 +2,7 @@ package jfreerails.world.terrain;
 
 import java.io.ObjectStreamException;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.Money;
 
 
 /** Defines the methods to access the properties of a type of terrains.
@@ -13,6 +14,8 @@ public interface TerrainType extends FreerailsSerializable {
     String getTerrainTypeName();
 
     String getTerrainCategory();
+
+    Money getBuildCost();
 
     int getRightOfWay();
 
@@ -61,6 +64,10 @@ public interface TerrainType extends FreerailsSerializable {
 
             private Object readResolve() throws ObjectStreamException {
                 return NULL;
+            }
+
+            public Money getBuildCost() {
+                return null;
             }
         });
 }

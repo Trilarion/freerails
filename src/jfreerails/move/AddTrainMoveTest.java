@@ -20,7 +20,7 @@ public class AddTrainMoveTest extends AbstractMoveTestCase {
     public void testMove() {
         TrainModel train = new TrainModel(0, new int[] {0, 1, 0}, 0);
         TrainOrdersModel orders = new TrainOrdersModel(0, new int[] {1, 2, 3},
-                true);
+                true, false);
         ImmutableSchedule schedule = new ImmutableSchedule(new TrainOrdersModel[] {
                     orders, orders, orders
                 }, 1, true);

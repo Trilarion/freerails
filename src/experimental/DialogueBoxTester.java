@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import jfreerails.client.common.JFrameMinimumSizeEnforcer;
-import jfreerails.client.common.ModelRoot;
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.ViewListsImpl;
@@ -15,11 +15,11 @@ import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.HtmlJPanel;
 import jfreerails.client.view.ShowJavaProperties;
 import jfreerails.client.view.TrainDialogueJPanel;
-import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.ListMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.network.MoveChainFork;
+import jfreerails.network.UntriedMoveReceiver;
 import jfreerails.server.NewTileSetFactoryImpl;
 import jfreerails.server.common.TileSetFactory;
 import jfreerails.util.FreerailsProgressMonitor;
@@ -55,7 +55,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     
     private ViewLists vl;
     
-    private ModelRoot modelRoot;
+    private ModelRootImpl modelRoot;
     
     private ActionListener closeCurrentDialogue = new ActionListener() {
         public void actionPerformed(ActionEvent arg0) {
@@ -63,25 +63,14 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         }
     };
     
-    private UntriedMoveReceiver dummyReceiver = new UntriedMoveReceiver() {
-        public MoveStatus tryDoMove(Move move) {
-            return MoveStatus.MOVE_OK;
-        }
-        
-        public void undoLastMove() {
-        }
-        
-        public void processMove(Move move) {
-            move.doMove(w, Player.AUTHORITATIVE);
-        }
-    };
+    private UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(w);
     
     private TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
     
     /** Creates new form TestGlassPanelMethod */
     private DialogueBoxTester() {
         
-        modelRoot = new ModelRoot();    
+        modelRoot = new ModelRootImpl();    
         modelRoot.setMoveFork(new MoveChainFork());
         modelRoot.setMoveReceiver(this.dummyReceiver);
         w = new WorldImpl(200, 200);
@@ -140,11 +129,11 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         
         MutableSchedule schedule = new MutableSchedule();
         TrainOrdersModel order =
-        new TrainOrdersModel(0, new int[] { 0, 0, 0 }, false);
+        new TrainOrdersModel(0, new int[] { 0, 0, 0 }, false, false);
         TrainOrdersModel order2 =
-        new TrainOrdersModel(1, new int[] { 1, 2, 0, 0,0 }, true);
+        new TrainOrdersModel(1, new int[] { 1, 2, 0, 0,0 }, true, false);
         TrainOrdersModel order3 =
-        new TrainOrdersModel(2, null, true);
+        new TrainOrdersModel(2, null, true, false);
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
         
@@ -190,6 +179,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         showTrainList = new javax.swing.JMenuItem();
         showCargoWaitingAndDemand = new javax.swing.JMenuItem();
         showJavaSystemProperties = new javax.swing.JMenuItem();
+        showNetworthGraph = new javax.swing.JMenuItem();
 
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -299,11 +289,24 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         show.add(showJavaSystemProperties);
 
+        showNetworthGraph.setText("Show networth graph");
+        showNetworthGraph.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showNetworthGraphActionPerformed(evt);
+            }
+        });
+
+        show.add(showNetworthGraph);
+
         jMenuBar1.add(show);
 
         setJMenuBar(jMenuBar1);
 
     }//GEN-END:initComponents
+
+    private void showNetworthGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showNetworthGraphActionPerformed
+        dialogueBoxController.showNetworthGraph();      
+    }//GEN-LAST:event_showNetworthGraphActionPerformed
     
     private void showJavaSystemPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showJavaSystemPropertiesActionPerformed
         // Add your handling code here:
@@ -411,6 +414,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private javax.swing.JMenuItem showCargoWaitingAndDemand;
     private javax.swing.JMenuItem showControls;
     private javax.swing.JMenuItem showJavaSystemProperties;
+    private javax.swing.JMenuItem showNetworthGraph;
     private javax.swing.JMenuItem showStationInfo;
     private javax.swing.JMenuItem showTerrainInfo;
     private javax.swing.JMenuItem showTrainList;

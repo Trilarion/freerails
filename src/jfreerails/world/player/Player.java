@@ -166,7 +166,7 @@ public class Player implements FreerailsSerializable {
         this.name = name;
         this.publicKey = publicKey;
         privateData = new PrivateData();
-        this.principal = new PlayerPrincipal(id);
+        this.principal = new PlayerPrincipal(id, name);
     }
 
     public boolean equals(Object o) {

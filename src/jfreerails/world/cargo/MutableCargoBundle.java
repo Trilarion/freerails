@@ -12,8 +12,6 @@ import java.util.Iterator;
 /**This CargoBundle implementation uses a <code>java.util.HashMap</code> to
  * map quantities to cargo batches.
  *
- * TODO make an immutable version!!
- *
  * @author Luke
  *
  */
@@ -26,22 +24,22 @@ public class MutableCargoBundle {
     }
 
     public String toString() {
-        String s = "CargoBundle {\n";
-        Iterator it = this.cargoBatchIterator();
-
-        while (it.hasNext()) {
-            CargoBatch cb = (CargoBatch)it.next();
-            s += this.getAmount(cb) + " units of cargo type " +
-            cb.getCargoType() + "\n";
-        }
-
-        s += "}";
-
-        return s;
+        return toImmutableCargoBundle().toString();
     }
 
     public MutableCargoBundle() {
         hashMap = new HashMap();
+    }
+
+    public MutableCargoBundle(ImmutableCargoBundle imcb) {
+        this();
+
+        Iterator it = imcb.cargoBatchIterator();
+
+        while (it.hasNext()) {
+            CargoBatch cb = (CargoBatch)it.next();
+            addCargo(cb, imcb.getAmount(cb));
+        }
     }
 
     private MutableCargoBundle(HashMap hm) {

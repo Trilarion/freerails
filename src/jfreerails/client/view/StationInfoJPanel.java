@@ -193,7 +193,7 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             StationModel station =
             (StationModel) w.get(KEY.STATIONS, stationNumber, modelRoot.getPrincipal());
-            FreerailsTile tile = w.getTile(station.x, station.y);
+            FreerailsTile tile = (FreerailsTile) w.getTile(station.x, station.y);
             String stationTypeName = tile.getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleNumber();
             ImmutableCargoBundle cargoWaiting =

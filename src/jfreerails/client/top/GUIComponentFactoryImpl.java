@@ -23,6 +23,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import jfreerails.client.common.ActionAdapter;
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
@@ -35,13 +36,13 @@ import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MainMapAndOverviewMapMediator;
 import jfreerails.client.view.MapViewJComponentConcrete;
 import jfreerails.client.view.OverviewMapJComponent;
+import jfreerails.client.view.RHSJTabPane;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationPlacementCursor;
-import jfreerails.client.view.RHSJTabPane;
-import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ProductionAtEngineShop;
@@ -66,7 +67,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     /** Whether to show certain 'cheat' menus used for testing.*/
     private static final boolean CHEAT = (System.getProperty("cheat") != null);
-    private final ModelRoot modelRoot;
+    private final ModelRootImpl modelRoot;
     private final ActionRoot actionRoot;
     private ServerControlModel sc;
     private final DateJLabel datejLabel;
@@ -96,8 +97,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private JMenuItem trainOrdersJMenuItem;
     private JMenuItem trainListJMenuItem;
     private JMenuItem stationInfoJMenuItem;
+    private JMenuItem networthGraphJMenuItem;
+    private JMenuItem leaderBoardJMenuItem;
 
-    public GUIComponentFactoryImpl(ModelRoot mr, ActionRoot ar) {
+    public GUIComponentFactoryImpl(ModelRootImpl mr, ActionRoot ar) {
         modelRoot = mr;
         actionRoot = ar;
         userInputOnMapController = new UserInputOnMapController(modelRoot);
@@ -205,6 +208,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
          */
         countStations();
         countTrains();
+
+        String name = modelRoot.getPrincipal().getName();
+        String serverDetails = (String)modelRoot.getProperty(ModelRoot.SERVER);
+        clientJFrame.setTitle(name + " - " + serverDetails + " - JFreerails");
     }
 
     public JPanel createOverviewMap() {
@@ -244,6 +251,23 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 }
             });
 
+        networthGraphJMenuItem = new JMenuItem("Networth Graph");
+        networthGraphJMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dialogueBoxController.showNetworthGraph();
+                }
+            });
+
+        leaderBoardJMenuItem = new JMenuItem("Leaderboard");
+        leaderBoardJMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dialogueBoxController.showLeaderBoard();
+                }
+            });
+
+        displayMenu.add(leaderBoardJMenuItem);
+
+        displayMenu.add(networthGraphJMenuItem);
         displayMenu.add(trainOrdersJMenuItem);
         displayMenu.add(stationInfoJMenuItem);
         displayMenu.add(trainListJMenuItem);

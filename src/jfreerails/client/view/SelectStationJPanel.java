@@ -237,7 +237,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         g2.setColor(Color.BLACK);
         for(int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, world.getMapWidth()); x++){
             for(int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, world.getMapHeight()); y++){
-                FreerailsTile tt = world.getTile(x, y);
+                FreerailsTile tt = (FreerailsTile) world.getTile(x, y);
                 if (!tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;
@@ -303,7 +303,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     public MutableSchedule generateNewSchedule(){
         TrainOrdersModel oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);
-        newOrders = new TrainOrdersModel(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull());
+        newOrders = new TrainOrdersModel(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
         schedule.setOrder(selectedOrderNumber, newOrders);
         return schedule;
     }

@@ -3,13 +3,13 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.Vector;
 import java.util.logging.Logger;
-import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.controller.pathfinder.SimpleAStarPathFinder;
 import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
+import jfreerails.network.MoveReceiver;
 import jfreerails.util.FreerailsIntIterator;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
@@ -186,7 +186,8 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         timeLoadingFinished = new GameTime(currentTime.getTime() + ticks);
     }
 
-    private void loadAndUnloadCargo(int stationId, boolean waiting) {
+    private void loadAndUnloadCargo(int stationId, boolean waiting,
+        boolean autoConsist) {
         /* We only want to generate a move if the station's cargo bundle is
          * not the last one we looked at.
          */
@@ -199,7 +200,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         if (currentCargoBundleAtStation != this.lastCargoBundleAtStation) {
             //train is at a station so do the cargo processing
             DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId,
-                    stationId, world, principal, waiting);
+                    stationId, world, principal, waiting, autoConsist);
             Move m = transfer.generateMove();
             moveReceiver.processMove(m);
             this.lastCargoBundleAtStation = currentCargoBundleAtStation;
@@ -233,10 +234,20 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         PositionOnTrack tempP = new PositionOnTrack(trackExplorer.getPosition());
         Point targetPoint = getTarget();
 
+        boolean autoConsist = false;
+
         if (tempP.getX() == targetPoint.x && tempP.getY() == targetPoint.y) {
             //One of the things updateTarget() does is change the train
             // consist, so
             //it should be called before loadAndUnloadCargo(stationNumber)
+            TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
+                    principal);
+            Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
+                    train.getScheduleID(), principal);
+            TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
+
+            autoConsist = order.autoConsist;
+
             updateTarget();
             targetPoint = getTarget();
         }
@@ -244,7 +255,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         int stationNumber = getStationNumber(tempP.getX(), tempP.getY());
 
         if (NOT_AT_STATION != stationNumber) {
-            loadAndUnloadCargo(stationNumber, false);
+            loadAndUnloadCargo(stationNumber, false, autoConsist);
         }
 
         int currentPosition = tempP.getOpposite().toInt();
@@ -264,7 +275,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
         FlatTrackExplorer tempExplorer = new FlatTrackExplorer(trackExplorer.getWorld(),
                 tempP);
-        int next = pathFinder.findpath(currentPosition, targets, tempExplorer);
+        int next = pathFinder.findstep(currentPosition, targets, tempExplorer);
 
         if (next == SimpleAStarPathFinder.PATH_NOT_FOUND) {
             trackExplorer.nextEdge();
@@ -313,7 +324,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
                 return false;
             } else {
                 /*Add any cargo that is waiting.*/
-                loadAndUnloadCargo(schedule.getStationToGoto(), true);
+                loadAndUnloadCargo(schedule.getStationToGoto(), true, false);
 
                 if (isTrainFull()) {
                     updateSchedule();

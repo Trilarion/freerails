@@ -15,6 +15,7 @@ import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
@@ -76,7 +77,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         int owner = getOwner(principle, w);
 
         if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = w.getTile(p.x, p.y).getTrackPiece();
+            oldTrackPiece = ((FreerailsTile)w.getTile(p.x, p.y)).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(),
@@ -104,7 +105,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         TrackPiece newTrackPiece;
 
         if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = w.getTile(p.x, p.y);
+            oldTrackPiece = (TrackPiece)w.getTile(p.x, p.y);
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(),
@@ -170,9 +171,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world,
                 principal);
         aggregator.setCategory(Transaction.TRACK);
-        aggregator.setStartYear(0);
 
-        return aggregator.calulateQuantity() > 0;
+        return aggregator.calculateQuantity() > 0;
     }
 
     private static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {

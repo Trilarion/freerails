@@ -5,12 +5,13 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-import jfreerails.client.common.ModelRoot;
+
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.controller.ServerControlInterface;
 import jfreerails.controller.StationBuilder;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -28,7 +29,7 @@ public class ActionRoot {
     private StationBuildModel stationBuildModel;
     private DialogueBoxController dialogueBoxController = null;
     private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
-    private final ServerControlModel serverControls = new ServerControlModel(null, null);
+    private final ServerControlModel serverControls = new ServerControlModel( null);
 
     private class BuildTrainDialogAction extends AbstractAction {
         public BuildTrainDialogAction() {
@@ -47,7 +48,7 @@ public class ActionRoot {
     /**
      *  Call this method when a new game is started or a game is loaded.
      */
-    public void setup(ModelRoot modelRoot, ViewLists vl) {
+    public void setup(ModelRootImpl modelRoot, ViewLists vl) {
     	serverControls.setModelRoot(modelRoot);
         if (!modelRoot.hasBeenSetup)
             throw new IllegalStateException();
@@ -94,7 +95,5 @@ public class ActionRoot {
         return serverControls;
     }
 
-    public void setServerControls(ServerControlInterface controls) {
-        serverControls.setServerControlInterface(controls);
-    }
+    
 }

@@ -6,9 +6,9 @@ package jfreerails.server;
 
 import java.util.Iterator;
 import jfreerails.controller.FreerailsServerSerializable;
-import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.cargo.ImmutableCargoBundle;
@@ -48,8 +48,8 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                 SupplyAtStation supply = station.getSupply();
                 ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
                         station.getCargoBundleNumber(), principal);
-                MutableCargoBundle before = cargoBundle.toCargoBundleImpl();
-                MutableCargoBundle after = cargoBundle.toCargoBundleImpl();
+                MutableCargoBundle before = new MutableCargoBundle(cargoBundle);
+                MutableCargoBundle after = new MutableCargoBundle(cargoBundle);
                 int stationNumber = nonNullStations.getIndex();
 
                 /* Get the iterator from a copy to avoid a

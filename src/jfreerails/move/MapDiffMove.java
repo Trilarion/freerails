@@ -30,10 +30,10 @@ public class MapDiffMove implements Move, MapUpdateMove {
 
             points.add(p);
 
-            FreerailsTile oldTile = world.getTile(p.x, p.y);
+            FreerailsTile oldTile = (FreerailsTile)world.getTile(p.x, p.y);
             before.add(oldTile);
 
-            FreerailsTile newTile = diffs.getTile(p.x, p.y);
+            FreerailsTile newTile = (FreerailsTile)diffs.getTile(p.x, p.y);
             after.add(newTile);
         }
 
@@ -48,7 +48,7 @@ public class MapDiffMove implements Move, MapUpdateMove {
     private MoveStatus tryMove(World w, ArrayList arrayList) {
         for (int i = 0; i < points.size(); i++) {
             Point point = (Point)points.get(i);
-            FreerailsTile actual = w.getTile(point.x, point.y);
+            FreerailsTile actual = (FreerailsTile)w.getTile(point.x, point.y);
 
             FreerailsTile expected = (FreerailsTile)arrayList.get(i);
 

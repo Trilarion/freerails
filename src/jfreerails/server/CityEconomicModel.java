@@ -95,7 +95,7 @@ class CityEconomicModel {
         /* Count tile types. */
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                FreerailsTile tile = w.getTile(x, y);
+                FreerailsTile tile = (FreerailsTile)w.getTile(x, y);
 
                 /* Count the number of stations at the city. */
                 if (tile.getTrackRule().isStation()) {
@@ -148,7 +148,7 @@ class CityEconomicModel {
 
         int x = tile.p.x;
         int y = tile.p.y;
-        FreerailsTile fTile = w.getTile(x, y);
+        FreerailsTile fTile = (FreerailsTile)w.getTile(x, y);
         fTile = FreerailsTile.getInstance(type, fTile.getTrackPiece());
         w.setTile(x, y, fTile);
     }

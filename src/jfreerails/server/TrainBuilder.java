@@ -3,7 +3,6 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.controller.pathfinder.RandomPathFinder;
 import jfreerails.move.AddCargoBundleMove;
@@ -13,6 +12,7 @@ import jfreerails.move.CompositeMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
 import jfreerails.move.RemoveTrainMove;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.Money;
@@ -156,7 +156,7 @@ public class TrainBuilder implements ServerAutomaton {
     public TrainMover buildTrain(int engineTypeId, int[] wagons, Point p,
         FreerailsPrincipal principal, ReadOnlyWorld world) {
         /* Check that the specified position is on the track.*/
-        FreerailsTile tile = world.getTile(p.x, p.y);
+        FreerailsTile tile = (FreerailsTile)world.getTile(p.x, p.y);
         TrackRule tr = tile.getTrackRule();
 
         if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != tr.getRuleNumber()) {
@@ -171,7 +171,12 @@ public class TrainBuilder implements ServerAutomaton {
                     cargoBundleId);
 
             /* Create the move that sets up the train's schedule.*/
-            ImmutableSchedule is = generateInitialSchedule(principal, world);
+
+            //If there are no wagons, setup an automatic schedule.
+            boolean autoSchedule = 0 == wagons.length;
+
+            ImmutableSchedule is = generateInitialSchedule(principal, world,
+                    autoSchedule);
             int trainId = world.size(KEY.TRAINS, principal);
             Move setupScheduleMove = TrainPathFinder.initTarget(train, trainId,
                     is, principal);
@@ -214,7 +219,7 @@ public class TrainBuilder implements ServerAutomaton {
     }
 
     private ImmutableSchedule generateInitialSchedule(
-        FreerailsPrincipal principal, ReadOnlyWorld world) {
+        FreerailsPrincipal principal, ReadOnlyWorld world, boolean autoSchedule) {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, world, principal);
 
         MutableSchedule s = new MutableSchedule();
@@ -222,7 +227,7 @@ public class TrainBuilder implements ServerAutomaton {
         //Add upto 4 stations to the schedule.
         while (wi.next() && s.getNumOrders() < 5) {
             TrainOrdersModel orders = new TrainOrdersModel(wi.getIndex(), null,
-                    false);
+                    false, autoSchedule);
             s.addOrder(orders);
         }
 

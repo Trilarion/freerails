@@ -59,8 +59,8 @@ public class OneTileMoveVectorTest extends TestCase {
     }
 
     public void testGetNewTemplateNumber() {
-        assertEquals(OneTileMoveVector.NORTH.getNewTemplateNumber(), 1);
-        assertEquals(OneTileMoveVector.NORTH_EAST.getNewTemplateNumber(), 2);
-        assertEquals(OneTileMoveVector.EAST.getNewTemplateNumber(), 4);
+        assertEquals(OneTileMoveVector.NORTH.get8bitTemplate(), 1);
+        assertEquals(OneTileMoveVector.NORTH_EAST.get8bitTemplate(), 2);
+        assertEquals(OneTileMoveVector.EAST.get8bitTemplate(), 4);
     }
 }

@@ -288,7 +288,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     private void stopAtStation() {
         DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(0,
-                0, w, MapFixtureFactory.TEST_PRINCIPAL, false);
+                0, w, MapFixtureFactory.TEST_PRINCIPAL, false, false);
         Move m = moveGenerator.generateMove();
         MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
         assertEquals(MoveStatus.MOVE_OK, ms);
@@ -317,7 +317,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private void setCargoAtStation(CargoBatch cb, int amount) {
         StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        MutableCargoBundle bundle = getCargoAtStation().toCargoBundleImpl();
+        MutableCargoBundle bundle = new MutableCargoBundle(getCargoAtStation());
         bundle.setAmount(cb, amount);
         w.set(KEY.CARGO_BUNDLES, station.getCargoBundleNumber(),
             bundle.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
@@ -326,7 +326,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private void setCargoOnTrain(CargoBatch cb, int amount) {
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        MutableCargoBundle bundle = getCargoOnTrain().toCargoBundleImpl();
+        MutableCargoBundle bundle = new MutableCargoBundle(getCargoOnTrain());
         bundle.setAmount(cb, amount);
         w.set(KEY.CARGO_BUNDLES, train.getCargoBundleNumber(),
             bundle.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);

@@ -40,7 +40,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         OneTileMoveVector[] vectors = OneTileMoveVector.getList();
 
         for (int i = 0; i < vectors.length; i++) {
-            if (this.contains(vectors[i].getTemplate())) {
+            if (this.contains(vectors[i].get9bitTemplate())) {
                 tempLength += vectors[i].getLength();
             }
         }
@@ -70,11 +70,8 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return (TrackConfiguration)(flatTrackConfigurations.get(i));
     }
 
-    /**
-     * Not implemented.
-     */
     public static TrackConfiguration getFlatInstance(OneTileMoveVector v) {
-        return null;
+        return getFlatInstance(v.get9bitTemplate());
     }
 
     /**
@@ -88,7 +85,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         int oldTemplate =c.getTrackGraphicsNumber();
         int newTemplate = oldTemplate | (1 << (3 * y + x));
         */
-        int newTemplate = c.getTemplate() | v.getTemplate();
+        int newTemplate = c.get9bitTemplate() | v.get9bitTemplate();
 
         return getFlatInstance(newTemplate);
     }
@@ -105,13 +102,13 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         int oldTemplate =c.getTrackGraphicsNumber();
          int newTemplate = oldTemplate ^ (1 << (3 * y + x));
          */
-        int newTemplate = c.getTemplate() & (~v.getTemplate());
+        int newTemplate = c.get9bitTemplate() & (~v.get9bitTemplate());
 
         return getFlatInstance(newTemplate);
     }
 
     public boolean contains(FlatTrackTemplate ftt) {
-        int trackTemplate = ftt.getTemplate();
+        int trackTemplate = ftt.get9bitTemplate();
 
         return contains(trackTemplate);
     }
@@ -127,7 +124,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     /**
      * @return an int representing this track configuration.
      */
-    public int getTemplate() {
+    public int get9bitTemplate() {
         return m_configuration;
     }
 
@@ -139,13 +136,13 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return m_configuration;
     }
 
-    public int getNewTemplateNumber() {
+    public int get8bitTemplate() {
         int newTemplate = 0;
         OneTileMoveVector[] vectors = OneTileMoveVector.getList();
 
         for (int i = 0; i < vectors.length; i++) {
             if (this.contains(vectors[i])) {
-                newTemplate = newTemplate | vectors[i].getNewTemplateNumber();
+                newTemplate = newTemplate | vectors[i].get8bitTemplate();
             }
         }
 
@@ -167,5 +164,30 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 
         //End of hack
         return (int)Integer.parseInt(templateString, 2);
+    }
+
+    /** Returns a String representing this configuration, for example "north, south".
+     */
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        int matches = 0;
+
+        if (contains(TrackConfiguration.getFlatInstance("000010000"))) {
+            sb.append("tile center");
+        } else {
+            sb.append("no tile center");
+        }
+
+        for (int i = 0; i < 8; i++) {
+            OneTileMoveVector v = OneTileMoveVector.getInstance(i);
+
+            if (contains(v)) {
+                sb.append(",");
+                sb.append(v);
+                matches++;
+            }
+        }
+
+        return sb.toString().trim();
     }
 }
