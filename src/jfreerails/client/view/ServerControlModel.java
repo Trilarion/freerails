@@ -122,10 +122,9 @@ public class ServerControlModel {
         private Action pauseAction = new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P);
 */
 
-    // Should be sorted
-
+    // Should be sorted   
     private ActionAdapter targetTicksPerSecondActions = new ActionAdapter(new Action[] {
-                new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),      // by MystiqueAgent: added keyEvent parameter
+                new SetTargetTicksPerSecondAction( "Pause" , 0, KeyEvent.VK_P),      // by MystiqueAgent: added keyEvent parameter
                 new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),      // by MystiqueAgent: added keyEvent parameter
                 new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),  // by MystiqueAgent: added keyEvent parameter
                 new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3),      // by MystiqueAgent: added keyEvent parameter
@@ -146,6 +145,7 @@ public class ServerControlModel {
         pauseAction.setEnabled(enabled);
 */
         Enumeration e = targetTicksPerSecondActions.getActions();
+        targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
 
         while (e.hasMoreElements()) {
             ((Action)e.nextElement()).setEnabled(enabled);

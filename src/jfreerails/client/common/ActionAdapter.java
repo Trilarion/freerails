@@ -1,5 +1,6 @@
 package jfreerails.client.common;
 
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
@@ -24,6 +25,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
      */
     private Action[] actions;
     private boolean initialised = false;
+    private boolean performActionOnSetSelectedItem = true;
 
     /**
      * The set of MappedButtonModels corresponding to the actions
@@ -111,15 +113,16 @@ public class ActionAdapter extends DefaultComboBoxModel {
             }
         }
 
-        /* commented to remove double action on item change
-                for (int i = 0; i < actions.length; i++) {
-                    if (actions[i].getValue(Action.NAME).equals(item)) {
-                        actions[i].actionPerformed(new ActionEvent(this,
-                                ActionEvent.ACTION_PERFORMED,
-                                (String)actions[i].getValue(Action.ACTION_COMMAND_KEY)));
-                    }
+        if (performActionOnSetSelectedItem) {
+            for (int i = 0; i < actions.length; i++) {
+                if (actions[i].getValue(Action.NAME).equals(item)) {
+                    actions[i].actionPerformed(new ActionEvent(this,
+                            ActionEvent.ACTION_PERFORMED,
+                            (String)actions[i].getValue(
+                                Action.ACTION_COMMAND_KEY)));
                 }
-        */
+            }
+        }
     }
 
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel
@@ -148,5 +151,14 @@ public class ActionAdapter extends DefaultComboBoxModel {
         public void propertyChange(PropertyChangeEvent e) {
             setEnabled(((Action)e.getSource()).isEnabled());
         }
+    }
+
+    public boolean isPerformActionOnSetSelectedItem() {
+        return performActionOnSetSelectedItem;
+    }
+
+    public void setPerformActionOnSetSelectedItem(
+        boolean performActionOnSetSelectedItem) {
+        this.performActionOnSetSelectedItem = performActionOnSetSelectedItem;
     }
 }
