@@ -23,7 +23,7 @@ public:
     virtual void open(char* c, int i);
     virtual void close();
 
-    virtual short getConnectionId(){};
+    virtual short getConnectionId(){ return 0; };
     
     State getState() {return state;};
     Error getError() {return error;};

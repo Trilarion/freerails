@@ -49,6 +49,9 @@ private:
     PG_ThemeWidget* splash;
     GameNetView* netView;
     GamePanel* panel;
+    PG_SpriteBase terrainbase;
+    PG_SpriteBase trackbase;
+    MapHelper* mapHelper;
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include "GuiEngine.h"
 #include "MapField.h"
 #include "Base2DMapView.h"
+#include "TerrainInfoPane.h"
 
 //#include <paragui_types.h>
 #include <pgimage.h>
@@ -21,6 +22,7 @@
 #include <pgspritebase.h>
 #include <pgspriteobject.h>
 
+class TerrainInfoPane;
 
 class GameMapView: public PG_Widget, Base2DMapView {
 
@@ -36,10 +38,12 @@ class GameMapView: public PG_Widget, Base2DMapView {
     void setMouseType(MouseType type);
     void setStationType(Station::Size type);
     void setGuiEngine(GuiEngine* _guiEngine);
+    void setInfoPane(TerrainInfoPane* _infoPane);
 
   private:
     MouseType mouseType;
     Station::Size stationType;
+    TerrainInfoPane* infoPane;
     void eventMouseLeave();
     void eventMouseEnter();
     bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);

@@ -5,8 +5,9 @@
 #include "GameDataSelectDialog.h"
 
 GameDataSelectDialog::GameDataSelectDialog(GameMainWindow* parent, int x, int y, int w, int h, char* titel, int _type):
-PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel) {
+PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel, PG_Window::MODAL) {
 
+  SetTransparency(90);
   type = _type;
   name=new PG_DropDown(this, PG_Rect(10,30,240,20));
   name->SetIndent(5);
@@ -30,6 +31,8 @@ PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel) {
 
   ok=new PG_Button(this, PG_Rect(10,260,180,20), "OK", PG_Button::OK);
   back=new PG_Button(this, PG_Rect(210,260,180,20), "Cancel", PG_Button::CANCEL);
+  ok->sigClick.connect(slot(*this, &GameDataSelectDialog::handleButtonClick));
+  back->sigClick.connect(slot(*this, &GameDataSelectDialog::handleButtonClick));
   buttonflag=1; /* Single Player */
   
   if (type>1)
@@ -37,6 +40,8 @@ PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel) {
     buttonflag=2; /* MULTIPLAYER SERVER */
     radio_server = new PG_RadioButton(this, PG_Rect(10, 60, 240, 20), "Be a server");
     radio_client = new PG_RadioButton(this, PG_Rect(10, 90, 240, 20), "Be a client", radio_server);
+//    radio_server->sigClick.connect(slot(*this, &GameDataSelectDialog::handleRadioClick));
+//  radio_client->sigClick.connect(slot(*this, &GameDataSelectDialog::handleRadioClick));
     ip_address = new PG_MaskEdit(this, PG_Rect(10,120,240,20));
     ip_address->SetMask("########################");
     port = new PG_MaskEdit(this, PG_Rect(260,120,100,20));
@@ -67,18 +72,29 @@ int GameDataSelectDialog::show() {
   return buttonflag;
 }
 
+bool GameDataSelectDialog::handleButtonClick(PG_Button* button) {
+
+  //Set Buttonflag to the ButtonID of pressed button
+  if (button==back)
+  {
+    buttonflag=button->GetID();
+  }
+  QuitModal();
+  return true;
+}
+
+bool GameDataSelectDialog::handleRadioClick(PG_RadioButton* button) {
+
+  return true;
+}
+
 //Event?
-bool GameDataSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
+/*bool GameDataSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
   //Button clicked?
-  if(widget==back) {
-    //Set Buttonflag to ButtonID
-    buttonflag=id;
-//    SendMessage(this, MSG_MODALQUIT, 0, 0);
-    return true;
   } else if (widget==ok){
     std::cerr << getName() << std::endl;
     //TODO test if name != "" ist
-    /*    buttonflag=id; */
+    /*    buttonflag=id; 
 //    SendMessage(this, MSG_MODALQUIT, 0, 0);
     return true;
   } else if (widget==radio_server){
@@ -87,7 +103,7 @@ bool GameDataSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
       height->Show();
       ip_address->Hide();
       port->Hide();
-      buttonflag=2; /* MULTIPLAYER SERVER */
+      buttonflag=2; /* MULTIPLAYER SERVER 
     }
     return true;
   } else if (widget==radio_client){
@@ -97,9 +113,9 @@ bool GameDataSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
 	height->Hide();
 	ip_address->Show();
 	port->Show();
-	buttonflag=3; /* MULTIPLAYER CLIENT */
+	buttonflag=3; /* MULTIPLAYER CLIENT 
       }
     return true;
   }
   return false;
-}
+}*/

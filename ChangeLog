@@ -1,3 +1,7 @@
+Thu Feb 13 05:15:00 2004  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Update to ParaGUI 1.1.9 Part 2
+  UI:	   Adding TerrainInfoPane and MapHelper to store images
+
 Thu Jan 20 01:15:00 2004  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Update to ParaGUI 1.1.8
   UI:	   Using some new images

@@ -134,9 +134,12 @@ int GameApplication::run() {
     {
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 
-      pGlobalApp->SetFrameHandler(new GameFrameHandler(pGlobalApp, guiEngine->getWorldMap()));
+      terrainbase.LoadDirectory("data/graphics/terrain");
+      trackbase.LoadDirectory("data/graphics/track");
+      mapHelper = new MapHelper(&terrainbase, &trackbase, guiEngine->getWorldMap());
+      pGlobalApp->SetFrameHandler(new GameFrameHandler(pGlobalApp, mapHelper, guiEngine->getWorldMap()));
       mw.getWidget()->setGuiEngine(guiEngine);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine);
+      panel=new GamePanel(&mw, 635, 0, 165, 600, guiEngine, mapHelper);
       pGlobalApp->SetNetHandler(new GameNetHandler(NULL, guiEngine, panel, NULL));
       pGlobalApp->SetFPSLabel(new PG_Label(panel, PG_Rect(0,0,120,20), "FPS"));
       panel->Show();
@@ -146,6 +149,7 @@ int GameApplication::run() {
       guiEngine->changeGameState(GuiEngine::Stopping);
       
       SDL_WaitThread(thread2, NULL);
+      if (mapHelper!=NULL) { delete mapHelper; mapHelper=NULL; }
       if (guiEngine!=NULL) { delete guiEngine; guiEngine=NULL; }
       if (netView!=NULL) { delete netView; netView=NULL; }
       if (panel!=NULL) { delete panel; panel=NULL; }

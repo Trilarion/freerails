@@ -33,10 +33,12 @@ class GameDataSelectDialog: public PG_Window {
     int getWidth() {return width->GetValue();};
     int getHeight() {return height->GetValue();};
 
+  protected:
+    bool handleButtonClick(PG_Button* button);
+    bool handleRadioClick(PG_RadioButton* button);
 
   private:
-
-    bool eventButtonClick(int id, PG_Widget* widget);
+//    bool eventButtonClick(int id, PG_Widget* widget);
     int buttonflag;
     int type;
     PG_DropDown* name;

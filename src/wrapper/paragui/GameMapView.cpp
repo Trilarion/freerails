@@ -41,6 +41,10 @@ void GameMapView::setStationType(Station::Size type) {
   stationType=type;
 }
 
+void GameMapView::setInfoPane(TerrainInfoPane* _infoPane) {
+  infoPane = _infoPane;
+}
+
 void GameMapView::eventMouseLeave() {
   std::cerr << "leave map" << std::endl;
   PG_Widget::eventMouseLeave();
@@ -77,6 +81,7 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
     break;
     }
     drawSelected(mapx, mapy);
+    infoPane->setSelected(mapx, mapy);
     return true;
   }
   return false;

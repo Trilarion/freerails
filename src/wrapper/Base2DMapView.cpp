@@ -17,6 +17,7 @@ Base2DMapView::~Base2DMapView() {
 
 }
 
+// Old dead code for the tiles on one map.
 int Base2DMapView::getPixmapPos(int x, int y, MapField::FieldType type)
 {
   MapField* field;
@@ -87,30 +88,6 @@ int Base2DMapView::get3DPixmapPos(int x, int y, MapField::FieldType type)
 
 void Base2DMapView::screen2map(int screenX, int screenY, unsigned int* mapX, unsigned int* mapY, int* dir)
 {
-    /*
-  int helpx, helpy;
-  helpx=screenX % 30;// for calculate the direction on the tile
-  helpy=screenY % 30;
-    */
   *mapX = screenX / 30;  // realMapPosX
   *mapY = screenY / 30;  // realMapPosY
-  /*
-  // now calculate direction
-  if (helpx<10) {
-    if (helpy<10) { *dir=8; }
-    else if (helpy<20) { *dir=7; }
-    else *dir=6;
-  } else
-  if (helpx<20) {
-    if (helpy<10) { *dir=1; }
-    else if (helpy<20) { *dir=1; }
-    else *dir=5;
-  } else
-  {
-    if (helpy<10) { *dir=2; }
-    else if (helpy<20) { *dir=3; }
-    else *dir=4;
-  };
-  */
-  // End of to be replace
 }
