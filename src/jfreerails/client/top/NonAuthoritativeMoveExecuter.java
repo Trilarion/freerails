@@ -11,9 +11,10 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.RejectedMove;
 import jfreerails.move.UndoneMove;
-import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.top.World;
 import jfreerails.util.GameModel;
+import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.player.Player;
+import jfreerails.world.top.World;
 
 
 /**
@@ -107,18 +108,11 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                 // rejected
                 Move attempted = rm.getAttemptedMove();
 
-                /* TODO
-                 * ms = attempted.tryUndoMove(world, attempted.getPrincipal());
-                 */
-                ms = attempted.tryUndoMove(world);
+                ms = attempted.tryUndoMove(world, Player.AUTHORITATIVE);
 
                 if (ms == MoveStatus.MOVE_OK) {
                     System.err.println("undoing " + attempted.toString());
-
-                    /* TODO
-                     * attempted.undoMove(world, attempted.getPrincipal());
-                     */
-                    attempted.undoMove(world);
+                    attempted.undoMove(world, Player.AUTHORITATIVE);
                     rejectedMoves.remove(i);
                     forwardMove(new UndoneMove(attempted), ms);
                     n++;
@@ -165,7 +159,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                                 /* TODO
                                  * if (am.doMove(world, am.getPrincipal()) !=
                                  */
-                                if (am.doMove(world) != MoveStatus.MOVE_OK) {
+                                if (am.doMove(world, Player.AUTHORITATIVE) != MoveStatus.MOVE_OK) {
                                     break;
                                 }
 
@@ -188,7 +182,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                 /* TODO
                  * ms = move.doMove(world, move.getPrincipal());
                  */
-                ms = move.doMove(world);
+                ms = move.doMove(world, Player.AUTHORITATIVE);
 
                 if (ms != MoveStatus.MOVE_OK) {
                     if (debug) {
@@ -226,10 +220,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
             if (moveReceiver != null) {
                 MoveStatus ms;
 
-                /* TODO
-                 * ms = move.doMove(world, move.getPrincipal());
-                 */
-                ms = move.doMove(world);
+                ms = move.doMove(world, Player.AUTHORITATIVE);
 
                 if (ms == MoveStatus.MOVE_OK) {
                     pendingMoves.add(move);

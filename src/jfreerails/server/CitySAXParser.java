@@ -8,14 +8,12 @@
 package jfreerails.server;
 
 import java.util.Vector;
+import jfreerails.world.terrain.CityModel;
+import jfreerails.world.top.SKEY;
+import jfreerails.world.top.World;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import jfreerails.world.terrain.CityModel;
-import jfreerails.world.top.World;
-import jfreerails.world.top.KEY;
-import jfreerails.world.player.Player;
 
 
 public class CitySAXParser extends DefaultHandler {
@@ -30,9 +28,9 @@ public class CitySAXParser extends DefaultHandler {
     public void endDocument() throws SAXException {
         for (int i = 0; i < cities.size(); i++) {
             CityModel tempCity = (CityModel)cities.elementAt(i);
-            world.add(KEY.CITIES,
+            world.add(SKEY.CITIES,
                 new CityModel(tempCity.getCityName(), tempCity.getCityX(),
-                    tempCity.getCityY()), Player.AUTHORITATIVE);
+                    tempCity.getCityY()));
         }
     }
 

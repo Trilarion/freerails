@@ -7,8 +7,9 @@
 package jfreerails.move;
 
 import java.awt.Point;
-import jfreerails.world.top.KEY;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.MapFixtureFactory;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
@@ -54,43 +55,43 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
-        TrackRule r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
+        TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(getWorld());
+        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
 
         //As above but with newTrackPiece and oldTrackPiece in the wrong order, should fail.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(getWorld());
+        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece, should fail.
         move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(getWorld());
+        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try buildingtrack outside the map.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
                 new Point(100, 0));
-        moveStatus = move.tryDoMove(getWorld());
+        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try building an illegal track configuration.
         newConfig = TrackConfiguration.getFlatInstance("000011111");
 
-        r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
+        r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(getWorld());
+        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(false, moveStatus.isOk());
     }
 
@@ -119,7 +120,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
-        TrackRule r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
+        TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
 
         assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
@@ -132,7 +133,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.doMove(getWorld());
+        moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
         assertEquals(newTrackPiece.getTrackConfiguration(),
@@ -165,7 +166,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
-        TrackRule r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
+        TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
 
         Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,

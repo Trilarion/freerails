@@ -12,7 +12,9 @@ import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.TrackRule;
 
@@ -36,7 +38,7 @@ public class TrackMaintenanceMoveGenerator {
         long amount = 0;
 
         for (int i = 0; i < track.length; i++) {
-            TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
+            TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
             if (track[i] > 0) {
@@ -52,8 +54,9 @@ public class TrackMaintenanceMoveGenerator {
     }
 
     public static int[] calulateNumberOfEachTrackType(World w) {
-        int[] unitsOfTrack = new int[w.size(KEY.TRACK_RULES)];
-        BankAccount account = (BankAccount)w.get(KEY.BANK_ACCOUNTS, 0);
+        int[] unitsOfTrack = new int[w.size(SKEY.TRACK_RULES)];
+        BankAccount account = (BankAccount)w.get(KEY.BANK_ACCOUNTS, 0,
+                Player.TEST_PRINCIPAL);
 
         for (int i = 0; i < account.size(); i++) {
             Transaction t = account.getTransaction(i);

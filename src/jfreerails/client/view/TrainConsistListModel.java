@@ -6,9 +6,14 @@
 
 package jfreerails.client.view;
 
-import javax.swing.*;
-import jfreerails.world.top.*;
-import jfreerails.world.train.*;
+import javax.swing.AbstractListModel;
+
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
+import jfreerails.world.top.TypeID;
+import jfreerails.world.train.TrainModel;
 
 /**
  *
@@ -18,12 +23,15 @@ public class TrainConsistListModel extends AbstractListModel {
     
     private ReadOnlyWorld w;
     
-    private int trainNumber;      
+    private int trainNumber;    
+    
+    private FreerailsPrincipal principal;
     
     /** Creates a new instance of TrainConsistListModel */
-    public TrainConsistListModel(ReadOnlyWorld w, int trainNumber) {
+    public TrainConsistListModel(ReadOnlyWorld w, int trainNumber, FreerailsPrincipal p) {
         this.w = w;
         this.trainNumber = trainNumber;
+        principal = p;
     }
     
     
@@ -33,9 +41,9 @@ public class TrainConsistListModel extends AbstractListModel {
     public Object getElementAt(int index) {
          TrainModel train = getTrain();
          if(0 == index){
-            return new TypeID(train.getEngineType(), KEY.ENGINE_TYPES);
+            return new TypeID(train.getEngineType(), SKEY.ENGINE_TYPES);
          }else{
-            return new TypeID(train.getWagon(index-1), KEY.WAGON_TYPES);
+            return new TypeID(train.getWagon(index-1), SKEY.WAGON_TYPES);
          }
     }
     
@@ -45,7 +53,7 @@ public class TrainConsistListModel extends AbstractListModel {
     }
     
     private TrainModel getTrain(){
-        return (TrainModel)w.get(KEY.TRAINS, trainNumber);
+        return (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -24,9 +25,9 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     protected void setUp() {
         super.setUp();
-        getWorld().add(KEY.STATIONS, new StationModel());
-        getWorld().add(KEY.STATIONS, new StationModel());
-        getWorld().add(KEY.STATIONS, new StationModel());
+        getWorld().add(KEY.STATIONS, new StationModel(), Player.TEST_PRINCIPAL);
+        getWorld().add(KEY.STATIONS, new StationModel(), Player.TEST_PRINCIPAL);
+        getWorld().add(KEY.STATIONS, new StationModel(), Player.TEST_PRINCIPAL);
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         wetf.addTypesToWorld(getWorld());

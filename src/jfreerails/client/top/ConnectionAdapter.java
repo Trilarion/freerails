@@ -20,7 +20,6 @@ import jfreerails.move.TimeTickMove;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.player.Player;
 import jfreerails.world.player.PlayerPrincipal;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
 
@@ -119,14 +118,14 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
         /* TODO
          * return move.tryDoMove(world, move.getPrincipal());
          */
-        return move.tryDoMove(world);
+        return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 
     public synchronized MoveStatus tryUndoMove(Move move) {
         /* TODO
          * return move.tryUndoMove(world, move.getPrincipal());
          */
-        return move.tryUndoMove(world);
+        return move.tryUndoMove(world, Player.AUTHORITATIVE);
     }
 
     private void closeConnection() {
@@ -222,11 +221,11 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
              * the model (this may not occur until we process the move creating
              * the player from the server
              */
-            while (!world.boundsContain(KEY.PLAYERS,
-                        ((PlayerPrincipal)modelRoot.getPlayerPrincipal()).getId(),
-                        modelRoot.getPlayerPrincipal())) {
+            int playerID = ((PlayerPrincipal)modelRoot.getPlayerPrincipal()).getId();
+
+            while (world.getNumberOfPlayers() < playerID) {
                 System.out.println("Size of players list is " +
-                    world.size(KEY.PLAYERS));
+                    world.getNumberOfPlayers());
                 moveExecuter.update();
             }
 

@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
 
@@ -37,7 +37,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
     public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
         int typeNumber) throws IOException {
-        TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, typeNumber);
+        TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, typeNumber);
         this.typeName = trackRule.getTypeName();
 
         for (int i = 0; i < 512; i++) {

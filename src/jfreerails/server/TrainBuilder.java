@@ -11,9 +11,11 @@ import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
@@ -37,10 +39,12 @@ import jfreerails.world.train.TrainPathIterator;
 public class TrainBuilder {
     private World world;
     private MoveReceiver moveReceiver;
+    private FreerailsPrincipal principal;
 
-    public TrainBuilder(World w, MoveReceiver mr) {
+    public TrainBuilder(World w, MoveReceiver mr, FreerailsPrincipal principal) {
         this.world = w;
         moveReceiver = mr;
+        this.principal = principal;
 
         if (null == mr) {
             throw new NullPointerException();
@@ -62,7 +66,8 @@ public class TrainBuilder {
 
         if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != tr.getRuleNumber()) {
             //Add train to train list.
-            WorldIterator wi = new NonNullElements(KEY.STATIONS, world);
+            WorldIterator wi = new NonNullElements(KEY.STATIONS, world,
+                    principal);
 
             MutableSchedule s = new MutableSchedule();
 
@@ -76,17 +81,17 @@ public class TrainBuilder {
             s.setOrderToGoto(0);
 
             CargoBundle cb = new CargoBundleImpl();
-            int cargoBundleNumber = world.size(KEY.CARGO_BUNDLES);
+            int cargoBundleNumber = world.size(KEY.CARGO_BUNDLES, principal);
             Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
                     cb);
-            int scheduleNumber = world.size(KEY.TRAIN_SCHEDULES);
+            int scheduleNumber = world.size(KEY.TRAIN_SCHEDULES, principal);
 
             TrainModel train = new TrainModel(engineTypeNumber, wagons, null,
                     scheduleNumber, cargoBundleNumber);
 
-            EngineType engineType = (EngineType)world.get(KEY.ENGINE_TYPES,
+            EngineType engineType = (EngineType)world.get(SKEY.ENGINE_TYPES,
                     engineTypeNumber);
-            int trainNumber = world.size(KEY.TRAINS);
+            int trainNumber = world.size(KEY.TRAINS, principal);
 
             ImmutableSchedule is = s.toImmutableSchedule();
 

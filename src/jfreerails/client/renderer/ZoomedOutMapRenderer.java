@@ -8,8 +8,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 
@@ -51,7 +51,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
             int typeNumber = tt.getTerrainTypeNumber();
-            TerrainType terrainType = (TerrainType)w.get(KEY.TERRAIN_TYPES,
+            TerrainType terrainType = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
                     typeNumber);
             rgb = terrainType.getRGB();
             assert (mapImage != null);

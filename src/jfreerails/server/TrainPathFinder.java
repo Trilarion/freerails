@@ -10,8 +10,8 @@ import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.util.FreerailsIntIterator;
-import jfreerails.server.ServerAutomaton;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -63,7 +63,8 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         StationModel station = null;
         int stationNumber = schedule.getStationToGoto();
-        station = (StationModel)world.get(KEY.STATIONS, stationNumber);
+        station = (StationModel)world.get(KEY.STATIONS, stationNumber,
+                Player.TEST_PRINCIPAL);
 
         int[] wagonsToAdd = schedule.getWagonsToAdd();
 
@@ -89,10 +90,11 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
      * station.
      */
     private void updateTarget() {
-        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId);
+        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
+                Player.TEST_PRINCIPAL);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule currentSchedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
-                scheduleID);
+                scheduleID, Player.TEST_PRINCIPAL);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         StationModel station = null;
         scheduledStop();
@@ -105,7 +107,8 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         moveReceiver.processMove(move);
 
         int stationNumber = schedule.getStationToGoto();
-        station = (StationModel)world.get(KEY.STATIONS, stationNumber);
+        station = (StationModel)world.get(KEY.STATIONS, stationNumber,
+                Player.TEST_PRINCIPAL);
 
         if (null == station) {
             System.err.println("null == station, train " + trainId +
@@ -121,10 +124,11 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
      * towards.
      */
     private Point getTarget() {
-        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId);
+        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
+                Player.TEST_PRINCIPAL);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
-                scheduleID);
+                scheduleID, Player.TEST_PRINCIPAL);
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {
@@ -133,18 +137,20 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         }
 
         StationModel station = (StationModel)world.get(KEY.STATIONS,
-                stationNumber);
+                stationNumber, Player.TEST_PRINCIPAL);
 
         return new Point(station.x, station.y);
     }
 
     private void scheduledStop() {
-        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId);
+        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
+                Player.TEST_PRINCIPAL);
         Schedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
-                train.getScheduleID());
+                train.getScheduleID(), Player.TEST_PRINCIPAL);
         StationModel station = null;
         int stationNumber = schedule.getStationToGoto();
-        station = (StationModel)world.get(KEY.STATIONS, stationNumber);
+        station = (StationModel)world.get(KEY.STATIONS, stationNumber,
+                Player.TEST_PRINCIPAL);
 
         int[] wagonsToAdd = schedule.getWagonsToAdd();
 
@@ -159,7 +165,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     private void loadAndUnloadCargo(int stationId) {
         //train is at a station so do the cargo processing
         DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId,
-                stationId, world);
+                stationId, world, Player.TEST_PRINCIPAL);
 
         Move m = transfer.generateMove();
         moveReceiver.processMove(m);
@@ -171,8 +177,10 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
      */
     public int getStationNumber(int x, int y) {
         //loop thru the station list to check if train is at the same Point as a station
-        for (int i = 0; i < world.size(KEY.STATIONS); i++) {
-            StationModel tempPoint = (StationModel)world.get(KEY.STATIONS, i);
+        for (int i = 0; i < world.size(KEY.STATIONS, Player.TEST_PRINCIPAL);
+                i++) {
+            StationModel tempPoint = (StationModel)world.get(KEY.STATIONS, i,
+                    Player.TEST_PRINCIPAL);
 
             if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
                 return i; //train is at the station at location tempPoint

@@ -10,6 +10,7 @@ import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
@@ -26,7 +27,8 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
 
     protected void setUp() throws Exception {
         w = new WorldImpl(20, 20);
-        w.add(KEY.BANK_ACCOUNTS, new BankAccount());
+        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.add(KEY.BANK_ACCOUNTS, new BankAccount(), Player.TEST_PRINCIPAL);
         MapFixtureFactory.generateTrackRuleList(w);
     }
 
@@ -67,7 +69,8 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
 
     /** Utility method to add the specifed number of units of the specified track type. */
     private BankAccount addTrack(int trackType, int quantity) {
-        BankAccount account = (BankAccount)w.get(KEY.BANK_ACCOUNTS, 0);
+        BankAccount account = (BankAccount)w.get(KEY.BANK_ACCOUNTS, 0,
+                Player.TEST_PRINCIPAL);
         AddItemTransaction t = new AddItemTransaction(AddItemTransaction.TRACK,
                 trackType, quantity, new Money(trackType));
         account.addTransaction(t);

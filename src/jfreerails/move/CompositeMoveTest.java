@@ -4,6 +4,7 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.player.Player;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 
@@ -29,10 +30,10 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
         assertEqualsSurvivesSerialisation(compositeMove);
         assertTryMoveIsOk(compositeMove);
         assertEquals("The stations should not have been add yet.", 0,
-            getWorld().size(KEY.STATIONS));
+            getWorld().size(KEY.STATIONS, Player.TEST_PRINCIPAL));
         assertDoMoveIsOk(compositeMove);
         assertEquals("The stations should have been add now.", 4,
-            getWorld().size(KEY.STATIONS));
+            getWorld().size(KEY.STATIONS, Player.TEST_PRINCIPAL));
         assertTryUndoMoveIsOk(compositeMove);
         assertUndoMoveIsOk(compositeMove);
 

@@ -1,9 +1,8 @@
 package jfreerails.move;
 
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.player.PlayerPrincipal;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 
@@ -11,54 +10,42 @@ import jfreerails.world.top.World;
 /**
  * Adds a player to the world
  */
-public class AddPlayerMove extends CompositeMove implements ServerMove {
-    private static class AddPlayerToListMove extends AddItemToListMove
-        implements ServerMove {
-        AddPlayerToListMove(KEY key, int i, Player p) {
-            super(key, i, p);
-        }
+public class AddPlayerMove implements Move, ServerMove {
+    private final Player player2add;
 
-        public MoveStatus tryDoMove(World w) {
-            MoveStatus ms;
-
-            if ((ms = super.tryDoMove(w)) != MoveStatus.MOVE_OK) {
-                assert false;
-
-                return ms;
-            }
-
-            /* verify that name is free */
-            NonNullElements i = new NonNullElements(KEY.PLAYERS, w,
-                    Player.NOBODY);
-
-            while (i.next()) {
-                Player pl = (Player)i.getElement();
-
-                if (pl.getName().equals(((Player)item).getName())) {
-                    return MoveStatus.moveFailed("Name already in use!");
-                }
-            }
-
-            return MoveStatus.MOVE_OK;
-        }
+    private AddPlayerMove(Player p) {
+        this.player2add = p;
     }
 
-    private static Move[] generateMove(ReadOnlyWorld w, Player player) {
+    public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
         /**
          * create a new player with a corresponding Principal
          */
-        Player newPlayer = new Player(player.getName(), player.getPublicKey(),
-                w.size(KEY.PLAYERS, Player.AUTHORITATIVE));
-        PlayerPrincipal tmpPlayer = new PlayerPrincipal(w.size(KEY.PLAYERS,
-                    Player.AUTHORITATIVE));
+        Player player2add = new Player(player.getName(), player.getPublicKey(),
+                w.getNumberOfPlayers());
+        PlayerPrincipal tmpPlayer = new PlayerPrincipal(w.getNumberOfPlayers());
 
-        return new Move[] {
-            new AddPlayerToListMove(KEY.PLAYERS,
-                w.size(KEY.PLAYERS, Player.AUTHORITATIVE), newPlayer)
-        };
+        return new AddPlayerMove(player2add);
     }
 
-    public AddPlayerMove(ReadOnlyWorld w, Player player) {
-        super(generateMove(w, player));
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
+        // TODO Auto-generated method stub
+        return MoveStatus.MOVE_OK;
+    }
+
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
+        // TODO Auto-generated method stub
+        return MoveStatus.MOVE_OK;
+    }
+
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        w.addPlayer(this.player2add, Player.AUTHORITATIVE);
+
+        return MoveStatus.MOVE_OK;
+    }
+
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        // TODO Auto-generated method stub
+        return MoveStatus.MOVE_OK;
     }
 }

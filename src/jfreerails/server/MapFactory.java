@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.HashMap;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.KEY;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.FreerailsTile;
 
@@ -42,8 +42,8 @@ public class MapFactory {
 
         HashMap rgb2TerrainType = new HashMap();
 
-        for (int i = 0; i < w.size(KEY.TERRAIN_TYPES); i++) {
-            TerrainType tilemodel = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
+        for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
+            TerrainType tilemodel = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
             rgb2TerrainType.put(new Integer(tilemodel.getRGB()), new Integer(i));
         }
 

@@ -10,6 +10,7 @@ import jfreerails.world.accounts.Receipt;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
@@ -103,7 +104,8 @@ public class OldWorldImpl {
         BankAccount bankAccount = new BankAccount();
         Receipt initialCredit = new Receipt(new Money(1000000));
         bankAccount.addTransaction(initialCredit);
-        w.add(KEY.BANK_ACCOUNTS, bankAccount);
+        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.add(KEY.BANK_ACCOUNTS, bankAccount, Player.TEST_PRINCIPAL);
 
         return w;
     }

@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
 import jfreerails.client.common.ImageManager;
-import jfreerails.client.renderer.ViewPerspective;
 import jfreerails.client.renderer.SideOnViewImageSize;
-import jfreerails.client.renderer.TrainTypeRenderer;
 import jfreerails.client.renderer.TrainImages;
+import jfreerails.client.renderer.TrainTypeRenderer;
+import jfreerails.client.renderer.ViewPerspective;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.train.WagonType;
 
 
@@ -164,8 +164,8 @@ public class WagonRenderer {
     public static void writeImages(ImageManager imageManager, ReadOnlyWorld w) {
         WagonRenderer wagonRenderer = new WagonRenderer();
 
-        for (int j = 0; j < w.size(KEY.CARGO_TYPES); j++) {
-            CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, j);
+        for (int j = 0; j < w.size(SKEY.CARGO_TYPES); j++) {
+            CargoType cargoType = (CargoType)w.get(SKEY.CARGO_TYPES, j);
             String name = cargoType.getName();
             String category = cargoType.getCategory();
 

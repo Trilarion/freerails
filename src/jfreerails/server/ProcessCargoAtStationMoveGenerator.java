@@ -10,6 +10,7 @@ import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.common.Money;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -23,7 +24,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 public class ProcessCargoAtStationMoveGenerator {
     public static AddTransactionMove processCargo(ReadOnlyWorld w,
         CargoBundle cargoBundle, int stationID) {
-        StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID);
+        StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
+                Player.TEST_PRINCIPAL);
         Iterator batches = cargoBundle.cargoBatchIterator();
         int amountOfCargo = 0;
         double amount = 0;

@@ -7,7 +7,6 @@ package jfreerails.world.top;
 import java.util.NoSuchElementException;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
 
 
 /**
@@ -19,24 +18,33 @@ import jfreerails.world.player.Player;
  */
 public class NonNullElements implements WorldIterator {
     private final KEY key;
+    private final SKEY skey;
     private final ReadOnlyWorld w;
     private final FreerailsPrincipal principal;
     int index = BEFORE_FIRST;
     int row = BEFORE_FIRST;
     int size = -1;
 
-    /**
-     * @deprecated in favour of NonNullElements(KEY, ReadOnlyWorld,
-     * FreerailsPrincipal)
-     */
-    public NonNullElements(KEY k, ReadOnlyWorld world) {
-        this(k, world, Player.NOBODY);
+    public NonNullElements(SKEY k, ReadOnlyWorld world) {
+        if (null == k) {
+            throw new NullPointerException();
+        }
+
+        if (null == world) {
+            throw new NullPointerException();
+        }
+
+        key = null;
+        principal = null;
+        skey = k;
+        w = world;
     }
 
     public NonNullElements(KEY k, ReadOnlyWorld world, FreerailsPrincipal p) {
         key = k;
         w = world;
         principal = p;
+        skey = null;
 
         if (null == k) {
             throw new NullPointerException();
@@ -57,7 +65,7 @@ public class NonNullElements implements WorldIterator {
         do {
             nextIndex++;
 
-            if (nextIndex >= w.size(key, principal)) {
+            if (nextIndex >= listSize()) {
                 return false;
             }
         } while (!testCondition(nextIndex));
@@ -75,7 +83,23 @@ public class NonNullElements implements WorldIterator {
     }
 
     public FreerailsSerializable getElement() {
-        return w.get(key, index, principal);
+        return listGet(index);
+    }
+
+    private FreerailsSerializable listGet(int i) {
+        if (null == this.skey) {
+            return w.get(key, i, principal);
+        } else {
+            return w.get(skey, i);
+        }
+    }
+
+    private int listSize() {
+        if (null == this.skey) {
+            return w.size(key, principal);
+        } else {
+            return w.size(this.skey);
+        }
     }
 
     public int getIndex() {
@@ -91,8 +115,8 @@ public class NonNullElements implements WorldIterator {
 
             int tempSize = 0;
 
-            for (int i = 0; i < w.size(key, principal); i++) {
-                if (null != w.get(key, i, principal)) {
+            for (int i = 0; i < listSize(); i++) {
+                if (null != listGet(i)) {
                     tempSize++;
                 }
             }
@@ -124,7 +148,7 @@ public class NonNullElements implements WorldIterator {
     public void gotoIndex(int i) {
         int newRow = -1;
 
-        for (int j = 0; j < w.size(key, principal); j++) {
+        for (int j = 0; j < listSize(); j++) {
             if (testCondition(j)) {
                 newRow++;
 
@@ -142,6 +166,6 @@ public class NonNullElements implements WorldIterator {
     }
 
     protected boolean testCondition(int i) {
-        return null != w.get(key, i, principal);
+        return null != listGet(i);
     }
 }

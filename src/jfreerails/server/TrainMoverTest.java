@@ -2,6 +2,7 @@ package jfreerails.server;
 
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.world.common.IntLine;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
@@ -32,12 +33,13 @@ public class TrainMoverTest extends TestCase {
         trainMover = trainFixture.getTrainMover();
 
         w = trainFixture.getWorld();
+        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
     }
 
     public void testTrainMover() {
         setUp();
 
-        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0);
+        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0, Player.TEST_PRINCIPAL);
 
         TrainPositionOnMap pos = t.getPosition();
 
@@ -59,12 +61,12 @@ public class TrainMoverTest extends TestCase {
     public void testUpdate() {
         setUp();
 
-        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0);
+        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0, Player.TEST_PRINCIPAL);
 
         TrainPositionOnMap pos = t.getPosition();
 
         ChangeTrainPositionMove m = trainMover.update(30);
 
-        m.doMove(w);
+        m.doMove(w, Player.AUTHORITATIVE);
     }
 }

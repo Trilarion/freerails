@@ -6,10 +6,10 @@
 
 package jfreerails.client.view;
 import java.awt.Point;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.ListMove;
@@ -20,6 +20,7 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.train.WagonType;
@@ -30,9 +31,10 @@ import jfreerails.world.train.WagonType;
  */
 public class StationInfoJPanel
 extends javax.swing.JPanel
-implements MoveReceiver {
-
-    private ReadOnlyWorld w;
+implements MoveReceiver, View {
+	
+	private ReadOnlyWorld w;
+    private ModelRoot modelRoot;
     private WorldIterator wi;
     private boolean ignoreMoves = true;
     private MapCursor mapCursor = MapCursor.NULL_MAP_CURSOR;
@@ -146,10 +148,11 @@ implements MoveReceiver {
         
 	} //GEN-LAST:event_nextStationActionPerformed
     
-    public void setup(ReadOnlyWorld w, ViewLists vl) {
-        this.w = w;
-        this.wi = new NonNullElements(KEY.STATIONS, w);
+    public void setup(ModelRoot mr, ActionListener al) {        
+        this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr.getPlayerPrincipal());
         addComponentListener(componentListener);
+        this.w = mr.getWorld();
+        this.modelRoot = mr;
     }
     
     public void setStation(int stationNumber) {
@@ -175,14 +178,14 @@ implements MoveReceiver {
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             StationModel station =
-            (StationModel) w.get(KEY.STATIONS, stationNumber);
+            (StationModel) w.get(KEY.STATIONS, stationNumber, modelRoot.getPlayerPrincipal());
             FreerailsTile tile = w.getTile(station.x, station.y);
             String stationTypeName = tile.getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleNumber();
             CargoBundle cargoWaiting =
             (CargoBundle) w.get(
             KEY.CARGO_BUNDLES,
-            station.getCargoBundleNumber());
+            station.getCargoBundleNumber(), modelRoot.getPlayerPrincipal());
             String title =
             "<h2 align=\"center\">"
             + station.getStationName()
@@ -191,10 +194,10 @@ implements MoveReceiver {
             + ")</h2>";
             String table =
             "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies / cars per year</td><td>Waiting for pickup / car loads</td>  </tr>";
-            for (int i = 0; i < w.size(KEY.CARGO_TYPES); i++) {
+            for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
                 
                 //get the values
-                CargoType cargoType = (CargoType) w.get(KEY.CARGO_TYPES, i);
+                CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
                 String demanded =
                 (station.getDemand().isCargoDemanded(i) ? "Yes" : "No");
                 int amountSupplied = station.getSupply().getSupply(i);

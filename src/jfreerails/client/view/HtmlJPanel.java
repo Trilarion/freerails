@@ -12,9 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import jfreerails.client.renderer.ViewLists;
-import jfreerails.world.top.ReadOnlyWorld;
-
 /**
  *  This JPanel displays a HTML document read from a URL.
  * @author  Luke
@@ -64,7 +61,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
     }//GEN-END:initComponents
     
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot m, ActionListener submitButtonCallBack) {
         this.done.addActionListener(submitButtonCallBack);
     }
     

@@ -6,6 +6,7 @@
 
 package jfreerails.client.view;
 
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.top.*;
@@ -19,6 +20,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
     
     private WorldIterator wi;
     private ReadOnlyWorld w;
+    private FreerailsPrincipal principal;
     
     /** Creates new form TrainDialogueJPanel */
     public TrainDialogueJPanel() {
@@ -117,14 +119,15 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements NewView, 
         }
     }//GEN-LAST:event_nextJButtonActionPerformed
     
-    public void setup(jfreerails.world.top.ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, CallBacks cb) {
-        newTrainScheduleJPanel1.setup(w, vl, cb);
-        trainDetailsJPanel1.setup(w, vl, null);
-        this.w = w;
+    public void setup(ModelRoot mr, CallBacks cb) {
+        newTrainScheduleJPanel1.setup(mr, cb);
+        trainDetailsJPanel1.setup(mr, null);
+        this.principal = mr.getPlayerPrincipal();
+        this.w = mr.getWorld();
     }
     
     public void display(int trainNumber){
-        wi = new NonNullElements(KEY.TRAINS, w);
+        wi = new NonNullElements(KEY.TRAINS, w, principal);
         wi.gotoIndex(trainNumber);
         if (wi.getRowNumber() > 0) {
             this.previousJButton.setEnabled(true);

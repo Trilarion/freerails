@@ -7,8 +7,8 @@ package jfreerails.client.renderer;
 
 import java.util.ArrayList;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 
 
 /**
@@ -34,8 +34,8 @@ final public class TileRendererListImpl implements TileRendererList {
     public boolean validate(ReadOnlyWorld w) {
         boolean okSoFar = true;
 
-        for (int i = 0; i < w.size(KEY.TERRAIN_TYPES); i++) {
-            TerrainType terrainType = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
+        for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
+            TerrainType terrainType = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
         }
 
         return okSoFar;

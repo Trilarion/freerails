@@ -7,6 +7,7 @@ package jfreerails.move;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 
 
@@ -29,7 +30,7 @@ public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
 
         assertTryMoveFails(m);
         assertTryUndoMoveFails(m);
-        getWorld().add(KEY.CARGO_BUNDLES, bundleA);
+        getWorld().add(KEY.CARGO_BUNDLES, bundleA, Player.TEST_PRINCIPAL);
         assertTryMoveIsOk(m);
 
         assertOkButNotRepeatable(m);

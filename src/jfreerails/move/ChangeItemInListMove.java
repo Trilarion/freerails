@@ -5,6 +5,8 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
@@ -37,30 +39,32 @@ public abstract class ChangeItemInListMove implements ListMove {
         this.listKey = k;
     }
 
-    public MoveStatus tryDoMove(World w) {
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         return tryMove(this.after, this.before, w);
     }
 
-    public MoveStatus tryUndoMove(World w) {
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         return tryMove(this.before, this.after, w);
     }
 
-    public MoveStatus doMove(World w) {
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
         return move(this.after, this.before, w);
     }
 
-    public MoveStatus undoMove(World w) {
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
         return move(this.before, this.after, w);
     }
 
     protected MoveStatus tryMove(FreerailsSerializable to,
         FreerailsSerializable from, World w) {
-        if (index >= w.size(this.listKey)) {
+        if (index >= w.size(this.listKey, Player.TEST_PRINCIPAL)) {
             return MoveStatus.moveFailed("w.size(this.listKey) is " +
-                w.size(this.listKey) + " but index is " + index);
+                w.size(this.listKey, Player.TEST_PRINCIPAL) + " but index is " +
+                index);
         }
 
-        FreerailsSerializable item2change = w.get(listKey, index);
+        FreerailsSerializable item2change = w.get(listKey, index,
+                Player.TEST_PRINCIPAL);
 
         if (null == item2change) {
             if (null == from) {
@@ -83,7 +87,7 @@ public abstract class ChangeItemInListMove implements ListMove {
         MoveStatus ms = tryMove(to, from, w);
 
         if (ms.ok) {
-            w.set(this.listKey, index, to);
+            w.set(this.listKey, index, to, Player.TEST_PRINCIPAL);
         }
 
         return ms;

@@ -18,10 +18,9 @@
 package jfreerails.server;
 
 import java.util.ArrayList;
-
 import jfreerails.world.terrain.CityModel;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.KEY;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 
@@ -42,8 +41,8 @@ public class CityTilePositioner {
         resourceTerrainTypes = new ArrayList();
 
         //get the different types of Urban/Industry/Resource terrain
-        for (int i = 0; i < w.size(KEY.TERRAIN_TYPES); i++) {
-            type = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
+        for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
+            type = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
 
             if (type.getTerrainCategory().equals("Urban")) {
                 urbanTerrainTypes.add(new Integer(i));
@@ -59,8 +58,8 @@ public class CityTilePositioner {
     }
 
     public void doTilePositioning(int urbMax, int indMax, int resMax) {
-        for (int i = 0; i < w.size(KEY.CITIES); i++) {
-            CityModel tempCity = (CityModel)w.get(KEY.CITIES, i);
+        for (int i = 0; i < w.size(SKEY.CITIES); i++) {
+            CityModel tempCity = (CityModel)w.get(SKEY.CITIES, i);
 
             calculateAndPositionTiles(tempCity.getCityX(), tempCity.getCityY(),
                 calcNumberOfInitialTiles(urbMax),
@@ -107,7 +106,7 @@ public class CityTilePositioner {
 
     public String getCategoryForTile(int x, int y) {
         int tileTypeNumber = w.getTile(x, y).getTerrainTypeNumber();
-        String category = ((TerrainType)w.get(KEY.TERRAIN_TYPES, tileTypeNumber)).getTerrainCategory();
+        String category = ((TerrainType)w.get(SKEY.TERRAIN_TYPES, tileTypeNumber)).getTerrainCategory();
 
         return category;
     }

@@ -5,6 +5,7 @@ import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
 import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.PathWalker;
@@ -67,7 +68,8 @@ public class TrainMover implements FreerailsServerSerializable {
     }
 
     public double getTrainSpeed() {
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber,
+                Player.TEST_PRINCIPAL);
         int trainLength = train.getNumberOfWagons();
 
         //For now train speeds are hard coded.

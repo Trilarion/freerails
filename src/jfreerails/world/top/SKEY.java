@@ -10,35 +10,30 @@ import jfreerails.world.common.FreerailsSerializable;
  * <p>It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)</p>
  */
-public class KEY implements FreerailsSerializable {
+public class SKEY implements FreerailsSerializable {
     /** Maps key numbers to KEYs */
-    private static KEY[] keys = new KEY[15];
+    private static SKEY[] keys = new SKEY[getNumberOfKeys()];
 
     //START OF KEYS
-    public static final KEY TRAINS = new KEY();
-    public static final KEY STATIONS = new KEY();
-    public static final KEY BANK_ACCOUNTS = new KEY();
+    public static final SKEY TERRAIN_TYPES = new SKEY();
+    public static final SKEY WAGON_TYPES = new SKEY();
+    public static final SKEY CARGO_TYPES = new SKEY();
+    public static final SKEY CITIES = new SKEY();
+    public static final SKEY ENGINE_TYPES = new SKEY();
+    public static final SKEY TRACK_RULES = new SKEY();
 
-    /** The cargo waiting at stations or carried by trains. */
-    public static final KEY CARGO_BUNDLES = new KEY();
-    public static final KEY TRAIN_SCHEDULES = new KEY();
-
-    //END OF KEYS		
+    //END OF SKEYS		
     private static int numberOfKeys;
     private final int keyNumber;
 
-    /**
-     * @param shared Whether the objects are common to all Principals in the
-     * game
-     */
-    private KEY() {
+    private SKEY() {
         this.keyNumber = numberOfKeys;
         keys[keyNumber] = this;
         numberOfKeys++;
     }
 
     static int getNumberOfKeys() {
-        return numberOfKeys;
+        return SKEY.class.getFields().length;
     }
 
     int getKeyNumber() {
@@ -53,7 +48,7 @@ public class KEY implements FreerailsSerializable {
         return String.valueOf(getKeyNumber());
     }
 
-    static KEY getKey(int keyNum) {
+    static SKEY getKey(int keyNum) {
         return keys[keyNum];
     }
 }

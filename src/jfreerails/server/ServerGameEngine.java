@@ -24,7 +24,6 @@ import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 
 
@@ -115,7 +114,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         identityProvider = new IdentityProvider(this, moveExecuter);
         queuedMoveReceiver = new QueuedMoveReceiver(moveExecuter,
                 identityProvider);
-        tb = new TrainBuilder(world, moveExecuter);
+        tb = new TrainBuilder(world, moveExecuter, Player.TEST_PRINCIPAL);
         calcSupplyAtStations = new CalcSupplyAtStations(w, moveExecuter);
         moveChainFork.addListListener(calcSupplyAtStations);
 
@@ -295,8 +294,10 @@ public class ServerGameEngine implements GameModel, Runnable {
      *
      */
     private void buildTrains() {
-        for (int i = 0; i < world.size(KEY.STATIONS); i++) {
-            StationModel station = (StationModel)world.get(KEY.STATIONS, i);
+        for (int i = 0; i < world.size(KEY.STATIONS, Player.TEST_PRINCIPAL);
+                i++) {
+            StationModel station = (StationModel)world.get(KEY.STATIONS, i,
+                    Player.TEST_PRINCIPAL);
 
             if (null != station && null != station.getProduction()) {
                 ProductionAtEngineShop production = station.getProduction();
@@ -353,11 +354,9 @@ public class ServerGameEngine implements GameModel, Runnable {
             /**
              * save player private data
              */
-            NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
-                    Player.AUTHORITATIVE);
-
-            while (i.next()) {
-                ((Player)i.getElement()).saveSession(objectOut);
+            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+                Player player = world.getPlayer(i);
+                player.saveSession(objectOut);
             }
 
             objectOut.flush();
@@ -388,11 +387,9 @@ public class ServerGameEngine implements GameModel, Runnable {
             /**
              * load player private data
              */
-            NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
-                    Player.AUTHORITATIVE);
-
-            while (i.next()) {
-                ((Player)i.getElement()).loadSession(objectIn);
+            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+                Player player = world.getPlayer(i);
+                player.loadSession(objectIn);
             }
 
             engine = new ServerGameEngine(trainMovers, world, serverAutomata);

@@ -139,8 +139,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         ((OverviewMapJComponent)overviewMapContainer).setup(overviewMap);
 
-        datejLabel.setup(world, null, null);
-        cashjLabel.setup(world, null, null);
+        datejLabel.setup(modelRoot, null);
+        cashjLabel.setup(modelRoot, null);
         trainsJTabPane.setup(world, vl, modelRoot);
 
         MapCursor mapCursor = modelRoot.getCursor();

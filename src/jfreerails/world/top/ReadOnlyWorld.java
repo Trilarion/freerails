@@ -1,8 +1,9 @@
 package jfreerails.world.top;
 
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
+import jfreerails.world.track.FreerailsTile;
 
 
 /** <p>This interface defines a unified set of methods to access the elements
@@ -24,20 +25,13 @@ import jfreerails.world.player.FreerailsPrincipal;
 public interface ReadOnlyWorld extends FreerailsSerializable {
     /**
      * Returns the element mapped to the specified item.
-     * @deprecated in favour of get(ITEM, FreerailsPrincipal)
      */
     FreerailsSerializable get(ITEM item);
 
     /**
-     * Returns the element mapped to the specified item.
-     */
-    FreerailsSerializable get(ITEM item, FreerailsPrincipal p);
-
-    /**
      * Returns the element at the specified position in the specified list.
-     * @deprecated in favour of get(KEY, int, FreerailsPrincipal)
      */
-    FreerailsSerializable get(KEY key, int index);
+    FreerailsSerializable get(SKEY key, int index);
 
     /**
      * Returns the element at the specified position in the specified list.
@@ -46,9 +40,8 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
 
     /**
      * Returns the number of elements in the specified list.
-     * @deprecated in favour of size(KEY, FreerailsPrincipal)
      */
-    int size(KEY key);
+    int size(SKEY key);
 
     /**
      * Returns the number of elements in the specified list.
@@ -63,16 +56,17 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
      */
     int getMapHeight();
 
+    int getNumberOfPlayers();
+
+    Player getPlayer(int i);
+
     /** Returns the tile at the specified position on the map.
      */
     FreerailsTile getTile(int x, int y);
 
     boolean boundsContain(int x, int y);
 
-    /**
-     * @deprecated in favour of boundsContain(KEY, int, FreerailsPrincipal)
-     */
-    boolean boundsContain(KEY k, int index);
+    boolean boundsContain(SKEY k, int index);
 
     boolean boundsContain(KEY k, int index, FreerailsPrincipal p);
 }

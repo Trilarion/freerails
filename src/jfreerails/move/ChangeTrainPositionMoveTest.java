@@ -1,5 +1,6 @@
 package jfreerails.move;
 
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
@@ -32,14 +33,15 @@ public class ChangeTrainPositionMoveTest extends TestCase {
     public void testDoMove() {
         setUp();
 
-        TrainModel t = (TrainModel)this.w.get(KEY.TRAINS, 0);
+        TrainModel t = (TrainModel)this.w.get(KEY.TRAINS, 0,
+                Player.TEST_PRINCIPAL);
         TrainPositionOnMap oldPosition = t.getPosition();
         assertEquals(FIXTURE1_BEFORE_MOVE1, oldPosition);
 
-        MoveStatus status = MOVE1.doMove(this.w);
+        MoveStatus status = MOVE1.doMove(this.w, Player.AUTHORITATIVE);
         assertTrue(status.ok);
 
-        t = (TrainModel)this.w.get(KEY.TRAINS, 0);
+        t = (TrainModel)this.w.get(KEY.TRAINS, 0, Player.TEST_PRINCIPAL);
 
         TrainPositionOnMap newPosition = t.getPosition();
         assertEquals(FIXTURE1_AFTER_MOVE1, newPosition);
@@ -51,7 +53,7 @@ public class ChangeTrainPositionMoveTest extends TestCase {
     public void testTryDoMove() {
         setUp();
 
-        MoveStatus status = MOVE1.tryDoMove(this.w);
+        MoveStatus status = MOVE1.tryDoMove(this.w, Player.AUTHORITATIVE);
         assertTrue(status.ok);
     }
 
@@ -60,10 +62,11 @@ public class ChangeTrainPositionMoveTest extends TestCase {
 
     protected void setUp() {
         w = new WorldImpl(1, 1);
+        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
 
         TrainModel train1 = new TrainModel(0, new int[] {},
                 FIXTURE1_BEFORE_MOVE1, 0);
-        w.add(KEY.TRAINS, train1);
+        w.add(KEY.TRAINS, train1, Player.TEST_PRINCIPAL);
     }
 
     public static final ChangeTrainPositionMove MOVE1 = new ChangeTrainPositionMove(TrainPositionOnMap.createInstance(

@@ -53,7 +53,6 @@ public class DialogueBoxController {
     private StationInfoJPanel stationInfo;    
     private TrainDialogueJPanel trainDialogueJPanel;
     private ReadOnlyWorld world;
-    private ViewLists viewLists;
     private UntriedMoveReceiver moveReceiver;
     private ModelRoot modelRoot;
     
@@ -61,9 +60,8 @@ public class DialogueBoxController {
     
     private LineBorder defaultBorder =
     new LineBorder(new java.awt.Color(0, 0, 0), 3);
-    
-    private ReadOnlyWorld w;
-    private ViewLists vl;
+
+
     
     /** Use this ActionListener to close a dialogue without performing any other action. */
     private ActionListener closeCurrentDialogue = new ActionListener() {
@@ -109,8 +107,7 @@ public class DialogueBoxController {
     MoveChainFork moveChainFork,
     UntriedMoveReceiver mr,
     MapCursor mapCursor) {
-    	this.w =w;
-    	this.vl = vl;
+
         
         moveReceiver = mr;
         
@@ -124,7 +121,7 @@ public class DialogueBoxController {
             throw new NullPointerException();
         
         this.world = w;
-        viewLists = vl;
+
         
         //Setup the various dialogue boxes.
         
@@ -135,19 +132,19 @@ public class DialogueBoxController {
         
         // setup the supply and demand at station dialogue.
         stationInfo = new StationInfoJPanel();
-        stationInfo.setup(w, vl);
+        stationInfo.setup(modelRoot, null);
         moveChainFork.addSplitMoveReceiver(stationInfo);
         stationInfo.setMapCursor(mapCursor);
         
         // setup the 'show controls' dialogue
         showControls = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/game_controls.html"));
-        showControls.setup(w, vl, this.closeCurrentDialogue);
+        showControls.setup(this.modelRoot, this.closeCurrentDialogue);
         
         about = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/about.htm"));
-        about.setup(w, vl, this.closeCurrentDialogue);
+        about.setup(this.modelRoot, this.closeCurrentDialogue);
         
         how2play = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/how_to_play.htm"));
-        how2play.setup(w, vl, this.closeCurrentDialogue);
+        how2play.setup(this.modelRoot, this.closeCurrentDialogue);
         
         //Set up train orders dialogue
         //trainScheduleJPanel = new TrainScheduleJPanel();
@@ -157,7 +154,7 @@ public class DialogueBoxController {
         //Set up select engine dialogue.
         selectEngine = new SelectEngineJPanel();
         selectEngine.setCancelButtonActionListener(this.closeCurrentDialogue);
-        selectEngine.setup(w, vl, new ActionListener() {
+        selectEngine.setup(modelRoot, new ActionListener() {
             
             public void actionPerformed(ActionEvent arg0) {
                 closeContent();
@@ -166,16 +163,16 @@ public class DialogueBoxController {
             
         });
         newspaper = new NewsPaperJPanel();
-        newspaper.setup(w, vl, closeCurrentDialogue);
+        newspaper.setup(modelRoot, closeCurrentDialogue);
         
         selectWagons = new SelectWagonsJPanel();
         
         final ReadOnlyWorld finalROW = this.world;
         //So that inner class can reference it.
-        selectWagons.setup(w, vl, new ActionListener() {
+        selectWagons.setup(modelRoot, new ActionListener() {
             
             public void actionPerformed(ActionEvent arg0) {
-                WorldIterator wi = new NonNullElements(KEY.STATIONS, finalROW);
+                WorldIterator wi = new NonNullElements(KEY.STATIONS, finalROW, modelRoot.getPlayerPrincipal());
                 if (wi.next()) {
                     
                     StationModel station = (StationModel) wi.getElement();
@@ -199,7 +196,7 @@ public class DialogueBoxController {
         });
         
         trainDialogueJPanel = new TrainDialogueJPanel();
-        trainDialogueJPanel.setup(world, viewLists, callbacks);
+        trainDialogueJPanel.setup(modelRoot, callbacks);
         moveChainFork.addListListener(trainDialogueJPanel);
         trainDialogueJPanel.setTrainDetailsButtonActionListener( new ActionListener() {            
             public void actionPerformed(ActionEvent arg0) {
@@ -217,7 +214,7 @@ public class DialogueBoxController {
     }
     
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElements(KEY.TRAINS, world);
+        WorldIterator wi = new NonNullElements(KEY.TRAINS, world, modelRoot.getPlayerPrincipal());
         if (!wi.next()) {
             modelRoot.getUserMessageLogger().println("Cannot" +
             " show train orders since there are no" +
@@ -229,7 +226,7 @@ public class DialogueBoxController {
     }
     
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, world);
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, world, modelRoot.getPlayerPrincipal());
         if (!wi.next()) {
             modelRoot.getUserMessageLogger().println("Can't" +
             " build train since there are no stations");
@@ -280,9 +277,9 @@ public class DialogueBoxController {
     }
     
     public void showTrainList() {
-        if (world.size(KEY.TRAINS) > 0) {
+        if (world.size(KEY.TRAINS, this.modelRoot.getPlayerPrincipal()) > 0) {
 			final TrainListJPanel trainList = new TrainListJPanel();		
-					trainList.setup(w, vl, closeCurrentDialogue);
+					trainList.setup(modelRoot, closeCurrentDialogue);
 					trainList.setShowTrainDetailsActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent arg0) {
 							int id = trainList.getSelectedTrainID();
@@ -349,9 +346,9 @@ public class DialogueBoxController {
     public void showStationOrTerrainInfo(int x, int y) {
         FreerailsTile tile = world.getTile(x, y);
         if (tile.getTrackRule().isStation()) {
-            for (int i = 0; i < world.size(KEY.STATIONS); i++) {
+            for (int i = 0; i < world.size(KEY.STATIONS, this.modelRoot.getPlayerPrincipal()); i++) {
                 StationModel station =
-                (StationModel) world.get(KEY.STATIONS, i);
+                (StationModel) world.get(KEY.STATIONS, i, this.modelRoot.getPlayerPrincipal());
                 if (null != station && station.x == x && station.y == y) {
                     this.showStationInfo(i);
                     return;

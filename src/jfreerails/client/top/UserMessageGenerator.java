@@ -19,6 +19,7 @@ import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.train.TrainModel;
 
 
@@ -52,9 +53,10 @@ public class UserMessageGenerator implements MoveReceiver {
                                                                  .getIndex();
                 int stationCargoBundle = transferCargoAtStationMove.getChangeAtStation()
                                                                    .getIndex();
-                NonNullElements trains = new NonNullElements(KEY.TRAINS, world);
+                NonNullElements trains = new NonNullElements(KEY.TRAINS, world,
+                        mr.getPlayerPrincipal());
                 NonNullElements stations = new NonNullElements(KEY.STATIONS,
-                        world);
+                        world, mr.getPlayerPrincipal());
 
                 int trainNumber = -1;
                 int statonNumber = -1;
@@ -88,11 +90,11 @@ public class UserMessageGenerator implements MoveReceiver {
                 String message = gc.getTimeOfDay(gt.getTime()) + "  Train #" +
                     trainNumber + " arrives at " + stationName + "\n";
 
-                for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
+                for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
                     int amount = cb.getAmount(i);
 
                     if (amount > 0) {
-                        CargoType ct = (CargoType)world.get(KEY.CARGO_TYPES, i);
+                        CargoType ct = (CargoType)world.get(SKEY.CARGO_TYPES, i);
                         message += amount + " " + ct.getDisplayName() + "\n";
                     }
                 }

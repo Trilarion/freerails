@@ -9,8 +9,10 @@ package jfreerails.move;
 import java.awt.Point;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackRule;
@@ -40,7 +42,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     protected void setUp() {
         super.setHasSetupBeenCalled(true);
         setWorld(new WorldImpl(10, 10));
-        getWorld().add(KEY.BANK_ACCOUNTS, new BankAccount());
+        getWorld().addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        getWorld().add(KEY.BANK_ACCOUNTS, new BankAccount(),
+            Player.TEST_PRINCIPAL);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }
 
@@ -48,7 +52,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         OneTileMoveVector east = OneTileMoveVector.EAST;
         OneTileMoveVector west = OneTileMoveVector.WEST;
 
-        TrackRule trackRule = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
 
         assertBuildTrackSuceeds(new Point(0, 5), east, trackRule);
 
@@ -77,7 +81,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         OneTileMoveVector south = OneTileMoveVector.SOUTH;
         OneTileMoveVector west = OneTileMoveVector.WEST;
 
-        TrackRule trackRule = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
 
         //First track piece built
         assertBuildTrackSuceeds(pointA, southeast, trackRule);
@@ -108,14 +112,14 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         //Not allowed on this terrain type, from existing track.
         assertBuildTrackFails(new Point(2, 0), northeast,
-            (TrackRule)getWorld().get(KEY.TRACK_RULES, 1));
+            (TrackRule)getWorld().get(SKEY.TRACK_RULES, 1));
     }
 
     private void assertBuildTrackFails(Point p, OneTileMoveVector v,
         TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p,
                 v, rule, getWorld());
-        MoveStatus status = move.doMove(getWorld());
+        MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(false, status.isOk());
     }
 
@@ -123,14 +127,14 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p,
                 v, rule, getWorld());
-        MoveStatus status = move.doMove(getWorld());
+        MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(true, status.isOk());
     }
 
     private void assertRemoveTrackSuceeds(Point p, OneTileMoveVector v) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(p,
                 v, getWorld());
-        MoveStatus status = move.doMove(getWorld());
+        MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(true, status.isOk());
     }
 
@@ -144,7 +148,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         OneTileMoveVector south = OneTileMoveVector.SOUTH;
         OneTileMoveVector west = OneTileMoveVector.WEST;
 
-        TrackRule trackRule = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA,
                 southeast, trackRule, getWorld());

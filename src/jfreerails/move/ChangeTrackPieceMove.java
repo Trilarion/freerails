@@ -3,8 +3,9 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.KEY;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackConfiguration;
@@ -40,7 +41,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         location = new Point(p);
     }
 
-    public MoveStatus tryDoMove(World w) {
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         return tryMove(w, this.trackPieceBefore, this.trackPieceAfter);
     }
 
@@ -96,7 +97,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         int terrainType = w.getTile(location.x, location.y)
                            .getTerrainTypeNumber();
-        TerrainType tt = (TerrainType)w.get(KEY.TERRAIN_TYPES, terrainType);
+        TerrainType tt = (TerrainType)w.get(SKEY.TERRAIN_TYPES, terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getTerrainCategory())) {
             String thisTrackType = newTrackPiece.getTrackRule().getTypeName();
@@ -109,12 +110,12 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World w) {
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         return tryMove(w, this.trackPieceAfter, this.trackPieceBefore);
     }
 
-    public MoveStatus doMove(World w) {
-        MoveStatus moveStatus = tryDoMove(w);
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        MoveStatus moveStatus = tryDoMove(w, p);
 
         if (!moveStatus.isOk()) {
             return moveStatus;
@@ -133,8 +134,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         w.setTile(location.x, location.y, newTile);
     }
 
-    public MoveStatus undoMove(World w) {
-        MoveStatus moveStatus = tryUndoMove(w);
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        MoveStatus moveStatus = tryUndoMove(w, p);
 
         if (!moveStatus.isOk()) {
             return moveStatus;

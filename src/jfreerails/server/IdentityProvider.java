@@ -5,8 +5,6 @@ import jfreerails.controller.ConnectionToServer;
 import jfreerails.move.AddPlayerMove;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 
 
@@ -39,12 +37,11 @@ class IdentityProvider {
         Player player, byte[] signature) {
         System.err.println("Authenticating player " + player.getName());
 
-        /* determine whether this identity already exists */
-        NonNullElements i = new NonNullElements(KEY.PLAYERS,
-                serverGameEngine.getWorld(), Player.AUTHORITATIVE);
+        World w = serverGameEngine.getWorld();
 
-        while (i.next()) {
-            Player p = (Player)i.getElement();
+        /* determine whether this identity already exists */
+        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
+            Player p = w.getPlayer(i);
 
             if (p.equals(player)) {
                 /* this player already exists */
@@ -77,7 +74,8 @@ class IdentityProvider {
         System.err.println("Adding player " + player.getName() + " to " +
             serverGameEngine.getWorld());
 
-        AddPlayerMove m = new AddPlayerMove(serverGameEngine.getWorld(), player);
+        AddPlayerMove m = AddPlayerMove.generateMove(serverGameEngine.getWorld(),
+                player);
 
         /* TODO
         moveExecuter.processMove(m, m.getPrincipal());
@@ -87,11 +85,8 @@ class IdentityProvider {
         /*
          * get the newly created player-with-principal
          */
-        World w = serverGameEngine.getWorld();
         System.err.println("checking " + w);
-        player = (Player)w.get(KEY.PLAYERS,
-                w.size(KEY.PLAYERS, Player.AUTHORITATIVE) - 1,
-                Player.AUTHORITATIVE);
+        player = w.getPlayer(w.getNumberOfPlayers() - 1);
         assert (w != null);
 
         principals.put(c, player);
@@ -122,12 +117,14 @@ class IdentityProvider {
     }
 
     public synchronized Player getPlayer(FreerailsPrincipal p) {
-        NonNullElements i = new NonNullElements(KEY.PLAYERS,
-                serverGameEngine.getWorld(), Player.AUTHORITATIVE);
+        World w = serverGameEngine.getWorld();
 
-        while (i.next()) {
-            if (((Player)i.getElement()).getPrincipal().equals(p)) {
-                return (Player)i.getElement();
+        /* determine whether this identity already exists */
+        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
+            Player player = w.getPlayer(i);
+
+            if (player.getPrincipal().equals(p)) {
+                return player;
             }
         }
 

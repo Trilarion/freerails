@@ -1,9 +1,10 @@
 package jfreerails.move;
 
-import jfreerails.world.top.World;
-import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ITEM;
+import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.World;
 
 
 public class TimeTickMove implements Move {
@@ -18,7 +19,7 @@ public class TimeTickMove implements Move {
         return timeTickMove;
     }
 
-    public MoveStatus tryDoMove(World w) {
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         if (((GameTime)w.get(ITEM.TIME)).equals(oldTime)) {
             return MoveStatus.MOVE_OK;
         } else {
@@ -29,7 +30,7 @@ public class TimeTickMove implements Move {
         }
     }
 
-    public MoveStatus tryUndoMove(World w) {
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         if (((GameTime)w.get(ITEM.TIME)).equals(newTime)) {
             return MoveStatus.MOVE_OK;
         } else {
@@ -37,8 +38,8 @@ public class TimeTickMove implements Move {
         }
     }
 
-    public MoveStatus doMove(World w) {
-        if (tryDoMove(w).equals(MoveStatus.MOVE_OK)) {
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        if (tryDoMove(w, p).equals(MoveStatus.MOVE_OK)) {
             w.set(ITEM.TIME, newTime);
 
             return MoveStatus.MOVE_OK;
@@ -47,8 +48,8 @@ public class TimeTickMove implements Move {
         }
     }
 
-    public MoveStatus undoMove(World w) {
-        if (tryUndoMove(w).equals(MoveStatus.MOVE_OK)) {
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        if (tryUndoMove(w, p).equals(MoveStatus.MOVE_OK)) {
             w.set(ITEM.TIME, oldTime);
 
             return MoveStatus.MOVE_OK;

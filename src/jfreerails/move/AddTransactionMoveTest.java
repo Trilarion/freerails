@@ -9,6 +9,7 @@ import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 
 
@@ -18,7 +19,8 @@ import jfreerails.world.top.KEY;
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
     public void testMove() {
-        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0);
+        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0,
+                Player.TEST_PRINCIPAL);
         assertEquals(new Money(0), account.getCurrentBalance());
 
         Transaction t = new Receipt(new Money(100));
@@ -36,7 +38,8 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
     }
 
     public void testConstrainedMove() {
-        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0);
+        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0,
+                Player.TEST_PRINCIPAL);
         assertEquals(new Money(0), account.getCurrentBalance());
 
         Transaction t = new Bill(new Money(100));

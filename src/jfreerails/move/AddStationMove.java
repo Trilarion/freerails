@@ -7,9 +7,11 @@ package jfreerails.move;
 import java.awt.Point;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.Money;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
 
 
@@ -27,12 +29,12 @@ public class AddStationMove extends CompositeMove {
 
     public static AddStationMove generateMove(ReadOnlyWorld w,
         String stationName, Point p, ChangeTrackPieceMove upgradeTrackMove) {
-        int cargoBundleNumber = w.size(KEY.CARGO_BUNDLES);
+        int cargoBundleNumber = w.size(KEY.CARGO_BUNDLES, Player.TEST_PRINCIPAL);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
                 new CargoBundleImpl());
-        int stationNumber = w.size(KEY.STATIONS);
+        int stationNumber = w.size(KEY.STATIONS, Player.TEST_PRINCIPAL);
         StationModel station = new StationModel(p.x, p.y, stationName,
-                w.size(KEY.CARGO_TYPES), cargoBundleNumber);
+                w.size(SKEY.CARGO_TYPES), cargoBundleNumber);
 
         Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber,
                 station);

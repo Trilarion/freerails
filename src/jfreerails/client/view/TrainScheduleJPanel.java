@@ -14,9 +14,11 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
@@ -37,6 +39,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
     private int scheduleID = -1;
     
     private TrainOrdersListModel listModel;
+    
+    private FreerailsPrincipal principal;
     
     private CallBacks callbacks = CallBacks.NULL_INSTANCE;
     
@@ -349,11 +353,12 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
         orders.setSelectedIndex(i-1);
     }//GEN-LAST:event_pullUpJMenuItemActionPerformed
     
-    public void setup(ReadOnlyWorld w, ViewLists vl, CallBacks cb) {
-        this.w =w;
-        this.vl = vl;
-        trainOrderJPanel1.setup(w, vl, null);
+    public void setup(ModelRoot mr, CallBacks cb) {
+        this.w =mr.getWorld();
+        this.vl = mr.getViewLists();
+        trainOrderJPanel1.setup(mr, null);
         this.callbacks = cb;
+		principal = mr.getPlayerPrincipal();
         
         //This actionListener is fired by the select station popup when a stion is selected.
         ActionListener actionListener =  new ActionListener(){
@@ -362,14 +367,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
                 selectStationJPopupMenu.setVisible(false);
             }
         };
-        this.selectStationJPanel1.setup(w, vl, actionListener);
+        this.selectStationJPanel1.setup(mr, actionListener);
     }
     
     public void display(int trainNumber){
         this.trainNumber = trainNumber;
-        TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber, principal);
         this.scheduleID = train.getScheduleID();
-        listModel = new TrainOrdersListModel(w, trainNumber);
+        listModel = new TrainOrdersListModel(w, trainNumber, principal);
         orders.setModel(listModel);
         orders.setFixedCellWidth(250);
         listModel.fireRefresh();
@@ -385,14 +390,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
     }
     
     private MutableSchedule getSchedule(){
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
-        ImmutableSchedule immutableSchedule = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID());
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
+        ImmutableSchedule immutableSchedule = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), principal);
         return new MutableSchedule(immutableSchedule);
     }
     
     private void setupWagonsPopup() {
         addWagonJMenu.removeAll(); //Remove existing menu items.
-        NonNullElements cargoTypes = new NonNullElements(KEY.CARGO_TYPES, w);
+        NonNullElements cargoTypes = new NonNullElements(SKEY.CARGO_TYPES, w);
         
         TrainImages trainImages = vl.getTrainImages();
         
@@ -503,9 +508,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements NewView, 
     }
     
     private void sendUpdateMove(MutableSchedule mutableSchedule ){
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainNumber);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainNumber, principal);
         int scheduleID = train.getScheduleID();
-        ImmutableSchedule before = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID);
+        ImmutableSchedule before = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID, principal);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move m = new ChangeTrainScheduleMove(scheduleID, before, after);
         this.callbacks.processMove(m);

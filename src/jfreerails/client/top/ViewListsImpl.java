@@ -19,8 +19,8 @@ import jfreerails.client.renderer.TrainImages;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 
 
 public class ViewListsImpl implements ViewLists {
@@ -57,14 +57,14 @@ public class ViewListsImpl implements ViewLists {
         //Setup progress monitor..
         pm.setMessage("Loading terrain graphics.");
 
-        int numberOfTypes = w.size(KEY.TERRAIN_TYPES);
+        int numberOfTypes = w.size(SKEY.TERRAIN_TYPES);
         pm.setMax(numberOfTypes);
 
         int progress = 0;
         pm.setValue(progress);
 
         for (int i = 0; i < numberOfTypes; i++) {
-            TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
+            TerrainType t = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
             int[] typesTreatedAsTheSame = new int[] {i};
 
             TileRenderer tr = null;
@@ -82,7 +82,8 @@ public class ViewListsImpl implements ViewLists {
                     int count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+                        TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
+                                j);
                         String terrainCategory = t2.getTerrainCategory();
 
                         if (terrainCategory.equalsIgnoreCase("Ocean") ||
@@ -96,7 +97,8 @@ public class ViewListsImpl implements ViewLists {
                     count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+                        TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
+                                j);
                         String terrainCategory = t2.getTerrainCategory();
 
                         if (terrainCategory.equalsIgnoreCase("Ocean") ||
@@ -167,7 +169,7 @@ public class ViewListsImpl implements ViewLists {
         TileRenderer occeanTileRenderer = null;
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES, j);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Ocean")) {
@@ -178,11 +180,11 @@ public class ViewListsImpl implements ViewLists {
         }
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES, j);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Harbour")) {
-                TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+                TerrainType t = (TerrainType)w.get(SKEY.TERRAIN_TYPES, j);
                 TileRenderer tr = new SpecialTileRenderer(imageManager,
                         new int[] {j}, t, occeanTileRenderer);
                 tileRenderers.set(j, tr);

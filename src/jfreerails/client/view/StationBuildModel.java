@@ -5,17 +5,18 @@ package jfreerails.client.view;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import java.util.Vector;
 
-import jfreerails.client.renderer.TrackPieceRendererList;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+
 import jfreerails.client.renderer.TrackPieceRenderer;
+import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.StationBuilder;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.KEY;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
 
@@ -62,8 +63,8 @@ public class StationBuildModel {
 	this.world = world;
 	TrackPieceRendererList trackPieceRendererList =
 	    vl.getTrackPieceViewList();
-	for (int i = 0; i < world.size(KEY.TRACK_RULES); i++) {
-	    TrackRule trackRule = (TrackRule)world.get(KEY.TRACK_RULES, i);
+	for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+	    TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
 	    if (trackRule.isStation()) {
 		TrackPieceRenderer renderer =
 		    trackPieceRendererList.getTrackPieceView(i);
@@ -92,7 +93,7 @@ public class StationBuildModel {
 	public void actionPerformed(
 		java.awt.event.ActionEvent actionEvent) {
 	    stationBuilder.setStationType(actionId);
-	    TrackRule trackRule = (TrackRule) world.get(KEY.TRACK_RULES,
+	    TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
 		    actionId);
 	    //Show the relevant station radius when the station type's menu item
 	    //gets focus.

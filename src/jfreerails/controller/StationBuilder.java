@@ -13,13 +13,13 @@ import java.awt.Point;
 import jfreerails.move.AddStationMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.Move;
-import jfreerails.world.top.KEY;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
-import jfreerails.world.player.FreerailsPrincipal;
 
 
 public class StationBuilder {
@@ -39,7 +39,7 @@ public class StationBuilder {
 
         do {
             i++;
-            trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
+            trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
         } while (!trackRule.isStation());
 
         ruleNumber = i;
@@ -61,7 +61,7 @@ public class StationBuilder {
             String stationName;
 
             TrackPiece before = (TrackPiece)w.getTile(p.x, p.y);
-            TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES,
+            TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES,
                     this.ruleNumber);
             TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration());
             ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,

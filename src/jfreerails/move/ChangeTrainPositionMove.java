@@ -1,9 +1,12 @@
 package jfreerails.move;
 
-import jfreerails.world.common.*;
+import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.IntLine;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainModel;
@@ -47,7 +50,8 @@ public class ChangeTrainPositionMove implements Move {
             return getNullMove(trainNumber);
         }
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber,
+                Player.TEST_PRINCIPAL);
 
         TrainPositionOnMap currentPosition = train.getPosition();
 
@@ -108,73 +112,28 @@ public class ChangeTrainPositionMove implements Move {
         return TrainPositionOnMap.createInOppositeDirectionToPath(nextPathSection);
     }
 
-    /*
-    public static ChangeTrainPositionMove generate(
-            TrainPosition currentPosition,
-            FreerailsPathIterator nextPathSection,
-            int trainNumber) {
-            TrainPosition bitToAdd, intermediate, newPosition, bitToRemove;
-
-            bitToAdd =
-                    TrainPosition.createInOppositeDirectionToPath(nextPathSection);
-
-
-
-            intermediate = TrainPosition.add(currentPosition, bitToAdd);
-
-            PathWalker pathWalker = new PathWalkerImpl(intermediate.path());
-
-            if (TrainPosition.headsAreEqual(intermediate, currentPosition)) {
-                    //Then we must have added a piece to the tail,
-                    //so we need to remove a piece from the head.
-
-                    double lengthToRemove = bitToAdd.calulateDistance();
-
-                    pathWalker.stepForward((int) lengthToRemove);
-
-                    bitToRemove = TrainPosition.createInSameDirectionAsPath(pathWalker);
-
-            } else {
-                    //We must have added a piece to the head,
-                    //so we need to remove a piece from the tail.
-
-                    double currentLength = currentPosition.calulateDistance();
-
-                    pathWalker.stepForward((int) currentLength);
-
-                    newPosition = TrainPosition.createInSameDirectionAsPath(pathWalker);
-
-                    bitToRemove = TrainPosition.remove(intermediate, newPosition);
-
-            }
-
-
-
-            return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber);
-    }
-    */
-    public MoveStatus doMove(World w) {
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = true;
         boolean isDoMove = true;
 
         return move(w, updateTrainPosition, isDoMove);
     }
 
-    public MoveStatus undoMove(World w) {
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = true;
         boolean isDoMove = false;
 
         return move(w, updateTrainPosition, isDoMove);
     }
 
-    public MoveStatus tryDoMove(World w) {
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = false;
         boolean isDoMove = true;
 
         return move(w, updateTrainPosition, isDoMove);
     }
 
-    public MoveStatus tryUndoMove(World w) {
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = false;
         boolean isDoMove = false;
 
@@ -194,7 +153,7 @@ public class ChangeTrainPositionMove implements Move {
         }
 
         TrainModel train = (TrainModel)w.get(KEY.TRAINS,
-                this.trainPositionNumber);
+                this.trainPositionNumber, Player.TEST_PRINCIPAL);
         TrainPositionOnMap oldTrainPosition = train.getPosition();
         TrainPositionOnMap intermediatePosition;
         TrainPositionOnMap newTrainPosition;

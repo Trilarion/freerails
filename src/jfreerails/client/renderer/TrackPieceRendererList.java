@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import jfreerails.client.common.ImageManager;
 import jfreerails.util.FreerailsProgressMonitor;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
@@ -32,12 +32,12 @@ final public class TrackPieceRendererList {
         FreerailsProgressMonitor pm) throws IOException {
         //		Setup progress monitor..
         pm.setMessage("Loading track graphics.");
-        pm.setMax(w.size(KEY.TRACK_RULES));
+        pm.setMax(w.size(SKEY.TRACK_RULES));
 
         int progress = 0;
         pm.setValue(progress);
 
-        int numberOfTrackTypes = w.size(KEY.TRACK_RULES);
+        int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
         trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
 
         for (int i = 0; i < numberOfTrackTypes; i++) {
@@ -50,8 +50,8 @@ final public class TrackPieceRendererList {
     public boolean validate(ReadOnlyWorld w) {
         boolean okSoFar = true;
 
-        for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
+        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
+            TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
             Iterator legalConfigurationsIterator = trackRule.getLegalConfigurationsIterator();
             TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
 

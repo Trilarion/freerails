@@ -218,7 +218,7 @@ public class InetConnection implements ConnectionToServer {
      */
     void disconnect() {
         /* To allow this method to be called without risk of deadlock from synchronized methods in the dispatcher,
-        * we must acquire the lock on the dispatcher before locking on this object.       
+        * we must acquire the lock on the dispatcher before locking on this object.
         */
         synchronized (dispatcher) {
             synchronized (this) {

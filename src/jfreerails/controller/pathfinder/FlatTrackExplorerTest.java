@@ -10,7 +10,7 @@ import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
-import jfreerails.world.top.World;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.TrackRule;
 import junit.framework.TestCase;
@@ -22,7 +22,7 @@ import junit.framework.TestCase;
  *
  */
 public class FlatTrackExplorerTest extends TestCase {
-    World world;
+    WorldImpl world;
 
     public FlatTrackExplorerTest(String arg0) {
         super(arg0);
@@ -33,12 +33,12 @@ public class FlatTrackExplorerTest extends TestCase {
 
     protected void setUp() {
         world = new WorldImpl(20, 20);
-        world.add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
+        world.addPlayer(testPlayer, Player.AUTHORITATIVE);
         world.add(KEY.BANK_ACCOUNTS, new BankAccount(),
             testPlayer.getPrincipal());
         MapFixtureFactory.generateTrackRuleList(world);
 
-        TrackRule rule = (TrackRule)world.get(KEY.TRACK_RULES, 0);
+        TrackRule rule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
 
         OneTileMoveVector[] vectors = {
             OneTileMoveVector.WEST, OneTileMoveVector.EAST,
@@ -50,7 +50,7 @@ public class FlatTrackExplorerTest extends TestCase {
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(points[i],
                     vectors[i], rule, world);
-            MoveStatus ms = move.doMove(world);
+            MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(ms.ok);
         }
     }

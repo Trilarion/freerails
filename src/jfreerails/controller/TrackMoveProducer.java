@@ -6,9 +6,9 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
@@ -80,7 +80,7 @@ final public class TrackMoveProducer {
      *@param  trackRuleNumber  The new trackRule value
      */
     public void setTrackRule(int trackRuleNumber) {
-        this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, trackRuleNumber);
+        this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNumber);
     }
 
     public void setTrackBuilderMode(int i) {
@@ -109,7 +109,7 @@ final public class TrackMoveProducer {
 
         this.moveTester = moveReceiver;
         this.w = world;
-        this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
+        this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, 0);
         principal = p;
         transactionsGenerator = new TrackMoveTransactionsGenerator(world,
                 principal);

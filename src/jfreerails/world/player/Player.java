@@ -80,6 +80,11 @@ public class Player implements FreerailsSerializable {
      * This Principal has no permissions
      */
     public static final FreerailsPrincipal NOBODY = new WorldPrincipal("Nobody");
+    public static final Player TEST_PLAYER = new Player("test player",
+            (new Player("test player")).getPublicKey(), 0);
+
+    /** Temporary - will be removed.*/
+    public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
 
     /**
      * name of the player

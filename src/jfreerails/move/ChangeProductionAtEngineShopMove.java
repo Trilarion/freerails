@@ -4,6 +4,8 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -30,17 +32,19 @@ public class ChangeProductionAtEngineShopMove implements Move {
         this.stationNumber = station;
     }
 
-    public MoveStatus tryDoMove(World w) {
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         return tryMove(w, before);
     }
 
     private MoveStatus tryMove(World w, ProductionAtEngineShop stateA) {
         //Check that the specified station exists.
-        if (!w.boundsContain(KEY.STATIONS, this.stationNumber)) {
+        if (!w.boundsContain(KEY.STATIONS, this.stationNumber,
+                    Player.TEST_PRINCIPAL)) {
             return MoveStatus.MOVE_FAILED;
         }
 
-        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber,
+                Player.TEST_PRINCIPAL);
 
         if (null == station) {
             return MoveStatus.MOVE_FAILED;
@@ -62,31 +66,31 @@ public class ChangeProductionAtEngineShopMove implements Move {
         }
     }
 
-    public MoveStatus tryUndoMove(World w) {
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         return tryMove(w, after);
     }
 
-    public MoveStatus doMove(World w) {
-        MoveStatus status = tryDoMove(w);
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        MoveStatus status = tryDoMove(w, p);
 
         if (status.isOk()) {
             StationModel station = (StationModel)w.get(KEY.STATIONS,
-                    stationNumber);
+                    stationNumber, Player.TEST_PRINCIPAL);
             station = new StationModel(station, this.after);
-            w.set(KEY.STATIONS, stationNumber, station);
+            w.set(KEY.STATIONS, stationNumber, station, Player.TEST_PRINCIPAL);
         }
 
         return status;
     }
 
-    public MoveStatus undoMove(World w) {
-        MoveStatus status = tryUndoMove(w);
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        MoveStatus status = tryUndoMove(w, p);
 
         if (status.isOk()) {
             StationModel station = (StationModel)w.get(KEY.STATIONS,
-                    stationNumber);
+                    stationNumber, Player.TEST_PRINCIPAL);
             station = new StationModel(station, this.before);
-            w.set(KEY.STATIONS, stationNumber, station);
+            w.set(KEY.STATIONS, stationNumber, station, Player.TEST_PRINCIPAL);
         }
 
         return status;

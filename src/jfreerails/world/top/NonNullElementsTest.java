@@ -4,11 +4,12 @@
  */
 package jfreerails.world.top;
 
-import jfreerails.world.station.StationModel;
-import junit.framework.TestCase;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import java.util.NoSuchElementException;
+import jfreerails.world.player.Player;
+import jfreerails.world.station.StationModel;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 
 /**
@@ -37,16 +38,18 @@ public class NonNullElementsTest extends TestCase {
         station1 = new StationModel(10, 20, "Station1", 4, 0);
         station2 = new StationModel(15, 16, "Station2", 4, 1);
         station3 = new StationModel(30, 50, "Station3", 4, 2);
-        w.add(KEY.STATIONS, station1);
-        w.add(KEY.STATIONS, null);
-        w.add(KEY.STATIONS, station2);
-        w.add(KEY.STATIONS, null);
-        w.add(KEY.STATIONS, null);
-        w.add(KEY.STATIONS, station3);
+        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.add(KEY.STATIONS, station1, Player.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, null, Player.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, station2, Player.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, null, Player.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, null, Player.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, station3, Player.TEST_PRINCIPAL);
     }
 
     public void testNext() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
+                Player.TEST_PRINCIPAL);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
@@ -65,12 +68,13 @@ public class NonNullElementsTest extends TestCase {
         assertEquals(1, wi.getRowNumber());
         assertEquals(station2, wi.getElement());
 
-        WorldIterator wi2 = new NonNullElements(KEY.TRACK_RULES, w);
+        WorldIterator wi2 = new NonNullElements(SKEY.TRACK_RULES, w);
         assertTrue(!wi2.next());
     }
 
     public void testGotoIndex() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
+                Player.TEST_PRINCIPAL);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 

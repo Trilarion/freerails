@@ -17,9 +17,9 @@ public class WorldImplTest extends TestCase {
         };
 
     public void testGet() {
-        World w = new WorldImpl();
-        w.add(KEY.TERRAIN_TYPES, fs);
-        assertEquals(w.get(KEY.TERRAIN_TYPES, 0), fs);
+        WorldImpl w = new WorldImpl();
+        w.add(SKEY.TERRAIN_TYPES, fs);
+        assertEquals(w.get(SKEY.TERRAIN_TYPES, 0), fs);
     }
 
     public void testConstructor() {
@@ -39,11 +39,11 @@ public class WorldImplTest extends TestCase {
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
 
-        copy.add(KEY.TERRAIN_TYPES, fs);
+        copy.add(SKEY.TERRAIN_TYPES, fs);
 
         assertFalse(original.equals(copy));
         assertFalse(copy.equals(original));
-        assertEquals(1, copy.size(KEY.TERRAIN_TYPES));
-        assertEquals(0, original.size(KEY.TERRAIN_TYPES));
+        assertEquals(1, copy.size(SKEY.TERRAIN_TYPES));
+        assertEquals(0, original.size(SKEY.TERRAIN_TYPES));
     }
 }

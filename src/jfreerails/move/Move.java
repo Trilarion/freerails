@@ -1,6 +1,7 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
 
 
@@ -32,22 +33,22 @@ public interface Move extends FreerailsSerializable {
      * the specifed world object, this method should
      * leave the world object unchanged.
      */
-    MoveStatus tryDoMove(World w);
+    MoveStatus tryDoMove(World w, FreerailsPrincipal p);
 
     /** Tests whether this Move can be undone on
      * the specifed world object, this method should
      * leave the world object unchanged.
      */
-    MoveStatus tryUndoMove(World w);
+    MoveStatus tryUndoMove(World w, FreerailsPrincipal p);
 
     /** Executes this move on the specifed world object.
      */
-    MoveStatus doMove(World w);
+    MoveStatus doMove(World w, FreerailsPrincipal p);
 
     /** If <code>doMove</code> has just been executed on the
      * specified world object, calling this method changes the
      * state of the world object back to how it was before <code>doMove</code>
      * was called.
      */
-    MoveStatus undoMove(World w);
+    MoveStatus undoMove(World w, FreerailsPrincipal p);
 }

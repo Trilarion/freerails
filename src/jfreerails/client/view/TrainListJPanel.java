@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 /**
@@ -20,6 +20,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 public class TrainListJPanel extends javax.swing.JPanel implements View {
 	
 	private ReadOnlyWorld world;
+	
+	private FreerailsPrincipal principal;
     
     /** Creates new form TrainListJPanel */
     public TrainListJPanel() {
@@ -100,11 +102,11 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
     }//GEN-LAST:event_jList1KeyPressed
     
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {  
-		world = w;
-        jList1.setModel(new World2ListModelAdapter(w, KEY.TRAINS));
+    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {  
+		world = mr.getWorld();
+        jList1.setModel(new World2ListModelAdapter(mr.getWorld(), KEY.TRAINS, mr.getPlayerPrincipal()));
         TrainViewJPanel trainView =
-        new TrainViewJPanel(w, vl);
+        new TrainViewJPanel(mr);
         jList1.setCellRenderer(trainView);
         trainView.setHeight(50);               
         ActionListener[] oldListeners = closeJButton.getActionListeners();
@@ -112,6 +114,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
             closeJButton.removeActionListener(oldListeners[i]);
         }
         closeJButton.addActionListener(submitButtonCallBack);
+		principal = mr.getPlayerPrincipal();
     }
     
     void setShowTrainDetailsActionListener(ActionListener l){        
@@ -140,7 +143,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 	
 	public void setVisible(boolean aFlag) {
 		if(aFlag){
-			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS));
+			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
 		}
 		super.setVisible(aFlag);
 	}

@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
-import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.top.ITEM;
@@ -38,8 +37,8 @@ public class DateJLabel extends JLabel implements View {
 		super.paint(g);
 	}
 
-	public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
-		this.w = w;
+	public void setup(ModelRoot model, ActionListener submitButtonCallBack) {
+		this.w = model.getWorld();
 	}
 
 }

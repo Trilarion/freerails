@@ -5,10 +5,17 @@
  */
 
 package jfreerails.client.view;
-import javax.swing.*;
-import jfreerails.world.top.*;
-import jfreerails.world.station.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.station.StationModel;
+import jfreerails.world.top.KEY;
 /**
  *
  * @author  Luke Lindsay
@@ -16,6 +23,7 @@ import java.awt.*;
 public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCellRenderer{
     
     jfreerails.world.top.ReadOnlyWorld w;
+    private FreerailsPrincipal principal;
     
     ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/selected_arrow.png"));
     ImageIcon gotoAfterPriorityOrders = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/deselected_arrow.png"));
@@ -88,11 +96,12 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
 
     }//GEN-END:initComponents
     
-    public void setup(jfreerails.world.top.ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
-        this.w = w;
+    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+        this.w = mr.getWorld();
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
-        trainViewJPanel.setup(w, vl, null);
+        trainViewJPanel.setup(mr, null);
+        this.principal = mr.getPlayerPrincipal();
         
     }
     
@@ -101,7 +110,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         
         //Set station name
         int stationNumber = trainOrders.order.station;
-        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber, principal);
         String stationName = station.getStationName();
         this.stationNameJLabel.setText(stationName);
         

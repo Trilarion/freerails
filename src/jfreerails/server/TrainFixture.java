@@ -2,11 +2,11 @@ package jfreerails.server;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import jfreerails.server.AuthoritativeMoveExecuter;
 import jfreerails.controller.ToAndFroPathIterator;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
@@ -31,10 +31,10 @@ public class TrainFixture {
         points.add(new Point(150, 100));
 
         TrainModel train = new TrainModel(0);
+        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.add(KEY.TRAINS, train, Player.TEST_PRINCIPAL);
 
-        w.add(KEY.TRAINS, train);
-
-        if (null == w.get(KEY.TRAINS, 0)) {
+        if (null == w.get(KEY.TRAINS, 0, Player.TEST_PRINCIPAL)) {
             throw new NullPointerException();
         }
 
@@ -43,7 +43,7 @@ public class TrainFixture {
         trainMover = new TrainMover(to, w, 0);
 
         Move move = trainMover.setInitialTrainPosition(train, from);
-        MoveStatus ms = move.doMove(w);
+        MoveStatus ms = move.doMove(w, Player.AUTHORITATIVE);
 
         if (!ms.isOk()) {
             throw new IllegalStateException(ms.message);

@@ -59,7 +59,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
         /* TODO
          * ms = move.doMove(world, p);
          */
-        ms = move.doMove(world);
+        ms = move.doMove(world, Player.AUTHORITATIVE);
 
         /* retain mutex since order of forwarded moves is important */
         forwardMove(move, ms);
@@ -87,7 +87,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
             /* TODO
              * ms = m.undoMove(world, Player.NOBODY);
              */
-            ms = m.undoMove(world);
+            ms = m.undoMove(world, Player.AUTHORITATIVE);
 
             if (ms != MoveStatus.MOVE_OK) {
                 System.err.println("Couldn't undo move!");

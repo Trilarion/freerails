@@ -1,9 +1,11 @@
 package jfreerails.move;
 
-import jfreerails.world.train.TrainModel;
-import jfreerails.world.train.TrainPositionOnMap;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
+import jfreerails.world.train.TrainModel;
+import jfreerails.world.train.TrainPositionOnMap;
 
 
 /**
@@ -19,7 +21,7 @@ public class InitialiseTrainPositionMove implements Move {
         trainNo = trainNumber;
     }
 
-    public MoveStatus tryDoMove(World w) {
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         /* the train must not have any previous position */
         if (getTrainPosition(w) == null) {
             return MoveStatus.MOVE_OK;
@@ -28,7 +30,7 @@ public class InitialiseTrainPositionMove implements Move {
         }
     }
 
-    public MoveStatus tryUndoMove(World w) {
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         if (newPosition.equals(getTrainPosition(w))) {
             return MoveStatus.MOVE_OK;
         } else {
@@ -36,8 +38,8 @@ public class InitialiseTrainPositionMove implements Move {
         }
     }
 
-    public MoveStatus doMove(World w) {
-        if (tryDoMove(w) == MoveStatus.MOVE_OK) {
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        if (tryDoMove(w, p) == MoveStatus.MOVE_OK) {
             setTrainPosition(w, newPosition);
 
             return MoveStatus.MOVE_OK;
@@ -46,8 +48,8 @@ public class InitialiseTrainPositionMove implements Move {
         }
     }
 
-    public MoveStatus undoMove(World w) {
-        if (tryUndoMove(w) == MoveStatus.MOVE_OK) {
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        if (tryUndoMove(w, p) == MoveStatus.MOVE_OK) {
             setTrainPosition(w, null);
 
             return MoveStatus.MOVE_OK;
@@ -57,12 +59,14 @@ public class InitialiseTrainPositionMove implements Move {
     }
 
     private void setTrainPosition(World w, TrainPositionOnMap p) {
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNo);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNo,
+                Player.TEST_PRINCIPAL);
         train.setPosition(p);
     }
 
     private TrainPositionOnMap getTrainPosition(World w) {
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNo);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNo,
+                Player.TEST_PRINCIPAL);
 
         return train.getPosition();
     }

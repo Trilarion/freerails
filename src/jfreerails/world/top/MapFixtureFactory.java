@@ -72,12 +72,12 @@ public class MapFixtureFactory {
 
         //Add track rules to world
         for (int i = 0; i < trackRulesArray.length; i++) {
-            world.add(KEY.TRACK_RULES, trackRulesArray[i]);
+            world.add(SKEY.TRACK_RULES, trackRulesArray[i]);
         }
 
-        //Add a single terrain type..		
+        //Add a single terrain type..
         //We need this since when we built track, the terrain type gets check to see if we can
         //built track on it and an exception is thrown if terrain type 0 does not exist.
-        world.add(KEY.TERRAIN_TYPES, TerrainType.NULL);
+        world.add(SKEY.TERRAIN_TYPES, TerrainType.NULL);
     }
 }
