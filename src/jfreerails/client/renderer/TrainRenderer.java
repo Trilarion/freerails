@@ -59,6 +59,7 @@ public class TrainRenderer {
 
         IntLine line = new IntLine();
 
+        //The wagon length.
         pw.stepForward(16);
 
         boolean firstIteration = true;
