@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <iostream.h>
 
 GameApplication::GameApplication(int argc, char *argv[]) :
     BaseApplication(argc, argv)
@@ -20,61 +21,48 @@ GameApplication::GameApplication(int argc, char *argv[]) :
   application = new QApplication(argc,argv);
   mW = 0l;
   splash = 0l;
-  vertLayout = 0l;
-  horLayout = 0l;
-  //map = 0l;
 }
 
 GameApplication::~GameApplication() {
-	if(splash) delete splash;
-
-	if(horLayout) delete horLayout;
-	if(vertLayout) delete vertLayout;
-	//if(map) delete map;
+  if(splash) delete splash;
 }
 
 int GameApplication::run() {
-	// Show the splash
-	showSplash();
-	// FIXME: better method for sleep?
-	sleep(1);
+  // Show the splash
+  showSplash();
+  // FIXME: better method for sleep?
+  sleep(1);
 
-	// FIXME: should be done in constructor with parameters from argc, argv
-	mW = new GameMainWindow(0, 0, 800, 600);
+  // FIXME: should be done in constructor with parameters from argc, argv
+  mW = new GameMainWindow(0, 0, 800, 600);
 
-	// FIXME: versionstring for caption
-	mW->setCaption("Freerails");
+  // FIXME: versionstring for caption
+  mW->setCaption("Freerails");
 
-	setMainWindow(mW);
-	hideSplash();
+  //setMainWindow(mW);
+  application->setMainWidget(mW->getWidget());
+  application->processEvents();
+  hideSplash();
 
-	// Show dialog menu for game mode
-	GameModeSelectDialog dialog(mW, 250, 150, 300, 200, "Choose game mode");
-	printf("Result=%i\n", dialog.Show());	// TEMP
+  // Show dialog menu for game mode
+  GameModeSelector::GameMode mode = mW->askGameMode();
+  printf("mW->askGameMode() result=%i\n", (int)mode);
 
-	// TEMP: Show the playfield (map, panel, menu like in RTII(tm))
-	// Layout managers
-	vertLayout = new QVBoxLayout(mW->getWidget());
-	horLayout = new QHBoxLayout(vertLayout);
+  // Show mainwindow
+  application->processEvents();
 
-	// The map where the actual game is displayed.
-	map = new GameMap(mW->getWidget(), "map");
+  // If user wants to quit, then quit
+  if(mode == GameModeSelector::Quit)
+  {
+    // Is this safe?
+    exit(0);
+  }
 
-	// A horizontal panel with a minimap, train info, ...
-	panel = new GamePanel(mW, "panel");
-
-	// A vertical menubar.
-	menu = new GameMenuBar(mW, "menu");
-
-	horLayout->addWidget(menu);
-	horLayout->addWidget(map->getWidget());
-	vertLayout->addWidget(panel);
-
-	menu->Show();
-	map->Show();
-	panel->show();
-
-
+  // Some sort of 'multi or single game mode' test should be here
+ 
+  // Construct playfield (map, panel, buttons)
+  mW->constructPlayField();
+  
   return application->exec();
 }
 
@@ -85,7 +73,8 @@ void GameApplication::showSplash()
       Qt::WStyle_Customize | Qt::WStyle_NoBorder | Qt::WX11BypassWM |
       Qt::WStyle_StaysOnTop);
   splash->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
-  splash->setPixmap(QPixmap(QString("data/graphics/ui/title.png")));
+  // New, better and probably a bit smaller splashscreen picture wanted!
+  splash->setPixmap(QPixmap(QString("/usr/local/share/freerails/title.png")));
   splash->adjustSize();
   splash->move((QApplication::desktop()->width() - splash->width()) / 2,
       (QApplication::desktop()->height() - splash->height()) / 2);
@@ -100,6 +89,8 @@ void GameApplication::hideSplash()
     splash->hide(); // deleted splash (WDestructiveClose flag in splash!!)
 }
 
+// Obsolote, because we call directly application->setMainWidget()
+// It crashed, too, but don't know why
 void GameApplication::setMainWindow(GameMainWindow* mw)
 {
   application->setMainWidget(mw->getWidget());

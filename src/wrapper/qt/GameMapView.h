@@ -13,15 +13,15 @@
 class GameMap;
 
 class GameMapView : public QCanvasView {
-	Q_OBJECT
+  Q_OBJECT
 public:
-	/** Constructor */
-	GameMapView(GameMap* map, GameMainWindow* parent, const char* name);
-	GameMapView(GameMap* map, QWidget* parent, const char* name);
-	/** Destructor */
-	~GameMapView();
-	/** Event mouse pressed */
-	void contentsMousePressEvent(QMouseEvent* e);
+  /** Constructor */
+  GameMapView(GameMap* map, GameMainWindow* parent, const char* name);
+  GameMapView(GameMap* map, QWidget* parent, const char* name);
+  /** Destructor */
+  ~GameMapView();
+  /** Event mouse pressed */
+  void contentsMousePressEvent(QMouseEvent* e);
 };
 
 #endif // __GAMEMAPVIEW_H__

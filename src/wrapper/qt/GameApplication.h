@@ -48,18 +48,14 @@ public:
     /** Sets main window to be @ref mw
       * Main window will be main widget. When it's destroyed, application
       * will exit
+      * This is obsolete. We use applicaton->setMainWidget() instead!
       */
     void setMainWindow(GameMainWindow* mw);
 
-private:
-	GameMainWindow* mW;
-	GameMap* map;
-	GamePanel* panel;
-	GameMenuBar* menu;
+  private:
+    GameMainWindow* mW;
     QApplication* application;
     QLabel* splash;
-	QVBoxLayout* vertLayout;
-	QHBoxLayout* horLayout;
 };
 
 #endif

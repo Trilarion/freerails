@@ -13,15 +13,15 @@
 class GameMainWindow;
 
 class GamePanel : public QWidget {
-	Q_OBJECT
+  Q_OBJECT
 public:
-	/** Constructor */
-	GamePanel(QWidget* parent, const char* name);
-	GamePanel(GameMainWindow* parent, const char* name);
-	/** Destructor */
-	~GamePanel();
+  /** Constructor */
+  GamePanel(QWidget* parent, const char* name);
+  GamePanel(GameMainWindow* parent, const char* name);
+  /** Destructor */
+  ~GamePanel();
 private:
-	QPushButton* but; //TEMP
+  QPushButton* but; //TEMP
 };
 
 

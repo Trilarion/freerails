@@ -9,8 +9,17 @@
 #include <qwidget.h>
 
 #include "BaseMainWindow.h"
+#include "GameModeSelector.h"
 
-/* GameMainWindow class manages main window
+
+class QHBoxLayout;
+class QVBoxLayout;
+class GameMenuBar;
+class GameMap;
+class GameMapView;
+class GamePanel;
+
+/** GameMainWindow class manages main window
  */
 class GameMainWindow : public BaseMainWindow
 {
@@ -27,8 +36,22 @@ class GameMainWindow : public BaseMainWindow
       * For internal use only !
       */
     QWidget* getWidget() { return widget; };
+    /** Displays little 'dialog' inside itself and lets user select
+      * Game mode - Single player, multiplayer or exit
+      */
+    GameModeSelector::GameMode askGameMode();
+    /** Constructs 'playfield'
+      * Playfield consists of map, panel and buttons
+      */
+    void constructPlayField();
   private:
     QWidget* widget;
+    QVBoxLayout* layout;
+    QHBoxLayout* layout_h;
+    GameMenuBar* menubar;
+    GameMap* map;
+    GameMapView* mapview;
+    GamePanel* panel;
 };
 
 #endif

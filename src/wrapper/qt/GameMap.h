@@ -9,23 +9,16 @@
 #include "GameMapView.h"
 #include <qcanvas.h>
 
-class GameMapView;
 class GameMainWindow;
 
 class GameMap : public QCanvas {
-	Q_OBJECT
+  Q_OBJECT
 public:
-	/** Constrcutor */
-	GameMap(GameMainWindow* parent, const char* name);
-	GameMap(QWidget* parent, const char* name);
-	/** Destructor */
-	~GameMap();
-	/** Show the map */
-	void Show();
-	GameMapView* getWidget() { return view; };
-
-private:
-	GameMapView* view;
+  /** Constrcutor */
+  GameMap(GameMainWindow* parent, const char* name);
+  GameMap(QWidget* parent, const char* name);
+  /** Destructor */
+  ~GameMap();
 };
 
 #endif // __GAMEMAP_H__
