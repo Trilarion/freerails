@@ -12,6 +12,7 @@
 #include "Message.h"
 #include "StationController.h"
 #include "Track.h"
+#include "Station.h"
 #include "TrackController.h"
 
 GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent, const char* name)
@@ -325,23 +326,15 @@ void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
       {
         case buildStation:
         {
-          struct station_data *trd;
-          trd = new struct station_data;
-          trd->field_pos_x = x;
-          trd->field_pos_y = y;
-          trd->player = NULL;
-          msg = new Message(Message::addElement, 0, (void *)trd);
+	  Station* new_station = new Station(x, y, NULL, "", Station::Small, "", NULL);
+          msg = new Message(Message::addElement, 0, (void *)new_station);
           engine->sendMsg(msg);
           break;
         }
         case buildTrack:
         {
-          struct track_data *trd;
-          trd = new struct track_data;
-          trd->field_pos_x = x;
-          trd->field_pos_y = y;
-          trd->player = NULL;
-          msg = new Message(Message::addElement, 0, (void *)trd);
+          Track* new_track = new Track(x,y,NULL,0);
+          msg = new Message(Message::addElement, 0, (void *)new_track);
           engine->sendMsg(msg);
           break;
         }
@@ -375,6 +368,8 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
     {
       case buildStation:
       {
+        #warning Do not build on mouse move
+/*
         struct station_data *trd;
         trd = new struct station_data;
         x = oldMousePos.x();
@@ -388,9 +383,11 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
         #warning fix me
         repaintContents(x - 45, y - 45, 90, 90, false);
         break;
+*/
       }
       case buildTrack:
       {
+/*
         struct track_data *trd;
         trd = new struct track_data;
         x = oldMousePos.x();
@@ -404,6 +401,7 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
         #warning fix me
         repaintContents(x - 45, y - 45, 90, 90, false);
         break;
+*/
       }
       default:
         break;
