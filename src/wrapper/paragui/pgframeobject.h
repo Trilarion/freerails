@@ -30,7 +30,7 @@ public:
 	*/
 	virtual void NextFrame(SDL_Surface* surface, Uint32 background);
 
-private:
+protected:
         SDL_Rect* pos;
 	SDL_Surface* sprite;
 };

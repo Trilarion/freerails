@@ -1,3 +1,9 @@
+Mon Jun 02 13:45:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI : some updates to pg*
+            add TrainFrame which have at the moment a stupid train movement
+	    all movement is fps depend ... how I do PathWalking?
+o Graphics: Add the train and wagon grafics
+
 Sun Jun 01 01:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Add pgframe* to CVS ... this will later be in ParGUI (1.0.5 maybe)
 

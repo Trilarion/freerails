@@ -40,7 +40,7 @@ public:
 	Every Time it calls the NextFrame function of the PG_FrameHandler Class.
 	*/
 	static int RunEventLoop(void* data);
-	
+
 	static void SetFrameHandler(PG_FrameHandler* framehandler);
 	static PG_FrameHandler* GetFrameHandler();
 

@@ -543,7 +543,6 @@ void GameMapView::setStationType(Station::Size type) {
 void GameMapView::eventMouseLeave() {
 
   regenerateTile(mouseOldMapX,mouseOldMapY);
-  view->Update();
 }
 
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
@@ -681,8 +680,6 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       return false;
     break;
   }
-
-  Update();
   return true;
 }
 
@@ -765,7 +762,6 @@ void GameMapView::redrawMap(int x, int y, int w, int h) {
       drawTrackPixmap(x1+startXmap, y1+startYmap);
     }
   }
-  view->Update(true);
 }
 
 void GameMapView::writeCities() {

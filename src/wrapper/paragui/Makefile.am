@@ -16,4 +16,5 @@ libwrapper_a_SOURCES = GameApplication.cpp \
     GamePanel.cpp \
     GameWidget.cpp \
     GameTimerWidget.cpp \
+    TrainFrame.cpp \
     pgframeapplication.cpp pgframehandler.cpp pgframewidgethandler.cpp pgframeapplicationhandler.cpp pgframeobject.cpp

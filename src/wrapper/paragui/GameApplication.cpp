@@ -149,13 +149,12 @@ int GameApplication::run() {
     }
     if (result>0)
     {
-      timer = new GameTimerWidget(guiEngine, panel);
+      timer = new GameTimerWidget(&mw, guiEngine, panel);
 
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 
       guiEngine->changeGameState(GuiEngine::Running);
       pGlobalApp->SetFrameHandler(new PG_FrameWidgetHandler(pGlobalApp, mapView));
-//      pGlobalApp->GetFrameHandler()->AddFrameObject(new PG_FrameObject());
       pGlobalApp->Run();
       
       guiEngine->changeGameState(GuiEngine::Stopping);

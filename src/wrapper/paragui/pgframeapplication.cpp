@@ -54,12 +54,11 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 	then = SDL_GetTicks();
 	while(!my_quitEventLoop) {
 		
-		while (SDL_PollEvent(&event)) {
+		if (SDL_PollEvent(&event)) {
 		  object->PumpIntoEventQueue(&event);
 		}
 		LockScreen();
 		my_framehandler->NextFrame();
-	        SDL_Flip(PG_Application::GetScreen());
 
 		++frames;
 		now = SDL_GetTicks();
@@ -74,6 +73,7 @@ int PG_FrameApplication::RunEventLoop(void* data) {
 					frames=0;
 				}
 		}
+	        SDL_Flip(PG_Application::GetScreen());
 		DrawCursor();
 		UnlockScreen();
 	}
