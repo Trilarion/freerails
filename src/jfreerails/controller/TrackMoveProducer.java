@@ -8,8 +8,10 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.UndoMove;
 import jfreerails.move.UpgradeTrackMove;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackPiece;
@@ -31,6 +33,7 @@ final public class TrackMoveProducer {
     public final static int IGNORE_TRACK = 4;
     private int trackBuilderMode = BUILD_TRACK;
     private final Stack moveStack = new Stack();
+    private GameTime lastMoveTime = GameTime.BIG_BANG;
 
     /**
     * This generates the transactions - the charge - for the track being built.
@@ -160,6 +163,8 @@ final public class TrackMoveProducer {
     }
 
     public MoveStatus undoLastTrackMove() {
+        clearStackIfStale();
+
         if (moveStack.size() > 0) {
             Move m = (Move)moveStack.pop();
             UndoMove undoMove = new UndoMove(m);
@@ -175,6 +180,21 @@ final public class TrackMoveProducer {
         }
     }
 
+    /** Moves are only undoable if no game time has passed since they
+     * they were executed.  This method clears the move stack if
+     * the moves were added to the stack at a time other than the
+     * current time.
+     */
+    private void clearStackIfStale() {
+        ReadOnlyWorld w = executor.getWorld();
+        GameTime currentTime = (GameTime)w.get(ITEM.TIME);
+
+        if (!currentTime.equals(lastMoveTime)) {
+            moveStack.clear();
+            lastMoveTime = currentTime;
+        }
+    }
+
     public int getTrackBuilderMode() {
         return trackBuilderMode;
     }
@@ -183,6 +203,7 @@ final public class TrackMoveProducer {
         MoveStatus ms = executor.doMove(m);
 
         if (ms.isOk()) {
+            clearStackIfStale();
             moveStack.add(m);
         }
 
