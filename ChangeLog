@@ -1,3 +1,6 @@
+Wed Jan 09 02:15:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add the first parts of the network wrappers
+o small headerfile bugfix in wrapper/qt
 Mon Jan 07 14:45:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add the view element for communication in the paraGUI design.
 Sun Jan 06 15:15:00 2002  Alexander Opitz <opi@le-bit.de>:
