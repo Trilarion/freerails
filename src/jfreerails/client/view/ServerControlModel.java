@@ -3,12 +3,14 @@ package jfreerails.client.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
+
 import jfreerails.client.common.ActionAdapter;
+import jfreerails.controller.ServerCommand;
 import jfreerails.controller.ServerControlInterface;
-import jfreerails.server.ServerGameEngine;
 
 
 /**
@@ -128,7 +130,7 @@ public class ServerControlModel {
         boolean enabled = (serverInterface != null);
 
         //Check that there is a file to load..
-        boolean canLoadGame = ServerGameEngine.isSaveGameAvailable();
+        boolean canLoadGame = ServerCommand.isSaveGameAvailable();
 
         loadGameAction.setEnabled(enabled && canLoadGame);
         saveGameAction.setEnabled(enabled);

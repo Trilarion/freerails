@@ -118,6 +118,16 @@ final public class TrackMoveProducer {
         }
     }
 
+    public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world) {
+        this.executor = executor;
+
+        this.trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
+
+        FreerailsPrincipal principal = executor.getPrincipal();
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
+                principal);
+    }
+
     public TrackMoveProducer(MoveExecutor executor) {
         this.executor = executor;
 

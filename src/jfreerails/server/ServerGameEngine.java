@@ -12,6 +12,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
+import jfreerails.controller.ServerCommand;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.TimeTickMove;
@@ -36,9 +37,6 @@ import jfreerails.world.top.World;
  *
  */
 public class ServerGameEngine implements GameModel, Runnable {
-    public static final String FREERAILS_SAV = "freerails.sav";
-    public static final String VERSION = "CVS";
-
     /**
     * Objects that run as part of the server should use this object as the
     * destination for moves, rather than queuedMoveReceiver.
@@ -321,12 +319,12 @@ public class ServerGameEngine implements GameModel, Runnable {
         try {
             System.out.print("Saving game..  ");
 
-            FileOutputStream out = new FileOutputStream(FREERAILS_SAV);
+            FileOutputStream out = new FileOutputStream(ServerCommand.FREERAILS_SAV);
             GZIPOutputStream zipout = new GZIPOutputStream(out);
 
             ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
 
-            objectOut.writeObject(VERSION);
+            objectOut.writeObject(ServerCommand.VERSION);
             objectOut.writeObject(trainMovers);
             objectOut.writeObject(world);
             objectOut.writeObject(serverAutomata);
@@ -357,12 +355,12 @@ public class ServerGameEngine implements GameModel, Runnable {
         try {
             System.out.print("Loading game..  ");
 
-            FileInputStream in = new FileInputStream(FREERAILS_SAV);
+            FileInputStream in = new FileInputStream(ServerCommand.FREERAILS_SAV);
             GZIPInputStream zipin = new GZIPInputStream(in);
             ObjectInputStream objectIn = new ObjectInputStream(zipin);
             String version_string = (String)objectIn.readObject();
 
-            if (!VERSION.equals(version_string)) {
+            if (!ServerCommand.VERSION.equals(version_string)) {
                 throw new Exception(version_string);
             }
 
@@ -415,24 +413,5 @@ public class ServerGameEngine implements GameModel, Runnable {
 
     public IdentityProvider getIdentityProvider() {
         return identityProvider;
-    }
-
-    public static boolean isSaveGameAvailable() {
-        try {
-            FileInputStream in = new FileInputStream(FREERAILS_SAV);
-            GZIPInputStream zipin = new GZIPInputStream(in);
-            ObjectInputStream objectIn = new ObjectInputStream(zipin);
-            String version_string = (String)objectIn.readObject();
-
-            if (!VERSION.equals(version_string)) {
-                throw new Exception(version_string);
-            }
-
-            in.close();
-
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

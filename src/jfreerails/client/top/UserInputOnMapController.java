@@ -14,10 +14,8 @@ import jfreerails.client.view.MapViewJComponent;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
-import java.util.List;
-import java.util.*;
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.BuildTrackRenderer;
+import jfreerails.client.common.ModelRoot;
 
 
 /** Handles key presses and mouse movements on the map - responsible for moving the cursor etc.
@@ -40,10 +38,11 @@ public class UserInputOnMapController extends KeyAdapter {
         private int x;
         private int y;
         private boolean pressedInside = false;
-        private List proposedTrack;
 
+        //        private List proposedTrack;
         public void mousePressed(MouseEvent evt) {
             if (SwingUtilities.isLeftMouseButton(evt)) {
+                buildTrack.setup(modelRoot);
                 x = evt.getX();
                 y = evt.getY();
 
@@ -68,8 +67,9 @@ public class UserInputOnMapController extends KeyAdapter {
                 Dimension tileSize = new Dimension((int)scale, (int)scale);
                 int tileX = x / tileSize.width;
                 int tileY = y / tileSize.height;
-                proposedTrack = createProposedTrack(new Point(tileX, tileY));
-                buildTrack.setTrack(getCursorPosition(), proposedTrack);
+
+                //                proposedTrack = createProposedTrack(new Point(tileX, tileY));
+                buildTrack.setTrack(getCursorPosition(), new Point(tileX, tileY));
                 mapView.requestFocus();
 
                 /** @todo  show created/show track but not send it to other players
@@ -82,17 +82,13 @@ public class UserInputOnMapController extends KeyAdapter {
             //            System.err.println("mouseReleased()");
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 // build a railroad from x,y to current cursor position
-
-                /** @todo build a track
-                 *  1st version -> create oneTileMove
-                 *  final version -> create multiTileMove to build longer track
-                 */
-                if (pressedInside && (null != proposedTrack)) {
-                    moveCursorMoreTiles(proposedTrack);
+                if (pressedInside && buildTrack.isBuilding()) {
+                    /** @todo copy WorldDifferences from buildTrack to World */
+                    Point newPosition = buildTrack.updateWorld(trackBuilder);
+                    setCursorPosition(newPosition);
                 }
 
                 pressedInside = false;
-                proposedTrack = null;
                 buildTrack.hide();
             }
         }
@@ -255,53 +251,6 @@ public class UserInputOnMapController extends KeyAdapter {
 
             break;
         }
-        }
-    }
-
-    private List createProposedTrack(Point tryThisPoint) {
-        Point oldCursorMapPosition = getCursorPosition();
-
-        int deltaX = tryThisPoint.x - oldCursorMapPosition.x;
-        int deltaY = tryThisPoint.y - oldCursorMapPosition.y;
-        int aDeltaX = Math.abs(deltaX);
-        int aDeltaY = Math.abs(deltaY);
-
-        /*Build track! */
-
-        /** @todo Replace this 'if' with longer track creation */
-        int diagLen = Math.min(aDeltaX, aDeltaY);
-
-        List proposedTrack = new ArrayList(Math.max(aDeltaX, aDeltaY));
-
-        int dirX = (deltaX > 0 ? 1 : -1);
-        int dirY = (deltaY > 0 ? 1 : -1);
-
-        for (int diag = 0; diag < diagLen; diag++) {
-            OneTileMoveVector vector = OneTileMoveVector.getInstance(dirX, dirY);
-            proposedTrack.add(vector);
-        }
-
-        int diff = aDeltaX - aDeltaY;
-
-        // if diff > 0 then we need to build some track in X direction
-        for (int rest = 0; rest < diff; rest++) {
-            OneTileMoveVector vector = OneTileMoveVector.getInstance(dirX, 0);
-            proposedTrack.add(vector);
-        }
-
-        // if diff < 0 then we need to build some track in Y direction
-        for (int rest = 0; rest > diff; rest--) {
-            OneTileMoveVector vector = OneTileMoveVector.getInstance(0, dirY);
-            proposedTrack.add(vector);
-        }
-
-        return proposedTrack;
-    }
-
-    private void moveCursorMoreTiles(List track) {
-        for (Iterator iter = track.iterator(); iter.hasNext();) {
-            OneTileMoveVector vector = (OneTileMoveVector)iter.next();
-            moveCursorOneTile(vector);
         }
     }
 

@@ -69,7 +69,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         //Check that we are not changing another players track if this is not allowed.
         if (!canConnect2OtherRRsTrack(w)) {
-            //If either the new or old track piece is null, we are ok.        	
+            //If either the new or old track piece is null, we are ok.
             int oldRuleNumber = oldTrackPiece.getTrackRule().getRuleNumber();
             int newRuleNumber = newTrackPiece.getTrackRule().getRuleNumber();
 
