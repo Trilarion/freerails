@@ -45,7 +45,7 @@ Cause of that we don't want to redefine the wheel we use libraries. You have
 two possibilities.
 
 1. you use SDL >= 1.2.0 (with SDL_ttf and SDL_image) and paraGUI >= 0.7.0
-2. you use Qt >= 2.0
+2. you use Qt >= 2.2.0 (We will switch to Qt 3.0.0 as soon as it's stable)
 
 Where to get:
 
