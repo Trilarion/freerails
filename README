@@ -1,11 +1,7 @@
-Freerails Java - version 0.1.1+
+Freerails Java - version 0.1.1++
 
 What's new:
--	No longer requires fastUtil.jar 
--	Build stations by pressing F8
--	Trains now use a simple A* pathfinder:
-	press 't' with the cursor over the track
-	and all trains will head for that point.
+-	Bug fixes and refactoring, so not much to see!
  
 Getting it, either:
 
