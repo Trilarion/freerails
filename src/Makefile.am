@@ -1,1 +1,1 @@
-SUBDIRS = elements wrapper main map
+SUBDIRS = elements map wrapper main
