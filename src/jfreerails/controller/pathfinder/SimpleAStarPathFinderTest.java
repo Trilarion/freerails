@@ -53,6 +53,9 @@ public class SimpleAStarPathFinderTest extends TestCase {
 
         i = pathFinder.findpath(4, new int[] {4}, map);
         assertEquals(SimpleAStarPathFinder.PATH_NOT_FOUND, i);
+
+        i = pathFinder.findpath(2, new int[] {1}, map);
+        assertEquals(1, i);
     }
 
     public void testExplorer() {
@@ -94,12 +97,13 @@ class Node {
 }
 
 class Map implements GraphExplorer {
-    //draw the graph on a piece of paper to see it.
+    
+    //Look at SimpleAStarPathFinderTest.svg to see it 
     private final Node[] nodes = new Node[] {
             new Node(new int[] {1}, new int[] {11}), //0
-            new Node(new int[] {0, 5}, new int[] {11, 4}), //1
-            new Node(new int[] {5, 3, 4}, new int[] {5, 10, 12}), //2
-            new Node(new int[] {2}, new int[] {10}), //3	
+            new Node(new int[] {0, 5, 2}, new int[] {11, 4, 8}), //1  // try {11,4,4}
+            new Node(new int[] {5, 3, 4, 1}, new int[] {5, 10, 12, 8}), //2  //try{5,10,12,4}
+            new Node(new int[] {2}, new int[] {10}), //3
             new Node(new int[] {5, 2}, new int[] {18, 12}), //4
             new Node(new int[] {1, 6, 4, 2}, new int[] {4, 3, 18, 5}), //5
             new Node(new int[] {5, 7}, new int[] {3, 4}), //6
