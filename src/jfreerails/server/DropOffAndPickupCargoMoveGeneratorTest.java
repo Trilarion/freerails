@@ -128,7 +128,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		//Test the expected values against the actuals..
 		assertEquals(expectedOnTrain, getCargoOnTrain());
 		assertEquals(expectedAtStation, getCargoAtStation());
-	}	
+	}
 
 	/** Tests that a train takes into account how much cargo it 
 	 * already has and the type of wagons it has when it is picking up cargo.
@@ -162,10 +162,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		CargoBundle expectedOnTrain = new CargoBundleImpl();
 		expectedOnTrain.setAmount(this.cargoType0FromStation2, 30);
 		expectedOnTrain.setAmount(this.cargoType0FromStation0, 50);
-		
+
 		assertEquals(expectedAtStation, getCargoAtStation());
 		assertEquals(expectedOnTrain, getCargoOnTrain());
-
 	}
 
 	/** Tests that a train drops of cargo that a station demands and does not drop off cargo that is not
@@ -182,13 +181,18 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		assertTrue(
 			"The station should demand cargo type 0.",
 			station.getDemand().isCargoDemanded(0));
-		assertTrue(
+		assertFalse(
 			"The station shouldn't demand cargo type 1.",
-			!station.getDemand().isCargoDemanded(1));
+			station.getDemand().isCargoDemanded(1));
+
+		//Add 2 wagons for cargo type 0 and 1 for cargo type 1 to train.
+		int[] wagons = new int[] { 0, 0, 1, 1 };
+		TrainModel train = (TrainModel) w.get(KEY.TRAINS, 0);
+		train.addWagons(wagons);
 
 		//Add quantities of cargo type 0 and 2 to the train.
-		getCargoAtStation().setAmount(this.cargoType0FromStation2, 50);
-		getCargoAtStation().setAmount(this.cargoType1FromStation2, 40);
+		getCargoOnTrain().setAmount(this.cargoType0FromStation2, 50);
+		getCargoOnTrain().setAmount(this.cargoType1FromStation2, 40);
 
 		stopAtStation();
 
@@ -231,6 +235,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		//The train shouldn't have dropped anything off.
 		CargoBundle expectedOnTrain = new CargoBundleImpl();
 		expectedOnTrain.setAmount(cargoType0FromStation0, 50);
+		expectedOnTrain.setAmount(cargoType0FromStation2, 50);
 
 		assertEquals(expectedOnTrain, getCargoOnTrain());
 		assertEquals(emptyCargoBundle, getCargoAtStation());
@@ -246,35 +251,37 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
 		CargoBundle expectedAtStaton = new CargoBundleImpl();
 		expectedAtStaton.setAmount(cargoType0FromStation0, 50);
+		expectedAtStaton.setAmount(cargoType0FromStation2, 50);
 
 		assertEquals(expectedAtStaton, getCargoAtStation());
 		assertEquals(emptyCargoBundle, getCargoOnTrain());
 	}
-	
+
 	/**  Tests that a train drops off any cargo before picking
 	 * up cargo.
 	 */
-	public void testPickUpAndDropOffSameCargoType(){
+	public void testPickUpAndDropOffSameCargoType() {
 		//Set cargo at station and on train.
 		getCargoOnTrain().setAmount(this.cargoType0FromStation2, 120);
-		getCargoAtStation().setAmount(this.cargoType0FromStation0, 300);
-		
+		getCargoAtStation().setAmount(this.cargoType0FromStation0, 200);
+
 		//Set station to demand cargo 0.
-		StationModel station = (StationModel)w.get(KEY.STATIONS, 0);
-		DemandAtStation demand = new DemandAtStation(new boolean[]{true, false, false, false});
+		StationModel station = (StationModel) w.get(KEY.STATIONS, 0);
+		DemandAtStation demand =
+			new DemandAtStation(new boolean[] { true, false, false, false });
 		station.setDemand(demand);
-				
+
 		assertTrue(station.getDemand().isCargoDemanded(0));
 		stopAtStation();
-					
+
 		CargoBundle expectedOnTrain = new CargoBundleImpl();
 		expectedOnTrain.setAmount(this.cargoType0FromStation0, 120);
-		
+
 		CargoBundle expectedAtStation = new CargoBundleImpl();
 		expectedAtStation.setAmount(this.cargoType0FromStation0, 80);
-		
+
 		assertEquals(expectedAtStation, getCargoAtStation());
-		assertEquals(expectedOnTrain, getCargoOnTrain());		
+		assertEquals(expectedOnTrain, getCargoOnTrain());
 	}
 
 	private void removeAllWagonsFromTrain() {

@@ -1,3 +1,6 @@
+27-Jul-2003 17:27:19 Luke
+	o Got DropOffAndPickupCargoMoveGeneratorTest running 
+	without failures.
 21-Jul-2003 23:48:47 Luke
 	o The player now gets charged for:
 		-building stations

@@ -37,6 +37,10 @@ public interface CargoBundle extends FreerailsSerializable {
 	int getAmount(int cargoType);
 	int getAmount(CargoBatch cb);
 	void setAmount(CargoBatch cb, int amount);
+	/** Adds the specified amount of the specified CargoBatch to the 
+	 * amount already present in the Bundle.
+	 */
+	void addCargo(CargoBatch cb, int amount);
 	boolean contains(CargoBatch cb);
 	Iterator cargoBatchIterator();
 	CargoBundle getCopy();

@@ -90,4 +90,9 @@ public class CargoBundleImpl implements CargoBundle {
 	public CargoBundle getCopy() {
 		return new CargoBundleImpl((HashMap)this.hashMap.clone());
 	}
+
+	public void addCargo(CargoBatch cb, int amount) {
+		int amountAlready = this.getAmount(cb);
+		this.setAmount(cb, amount + amountAlready);		
+	}
 }
