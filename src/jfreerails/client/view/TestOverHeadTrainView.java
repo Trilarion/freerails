@@ -1,6 +1,5 @@
 package jfreerails.client.view;
 
-import experimental.TrainPainter;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,11 +9,14 @@ import jfreerails.lib.GameJFrame;
 import jfreerails.lib.Painter;
 import jfreerails.world.misc.FreerailsPathIterator;
 import jfreerails.world.misc.IntLine;
+import jfreerails.world.train.EngineModel;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.Snake;
 import jfreerails.world.train.TrainList;
-import jfreerails.world.train.TrainModelPublic;
+import jfreerails.world.train.TrainModel;
+
+import experimental.TrainPainter;
 
 public class TestOverHeadTrainView implements Painter {
 	
@@ -28,7 +30,7 @@ public class TestOverHeadTrainView implements Painter {
 	}
 
 	public static void addtrainsTotrainlist(TrainList trains) {
-		TrainModelPublic train = new TrainModelPublic();
+		TrainModel train = new TrainModel(new EngineModel());
 		
 		Snake s = train.getPosition();
 		
@@ -38,7 +40,7 @@ public class TestOverHeadTrainView implements Painter {
 		
 		trains.addTrain(train);
 		
-		train = new TrainModelPublic();
+		train = new TrainModel(new EngineModel());
 		
 		s = train.getPosition();
 		
@@ -68,7 +70,7 @@ public class TestOverHeadTrainView implements Painter {
 
 		for (int i = 0; i < trainList.size(); i++) {
 
-			TrainModelPublic train = trainList.getTrain(i);
+			TrainModel train = trainList.getTrain(i);
 			Snake s = train.getPosition();
 			IntLine line = new IntLine();
 			FreerailsPathIterator it = s.pathIterator();
