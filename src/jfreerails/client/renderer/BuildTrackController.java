@@ -226,7 +226,7 @@ public class BuildTrackController implements GameModel {
         this.m_isBuildTrackSuccessful = false;
     }
     
-    /** Utility method the sets the CURSOR_MESSAGE property on the model root.*/
+    /** Utility method that sets the CURSOR_MESSAGE property on the model root.*/
 	private void setCursorMessage(String s) {
         m_modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, s);
     }
