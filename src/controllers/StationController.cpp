@@ -111,9 +111,8 @@ void StationController::stationDoBuild(int x, int y, int size)
     return;
   }
   connect = track->getConnect();
-/*  if (connect & TrackIsSignal)
-    connect &= ~TrackIsSignal; Verstehe Gott?? *gg* */
   #warning complete me
   connect |= TrackIsBlocked;
   track->setConnect(connect);
+  field->setElement(new Station(x,y, NULL, "", (Station::Size)size, NULL));
 }

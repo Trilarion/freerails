@@ -47,7 +47,10 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     PG_Point viewPos;
     
     void drawMapPixmap(int mapX, int mapY);
+    void drawElementsPixmap(int mapX, int mapY);
     void drawTrackPixmap(int mapX, int mapY);
+
+    void drawStationPixmap(int mapX, int mapY, Station* station);
     void drawTrackPixmap(int mapX, int mapY, Track* track);
     void drawPixmap(SDL_Surface* pixmap, int tilesetX, int tilesetY, int mapX, int mapY);
     void drawTilesPixmap(int tilesetPosX, int tilesetPosY, int mapX, int mapY);

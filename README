@@ -1,6 +1,6 @@
-=================
-FreeRails v0.0.7+
-=================
+================
+FreeRails v0.0.8
+================
 
 Welcome to FreeRails!
 
@@ -8,18 +8,10 @@ Welcome to FreeRails!
 IMPORTAND
 =========
 
-We are on porting the source from C to C++ so it can be, that you can't compile
-the cvs.
-Please do NOT mass us up with this problems!!! This can happen while porting.
-
-=========
-IMPORTAND
-=========
-
 We using 2 different libraries to display.
 
-1.) Qt 3.0.x
-2.) libSDL 1.2.x with paraGUI 1.0.2
+1.) Qt 3.1.x (3.1.1)
+2.) libSDL 1.2.x (1.2.5) with paraGUI 1.0.2 (1.0.3)
 
 See requirements.
 
@@ -50,9 +42,9 @@ Cause of that we don't want to redefine the wheel we use libraries. You have
 two possibilities for graphics.
 
 For Linux, Win32, BeOS, MacOS(, *BSD ?)
-1. you use SDL >= 1.2.0 (with SDL_ttf >= 2.0 and SDL_image >= 1.2) and paraGUI >= 1.0.2
+1. you use SDL >= 1.2.0 (with SDL_ttf >= 2.0 and SDL_image >= 1.2) and ParaGUI >= 1.0.2
 For Linux/X11, Win32, *BSD, OS/2(XFree86), several UNIX's
-2. you use Qt >= 3.0.0 (We are on switching to Qt 3.0.0)
+2. you use Qt >= 3.1.0
 
 
 
@@ -64,7 +56,7 @@ SDL_ttf:
     http://www.libsdl.org/projects/SDL_ttf
 SDL_image:
     http://www.libsdl.org/projects/SDL_image
-paraGUI:
+ParaGUI:
     http://www.paragui.org
 Qt:
     http://www.trolltech.com
@@ -79,10 +71,12 @@ If you have extracted fresh from CVS then you need at first to autogenerate the
 configuration scripts. Do this by typing "sh ./autogen.sh".
 
 Use the configure command to generate the makefiles with your configuration.
-Try "configure --help" to see all the options you can use.
-By standard configuration the Qt libraries are choosen as ground graphic library.
+Try "./configure --help" to see all the options you can use.
+By standard configuration the Qt libraries are choosen as ground graphic
+library. With "./configure --with-paragui-client" you can choose the libSDL
+with ParaGUI version.
 
-Now type make in the directory where the README file is.
+Now type "make" in the directory where the README file is.
 If you get errors feel free and write to the mailinglist or in the buglist on
 http://sourceforge.net/projects/freerails .
 There is no install possibilities at the moment.
@@ -91,10 +85,10 @@ There is no install possibilities at the moment.
 Starting a new game:
 ====================
 
-Start under your X11 environment with "./src/main/freerails" in the directory where this
-README is.
-If you using the paragui version you can specify the theme which can be use as parameter
-or you can use "-f" for fullscreen view.
+Start under your X11 environment with "./src/main/freerails" in the directory
+where this README is.
+If you using the paragui version you can specify the theme which can be use
+as parameter or you can use "-f" for fullscreen view.
 
 
 Playing the game:

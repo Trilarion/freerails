@@ -174,9 +174,23 @@ void GameMapView::drawMapPixmap(int mapX, int mapY) {
   drawTilesPixmap(tilesetPosX,tilesetPosY,mapX,mapY);
 }
 
-void GameMapView::drawTrackPixmap(int mapX, int mapY) {
+void GameMapView::drawElementsPixmap(int mapX, int mapY) {
 
-  int tilesetX, tilesetY;
+  MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
+  if (field==NULL) return;
+  GameElement* element = field->getElement();
+  if (element==NULL) return;
+  
+  switch (element->getTypeID())
+  {
+    case (GameElement::idStation):
+      drawStationPixmap(mapX, mapY, (Station*) element);
+    break;
+// others like industrie there
+  }
+}
+
+void GameMapView::drawTrackPixmap(int mapX, int mapY) {
 
   MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
   if (field==NULL) return;
@@ -184,6 +198,46 @@ void GameMapView::drawTrackPixmap(int mapX, int mapY) {
   if (track==NULL) return;
   drawTrackPixmap(mapX, mapY, track);  
 }
+
+void GameMapView::drawStationPixmap(int mapX, int mapY, Station* station) {
+#warning It dont look for station type
+  int tilesetX, tilesetY;
+  MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
+  if (field == NULL) return;
+  Track* track = field->getTrack();
+  if (track==NULL) return;
+  unsigned int connect = track->getConnect();
+  
+  switch (connect ^ TrackIsBlocked)
+  {
+    case TrackGoNorth:
+    case TrackGoSouth:
+    case TrackGoNorth | TrackGoSouth:
+      tilesetX=18*30+15;
+      tilesetY=26*30+15;
+    break;
+    case TrackGoNorthEast:
+    case TrackGoSouthWest:
+    case TrackGoNorthEast | TrackGoSouthWest:
+      tilesetX=20*30+15;
+      tilesetY=26*30+15;
+    break;
+    case TrackGoEast:
+    case TrackGoWest:
+    case TrackGoEast | TrackGoWest:
+      tilesetX=22*30+15;
+      tilesetY=26*30+15;
+    break;
+    case TrackGoNorthWest:
+    case TrackGoSouthEast:
+    case TrackGoNorthWest | TrackGoSouthEast:
+      tilesetX=24*30+15;
+      tilesetY=26*30+15;
+    break;
+  }
+  drawPixmap(trackImage, tilesetX, tilesetY, mapX, mapY);
+}
+
 
 void GameMapView::drawTrackPixmap(int mapX, int mapY, Track* track) {
 
@@ -437,6 +491,7 @@ void GameMapView::regenerateTile(int x, int y)
     for (int x1=-1;x1<=1;x1++)
     {
       drawMapPixmap(x+x1, y+y1);
+      drawElementsPixmap(x+x1, y+y1);
     }
   }
 

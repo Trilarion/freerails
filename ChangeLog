@@ -1,3 +1,7 @@
+Tue Apr 29 01:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o update to build and View Stations.
+o ParaGUI Client needs a bit clean up for the View. The Show* are for deletion.
+o Will release codebase as 0.0.8
 Fri Apr 25 02:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o add "std::" to the standard C++ functions in network code
 o workaround for the track corner drawing problem
