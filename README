@@ -1,7 +1,9 @@
-Freerails Java - version 0.1.1++
+Freerails Java - version 0.1.3
 
 What's new:
--	Bug fixes and refactoring, so not much to see!
+o	You can choose the type of engine and wagons that
+	a train has.
+o	Trains are built at stations.	
  
 Getting it, either:
 

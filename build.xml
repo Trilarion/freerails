@@ -36,6 +36,8 @@
             <include name="*.png" />
 
             <include name="*.dtd" />
+            
+             <include name="*.gif" />
          </fileset>
       </copy>
 
@@ -99,6 +101,8 @@
          <include name="src/jfreerails/data/*.png" />
 
          <include name="src/jfreerails/data/*.dtd" />
+         
+         <include name="src/jfreerails/data/*.gif" />
 
          <include name="README" />
 
