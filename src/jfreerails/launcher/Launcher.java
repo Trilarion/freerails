@@ -31,7 +31,8 @@ import jfreerails.world.player.Player;
  */
 public class Launcher extends javax.swing.JFrame implements
 FreerailsProgressMonitor {
-    private Component[] wizardPages = new Component[4];
+    private static final int GAME_SPEED_SLOW = 10;
+	private Component[] wizardPages = new Component[4];
     int currentPage = 0;
 
     public void setMessage(String s) {
@@ -84,6 +85,7 @@ FreerailsProgressMonitor {
 		} else {
 		    sci = gs.getSavedGame(this, 0);
 		}
+		sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);  //Set initial game speed to slow.
 		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
 		    ScreenHandler.FULL_SCREEN;
 		try {
@@ -403,7 +405,7 @@ FreerailsProgressMonitor {
 	    case 3:
 		/* Connection status screen */
 		prevButton.setEnabled(false);
-		sci.setTargetTicksPerSecond(30);
+		sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);
 		setNextEnabled(false);
 	}
     }//GEN-LAST:event_nextButtonActionPerformed

@@ -92,7 +92,7 @@ public class ServerControlModel {
 
             /* TODO one day we will make turbo faster :) */
             new SetTargetTicksPerSecondAction("Turbo", 50)
-            }, 2);
+            }, 1);
 
     public void setServerControlInterface(ServerControlInterface i) {
         serverInterface = i;
