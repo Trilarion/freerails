@@ -12,7 +12,7 @@
 
 MyGameApplication::MyGameApplication(int argc, char *argv[]) : GameApplication(argc, argv)
 {
-  worldMap=NULL;
+  /*  worldMap=NULL; */
   // Some rather silly demonstration code:
 /*  GameController controll("default",1900,1,1);
   Train train(&controll,NULL, &pl);
@@ -37,7 +37,8 @@ void MyGameApplication::initSingleGame(const std::string name, int playFieldWidt
   }
   else
   {
-    worldMap = MapGenerator().generateWorld(playFieldWidth, playFieldHeight);
+    
+    /* worldMap = MapGenerator().generateWorld(playFieldWidth, playFieldHeight); */
   }
 }
 
@@ -51,7 +52,7 @@ void MyGameApplication::initServerGame(const std::string name, int playFieldWidt
   }
   else
   {
-    worldMap = MapGenerator().generateWorld(playFieldWidth, playFieldHeight);
+    /*  worldMap = MapGenerator().generateWorld(playFieldWidth, playFieldHeight);  */
   }
 }
 
@@ -59,4 +60,5 @@ void MyGameApplication::initClientGame(const std::string name)
 {
   std::cerr << "ClientGame" << std::endl;
   playerSelf = new Player(name,Player::HUMAN);
+
 }

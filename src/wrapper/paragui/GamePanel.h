@@ -14,14 +14,14 @@
 
 #include <pgeventobject.h>
 
-#include "Engine.h"
+#include "GuiEngine.h"
 #include "Message.h"
 
 class GamePanel: public PG_ThemeWidget, public PG_EventObject {
 
   public:
     /**  */
-    GamePanel(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine, GameMapView* _mapView);
+    GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _engine, GameMapView* _mapView);
     /**  */
     ~GamePanel();
 
@@ -36,7 +36,7 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     PG_Button* trackButton;
     PG_Button* stationButton;
     PG_Button* pauseButton;
-    Engine* engine;
+    GuiEngine* guiEngine;
     GameMapView* mapView;
 };
 

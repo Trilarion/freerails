@@ -30,14 +30,15 @@ PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,0, "Window") {
 
   ok=new PG_Button(this, type, PG_Rect(10,260,180,20), "OK");
   back=new PG_Button(this, -1, PG_Rect(210,260,180,20), "Zurück");
-  buttonflag=0;
+  buttonflag=1; /* Single Player */
   
   if (type>1)
   {
+    buttonflag=2; /* MULTIPLAYER SERVER */
     radio_server = new PG_RadioButton(this, 20, PG_Rect(10, 60, 240, 20), "Be a server");
     radio_client = new PG_RadioButton(this, 21, PG_Rect(10, 90, 240, 20), "Be a client", radio_server);
-    ip_adress = new PG_MaskEdit(this, PG_Rect(10,120,240,20));
-    ip_adress->SetMask("###.###.###.###");
+    ip_address = new PG_MaskEdit(this, PG_Rect(10,120,240,20));
+    ip_address->SetMask("###.###.###.###");
     port = new PG_MaskEdit(this, PG_Rect(260,120,100,20));
     port->SetMask("#####");
     port->SetText("9010");
@@ -49,7 +50,7 @@ GameDataSelectDialog::~GameDataSelectDialog() {
   {
     delete radio_client;
     delete radio_server;
-    delete ip_adress;
+    delete ip_address;
   }
   delete name;
   delete width;
@@ -59,8 +60,6 @@ GameDataSelectDialog::~GameDataSelectDialog() {
 }
 
 int GameDataSelectDialog::show() {
-
-  buttonflag=0;
 
   Show();
   RunModal();
@@ -76,35 +75,30 @@ bool GameDataSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
     buttonflag=id;
     SendMessage(this, MSG_MODALQUIT, 0, 0);
     return true;
-  } else
-  if (widget==ok)
-  {
+  } else if (widget==ok){
     std::cerr << getName() << std::endl;
-    //TODO taste if name != "" ist
-    buttonflag=id;
+    //TODO test if name != "" ist
+    /*    buttonflag=id; */
     SendMessage(this, MSG_MODALQUIT, 0, 0);
     return true;
-  } else
-  if (widget==radio_server)
-  {
-    if (radio_server->GetPressed())
-    {
+  } else if (widget==radio_server){
+    if (radio_server->GetPressed()){
       width->Show();
       height->Show();
-      ip_adress->Hide();
+      ip_address->Hide();
       port->Hide();
+      buttonflag=2; /* MULTIPLAYER SERVER */
     }
     return true;
-  } else
-  if (widget==radio_client)
-  {
+  } else if (widget==radio_client){
     if (radio_client->GetPressed())
-    {
-      width->Hide();
-      height->Hide();
-      ip_adress->Show();
-      port->Show();
-    }
+      {
+	width->Hide();
+	height->Hide();
+	ip_address->Show();
+	port->Show();
+	buttonflag=3; /* MULTIPLAYER CLIENT */
+      }
     return true;
   }
   return false;

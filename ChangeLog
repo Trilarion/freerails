@@ -1,3 +1,7 @@
+Wed Jan 15 02:30:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
+o GUIEngine added
+o It is possible to create a server. it doesn't respond to any requests.
+  in fact it receives and closes connections.
 Wed Jan 15 02:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o canBuildElement in TrackController should now be ready
 o the ParaGUI Client now shows on which Field you can build a Track

@@ -8,7 +8,7 @@
 #define WRAPPERTYPE_BASE 1
 
 #include "WorldMap.h"
-#include "Engine.h"
+#include "GuiEngine.h"
 #include "Client.h"
 
 class GameMainWindow;
@@ -43,15 +43,16 @@ public:
     virtual void initClientGame(const std::string) {};
     virtual void initServerGame(const std::string, int, int, int) {};
 
-    Engine* getEngine() { return engine; };
+    GuiEngine* getGuiEngine() { return guiEngine;};
     
 protected:
     GameMainWindow* mW;
-    WorldMap* worldMap;
-    Engine* engine;
+    /* WorldMap* worldMap; */   /* why the fuck WorldMap is here???, are we all mad */
+    GuiEngine* guiEngine;
+    
     Player* playerSelf;
-    Client* client;
-//    Server* server;
+    /* Client* client; */
+    /* Server* server; */
 };
 
 #endif

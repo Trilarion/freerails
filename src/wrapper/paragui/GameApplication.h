@@ -16,7 +16,7 @@
 #include "SDL.h"
 
 #include "Message.h"
-#include "Engine.h"
+/* #include "Engine.h" */
 
 
 #include <pgapplication.h>
@@ -50,7 +50,7 @@ private:
     GameMapView* mapView;
     GameNetView* netView;
     GamePanel* panel;
-    Engine* engine;
+    /* Engine* engine; */
 };
 
 #endif

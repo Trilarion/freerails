@@ -9,8 +9,8 @@ if WRAPPER_PARAGUI
 endif
 
 freerails_LDADD = ../wrapper/$(WRAPPER)/libwrapper.a ../game/libgame.a \
-    ../map/libmap.a ../controllers/libcontrollers.a ../elements/libelements.a \
-    ../wrapper/libwrapperbase.a ../network/libnetwork.a
+    ../map/libmap.a ../controllers/libcontrollers.a ../wrapper/libwrapperbase.a \
+     ../elements/libelements.a ../network/libnetwork.a
 freerails_LDFLAGS = $(WRAPPER_LDF) $(all_libraries)
 INCLUDES = $(all_includes) -I$(top_srcdir)/src/wrapper/$(WRAPPER) \
     -I$(srcdir) -I$(top_srcdir)/src/wrapper \

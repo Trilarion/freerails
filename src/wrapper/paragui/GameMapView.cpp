@@ -8,12 +8,10 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine):
+GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine):
 PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
-  engine=_engine;
-  trackcontroller = (TrackController *)engine->getControllerDispatcher()->getController(GameElement::idTrack);
-  stationcontroller = (StationController *)engine->getControllerDispatcher()->getController(GameElement::idStation);
+  guiEngine=_guiEngine;
 
   PG_Point p;
   
@@ -33,10 +31,10 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   verticalScrollBar = new PG_ScrollBar(this,200/*ID*/,PG_Rect(w-15,0,15,h-15),PG_SB_VERTICAL);
   horizontalScrollBar = new PG_ScrollBar(this,201/*ID*/,PG_Rect(0,h-15,w-15,15),PG_SB_HORIZONTAL);
   
-  verticalScrollBar->SetRange(0,(engine->getWorldMap()->getHeight()*30)-h);
+  verticalScrollBar->SetRange(0,(guiEngine->getWorldMap()->getHeight()*30)-h);
   verticalScrollBar->SetPageSize(h);
   verticalScrollBar->SetLineSize(30);
-  horizontalScrollBar->SetRange(0,(engine->getWorldMap()->getWidth()*30)-w);
+  horizontalScrollBar->SetRange(0,(guiEngine->getWorldMap()->getWidth()*30)-w);
   horizontalScrollBar->SetPageSize(w);
   horizontalScrollBar->SetLineSize(30);
   mouseType=0;
@@ -59,7 +57,7 @@ void GameMapView::getMapImage(SDL_Surface* surface, int offsetX, int offsetY, in
   SDL_Rect rectSRC;
   rectSRC.w=30;
   rectSRC.h=30;
-  MapField* field = engine->getWorldMap()->getMapField(x,y);
+  MapField* field = guiEngine->getWorldMap()->getMapField(x,y);
   if (field==NULL) return;
   MapField::FieldType type=field->getType();
   MapField* otherField;
@@ -195,13 +193,13 @@ int GameMapView::getImagePos(int x, int y, MapField::FieldType type)
   MapField* field;
   int xpos=0;
   
-  field=engine->getWorldMap()->getMapField(x,y-1);
+  field=guiEngine->getWorldMap()->getMapField(x,y-1);
   if (field!=NULL && field->getType()!=type) xpos+=1;
-  field=engine->getWorldMap()->getMapField(x+1,y);
+  field=guiEngine->getWorldMap()->getMapField(x+1,y);
   if (field!=NULL && field->getType()!=type) xpos+=2;
-  field=engine->getWorldMap()->getMapField(x,y+1);
+  field=guiEngine->getWorldMap()->getMapField(x,y+1);
   if (field!=NULL && field->getType()!=type) xpos+=4;
-  field=engine->getWorldMap()->getMapField(x-1,y);
+  field=guiEngine->getWorldMap()->getMapField(x-1,y);
   if (field!=NULL && field->getType()!=type) xpos+=8;
 
   return xpos;
@@ -212,13 +210,13 @@ int GameMapView::getRiverImagePos(int x, int y)
   MapField* field;
   int xpos=0;
   
-  field=engine->getWorldMap()->getMapField(x,y-1);
+  field=guiEngine->getWorldMap()->getMapField(x,y-1);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=1;
-  field=engine->getWorldMap()->getMapField(x+1,y);
+  field=guiEngine->getWorldMap()->getMapField(x+1,y);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=2;
-  field=engine->getWorldMap()->getMapField(x,y+1);
+  field=guiEngine->getWorldMap()->getMapField(x,y+1);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=4;
-  field=engine->getWorldMap()->getMapField(x-1,y);
+  field=guiEngine->getWorldMap()->getMapField(x-1,y);
   if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=8;
 
   return xpos;
@@ -230,8 +228,8 @@ int GameMapView::get3DImagePos(int x, int y, MapField::FieldType type)
   MapField* fieldRight;
   int xpos=0;
   
-  fieldLeft=engine->getWorldMap()->getMapField(x-1,y);
-  fieldRight=engine->getWorldMap()->getMapField(x+1,y);
+  fieldLeft=guiEngine->getWorldMap()->getMapField(x-1,y);
+  fieldRight=guiEngine->getWorldMap()->getMapField(x+1,y);
   if (fieldLeft!=NULL && fieldRight!=NULL)
   {
     if (fieldLeft->getType()==type && fieldRight->getType()==type)
@@ -265,7 +263,7 @@ void GameMapView::setMouseType(MouseType type) {
 
 void GameMapView::eventMouseLeave() {
 
-  regenerateTile(mouseOldX,mouseOldY);
+  regenerateTile(mouseOldMapX,mouseOldMapY);
   view->Update();
 }
 
@@ -305,6 +303,7 @@ void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
   SDL_BlitSurface(trackImage, &rectSRC, imageSurface, &rectDST);
 }
 
+
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
   unsigned int x,y;
@@ -340,7 +339,6 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   };
   // End of to be replace
 
-  GameElement* new_element;
   mouseOldMapX = x;
   mouseOldMapY = y;
 
@@ -348,27 +346,26 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   
     case buildStation:
       cerr << "BuildStation" << endl;
-      new_element = new Station(x,y,NULL,"",Station::Small,NULL,NULL);
-      if (stationcontroller -> canBuildElement(new_element))
-      {
-        showTrack(x,y,20*30+15,26*30+15);
+      if(guiEngine->testBuildStation(x,y)){
+	showTrack(x,y,20*30+15,26*30+15);
       }
       break;
     case buildTrack:
       cerr << "BuildTrack" << endl;
-      new_element = new Track(x,y,NULL,dir);
-      if (trackcontroller->canBuildElement(new_element))
-      {
+      if(guiEngine->testBuildTrack(x,y,dir)){
         showTrack(x,y,(dir-1)*2*30+15,0*30+15);
-	trackcontroller->getOtherConnectionSide(&x,&y,&dir);
-        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
+	/*
+	  trackcontroller->getOtherConnectionSide(&x,&y,&dir);
+	  showTrack(x,y,(dir-1)*2*30+15,0*30+15);
+	*/
       }
+     
       break;
     default:
       return false;
       break;
   }
-  if (new_element!=NULL) delete new_element;
+
   Update();
   return true;
 }

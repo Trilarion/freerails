@@ -7,13 +7,13 @@
 
 #include "GameMainWindow.h"
 #include "WorldMap.h"
-#include "Engine.h"
+#include "GuiEngine.h"
 #include "MapField.h"
 
-#include "TrackController.h"
-#include "StationController.h"
-#include "Track.h"
-#include "Station.h"
+/*#include "TrackController.h"
+  #include "StationController.h"
+  #include "Track.h"
+  #include "Station.h"*/
 
 #include <paragui_types.h>
 #include <pgthemewidget.h>
@@ -28,14 +28,14 @@ class GameMapView: public PG_ThemeWidget {
     enum MouseType {normal=0,
                     buildTrack=10, buildStation, buildSignal};
     /**  */
-    GameMapView(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine);
+    GameMapView(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine);
     /**  */
     ~GameMapView();
     
     void setMouseType(MouseType type);
 
   private:
-    Engine* engine;
+    GuiEngine* guiEngine;
     
     SDL_Surface* tilesImage;
     SDL_Surface* trackImage;
@@ -52,8 +52,8 @@ class GameMapView: public PG_ThemeWidget {
     
     PG_Point viewPos;
     
-    TrackController* trackcontroller;
-    StationController* stationcontroller;
+    /* TrackController* trackcontroller;
+       StationController* stationcontroller; */
     
     void getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y);
     int getImagePos(int x, int y, MapField::FieldType type);

@@ -7,4 +7,5 @@ noinst_LIBRARIES = libwrapperbase.a
 libwrapperbase_a_SOURCES = BaseApplication.cpp \
     BaseDialog.cpp \
     BaseMainWindow.cpp \
-    BaseWidget.cpp
+    BaseWidget.cpp \
+    GuiEngine.cpp

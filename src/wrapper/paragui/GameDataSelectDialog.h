@@ -27,6 +27,8 @@ class GameDataSelectDialog: public PG_Window {
     int show();
     
     std::string getName() {return std::string(name->GetText());};
+    int getPort() {return atoi(port->GetText());};
+    char *getIpAddress() {return (char *)ip_address->GetText();};
     
     int getWidth() {return width->GetValue();};
     int getHeight() {return height->GetValue();};
@@ -40,7 +42,7 @@ class GameDataSelectDialog: public PG_Window {
     PG_DropDown* name;
     PG_SpinnerBox* width;
     PG_SpinnerBox* height;
-    PG_MaskEdit* ip_adress;
+    PG_MaskEdit* ip_address;
     PG_MaskEdit* port;
     PG_Button* ok;
     PG_Button* back;

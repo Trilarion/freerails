@@ -3,47 +3,53 @@
 #include <iostream>
 
 #include "Engine.h"
+#include "MapGenerator.h"
 
-Engine::Engine(WorldMap* _worldMap, Player* _player)
+Engine::Engine(Player* _player, int w, int h)
 {
-  worldMap = _worldMap;
+  worldMap = MapGenerator().generateWorld(w, h);
   isSingle = true;
   isClient = false;
   isServer = false;
   
-  Init(_player, _worldMap);
+  Init(_player, worldMap);
 
   std::cerr << "engine(alone) inited" << std::endl;
 }
 
-Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server)
+Engine::Engine(Player* _player, int w, int h, int port)
 {
   gameState = Initializing;
 
-  worldMap = _worldMap;
-  server=_server;
+  worldMap = MapGenerator().generateWorld(w, h);
+  
+  server=new Server(port);
+  /* server=_server; */
   isSingle = false;
   isClient = false;
   isServer = true;
   
-  Init(_player, _worldMap);
+  Init(_player, worldMap);
   
    std::cerr << "engine(Server) inited" << std::endl;
 }
 
-Engine::Engine(Player* _player, Client* _client)
+Engine::Engine(Player* _player, int w, int h, char *server, int port)
 {
   gameState = Initializing;
-
+  
   worldMap = NULL;
-  client=_client;
+  client=new Client();
+  client->open(server,port);
+  /* client=_client; */
+  
   isSingle = false;
   isClient = true;
   isServer = false;
   
 //  Init(_player, _worldMap); // Must be done Later!
   
-   std::cerr << "engine(Client) inited" << std::endl;
+  std::cerr << "engine(Client) inited" << std::endl;
 }
 
 void Engine::Init(Player* _player, WorldMap* _worldMap)

@@ -26,9 +26,9 @@ class Engine
     enum GameState { ask=0, Initializing, Waiting, Starting, Running, Pausing, Stopping, Error };
 
     /** Constructor */
-    Engine(WorldMap* _worldMap, Player* _player);                   // For a single game
-    Engine(WorldMap* _worldMap, Player* _player, Server* _server);  // For a Server game
-    Engine(Player* _player, Client* _client);                       // For a Client game
+    Engine(Player* _player, int w, int h);                   // For a single game
+    Engine(Player* _player, int w, int h, int port);  // For a Server game
+    Engine(Player* _player, int w, int h, char *server, int port); // For a Client game
     /** Destructor */
     virtual ~Engine();
 
@@ -71,7 +71,7 @@ class Engine
     MessageQueue* engine2net;
 
 
-    WorldMap* worldMap;  // Points to the worldmap
+    WorldMap* worldMap;  // The worldmap
     Server* server;      // Points to the Server connection or to NULL
     Client* client;      // Points to the Client connection or to NULL
 

@@ -6,9 +6,7 @@
 
 PARAGUI_CALLBACK(GamePanel::pause_handler) {
 
-  Engine::GameState state = Engine::Pausing;
-  Message* msg=new Message(Message::stateOfGame, 0,&state);
-  engine->sendMsg(msg);
+  guiEngine->changeGameState(GuiEngine::Pausing);
   
 }
 
@@ -35,7 +33,7 @@ PARAGUI_CALLBACK(GamePanel::clickStationButton) {
 }
 
 
-GamePanel::GamePanel(GameMainWindow* parent, int x, int y, int w, int h, Engine* _engine, GameMapView* _mapView):
+GamePanel::GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine, GameMapView* _mapView):
 PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   SetBackgroundBlend(0);
   trackButton=new PG_Button(this,1,PG_Rect(5,400,25,25));
@@ -53,7 +51,7 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   pauseButton=new PG_Button(this,3,PG_Rect(5,430,125,25),"PAUSE");
   pauseButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::pause_handler);
   
-  engine=_engine;
+  guiEngine=_guiEngine;
   mapView=_mapView;
 }
 

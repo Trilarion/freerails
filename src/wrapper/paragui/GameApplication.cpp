@@ -36,8 +36,10 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
 
   cerr << "networking" << endl;
 
+  /*
   Client* client=new Client();
   client->open("localhost",30000);
+  */
 /*  *client << "Testmessage";
   
   *client >> replay;
@@ -58,11 +60,12 @@ int GameApplication::runEngine(void* data)
 {
 
   GameApplication* object = static_cast<GameApplication*>(data);
-  while (object->engine->getGameState()<Engine::Stopping) {
-    object->engine->checkNet();
-    object->engine->checkNext(SDL_GetTicks());
+  while (object->guiEngine->getGameState()<GuiEngine::Stopping) {
+    object->guiEngine->checkNet();
+    object->guiEngine->checkNext(SDL_GetTicks());
     SDL_Delay(10);
   }
+  
   return 0;
 }
 
@@ -78,20 +81,21 @@ int GameApplication::run() {
     GameMainWindow mw( 0, 0, 800, 600);
     GameModeSelectDialog dialog(&mw, 250, 150, 300, 200, "Choose game mode");
     result=dialog.show();
-    printf("Result=%i\n",result);
+    cout << "Result=" << result << endl;
+    /* printf("Result=%i\n",result); */
     if (result==-1) {  // Quit
       pGlobalApp->Quit();
       return 0;
     }
     GameDataSelectDialog dataDialog(&mw, 200, 100, 400, 300, "Choos game Data", result);
     result=dataDialog.show();
-    
+    cout << "Result=" << result << endl;
     // get Player Name
     if (result==1) {  // Single Player
       initSingleGame(dataDialog.getName(), dataDialog.getWidth(), dataDialog.getHeight(), 0);
-      engine=new Engine(worldMap, playerSelf);
-      mapView=new GameMapView(&mw, 0, 0, 650, 600 , engine);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
+      guiEngine=new GuiEngine(playerSelf, dataDialog.getWidth(), dataDialog.getHeight());
+      mapView=new GameMapView(&mw, 0, 0, 650, 600 , guiEngine);
+      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
       mapView->Show();
       panel->Show();
     } else
@@ -100,13 +104,13 @@ int GameApplication::run() {
       // TODO
       // get Network settings
       initServerGame(dataDialog.getName(), dataDialog.getWidth(), dataDialog.getHeight(), 0);
-      // get Network
-      Server* server=new Server(30000);
+      /* Server* server=new Server(30000); */
+      
       // start engine Server
-      engine=new Engine(worldMap, playerSelf, server);
-
-      mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
+      guiEngine=new GuiEngine(playerSelf, dataDialog.getWidth(), dataDialog.getHeight(), 30000);
+      
+      mapView=new GameMapView(&mw, 0, 0, 650, 450 , guiEngine);
+      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
       
       mapView->Show();
@@ -116,34 +120,43 @@ int GameApplication::run() {
     if (result==3) {
       // Multi Player Client
       initClientGame(dataDialog.getName());
-/*    Need's change to client
-      Server* server=new Server(30000);
-      engine=new Engine(worldMap, playerSelf, server);
-*/
-      Client* client=new Client();
-      
+      /*    Need's change to client
+	    Server* server=new Server(30000);
+	    engine=new Engine(playerSelf, server);
+      */
+      /*
+	Client* client=new Client();
+      */
       /* client->open(host, port);*/
+      /* Start engine client */
 
-      mapView=new GameMapView(&mw, 0, 0, 650, 450 , engine);
-      panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);
+      guiEngine=new GuiEngine(playerSelf, dataDialog.getWidth(), dataDialog.getHeight(), 
+			      dataDialog.getIpAddress(), dataDialog.getPort());
+      
+      mapView=new GameMapView(&mw, 0, 0, 650, 450 , guiEngine);
+      panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
-
+      
+      cout << " Why not..." << endl;
+      
       mapView->Show();
       panel->Show();
       netView->Show();
+
+      cout << " WHAAA" << endl;
     }
     if (result>0)
     {
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
-      Engine::GameState state = Engine::Running;
-      Message* msg=new Message(Message::stateOfGame, 0,&state);
-      engine->sendMsg(msg);
+
+      guiEngine->changeGameState(GuiEngine::Running);
+      
       pGlobalApp->Run();
-      state = Engine::Stopping;
-      msg=new Message(Message::stateOfGame, 0,&state);
-      engine->sendMsg(msg);
+      
+      guiEngine->changeGameState(GuiEngine::Stopping);
+      
       SDL_WaitThread(thread2, NULL);
-      if (engine!=NULL) { delete engine; engine=NULL; }
+      if (guiEngine!=NULL) { delete guiEngine; guiEngine=NULL; }
       if (mapView!=NULL) { delete mapView; mapView=NULL; }
       if (netView!=NULL) { delete netView; netView=NULL; }
       if (panel!=NULL) { delete panel; panel=NULL; }
