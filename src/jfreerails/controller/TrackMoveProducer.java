@@ -147,7 +147,7 @@ final public class TrackMoveProducer {
 	}
 	private void upgradeTrack(Point point, TrackRule trackRule) {
 
-		TrackPiece before=(TrackPiece)w.getMapElement(point.x, point.y);
+		TrackPiece before=(TrackPiece)w.getTile(point.x, point.y);
 		TrackPiece after=trackRule.getTrackPiece(before.getTrackConfiguration());
 		ChangeTrackPieceMove move = new ChangeTrackPieceMove( before, after, point);
 		MoveStatus moveStatus = moveReceiver.processMove(move);

@@ -91,7 +91,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 						&& (tile.y < mapSize.height)) {
 						
 							
-						TrackPiece tp = (TrackPiece)w.getMapElement(tile.x, tile.y);	
+						TrackPiece tp = (TrackPiece)w.getTile(tile.x, tile.y);	
 						
 						int graphicsNumber = tp.getTrackGraphicNumber();
 													
@@ -189,7 +189,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 				&& (tile.y >= 0)
 				&& (tile.y < mapSize.height)) {
 					
-				TerrainTile tt = (TerrainTile)w.getMapElement(tile.x, tile.y);	
+				TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);	
 				int rgb = tt.getRGB();
 				tiles.getTileViewWithRGBValue(rgb).renderTile(
 					g,

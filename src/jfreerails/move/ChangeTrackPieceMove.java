@@ -54,7 +54,7 @@ final public class ChangeTrackPieceMove
 
 		//Check that the current track piece at this.location is
 		//the same as this.oldTrackPiece.
-		TrackPiece currentTrackPieceAtLocation = (TrackPiece)w.getMapElement(location.x ,location.y);
+		TrackPiece currentTrackPieceAtLocation = (TrackPiece)w.getTile(location.x ,location.y);
 
 		if ((currentTrackPieceAtLocation.getTrackConfiguration()
 			!= oldTrackPiece.getTrackConfiguration())
@@ -113,7 +113,7 @@ final public class ChangeTrackPieceMove
 		if (!moveStatus.isOk()) {
 			return moveStatus;
 		} else {
-			w.setMapElment(location.x, location.y, newTrackPiece);			
+			w.setTile(location.x, location.y, newTrackPiece);			
 			return moveStatus;
 		}
 
@@ -140,13 +140,13 @@ final public class ChangeTrackPieceMove
 		Dimension mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
 		//Avoid array-out-of-bounds exceptions.
 		if (point.y > 0) {			
-			TrackPiece tp = (TrackPiece)w.getMapElement(point.x, point.y-1);
+			TrackPiece tp = (TrackPiece)w.getTile(point.x, point.y-1);
 			trackTemplateAbove = tp.getTrackGraphicNumber();				
 		} else {
 			trackTemplateAbove = 0;
 		}
 		if ((point.y + 1) < mapSize.height) {			
-			TrackPiece tp = (TrackPiece)w.getMapElement(point.x, point.y+1);
+			TrackPiece tp = (TrackPiece)w.getTile(point.x, point.y+1);
 			trackTemplateBelow = tp.getTrackGraphicNumber();	
 		} else {
 			trackTemplateBelow = 0;

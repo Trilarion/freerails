@@ -3,6 +3,7 @@ package jfreerails.world.top;
 import java.util.ArrayList;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.track.NullTrackPiece;
 
 public class WorldImpl implements World {
 	
@@ -10,12 +11,22 @@ public class WorldImpl implements World {
 	
 	private FreerailsSerializable[][] map;
 	
+	public WorldImpl(){
+		this.setup(0, 0);			
+	}
+	
 	public WorldImpl(int mapWidth, int mapHeight){
 		this.setup(mapWidth, mapHeight);
 	}
 	
 	public void setup(int mapWidth, int mapHeight){
 		map = new FreerailsSerializable[mapWidth][mapHeight];
+		for(int x = 0; x < mapWidth; x++){
+			for(int y = 0; y < mapHeight; y++){
+				map[x][y]=NullTrackPiece.getInstance();				
+			}
+		}
+		
 		for(int i = 0; i < lists.length ; i++){			
 			lists[i] = new ArrayList();
 		}
@@ -45,11 +56,11 @@ public class WorldImpl implements World {
 		return map[0].length;
 	}
 
-	public void setMapElment(int x, int y, FreerailsSerializable element) {
+	public void setTile(int x, int y, FreerailsSerializable element) {
 		map[x][y]=element;
 	}
 
-	public FreerailsSerializable getMapElement(int x, int y) {
+	public FreerailsSerializable getTile(int x, int y) {
 		return map[x][y];
 	}
 

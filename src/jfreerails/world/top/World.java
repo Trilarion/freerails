@@ -5,21 +5,21 @@ import jfreerails.world.common.FreerailsSerializable;
 /** <p>This interface defines a unified set of methods to access the elements that make
  * up the game world.  One can think of it as a specific-purpose Collection.
  * Game world elements are either placed on a 2D grid - the map - or in one of a number
- * of lists.  The lists are accessed using keys defined in the class {@link ListKey}.</p>
+ * of lists.  The lists are accessed using keys defined in the class {@link KEY}.</p>
  *
  * <p>Example: the following code gets train #5.<br>
- * <CODE> TrainModel t = (TrainModel)world.get(ListKey.TRAIN_LIST, 5);</CODE></p>
+ * <CODE> TrainModel t = (TrainModel)world.get(KEY.TRAINS, 5);</CODE></p>
  *
  * <p>The motivation for accessing lists using keys is that one does not need to add a new
  * class or change the interface of the World class when a new list is added.  Instead one
- * can just add a new entry to the class ListKey.</p>
+ * can just add a new entry to the class KEY.</p>
  *
  * <p>Also notice that incontrast to, say, <CODE>java.util.List</CODE> there is no remove()
  * method that shifts any subsequent elements to the left (subtracts one from their indices).
  * This means that an elements' position in a list can be used as an address space independent
  * way to reference the element.  If you want to remove an element from a list, you should
  * set it to null, e.g. <br>
- * <CODE>world.set(ListKey.TRAIN_LIST, 5, null);</CODE><br>
+ * <CODE>world.set(KEY.TRAINS, 5, null);</CODE><br>
  * Code that loops through lists should handle null values gracefully</p>
  *
  */
@@ -49,13 +49,13 @@ public interface World extends FreerailsSerializable {
      */
     int getMapHeight();
     
-    /** Replaces the element at the specified position on the map with the specified element.
+    /** Replaces the tile at the specified position on the map with the specified tile.
      */
-    void setMapElment(int x, int y, FreerailsSerializable element);
+    void setTile(int x, int y, FreerailsSerializable tile);
     
-    /** Returns the element at the specified position on the map.
+    /** Returns the tile at the specified position on the map.
      */
-    FreerailsSerializable getMapElement(int x, int y);
+    FreerailsSerializable getTile(int x, int y);
     
 	boolean boundsContain(int x, int y);
 }

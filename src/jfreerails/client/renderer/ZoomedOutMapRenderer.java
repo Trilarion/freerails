@@ -69,7 +69,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 //			rgb = node.getRGB();
 //		} else {
 //			rgb = terrainMap.
-			TerrainTile tt = (TerrainTile)w.getMapElement(tile.x, tile.y);
+			TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);
 			rgb = tt.getRGB();
 		//}
 

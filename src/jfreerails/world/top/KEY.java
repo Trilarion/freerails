@@ -29,7 +29,7 @@ public class KEY {
 	public static final KEY STATIONS = new KEY();
 	
 	public static final KEY TERRAIN_TYPES = new KEY();
-		
+			
 	//END OF KEYS
 	
 	private static int numberOfKeys = 0;
@@ -41,8 +41,8 @@ public class KEY {
 		numberOfKeys++;
 	}
 	
-	static int getNumberOfKeys(){
-		return numberOfKeys;		
+	static int getNumberOfKeys(){		
+		return KEY.class.getFields().length;		
 	}
 	
 	int getKeyNumber(){

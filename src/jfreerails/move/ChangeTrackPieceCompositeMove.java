@@ -123,7 +123,7 @@ public final class ChangeTrackPieceCompositeMove
 		TrackPiece oldTrackPiece, newTrackPiece;
 
 		if (w.boundsContain(p.x, p.y)) {
-			oldTrackPiece = (TrackPiece)w.getMapElement(p.x, p.y);
+			oldTrackPiece = (TrackPiece)w.getTile(p.x, p.y);
 			if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
 				TrackConfiguration trackConfiguration =
 					TrackConfiguration.add(
@@ -153,7 +153,7 @@ public final class ChangeTrackPieceCompositeMove
 		TrackPiece oldTrackPiece, newTrackPiece;
 
 		if (w.boundsContain(p.x, p.y)) {
-			oldTrackPiece = (TrackPiece)w.getMapElement(p.x, p.y);
+			oldTrackPiece = (TrackPiece)w.getTile(p.x, p.y);
 			if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
 				TrackConfiguration trackConfiguration =
 					TrackConfiguration.subtract(

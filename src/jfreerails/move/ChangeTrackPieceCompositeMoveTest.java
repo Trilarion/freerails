@@ -67,12 +67,12 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         //Remove only track piece built.
         
         assertRemoveTrackSuceeds(new Point(0, 5), east);
-        assertEquals(NullTrackPiece.getInstance(), world.getMapElement(0, 5));
-        assertEquals(NullTrackPiece.getInstance(), world.getMapElement(1, 5));
+        assertEquals(NullTrackPiece.getInstance(), world.getTile(0, 5));
+        assertEquals(NullTrackPiece.getInstance(), world.getTile(1, 5));
                      
         //Try to remove non existent track piece
         
-        assertEquals(NullTrackPiece.getInstance(), world.getMapElement(0, 5)  );
+        assertEquals(NullTrackPiece.getInstance(), world.getTile(0, 5)  );
         assertRemoveTrackFails(new Point(0, 5), east);
                 
     }
