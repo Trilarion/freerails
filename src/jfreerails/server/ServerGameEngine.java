@@ -14,7 +14,6 @@ import jfreerails.controller.CalcSupplyAtStations;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.TrainMover;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.TimeTickMove;
@@ -118,7 +117,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         moveChainFork = new MoveChainFork();
         moveChainFork.addListListener(calcSupplyAtStations);
         moveExecuter = new AuthoritativeMoveExecuter(world, moveChainFork, mutex);
-        tb = new TrainBuilder(world, this, moveExecuter);
+        tb = new TrainBuilder(world, moveExecuter);
 
         for (int i = 0; i < serverAutomata.size(); i++) {
             ((ServerAutomaton)serverAutomata.get(i)).initAutomaton(moveExecuter);
@@ -305,9 +304,13 @@ public class ServerGameEngine implements GameModel, Runnable {
             if (null != station && null != station.getProduction()) {
                 ProductionAtEngineShop production = station.getProduction();
                 Point p = new Point(station.x, station.y);
-                tb.buildTrain(production.getEngineType(),
-                    production.getWagonTypes(), p);
+                TrainMover trainMover = tb.buildTrain(production.getEngineType(),
+                        production.getWagonTypes(), p);
 
+                //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
+                TrainPathFinder tpf = trainMover.getTrainPathFinder();
+                this.addServerAutomaton(tpf);
+                this.addTrainMover(trainMover);
                 getMoveExecuter().processMove(new ChangeProductionAtEngineShopMove(
                         production, null, i));
             }

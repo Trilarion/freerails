@@ -47,7 +47,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     public static TrackConfiguration getFlatInstance(String template) {
-        int i = LegalTrackConfigurations.stringTemplate2Int(template);
+        int i = TrackConfiguration.stringTemplate2Int(template);
 
         return (TrackConfiguration)(flatTrackConfigurations.get(i));
     }
@@ -146,5 +146,15 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         }
 
         return newTemplate;
+    }
+
+    public static int stringTemplate2Int(String templateString) {
+        //Hack - so that result is as expected by earlier written code.
+        StringBuffer strb = new StringBuffer(templateString);
+        strb = strb.reverse();
+        templateString = strb.toString();
+
+        //End of hack
+        return (int)Integer.parseInt(templateString, 2);
     }
 }

@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
@@ -25,19 +24,9 @@ import jfreerails.util.FreerailsProgressMonitor;
  * the client having access to a ServerControlInterface object
  */
 public class GUIClient extends Client {
-    private MapCursor cursor = null;
     private Object mutex;
     private GUIComponentFactoryImpl gUIComponentFactory;
-    protected ServerControlModel serverControls = new ServerControlModel(null);
     private ModelRoot modelRoot;
-
-    public void setCursor(MapCursor c) {
-        cursor = c;
-    }
-
-    public MapCursor getCursor() {
-        return cursor;
-    }
 
     private GUIClient(ConnectionToServer server, int mode, DisplayMode dm,
         String title, FreerailsProgressMonitor pm) throws IOException {
@@ -49,7 +38,10 @@ public class GUIClient extends Client {
         receiver.setMoveReceiver(moveChainFork);
         receiver.setConnection(server);
 
-        GUIComponentFactoryImpl gUIComponentFactory = new GUIComponentFactoryImpl(this);
+        modelRoot.setMoveReceiver(receiver);
+        modelRoot.setMoveFork(moveChainFork);
+
+        GUIComponentFactoryImpl gUIComponentFactory = new GUIComponentFactoryImpl(modelRoot);
 
         ViewLists viewLists = new ViewListsImpl(receiver.world, pm);
 
@@ -57,7 +49,7 @@ public class GUIClient extends Client {
             throw new IllegalArgumentException();
         }
 
-        gUIComponentFactory.setup(viewLists);
+        gUIComponentFactory.setup(viewLists, receiver.world);
 
         JFrame client = gUIComponentFactory.createClientJFrame(title);
 
@@ -86,22 +78,12 @@ public class GUIClient extends Client {
      * form of connection supported.
      * @throws java.io.IOException if the connection could not be opened
      */
-    public GUIClient(LocalConnection server, int mode, DisplayMode dm,
-        String title, FreerailsProgressMonitor pm) throws IOException {
+    public GUIClient(ServerControlInterface controls, LocalConnection server,
+        int mode, DisplayMode dm, String title, FreerailsProgressMonitor pm)
+        throws IOException {
         this((ConnectionToServer)new LocalConnection(server), mode, dm, title,
             pm);
-    }
-
-    /**
-     * Not all clients may return a valid object - access to the server controls
-     * is at the discretion of the server.
-     */
-    public ServerControlModel getServerControls() {
-        return serverControls;
-    }
-
-    public void setServerControls(ServerControlInterface controls) {
-        serverControls.setServerControlInterface(controls);
+        this.modelRoot.setServerControls(controls);
     }
 
     public ModelRoot getModelRoot() {

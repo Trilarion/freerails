@@ -151,10 +151,11 @@ public class DialogueBoxController {
 		//moveChainFork.add(trainScheduleJPanel);
 
 		//Set up select engine dialogue.
-		selectEngine = new SelectEngineJPanel(this);
+		selectEngine = new SelectEngineJPanel();
 		selectEngine.setup(w, vl, new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
+				closeContent();
 				showSelectWagons();
 			}
 

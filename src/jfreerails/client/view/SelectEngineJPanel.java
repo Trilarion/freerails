@@ -28,14 +28,12 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
 
 
-	DialogueBoxController dialogueBoxController;
+	//DialogueBoxController dialogueBoxController;
 
 	/** Creates new form SelectEngineJPanel */
-	public SelectEngineJPanel(DialogueBoxController dbc) {
-		dialogueBoxController = dbc;
-		initComponents();
-
+	public SelectEngineJPanel() {
 		
+		initComponents();		
 		jList1ValueChanged(null); //Disable the ok button if no engine type is selected.
 	}
 
@@ -98,8 +96,8 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
 	private void canceljButtonMouseClicked(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_canceljButtonMouseClicked
 		//Close this dialogue.
-		dialogueBoxController.closeContent();
-
+		//dialogueBoxController.closeContent();
+		//FIXME remove this method! 
 	} //GEN-LAST:event_canceljButtonMouseClicked
 
 	private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) { //GEN-FIRST:event_jList1ValueChanged

@@ -21,6 +21,7 @@ import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.renderer.ZoomedOutMapRenderer;
+import jfreerails.client.view.*;
 import jfreerails.client.view.CashJLabel;
 import jfreerails.client.view.DateJLabel;
 import jfreerails.client.view.DetailMapView;
@@ -58,7 +59,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private javax.swing.JLabel messageJLabel;
     private final DialogueBoxController dialogueBoxController;
     private ViewLists viewLists;
-    private GUIClient client;
+
+    // private GUIClient client;
     private ReadOnlyWorld world;
     private MainMapAndOverviewMapMediator mediator;
     MapCursor cursor;
@@ -76,9 +78,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     ClientJFrame clientJFrame;
     UserMessageGenerator userMessageGenerator;
 
-    public GUIComponentFactoryImpl(GUIClient c) {
-        client = c;
-        modelRoot = client.getModelRoot();
+    public GUIComponentFactoryImpl(ModelRoot mr) {
+        modelRoot = mr;
         userInputOnMapController = new UserInputOnMapController(modelRoot);
         buildMenu = new jfreerails.client.top.BuildMenu();
         mapViewJComponent = new MapViewJComponentConcrete();
@@ -102,11 +103,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 modelRoot);
     }
 
-    public void setup(ViewLists vl) {
+    public void setup(ViewLists vl, ReadOnlyWorld w) {
         viewLists = vl;
-        world = client.getWorld();
+        world = w;
 
-        UntriedMoveReceiver receiver = client.getReceiver();
+        UntriedMoveReceiver receiver = modelRoot.getReceiver();
 
         /* create the models */
         modelRoot.setWorld(world, receiver, viewLists);
@@ -125,25 +126,25 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         //init the move handlers
         MoveReceiver overviewmapMoveReceiver = new MapViewMoveReceiver(mainMap);
 
-        MoveChainFork moveFork = client.getMoveChainFork();
+        MoveChainFork moveFork = modelRoot.getMoveChainFork();
         moveFork.addSplitMoveReceiver(overviewmapMoveReceiver);
 
         MoveReceiver mainmapMoveReceiver = new MapViewMoveReceiver(overviewMap);
         moveFork.addSplitMoveReceiver(mainmapMoveReceiver);
 
-        StationBuilder sb = new StationBuilder(receiver, client.getWorld());
+        StationBuilder sb = new StationBuilder(receiver, w);
 
         stationTypesPopup.setup(modelRoot, mainMap.getStationRadius());
 
-        mapViewJComponent.setup(mainMap, client.getWorld());
-        client.setCursor(mapViewJComponent.getMapCursor());
-        this.cursor = client.getCursor();
+        mapViewJComponent.setup(mainMap, w);
+        modelRoot.setCursor(mapViewJComponent.getMapCursor());
+        this.cursor = modelRoot.getCursor();
         //setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
         userInputOnMapController.setup(mapViewJComponent,
-            modelRoot.getTrackMoveProducer(), stationTypesPopup, client,
-            dialogueBoxController, receiver);
+            modelRoot.getTrackMoveProducer(), stationTypesPopup,
+            this.modelRoot, dialogueBoxController, receiver);
 
         buildMenu.setup(world, modelRoot);
         mainMapScrollPane1.setViewportView(this.mapViewJComponent);
@@ -154,11 +155,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         cashjLabel.setup(world, null, null);
         trainsJTabPane.setup(world, vl, modelRoot);
 
-        MapCursor mapCursor = client.getCursor();
+        MapCursor mapCursor = modelRoot.getCursor();
         mapCursor.addCursorEventListener(trainsJTabPane);
         trainsJTabPane.setMapCursor(mapCursor);
-        dialogueBoxController.setup(world, vl, client.getMoveChainFork(),
-            client.getReceiver(), mapCursor);
+        dialogueBoxController.setup(world, vl, modelRoot.getMoveChainFork(),
+            modelRoot.getReceiver(), mapCursor);
         stationPlacementCursor = new StationPlacementCursor(modelRoot,
                 mainMap.getStationRadius(), mapViewJComponent);
         modelRoot.setUserMessageLogger(this.mapViewJComponent);
@@ -212,7 +213,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     public JMenu createGameMenu() {
-        sc = client.getServerControls();
+        sc = modelRoot.getServerControls();
 
         JMenu gameMenu = new JMenu("Game");
         gameMenu.setMnemonic(71);
@@ -348,14 +349,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
          * XXX this is temporary - we should have a formal object to store
          * the clients copy of the model, connections to the server, etc.
          */
-        ReadOnlyWorld world = client.getWorld();
+        ReadOnlyWorld world = this.modelRoot.getWorld();
         ViewLists viewLists = getViewLists();
 
         if (!viewLists.validate(world)) {
             throw new IllegalArgumentException();
         }
 
-        setup(viewLists);
+        setup(viewLists, world);
     }
 
     public void processMove(Move m) {

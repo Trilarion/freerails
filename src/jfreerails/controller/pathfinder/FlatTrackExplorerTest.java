@@ -2,13 +2,13 @@ package jfreerails.controller.pathfinder;
 
 import java.awt.Point;
 import java.util.HashSet;
-import jfreerails.MapFixtureFactory;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.TrackRule;

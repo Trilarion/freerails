@@ -8,6 +8,7 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.LegalTrackConfigurations;
+import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
@@ -155,8 +156,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         //int trackTemplate = (1 << (3 * (1 + tv.getY()) + (1 + tv.getX())));
         int trackTemplateAbove;
         int trackTemplateBelow;
-        int cornersTemplate = LegalTrackConfigurations.stringTemplate2Int(
-                "101000101");
+        int cornersTemplate = TrackConfiguration.stringTemplate2Int("101000101");
         trackTemplate = trackTemplate & cornersTemplate;
 
         Dimension mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());

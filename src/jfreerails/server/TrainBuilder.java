@@ -2,7 +2,6 @@ package jfreerails.server;
 
 import java.awt.Point;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.TrainMover;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.move.AddCargoBundleMove;
 import jfreerails.move.AddTrainMove;
@@ -36,13 +35,11 @@ import jfreerails.world.train.TrainPathIterator;
  */
 public class TrainBuilder {
     private ReadOnlyWorld world;
-    private ServerGameEngine gameEngine;
     private int trainId;
     private MoveReceiver moveReceiver;
 
-    public TrainBuilder(ReadOnlyWorld w, ServerGameEngine gm, MoveReceiver mr) {
+    public TrainBuilder(ReadOnlyWorld w, MoveReceiver mr) {
         this.world = w;
-        this.gameEngine = gm;
         moveReceiver = mr;
 
         if (null == mr) {
@@ -55,7 +52,7 @@ public class TrainBuilder {
      * @param wagons array of wagon types
      * @param p point at which to add train on map.
      */
-    public void buildTrain(int engineTypeNumber, int[] wagons, Point p) {
+    public TrainMover buildTrain(int engineTypeNumber, int[] wagons, Point p) {
         FreerailsTile tile = (FreerailsTile)world.getTile(p.x, p.y);
 
         TrackRule tr = tile.getTrackRule();
@@ -122,9 +119,7 @@ public class TrainBuilder {
 
             tpf.initTarget(train, is);
 
-            FreerailsPathIterator to = new TrainPathIterator(tpf);
-
-            TrainMover trainMover = new TrainMover(to, world, trainNumber);
+            TrainMover trainMover = new TrainMover(tpf, world, trainNumber);
 
             /*
              * call setInitialTrainPosition before processing the move so
@@ -135,9 +130,10 @@ public class TrainBuilder {
             Move positionMove = trainMover.setInitialTrainPosition(train, from);
             moveReceiver.processMove(positionMove);
 
-            gameEngine.addTrainMover(trainMover);
+            return trainMover;
         } else {
-            System.err.println("No track here so cannot build train");
+            throw new IllegalArgumentException("No track here (" + p.x + ", " +
+                p.y + ") so cannot build train");
         }
     }
 
@@ -155,7 +151,6 @@ public class TrainBuilder {
 
         TrainPathFinder tpf = new TrainPathFinder(explorer, w, trainNumber,
                 moveReceiver);
-        gameEngine.addServerAutomaton(tpf);
 
         return tpf;
     }

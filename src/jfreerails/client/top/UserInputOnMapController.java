@@ -52,7 +52,7 @@ public class UserInputOnMapController implements CursorEventListener {
     }
 
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
-        StationTypesPopup stPopup, GUIClient c, DialogueBoxController dbc,
+        StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
         UncommittedMoveReceiver tx) {
         trackMoveExecutor = tx;
         this.dialogueBoxController = dbc;
@@ -61,7 +61,7 @@ public class UserInputOnMapController implements CursorEventListener {
 
         this.trackBuilder = trackBuilder;
 
-        this.cursor = c.getCursor();
+        this.cursor = mr.getCursor();
 
         cursor.addCursorEventListener(this);
     }

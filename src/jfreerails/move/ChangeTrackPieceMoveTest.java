@@ -7,8 +7,8 @@
 package jfreerails.move;
 
 import java.awt.Point;
-import jfreerails.MapFixtureFactory;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;

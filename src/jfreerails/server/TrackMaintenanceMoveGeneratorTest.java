@@ -5,13 +5,13 @@
 package jfreerails.server;
 
 import java.util.Arrays;
-import jfreerails.MapFixtureFactory;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;

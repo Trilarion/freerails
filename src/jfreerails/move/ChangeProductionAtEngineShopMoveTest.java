@@ -4,10 +4,10 @@
  */
 package jfreerails.move;
 
-import jfreerails.server.WagonAndEngineTypesFactory;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.WagonAndEngineTypesFactory;
 
 
 /**

@@ -153,6 +153,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
         synchronized (mutex) {
             connection.addMoveReceiver(worldUpdater);
             world = connection.loadWorldFromServer();
+            modelRoot.setWorld(world);
 
             if (!(connection instanceof LocalConnection)) {
                 NonAuthoritativeMoveExecuter moveExecuter = new NonAuthoritativeMoveExecuter(world,
@@ -169,7 +170,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     public void setMoveReceiver(MoveReceiver m) {
         //moveReceiver = new CompositeMoveSplitter(m);
         //I don't want moves split at this stage since I want to be able
-        //to listen of composite moves.
+        //to listen for composite moves.
         moveReceiver = m;
     }
 

@@ -65,16 +65,6 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         return legalTrackConfigurationsHashSet.contains(trackConfiguration);
     }
 
-    public static int stringTemplate2Int(String templateString) {
-        //Hack - so that result is as expected by earlier written code.
-        StringBuffer strb = new StringBuffer(templateString);
-        strb = strb.reverse();
-        templateString = strb.toString();
-
-        //End of hack
-        return (int)Integer.parseInt(templateString, 2);
-    }
-
     public Iterator getLegalConfigurationsIterator() {
         return legalTrackConfigurationsHashSet.iterator();
     }
