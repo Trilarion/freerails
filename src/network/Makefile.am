@@ -6,4 +6,6 @@ libnetwork_a_SOURCES = Connection.cpp \
 	TCPConnection.cpp \
 	FileConnection.cpp \
 	Client.cpp \
-	Server.cpp
+	Server.cpp \
+	Serializer.cpp \
+	Serializeable.cpp

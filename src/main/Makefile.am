@@ -13,13 +13,13 @@ endif
 
 if WRAPPER_PARAGUI
 WRAPPERINC = $(SDL_CFLAGS) $(PARAGUI_CFLAGS) -I$(top_srcdir)/src/wrapper/paragui
-freerails_LDFLAGS = $(SDL_LIBS) $(PARAGUI_LIBS) -lSDL_ttf -lSDL_image -lSDL_net
-freerails_DEPENDENCIES = ../wrapper/libwrapperbase.a ../elements/libelements.a \
-    ../map/libmap.a ../controllers/libcontrollers.a ../wrapper/paragui/libwrapper_paragui.a \
-    ../network/libnetwork.a
-freerails_LDADD = ../wrapper/libwrapperbase.a ../elements/libelements.a \
-    ../map/libmap.a ../controllers/libcontrollers.a ../wrapper/paragui/libwrapper_paragui.a \
-    ../network/libnetwork.a
+freerails_LDFLAGS = $(SDL_LIBS) $(PARAGUI_LIBS) -lSDL_ttf -lSDL_image
+freerails_DEPENDENCIES = ../wrapper/paragui/libwrapper_paragui.a ../elements/libelements.a \
+	../map/libmap.a ../game/libgame.a ../controllers/libcontrollers.a \
+	../wrapper/libwrapperbase.a ../network/libnetwork.a 
+freerails_LDADD = ../wrapper/paragui/libwrapper_paragui.a ../elements/libelements.a \
+	../game/libgame.a ../map/libmap.a ../controllers/libcontrollers.a \
+	../wrapper/libwrapperbase.a ../network/libnetwork.a 
 endif
 
 INCLUDES = $(WRAPPERINC) -I$(srcdir) -I$(top_srcdir)/src/wrapper \
