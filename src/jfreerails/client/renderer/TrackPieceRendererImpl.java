@@ -3,10 +3,14 @@ package jfreerails.client.renderer;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 
 import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
 import jfreerails.world.track.TrackConfiguration;
+import jfreerails.world.track.TrackRule;
 
 /**
 *  This class renders a track piece.
@@ -90,7 +94,18 @@ final public  class TrackPieceRendererImpl implements TrackPieceRenderer {
 			}
 		}
 	}
-
+	
+	public TrackPieceRendererImpl(World w, ImageManager imageManager, int typeNumber) throws IOException{
+		TrackRule trackRule =(TrackRule)w.get(KEY.TRACK_RULES, typeNumber);
+		this.typeName=trackRule.getTypeName();
+		for(int i = 0; i < 512; i++){
+			if(trackRule.testTrackPieceLegality(i)){
+				TrackConfiguration config = TrackConfiguration.getFlatInstance(i); 
+				String fileName = generateFilename(i);
+				trackPieceIcons[i] = imageManager.getImage(fileName); 				
+			}
+		}
+	}
 	
 	public Image getTrackPieceIcon(int trackTemplate) {
 		if ((trackTemplate > 511) || (trackTemplate < 0)) {
@@ -102,16 +117,20 @@ final public  class TrackPieceRendererImpl implements TrackPieceRenderer {
 		return trackPieceIcons[trackTemplate];
 	}
 
-	public void dumpImages(ImageManager imageManager) {
-		String relativeFileNameBase = "track" + File.separator + this.getTrackTypeName();
-		
+	public void dumpImages(ImageManager imageManager) {				
 		for (int i = 0 ; i < 512 ; i++){
 			if(trackPieceIcons[i] != null){
-				int newTemplate = TrackConfiguration.getFlatInstance(i).getNewTemplateNumber();
-				String fileName = relativeFileNameBase+"_"+BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8)+".png";	
+				String fileName = generateFilename(i);
 				imageManager.setImage(fileName,trackPieceIcons[i]);							
 			}			
 		}			
+	}
+
+	private String generateFilename(int i) {
+		String relativeFileNameBase = "track" + File.separator + this.getTrackTypeName();
+		int newTemplate = TrackConfiguration.getFlatInstance(i).getNewTemplateNumber();
+		String fileName = relativeFileNameBase+"_"+BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8)+".png";	
+		return fileName;
 	}
 
 	public String getTrackTypeName() {		

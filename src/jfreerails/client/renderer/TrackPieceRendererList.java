@@ -6,9 +6,11 @@
  */
 package jfreerails.client.renderer;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import jfreerails.client.common.ImageManager;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.NullTrackType;
@@ -51,6 +53,15 @@ final public class TrackPieceRendererList {
 			TrackPieceRenderer trackPieceView =
 				(TrackPieceRenderer) (trackPieceViewArrayList.get(i));
 			trackPieceViewArray[i] = trackPieceView;
+		}
+	}
+	
+	public TrackPieceRendererList(World w, ImageManager imageManager) throws IOException{
+		
+		int numberOfTrackTypes = w.size(KEY.TRACK_RULES);
+		trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
+		for (int i = 0 ; i < numberOfTrackTypes ; i++){
+			trackPieceViewArray[i]=new TrackPieceRendererImpl(w, imageManager, i);		
 		}
 	}
 
