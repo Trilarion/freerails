@@ -20,6 +20,7 @@ import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.train.ImmutableSchedule;
@@ -70,11 +71,11 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         this.centerTrain = b;
     }
 
-    public void display(int newTrainID) {
+    public void display(int newTrainNumber) {
         showingOrder = false;
-        this.trainNumber = newTrainID;
+        this.trainNumber = newTrainNumber;
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, newTrainID, principal);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
 
         //Set up the array of images.
         images = new Image[1 + train.getNumberOfWagons()];
@@ -89,12 +90,12 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         resetPreferredSize();
     }
 
-    public void display(int newTrainID, int newScheduleOrderID) {
+    public void display(int newTrainNumber, int newScheduleOrderID) {
         showingOrder = true;
-        this.trainNumber = newTrainID;
+        this.trainNumber = newTrainNumber;
         this.scheduleOrderNumber = newScheduleOrderID;
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, newTrainID, principal);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         this.scheduleID = train.getScheduleID();
 
         ImmutableSchedule s = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES,
@@ -138,7 +139,9 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
 
     public Component getListCellRendererComponent(JList list, Object value,
     		int index, boolean isSelected, boolean cellHasFocus) {
-    	display(index);
+    	
+    	int trainID = NonNullElements.row2index(w, KEY.TRAINS, principal, index);
+    	display(trainID);
     	
     	
     	selected = isSelected;

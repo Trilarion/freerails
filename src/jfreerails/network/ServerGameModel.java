@@ -12,6 +12,8 @@ import jfreerails.world.top.World;
 
 
 /**
+ * Defines methods on a GameModel that let the server load and initiate, and save it.
+ * 
  * @author Luke
  *
  */

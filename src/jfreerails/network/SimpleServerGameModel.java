@@ -12,6 +12,8 @@ import jfreerails.world.top.World;
 
 
 /**
+ *  A ServerGameModel that has a world object but no automation. 
+ * 
  * @author Luke
  *
  */

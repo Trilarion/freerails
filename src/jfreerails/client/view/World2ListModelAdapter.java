@@ -65,7 +65,7 @@ public class World2ListModelAdapter implements ListModel {
     }
 
     public Object getElementAt(int i) {
-    	elements.gotoIndex(i);        
+    	elements.gotoRow(i);        
 		return elements.getElement();
     }
 

@@ -106,7 +106,11 @@ public class LeaderBoardJPanel extends JPanel implements View {
 		playersList.setListData(values);
 		setSize(getPreferredSize());
     }
-    
+    /**
+     * Stores the details a player that are shown on the leaderboard.
+     * @author Luke
+     *
+     */
     static class PlayerDetails implements Comparable{               
         
         String name = "player";

@@ -50,7 +50,12 @@ public class DropOffAndPickupCargoMoveGenerator {
     private boolean waitingForFullLoad;
     private boolean m_autoConsist;
     private int[] consist = new int[0];
-
+    
+    /** Stores the type and quanity of cargo in a wagon.
+     * 
+     * @author Luke
+     *
+     */
     private static class WagonLoad implements Comparable {
         final int quantity;
         final int cargoType;

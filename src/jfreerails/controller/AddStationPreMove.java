@@ -26,18 +26,19 @@ import jfreerails.world.track.TrackRule;
 
 
 /**
+ * Generates a move that adds or upgrades a station. 
+ * 
  * @author Luke
  *
  */
 public class AddStationPreMove implements PreMove {
-    // private final String stationName;
+    
     private final Point p;
     private final int ruleNumber;
     private final FreerailsPrincipal principal;
 
     private AddStationPreMove(Point p, int trackRule,
-        FreerailsPrincipal principal) {
-        //  this.stationName = stationName;
+        FreerailsPrincipal principal) {    
         this.p = p;
         this.ruleNumber = trackRule;
         this.principal = principal;

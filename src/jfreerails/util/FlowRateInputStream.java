@@ -6,7 +6,11 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.logging.Logger;
 
-
+/**
+*  A FilterInputStream that measures flow rate.
+* @author Patrice Espié
+* Licensing: LGPL
+*/
 public class FlowRateInputStream extends FilterInputStream implements Runnable {
     private static final Logger logger = Logger.getLogger(FlowRateInputStream.class.getName());
 

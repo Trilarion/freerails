@@ -7,6 +7,7 @@
 package jfreerails.launcher;
 import jfreerails.util.FreerailsProgressMonitor;
 /**
+ * A JPanel that displays a splash screen and a progress bar.
  *
  * @author  Luke
  */

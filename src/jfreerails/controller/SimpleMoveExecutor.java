@@ -8,7 +8,12 @@ import jfreerails.world.player.Player;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 
-
+/**
+ * A MoveExecutor that executes moves on the world object passed to its constructor.
+ * 
+ * @author Luke
+ *
+ */
 public class SimpleMoveExecutor implements MoveExecutor{
 	
 	private final World w;

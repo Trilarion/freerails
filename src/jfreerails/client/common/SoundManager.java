@@ -32,6 +32,10 @@ public class SoundManager implements ModelRootListener {
     private boolean playSounds = true;
     private static final SoundManager instance = new SoundManager();
 
+    /**
+     *  Stores the audio data and properties of a sample.      
+     *
+     */
     private static class Sample {
         DataLine.Info info;
         AudioFormat format;

@@ -76,7 +76,7 @@ public class UserMessageGenerator implements MoveReceiver {
                     TrainModel train = (TrainModel)trains.getElement();
 
                     if (train.getCargoBundleID() == trainCargoBundle) {
-                        trainNumber = trains.getIndex() + 1;
+                        trainNumber = trains.getNaturalNumber();
 
                         break;
                     }

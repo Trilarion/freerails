@@ -11,6 +11,7 @@ import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldListListener;
@@ -85,6 +86,9 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
     }
     
     public void displayTrain(int newTrainNumber){
+    	
+    	NonNullElements it = new NonNullElements(KEY.TRAINS, w, principal);
+    	it.gotoIndex(newTrainNumber);
         
         this.trainNumber = newTrainNumber;
         
@@ -98,7 +102,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
             //this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
         }
         ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleID(), principal);
-        String s="Train #"+newTrainNumber+": ";
+        String s="Train #"+it.getNaturalNumber()+": ";
         int numberOfTypesInBundle = 0;
         for (int i = 0 ; i < w.size(SKEY.CARGO_TYPES) ; i ++){
             int amount = cb.getAmount(i);

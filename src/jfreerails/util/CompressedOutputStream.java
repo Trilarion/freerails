@@ -7,6 +7,11 @@ import java.util.zip.Deflater;
 
 
 /**
+*  A FilterOutputStream for sending compressed data over a network connection.
+ * Note that standard ZipOutputStream and java.util.zip.GZipOutputStream don't 
+ * guarantee that flush sends out all the data written so far, which 
+ * leads to deadlocks in request-response-based protocols.
+ * 
 * @author Patrice Espié
 * Licensing: LGPL
 */

@@ -13,7 +13,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.swing.JLabel;
@@ -68,9 +67,13 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     private Rectangle graphRect = new Rectangle(44, 50, 380, 245);
     ActionListener submitButtonCallBack = null;
 
+    /**
+     * Stores the company details that are used to draw a line and title on the graph.
+     * @author Luke
+     *
+     */
     static class CompanyDetails {
-        static Random r = new Random();
-
+      
         /** The company's net worth at the end of each year. */
         long[] value = new long[100];
 
@@ -88,16 +91,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
                 value[i] = Integer.MIN_VALUE;
             }           
             
-        }
-        
-//        /** Only here for testing! */
-//        void fillWithRnadomData() {
-//            for (int i = 1; i < 100; i++) {
-//                long lastValue = Math.max(0, value[i - 1]);
-//                long nextValue = lastValue + r.nextInt(30) - 10;
-//                value[i] = Math.max(0, nextValue);
-//            }
-//        }
+        }     
     }
 
     /**
@@ -388,7 +382,13 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         setAppropriateScale();
         
     }
-    
+    /**
+     * A TransactionAggregator that calculates the networth of a player by totalling 
+     * the value of their assets.
+     * 
+     * @author Luke
+     *
+     */
     static class NetWorthCalculator extends TransactionAggregator{
         
     

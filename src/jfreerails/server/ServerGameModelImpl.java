@@ -22,6 +22,8 @@ import jfreerails.world.top.WorldDifferences;
 
 
 /**
+ *  A ServerGameModel that contains the automations used in the actual game. 
+ * 
  * @author Luke
  *
  */

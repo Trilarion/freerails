@@ -22,6 +22,8 @@ import jfreerails.util.FreerailsProgressMonitor;
 
 
 /**
+ *  A SavedGamesManager reads and writes gzipped saved games to the working directory.
+ * 
  * @author Luke
  *
  */

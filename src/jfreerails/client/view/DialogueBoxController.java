@@ -222,7 +222,7 @@ public class DialogueBoxController implements WorldListListener {
                 "Cannot" + " show train orders since there are no" +
                 " trains!");
         } else {
-            trainDialogueJPanel.display(0);
+            trainDialogueJPanel.display(wi.getIndex());
             this.showContent(trainDialogueJPanel);
         }
     }

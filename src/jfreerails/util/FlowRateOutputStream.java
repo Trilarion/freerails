@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 
 /**
+*  A FilterOutputStream that measures flow rate.
 * @author Patrice Espié
 * Licensing: LGPL
 */

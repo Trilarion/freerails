@@ -12,6 +12,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
 /**
+ * A BuildTrackStrategy determines which track types to build (or upgrade to) on different terrains.
  *
  * @author Luke
  */

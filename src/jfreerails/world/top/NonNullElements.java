@@ -166,4 +166,42 @@ public class NonNullElements implements WorldIterator {
     protected boolean testCondition(int i) {
         return null != listGet(i);
     }
+	
+	public int getNaturalNumber() {
+		return getRowID() +1;
+	}
+
+	
+	public void gotoRow(int newRow) {
+		if(row == newRow){
+			return;
+		}
+		if(row < newRow){
+			while(row != newRow){
+				next();
+			}
+		}else{
+			while(row != newRow){
+				previous();
+			}
+			
+		}
+		return;				
+	}
+	
+	public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p, int row){
+		int count = 0;
+		for(int i = 0 ; i < w.size(key, p); i++){
+			
+			if(w.get(key, i, p) != null){				
+				if(count == row){
+					return i;
+				}
+				count++;
+			}			
+		}
+		
+		
+		throw new NoSuchElementException(String.valueOf(row));
+	}
 }

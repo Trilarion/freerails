@@ -153,7 +153,11 @@ final public class GameLoop implements Runnable {
         }
     }
 }
-
+/**
+ * Provides a method that draws a String showing the average FPS over the last complete 5000ms interval.
+ * @author Luke
+ *
+ */
 final class FPScounter {
     private final long TIME_INTERVAL = 5000;
     private int frameCount = 0;

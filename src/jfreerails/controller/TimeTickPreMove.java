@@ -10,6 +10,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
+ * Generates a TimeTickMove.
+ * 
  * @author Luke
  *
  */

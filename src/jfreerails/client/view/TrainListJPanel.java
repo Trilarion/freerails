@@ -157,7 +157,12 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     };
     
     int getSelectedTrainID(){
-        return jList1.getSelectedIndex();
+    	/* Note, the selected index is not 
+    	 * the train id since trains that
+    	 * have been removed are not shown on the list.
+    	 */
+    	int row = jList1.getSelectedIndex();
+        return NonNullElements.row2index(world, KEY.TRAINS, principal, row);
     }
     
     /** When the train list is shown on a tab we don't want the buttons.*/

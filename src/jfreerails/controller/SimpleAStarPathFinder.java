@@ -221,6 +221,11 @@ public class SimpleAStarPathFinder implements FreerailsSerializable,
         status = SEARCH_NOT_STARTED;
     }
 
+    /** An OpenList for SimpleAStarPathFinder which store nodes and f values in a Int2IntHashMap.
+     * 
+     * @author Luke
+     *
+     */
     private static class OpenList implements Serializable {
         private final Int2IntHashMap openList = new Int2IntHashMap();
 
