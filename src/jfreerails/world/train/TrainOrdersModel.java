@@ -71,9 +71,8 @@ public class TrainOrdersModel implements FreerailsSerializable {
             this.m_station == test.m_station &&
             autoConsist == test.autoConsist &&
             Arrays.equals(this.consist, test.consist);
-        } else {
-            return false;
         }
+		return false;
     }
 
     public boolean isAutoConsist() {

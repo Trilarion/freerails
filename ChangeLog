@@ -1,3 +1,12 @@
+Jan 04, 2005 Luke
+	Bugs fixed:
+	o 1087437	java properties window should word wrap.
+	o 1087434	Building track out of station
+	
+	RFEs Implemented:
+	
+	Other changes:
+	o Code cleanup
 Dec 18, 2004 Luke
 	RFEs Implemented:
 	o 1055501	Automatically build bridges & tunnels

@@ -31,42 +31,11 @@ import jfreerails.client.renderer.StationRadiusRenderer;
  * @author rob
  */
 public class StationPlacementCursor extends MouseInputAdapter  {
-	private boolean buildEnabled;
-    private final MapViewJComponent mapView;
-    private final StationRadiusRenderer stationRadiusRenderer;
-    private final StationBuildModel stationBuildModel;
-    private final float scale;
 
-    public void mouseMoved(MouseEvent e) {
-        if (stationBuildModel.isPositionFollowsMouse()) {
-            Point p = e.getPoint();
-            Point mapCoord = new Point((int)(p.x / scale), (int)(p.y / scale));
-            stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY,
-                mapCoord);
-        }
-    }
-
-    public void mouseClicked(MouseEvent e) {
-        int button = e.getButton();
-
-        if (button == MouseEvent.BUTTON1) {
-            /* attempt to build */
-            stationBuildModel.getStationBuildAction().actionPerformed(new ActionEvent(
-                    this, ActionEvent.ACTION_PERFORMED, ""));
-        } else if (button == MouseEvent.BUTTON3) {
-            /* cancel the build */
-            stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(
-                    this, ActionEvent.ACTION_PERFORMED, ""));
-        }
-    }
-
-    public void mouseEntered(MouseEvent e) {
-        stationRadiusRenderer.show();
-    }
-
-    public void mouseExited(MouseEvent e) {
-        stationRadiusRenderer.hide();
-    }
+    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewJComponent mapView) {
+    	StationPlacementCursor spc =  new StationPlacementCursor(actionRoot, srr, mapView);
+    	spc.init();
+	}
 
     private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent e) {
@@ -103,16 +72,27 @@ public class StationPlacementCursor extends MouseInputAdapter  {
                 }
             }
         };
+	private boolean buildEnabled;
+    private final MapViewJComponent mapView;
+    private final float scale;
+    private final StationBuildModel stationBuildModel;
+    private final StationRadiusRenderer stationRadiusRenderer;
 
-    public StationPlacementCursor(ActionRoot actionRoot,
+    private StationPlacementCursor(ActionRoot actionRoot,
         StationRadiusRenderer srr, MapViewJComponent mapView) {
         scale = mapView.getScale();
         this.mapView = mapView;
         stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
         buildEnabled = stationBuildModel.getStationBuildAction().isEnabled();
+       
+    }
 
-        if (buildEnabled) {        	
+	/**
+	 * @param mapView
+	 */
+	private void init() {
+		if (buildEnabled) {        	
             mapView.addMouseListener(this);
             mapView.addMouseMotionListener(this);
             stationRadiusRenderer.show();
@@ -121,10 +101,39 @@ public class StationPlacementCursor extends MouseInputAdapter  {
             mapView.removeMouseListener(this);
             mapView.removeMouseMotionListener(this);
         }
+		stationBuildModel.getStationBuildAction().addPropertyChangeListener(buildActionListener);
+	}
 
-        stationBuildModel.getStationBuildAction().addPropertyChangeListener(buildActionListener);
+    public void mouseClicked(MouseEvent e) {
+        int button = e.getButton();
+
+        if (button == MouseEvent.BUTTON1) {
+            /* attempt to build */
+            stationBuildModel.getStationBuildAction().actionPerformed(new ActionEvent(
+                    this, ActionEvent.ACTION_PERFORMED, ""));
+        } else if (button == MouseEvent.BUTTON3) {
+            /* cancel the build */
+            stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(
+                    this, ActionEvent.ACTION_PERFORMED, ""));
+        }
     }
-    
-    
+
+    public void mouseEntered(MouseEvent e) {
+        stationRadiusRenderer.show();
+    }
+
+    public void mouseExited(MouseEvent e) {
+        stationRadiusRenderer.hide();
+    }
+
+	public void mouseMoved(MouseEvent e) {
+        if (stationBuildModel.isPositionFollowsMouse()) {
+            Point p = e.getPoint();
+            Point mapCoord = new Point((int)(p.x / scale), (int)(p.y / scale));
+            stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY,
+                mapCoord);
+        }
+    }
+       
 
 }

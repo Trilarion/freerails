@@ -15,22 +15,20 @@ import jfreerails.world.track.FreerailsTile;
  * @author Luke
   */
 public class MapDiffMove implements Move, MapUpdateMove {
-    private /*=mutable*/ final ArrayList points;
-    private /*=mutable*/ final ArrayList before;
-    private /*=mutable*/ final ArrayList after;
+    private /*=mutable*/ final ArrayList<Point> points;
+    private /*=mutable*/ final ArrayList<FreerailsTile> before;
+    private /*=mutable*/ final ArrayList<FreerailsTile> after;
     private final Rectangle updateTiles;
 
     public MapDiffMove(ReadOnlyWorld world, WorldDifferences diffs) {
-        points = new ArrayList();
-        before = new ArrayList();
-        after = new ArrayList();
+        points = new ArrayList<Point>();
+        before = new ArrayList<FreerailsTile>();
+        after = new ArrayList<FreerailsTile>();
 
         Iterator it = diffs.getMapDifferences();
 
         while (it.hasNext()) {
             Point p = (Point)it.next();
-            Rectangle tile = new Rectangle(p.x - 1, p.y - 1, 3, 3);
-
             points.add(p);
 
             FreerailsTile oldTile = (FreerailsTile)world.getTile(p.x, p.y);
@@ -50,7 +48,7 @@ public class MapDiffMove implements Move, MapUpdateMove {
 
     private MoveStatus tryMove(World w, ArrayList arrayList) {
         for (int i = 0; i < points.size(); i++) {
-            Point point = (Point)points.get(i);
+            Point point = points.get(i);
             FreerailsTile actual = (FreerailsTile)w.getTile(point.x, point.y);
 
             FreerailsTile expected = (FreerailsTile)arrayList.get(i);
@@ -64,10 +62,10 @@ public class MapDiffMove implements Move, MapUpdateMove {
         return MoveStatus.MOVE_OK;
     }
 
-    private void doMove(World w, ArrayList arrayList) {
+    private void doMove(World w, ArrayList<FreerailsTile> arrayList) {
         for (int i = 0; i < points.size(); i++) {
-            Point point = (Point)points.get(i);
-            FreerailsTile tile = (FreerailsTile)arrayList.get(i);
+            Point point = points.get(i);
+            FreerailsTile tile = arrayList.get(i);
             w.setTile(point.x, point.y, tile);
         }
     }

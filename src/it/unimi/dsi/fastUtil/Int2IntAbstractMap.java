@@ -72,9 +72,9 @@ public abstract class Int2IntAbstractMap implements Int2IntMap {
         while (n-- != 0) {
             e = (Int2IntMap.Entry)i.next();
 
-            h += ((int)(e.getIntKey()));
+            h += e.getIntKey();
 
-            h += ((int)(e.getIntValue()));
+            h += e.getIntValue();
         }
 
         return h;

@@ -35,9 +35,8 @@ public class GameSpeed implements FreerailsSerializable {
             GameSpeed test = (GameSpeed)o;
 
             return this.speed == test.speed;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public int hashCode() {

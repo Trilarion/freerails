@@ -199,8 +199,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         dialogueBoxController.setup(modelRoot, vl);
 
-        StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(actionRoot,
-                mainMap.getStationRadius(), mapViewJComponent);
+        StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
         int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
 

@@ -38,8 +38,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
     public ChangeProductionAtEngineShopMove(ProductionAtEngineShop[] b,
         ProductionAtEngineShop[] a, int station, FreerailsPrincipal p) {
-        m_before = (ProductionAtEngineShop[])b.clone();
-        m_after = (ProductionAtEngineShop[])a.clone();
+        m_before = b.clone();
+        m_after = a.clone();
         m_stationNumber = station;
         m_principal = p;
     }
@@ -68,18 +68,15 @@ public class ChangeProductionAtEngineShopMove implements Move {
         if (null == station.getProduction()) {
             if (null == stateA) {
                 return MoveStatus.MOVE_OK;
-            } else {
-                return MoveStatus.moveFailed(this.m_stationNumber + " " +
-                    m_principal);
             }
-        } else {
-            if (Arrays.equals(station.getProduction(), (stateA))) {
-                return MoveStatus.MOVE_OK;
-            } else {
-                return MoveStatus.moveFailed(this.m_stationNumber + " " +
-                    m_principal);
-            }
+			return MoveStatus.moveFailed(this.m_stationNumber + " " +
+			    m_principal);
         }
+		if (Arrays.equals(station.getProduction(), (stateA))) {
+		    return MoveStatus.MOVE_OK;
+		}
+		return MoveStatus.moveFailed(this.m_stationNumber + " " +
+		    m_principal);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
@@ -122,11 +119,9 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
             if (stationNumbersEqual && beforeFieldsEqual && afterFieldsEqual) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 }

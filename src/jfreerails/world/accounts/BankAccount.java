@@ -16,8 +16,8 @@ import jfreerails.world.common.Money;
  *
  */
 public class BankAccount implements FreerailsMutableSerializable {
-    private final ArrayList transactions = new ArrayList();
-    private final ArrayList transactionsTimeStamps = new ArrayList();
+    private final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private final ArrayList<GameTime> transactionsTimeStamps = new ArrayList<GameTime>();
     private Money currentBalance = new Money(0);
 
     public BankAccount() {
@@ -44,7 +44,7 @@ public class BankAccount implements FreerailsMutableSerializable {
 
     public Transaction removeLastTransaction() {
         int last = transactions.size() - 1;
-        Transaction t = (Transaction)transactions.remove(last);
+        Transaction t = transactions.remove(last);
         transactionsTimeStamps.remove(last);
         this.currentBalance = new Money(currentBalance.getAmount() -
                 t.getValue().getAmount());
@@ -53,11 +53,11 @@ public class BankAccount implements FreerailsMutableSerializable {
     }
 
     public Transaction getTransaction(int i) {
-        return (Transaction)transactions.get(i);
+        return transactions.get(i);
     }
 
     public GameTime getTimeStamp(int transactionsId) {
-        return (GameTime)transactionsTimeStamps.get(transactionsId);
+        return transactionsTimeStamps.get(transactionsId);
     }
 
     public boolean equals(Object o) {
@@ -67,8 +67,7 @@ public class BankAccount implements FreerailsMutableSerializable {
             return this.transactions.equals(test.transactions);
             //No need to look at the current balance field since it 
             //can be calculated by looking at the transactions.
-        } else {
-            return false;
         }
+		return false;
     }
 }

@@ -22,7 +22,7 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                                   .getDefaultScreenDevice()
                                                                                   .getDefaultConfiguration();
-    private final ArrayList modes = new ArrayList();
+    private final ArrayList<MyDisplayMode> modes = new ArrayList<MyDisplayMode>();
     private MyDisplayMode selection;
 
     public DisplayModesComboBoxModels() {

@@ -32,7 +32,7 @@ public class ProductionAtEngineShop implements FreerailsSerializable {
     }
 
     public int[] getWagonTypes() {
-        return (int[])wagonTypes.clone(); //Defensive copy.
+        return wagonTypes.clone(); //Defensive copy.
     }
 
     public boolean equals(Object o) {

@@ -44,7 +44,7 @@ public class StationBuilderTest extends TestCase {
 		assertTrue(stationBuilder.canBuildStationHere(new Point(10,10)));
 		assertTrue(stationBuilder.canBuildStationHere(new Point(13,10)));
 		MoveStatus ms1 = stationBuilder.buildStation(new Point(10,10));
-		assertTrue(ms.ok);
+		assertTrue(ms1.ok);
 		
 		MoveStatus ms2 = stationBuilder.buildStation(new Point(13,10));
 		assertFalse(ms2.ok);

@@ -24,7 +24,7 @@ public class GenerateDependenciesXmlAndHtml {
 
 	private PrintWriter xmlWriter;
 	private PrintWriter htmlWriter;
-	private ArrayList packages = new ArrayList();
+	private ArrayList<String> packages = new ArrayList<String>();
 	private boolean started = false;
 	private boolean startedBlock = false;
 	private String sig;
@@ -140,7 +140,7 @@ public class GenerateDependenciesXmlAndHtml {
 		
 		htmlWriter.write("<table width=\"100%\" border=\"1\" cellpadding=\"10\" cellspacing=\"10\" bordercolor=\"#333333\" bgcolor=\"#FFFFFF\">\n");
 		for(int i = packages.size() - 1; i >= 0 ; i--){
-			String packageName = (String)packages.get(i);			
+			String packageName = packages.get(i);			
 			htmlWriter.write("<tr bgcolor=\"#FFCCCC\"> \n");
 			htmlWriter.write("<td height=\"50\"  bgcolor=\"#FFCC66\">"+packageName+"</td>\n");
 			htmlWriter.write("</tr>\n");

@@ -32,7 +32,7 @@ public class CalcCargoSupplyRateAtStation {
     private static final int PREREQUISITE_FOR_DEMAND = 16;
     private final int[] converts;
     private final int[] demand;
-    private final Vector supplies;
+    private final Vector<CargoElementObject> supplies;
     private final ReadOnlyWorld w;
     private int x;
     private int y;
@@ -50,7 +50,7 @@ public class CalcCargoSupplyRateAtStation {
         TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
 
-        supplies = new Vector();
+        supplies = new Vector<CargoElementObject>();
         populateSuppliesVector();
 
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
@@ -169,7 +169,7 @@ public class CalcCargoSupplyRateAtStation {
     private void updateSupplyRate(int type, int rate) {
         //loop through supplies vector and increment the cargo values as required
         for (int n = 0; n < supplies.size(); n++) {
-            CargoElementObject tempElement = (CargoElementObject)supplies.elementAt(n);
+            CargoElementObject tempElement = supplies.elementAt(n);
 
             if (tempElement.getType() == type) {
                 //cargo types are the same, so increment the rate in supply

@@ -24,12 +24,12 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     private static final Logger logger = Logger.getLogger(Track_TilesParser.class.getName());
     private java.lang.StringBuffer buffer;
     private Track_TilesHandler handler;
-    private java.util.Stack context;
+    private java.util.Stack<Object[]> context;
 
     public Track_TilesParser(final Track_TilesHandler handler) {
         this.handler = handler;
         buffer = new StringBuffer(111);
-        context = new java.util.Stack();
+        context = new java.util.Stack<Object[]>();
     }
 
     public void setDocumentLocator(org.xml.sax.Locator locator) {
@@ -126,9 +126,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
             return; //skip it
         }
 
-        Object[] ctx = (Object[])context.peek();
-        String here = (String)ctx[0];
-        org.xml.sax.Attributes attrs = (org.xml.sax.Attributes)ctx[1];
         buffer.delete(0, buffer.length());
     }
 

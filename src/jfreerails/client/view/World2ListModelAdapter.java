@@ -62,17 +62,15 @@ public class World2ListModelAdapter implements ListModel {
     public int getSize() {
         if (null == skey) {
             return w.size(k, principal);
-        } else {
-            return w.size(skey);
         }
+		return w.size(skey);
     }
 
     public Object getElementAt(int i) {
         if (null == skey) {
             return w.get(k, i, principal);
-        } else {
-            return w.get(skey, i);
         }
+		return w.get(skey, i);
     }
 
     public void addListDataListener(ListDataListener arg0) {

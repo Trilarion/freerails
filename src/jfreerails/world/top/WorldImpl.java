@@ -41,10 +41,10 @@ public class WorldImpl implements World {
     * which themselves contain instances of the class corresponding to the
     * KEY type.
     */
-    private final ArrayList players = new ArrayList();
-    private final ArrayList bankAccounts = new ArrayList();
-    private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
-    private final ArrayList[] sharedLists = new ArrayList[SKEY.getNumberOfKeys()];
+    private final ArrayList<Player> players = new ArrayList<Player>();
+    private final ArrayList<BankAccount> bankAccounts = new ArrayList<BankAccount>();
+    private final ArrayList<ArrayList<FreerailsSerializable>>[] lists = new ArrayList[KEY.getNumberOfKeys()];
+    private final ArrayList<FreerailsSerializable>[] sharedLists = new ArrayList[SKEY.getNumberOfKeys()];
     private final FreerailsSerializable[] items = new FreerailsSerializable[ITEM.getNumberOfKeys()];
     private FreerailsSerializable[][] map;
 
@@ -78,25 +78,27 @@ public class WorldImpl implements World {
 
     private void setupLists() {
         for (int i = 0; i < lists.length; i++) {
-            lists[i] = new ArrayList();
+            lists[i] = new ArrayList<ArrayList<FreerailsSerializable>>();
         }
 
         for (int i = 0; i < sharedLists.length; i++) {
-            sharedLists[i] = new ArrayList();
+            sharedLists[i] = new ArrayList<FreerailsSerializable>();
         }
     }
 
     public FreerailsSerializable get(SKEY key, int index) {
-        return (FreerailsSerializable)sharedLists[key.getKeyID()].get(index);
+        return sharedLists[key.getKeyID()].get(index);
     }
 
     public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p) {
-        return (FreerailsSerializable)((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(
-                p))).get(index);
+        ArrayList arrayList2 = lists[key.getKeyID()];
+		int playerIndex = getPlayerIndex(p);
+		ArrayList arrayList = (ArrayList)arrayList2.get(playerIndex);
+		return (FreerailsSerializable)(arrayList).get(index);
     }
 
     public void set(SKEY key, int index, FreerailsSerializable element) {
-        sharedLists[key.getKeyID()].set(index, element);
+       sharedLists[key.getKeyID()].set(index, element);		
     }
 
     public void set(KEY key, int index, FreerailsSerializable element,
@@ -104,13 +106,13 @@ public class WorldImpl implements World {
         logger.finer("Setting " + element + " of type " + key + " at index " +
             index + " for " + p);
 
-        ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).set(index,
-            element);
+        int playerIndex = getPlayerIndex(p);
+		ArrayList<FreerailsSerializable> arrayList = lists[key.getKeyID()].get(playerIndex);
+		arrayList.set(index, element);
     }
 
     public int add(SKEY key, FreerailsSerializable element) {
-        sharedLists[key.getKeyID()].add(element);
-
+        sharedLists[key.getKeyID()].add(element);		
         return size(key) - 1;
     }
 
@@ -120,7 +122,7 @@ public class WorldImpl implements World {
         //        if (key == KEY.PLAYERS) {
         //            return addPlayer((Player)element, p);
         //        }
-        ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).add(element);
+        lists[key.getKeyID()].get(getPlayerIndex(p)).add(element);
 
         return size(key, p) - 1;
     }
@@ -130,7 +132,7 @@ public class WorldImpl implements World {
     }
 
     public int size(KEY key, FreerailsPrincipal p) {
-        return ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).size();
+        return lists[key.getKeyID()].get(getPlayerIndex(p)).size();
     }
 
     public int getMapWidth() {
@@ -142,9 +144,8 @@ public class WorldImpl implements World {
             //When the map size is 0*0 we get a java.lang.ArrayIndexOutOfBoundsException: 0
             // if we don't have check above.
             return 0;
-        } else {
-            return map[0].length;
         }
+		return map[0].length;
     }
 
     public void setTile(int x, int y, FreerailsSerializable element) {
@@ -158,9 +159,8 @@ public class WorldImpl implements World {
     public boolean boundsContain(int x, int y) {
         if (x >= 0 && x < map.length && y >= 0 && y < map[0].length) {
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public boolean boundsContain(KEY k, int index, FreerailsPrincipal p) {
@@ -180,7 +180,7 @@ public class WorldImpl implements World {
     public FreerailsSerializable removeLast(SKEY key) {
         int size = lists[key.getKeyID()].size();
 
-        return (FreerailsSerializable)sharedLists[key.getKeyID()].remove(size -
+        return sharedLists[key.getKeyID()].remove(size -
             1);
     }
 
@@ -188,12 +188,12 @@ public class WorldImpl implements World {
         logger.finer("Removing last " + key + " for " + p);
 
         int size;
-        size = ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).size();
+        size = lists[key.getKeyID()].get(getPlayerIndex(p)).size();
 
         int index = size - 1;
 
-        return (FreerailsSerializable)((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(
-                p))).remove(index);
+        return lists[key.getKeyID()].get(getPlayerIndex(
+                p)).remove(index);
     }
 
     public boolean equals(Object o) {
@@ -202,49 +202,45 @@ public class WorldImpl implements World {
 
             if (lists.length != test.lists.length) {
                 return false;
-            } else {
-                for (int i = 0; i < lists.length; i++) {
-                    if (!lists[i].equals(test.lists[i])) {
-                        return false;
-                    }
-                }
             }
+			for (int i = 0; i < lists.length; i++) {
+			    if (!lists[i].equals(test.lists[i])) {
+			        return false;
+			    }
+			}
 
             if (sharedLists.length != test.sharedLists.length) {
                 return false;
-            } else {
-                for (int i = 0; i < sharedLists.length; i++) {
-                    if (!sharedLists[i].equals(test.sharedLists[i])) {
-                        return false;
-                    }
-                }
             }
+			for (int i = 0; i < sharedLists.length; i++) {
+			    if (!sharedLists[i].equals(test.sharedLists[i])) {
+			        return false;
+			    }
+			}
 
             if ((this.getMapWidth() != test.getMapWidth()) ||
                     (this.getMapHeight() != test.getMapHeight())) {
                 return false;
-            } else {
-                for (int x = 0; x < this.getMapWidth(); x++) {
-                    for (int y = 0; y < this.getMapHeight(); y++) {
-                        if (!getTile(x, y).equals(test.getTile(x, y))) {
-                            return false;
-                        }
-                    }
-                }
             }
+			for (int x = 0; x < this.getMapWidth(); x++) {
+			    for (int y = 0; y < this.getMapHeight(); y++) {
+			        if (!getTile(x, y).equals(test.getTile(x, y))) {
+			            return false;
+			        }
+			    }
+			}
 
             if (this.items.length != test.items.length) {
                 return false;
-            } else {
-                for (int i = 0; i < this.items.length; i++) {
-                    //Some of the elements in the items array might be null, so we check for this before
-                    //calling equals to avoid NullPointerExceptions.
-                    if (!(null == items[i] ? null == test.items[i]
-                                               : items[i].equals(test.items[i]))) {
-                        return false;
-                    }
-                }
             }
+			for (int i = 0; i < this.items.length; i++) {
+			    //Some of the elements in the items array might be null, so we check for this before
+			    //calling equals to avoid NullPointerExceptions.
+			    if (!(null == items[i] ? null == test.items[i]
+			                               : items[i].equals(test.items[i]))) {
+			        return false;
+			    }
+			}
 
             /* Compare bank accounts.*/
             if (!this.bankAccounts.equals(test.bankAccounts)) {
@@ -253,9 +249,8 @@ public class WorldImpl implements World {
 
             //phew!
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public FreerailsSerializable get(ITEM item) {
@@ -281,7 +276,7 @@ public class WorldImpl implements World {
         int index = players.size() - 1;
 
         for (int i = 0; i < KEY.getNumberOfKeys(); i++) {
-            lists[i].add(new ArrayList());
+            lists[i].add(new ArrayList<FreerailsSerializable>());
         }
 
         return index;
@@ -289,7 +284,7 @@ public class WorldImpl implements World {
 
     private int getPlayerIndex(FreerailsPrincipal p) {
         for (int i = 0; i < players.size(); i++) {
-            Player player = ((Player)(players.get(i)));
+            Player player = (players.get(i));
 
             if (p.equals(player.getPrincipal())) {
                 return i;
@@ -326,7 +321,7 @@ public class WorldImpl implements World {
     }
 
     public Player getPlayer(int i) {
-        return (Player)players.get(i);
+        return players.get(i);
     }
 
     public void addTransaction(Transaction t, FreerailsPrincipal p) {
@@ -353,7 +348,7 @@ public class WorldImpl implements World {
     private BankAccount getBankAccount(FreerailsPrincipal p) {
         int index = this.getPlayerIndex(p);
 
-        return (BankAccount)bankAccounts.get(index);
+        return bankAccounts.get(index);
     }
 
     public boolean isPlayer(FreerailsPrincipal p) {

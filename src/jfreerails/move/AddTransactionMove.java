@@ -68,10 +68,9 @@ public class AddTransactionMove implements Move {
             }
 
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed(p.getName() +
-                " does not have a bank account.");
         }
+		return MoveStatus.moveFailed(p.getName() +
+		    " does not have a bank account.");
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
@@ -85,10 +84,9 @@ public class AddTransactionMove implements Move {
 
         if (lastTransaction.equals(this.transaction)) {
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed("Expected " + this.transaction +
-                "but found " + lastTransaction);
         }
+		return MoveStatus.moveFailed("Expected " + this.transaction +
+		    "but found " + lastTransaction);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
@@ -117,9 +115,8 @@ public class AddTransactionMove implements Move {
 
             return test.principal.equals(this.principal) &&
             test.transaction.equals(this.transaction);
-        } else {
-            return false;
         }
+		return false;
     }
 
     public FreerailsPrincipal getPrincipal() {

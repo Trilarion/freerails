@@ -36,45 +36,43 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
     public void moveForward() {
         if (beforeFirst) {
             throw new IllegalStateException();
-        } else {
-            this.setPosition(this.getVertexConnectedByEdge());
         }
+		this.setPosition(this.getVertexConnectedByEdge());
     }
 
     public void nextEdge() {
         if (!hasNextEdge()) {
             throw new NoSuchElementException();
-        } else {
-            OneTileMoveVector v = this.getFirstVectorToTry();
-            Point p = new Point(currentPosition.getX(), currentPosition.getY());
-            TrackPiece tp = (TrackPiece)w.getTile(p.x, p.y);
-            TrackConfiguration conf = tp.getTrackConfiguration();
-            OneTileMoveVector[] vectors = OneTileMoveVector.getList();
-
-            int i = v.getID();
-
-            int loopCounter = 0;
-
-            while (!conf.contains(vectors[i].get9bitTemplate())) {
-                i++;
-                i = i % 8;
-                loopCounter++;
-
-                if (8 < loopCounter) {
-                    throw new IllegalStateException();
-                    //This should never happen..  ..but it does happen when you removed the track from under a train.
-                }
-            }
-
-            OneTileMoveVector branchDirection = OneTileMoveVector.getInstance(i);
-            this.currentBranch.setDirection(branchDirection);
-
-            int x = this.currentPosition.getX() + branchDirection.deltaX;
-            int y = this.currentPosition.getY() + branchDirection.deltaY;
-
-            this.currentBranch.setX(x);
-            this.currentBranch.setY(y);
         }
+		OneTileMoveVector v = this.getFirstVectorToTry();
+		Point p = new Point(currentPosition.getX(), currentPosition.getY());
+		TrackPiece tp = (TrackPiece)w.getTile(p.x, p.y);
+		TrackConfiguration conf = tp.getTrackConfiguration();
+		OneTileMoveVector[] vectors = OneTileMoveVector.getList();
+
+		int i = v.getID();
+
+		int loopCounter = 0;
+
+		while (!conf.contains(vectors[i].get9bitTemplate())) {
+		    i++;
+		    i = i % 8;
+		    loopCounter++;
+
+		    if (8 < loopCounter) {
+		        throw new IllegalStateException();
+		        //This should never happen..  ..but it does happen when you removed the track from under a train.
+		    }
+		}
+
+		OneTileMoveVector branchDirection = OneTileMoveVector.getInstance(i);
+		this.currentBranch.setDirection(branchDirection);
+
+		int x = this.currentPosition.getX() + branchDirection.deltaX;
+		int y = this.currentPosition.getY() + branchDirection.deltaY;
+
+		this.currentBranch.setX(x);
+		this.currentBranch.setY(y);
 
         beforeFirst = false;
     }
@@ -92,34 +90,25 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             //We can always go back the way we have come, so if we are before the first
             //branch, there must be a branch: the one we used to get here.
             return true;
-        } else {
-            //Since we can always go back the way we have come, if the direction of 
-            //current branch is not equal to the opposite of the current direction,
-            //there must be another branch.
-            OneTileMoveVector currentBranchDirection = this.currentBranch.cameFrom();
-            OneTileMoveVector oppositeToCurrentDirection = this.currentPosition.cameFrom()
-                                                                               .getOpposite();
-
-            if (oppositeToCurrentDirection.getID() == currentBranchDirection.getID()) {
-                return false;
-            } else {
-                return true;
-            }
         }
+		//Since we can always go back the way we have come, if the direction of 
+		//current branch is not equal to the opposite of the current direction,
+		//there must be another branch.
+		OneTileMoveVector currentBranchDirection = this.currentBranch.cameFrom();
+		OneTileMoveVector oppositeToCurrentDirection = this.currentPosition.cameFrom()
+		                                                                   .getOpposite();
+
+		if (oppositeToCurrentDirection.getID() == currentBranchDirection.getID()) {
+		    return false;
+		}
+		return true;
     }
 
     public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) {
         w = world;
         this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p.getY(), p.cameFrom());
     }
-
-    /******************************************************************************************/
-
-    //scott bennett 15/03/03
-    public FlatTrackExplorer(PositionOnTrack p, ReadOnlyWorld world) {
-        this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p.getY(), p.cameFrom());
-        this.w = world;
-    }
+       
 
     /**
      * @return an array of PositionOnTrack objects describing the set of
@@ -169,17 +158,16 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             v = OneTileMoveVector.getInstance(i);
 
             return v;
-        } else {
-            //Return the vector that is 45 degrees clockwise from the direction  
-            //of the current branch.
-            OneTileMoveVector v = this.currentBranch.cameFrom();
-            int i = v.getID();
-            i++;
-            i = i % 8;
-            v = OneTileMoveVector.getInstance(i);
-
-            return v;
         }
+		//Return the vector that is 45 degrees clockwise from the direction  
+		//of the current branch.
+		OneTileMoveVector v = this.currentBranch.cameFrom();
+		int i = v.getID();
+		i++;
+		i = i % 8;
+		v = OneTileMoveVector.getInstance(i);
+
+		return v;
     }
 
     public int getH() {

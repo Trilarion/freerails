@@ -37,7 +37,7 @@ public class TrackMoveTransactionsGenerator {
      * it may cost more to added a unit of track than is refunded when
      * you removed it.
      */
-    private final ArrayList transactions = new ArrayList();
+    private final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
     private final ReadOnlyWorld w;
 
     /**
@@ -63,7 +63,7 @@ public class TrackMoveTransactionsGenerator {
         moves[0] = move;
 
         for (int i = 0; i < transactions.size(); i++) {
-            Transaction t = (Transaction)transactions.get(i);
+            Transaction t = transactions.get(i);
             moves[i + 1] = new AddTransactionMove(principal, t, true);
         }
 
@@ -140,7 +140,7 @@ public class TrackMoveTransactionsGenerator {
                 TrackRule rule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
                 Money total = new Money(-m.getAmount() * numberAdded / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-                Transaction t = new AddItemTransaction(AddItemTransaction.TRACK,
+                Transaction t = new AddItemTransaction(Transaction.TRACK,
                         i, numberAdded, total);
                 transactions.add(t);
             }
@@ -156,7 +156,7 @@ public class TrackMoveTransactionsGenerator {
                 //You only get half the money back.
                 total = new Money(total.getAmount() / 2);
 
-                Transaction t = new AddItemTransaction(AddItemTransaction.TRACK,
+                Transaction t = new AddItemTransaction(Transaction.TRACK,
                         i, -numberRemoved, total);
                 transactions.add(t);
             }

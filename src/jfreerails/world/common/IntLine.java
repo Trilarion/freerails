@@ -27,7 +27,7 @@ public class IntLine implements FreerailsSerializable {
     public double getLength() {
         int sumOfSquares = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
-        return Math.sqrt((double)sumOfSquares);
+        return Math.sqrt(sumOfSquares);
     }
 
     /**
@@ -64,12 +64,10 @@ public class IntLine implements FreerailsSerializable {
             if (line.x1 == this.x1 && line.x2 == this.x2 && line.y1 == this.y1 &&
                     line.y2 == this.y2) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public String toString() {

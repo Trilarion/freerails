@@ -81,17 +81,15 @@ public abstract class ChangeItemInListMove implements ListMove {
         if (null == item2change) {
             if (null == from) {
                 return MoveStatus.MOVE_OK;
-            } else {
-                return MoveStatus.moveFailed("Expected null but found " + from);
             }
-        } else {
-            if (!from.equals(item2change)) {
-                return MoveStatus.moveFailed("Expected " + from.toString() +
-                    " but found " + to.toString());
-            } else {
-                return MoveStatus.MOVE_OK;
-            }
+			return MoveStatus.moveFailed("Expected null but found " + from);
         }
+		if (!from.equals(item2change)) {
+		    String message = "Expected " + from.toString() +
+		        " but found " + to.toString();
+			return MoveStatus.moveFailed(message);
+		}
+		return MoveStatus.MOVE_OK;
     }
 
     protected MoveStatus move(FreerailsSerializable to,
@@ -126,9 +124,8 @@ public abstract class ChangeItemInListMove implements ListMove {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public FreerailsSerializable getAfter() {

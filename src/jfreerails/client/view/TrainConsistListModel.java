@@ -38,9 +38,8 @@ public class TrainConsistListModel extends AbstractListModel {
 
         if (0 == index) {
             return new TypeID(train.getEngineType(), SKEY.ENGINE_TYPES);
-        } else {
-            return new TypeID(train.getWagon(index - 1), SKEY.WAGON_TYPES);
         }
+		return new TypeID(train.getWagon(index - 1), SKEY.WAGON_TYPES);
     }
 
     public int getSize() {

@@ -128,9 +128,8 @@ abstract class AbstractInetConnection implements Runnable {
     FreerailsSerializable[] read() throws IOException {
         if (status.isOpen()) {
             return inbound.read();
-        } else {
-            throw new IOException();
         }
+		throw new IOException();
     }
 
     void send(FreerailsSerializable object) throws IOException {
@@ -147,18 +146,15 @@ abstract class AbstractInetConnection implements Runnable {
             synchronized (inbound) {
                 if (inbound.size() > 0) {
                     return inbound.getFirst();
-                } else {
-                    inbound.wait();
-
-                    if (inbound.size() > 0) {
-                        return inbound.getFirst();
-                    } else {
-                        throw new IllegalStateException();
-                    }
                 }
+				inbound.wait();
+
+				if (inbound.size() > 0) {
+				    return inbound.getFirst();
+				}
+				throw new IllegalStateException();
             }
-        } else {
-            throw new IOException("The connection is close.");
         }
+		throw new IOException("The connection is close.");
     }
 }

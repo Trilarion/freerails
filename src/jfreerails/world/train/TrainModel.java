@@ -89,7 +89,7 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     public int[] getConsist() {
-        return (int[])m_wagonTypes.clone();
+        return m_wagonTypes.clone();
     }
 
     public boolean equals(Object obj) {
@@ -101,8 +101,7 @@ public class TrainModel implements FreerailsSerializable {
                 this.m_scheduleID == test.m_scheduleID;
 
             return b;
-        } else {
-            return false;
         }
+		return false;
     }
 }

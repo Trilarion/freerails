@@ -56,7 +56,7 @@ public class ViewListsImpl implements ViewLists {
 
     private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
         FreerailsProgressMonitor pm) throws IOException {
-        ArrayList tileRenderers = new ArrayList();
+        ArrayList<TileRenderer> tileRenderers = new ArrayList<TileRenderer>();
 
         //Setup progress monitor..
         pm.setMessage("Loading terrain graphics.");
@@ -176,7 +176,7 @@ public class ViewListsImpl implements ViewLists {
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Ocean")) {
-                occeanTileRenderer = (TileRenderer)tileRenderers.get(j);
+                occeanTileRenderer = tileRenderers.get(j);
 
                 break;
             }
@@ -192,7 +192,7 @@ public class ViewListsImpl implements ViewLists {
                         new int[] {j}, t, occeanTileRenderer);
                 tileRenderers.set(j, tr);
 
-                occeanTileRenderer = (TileRenderer)tileRenderers.get(j);
+                occeanTileRenderer = tileRenderers.get(j);
 
                 break;
             }

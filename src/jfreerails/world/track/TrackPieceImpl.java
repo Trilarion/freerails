@@ -47,12 +47,10 @@ final public class TrackPieceImpl implements TrackPiece {
             if (configuration.equals(trackPieceImpl.getTrackConfiguration()) &&
                     trackType.equals(trackPieceImpl.getTrackRule())) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public int getOwnerID() {

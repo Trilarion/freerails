@@ -119,10 +119,10 @@ public class WorldDifferences implements World {
     private final ReadOnlyWorld underlyingWorld;
 
     /** Stores the differences on the map, Points are used as keys. */
-    private HashMap mapDifferences = new HashMap();
+    private HashMap<Point,Object> mapDifferences = new HashMap<Point,Object>();
 
     /** Stores the differences not on the map, instances of DiffKey are used as keys. */
-    private HashMap listDifferences = new HashMap();
+    private HashMap<Object, Object> listDifferences = new HashMap<Object, Object>();
 
     /**
      * Creates a new WorldDifferences object that stores differences relative to
@@ -421,9 +421,8 @@ public class WorldDifferences implements World {
     public FreerailsSerializable get(ITEM item) {
         if (this.listDifferences.containsKey(item)) {
             return (FreerailsSerializable)this.listDifferences.get(item);
-        } else {
-            return this.underlyingWorld.get(item);
         }
+		return this.underlyingWorld.get(item);
     }
 
     public FreerailsSerializable get(SKEY key, int index) {
@@ -431,9 +430,8 @@ public class WorldDifferences implements World {
 
         if (this.listDifferences.containsKey(diffKey)) {
             return (FreerailsSerializable)listDifferences.get(diffKey);
-        } else {
-            return underlyingWorld.get(key, index);
         }
+		return underlyingWorld.get(key, index);
     }
 
     public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p) {
@@ -443,9 +441,8 @@ public class WorldDifferences implements World {
 
         if (this.listDifferences.containsKey(diffKey)) {
             return (FreerailsSerializable)this.listDifferences.get(diffKey);
-        } else {
-            return this.underlyingWorld.get(key, index, p);
         }
+		return this.underlyingWorld.get(key, index, p);
     }
 
     public int size(SKEY key) {
@@ -455,9 +452,8 @@ public class WorldDifferences implements World {
             Integer i = (Integer)listDifferences.get(lengthKey);
 
             return i.intValue();
-        } else {
-            return this.underlyingWorld.size(key);
         }
+		return this.underlyingWorld.size(key);
     }
 
     public int size(KEY key, FreerailsPrincipal p) {
@@ -468,9 +464,8 @@ public class WorldDifferences implements World {
             Integer i = (Integer)listDifferences.get(listSize);
 
             return i.intValue();
-        } else {
-            return underlyingWorld.size(key, p);
         }
+		return underlyingWorld.size(key, p);
     }
 
     public int getMapWidth() {
@@ -486,9 +481,8 @@ public class WorldDifferences implements World {
             Integer i = (Integer)listDifferences.get(NUMBER_OF_PLAYERS_KEY);
 
             return i.intValue();
-        } else {
-            return underlyingWorld.getNumberOfPlayers();
         }
+		return underlyingWorld.getNumberOfPlayers();
     }
 
     public boolean isPlayer(FreerailsPrincipal p) {
@@ -515,9 +509,8 @@ public class WorldDifferences implements World {
 
         if (this.listDifferences.containsKey(diffKey)) {
             return (Player)this.listDifferences.get(diffKey);
-        } else {
-            return this.underlyingWorld.getPlayer(i);
         }
+		return this.underlyingWorld.getPlayer(i);
     }
 
     public FreerailsSerializable getTile(int x, int y) {
@@ -525,9 +518,8 @@ public class WorldDifferences implements World {
 
         if (this.mapDifferences.containsKey(p)) {
             return (FreerailsTile)this.mapDifferences.get(p);
-        } else {
-            return underlyingWorld.getTile(x, y);
         }
+		return underlyingWorld.getTile(x, y);
     }
 
     public boolean boundsContain(int x, int y) {
@@ -545,33 +537,29 @@ public class WorldDifferences implements World {
     public Transaction getTransaction(int i, FreerailsPrincipal p) {
         if (isAccountDiff(p)) {
             return this.getAccount(p).getTransaction(i);
-        } else {
-            return this.underlyingWorld.getTransaction(i, p);
         }
+		return this.underlyingWorld.getTransaction(i, p);
     }
 
     public GameTime getTransactionTimeStamp(int i, FreerailsPrincipal p) {
         if (isAccountDiff(p)) {
             return this.getAccount(p).getTimeStamp(i);
-        } else {
-            return this.underlyingWorld.getTransactionTimeStamp(i, p);
         }
+		return this.underlyingWorld.getTransactionTimeStamp(i, p);
     }
 
     public Money getCurrentBalance(FreerailsPrincipal p) {
         if (isAccountDiff(p)) {
             return this.getAccount(p).getCurrentBalance();
-        } else {
-            return this.underlyingWorld.getCurrentBalance(p);
         }
+		return this.underlyingWorld.getCurrentBalance(p);
     }
 
     public int getNumberOfTransactions(FreerailsPrincipal p) {
         if (isAccountDiff(p)) {
             return this.getAccount(p).size();
-        } else {
-            return this.underlyingWorld.getNumberOfTransactions(p);
         }
+		return this.underlyingWorld.getNumberOfTransactions(p);
     }
 
     private boolean isAccountDiff(FreerailsPrincipal p) {
@@ -592,22 +580,21 @@ public class WorldDifferences implements World {
     private BankAccount addAccountIfNecessary(FreerailsPrincipal p) {
         if (isAccountDiff(p)) {
             return getAccount(p);
-        } else {
-            //We need to copy the account..
-            DiffKey accountKey = new DiffKey(KeyType.BANK_ACCOUNT,
-                    this.getPlayerID(p));
-            BankAccount account = new BankAccount();
-
-            for (int i = 0; i < underlyingWorld.getNumberOfTransactions(p);
-                    i++) {
-                account.addTransaction(underlyingWorld.getTransaction(i, p),
-                    getTransactionTimeStamp(i, p));
-            }
-
-            listDifferences.put(accountKey, account);
-
-            return account;
         }
+		//We need to copy the account..
+		DiffKey accountKey = new DiffKey(KeyType.BANK_ACCOUNT,
+		        this.getPlayerID(p));
+		BankAccount account = new BankAccount();
+
+		for (int i = 0; i < underlyingWorld.getNumberOfTransactions(p);
+		        i++) {
+		    account.addTransaction(underlyingWorld.getTransaction(i, p),
+		        getTransactionTimeStamp(i, p));
+		}
+
+		listDifferences.put(accountKey, account);
+
+		return account;
     }
 
 	

@@ -18,7 +18,7 @@ import jfreerails.world.top.WorldImpl;
  */
 public class SavedGamesManager4UnitTests implements SavedGamesManager {
     private String[] mapsAvailable = {"map1", "map2"};
-    private final HashMap savedGames = new HashMap();
+    private final HashMap<String, Serializable> savedGames = new HashMap<String, Serializable>();
 
     public String[] getSaveGameNames() {
         Object[] keys = savedGames.keySet().toArray();
@@ -33,12 +33,12 @@ public class SavedGamesManager4UnitTests implements SavedGamesManager {
     }
 
     public String[] getNewMapNames() {
-        return (String[])mapsAvailable.clone();
+        return mapsAvailable.clone();
     }
 
     public void saveGame(Serializable w, String name) throws IOException {
         //Make a copy so that the saved version's state cannot be changed.
-        Object copy = Utils.cloneBySerialisation(w);
+    	Serializable copy = Utils.cloneBySerialisation(w);
         this.savedGames.put(name, copy);
     }
 

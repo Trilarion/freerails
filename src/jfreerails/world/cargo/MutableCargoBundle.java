@@ -16,7 +16,7 @@ import java.util.Iterator;
  *
  */
 public class MutableCargoBundle {
-    private final HashMap hashMap;
+    private final HashMap<CargoBatch, Integer> hashMap;
     private int updateID = 0;
 
     public int hashCode() {
@@ -28,7 +28,7 @@ public class MutableCargoBundle {
     }
 
     public MutableCargoBundle() {
-        hashMap = new HashMap();
+        hashMap = new HashMap<CargoBatch, Integer>();
     }
 
     public MutableCargoBundle(ImmutableCargoBundle imcb) {
@@ -40,10 +40,6 @@ public class MutableCargoBundle {
             CargoBatch cb = (CargoBatch)it.next();
             addCargo(cb, imcb.getAmount(cb));
         }
-    }
-
-    private MutableCargoBundle(HashMap hm) {
-        hashMap = hm;
     }
 
     private HashMap getHashMap() {
@@ -67,12 +63,11 @@ public class MutableCargoBundle {
 
     public int getAmount(CargoBatch cb) {
         if (contains(cb)) {
-            Integer i = (Integer)hashMap.get(cb);
+            Integer i = hashMap.get(cb);
 
             return i.intValue();
-        } else {
-            return 0;
         }
+		return 0;
     }
 
     public void setAmount(CargoBatch cb, int amount) {
@@ -92,7 +87,7 @@ public class MutableCargoBundle {
     /** Note, calling  hasNext() or next() on the returned iterator throws a ConcurrentModificationException
      * if this CargoBundle has changed since the iterator was aquired.
      */
-    public Iterator cargoBatchIterator() {
+    public Iterator<CargoBatch> cargoBatchIterator() {
         final Iterator it = hashMap.keySet().iterator();
 
         /* A ConcurrentModificationException used to get thrown when the amount
@@ -118,12 +113,12 @@ public class MutableCargoBundle {
                     return it.hasNext();
                 }
 
-                public Object next() {
+                public CargoBatch next() {
                     if (updateIDAtCreation != updateID) {
                         throw new ConcurrentModificationException();
                     }
 
-                    return it.next();
+                    return (CargoBatch)it.next();
                 }
             };
     }
@@ -133,9 +128,8 @@ public class MutableCargoBundle {
             MutableCargoBundle test = (MutableCargoBundle)o;
 
             return hashMap.equals(test.getHashMap());
-        } else {
-            return false;
         }
+		return false;
     }
 
     public void addCargo(CargoBatch cb, int amount) {

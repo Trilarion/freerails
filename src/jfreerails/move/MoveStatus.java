@@ -19,9 +19,8 @@ final public class MoveStatus implements FreerailsSerializable {
     private Object readResolve() {
         if (ok) {
             return MOVE_OK;
-        } else {
-            return this;
         }
+		return this;
     }
 
     private MoveStatus(boolean ok, String mess) {

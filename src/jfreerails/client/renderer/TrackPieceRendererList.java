@@ -28,9 +28,8 @@ final public class TrackPieceRendererList {
     public TrackPieceRenderer getTrackPieceView(int i) {
         if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER == i) {
             return NullTrackPieceRenderer.instance;
-        } else {
-            return trackPieceViewArray[i];
         }
+		return trackPieceViewArray[i];
     }
 
     public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
@@ -66,21 +65,20 @@ final public class TrackPieceRendererList {
                     trackRule.getTypeName());
 
                 return false;
-            } else {
-                while (legalConfigurationsIterator.hasNext()) {
-                    TrackConfiguration trackConfig = (TrackConfiguration)legalConfigurationsIterator.next();
-                    int trackGraphicsNo = trackConfig.getTrackGraphicsID();
-                    Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
-
-                    if (null == img) {
-                        logger.warning(
-                            "No track piece image for the following track type: " +
-                            trackRule.getTypeName() + ", with configuration: " +
-                            trackGraphicsNo);
-                        okSoFar = false;
-                    }
-                }
             }
+			while (legalConfigurationsIterator.hasNext()) {
+			    TrackConfiguration trackConfig = (TrackConfiguration)legalConfigurationsIterator.next();
+			    int trackGraphicsNo = trackConfig.getTrackGraphicsID();
+			    Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
+
+			    if (null == img) {
+			        logger.warning(
+			            "No track piece image for the following track type: " +
+			            trackRule.getTypeName() + ", with configuration: " +
+			            trackGraphicsNo);
+			        okSoFar = false;
+			    }
+			}
         }
 
         return okSoFar;

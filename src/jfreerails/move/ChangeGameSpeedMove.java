@@ -31,13 +31,12 @@ public class ChangeGameSpeedMove implements Move {
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         if (w.get(ITEM.GAME_SPEED).equals(oldSpeed)) {
             return MoveStatus.MOVE_OK;
-        } else {
-            String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " +
-                "currentSpeed " +
-                ((GameSpeed)w.get(ITEM.GAME_SPEED)).getSpeed();
-
-            return MoveStatus.moveFailed(string);
         }
+		String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " +
+		    "currentSpeed " +
+		    ((GameSpeed)w.get(ITEM.GAME_SPEED)).getSpeed();
+
+		return MoveStatus.moveFailed(string);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
@@ -45,10 +44,9 @@ public class ChangeGameSpeedMove implements Move {
 
         if (speed.equals(newSpeed)) {
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed("Expected " + newSpeed + ", found " +
-                speed);
         }
+		return MoveStatus.moveFailed("Expected " + newSpeed + ", found " +
+		    speed);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {

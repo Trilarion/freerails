@@ -31,12 +31,11 @@ public class TimeTickMove implements Move {
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         if (w.get(ITEM.TIME).equals(m_oldTime)) {
             return MoveStatus.MOVE_OK;
-        } else {
-            String string = "oldTime = " + m_oldTime.getTime() + " <=> " +
-                "currentTime " + ((GameTime)w.get(ITEM.TIME)).getTime();
-
-            return MoveStatus.moveFailed(string);
         }
+		String string = "oldTime = " + m_oldTime.getTime() + " <=> " +
+		    "currentTime " + ((GameTime)w.get(ITEM.TIME)).getTime();
+
+		return MoveStatus.moveFailed(string);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
@@ -44,10 +43,9 @@ public class TimeTickMove implements Move {
 
         if (time.equals(m_newTime)) {
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed("Expected " + m_newTime + ", found " +
-                time);
         }
+		return MoveStatus.moveFailed("Expected " + m_newTime + ", found " +
+		    time);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {

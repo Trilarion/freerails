@@ -89,17 +89,15 @@ public class NonNullElements implements WorldIterator {
     private FreerailsSerializable listGet(int i) {
         if (null == this.skey) {
             return w.get(key, i, principal);
-        } else {
-            return w.get(skey, i);
         }
+		return w.get(skey, i);
     }
 
     private int listSize() {
         if (null == this.skey) {
             return w.size(key, principal);
-        } else {
-            return w.size(this.skey);
         }
+		return w.size(this.skey);
     }
 
     public int getIndex() {

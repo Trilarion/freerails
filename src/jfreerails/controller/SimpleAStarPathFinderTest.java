@@ -52,7 +52,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
         assertEquals(2, i);
 
         i = pathFinder.findstep(4, new int[] {4}, map);
-        assertEquals(SimpleAStarPathFinder.PATH_NOT_FOUND, i);
+        assertEquals(IncrementalPathFinder.PATH_NOT_FOUND, i);
 
         i = pathFinder.findstep(2, new int[] {1}, map);
         assertEquals(1, i);
@@ -139,9 +139,8 @@ class Map implements GraphExplorer {
     public boolean hasNextEdge() {
         if (nodes[position].edges.length > (branch + 1)) {
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public void moveForward() {

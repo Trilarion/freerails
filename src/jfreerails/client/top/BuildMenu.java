@@ -5,10 +5,7 @@
 */
 package jfreerails.client.top;
 
-import javax.swing.ButtonGroup;
-
 import jfreerails.client.view.ActionRoot;
-import jfreerails.client.view.TrackBuildModel;
 
 
 /**
@@ -16,10 +13,6 @@ import jfreerails.client.view.TrackBuildModel;
 * @author  Luke Lindsay
 */
 final public class BuildMenu extends javax.swing.JMenu {
-    private ButtonGroup buttonGroup;
-    private ButtonGroup buttonGroup2;
-    private TrackBuildModel trackBuildModel;
-
     public BuildMenu() {
         super();
     }

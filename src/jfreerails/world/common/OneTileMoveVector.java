@@ -93,6 +93,15 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
 
         return tvectors;
     }
+    
+    public static Point move(Point start, OneTileMoveVector[] path){
+    	Point returnValue = new Point(start);
+    	for(OneTileMoveVector v : path){
+    		returnValue.x += v.deltaX;
+    		returnValue.y += v.deltaY;
+    	}
+    	return returnValue;
+    }
 
     /** The X and Y components of the vector.    */
     public final int deltaX;
@@ -214,7 +223,7 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
 
         int sumOfSquares = (x * x * TILE_DIAMETER * TILE_DIAMETER +
             y * y * TILE_DIAMETER * TILE_DIAMETER);
-        length = (int)Math.sqrt((double)sumOfSquares);
+        length = (int)Math.sqrt(sumOfSquares);
     }
 
     public static OneTileMoveVector getInstance(int number) {
@@ -226,9 +235,8 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
                 ((dx == 0) && (dy == 0))) {
             throw new IllegalArgumentException(dx + " and " + dy +
                 ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
-        } else {
-            return vectors[dx + 1][dy + 1];
         }
+		return vectors[dx + 1][dy + 1];
     }
 
     /** Returns true if the values passed could be used to create a valid vector.
@@ -237,9 +245,8 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
         if ((((x < -1) || (x > 1)) || ((y < -1) || (y > 1))) ||
                 ((x == 0) && (y == 0))) {
             return false;
-        } else {
-            return true;
         }
+		return true;
     }
 
     public Point createRelocatedPoint(Point from) {
@@ -249,9 +256,8 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
     public boolean contains(FlatTrackTemplate ftt) {
         if (ftt.get9bitTemplate() == this.flatTrackTemplate) {
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public int get9bitTemplate() {
@@ -263,7 +269,7 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
      * from North.
      */
     public static OneTileMoveVector[] getList() {
-        return (OneTileMoveVector[])list.clone(); //defensive copy.
+        return list.clone(); //defensive copy.
     }
 
     /**
@@ -330,33 +336,28 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
         if (gradient > B) {
             if (dy < 0) {
                 return NORTH;
-            } else {
-                return SOUTH;
             }
+			return SOUTH;
         } else if (gradient > A) {
             if (dy > 0) {
                 return SOUTH_EAST;
-            } else {
-                return NORTH_WEST;
             }
+			return NORTH_WEST;
         } else if (gradient > D) {
             if (dx > 0) {
                 return EAST;
-            } else {
-                return WEST;
             }
+			return WEST;
         } else if (gradient > C) {
             if (dx < 0) {
                 return SOUTH_WEST;
-            } else {
-                return NORTH_EAST;
             }
+			return NORTH_EAST;
         } else {
             if (dy > 0) {
                 return SOUTH;
-            } else {
-                return NORTH;
             }
+			return NORTH;
         }
     }
 

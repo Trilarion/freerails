@@ -55,21 +55,20 @@ public class TerrainRandomiser {
             if (Math.random() < CLEAR_PERCENTAGE) {
                 //make the tile Clear
                 return 4;
-            } else {
-                value = Math.random();
-
-                /*
-                 * at the moment, this logic produces a balanced and even distribution of the
-                 * different country tiles (currently 3). somehow it would be better to have
-                 * the actual proportions of Farms, Jungle and Desert etc vary. dunno how.
-                 */
-                for (int i = 0; i < terrainTypes.size(); i++) {
-                    if ((value > (i * divide)) &&
-                            (value <= ((i + 1) * divide))) {
-                        return ((Integer)terrainTypes.elementAt(i)).intValue();
-                    }
-                }
             }
+			value = Math.random();
+
+			/*
+			 * at the moment, this logic produces a balanced and even distribution of the
+			 * different country tiles (currently 3). somehow it would be better to have
+			 * the actual proportions of Farms, Jungle and Desert etc vary. dunno how.
+			 */
+			for (int i = 0; i < terrainTypes.size(); i++) {
+			    if ((value > (i * divide)) &&
+			            (value <= ((i + 1) * divide))) {
+			        return ((Integer)terrainTypes.elementAt(i)).intValue();
+			    }
+			}
         }
 
         return newType;

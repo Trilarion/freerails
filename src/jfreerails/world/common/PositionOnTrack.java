@@ -19,6 +19,23 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     private int x = 0;
 
     private int y = 0;
+    
+    public static int[] toInts(PositionOnTrack[] pos){
+    	int[] returnValue = new int[pos.length];
+    	for(int i = 0; i < pos.length; i++){
+    		returnValue[i] = pos[i].toInt();
+    	}
+    	return returnValue;
+    }
+    
+    public static PositionOnTrack[] fromInts(int[] ints){
+    	PositionOnTrack[] returnValue = new PositionOnTrack[ints.length];
+    	for(int i = 0; i < ints.length; i++){
+    		PositionOnTrack p = new PositionOnTrack(ints[i]);
+    		returnValue[i] = p;
+    	}
+    	return returnValue;
+    }
 
     public static PositionOnTrack createComingFrom(int x, int y, OneTileMoveVector direction) {
 		return new PositionOnTrack(x, y, direction);
@@ -61,12 +78,10 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
             if (other.cameFrom() == this.cameFrom() &&
                     other.getX() == this.getX() && other.getY() == this.getY()) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     /**

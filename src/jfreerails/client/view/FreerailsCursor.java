@@ -4,7 +4,6 @@
  */
 package jfreerails.client.view;
 
-import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -26,13 +25,9 @@ import jfreerails.controller.TrackMoveProducer;
  * @author Luke
  */
 final public class FreerailsCursor {
-	private int blinkValue = 1;
-
 	private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
 
 	private final ModelRoot modelRoot;
-
-	private BasicStroke stroke = new BasicStroke(3);
 
 	/**
 	 * Creates a new FreerailsCursor.

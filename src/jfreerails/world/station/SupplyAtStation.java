@@ -10,7 +10,7 @@ public class SupplyAtStation implements FreerailsSerializable {
     private final int[] supply;
 
     public SupplyAtStation(int[] cargoWaiting) {
-        supply = (int[])cargoWaiting.clone();
+        supply = cargoWaiting.clone();
     }
 
     /** Returns the number of car loads of the specified cargo that the station
@@ -45,8 +45,7 @@ public class SupplyAtStation implements FreerailsSerializable {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 }

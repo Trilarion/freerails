@@ -34,8 +34,8 @@ public class ImageManagerImpl implements ImageManager {
 	 private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
     private String pathToReadFrom;
     private String pathToWriteTo;
-    private final HashMap imageHashMap = new HashMap();
-    private final HashMap scaledImagesHashMap = new HashMap();
+    private final HashMap<String, Image> imageHashMap = new HashMap<String, Image>();
+    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<String, Image>();
     private final RenderingHints renderingHints;
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                                   .getDefaultScreenDevice()
@@ -69,7 +69,7 @@ public class ImageManagerImpl implements ImageManager {
         relativeFilename = relativeFilename.replace(' ', '_');
 
         if (imageHashMap.containsKey(relativeFilename)) {
-            return (Image)imageHashMap.get(relativeFilename);
+            return imageHashMap.get(relativeFilename);
         }
 
         //File f = new File(pathToReadFrom+File.separator+relativeFilename);
@@ -97,16 +97,14 @@ public class ImageManagerImpl implements ImageManager {
 
         if (imageHashMap.containsKey(relativeFilename)) {
             return true;
-        } else {
-            File f = new File(pathToWriteTo + File.separator +
-                    relativeFilename);
-
-            if (f.isFile()) {
-                return true;
-            } else {
-                return false;
-            }
         }
+		File f = new File(pathToWriteTo + File.separator +
+		        relativeFilename);
+
+		if (f.isFile()) {
+		    return true;
+		}
+		return false;
     }
 
     public void setImage(String relativeFilename, Image i) {
@@ -154,25 +152,25 @@ public class ImageManagerImpl implements ImageManager {
     /** Returns the specified image scaled so that its height is equal to the specified height. */
     public Image getScaledImage(String relativeFilename, int height)
         throws IOException {
-        Image i = getImage(relativeFilename);
+       
         String hashKey = relativeFilename + height;
 
         if (this.scaledImagesHashMap.containsKey(hashKey)) {
-            return (Image)scaledImagesHashMap.get(hashKey);
-        } else {
-            if (i.getHeight(null) == height) {
-                return i;
-            } else {
-                int width = (i.getWidth(null) * height) / i.getHeight(null);
-                Image compatibleImage = newBlankImage(height, width);
-                Graphics2D g = (Graphics2D)compatibleImage.getGraphics();
-                g.setRenderingHints(this.renderingHints);
-                g.drawImage(i, 0, 0, width, height, null);
-                scaledImagesHashMap.put(hashKey, compatibleImage);
-
-                return compatibleImage;
-            }
+            return scaledImagesHashMap.get(hashKey);
         }
+        
+        Image i = getImage(relativeFilename);
+		if (i.getHeight(null) == height) {
+		    return i;
+		}
+		int width = (i.getWidth(null) * height) / i.getHeight(null);
+		Image compatibleImage = newBlankImage(height, width);
+		Graphics2D g = (Graphics2D)compatibleImage.getGraphics();
+		g.setRenderingHints(this.renderingHints);
+		g.drawImage(i, 0, 0, width, height, null);
+		scaledImagesHashMap.put(hashKey, compatibleImage);
+
+		return compatibleImage;
     }
 
 	

@@ -17,7 +17,7 @@ public class MutableSchedule implements Schedule {
     /**
      * Vector of TrainOrdersModel.
      */
-    private final Vector orders = new Vector();
+    private final Vector<TrainOrdersModel> orders = new Vector<TrainOrdersModel>();
     private int nextScheduledOrder = 0;
 
     /** Whether the train should ignore the stationToGoto
@@ -41,7 +41,7 @@ public class MutableSchedule implements Schedule {
         TrainOrdersModel[] ordersArray = new TrainOrdersModel[orders.size()];
 
         for (int i = 0; i < ordersArray.length; i++) {
-            ordersArray[i] = (TrainOrdersModel)orders.get(i);
+            ordersArray[i] = orders.get(i);
         }
 
         return new ImmutableSchedule(ordersArray, this.nextScheduledOrder,
@@ -129,7 +129,7 @@ public class MutableSchedule implements Schedule {
     }
 
     public TrainOrdersModel getOrder(int i) {
-        return (TrainOrdersModel)orders.get(i);
+        return orders.get(i);
     }
 
     /** Returns the number of the order the train is currently carry out. */
@@ -148,12 +148,12 @@ public class MutableSchedule implements Schedule {
     /** Returns the station number of the next station the train is scheduled to
      * stop at. */
     public int getStationToGoto() {
-        return ((TrainOrdersModel)orders.get(nextScheduledOrder)).getStationID();
+        return orders.get(nextScheduledOrder).getStationID();
     }
 
     /** Returns the wagons to add at the next scheduled stop. */
     public /*=const*/ int[] getWagonsToAdd() {
-        return ((TrainOrdersModel)orders.get(nextScheduledOrder)).getConsist();
+        return orders.get(nextScheduledOrder).getConsist();
     }
 
     /** If there are no priority orders, sets the station to goto to the next station

@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 public class HtmlJPanelTest extends TestCase {
     public void testPopulateTokens() {
         String template = "test";
-        HashMap context = new HashMap();
+        HashMap<String, String> context = new HashMap<String, String>();
         String output = HtmlJPanel.populateTokens(template, context);
         assertEquals(template, output);
 

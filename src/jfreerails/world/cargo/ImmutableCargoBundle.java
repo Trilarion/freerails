@@ -127,7 +127,7 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
         return false;
     }
 
-    public Iterator cargoBatchIterator() {
+    public Iterator<CargoBatch> cargoBatchIterator() {
         return new Iterator() {
                 int index = 0;
 
@@ -139,8 +139,8 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
                     return index < m_batches.length;
                 }
 
-                public Object next() {
-                    Object o = m_batches[index];
+                public CargoBatch next() {
+                	CargoBatch o = m_batches[index];
                     index++;
 
                     return o;

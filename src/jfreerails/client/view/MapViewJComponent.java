@@ -54,19 +54,17 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
 
             if (best > 0) {
                 return best;
-            } else {
-                return rectangle.height;
             }
-        } else {
-            int best = (int)(((rectangle.width / getMapView().getScale()) - 2) * getMapView()
-                                                                                     .getScale());
-
-            if (best > 0) {
-                return best;
-            } else {
-                return rectangle.width;
-            }
+			return rectangle.height;
         }
+		float f = ((rectangle.width / getMapView().getScale()) - 2) * getMapView()
+		                                                                         .getScale();
+		int best = (int)(f);
+
+		if (best > 0) {
+		    return best;
+		}
+		return rectangle.width;
     }
 
     /**

@@ -31,7 +31,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     /**
      * The set of MappedButtonModels corresponding to the actions.
      */
-    private final Vector buttonModels;
+    private final Vector<MappedButtonModel> buttonModels;
 
     /**
      * An array of the actions to be used. The ComboBoxModel
@@ -41,7 +41,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     public ActionAdapter(Action[] actions) {
         super();
         this.actions = actions;
-        buttonModels = new Vector();
+        buttonModels = new Vector<MappedButtonModel>();
 
         for (int i = 0; i < actions.length; i++) {
             buttonModels.add(new MappedButtonModel(actions[i]));
@@ -61,7 +61,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
         this(actions);
 
         for (int i = 0; i < buttonModels.size(); i++) {
-            MappedButtonModel bm = (MappedButtonModel)buttonModels.get(i);
+            MappedButtonModel bm = buttonModels.get(i);
             bm.setSelected(i == selected);
         }
     }
@@ -107,7 +107,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
         }
 
         for (int i = 0; i < buttonModels.size(); i++) {
-            MappedButtonModel bm = (MappedButtonModel)buttonModels.get(i);
+            MappedButtonModel bm = buttonModels.get(i);
 
             if (bm.actionName.equals(item)) {
                 bm.setSelected(true);

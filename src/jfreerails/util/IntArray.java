@@ -126,9 +126,8 @@ public class IntArray extends ArrayBase implements Serializable {
     public final int get(int index) {
         if (index < m_countPresent) {
             return m_baseArray[index];
-        } else {
-            throw new ArrayIndexOutOfBoundsException("Invalid index value");
         }
+		throw new ArrayIndexOutOfBoundsException("Invalid index value");
     }
 
     /**

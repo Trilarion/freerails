@@ -22,7 +22,7 @@ import jfreerails.world.train.MutableSchedule;
  *
  */
 public class RemoveStationMove extends CompositeMove implements TrackMove {
-    private RemoveStationMove(ArrayList moves) {
+    private RemoveStationMove(ArrayList<Move> moves) {
         super(moves);
     }
 
@@ -51,7 +51,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
 
         StationModel station2remove = (StationModel)w.get(KEY.STATIONS,
                 stationIndex, principal);
-        ArrayList moves = new ArrayList();
+        ArrayList<Move> moves = new ArrayList<Move>();
         moves.add(removeTrackMove);
         moves.add(new RemoveItemFromListMove(KEY.STATIONS, stationIndex,
                 station2remove, principal));

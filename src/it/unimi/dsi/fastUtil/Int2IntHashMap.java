@@ -71,7 +71,7 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
      * The default return value for <code>get()</code>, <code>put()</code> and
      * <code>remove()</code>.
           */
-    private int defRetValue = ((int)0);
+    private int defRetValue = 0;
 
     /** Creates a new hash map.
      *
@@ -158,7 +158,7 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
     private int findInsertionPoint(final int k, final int[] key,
         final byte[] state) {
         // First of all, we make the key into a positive integer.
-        final int k2i = ((int)(k)) & 0x7FFFFFFF;
+        final int k2i = (k) & 0x7FFFFFFF;
 
         // The primary hash, a.k.a. starting point.
         int h1 = k2i % m_n;
@@ -204,7 +204,7 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
      */
     private int findKey(final int k, final int[] key, final byte[] state) {
         // First of all, we make the key into a positive integer.
-        final int k2i = ((int)(k)) & 0x7FFFFFFF;
+        final int k2i = (k) & 0x7FFFFFFF;
 
         // The primary hash, a.k.a. starting point.
         int h1 = k2i % m_n;
@@ -384,7 +384,7 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
         }
 
         public int hashCode() {
-            return ((int)(key)) ^ ((int)(value));
+            return (key) ^ (value);
         }
 
         public String toString() {
@@ -744,7 +744,7 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
 
             k = key[i];
             v = value[i];
-            k2i = ((int)(k)) & 0x7FFFFFFF;
+            k2i = (k) & 0x7FFFFFFF;
 
             h1 = k2i % newN;
             h2 = (k2i % (newN - 2)) + 1;
@@ -827,9 +827,9 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
             throw new InternalError();
         }
 
-        c.m_key = (int[])m_key.clone();
-        c.m_value = (int[])m_value.clone();
-        c.m_state = (byte[])m_state.clone();
+        c.m_key = m_key.clone();
+        c.m_value = m_value.clone();
+        c.m_state = m_state.clone();
 
         return c;
     }
@@ -853,9 +853,9 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
                 i++;
             }
 
-            h += ((int)(m_key[i]));
+            h += m_key[i];
 
-            h += ((int)(m_value[i]));
+            h += m_value[i];
             i++;
         }
 
@@ -1136,8 +1136,8 @@ public final class Int2IntHashMap extends Int2IntAbstractMap
                 System.exit(-1);
             }
 
-            if ((m.get(T) != ((int)0)) != ((t.get((new Integer(T))) == null
-                    ? ((int)0) : (((Integer)(t.get((new Integer(T))))).intValue())) != ((int)0)) ||
+            if ((m.get(T) != 0) != ((t.get((new Integer(T))) == null
+                    ? ((int)0) : (((Integer)(t.get((new Integer(T))))).intValue())) != 0) ||
                     t.get((new Integer(T))) != null &&
                     !m.get((new Integer(T))).equals(t.get((new Integer(T))))) {
                 System.out.println(

@@ -60,13 +60,9 @@ public class UserInputOnMapController extends KeyAdapter {
 
 	private boolean ignoreDragging = false;
 
-	private boolean ignoreKeyEvents = false;
-
 	public UserInputOnMapController(ModelRoot mr, ActionRoot ar) {
 		modelRoot = mr;
-		actionRoot = ar;
-		
-
+		actionRoot = ar;		
 	}
 
 	private class CursorMouseAdapter extends MouseInputAdapter {

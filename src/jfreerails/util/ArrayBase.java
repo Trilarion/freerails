@@ -208,8 +208,7 @@ public abstract class ArrayBase extends GrowableBase {
     protected Object buildArray(Class type, int offset, int length) {
         if (offset + length <= m_countPresent) {
             return super.buildArray(type, offset, length);
-        } else {
-            throw new ArrayIndexOutOfBoundsException();
         }
+		throw new ArrayIndexOutOfBoundsException();
     }
 }

@@ -23,7 +23,6 @@ public class BuildJPane extends javax.swing.JPanel {
     
     private ActionRoot actionRoot;
     private JPanel currentPanel;
-    private ModelRoot modelRoot;
     private ViewLists vl;
     
     public void validate() {
@@ -38,7 +37,6 @@ public class BuildJPane extends javax.swing.JPanel {
     }
     
     public void setup(ActionRoot actionRoot, ViewLists vl, ModelRoot modelRoot) {
-        this.modelRoot = modelRoot;
         this.actionRoot = actionRoot;
         this.vl = vl;
         setBuildPanel("Track");

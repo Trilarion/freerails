@@ -23,10 +23,10 @@ import jfreerails.world.top.WorldMapListener;
  * @author rob
  */
 final public class MoveChainFork implements MoveReceiver {
-    private final ArrayList moveReceivers = new ArrayList();
-    private final ArrayList splitMoveReceivers = new ArrayList();
-    private final ArrayList listListeners = new ArrayList();
-    private final ArrayList mapListeners = new ArrayList();
+    private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<MoveReceiver>();
+    private final ArrayList<MoveReceiver> splitMoveReceivers = new ArrayList<MoveReceiver>();
+    private final ArrayList<WorldListListener> listListeners = new ArrayList<WorldListListener>();
+    private final ArrayList<WorldMapListener> mapListeners = new ArrayList<WorldMapListener>();
 
     public MoveChainFork() {
         // do nothing
@@ -74,7 +74,7 @@ final public class MoveChainFork implements MoveReceiver {
 
     public void processMove(Move move) {
         for (int i = 0; i < moveReceivers.size(); i++) {
-            MoveReceiver m = (MoveReceiver)moveReceivers.get(i);
+            MoveReceiver m = moveReceivers.get(i);
             m.processMove(move);
         }
 
@@ -95,7 +95,7 @@ final public class MoveChainFork implements MoveReceiver {
             }
         } else {
             for (int i = 0; i < splitMoveReceivers.size(); i++) {
-                MoveReceiver m = (MoveReceiver)splitMoveReceivers.get(i);
+                MoveReceiver m = splitMoveReceivers.get(i);
                 m.processMove(move);
             }
 
@@ -117,28 +117,28 @@ final public class MoveChainFork implements MoveReceiver {
 
     private void sendMapUpdated(Rectangle r) {
         for (int i = 0; i < mapListeners.size(); i++) {
-            WorldMapListener l = (WorldMapListener)mapListeners.get(i);
+            WorldMapListener l = mapListeners.get(i);
             l.tilesChanged(r);
         }
     }
 
     private void sendItemAdded(KEY key, int index, FreerailsPrincipal p) {
         for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = (WorldListListener)listListeners.get(i);
+            WorldListListener l = listListeners.get(i);
             l.itemAdded(key, index, p);
         }
     }
 
     private void sendItemRemoved(KEY key, int index, FreerailsPrincipal p) {
         for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = (WorldListListener)listListeners.get(i);
+            WorldListListener l = listListeners.get(i);
             l.itemRemoved(key, index, p);
         }
     }
 
     private void sendListUpdated(KEY key, int index, FreerailsPrincipal p) {
         for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = (WorldListListener)listListeners.get(i);
+            WorldListListener l = listListeners.get(i);
             l.listUpdated(key, index, p);
         }
     }

@@ -91,7 +91,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
         return Player.NOBODY;
     }
 
-    public TransferCargoAtStationMove(ArrayList movesArrayList, boolean waiting) {
+    public TransferCargoAtStationMove(ArrayList<Move> movesArrayList, boolean waiting) {
         super(movesArrayList);
         this.m_waitingForFullLoad = waiting;
     }

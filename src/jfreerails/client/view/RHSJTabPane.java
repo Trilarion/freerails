@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
 
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
@@ -28,7 +29,6 @@ public class RHSJTabPane extends JTabbedPane
     private final TrainListJPanel trainListPanel;
     private final BuildTrackJPanel buildTrackPanel;
     private ReadOnlyWorld world;     
-    private int stationInfoIndex;
     private int trainListIndex;
 
 
@@ -38,9 +38,7 @@ public class RHSJTabPane extends JTabbedPane
     	
     	ImageIcon trainListIcon;
     	ImageIcon buildTrackIcon;
-    	ImageIcon stationInfoIcon;    	
-    	    	
-        /* set up trainsJTabbedPane */
+    	/* set up trainsJTabbedPane */
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         terrainInfoPanel = new TerrainInfoJPanel();
         trainListPanel = new TrainListJPanel();
@@ -50,15 +48,13 @@ public class RHSJTabPane extends JTabbedPane
         URL terrainInfoIconUrl = getClass().getResource("/jfreerails/client/graphics/icons/terrain_info.png");
         ImageIcon terrainInfoIcon = new ImageIcon(terrainInfoIconUrl);
 
-        URL stationInfoIconUrl = getClass().getResource("/jfreerails/client/graphics/icons/station_info.png");
-        stationInfoIcon = new ImageIcon(stationInfoIconUrl);
-		URL buildTrackIconUrl = getClass().getResource("/jfreerails/client/graphics/icons/track_new.png");
+        URL buildTrackIconUrl = getClass().getResource("/jfreerails/client/graphics/icons/track_new.png");
         buildTrackIcon = new ImageIcon(buildTrackIconUrl);
 		URL trainListIconUrl = getClass().getResource("/jfreerails/client/graphics/icons/train_list.png");
         trainListIcon = new ImageIcon(trainListIconUrl);
 		//Note titles set to null so only the icon appears at the top of the top.
         JScrollPane terrainInfoJScrollPane = new JScrollPane(terrainInfoPanel);
-        terrainInfoJScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        terrainInfoJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         addTab(null, terrainInfoIcon, terrainInfoJScrollPane, "Terrain Info");
         stationInfoPanel = new StationInfoJPanel();
         stationInfoPanel.removeCloseButton();

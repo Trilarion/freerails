@@ -41,9 +41,8 @@ public class AddItemTransaction implements Transaction {
             return this.m_amount.equals(test.m_amount) &&
             m_category == test.m_category && m_type == test.m_type &&
             m_quantity == test.m_quantity;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public AddItemTransaction(int category, int type, int quantity, Money amount) {

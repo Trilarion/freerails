@@ -72,8 +72,6 @@ public class LocalConnectionTest extends TestCase {
     }
 
     public void testWait() {
-        FreerailsSerializable[] objectsRead;
-
         try {
             Money m = new Money(100);
 
@@ -114,7 +112,6 @@ public class LocalConnectionTest extends TestCase {
             localConnection.writeToClient(m);
             fail();
         } catch (IOException e) {
-            String message = e.getMessage();
         }
     }
 

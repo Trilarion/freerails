@@ -30,7 +30,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class.getName());
     private SimpleAStarPathFinder m_pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld m_world;
-    private Point m_startPoint,  m_targetPoint;
+    private Point m_startPoint;
 
     public TrackPathFinder(ReadOnlyWorld world) {
         m_world = world;
@@ -41,14 +41,10 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     private List<Point> convertPath2Points(IntArray path) {
-        int loopCount = 0;
-
         PositionOnTrack progress = new PositionOnTrack();
         List<Point> proposedTrack = new ArrayList<Point>();
 
         Point p;
-        Point lastp;
-
         for (int i = 0; i < path.size(); i++) {
             progress.setValuesFromInt(path.get(i));
             p = new Point(progress.getX(), progress.getY());
@@ -75,7 +71,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
                     ruleNumber);
 
             /* Count number of possible directions. */
-            ArrayList possibleDirections = new ArrayList();
+            ArrayList<OneTileMoveVector> possibleDirections = new ArrayList<OneTileMoveVector>();
 
             for (int i = 0; i < 8; i++) {
                 OneTileMoveVector direction = OneTileMoveVector.getInstance(i);
@@ -92,7 +88,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
             targetInts = new int[possibleDirections.size()];
 
             for (int i = 0; i < targetInts.length; i++) {
-                OneTileMoveVector direction = (OneTileMoveVector)possibleDirections.get(i);               
+                OneTileMoveVector direction = possibleDirections.get(i);               
                 PositionOnTrack targetPot = PositionOnTrack.createFacing(targetPoint.x, targetPoint.y, direction);
                 targetInts[i] = targetPot.toInt();
             }
@@ -161,8 +157,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
             targetPoint);
         
         m_startPoint = startPoint;
-        m_targetPoint = targetPoint;
-       
         int[] targetInts = findTargets(targetPoint);
         int[] startInts = findTargets(startPoint);
 

@@ -92,16 +92,16 @@ public class PathWalkerImplTest extends TestCase {
 
         /* Now test with underlying pathIterators with few elements.
          */
-        ArrayList points = new ArrayList();
+        ArrayList<Point> points = new ArrayList<Point>();
 
         assertHasNextEqualsFalse(points);
 
-        points = new ArrayList();
+        points = new ArrayList<Point>();
         points.add(new Point(0, 0));
 
         assertHasNextEqualsFalse(points);
 
-        points = new ArrayList();
+        points = new ArrayList<Point>();
         points.add(new Point(0, 0));
         points.add(new Point(100, 0));
 

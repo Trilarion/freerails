@@ -25,7 +25,7 @@ import jfreerails.world.top.SKEY;
 public class QuickRGBTileRendererList implements TileRendererList {
     private final int[] rgbValues;
     private final Image[] images;
-    private final HashMap rgb2index = new HashMap();
+    private final HashMap<Integer, Integer> rgb2index = new HashMap<Integer, Integer>();
     private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
     private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                                                            .getDefaultScreenDevice()
@@ -60,7 +60,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     public TileRenderer getTileViewWithRGBValue(int rgb) {
-        Integer i = (Integer)rgb2index.get(new Integer(rgb));
+        Integer i = rgb2index.get(new Integer(rgb));
         this.simpleTileRenderer.setImage(images[i.intValue()]);
 
         return simpleTileRenderer;

@@ -117,7 +117,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     private void refreshTile(Point tile) {
-        int rgb;
         FreerailsTile tt = (FreerailsTile)w.getTile(tile.x, tile.y);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
@@ -170,7 +169,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 
         for (tile.x = mapX; tile.x < mapWidth + mapX; tile.x++) {
             for (tile.y = mapY; tile.y < mapHeight + mapY; tile.y++) {
-                int rgb;
                 FreerailsTile tt = (FreerailsTile)w.getTile(tile.x, tile.y);
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {

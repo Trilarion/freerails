@@ -90,7 +90,7 @@ public class StationModel implements FreerailsSerializable {
     }
 
     public ProductionAtEngineShop[] getProduction() {
-        return (ProductionAtEngineShop[])production.clone();
+        return production.clone();
     }
 
     public StationModel(StationModel s, /*=const*/
@@ -175,8 +175,7 @@ public class StationModel implements FreerailsSerializable {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 }

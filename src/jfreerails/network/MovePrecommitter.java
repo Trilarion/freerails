@@ -11,6 +11,7 @@ import jfreerails.controller.PreMove;
 import jfreerails.controller.PreMoveStatus;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
 
@@ -26,7 +27,7 @@ import jfreerails.world.top.World;
  *
  */
 public class MovePrecommitter {
-    private class PreMoveAndMove {
+    private class PreMoveAndMove implements FreerailsSerializable{
         final Move m;
         final PreMove pm;
 
@@ -41,15 +42,15 @@ public class MovePrecommitter {
     /** Whether the first move on the uncommitted list failed to go through on the last try.*/
     boolean blocked = false;
 
-    /** List of moves that have been sent to the server and
+    /** List of moves and premoves that have been sent to the server and
      * executed on the local world object.
      */
-    final LinkedList precomitted = new LinkedList();
+    final LinkedList<FreerailsSerializable> precomitted = new LinkedList<FreerailsSerializable>();
 
-    /** List of moves that have been sent to the server but not
+    /** List of moves and premoves that have been sent to the server but not
      * executed on the local world object.
      */
-    final LinkedList uncomitted = new LinkedList();
+    final LinkedList<FreerailsSerializable> uncomitted = new LinkedList<FreerailsSerializable>();
     private final World w;
 
     MovePrecommitter(World w) {
@@ -159,7 +160,7 @@ public class MovePrecommitter {
         while (precomitted.size() > 0) {
             Object last = precomitted.removeLast();
             Move move2undo;
-            Object obj2add2uncomitted;
+            FreerailsSerializable obj2add2uncomitted;
 
             if (last instanceof Move) {
                 move2undo = (Move)last;
@@ -193,10 +194,9 @@ public class MovePrecommitter {
 
         if (blocked) {
             return pm.generateMove(w);
-        } else {
-            PreMoveAndMove pmam = (PreMoveAndMove)precomitted.getLast();
-
-            return pmam.m;
         }
+		PreMoveAndMove pmam = (PreMoveAndMove)precomitted.getLast();
+
+		return pmam.m;
     }
 }

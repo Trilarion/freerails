@@ -33,11 +33,11 @@ class CityEconomicModel {
         }
     }
 
-    final ArrayList urbanTiles = new ArrayList();
-    final ArrayList industryTiles = new ArrayList();
-    final ArrayList industriesNotAtCity = new ArrayList();
-    final ArrayList resourceTiles = new ArrayList();
-    final ArrayList clearTiles = new ArrayList();
+    final ArrayList<Tile> urbanTiles = new ArrayList<Tile>();
+    final ArrayList<Tile> industryTiles = new ArrayList<Tile>();
+    final ArrayList<TerrainType> industriesNotAtCity = new ArrayList<TerrainType>();
+    final ArrayList<Tile> resourceTiles = new ArrayList<Tile>();
+    final ArrayList<Point> clearTiles = new ArrayList<Point>();
 
     /** The number of stations within this city's bounds. */
     int stations = 0;
@@ -48,7 +48,7 @@ class CityEconomicModel {
         //Pick a spot at random at which to place the tile.
         if (clearTiles.size() > 0) {
             int tilePos = rand.nextInt(clearTiles.size());
-            Point p = (Point)clearTiles.remove(tilePos);
+            Point p = clearTiles.remove(tilePos);
 
             if (type.getCategory().equals(TerrainType.Category.Urban)) {
                 urbanTiles.add(new Tile(p, type));
@@ -127,15 +127,15 @@ class CityEconomicModel {
 
     void write2map(World w) {
         for (int i = 0; i < urbanTiles.size(); i++) {
-            writeTile(w, (Tile)urbanTiles.get(i));
+            writeTile(w, urbanTiles.get(i));
         }
 
         for (int i = 0; i < industryTiles.size(); i++) {
-            writeTile(w, (Tile)industryTiles.get(i));
+            writeTile(w, industryTiles.get(i));
         }
 
         for (int i = 0; i < resourceTiles.size(); i++) {
-            writeTile(w, (Tile)resourceTiles.get(i));
+            writeTile(w, resourceTiles.get(i));
         }
     }
 

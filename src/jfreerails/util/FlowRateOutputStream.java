@@ -33,7 +33,7 @@ public class FlowRateOutputStream extends FilterOutputStream implements Runnable
         measureIntervall = measureInterval;
         this.streamName = streamName;
 
-        if (measureIntervall == (long)0) {
+        if (measureIntervall == 0) {
             showTrace = false;
             measureIntervall = 1000L;
         } else {
@@ -61,11 +61,11 @@ public class FlowRateOutputStream extends FilterOutputStream implements Runnable
 
         logger.info(String.valueOf(String.valueOf((new StringBuffer("Stream ")).append(
                         streamName).append(": Open duration = ")
-                                                   .append((double)(System.currentTimeMillis() -
+                                                   .append((System.currentTimeMillis() -
                         openTimeMillis) / 1000D).append(", Byte sent = ")
                                                    .append(totalByteSent)
                                                    .append(" (")
-                                                   .append((int)((double)totalByteSent / 1024D))
+                                                   .append((int)(totalByteSent / 1024D))
                                                    .append(" Ko), overall flow rate = ")
                                                    .append(overallRateString())
                                                    .append(" Ko/s"))));
@@ -87,23 +87,23 @@ public class FlowRateOutputStream extends FilterOutputStream implements Runnable
     }
 
     public int currentRate() throws IOException {
-        return (int)((double)byteSentCumul / 1024D / ((double)nbUsed * ((double)measureIntervall / 1000D)));
+        return (int)(byteSentCumul / 1024D / (nbUsed * (measureIntervall / 1000D)));
     }
 
     public int overallRate() throws IOException {
-        return (int)((double)totalByteSent / 1024D / ((double)(System.currentTimeMillis() -
+        return (int)(totalByteSent / 1024D / ((System.currentTimeMillis() -
         openTimeMillis) / 1000D));
     }
 
     public String overallRateString() throws IOException {
-        double d = (double)totalByteSent / 1024D / ((double)(System.currentTimeMillis() -
+        double d = totalByteSent / 1024D / ((System.currentTimeMillis() -
             openTimeMillis) / 1000D);
 
         return decimalFormat.format(d);
     }
 
     public String currentRateString() {
-        double d = ((double)byteSentCumul / 1024D / ((double)nbUsed * ((double)measureIntervall / 1000D)));
+        double d = (byteSentCumul / 1024D / (nbUsed * (measureIntervall / 1000D)));
 
         return decimalFormat.format(d);
     }
@@ -142,11 +142,11 @@ public class FlowRateOutputStream extends FilterOutputStream implements Runnable
                         logger.info(String.valueOf(String.valueOf(
                                     (new StringBuffer("Stream ")).append(
                                         streamName).append(": Open duration = ")
-                                     .append((double)(System.currentTimeMillis() -
+                                     .append((System.currentTimeMillis() -
                                         openTimeMillis) / 1000D)
                                      .append(", Byte sent = ")
                                      .append(totalByteSent).append(" (")
-                                     .append((int)((double)totalByteSent / 1024D))
+                                     .append((int)(totalByteSent / 1024D))
                                      .append(" Ko), current flow rate = ")
                                      .append(currentRateString()).append(" Ko/s"))));
                     }

@@ -80,8 +80,10 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         /* Connect 2 clients. */
         FreerailsClient client0 = new FreerailsClient();
         LogOnResponse response0 = client0.connect(server, "client0", "password");
+        assertTrue(response0.isSuccessful());
         FreerailsClient client1 = new FreerailsClient();
         LogOnResponse response1 = client1.connect(server, "client1", "password");
+        assertTrue(response1.isSuccessful());
         assertEquals(2, server.countOpenConnections());
         client0.update();
         client1.update();
@@ -145,9 +147,11 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             FreerailsClient client0 = new FreerailsClient();
             LogOnResponse response0 = client0.connect(server, "client0",
                     "password");
+            assertTrue(response0.isSuccessful());
             FreerailsClient client1 = new FreerailsClient();
             LogOnResponse response1 = client1.connect(server, "client1",
                     "password");
+            assertTrue(response1.isSuccessful());
             client0.update();
             client1.update();
 
@@ -214,9 +218,11 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             FreerailsClient client0 = new FreerailsClient();
             LogOnResponse response0 = client0.connect(server, "client0",
                     "password");
+            assertTrue(response0.isSuccessful());
             FreerailsClient client1 = new FreerailsClient();
             LogOnResponse response1 = client1.connect(server, "client1",
                     "password");
+            assertTrue(response1.isSuccessful());
             client0.update();
             client1.update();
 
@@ -238,7 +244,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
             Move move = pm.generateMove(copyOfWorld);
             MoveStatus status = move.doMove(copyOfWorld, principal0);
-
+            assertTrue(status.isOk());
             client0.processPreMove(pm);
             server.update();
 

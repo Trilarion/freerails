@@ -26,18 +26,16 @@ public class InitialiseTrainPositionMove implements Move {
         /* the train must not have any previous position */
         if (getTrainPosition(w) == null) {
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed("The train already has a position.");
         }
+		return MoveStatus.moveFailed("The train already has a position.");
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         if (newPosition.equals(getTrainPosition(w))) {
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed(
-                "The train did not have the expected position.");
         }
+		return MoveStatus.moveFailed(
+		    "The train did not have the expected position.");
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {

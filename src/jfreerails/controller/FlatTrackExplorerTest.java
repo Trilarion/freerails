@@ -150,12 +150,12 @@ public class FlatTrackExplorerTest extends TestCase {
         assertNotNull(positions);
         assertEquals(3, positions.length);
 
-        HashSet directions = new HashSet();
+        HashSet<OneTileMoveVector> directions = new HashSet<OneTileMoveVector>();
         directions.add(OneTileMoveVector.WEST);
         directions.add(OneTileMoveVector.EAST);
         directions.add(OneTileMoveVector.SOUTH_WEST);
 
-        HashSet directions2 = new HashSet();
+        HashSet<OneTileMoveVector> directions2 = new HashSet<OneTileMoveVector>();
 
         for (int i = 0; i < positions.length; i++) {
             directions2.add(positions[i].cameFrom());

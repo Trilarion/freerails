@@ -21,9 +21,8 @@ public class NewLocalConnection implements Connection2Client, Connection2Server 
     public FreerailsSerializable[] readFromClient() throws IOException {
         if (status.isOpen()) {
             return fromClient.read();
-        } else {
-            throw new IOException();
         }
+		throw new IOException();
     }
 
     public FreerailsSerializable waitForObjectFromClient()
@@ -35,9 +34,8 @@ public class NewLocalConnection implements Connection2Client, Connection2Server 
 
             if (status.isOpen()) {
                 return fromClient.getFirst();
-            } else {
-                throw new IOException();
             }
+			throw new IOException();
         }
     }
 
@@ -56,9 +54,8 @@ public class NewLocalConnection implements Connection2Client, Connection2Server 
     public FreerailsSerializable[] readFromServer() throws IOException {
         if (status.isOpen()) {
             return fromServer.read();
-        } else {
-            throw new IOException();
         }
+		throw new IOException();
     }
 
     public FreerailsSerializable waitForObjectFromServer()
@@ -71,9 +68,8 @@ public class NewLocalConnection implements Connection2Client, Connection2Server 
 
                 return fromServer.getFirst();
             }
-        } else {
-            throw new IOException();
         }
+		throw new IOException();
     }
 
     public void writeToServer(FreerailsSerializable object)

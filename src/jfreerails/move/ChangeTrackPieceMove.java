@@ -140,7 +140,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         
         //Check 4 overlapping stations.
         if(newTrackPiece.getTrackRule().isStation()){
-        	MoveStatus ms = AddStationMove.check4overlap(w, this);
+        	MoveStatus ms = AddStationMove.check4overlap(w, new Point(location), newTrackPiece);
         	if(!ms.ok) return ms;
         }
 
@@ -156,11 +156,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         if (!moveStatus.isOk()) {
             return moveStatus;
-        } else {
-            move(w, this.trackPieceBefore, this.trackPieceAfter);
-
-            return moveStatus;
         }
+		move(w, this.trackPieceBefore, this.trackPieceAfter);
+
+		return moveStatus;
     }
 
     private void move(World w, TrackPiece oldTrackPiece,
@@ -177,11 +176,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         if (!moveStatus.isOk()) {
             return moveStatus;
-        } else {
-            move(w, this.trackPieceAfter, this.trackPieceBefore);
-
-            return moveStatus;
         }
+		move(w, this.trackPieceAfter, this.trackPieceBefore);
+
+		return moveStatus;
     }
 
     private boolean noDiagonalTrackConflicts( /*=const*/
@@ -221,10 +219,9 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if (trackTemplate != 0) {
             return false;
             //There is a clash.
-        } else {
-            return true;
-            //Things are ok.
         }
+		return true;
+		//Things are ok.
     }
 
     public /*=const*/ Rectangle getUpdatedTiles() {
@@ -270,12 +267,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
             if (fieldPointEqual && fieldoldTrackPieceEqual &&
                     fieldnewTrackPieceEqual) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     protected static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {

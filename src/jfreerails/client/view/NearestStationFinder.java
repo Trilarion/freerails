@@ -92,12 +92,10 @@ public class NearestStationFinder {
 
         if (isDiagonal) {
             return sameXDirection && sameYDirection;
-        } else {
-            if (0 == direction.deltaX) {
-                return deltaXisLongerThanDeltaY && sameYDirection;
-            } else {
-                return !deltaXisLongerThanDeltaY && sameXDirection;
-            }
         }
+		if (0 == direction.deltaX) {
+		    return deltaXisLongerThanDeltaY && sameYDirection;
+		}
+		return !deltaXisLongerThanDeltaY && sameXDirection;
     }
 }

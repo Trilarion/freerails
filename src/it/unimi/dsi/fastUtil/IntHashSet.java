@@ -165,7 +165,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
     private int findInsertionPoint(final int k, final int[] key,
         final byte[] state) {
         // First of all, we make the key into a positive integer.
-        final int k2i = ((int)(k)) & 0x7FFFFFFF;
+        final int k2i = (k) & 0x7FFFFFFF;
 
         // The primary hash, a.k.a. starting point.
         int h1 = k2i % m_n;
@@ -211,7 +211,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
      */
     private int findKey(final int k, final int[] key, final byte[] state) {
         // First of all, we make the key into a positive integer.
-        final int k2i = ((int)(k)) & 0x7FFFFFFF;
+        final int k2i = (k) & 0x7FFFFFFF;
 
         // The primary hash, a.k.a. starting point.
         int h1 = k2i % m_n;
@@ -442,7 +442,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
             }
 
             k = key[i];
-            k2i = ((int)(k)) & 0x7FFFFFFF;
+            k2i = (k) & 0x7FFFFFFF;
 
             h1 = k2i % newN;
             h2 = (k2i % (newN - 2)) + 1;
@@ -504,8 +504,8 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
             throw new InternalError();
         }
 
-        c.m_key = (int[])m_key.clone();
-        c.m_state = (byte[])m_state.clone();
+        c.m_key = m_key.clone();
+        c.m_state = m_state.clone();
 
         return c;
     }
@@ -529,7 +529,7 @@ public final class IntHashSet extends IntAbstractSet implements Serializable,
                 i++;
             }
 
-            h += ((int)(m_key[i]));
+            h += (m_key[i]);
             i++;
         }
 

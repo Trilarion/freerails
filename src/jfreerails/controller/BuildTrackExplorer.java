@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
 
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
-import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
@@ -183,9 +182,6 @@ public class BuildTrackExplorer implements GraphExplorer {
 		TrackRule rule;
 		if (tile.getTrackRule().equals(NullTrackType.getInstance())) {           
             int terrainTypeID = tile.getTerrainTypeID();
-            TileTypeImpl terrainType = (TileTypeImpl)m_world.get(SKEY.TERRAIN_TYPES,
-                    terrainTypeID);            
-
             int trackRuleID = m_buildTrackStrategy.getRule(terrainTypeID);
             if(trackRuleID == -1){
             	return null; //Can't build on this terrain!
@@ -203,29 +199,28 @@ public class BuildTrackExplorer implements GraphExplorer {
 	public int getEdgeCost() {
         if (m_beforeFirst) {
             throw new IllegalStateException();
-        } else {
-            OneTileMoveVector edgeDirection = OneTileMoveVector.getInstance(m_direction -
-                    1);
-            int length = edgeDirection.getLength();                       
-            final int DISTANCE_COST = 10000;  //Same as the cost of standard track.           
-            int cost = DISTANCE_COST * length;
-            
-            if (!m_usingExistingTrack) {
-            	int x = m_currentPosition.getX();
-    			int y = m_currentPosition.getY();
-    			TrackRule ruleA = getAppropriateTrackRule(x, y);
-    			TrackRule ruleB = getAppropriateTrackRule(x+ edgeDirection.deltaX, y+edgeDirection.deltaY);
-    			/* If there is a station at either of the points, don't include its
-    			 * price in the cost calulation since it has already been paid.  Otherwise,
-    			 * add the cost of building the track.
-    			 */
-    			long priceA = ruleA.isStation() ? 0 : ruleA.getPrice().getAmount();    			    			
-    			long priceB = ruleB.isStation() ? 0 : ruleB.getPrice().getAmount();  
-    			cost += length*(priceA + priceB);
-               
-            }                        			
-            return cost;
         }
+		OneTileMoveVector edgeDirection = OneTileMoveVector.getInstance(m_direction -
+		        1);
+		int length = edgeDirection.getLength();                       
+		final int DISTANCE_COST = 10000;  //Same as the cost of standard track.           
+		int cost = DISTANCE_COST * length;
+		
+		if (!m_usingExistingTrack) {
+			int x = m_currentPosition.getX();
+			int y = m_currentPosition.getY();
+			TrackRule ruleA = getAppropriateTrackRule(x, y);
+			TrackRule ruleB = getAppropriateTrackRule(x+ edgeDirection.deltaX, y+edgeDirection.deltaY);
+			/* If there is a station at either of the points, don't include its
+			 * price in the cost calulation since it has already been paid.  Otherwise,
+			 * add the cost of building the track.
+			 */
+			long priceA = ruleA.isStation() ? 0 : ruleA.getPrice().getAmount();    			    			
+			long priceB = ruleB.isStation() ? 0 : ruleB.getPrice().getAmount();  
+			cost += length*(priceA + priceB);
+		   
+		}                        			
+		return cost;
     }
 
     public int getH() {
@@ -233,7 +228,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         int yDistance = (m_target.y - m_currentPosition.getY()) * OneTileMoveVector.TILE_DIAMETER;
         int sumOfSquares = (xDistance * xDistance + yDistance * yDistance);
 
-        return (int)Math.sqrt((double)sumOfSquares);
+        return (int)Math.sqrt(sumOfSquares);
     }
 
     public int getPosition() {
@@ -244,9 +239,8 @@ public class BuildTrackExplorer implements GraphExplorer {
     public int getVertexConnectedByEdge() {
         if (m_beforeFirst) {
             throw new IllegalStateException();
-        } else {
-            return m_currentBranch.toInt();
         }
+		return m_currentBranch.toInt();
     }
 
     public boolean hasNextEdge() {
@@ -264,25 +258,23 @@ public class BuildTrackExplorer implements GraphExplorer {
     public void moveForward() {
         if (m_beforeFirst) {
             throw new IllegalStateException();
-        } else {
-            setPosition(this.getVertexConnectedByEdge());
         }
+		setPosition(this.getVertexConnectedByEdge());
     }
 
     public void nextEdge() {
         if (!hasNextEdge()) {
             throw new NoSuchElementException();
-        } else {
-            //The direction we are moving relative to the current position.
-            OneTileMoveVector direction = OneTileMoveVector.getInstance(m_direction);
-
-            m_currentBranch.setDirection(direction);
-            m_currentBranch.setX(m_currentPosition.getX() + direction.getDx());
-            m_currentBranch.setY(m_currentPosition.getY() + direction.getDy());
-
-            m_direction++;
-            m_beforeFirst = false;
         }
+		//The direction we are moving relative to the current position.
+		OneTileMoveVector direction = OneTileMoveVector.getInstance(m_direction);
+
+		m_currentBranch.setDirection(direction);
+		m_currentBranch.setX(m_currentPosition.getX() + direction.getDx());
+		m_currentBranch.setY(m_currentPosition.getY() + direction.getDy());
+
+		m_direction++;
+		m_beforeFirst = false;
     }
 
     public void setPosition(int vertex) {

@@ -45,10 +45,9 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 
         if (before.equals(m_before)) {
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed("Expected " + m_before +
-                " but found " + before);
         }
+		return MoveStatus.moveFailed("Expected " + m_before +
+		    " but found " + before);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
@@ -56,10 +55,9 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 
         if (after.equals(m_after)) {
             return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.moveFailed("Expected " + m_after + " but found " +
-                after);
         }
+		return MoveStatus.moveFailed("Expected " + m_after + " but found " +
+		    after);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {

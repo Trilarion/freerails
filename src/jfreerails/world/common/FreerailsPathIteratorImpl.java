@@ -43,9 +43,8 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     public boolean hasNext() {
         if (forwards) {
             return (position + 1) < points.size();
-        } else {
-            return (position - 1) >= 0;
         }
+		return (position - 1) >= 0;
     }
 
     public void nextSegment(IntLine line) {

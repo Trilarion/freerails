@@ -31,7 +31,7 @@ public abstract class TransactionAggregator {
 
     public GameTime[] getTimes() {
         //return defensive copy.
-        return (GameTime[])m_times.clone();
+        return m_times.clone();
     }
 
     public void setTimes(GameTime[] times) {

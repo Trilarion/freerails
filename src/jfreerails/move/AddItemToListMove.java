@@ -110,9 +110,8 @@ public class AddItemToListMove implements ListMove {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public FreerailsSerializable getBefore() {

@@ -43,12 +43,10 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
                     this.legalConfigs.equals(
                         test.legalConfigs)) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
@@ -69,7 +67,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     }
 
     private void processTemplate(String trackTemplateString) {
-        int trackTemplate = (int)Integer.parseInt(trackTemplateString, 2);
+        int trackTemplate = Integer.parseInt(trackTemplateString, 2);
 
         //  Check for invalid parameters.
         if ((trackTemplate > 511) || (trackTemplate < 0)) {

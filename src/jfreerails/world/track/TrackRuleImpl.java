@@ -57,10 +57,9 @@ final public class TrackRuleImpl implements TrackRule {
 			int comp = otherRule.getCategory().compareTo(getCategory());
 			if(comp != 0){
 				return -comp;
-			}else{
-				long dPrice = this.properties.getPrice().getAmount() - otherRule.getPrice().getAmount() ;
-				return (int)dPrice;
 			}
+			long dPrice = this.properties.getPrice().getAmount() - otherRule.getPrice().getAmount() ;
+			return (int)dPrice;
 		}		
 		return 0;
 	}
@@ -75,12 +74,10 @@ final public class TrackRuleImpl implements TrackRule {
             if (propertiesFieldsEqual && legalConfigurationsEqual &&
                     legalTrackPlacementEqual) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
 	public TrackRule.TrackCategories getCategory() {		

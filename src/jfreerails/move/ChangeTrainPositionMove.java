@@ -93,7 +93,7 @@ public class ChangeTrainPositionMove implements Move {
 
             intermediate = currentPosition.addToHead(bitToAdd);
 
-            double currentLength = (double)train.getLength();
+            double currentLength = train.getLength();
 
             bitToRemove = getBitToRemove(intermediate, currentLength);
 

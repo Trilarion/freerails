@@ -102,9 +102,8 @@ public class AddItemToSharedListMove implements Move {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public FreerailsSerializable getBefore() {

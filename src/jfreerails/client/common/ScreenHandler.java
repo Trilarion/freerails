@@ -145,11 +145,8 @@ final public class ScreenHandler {
     }
 
     public void swapScreens() {
-        boolean done = false;
-
         if (!bufferStrategy.contentsLost()) {
             bufferStrategy.show();
-            done = true;
         }
     }
 

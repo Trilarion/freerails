@@ -121,15 +121,12 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
                 if (path1.hasNext() || path2.hasNext()) {
                     return false;
-                } else {
-                    return true;
                 }
-            } else {
-                return false;
+				return true;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public double calulateDistance() {
@@ -142,7 +139,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
             int sumOfSquares = (line.x1 - line.x2) * (line.x1 - line.x2) +
                 (line.y1 - line.y2) * (line.y1 - line.y2);
-            distance += Math.sqrt((double)sumOfSquares);
+            distance += Math.sqrt(sumOfSquares);
         }
 
         return distance;
@@ -202,8 +199,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     public static TrainPositionOnMap createInstance(int[] xpoints, int[] ypoints) {
-        return new TrainPositionOnMap((int[])xpoints.clone(),
-            (int[])ypoints.clone());
+        return new TrainPositionOnMap(xpoints.clone(),
+            ypoints.clone());
     }
 
     public TrainPositionOnMap addToHead(TrainPositionOnMap b) {
@@ -236,10 +233,9 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             }
 
             return new TrainPositionOnMap(newXpoints, newYpoints);
-        } else {
-            throw new IllegalArgumentException("Tried to add " + b.toString() +
-                " to the head of " + a.toString());
         }
+		throw new IllegalArgumentException("Tried to add " + b.toString() +
+		    " to the head of " + a.toString());
     }
 
     public boolean canAddToHead(TrainPositionOnMap b) {
@@ -279,9 +275,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             }
 
             return new TrainPositionOnMap(newXpoints, newYpoints);
-        } else {
-            throw new IllegalArgumentException();
         }
+		throw new IllegalArgumentException();
     }
 
     public boolean canRemoveFromHead(TrainPositionOnMap b) {
@@ -301,9 +296,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public TrainPositionOnMap removeFromTail(TrainPositionOnMap b) {
@@ -324,9 +318,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             newYpoints[newLength - 1] = b.getY(0);
 
             return new TrainPositionOnMap(newXpoints, newYpoints);
-        } else {
-            throw new IllegalArgumentException();
         }
+		throw new IllegalArgumentException();
     }
 
     public boolean canRemoveFromTail(TrainPositionOnMap b) {
@@ -346,9 +339,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public static TrainPositionOnMap createInSameDirectionAsPath(
@@ -391,9 +383,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
         if (aHeadX == bHeadX && aHeadY == bHeadY) {
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public static boolean tailsAreEqual(TrainPositionOnMap a,
@@ -405,9 +396,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
         if (aTailX == bTailX && aTailY == bTailY) {
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public static boolean aHeadEqualsBTail(TrainPositionOnMap a,
@@ -420,9 +410,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
         if (aHeadX == bTailX && aHeadY == bTailY) {
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public static boolean bHeadEqualsATail(TrainPositionOnMap a,

@@ -7,6 +7,7 @@ package jfreerails.server;
 import java.util.ArrayList;
 import java.util.Iterator;
 import jfreerails.move.AddTransactionMove;
+import jfreerails.move.Move;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.MutableCargoBundle;
@@ -28,13 +29,13 @@ public class ProcessCargoAtStationMoveGenerator {
      */
     private final static int MAGIC_NUMBER = 75;
 
-    public static ArrayList processCargo(ReadOnlyWorld w,
+    public static ArrayList<Move> processCargo(ReadOnlyWorld w,
         MutableCargoBundle bundle, int stationID, FreerailsPrincipal p) {
         StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
                 p);
         Iterator batches = bundle.cargoBatchIterator();
 
-        ArrayList moves = new ArrayList();
+        ArrayList<Move> moves = new ArrayList<Move>();
 
         while (batches.hasNext()) {
             CargoBatch batch = (CargoBatch)batches.next();

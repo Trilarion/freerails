@@ -12,7 +12,7 @@ public class ConvertedAtStation implements FreerailsSerializable {
     private final int[] convertedTo;
 
     public ConvertedAtStation(int[] convertedTo) {
-        this.convertedTo = (int[])convertedTo.clone(); //defensive copy.
+        this.convertedTo = convertedTo.clone(); //defensive copy.
     }
 
     public static ConvertedAtStation emptyInstance(int numberOfCargoTypes) {
@@ -34,9 +34,8 @@ public class ConvertedAtStation implements FreerailsSerializable {
     public boolean isCargoConverted(int cargoNumber) {
         if (NOT_CONVERTED == convertedTo[cargoNumber]) {
             return false;
-        } else {
-            return true;
         }
+		return true;
     }
 
     public int getConversion(int cargoNumber) {
@@ -68,8 +67,7 @@ public class ConvertedAtStation implements FreerailsSerializable {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 }

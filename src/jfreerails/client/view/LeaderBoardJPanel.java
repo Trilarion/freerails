@@ -129,9 +129,8 @@ public class LeaderBoardJPanel extends JPanel implements View {
                 PlayerDetails test = (PlayerDetails)o;
                 long l = test.networth.getAmount() - networth.getAmount();
                 return (int)l;
-            }else{
-                return 0;
             }
+			return 0;
         }
         
     }

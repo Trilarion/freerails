@@ -17,7 +17,7 @@ import jfreerails.world.terrain.TerrainType;
  * TODO maybe it would be simplier to get rid of this and jsut check against null!
  * @author  lindsal
  */
-final public class NullTrackType implements jfreerails.world.track.TrackRule {
+final public class NullTrackType implements TrackRule {
     public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
     private static final NullTrackType nullTrackType = new NullTrackType();
 
@@ -53,16 +53,15 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
     public boolean testTrackPieceLegality(int trackTemplateToTest) {
         if (trackTemplateToTest != 0) {
             return false;
-        } else {
-            return true;
         }
+		return true;
     }
 
     public boolean trackPieceIsLegal(TrackConfiguration config) {
         return testTrackPieceLegality(config.getTrackGraphicsID());
     }
 
-    public Iterator getLegalConfigurationsIterator() {
+    public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
         throw new UnsupportedOperationException("Method not implemented yet!");
     }
 

@@ -417,9 +417,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     	 NonNullElements stations = new NonNullElements(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
     	 if(stations.next()){
     	 	return stations.getIndex();
-    	 }else{
-    	 	throw new NoSuchElementException();
     	 }
+		throw new NoSuchElementException();
     }
     
     private void setupWagonsPopup() {

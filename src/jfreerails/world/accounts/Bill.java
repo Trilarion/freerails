@@ -39,9 +39,8 @@ public class Bill implements Transaction {
 
             return test.m_amount.equals(m_amount) &&
             m_category == test.m_category;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public int getCategory() {

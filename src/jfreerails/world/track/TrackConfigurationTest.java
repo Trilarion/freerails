@@ -81,7 +81,7 @@ public class TrackConfigurationTest extends TestCase {
         assertEquals("no tile center", a.toString());
 
         //Check that no two track configurations have the same String representation.
-        HashSet strings = new HashSet();
+        HashSet<String> strings = new HashSet<String>();
 
         for (int i = 0; i < 512; i++) {
             TrackConfiguration test = TrackConfiguration.from9bitTemplate(i);

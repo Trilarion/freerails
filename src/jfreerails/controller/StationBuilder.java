@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import jfreerails.move.MoveStatus;
-import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -26,7 +25,6 @@ import jfreerails.world.track.TrackRule;
 public class StationBuilder {
     private static final Logger logger = Logger.getLogger(StationBuilder.class.getName());
     private int ruleNumber;
-    private final TrackMoveTransactionsGenerator transactionsGenerator;
     private final MoveExecutor executor;
 
     public StationBuilder(MoveExecutor executor) {
@@ -44,10 +42,6 @@ public class StationBuilder {
         } while (!trackRule.isStation());
 
         ruleNumber = i;
-
-        FreerailsPrincipal principal = executor.getPrincipal();
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
-                principal);
     }
 
     public boolean canBuildStationHere(Point p) {
@@ -59,9 +53,6 @@ public class StationBuilder {
     }
 
     public MoveStatus buildStation(Point p) {
-        ReadOnlyWorld world = executor.getWorld();
-        FreerailsTile oldTile = (FreerailsTile)world.getTile(p.x, p.y);
-
         //Only build a station if there is track at the specified point.
         if (canBuildStationHere(p)) {
             FreerailsPrincipal principal = executor.getPrincipal();
@@ -121,12 +112,11 @@ public class StationBuilder {
             //            }
             //
             //            return executor.doMove(move);
-        } else {
-            String message = "Can't build station since there is no track here!";
-            logger.warning(message);
-
-            return MoveStatus.moveFailed(message);
         }
+		String message = "Can't build station since there is no track here!";
+		logger.warning(message);
+
+		return MoveStatus.moveFailed(message);
     }
 
     public void setStationType(int ruleNumber) {

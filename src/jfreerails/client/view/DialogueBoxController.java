@@ -8,6 +8,7 @@ package jfreerails.client.view;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
@@ -142,6 +143,9 @@ public class DialogueBoxController implements WorldListListener {
         terrainInfo = new TerrainInfoJPanel();
         stationInfo = new StationInfoJPanel();
         javaProperties = new HtmlJPanel(ShowJavaProperties.getPropertiesHtmlString());
+        Dimension d = javaProperties.getPreferredSize();
+        d.width += 50;
+        javaProperties.setPreferredSize(d);
         newspaper = new NewsPaperJPanel();
         selectWagons = new SelectWagonsJPanel();
         selectEngine = new SelectEngineJPanel();
@@ -346,11 +350,13 @@ public class DialogueBoxController implements WorldListListener {
             constraints.gridy = 0;
             constraints.weightx = 1.0;
             constraints.weighty = 1.0;
+            constraints.insets = new Insets(7, 7, 7, 7);           
             contentPanel.add(component, constraints);
 
             constraints = new GridBagConstraints();
             constraints.gridx = 0;
             constraints.gridy = 1;
+            constraints.insets = new Insets(7, 7, 7, 7);           
             contentPanel.add(closeButton, constraints);
         } else {
             contentPanel = component;
@@ -428,9 +434,8 @@ public class DialogueBoxController implements WorldListListener {
 
             throw new IllegalStateException("Couldn't find station at " + x +
                 ", " + y);
-        } else {
-            this.showTerrainInfo(x, y);
         }
+		this.showTerrainInfo(x, y);
     }
 
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {

@@ -26,8 +26,8 @@ import org.xml.sax.SAXException;
  */
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     private final World world;
-    HashMap cargoName2cargoTypeNumber = new HashMap();
-    HashSet rgbValuesAlreadyUsed = new HashSet();
+    HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<String, Integer>();
+    HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<Integer>();
 
     //Parsing variables for Tile
     String tileID;
@@ -35,9 +35,9 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     int tileRGB;
     int tileROW;
     int tileBuildCost;
-    ArrayList typeConsumes = new ArrayList();
-    ArrayList typeProduces = new ArrayList();
-    ArrayList typeConverts = new ArrayList();
+    ArrayList<Consumption> typeConsumes = new ArrayList<Consumption>();
+    ArrayList<Production> typeProduces = new ArrayList<Production>();
+    ArrayList<Conversion> typeConverts = new ArrayList<Conversion>();
 
     public CargoAndTerrainHandlerImpl(World w) {
         world = w;
@@ -79,9 +79,8 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         if (rgbValuesAlreadyUsed.contains(rgbInteger)) {
             throw new SAXException(tileID + " can't using rgb value " +
                 rgbString + " because it is being used by another tile type!");
-        } else {
-            rgbValuesAlreadyUsed.add(rgbInteger);
         }
+		rgbValuesAlreadyUsed.add(rgbInteger);
 
         tileROW = Integer.parseInt(meta.getValue("right-of-way"));
     }
@@ -90,19 +89,19 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         Consumption[] consumes = new Consumption[typeConsumes.size()];
 
         for (int i = 0; i < typeConsumes.size(); i++) {
-            consumes[i] = (Consumption)typeConsumes.get(i);
+            consumes[i] = typeConsumes.get(i);
         }
 
         Production[] produces = new Production[typeProduces.size()];
 
         for (int i = 0; i < typeProduces.size(); i++) {
-            produces[i] = (Production)typeProduces.get(i);
+            produces[i] = typeProduces.get(i);
         }
 
         Conversion[] converts = new Conversion[typeConverts.size()];
 
         for (int i = 0; i < typeConverts.size(); i++) {
-            converts[i] = (Conversion)typeConverts.get(i);
+            converts[i] = typeConverts.get(i);
         }
 
         TileTypeImpl tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
@@ -184,11 +183,10 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     /** Returns the index number of the cargo with the specified name. */
     private int string2CargoID(String cargoName) throws SAXException {
         if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
-            Integer integer = (Integer)cargoName2cargoTypeNumber.get(cargoName);
+            Integer integer = cargoName2cargoTypeNumber.get(cargoName);
 
             return integer.intValue();
-        } else {
-            throw new SAXException("Unknown cargo type: " + cargoName);
         }
+		throw new SAXException("Unknown cargo type: " + cargoName);
     }
 }

@@ -43,8 +43,7 @@ public class GameTime implements FreerailsSerializable {
             GameTime test = (GameTime)o;
 
             return this.time == test.time;
-        } else {
-            return false;
         }
+		return false;
     }
 }

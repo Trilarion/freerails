@@ -10,6 +10,7 @@ import java.awt.Insets;
 
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * JPanel shown on the RHS that lets you pick a station type.
@@ -45,7 +46,7 @@ class StationBuildJPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setViewportView(stationTypesjPanel1);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);

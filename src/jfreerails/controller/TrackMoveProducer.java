@@ -43,7 +43,7 @@ final public class TrackMoveProducer {
 
 	private int trackBuilderMode = BUILD_TRACK;
 
-	private final Stack moveStack = new Stack();
+	private final Stack<Move> moveStack = new Stack<Move>();
 
 	private GameTime lastMoveTime = GameTime.BIG_BANG;
 
@@ -69,6 +69,9 @@ final public class TrackMoveProducer {
 	}
 
 	public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
+		if(trackBuilderMode ==  IGNORE_TRACK){
+			return MoveStatus.MOVE_OK;
+		}
 		ReadOnlyWorld w = executor.getWorld();
 
 		int ruleAID, ruleBID;
@@ -142,8 +145,7 @@ final public class TrackMoveProducer {
 			break;
 		}
 
-		case IGNORE_TRACK:
-			return MoveStatus.MOVE_OK;
+		
 
 		default:
 			throw new IllegalArgumentException(String.valueOf(trackBuilderMode));
@@ -160,23 +162,12 @@ final public class TrackMoveProducer {
 			FreerailsTile tile = (FreerailsTile) w.getTile(point.x, point.y);
 			int tt = tile.getTerrainTypeID();
 			return upgradeTrack(point, buildTrackStrategy.getRule(tt));
-		} else {
-			throw new IllegalStateException(
-					"Track builder not set to upgrade track!");
 		}
+		throw new IllegalStateException(
+				"Track builder not set to upgrade track!");
 	}
 
-	/**
-	 * Sets the current track rule. E.g. there are different rules governing the
-	 * track-configurations that are legal for double and single track.
-	 * 
-	 * @param trackRuleNumber
-	 *            The new trackRule value
-	 */
-	public void setTrackRule(int trackRuleNumber) {
-		ReadOnlyWorld w = executor.getWorld();
-		// this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNumber);
-	}
+	
 
 	public void setTrackBuilderMode(int i) {
 		switch (i) {
@@ -244,18 +235,16 @@ final public class TrackMoveProducer {
 		clearStackIfStale();
 
 		if (moveStack.size() > 0) {
-			Move m = (Move) moveStack.pop();
+			Move m = moveStack.pop();
 			UndoMove undoMove = new UndoMove(m);
 			MoveStatus ms = executor.doMove(undoMove);
 
 			if (!ms.ok) {
 				return MoveStatus.moveFailed("Can not undo building track!");
-			} else {
-				return ms;
 			}
-		} else {
-			return MoveStatus.moveFailed("No track to undo building!");
+			return ms;
 		}
+		return MoveStatus.moveFailed("No track to undo building!");
 	}
 
 	/**

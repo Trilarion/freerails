@@ -14,7 +14,6 @@ import jfreerails.client.common.SoundManager;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.IncrementalPathFinder;
 import jfreerails.controller.PathNotFoundException;
-import jfreerails.controller.SimpleAStarPathFinder;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.TrackPathFinder;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
@@ -84,56 +83,7 @@ public class BuildTrackRenderer implements Painter {
         return move.doMove(m_worldDiffs, m_principal);
     }
 
-    /**
-     * return List of Point where the track should be built
-     * @param startPoint Point
-     * @param targetPoint Point
-     * @return List
-     */
-    private List createProposedTrack(Point startPoint, Point targetPoint) {
-        int x = startPoint.x;
-        int y = startPoint.y;
-
-        int deltaX = targetPoint.x - x;
-        int deltaY = targetPoint.y - y;
-        int aDeltaX = Math.abs(deltaX);
-        int aDeltaY = Math.abs(deltaY);
-
-        /*Build track! */
-
-        /** @todo Replace this 'if' with longer track creation */
-        int diagLen = Math.min(aDeltaX, aDeltaY);
-
-        List proposedTrack = new ArrayList(Math.max(aDeltaX, aDeltaY) + 1);
-
-        int dirX = (deltaX > 0 ? 1 : -1);
-        int dirY = (deltaY > 0 ? 1 : -1);
-
-        int actX = x;
-        int actY = y;
-
-        for (int diag = 0; diag < diagLen; diag++) {
-            actX += dirX;
-            actY += dirY;
-            proposedTrack.add(new Point(actX, actY));
-        }
-
-        int diff = aDeltaX - aDeltaY;
-
-        // if diff > 0 then we need to build some track in X direction
-        for (int rest = 0; rest < diff; rest++) {
-            actX += dirX;
-            proposedTrack.add(new Point(actX, actY));
-        }
-
-        // if diff < 0 then we need to build some track in Y direction
-        for (int rest = 0; rest > diff; rest--) {
-            actY += dirY;
-            proposedTrack.add(new Point(actX, actY));
-        }
-
-        return proposedTrack;
-    }
+   
 
 	private BuildTrackStrategy getBts() {
 		BuildTrackStrategy btss = (BuildTrackStrategy)m_modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
@@ -224,9 +174,8 @@ public class BuildTrackRenderer implements Painter {
                 oldPosition = point;
 
                 continue;
-            } else {
-                piecesOfNewTrack++;
             }
+			piecesOfNewTrack++;
 
             if (trackBuilder != null) {
                 ms = trackBuilder.buildTrack(oldPosition, vector);
@@ -269,7 +218,7 @@ public class BuildTrackRenderer implements Painter {
 
     public void paint(Graphics2D g) {
         //update search for path if necessay.
-        if (m_trackPathFinder.getStatus() == SimpleAStarPathFinder.SEARCH_PAUSED) {
+        if (m_trackPathFinder.getStatus() == IncrementalPathFinder.SEARCH_PAUSED) {
             updateSearch();
         }
 
@@ -331,18 +280,8 @@ public class BuildTrackRenderer implements Painter {
         this.m_isBuildTrackSuccessful = false;
     }
 
-	private void setBts(BuildTrackStrategy bts) {
-		m_modelRoot.setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);		
-	}
-
-    private void setCursorMessage(String s) {
+	private void setCursorMessage(String s) {
         m_modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, s);
-    }
-
-    private void setCursorPosition(Point p) {
-        //Make a defensive copy.
-        Point point = new Point(p);
-        m_modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, point);
     }
 
     public void setTrack(Point startPoint, Point endPoint) {
@@ -414,7 +353,7 @@ public class BuildTrackRenderer implements Painter {
             return;
         }
 
-        if (m_trackPathFinder.getStatus() == SimpleAStarPathFinder.PATH_FOUND) {
+        if (m_trackPathFinder.getStatus() == IncrementalPathFinder.PATH_FOUND) {
             m_builtTrack = m_trackPathFinder.pathAsPoints();
             moveCursorMoreTiles(m_builtTrack);
             show();
@@ -432,8 +371,8 @@ public class BuildTrackRenderer implements Painter {
 
             /* Note, reset() will have been called if ms.ok == false */
             if (ms.ok) {
-                actPoint = (Point)m_builtTrack.get(m_builtTrack.size() - 1);
-                m_builtTrack = new ArrayList();
+                actPoint = m_builtTrack.get(m_builtTrack.size() - 1);
+                m_builtTrack = new ArrayList<Point>();
             }
         }
 

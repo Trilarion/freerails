@@ -121,7 +121,7 @@ public class Player implements FreerailsSerializable {
          * record of "salt" used for previous connections. This is held by the
          * server.
          */
-        final /*=mutable*/ HashSet salts = new HashSet();
+        final /*=mutable*/ HashSet<Integer> salts = new HashSet<Integer>();
 
         PrivateData(PrivateKey key) {
             privateKey = key;

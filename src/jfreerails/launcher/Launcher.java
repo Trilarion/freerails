@@ -25,7 +25,6 @@ import jfreerails.network.ServerControlInterface;
 import jfreerails.server.SavedGamesManagerImpl;
 import jfreerails.server.ServerGameModelImpl;
 import jfreerails.util.GameModel;
-import jfreerails.world.player.Player;
 
 /**
  * Launcher GUI for both the server and/or client.
@@ -76,10 +75,6 @@ LauncherInterface {
         int mode;
         
         
-        Player p;
-        
-        
-        
         switch (lp.getMode()) {
             case LauncherPanel1.MODE_SINGLE_PLAYER:
                 try {
@@ -92,7 +87,7 @@ LauncherInterface {
                     
                     setServerGameModel();
                 } catch (IOException e) {
-                    setInfoText(e.getMessage(), Launcher.WARNING);
+                    setInfoText(e.getMessage(), LauncherInterface.WARNING);
                     recover = true;
                 } finally {
                     if (recover) {
@@ -118,7 +113,7 @@ LauncherInterface {
 	                setNextEnabled(false);
             	} catch (IOException e) {
             		//We end up here if an Exception was thrown when loading a saved game. 
-                    setInfoText(e.getMessage(), Launcher.WARNING);
+                    setInfoText(e.getMessage(), LauncherInterface.WARNING);
                     recover = true;
                 } 
                 finally {
@@ -151,13 +146,13 @@ LauncherInterface {
                     	startThread(client);
                     }else{
                     	recover = true;
-                    	setInfoText(logOnResponse.getMessage(), Launcher.WARNING);
+                    	setInfoText(logOnResponse.getMessage(), LauncherInterface.WARNING);
                     }
                 } catch (IOException e) {
-                    setInfoText(e.getMessage(), Launcher.WARNING);
+                    setInfoText(e.getMessage(), LauncherInterface.WARNING);
                     recover = true;
                 } catch (NullPointerException e) {
-                    setInfoText(e.getMessage(), Launcher.WARNING);
+                    setInfoText(e.getMessage(), LauncherInterface.WARNING);
                     recover = true;
                 }
                 finally {
@@ -180,10 +175,10 @@ LauncherInterface {
                         prepare2HostNetworkGame(msp.getServerPort());
                         setNextEnabled(true);
                     } catch (NullPointerException e) {
-                        setInfoText(e.getMessage(), Launcher.WARNING);
+                        setInfoText(e.getMessage(), LauncherInterface.WARNING);
                         recover = true;
                     }catch (IOException e) {
-                        setInfoText(e.getMessage(), Launcher.WARNING);
+                        setInfoText(e.getMessage(), LauncherInterface.WARNING);
                         recover = true;
                     }
                     finally {
@@ -578,7 +573,7 @@ LauncherInterface {
                 		}
                 		setNextEnabled(false);
                 	} catch (IOException e) {
-                		setInfoText(e.getMessage(), Launcher.WARNING);
+                		setInfoText(e.getMessage(), LauncherInterface.WARNING);
                 		recover = true;
                 	} finally {
                 		if (recover) {

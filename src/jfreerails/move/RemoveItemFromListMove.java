@@ -66,9 +66,8 @@ public class RemoveItemFromListMove implements ListMove {
                 item.toString() + ").";
 
             return MoveStatus.moveFailed(reason);
-        } else {
-            return MoveStatus.MOVE_OK;
         }
+		return MoveStatus.MOVE_OK;
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
@@ -83,9 +82,8 @@ public class RemoveItemFromListMove implements ListMove {
                 ") is not the expected item (null).";
 
             return MoveStatus.moveFailed(reason);
-        } else {
-            return MoveStatus.MOVE_OK;
         }
+		return MoveStatus.MOVE_OK;
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
@@ -125,9 +123,8 @@ public class RemoveItemFromListMove implements ListMove {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public FreerailsSerializable getBefore() {

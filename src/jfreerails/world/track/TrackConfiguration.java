@@ -46,7 +46,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     public static TrackConfiguration getFlatInstance(String trackTemplate) {
         int i = TrackConfiguration.stringTemplate2Int(trackTemplate);
 
-        return (TrackConfiguration)(flatTrackConfigurations.get(i));
+        return (flatTrackConfigurations.get(i));
     }
 
     private static ArrayList<TrackConfiguration> setupConfigurations() {
@@ -66,7 +66,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         templateString = strb.toString();
 
         //End of hack
-        return (int)Integer.parseInt(templateString, 2);
+        return Integer.parseInt(templateString, 2);
     }
 
     /**
@@ -114,9 +114,8 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     public boolean contains(int trackTemplate) {
         if ((trackTemplate | this.m_configuration) == this.m_configuration) {
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 
     public boolean equals(Object o) {

@@ -88,8 +88,7 @@ public class BalanceSheetGenerator {
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
-
-        GameTime startyeargt = new GameTime(cal.getTicks(startyear));
+       
         GameTime[] totalTimeInteval = new GameTime[] { GameTime.BIG_BANG,
                 GameTime.END_OF_THE_WORLD };
 
@@ -153,8 +152,6 @@ public class BalanceSheetGenerator {
                 w, principal);
 
         aggregator.setCategory(Transaction.TRACK);
-        GameCalendar gameCalendar = (GameCalendar) w.get(ITEM.CALENDAR);
-
         long amount = 0;
 
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {

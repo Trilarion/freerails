@@ -61,7 +61,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
     private  final Font FONT;
 
-    private ArrayList companies = new ArrayList();
+    private ArrayList<CompanyDetails> companies = new ArrayList<CompanyDetails>();
 
     private long scaleMax;       
 
@@ -226,7 +226,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         //Draw key
         for (int i = 0; i < companies.size(); i++) {
             int yOffset = i * 20;
-            CompanyDetails company = (CompanyDetails) companies.get(i);
+            CompanyDetails company = companies.get(i);
             g2.setColor(company.color);
             g2.drawLine(50, 70 + yOffset, 60, 70 + yOffset);
             g2.setColor(Color.BLACK);
@@ -237,7 +237,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         //Draw graphs lines
         for (int i = 0; i < companies.size(); i++) {
 
-            CompanyDetails company = (CompanyDetails) companies.get(i);
+            CompanyDetails company = companies.get(i);
             g2.setColor(company.color);
             for (int year = 1; year < 100; year++) {
                 if (company.value[year] != Integer.MIN_VALUE
@@ -281,7 +281,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         
         long max = 0;
         for (int i = 0; i < companies.size(); i++) {
-            CompanyDetails company = (CompanyDetails) companies.get(i);
+            CompanyDetails company = companies.get(i);
             for (int year = 0; year < 100; year++) {
                 long value = company.value[year];
                 if (value > max){
@@ -331,7 +331,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     }
 
     private String getYScaleString(long value) {
-        String returnValue;
         String abv;
         if(value >= 1000000000){
             value = value / 1000000000;
@@ -352,7 +351,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     public void setup(ModelRoot modelRoot, ViewLists vl, ActionListener submitButtonCallBack) {
         this.submitButtonCallBack = submitButtonCallBack;
         ReadOnlyWorld world = modelRoot.getWorld();
-        companies = new ArrayList();
+        companies = new ArrayList<CompanyDetails>();
         GameCalendar calender  = (GameCalendar)world.get(ITEM.CALENDAR);
         int startYear = calender.getYear(0);
         int endYear = startYear + 100;        
@@ -403,9 +402,8 @@ public class NetWorthGraphJPanel extends JPanel implements View {
             if(t instanceof AddItemTransaction){
                 //Since buying something is just converting one asset type to another.
                 return false;
-            }else{
-                return true;
             }
+			return true;
         }
     }
 

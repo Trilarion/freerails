@@ -39,12 +39,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     
     private final Image stationView;
     
-    private final ArrayList wagons = new ArrayList();
+    private final ArrayList<Integer> wagons = new ArrayList<Integer>();
     
     
     private int engineType = 0;
-    
-    private ModelRoot modelRoot;
     
     private ViewLists vl;
     
@@ -223,7 +221,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         //paint the wagons
         for (int i = this.wagons.size()-1; i >= 0; i--) {  //Count down so we paint the wagon at the end of the train first.
             
-            Integer type = (Integer)wagons.get(i);
+            Integer type = wagons.get(i);
             Image image = vl.getTrainImages().getSideOnWagonImage(type.intValue());
             int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
             x -= scaledWidth;
@@ -290,7 +288,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     }
     
     public void setup(ModelRoot mr, ViewLists vl, ActionListener submitButtonCallBack) {
-        this.modelRoot = mr;
         World2ListModelAdapter w2lma = new World2ListModelAdapter(mr.getWorld(),
         SKEY.CARGO_TYPES);
         this.wagonTypesJList.setModel(w2lma);
@@ -305,7 +302,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     public int[] getWagons(){
         int [] wagonsArray = new int[wagons.size()];
         for(int i=0; i<wagons.size(); i++){
-            Integer type = (Integer)wagons.get(i);
+            Integer type = wagons.get(i);
             wagonsArray[i]=type.intValue();
         }
         return wagonsArray;

@@ -28,7 +28,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     UntriedMoveReceiver, ServerCommandReceiver {
     private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     protected Connection2Server connection2Server;
-    private final HashMap properties = new HashMap();
+    private final HashMap<String, Serializable> properties = new HashMap<String, Serializable>();
     private final MoveChainFork moveFork;
     private World world;
     private MovePrecommitter committer;
@@ -126,7 +126,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     }
 
     public final Serializable getProperty(String propertyName) {
-        return (Serializable)properties.get(propertyName);
+        return properties.get(propertyName);
     }
 
     public final void resetProperties(HashMap newProperties) {

@@ -34,8 +34,7 @@ public class MyDisplayMode {
             MyDisplayMode test = (MyDisplayMode)o;
 
             return test.displayMode.equals(this.displayMode);
-        } else {
-            return false;
         }
+		return false;
     }
 }

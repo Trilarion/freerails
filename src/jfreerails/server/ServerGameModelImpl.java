@@ -29,7 +29,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     public World world;
     private transient CalcSupplyAtStations calcSupplyAtStations;
     private TrainBuilder tb;
-    private final ArrayList trainMovers;
+    private final ArrayList<TrainMover> trainMovers;
 
     /**
      * List of the ServerAutomaton objects connected to this game.
@@ -44,10 +44,10 @@ public class ServerGameModelImpl implements ServerGameModel {
     private transient MoveReceiver moveExecuter;
 
     public ServerGameModelImpl() {
-        this(new ArrayList(), null, new Vector());
+        this(new ArrayList<TrainMover>(), null, new Vector());
     }
 
-    public ServerGameModelImpl(ArrayList trainMovers, World w,
+    public ServerGameModelImpl(ArrayList<TrainMover> trainMovers, World w,
         Vector serverAutomata) {
         this.world = w;
         this.serverAutomata = serverAutomata;

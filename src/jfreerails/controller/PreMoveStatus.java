@@ -18,9 +18,8 @@ final public class PreMoveStatus implements FreerailsSerializable {
     private Object readResolve() {
         if (ms.ok) {
             return PRE_MOVE_OK;
-        } else {
-            return this;
         }
+		return this;
     }
 
     private PreMoveStatus(MoveStatus ms) {
@@ -34,8 +33,7 @@ final public class PreMoveStatus implements FreerailsSerializable {
     public static PreMoveStatus fromMoveStatus(MoveStatus ms) {
         if (ms.ok) {
             return PRE_MOVE_OK;
-        } else {
-            return new PreMoveStatus(ms);
         }
+		return new PreMoveStatus(ms);
     }
 }

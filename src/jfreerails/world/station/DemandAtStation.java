@@ -43,8 +43,7 @@ public class DemandAtStation implements FreerailsSerializable {
             }
 
             return true;
-        } else {
-            return false;
         }
+		return false;
     }
 }

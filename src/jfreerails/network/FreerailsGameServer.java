@@ -58,7 +58,7 @@ public class FreerailsGameServer implements ServerControlInterface,
         }
     }
 
-    private HashMap acceptedConnections = new HashMap();
+    private HashMap<Integer, Connection2Client> acceptedConnections = new HashMap<Integer, Connection2Client>();
     private int commandID = 0;
 
     /**
@@ -71,18 +71,18 @@ public class FreerailsGameServer implements ServerControlInterface,
      * The players who have cofirmed that they have received the last copy of
      * the world object sent.
      */
-    private HashSet confirmedPlayers = new HashSet();
+    private HashSet<Integer> confirmedPlayers = new HashSet<Integer>();
 
     /* Contains the usernames of the players who are currently logged on.*/
-    private HashSet currentlyLoggedOn = new HashSet();
-    private HashMap id2username = new HashMap();
+    private HashSet<String> currentlyLoggedOn = new HashSet<String>();
+    private HashMap<String, Integer> id2username = new HashMap<String, Integer>();
     private boolean newPlayersAllowed = true;
-    private ArrayList players = new ArrayList();
+    private ArrayList<String> players = new ArrayList<String>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final SavedGamesManager savedGamesManager;
     private ServerGameModel serverGameModel = new SimpleServerGameModel();
     private final SynchronizedFlag status = new SynchronizedFlag(false);
-    private HashMap username2password = new HashMap();
+    private HashMap<String, String> username2password = new HashMap<String, String>();
 
     public FreerailsGameServer(SavedGamesManager gamesManager) {
         this.savedGamesManager = gamesManager;
@@ -158,7 +158,7 @@ public class FreerailsGameServer implements ServerControlInterface,
         int numConnections = 0;
 
         while (it.hasNext()) {
-            Connection2Client connection = (Connection2Client)acceptedConnections.get(it.next());
+            Connection2Client connection = acceptedConnections.get(it.next());
 
             if (connection.isOpen()) {
                 numConnections++;
@@ -180,7 +180,7 @@ public class FreerailsGameServer implements ServerControlInterface,
         String[] playerNames = new String[players.size()];
 
         for (int i = 0; i < players.size(); i++) {
-            playerNames[i] = (String)players.get(i);
+            playerNames[i] = players.get(i);
         }
 
         return playerNames;
@@ -213,7 +213,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     public void logoff(int player) {
-        String username = (String)players.get(player);
+        String username = players.get(player);
         currentlyLoggedOn.remove(username);
     }
 
@@ -232,11 +232,11 @@ public class FreerailsGameServer implements ServerControlInterface,
         int id;
 
         if (isReturningPlayer) {
-            Integer idInteger = (Integer)id2username.get(username);
+            Integer idInteger = id2username.get(username);
             id = idInteger.intValue();
 
             /* Check the password. */
-            String correctPassword = (String)username2password.get(username);
+            String correctPassword = username2password.get(username);
 
             if (!correctPassword.equals(lor.getPassword())) {
                 return LogOnResponse.rejected("Incorrect password.");
@@ -262,7 +262,7 @@ public class FreerailsGameServer implements ServerControlInterface,
 
             /* Add players to world. */
             for (int i = 0; i < players.size(); i++) {
-                String name = (String)players.get(i);
+                String name = players.get(i);
                 Player p = new Player(name, null, i); //public key set to null!
                 int index = world.addPlayer(p);
 
@@ -287,7 +287,7 @@ public class FreerailsGameServer implements ServerControlInterface,
 
     private void removeConnection(Integer id) throws IOException {
         String[] before = getPlayerNames();
-        Connection2Client connection = (Connection2Client)acceptedConnections.get(id);
+        Connection2Client connection = acceptedConnections.get(id);
 
         /* Fix for bug 1047439        Shutting down remote client crashes server
          * We get an IllegalStateException if we try to disconnect a
@@ -297,7 +297,7 @@ public class FreerailsGameServer implements ServerControlInterface,
             connection.disconnect();
         }
 
-        String userName = (String)players.get(id.intValue());
+        String userName = players.get(id.intValue());
         this.currentlyLoggedOn.remove(userName);
 
         String[] after = getPlayerNames();
@@ -336,7 +336,7 @@ public class FreerailsGameServer implements ServerControlInterface,
 
         while (it.hasNext()) {
             Integer id = (Integer)it.next();
-            Connection2Client connection = (Connection2Client)acceptedConnections.get(id);
+            Connection2Client connection = acceptedConnections.get(id);
 
             if (dontSend2 != connection) {
                 try {
@@ -419,11 +419,9 @@ public class FreerailsGameServer implements ServerControlInterface,
 
         try {
             Iterator it = acceptedConnections.keySet().iterator();
-            int numConnections = 0;
-
             while (it.hasNext()) {
                 Integer playerID = (Integer)it.next();
-                Connection2Client connection = (Connection2Client)acceptedConnections.get(playerID);
+                Connection2Client connection = acceptedConnections.get(playerID);
 
                 if (connection.isOpen()) {
                     FreerailsSerializable[] messages = connection.readFromClient();

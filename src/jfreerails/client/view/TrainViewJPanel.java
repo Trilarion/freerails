@@ -137,24 +137,24 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
-        int index, boolean isSelected, boolean cellHasFocus) {
-        display(index);
-
-        if (selected != isSelected) {
-            selected = isSelected;
-
-            if (selected) {
-            	if(list.isFocusOwner()){
-            		setBackground(selectedColor);
-            	}else{
-            		setBackground(selectedColorNotFocused);
-            	}
-            } else {
-                setBackground(backgoundColor);
-            }
-        }
-
-        return this;
+    		int index, boolean isSelected, boolean cellHasFocus) {
+    	display(index);
+    	
+    	
+    	selected = isSelected;
+    	
+    	if (selected) {
+    		if(list.isFocusOwner()){
+    			setBackground(selectedColor);
+    		}else{
+    			setBackground(selectedColorNotFocused);
+    		}
+    	} else {
+    		setBackground(backgoundColor);
+    	}
+    	
+    	
+    	return this;
     }
 
     public int getHeight() {

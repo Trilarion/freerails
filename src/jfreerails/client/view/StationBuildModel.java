@@ -46,7 +46,7 @@ public class StationBuildModel {
      * Vector of StationBuildAction.
      * Actions which represent stations which can be built
      */
-    private final Vector stationChooseActions = new Vector();
+    private final Vector<Action> stationChooseActions = new Vector<Action>();
 
     /**
      * Whether the station's position can should change when the mouse moves.
@@ -89,7 +89,7 @@ public class StationBuildModel {
     }
 
     public Action[] getStationChooseActions() {
-        return (Action[])stationChooseActions.toArray(new Action[0]);
+        return stationChooseActions.toArray(new Action[0]);
     }
 
     private class StationChooseAction extends AbstractAction {

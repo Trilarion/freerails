@@ -16,6 +16,7 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JToggleButton;
+import javax.swing.ScrollPaneConstants;
 
 import jfreerails.client.renderer.ViewLists;
 
@@ -133,7 +134,7 @@ class TrackBuildJPanel extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(jSeparator1, gridBagConstraints);
 
-        trackBuildModesSP.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        trackBuildModesSP.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         trackBuildModesSP.setViewportView(trackBuildModesPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

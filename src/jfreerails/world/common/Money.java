@@ -35,8 +35,7 @@ final public class Money implements FreerailsSerializable {
             Money test = (Money)obj;
 
             return test.amount == this.amount;
-        } else {
-            return false;
         }
+		return false;
     }
 }

@@ -23,7 +23,7 @@ import jfreerails.world.train.TrainPositionOnMap;
  */
 public class TrainFixture {
     private TrainMover trainMover;
-    private final ArrayList points = new ArrayList();
+    private final ArrayList<Point> points = new ArrayList<Point>();
     private final World w = new WorldImpl(0, 0);
 
     public TrainFixture() {

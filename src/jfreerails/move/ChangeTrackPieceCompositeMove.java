@@ -137,9 +137,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         if (oldTrackPiece.getTrackRule().isStation() &&
                 !newTrackPiece.getTrackRule().isStation()) {
             return RemoveStationMove.getInstance(w, m, principal);
-        } else {
-            return m;
         }
+		return m;
     }
 
     private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(

@@ -89,12 +89,10 @@ final public class TileTypeImpl implements TerrainType {
                     terrainType.equals(test.getTerrainTypeName()) &&
                     terrainCategory.equals(test.getCategory())) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public int getRightOfWay() {

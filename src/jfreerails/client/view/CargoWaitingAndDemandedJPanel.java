@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -57,7 +58,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
         setPreferredSize(new java.awt.Dimension(100, 200));
         jScrollPane1.setBorder(null);
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         stationName.setText("Station Name");
@@ -152,9 +153,9 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         station.getCargoBundleID(), principal);
         
         //count the number of cargo types waiting and demanded.
-        final ArrayList typeWaiting = new ArrayList();
-        final ArrayList quantityWaiting = new ArrayList();
-        final Vector typeDemanded = new Vector();
+        final ArrayList<String> typeWaiting = new ArrayList<String>();
+        final ArrayList<Integer> quantityWaiting = new ArrayList<Integer>();
+        final Vector<String> typeDemanded = new Vector<String>();
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
             CargoType cargoType = (CargoType)world.get(SKEY.CARGO_TYPES, i);
             int amountWaiting = cargoWaiting.getAmount(i);
@@ -182,9 +183,8 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
             public Object getValueAt(int row, int column){
                 if(0 == column){
                     return typeWaiting.get(row);
-                }else{
-                    return quantityWaiting.get(row);
                 }
+				return quantityWaiting.get(row);
             }
         };
         this.waitingJTable.setModel(tableModel);

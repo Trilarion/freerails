@@ -14,7 +14,7 @@ import jfreerails.world.common.OneTileMoveVector;
  */
 public class KeyCode2OneTileMoveVector {
 	
-	  private static final HashMap keycode2vector = new HashMap();
+	  private static final HashMap<Integer,OneTileMoveVector>  keycode2vector = new HashMap<Integer,OneTileMoveVector>();
 	
 	static {
 		 //Set up key mappings...
@@ -49,7 +49,7 @@ public class KeyCode2OneTileMoveVector {
             throw new NoSuchElementException(String.valueOf(keycode));
         }
 
-        return (OneTileMoveVector)keycode2vector.get(integer);
+        return keycode2vector.get(integer);
     }
 
 

@@ -21,12 +21,12 @@ import jfreerails.world.top.WorldIterator;
 public class VerifyStationName {
     private final ReadOnlyWorld w;
     private final String nameToVerify;
-    private final Vector stationAlternatives;
+    private final Vector<String> stationAlternatives;
 
     public VerifyStationName(ReadOnlyWorld world, String name) {
         this.w = world;
         this.nameToVerify = name;
-        this.stationAlternatives = new Vector();
+        this.stationAlternatives = new Vector<String>();
 
         stationAlternatives.addElement("Junction");
         stationAlternatives.addElement("Siding");
@@ -49,29 +49,28 @@ public class VerifyStationName {
 
         if (!found) {
             return appropriateName;
-        } else {
-            //a station with that name already exists, so we need to find another name
-            for (int i = 0; i < stationAlternatives.size(); i++) {
-                tempName = appropriateName + " " +
-                    (String)stationAlternatives.elementAt(i);
-
-                found = checkStationExists(tempName);
-
-                if (!found) {
-                    return tempName;
-                }
-            }
-
-            int j = 7; //for number of names that have already been used
-
-            while (found) {
-                j++;
-                tempName = appropriateName + "Station #" + j;
-                found = checkStationExists(tempName);
-            }
-
-            return tempName;
         }
+		//a station with that name already exists, so we need to find another name
+		for (int i = 0; i < stationAlternatives.size(); i++) {
+		    tempName = appropriateName + " " +
+		        stationAlternatives.elementAt(i);
+
+		    found = checkStationExists(tempName);
+
+		    if (!found) {
+		        return tempName;
+		    }
+		}
+
+		int j = 7; //for number of names that have already been used
+
+		while (found) {
+		    j++;
+		    tempName = appropriateName + "Station #" + j;
+		    found = checkStationExists(tempName);
+		}
+
+		return tempName;
     }
 
     private boolean checkStationExists(String name) {

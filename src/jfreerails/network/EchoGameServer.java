@@ -19,9 +19,9 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 public class EchoGameServer implements NewGameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class.getName());
-    private final Vector connections = new Vector();
+    private final Vector<Connection2Client> connections = new Vector<Connection2Client>();
     private final SynchronizedFlag status = new SynchronizedFlag(false);
-    private final LinkedList messsages2send = new LinkedList();
+    private final LinkedList<FreerailsSerializable> messsages2send = new LinkedList<FreerailsSerializable>();
 
     private EchoGameServer() {
     }
@@ -107,7 +107,7 @@ public class EchoGameServer implements NewGameServer, Runnable {
     synchronized void sendMessage(FreerailsSerializable m) {
         /* Send messages. */
         for (int i = 0; i < connections.size(); i++) {
-            Connection2Client connection = (Connection2Client)connections.get(i);
+            Connection2Client connection = connections.get(i);
 
             try {
                 connection.writeToClient(m);
@@ -130,7 +130,7 @@ public class EchoGameServer implements NewGameServer, Runnable {
         synchronized (this) {
             /* Read messages. */
             for (int i = 0; i < connections.size(); i++) {
-                Connection2Client connection = (Connection2Client)connections.get(i);
+                Connection2Client connection = connections.get(i);
 
                 try {
                     FreerailsSerializable[] messages = connection.readFromClient();

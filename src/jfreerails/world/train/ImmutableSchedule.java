@@ -47,9 +47,8 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 
         if (-1 == orderToGoto) {
             return -1;
-        } else {
-            return m_orders[orderToGoto].getStationID();
         }
+		return m_orders[orderToGoto].getStationID();
     }
 
     public /*=const*/ int[] getWagonsToAdd() {
@@ -87,8 +86,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
             return this.m_hasPriorityOrders == test.m_hasPriorityOrders &&
             this.nextScheduledOrder == test.nextScheduledOrder &&
             Arrays.equals(this.m_orders, test.m_orders);
-        } else {
-            return false;
         }
+		return false;
     }
 }

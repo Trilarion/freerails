@@ -50,9 +50,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
             MyDisplayMode displayMode = ((MyDisplayMode) jList1.getSelectedValue());
             logger.fine("The selected display mode is "+displayMode.toString());
             return displayMode.displayMode;
-        }else{
-            return null;
         }
+		return null;
     }
     InetSocketAddress getRemoteServerAddress() {
         String portStr = remotePort.getText();

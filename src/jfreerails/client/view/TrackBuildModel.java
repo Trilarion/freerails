@@ -37,8 +37,7 @@ public class TrackBuildModel {
     private final ViewLists viewLists;
     private final ReadOnlyWorld world;
     private final StationBuildModel stationBuildModel;
-    private final ModelRoot modelRoot;
-	private final HashMap<Integer, Action> buildModeActionsHM = new HashMap<Integer, Action>(); 
+    private final HashMap<Integer, Action> buildModeActionsHM = new HashMap<Integer, Action>(); 
   
     public ActionAdapter getBuildModeActionAdapter() {
         return buildModeAdapter;
@@ -98,8 +97,7 @@ public class TrackBuildModel {
             //Not sure why the following is here, LL
             if (!(e.getSource() instanceof ActionAdapter))
                 return;
-
-            trackMoveProducer.setTrackRule(actionId);
+           
             System.err.println("SELECTED_TRACK_TYPE="+actionId);
             //modelRoot.setProperty(ModelRoot.Property.SELECTED_TRACK_TYPE, new Integer(actionId));
            
@@ -112,8 +110,7 @@ public class TrackBuildModel {
     
     public TrackBuildModel(TrackMoveProducer tmp, ModelRoot modelRoot,
         ViewLists vl, StationBuildModel stationBuildModel) {
-    	this.modelRoot = modelRoot;
-        this.world = modelRoot.getWorld();
+    	this.world = modelRoot.getWorld();
         viewLists = vl;
         trackMoveProducer = tmp;
         this.stationBuildModel = stationBuildModel;
@@ -134,7 +131,7 @@ public class TrackBuildModel {
 		buildModeActionsHM.put(new Integer(TrackMoveProducer.IGNORE_TRACK), buildModeActions[3]);
 		
         /* set up track actions */
-        Vector actionsVector = new Vector();
+        Vector<Action> actionsVector = new Vector<Action>();
 
         for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
             TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
@@ -144,7 +141,7 @@ public class TrackBuildModel {
             }
         }
 
-        trackRuleAdapter = new ActionAdapter((Action[])actionsVector.toArray(
+        trackRuleAdapter = new ActionAdapter(actionsVector.toArray(
                     new Action[0]));
     }
 

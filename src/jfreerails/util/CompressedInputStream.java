@@ -15,7 +15,7 @@ public class CompressedInputStream extends FilterInputStream {
     public CompressedInputStream(InputStream in) {
         super(in);
         buffer = new byte[0x7d000];
-        compBuffer = new byte[(int)((double)buffer.length * 1.2D)];
+        compBuffer = new byte[(int)(buffer.length * 1.2D)];
         readIndex = 0;
         maxReadIndex = 0;
         inflater = new Inflater();
@@ -29,9 +29,8 @@ public class CompressedInputStream extends FilterInputStream {
         if (maxReadIndex - readIndex == 0 && super.in.available() > 0 &&
                 !readNextBuffer()) {
             return -1;
-        } else {
-            return maxReadIndex - readIndex;
         }
+		return maxReadIndex - readIndex;
     }
 
     public int read() throws IOException {
@@ -43,9 +42,8 @@ public class CompressedInputStream extends FilterInputStream {
 
         if (b < 0) {
             return 256 + b;
-        } else {
-            return b;
         }
+		return b;
     }
 
     public int read(byte[] b) throws IOException {

@@ -27,7 +27,7 @@ public class CargoAndTerrainParser implements ContentHandler {
     private static final Logger logger = Logger.getLogger(CargoAndTerrainParser.class.getName());
     private java.lang.StringBuffer buffer;
     private CargoAndTerrainHandler handler;
-    private java.util.Stack context;
+    private java.util.Stack<Object[]> context;
     private EntityResolver resolver;
 
     /**
@@ -41,7 +41,7 @@ public class CargoAndTerrainParser implements ContentHandler {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
-        context = new java.util.Stack();
+        context = new java.util.Stack<Object[]>();
     }
 
     /**
@@ -170,9 +170,6 @@ public class CargoAndTerrainParser implements ContentHandler {
             return; //skip it
         }
 
-        Object[] ctx = (Object[])context.peek();
-        String here = (String)ctx[0];
-        Attributes attrs = (Attributes)ctx[1];
         buffer.delete(0, buffer.length());
     }
 

@@ -37,12 +37,10 @@ final public class TrackRuleProperties implements FreerailsSerializable {
                     category == test.category &&
                     stationRadius == test.stationRadius) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public Money getMaintenanceCost() {

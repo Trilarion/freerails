@@ -49,6 +49,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         this.trainNumber = trainNumber;
         this.w = w;
         this.principal = p;
+        assert(null != getSchedule());
     }
 
     public Object getElementAt(int index) {

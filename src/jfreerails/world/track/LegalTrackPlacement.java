@@ -40,9 +40,8 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
         if (PlacementRule.ONLY_ON_THESE == placementRule) {
             return terrainTypes.contains(terrainType);
-        } else {
-            return !terrainTypes.contains(terrainType);
         }
+		return !terrainTypes.contains(terrainType);
     }
 
     final public static class PlacementRule implements FreerailsSerializable {
@@ -55,9 +54,8 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
         private Object readResolve() throws ObjectStreamException {
             if (i == 1) {
                 return ONLY_ON_THESE;
-            } else {
-                return ANYWHERE_EXCEPT_ON_THESE;
             }
+			return ANYWHERE_EXCEPT_ON_THESE;
         }
 
         public static final PlacementRule ONLY_ON_THESE = new PlacementRule(1);
@@ -71,12 +69,10 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
             if (this.placementRule.equals(test.getPlacementRule()) &&
                     this.terrainTypes.equals(test.terrainTypes)) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public PlacementRule getPlacementRule() {

@@ -39,7 +39,7 @@ public class SoundManager implements ModelRootListener {
         byte[] audio;
     }
 
-    private HashMap samples = new HashMap();
+    private HashMap<String, Sample> samples = new HashMap<String, Sample>();
 
     private SoundManager() {
     }
@@ -85,7 +85,7 @@ public class SoundManager implements ModelRootListener {
                     addClip(s);
                 }
 
-                Sample sample = (Sample)samples.get(s);
+                Sample sample = samples.get(s);
 
                 //Add a random component to the sample rate so that the samples 
                 //don't always sound the same.

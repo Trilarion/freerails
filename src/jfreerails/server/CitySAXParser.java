@@ -17,17 +17,17 @@ import org.xml.sax.helpers.DefaultHandler;
  * Date: 31st March 2003
  */
 public class CitySAXParser extends DefaultHandler {
-    private final Vector cities;
+    private final Vector<CityModel> cities;
     private final World world;
 
     public CitySAXParser(World w) throws SAXException {
         world = w;
-        cities = new Vector();
+        cities = new Vector<CityModel>();
     }
 
     public void endDocument() throws SAXException {
         for (int i = 0; i < cities.size(); i++) {
-            CityModel tempCity = (CityModel)cities.elementAt(i);
+            CityModel tempCity = cities.elementAt(i);
             world.add(SKEY.CITIES,
                 new CityModel(tempCity.getCityName(), tempCity.getCityX(),
                     tempCity.getCityY()));

@@ -5,6 +5,7 @@
 package jfreerails.move;
 
 import java.awt.Point;
+
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -15,6 +16,7 @@ import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
 
@@ -60,13 +62,19 @@ public class AddStationMove extends CompositeMove {
         return new AddStationMove(new Move[] {upgradeTrackMove});
     }
 
-    protected static MoveStatus check4overlap(World w, ChangeTrackPieceMove upgradeTrackMove) {
+    /** This method may be called under 3 possible conditions: (1) when a station is getting built, (2) 
+     * when a station is getting upgraded, (3) when a staton is getting removed.
+     * @param w
+     * @param location
+     * @param trackPiece
+     * @return
+     */
+    protected static MoveStatus check4overlap(World w, Point location, TrackPiece trackPiece) {
         /* Fix for 915945 (Stations should not overlap)
          * Check that there is not another station whose radius overlaps with
          * the one we are building.
          */        
-        TrackRule thisStationType = upgradeTrackMove.getNewTrackPiece()
-                                                    .getTrackRule();
+        TrackRule thisStationType = trackPiece.getTrackRule();
         assert thisStationType.isStation();
 
         for (int player = 0; player < w.getNumberOfPlayers(); player++) {
@@ -75,6 +83,16 @@ public class AddStationMove extends CompositeMove {
 
             while (wi.next()) {
                 StationModel station = (StationModel)wi.getElement();
+                
+                /* Fix for bug 948675 - Can't upgrade station types
+                 * If locations are the same, then we are upgrading a station so
+                 * it doesn't matter if the radii overlap.
+                 */
+                
+                if(location.x == station.x && location.y == station.y){
+                	continue;
+                }
+                
                 FreerailsTile tile = (FreerailsTile)w.getTile(station.x,
                         station.y);
                 TrackRule otherStationType = tile.getTrackRule();
@@ -83,21 +101,14 @@ public class AddStationMove extends CompositeMove {
                 int sumOfRadii = otherStationType.getStationRadius() +
                     thisStationType.getStationRadius();
                 int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
-                int xDistance = station.x - upgradeTrackMove.getLocation().x;
-                int yDistance = station.y - upgradeTrackMove.getLocation().y;
+                int xDistance = station.x - location.x;
+                int yDistance = station.y - location.y;
 
                 //Do radii overlap?	                
                 boolean xOverlap = sumOfRadiiSquared >= (xDistance * xDistance);
                 boolean yOverlap = sumOfRadiiSquared >= (yDistance * yDistance);
-
-                /* Fix for bug 948675        Can't upgrade station types
-                 * If locations are the same, then we are upgrading a station so
-                 * it doesn't matter if the radii overlap.
-                 */
-                boolean areLocationsDifferent = (xDistance != 0) ||
-                    (yDistance != 0);
-
-                if (xOverlap && yOverlap && areLocationsDifferent) {
+               
+                if (xOverlap && yOverlap) {
                     String message = "Too close to " +
                         station.getStationName();
 

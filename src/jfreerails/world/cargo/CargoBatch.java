@@ -53,12 +53,10 @@ public class CargoBatch implements FreerailsSerializable {
                     test.timeCreated == this.timeCreated &&
                     test.stationOfOrigin == this.stationOfOrigin) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
+			return false;
         }
+		return false;
     }
 
     public int hashCode() {

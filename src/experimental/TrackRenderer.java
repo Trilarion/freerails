@@ -59,8 +59,8 @@ public class TrackRenderer {
 
 	boolean tunnel = false;
 
-	void paintTrackConf(Graphics2D g, TrackConfiguration conf) {
-		Graphics2D g2 = (Graphics2D) g;
+	void paintTrackConf(Graphics2D g2, TrackConfiguration conf) {
+		
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -117,13 +117,13 @@ public class TrackRenderer {
 				}
 			}
 		}
-		paintTrack(g, sections);
+		paintTrack(g2, sections);
 
 	}
 
 	CubicCurve2D.Double toCurve(OneTileMoveVector a) {
 		float halfTile = tileWidth / 2;
-		Point2D.Double start, end, one, two, point;
+		Point2D.Double start, end, one;
 		start = new Point2D.Double();
 		start.x = tileWidth + (halfTile * a.deltaX);
 		start.y = tileWidth + (halfTile * a.deltaY);
@@ -136,7 +136,7 @@ public class TrackRenderer {
 
 	CubicCurve2D.Double toCurve(OneTileMoveVector a, OneTileMoveVector b) {
 		float halfTile = tileWidth / 2;
-		Point2D.Double start, end, one, two, point;
+		Point2D.Double start, end, one, two;
 		start = new Point2D.Double();
 		start.x = tileWidth + (halfTile * a.deltaX);
 		start.y = tileWidth + (halfTile * a.deltaY);
@@ -151,10 +151,7 @@ public class TrackRenderer {
 	}
 
 	void paintTrack(Graphics2D g, List<CubicCurve2D.Double> sections) {
-		float halfTile = tileWidth / 2;
-//		g.setColor(Color.BLACK);
-//		g.fillRect((int) halfTile, (int) halfTile, (int) tileWidth,
-//				(int) tileWidth);
+
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 

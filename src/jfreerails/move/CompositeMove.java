@@ -42,7 +42,7 @@ public class CompositeMove implements Move {
         Move[] moves = new Move[movesArrayList.size()];
 
         for (int i = 0; i < movesArrayList.size(); i++) {
-            moves[i] = (Move)movesArrayList.get(i);
+            moves[i] = movesArrayList.get(i);
         }
 
         m_moves = moves;
@@ -142,18 +142,16 @@ public class CompositeMove implements Move {
 
             if (this.m_moves.length != test.m_moves.length) {
                 return false;
-            } else {
-                for (int i = 0; i < this.m_moves.length; i++) {
-                    if (!this.m_moves[i].equals(test.m_moves[i])) {
-                        return false;
-                    }
-                }
-
-                return true;
             }
-        } else {
-            return false;
+			for (int i = 0; i < this.m_moves.length; i++) {
+			    if (!this.m_moves[i].equals(test.m_moves[i])) {
+			        return false;
+			    }
+			}
+
+			return true;
         }
+		return false;
     }
 
     /** Subclasses may override this method to perform tests which pass or fail depending on the

@@ -5,11 +5,9 @@ import jfreerails.move.PreMoveException;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
-import jfreerails.world.train.TrainModel;
 import junit.framework.TestCase;
 
 
@@ -40,9 +38,6 @@ public class TrainMoverTest extends TestCase implements MoveReceiver {
 
     public void testTrainMover() {
         setUp();
-
-        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
 
         PathWalker pw = trainMover.getWalker();
 

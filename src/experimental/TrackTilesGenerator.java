@@ -54,7 +54,7 @@ public class TrackTilesGenerator extends JPanel {
 	CubicCurve2D.Double[] track;
 
 	public TrackTilesGenerator() {
-		Point2D.Double start, end, one, two, point;
+		Point2D.Double start, end, one, two;
 		track = new CubicCurve2D.Double[3];
 		track[0] = new CubicCurve2D.Double();
 
@@ -145,7 +145,6 @@ public class TrackTilesGenerator extends JPanel {
 			Iterator<TrackConfiguration> it = rule
 					.getLegalConfigurationsIterator();
 			while (it.hasNext()) {
-				TrackConfiguration conf = it.next();
 				lastWidth += 60;
 			}
 		}
@@ -167,8 +166,6 @@ public class TrackTilesGenerator extends JPanel {
 			for (int i = 0; i < 512; i++) {
 	            if (rule.testTrackPieceLegality(i)) {
 	                String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getTypeName());
-	                TrackConfiguration conf = TrackConfiguration.from9bitTemplate(i);
-	           
 	                Image tile;
 					try {
 						tile = imageManager.getImage(fileName);
