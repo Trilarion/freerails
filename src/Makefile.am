@@ -1,1 +1,1 @@
-SUBDIRS = elements map wrapper main
+SUBDIRS = controllers elements map wrapper main

@@ -18,6 +18,8 @@ freerails_SOURCES = i18n.cpp \
     game.cpp
 
 freerails_DEPENDENCIES = ../wrapper/$(WRAPPER)/libwrapper_$(WRAPPER).a \
-    ../wrapper/libwrapperbase.a ../elements/libelements.a ../map/libmap.a
+    ../wrapper/libwrapperbase.a ../elements/libelements.a ../map/libmap.a \
+    ../controllers/libcontrollers.a
 freerails_LDADD = ../wrapper/$(WRAPPER)/libwrapper_$(WRAPPER).a \
-    ../wrapper/libwrapperbase.a ../elements/libelements.a ../map/libmap.a
+    ../wrapper/libwrapperbase.a ../elements/libelements.a ../map/libmap.a \
+    ../controllers/libcontrollers.a
