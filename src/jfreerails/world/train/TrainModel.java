@@ -11,7 +11,7 @@ public class TrainModel implements FreerailsSerializable{
 	
 	public static final int DISTANCE_BETWEEN_WAGONS=5;	
     
-    Snake trainposition = new SnakeImpl();
+    TrainPosition trainposition;
     
     EngineModel engine;
     
@@ -21,8 +21,9 @@ public class TrainModel implements FreerailsSerializable{
     
     
     
-    public TrainModel(EngineModel e){
+    public TrainModel(EngineModel e, TrainPosition p){
         engine=e;
+        trainposition=p;
     }
     
     public boolean canAddWagon(){
@@ -50,11 +51,11 @@ public class TrainModel implements FreerailsSerializable{
     	}    		    			
     }
     
-    public Snake getPosition(){
+    public TrainPosition getPosition(){
         return  trainposition;
     }
     
-    public  void setPosition(Snake s){
+    public  void setPosition(TrainPosition s){
           trainposition=s;
     }
     

@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
-import jfreerails.client.train.TrainTypeView;
 
 public class WagonType {
 	
