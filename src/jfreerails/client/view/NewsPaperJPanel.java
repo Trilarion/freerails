@@ -9,33 +9,33 @@ import java.awt.*;
 /**
  *
  * @author  lindsal8
- * @version 
+ * @version
  */
 public class NewsPaperJPanel extends javax.swing.JPanel {
-	
-	private java.awt.GraphicsConfiguration defaultConfiguration =
-			java
-				.awt
-				.GraphicsEnvironment
-				.getLocalGraphicsEnvironment()
-				.getDefaultScreenDevice()
-				.getDefaultConfiguration();
-
+    
+    private java.awt.GraphicsConfiguration defaultConfiguration =
+    java
+    .awt
+    .GraphicsEnvironment
+    .getLocalGraphicsEnvironment()
+    .getDefaultScreenDevice()
+    .getDefaultConfiguration();
+    
     Image pieceOfNewspaper;
     /** Creates new form NewsPaperJPanel */
     public NewsPaperJPanel() {
         initComponents ();
-         
+        
         
         Image tempImage = (new javax.swing.ImageIcon(getClass().getResource("/jfreerails/data/newspaper.png"))).getImage();
         
-    	pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
-    	
-    	Graphics g = pieceOfNewspaper.getGraphics();
-    	
-    	g.drawImage(tempImage, 0 ,0, null);
+        pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
+        
+        Graphics g = pieceOfNewspaper.getGraphics();
+        
+        g.drawImage(tempImage, 0 ,0, null);
     }
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -82,22 +82,26 @@ public class NewsPaperJPanel extends javax.swing.JPanel {
         jPanel1.setBounds(230, 260, 190, 30);
         
     }//GEN-END:initComponents
-
+    
   private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-// Add your handling code here:
+      // Add your handling code here:
       this.setVerifyInputWhenFocusTarget(false);
       System.out.println("Key pressed");
   }//GEN-LAST:event_formKeyPressed
-
-  public void paint(Graphics g){     
-        g.drawImage(this.pieceOfNewspaper, 0, 0, null);
-        this.paintChildren(g);
+  
+  public void paint(Graphics g){
+      g.drawImage(this.pieceOfNewspaper, 0, 0, null);
+      this.paintChildren(g);
   }
-
+  
+  public void setHeadline(String s){
+    this.headline.setText(s);
+  }
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel headline;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JLabel anyKeyToContinueJLabel;
   // End of variables declaration//GEN-END:variables
-
+  
 }

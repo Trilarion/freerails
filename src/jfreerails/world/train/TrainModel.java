@@ -6,10 +6,10 @@ import java.util.NoSuchElementException;
 import jfreerails.world.misc.FreerailsSerializable;
 
 public class TrainModel implements FreerailsSerializable{
-	
-	public static final int MAX_NUMBER_OF_WAGONS=10;
-	
-	public static final int DISTANCE_BETWEEN_WAGONS=5;	
+    
+    public static final int MAX_NUMBER_OF_WAGONS=10;
+    
+    public static final int DISTANCE_BETWEEN_WAGONS=5;
     
     TrainPosition trainposition;
     
@@ -31,12 +31,12 @@ public class TrainModel implements FreerailsSerializable{
     }
     
     public int getLength(){
-    	return (1+numberOfWagons)*32;  //Engine + wagons.
+        return (1+numberOfWagons)*32;  //Engine + wagons.
     }
-    	
+    
     
     public boolean canAddWagon(){
-    	return numberOfWagons < MAX_NUMBER_OF_WAGONS;
+        return numberOfWagons < MAX_NUMBER_OF_WAGONS;
     }
     
     public int getNumberOfWagons(){
@@ -44,20 +44,20 @@ public class TrainModel implements FreerailsSerializable{
     }
     
     public WagonModel getWagon(int i){
-    	if(i<=numberOfWagons){
-    		return wagons[i];
-    	}else{
-    		throw new NoSuchElementException();	
-    	}	
+        if(i<=numberOfWagons){
+            return wagons[i];
+        }else{
+            throw new NoSuchElementException();
+        }
     }
     
     public void addWagon(WagonModel w){
-    	if(canAddWagon()){
-    		wagons[numberOfWagons]=w;
-    		numberOfWagons++;		
-    	}else{
-    		throw new IllegalStateException("Cannot add wagon");
-    	}    		    			
+        if(canAddWagon()){
+            wagons[numberOfWagons]=w;
+            numberOfWagons++;
+        }else{
+            throw new IllegalStateException("Cannot add wagon");
+        }
     }
     
     public TrainPosition getPosition(){
@@ -65,15 +65,15 @@ public class TrainModel implements FreerailsSerializable{
     }
     
     public  void setPosition(TrainPosition s){
-          trainposition=s;
+        trainposition=s;
     }
     
     public EngineModel getEngine(){
-    	return engine;    	
+        return engine;
     }
     
     public void setEngine( EngineModel e){
-    	this.engine=e;
+        this.engine=e;
     }
-    	
+    
 }
