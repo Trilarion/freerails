@@ -4,7 +4,9 @@
 
 #include "Track.h"
 
-Track::Track(Player* _player) : GameElement(_player, "")
+#include "GameController.h"
+
+Track::Track(GameController* _controller, Player* _player) : GameElement(_controller, _player, "")
 {
 }
 

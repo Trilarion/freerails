@@ -17,8 +17,10 @@
 
 #include "Station.h"
 
-Station::Station(Player* p, char* n, Size s, char* t, StationAddon* sA)
-       : GameElement(p, t) {
+#include "GameController.h"
+
+Station::Station(GameController* c, Player* p, char* n, Size s, char* t, StationAddon* sA)
+       : GameElement(c, p, t) {
   size = s;
   name = n;
   stationAddon = sA;

@@ -4,8 +4,10 @@
 
 #include "Wagon.h"
 
-Wagon::Wagon(WagonType ty, Player* p) :
-    GameElement(p, ""),
+#include "GameController.h"
+
+Wagon::Wagon(GameController* c, WagonType ty, Player* p) :
+    GameElement(c, p, ""),
     type(ty)
 {
 }

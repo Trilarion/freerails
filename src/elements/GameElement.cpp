@@ -4,9 +4,14 @@
 
 #include "GameElement.h"
 
-GameElement::GameElement(Player* p, char* filename) {
+#include "Player.h"
+
+GameElement::GameElement(GameController* c, Player* p, char* filename) {
   player = p;
   tileset = filename;
+  controller = c;
+  registered = false;
+  id = 0;
 }
 
 GameElement::~GameElement() {
@@ -23,3 +28,19 @@ Player* GameElement::getPlayer() {
 void GameElement::update() {
 }
 
+bool GameElement::registerSelf() {
+  // Return immidiately if element is already registered
+  if(registered == true)
+    return false;
+  id = controller->addElement(this);
+  if(id == 0)
+  {
+    // error
+    return false;
+  }
+  else
+  {
+    registered = true;
+    return true;
+  }
+}

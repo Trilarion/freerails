@@ -25,6 +25,9 @@
 #include <vector>
 #include <string>
 
+#define RTTI_STATION 1
+
+class GameController;
 
 /** @short Station class
   *
@@ -38,13 +41,14 @@ public:
 
 
   /** Constructor
+    * @param c Controller of game
     * @param p Owner (Human or AI \b not Nature!)
     * @param n Name
     * @param t Tileset location
     * @param a All StationAddons in the game (available or not)
     * @param sA The common StationAddon
     */
-  Station(Player* p, char* n, Size s, char* t, StationAddon* sA);
+  Station(GameController* c, Player* p, char* n, Size s, char* t, StationAddon* sA);
   /** Destructor */
   ~Station();
   /** Adds a station addon
@@ -66,6 +70,8 @@ public:
     * @warning Just temporary, must be done with the GameController??
     * @todo Clean up this interface */
   unsigned int year;
+  /** Return type of element (RTTI_STATION) */
+  virtual int rtti() { return RTTI_STATION; };
 
 
 private:

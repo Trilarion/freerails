@@ -2,7 +2,7 @@
 
 noinst_LIBRARIES = libelements.a
 
-INCLUDES = -I$(srcdir)
+INCLUDES = -I$(srcdir) -I$(srcdir)/../controllers
 
 libelements_a_SOURCES = GameElement.cpp \
     Player.cpp \

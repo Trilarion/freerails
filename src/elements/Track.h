@@ -10,11 +10,13 @@
 #include "GameElement.h"
 #include "Player.h"
 
+class GameController;
+
 class Track : public GameElement
 {
   public:
     /** Constructs a track */
-    Track(Player* _player);
+    Track(GameController* _controller, Player* _player);
     ~Track();
 
   private:

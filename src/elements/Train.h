@@ -13,6 +13,10 @@
 #include "GameElement.h"
 #include "Player.h"
 
+class GameController;
+
+#define RTTI_TRAIN 2
+
 /** @short Class that represents train
   * Train's information is stored in @ref TrainInfo object, that is shared
   * between trains with same type.
@@ -26,7 +30,7 @@ class Train : public GameElement
     /** Constructs train with characteristics given by @ref info
       * Note that you cannot set info to something else later
       */
-    Train(TrainInfo* info, Player* p);
+    Train(GameController* c, TrainInfo* info, Player* p);
     ~Train();
     /** Adds wagon to this train */
     void addWagon(Wagon* wagon);
@@ -34,6 +38,8 @@ class Train : public GameElement
       * something else
       */
     TrainInfo* getInfo() { return info; };
+    /** Return type of this element (RTTI_TRAIN) */
+    virtual int rtti() { return RTTI_TRAIN; };
   private:
     vector<Wagon*> wagons;
     TrainInfo* info;

@@ -4,7 +4,9 @@
 
 #include "Train.h"
 
-Train::Train(TrainInfo* i, Player* p) : GameElement(p, "")
+#include "GameController.h"
+
+Train::Train(GameController* c, TrainInfo* i, Player* p) : GameElement(c, p, "")
 {
   info = i;
 }
