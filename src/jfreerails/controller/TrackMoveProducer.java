@@ -130,7 +130,7 @@ final public class TrackMoveProducer {
 		case UPGRADE_TRACK: {
 			//upgrade the from tile if necessary.			
 			FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
-			if(tileA.getTrackTypeID() != ruleIDs[0]){
+			if(tileA.getTrackTypeID() != ruleIDs[0]  && !isStationHere(from)){
 				MoveStatus ms = upgradeTrack(new Point(from), ruleIDs[0]);
 				if(!ms.ok){
 					return ms;
@@ -139,7 +139,7 @@ final public class TrackMoveProducer {
 			Point point = new Point(from.x + trackVector.getDx(), from.y
 					+ trackVector.getDy());					
 			FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
-			if(tileB.getTrackTypeID() != ruleIDs[1]){
+			if(tileB.getTrackTypeID() != ruleIDs[1] && !isStationHere(point)){
 				MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
 				if(!ms.ok){
 					return ms;
@@ -288,4 +288,12 @@ final public class TrackMoveProducer {
 	public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
 		this.buildTrackStrategy = buildTrackStrategy;
 	}
+	
+	
+	private boolean isStationHere(Point p){		
+		ReadOnlyWorld w = executor.getWorld();
+		FreerailsTile tile = (FreerailsTile) w.getTile(p.x, p.y);
+		return tile.getTrackRule().isStation();		
+	}
+
 }
