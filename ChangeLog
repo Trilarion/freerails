@@ -1,3 +1,6 @@
+22-Dec-2002 20:47:51 Luke Lindsay
+	o Added 'Newspaper' option to 'game' menu to test drawing on 
+	the glass panel.  The same technique can be used to dialogue boxes.
 04-Dec-2002 21:36:42 Luke Lindsay
 	o The classes from the fastUtils libary that are needed by
 	jfreerails have been added to the jfreerails source tree, so
