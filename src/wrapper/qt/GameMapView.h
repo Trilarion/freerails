@@ -5,23 +5,58 @@
 #ifndef __GAMEMAPVIEW_H__
 #define __GAMEMAPVIEW_H__
 
-#include "GameMap.h"
-#include "GameMainWindow.h"
+#include "MapField.h"
 
 #include <qcanvas.h>
+#include <qpoint.h>
 
+class QPainter;
+class QPixmap;
+
+class Engine;
+class GameMainWindow;
 class GameMap;
 
-class GameMapView : public QCanvasView {
-  Q_OBJECT
-public:
-  /** Constructor */
-  GameMapView(GameMap* map, GameMainWindow* parent, const char* name);
-  GameMapView(GameMap* map, QWidget* parent, const char* name);
-  /** Destructor */
-  ~GameMapView();
-  /** Event mouse pressed */
-  void contentsMousePressEvent(QMouseEvent* e);
+class GameMapView : public QCanvasView
+{
+    Q_OBJECT
+
+  public:
+    enum MouseType {normal = 0, 
+                    buildTrack = 10, buildStation, buildSignal};
+    enum MouseButton {none = 0, left, middle, right};
+    
+    /** Constructor */
+    GameMapView(Engine *_engine, GameMap *_map, GameMainWindow  *parent, const char *name = 0);
+    /** Destructor */
+    ~GameMapView();
+    /** Event mouse pressed */
+    void setMouseType(MouseType type);
+    void drawContents(QPainter *p, int cx, int cy, int cw, int ch);
+
+  protected:
+    void contentsMousePressEvent(QMouseEvent *e);
+    void contentsMouseReleaseEvent(QMouseEvent *e);
+    void contentsMouseMoveEvent(QMouseEvent *e);
+    
+  private:
+    void getMapPixmap(QPixmap *pixPaint, int x, int y);
+    int getPixmapPos(int x, int y, MapField::FieldType type);
+    int getRiverPixmapPos(int x, int y);
+    int get3DPixmapPos(int x, int y, MapField::FieldType type);
+
+    void regenerateTile(int x, int y);
+    void showTrack(int x, int y, int offsetX, int offsetY, int tracktileX, int tracktileY);
+
+    MouseType mouseType;
+    Engine *engine;
+    GameMap *map;
+    QPixmap *pixTiles;
+    QPixmap *pixTrack;
+
+    MouseButton mouseButton;
+
+    QPoint oldMousePos;
 };
 
 #endif // __GAMEMAPVIEW_H__

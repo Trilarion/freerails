@@ -4,29 +4,24 @@
 
 #include "GameMenuBar.h"
 
-#include <qpushbutton.h>
 #include <qlayout.h>
 #include <qpixmap.h>
-#include <stdio.h>
+#include <qpushbutton.h>
 
-
-GameMenuBar::GameMenuBar(QWidget* parent, const char* name)
-           : QWidget(parent, name) {
-  setFixedWidth(50);
-  initDone = false;
-  init();
-}
 
 GameMenuBar::GameMenuBar(GameMainWindow* parent, const char* name)
-           : QWidget(parent->getWidget(), name){
+           : QWidget(parent->getWidget(), name)
+{
   setFixedWidth(50);
   initDone = false;
   init();
 }
 
 
-GameMenuBar::~GameMenuBar() {
-  if(initDone) {
+GameMenuBar::~GameMenuBar()
+{
+  if(initDone)
+  {
     delete bBuildRail;
     delete bBuildStation;
     delete bBulldoze;
@@ -39,11 +34,12 @@ GameMenuBar::~GameMenuBar() {
   }
 }
 
-void GameMenuBar::init() {
+void GameMenuBar::init()
+{
   layout = new QVBoxLayout(this);
 
   // TEMP just to show the pix ;-)
-  bBuildRail = new QPushButton(QPixmap("./data/graphics/ui/buttons/rail.png"),0, this);
+  bBuildRail = new QPushButton(QPixmap("/development/freerails/freerails/data/graphics/ui/buttons/rail.png"),0, this);
   bBuildStation = new QPushButton("Station", this);
   bBulldoze = new QPushButton("Bulldoze", this);
   bMapOverview = new QPushButton("Map", this);
@@ -63,15 +59,16 @@ void GameMenuBar::init() {
   initDone = true;
 }
 
-void GameMenuBar::show() {
+void GameMenuBar::show()
+{
   QWidget::show();
-  bBuildRail->show();
-  bBuildStation->show();
-  bBulldoze->show();
-  bMapOverview->show();
-  bPurchaseTrain->show();
-  bStockMarket->show();
-  bControllPanel->show();
-  bOptions->show();
+//  bBuildRail->show();
+//  bBuildStation->show();
+//  bBulldoze->show();
+//  bMapOverview->show();
+//  bPurchaseTrain->show();
+//  bStockMarket->show();
+//  bControllPanel->show();
+//  bOptions->show();
 }
 

@@ -17,6 +17,8 @@ class QApplication;
 class QLabel;
 class QHBoxLayout;
 class QVBoxLayout;
+
+class Engine;
 class GameMainWindow;
 class GameMap;
 class GamePanel;
@@ -57,6 +59,8 @@ class GameApplication : public BaseApplication
     GameMainWindow* mW;
     QApplication* application;
     QLabel* splash;
+
+    Engine *engine;
 };
 
 #endif

@@ -24,8 +24,7 @@ class GameMenuBar : public QWidget {
 public:
   /** Constructor */
   // Do we need constructor with QWidget (we only construct it in MainWin anyway)
-  GameMenuBar(QWidget* parent, const char* name);
-  GameMenuBar(GameMainWindow* parent, const char* name);
+  GameMenuBar(GameMainWindow* parent, const char* name = 0);
   /** Destructor */
   ~GameMenuBar();
   /** Show the menubar */

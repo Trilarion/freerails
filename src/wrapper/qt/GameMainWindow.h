@@ -6,14 +6,15 @@
 #ifndef __GAMEMAINWINDOW_H__
 #define __GAMEMAINWINDOW_H__
 
-#include <qwidget.h>
-
 #include "BaseMainWindow.h"
 #include "GameModeSelector.h"
 
 
 class QHBoxLayout;
 class QVBoxLayout;
+class QWidget;
+
+class Engine;
 class GameMenuBar;
 class GameMap;
 class GameMapView;
@@ -44,14 +45,20 @@ class GameMainWindow : public BaseMainWindow
       * Playfield consists of map, panel and buttons
       */
     void constructPlayField();
+    void setEngine(Engine *_engine);
+
+    void resizeEvent(QResizeEvent *);
+    
   private:
-    QWidget* widget;
-    QVBoxLayout* layout;
-    QHBoxLayout* layout_h;
-    GameMenuBar* menubar;
-    GameMap* map;
-    GameMapView* mapview;
-    GamePanel* panel;
+    QWidget *widget;
+    QVBoxLayout *layout;
+    QHBoxLayout *layout_h;
+    GameMenuBar *menubar;
+    GameMap *map;
+    GameMapView *mapview;
+    GamePanel *panel;
+
+    Engine *engine;
 };
 
 #endif

@@ -2,18 +2,18 @@
  * $Id$
  */
 
-#include "GameApplication.h"
-#include "GameMainWindow.h"
-#include "GameModeSelectDialog.h"
+//#include <stdio.h>
+//#include <unistd.h>
+//#include <iostream>
 
 #include <qapplication.h>
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qstring.h>
 
-#include <stdio.h>
-#include <unistd.h>
-#include <iostream.h>
+#include "Engine.h"
+#include "GameApplication.h"
+#include "GameMainWindow.h"
 
 GameApplication::GameApplication(int argc, char *argv[]) :
     BaseApplication(argc, argv)
@@ -23,15 +23,18 @@ GameApplication::GameApplication(int argc, char *argv[]) :
   splash = 0l;
 }
 
-GameApplication::~GameApplication() {
-  if(splash) delete splash;
+GameApplication::~GameApplication()
+{
+  if(splash)
+    delete splash;
 }
 
-int GameApplication::run() {
+int GameApplication::run()
+{
   // Show the splash
   showSplash();
-  // FIXME: better method for sleep?
-  sleep(1);
+  application->processEvents();
+  sleep(2);
 
   hideSplash();
   application->processEvents();
@@ -44,12 +47,11 @@ int GameApplication::run() {
 
   //setMainWindow(mW);
   application->setMainWidget(mW->getWidget());
-  application->processEvents();
-//  hideSplash();
+  hideSplash();
 
   // Show dialog menu for game mode
   GameModeSelector::GameMode mode = mW->askGameMode();
-  printf("mW->askGameMode() result=%i\n", (int)mode);
+  qDebug("mW->askGameMode() result=%i\n", (int)mode);
 
   // Show mainwindow
   application->processEvents();
@@ -57,13 +59,19 @@ int GameApplication::run() {
   // If user wants to quit, then quit
   if(mode == GameModeSelector::Quit)
   {
-    // Is this safe?
+    application->exit(0);
     exit(0);
   }
 
-  // Some sort of 'multi or single game mode' test should be here
+  #warning complete me
+  initSingleGame();
+  
+  engine = new Engine(worldMap, playerSelf);
+  CHECK_PTR(engine);
+
  
   // Construct playfield (map, panel, buttons)
+  mW->setEngine(engine);
   mW->constructPlayField();
   
   return application->exec();

@@ -2,8 +2,9 @@
  * $Id$
  */
 
-#include <iostream.h>
-#include <qlayout.h>
+#include <iostream>
+
+#include <qwidget.h>
 
 #include "GameMainWindow.h"
 #include "GameMenuBar.h"
@@ -29,30 +30,37 @@ void GameMainWindow::setCaption(const char* caption)
   widget->setCaption(caption);
 }
 
+void GameMainWindow::setEngine(Engine *_engine)
+{
+  engine = _engine;
+}
+
 GameModeSelector::GameMode GameMainWindow::askGameMode()
 {
   GameModeSelector::GameMode m;
   GameModeSelector* s = new GameModeSelector(this);
-  m = s->exec();
+  m = GameModeSelector::GameMode(s->exec());
   delete s;
   return m;
 }
 
 void GameMainWindow::constructPlayField()
 {
-  // Maybe such layout isn't best
-  layout = new QVBoxLayout(widget);
-  layout_h = new QHBoxLayout(layout);
-  menubar = new GameMenuBar(this, "menubar");
-  map = new GameMap(this, "map");
-  mapview = new GameMapView(map, this, "mapview");
-  panel = new GamePanel(this, "panel");
+  map = new GameMap(engine, this);
+  CHECK_PTR(map);
+  
+  mapview = new GameMapView(engine, map, this);
+  CHECK_PTR(mapview);
 
-  layout_h->addWidget(menubar);
-  layout_h->addWidget(mapview);
-  layout->addWidget(panel);
+  panel = new GamePanel(engine, mapview, this);
+  CHECK_PTR(panel);
+  panel->move(widget->width() - 150, 0);
 
-  menubar->show();
   mapview->show();
   panel->show();
+}
+
+void GameMainWindow::resizeEvent(QResizeEvent *)
+{
+  panel->move(widget->width() - 150, 0);
 }
