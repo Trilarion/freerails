@@ -11,7 +11,7 @@
 
       <property name="dist" location="dist" />
 
-      <property name="doc" location="doc" />
+      <property name="doc" location="javadoc" />
 
       <property name="temp" location="temp" />
    </target>
@@ -89,6 +89,8 @@
    <target name="srcdist" depends="init" description="Generate source distribution">
       <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-src.jar" basedir=".">
          <include name="src/**/*.java" />
+         
+         <include name="src/**/*.html" />
 
          <include name="build.xml" />
 
@@ -138,8 +140,8 @@
 	   <!-- now copy the html	-->
 	  <copy todir="${doc}">
          <fileset dir="${src}">
-            <include name="*.html" />
-			<include name="*.htm" />
+            <include name="**/*.html" />
+			<include name="**/*.htm" />
 			
 			<!--Don't copy these since the javadoc tool processes with them -->
             <exclude name="**/overview.html" /> 
@@ -148,10 +150,10 @@
       </copy>
    </target>
 
-  
-   <target name="jar_doc" depends="javadoc">
+  <!--  depends="javadoc" -->
+   <target name="jar_doc" depends="javadoc" description="Jar up javadoc">
       <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-javadoc.jar" basedir=".">
-         <include name="doc/**/*" />
+         <include name="javadoc/**/*" />
       </jar>
    </target>
 

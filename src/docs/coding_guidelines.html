@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>Untitled Document</title>
+<title>Coding Guidelines</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
@@ -9,11 +9,12 @@
 <p><strong>Coding Guidelines</strong></p>
 <p>(1) Run all the unit tests after making changes to see whether anything has 
   broken. You can do this using the <strong>runtests </strong>Ant target.</p>
-<p>(2) Write junit tests where in your judgement they would appropriate.</p>
+<p>(2) Write junit tests where in your judgement they would be appropriate.</p>
 <p>(3) Ensure that there are no circular dependencies between packages. I.e. if 
   any classes in package A import classes from package B, then classes in package 
   B should not import classes from package A. You can use the <strong>checkdep</strong> 
   Ant target to help with this.</p>
-<p>(4) Check that the ant javadoc target runs without errors.</p>
+<p>(4) Check that the <strong>javadoc</strong> Ant target runs without errors 
+  or warnings.</p>
 </body>
 </html>

@@ -62,8 +62,8 @@ final public class MapViewJComponentConcrete
 		catch(java.awt.AWTException e)   {}
 	}
 	/**
-	* Implements a {@link MouseListener} for FreerailsCursor-movement (left
-	* mouse button) and a {@link MouseMotionListener} for map-scrolling (right
+	* Implements a MouseListener for FreerailsCursor-movement (left
+	* mouse button) and a MouseMotionListener for map-scrolling (right
 	* mouse button).<p>
 	* Possible enhancements: 
 	*     setCursor(blankCursor), 
@@ -81,7 +81,7 @@ final public class MapViewJComponentConcrete
 		*/
 		private Point sigmadelta = new Point();
 		/**
-		* Where to scroll? Reflects granularity, scroll direction and
+		* Where to scroll - Reflects granularity, scroll direction and
 		* acceleration, respects bounds.
 		*/
 		private Point tiledelta  = new Point();
