@@ -10,7 +10,7 @@ endif
 
 freerails_LDADD = ../wrapper/$(WRAPPER)/libwrapper.a ../elements/libelements.a \
     ../game/libgame.a ../map/libmap.a ../controllers/libcontrollers.a \
-    ../wrapper/libwrapperbase.a ../network/libnetwork.a 
+    ../wrapper/libwrapperbase.a ../network/libnetwork.a ../elements/Track.o
 freerails_LDFLAGS = $(WRAPPER_LDF) $(all_libraries)
 INCLUDES = $(all_includes) -I$(top_srcdir)/src/wrapper/$(WRAPPER) \
     -I$(srcdir) -I$(top_srcdir)/src/wrapper \

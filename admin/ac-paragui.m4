@@ -54,7 +54,7 @@ AC_ARG_ENABLE(paraguitest, [  --disable-paraguitest       Do not try to compile 
     if test "x$enable_paraguitest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
-      CXXFLAGS="$CFLAGS $PARAGUI_CFLAGS"
+      CXXFLAGS="$CXXFLAGS $CFLAGS $PARAGUI_CFLAGS"
       LIBS="$LIBS $PARAGUI_LIBS"
 dnl
 dnl Now check if the installed PARAGUI is sufficiently new. (Also sanity
@@ -171,6 +171,7 @@ int main (int argc, char *argv[])
   fi
   AC_SUBST(PARAGUI_CFLAGS)
   AC_SUBST(PARAGUI_LIBS)
+  AC_SUBST(CXXFLAGS)
   rm -f conf.paraguitest
 ])
 
