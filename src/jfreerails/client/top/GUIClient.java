@@ -10,6 +10,7 @@ import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.MapCursor;
 import jfreerails.controller.ConnectionToServer;
+import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
@@ -30,6 +31,8 @@ public class GUIClient extends Client {
 	protected ServerControlModel serverControls = new
 	    ServerControlModel(null);
 
+	private ModelRoot modelRoot;
+
 	public void setCursor(MapCursor c) {
 		cursor = c;
 	}
@@ -41,7 +44,8 @@ public class GUIClient extends Client {
 	private GUIClient(ConnectionToServer server, int mode, DisplayMode dm,
 		String title, FreerailsProgressMonitor pm)
 	    throws IOException {
-		receiver = new ConnectionAdapter();
+		modelRoot = new ModelRoot();
+		receiver = new ConnectionAdapter(modelRoot);
 		moveChainFork = new MoveChainFork();
 		receiver.setMoveReceiver(moveChainFork);
 		receiver.setConnection(server);
@@ -86,7 +90,8 @@ public class GUIClient extends Client {
 
 	/**
 	 * sets up a connnection with a local server. Currently this is the only
-	 * form of connection supported
+	 * form of connection supported.
+	 * @throws java.io.IOException if the connection could not be opened
 	 */
 	public GUIClient(LocalConnection server, int mode, DisplayMode dm,
 	String title, FreerailsProgressMonitor pm) throws IOException {
@@ -104,5 +109,9 @@ public class GUIClient extends Client {
 
 	public void setServerControls(ServerControlInterface controls) {
 		serverControls.setServerControlInterface(controls);
+	}
+
+	public ModelRoot getModelRoot() {
+	    return modelRoot;
 	}
 }

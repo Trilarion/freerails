@@ -56,6 +56,7 @@ public class DialogueBoxController {
 	private ReadOnlyWorld world;
 	private ViewLists viewLists;
 	private UntriedMoveReceiver moveReceiver;
+	private ModelRoot modelRoot;
 
 	private Component defaultFocusOwner = null;
 
@@ -85,7 +86,8 @@ public class DialogueBoxController {
 
 	/** Creates new DialogueBoxController */
 
-	public DialogueBoxController(JFrame frame) {
+	public DialogueBoxController(JFrame frame, ModelRoot mr) {
+		modelRoot = mr;
 		//Setup glass panel..
 		glassPanel = new MyGlassPanel();
 		glassPanel.setSize(frame.getSize());
@@ -203,8 +205,9 @@ public class DialogueBoxController {
 	public void showTrainOrders() {
 		WorldIterator wi = new NonNullElements(KEY.TRAINS, world);
 		if (!wi.next()) {
-			System.out.println(
-				"Cannot show train orders since there are no trains!");
+			modelRoot.getUserMessageLogger().println("Cannot" +
+				" show train orders since there are no" +
+				" trains!");
 		} else {
 			trainDialogueJPanel.display(0);
 			this.showContent(trainDialogueJPanel);
@@ -214,7 +217,8 @@ public class DialogueBoxController {
 	public void showSelectEngine() {
 		WorldIterator wi = new NonNullElements(KEY.STATIONS, world);
 		if (!wi.next()) {
-			System.out.println("Can't build train since there are no stations");
+			modelRoot.getUserMessageLogger().println("Can't" +
+			" build train since there are no stations");
 		} else {
 			System.out.println("showSelectEngine()");
 			showContent(selectEngine);
@@ -262,7 +266,8 @@ public class DialogueBoxController {
 			trainView.setHeight(50);
 			showContent(trainList);
 		} else {
-			System.out.println("There are no trains to display!");
+			modelRoot.getUserMessageLogger().println("There are" +
+				" no trains to display!");
 		}
 	}
 

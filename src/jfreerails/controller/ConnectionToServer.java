@@ -41,6 +41,56 @@ public interface ConnectionToServer extends UncommittedMoveReceiver {
 
     public void flush();
      
+     public static class ConnectionState {
+	private String state;
+     
+	/**
+	 * Waiting - connection has been opened, but client has not been
+	 * initialised with the World DB.
+	 */
+	public static final ConnectionState WAITING = new
+	ConnectionState("Waiting");
+
+	/**
+	 * Initialising - client has requested world, but it has not been sent
+	 * yet.
+	 */
+	public static final ConnectionState INITIALISING = new
+	ConnectionState("Initialising");
+
+	/**
+	 * Ready - client has received world and is ready to receive moves.
+	 */
+	public static final ConnectionState READY = new
+	ConnectionState("Ready");
+
+	/**
+	 * Closing - a CloseConnectionCommand has been sent, but the connection
+	 * is not yet closed.
+	 */
+	public static final ConnectionState CLOSING = new
+	ConnectionState("Closing");
+
+	/**
+	 * Closed - the connection is closed.
+	 */
+	public static final ConnectionState CLOSED = new
+	ConnectionState("Closed");
+
+	private ConnectionState(String aState) {
+	    state = aState;
+	}
+
+	public String toString() {
+	    return state;
+	}
+     }
+
+    /**
+     * @return the current state of this connection
+     */
+    public ConnectionState getConnectionState();
+
     /*
      * TODO
      * proposed interface:

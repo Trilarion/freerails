@@ -33,6 +33,8 @@ Runnable {
      */
     public static final int SERVER_PORT = 55000;
 
+    private ConnectionState state = ConnectionState.CLOSED;
+
     private InetAddress serverAddress;
 
     private ObjectInputStream objectInputStream;
@@ -50,6 +52,10 @@ Runnable {
     private boolean isOpen = false;
 
     private Sender sender;
+
+    public InetAddress getRemoteAddress() {
+	return socket.getInetAddress();
+    }
 
     private class Sender {
 	private BufferedOutputStream sendQueue;
@@ -132,8 +138,7 @@ Runnable {
 	if (c instanceof CloseConnectionCommand) {
 	    disconnect();
 	} else if (c instanceof LoadWorldCommand) {
-	    System.out.println("received LoadWorldCommand");
-	    System.out.println("sending World");
+	    setState(ConnectionState.INITIALISING);
 	    /*
 	     * TODO in the future, queue up moves from the server whilst
 	     * the client gets a copy of the World, for now just have a
@@ -143,8 +148,7 @@ Runnable {
 		send(world);
 		flush();
 	    }
-
-	    System.out.println("world sent");
+	    setState(ConnectionState.READY);
 	}
     }
 
@@ -199,7 +203,8 @@ Runnable {
     }
 
     /**
-     * Constructor called by the server
+     * Constructor called by the server.
+     * The state of this socket is always WAITING.
      * @throws IOException if the socket couldn't be created.
      * @throws SecurityException if we're not allowed to create the socket.
      */
@@ -209,6 +214,7 @@ Runnable {
 	System.out.println("Server listening for new connections on port " +
 		SERVER_PORT);
 	serverSocket = new ServerSocket(SERVER_PORT);
+	setState(ConnectionState.WAITING);
     }
 
     /**
@@ -225,6 +231,7 @@ Runnable {
 	objectInputStream = new ObjectInputStream(socket.getInputStream());
 	System.out.println("got ObjectInputStream");
 	isOpen = true;
+	setState(ConnectionState.WAITING);
     }
 
     /**
@@ -266,7 +273,11 @@ Runnable {
 	sender.flush();
     }
 
+    /**
+     * Called by the client to get a copy of the world.
+     */
     public World loadWorldFromServer() throws IOException {
+	setState(ConnectionState.INITIALISING);
 	send(new LoadWorldCommand());
 	sender.flush();
 	synchronized (objectInputStream) {
@@ -275,7 +286,7 @@ Runnable {
 		    Object o = objectInputStream.readObject();
 		    if (o instanceof World) {
 			world = (World) o;
-			System.out.println("got the world!");
+			setState(ConnectionState.READY);
 			break;
 		    } else {
 			System.out.println("Received garbage whilst loading world:" +
@@ -305,12 +316,14 @@ Runnable {
 	     * If we are the parent server socket, close it.
 	     */
 	    try {
+		setState(ConnectionState.CLOSED);
 		serverSocket.close();
 	    } catch (IOException e) {
 		System.out.println("Caught an IOException whilst closing the " +
 		"server socket " + e);
 	    }
 	} else {
+	    setState(ConnectionState.CLOSED);
 	    send(new CloseConnectionCommand());
 	    flush();
 	    disconnect();
@@ -330,6 +343,7 @@ Runnable {
 	objectInputStream = new ObjectInputStream(socket.getInputStream());
 	System.out.println("Successfully opened connection to remote peer");
 	isOpen = true;
+	setState(ConnectionState.WAITING);
     }
     
     /**
@@ -340,6 +354,7 @@ Runnable {
 	try {
 	    System.out.println("disconnecting from remote peer!");
 	    isOpen = false;
+	    setState(ConnectionState.CLOSED);
 	    objectInputStream.close();
 	    sender.close();
 	    socket.close();
@@ -355,5 +370,15 @@ Runnable {
      */
     public void setWorld(World w) {
 	world = w;
+    }
+
+    public ConnectionState getConnectionState() {
+	return state;
+    }
+
+    private void setState(ConnectionState s) {
+	state = s;
+	if (connectionListener != null)
+	    connectionListener.connectionStateChanged(this);
     }
 }

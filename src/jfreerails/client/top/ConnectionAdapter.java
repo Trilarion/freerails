@@ -2,6 +2,7 @@ package jfreerails.client.top;
 
 import java.io.IOException;
 
+import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.CompositeMoveSplitter;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
@@ -22,6 +23,7 @@ import jfreerails.move.Move;
 public class ConnectionAdapter implements UntriedMoveReceiver {
 
     private MoveExecuter moveExecuter;
+    private ModelRoot modelRoot;
 
     ConnectionToServer connection;
     MoveReceiver moveReceiver;
@@ -31,6 +33,10 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
      */
     Object mutex;
     
+    public ConnectionAdapter(ModelRoot mr) {
+	modelRoot = mr;
+    }
+
     /**
      * This class receives moves from the connection and updates the world
      * accordingly.
@@ -49,8 +55,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
 		try {
 		    setConnection(connection);
 		} catch (IOException e) {
-		    System.out.println("IOException occurred whilst " +
-			    " whilst setting connection");
+		    modelRoot.getUserMessageLogger().println("Unable to open" +
+			" remote connection");
 		    closeConnection();	
 		}
 	    } else if (move instanceof TimeTickMove) {
@@ -99,7 +105,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     private void closeConnection() {
 	connection.close();
 	connection.removeMoveReceiver(worldUpdater);
-	System.out.println("ConnectionToServer closed");
+	modelRoot.getUserMessageLogger().println("Connection to server closed");
     }
 
     public void setConnection(ConnectionToServer c) throws IOException {

@@ -14,6 +14,7 @@ import jfreerails.client.top.ViewListsImpl;
 import jfreerails.client.view.CallBacks;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MapCursor;
+import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.NewTrainScheduleJPanel;
 import jfreerails.client.view.TrainDialogueJPanel;
 import jfreerails.client.view.TrainOrdersListModel;
@@ -72,8 +73,16 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     /** Creates new form TestGlassPanelMethod */
     public DialogueBoxTester() {
         
-        dialogueBoxController = new DialogueBoxController(this);
+	ModelRoot mr = new ModelRoot();
         w = new WorldImpl();
+	try {
+	    vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	mr.setWorld(w, dummyReceiver, vl);
+        dialogueBoxController = new DialogueBoxController(this, mr);
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
@@ -127,26 +136,20 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
         scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
         w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID));
         
-        try {
-            vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE); //new ViewListsImpl();
             
-            final MyGlassPanel glassPanel = new MyGlassPanel();
-            dialogueBoxController.setup(
-            w,
-            vl,
-            new MoveChainFork(),
-	    dummyReceiver,
-            MapCursor.NULL_MAP_CURSOR);
-            initComponents();
-            
-            glassPanel.setSize(800, 600);
-            //this.setGlassPane(glassPanel);
-            this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 400));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        //pack();
+	final MyGlassPanel glassPanel = new MyGlassPanel();
+	dialogueBoxController.setup(
+		w,
+		vl,
+		new MoveChainFork(),
+		dummyReceiver,
+		MapCursor.NULL_MAP_CURSOR);
+	initComponents();
+
+	glassPanel.setSize(800, 600);
+	//this.setGlassPane(glassPanel);
+	this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 400));
+	//pack();
     }
     
     /** This method is called from within the constructor to

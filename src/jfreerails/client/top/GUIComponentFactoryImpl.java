@@ -87,7 +87,9 @@ public class GUIComponentFactoryImpl
 
 	public GUIComponentFactoryImpl(GUIClient c) {
 	    client = c;
-		userInputOnMapController = new UserInputOnMapController();
+	    modelRoot = client.getModelRoot();
+		userInputOnMapController = new
+		    UserInputOnMapController(modelRoot);
 		buildMenu = new jfreerails.client.top.BuildMenu();
 		mapViewJComponent = new MapViewJComponentConcrete();
 		mainMapScrollPane1 = new JScrollPane();
@@ -112,7 +114,8 @@ public class GUIComponentFactoryImpl
 		messageJLabel = new javax.swing.JLabel("Message");
 
 		clientJFrame = new ClientJFrame(this);
-		dialogueBoxController = new DialogueBoxController(clientJFrame);
+		dialogueBoxController = new DialogueBoxController(clientJFrame,
+			modelRoot);
 
 	}
 
@@ -122,7 +125,7 @@ public class GUIComponentFactoryImpl
 
 		UntriedMoveReceiver receiver = client.getReceiver();
 		/* create the models */
-		modelRoot = new ModelRoot(world, receiver, viewLists);
+		modelRoot.setWorld(world, receiver, viewLists);
 
 		clientJFrame.setup();
 

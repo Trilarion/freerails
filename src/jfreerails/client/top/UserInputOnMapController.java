@@ -10,6 +10,7 @@ import jfreerails.client.view.CursorEventListener;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.MapViewJComponent;
+import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.TrackMoveProducer;
 
@@ -26,6 +27,12 @@ public class UserInputOnMapController implements CursorEventListener {
 	private DialogueBoxController dialogueBoxController;
 
 	private UncommittedMoveReceiver trackMoveExecutor;
+
+	private ModelRoot modelRoot;
+
+	public UserInputOnMapController(ModelRoot mr) {
+	    modelRoot = mr;
+	}
 
 	public void cursorOneTileMove(CursorEvent ce) {
 		if (null != trackBuilder) {
@@ -73,48 +80,49 @@ public class UserInputOnMapController implements CursorEventListener {
 
 	public void cursorKeyPressed(CursorEvent ce) {
 
-		switch (ce.keyEvent.getKeyCode()) {
-			case KeyEvent.VK_F7 :
-				{
-					buildTrain(ce);
-					break;
-				}
-			case KeyEvent.VK_F8 :
-				{							
-					//defensive copy.
-					Point tile = new Point(ce.newPosition);
-										
-					//Check whether we can built a station here before proceeding.
-					if (stationTypesPopup.canBuiltStationHere(tile)) {
-						float scale = mapView.getScale();
-						Dimension tileSize =
-							new Dimension((int) scale, (int) scale);
-						int x = tile.x * tileSize.width;
-						int y = tile.y * tileSize.height;
-						stationTypesPopup.show(mapView, x, y, tile);
-					} else {
-						System.out.println("Can't built station here!");
-					}
-					break;
-				}
-			case KeyEvent.VK_BACK_SPACE :
-				System.out.println("Undo last move");
-				trackMoveExecutor.undoLastMove();
-				break;
-			case KeyEvent.VK_I :
-				{
-					dialogueBoxController.showStationOrTerrainInfo(
-						ce.newPosition.x,
-						ce.newPosition.y);
-					break;
-				}
-			case KeyEvent.VK_C :
-				{
-					mapView.centerOnTile(
-						new Point(ce.newPosition.x, ce.newPosition.y));
-					break;
-				}
-		}
+	    switch (ce.keyEvent.getKeyCode()) {
+		case KeyEvent.VK_F7 :
+		    {
+			buildTrain(ce);
+			break;
+		    }
+		case KeyEvent.VK_F8 :
+		    {							
+			//defensive copy.
+			Point tile = new Point(ce.newPosition);
+
+			//Check whether we can built a station here before proceeding.
+			if (stationTypesPopup.canBuiltStationHere(tile)) {
+			    float scale = mapView.getScale();
+			    Dimension tileSize =
+				new Dimension((int) scale, (int) scale);
+			    int x = tile.x * tileSize.width;
+			    int y = tile.y * tileSize.height;
+			    stationTypesPopup.show(mapView, x, y, tile);
+			} else {
+			    modelRoot.getUserMessageLogger().println("Can't" +
+				    " build station here!");
+			}
+			break;
+		    }
+		case KeyEvent.VK_BACK_SPACE :
+		    System.out.println("Undo last move");
+		    trackMoveExecutor.undoLastMove();
+		    break;
+		case KeyEvent.VK_I :
+		    {
+			dialogueBoxController.showStationOrTerrainInfo(
+				ce.newPosition.x,
+				ce.newPosition.y);
+			break;
+		    }
+		case KeyEvent.VK_C :
+		    {
+			mapView.centerOnTile(
+				new Point(ce.newPosition.x, ce.newPosition.y));
+			break;
+		    }
+	    }
 	}
 
 	private void buildTrain(CursorEvent ce) {

@@ -5,6 +5,9 @@ import java.util.Vector;
 import java.io.IOException;
 import java.net.SocketException;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import jfreerails.controller.CalcSupplyAtStations;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.ConnectionListener;
@@ -38,8 +41,11 @@ public class GameServer implements ConnectionListener {
 
     public void connectionClosed(ConnectionToServer c) {
 	synchronized (connections) {
-	    connections.remove(c);
-	    moveChainFork.remove(c);
+	    if (! (c instanceof LocalConnection)) {
+		tableModel.removeRow(c);
+		connections.remove(c);
+		moveChainFork.remove(c);
+	    }
 	}
     }
     
@@ -59,6 +65,8 @@ public class GameServer implements ConnectionListener {
 			synchronized (connections) {
 			    connections.add(c);
 			}
+			tableModel.addRow (c,
+				((InetConnection) c).getRemoteAddress().toString());
 			Thread thread = new Thread((InetConnection) c);
 			thread.start();
 		    } catch (IOException e) {
@@ -95,16 +103,20 @@ public class GameServer implements ConnectionListener {
 	    throw new RuntimeException (e);
 	}
 	
-	/**
-	 * start the server thread
-	 */
-	Thread thread = new Thread(gameEngine);
-	thread.start();
-
-	thread = new Thread(new InetGameServer());
+	Thread thread = new Thread(new InetGameServer());
 	thread.start();
     }
     
+    /**
+     * Starts the server thread.
+     * TODO control of whether clients can issue moves prior to the thread being
+     * started.
+     */
+    public void startGame() {
+	Thread thread = new Thread(gameEngine);
+	thread.start();
+    }
+
     public LocalConnection getLocalConnection() {
 	synchronized (connections) {
 	    LocalConnection connection = new LocalConnection(world, this);
@@ -112,6 +124,8 @@ public class GameServer implements ConnectionListener {
 	    MoveExecuter executer = MoveExecuter.getMoveExecuter();
 	    connection.addMoveReceiver(executer);
 	    connections.add(connection);
+	    tableModel.addRow(connection, "Local connection");
+	    connection.addConnectionListener(this);
 	    return connection;
 	}
     }
@@ -137,5 +151,49 @@ public class GameServer implements ConnectionListener {
 	    if (serverSocket != null)
 		serverSocket.setWorld(world);
 	}
+    }
+
+    public void connectionStateChanged(ConnectionToServer c) {
+	tableModel.stateChanged(c);
+    }
+
+    /**
+     * Table model which represents currently connected clients.
+     * Connection states are described as follows:
+     * <ol>
+     */
+    private class ClientConnectionTableModel extends DefaultTableModel {
+	public ClientConnectionTableModel() {
+	    super(new String[]{"Client address", "State"}, 0);
+	}
+
+	public void addRow(ConnectionToServer c, String address) {
+	    addRow(new String[]{address, c.getConnectionState().toString()});
+	}
+
+	public void stateChanged(ConnectionToServer c) {
+	    int i;
+	    synchronized (connections) {
+		i = connections.indexOf(c);
+		setValueAt(c.getConnectionState().toString(), i, 1);
+	    }
+	}
+
+	public void removeRow(ConnectionToServer c) {
+	    synchronized (connections) {
+		removeRow(connections.indexOf(c));
+	    }
+	}
+
+	public boolean isCellEditable(int r, int c) {
+	    return false;
+	}
+    }
+
+    private ClientConnectionTableModel tableModel = new
+	ClientConnectionTableModel();
+
+    public TableModel getClientConnectionTableModel() {
+	return tableModel;
     }
 }

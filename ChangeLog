@@ -1,3 +1,6 @@
+03-Nov-2003 17:58:00 Luke
+	o Applied Robert Tuck's patches to update the launcher gui.
+	o Added Scott Bennett's extra Cities
 18-Oct-2003 00:36:59 Luke
 	o Applied Robert Tuck's patch adding comments to ServerGameEngine.
 	o Other javadoc updates.
