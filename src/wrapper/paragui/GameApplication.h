@@ -11,7 +11,6 @@
 #include "GameMapView.h"
 #include "GameNetView.h"
 #include "GamePanel.h"
-#include "GameController.h"
 #include "GameTimerWidget.h"
 
 #include "SDL.h"

@@ -16,7 +16,7 @@ Controller::~Controller ()
 
 void Controller::addGameElement (GameElement* _element)
 {
-  long int elementID = _element->getElementID();
+  long int elementID = _element->getTypeID();
   elementMap[elementID] = _element;  
 }
 

@@ -25,10 +25,6 @@
 #include <vector>
 #include <string>
 
-#define RTTI_STATION 1
-
-class GameController;
-
 /** @short Station class
   *
   * @author Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>

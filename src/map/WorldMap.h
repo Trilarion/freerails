@@ -5,6 +5,8 @@
 #ifndef __MORLDMAP_H__
 #define __MORLDMAP_H__
 
+#include <vector>
+
 #include "MapField.h"
 
 class WorldMap {

@@ -7,14 +7,13 @@
 
 #include "Serializeable.h"
 
-#include "GameController.h"
-
 class Player;
 
 class GameElement : public Serializeable
 {
   public:
     enum TypeID { idNone = 0, idPlayer, idStation, idTrain, idWagon, idTrack };
+    typedef long unsigned int ElementID;
     /** Constructor
       * @param _player: Player who own this element
       * @param _typeID: The type from which this element is
@@ -28,7 +27,7 @@ class GameElement : public Serializeable
     void deserialize(Serializer* _serializer);
 
     /** Return type of element */
-    idtype getElementID() {return elementID;};
+    ElementID getElementID() {return elementID;};
     TypeID getTypeID() {return typeID;};
 
     /** Changes the owner of this element */
@@ -42,9 +41,8 @@ class GameElement : public Serializeable
     /** Player who owns this element */
     Player* player;
 
-    idtype elementID;
+    ElementID elementID;
     TypeID typeID;
-  
 };
 
 #endif // __GAMEELEMENT_H__

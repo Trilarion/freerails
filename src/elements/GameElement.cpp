@@ -21,7 +21,7 @@ void GameElement::serialize(Serializer* _serializer)
 
 void GameElement::deserialize(Serializer* _serializer)
 {
-  *_serializer >> (idtype &)elementID;
+  *_serializer >> (ElementID &)elementID;
 }
 
 void GameElement::setPlayer(Player* p)

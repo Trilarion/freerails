@@ -7,10 +7,6 @@
 
 #include "GameElement.h"
 
-class GameController;
-
-#define RTTI_WAGON 3
-
 /** @short Class that represents wagon
   *
   * @author Rivo Laks <rivolaks@hot.ee>
@@ -29,14 +25,12 @@ class Wagon : public GameElement
     /** Constructs new wagon
       * Wagon must be positioned by train that constructed it
       */
-    Wagon(GameController* c, WagonType type, Player* p);
+    Wagon(WagonType type, Player* _player);
     ~Wagon();
     /** Return type of wagon */
     WagonType getType() { return type; };
     /** Sets type of wagon */
     void setType(WagonType t) { type = t; };
-    /** Returns type of this element (RTTI_WAGON) */
-    virtual int rtti() { return RTTI_WAGON; };
 
   private:
     WagonType type;

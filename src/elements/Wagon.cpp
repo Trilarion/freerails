@@ -4,10 +4,8 @@
 
 #include "Wagon.h"
 
-#include "GameController.h"
-
-Wagon::Wagon(GameController* c, WagonType ty, Player* p)
-     : GameElement(p, idWagon),
+Wagon::Wagon(WagonType ty, Player* _player)
+     : GameElement(_player, idWagon),
     type(ty)
 {
 }

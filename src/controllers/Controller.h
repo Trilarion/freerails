@@ -10,8 +10,7 @@
 
 #include "GameElement.h"
 #include "Serializer.h"
-
-class WoldMap;
+#include "WorldMap.h"
 
 class Controller
 {
@@ -38,7 +37,6 @@ class Controller
     // compute direction inner field of a given point relative to center of field
     int computeDirection(int x, int y);
 
-    GameController *controller;
     WorldMap *worldMap;
         
   private:

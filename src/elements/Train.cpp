@@ -4,12 +4,10 @@
 
 #include "Train.h"
 
-#include "GameController.h"
-
-Train::Train(GameController* c, TrainInfo* i, Player* p)
-     : GameElement(p, idTrain)
+Train::Train(TrainInfo* _info, Player* _player)
+     : GameElement(_player, idTrain)
 {
-  info = i;
+  info = _info;
 }
 
 Train::~Train()
