@@ -18,5 +18,6 @@ public interface LauncherInterface {
     
     void setNextEnabled(boolean enabled);
     
-    void hideText();
+    void hideErrorMessages();
+    
 }

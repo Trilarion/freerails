@@ -19,6 +19,7 @@ import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
 import jfreerails.network.FreerailsGameServer;
 import jfreerails.network.InetConnectionAccepter;
+import jfreerails.network.LogOnResponse;
 import jfreerails.network.SavedGamesManager;
 import jfreerails.network.ServerControlInterface;
 import jfreerails.server.SavedGamesManagerImpl;
@@ -126,8 +127,13 @@ LauncherInterface {
                     
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
-                    client.connect(hostname, port, playerName, "password");
-                    startThread(client);
+                    LogOnResponse logOnResponse = client.connect(hostname, port, playerName, "password");
+                    if(logOnResponse.isSuccessful()){
+                    	startThread(client);
+                    }else{
+                    	recover = true;
+                    	setInfoText(logOnResponse.getMessage(), Launcher.WARNING);
+                    }
                 } catch (IOException e) {
                     setInfoText(e.getMessage(), Launcher.WARNING);
                     recover = true;
@@ -140,6 +146,7 @@ LauncherInterface {
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setNextEnabled(true);
+                        cl.show(jPanel1, "2");
                         return;
                     }
                 }
@@ -345,7 +352,7 @@ LauncherInterface {
             nextButton.setVisible(false);
             pack();
         }
-        hideText();
+        hideAllMessages();
     }
     
     /** This method is called from within the constructor to
@@ -433,7 +440,7 @@ LauncherInterface {
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         nextIsStart = false;
-        hideText();
+        hideAllMessages();
         switch (currentPage) {
             case 1:
                 cl.previous(jPanel1);
@@ -459,7 +466,7 @@ LauncherInterface {
             LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
             MapSelectionPanel msp = (MapSelectionPanel) wizardPages[1];
             ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
-            hideText();
+            hideAllMessages();
             
             switch (currentPage) {
                 case 0:
@@ -595,11 +602,19 @@ LauncherInterface {
         
     }
     
-    public void hideText() {
+    public void hideAllMessages() {
         infoLabel.setText(null);
         infoLabel.setIcon(null);
         nextButton.setEnabled(true);
         
+    }
+    
+    public void hideErrorMessages(){
+    	if(infoLabel.getIcon() == errorIcon){
+    		infoLabel.setText(null);
+            infoLabel.setIcon(null);
+            nextButton.setEnabled(true);
+    	}    	
     }
     
 }

@@ -90,7 +90,7 @@ class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
         }
         
         /*Everything is ok.*/
-        owner.hideText();
+        owner.hideErrorMessages();
         return true;
     }
     
