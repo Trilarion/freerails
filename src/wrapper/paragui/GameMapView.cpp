@@ -17,10 +17,8 @@ GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, Eng
 PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
   engine=_engine;
-  WidgetList = new PG_WidgetList(this, PG_Rect(0,0,w,h));
-  WidgetList->EnableScrollBar(true, PG_SB_VERTICAL);
-  WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
   PG_Point p;
+  
   SetBackgroundBlend(0);
   tilesImage=IMG_Load("data/graphics/tilesets/default/terrain_tiles.png");
   trackImage=IMG_Load("data/graphics/tilesets/default/track_tiles.png");
@@ -37,7 +35,8 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   p.x=0;
   p.y=0;
   view=new PG_Image(this, p, imageSurface, false);
-  WidgetList->AddWidget(view);
+  verticalScrollBar = new PG_ScrollBar(this,200/*ID*/,PG_Rect(w-15,0,15,h-15),PG_SB_VERTICAL);
+  horizontalScrollBar = new PG_ScrollBar(this,201/*ID*/,PG_Rect(0,h-15,w-15,15),PG_SB_HORIZONTAL);
   mouseType=0;
   mouseOldX=0;
   mouseOldY=0;
@@ -47,7 +46,6 @@ GameMapView::~GameMapView() {
 
 //  imageSurface=NULL;
   cerr << "Blob" << endl;
-//  delete WidgetList;
   delete tilesImage;
   delete trackImage;
   cerr << "Blub" << endl;

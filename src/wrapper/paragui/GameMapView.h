@@ -14,6 +14,7 @@
 #include <pgthemewidget.h>
 #include <pgrect.h>
 #include <pgimage.h>
+#include <pgscrollbar.h>
 #include <pgwidgetlist.h>
 
 class GameMapView: public PG_ThemeWidget {
@@ -34,8 +35,12 @@ class GameMapView: public PG_ThemeWidget {
     
     SDL_Surface* tilesImage;
     SDL_Surface* trackImage;
+    
+    PG_ScrollBar* verticalScrollBar;
+    PG_ScrollBar* horizontalScrollBar;
+    
     SDL_Surface* imageSurface;
-    PG_WidgetList* WidgetList;
+//    PG_WidgetList* WidgetList;
     PG_Image* view;
     int mouseType;
     int mouseOldX;
