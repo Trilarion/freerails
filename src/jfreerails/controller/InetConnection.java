@@ -34,7 +34,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
     public static final int SERVER_PORT = 55000;
     private ConnectionState state = ConnectionState.CLOSED;
     private InetAddress serverAddress;
-    private Object mutex;
+    private final Object mutex;
     private ServerSocket serverSocket;
     private Socket socket;
     private World world;
@@ -267,12 +267,10 @@ public class InetConnection extends Socket implements ConnectionToServer {
      * The state of this socket is always WAITING.
      * @throws IOException if the socket couldn't be created.
      * @throws SecurityException if we're not allowed to create the socket.
-     * @deprecated
      */
-    public InetConnection(World w, Object mutex, int port)
-        throws IOException {
+    public InetConnection(World w, int port) throws IOException {
         world = w;
-        this.mutex = mutex;
+        this.mutex = new Object();
         System.out.println("Server listening for new connections on port " +
             port);
         serverSocket = new ServerSocket();
@@ -283,7 +281,6 @@ public class InetConnection extends Socket implements ConnectionToServer {
 
     /**
      * called when an incoming connection is attempted
-     * @deprecated
      */
     private InetConnection(Socket acceptedConnection, World w, Object mutex)
         throws IOException {
@@ -306,6 +303,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
      */
     public InetConnection(InetAddress serverAddress) {
         this.serverAddress = serverAddress;
+        this.mutex = null;
         dispatcher = new Dispatcher();
 
         Thread receiveThread = new Thread(dispatcher, "InetConnection");

@@ -36,13 +36,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     /**
-     * This class receives moves from the connection and updates the world
-     * accordingly.
-     * TODO - this cannot be completed until all world changes are serialized
-     * into moves. This will eventually implement EventReceiver instead of
-     * MoveReceiver.
-     * XXX large numbers of incoming moves may cause problems competing for
-     * mutex?? Not a problem for local connection as we already have the lock.
+     * This class receives moves from the connection and passes them on to a MoveReceiver.
      */
     public class WorldUpdater implements MoveReceiver {
         private MoveReceiver moveReceiver;
@@ -120,9 +114,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             worldUpdater.setMoveReceiver(moveReceiver);
         }
 
-        /* don't allow other events to update until we've downloaded our copy of
-         * the World */
-        //synchronized (mutex) {
         connection.addMoveReceiver(worldUpdater);
         world = connection.loadWorldFromServer();
         modelRoot.setWorld(world);

@@ -24,7 +24,6 @@ import jfreerails.util.FreerailsProgressMonitor;
  * the client having access to a ServerControlInterface object
  */
 public class GUIClient extends Client {
-    private Object mutex;
     private GUIComponentFactoryImpl gUIComponentFactory;
     private ModelRoot modelRoot;
 

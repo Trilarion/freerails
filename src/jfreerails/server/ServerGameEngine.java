@@ -73,13 +73,6 @@ public class ServerGameEngine implements GameModel, Runnable {
     private int yearCargoLastAddedToStations = -1;
     private boolean keepRunning = true;
 
-    /**
-     * This is a mutex we are given in our constructor. We hold a lock on
-     * this during the update loop. This mutex is also given to local
-     * clients so that they can acquire the lock.
-     */
-
-    //private Object mutex;
     public int getTargetTicksPerSecond() {
         return targetTicksPerSecond;
     }
@@ -106,7 +99,6 @@ public class ServerGameEngine implements GameModel, Runnable {
         Vector serverAutomata) {
         this.world = w;
         this.serverAutomata = serverAutomata;
-        //mutex = new Integer(1);
         this.trainMovers = trainMovers;
 
         moveChainFork = new MoveChainFork();
@@ -127,8 +119,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         Thread.currentThread().setName("JFreerails server");
 
         /*
-         * bump this threads priority so we always gain control when the
-         * client relinquishes lock on the mutex.
+         * bump this threads priority so we always gain control.
         */
         Thread.currentThread().setPriority(Thread.currentThread().getPriority() +
             1);
@@ -173,14 +164,7 @@ public class ServerGameEngine implements GameModel, Runnable {
      * <li>Server calculates the desired time at which frame n+1 should
      * start using t_(n+1) = t_0 + n * frame_interval. t_0 is the time at which
      * frame 0 was scheduled.
-     * <li>Server then wait()s on mutex for t_(n+1) - current_time millis
-     * (notifying any waiting thread).
-     * <li>Server wakes up at some time not earlier than t_(n+1). Because it
-     * has given up the mutex, it cannot reacquire it until some
-     * whole-integer number of client frames has elapsed (client
-     * relinquishes lock only at end of each client frame). Provided that
-     * the desired server frame interval &lt; (time for server frame + time
-     * for client frame), we should always achieve our target fps.
+     * <li>Server wakes up at some time not earlier than t_(n+1).
      * <li>repeat.
      * </ol>
      */

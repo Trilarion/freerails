@@ -17,7 +17,7 @@ final public class GameLoop implements Runnable {
     final static boolean LIMIT_FRAME_RATE = false;
     boolean gameNotDone = true;
     final ScreenHandler screenHandler;
-    final static int TARGET_FPS = 30;
+    final static int TARGET_FPS = 40;
     FPScounter fPScounter;
     private long frameStartTime;
     private final GameModel model;

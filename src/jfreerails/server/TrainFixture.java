@@ -19,7 +19,6 @@ public class TrainFixture {
     TrainMover trainMover;
     ArrayList points = new ArrayList();
     World w = new WorldImpl(0, 0);
-    Object mutex = new Integer(1);
     MoveExecuter moveExecuter;
 
     public TrainFixture() {
