@@ -1,9 +1,11 @@
-Freerails Java - version 0.0.8
+Freerails Java - version 0.0.9
 
 What's new:
- build.xml file, thanks to JonLS 
- train demo
- (Run "experimental.RunTrainDemo.java" to see it).
+-  Trains!  They don't move yet.  Hit F7 when the cursor 
+   is over the track to build one.
+-  There is now a 'runtests' task in the ant script build.xml
+	that runs all of the junit tests.
+
  
 Getting it, either:
 

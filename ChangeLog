@@ -1,4 +1,7 @@
-13-Oct-2002 20:24:18 Luke Lindsay <lindsal49@hotmail.com>:
+13-Oct-2002 22:30:30 Luke Lindsay 
+   o Added trains!  They don't move yet.  Hit F7 when the cursor 
+   is over the track to build one.
+13-Oct-2002 00:24:18 Luke Lindsay <lindsal49@hotmail.com>:
 	o Add a task to build.xml that runs all junit tests.
 	o Change build.xml to work under Eclipse.
 29-Sep-2002 20:24:18 Luke Lindsay <lindsal49@hotmail.com>:
