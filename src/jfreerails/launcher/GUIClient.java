@@ -85,7 +85,9 @@ public class GUIClient extends FreerailsClient implements
 	}
 
 	protected void clientUpdates() {
-		factory.getBuildTrackController().update();
+		if(factory.isSetup()){
+			factory.getBuildTrackController().update();
+		}
 	}
 
 	public void finished() {
@@ -161,7 +163,7 @@ public class GUIClient extends FreerailsClient implements
 
 		GameModel[] models = new GameModel[] { this, server };
 
-		// Start the gameloop
+		// Start the game loop
 		GameLoop gameLoop = new GameLoop(screenHandler, models);
 		screenHandler.apply();
 

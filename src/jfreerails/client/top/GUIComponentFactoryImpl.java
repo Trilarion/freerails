@@ -103,8 +103,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private JMenuItem stationInfoJMenuItem;
     private JMenuItem networthGraphJMenuItem;
     private JMenuItem leaderBoardJMenuItem;
+    private boolean isSetup = false;
 
-    public GUIComponentFactoryImpl(ModelRootImpl mr, ActionRoot ar) {
+    public GUIComponentFactoryImpl(ModelRootImpl mr, ActionRoot ar) {    	
         modelRoot = mr;
         actionRoot = ar;
         userInputOnMapController = new UserInputOnMapController(modelRoot, ar);
@@ -151,6 +152,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         userMessageGenerator = new UserMessageGenerator(this.modelRoot,
                 this.actionRoot);
         modelRoot.addCompleteMoveReceiver(userMessageGenerator);
+       
     }
 
     /** Called when a new game is started or a game is loaded.
@@ -218,6 +220,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         String name = modelRoot.getPrincipal().getName();
         String serverDetails = (String)modelRoot.getProperty(ModelRoot.Property.SERVER);
         clientJFrame.setTitle(name + " - " + serverDetails + " - JFreerails");
+        isSetup = true;
     }
 	
 	public BuildTrackController getBuildTrackController() {
@@ -614,4 +617,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
         //do nothing
     }
+	public boolean isSetup() {
+		return isSetup;
+	}
 }
