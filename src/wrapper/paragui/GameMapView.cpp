@@ -34,9 +34,9 @@ GameMapView::~GameMapView() {
     for (int x=0;x<worldMap->getWidth();x++)
     {
       delete imageField[x+(y*worldMap->getWidth())];
-      delete sdlimage;
     }
   }
+  delete sdlimage;
   cerr << "Blub" << endl;
 
 }
