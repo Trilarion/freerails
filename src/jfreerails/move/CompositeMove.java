@@ -13,6 +13,11 @@ import jfreerails.world.top.World;
 public class CompositeMove implements Move {
 
 	private final Move[] moves;
+	
+	/** This method lets sub classes look at the moves. */
+	protected Move getMove(int i){
+		return moves[i];
+	}
 
 	public CompositeMove(Move[] moves) {
 		this.moves = moves;

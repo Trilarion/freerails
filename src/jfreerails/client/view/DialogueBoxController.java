@@ -235,5 +235,21 @@ public class DialogueBoxController {
 	public void setDefaultFocusOwner(Component defaultFocusOwner) {
 		this.defaultFocusOwner = defaultFocusOwner;
 	}
+	
+	public void showStationOrTerrainInfo(int x, int y){
+		FreerailsTile tile = w.getTile(x,y);
+		if(tile.getTrackRule().isStation()){
+			 for(int i = 0 ; i < w.size(KEY.STATIONS); i++){
+			 	StationModel station = (StationModel)w.get(KEY.STATIONS, i);
+			 	if(null!=station && station.x == x && station.y==y){
+			 		this.showStationInfo(i);
+			 		return;
+			 	}
+			 }	
+			 throw new IllegalStateException("Could find station at "+x+", "+y);
+		}else{
+			this.showTerrainInfo(x, y);			
+		}
+	}
 
 }

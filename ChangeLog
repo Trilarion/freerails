@@ -1,3 +1,23 @@
+15-Jun_2003 23:17:00 Luke
+	o Fixed a load of problems with station building.
+	-stations can now only be built on the track
+	-building a station on a station now upgrades the
+	station rather than adding a new one.
+	-building stations is now fully undoable in the same
+	way as building track.		
+15-Jun_2003 20:55:00 Luke
+	o The map gets centered on the curors when you press 'C';
+	o Pressing 'I' over a station brings up the station info dialogue
+	box.
+	o Station radii are defined in track xml.
+	o The radius of the station type selected is
+	shown on the map when the station types popup is
+	visible.
+14-Jun_2003 20:40:00 Luke
+	o Fixed bug where train went past station before 
+	turning around.
+12-Jun_2003 20:40:00 Luke
+	o Improved javadoc comments.
 11-Jun-2003 17:39:00 Luke
 	o Add change game speed submenu to game menu.
 11-Jun-2003 17:26:00 Scott

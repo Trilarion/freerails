@@ -107,7 +107,7 @@ public class ClientJFrame extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        pack();
+        //pack();
     }//GEN-END:initComponents
     
     /** Exit the Application */

@@ -5,6 +5,7 @@
 package jfreerails.move;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.station.StationModel;
@@ -18,20 +19,27 @@ import jfreerails.world.top.World;
  * @author Luke
  * 
  */
-public class AddStationMove extends CompositeMove {
+public class AddStationMove extends CompositeMove implements TrackMove {
 		
 
 	protected AddStationMove(Move[] moves){
 		super(moves);					
 	}
 
-	public static AddStationMove generateMove(World w, String stationName, Point p){	
+	public static AddStationMove generateMove(World w, String stationName, Point p, TrackMove upgradeTrackMove){	
 					
 		int cargoBundleNumber = w.size(KEY.CARGO_BUNDLES);
 		Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, new CargoBundleImpl());
 		int stationNumber = w.size(KEY.STATIONS);
 		StationModel station = new StationModel(p.x, p.y, stationName, w.size(KEY.CARGO_TYPES), cargoBundleNumber);
 		Move addStation = new AddItemToListMove(KEY.STATIONS,  stationNumber, station);
-		return new AddStationMove(new Move[]{addCargoBundleMove, addStation});
+		return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
+	}
+
+	
+	public Rectangle getUpdatedTiles() {
+		//We know we there is a TrackMove in position 0 in the moves array since we put it there;
+		TrackMove tm = (TrackMove)this.getMove(0);
+		return tm.getUpdatedTiles();
 	}
 }

@@ -4,34 +4,39 @@
 </head>
 <body bgcolor="white">
 <p>Provides classes that encapsulate changes to the game world. The classes implement 
-  the GoF command pattern, and they are referred to as 'moves'. They implement 
-  the following interface:</p>
-
-<pre><code><font size="2">public interface Move {
-
-	MoveStatus tryDoMove(World w);
-
-	MoveStatus tryUndoMove(World w);
-
-	MoveStatus doMove(World w);
-
-	MoveStatus undoMove(World w);
-
-}
-</font></code></pre>
-<p>&nbsp;</p>
-<p>They have the following properties:</p>
-<p>(1) The changes they encapsulate are stored in an address space independent 
-  way, so that a move generated on a client can be serialised, sent over a network, 
-  and then deserialised and executed on a server. To achieve this, they refer 
-  to items in the game world via either their coorinates, e.g. tile 10,50, or 
-  their position in a list, e.g. train #4.</p>
-<p>(2) They are undoable. To achieve this, they need to store the information 
-  necessary to undo the change. E.g. a change-terrain-type move might store the 
-  tile coorindates, the terrain type before the change and the terrain type after 
-  the change.</p>
-<p>(3) The <code><font size="2">tryDoMove</font></code> and <code><font size="2">tryUndoMove</font></code> 
-  methods test whether the move is valid but leave the gameworld unchanged.</p>
+  the GoF command pattern, and they are referred to as 'moves'. All moves should 
+  implement the interface {@link jfreerails.move.Move}. The javadoc comment for 
+  the interface move sets out the contract they should obey in addition to implementing 
+  the methods it defines. </p>
+<p><strong>Guide lines for writing moves</strong></p>
+<p>(1) Implement the interface Move and follow the contract described in the javadoc 
+  for the interface.</p>
+<p>(2) Rather than writing the class from scatch, it is probably better to extend 
+  one of the generic moves class.</p>
+<table width="75%" border="0">
+  <tr> 
+    <td><strong>if the move..</strong></td>
+    <td><strong>then extend</strong></td>
+  </tr>
+  <tr> 
+    <td>adds an item to a list</td>
+    <td>{@link jfreerails.move.AddItemToListMove}</td>
+  </tr>
+  <tr> 
+    <td>removes an item from a list</td>
+    <td>{@link jfreerails.move.AbstractRemoveItemFromListMove}</td>
+  </tr>
+  <tr> 
+    <td>changes an item in a list </td>
+    <td>{@link jfreerails.move.AbstractChangeItemInListMove}</td>
+  </tr>
+  <tr>
+    <td>does several things</td>
+    <td>{@link jfreerails.move.CompositeMove}</td>
+  </tr>
+</table>
+<p>(3) Consider writing a junit testcase for the move, and if you do, make the 
+  testcase a extend {@link jfreerails.move.AbstractMoveTestCase}.</p>
 <p>&nbsp;</p>
 </body>
 </html>

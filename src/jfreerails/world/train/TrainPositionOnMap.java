@@ -5,7 +5,58 @@ import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.IntLine;
 
-/**
+/**This class represents the position of a train as a series of 
+ * straight lines connecting a series of points on a plane.
+ * 
+ * 
+<p>Train positions can be combined and divided as illustrated below (notice what 
+  happens to the head and tail that are combined)</p>
+<table width="100%" border="0">
+  <tr> 
+    <td>if</td>
+    <td><code> a</code></td>
+    <td><code>=</code></td>
+    <td><code>{<strong>(10, 10)</strong>, (20,20), (30,30), (40,40) }</code></td>
+  </tr>
+  <tr> 
+    <td>and</td>
+    <td><code> b</code></td>
+    <td><code>=</code></td>
+    <td><code>{(1,1), (4,4), (5,5), <strong>(10, 10)</strong>}</code></td>
+  </tr>
+  <tr> 
+    <td>then</td>
+    <td><code>a.addToHead(b)</code></td>
+    <td><code>=</code></td>
+    <td><code>{(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }</code></td>
+  </tr>
+  <tr> 
+    <td>and</td>
+    <td><code>b.addToTail(a)</code></td>
+    <td><code>=</code></td>
+    <td><code>{(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }</code></td>
+  </tr>
+  <tr> 
+    <td>and if</td>
+    <td><code> c</code></td>
+    <td><code>=</code></td>
+    <td><code>{(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }</code></td>
+  </tr>
+  <tr> 
+    <td>then</td>
+    <td><code>c.removeFromTail(a)</code></td>
+    <td><code>=</code></td>
+    <td><code>{(1,1), (4,4), (5,5), (10, 10)}</code></td>
+  </tr>
+  <tr> 
+    <td>and</td>
+    <td><code>c.removeFromHead(b)</code></td>
+    <td><code>=</code></td>
+    <td><code>{(10, 10), (20,20), (30,30), (40,40) }</code></td>
+  </tr>
+</table>
+
+ * 
  * @author Luke Lindsay 26-Oct-2002
  *
  */

@@ -38,6 +38,7 @@
     doubleTrack (true|false)  #REQUIRED
     maxConsecuativePieces CDATA #REQUIRED
     station (true|false) #REQUIRED
+    stationRadius (0|1|2|3) #IMPLIED
     type CDATA #REQUIRED
     Y CDATA #REQUIRED
     signalTower (true|false)  #REQUIRED

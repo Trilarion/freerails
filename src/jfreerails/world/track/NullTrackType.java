@@ -81,4 +81,8 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 		return o == this;
 	}
 
+	public int getStationRadius() {		
+		return 0;
+	}
+
 }

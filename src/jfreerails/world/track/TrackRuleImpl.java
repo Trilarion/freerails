@@ -128,4 +128,11 @@ final public class TrackRuleImpl implements TrackRule {
 		return properties;
 	}
 
+	/* (non-Javadoc)
+	 * @see jfreerails.world.track.TrackRule#getStationRadius()
+	 */
+	public int getStationRadius() {
+		return this.properties.getStationRadius();
+	}
+
 }

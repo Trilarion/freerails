@@ -152,21 +152,6 @@ final public class TrackMoveProducer {
 		ChangeTrackPieceMove move = new ChangeTrackPieceMove( before, after, point);
 		MoveStatus moveStatus = moveReceiver.processMove(move);
 			TextMessageHandler.sendMessage(moveStatus.message);
-
-//		TrackNode node = this.trackSystem.getTrackNode(point);
-//
-//		TrackRule oldtype;
-//		if (node != null) {
-//			oldtype = node.getTrackRule();
-//		} else {
-//			oldtype = trackSystem.getTrackRuleList().getTrackRule(0);
-//
-//		}
-//		//trackUpgrader.upgradeTrack(point, oldtype, trackRule);
-//		ChangeTrackTypeMove move = new ChangeTrackTypeMove(point, oldtype, trackRule);
-//		MoveStatus moveStatus = moveReceiver.processMove(move);
-//		TextMessageHandler.sendMessage(moveStatus.message);
-//System.out.println("up grade track not yet implemented!");
 	}
 
 }

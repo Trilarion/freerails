@@ -21,10 +21,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
 	World world;
 
-	/**
-	 * Constructor for NewFlatTrackExplorerTest.
-	 * @param arg0
-	 */
+	
 	public FlatTrackExplorerTest(String arg0) {
 		super(arg0);
 	}

@@ -24,23 +24,33 @@ final public class TrackRuleProperties implements FreerailsSerializable {
 	private final boolean enableDoubleTrack;
 	private final String typeName;
 	private final boolean isStation;
+	private final int stationRadius;
 	
 	
-	public	TrackRuleProperties(int rgb, boolean doubleTrack, String name, int n, boolean station){
+	public	TrackRuleProperties(int rgb, boolean doubleTrack, String name, int n, boolean station, int radius){
+		stationRadius=radius;
 		rGBvalue=rgb;
 		enableDoubleTrack=doubleTrack;
 		typeName=name;
 		number=n;
 		isStation=station;		
 	}
+	/**
+	 * @return
+	 */
+	public int getStationRadius() {
+		return stationRadius;
+	}
+
 	public boolean equals(Object o) {
 		if(o instanceof TrackRuleProperties){
-			TrackRuleProperties trackRuleProperties = (TrackRuleProperties)o;
-			if(rGBvalue == trackRuleProperties.getRGBvalue()
-			&& number == trackRuleProperties.getNumber()
-			&& enableDoubleTrack == trackRuleProperties.isEnableDoubleTrack()
-			&& typeName.equals(trackRuleProperties.getTypeName())
-			&& isStation == trackRuleProperties.isStation()	){
+			TrackRuleProperties test = (TrackRuleProperties)o;
+			if(rGBvalue == test.getRGBvalue()
+			&& number == test.getNumber()
+			&& enableDoubleTrack == test.isEnableDoubleTrack()
+			&& typeName.equals(test.getTypeName())
+			&& isStation == test.isStation()
+			&& stationRadius == test.stationRadius	){
 				return true;
 			}else{
 				return false;

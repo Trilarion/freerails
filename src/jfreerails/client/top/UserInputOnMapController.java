@@ -31,8 +31,12 @@ public class UserInputOnMapController implements CursorEventListener {
 
 			trackBuilder.buildTrack(ce.oldPosition, ce.vector);
 			Point tile = new Point();
-			for (tile.x = ce.oldPosition.x - 1; tile.x < ce.oldPosition.x + 2; tile.x++) {
-				for (tile.y = ce.oldPosition.y - 1; tile.y < ce.oldPosition.y + 2; tile.y++) {
+			for (tile.x = ce.oldPosition.x - 1;
+				tile.x < ce.oldPosition.x + 2;
+				tile.x++) {
+				for (tile.y = ce.oldPosition.y - 1;
+					tile.y < ce.oldPosition.y + 2;
+					tile.y++) {
 					mapView.refreshTile(tile.x, tile.y);
 				}
 			}
@@ -75,16 +79,22 @@ public class UserInputOnMapController implements CursorEventListener {
 					break;
 				}
 			case KeyEvent.VK_F8 :
-				{
-
-					float scale = mapView.getScale();
-					Point tile = new Point(ce.newPosition); //defensive copy.
-					Dimension tileSize = new Dimension((int) scale, (int) scale);
-					int x = tile.x * tileSize.width;
-					int y = tile.y * tileSize.height;
-					stationTypesPopup.show(mapView, x, y, tile);
+				{							
+					//defensive copy.
+					Point tile = new Point(ce.newPosition);
+										
+					//Check whether we can built a station here before proceeding.
+					if (stationTypesPopup.canBuiltStationHere(tile)) {
+						float scale = mapView.getScale();
+						Dimension tileSize =
+							new Dimension((int) scale, (int) scale);
+						int x = tile.x * tileSize.width;
+						int y = tile.y * tileSize.height;
+						stationTypesPopup.show(mapView, x, y, tile);
+					} else {
+						System.out.println("Can't built station here!");
+					}
 					break;
-
 				}
 			case KeyEvent.VK_BACK_SPACE :
 				System.out.println("Undo last move");
@@ -92,8 +102,15 @@ public class UserInputOnMapController implements CursorEventListener {
 				break;
 			case KeyEvent.VK_I :
 				{
-					System.out.println("Show terrain info");
-					dialogueBoxController.showTerrainInfo(ce.newPosition.x, ce.newPosition.y);
+					dialogueBoxController.showStationOrTerrainInfo(
+						ce.newPosition.x,
+						ce.newPosition.y);
+					break;
+				}
+			case KeyEvent.VK_C :
+				{
+					mapView.centerOnTile(
+						new Point(ce.newPosition.x, ce.newPosition.y));
 					break;
 				}
 		}

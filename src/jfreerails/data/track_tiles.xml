@@ -220,7 +220,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1" RGBvalue="000007">
+      <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" station="true" stationRadius="1" maxConsecuativePieces="-1" RGBvalue="000007">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -244,7 +244,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1" RGBvalue="000008">
+      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -268,7 +268,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1" RGBvalue="000009">
+      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="false" station="true" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 

@@ -15,9 +15,7 @@ public  class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable 
 	PositionOnTrack currentPosition = new PositionOnTrack(0, 0, OneTileMoveVector.NORTH);
 	PositionOnTrack currentBranch = new PositionOnTrack(0, 0, OneTileMoveVector.NORTH);
 
-	boolean beforeFirst = true;
-
-	
+	boolean beforeFirst = true;	
 
 	private World w;
 
@@ -26,7 +24,6 @@ public  class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable 
 	public World getWorld() {
 		return w;
 	}
-
 	
 	public void setPosition(int i) {
 		beforeFirst = true;

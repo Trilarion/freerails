@@ -15,6 +15,8 @@ public interface TrackRule extends FreerailsSerializable {
 	boolean canBuildOnThisTerrainType(String TerrainType);
 	
 	boolean isStation();
+	
+	int getStationRadius();
 
 	int getRuleNumber();
 

@@ -120,6 +120,7 @@ final public class ScreenHandler {
 
 	private static final DisplayMode[] BEST_DISPLAY_MODES =
 		new DisplayMode[] {
+			new DisplayMode(1024, 768, 8, 0),
 			new DisplayMode(640, 400, 8, 0),
 			new DisplayMode(800, 600, 16, 0),
 			new DisplayMode(1024, 768, 16, 0),
