@@ -1,13 +1,20 @@
-===============
-FreeRails v0.06
-===============
+================
+FreeRails v0.0.7
+================
 
 
 Install
 =======
 
 There is no installation routine at the moment!
-You can only compile it with "make" and then start with "game" from this directory
 
+Do the following:
+- "./configure" for using the Qt GUI
+or
+- "./configure --with-paragui-client" for using the paragui GUI
+
+- "make" to compile all
+
+- "game" to start the game (if configure and make was successfully :-)
 
 ## $Id$
