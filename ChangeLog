@@ -1,3 +1,5 @@
+19-Apr-2003 02:46:15 Luke
+	o Work on train schedule GUI.
 16-Apr-2003 00:48:02 Luke
 	o Added NonNullElements WorldIterator which iterates over non-null elements
 	o Stations now get removed when you remove the track beneath them

@@ -15,8 +15,7 @@ public class TrainModel implements FreerailsSerializable{
     
     int engineType = 0; 
            
-    int[] wagonTypes = new int[]{0, 1, 2};
-   
+    int[] wagonTypes = new int[]{0, 1, 2};       
     
     public TrainModel(int engine, int[] wagons, TrainPositionOnMap p, Schedule s){
         this.engineType = engine;
@@ -24,15 +23,19 @@ public class TrainModel implements FreerailsSerializable{
         trainposition=p;
         this.schedule=s;
     }
+    
     public TrainModel(int engine){
-		this.engineType = engine;  
+	this.engineType = engine;  
+    }
+    
+    public Schedule getSchedule(){
+        return this.schedule;
     }
     
     public int getLength(){
         return (1+wagonTypes.length)*32;  //Engine + wagons.
     }
-    
-    
+        
     public boolean canAddWagon(){
         return wagonTypes.length < MAX_NUMBER_OF_WAGONS;
     }
@@ -43,6 +46,10 @@ public class TrainModel implements FreerailsSerializable{
     
     public int getWagon(int i){      
         return wagonTypes[i];        
+    }
+    
+    public void addWagons(int [] wagonsToAdd){
+    	this.wagonTypes = (int[])wagonsToAdd.clone();
     }
     
     public void addWagon(int wagonType){
@@ -65,8 +72,9 @@ public class TrainModel implements FreerailsSerializable{
     
     public  void setPosition(TrainPositionOnMap s){
         trainposition=s;
-    }
-    
-    
-    
+    }            
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+	}
+
 }

@@ -42,8 +42,29 @@ public class Schedule implements FreerailsSerializable {
     }
     
     public void setOrder(int orderNumber, TrainOrdersModel order){
-        
+        orders[orderNumber]=order;
     }
     
+    public TrainOrdersModel getOrder(int i){
+        return orders[i];
+    }
+        
+    /** Returns the station number of the next station the train is scheduled to stop at. */
+	public int getStationToGoto() {
+		return orders[stationToGoto].getStationNumber();
+	}
+	
+	/** Returns the wagons to add at the next scheduled stop. */
+	public int[] getWagonsToAdd(){
+		return orders[stationToGoto].getConsist();
+	}
+
+	public void gotoNextStaton(){		
+		stationToGoto++;
+		if(MAX_NUMBER_OF_ORDERS<stationToGoto){
+			stationToGoto=1;
+		}
+	}
+
 }
 

@@ -5,17 +5,31 @@
  */
 
 package jfreerails.client.view;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
+import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
+import jfreerails.world.top.World;
+import jfreerails.world.top.WorldIterator;
+import jfreerails.world.train.Schedule;
 /**
  *
  * @author  Luke
  */
-public class TrainScheduleJPanel extends javax.swing.JPanel {
+public class TrainScheduleJPanel extends javax.swing.JPanel implements View {
     
+    private World w;
+    
+    private WorldIterator wi;
+    
+  
     /** Creates new form TrainScheduleJPanel */
     public TrainScheduleJPanel() {
         initComponents();
     }
+    
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -24,26 +38,36 @@ public class TrainScheduleJPanel extends javax.swing.JPanel {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        heading = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         trainOrders1 = new jfreerails.client.view.TrainOrders();
+        trainOrders1.setOrderID("P");
         jPanel11 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         trainOrders2 = new jfreerails.client.view.TrainOrders();
+        trainOrders2.setOrderID("1.");
         trainOrders3 = new jfreerails.client.view.TrainOrders();
+        trainOrders3.setOrderID("2.");
         trainOrders4 = new jfreerails.client.view.TrainOrders();
+        trainOrders4.setOrderID("3.");
         trainOrders5 = new jfreerails.client.view.TrainOrders();
+        trainOrders5.setOrderID("4.");
+        jPanel2 = new javax.swing.JPanel();
+        previous = new javax.swing.JButton();
+        next = new javax.swing.JButton();
+        done = new javax.swing.JButton();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 18));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("TRAIN ORDERS");
-        jLabel1.setPreferredSize(new java.awt.Dimension(200, 16));
-        jPanel1.add(jLabel1);
+        heading.setFont(new java.awt.Font("Dialog", 1, 14));
+        heading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        heading.setText("TRAIN ORDERS #10000");
+        heading.setName("null");
+        heading.setPreferredSize(new java.awt.Dimension(300, 30));
+        jPanel1.add(heading);
 
         add(jPanel1);
 
@@ -113,7 +137,60 @@ public class TrainScheduleJPanel extends javax.swing.JPanel {
 
         add(trainOrders5);
 
+        previous.setText("<- previous");
+        previous.setActionCommand("previous");
+        previous.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                previousActionPerformed(evt);
+            }
+        });
+
+        jPanel2.add(previous);
+
+        next.setText("next ->");
+        next.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextActionPerformed(evt);
+            }
+        });
+
+        jPanel2.add(next);
+
+        done.setText("Done");
+        done.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doneActionPerformed(evt);
+            }
+        });
+
+        jPanel2.add(done);
+
+        add(jPanel2);
+
     }//GEN-END:initComponents
+    
+    private void previousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousActionPerformed
+        // Add your handling code here:
+        if(wi.previous()){
+            display();
+        }else{
+            throw new IllegalStateException();
+        }
+        
+    }//GEN-LAST:event_previousActionPerformed
+    
+    private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
+        // Add your handling code here:
+        if(wi.next() ){
+            display();
+        }else{
+            throw new IllegalStateException();
+        }
+    }//GEN-LAST:event_nextActionPerformed
+    
+    private void doneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneActionPerformed
+        // Add your handling code here:
+    }//GEN-LAST:event_doneActionPerformed
     
     private void trainOrders5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_trainOrders5KeyPressed
         // Add your handling code here:
@@ -159,12 +236,75 @@ public class TrainScheduleJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_trainOrders1KeyPressed
     
+    public void setup(World w, ViewLists vl, ActionListener submitButtonCallBack) {
+        this.w = w;
+        trainOrders1.setup(w, vl);
+        trainOrders2.setup(w, vl);
+        trainOrders3.setup(w, vl);
+        trainOrders4.setup(w, vl);
+        trainOrders5.setup(w, vl);
+        this.done.addActionListener(submitButtonCallBack);
+        displayFirst();
+    }
+    
+    
+    private void display(){
+        int trainNumber = wi.getIndex();
+        
+        trainOrders1.display(trainNumber, 0);
+        trainOrders2.display(trainNumber, 1);
+        trainOrders3.display(trainNumber, 2);
+        trainOrders4.display(trainNumber, 3);
+        trainOrders5.display(trainNumber, 4);
+              
+        if(wi.getRowNumber()>0){
+            this.previous.setEnabled(true);
+        }else{
+            this.previous.setEnabled(false);
+        }
+        
+        if(wi.getRowNumber()<(wi.size()-1)){
+            this.next.setEnabled(true);
+        }else{
+            this.next.setEnabled(false);
+        }
+        this.heading.setText("TRAIN ORDERS #"+(wi.getRowNumber()+1));
+        this.repaint();
+    }
+    
+    public void displayFirst(){
+        wi = new NonNullElements(KEY.TRAINS, w);  
+        if(wi.next()){  
+			display();    
+        }else{
+        	System.out.println("No trains to display!");
+        }
+        
+        
+    }
+    
+    public Schedule getNewSchedule(){
+		Schedule newSchedule = new Schedule();
+		newSchedule.setOrder(0, this.trainOrders1.getNewOrders());
+		newSchedule.setOrder(1, this.trainOrders2.getNewOrders());
+		newSchedule.setOrder(2, this.trainOrders3.getNewOrders());
+		newSchedule.setOrder(3, this.trainOrders4.getNewOrders());
+		newSchedule.setOrder(4, this.trainOrders5.getNewOrders());
+    	return newSchedule;
+    }
+    
+    public int getTrainNumber(){
+    	return this.wi.getIndex();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel12;
     private jfreerails.client.view.TrainOrders trainOrders1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton done;
+    private javax.swing.JButton next;
+    private javax.swing.JButton previous;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private jfreerails.client.view.TrainOrders trainOrders5;
@@ -174,6 +314,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel {
     private jfreerails.client.view.TrainOrders trainOrders3;
     private javax.swing.JLabel jLabel22;
     private jfreerails.client.view.TrainOrders trainOrders4;
+    private javax.swing.JLabel heading;
     // End of variables declaration//GEN-END:variables
     
 }
+

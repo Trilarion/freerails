@@ -98,7 +98,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 	private void canceljButtonMouseClicked(
 		java.awt.event.MouseEvent evt) { //GEN-FIRST:event_canceljButtonMouseClicked
 		//Close this dialogue.
-		dialogueBoxController.closeCurrentDialogue();
+		dialogueBoxController.closeContent();
 
 	} //GEN-LAST:event_canceljButtonMouseClicked
 

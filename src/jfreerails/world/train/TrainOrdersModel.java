@@ -27,4 +27,11 @@ public class TrainOrdersModel implements FreerailsSerializable {
         this.station = station;
     }
     
+    public int[] getConsist(){
+        return this.consist;
+    }
+    
+    public int getStationNumber(){
+        return station;
+    }    
 }

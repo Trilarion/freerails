@@ -10,7 +10,6 @@ import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
 import jfreerails.controller.TrackMoveProducer;
-import jfreerails.controller.pathfinder.TrainPathFinder;
 
 public class UserInputOnMapController implements CursorEventListener {
 
@@ -91,26 +90,7 @@ public class UserInputOnMapController implements CursorEventListener {
 					break;
 
 				}
-			case KeyEvent.VK_F1 :
-				{
-					TrainPathFinder.setTarget(0, ce.newPosition.x, ce.newPosition.y);
-					break;
-				}
-			case KeyEvent.VK_F2 :
-				{
-					TrainPathFinder.setTarget(1, ce.newPosition.x, ce.newPosition.y);
-					break;
-				}
-			case KeyEvent.VK_F3 :
-				{
-					TrainPathFinder.setTarget(2, ce.newPosition.x, ce.newPosition.y);
-					break;
-				}
-			case KeyEvent.VK_F4 :
-				{
-					TrainPathFinder.setTarget(3, ce.newPosition.x, ce.newPosition.y);
-					break;
-				}
+			
 		}
 	}
 

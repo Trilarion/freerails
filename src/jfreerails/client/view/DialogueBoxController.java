@@ -5,11 +5,14 @@
  */
 
 package jfreerails.client.view;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.border.LineBorder;
 
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
@@ -22,7 +25,13 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
-/**
+import jfreerails.world.train.Schedule;
+import jfreerails.world.train.TrainModel;
+
+/**	This class is responsible for displaying dialogue boxes, adding borders to them as appropriate, and 
+ *  returning focus to the last focus owner after a dialogue box has been closed.  Currently dialogue boxes
+ * are not separate windows.  Instead, they are drawn on the modal layer of the main JFrames LayerPlane.  This 
+ * allows dialogue boxes with transparent regions to be used. 
  *
  * @author  lindsal8 
  */
@@ -32,8 +41,21 @@ public class DialogueBoxController {
 	private MyGlassPanel glassPanel;
 	private NewsPaperJPanel newspaper;
 	private SelectWagonsJPanel selectWagons;
+	private TrainScheduleJPanel trainSchedule;
 
 	private World w;
+
+	private Component defaultFocusOwner = null;
+
+	private LineBorder defaultBorder =
+		new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3);
+
+	/** Use this ActionListener to close a dialogue without performing any other action. */
+	private ActionListener closeCurrentDialogue = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			closeContent();
+		}
+	};
 
 	/** Creates new DialogueBoxController */
 	public DialogueBoxController(JFrame frame, World world, ViewLists vl) {
@@ -53,6 +75,22 @@ public class DialogueBoxController {
 		glassPanel.setVisible(false);
 
 		//Setup the various dialogue boxes.
+
+		//Set up train orders dialogue
+		trainSchedule = new TrainScheduleJPanel();
+		trainSchedule.setup(w, vl, new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int trainNumber = trainSchedule.getTrainNumber();
+				Schedule schedule = trainSchedule.getNewSchedule();
+				TrainModel train = (TrainModel)w.get(KEY.TRAINS,trainNumber);
+				train.setSchedule(schedule);
+				closeContent();
+			}
+
+		});
+
+		
+		//Set up select engine dialogue.
 		selectEngine = new SelectEngineJPanel(this);
 		selectEngine.setup(w, vl, new ActionListener() {
 
@@ -62,21 +100,17 @@ public class DialogueBoxController {
 
 		});
 		newspaper = new NewsPaperJPanel();
-		newspaper.setup(w, vl, new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				closeCurrentDialogue();
-			}
-		});
+		newspaper.setup(w, vl, closeCurrentDialogue);
 
 		selectWagons = new SelectWagonsJPanel();
 		selectWagons.setup(w, vl, new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
 				WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
-				if (wi.next()) { 
+				if (wi.next()) {
 
-					StationModel station  = (StationModel) wi.getElement();
-					
+					StationModel station = (StationModel) wi.getElement();
+
 					ProductionAtEngineShop before = station.getProduction();
 					int engineType = selectEngine.getEngineType();
 					int[] wagonTypes = selectWagons.getWagons();
@@ -92,37 +126,66 @@ public class DialogueBoxController {
 						System.out.println("Production at station changed.");
 					}
 				}
-				closeCurrentDialogue();
+				closeContent();
 			}
 
 		});
 	}
 
-	public void closeCurrentDialogue() {
-		System.out.println("closeCurrentDialogue()");
-		glassPanel.setVisible(false);
-	}
-
 	public void showNewspaper(String headline) {
 		newspaper.setHeadline(headline);
-		glassPanel.showContent(newspaper);
-		glassPanel.setVisible(true);
+		showContent(newspaper);
+	}
+
+	public void showTrainOrders() {
+		WorldIterator wi = new NonNullElements(KEY.TRAINS, w);
+		if (!wi.next()) {
+			System.out.println("Cannot show train orders since there are no trains!");
+		} else {
+			trainSchedule.displayFirst();
+			showContent(trainSchedule);
+		}
 	}
 
 	public void showSelectEngine() {
-		WorldIterator wi = new NonNullElements(KEY.STATIONS, w);								
+		WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
 		if (!wi.next()) {
 			System.out.println("Can't build train since there are no stations");
 		} else {
 			System.out.println("showSelectEngine()");
-			glassPanel.showContent(selectEngine);
-			glassPanel.setVisible(true);
+			showContent(selectEngine);
 		}
 	}
 
 	public void showSelectWagons() {
 		System.out.println("showSelectWagons");
-		glassPanel.showContent(selectWagons);
+		showContent(selectWagons);
+	}
+
+	public void showContent(JComponent component) {
+		component.setBorder(defaultBorder);
+		//		if(!glassPanel.isVisible()){					
+		//			KeyboardFocusManager keyboardFocusManager =
+		//			KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		//			lastFocusOwner = keyboardFocusManager.getFocusOwner();
+		//		}
+		glassPanel.showContent(component);
+		glassPanel.validate();
 		glassPanel.setVisible(true);
 	}
+	public void closeContent() {
+		glassPanel.setVisible(false);
+		if (null != defaultFocusOwner) {
+			defaultFocusOwner.requestFocus();
+		}
+	}
+
+	public Component getDefaultFocusOwner() {
+		return defaultFocusOwner;
+	}
+
+	public void setDefaultFocusOwner(Component defaultFocusOwner) {
+		this.defaultFocusOwner = defaultFocusOwner;
+	}
+
 }
