@@ -23,7 +23,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
 	World world;
 
-	private boolean hasSetupBeenCalled = false;
+	protected boolean hasSetupBeenCalled = false;
 
 	protected void setUp() {
 		hasSetupBeenCalled = true;

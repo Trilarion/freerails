@@ -6,7 +6,7 @@ import jfreerails.world.common.FreerailsSerializable;
 
 public class SupplyAtStation implements FreerailsSerializable {
 
-	final int[] supply;
+	private final int[] supply;
 		
 	public SupplyAtStation(int[] cargoWaiting) {
 		supply = (int[]) cargoWaiting.clone();
@@ -22,7 +22,15 @@ public class SupplyAtStation implements FreerailsSerializable {
 	public boolean equals(Object o) {		
 		if(o instanceof SupplyAtStation){
 			SupplyAtStation test = (SupplyAtStation)o;
-			return this.supply.equals(test.supply);
+			if(this.supply.length != test.supply.length){
+				return false;
+			}
+			for(int i = 0; i < supply.length ; i ++){
+				if(supply[i]!=test.supply[i]){
+					return false;
+				}
+			}
+			return true;
 		}else{		
 			return false;
 		}

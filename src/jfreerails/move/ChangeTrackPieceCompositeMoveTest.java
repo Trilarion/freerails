@@ -14,21 +14,19 @@ import java.awt.Point;
 import jfreerails.MapFixtureFactory;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackRule;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
  *
  * @author lindsal
  */
-public class ChangeTrackPieceCompositeMoveTest extends TestCase {
+public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     
-	World world;   
+	
     
     public ChangeTrackPieceCompositeMoveTest(java.lang.String testName) {
         super(testName);
@@ -45,6 +43,7 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
     }
     
     protected void setUp(){
+    	this.hasSetupBeenCalled = true;
 		world = new WorldImpl(10,10);
 		MapFixtureFactory.generateTrackRuleList(world);         
     }
@@ -153,5 +152,23 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
         MoveStatus status=move.doMove(world);
         assertEquals(true, status.isOk());
     }
+
+	public void testMove() {
+		Point pointA = new Point(0, 0);
+		Point pointB = new Point(1, 1);
+		Point pointC = new Point(1, 0);
+		OneTileMoveVector southeast = OneTileMoveVector.SOUTH_EAST;
+		OneTileMoveVector east = OneTileMoveVector.EAST;
+		OneTileMoveVector northeast = OneTileMoveVector.NORTH_EAST;
+		OneTileMoveVector south = OneTileMoveVector.SOUTH;
+		OneTileMoveVector west = OneTileMoveVector.WEST;
+        
+		TrackRule trackRule = (TrackRule)world.get(KEY.TRACK_RULES, 0);
+        
+		ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove( pointA,  southeast,  trackRule, world);
+		
+		assertEqualsSurvivesSerialisation(move);
+		assertOkButNotRepeatable(move);
+	}
     
 }

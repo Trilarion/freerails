@@ -37,10 +37,11 @@ public class AddItemToListMove implements Move {
 	}
 
 	public MoveStatus tryUndoMove(World w) {
-		if (w.size(listKey) != (index + 1)) {
+		int expectListSize = index + 1;
+		if (w.size(listKey) != expectListSize) {
 			return MoveStatus.moveFailed(
 				"Expected size of list is "
-					+ (index + 1)
+					+ expectListSize
 					+ " but actual size is "
 					+ w.size(listKey));
 		}

@@ -6,7 +6,7 @@ import jfreerails.world.common.FreerailsSerializable;
 
 public class DemandAtStation implements FreerailsSerializable {
 
-	final boolean[] demand;
+	private final boolean[] demand;
 
 	public DemandAtStation(boolean[] demand) {
 		this.demand = (boolean[]) demand.clone(); //defensive copy.
@@ -19,7 +19,15 @@ public class DemandAtStation implements FreerailsSerializable {
 	public boolean equals(Object o) {
 		if (o instanceof DemandAtStation) {
 			DemandAtStation test = (DemandAtStation) o;
-			return demand.equals(test.demand);
+			if (this.demand.length != test.demand.length) {
+				return false;
+			}
+			for (int i = 0; i < demand.length; i++) {
+				if (demand[i] != test.demand[i]) {
+					return false;
+				}
+			}
+			return true;
 		} else {
 			return false;
 		}

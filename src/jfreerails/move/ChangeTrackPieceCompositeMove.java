@@ -21,50 +21,17 @@ import jfreerails.world.track.TrackRule;
  * @author  lindsal
  * 
  */
-public final class ChangeTrackPieceCompositeMove implements TrackMove, MapUpdateMove {
+public final class ChangeTrackPieceCompositeMove extends CompositeMove implements TrackMove, MapUpdateMove {
 
-	private final TrackMove moveA, moveB;
+	private final Rectangle updatedTiles;
 
 	/** Creates new ChangeTrackPieceCompositeMove */
 	public ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b) {
-		moveA = a;
-		moveB = b;
+		super(new Move[]{a, b});
+		updatedTiles = a.getUpdatedTiles();
+		
 	}
 
-	public MoveStatus doMove(World w) {
-
-		MoveStatus moveStatus = tryDoMove(w);
-		if (moveStatus.ok) {
-			moveA.doMove(w);
-			moveB.doMove(w);
-			return moveStatus;
-		} else {
-			return moveStatus;
-		}
-	}
-
-	public MoveStatus tryDoMove(World w) {
-
-		MoveStatus moveStatusA, moveStatusB;
-		moveStatusA = moveA.tryDoMove(w);
-		moveStatusB = moveB.tryDoMove(w);
-		if (moveStatusA.isOk() && moveStatusB.isOk()) {
-			return MoveStatus.MOVE_OK;
-		} else {
-			return MoveStatus.MOVE_FAILED;
-		}
-
-	}
-
-	public MoveStatus tryUndoMove(World w) {
-
-		return MoveStatus.MOVE_RECEIVED;
-	}
-
-	public MoveStatus undoMove(World w) {
-
-		return MoveStatus.MOVE_RECEIVED;
-	}
 	public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
 		Point from,
 		OneTileMoveVector direction,
@@ -171,7 +138,7 @@ public final class ChangeTrackPieceCompositeMove implements TrackMove, MapUpdate
 	}
 
 	public Rectangle getUpdatedTiles() {
-		return moveA.getUpdatedTiles();
+		return updatedTiles;
 	}
 
 }

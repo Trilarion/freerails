@@ -10,6 +10,7 @@ import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.LegalTrackConfigurations;
 import jfreerails.world.track.TrackPiece;
+import jfreerails.world.track.TrackRule;
 /**
  * This Move adds, removes, or upgrades the track on a single tile. 
  * @author Luke
@@ -18,32 +19,35 @@ import jfreerails.world.track.TrackPiece;
 
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
-	 final TrackPiece oldTrackPiece;
+	final TrackPiece trackPieceBefore;
 
-	 final TrackPiece newTrackPiece;
+	final TrackPiece trackPieceAfter;
 
-	 final Point location;
+	final Point location;
 
 	public Point getLocation() {
 		return location;
 	}
 
 	public TrackPiece getOldTrackPiece() {
-		return oldTrackPiece;
+		return trackPieceBefore;
 	}
 
 	public TrackPiece getNewTrackPiece() {
-		return newTrackPiece;
+		return trackPieceAfter;
 	}
 
 	public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point p) {
-		oldTrackPiece = before;
-		newTrackPiece = after;
+		trackPieceBefore = before;
+		trackPieceAfter = after;
 		location = new Point(p);
 	}
 
 	public MoveStatus tryDoMove(World w) {
+		return tryMove(w, this.trackPieceBefore, this.trackPieceAfter);
+	}
 
+	private MoveStatus tryMove(World w, TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
 		//Check that location is on the map.
 		if (!w.boundsContain(location.x, location.y)) {
 			return MoveStatus.moveFailed("Tried to build track outside the map.");
@@ -53,9 +57,16 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		//the same as this.oldTrackPiece.
 		TrackPiece currentTrackPieceAtLocation = (TrackPiece) w.getTile(location.x, location.y);
 
-		if ((currentTrackPieceAtLocation.getTrackConfiguration()
-			!= oldTrackPiece.getTrackConfiguration())
-			|| (currentTrackPieceAtLocation.getTrackRule() != oldTrackPiece.getTrackRule())) {
+		TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
+		TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();
+
+		if ( !expectedTrackRule.equals(actualTrackRule) ) {
+			return MoveStatus.moveFailed(
+				"Expected '"+expectedTrackRule.getTypeName()+"' but found '"+ actualTrackRule.getTypeName()+"' at " + location.x + " ," + location.y);
+		}
+
+		if (currentTrackPieceAtLocation.getTrackConfiguration()
+			!= oldTrackPiece.getTrackConfiguration()) {
 			return MoveStatus.moveFailed(
 				"Unexpected track piece found at location: " + location.x + " ," + location.y);
 		}
@@ -79,15 +90,15 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 			return MoveStatus.moveFailed("Illegal track configuration - diagonal conflict");
 		}
 		int terrainType = w.getTile(location.x, location.y).getTerrainTypeNumber();
-		TerrainType tt = (TerrainType)w.get(KEY.TERRAIN_TYPES, terrainType);
-		if(!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getTerrainCategory())){
+		TerrainType tt = (TerrainType) w.get(KEY.TERRAIN_TYPES, terrainType);
+		if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getTerrainCategory())) {
 			return MoveStatus.moveFailed("Cann't build track on water!");
 		}
 		return MoveStatus.MOVE_OK;
 	}
 
 	public MoveStatus tryUndoMove(World w) {
-		return MoveStatus.MOVE_RECEIVED;
+		return tryMove(w, this.trackPieceAfter, this.trackPieceBefore);
 	}
 
 	public MoveStatus doMove(World w) {
@@ -96,19 +107,26 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		if (!moveStatus.isOk()) {
 			return moveStatus;
 		} else {
-			FreerailsTile oldTile = (FreerailsTile) w.getTile(location.x, location.y);
-			int terrain = oldTile.getTerrainTypeNumber();
-			FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece);
-			w.setTile(location.x, location.y, newTile);
+			move(w, this.trackPieceBefore, this.trackPieceAfter);
 			return moveStatus;
 		}
+	}
 
+	private void move(World w, TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
+		FreerailsTile oldTile = (FreerailsTile) w.getTile(location.x, location.y);
+		int terrain = oldTile.getTerrainTypeNumber();
+		FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece);
+		w.setTile(location.x, location.y, newTile);
 	}
 
 	public MoveStatus undoMove(World w) {
-
-		return MoveStatus.MOVE_RECEIVED;
-
+		MoveStatus moveStatus = tryUndoMove(w);
+		if (!moveStatus.isOk()) {
+			return moveStatus;
+		} else {
+			move(w, this.trackPieceAfter, this.trackPieceBefore);
+			return moveStatus;
+		}
 	}
 	private boolean noDiagonalTrackConflicts(Point point, int trackTemplate, World w) {
 		/*This method is needs replacing.  It only deals with flat track pieces, and
@@ -152,22 +170,20 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		width = 3;
 		height = 3;
 		return new Rectangle(x, y, width, height);
-
 	}
-	
 
 	public boolean equals(Object o) {
-		if( o instanceof ChangeTrackPieceMove){
-			ChangeTrackPieceMove m = (ChangeTrackPieceMove)o;
+		if (o instanceof ChangeTrackPieceMove) {
+			ChangeTrackPieceMove m = (ChangeTrackPieceMove) o;
 			boolean fieldPointEqual = this.location.equals(m.location);
-			boolean fieldoldTrackPieceEqual = this.oldTrackPiece.equals(m.oldTrackPiece);
-			boolean fieldnewTrackPieceEqual = this.newTrackPiece.equals(m.newTrackPiece);
-			if(fieldPointEqual && fieldoldTrackPieceEqual && fieldnewTrackPieceEqual){
+			boolean fieldoldTrackPieceEqual = this.trackPieceBefore.equals(m.trackPieceBefore);
+			boolean fieldnewTrackPieceEqual = this.trackPieceAfter.equals(m.trackPieceAfter);
+			if (fieldPointEqual && fieldoldTrackPieceEqual && fieldnewTrackPieceEqual) {
 				return true;
-			}else{
-				return false;				
+			} else {
+				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
 	}

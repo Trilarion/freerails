@@ -89,5 +89,31 @@ public class StationModel implements FreerailsSerializable {
 	public int getCargoBundleNumber() {
 		return cargoBundleNumber;
 	}
+	public boolean equals(Object o) {		
+		if(o instanceof StationModel){
+			StationModel test = (StationModel)o;
+			if(this.cargoBundleNumber!=test.cargoBundleNumber){
+				return false;
+			}
+			if(!this.demand.equals(test.demand)){
+				return false;
+			}
+			if(!this.name.equals(test.name)){
+				return false;				
+			}
+			if(!(this.production == null ? test.production == null : this.production.equals(test.production))){
+				return false;
+			}
+			if(!this.supply.equals(test.supply)){
+				return false;
+			}
+			if(this.x!=test.x || this.y != test.y){
+				return false;
+			}
+			return true;
+		}else{		
+			return false;
+		}
+	}
 
 }

@@ -40,7 +40,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 	}
 
 	protected void setUp() {
-
+		hasSetupBeenCalled = true;
 		world = new WorldImpl(20, 20);
 		MapFixtureFactory.generateTrackRuleList(world);
 	}
@@ -147,14 +147,8 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 		//  assertMoveDoMoveIsOk(oldTrackPiece, newConfig);
 
 	}
-
-	private void assertTryMoveIsOK(TrackMove move, boolean undo, String testDescription) {
-
-	}
-
-	private void assertExecuteMoveIsOK(TrackMove move, boolean undo, String testDescription) {
-
-	}
+	
+	
 
 	public void testMove() {
 		TrackPiece oldTrackPiece, newTrackPiece;
@@ -167,6 +161,8 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 		Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, new Point(0, 0));
 		
 		assertEqualsSurvivesSerialisation(move);
+		
+		assertOkButNotRepeatable(move);
 
 	}
 
