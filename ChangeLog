@@ -1,3 +1,8 @@
+16-Sep-2002 21:37:46 Luke Lindsay <lindsal49@hotmail.com>:
+	o build.xml written by JonLS added.  (Sorry, I 
+	forgot to add it to the change log ealier.)
+16-Sep-2002 21:36:50 Luke Lindsay <lindsal49@hotmail.com>:
+	o Updated and commented FreerailsPathIterator and PathWalker interfaces.
 08-Sep-2002 22:11:24 Luke Lindsay <lindsal49@hotmail.com>:
 	o Wrote 'Snake' class that represents a train position.
 26-Aug-2002 19:51:35 Luke Lindsay <lindsal49@hotmail.com>:
