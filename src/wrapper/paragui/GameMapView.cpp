@@ -133,6 +133,48 @@ void GameMapView::getMapImage(SDL_Surface* surface, int offsetX, int offsetY, in
       rectSRC.y=6*30;
       break;
     }
+    case MapField::village:
+    {
+      // What village?
+      rectSRC.x=0*30;
+      rectSRC.y=8*30;
+      break;
+    }
+    case MapField::city:
+    {
+      // What city?
+      rectSRC.x=2*30;
+      rectSRC.y=7*30;
+      break;
+    }
+    case MapField::slum:
+    {
+      // What Slum?
+      rectSRC.x=2*30;
+      rectSRC.y=8*30;
+      break;
+    }
+    case MapField::resource:
+    {
+      // What Resource?
+      rectSRC.x=8*30;
+      rectSRC.y=8*30;
+      break;
+    }
+    case MapField::industrie:
+    {
+      // What Industrie?
+      rectSRC.x=5*30;
+      rectSRC.y=8*30;
+      break;
+    }
+    case MapField::farm:
+    {
+      // What Farm? Have we more then 1?
+      rectSRC.x=6*30;
+      rectSRC.y=7*30;
+      break;
+    }
     default:
     {
       rectSRC.x=13*30;
