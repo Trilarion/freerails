@@ -12,6 +12,7 @@ GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, Eng
 PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
 
   engine=_engine;
+  trackcontroller = (TrackController *)engine->getControllerDispatcher()->getController(GameElement::idTrack);
   PG_Point p;
   
   oldViewPos.x=0;
@@ -221,7 +222,7 @@ void GameMapView::setMouseType(MouseType type) {
 void GameMapView::eventMouseLeave() {
 
 //  getMapImage(imageSurface,mouseOldX,mouseOldY);
-  view->Update();
+//  view->Update();
 }
 
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
@@ -263,6 +264,10 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
   int x,y, x2, y2;
   int dir, dir2, helpx, helpy;
+  
+  x = (oldViewPos.x + motion->x) / 30;
+  y = (oldViewPos.y + motion->y) / 30;
+  
   x = motion->x / 30;
   y = motion->y / 30;
   helpx=x*30;
@@ -308,24 +313,27 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
     break;
   }
 
-  regenerateTile(x,y);
+//  regenerateTile(x,y);
   
   switch (mouseType) {
   
     case buildStation:
   // canBuild(Station,x,y);
       showTrack(x,y,20*30+15,26*30+15);
+      cerr << "BuildStation" << endl;
       break;
     case buildTrack:
+    
+      cerr << "BuildTrack" << endl;
 
 // TODO      
-/*      if (engine->canBuildTrack(x,y,1,dir)>=0)
+/*      if (trackcontroller->canBuildElement(x,y,dir))
       {
-        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
-	if (engine->canBuildTrack(x2,y2,1,dir2)>=0)
-	{
-	  showTrack(x2,y2,(dir2-1)*2*30+15,0*30+15);
-	}
+//        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
+//	if (engine->canBuildTrack(x2,y2,1,dir2)>=0)
+//	{
+//	  showTrack(x2,y2,(dir2-1)*2*30+15,0*30+15);
+//	}
       }
 */      break;
     default:

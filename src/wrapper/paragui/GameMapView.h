@@ -16,6 +16,8 @@
 #include <pgimage.h>
 #include <pgscrollbar.h>
 
+class TrackController;
+
 class GameMapView: public PG_ThemeWidget {
 
   public:
@@ -45,6 +47,8 @@ class GameMapView: public PG_ThemeWidget {
     int mouseOldY;
     
     PG_Point oldViewPos;
+    
+    TrackController* trackcontroller;
     
     void getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y);
     int getImagePos(int x, int y, MapField::FieldType type);
