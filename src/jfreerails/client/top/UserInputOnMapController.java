@@ -90,9 +90,21 @@ public class UserInputOnMapController extends KeyAdapter {
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 // build a railroad from x,y to current cursor position
                 if (pressedInside && buildTrack.isBuilding()) {
-                    /** @todo copy WorldDifferences from buildTrack to World */
-                    Point newPosition = buildTrack.updateWorld(trackBuilder);
-                    setCursorPosition(newPosition);
+                    // Fix for bug [ 997088 ]
+                    // Is current posisition different from original position?
+                    int x = evt.getX();
+                    int y = evt.getY();
+                    float scale = mapView.getScale();
+                    Dimension tileSize = new Dimension((int)scale, (int)scale);
+                    int tileX = x / tileSize.width;
+                    int tileY = y / tileSize.height;
+
+                    if (getCursorPosition().getX() != tileX ||
+                            getCursorPosition().getY() != tileY) {
+                        // copy WorldDifferences from buildTrack to World
+                        Point newPosition = buildTrack.updateWorld(trackBuilder);
+                        setCursorPosition(newPosition);
+                    }
                 }
 
                 pressedInside = false;

@@ -1,3 +1,5 @@
+Jul 26, 2004 Luke		
+	o Apply Jan Tozicka's patch for bug 997088  (IllegalArgumentException in OneTileMoveVector.getInstance)
 Jul 21, 2004 Luke	
 	o Remove some circular dependencies.
 Jul 07, 2004 Luke	
