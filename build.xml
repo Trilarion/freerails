@@ -27,6 +27,8 @@
 		<mkdir dir="${dist}/lib" />
 
 		<mkdir dir="${dist}/latest" />
+		
+		<mkdir dir="${doc}" />
 
 	</target>	
 
@@ -168,7 +170,7 @@
 		<java fork="true" jar="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" />
 	</target>
 
-	<target depends="mkdirs, init" name="javadoc" description="Generate javadoc">
+	<target depends="mkdirs" name="javadoc" description="Generate javadoc">
 		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.4" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />
