@@ -4,6 +4,7 @@ Jun 14, 2004 Luke
 	o 948671 Map City Overlays incorrect
 	o 967675 No trains/stations but train & station menus selectable
 	o 972738 Crash when station removed
+	o 967662 Bottom of terrain info tab cut off in 640*480 res. 
 Jun 13, 2004 Luke
 	Bugs fixed:
 	o 948651 IP Address input should be checked immediately. 

@@ -309,6 +309,7 @@ FreerailsProgressMonitor {
 
         jPanel1.setLayout(new java.awt.CardLayout());
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(400, 300));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;

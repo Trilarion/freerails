@@ -37,7 +37,7 @@ import jfreerails.client.view.MapViewJComponentConcrete;
 import jfreerails.client.view.OverviewMapJComponent;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationPlacementCursor;
-import jfreerails.client.view.TrainsJTabPane;
+import jfreerails.client.view.RHSJTabPane;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
@@ -63,6 +63,9 @@ import jfreerails.world.top.WorldMapListener;
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
     WorldMapListener, WorldListListener {
     private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
+
+    /** Whether to show certain 'cheat' menus used for testing.*/
+    private static final boolean CHEAT = (System.getProperty("cheat") != null);
     private final ModelRoot modelRoot;
     private final ActionRoot actionRoot;
     private ServerControlModel sc;
@@ -72,7 +75,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     /**
      * This is the panel at the bottom right of the screen.
      */
-    private final TrainsJTabPane trainsJTabPane;
+    private final RHSJTabPane trainsJTabPane;
     private javax.swing.JMenu helpMenu;
     private final DialogueBoxController dialogueBoxController;
     private ViewLists viewLists;
@@ -108,7 +111,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         mediator.setup(overviewMapContainer, mainMapScrollPane1.getViewport(),
             mapViewJComponent, r);
 
-        trainsJTabPane = new TrainsJTabPane();
+        trainsJTabPane = new RHSJTabPane();
         datejLabel = new DateJLabel();
 
         cashjLabel = new CashJLabel();
@@ -375,45 +378,49 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         gameMenu.addSeparator();
         gameMenu.add(quitJMenuItem);
 
-        /** For testing.*/
-        final ActionListener build200trains = new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    WorldIterator wi = new NonNullElements(KEY.STATIONS,
-                            modelRoot.getWorld(), modelRoot.getPrincipal());
+        if (CHEAT) {
+            /** For testing.*/
+            final ActionListener build200trains = new ActionListener() {
+                    public void actionPerformed(ActionEvent arg0) {
+                        WorldIterator wi = new NonNullElements(KEY.STATIONS,
+                                modelRoot.getWorld(), modelRoot.getPrincipal());
 
-                    if (wi.next()) {
-                        Random randy = new Random();
-                        StationModel station = (StationModel)wi.getElement();
+                        if (wi.next()) {
+                            Random randy = new Random();
+                            StationModel station = (StationModel)wi.getElement();
 
-                        ProductionAtEngineShop[] before = station.getProduction();
-                        int numberOfEngineTypes = modelRoot.getWorld().size(SKEY.ENGINE_TYPES) -
-                            1;
-                        int numberOfcargoTypes = modelRoot.getWorld().size(SKEY.CARGO_TYPES) -
-                            1;
-                        ProductionAtEngineShop[] after = new ProductionAtEngineShop[200];
+                            ProductionAtEngineShop[] before = station.getProduction();
+                            int numberOfEngineTypes = modelRoot.getWorld().size(SKEY.ENGINE_TYPES) -
+                                1;
+                            int numberOfcargoTypes = modelRoot.getWorld().size(SKEY.CARGO_TYPES) -
+                                1;
+                            ProductionAtEngineShop[] after = new ProductionAtEngineShop[200];
 
-                        for (int i = 0; i < after.length; i++) {
-                            int engineType = randy.nextInt(numberOfEngineTypes);
-                            int[] wagonTypes = new int[] {
-                                    randy.nextInt(numberOfcargoTypes),
-                                    randy.nextInt(numberOfcargoTypes),
-                                    randy.nextInt(numberOfcargoTypes)
-                                };
-                            ProductionAtEngineShop paes = new ProductionAtEngineShop(engineType,
-                                    wagonTypes);
-                            after[i] = paes;
+                            for (int i = 0; i < after.length; i++) {
+                                int engineType = randy.nextInt(numberOfEngineTypes);
+                                int[] wagonTypes = new int[] {
+                                        randy.nextInt(numberOfcargoTypes),
+                                        randy.nextInt(numberOfcargoTypes),
+                                        randy.nextInt(numberOfcargoTypes)
+                                    };
+                                ProductionAtEngineShop paes = new ProductionAtEngineShop(engineType,
+                                        wagonTypes);
+                                after[i] = paes;
+                            }
+
+                            Move m = new ChangeProductionAtEngineShopMove(before,
+                                    after, wi.getIndex(),
+                                    modelRoot.getPrincipal());
+                            modelRoot.doMove(m);
                         }
-
-                        Move m = new ChangeProductionAtEngineShopMove(before,
-                                after, wi.getIndex(), modelRoot.getPrincipal());
-                        modelRoot.doMove(m);
                     }
-                }
-            };
+                };
 
-        JMenuItem build200TrainsMenuItem = new JMenuItem("Build 200 trains!");
-        build200TrainsMenuItem.addActionListener(build200trains);
-        gameMenu.add(build200TrainsMenuItem);
+            JMenuItem build200TrainsMenuItem = new JMenuItem(
+                    "Build 200 trains!");
+            build200TrainsMenuItem.addActionListener(build200trains);
+            gameMenu.add(build200TrainsMenuItem);
+        }
 
         return gameMenu;
     }
