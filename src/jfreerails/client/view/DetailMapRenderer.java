@@ -47,7 +47,7 @@ public class DetailMapRenderer implements MapRenderer {
         Dimension mapSize = new Dimension(world.getMapWidth(),
                 world.getMapHeight());
         mapSizeInPixels = new Dimension(mapSize.width * 30, mapSize.height * 30);
-        stationRadius = new StationRadiusRenderer();
+        stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrack = new BuildTrackRenderer(world, vl.getTrackPieceViewList());
         stationBoxes = new StationBoxRenderer(world, vl, modelRoot);
     }

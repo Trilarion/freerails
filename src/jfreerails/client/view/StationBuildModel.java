@@ -135,12 +135,14 @@ public class StationBuildModel {
                         StationBuildAction.STATION_POSITION_KEY));
             String message = null;
 
-            if (!ms.isOk()) {
-                message = ms.message;
+            if (ms.isOk()) {
+            	setEnabled(false);
+            }else{
+            	message = ms.message;            	
             }
 
             modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, message);
-            setEnabled(false);
+            
         }
     }
 

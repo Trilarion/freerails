@@ -32,6 +32,10 @@ public final class ModelRoot implements MoveExecutor {
     private final HashMap properties = new HashMap();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     public static final String CURSOR_POSITION = "CURSOR_POSITION";
+    public static final String CURSOR_MODE = "CURSOR_MODE";
+    public static final String PREVIOUS_CURSOR_MODE = "PREVIOUS_CURSOR_MODE";
+    public static final String PLACE_STATION_CURSOR_MODE = "PLACE_STATION_CURSOR_MODE";
+    public static final String BUILD_TRACK_CURSOR_MODE = "BUILD_TRACK_CURSOR_MODE";
     public static final String CURSOR_MESSAGE = "CURSOR_MESSAGE";
     public static final String QUICK_MESSAGE = "QUICK_MESSAGE";
     public static final String PERMANENT_MESSAGE = "PERMANENT_MESSAGE";
@@ -44,6 +48,8 @@ public final class ModelRoot implements MoveExecutor {
         properties.put(SHOW_STATION_NAMES, new Boolean(true));
         properties.put(SHOW_CARGO_AT_STATIONS, new Boolean(true));
         properties.put(SHOW_STATION_BORDERS, new Boolean(true));
+        properties.put(CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
+        properties.put(PREVIOUS_CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
     }
 
     public FreerailsPrincipal getPrincipal() {

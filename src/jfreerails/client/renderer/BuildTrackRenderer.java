@@ -123,7 +123,8 @@ public class BuildTrackRenderer implements Painter {
 
     /**
      * return List of Point where the track should be built
-     * @param tryThisPoint Point
+     * @param startPoint Point
+     * @param targetPoint Point
      * @return List
      */
     private List createProposedTrack(Point startPoint, Point targetPoint) {

@@ -3,6 +3,7 @@ package jfreerails.client.renderer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
 
 
@@ -28,18 +29,14 @@ public class StationRadiusRenderer implements Painter {
     private int radius = 2;
     private int x;
     private int y;
-    private boolean show = false;
+    private final ModelRoot modelRoot;
+
+    public StationRadiusRenderer(ModelRoot mr) {
+        this.modelRoot = mr;
+    }
 
     public void setBorderColor(Color c) {
         borderColor = c;
-    }
-
-    public void show() {
-        this.show = true;
-    }
-
-    public void hide() {
-        this.show = false;
     }
 
     public void setPosition(int x, int y) {
@@ -51,8 +48,26 @@ public class StationRadiusRenderer implements Painter {
         this.radius = radius;
     }
 
+    public void show() {
+        String lastCursorMode = (String)modelRoot.getProperty(ModelRoot.CURSOR_MODE);
+
+        if (!lastCursorMode.equals(ModelRoot.PLACE_STATION_CURSOR_MODE)) {
+            modelRoot.setProperty(ModelRoot.PREVIOUS_CURSOR_MODE, lastCursorMode);
+            modelRoot.setProperty(ModelRoot.CURSOR_MODE,
+                ModelRoot.PLACE_STATION_CURSOR_MODE);
+        }
+    }
+
+    public void hide() {
+        String lastCursorMode = (String)modelRoot.getProperty(ModelRoot.PREVIOUS_CURSOR_MODE);
+
+        assert !lastCursorMode.equals(ModelRoot.PLACE_STATION_CURSOR_MODE);
+
+        modelRoot.setProperty(ModelRoot.CURSOR_MODE, lastCursorMode);
+    }
+
     public void paint(Graphics2D g) {
-        if (show) {
+        if (modelRoot.getProperty(ModelRoot.CURSOR_MODE).equals(ModelRoot.PLACE_STATION_CURSOR_MODE)) {
             g.setStroke(new BasicStroke(2f));
             g.setColor(borderColor);
 
