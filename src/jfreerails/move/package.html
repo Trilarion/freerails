@@ -38,7 +38,7 @@
 <p>&nbsp;</p>
 <p>They have the following properties:</p>
 <p>(1) The changes they encapsulate are stored in an address space independent 
-  way, so that a move generated a client can be serialised, sent over a network, 
+  way, so that a move generated on a client can be serialised, sent over a network, 
   and then deserialised and executed on a server. To achieve this, they refer 
   to items in the game world via either their coorinates, e.g. tile 10,50, or 
   their position in a list, e.g. train #4.</p>
@@ -46,6 +46,8 @@
   necessary to undo the change. E.g. a change-terrain-type move might store the 
   tile coorindates, the terrain type before the change and the terrain type after 
   the change.</p>
+<p>(3) The <code><font size="2">tryDoMove</font></code> and <code><font size="2">tryUndoMove</font></code> 
+  methods test whether the move is valid but leave the gameworld unchanged.</p>
 <p>&nbsp;</p>
 </body>
 </html>
