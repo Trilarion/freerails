@@ -119,6 +119,7 @@ data/graphics/ui/Makefile \
 data/graphics/ui/buttons/Makefile \
 data/graphics/ui/cursors/Makefile \
 src/Makefile \
+src/common/Makefile \
 src/controllers/Makefile \
 src/elements/Makefile \
 src/map/Makefile \

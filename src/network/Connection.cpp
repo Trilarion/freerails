@@ -2,7 +2,11 @@
  * $Id$
  */
 
+#include "Serializer.h"
 #include "Connection.h"
+
+
+Serializer *Connection::serializer=new Serializer();
 
 Connection::Connection() {
 

@@ -15,6 +15,7 @@
 #include "MessageQueue.h"
 #include "Client.h"
 #include "Server.h"
+#include "Serializer.h"
 
 class TrackController;
 class StationController;
@@ -87,6 +88,8 @@ class Engine
 
     GameController* gameCon; // Is it needed any longer? Should later be added to controllerDispatcher
   
+    /* The Engine Serializer */
+    Serializer *serializer;
 };
 
 #endif // __ENGINE_H__

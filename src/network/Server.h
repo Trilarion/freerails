@@ -6,23 +6,49 @@
 #define __SERVER_H__
 
 #include "TCPConnection.h"
+#include "Client.h"
+#include "Serializer.h"
+/* #include "FreeHash.h" */
+#include <list>
+
 class Server: public TCPConnection {
 
-public:
+ public:
 
-    Server(int port);
-    /**  */
-    ~Server();
+  Server(int port);
+  /**  */
+  ~Server();
     
-    int getCount() {return count;};
-    void check();
+
+  void check();
     
-private:
+ private:
     
-    /* void connect(char* host, int port); */
+  /* void connect(char* host, int port); */
+  list<Client *> clients;
+  short playersInGame; /* counts the current number of players in the game */
+  short maxPlayers;
+  fd_set setfd;
+  short maxfd;
     
-    int count;
+  void newPlayer();
+  void buildFD_SET();
     
 };
+
+
+#define iterate_client_list(clients, client){ \
+  list<Client *>::iterator iter,it; \
+  Client *client; \
+  iter=clients.begin(); \
+  while( ++iter != clients.end() ){ \
+    it=iter++; \
+    client=*it;
+
+#define iterate_client_list_end \
+  } \
+}
+
+
 
 #endif

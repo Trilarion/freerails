@@ -1,3 +1,7 @@
+Thu Apr 24 12:33:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
+o add FreeRailsLog, we can start to write a log(easier for debugging).
+o created an initial version of a netBuffer.
+o some network code(ex: a list of clients in the Server)
 Wed Apr 23 03:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o cleanup in StationController (stationDoBuild not ready yet)
 o show TrackConners in ParaGUI Client

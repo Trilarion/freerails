@@ -1,0 +1,14 @@
+#ifndef __NETWORK_H__
+#define __NETWORK_H__
+
+#define MAX_MSG_SIZE 512
+
+enum MSG_TYPE {
+  MSG_REQUEST_JOIN_GAME,
+  MSG_REPLY_REQUEST_JOIN_GAME,
+  MSG_MAP_INFO,
+  MSG_ADD_GAME_OBJECT
+};
+
+
+#endif /* __NETWORK_H__ */

@@ -36,6 +36,8 @@ public:
     int accept();
     void close();
 
+    short getConnectionId(){ return socketID;};
+
  protected:
     int socketID;
 

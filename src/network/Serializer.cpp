@@ -2,105 +2,262 @@
   */
 
 #include "Serializer.h"
+#include "FreeRailsLog.h"
+#include <netinet/in.h>
+
+Serializer::Serializer() {
+  
+  write_buffer=(void *)malloc(sizeof(char)*MAX_MSG_SIZE+1);
+  write_counter=0;
+
+  readBuffer=new NetBuffer();
+  /*
+  read_buffer=(void *)malloc(sizeof(char)*MAX_MSG_SIZE+1);
+  read_counter=0;
+  write_read_counter=0;
+  */
+}
 
 Serializer::~Serializer() {
+  
+  delete readBuffer;
+
+}
+
+inline bool Serializer::enoughSpace(short s)
+{
+  return (write_counter+s>MAX_MSG_SIZE) ? false:true;  
+}
+
+inline bool Serializer::enoughData(short s)
+{
+  
+  return true;
+
+}
+
+void Serializer::initSend(MSG_TYPE msg)
+{
+  
+  memset(write_buffer,'\0',MAX_MSG_SIZE);
+  write_counter=0;
+  write_int(0); /* message size :) */
+  write_char((char) msg);
+  
+}
+
+size_t Serializer::finishSend(Connection *_myConnection)
+{
+  int old_counter=write_counter;
+  int size=write_counter-sizeof(int);
+  write_counter=0; /* rewind buffer */ 
+  write_int(size); /* writes real message size :) */
+  write_counter=old_counter; /* write_counter points to the end */
+
+  /* memcpy((char *)write_buffer+write_counter,"\0",1); */ /* close buffer */
+
+  return _myConnection->write(write_buffer, write_counter);
+
+}
+
+
+short Serializer::receive(Connection *_myConnection){
+  int size, message_size,buffer;
+  
+  /* memset(read_buffer, '\0', MAX_MSG_SIZE); */
+
+  /* let's check if it's possible to receive more information */
+  if( (buffer=readBuffer->canWriteToBuffer(_myConnection->getConnectionId())) == -1)
+    /* no buffers to write to */
+    return 0;
+  
+  size=_myConnection->read(readBuffer->writeToBuffer(), 
+			   readBuffer->sizeToWrite(buffer));
+  
+  readBuffer->written(size);
+
+  /* size=_myConnection->read(&read_buffer+write_read_counter, MAX_MSG_SIZE); */
+  
+  /*
+    write_read_counter+=size;
+    if(size > 1){
+    // We can read the size of the message
+    read_int(message_size);
+    if(message_size==size){
+    }
+    }
+  */
 }
 
 /*=========================
  * writes
  *========================*/
 
-size_t Serializer::write_long(long l) {
-
-  return myConnection->write(&l, sizeof(long));
+void Serializer::write_long(long l) {
+  
+  short size=sizeof(l);
+  if(enoughSpace(size)){
+    unsigned long x = htonl(l);
+    
+    memcpy((char *)write_buffer+write_counter,(void *)x,size);
+    write_counter+=size;
+  }
+  
 }
 
-size_t Serializer::write_long_unsigned(long unsigned l) {
+void Serializer::write_long_unsigned(long unsigned l) {
 
-  return myConnection->write(&l, sizeof(long));
+  unsigned long x = htonl(l);
+  short size=sizeof(l);
+  memcpy((char *)write_buffer+write_counter,(void *)x,size);
+  write_counter+=size;
+
+  /* return myConnection->write(&l, sizeof(long)); */
 }
 
-size_t Serializer::write_int(int i) {
+void Serializer::write_int(int i) {
 
-  return myConnection->write(&i, sizeof(int));
+  unsigned long x = htonl(i);
+  short size=sizeof(i);
+  memcpy((char *)write_buffer+write_counter,(void *)x,size);
+  write_counter+=size;
+  /*  return myConnection->write(&i, sizeof(int)); */
+
 }
 
-size_t Serializer::write_int_unsigned(int unsigned i) {
+void Serializer::write_int_unsigned(int unsigned i) {
 
-  return myConnection->write(&i, sizeof(int));
+  unsigned long x = htonl(i);
+  short size=sizeof(i);
+  memcpy((char *)write_buffer+write_counter,(void *)x,size);
+  write_counter+=size;
+
+  /*  return myConnection->write(&i, sizeof(int)); */
 }
 
-size_t Serializer::write_short(short s) {
+void Serializer::write_short(short s) {
 
-  return myConnection->write(&s, sizeof(short));
+  unsigned short x = htons(s);
+  short size=sizeof(s);
+  memcpy((char *)write_buffer+write_counter,(void *)x,size);
+  write_counter+=size;
+
 }
 
-size_t Serializer::write_char(char c) {
+void Serializer::write_char(char c) {
 
-  return myConnection->write(&c, sizeof(char));
+  short size=sizeof(c);
+  memcpy((char *)write_buffer+write_counter,(void *)c,size);
+  write_counter+=size;
+  /* return myConnection->write(&c, sizeof(char)); */
 }
 
-size_t Serializer::write_string(const std::string &s) {
+void Serializer::write_string(const std::string &s) {
 
   short size = s.length();
-  size_t s1 = write_short(size);
-  if (s1<0) return s1;
-  size_t s2 = 0;
+  
   if (size) {
-    s2 = myConnection->write((void*) s.c_str(), size);
-    if (s2<0) return s2;
+    write_short(size);
+    memcpy((char *)write_buffer+write_counter,(void*) s.c_str(),size);
+    write_counter+=size;
   }
-  return s1+s2;
+  
 }
 
 /*=========================
  * reads
  *========================*/
 
-size_t Serializer::read_long(long& l) {
+void Serializer::read_long(long& l) {
 
-  return myConnection->read(&l, sizeof(long));
+  short size=sizeof(long);
+  
+  if(enoughData(size)){
+    unsigned long x;
+    
+    readBuffer->read((void *)x, size);
+    /*
+    memcpy(&x,(char *)read_buffer+read_counter,size);
+    */
+
+    l=ntohl(x);
+    /* read_counter+=size; */
+  }
 }
 
-size_t Serializer::read_long_unsigned(long unsigned& l) {
+void Serializer::read_long_unsigned(long unsigned& l) {
 
-  return myConnection->read(&l, sizeof(long));
+  unsigned long x;
+  short size=sizeof(long);
+  
+  readBuffer->read((void *)x, size);
+  /* memcpy(&x,(char *)read_buffer+read_counter,size); */
+  l=ntohl(x);
+  /* read_counter+=size; */
+
+  /*  return myConnection->read(&l, sizeof(long)); */
 }
 
-size_t Serializer::read_int(int& i) {
+void Serializer::read_int(int& i) {
 
-  return myConnection->read(&i, sizeof(int));
+  unsigned int x;
+  short size=sizeof(int);
+
+  /* memcpy(&x,(char *)read_buffer+read_counter,size); */
+
+  i=ntohl(x);
+  /* read_counter+=size; */
+
+  /*return myConnection->read(&i, sizeof(int)); */
 }
 
-size_t Serializer::read_int_unsigned(int unsigned& i) {
+void Serializer::read_int_unsigned(int unsigned& i) {
 
-  return myConnection->read(&i, sizeof(int));
+  unsigned int x;
+  short size=sizeof(int);
+  /* memcpy(&x,(char *)read_buffer+read_counter,size); */
+  i=ntohl(x);
+  /* read_counter+=size; */
+
+  /* return myConnection->read(&i, sizeof(int)); */
 }
 
-size_t Serializer::read_short(short& s) {
+void Serializer::read_short(short& s) {
 
-  return myConnection->read(&s, sizeof(short));
+  unsigned short x;
+  short size=sizeof(short);
+
+  readBuffer->read((void *)x, size);
+  /* memcpy(&x,(char *)read_buffer+read_counter,size); */
+  s=ntohs(x);
+  /* read_counter+=size; */
+
+  /* return myConnection->read(&s, sizeof(short)); */
 }
 
-size_t Serializer::read_char(char& c) {
+void Serializer::read_char(char& c) {
+  
+  short size=sizeof(char);
+  /* memcpy(&c,(char *)read_buffer+read_counter,size); */
+  /* read_counter+=size; */
 
-  return myConnection->read(&c, sizeof(char));
+  /*  return myConnection->read(&c, sizeof(char)); */
 }
 
-size_t Serializer::read_string(std::string& s) {
+void Serializer::read_string(std::string& s) {
 
   short size;
-  size_t s1 = read_short(size);
-  if (s1 < 0) return 0;
+  read_short(size);
+  if (size < 0) return;
   char *help_str = new char[size+1];
-  size_t s2 = 0;
   if (size) {
-    s2 = myConnection->read(help_str, size);
-    if (s2 < 0) return 0;
+    /* s2 = myConnection->read(help_str, size); */
+    readBuffer->read((void *)help_str, size);
+    /* memcpy(help_str,(char *)read_buffer+read_counter,size); */
+
   }
   help_str[size] = '\0';
   s = help_str;
-  return s1 + s2;
 }
 
 

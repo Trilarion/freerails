@@ -5,6 +5,11 @@
 #ifndef __CONNECTION_H__
 #define __CONNECTION_H__
 
+/* #include "Serializer.h" */
+
+
+class Serializer;
+
 class Connection {
 
 public:
@@ -21,11 +26,16 @@ public:
     
     virtual void open(char* c, int i);
     virtual void close();
+
+    virtual short getConnectionId(){};
     
     State getState() {return state;};
     Error getError() {return error;};
+    inline Serializer *getSerializer(){return serializer;};
     
 protected:
+
+    static Serializer *serializer;
 
     State state;
     Error error;

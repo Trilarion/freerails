@@ -1,6 +1,7 @@
 noinst_LIBRARIES = libnetwork.a
 
-INCLUDES = -I$(srcdir)/../controllers -I$(srcdir)/../elements -I$(srcdir)/../map -I$(srcdir)
+INCLUDES = -I$(srcdir)/../common -I$(srcdir)/../controllers \
+	-I$(srcdir)/../elements -I$(srcdir)/../map -I$(srcdir)
 
 libnetwork_a_SOURCES = Connection.cpp \
 	TCPConnection.cpp \
@@ -8,4 +9,6 @@ libnetwork_a_SOURCES = Connection.cpp \
 	Client.cpp \
 	Server.cpp \
 	Serializer.cpp \
-	Serializeable.cpp
+	Serializeable.cpp \
+	NetInitGame.cpp \
+	NetBuffer.cpp

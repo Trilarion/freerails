@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
   char versionString[50];
 
-  sprintf(versionString, _("FreeRails v%s"), GAME_VERSION);
+  sprintf(versionString, _("FreeRails v%s"), PACKAGE_VERSION);
 
   // construct the application object
   MyGameApplication app(argc,argv);

@@ -4,8 +4,14 @@
 
 #include "TCPConnection.h"
 
-#include <iostream>
+#include "FreeRailsLog.h"
+
 #include <stdio.h>
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 /* extern int errno; */
 
 
@@ -28,13 +34,14 @@ TCPConnection::~TCPConnection() {
 void TCPConnection::open(char* host, int port) {
 
   state = HOSTLOOKUP;
-  struct hostent* hp = gethostbyname(host);
+  struct hostent* hp = gethostbyname(host); 
+
   if (!hp)
   {
     state = ERROR;
     error = OTHER;
   }
-  
+
   socketID = socket (AF_INET, SOCK_STREAM, 0);
   
   if (socketID <= 0)
@@ -47,15 +54,18 @@ void TCPConnection::open(char* host, int port) {
   state = CONNECTING;
   
   struct in_addr in;
-  memcpy(&in.s_addr, hp->h_addr_list[0], sizeof(in.s_addr));
+  char *ip;
+
+  /* memcpy(&in.s_addr, hp->h_addr_list[0], sizeof(in.s_addr)); */
+  in=*((struct in_addr *) hp->h_addr_list[0]);
 
   struct sockaddr_in m_addr;
   memset (&m_addr, 0, sizeof(m_addr));
   
   m_addr.sin_family=AF_INET;
-  m_addr.sin_port = port;
+  m_addr.sin_port = htons(port);
   m_addr.sin_addr.s_addr = in.s_addr;
-  
+
   int stat = ::connect( socketID, (sockaddr *) &m_addr, sizeof(m_addr));
   
   if (stat!=0)
@@ -109,7 +119,7 @@ void TCPConnection::listen(int port) {
     error=OTHER; // TODO: read problem from errno!
   } else
   {
-    std::cout << "SERVER LISTENING on PORT " << port << std::endl;
+    FreeRailsLog("TCPConnection: SERVER LISTENING on PORT %i",port);
     state=LISTENING;
   }
   ::fcntl(socketID, F_SETFL, O_NONBLOCK);
@@ -119,7 +129,7 @@ int TCPConnection::accept() {
 
   struct sockaddr_in m_addr;
   socklen_t len = sizeof(m_addr);
-  
+
   memset (&m_addr, 0, sizeof(m_addr));
 
   /*  m_addr.sin_family=AF_INET;
@@ -132,9 +142,10 @@ int TCPConnection::accept() {
   /* test */
 #warning FIX ME -- network code will not work WITH this
   state=OPEN;
-  ::write(newSockID,"Freerails Server...disconnecting\n",33);
-  ::close(newSockID);
+  
   /* end of test */
+  
+  FreeRailsLog("TCPConnection:accept(): ONE CLIENT");
 
   return newSockID;
 }
@@ -160,7 +171,7 @@ int TCPConnection::write(void* data, int len) {
 	 TODO: search for errors in errno */
       return -1;
     }
-    return 0;
+    return n;
   } else
   {
     error=NOT_OPEN;
@@ -179,7 +190,7 @@ int TCPConnection::read(void* buf, int maxlen) {
       return -1;
     }
 
-    return 0;
+    return n;
   } else
   {
     error=NOT_OPEN;

@@ -120,6 +120,7 @@ int GameApplication::run() {
     if (result==3) {
       // Multi Player Client
       initClientGame(dataDialog.getName());
+
       /*    Need's change to client
 	    Server* server=new Server(30000);
 	    engine=new Engine(playerSelf, server);
@@ -132,7 +133,8 @@ int GameApplication::run() {
 
       guiEngine=new GuiEngine(playerSelf, dataDialog.getWidth(), dataDialog.getHeight(), 
 			      dataDialog.getIpAddress(), dataDialog.getPort());
-      
+
+            
       mapView=new GameMapView(&mw, 0, 0, 650, 450 , guiEngine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
@@ -142,7 +144,7 @@ int GameApplication::run() {
       mapView->Show();
       panel->Show();
       netView->Show();
-
+      
       cout << " WHAAA" << endl;
     }
     if (result>0)

@@ -4,26 +4,40 @@
 
 #include "Engine.h"
 #include "MapGenerator.h"
+#include "FreeRailsLog.h"
 
+/* single player */
 Engine::Engine(Player* _player, int w, int h)
 {
   worldMap = MapGenerator().generateWorld(w, h);
   isSingle = true;
   isClient = false;
   isServer = false;
+
+  /* Serializer Was Created...right .. Static member of Connection.
+     so we just have to grab it... */
+  Connection con;
+  serializer = con.getSerializer();
   
   Init(_player, worldMap);
 
   std::cerr << "engine(alone) inited" << std::endl;
 }
 
+
+/* server game */
 Engine::Engine(Player* _player, int w, int h, int port)
 {
   gameState = Initializing;
 
   worldMap = MapGenerator().generateWorld(w, h);
+
+
   
   server=new Server(port);
+
+  /* OH WELL ... HARD DECISION */
+  serializer = server->getSerializer();
   /* server=_server; */
   isSingle = false;
   isClient = false;
@@ -34,20 +48,32 @@ Engine::Engine(Player* _player, int w, int h, int port)
    std::cerr << "engine(Server) inited" << std::endl;
 }
 
+
+/* client game */
 Engine::Engine(Player* _player, int w, int h, char *server, int port)
 {
   gameState = Initializing;
   
   worldMap = NULL;
+
   client=new Client();
+
+  /* OH WELL ... HARD DECISION */
+  serializer = client->getSerializer();
+
   client->open(server,port);
+  FreeRailsLog("CLIENT GAME INIT ENGINE: %i",client->getState());
+  client->joinGame(_player, serializer);
+  FreeRailsLog("CLIENT GAME INIT ENGINE");
+
+
   /* client=_client; */
   
   isSingle = false;
   isClient = true;
   isServer = false;
   
-//  Init(_player, _worldMap); // Must be done Later!
+  //  Init(_player, _worldMap); // Must be done Later!
   
   std::cerr << "engine(Client) inited" << std::endl;
 }
@@ -125,7 +151,7 @@ void Engine::checkNext(int msec)
 
 void Engine::process()
 {
-  std::cerr << ".";
+  /*  std::cerr << "."; */
   if(isServer)
   {
   }

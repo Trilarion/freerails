@@ -7,12 +7,13 @@
 #include "Serializer.h"
 
 class Serializeable {
-public:
-
+ public:
+  
   virtual void serialize(Serializer* _serializer) {};
   virtual void deserialize(Serializer* _serializer) {};
 
 private:
+
 
 };
 

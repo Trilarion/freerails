@@ -10,6 +10,8 @@
 #include "WorldMap.h"
 #include "MapGenerator.h"
 
+#include "FreeRailsLog.h"
+
 MyGameApplication::MyGameApplication(int argc, char *argv[]) : GameApplication(argc, argv)
 {
   /*  worldMap=NULL; */
@@ -19,10 +21,15 @@ MyGameApplication::MyGameApplication(int argc, char *argv[]) : GameApplication(a
   train.setPlayer(&pl);
   pl.addGameElement(&train);
 */
+  FreeRailsLog("game: STARTING FREERAILS");  
+
 }
 
 MyGameApplication::~MyGameApplication()
 {
+
+  FreeRailsLog logFile("game: ENDING FREERAILS");  
+  logFile.close();
 
 }
 

@@ -29,7 +29,7 @@ PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,0, "Window") {
   height->SetMaxValue(1000);
 
   ok=new PG_Button(this, type, PG_Rect(10,260,180,20), "OK");
-  back=new PG_Button(this, -1, PG_Rect(210,260,180,20), "Zurück");
+  back=new PG_Button(this, -1, PG_Rect(210,260,180,20), "Cancel");
   buttonflag=1; /* Single Player */
   
   if (type>1)
@@ -38,10 +38,10 @@ PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,0, "Window") {
     radio_server = new PG_RadioButton(this, 20, PG_Rect(10, 60, 240, 20), "Be a server");
     radio_client = new PG_RadioButton(this, 21, PG_Rect(10, 90, 240, 20), "Be a client", radio_server);
     ip_address = new PG_MaskEdit(this, PG_Rect(10,120,240,20));
-    ip_address->SetMask("###.###.###.###");
+    ip_address->SetMask("########################");
     port = new PG_MaskEdit(this, PG_Rect(260,120,100,20));
     port->SetMask("#####");
-    port->SetText("9010");
+    port->SetText("30000");
   }
 }
 

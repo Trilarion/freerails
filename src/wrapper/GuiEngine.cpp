@@ -2,6 +2,7 @@
 #include "Station.h"
 #include "GameElement.h"
 
+/* single game */
 GuiEngine::GuiEngine(Player* _player,int w, int h){
   
   engine=new Engine(_player, w, h);
@@ -10,6 +11,7 @@ GuiEngine::GuiEngine(Player* _player,int w, int h){
 }
 
 
+/* server game */
 GuiEngine::GuiEngine(Player* _player, int w, int h, int port){
   
   engine=new Engine(_player, w, h, port);
@@ -17,10 +19,11 @@ GuiEngine::GuiEngine(Player* _player, int w, int h, int port){
   
 }
 
-
+/* client game */
 GuiEngine::GuiEngine(Player* _player, int w, int h, char *server, int port){
   
   engine=new Engine(_player, w, h,server, port);
+  
   initialize(_player);
 
 }
