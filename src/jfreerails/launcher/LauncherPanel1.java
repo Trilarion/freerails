@@ -6,7 +6,7 @@
 
 package jfreerails.launcher;
 
-import java.net.InetSocketAddress;
+
 
 import javax.swing.ButtonModel;
 
@@ -34,68 +34,31 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         return 0;
     }
     
-    int getServerPort() {
-        String s = serverPort.getText();
-        return Integer.parseInt(s);
-    }
     
-    InetSocketAddress getRemoteServerAddress() {
-        String portStr = remotePort.getText();
-        if (portStr == null) {
-            return null;
-        }
-        int port;
-        try {
-            port = Integer.parseInt(portStr);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-        InetSocketAddress address;
-        try {
-            address = new InetSocketAddress
-            (remoteIP.getText(), port);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-        return address;
-    }
+    
+    
     
     private void validateSettings() {
         boolean isValid = false;
         String infoText = null;
         
         switch (getMode()) {
+            
             case MODE_SINGLE_PLAYER:
                 isValid = true;
                 break;
             case MODE_START_NETWORK_GAME:
             case MODE_SERVER_ONLY:
-                try {
-                    if (getServerPort() > 0 &&
-                    getServerPort() < 65536) {
-                        isValid = true;
-                        break;
-                    }
-                } catch (NumberFormatException e) {
-                    //ignore
-                }
-                infoText = "Please enter a valid port number";
+                isValid = true;
                 break;
             case MODE_JOIN_NETWORK_GAME:
-                InetSocketAddress isa = getRemoteServerAddress();
-                if (isa == null) {
-                    infoText = "Please enter a valid remote server address";
-                } else if (isa.isUnresolved()) {
-                    infoText = "Couldn't resolve remote server address";
-                } else {
-                    isValid = true;
-                }
+                isValid = true;
                 break;
         }
         owner.setInfoText(infoText);
         owner.setNextEnabled(isValid);
     }
-
+    
     public LauncherPanel1(Launcher owner) {
         initComponents();
         this.owner = owner;
@@ -120,15 +83,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         startNetworkButton = new javax.swing.JRadioButton();
         joinNetworkButton = new javax.swing.JRadioButton();
         serverOnlyButton = new javax.swing.JRadioButton();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        remoteIP = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        remotePort = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        serverPort = new javax.swing.JTextField();
+        paddingJPanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -149,7 +104,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         add(singlePlayerButton, gridBagConstraints);
 
@@ -163,7 +118,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         add(startNetworkButton, gridBagConstraints);
 
@@ -177,7 +132,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         add(joinNetworkButton, gridBagConstraints);
 
@@ -191,89 +146,17 @@ final class LauncherPanel1 extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         add(serverOnlyButton, gridBagConstraints);
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel1.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Remote server address"));
-        jPanel1.setEnabled(false);
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jLabel1.setText("IP Address:");
-        jPanel2.add(jLabel1);
-
-        remoteIP.setColumns(15);
-        remoteIP.setText("127.0.0.1");
-        remoteIP.setEnabled(false);
-        remoteIP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                remoteIPActionPerformed(evt);
-            }
-        });
-        remoteIP.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                remoteIPFocusLost(evt);
-            }
-        });
-
-        jPanel2.add(remoteIP);
-
-        jLabel2.setText("Port:");
-        jPanel2.add(jLabel2);
-
-        remotePort.setColumns(5);
-        remotePort.setText("55000");
-        remotePort.setEnabled(false);
-        remotePort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                remotePortActionPerformed(evt);
-            }
-        });
-        remotePort.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                remotePortFocusLost(evt);
-            }
-        });
-
-        jPanel2.add(remotePort);
-
-        jPanel1.add(jPanel2);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(jPanel1, gridBagConstraints);
-
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jPanel3.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Server port"));
-        jLabel3.setText("Port:");
-        jPanel3.add(jLabel3);
-
-        serverPort.setColumns(6);
-        serverPort.setText("55000");
-        serverPort.setEnabled(false);
-        serverPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serverPortActionPerformed(evt);
-            }
-        });
-        serverPort.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                serverPortFocusLost(evt);
-            }
-        });
-
-        jPanel3.add(serverPort);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(jPanel3, gridBagConstraints);
+        add(paddingJPanel, gridBagConstraints);
 
     }//GEN-END:initComponents
     
@@ -282,18 +165,14 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     }//GEN-LAST:event_formComponentShown
     
     private void serverOnlyButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_serverOnlyButtonStateChanged
-        serverPort.setEnabled(serverOnlyButton.isSelected());
         validateSettings();
     }//GEN-LAST:event_serverOnlyButtonStateChanged
     
     private void joinNetworkButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_joinNetworkButtonStateChanged
-        remoteIP.setEnabled(joinNetworkButton.isSelected());
-        remotePort.setEnabled(joinNetworkButton.isSelected());
         validateSettings();
     }//GEN-LAST:event_joinNetworkButtonStateChanged
     
     private void startNetworkButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startNetworkButtonStateChanged
-        serverPort.setEnabled(startNetworkButton.isSelected());
         validateSettings();
     }//GEN-LAST:event_startNetworkButtonStateChanged
     
@@ -301,44 +180,12 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         validateSettings();
     }//GEN-LAST:event_singlePlayerButtonStateChanged
     
-    private void serverPortFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serverPortFocusLost
-        validateSettings();
-    }//GEN-LAST:event_serverPortFocusLost
-    
-    private void remotePortFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_remotePortFocusLost
-        validateSettings();
-    }//GEN-LAST:event_remotePortFocusLost
-    
-    private void remoteIPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_remoteIPFocusLost
-        validateSettings();
-    }//GEN-LAST:event_remoteIPFocusLost
-    
-    private void serverPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverPortActionPerformed
-        validateSettings();
-    }//GEN-LAST:event_serverPortActionPerformed
-    
-    private void remotePortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remotePortActionPerformed
-        validateSettings();
-    }//GEN-LAST:event_remotePortActionPerformed
-    
-    private void remoteIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remoteIPActionPerformed
-        validateSettings();
-    }//GEN-LAST:event_remoteIPActionPerformed
-    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton joinNetworkButton;
-    private javax.swing.JTextField remoteIP;
-    private javax.swing.JTextField remotePort;
+    private javax.swing.JPanel paddingJPanel;
     private javax.swing.JRadioButton serverOnlyButton;
-    private javax.swing.JTextField serverPort;
     private javax.swing.JRadioButton singlePlayerButton;
     private javax.swing.JRadioButton startNetworkButton;
     // End of variables declaration//GEN-END:variables

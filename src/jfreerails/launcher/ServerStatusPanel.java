@@ -16,15 +16,15 @@ import javax.swing.table.TableModel;
  */
 class ServerStatusPanel extends javax.swing.JPanel {
     private final Launcher owner;
-
+    
     ServerStatusPanel(Launcher owner) {
-	this.owner = owner;
+        this.owner = owner;
         initComponents();
-	owner.setNextEnabled(true);
+        owner.setNextEnabled(true);
     }
     
     void setTableModel(TableModel tm) {
-	jTable1.setModel(tm);
+        jTable1.setModel(tm);
     }
     
     /** This method is called from within the constructor to
