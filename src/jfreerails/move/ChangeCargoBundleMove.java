@@ -11,7 +11,7 @@ import jfreerails.world.top.KEY;
  * @author Luke
  * 
  */
-public class ChangeCargoBundleMove extends AbstractChangeItemInListMove {
+public class ChangeCargoBundleMove extends ChangeItemInListMove {
 			
 	public ChangeCargoBundleMove(CargoBundle before, CargoBundle after, int bundleNumber){
 		super(KEY.CARGO_BUNDLES, bundleNumber, before, after);		
