@@ -79,18 +79,22 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 	}
 
 	public void end_Tile() throws SAXException {
+		
 		Consumption[] consumes = new Consumption[typeConsumes.size()];
 		for (int i = 0; i < typeConsumes.size(); i++) {
 			consumes[i] = (Consumption) typeConsumes.get(i);
 		}
+		
 		Production[] produces = new Production[typeProduces.size()];
 		for (int i = 0; i < typeProduces.size(); i++) {
 			produces[i] = (Production) typeProduces.get(i);
 		}
+		
 		Conversion[] converts = new Conversion[typeConverts.size()];
 		for (int i = 0; i < typeConverts.size(); i++) {
 			converts[i] = (Conversion) typeConverts.get(i);
 		}
+		
 		TileTypeImpl tileType = new TileTypeImpl(tileRGB,tileCategory, tileID, tileROW, produces, consumes, converts);
 		
 		world.add(KEY.TERRAIN_TYPES, tileType);		
