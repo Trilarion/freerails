@@ -80,7 +80,7 @@ public class DialogueBoxController {
 				Move m = new ChangeProductionAtEngineShopMove(before, after, 0);
 				MoveStatus ms = m.doMove(w);
 				if (!ms.ok) {
-					System.out.println("Couldn't change production at station: " + ms.getMessage());
+					System.out.println("Couldn't change production at station: " + ms.toString());
 				} else {
 					System.out.println("Production at station changed.");
 				}

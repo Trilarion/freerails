@@ -9,6 +9,8 @@ public class TrainModel implements FreerailsSerializable{
     
     public static final int DISTANCE_BETWEEN_WAGONS=5;
     
+    private Schedule schedule;
+    
     TrainPositionOnMap trainposition;    
     
     int engineType = 0; 
@@ -16,10 +18,11 @@ public class TrainModel implements FreerailsSerializable{
     int[] wagonTypes = new int[]{0, 1, 2};
    
     
-    public TrainModel(int engine, int[] wagons, TrainPositionOnMap p){
+    public TrainModel(int engine, int[] wagons, TrainPositionOnMap p, Schedule s){
         this.engineType = engine;
         this.wagonTypes=wagons;
         trainposition=p;
+        this.schedule=s;
     }
     public TrainModel(int engine){
 		this.engineType = engine;  

@@ -40,25 +40,25 @@ public class ChangeProductionAtEngineShopMove implements Move {
 	private MoveStatus tryMove(World w, ProductionAtEngineShop stateA) {
 		//Check that the specified station exists.
 		if(!w.boundsContain(KEY.STATIONS, this.stationNumber)){
-			return MoveStatus.MOVE_REJECTED;			
+			return MoveStatus.MOVE_FAILED;			
 		}
 		StationModel station = (StationModel) w.get(KEY.STATIONS, stationNumber);
 		if(null==station){
-			return MoveStatus.MOVE_REJECTED;
+			return MoveStatus.MOVE_FAILED;
 		}
 				
 		//Check that the station is building what we expect.					
 		if (null == station.getProduction()) {
 			if (null == stateA) {
-				return MoveStatus.MOVE_ACCEPTED;
+				return MoveStatus.MOVE_OK;
 			} else {
-				return MoveStatus.MOVE_REJECTED;
+				return MoveStatus.MOVE_FAILED;
 			}
 		} else {
 			if (station.getProduction().equals(stateA)) {
-				return MoveStatus.MOVE_ACCEPTED;
+				return MoveStatus.MOVE_OK;
 			} else {
-				return MoveStatus.MOVE_REJECTED;
+				return MoveStatus.MOVE_FAILED;
 			}
 		}
 	}

@@ -6,11 +6,13 @@
 
 package jfreerails.world.train;
 
+import jfreerails.world.common.FreerailsSerializable;
+
 /**
- *
+ * This class encapsulates the orders for a train.  
  * @author  Luke
  */
-public class TrainOrdersModel {
+public class TrainOrdersModel implements FreerailsSerializable {
     
     public final boolean waitUntilFull;
     

@@ -25,18 +25,18 @@ public abstract class AbstractMoveTestCase extends TestCase {
 		w = new WorldImpl();
 	}
 
-	abstract void testMove();	
+	abstract public void testMove();	
 
 	protected void assertTryMoveIsOk(Move m) {
 		assertSetupHasBeenCalled();
 		
 		MoveStatus ms = m.tryDoMove(w);
 		assertNotNull(ms);
-		assertTrue("First try failed", ms.ok);
+		assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
 				
 		ms = m.tryDoMove(w);
 		assertNotNull(ms);
-		assertTrue("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!", ms.ok);
+		assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",MoveStatus.MOVE_OK, ms);
 	}
 
 	protected void assertTryMoveFails(Move m) {
@@ -52,7 +52,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 		
 		MoveStatus ms = m.doMove(w);
 		assertNotNull(ms);
-		assertTrue(ms.ok);
+		assertEquals(MoveStatus.MOVE_OK, ms);
 				
 	}
 
@@ -69,11 +69,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
 		MoveStatus ms = m.tryUndoMove(w);
 		assertNotNull(ms);
-		assertTrue("First try failed", ms.ok);
+		assertEquals("First try failed",MoveStatus.MOVE_OK, ms);
 				
 		ms = m.tryUndoMove(w);
 		assertNotNull(ms);
-		assertTrue("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!", ms.ok);
+		assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",MoveStatus.MOVE_OK, ms);
 		
 	}
 
@@ -90,7 +90,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 		
 		MoveStatus ms = m.undoMove(w);
 		assertNotNull(ms);
-		assertTrue(ms.ok);
+		assertEquals(MoveStatus.MOVE_OK, ms);
 	}
 
 	protected void assertUndoMoveFails(Move m) {

@@ -38,6 +38,9 @@ public interface World extends FreerailsSerializable {
      */
     void add(KEY key, FreerailsSerializable element);
     
+    /** Removes the last element from the specified list. */
+    FreerailsSerializable removeLast(KEY key);
+    
     /** Returns the number of elements in the specified list.
      */
     int size(KEY key);

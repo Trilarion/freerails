@@ -57,7 +57,7 @@ public class ChangeTrainPositionMoveTest extends TestCase {
 	
 	protected void setUp(){
 		w = new WorldImpl(1,1);
-		TrainModel train1 = new TrainModel(0, new int[]{}, FIXTURE1_BEFORE_MOVE1);
+		TrainModel train1 = new TrainModel(0, new int[]{}, FIXTURE1_BEFORE_MOVE1, null);
 		w.add(KEY.TRAINS, train1);			
 	}
 	

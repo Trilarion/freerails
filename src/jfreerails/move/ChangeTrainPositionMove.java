@@ -31,7 +31,7 @@ public class ChangeTrainPositionMove {
 	public static ChangeTrainPositionMove getNullMove(int trainNumber) {
 		return new ChangeTrainPositionMove(null, null, trainNumber, false, false) {
 			MoveStatus move(World w, boolean updateTrainPosition, boolean isDoMove) {
-				return MoveStatus.MOVE_ACCEPTED;
+				return MoveStatus.MOVE_OK;
 			}
 
 		};
@@ -170,7 +170,7 @@ public class ChangeTrainPositionMove {
 		if (localAddToHead) {
 
 			if (!oldTrainPosition.canAddToHead(changeToHead)) {
-				return MoveStatus.MOVE_REJECTED;
+				return MoveStatus.MOVE_FAILED;
 			}
 			intermediatePosition = oldTrainPosition.addToHead(changeToHead);
 			//System.out.println(
@@ -178,12 +178,12 @@ public class ChangeTrainPositionMove {
 
 			if (localAddToTail) {
 				if (!intermediatePosition.canAddToTail(changeToTail)) {
-					return MoveStatus.MOVE_REJECTED;
+					return MoveStatus.MOVE_FAILED;
 				}
 				newTrainPosition = intermediatePosition.addToTail(changeToTail);
 			} else {
 				if (!intermediatePosition.canRemoveFromTail(changeToTail)) {
-					return MoveStatus.MOVE_REJECTED;
+					return MoveStatus.MOVE_FAILED;
 				}
 				newTrainPosition = intermediatePosition.removeFromTail(changeToTail);
 			}
@@ -192,12 +192,12 @@ public class ChangeTrainPositionMove {
 		} else {
 			if (localAddToTail) {
 				if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
-					return MoveStatus.MOVE_REJECTED;
+					return MoveStatus.MOVE_FAILED;
 				}
 				intermediatePosition = oldTrainPosition.addToTail(changeToTail);
 			} else {
 				if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
-					return MoveStatus.MOVE_REJECTED;
+					return MoveStatus.MOVE_FAILED;
 				}
 				intermediatePosition = oldTrainPosition.removeFromTail(changeToTail);
 			}
@@ -205,7 +205,7 @@ public class ChangeTrainPositionMove {
 			//	"intermediatePosition=" + intermediatePosition.toString());
 
 			if (!intermediatePosition.canRemoveFromHead(changeToHead)) {
-				return MoveStatus.MOVE_REJECTED;
+				return MoveStatus.MOVE_FAILED;
 			}
 			newTrainPosition = intermediatePosition.removeFromHead(changeToHead);
 			//System.out.println(
@@ -215,7 +215,7 @@ public class ChangeTrainPositionMove {
 			train.setPosition(newTrainPosition);
 		}
 
-		return MoveStatus.MOVE_ACCEPTED;
+		return MoveStatus.MOVE_OK;
 	}
 
 	/*

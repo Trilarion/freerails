@@ -6,12 +6,14 @@
 
 package jfreerails.world.train;
 
+import jfreerails.world.common.FreerailsSerializable;
+
 /** This class represents a train's schedule.  That is, which stations that the train should
  * visit and what wagons the engine should pull.
  *
  * @author  lindsal
  */
-public class Schedule {
+public class Schedule implements FreerailsSerializable {
     
     public static final int MAX_NUMBER_OF_ORDERS=4;
     
@@ -19,7 +21,11 @@ public class Schedule {
     
     private final TrainOrdersModel[] orders = new TrainOrdersModel[MAX_NUMBER_OF_ORDERS+1];
     
-    int stationToGoto=1;
+    private int stationToGoto=1;
+    
+    public Schedule(){
+    	
+    }        
     
     public void removeOrder(int orderNumber){
         if(PRIORITY_ORDERS == orderNumber){

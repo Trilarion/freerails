@@ -17,9 +17,9 @@ package jfreerails.move;
 
 final public class MoveStatus {
 
-	public static final MoveStatus MOVE_ACCEPTED = new MoveStatus(true, "Move accepted");
+	public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
 
-	public static final MoveStatus MOVE_REJECTED = new MoveStatus(false, "Move rejected");
+	public static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
 
 	public static final MoveStatus MOVE_RECEIVED = new MoveStatus(false, "Move received");
 
@@ -27,15 +27,19 @@ final public class MoveStatus {
 
 	public final String message;
 
-	public MoveStatus(boolean ok, String mess) {
+	private MoveStatus(boolean ok, String mess) {
 		this.ok = ok;
 		this.message = mess;
+	}
+	
+	public static MoveStatus moveFailed(String reason){
+		return new MoveStatus(false, reason);
 	}
 
 	public boolean isOk() {
 		return ok;
 	}
-	public String getMessage() {
+	public String toString() {
 		return message;
 	}
 

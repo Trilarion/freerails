@@ -55,9 +55,9 @@ public final class ChangeTrackPieceCompositeMove
 		moveStatusA = moveA.tryDoMove(w);
 		moveStatusB = moveB.tryDoMove(w);
 		if (moveStatusA.isOk() && moveStatusB.isOk()) {
-			return MoveStatus.MOVE_ACCEPTED;
+			return MoveStatus.MOVE_OK;
 		} else {
-			return MoveStatus.MOVE_REJECTED;
+			return MoveStatus.MOVE_FAILED;
 		}
 
 	}

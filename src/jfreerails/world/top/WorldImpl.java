@@ -90,4 +90,10 @@ public class WorldImpl implements World {
 		}
 	}
 
+	public FreerailsSerializable removeLast(KEY key) {
+		int size = lists[key.getKeyNumber()].size();
+		int index = size - 1;
+		return (FreerailsSerializable)lists[key.getKeyNumber()].remove(index);
+	}
+
 }
