@@ -15,6 +15,9 @@ import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
+import java.util.List;
+import java.util.*;
+import jfreerails.client.renderer.BuildTrackRenderer;
 
 
 /** Handles key presses and mouse movements on the map - responsible for moving the cursor etc.
@@ -27,21 +30,67 @@ public class UserInputOnMapController extends KeyAdapter {
     private DialogueBoxController dialogueBoxController;
     private final ModelRoot modelRoot;
     private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
+    private BuildTrackRenderer buildTrack;
 
     public UserInputOnMapController(ModelRoot mr) {
         modelRoot = mr;
     }
 
     private class CursorMouseAdapter extends MouseInputAdapter {
+        private int x;
+        private int y;
+        private boolean pressedInside = false;
+        private List proposedTrack;
+
         public void mousePressed(MouseEvent evt) {
             if (SwingUtilities.isLeftMouseButton(evt)) {
+                x = evt.getX();
+                y = evt.getY();
+                float scale = mapView.getScale();
+                Dimension tileSize = new Dimension((int)scale, (int)scale);
+
+                // only jump - no track building
+                moveCursorJump(new Point(x / tileSize.width, y / tileSize.height));
+
+                mapView.requestFocus();
+                pressedInside = true;
+                buildTrack.show();
+            }
+        }
+
+        public void mouseDragged(MouseEvent evt) {
+//            System.err.println("mouseDragged()");
+            if (SwingUtilities.isLeftMouseButton(evt) && pressedInside) {
                 int x = evt.getX();
                 int y = evt.getY();
                 float scale = mapView.getScale();
-                Dimension tileSize = new Dimension((int)scale, (int)scale);
-                tryMoveCursor(new Point(x / tileSize.width, y / tileSize.height));
+                Dimension tileSize = new Dimension( (int) scale, (int) scale);
+                int tileX = x / tileSize.width;
+                int tileY = y / tileSize.height;
+                proposedTrack = createProposedTrack(new Point(tileX, tileY));
+                buildTrack.setTrack(getCursorPosition(), proposedTrack);
                 mapView.requestFocus();
+                /** @todo  show created/show track but not send it to other players
+                 * ??? How ???
+                 */
             }
+        }
+
+        public void mouseReleased(MouseEvent evt) {
+//            System.err.println("mouseReleased()");
+            if (SwingUtilities.isLeftMouseButton(evt)) {
+                // build a railroad from x,y to current cursor position
+                /** @todo build a track
+                 *  1st version -> create oneTileMove
+                 *  final version -> create multiTileMove to build longer track
+                 */
+                if (pressedInside && (null != proposedTrack)) {
+                    moveCursorMoreTiles(proposedTrack);
+                }
+                pressedInside = false;
+                proposedTrack = null;
+                buildTrack.hide();
+             }
         }
     }
 
@@ -71,17 +120,20 @@ public class UserInputOnMapController extends KeyAdapter {
 
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
         StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
-        FreerailsCursor cursor) {
+        FreerailsCursor cursor, BuildTrackRenderer buildTrack) {
         this.dialogueBoxController = dbc;
         this.mapView = mv;
         this.stationTypesPopup = stPopup;
         this.trackBuilder = trackBuilder;
+        this.buildTrack = buildTrack;
 
         /* We attempt to remove listeners before adding them to
          * prevent them being added several times.
          */
         mapView.removeMouseListener(mouseInputAdapter);
         mapView.addMouseListener(mouseInputAdapter);
+        mapView.removeMouseMotionListener(mouseInputAdapter);
+        mapView.addMouseMotionListener(mouseInputAdapter);
         mapView.removeKeyListener(this);
         mapView.addKeyListener(this);
     }
@@ -101,7 +153,7 @@ public class UserInputOnMapController extends KeyAdapter {
     private Point getCursorPosition() {
         Point point = (Point)modelRoot.getProperty(ModelRoot.CURSOR_POSITION);
 
-        //Check for null & make a defensive copy    	
+        //Check for null & make a defensive copy
         point = null == point ? new Point() : new Point(point);
 
         return point;
@@ -122,42 +174,42 @@ public class UserInputOnMapController extends KeyAdapter {
 
         switch (e.getKeyCode()) {
         case KeyEvent.VK_NUMPAD1:
-            moveCursor(OneTileMoveVector.SOUTH_WEST);
+            moveCursorOneTile(OneTileMoveVector.SOUTH_WEST);
 
             break;
 
         case KeyEvent.VK_NUMPAD2:
-            moveCursor(OneTileMoveVector.SOUTH);
+            moveCursorOneTile(OneTileMoveVector.SOUTH);
 
             break;
 
         case KeyEvent.VK_NUMPAD3:
-            moveCursor(OneTileMoveVector.SOUTH_EAST);
+            moveCursorOneTile(OneTileMoveVector.SOUTH_EAST);
 
             break;
 
         case KeyEvent.VK_NUMPAD4:
-            moveCursor(OneTileMoveVector.WEST);
+            moveCursorOneTile(OneTileMoveVector.WEST);
 
             break;
 
         case KeyEvent.VK_NUMPAD6:
-            moveCursor(OneTileMoveVector.EAST);
+            moveCursorOneTile(OneTileMoveVector.EAST);
 
             break;
 
         case KeyEvent.VK_NUMPAD7:
-            moveCursor(OneTileMoveVector.NORTH_WEST);
+            moveCursorOneTile(OneTileMoveVector.NORTH_WEST);
 
             break;
 
         case KeyEvent.VK_NUMPAD8:
-            moveCursor(OneTileMoveVector.NORTH);
+            moveCursorOneTile(OneTileMoveVector.NORTH);
 
             break;
 
         case KeyEvent.VK_NUMPAD9:
-            moveCursor(OneTileMoveVector.NORTH_EAST);
+            moveCursorOneTile(OneTileMoveVector.NORTH_EAST);
 
             break;
 
@@ -202,40 +254,83 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
-    private void tryMoveCursor(Point tryThisPoint) {
-        setCursorMessage(null);
+    private List createProposedTrack(Point tryThisPoint) {
 
         Point oldCursorMapPosition = getCursorPosition();
-        float tileSize = mapView.getScale();
-        Dimension mapSizeInPixels = mapView.getMapSizeInPixels();
-        int maxX = (int)(mapSizeInPixels.width / tileSize) - 2;
-        int maxY = (int)(mapSizeInPixels.height / tileSize) - 2;
-        Rectangle legalRectangle; //The set of legal cursor positions.
-        legalRectangle = new Rectangle(1, 1, maxX, maxY);
 
-        if (legalRectangle.contains(tryThisPoint)) {
-            /*Move the cursor. */
+        int deltaX = tryThisPoint.x - oldCursorMapPosition.x;
+        int deltaY = tryThisPoint.y - oldCursorMapPosition.y;
+        int aDeltaX = Math.abs(deltaX);
+        int aDeltaY = Math.abs(deltaY);
+         /*Build track! */
+         /** @todo Replace this 'if' with longer track creation */
+         int diagLen = Math.min(aDeltaX, aDeltaY);
+
+         List proposedTrack = new ArrayList(Math.max(aDeltaX, aDeltaY));
+
+         int dirX = (deltaX>0 ? 1 : -1);
+         int dirY = (deltaY>0 ? 1 : -1);
+         for (int diag = 0; diag<diagLen; diag++) {
+             OneTileMoveVector vector = OneTileMoveVector.getInstance(dirX, dirY);
+             proposedTrack.add(vector);
+         }
+         int diff = aDeltaX - aDeltaY;
+         // if diff > 0 then we need to build some track in X direction
+         for (int rest = 0; rest < diff; rest++) {
+             OneTileMoveVector vector = OneTileMoveVector.getInstance(dirX,0);
+             proposedTrack.add(vector);
+         }
+         // if diff < 0 then we need to build some track in Y direction
+         for (int rest = 0; rest > diff; rest--) {
+             OneTileMoveVector vector = OneTileMoveVector.getInstance(0, dirY);
+             proposedTrack.add(vector);
+         }
+         return proposedTrack;
+    }
+
+    private void moveCursorMoreTiles(List track) {
+        for (Iterator iter = track.iterator(); iter.hasNext(); ) {
+            OneTileMoveVector vector = (OneTileMoveVector)iter.next();
+            moveCursorOneTile(vector);
+        }
+    }
+
+    private void moveCursorJump(Point tryThisPoint) {
+        setCursorMessage("");
+            if (legalRectangleContains(tryThisPoint)) {
             setCursorPosition(tryThisPoint);
-
-            int deltaX = tryThisPoint.x - oldCursorMapPosition.x;
-            int deltaY = tryThisPoint.y - oldCursorMapPosition.y;
-
-            /*Build track! */
-            if (OneTileMoveVector.checkValidity(deltaX, deltaY)) {
-                OneTileMoveVector vector = OneTileMoveVector.getInstance(deltaX,
-                        deltaY);
-                this.cursorOneTileMove(oldCursorMapPosition, vector);
-            } else {
-                cursorJumped(tryThisPoint);
-            }
-        } else {
+            cursorJumped(tryThisPoint);
+        }
+        else {
             this.setCursorMessage("Illegal cursor position!");
         }
     }
 
-    private void moveCursor(OneTileMoveVector v) {
+    /**
+     * Checks whether specified point is in legal rectangle.
+     * @param tryThisPoint Point
+     * @return boolean
+     */
+    private boolean legalRectangleContains(Point tryThisPoint) {
+        float tileSize = mapView.getScale();
+        Dimension mapSizeInPixels = mapView.getMapSizeInPixels();
+        int maxX = (int) (mapSizeInPixels.width / tileSize) - 2;
+        int maxY = (int)(mapSizeInPixels.height / tileSize) - 2;
+        Rectangle legalRectangle; //The set of legal cursor positions.
+        legalRectangle = new Rectangle(1, 1, maxX, maxY);
+        return legalRectangle.contains(tryThisPoint);
+    }
+
+    private void moveCursorOneTile(OneTileMoveVector v) {
+        setCursorMessage(null);
         Point cursorMapPosition = this.getCursorPosition();
-        tryMoveCursor(new Point(cursorMapPosition.x + v.getDx(),
-                cursorMapPosition.y + v.getDy()));
+        Point tryThisPoint = new Point(cursorMapPosition.x + v.getDx(), cursorMapPosition.y + v.getDy());
+        /*Move the cursor. */
+        if (legalRectangleContains(tryThisPoint)) {
+            setCursorPosition(tryThisPoint);
+            cursorOneTileMove(cursorMapPosition, v);
+        } else {
+            this.setCursorMessage("Illegal cursor position!");
+        }
     }
 }
