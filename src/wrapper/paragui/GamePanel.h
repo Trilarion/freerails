@@ -8,6 +8,7 @@
 #include "GameMainWindow.h"
 
 #include <pggradientwidget.h>
+#include <pgbutton.h>
 #include <pgrect.h>
 
 class GamePanel: public PG_GradientWidget {
@@ -20,6 +21,8 @@ class GamePanel: public PG_GradientWidget {
 
   private:
 
+    PG_Button* trackButton;
+    PG_Button* stationButton;
 };
 
 #endif
