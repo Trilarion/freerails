@@ -1,544 +1,61 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
-	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.1  (Win32)">
-	<META NAME="CREATED" CONTENT="20040509;23115157">
-	<META NAME="CHANGED" CONTENT="20041123;15491696">
+<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+<TITLE></TITLE>
+<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.1  (Win32)">
+<META NAME="CREATED" CONTENT="20040509;23115157">
+<META NAME="CHANGED" CONTENT="20041212;16325390">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
-<H1 ALIGN=CENTER>JFreerails 1.0 
-</H1>
+<H1 ALIGN=CENTER>JFreerails 1.0 </H1>
 <H2 ALIGN=CENTER>Functional Specification</H2>
 <P ALIGN=CENTER>Luke Lindsay</P>
-<P ALIGN=CENTER>last updated <SDFIELD TYPE=DATETIME SDNUM="2057;1033;MMM D, YYYY">Nov 23, 2004</SDFIELD></P>
+<P ALIGN=CENTER>last updated <SDFIELD TYPE=DATETIME SDNUM="2057;1033;MMM D, YYYY">Dec 
+  12, 2004</SDFIELD></P>
 <H2>Overview</H2>
-<P>FreeRails a is real time multi player strategy game where players
-compete to build the most powerful railroad empire. 
-</P>
-<P>This spec is incomplete and what is here will be revised several
-times before it is finalized.</P>
-<P>This spec does not discuss in detail how features will be
-implemented.</P>
+<P>FreeRails a is real time multi player strategy game where players compete to 
+  build the most powerful railroad empire. </P>
+<P>This spec is incomplete and what is here will be revised several times before 
+  it is finalized.</P>
+<P>This spec does not discuss in detail how features will be implemented.</P>
 <H2>Scenarios</H2>
-<P>In designing software, it helps to imagine a few real life stories
-of how actual (stereotypical) people would use it. We'll look at
-three scenarios.</P>
+<P>In designing software, it helps to imagine a few real life stories of how actual 
+  (stereotypical) people would use it. We'll look at three scenarios.</P>
 <H4>Scenario 1: Jeff.</H4>
-<P>Aged 38, splits his time between contract web development work and
-(real) surfing (i.e. He's an aging hippy). Played RT1, disliked RT2
-and RT3. Skeptical about the quality of OS software.</P>
+<P>Aged 38, splits his time between contract web development work and (real) surfing 
+  (i.e. He's an aging hippy). Played RT1, disliked RT2 and RT3. Skeptical about 
+  the quality of OS software.</P>
 <H4>Scenario 2: Andy.</H4>
-<P>Young programmer, 19, rides a moped. First language not English.
-Never played RT1 but has played RT2 and RT3. When software doesn't
-work or works in a way he doesn't expect, he is quick to blame the
-software. Wants to get involved in the development of jfreerails and
-to write is own AI.</P>
+<P>Young programmer, 19, rides a moped. First language not English. Never played 
+  RT1 but has played RT2 and RT3. When software doesn't work or works in a way 
+  he doesn't expect, he is quick to blame the software. Wants to get involved 
+  in the development of jfreerails and to write is own AI.</P>
 <H4>Scenario 3: Claudia.</H4>
-<P>Smartest of the three. Recently left university and started
-working for the government (as an economist). Never played any of the
-RT games before. Wants something to play on her computer to distract
-her from her research.</P>
+<P>Smartest of the three. Recently left university and started working for the 
+  government (as an economist). Never played any of the RT games before. Wants 
+  something to play on her computer to distract her from her research.</P>
 <H2>Non Goals</H2>
-<P>This version will <I>not</I> support the following:</P>
 <P>Realism &ndash; its a game not a simulation..</P>
+<H2>Postponed for later releases</H2>
+<P>This version will <I>not</I> support the following:</P>
 <P>Customisablity</P>
-<P>Advanced graphics: 
-</P>
+<P>Difficulty levels</P>
+<P>Advanced graphics (including animations other than movement).</P>
 <P>Performance</P>
-<P>Cheat proof: don't play it with your house-mate who keeps stealing
-your milk</P>
-<P><BR><BR>
-</P>
-<H2>Game Model</H2>
-<H4>Time</H4>
-<P>Each year is a representative day. So, for instance, a train
-travelling at an average speed of 10 mph will make two (and a bit)
-200 mile trips in a year.</P>
-<H4>Map</H4>
-<P>Two maps will be available. A map of south America &ndash; used
-for proper games &ndash; and a small map &ndash; used for a tutorial.
-The maps are divided into square tiles. Tiles are 10 miles across.
-Rather than let the scale vary between maps of different sized
-regions, different sized maps should be used.</P>
-<P>The exact shape of mountain ranges and the distribution of terrain
-types will vary between games.</P>
-<H4>Terrain</H4>
-<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
-	<COL WIDTH=128*>
-	<COL WIDTH=128*>
-	<TR VALIGN=TOP>
-		<TD WIDTH=50%>
-			<P>Terrain type</P>
-		</TD>
-		<TD WIDTH=50%>
-			<P>Each tile on the map has a 'terrain type' e.g. Farm, desert
-			etc.</P>
-		</TD>
-	</TR>
-	<TR VALIGN=TOP>
-		<TD WIDTH=50%>
-			<P>Right-of-way cost</P>
-		</TD>
-		<TD WIDTH=50%>
-			<P>Before you build track on a square, you need to purchase the
-			right of way. Different terrain types have different ROW costs.</P>
-		</TD>
-	</TR>
-	<TR VALIGN=TOP>
-		<TD WIDTH=50%>
-			<P>Category</P>
-		</TD>
-		<TD WIDTH=50%>
-			<P>All terrain types fall into one of the following categories:
-			Urban, River, Ocean, Hill, Country, Special, Industry, or
-			Resource.</P>
-		</TD>
-	</TR>
-	<TR VALIGN=TOP>
-		<TD WIDTH=50%>
-			<P>Cargo production</P>
-		</TD>
-		<TD WIDTH=50%>
-			<P>Some types of terrain produce cargo (of one or more types),
-			e.g. A Cattle Ranch produces livestock.</P>
-		</TD>
-	</TR>
-	<TR VALIGN=TOP>
-		<TD WIDTH=50%>
-			<P>Cargo consumption</P>
-		</TD>
-		<TD WIDTH=50%>
-			<P>Some types of terrain consume cargo, e.g 'City' tiles consume
-			'Food'.</P>
-		</TD>
-	</TR>
-	<TR VALIGN=TOP>
-		<TD WIDTH=50%>
-			<P>Cargo conversion</P>
-		</TD>
-		<TD WIDTH=50%>
-			<P>Some types of terrain convert one type of cargo to another,
-			e.g. A Stock-Yard [vegetarians might want to stop reading..]
-			converts livestock to food.</P>
-		</TD>
-	</TR>
-</TABLE>
-<P><BR><BR>
-</P>
-<H4>Terrain Heights</H4>
-<P>Different terrain types will have different heights, I'll call
-this the type-height. The height of a tile will be the weighted
-average of the type-heights of the surrounding tiles.</P>
-<H4>Cargo</H4>
-<P>There are a number of cargo types, e.g. Mail, Passengers,
-Livestock etc. Cargo types fall into one of the following categories:
-Mail, Passengers, Fast Freight, Slow Freight, Bulk Freight. Mail is
-the most sensitive to speed of delivery; Bulk Freight is the least. 
-</P>
-<H4>Cities</H4>
-<P>Cities of random size are added at predefined locations on the map
-when the game starts. As time passes, cities grow and shrink
-depending the amount of cargo picked up and delivered.</P>
-<H4>Track</H4>
-<P>There are a number of track types, e.g. standard track, double
-track, tunnel etc. A tile can only have track of one type.</P>
-<P>You can only built track if you have cash &gt; 0. The cost of
-building track depends on the track type, the track configuration,
-and the right of way cost of the terrain. Some track types can only
-be built on certain terrain, e.g. an Iron Girder bridge can only be
-built on river. If some track has already been built, all new track
-must connect to the existing track.</P>
-<P>Track can be upgraded. The cost of upgrading track from type X to
-type Y is less than the cost of building track of type Y but more
-than the cost of Y less the cost of X.</P>
-<P>Track can be removed. When you remove track you get some money
-back.</P>
-<P>Different track types have different maintenance costs. The
-maintenance cost must be paid once per year.</P>
-<H4>Trains</H4>
-<P>Once you have built some track and a station you can build a
-train. You get a choice of engines and the option to add up to 6
-wagons. You can build trains even if you have cash &lt; 0. (This is
-to stop people getting stuck without any trains since you need trains
-to make money.)</P>
-<P>Trains can be scheduled to stop at 2 or more stations.</P>
-<H4>Engines</H4>
-<P>Types of engine are available when you start the game, three other
-types become available later.</P>
-<P>A train's engine can be upgraded.</P>
-<H4>Wagons</H4>
-<P>There is one wagon type for each cargo type. A wagon can carry 40
-units of cargo. Wagons are free and can be added at any station
-(since moving emtpy wagons about would be boring).</P>
-<H4>Train Schedules</H4>
-<P>The stations a train stops at and whether it changes its wagons
-when it stops are governed by a train's schedule.</P>
-<H4>Train movement</H4>
-<P>The more wagons a train is pulling, the slower it moves. The
-greater the amount of cargo, the slower the train. The gradient of
-the track also affects speed. When trains arrive at a station it
-stops for a few moments to load and unload cargo. Trains stop
-instantly (this is a simplication so we don't need to look ahead) but
-speed up slowly.</P>
-<H4>Stations</H4>
-<P>Supply and demand at a station is determined by the tile types
-withing the station's sphere-of-influence. Different station types
-have different sized spheres-of-influence. The spheres-of-influence
-of two stations cannot overlap.</P>
-<H4>The Economy 
-</H4>
-<P>The economy alternates between 5 states.</P>
-<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
-	<COL WIDTH=43*>
-	<COL WIDTH=43*>
-	<COL WIDTH=43*>
-	<COL WIDTH=43*>
-	<COL WIDTH=85*>
-	<THEAD>
-		<TR VALIGN=TOP>
-			<TH WIDTH=17%>
-				<P>Economic Climate</P>
-			</TH>
-			<TH WIDTH=17%>
-				<P>Base interest rate</P>
-			</TH>
-			<TH WIDTH=17%>
-				<P>Worsens to</P>
-			</TH>
-			<TH WIDTH=17%>
-				<P>Improves to</P>
-			</TH>
-			<TH WIDTH=33%>
-				<P>Effect on track price</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Boom</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>2%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Panic</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>N/A</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P ALIGN=LEFT>+33%</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Prosperity</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>3%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Boom</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P ALIGN=LEFT>+17%</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Moderation</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>4%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Prosperity</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>No change</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>5%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Panic</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Moderation</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>-17%</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
-				<P>Panic</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P ALIGN=LEFT>6%</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>N/A</P>
-			</TD>
-			<TD WIDTH=17%>
-				<P>Recession</P>
-			</TD>
-			<TD WIDTH=33%>
-				<P>-33%</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<H4>Stock and Bonds</H4>
-<P STYLE="margin-bottom: 0cm">The value of a bonds is $500k.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">The interest rate for new bonds = (base
-interest rate) + (number of outstanding bonds). Bonds can only be
-issued if this figure is &lt;= 7. 
-</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">New railroads issue 1,000,000 shares at
-$5 per share.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">Shares are traded in 10,000 share
-bundles.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">If the share price is &gt;$100 at the
-end of the year, stocks are split 2 for 1.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">Stock price = [Net worth + stock
-stockholder equity + 5 * profit last year] / [ shares owned by public
-+ 0.5 shares owned by other players]</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">Let profit last year = 100,000 in the
-first year.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">When a player buys or sells shares, the
-price used is the price calculate <I>after</I> the shares have
-changed hands.</P>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
-<P STYLE="margin-bottom: 0cm">A transaction fee $25,000 applies each
-time a bond is issued or repaid and each time a bundle of shares is
-bought or sold.</P>
-<H2>Non player changes to the Game Model</H2>
-<H4>City Growth and Decay</H4>
-<P>As time passes, Urban, Industry, and Resource tiles are added and
-removed from cities. Example, a factory tile will relocate from New
-York to Boston if Boston's utiltiy gain exceeds New york's utility
-loss. Utilities are caluculated as follows. The routine that updates
-cities should run once per month.</P>
-<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
-	<COL WIDTH=128*>
-	<COL WIDTH=64*>
-	<COL WIDTH=64*>
-	<THEAD>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Category</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Utility</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Motivation</P>
-			</TD>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Industry</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Number of Urban Tiles / (1+Number of Industry Tiles)^2</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Urban tiles supply labour to industries. There are decreasing
-				returns to scale.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Resource</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>(Units of Resource Picked Up + c) / (1 + Number of Resource
-				Tiles)</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Resources grow when they are exploited. There are decreasing
-				returns to scale.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=50%>
-				<P>Urban</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Units of demanded cargo delivered &ndash; k * Number of Urban
-				Tiles/(1+Number of Industry Tiles)</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Urban tiles value employment and delivery of cargo but are
-				adverse to overcrowding.</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<P><BR><BR>
-</P>
-<P>Industries owned by Railroads do not enter the utility
-calculations, so when you build an industry, it stays put!</P>
-<H4>Payments for delivering cargo</H4>
-<H4>Addition and removal of cargo to stations</H4>
-<H2>User Interface</H2>
-<H4>Main map</H4>
-<P>...</P>
-<H4>Build Tab</H4>
-<H4>There are 5 build modes (see the table and screenshot below).</H4>
-<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
-	<COL WIDTH=64*>
-	<COL WIDTH=64*>
-	<COL WIDTH=128*>
-	<THEAD>
-		<TR VALIGN=TOP>
-			<TH WIDTH=25%>
-				<P>Build mode</P>
-			</TH>
-			<TH WIDTH=25%>
-				<P>Options visible when mode is selected</P>
-			</TH>
-			<TH WIDTH=50%>
-				<P>Action</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR VALIGN=TOP>
-			<TD WIDTH=25%>
-				<P>build track</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Track type, bridges, and tunnels.</P>
-			</TD>
-			<TD WIDTH=50%>
-				<P>When the cursor is moved, track is built. On clear terrain,
-				the selected track type is built. On rivers, the selected bridge
-				type is built (if a bridge type is selected.) On hills and
-				mountains, tunnel is built if build tunnls is selected.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=25%>
-				<P>upgrade track</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Track type and bridges</P>
-			</TD>
-			<TD WIDTH=50%>
-				<P>Track and bridges are upgraded to the selected type when the
-				cursor enters a tile.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=25%>
-				<P>build station</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>Stations</P>
-			</TD>
-			<TD WIDTH=50%>
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=25%>
-				<P>bulldoze</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>None</P>
-			</TD>
-			<TD WIDTH=50%>
-				<P>When the cursor moves from a tile to a neigbouring tile, any
-				track connecting the two tiles is removed.</P>
-			</TD>
-		</TR>
-		<TR VALIGN=TOP>
-			<TD WIDTH=25%>
-				<P>off</P>
-			</TD>
-			<TD WIDTH=25%>
-				<P>None</P>
-			</TD>
-			<TD WIDTH=50%>
-				<P>Nothing is built or removed when the cursor moves.</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<P><BR><BR>
-</P>
-<P><IMG SRC="build_track_options.png" NAME="Graphic1" ALIGN=LEFT WIDTH=323 HEIGHT=574 BORDER=0><BR CLEAR=LEFT><BR><BR>
-</P>
-<H4>Cursor</H4>
-<P>The cursor can be in one of the following modes.</P>
-<H4>Place station mode</H4>
-<UL>
-	<LI><P>The cursor gets put into place-station-mode when the player
-	selects a station type from the build tab.</P>
-</UL>
-<UL>
-	<LI><P>Shows the radius of the selected station type.</P>
-	<LI><P>Red when station cannot be built on selected square, white
-	otherwise. This should be determined by whether building the station
-	is possible, not merely whether there is track on the selected tile.</P>
-	<LI><P>Pressing the LMB attempts to place the station. If the
-	station is built, the cursor is returned to its previous mode; if
-	the station is not built, the cursor remains in place-station-mode.</P>
-	<LI><P>Pressing the RMB or pressing Esc cancels placing the station
-	and returns the cursor to its previous mode.</P>
-</UL>
-<H4>Build track mode</H4>
-<UL>
-	<LI><P>Track can be built by dragging the mouse</P>
-	<LI><P>Track can be built by pressing the number pad keys.</P>
-</UL>
-<H4>Remove track mode</H4>
-<UL>
-	<LI><P>Track can be removed by moving the cursor with the number pad
-	keys.</P>
-</UL>
-<H4>Info mode</H4>
-<H4>Overview map</H4>
-<H4>RHS tabs</H4>
-<H4>Broker screen</H4>
-<H4><A HREF="launcher_spec.html">Launcher</A></H4>
-<H2><BR><BR>
-</H2>
+<P>Cheat proof: don't play it with your house-mate who keeps stealing your milk</P>
+<P>Prority Shipments</P>
+<P>Scripting events and AI using Jython</P>
+<P>Internet high score table</P>
+<H2 ALIGN=LEFT>Specification</H2>
+<P ALIGN=LEFT>Glad you're still reading. Now lets look at the features this version 
+  will actually have..</P>
+<P STYLE="margin-bottom: 0cm"><A HREF="game_model.html">Game Model</A></P>
+<P STYLE="margin-bottom: 0cm"><A HREF="Non_player_changes_to_the_Game_Model.html">Non 
+  player changes to the Game Model</A></P>
+<P STYLE="margin-bottom: 0cm"><A HREF="User_Interface.html">User_Interface</A></P>
+<P STYLE="margin-bottom: 0cm"><A HREF="Reports_and_Dialogue_boxes.html">Reports 
+  and Dialogue boxes</A></P>
+<P><A HREF="launcher_spec.html">Launcher</A></P>
 </BODY>
 </HTML>

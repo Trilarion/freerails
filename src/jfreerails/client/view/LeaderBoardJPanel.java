@@ -53,8 +53,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 	}
 	/**
 	 * This method initializes this
-	 * 
-	 * @return void
+	 * 	
 	 */
 	private void initialize() {      
         this.add(getPlayersList(), null);      

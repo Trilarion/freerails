@@ -124,7 +124,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     /**
      * This method initializes this
      * 
-     * @return void
      */
     private void initialize() {
         yAxisLabel4 = new JLabel();

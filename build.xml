@@ -193,6 +193,10 @@
 			<fileset dir="${src}">
 				<include name="**/*.html" />
 				<include name="**/*.htm" />
+				
+				<!--Copy the images used by the functional specification but don't copy all the tile graphics etc.-->
+				<include name="docs/*.png" />
+				
 
 				<!--Don't copy these since the javadoc tool processes them -->
 				<exclude name="**/overview.html" />
