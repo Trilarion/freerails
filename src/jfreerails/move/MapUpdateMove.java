@@ -8,6 +8,6 @@ import java.awt.Rectangle;
  */
 public interface MapUpdateMove extends Move {
 	
-	public Rectangle getUpdatedTiles();
+	 Rectangle getUpdatedTiles();
 
 }

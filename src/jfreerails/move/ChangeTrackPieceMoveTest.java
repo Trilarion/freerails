@@ -12,10 +12,10 @@ import java.awt.Point;
 
 import jfreerails.move.status.MoveStatus;
 import jfreerails.unittest.fixture.MapFixtureFactory;
-import jfreerails.world.std_track.*;
 import jfreerails.world.std_track.TrackConfiguration;
 import jfreerails.world.std_track.TrackPiece;
 import jfreerails.world.std_track.TrackTileMapImpl;
+import jfreerails.world.std_track.TrackTileMap;
 
 /**
  *
@@ -35,8 +35,8 @@ public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
     }
     
     public static junit.framework.Test suite() {
-        junit.framework.TestSuite suite = new junit.framework.TestSuite(ChangeTrackPieceMoveTest.class);
-        return suite;
+        junit.framework.TestSuite testSuite = new junit.framework.TestSuite(ChangeTrackPieceMoveTest.class);
+        return testSuite;
     }
     
     protected void setUp(){

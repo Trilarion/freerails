@@ -2,7 +2,7 @@ package jfreerails.world.terrain;
 
 public interface TerrainType  {
     
-    public String getTerrainTypeName();
+    String getTerrainTypeName();
 
-    public int getRGB();
+    int getRGB();
 }

@@ -17,7 +17,6 @@ import jfreerails.misc.OneTileMoveVector;
 import jfreerails.move.status.MoveStatus;
 import jfreerails.type.TrackRule;
 import jfreerails.unittest.fixture.MapFixtureFactory;
-import jfreerails.world.std_track.*;
 import jfreerails.world.std_track.NullTrackPiece;
 import jfreerails.world.std_track.TrackTileMap;
 import jfreerails.world.std_track.TrackTileMapImpl;
@@ -44,8 +43,8 @@ public class ChangeTrackPieceCompositeMoveTest extends TestCase {
     }
     
     public static Test suite() {
-        TestSuite suite = new TestSuite(ChangeTrackPieceCompositeMoveTest.class);
-        return suite;
+        TestSuite testSuite = new TestSuite(ChangeTrackPieceCompositeMoveTest.class);
+        return testSuite;
     }
      protected void setUp(){
          trackRuleList=MapFixtureFactory.generateTrackRuleList();       

@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 
 import jfreerails.move.status.MoveStatus;
 import jfreerails.type.LegalTrackConfigurations;
-import jfreerails.world.std_track.*;
 import jfreerails.world.std_track.TrackPiece;
 import jfreerails.world.std_track.TrackTileMap;
 
@@ -92,7 +91,7 @@ final public class ChangeTrackPieceMove implements NewTrackMove, MapUpdateMove {
 
 	public MoveStatus doMove(TrackTileMap trackTileMap) {
 		MoveStatus moveStatus = tryDoMove(trackTileMap);
-		if (moveStatus.isOk() == false) {
+		if (!moveStatus.isOk()) {
 			return moveStatus;
 		} else {
 			trackTileMap.setTrackPiece(location, newTrackPiece);

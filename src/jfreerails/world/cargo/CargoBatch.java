@@ -3,15 +3,14 @@ package jfreerails.world.cargo;
 import java.awt.Point;
 
 import jfreerails.type.CargoType;
-import jfreerails.world.std_cargo.CompositeCargoBundle;
 
 public interface CargoBatch {
 	
-	public Point getPointOfOrigin();
+	Point getPointOfOrigin();
 
-	public String getPlaceOfOrigin();
+	String getPlaceOfOrigin();
 
-	public CargoType getCargoType();	
+	CargoType getCargoType();	
 
 	boolean hasTravelled();
 }

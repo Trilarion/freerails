@@ -7,7 +7,6 @@
  */
 package jfreerails.server;
 
-import java.util.*;
 
 
 /**
