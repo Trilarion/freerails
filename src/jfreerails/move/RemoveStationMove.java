@@ -10,6 +10,7 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 
 /**
@@ -30,7 +31,7 @@ public class RemoveStationMove extends RemoveItemFromListMove implements TrackMo
 		System.out.println(this.toString());
 	}
 
-	static RemoveStationMove getInstance(World w, ChangeTrackPieceMove removeTrackMove) {
+	static RemoveStationMove getInstance(ReadOnlyWorld w, ChangeTrackPieceMove removeTrackMove) {
 		WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
 		int stationIndex = -1;
 		while (wi.next()) {

@@ -1,5 +1,5 @@
 package jfreerails.client.renderer;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 
 
@@ -28,5 +28,5 @@ public interface TileRendererList {
 	 * the terrain types in the specifed list.
 	 */
 
-	boolean validate(World world);
+	boolean validate(ReadOnlyWorld world);
 }

@@ -9,7 +9,7 @@ import jfreerails.client.common.Painter;
 import jfreerails.client.renderer.TrainRenderer;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.TrainModel;
 
 
@@ -17,9 +17,9 @@ public class TestOverHeadTrainView implements Painter {
 	
 	final TrainRenderer trainPainter;
 
-	World w;
+	ReadOnlyWorld w;
 
-	public TestOverHeadTrainView(World world, ViewLists vl) {
+	public TestOverHeadTrainView(ReadOnlyWorld world, ViewLists vl) {
 		this.w = world;
 		trainPainter = new TrainRenderer(vl.getTrainImages());
 	}

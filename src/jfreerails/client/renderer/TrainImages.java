@@ -10,7 +10,7 @@ import java.io.IOException;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.EngineType;
 
 /**
@@ -29,7 +29,7 @@ public class TrainImages {
 	private final Image[] sideOnEngineImages;
 	private final Image[][] overheadEngineImages;
 
-	public TrainImages(World w, ImageManager imageManager) throws IOException {
+	public TrainImages(ReadOnlyWorld w, ImageManager imageManager) throws IOException {
 		final int numberOfWagonTypes = w.size(KEY.CARGO_TYPES);
 		final int numberOfEngineTypes = w.size(KEY.ENGINE_TYPES);
 		sideOnWagonImages = new Image[numberOfWagonTypes];

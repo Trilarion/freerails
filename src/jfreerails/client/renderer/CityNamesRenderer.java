@@ -13,14 +13,14 @@ import java.awt.Graphics2D;
 
 import jfreerails.client.common.Painter;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.city.CityModel;
 
 public class CityNamesRenderer implements Painter {
 
-	private World w;
+	private ReadOnlyWorld w;
 	
-	public CityNamesRenderer(World world) {
+	public CityNamesRenderer(ReadOnlyWorld world) {
 		this.w = world;
 	}
 	

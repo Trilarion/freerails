@@ -11,7 +11,7 @@ import java.io.File;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
 *  This class encapsulates the visible properties of a tile.
@@ -53,7 +53,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 		int screenY,
 		int mapX,
 		int mapY,
-		World w) {
+		ReadOnlyWorld w) {
 		Image icon = this.getIcon(mapX, mapY, w);
 		if (null != icon) {
 			g.drawImage(icon, screenX, screenY, null);
@@ -81,7 +81,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 		return tileModel.getTerrainTypeName();
 	}
 
-	public Image getIcon(int x, int y, World w) {
+	public Image getIcon(int x, int y, ReadOnlyWorld w) {
 		int tile = selectTileIcon(x, y, w);
 		
 		if (tileIcons[tile] != null) {
@@ -96,7 +96,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 	river; ocean, ports, and other rivers are treated as the same terrain type.
 	*/
 
-	public int selectTileIcon(int x, int y, World w) {
+	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
 		return 0;
 	}
 
@@ -105,7 +105,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 		tileWidth = width;
 	}
 
-	protected int checkTile(int x, int y, World w) {
+	protected int checkTile(int x, int y, ReadOnlyWorld w) {
 		int match = 0;
 
 		

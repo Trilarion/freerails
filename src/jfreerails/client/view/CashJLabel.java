@@ -13,7 +13,7 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.Money;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
  * This JLabel shows the amount of cash available.
@@ -22,13 +22,14 @@ import jfreerails.world.top.World;
  */
 public class CashJLabel extends JLabel implements View {
 
-	private World w;
+	private ReadOnlyWorld w;
+
 	public CashJLabel(){
 		this.setText("CASH NOT SET!");
 	}
 
-	public void setup(World w, ViewLists vl, ActionListener submitButtonCallBack) {
-		this.w = w;				
+	public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
+		this.w = w;
 	}
 	
 

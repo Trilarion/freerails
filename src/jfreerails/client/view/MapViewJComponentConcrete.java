@@ -6,8 +6,8 @@
  */
 package jfreerails.client.view;
 
-import java.awt.Dimension;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -18,6 +18,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
 import jfreerails.client.renderer.MapRenderer;
+import jfreerails.world.top.ReadOnlyWorld;
+
 
 /**
  *
@@ -35,7 +37,7 @@ final public class MapViewJComponentConcrete
 
 	//private StationTypesPopup stationTypesPopup;
 
-	private FreerailsCursor cursor;
+	private FreerailsCursor mapCursor;
 
 
 	/**
@@ -90,7 +92,7 @@ final public class MapViewJComponentConcrete
 				int y = evt.getY();
 				float scale = mapView.getScale();
 				Dimension tileSize = new Dimension((int) scale, (int) scale);
-				cursor.TryMoveCursor(new Point(
+				mapCursor.tryMoveCursor(new Point(
 					x / tileSize.width,
 					y / tileSize.height));
 				MapViewJComponentConcrete.this.requestFocus();
@@ -185,8 +187,8 @@ final public class MapViewJComponentConcrete
 		java.awt.Rectangle r = this.getVisibleRect();
 
 		mapView.paintRect(g2, r);
-		if (null != cursor) {
-			cursor.cursorRenderer.paintCursor(
+		if (null != mapCursor) {
+			mapCursor.cursorRenderer.paintCursor(
 				g2,
 				new java.awt.Dimension(30, 30));
 		}
@@ -201,19 +203,19 @@ final public class MapViewJComponentConcrete
 
 	public void setup(
 		MapRenderer mv,
-		FreerailsCursor fc
+		ReadOnlyWorld w
 		) {
 		super.mapView = mv;
 
 		this.setBorder(null);
 
-		this.removeKeyListener(this.cursor);
+		this.removeKeyListener(this.mapCursor);
 
-		this.cursor = fc;
-		//this.cursor = new FreerailsCursor(mv);
-		cursor.addCursorEventListener(this);
+		this.mapCursor = new FreerailsCursor(mv);
+		
+		mapCursor.addCursorEventListener(this);
 
-		this.addKeyListener(cursor);
+		this.addKeyListener(mapCursor);
 	}
 
 	public void setup(MapRenderer mv) {
@@ -308,6 +310,11 @@ final public class MapViewJComponentConcrete
 	}
 
 	public void paintRect(Graphics g, Rectangle visibleRect) {
+	}
+
+	
+	public FreerailsCursor getMapCursor() {
+		return mapCursor;
 	}
 
 }

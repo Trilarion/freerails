@@ -13,7 +13,7 @@ import java.io.IOException;
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageSplitter;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
 *
@@ -42,7 +42,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 		int renderY,
 		int mapX,
 		int mapY,
-		World w) {
+		ReadOnlyWorld w) {
 
 		if (parentTileView != null) {
 			parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
@@ -59,7 +59,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 
 	}
 
-	public int selectTileIcon(int x, int y, World w) {
+	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
 		return 0;
 	}
 

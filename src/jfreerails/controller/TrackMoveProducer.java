@@ -3,11 +3,10 @@ import java.awt.Point;
 
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
-import jfreerails.move.MoveStatus;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
@@ -18,7 +17,7 @@ final public class TrackMoveProducer {
 
 	private TrackRule trackRule;
 
-	private World w;
+	private ReadOnlyWorld w;
 
 	private MoveReceiver moveReceiver;
 
@@ -55,8 +54,7 @@ final public class TrackMoveProducer {
 					trackRule,
 					w);
 
-			MoveStatus moveStatus = moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-			TextMessageHandler.sendMessage(moveStatus.message);
+			moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 			return true;
 		}
 		if (trackBuilderMode == REMOVE_TRACK) {
@@ -66,8 +64,7 @@ final public class TrackMoveProducer {
 					from,
 					trackVector,
 					w);
-			MoveStatus moveStatus = moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-			TextMessageHandler.sendMessage(moveStatus.message);
+			moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 			return true;
 		}
 		if (trackBuilderMode == UPGRADE_TRACK) {
@@ -126,7 +123,7 @@ final public class TrackMoveProducer {
 		return trackBuilderMode;
 	}
 
-	public TrackMoveProducer(World world) {
+	public TrackMoveProducer(ReadOnlyWorld world) {
 		transactionsGenerator = new TrackMoveTransactionsGenerator(world);
 		if (world == null) {
 			throw new java.lang.NullPointerException(
@@ -135,7 +132,7 @@ final public class TrackMoveProducer {
 		this.w = world;
 	}
 	
-	public TrackMoveProducer(World  world, MoveReceiver moveReceiver) {
+	public TrackMoveProducer(ReadOnlyWorld  world, MoveReceiver moveReceiver) {
 		if (null == world||null==moveReceiver) {
 			throw new NullPointerException();
 		}
@@ -150,8 +147,7 @@ final public class TrackMoveProducer {
 		TrackPiece before=(TrackPiece)w.getTile(point.x, point.y);
 		TrackPiece after=trackRule.getTrackPiece(before.getTrackConfiguration());
 		Move move = UpgradeTrackMove.generateMove( before, after, point);		
-		MoveStatus moveStatus = moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-			TextMessageHandler.sendMessage(moveStatus.message);
+		moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 	}
 
 }

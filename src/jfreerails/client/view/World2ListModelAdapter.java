@@ -8,7 +8,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
  * This class implements the GoF Adapter pattern.  It converts the
@@ -21,9 +21,9 @@ public class World2ListModelAdapter implements ListModel {
 	
 	private final KEY k;
 	
-	private final World w;
+	private final ReadOnlyWorld w;
 	
-	public World2ListModelAdapter(World world, KEY key){
+	public World2ListModelAdapter(ReadOnlyWorld world, KEY key){
 		this.k=key;
 		this.w=world;
 	}

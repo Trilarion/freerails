@@ -12,7 +12,7 @@ import java.io.IOException;
 import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
 *
@@ -52,7 +52,7 @@ final public class RiverStyleTileRenderer extends jfreerails.client.renderer.Abs
 		}
 	}
 
-	public int selectTileIcon(int x, int y, World w) {
+	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
 		int iconNumber = 0;
 		for (int i = 0; i < 4; i++) {
 			iconNumber = iconNumber << 1;

@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import jfreerails.client.renderer.MapRenderer;
-import jfreerails.client.view.MapCursor;
 import jfreerails.world.common.OneTileMoveVector;
 
 final public class FreerailsCursor implements KeyListener, MapCursor  {
@@ -30,7 +29,7 @@ final public class FreerailsCursor implements KeyListener, MapCursor  {
 
 	private Point oldCursorMapPosition = new Point(0, 0);
 
-	private static int blinkValue = 1;
+	private int blinkValue = 1;
 	/*The cursor tile and one tile in each direction
 	*/
 	private java.awt.BasicStroke stroke = new java.awt.BasicStroke(3);
@@ -40,17 +39,6 @@ final public class FreerailsCursor implements KeyListener, MapCursor  {
 	private Point cursorMapPosition = new Point(0, 0);
 
 	private MapRenderer mapView;
-
-	private static FreerailsCursor theCursor = null;
-
-	public static FreerailsCursor getCursor() {
-	    return theCursor;
-	}
-
-	public static void initCursor(MapRenderer mv) {
-	    if (theCursor == null)
-		theCursor = new FreerailsCursor(mv);
-	}
 
 	/** This inner class controls rendering of the cursor.
 	*/
@@ -132,7 +120,7 @@ final public class FreerailsCursor implements KeyListener, MapCursor  {
 		// component = (MapViewJComponent)keyEvent.getComponent();
 	}
 
-	public void TryMoveCursor(Point tryThisPoint) {
+	public void tryMoveCursor(Point tryThisPoint) {
 		float tileSize = mapView.getScale();
 		Dimension mapSizeInPixels = mapView.getMapSizeInPixels();
 		int maxX = (int)(mapSizeInPixels.width / tileSize) - 2;
@@ -184,8 +172,7 @@ final public class FreerailsCursor implements KeyListener, MapCursor  {
 	* @param mapView The view that the curors moves across.
 	*/
 
-	//public FreerailsCursor(MapRenderer mv) {
-	private FreerailsCursor(MapRenderer mv) {
+	public FreerailsCursor(MapRenderer mv) {
 		this.mapView = mv;
 	}
 
@@ -199,7 +186,7 @@ final public class FreerailsCursor implements KeyListener, MapCursor  {
 	}
 
 	private void moveCursor(OneTileMoveVector v) {
-		TryMoveCursor(
+		tryMoveCursor(
 			new Point(cursorMapPosition.x + v.getDx(), cursorMapPosition.y + v.getDy()));
 	}
 

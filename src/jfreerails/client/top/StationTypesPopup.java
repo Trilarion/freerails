@@ -13,7 +13,7 @@ import javax.swing.event.PopupMenuListener;
 import jfreerails.client.renderer.StationRadiusRenderer;
 import jfreerails.controller.StationBuilder;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackRule;
 
 /**
@@ -43,7 +43,7 @@ public class StationTypesPopup extends JPopupMenu {
 	public void setup(StationBuilder sb, StationRadiusRenderer srr) {
 		stationBuilder = sb;
 		stationRadiusRenderer = srr;
-		World w = sb.getWorld();
+		ReadOnlyWorld w = sb.getWorld();
 		this.removeAll();
 		this.removePopupMenuListener(popupMenuListener);
 		popupMenuListener = new PopupMenuListener() {

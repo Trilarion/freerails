@@ -1,6 +1,10 @@
 Freerails Java - version 0.1.7
 
 What's new:
+o	Improved train orders dialogue.
+o	Station, train, info tabs on RHS
+o	Cargo conversions at station.
+o	Charges for track maintenance
 o	Payments for delivering cargo.
 o	Charges for building track.
 

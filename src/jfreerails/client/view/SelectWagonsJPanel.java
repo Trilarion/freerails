@@ -25,7 +25,7 @@ import jfreerails.client.renderer.TrainImages;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.TrainModel;
 /**
  * This JPanel lets the user add wagons to a train.
@@ -48,7 +48,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
 	private ViewLists viewLists;
 
-	private World w;
+	private ReadOnlyWorld w;
 
 	/** Creates new form SelectWagonsJPanel */
 	public SelectWagonsJPanel() {
@@ -262,11 +262,13 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 		}
 	}
 
-	public void setup(World world, ViewLists vl, ActionListener submitButtonCallBack) {
+	public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
+		this.w = w;
 		this.viewLists = vl;
-		this.w = world;
 		this.wagonTypesJList.setModel(new World2ListModelAdapter(w, KEY.CARGO_TYPES) );
-		this.wagonTypesJList.setCellRenderer(new WagonCellRenderer(viewLists.getTrainImages()));
+		TrainImages trainImages = viewLists.getTrainImages();
+		WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(trainImages);
+		this.wagonTypesJList.setCellRenderer(wagonCellRenderer);
 		this.okjButton.addActionListener(submitButtonCallBack);
 	}
 	public int getEngineType() {

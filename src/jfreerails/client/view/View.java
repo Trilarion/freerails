@@ -7,7 +7,7 @@ package jfreerails.client.view;
 import java.awt.event.ActionListener;
 
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
  * @author Luke
@@ -15,6 +15,6 @@ import jfreerails.world.top.World;
  */
 public interface View {
 	
-	void setup(World w, ViewLists vl, ActionListener submitButtonCallBack);
+	void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack);
 
 }

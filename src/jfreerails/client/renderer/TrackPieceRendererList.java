@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
@@ -56,7 +56,7 @@ final public class TrackPieceRendererList {
 		}
 	}
 	
-	public TrackPieceRendererList(World w, ImageManager imageManager) throws IOException{
+	public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager) throws IOException{
 		
 		int numberOfTrackTypes = w.size(KEY.TRACK_RULES);
 		trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
@@ -65,7 +65,7 @@ final public class TrackPieceRendererList {
 		}
 	}
 
-	public boolean validate(World w) {
+	public boolean validate(ReadOnlyWorld w) {
 
 		boolean okSoFar = true;
 		for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {

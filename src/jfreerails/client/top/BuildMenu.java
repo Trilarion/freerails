@@ -6,7 +6,7 @@
 package jfreerails.client.top;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackRule;
 
 
@@ -25,7 +25,7 @@ final public class BuildMenu extends javax.swing.JMenu {
 		super();
 	}
 
-	public void setup(World w, TrackMoveProducer tb) {
+	public void setup(ReadOnlyWorld w, TrackMoveProducer tb) {
 
 		this.removeAll();
 		this.trackBuilder = tb;

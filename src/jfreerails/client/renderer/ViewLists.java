@@ -1,6 +1,6 @@
 package jfreerails.client.renderer;
 
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 
 public interface ViewLists {
@@ -9,6 +9,6 @@ public interface ViewLists {
 	TrackPieceRendererList getTrackPieceViewList();
 	SideOnTrainTrainViewImages getSideOnTrainTrainViewImages();
 	TrainImages getTrainImages();
-	boolean validate(World world);
+	boolean validate(ReadOnlyWorld world);
 
 }

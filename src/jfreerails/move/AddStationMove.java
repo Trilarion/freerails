@@ -12,7 +12,7 @@ import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.Money;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackRule;
 
 /**
@@ -29,7 +29,7 @@ public class AddStationMove extends CompositeMove implements TrackMove {
 		super(moves);					
 	}
 
-	public static AddStationMove generateMove(World w, String stationName, Point p, ChangeTrackPieceMove upgradeTrackMove){	
+	public static AddStationMove generateMove(ReadOnlyWorld w, String stationName, Point p, ChangeTrackPieceMove upgradeTrackMove){	
 					
 		int cargoBundleNumber = w.size(KEY.CARGO_BUNDLES);
 		Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, new CargoBundleImpl());

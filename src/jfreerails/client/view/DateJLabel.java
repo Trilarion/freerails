@@ -13,7 +13,7 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.top.ITEM;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
  * This JLabel shows the current date.
@@ -22,7 +22,7 @@ import jfreerails.world.top.World;
  */
 public class DateJLabel extends JLabel implements View {
 
-	private World w;
+	private ReadOnlyWorld w;
 	
 	public DateJLabel(){
 		this.setText("DATE NOT SET!");	
@@ -38,7 +38,7 @@ public class DateJLabel extends JLabel implements View {
 		super.paint(g);
 	}
 
-	public void setup(World w, ViewLists vl, ActionListener submitButtonCallBack) {
+	public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
 		this.w = w;
 	}
 

@@ -7,7 +7,7 @@
 package experimental;
 import javax.swing.JFrame;
 
-import jfreerails.client.common.GameLoop;
+import jfreerails.client.top.GameLoop;
 import jfreerails.client.common.ScreenHandler;
 /**
  *

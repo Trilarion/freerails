@@ -5,16 +5,19 @@
  */
 
 package jfreerails.client.view;
-import jfreerails.world.top.*;
-import jfreerails.world.train.*;
-import jfreerails.world.cargo.*;
+import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.cargo.CargoType;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.train.TrainModel;
 /**
  *
  * @author  Luke Lindsay
  */
 public class TrainDetailsJPanel extends javax.swing.JPanel implements View {
-    
-    private World w;    
+
+
+    private ReadOnlyWorld w;    
     
     /** Creates new form TrainDetailsJPanel */
     public TrainDetailsJPanel() {
@@ -44,7 +47,8 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View {
 
     }//GEN-END:initComponents
 
-    public void setup(jfreerails.world.top.World w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
+    public void setup(ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
+	
         this.sideOnTrainViewJPanel1.setup(w, vl, null);
         this.sideOnTrainViewJPanel1.setShowEngine(true);
         this.sideOnTrainViewJPanel1.scaledImageHeight=30;

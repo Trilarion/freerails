@@ -8,10 +8,9 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.NullTrackType;
@@ -38,7 +37,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 		Point from,
 		OneTileMoveVector direction,
 		TrackRule trackRule,
-		World w) {
+		ReadOnlyWorld w) {
 
 		ChangeTrackPieceMove a, b;
 
@@ -57,7 +56,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 	public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
 		Point from,
 		OneTileMoveVector direction,
-		World w) {
+		ReadOnlyWorld w) {
 
 		TrackMove a, b;
 
@@ -75,7 +74,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 		Point p,
 		OneTileMoveVector direction,
 		TrackRule trackRule,
-		World w) {
+		ReadOnlyWorld w) {
 
 		TrackPiece oldTrackPiece, newTrackPiece;
 
@@ -100,7 +99,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 	private static TrackMove getRemoveTrackChangeTrackPieceMove(
 		Point p,
 		OneTileMoveVector direction,
-		World w) {
+		ReadOnlyWorld w) {
 
 		TrackPiece oldTrackPiece, newTrackPiece;
 

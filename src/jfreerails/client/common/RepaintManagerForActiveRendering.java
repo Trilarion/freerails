@@ -4,6 +4,9 @@
  */
 package jfreerails.client.common;
 
+import java.awt.Container;
+import java.util.HashSet;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.RepaintManager;
@@ -20,46 +23,62 @@ import javax.swing.RepaintManager;
  * @author Luke
  * 
  */
-final class RepaintManagerForActiveRendering extends RepaintManager {
-	
-	/** The JFrame that is being actively rendered in the game loop. */
-	private final JFrame frame;
-	
-	public RepaintManagerForActiveRendering(JFrame f){
-		this.frame =f;
+public final class RepaintManagerForActiveRendering extends RepaintManager {
+
+	/** The JFrame(s) that are being actively rendered in the game loop(s). */
+	private static HashSet componetsBEingActivleyRenderered = new HashSet();
+
+	private static RepaintManagerForActiveRendering instance =
+		new RepaintManagerForActiveRendering();
+
+	public static void setAsCurrentManager() {
+		RepaintManager.setCurrentManager(instance);
 	}
 
-	public synchronized void addDirtyRegion(JComponent c, int x, int y, int w, int h) {
-		if(hasDifferentAncester(c)){				
+	private RepaintManagerForActiveRendering() {
+	}
+
+	public synchronized void addDirtyRegion(
+		JComponent c,
+		int x,
+		int y,
+		int w,
+		int h) {
+		if (hasDifferentAncester(c)) {
 			super.addDirtyRegion(c, x, y, w, h);
 		}
 	}
 
+	public static synchronized void addJFrame(JFrame f) {
+		componetsBEingActivleyRenderered.add(f);
+	}
+
 	public synchronized void addInvalidComponent(JComponent invalidComponent) {
-		if(hasDifferentAncester(invalidComponent)){				
+		if (hasDifferentAncester(invalidComponent)) {
 			super.addInvalidComponent(invalidComponent);
 		}
 	}
 
 	public void markCompletelyClean(JComponent aComponent) {
-		if(hasDifferentAncester(aComponent)){			
+		if (hasDifferentAncester(aComponent)) {
 			super.markCompletelyClean(aComponent);
 		}
 	}
 
 	public void markCompletelyDirty(JComponent aComponent) {
-		if(hasDifferentAncester(aComponent)){		
+		if (hasDifferentAncester(aComponent)) {
 			super.markCompletelyDirty(aComponent);
 		}
 	}
-	
-	public boolean hasDifferentAncester(JComponent aComponent){
-		if(aComponent.getTopLevelAncestor() != null && aComponent.getTopLevelAncestor() != frame){			
-			return true;
-		}else{
+
+	public boolean hasDifferentAncester(JComponent aComponent) {
+
+		Container topLevelAncestor = aComponent.getTopLevelAncestor();
+		if (null == topLevelAncestor
+			|| componetsBEingActivleyRenderered.contains(topLevelAncestor)) {
 			return false;
-		}		
+		} else {
+			return true;
+		}
 	}
-
 }
-

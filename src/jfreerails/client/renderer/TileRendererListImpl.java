@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
 *@author           Luke Lindsay
@@ -54,7 +54,7 @@ final public class TileRendererListImpl implements TileRendererList {
 	//	return tiles.values().iterator();
 	//}
 
-	public boolean validate(World w) {
+	public boolean validate(ReadOnlyWorld w) {
 		
 		boolean okSoFar = true;
 		for(int i = 0; i < w.size(KEY.TERRAIN_TYPES); i++){

@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 
@@ -19,7 +19,7 @@ import jfreerails.world.track.NullTrackPiece;
 
 final public class ZoomedOutMapRenderer implements MapRenderer {
 
-	private World w;
+	private ReadOnlyWorld w;
 
 	private BufferedImage mapImage; //, scaledMapImage;
 
@@ -29,7 +29,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 			.getDefaultScreenDevice()
 			.getDefaultConfiguration();
 
-	public ZoomedOutMapRenderer(World world) {
+	public ZoomedOutMapRenderer(ReadOnlyWorld world) {
 		this.w = world;
 		this.refresh();
 		//mapImage.setRGB(0, 0, mapWidth, mapHeight, rgbArrary, 0, mapWidth);

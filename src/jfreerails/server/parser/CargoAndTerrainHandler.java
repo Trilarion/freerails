@@ -7,7 +7,8 @@
  */
 package jfreerails.server.parser;
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public interface CargoAndTerrainHandler {
     

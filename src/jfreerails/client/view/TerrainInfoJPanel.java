@@ -16,7 +16,7 @@ import jfreerails.world.terrain.Conversion;
 import jfreerails.world.terrain.Production;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /** This JPanel shows information on a terrain type.
  *
@@ -28,7 +28,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     
     private int terrainType=0;
     
-    private World w;
+    private ReadOnlyWorld w;
     
     /** Creates new form TerrainInfoJPanel */
     public TerrainInfoJPanel() {
@@ -79,7 +79,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
     }//GEN-END:initComponents
 
-    public void setup(World w, ViewLists vl) {
+    public void setup(ReadOnlyWorld w, ViewLists vl) {
         this.w = w;
         this.vl = vl;
     }    

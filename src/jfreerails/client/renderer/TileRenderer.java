@@ -2,7 +2,7 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 
 import jfreerails.client.common.ImageManager;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
@@ -14,7 +14,7 @@ import jfreerails.world.top.World;
 
 public interface TileRenderer {
 
-	 int selectTileIcon(int x, int y, World w);
+	 int selectTileIcon(int x, int y, ReadOnlyWorld w);
 
 	 int getRGB();
 
@@ -22,7 +22,7 @@ public interface TileRenderer {
 
 	 int getTileHeight();
 
-	 Image getIcon(int x, int y, World w);
+	 Image getIcon(int x, int y, ReadOnlyWorld w);
 
 	 Image getIcon();
 
@@ -32,7 +32,7 @@ public interface TileRenderer {
 		int renderY,
 		int mapX,
 		int mapY,
-		World w);
+		ReadOnlyWorld w);
 
 	 String getTerrainType();
 	 

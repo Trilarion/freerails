@@ -17,7 +17,7 @@ public class NonNullElements implements WorldIterator {
     
     private final KEY key;
     
-    private final World w;
+    private final ReadOnlyWorld w;
     
     int index = BEFORE_FIRST;
     
@@ -25,7 +25,7 @@ public class NonNullElements implements WorldIterator {
     
     int size = -1;
     
-    public NonNullElements(KEY k, World world) {
+    public NonNullElements(KEY k, ReadOnlyWorld world) {
         key = k;
         w = world;
         if(null == k){        

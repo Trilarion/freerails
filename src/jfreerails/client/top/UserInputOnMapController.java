@@ -4,12 +4,13 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 
+import jfreerails.client.top.GUIClient;
 import jfreerails.client.view.CursorEvent;
 import jfreerails.client.view.CursorEventListener;
 import jfreerails.client.view.DialogueBoxController;
-import jfreerails.client.view.FreerailsCursor;
+import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.MapViewJComponent;
-import jfreerails.controller.MoveExecuter;
+import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.TrackMoveProducer;
 
 public class UserInputOnMapController implements CursorEventListener {
@@ -20,11 +21,11 @@ public class UserInputOnMapController implements CursorEventListener {
 
 	private TrackMoveProducer trackBuilder;
 
-	private FreerailsCursor cursor;
+	private MapCursor cursor;
 
 	private DialogueBoxController dialogueBoxController;
 
-	private MoveExecuter trackMoveExecutor;
+	private UncommittedMoveReceiver trackMoveExecutor;
 
 	public void cursorOneTileMove(CursorEvent ce) {
 		if (null != trackBuilder) {
@@ -50,9 +51,9 @@ public class UserInputOnMapController implements CursorEventListener {
 		MapViewJComponent mv,
 		TrackMoveProducer trackBuilder,
 		StationTypesPopup stPopup,
-		FreerailsCursor fc,
+		GUIClient c,
 		DialogueBoxController dbc,
-		MoveExecuter tx) {
+		UncommittedMoveReceiver tx) {
 		trackMoveExecutor = tx;
 		this.dialogueBoxController = dbc;
 		this.mapView = mv;
@@ -60,7 +61,7 @@ public class UserInputOnMapController implements CursorEventListener {
 
 		this.trackBuilder = trackBuilder;
 
-		this.cursor = fc;
+		this.cursor = c.getCursor();
 
 		cursor.addCursorEventListener(this);
 

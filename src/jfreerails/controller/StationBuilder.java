@@ -18,7 +18,7 @@ import jfreerails.move.Move;
 import jfreerails.world.station.naming.CalcNearestCity;
 import jfreerails.world.station.naming.VerifyStationName;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
@@ -26,14 +26,14 @@ import jfreerails.world.track.TrackRule;
 
 public class StationBuilder {
 	
-	private MoveReceiver moveReceiver;	
-	private World w;
+	private UntriedMoveReceiver moveReceiver;	
+	private ReadOnlyWorld w;
 	private int ruleNumber;
 	private TrackMoveTransactionsGenerator transactionsGenerator;
 
-	public StationBuilder(MoveReceiver moveReceiver, World world) {
+	public StationBuilder(UntriedMoveReceiver moveReceiver, ReadOnlyWorld world) {
 		this.moveReceiver = moveReceiver;
-		this.w = world;
+		w = world;
 		TrackRule trackRule;
 
 		int i = -1;
@@ -43,7 +43,7 @@ public class StationBuilder {
 		} while (!trackRule.isStation());
 
 		ruleNumber = i;
-		transactionsGenerator = new TrackMoveTransactionsGenerator(world);
+		transactionsGenerator = new TrackMoveTransactionsGenerator(w);
 	}
 
 	public boolean canBuiltStationHere(Point p) {
@@ -68,7 +68,7 @@ public class StationBuilder {
 				new ChangeTrackPieceMove(before, after, p);
 				
 			//Check whether we can upgrade the track to a station here.
-			if(!upgradeTrackMove.tryDoMove(w).ok){
+			if(!moveReceiver.tryDoMove(upgradeTrackMove).ok){
 				System.out.println("Cannot upgrade this track to a station!");
 				return;
 			}
@@ -104,7 +104,7 @@ public class StationBuilder {
 
 	}
 
-	public World getWorld() {
+	public ReadOnlyWorld getWorld() {
 		return w;
 	}
 

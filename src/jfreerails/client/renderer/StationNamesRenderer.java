@@ -19,18 +19,18 @@ import jfreerails.client.common.Painter;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 
 public class StationNamesRenderer implements Painter {
 
-	private World w;
+	private ReadOnlyWorld w;
 	
 	private int fontSize;
 	private Color bgColor;
 	private Color textColor;
 	
-	public StationNamesRenderer(World world) {
+	public StationNamesRenderer(ReadOnlyWorld world) {
 		this.w = world;
 		
 		this.fontSize = 10;

@@ -17,7 +17,7 @@ import javax.swing.JFrame;
  */
 final public class ScreenHandler {
 
-	final JFrame frame;
+	public final JFrame frame;
 
 	BufferStrategy bufferStrategy;
 

@@ -1,3 +1,15 @@
+19-Aug-2003 00:59:00 Luke
+	o Applied Robert Tuck's patches that separated the
+	client and server and allow you to start up two clients
+	in the same JVM.
+	o Fixed painting bug that occured when you started two
+	clients.
+	o Major refactor to get the checkdep ant target working again.
+11-Aug-2003 21:06:23 Luke
+	o You are now charged for track maintenance once per year.
+	o Cargo converions occur when you deliver cargo to a station
+	if an industry that converts the relevant cargo is within the
+	station radius.
 07-Aug-2003 23:26:02 Luke
 	o Applied Robert Tuck's patches to:
 	(i) 	Stop the Terrain Info panel from setting its preferred size to

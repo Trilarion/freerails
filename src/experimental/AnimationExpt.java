@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import jfreerails.client.common.GameLoop;
+import jfreerails.client.top.GameLoop;
 import jfreerails.client.common.ScreenHandler;
 
 public class AnimationExpt extends JComponent {

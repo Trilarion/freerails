@@ -12,7 +12,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import jfreerails.world.terrain.TerrainTile;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackPiece;
 
 
@@ -53,7 +53,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
 	final public class TrackLayer implements MapLayerRenderer {
 
-		private World w;
+		private ReadOnlyWorld w;
 
 		private TrackPieceRendererList trackPieceViewList;
 
@@ -152,7 +152,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 		 */
 
 		public TrackLayer(
-			World world,
+			ReadOnlyWorld world,
 			TrackPieceRendererList trackPieceViewList) {
 			this.trackPieceViewList = trackPieceViewList;
 			this.w = world;
@@ -170,7 +170,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
 		private TileRendererList tiles;
 
-		private World w;
+		private ReadOnlyWorld w;
 
 
 
@@ -257,7 +257,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
 
 
-		public TerrainLayer(World world, TileRendererList tiles) {
+		public TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
 			this.w = world;
 			this.tiles = tiles;
 		}
@@ -273,7 +273,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 	 */
 
 	public MapBackgroundRender(
-		World w,
+		ReadOnlyWorld w,
 		TileRendererList tiles,
 		TrackPieceRendererList trackPieceViewList) {
 		trackLayer = new TrackLayer(w, trackPieceViewList);

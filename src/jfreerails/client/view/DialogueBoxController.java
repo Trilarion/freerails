@@ -19,21 +19,21 @@ import javax.swing.border.LineBorder;
 
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.controller.CalcSupplyAtStations;
+import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
-import jfreerails.move.MoveStatus;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
-import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 
 /**	This class is responsible for displaying dialogue boxes, adding borders to them as appropriate, and
- *  returning focus to the last focus owner after a dialogue box has been closed.  Currently dialogue boxes
+ *  returning focus to the last focus owner after a dialogue box has been closed.  It is also responsible for 
+ * adding components that need to update in response to moves to the MoveChainFork.  Currently dialogue boxes
  * are not separate windows.  Instead, they are drawn on the modal layer of the main JFrames LayerPlane.  This
  * allows dialogue boxes with transparent regions to be used.
  *
@@ -51,12 +51,13 @@ public class DialogueBoxController {
 	private TerrainInfoJPanel terrainInfo;
 	private StationInfoJPanel stationInfo;
 
-	private World w;
+
+	private ReadOnlyWorld world;
 
 	private Component defaultFocusOwner = null;
 
 	private LineBorder defaultBorder =
-		new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3);
+		new LineBorder(new java.awt.Color(0, 0, 0), 3);
 
 	/** Use this ActionListener to close a dialogue without performing any other action. */
 	private ActionListener closeCurrentDialogue = new ActionListener() {
@@ -86,8 +87,14 @@ public class DialogueBoxController {
 		closeButton.addActionListener(closeCurrentDialogue);
 	}
 
-	public void setup(World world, ViewLists vl) {
-		this.w = world;
+	public void setup(ReadOnlyWorld  w, ViewLists vl, MoveChainFork moveChainFork, MapCursor mapCursor) {
+		
+		if(w==null) throw new NullPointerException();
+		if(vl==null) throw new NullPointerException();
+		if(moveChainFork==null) throw new NullPointerException();
+		if(mapCursor==null) throw new NullPointerException();
+		
+		this.world = w;
 
 		//Setup the various dialogue boxes.
 
@@ -98,6 +105,9 @@ public class DialogueBoxController {
 		// setup the supply and demand at station dialogue.
 		stationInfo = new StationInfoJPanel();
 		stationInfo.setup(w, vl);
+		moveChainFork.add(stationInfo);
+		stationInfo.setMapCursor(mapCursor);
+		
 
 		// setup the 'show controls' dialogue
 		showControls = new GameControlsJPanel();
@@ -106,6 +116,7 @@ public class DialogueBoxController {
 		//Set up train orders dialogue
 		trainScheduleJPanel = new TrainScheduleJPanel();
 		trainScheduleJPanel.setup(w, vl);
+		moveChainFork.add(trainScheduleJPanel);
 
 		//Set up select engine dialogue.
 		selectEngine = new SelectEngineJPanel(this);
@@ -120,10 +131,12 @@ public class DialogueBoxController {
 		newspaper.setup(w, vl, closeCurrentDialogue);
 
 		selectWagons = new SelectWagonsJPanel();
+		
+		final ReadOnlyWorld finalROW = this.world; //So that inner class can reference it.
 		selectWagons.setup(w, vl, new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
+				WorldIterator wi = new NonNullElements(KEY.STATIONS, finalROW);
 				if (wi.next()) {
 
 					StationModel station = (StationModel) wi.getElement();
@@ -135,14 +148,7 @@ public class DialogueBoxController {
 						new ProductionAtEngineShop(engineType, wagonTypes);
 
 					Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex());
-					MoveStatus ms =
 					MoveExecuter.getMoveExecuter().processMove(m);
-					if (!ms.ok) {
-						System.out.println(
-							"Couldn't change production at station: " + ms.toString());
-					} else {
-						System.out.println("Production at station changed.");
-					}
 				}
 				closeContent();
 			}
@@ -156,7 +162,7 @@ public class DialogueBoxController {
 	}
 
 	public void showTrainOrders() {
-		WorldIterator wi = new NonNullElements(KEY.TRAINS, w);
+		WorldIterator wi = new NonNullElements(KEY.TRAINS, world);
 		if (!wi.next()) {
 			System.out.println("Cannot show train orders since there are no trains!");
 		} else {
@@ -166,7 +172,7 @@ public class DialogueBoxController {
 	}
 
 	public void showSelectEngine() {
-		WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
+		WorldIterator wi = new NonNullElements(KEY.STATIONS, world);
 		if (!wi.next()) {
 			System.out.println("Can't build train since there are no stations");
 		} else {
@@ -193,18 +199,13 @@ public class DialogueBoxController {
 	}
 
 	public void showTerrainInfo(int x, int y) {
-		FreerailsTile tile = w.getTile(x, y);
+		FreerailsTile tile = world.getTile(x, y);
 		int terrainType = tile.getTerrainTypeNumber();
 		showTerrainInfo(terrainType);
 	}
 
 	public void showStationInfo(int stationNumber) {
 		try{		
-			/* XXX FIXME This is the wrong place for this!!! 
-			 * This needs to be done somewhere on the server side */
-			CalcSupplyAtStations cSAS = new CalcSupplyAtStations(w);
-			cSAS.doProcessing();
-
 			stationInfo.setStation(stationNumber);
 			showContent(stationInfo);
 		}catch (NoSuchElementException e){
@@ -258,10 +259,10 @@ public class DialogueBoxController {
 	}
 	
 	public void showStationOrTerrainInfo(int x, int y){
-		FreerailsTile tile = w.getTile(x,y);
+		FreerailsTile tile = world.getTile(x,y);
 		if(tile.getTrackRule().isStation()){
-			 for(int i = 0 ; i < w.size(KEY.STATIONS); i++){
-			 	StationModel station = (StationModel)w.get(KEY.STATIONS, i);
+			 for(int i = 0 ; i < world.size(KEY.STATIONS); i++){
+			 	StationModel station = (StationModel)world.get(KEY.STATIONS, i);
 			 	if(null!=station && station.x == x && station.y==y){
 			 		this.showStationInfo(i);
 			 		return;
