@@ -1,3 +1,5 @@
+Feb 6, 2004 12:23:44 AM Luke
+	o Apply Robert Tuck's patch to fix bug 880496 (User stuck after connection refused)
 Feb 5, 2004 12:09:19 AM Luke
 	o Apply Robert Tuck's Mac OS X fixes.
 	o Uncomment out code in TrackMaintenanceMoveGenerator

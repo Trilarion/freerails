@@ -224,6 +224,19 @@ public class GameServer {
         public void connectionStateChanged(ConnectionToServer c) {
             tableModel.stateChanged(c);
         }
+
+        public void quitGame() {
+            synchronized (connections) {
+                while (!connections.isEmpty()) {
+                    ConnectionToServer c = (ConnectionToServer)connections.get(0);
+
+                    c.close();
+                    removeConnection(c);
+                }
+
+                gameEngine.stop();
+            }
+        }
     }
 
     public LocalConnection getLocalConnection(ServerControlInterface i) {

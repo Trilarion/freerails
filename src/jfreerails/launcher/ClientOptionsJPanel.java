@@ -30,6 +30,14 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
 	return windowedButton.isSelected();
     }
 
+    public void setControlsEnabled(boolean enabled) {
+	windowedButton.setEnabled(enabled);
+	fullScreenButton.setEnabled(enabled);
+	if (fullScreenButton.isSelected()) {
+	    jList1.setEnabled(enabled);
+	}
+    }
+    
     private void validateSettings() {
 	boolean isValid = false;
 	String infoText = "";

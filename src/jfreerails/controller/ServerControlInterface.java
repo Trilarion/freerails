@@ -35,6 +35,8 @@ public interface ServerControlInterface {
 
     public void saveGame();
 
+    public void quitGame();
+
     /**
      * Retrieve a list of map names for use with newGame()
      */

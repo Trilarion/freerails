@@ -81,6 +81,10 @@ FreerailsProgressMonitor {
 			    cop.getDisplayMode(), "JFreerails Client", this);
 		} catch (IOException e) {
 		    setInfoText(e.getMessage());
+		    sci.quitGame();
+		    cop.setControlsEnabled(true);
+		    prevButton.setEnabled(true);
+		    setNextEnabled(true);
 		    return;
 		}
 		hide();
@@ -99,6 +103,10 @@ FreerailsProgressMonitor {
 			    cop.getDisplayMode(), "JFreerails Client", this);
 		} catch (IOException e) {
 		    setInfoText(e.getMessage());
+		    sci.quitGame();
+		    cop.setControlsEnabled(true);
+		    prevButton.setEnabled(true);
+		    setNextEnabled(true);
 		    return;
 		}
 		ssp.setTableModel(sci.getClientConnectionTableModel());
@@ -116,6 +124,9 @@ FreerailsProgressMonitor {
 				"Client", this);
 		} catch (IOException e) {
 		    setInfoText(e.getMessage());
+		    cop.setControlsEnabled(true);
+		    prevButton.setEnabled(true);
+		    setNextEnabled(true);
 		    return;
 		}
 		hide();
@@ -283,7 +294,6 @@ FreerailsProgressMonitor {
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 	CardLayout cl = (CardLayout) jPanel1.getLayout();
 	LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
-	boolean enablePrevButton = true;
 	switch (currentPage) {
 	    case 0:
 		/* Initial game selection page */
@@ -302,14 +312,16 @@ FreerailsProgressMonitor {
 			currentPage = 2;
 			break;
 		}
+		prevButton.setEnabled(true);
 		break;
 	    case 1:
 		/* map selection page */
 		if (panel.getMode() == LauncherPanel1.MODE_SERVER_ONLY) {
-		    enablePrevButton = false;
+		    prevButton.setEnabled(false);
 		    startGame();
 		} else {
 		    nextIsStart = true;
+		    prevButton.setEnabled(true);
 		    setNextEnabled(true);
 		    currentPage++;
 		    cl.next(jPanel1);
@@ -317,16 +329,17 @@ FreerailsProgressMonitor {
 		break;
 	    case 2:
 		/* display mode selection */
-		enablePrevButton = false;
+		prevButton.setEnabled(false);
+		((ClientOptionsJPanel) wizardPages[2])
+		    .setControlsEnabled(false);
 		startGame();
 		break;
 	    case 3:
 		/* Connection status screen */
-		enablePrevButton = false;
+		prevButton.setEnabled(false);
 		sci.setTargetTicksPerSecond(30);
 		setNextEnabled(false);
 	}
-	prevButton.setEnabled(enablePrevButton);
     }//GEN-LAST:event_nextButtonActionPerformed
     
     /** Exit the Application */
