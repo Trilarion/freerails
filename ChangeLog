@@ -1,3 +1,6 @@
+11-Jun-2003 17:26:00 Scott
+	o Implemented the Train/Station cargo dropoff and pickup feature, 
+		trains currently only pickup cargo. Its playable!
 05-Jun-2003 21:57:45 Luke
 	o Added loadAndUnloadCargo(..) method to 
 	jfreerails.controller.pathfinder.TrainPathFinder
