@@ -25,6 +25,9 @@ WorldMap* MapGenerator::generateWorld(int width, int height) {
   generateJungle(map);
   generateBog(map);
   generateMountain(map);
+  generateCities(map);
+  generateResources(map);
+  generateIndustrie(map);
 
   // some code for setting:
   // desert, jungle, ice, river, ocean, hills, mountains, ...
@@ -211,6 +214,63 @@ void MapGenerator::generateMountain(WorldMap* worldMap)
        {
          generateFieldOfType(worldMap,x,y,type);
        }
+    }
+  }
+}
+
+void MapGenerator::generateCities(WorldMap* worldMap)
+{
+  int x, y;
+  int i, ii;
+  int howmuch = worldMap->getWidth() * worldMap->getHeight() / 500;
+  for (i=0; i<howmuch; i++)
+  {
+    if (generateStartPoint(worldMap, &x, &y))
+    {
+       worldMap->getMapField(x, y)->setType(MapField::village);
+       for (ii=0; ii<3; ii++)
+       {
+         generateFieldOfType(worldMap, x, y, MapField::village);
+       }
+    }
+  }
+}
+
+void MapGenerator::generateFarm(WorldMap* worldMap)
+{
+  int x, y;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
+  for (int i=0; i<howmuch; i++)
+  {
+    if (generateStartPoint(worldMap, &x, &y))
+    {
+       worldMap->getMapField(x,y)->setType(MapField::farm);
+    }
+  }
+}
+
+void MapGenerator::generateResources(WorldMap* worldMap)
+{
+  int x, y;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
+  for (int i=0; i<howmuch; i++)
+  {
+    if (generateStartPoint(worldMap, &x, &y))
+    {
+       worldMap->getMapField(x,y)->setType(MapField::resource);
+    }
+  }
+}
+
+void MapGenerator::generateIndustrie(WorldMap* worldMap)
+{
+  int x, y;
+  int howmuch=worldMap->getWidth()*worldMap->getHeight()/200;
+  for (int i=0; i<howmuch; i++)
+  {
+    if (generateStartPoint(worldMap, &x, &y))
+    {
+       worldMap->getMapField(x,y)->setType(MapField::industrie);
     }
   }
 }

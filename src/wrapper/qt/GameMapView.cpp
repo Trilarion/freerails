@@ -10,9 +10,9 @@
 #include "GameMapView.h"
 #include "GameWidget.h"
 #include "Message.h"
-#include "stationcontroller.h"
+#include "StationController.h"
 #include "Track.h"
-#include "trackcontroller.h"
+#include "TrackController.h"
 
 GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent, const char* name)
            : QCanvasView((QCanvas*)_map, (QWidget*)parent->getWidget(), name,

@@ -26,6 +26,10 @@ private:
   void generateBog(WorldMap* worldMap);
   void generateMountain(WorldMap* worldMap);
   void generateHeight(WorldMap* worldMap);
+  void generateCities(WorldMap *worldMap);
+  void generateFarm(WorldMap *worldMap);
+  void generateResources(WorldMap *worldMap);
+  void generateIndustrie(WorldMap *worldMap);
   bool generateStartPoint(WorldMap* worldMap, int* x, int* y);
   void generateFieldOfType(WorldMap* worldMap, int x, int y, MapField::FieldType type);
 };

@@ -10,7 +10,9 @@
 
 class MapField {
 public:
-  enum FieldType { grass=0, wood, dessert, jungle, bog, river, ocean, foothills, hills, mountain };
+  enum FieldType { grass=0, wood, dessert, jungle, bog, river, ocean,
+                   foothills, hills, mountain,
+                   village, farm, resource, industrie };
 
   /** Constructor */
   MapField(FieldType _type, unsigned short _cost, unsigned short _height);
