@@ -1,3 +1,6 @@
+26-Nov-2002 21:32:20 Luke Lindsay
+	o More or less finished NewFlatTrackExplorer and 
+	incorporated into the main game code.
 26-Nov-2002 00:17:15 Luke Lindsay
 	o Wrote NewFlatTrackExplorer and NewFlatTrackExplorerTest, 
 	in preparation for writing a pathfinder.
