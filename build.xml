@@ -259,7 +259,7 @@
 
 
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
-	<target name="deploysite" description="Upload website to sourceforge" depends="webdist, check_username_and_password">
+	<target name="deploysite" description="Upload website to sourceforge" depends="webdist, check_username_and_password, srcdist">
 
 		<fail unless="u" message="Usage: ant -Du=me -Dp=mypassword target" />
 		<fail unless="p" message="Usage: ant -Du=me -Dp=mypassword target" />
