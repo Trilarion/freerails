@@ -47,11 +47,11 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
         try {
             connection2Server = new InetConnection2Server(address, port);
-        }catch(IOException e){
-        	   return LogOnResponse.rejected(e.getMessage());
+        } catch (IOException e) {
+            return LogOnResponse.rejected(e.getMessage());
         }
-        
-        try{            
+
+        try {
             LogOnRequest request = new LogOnRequest(username, password);
             connection2Server.writeToServer(request);
             connection2Server.flush();

@@ -45,12 +45,14 @@ public final class ModelRootImpl implements ModelRoot {
 
     public ModelRootImpl() {
         properties.put(CURSOR_POSITION, new Point());
-        properties.put(SHOW_STATION_NAMES, new Boolean(true));
-        properties.put(SHOW_CARGO_AT_STATIONS, new Boolean(true));
-        properties.put(SHOW_STATION_BORDERS, new Boolean(true));
+        properties.put(SHOW_STATION_NAMES, Boolean.TRUE);
+        properties.put(SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
+        properties.put(SHOW_STATION_BORDERS, Boolean.TRUE);
         properties.put(CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
         properties.put(PREVIOUS_CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
-        properties.put(SERVER, "server details not set!");
+        properties.put(SERVER, "server details not set!");               
+        properties.put(PLAY_SOUNDS, Boolean.TRUE);
+        addPropertyChangeListener(SoundManager.getSoundManager());
     }
 
     public FreerailsPrincipal getPrincipal() {

@@ -1,5 +1,7 @@
 package jfreerails.client.common;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,10 +27,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *  @author Luke
  *
  */
-public class SoundManager {
+public class SoundManager implements PropertyChangeListener {
     private static final Logger logger = Logger.getLogger(SoundManager.class.getName());
     Random r = new Random();
-    private static boolean enableSounds = true;
+    private boolean playSounds = true;
     private static final SoundManager instance = new SoundManager();
 
     private static class Sample {
@@ -78,33 +80,36 @@ public class SoundManager {
     }
 
     public void playSound(String s, int loops) {
-        try {
-            if (!samples.containsKey(s)) {
-                addClip(s);
+        if (playSounds) {
+            try {
+                if (!samples.containsKey(s)) {
+                    addClip(s);
+                }
+
+                Sample sample = (Sample)samples.get(s);
+
+                //Add a random component to the sample rate so that the samples 
+                //don't always sound the same.
+                float frameRate = (1 + (r.nextFloat() - 0.5f) / 3) * sample.format.getFrameRate();
+
+                //Make sure the frameRate is a sensible value, i.e.  between 4 kHz and 48 kHz.
+                frameRate = Math.min(frameRate, 48000f);
+                frameRate = Math.max(frameRate, 4000f);
+
+                AudioFormat format = new AudioFormat(sample.format.getEncoding(),
+                        sample.format.getSampleRate(),
+                        sample.format.getSampleSizeInBits(),
+                        sample.format.getChannels(),
+                        sample.format.getFrameSize(), frameRate,
+                        sample.format.isBigEndian());
+                Clip clip = (Clip)AudioSystem.getLine(sample.info);
+                clip.open(format, sample.audio, 0, sample.size);
+                clip.loop(loops);
+            } catch (LineUnavailableException e) {
+                logger.warning(e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            Sample sample = (Sample)samples.get(s);
-
-            //Add a random component to the sample rate so that the samples 
-            //don't always sound the same.
-            float frameRate = (1 + (r.nextFloat() - 0.5f) / 3) * sample.format.getFrameRate();
-
-            //Make sure the frameRate is a sensible value, i.e.  between 4 kHz and 48 kHz.
-            frameRate = Math.min(frameRate, 48000f);
-            frameRate = Math.max(frameRate, 4000f);
-
-            AudioFormat format = new AudioFormat(sample.format.getEncoding(),
-                    sample.format.getSampleRate(),
-                    sample.format.getSampleSizeInBits(),
-                    sample.format.getChannels(), sample.format.getFrameSize(),
-                    frameRate, sample.format.isBigEndian());
-            Clip clip = (Clip)AudioSystem.getLine(sample.info);
-            clip.open(format, sample.audio, 0, sample.size);
-            clip.loop(loops);
-        } catch (LineUnavailableException e) {
-            logger.warning(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -123,5 +128,14 @@ public class SoundManager {
 
     public static SoundManager getSoundManager() {
         return instance;
+    }
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        String s = evt.getPropertyName();
+
+        if (s.equals(ModelRoot.PLAY_SOUNDS)) {
+            Boolean b = (Boolean)evt.getNewValue();
+            playSounds = b.booleanValue();
+        }
     }
 }
