@@ -8,11 +8,18 @@
 #include "WorldMap.h"
 #include "Engine.h"
 #include "MapField.h"
+#include "GameElement.h"
 #include "Track.h"
 #include "TrackController.h"
 #include "Station.h"
 #include "StationController.h"
+#include "City.h"
+#include "CityController.h"
 #include "Message.h"
+
+#include <map>
+#include <vector>
+
 
 
 class GuiEngine{
@@ -48,6 +55,8 @@ class GuiEngine{
   bool buildTrack(int x, int y, int dir);
   
   void getOtherConnectionSide(unsigned int* x, unsigned int* y, int* dir) {trackController->getOtherConnectionSide(x,y,dir);}
+  
+  std::vector<City*> getAllCities();
   
  private:
   

@@ -25,6 +25,7 @@ class Controller
     void removeGameElement(long int _elementID);
     GameElement* getGameElement(long int _elementID);
 
+    std::map<long int, GameElement*> getGameElements() { return elementMap; };
     GameElement::TypeID getTypeID() {return typeID;};
  
     // create an element
@@ -42,8 +43,9 @@ class Controller
   private:
 
     GameElement::TypeID typeID;
+    GameElement::ElementID highestElementID;
 
-    std::map<long int, GameElement*> elementMap;
+    std::map<GameElement::ElementID, GameElement*> elementMap;
   
 };
 

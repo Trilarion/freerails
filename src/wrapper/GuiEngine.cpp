@@ -1,6 +1,4 @@
 #include "GuiEngine.h"
-#include "Station.h"
-#include "GameElement.h"
 
 /* single game */
 GuiEngine::GuiEngine(Player* _player,int w, int h){
@@ -111,5 +109,19 @@ bool GuiEngine::haveMsg(){
 Message* GuiEngine::getMsg(){
 
   return engine->getMsg();
+
+}
+
+std::vector<City*> GuiEngine::getAllCities(){
+
+  Controller* con=engine->getControllerDispatcher()->getController(GameElement::idCity);
+  std::vector<City*> allCities;
+  std::map<long int, GameElement*> all=con->getGameElements();
+  std::map<long int, GameElement*>::iterator it;
+  for (it = all.begin(); it != all.end(); ++it)
+  {
+    allCities.push_back((City*)(*it).second);
+  }
+  return allCities;
 
 }

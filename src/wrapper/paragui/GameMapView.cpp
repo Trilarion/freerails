@@ -42,6 +42,14 @@ Base2DMapView(_guiEngine) {
   mouseOldMapY=0;
   
   new PG_Label(view, PG_Rect(10,10,100,20),"Try?");
+  
+  std::vector<City*> cities = guiEngine->getAllCities();
+  std::vector<City*>::iterator it;
+  for (it = cities.begin(); it != cities.end(); ++it)
+  {
+    std::cerr << (*it)->getPosX() << (*it)->getName() << (*it)->getPosY() << std::endl;
+    // Set the City Name Labels
+  }
 }
 
 GameMapView::~GameMapView() {
