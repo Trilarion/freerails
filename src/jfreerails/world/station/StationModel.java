@@ -20,19 +20,19 @@ public class StationModel implements FreerailsSerializable {
 	
 	private DemandAtStation demand;
 	
-	private CargoWaitingAtStation waiting;
+	private int cargoBundleNumber;
 	
 	/** What this station is building. */
 	private ProductionAtEngineShop production;
 	
-	public StationModel(int x, int y, String stationName, int numberOfCargoTypes) {
+	public StationModel(int x, int y, String stationName, int numberOfCargoTypes, int cargoBundle) {
 		this.name = stationName;
 		this.x = x;
 		this.y = y;
 		
 		supply = new SupplyAtStation(new int[numberOfCargoTypes]);
 		demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
-		waiting = new CargoWaitingAtStation(new int[numberOfCargoTypes]);
+		cargoBundleNumber = cargoBundle;
 		
 	}
 	
@@ -70,8 +70,8 @@ public class StationModel implements FreerailsSerializable {
 		return supply;
 	}
 
-	public CargoWaitingAtStation getWaiting() {
-		return waiting;
+	public int getWaiting() {
+		return cargoBundleNumber;
 	}
 
 	public void setDemand(DemandAtStation demand) {
@@ -82,8 +82,12 @@ public class StationModel implements FreerailsSerializable {
 		this.supply = supply;
 	}
 
-	public void setWaiting(CargoWaitingAtStation waiting) {
-		this.waiting = waiting;
+	public void setWaiting(int waiting) {
+		this.cargoBundleNumber = waiting;
+	}
+
+	public int getCargoBundleNumber() {
+		return cargoBundleNumber;
 	}
 
 }

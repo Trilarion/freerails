@@ -12,7 +12,7 @@ import jfreerails.world.train.TrainModel;
  * @author Luke
  * 
  */
-public class AddTrainMove extends AbstractAddItemToListMove {
+public class AddTrainMove extends AddItemToListMove {
 
 	public AddTrainMove(int i, TrainModel train){		
 		super(KEY.TRAINS, i, train);

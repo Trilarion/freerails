@@ -12,7 +12,8 @@ package jfreerails.controller;
 
 import java.awt.Point;
 
-import jfreerails.world.station.StationModel;
+import jfreerails.move.AddStationMove;
+import jfreerails.move.Move;
 import jfreerails.world.station.naming.CalcNearestCity;
 import jfreerails.world.station.naming.VerifyStationName;
 import jfreerails.world.top.KEY;
@@ -61,10 +62,11 @@ public class StationBuilder {
 			//there are no cities, this should never happen
 			stationName = "Central Station";
 		}
-				
+				 
 		//check the terrain to see if we can build a station on it...
-		
-		w.add(KEY.STATIONS, new StationModel(p.x, p.y, stationName, w.size(KEY.CARGO_TYPES)));	
+		Move m = AddStationMove.generateMove(w, stationName, p);
+		m.doMove(w);
+		//w.add(KEY.STATIONS, new StationModel(p.x, p.y, stationName, w.size(KEY.CARGO_TYPES), 0));	
 		
 				
 	}

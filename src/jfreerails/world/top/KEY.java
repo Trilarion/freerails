@@ -1,12 +1,19 @@
 package jfreerails.world.top;
 
+import java.io.ObjectStreamException;
+
+import jfreerails.world.common.FreerailsSerializable;
+
 /** <p>This class provides a set of keys to access the lists of elements
  * in the game world.</P>
  *
  * <p>It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)</p>
  */
-public class KEY {
+public class KEY implements FreerailsSerializable {
+	
+	/** Maps key numbers to KEYs */
+	private static KEY[] keys = new KEY[getNumberOfKeys()];
 	
 	//START OF KEYS
 	
@@ -31,8 +38,11 @@ public class KEY {
 	public static final KEY TERRAIN_TYPES = new KEY();
 	
 	public static final KEY WAGON_TYPES = new KEY();
+	
+	/** The cargo waiting at stations or carried by trains. */
+	public static final KEY CARGO_BUNDLES = new KEY();
 			
-	//END OF KEYS
+	//END OF KEYS		
 	
 	private static int numberOfKeys = 0;
 	
@@ -40,6 +50,7 @@ public class KEY {
 	
 	private KEY(){		
 		this.keyNumber=numberOfKeys;
+		keys[keyNumber]=this;
 		numberOfKeys++;
 	}
 	
@@ -49,6 +60,10 @@ public class KEY {
 	
 	int getKeyNumber(){
 		return keyNumber;
+	}
+	
+	private Object readResolve() throws ObjectStreamException {
+		return keys[this.keyNumber];
 	}
 
 }

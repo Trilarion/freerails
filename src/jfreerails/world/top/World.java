@@ -1,6 +1,7 @@
 package jfreerails.world.top;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.GameCalendar;
 import jfreerails.world.track.FreerailsTile;
 
 /** <p>This interface defines a unified set of methods to access the elements that make
@@ -25,6 +26,10 @@ import jfreerails.world.track.FreerailsTile;
  *
  */
 public interface World extends FreerailsSerializable {
+	
+	GameCalendar getGameTime();
+	
+	void setGameTime(GameCalendar t);
     
     /** Returns the element at the specified position in the specified list.
      */

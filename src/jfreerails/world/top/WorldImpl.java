@@ -3,9 +3,12 @@ package jfreerails.world.top;
 import java.util.ArrayList;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.GameCalendar;
 import jfreerails.world.track.FreerailsTile;
 
 public class WorldImpl implements World {
+	
+	private GameCalendar time;
 
 	private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
 
@@ -94,6 +97,14 @@ public class WorldImpl implements World {
 		int size = lists[key.getKeyNumber()].size();
 		int index = size - 1;
 		return (FreerailsSerializable)lists[key.getKeyNumber()].remove(index);
+	}
+
+	public GameCalendar getGameTime() {		
+		return time;
+	}
+
+	public void setGameTime(GameCalendar t) {
+		this.time = t;		
 	}
 
 }

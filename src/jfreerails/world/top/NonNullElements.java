@@ -28,6 +28,12 @@ public class NonNullElements implements WorldIterator {
     public NonNullElements(KEY k, World world) {
         key = k;
         w = world;
+        if(null == k){        
+        	throw new NullPointerException();
+        }
+		if(null == world){		
+			 throw new NullPointerException();
+		}
     }
     
     public boolean next() {
