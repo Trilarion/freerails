@@ -441,9 +441,9 @@ void GameMapView::regenerateTile(int x, int y)
   }
 
   // Then the Tracks
-  for (int y1=-1;y1<=1;y1++)
+  for (int y1=-2;y1<=2;y1++)
   {
-    for (int x1=-1;x1<=1;x1++)
+    for (int x1=-2;x1<=2;x1++)
     {
       drawTrackPixmap(x+x1, y+y1);
     }

@@ -1,3 +1,6 @@
+Fri Apr 25 02:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o add "std::" to the standard C++ functions in network code
+o workaround for the track corner drawing problem
 Thu Apr 24 14:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o now builded Track's are shown up in ParaGUI Client
 o needs an idea for the track corner drawing problem

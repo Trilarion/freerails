@@ -16,8 +16,8 @@ class PacketRequestJoinGame : public Serializeable{
   void serialize(Serializer* _serializer);
   void deserialize(Serializer* _serializer);
 
-  void setName(string s){name=s;};
-  string getName(){return name;};
+  void setName(std::string s){name=s;};
+  std::string getName(){return name;};
 
 
  private:

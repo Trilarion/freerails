@@ -25,7 +25,7 @@ class Server: public TCPConnection {
  private:
     
   /* void connect(char* host, int port); */
-  list<Client *> clients;
+  std::list<Client *> clients;
   short playersInGame; /* counts the current number of players in the game */
   short maxPlayers;
   fd_set setfd;
@@ -38,7 +38,7 @@ class Server: public TCPConnection {
 
 
 #define iterate_client_list(clients, client){ \
-  list<Client *>::iterator iter,it; \
+  std::list<Client *>::iterator iter,it; \
   Client *client; \
   iter=clients.begin(); \
   while( ++iter != clients.end() ){ \
