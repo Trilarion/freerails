@@ -1,3 +1,5 @@
+Feb 26, 2004 9:48:04 PM Luke
+	o Applied Jan Tozicka's 'Shortcuts for gamespeed' (patch 904903).
 Feb 21, 2004 2:14:47 AM Luke
 	o Fix 891359 - Javadoc package dependencies out of date
 	o Tidy up javadoc

@@ -1,6 +1,8 @@
 package jfreerails.client.view;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.KeyStroke;
 import javax.swing.Action;
 import javax.swing.AbstractAction;
 import java.util.Enumeration;
@@ -77,18 +79,37 @@ public class ServerControlModel {
             }
         }
 
+
         public SetTargetTicksPerSecondAction(String name, int speed) {
+          this(name, speed, KeyEvent.VK_UNDEFINED); // by MystiqueAgent: + commented next 2 lines
+//          putValue(NAME, name);
+//          this.speed = speed;
+        }
+
+        /**
+         * Same as the constructor above but it enables also to associate a <code>keyEvent</code>
+         * with the action.
+         *
+         * @param name action name
+         * @param speed speed
+         * @param keyEvent associated key event. Use values from <code>KeyEvent</class>.
+         *
+         * by MystiqueAgent
+         */
+        public SetTargetTicksPerSecondAction(String name, int speed, int keyEvent) {
             putValue(NAME, name);
             this.speed = speed;
+            putValue(ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(keyEvent, 0));
         }
     }
 
     private ActionAdapter targetTicksPerSecondActions = new ActionAdapter(new Action[] {
-                new SetTargetTicksPerSecondAction("Pause", 0),
-                new SetTargetTicksPerSecondAction("Slow", 10),
-                new SetTargetTicksPerSecondAction("Moderate", 30),
-                new SetTargetTicksPerSecondAction("Fast", 50),
-                
+                new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),      // by MystiqueAgent: added keyEvent parameter
+                new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),      // by MystiqueAgent: added keyEvent parameter
+                new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),  // by MystiqueAgent: added keyEvent parameter
+                new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3),      // by MystiqueAgent: added keyEvent parameter
+
 
             /* TODO one day we will make turbo faster :) */
             new SetTargetTicksPerSecondAction("Turbo", 50)
