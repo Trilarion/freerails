@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import jfreerails.util.IntArray;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
@@ -31,9 +32,11 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private SimpleAStarPathFinder m_pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld m_world;
     private Point m_startPoint;
+    private final FreerailsPrincipal m_principal;
 
-    public TrackPathFinder(ReadOnlyWorld world) {
+    public TrackPathFinder(ReadOnlyWorld world, FreerailsPrincipal principal) {
         m_world = world;
+        m_principal = principal;
     }
 
     public void abandonSearch() {
@@ -160,7 +163,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         int[] targetInts = findTargets(targetPoint);
         int[] startInts = findTargets(startPoint);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(m_world,
+        BuildTrackExplorer explorer = new BuildTrackExplorer(m_world, m_principal, 
                 startPoint, targetPoint);
         explorer.setBuildTrackStrategy(bts);
        

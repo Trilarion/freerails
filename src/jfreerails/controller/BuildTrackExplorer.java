@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
@@ -35,14 +36,15 @@ public class BuildTrackExplorer implements GraphExplorer {
     private BuildTrackStrategy m_buildTrackStrategy;
     private boolean m_usingExistingTrack = false;
     private final ReadOnlyWorld m_world;    
+    private final FreerailsPrincipal m_principle;
 
-    public BuildTrackExplorer(ReadOnlyWorld w) {
-        this(w, null, new Point(0, 0));
+    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle) {
+        this(w, principle, null, new Point(0, 0));
     }
 
-    public BuildTrackExplorer(ReadOnlyWorld w, Point start, Point target) {
+    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle, Point start, Point target) {
         m_world = w;
-
+        m_principle = principle;
         PositionOnTrack pos;
 
         if (null == start) {
@@ -100,12 +102,23 @@ public class BuildTrackExplorer implements GraphExplorer {
         if (!m_world.boundsContain(newX, newY)) {
             return false;
         }                
+        
+        
        
         TrackRule rule4nextTile;
         TrackRule rule4lastTile;
 
         //Determine the track rule for the next tile.
         final FreerailsTile nextTile = (FreerailsTile)m_world.getTile(newX, newY);
+        
+        //Check there is not another players track at nextTile.
+        if(nextTile.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER){
+        	if(nextTile.getOwnerID() != m_world.getID(m_principle)){
+        		return false;
+        	}
+        }
+        
+        
         rule4nextTile = getAppropriateTrackRule(newX, newY);
         
         if(null == rule4nextTile){

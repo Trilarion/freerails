@@ -7,6 +7,7 @@ import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
 import jfreerails.world.common.OneTileMoveVector;
 import static jfreerails.world.common.OneTileMoveVector.*;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
@@ -28,7 +29,8 @@ public class TrackBuildingTest extends TestCase {
 		w = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(w, 0);
 		producer = new TrackMoveProducer(me, w);
-		pathFinder = new TrackPathFinder(w);
+		FreerailsPrincipal principle = w.getPlayer(0).getPrincipal();
+		pathFinder = new TrackPathFinder(w, principle);
 		stationBuilder = new StationBuilder(me);
 		bts = BuildTrackStrategy.getDefault(w);
 	}

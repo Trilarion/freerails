@@ -36,7 +36,7 @@ public class TrackPathFinderTest extends TestCase {
         try {
         	BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(0, world);
         	
-            TrackPathFinder pathFinder = new TrackPathFinder(world);
+            TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer.getPrincipal());
             List l = pathFinder.generatePath(new Point(0, 0), new Point(0, 5), bts);
             assertEquals(5, l.size());
 

@@ -5,10 +5,12 @@
 package jfreerails.controller;
 
 import java.awt.Point;
+
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.terrain.TileTypeImpl;
@@ -31,11 +33,13 @@ public class BuildTrackExplorerTest extends TestCase {
     private WorldImpl world;
     private Player testPlayer = new Player("test",
             (new Player("test")).getPublicKey(), 0);
+    private FreerailsPrincipal principle;
 
     protected void setUp() throws Exception {
         world = new WorldImpl(20, 20);
         world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
+        principle = testPlayer.getPrincipal();
         MapFixtureFactory.generateTrackRuleList(world);
     }
 
@@ -48,7 +52,7 @@ public class BuildTrackExplorerTest extends TestCase {
         //Test starting in the middle of the map.
         start = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.NORTH);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(OneTileMoveVector.NORTH, 10, 9, explorer);
         assertNextVertexIs(OneTileMoveVector.NORTH_EAST, 11, 9, explorer);
@@ -90,7 +94,7 @@ public class BuildTrackExplorerTest extends TestCase {
                     ocean.getCategory()));
         }
 
-        //Place some occean.
+        //Place some ocean.
         FreerailsTile tile = FreerailsTile.getInstance(occeanTypeNumber);
         world.setTile(10, 9, tile);
         world.setTile(11, 10, tile);
@@ -100,7 +104,7 @@ public class BuildTrackExplorerTest extends TestCase {
         //Test starting in the middle of the map.
         start = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.NORTH);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(OneTileMoveVector.NORTH_EAST, 11, 9, explorer);
         //We miss out SW, S, and SE since we don't want to double back on ourselves.
@@ -124,7 +128,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
         //If we enter 10, 10 from the south, we should be able to build track S & SW.
         PositionOnTrack start = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.SOUTH);
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
         explorer.setPosition(start.toInt());
         //SE is going along existing track
         assertNextVertexIs(OneTileMoveVector.SOUTH_EAST, 11, 11, explorer);

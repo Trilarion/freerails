@@ -86,7 +86,7 @@ public class BuildTrackController implements GameModel {
     public BuildTrackController(ReadOnlyWorld readOnlyWorld, ModelRoot modelRoot) {
         m_worldDiffs = new WorldDifferences(readOnlyWorld);
         m_realWorld = readOnlyWorld;
-        m_path4newTrackFinder = new TrackPathFinder(readOnlyWorld);
+        m_path4newTrackFinder = new TrackPathFinder(readOnlyWorld, modelRoot.getPrincipal());
         m_pathOnExistingTrackFinder = new PathOnTrackFinder(readOnlyWorld);
         this.m_modelRoot = modelRoot;
         m_principal = modelRoot.getPrincipal();
