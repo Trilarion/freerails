@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
   Splash(&app);
   
-  GameDialog dialog(&app, 10,10,300,300, "Spielart wählen");
+  GameDialog dialog(&app, 250,150,300,300, "Spielart wählen");
 
   dialog.show();
 

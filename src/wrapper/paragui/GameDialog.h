@@ -24,9 +24,18 @@ class GameDialog: public GameWidget {
     ~GameDialog();
 
     int show();
+    
+    void setButtonflag(int i) {buttonflag=i;};
+
+    PARAGUI_CALLBACK(handle_dialog_exit) {
+      PG_Button* but = (PG_Button*)clientdata;
+      buttonflag = id;
+      return true;
+    }
 
   private:
     int WaitForEvent();
+    int buttonflag;
 
 };
 
