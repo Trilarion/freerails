@@ -6,10 +6,21 @@
 #define __GAMEAPPLICATION_H__
 
 #include "BaseApplication.h"
+#include "GameMap.h"
+#include "GamePanel.h"
+#include "GameMenuBar.h"
+
+#include <qlayout.h>
+
 
 class QApplication;
 class QLabel;
+class QHBoxLayout;
+class QVBoxLayout;
 class GameMainWindow;
+class GameMap;
+class GamePanel;
+class GameMenuBar;
 
 #define WRAPPERTYPE_QT 2
 
@@ -41,8 +52,14 @@ public:
     void setMainWindow(GameMainWindow* mw);
 
 private:
+	GameMainWindow* mW;
+	GameMap* map;
+	GamePanel* panel;
+	GameMenuBar* menu;
     QApplication* application;
     QLabel* splash;
+	QVBoxLayout* vertLayout;
+	QHBoxLayout* horLayout;
 };
 
 #endif
