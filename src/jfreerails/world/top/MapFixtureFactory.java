@@ -5,6 +5,8 @@ import jfreerails.world.cargo.CargoType;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.terrain.TileTypeImpl;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.LegalTrackConfigurations;
 import jfreerails.world.track.LegalTrackPlacement;
 import jfreerails.world.track.TrackRule;
@@ -18,17 +20,27 @@ import jfreerails.world.track.TrackRuleProperties;
  *
  */
 public class MapFixtureFactory {
-    private int w = 10;
-    private int h = 10;
-    private World world = new WorldImpl(w, h);
-
     /** Only subclasses should use these constants.*/
     public static final Player TEST_PLAYER = new Player("test player",
             (new Player("test player")).getPublicKey(), 0);
     public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
 
-    public MapFixtureFactory() {
-        generateTrackRuleList(world);
+    /** Returns a world object with a map of the specifed size with the terrain and cargo types
+     * setup.
+     */
+    public static World getWorld(int w, int h) {
+        FreerailsTile tile = FreerailsTile.getInstance(0);
+        World world = new WorldImpl(w, h);
+        generateTerrainTypesList(world);
+        generateCargoTypesList(world);
+
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < w; y++) {
+                world.setTile(x, y, tile);
+            }
+        }
+
+        return world;
     }
 
     public static void generateTrackRuleList(World world) {
@@ -96,5 +108,13 @@ public class MapFixtureFactory {
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", "Fast_Freight"));
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Steel", "Slow_Freight"));
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Coal", "Bulk_Freight"));
+    }
+
+    /** Adds hard coded terrain types.*/
+    private static void generateTerrainTypesList(World world) {
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Country", "Grassland"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Urban", "City"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Resource", "Mine"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Industry", "Factory"));
     }
 }

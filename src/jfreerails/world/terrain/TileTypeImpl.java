@@ -52,6 +52,17 @@ final public class TileTypeImpl implements TerrainType {
         this.conversion = conversion;
     }
 
+    /** Lets unit tests create terrain types without bothering with all the details.*/
+    public TileTypeImpl(String terrainCategory, String terrainType) {
+        this.terrainType = terrainType;
+        this.terrainCategory = terrainCategory;
+        this.rgb = 0;
+        this.rightOfWay = 0;
+        this.production = new Production[0];
+        this.consumption = new Consumption[0];
+        this.conversion = new Conversion[0];
+    }
+
     /**
     *@return    The RGB value mapped to this terrain type.
     */
