@@ -1,8 +1,8 @@
-Freerails Java - version 0.0.6
+Freerails Java - version 0.0.7
 
 What's new:
-*	Full screen mode.
-*	FPS counter.
+ Games can now be loaded and saved.	 
+ New games can be started.
 
 Getting it, either:
 
@@ -26,6 +26,9 @@ http://sourceforge.net/projects/freerails/
 or
 http://freerails.sourceforge.net/
 
+N.B. The source package contains some unit tests.  To compile them you will
+need to add junit.jar to your classpath, which can be downloaded from 
+www.junit.org.
 
 
 
