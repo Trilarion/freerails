@@ -35,9 +35,6 @@ class Controller
     virtual bool canBuildElement(GameElement* _element) = 0;
 
   protected:
-    // compute direction inner field of a given point relative to center of field
-    int computeDirection(int x, int y);
-
     WorldMap *worldMap;
         
   private:
