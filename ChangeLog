@@ -1,3 +1,7 @@
+Thu Jul 09 17:15:00 2001  Alexander Opitz <opi@sputnik.de>:
+o change from 32x32 Tileset to 30x30 Tileset
+o make tracks in one tileset and not in different files
+o change version to 0.0.5+
 Thu Jul 06 12:00:00 2001  Alexander Opitz <opi@sputnik.de>:
 o some minor changes
 o release the version 0.0.5
