@@ -39,6 +39,7 @@
     maxConsecuativePieces CDATA #REQUIRED
     category (track|tunnel|bridge|station) #REQUIRED
     stationRadius (0|1|2|3) #IMPLIED
+    fixedCost CDATA #IMPLIED
     type CDATA #REQUIRED
     Y CDATA #REQUIRED
     signalTower (true|false)  #REQUIRED

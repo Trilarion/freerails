@@ -11,13 +11,14 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     private final boolean enableDoubleTrack;
     private final Money maintenanceCost;    
     private final Money price;
+    private final Money fixedCost;
     private final TrackRule.TrackCategories category;
     private final int rGBvalue;
     private final int stationRadius;
     private final String typeName;
 
     public TrackRuleProperties(int rgb, boolean doubleTrack, String name,
-        TrackRule.TrackCategories c, int radius, int price, int maintenance) {
+        TrackRule.TrackCategories c, int radius, int price, int maintenance, int fixedCost) {
         stationRadius = radius;
         rGBvalue = rgb;
         enableDoubleTrack = doubleTrack;
@@ -25,6 +26,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         category = c;
         this.price = new Money(price);
         this.maintenanceCost = new Money(maintenance);
+        this.fixedCost = new Money(fixedCost);
     }
 
     public boolean equals(Object o) {
@@ -73,6 +75,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         result = 29 * result + category.hashCode();
         result = 29 * result + stationRadius;
         result = 29 * result + price.hashCode();
+        result = 29 * result + fixedCost.hashCode();
         result = 29 * result + maintenanceCost.hashCode();
 
         return result;
@@ -87,5 +90,9 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 	public TrackRule.TrackCategories getCategory() {
 		return category;
+	}
+	
+	public Money getFixedCost() {
+		return fixedCost;
 	}
 }

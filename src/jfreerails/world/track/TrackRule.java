@@ -16,7 +16,7 @@ import jfreerails.world.terrain.TerrainType;
 */
 public interface TrackRule extends FreerailsSerializable, Comparable {
 	
-	public enum TrackCategories{track,  bridge, tunnel, station};
+	public enum TrackCategories{track,  bridge, tunnel, station, non};
 	
 	TrackCategories getCategory();
 	
@@ -27,6 +27,8 @@ public interface TrackRule extends FreerailsSerializable, Comparable {
     boolean isDouble();
 
     Money getPrice();
+    
+    Money getFixedCost();
 
     Money getMaintenanceCost();
 

@@ -111,13 +111,22 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
         String priceString = meta.getValue("price");
         int price = Integer.parseInt(priceString);
+        
+        String fixedCostString = meta.getValue("fixedCost");
+        int fixedCost;
+
+        if (null != fixedCostString) {
+        	fixedCost = Integer.parseInt(fixedCostString);
+        } else {
+        	fixedCost = 0;
+        }
 
         String maintenanceString = meta.getValue("maintenance");
         int maintenance = Integer.parseInt(maintenanceString);
 
         trackRuleProperties = new TrackRuleProperties(rGBvalue,
                 enableDoubleTrack, typeName, category,
-                stationRadius, price, maintenance);
+                stationRadius, price, maintenance, fixedCost);
     }
 
     public void end_TrackType() throws SAXException {

@@ -93,9 +93,8 @@ final public class NullTrackType implements TrackRule {
         return new Money(0);
     }
 
-	public jfreerails.world.track.TrackRule.TrackCategories getCategory() {
-		// TODO Auto-generated method stub
-		return null;
+	public TrackCategories getCategory() {
+		return TrackCategories.non;
 	}
 
 	public int compareTo(Object arg0) {
@@ -107,5 +106,9 @@ final public class NullTrackType implements TrackRule {
 	public boolean isDouble() {
 		
 		return false;
+	}
+
+	public Money getFixedCost() {
+		return Money.ZERO;
 	}
 }

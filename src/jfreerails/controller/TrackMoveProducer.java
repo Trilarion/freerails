@@ -88,7 +88,7 @@ final public class TrackMoveProducer {
 						.addTransactions(move);
 
 				return sendMove(moveAndTransaction);
-			} catch (Exception e) {
+			} catch (Exception e) {				
 				// thrown when there is no track to remove.
 				// Fix for bug [ 948670 ] Removing non-existant track
 				return MoveStatus.moveFailed("No track to remove.");

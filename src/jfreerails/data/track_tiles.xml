@@ -128,7 +128,7 @@
 
      
 
-      <TrackType type="wooden trestle bridge" X="9" Y="2" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000003" price="50000" maintenance="2000">
+      <TrackType type="wooden trestle bridge" X="9" Y="2" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000003" price="10000" fixedCost="50000"  maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="River" />
          </CanOnlyBuildOnTheseTerrainTypes>
@@ -168,7 +168,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="steel girder bridge" X="9" Y="4" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000004" price="100000" maintenance="2000">
+      <TrackType type="steel girder bridge" X="9" Y="4" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000004" price="10000" fixedCost="100000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="River" />
          </CanOnlyBuildOnTheseTerrainTypes>
@@ -188,7 +188,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="stone masonry bridge" X="9" Y="6" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000005" price="200000" maintenance="2000">
+      <TrackType type="stone masonry bridge" X="9" Y="6" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000005" price="10000" fixedCost="200000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="River" />
          </CanOnlyBuildOnTheseTerrainTypes>
@@ -209,7 +209,7 @@
       </TrackType>
     
 
-      <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" category="station" stationRadius="1" maxConsecuativePieces="-1" RGBvalue="000007" price="50000" maintenance="2000">
+      <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" category="station" stationRadius="1" maxConsecuativePieces="-1" RGBvalue="000007" price="10000" fixedCost="50000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -236,7 +236,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="false" category="station" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008" price="100000" maintenance="2000">
+      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="false" category="station" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008" price="10000" fixedCost="100000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -263,7 +263,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="false" category="station" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009" price="200000" maintenance="2000">
+      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="false" category="station" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009" price="10000" fixedCost="200000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 

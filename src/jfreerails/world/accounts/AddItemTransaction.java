@@ -25,7 +25,7 @@ public class AddItemTransaction implements Transaction {
 		sb.append(m_quantity);
 		sb.append(", amount ");
 		sb.append(m_amount);
-		return super.toString();
+		return sb.toString();
 	}
     /** For example track. */
     private final Category m_category;

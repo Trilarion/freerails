@@ -159,4 +159,9 @@ final public class TrackRuleImpl implements TrackRule {
 	
 		return properties.isEnableDoubleTrack();
 	}
+
+	
+	public Money getFixedCost() {
+		return properties.getFixedCost();
+	}
 }
