@@ -3,16 +3,16 @@ package jfreerails.client.top;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import jfreerails.controller.UncommittedMoveReceiver;
+import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
+import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.RejectedMove;
 import jfreerails.move.UndoneMove;
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.top.World;
-import jfreerails.client.common.UserMessageLogger;
-import jfreerails.client.view.ModelRoot;
 
 
 /**
@@ -31,7 +31,7 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
      */
     public NonAuthoritativeMoveExecuter(World w, MoveReceiver mr, Object mutex,
         ModelRoot modelRoot) {
-        super(w, mr, mutex);
+        super(w, mr);
         this.modelRoot = modelRoot;
     }
 
@@ -45,10 +45,15 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
     }
 
     /**
-     * Processes moves confirmed or rejected by the server.
-     */
-    public synchronized void processMove(Move move) {
-        pendingQueue.moveCommitted(move);
+            * Processes moves confirmed or rejected by the server.
+            */
+    public void executeOutstandingMoves() {
+        FreerailsSerializable[] items = sychronizedQueue.read();
+
+        for (int i = 0; i < items.length; i++) {
+            Move move = (Move)items[i];
+            pendingQueue.moveCommitted(move);
+        }
     }
 
     public class PendingQueue implements UncommittedMoveReceiver {
@@ -69,18 +74,16 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
                 // attempt to undo moves starting with the last one
                 RejectedMove rm = (RejectedMove)rejectedMoves.get(i);
 
-                synchronized (mutex) {
-                    // our attempt to undo may fail due to a
-                    // pre-committed move which is yet to be
-                    // rejected
-                    ms = rm.getAttemptedMove().tryUndoMove(world);
+                // our attempt to undo may fail due to a
+                // pre-committed move which is yet to be
+                // rejected
+                ms = rm.getAttemptedMove().tryUndoMove(world);
 
-                    if (ms == MoveStatus.MOVE_OK) {
-                        rm.getAttemptedMove().undoMove(world);
-                        rejectedMoves.remove(i);
-                        forwardMove(new UndoneMove(rm.getAttemptedMove()), ms);
-                        n++;
-                    }
+                if (ms == MoveStatus.MOVE_OK) {
+                    rm.getAttemptedMove().undoMove(world);
+                    rejectedMoves.remove(i);
+                    forwardMove(new UndoneMove(rm.getAttemptedMove()), ms);
+                    n++;
                 }
             }
 
@@ -141,9 +144,7 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
 
             /* move must be from another client */
             if (!(move instanceof RejectedMove)) {
-                synchronized (mutex) {
-                    ms = move.doMove(world);
-                }
+                ms = move.doMove(world);
 
                 if (ms != MoveStatus.MOVE_OK) {
                     /* move could not be committed because of
@@ -165,9 +166,7 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
                     // ignore
                 }
 
-                synchronized (mutex) {
-                    moveReceiver.undoLastMove();
-                }
+                moveReceiver.undoLastMove();
             }
         }
 
@@ -178,9 +177,7 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
             if (moveReceiver != null) {
                 MoveStatus ms;
 
-                synchronized (mutex) {
-                    ms = move.doMove(world);
-                }
+                ms = move.doMove(world);
 
                 if (ms == MoveStatus.MOVE_OK) {
                     pendingMoves.add(move);

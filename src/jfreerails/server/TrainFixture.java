@@ -23,7 +23,7 @@ public class TrainFixture {
     MoveExecuter moveExecuter;
 
     public TrainFixture() {
-        moveExecuter = new MoveExecuter(w, null, mutex);
+        moveExecuter = new MoveExecuter(w, null);
 
         points.add(new Point(0, 0));
         points.add(new Point(80, 80));

@@ -2,6 +2,7 @@ package jfreerails.client.top;
 
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.UntriedMoveReceiver;
+import jfreerails.util.GameModel;
 import jfreerails.world.top.ReadOnlyWorld;
 
 
@@ -46,5 +47,9 @@ public abstract class Client {
      */
     public Object getMutex() {
         return receiver.mutex;
+    }
+    
+    public GameModel getModel(){
+    	return this.receiver.getModel();
     }
 }

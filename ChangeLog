@@ -1,3 +1,15 @@
+Dec 30, 2003 12:00:03 AM Luke
+	o Refactoring to change the threads in which moves are executed.  
+		(i)  Moves are precommitted on the client's copy of the world 
+		by the thread "AWT_EventQueue."
+		(ii) All moves are now executed on the server's copy of the world 
+		in jfreerails.server.ServerGameEngine.update() by the thread "JFreerails server".		
+		(iii) Moves received from the server are now executed on the clients copy of the 
+		world in jfreerails.client.top.run() by the client thread by the  thread
+		"JFreerails client: ..."
+	Moves are passed between threads using queues. 
+	Currently starting new games and loading games does not work.
+	o Removed most of the passing of mutexes between classes.
 Dec 29, 2003 9:12:42 PM Luke
 	o Apply Robert Tuck's patch to BufferedTiledBackgroundRenderer.
 	o Make the client keep its own copy of the world object even when it is in the same VM as the server.

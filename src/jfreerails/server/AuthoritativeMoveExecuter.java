@@ -13,11 +13,9 @@ import jfreerails.world.top.World;
  * outright.
  */
 public class AuthoritativeMoveExecuter extends MoveExecuter {
-    /**
-     * @deprecated
-     */
-    public AuthoritativeMoveExecuter(World w, MoveReceiver mr, Object mutex) {
-        super(w, mr, mutex);
+    
+    public AuthoritativeMoveExecuter(World w, MoveReceiver mr) {
+        super(w, mr);
     }
 
     /**

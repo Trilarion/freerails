@@ -1,13 +1,11 @@
 package jfreerails.client.top;
 
-import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.io.IOException;
+
 import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.LocalConnection;
-import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
@@ -15,6 +13,7 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TimeTickMove;
 import jfreerails.move.WorldChangedEvent;
+import jfreerails.util.GameModel;
 import jfreerails.world.top.World;
 
 
@@ -23,7 +22,7 @@ import jfreerails.world.top.World;
  * world if necessary, and passes them to the connection.
  */
 public class ConnectionAdapter implements UntriedMoveReceiver {
-    private MoveExecuter moveExecuter;
+    private NonAuthoritativeMoveExecuter moveExecuter;
     private ModelRoot modelRoot;
     ConnectionToServer connection;
 
@@ -129,9 +128,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             closeConnection();
             connection.removeMoveReceiver(worldUpdater);
 
-            if ((mutex != null)) {
-                eventQueue.removeMutex(mutex);
-            }
+           
         }
 
         connection = c;
@@ -145,9 +142,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             mutex = new Integer(0);
         }
 
-        /* add our mutex to the AWT event queue's mutex list */
-        eventQueue.addMutex(mutex);
-
+      
         /* don't allow other events to update until we've downloaded our copy of
          * the World */
         synchronized (mutex) {
@@ -156,7 +151,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             modelRoot.setWorld(world);
 
             //  if (!(connection instanceof LocalConnection)) {
-            NonAuthoritativeMoveExecuter moveExecuter = new NonAuthoritativeMoveExecuter(world,
+             moveExecuter = new NonAuthoritativeMoveExecuter(world,
                     moveReceiver, mutex, modelRoot);
             worldUpdater.setMoveReceiver(moveExecuter);
             uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
@@ -179,5 +174,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
      */
     public Object getMutex() {
         return mutex;
+    }
+    
+    public GameModel getModel(){
+    	return this.moveExecuter;
     }
 }

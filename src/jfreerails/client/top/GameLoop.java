@@ -3,45 +3,44 @@ package jfreerails.client.top;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import jfreerails.client.common.MultiLockedRegion;
-import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.common.RepaintManagerForActiveRendering;
 import jfreerails.client.common.ScreenHandler;
+import jfreerails.client.common.SynchronizedEventQueue;
+import jfreerails.util.GameModel;
 
 
 /**
  * This thread updates the GUI Client window.
  *
  */
-final public class GameLoop implements Runnable, MultiLockedRegion {
+final public class GameLoop implements Runnable {
     final static boolean LIMIT_FRAME_RATE = false;
     boolean gameNotDone = true;
     final ScreenHandler screenHandler;
     final static int TARGET_FPS = 30;
     FPScounter fPScounter;
     private long frameStartTime;
+    private final GameModel model;
 
     public GameLoop(ScreenHandler s) {
         screenHandler = s;
+        model = GameModel.NULL_MODEL;
+    }
+
+    public GameLoop(ScreenHandler s, GameModel gm) {
+        screenHandler = s;
+        model = gm;
+
+        if (null == model) {
+            throw new NullPointerException();
+        }
     }
 
     public void multiLockedCallback() {
-        Graphics g = screenHandler.getDrawGraphics();
-
-        try {
-            screenHandler.frame.paintComponents(g);
-
-            fPScounter.updateFPSCounter(frameStartTime, g);
-        } finally {
-            g.dispose();
-        }
-
-        screenHandler.swapScreens();
     }
 
     public void run() {
-        SynchronizedEventQueue seq = SynchronizedEventQueue.getInstance();
-
+        //SynchronizedEventQueue seq = SynchronizedEventQueue.getInstance();
         RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
         RepaintManagerForActiveRendering.setAsCurrentManager();
 
@@ -63,14 +62,28 @@ final public class GameLoop implements Runnable, MultiLockedRegion {
             frameStartTime = System.currentTimeMillis();
 
             if (!screenHandler.isMinimised()) {
-                seq.grabAllLocks(this);
-
                 /*
                  * Flush all redraws in the underlying toolkit.  This reduces
                  * X11 lag when there isn't much happening, but is expensive
                  * under Windows
                  */
                 Toolkit.getDefaultToolkit().sync();
+
+                synchronized (SynchronizedEventQueue.MUTEX) {
+                    model.update();
+
+                    Graphics g = screenHandler.getDrawGraphics();
+
+                    try {
+                        screenHandler.frame.paintComponents(g);
+
+                        fPScounter.updateFPSCounter(frameStartTime, g);
+                    } finally {
+                        g.dispose();
+                    }
+
+                    screenHandler.swapScreens();
+                }
 
                 if (LIMIT_FRAME_RATE) {
                     long deltatime = System.currentTimeMillis() -

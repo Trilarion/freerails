@@ -116,7 +116,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         calcSupplyAtStations = new CalcSupplyAtStations(w);
         moveChainFork = new MoveChainFork();
         moveChainFork.addListListener(calcSupplyAtStations);
-        moveExecuter = new AuthoritativeMoveExecuter(world, moveChainFork, mutex);
+        moveExecuter = new AuthoritativeMoveExecuter(world, moveChainFork);
         tb = new TrainBuilder(world, moveExecuter);
 
         for (int i = 0; i < serverAutomata.size(); i++) {
@@ -191,16 +191,21 @@ public class ServerGameEngine implements GameModel, Runnable {
         if (targetTicksPerSecond > 0) {
             synchronized (mutex) {
                 if (targetTicksPerSecond > 0) {
+					moveExecuter.executeOutstandingMoves();
                     /*
                      * start of server world update
-                     */
-                    buildTrains();
+                     */                   
                     //update the time first, since other updates might need
                     //to know the current time.
                     updateGameTime();
 
                     //now do the other updates
                     moveTrains();
+                    
+                    /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
+                     * without first calling moveExecuter.executeOutstandingMoves()
+                     */
+					buildTrains();
 
                     //Check whether we have just started a new year..
                     GameTime time = (GameTime)world.get(ITEM.TIME);
@@ -392,7 +397,9 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @return World
      */
     public World getWorld() {
-        return world.defensiveCopy();
+		synchronized (mutex) {
+			return world.defensiveCopy();
+		}
     }
 
     /**

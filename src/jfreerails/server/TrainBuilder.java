@@ -1,6 +1,7 @@
 package jfreerails.server;
 
 import java.awt.Point;
+
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.move.AddCargoBundleMove;
@@ -14,6 +15,7 @@ import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
@@ -34,11 +36,11 @@ import jfreerails.world.train.TrainPathIterator;
  *
  */
 public class TrainBuilder {
-    private ReadOnlyWorld world;
+    private World world;
     private int trainId;
     private MoveReceiver moveReceiver;
 
-    public TrainBuilder(ReadOnlyWorld w, MoveReceiver mr) {
+    public TrainBuilder(World w, MoveReceiver mr) {
         this.world = w;
         moveReceiver = mr;
 
@@ -95,13 +97,13 @@ public class TrainBuilder {
 
             TrainPathFinder tpf = getPathToFollow(p, world, trainNumber);
 
-            Move m = tpf.initTarget(train, is);
+            Move setupScheduleMove = tpf.initTarget(train, is);
 
-            AddTrainMove move = AddTrainMove.generateMove(trainNumber, train,
+            AddTrainMove addTrainMove = AddTrainMove.generateMove(trainNumber, train,
                     engineType.getPrice(), is);
 
             Move compositeMove = new CompositeMove(new Move[] {
-                        addCargoBundleMove, move, m
+                        addCargoBundleMove, addTrainMove, setupScheduleMove
                     });
 
             /*
@@ -111,8 +113,12 @@ public class TrainBuilder {
              * handling for moves which must be performed differently on
              * the client than the server.
              */
-            moveReceiver.processMove(compositeMove);
-
+            //moveReceiver.processMove(compositeMove);
+			/* Temporarily do move directly on world.  We will undo it before sending it to the client as 
+			 * one composite move.
+			 */
+			compositeMove.doMove(world);
+            
             FreerailsPathIterator from = new TrainPathIterator(tpf);
 
             tpf = getPathToFollow(p, world, trainNumber);
@@ -128,8 +134,11 @@ public class TrainBuilder {
              * period in the client (yuk!)
              */
             Move positionMove = trainMover.setInitialTrainPosition(train, from);
+            
+			compositeMove.undoMove(world);
+            
+            moveReceiver.processMove(compositeMove);
             moveReceiver.processMove(positionMove);
-
             return trainMover;
         } else {
             throw new IllegalArgumentException("No track here (" + p.x + ", " +
