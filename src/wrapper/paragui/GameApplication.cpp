@@ -33,8 +33,8 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
   pGlobalApp = new PG_Application();
   pGlobalApp->LoadTheme(theme);
   pGlobalApp->InitScreen(800,600,screenDepth,screenFlags);
-
-  cerr << "networking" << endl;
+  
+  std::cerr << "networking" << std::endl;
 
   /*
   Client* client=new Client();
@@ -44,7 +44,7 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
   
   *client >> replay;
 */
-  cerr << replay << endl;
+  std::cerr << replay << std::endl;
   
   mapView=NULL;
   netView=NULL;
@@ -81,15 +81,14 @@ int GameApplication::run() {
     GameMainWindow mw( 0, 0, 800, 600);
     GameModeSelectDialog dialog(&mw, 250, 150, 300, 200, "Choose game mode");
     result=dialog.show();
-    cout << "Result=" << result << endl;
-    /* printf("Result=%i\n",result); */
+    std::cout << "Result=" << result << std::endl;
     if (result==-1) {  // Quit
       pGlobalApp->Quit();
       return 0;
     }
     GameDataSelectDialog dataDialog(&mw, 200, 100, 400, 300, "Choos game Data", result);
     result=dataDialog.show();
-    cout << "Result=" << result << endl;
+    std::cout << "Result=" << result << std::endl;
     // get Player Name
     if (result==1) {  // Single Player
       initSingleGame(dataDialog.getName(), dataDialog.getWidth(), dataDialog.getHeight(), 0);
@@ -139,16 +138,18 @@ int GameApplication::run() {
       panel=new GamePanel(&mw, 650, 0, 150, 600, guiEngine, mapView);
       netView=new GameNetView(&mw, 0, 450, 650, 150);
       
-      cout << " Why not..." << endl;
+      std::cout << " Why not..." << std::endl;
       
       mapView->Show();
       panel->Show();
       netView->Show();
       
-      cout << " WHAAA" << endl;
+      std::cout << " WHAAA" << std::endl;
     }
     if (result>0)
     {
+      timer = new GameTimerWidget(guiEngine);
+
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 
       guiEngine->changeGameState(GuiEngine::Running);
@@ -158,6 +159,7 @@ int GameApplication::run() {
       guiEngine->changeGameState(GuiEngine::Stopping);
       
       SDL_WaitThread(thread2, NULL);
+      if (timer!=NULL) { delete timer; timer=NULL; }
       if (guiEngine!=NULL) { delete guiEngine; guiEngine=NULL; }
       if (mapView!=NULL) { delete mapView; mapView=NULL; }
       if (netView!=NULL) { delete netView; netView=NULL; }

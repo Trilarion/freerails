@@ -14,4 +14,5 @@ libwrapper_a_SOURCES = GameApplication.cpp \
     GameNetView.cpp \
     GameModeSelectDialog.cpp \
     GamePanel.cpp \
-    GameWidget.cpp
+    GameWidget.cpp \
+    GameTimerWidget.cpp

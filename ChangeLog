@@ -1,3 +1,6 @@
+Tue May 06 14:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Add a timer Widget, that will later move the trains and
+  read messages from Server (if any)
 Mon May 05 13:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI  : Let Buttons work for different stations
 o GUIEngine: Give StationType to Engine

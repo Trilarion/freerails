@@ -12,6 +12,7 @@
 #include "GameNetView.h"
 #include "GamePanel.h"
 #include "GameController.h"
+#include "GameTimerWidget.h"
 
 #include "SDL.h"
 
@@ -50,6 +51,7 @@ private:
     GameMapView* mapView;
     GameNetView* netView;
     GamePanel* panel;
+    GameTimerWidget* timer;
     /* Engine* engine; */
 };
 
