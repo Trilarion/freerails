@@ -7,10 +7,16 @@ package jfreerails.move;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import jfreerails.world.accounts.AddItemTransaction;
+import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.GameRules;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
+import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.NullTrackType;
@@ -27,26 +33,29 @@ import jfreerails.world.track.TrackRule;
 public final class ChangeTrackPieceCompositeMove extends CompositeMove
     implements TrackMove, MapUpdateMove {
     private final Rectangle updatedTiles;
+    private final FreerailsPrincipal builder;
 
     /** Creates new ChangeTrackPieceCompositeMove */
-    public ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b) {
+    private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b,
+        FreerailsPrincipal fp) {
         super(new Move[] {a, b});
         updatedTiles = a.getUpdatedTiles().union(b.getUpdatedTiles());
+        builder = fp;
     }
 
     public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
         Point from, OneTileMoveVector direction, TrackRule trackRule,
-        ReadOnlyWorld w) {
+        ReadOnlyWorld w, FreerailsPrincipal principal) {
         ChangeTrackPieceMove a;
         ChangeTrackPieceMove b;
-
-        a = getBuildTrackChangeTrackPieceMove(from, direction, trackRule, w);
+        a = getBuildTrackChangeTrackPieceMove(from, direction, trackRule, w,
+                principal);
         b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(
-                    from), direction.getOpposite(), trackRule, w);
+                    from), direction.getOpposite(), trackRule, w, principal);
 
         Money price = new Money(trackRule.getPrice().getAmount() * 2);
 
-        return new ChangeTrackPieceCompositeMove(a, b);
+        return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
 
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
@@ -59,15 +68,17 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(
                     from), direction.getOpposite(), w, principal);
 
-        return new ChangeTrackPieceCompositeMove(a, b);
+        return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
 
     //utility method.
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(
         Point p, OneTileMoveVector direction, TrackRule trackRule,
-        ReadOnlyWorld w) {
+        ReadOnlyWorld w, FreerailsPrincipal principle) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
+
+        int owner = getOwner(principle, w);
 
         if (w.boundsContain(p.x, p.y)) {
             oldTrackPiece = ((FreerailsTile)w.getTile(p.x, p.y)).getTrackPiece();
@@ -75,14 +86,15 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(),
                         direction);
-                newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration);
+                newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration,
+                        owner);
             } else {
                 newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction,
-                        trackRule);
+                        trackRule, owner);
             }
         } else {
             newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction,
-                    trackRule);
+                    trackRule, owner);
             oldTrackPiece = NullTrackPiece.getInstance();
         }
 
@@ -105,7 +117,9 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance(
                             "000010000")) {
-                    newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration);
+                    int owner = getOwner(principal, w);
+                    newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration,
+                            owner);
                 } else {
                     newTrackPiece = NullTrackPiece.getInstance();
                 }
@@ -130,16 +144,86 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(
-        OneTileMoveVector direction, TrackRule trackRule) {
+        OneTileMoveVector direction, TrackRule trackRule, int owner) {
         TrackConfiguration simplestConfig = TrackConfiguration.getFlatInstance(
                 "000010000");
         TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig,
                 direction);
 
-        return trackRule.getTrackPiece(trackConfiguration);
+        return trackRule.getTrackPiece(trackConfiguration, owner);
     }
 
     public Rectangle getUpdatedTiles() {
         return updatedTiles;
+    }
+
+    public static int getOwner(FreerailsPrincipal p, ReadOnlyWorld w) {
+        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
+            if (w.getPlayer(i).getPrincipal().equals(p)) {
+                return i;
+            }
+        }
+
+        throw new IllegalStateException();
+    }
+
+    /** Returns true if some track has been built.*/
+    protected static boolean hasAnyTrackBeenBuilt(ReadOnlyWorld world,
+        FreerailsPrincipal principal) {
+        int[] unitsOfTrack = calulateNumberOfEachTrackType(world, principal);
+
+        for (int i = 0; i < unitsOfTrack.length; i++) {
+            if (0 != unitsOfTrack[i]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {
+        GameRules rules = (GameRules)world.get(ITEM.GAME_RULES);
+
+        return rules.isMustConnect2ExistingTrack();
+    }
+
+    public static int[] calulateNumberOfEachTrackType(ReadOnlyWorld w,
+        FreerailsPrincipal principal) {
+        int[] unitsOfTrack = new int[w.size(SKEY.TRACK_RULES)];
+
+        for (int i = 0; i < w.getNumberOfTransactions(principal); i++) {
+            Transaction t = w.getTransaction(i, principal);
+
+            if (t instanceof AddItemTransaction) {
+                AddItemTransaction addItemTransaction = (AddItemTransaction)t;
+
+                if (AddItemTransaction.TRACK == addItemTransaction.getCategory()) {
+                    unitsOfTrack[addItemTransaction.getType()] += addItemTransaction.getQuantity();
+                }
+            }
+        }
+
+        return unitsOfTrack;
+    }
+
+    protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
+        if (mustConnectToExistingTrack(w)) {
+            if (hasAnyTrackBeenBuilt(w, this.builder)) {
+                ChangeTrackPieceMove a = (ChangeTrackPieceMove)super.getMove(0);
+                ChangeTrackPieceMove b = (ChangeTrackPieceMove)super.getMove(0);
+                int ruleBeforeA = a.trackPieceBefore.getTrackRule()
+                                                    .getRuleNumber();
+                int ruleBeforeB = b.trackPieceBefore.getTrackRule()
+                                                    .getRuleNumber();
+
+                if (ruleBeforeA == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER &&
+                        ruleBeforeB == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+                    return MoveStatus.moveFailed(
+                        "Must connect to existing track");
+                }
+            }
+        }
+
+        return MoveStatus.MOVE_OK;
     }
 }

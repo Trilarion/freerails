@@ -7,6 +7,7 @@ import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
 import jfreerails.world.top.World;
@@ -94,6 +95,7 @@ public class OldWorldImpl {
         //Set the time..
         w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         w.set(ITEM.TIME, new GameTime(0));
+        w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 
         /* Note, money used to get added to player accounts here, now
          * it is done when players are added.

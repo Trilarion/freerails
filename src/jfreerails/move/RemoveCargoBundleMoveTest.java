@@ -7,8 +7,8 @@ package jfreerails.move;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
-import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 
 
 /**
@@ -25,12 +25,14 @@ public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
         bundleB.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move m = new RemoveCargoBundleMove(0, bundleB, Player.TEST_PRINCIPAL);
+        Move m = new RemoveCargoBundleMove(0, bundleB,
+                MapFixtureFactory.TEST_PRINCIPAL);
         assertEqualsSurvivesSerialisation(m);
 
         assertTryMoveFails(m);
         assertTryUndoMoveFails(m);
-        getWorld().add(KEY.CARGO_BUNDLES, bundleA, Player.TEST_PRINCIPAL);
+        getWorld().add(KEY.CARGO_BUNDLES, bundleA,
+            MapFixtureFactory.TEST_PRINCIPAL);
         assertTryMoveIsOk(m);
 
         assertOkButNotRepeatable(m);

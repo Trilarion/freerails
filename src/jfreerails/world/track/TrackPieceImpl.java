@@ -3,11 +3,13 @@ package jfreerails.world.track;
 final public class TrackPieceImpl implements TrackPiece {
     private final TrackConfiguration configuration;
     private final TrackRule trackType;
+    private final int ownerID;
 
     public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c,
-        TrackRule type) {
+        TrackRule type, int owner) {
         configuration = c;
         trackType = type;
+        this.ownerID = owner;
     }
 
     public int getTrackGraphicNumber() {
@@ -35,5 +37,9 @@ final public class TrackPieceImpl implements TrackPiece {
         } else {
             return false;
         }
+    }
+
+    public int getOwnerID() {
+        return ownerID;
     }
 }

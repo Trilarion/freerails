@@ -1,6 +1,8 @@
 package jfreerails.world.top;
 
 import java.util.HashSet;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.track.LegalTrackConfigurations;
 import jfreerails.world.track.LegalTrackPlacement;
@@ -18,6 +20,11 @@ public class MapFixtureFactory {
     public int w = 10;
     public int h = 10;
     public World world = new WorldImpl(w, h);
+
+    /** Only subclasses should use these constants.*/
+    public static final Player TEST_PLAYER = new Player("test player",
+            (new Player("test player")).getPublicKey(), 0);
+    public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
 
     public MapFixtureFactory() {
         generateTrackRuleList(world);

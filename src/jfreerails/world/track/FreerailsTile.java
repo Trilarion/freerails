@@ -71,4 +71,8 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
     public TrackPiece getTrackPiece() {
         return trackPiece;
     }
+
+    public int getOwnerID() {
+        return trackPiece.getOwnerID();
+    }
 }

@@ -1,7 +1,7 @@
 package jfreerails.server;
 
-import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.controller.ConnectionToServer;
+import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.controller.SychronizedQueue;
 import jfreerails.move.Move;
 import jfreerails.world.common.FreerailsSerializable;

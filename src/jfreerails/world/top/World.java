@@ -14,9 +14,9 @@ import jfreerails.world.track.FreerailsTile;
  * one from their indices).
  * This means that an elements' position in a list can be used as an address
  * space independent way to reference the element.  If you want to remove an
- * element from a list, you should set it to null, e.g. <br>
- * <CODE>world.set(KEY.TRAINS, 5, null);</CODE><br>
- * Code that loops through lists should handle null values gracefully</p>
+ * element from a list, you should set it to null, e.g. </p>
+ * <p><CODE>world.set(KEY.TRAINS, 5, null, player);</CODE></P>
+ * <p>Code that loops through lists should handle null values gracefully</p>
  */
 public interface World extends ReadOnlyWorld {
     /**

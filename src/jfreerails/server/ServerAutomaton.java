@@ -7,8 +7,8 @@ package jfreerails.server;
  * They are internal clients of the ServerGameEngine and need to be initialised
  * with a connection to the game when deserialized.
  */
-import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.controller.MoveReceiver;
+import jfreerails.world.common.FreerailsSerializable;
 
 
 public interface ServerAutomaton extends FreerailsSerializable {

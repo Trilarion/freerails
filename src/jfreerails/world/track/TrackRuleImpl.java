@@ -78,8 +78,8 @@ final public class TrackRuleImpl implements TrackRule {
         return legalConfigurations.getLegalConfigurationsIterator();
     }
 
-    public TrackPiece getTrackPiece(TrackConfiguration config) {
-        return new TrackPieceImpl(config, this);
+    public TrackPiece getTrackPiece(TrackConfiguration config, int owner) {
+        return new TrackPieceImpl(config, this, owner);
     }
 
     public boolean trackPieceIsLegal(TrackConfiguration config) {

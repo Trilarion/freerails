@@ -5,7 +5,7 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /** <p>This class provides a set of keys to access the lists of elements
- * in the game world.</P>
+ * in the game world that are indexed by player.</P>
  *
  * <p>It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)</p>

@@ -38,18 +38,18 @@ public class NonNullElementsTest extends TestCase {
         station1 = new StationModel(10, 20, "Station1", 4, 0);
         station2 = new StationModel(15, 16, "Station2", 4, 1);
         station3 = new StationModel(30, 50, "Station3", 4, 2);
-        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
-        w.add(KEY.STATIONS, station1, Player.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, Player.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, station2, Player.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, Player.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, Player.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, station3, Player.TEST_PRINCIPAL);
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.add(KEY.STATIONS, station1, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, station2, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, station3, MapFixtureFactory.TEST_PRINCIPAL);
     }
 
     public void testNext() {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                Player.TEST_PRINCIPAL);
+                MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
@@ -74,7 +74,7 @@ public class NonNullElementsTest extends TestCase {
 
     public void testGotoIndex() {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                Player.TEST_PRINCIPAL);
+                MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 

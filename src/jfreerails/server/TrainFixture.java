@@ -8,6 +8,7 @@ import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.train.TrainModel;
@@ -31,16 +32,16 @@ public class TrainFixture {
         points.add(new Point(150, 100));
 
         TrainModel train = new TrainModel(0);
-        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
-        w.add(KEY.TRAINS, train, Player.TEST_PRINCIPAL);
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.add(KEY.TRAINS, train, MapFixtureFactory.TEST_PRINCIPAL);
 
-        if (null == w.get(KEY.TRAINS, 0, Player.TEST_PRINCIPAL)) {
+        if (null == w.get(KEY.TRAINS, 0, MapFixtureFactory.TEST_PRINCIPAL)) {
             throw new NullPointerException();
         }
 
         FreerailsPathIterator to = pathIterator();
         FreerailsPathIterator from = pathIterator();
-        trainMover = new TrainMover(to, w, 0, Player.TEST_PRINCIPAL);
+        trainMover = new TrainMover(to, w, 0, MapFixtureFactory.TEST_PRINCIPAL);
 
         Move move = trainMover.setInitialTrainPosition(train, from);
         MoveStatus ms = move.doMove(w, Player.AUTHORITATIVE);

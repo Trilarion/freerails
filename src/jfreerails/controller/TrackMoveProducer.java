@@ -49,7 +49,7 @@ final public class TrackMoveProducer {
 
         if (trackBuilderMode == BUILD_TRACK) {
             move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
-                    trackVector, trackRule, w);
+                    trackVector, trackRule, w, this.principal);
         } else if (trackBuilderMode == REMOVE_TRACK) {
             move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from,
                     trackVector, w, principal);
@@ -117,7 +117,9 @@ final public class TrackMoveProducer {
 
     private MoveStatus upgradeTrack(Point point, TrackRule trackRule) {
         TrackPiece before = (TrackPiece)w.getTile(point.x, point.y);
-        TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration());
+        int owner = ChangeTrackPieceCompositeMove.getOwner(this.principal, w);
+        TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration(),
+                owner);
 
         /* We don't want to 'upgrade' a station to track.  See bug 874416.*/
         if (before.getTrackRule().isStation()) {

@@ -14,6 +14,11 @@ import jfreerails.world.player.Player;
 import jfreerails.world.track.FreerailsTile;
 
 
+/**
+ * An implementation of World that uses standard java.util collections internally.
+ *  @author Luke
+ *
+ */
 public class WorldImpl implements World {
     private static final boolean debug = (System.getProperty(
             "jfreerails.world.top.WorldImpl.debug") != null);

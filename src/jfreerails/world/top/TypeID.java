@@ -7,7 +7,7 @@ package jfreerails.world.top;
 
 
 /**
- *  This class stores a list KEY and an item index.
+ *  This class stores an SKEY and an item index.
  * @author  Luke Lindsay
  */
 public class TypeID {

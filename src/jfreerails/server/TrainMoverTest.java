@@ -4,6 +4,7 @@ import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.TrainModel;
@@ -33,13 +34,14 @@ public class TrainMoverTest extends TestCase {
         trainMover = trainFixture.getTrainMover();
 
         w = trainFixture.getWorld();
-        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
     }
 
     public void testTrainMover() {
         setUp();
 
-        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0, Player.TEST_PRINCIPAL);
+        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0,
+                MapFixtureFactory.TEST_PRINCIPAL);
 
         TrainPositionOnMap pos = t.getPosition();
 
@@ -61,7 +63,8 @@ public class TrainMoverTest extends TestCase {
     public void testUpdate() {
         setUp();
 
-        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0, Player.TEST_PRINCIPAL);
+        TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0,
+                MapFixtureFactory.TEST_PRINCIPAL);
 
         TrainPositionOnMap pos = t.getPosition();
 

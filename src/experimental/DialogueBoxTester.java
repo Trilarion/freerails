@@ -33,6 +33,7 @@ import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
@@ -50,6 +51,10 @@ import jfreerails.world.train.TrainOrdersModel;
  *
  */
 public class DialogueBoxTester extends javax.swing.JFrame {
+	
+	private static final Player TEST_PLAYER = new Player("test player",
+		(new Player("test player")).getPublicKey(), 0);
+	private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
 
     
     private final DialogueBoxController dialogueBoxController;
@@ -97,14 +102,14 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
         wetf.addTypesToWorld(w);
-        w.addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        w.addPlayer(TEST_PLAYER, Player.AUTHORITATIVE);
         try {
             vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {            
             e.printStackTrace();
         }
         modelRoot.setWorld(w, dummyReceiver, vl);
-		modelRoot.setPlayerPrincipal(Player.TEST_PLAYER.getPrincipal());
+		modelRoot.setPlayerPrincipal(TEST_PLAYER.getPrincipal());
         dialogueBoxController = new DialogueBoxController(this, modelRoot);
         dialogueBoxController.setDefaultFocusOwner(this);
         
@@ -118,19 +123,19 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         bristol = new StationModel(bristol, demand);
         w.add(
         KEY.STATIONS,
-        bristol, Player.TEST_PRINCIPAL);
+        bristol, TEST_PRINCIPAL);
         w.add(
         KEY.STATIONS,
-        new StationModel(50, 100, "Bath", numberOfCargoTypes, 0), Player.TEST_PRINCIPAL);
+        new StationModel(50, 100, "Bath", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         w.add(
         KEY.STATIONS,
-        new StationModel(40, 10, "Cardiff", numberOfCargoTypes, 0), Player.TEST_PRINCIPAL);
+        new StationModel(40, 10, "Cardiff", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         w.add(
         KEY.STATIONS,
-        new StationModel(100, 10, "London", numberOfCargoTypes, 0), Player.TEST_PRINCIPAL);
+        new StationModel(100, 10, "London", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         w.add(
         KEY.STATIONS,
-        new StationModel(90, 50, "Swansea", numberOfCargoTypes, 0), Player.TEST_PRINCIPAL);
+        new StationModel(90, 50, "Swansea", numberOfCargoTypes, 0), TEST_PRINCIPAL);
         //Set up cargo bundle, for the purpose of this test code all the trains can share the
         //same one.
         CargoBundle cb = new CargoBundleImpl();
@@ -139,7 +144,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 140);
         cb.setAmount(new CargoBatch(3, 10, 10, 9, 0), 180);
         cb.setAmount(new CargoBatch(5, 10, 10, 9, 0), 10);
-        w.add(KEY.CARGO_BUNDLES, cb, Player.TEST_PRINCIPAL);
+        w.add(KEY.CARGO_BUNDLES, cb, TEST_PRINCIPAL);
         
         MutableSchedule schedule = new MutableSchedule();
         TrainOrdersModel order =
@@ -151,17 +156,17 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
         
-        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), Player.TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID), Player.TEST_PRINCIPAL);
+        int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID), TEST_PRINCIPAL);
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), Player.TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, scheduleID), Player.TEST_PRINCIPAL);
+        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
+        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, scheduleID), TEST_PRINCIPAL);
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), Player.TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID), Player.TEST_PRINCIPAL);
+        scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID), TEST_PRINCIPAL);
         
             
 	final MyGlassPanel glassPanel = new MyGlassPanel();
@@ -350,7 +355,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         // Add your handling code here:
         CargoWaitingAndDemandedJPanel panel = new CargoWaitingAndDemandedJPanel();
         panel.setup(modelRoot, closeCurrentDialogue);
-        int newStationID = randy.nextInt(w.size(KEY.STATIONS, Player.TEST_PRINCIPAL) - 1);
+        int newStationID = randy.nextInt(w.size(KEY.STATIONS, TEST_PRINCIPAL) - 1);
         panel.display(0);
         dialogueBoxController.showContent(panel);
     }//GEN-LAST:event_showCargoWaitingAndDemandActionPerformed
@@ -376,7 +381,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         jfreerails.client.view.TrainOrderJPanel trainOrderJPanel = new  jfreerails.client.view.TrainOrderJPanel();
         trainOrderJPanel.setup(modelRoot, null);
         list.setCellRenderer(trainOrderJPanel);
-        TrainOrdersListModel listModel = new TrainOrdersListModel(w, 0, Player.TEST_PRINCIPAL);
+        TrainOrdersListModel listModel = new TrainOrdersListModel(w, 0, TEST_PRINCIPAL);
         list.setModel(listModel);
         list.setFixedCellWidth(250);
         dialogueBoxController.showContent(list);
@@ -393,14 +398,14 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 	private void showTrainConsistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTrainConsistActionPerformed
             // Add your handling code here:
             //TrainView
-            int trainNumber = randy.nextInt(w.size(KEY.TRAINS, Player.TEST_PRINCIPAL) - 1);
+            int trainNumber = randy.nextInt(w.size(KEY.TRAINS, TEST_PRINCIPAL) - 1);
             JComponent trainView = new TrainViewJList(modelRoot, trainNumber);
             dialogueBoxController.showContent(trainView);
 	} //GEN-LAST:event_showTrainConsistActionPerformed
         
 	private void showStationInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showStationInfoActionPerformed
             // Add your handling code here:
-            int stationNumber = randy.nextInt(w.size(KEY.STATIONS, Player.TEST_PRINCIPAL) - 1);
+            int stationNumber = randy.nextInt(w.size(KEY.STATIONS, TEST_PRINCIPAL) - 1);
             dialogueBoxController.showStationInfo(stationNumber);
 	} //GEN-LAST:event_showStationInfoActionPerformed
         

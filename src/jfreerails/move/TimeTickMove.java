@@ -7,6 +7,11 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 
 
+/**
+ *
+ *  Changes the time item on the world object.
+ *
+ */
 public class TimeTickMove implements Move {
     private GameTime oldTime = null;
     private GameTime newTime = null;

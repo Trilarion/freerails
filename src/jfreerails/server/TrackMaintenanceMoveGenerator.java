@@ -6,8 +6,8 @@ package jfreerails.server;
 
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddTransactionMove;
+import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
-import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
@@ -33,7 +33,8 @@ public class TrackMaintenanceMoveGenerator {
 
     public static AddTransactionMove generateMove(World w,
         FreerailsPrincipal principal) {
-        int[] track = calulateNumberOfEachTrackType(w, principal);
+        int[] track = ChangeTrackPieceCompositeMove.calulateNumberOfEachTrackType(w,
+                principal);
         long amount = 0;
 
         for (int i = 0; i < track.length; i++) {
@@ -50,25 +51,6 @@ public class TrackMaintenanceMoveGenerator {
         Transaction t = new Bill(new Money(amount));
 
         return new AddTransactionMove(principal, t);
-    }
-
-    public static int[] calulateNumberOfEachTrackType(World w,
-        FreerailsPrincipal principal) {
-        int[] unitsOfTrack = new int[w.size(SKEY.TRACK_RULES)];
-
-        for (int i = 0; i < w.getNumberOfTransactions(principal); i++) {
-            Transaction t = w.getTransaction(i, principal);
-
-            if (t instanceof AddItemTransaction) {
-                AddItemTransaction addItemTransaction = (AddItemTransaction)t;
-
-                if (AddItemTransaction.TRACK == addItemTransaction.getCategory()) {
-                    unitsOfTrack[addItemTransaction.getType()] += addItemTransaction.getQuantity();
-                }
-            }
-        }
-
-        return unitsOfTrack;
     }
 
     public void update(World w) {

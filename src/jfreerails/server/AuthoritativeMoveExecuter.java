@@ -3,12 +3,12 @@ package jfreerails.server;
 import java.util.LinkedList;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.UncommittedMoveReceiver;
-import jfreerails.move.RejectedMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.world.top.World;
+import jfreerails.move.RejectedMove;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
+import jfreerails.world.top.World;
 
 
 /**

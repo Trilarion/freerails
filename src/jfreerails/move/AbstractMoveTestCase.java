@@ -13,6 +13,7 @@ import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
@@ -35,7 +36,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
         getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
         getWorld().set(ITEM.TIME, new GameTime(0));
 
-        getWorld().addPlayer(Player.TEST_PLAYER, Player.AUTHORITATIVE);
+        getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
     }
 
     abstract public void testMove();

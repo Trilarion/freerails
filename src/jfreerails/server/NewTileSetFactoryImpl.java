@@ -4,7 +4,7 @@
  */
 package jfreerails.server;
 
-import jfreerails.server.common.*;
+import jfreerails.server.common.TileSetFactory;
 import jfreerails.server.parser.CargoAndTerrainHandlerImpl;
 import jfreerails.server.parser.CargoAndTerrainParser;
 import jfreerails.server.parser.RunTypesParser;

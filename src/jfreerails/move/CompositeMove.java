@@ -48,7 +48,7 @@ public class CompositeMove implements Move {
         //Since whether a move later in the list goes through could
         //depend on whether an ealier move has been executed, we need
         //actually execute moves, then undo them to test whether the 
-        //array of moves can be excuted ok.
+        //array of moves can be excuted ok.		    	
         MoveStatus ms = doMove(w, p);
 
         if (ms.ok) {
@@ -71,7 +71,11 @@ public class CompositeMove implements Move {
     }
 
     public final MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = MoveStatus.MOVE_OK;
+        MoveStatus ms = compositeTest(w, p);
+
+        if (!ms.ok) {
+            return ms;
+        }
 
         for (int i = 0; i < moves.length; i++) {
             ms = moves[i].doMove(w, p);
@@ -142,6 +146,12 @@ public class CompositeMove implements Move {
         } else {
             return false;
         }
+    }
+
+    /** Subclasses may override this method to perform tests which pass or fail depending on the
+     * combination of moves making up this composite move. */
+    protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
+        return MoveStatus.MOVE_OK;
     }
 
     public final String toString() {

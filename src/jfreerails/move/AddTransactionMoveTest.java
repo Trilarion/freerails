@@ -9,6 +9,7 @@ import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.Player;
+import jfreerails.world.top.MapFixtureFactory;
 
 
 /**
@@ -17,15 +18,15 @@ import jfreerails.world.player.Player;
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
     public void testMove() {
-        Money currentBalance = getWorld().getCurrentBalance(Player.TEST_PRINCIPAL);
+        Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
         Transaction t = new Receipt(new Money(100));
-        Move m = new AddTransactionMove(Player.TEST_PRINCIPAL, t);
+        Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t);
         assertTryMoveIsOk(m);
         assertTryUndoMoveFails(m);
         assertDoMoveIsOk(m);
-        currentBalance = getWorld().getCurrentBalance(Player.TEST_PRINCIPAL);
+        currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(100), currentBalance);
 
         final Player PLAYER_WITHOUT_ACCOUNT = new Player("PLAYER_WITHOUT_ACCOUNT",
@@ -41,11 +42,12 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
     }
 
     public void testConstrainedMove() {
-        Money currentBalance = getWorld().getCurrentBalance(Player.TEST_PRINCIPAL);
+        Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
         Transaction t = new Bill(new Money(100));
-        Move m = new AddTransactionMove(Player.TEST_PRINCIPAL, t, true);
+        Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t,
+                true);
 
         //This move should fail since there is no money in the account and 
         //it is constrained is set to true.

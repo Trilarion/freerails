@@ -4,10 +4,10 @@
  */
 package jfreerails.move;
 
-import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
 
 
@@ -25,9 +25,12 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     protected void setUp() {
         super.setUp();
-        getWorld().add(KEY.STATIONS, new StationModel(), Player.TEST_PRINCIPAL);
-        getWorld().add(KEY.STATIONS, new StationModel(), Player.TEST_PRINCIPAL);
-        getWorld().add(KEY.STATIONS, new StationModel(), Player.TEST_PRINCIPAL);
+        getWorld().add(KEY.STATIONS, new StationModel(),
+            MapFixtureFactory.TEST_PRINCIPAL);
+        getWorld().add(KEY.STATIONS, new StationModel(),
+            MapFixtureFactory.TEST_PRINCIPAL);
+        getWorld().add(KEY.STATIONS, new StationModel(),
+            MapFixtureFactory.TEST_PRINCIPAL);
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         wetf.addTypesToWorld(getWorld());
@@ -44,19 +47,19 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
         //Should fail because current production at station 0 is null;
         m = new ChangeProductionAtEngineShopMove(after, before, 0,
-                Player.TEST_PRINCIPAL);
+                MapFixtureFactory.TEST_PRINCIPAL);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         //Should fail because station 6 does not exist.
         m = new ChangeProductionAtEngineShopMove(before, after, 6,
-                Player.TEST_PRINCIPAL);
+                MapFixtureFactory.TEST_PRINCIPAL);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         //Should go through
         m = new ChangeProductionAtEngineShopMove(before, after, 0,
-                Player.TEST_PRINCIPAL);
+                MapFixtureFactory.TEST_PRINCIPAL);
         assertTryMoveIsOk(m);
         assertDoMoveIsOk(m);
         assertTryUndoMoveIsOk(m);

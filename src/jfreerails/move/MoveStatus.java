@@ -4,7 +4,7 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- *
+ * Records the success or failure of an attempt to execute a move.
  * @author lindsal
  */
 final public class MoveStatus implements FreerailsSerializable {

@@ -1,7 +1,10 @@
+Mar 3, 2004 1:25:27 AM Luke
+	o Implemented Request 905446 Track should be continuous 
+	o Implemented Request 905444 Multi player support: different track 
 Mar 2, 2004 5:21:23 PM Luke
-	o Implemented 905443 Multi player support: different trains 
+	o Implemented Request 905443 Multi player support: different trains 
 Mar 1, 2004 10:33:52 PM Luke
-	o Implemented [ 905441 ] Multi player support: different bank accounts
+	o Implemented Request 905441 Multi player support: different bank accounts
 	Note, presently some of the dialogue boxes are not working.  This will
 	be fixed as adding multi player support continues.
 Feb 27, 2004 1:03:38 PM Luke

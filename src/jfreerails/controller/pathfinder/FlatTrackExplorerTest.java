@@ -7,6 +7,8 @@ import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.Player;
+import jfreerails.world.top.GameRules;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
@@ -32,6 +34,7 @@ public class FlatTrackExplorerTest extends TestCase {
     protected void setUp() {
         world = new WorldImpl(20, 20);
         world.addPlayer(testPlayer, Player.AUTHORITATIVE);
+        world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
 
         TrackRule rule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
@@ -45,7 +48,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(points[i],
-                    vectors[i], rule, world);
+                    vectors[i], rule, world, MapFixtureFactory.TEST_PRINCIPAL);
             MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(ms.ok);
         }

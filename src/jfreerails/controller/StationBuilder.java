@@ -11,6 +11,7 @@ package jfreerails.controller;
 
 import java.awt.Point;
 import jfreerails.move.AddStationMove;
+import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.Move;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -65,7 +66,10 @@ public class StationBuilder {
             TrackPiece before = (TrackPiece)w.getTile(p.x, p.y);
             TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES,
                     this.ruleNumber);
-            TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration());
+
+            int owner = ChangeTrackPieceCompositeMove.getOwner(this.principal, w);
+            TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration(),
+                    owner);
             ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,
                     after, p);
 
