@@ -38,6 +38,8 @@
 				<include name="**/*.xml" />
 
 				<include name="**/*.png" />
+                                
+                                <include name="**/*.jpg" />
 
 				<include name="**/*.dtd" />
 
@@ -120,6 +122,8 @@
 			<include name="src/jfreerails/**/*.xml" />
 
 			<include name="src/**/*.png" />
+                        
+                        <include name="src/**/*.jpg" />
 
 			<include name="src/**/*.wav" />
 

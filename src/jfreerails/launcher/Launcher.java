@@ -13,6 +13,8 @@ import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
 import jfreerails.network.FreerailsGameServer;
@@ -21,7 +23,6 @@ import jfreerails.network.SavedGamesManager;
 import jfreerails.network.ServerControlInterface;
 import jfreerails.server.SavedGamesManagerImpl;
 import jfreerails.server.ServerGameModelImpl;
-import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
 import jfreerails.world.player.Player;
 
@@ -34,33 +35,18 @@ import jfreerails.world.player.Player;
  * @author Luke
  */
 public class Launcher extends javax.swing.JFrame implements
-FreerailsProgressMonitor, LauncherInterface {
+LauncherInterface {
     private static final Logger logger = Logger.getLogger(Launcher.class.getName());
     private static String QUICKSTART = "-quickstart";
     private final Component[] wizardPages = new Component[4];
     private int currentPage = 0;
     private FreerailsGameServer server;
     private GUIClient client;
+    private final ImageIcon errorIcon = new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/icons/error.gif"));
+    private final ImageIcon warningIcon = new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/icons/warning.gif"));
+    private final ImageIcon infoIcon = new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/icons/error.gif"));
+    private final ProgressPanel progressPanel = new ProgressPanel();
     
-    
-    public void setMessage(String s) {
-        setInfoText(s);
-    }
-    
-    public void setValue(int i) {
-        jProgressBar1.setValue(i);
-        
-    }
-    
-    public void setMax(int max) {
-        jProgressBar1.setMaximum(max);
-        
-    }
-    
-    public void setInfoText(String text) {
-        infoLabel.setText(text);
-        
-    }
     
     public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
@@ -76,7 +62,10 @@ FreerailsProgressMonitor, LauncherInterface {
     
     
     private void startGame() {
-        jProgressBar1.setVisible(true);
+        //jProgressBar1.setVisible(true);
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "4");
+        
         setNextEnabled(false);
         LauncherPanel1 lp = (LauncherPanel1) wizardPages[0];
         MapSelectionPanel msp = (MapSelectionPanel) wizardPages[1];
@@ -88,7 +77,7 @@ FreerailsProgressMonitor, LauncherInterface {
         
         
         Player p;
-        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        
         
         
         switch (lp.getMode()) {
@@ -97,13 +86,13 @@ FreerailsProgressMonitor, LauncherInterface {
                     
                     mode = cop.getScreenMode();
                     
-                    client = new GUIClient(cop.getPlayerName(), this, mode, cop.getDisplayMode());
+                    client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
                     server = initServer();
                     client.connect(server, cop.getPlayerName(), "password");
                     
                     setServerGameModel();
                 } catch (IOException e) {
-                    setInfoText(e.getMessage());
+                    setInfoText(e.getMessage(), Launcher.WARNING);
                     recover = true;
                 } finally {
                     if (recover) {
@@ -134,17 +123,17 @@ FreerailsProgressMonitor, LauncherInterface {
                         throw new NullPointerException("Couldn't resolve hostname.");
                     }
                     String playerName = cop.getPlayerName();
-                    client = new GUIClient(playerName, this, mode, cop.getDisplayMode());
+                    client = new GUIClient(playerName, progressPanel, mode, cop.getDisplayMode());
                     
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
                     client.connect(hostname, port, playerName, "password");
                     startThread(client);
                 } catch (IOException e) {
-                    setInfoText(e.getMessage());
+                    setInfoText(e.getMessage(), Launcher.WARNING);
                     recover = true;
                 } catch (NullPointerException e) {
-                    setInfoText(e.getMessage());
+                    setInfoText(e.getMessage(), Launcher.WARNING);
                     recover = true;
                 }
                 finally {
@@ -158,7 +147,7 @@ FreerailsProgressMonitor, LauncherInterface {
                 
                 break;
             case LauncherPanel1.MODE_SERVER_ONLY:
-                if(msp.validatePort()){
+                if(msp.validateInput()){
                     server = initServer();
                     try {
                         setServerGameModel();
@@ -166,10 +155,10 @@ FreerailsProgressMonitor, LauncherInterface {
                         prepare2HostNetworkGame(msp.getServerPort());
                         setNextEnabled(true);
                     } catch (NullPointerException e) {
-                        setInfoText(e.getMessage());
+                        setInfoText(e.getMessage(), Launcher.WARNING);
                         recover = true;
                     }catch (IOException e) {
-                        setInfoText(e.getMessage());
+                        setInfoText(e.getMessage(), Launcher.WARNING);
                         recover = true;
                     }
                     finally {
@@ -350,14 +339,14 @@ FreerailsProgressMonitor, LauncherInterface {
             jPanel1.add(wizardPages[1], "1");
             jPanel1.add(wizardPages[2], "2");
             jPanel1.add(wizardPages[3], "3");
+            jPanel1.add(progressPanel, "4");
             pack();
-            /* hide the progress bar until needed */
-            jProgressBar1.setVisible(false);
         } else {
             prevButton.setVisible(false);
             nextButton.setVisible(false);
             pack();
         }
+        hideText();
     }
     
     /** This method is called from within the constructor to
@@ -369,9 +358,7 @@ FreerailsProgressMonitor, LauncherInterface {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
         nextButton = new javax.swing.JButton();
-        jProgressBar1 = new javax.swing.JProgressBar();
         prevButton = new javax.swing.JButton();
         infoLabel = new javax.swing.JLabel();
 
@@ -388,19 +375,10 @@ FreerailsProgressMonitor, LauncherInterface {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(420, 300));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jPanel1, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jSeparator1, gridBagConstraints);
+        getContentPane().add(jPanel1, gridBagConstraints);
 
         nextButton.setText("Next...");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
@@ -411,19 +389,10 @@ FreerailsProgressMonitor, LauncherInterface {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(nextButton, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jProgressBar1, gridBagConstraints);
 
         prevButton.setText("Back...");
         prevButton.setEnabled(false);
@@ -435,15 +404,20 @@ FreerailsProgressMonitor, LauncherInterface {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(prevButton, gridBagConstraints);
 
+        infoLabel.setText("Error messages go here!");
+        infoLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        infoLabel.setMinimumSize(new java.awt.Dimension(114, 20));
+        infoLabel.setPreferredSize(new java.awt.Dimension(114, 40));
+        infoLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
@@ -455,6 +429,7 @@ FreerailsProgressMonitor, LauncherInterface {
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         nextIsStart = false;
+        hideText();
         switch (currentPage) {
             case 1:
                 cl.previous(jPanel1);
@@ -480,8 +455,7 @@ FreerailsProgressMonitor, LauncherInterface {
             LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
             MapSelectionPanel msp = (MapSelectionPanel) wizardPages[1];
             ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
-            setInfoText(null);
-            
+            hideText();
             
             switch (currentPage) {
                 case 0:
@@ -522,14 +496,14 @@ FreerailsProgressMonitor, LauncherInterface {
                 case 1:
                     /* map selection page */
                     if (panel.getMode() == LauncherPanel1.MODE_SERVER_ONLY) {
-                        if(msp.validatePort()){
+                        if(msp.validateInput()){
                             prevButton.setEnabled(false);
                             try{
                                 prepare2HostNetworkGame(msp.getServerPort());
                             }catch (BindException be){
                                 //When the port is already in use.
                                 prevButton.setEnabled(true);
-                                setInfoText(be.getMessage());
+                                setInfoText(be.getMessage(), LauncherInterface.WARNING);
                             }
                         }
                     } else {
@@ -543,12 +517,12 @@ FreerailsProgressMonitor, LauncherInterface {
                 case 2:
                     /* display mode selection */
                     if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
-                        if(msp.validatePort()){
+                        if(msp.validateInput()){
                             prevButton.setEnabled(false);
                             int mode = cop.getScreenMode();
                             
                             prepare2HostNetworkGame(msp.getServerPort());
-                            client = new GUIClient(cop.getPlayerName(), this, mode, cop.getDisplayMode());
+                            client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
                             client.connect(server, cop.getPlayerName(), "password");
                         }
                     }else{
@@ -590,14 +564,37 @@ FreerailsProgressMonitor, LauncherInterface {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JLabel infoLabel;
     javax.swing.JPanel jPanel1;
-    javax.swing.JProgressBar jProgressBar1;
-    javax.swing.JSeparator jSeparator1;
     javax.swing.JButton nextButton;
     javax.swing.JButton prevButton;
     // End of variables declaration//GEN-END:variables
     
-    public void finished() {
-        setVisible(false);
+    
+    
+    public void setInfoText(String text, int status) {
+        infoLabel.setText(text);
+        switch(status){
+            case LauncherInterface.ERROR:
+                infoLabel.setIcon(errorIcon);
+                nextButton.setEnabled(false);
+                break;
+            case LauncherInterface.INFO:
+                infoLabel.setIcon(infoIcon);
+                nextButton.setEnabled(true);
+                break;
+            case LauncherInterface.WARNING:
+                infoLabel.setIcon(warningIcon);
+                nextButton.setEnabled(true);
+                break;
+            default:
+                throw new IllegalArgumentException(String.valueOf(status));
+        }
+        
+    }
+    
+    public void hideText() {
+        infoLabel.setText(null);
+        infoLabel.setIcon(null);
+        nextButton.setEnabled(true);
         
     }
     

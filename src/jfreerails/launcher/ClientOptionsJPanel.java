@@ -7,12 +7,16 @@
 package jfreerails.launcher;
 
 import java.awt.DisplayMode;
+import java.net.InetSocketAddress;
 import java.util.logging.Logger;
-import java.net.*;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import jfreerails.client.common.MyDisplayMode;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.view.DisplayModesComboBoxModels;
-import javax.swing.event.*;
+
 /**
  * The  Launcher panel that lets you choose fullscreen or windowed mode and the
  * screen resolution etc.
@@ -20,22 +24,35 @@ import javax.swing.event.*;
  * @author  rtuck99@users.sourceforge.net
  *@author Luke Lindsay
  */
-class ClientOptionsJPanel extends javax.swing.JPanel {
+class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
     private static final Logger logger = Logger.getLogger(ClientOptionsJPanel.class.getName());
     private final LauncherInterface owner;
+    private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
+    private final DocumentListener documentListener = new DocumentListener(){
+        public void insertUpdate(DocumentEvent e) {
+            validateInput();
+        }
+        public void removeUpdate(DocumentEvent e) {
+            validateInput();
+        }
+        public void changedUpdate(DocumentEvent e) {
+            validateInput();
+        }
+        
+    };
     
     String getPlayerName() {
         return playerName.getText();
     }
     
     DisplayMode getDisplayMode() {
-    	if(this.fullScreenButton.isSelected()){
-	        MyDisplayMode displayMode = ((MyDisplayMode) jList1.getSelectedValue());
-	        logger.fine("The selected display mode is "+displayMode.toString());
-	        return displayMode.displayMode;
-    	}else{
-    		return null;
-    	}
+        if(this.fullScreenButton.isSelected()){
+            MyDisplayMode displayMode = ((MyDisplayMode) jList1.getSelectedValue());
+            logger.fine("The selected display mode is "+displayMode.toString());
+            return displayMode.displayMode;
+        }else{
+            return null;
+        }
     }
     InetSocketAddress getRemoteServerAddress() {
         String portStr = remotePort.getText();
@@ -68,6 +85,45 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         return address;
     }
     
+    public boolean validateInput(){
+        /* Validate player name.*/
+        if (playerName.getText() == null ||  playerName.getText().equals("")) {
+            owner.setInfoText("Please set a name for your player", LauncherInterface.ERROR);
+            return false;
+        }
+        
+        /* Validate host name.*/
+        if (remoteIP.getText() == null ||  remoteIP.getText().equals("")) {
+            owner.setInfoText("Please enter a host name", LauncherInterface.ERROR);
+            return false;
+        }
+        
+        
+        /* Validate port.*/
+        try{
+            int port = Integer.parseInt(remotePort.getText());
+            if(port < 0 || port > 65535){
+                owner.setInfoText(INVALID_PORT, LauncherInterface.ERROR);
+                return false;
+            }
+        }catch(Exception e){
+            owner.setInfoText(INVALID_PORT, LauncherInterface.ERROR);
+            return false;
+        }
+        
+        /* Validate display-mode selection.  Note, on some systems the
+         display mode can't be changed, in which case the list of selectable
+         display modes will have length 0.*/
+        if(fullScreenButton.isSelected() && jList1.getModel().getSize() > 0 &&  jList1.getSelectedIndex() == -1){
+            owner.setInfoText("Select a display-mode.", LauncherInterface.ERROR);
+            return false;
+        }
+        
+        /*Everything is ok.*/
+        owner.hideText();
+        return true;
+    }
+    
     int getScreenMode(){
         if(this.fullScreenButton.isSelected()){
             return ScreenHandler.FULL_SCREEN;
@@ -79,7 +135,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
             throw new IllegalStateException();
         }
     }
-
+    
     public void setControlsEnabled(boolean enabled) {
         windowedButton.setEnabled(enabled);
         fullScreenButton.setEnabled(enabled);
@@ -89,18 +145,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         }
     }
     
-    private void validateSettings() {
-        boolean isValid = false;
-        String infoText = "";
-        if (playerName.getText() == null ||
-        playerName.getText().equals("")) {
-            infoText = "Please set a name for your player";
-        } else {
-            isValid = true;
-        }
-        owner.setInfoText(infoText);
-        owner.setNextEnabled(isValid);
-    }
+    
     
     private final DisplayModesComboBoxModels listModel;
     
@@ -116,38 +161,17 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         jList1.setModel(listModel);
         jList1.setSelectedIndex(0);
         
-        validateSettings();
+        validateInput();
         
         //Listen for changes in the server port text box.
-        remotePort.getDocument().addDocumentListener(new DocumentListener(){
-            public void insertUpdate(DocumentEvent e) {
-                validatePort();
-            }
-            public void removeUpdate(DocumentEvent e) {
-                validatePort();
-            }
-            public void changedUpdate(DocumentEvent e) {
-                validatePort();
-            }
-            
-        });
+        remotePort.getDocument().addDocumentListener(documentListener);
+        remoteIP.getDocument().addDocumentListener(documentListener);
+        playerName.getDocument().addDocumentListener(documentListener);
         
         
     }
     
-    boolean  validatePort(){
-        try{
-            int port = Integer.parseInt(remotePort.getText());
-            if(port >= 0 && port <= 65535){
-                portErrorMessage.setText("");
-                return true;
-            }
-        }catch(Exception e){
-        }
-        portErrorMessage.setText("A valid port value is between 0 and 65535.");
-        return false;
-    }
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -163,10 +187,9 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         remoteIP = new javax.swing.JTextField();
-        ipErrorMessage = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         remotePort = new javax.swing.JTextField();
-        portErrorMessage = new javax.swing.JLabel();
+        spacer = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
@@ -190,18 +213,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         jPanel3.add(jLabel1);
 
         playerName.setColumns(12);
-        playerName.setText("Player1");
-        playerName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playerNameActionPerformed(evt);
-            }
-        });
-        playerName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                playerNameFocusLost(evt);
-            }
-        });
-
+        playerName.setText( System.getProperty("user.name"));
         jPanel3.add(playerName);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -213,47 +225,20 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         jPanel4.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Remote server address"));
         jPanel4.setEnabled(false);
         jLabel2.setText("IP Address:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel4.add(jLabel2, gridBagConstraints);
+        jPanel4.add(jLabel2, new java.awt.GridBagConstraints());
 
         remoteIP.setColumns(15);
         remoteIP.setText("127.0.0.1");
-        remoteIP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                remoteIPActionPerformed(evt);
-            }
-        });
-        remoteIP.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                remoteIPCaretUpdate(evt);
-            }
-        });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(remoteIP, gridBagConstraints);
-
-        ipErrorMessage.setForeground(java.awt.Color.red);
-        ipErrorMessage.setText("  ");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel4.add(ipErrorMessage, gridBagConstraints);
 
         jLabel3.setText("port");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(jLabel3, gridBagConstraints);
 
@@ -266,20 +251,15 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(remotePort, gridBagConstraints);
 
-        portErrorMessage.setForeground(java.awt.Color.red);
-        portErrorMessage.setText("   ");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel4.add(portErrorMessage, gridBagConstraints);
+        jPanel4.add(spacer, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         add(jPanel4, gridBagConstraints);
 
@@ -289,23 +269,29 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         jScrollPane1.setBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.LOWERED));
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jList1.setEnabled(false);
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
+        });
+
         jScrollPane1.setViewportView(jList1);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
 
+        buttonGroup1.add(windowedButton);
         windowedButton.setSelected(true);
         windowedButton.setText("Windowed");
-        buttonGroup1.add(windowedButton);
         jPanel2.add(windowedButton);
 
-        fixedSizeButton.setText("Windowed (fixed size 640*480)");
         buttonGroup1.add(fixedSizeButton);
+        fixedSizeButton.setText("Windowed (fixed size 640*480)");
         jPanel2.add(fixedSizeButton);
 
-        fullScreenButton.setText("Full screen");
         buttonGroup1.add(fullScreenButton);
+        fullScreenButton.setText("Full screen");
         fullScreenButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 fullScreenButtonStateChanged(evt);
@@ -326,51 +312,40 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
 
     }//GEN-END:initComponents
     
-    private void remoteIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remoteIPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_remoteIPActionPerformed
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+        validateInput();
+    }//GEN-LAST:event_jList1ValueChanged
     
-    private void remoteIPCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_remoteIPCaretUpdate
-        // TODO add your handling code here:
-    }//GEN-LAST:event_remoteIPCaretUpdate
     
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        validateSettings();
+        validateInput();
     }//GEN-LAST:event_formComponentShown
-    
-    private void playerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerNameActionPerformed
-        validateSettings();
-    }//GEN-LAST:event_playerNameActionPerformed
-    
-    private void playerNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_playerNameFocusLost
-        validateSettings();
-    }//GEN-LAST:event_playerNameFocusLost
     
     private void fullScreenButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_fullScreenButtonStateChanged
         jList1.setEnabled(fullScreenButton.isSelected());
+        validateInput();
     }//GEN-LAST:event_fullScreenButtonStateChanged
     
     
-    // Variables declaration - do not modify
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JRadioButton fixedSizeButton;
-    private javax.swing.JRadioButton fullScreenButton;
-    private javax.swing.JLabel ipErrorMessage;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JList jList1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField playerName;
-    private javax.swing.JLabel portErrorMessage;
-    private javax.swing.JTextField remoteIP;
-    private javax.swing.JTextField remotePort;
-    private javax.swing.JRadioButton windowedButton;
-    // End of variables declaration
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.ButtonGroup buttonGroup1;
+    javax.swing.JRadioButton fixedSizeButton;
+    javax.swing.JRadioButton fullScreenButton;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JLabel jLabel2;
+    javax.swing.JLabel jLabel3;
+    javax.swing.JList jList1;
+    javax.swing.JPanel jPanel1;
+    javax.swing.JPanel jPanel2;
+    javax.swing.JPanel jPanel3;
+    javax.swing.JPanel jPanel4;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JTextField playerName;
+    javax.swing.JTextField remoteIP;
+    javax.swing.JTextField remotePort;
+    javax.swing.JPanel spacer;
+    javax.swing.JRadioButton windowedButton;
+    // End of variables declaration//GEN-END:variables
     
     
 }

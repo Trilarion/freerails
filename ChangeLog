@@ -1,6 +1,9 @@
 Oct 17, 2004 Luke
+	RFEs Implemented:
+ 	o 972863	Launcher: progress bar should be on new page
 	Bugs Fixed:
 	o 1047435	Can't rejoin game
+	o 1047445 Invalid port but next button enabled	
 Oct 13, 2004 Luke
 	Bugs Fixed:
 	o 1047428 "no players" message goes away

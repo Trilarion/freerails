@@ -80,10 +80,13 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="jList1">
+            <Component class="javax.swing.JList" name="mapsJList">
               <Properties>
                 <Property name="selectionMode" type="int" value="0"/>
               </Properties>
+              <Events>
+                <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="mapsJListValueChanged"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -125,13 +128,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="serverPortActionPerformed"/>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="serverPortKeyReleased"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="serverPortErrorMessage">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
-            </Property>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>

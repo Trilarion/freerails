@@ -1,0 +1,311 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20041015;23500353">
+	<META NAME="CHANGED" CONTENT="20041017;16030379">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H2>Launcher</H2>
+<P><B>Panel 1: Select Game Type</B></P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=128*>
+	<COL WIDTH=128*>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P><B>Selection</B></P>
+		</TD>
+		<TD WIDTH=50%>
+			<P><B>Next Screen</B></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Single Player</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Select Map (without server port input box)</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Start a network game</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Select Map (with server port input box)</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Join a network game</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Client details (with remote server details showing)</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Server only</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Select Map (with server port input box)</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><IMG SRC="launcher_spec_html_ma3086e8.jpg" NAME="Graphic1" ALIGN=LEFT WIDTH=436 HEIGHT=409 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P>Panel 2: Select Map (and server details)</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=128*>
+	<COL WIDTH=128*>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P><B>Selection</B></P>
+		</TD>
+		<TD WIDTH=50%>
+			<P><B>Next Screen</B></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Single Player</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Client details (without remote server details showing)</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Start a network game</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Client details (without remote server details showing)</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Server only</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Connected players</P>
+		</TD>
+	</TR>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><IMG SRC="launcher_spec_html_aeff837.jpg" NAME="Graphic2" ALIGN=LEFT WIDTH=436 HEIGHT=409 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=85*>
+	<COL WIDTH=85*>
+	<COL WIDTH=85*>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TH WIDTH=33%>
+				<P>Condition</P>
+			</TH>
+			<TH WIDTH=33%>
+				<P>Message or result</P>
+			</TH>
+			<TH WIDTH=33%>
+				<P>When checked</P>
+			</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>No saved game available.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>The item &ldquo;Load a saved game&rdquo; should be disabled</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>When the panel is created.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>Port field does not contain a number between, inclusive 0 and
+				65535</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;A valid port value is between between 0 and 65535.&rdquo;
+				and disable &ldquo;next&rdquo; button.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>As text is entered.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>&ldquo;Start a new map&rdquo; is selected but no map is
+				selected.&rdquo;</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;Select a map&rdquo;. The next button should be
+				disabled.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>When the radio button selection changes and when the selected
+				map in the map list changes.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>Can't start server on specified port</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>Use the message from the exception.  The next button should
+				still be enabled.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>When the next button is pressed.</P>
+			</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P><B>Panel 3: Client details (and remote server details).</B></P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=128*>
+	<COL WIDTH=128*>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P><B>Selection</B></P>
+		</TD>
+		<TD WIDTH=50%>
+			<P><B>Next Screen</B></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Single Player</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Progress bar</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Start a network game</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Connected players</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=50%>
+			<P>Join a network game</P>
+		</TD>
+		<TD WIDTH=50%>
+			<P>Progress bar</P>
+		</TD>
+	</TR>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><IMG SRC="launcher_spec_html_m3a2251c1.jpg" NAME="Graphic3" ALIGN=LEFT WIDTH=436 HEIGHT=409 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=85*>
+	<COL WIDTH=85*>
+	<COL WIDTH=85*>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TH WIDTH=33%>
+				<P>Condition</P>
+			</TH>
+			<TH WIDTH=33%>
+				<P>Message or result</P>
+			</TH>
+			<TH WIDTH=33%>
+				<P>When checked</P>
+			</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>The &ldquo;Player name&rdquo; field is empty.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;Enter a player name&rdquo; and disable &ldquo;next&rdquo;
+				button.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>As text is entered.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>Port field does not contain a number between, inclusive 0 and
+				65535</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;A valid port value is between between 0 and 65535.&rdquo;
+				and disable &ldquo;next&rdquo; button.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>As text is entered.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>&ldquo;Full screen&rdquo; is selected but no map is selected.&rdquo;</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;Select a display mode&rdquo;. The next button should be
+				disabled.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>When the radio button selection changes and when the selected
+				display-mode in the display-mode  list changes.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>The &ldquo;IP address&rdquo; field is empty.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;Enter the address of the server&rdquo;  and disable
+				&ldquo;next&rdquo; button.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>As text is entered.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>Can't resolve host.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;Can't resolve host.&rdquo;</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>When next button is pressed.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=33%>
+				<P>Can't connect to server.</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>&ldquo;Can't connect to server.&rdquo;</P>
+			</TD>
+			<TD WIDTH=33%>
+				<P>When next button is pressed.</P>
+			</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P><B>Panel 4: Connected players.</B></P>
+<P><IMG SRC="launcher_spec_html_7085254.jpg" NAME="Graphic4" ALIGN=LEFT WIDTH=436 HEIGHT=409 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+</BODY>
+</HTML>

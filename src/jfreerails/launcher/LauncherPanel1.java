@@ -37,13 +37,13 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     
     
     
-    
+    /*
     private void validateSettings() {
         boolean isValid = false;
         String infoText = null;
-        
+     
         switch (getMode()) {
-            
+     
             case MODE_SINGLE_PLAYER:
                 isValid = true;
                 break;
@@ -55,9 +55,10 @@ final class LauncherPanel1 extends javax.swing.JPanel {
                 isValid = true;
                 break;
         }
-        owner.setInfoText(infoText);
+        owner.setInfoText(infoText, LauncherInterface.WARNING);
         owner.setNextEnabled(isValid);
     }
+     */
     
     public LauncherPanel1(LauncherInterface owner) {
         initComponents();
@@ -67,7 +68,6 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         buttonModels[MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
         buttonModels[MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
         buttonModels[MODE_SERVER_ONLY] = serverOnlyButton.getModel();
-        validateSettings();
     }
     
     /** This method is called from within the constructor to
@@ -88,62 +88,32 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Select Game Type"));
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
-            }
-        });
-
+        buttonGroup1.add(singlePlayerButton);
         singlePlayerButton.setSelected(true);
         singlePlayerButton.setText("Single-Player");
-        buttonGroup1.add(singlePlayerButton);
-        singlePlayerButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                singlePlayerButtonStateChanged(evt);
-            }
-        });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         add(singlePlayerButton, gridBagConstraints);
 
-        startNetworkButton.setText("Start a network game");
         buttonGroup1.add(startNetworkButton);
-        startNetworkButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                startNetworkButtonStateChanged(evt);
-            }
-        });
-
+        startNetworkButton.setText("Start a network game");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         add(startNetworkButton, gridBagConstraints);
 
-        joinNetworkButton.setText("Join a network game");
         buttonGroup1.add(joinNetworkButton);
-        joinNetworkButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                joinNetworkButtonStateChanged(evt);
-            }
-        });
-
+        joinNetworkButton.setText("Join a network game");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         add(joinNetworkButton, gridBagConstraints);
 
-        serverOnlyButton.setText("Server only");
         buttonGroup1.add(serverOnlyButton);
-        serverOnlyButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                serverOnlyButtonStateChanged(evt);
-            }
-        });
-
+        serverOnlyButton.setText("Server only");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -160,34 +130,14 @@ final class LauncherPanel1 extends javax.swing.JPanel {
 
     }//GEN-END:initComponents
     
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        validateSettings();
-    }//GEN-LAST:event_formComponentShown
-    
-    private void serverOnlyButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_serverOnlyButtonStateChanged
-        validateSettings();
-    }//GEN-LAST:event_serverOnlyButtonStateChanged
-    
-    private void joinNetworkButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_joinNetworkButtonStateChanged
-        validateSettings();
-    }//GEN-LAST:event_joinNetworkButtonStateChanged
-    
-    private void startNetworkButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startNetworkButtonStateChanged
-        validateSettings();
-    }//GEN-LAST:event_startNetworkButtonStateChanged
-    
-    private void singlePlayerButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_singlePlayerButtonStateChanged
-        validateSettings();
-    }//GEN-LAST:event_singlePlayerButtonStateChanged
-    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JRadioButton joinNetworkButton;
-    private javax.swing.JPanel paddingJPanel;
-    private javax.swing.JRadioButton serverOnlyButton;
-    private javax.swing.JRadioButton singlePlayerButton;
-    private javax.swing.JRadioButton startNetworkButton;
+    javax.swing.ButtonGroup buttonGroup1;
+    javax.swing.JRadioButton joinNetworkButton;
+    javax.swing.JPanel paddingJPanel;
+    javax.swing.JRadioButton serverOnlyButton;
+    javax.swing.JRadioButton singlePlayerButton;
+    javax.swing.JRadioButton startNetworkButton;
     // End of variables declaration//GEN-END:variables
     
 }
