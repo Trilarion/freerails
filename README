@@ -82,6 +82,12 @@ N.B. The source package contains some unit tests.  To compile them you will
 need to add junit.jar to your classpath, which can be downloaded from 
 www.junit.org.
 
+Windows users
+=============
+If you experience poor frame rates, try the following.
+java -Dsun.java2d.d3d=false jfreerails/launcher/Launcher
+
+
 Mac OS X users:
 ===============
 
