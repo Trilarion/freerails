@@ -1,26 +1,29 @@
-default: all
+default: dist
 
 dist:
 	@echo "This file is to make it easier for you to create all you need"
 	@echo "Creating acinclude.m4"
-	cat acinclude.m4.in ac-qt.m4 libtool.m4.in >acinclude.m4
+	cat admin/acinclude.m4.in admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in >acinclude.m4
 	@echo "Creating aclocal.m4"
 	aclocal
 	@echo "Creating config.h.in"
 	autoheader
-# use --include-deps, if you want to release the stuff. Don't use it for
-# yourself
-#	automake --include-deps
 	@echo "Creating makefiles"
-	automake
+	@automake --foreign --include-deps
+	@echo "*** Postprocessing Makefile templates"
+	@perl admin/am_edit
 	@echo "Creating configure"
 	autoconf
-	touch stamp-h.in
 	LIST=`find ./po -name "*.po"`; \
 	for i in $$LIST; do \
 	 file2=`echo $$i | sed -e "s#\.po#\.gmo#"`; \
 	 msgfmt -o $$file2 $$i; \
 	done 
+	@echo "*** Creating date/time stamp"
+	@touch stamp-h.in
+	@echo "*** Finished"
+	@echo "    Don't forget to run ./configure"
+	@echo "    If you haven't done so in a while, run ./configure --help"
 
 all: Makefile.in configure
 
@@ -40,6 +43,6 @@ aclocal.m4: acinclude.m4
 	@echo "Creating aclocal.m4"
 	@aclocal
 
-acinclude.m4: admin/acinclude.m4.in admin/ac-qt.m4 admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in
+acinclude.m4: admin/acinclude.m4.in admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in
 	@echo "Creating acinclude.m4"
-	@cat admin/acinclude.m4.in admin/ac-qt.m4 admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in >acinclude.m4
+	@cat admin/acinclude.m4.in admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in >acinclude.m4

@@ -5,8 +5,6 @@
 # stolen from Manish Singh
 # Shamelessly stolen from Owen Taylor
 
-# Stolen for FreeRails by Rivo Laks from people above
-
 dnl AM_PATH_SDL([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
 dnl Test for SDL, and define SDL_CFLAGS and SDL_LIBS
 dnl
@@ -34,6 +32,7 @@ AC_ARG_ENABLE(sdltest, [  --disable-sdltest       Do not try to compile and run 
      fi
   fi
 
+  AC_REQUIRE([AC_CANONICAL_TARGET])
   AC_PATH_PROG(SDL_CONFIG, sdl-config, no)
   min_sdl_version=ifelse([$1], ,0.11.0,$1)
   AC_MSG_CHECKING(for SDL - version >= $min_sdl_version)

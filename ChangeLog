@@ -1,5 +1,12 @@
+Mon Sep 16 02:08:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o makes needed changes for using automake 1.6
+o add makefile.am for all subdirs in data
+o add a subdir for future translations
+o add .cvsignore-files for every directory/subdirectory
+o remove all Makefile.in, because these are generated files, not source files
+o changed default in Makefile.dist from 'all' to 'dist', so it will work cleanly
 Sun Sep 15 18:25:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
-o makes QT-wrapper show map 
+o makes QT-wrapper show map
 Fri Sep 13 12:45:00 2002  Alexander Opitz <opi@le-bit.de>:
 o some code clean ups to compile with gcc3.x.x (like missing std::
   forgotten last lines and so on.)

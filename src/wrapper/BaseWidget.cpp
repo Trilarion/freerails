@@ -4,18 +4,22 @@
 
 #include "BaseWidget.h"
 
-BaseWidget::BaseWidget() {
+BaseWidget::BaseWidget()
+{
 
 }
 
-BaseWidget::~BaseWidget() {
+BaseWidget::~BaseWidget()
+{
 
 }
 
-void BaseWidget::show() {
+void BaseWidget::show()
+{
 
 }
 
-void BaseWidget::hide() {
+void BaseWidget::hide()
+{
 
 }
