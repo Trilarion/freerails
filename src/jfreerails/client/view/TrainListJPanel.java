@@ -18,6 +18,8 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author  Luke
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {
+	
+	private ReadOnlyWorld world;
     
     /** Creates new form TrainListJPanel */
     public TrainListJPanel() {
@@ -98,14 +100,13 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
     }//GEN-LAST:event_jList1KeyPressed
     
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {                
+    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {  
+		world = w;
         jList1.setModel(new World2ListModelAdapter(w, KEY.TRAINS));
         TrainViewJPanel trainView =
-        new TrainViewJPanel(w, vl, 0);
+        new TrainViewJPanel(w, vl);
         jList1.setCellRenderer(trainView);
-        trainView.setHeight(50);
-        jList1.setSelectedIndex(1);
-        
+        trainView.setHeight(50);               
         ActionListener[] oldListeners = closeJButton.getActionListeners();
         for(int i = 0; i < oldListeners.length; i ++){
             closeJButton.removeActionListener(oldListeners[i]);
@@ -115,7 +116,10 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     
     void setShowTrainDetailsActionListener(ActionListener l){        
        showTrainDetails = l;
+       
     }
+    
+    
     
     private ActionListener showTrainDetails = new ActionListener(){
         public void actionPerformed(ActionEvent arg0) {
@@ -133,4 +137,12 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     private javax.swing.JButton showDetails;
     // End of variables declaration//GEN-END:variables
     
+	
+	public void setVisible(boolean aFlag) {
+		if(aFlag){
+			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS));
+		}
+		super.setVisible(aFlag);
+	}
+
 }

@@ -50,8 +50,7 @@ public class DialogueBoxController {
     private HtmlJPanel about;
     private HtmlJPanel how2play;
     private TerrainInfoJPanel terrainInfo;
-    private StationInfoJPanel stationInfo;
-    private TrainListJPanel trainList = new TrainListJPanel();
+    private StationInfoJPanel stationInfo;    
     private TrainDialogueJPanel trainDialogueJPanel;
     private ReadOnlyWorld world;
     private ViewLists viewLists;
@@ -62,6 +61,9 @@ public class DialogueBoxController {
     
     private LineBorder defaultBorder =
     new LineBorder(new java.awt.Color(0, 0, 0), 3);
+    
+    private ReadOnlyWorld w;
+    private ViewLists vl;
     
     /** Use this ActionListener to close a dialogue without performing any other action. */
     private ActionListener closeCurrentDialogue = new ActionListener() {
@@ -107,6 +109,8 @@ public class DialogueBoxController {
     MoveChainFork moveChainFork,
     UntriedMoveReceiver mr,
     MapCursor mapCursor) {
+    	this.w =w;
+    	this.vl = vl;
         
         moveReceiver = mr;
         
@@ -123,19 +127,7 @@ public class DialogueBoxController {
         viewLists = vl;
         
         //Setup the various dialogue boxes.
-        trainList = new TrainListJPanel();
-        trainList.setup(w, vl, closeCurrentDialogue);
-        trainList.setShowTrainDetailsActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent arg0) {
-                int id = trainList.getSelectedTrainID();
-                closeContent();
-                if(id != -1){
-                    trainDialogueJPanel.display(id);
-                    showContent(trainDialogueJPanel);
-                }
-                
-            }
-        });
+        
         
         // setup the terrain info dialogue.
         terrainInfo = new TerrainInfoJPanel();
@@ -289,6 +281,21 @@ public class DialogueBoxController {
     
     public void showTrainList() {
         if (world.size(KEY.TRAINS) > 0) {
+			final TrainListJPanel trainList = new TrainListJPanel();		
+					trainList.setup(w, vl, closeCurrentDialogue);
+					trainList.setShowTrainDetailsActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent arg0) {
+							int id = trainList.getSelectedTrainID();
+							closeContent();
+							if(id != -1){
+								trainDialogueJPanel.display(id);
+								showContent(trainDialogueJPanel);
+							}
+                
+						}
+					});
+        	
+        	
             showContent(trainList);
         } else {
             modelRoot.getUserMessageLogger().println("There are" +

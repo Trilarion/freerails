@@ -62,6 +62,12 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer, W
         this.setOpaque(false);
     }
     
+	/** Creates a new instance of TrainView */
+	   public TrainViewJPanel(ReadOnlyWorld w, ViewLists vl) {
+		   setup(w, vl, null);		  
+		   this.setBackground(backgoundColor);
+	   }
+    
     /** Creates a new instance of TrainView */
     public TrainViewJPanel(ReadOnlyWorld w, ViewLists vl, int trainNumber) {
         setup(w, vl, null);
