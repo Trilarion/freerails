@@ -17,7 +17,7 @@ class Base2DMapView: public BaseWidget {
     enum MouseType {normal=0,
                     buildTrack=10, buildStation, buildSignal};
     /**  */
-    Base2DMapView(int x, int y, int w, int h, GuiEngine* _guiEngine);
+    Base2DMapView(GuiEngine* _guiEngine);
     /**  */
     ~Base2DMapView();
     

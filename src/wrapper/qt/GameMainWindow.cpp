@@ -69,7 +69,7 @@ void GameMainWindow::constructPlayField()
   CHECK_PTR(panel);
   panel->move(widget->width() - 176, 0);
 
-  mapview->show();
+  ((QScrollView*)mapview)->show();
   panel->show();
 }
 

@@ -5,10 +5,7 @@
 
 #include "Base2DMapView.h"
 
-#include "SDL.h"
-#include "SDL_image.h"
-
-Base2DMapView::Base2DMapView(int x, int y, int w, int h, GuiEngine* _guiEngine):
+Base2DMapView::Base2DMapView(GuiEngine* _guiEngine):
 BaseWidget() {
 
   # warning All calculations are based on 30x30 tileset!

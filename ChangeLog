@@ -1,18 +1,28 @@
+Fri May 09 01:15:00 2003  Alexander Opitz <opi@le-bit.de>:
+o QT     : Updated to API changes so does it compiles again
+o Wrapper: Remove SDL.h and Size from Base2DMapView, cause it isn't
+           needed there
+
 Tue May 06 14:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Add a timer Widget, that will later move the trains and
-  read messages from Server (if any)
+           read messages from Server (if any)
+
 Mon May 05 13:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI  : Let Buttons work for different stations
 o GUIEngine: Give StationType to Engine
+
 Sat May 03 02:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Add Buttons for different Station size, doesn't do anything yet.
+
 Wed Apr 30 13:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Elements  : Add Signal to Station size type
 o Controller: correct connectIsBuildable for BlockedTracks
 o ParaGUI   : Show different Station types
+
 Wed Apr 30 02:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: repair Pause handling
 o Engine : Don't accept Msg's in Pause mode if they are not gameState Msg's.
+
 Tue Apr 29 20:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o make ParaGUI ready for 0.0.8
 o remove showStation in ParaGUI, showTrack should be the next, dir -> connect

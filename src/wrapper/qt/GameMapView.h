@@ -6,6 +6,7 @@
 #define __GAMEMAPVIEW_H__
 
 #include "MapField.h"
+#include "Base2DMapView.h"
 
 #include <qcanvas.h>
 #include <qpoint.h>

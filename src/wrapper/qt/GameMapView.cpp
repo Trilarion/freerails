@@ -15,9 +15,9 @@
 #include "Station.h"
 #include "TrackController.h"
 
-GameMapView::GameMapView(GuiEngine *_guiEngine, GameMap *_map, GameMainWindow* parent, const char* name)
-           : QCanvasView((QCanvas*)_map, (QWidget*)parent->getWidget(), name,
-               Qt::WStyle_Customize | Qt::WStyle_NoBorder)
+GameMapView::GameMapView(GuiEngine *_guiEngine, GameMap *_map, GameMainWindow* parent, const char* name):
+QCanvasView((QCanvas*)_map, (QWidget*)parent->getWidget(), name, Qt::WStyle_Customize | Qt::WStyle_NoBorder),
+Base2DMapView(_guiEngine)
 {
   guiEngine = _guiEngine;
   map = _map;
@@ -231,7 +231,7 @@ void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
           msg = new Message(Message::addElement, 0, (void *)new_station);
           guiEngine->sendMsg(msg);
 	  */
-	  guiEngine->buildStation(x,y);
+	  guiEngine->buildStation(x,y,Station::Small);
 
           break;
         }
