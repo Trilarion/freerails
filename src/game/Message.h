@@ -9,9 +9,8 @@
 class Message {
 public:
 
-  enum MsgTypes { startGame=0, stopGame, pauseGame, newPlayer,
-
-                  newDay=100
+  enum MsgTypes { addElement=1, changeElement, deleteElement, stateOfLastMsg,
+                  stateOfGame
 		};
 
   /** Constructor */
