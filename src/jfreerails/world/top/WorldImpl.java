@@ -45,7 +45,7 @@ public class WorldImpl implements World {
     private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
     private final ArrayList[] sharedLists = new ArrayList[SKEY.getNumberOfKeys()];
     private final FreerailsSerializable[] items = new FreerailsSerializable[ITEM.getNumberOfKeys()];
-    private FreerailsTile[][] map;
+    private FreerailsSerializable[][] map;
 
     public WorldImpl() {
         setupTime();
@@ -65,7 +65,7 @@ public class WorldImpl implements World {
     }
 
     public void setupMap(int mapWidth, int mapHeight) {
-        map = new FreerailsTile[mapWidth][mapHeight];
+        map = new FreerailsSerializable[mapWidth][mapHeight];
 
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
@@ -145,11 +145,11 @@ public class WorldImpl implements World {
         }
     }
 
-    public void setTile(int x, int y, FreerailsTile element) {
+    public void setTile(int x, int y, FreerailsSerializable element) {
         map[x][y] = element;
     }
 
-    public FreerailsTile getTile(int x, int y) {
+    public FreerailsSerializable getTile(int x, int y) {
         return map[x][y];
     }
 

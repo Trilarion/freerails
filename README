@@ -1,21 +1,20 @@
 Freerails Java - build @version@
 
 Bugs Fixed:
-o 972866 Build track by dragging - only when build track selected
-o 984510 jfreerails.world.player.player; local class incompatible
-o 979831 Stacktraces printed out when running unit tests 	
 
 
 Features implemented:
-
-o 915943 Sounds!
-
+o 931581 Build Industry.
+o 931594 Show which player is winning.
+o 915955 Automatic Schedules.
+o 931597 Graph showing total profits over time.
+o 915957 Build track by dragging mouse.	
+o 932630 Change speed from network clients.
 
 Changes not in tracker
-
-o Apply Vincenzo Di Massa's station distance patch.
-o Fixed DisplayModesComboBoxModels.removeDisplayModesBelow(.) so 
-that it does not remove display modes when displayMode.getBitDepth() returns DisplayMode.BIT_DEPTH_MULTI
+o Added ConstJava ant target
+	Note, ConstJava adds the keyword 'const' to java.  It can
+	be typed /*=const */ so that the files remain valid java files.
 
 
 Getting it, either:

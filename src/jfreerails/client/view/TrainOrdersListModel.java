@@ -30,7 +30,7 @@ public class TrainOrdersListModel extends AbstractListModel {
     /** This class holds the values that are needed by the ListCellRender. TrainOrdersListModel.getElementAt(int index) returns
      an instance of this class. */
     public static class TrainOrdersListElement {
-        public final boolean isPriorityOrder;
+        public final boolean isPriorityOrder;       
         public final int gotoStatus;
         public final TrainOrdersModel order;
         public final int trainNumber;
@@ -40,7 +40,7 @@ public class TrainOrdersListModel extends AbstractListModel {
             this.isPriorityOrder = isPriorityOrder;
             this.gotoStatus = gotoStatus;
             this.order = order;
-            this.trainNumber = trainNumber;
+            this.trainNumber = trainNumber;            
         }
     }
 

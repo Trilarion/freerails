@@ -26,7 +26,7 @@ public class TrackBuildModel {
      * 100 010 001 = 0x111
      */
     private static final int trackTemplate = TrackConfiguration.getFlatInstance(0x111)
-                                                               .getTemplate();
+                                                               .get9bitTemplate();
     private final ActionAdapter buildModeAdapter;
     private final ActionAdapter trackRuleAdapter;
     private final TrackMoveProducer trackMoveProducer;

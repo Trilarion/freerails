@@ -15,7 +15,7 @@ public interface GraphExplorer {
     int getPosition();
 
     /** Sets the current edge to the current vertex's next edge.  Throws a NoSuchElementException if
-     * the vertex foes not have another edge.*/
+     * the vertex does not have another edge.*/
     void nextEdge();
 
     /** Returns the vertex that is connected to the current vertex by the current edge. */
@@ -30,4 +30,6 @@ public interface GraphExplorer {
      * that is connected to the current vertex by the current edge.
      */
     void moveForward();
+
+    int getH();
 }

@@ -26,6 +26,10 @@ final public class Money implements FreerailsSerializable {
         this.amount = amount;
     }
 
+    public Money changeSign() {
+        return new Money(-amount);
+    }
+
     public boolean equals(Object obj) {
         if (obj instanceof Money) {
             Money test = (Money)obj;

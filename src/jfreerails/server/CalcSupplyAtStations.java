@@ -2,9 +2,9 @@ package jfreerails.server;
 
 import java.util.Vector;
 import jfreerails.controller.CargoElementObject;
-import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeStationMove;
 import jfreerails.move.Move;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.station.SupplyAtStation;

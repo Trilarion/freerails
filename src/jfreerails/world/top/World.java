@@ -4,7 +4,6 @@ import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
-import jfreerails.world.track.FreerailsTile;
 
 
 /**
@@ -71,7 +70,7 @@ public interface World extends ReadOnlyWorld {
      * specified tile.
      *
      */
-    void setTile(int x, int y, FreerailsTile tile);
+    void setTile(int x, int y, FreerailsSerializable tile);
 
     int addPlayer(Player player);
 

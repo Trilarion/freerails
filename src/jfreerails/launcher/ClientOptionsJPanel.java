@@ -240,8 +240,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         jPanel4.setEnabled(false);
         jLabel2.setText("IP Address:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(jLabel2, gridBagConstraints);
 
         remoteIP.setColumns(15);
@@ -259,8 +259,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(remoteIP, gridBagConstraints);
 
         ipErrorMessage.setForeground(java.awt.Color.red);
@@ -270,17 +270,17 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 1;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(ipErrorMessage, gridBagConstraints);
 
         jLabel3.setText("port");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(jLabel3, gridBagConstraints);
 
         remotePort.setColumns(5);
@@ -288,8 +288,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(remotePort, gridBagConstraints);
 
         portErrorMessage.setForeground(java.awt.Color.red);
@@ -299,8 +299,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(portErrorMessage, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -377,7 +377,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fullScreenButtonStateChanged
     
     
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton fixedSizeButton;
     private javax.swing.JRadioButton fullScreenButton;
@@ -396,6 +396,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField remoteIP;
     private javax.swing.JTextField remotePort;
     private javax.swing.JRadioButton windowedButton;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration
+    
     
 }

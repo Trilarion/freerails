@@ -11,9 +11,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;

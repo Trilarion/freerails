@@ -57,7 +57,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = getWorld().getTile(0, 0);
+        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
 
@@ -113,7 +113,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = getWorld().getTile(0, 0);
+        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0);
@@ -132,7 +132,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
         assertEquals(newTrackPiece.getTrackConfiguration(),
-            getWorld().getTile(0, 0).getTrackConfiguration());
+            ((TrackPiece)getWorld().getTile(0, 0)).getTrackConfiguration());
     }
 
     public void testMove() {
@@ -140,7 +140,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = getWorld().getTile(0, 0);
+        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0);

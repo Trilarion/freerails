@@ -138,7 +138,8 @@ public class MapFactory {
 
     private static void setTile(int x, int y, FreerailsTile tile) {
         if (!non_countryTypes.contains(
-                    new Integer(world.getTile(x, y).getTerrainTypeNumber()))) {
+                    new Integer(
+                        ((FreerailsTile)world.getTile(x, y)).getTerrainTypeNumber()))) {
             world.setTile(x, y, tile);
         }
     }

@@ -6,9 +6,11 @@ package jfreerails.client.view;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
@@ -37,7 +39,7 @@ public class StationBuildModel {
      * 100 010 001 = 0x111
      */
     private static final int trackTemplate = TrackConfiguration.getFlatInstance(0x111)
-                                                               .getTemplate();
+                                                               .get9bitTemplate();
 
     /**
      * Vector of StationBuildAction.

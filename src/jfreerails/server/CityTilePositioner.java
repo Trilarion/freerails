@@ -106,7 +106,7 @@ public class CityTilePositioner {
     }
 
     private String getCategoryForTile(int x, int y) {
-        int tileTypeNumber = w.getTile(x, y).getTerrainTypeNumber();
+        int tileTypeNumber = ((FreerailsTile)w.getTile(x, y)).getTerrainTypeNumber();
         String category = ((TerrainType)w.get(SKEY.TERRAIN_TYPES, tileTypeNumber)).getTerrainCategory();
 
         return category;

@@ -1,0 +1,138 @@
+/*
+ * Created on Apr 11, 2004
+ */
+package jfreerails.network;
+
+import java.io.IOException;
+import java.util.Arrays;
+import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.Money;
+import junit.framework.TestCase;
+
+
+/**
+ * JUnit test for NewLocalConnection.
+ * @author Luke
+ *
+ */
+public class LocalConnectionTest extends TestCase {
+    private static class Server implements Runnable {
+        private boolean keepGoing = true;
+        private final NewLocalConnection connection;
+
+        public Server(NewLocalConnection l) {
+            connection = l;
+        }
+
+        public void run() {
+            try {
+                while (isKeepGoing()) {
+                    FreerailsSerializable fs = connection.waitForObjectFromClient();
+                    connection.writeToClient(fs);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+
+        private synchronized boolean isKeepGoing() {
+            return keepGoing;
+        }
+
+        public synchronized void stop() {
+            this.keepGoing = false;
+        }
+    }
+
+    private NewLocalConnection localConnection;
+    private final FreerailsSerializable[] EmptyArray = new FreerailsSerializable[0];
+    private Server server;
+
+    public void testReadFromClient() {
+        FreerailsSerializable[] objectsRead;
+
+        try {
+            objectsRead = localConnection.readFromClient();
+            assertNotNull(objectsRead);
+            assertTrue(Arrays.equals(EmptyArray, objectsRead));
+
+            Money m = new Money(100);
+            localConnection.writeToServer(m); //From the client.
+            objectsRead = localConnection.readFromClient();
+
+            FreerailsSerializable[] expectedArray = {m};
+            assertTrue(Arrays.equals(expectedArray, objectsRead));
+            objectsRead = localConnection.readFromClient();
+            assertTrue(Arrays.equals(EmptyArray, objectsRead));
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    public void testWait() {
+        FreerailsSerializable[] objectsRead;
+
+        try {
+            Money m = new Money(100);
+
+            localConnection.writeToServer(m);
+
+            //Since we have just added an object, there is no need to wait.
+            Object o = localConnection.waitForObjectFromClient();
+            assertEquals(m, o);
+
+            localConnection.writeToServer(m);
+            o = localConnection.waitForObjectFromServer();
+
+            assertEquals(m, o);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    public void testReadFromServer() {
+        FreerailsSerializable[] objectsRead;
+
+        try {
+            objectsRead = localConnection.readFromServer();
+            assertNotNull(objectsRead);
+            assertTrue(Arrays.equals(EmptyArray, objectsRead));
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    public void testClose() {
+        try {
+            localConnection.disconnect();
+
+            Money m = new Money(100);
+            localConnection.writeToClient(m);
+            fail();
+        } catch (IOException e) {
+            String message = e.getMessage();
+        }
+    }
+
+    public void testIsOpen() {
+        assertTrue(localConnection.isOpen());
+    }
+
+    protected void setUp() throws Exception {
+        localConnection = new NewLocalConnection();
+        server = new Server(this.localConnection);
+
+        Thread t = new Thread(server);
+        t.start(); //Start the sever thread.	
+    }
+
+    protected void tearDown() throws Exception {
+        // TODO Auto-generated method stub
+        super.tearDown();
+        server.stop(); //Stop the server thread.
+    }
+}

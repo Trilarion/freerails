@@ -142,7 +142,7 @@ final public class TrackMoveProducer {
 
     private MoveStatus upgradeTrack(Point point, TrackRule trackRule) {
         ReadOnlyWorld w = executor.getWorld();
-        TrackPiece before = w.getTile(point.x, point.y);
+        TrackPiece before = (TrackPiece)w.getTile(point.x, point.y);
         FreerailsPrincipal principal = executor.getPrincipal();
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),

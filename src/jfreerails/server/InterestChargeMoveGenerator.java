@@ -1,8 +1,8 @@
 package jfreerails.server;
 
-import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.BondTransaction;
 import jfreerails.world.accounts.Transaction;

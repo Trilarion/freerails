@@ -84,7 +84,7 @@ public class StationNamesRenderer implements Painter {
 
                 //First draw station sphere of influence  
                 if (showStationBorders.booleanValue()) {
-                    FreerailsTile tile = w.getTile(x, y);
+                    FreerailsTile tile = (FreerailsTile)w.getTile(x, y);
                     int radius = tile.getTrackRule().getStationRadius();
                     int diameterInPixels = (radius * 2 + 1) * 30;
                     int radiusX = (x - radius) * 30;

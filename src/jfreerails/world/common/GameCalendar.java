@@ -20,6 +20,13 @@ final public class GameCalendar implements FreerailsSerializable {
         return result;
     }
 
+    public GameTime getStartOfYear(GameTime t) {
+        int year = getYear(t.getTime());
+        int ticks = getTicks(year);
+
+        return new GameTime(ticks);
+    }
+
     public String getYearAsString(int ticks) {
         int i = getYear(ticks);
 
@@ -28,6 +35,12 @@ final public class GameCalendar implements FreerailsSerializable {
 
     public int getYear(int ticks) {
         return startYear + (ticks / ticksPerYear);
+    }
+
+    public int getTicks(int year) {
+        int deltaYear = year - startYear;
+
+        return deltaYear * ticksPerYear;
     }
 
     /** Returns the time of day as a string, note that a year is made

@@ -57,14 +57,13 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         int[] actual;
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        aggregator.setStartYear(0);
         actual = new int[3];
         aggregator.setType(0);
-        actual[0] = aggregator.calulateQuantity();
+        actual[0] = aggregator.calculateQuantity();
         aggregator.setType(1);
-        actual[1] = aggregator.calulateQuantity();
+        actual[1] = aggregator.calculateQuantity();
         aggregator.setType(2);
-        actual[2] = aggregator.calulateQuantity();
+        actual[2] = aggregator.calculateQuantity();
 
         return actual;
     }

@@ -27,6 +27,7 @@ public class UserInputOnMapController extends KeyAdapter {
     private static final String JFREERAILS_CLIENT_SOUNDS_BUILDTRACK_WAV = "/jfreerails/client/sounds/buildtrack.wav";
     private static final Logger logger = Logger.getLogger(UserInputOnMapController.class.getName());
     private StationTypesPopup stationTypesPopup;
+    private BuildIndustryJPopupMenu buildIndustryJPopupMenu = new BuildIndustryJPopupMenu();
     private MapViewJComponent mapView;
     private TrackMoveProducer trackBuilder;
     private DialogueBoxController dialogueBoxController;
@@ -89,7 +90,8 @@ public class UserInputOnMapController extends KeyAdapter {
         public void mouseReleased(MouseEvent evt) {
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 // build a railroad from x,y to current cursor position
-                if (pressedInside && buildTrack.isBuilding()) {
+                if (pressedInside && buildTrack.isBuilding() &&
+                        buildTrack.isBuildTrackSuccessful()) {
                     // Fix for bug [ 997088 ]
                     // Is current posisition different from original position?
                     int x = evt.getX();
@@ -158,6 +160,7 @@ public class UserInputOnMapController extends KeyAdapter {
         this.stationTypesPopup = stPopup;
         this.trackBuilder = trackBuilder;
         this.buildTrack = buildTrack;
+        buildIndustryJPopupMenu.setup(mr, null, null);
 
         /* We attempt to remove listeners before adding them to
          * prevent them being added several times.
@@ -281,6 +284,17 @@ public class UserInputOnMapController extends KeyAdapter {
 
         case KeyEvent.VK_C: {
             mapView.centerOnTile(cursorPosition);
+
+            break;
+        }
+
+        case KeyEvent.VK_B: {
+            float scale = mapView.getScale();
+            Dimension tileSize = new Dimension((int)scale, (int)scale);
+            int x = cursorPosition.x * tileSize.width;
+            int y = cursorPosition.y * tileSize.height;
+            buildIndustryJPopupMenu.setCusorLocation(cursorPosition);
+            buildIndustryJPopupMenu.show(mapView, x, y);
 
             break;
         }

@@ -17,5 +17,5 @@ public interface FlatTrackTemplate extends FreerailsSerializable {
     /**
      * @return the integer representing the vector(s) of this object.
      */
-    int getTemplate();
+    int get9bitTemplate();
 }

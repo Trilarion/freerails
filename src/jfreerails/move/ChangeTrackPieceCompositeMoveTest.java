@@ -78,9 +78,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         //Remove only track piece built.
         assertRemoveTrackSuceeds(new Point(0, 5), east);
         assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(),
-            getWorld().getTile(0, 5).getTrackConfiguration());
+            ((FreerailsTile)getWorld().getTile(0, 5)).getTrackConfiguration());
         assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(),
-            getWorld().getTile(1, 5).getTrackConfiguration());
+            ((FreerailsTile)getWorld().getTile(1, 5)).getTrackConfiguration());
     }
 
     /** All track except the first piece built should be connected to existing track.*/
@@ -118,7 +118,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         //Now change the owner of the track piece at  (1, 6);				
         int anotherPlayer = 999;
-        FreerailsTile oldTile = world.getTile(1, 6);
+        FreerailsTile oldTile = (FreerailsTile)world.getTile(1, 6);
         TrackPiece tp = oldTile.getTrackPiece();
         TrackPiece newTrackPiece = new TrackPieceImpl(tp.getTrackConfiguration(),
                 tp.getTrackRule(), anotherPlayer);

@@ -21,6 +21,8 @@
  */
 package jfreerails.util;
 
+import java.io.Serializable;
+
 
 /**
  * Growable <code>int</code> array with type specific access methods. This
@@ -33,7 +35,7 @@ package jfreerails.util;
  * @author Dennis M. Sosnoski
  * @version 1.0
  */
-public class IntArray extends ArrayBase {
+public class IntArray extends ArrayBase implements Serializable {
     /** The underlying array used for storing the data. */
     protected int[] m_baseArray;
 

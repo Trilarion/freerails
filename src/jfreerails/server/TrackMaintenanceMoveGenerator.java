@@ -4,9 +4,9 @@
  */
 package jfreerails.server;
 
-import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
@@ -43,7 +43,6 @@ public class TrackMaintenanceMoveGenerator {
         //        principal, 0);
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w,
                 principal);
-        aggregator.setStartYear(0);
         aggregator.setCategory(Transaction.TRACK);
 
         long amount = 0;
@@ -58,7 +57,7 @@ public class TrackMaintenanceMoveGenerator {
 
             if (rightType) {
                 aggregator.setType(i);
-                amount += maintenanceCost * aggregator.calulateQuantity() / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+                amount += maintenanceCost * aggregator.calculateQuantity() / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE;
             }
         }
 

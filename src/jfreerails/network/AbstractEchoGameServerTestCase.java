@@ -1,0 +1,38 @@
+/*
+ * Created on Apr 13, 2004
+ */
+package jfreerails.network;
+
+import junit.framework.TestCase;
+
+
+/**
+ *  Test cases that use EchoGameServer should extend this class.
+ *  @author Luke
+ *
+ */
+public class AbstractEchoGameServerTestCase extends TestCase {
+    InetConnectionAccepter server;
+    EchoGameServer echoGameServer;
+    final String ipAddress = "127.0.0.1";
+
+    protected synchronized void setUp() throws Exception {
+        echoGameServer = EchoGameServer.startServer();
+
+        /* There was a problem that occurred intermittenly
+         * when the unit tests were run as a batch.  I think
+         * it was to do with reusing ports in quick succession.
+         * Passing 0 as the port allow us to listen on an unspecified
+         * port whose number we obtain by calling getLocalPort().  This
+         * making this change, the problem has not occurred.
+         */
+        server = new InetConnectionAccepter(0, echoGameServer);
+
+        Thread serverThread = new Thread(server);
+        serverThread.start();
+    }
+
+    protected synchronized void tearDown() throws Exception {
+        server.stop();
+    }
+}

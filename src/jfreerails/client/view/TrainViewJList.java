@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;

@@ -152,7 +152,7 @@ public class WorldDifferencesTest extends TestCase {
         assertEquals(21, worldDiff.getMapWidth());
         assertEquals(8, worldDiff.getMapHeight());
 
-        FreerailsTile tile = underlyingWorld.getTile(2, 2);
+        FreerailsTile tile = (FreerailsTile)underlyingWorld.getTile(2, 2);
         assertNotNull(tile);
         assertEquals(tile, worldDiff.getTile(2, 2));
 

@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
 import jfreerails.client.common.ModelRoot;
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.renderer.MapRenderer;
 
 
@@ -214,7 +215,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         this.addMouseMotionListener(mva);
     }
 
-    public void setup(MapRenderer mv, ModelRoot mr) {
+    public void setup(MapRenderer mv, ModelRootImpl mr) {
         super.setMapView(mv);
 
         this.setBorder(null);

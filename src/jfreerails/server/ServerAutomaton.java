@@ -1,6 +1,6 @@
 package jfreerails.server;
 
-import jfreerails.controller.MoveReceiver;
+import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.FreerailsSerializable;
 
 

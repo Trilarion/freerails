@@ -69,8 +69,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     private String generateFilename(int i) {
         String relativeFileNameBase = "track" + File.separator +
             this.getTrackTypeName();
-        int newTemplate = TrackConfiguration.getFlatInstance(i)
-                                            .getNewTemplateNumber();
+        int newTemplate = TrackConfiguration.getFlatInstance(i).get8bitTemplate();
         String fileName = relativeFileNameBase + "_" +
             BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8) +
             ".png";

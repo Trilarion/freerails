@@ -7,13 +7,15 @@ package jfreerails.world.player;
  */
 public class PlayerPrincipal extends FreerailsPrincipal {
     private final int id;
+    private final String name;
 
-    public PlayerPrincipal(int id) {
+    public PlayerPrincipal(int id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public String getName() {
-        return "Player " + id;
+        return name;
     }
 
     public int hashCode() {

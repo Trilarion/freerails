@@ -13,8 +13,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import jfreerails.client.common.ModelRoot;
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.track.FreerailsTile;
 
 
 /**  The tabbed panel that sits in the lower right hand corner of the screen, note does not only display trains.
@@ -75,7 +77,7 @@ public class RHSJTabPane extends JTabbedPane
     }
 
     public void setup(final ActionRoot actionRoot, ViewLists vl,
-        final ModelRoot modelRoot) {
+        final ModelRootImpl modelRoot) {
         world = modelRoot.getWorld();
         terrainInfoPanel.setup(world, vl);
         stationInfoPanel.setup(modelRoot, vl, null);
@@ -99,7 +101,7 @@ public class RHSJTabPane extends JTabbedPane
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(ModelRoot.CURSOR_POSITION)) {
             Point p = (Point)evt.getNewValue();
-            terrainInfoPanel.setTerrainType(world.getTile(p.x, p.y)
+            terrainInfoPanel.setTerrainType(((FreerailsTile) world.getTile(p.x, p.y))
                                                  .getTerrainTypeNumber());
         }
     }

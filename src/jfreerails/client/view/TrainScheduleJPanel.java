@@ -67,6 +67,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         changeConsistJMenu = new javax.swing.JMenu();
         noChangeJMenuItem = new javax.swing.JMenuItem();
         engineOnlyJMenuItem = new javax.swing.JMenuItem();
+        autoConsistJMenuItem = new javax.swing.JMenuItem();
         waitJMenu = new javax.swing.JMenu();
         dontWaitJMenuItem = new javax.swing.JMenuItem();
         waitUntilFullJMenuItem = new javax.swing.JMenuItem();
@@ -152,6 +153,15 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         });
 
         changeConsistJMenu.add(engineOnlyJMenuItem);
+
+        autoConsistJMenuItem.setText("Choose wagons automatically");
+        autoConsistJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autoConsistJMenuItemActionPerformed(evt);
+            }
+        });
+
+        changeConsistJMenu.add(autoConsistJMenuItem);
 
         editOrderJPopupMenu.add(changeConsistJMenu);
 
@@ -246,6 +256,10 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         add(jScrollPane1, gridBagConstraints);
 
     }//GEN-END:initComponents
+
+    private void autoConsistJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoConsistJMenuItemActionPerformed
+        setAutoConsist();    
+    }//GEN-LAST:event_autoConsistJMenuItemActionPerformed
     
     private void changeStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeStationActionPerformed
         int orderNumber = this.orders.getSelectedIndex();
@@ -273,18 +287,18 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }//GEN-LAST:event_engineOnlyJMenuItemActionPerformed
     
     private void noChangeJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noChangeJMenuItemActionPerformed
-        noChange();
+        noChange();      
     }//GEN-LAST:event_noChangeJMenuItemActionPerformed
     
     private void priorityOrdersJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priorityOrdersJButtonActionPerformed
         MutableSchedule s = getSchedule();
-        s.setPriorityOrders(new TrainOrdersModel(0, null, false));
+        s.setPriorityOrders(new TrainOrdersModel(0, null, false, false));
         showSelectStation(s, Schedule.PRIORITY_ORDERS);
     }//GEN-LAST:event_priorityOrdersJButtonActionPerformed
     
     private void addStationJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStationJButtonActionPerformed
         MutableSchedule s = getSchedule();
-        int newOrderNumber = s.addOrder(new TrainOrdersModel(0, null, false));
+        int newOrderNumber = s.addOrder(new TrainOrdersModel(0, null, false, false));
         showSelectStation(s, newOrderNumber);
     }//GEN-LAST:event_addStationJButtonActionPerformed
     
@@ -418,7 +432,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), null, false);
+        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), null, false, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -428,7 +442,18 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), oldOrders.consist, b);
+        boolean autoConsist = b ? false: oldOrders.autoConsist;
+        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), oldOrders.consist, b, autoConsist);
+        s.setOrder(orderNumber, newOrders);
+        sendUpdateMove(s);
+    }
+    
+      private void setAutoConsist(){
+        TrainOrdersModel oldOrders, newOrders;
+        MutableSchedule s = getSchedule();
+        int orderNumber = this.orders.getSelectedIndex();
+        oldOrders = s.getOrder(orderNumber);       
+        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), null, false, true);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -452,7 +477,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         }else{
             newConsist = new int[]{wagonTypeNumber};
         }
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), newConsist, oldOrders.getWaitUntilFull());
+        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), newConsist, oldOrders.getWaitUntilFull(), false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -462,7 +487,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), new int[0], false);
+        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), new int[0], false, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -481,7 +506,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         
         //Copy existing wagons
         System.arraycopy(oldConsist, 0, newConsist, 0, newConsist.length);
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), newConsist, oldOrders.waitUntilFull);
+        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), newConsist, oldOrders.waitUntilFull, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -530,6 +555,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addStationJButton;
     private javax.swing.JMenu addWagonJMenu;
+    private javax.swing.JMenuItem autoConsistJMenuItem;
     private javax.swing.JMenu changeConsistJMenu;
     private javax.swing.JMenuItem changeStation;
     private javax.swing.JMenuItem dontWaitJMenuItem;

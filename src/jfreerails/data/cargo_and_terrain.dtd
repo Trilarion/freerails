@@ -32,6 +32,7 @@
 <!ATTLIST Tile
     Category (Urban | River | Ocean | Hill | Country | Special | Industry | Resource) #REQUIRED
     right-of-way CDATA #REQUIRED
+    build_cost CDATA #IMPLIED
     rgb CDATA #REQUIRED
     id ID #REQUIRED
   >

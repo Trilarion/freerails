@@ -5,8 +5,6 @@ package jfreerails.world.top;
 
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
-import jfreerails.world.common.GameCalendar;
-import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 
@@ -21,13 +19,20 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     public static final int ANY_VALUE = Integer.MIN_VALUE;
     private int type = ANY_VALUE;
     private int category = ANY_VALUE;
-    private static GameCalendar calendar;
-    private int startYear = 0;
+
+    //private static GameCalendar calendar;
+    //private int startYear = 0;
+    private int[] quantities;
+    private int quantityRunningTotal;
+
+    public static class QuantitiesAndValues {
+        public int[] quantities;
+        public Money[] values;
+    }
 
     public ItemsTransactionAggregator(ReadOnlyWorld w,
         FreerailsPrincipal principal) {
         super(w, principal);
-        calendar = (GameCalendar)w.get(ITEM.CALENDAR);
     }
 
     /**
@@ -46,32 +51,45 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
             (type == addItemTransaction.getType());
         boolean isCategoryAcceptable = (category == ANY_VALUE) ||
             (category == addItemTransaction.getCategory());
-        int transactionTime = w.getTransactionTimeStamp(transactionID, principal)
-                               .getTime();
-        int transactionYear = calendar.getYear(transactionTime);
 
-        return isCategoryAcceptable && isTypeAcceptable &&
-        transactionYear >= startYear;
+        return isCategoryAcceptable && isTypeAcceptable;
     }
 
-    public int calulateQuantity() {
-        int quantity = 0;
+    public int calculateQuantity() {
+        QuantitiesAndValues qnv = calculateQuantitiesAndValues();
 
-        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-            Transaction t = w.getTransaction(i, principal);
-            GameTime time = w.getTransactionTimeStamp(i, principal);
-
-            if (condition(i)) {
-                AddItemTransaction addItemTransaction = (AddItemTransaction)t;
-                quantity += addItemTransaction.getQuantity();
-            }
-        }
-
-        return quantity;
+        return qnv.quantities[0];
     }
 
-    public Money calulateAssetValue() {
-        return new Money(-super.calulateValue().getAmount());
+    public QuantitiesAndValues calculateQuantitiesAndValues() {
+        QuantitiesAndValues returnValue = new QuantitiesAndValues();
+        returnValue.values = super.calculateValues();
+        returnValue.quantities = this.quantities;
+
+        return returnValue;
+    }
+
+    protected void incrementRunningTotal(int transactionID) {
+        super.incrementRunningTotal(transactionID);
+
+        Transaction t = w.getTransaction(transactionID, principal);
+        AddItemTransaction addItemTransaction = (AddItemTransaction)t;
+        quantityRunningTotal += addItemTransaction.getQuantity();
+    }
+
+    protected void setTotalsArrayLength(int length) {
+        super.setTotalsArrayLength(length);
+        quantities = new int[length];
+        quantityRunningTotal = 0;
+    }
+
+    protected void storeRunningTotal(int timeIndex) {
+        /*Note, a negative sign since we are totalling
+         * the value of assets not their impact on the
+         * operating funds.
+         */
+        monetaryTotals[timeIndex] = new Money(-runningTotal);
+        quantities[timeIndex] = quantityRunningTotal;
     }
 
     public int getCategory() {
@@ -80,14 +98,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 
     public void setCategory(int category) {
         this.category = category;
-    }
-
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public void setStartYear(int startYear) {
-        this.startYear = startYear;
     }
 
     public int getType() {

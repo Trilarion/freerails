@@ -31,6 +31,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     String tileCategory;
     int tileRGB;
     int tileROW;
+    int tileBuildCost;
     ArrayList typeConsumes = new ArrayList();
     ArrayList typeProduces = new ArrayList();
     ArrayList typeConverts = new ArrayList();
@@ -60,6 +61,14 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
         String rgbString = meta.getValue("rgb");
         tileRGB = string2RGBValue(rgbString);
+
+        String buildCostString = meta.getValue("build_cost");
+
+        if (null != buildCostString) {
+            tileBuildCost = Integer.parseInt(buildCostString);
+        } else {
+            tileBuildCost = -1;
+        }
 
         //Check if another type is already using this rgb value..
         Integer rgbInteger = new Integer(tileRGB);
@@ -94,7 +103,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         }
 
         TileTypeImpl tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
-                tileROW, produces, consumes, converts);
+                tileROW, produces, consumes, converts, tileBuildCost);
 
         world.add(SKEY.TERRAIN_TYPES, tileType);
     }

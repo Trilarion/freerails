@@ -36,7 +36,11 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
     }
 
     public void moveForward() {
-        this.setPosition(this.getVertexConnectedByEdge());
+        if (beforeFirst) {
+            throw new IllegalStateException();
+        } else {
+            this.setPosition(this.getVertexConnectedByEdge());
+        }
     }
 
     public void nextEdge() {
@@ -45,7 +49,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
         } else {
             OneTileMoveVector v = this.getFirstVectorToTry();
             Point p = new Point(currentPosition.getX(), currentPosition.getY());
-            TrackPiece tp = w.getTile(p.x, p.y);
+            TrackPiece tp = (TrackPiece)w.getTile(p.x, p.y);
             TrackConfiguration conf = tp.getTrackConfiguration();
             OneTileMoveVector[] vectors = OneTileMoveVector.getList();
 
@@ -53,7 +57,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 
             int loopCounter = 0;
 
-            while (!conf.contains(vectors[i].getTemplate())) {
+            while (!conf.contains(vectors[i].get9bitTemplate())) {
                 i++;
                 i = i % 8;
                 loopCounter++;
@@ -129,7 +133,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
      */
     public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
         Point p) {
-        TrackPiece tp = w.getTile(p.x, p.y);
+        TrackPiece tp = (TrackPiece)w.getTile(p.x, p.y);
         TrackConfiguration conf = tp.getTrackConfiguration();
         OneTileMoveVector[] vectors = OneTileMoveVector.getList();
 
@@ -137,7 +141,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
         int n = 0;
 
         for (int i = 0; i < vectors.length; i++) {
-            if (conf.contains(vectors[i].getTemplate())) {
+            if (conf.contains(vectors[i].get9bitTemplate())) {
                 n++;
             }
         }
@@ -147,7 +151,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
         n = 0;
 
         for (int i = 0; i < vectors.length; i++) {
-            if (conf.contains(vectors[i].getTemplate())) {
+            if (conf.contains(vectors[i].get9bitTemplate())) {
                 possiblePositions[n] = new PositionOnTrack(p.x, p.y,
                         vectors[i].getOpposite());
                 n++;
@@ -181,5 +185,10 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 
             return v;
         }
+    }
+
+    public int getH() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

@@ -14,20 +14,29 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.security.GeneralSecurityException;
+import java.net.InetSocketAddress;
 import java.util.logging.Logger;
-import java.net.*;
+
 import jfreerails.client.common.FileUtils;
-import jfreerails.client.top.GUIClient;
-import jfreerails.controller.ServerControlInterface;
-import jfreerails.server.GameServer;
+import jfreerails.client.common.ScreenHandler;
+import jfreerails.client.top.GameLoop;
+import jfreerails.network.FreerailsGameServer;
+import jfreerails.network.InetConnectionAccepter;
+import jfreerails.network.SavedGamesManager;
+import jfreerails.network.ServerControlInterface;
+import jfreerails.server.SavedGamesManagerImpl;
+import jfreerails.server.ServerGameModelImpl;
 import jfreerails.util.FreerailsProgressMonitor;
+import jfreerails.util.GameModel;
 import jfreerails.world.player.Player;
 
 /**
  * Launcher GUI for both the server and/or client.
  *
- * @author  rtuck99@users.sourceforge.net
+ * TODO The code in the switch statements needs reviewing.
+ *
+ * @author rtuck99@users.sourceforge.net
+ * @author Luke
  */
 public class Launcher extends javax.swing.JFrame implements
 FreerailsProgressMonitor, LauncherInterface {
@@ -36,6 +45,9 @@ FreerailsProgressMonitor, LauncherInterface {
     private static final int GAME_SPEED_SLOW = 10;
     private final Component[] wizardPages = new Component[4];
     private int currentPage = 0;
+    private FreerailsGameServer server;
+    private GUIClient client;
+    
     
     public void setMessage(String s) {
         setInfoText(s);
@@ -43,14 +55,17 @@ FreerailsProgressMonitor, LauncherInterface {
     
     public void setValue(int i) {
         jProgressBar1.setValue(i);
+        
     }
     
     public void setMax(int max) {
         jProgressBar1.setMaximum(max);
+        
     }
     
     public void setInfoText(String text) {
         infoLabel.setText(text);
+        
     }
     
     public void setNextEnabled(boolean enabled) {
@@ -64,7 +79,7 @@ FreerailsProgressMonitor, LauncherInterface {
     
     private boolean nextIsStart = false;
     
-    private ServerControlInterface sci;
+    
     
     private void startGame() {
         jProgressBar1.setVisible(true);
@@ -72,93 +87,66 @@ FreerailsProgressMonitor, LauncherInterface {
         LauncherPanel1 lp = (LauncherPanel1) wizardPages[0];
         MapSelectionPanel msp = (MapSelectionPanel) wizardPages[1];
         ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
-        ServerStatusPanel ssp = (ServerStatusPanel) wizardPages[3];
+        ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
         
         boolean recover = false;
         int mode;
-        GameServer gs = new GameServer();
+               
+        
         Player p;
         CardLayout cl = (CardLayout) jPanel1.getLayout();
-        GUIClient gc;
+        
+        
         switch (lp.getMode()) {
             case LauncherPanel1.MODE_SINGLE_PLAYER:
-                if (msp.getMapAction() == MapSelectionPanel.START_NEW_MAP) {
-                    sci = gs.getNewGame(msp.getMapName(), this, 0);
-                } else {
-                    sci = gs.getSavedGame(0);
-                }
-                sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);  //Set initial game speed to slow.
-                mode = cop.getScreenMode();
                 try {
-                    p = getPlayer(cop.getPlayerName());
-                    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
-                    cop.getDisplayMode(), "JFreerails Client", this, p);
+                    
+                    mode = cop.getScreenMode();
+                                        
+                    client = new GUIClient(cop.getPlayerName(), this, mode);
+                    server = initServer();
+                    client.connect(server, cop.getPlayerName(), "password");
+                    
+                    setServerGameModel();                                                            
                 } catch (IOException e) {
                     setInfoText(e.getMessage());
                     recover = true;
-                } catch (GeneralSecurityException e) {
-                    setInfoText(e.getMessage());
-                    recover = true;
                 } finally {
-                    if (recover) {
-                        sci.quitGame();
+                    if (recover) {                       
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setNextEnabled(true);
                         return;
                     }
                 }
-                hide();
+                startThread(server, client);
                 break;
-            case LauncherPanel1.MODE_START_NETWORK_GAME:
-                if (msp.getMapAction() == MapSelectionPanel.START_NEW_MAP) {
-                    sci = gs.getNewGame(msp.getMapName(), this,
-                    msp.getServerPort());
-                } else {
-                    sci = gs.getSavedGame(msp.getServerPort());
-                }
-                mode = cop.getScreenMode();
-                try {
-                    p = getPlayer(cop.getPlayerName());
-                    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
-                    cop.getDisplayMode(), "JFreerails Client", this, p);
-                } catch (IOException e) {
-                    recover = true;
-                    setInfoText(e.getMessage());
-                } catch (GeneralSecurityException e) {
-                    recover = true;
-                    setInfoText(e.getMessage());
-                } finally {
-                    if (recover) {
-                        sci.quitGame();
-                        cop.setControlsEnabled(true);
-                        prevButton.setEnabled(true);
-                        setNextEnabled(true);
-                        return;
-                    }
-                }
-                ssp.setTableModel(sci.getClientConnectionTableModel());
-                /* show the connection status screen */
+            case LauncherPanel1.MODE_START_NETWORK_GAME:              
+                setServerGameModel();  
                 currentPage = 3;
+                String[] playerNames = server.getPlayerNames();
+                playerNames = playerNames.length == 0 ? new String[]{"No players are connected."}:playerNames;
+                cp.setListOfPlayers(playerNames);
                 cl.show(jPanel1, "3");
                 setNextEnabled(false);
+               
                 break;
             case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
                 mode = cop.getScreenMode();
                 try {
-                    p = getPlayer(cop.getPlayerName());
-                    InetAddress serverInetAddress = cop.getRemoteServerAddress().getAddress();
+               
+                    InetSocketAddress serverInetAddress = cop.getRemoteServerAddress();
                     if(null == serverInetAddress){
                         throw new NullPointerException("Couldn't resolve hostname.");
                     }
-                    gc = new
-                    GUIClient(serverInetAddress,
-                    mode, cop.getDisplayMode(), "JFreerails " +
-                    "Client", this, p);
+                    String playerName = cop.getPlayerName();
+                    client = new GUIClient(playerName, this, mode);
+                    
+                    String hostname = serverInetAddress.getHostName();
+                    int port = serverInetAddress.getPort();
+                    client.connect(hostname, port, playerName, "password");
+                    startThread(client);
                 } catch (IOException e) {
-                    setInfoText(e.getMessage());
-                    recover = true;
-                } catch (GeneralSecurityException e) {
                     setInfoText(e.getMessage());
                     recover = true;
                 } catch (NullPointerException e) {
@@ -173,24 +161,137 @@ FreerailsProgressMonitor, LauncherInterface {
                         return;
                     }
                 }
-                hide();
+               
                 break;
             case LauncherPanel1.MODE_SERVER_ONLY:
                 if(msp.validatePort()){
-                    if (msp.getMapAction() == MapSelectionPanel.START_NEW_MAP) {
-                        sci = gs.getNewGame(msp.getMapName(), this,
-                        msp.getServerPort());
-                    } else {
-                        sci = gs.getSavedGame(msp.getServerPort());
+                    server = initServer();
+                    try {                        
+                        setServerGameModel();  
+                        
+                        prepare2HostNetworkGame(msp.getServerPort());
+                        setNextEnabled(true);                        
+                    } catch (NullPointerException e) {
+                        setInfoText(e.getMessage());
+                        recover = true;
+                    }catch (IOException e) {
+                        setInfoText(e.getMessage());
+                        recover = true;
                     }
-                    ssp.setTableModel(sci.getClientConnectionTableModel());
-                    nextIsStart = true;
-                    setNextEnabled(true);
-                    currentPage = 3;
-                    cl.show(jPanel1, "3");
-                    /* TODO start server! */
+                    finally {
+                        if (recover) {
+                            cop.setControlsEnabled(true);
+                            prevButton.setEnabled(true);
+                            setNextEnabled(true);
+                            return;
+                        }
+                    }
+               
                 }
+        }//End of switch statement                              
+    }
+    
+    private void setServerGameModel() {
+        MapSelectionPanel msp2 = (MapSelectionPanel) wizardPages[1];
+        if (msp2.getMapAction() == MapSelectionPanel.START_NEW_MAP) {                       
+            server.newGame(msp2.getMapName());
+        } else {
+            server.loadgame(ServerControlInterface.FREERAILS_SAV);
+            
         }
+    }
+
+    /** Starts the client and server in the same thread.*/
+    private static void startThread(final FreerailsGameServer server, final GUIClient client) {
+        Runnable run = new Runnable(){
+            
+            public void run() {
+                while(null == client.getWorld()){
+                    client.update();
+                    server.update();
+                }
+                
+                GameModel[] models= new GameModel[] {client, server};                
+                ScreenHandler screenHandler = client.getScreenHandler();                
+                GameLoop gameLoop = new GameLoop(screenHandler, models);
+                screenHandler.apply();
+                
+                gameLoop.run();
+            }
+            
+        };
+        Thread t = new Thread(run, "Client + server main loop");
+        t.start();
+    }
+    
+    /** Starts the client in a new thread.*/
+    private static void startThread(final GUIClient client) {
+        Runnable run = new Runnable(){
+            
+            public void run() {
+                while(null == client.getWorld()){
+                    client.update();
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        //do nothing
+                    }
+                }
+                
+                GameModel[] models= new GameModel[] {client};                
+                ScreenHandler screenHandler = client.getScreenHandler();                
+                GameLoop gameLoop = new GameLoop(screenHandler, models);
+                screenHandler.apply();
+                
+                gameLoop.run();
+            }
+            
+        };
+        Thread t = new Thread(run, "Client main loop");
+        t.start();
+    }
+    
+    /** Starts the server in a new thread.*/
+    private static void startThread(final FreerailsGameServer server) {
+        
+        Runnable r = new Runnable(){
+
+            public void run() {
+                
+               while(true){
+                   long startTime = System.currentTimeMillis();
+                   server.update();
+                   long deltatime = System.currentTimeMillis() - startTime;
+                   if(deltatime < 20){ 
+                       try {
+                        Thread.sleep(20 - deltatime);
+                    } catch (InterruptedException e) {
+                       //do nothing.
+                    }
+                   }
+               }
+                
+            }
+            
+        };
+        
+        Thread t = new Thread(r, "FreerailsGameServer");
+        t.start();
+    }
+    
+    private FreerailsGameServer initServer() {
+        SavedGamesManager gamesManager = new SavedGamesManagerImpl();
+        FreerailsGameServer server = new FreerailsGameServer(gamesManager);
+        ServerGameModelImpl serverGameModel = new ServerGameModelImpl();
+        server.setServerGameModel(serverGameModel);
+        
+        /* Set the server field on the connected players panel so that
+         * it can keep track of who is connected.
+         */        
+        ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
+        cp.server = server;
+        
+        return server;
     }
     
     private Player getPlayer(String name) throws IOException {
@@ -255,9 +356,21 @@ FreerailsProgressMonitor, LauncherInterface {
     public void start(boolean quickstart) {
         show();
         if (quickstart) {
-            startGame();
-            sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);
+            startGame();           
         }
+    }
+    
+    /** Starts a thread listening for new connections.*/
+    private void prepare2HostNetworkGame(int port) throws IOException{
+        server = initServer();
+        InetConnectionAccepter accepter = new InetConnectionAccepter(port, server);
+        /* Note, the thread's name gets set in the run method so there is no point setting it here.*/
+        Thread t = new Thread(accepter);
+        t.start();
+        
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "3");
+        currentPage = 3;
     }
     
     public Launcher(boolean quickstart) {
@@ -266,7 +379,7 @@ FreerailsProgressMonitor, LauncherInterface {
         wizardPages[0] = new LauncherPanel1(this);
         wizardPages[1] = new MapSelectionPanel(this);
         wizardPages[2] = new ClientOptionsJPanel(this);
-        wizardPages[3] = new ServerStatusPanel(this);
+        wizardPages[3] = new ConnectedPlayersJPanel();
         
         if (!quickstart) {
             jPanel1.add(wizardPages[0], "0");
@@ -403,7 +516,7 @@ FreerailsProgressMonitor, LauncherInterface {
             LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
             MapSelectionPanel msp = (MapSelectionPanel) wizardPages[1];
             ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
-            ServerStatusPanel ssp = (ServerStatusPanel) wizardPages[3];
+
             
             
             switch (currentPage) {
@@ -447,7 +560,7 @@ FreerailsProgressMonitor, LauncherInterface {
                     if (panel.getMode() == LauncherPanel1.MODE_SERVER_ONLY) {
                         if(msp.validatePort()){
                             prevButton.setEnabled(false);
-                            startGame();
+                            prepare2HostNetworkGame(msp.getServerPort());  
                         }
                     } else {
                         nextIsStart = true;
@@ -459,7 +572,17 @@ FreerailsProgressMonitor, LauncherInterface {
                     break;
                 case 2:
                     /* display mode selection */
-                    if(cop.validatePort()){
+                    if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
+                        if(msp.validatePort()){
+                            prevButton.setEnabled(false);
+                            int mode = cop.getScreenMode();                                        
+                                                                                   
+                            prepare2HostNetworkGame(msp.getServerPort());
+                            client = new GUIClient(cop.getPlayerName(), this, mode); 
+                            client.connect(server, cop.getPlayerName(), "password");
+                        }
+                    }else{
+                    
                         prevButton.setEnabled(false);
                         cop.setControlsEnabled(false);
                         startGame();
@@ -468,8 +591,19 @@ FreerailsProgressMonitor, LauncherInterface {
                 case 3:
                     /* Connection status screen */
                     prevButton.setEnabled(false);
-                    sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);
+                    setServerGameModel();  
+                    if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
+                    
+                        startThread(server, client);
+                    }else{
+                        /*Start a stand alone server.*/
+                        startThread(server);
+                        hide();
+                    }
                     setNextEnabled(false);
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.valueOf(currentPage));
             }
         }catch (Exception e){
             logger.severe("Unexpected exception, can't recover");
@@ -491,5 +625,10 @@ FreerailsProgressMonitor, LauncherInterface {
     private javax.swing.JButton nextButton;
     private javax.swing.JButton prevButton;
     // End of variables declaration//GEN-END:variables
+    
+    public void finished() {
+        hide();
+        
+    }
     
 }

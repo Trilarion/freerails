@@ -20,6 +20,9 @@ public interface FreerailsProgressMonitor {
 
             public void setMax(int max) {
             }
+
+            public void finished() {
+            }
         };
 
     void setMessage(String s);
@@ -27,4 +30,6 @@ public interface FreerailsProgressMonitor {
     void setValue(int i);
 
     void setMax(int max);
+
+    void finished();
 }

@@ -30,31 +30,31 @@ public class SimpleAStarPathFinderTest extends TestCase {
     public void testFindpath() {
         setUp();
 
-        int i = pathFinder.findpath(0, new int[] {1}, map);
+        int i = pathFinder.findstep(0, new int[] {1}, map);
         assertEquals(1, i);
 
-        i = pathFinder.findpath(0, new int[] {5}, map);
+        i = pathFinder.findstep(0, new int[] {5}, map);
         assertEquals(1, i);
 
-        i = pathFinder.findpath(0, new int[] {4}, map);
+        i = pathFinder.findstep(0, new int[] {4}, map);
         assertEquals(1, i);
 
-        i = pathFinder.findpath(5, new int[] {7}, map);
+        i = pathFinder.findstep(5, new int[] {7}, map);
         assertEquals(6, i);
 
-        i = pathFinder.findpath(4, new int[] {1}, map);
+        i = pathFinder.findstep(4, new int[] {1}, map);
         assertEquals(2, i);
 
-        i = pathFinder.findpath(5, new int[] {0, 7}, map);
+        i = pathFinder.findstep(5, new int[] {0, 7}, map);
         assertEquals(6, i);
 
-        i = pathFinder.findpath(5, new int[] {4}, map);
+        i = pathFinder.findstep(5, new int[] {4}, map);
         assertEquals(2, i);
 
-        i = pathFinder.findpath(4, new int[] {4}, map);
+        i = pathFinder.findstep(4, new int[] {4}, map);
         assertEquals(SimpleAStarPathFinder.PATH_NOT_FOUND, i);
 
-        i = pathFinder.findpath(2, new int[] {1}, map);
+        i = pathFinder.findstep(2, new int[] {1}, map);
         assertEquals(1, i);
     }
 
@@ -150,5 +150,10 @@ class Map implements GraphExplorer {
 
     public boolean isAtStation() {
         return false;
+    }
+
+    public int getH() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

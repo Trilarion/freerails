@@ -76,7 +76,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight()) &&
                 (y >= 0)) {
             for (int i = 0; i < typeNumbers.length; i++) {
-                TerrainTile tt = w.getTile(x, y);
+                TerrainTile tt = (TerrainTile)w.getTile(x, y);
 
                 if (tt.getTerrainTypeNumber() == typeNumbers[i]) {
                     match = 1;

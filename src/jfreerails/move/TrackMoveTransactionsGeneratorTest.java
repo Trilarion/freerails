@@ -46,7 +46,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = world.getTile(0, 0);
+        oldTrackPiece = (TrackPiece)world.getTile(0, 0);
 
         TrackRule r = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
         int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL,

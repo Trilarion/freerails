@@ -44,12 +44,20 @@
                   <LegalRouteAcrossNode RouteTemplate="010011000" />
                </ListOfLegalRoutesAcrossNode>
             </TrackPieceTemplate>
-
+			<!-- 
             <TrackPieceTemplate trackTemplate="010111010">
                <ListOfLegalRoutesAcrossNode>
                   <LegalRouteAcrossNode RouteTemplate="010011000" />
                </ListOfLegalRoutesAcrossNode>
             </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010111000">
+               <ListOfLegalRoutesAcrossNode>
+                  <LegalRouteAcrossNode RouteTemplate="010011000" />
+               </ListOfLegalRoutesAcrossNode>
+            </TrackPieceTemplate>
+            
+            
+            -->
 
             <TrackPieceTemplate trackTemplate="010011000">
                <ListOfLegalRoutesAcrossNode>
@@ -63,11 +71,7 @@
                </ListOfLegalRoutesAcrossNode>
             </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="010111000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+            
          </ListOfTrackPieceTemplates>
       </TrackType>
 

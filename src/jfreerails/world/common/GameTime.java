@@ -11,6 +11,11 @@ package jfreerails.world.common;
  *
  */
 public class GameTime implements FreerailsSerializable {
+    /** The first possible time.*/
+    public static final GameTime BIG_BANG = new GameTime(Integer.MIN_VALUE);
+
+    /** The last possible time.*/
+    public static final GameTime END_OF_THE_WORLD = new GameTime(Integer.MAX_VALUE);
     private final int time;
 
     public String toString() {
@@ -23,6 +28,10 @@ public class GameTime implements FreerailsSerializable {
 
     public GameTime(int l) {
         this.time = l;
+    }
+
+    public GameTime nextTick() {
+        return new GameTime(time + 1);
     }
 
     public int getTime() {

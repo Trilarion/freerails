@@ -80,7 +80,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                         tile.y++) {
                     if ((tile.x >= 0) && (tile.x < mapSize.width) &&
                             (tile.y >= 0) && (tile.y < mapSize.height)) {
-                        TrackPiece tp = w.getTile(tile.x, tile.y);
+                        TrackPiece tp = (TrackPiece)w.getTile(tile.x, tile.y);
 
                         int graphicsNumber = tp.getTrackGraphicNumber();
 
@@ -141,7 +141,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
             if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) &&
                     (tile.y < mapSize.height)) {
-                TerrainTile tt = w.getTile(tile.x, tile.y);
+                TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);
 
                 int typeNumber = tt.getTerrainTypeNumber();
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);

@@ -62,7 +62,7 @@ public class CalcCargoSupplyRateAtStation {
 
     public Vector ScanAdjacentTiles() {
         //Find the station radius.
-        FreerailsTile tile = w.getTile(this.x, this.y);
+        FreerailsTile tile = (FreerailsTile)w.getTile(this.x, this.y);
         TrackRule trackRule = tile.getTrackRule();
         int stationRadius = trackRule.getStationRadius();
         int stationDiameter = stationRadius * 2 + 1;
@@ -107,7 +107,7 @@ public class CalcCargoSupplyRateAtStation {
     }
 
     private void incrementSupplyAndDemand(int i, int j) {
-        int tileTypeNumber = w.getTile(i, j).getTerrainTypeNumber();
+        int tileTypeNumber = ((FreerailsTile)w.getTile(i, j)).getTerrainTypeNumber();
 
         TerrainType terrainType = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
                 tileTypeNumber);

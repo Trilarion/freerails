@@ -55,8 +55,8 @@ public class GenerateDependenciesXmlAndHtml {
 		
 		add(basePackages);
 		add("jfreerails/world/**/*");
-		add("jfreerails/move/**/*");		
-		add("jfreerails/controller/**/*");
+		add("jfreerails/move/**/*");	
+		add(new String[] {"jfreerails/network/*", "jfreerails/controller/*", "jfreerails/controller/pathfinder/*"});		
 		add(new String[] {"jfreerails/server/**/*", "jfreerails/client/**/*"});		
 		add("jfreerails/launcher/**/*");
 		add("jfreerails/experimental/**/*");
@@ -77,8 +77,8 @@ public class GenerateDependenciesXmlAndHtml {
 		startBlock("Server");
 		add(basePackages);
 		add("jfreerails/world/**/*");
-		add("jfreerails/move/**/*");		
-		add("jfreerails/controller/**/*");
+		add("jfreerails/move/**/*");
+		add(new String[] {"jfreerails/network/*", "jfreerails/controller/*", "jfreerails/controller/pathfinder/*"});
 		add("jfreerails/server/common/*");
 		add("jfreerails/server/parser/*");
 		add("jfreerails/server/*");			
@@ -86,9 +86,9 @@ public class GenerateDependenciesXmlAndHtml {
 		
 		startBlock("Client");
 		add(basePackages);
-		add("jfreerails/world/**/*");
-		add("jfreerails/move/**/*");		
-		add("jfreerails/controller/**/*");
+		add("jfreerails/world/**/*");		
+		add("jfreerails/move/**/*");	
+		add(new String[] {"jfreerails/network/*", "jfreerails/controller/*", "jfreerails/controller/pathfinder/*"});
 		add("jfreerails/client/common/*");
 		add("jfreerails/client/renderer/*");
 		add("jfreerails/client/view/*");			

@@ -7,6 +7,7 @@
  */
 package jfreerails.world.track;
 
+import java.util.HashSet;
 import jfreerails.world.common.OneTileMoveVector;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -52,5 +53,30 @@ public class TrackConfigurationTest extends TestCase {
         TrackConfiguration b = TrackConfiguration.subtract(a,
                 OneTileMoveVector.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("000010000"), b);
+    }
+
+    public void testToString() {
+        TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
+        assertEquals("tile center, north west", a.toString());
+        a = TrackConfiguration.getFlatInstance(OneTileMoveVector.NORTH_WEST);
+        assertEquals("no tile center, north west", a.toString());
+        a = TrackConfiguration.getFlatInstance("000010000");
+        assertEquals("tile center", a.toString());
+        a = TrackConfiguration.getFlatInstance("000000000");
+        assertEquals("no tile center", a.toString());
+
+        //Check that no two track configurations have the same String representation.
+        HashSet strings = new HashSet();
+
+        for (int i = 0; i < 512; i++) {
+            TrackConfiguration test = TrackConfiguration.getFlatInstance(i);
+            String toString = test.toString();
+
+            if (strings.contains(toString)) {
+                fail(toString + " " + i);
+            }
+
+            strings.add(toString);
+        }
     }
 }

@@ -6,9 +6,11 @@
 
 package jfreerails.launcher;
 
-import jfreerails.controller.ServerCommand;
-import jfreerails.server.GameServer;
-import javax.swing.event.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import jfreerails.client.view.ServerControlModel;
+import jfreerails.network.NewGameServerCommand;
 
 
 /**
@@ -45,11 +47,11 @@ class MapSelectionPanel extends javax.swing.JPanel {
         initComponents();
         
         /* initialise the map list */
-        jList1.setListData(GameServer.getMapNames());
+        jList1.setListData(NewGameServerCommand.getMapNames());
         jList1.setSelectedIndex(0);
         
         owner.setNextEnabled(true);
-        this.loadMapButton.setEnabled(ServerCommand.isSaveGameAvailable());
+        this.loadMapButton.setEnabled(ServerControlModel.isSaveGameAvailable());
         
         //Listen for changes in the server port text box.
         serverPort.getDocument().addDocumentListener(new DocumentListener(){
