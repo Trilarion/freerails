@@ -1,3 +1,7 @@
+Sat Sep 01 12:30:00 2001  Rivo Laks <rivolaks@hot.ee>:
+o Removed i18n.c and main.c from src/main (They confused make)
+o Fixed minimum needed version for ParaGUI (now 1.0.0)
+o Removed moc files from Qt wrapper
 Fri Aug 31 22:30:00 2001  Rivo Laks <rivolaks@hot.ee>:
 o Added automake/autoconf support
 o Added elements Train and TrainInfo
