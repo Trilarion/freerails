@@ -7,15 +7,27 @@
  */
 package jfreerails.server.parser;
 
-import org.xml.sax.*;
-import jfreerails.world.terrain.*;
-import jfreerails.world.cargo.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import jfreerails.world.cargo.CargoType;
+import jfreerails.world.terrain.Consumption;
+import jfreerails.world.terrain.Conversion;
+import jfreerails.world.terrain.Production;
+import jfreerails.world.terrain.TileTypeImpl;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
-	ArrayList cargoTypes = new ArrayList();
-	ArrayList terrainTypes = new ArrayList();
+	private final World world;
+
+	//ArrayList cargoTypes = new ArrayList();
+	//ArrayList terrainTypes = new ArrayList();
 	HashMap cargoName2cargoTypeNumber = new HashMap();
 	HashSet rgbValuesAlreadyUsed = new HashSet();
 			
@@ -27,6 +39,10 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 	ArrayList typeConsumes = new ArrayList();
 	ArrayList typeProduces = new ArrayList();
 	ArrayList typeConverts = new ArrayList();
+	
+	public CargoAndTerrainHandlerImpl(World w){
+		world = w;
+	}
 		
 	public void handle_Converts(final Attributes meta) throws SAXException {
 	
@@ -76,7 +92,8 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 			converts[i] = (Conversion) typeConverts.get(i);
 		}
 		TileTypeImpl tileType = new TileTypeImpl(tileRGB,tileCategory, tileID, tileROW, produces, consumes, converts);
-		terrainTypes.add(tileType);
+		
+		world.add(KEY.TERRAIN_TYPES, tileType);		
 	}
 
 	public void handle_Cargo(final Attributes meta) throws SAXException {
@@ -85,9 +102,10 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 		String cargoCategory = meta.getValue("Category");
 		int unitWeight=Integer.parseInt(meta.getValue("unitWeight"));
 		CargoType cargoType = new CargoType(unitWeight, cargoID, cargoCategory);
-		int cargoNumber = cargoTypes.size();
+		
+		int cargoNumber = world.size(KEY.CARGO_TYPES);
 		cargoName2cargoTypeNumber.put(cargoID, new Integer(cargoNumber));
-		cargoTypes.add(cargoType);
+		world.add(KEY.CARGO_TYPES, cargoType);		
 	}
 
 	public void start_Cargo_Types(final Attributes meta) throws SAXException {

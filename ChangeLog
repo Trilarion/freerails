@@ -1,3 +1,6 @@
+28-Apr-2003 22:18:03 Luke
+	o Integrate new terrain and cargo xml into game.
+	Temporarily lost terrain graphics.
 19-Apr-2003 18:07:22 Luke
 	o More work on schedule GUI, you can set 
 	change the station that a train is going to.

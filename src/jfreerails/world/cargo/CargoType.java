@@ -1,8 +1,10 @@
 package jfreerails.world.cargo;
 
+import jfreerails.world.common.FreerailsSerializable;
+
 /** This class represents a type of cargo */
 
-final public class CargoType {
+final public class CargoType implements FreerailsSerializable {
 	
 	public static final String MAIL = "Mail";
 	public static final String PASSENGERS = "Passengers";
