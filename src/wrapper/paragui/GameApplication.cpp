@@ -56,8 +56,9 @@ GameApplication::~GameApplication() {
 
 int GameApplication::runEngine(void* data)
 {
+
   GameApplication* object = static_cast<GameApplication*>(data);
-  while (object->engine->getState()!=GameController::Stopped) {
+  while (object->engine->getGameState()<Engine::Stopping) {
     object->engine->checkNet();
     object->engine->checkNext(SDL_GetTicks());
     SDL_Delay(10);
@@ -111,20 +112,18 @@ int result;
       netView->Show();
     }
     SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
-    Message* msg=new Message(Message::startGame,0,NULL);
+    Engine::GameState state = Engine::Running;
+    Message* msg=new Message(Message::stateOfGame,0,&state);
     engine->sendMsg(msg);
     pGlobalApp->Run();
-    msg=new Message(Message::stopGame,0,NULL);
+    state = Engine::Stopping;
+    msg=new Message(Message::stateOfGame,0,&state);
     engine->sendMsg(msg);
     SDL_WaitThread(thread2, NULL);
     if (engine!=NULL) { delete engine; engine=NULL; }
-cerr << "blög4" << endl;
     if (mapView!=NULL) { delete mapView; mapView=NULL; }
-cerr << "blög5" << endl;
     if (netView!=NULL) { delete netView; netView=NULL; }
-cerr << "blög6" << endl;
     if (panel!=NULL) { delete panel; panel=NULL; }
-cerr << "blög7" << endl;
   }
 }
 

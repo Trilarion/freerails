@@ -48,7 +48,7 @@ GameMapView::~GameMapView() {
 
 //  imageSurface=NULL;
   cerr << "Blob" << endl;
-  delete WidgetList;
+//  delete WidgetList;
   delete tilesImage;
   delete trackImage;
   cerr << "Blub" << endl;
@@ -321,8 +321,9 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       showTrack(x,y,20*30+15,26*30+15);
       break;
     case buildTrack:
-      
-      if (engine->canBuildTrack(x,y,1,dir)>=0)
+
+// TODO      
+/*      if (engine->canBuildTrack(x,y,1,dir)>=0)
       {
         showTrack(x,y,(dir-1)*2*30+15,0*30+15);
 	if (engine->canBuildTrack(x2,y2,1,dir2)>=0)
@@ -330,7 +331,7 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 	  showTrack(x2,y2,(dir2-1)*2*30+15,0*30+15);
 	}
       }
-      break;
+*/      break;
     default:
       return false;
       break;

@@ -10,9 +10,12 @@
 #include "GameMapView.h"
 #include "GameNetView.h"
 #include "GamePanel.h"
+#include "GameController.h"
+
 #include "SDL.h"
 
 #include "Message.h"
+#include "Engine.h"
 
 
 #include <pgapplication.h>
