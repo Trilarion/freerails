@@ -35,7 +35,10 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author rtuck99@users.sourceforge.net
  */
 public class Player implements FreerailsSerializable {
+    private static final long serialVersionUID = 1;
+
     private static class WorldPrincipal extends FreerailsPrincipal {
+        private static final long serialVersionUID = 1;
         private final String name;
 
         public WorldPrincipal(String name) {
@@ -104,7 +107,9 @@ public class Player implements FreerailsSerializable {
      * transmitted to other players/systems. Note that we do not implement
      * FreerailsSerializable here as this is private data.
      */
-    private class PrivateData implements Serializable {
+    private static class PrivateData implements Serializable {
+        private static final long serialVersionUID = 1;
+
         /**
          * The players private key. This is held by the client.
          */
