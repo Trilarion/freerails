@@ -1,3 +1,8 @@
+Mon Jan 21 02:35:00 2002  Alexander Opitz <opi@le-bit.de>:
+o in ParaGUI let selected object follow mouse on map
+o no buildable check yet but looks nice
+  not funtional if it is scrolled, but WidgetList should later replaced by
+  something self written.
 Thu Jan 17 15:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o in ParaGUI let the buttons function
 o Messaged ParaGUI mailing list, cause of bug in PG_Button
