@@ -1,0 +1,11 @@
+<!DOCTYPE Tiles SYSTEM "cities.dtd">
+
+<!--This file specifies the name and co-ordinates of the cities on a map-->
+
+<Cities>
+	<City name="Perth" x="5" y="6"/>
+	<City name="Adelaide" x="9" y="10"/>
+	<City name="Melbourne" x="3" y="4"/>
+	<City name="Sydney" x="8" y="7"/>
+	<City name="Test City" x="158" y="161"/>
+</Cities>

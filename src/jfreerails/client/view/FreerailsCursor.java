@@ -63,7 +63,8 @@ final public class FreerailsCursor implements KeyListener  {
 				cursorMapPosition.x * tileSize.width,
 				cursorMapPosition.y * tileSize.height,
 				tileSize.width,
-				tileSize.height);
+				tileSize.height);	
+			
 		}
 
 	}
@@ -177,6 +178,7 @@ final public class FreerailsCursor implements KeyListener  {
 	* @param mapView The view that the curors moves across.
 	*/
 
+	//public FreerailsCursor(MapRenderer mv) {
 	public FreerailsCursor(MapRenderer mv) {
 		this.mapView = mv;
 	}
