@@ -1,3 +1,6 @@
+Fri Feb 14 13:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o add getOtherConnectionSide to GuiEngine (links to TrackController).
+o reuse it in paragui client.
 Fri Jan 24 15:42:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
 o the QT GUI is also working with the GuiEngine.
 Wed Jan 22 00:30:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
