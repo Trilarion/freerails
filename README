@@ -4,7 +4,7 @@ What's new:
 o	Cargo types read from xml file.
 o	Terrain info dialogue box press 'i' on a tile.
 o	Station info dialogue box, shows supply and demand.
-o	Train graphics are read from a files rather
+o	Train graphics are read from files rather
 	than generated on the fly.
  
 Getting it, either:
