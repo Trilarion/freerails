@@ -4,6 +4,7 @@
 
 #include "MapGenerator.h"
 #include <iostream>
+#include <sstream>
 
 MapGenerator::MapGenerator() {
 
@@ -223,7 +224,9 @@ void MapGenerator::generateCities(WorldMap* worldMap, ControllerDispatcher* disp
   {
     if (generateStartPoint(worldMap, &x, &y))
     {
-      disp->getController(GameElement::idCity)->addGameElement(new City(x,y,"A"));
+      std::stringstream s;
+      s << "City Nr.: " << i;
+      disp->getController(GameElement::idCity)->addGameElement(new City(x,y,s.str()));
       z=(int) (3.0*rand()/(RAND_MAX+1.0));
       MapField::FieldType type;
       switch(z)

@@ -41,14 +41,16 @@ Base2DMapView(_guiEngine) {
   mouseOldMapX=0;
   mouseOldMapY=0;
   
-  new PG_Label(view, PG_Rect(10,10,100,20),"Try?");
-  
   std::vector<City*> cities = guiEngine->getAllCities();
   std::vector<City*>::iterator it;
   for (it = cities.begin(); it != cities.end(); ++it)
   {
     std::cerr << (*it)->getPosX() << (*it)->getName() << (*it)->getPosY() << std::endl;
     // Set the City Name Labels
+    int x = (*it)->getPosX();
+    int y = (*it)->getPosY();
+    PG_Label* l = new PG_Label(view, PG_Rect(x*30-30,y*30+30,90,20),(*it)->getName().c_str());
+    l->SetAlignment(PG_TA_CENTER);
   }
 }
 

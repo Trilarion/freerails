@@ -1,3 +1,6 @@
+Thu May 16 11:15:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Show City Names under the City
+o Map    : Generate City Names from count
 Thu May 16 03:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Controller: Use ElementID instead of the given typeID for the Map of Elements
             : Use highest known ElementID
