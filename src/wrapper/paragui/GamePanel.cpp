@@ -106,16 +106,22 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   stationListSize=0;
   
   trackButton=new PG_Button(this,GamePanel::BuildTrack,PG_Rect(5,400,25,25));
-  trackButton->SetIcon("graphics/ui/buttons/build_track_up.png",
-			"graphics/ui/buttons/build_track_down.png");
+  trackButton->SetIcon("graphics/ui/buttons/build_track.png",
+			"graphics/ui/buttons/build_track.png");
   trackButton->SetToggle(true);
   trackButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
 
   stationButton=new PG_Button(this,GamePanel::BuildStation,PG_Rect(35,400,25,25));
-  stationButton->SetIcon("graphics/ui/buttons/build_station_up.png",
-			 "graphics/ui/buttons/build_station_down.png");
+  stationButton->SetIcon("graphics/ui/buttons/build_station.png",
+			 "graphics/ui/buttons/build_station.png");
   stationButton->SetToggle(true);
   stationButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
+
+  trainButton=new PG_Button(this,GamePanel::BuildStation,PG_Rect(65,400,25,25));
+  trainButton->SetIcon("graphics/ui/buttons/build_train.png",
+			 "graphics/ui/buttons/build_train.png");
+  trainButton->SetToggle(true);
+  trainButton->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickBuildButton);
   
   stationSignal=new PG_RadioButton(this, 4, PG_Rect(5, 430, 150, 20), "Signal Tower");
   stationSmall=new PG_RadioButton(this, 5, PG_Rect(5, 450, 150, 20), "Depot", stationSignal);
@@ -148,6 +154,7 @@ GamePanel::~GamePanel() {
 void GamePanel::releaseAllBuildButtons(PG_Button* button) {
   if (button!=trackButton) trackButton->SetPressed(false);
   if (button!=stationButton) stationButton->SetPressed(false);
+  if (button!=trainButton) trainButton->SetPressed(false);
 }
 
 void GamePanel::releaseAllViewButtons(PG_Button* button) {
@@ -159,28 +166,26 @@ void GamePanel::addStation(Station* station)
 {
   PG_Point point;
   PG_Image* image;
+  PG_Button* button;
   point.x=0; point.y=0;
   switch(station->getSize())
   {
     case Station::Signal:
+      return;
     break;
     case Station::Small:
-      image=new PG_Image(NULL,point,"graphics/ui/buttons/build_station_up.png");
-      stationList->AddWidget(image);
-      image->Show();
-      stationListSize++;
+      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"Depot");
     break;
     case Station::Medium:
-      image=new PG_Image(NULL,point,"graphics/ui/buttons/build_station_up.png");
-      stationList->AddWidget(image);
-      image->Show();
-      stationListSize++;
+      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"Station");
     break;
     case Station::Big:
-      image=new PG_Image(NULL,point,"graphics/ui/buttons/build_station_up.png");
-      stationList->AddWidget(image);
-      image->Show();
-      stationListSize++;
+      button=new PG_Button(NULL, 0, PG_Rect(0,0,150,30),"Terminal");
     break;
   }
+  stationList->AddWidget(button);
+  image=new PG_Image(button,point,"graphics/ui/buttons/build_station.png");
+  image->Show();
+  button->Show();
+  stationListSize++;
 }

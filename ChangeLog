@@ -1,3 +1,8 @@
+Mon May 19 14:45:00 2003  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI   : Some corrections.
+o Controller: Small station corrections
+o Graphics  : Some images changed
+
 Sat May 17 12:15:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Show builded Stations in stationList
 o Some quirks with ParaGUI must be resolved and then on monday

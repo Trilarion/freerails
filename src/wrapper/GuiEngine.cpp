@@ -51,7 +51,7 @@ bool GuiEngine::testBuildStation(int x, int y){
 
 bool GuiEngine::buildStation(int x, int y, Station::Size size){
     
-  GameElement* new_element = new Station(x,y,player,"", size,NULL);
+  GameElement* new_element = new Station(x,y,player,"Station", size,NULL);
   if (stationController -> canBuildElement(new_element))
     {
       Message *msg=new Message(Message::addElement,1,(void *)new_element,player);

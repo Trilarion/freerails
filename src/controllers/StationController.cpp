@@ -55,8 +55,7 @@ bool StationController::testBuildElement(int x, int y)
 
 void StationController::addGameElement(GameElement* _element)
 {
-  Station* station = (Station*)_element;
-  stationDoBuild(station->getPosX(), station->getPosY(), station->getSize());
+  stationDoBuild((Station*)_element);
 }
 
 void StationController::removeGameElement(long int _elementID)
@@ -96,13 +95,13 @@ bool StationController::connectIsBuildable(unsigned int connect)
   return status;
 }
 
-void StationController::stationDoBuild(int x, int y, int size)
+void StationController::stationDoBuild(Station* station)
 {
   MapField *field;
   Track *track;
   unsigned int connect;
 
-  field = worldMap->getMapField(x, y);
+  field = worldMap->getMapField(station->getPosX(), station->getPosY());
   if (field == NULL)
     return;
   track = field->getTrack();
@@ -115,5 +114,6 @@ void StationController::stationDoBuild(int x, int y, int size)
   #warning complete me
   connect |= TrackIsBlocked;
   track->setConnect(connect);
-  field->setStation(new Station(x,y, NULL, "", (Station::Size)size, NULL));
+  field->setStation(station);
+  std::cerr << station->getSize() << std::endl;
 }

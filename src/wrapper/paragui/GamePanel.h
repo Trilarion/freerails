@@ -52,6 +52,7 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
 
     PG_Button* trackButton;
     PG_Button* stationButton;
+    PG_Button* trainButton;
     PG_Button* pauseButton;
     
     PG_RadioButton* stationSignal;

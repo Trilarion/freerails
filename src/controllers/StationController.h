@@ -42,7 +42,7 @@ class StationController : public Controller
   private:
     bool testBuildElement(int x, int y);
     bool connectIsBuildable(unsigned int connect);
-    void stationDoBuild(int x, int y, int size);
+    void stationDoBuild(Station* station);
 
 };
 
