@@ -1,3 +1,6 @@
+Mon Sep 16 22:50:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o add some decoration to qt-panel
+o change autogen.sh to work
 Mon Sep 16 10:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o Add autogen.sh as helper script.
 o add information in the instal and readme file
