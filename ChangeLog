@@ -1,3 +1,5 @@
+11-Jun-2003 17:39:00 Luke
+	o Add change game speed submenu to game menu.
 11-Jun-2003 17:26:00 Scott
 	o Implemented the Train/Station cargo dropoff and pickup feature, 
 		trains currently only pickup cargo. Its playable!
