@@ -7,15 +7,16 @@
 
 #include <qwidget.h>
 
-#include "GameApplication.h"
+#include "GameMainWindow.h"
+#include "BaseWidget.h"
 
-class GameWidget {
+class GameWidget : public BaseWidget {
 
   public:
     /**  */
     GameWidget();
     GameWidget(GameWidget* parent, int x, int y, int w, int h);
-    GameWidget(GameApplication* parent, int x, int y, int w, int h);
+    GameWidget(GameMainWindow* parent, int x, int y, int w, int h);
     /**  */
     ~GameWidget();
 
@@ -23,7 +24,7 @@ class GameWidget {
     void hide();
     
     /* ONLY for internal use */
-    QWidget* getWidget() {return widget;};
+    QWidget* getWidget() { return widget; };
 
   protected:
     QWidget* widget;

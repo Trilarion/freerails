@@ -4,17 +4,9 @@
 
 #include "game.h"
 #include "i18n.h"
-
-void Splash(MyGameApplication* app) {
-  GameWidget splash(app, 100,100,600,400);
-  char file[]="data/graphics/ui/title.png";
-/*  splash.SetBackground(file,BKMODE_STRETCH);
-  splash.SetBackgroundBlend(0);*/
-  splash.show();
-  app->initGame();
-//  SDL_Delay(2000);
-  splash.hide();
-}
+#include "GameMainWindow.h"
+#include <stdio.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[])
 {
@@ -22,27 +14,31 @@ int main(int argc, char *argv[])
 
   char versionString[50];
 
-  strcpy(versionString,"FreeRails v"GAME_VERSION"");
+  sprintf(versionString, _("FreeRails v%s"), GAME_VERSION);
 
   // construct the application object
   MyGameApplication app(argc,argv);
 
-  if(!app.initScreen(0,0,800,600)){
-    printf("Resolution not supported\n");
-    exit(-1);
-  }
+  // Show splash screen
+  app.showSplash();
+  app.initGame();
+  // To show splash for a while :-)
+  // Remove when initialization works
+  sleep(3);
 
-  app.setCaption(versionString);
+  // No error checking yet
+  // Maybe this should be done BEFORE app.initGame()?
+  GameMainWindow mw(0, 0, 800, 600);
+  mw.setCaption(versionString);
+  app.setMainWindow(&mw);
 
-  Splash(&app);
-  
-  GameDialog dialog(&app, 250,150,300,300, "Spielart wählen");
+  app.hideSplash();
 
-  dialog.show();
+  // What is this for ?
+  //GameDialog dialog(&mw, 250,150,300,300, "Spielart wählen");
+  //dialog.show();
 
   printf("choose\n");
 
-  app.run();
-
-  return EXIT_SUCCESS;
+  return app.run();
 }

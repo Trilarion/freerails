@@ -17,8 +17,8 @@ class GameDialog: public GameWidget {
 
   public:
     /**  */
-    GameDialog(GameWidget* parent, int x, int y, int w, int h, char* titel);
-    GameDialog(GameApplication* parent, int x, int y, int w, int h, char* titel);
+    GameDialog(GameWidget* parent, int x, int y, int w, int h, char* title);
+    GameDialog(GameMainWindow* parent, int x, int y, int w, int h, char* title);
     /**  */
     ~GameDialog();
 
