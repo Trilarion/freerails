@@ -184,6 +184,7 @@ public class DialogueBoxController {
 
 	public void showSelectWagons() {
 		System.out.println("showSelectWagons");
+		selectWagons.resetSelectedWagons();
 		showContent(selectWagons);
 	}
 

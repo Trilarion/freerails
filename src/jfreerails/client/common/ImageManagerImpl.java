@@ -58,7 +58,7 @@ public class ImageManagerImpl implements ImageManager {
 		}
 		//File f = new File(pathToReadFrom+File.separator+relativeFilename);
 		String read = pathToReadFrom+relativeFilename;		
-		read = read.replace('\\', '/');
+		read = read.replace(File.separatorChar, '/');
 		URL url = ImageManagerImpl.class.getResource(read);
 		if(null == url){
 			System.out.println(read);

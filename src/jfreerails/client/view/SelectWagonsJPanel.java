@@ -62,6 +62,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
 		g.drawImage(tempImage, 0, 0, null);			
 	}
+	
+	public void resetSelectedWagons(){
+		this.wagons.clear();
+	}
 
 	public void setTrain(TrainModel t) {
 		train = t;

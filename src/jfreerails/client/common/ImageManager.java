@@ -8,7 +8,7 @@ import java.awt.Image;
 import java.io.IOException;
 
 /**
- * This class handles loading and saving images. 
+ * This interface defines methods for loading and saving images. 
  * @author Luke
  * 
  */
