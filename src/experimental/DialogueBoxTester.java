@@ -99,7 +99,8 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         modelRoot.setup(w, TEST_PLAYER.getPrincipal());
         ActionRoot actionRoot = new ActionRoot();
         actionRoot.setup(modelRoot, vl);
-        dialogueBoxController = new DialogueBoxController(this, modelRoot, actionRoot);
+        dialogueBoxController = new DialogueBoxController(this, modelRoot);
+        actionRoot.setDialogueBoxController(dialogueBoxController);
         dialogueBoxController.setDefaultFocusOwner(this);
         
         int numberOfCargoTypes = w.size(SKEY.CARGO_TYPES);

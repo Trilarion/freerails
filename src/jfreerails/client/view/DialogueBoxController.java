@@ -65,7 +65,7 @@ public class DialogueBoxController implements WorldListListener {
     private Component defaultFocusOwner = null;
     private final LineBorder defaultBorder = new LineBorder(new java.awt.Color(
                 0, 0, 0), 3);
-    private final ActionRoot actionRoot;
+    //private final ActionRoot actionRoot;
     private final JFrame frame;
 
     /** Use this ActionListener to close a dialogue without performing any other action. */
@@ -113,10 +113,10 @@ public class DialogueBoxController implements WorldListListener {
         
 	private JInternalFrame dialogueJInternalFrame;
 
-    public DialogueBoxController(JFrame frame, ModelRoot mr, ActionRoot ar) {
+    public DialogueBoxController(JFrame frame, ModelRoot mr) {
         this.frame = frame;
         modelRoot = mr;
-        actionRoot = ar;
+        
         //Setup glass panel..
         glassPanel = new MyGlassPanel();
         glassPanel.setSize(frame.getSize());
@@ -133,7 +133,7 @@ public class DialogueBoxController implements WorldListListener {
             });
 
         closeButton.addActionListener(closeCurrentDialogue);
-        actionRoot.setDialogueBoxController(this);
+        
 
         showControls = new HtmlJPanel(DialogueBoxController.class.getResource(
                     "/jfreerails/client/view/game_controls.html"));

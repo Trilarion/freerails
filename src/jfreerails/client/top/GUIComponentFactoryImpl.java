@@ -118,7 +118,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         clientJFrame = new ClientJFrame(this);
         dialogueBoxController = new DialogueBoxController(clientJFrame,
-                modelRoot, actionRoot);
+                modelRoot);
+        actionRoot.setDialogueBoxController(dialogueBoxController);
 
         modelRoot.addSplitMoveReceiver(new MoveReceiver() {
                 public void processMove(Move move) {

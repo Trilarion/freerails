@@ -36,6 +36,4 @@ public interface TrackRule extends FreerailsSerializable {
     OneTileMoveVector[] getLegalRoutes(OneTileMoveVector directionComingFrom);
 
     Iterator getLegalConfigurationsIterator();
-
-    TrackPiece getTrackPiece(TrackConfiguration config, int owner);
 }

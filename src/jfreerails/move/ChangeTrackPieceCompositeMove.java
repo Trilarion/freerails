@@ -19,6 +19,7 @@ import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
+import jfreerails.world.track.TrackPieceImpl;
 import jfreerails.world.track.TrackRule;
 
 
@@ -80,8 +81,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(),
                         direction);
-                newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration,
-                        owner);
+                newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner);
+                
             } else {
                 newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction,
                         trackRule, owner);
@@ -112,8 +113,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                 if (trackConfiguration != TrackConfiguration.getFlatInstance(
                             "000010000")) {
                     int owner = getOwner(principal, w);
-                    newTrackPiece = oldTrackPiece.getTrackRule().getTrackPiece(trackConfiguration,
-                            owner);
+                    newTrackPiece =  new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner);                    
                 } else {
                     newTrackPiece = NullTrackPiece.getInstance();
                 }
@@ -146,7 +146,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig,
                 direction);
 
-        return trackRule.getTrackPiece(trackConfiguration, owner);
+        return new TrackPieceImpl(trackConfiguration, trackRule, owner);
     }
 
     public Rectangle getUpdatedTiles() {
