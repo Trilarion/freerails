@@ -2,6 +2,8 @@
  * $Id$
  * Internalization support
  */
+#include <locale.h>
+
 
 #include <locale.h>
 

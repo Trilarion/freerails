@@ -74,7 +74,7 @@ int FileConnection::write(void* data, int len) {
     error=REFUSED;
     return -1;
   }
-  return -1;
+  return 0;
 }
 
 int FileConnection::read(void* buf, int maxlen) {

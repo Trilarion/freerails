@@ -1,29 +1,22 @@
 bin_PROGRAMS = freerails
 
 if WRAPPER_QT
-WRAPPERINC = $(QT_INCLUDES) -I$(top_srcdir)/src/wrapper/qt
-freerails_LDFLAGS = $(QT_LDFLAGS) -lqt
-freerails_DEPENDENCIES = ../wrapper/libwrapperbase.a ../elements/libelements.a \
-    ../map/libmap.a ../controllers/libcontrollers.a ../wrapper/qt/libwrapper_qt.a \
-    ../network/libnetwork.a
-freerails_LDADD = ../wrapper/qt/libwrapper_qt.a ../elements/libelements.a \
-    ../map/libmap.a ../controllers/libcontrollers.a  ../wrapper/libwrapperbase.a\
-    ../network/libnetwork.a
+    WRAPPER_LDF = $(LIB_QT) 
 endif
 
 if WRAPPER_PARAGUI
-WRAPPERINC = $(SDL_CFLAGS) $(PARAGUI_CFLAGS) -I$(top_srcdir)/src/wrapper/paragui
-freerails_LDFLAGS = $(SDL_LIBS) $(PARAGUI_LIBS) -lSDL_ttf -lSDL_image
-freerails_DEPENDENCIES = ../wrapper/paragui/libwrapper_paragui.a ../elements/libelements.a \
-	../map/libmap.a ../game/libgame.a ../controllers/libcontrollers.a \
-	../wrapper/libwrapperbase.a ../network/libnetwork.a 
-freerails_LDADD = ../wrapper/paragui/libwrapper_paragui.a ../elements/libelements.a \
-	../game/libgame.a ../map/libmap.a ../controllers/libcontrollers.a \
-	../wrapper/libwrapperbase.a ../network/libnetwork.a 
+    WRAPPER_LDF = $(SDL_LIBS) $(PARAGUI_LIBS) -lSDL_ttf -lSDL_image
 endif
 
-INCLUDES = $(WRAPPERINC) -I$(srcdir) -I$(top_srcdir)/src/wrapper \
-    -I$(top_srcdir) -I$(top_srcdir)/src/map -I$(top_srcdir)/src/elements -I$(top_srcdir)/src/controllers -I$(top_srcdir)/src/network -I$(top_srcdir)/src/game
+freerails_LDADD = ../wrapper/$(WRAPPER)/libwrapper.a ../elements/libelements.a \
+    ../game/libgame.a ../map/libmap.a ../controllers/libcontrollers.a \
+    ../wrapper/libwrapperbase.a ../network/libnetwork.a 
+freerails_LDFLAGS = $(WRAPPER_LDF) $(all_libraries)
+INCLUDES = $(all_includes) -I$(top_srcdir)/src/wrapper/$(WRAPPER) \
+    -I$(srcdir) -I$(top_srcdir)/src/wrapper \
+    -I$(top_srcdir) -I$(top_srcdir)/src/map \
+    -I$(top_srcdir)/src/elements -I$(top_srcdir)/src/controllers \
+    -I$(top_srcdir)/src/network -I$(top_srcdir)/src/game
 
 freerails_SOURCES = i18n.cpp \
     main.cpp \

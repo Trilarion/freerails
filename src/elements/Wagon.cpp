@@ -11,3 +11,7 @@ Wagon::Wagon(GameController* c, WagonType ty, Player* p) :
     type(ty)
 {
 }
+
+Wagon::~Wagon()
+{
+}

@@ -1,3 +1,4 @@
+
 #include <iostream>
 
 #include "game.h"
@@ -25,13 +26,13 @@ MyGameApplication::~MyGameApplication() {
 }
 
 void MyGameApplication::initSingleGame() {
-  std::cerr << "SingleGame" << std:endl;
+//  cerr << "SingleGame" << endl;
   playerSelf=new Player(std::string("me"),Player::HUMAN);
   worldMap = MapGenerator().generateWorld(30,30);
 }
 
 void MyGameApplication::initServerGame() {
-  std::cerr << "ServerGame" << std::endl;
+//  cerr << "ServerGame" << endl;
   playerSelf=new Player(std::string("me"),Player::HUMAN);
   worldMap = MapGenerator().generateWorld(30,30);
 }
