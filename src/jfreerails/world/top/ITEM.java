@@ -18,8 +18,7 @@ public class ITEM implements FreerailsSerializable {
 	//START OF KEYS
 	
 	public static final ITEM TIME = new ITEM();
-	public static final ITEM CALENDAR = new ITEM();					
-	public static final ITEM CASH = new ITEM();
+	public static final ITEM CALENDAR = new ITEM();						
 			
 	//END OF KEYS		
 	

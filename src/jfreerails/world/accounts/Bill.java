@@ -5,28 +5,29 @@
 package jfreerails.world.accounts;
 
 import jfreerails.world.common.Money;
-import jfreerails.world.top.World;
 
 /**
  * @author Luke Lindsay
  *
  */
 public class Bill implements Transaction {
-	
+
 	private final Money amount;
-	
-	private final String desc;
-	
-	public Bill(Money amount, String description){
-		this.amount = amount;
-		this.desc = description;
+
+	public Bill(Money amount) {
+		this.amount = new Money(-amount.getAmount());
 	}
-	
-	public Money getValue() {		
+
+	public Money getValue() {
 		return amount;
 	}
-	
-	public String getDescription(World w) {		
-		return desc;
+
+	public boolean equals(Object o) {
+		if (o instanceof Bill) {
+			Bill test = (Bill) o;
+			return test.amount.equals(this.amount);
+		} else {
+			return false;
+		}
 	}
 }

@@ -1,3 +1,14 @@
+08-Jul-2003 19:55:14 Luke
+	o Added initial balance of 1,000,000.
+	o Added prices to the track types defined in track_tiles.xml
+	o Updated the track XML parser to read in the track prices.
+	o Updated the build track moves that you get charged when you build
+	track and get a small credit when you remove track.	  
+07-Jul-2003 22:41:23 Luke
+	o Wrote 'Move' class to add financial transactions.
+	o Changed the class that adds cargo to stations so that
+	it adds 40 units per year if the station supplies one 
+	carload per year. 
 30-Jun-2003 17:29:00 Scott
  	o Cargo is now transferred correctly
 28-Jun-2003 21:46:40 Luke

@@ -20,6 +20,14 @@ final public class Money implements FreerailsSerializable {
     public Money(long amount){
         this.amount=amount;
     }
+    public boolean equals(Object obj) {
+		if(obj instanceof Money){
+			Money test = (Money)obj;
+			return test.amount == this.amount;
+		}else{
+			return false;
+		}		
+	}
     
 }
 

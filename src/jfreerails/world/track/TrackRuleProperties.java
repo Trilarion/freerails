@@ -1,6 +1,7 @@
 package jfreerails.world.track;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.Money;
 
 final public class TrackRuleProperties implements FreerailsSerializable {
 
@@ -25,17 +26,23 @@ final public class TrackRuleProperties implements FreerailsSerializable {
 	private final String typeName;
 	private final boolean isStation;
 	private final int stationRadius;
+	private final Money price;
 	
 	
-	public	TrackRuleProperties(int rgb, boolean doubleTrack, String name, int n, boolean station, int radius){
+	public	TrackRuleProperties(int rgb, boolean doubleTrack, String name, int n, boolean station, int radius, int price){
 		stationRadius=radius;
 		rGBvalue=rgb;
 		enableDoubleTrack=doubleTrack;
 		typeName=name;
 		number=n;
 		isStation=station;		
+		this.price=new Money(price);
 	}
 	
+	public Money getPrice() {
+		return price;
+	}
+
 	public int getStationRadius() {
 		return stationRadius;
 	}

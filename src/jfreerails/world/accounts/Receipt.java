@@ -5,7 +5,6 @@
 package jfreerails.world.accounts;
 
 import jfreerails.world.common.Money;
-import jfreerails.world.top.World;
 
 /**
  * @author Luke Lindsay
@@ -13,14 +12,22 @@ import jfreerails.world.top.World;
  */
 public class Receipt implements Transaction {
 
-
-	public Money getValue() {
-		// TODO Auto-generated method stub
-		return null;
+	private final Money amount;
+	
+	public Receipt(Money m){
+		this.amount = m;
 	}
 
-	public String getDescription(World w) {
-		// TODO Auto-generated method stub
-		return null;
+	public Money getValue() {		
+		return amount;
+	}
+	
+	public boolean equals(Object o){
+		if(o instanceof Receipt){			
+			Receipt test = (Receipt)o;			
+			return test.amount.equals(this.amount);
+		}else{
+			return false;
+		}
 	}
 }

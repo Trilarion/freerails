@@ -8,6 +8,7 @@ package jfreerails.world.track;
 import java.io.ObjectStreamException;
 import java.util.Iterator;
 
+import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
 /**
  *
@@ -67,10 +68,10 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 		return testTrackPieceLegality(config.getTrackGraphicsNumber());
 	}
 	public Iterator getLegalConfigurationsIterator() {
-		throw new java.lang.UnsupportedOperationException("Method not implemented yet!");
+		throw new UnsupportedOperationException("Method not implemented yet!");
 	}
 	public TrackPiece getTrackPiece(TrackConfiguration config) {
-		throw new java.lang.UnsupportedOperationException("Method not implemented yet!");
+		throw new UnsupportedOperationException("Method not implemented yet!");
 	}
 	
 	public boolean isStation(){
@@ -83,6 +84,10 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 
 	public int getStationRadius() {		
 		return 0;
+	}
+
+	public Money getPrice() {		
+		return new Money(0);
 	}
 
 }

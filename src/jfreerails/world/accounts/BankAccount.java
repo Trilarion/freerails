@@ -41,5 +41,21 @@ public class BankAccount implements FreerailsSerializable {
 		Transaction t = (Transaction)transactions.remove(last);
 		this.currentBalance = new Money(currentBalance.getAmount() - t.getValue().getAmount());
 		return t;	
-	}		
+	}
+	
+	public Transaction getTransaction(int i){
+		return (Transaction)transactions.get(i);
+	}
+	
+	public boolean equals(Object o){
+		if(o instanceof BankAccount){
+			BankAccount test = (BankAccount)o;
+			return this.transactions.equals(test.transactions);
+			//No need to look at the current balance field since it 
+			//can be calculated by looking at the transactions.
+		}else{
+			return false;
+		}
+	}
+			
 }

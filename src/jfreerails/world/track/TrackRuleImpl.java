@@ -8,6 +8,7 @@ package jfreerails.world.track;
 
 import java.util.Iterator;
 
+import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
 
 /**
@@ -133,6 +134,10 @@ final public class TrackRuleImpl implements TrackRule {
 	 */
 	public int getStationRadius() {
 		return this.properties.getStationRadius();
+	}
+
+	public Money getPrice() {
+		return this.properties.getPrice();
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.HashSet;
 
 import jfreerails.MapFixtureFactory;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
+import jfreerails.move.MoveStatus;
+import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.top.KEY;
@@ -28,6 +30,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
 	protected void setUp() {
 		world = new WorldImpl(20,20);
+		world.add(KEY.BANK_ACCOUNTS, new BankAccount());
 		MapFixtureFactory.generateTrackRuleList(world);		
 		TrackRule rule = (TrackRule)world.get(KEY.TRACK_RULES, 0);
 
@@ -45,7 +48,8 @@ public class FlatTrackExplorerTest extends TestCase {
 					vectors[i],
 					rule,
 					world);
-			move.doMove(world);
+			MoveStatus ms = move.doMove(world);
+			assertTrue(ms.ok);
 		}
 	}
 

@@ -24,7 +24,7 @@ import jfreerails.world.top.World;
  */
 public class CargoAtStationsGenerator implements FreerailsServerSerializable{
 	
-	
+	public static final int UNITS_OF_CARGO_PER_WAGON = 40;
 
 	public CargoAtStationsGenerator(){
 		
@@ -44,7 +44,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable{
 				if(amountSupplied>0){
 					CargoBatch cb = new CargoBatch(i, station.x, station.y, 0, stationNumber);
 					int amountAlready = before.getAmount(cb);
-					after.setAmount(cb, amountSupplied + amountAlready);
+					after.setAmount(cb, (amountSupplied * UNITS_OF_CARGO_PER_WAGON) + amountAlready);
 				}
 			}
 			Move m = new ChangeCargoBundleMove(before, after, station.getCargoBundleNumber());

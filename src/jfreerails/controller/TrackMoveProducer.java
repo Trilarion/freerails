@@ -21,28 +21,18 @@ final public class TrackMoveProducer {
 
 	private MoveReceiver moveReceiver;
 
-	/**
-	 *  Description of the Field
-	 */
 	public final static int REMOVE_TRACK = 2;
 
-	/**
-	 *  Description of the Field
-	 */
 	public final static int UPGRADE_TRACK = 3;
 
-	/**
-	 *  Description of the Field
-	 */
 	public final static int BUILD_TRACK = 1;
 
 	private int trackBuilderMode = BUILD_TRACK;
 
-
-
 	public MoveReceiver getMoveReceiver() {
 		return moveReceiver;
 	}
+
 	public void setMoveReceiver(MoveReceiver moveReceiver) {
 		this.moveReceiver = moveReceiver;
 	}

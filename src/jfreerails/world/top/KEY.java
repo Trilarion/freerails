@@ -39,6 +39,8 @@ public class KEY implements FreerailsSerializable {
 	
 	public static final KEY WAGON_TYPES = new KEY();
 	
+	public static final KEY BANK_ACCOUNTS = new KEY();
+	
 	/** The cargo waiting at stations or carried by trains. */
 	public static final KEY CARGO_BUNDLES = new KEY();
 			
