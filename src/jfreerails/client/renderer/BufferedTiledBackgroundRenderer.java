@@ -130,7 +130,17 @@ public abstract class BufferedTiledBackgroundRenderer
                 h);
         bufferRect.height = backgroundBuffer.getHeight(null);
         bufferRect.width = backgroundBuffer.getWidth(null);
+
+        if (bg != null) {
+            bg.dispose();
+        }
+
         bg = backgroundBuffer.getGraphics();
+
+        if (translatedBg != null) {
+            translatedBg.dispose();
+        }
+
         translatedBg = bg.create();
         translatedBg.translate(-bufferRect.x, -bufferRect.y);
         bg.clearRect(0, 0, w, h);
