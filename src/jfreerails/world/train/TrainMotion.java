@@ -10,10 +10,10 @@ import jfreerails.world.common.PositionOnTrack;
 
 /**
  * <p>
- * This immutable class provides methods that return a train's position and speed at any
- * time within an interval. An instance of this class will be stored on the
- * world object for each train rather the train’s position. The reasons for this
- * are as follows.
+ * This immutable class provides methods that return a train's position and
+ * speed at any time within an interval. An instance of this class will be
+ * stored on the world object for each train rather the train’s position. The
+ * reasons for this are as follows.
  * </p>
  * 
  * <p>
@@ -28,7 +28,7 @@ import jfreerails.world.common.PositionOnTrack;
  * (2) It makes supporting low bandwidth networks easier since it allows the
  * server to send updates less frequently.
  * </p>
- *  
+ * 
  * 
  * @author Luke
  * @see jfreerails.world.train.PathOnTiles
@@ -38,78 +38,104 @@ public class TrainMotion implements FreerailsSerializable {
 
 	private static final long serialVersionUID = 3618423722025891641L;
 
+	private final int initialPosition;
+
 	private final PathOnTiles path;
 
-	private  final SpeedAgainstTime speeds;
-	
-	private final  int initialPosition;
-	
+	private final SpeedAgainstTime speeds;
+
 	private final int trainLength;
-	
-	
+
 	/**
 	 * Creates a new TrainMotion instance.
-	 * @param path the path the train will take.
-	 * @param initialPosition the distance the trains engine is along the path at time <code>speeds.getStart()</code>.
-	 * @param trainLength the length of the train, as returned by <code>TrainModel.getLength()</code>.		
-	 * @throws IllegalArgumentException if length is out the range 
-	 * <code>length &gt; TrainModel.WAGON_LENGTH || length &lt; TrainModel.MAX_TRAIN_LENGTH</code> 
-	 * @throws IllegalArgumentException if <code> initialPosition &lt; length</code>.
-	 * @throws IllegalArgumentException if <code>(initialPosition + speeds.getDistance(speeds.getEnd())) &lt; path.getLength()</code>.
-	 */	
-	public TrainMotion(PathOnTiles path, int initialPosition, int trainLength, SpeedAgainstTime speeds){
-		this.path =path;
+	 * 
+	 * @param path
+	 *            the path the train will take.
+	 * @param initialPosition
+	 *            the distance the trains engine is along the path at time
+	 *            <code>speeds.getStart()</code>.
+	 * @param trainLength
+	 *            the length of the train, as returned by
+	 *            <code>TrainModel.getLength()</code>.
+	 * @throws IllegalArgumentException
+	 *             if trainLength is out the range
+	 *             <code>length &gt; TrainModel.WAGON_LENGTH || length &lt; TrainModel.MAX_TRAIN_LENGTH</code>
+	 * @throws IllegalArgumentException
+	 *             if <code> initialPosition &lt; length</code>.
+	 * @throws IllegalArgumentException
+	 *             if
+	 *             <code>(initialPosition + speeds.getDistance(speeds.getEnd())) &lt; path.getLength()</code>.
+	 */
+	public TrainMotion(PathOnTiles path, int initialPosition, int trainLength,
+			SpeedAgainstTime speeds) {
+		this.path = path;
 		this.speeds = speeds;
 		this.initialPosition = initialPosition;
-		this.trainLength = trainLength;	
-		
+		this.trainLength = trainLength;
+
 	}
 
 	/**
-	 * Returns the train's position at the specified time.  
-	 * @param t the time.	
-	 * @return the train's position
-	 * @throws IllegalArgumentException if t is outside the interval
-	 * (<tt>t &gt; from || t &lt; to</tt>) or length is out the range 
-	 * (<tt>length &gt; TrainModel.WAGON_LENGTH || length &lt; TrainModel.MAX_TRAIN_LENGTH</tt>) 
+	 * Returns the train's distance along the track from the point the train was
+	 * at at time <code>getStart()</code> at the specified time.
+	 * 
+	 * @param t
+	 *            the time.
+	 * @return the distance
+	 * @throws IllegalArgumentException
+	 *             if t is outside the interval
+	 */
+	public int getDistance(GameTime t) {
+		return 0;
+	}
+
+	/** Returns the time at which the interval ends. */
+	public GameTime getEnd() {
+		return speeds.getEnd();
+	}
+
+	/**
+	 * Returns the train's position at the specified time.
+	 * 
+	 * @param t
+	 *            the time.
+	 * @return the train's position.
+	 * @throws IllegalArgumentException
+	 *             if t is outside the interval
 	 */
 	public TrainPositionOnMap getPosition(GameTime t) {
 		return null;
 	}
 
 	/**
-	 * Returns an array of the tiles the train is on at the specified time.  
-	 * @param t the time.	
-	 * @return an array of the tiles the train is on
-	 * @throws IllegalArgumentException if t is outside the interval
-	 * (<tt>t &gt; from || t &lt; to</tt>) or length is out the range 	 
-	 */
-	public PositionOnTrack[] getTiles(GameTime t) {
-		return null;
-	}
-
-	
-	/**
-	 * Returns the train's speed in MPH at the specified time.  
-	 * @param t the time.	
+	 * Returns the train's speed in MPH at the specified time.
+	 * 
+	 * @param t
+	 *            the time.
 	 * @return the speed
-	 * @throws IllegalArgumentException if t is outside the interval
-	 * (<tt>t &gt; from || t &lt; to</tt>) or length is out the range 	  
+	 * @throws IllegalArgumentException
+	 *             if t is outside the interval
 	 */
 	public int getSpeed(GameTime t) {
 		return 0;
 	}
 
+	/** Returns the time at which the interval starts. */
+	public GameTime getStart() {
+		return speeds.getStart();
+	}
+
 	/**
-	 * Returns the train's distance along the track from the point the train was at at time
-	 * <code>from</code> at the specified time.  
-	 * @param t the time.	
-	 * @return the distance
-	 * @throws IllegalArgumentException if t is outside the interval
-	 * (<tt>t &gt; from || t &lt; to</tt>) or length is out the range 	  
+	 * Returns an array of the tiles the train is on at the specified time.
+	 * 
+	 * @param t
+	 *            the time.
+	 * @return an array of the tiles the train is on
+	 * @throws IllegalArgumentException
+	 *             if t is outside the interval
 	 */
-	public int getDistance(GameTime t) {
-		return 0;
+	public PositionOnTrack[] getTiles(GameTime t) {
+		return null;
 	}
 
 }

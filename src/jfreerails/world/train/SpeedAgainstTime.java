@@ -43,8 +43,8 @@ public class SpeedAgainstTime implements FreerailsSerializable {
 	 * @param speeds
 	 * @throws IllegalArgumentException if times.length != speeds.length 
 	 * @throws IllegalArgumentException if any of the speed values are negative. 
-	 * @throws IllegalArgumentException if times[i] >= times[i + 1] for any i
-	 * @throws IllegalArgumentException if times[i] == null for any i
+	 * @throws IllegalArgumentException if times[i] >= times[i + 1] for any i.
+	 * @throws IllegalArgumentException if any of the time values are null.
 	 * 
 	 */
 	public SpeedAgainstTime(GameTime[] times, int[] speeds) {
