@@ -1,3 +1,5 @@
+Son Oct 13 00:22:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o add cache for pixmap-positions in qt-client
 Sat Oct 12 04:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add city and slum to field Type
 o add viewing of new FieldTypes (farm, village, industrie, resource, ...) in ParaGUI Client

@@ -46,112 +46,41 @@ GameMapView::GameMapView(Engine *_engine, GameMap *_map, GameMainWindow* parent,
   oldMousePos.setX(0);
   oldMousePos.setY(0);
   bShowGrid = false;
+
+  int i1, i2, w, h;
+  w = engine->getWorldMap()->getWidth();
+  h = engine->getWorldMap()->getHeight();
+  fldData = new field_data[h * w];
+  CHECK_PTR(fldData);
+
+  for(i1=0;i1<h;i1++)
+    for(i2=0;i2<w;i2++)
+      updatePixmapPos(i2, i1);
 }
 
 GameMapView::~GameMapView()
 {
+  delete fldData;
 }
 
 void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
 {
-  MapField *field;
+  int element_offset;
+  int ox, oy, i;
 
-  field = engine->getWorldMap()->getMapField(x, y);
-  if (field == NULL)
-    return;
-  MapField::FieldType type = field->getType();
-    
-  int xpos=0;
-  int ox, oy;
+  element_offset = y * engine->getWorldMap()->getWidth() + x;
 
-  switch (type)
-  {
-    case MapField::grass:
-      ox = 0 * 30;
-      oy = 0 * 30;
-      break;
-    case MapField::dessert:
-      xpos = getPixmapPos(x, y, MapField::dessert);
-      ox = xpos * 30;
-      oy = 1 * 30;
-      break;
-    case MapField::river:
-      xpos = getRiverPixmapPos(x, y);
-      ox = xpos * 30;
-      oy = 4 * 30;
-      break;
-    case MapField::ocean:
-      xpos = getPixmapPos(x, y, MapField::ocean);
-      ox = xpos * 30;
-      oy = 5 * 30;
-      break;
-    case MapField::bog:
-      xpos = getPixmapPos(x, y, MapField::bog);
-      ox = xpos * 30;
-      oy = 2 * 30;
-      break;
-    case MapField::jungle:
-      xpos = getPixmapPos(x, y, MapField::jungle);
-      ox = xpos * 30;
-      oy = 3 * 30;
-      break;
-    case MapField::wood:
-      xpos = get3DPixmapPos(x, y, MapField::wood);
-      ox = (12 + xpos) * 30;
-      oy = 6 * 30;
-      break;
-    case MapField::foothills:
-      xpos = get3DPixmapPos(x, y, MapField::foothills);
-      ox = (0 + xpos) * 30;
-      oy = 6 * 30;
-      break;
-    case MapField::hills:
-      xpos = get3DPixmapPos(x, y, MapField::hills);
-      ox = (4 + xpos) * 30;
-      oy = 6 * 30;
-      break;
-    case MapField::mountain:
-      xpos = get3DPixmapPos(x, y, MapField::mountain);
-      ox = (8 + xpos) * 30;
-      oy = 6 * 30;
-      break;
-    case MapField::village:
-      ox = 3 * 30;
-      oy = 7 * 30;
-      break;
-    case MapField::farm:
-      ox = 6 * 30;
-      oy = 7 * 30;
-      break;
-    case MapField::industrie:
-      ox = 5 * 30;
-      oy = 7 * 30;
-      break;
-    case MapField::resource:
-      ox = 10 * 30;
-      oy = 7 * 30;
-      break;
-    default:
-      ox = 13 * 30;
-      oy = 7 * 30;
-      break;
-  }
-  
+  ox = fldData[element_offset].field_x;
+  oy = fldData[element_offset].field_y;
   bitBlt(pixPaint, 0, 0, pixTiles, ox, oy, 30, 30, Qt::CopyROP, true);
 
-/*  Track *trk;
-  trk = field->getTrack();
-  if (trk != NULL)
+  for(i=0;i<5;i++)
   {
-    int tracktileX, tracktileY, i;
-    for(i=0;i<5;i++)
-    {
-//      trk->getTrackTile(i, &tracktileX, &tracktileY);
-//      if (tracktileX >= 0)
-//        bitBlt(pixPaint, 0, 0, pixTrack, tracktileX, tracktileY, 30, 30, Qt::CopyROP, false);
-    }
+    ox = fldData[element_offset].track_x[i];
+    oy = fldData[element_offset].track_y[i];
+    if (ox >= 0)
+      bitBlt(pixPaint, 0, 0, pixTrack, ox, oy, 30, 30, Qt::CopyROP, false);
   }
-*/
 }
 
 int GameMapView::getPixmapPos(int x, int y, MapField::FieldType type)
@@ -254,6 +183,112 @@ int GameMapView::get3DPixmapPos(int x, int y, MapField::FieldType type)
   return xpos;
 }
 
+void GameMapView::updatePixmapPos(int x, int y)
+{
+  MapField *field;
+
+  field = engine->getWorldMap()->getMapField(x, y);
+  if (field == NULL)
+    return;
+  MapField::FieldType type = field->getType();
+
+  int xpos=0;
+  int ox, oy;
+
+  switch (type)
+  {
+    case MapField::grass:
+      ox = 0 * 30;
+      oy = 0 * 30;
+      break;
+    case MapField::dessert:
+      xpos = getPixmapPos(x, y, MapField::dessert);
+      ox = xpos * 30;
+      oy = 1 * 30;
+      break;
+    case MapField::river:
+      xpos = getRiverPixmapPos(x, y);
+      ox = xpos * 30;
+      oy = 4 * 30;
+      break;
+    case MapField::ocean:
+      xpos = getPixmapPos(x, y, MapField::ocean);
+      ox = xpos * 30;
+      oy = 5 * 30;
+      break;
+    case MapField::bog:
+      xpos = getPixmapPos(x, y, MapField::bog);
+      ox = xpos * 30;
+      oy = 2 * 30;
+      break;
+    case MapField::jungle:
+      xpos = getPixmapPos(x, y, MapField::jungle);
+      ox = xpos * 30;
+      oy = 3 * 30;
+      break;
+    case MapField::wood:
+      xpos = get3DPixmapPos(x, y, MapField::wood);
+      ox = (12 + xpos) * 30;
+      oy = 6 * 30;
+      break;
+    case MapField::foothills:
+      xpos = get3DPixmapPos(x, y, MapField::foothills);
+      ox = (0 + xpos) * 30;
+      oy = 6 * 30;
+      break;
+    case MapField::hills:
+      xpos = get3DPixmapPos(x, y, MapField::hills);
+      ox = (4 + xpos) * 30;
+      oy = 6 * 30;
+      break;
+    case MapField::mountain:
+      xpos = get3DPixmapPos(x, y, MapField::mountain);
+      ox = (8 + xpos) * 30;
+      oy = 6 * 30;
+      break;
+    case MapField::village:
+      ox = 3 * 30;
+      oy = 7 * 30;
+      break;
+    case MapField::farm:
+      ox = 6 * 30;
+      oy = 7 * 30;
+      break;
+    case MapField::industrie:
+      ox = 5 * 30;
+      oy = 7 * 30;
+      break;
+    case MapField::resource:
+      ox = 10 * 30;
+      oy = 7 * 30;
+      break;
+    default:
+      ox = 13 * 30;
+      oy = 7 * 30;
+      break;
+  }
+  
+  int element_offset, i;
+
+  element_offset = y * engine->getWorldMap()->getWidth() + x;
+  fldData[element_offset].field_x = ox;
+  fldData[element_offset].field_y = oy;
+
+//  Track *trk;
+//  trk = field->getTrack();
+//  if (trk != NULL)
+//  {
+    for(i=0;i<5;i++)
+    {
+//      trk->getTrackTile(i, &tracktileX, &tracktileY);
+//      if (tracktileX >= 0)
+//        bitBlt(pixPaint, 0, 0, pixTrack, tracktileX, tracktileY, 30, 30, Qt::CopyROP, false);
+      fldData[element_offset].track_x[i] = -1;
+      fldData[element_offset].track_x[i] = -1;
+    }
+//  }
+}
+
 void GameMapView::contentsMousePressEvent(QMouseEvent* e)
 {
   if(e->button() == Qt::LeftButton)
@@ -297,8 +332,6 @@ void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
           trd->player = NULL;
           msg = new Message(Message::addElement, 0, (void *)trd);
           engine->sendMsg(msg);
-          #warning fix me
-          repaintContents(x - 45, y - 45, 90, 90, false);
           break;
         }
         case buildTrack:
@@ -310,8 +343,6 @@ void GameMapView::contentsMouseReleaseEvent(QMouseEvent *e)
           trd->player = NULL;
           msg = new Message(Message::addElement, 0, (void *)trd);
           engine->sendMsg(msg);
-          #warning fix me
-          repaintContents(x - 45, y - 45, 90, 90, false);
           break;
         }
         default:

@@ -17,6 +17,14 @@ class Engine;
 class GameMainWindow;
 class GameMap;
 
+typedef struct field_data
+{
+  int field_x;          // offset for picture of field
+  int field_y;
+  int track_x[5];       // offset for picture of track and edges
+  int track_y[5];
+};
+
 class GameMapView : public QCanvasView
 {
     Q_OBJECT
@@ -40,11 +48,14 @@ class GameMapView : public QCanvasView
     void contentsMouseMoveEvent(QMouseEvent *e);
     
   private:
+    void updatePixmapPos(int x, int y);
     void getMapPixmap(QPixmap *pixPaint, int x, int y);
     int getPixmapPos(int x, int y, MapField::FieldType type);
     int getRiverPixmapPos(int x, int y);
     int get3DPixmapPos(int x, int y, MapField::FieldType type);
 
+    struct field_data *fldData;
+    
     MouseType mouseType;
     Engine *engine;
     GameMap *map;

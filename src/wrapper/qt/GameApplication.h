@@ -55,6 +55,7 @@ class GameApplication : public BaseApplication
       */
     void setMainWindow(GameMainWindow* mw);
 //    void* runEngine(void*);
+    void retrieveMessage();
 
   private:
     QApplication* application;

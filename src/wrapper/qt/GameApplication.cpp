@@ -40,6 +40,7 @@ void* runEngine(void *data)
   qDebug("status in runEngine: %i", int(object->getEngine()->getGameState()));
   while (object->getEngine()->getGameState() < Engine::Stopping)
   {
+    object->retrieveMessage();
     object->getEngine()->checkNet();
     object->getEngine()->checkNext(play_time);
     usleep(10500);      // wait for 10.5 ms
@@ -158,4 +159,9 @@ void GameApplication::hideSplash()
 void GameApplication::setMainWindow(GameMainWindow* mw)
 {
   application->setMainWidget((QWidget*)mw->getWidget());
+}
+
+void GameApplication::retrieveMessage()
+{
+  
 }
