@@ -49,11 +49,11 @@
 
 		<copy todir="${build}">
 			<fileset dir=".">
-				<include name="README" />
-
-				<include name="TODO" />
-
+				<include name="README" />				
+				
 				<include name="ChangeLog" />
+				
+				<include name="logging.properties" />
 			</fileset>
 		</copy>
 
@@ -159,10 +159,12 @@
 	</target>
 
 	<target depends="mkdirs, compile" description="Test run based on compile" name="run">
-		<java classname="jfreerails.launcher.Launcher" fork="true">
+		<java classname="jfreerails.launcher.Launcher" fork="true" >
 			<classpath>
 				<pathelement path="${build}" />
 			</classpath>
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" /> 
+			
 		</java>
 	</target>
 

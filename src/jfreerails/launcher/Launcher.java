@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.GeneralSecurityException;
+import java.util.logging.Logger;
 
 import jfreerails.client.common.FileUtils;
 import jfreerails.client.top.GUIClient;
@@ -30,6 +31,7 @@ import jfreerails.world.player.Player;
  */
 public class Launcher extends javax.swing.JFrame implements
 FreerailsProgressMonitor {
+	private static final Logger logger = Logger.getLogger(Launcher.class.getName()); 
     private static String QUICKSTART = "-quickstart";
     private static final int GAME_SPEED_SLOW = 10;
     private final Component[] wizardPages = new Component[4];
@@ -216,6 +218,14 @@ FreerailsProgressMonitor {
      * Runs the game.
      */
     public static void main(String args[]) {
+    	
+    	//Let the user know if we are using a custom logging config.
+    	String loggingProperties = System.getProperty("java.util.logging.config.file");
+    	if(null != loggingProperties){
+    		logger.info("Logging properties file: " +loggingProperties);
+    	}
+    	
+    	logger.fine("Started launcher.");
         boolean quickstart = false;
         if (args.length > 0) {
           for (int i = 0; i < args.length; i++) {

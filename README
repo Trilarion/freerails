@@ -74,6 +74,17 @@ N.B. The source package contains some unit tests.  To compile them you will
 need to add junit.jar to your classpath, which can be downloaded from 
 www.junit.org.
 
+Enabling logging
+=============
+Either type:
+java -Djava.util.logging.config.file=logging.properties jfreerails/launcher/Launcher
+or
+ant run
+
+Make sure that 'logging.properties' is in the working directory.
+
+A log file called something like 'JFreerailsLog0.txt' will be written in your home directory.
+
 Windows users
 =============
 If you experience poor frame rates, try the following.
