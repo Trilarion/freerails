@@ -112,4 +112,8 @@ public class AddTransactionMove implements Move {
             return false;
         }
     }
+
+    public FreerailsPrincipal getPrincipal() {
+        return principal;
+    }
 }

@@ -3,7 +3,6 @@ package jfreerails.move;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
@@ -24,19 +23,23 @@ public class ChangeTrainPositionMove implements Move {
     private final boolean addToHead;
     private final boolean addToTail;
     final int trainPositionNumber;
+    private final FreerailsPrincipal principal;
 
     public ChangeTrainPositionMove(TrainPositionOnMap pieceToAdd,
         TrainPositionOnMap pieceToRemove, int trainNumber, boolean addToHead,
-        boolean addToTail) {
+        boolean addToTail, FreerailsPrincipal p) {
         this.addToHead = addToHead;
         this.addToTail = addToTail;
         this.changeToHead = pieceToAdd;
         this.changeToTail = pieceToRemove;
         this.trainPositionNumber = trainNumber;
+        this.principal = p;
     }
 
-    public static ChangeTrainPositionMove getNullMove(int trainNumber) {
-        return new ChangeTrainPositionMove(null, null, trainNumber, false, false) {
+    public static ChangeTrainPositionMove getNullMove(int trainNumber,
+        FreerailsPrincipal p) {
+        return new ChangeTrainPositionMove(null, null, trainNumber, false,
+            false, p) {
                 MoveStatus move(World w, boolean updateTrainPosition,
                     boolean isDoMove) {
                     return MoveStatus.MOVE_OK;
@@ -45,13 +48,13 @@ public class ChangeTrainPositionMove implements Move {
     }
 
     public static ChangeTrainPositionMove generate(ReadOnlyWorld w,
-        FreerailsPathIterator nextPathSection, int trainNumber) {
+        FreerailsPathIterator nextPathSection, int trainNumber,
+        FreerailsPrincipal p) {
         if (!nextPathSection.hasNext()) {
-            return getNullMove(trainNumber);
+            return getNullMove(trainNumber, p);
         }
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber,
-                Player.TEST_PRINCIPAL);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, p);
 
         TrainPositionOnMap currentPosition = train.getPosition();
 
@@ -89,7 +92,7 @@ public class ChangeTrainPositionMove implements Move {
         bitToRemove = getBitToRemove(intermediate, currentLength);
 
         return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber,
-            true, false);
+            true, false, p);
     }
 
     static TrainPositionOnMap getBitToRemove(TrainPositionOnMap intermediate,
@@ -153,7 +156,7 @@ public class ChangeTrainPositionMove implements Move {
         }
 
         TrainModel train = (TrainModel)w.get(KEY.TRAINS,
-                this.trainPositionNumber, Player.TEST_PRINCIPAL);
+                this.trainPositionNumber, principal);
         TrainPositionOnMap oldTrainPosition = train.getPosition();
         TrainPositionOnMap intermediatePosition;
         TrainPositionOnMap newTrainPosition;

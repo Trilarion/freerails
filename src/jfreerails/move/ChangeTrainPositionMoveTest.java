@@ -72,7 +72,7 @@ public class ChangeTrainPositionMoveTest extends TestCase {
     public static final ChangeTrainPositionMove MOVE1 = new ChangeTrainPositionMove(TrainPositionOnMap.createInstance(
                 new int[] {0, 10}, new int[] {1, 11}),
             TrainPositionOnMap.createInstance(new int[] {37, 40},
-                new int[] {38, 44}), 0, true, false);
+                new int[] {38, 44}), 0, true, false, Player.TEST_PRINCIPAL);
     public static final TrainPositionOnMap FIXTURE1_BEFORE_MOVE1 = TrainPositionOnMap.createInstance(new int[] {
                 10, 30, 40
             }, new int[] {11, 33, 44});

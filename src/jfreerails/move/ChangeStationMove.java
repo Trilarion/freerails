@@ -1,5 +1,6 @@
 package jfreerails.move;
 
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 
@@ -11,7 +12,8 @@ import jfreerails.world.top.KEY;
  * @author lindsal
  */
 final public class ChangeStationMove extends ChangeItemInListMove {
-    public ChangeStationMove(int index, StationModel before, StationModel after) {
-        super(KEY.STATIONS, index, before, after);
+    public ChangeStationMove(int index, StationModel before,
+        StationModel after, FreerailsPrincipal p) {
+        super(KEY.STATIONS, index, before, after, p);
     }
 }

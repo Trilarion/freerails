@@ -34,7 +34,8 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
 
         /* The maintenace cost of track type 0 is 10 (see MapFixtureFactory), so
         * the cost of maintaining 50 units is 500. */
-        AddTransactionMove m = TrackMaintenanceMoveGenerator.generateMove(w);
+        AddTransactionMove m = TrackMaintenanceMoveGenerator.generateMove(w,
+                Player.TEST_PRINCIPAL);
         Transaction t = m.getTransaction();
         Money expected = new Money(-500);
         Money actual = t.getValue();
@@ -44,7 +45,8 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
     public void testCalulateNumberOfEachTrackType() {
         int[] actual;
         int[] expected;
-        actual = TrackMaintenanceMoveGenerator.calulateNumberOfEachTrackType(w);
+        actual = TrackMaintenanceMoveGenerator.calulateNumberOfEachTrackType(w,
+                Player.TEST_PRINCIPAL);
         expected = new int[] {0, 0, 0}; //No track has been built yet.
         assertTrue(Arrays.equals(expected, actual));
 
@@ -53,13 +55,15 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         AddItemTransaction t;
         addTrack(0, 10);
 
-        actual = TrackMaintenanceMoveGenerator.calulateNumberOfEachTrackType(w);
+        actual = TrackMaintenanceMoveGenerator.calulateNumberOfEachTrackType(w,
+                Player.TEST_PRINCIPAL);
         expected = new int[] {10, 0, 0};
         assertTrue(Arrays.equals(expected, actual));
 
         addTrack(2, 20);
 
-        actual = TrackMaintenanceMoveGenerator.calulateNumberOfEachTrackType(w);
+        actual = TrackMaintenanceMoveGenerator.calulateNumberOfEachTrackType(w,
+                Player.TEST_PRINCIPAL);
         expected = new int[] {10, 0, 20};
         assertTrue(Arrays.equals(expected, actual));
     }

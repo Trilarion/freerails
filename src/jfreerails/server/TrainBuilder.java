@@ -39,12 +39,10 @@ import jfreerails.world.train.TrainPathIterator;
 public class TrainBuilder {
     private World world;
     private MoveReceiver moveReceiver;
-    private FreerailsPrincipal principal;
 
-    public TrainBuilder(World w, MoveReceiver mr, FreerailsPrincipal principal) {
+    public TrainBuilder(World w, MoveReceiver mr) {
         this.world = w;
         moveReceiver = mr;
-        this.principal = principal;
 
         if (null == mr) {
             throw new NullPointerException();
@@ -59,7 +57,8 @@ public class TrainBuilder {
      *
      *
      */
-    public TrainMover buildTrain(int engineTypeNumber, int[] wagons, Point p) {
+    public TrainMover buildTrain(int engineTypeNumber, int[] wagons, Point p,
+        FreerailsPrincipal principal) {
         FreerailsTile tile = (FreerailsTile)world.getTile(p.x, p.y);
 
         TrackRule tr = tile.getTrackRule();
@@ -83,7 +82,7 @@ public class TrainBuilder {
             CargoBundle cb = new CargoBundleImpl();
             int cargoBundleNumber = world.size(KEY.CARGO_BUNDLES, principal);
             Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
-                    cb);
+                    cb, principal);
             int scheduleNumber = world.size(KEY.TRAIN_SCHEDULES, principal);
 
             TrainModel train = new TrainModel(engineTypeNumber, wagons, null,
@@ -99,12 +98,13 @@ public class TrainBuilder {
              * atomically */
             /* TODO FIXME need to figure out what to do if the above
              * step fails! */
-            TrainPathFinder tpf = getPathToFollow(p, world, trainNumber);
+            TrainPathFinder tpf = getPathToFollow(p, world, trainNumber,
+                    principal);
 
             Move setupScheduleMove = tpf.initTarget(train, is);
 
             AddTrainMove addTrainMove = AddTrainMove.generateMove(trainNumber,
-                    train, engineType.getPrice(), is);
+                    train, engineType.getPrice(), is, principal);
 
             Move compositeMove = new CompositeMove(new Move[] {
                         addCargoBundleMove, addTrainMove, setupScheduleMove
@@ -122,11 +122,12 @@ public class TrainBuilder {
 
             FreerailsPathIterator from = new TrainPathIterator(tpf);
 
-            tpf = getPathToFollow(p, world, trainNumber);
+            tpf = getPathToFollow(p, world, trainNumber, principal);
 
             tpf.initTarget(train, is);
 
-            TrainMover trainMover = new TrainMover(tpf, world, trainNumber);
+            TrainMover trainMover = new TrainMover(tpf, world, trainNumber,
+                    principal);
 
             Move positionMove = trainMover.setInitialTrainPosition(train, from);
 
@@ -155,7 +156,7 @@ public class TrainBuilder {
      * @param p the point at which the path iterator starts.
      */
     public TrainPathFinder getPathToFollow(Point p, ReadOnlyWorld w,
-        int trainNumber) {
+        int trainNumber, FreerailsPrincipal principal) {
         PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(world, p)[0];
 
         FlatTrackExplorer explorer = new FlatTrackExplorer(pot, world);
@@ -163,7 +164,7 @@ public class TrainBuilder {
         FreerailsPathIterator it;
 
         TrainPathFinder tpf = new TrainPathFinder(explorer, w, trainNumber,
-                moveReceiver);
+                moveReceiver, principal);
 
         return tpf;
     }

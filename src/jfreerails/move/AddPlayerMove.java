@@ -1,7 +1,6 @@
 package jfreerails.move;
 
 import jfreerails.world.accounts.Receipt;
-import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
@@ -44,8 +43,9 @@ public class AddPlayerMove implements Move, ServerMove {
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
         w.addPlayer(this.player2add, Player.AUTHORITATIVE);
 
-        Transaction t = new Receipt(new Money(w.getNumberOfPlayers() * 100000));
-        w.addTransaction(t, player2add.getPrincipal());
+        //Set up bank account with initial balance of $1000,000.
+        Receipt initialCredit = new Receipt(new Money(1000000));
+        w.addTransaction(initialCredit, player2add.getPrincipal());
 
         return MoveStatus.MOVE_OK;
     }

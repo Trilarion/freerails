@@ -25,7 +25,7 @@ public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
         bundleB.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move m = new AddCargoBundleMove(0, bundleA);
+        Move m = new AddCargoBundleMove(0, bundleA, Player.TEST_PRINCIPAL);
         assertDoMoveIsOk(m);
         assertEquals(getWorld().size(KEY.CARGO_BUNDLES, Player.TEST_PRINCIPAL),
             1);

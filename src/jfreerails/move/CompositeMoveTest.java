@@ -21,10 +21,14 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
 
     public void testMove() {
         Move[] moves = new Move[4];
-        moves[0] = new AddItemToListMove(KEY.STATIONS, 0, station1);
-        moves[1] = new AddItemToListMove(KEY.STATIONS, 1, station2);
-        moves[2] = new AddItemToListMove(KEY.STATIONS, 2, station3);
-        moves[3] = new AddItemToListMove(KEY.STATIONS, 3, station4);
+        moves[0] = new AddItemToListMove(KEY.STATIONS, 0, station1,
+                Player.TEST_PRINCIPAL);
+        moves[1] = new AddItemToListMove(KEY.STATIONS, 1, station2,
+                Player.TEST_PRINCIPAL);
+        moves[2] = new AddItemToListMove(KEY.STATIONS, 2, station3,
+                Player.TEST_PRINCIPAL);
+        moves[3] = new AddItemToListMove(KEY.STATIONS, 3, station4,
+                Player.TEST_PRINCIPAL);
 
         Move compositeMove = new CompositeMove(moves);
         assertEqualsSurvivesSerialisation(compositeMove);

@@ -19,6 +19,7 @@ import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
@@ -114,7 +115,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         identityProvider = new IdentityProvider(this, moveExecuter);
         queuedMoveReceiver = new QueuedMoveReceiver(moveExecuter,
                 identityProvider);
-        tb = new TrainBuilder(world, moveExecuter, Player.TEST_PRINCIPAL);
+        tb = new TrainBuilder(world, moveExecuter);
         calcSupplyAtStations = new CalcSupplyAtStations(w, moveExecuter);
         moveChainFork.addListListener(calcSupplyAtStations);
 
@@ -294,23 +295,28 @@ public class ServerGameEngine implements GameModel, Runnable {
      *
      */
     private void buildTrains() {
-        for (int i = 0; i < world.size(KEY.STATIONS, Player.TEST_PRINCIPAL);
-                i++) {
-            StationModel station = (StationModel)world.get(KEY.STATIONS, i,
-                    Player.TEST_PRINCIPAL);
+        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
+            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
-            if (null != station && null != station.getProduction()) {
-                ProductionAtEngineShop production = station.getProduction();
-                Point p = new Point(station.x, station.y);
-                TrainMover trainMover = tb.buildTrain(production.getEngineType(),
-                        production.getWagonTypes(), p);
+            for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {
+                StationModel station = (StationModel)world.get(KEY.STATIONS, i,
+                        principal);
 
-                //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
-                TrainPathFinder tpf = trainMover.getTrainPathFinder();
-                this.addServerAutomaton(tpf);
-                this.addTrainMover(trainMover);
-                moveExecuter.processMove(new ChangeProductionAtEngineShopMove(
-                        production, null, i));
+                if (null != station && null != station.getProduction()) {
+                    ProductionAtEngineShop production = station.getProduction();
+                    Point p = new Point(station.x, station.y);
+                    TrainMover trainMover = tb.buildTrain(production.getEngineType(),
+                            production.getWagonTypes(), p, principal);
+
+                    //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
+                    TrainPathFinder tpf = trainMover.getTrainPathFinder();
+                    this.addServerAutomaton(tpf);
+                    this.addTrainMover(trainMover);
+
+                    ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(production,
+                            null, i, principal);
+                    moveExecuter.processMove(move);
+                }
             }
         }
     }

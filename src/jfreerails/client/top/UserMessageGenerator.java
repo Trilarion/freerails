@@ -14,6 +14,7 @@ import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
@@ -30,13 +31,15 @@ import jfreerails.world.train.TrainModel;
  *
  */
 public class UserMessageGenerator implements MoveReceiver {
-    ModelRoot mr;
-    ReadOnlyWorld world;
+    ModelRoot modelRoot;
     DecimalFormat formatter = new DecimalFormat("#,###,###");
 
-    public UserMessageGenerator(ModelRoot mr, ReadOnlyWorld world) {
-        this.mr = mr;
-        this.world = world;
+    public UserMessageGenerator(ModelRoot mr) {
+        if (null == mr) {
+            throw new NullPointerException();
+        }
+
+        this.modelRoot = mr;
     }
 
     public void processMove(Move move) {
@@ -48,15 +51,19 @@ public class UserMessageGenerator implements MoveReceiver {
             DeliverCargoReceipt deliverCargoReceipt = (DeliverCargoReceipt)addTransactionMove.getTransaction();
             long revenue = deliverCargoReceipt.getValue().getAmount();
 
-            if (0 < revenue) {
+            FreerailsPrincipal playerPrincipal = modelRoot.getPlayerPrincipal();
+            FreerailsPrincipal transactionPrincipal = addTransactionMove.getPrincipal();
+
+            if (0 < revenue && playerPrincipal.equals(transactionPrincipal)) {
+                ReadOnlyWorld world = modelRoot.getWorld();
                 int trainCargoBundle = transferCargoAtStationMove.getChangeOnTrain()
                                                                  .getIndex();
                 int stationCargoBundle = transferCargoAtStationMove.getChangeAtStation()
                                                                    .getIndex();
                 NonNullElements trains = new NonNullElements(KEY.TRAINS, world,
-                        mr.getPlayerPrincipal());
+                        playerPrincipal);
                 NonNullElements stations = new NonNullElements(KEY.STATIONS,
-                        world, mr.getPlayerPrincipal());
+                        world, playerPrincipal);
 
                 int trainNumber = -1;
                 int statonNumber = -1;
@@ -100,7 +107,7 @@ public class UserMessageGenerator implements MoveReceiver {
                 }
 
                 message += "$" + formatter.format(revenue);
-                mr.getUserMessageLogger().println(message);
+                modelRoot.getUserMessageLogger().println(message);
             }
         }
     }

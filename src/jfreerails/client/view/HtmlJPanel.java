@@ -47,9 +47,9 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(jScrollPane1, gridBagConstraints);
 
         done.setText("Close");

@@ -124,7 +124,8 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     
     public void setup(ModelRoot mr, ActionListener al) {
         newTrainScheduleJPanel1.setup(mr, al);
-        trainDetailsJPanel1.setup(mr, null);
+        trainDetailsJPanel1.setup(mr, al);
+        this.setCancelButtonActionListener(al);
         this.principal = mr.getPlayerPrincipal();
         this.w = mr.getWorld();
     }

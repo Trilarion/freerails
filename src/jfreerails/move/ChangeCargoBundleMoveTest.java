@@ -24,7 +24,8 @@ public class ChangeCargoBundleMoveTest extends AbstractMoveTestCase {
         before.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
         after.setAmount(new CargoBatch(1, 2, 3, 4, 0), 8);
 
-        Move m = new ChangeCargoBundleMove(before, after, 0);
+        Move m = new ChangeCargoBundleMove(before, after, 0,
+                Player.TEST_PRINCIPAL);
         assertEqualsSurvivesSerialisation(m);
 
         assertTryMoveFails(m);

@@ -52,7 +52,7 @@ final public class TrackMoveProducer {
                     trackVector, trackRule, w);
         } else if (trackBuilderMode == REMOVE_TRACK) {
             move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from,
-                    trackVector, w);
+                    trackVector, w, principal);
         } else {
             throw new IllegalArgumentException(String.valueOf(trackBuilderMode));
         }

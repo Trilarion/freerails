@@ -4,6 +4,7 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.train.TrainModel;
 
@@ -14,7 +15,7 @@ import jfreerails.world.train.TrainModel;
  *
  */
 public class RemoveTrainMove extends RemoveItemFromListMove {
-    public RemoveTrainMove(int index, TrainModel train) {
-        super(KEY.TRAINS, index, train);
+    public RemoveTrainMove(int index, TrainModel train, FreerailsPrincipal p) {
+        super(KEY.TRAINS, index, train, p);
     }
 }

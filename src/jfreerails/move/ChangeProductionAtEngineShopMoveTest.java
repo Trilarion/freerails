@@ -43,17 +43,20 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         ChangeProductionAtEngineShopMove m;
 
         //Should fail because current production at station 0 is null;
-        m = new ChangeProductionAtEngineShopMove(after, before, 0);
+        m = new ChangeProductionAtEngineShopMove(after, before, 0,
+                Player.TEST_PRINCIPAL);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         //Should fail because station 6 does not exist.
-        m = new ChangeProductionAtEngineShopMove(before, after, 6);
+        m = new ChangeProductionAtEngineShopMove(before, after, 6,
+                Player.TEST_PRINCIPAL);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         //Should go through
-        m = new ChangeProductionAtEngineShopMove(before, after, 0);
+        m = new ChangeProductionAtEngineShopMove(before, after, 0,
+                Player.TEST_PRINCIPAL);
         assertTryMoveIsOk(m);
         assertDoMoveIsOk(m);
         assertTryUndoMoveIsOk(m);

@@ -74,7 +74,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                 }
 
                 Move m = new ChangeCargoBundleMove(before, after,
-                        station.getCargoBundleNumber());
+                        station.getCargoBundleNumber(), principal);
                 moveReceiver.processMove(m);
             }
         }

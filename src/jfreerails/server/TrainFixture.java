@@ -40,7 +40,7 @@ public class TrainFixture {
 
         FreerailsPathIterator to = pathIterator();
         FreerailsPathIterator from = pathIterator();
-        trainMover = new TrainMover(to, w, 0);
+        trainMover = new TrainMover(to, w, 0, Player.TEST_PRINCIPAL);
 
         Move move = trainMover.setInitialTrainPosition(train, from);
         MoveStatus ms = move.doMove(w, Player.AUTHORITATIVE);

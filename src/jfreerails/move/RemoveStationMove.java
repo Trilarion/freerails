@@ -6,7 +6,7 @@ package jfreerails.move;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import jfreerails.world.player.Player;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -27,9 +27,8 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
     }
 
     static RemoveStationMove getInstance(ReadOnlyWorld w,
-        ChangeTrackPieceMove removeTrackMove) {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                Player.TEST_PRINCIPAL);
+        ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
         int stationIndex = -1;
 
         while (wi.next()) {
@@ -51,15 +50,15 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         }
 
         StationModel station2remove = (StationModel)w.get(KEY.STATIONS,
-                stationIndex, Player.TEST_PRINCIPAL);
+                stationIndex, principal);
         ArrayList moves = new ArrayList();
         moves.add(removeTrackMove);
         moves.add(new RemoveItemFromListMove(KEY.STATIONS, stationIndex,
-                station2remove));
+                station2remove, principal));
 
         //Now update any train schedules that include this station.
         WorldIterator schedules = new NonNullElements(KEY.TRAIN_SCHEDULES, w,
-                Player.TEST_PRINCIPAL);
+                principal);
 
         while (schedules.next()) {
             ImmutableSchedule schedule = (ImmutableSchedule)schedules.getElement();
@@ -69,7 +68,8 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
                 mutableSchedule.removeAllStopsAtStation(stationIndex);
 
                 Move changeScheduleMove = new ChangeTrainScheduleMove(schedules.getIndex(),
-                        schedule, mutableSchedule.toImmutableSchedule());
+                        schedule, mutableSchedule.toImmutableSchedule(),
+                        principal);
                 moves.add(changeScheduleMove);
             }
         }

@@ -92,7 +92,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         
     	modelRoot = new ModelRoot();
     	modelRoot.setMoveReceiver(this.dummyReceiver);
-        w = new WorldImpl();       
+        w = new WorldImpl(200, 200);       
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
@@ -104,7 +104,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             e.printStackTrace();
         }
         modelRoot.setWorld(w, dummyReceiver, vl);
+		modelRoot.setPlayerPrincipal(Player.TEST_PLAYER.getPrincipal());
         dialogueBoxController = new DialogueBoxController(this, modelRoot);
+        dialogueBoxController.setDefaultFocusOwner(this);
         
         int numberOfCargoTypes = w.size(SKEY.CARGO_TYPES);
         StationModel bristol = new StationModel(10, 10, "Bristol", numberOfCargoTypes, 0);
@@ -199,6 +201,11 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         showSelectStation = new javax.swing.JMenuItem();
         showCargoWaitingAndDemand = new javax.swing.JMenuItem();
 
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
@@ -206,6 +213,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/data/south_america.png")));
+        jLabel1.setText("Press Esc to close dialogue boxes");
         getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
 
         show.setText("Show");
@@ -331,6 +339,12 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         setJMenuBar(jMenuBar1);
 
     }//GEN-END:initComponents
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if(java.awt.event.KeyEvent.VK_ESCAPE == evt.getKeyCode()){
+             dialogueBoxController.closeContent();
+        }
+    }//GEN-LAST:event_formKeyPressed
     
     private void showCargoWaitingAndDemandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCargoWaitingAndDemandActionPerformed
         // Add your handling code here:
@@ -403,7 +417,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         
 	private void selectTrainOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTrainOrdersActionPerformed
             // Add your handling code here:
-            trainDialogueJPanel.setup(modelRoot, null);
+            trainDialogueJPanel.setup(modelRoot, closeCurrentDialogue);
             trainDialogueJPanel.display(0);
             dialogueBoxController.showContent(trainDialogueJPanel);
 	} //GEN-LAST:event_selectTrainOrdersActionPerformed

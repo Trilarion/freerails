@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 
 import jfreerails.client.renderer.TrainImages;
-import jfreerails.client.renderer.ViewLists;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoType;
@@ -28,19 +27,13 @@ import jfreerails.world.train.TrainOrdersModel;
  *  This JPanel displays a train's schedule and provides controls that let you edit it.
  * @author  Luke Lindsay
  */
-public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {
-    
-    private ReadOnlyWorld w;
-    
-    private ViewLists vl;
+public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {        
     
     private int trainNumber = -1;
     
     private int scheduleID = -1;
     
-    private TrainOrdersListModel listModel;
-    
-    private FreerailsPrincipal principal;
+    private TrainOrdersListModel listModel;       
     
     private ModelRoot modelRoot;        
     
@@ -353,12 +346,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         orders.setSelectedIndex(i-1);
     }//GEN-LAST:event_pullUpJMenuItemActionPerformed
     
-    public void setup(ModelRoot mr, ActionListener al) {
-        this.w =mr.getWorld();
-        this.vl = mr.getViewLists();
+    public void setup(ModelRoot mr, ActionListener al) {       
         trainOrderJPanel1.setup(mr, null);
-        this.modelRoot = mr;
-		principal = mr.getPlayerPrincipal();
+        this.modelRoot = mr;		
         
         //This actionListener is fired by the select station popup when a stion is selected.
         ActionListener actionListener =  new ActionListener(){
@@ -370,11 +360,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         this.selectStationJPanel1.setup(mr, actionListener);
     }
     
-    public void display(int trainNumber){
-        this.trainNumber = trainNumber;
-        TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber, principal);
+    public void display(int newTrainNumber){
+        this.trainNumber = newTrainNumber;
+        FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+        ReadOnlyWorld w = modelRoot.getWorld();
+		TrainModel train = (TrainModel) w.get(KEY.TRAINS, newTrainNumber, principal);
         this.scheduleID = train.getScheduleID();
-        listModel = new TrainOrdersListModel(w, trainNumber, principal);
+        listModel = new TrainOrdersListModel(w, newTrainNumber, principal);
         orders.setModel(listModel);
         orders.setFixedCellWidth(250);
         listModel.fireRefresh();
@@ -390,6 +382,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }
     
     private MutableSchedule getSchedule(){
+		FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+		ReadOnlyWorld w = modelRoot.getWorld();    	
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         ImmutableSchedule immutableSchedule = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), principal);
         return new MutableSchedule(immutableSchedule);
@@ -397,9 +391,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     
     private void setupWagonsPopup() {
         addWagonJMenu.removeAll(); //Remove existing menu items.
-        NonNullElements cargoTypes = new NonNullElements(SKEY.CARGO_TYPES, w);
+        NonNullElements cargoTypes = new NonNullElements(SKEY.CARGO_TYPES, modelRoot.getWorld());
         
-        TrainImages trainImages = vl.getTrainImages();
+        TrainImages trainImages = modelRoot.getViewLists().getTrainImages();
         
         while (cargoTypes.next()) {
             final CargoType wagonType = (CargoType) cargoTypes.getElement();
@@ -507,12 +501,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         sendUpdateMove(s);
     }
     
-    private void sendUpdateMove(MutableSchedule mutableSchedule ){
+    private void sendUpdateMove(MutableSchedule mutableSchedule ){    	
+		FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+		ReadOnlyWorld w = modelRoot.getWorld();
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainNumber, principal);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule before = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID, principal);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
-        Move m = new ChangeTrainScheduleMove(scheduleID, before, after);
+        Move m = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
         this.modelRoot.getReceiver().processMove(m);        
     }
     

@@ -19,7 +19,7 @@ import java.awt.Graphics;
  */
 final public class SquareTileBackgroundRenderer
     extends BufferedTiledBackgroundRenderer {
-    private MapLayerRenderer mapView;
+    private final MapLayerRenderer mapView;
 
     protected void paintBufferRectangle(int x, int y, int width, int height) {
         Graphics gg = bg.create();
@@ -29,6 +29,10 @@ final public class SquareTileBackgroundRenderer
     }
 
     public SquareTileBackgroundRenderer(MapLayerRenderer mv, float _scale) {
+        if (null == mv) {
+            throw new NullPointerException();
+        }
+
         this.mapView = mv;
     }
 
@@ -37,8 +41,12 @@ final public class SquareTileBackgroundRenderer
     }
 
     public void refreshTile(int x, int y) {
-        Graphics gg = bg.create();
-        gg.translate(-bufferRect.x, -bufferRect.y);
-        mapView.paintTile(gg, x, y);
+        //The backgroundBuffer gets created on the first call to backgroundBuffer.paintRect(..)
+        //so we need a check here to avoid a null pointer exception.
+        if (null != super.backgroundBuffer) {
+            Graphics gg = bg.create();
+            gg.translate(-bufferRect.x, -bufferRect.y);
+            mapView.paintTile(gg, x, y);
+        }
     }
 }

@@ -6,7 +6,6 @@ package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
@@ -20,6 +19,7 @@ import jfreerails.world.top.World;
 public class AddItemToListMove implements ListMove {
     final KEY listKey;
     final int index;
+    final FreerailsPrincipal principal;
     protected final FreerailsSerializable item;
 
     public int getIndex() {
@@ -30,17 +30,18 @@ public class AddItemToListMove implements ListMove {
         return listKey;
     }
 
-    protected AddItemToListMove(KEY key, int i, FreerailsSerializable item) {
+    protected AddItemToListMove(KEY key, int i, FreerailsSerializable item,
+        FreerailsPrincipal p) {
         this.listKey = key;
         this.index = i;
         this.item = item;
+        this.principal = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (w.size(listKey, Player.TEST_PRINCIPAL) != index) {
+        if (w.size(listKey, this.principal) != index) {
             return MoveStatus.moveFailed("Expected size of list is " + index +
-                " but actual size is " +
-                w.size(listKey, Player.TEST_PRINCIPAL));
+                " but actual size is " + w.size(listKey, this.principal));
         }
 
         return MoveStatus.MOVE_OK;
@@ -49,10 +50,10 @@ public class AddItemToListMove implements ListMove {
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         int expectListSize = index + 1;
 
-        if (w.size(listKey, Player.TEST_PRINCIPAL) != expectListSize) {
+        if (w.size(listKey, this.principal) != expectListSize) {
             return MoveStatus.moveFailed("Expected size of list is " +
                 expectListSize + " but actual size is " +
-                w.size(listKey, Player.TEST_PRINCIPAL));
+                w.size(listKey, this.principal));
         }
 
         return MoveStatus.MOVE_OK;
@@ -62,7 +63,7 @@ public class AddItemToListMove implements ListMove {
         MoveStatus ms = tryDoMove(w, p);
 
         if (ms.isOk()) {
-            w.add(listKey, this.item, Player.TEST_PRINCIPAL);
+            w.add(listKey, this.item, this.principal);
         }
 
         return ms;
@@ -72,7 +73,7 @@ public class AddItemToListMove implements ListMove {
         MoveStatus ms = tryUndoMove(w, p);
 
         if (ms.isOk()) {
-            w.removeLast(listKey, Player.TEST_PRINCIPAL);
+            w.removeLast(listKey, this.principal);
         }
 
         return ms;

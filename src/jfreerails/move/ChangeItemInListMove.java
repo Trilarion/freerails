@@ -6,7 +6,6 @@ package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
@@ -22,6 +21,7 @@ public abstract class ChangeItemInListMove implements ListMove {
     final int index;
     private final FreerailsSerializable before;
     private final FreerailsSerializable after;
+    final FreerailsPrincipal principal;
 
     public int getIndex() {
         return index;
@@ -32,11 +32,13 @@ public abstract class ChangeItemInListMove implements ListMove {
     }
 
     protected ChangeItemInListMove(KEY k, int index,
-        FreerailsSerializable before, FreerailsSerializable after) {
+        FreerailsSerializable before, FreerailsSerializable after,
+        FreerailsPrincipal p) {
         this.before = before;
         this.after = after;
         this.index = index;
         this.listKey = k;
+        this.principal = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -57,14 +59,12 @@ public abstract class ChangeItemInListMove implements ListMove {
 
     protected MoveStatus tryMove(FreerailsSerializable to,
         FreerailsSerializable from, World w) {
-        if (index >= w.size(this.listKey, Player.TEST_PRINCIPAL)) {
+        if (index >= w.size(this.listKey, principal)) {
             return MoveStatus.moveFailed("w.size(this.listKey) is " +
-                w.size(this.listKey, Player.TEST_PRINCIPAL) + " but index is " +
-                index);
+                w.size(this.listKey, principal) + " but index is " + index);
         }
 
-        FreerailsSerializable item2change = w.get(listKey, index,
-                Player.TEST_PRINCIPAL);
+        FreerailsSerializable item2change = w.get(listKey, index, principal);
 
         if (null == item2change) {
             if (null == from) {
@@ -87,7 +87,7 @@ public abstract class ChangeItemInListMove implements ListMove {
         MoveStatus ms = tryMove(to, from, w);
 
         if (ms.ok) {
-            w.set(this.listKey, index, to, Player.TEST_PRINCIPAL);
+            w.set(this.listKey, index, to, principal);
         }
 
         return ms;

@@ -25,7 +25,7 @@ public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
         bundleB.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move m = new RemoveCargoBundleMove(0, bundleB);
+        Move m = new RemoveCargoBundleMove(0, bundleB, Player.TEST_PRINCIPAL);
         assertEqualsSurvivesSerialisation(m);
 
         assertTryMoveFails(m);

@@ -58,7 +58,7 @@ public class CalcSupplyAtStations implements WorldListListener {
 
                 if (!stationAfter.equals(stationBefore)) {
                     Move move = new ChangeStationMove(iterator.getIndex(),
-                            stationBefore, stationAfter);
+                            stationBefore, stationAfter, principal);
                     this.moveReceiver.processMove(move);
                 }
             }

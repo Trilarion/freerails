@@ -153,7 +153,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 mainMap.getStationRadius(), mapViewJComponent);
         modelRoot.setUserMessageLogger(this.mapViewJComponent);
 
-        userMessageGenerator = new UserMessageGenerator(this.modelRoot, world);
+        userMessageGenerator = new UserMessageGenerator(this.modelRoot);
         moveFork.add(userMessageGenerator);
     }
 

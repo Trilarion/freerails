@@ -65,9 +65,9 @@ public class DropOffAndPickupCargoMoveGenerator {
     public Move generateMove() {
         //The methods that calculate the before and after bundles could be called from here.
         ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore,
-                stationAfter, stationBundleId);
+                stationAfter, stationBundleId, principal);
         ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore,
-                trainAfter, trainBundleId);
+                trainAfter, trainBundleId, principal);
 
         return TransferCargoAtStationMove.generateMove(changeAtStation,
             changeOnTrain, payment);
@@ -123,7 +123,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
 
         payment = ProcessCargoAtStationMoveGenerator.processCargo(w,
-                cargoDroppedOff, this.stationId);
+                cargoDroppedOff, this.stationId, principal);
 
         //Unload the cargo that there isn't space for on the train regardless of whether the station
         // demands it.

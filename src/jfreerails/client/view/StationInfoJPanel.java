@@ -60,6 +60,7 @@ implements MoveReceiver, View {
         jLabel1 = new javax.swing.JLabel();
         nextStation = new javax.swing.JButton();
         previousStation = new javax.swing.JButton();
+        close = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -72,10 +73,10 @@ implements MoveReceiver, View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 8);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 8);
         add(jLabel1, gridBagConstraints);
 
         nextStation.setText("next ->");
@@ -90,9 +91,9 @@ implements MoveReceiver, View {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 8, 8);
         add(nextStation, gridBagConstraints);
 
         previousStation.setText("<- previous");
@@ -107,10 +108,22 @@ implements MoveReceiver, View {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 8, 8, 4);
         add(previousStation, gridBagConstraints);
+
+        close.setText("close");
+        close.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        close.setMaximumSize(new java.awt.Dimension(65, 22));
+        close.setMinimumSize(new java.awt.Dimension(65, 22));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.weightx = 1.0;
+        add(close, gridBagConstraints);
 
     }//GEN-END:initComponents
     
@@ -153,6 +166,7 @@ implements MoveReceiver, View {
         addComponentListener(componentListener);
         this.w = mr.getWorld();
         this.modelRoot = mr;
+        this.close.addActionListener(al);
     }
     
     public void setStation(int stationNumber) {
@@ -288,6 +302,7 @@ implements MoveReceiver, View {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton close;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton nextStation;
     private javax.swing.JButton previousStation;
