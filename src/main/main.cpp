@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
+
 int main(int argc, char *argv[])
 {
   i18n_init();
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
   app.initGame();
   // To show splash for a while :-)
   // Remove when initialization works
-  sleep(3);
+  sleep(1);
 
   // No error checking yet
   // Maybe this should be done BEFORE app.initGame()?
@@ -35,10 +36,12 @@ int main(int argc, char *argv[])
 
   app.hideSplash();
 
+
   // Ask's for user choose
   // Must insert in GameApplication, only for testing/demonstration here.
-  GameModeSelectDialog dialog(&mw, 250,150,300,300, "Choose game mode");
-  dialog.show();
+  GameModeSelectDialog dialog(&mw, 250,150,300,200, "Choose game mode");
 
-  return app.run();
+  printf("Result=%i\n", dialog.Show());
+
+  return app.run();;
 }
