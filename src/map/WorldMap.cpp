@@ -27,3 +27,11 @@ WorldMap::~WorldMap() {
   }  
 }
 
+bool WorldMap::isMapFieldOcean(int x, int y) {
+
+  MapField* field=getMapField(x,y);
+  if (field!=NULL) {
+    if (field->getType()==MapField::ocean) return true;
+      else return false;
+  } return false;
+}

@@ -29,6 +29,8 @@ public:
   int getWidth() { return width;}
 
   int getHeight() { return height;}
+  
+  bool isMapFieldOcean(int x, int y);
 
 private:
   std::vector<MapField *> mapFields;
