@@ -1,3 +1,7 @@
+Thu Sep 27 02:10:00 2001  Alexander Opitz <opi@sputnik.de>:
+o add Track.h and Track.cpp without functionality.
+o some changes in FieldMap to activate Track
+o small writing corection in WorldMap
 Wed Sep 26 02:15:00 2001  Alexander Opitz <opi@sputnik.de>:
 o add FiedTypes definitions in MapField
 o add first unfunctionell MapGenerator
