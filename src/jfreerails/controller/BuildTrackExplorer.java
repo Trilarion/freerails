@@ -234,7 +234,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 			//Add fixed cost if tile b does not have the desired track type.
 			FreerailsTile a = (FreerailsTile)m_world.getTile(x[0], y[0]);
 			TrackRule currentRuleA = a.getTrackRule();
-			if(!currentRuleA.equals(priceA)){
+			if(!currentRuleA.equals(ruleA)){
 				assert( !currentRuleA.isStation()); //We shouldn't be upgrading a station. 
 				cost+= ruleA.getFixedCost().getAmount() * OneTileMoveVector.TILE_DIAMETER;
 			}
