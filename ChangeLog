@@ -1,3 +1,6 @@
+Mon Jun 02 14:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o 0.1.0: releasing
+
 Mon Jun 02 13:45:00 2003  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI : some updates to pg*
             add TrainFrame which have at the moment a stupid train movement
