@@ -1,3 +1,5 @@
+Thu Mar 08 20:30:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add msgID to Message, update in wrapper paraGUI
 Thu Mar 07 14:50:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add accept to TCPConnection
 o make TCPConnection non_blocking
