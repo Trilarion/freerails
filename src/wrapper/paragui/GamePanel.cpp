@@ -6,7 +6,7 @@
 
 PARAGUI_CALLBACK(GamePanel::pause_handler) {
 
-  Message* msg=new Message(Message::pauseGame,NULL);
+  Message* msg=new Message(Message::pauseGame,0,NULL);
   engine->sendMsg(msg);
   
 }

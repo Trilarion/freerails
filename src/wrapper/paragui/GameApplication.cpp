@@ -57,7 +57,7 @@ GameApplication::~GameApplication() {
 int GameApplication::runEngine(void* data)
 {
   GameApplication* object = static_cast<GameApplication*>(data);
-  while (1) {
+  while (object->engine->getState()!=GameController::Stopped) {
     object->engine->checkNet();
     object->engine->checkNext(SDL_GetTicks());
     SDL_Delay(10);
@@ -98,7 +98,7 @@ int result;
       // initServerGame() or initClientGame()
       initServerGame();
       // get Network/Clientsocket
-      Server* server=new Server();
+      Server* server=new Server(30000);
       // start engine Client or Server
       engine=new Engine(worldMap, playerSelf, server);
 
@@ -111,16 +111,20 @@ int result;
       netView->Show();
     }
     SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
-    Message* msg=new Message(Message::startGame,NULL);
+    Message* msg=new Message(Message::startGame,0,NULL);
     engine->sendMsg(msg);
     pGlobalApp->Run();
-//    SDL_WaitThread(thread2, NULL);
-    msg=new Message(Message::stopGame,NULL);
+    msg=new Message(Message::stopGame,0,NULL);
     engine->sendMsg(msg);
+    SDL_WaitThread(thread2, NULL);
     if (engine!=NULL) { delete engine; engine=NULL; }
-    if (mapView!=NULL) { delete mapView; engine=NULL; }
-    if (netView!=NULL) { delete netView; engine=NULL; }
-    if (panel!=NULL) { delete panel; engine=NULL; }
+cerr << "blög4" << endl;
+    if (mapView!=NULL) { delete mapView; mapView=NULL; }
+cerr << "blög5" << endl;
+    if (netView!=NULL) { delete netView; netView=NULL; }
+cerr << "blög6" << endl;
+    if (panel!=NULL) { delete panel; panel=NULL; }
+cerr << "blög7" << endl;
   }
 }
 
