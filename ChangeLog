@@ -1,3 +1,10 @@
+Tue Mar 26 11:40:00 2002  Alexander Opitz <opi@le-bit.de>:
+o clean up cvs
+o add Class Controller, PlayerController, ControllerDispatcher
+o Marking GameController for removal/replacing
+o New working GameElement and Player Element, all the other elements must reworked
+o Every GameElement needs his Controller (extending from Class Controller)
+o Update the ParaGUI wrapper for using changed Messageing
 Mon Mar 25 15:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o move Serializeable to network and change class
 o split the operator functions out to Serializer class.
