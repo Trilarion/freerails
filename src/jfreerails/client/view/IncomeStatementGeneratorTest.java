@@ -44,7 +44,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
             if (ct.getCategory().equals(category)) {
                 CargoBatch cb = new CargoBatch(i, 0, 0, 0, 0);
-                w.addTransaction(new DeliverCargoReceipt(amount, 10, 0, cb),
+                w.addTransaction(new DeliverCargoReceipt(amount, 10, 0, cb, 1),
                     MapFixtureFactory.TEST_PRINCIPAL);
 
                 return;

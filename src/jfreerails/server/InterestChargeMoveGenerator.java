@@ -35,7 +35,7 @@ public class InterestChargeMoveGenerator {
             if (t instanceof BondTransaction) {
                 BondTransaction bt = (BondTransaction)t;
                 int interestRate = bt.getType();
-                long bondAmount = BondTransaction.BOND_VALUE.getAmount();
+                long bondAmount = BondTransaction.BOND_VALUE_ISSUE.getAmount();
                 interestDue += (interestRate * bondAmount / 100) * bt.getQuantity();
             }
         }

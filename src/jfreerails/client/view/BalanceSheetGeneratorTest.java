@@ -32,7 +32,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
         world.set(ITEM.TIME, new GameTime(100));
         
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
-        Money expectedBondValue = new Money(BondTransaction.BOND_VALUE.getAmount() * 2);
+        Money expectedBondValue = new Money(BondTransaction.BOND_VALUE_ISSUE.getAmount() * 2);
         assertEquals(expectedBondValue.changeSign(),  generator.loansTotal);
         assertEquals(expectedBondValue.changeSign(),  generator.loansYtd);
         

@@ -2,9 +2,11 @@ package jfreerails.server;
 
 import java.awt.Point;
 import java.util.logging.Logger;
+
 import jfreerails.controller.FreerailsServerSerializable;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.PreMoveException;
+import jfreerails.move.TrainCrashException;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -67,24 +69,27 @@ public class TrainMover implements FreerailsServerSerializable, ServerAutomaton 
         return principal;
     }
 
-    public void update(int distanceTravelled, MoveReceiver moveReceiver) throws PreMoveException {
+    public void update(int distanceTravelled, MoveReceiver moveReceiver) throws PreMoveException, TrainCrashException {
         if (walker.canStepForward()) {
+            
             double distanceTravelledAsDouble = distanceTravelled;
             double distance = distanceTravelledAsDouble * getTrainSpeed();
             walker.stepForward(distance);
-
-            checkTrainPosition();
-          
+            
+            checkTrainPosition();  
             ChangeTrainPositionMove m = ChangeTrainPositionMove.generate(w,
                     walker, trainNumber, principal);
-
+              
             moveReceiver.processMove(m);
             head = m.newHead();
-            checkTrainPosition();
+            checkTrainPosition(); 
             
         }
     }
 
+   
+
+    
     private void checkTrainPosition() {
         TrainPositionOnMap currentPosition = (TrainPositionOnMap)w.get(KEY.TRAIN_POSITIONS,
                 trainNumber, principal);
@@ -96,7 +101,7 @@ public class TrainMover implements FreerailsServerSerializable, ServerAutomaton 
             logger.severe("Expected head =" + head.toString() +
                 ", actual head =" + currentHead.toString());
             logger.severe("Thread:" + Thread.currentThread().getName());
-
+            
             IllegalStateException e = new IllegalStateException();
             e.printStackTrace();
             throw e;

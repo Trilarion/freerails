@@ -17,15 +17,19 @@ public class DeliverCargoReceipt extends Receipt {
 	private final CargoBatch m_cb;
     private final int m_quantity;
     private final int m_stationId;
+    private final int m_trainId;
 
     public DeliverCargoReceipt(Money m, int quantity, int stationId,
-        CargoBatch cb) {
+        CargoBatch cb, int trainId) {
         super(m, Category.CARGO_DELIVERY);
         m_stationId = stationId;
         m_quantity = quantity;
         m_cb = cb;
+        m_trainId = trainId;
     }
-
+    public int getTrainId() {
+        return m_trainId;
+    }
     public CargoBatch getCb() {
         return m_cb;
     }

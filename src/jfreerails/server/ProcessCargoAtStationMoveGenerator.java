@@ -30,7 +30,7 @@ public class ProcessCargoAtStationMoveGenerator {
     private final static int MAGIC_NUMBER = 75;
 
     public static ArrayList<Move> processCargo(ReadOnlyWorld w,
-        MutableCargoBundle bundle, int stationID, FreerailsPrincipal p) {
+        MutableCargoBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
         StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
                 p);
         Iterator batches = bundle.cargoBatchIterator();
@@ -48,8 +48,7 @@ public class ProcessCargoAtStationMoveGenerator {
 
             double amount = quantity * Math.log(dist) * MAGIC_NUMBER;
             Money money = new Money((long)amount);
-            DeliverCargoReceipt receipt = new DeliverCargoReceipt(money,
-                    quantity, stationID, batch);
+            DeliverCargoReceipt receipt = new DeliverCargoReceipt(money, quantity, stationID, batch, trainId);
             moves.add(new AddTransactionMove(p, receipt));
         }
 

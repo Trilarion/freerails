@@ -30,7 +30,7 @@ import jfreerails.world.top.World;
  * @see InetConnectionAccepter
  * @see Connection2Client
  *
- * @author Luke
+ * @author Luke Fizzle
  *
  */
 public class FreerailsGameServer implements ServerControlInterface,
@@ -265,7 +265,14 @@ public class FreerailsGameServer implements ServerControlInterface,
         currentlyLoggedOn.add(p);
         return LogOnResponse.accepted(players.indexOf(p));
     }
-
+    public void newGame(String mapName, int numAI) {
+        for(int i = 0; i < numAI; ++i) {
+            NameAndPassword aiPlayer = new NameAndPassword("AI"+i, null);
+            
+            players.add(aiPlayer);
+        }
+        this.newGame(mapName);
+    }
     public void newGame(String mapName) {
         newPlayersAllowed = false;
         confirmedPlayers.clear();

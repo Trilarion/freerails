@@ -5,6 +5,7 @@
  */
 
 package jfreerails.client.view;
+
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -29,6 +30,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     private static final long serialVersionUID = 4120848850266371126L;
 	private static final Logger logger = Logger.getLogger(HtmlJPanel.class
             .getName());
+        
     HtmlJPanel(){
         initComponents();
     }
@@ -79,6 +81,12 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         add(jScrollPane1, gridBagConstraints);
 
         done.setText("Close");
+        done.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doneActionPerformed(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -86,6 +94,10 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         add(done, gridBagConstraints);
 
     }//GEN-END:initComponents
+
+    private void doneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_doneActionPerformed
         
     public void setup(ModelRoot m,  ViewLists vl, ActionListener submitButtonCallBack) {
         this.done.addActionListener(submitButtonCallBack);
@@ -113,7 +125,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     
     void setHtml(String s){
         htmlJLabel.setText(s);
-        
     }
            
     
@@ -145,9 +156,9 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JButton done;
-    javax.swing.JLabel htmlJLabel;
-    javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton done;
+    private javax.swing.JLabel htmlJLabel;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     
 }

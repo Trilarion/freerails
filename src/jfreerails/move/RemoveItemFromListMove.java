@@ -47,7 +47,7 @@ public class RemoveItemFromListMove implements ListMove {
         this.index = i;
         this.principal = p;
     }
-
+  
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         if (w.size(listKey, principal) < (index + 1)) {
             return MoveStatus.moveFailed("w.size(listKey)=" +

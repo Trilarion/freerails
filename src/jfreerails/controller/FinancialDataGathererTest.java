@@ -30,8 +30,7 @@ public class FinancialDataGathererTest extends TestCase {
 
         w.addPlayer(player);
         w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
-        w.addTransaction(IssueStockTransaction.issueStock(
-                FinancialMoveProducer.IPO_SIZE, 5), player.getPrincipal());
+        w.addTransaction(IssueStockTransaction.issueStock(FinancialMoveProducer.IPO_SIZE, 5), player.getPrincipal());
     }
 
     public void testChangeTreasuryStock() {

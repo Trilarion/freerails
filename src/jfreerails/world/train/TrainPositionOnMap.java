@@ -68,10 +68,37 @@ import jfreerails.world.common.IntLine;
  *
  */
 public class TrainPositionOnMap implements FreerailsSerializable {
+    public static final int CRASH_FRAMES_COUNT = 15;
     private static final long serialVersionUID = 3979269144611010865L;
 	private final int[] m_xpoints;
     private final int[] m_ypoints;
-
+    
+    private boolean crashSite = false;
+    public boolean isCrashSite() {
+        return crashSite;
+    }
+    public void setCrashSite(boolean isCrash) {
+        crashSite = isCrash;
+    }
+    private int frameCt = 1;
+    private int frame = 0;
+    
+    public int getFrameCt() {
+        return frameCt;
+    }
+    public void incrementFramCt() {
+        if(frame>0){
+            incrementFrame();
+            frame = 0;
+        }
+        else{
+            frame++;
+        }
+    }
+    public void incrementFrame(){
+        frameCt++;
+    }
+    
     public int hashCode() {
         int result = 0;
 
@@ -149,7 +176,12 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     public int getLength() {
         return m_xpoints.length;
     }
-
+    public int[] getXPoints() {
+        return m_xpoints;
+    }
+    public int[] getYPoints() {
+        return m_ypoints;
+    }
     public int getX(int position) {
         return m_xpoints[position];
     }
@@ -187,7 +219,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
         return new TrainPositionOnMap(reversed_xpoints, reversed_ypoints);
     }
-
+    
     private TrainPositionOnMap( /*=const*/
         int[] xpoints, /*=const*/
         int[] ypoints) {
@@ -419,7 +451,8 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         TrainPositionOnMap b) {
         return aHeadEqualsBTail(b, a);
     }
-
+        
+    
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("TrainPosition {");

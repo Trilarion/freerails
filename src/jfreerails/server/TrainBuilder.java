@@ -3,20 +3,20 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 
 import jfreerails.controller.FlatTrackExplorer;
 import jfreerails.controller.RandomPathFinder;
 import jfreerails.move.AddCargoBundleMove;
 import jfreerails.move.AddTrainMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
-import jfreerails.move.ChangeTrainMove;
-import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.InitialiseTrainPositionMove;
+import jfreerails.move.MarkAsCrashSiteMove;
 import jfreerails.move.Move;
 import jfreerails.move.PreMoveException;
 import jfreerails.move.RemoveTrainMove;
+import jfreerails.move.RemoveTrainPositionOnMapMove;
+import jfreerails.move.TrainCrashException;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsPathIterator;
@@ -50,7 +50,7 @@ import jfreerails.world.train.TrainPositionOnMap;
  *
  */
 public class TrainBuilder implements ServerAutomaton {
-
+    
     private static final long serialVersionUID = 3258410646839243577L;
 
 	private static FreerailsPathIterator getRandomPathToFollow(Point p,
@@ -134,7 +134,7 @@ public class TrainBuilder implements ServerAutomaton {
             ImmutableSchedule is = generateInitialSchedule(principal, world,
                     autoSchedule);
             int trainId = world.size(KEY.TRAINS, principal);
-            Move setupScheduleMove = TrainBuilder.initTarget(train, trainId,
+            Move setupScheduleMove = TrainPathFinder.initTarget(train, trainId,
                     is, principal);
 
             /* Create the move that sets the train's initial position.*/
@@ -255,57 +255,121 @@ public class TrainBuilder implements ServerAutomaton {
             tm.initAutomaton(mr);
         }
     }
+    
+    // crashes trains that meet head to head or head to tail when both trains are moving. Still does not account for double track situations
+    void crashTrains(TrainMover moverA, ReadOnlyWorld w) throws TrainCrashException{
+        Iterator i = trainMovers.iterator();
+        int trainAId = moverA.getTrainID();
+        FreerailsPrincipal p = moverA.getPrincipal();
+        TrainPositionOnMap currentPosition = (TrainPositionOnMap)w.get(KEY.TRAIN_POSITIONS, trainAId, p);
+        if(!currentPosition.isCrashSite()){
+            while(i.hasNext()) {
+                TrainMover moverB = (TrainMover)i.next();
+                int trainBId = moverB.getTrainID();
+                Point currentHead = new Point(currentPosition.getX(0), currentPosition.getY(0));
+                Point currentTail = new Point(currentPosition.getX(currentPosition.getLength()-1), currentPosition.getY(currentPosition.getLength()-1));
+                if(trainAId != trainBId){
+                    TrainPositionOnMap trainBposition = (TrainPositionOnMap)w.get(KEY.TRAIN_POSITIONS, trainBId, p);
+                    Point trainBhead = new Point(trainBposition.getX(0), trainBposition.getY(0));
+                    Point trainBtail = new Point(trainBposition.getX(trainBposition.getLength()-1), trainBposition.getY(trainBposition.getLength()-1));
+                    if(!moverA.getTrainPathFinder().isTrainAtStation() && !moverB.getTrainPathFinder().isTrainAtStation()){
+                        boolean crashed = false;
+                        if(willTrainsCrash(currentHead, trainBhead, 7)){
+                            if(!(checkTrackType(currentPosition, w))){
+                                crashed = true;
+                            }                          
+                        }else if(willTrainsCrash(currentHead, trainBtail, 7)){
+                            if(!(checkTrackType(currentPosition, w))){
+                                 crashed = true;
+                            }
+                        }else if(willTrainsCrash(trainBhead, currentTail, 7)){
+                            if(!(checkTrackType(trainBposition, w))){
+                                 crashed = true;
+                            }
+                        }
+                        if(crashed){
+                            Move m = MarkAsCrashSiteMove.generateMove(trainAId, w, p);
+                            Move m2 = MarkAsCrashSiteMove.generateMove(trainBId, w, p);
+                            moveReceiver.processMove(m);
+                            moveReceiver.processMove(m2);
+                            throw new TrainCrashException(trainAId, trainBId);
+                        }
+                    }
+                }
+                
+            }
+        } else if(currentPosition.getFrameCt() == TrainPositionOnMap.CRASH_FRAMES_COUNT){
+            Move m = RemoveTrainPositionOnMapMove.generateMove(trainAId, p, w);
+            moveReceiver.processMove(m);
+        }
+    }
+     private boolean checkTrackType(TrainPositionOnMap pos, ReadOnlyWorld world){
+        Point[] positionA = trainPos2Tiles(pos);
+        FreerailsTile tileA = (FreerailsTile)world.getTile(positionA[0].x, positionA[0].y);
+        if(!(tileA.getTrackRule().isDouble())){
+            return false;
+        }
+		return true;
+    }
+     public static Point[] trainPos2Tiles(TrainPositionOnMap pos){
+         Point[] returnValue = new Point[pos.getLength()];
+         final int TILE_WIDTH = 30;
+         for (int i = 0; i < returnValue.length; i++) {
+             returnValue[i] = new Point(pos.getX(i) / TILE_WIDTH, pos.getY(i) /
+                     TILE_WIDTH);
+         }
+         
+         return returnValue;
+     }
 
+
+    private boolean willTrainsCrash(Point trainA, Point trainB, int tolerance){
+        return (Math.abs(trainA.y - trainB.y) < tolerance && Math.abs(trainA.x - trainB.x) < tolerance);
+    }
+    
     void moveTrains(ReadOnlyWorld world) {
         int deltaDistance = 5;
-
+        
         Iterator i = trainMovers.iterator();
-
+        ArrayList crashedTrains = new ArrayList();
         while (i.hasNext()) {
             Object o = i.next();
             TrainMover trainMover = (TrainMover)o;
-
+            
             try {
+                crashTrains(trainMover, world);
                 trainMover.update(deltaDistance, moveReceiver);
             } catch (PreMoveException e) {
                 //Thrown when track under train is removed.
                 // (1) Remove the train mover..
                 i.remove();
-
+                FreerailsPrincipal principal = trainMover.getPrincipal();
                 // (2) Remove the train.
                 int trainID = trainMover.getTrainID();
-                FreerailsPrincipal principal = trainMover.getPrincipal();
-                Move removeTrainMove = RemoveTrainMove.getInstance(trainID,
-                        principal, world);
+                
+                Move removeTrainMove = RemoveTrainMove.getInstance(trainID, principal, world);
                 moveReceiver.processMove(removeTrainMove);
+            } catch(TrainCrashException tcex) {
+                crashedTrains.add(tcex.getTrainA());
+                crashedTrains.add(tcex.getTrainB());
             }
         }
+        
+        // remove the crashed trains and their train movers
+        Iterator j = trainMovers.iterator();
+        while(j.hasNext()) {
+            TrainMover tMover = (TrainMover)j.next();
+            int trainId = tMover.getTrainID();
+            if(crashedTrains.contains(trainId)) {
+                j.remove();
+                FreerailsPrincipal principal = tMover.getPrincipal();
+                Move removeTrainMove = RemoveTrainMove.getInstance(trainId, principal, world);
+                moveReceiver.processMove(removeTrainMove);
+            }
+        }      
     }
-
-	/**
-	 * @return a move that initialises the trains schedule.
-	 */
-	public static Move initTarget(TrainModel train, int trainID,
-	    ImmutableSchedule currentSchedule, FreerailsPrincipal principal) {
-	    Vector<Move> moves = new Vector<Move>();
-	    int scheduleID = train.getScheduleID();
-	    MutableSchedule schedule = new MutableSchedule(currentSchedule);
-	    int[] wagonsToAdd = schedule.getWagonsToAdd();
-	
-	    if (null != wagonsToAdd) {
-	        int engine = train.getEngineType();
-	        ChangeTrainMove move = ChangeTrainMove.generateMove(trainID, train,
-	                engine, wagonsToAdd, principal);
-	        moves.add(move);
-	    }
-	
-	    schedule.gotoNextStaton();
-	
-	    ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
-	    ChangeTrainScheduleMove move = new ChangeTrainScheduleMove(scheduleID,
-	            currentSchedule, newSchedule, principal);
-	    moves.add(move);
-	
-	    return new CompositeMove(moves.toArray(new Move[1]));
-	}
+    
+    
+    
+    
 }

@@ -231,8 +231,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             }
         }
 
-        moves = ProcessCargoAtStationMoveGenerator.processCargo(w,
-                cargoDroppedOff, this.stationId, principal);
+        moves = ProcessCargoAtStationMoveGenerator.processCargo(w, cargoDroppedOff, this.stationId, principal, trainId);
 
         //Unload the cargo that there isn't space for on the train regardless of whether the station
         // demands it.

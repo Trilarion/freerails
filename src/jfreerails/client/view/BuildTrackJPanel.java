@@ -50,7 +50,7 @@ import static jfreerails.world.track.TrackRule.TrackCategories.track;
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     
     private static final long serialVersionUID = 3618701915647850036L;
-	private final ImageManager imageManager = new ImageManagerImpl("/jfreerails/client/graphics/");
+    private final ImageManager imageManager = new ImageManagerImpl("/jfreerails/client/graphics/");
     private HashMap<TrackRule.TrackCategories, Integer> selectionSet;
     private ModelRoot modelRoot;
     private TrackMoveProducer trackMoveProducer;
@@ -65,22 +65,22 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
     
     public void setup(ModelRoot mr, ActionRoot ar, ViewLists vl, ActionListener al){
-    	
-    	
-    	modelRoot = mr;
-    	stationBuildModel = ar.getStationBuildModel();        
-    	trackMoveProducer = ar.getTrackMoveProducer();
-    	if(null == trackMoveProducer) throw new NullPointerException();
+        
+        
+        modelRoot = mr;
+        stationBuildModel = ar.getStationBuildModel();
+        trackMoveProducer = ar.getTrackMoveProducer();
+        if(null == trackMoveProducer) throw new NullPointerException();
         
         selectionSet = new HashMap<TrackRule.TrackCategories, Integer>();
         
-      
+        
         
         trackButtonGroup = new javax.swing.ButtonGroup();
         bridgeButtonGroup = new javax.swing.ButtonGroup();
         stationButtonGroup = new javax.swing.ButtonGroup();
         tunnelButtonGroup = new javax.swing.ButtonGroup();
-      
+        
         //Remove any existing buttons.
         bridgesJPanel.removeAll();
         stationsJPanel.removeAll();
@@ -140,7 +140,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                 case station:
                     
                     stationButtonGroup.add(toggleButton);
-                                        
+                    
                     toggleButton.setAction(stationBuildModel.getStationChooseAction(ruleID));
                     
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
@@ -177,8 +177,35 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         setFocusableFalse(trackButtonGroup);
         setFocusableFalse(tunnelButtonGroup);
         setFocusableFalse(stationButtonGroup);
-        setFocusableFalse(buildModeButtonGroup);               
+        setFocusableFalse(buildModeButtonGroup);
         
+              //Add button click
+//        buildTrackJPanel.addKeyListener(new KeyListener(){
+//            public void keyPressed(KeyEvent e){
+//                System.out.println(e.getKeyCode());
+//                viewMode.doClick();
+//            }
+//            public void keyReleased(KeyEvent e){
+//                
+//            }
+//            public void keyTyped(KeyEvent e){
+//                
+//            }
+//        });  
+    }
+ 
+    public void setSelectedButton(){
+                
+                //viewModeKeyPressed(evt);
+                viewMode.doClick();
+                // jfreerails.client.view.RHSJTabPane pane = new RHSJTabPane();
+                // pane.setTrainTabEnabled(true);
+                // buildModeButtonGroup.setSelected(addTrack.getModel(), false);
+                // buildModeButtonGroup.setSelected(viewMode.getModel(), true);
+                //setVisible(false, false, false, false);
+                //cancelStationPlacement();
+                setTrackBuilderMode(IGNORE_TRACK);
+                
     }
     
     /** Calls setFocusable(false) for each button in the button group.*/
@@ -267,6 +294,15 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         setLayout(new java.awt.GridBagLayout());
 
         setFocusable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
+
         buildModeJPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
 
         buildModeButtonGroup.add(addTrack);
@@ -411,23 +447,32 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
     }//GEN-END:initComponents
 
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        viewMode.doClick();
+    }//GEN-LAST:event_formKeyTyped
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+       viewMode.doClick();
+    }//GEN-LAST:event_formKeyPressed
+    
+    
     private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModeActionPerformed
         setVisible(false, false, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(IGNORE_TRACK);        
+        setTrackBuilderMode(IGNORE_TRACK);
     }//GEN-LAST:event_viewModeActionPerformed
-                                            
+    
     private void bulldozeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulldozeActionPerformed
         
         setVisible(false, false, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(REMOVE_TRACK);  
+        setTrackBuilderMode(REMOVE_TRACK);
     }//GEN-LAST:event_bulldozeActionPerformed
     
     private void addStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStationActionPerformed
         
-        setVisible(false, false, false, true);       
-        setTrackBuilderMode(BUILD_STATION); 
+        setVisible(false, false, false, true);
+        setTrackBuilderMode(BUILD_STATION);
         
     }//GEN-LAST:event_addStationActionPerformed
     
@@ -435,7 +480,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         
         setVisible(true, true, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(UPGRADE_TRACK); 
+        setTrackBuilderMode(UPGRADE_TRACK);
         
     }//GEN-LAST:event_upgradeTrackActionPerformed
     
@@ -443,7 +488,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         
         setVisible(true, true, true, false);
         cancelStationPlacement();
-        setTrackBuilderMode(BUILD_TRACK); 
+        setTrackBuilderMode(BUILD_TRACK);
     }//GEN-LAST:event_addTrackActionPerformed
     
     private void setVisible(boolean track, boolean bridges, boolean tunnels, boolean stations){
@@ -463,38 +508,38 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
     
     private void cancelStationPlacement() {
-		//Cancel build station mode..
-		stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(
-		        this,
-		        ActionEvent.ACTION_PERFORMED, ""));
-	}
+        //Cancel build station mode..
+        stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(
+                this,
+                ActionEvent.ACTION_PERFORMED, ""));
+    }
     
     private void setTrackBuilderMode(TrackMoveProducer.BuildMode mode){
-    	trackMoveProducer.setTrackBuilderMode(mode);
-    	modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
+        trackMoveProducer.setTrackBuilderMode(mode);
+        modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JToggleButton addStation;
-    javax.swing.JToggleButton addTrack;
-    javax.swing.ButtonGroup bridgeButtonGroup;
-    javax.swing.JPanel bridgesJPanel;
-    javax.swing.ButtonGroup buildModeButtonGroup;
-    javax.swing.JPanel buildModeJPanel;
-    javax.swing.JToggleButton bulldoze;
-    javax.swing.JPanel spacer;
-    javax.swing.ButtonGroup stationButtonGroup;
-    javax.swing.JPanel stationsJPanel;
-    javax.swing.ButtonGroup trackButtonGroup;
-    javax.swing.JPanel trackJPanel;
-    javax.swing.ButtonGroup tunnelButtonGroup;
-    javax.swing.JPanel tunnelsJPanel;
-    javax.swing.JToggleButton upgradeTrack;
-    javax.swing.JToggleButton viewMode;
-    javax.swing.JToggleButton viewMode1;
-    javax.swing.JToggleButton viewMode2;
-    javax.swing.JToggleButton viewMode3;
-    javax.swing.JToggleButton viewMode4;
+    private javax.swing.JToggleButton addStation;
+    private javax.swing.JToggleButton addTrack;
+    private javax.swing.ButtonGroup bridgeButtonGroup;
+    private javax.swing.JPanel bridgesJPanel;
+    private javax.swing.ButtonGroup buildModeButtonGroup;
+    private javax.swing.JPanel buildModeJPanel;
+    private javax.swing.JToggleButton bulldoze;
+    private javax.swing.JPanel spacer;
+    private javax.swing.ButtonGroup stationButtonGroup;
+    private javax.swing.JPanel stationsJPanel;
+    private javax.swing.ButtonGroup trackButtonGroup;
+    private javax.swing.JPanel trackJPanel;
+    private javax.swing.ButtonGroup tunnelButtonGroup;
+    private javax.swing.JPanel tunnelsJPanel;
+    private javax.swing.JToggleButton upgradeTrack;
+    private javax.swing.JToggleButton viewMode;
+    private javax.swing.JToggleButton viewMode1;
+    private javax.swing.JToggleButton viewMode2;
+    private javax.swing.JToggleButton viewMode3;
+    private javax.swing.JToggleButton viewMode4;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -80,7 +80,12 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     public int getSize() {
-        return getSchedule().getNumOrders();
+        Schedule s = getSchedule();
+        int size = 0;
+        if(s != null){
+            size = s.getNumOrders();
+        }
+        return size;
     }
 
     public void fireRefresh() {
@@ -89,8 +94,10 @@ public class TrainOrdersListModel extends AbstractListModel {
 
     private Schedule getSchedule() {
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
-
-        return (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES,
-            train.getScheduleID(), principal);
+        ImmutableSchedule sched = null;
+        if(train != null) {
+            sched = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), principal);
+        }
+        return sched;
     }
 }

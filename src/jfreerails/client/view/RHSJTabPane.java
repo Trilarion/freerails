@@ -39,10 +39,13 @@ public class RHSJTabPane extends JTabbedPane
     	
     	ImageIcon trainListIcon;
     	ImageIcon buildTrackIcon;
-    	/* set up trainsJTabbedPane */
+    	
+        /* set up trainsJTabbedPane */
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         terrainInfoPanel = new TerrainInfoJPanel();
-        trainListPanel = new TrainListJPanel();
+        
+        trainListPanel = new TrainListJPanel(true);
+        
         buildTrackPanel = new BuildTrackJPanel();
         trainListPanel.removeButtons();
 
@@ -66,7 +69,7 @@ public class RHSJTabPane extends JTabbedPane
 //        this.stationInfoIndex= this.getTabCount()-1;
 
        
-        trainListPanel.setTrainViewHeight(20);       
+        trainListPanel.setTrainViewHeight(20);
         addTab(null, buildTrackIcon, buildTrackPanel, "Build Track");
         addTab(null, trainListIcon, trainListPanel, "Train List");
         this.trainListIndex= this.getTabCount()-1;
@@ -80,7 +83,7 @@ public class RHSJTabPane extends JTabbedPane
         final ModelRootImpl modelRoot) {
         world = modelRoot.getWorld();
         terrainInfoPanel.setup(world, vl);
-        stationInfoPanel.setup(modelRoot, vl, null);        
+        stationInfoPanel.setup(modelRoot, vl, null);
 
         ActionListener showTrain = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {

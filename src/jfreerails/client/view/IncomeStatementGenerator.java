@@ -128,7 +128,25 @@ public class IncomeStatementGenerator {
 
         return new Money(amount);
     }
+    
+      Money calTrainRevenue(int trainId) {
+        long amount = 0;
 
+        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
+            Transaction t = w.getTransaction(i, principal);
+            GameTime time = w.getTransactionTimeStamp(i, principal);
+
+            if (t instanceof DeliverCargoReceipt && cal.getYear(time.getTime()) >= this.startyear) {
+                DeliverCargoReceipt dcr = (DeliverCargoReceipt)t;
+                if(dcr.getTrainId() == trainId) {
+                    amount += dcr.getValue().getAmount();
+                }
+            }
+        }
+
+        return new Money(amount);
+    }
+     
     private Money calTotal(Transaction.Category transactionCategory) {
         long amount = 0;
 

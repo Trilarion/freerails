@@ -20,7 +20,7 @@ import jfreerails.world.train.TrainPositionOnMap;
  */
 public class ChangeTrainPositionMove implements Move {
     private static final long serialVersionUID = 3906926759780956466L;
-	private final TrainPositionOnMap m_changeToHead;
+    private final TrainPositionOnMap m_changeToHead;
     private final TrainPositionOnMap m_changeToTail;
     private final boolean m_addToHead;
     private final boolean m_addToTail;
@@ -91,15 +91,16 @@ public class ChangeTrainPositionMove implements Move {
                 TrainPositionOnMap extraBit = TrainPositionOnMap.createInstance(new int[] {
                             x, x, x
                         }, new int[] {y, y, y});
+                        
                 bitToAdd = bitToAdd.addToTail(extraBit);
-            }
-
+               }
+            
             intermediate = currentPosition.addToHead(bitToAdd);
 
             double currentLength = train.getLength();
 
             bitToRemove = getBitToRemove(intermediate, currentLength);
-
+            
             return new ChangeTrainPositionMove(bitToAdd, bitToRemove,
                 trainNumber, true, false, p);
         } catch (Exception e) {

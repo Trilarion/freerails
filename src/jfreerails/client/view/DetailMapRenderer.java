@@ -38,7 +38,7 @@ public class DetailMapRenderer implements MapRenderer {
 
         MapBackgroundRender render = new MapBackgroundRender(world, vl,
                 modelRoot);
-
+          
         if (OSXWorkaround) {
             //Don't buffer the mapviews background.
             background = render;

@@ -19,6 +19,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  *
  */
 public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
+    
     private static final long serialVersionUID = 3257009873370886964L;
 	private String template;
     private int lastNumTransactions = 0;

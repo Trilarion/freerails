@@ -33,15 +33,17 @@ public class RemoveTrainMove extends CompositeMove {
         int cargoBundleId = train.getCargoBundleID();
         ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle)world.get(KEY.CARGO_BUNDLES,
                 cargoBundleId, p);
+        //TrainPositionOnMap position = (TrainPositionOnMap)world.get(KEY.TRAIN_POSITIONS, index, p);
         Move removeTrain = new RemoveItemFromListMove(KEY.TRAINS, index, train,
                 p);
         Move removeCargobundle = new RemoveItemFromListMove(KEY.CARGO_BUNDLES,
                 cargoBundleId, cargoBundle, p);
         Move removeSchedule = new RemoveItemFromListMove(KEY.TRAIN_SCHEDULES,
                 scheduleId, schedule, p);
+       // Move removePosition = new RemoveItemFromListMove(KEY.TRAIN_POSITIONS, index, position, p);
 
         return new RemoveTrainMove(new Move[] {
-                removeTrain, removeCargobundle, removeSchedule
+                removeTrain, removeCargobundle, removeSchedule/*, removePosition*/
             });
     }
 }
