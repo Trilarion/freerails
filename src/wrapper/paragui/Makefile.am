@@ -8,6 +8,7 @@ libwrapper_paragui_a_SOURCES = GameApplication.cpp \
     GameDialog.cpp \
     GameMainWindow.cpp \
     GameMapView.cpp \
+    GameNetView.cpp \
     GameModeSelectDialog.cpp \
     GamePanel.cpp \
     GameWidget.cpp
