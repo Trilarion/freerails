@@ -3,9 +3,9 @@ package jfreerails.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import jfreerails.world.misc.FreerailsPathIterator;
-import jfreerails.world.misc.FreerailsPathIteratorImpl;
-import jfreerails.world.misc.IntLine;
+import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.FreerailsPathIteratorImpl;
+import jfreerails.world.common.IntLine;
 
 /**
  * @author Luke Lindsay 30-Oct-2002
@@ -30,7 +30,7 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
 	}
 
 	/**
-	 * @see jfreerails.world.misc.FreerailsPathIterator#hasNext()
+	 * @see jfreerails.world.common.FreerailsPathIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		if (list.size() < 2) {
@@ -41,7 +41,7 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
 	}
 
 	/**
-	 * @see jfreerails.world.misc.FreerailsPathIterator#nextSegment(jfreerails.world.misc.IntLine)
+	 * @see jfreerails.world.common.FreerailsPathIterator#nextSegment(jfreerails.world.misc.IntLine)
 	 */
 	public void nextSegment(IntLine line) {
 		if (this.hasNext()) {

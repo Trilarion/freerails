@@ -1,6 +1,6 @@
 package jfreerails.world.track;
 
-import jfreerails.world.misc.FreerailsSerializable;
+import jfreerails.world.common.FreerailsSerializable;
 
 final public class TrackRuleProperties implements FreerailsSerializable {
 

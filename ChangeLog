@@ -1,3 +1,11 @@
+12-Jan-2003 05:11:47 Luke
+	o Major refactoring
+	o added ant target, check_dependencies, to check that the dependencies
+	betweem packages are in order.  What it does is copy the java files from 
+	a package together with the java files from all the packages that it
+	is allowed to depend on to a temporary directory.  It then compiles the 
+	java files from the package in question in the temporary director.  If the
+	build succeeds, then the package dependencies are ok.		
 11-Jan-2003 02:44:16 Luke
 	o Refactoring and removing dead code.
 10-Jan-2003 23:52:01 Luke

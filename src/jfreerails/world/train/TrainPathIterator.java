@@ -1,9 +1,9 @@
 package jfreerails.world.train;
 
 import jfreerails.util.IntIterator;
-import jfreerails.world.misc.FreerailsPathIterator;
-import jfreerails.world.misc.IntLine;
-import jfreerails.world.track.PositionOnTrack;
+import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.IntLine;
+import jfreerails.world.common.PositionOnTrack;
 
 /**
  * 30-Nov-2002
@@ -25,14 +25,14 @@ public class TrainPathIterator implements FreerailsPathIterator {
 	}
 
 	/**
-	 * @see jfreerails.world.misc.FreerailsPathIterator#hasNext()
+	 * @see jfreerails.world.common.FreerailsPathIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		return intIterator.hasNextInt();
 	}
 
 	/**
-	 * @see jfreerails.world.misc.FreerailsPathIterator#nextSegment(jfreerails.world.misc.IntLine)
+	 * @see jfreerails.world.common.FreerailsPathIterator#nextSegment(jfreerails.world.misc.IntLine)
 	 */
 	public void nextSegment(IntLine line) {
 		p1.setValuesFromInt(p2.toInt());

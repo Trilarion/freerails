@@ -1,6 +1,6 @@
 package jfreerails.move;
 
-import jfreerails.world.misc.FreerailsPathIterator;
+import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainList;

@@ -1,6 +1,6 @@
 package jfreerails.world.track;
 
-import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.common.OneTileMoveVector;
 
 public class LegalRouteAcrossTrackPiece {
 

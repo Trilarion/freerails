@@ -9,7 +9,7 @@ import java.io.ObjectStreamException;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import jfreerails.world.misc.FreerailsSerializable;
+import jfreerails.world.common.FreerailsSerializable;
 
 /**
  *

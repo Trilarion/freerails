@@ -1,6 +1,6 @@
 package jfreerails.move;
 
-import jfreerails.world.World;
+import jfreerails.world.top.World;
 
 /**
  * Defining operations expected of ...

@@ -5,19 +5,16 @@
  * Created on 31 July 2001, 13:56
  */
 package jfreerails.client.view;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
 import javax.swing.SwingUtilities;
+
 import jfreerails.client.event.CursorEvent;
 import jfreerails.client.event.CursorEventListener;
-import jfreerails.client.menu.StationTypesPopup;
-import jfreerails.controller.TrackMoveProducer;
-import jfreerails.controller.TrainBuilder;
-import jfreerails.misc.TrainPathFinder;
+import jfreerails.client.renderer.MapRenderer;
 
 /**
  *
@@ -29,11 +26,11 @@ final public class MapViewJComponentConcrete
 	extends MapViewJComponent
 	implements CursorEventListener {
 
-	private TrackMoveProducer trackBuilder;
+	//private TrackMoveProducer trackBuilder;
 
-	private TrainBuilder trainBuilder;
+	//private TrainBuilder trainBuilder;
 
-	private StationTypesPopup stationTypesPopup;
+	//private StationTypesPopup stationTypesPopup;
 
 	private FreerailsCursor cursor;
 
@@ -75,31 +72,29 @@ final public class MapViewJComponentConcrete
 	}
 
 	public void setup(
-		MapView mv,
-		TrackMoveProducer trackBuilder,
-		TrainBuilder tb,
-		StationTypesPopup stPopup) {
+		MapRenderer mv,
+		FreerailsCursor fc
+		) {
 		super.mapView = mv;
-		this.trainBuilder = tb;
-		this.stationTypesPopup = stPopup;
+		
 		this.setBorder(null);
-		this.trackBuilder = trackBuilder;
-
+		
 		this.removeKeyListener(this.cursor);
 
-		this.cursor = new FreerailsCursor(mv);
+		this.cursor = fc;
+		//this.cursor = new FreerailsCursor(mv);
 		cursor.addCursorEventListener(this);
 
 		this.addKeyListener(cursor);
 	}
 
-	public void setup(MapView mv) {
+	public void setup(MapRenderer mv) {
 		super.mapView = mv;
 	}
 
 	public void cursorJumped(CursorEvent ce) {
 
-		trackBuilder.upgradeTrack(ce.newPosition);
+		
 		//repaintMap(ce);
 
 		reactToCursorMovement(ce);
@@ -125,47 +120,12 @@ final public class MapViewJComponentConcrete
 	
 	
 	public void cursorOneTileMove(CursorEvent ce) {
-		if (null != trackBuilder) {
-
-			trackBuilder.buildTrack(ce.oldPosition, ce.vector);
-			Point tile = new Point();
-			for (tile.x = ce.oldPosition.x - 1;
-				tile.x < ce.oldPosition.x + 2;
-				tile.x++) {
-				for (tile.y = ce.oldPosition.y - 1;
-					tile.y < ce.oldPosition.y + 2;
-					tile.y++) {
-					mapView.refreshTile(tile.x, tile.y);
-				}
-			}
-
-		} else {
-			System.out.println("No track builder available!");
-		}
+		
 		reactToCursorMovement(ce);
 	}
 
 	public void cursorKeyPressed(CursorEvent ce) {
-		if (ce.keyEvent.getKeyCode() == KeyEvent.VK_F7) {
-			System.out.println("Build train");
-			trainBuilder.buildTrain(ce.newPosition);
-		} else if (ce.keyEvent.getKeyCode() == KeyEvent.VK_F8) {
-			System.out.println("Build station");
-			float scale = mapView.getScale();
-			Point tile = new Point(ce.newPosition);	//defensive copy.
-			Dimension tileSize = new Dimension((int) scale, (int) scale);
-			int x =tile.x*tileSize.width;
-			int y =tile.y*tileSize.height;
-			stationTypesPopup.show(this, x,y, tile);
-			//stationBuilder.buildStation(ce.newPosition);
-			//repaintMap(ce);
-		} else if (ce.keyEvent.getKeyCode() == KeyEvent.VK_T){
 		
-			TrainPathFinder.setTarget(ce.newPosition.x, ce.newPosition.y);
-			System.out.println("The target for the train pathfinder is now: "+ce.newPosition.x+", "+ce.newPosition.y);
-				
-			
-		}
 		reactToCursorMovement(ce);
 	}
 

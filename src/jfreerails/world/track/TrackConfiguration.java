@@ -4,9 +4,9 @@ import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import jfreerails.world.misc.FlatTrackTemplate;
-import jfreerails.world.misc.OneTileMoveVector;
-import jfreerails.world.misc.Rotation;
+import jfreerails.world.common.FlatTrackTemplate;
+import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Rotation;
 
 final public class TrackConfiguration implements FlatTrackTemplate {
 

@@ -1,7 +1,7 @@
 package jfreerails.world.train;
 
-import jfreerails.world.misc.FreerailsPathIterator;
-import jfreerails.world.misc.FreerailsSerializable;
+import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.FreerailsSerializable;
 
 
 /** This interface lets the caller retrieve a path broken into

@@ -8,7 +8,7 @@ package jfreerails.world.track;
 
 import java.util.Iterator;
 
-import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.common.OneTileMoveVector;
 
 /**
  *  This class encapsulates the rules that apply to a type of track node. They

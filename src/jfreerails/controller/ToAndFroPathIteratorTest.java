@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import jfreerails.world.misc.FreerailsPathIterator;
-import jfreerails.world.misc.IntLine;
+import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 /**

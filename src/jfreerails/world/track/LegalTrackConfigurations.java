@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import jfreerails.world.misc.FreerailsSerializable;
+import jfreerails.world.common.FreerailsSerializable;
 
 
 final public class LegalTrackConfigurations implements FreerailsSerializable{

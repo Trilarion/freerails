@@ -3,7 +3,7 @@ package jfreerails.world.train;
 
 import java.util.NoSuchElementException;
 
-import jfreerails.world.misc.FreerailsSerializable;
+import jfreerails.world.common.FreerailsSerializable;
 
 public class TrainModel implements FreerailsSerializable{
     

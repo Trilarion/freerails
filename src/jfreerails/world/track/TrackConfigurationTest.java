@@ -9,8 +9,8 @@
 
 package jfreerails.world.track;
 
-import jfreerails.world.misc.OneTileMoveVector;
-import jfreerails.world.misc.Rotation;
+import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Rotation;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -1,6 +1,6 @@
 package jfreerails.world.train;
 
-import jfreerails.world.misc.IntLine;
+import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 public class IntLineTest extends TestCase {

@@ -13,6 +13,9 @@ import java.awt.Rectangle;
 import javax.swing.JComponent;
 import javax.swing.Scrollable;
 
+import jfreerails.client.renderer.BlankMapRenderer;
+import jfreerails.client.renderer.MapRenderer;
+
 /**
  *@author     Luke Lindsay
  *     01 November 2001
@@ -20,12 +23,12 @@ import javax.swing.Scrollable;
 
 public abstract class MapViewJComponent
 	extends JComponent
-	implements Scrollable, MapView {
+	implements Scrollable, MapRenderer {
 
 	/**
 	 *  Description of the Field
 	 */
-	protected MapView mapView=new BlankMapView(10);
+	protected MapRenderer mapView=new BlankMapRenderer(10);
 
 	public MapViewJComponent() {
 	}

@@ -4,10 +4,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.world.World;
+import jfreerails.world.top.World;
 import jfreerails.world.track.LegalTrackConfigurations;
-import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackMap;
+import jfreerails.world.track.TrackPiece;
 
 final public class ChangeTrackPieceMove
 	implements NewTrackMove, MapUpdateMove {

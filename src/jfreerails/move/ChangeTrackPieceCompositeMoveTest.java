@@ -12,8 +12,8 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import jfreerails.world.WorldBean;
-import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.top.WorldBean;
 import jfreerails.world.track.MapFixtureFactory;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.track.TrackRule;

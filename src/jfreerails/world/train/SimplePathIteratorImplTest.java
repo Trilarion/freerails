@@ -1,7 +1,7 @@
 package jfreerails.world.train;
 
-import jfreerails.world.misc.FreerailsPathIterator;
-import jfreerails.world.misc.IntLine;
+import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 public class SimplePathIteratorImplTest extends TestCase {

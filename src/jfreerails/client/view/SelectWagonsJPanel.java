@@ -16,7 +16,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import jfreerails.client.train.SideOnTrainTrainView;
+
+import jfreerails.client.renderer.SideOnTrainTrainViewImages;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.WagonType;
 /**
@@ -138,10 +139,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
       
       Image tempImage;
       JLabel label;
-      SideOnTrainTrainView sideOnTrainTrainView;
+      SideOnTrainTrainViewImages sideOnTrainTrainView;
       
       public WagonCellRenderer(){
-          sideOnTrainTrainView = new SideOnTrainTrainView(5, 0);
+          sideOnTrainTrainView = new SideOnTrainTrainViewImages(5, 0);
           tempImage = (new javax.swing.ImageIcon(getClass().getResource("/jfreerails/data/wagon_151x100.PNG"))).getImage();
           sideOnTrainTrainView.setWagonImage(0, tempImage);
           sideOnTrainTrainView.setWagonImage(1, tempImage);
@@ -158,7 +159,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
           label.setFont(new java.awt.Font ("Dialog", 0, 12));
           String text = "<html><body>" + ( isSelected ? "<strong>" : "" ) + wagon.getName()+ ( isSelected ? "</strong>" : "" ) + "</body></html>";
           label.setText(text);
-          label.setIcon(new ImageIcon(sideOnTrainTrainView.getWagonImage(index, SideOnTrainTrainView.HEIGHT_25_PIXELS)));          
+          label.setIcon(new ImageIcon(sideOnTrainTrainView.getWagonImage(index, SideOnTrainTrainViewImages.HEIGHT_25_PIXELS)));          
           return label;
       }
   }

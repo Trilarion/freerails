@@ -8,7 +8,7 @@ package jfreerails.world.track;
 import java.io.ObjectStreamException;
 import java.util.Iterator;
 
-import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.common.OneTileMoveVector;
 /**
  *
  * @author  lindsal
@@ -35,8 +35,8 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
 		return true; //No track is possible anywhere.
 	}
 
-	public jfreerails.world.misc.OneTileMoveVector[] getLegalRoutes(
-		jfreerails.world.misc.OneTileMoveVector directionComingFrom) {
+	public jfreerails.world.common.OneTileMoveVector[] getLegalRoutes(
+		jfreerails.world.common.OneTileMoveVector directionComingFrom) {
 		return new OneTileMoveVector[0];
 	}
 

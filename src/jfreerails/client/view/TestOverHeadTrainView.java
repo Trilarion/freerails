@@ -5,10 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-import jfreerails.lib.GameJFrame;
-import jfreerails.lib.Painter;
-import jfreerails.world.misc.FreerailsPathIterator;
-import jfreerails.world.misc.IntLine;
+import jfreerails.client.common.GameJFrame;
+import jfreerails.client.common.Painter;
+import jfreerails.client.renderer.TrainRenderer;
+import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.IntLine;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainList;
@@ -18,7 +19,7 @@ import jfreerails.world.train.TrainPosition;
 
 public class TestOverHeadTrainView implements Painter {
 	
-	TrainPainter trainPainter=new TrainPainter();
+	TrainRenderer trainPainter=new TrainRenderer();
 
 	TrainList trainList = new TrainList();
 

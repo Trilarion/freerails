@@ -5,12 +5,17 @@
  */
 
 package jfreerails.client.view;
-import java.awt.*;
-import javax.swing.*;
-import jfreerails.client.train.*;
-import jfreerails.world.train.*;
-import jfreerails.world.misc.Money;
-import jfreerails.client.DialogueBoxController;
+import java.awt.Component;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
+import jfreerails.client.renderer.SideOnTrainTrainViewImages;
+import jfreerails.world.common.Money;
+import jfreerails.world.train.EngineType;
 /**
  *
  * @author  lindsal8
@@ -123,10 +128,10 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
       
       Image tempImage;
       JLabel label;
-      SideOnTrainTrainView sideOnTrainTrainView;
+      SideOnTrainTrainViewImages sideOnTrainTrainView;
       
       public TrainCellRenderer(){
-          sideOnTrainTrainView = new SideOnTrainTrainView(0, 3);
+          sideOnTrainTrainView = new SideOnTrainTrainViewImages(0, 3);
           tempImage = (new javax.swing.ImageIcon(getClass().getResource("/jfreerails/data/engine_350x100.PNG"))).getImage();
           sideOnTrainTrainView.setEngineImage(0, tempImage);
           sideOnTrainTrainView.setEngineImage(1, tempImage);
@@ -141,7 +146,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
           label.setFont(new java.awt.Font ("Dialog", 0, 12));
           String text = "<html><body>" + ( isSelected ? "<strong>" : "" ) + engine.getEngineTypeName()+ "<br>" + engine.getMaxSpeed() + " m.p.h. "+engine.getPowerAtDrawbar()+" hp $" +engine.getPrice().toString() + ( isSelected ? "</strong>" : "" ) + "</body></html>";
           label.setText(text);
-          label.setIcon(new ImageIcon(sideOnTrainTrainView.getEngineImage(index, SideOnTrainTrainView.HEIGHT_50_PIXELS)));
+          label.setIcon(new ImageIcon(sideOnTrainTrainView.getEngineImage(index, SideOnTrainTrainViewImages.HEIGHT_50_PIXELS)));
            /*
             if(isSelected){
                 label.setBorder(new javax.swing.border.LineBorder(java.awt.Color.black, 4));

@@ -5,7 +5,9 @@
  */
 
 package jfreerails.client.view;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Transparency;
 /**
  *
  * @author  lindsal8

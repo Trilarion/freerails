@@ -12,6 +12,8 @@
       <property name="dist" location="dist" />
 
       <property name="doc" location="doc" />
+
+      <property name="temp" location="temp" />
    </target>
 
    <target name="mkdirs" depends="init">
@@ -110,6 +112,8 @@
       <delete dir="${dist}" />
 
       <delete dir="${doc}" />
+
+      <delete dir="${temp}" />
    </target>
 
    <target name="run" depends="compile" description="Test run based on compile">
@@ -124,19 +128,27 @@
       <java jar="${dist}/lib/jFreeRails-${DSTAMP}-bin.jar" fork="true" />
    </target>
 
-   <target name="world_javadoc">
+   <target name="javadoc" depends="mkdirs, init">
       <javadoc destdir="${doc}" author="true" version="true" use="true" windowtitle="Freerails World API">
          <fileset dir="${src}" defaultexcludes="yes">
-            <include name="jfreerails/util/**" />
-			<include name="jfreerails/misc/**" />
-            <include name="jfreerails/world/**" />
+            <include name="**/*java" />
 
             <exclude name="**/*Test.java" />
          </fileset>
       </javadoc>
    </target>
 
-   <target name="jar_doc" depends="mkdirs, world_javadoc, init">
+   <target name="move_javadoc" depends="mkdirs, init">
+      <javadoc destdir="${doc}" author="true" version="true" use="true" Overview="true" windowtitle="Freerails World API - build ${DSTAMP}">
+         <fileset dir="${src}" defaultexcludes="yes">
+            <include name="jfreerails/move/*.java" />
+
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </javadoc>
+   </target>
+
+   <target name="jar_doc" depends="javadoc">
       <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-javadoc.jar" basedir=".">
          <include name="doc/**/*" />
       </jar>
@@ -152,6 +164,288 @@
             <include name="*.jar" />
          </fileset>
       </ftp>
+   </target>
+
+	<target name="copy_world_src" depends="mkdirs, init" description="Copies the files world/**/*java  to dist/world_scr" >
+		<delete dir="${dist}/world_scr" />
+		<mkdir dir="${dist}/world_scr" />
+      <copy todir="${dist}/world_scr">
+         <fileset dir="${src}">
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+     </target>
+     
+     
+     <!-- The check_dependencies target tests the dependencies of packages.  It does this by copying the contents of the package 
+     in question together with the contents of the packages it is allowed to depend on to a tempory directory, then compiling
+     the contents of the package.  If the packaged depends on classes other than those contained in the packages it is allowed
+     to depend on, the compile will fail.
+     -->               
+
+   <target name="check_dependencies" depends="compile" description="Tests whether dependencies between packages conform to the rules defined in this target">
+
+	  <!-- Check dependencies for jfreerails.world.common.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/common/*.java"/>
+      <delete dir="${temp}" />     
+      
+      
+	  <!-- Check dependencies for jfreerails.world.tilemap.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/world/tilemap/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/tilemap/*.java"/>
+      <delete dir="${temp}" /> 
+      
+       <!-- Check dependencies for jfreerails.world.terrain.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/world/terrain/*.java" />
+         	<include name="jfreerails/world/tilemap/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/terrain/*.java"/>
+      <delete dir="${temp}" /> 
+      
+      <!-- Check dependencies for jfreerails.world.track.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/world/track/*.java" />
+         	<include name="jfreerails/world/terrain/*.java" />
+         	<include name="jfreerails/world/tilemap/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/track/*.java"/>
+      <delete dir="${temp}" /> 
+      
+      <!-- Check dependencies for jfreerails.world.cargo.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">         
+         	<include name="jfreerails/world/cargo/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/cargo/*.java"/>
+      <delete dir="${temp}" /> 
+      
+      <!-- Check dependencies for jfreerails.world.train.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">         
+         	<include name="jfreerails/world/train/*.java" />
+         	<include name="jfreerails/world/cargo/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/train/*.java"/>
+      <delete dir="${temp}" /> 
+      
+      <!-- Check dependencies for jfreerails.world.station.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">         
+         	<include name="jfreerails/world/station/*.java" />
+         	<include name="jfreerails/world/cargo/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/station/*.java"/>
+      <delete dir="${temp}" /> 
+      
+      <!-- Check dependencies for jfreerails.world.stats.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">           
+         	<include name="jfreerails/world/stats/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/stats/*.java"/>
+      <delete dir="${temp}" /> 
+      
+      <!-- Check dependencies for jfreerails.world.financial.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">           
+         	<include name="jfreerails/world/financial/*.java" />
+            <include name="jfreerails/world/common/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/financial/*.java"/>
+      <delete dir="${temp}" /> 
+      
+      <!-- Check dependencies for jfreerails.world.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/**/*.java"/>
+      <delete dir="${temp}" />     
+      
+      <!-- Check dependencies for jfreerails.move.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/move/*.java"/>
+      <delete dir="${temp}" />        
+      
+      <!-- Check dependencies for jfreerails.controller.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/controller/**/*.java" />
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/controller/**/*.java"/>
+      <delete dir="${temp}" />    
+      
+      <!-- Check dependencies for jfreerails.client.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/client/**/*.java" />
+         	<include name="jfreerails/controller/**/*.java" />
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/**/*.java"/>
+      <delete dir="${temp}" />    
+      
+      <!-- Check dependencies for jfreerails.client.common.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/client/common/*.java" />
+         	<include name="jfreerails/controller/**/*.java" />
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/common/*.java"/>
+      <delete dir="${temp}" />   
+      
+     <!-- Check dependencies for jfreerails.client.renderer.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         		<include name="jfreerails/client/renderer/*.java" />
+         	<include name="jfreerails/client/common/*.java" />
+         	<include name="jfreerails/controller/**/*.java" />
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/renderer/*.java"/>
+      <delete dir="${temp}" />   
+      
+       <!-- Check dependencies for jfreerails.client.event.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         		<include name="jfreerails/client/event/*.java" />
+         	<include name="jfreerails/client/common/*.java" />
+         	<include name="jfreerails/controller/**/*.java" />
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/event/*.java"/>
+      <delete dir="${temp}" />   
+      
+      <!-- Check dependencies for jfreerails.client.menu.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         		<include name="jfreerails/client/menu/*.java" />
+         	<include name="jfreerails/client/common/*.java" />
+         	<include name="jfreerails/controller/**/*.java" />
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/menu/*.java"/>
+      <delete dir="${temp}" />   
+      
+       <!-- Check dependencies for jfreerails.client.view.*  -->     
+      <mkdir dir="${temp}" />
+      <copy todir="${temp}">
+         <fileset dir="${src}">
+         	<include name="jfreerails/client/view/*.java" />
+         	<include name="jfreerails/client/renderer/*.java" />
+         	<include name="jfreerails/client/event/*.java" />
+         	<include name="jfreerails/client/common/*.java" />
+         	<include name="jfreerails/controller/**/*.java" />
+         	<include name="jfreerails/move/*.java" />
+            <include name="jfreerails/world/**/*.java" />
+            <include name="jfreerails/util/*.java" />
+            <include name="it/unimi/dsi/fastUtil/*.java" />
+            <exclude name="**/*Test.java" />
+         </fileset>
+      </copy>
+      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/view/*.java"/>
+      <delete dir="${temp}" />  
+
    </target>
 </project>
 

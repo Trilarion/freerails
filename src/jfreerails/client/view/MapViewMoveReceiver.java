@@ -3,6 +3,7 @@ package jfreerails.client.view;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import jfreerails.client.renderer.MapRenderer;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.MapUpdateMove;
 import jfreerails.move.Move;
@@ -10,11 +11,11 @@ import jfreerails.move.MoveStatus;
 
 public class MapViewMoveReceiver implements MoveReceiver {
 
-	private final MapView mapView;
+	private final MapRenderer mapView;
 
 	private Class mapUpdateMoveClass;
 
-	public MapViewMoveReceiver(MapView mv) {
+	public MapViewMoveReceiver(MapRenderer mv) {
 		mapView=mv;
 
 		try {
