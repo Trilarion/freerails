@@ -39,17 +39,7 @@
          <Consumes Cargo="Food" Prerequisite="2" />
       </Tile>
 
-      <Tile id="Factory" Category="Urban" rgb="0000b7" right-of-way="1000">
-         <Converts input="Coffee" output="Export_Goods" />
-
-         <Converts input="Wood" output="Export_Goods" />
-
-         <Converts input="Sugar" output="Export_Goods" />
-         
-         <Converts input="Petroleum" output="Export_Goods" />
-      </Tile>
-
-      <Tile id="Refinery" Category="Urban" rgb="7" right-of-way="0">
+      <Tile id="Refinery" Category="Industry" rgb="7" right-of-way="0">
          <Converts input="Oil" output="Petroleum" />
       </Tile>
 
@@ -62,10 +52,20 @@
 
          <Consumes Cargo="Mfg._Goods" Prerequisite="4" />
       </Tile>
+      
+      <Tile id="Factory" Category="Industry" rgb="0000b7" right-of-way="1000">
+         <Converts input="Coffee" output="Export_Goods" />
+
+         <Converts input="Wood" output="Export_Goods" />
+
+         <Converts input="Sugar" output="Export_Goods" />
+         
+         <Converts input="Petroleum" output="Export_Goods" />
+      </Tile>
 
       <Tile id="Clear" Category="Country" rgb="00b400" right-of-way="0"/>
 
-      <Tile id="Farm" Category="Special" rgb="48fc48" right-of-way="0"/>
+      <Tile id="Farm" Category="Country" rgb="48fc48" right-of-way="0"/>
 
       <Tile id="Desert" Category="Country" rgb="b42400" right-of-way="0"/>
 
@@ -91,31 +91,31 @@
          <Consumes Cargo="Sugar" />
       </Tile>
 
-      <Tile id="Stock-Yard" Category="Urban" rgb="3" right-of-way="0">
+      <Tile id="Stock-Yard" Category="Industry" rgb="3" right-of-way="0">
          <Converts input="Livestock" output="Food" />
       </Tile>
 
-      <Tile id="Food_Proc._Plant" Category="Urban" rgb="5" right-of-way="0">
+      <Tile id="Food_Proc._Plant" Category="Industry" rgb="5" right-of-way="0">
          <Converts input="Grain" output="Food" />
       </Tile>
 
-      <Tile id="Cattle_Ranch" Category="Urban" rgb="4" right-of-way="0">
+      <Tile id="Cattle_Ranch" Category="Resource" rgb="4" right-of-way="0">
          <Produces Cargo="Livestock" Rate="4" />
       </Tile>
 
-      <Tile id="Grain_Elevator" Category="Urban" rgb="fcfc48" right-of-way="0">
+      <Tile id="Grain_Elevator" Category="Resource" rgb="fcfc48" right-of-way="0">
          <Produces Cargo="Grain" Rate="4" />
       </Tile>
 
-      <Tile id="Oil_Well" Category="Urban" rgb="ef901d" right-of-way="0">
+      <Tile id="Oil_Well" Category="Resource" rgb="ef901d" right-of-way="0">
          <Produces Cargo="Oil" Rate="4" />
       </Tile>
 
-      <Tile id="Lumber_Mill" Category="Urban" rgb="ef901c" right-of-way="0">
+      <Tile id="Lumber_Mill" Category="Resource" rgb="ef901c" right-of-way="0">
          <Produces Cargo="Wood" Rate="4" />
       </Tile>
 
-      <Tile id="Sugar_Plant." Category="Urban" rgb="ef901f" right-of-way="0">
+      <Tile id="Sugar_Plant." Category="Resource" rgb="ef901f" right-of-way="0">
          <Produces Cargo="Sugar" Rate="4" />
       </Tile>
 
