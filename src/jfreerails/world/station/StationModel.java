@@ -1,7 +1,6 @@
 package jfreerails.world.station;
 
-import jfreerails.world.type.StationType;
-import jfreerails.world.GameTime;
+import jfreerails.world.misc.GameTime;
 
 public interface StationModel {
 	GameTime getBuiltDate();

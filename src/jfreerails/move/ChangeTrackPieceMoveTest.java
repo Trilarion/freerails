@@ -11,11 +11,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import jfreerails.move.status.MoveStatus;
-import jfreerails.world.flat.TrackConfiguration;
-import jfreerails.world.std_track.TrackPiece;
-import jfreerails.world.std_track.TrackTileMapImpl;
-import jfreerails.world.std_track.TrackTileMap;
-import jfreerails.world.tilemap.MapFixtureFactory;
+import jfreerails.world.track.TrackConfiguration;
+import jfreerails.world.track.TrackPiece;
+import jfreerails.world.track.TrackTileMapImpl;
+import jfreerails.world.track.TrackTileMap;
+import jfreerails.world.track.MapFixtureFactory;
 
 /**
  *
@@ -23,8 +23,8 @@ import jfreerails.world.tilemap.MapFixtureFactory;
  */
 
 public class ChangeTrackPieceMoveTest extends junit.framework.TestCase {
-    jfreerails.world.TrackRuleList trackRules;
-    jfreerails.world.std_track.TrackTileMap map;
+    jfreerails.world.track.TrackRuleList trackRules;
+    jfreerails.world.track.TrackTileMap map;
     
     public ChangeTrackPieceMoveTest(String testName) {
         super(testName);

@@ -1,3 +1,13 @@
+16-Oct-2002 22:58:03 Luke Lindsay 
+   o Removed cyclic dependencies from the rest of
+   the project.
+16-Oct-2002 21:48:24 Luke Lindsay 
+   o Refactored the jfreerails.world.* packages
+   	so that (1) jfreerails.world.* do not depend on any
+   				other jfreerails packages.
+   			(2) there are no cyclic dependencies between
+   				any of the jfreerails.world.* packages.
+   	hopefully this should make it easier to maintain.
 13-Oct-2002 22:30:30 Luke Lindsay 
    o Added trains!  They don't move yet.  Hit F7 when the cursor 
    is over the track to build one.

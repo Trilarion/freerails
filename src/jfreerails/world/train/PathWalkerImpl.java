@@ -1,5 +1,7 @@
 package jfreerails.world.train;
 
+import jfreerails.world.misc.IntLine;
+import jfreerails.world.misc.FreerailsPathIterator;
 import java.util.NoSuchElementException;
 
 public class PathWalkerImpl implements PathWalker {

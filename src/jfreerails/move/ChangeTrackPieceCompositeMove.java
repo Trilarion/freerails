@@ -9,13 +9,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import jfreerails.move.status.MoveStatus;
-import jfreerails.world.type.TrackRule;
-import jfreerails.world.flat.OneTileMoveVector;
-import jfreerails.world.flat.TrackConfiguration;
-import jfreerails.world.std_track.NullTrackPiece;
-import jfreerails.world.std_track.NullTrackType;
-import jfreerails.world.std_track.TrackPiece;
-import jfreerails.world.std_track.TrackTileMap;
+import jfreerails.world.track.TrackRule;
+import jfreerails.world.misc.OneTileMoveVector;
+import jfreerails.world.track.TrackConfiguration;
+import jfreerails.world.track.NullTrackPiece;
+import jfreerails.world.track.NullTrackType;
+import jfreerails.world.track.TrackPiece;
+import jfreerails.world.track.TrackTileMap;
 
 /**
  *
