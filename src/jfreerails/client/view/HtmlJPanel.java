@@ -27,7 +27,7 @@ import jfreerails.client.renderer.ViewLists;
 public class HtmlJPanel extends javax.swing.JPanel implements View {
     
     private static final Logger logger = Logger.getLogger(HtmlJPanel.class
-			.getName()); 
+            .getName());
     HtmlJPanel(){
         initComponents();
     }
@@ -35,19 +35,19 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     
     public HtmlJPanel(URL url) {
         initComponents();
-        htmlJLabel.setText(loadText(url));
+        setHtml(loadText(url));
     }
     
     public HtmlJPanel(URL url, HashMap context) {
         initComponents();
         String template = loadText(url);
         String populatedTemplate = populateTokens(template, context);
-        htmlJLabel.setText(populatedTemplate);
+        setHtml(populatedTemplate);
     }
     
     public HtmlJPanel(String html) {
         initComponents();
-        this.htmlJLabel.setText(html);
+        setHtml(html);
     }
     
     /** This method is called from within the constructor to
@@ -65,6 +65,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         setLayout(new java.awt.GridBagLayout());
 
         setMinimumSize(new java.awt.Dimension(400, 300));
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         htmlJLabel.setFont(new java.awt.Font("Dialog", 0, 12));
         htmlJLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jScrollPane1.setViewportView(htmlJLabel);
@@ -84,7 +85,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         add(done, gridBagConstraints);
 
     }//GEN-END:initComponents
-    
+        
     public void setup(ModelRoot m,  ViewLists vl, ActionListener submitButtonCallBack) {
         this.done.addActionListener(submitButtonCallBack);
     }
@@ -94,8 +95,8 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         try {
             InputStream in = htmlUrl.openStream();
             BufferedReader br =
-            new BufferedReader(
-            new InputStreamReader(new DataInputStream(in)));
+                    new BufferedReader(
+                    new InputStreamReader(new DataInputStream(in)));
             String line;
             String text = "";
             while ((line = br.readLine()) != null) {
@@ -111,7 +112,9 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     
     void setHtml(String s){
         htmlJLabel.setText(s);
+        
     }
+           
     
     static String populateTokens(String template, Object context){
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
@@ -141,9 +144,9 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton done;
-    private javax.swing.JLabel htmlJLabel;
-    private javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JButton done;
+    javax.swing.JLabel htmlJLabel;
+    javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     
 }

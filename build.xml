@@ -33,13 +33,14 @@
 
 
 		<mkdir dir="${doc}" />
+                <mkdir dir="${datafiles}" />
 
 	</target>
 
 	<!-- Used by other targets, copies data files to a temporary directory. -->
 	<target name="data2temp" depends="mkdirs">
-		<delete dir="${datafiles}" />
-		<mkdir dir="${datafiles}" />
+            
+		
 		<copy todir="${datafiles}/src">
 			<fileset dir="${src}">
 				<include name="**/*.xml" />
