@@ -10,6 +10,7 @@ import jfreerails.move.Move;
 import jfreerails.move.TimeTickMove;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.top.World;
+import jfreerails.move.ChangeGameSpeedMove;
 
 
 /**
@@ -118,7 +119,8 @@ public class InetConnection implements ConnectionToServer {
     public void processMove(Move move) {
         send(move);
 
-        if (move instanceof TimeTickMove) {
+        if ((move instanceof TimeTickMove) ||
+                (move instanceof ChangeGameSpeedMove)) {
             flush();
         }
     }

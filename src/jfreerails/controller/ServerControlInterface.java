@@ -44,6 +44,8 @@ public interface ServerControlInterface {
 
     public void setTargetTicksPerSecond(int ticksPerSecond);
 
+    public int getTargetTicksPerSecond();
+
     /**
      * @return a TableModel which provides information about the current
      * connections to this game

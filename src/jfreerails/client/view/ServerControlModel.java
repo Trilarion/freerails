@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import java.util.Enumeration;
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.controller.ServerControlInterface;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -75,7 +76,10 @@ public class ServerControlModel {
 
         public void actionPerformed(ActionEvent e) {
             if (serverInterface != null) {
-                serverInterface.setTargetTicksPerSecond(speed);
+                if (speed == 0) // pausing/unpausing
+                  serverInterface.setTargetTicksPerSecond(-1* serverInterface.getTargetTicksPerSecond());
+                else
+                  serverInterface.setTargetTicksPerSecond(speed);
             }
         }
 
@@ -104,8 +108,10 @@ public class ServerControlModel {
         }
     }
 
+    private Action pauseAction = new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P);
+
     private ActionAdapter targetTicksPerSecondActions = new ActionAdapter(new Action[] {
-                new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),      // by MystiqueAgent: added keyEvent parameter
+//                new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),      // by MystiqueAgent: added keyEvent parameter
                 new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),      // by MystiqueAgent: added keyEvent parameter
                 new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),  // by MystiqueAgent: added keyEvent parameter
                 new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3),      // by MystiqueAgent: added keyEvent parameter
@@ -113,7 +119,7 @@ public class ServerControlModel {
 
             /* TODO one day we will make turbo faster :) */
             new SetTargetTicksPerSecondAction("Turbo", 50)
-            }, 1);
+            }, 0);
 
     public void setServerControlInterface(ServerControlInterface i) {
         serverInterface = i;
@@ -121,6 +127,8 @@ public class ServerControlModel {
         boolean enabled = (serverInterface != null);
         loadGameAction.setEnabled(enabled);
         saveGameAction.setEnabled(enabled);
+
+        pauseAction.setEnabled(enabled);
 
         Enumeration e = targetTicksPerSecondActions.getActions();
 
@@ -170,6 +178,14 @@ public class ServerControlModel {
      */
     public ActionAdapter getSetTargetTickPerSecondActions() {
         return targetTicksPerSecondActions;
+    }
+
+    /**
+     *
+     * @return an action to pause/unpase the game
+     */
+    public Action getPauseAction() {
+        return pauseAction;
     }
 
     /**

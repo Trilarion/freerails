@@ -39,6 +39,7 @@ import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.world.top.ReadOnlyWorld;
+import javax.swing.JCheckBoxMenuItem;
 
 
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
@@ -248,9 +249,16 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
             });
 
         //Set up the gamespeed submenu.
-        ButtonGroup group = new ButtonGroup();
-        ActionAdapter speedActions = sc.getSetTargetTickPerSecondActions();
         JMenu gameSpeedSubMenu = new JMenu("Game Speed");
+
+        final JCheckBoxMenuItem speedMI = new JCheckBoxMenuItem(sc.getPauseAction());
+
+        //        mi.setModel((ButtonModel)buttonModels.nextElement());
+        gameSpeedSubMenu.add(speedMI);
+
+        ButtonGroup group = new ButtonGroup();
+
+        ActionAdapter speedActions = sc.getSetTargetTickPerSecondActions();
 
         Enumeration buttonModels = speedActions.getButtonModels();
         Enumeration actions = speedActions.getActions();
@@ -258,6 +266,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         while (buttonModels.hasMoreElements()) {
             JRadioButtonMenuItem mi = new JRadioButtonMenuItem((Action)actions.nextElement());
             mi.setModel((ButtonModel)buttonModels.nextElement());
+            mi.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (speedMI.isSelected()) {
+                            // paused => unchecking the pause checkBox
+                            speedMI.setSelected(false);
+                        }
+                    }
+                });
             group.add(mi);
             gameSpeedSubMenu.add(mi);
         }

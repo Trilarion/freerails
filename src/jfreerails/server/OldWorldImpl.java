@@ -13,6 +13,7 @@ import jfreerails.world.top.WagonAndEngineTypesFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import org.xml.sax.SAXException;
+import jfreerails.world.common.GameSpeed;
 
 
 /** This class sets up a World object.*/
@@ -91,6 +92,7 @@ public class OldWorldImpl {
         //Set the time..
         w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         w.set(ITEM.TIME, new GameTime(0));
+        w.set(ITEM.GAME_SPEED, new GameSpeed(10));
         w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 
         /* Note, money used to get added to player accounts here, now

@@ -26,6 +26,8 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
+import jfreerails.world.common.GameSpeed;
+import jfreerails.move.ChangeGameSpeedMove;
 
 
 /**
@@ -45,7 +47,6 @@ public class ServerGameEngine implements GameModel, Runnable {
     private final MoveChainFork moveChainFork;
     private CalcSupplyAtStations calcSupplyAtStations;
     TrainBuilder tb;
-    private int targetTicksPerSecond = 0;
     private IdentityProvider identityProvider;
 
     /**
@@ -69,11 +70,12 @@ public class ServerGameEngine implements GameModel, Runnable {
     private boolean keepRunning = true;
 
     public int getTargetTicksPerSecond() {
-        return targetTicksPerSecond;
+        return ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
     }
 
     public synchronized void setTargetTicksPerSecond(int targetTicksPerSecond) {
-        this.targetTicksPerSecond = targetTicksPerSecond;
+        moveExecuter.processMove(ChangeGameSpeedMove.getMove(world,
+                new GameSpeed(targetTicksPerSecond)));
     }
 
     /**
@@ -181,7 +183,9 @@ public class ServerGameEngine implements GameModel, Runnable {
         buildTrains();
         queuedMoveReceiver.executeOutstandingMoves();
 
-        if (targetTicksPerSecond > 0) {
+        int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
+
+        if (gameSpeed > 0) {
             /* Update the time first, since other updates might need
             to know the current time.*/
             updateGameTime();
@@ -204,8 +208,7 @@ public class ServerGameEngine implements GameModel, Runnable {
             }
 
             /* calculate "ideal world" time for next tick */
-            nextModelUpdateDue = nextModelUpdateDue +
-                (1000 / targetTicksPerSecond);
+            nextModelUpdateDue = nextModelUpdateDue + (1000 / gameSpeed);
 
             int delay = (int)(nextModelUpdateDue - frameStartTime);
 

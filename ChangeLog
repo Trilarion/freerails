@@ -1,3 +1,5 @@
+Mar 12, 2004 8:37:12 PM Luke
+	o Apply Jan Tozicka's patch for 910902 (Game speed not stored on world object).
 Mar 9, 2004 1:11:50 AM Luke
 	o Increase client performance.  93FPS to 111FPS on my machine.
 	Note, I get much higher FPS when the client and server are in different JVMs. 

@@ -15,7 +15,7 @@ import jfreerails.util.GameModel;
  */
 final public class GameLoop implements Runnable {
     /** Whether to display the FPS counter on the top left of the screen.*/
-    private static final boolean SHOWFPS = (System.getProperty("SHOWFPS") != null);
+    private static final boolean SHOWFPS = true; //(System.getProperty("SHOWFPS") != null);
     final static boolean LIMIT_FRAME_RATE = false;
     boolean gameNotDone = false;
     final ScreenHandler screenHandler;

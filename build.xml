@@ -155,7 +155,7 @@
    </target>
 
    <target depends="mkdirs, compile" description="Test run based on compile" name="run">
-      <java classname="jfreerails.RunFreerails" fork="true">
+      <java classname="jfreerails.launcher.Launcher" fork="true">
          <classpath>
             <pathelement path="${build}"/>
          </classpath>

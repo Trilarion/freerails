@@ -15,7 +15,6 @@ import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.ServerCommand;
 import jfreerails.controller.ServerControlInterface;
-import jfreerails.controller.SpeedChangedCommand;
 import jfreerails.controller.WorldChangedCommand;
 import jfreerails.util.FreerailsProgressMonitor;
 
@@ -127,7 +126,10 @@ class ServerGameController implements ServerControlInterface,
 
     public void setTargetTicksPerSecond(int ticksPerSecond) {
         gameEngine.setTargetTicksPerSecond(ticksPerSecond);
-        sendToAllConections(new SpeedChangedCommand(ticksPerSecond));
+    }
+
+    public int getTargetTicksPerSecond() {
+        return gameEngine.getTargetTicksPerSecond();
     }
 
     /**

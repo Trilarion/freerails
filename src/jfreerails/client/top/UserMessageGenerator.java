@@ -22,6 +22,8 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.TrainModel;
+import jfreerails.move.ChangeGameSpeedMove;
+import jfreerails.world.common.GameSpeed;
 
 
 /**
@@ -106,6 +108,17 @@ public class UserMessageGenerator implements MoveReceiver {
 
                 message += "$" + formatter.format(revenue);
                 modelRoot.getUserMessageLogger().println(message);
+            }
+        } else if (move instanceof ChangeGameSpeedMove) {
+            ReadOnlyWorld world = modelRoot.getWorld();
+            int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
+            modelRoot.getUserMessageLogger().println("Game speed changed to: " +
+                gameSpeed + " [ticksPerSecond]");
+
+            if (gameSpeed <= 0) {
+                modelRoot.getUserMessageLogger().showMessage("Game is paused.");
+            } else {
+                modelRoot.getUserMessageLogger().hideMessage();
             }
         }
     }

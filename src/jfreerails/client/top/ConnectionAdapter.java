@@ -14,7 +14,6 @@ import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.controller.WorldChangedCommand;
-import jfreerails.controller.SpeedChangedCommand;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TimeTickMove;
@@ -280,14 +279,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             } catch (GeneralSecurityException e) {
                 modelRoot.getUserMessageLogger().println("Unable to " +
                     "authenticate with server: " + e.toString());
-            }
-        } else if (s instanceof SpeedChangedCommand) {
-            int actTickPerSecond = ((SpeedChangedCommand)s).getTicksPerSecond();
-
-            if (actTickPerSecond == 0) {
-                modelRoot.getUserMessageLogger().showMessage("Game is paused.");
-            } else {
-                modelRoot.getUserMessageLogger().hideMessage();
             }
         }
     }

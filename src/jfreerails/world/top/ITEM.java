@@ -18,8 +18,9 @@ public class ITEM implements FreerailsSerializable {
     public static final ITEM TIME = new ITEM();
     public static final ITEM CALENDAR = new ITEM();
     public static final ITEM GAME_RULES = new ITEM();
+    public static final ITEM GAME_SPEED = new ITEM();
 
-    //END OF KEYS		
+    //END OF KEYS
     private static int numberOfKeys = 0;
     private final int keyNumber;
 
