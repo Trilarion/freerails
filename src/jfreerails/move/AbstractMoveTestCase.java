@@ -4,11 +4,7 @@
  */
 package jfreerails.move;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import jfreerails.util.Utils;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
@@ -145,7 +141,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
             m);
 
         try {
-            Object o = cloneBySerialisation(m);
+            Object o = Utils.cloneBySerialisation(m);
             assertEquals(m, o);
             assertEquals("The hashcodes should be the same!", m.hashCode(),
                 o.hashCode());
@@ -157,7 +153,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
     protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
         try {
-            World copyOfWorldBefore = (World)cloneBySerialisation(getWorld());
+            World copyOfWorldBefore = (World)Utils.cloneBySerialisation(getWorld());
             assertEquals("The world objects equals method did not survive serialization!",
                 copyOfWorldBefore, getWorld());
             assertTrue(m.doMove(getWorld(), Player.AUTHORITATIVE).ok);
@@ -167,22 +163,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
             e.printStackTrace();
             assertTrue(false);
         }
-    }
-
-    public Object cloneBySerialisation(Object m)
-        throws IOException, ClassNotFoundException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream objectOut = new ObjectOutputStream(out);
-        objectOut.writeObject(m);
-        objectOut.flush();
-
-        byte[] bytes = out.toByteArray();
-
-        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        ObjectInputStream objectIn = new ObjectInputStream(in);
-        Object o = objectIn.readObject();
-
-        return o;
     }
 
     protected void assertOkAndRepeatable(Move m) {

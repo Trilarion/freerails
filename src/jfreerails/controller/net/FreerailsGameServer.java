@@ -26,6 +26,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     NewGameServer, Runnable {
     private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
     private final SynchronizedFlag status = new SynchronizedFlag(false);
+    private final SavedGamesManager savedGamesManager;
     private boolean newPlayersAllowed = true;
     private ArrayList players = new ArrayList();
     private HashMap username2password = new HashMap();
@@ -41,8 +42,6 @@ public class FreerailsGameServer implements ServerControlInterface,
     private HashSet confirmedPlayers = new HashSet();
     private HashMap acceptedConnections = new HashMap();
     private int commandID = 0;
-    private String[] mapsAvailable = {"map1", "map2"};
-    private String[] saveGamesAvailable = {"game1", "game2"};
     private World world;
 
     /**
@@ -52,12 +51,17 @@ public class FreerailsGameServer implements ServerControlInterface,
     private int confirmationID = Integer.MIN_VALUE; //Don't default to avoid
 
     // mistaken confirmations.
+    public FreerailsGameServer(SavedGamesManager gamesManager) {
+        this.savedGamesManager = gamesManager;
+    }
+
     private int getNextClientCommandId() {
         return commandID++;
     }
 
-    public static FreerailsGameServer startServer() {
-        FreerailsGameServer server = new FreerailsGameServer();
+    public static FreerailsGameServer startServer(
+        SavedGamesManager gamesManager) {
+        FreerailsGameServer server = new FreerailsGameServer(gamesManager);
         Thread t = new Thread(server);
         t.start();
 
@@ -173,9 +177,11 @@ public class FreerailsGameServer implements ServerControlInterface,
 
                 /* Just send to the new client. */
                 ClientCommand setMaps = new SetPropertyClientCommand(getNextClientCommandId(),
-                        ClientControlInterface.MAPS_AVAILABLE, mapsAvailable);
+                        ClientControlInterface.MAPS_AVAILABLE,
+                        savedGamesManager.getNewMapNames());
                 ClientCommand setSaveGames = new SetPropertyClientCommand(getNextClientCommandId(),
-                        ClientControlInterface.SAVED_GAMES, saveGamesAvailable);
+                        ClientControlInterface.SAVED_GAMES,
+                        savedGamesManager.getSaveGameNames());
                 connection.writeToClient(setMaps);
                 connection.writeToClient(setSaveGames);
                 //no need to flush since it is done in

@@ -26,7 +26,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
     private FreerailsGameServer server;
 
     protected void setUp() throws Exception {
-        server = new FreerailsGameServer();
+        server = new FreerailsGameServer(new SavedGamesManager4UnitTests());
     }
 
     /** Copy & pasted from FreerailsClientTest, then edited. */
@@ -97,8 +97,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         assertFalse("New players cannot be added once the game has started.",
             server.isNewPlayersAllowed());
 
-        //Note, the following would have happend anyway when client0.update();
-        // gets called.
+        /* Note, the following would have happened anyway when client0.update();
+        gets called.*/
         ClientCommand cc = (ClientCommand)client0.read();
         client0.write(cc.execute(client0));
 
