@@ -5,6 +5,7 @@
 package jfreerails.world.train;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
@@ -41,6 +42,8 @@ public class TrainMotion implements FreerailsSerializable {
 
 	private static final long serialVersionUID = 3618423722025891641L;
 
+	private final int initialPosition;
+
 	private final PathOnTiles path;
 
 	private final SpeedAgainstTime speeds;
@@ -52,41 +55,68 @@ public class TrainMotion implements FreerailsSerializable {
 	 * 
 	 * @param path
 	 *            the path the train will take.
+	 * @param enginePosition
+	 *            the position measured in tiles that trains engine is along the
+	 *            path
 	 * @param trainLength
 	 *            the length of the train, as returned by
 	 *            <code>TrainModel.getLength()</code>.
 	 * @throws IllegalArgumentException
 	 *             if trainLength is out the range
-	 *             <code>length &gt; TrainModel.WAGON_LENGTH || length &lt; TrainModel.MAX_TRAIN_LENGTH</code>
+	 *             <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
 	 * @throws IllegalArgumentException
 	 *             if
-	 *             <code>(initialPosition + speeds.getDistance(speeds.getEnd())) &lt; path.getLength()</code>.
+	 *             <code>path.getDistance(enginePosition) &lt; trainLength</code>.
+	 * @throws IllegalArgumentException
+	 *             if
+	 *             <code>path.getDistance(enginePosition) + speeds.getDistance(speeds.getEnd))&lt;  path.getLength</code>.
 	 */
-	public TrainMotion(PathOnTiles path,  int trainLength,
+
+	public TrainMotion(PathOnTiles path, int enginePosition, int trainLength,
 			SpeedAgainstTime speeds) {
+		if (trainLength < TrainModel.WAGON_LENGTH
+				|| trainLength > TrainModel.MAX_TRAIN_LENGTH)
+			throw new IllegalArgumentException();
 		this.path = path;
-		this.speeds = speeds;	
+		this.speeds = speeds;
 		this.trainLength = trainLength;
-
+		initialPosition = path.getDistance(enginePosition);
+		if (initialPosition < trainLength)
+			throw new IllegalArgumentException();
+		if (path.getLength() < initialPosition
+				+ speeds.getDistance(speeds.getEnd()))
+			throw new IllegalArgumentException();
 	}
-	
-	private void checkT(GameTime t){
-		if(t.getTime() < getStart().getTime()) throw new IllegalArgumentException();
-		if(t.getTime() > getEnd().getTime()) throw new IllegalArgumentException();
+
+	private int calcOffSet(GameTime t) {
+		int offset = getDistance(t) + initialPosition - trainLength;
+		return offset;
 	}
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TrainMotion)) return false;
+	private void checkT(GameTime t) {
+		if (t.getTime() < getStart().getTime())
+			throw new IllegalArgumentException();
+		if (t.getTime() > getEnd().getTime())
+			throw new IllegalArgumentException();
+	}
 
-        final TrainMotion trainMotion = (TrainMotion) o;
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof TrainMotion))
+			return false;
 
-        if (trainLength != trainMotion.trainLength) return false;
-        if (!path.equals(trainMotion.path)) return false;
-        if (!speeds.equals(trainMotion.speeds)) return false;
+		final TrainMotion trainMotion = (TrainMotion) o;
 
-        return true;
-    }
+		if (trainLength != trainMotion.trainLength)
+			return false;
+		if (!path.equals(trainMotion.path))
+			return false;
+		if (!speeds.equals(trainMotion.speeds))
+			return false;
+
+		return true;
+	}
 
 	/**
 	 * Returns the train's distance along the track from the point the train was
@@ -118,10 +148,11 @@ public class TrainMotion implements FreerailsSerializable {
 	 *             if t is outside the interval
 	 */
 	public TrainPositionOnMap getPosition(GameTime t) {
-		//Note, no need to call checkT() since it is called by getDistance(t)
-		int offset = getDistance(t);
+		int offset = calcOffSet(t);
 		FreerailsPathIterator pathIt = path.subPath(offset, trainLength);
-		return TrainPositionOnMap.createInSameDirectionAsPath(pathIt);
+		TrainPositionOnMap tpom = TrainPositionOnMap
+				.createInSameDirectionAsPath(pathIt);
+		return tpom.reverse();
 	}
 
 	/**
@@ -154,31 +185,55 @@ public class TrainMotion implements FreerailsSerializable {
 	 */
 	public Point[] getTiles(GameTime t) {
 		checkT(t);
-		int distance = getDistance(t);
-		int startIndex = path.getStepIndex(distance);
-		int endIndex = path.getStepIndex(distance+ trainLength);
-		Point[] returnValue = new Point[endIndex - startIndex +1];
-		Point tile = path.getStart();
-		for (int i = 0; i <= endIndex; i++) {
-			OneTileMoveVector v = path.getStep(i);
-			
-			int j = i - startIndex;
-			if(j >= 0){								
-				returnValue[j] = new Point(tile);
-				
+		int start = calcOffSet(t);
+		int end = start + trainLength;
+		ArrayList<Point> points = new ArrayList<Point>();
+		int distanceSoFar = 0;
+		Point p = path.getStart();
+		for (int i = 0; i < path.steps(); i++) {
+			OneTileMoveVector step = path.getStep(i);
+			distanceSoFar += step.getLength();
+			if (distanceSoFar > start) {
+				points.add(new Point(p));
 			}
-			tile.x += v.deltaX;
-			tile.y += v.deltaY;
+			p.x += step.deltaX;
+			p.y += step.deltaY;
+			if (distanceSoFar >= end) {
+				points.add(new Point(p));
+				break;
+			}
 		}
-		return returnValue;
+		return points.toArray(new Point[points.size()]);
 	}
 
-    public int hashCode() {
-        int result;
-        result = path.hashCode();
-        result = 29 * result + speeds.hashCode();
-        result = 29 * result + trainLength;
-        return result;
-    }
+	public int hashCode() {
+		int result;
+		result = path.hashCode();
+		result = 29 * result + speeds.hashCode();
+		result = 29 * result + trainLength;
+		return result;
+	}
+
+	public TrainMotion next(SpeedAgainstTime newSpeeds,
+			OneTileMoveVector[] newPathSection) {
+		GameTime start = newSpeeds.getStart();
+		Point[] tiles = getTiles(start);
+		final int OLD = tiles.length - 1;
+		OneTileMoveVector[] newPath = new OneTileMoveVector[newPathSection.length
+				+ OLD];
+		for (int i = 0; i < newPath.length; i++) {
+			if (i < OLD) {
+				Point a = tiles[i];
+				Point b = tiles[i + 1];
+				newPath[i] = OneTileMoveVector
+						.getInstance(b.x - a.x, b.y - a.y);
+			} else {
+				newPath[i] = newPathSection[i - OLD];
+			}
+		}
+		PathOnTiles pathOnTiles = new PathOnTiles(tiles[0], newPath);
+		return new TrainMotion(pathOnTiles, pathOnTiles.getDistance(OLD),
+				trainLength, newSpeeds);
+	}
 
 }

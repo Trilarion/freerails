@@ -80,7 +80,7 @@ public class AddTrainPreMove implements PreMove{
 	}
     
     TrainMotion initPositionStep2(PathOnTiles path){
-    	TrainMotion tm = new TrainMotion(path, calTrainLength(), SpeedAgainstTime.STOPPED);
+    	TrainMotion tm = new TrainMotion(path, path.steps(), calTrainLength(), SpeedAgainstTime.STOPPED);
     	return tm;
     }
 

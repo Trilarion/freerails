@@ -89,9 +89,13 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * Returns the distance you would travel if you walked the all the way along
 	 * the path.
 	 */
-	public int getLength() {
+	public int getLength() {		
+		return getDistance(vectors.length);
+	}
+
+	public int getDistance(int steps) {
 		int distanceSoFar = 0;
-		for (int i = 0; i < vectors.length; i++) {
+		for (int i = 0; i < steps; i++) {
 			OneTileMoveVector v = vectors[i];
 			distanceSoFar += v.getLength();
 		}

@@ -66,6 +66,7 @@ public class MoveTrainPreMove implements PreMove {
 		int[] speed = {u, v1, v1};
 		SpeedAgainstTime speeds = new SpeedAgainstTime(times, speed);
 		GameTime end = speeds.getTime(s);
+		SpeedAgainstTime clippedSpeeds = speeds.subSection(t, end);
 		
 		return null;
 	}

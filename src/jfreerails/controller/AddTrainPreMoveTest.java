@@ -98,8 +98,9 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 		
 		
 		GameTime t = GameTime.BIG_BANG;
-		Point[] expected =  new Point[]{new Point(10,10), new Point(11,10), new Point(12,10)};
-		assertTrue(Arrays.deepEquals(tm.getTiles(t),expected) );
+		Point[] expected =  new Point[]{new Point(10,10), new Point(11,10), new Point(12,10), new Point(13,10)};
+		Point[] actual = tm.getTiles(t);
+		assertTrue(Arrays.equals(actual,expected) );
 		
 		//Check distance
 		assertEquals(0, tm.getDistance(new GameTime(0)));
