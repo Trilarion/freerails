@@ -82,7 +82,7 @@ size_t Serializer::read_string(std::string& s) {
   short size;
   size_t s1 = read_short(size);
   if (s1 < 0) return 0;
-  char help_str[size+1];
+  char *help_str = new char[size+1];
   size_t s2 = 0;
   if (size) {
     s2 = myConnection->read(help_str, size);

@@ -24,13 +24,13 @@ public:
       */
     BaseApplication(int argc, char *argv[]);
     /** Should destroy application */
-    ~BaseApplication();
+    virtual ~BaseApplication();
     /** Should create and show splash screen */
     virtual void showSplash() {};
     /** Should hide (destroy) splash screen */
     virtual void hideSplash() {};
     /** Should run application. Return value will be used as exit value */
-    virtual int run() {};
+    virtual int run() { return 0; };
     /** Should return type of wrapper as int */
     // Probably this must be made pure too
     virtual int wrapperType() { return WRAPPERTYPE_BASE; };

@@ -48,7 +48,7 @@ bool Station::hasAddon(std::string addon) {
 
 std::map<std::string, bool> Station::giveAddons() {
   std::vector<std::string> availAddons = stationAddon->getAvailable(year);
-  for(int i = 0; i != availAddons.size(); i++)
+  for(unsigned int i = 0; i != availAddons.size(); i++)
     if(addons.count(availAddons[i]) == 0) addons[availAddons[i]] == false;
   return addons;
 }

@@ -49,8 +49,6 @@ class GameInfo
     /** Returns GameController class to which this object belongs to */
     GameController* getController() { return controller; };
   private:
-    // Contains information about how many days are in each month
-    const short int daysinmonth[];
     /** Sets name of game. Meant to be used by GameController only */
     void setName(char* n);
     /** Sets year of game. Meant to be used by GameController only */

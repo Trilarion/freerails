@@ -25,16 +25,17 @@ class GameMenuBar;
 #define WRAPPERTYPE_QT 2
 
 /** Constucts QApplication */
-class GameApplication : public BaseApplication {
+class GameApplication : public BaseApplication
+{
 
-public:
+  public:
     /** Initializes GameApplication 
       * @param argc count of command-line parameters
       * @param argv array of command-line parameter
       */
     GameApplication(int argc, char *argv[]);
     /**  */
-    ~GameApplication();
+    virtual ~GameApplication();
     /** Runs application (application->exec()) */
     int run();
     /** Returns number, that shows type of used wrapper

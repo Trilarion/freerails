@@ -3,6 +3,8 @@
  * Internalization support
  */
 
+#include <locale.h>
+
 #include "i18n.h"
 
 // Initializes NLS (Native Language Support)

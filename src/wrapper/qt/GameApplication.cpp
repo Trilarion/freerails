@@ -33,6 +33,9 @@ int GameApplication::run() {
   // FIXME: better method for sleep?
   sleep(1);
 
+  hideSplash();
+  application->processEvents();
+
   // FIXME: should be done in constructor with parameters from argc, argv
   mW = new GameMainWindow(0, 0, 800, 600);
 
@@ -42,7 +45,7 @@ int GameApplication::run() {
   //setMainWindow(mW);
   application->setMainWidget(mW->getWidget());
   application->processEvents();
-  hideSplash();
+//  hideSplash();
 
   // Show dialog menu for game mode
   GameModeSelector::GameMode mode = mW->askGameMode();

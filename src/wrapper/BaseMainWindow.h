@@ -16,7 +16,7 @@ class BaseMainWindow
       */
     BaseMainWindow(int x, int y, int w, int h);
     /** Should destroy (and hide) mainwindow */
-    ~BaseMainWindow();
+    virtual ~BaseMainWindow();
     /** Should set mainwindow's caption to @ref caption */
     virtual void setCaption(const char* caption) = 0;
 };

@@ -16,7 +16,12 @@ Please do NOT mass us up with this problems!!! This can happen while porting.
 IMPORTAND
 =========
 
-We use now other libraries! For compiling, please look at the Rules.make file.
+We using 2 different libraries to display.
+
+1.) Qt 3.0.x
+2.) libSDL 1.2.x with paraGUI 1.0.2
+
+See requirements.
 
 
 Web site:
@@ -45,9 +50,9 @@ Cause of that we don't want to redefine the wheel we use libraries. You have
 two possibilities for graphics.
 
 For Linux, Win32, BeOS, MacOS(, *BSD ?)
-1. you use SDL >= 1.2.0 (with SDL_ttf >= 2.0 and SDL_image >= 1.2) and paraGUI >= 1.0.0
+1. you use SDL >= 1.2.0 (with SDL_ttf >= 2.0 and SDL_image >= 1.2) and paraGUI >= 1.0.2
 For Linux/X11, Win32, *BSD, OS/2(XFree86), several UNIX's
-2. you use Qt >= 2.2.0 (We will switch to Qt 3.0.0 as soon as it's stable)
+2. you use Qt >= 3.0.0 (We are on switching to Qt 3.0.0)
 
 
 
@@ -60,7 +65,7 @@ SDL_ttf:
 SDL_image:
     http://www.libsdl.org/projects/SDL_image
 paraGUI:
-    http://www.bms-austria.com/projects/paragui
+    http://www.paragui.org
 Qt:
     http://www.trolltech.com
 
@@ -83,8 +88,10 @@ There is no install possibilities at the moment.
 Starting a new game:
 ====================
 
-start under your X11 environment with "game" in the directory where the
+Start under your X11 environment with "./src/main/freerails" in the directory where this
 README is.
+If you using the paragui version you can specify the theme which can be use as parameter
+or you can use "-f" for fullscreen view.
 
 
 Playing the game:

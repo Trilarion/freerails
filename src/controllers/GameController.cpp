@@ -55,6 +55,8 @@ bool GameController::addPlayer(Player* p)
 {
   // TODO: Check if action is valid ??
   players.push_back(p);
+
+  return true;
 }
 
 bool GameController::startGame()

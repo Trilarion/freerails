@@ -14,10 +14,10 @@ public:
 
     Connection();
     /**  */
-    ~Connection();
+    virtual ~Connection();
     
-    virtual int write(void* data, int len){};
-    virtual int read(void* buf, int maxlen){};
+    virtual int write(void* data, int len){ return 0; };
+    virtual int read(void* buf, int maxlen){ return 0; };
     
     virtual void open(char* c, int i);
     virtual void close();

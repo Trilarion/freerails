@@ -29,7 +29,7 @@ class GameMainWindow : public BaseMainWindow
       */
     GameMainWindow(int x, int y, int w, int h);
     /** Destroys MainWindow */
-    ~GameMainWindow();
+    virtual ~GameMainWindow();
     /** Sets caption of MainWindow to @ref caption */
     void setCaption(const char* caption);
     /** Returns MainWindow's widget

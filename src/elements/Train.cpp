@@ -14,7 +14,7 @@ Train::Train(GameController* c, TrainInfo* i, Player* p) : GameElement(p, 3)
 Train::~Train()
 {
   // Delete wagons
-  for(int i = 0; i < wagons.size(); i++)
+  for(unsigned int i = 0; i < wagons.size(); i++)
     delete wagons[i];
 }
 

@@ -8,8 +8,9 @@
 #include "GameController.h"
 #include <string.h>
 
-const short int daysinmonth[] =
-    { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+// Contains information about how many days are in each month
+const short int daysinmonth[13] =
+  { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 GameInfo::GameInfo(GameController* c)
 {

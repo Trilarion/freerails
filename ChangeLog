@@ -1,3 +1,8 @@
+Fri Sep 13 12:45:00 2002  Alexander Opitz <opi@le-bit.de>:
+o some code clean ups to compile with gcc3.x.x (like missing std::
+  forgotten last lines and so on.)
+o the diff was sended from  Frank Schmischke
+o Frank starts to use Qt 3.0.x
 Thu Sep 05 10:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add missing images/tilesets
 o change hard link to the tilesets

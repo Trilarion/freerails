@@ -1,6 +1,6 @@
-================
-FreeRails v0.0.7
-================
+=================
+FreeRails v0.0.7+
+=================
 
 
 Install
@@ -15,6 +15,6 @@ or
 
 - "make" to compile all
 
-- "game" to start the game (if configure and make was successfully :-)
+- "src/main/freerails" to start the game (if configure and make was successfully :-)
 
 ## $Id$
