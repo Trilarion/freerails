@@ -5,8 +5,9 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include "GameElement.h"
 #include <vector>
+
+class GameElement;
 
 class Player {
 public:
