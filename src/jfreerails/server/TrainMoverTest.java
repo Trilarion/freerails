@@ -9,7 +9,6 @@ import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.TrainModel;
-import jfreerails.world.train.TrainPositionOnMap;
 import junit.framework.TestCase;
 
 
@@ -43,11 +42,6 @@ public class TrainMoverTest extends TestCase implements MoveReceiver {
 
         TrainModel t = (TrainModel)w.get(KEY.TRAINS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
-
-        TrainPositionOnMap pos = t.getPosition();
-
-        assertEquals(pos.getX(0), 0);
-        assertEquals(pos.getY(0), 0);
 
         PathWalker pw = trainMover.getWalker();
 

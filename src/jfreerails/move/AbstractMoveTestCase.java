@@ -27,7 +27,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
     protected void setUp() {
         setHasSetupBeenCalled(true);
-        setWorld(new WorldImpl());
+        setWorld(new WorldImpl(10, 10));
         //		Set the time..
         getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
         getWorld().set(ITEM.TIME, new GameTime(0));

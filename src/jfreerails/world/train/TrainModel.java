@@ -10,7 +10,6 @@ import jfreerails.world.common.FreerailsSerializable;
 public class TrainModel implements FreerailsSerializable {
     public static final int MAX_NUMBER_OF_WAGONS = 6;
     private int scheduleID;
-    private TrainPositionOnMap trainposition;
     private int engineType = 0;
     private final int[] wagonTypes;
     private int cargoBundleNumber;
@@ -18,8 +17,6 @@ public class TrainModel implements FreerailsSerializable {
     public int hashCode() {
         int result;
         result = scheduleID;
-        result = 29 * result +
-            (trainposition != null ? trainposition.hashCode() : 0);
         result = 29 * result + engineType;
         result = 29 * result + cargoBundleNumber;
 
@@ -27,8 +24,8 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     public TrainModel getNewInstance(int newEngine, int[] newWagons) {
-        return new TrainModel(newEngine, newWagons, this.getPosition(),
-            this.getScheduleID(), this.getCargoBundleNumber());
+        return new TrainModel(newEngine, newWagons, this.getScheduleID(),
+            this.getCargoBundleNumber());
     }
 
     /**
@@ -37,11 +34,10 @@ public class TrainModel implements FreerailsSerializable {
      * @param wagons array of wagon types
      * @param p initial position of the train on the map.
      */
-    public TrainModel(int engine, int[] wagons, TrainPositionOnMap p,
-        int scheduleID, int BundleId) { //World world){
+    public TrainModel(int engine, int[] wagons, int scheduleID, int BundleId) { //World world){
         this.engineType = engine;
         this.wagonTypes = wagons;
-        trainposition = p;
+
         this.scheduleID = scheduleID;
         this.cargoBundleNumber = BundleId;
     }
@@ -51,11 +47,9 @@ public class TrainModel implements FreerailsSerializable {
         this.cargoBundleNumber = BundleId;
     }
 
-    public TrainModel(int engine, int[] wagons, TrainPositionOnMap p,
-        int scheduleID) {
+    public TrainModel(int engine, int[] wagons, int scheduleID) {
         this.engineType = engine;
         this.wagonTypes = wagons;
-        trainposition = p;
         this.scheduleID = scheduleID;
     }
 
@@ -93,14 +87,6 @@ public class TrainModel implements FreerailsSerializable {
     //			throw new IllegalStateException("Cannot add wagon");
     //		}
     //	}
-    public TrainPositionOnMap getPosition() {
-        return trainposition;
-    }
-
-    public void setPosition(TrainPositionOnMap s) {
-        trainposition = s;
-    }
-
     public int getEngineType() {
         return engineType;
     }
@@ -118,8 +104,6 @@ public class TrainModel implements FreerailsSerializable {
             TrainModel test = (TrainModel)obj;
             boolean b = this.cargoBundleNumber == test.cargoBundleNumber &&
                 this.engineType == test.engineType &&
-                null == this.trainposition ? null == test.trainposition
-                                           : this.trainposition.equals(test.trainposition) &&
                 Arrays.equals(this.wagonTypes, test.wagonTypes) &&
                 this.scheduleID == test.scheduleID;
 

@@ -35,18 +35,16 @@ public class ChangeTrainPositionMoveTest extends TestCase {
     public void testDoMove() {
         setUp();
 
-        TrainModel t = (TrainModel)this.w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
-        TrainPositionOnMap oldPosition = t.getPosition();
+        TrainPositionOnMap oldPosition = (TrainPositionOnMap)w.get(KEY.TRAIN_POSITIONS,
+                0, MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(FIXTURE1_BEFORE_MOVE1, oldPosition);
 
         MoveStatus status = MOVE1.doMove(this.w, Player.AUTHORITATIVE);
         assertTrue(status.ok);
 
-        t = (TrainModel)this.w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        TrainPositionOnMap newPosition = (TrainPositionOnMap)w.get(KEY.TRAIN_POSITIONS,
+                0, MapFixtureFactory.TEST_PRINCIPAL);
 
-        TrainPositionOnMap newPosition = t.getPosition();
         assertEquals(FIXTURE1_AFTER_MOVE1, newPosition);
     }
 
@@ -67,9 +65,10 @@ public class ChangeTrainPositionMoveTest extends TestCase {
         w = new WorldImpl(1, 1);
         w.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
-        TrainModel train1 = new TrainModel(0, new int[] {},
-                FIXTURE1_BEFORE_MOVE1, 0);
+        TrainModel train1 = new TrainModel(0, new int[] {}, 0);
         w.add(KEY.TRAINS, train1, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.TRAIN_POSITIONS, FIXTURE1_BEFORE_MOVE1,
+            MapFixtureFactory.TEST_PRINCIPAL);
     }
 
     private static final ChangeTrainPositionMove MOVE1 = new ChangeTrainPositionMove(TrainPositionOnMap.createInstance(

@@ -34,6 +34,7 @@ public class TrainFixture {
         TrainModel train = new TrainModel(0);
         w.addPlayer(MapFixtureFactory.TEST_PLAYER);
         w.add(KEY.TRAINS, train, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.TRAIN_POSITIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
 
         if (null == w.get(KEY.TRAINS, 0, MapFixtureFactory.TEST_PRINCIPAL)) {
             throw new NullPointerException();

@@ -10,6 +10,7 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.TrainModel;
+import jfreerails.world.train.TrainPositionOnMap;
 
 
 /** Draws the trains on the main map.
@@ -33,7 +34,8 @@ public class OverHeadTrainView implements Painter {
 
             for (int i = 0; i < w.size(KEY.TRAINS, principal); i++) {
                 TrainModel train = (TrainModel)w.get(KEY.TRAINS, i, principal);
-                trainPainter.paintTrain(g, train);
+                TrainPositionOnMap pos = (TrainPositionOnMap)w.get(KEY.TRAIN_POSITIONS, i, principal);
+                trainPainter.paintTrain(g, train, pos);
             }
         }
     }

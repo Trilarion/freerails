@@ -12,6 +12,7 @@ import jfreerails.world.common.IntLine;
  */
 public class PathWalkerImpl implements PathWalker {
     private final FreerailsPathIterator it;
+    private final Thread t;
 
     /**
      * current segment of the path we are on.
@@ -19,9 +20,13 @@ public class PathWalkerImpl implements PathWalker {
     private final IntLine currentSegment = new IntLine();
     private double distanceAlongCurrentSegment = 0;
     private double distanceOfThisStepRemaining = 0;
+    private boolean beforeFirst = true;
+    private int lastX;
+    private int lastY;
 
     public PathWalkerImpl(FreerailsPathIterator i) {
         it = i;
+        t = Thread.currentThread();
     }
 
     /**
@@ -81,6 +86,24 @@ public class PathWalkerImpl implements PathWalker {
         } else {
             endInMiddleOfSegment(line);
         }
+
+        /*Sanity check: the first point of the last line should equal the
+         * second point of the current line.
+         *
+         */
+        if (!beforeFirst) {
+            if (line.x1 != this.lastX) {
+                throw new IllegalStateException();
+            }
+
+            if (line.y1 != this.lastY) {
+                throw new IllegalStateException();
+            }
+        }
+
+        this.lastX = line.x2;
+        this.lastY = line.y2;
+        beforeFirst = false;
 
         return;
     }

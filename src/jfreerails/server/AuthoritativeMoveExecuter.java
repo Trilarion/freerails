@@ -63,6 +63,10 @@ class AuthoritativeMoveExecuter implements MoveReceiver {
          */
         ms = move.doMove(world, Player.AUTHORITATIVE);
 
+        if (!ms.isOk()) {
+            logger.info(ms.message);
+        }
+
         /* retain mutex since order of forwarded moves is important */
         forwardMove(move, ms);
     }

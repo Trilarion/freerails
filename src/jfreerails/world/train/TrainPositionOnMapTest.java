@@ -407,7 +407,8 @@ public class TrainPositionOnMapTest extends TestCase {
         FreerailsPathIterator path = new SimplePathIteratorImpl(new int[] {
                     40, 30, 20, 10
                 }, new int[] {44, 33, 22, 11});
-        TrainPositionOnMap a = TrainPositionOnMap.createInOppositeDirectionToPath(path);
+        TrainPositionOnMap a = TrainPositionOnMap.createInSameDirectionAsPath(path)
+                                                 .reverse();
 
         assertEquals(a.getLength(), 4);
 

@@ -150,16 +150,16 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         schedule.setOrder(1, order2);
         
         int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, null, scheduleID), TEST_PRINCIPAL);
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 },  scheduleID), TEST_PRINCIPAL);
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
         scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, null, scheduleID), TEST_PRINCIPAL);
+        w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 },  scheduleID), TEST_PRINCIPAL);
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
         scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(), TEST_PRINCIPAL);
-        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, null, scheduleID), TEST_PRINCIPAL);
+        w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 },  scheduleID), TEST_PRINCIPAL);
         
         
         final MyGlassPanel glassPanel = new MyGlassPanel();

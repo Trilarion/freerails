@@ -61,7 +61,7 @@ public class WorldDifferences implements World {
     private final int LIST_LENGTH = i++;
 
     /** Instances of this class are used as the keys in the hashmap listDifferences.*/
-    private class DiffKey {
+    public class DiffKey {
         final int keyType;
         final int a;
         final int b;

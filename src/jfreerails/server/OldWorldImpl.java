@@ -89,7 +89,8 @@ public class OldWorldImpl {
         }
 
         //Randomly position the city tiles
-        CityTilePositioner.positionCityTiles(w);
+        NewCityTilePositioner ctp = new NewCityTilePositioner(w);
+        ctp.initCities();
 
         //Set the time..
         w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));

@@ -487,21 +487,30 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
          * refreshes the map views.
          */
     public void tilesChanged(Rectangle tilesChanged) {
-        Point tile = new Point();
         logger.fine("TilesChanged = " + tilesChanged);
 
-        // Fix for bug 967673 (Crash when building track close to edge of map). 
-        Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(),
-                world.getMapHeight());
-        tilesChanged = tilesChanged.intersection(mapRect);
+        //If lots of tiles have changed, do a complete refresh. 
+        int size = tilesChanged.width * tilesChanged.height;
 
-        for (tile.x = tilesChanged.x;
-                tile.x < (tilesChanged.x + tilesChanged.width); tile.x++) {
-            for (tile.y = tilesChanged.y;
-                    tile.y < (tilesChanged.y + tilesChanged.height);
-                    tile.y++) {
-                mainMap.refreshTile(tile.x, tile.y);
-                overviewMap.refreshTile(tile.x, tile.y);
+        if (size > 100) {
+            mainMap.refreshAll();
+            overviewMap.refreshAll();
+        } else {
+            Point tile = new Point();
+
+            // Fix for bug 967673 (Crash when building track close to edge of map). 
+            Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(),
+                    world.getMapHeight());
+            tilesChanged = tilesChanged.intersection(mapRect);
+
+            for (tile.x = tilesChanged.x;
+                    tile.x < (tilesChanged.x + tilesChanged.width); tile.x++) {
+                for (tile.y = tilesChanged.y;
+                        tile.y < (tilesChanged.y + tilesChanged.height);
+                        tile.y++) {
+                    mainMap.refreshTile(tile.x, tile.y);
+                    overviewMap.refreshTile(tile.x, tile.y);
+                }
             }
         }
     }

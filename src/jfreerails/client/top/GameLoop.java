@@ -94,25 +94,25 @@ final public class GameLoop implements Runnable {
         while (true) {
             frameStartTime = System.currentTimeMillis();
 
-            if (!screenHandler.isMinimised()) {
-                /*
-                * Flush all redraws in the underlying toolkit.  This reduces
-                * X11 lag when there isn't much happening, but is expensive
-                * under Windows
-                */
-                Toolkit.getDefaultToolkit().sync();
+            /*
+            * Flush all redraws in the underlying toolkit.  This reduces
+            * X11 lag when there isn't much happening, but is expensive
+            * under Windows
+            */
+            Toolkit.getDefaultToolkit().sync();
 
-                synchronized (SynchronizedEventQueue.MUTEX) {
-                    if (!gameNotDone) {
-                        SynchronizedEventQueue.MUTEX.notify();
+            synchronized (SynchronizedEventQueue.MUTEX) {
+                if (!gameNotDone) {
+                    SynchronizedEventQueue.MUTEX.notify();
 
-                        break;
-                    }
+                    break;
+                }
 
-                    if (model != null) {
-                        model.update();
-                    }
+                if (model != null) {
+                    model.update();
+                }
 
+                if (!screenHandler.isMinimised()) {
                     if (screenHandler.isInUse()) {
                         Graphics g = screenHandler.getDrawGraphics();
 
@@ -137,28 +137,27 @@ final public class GameLoop implements Runnable {
                         screenHandler.swapScreens();
                     }
                 }
+            }
 
-                if (LIMIT_FRAME_RATE) {
-                    long deltatime = System.currentTimeMillis() -
-                        frameStartTime;
-
-                    while (deltatime < (1000 / TARGET_FPS)) {
-                        try {
-                            long sleeptime = (1000 / TARGET_FPS) - deltatime;
-                            Thread.sleep(sleeptime);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        deltatime = System.currentTimeMillis() -
-                            frameStartTime;
-                    }
-                }
-            } else {
+            if (screenHandler.isMinimised()) {
                 try {
-                    //The window is minimised
+                    //The window is minimised so we don't need to keep updating.
                     Thread.sleep(200);
                 } catch (Exception e) {
+                    //do nothing.
+                }
+            } else if (LIMIT_FRAME_RATE) {
+                long deltatime = System.currentTimeMillis() - frameStartTime;
+
+                while (deltatime < (1000 / TARGET_FPS)) {
+                    try {
+                        long sleeptime = (1000 / TARGET_FPS) - deltatime;
+                        Thread.sleep(sleeptime);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    deltatime = System.currentTimeMillis() - frameStartTime;
                 }
             }
         }

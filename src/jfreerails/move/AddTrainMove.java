@@ -28,6 +28,7 @@ public class AddTrainMove extends CompositeMove {
         Move m = new AddItemToListMove(KEY.TRAINS, i, train, p);
         Move m2 = new AddItemToListMove(KEY.TRAIN_SCHEDULES,
                 train.getScheduleID(), s, p);
+        Move m3 = new AddItemToListMove(KEY.TRAIN_POSITIONS, i, null, p);
         int quantity = 1;
         int engineType = train.getEngineType();
         Transaction transaction = new AddItemTransaction(Transaction.TRAIN,
@@ -35,6 +36,6 @@ public class AddTrainMove extends CompositeMove {
         AddTransactionMove transactionMove = new AddTransactionMove(p,
                 transaction);
 
-        return new AddTrainMove(new Move[] {m, transactionMove, m2});
+        return new AddTrainMove(new Move[] {m, transactionMove, m2, m3});
     }
 }

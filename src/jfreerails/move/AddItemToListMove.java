@@ -93,7 +93,11 @@ public class AddItemToListMove implements ListMove {
         if (o instanceof AddItemToListMove) {
             AddItemToListMove test = (AddItemToListMove)o;
 
-            if (!this.item.equals(test.getAfter())) {
+            if (null == this.item) {
+                if (null != test.item) {
+                    return false;
+                }
+            } else if (!this.item.equals(test.getAfter())) {
                 return false;
             }
 

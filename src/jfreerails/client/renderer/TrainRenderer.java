@@ -25,13 +25,11 @@ public class TrainRenderer {
         this.trainImages = trainImages;
     }
 
-    public void paintTrain(Graphics g, TrainModel train) {
+    public void paintTrain(Graphics g, TrainModel train, TrainPositionOnMap s) {
         //If the train has been removeed, it will be null!
         if (train == null) {
             return;
         }
-
-        TrainPositionOnMap s = train.getPosition();
 
         /*
          * XXX HACK !!

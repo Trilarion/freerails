@@ -13,6 +13,7 @@ import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerCommand;
 import jfreerails.move.ChangeGameSpeedMove;
+import jfreerails.move.MapDiffMove;
 import jfreerails.move.TimeTickMove;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
@@ -22,6 +23,7 @@ import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.World;
+import jfreerails.world.top.WorldDifferences;
 
 
 /**
@@ -249,6 +251,14 @@ public class ServerGameEngine implements GameModel, Runnable {
 
         InterestChargeMoveGenerator interestChargeMoveGenerator = new InterestChargeMoveGenerator(moveExecuter);
         interestChargeMoveGenerator.update(world);
+
+        //Grow cities.
+        WorldDifferences wd = new WorldDifferences(world);
+        NewCityTilePositioner ctp = new NewCityTilePositioner(wd);
+        ctp.growCities();
+
+        MapDiffMove move = new MapDiffMove(world, wd);
+        moveExecuter.processMove(move);
     }
 
     /** This is called at the start of each new month. */

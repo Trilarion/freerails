@@ -1,9 +1,10 @@
 package jfreerails.server;
 
+import java.awt.Point;
+import java.util.logging.Logger;
 import jfreerails.controller.FreerailsServerSerializable;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeTrainPositionMove;
-import jfreerails.move.Move;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -12,6 +13,7 @@ import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPathIterator;
+import jfreerails.world.train.TrainPositionOnMap;
 
 
 /**
@@ -23,11 +25,13 @@ import jfreerails.world.train.TrainPathIterator;
  *
  */
 public class TrainMover implements FreerailsServerSerializable, ServerAutomaton {
+    private static final Logger logger = Logger.getLogger(TrainMover.class.getName());
     private final PathWalker walker;
     private final int trainNumber;
     private final ReadOnlyWorld w;
     private final TrainPathFinder trainPathFinder;
     private final FreerailsPrincipal principal;
+    private Point head;
 
     public TrainMover(FreerailsPathIterator to, ReadOnlyWorld world,
         int trainNo, FreerailsPrincipal p) {
@@ -67,9 +71,32 @@ public class TrainMover implements FreerailsServerSerializable, ServerAutomaton 
             double distance = distanceTravelledAsDouble * getTrainSpeed();
             walker.stepForward(distance);
 
-            Move m = ChangeTrainPositionMove.generate(w, walker, trainNumber,
-                    principal);
+            checkTrainPosition();
+
+            ChangeTrainPositionMove m = ChangeTrainPositionMove.generate(w,
+                    walker, trainNumber, principal);
+
             moveReceiver.processMove(m);
+            head = m.newHead();
+            checkTrainPosition();
+        }
+    }
+
+    private void checkTrainPosition() {
+        TrainPositionOnMap currentPosition = (TrainPositionOnMap)w.get(KEY.TRAIN_POSITIONS,
+                trainNumber, principal);
+
+        Point currentHead = new Point(currentPosition.getX(0),
+                currentPosition.getY(0));
+
+        if (null != head && !head.equals(currentHead)) {
+            logger.severe("Expected head =" + head.toString() +
+                ", actual head =" + currentHead.toString());
+            logger.severe("Thread:" + Thread.currentThread().getName());
+
+            IllegalStateException e = new IllegalStateException();
+            e.printStackTrace();
+            throw e;
         }
     }
 

@@ -169,8 +169,8 @@ public class TrainBuilder implements ServerAutomaton {
 
             /* Create the train model object.*/
             int scheduleId = world.size(KEY.TRAIN_SCHEDULES, principal);
-            TrainModel train = new TrainModel(engineTypeId, wagons, null,
-                    scheduleId, cargoBundleId);
+            TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId,
+                    cargoBundleId);
 
             /* Create the move that sets up the train's schedule.*/
             ImmutableSchedule is = generateInitialSchedule(principal, world);
