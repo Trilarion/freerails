@@ -13,9 +13,6 @@ Engine::Engine(WorldMap* _worldMap, Player* _player)
   
   Init(_player, _worldMap);
 
-/*  trackControl = new TrackController(_worldMap);
-  stationControl = new StationController(_worldMap);
-*/
   std::cerr << "engine(alone) inited" << std::endl;
 }
 
@@ -59,9 +56,6 @@ void Engine::Init(Player* _player, WorldMap* _worldMap)
   controllerDispatcher = new ControllerDispatcher();
   
   controllerDispatcher->addController(new PlayerController());
-
-//  trackControl = new TrackController(_worldMap);
-//  stationControl = new StationController(_worldMap);
 
   controllerDispatcher->addController(new TrackController(_worldMap));
   controllerDispatcher->addController(new StationController(_worldMap));
@@ -147,24 +141,13 @@ void Engine::processMsg(Message* msg)
 
 void Engine::addElementToGame(Message* msg)
 {
-  #warning correct this
-/*  switch (msg->getType())
-  {
-    case GameElement::idStation:
-      stationControl->addGameElement(msg->getData());
-      break;
-    case GameElement::idTrack:
-      trackControl->addGameElement(msg->getData());
-      break;
-    default:
-*/
+  #warning correct me ... I need the place to put the element on map!
   GameElement* element = (GameElement *)msg->getData();
   Controller* elementController = controllerDispatcher->getController(element->getTypeID());
 //  if (isServer)
 //  {
 //    if (elementController->canBuildElement(element)) {
       elementController->addGameElement(element);
-cerr << "3" << endl;
 //      Message* msg = new Message(Message::addElement, 0, element);
 //      SendAll(msg);
 //    }
@@ -173,9 +156,6 @@ cerr << "3" << endl;
 //  {
 //  //  elementController->addGameElement(element);
 //  }
-/*    break;
-  }
-*/
 }
 
 void Engine::changeStateOfGame(Message* msg)

@@ -85,12 +85,7 @@ class Engine
 
     ControllerDispatcher* controllerDispatcher;  // Holds the controllerDispatcher
 
-//    TrackController *trackControl;
-//    StationController *stationControl;
-
-
-
-    GameController* gameCon; // Is it needed any longer?
+    GameController* gameCon; // Is it needed any longer? Should later be added to controllerDispatcher
   
 };
 
