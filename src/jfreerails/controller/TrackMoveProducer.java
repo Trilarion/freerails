@@ -8,6 +8,7 @@ import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
@@ -15,6 +16,12 @@ import jfreerails.world.track.TrackRule;
 final public class TrackMoveProducer {
     private TrackRule trackRule;
     private ReadOnlyWorld w;
+
+    /**
+     * The principal on behalf of which this TrackMoveProducer is producing
+     * moves
+     */
+    private FreerailsPrincipal principal;
     private UntriedMoveReceiver moveTester;
     public final static int BUILD_TRACK = 1;
     public final static int REMOVE_TRACK = 2;
@@ -24,7 +31,10 @@ final public class TrackMoveProducer {
     public final static int IGNORE_TRACK = 4;
     private int trackBuilderMode = BUILD_TRACK;
 
-    /** This generates the transactions - the charge - for the track being built.*/
+    /**
+     * This generates the transactions - the charge - for the track being
+     * built.
+     */
     private TrackMoveTransactionsGenerator transactionsGenerator;
 
     public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
@@ -97,19 +107,11 @@ final public class TrackMoveProducer {
         return trackBuilderMode;
     }
 
-    public TrackMoveProducer(ReadOnlyWorld world) {
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world);
-
-        if (world == null) {
-            throw new java.lang.NullPointerException(
-                "Tried to create new TrackBuilder, but world==null");
-        }
-
-        this.w = world;
-    }
-
+    /**
+     * @param p the principal which this TrackMoveProducer generates moves for
+     */
     public TrackMoveProducer(ReadOnlyWorld world,
-        UntriedMoveReceiver moveReceiver) {
+        UntriedMoveReceiver moveReceiver, FreerailsPrincipal p) {
         if (null == world || null == moveReceiver) {
             throw new NullPointerException();
         }
@@ -117,7 +119,9 @@ final public class TrackMoveProducer {
         this.moveTester = moveReceiver;
         this.w = world;
         this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world);
+        principal = p;
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
+                principal);
     }
 
     private MoveStatus upgradeTrack(Point point, TrackRule trackRule) {

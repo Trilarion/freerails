@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import jfreerails.client.view.ModelRoot;
-import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.Move;
@@ -13,23 +12,68 @@ import jfreerails.move.RejectedMove;
 import jfreerails.move.UndoneMove;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.top.World;
+import jfreerails.util.GameModel;
+import jfreerails.util.SychronizedQueue;
 
 
 /**
- * An implementation of MoveExecuter which pre-commits moves on the outward trip
+ * A move executer which pre-commits moves on the outward trip
  * to the server, and rolls back rejected moves when received back from the
  * server.
  *
+ * TODO sort out "undo moves" mess.
+ *
+ * Requirements for Undo Move:
+ * *Move must already have been performed
+ * *Undo must not succeed if circumstances have changed such that the undo is
+ * not possible.
+ * *Undo cannot be performed more than once
+ * *Client must receive notification of change.
+ * *Order of composite undo must be reversed wrt forwards move.
+ * *Undo must only be executable by client which performed the move.
+ * *Undos must remain in stack for sufficient time for human to manually perform
+ * them
+ *
  * @author rtuck99@users.sourceforge.net
  */
-public class NonAuthoritativeMoveExecuter extends MoveExecuter {
+public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
+    GameModel {
     private PendingQueue pendingQueue = new PendingQueue();
     private ModelRoot modelRoot;
+    private MoveReceiver moveReceiver;
+    private World world;
+    private final SychronizedQueue sychronizedQueue = new SychronizedQueue();
+    static final boolean debug = (System.getProperty(
+            "jfreerails.move.NonAuthoritativeMoveExecuter.debug") != null);
 
     public NonAuthoritativeMoveExecuter(World w, MoveReceiver mr,
         ModelRoot modelRoot) {
-        super(w, mr);
         this.modelRoot = modelRoot;
+        moveReceiver = mr;
+        world = w;
+    }
+
+    /**
+     * @see MoveReceiver#processMove(Move)
+     */
+    public void processMove(Move move) {
+        if (move instanceof jfreerails.move.AddTrainMove) {
+            System.err.println("adding train move " + move);
+        }
+
+        sychronizedQueue.write(move);
+    }
+
+    /**
+     * Processes moves confirmed or rejected by the server.
+     */
+    private void executeOutstandingMoves() {
+        FreerailsSerializable[] items = sychronizedQueue.read();
+
+        for (int i = 0; i < items.length; i++) {
+            Move move = (Move)items[i];
+            pendingQueue.moveCommitted(move);
+        }
     }
 
     /**
@@ -39,18 +83,6 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
      */
     public UncommittedMoveReceiver getUncommittedMoveReceiver() {
         return pendingQueue;
-    }
-
-    /**
-            * Processes moves confirmed or rejected by the server.
-            */
-    public void executeOutstandingMoves() {
-        FreerailsSerializable[] items = getSychronizedQueue().read();
-
-        for (int i = 0; i < items.length; i++) {
-            Move move = (Move)items[i];
-            pendingQueue.moveCommitted(move);
-        }
     }
 
     public class PendingQueue implements UncommittedMoveReceiver {
@@ -74,12 +106,22 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
                 // our attempt to undo may fail due to a
                 // pre-committed move which is yet to be
                 // rejected
-                ms = rm.getAttemptedMove().tryUndoMove(world);
+                Move attempted = rm.getAttemptedMove();
+
+                /* TODO
+                 * ms = attempted.tryUndoMove(world, attempted.getPrincipal());
+                 */
+                ms = attempted.tryUndoMove(world);
 
                 if (ms == MoveStatus.MOVE_OK) {
-                    rm.getAttemptedMove().undoMove(world);
+                    System.err.println("undoing " + attempted.toString());
+
+                    /* TODO
+                     * attempted.undoMove(world, attempted.getPrincipal());
+                     */
+                    attempted.undoMove(world);
                     rejectedMoves.remove(i);
-                    forwardMove(new UndoneMove(rm.getAttemptedMove()), ms);
+                    forwardMove(new UndoneMove(attempted), ms);
                     n++;
                 }
             }
@@ -121,6 +163,9 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
                             while (!approvedMoves.isEmpty()) {
                                 Move am = (Move)approvedMoves.getFirst();
 
+                                /* TODO
+                                 * if (am.doMove(world, am.getPrincipal()) !=
+                                 */
                                 if (am.doMove(world) != MoveStatus.MOVE_OK) {
                                     break;
                                 }
@@ -141,9 +186,17 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
 
             /* move must be from another client */
             if (!(move instanceof RejectedMove)) {
+                /* TODO
+                 * ms = move.doMove(world, move.getPrincipal());
+                 */
                 ms = move.doMove(world);
 
                 if (ms != MoveStatus.MOVE_OK) {
+                    if (debug) {
+                        System.out.println("Move " + move + " rejected " +
+                            "because " + ms.toString());
+                    }
+
                     /* move could not be committed because of
                      * a pre-commited move yet to be rejected by the server */
                     approvedMoves.addLast(move);
@@ -174,6 +227,9 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
             if (moveReceiver != null) {
                 MoveStatus ms;
 
+                /* TODO
+                 * ms = move.doMove(world, move.getPrincipal());
+                 */
                 ms = move.doMove(world);
 
                 if (ms == MoveStatus.MOVE_OK) {
@@ -199,5 +255,28 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
 
     public void undoLastMove() {
         assert false : "attempted to undo move in client on return from server";
+    }
+
+    /**
+     * Forwards moves after execution. This implementation forwards all
+     * successful moves submitted. Subclasses may choose to override this to
+     * forward moves differently.
+     */
+    private void forwardMove(Move move, MoveStatus status) {
+        if (status != MoveStatus.MOVE_OK) {
+            System.err.println("Couldn't commit move: " + status.message);
+
+            return;
+        }
+
+        if (moveReceiver == null) {
+            return;
+        }
+
+        moveReceiver.processMove(move);
+    }
+
+    public void update() {
+        executeOutstandingMoves();
     }
 }

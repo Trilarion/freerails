@@ -15,12 +15,13 @@ import jfreerails.util.GameModel;
  */
 final public class GameLoop implements Runnable {
     final static boolean LIMIT_FRAME_RATE = false;
-    boolean gameNotDone = true;
+    boolean gameNotDone = false;
     final ScreenHandler screenHandler;
     final static int TARGET_FPS = 40;
     FPScounter fPScounter;
     private long frameStartTime;
     private final GameModel model;
+    private Integer loopMonitor = new Integer(0);  
 
     public GameLoop(ScreenHandler s) {
         screenHandler = s;
@@ -36,10 +37,41 @@ final public class GameLoop implements Runnable {
         }
     }
 
-    public void multiLockedCallback() {
+    /**
+     * Stops the game loop.
+     * Blocks until the loop is stopped.
+     * Do not call this from inside the event loop!
+     */
+    public void stop() {
+        synchronized (loopMonitor) {
+            if (gameNotDone == false) {
+                return;
+            }
+
+            gameNotDone = false;
+
+            if (Thread.holdsLock(SynchronizedEventQueue.MUTEX)) {
+                /*
+                 * we might be executing in the event queue so give up the
+                 * mutex temporarily to allow the loop to exit
+                 */
+                try {
+                    SynchronizedEventQueue.MUTEX.wait();
+                } catch (InterruptedException e) {
+                    assert false;
+                }
+            }
+
+            try {
+                loopMonitor.wait();
+            } catch (InterruptedException e) {
+                assert false;
+            }
+        }
     }
 
     public void run() {
+        gameNotDone = true;
         //SynchronizedEventQueue seq = SynchronizedEventQueue.getInstance();
         RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
         RepaintManagerForActiveRendering.setAsCurrentManager();
@@ -58,7 +90,7 @@ final public class GameLoop implements Runnable {
             System.err.println("Couldn't lower priority of redraw thread");
         }
 
-        while (gameNotDone) {
+        while (true) {
             frameStartTime = System.currentTimeMillis();
 
             if (!screenHandler.isMinimised()) {
@@ -70,7 +102,15 @@ final public class GameLoop implements Runnable {
                 Toolkit.getDefaultToolkit().sync();
 
                 synchronized (SynchronizedEventQueue.MUTEX) {
-                    model.update();
+                    if (!gameNotDone) {
+                        SynchronizedEventQueue.MUTEX.notify();
+
+                        break;
+                    }
+
+                    if (model != null) {
+                        model.update();
+                    }
 
                     Graphics g = screenHandler.getDrawGraphics();
 
@@ -108,6 +148,11 @@ final public class GameLoop implements Runnable {
                 } catch (Exception e) {
                 }
             }
+        }
+
+        /* signal that we are done */
+        synchronized (loopMonitor) {
+            loopMonitor.notify();
         }
     }
 }

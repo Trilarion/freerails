@@ -1,5 +1,10 @@
 package jfreerails.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import jfreerails.move.Move;
 import jfreerails.world.top.World;
 
@@ -9,7 +14,7 @@ import jfreerails.world.top.World;
  * same JVM.
  */
 public class LocalConnection implements ConnectionToServer {
-    private MoveReceiver moveReceiver;
+    private SourcedMoveReceiver moveReceiver;
     private LocalConnection peer;
     private World world;
     private ConnectionListener connectionListener;
@@ -32,25 +37,20 @@ public class LocalConnection implements ConnectionToServer {
         connectionListener = null;
     }
 
-    public void addMoveReceiver(MoveReceiver m) {
+    public void addMoveReceiver(SourcedMoveReceiver m) {
         moveReceiver = m;
     }
 
-    public void removeMoveReceiver(MoveReceiver m) {
+    public void removeMoveReceiver(SourcedMoveReceiver m) {
         moveReceiver = null;
     }
 
-    /*
-     * TODO implement this
-     public void send(FreerailsSerializable s);
-     */
-
-    /**
-     * TODO get rid of this
-     */
     public void processMove(Move move) {
         if (sendMoves) {
-            peer.sendMove(move);
+            /* XXX HACK HACK HACK */
+            /* until issues with world object mutability are resolved */
+            Move m = (Move)defensiveCopy(move);
+            peer.sendMove(m);
         }
     }
 
@@ -80,7 +80,7 @@ public class LocalConnection implements ConnectionToServer {
 
     protected void sendMove(Move move) {
         if (moveReceiver != null) {
-            moveReceiver.processMove(move);
+            moveReceiver.processMove(move, this);
         }
     }
 
@@ -88,7 +88,7 @@ public class LocalConnection implements ConnectionToServer {
      * TODO get rid of this
      */
     protected void sendUndoLastMove() {
-        ((UncommittedMoveReceiver)moveReceiver).undoLastMove();
+        moveReceiver.undoLastMove();
     }
 
     /**
@@ -115,6 +115,26 @@ public class LocalConnection implements ConnectionToServer {
         }
     }
 
+    private Serializable defensiveCopy(Serializable s) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream objectOut = new ObjectOutputStream(out);
+            objectOut.writeObject(s);
+            objectOut.flush();
+
+            byte[] bytes = out.toByteArray();
+
+            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+            ObjectInputStream objectIn = new ObjectInputStream(in);
+            Object o = objectIn.readObject();
+
+            return (Serializable)o;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+
     public World loadWorldFromServer() {
         sendMoves = true;
 
@@ -123,12 +143,14 @@ public class LocalConnection implements ConnectionToServer {
         setState(ConnectionState.READY);
         peer.setState(ConnectionState.READY);
 
-        return world;
+        assert peer.world != null;
+
+        /* create a copy of the world */
+        return (World)defensiveCopy(peer.world);
     }
 
     public void open() {
         peer.connect(this);
-        world = peer.world;
         setState(ConnectionState.WAITING);
         peer.setState(ConnectionState.WAITING);
     }
@@ -161,5 +183,19 @@ public class LocalConnection implements ConnectionToServer {
         if (connectionListener != null) {
             connectionListener.connectionStateChanged(this);
         }
+    }
+
+    private void sendServerCommand(ServerCommand s) {
+        if (connectionListener != null) {
+            System.out.println("Sending " + s);
+            connectionListener.processServerCommand(this, s);
+        }
+    }
+
+    /**
+     * send a server command to the remote peer
+     */
+    public void send(ServerCommand s) {
+        peer.sendServerCommand(s);
     }
 }

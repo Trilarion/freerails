@@ -9,12 +9,20 @@ package jfreerails.launcher;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.security.GeneralSecurityException;
 
+import jfreerails.client.common.FileUtils;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GUIClient;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.server.GameServer;
 import jfreerails.util.FreerailsProgressMonitor;
+import jfreerails.world.player.Player;
 
 /**
  * Launcher GUI for both the server and/or client.
@@ -63,9 +71,11 @@ FreerailsProgressMonitor {
 	ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
 	ServerStatusPanel ssp = (ServerStatusPanel) wizardPages[3];
 
+	boolean recover = false;
 	int port, mode;
 	GameServer gs = new GameServer();
 	GUIClient gc;
+	Player p;
 	CardLayout cl = (CardLayout) jPanel1.getLayout();
 	switch (lp.getMode()) {
 	    case LauncherPanel1.MODE_SINGLE_PLAYER:
@@ -77,15 +87,23 @@ FreerailsProgressMonitor {
 		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
 		    ScreenHandler.FULL_SCREEN;
 		try {
+		    p = getPlayer(cop.getPlayerName());
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
-			    cop.getDisplayMode(), "JFreerails Client", this);
+			    cop.getDisplayMode(), "JFreerails Client", this, p);
 		} catch (IOException e) {
 		    setInfoText(e.getMessage());
-		    sci.quitGame();
-		    cop.setControlsEnabled(true);
-		    prevButton.setEnabled(true);
-		    setNextEnabled(true);
-		    return;
+		    recover = true;
+		} catch (GeneralSecurityException e) {
+		    setInfoText(e.getMessage());
+		    recover = true;
+		} finally {
+		    if (recover) {
+			sci.quitGame();
+			cop.setControlsEnabled(true);
+			prevButton.setEnabled(true);
+			setNextEnabled(true);
+			return;
+		    }
 		}
 		hide();
 		break;
@@ -99,35 +117,52 @@ FreerailsProgressMonitor {
 		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
 		    ScreenHandler.FULL_SCREEN;
 		try {
+		    p = getPlayer(cop.getPlayerName());
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
-			    cop.getDisplayMode(), "JFreerails Client", this);
+			    cop.getDisplayMode(), "JFreerails Client", this, p);
 		} catch (IOException e) {
+		    recover = true;
 		    setInfoText(e.getMessage());
-		    sci.quitGame();
-		    cop.setControlsEnabled(true);
-		    prevButton.setEnabled(true);
-		    setNextEnabled(true);
-		    return;
+		} catch (GeneralSecurityException e) {
+		    recover = true;
+		    setInfoText(e.getMessage());
+		} finally {
+		    if (recover) {
+			sci.quitGame();
+			cop.setControlsEnabled(true);
+			prevButton.setEnabled(true);
+			setNextEnabled(true);
+			return;
+		    }
 		}
 		ssp.setTableModel(sci.getClientConnectionTableModel());
 		/* show the connection status screen */
 		currentPage = 3;
 		cl.show(jPanel1, "3");
+		setNextEnabled(false);
 		break;
 	    case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
 		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
 		    ScreenHandler.FULL_SCREEN;
 		try {
+		    p = getPlayer(cop.getPlayerName());
 		    gc = new
 			GUIClient(lp.getRemoteServerAddress().getAddress(),
 				mode, cop.getDisplayMode(), "JFreerails " +
-				"Client", this);
+				"Client", this, p);
 		} catch (IOException e) {
 		    setInfoText(e.getMessage());
-		    cop.setControlsEnabled(true);
-		    prevButton.setEnabled(true);
-		    setNextEnabled(true);
-		    return;
+		    recover = true;
+		} catch (GeneralSecurityException e) {
+		    setInfoText(e.getMessage());
+		    recover = true;
+		} finally {
+		    if (recover) {
+			cop.setControlsEnabled(true);
+			prevButton.setEnabled(true);
+			setNextEnabled(true);
+			return;
+		    }
 		}
 		hide();
 		break;
@@ -145,6 +180,37 @@ FreerailsProgressMonitor {
 		cl.show(jPanel1, "3");
 		/* TODO start server! */
 	}
+    }
+
+    private Player getPlayer(String name) throws IOException {
+	Player p;
+
+	try {
+	    FileInputStream fis =
+		FileUtils.openForReading(FileUtils.DATA_TYPE_PLAYER_SPECIFIC,
+			name, "keyPair");
+	    setInfoText("Loading saved player keys");
+	    ObjectInputStream ois = new ObjectInputStream(fis);
+	    p = (Player) ois.readObject();
+	    p.loadSession(ois);
+	} catch (FileNotFoundException e) {
+	    p = new Player(name);
+	    // save both public and private key for future use
+	    FileOutputStream fos =
+		FileUtils.openForWriting(FileUtils.DATA_TYPE_PLAYER_SPECIFIC,
+			name, "keyPair");
+	    setInfoText("Saving player keys");
+	    ObjectOutputStream oos = new ObjectOutputStream(fos);
+	    oos.writeObject(p);
+	    p.saveSession(oos);
+	} catch (ClassNotFoundException e) {
+	    setInfoText("Player KeyPair was corrupted!");
+	    throw new IOException (e.getMessage());
+	} catch (IOException e) {
+	    setInfoText("Player KeyPair was corrupted!");
+	    throw e;
+	}
+	return p;
     }
 
     /**

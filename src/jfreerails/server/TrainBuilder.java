@@ -112,11 +112,7 @@ public class TrainBuilder {
              * handling for moves which must be performed differently on
              * the client than the server.
              */
-            //moveReceiver.processMove(compositeMove);
-            /* Temporarily do move directly on world.  We will undo it before sending it to the client as
-             * one composite move.
-             */
-            compositeMove.doMove(world);
+            moveReceiver.processMove(compositeMove);
 
             FreerailsPathIterator from = new TrainPathIterator(tpf);
 
@@ -134,9 +130,6 @@ public class TrainBuilder {
              */
             Move positionMove = trainMover.setInitialTrainPosition(train, from);
 
-            compositeMove.undoMove(world);
-
-            moveReceiver.processMove(compositeMove);
             moveReceiver.processMove(positionMove);
 
             return trainMover;

@@ -7,6 +7,7 @@ import jfreerails.client.renderer.MapRenderer;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.MapUpdateMove;
 import jfreerails.move.Move;
+import jfreerails.move.UndoneMove;
 
 public class MapViewMoveReceiver implements MoveReceiver {
 
@@ -27,6 +28,10 @@ public class MapViewMoveReceiver implements MoveReceiver {
 	}
 
 	public void processMove(Move move) {
+		if (move instanceof UndoneMove) {
+		    move = ((UndoneMove) move).getUndoneMove();
+		}
+
 		if (mapUpdateMoveClass.isInstance(move)) {
 		
 			Rectangle r = ((MapUpdateMove) move).getUpdatedTiles();

@@ -24,18 +24,25 @@ public class KEYTest extends TestCase {
         Field[] fields = KEY.class.getFields();
 
         for (int i = 0; i < fields.length; i++) {
+            String name = fields[i].getName();
             int modifiers = fields[i].getModifiers();
-            assertTrue("All the fields of KEY should be static",
-                Modifier.isStatic(modifiers));
+
+            if (!name.equals("shared")) {
+                assertTrue("All the fields of KEY should be static",
+                    Modifier.isStatic(modifiers));
+            }
+
             assertTrue("All the fields of KEY should be public",
                 Modifier.isPublic(modifiers));
             assertTrue("All the fields of KEY should be final",
                 Modifier.isFinal(modifiers));
 
             try {
-                Object o = fields[i].get(null);
-                assertTrue("All the fields of KEY should be instances of KEY",
-                    o instanceof KEY);
+                if (Modifier.isStatic(modifiers)) {
+                    Object o = fields[i].get(null);
+                    assertTrue("All the fields of KEY should be instances of" +
+                        " KEY", o instanceof KEY);
+                }
             } catch (IllegalAccessException e) {
                 assertTrue(false);
             }

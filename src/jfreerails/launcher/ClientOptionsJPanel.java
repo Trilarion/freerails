@@ -61,9 +61,6 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
 	jList1.setModel(listModel);
 	jList1.setSelectedIndex(0);
 	validateSettings();
-
-	/* XXX remove this when we have integrated multi-player support */
-	jPanel3.setVisible(false);
     }
     
     /** This method is called from within the constructor to

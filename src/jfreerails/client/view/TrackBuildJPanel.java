@@ -46,6 +46,9 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 	    /* determine max number of cols */
 	    Dimension d = trackBuildModesSP.getViewport().getSize();
 	    int numCols = (int) (d.getWidth() / (widthOfButton + 5));
+	    if (numCols < 1) {
+		numCols = 1;
+	    }
 	    int numRows = numberOfButtons / numCols + 1;
 	    d.setSize(d.getWidth(), numRows * (widthOfButton + 5));
 	    trackBuildModesPanel.setPreferredSize(d);

@@ -2,6 +2,7 @@ package jfreerails.world.top;
 
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.player.FreerailsPrincipal;
 
 
 /** <p>This interface defines a unified set of methods to access the elements
@@ -21,17 +22,38 @@ import jfreerails.world.track.FreerailsTile;
  *
  */
 public interface ReadOnlyWorld extends FreerailsSerializable {
-    /** Returns the element mapped to the specified item.
+    /**
+     * Returns the element mapped to the specified item.
+     * @deprecated in favour of get(ITEM, FreerailsPrincipal)
      */
     FreerailsSerializable get(ITEM item);
 
-    /** Returns the element at the specified position in the specified list.
+    /**
+     * Returns the element mapped to the specified item.
+     */
+    FreerailsSerializable get(ITEM item, FreerailsPrincipal p);
+
+    /**
+     * Returns the element at the specified position in the specified list.
+     * @deprecated in favour of get(KEY, int, FreerailsPrincipal)
      */
     FreerailsSerializable get(KEY key, int index);
 
-    /** Returns the number of elements in the specified list.
+    /**
+     * Returns the element at the specified position in the specified list.
+     */
+    FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p);
+
+    /**
+     * Returns the number of elements in the specified list.
+     * @deprecated in favour of size(KEY, FreerailsPrincipal)
      */
     int size(KEY key);
+
+    /**
+     * Returns the number of elements in the specified list.
+     */
+    int size(KEY key, FreerailsPrincipal p);
 
     /** Returns the width of the map in tiles.
      */
@@ -47,5 +69,10 @@ public interface ReadOnlyWorld extends FreerailsSerializable {
 
     boolean boundsContain(int x, int y);
 
+    /**
+     * @deprecated in favour of boundsContain(KEY, int, FreerailsPrincipal)
+     */
     boolean boundsContain(KEY k, int index);
+
+    boolean boundsContain(KEY k, int index, FreerailsPrincipal p);
 }

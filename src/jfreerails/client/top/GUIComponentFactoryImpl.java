@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -17,11 +18,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.renderer.ZoomedOutMapRenderer;
-import jfreerails.client.view.*;
 import jfreerails.client.view.CashJLabel;
 import jfreerails.client.view.DateJLabel;
 import jfreerails.client.view.DetailMapView;
@@ -31,20 +32,20 @@ import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.MapViewJComponentConcrete;
 import jfreerails.client.view.MapViewMoveReceiver;
 import jfreerails.client.view.ModelRoot;
+import jfreerails.client.view.ModelRootListener;
 import jfreerails.client.view.OverviewMapJComponent;
+import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationPlacementCursor;
 import jfreerails.client.view.TrainsJTabPane;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.StationBuilder;
 import jfreerails.controller.UntriedMoveReceiver;
-import jfreerails.move.Move;
-import jfreerails.move.WorldChangedEvent;
 import jfreerails.world.top.ReadOnlyWorld;
 
 
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
-    MoveReceiver {
+    ModelRootListener {
     private ModelRoot modelRoot;
     private ServerControlModel sc;
     private DateJLabel datejLabel;
@@ -102,14 +103,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 modelRoot);
     }
 
-    public void setup(ViewLists vl, ReadOnlyWorld w) {
+    private void setup(ViewLists vl, ReadOnlyWorld w) {
         viewLists = vl;
         world = w;
 
         UntriedMoveReceiver receiver = modelRoot.getReceiver();
-
-        /* create the models */
-        modelRoot.setWorld(world, receiver, viewLists);
 
         clientJFrame.setup();
 
@@ -131,7 +129,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         MoveReceiver mainmapMoveReceiver = new MapViewMoveReceiver(overviewMap);
         moveFork.addSplitMoveReceiver(mainmapMoveReceiver);
 
-        StationBuilder sb = new StationBuilder(receiver, w);
+        StationBuilder sb = new StationBuilder(receiver, w,
+                modelRoot.getPlayerPrincipal());
 
         stationTypesPopup.setup(modelRoot, mainMap.getStationRadius());
 
@@ -300,7 +299,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     ViewLists getViewLists() {
-        return this.viewLists;
+        return modelRoot.getViewLists();
     }
 
     ReadOnlyWorld getAddTrackRules() {
@@ -375,9 +374,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         setup(viewLists, world);
     }
 
-    public void processMove(Move m) {
-        if (m instanceof WorldChangedEvent) {
-            worldModelChanged();
-        }
+    public void modelRootChanged() {
+        worldModelChanged();
     }
 }

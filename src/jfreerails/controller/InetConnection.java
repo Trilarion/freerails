@@ -1,5 +1,6 @@
 package jfreerails.controller;
 
+import java.io.EOFException;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
@@ -29,7 +30,6 @@ import jfreerails.world.top.World;
 public class InetConnection extends Socket implements ConnectionToServer {
     /**
      * The socket which clients should connect to.
-     * TODO determine this 'scientifically'
      */
     public static final int SERVER_PORT = 55000;
     private ConnectionState state = ConnectionState.CLOSED;
@@ -60,7 +60,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
             sendQueue.flush();
         }
 
-        public synchronized void send(Serializable s) {
+        private synchronized void send(Serializable s) {
             try {
                 objectOutputStream.writeObject(s);
             } catch (SocketException e) {
@@ -109,7 +109,15 @@ public class InetConnection extends Socket implements ConnectionToServer {
     }
 
     public void addConnectionListener(ConnectionListener l) {
-        connectionListener = l;
+        synchronized (dispatcher) {
+            connectionListener = l;
+
+            /*
+             * wake up the dispatcher if it is waiting for the
+             * connectionListener to be activated
+             */
+            dispatcher.notifyAll();
+        }
     }
 
     public void removeConnectionListener(ConnectionListener l) {
@@ -117,15 +125,15 @@ public class InetConnection extends Socket implements ConnectionToServer {
     }
 
     private class Dispatcher implements Runnable {
-        private MoveReceiver moveReceiver;
+        private SourcedMoveReceiver moveReceiver;
         private ObjectInputStream objectInputStream;
         private boolean worldNotYetLoaded = true;
 
-        public synchronized void addMoveReceiver(MoveReceiver m) {
+        public synchronized void addMoveReceiver(SourcedMoveReceiver m) {
             moveReceiver = m;
         }
 
-        public synchronized void removeMoveReceiver(MoveReceiver m) {
+        public synchronized void removeMoveReceiver(SourcedMoveReceiver m) {
             moveReceiver = null;
         }
 
@@ -159,7 +167,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
             /*
              * wake up any thread waiting
              */
-            notify();
+            notifyAll();
             System.out.println("World received from server");
         }
 
@@ -182,6 +190,22 @@ public class InetConnection extends Socket implements ConnectionToServer {
                 }
 
                 setState(ConnectionState.READY);
+            } else {
+                synchronized (this) {
+                    while (connectionListener == null) {
+                        /* if the connectionListener has not yet been added then
+                         * sleep until one has been added to avoid losing the
+                         * event */
+                        try {
+                            wait();
+                        } catch (InterruptedException e) {
+                            assert false;
+                        }
+                    }
+
+                    connectionListener.processServerCommand(InetConnection.this,
+                        c);
+                }
             }
         }
 
@@ -208,7 +232,7 @@ public class InetConnection extends Socket implements ConnectionToServer {
                 if (o instanceof ServerCommand) {
                     processServerCommand((ServerCommand)o);
                 } else if ((o instanceof Move) && (moveReceiver != null)) {
-                    moveReceiver.processMove((Move)o);
+                    moveReceiver.processMove((Move)o, InetConnection.this);
                 } else {
                     System.out.println("Invalid class sent in stream");
                 }
@@ -237,6 +261,11 @@ public class InetConnection extends Socket implements ConnectionToServer {
                 }
             } catch (IOException e) {
                 System.out.println("IOException occurred " + e);
+
+                if (e instanceof EOFException) {
+                    //remote side probably disconnected abruptly
+                    disconnect();
+                }
             }
         }
 
@@ -247,12 +276,14 @@ public class InetConnection extends Socket implements ConnectionToServer {
             /*
              * wake up the thread if it's waiting for the connection to open
              */
-            notify();
+            notifyAll();
         }
 
         public synchronized void close() {
             try {
-                objectInputStream.close();
+                if (objectInputStream != null) {
+                    objectInputStream.close();
+                }
             } catch (IOException e) {
                 System.out.println("Caught an IOException disconnecting " + e);
             }
@@ -319,6 +350,13 @@ public class InetConnection extends Socket implements ConnectionToServer {
         return new InetConnection(serverSocket.accept(), world, mutex);
     }
 
+    public void send(ServerCommand s) {
+        if (sender != null) {
+            sender.send(s);
+            flush();
+        }
+    }
+
     public void processMove(Move move) {
         send(move);
 
@@ -331,16 +369,18 @@ public class InetConnection extends Socket implements ConnectionToServer {
         /* TODO implement this */
     }
 
-    public void addMoveReceiver(MoveReceiver m) {
+    public void addMoveReceiver(SourcedMoveReceiver m) {
         dispatcher.addMoveReceiver(m);
     }
 
-    public void removeMoveReceiver(MoveReceiver m) {
+    public void removeMoveReceiver(SourcedMoveReceiver m) {
         dispatcher.removeMoveReceiver(m);
     }
 
     public void flush() {
-        sender.flush();
+        if (sender != null) {
+            sender.flush();
+        }
     }
 
     /**
@@ -359,7 +399,11 @@ public class InetConnection extends Socket implements ConnectionToServer {
      * Closes the socket. Called by either client or server. Notifies the
      * remote side and then calls disconnect().
      */
-    public void close() {
+    public synchronized void close() {
+        if (state == ConnectionState.CLOSED) {
+            return;
+        }
+
         if (serverSocket != null) {
             /*
              * If we are the parent server socket, close it.
@@ -402,14 +446,26 @@ public class InetConnection extends Socket implements ConnectionToServer {
      * Actually closes the connection. Notifies the local side that the
      * connection has been disconnected.
      */
-    private void disconnect() {
+    private synchronized void disconnect() {
         try {
             System.out.println("disconnecting from remote peer!");
             setState(ConnectionState.CLOSED);
-            dispatcher.close();
-            sender.close();
+
+            if (dispatcher != null) {
+                dispatcher.close();
+            }
+
+            if (sender != null) {
+                sender.close();
+            }
+
             sender = null;
-            socket.close();
+
+            if (socket != null) {
+                socket.close();
+            }
+
+            socket = null;
         } catch (IOException e) {
             System.out.println("Caught an IOException disconnecting " + e);
         }

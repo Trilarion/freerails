@@ -7,6 +7,7 @@ import jfreerails.move.MoveStatus;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
@@ -27,9 +28,14 @@ public class FlatTrackExplorerTest extends TestCase {
         super(arg0);
     }
 
+    private Player testPlayer = new Player("test",
+            (new Player("test")).getPublicKey(), 0);
+
     protected void setUp() {
         world = new WorldImpl(20, 20);
-        world.add(KEY.BANK_ACCOUNTS, new BankAccount());
+        world.add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
+        world.add(KEY.BANK_ACCOUNTS, new BankAccount(),
+            testPlayer.getPrincipal());
         MapFixtureFactory.generateTrackRuleList(world);
 
         TrackRule rule = (TrackRule)world.get(KEY.TRACK_RULES, 0);

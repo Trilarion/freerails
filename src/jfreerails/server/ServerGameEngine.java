@@ -10,9 +10,9 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
 import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.MoveExecuter;
-import jfreerails.controller.MoveReceiver;
+import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.TimeTickMove;
@@ -20,10 +20,12 @@ import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 
 
@@ -34,16 +36,22 @@ import jfreerails.world.top.World;
  *
  */
 public class ServerGameEngine implements GameModel, Runnable {
+    /**
+     * Objects that run as part of the server should use this object as the
+     * destination for moves, rather than queuedMoveReceiver
+     */
+    private final AuthoritativeMoveExecuter moveExecuter;
+    private final QueuedMoveReceiver queuedMoveReceiver;
     private World world;
-    private MoveExecuter moveExecuter;
 
     /* some stats for monitoring sim speed */
     private int statUpdates = 0;
     private long statLastTimestamp = 0;
-    private MoveChainFork moveChainFork;
+    private final MoveChainFork moveChainFork;
     private CalcSupplyAtStations calcSupplyAtStations;
     TrainBuilder tb;
     private int targetTicksPerSecond = 0;
+    private IdentityProvider identityProvider;
 
     /**
      * List of the ServerAutomaton objects connected to this game
@@ -94,6 +102,8 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @param trainMovers ArrayList of TrainMover objects.
      * @param serverAutomata Vector of ServerAutomaton representing internal
      * clients of this game.
+     * @param p an IdentityProvider which correlates a ConnectionToServer
+     * object with a Principal.
      */
     private ServerGameEngine(ArrayList trainMovers, World w,
         Vector serverAutomata) {
@@ -104,6 +114,9 @@ public class ServerGameEngine implements GameModel, Runnable {
         moveChainFork = new MoveChainFork();
 
         moveExecuter = new AuthoritativeMoveExecuter(world, moveChainFork);
+        identityProvider = new IdentityProvider(this, moveExecuter);
+        queuedMoveReceiver = new QueuedMoveReceiver(moveExecuter,
+                identityProvider);
         tb = new TrainBuilder(world, moveExecuter);
         calcSupplyAtStations = new CalcSupplyAtStations(w, moveExecuter);
         moveChainFork.addListListener(calcSupplyAtStations);
@@ -113,6 +126,10 @@ public class ServerGameEngine implements GameModel, Runnable {
         }
 
         nextModelUpdateDue = System.currentTimeMillis();
+
+        /* Start the server thread */
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     public void run() {
@@ -170,7 +187,7 @@ public class ServerGameEngine implements GameModel, Runnable {
      */
     public synchronized void update() {
         if (targetTicksPerSecond > 0) {
-            moveExecuter.executeOutstandingMoves();
+            queuedMoveReceiver.executeOutstandingMoves();
 
             /*
              * start of server world update
@@ -248,6 +265,12 @@ public class ServerGameEngine implements GameModel, Runnable {
 
             ticksSinceUpdate++;
         } else {
+            /*
+             * even when game is paused, we should still check for moves
+             * submitted by players due to execution of ServerCommands on the
+             * server
+             */
+            queuedMoveReceiver.executeOutstandingMoves();
             // desired tick rate was 0
             nextModelUpdateDue = frameStartTime;
 
@@ -267,10 +290,10 @@ public class ServerGameEngine implements GameModel, Runnable {
 
     /** This is called at the start of each new year. */
     private void newYear() {
-        TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(getMoveExecuter());
+        TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(moveExecuter);
         tmmg.update(world);
 
-        CargoAtStationsGenerator cargoAtStationsGenerator = new CargoAtStationsGenerator(getMoveExecuter());
+        CargoAtStationsGenerator cargoAtStationsGenerator = new CargoAtStationsGenerator(moveExecuter);
         cargoAtStationsGenerator.update(world);
     }
 
@@ -293,7 +316,7 @@ public class ServerGameEngine implements GameModel, Runnable {
                 TrainPathFinder tpf = trainMover.getTrainPathFinder();
                 this.addServerAutomaton(tpf);
                 this.addTrainMover(trainMover);
-                getMoveExecuter().processMove(new ChangeProductionAtEngineShopMove(
+                moveExecuter.processMove(new ChangeProductionAtEngineShopMove(
                         production, null, i));
             }
         }
@@ -310,12 +333,12 @@ public class ServerGameEngine implements GameModel, Runnable {
             Object o = i.next();
             TrainMover trainMover = (TrainMover)o;
             m = trainMover.update(deltaDistance);
-            getMoveExecuter().processMove(m);
+            moveExecuter.processMove(m);
         }
     }
 
     private void updateGameTime() {
-        getMoveExecuter().processMove(TimeTickMove.getMove(world));
+        moveExecuter.processMove(TimeTickMove.getMove(world));
     }
 
     public void addTrainMover(TrainMover m) {
@@ -332,8 +355,18 @@ public class ServerGameEngine implements GameModel, Runnable {
             ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
 
             objectOut.writeObject(trainMovers);
-            objectOut.writeObject(this.world);
+            objectOut.writeObject(world);
             objectOut.writeObject(serverAutomata);
+
+            /**
+             * save player private data
+             */
+            NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
+                    Player.AUTHORITATIVE);
+
+            while (i.next()) {
+                ((Player)i.getElement()).saveSession(objectOut);
+            }
 
             objectOut.flush();
             objectOut.close();
@@ -359,6 +392,17 @@ public class ServerGameEngine implements GameModel, Runnable {
             ArrayList trainMovers = (ArrayList)objectIn.readObject();
             World world = (World)objectIn.readObject();
             Vector serverAutomata = (Vector)objectIn.readObject();
+
+            /**
+             * load player private data
+             */
+            NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
+                    Player.AUTHORITATIVE);
+
+            while (i.next()) {
+                ((Player)i.getElement()).loadSession(objectIn);
+            }
+
             engine = new ServerGameEngine(trainMovers, world, serverAutomata);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -368,19 +412,23 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     /**
-     * Returns the world.
+     * Returns a reference to the servers world.
      * @return World
      */
     public synchronized World getWorld() {
+        /* Nobody in their right minds would expect this to return a clone ...
+         * Would they???
         return world.defensiveCopy();
+         */
+        return world;
     }
 
     /**
-     * @return Returns a moveReceiver - moves are submitted to the
+     * @return Returns a moveReceiver - moves are submitted from clients to the
      * ServerGameEngine via this.
      */
-    public MoveReceiver getMoveExecuter() {
-        return moveExecuter;
+    public SourcedMoveReceiver getMoveExecuter() {
+        return queuedMoveReceiver;
     }
 
     /**
@@ -396,5 +444,9 @@ public class ServerGameEngine implements GameModel, Runnable {
 
     public void removeServerAutomaton(ServerAutomaton sa) {
         serverAutomata.remove(sa);
+    }
+
+    public IdentityProvider getIdentityProvider() {
+        return identityProvider;
     }
 }

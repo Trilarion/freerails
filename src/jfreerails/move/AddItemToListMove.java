@@ -18,7 +18,7 @@ import jfreerails.world.top.World;
 public class AddItemToListMove implements ListMove {
     final KEY listKey;
     final int index;
-    private final FreerailsSerializable item;
+    protected final FreerailsSerializable item;
 
     public int getIndex() {
         return index;

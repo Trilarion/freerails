@@ -2,10 +2,11 @@ package jfreerails.server;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.controller.ConnectionListener;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
@@ -13,7 +14,10 @@ import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerControlInterface;
-import jfreerails.move.WorldChangedEvent;
+import jfreerails.controller.ServerCommand;
+import jfreerails.controller.AddPlayerCommand;
+import jfreerails.controller.AddPlayerResponseCommand;
+import jfreerails.controller.WorldChangedCommand;
 import jfreerails.util.FreerailsProgressMonitor;
 
 
@@ -46,7 +50,8 @@ public class GameServer {
         private MoveChainFork moveChainFork;
         private InetConnection serverSocket;
         private ServerGameEngine gameEngine;
-        private ClientConnectionTableModel tableModel = new ClientConnectionTableModel(connections);
+        private ClientConnectionTableModel tableModel = new ClientConnectionTableModel(connections,
+                this);
 
         /**
          * Port number the game is available on
@@ -72,8 +77,6 @@ public class GameServer {
                 Thread thread = new Thread(new InetGameServer(serverSocket, this));
                 thread.start();
             }
-
-            startGame();
         }
 
         /**
@@ -90,16 +93,24 @@ public class GameServer {
 
         public void connectionClosed(ConnectionToServer c) {
             synchronized (connections) {
+                /*
+                 * If the player is connected locally, the connection is still
+                 * active, so that the server may still be controlled via the
+                 * connection, but the player must re-authenticate themselves
+                 * in order to play
+                 */
                 if (!(c instanceof LocalConnection)) {
-                    tableModel.removeRow(c);
-                    connections.remove(c);
-                    moveChainFork.remove(c);
+                    removeConnection(c);
+                } else {
+                    gameEngine.getIdentityProvider().removeConnection(c);
+                    tableModel.stateChanged(c);
                 }
             }
         }
 
         private void removeConnection(ConnectionToServer c) {
             synchronized (connections) {
+                gameEngine.getIdentityProvider().removeConnection(c);
                 tableModel.removeRow(c);
                 moveChainFork.remove(c);
                 connections.remove(c);
@@ -126,25 +137,17 @@ public class GameServer {
         }
 
         /**
-         * Starts the server thread.
-         * TODO control of whether clients can issue moves prior to the thread being
-         * started.
-         */
-        private void startGame() {
-            Thread thread = new Thread(gameEngine);
-            thread.start();
-        }
-
-        /**
          * Create a new ServerGameEngine instance and transfer all clients of
          * this game to the new one.
          */
         public void loadGame() {
+            int ticksPerSec = gameEngine.getTargetTicksPerSecond();
+
             /* open a new controller */
             ServerGameEngine newGame = ServerGameEngine.loadGame();
 
             transferClients(newGame);
-            startGame();
+            setTargetTicksPerSecond(ticksPerSec);
         }
 
         public void saveGame() {
@@ -164,11 +167,12 @@ public class GameServer {
          * new game running the specified map.
          */
         public void newGame(String mapName) {
+            int ticksPerSec = gameEngine.getTargetTicksPerSecond();
             ServerGameEngine newGame = new ServerGameEngine(mapName,
                     FreerailsProgressMonitor.NULL_INSTANCE);
             transferClients(newGame);
 
-            startGame();
+            setTargetTicksPerSecond(ticksPerSec);
         }
 
         /**
@@ -179,40 +183,45 @@ public class GameServer {
             MoveReceiver oldExecuter = gameEngine.getMoveExecuter();
 
             synchronized (connections) {
-                Iterator i = connections.iterator();
-
-                while (i.hasNext()) {
-                    ConnectionToServer c = (ConnectionToServer)i.next();
+                for (int i = 0; i < connections.size(); i++) {
+                    ConnectionToServer c = (ConnectionToServer)connections.get(i);
 
                     /* Local connections must be transferred manually - remote
-                     * connections are sent a WorldChangedEvent later */
+                     * connections are sent a WorldChangedCommand later */
                     if (c instanceof LocalConnection) {
-                        i.remove();
                         localConnections.add(c);
+                        removeConnection(c);
+                        i--;
                     }
                 }
 
                 gameEngine.stop();
-                newGame.setTargetTicksPerSecond(gameEngine.getTargetTicksPerSecond());
                 gameEngine = newGame;
                 moveChainFork = newGame.getMoveChainFork();
-                serverSocket.setWorld(gameEngine.getWorld());
+
+                if (serverSocket != null) {
+                    serverSocket.setWorld(gameEngine.getWorld());
+                }
 
                 while (!localConnections.isEmpty()) {
                     LocalConnection lc = (LocalConnection)localConnections.remove(0);
                     addConnection(lc);
-                    lc.processMove(new WorldChangedEvent());
+                    lc.send(new WorldChangedCommand());
                 }
 
                 /* send all remaining clients notification that this game is
                  * about to end */
-                for (i = connections.iterator(); i.hasNext();) {
-                    ConnectionToServer c = (ConnectionToServer)i.next();
+                for (int i = 0; i < connections.size(); i++) {
+                    ConnectionToServer c = (ConnectionToServer)connections.get(i);
 
-                    //if (!(c instanceof LocalConnection)) {
-                    c.processMove(new WorldChangedEvent());
-                    c.flush();
-                    //}
+                    /*
+                     * don't send locally connected clients the
+                     * WorldChangedCommand as they have already been sent one
+                     */
+                    if (!(c instanceof LocalConnection)) {
+                        c.send(new WorldChangedCommand());
+                        c.flush();
+                    }
                 }
             }
         }
@@ -235,6 +244,28 @@ public class GameServer {
                 }
 
                 gameEngine.stop();
+            }
+        }
+
+        public void processServerCommand(ConnectionToServer c, ServerCommand s) {
+            if (s instanceof AddPlayerCommand) {
+                AddPlayerCommand apc = (AddPlayerCommand)s;
+
+                synchronized (connections) {
+                    System.out.println(
+                        "Received request to authenticate player" + " " +
+                        apc.getPlayer());
+
+                    if (!gameEngine.getIdentityProvider().addConnection(c,
+                                apc.getPlayer(), apc.getSignature())) {
+                        c.send(new AddPlayerResponseCommand(apc, ""));
+                    } else {
+                        c.send(new AddPlayerResponseCommand(
+                                gameEngine.getIdentityProvider().getPrincipal(c)));
+                    }
+
+                    tableModel.stateChanged(c);
+                }
             }
         }
     }
@@ -280,9 +311,7 @@ public class GameServer {
 
     /**
      * starts the server and creates a new ServerGameEngine running initialised
-     * from a new map.
-     * @param port port number on which to accept incoming connections, or 0 for
-     * no network connections.
+     * from a new map, accepting connections on the default port.
      */
     public ServerControlInterface getNewGame(String mapName,
         FreerailsProgressMonitor pm, int port) {
@@ -317,14 +346,36 @@ public class GameServer {
          * reference to ServerGameController's connections
          */
         private Vector connections;
+        private ServerGameController gameController;
 
-        public ClientConnectionTableModel(Vector connections) {
-            super(new String[] {"Client address", "State"}, 0);
+        public ClientConnectionTableModel(Vector connections,
+            ServerGameController sgc) {
+            super(new String[] {"Client address", "State", "Player"}, 0);
             this.connections = connections;
+            gameController = sgc;
+        }
+
+        private String getPlayerName(ConnectionToServer c) {
+            IdentityProvider ip = gameController.gameEngine.getIdentityProvider();
+            FreerailsPrincipal p = ip.getPrincipal(c);
+
+            if (p != null) {
+                Player pl;
+
+                if ((pl = ip.getPlayer(p)) == null) {
+                    return p.getName();
+                } else {
+                    return pl.getName();
+                }
+            } else {
+                return "Player not authenticated.";
+            }
         }
 
         public void addRow(ConnectionToServer c, String address) {
-            addRow(new String[] {address, c.getConnectionState().toString()});
+            addRow(new String[] {
+                    address, c.getConnectionState().toString(), getPlayerName(c)
+                });
         }
 
         public void stateChanged(ConnectionToServer c) {
@@ -333,6 +384,7 @@ public class GameServer {
             synchronized (connections) {
                 i = connections.indexOf(c);
                 setValueAt(c.getConnectionState().toString(), i, 1);
+                setValueAt(getPlayerName(c), i, 2);
             }
         }
 

@@ -2,7 +2,7 @@ package jfreerails.server;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import jfreerails.controller.MoveExecuter;
+import jfreerails.server.AuthoritativeMoveExecuter;
 import jfreerails.controller.ToAndFroPathIterator;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
@@ -21,10 +21,10 @@ public class TrainFixture {
     TrainMover trainMover;
     ArrayList points = new ArrayList();
     World w = new WorldImpl(0, 0);
-    MoveExecuter moveExecuter;
+    AuthoritativeMoveExecuter moveExecuter;
 
     public TrainFixture() {
-        moveExecuter = new MoveExecuter(w, null);
+        moveExecuter = new AuthoritativeMoveExecuter(w, null);
 
         points.add(new Point(0, 0));
         points.add(new Point(80, 80));

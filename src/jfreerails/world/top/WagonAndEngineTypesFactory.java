@@ -7,6 +7,7 @@ package jfreerails.world.top;
 import jfreerails.world.common.Money;
 import jfreerails.world.train.EngineType;
 import jfreerails.world.train.WagonType;
+import jfreerails.world.player.Player;
 
 
 /**
@@ -28,7 +29,7 @@ public class WagonAndEngineTypesFactory {
             };
 
         for (int i = 0; i < wagonTypes.length; i++) {
-            w.add(KEY.WAGON_TYPES, wagonTypes[i]);
+            w.add(KEY.WAGON_TYPES, wagonTypes[i], Player.AUTHORITATIVE);
         }
 
         //Engine types
@@ -40,7 +41,7 @@ public class WagonAndEngineTypesFactory {
             };
 
         for (int i = 0; i < engineTypes.length; i++) {
-            w.add(KEY.ENGINE_TYPES, engineTypes[i]);
+            w.add(KEY.ENGINE_TYPES, engineTypes[i], Player.AUTHORITATIVE);
         }
     }
 }

@@ -1,17 +1,27 @@
 package jfreerails.client.top;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.ModelRoot;
+import jfreerails.controller.AddPlayerCommand;
+import jfreerails.controller.AddPlayerResponseCommand;
+import jfreerails.controller.ConnectionListener;
 import jfreerails.controller.ConnectionToServer;
-import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveReceiver;
+import jfreerails.controller.ServerCommand;
+import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
+import jfreerails.controller.WorldChangedCommand;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TimeTickMove;
-import jfreerails.move.WorldChangedEvent;
-import jfreerails.util.GameModel;
+import jfreerails.util.FreerailsProgressMonitor;
+import jfreerails.world.player.Player;
+import jfreerails.world.player.PlayerPrincipal;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
 
@@ -19,10 +29,21 @@ import jfreerails.world.top.World;
  * This class receives moves from the client. This class tries out moves on the
  * world if necessary, and passes them to the connection.
  */
-public class ConnectionAdapter implements UntriedMoveReceiver {
+public class ConnectionAdapter implements UntriedMoveReceiver,
+    ConnectionListener {
     private NonAuthoritativeMoveExecuter moveExecuter;
     private ModelRoot modelRoot;
+    private Player player;
     ConnectionToServer connection;
+    private Object authMutex = new Integer(1);
+    private boolean authenticated;
+    private GUIClient guiClient;
+
+    /**
+     * The GameLoop providing the move execution thread for this
+     * ConnectionAdapter's Move Executer
+     */
+    private GameLoop gameLoop;
 
     /**
      * we forward outbound moves from the client to this.
@@ -30,30 +51,39 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     UncommittedMoveReceiver uncommittedReceiver;
     MoveReceiver moveReceiver;
     World world;
+    private FreerailsProgressMonitor progressMonitor;
 
-    public ConnectionAdapter(ModelRoot mr) {
+    public ConnectionAdapter(ModelRoot mr, Player player,
+        FreerailsProgressMonitor pm, GUIClient gc) {
         modelRoot = mr;
+        this.player = player;
+        this.progressMonitor = pm;
+        guiClient = gc;
     }
 
     /**
-     * This class receives moves from the connection and passes them on to a MoveReceiver.
+     * This class receives moves from the connection and passes them on to a
+     * MoveReceiver.
      */
-    public class WorldUpdater implements MoveReceiver {
+    public class WorldUpdater implements SourcedMoveReceiver {
         private MoveReceiver moveReceiver;
+
+        /**
+         * TODO get rid of this
+         */
+        public synchronized void undoLastMove() {
+            // do nothing
+        }
+
+        public synchronized void processMove(Move move, ConnectionToServer c) {
+            processMove(move);
+        }
 
         /**
          * Processes inbound moves from the server
          */
-        public void processMove(Move move) {
-            if (move instanceof WorldChangedEvent) {
-                try {
-                    setConnection(connection);
-                } catch (IOException e) {
-                    modelRoot.getUserMessageLogger().println("Unable to open" +
-                        " remote connection");
-                    closeConnection();
-                }
-            } else if (move instanceof TimeTickMove) {
+        public synchronized void processMove(Move move) {
+            if (move instanceof TimeTickMove) {
                 /*
                  * flush our outgoing moves prior to receiving next tick
                  * TODO improve our buffering strategy
@@ -64,7 +94,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             moveReceiver.processMove(move);
         }
 
-        public void setMoveReceiver(MoveReceiver moveReceiver) {
+        public synchronized void setMoveReceiver(MoveReceiver moveReceiver) {
             this.moveReceiver = moveReceiver;
         }
     }
@@ -74,23 +104,29 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     /**
      * Processes outbound moves to the server
      */
-    public void processMove(Move move) {
+    public synchronized void processMove(Move move) {
         if (uncommittedReceiver != null) {
             uncommittedReceiver.processMove(move);
         }
     }
 
-    public void undoLastMove() {
+    public synchronized void undoLastMove() {
         if (uncommittedReceiver != null) {
             uncommittedReceiver.undoLastMove();
         }
     }
 
-    public MoveStatus tryDoMove(Move move) {
+    public synchronized MoveStatus tryDoMove(Move move) {
+        /* TODO
+         * return move.tryDoMove(world, move.getPrincipal());
+         */
         return move.tryDoMove(world);
     }
 
-    public MoveStatus tryUndoMove(Move move) {
+    public synchronized MoveStatus tryUndoMove(Move move) {
+        /* TODO
+         * return move.tryUndoMove(world, move.getPrincipal());
+         */
         return move.tryUndoMove(world);
     }
 
@@ -101,33 +137,108 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     public synchronized void setConnection(ConnectionToServer c)
-        throws IOException {
+        throws IOException, GeneralSecurityException {
+        setConnectionImpl(c);
+
+        synchronized (authMutex) {
+            if (!authenticated) {
+                System.out.println("Waiting for authentication");
+
+                try {
+                    authMutex.wait();
+                } catch (InterruptedException e) {
+                    //ignore
+                }
+
+                if (!authenticated) {
+                    throw new GeneralSecurityException("Server rejected " +
+                        "attempt to authenticate");
+                }
+            }
+        }
+    }
+
+    /**
+     * This function may be entered from either the AWT event handler thread
+     * (via a local connection when the user clicks on something), or from the
+     * network connection thread, or from the initialisation thread of the
+     * launcher.
+     */
+    private synchronized void setConnectionImpl(ConnectionToServer c)
+        throws IOException, GeneralSecurityException {
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
+
         if (connection != null) {
             closeConnection();
             connection.removeMoveReceiver(worldUpdater);
+            connection.removeConnectionListener(this);
         }
 
-        connection = c;
-        connection.open();
+        /* grab the lock on the WorldUpdater in order to prevent any moves from
+         * the server being lost whilst we plumb it in */
+        synchronized (worldUpdater) {
+            connection = c;
+            connection.open();
 
-        if (connection instanceof LocalConnection) {
-            worldUpdater.setMoveReceiver(moveReceiver);
+            connection.addMoveReceiver(worldUpdater);
+            connection.addConnectionListener(this);
+            world = connection.loadWorldFromServer();
+
+            /* plumb in a new Move Executer */
+            moveExecuter = new NonAuthoritativeMoveExecuter(world,
+                    moveReceiver, modelRoot);
+            worldUpdater.setMoveReceiver(moveExecuter);
+            uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
+            ((NonAuthoritativeMoveExecuter.PendingQueue)uncommittedReceiver).addMoveReceiver(connection);
         }
 
-        connection.addMoveReceiver(worldUpdater);
-        world = connection.loadWorldFromServer();
-        modelRoot.setWorld(world);
+        /* start a new game loop */
+        gameLoop = new GameLoop(guiClient.getScreenHandler(), moveExecuter);
 
-        //  if (!(connection instanceof LocalConnection)) {
-        moveExecuter = new NonAuthoritativeMoveExecuter(world, moveReceiver,
-                modelRoot);
-        worldUpdater.setMoveReceiver(moveExecuter);
-        uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
-        ((NonAuthoritativeMoveExecuter.PendingQueue)uncommittedReceiver).addMoveReceiver(connection);
-        //  } else {
-        //      uncommittedReceiver = connection;
-        //  }
-        // }
+        /* attempt to authenticate the player */
+        modelRoot.getUserMessageLogger().println("Attempting to " +
+            "authenticate " + player.getName() + " with server");
+        authenticated = false;
+        connection.send(new AddPlayerCommand(player, player.sign()));
+    }
+
+    private void playerConfirmed() {
+        try {
+            /* create the models */
+            assert world != null;
+
+            ViewLists viewLists = new ViewListsImpl(world, progressMonitor);
+
+            if (!viewLists.validate(world)) {
+                modelRoot.getUserMessageLogger().println("Couldn't validate " +
+                    "viewLists!");
+            }
+
+            modelRoot.setWorld(world, this, viewLists);
+
+            /*
+             * wait until the player the client represents has been created in
+             * the model (this may not occur until we process the move creating
+             * the player from the server
+             */
+            while (!world.boundsContain(KEY.PLAYERS,
+                        ((PlayerPrincipal)modelRoot.getPlayerPrincipal()).getId(),
+                        modelRoot.getPlayerPrincipal())) {
+                System.out.println("Size of players list is " +
+                    world.size(KEY.PLAYERS));
+                moveExecuter.update();
+            }
+
+            /* start the game loop */
+            String threadName = "JFreerails client: " + guiClient.getTitle();
+            Thread t = new Thread(gameLoop, threadName);
+            t.start();
+        } catch (IOException e) {
+            modelRoot.getUserMessageLogger().println("Couldn't set up " +
+                "view Lists");
+        }
     }
 
     public void setMoveReceiver(MoveReceiver m) {
@@ -137,7 +248,40 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
         moveReceiver = m;
     }
 
-    public GameModel getModel() {
-        return this.moveExecuter;
+    public void connectionClosed(ConnectionToServer c) {
+        // ignore
+    }
+
+    public void connectionStateChanged(ConnectionToServer c) {
+        // ignore
+    }
+
+    public void processServerCommand(ConnectionToServer c, ServerCommand s) {
+        if (s instanceof AddPlayerResponseCommand) {
+            synchronized (authMutex) {
+                authenticated = !((AddPlayerResponseCommand)s).isRejected();
+
+                if (authenticated) {
+                    System.out.println("Player was authenticated");
+                    modelRoot.setPlayerPrincipal(((AddPlayerResponseCommand)s).getPrincipal());
+                    playerConfirmed();
+                } else {
+                    System.out.println("Authentication was rejected");
+                }
+
+                authMutex.notify();
+            }
+        } else if (s instanceof WorldChangedCommand) {
+            try {
+                setConnectionImpl(c);
+            } catch (IOException e) {
+                modelRoot.getUserMessageLogger().println("Unable to open" +
+                    " remote connection");
+                closeConnection();
+            } catch (GeneralSecurityException e) {
+                modelRoot.getUserMessageLogger().println("Unable to " +
+                    "authenticate with server: " + e.toString());
+            }
+        }
     }
 }

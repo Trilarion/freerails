@@ -10,6 +10,8 @@ package jfreerails.server.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
@@ -17,8 +19,7 @@ import jfreerails.world.terrain.Production;
 import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
+import jfreerails.world.player.Player;
 
 
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
@@ -99,7 +100,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         TileTypeImpl tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
                 tileROW, produces, consumes, converts);
 
-        world.add(KEY.TERRAIN_TYPES, tileType);
+        world.add(KEY.TERRAIN_TYPES, tileType, Player.AUTHORITATIVE);
     }
 
     public void handle_Cargo(final Attributes meta) throws SAXException {
@@ -110,7 +111,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
         int cargoNumber = world.size(KEY.CARGO_TYPES);
         cargoName2cargoTypeNumber.put(cargoID, new Integer(cargoNumber));
-        world.add(KEY.CARGO_TYPES, cargoType);
+        world.add(KEY.CARGO_TYPES, cargoType, Player.AUTHORITATIVE);
     }
 
     public void start_Cargo_Types(final Attributes meta)

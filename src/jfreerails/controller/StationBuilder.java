@@ -19,6 +19,7 @@ import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
+import jfreerails.world.player.FreerailsPrincipal;
 
 
 public class StationBuilder {
@@ -27,7 +28,8 @@ public class StationBuilder {
     private int ruleNumber;
     private TrackMoveTransactionsGenerator transactionsGenerator;
 
-    public StationBuilder(UntriedMoveReceiver moveReceiver, ReadOnlyWorld world) {
+    public StationBuilder(UntriedMoveReceiver moveReceiver,
+        ReadOnlyWorld world, FreerailsPrincipal p) {
         this.moveReceiver = moveReceiver;
         w = world;
 
@@ -41,7 +43,7 @@ public class StationBuilder {
         } while (!trackRule.isStation());
 
         ruleNumber = i;
-        transactionsGenerator = new TrackMoveTransactionsGenerator(w);
+        transactionsGenerator = new TrackMoveTransactionsGenerator(w, p);
     }
 
     public boolean canBuiltStationHere(Point p) {
