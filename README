@@ -42,15 +42,23 @@ Requirements
 ============
 
 Cause of that we don't want to redefine the wheel we use libraries. You have
-two possibilities.
+two possibilities for graphics.
 
-1. you use SDL >= 1.2.0 (with SDL_ttf and SDL_image) and paraGUI >= 0.7.0
+For Linux, Win32, BeOS, MacOS(, *BSD ?)
+1. you use SDL >= 1.2.0 (with SDL_ttf >= 2.0 and SDL_image >= 1.2) and paraGUI >= 1.0.0
+For Linux/X11, Win32, *BSD, OS/2(XFree86), several UNIX's
 2. you use Qt >= 2.2.0 (We will switch to Qt 3.0.0 as soon as it's stable)
+
+
 
 Where to get:
 
 SDL:
     http://www.libsdl.org
+SDL_ttf:
+    http://www.libsdl.org/projects/SDL_ttf
+SDL_image:
+    http://www.libsdl.org/projects/SDL_image
 paraGUI:
     http://www.bms-austria.com/projects/paragui
 Qt:

@@ -1,3 +1,9 @@
+Mon Aug 20 02:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o Add GameMainWindow in paraGUI (nothing inside), cause I don't need it yet
+o make paraGUI compatible to rivo's API
+o need setCaption() in GameApplication!!
+o added show/hideSplash()
+o small changes in README
 Sat Aug 18 18:00:00 2001  Rivo Laks <rivolaks@hot.ee>:
 o Added *MainWindow wrapper classes for mainwindow creation
 o Remove initScreen() and setCaption() from BaseApplication
