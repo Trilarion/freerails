@@ -31,6 +31,7 @@ class GamePanel: public PG_ThemeWidget, public PG_EventObject {
     PARAGUI_CALLBACK(pause_handler);
     PARAGUI_CALLBACK(clickTrackButton);
     PARAGUI_CALLBACK(clickStationButton);
+    PARAGUI_CALLBACK(clickStationSelect);
     
     void releaseAllButtons(PG_Button* button);
 

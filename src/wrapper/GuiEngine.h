@@ -8,11 +8,12 @@
 #include "WorldMap.h"
 #include "Engine.h"
 #include "MapField.h"
+#include "Track.h"
 #include "TrackController.h"
+#include "Station.h"
 #include "StationController.h"
 #include "Message.h"
 
-/* #include "Message.h" */
 
 class GuiEngine{
 
@@ -41,7 +42,7 @@ class GuiEngine{
   
 
   bool testBuildStation(int x, int y);
-  bool buildStation(int x, int y);
+  bool buildStation(int x, int y, Station::Size size);
   
   bool testBuildTrack(int x, int y, int dir);
   bool buildTrack(int x, int y, int dir);

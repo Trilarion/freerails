@@ -29,6 +29,7 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     ~GameMapView();
     
     void setMouseType(MouseType type);
+    void setStationType(Station::Size type);
 
   private:
     SDL_Surface* tilesImage;
@@ -39,7 +40,8 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     
     SDL_Surface* imageSurface;
     PG_Image* view;
-    int mouseType;
+    MouseType mouseType;
+    Station::Size stationType;
 
     int mouseOldMapX;
     int mouseOldMapY;

@@ -43,6 +43,26 @@ PARAGUI_CALLBACK(GamePanel::clickStationButton) {
   }
 }
 
+PARAGUI_CALLBACK(GamePanel::clickStationSelect) {
+
+  std::cerr << data << ":" << id << std::endl;
+  switch (id)
+  {
+    case 4:
+      mapView->setStationType(Station::Signal);
+    break;
+    case 5:
+      mapView->setStationType(Station::Small);
+    break;
+    case 6:
+      mapView->setStationType(Station::Medium);
+    break;
+    case 7:
+      mapView->setStationType(Station::Big);
+    break;
+  }
+}
+
 
 GamePanel::GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine, GameMapView* _mapView):
 PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
@@ -63,6 +83,11 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   stationSmall=new PG_RadioButton(this, 5, PG_Rect(5, 450, 150, 20), "Depot", stationSignal);
   stationMedium=new PG_RadioButton(this, 6, PG_Rect(5, 470, 150, 20), "Station", stationSignal);
   stationBig=new PG_RadioButton(this, 7, PG_Rect(5, 490, 150, 20), "Terminal", stationSignal);
+
+  stationSignal->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
+  stationSmall->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
+  stationMedium->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
+  stationBig->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&GamePanel::clickStationSelect);
 
   pauseButton=new PG_Button(this,3,PG_Rect(5,510,125,25),"PAUSE");
   pauseButton->SetToggle(true);

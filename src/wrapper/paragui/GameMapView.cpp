@@ -36,7 +36,8 @@ Base2DMapView(x,y,w,h,_guiEngine) {
   horizontalScrollBar->SetRange(0,(guiEngine->getWorldMap()->getWidth()*30)-w);
   horizontalScrollBar->SetPageSize(w);
   horizontalScrollBar->SetLineSize(30);
-  mouseType=0;
+  mouseType=normal;
+  stationType=Station::Signal;
   mouseOldMapX=0;
   mouseOldMapY=0;
 }
@@ -200,7 +201,6 @@ void GameMapView::drawTrackPixmap(int mapX, int mapY) {
 }
 
 void GameMapView::drawStationPixmap(int mapX, int mapY, Station* station) {
-#warning It dont look for station type
   int tilesetX, tilesetY;
   MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
   if (field == NULL) return;
@@ -488,6 +488,11 @@ void GameMapView::setMouseType(MouseType type) {
   mouseType=type;
 }
 
+void GameMapView::setStationType(Station::Size type) {
+
+  stationType=type;
+}
+
 void GameMapView::eventMouseLeave() {
 
   regenerateTile(mouseOldMapX,mouseOldMapY);
@@ -505,7 +510,7 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
     switch (mouseType) {
   
       case buildStation:
-        guiEngine->buildStation(mapx,mapy);
+        guiEngine->buildStation(mapx,mapy,stationType);
       break;
       case buildTrack:
         guiEngine->buildTrack(mapx,mapy,dir);
@@ -607,7 +612,7 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   
     case buildStation:
       if(guiEngine->testBuildStation(mapx,mapy)){
-	drawStationPixmap(mapx, mapy, new Station(mapx,mapy, NULL, "", Station::Big, NULL));
+	drawStationPixmap(mapx, mapy, new Station(mapx,mapy, NULL, "", stationType, NULL));
       }
       break;
     case buildTrack:
