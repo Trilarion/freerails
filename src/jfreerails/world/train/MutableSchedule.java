@@ -25,7 +25,6 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
      *and goto the first station in the list.
      */
     private boolean hasPriorityOrders = false;
-    public static int PRIORITY_ORDERS = 0;
 
     public MutableSchedule() {
     }
@@ -111,12 +110,15 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
         }
     }
 
-    public void addOrder(TrainOrdersModel order) {
+    public int addOrder(TrainOrdersModel order) {
         if (!canAddOrder()) {
             throw new IllegalStateException();
         }
 
-        addOrder(orders.size(), order);
+        int newOrderNumber = orders.size();
+        addOrder(newOrderNumber, order);
+
+        return newOrderNumber;
     }
 
     public void setOrder(int orderNumber, TrainOrdersModel order) {

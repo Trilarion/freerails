@@ -77,41 +77,51 @@ public class CargoBundleImpl implements CargoBundle {
         } else {
             hashMap.put(cb, new Integer(amount));
         }
-        updateID ++;
+
+        updateID++;
     }
 
     public boolean contains(CargoBatch cb) {
         return hashMap.containsKey(cb);
     }
-    
+
     /** Note, calling  hasNext() or next() on the returned iterator throws a ConcurrentModificationException
      * if this CargoBundle has changed since the iterator was aquired.
      */
     public Iterator cargoBatchIterator() {
-    	final Iterator it = hashMap.keySet().iterator();
-    	/* A ConcurrentModificationException used to get thrown when the amount
-    	 * of cargo was set to 0, since this resulted in the key being removed
-    	 * from the hashmap.  The iterator below throws a ConcurrentModificationException
-    	 * whenever this CargoBundle has been changed since the iterator was aquired.  This should
-    	 * mean that if the cargo bundle gets changed while the iterator is in use, you will know 
-    	 * about it straight away.
-    	 */
-        return new Iterator(){
-        	int  updateIDAtCreation = updateID;        	
-			public void remove() {				
-				throw new UnsupportedOperationException("Use CargoBundle.setAmount(CargoBatch cb, 0)");
-			}
-			public boolean hasNext() {	
-				if(updateIDAtCreation != updateID)
-					throw new ConcurrentModificationException();
-				return it.hasNext();
-			}
-			public Object next() {
-				if(updateIDAtCreation != updateID)
-					throw new ConcurrentModificationException();
-				return it.next();
-			}        	
-        };
+        final Iterator it = hashMap.keySet().iterator();
+
+        /* A ConcurrentModificationException used to get thrown when the amount
+             * of cargo was set to 0, since this resulted in the key being removed
+             * from the hashmap.  The iterator below throws a ConcurrentModificationException
+             * whenever this CargoBundle has been changed since the iterator was aquired.  This should
+             * mean that if the cargo bundle gets changed while the iterator is in use, you will know
+             * about it straight away.
+             */
+        return new Iterator() {
+                int updateIDAtCreation = updateID;
+
+                public void remove() {
+                    throw new UnsupportedOperationException(
+                        "Use CargoBundle.setAmount(CargoBatch cb, 0)");
+                }
+
+                public boolean hasNext() {
+                    if (updateIDAtCreation != updateID) {
+                        throw new ConcurrentModificationException();
+                    }
+
+                    return it.hasNext();
+                }
+
+                public Object next() {
+                    if (updateIDAtCreation != updateID) {
+                        throw new ConcurrentModificationException();
+                    }
+
+                    return it.next();
+                }
+            };
     }
 
     public boolean equals(Object o) {
@@ -131,6 +141,6 @@ public class CargoBundleImpl implements CargoBundle {
     public void addCargo(CargoBatch cb, int amount) {
         int amountAlready = this.getAmount(cb);
         this.setAmount(cb, amount + amountAlready);
-        updateID ++;
+        updateID++;
     }
 }

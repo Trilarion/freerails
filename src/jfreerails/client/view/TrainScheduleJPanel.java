@@ -21,21 +21,22 @@ import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
+import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
 /**
  *  This JPanel displays a train's schedule and provides controls that let you edit it.
  * @author  Luke Lindsay
  */
-public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {        
+public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {
     
     private int trainNumber = -1;
     
     private int scheduleID = -1;
     
-    private TrainOrdersListModel listModel;       
+    private TrainOrdersListModel listModel;
     
-    private ModelRoot modelRoot;        
+    private ModelRoot modelRoot;
     
     /** Creates new form TrainScheduleJPanel */
     public TrainScheduleJPanel() {
@@ -245,16 +246,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     
     private void changeStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeStationActionPerformed
         int orderNumber = this.orders.getSelectedIndex();
-        selectStationJPanel1.display(trainNumber, orderNumber);
-        
-        //Show the select station popup in the middle of the window.
-        Container topLevelAncestor = this.getTopLevelAncestor();
-        Dimension d = topLevelAncestor.getSize();
-        Dimension d2 = selectStationJPopupMenu.getPreferredSize();
-        int x = Math.max((d.width - d2.width)/2, 0);
-        int y = Math.max((d.height - d2.height)/2, 0);
-        selectStationJPopupMenu.show(topLevelAncestor, x, y);
-        selectStationJPanel1.requestFocus();
+        showSelectStation(this.getSchedule(), orderNumber);
     }//GEN-LAST:event_changeStationActionPerformed
     
     private void removeAllJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllJMenuItemActionPerformed
@@ -284,13 +276,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     private void priorityOrdersJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priorityOrdersJButtonActionPerformed
         MutableSchedule s = getSchedule();
         s.setPriorityOrders(new TrainOrdersModel(0, null, false));
-        sendUpdateMove(s);
+        showSelectStation(s, Schedule.PRIORITY_ORDERS);
     }//GEN-LAST:event_priorityOrdersJButtonActionPerformed
     
     private void addStationJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStationJButtonActionPerformed
         MutableSchedule s = getSchedule();
-        s.addOrder(new TrainOrdersModel(0, null, false));
-        sendUpdateMove(s);
+        int newOrderNumber = s.addOrder(new TrainOrdersModel(0, null, false));
+        showSelectStation(s, newOrderNumber);
     }//GEN-LAST:event_addStationJButtonActionPerformed
     
     private void removeStationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeStationJMenuItemActionPerformed
@@ -338,7 +330,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }//GEN-LAST:event_ordersMouseClicked
     
     private void pullUpJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pullUpJMenuItemActionPerformed
-        // Add your handling code here:
         MutableSchedule s = getSchedule();
         int i = orders.getSelectedIndex();
         s.pullUp(i);
@@ -346,14 +337,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         orders.setSelectedIndex(i-1);
     }//GEN-LAST:event_pullUpJMenuItemActionPerformed
     
-    public void setup(ModelRoot mr, ActionListener al) {       
+    public void setup(ModelRoot mr, ActionListener al) {
         trainOrderJPanel1.setup(mr, null);
-        this.modelRoot = mr;		
+        this.modelRoot = mr;
         
-        //This actionListener is fired by the select station popup when a stion is selected.
+        //This actionListener is fired by the select station popup when a station is selected.
         ActionListener actionListener =  new ActionListener(){
             public void actionPerformed(ActionEvent evt) {
-                setStationNumber(selectStationJPanel1.getSelectedStationID());
+                sendUpdateMove(selectStationJPanel1.generateNewSchedule());
                 selectStationJPopupMenu.setVisible(false);
             }
         };
@@ -364,7 +355,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         this.trainNumber = newTrainNumber;
         FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
         ReadOnlyWorld w = modelRoot.getWorld();
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, newTrainNumber, principal);
+        TrainModel train = (TrainModel) w.get(KEY.TRAINS, newTrainNumber, principal);
         this.scheduleID = train.getScheduleID();
         listModel = new TrainOrdersListModel(w, newTrainNumber, principal);
         orders.setModel(listModel);
@@ -382,8 +373,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }
     
     private MutableSchedule getSchedule(){
-		FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
-		ReadOnlyWorld w = modelRoot.getWorld();    	
+        FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+        ReadOnlyWorld w = modelRoot.getWorld();
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         ImmutableSchedule immutableSchedule = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), principal);
         return new MutableSchedule(immutableSchedule);
@@ -416,16 +407,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
             });
             addWagonJMenu.add(wagonMenuItem);
         }
-    }
-    
-    public void setStationNumber(int stationIndex){
-        TrainOrdersModel oldOrders, newOrders;
-        MutableSchedule s = getSchedule();
-        int orderNumber = this.orders.getSelectedIndex();
-        oldOrders = s.getOrder(orderNumber);
-        newOrders = new TrainOrdersModel(stationIndex, oldOrders.getConsist(), oldOrders.getWaitUntilFull());
-        s.setOrder(orderNumber, newOrders);
-        sendUpdateMove(s);
     }
     
     public void noChange(){
@@ -501,15 +482,15 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         sendUpdateMove(s);
     }
     
-    private void sendUpdateMove(MutableSchedule mutableSchedule ){    	
-		FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
-		ReadOnlyWorld w = modelRoot.getWorld();
+    private void sendUpdateMove(MutableSchedule mutableSchedule ){
+        FreerailsPrincipal principal = modelRoot.getPlayerPrincipal();
+        ReadOnlyWorld w = modelRoot.getWorld();
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, this.trainNumber, principal);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule before = (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, scheduleID, principal);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move m = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
-        this.modelRoot.getReceiver().processMove(m);        
+        this.modelRoot.getReceiver().processMove(m);
     }
     
     public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
@@ -525,6 +506,21 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     
     public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
         //do nothing.
+    }
+    
+    /** Show the popup that lets the user select a station, called when a new
+     * scheduled stop is added and when an existing scheduled stop is changed.*/
+    private void showSelectStation(MutableSchedule schedule, int orderNumber){
+        selectStationJPanel1.display(schedule, orderNumber);
+        
+        //Show the select station popup in the middle of the window.
+        Container topLevelAncestor = this.getTopLevelAncestor();
+        Dimension d = topLevelAncestor.getSize();
+        Dimension d2 = selectStationJPopupMenu.getPreferredSize();
+        int x = Math.max((d.width - d2.width)/2, 0);
+        int y = Math.max((d.height - d2.height)/2, 0);
+        selectStationJPopupMenu.show(topLevelAncestor, x, y);
+        selectStationJPanel1.requestFocus();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

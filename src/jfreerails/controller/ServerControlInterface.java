@@ -43,6 +43,7 @@ public interface ServerControlInterface {
     public String[] getMapNames();
 
     public void setTargetTicksPerSecond(int ticksPerSecond);
+
     public int getTargetTicksPerSecond();
 
     /**

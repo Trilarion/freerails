@@ -71,9 +71,8 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     public int getNewSpeed() {
-      return newSpeed.getSpeed();
+        return newSpeed.getSpeed();
     }
-
 
     public String toString() {
         return "ChangeGameSpeedMove: " + oldSpeed + "=>" + newSpeed;

@@ -10,8 +10,6 @@ import javax.swing.KeyStroke;
 
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.controller.ServerControlInterface;
-import java.awt.event.ActionListener;
-import jfreerails.world.top.ITEM;
 
 /**
  * Exposes the ServerControlInterface to client UI implementations
@@ -218,9 +216,9 @@ public class ServerControlModel {
       for (Enumeration enum = targetTicksPerSecondActions.getActions(); enum.hasMoreElements(); ) {
         action = (SetTargetTicksPerSecondAction)enum.nextElement();
         if (action.speed >= tickPerSecond)
-          return (String) action.getValue(action.NAME);
+          return (String) action.getValue(Action.NAME);
       }
-      return (String) action.getValue(action.NAME);
+      return (String) action.getValue(Action.NAME);
     }
 
 

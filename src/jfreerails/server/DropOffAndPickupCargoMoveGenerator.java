@@ -126,7 +126,8 @@ public class DropOffAndPickupCargoMoveGenerator {
                             station.x, station.y, 0, stationId);
                     stationAfter.addCargo(newCargoBatch, amount);
                 }
-                trainAfter.setAmount(cb, 0);                
+
+                trainAfter.setAmount(cb, 0);
             }
         }
 

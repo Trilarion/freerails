@@ -102,16 +102,20 @@ public class UserMessageGenerator implements MoveReceiver {
                 message += "$" + formatter.format(revenue);
                 modelRoot.getUserMessageLogger().println(message);
             }
-          } else if (move instanceof ChangeGameSpeedMove) {
+        } else if (move instanceof ChangeGameSpeedMove) {
             ReadOnlyWorld world = modelRoot.getWorld();
             int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
+
             if (gameSpeed <= 0) {
                 modelRoot.getUserMessageLogger().showMessage("Game is paused.");
             } else {
                 modelRoot.getUserMessageLogger().hideMessage();
-                String gameSpeedDesc = modelRoot.getServerControls().getGameSpeedDesc(gameSpeed);
-                modelRoot.getUserMessageLogger().println("Game speed: " + gameSpeedDesc);
+
+                String gameSpeedDesc = modelRoot.getServerControls()
+                                                .getGameSpeedDesc(gameSpeed);
+                modelRoot.getUserMessageLogger().println("Game speed: " +
+                    gameSpeedDesc);
             }
-          }
+        }
     }
 }

@@ -22,6 +22,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.train.Schedule;
+import jfreerails.world.train.ImmutableSchedule;
+import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
 /**
@@ -33,14 +35,14 @@ import jfreerails.world.train.TrainOrdersModel;
 public class SelectStationJPanel extends javax.swing.JPanel implements View {
     
     private ReadOnlyWorld world;
-
+    
     private ActionListener submitButtonCallBack;
     
     private int selectedStationID = 0;
     
     private int selectedOrderNumber = 1;
     
-    private int trainID = 0;
+    private  MutableSchedule schedule;
     
     private Rectangle mapRect = new Rectangle();
     
@@ -171,18 +173,14 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         }
     }//GEN-LAST:event_formMouseMoved
     
-    public void display(int newTrainID, int orderNumber){
-        this.trainID = newTrainID;
+    public void display(MutableSchedule schedule, int orderNumber){
+        this.schedule = schedule;
         this.selectedOrderNumber = orderNumber;
-        
-        //Set the selected station to the current station for the specified order.
-        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainID, this.principal);
-        Schedule schedule = (Schedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), this.principal);
         TrainOrdersModel order = schedule.getOrder(selectedOrderNumber);
         this.selectedStationID = order.getStationNumber();
         
         //Set the text on the title JLabel.
-        this.jLabel1.setText("Train #"+String.valueOf(trainID+1)+" Stop "+String.valueOf(selectedOrderNumber+1));
+        this.jLabel1.setText("Stop "+String.valueOf(selectedOrderNumber+1));
         
         //Set the station info panel to show the current selected station.
         cargoWaitingAndDemandedJPanel1.display(selectedStationID);
@@ -250,10 +248,6 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
                 }
             }
         }
-        
-        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainID, this.principal);
-        Schedule schedule = (Schedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), this.principal);
-        
         //Draw stations
         while(it.next()){
             
@@ -297,20 +291,24 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
                 g2.setColor(Color.WHITE);
             }
             g2.fillRect(xInt, yInt, 10, 10);
-        }        
+        }
     }
     
     public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
         cargoWaitingAndDemandedJPanel1.setup(mr,  null);
         this.world = mr.getWorld();
         this.submitButtonCallBack = submitButtonCallBack;
-		principal = mr.getPlayerPrincipal();
+        principal = mr.getPlayerPrincipal();
     }
     
-    public int getSelectedStationID(){
-        return this.selectedStationID;
+    public MutableSchedule generateNewSchedule(){
+        TrainOrdersModel oldOrders, newOrders;
+        oldOrders = schedule.getOrder(selectedOrderNumber);
+        newOrders = new TrainOrdersModel(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull());
+        schedule.setOrder(selectedOrderNumber, newOrders);
+        return schedule;
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jfreerails.client.view.CargoWaitingAndDemandedJPanel cargoWaitingAndDemandedJPanel1;
     private javax.swing.JLabel jLabel1;

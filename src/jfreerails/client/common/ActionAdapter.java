@@ -1,13 +1,12 @@
 package jfreerails.client.common;
 
-import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JToggleButton;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 
 
 /**
@@ -111,15 +110,16 @@ public class ActionAdapter extends DefaultComboBoxModel {
                 bm.setSelected(true);
             }
         }
-/* commented to remove double action on item change
-        for (int i = 0; i < actions.length; i++) {
-            if (actions[i].getValue(Action.NAME).equals(item)) {
-                actions[i].actionPerformed(new ActionEvent(this,
-                        ActionEvent.ACTION_PERFORMED,
-                        (String)actions[i].getValue(Action.ACTION_COMMAND_KEY)));
-            }
-        }
-*/
+
+        /* commented to remove double action on item change
+                for (int i = 0; i < actions.length; i++) {
+                    if (actions[i].getValue(Action.NAME).equals(item)) {
+                        actions[i].actionPerformed(new ActionEvent(this,
+                                ActionEvent.ACTION_PERFORMED,
+                                (String)actions[i].getValue(Action.ACTION_COMMAND_KEY)));
+                    }
+                }
+        */
     }
 
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel

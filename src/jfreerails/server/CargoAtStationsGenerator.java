@@ -51,7 +51,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                 CargoBundle after = cargoBundle.getCopy();
                 int stationNumber = nonNullStations.getIndex();
 
-                /* Get the iterator from a copy to avoid a 
+                /* Get the iterator from a copy to avoid a
                  * ConcurrentModificationException if the amount
                  * gets set to zero and the CargoBatch removed from
                  * the cargo bundle. LL
