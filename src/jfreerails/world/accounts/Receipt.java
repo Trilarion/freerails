@@ -14,7 +14,8 @@ import jfreerails.world.common.Money;
  *
  */
 public class Receipt implements Transaction {
-    private final Money m_amount;
+    private static final long serialVersionUID = 3617576007066924596L;
+	private final Money m_amount;
     private final Category m_category;
 
     public Receipt(Money m, Category category) {

@@ -13,7 +13,8 @@ import jfreerails.world.common.Money;
  *
  */
 public class Bill implements Transaction {
-    private final Money m_amount;
+    private static final long serialVersionUID = 3258416144497782835L;
+	private final Money m_amount;
     private final Category m_category;
 
     public Bill(Money amount, Category category) {

@@ -12,7 +12,9 @@ import jfreerails.world.top.KEY;
  * @author lindsal
  */
 final public class ChangeStationMove extends ChangeItemInListMove {
-    public ChangeStationMove(int index, StationModel before,
+    private static final long serialVersionUID = 3833469496064160307L;
+
+	public ChangeStationMove(int index, StationModel before,
         StationModel after, FreerailsPrincipal p) {
         super(KEY.STATIONS, index, before, after, p);
     }

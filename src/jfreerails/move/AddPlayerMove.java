@@ -12,7 +12,8 @@ import jfreerails.world.top.World;
  * @author Luke
  */
 public class AddPlayerMove implements Move, ServerMove {
-    private final Player player2add;
+    private static final long serialVersionUID = 3977580277537322804L;
+	private final Player player2add;
 
     private AddPlayerMove(Player p) {
         player2add = p;

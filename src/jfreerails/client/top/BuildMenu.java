@@ -13,7 +13,9 @@ import jfreerails.client.view.ActionRoot;
 * @author  Luke Lindsay
 */
 final public class BuildMenu extends javax.swing.JMenu {
-    public BuildMenu() {
+    private static final long serialVersionUID = 3617850859305055542L;
+
+	public BuildMenu() {
         super();
     }
 

@@ -19,7 +19,9 @@ import jfreerails.world.train.TrainModel;
  *
  */
 public class AddTrainMove extends CompositeMove {
-    private AddTrainMove(Move[] moves) {
+    private static final long serialVersionUID = 4121972551066399792L;
+
+	private AddTrainMove(Move[] moves) {
         super(moves);
     }
 

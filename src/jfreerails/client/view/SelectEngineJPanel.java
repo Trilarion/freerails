@@ -27,7 +27,9 @@ import jfreerails.world.train.EngineType;
 public class SelectEngineJPanel extends javax.swing.JPanel implements View {
     
     
-    public SelectEngineJPanel() {
+    private static final long serialVersionUID = 4122537730158179638L;
+
+	public SelectEngineJPanel() {
         initComponents();
         jList1ValueChanged(null); //Disable the ok button if no engine type is selected.
     }

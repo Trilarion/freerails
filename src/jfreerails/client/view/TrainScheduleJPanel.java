@@ -34,7 +34,9 @@ import jfreerails.world.train.TrainOrdersModel;
  */
 public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {
     
-    private static final Logger logger = Logger.getLogger(TrainScheduleJPanel.class.getName());
+    private static final long serialVersionUID = 3762248626113884214L;
+
+	private static final Logger logger = Logger.getLogger(TrainScheduleJPanel.class.getName());
     
     private int trainNumber = -1;
     

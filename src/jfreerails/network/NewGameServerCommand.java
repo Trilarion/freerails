@@ -11,7 +11,8 @@ package jfreerails.network;
  *
  */
 public class NewGameServerCommand implements ServerCommand {
-    private final int id;
+    private static final long serialVersionUID = 3256723961743422513L;
+	private final int id;
     private final String mapName;
 
     public NewGameServerCommand(int id, String s) {

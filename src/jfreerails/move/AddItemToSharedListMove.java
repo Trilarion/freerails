@@ -17,7 +17,8 @@ import jfreerails.world.top.World;
  *
  */
 public class AddItemToSharedListMove implements Move {
-    private final SKEY listKey;
+    private static final long serialVersionUID = 3762256352759722807L;
+	private final SKEY listKey;
     private final int index;
     private final FreerailsSerializable item;
 

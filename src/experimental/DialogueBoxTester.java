@@ -44,7 +44,8 @@ import jfreerails.world.train.TrainOrdersModel;
  */
 public class DialogueBoxTester extends javax.swing.JFrame {
     
-    private static final Player TEST_PLAYER = new Player("test player",
+    private static final long serialVersionUID = 4050764909631780659L;
+	private static final Player TEST_PLAYER = new Player("test player",
             (new Player("test player")).getPublicKey(), 0);
     private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
     

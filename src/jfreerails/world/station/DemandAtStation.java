@@ -7,7 +7,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class DemandAtStation implements FreerailsSerializable {
-    private final boolean[] m_demand;
+    private static final long serialVersionUID = 3257565088071038009L;
+	private final boolean[] m_demand;
 
     public DemandAtStation( /*=const*/
         boolean[] demand) {

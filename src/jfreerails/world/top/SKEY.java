@@ -12,7 +12,9 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class SKEY implements FreerailsSerializable {
-    /** Maps key numbers to KEYs. */
+    private static final long serialVersionUID = 3257847679739506737L;
+
+	/** Maps key numbers to KEYs. */
     private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
 
     //START OF KEYS

@@ -18,7 +18,8 @@ import javax.swing.ScrollPaneConstants;
  */
 class StationBuildJPanel extends javax.swing.JPanel {
     
-    private int numberOfButtons = 0;
+    private static final long serialVersionUID = 3977299940727075128L;
+	private int numberOfButtons = 0;
     
     
     public StationBuildJPanel() {
@@ -58,7 +59,9 @@ class StationBuildJPanel extends javax.swing.JPanel {
      * and a text label.
      */
     private class StationButton extends JButton {
-        public StationButton(Action a) {
+        private static final long serialVersionUID = 3761684572303603763L;
+
+		public StationButton(Action a) {
             super(a);
             setMargin(new Insets(0,0,0,0));
             setText(null);

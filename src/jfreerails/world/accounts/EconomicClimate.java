@@ -14,7 +14,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class EconomicClimate implements FreerailsSerializable {
-    private static int i = 2;
+    private static final long serialVersionUID = 3834025840475321136L;
+	private static int i = 2;
     private final String name;
     public static final EconomicClimate BOOM = new EconomicClimate(i++, "BOOM");
     public static final EconomicClimate PROSPERITY = new EconomicClimate(i++,

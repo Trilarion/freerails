@@ -36,7 +36,8 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class IntArray extends ArrayBase implements Serializable {
-    /** The underlying array used for storing the data. */
+    private static final long serialVersionUID = 3258408426391418681L;
+	/** The underlying array used for storing the data. */
     protected int[] m_baseArray;
 
     /**

@@ -68,7 +68,8 @@ import jfreerails.world.common.IntLine;
  *
  */
 public class TrainPositionOnMap implements FreerailsSerializable {
-    private final int[] m_xpoints;
+    private static final long serialVersionUID = 3979269144611010865L;
+	private final int[] m_xpoints;
     private final int[] m_ypoints;
 
     public int hashCode() {

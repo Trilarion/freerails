@@ -16,7 +16,8 @@ import jfreerails.world.common.OneTileMoveVector;
  * @author Luke
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
-    private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
+    private static final long serialVersionUID = 3618695301330974512L;
+	private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
 
     /**

@@ -13,7 +13,9 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class Consumption implements FreerailsSerializable {
-    private final int cargoType;
+    private static final long serialVersionUID = 3258133565631051064L;
+
+	private final int cargoType;
 
     /** The number of tiles that must be within the station radius before
      * the station demands the cargo.

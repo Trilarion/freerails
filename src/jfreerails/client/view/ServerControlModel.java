@@ -38,7 +38,9 @@ public class ServerControlModel {
 		this.modelRoot = modelRoot;
 	}
     private class NewGameAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
+        private static final long serialVersionUID = 3690758388631745337L;
+
+		public void actionPerformed(ActionEvent e) {
            
                 String mapName = e.getActionCommand();
 
@@ -63,7 +65,9 @@ public class ServerControlModel {
     private final Action newGameAction = new NewGameAction(null);
 
     private class LoadGameAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
+        private static final long serialVersionUID = 3616451215278682931L;
+
+		public void actionPerformed(ActionEvent e) {
             ServerCommand command = new LoadGameServerCommand(1, ServerControlInterface.FREERAILS_SAV);
             modelRoot.sendCommand(command);
         }
@@ -76,8 +80,10 @@ public class ServerControlModel {
 
     private final Action loadGameAction = new LoadGameAction();
 
-    private class SaveGameAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
+    private class SaveGameAction extends AbstractAction {        
+		private static final long serialVersionUID = 3905808578064562480L;
+
+		public void actionPerformed(ActionEvent e) {
             ServerCommand command = new SaveGameServerCommand(1, ServerControlInterface.FREERAILS_SAV);
             modelRoot.sendCommand(command);
             loadGameAction.setEnabled(true);
@@ -93,7 +99,8 @@ public class ServerControlModel {
     private final Action saveGameAction = new SaveGameAction();
 
     private class SetTargetTicksPerSecondAction extends AbstractAction {
-        final int speed;
+        private static final long serialVersionUID = 3256437014978048052L;
+		final int speed;
 
         public void actionPerformed(ActionEvent e) {
         	 int speed2set = speed;

@@ -23,7 +23,8 @@ import jfreerails.world.track.TrackRule;
  *
  */
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
-    final TrackPiece trackPieceBefore;
+    private static final long serialVersionUID = 4120849958418591801L;
+	final TrackPiece trackPieceBefore;
     private final TrackPiece trackPieceAfter;
     private final Point location;
 

@@ -15,7 +15,8 @@ import jfreerails.world.top.World;
  *
  */
 public class AddTransactionMove implements Move {
-    private final Transaction transaction;
+    private static final long serialVersionUID = 3976738055925019701L;
+	private final Transaction transaction;
     private final FreerailsPrincipal principal;
 
     /** Whether the move fails if there is not enough cash. */

@@ -49,7 +49,8 @@ import static jfreerails.world.track.TrackRule.TrackCategories.track;
  */
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     
-    private final ImageManager imageManager = new ImageManagerImpl("/jfreerails/client/graphics/");
+    private static final long serialVersionUID = 3618701915647850036L;
+	private final ImageManager imageManager = new ImageManagerImpl("/jfreerails/client/graphics/");
     private HashMap<TrackRule.TrackCategories, Integer> selectionSet;
     private ModelRoot modelRoot;
     private TrackMoveProducer trackMoveProducer;

@@ -39,7 +39,8 @@ import jfreerails.world.train.WagonType;
  * @author Luke Lindsay 28-Nov-2002
  */
 public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
-    private static final Logger logger = Logger.getLogger(TrainPathFinder.class.getName());
+    private static final long serialVersionUID = 3256446893302559280L;
+	private static final Logger logger = Logger.getLogger(TrainPathFinder.class.getName());
     private static final int NOT_AT_STATION = -1;
 
     /**

@@ -6,7 +6,8 @@ package jfreerails.world.common;
  * @author Luke
  */
 public class IntLine implements FreerailsSerializable {
-    public int x1;
+    private static final long serialVersionUID = 3257853198755705393L;
+	public int x1;
     public int x2;
     public int y1;
     public int y2;

@@ -11,7 +11,8 @@ import jfreerails.world.train.TrainPositionOnMap;
  * @author Luke
  */
 public class InitialiseTrainPositionMove implements Move {
-    private final TrainPositionOnMap newPosition;
+    private static final long serialVersionUID = 3256727294587320632L;
+	private final TrainPositionOnMap newPosition;
     private final int trainNo;
     private final FreerailsPrincipal m_principal;
 

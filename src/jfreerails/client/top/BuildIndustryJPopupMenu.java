@@ -34,7 +34,8 @@ import jfreerails.world.top.SKEY;
  *
  */
 public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
-    private final Point cursorLocation = new Point();
+    private static final long serialVersionUID = 3689636912575165749L;
+	private final Point cursorLocation = new Point();
 
     public void setCusorLocation(Point p) {
         cursorLocation.x = p.x;

@@ -13,7 +13,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class LogOnRequest implements FreerailsSerializable {
-    private final String username;
+    private static final long serialVersionUID = 3257854263924240949L;
+	private final String username;
     private final String password;
 
     public LogOnRequest(String username, String password) {

@@ -11,7 +11,8 @@ import jfreerails.world.top.World;
  * @author rob
  */
 public class RejectedMove implements Move {
-    private final Move m_attemptedMove;
+    private static final long serialVersionUID = 3257288037011305780L;
+	private final Move m_attemptedMove;
     private final MoveStatus moveStatus;
 
     /**

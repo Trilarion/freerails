@@ -8,7 +8,8 @@ import jfreerails.world.common.Money;
  *@author Luke
  */
 final public class TrackRuleProperties implements FreerailsSerializable {
-    private final boolean enableDoubleTrack;
+    private static final long serialVersionUID = 3618704101752387641L;
+	private final boolean enableDoubleTrack;
     private final Money maintenanceCost;    
     private final Money price;
     private final Money fixedCost;

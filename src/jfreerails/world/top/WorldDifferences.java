@@ -53,7 +53,9 @@ import jfreerails.world.track.FreerailsTile;
  *
  */
 public class WorldDifferences implements World {
-    private static final Object NUMBER_OF_PLAYERS_KEY = new Integer(0);
+    private static final long serialVersionUID = 3761975968721418550L;
+
+	private static final Object NUMBER_OF_PLAYERS_KEY = new Integer(0);
     private enum KeyType {LIST, PLAYER, BANK_ACCOUNT, LIST_LENGTH};
 //    private static int i = 0;
 //    private final int LIST = i++;

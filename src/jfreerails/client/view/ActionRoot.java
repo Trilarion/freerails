@@ -32,7 +32,9 @@ public class ActionRoot {
     private final ServerControlModel serverControls = new ServerControlModel( null);
 
     private class BuildTrainDialogAction extends AbstractAction {
-        public BuildTrainDialogAction() {
+        private static final long serialVersionUID = 3257853173002416948L;
+
+		public BuildTrainDialogAction() {
             super("Build Train");
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
             putValue(SHORT_DESCRIPTION, "Build a new train");

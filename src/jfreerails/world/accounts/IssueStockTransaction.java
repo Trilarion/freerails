@@ -15,7 +15,9 @@ import jfreerails.world.common.Money;
  *
  */
 public class IssueStockTransaction extends AddItemTransaction {
-    private IssueStockTransaction(int quantity, Money amount) {
+    private static final long serialVersionUID = 3256441412924224824L;
+
+	private IssueStockTransaction(int quantity, Money amount) {
         super(Transaction.Category.ISSUE_STOCK, -1, quantity, amount);
     }
 

@@ -19,7 +19,8 @@ import jfreerails.world.top.ReadOnlyWorld;
  *
  */
 public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
-    private String template;
+    private static final long serialVersionUID = 3257846588885120057L;
+	private String template;
     private int lastNumTransactions = 0;
     private ModelRoot modelRoot;
 

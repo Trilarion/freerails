@@ -12,7 +12,9 @@ package jfreerails.controller;
  *
  */
 public class PathNotFoundException extends Exception {
-    public PathNotFoundException(String arg0) {
+    private static final long serialVersionUID = 4121409601112717368L;
+
+	public PathNotFoundException(String arg0) {
         super(arg0);
     }
 }

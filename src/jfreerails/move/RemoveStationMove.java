@@ -22,7 +22,9 @@ import jfreerails.world.train.MutableSchedule;
  *
  */
 public class RemoveStationMove extends CompositeMove implements TrackMove {
-    private RemoveStationMove(ArrayList<Move> moves) {
+    private static final long serialVersionUID = 3760847865429702969L;
+
+	private RemoveStationMove(ArrayList<Move> moves) {
         super(moves);
     }
 

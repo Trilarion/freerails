@@ -24,7 +24,9 @@ import jfreerails.world.train.TrainModel;
 public class TrainDescriptionJPanel extends javax.swing.JPanel implements View, WorldListListener {
     
     
-    private ReadOnlyWorld w;
+    private static final long serialVersionUID = 3977018444325664049L;
+
+	private ReadOnlyWorld w;
     
     private FreerailsPrincipal principal;
     

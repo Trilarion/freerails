@@ -11,7 +11,9 @@ package jfreerails.world.common;
  *
  */
 public class GameTime implements FreerailsSerializable {
-    /** The first possible time.*/
+    private static final long serialVersionUID = 3691035461301055541L;
+
+	/** The first possible time.*/
     public static final GameTime BIG_BANG = new GameTime(Integer.MIN_VALUE);
 
     /** The last possible time.*/

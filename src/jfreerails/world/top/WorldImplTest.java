@@ -18,6 +18,8 @@ import junit.framework.TestCase;
  */
 public class WorldImplTest extends TestCase {
     private final FreerailsSerializable fs = new FreerailsSerializable() {
+
+		private static final long serialVersionUID = 3257565088071038009L;
         };
 
     public void testGet() {

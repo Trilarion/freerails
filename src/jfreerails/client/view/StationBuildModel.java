@@ -93,7 +93,8 @@ public class StationBuildModel {
     }
 
     private class StationChooseAction extends AbstractAction {
-        private final int actionId;
+        private static final long serialVersionUID = 3257290240279458098L;
+		private final int actionId;
 
         public StationChooseAction(int actionId) {
             this.actionId = actionId;
@@ -114,7 +115,9 @@ public class StationBuildModel {
     }
 
     private class StationCancelAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
+        private static final long serialVersionUID = 3256441421581203252L;
+
+		public void actionPerformed(ActionEvent e) {
         	
         	stationBuildAction.setEnabled(false);
         }
@@ -124,7 +127,9 @@ public class StationBuildModel {
      * This action builds the station.
      */
     public class StationBuildAction extends AbstractAction {
-        /**
+        private static final long serialVersionUID = 3905236827739926833L;
+
+		/**
          * This key can be used to set the position where the station is to be
          * built as a Point object.
          */

@@ -19,7 +19,8 @@ import jfreerails.network.NewGameServerCommand;
  * @author rtuck99@users.sourceforge.net
  */
 class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
-    private static final String SELECT_A_MAP = "Select a map.";
+    private static final long serialVersionUID = 3763096353857024568L;
+	private static final String SELECT_A_MAP = "Select a map.";
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
     

@@ -29,7 +29,9 @@ import jfreerails.world.track.TrackRule;
  *
  */
 public class AddStationMove extends CompositeMove {
-    private AddStationMove(Move[] moves) {
+    private static final long serialVersionUID = 3256728398461089080L;
+
+	private AddStationMove(Move[] moves) {
         super(moves);
     }
 

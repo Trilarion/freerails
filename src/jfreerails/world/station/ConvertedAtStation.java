@@ -8,7 +8,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class ConvertedAtStation implements FreerailsSerializable {
-    private static final int NOT_CONVERTED = Integer.MIN_VALUE;
+    private static final long serialVersionUID = 3690754012076978231L;
+	private static final int NOT_CONVERTED = Integer.MIN_VALUE;
     private final int[] convertedTo;
 
     public ConvertedAtStation(int[] convertedTo) {

@@ -32,7 +32,9 @@ import jfreerails.world.top.World;
  *
  */
 public class CargoAtStationsGenerator implements FreerailsServerSerializable {
-    public CargoAtStationsGenerator() {
+    private static final long serialVersionUID = 3834596504072959796L;
+
+	public CargoAtStationsGenerator() {
     }
 
     /** Call this method once a month.*/

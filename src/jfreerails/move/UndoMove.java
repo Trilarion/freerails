@@ -9,7 +9,8 @@ import jfreerails.world.top.World;
  * @author luke
  */
 public class UndoMove implements Move {
-    private Move move2undo;
+    private static final long serialVersionUID = 3977582498051929144L;
+	private Move move2undo;
 
     /**
     * @param move The move that was undone

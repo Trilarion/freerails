@@ -23,7 +23,8 @@ import jfreerails.client.renderer.ViewLists;
  *
  */
 public class NewsPaperJPanel extends javax.swing.JPanel implements View {
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
+    private static final long serialVersionUID = 3258410638366946868L;
+	private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
     .getDefaultScreenDevice()
     .getDefaultConfiguration();
     private ActionListener callBack;

@@ -18,12 +18,14 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 /**
- * JPanel that didplays a list of trains, used for the train list window and the train roster tab.
+ * JPanel that displays a list of trains, used for the train list window and the train roster tab.
  * @author  Luke
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {
     
-    private ReadOnlyWorld world;
+    private static final long serialVersionUID = 3256446901892165688L;
+
+	private ReadOnlyWorld world;
     
     private FreerailsPrincipal principal;
     

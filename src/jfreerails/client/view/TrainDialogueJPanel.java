@@ -24,6 +24,8 @@ import jfreerails.world.top.WorldListListener;
  */
 public class TrainDialogueJPanel extends javax.swing.JPanel implements View, WorldListListener {
 	
+	private static final long serialVersionUID = 3257005466801157938L;
+
 	private static final Logger logger = Logger
 			.getLogger(TrainDialogueJPanel.class.getName()); 
     

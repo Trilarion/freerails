@@ -17,7 +17,8 @@ import jfreerails.world.top.World;
  *
  */
 public class AddItemToListMove implements ListMove {
-    private final KEY listKey;
+    private static final long serialVersionUID = 3256721779916747824L;
+	private final KEY listKey;
     private final int index;
     private final FreerailsPrincipal principal;
     private final FreerailsSerializable item;

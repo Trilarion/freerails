@@ -21,7 +21,8 @@ import jfreerails.world.top.World;
  *
  */
 public class ChangeProductionAtEngineShopMove implements Move {
-    private final ProductionAtEngineShop[] m_before;
+    private static final long serialVersionUID = 3905519384997737520L;
+	private final ProductionAtEngineShop[] m_before;
     private final ProductionAtEngineShop[] m_after;
     private final int m_stationNumber;
     private final FreerailsPrincipal m_principal;

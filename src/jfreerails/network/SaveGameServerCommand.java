@@ -11,7 +11,8 @@ package jfreerails.network;
  *
  */
 public class SaveGameServerCommand implements ServerCommand {
-    private final int id;
+    private static final long serialVersionUID = 3257281452725777209L;
+	private final int id;
     private final String filename;
 
     public SaveGameServerCommand(int id, String s) {

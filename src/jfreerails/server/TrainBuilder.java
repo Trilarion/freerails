@@ -48,7 +48,9 @@ import jfreerails.world.train.TrainPositionOnMap;
  */
 public class TrainBuilder implements ServerAutomaton {
 
-    private static FreerailsPathIterator getRandomPathToFollow(Point p,
+    private static final long serialVersionUID = 3258410646839243577L;
+
+	private static FreerailsPathIterator getRandomPathToFollow(Point p,
         ReadOnlyWorld w) {
         PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(w, p)[0];
 

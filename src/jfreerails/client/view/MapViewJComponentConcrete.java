@@ -35,7 +35,8 @@ import jfreerails.client.renderer.MapRenderer;
  */
 final public class MapViewJComponentConcrete extends MapViewJComponent
     implements ModelRootListener {
-    private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
+    private static final long serialVersionUID = 3834868087706236208L;
+	private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
     private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);   
 
     /** The length of the array is the number of lines.

@@ -14,7 +14,8 @@ package jfreerails.client.top;
  */
 public class ClientJFrame extends javax.swing.JFrame {
     
-    private GUIComponentFactory gUIComponentFactory;
+    private static final long serialVersionUID = 3834868100742265142L;
+	private GUIComponentFactory gUIComponentFactory;
 
     /** Creates new form ClientJFrame. */
     public ClientJFrame(GUIComponentFactory gcf) {

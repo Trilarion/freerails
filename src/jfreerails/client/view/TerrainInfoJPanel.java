@@ -25,7 +25,9 @@ import jfreerails.world.train.WagonType;
  */
 public class TerrainInfoJPanel extends javax.swing.JPanel {
     
-    private ViewLists vl;
+    private static final long serialVersionUID = 3258131375164045363L;
+
+	private ViewLists vl;
     
     private ReadOnlyWorld w;
     

@@ -8,7 +8,8 @@ import java.text.DecimalFormat;
  * @author Luke
  */
 final public class GameCalendar implements FreerailsSerializable {
-    private static final DecimalFormat decimalFormat = new DecimalFormat("00");
+    private static final long serialVersionUID = 3257568421033226805L;
+	private static final DecimalFormat decimalFormat = new DecimalFormat("00");
     private final int ticksPerYear;
     private final int startYear;
 

@@ -12,7 +12,9 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class Production implements FreerailsSerializable {
-    private final int cargoType;
+    private static final long serialVersionUID = 3258125847641536052L;
+
+	private final int cargoType;
 
     /** The number of units per year (40 units = 1 car load). */
     private final int rate;

@@ -22,7 +22,8 @@ import jfreerails.world.terrain.TerrainType;
  *    09 October 2001
  */
 final public class TrackRuleImpl implements TrackRule {
-    private final LegalTrackConfigurations legalConfigurations;
+    private static final long serialVersionUID = 3257281414171801401L;
+	private final LegalTrackConfigurations legalConfigurations;
     private final LegalTrackPlacement legalTrackPlacement;
     private final TrackRuleProperties properties;
     

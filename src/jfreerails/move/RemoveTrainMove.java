@@ -18,7 +18,9 @@ import jfreerails.world.train.TrainModel;
  *
  */
 public class RemoveTrainMove extends CompositeMove {
-    private RemoveTrainMove(Move[] moves) {
+    private static final long serialVersionUID = 3979265867567544114L;
+
+	private RemoveTrainMove(Move[] moves) {
         super(moves);
     }
 

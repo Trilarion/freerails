@@ -12,7 +12,8 @@ import jfreerails.world.common.Money;
  *
  */
 public class BondTransaction extends AddItemTransaction {
-    public static final Money BOND_VALUE = new Money(500000);
+    private static final long serialVersionUID = 3257562923491473465L;
+	public static final Money BOND_VALUE = new Money(500000);
 
     private BondTransaction(Category category, int type, int quantity, Money amount) {
         super(category, type, quantity, amount);

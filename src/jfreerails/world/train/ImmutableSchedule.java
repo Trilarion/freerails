@@ -14,7 +14,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class ImmutableSchedule implements Schedule, FreerailsSerializable {
-    private final TrainOrdersModel[] m_orders;
+    private static final long serialVersionUID = 3977858458324318264L;
+	private final TrainOrdersModel[] m_orders;
     private final int nextScheduledOrder;
 
     public int hashCode() {

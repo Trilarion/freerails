@@ -9,7 +9,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class CargoBatch implements FreerailsSerializable {
-    private final int cargoType;
+    private static final long serialVersionUID = 3257006557605540149L;
+	private final int cargoType;
     private final int sourceX;
     private final int sourceY;
     private final int stationOfOrigin;

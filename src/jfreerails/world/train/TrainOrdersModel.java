@@ -14,7 +14,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author  Luke
  */
 public class TrainOrdersModel implements FreerailsSerializable {
-    private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
+    private static final long serialVersionUID = 3616453397155559472L;
+	private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
     public final boolean waitUntilFull;
     public final boolean autoConsist;
     public final int[] consist; //The wagon types to add; if null, then no change.

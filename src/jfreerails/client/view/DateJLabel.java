@@ -22,7 +22,8 @@ import jfreerails.world.top.ReadOnlyWorld;
  *
  */
 public class DateJLabel extends JLabel implements View {
-    private ReadOnlyWorld w;
+    private static final long serialVersionUID = 3689348840578757942L;
+	private ReadOnlyWorld w;
 
     public DateJLabel() {
         this.setText("          ");

@@ -18,7 +18,9 @@ import jfreerails.world.track.TrackPiece;
  *
  */
 public class UpgradeTrackMove extends CompositeMove implements TrackMove {
-    private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
+    private static final long serialVersionUID = 3907215961470875442L;
+
+	private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
         super(new Move[] {trackMove});
     }
 

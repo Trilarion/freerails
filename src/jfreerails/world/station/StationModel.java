@@ -11,7 +11,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class StationModel implements FreerailsSerializable {
-    public final int x;
+    private static final long serialVersionUID = 3256442503979874355L;
+	public final int x;
     public final int y;
     private final String name;
     private final SupplyAtStation supply;

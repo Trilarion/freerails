@@ -24,7 +24,8 @@ import jfreerails.world.top.KEY;
  */
 public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCellRenderer{
     
-    private jfreerails.world.top.ReadOnlyWorld w;
+    private static final long serialVersionUID = 4051047466990319413L;
+	private jfreerails.world.top.ReadOnlyWorld w;
     private FreerailsPrincipal principal;
     
     private final ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/selected_arrow.png"));

@@ -19,7 +19,8 @@ import jfreerails.world.train.TrainPositionOnMap;
  *
  */
 public class ChangeTrainPositionMove implements Move {
-    private final TrainPositionOnMap m_changeToHead;
+    private static final long serialVersionUID = 3906926759780956466L;
+	private final TrainPositionOnMap m_changeToHead;
     private final TrainPositionOnMap m_changeToTail;
     private final boolean m_addToHead;
     private final boolean m_addToTail;
@@ -45,7 +46,9 @@ public class ChangeTrainPositionMove implements Move {
         FreerailsPrincipal p) {
         return new ChangeTrainPositionMove(null, null, trainNumber, false,
             false, p) {
-                MoveStatus move(World w, boolean updateTrainPosition,
+                private static final long serialVersionUID = 3906926759780956466L;
+
+				MoveStatus move(World w, boolean updateTrainPosition,
                     boolean isDoMove) {
                     return MoveStatus.MOVE_OK;
                 }

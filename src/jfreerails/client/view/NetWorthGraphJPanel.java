@@ -39,7 +39,9 @@ import jfreerails.world.top.TransactionAggregator;
  */
 public class NetWorthGraphJPanel extends JPanel implements View {
     
-    private static final Logger logger = Logger
+    private static final long serialVersionUID = 3618703010813980982L;
+
+	private static final Logger logger = Logger
             .getLogger(NetWorthGraphJPanel.class.getName());
 
     private JLabel title = null;

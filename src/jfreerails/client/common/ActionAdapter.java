@@ -21,7 +21,8 @@ import javax.swing.JToggleButton;
  *  @author Rob
  */
 public class ActionAdapter extends DefaultComboBoxModel {
-    /**
+    private static final long serialVersionUID = 3546920294666351415L;
+	/**
      * The set of actions which each button / menu item correspond to.
      */
     private final Action[] actions;
@@ -128,7 +129,8 @@ public class ActionAdapter extends DefaultComboBoxModel {
 
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel
         implements PropertyChangeListener {
-        /**
+        private static final long serialVersionUID = 3834589889856353845L;
+		/**
          * The NAME of the Action to which this ButtonModel is mapped.
          */
         public final String actionName;

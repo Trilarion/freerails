@@ -35,7 +35,9 @@ import jfreerails.world.train.TrainModel;
  */
 public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+    private static final long serialVersionUID = 3905239009449095220L;
+
+	private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     
     private final Image stationView;
     

@@ -15,7 +15,8 @@ import jfreerails.world.track.TrackPiece;
  * @author Luke
  */
 public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
-    private PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.NORTH);
+    private static final long serialVersionUID = 3834311713465185081L;
+	private PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.NORTH);
     final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, OneTileMoveVector.NORTH);
     private boolean beforeFirst = true;
     private final ReadOnlyWorld w;

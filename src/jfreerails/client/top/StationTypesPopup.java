@@ -29,7 +29,8 @@ import jfreerails.world.track.TrackRule;
  *
  */
 public class StationTypesPopup extends JPopupMenu {
-    private Point tileToBuildStationOn;
+    private static final long serialVersionUID = 3258415040658093364L;
+	private Point tileToBuildStationOn;
     private StationRadiusRenderer stationRadiusRenderer;
     private PopupMenuListener popupMenuListener;
     private StationBuildModel stationBuildModel;
@@ -47,7 +48,9 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     private class StationBuildMenuItem extends JMenuItem {
-        public void configurePropertiesFromAction(Action a) {
+        private static final long serialVersionUID = 3256721792751120946L;
+
+		public void configurePropertiesFromAction(Action a) {
             super.configurePropertiesFromAction(a);
         }
     }

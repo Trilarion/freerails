@@ -37,7 +37,9 @@ import java.util.Set;
  */
 public final class IntHashSet extends IntAbstractSet implements Serializable,
     Cloneable, Hash, IntSet {
-    /** The array of keys. */
+    private static final long serialVersionUID = 3760848956401136435L;
+
+	/** The array of keys. */
     private transient int[] m_key;
 
     /** The array of occupancy states. */

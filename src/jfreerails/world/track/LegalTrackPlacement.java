@@ -19,7 +19,8 @@ import jfreerails.world.terrain.TerrainType;
  * @author  lindsal
  */
 public final class LegalTrackPlacement implements FreerailsSerializable {
-    /** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
+    private static final long serialVersionUID = 3616445687756437049L;
+	/** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
     private final /*=mutable*/ HashSet<TerrainType.Category> terrainTypes = new HashSet<TerrainType.Category>();
     private final PlacementRule placementRule;
 
@@ -45,7 +46,8 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     }
 
     final public static class PlacementRule implements FreerailsSerializable {
-        private final int i;
+        private static final long serialVersionUID = 3257008756746697016L;
+		private final int i;
 
         private PlacementRule(int i) {
             this.i = i;

@@ -11,7 +11,9 @@ import jfreerails.world.common.IntLine;
  * @author Luke
  */
 public class PathWalkerImpl implements PathWalker {
-    private final FreerailsPathIterator it;
+    private static final long serialVersionUID = 4050204158701155639L;
+
+	private final FreerailsPathIterator it;
 
     /**
      * current segment of the path we are on.

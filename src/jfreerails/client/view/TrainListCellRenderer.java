@@ -34,7 +34,8 @@ import jfreerails.world.train.TrainOrdersModel;
  */
 public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer,
     WorldListListener {
-    private ReadOnlyWorld w;
+    private static final long serialVersionUID = 3546076964969591093L;
+	private ReadOnlyWorld w;
     private ViewLists vl;
     private int trainNumber = -1;
     private int scheduleOrderNumber;

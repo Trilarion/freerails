@@ -33,7 +33,8 @@ import jfreerails.world.track.TrackRule;
  */
 public class AddStationPreMove implements PreMove {
     
-    private final Point p;
+    private static final long serialVersionUID = 3258131349411148085L;
+	private final Point p;
     private final int ruleNumber;
     private final FreerailsPrincipal principal;
 

@@ -16,7 +16,9 @@ import java.util.NoSuchElementException;
  * @author  Luke Lindsay
  */
 public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
-    public static FreerailsPathIterator forwardsIterator(List l) {
+    private static final long serialVersionUID = 3258411750679720758L;
+
+	public static FreerailsPathIterator forwardsIterator(List l) {
         return new FreerailsPathIteratorImpl(l, true);
     }
 

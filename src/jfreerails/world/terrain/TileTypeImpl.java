@@ -16,7 +16,8 @@ import jfreerails.world.common.Money;
 *     16 August 2001
 */
 final public class TileTypeImpl implements TerrainType {
-    private final int rgb;
+    private static final long serialVersionUID = 4049919380945253945L;
+	private final int rgb;
     private final TerrainType.Category terrainCategory;
 
     public int hashCode() {

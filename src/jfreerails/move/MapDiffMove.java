@@ -15,7 +15,8 @@ import jfreerails.world.track.FreerailsTile;
  * @author Luke
   */
 public class MapDiffMove implements Move, MapUpdateMove {
-    private /*=mutable*/ final ArrayList<Point> points;
+    private static final long serialVersionUID = 3905245632406239544L;
+	private /*=mutable*/ final ArrayList<Point> points;
     private /*=mutable*/ final ArrayList<FreerailsTile> before;
     private /*=mutable*/ final ArrayList<FreerailsTile> after;
     private final Rectangle updateTiles;

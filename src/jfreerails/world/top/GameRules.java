@@ -13,7 +13,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class GameRules implements FreerailsSerializable {
-    private final boolean canConnect2OtherRRTrack;
+    private static final long serialVersionUID = 3258125847557978416L;
+	private final boolean canConnect2OtherRRTrack;
     private final boolean mustConnect2ExistingTrack;
     public static final GameRules DEFAULT_RULES = new GameRules(true, false);
     public static final GameRules NO_RESTRICTIONS = new GameRules(false, true);

@@ -34,7 +34,9 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class ImmutableCargoBundle implements FreerailsSerializable {
-    public String toString() {
+    private static final long serialVersionUID = 3257566187666814009L;
+
+	public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("CargoBundle {\n");
 

@@ -27,7 +27,8 @@ import jfreerails.client.view.DisplayModesComboBoxModels;
  *@author Luke Lindsay
  */
 class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel{
-    private static final Logger logger = Logger.getLogger(ClientOptionsJPanel.class.getName());
+    private static final long serialVersionUID = 3256721779883325748L;
+	private static final Logger logger = Logger.getLogger(ClientOptionsJPanel.class.getName());
     private final LauncherInterface owner;
     private String[] names;
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";

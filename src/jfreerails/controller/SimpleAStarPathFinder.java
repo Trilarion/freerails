@@ -18,7 +18,8 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 public class SimpleAStarPathFinder implements FreerailsSerializable,
     IncrementalPathFinder {
-    private static final Logger logger = Logger.getLogger(SimpleAStarPathFinder.class.getName());
+    private static final long serialVersionUID = 3257565105200576310L;
+	private static final Logger logger = Logger.getLogger(SimpleAStarPathFinder.class.getName());
     private OpenList openList = new OpenList();
     private final IntHashSet startingPositions = new IntHashSet();
     private final Int2IntHashMap closedList = new Int2IntHashMap();
@@ -227,7 +228,8 @@ public class SimpleAStarPathFinder implements FreerailsSerializable,
      *
      */
     private static class OpenList implements Serializable {
-        private final Int2IntHashMap openList = new Int2IntHashMap();
+        private static final long serialVersionUID = 3257282539419611442L;
+		private final Int2IntHashMap openList = new Int2IntHashMap();
 
         void clear() {
             openList.clear();

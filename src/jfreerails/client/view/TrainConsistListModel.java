@@ -19,7 +19,8 @@ import jfreerails.world.train.TrainModel;
  * @author  Luke Lindsay
  */
 public class TrainConsistListModel extends AbstractListModel {
-    private final ReadOnlyWorld w;
+    private static final long serialVersionUID = 3688784791013373750L;
+	private final ReadOnlyWorld w;
     private final int trainNumber;
     private final FreerailsPrincipal principal;
 

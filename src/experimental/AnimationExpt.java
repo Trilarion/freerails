@@ -13,8 +13,11 @@ import jfreerails.client.top.GameLoop;
  * @author Luke Lindsay
  *
  */
-public class AnimationExpt extends JComponent {
-    protected void paintComponent(Graphics g) {
+public class AnimationExpt extends JComponent { 
+
+	private static final long serialVersionUID = 3690191057862473264L;
+
+	protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         long l = System.currentTimeMillis();

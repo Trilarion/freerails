@@ -27,6 +27,8 @@ import jfreerails.world.track.TrackRule;
  * @author Luke
  * */
 public class TrackTilesGenerator extends JPanel {
+	
+	private static final long serialVersionUID = 3618982273966487859L;
 
 	public static void main(String[] args) {
 

@@ -6,7 +6,8 @@ package jfreerails.world.player;
  * @author rob
  */
 public class PlayerPrincipal extends FreerailsPrincipal {
-    private final int id;
+    private static final long serialVersionUID = 3257563997099537459L;
+	private final int id;
     private final String name;
 
     public PlayerPrincipal(int id, String name) {

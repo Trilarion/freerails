@@ -29,7 +29,8 @@ import jfreerails.world.train.WagonType;
  */
 public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements View {
     
-    private ReadOnlyWorld world;
+    private static final long serialVersionUID = 3760559784860071476L;
+	private ReadOnlyWorld world;
     private FreerailsPrincipal principal;
     
     
@@ -174,7 +175,8 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
          column is quantity in carloads.*/
         TableModel tableModel = new AbstractTableModel() {
             
-            public int getRowCount(){
+            private static final long serialVersionUID = 3760559784860071476L;
+			public int getRowCount(){
                 return typeWaiting.size();
             }
             public int getColumnCount(){

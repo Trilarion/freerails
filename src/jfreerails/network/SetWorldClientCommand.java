@@ -13,7 +13,8 @@ import jfreerails.world.top.World;
  *
  */
 public class SetWorldClientCommand implements ClientCommand {
-    private final int id;
+    private static final long serialVersionUID = 3257570619972269362L;
+	private final int id;
     private final World world;
 
     /** Note, makes a defensive copy of the

@@ -14,7 +14,8 @@ import jfreerails.world.top.World;
  *
  */
 public class ChangeGameSpeedMove implements Move {
-    private final GameSpeed oldSpeed;
+    private static final long serialVersionUID = 3545794368956086071L;
+	private final GameSpeed oldSpeed;
     private final GameSpeed newSpeed;
 
     public static ChangeGameSpeedMove getMove(ReadOnlyWorld w,

@@ -15,7 +15,9 @@ import jfreerails.world.top.KEY;
  *
  */
 public class RemoveCargoBundleMove extends RemoveItemFromListMove {
-    public RemoveCargoBundleMove(int i, ImmutableCargoBundle item,
+    private static final long serialVersionUID = 3762247522239723316L;
+
+	public RemoveCargoBundleMove(int i, ImmutableCargoBundle item,
         FreerailsPrincipal p) {
         super(KEY.CARGO_BUNDLES, i, item, p);
     }

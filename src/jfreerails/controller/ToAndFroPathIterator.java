@@ -13,7 +13,8 @@ import jfreerails.world.common.IntLine;
  *
  */
 public class ToAndFroPathIterator implements FreerailsPathIterator {
-    private FreerailsPathIterator path;
+    private static final long serialVersionUID = 3256442525337202993L;
+	private FreerailsPathIterator path;
     private boolean forwards = true;
     private final List list;
 

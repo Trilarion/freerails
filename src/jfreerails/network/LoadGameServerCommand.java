@@ -11,7 +11,8 @@ package jfreerails.network;
  *
  */
 public class LoadGameServerCommand implements ServerCommand {
-    private final int id;
+    private static final long serialVersionUID = 3256726186552930869L;
+	private final int id;
     private final String filename;
 
     public LoadGameServerCommand(int id, String s) {

@@ -10,7 +10,8 @@ package jfreerails.world.common;
  * @author Luke
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
-    private static final int BITS_FOR_COORINATE = 14;
+    private static final long serialVersionUID = 3257853198755707184L;
+	private static final int BITS_FOR_COORINATE = 14;
     private static final int BITS_FOR_DIRECTION = 3;
     public static final int MAX_COORINATE = (1 << BITS_FOR_COORINATE) - 1;
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;

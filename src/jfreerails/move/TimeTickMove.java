@@ -13,7 +13,8 @@ import jfreerails.world.top.World;
  * @author rob
  */
 public class TimeTickMove implements Move {
-    private final GameTime m_oldTime;
+    private static final long serialVersionUID = 3257290240212153393L;
+	private final GameTime m_oldTime;
     private final GameTime m_newTime;
 
     public static TimeTickMove getMove(ReadOnlyWorld w) {

@@ -28,7 +28,8 @@ import jfreerails.world.top.WorldDifferences;
  *
  */
 public class ServerGameModelImpl implements ServerGameModel {
-    public World world;
+    private static final long serialVersionUID = 3978144352788820021L;
+	public World world;
     private transient CalcSupplyAtStations calcSupplyAtStations;
     private TrainBuilder tb;
     private final ArrayList<TrainMover> trainMovers;

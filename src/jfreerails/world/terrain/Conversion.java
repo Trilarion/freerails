@@ -13,7 +13,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class Conversion implements FreerailsSerializable {
-    private final int input;
+    private static final long serialVersionUID = 3546356219414853689L;
+	private final int input;
     private final int output;
 
     public Conversion(int in, int out) {

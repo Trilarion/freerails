@@ -33,7 +33,9 @@ public interface TerrainType extends FreerailsSerializable {
     String getDisplayName();
 
     static final TerrainType NULL = (new TerrainType() {
-            public /*=const*/ Production[] getProduction() {
+            private static final long serialVersionUID = 3834874680581369912L;
+
+			public /*=const*/ Production[] getProduction() {
                 return new Production[0];
             }
 

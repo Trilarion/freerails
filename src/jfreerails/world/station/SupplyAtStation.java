@@ -7,7 +7,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class SupplyAtStation implements FreerailsSerializable {
-    private final int[] supply;
+    private static final long serialVersionUID = 4049918272826847286L;
+	private final int[] supply;
 
     public SupplyAtStation(int[] cargoWaiting) {
         supply = cargoWaiting.clone();

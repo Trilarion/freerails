@@ -15,7 +15,9 @@ import java.io.ObjectStreamException;
  * @author Luke
 */
 final public class OneTileMoveVector implements FlatTrackTemplate {
-    public static final int TILE_DIAMETER = 100;
+    private static final long serialVersionUID = 3256444698640921912L;
+
+	public static final int TILE_DIAMETER = 100;
 
     /** North.   */
     public static final OneTileMoveVector NORTH;

@@ -18,7 +18,8 @@ import jfreerails.network.FreerailsGameServer;
  */
 public class ConnectedPlayersJPanel extends javax.swing.JPanel implements PropertyChangeListener {
     
-    FreerailsGameServer server = null;
+    private static final long serialVersionUID = 4049080453489111344L;
+	FreerailsGameServer server = null;
     
     /** Creates new form ConnectedPlayersJPanel */
     public ConnectedPlayersJPanel() {
@@ -45,7 +46,8 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements Proper
         add(title, gridBagConstraints);
 
         jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "No players are logged on!" };
+            private static final long serialVersionUID = 4049080453489111344L;
+			String[] strings = { "No players are logged on!" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });

@@ -12,7 +12,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class LogOnResponse implements FreerailsSerializable {
-    private final boolean successful;
+    private static final long serialVersionUID = 3690479099844311344L;
+	private final boolean successful;
     private final int playerNumber;
     private final String message;
 

@@ -15,7 +15,8 @@ import java.io.ObjectStreamException;
  * @author  lindsal
  */
 final public class NullTrackPiece implements TrackPiece {
-    private static final TrackPiece nullTrackPiece = new NullTrackPiece();
+    private static final long serialVersionUID = 3258413915376268599L;
+	private static final TrackPiece nullTrackPiece = new NullTrackPiece();
     private static final int NO_OWNER = Integer.MIN_VALUE;
 
     private NullTrackPiece() {

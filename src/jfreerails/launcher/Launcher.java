@@ -36,7 +36,8 @@ import jfreerails.util.GameModel;
  */
 public class Launcher extends javax.swing.JFrame implements
 LauncherInterface {
-    private static final Logger logger = Logger.getLogger(Launcher.class.getName());
+    private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger.getLogger(Launcher.class.getName());
     private static String QUICKSTART = "-quickstart";
     private final Component[] wizardPages = new Component[4];
     private int currentPage = 0;

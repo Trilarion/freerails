@@ -26,7 +26,8 @@ import jfreerails.world.train.TrainPositionOnMap;
  *
  */
 public class TrainMover implements FreerailsServerSerializable, ServerAutomaton {
-    private static final Logger logger = Logger.getLogger(TrainMover.class.getName());
+    private static final long serialVersionUID = 3979272460359250994L;
+	private static final Logger logger = Logger.getLogger(TrainMover.class.getName());
     private final PathWalker walker;
     private final int trainNumber;
     private final ReadOnlyWorld w;

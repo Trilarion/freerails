@@ -26,7 +26,8 @@ import jfreerails.client.renderer.ViewLists;
  */
 public class HtmlJPanel extends javax.swing.JPanel implements View {
     
-    private static final Logger logger = Logger.getLogger(HtmlJPanel.class
+    private static final long serialVersionUID = 4120848850266371126L;
+	private static final Logger logger = Logger.getLogger(HtmlJPanel.class
             .getName());
     HtmlJPanel(){
         initComponents();

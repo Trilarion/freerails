@@ -21,7 +21,8 @@ import jfreerails.world.top.ReadOnlyWorld;
  *
  */
 public class CashJLabel extends JLabel implements View {
-    private ReadOnlyWorld w;
+    private static final long serialVersionUID = 3257853181542412341L;
+	private ReadOnlyWorld w;
     private FreerailsPrincipal principal;
 
     public CashJLabel() {

@@ -26,7 +26,9 @@ import jfreerails.world.top.TypeID;
  * @author  Luke Lindsay
  */
 public class WagonView extends JLabel implements View, ListCellRenderer {
-    private ViewLists vl;
+    private static final long serialVersionUID = 3545233631011680820L;
+
+	private ViewLists vl;
 
     /** The height in pixels to display the images at. */
     private final int height = 40;

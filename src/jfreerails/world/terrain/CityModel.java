@@ -14,7 +14,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class CityModel implements FreerailsSerializable {
-    private final String name;
+    private static final long serialVersionUID = 3256720697500709428L;
+	private final String name;
     private final int x;
     private final int y;
 

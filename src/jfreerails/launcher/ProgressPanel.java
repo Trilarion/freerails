@@ -14,7 +14,8 @@ import jfreerails.util.FreerailsProgressMonitor;
 public class ProgressPanel extends javax.swing.JPanel implements
 FreerailsProgressMonitor {
     
-    /** Creates new form ProgressPanel */
+    private static final long serialVersionUID = 3256445798203273776L;
+	/** Creates new form ProgressPanel */
     public ProgressPanel() {
         initComponents();
     }

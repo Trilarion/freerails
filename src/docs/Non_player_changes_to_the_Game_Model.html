@@ -11,41 +11,42 @@
 <BODY LANG="en-US" DIR="LTR">
 <H2>Non player changes to the Game Model</H2>
 <H4 class="planned">City Growth and Decay</H4>
-<P class="planned">As time passes, Urban, Industry, and Resource tiles are added 
-  and removed from cities. Example, a factory tile will relocate from New York 
-  to Boston if Boston's utiltiy gain exceeds New york's utility loss. Utilities 
-  are caluculated as follows. The routine that updates cities should run once 
-  per month.</P>
+<P class="planned">As time passes, Urban (e.g. Village, City), Industry (e.g. 
+  Factory, Steel Mill), and Resource (e.g. Coal Mine, Sugar Plantation) tiles 
+  are added and removed from cities. Example, a factory tile will relocate from 
+  New York to Boston if Boston's utiltiy gain exceeds New york's utility loss. 
+  Utilities are caluculated as follows. The routine that updates cities should 
+  run once per month.</P>
 <TABLE>
   <COL WIDTH=128*>
   <COL WIDTH=64*>
   <COL WIDTH=64*>
   <THEAD>
     <TR VALIGN=TOP> 
-      <TD WIDTH=50%> <P class="planned">Category</P></TD>
-      <TD WIDTH=25%> <P class="planned">Utility</P></TD>
+      <TD WIDTH=14%> <P class="planned">Category</P></TD>
+      <TD WIDTH=61%> <P class="planned">Marginal Utility</P></TD>
       <TD WIDTH=25%> <P class="planned">Motivation</P></TD>
     </TR>
   </THEAD>
   <TBODY>
     <TR VALIGN=TOP> 
-      <TD WIDTH=50%> <P class="planned">Industry</P></TD>
-      <TD WIDTH=25%> <P class="planned">Number of Urban Tiles / (1+Number of Industry 
+      <TD WIDTH=14%> <P class="planned">Industry</P></TD>
+      <TD WIDTH=61%> <P class="planned">Number of Urban Tiles / (1+Number of Industry 
           Tiles)^2</P></TD>
       <TD WIDTH=25%> <P class="planned">Urban tiles supply labour to industries. 
           There are decreasing returns to scale.</P></TD>
     </TR>
     <TR VALIGN=TOP> 
-      <TD WIDTH=50%> <P class="planned">Resource</P></TD>
-      <TD WIDTH=25%> <P class="planned">(Units of Resource Picked Up + c) / (1 
+      <TD WIDTH=14%> <P class="planned">Resource</P></TD>
+      <TD WIDTH=61%> <P class="planned">(Units of Resource Picked Up + c) / (1 
           + Number of Resource Tiles)</P></TD>
       <TD WIDTH=25%> <P class="planned">Resources grow when they are exploited. 
           There are decreasing returns to scale.</P></TD>
     </TR>
     <TR VALIGN=TOP> 
-      <TD WIDTH=50%> <P class="planned">Urban</P></TD>
-      <TD WIDTH=25%> <P class="planned">Units of demanded cargo delivered &ndash; 
-          k * Number of Urban Tiles/(1+Number of Industry Tiles)</P></TD>
+      <TD WIDTH=14%> <P class="planned">Urban</P></TD>
+      <TD WIDTH=61%> <P class="planned">Units of demanded cargo delivered - k 
+          * Number of Urban Tiles/(1+Number of Industry Tiles)</P></TD>
       <TD WIDTH=25%> <P class="planned">Urban tiles value employment and delivery 
           of cargo but are adverse to overcrowding.</P></TD>
     </TR>

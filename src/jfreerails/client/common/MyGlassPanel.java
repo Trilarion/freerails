@@ -14,7 +14,9 @@ import javax.swing.JComponent;
  *
  */
 public class MyGlassPanel extends javax.swing.JPanel {
-    public MyGlassPanel() {
+    private static final long serialVersionUID = 3976735856986239795L;
+
+	public MyGlassPanel() {
         initComponents();
     }
 

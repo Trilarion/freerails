@@ -18,7 +18,8 @@ import jfreerails.world.terrain.TerrainType;
  * @author  lindsal
  */
 final public class NullTrackType implements TrackRule {
-    public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
+    private static final long serialVersionUID = 3257849891614306614L;
+	public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
     private static final NullTrackType nullTrackType = new NullTrackType();
 
     private NullTrackType() {

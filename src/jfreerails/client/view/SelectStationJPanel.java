@@ -33,7 +33,9 @@ import jfreerails.world.train.TrainOrdersModel;
  */
 public class SelectStationJPanel extends javax.swing.JPanel implements View {
     
-    private ReadOnlyWorld world;
+    private static final long serialVersionUID = 3258411750662877488L;
+
+	private ReadOnlyWorld world;
     
     private ActionListener submitButtonCallBack;
     

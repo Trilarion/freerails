@@ -21,7 +21,8 @@ import jfreerails.world.track.FreerailsTile;
  *
  */
 public class ChangeTileMove implements Move, MapUpdateMove {
-    private final int m_x;
+    private static final long serialVersionUID = 3256726169272662320L;
+	private final int m_x;
     private final int m_y;
     private final FreerailsTile m_before;
     private final FreerailsTile m_after;

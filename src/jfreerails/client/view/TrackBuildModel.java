@@ -53,7 +53,8 @@ public class TrackBuildModel {
     }
 
     private class BuildModeAction extends AbstractAction {
-        private final TrackMoveProducer.BuildMode mode;
+        private static final long serialVersionUID = 3689073962638324024L;
+		private final TrackMoveProducer.BuildMode mode;
 
         private BuildModeAction(TrackMoveProducer.BuildMode mode, String name) {
             putValue(NAME, name);
@@ -71,7 +72,8 @@ public class TrackBuildModel {
     }
 
     private class TrackRuleAction extends AbstractAction {
-        private final int actionId;
+        private static final long serialVersionUID = 3256719576464046128L;
+		private final int actionId;
 
         private TrackRuleAction(int actionId, String name) {
             TrackPieceRendererList trackPieceRendererList = viewLists.getTrackPieceViewList();

@@ -15,6 +15,8 @@ import jfreerails.world.common.Money;
  */
 public class AddItemTransaction implements Transaction {
 	
+	private static final long serialVersionUID = 3690471411852326457L;
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("AddItemTransaction ");

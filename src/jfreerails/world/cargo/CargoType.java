@@ -8,7 +8,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author luke
  */
 final public class CargoType implements FreerailsSerializable {
-    private static final String[] categories = new String[] {
+    private static final long serialVersionUID = 3834874680581369912L;
+	private static final String[] categories = new String[] {
             "Mail", "Passengers", "Fast_Freight", "Slow_Freight", "Bulk_Freight"
         };
 

@@ -24,7 +24,8 @@ import jfreerails.world.track.FreerailsTile;
  *
  */
 public class WorldImpl implements World {
-    private static final Logger logger = Logger.getLogger(WorldImpl.class.getName());
+    private static final long serialVersionUID = 3544393612684505393L;
+	private static final Logger logger = Logger.getLogger(WorldImpl.class.getName());
 
     public int hashCode() {
         int result;

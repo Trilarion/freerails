@@ -24,7 +24,8 @@ import jfreerails.world.track.FreerailsTile;
  */
 public class RHSJTabPane extends JTabbedPane
     implements ModelRootListener {
-    private final TerrainInfoJPanel terrainInfoPanel;
+    private static final long serialVersionUID = 3906926798502965297L;
+	private final TerrainInfoJPanel terrainInfoPanel;
     private final StationInfoJPanel stationInfoPanel;
     private final TrainListJPanel trainListPanel;
     private final BuildTrackJPanel buildTrackPanel;

@@ -8,7 +8,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author lindsal
  */
 final public class MoveStatus implements FreerailsSerializable {
-    public static final MoveStatus MOVE_OK = new MoveStatus(true,
+    private static final long serialVersionUID = 3258129171879309624L;
+	public static final MoveStatus MOVE_OK = new MoveStatus(true,
             "Move accepted");
     public final boolean ok;
     public final String message;

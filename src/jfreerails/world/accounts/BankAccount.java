@@ -16,7 +16,8 @@ import jfreerails.world.common.Money;
  *
  */
 public class BankAccount implements FreerailsMutableSerializable {
-    private final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private static final long serialVersionUID = 3257846576033902646L;
+	private final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
     private final ArrayList<GameTime> transactionsTimeStamps = new ArrayList<GameTime>();
     private Money currentBalance = new Money(0);
 

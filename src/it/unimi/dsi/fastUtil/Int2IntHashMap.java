@@ -37,7 +37,9 @@ import java.util.Set;
  */
 public final class Int2IntHashMap extends Int2IntAbstractMap
     implements Serializable, Cloneable, Hash, Int2IntMap {
-    /** The array of keys. */
+    private static final long serialVersionUID = 3257854276910070070L;
+
+	/** The array of keys. */
     private transient int[] m_key;
 
     /** The array of values. */

@@ -15,7 +15,8 @@ import javax.swing.ButtonModel;
  * @author rtuck99@users.sourceforge.net
  */
 final class LauncherPanel1 extends javax.swing.JPanel {
-    static final int MODE_SINGLE_PLAYER = 0;
+    private static final long serialVersionUID = 3257850965422913590L;
+	static final int MODE_SINGLE_PLAYER = 0;
     static final int MODE_START_NETWORK_GAME = 1;
     static final int MODE_JOIN_NETWORK_GAME = 2;
     static final int MODE_SERVER_ONLY = 3;

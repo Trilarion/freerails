@@ -15,7 +15,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class CommandStatus implements FreerailsSerializable {
-    private final int id;
+    private static final long serialVersionUID = 3257285842216103987L;
+	private final int id;
     private final String reason;
     private final boolean successful;
 

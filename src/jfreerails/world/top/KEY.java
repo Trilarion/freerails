@@ -12,7 +12,9 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class KEY implements FreerailsSerializable {
-    /** Maps key numbers to KEYs. */
+    private static final long serialVersionUID = 3257572793275987001L;
+
+	/** Maps key numbers to KEYs. */
     private static final KEY[] keys = new KEY[15];
 
     //START OF KEYS

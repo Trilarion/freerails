@@ -11,7 +11,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class WagonType implements FreerailsSerializable {
-    public static final int BULK_FREIGHT = 4;
+    private static final long serialVersionUID = 3906368233710826292L;
+	public static final int BULK_FREIGHT = 4;
     public static final int ENGINE = 5;
     public static final int FAST_FREIGHT = 2;
     public static final int MAIL = 0;

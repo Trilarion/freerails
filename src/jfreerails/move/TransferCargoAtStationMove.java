@@ -16,7 +16,8 @@ import jfreerails.world.player.Player;
  *
  */
 public class TransferCargoAtStationMove extends CompositeMove {
-    public static final int CHANGE_ON_TRAIN_INDEX = 1;
+    private static final long serialVersionUID = 3257291318215456563L;
+	public static final int CHANGE_ON_TRAIN_INDEX = 1;
     public static final int CHANGE_AT_STATION_INDEX = 0;
     private final boolean m_waitingForFullLoad;
 

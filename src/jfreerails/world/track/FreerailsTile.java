@@ -13,7 +13,8 @@ import jfreerails.world.terrain.TerrainTile;
  */
 public class FreerailsTile implements TrackPiece, TerrainTile,
     FreerailsSerializable {
-    public static final FreerailsTile NULL = new FreerailsTile(0);
+    private static final long serialVersionUID = 3617574907538847544L;
+	public static final FreerailsTile NULL = new FreerailsTile(0);
     private final TrackPiece trackPiece;
     private final int terrainType;
     private static HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<FreerailsTile, FreerailsTile>();

@@ -6,7 +6,8 @@ package jfreerails.world.track;
  * @author Luke
  */
 final public class TrackPieceImpl implements TrackPiece {
-    private final TrackConfiguration configuration;
+    private static final long serialVersionUID = 4049080423458027569L;
+	private final TrackConfiguration configuration;
     private final TrackRule trackType;
     private final int ownerID;
     private final int ruleNumber;

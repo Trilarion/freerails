@@ -16,7 +16,8 @@ import jfreerails.world.top.World;
  *
  */
 public class RemoveItemFromListMove implements ListMove {
-    private final FreerailsSerializable item;
+    private static final long serialVersionUID = 3906091169698953521L;
+	private final FreerailsSerializable item;
     private final KEY listKey;
     private final int index;
     private final FreerailsPrincipal principal;

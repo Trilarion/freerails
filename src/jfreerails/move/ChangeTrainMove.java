@@ -17,7 +17,9 @@ import jfreerails.world.train.TrainModel;
  *
  */
 public class ChangeTrainMove extends ChangeItemInListMove {
-    private ChangeTrainMove(int index, FreerailsSerializable before,
+    private static final long serialVersionUID = 3257854272514242873L;
+
+	private ChangeTrainMove(int index, FreerailsSerializable before,
         FreerailsSerializable after, FreerailsPrincipal p) {
         super(KEY.TRAINS, index, before, after, p);
     }

@@ -19,7 +19,8 @@ import jfreerails.world.top.World;
  *  @author Luke
  */
 public class CompositeMove implements Move {
-    private final Move[] m_moves;
+    private static final long serialVersionUID = 3257289149391517489L;
+	private final Move[] m_moves;
 
     /**
      * This method lets sub classes look at the moves.

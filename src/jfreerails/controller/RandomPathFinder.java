@@ -12,7 +12,8 @@ import jfreerails.world.common.PositionOnTrack;
  *
  */
 public class RandomPathFinder implements FreerailsPathIterator {
-    private final FlatTrackExplorer trackExplorer;
+    private static final long serialVersionUID = 3832906571880608313L;
+	private final FlatTrackExplorer trackExplorer;
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();
     private static final int tileSize = 30;

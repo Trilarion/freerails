@@ -16,7 +16,8 @@ package jfreerails.world.common;
  *
  */
 public class GameSpeed implements FreerailsSerializable {
-    private final int speed;
+    private static final long serialVersionUID = 3257562901983081783L;
+	private final int speed;
 
     public String toString() {
         return "GameSpeed:" + String.valueOf(speed);

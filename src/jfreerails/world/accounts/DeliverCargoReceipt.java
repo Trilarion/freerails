@@ -13,7 +13,8 @@ import jfreerails.world.common.Money;
  *
  */
 public class DeliverCargoReceipt extends Receipt {
-    private final CargoBatch m_cb;
+    private static final long serialVersionUID = 3257009851963160372L;
+	private final CargoBatch m_cb;
     private final int m_quantity;
     private final int m_stationId;
 

@@ -15,7 +15,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class ProductionAtEngineShop implements FreerailsSerializable {
-    private final int engineType;
+    private static final long serialVersionUID = 3545515106038592057L;
+	private final int engineType;
     private final int[] wagonTypes;
 
     public ProductionAtEngineShop(int e, int[] wagons) {

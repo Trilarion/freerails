@@ -35,7 +35,8 @@ import jfreerails.world.train.WagonType;
  */
 public class StationInfoJPanel extends JPanel implements View, WorldListListener {
     
-    private ReadOnlyWorld w;
+    private static final long serialVersionUID = 4050759377680150585L;
+	private ReadOnlyWorld w;
     private ModelRoot modelRoot;
     private WorldIterator wi;   
     

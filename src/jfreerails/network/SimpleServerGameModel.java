@@ -18,7 +18,8 @@ import jfreerails.world.top.World;
  *
  */
 public class SimpleServerGameModel implements ServerGameModel {
-    private World w;
+    private static final long serialVersionUID = 3546074757457131826L;
+	private World w;
     private String[] passwords;
 
     public void setWorld(World w,  String[] passwords) {

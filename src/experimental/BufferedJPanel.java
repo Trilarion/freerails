@@ -19,7 +19,8 @@ import jfreerails.client.common.RepaintManagerForActiveRendering;
  *
  */
 public class BufferedJPanel extends JPanel {
-    private static final Logger logger = Logger.getLogger(BufferedJPanel.class.getName());
+    private static final long serialVersionUID = 4048796753853689911L;
+	private static final Logger logger = Logger.getLogger(BufferedJPanel.class.getName());
     private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                             .getDefaultScreenDevice()
                                                                             .getDefaultConfiguration();

@@ -10,7 +10,8 @@ import jfreerails.world.common.IntLine;
  * @author Luke
  */
 public class SimplePathIteratorImpl implements FreerailsPathIterator {
-    private final /*=const */ int[] x;
+    private static final long serialVersionUID = 3618420406261003576L;
+	private final /*=const */ int[] x;
     private final /*=const */ int[] y;
     private int position = 0;
 

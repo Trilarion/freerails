@@ -9,7 +9,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author lindsal
  */
 final public class PreMoveStatus implements FreerailsSerializable {
-    public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(MoveStatus.MOVE_OK);
+    private static final long serialVersionUID = 3978145456646009140L;
+	public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(MoveStatus.MOVE_OK);
     public final MoveStatus ms;
 
     /**

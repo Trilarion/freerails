@@ -30,6 +30,8 @@ import jfreerails.world.top.TransactionAggregator;
  */
 public class LeaderBoardJPanel extends JPanel implements View {
 
+	private static final long serialVersionUID = 3258131375298066229L;
+
 	private JList playersList = null;
 	
 	private ActionListener m_submitButtonCallBack = null;

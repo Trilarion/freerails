@@ -11,7 +11,9 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 final public class LegalTrackConfigurations implements FreerailsSerializable {
 
-    /** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
+    private static final long serialVersionUID = 3617295631735928119L;
+
+	/** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
     private final /*=mutable*/ HashSet<TrackConfiguration> legalConfigs = new HashSet<TrackConfiguration>();
 
     private final int maximumConsecutivePieces;

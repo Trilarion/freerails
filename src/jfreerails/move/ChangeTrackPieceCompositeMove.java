@@ -32,7 +32,8 @@ import jfreerails.world.track.TrackRule;
  */
 public final class ChangeTrackPieceCompositeMove extends CompositeMove
     implements TrackMove, MapUpdateMove {
-    private final Rectangle updatedTiles;
+    private static final long serialVersionUID = 3616443518780978743L;
+	private final Rectangle updatedTiles;
     private final FreerailsPrincipal builder;
 
     private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b,
