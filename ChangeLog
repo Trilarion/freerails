@@ -1,3 +1,22 @@
+Wed Sep 12 11:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o Thinking about NewYork City and the world. I can't say this in english so some
+  sentences follow in german.
+  
+--- 
+Hiermit möchte ich mein Beileid und meine Trauer bekunden für alle Menschen die durch
+den gestrigen Terroranschlag leiden. Für so eine unverfrorene Sache fehlen jegliche Worte.
+
+Ich wünsche mir, das die Linux und OpenSource Gemeinde weltweit zusammen hält und für
+seine Freiheit kämpft. Auch hoffe ich, dass auch alle anderen Menschen aller Nationen für
+ihre Freiheit und Demokratie kämpfen. Besonders die Staatsmänner und -führer, als Vertreter
+ihrer Nation, sollten sich mehr Kommunikativ und Konstruktiv vereinen um Weltweit gegen
+Terror vorzugehen.
+
+In Trauer
+Alexander Opitz
+--- 
+o Readme and Makefile.am changes
+o remove unused files
 Tue Sep 04 18:30:00 2001 Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>
 o Added Station and StationAddon class
 Sun Sep 02 12:25:00 2001  Rivo Laks <rivolaks@hot.ee>:

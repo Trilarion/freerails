@@ -1,6 +1,6 @@
-================
-FreeRails v0.0.7
-================
+=================
+FreeRails v0.0.7+
+=================
 
 Welcome to FreeRails!
 
@@ -70,8 +70,11 @@ Don't forget to take a look in the Licence of the libraries you use.
 Compiling and installing:
 =========================
 
-Change the Rules.make file to what you want (SDL with paraGUI or Qt).
-Only type make in the directory where the Rules.make is.
+Use the configure command to generate the makefiles with your configuration.
+Try "configure --help" to see all the options you can use.
+By standard configuration the Qt libraries are choosen as ground graphic library.
+
+Now type make in the directory where the README file is.
 If you get errors feel free and write to the mailinglist or in the buglist on
 http://sourceforge.net/projects/freerails .
 There is no install possibilities at the moment.
@@ -81,11 +84,13 @@ Starting a new game:
 ====================
 
 start under your X11 environment with "game" in the directory where the
-Rules.make is.
+README is.
 
 
 Playing the game:
 =================
+
+The down described possibilities are gone while porting from C to C++
 
 Nothing realy to play yet. You can set stations and tracks and then build
 trains and let them drive to an other station. (It must be a direct connection!)
