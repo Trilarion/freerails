@@ -1,3 +1,7 @@
+Tue Dec 31 20:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o Added GamePosElement as SuperClass for all Elements which need a Position
+o Change in QT: The Message addElement uses a Class not struct, added Position
+o Engine: CleanUp and crash fix on ElementTypes without a controller
 Tue Dec 31 12:00:00 2002  Alexander Opitz <opi@le-bit.de>:
 o let QT not crash on startup
 o go to using QT3.1.0
