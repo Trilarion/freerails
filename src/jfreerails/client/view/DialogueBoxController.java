@@ -426,7 +426,7 @@ public class DialogueBoxController implements WorldListListener {
         boolean rightPrincipal = principal.equals(this.modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
-           // this.showTrainOrders(index);
+        	this.showTrainOrders(index);
         } else if (KEY.STATIONS == key && rightPrincipal) {
             this.showStationInfo(index);
         }

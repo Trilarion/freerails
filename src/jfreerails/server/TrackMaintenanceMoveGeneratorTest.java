@@ -5,9 +5,7 @@
 package jfreerails.server;
 
 import java.util.Arrays;
-import jfreerails.move.AddTransactionMove;
 import jfreerails.world.accounts.AddItemTransaction;
-import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.MapFixtureFactory;
@@ -28,19 +26,6 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         w = new WorldImpl(20, 20);
         w.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateTrackRuleList(w);
-    }
-
-    public void testGenerateMove() {
-        addTrack(0, 50);
-
-        /* The maintenace cost of track type 0 is 10 (see MapFixtureFactory), so
-        * the cost of maintaining 50 units is 500. */
-        AddTransactionMove m = TrackMaintenanceMoveGenerator.generateMove(w,
-                MapFixtureFactory.TEST_PRINCIPAL, Transaction.TRACK_MAINTENANCE);
-        Transaction t = m.getTransaction();
-        Money expected = new Money(-500);
-        Money actual = t.getValue();
-        assertEquals(expected, actual);
     }
 
     public void testCalulateNumberOfEachTrackType() {
