@@ -12,6 +12,7 @@
 #include "CityController.h"
 #include "GameController.h"
 #include "TrackController.h"
+#include "TrainController.h"
 #include "StationController.h"
 #include "MessageQueue.h"
 #include "Client.h"

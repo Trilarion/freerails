@@ -8,7 +8,7 @@
 
 #include "Controller.h"
 #include "Train.h"
-#include "TrainType.h"
+#include "TrainInfo.h"
 #include "WorldMap.h"
 
 class TrainController : public Controller

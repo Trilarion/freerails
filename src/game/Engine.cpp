@@ -86,6 +86,7 @@ void Engine::Init(Player* _player, WorldMap* _worldMap)
 
   controllerDispatcher->addController(new TrackController(_worldMap));
   controllerDispatcher->addController(new StationController(_worldMap));
+  controllerDispatcher->addController(new TrainController(_worldMap));
   
   controllerDispatcher->getController(GameElement::idPlayer)->addGameElement(_player);
 

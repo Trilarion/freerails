@@ -1,6 +1,7 @@
 Wed May 21 02:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o Controller: Add TrainController sceleton
 o Element   : Some Train clean ups
+o Engine    : start TrainController
 o QT        : Change filenames of button images
 
 Tue May 20 01:30:00 2003  Alexander Opitz <opi@le-bit.de>:
