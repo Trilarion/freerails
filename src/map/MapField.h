@@ -5,8 +5,8 @@
 #ifndef __MAPFIELD_H__
 #define __MAPFIELD_H__
 
-#include "../elements/GameElement.h"
-#include "../elements/Track.h"
+#include "GameElement.h"
+#include "Track.h"
 
 class MapField {
 public:
