@@ -328,9 +328,13 @@ implements MoveReceiver, View {
 	protected void paintComponent(Graphics g) {
 		/* We need to update if the cargo bundle has changed.*/
 		FreerailsPrincipal playerPrincipal = this.modelRoot.getPlayerPrincipal();
-		FreerailsSerializable currentCargoBundle = w.get(KEY.CARGO_BUNDLES, this.cargoBundleIndex, playerPrincipal);
-		if(lastCargoBundle != currentCargoBundle){
-			this.display();
+		
+		/* Avoid a array out of bounds exception when there are no stations and the stations tab is visible.*/
+		if(w.boundsContain(KEY.CARGO_BUNDLES, cargoBundleIndex, playerPrincipal)){
+			FreerailsSerializable currentCargoBundle = w.get(KEY.CARGO_BUNDLES, this.cargoBundleIndex, playerPrincipal);
+			if(lastCargoBundle != currentCargoBundle){
+				this.display();
+			}
 		}
 		super.paintComponent(g);
 	}
