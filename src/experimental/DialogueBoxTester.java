@@ -21,7 +21,8 @@ import jfreerails.client.view.TrainOrdersListModel;
 import jfreerails.client.view.TrainViewJList;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.UntriedMoveReceiver;
-import jfreerails.move.*;
+import jfreerails.move.ListMove;
+import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.NewTileSetFactoryImpl;
 import jfreerails.server.WagonAndEngineTypesFactory;
@@ -65,6 +66,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
 	}
 
 	public void processMove(Move move) {
+		move.doMove(w);
 	}
     };
     
@@ -75,6 +77,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
         
 	ModelRoot mr = new ModelRoot();
         w = new WorldImpl();
+		//MapFixtureFactory.generateTrackRuleList(w);
 	try {
 	    vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
 	} catch (IOException e) {
@@ -291,7 +294,7 @@ public class DialogueBoxTester extends javax.swing.JFrame implements CallBacks {
     private void trainScheduleJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainScheduleJMenuItemActionPerformed
         // Add your handling code here:
         NewTrainScheduleJPanel tsp = new NewTrainScheduleJPanel();
-        tsp.setup(w, vl, null);
+        tsp.setup(w, vl, this);
         tsp.display(0);
         dialogueBoxController.showContent(tsp);
     }//GEN-LAST:event_trainScheduleJMenuItemActionPerformed

@@ -39,7 +39,7 @@ public interface TerrainType extends FreerailsSerializable {
             }
 
             public String getTerrainCategory() {
-                return null;
+                return "TerrainType NULL";
             }
 
             public int getRGB() {

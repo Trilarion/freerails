@@ -1,3 +1,5 @@
+Dec 13, 2003 11:38:12 PM Luke
+	o Fix bug: stations on the trains schedule can now be changed again.
 Dec 13, 2003 10:09:04 PM Luke
 	o Fixed bug: passengers are now demanded by cities and villages.
 	o Fixed bug: track maintenance cost is no longer equal to the build cost.
