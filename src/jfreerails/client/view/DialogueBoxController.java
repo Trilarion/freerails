@@ -52,7 +52,7 @@ import jfreerails.world.track.TrackRule;
  * transparent regions to be used.
  * 
  * @author lindsal8
- * @revised smackay
+ * @author smackay
  */
 public class DialogueBoxController implements WorldListListener {
 	private static final Logger logger = Logger

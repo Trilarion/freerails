@@ -21,7 +21,7 @@ import jfreerails.world.top.TransactionAggregator;
  * Gathers the financial data for a company.
  *
  * @author Luke
- * @revised smackay
+ * @author smackay
  */
 public class FinancialDataGatherer extends TransactionAggregator {
     private int totalShares = 100000;

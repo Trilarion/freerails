@@ -12,7 +12,7 @@ import jfreerails.world.common.Money;
  * additional shares.
  *
  * @author Luke
- * @revised smackay
+ * @author smackay
  */
 public class IssueStockTransaction extends AddItemTransaction {
     private static final long serialVersionUID = 3256441412924224824L;

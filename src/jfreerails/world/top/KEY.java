@@ -22,6 +22,7 @@ public class KEY implements FreerailsSerializable {
     //START OF KEYS
     public static final KEY TRAINS = new KEY();
     public static final KEY TRAIN_POSITIONS = new KEY();
+    public static final KEY TRAIN_STATUS = new KEY();
     public static final KEY TRAIN_MOTION1 = new KEY();
     public static final KEY TRAIN_MOTION2 = new KEY();
     public static final KEY STATIONS = new KEY();

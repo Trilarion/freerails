@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jfreerails.move.Move;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -30,7 +31,14 @@ public class MoveTrainPreMove implements PreMove {
 		principal = p;
 	}
 	
-
+	/** Returns true if 
+	 * 	the train is moving and a new train position is due.
+	 * 	the train is waiting for a full load and there is more cargo to add.
+	 * 	the train is stopped but due to start moving.
+	 */
+	public boolean canGenerateMove(ReadOnlyWorld w){
+		return false;
+	}
 	
 	public Move generateMove(ReadOnlyWorld w) {	
 		//Get current position.
