@@ -238,12 +238,13 @@
 	<target name="alldist" depends="docdist, bindist, srcdist" description="Create binary jar, and source and javadoc zips">
 	</target>
 
-	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
-	<target name="upload" depends="alldist" description="Upload source, binary, and javadocs jar files to sourcforge">
-		<ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous">
+	<!-- depends=""-->
+	<target name="upload"  depends="alldist" description="Upload source, binary, and javadocs jar files to sourcforge">
+		<ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous" verbose="yes">
 			<fileset dir="${dist}/latest">
-				<include name="*.jar" />
-				<include name="*.zip" />
+				<include name="jfreerails-${DSTAMP}-${TSTAMP}.jar" />
+				<include name="jfreerails-${DSTAMP}-${TSTAMP}-src.zip" />
+				<include name="jfreerails-${DSTAMP}-${TSTAMP}-javadoc.zip" />
 			</fileset>
 		</ftp>
 	</target>
@@ -272,14 +273,14 @@
 	</target>
 
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
-	<target name="updatesite" description="Uploads modified files to website, skips javadoc." depends="check_username_and_password">
+	<target name="updatesite" description="Uploads modified files to website, skips javadoc and jar files." depends="check_username_and_password">
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir="www">
 				<include name="**/*.html" />
 				<include name="**/*.css" />
 				<include name="**/*.png" />
 				<include name="**/*.jnpl" />
-				<include name="signed_jfreerails.jar" />
+				<exclude name="signed_jfreerails.jar" />
 				<exclude name="javadoc/**/*" />
 				<modified />
 			</fileset>
