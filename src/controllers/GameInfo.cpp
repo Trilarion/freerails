@@ -26,10 +26,16 @@ GameInfo::GameInfo(GameController* c, char* n, short int y, short int m,
     short int d)
 {
   controller = c;
-  strcpy(name, n);
+  // FIXME: make deep copy?
+  name = n;
+  // TODO: check if date is valid
   year = y;
   month = m;
   day = d;
+}
+
+GameInfo::~GameInfo()
+{
 }
 
 void GameInfo::setName(char* n)

@@ -9,6 +9,7 @@
 class GameController;
 
 /** @short 'Helper' class that holds basic information about game
+  *
   * It holds basic information about game, like game's name and current year.
   * Only get methods are public, so other classes can read game's name and
   * year, but can't set it. Exception is GameController class, which is our
@@ -35,15 +36,16 @@ class GameInfo
       */
     GameInfo(GameController* gc, char* name, short int year = 1900,
         short int month = 1, short int day = 1);
+    /** Destructs GameInfo */
     ~GameInfo();
     /** Returns name of game */
-    char* getName();
+    char* getName() { return name; };
     /** Returns current year of game */
-    short int getYear();
+    short int getYear() { return year; };
     /** Returns number of current month of game */
-    short int getMonth();
+    short int getMonth() { return month; };
     /** Returns current day of game */
-    short int getDay();
+    short int getDay() { return day; };
     /** Returns GameController class to which this object belongs to */
     GameController* getController() { return controller; };
   private:
