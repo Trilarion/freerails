@@ -7,7 +7,7 @@ package jfreerails.world.accounts;
 import jfreerails.world.common.Money;
 
 /**
- * This Transaction represents the charge for building a piece of track.
+ * This Transaction represents the charge/credit for buying/selling an item.
  * 
  * @author Luke Lindsay
  *
@@ -17,13 +17,13 @@ public class AddItemTransaction implements Transaction {
 	/** Constants to specify the category. */
 	public static final int TRACK = 0;
 
-	/** E.g. track. */
+	/** For example track. */
 	private final int category;
 
-	/** E.g. standard track. */
+	/** For example, standard track. */
 	private final int type;
 
-	/** E.g. 4 tiles. */
+	/** For example, 4 tiles. */
 	private final int quantity;
 
 	private final Money amount;

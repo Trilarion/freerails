@@ -6,28 +6,17 @@
 
 package jfreerails.client.view;
 import java.awt.Component;
-import java.awt.event.ActionListener;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.DefaultListModel;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.JComponent;
+import java.util.Vector;
+
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.plaf.ListUI;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import java.util.Vector;
+import javax.swing.ListCellRenderer;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.MoveChainFork;
@@ -40,7 +29,9 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
-import jfreerails.world.train.*;
+import jfreerails.world.train.Schedule;
+import jfreerails.world.train.TrainModel;
+import jfreerails.world.train.TrainOrdersModel;
 /**
  *
  * @author  Luke

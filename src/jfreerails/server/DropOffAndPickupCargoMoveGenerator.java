@@ -1,5 +1,6 @@
 /**
- * Class to transfer cargo between train and the stations it stops at.
+ * Class to transfer cargo between train and the stations it stops at - it also 
+ * handles cargo converions that occur when cargo is dropped off. 
  * 
  * @author Scott Bennett
  * Date Created: 4 June 2003
@@ -17,6 +18,8 @@ import jfreerails.move.TransferCargoAtStationMove;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
+import jfreerails.world.station.ConvertedAtStation;
+import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
@@ -107,6 +110,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 
 		CargoBundle cargoDroppedOff = new CargoBundleImpl();
+	
 
 		//Unload the cargo that the station demands
 		while (batches.hasNext()) {
@@ -114,19 +118,27 @@ public class DropOffAndPickupCargoMoveGenerator {
 			CargoBatch cb = (CargoBatch) batches.next();
 
 			//if the cargo is demanded and its not from this station originally...
-			if ((station.getDemand().isCargoDemanded(cb.getCargoType()))
+			DemandAtStation demand = station.getDemand();
+			int cargoType = cb.getCargoType();
+			if ((demand.isCargoDemanded(cargoType))
 				&& (stationId != cb.getStationOfOrigin())) {
-				//cargo is demanded, so:
-				//		pay train owner...
 				
-				cargoDroppedOff.addCargo(cb, trainAfter.getAmount(cb));
-				System.out.println(
-					w.get(KEY.CARGO_TYPES, cb.getCargoType())
-						+ " was delivered by train #"
-						+ trainId);
+				int amount = trainAfter.getAmount(cb);
+				cargoDroppedOff.addCargo(cb, amount);				
+				
+				//Now perform any conversions..
+				ConvertedAtStation converted = station.getConverted();
+				if(converted.isCargoConverted(cargoType)){
+					int newCargoType = converted.getConversion(cargoType);
+					CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.x, station.y, 0, stationId);
+					stationAfter.addCargo(newCargoBatch, amount);
+				}
+								
 				batches.remove();
 			}			
 		}
+		
+		
 		
 		payment = ProcessCargoAtStationMoveGenerator.processCargo(w, cargoDroppedOff, this.stationId);
 		
@@ -160,7 +172,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 			int amount2transfer =
 				Math.min(
 					spaceAvailable[cargoType],
-					stationBefore.getAmount(cargoType));
+				stationAfter.getAmount(cargoType));
 			transferCargo(cargoType, amount2transfer, stationAfter, trainAfter);
 		}
 

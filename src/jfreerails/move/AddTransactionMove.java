@@ -9,7 +9,8 @@ import jfreerails.world.accounts.Transaction;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
-/**
+/** This {@link Move} adds a {@link Transaction} to a players
+ * {@link BankAccount}.
  * @author Luke Lindsay
  *
  */
@@ -21,6 +22,10 @@ public class AddTransactionMove implements Move {
 
 	/** Whether the move fails if there is not enough cash. */
 	private final boolean constrained;
+
+	public Transaction getTransaction() {
+		return transaction;
+	}
 
 	public AddTransactionMove(int account, Transaction t) {
 		if (null == t) {

@@ -7,7 +7,7 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.world.accounts.Bill;
+
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.common.Money;
 import jfreerails.world.station.StationModel;
@@ -37,9 +37,8 @@ public class AddStationMove extends CompositeMove implements TrackMove {
 		StationModel station = new StationModel(p.x, p.y, stationName, w.size(KEY.CARGO_TYPES), cargoBundleNumber);
 		Move addStation = new AddItemToListMove(KEY.STATIONS,  stationNumber, station);
 		TrackRule typeAfter = upgradeTrackMove.getNewTrackPiece().getTrackRule();
-		Money cost = typeAfter.getPrice();
-		AddTransactionMove addTransactionMove = new AddTransactionMove(0, new Bill(cost));		
-		return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation, addTransactionMove});
+		Money cost = typeAfter.getPrice();	
+		return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
 	}
 	
 	public Rectangle getUpdatedTiles() {

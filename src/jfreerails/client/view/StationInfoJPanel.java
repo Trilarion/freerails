@@ -6,17 +6,16 @@
 
 package jfreerails.client.view;
 import java.awt.Point;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddItemToListMove;
-import jfreerails.move.MoveStatus;
-import jfreerails.move.Move;
 import jfreerails.move.ListMove;
+import jfreerails.move.Move;
+import jfreerails.move.MoveStatus;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.station.StationModel;

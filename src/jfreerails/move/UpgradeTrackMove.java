@@ -7,8 +7,6 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.world.accounts.Bill;
-import jfreerails.world.common.Money;
 import jfreerails.world.track.TrackPiece;
 
 /**
@@ -21,16 +19,13 @@ import jfreerails.world.track.TrackPiece;
  */
 public class UpgradeTrackMove extends CompositeMove implements TrackMove {
 	
-	public UpgradeTrackMove(ChangeTrackPieceMove trackMove, AddTransactionMove transaction){		
-		super(new Move[]{trackMove, transaction});
+	public UpgradeTrackMove(ChangeTrackPieceMove trackMove){		
+		super(new Move[]{trackMove});
 	}
 	
 	public static UpgradeTrackMove generateMove(TrackPiece before, TrackPiece after, Point p){
-		ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);	
-		Money oldPieceCost = before.getTrackRule().getPrice();
-		Money newPieceCost = after.getTrackRule().getPrice();
-		Money cost = new Money(oldPieceCost.getAmount() - newPieceCost.getAmount());		
-		return new UpgradeTrackMove(m, new AddTransactionMove(0, new Bill(cost), true));
+		ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);				
+		return new UpgradeTrackMove(m);
 	}
 
 	public Rectangle getUpdatedTiles() {

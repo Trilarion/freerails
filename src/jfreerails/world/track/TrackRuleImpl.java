@@ -140,4 +140,8 @@ final public class TrackRuleImpl implements TrackRule {
 		return this.properties.getPrice();
 	}
 
+	public Money getMaintenanceCost() {
+		return properties.getMaintenanceCost();
+	}
+
 }

@@ -29,6 +29,7 @@ public class StationBuilder {
 	private MoveReceiver moveReceiver;	
 	private World w;
 	private int ruleNumber;
+	private TrackMoveTransactionsGenerator transactionsGenerator;
 
 	public StationBuilder(MoveReceiver moveReceiver, World world) {
 		this.moveReceiver = moveReceiver;
@@ -42,6 +43,7 @@ public class StationBuilder {
 		} while (!trackRule.isStation());
 
 		ruleNumber = i;
+		transactionsGenerator = new TrackMoveTransactionsGenerator(world);
 	}
 
 	public boolean canBuiltStationHere(Point p) {
@@ -89,7 +91,7 @@ public class StationBuilder {
 				//check the terrain to see if we can build a station on it...
 				Move m = AddStationMove.generateMove(w, stationName, p, upgradeTrackMove);
 				
-				this.moveReceiver.processMove(m);			
+				this.moveReceiver.processMove(transactionsGenerator.addTransactions(m));			
 			}else{
 				//Upgrade an existing station.
 				this.moveReceiver.processMove(upgradeTrackMove);

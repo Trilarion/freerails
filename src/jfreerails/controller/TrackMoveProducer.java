@@ -32,6 +32,9 @@ final public class TrackMoveProducer {
 	public final static int IGNORE_TRACK = 4;
 
 	private int trackBuilderMode = BUILD_TRACK;
+	
+	/** This generates the transactions - the charge - for the track being built.*/
+	private TrackMoveTransactionsGenerator transactionsGenerator;
 
 	public MoveReceiver getMoveReceiver() {
 		return moveReceiver;
@@ -52,7 +55,7 @@ final public class TrackMoveProducer {
 					trackRule,
 					w);
 
-			MoveStatus moveStatus = moveReceiver.processMove(move);
+			MoveStatus moveStatus = moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 			TextMessageHandler.sendMessage(moveStatus.message);
 			return true;
 		}
@@ -63,7 +66,7 @@ final public class TrackMoveProducer {
 					from,
 					trackVector,
 					w);
-			MoveStatus moveStatus = moveReceiver.processMove(move);
+			MoveStatus moveStatus = moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 			TextMessageHandler.sendMessage(moveStatus.message);
 			return true;
 		}
@@ -124,6 +127,7 @@ final public class TrackMoveProducer {
 	}
 
 	public TrackMoveProducer(World world) {
+		transactionsGenerator = new TrackMoveTransactionsGenerator(world);
 		if (world == null) {
 			throw new java.lang.NullPointerException(
 				"Tried to create new TrackBuilder, but world==null");
@@ -138,6 +142,7 @@ final public class TrackMoveProducer {
 		this.moveReceiver=moveReceiver;
 		this.w = world;		
 		this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
+		transactionsGenerator = new TrackMoveTransactionsGenerator(world);
 	}
 	
 	private void upgradeTrack(Point point, TrackRule trackRule) {
@@ -145,7 +150,7 @@ final public class TrackMoveProducer {
 		TrackPiece before=(TrackPiece)w.getTile(point.x, point.y);
 		TrackPiece after=trackRule.getTrackPiece(before.getTrackConfiguration());
 		Move move = UpgradeTrackMove.generateMove( before, after, point);		
-		MoveStatus moveStatus = moveReceiver.processMove(move);
+		MoveStatus moveStatus = moveReceiver.processMove(transactionsGenerator.addTransactions(move));
 			TextMessageHandler.sendMessage(moveStatus.message);
 	}
 

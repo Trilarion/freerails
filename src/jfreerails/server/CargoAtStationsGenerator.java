@@ -49,7 +49,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable{
 				}
 			}
 			Move m = new ChangeCargoBundleMove(before, after, station.getCargoBundleNumber());
-			MoveExecuter.getMoveExecuter().processMove(m);;
+			MoveExecuter.getMoveExecuter().processMove(m);
 		}
 	}
 }

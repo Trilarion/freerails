@@ -8,6 +8,8 @@ import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.top.KEY;
 
 /**
+ * This {@link Move} changes a cargo bundle (cargo bundles are used to represent
+ * the cargo carried by trains and the cargo waiting at stations).
  * @author Luke
  * 
  */

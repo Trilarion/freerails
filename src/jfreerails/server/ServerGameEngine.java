@@ -29,17 +29,17 @@ import jfreerails.world.top.World;
 public class ServerGameEngine implements GameModel {
 
 	World world;
-	
+
 	TrainBuilder tb;
-	
+
 	private int targetTicksPerSecond = 30;
-	
-	long frameStartTime;	
+
+	long frameStartTime;
 	long nextModelUpdateDue = System.currentTimeMillis();
 
 	ArrayList trainMovers = new ArrayList();
-	
-	private int yearCargoLastAddedToStations = -1;
+
+	private int currentYearLastTick = -1;
 
 	public int getTargetTicksPerSecond() {
 		return targetTicksPerSecond;
@@ -49,49 +49,54 @@ public class ServerGameEngine implements GameModel {
 		this.targetTicksPerSecond = targetTicksPerSecond;
 	}
 
-
 	public ServerGameEngine(World w) {
 		this.world = w;
 		setupGame();
 	}
-
 
 	private void setupGame() {
 		tb = new TrainBuilder(world, this);
 		nextModelUpdateDue = System.currentTimeMillis();
 	}
 
-	
 	public void update() {
 		frameStartTime = System.currentTimeMillis();
-		
+
 		if (targetTicksPerSecond > 0) {
 			buildTrains();
 			while (nextModelUpdateDue < frameStartTime) {
 				//update the time first, since other updates might need to know the current time.
-				updateGameTime();	
-				
+				updateGameTime();
+
 				//now do the other updates
-				moveTrains();						
-				addCargoToStations();						
+				moveTrains();
+
+				//Check whether we have just started a new year..
+				GameTime time = (GameTime) world.get(ITEM.TIME);
+				GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
+				int currentYear = calendar.getYear(time.getTime());
+				if (this.currentYearLastTick != currentYear) {
+					this.currentYearLastTick = currentYear;
+					newYear();
+				}
 				nextModelUpdateDue += 1000 / targetTicksPerSecond;
 			}
 		} else {
 			nextModelUpdateDue = frameStartTime;
-		}		
-	}
-	
-	private void addCargoToStations(){		
-		//Add cargo to stations at the start of each new year.
-		GameTime time = (GameTime)world.get(ITEM.TIME);
-		GameCalendar calendar = (GameCalendar)world.get(ITEM.CALENDAR);
-		int currentYear = calendar.getYear(time.getTime());
-		if(this.yearCargoLastAddedToStations != currentYear){
-			CargoAtStationsGenerator cargoAtStationsGenerator =
-							new CargoAtStationsGenerator();
-			cargoAtStationsGenerator.update(world);
-			this.yearCargoLastAddedToStations = currentYear;										
 		}
+	}
+
+	private void addCargoToStations() {
+		//Add cargo to stations at the start of each new year.
+
+	}
+
+	/** This is called at the start of each new year. */
+	private void newYear() {
+		TrackMaintenanceMoveGenerator.update(world);
+		CargoAtStationsGenerator cargoAtStationsGenerator =
+			new CargoAtStationsGenerator();
+		cargoAtStationsGenerator.update(world);
 	}
 
 	/** Iterator over the stations  
@@ -100,26 +105,28 @@ public class ServerGameEngine implements GameModel {
 	 *
 	 */
 	private void buildTrains() {
-		for(int i=0; i< world.size(KEY.STATIONS); i++){
-			StationModel station = (StationModel)world.get(KEY.STATIONS, i);
-			if(null !=station && null != station.getProduction()){
+		for (int i = 0; i < world.size(KEY.STATIONS); i++) {
+			StationModel station = (StationModel) world.get(KEY.STATIONS, i);
+			if (null != station && null != station.getProduction()) {
 				ProductionAtEngineShop production = station.getProduction();
 				Point p = new Point(station.x, station.y);
-				tb.buildTrain(production.getEngineType(), production.getWagonTypes(), p);
-				station.setProduction(null);	
-			}			
+				tb.buildTrain(
+					production.getEngineType(),
+					production.getWagonTypes(),
+					p);
+				station.setProduction(null);
+			}
 		}
 	}
 
-
 	private void moveTrains() {
-		
+
 		int deltaDistance = 5;
-	
+
 		ChangeTrainPositionMove m = null;
-		
+
 		Iterator i = trainMovers.iterator();
-		
+
 		while (i.hasNext()) {
 			Object o = i.next();
 			TrainMover trainMover = (TrainMover) o;
@@ -127,9 +134,9 @@ public class ServerGameEngine implements GameModel {
 			MoveExecuter.getMoveExecuter().processMove(m);
 		}
 	}
-	
-	private void updateGameTime(){
-		GameTime gt = (GameTime)world.get(ITEM.TIME);
+
+	private void updateGameTime() {
+		GameTime gt = (GameTime) world.get(ITEM.TIME);
 		int time = gt.getTime();
 		time += 1;
 		world.set(ITEM.TIME, new GameTime(time));
@@ -171,19 +178,19 @@ public class ServerGameEngine implements GameModel {
 
 			this.trainMovers = (ArrayList) objectIn.readObject();
 
-			this.world = (World) objectIn.readObject();									
+			this.world = (World) objectIn.readObject();
 			setupGame();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
 	}
-	
+
 	public void newGame(World w) {
 
 		this.world = w;
 
-		trainMovers = new ArrayList();		
+		trainMovers = new ArrayList();
 		setupGame();
 	}
 

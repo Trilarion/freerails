@@ -8,8 +8,7 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.world.accounts.Bill;
-import jfreerails.world.accounts.Receipt;
+
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.World;
@@ -30,8 +29,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 	private final Rectangle updatedTiles;
 
 	/** Creates new ChangeTrackPieceCompositeMove */
-	public ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b, AddTransactionMove ta) {
-		super(new Move[]{a, b, ta});
+	public ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b) {
+		super(new Move[]{a, b});
 		updatedTiles = a.getUpdatedTiles().union(b.getUpdatedTiles());						
 	}
 
@@ -51,8 +50,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 				trackRule,
 				w);
 		Money price = new Money(trackRule.getPrice().getAmount()*2);
-		AddTransactionMove ta = new AddTransactionMove(0, new Bill(price), true); 
-		return new ChangeTrackPieceCompositeMove(a, b, ta);
+	
+		return new ChangeTrackPieceCompositeMove(a, b);
 	}
 
 	public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
@@ -68,8 +67,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 				direction.createRelocatedPoint(from),
 				direction.getOpposite(),
 				w);
-		AddTransactionMove ta = new AddTransactionMove(0, new Receipt(new Money(5)));
-		return new ChangeTrackPieceCompositeMove(a, b, ta);
+		
+		return new ChangeTrackPieceCompositeMove(a, b);
 	}
 	//utility method.
 	private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(

@@ -19,6 +19,8 @@ public interface TrackRule extends FreerailsSerializable {
 	
 	Money getPrice();
 	
+	Money getMaintenanceCost();
+	
 	int getStationRadius();
 
 	int getRuleNumber();

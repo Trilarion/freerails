@@ -10,50 +10,66 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 
 public class StationModel implements FreerailsSerializable {
-	
+
 	public int x;
 	public int y;
-	
+
 	private final String name;
-	
+
 	private SupplyAtStation supply;
-	
+
 	private DemandAtStation demand;
-	
+
+	private ConvertedAtStation converted;
+
 	private int cargoBundleNumber;
-	
+
 	/** What this station is building. */
 	private ProductionAtEngineShop production;
-	
-	public StationModel(int x, int y, String stationName, int numberOfCargoTypes, int cargoBundle) {
+
+	public ConvertedAtStation getConverted() {
+		return converted;
+	}
+
+	public void setConverted(ConvertedAtStation converted) {
+		this.converted = converted;
+	}
+
+	public StationModel(
+		int x,
+		int y,
+		String stationName,
+		int numberOfCargoTypes,
+		int cargoBundle) {
 		this.name = stationName;
 		this.x = x;
 		this.y = y;
-		
+
 		supply = new SupplyAtStation(new int[numberOfCargoTypes]);
 		demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
+		converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
 		cargoBundleNumber = cargoBundle;
-		
+
 	}
-	
+
 	public StationModel() {
 		this.name = "No name";
 		x = 0;
-		y = 0;	
+		y = 0;
 	}
-	
+
 	public String getStationName() {
 		return name;
 	}
-	
+
 	public int getStationX() {
 		return x;
 	}
-	
+
 	public int getStationY() {
 		return y;
 	}
-	
+
 	public ProductionAtEngineShop getProduction() {
 		return production;
 	}
@@ -89,29 +105,34 @@ public class StationModel implements FreerailsSerializable {
 	public int getCargoBundleNumber() {
 		return cargoBundleNumber;
 	}
-	public boolean equals(Object o) {		
-		if(o instanceof StationModel){
-			StationModel test = (StationModel)o;
-			if(this.cargoBundleNumber!=test.cargoBundleNumber){
+	public boolean equals(Object o) {
+		if (o instanceof StationModel) {
+			StationModel test = (StationModel) o;
+			if (this.cargoBundleNumber != test.cargoBundleNumber) {
 				return false;
 			}
-			if(!this.demand.equals(test.demand)){
+			if (!this.demand.equals(test.demand)) {
 				return false;
 			}
-			if(!this.name.equals(test.name)){
-				return false;				
-			}
-			if(!(this.production == null ? test.production == null : this.production.equals(test.production))){
+			if (!this.converted.equals(test.converted)) {
 				return false;
 			}
-			if(!this.supply.equals(test.supply)){
+			if (!this.name.equals(test.name)) {
 				return false;
 			}
-			if(this.x!=test.x || this.y != test.y){
+			if (!(this.production == null
+				? test.production == null
+				: this.production.equals(test.production))) {
+				return false;
+			}
+			if (!this.supply.equals(test.supply)) {
+				return false;
+			}
+			if (this.x != test.x || this.y != test.y) {
 				return false;
 			}
 			return true;
-		}else{		
+		} else {
 			return false;
 		}
 	}

@@ -21,7 +21,7 @@ public class CompositeMove implements Move {
 	 */
 	protected Move getMove(int i){
 		return moves[i];
-	}
+	}	
 
 	public Move[] getMoves() {
 	    return moves;
@@ -115,4 +115,7 @@ public class CompositeMove implements Move {
 			return false;
 		}
 	}
+	
+	
+	
 }

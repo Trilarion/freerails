@@ -4,7 +4,6 @@ import java.awt.Point;
 
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.controller.pathfinder.SimpleAStarPathFinder;
-import jfreerails.controller.MoveExecuter;
 import jfreerails.move.Move;
 import jfreerails.util.FreerailsIntIterator;
 import jfreerails.world.common.FreerailsSerializable;
