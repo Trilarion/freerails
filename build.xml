@@ -36,8 +36,8 @@
 		<mkdir dir="${datafiles}" />
 
 	</target>
-	<!-- Sets last modified date in html files.-->
-	<target name="lastmod" depends="mkdirs">
+	<!-- Copies html etc and sets last modified date in html files.-->
+	<target name="html2docs" depends="mkdirs">
 		<copy todir="${doc}" preservelastmodified="true" overwrite="true">
 					<fileset dir="${src}">
 						<include name="**/*.html" />
@@ -252,7 +252,7 @@ else:
 		<java fork="true" jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
 	</target>
 
-	<target name="javadoc" depends="mkdirs" description="Generate javadoc">
+	<target name="javadoc" depends="mkdirs, html2docs" description="Generate javadoc">
 		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}-${TSTAMP}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />

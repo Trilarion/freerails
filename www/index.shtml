@@ -21,12 +21,13 @@
   is not yet complete.</P>
 
 <P><IMG SRC="screenshots/jfreerails_0_2_6_320x240.png" NAME="Graphic1" ALIGN=BOTTOM WIDTH=320 HEIGHT=240 BORDER=0></P>
-<P><A HREF="jfreerails.jnlp">Play now</A> 
-Updated  <!--#config timefmt="%d  %b"   -->  <!--#flastmod file="signed_jfreerails.jar" -->. 
-  Size 
-  <!--#fsize file="signed_jfreerails.jar"-->. 
-  Requires <A HREF="http://java.sun.com/j2se/1.5.0/download.jsp">Java 1.5</A> 
-</P>
+<P><A HREF="jfreerails.jnlp">Play now</A><font size="-1"> 
+(Size 
+  <!--#fsize file="signed_jfreerails.jar"-->;
+   updated 
+  <!--#config timefmt="%d  %b"   -->
+  <!--#flastmod file="signed_jfreerails.jar" -->; 
+  requires <A HREF="http://java.sun.com/j2se/1.5.0/download.jsp">Java 1.5</A>)</font></P>
 <P>If you are interested in getting involved in the Freerails project, post a 
   message to the mailing list. Before writing any code, have a look at the <a href="javadoc/docs/coding_guidelines.html">coding 
   guidelines</a>.</P>
