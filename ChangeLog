@@ -2,6 +2,7 @@ Jan 13, 2005 Luke
 	Bugs fixed:
 	o 1098769 Blinking cursor
 	o 1098767 Can't remove bridges when 'no bridges' selected
+	o 1099095 Remove track not cancelled
 Jan 09, 2005 Luke
 	Bugs fixed:
 	o 1087432	Can't remove or upgrade track using mouse

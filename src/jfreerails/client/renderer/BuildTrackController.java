@@ -33,6 +33,7 @@ import jfreerails.world.track.TrackRule;
  * This class provides methods to change the proposed track and save it to the
  * real world.
  * 
+ * TODO jfreerails.client.renderer is not the most logical place for this class.
  * @author MystiqueAgent
  * @author Luke
  * 
@@ -295,6 +296,7 @@ public class BuildTrackController implements GameModel {
 
 		m_worldDiffs.reset();
 		m_builtTrack.clear();
+		m_isBuildTrackSuccessful = false;
 
 		if (startPoint.equals(endPoint)) {
 			hide();
