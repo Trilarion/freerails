@@ -102,9 +102,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         public void refreshTile(int x, int y) {
         }
 
-        public void refreshRectangleOfTiles(int x, int y, int width, int height) {
-        }
-
         public void paintRect(Graphics g, Rectangle visibleRect) {
             throw new UnsupportedOperationException(
                 "Method not yet implemented.");
@@ -191,9 +188,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         public void refreshTile(int x, int y) {
         }
 
-        public void refreshRectangleOfTiles(int x, int y, int width, int height) {
-        }
-
         public TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
             this.w = world;
             this.tiles = tiles;
@@ -266,8 +260,5 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     public void refreshTile(int x, int y) {
-    }
-
-    public void refreshRectangleOfTiles(int x, int y, int width, int height) {
     }
 }

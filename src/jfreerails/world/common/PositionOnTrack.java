@@ -53,8 +53,7 @@ public final class PositionOnTrack implements FreerailsSerializable {
      * @return an integer representing this PositionOnTrack object
      */
     public int toInt() {
-        int i = 0;
-        i = i | x;
+        int i = x;
 
         int shiftedY = y << BITS_FOR_COORINATE;
         i = i | shiftedY;

@@ -20,7 +20,5 @@ public interface MapLayerRenderer {
 
     void refreshTile(int x, int y);
 
-    void refreshRectangleOfTiles(int x, int y, int width, int height);
-
     void paintRect(Graphics g, Rectangle visibleRect);
 }

@@ -24,19 +24,19 @@ final public class StandardTileRenderer
         TerrainType tileModel) {
         super(tileModel, rgbValues);
         imageSplitter.setTransparencyToOPAQUE();
-        tileIcons = new java.awt.Image[1];
-        tileIcons[0] = imageSplitter.getTileFromSubGrid(0, 0);
+        setTileIcons(new java.awt.Image[1]);
+        getTileIcons()[0] = imageSplitter.getTileFromSubGrid(0, 0);
     }
 
     public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);
-        this.tileIcons = new Image[1];
-        this.tileIcons[0] = imageManager.getImage(generateFilename());
+        this.setTileIcons(new Image[1]);
+        this.getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
 
     public void dumpImages(ImageManager imageManager) {
-        imageManager.setImage(generateFilename(), this.tileIcons[0]);
+        imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
     }
 
     private String generateFilename() {

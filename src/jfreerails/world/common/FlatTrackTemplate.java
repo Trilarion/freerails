@@ -32,12 +32,6 @@ public interface FlatTrackTemplate extends FreerailsSerializable {
     public static final int NEW_TEMPLATE_NW = 0x80;
 
     /**
-     * @return the corresponding instance of this object when rotated by the
-     * specified amount
-     */
-    FlatTrackTemplate getRotatedInstance(Rotation r);
-
-    /**
      * @param ftt the FlatTrackTemplate which may be a subset of this
      * FlatTrackTemplate.
      * @return true if the vectors represented by this FlatTrackTemplate are a

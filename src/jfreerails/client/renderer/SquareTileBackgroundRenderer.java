@@ -24,7 +24,7 @@ final public class SquareTileBackgroundRenderer
     private final float scaleAsInt;
 
     protected void paintBufferRectangle(int x, int y, int width, int height) {
-        java.awt.Graphics gg = bg.create();
+        Graphics gg = bg.create();
         gg.setClip(x, y, width, height);
         gg.translate(-bufferRect.x, -bufferRect.y);
         mapView.paintRect(gg, bufferRect);
@@ -34,14 +34,6 @@ final public class SquareTileBackgroundRenderer
         this.scale = _scale;
         scaleAsInt = (int)scale;
         this.mapView = mv;
-    }
-
-    public void refreshRectangleOfTiles(int x, int y, int width, int height) {
-        java.awt.Graphics gg = bg.create();
-        gg.translate(-bufferRect.x, -bufferRect.y);
-        gg.clipRect((int)(x * scaleAsInt), (int)(y * scaleAsInt),
-            (int)(width * scaleAsInt), (int)(height * scaleAsInt));
-        mapView.paintRectangleOfTiles(gg, x, y, width, height);
     }
 
     public void paintTile(Graphics g, int tileX, int tileY) {

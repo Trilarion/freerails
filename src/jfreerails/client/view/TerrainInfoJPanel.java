@@ -98,7 +98,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         if((cargosProduced +  cargosConsumed+ cargosConverted) > 0){
             //if the terrain type produces, consumes, or converts anything.
             tableString = "<table width=\"75%\" >";
-            if(cargosProduced>0){
+            if(cargosProduced != 0){
                 tableString += "<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>";
                 for(int i = 0; i < cargosProduced ; i++){
                     Production p = type.getProduction()[i];
@@ -107,7 +107,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                     tableString += "<tr> <td>"+c.getDisplayName()+" </td><td>"+supply+"</td></tr>";
                 }
             }
-            if(cargosConsumed>0){
+            if(cargosConsumed != 0){
                 tableString += "<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>";
                 for(int i = 0; i < cargosConsumed ; i++){
                     Consumption p = type.getConsumption()[i];
@@ -115,7 +115,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                     tableString += "<tr> <td>"+c.getDisplayName()+" </td><td>&nbsp;</td></tr>";
                 }                
             }
-            if(cargosConverted>0){
+            if(cargosConverted != 0){
                 tableString += "<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>";
                 for(int i = 0; i < cargosConverted ; i++){
                     Conversion p = type.getConversion()[i];
@@ -130,7 +130,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         terrainDescription.setText(labelString);
         terrainName.setText(type. getDisplayName());
         
-        Image tileIcon = vl.getTileViewList().getTileViewWithNumber(typeNumber).getIcon();
+        Image tileIcon = vl.getTileViewList().getTileViewWithNumber(typeNumber).getDefaultIcon();
         terrainImage.setIcon(new ImageIcon(tileIcon));
         
         repaint();

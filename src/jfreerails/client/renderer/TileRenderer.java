@@ -16,13 +16,9 @@ public interface TileRenderer {
 
     int getRGB();
 
-    int getTileWidth();
-
-    int getTileHeight();
-
     Image getIcon(int x, int y, ReadOnlyWorld w);
 
-    Image getIcon();
+    Image getDefaultIcon();
 
     void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX,
         int mapY, ReadOnlyWorld w);

@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.ToAndFroPathIterator;
+import jfreerails.move.Move;
+import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
@@ -39,7 +41,13 @@ public class TrainFixture {
         FreerailsPathIterator to = pathIterator();
         FreerailsPathIterator from = pathIterator();
         trainMover = new TrainMover(to, w, 0);
-        moveExecuter.processMove(trainMover.setInitialTrainPosition(train, from));
+
+        Move move = trainMover.setInitialTrainPosition(train, from);
+        MoveStatus ms = move.doMove(w);
+
+        if (!ms.isOk()) {
+            throw new IllegalStateException(ms.message);
+        }
     }
 
     public FreerailsPathIterator pathIterator() {

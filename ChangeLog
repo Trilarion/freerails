@@ -1,3 +1,6 @@
+Dec 31, 2003 1:35:01 AM Luke
+	o Remove some unused code.
+	o Fix some things jlint moaned about - perhaps slightly pointless!
 Dec 30, 2003 12:00:03 AM Luke
 	o Refactoring to change the threads in which moves are executed.  
 		(i)  Moves are precommitted on the client's copy of the world 

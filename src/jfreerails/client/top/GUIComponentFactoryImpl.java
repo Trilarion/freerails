@@ -46,7 +46,6 @@ import jfreerails.world.top.ReadOnlyWorld;
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
     MoveReceiver {
     private ModelRoot modelRoot;
-    private StationPlacementCursor stationPlacementCursor;
     private ServerControlModel sc;
     private DateJLabel datejLabel;
     private CashJLabel cashjLabel;
@@ -160,7 +159,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         trainsJTabPane.setMapCursor(mapCursor);
         dialogueBoxController.setup(world, vl, modelRoot.getMoveChainFork(),
             modelRoot.getReceiver(), mapCursor);
-        stationPlacementCursor = new StationPlacementCursor(modelRoot,
+
+        StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(modelRoot,
                 mainMap.getStationRadius(), mapViewJComponent);
         modelRoot.setUserMessageLogger(this.mapViewJComponent);
 

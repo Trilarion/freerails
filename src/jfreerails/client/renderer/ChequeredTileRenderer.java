@@ -27,25 +27,27 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
         TerrainType tileModel) {
         super(tileModel, rgbValues);
         imageSplitter.setTransparencyToOPAQUE();
-        tileIcons = new java.awt.Image[2];
+        super.setTileIcons(new java.awt.Image[2]);
 
-        for (int i = 0; i < tileIcons.length; i++) {
-            tileIcons[i] = imageSplitter.getTileFromSubGrid(0 + i, 0);
+        for (int i = 0; i < getTileIcons().length; i++) {
+            getTileIcons()[i] = imageSplitter.getTileFromSubGrid(i, 0);
         }
     }
 
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);
-        this.tileIcons = new Image[2];
-        this.tileIcons[0] = imageManager.getImage(generateRelativeFileName(0));
-        this.tileIcons[1] = imageManager.getImage(generateRelativeFileName(1));
+        this.setTileIcons(new Image[2]);
+        this.getTileIcons()[0] = imageManager.getImage(generateRelativeFileName(
+                    0));
+        this.getTileIcons()[1] = imageManager.getImage(generateRelativeFileName(
+                    1));
     }
 
     public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < this.tileIcons.length; i++) {
+        for (int i = 0; i < this.getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);
-            imageManager.setImage(fileName, this.tileIcons[i]);
+            imageManager.setImage(fileName, this.getTileIcons()[i]);
         }
     }
 

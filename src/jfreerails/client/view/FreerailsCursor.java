@@ -225,11 +225,7 @@ final public class FreerailsCursor implements KeyListener, MapCursor {
         for (int i = 0; i < listeners.size(); i++) {
             ((CursorEventListener)listeners.elementAt(i)).cursorKeyPressed(ce);
         }
-    }
-
-    public String getMessage() {
-        return message;
-    }
+    }   
 
     public void setMessage(String message) {
         this.message = message;

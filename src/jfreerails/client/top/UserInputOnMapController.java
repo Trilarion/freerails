@@ -88,7 +88,7 @@ public class UserInputOnMapController implements CursorEventListener {
                 Dimension tileSize = new Dimension((int)scale, (int)scale);
                 int x = tile.x * tileSize.width;
                 int y = tile.y * tileSize.height;
-                stationTypesPopup.show(mapView, x, y, tile);
+                stationTypesPopup.showMenu(mapView, x, y, tile);
             } else {
                 modelRoot.getUserMessageLogger().println("Can't" +
                     " build station here!");

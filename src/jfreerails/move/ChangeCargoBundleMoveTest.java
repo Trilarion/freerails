@@ -28,6 +28,6 @@ public class ChangeCargoBundleMoveTest extends AbstractMoveTestCase {
 
         assertTryMoveFails(m);
         assertTryUndoMoveFails(m);
-        world.add(KEY.CARGO_BUNDLES, before);
+        getWorld().add(KEY.CARGO_BUNDLES, before);
     }
 }

@@ -20,11 +20,9 @@ import jfreerails.world.top.ReadOnlyWorld;
 public abstract class AbstractTileRenderer implements TileRenderer {
     protected final int[] typeNumbers;
     protected TileIconSelector tileIconSelector;
-    protected Image[] tileIcons;
+    private Image[] tileIcons;
     protected final TerrainType tileModel;
     protected int rgb;
-    protected int tileWidth;
-    protected int tileHeight;
 
     public AbstractTileRenderer(TerrainType t, int[] rgbValues) {
         tileModel = t;
@@ -52,27 +50,22 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         return tileModel.getRGB();
     }
 
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
-
-    public Image getIcon() {
-        return tileIcons[0];
+    public Image getDefaultIcon() {
+        return getTileIcons()[0];
     }
 
     public String getTerrainType() {
         return tileModel.getTerrainTypeName();
     }
 
+    /** Returns an icon for the tile at x,y, which may depend on the terrain types of
+     * of the surrounding tiles.
+     */
     public Image getIcon(int x, int y, ReadOnlyWorld w) {
         int tile = selectTileIcon(x, y, w);
 
-        if (tileIcons[tile] != null) {
-            return tileIcons[tile];
+        if (getTileIcons()[tile] != null) {
+            return getTileIcons()[tile];
         } else {
             throw new NullPointerException(
                 "Error in TileView.getIcon: icon no. " + tile + "==null");
@@ -84,11 +77,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     */
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         return 0;
-    }
-
-    public void setTileSize(int height, int width) {
-        tileHeight = height;
-        tileWidth = width;
     }
 
     protected int checkTile(int x, int y, ReadOnlyWorld w) {
@@ -125,4 +113,12 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     protected abstract String generateFileNameNumber(int i);
+
+    protected void setTileIcons(Image[] tileIcons) {
+        this.tileIcons = tileIcons;
+    }
+
+    protected Image[] getTileIcons() {
+        return tileIcons;
+    }
 }

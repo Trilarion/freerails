@@ -25,31 +25,23 @@ import jfreerails.client.renderer.MapRenderer;
 public abstract class MapViewJComponent
 	extends JPanel
 	implements Scrollable, MapRenderer, UserMessageLogger {
-
-	/**
-	 *  Description of the Field
-	 */
-	protected MapRenderer mapView=new BlankMapRenderer(10);
+	
+	private MapRenderer mapView=new BlankMapRenderer(10);
 
 	public MapViewJComponent() {
 	}
 
 	public float getScale() {
-		return mapView.getScale();
+		return getMapView().getScale();
 
 	}
 
-	/*
-	public void setMapView(MapView mapView) {
-		this.mapView = mapView;
-		this.setPreferredSize(mapView.getMapSizeInPixels());
-	}
-	*/
+	
 
 	protected void paintComponent(java.awt.Graphics g) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 		java.awt.Rectangle r = this.getVisibleRect();
-		mapView.paintRect(g2, r);
+		getMapView().paintRect(g2, r);
 	}
 
 	public int getScrollableUnitIncrement(
@@ -57,7 +49,7 @@ public abstract class MapViewJComponent
 		int orientation,
 		int direction) {
 
-		return (int) mapView.getScale();
+		return (int) getMapView().getScale();
 
 	}
 
@@ -71,8 +63,8 @@ public abstract class MapViewJComponent
 		int direction) {
 		if (javax.swing.SwingConstants.VERTICAL == orientation) {
 			int best =
-				(int) (((rectangle.height / mapView.getScale()) - 2)
-					* mapView.getScale());
+				(int) (((rectangle.height / getMapView().getScale()) - 2)
+					* getMapView().getScale());
 			if (best > 0) {
 				return best;
 			} else {
@@ -80,8 +72,8 @@ public abstract class MapViewJComponent
 			}
 		} else {
 			int best =
-				(int) (((rectangle.width / mapView.getScale()) - 2)
-					* mapView.getScale());
+				(int) (((rectangle.width / getMapView().getScale()) - 2)
+					* getMapView().getScale());
 			if (best > 0) {
 				return best;
 			} else {
@@ -109,41 +101,29 @@ public abstract class MapViewJComponent
 	public java.awt.Dimension getPreferredScrollableViewportSize() {
 		return this.getPreferredSize();
 	}
-	public boolean isRectVisible(Rectangle r) {
-
-		Rectangle visRect = this.getVisibleRect();
-		if ((r.x < visRect.x)
-			|| (r.y < visRect.y)
-			|| ((r.x + r.width) > (visRect.x + visRect.width))
-			|| ((r.y + r.height) > (visRect.y + visRect.height))) {
-			return false;
-		} else {
-			return true;
-		}
-
-	}
 	public void centerOnTile(Point tile) {
 
-		float scale = mapView.getScale();
+		float scale = getMapView().getScale();
 		Rectangle visRect = new Rectangle(this.getVisibleRect());
 		visRect.x = (int) (tile.x * scale - (visRect.width / 2));
 		visRect.y = (int) (tile.y * scale - (visRect.height / 2));
 		this.scrollRectToVisible(visRect);
 
 	}
-	/*
-	public boolean isWrappedVertically() {
-		return false;
-	}
-	public boolean isWrappedHorizontally() {
-		return false;
-	}
-	*/
+	
 	public Dimension getMapSizeInPixels() {
-		return mapView.getMapSizeInPixels();
+		return getMapView().getMapSizeInPixels();
 	}
 	public Dimension getPreferredSize(){
 		return getMapSizeInPixels();
+	}
+
+	protected void setMapView(MapRenderer mapView) {
+		this.mapView = mapView;
+	}
+
+	protected MapRenderer getMapView() {
+		return mapView;
 	}
 
 }

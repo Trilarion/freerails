@@ -112,16 +112,6 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
         return getInstance(this.deltaX * -1, this.deltaY * -1);
     }
 
-    public FlatTrackTemplate getRotatedInstance(Rotation r) {
-        for (int i = 0; i < 8; i++) {
-            if (this == list[i]) {
-                return list[(i + r.i) % 8];
-            }
-        }
-
-        return null;
-    }
-
     /** Returns the name of the vector.  E.g. "north-east"
     * @return the name.
     */
@@ -311,7 +301,7 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
         if (0 == dx * dy) {
             if (dx > 0) {
                 return EAST;
-            } else if (dx < 0) {
+            } else if (dx != 0) {
                 return WEST;
             } else if (dy > 0) {
                 return SOUTH;

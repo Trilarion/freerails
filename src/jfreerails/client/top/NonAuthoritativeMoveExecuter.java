@@ -45,7 +45,7 @@ public class NonAuthoritativeMoveExecuter extends MoveExecuter {
             * Processes moves confirmed or rejected by the server.
             */
     public void executeOutstandingMoves() {
-        FreerailsSerializable[] items = sychronizedQueue.read();
+        FreerailsSerializable[] items = getSychronizedQueue().read();
 
         for (int i = 0; i < items.length; i++) {
             Move move = (Move)items[i];

@@ -28,21 +28,21 @@ final public class RiverStyleTileRenderer
         TerrainType tileModel) {
         super(tileModel, rgbValues);
         imageSplitter.setTransparencyToOPAQUE();
-        tileIcons = new java.awt.Image[16];
+        setTileIcons(new java.awt.Image[16]);
 
-        for (int i = 0; i < tileIcons.length; i++) {
-            tileIcons[i] = imageSplitter.getTileFromSubGrid(15 - i, 0);
+        for (int i = 0; i < getTileIcons().length; i++) {
+            getTileIcons()[i] = imageSplitter.getTileFromSubGrid(15 - i, 0);
         }
     }
 
     public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);
-        this.tileIcons = new Image[16];
+        this.setTileIcons(new Image[16]);
 
-        for (int i = 0; i < this.tileIcons.length; i++) {
+        for (int i = 0; i < this.getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);
-            this.tileIcons[i] = imageManager.getImage(fileName);
+            this.getTileIcons()[i] = imageManager.getImage(fileName);
         }
     }
 
@@ -59,8 +59,9 @@ final public class RiverStyleTileRenderer
     }
 
     public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < this.tileIcons.length; i++) {
-            imageManager.setImage(generateRelativeFileName(i), this.tileIcons[i]);
+        for (int i = 0; i < this.getTileIcons().length; i++) {
+            imageManager.setImage(generateRelativeFileName(i),
+                this.getTileIcons()[i]);
         }
     }
 

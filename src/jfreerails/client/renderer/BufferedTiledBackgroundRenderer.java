@@ -8,7 +8,6 @@ package jfreerails.client.renderer;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.VolatileImage;
 
@@ -150,16 +149,6 @@ public abstract class BufferedTiledBackgroundRenderer
     protected abstract void paintBufferRectangle(int x, int y, int width,
         int height);
 
-    public void refreshRectangleOfTiles(Rectangle r) {
-        Point tile = new Point();
-
-        for (tile.x = r.x; tile.x < (r.x + r.width); tile.x++) {
-            for (tile.y = r.y; tile.y < (r.y + r.width); tile.y++) {
-                refreshTile(tile.x, tile.y);
-            }
-        }
-    }
-
     /**
      *  Description of the Method
      *
@@ -191,12 +180,12 @@ public abstract class BufferedTiledBackgroundRenderer
         bufferRect.y -= dy;
 
         // paint exposed areas
-        if (dx > 0) {
-            bg.setClip(0, 0, dx, bufferRect.height);
-            bg.clearRect(0, 0, dx, bufferRect.height);
-            paintBufferRectangle(0, 0, dx, bufferRect.height);
-        } else {
-            if (dx < 0) {
+        if (dx != 0) {
+            if (dx > 0) {
+                bg.setClip(0, 0, dx, bufferRect.height);
+                bg.clearRect(0, 0, dx, bufferRect.height);
+                paintBufferRectangle(0, 0, dx, bufferRect.height);
+            } else {
                 bg.setClip(bufferRect.width + dx, 0, -dx, bufferRect.height);
                 bg.clearRect(bufferRect.width + dx, 0, -dx, bufferRect.height);
                 paintBufferRectangle(bufferRect.width + dx, 0, -dx,
@@ -204,12 +193,12 @@ public abstract class BufferedTiledBackgroundRenderer
             }
         }
 
-        if (dy > 0) {
-            bg.setClip(0, 0, bufferRect.width, dy);
-            bg.clearRect(0, 0, bufferRect.width, dy);
-            paintBufferRectangle(0, 0, bufferRect.width, dy);
-        } else {
-            if (dy < 0) {
+        if (dy != 0) {
+            if (dy > 0) {
+                bg.setClip(0, 0, bufferRect.width, dy);
+                bg.clearRect(0, 0, bufferRect.width, dy);
+                paintBufferRectangle(0, 0, bufferRect.width, dy);
+            } else {
                 bg.setClip(0, bufferRect.height + dy, bufferRect.width, -dy);
                 bg.clearRect(0, bufferRect.height + dy, bufferRect.width, -dy);
                 paintBufferRectangle(0, bufferRect.height + dy,

@@ -47,7 +47,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
     }
 
     public boolean orderHasWagons() {
-        return null != consist && 0 < consist.length;
+        return null != consist && 0 != consist.length;
     }
 
     public boolean hasLessThanMaxiumNumberOfWagons() {

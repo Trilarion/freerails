@@ -113,7 +113,7 @@ public class StationTypesPopup extends JPopupMenu {
             });
     }
 
-    public void show(Component invoker, int x, int y, Point tile) {
+    public void showMenu(Component invoker, int x, int y, Point tile) {
         tileToBuildStationOn = tile;
 
         super.show(invoker, x, y);

@@ -23,14 +23,6 @@ final public class TileRendererListImpl implements TileRendererList {
         return tiles[i];
     }
 
-    public int getLength() {
-        return tiles.length;
-    }
-
-    public boolean TestTileViewNumber() {
-        return false;
-    }
-
     public TileRendererListImpl(ArrayList t) {
         tiles = new TileRenderer[t.size()];
 
@@ -39,13 +31,6 @@ final public class TileRendererListImpl implements TileRendererList {
         }
     }
 
-    public void add(TileRenderer tr) {
-        //tileArrayList.add(tr);
-    }
-
-    //public Iterator getIterator() {
-    //	return tiles.values().iterator();
-    //}
     public boolean validate(ReadOnlyWorld w) {
         boolean okSoFar = true;
 

@@ -1,7 +1,6 @@
 package jfreerails.client.top;
 
 import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.util.GameModel;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -17,31 +16,41 @@ import jfreerails.world.top.ReadOnlyWorld;
  *
  */
 public abstract class Client {
-    protected MoveChainFork moveChainFork;
-    protected ConnectionAdapter receiver;
+    private MoveChainFork moveChainFork;
+    private ConnectionAdapter receiver;
 
     /**
      * @return A receiver with which moves may be tried out and submitted
      */
-    public UntriedMoveReceiver getReceiver() {
-        return receiver;
-    }
 
-    /**
-     * @return  A MoveChainFork to which classes may subscrive to receive Moves
-     */
-    public MoveChainFork getMoveChainFork() {
-        return moveChainFork;
-    }
+    //    public UntriedMoveReceiver getReceiver() {
+    //        return receiver;
+    //    }
 
     /**
      * @return A read-only copy of the world
      */
     public ReadOnlyWorld getWorld() {
-        return receiver.world;
+        return getReceiver().world;
     }
 
     public GameModel getModel() {
-        return this.receiver.getModel();
+        return this.getReceiver().getModel();
+    }
+
+    protected void setMoveChainFork(MoveChainFork moveChainFork) {
+        this.moveChainFork = moveChainFork;
+    }
+
+    protected MoveChainFork getMoveChainFork() {
+        return moveChainFork;
+    }
+
+    protected void setReceiver(ConnectionAdapter receiver) {
+        this.receiver = receiver;
+    }
+
+    protected ConnectionAdapter getReceiver() {
+        return receiver;
     }
 }

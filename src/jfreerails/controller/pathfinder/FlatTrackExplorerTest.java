@@ -41,7 +41,7 @@ public class FlatTrackExplorerTest extends TestCase {
         Point p = new Point(10, 10);
         Point[] points = {p, p, p};
 
-        for (int i = 0; (i < points.length && i < vectors.length); i++) {
+        for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(points[i],
                     vectors[i], rule, world);
             MoveStatus ms = move.doMove(world);

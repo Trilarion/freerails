@@ -314,7 +314,6 @@ public class InetConnection extends Socket implements ConnectionToServer {
      * Called by the server to accept client connections.
      * @throws IOException if an IO error occurred.
      * @return The new connection, or null if the socket is closed.
-     * @deprecated
      */
     public ConnectionToServer accept() throws IOException {
         return new InetConnection(serverSocket.accept(), world, mutex);

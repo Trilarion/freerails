@@ -20,7 +20,6 @@ import jfreerails.world.track.TrackRule;
  * @author lindsal
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
-    //World world;
     public ChangeTrackPieceMoveTest(String testName) {
         super(testName);
     }
@@ -36,9 +35,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     protected void setUp() {
-        hasSetupBeenCalled = true;
-        world = new WorldImpl(20, 20);
-        MapFixtureFactory.generateTrackRuleList(world);
+        setHasSetupBeenCalled(true);
+        setWorld(new WorldImpl(20, 20));
+        MapFixtureFactory.generateTrackRuleList(getWorld());
     }
 
     public void testTryDoMove() {
@@ -53,45 +52,45 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)world.getTile(0, 0);
+        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
-        TrackRule r = (TrackRule)world.get(KEY.TRACK_RULES, 0);
+        TrackRule r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(world);
+        moveStatus = move.tryDoMove(getWorld());
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
 
         //As above but with newTrackPiece and oldTrackPiece in the wrong order, should fail.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(world);
+        moveStatus = move.tryDoMove(getWorld());
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece, should fail.
         move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(world);
+        moveStatus = move.tryDoMove(getWorld());
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try buildingtrack outside the map.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
                 new Point(100, 0));
-        moveStatus = move.tryDoMove(world);
+        moveStatus = move.tryDoMove(getWorld());
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try building an illegal track configuration.
         newConfig = TrackConfiguration.getFlatInstance("000011111");
 
-        r = (TrackRule)world.get(KEY.TRACK_RULES, 0);
+        r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.tryDoMove(world);
+        moveStatus = move.tryDoMove(getWorld());
         assertEquals(false, moveStatus.isOk());
     }
 
@@ -118,9 +117,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)world.getTile(0, 0);
+        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
-        TrackRule r = (TrackRule)world.get(KEY.TRACK_RULES, 0);
+        TrackRule r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
 
         assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
@@ -133,11 +132,11 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
-        moveStatus = move.doMove(world);
+        moveStatus = move.doMove(getWorld());
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
         assertEquals(newTrackPiece.getTrackConfiguration(),
-            world.getTile(0, 0).getTrackConfiguration());
+            getWorld().getTile(0, 0).getTrackConfiguration());
     }
 
     public void testUndoMove() {
@@ -153,7 +152,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)world.getTile(0, 0);
+        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
         //  assertMoveDoMoveIsOk(oldTrackPiece, newConfig);
     }
@@ -164,9 +163,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackConfiguration oldConfig;
         TrackConfiguration newConfig;
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)world.getTile(0, 0);
+        oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
-        TrackRule r = (TrackRule)world.get(KEY.TRACK_RULES, 0);
+        TrackRule r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
 
         Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,

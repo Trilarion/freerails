@@ -17,21 +17,6 @@ public class OneTileMoveVectorTest extends TestCase {
         super(arg0);
     }
 
-    public void testGetRotatedInstance() {
-        assertEquals("Rotating by 0 degrees should have no effect",
-            n.getRotatedInstance(Rotation.BY_0_DEGREES), n);
-        assertEquals(n.getRotatedInstance(Rotation.BY_45_DEGREES), ne);
-        assertEquals(n.getRotatedInstance(Rotation.BY_90_DEGREES), e);
-        assertEquals(n.getRotatedInstance(Rotation.BY_135_DEGREES), se);
-        assertEquals(n.getRotatedInstance(Rotation.BY_180_DEGREES), s);
-
-        assertEquals(nw.getRotatedInstance(Rotation.BY_45_DEGREES), n);
-        assertEquals(nw.getRotatedInstance(Rotation.BY_90_DEGREES), ne);
-        assertEquals(nw.getRotatedInstance(Rotation.BY_135_DEGREES), e);
-        assertEquals(nw.getRotatedInstance(Rotation.BY_180_DEGREES), se);
-        assertTrue(n != ne);
-    }
-
     public void testGetDirection() {
         double d = 0;
         assertTrue(d == n.getDirection());

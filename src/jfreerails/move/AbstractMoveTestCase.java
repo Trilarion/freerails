@@ -26,16 +26,16 @@ import junit.framework.TestCase;
  *
  */
 public abstract class AbstractMoveTestCase extends TestCase {
-    World world;
-    protected boolean hasSetupBeenCalled = false;
+    private World world;
+    private boolean hasSetupBeenCalled = false;
 
     protected void setUp() {
-        hasSetupBeenCalled = true;
-        world = new WorldImpl();
+        setHasSetupBeenCalled(true);
+        setWorld(new WorldImpl());
         //		Set the time..
-        world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
-        world.set(ITEM.TIME, new GameTime(0));
-        world.add(KEY.BANK_ACCOUNTS, new BankAccount());
+        getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
+        getWorld().set(ITEM.TIME, new GameTime(0));
+        getWorld().add(KEY.BANK_ACCOUNTS, new BankAccount());
     }
 
     abstract public void testMove();
@@ -43,11 +43,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryDoMove(world);
+        MoveStatus ms = m.tryDoMove(getWorld());
         assertNotNull(ms);
         assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
 
-        ms = m.tryDoMove(world);
+        ms = m.tryDoMove(getWorld());
         assertNotNull(ms);
         assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
             MoveStatus.MOVE_OK, ms);
@@ -56,7 +56,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryDoMove(world);
+        MoveStatus ms = m.tryDoMove(getWorld());
         assertNotNull(ms);
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
@@ -64,7 +64,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertDoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.doMove(world);
+        MoveStatus ms = m.doMove(getWorld());
         assertNotNull(ms);
         assertEquals(MoveStatus.MOVE_OK, ms);
     }
@@ -72,7 +72,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertDoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.doMove(world);
+        MoveStatus ms = m.doMove(getWorld());
         assertNotNull(ms);
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
@@ -80,11 +80,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(world);
+        MoveStatus ms = m.tryUndoMove(getWorld());
         assertNotNull(ms);
         assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
 
-        ms = m.tryUndoMove(world);
+        ms = m.tryUndoMove(getWorld());
         assertNotNull(ms);
         assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
             MoveStatus.MOVE_OK, ms);
@@ -93,7 +93,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryUndoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(world);
+        MoveStatus ms = m.tryUndoMove(getWorld());
         assertNotNull(ms);
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
@@ -101,7 +101,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.undoMove(world);
+        MoveStatus ms = m.undoMove(getWorld());
         assertNotNull(ms);
         assertEquals(MoveStatus.MOVE_OK, ms);
     }
@@ -109,7 +109,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertUndoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(world);
+        MoveStatus ms = m.tryUndoMove(getWorld());
         assertNotNull(ms);
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
@@ -154,12 +154,12 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
     protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
         try {
-            World copyOfWorldBefore = (World)cloneBySerialisation(world);
+            World copyOfWorldBefore = (World)cloneBySerialisation(getWorld());
             assertEquals("The world objects equals method did not survive serialization!",
-                copyOfWorldBefore, world);
-            assertTrue(m.doMove(world).ok);
-            assertTrue(m.undoMove(world).ok);
-            assertEquals(copyOfWorldBefore, world);
+                copyOfWorldBefore, getWorld());
+            assertTrue(m.doMove(getWorld()).ok);
+            assertTrue(m.undoMove(getWorld()).ok);
+            assertEquals(copyOfWorldBefore, getWorld());
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -201,7 +201,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
     private void assertSetupHasBeenCalled() {
         assertTrue("AbstractMoveTestCase.setUp has not been called!",
-            hasSetupBeenCalled);
+            hasSetupBeenCalled());
     }
 
     public AbstractMoveTestCase() {
@@ -209,5 +209,21 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
     public AbstractMoveTestCase(String str) {
         super(str);
+    }
+
+    protected void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
+        this.hasSetupBeenCalled = hasSetupBeenCalled;
+    }
+
+    protected boolean hasSetupBeenCalled() {
+        return hasSetupBeenCalled;
+    }
+
+    void setWorld(World world) {
+        this.world = world;
+    }
+
+    World getWorld() {
+        return world;
     }
 }

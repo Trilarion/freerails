@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import jfreerails.world.common.FlatTrackTemplate;
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.common.Rotation;
 
 
 /**
@@ -25,7 +24,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 
     private final int configuration;
 
-    //private TrackSectionVector[] vectors;
     private TrackConfiguration(int i) {
         configuration = i;
     }
@@ -90,20 +88,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         int newTemplate = c.getTemplate() & (~v.getTemplate());
 
         return getFlatInstance(newTemplate);
-    }
-
-    public FlatTrackTemplate getRotatedInstance(Rotation r) {
-        OneTileMoveVector[] list = OneTileMoveVector.getList();
-        TrackConfiguration newTrackConfiguration = getFlatInstance("000010000");
-
-        for (int i = 0; i < list.length; i++) {
-            if (this.contains(list[i])) {
-                newTrackConfiguration = add(newTrackConfiguration,
-                        list[i].getRotatedInstance(r));
-            }
-        }
-
-        return newTrackConfiguration;
     }
 
     public boolean contains(FlatTrackTemplate ftt) {

@@ -100,7 +100,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 int x = evt.getX();
                 int y = evt.getY();
-                float scale = mapView.getScale();
+                float scale = getScale();
                 Dimension tileSize = new Dimension((int)scale, (int)scale);
                 mapCursor.tryMoveCursor(new Point(x / tileSize.width,
                         y / tileSize.height));
@@ -131,7 +131,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
                 sigmadelta.x += evt.getX() - lastMouseLocation.x;
                 sigmadelta.y += evt.getY() - lastMouseLocation.y;
 
-                int tileSize = (int)mapView.getScale();
+                int tileSize = (int)getScale();
                 tiledelta.x = (int)(sigmadelta.x * GRANULARITY) / tileSize;
                 tiledelta.y = (int)(sigmadelta.y * GRANULARITY) / tileSize;
                 tiledelta.x = (int)((tiledelta.x * tileSize) / GRANULARITY) * LINEAR_ACCEL;
@@ -142,19 +142,19 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 
                 int temp; //respect bounds
 
-                if ((temp = vr.x - 0 - tiledelta.x) < 0) {
+                if ((temp = vr.x - tiledelta.x) < 0) {
                     sigmadelta.x += temp / LINEAR_ACCEL;
                     tiledelta.x += temp;
-                } else if ((temp = (0 + bounds.width) - (vr.x + vr.width) +
+                } else if ((temp = (bounds.width) - (vr.x + vr.width) +
                             tiledelta.x) < 0) {
                     sigmadelta.x -= temp / LINEAR_ACCEL;
                     tiledelta.x -= temp;
                 }
 
-                if ((temp = vr.y - 0 - tiledelta.y) < 0) {
+                if ((temp = vr.y - tiledelta.y) < 0) {
                     sigmadelta.y += temp / LINEAR_ACCEL;
                     tiledelta.y += temp;
-                } else if ((temp = (0 + bounds.height) - (vr.y + vr.height) +
+                } else if ((temp = (bounds.height) - (vr.y + vr.height) +
                             tiledelta.y) < 0) {
                     sigmadelta.y -= temp / LINEAR_ACCEL;
                     tiledelta.y -= temp;
@@ -231,7 +231,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     public void setup(MapRenderer mv, ReadOnlyWorld w) {
-        super.mapView = mv;
+        super.setMapView(mv);
 
         this.setBorder(null);
 
@@ -245,7 +245,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     public void setup(MapRenderer mv) {
-        super.mapView = mv;
+        super.setMapView(mv);
     }
 
     public void cursorJumped(CursorEvent ce) {
@@ -279,7 +279,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     private void reactToCursorMovement(CursorEvent ce) {
-        float scale = mapView.getScale();
+        float scale = getMapView().getScale();
         Dimension tileSize = new Dimension((int)scale, (int)scale);
         Rectangle vr = this.getVisibleRect();
         Rectangle rectangleSurroundingCursor = new Rectangle(0, 0, 1, 1);
@@ -310,9 +310,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     public void refreshTile(int x, int y) {
-    }
-
-    public void refreshRectangleOfTiles(int x, int y, int width, int height) {
     }
 
     public void paintRect(Graphics g, Rectangle visibleRect) {

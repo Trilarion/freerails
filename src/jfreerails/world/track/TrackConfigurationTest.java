@@ -8,7 +8,6 @@
 package jfreerails.world.track;
 
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.common.Rotation;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -46,12 +45,5 @@ public class TrackConfigurationTest extends TestCase {
         TrackConfiguration b = TrackConfiguration.subtract(a,
                 OneTileMoveVector.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("000010000"), b);
-    }
-
-    public void testGetRotatedInstance() {
-        TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
-        assertEquals(a, a.getRotatedInstance(Rotation.BY_0_DEGREES));
-        assertEquals(a.getRotatedInstance(Rotation.BY_45_DEGREES),
-            TrackConfiguration.getFlatInstance("010010000"));
     }
 }

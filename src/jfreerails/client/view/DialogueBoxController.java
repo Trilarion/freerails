@@ -309,9 +309,7 @@ public class DialogueBoxController {
 		}
 	}
 
-	public Component getDefaultFocusOwner() {
-		return defaultFocusOwner;
-	}
+	
 
 	public void setDefaultFocusOwner(Component defaultFocusOwner) {
 		this.defaultFocusOwner = defaultFocusOwner;

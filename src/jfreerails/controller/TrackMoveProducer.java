@@ -72,7 +72,6 @@ final public class TrackMoveProducer {
      */
     public void setTrackRule(int trackRuleNumber) {
         this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, trackRuleNumber);
-        TextMessageHandler.sendMessage(trackRule.getTypeName());
     }
 
     public int getTrackRule() {

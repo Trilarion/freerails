@@ -119,7 +119,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
             return i;
         }
 
-        public Image getIcon() {
+        public Image getDefaultIcon() {
             return i;
         }
 

@@ -32,23 +32,23 @@ public class GUIClient extends Client {
         SynchronizedEventQueue.use();
 
         modelRoot = new ModelRoot();
-        receiver = new ConnectionAdapter(modelRoot);
-        moveChainFork = new MoveChainFork();
-        receiver.setMoveReceiver(moveChainFork);
-        receiver.setConnection(server);
+        super.setReceiver(new ConnectionAdapter(modelRoot));
+        super.setMoveChainFork(new MoveChainFork());
+        getReceiver().setMoveReceiver(getMoveChainFork());
+        getReceiver().setConnection(server);
 
-        modelRoot.setMoveReceiver(receiver);
-        modelRoot.setMoveFork(moveChainFork);
+        modelRoot.setMoveReceiver(getReceiver());
+        modelRoot.setMoveFork(super.getMoveChainFork());
 
         GUIComponentFactoryImpl gUIComponentFactory = new GUIComponentFactoryImpl(modelRoot);
 
-        ViewLists viewLists = new ViewListsImpl(receiver.world, pm);
+        ViewLists viewLists = new ViewListsImpl(getReceiver().world, pm);
 
-        if (!viewLists.validate(receiver.world)) {
+        if (!viewLists.validate(getReceiver().world)) {
             throw new IllegalArgumentException();
         }
 
-        gUIComponentFactory.setup(viewLists, receiver.world);
+        gUIComponentFactory.setup(viewLists, getReceiver().world);
 
         JFrame client = gUIComponentFactory.createClientJFrame(title);
 
@@ -57,7 +57,7 @@ public class GUIClient extends Client {
         //and the screen handler may change the display settings.
         ScreenHandler screenHandler = new ScreenHandler(client, mode, dm);
 
-        moveChainFork.add(gUIComponentFactory);
+        getMoveChainFork().add(gUIComponentFactory);
 
         GameLoop gameLoop = new GameLoop(screenHandler, this.getModel());
         String threadName = "JFreerails client: " + title;

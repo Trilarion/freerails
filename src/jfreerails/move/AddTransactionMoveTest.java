@@ -18,7 +18,7 @@ import jfreerails.world.top.KEY;
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
     public void testMove() {
-        BankAccount account = (BankAccount)world.get(KEY.BANK_ACCOUNTS, 0);
+        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0);
         assertEquals(new Money(0), account.getCurrentBalance());
 
         Transaction t = new Receipt(new Money(100));
@@ -36,7 +36,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
     }
 
     public void testConstrainedMove() {
-        BankAccount account = (BankAccount)world.get(KEY.BANK_ACCOUNTS, 0);
+        BankAccount account = (BankAccount)getWorld().get(KEY.BANK_ACCOUNTS, 0);
         assertEquals(new Money(0), account.getCurrentBalance());
 
         Transaction t = new Bill(new Money(100));

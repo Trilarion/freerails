@@ -26,7 +26,7 @@ public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
 
         Move m = new AddCargoBundleMove(0, bundleA);
         assertDoMoveIsOk(m);
-        assertEquals(world.size(KEY.CARGO_BUNDLES), 1);
+        assertEquals(getWorld().size(KEY.CARGO_BUNDLES), 1);
         assertUndoMoveIsOk(m);
         assertEqualsSurvivesSerialisation(m);
         assertOkButNotRepeatable(m);

@@ -28,23 +28,23 @@ final public class ForestStyleTileRenderer
         int[] rgbValues, TerrainType tileModel) {
         super(tileModel, rgbValues);
         imageSplitter.setTransparencyToOPAQUE();
-        tileIcons = new java.awt.Image[4];
+        setTileIcons(new java.awt.Image[4]);
 
         //Grap them in this order so that they display correctly :)
-        tileIcons[0] = imageSplitter.getTileFromSubGrid(0, 0);
-        tileIcons[1] = imageSplitter.getTileFromSubGrid(1, 0);
-        tileIcons[2] = imageSplitter.getTileFromSubGrid(3, 0);
-        tileIcons[3] = imageSplitter.getTileFromSubGrid(2, 0);
+        getTileIcons()[0] = imageSplitter.getTileFromSubGrid(0, 0);
+        getTileIcons()[1] = imageSplitter.getTileFromSubGrid(1, 0);
+        getTileIcons()[2] = imageSplitter.getTileFromSubGrid(3, 0);
+        getTileIcons()[3] = imageSplitter.getTileFromSubGrid(2, 0);
     }
 
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);
-        this.tileIcons = new Image[4];
+        this.setTileIcons(new Image[4]);
 
-        for (int i = 0; i < this.tileIcons.length; i++) {
+        for (int i = 0; i < this.getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);
-            this.tileIcons[i] = imageManager.getImage(fileName);
+            this.getTileIcons()[i] = imageManager.getImage(fileName);
         }
     }
 
@@ -63,9 +63,9 @@ final public class ForestStyleTileRenderer
     }
 
     public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < this.tileIcons.length; i++) {
+        for (int i = 0; i < this.getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);
-            imageManager.setImage(fileName, this.tileIcons[i]);
+            imageManager.setImage(fileName, this.getTileIcons()[i]);
         }
     }
 

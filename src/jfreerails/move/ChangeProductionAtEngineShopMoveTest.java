@@ -24,12 +24,12 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     protected void setUp() {
         super.setUp();
-        world.add(KEY.STATIONS, new StationModel());
-        world.add(KEY.STATIONS, new StationModel());
-        world.add(KEY.STATIONS, new StationModel());
+        getWorld().add(KEY.STATIONS, new StationModel());
+        getWorld().add(KEY.STATIONS, new StationModel());
+        getWorld().add(KEY.STATIONS, new StationModel());
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        wetf.addTypesToWorld(world);
+        wetf.addTypesToWorld(getWorld());
         engineType = 0;
         wagonType = 0;
         wagons = new int[] {wagonType, wagonType};

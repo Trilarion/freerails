@@ -36,9 +36,6 @@ public class BlankMapRenderer implements MapRenderer {
     public void refreshTile(int x, int y) {
     }
 
-    public void refreshRectangleOfTiles(int x, int y, int width, int height) {
-    }
-
     public void paintRect(Graphics g, Rectangle visibleRect) {
         g.setColor(Color.darkGray);
         g.fillRect(0, 0, (int)(scale * 400), (int)(scale * 400));
