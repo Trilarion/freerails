@@ -7,7 +7,6 @@
 package jfreerails.move;
 
 import java.awt.Point;
-import jfreerails.controller.TrackMoveTransactionsGenerator;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.GameRules;

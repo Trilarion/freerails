@@ -1,6 +1,8 @@
 package jfreerails.controller;
 
 import java.awt.Point;
+
+import jfreerails.move.*;
 import jfreerails.move.AddStationMove;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;

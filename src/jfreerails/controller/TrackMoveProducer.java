@@ -2,6 +2,8 @@ package jfreerails.controller;
 
 import java.awt.Point;
 import java.util.Stack;
+
+import jfreerails.move.*;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
