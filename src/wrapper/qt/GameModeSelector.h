@@ -2,8 +2,8 @@
   * A dialog to choose the Game Mode
   */
 
-#ifndef __GAMEMODESELECTDIALOG_H__
-#define __GAMEMODESELECTDIALOG_H__
+#ifndef __GAMEMODESELECTOR_H__
+#define __GAMEMODESELECTOR_H__
 
 #include <qwidget.h>
 
