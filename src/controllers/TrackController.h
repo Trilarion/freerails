@@ -43,12 +43,15 @@ class TrackController : public Controller
     void addGameElement(void *_data);
     void removeGameElement(void *_data);
 
+    void getOtherConnectionSide(unsigned int* x, unsigned int* y, int* dir);
+
   private:
     bool testBuildElement(int x, int y, int dir);
     bool connectIsBuildable(unsigned int connect);
     unsigned int doConnect(unsigned int connect, int dir);
     void trackUpdate(int x, int y, int dir);
     void trackDoBuild(int x, int y, int dir);
+    
 //    void setCorner(int x, int y);
 };
 

@@ -29,55 +29,61 @@ GameElement* TrackController::CreateElement(Serializer* _serializer)
 {
 }
 
+void TrackController::getOtherConnectionSide(unsigned int* x, unsigned int* y, int* dir)
+{
+  switch (*dir)
+  {
+    case 1:
+      (*y)--;
+      *dir = 5;
+      break;
+    case 2:
+      (*y)--;
+      (*x)++;
+      *dir = 6;
+      break;
+    case 3:
+      (*x)++;
+      *dir = 7;
+      break;
+    case 4:
+      (*y)++;
+      (*x)++;
+      *dir = 8;
+      break;
+    case 5:
+      (*y)++;
+      *dir = 1;
+      break;
+    case 6:
+      (*y)++;
+      (*x)--;
+      *dir = 2;
+      break;
+    case 7:
+      (*x)--;
+      *dir = 3;
+      break;
+    case 8:
+      (*y)--;
+      (*x)--;
+      *dir = 4;
+      break;
+  };
+}
+
 bool TrackController::canBuildElement(GameElement* _element)
 {
-  return false;
-/*  if (!testBuildElement(x,y,dir))
+  Track* track = (Track*)_element;
+  int dir = track->getConnect();
+  unsigned int x = track->getPosX();
+  unsigned int y = track->getPosY();
+  if (!testBuildElement(x,y,dir))
   {
     return false;
   }
-
-  switch (dir)
-  {
-    case 1:
-      y--;
-      dir = 5;
-      break;
-    case 2:
-      y--;
-      x++;
-      dir = 6;
-      break;
-    case 3:
-      x++;
-      dir = 7;
-      break;
-    case 4:
-      y++;
-      x++;
-      dir = 8;
-      break;
-    case 5:
-      y++;
-      dir = 1;
-      break;
-    case 6:
-      y++;
-      x--;
-      dir = 2;
-      break;
-    case 7:
-      x--;
-      dir = 3;
-      break;
-    case 8:
-      y--;
-      x--;
-      dir = 4;
-      break;
-  };
+  getOtherConnectionSide(&x, &y, &dir);
   return testBuildElement(x,y,dir);
-*/
 }
 
 bool TrackController::testBuildElement(int x, int y, int dir)
