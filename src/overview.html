@@ -6,9 +6,19 @@
 </head>
 
 <body>
-<p>This is an overview of the jfreerails source code. The dependencies between 
-  packages are shown below. Packages may only depend, i.e. import classes and 
-  interfaces, from packages below.</p>
+<p>This is an overview of the jfreerails source code. </p>
+<p>Also see:</p>
+<p><a href="docs/coding_guidelines.html">Coding guidelines</a></p>
+<p><strong>Brief overview of the architecture</strong></p>
+<p>(1) The model and the view are separated. The classes that compose the model, 
+  referred to as the <em>game world</em>, are in the jfreerails.world.* packages. 
+  The view classes are in the jfreerails.client.* packages. </p>
+<p>(2) All changes to the game world that occur after the game has started, referred 
+  to as <em>moves</em>, are done using the classes in the package <a href="jfreerails/move/package-summary.html">jfreerails.move</a> 
+  There are more details <a href="/jfreerails/move/package-summary.html">here</a>.</p>
+<p><strong>Dependencies between packages</strong></p>
+<p> The figures below show the dependencies: packages may only depend, i.e. import 
+  classes and interfaces, from packages below.</p>
 <table width="75%" border="1" cellpadding="10" cellspacing="10" bordercolor="#333333" bgcolor="#FFFFFF">
   <tr bgcolor="#FFCCCC"> 
     <td height="50" colspan="2">experimental.* &amp; jfreerails</td>

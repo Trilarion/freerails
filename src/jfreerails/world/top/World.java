@@ -1,6 +1,7 @@
 package jfreerails.world.top;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.station.StationList;
 import jfreerails.world.terrain.TerrainMap;
 import jfreerails.world.track.TrackAndTerrainTileMap;
 import jfreerails.world.track.TrackMap;
@@ -14,6 +15,8 @@ public interface World extends Types, FreerailsSerializable  {
 	TrackAndTerrainTileMap getMap();
 	
 	TrainList getTrainList();	
+
+	StationList getStationList();
 	
 	EngineTypesList getEngineTypes();
 	

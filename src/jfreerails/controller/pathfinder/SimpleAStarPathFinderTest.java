@@ -148,4 +148,7 @@ class Map implements Explorer {
 	public void moveForward() {
 		this.setPosition(this.getBranchPosition());
 	}
+	public boolean isAtStation() {
+		return false;
+	}
 }

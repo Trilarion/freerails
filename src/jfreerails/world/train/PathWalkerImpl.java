@@ -29,7 +29,7 @@ public class PathWalkerImpl implements PathWalker {
 		}
 	}
 
-	public void stepForward(int distance) {
+	public void stepForward(double distance) {
 		distanceOfThisStepRemaining += distance;
 	}
 

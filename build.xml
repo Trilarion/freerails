@@ -131,11 +131,21 @@
    <target name="javadoc" depends="mkdirs, init">
       <javadoc destdir="${doc}" author="true" version="true"  overview="${src}/overview.html" Private="true"  use="true" windowtitle="JFreerails API - build ${DSTAMP}">
          <fileset dir="${src}" defaultexcludes="yes">
-            <include name="**/*java" />
-
+            <include name="**/*.java" />
             <exclude name="**/*Test.java" />
          </fileset>
       </javadoc>
+	   <!-- now copy the html	-->
+	  <copy todir="${doc}">
+         <fileset dir="${src}">
+            <include name="*.html" />
+			<include name="*.htm" />
+			
+			<!--Don't copy these since the javadoc tool processes with them -->
+            <exclude name="**/overview.html" /> 
+			<exclude name="**/package.html" />      
+         </fileset>
+      </copy>
    </target>
 
   
@@ -171,7 +181,7 @@
      </target>
      
      
-     <!-- The check_dependencies target tests the dependencies of packages.  It does this by copying the contents of the package 
+     <!-- The checkdep target tests the dependencies of packages.  It does this by copying the contents of the package 
      in question together with the contents of the packages it is allowed to depend on to a tempory directory, then compiling
      the contents of the package.  If the packaged depends on classes other than those contained in the packages it is allowed
      to depend on, the compile will fail.

@@ -27,6 +27,6 @@ public interface PathWalker extends FreerailsPathIterator, FreerailsSerializable
 	 * to retrieve the section of the path travelled
 	 * during this move.
 	 */
-	void stepForward(int distance);
+	void stepForward(double distance);
 
 }
