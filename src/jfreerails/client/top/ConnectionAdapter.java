@@ -123,15 +123,14 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     public void setConnection(ConnectionToServer c) throws IOException {
-        EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+        SynchronizedEventQueue eventQueue = SynchronizedEventQueue.getInstance();
 
         if (connection != null) {
             closeConnection();
             connection.removeMoveReceiver(worldUpdater);
 
             if ((mutex != null)) {
-                SynchronizedEventQueue synchronizedEventQueue = (SynchronizedEventQueue)eventQueue;
-                synchronizedEventQueue.removeMutex(mutex);
+                eventQueue.removeMutex(mutex);
             }
         }
 
@@ -147,7 +146,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
         }
 
         /* add our mutex to the AWT event queue's mutex list */
-        ((SynchronizedEventQueue)eventQueue).addMutex(mutex);
+        eventQueue.addMutex(mutex);
 
         /* don't allow other events to update until we've downloaded our copy of
          * the World */

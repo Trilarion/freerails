@@ -1,17 +1,15 @@
 package jfreerails.client.top;
 
-import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.DisplayMode;
 import java.io.IOException;
 import java.net.InetAddress;
 import javax.swing.JFrame;
-import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.common.ScreenHandler;
+import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.MapCursor;
-import jfreerails.controller.ConnectionToServer;
 import jfreerails.client.view.ModelRoot;
+import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
@@ -43,12 +41,7 @@ public class GUIClient extends Client {
 
     private GUIClient(ConnectionToServer server, int mode, DisplayMode dm,
         String title, FreerailsProgressMonitor pm) throws IOException {
-        /* set up the synchronized event queue if not already done */
-        EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
-
-        if (!(Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof SynchronizedEventQueue)) {
-            eventQueue.push(new SynchronizedEventQueue());
-        }
+        SynchronizedEventQueue.use();
 
         modelRoot = new ModelRoot();
         receiver = new ConnectionAdapter(modelRoot);

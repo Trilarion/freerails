@@ -20,7 +20,7 @@ public class WagonType implements FreerailsSerializable {
     public static final int ENGINE = 5;
     private final String typeName;
     private final int typeCategory;
-	public static final int UNITS_OF_CARGO_PER_WAGON = 40;
+    public static final int UNITS_OF_CARGO_PER_WAGON = 40;
 
     public WagonType(String name, int category) {
         typeName = name;

@@ -40,8 +40,7 @@ final public class GameLoop implements Runnable, MultiLockedRegion {
     }
 
     public void run() {
-        SynchronizedEventQueue seq = (SynchronizedEventQueue)Toolkit.getDefaultToolkit()
-                                                                    .getSystemEventQueue();
+        SynchronizedEventQueue seq = SynchronizedEventQueue.getInstance();
 
         RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
         RepaintManagerForActiveRendering.setAsCurrentManager();
