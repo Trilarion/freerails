@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
-import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -67,7 +67,7 @@ public class StationBoxRenderer implements Painter {
                     g.drawRect(positionX, positionY, MAX_WIDTH,
                         5 * (WAGON_IMAGE_HEIGHT + SPACING));
 
-                    CargoBundle cb = (CargoBundle)w.get(KEY.CARGO_BUNDLES,
+                    ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
                             station.getCargoBundleNumber(), principal);
 
                     for (int category = 0;
@@ -102,7 +102,7 @@ public class StationBoxRenderer implements Painter {
         * in the array are the type of the cargo.  E.g. if the bundle contained
         * 2 carloads of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
         */
-    private int[] calculateCarLoads(CargoBundle cb, int category) {
+    private int[] calculateCarLoads(ImmutableCargoBundle cb, int category) {
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
         int numberOfCarLoads = 0;
 

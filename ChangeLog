@@ -1,3 +1,11 @@
+Aug 14, 2004 Luke		
+	o Added ConstJava ant target
+	Note, ConstJava adds the keyword 'const' to java.  It can
+	be typed /*=const */ so that the files remain valid java files.
+	o Fixed some mutablity problems that is identified.
+Aug 10, 2004 Luke		
+	o Implemented City growth
+	o Work on deadlock and unexpected exception bugs.
 Jul 26, 2004 Luke		
 	o Apply Jan Tozicka's patch for bug 997088  (IllegalArgumentException in OneTileMoveVector.getInstance)
 Jul 21, 2004 Luke	
