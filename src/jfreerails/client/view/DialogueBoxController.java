@@ -230,6 +230,12 @@ public class DialogueBoxController {
 		bs.setup(this.modelRoot, this.closeCurrentDialogue);
 		this.showContent(bs);
     }
+    
+    public void showBalanceSheet(){
+    	BalanceSheetHtmlJPanel bs = new BalanceSheetHtmlJPanel();
+		bs.setup(this.modelRoot, this.closeCurrentDialogue);
+		this.showContent(bs);
+    }
 
     public void showAbout() {
         showContent(this.about);

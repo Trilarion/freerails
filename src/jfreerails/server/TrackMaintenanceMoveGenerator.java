@@ -6,12 +6,12 @@ package jfreerails.server;
 
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddTransactionMove;
-import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.TrackRule;
@@ -38,11 +38,16 @@ public class TrackMaintenanceMoveGenerator {
             throw new IllegalArgumentException(String.valueOf(category));
         }
 
-        int[] track = ChangeTrackPieceCompositeMove.calulateNumberOfEachTrackType(w,
+        //int[] track = ItemsTransactionAggregator.calulateNumberOfEachTrackType(w,
+        //        principal, 0);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w,
                 principal);
+        aggregator.setStartYear(0);
+        aggregator.setCategory(Transaction.TRACK);
+
         long amount = 0;
 
-        for (int i = 0; i < track.length; i++) {
+        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
             TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
@@ -50,8 +55,9 @@ public class TrackMaintenanceMoveGenerator {
             boolean rightType = Transaction.TRACK_MAINTENANCE == category
                 ? !trackRule.isStation() : trackRule.isStation();
 
-            if (track[i] > 0 && rightType) {
-                amount += maintenanceCost * track[i];
+            if (rightType) {
+                aggregator.setType(i);
+                amount += maintenanceCost * aggregator.calulateQuantity();
             }
         }
 

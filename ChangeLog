@@ -1,3 +1,7 @@
+Mar 30, 2004 6:39:20 PM Luke
+	o Implemented 915949 (Balance sheet)
+	o Fixed bug where an exception was thrown if you moved the cursor 
+	when 'View Mode' was selected on the build menu.
 Mar 29, 2004 7:13:13 PM Luke
 	o Implemented 915948 (Income statement) 
 Mar 27, 2004 9:43:29 PM Luke

@@ -6,10 +6,10 @@ package jfreerails.server;
 
 import java.util.Arrays;
 import jfreerails.move.AddTransactionMove;
-import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
+import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
@@ -45,24 +45,42 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
     public void testCalulateNumberOfEachTrackType() {
         int[] actual;
         int[] expected;
-        actual = ChangeTrackPieceCompositeMove.calulateNumberOfEachTrackType(w,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        actual = calNumOfEachTrackType();
+
+        /*
+        actual = ItemsTransactionAggregator.calulateNumberOfEachTrackType(w,
+                MapFixtureFactory.TEST_PRINCIPAL, 0);
+               */
         expected = new int[] {0, 0, 0}; //No track has been built yet.
         assertTrue(Arrays.equals(expected, actual));
 
         addTrack(0, 10);
 
-        actual = ChangeTrackPieceCompositeMove.calulateNumberOfEachTrackType(w,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        actual = calNumOfEachTrackType();
         expected = new int[] {10, 0, 0};
         assertTrue(Arrays.equals(expected, actual));
 
         addTrack(2, 20);
 
-        actual = ChangeTrackPieceCompositeMove.calulateNumberOfEachTrackType(w,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        actual = calNumOfEachTrackType();
         expected = new int[] {10, 0, 20};
         assertTrue(Arrays.equals(expected, actual));
+    }
+
+    private int[] calNumOfEachTrackType() {
+        int[] actual;
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w,
+                MapFixtureFactory.TEST_PRINCIPAL);
+        aggregator.setStartYear(0);
+        actual = new int[3];
+        aggregator.setType(0);
+        actual[0] = aggregator.calulateQuantity();
+        aggregator.setType(1);
+        actual[1] = aggregator.calulateQuantity();
+        aggregator.setType(2);
+        actual[2] = aggregator.calulateQuantity();
+
+        return actual;
     }
 
     /** Utility method to add the specifed number of units of the specified track type. */

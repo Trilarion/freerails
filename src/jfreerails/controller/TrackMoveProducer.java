@@ -32,8 +32,7 @@ final public class TrackMoveProducer {
     private int trackBuilderMode = BUILD_TRACK;
 
     /**
-     * This generates the transactions - the charge - for the track being
-     * built.
+     * This generates the transactions - the charge - for the track being built.
      */
     private TrackMoveTransactionsGenerator transactionsGenerator;
 
@@ -47,14 +46,25 @@ final public class TrackMoveProducer {
 
         ChangeTrackPieceCompositeMove move = null;
 
-        if (trackBuilderMode == BUILD_TRACK) {
+        switch (trackBuilderMode) {
+        case BUILD_TRACK: {
             move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
                     trackVector, trackRule, w, this.principal);
-        } else if (trackBuilderMode == REMOVE_TRACK) {
+
+            break;
+        }
+
+        case REMOVE_TRACK: {
             move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from,
                     trackVector, w, principal);
-        } else {
-            throw new IllegalArgumentException(String.valueOf(trackBuilderMode));
+
+            break;
+        }
+
+        case IGNORE_TRACK:return MoveStatus.MOVE_OK;
+
+        default:throw new IllegalArgumentException(String.valueOf(
+                    trackBuilderMode));
         }
 
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
@@ -74,10 +84,11 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *  Sets the current track rule. E.g. there are different rules governing
-     *  the track-configurations that are legal for double and single track.
+     * Sets the current track rule. E.g. there are different rules governing the
+     * track-configurations that are legal for double and single track.
      *
-     *@param  trackRuleNumber  The new trackRule value
+     * @param trackRuleNumber
+     *            The new trackRule value
      */
     public void setTrackRule(int trackRuleNumber) {
         this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNumber);
@@ -99,7 +110,8 @@ final public class TrackMoveProducer {
     }
 
     /**
-     * @param p the principal which this TrackMoveProducer generates moves for
+     * @param p
+     *            the principal which this TrackMoveProducer generates moves for
      */
     public TrackMoveProducer(ReadOnlyWorld world,
         UntriedMoveReceiver moveReceiver, FreerailsPrincipal p) {
@@ -121,7 +133,7 @@ final public class TrackMoveProducer {
         TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration(),
                 owner);
 
-        /* We don't want to 'upgrade' a station to track.  See bug 874416.*/
+        /* We don't want to 'upgrade' a station to track. See bug 874416. */
         if (before.getTrackRule().isStation()) {
             return MoveStatus.moveFailed("No need to upgrade track at station.");
         }

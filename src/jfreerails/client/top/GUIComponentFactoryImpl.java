@@ -255,6 +255,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 }
             });
 
+        JMenuItem balanceSheetJMenuItem = new JMenuItem("Balance Sheet");
+        balanceSheetJMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dialogueBoxController.showBalanceSheet();
+                }
+            });
+
         //Set up the gamespeed submenu.
         JMenu gameSpeedSubMenu = new JMenu("Game Speed");
 
@@ -290,6 +297,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         gameMenu.add(loadGameJMenuItem);
         gameMenu.add(saveGameJMenuItem);
         gameMenu.addSeparator();
+        gameMenu.add(balanceSheetJMenuItem);
         gameMenu.add(incomeStatementJMenuItem);
         gameMenu.add(gameSpeedSubMenu);
         gameMenu.add(newspaperJMenuItem);

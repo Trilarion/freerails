@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -40,11 +41,18 @@ public class WorldImpl implements World {
     private FreerailsTile[][] map;
 
     public WorldImpl() {
+        setupTime();
         this.setupMap(0, 0);
         this.setupLists();
     }
 
+    private void setupTime() {
+        this.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        this.set(ITEM.TIME, new GameTime(0));
+    }
+
     public WorldImpl(int mapWidth, int mapHeight) {
+        setupTime();
         this.setupMap(mapWidth, mapHeight);
         this.setupLists();
     }

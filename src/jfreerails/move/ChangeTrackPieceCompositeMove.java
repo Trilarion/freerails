@@ -7,14 +7,13 @@ package jfreerails.move;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
+import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
@@ -167,40 +166,18 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     /** Returns true if some track has been built.*/
     protected static boolean hasAnyTrackBeenBuilt(ReadOnlyWorld world,
         FreerailsPrincipal principal) {
-        int[] unitsOfTrack = calulateNumberOfEachTrackType(world, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world,
+                principal);
+        aggregator.setCategory(Transaction.TRACK);
+        aggregator.setStartYear(0);
 
-        for (int i = 0; i < unitsOfTrack.length; i++) {
-            if (0 != unitsOfTrack[i]) {
-                return true;
-            }
-        }
-
-        return false;
+        return aggregator.calulateQuantity() > 0;
     }
 
     protected static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {
         GameRules rules = (GameRules)world.get(ITEM.GAME_RULES);
 
         return rules.isMustConnect2ExistingTrack();
-    }
-
-    public static int[] calulateNumberOfEachTrackType(ReadOnlyWorld w,
-        FreerailsPrincipal principal) {
-        int[] unitsOfTrack = new int[w.size(SKEY.TRACK_RULES)];
-
-        for (int i = 0; i < w.getNumberOfTransactions(principal); i++) {
-            Transaction t = w.getTransaction(i, principal);
-
-            if (t instanceof AddItemTransaction) {
-                AddItemTransaction addItemTransaction = (AddItemTransaction)t;
-
-                if (AddItemTransaction.TRACK == addItemTransaction.getCategory()) {
-                    unitsOfTrack[addItemTransaction.getType()] += addItemTransaction.getQuantity();
-                }
-            }
-        }
-
-        return unitsOfTrack;
     }
 
     protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
