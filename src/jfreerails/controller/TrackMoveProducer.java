@@ -64,13 +64,12 @@ final public class TrackMoveProducer {
         return ms;
     }
 
-    public boolean upgradeTrack(Point point) {
+    public MoveStatus upgradeTrack(Point point) {
         if (trackBuilderMode == UPGRADE_TRACK) {
-            upgradeTrack(point, trackRule);
-
-            return true;
+            return upgradeTrack(point, trackRule);
         } else {
-            return false;
+            throw new IllegalStateException(
+                "Track builder not set to upgrade track!");
         }
     }
 
@@ -119,9 +118,19 @@ final public class TrackMoveProducer {
     private MoveStatus upgradeTrack(Point point, TrackRule trackRule) {
         TrackPiece before = (TrackPiece)w.getTile(point.x, point.y);
         TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration());
+
+        /* We don't want to 'upgrade' a station to track.  See bug 874416.*/
+        if (before.getTrackRule().isStation()) {
+            return MoveStatus.moveFailed("No need to upgrade track at station.");
+        }
+
         Move move = UpgradeTrackMove.generateMove(before, after, point);
         moveTester.processMove(transactionsGenerator.addTransactions(move));
 
         return moveTester.tryDoMove(move);
+    }
+
+    public int getTrackBuilderMode() {
+        return trackBuilderMode;
     }
 }

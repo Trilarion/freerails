@@ -67,7 +67,15 @@ public class UserInputOnMapController implements CursorEventListener {
     }
 
     public void cursorJumped(CursorEvent ce) {
-        trackBuilder.upgradeTrack(ce.newPosition);
+        if (trackBuilder.getTrackBuilderMode() == TrackMoveProducer.UPGRADE_TRACK) {
+            MoveStatus ms = trackBuilder.upgradeTrack(ce.newPosition);
+
+            if (ms.ok) {
+                cursor.setMessage("");
+            } else {
+                cursor.setMessage(ms.message);
+            }
+        }
     }
 
     public void cursorKeyPressed(CursorEvent ce) {
