@@ -12,100 +12,100 @@ import javax.swing.ButtonModel;
 
 /**
  *
- * @author rtuck99@users.sourceforge.net 
+ * @author rtuck99@users.sourceforge.net
  */
 final class LauncherPanel1 extends javax.swing.JPanel {
     static final int MODE_SINGLE_PLAYER = 0;
     static final int MODE_START_NETWORK_GAME = 1;
     static final int MODE_JOIN_NETWORK_GAME = 2;
     static final int MODE_SERVER_ONLY = 3;
-
+    
     private Launcher owner;
-
+    
     ButtonModel[] buttonModels = new ButtonModel[4];
     
     int getMode() {
-	for (int i = 0; i < buttonModels.length; i++) {
-	    if (buttonGroup1.getSelection() == buttonModels[i]) {
-		return i;
-	    }
-	}
-	assert false;
-	return 0;
+        for (int i = 0; i < buttonModels.length; i++) {
+            if (buttonGroup1.getSelection() == buttonModels[i]) {
+                return i;
+            }
+        }
+        assert false;
+        return 0;
     }
     
     int getServerPort() {
-	String s = serverPort.getText();
-	return Integer.parseInt(s);
+        String s = serverPort.getText();
+        return Integer.parseInt(s);
     }
-
+    
     InetSocketAddress getRemoteServerAddress() {
-	String portStr = remotePort.getText();
-	if (portStr == null) {
-	    return null;
-	}
-	int port;
-	try {
-	    port = Integer.parseInt(portStr);
-	} catch (NumberFormatException e) {
-	    return null;
-	}
-	InetSocketAddress address;
-	try {
-	    address = new InetSocketAddress
-		(remoteIP.getText(), port);
-	} catch (IllegalArgumentException e) {
-	    return null;
-	}
-	return address;
+        String portStr = remotePort.getText();
+        if (portStr == null) {
+            return null;
+        }
+        int port;
+        try {
+            port = Integer.parseInt(portStr);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        InetSocketAddress address;
+        try {
+            address = new InetSocketAddress
+            (remoteIP.getText(), port);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        return address;
     }
     
     private void validateSettings() {
-	boolean isValid = false;
-	String infoText = null;
-
-	switch (getMode()) {
-	    case MODE_SINGLE_PLAYER:
-		isValid = true;
-		break;
-	    case MODE_START_NETWORK_GAME:
-	    case MODE_SERVER_ONLY:
-		try {
-		    if (getServerPort() > 0 &&
-			    getServerPort() < 65536) {
-			isValid = true;
-			break;
-		    }
-		} catch (NumberFormatException e) {
-		    //ignore
-		}
-		infoText = "Please enter a valid port number";
-		break;
-	    case MODE_JOIN_NETWORK_GAME:
-		InetSocketAddress isa = getRemoteServerAddress();
-		if (isa == null) {
-		    infoText = "Please enter a valid remote server address";
-		} else if (isa.isUnresolved()) {
-		    infoText = "Couldn't resolve remote server address";
-		} else {
-		    isValid = true;
-		}
-		break;
-	}
-	owner.setInfoText(infoText);
-	owner.setNextEnabled(isValid);
+        boolean isValid = false;
+        String infoText = null;
+        
+        switch (getMode()) {
+            case MODE_SINGLE_PLAYER:
+                isValid = true;
+                break;
+            case MODE_START_NETWORK_GAME:
+            case MODE_SERVER_ONLY:
+                try {
+                    if (getServerPort() > 0 &&
+                    getServerPort() < 65536) {
+                        isValid = true;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    //ignore
+                }
+                infoText = "Please enter a valid port number";
+                break;
+            case MODE_JOIN_NETWORK_GAME:
+                InetSocketAddress isa = getRemoteServerAddress();
+                if (isa == null) {
+                    infoText = "Please enter a valid remote server address";
+                } else if (isa.isUnresolved()) {
+                    infoText = "Couldn't resolve remote server address";
+                } else {
+                    isValid = true;
+                }
+                break;
+        }
+        owner.setInfoText(infoText);
+        owner.setNextEnabled(isValid);
     }
     
     /** Creates new form LauncherPanel1 */
     public LauncherPanel1(Launcher owner) {
         initComponents();
-	this.owner = owner;
-
-	buttonModels[MODE_SINGLE_PLAYER] = singlePlayerButton.getModel();
-	buttonModels[MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
-	buttonModels[MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
-	buttonModels[MODE_SERVER_ONLY] = serverOnlyButton.getModel();
-	validateSettings();
+        this.owner = owner;
+        
+        buttonModels[MODE_SINGLE_PLAYER] = singlePlayerButton.getModel();
+        buttonModels[MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
+        buttonModels[MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
+        buttonModels[MODE_SERVER_ONLY] = serverOnlyButton.getModel();
+        validateSettings();
     }
     
     /** This method is called from within the constructor to
@@ -277,53 +277,53 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         add(jPanel3, gridBagConstraints);
 
     }//GEN-END:initComponents
-
+    
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_formComponentShown
-
+    
     private void serverOnlyButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_serverOnlyButtonStateChanged
-	serverPort.setEnabled(serverOnlyButton.isSelected());
-	validateSettings();
+        serverPort.setEnabled(serverOnlyButton.isSelected());
+        validateSettings();
     }//GEN-LAST:event_serverOnlyButtonStateChanged
-
+    
     private void joinNetworkButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_joinNetworkButtonStateChanged
-	remoteIP.setEnabled(joinNetworkButton.isSelected());
-	remotePort.setEnabled(joinNetworkButton.isSelected());
-	validateSettings();
+        remoteIP.setEnabled(joinNetworkButton.isSelected());
+        remotePort.setEnabled(joinNetworkButton.isSelected());
+        validateSettings();
     }//GEN-LAST:event_joinNetworkButtonStateChanged
-
+    
     private void startNetworkButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startNetworkButtonStateChanged
-	serverPort.setEnabled(startNetworkButton.isSelected());
-	validateSettings();
+        serverPort.setEnabled(startNetworkButton.isSelected());
+        validateSettings();
     }//GEN-LAST:event_startNetworkButtonStateChanged
-
+    
     private void singlePlayerButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_singlePlayerButtonStateChanged
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_singlePlayerButtonStateChanged
-
+    
     private void serverPortFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serverPortFocusLost
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_serverPortFocusLost
-
+    
     private void remotePortFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_remotePortFocusLost
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_remotePortFocusLost
-
+    
     private void remoteIPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_remoteIPFocusLost
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_remoteIPFocusLost
-
+    
     private void serverPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverPortActionPerformed
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_serverPortActionPerformed
-
+    
     private void remotePortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remotePortActionPerformed
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_remotePortActionPerformed
-
+    
     private void remoteIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remoteIPActionPerformed
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_remoteIPActionPerformed
     
     

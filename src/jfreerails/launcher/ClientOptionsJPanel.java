@@ -19,13 +19,13 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
     private Launcher owner;
     
     String getPlayerName() {
-	return playerName.getText();
+        return playerName.getText();
     }
-
+    
     DisplayMode getDisplayMode() {
-	return ((MyDisplayMode) listModel.getSelectedItem()).displayMode;
+        return ((MyDisplayMode) listModel.getSelectedItem()).displayMode;
     }
-
+    
     int getScreenMode(){
         if(this.fullScreenButton.isSelected()){
             return ScreenHandler.FULL_SCREEN;
@@ -37,38 +37,38 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
             throw new IllegalStateException();
         }
     }
-
+    
     public void setControlsEnabled(boolean enabled) {
-	windowedButton.setEnabled(enabled);
-	fullScreenButton.setEnabled(enabled);
-	if (fullScreenButton.isSelected()) {
-	    jList1.setEnabled(enabled);
-	}
+        windowedButton.setEnabled(enabled);
+        fullScreenButton.setEnabled(enabled);
+        if (fullScreenButton.isSelected()) {
+            jList1.setEnabled(enabled);
+        }
     }
     
     private void validateSettings() {
-	boolean isValid = false;
-	String infoText = "";
-	if (playerName.getText() == null ||
-	    playerName.getText().equals("")) {
-	    infoText = "Please set a name for your player";
-	} else {
-	    isValid = true;
-	}
-	owner.setInfoText(infoText);
-	owner.setNextEnabled(isValid);
+        boolean isValid = false;
+        String infoText = "";
+        if (playerName.getText() == null ||
+        playerName.getText().equals("")) {
+            infoText = "Please set a name for your player";
+        } else {
+            isValid = true;
+        }
+        owner.setInfoText(infoText);
+        owner.setNextEnabled(isValid);
     }
-
+    
     private DisplayModesComboBoxModels listModel;
-
+    
     /** Creates new form ClientOptionsJPanel */
     public ClientOptionsJPanel(Launcher owner) {
-	this.owner = owner;
+        this.owner = owner;
         initComponents();
-	listModel = new DisplayModesComboBoxModels();
-	jList1.setModel(listModel);
-	jList1.setSelectedIndex(0);
-	validateSettings();
+        listModel = new DisplayModesComboBoxModels();
+        jList1.setModel(listModel);
+        jList1.setSelectedIndex(0);
+        validateSettings();
     }
     
     /** This method is called from within the constructor to
@@ -156,21 +156,21 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
     }//GEN-END:initComponents
-
+    
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_formComponentShown
-
+    
     private void playerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerNameActionPerformed
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_playerNameActionPerformed
-
+    
     private void playerNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_playerNameFocusLost
-	validateSettings();
+        validateSettings();
     }//GEN-LAST:event_playerNameFocusLost
-
+    
     private void fullScreenButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_fullScreenButtonStateChanged
-	jList1.setEnabled(fullScreenButton.isSelected());
+        jList1.setEnabled(fullScreenButton.isSelected());
     }//GEN-LAST:event_fullScreenButtonStateChanged
     
     
