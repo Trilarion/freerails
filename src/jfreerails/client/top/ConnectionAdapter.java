@@ -1,7 +1,6 @@
 package jfreerails.client.top;
 
 import java.io.IOException;
-
 import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.ConnectionToServer;
@@ -122,13 +121,10 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     }
 
     public void setConnection(ConnectionToServer c) throws IOException {
-        SynchronizedEventQueue eventQueue = SynchronizedEventQueue.getInstance();
-
+        //SynchronizedEventQueue eventQueue = SynchronizedEventQueue.getInstance();
         if (connection != null) {
             closeConnection();
             connection.removeMoveReceiver(worldUpdater);
-
-           
         }
 
         connection = c;
@@ -142,7 +138,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             mutex = new Integer(0);
         }
 
-      
         /* don't allow other events to update until we've downloaded our copy of
          * the World */
         synchronized (mutex) {
@@ -151,7 +146,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             modelRoot.setWorld(world);
 
             //  if (!(connection instanceof LocalConnection)) {
-             moveExecuter = new NonAuthoritativeMoveExecuter(world,
+            moveExecuter = new NonAuthoritativeMoveExecuter(world,
                     moveReceiver, mutex, modelRoot);
             worldUpdater.setMoveReceiver(moveExecuter);
             uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
@@ -175,8 +170,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
     public Object getMutex() {
         return mutex;
     }
-    
-    public GameModel getModel(){
-    	return this.moveExecuter;
+
+    public GameModel getModel() {
+        return this.moveExecuter;
     }
 }

@@ -213,8 +213,8 @@ public class GameServer {
                     ConnectionToServer c = (ConnectionToServer)i.next();
 
                     //if (!(c instanceof LocalConnection)) {
-                        c.processMove(new WorldChangedEvent());
-                        c.flush();
+                    c.processMove(new WorldChangedEvent());
+                    c.flush();
                     //}
                 }
             }
@@ -247,7 +247,8 @@ public class GameServer {
         }
 
         public void run() {
-        	Thread.currentThread().setName("GameServer.InetGameServer");
+            Thread.currentThread().setName("GameServer.InetGameServer");
+
             try {
                 while (true) {
                     try {

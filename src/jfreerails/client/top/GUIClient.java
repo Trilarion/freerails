@@ -61,7 +61,7 @@ public class GUIClient extends Client {
         moveChainFork.add(gUIComponentFactory);
 
         GameLoop gameLoop = new GameLoop(screenHandler, this.getModel());
-        String threadName = "JFreerails client: "+title;
+        String threadName = "JFreerails client: " + title;
         Thread t = new Thread(gameLoop, threadName);
         t.start();
     }

@@ -13,7 +13,6 @@ import jfreerails.world.top.World;
  * outright.
  */
 public class AuthoritativeMoveExecuter extends MoveExecuter {
-    
     public AuthoritativeMoveExecuter(World w, MoveReceiver mr) {
         super(w, mr);
     }

@@ -27,26 +27,50 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     public void remove(MoveReceiver moveReceiver) {
+        if (null == moveReceiver) {
+            throw new NullPointerException();
+        }
+
         moveReceivers.remove(moveReceiver);
     }
 
     public void add(MoveReceiver moveReceiver) {
+        if (null == moveReceiver) {
+            throw new NullPointerException();
+        }
+
         moveReceivers.add(moveReceiver);
     }
 
     public void removeSplitMoveReceiver(MoveReceiver moveReceiver) {
+        if (null == moveReceiver) {
+            throw new NullPointerException();
+        }
+
         splitMoveReceivers.remove(moveReceiver);
     }
 
     public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
+        if (null == moveReceiver) {
+            throw new NullPointerException();
+        }
+
         splitMoveReceivers.add(moveReceiver);
     }
 
     public void removeListListener(WorldListListener listener) {
+        if (null == listener) {
+            throw new NullPointerException();
+        }
+
         listListeners.remove(listener);
     }
 
     public void addListListener(WorldListListener listener) {
+        if (null == listener) {
+            throw new NullPointerException();
+        }
+
         listListeners.add(listener);
     }
 

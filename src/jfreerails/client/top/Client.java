@@ -48,8 +48,8 @@ public abstract class Client {
     public Object getMutex() {
         return receiver.mutex;
     }
-    
-    public GameModel getModel(){
-    	return this.receiver.getModel();
+
+    public GameModel getModel() {
+        return this.receiver.getModel();
     }
 }

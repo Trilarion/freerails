@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import jfreerails.controller.CalcSupplyAtStations;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.MoveReceiver;
@@ -113,11 +112,13 @@ public class ServerGameEngine implements GameModel, Runnable {
         this.serverAutomata = serverAutomata;
         mutex = new Integer(1);
         this.trainMovers = trainMovers;
-        calcSupplyAtStations = new CalcSupplyAtStations(w);
+
         moveChainFork = new MoveChainFork();
-        moveChainFork.addListListener(calcSupplyAtStations);
+
         moveExecuter = new AuthoritativeMoveExecuter(world, moveChainFork);
         tb = new TrainBuilder(world, moveExecuter);
+        calcSupplyAtStations = new CalcSupplyAtStations(w, moveExecuter);
+        moveChainFork.addListListener(calcSupplyAtStations);
 
         for (int i = 0; i < serverAutomata.size(); i++) {
             ((ServerAutomaton)serverAutomata.get(i)).initAutomaton(moveExecuter);
@@ -191,21 +192,23 @@ public class ServerGameEngine implements GameModel, Runnable {
         if (targetTicksPerSecond > 0) {
             synchronized (mutex) {
                 if (targetTicksPerSecond > 0) {
-					moveExecuter.executeOutstandingMoves();
+                    moveExecuter.executeOutstandingMoves();
+
                     /*
                      * start of server world update
-                     */                   
+                     */
+
                     //update the time first, since other updates might need
                     //to know the current time.
                     updateGameTime();
 
                     //now do the other updates
                     moveTrains();
-                    
+
                     /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
                      * without first calling moveExecuter.executeOutstandingMoves()
                      */
-					buildTrains();
+                    buildTrains();
 
                     //Check whether we have just started a new year..
                     GameTime time = (GameTime)world.get(ITEM.TIME);
@@ -397,9 +400,9 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @return World
      */
     public World getWorld() {
-		synchronized (mutex) {
-			return world.defensiveCopy();
-		}
+        synchronized (mutex) {
+            return world.defensiveCopy();
+        }
     }
 
     /**

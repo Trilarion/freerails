@@ -1,7 +1,6 @@
 package jfreerails.server;
 
 import java.awt.Point;
-
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
 import jfreerails.move.AddCargoBundleMove;
@@ -99,8 +98,8 @@ public class TrainBuilder {
 
             Move setupScheduleMove = tpf.initTarget(train, is);
 
-            AddTrainMove addTrainMove = AddTrainMove.generateMove(trainNumber, train,
-                    engineType.getPrice(), is);
+            AddTrainMove addTrainMove = AddTrainMove.generateMove(trainNumber,
+                    train, engineType.getPrice(), is);
 
             Move compositeMove = new CompositeMove(new Move[] {
                         addCargoBundleMove, addTrainMove, setupScheduleMove
@@ -114,11 +113,11 @@ public class TrainBuilder {
              * the client than the server.
              */
             //moveReceiver.processMove(compositeMove);
-			/* Temporarily do move directly on world.  We will undo it before sending it to the client as 
-			 * one composite move.
-			 */
-			compositeMove.doMove(world);
-            
+            /* Temporarily do move directly on world.  We will undo it before sending it to the client as
+             * one composite move.
+             */
+            compositeMove.doMove(world);
+
             FreerailsPathIterator from = new TrainPathIterator(tpf);
 
             tpf = getPathToFollow(p, world, trainNumber);
@@ -134,11 +133,12 @@ public class TrainBuilder {
              * period in the client (yuk!)
              */
             Move positionMove = trainMover.setInitialTrainPosition(train, from);
-            
-			compositeMove.undoMove(world);
-            
+
+            compositeMove.undoMove(world);
+
             moveReceiver.processMove(compositeMove);
             moveReceiver.processMove(positionMove);
+
             return trainMover;
         } else {
             throw new IllegalArgumentException("No track here (" + p.x + ", " +

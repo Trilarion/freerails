@@ -13,8 +13,6 @@ import java.awt.Point;
 import jfreerails.move.AddStationMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.Move;
-import jfreerails.world.station.naming.CalcNearestCity;
-import jfreerails.world.station.naming.VerifyStationName;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
