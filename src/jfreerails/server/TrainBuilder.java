@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import jfreerails.controller.TrainMover;
 import jfreerails.controller.pathfinder.FlatTrackExplorer;
+import jfreerails.controller.MoveExecuter;
 import jfreerails.move.AddTrainMove;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.cargo.CargoBundle;
@@ -70,7 +71,8 @@ public class TrainBuilder {
 			int trainNumber = world.size(KEY.TRAINS);
 			AddTrainMove move = AddTrainMove.generateMove(trainNumber, train, engineType.getPrice());
 
-			MoveStatus ms = move.doMove(world);
+			MoveStatus ms =
+			MoveExecuter.getMoveExecuter().processMove(move);
 			
 			if(!ms.ok){
 				System.out.println("Build train move failed");

@@ -13,9 +13,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import jfreerails.client.renderer.MapRenderer;
+import jfreerails.client.view.MapCursor;
 import jfreerails.world.common.OneTileMoveVector;
 
-final public class FreerailsCursor implements KeyListener  {
+final public class FreerailsCursor implements KeyListener, MapCursor  {
 
 	/** This inner class controls rendering of the cursor.
 	*/
@@ -39,6 +40,17 @@ final public class FreerailsCursor implements KeyListener  {
 	private Point cursorMapPosition = new Point(0, 0);
 
 	private MapRenderer mapView;
+
+	private static FreerailsCursor theCursor = null;
+
+	public static FreerailsCursor getCursor() {
+	    return theCursor;
+	}
+
+	public static void initCursor(MapRenderer mv) {
+	    if (theCursor == null)
+		theCursor = new FreerailsCursor(mv);
+	}
 
 	/** This inner class controls rendering of the cursor.
 	*/
@@ -120,10 +132,6 @@ final public class FreerailsCursor implements KeyListener  {
 		// component = (MapViewJComponent)keyEvent.getComponent();
 	}
 
-	/** Moves the cursor provided the destination is a legal position.
-	* @param tryThisPoint The cursor's destination.
-	*/
-
 	public void TryMoveCursor(Point tryThisPoint) {
 		float tileSize = mapView.getScale();
 		Dimension mapSizeInPixels = mapView.getMapSizeInPixels();
@@ -177,21 +185,14 @@ final public class FreerailsCursor implements KeyListener  {
 	*/
 
 	//public FreerailsCursor(MapRenderer mv) {
-	public FreerailsCursor(MapRenderer mv) {
+	private FreerailsCursor(MapRenderer mv) {
 		this.mapView = mv;
 	}
-
-	/** Adds a listener.  Listeners could include: the trackbuild system, the view the cursor moves across, etc.
-	* @param l The listener.
-	*/
 
 	public void addCursorEventListener(CursorEventListener l) {
 		listeners.addElement(l);
 	}
 
-	/** Removes a listener.
-	* @param l The listener.
-	*/
 
 	public void removeCursorEventListener(CursorEventListener l) {
 		listeners.removeElement(l);

@@ -11,6 +11,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import jfreerails.controller.TrainMover;
+import jfreerails.controller.MoveExecuter;
 import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.GameCalendar;
@@ -123,7 +124,7 @@ public class ServerGameEngine implements GameModel {
 			Object o = i.next();
 			TrainMover trainMover = (TrainMover) o;
 			m = trainMover.update(deltaDistance);
-			m.doMove(world);
+			MoveExecuter.getMoveExecuter().processMove(m);
 		}
 	}
 	

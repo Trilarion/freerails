@@ -5,19 +5,24 @@
  */
 
 package jfreerails.client.view;
-import jfreerails.world.top.*;
-import jfreerails.client.renderer.ViewLists;
-import java.awt.event.ActionListener;
-import jfreerails.world.terrain.*;
-import jfreerails.world.cargo.*;
 import java.awt.Image;
+
 import javax.swing.ImageIcon;
+
+import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.cargo.CargoType;
+import jfreerails.world.terrain.Consumption;
+import jfreerails.world.terrain.Conversion;
+import jfreerails.world.terrain.Production;
+import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
 
 /** This JPanel shows information on a terrain type.
  *
  * @author  Luke
  */
-public class TerrainInfoJPanel extends javax.swing.JPanel implements View {
+public class TerrainInfoJPanel extends javax.swing.JPanel {
     
     private ViewLists vl;
     
@@ -41,13 +46,13 @@ public class TerrainInfoJPanel extends javax.swing.JPanel implements View {
         terrainImage = new javax.swing.JLabel();
         terrainName = new javax.swing.JLabel();
         terrainDescription = new javax.swing.JLabel();
-        closejButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
+        setPreferredSize(new java.awt.Dimension(250, 300));
         terrainImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/terrain/City_0.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 4);
         add(terrainImage, gridBagConstraints);
 
         terrainName.setFont(new java.awt.Font("Dialog", 1, 14));
@@ -56,38 +61,33 @@ public class TerrainInfoJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 8);
         add(terrainName, gridBagConstraints);
 
         terrainDescription.setFont(new java.awt.Font("Dialog", 0, 12));
         terrainDescription.setText("<html>\n<p>Right-of-Way costs X per mile. </p>\n<table width=\"75%\" >\n  <tr> \n    <td><strong>Supplies:</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail </td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td>Passangers</td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td> <strong>Demands</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td><strong>Converts</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Livestock to Food</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Steel to Goods</td>\n    <td>&nbsp;</td>\n  </tr>\n</table>\n</html>");
+        terrainDescription.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        terrainDescription.setPreferredSize(new java.awt.Dimension(150, 224));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 8, 4, 8);
         add(terrainDescription, gridBagConstraints);
-
-        closejButton.setText("Close");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        add(closejButton, gridBagConstraints);
 
     }//GEN-END:initComponents
 
-    public void setup(World w, ViewLists vl, ActionListener submitButtonCallBack) {
-        this.closejButton.addActionListener(submitButtonCallBack);
+    public void setup(World w, ViewLists vl) {
         this.w = w;
         this.vl = vl;
     }    
     
     public void setTerrainType(int typeNumber){
+        System.out.println("terrain type is " + typeNumber);
         terrainType=typeNumber;
         TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES, typeNumber);
       
@@ -129,15 +129,17 @@ public class TerrainInfoJPanel extends javax.swing.JPanel implements View {
         String labelString = "<html>" + row + tableString + "</html>";
         terrainDescription.setText(labelString);
         terrainName.setText(type. getDisplayName());
+        System.out.println(type.getDisplayName());
         Image tileIcon = vl.getTileViewList().getTileViewWithNumber(typeNumber).getIcon();
         terrainImage.setIcon(new ImageIcon(tileIcon));
+        System.out.println("invalidated");
+        repaint();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel terrainName;
-    private javax.swing.JLabel terrainImage;
-    private javax.swing.JButton closejButton;
     private javax.swing.JLabel terrainDescription;
+    private javax.swing.JLabel terrainImage;
+    private javax.swing.JLabel terrainName;
     // End of variables declaration//GEN-END:variables
     
 }

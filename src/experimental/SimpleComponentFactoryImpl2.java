@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 
 import jfreerails.client.renderer.BlankMapRenderer;
 import jfreerails.client.view.MainMapAndOverviewMapMediator;
@@ -167,7 +168,7 @@ public class SimpleComponentFactoryImpl2 implements jfreerails.client.top.GUICom
             return null;
         }
         
-        public JPanel createTrainsJPanel() {
+        public JTabbedPane createTrainsJTabPane() {
             return null;
         }
         

@@ -1,4 +1,3 @@
-
 /*
 * BuildMenu.java
 *
@@ -26,9 +25,7 @@ final public class BuildMenu extends javax.swing.JMenu {
 		super();
 	}
 
-	public void setup(
-		World w,
-		TrackMoveProducer tb) {
+	public void setup(World w, TrackMoveProducer tb) {
 
 		this.removeAll();
 		this.trackBuilder = tb;
@@ -36,6 +33,21 @@ final public class BuildMenu extends javax.swing.JMenu {
 		javax.swing.ButtonGroup trackTypesGroup = new javax.swing.ButtonGroup();
 		javax.swing.ButtonGroup buildRemoveOrUpgrade =
 			new javax.swing.ButtonGroup();
+
+		javax.swing.JRadioButtonMenuItem ignoreTrackMenuItem =
+			new javax.swing.JRadioButtonMenuItem("Info Mode");
+		ignoreTrackMenuItem
+			.addActionListener(new java.awt.event.ActionListener() {
+
+					public void actionPerformed(
+						java.awt.event.ActionEvent actionEvent) {
+					System.out.println("ignore track");
+					trackBuilder.setTrackBuilderMode(TrackMoveProducer.IGNORE_TRACK);
+					}
+					});
+		buildRemoveOrUpgrade.add(ignoreTrackMenuItem);
+		this.add(ignoreTrackMenuItem);
+
 		javax.swing.JRadioButtonMenuItem buildTrackMenuItem =
 			new javax.swing.JRadioButtonMenuItem("Build Track");
 		buildTrackMenuItem
@@ -78,6 +90,7 @@ final public class BuildMenu extends javax.swing.JMenu {
 			}
 		});
 		buildRemoveOrUpgrade.add(upgradeTrackMenuItem);
+        
 		this.add(upgradeTrackMenuItem);
 		this.addSeparator();
 		for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {

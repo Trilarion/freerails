@@ -9,16 +9,24 @@ import jfreerails.world.top.World;
 /**
  * @author Luke
  * 
+ * This Move may be subclassed to create a move composed of a number of
+ * component Moves where atomicity of the move is required.
  */
 public class CompositeMove implements Move {
 
 	private final Move[] moves;
 	
-	/** This method lets sub classes look at the moves. */
+	/**
+	 * This method lets sub classes look at the moves.
+	 */
 	protected Move getMove(int i){
 		return moves[i];
 	}
 
+	public Move[] getMoves() {
+	    return moves;
+	}
+	    
 	public CompositeMove(Move[] moves) {
 		this.moves = moves;
 	}

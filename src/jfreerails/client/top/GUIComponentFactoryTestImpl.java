@@ -14,7 +14,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     
     private javax.swing.JLabel datejLabel;
     private javax.swing.JLabel cashjLabel;
-    private javax.swing.JPanel trainsJPanel;
+    private javax.swing.JTabbedPane trainsJPanel;
     private javax.swing.JMenu displayMenu;
     private javax.swing.JScrollPane mainMapView;
     private javax.swing.JMenu buildMenu;
@@ -31,7 +31,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     public GUIComponentFactoryTestImpl() {
          javax.swing.JPanel mainmapjPanel;
         
-        trainsJPanel = new javax.swing.JPanel();
+        trainsJPanel = new javax.swing.JTabbedPane();
         datejLabel = new javax.swing.JLabel();
         mapOverview = new javax.swing.JPanel();
         cashjLabel = new javax.swing.JLabel();
@@ -94,7 +94,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         return mapOverview;
     }
     
-    public JPanel createTrainsJPanel() {
+    public JTabbedPane createTrainsJTabPane() {
         return trainsJPanel;
     }
     

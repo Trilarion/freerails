@@ -6,10 +6,12 @@
 
 package jfreerails.client.view;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -18,6 +20,7 @@ import javax.swing.border.LineBorder;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.CalcSupplyAtStations;
+import jfreerails.controller.MoveExecuter;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
@@ -28,8 +31,6 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.train.Schedule;
-import jfreerails.world.train.TrainModel;
 
 /**	This class is responsible for displaying dialogue boxes, adding borders to them as appropriate, and
  *  returning focus to the last focus owner after a dialogue box has been closed.  Currently dialogue boxes
@@ -40,6 +41,7 @@ import jfreerails.world.train.TrainModel;
  */
 public class DialogueBoxController {
 
+	private JButton closeButton = new JButton("Close");
 	private SelectEngineJPanel selectEngine;
 	private MyGlassPanel glassPanel;
 	private NewsPaperJPanel newspaper;
@@ -80,6 +82,8 @@ public class DialogueBoxController {
 				glassPanel.revalidate();
 			}
 		});
+
+		closeButton.addActionListener(closeCurrentDialogue);
 	}
 
 	public void setup(World world, ViewLists vl) {
@@ -89,7 +93,7 @@ public class DialogueBoxController {
 
 		// setup the terrain info dialogue.
 		terrainInfo = new TerrainInfoJPanel();
-		terrainInfo.setup(w, vl, this.closeCurrentDialogue);
+		terrainInfo.setup(w, vl);
 
 		// setup the supply and demand at station dialogue.
 		stationInfo = new StationInfoJPanel();
@@ -101,16 +105,7 @@ public class DialogueBoxController {
 
 		//Set up train orders dialogue
 		trainScheduleJPanel = new TrainScheduleJPanel();
-		trainScheduleJPanel.setup(w, vl, new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int trainNumber = trainScheduleJPanel.getTrainNumber();
-				Schedule schedule = trainScheduleJPanel.getNewSchedule();
-				TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber);
-				train.setSchedule(schedule);
-				closeContent();
-			}
-
-		});
+		trainScheduleJPanel.setup(w, vl, this.closeCurrentDialogue);
 
 		//Set up select engine dialogue.
 		selectEngine = new SelectEngineJPanel(this);
@@ -140,7 +135,8 @@ public class DialogueBoxController {
 						new ProductionAtEngineShop(engineType, wagonTypes);
 
 					Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex());
-					MoveStatus ms = m.doMove(w);
+					MoveStatus ms =
+					MoveExecuter.getMoveExecuter().processMove(m);
 					if (!ms.ok) {
 						System.out.println(
 							"Couldn't change production at station: " + ms.toString());
@@ -214,13 +210,33 @@ public class DialogueBoxController {
 	}
 
 	public void showContent(JComponent component) {
-		component.setBorder(defaultBorder);
+	    JComponent contentPanel;
+	    if (! (component instanceof View) /* || component instanceof
+	    TrainScheduleJPanel */) {
+		contentPanel = new javax.swing.JPanel();
+		contentPanel.setLayout(new java.awt.GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
+		contentPanel.add(component, constraints);
+
+		constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		contentPanel.add(closeButton, constraints);
+	    } else {
+		contentPanel = component;
+	    }
+
+	    contentPanel.setBorder(defaultBorder);
 		//		if(!glassPanel.isVisible()){
 		//			KeyboardFocusManager keyboardFocusManager =
 		//			KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		//			lastFocusOwner = keyboardFocusManager.getFocusOwner();
 		//		}
-		glassPanel.showContent(component);
+	    glassPanel.showContent(contentPanel);
 		glassPanel.validate();
 		glassPanel.setVisible(true);
 	}

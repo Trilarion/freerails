@@ -1,22 +1,23 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="jFreeRails" default="bindist" basedir=".">
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="bindist" name="jFreeRails">
+    
    <description>The aim of the FreeRails project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.</description>
 
-   <target name="init" depends="properties">
+   <target depends="properties" name="init">
       <tstamp />
 
-      <property name="src" location="src" />
+      <property location="src" name="src"/>
 
-      <property name="build" location="build" />
+      <property location="build" name="build"/>
 
-      <property name="dist" location="dist" />
+      <property location="dist" name="dist"/>
 
-      <property name="doc" location="javadoc" />
+      <property location="javadoc" name="doc"/>
 
-      <property name="temp" location="temp" />
+      <property location="temp" name="temp"/>
    </target>
 
-   <target name="mkdirs" depends="init">
+   <target depends="init" description="Make build directories" name="mkdirs">
       <tstamp />
 
       <mkdir dir="${build}" />
@@ -24,11 +25,11 @@
       <mkdir dir="${dist}/lib" />
    </target>
 
-   <target name="properties" if="eclipse.running">
+   <target if="eclipse.running" name="properties">
       <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
    </target>
 
-   <target name="copydata" depends="init" description="Copy data files">
+   <target depends="init" description="Copy data files" name="copydata">
       <copy todir="${build}/jfreerails">
          <fileset dir="${src}/jfreerails">
             <include name="**/*.xml" />
@@ -38,6 +39,7 @@
             <include name="**/*.dtd" />
             
              <include name="**/*.gif" />
+             <include name="client/view/game_controls.html"/>
          </fileset>
       </copy>
 
@@ -52,18 +54,18 @@
       </copy>
    </target>
 
-   <target name="compile" depends="copydata" description="Build everything except JUnit test-classes">
-      <javac srcdir="${src}" destdir="${build}" fork="true">
+   <target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
+      <javac destdir="${build}" fork="true" srcdir="${src}">
          <exclude name="**/*Test.java" />
       </javac>
    </target>
 
-   <target name="debugcompile" depends="copydata" description="Build everything including JUnit test-classes">
-      <javac srcdir="${src}" destdir="${build}" fork="true" />
+   <target depends="copydata" description="Build everything including JUnit test-classes. Include debugging symbols" name="debugcompile">
+      <javac destdir="${build}" fork="true" srcdir="${src}" debug="true" />
    </target>
 
-   <target name="runtests" depends="debugcompile" description="Run all junit tests">
-      <junit printsummary="yes" haltonfailure="yes">
+   <target depends="debugcompile" description="Run all junit tests" name="runtests">
+      <junit haltonfailure="yes" printsummary="yes">
          <classpath>
             <pathelement location="${build}" />
 
@@ -80,16 +82,16 @@
       </junit>
    </target>
 
-   <target name="bindist" depends="compile, mkdirs" description="Generate binary distribution">
-      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" basedir="${build}">
+   <target depends="compile, mkdirs" description="Generate binary distribution" name="bindist">
+      <jar basedir="${build}" destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar">
          <manifest>
             <attribute name="Main-Class" value="jfreerails.RunFreerails" />
          </manifest>
       </jar>
    </target>
 
-   <target name="srcdist" depends="mkdirs" description="Generate source distribution">
-      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar" basedir=".">
+   <target depends="mkdirs" description="Generate source distribution" name="srcdist">
+      <jar basedir="." destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar">
          <include name="src/**/*.java" />
          
          <include name="src/**/*.html" />
@@ -112,7 +114,7 @@
       </jar>
    </target>
 
-   <target name="clean" description="Clean up build and distribution" depends="init">
+   <target depends="init" description="Clean up build and distribution" name="clean">
       <delete dir="${build}" />
 
       <delete dir="${dist}" />
@@ -122,7 +124,7 @@
       <delete dir="${temp}" />
    </target>
 
-   <target name="run" depends="compile" description="Test run based on compile">
+   <target depends="mkdirs, compile" description="Test run based on compile" name="run">
       <java classname="jfreerails.RunFreerails" fork="true">
          <classpath>
             <pathelement path="${build}" />
@@ -130,13 +132,13 @@
       </java>
    </target>
 
-   <target name="rundist" depends="bindist" description="Test run based on bindist">
-      <java jar="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" fork="true" />
+   <target depends="bindist" description="Test run based on bindist" name="rundist">
+      <java fork="true" jar="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar"/>
    </target>
 
-   <target name="javadoc" depends="mkdirs, init">
-      <javadoc destdir="${doc}" author="true" version="true"  overview="${src}/overview.html" Private="true"  use="true" windowtitle="JFreerails API - build ${DSTAMP}">
-         <fileset dir="${src}" defaultexcludes="yes">
+   <target depends="mkdirs, init" name="javadoc">
+      <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
+         <fileset defaultexcludes="yes" dir="${src}">
             <include name="**/*.java" />
             <exclude name="**/*Test.java" />
          </fileset>
@@ -155,25 +157,25 @@
    </target>
 
   <!--  depends="javadoc" -->
-   <target name="jar_doc" depends="javadoc" description="Jar up javadoc">
-      <jar destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar" basedir=".">
+   <target depends="javadoc" description="Jar up javadoc" name="jar_doc">
+      <jar basedir="." destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar">
          <include name="javadoc/**/*" />
       </jar>
    </target>
 
-   <target name="all_dist" depends="jar_doc, bindist, srcdist" description="Create binary, source, and javadoc jars">
+   <target depends="jar_doc, bindist, srcdist" description="Create binary, source, and javadoc jars" name="all_dist">
    </target>
 
 <!-- Requires that NetComponents.jar is in ant/lib -->
-   <target name="upload" depends="all_dist" description="Upload source, binary, and javadocs jar files to sourcforge">
-      <ftp server="upload.sourceforge.net" userid="anonymous" password="me@myorg.com" remotedir="/incoming" binary="yes">
+   <target depends="all_dist" description="Upload source, binary, and javadocs jar files to sourcforge" name="upload">
+      <ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous">
          <fileset dir="${dist}/lib">
             <include name="*.jar" />
          </fileset>
       </ftp>
    </target>
 
-	<target name="copy_world_src" depends="mkdirs, init" description="Copies the files world/**/*java  to dist/world_scr" >
+	<target depends="mkdirs, init" description="Copies the files world/**/*java  to dist/world_scr" name="copy_world_src">
 		<delete dir="${dist}/world_scr" />
 		<mkdir dir="${dist}/world_scr" />
       <copy todir="${dist}/world_scr">
@@ -193,7 +195,7 @@
      to depend on, the compile will fail.
      -->               
 
-   <target name="checkdep" depends="compile" description="Tests whether dependencies between packages conform to the rules defined in this target">
+   <target depends="compile" description="Tests whether dependencies between packages conform to the rules defined in this target" name="checkdep">
 
 	  <!-- Check dependencies for jfreerails.world.common.*  -->     
       <mkdir dir="${temp}" />
@@ -203,7 +205,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/common/*.java"/>
+      <javac fork="true" includes="jfreerails/world/common/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />     
             	  
        <!-- Check dependencies for jfreerails.world.terrain.*  -->     
@@ -215,7 +217,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/terrain/*.java"/>
+      <javac fork="true" includes="jfreerails/world/terrain/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.track.*  -->     
@@ -228,7 +230,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/track/*.java"/>
+      <javac fork="true" includes="jfreerails/world/track/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.cargo.*  -->     
@@ -240,7 +242,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/cargo/*.java"/>
+      <javac fork="true" includes="jfreerails/world/cargo/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.train.*  -->     
@@ -254,7 +256,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/train/*.java"/>
+      <javac fork="true" includes="jfreerails/world/train/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" /> 
       
       <!-- Check dependencies for jfreerails.world.city.*  -->     
@@ -268,7 +270,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/city/*.java"/>
+      <javac fork="true" includes="jfreerails/world/city/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" /> 
       
       
@@ -282,7 +284,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/station/*.java"/>
+      <javac fork="true" includes="jfreerails/world/station/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" /> 
       
       
@@ -296,7 +298,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/world/**/*.java"/>
+      <javac fork="true" includes="jfreerails/world/**/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />     
       
       <!-- Check dependencies for jfreerails.accounts.*  -->     
@@ -310,7 +312,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/accounts/**/*.java"/>
+      <javac fork="true" includes="jfreerails/accounts/**/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />     
       
       
@@ -325,7 +327,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/move/*.java"/>
+      <javac fork="true" includes="jfreerails/move/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />        
       
       <!-- Check dependencies for jfreerails.controller.*  -->     
@@ -341,7 +343,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/controller/**/*.java"/>
+      <javac fork="true" includes="jfreerails/controller/**/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />    
       
       <!-- Check dependencies for jfreerails.server.*  -->     
@@ -358,7 +360,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/server/**/*.java"/>
+      <javac fork="true" includes="jfreerails/server/**/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />    
       
       
@@ -376,7 +378,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/**/*.java"/>
+      <javac fork="true" includes="jfreerails/client/**/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />    
       
       <!-- Check dependencies for jfreerails.client.common.*  -->     
@@ -393,7 +395,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/common/*.java"/>
+      <javac fork="true" includes="jfreerails/client/common/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />   
       
      <!-- Check dependencies for jfreerails.client.renderer.*  -->     
@@ -411,7 +413,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/renderer/*.java"/>
+      <javac fork="true" includes="jfreerails/client/renderer/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />   
       
        <!-- Check dependencies for jfreerails.client.event.*  -->     
@@ -428,7 +430,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/event/*.java"/>
+      <javac fork="true" includes="jfreerails/client/event/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />   
       
       <!-- Check dependencies for jfreerails.client.menu.*  -->     
@@ -445,7 +447,7 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/menu/*.java"/>
+      <javac fork="true" includes="jfreerails/client/menu/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />   
       
        <!-- Check dependencies for jfreerails.client.view.*  -->     
@@ -464,9 +466,8 @@
             <exclude name="**/*Test.java" />
          </fileset>
       </copy>
-      <javac srcdir="${temp}" fork="true" includes="jfreerails/client/view/*.java"/>
+      <javac fork="true" includes="jfreerails/client/view/*.java" srcdir="${temp}"/>
       <delete dir="${temp}" />  
 
    </target>
 </project>
-

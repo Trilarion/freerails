@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JTabbedPane;
 
 public interface GUIComponentFactory {
 
@@ -12,7 +13,7 @@ public interface GUIComponentFactory {
 
 	JPanel createOverviewMap();
 
-	JPanel createTrainsJPanel();
+	JTabbedPane createTrainsJTabPane();
 
 	JScrollPane createMainMap();
 

@@ -1,3 +1,14 @@
+04-Aug-2003 22:35:08 Luke
+	o Added 5 patches contributed by Robert Tuck
+	(i)		Changes to build.xml
+	(ii)	Added 'View mode' to build menu.
+	(iii)	Update to train schedule so that stations
+			can be added and removed.
+	(iv)	Changes to MoveChain and Addition of
+			MoveExecutor.
+	(v)		Adding TabbedPane to the RHS with a tab
+			to show terrain info.
+	o Made build xml copy the game controls html file.
 02-Aug-2003 22:16:33 Luke
 	o Increased the number of resource tiles that are placed
 	around cities.

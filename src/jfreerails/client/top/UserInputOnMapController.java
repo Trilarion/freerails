@@ -9,7 +9,7 @@ import jfreerails.client.view.CursorEventListener;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
-import jfreerails.controller.TrackMoveExecutor;
+import jfreerails.controller.MoveExecuter;
 import jfreerails.controller.TrackMoveProducer;
 
 public class UserInputOnMapController implements CursorEventListener {
@@ -24,7 +24,7 @@ public class UserInputOnMapController implements CursorEventListener {
 
 	private DialogueBoxController dialogueBoxController;
 
-	private TrackMoveExecutor trackMoveExecutor;
+	private MoveExecuter trackMoveExecutor;
 
 	public void cursorOneTileMove(CursorEvent ce) {
 		if (null != trackBuilder) {
@@ -52,7 +52,7 @@ public class UserInputOnMapController implements CursorEventListener {
 		StationTypesPopup stPopup,
 		FreerailsCursor fc,
 		DialogueBoxController dbc,
-		TrackMoveExecutor tx) {
+		MoveExecuter tx) {
 		trackMoveExecutor = tx;
 		this.dialogueBoxController = dbc;
 		this.mapView = mv;

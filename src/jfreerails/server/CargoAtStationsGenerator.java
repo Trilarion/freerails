@@ -5,6 +5,7 @@
 package jfreerails.server;
 
 import jfreerails.controller.FreerailsServerSerializable;
+import jfreerails.controller.MoveExecuter;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoBatch;
@@ -48,7 +49,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable{
 				}
 			}
 			Move m = new ChangeCargoBundleMove(before, after, station.getCargoBundleNumber());
-			m.doMove(w);
+			MoveExecuter.getMoveExecuter().processMove(m);;
 		}
 	}
 }

@@ -13,7 +13,7 @@ import jfreerails.world.train.TrainPositionOnMap;
  * @author Luke Lindsay 22-Oct-2002
  *
  */
-public class ChangeTrainPositionMove {
+public class ChangeTrainPositionMove implements Move {
 
 	private final TrainPositionOnMap changeToHead, changeToTail;
 

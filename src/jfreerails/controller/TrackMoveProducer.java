@@ -22,11 +22,14 @@ final public class TrackMoveProducer {
 
 	private MoveReceiver moveReceiver;
 
+	public final static int BUILD_TRACK = 1;
+
 	public final static int REMOVE_TRACK = 2;
 
 	public final static int UPGRADE_TRACK = 3;
 
-	public final static int BUILD_TRACK = 1;
+	/* Don't build any track */
+	public final static int IGNORE_TRACK = 4;
 
 	private int trackBuilderMode = BUILD_TRACK;
 
@@ -104,10 +107,15 @@ final public class TrackMoveProducer {
 	
 	
 	public void setTrackBuilderMode(int i){
-		if(BUILD_TRACK!=i && REMOVE_TRACK!=i && UPGRADE_TRACK!=i){
-			throw new IllegalArgumentException();	
-		}else{
+		switch (i) {
+			case BUILD_TRACK:
+			case REMOVE_TRACK:
+			case UPGRADE_TRACK:
+			case IGNORE_TRACK:
 			trackBuilderMode=i;
+				break;
+			default:
+				throw new IllegalArgumentException();
 		}
 	}
 	
