@@ -10,5 +10,5 @@
 #include "log.h"
 #include "ai.h"
 
-void AiInit(Player* Player) {
+void AiInit(sPlayer* Player) {
 }
