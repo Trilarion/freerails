@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -31,16 +33,32 @@ import javax.imageio.ImageIO;
  *
  */
 public class ImageManagerImpl implements ImageManager {
-	 private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
-    private String pathToReadFrom;
-    private String pathToWriteTo;
-    private final HashMap<String, Image> imageHashMap = new HashMap<String, Image>();
-    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<String, Image>();
-    private final RenderingHints renderingHints;
+	/** Matches anying but a string beginning with a "/"*. The reason for this check is that 
+	 * relative filenames such as "/cursor/removetrack.png" work from with files but not 
+	 * from within jars, which lets bugs slip in.
+	 */
+	private static final String A_REGEX = "^[^///].*";
+	private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
+
+    private static final Pattern pattern = Pattern.compile(A_REGEX);		
+	
+	public static boolean isValid(String s){
+		Matcher m = pattern.matcher(s);
+		return m.matches();
+	}
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                                   .getDefaultScreenDevice()
                                                                                   .getDefaultConfiguration();
-
+    private final HashMap<String, Image> imageHashMap = new HashMap<String, Image>();
+    private String pathToReadFrom;
+    private String pathToWriteTo;
+    private final RenderingHints renderingHints;
+    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<String, Image>();
+    
+     public ImageManagerImpl(String readpath) {
+         this(readpath, null);
+     }
+    
     public ImageManagerImpl(String readpath, String writePath) {
         pathToReadFrom = readpath;
         pathToWriteTo = writePath;
@@ -52,21 +70,25 @@ public class ImageManagerImpl implements ImageManager {
         renderingHints.put(RenderingHints.KEY_INTERPOLATION,
             RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     }
-    
-     public ImageManagerImpl(String readpath) {
-         this(readpath, null);
-     }
 
-    public void setPathToReadFrom(String s) {
-        pathToReadFrom = s;
-    }
+    public boolean contains(String relativeFilename) {
+        relativeFilename = relativeFilename.replace(' ', '_');
 
-    public void setPathToWriteTo(String s) {
-        pathToWriteTo = s;
+        if (imageHashMap.containsKey(relativeFilename)) {
+            return true;
+        }
+		File f = new File(pathToWriteTo + File.separator +
+		        relativeFilename);
+
+		if (f.isFile()) {
+		    return true;
+		}
+		return false;
     }
 
     public Image getImage(String relativeFilename) throws IOException {
         relativeFilename = relativeFilename.replace(' ', '_');
+    	if(!isValid(relativeFilename)) throw new IllegalArgumentException(relativeFilename+ " must match "+A_REGEX);
 
         if (imageHashMap.containsKey(relativeFilename)) {
             return imageHashMap.get(relativeFilename);
@@ -91,68 +113,15 @@ public class ImageManagerImpl implements ImageManager {
 
         return compatibleImage;
     }
-
-    public boolean contains(String relativeFilename) {
-        relativeFilename = relativeFilename.replace(' ', '_');
-
-        if (imageHashMap.containsKey(relativeFilename)) {
-            return true;
-        }
-		File f = new File(pathToWriteTo + File.separator +
-		        relativeFilename);
-
-		if (f.isFile()) {
-		    return true;
-		}
-		return false;
-    }
-
-    public void setImage(String relativeFilename, Image i) {
-        relativeFilename = relativeFilename.replace(' ', '_');
-
-        if (i == null) {
-            throw new NullPointerException(relativeFilename);
-        }
-
-        imageHashMap.put(relativeFilename, i);
-    }
-
-    public void writeImage(String relativeFilename) throws IOException {
-    	
-    	if(null == pathToWriteTo) throw new NullPointerException("null == pathToWriteTo");
-    	
-        relativeFilename = relativeFilename.replace(' ', '_');
-
-        File f = new File(pathToWriteTo + File.separator + relativeFilename);
-
-        if (imageHashMap.containsKey(relativeFilename)) {
-            RenderedImage i = (RenderedImage)imageHashMap.get(relativeFilename);
-            String pathName = f.getPath();
-            File path = new File(pathName);
-            path.mkdirs();
-
-            ImageIO.write(i, "png", f);
-            logger.info("Writing "+f);
-        } else {
-            throw new NoSuchElementException(relativeFilename);
-        }
-    }
-
-    public void writeAllImages() throws IOException {
-        Iterator it = imageHashMap.keySet().iterator();
-
-        while (it.hasNext()) {
-            String s = (String)it.next();
-            writeImage(s);
-        }
-    }
     
     
 
     /** Returns the specified image scaled so that its height is equal to the specified height. */
     public Image getScaledImage(String relativeFilename, int height)
         throws IOException {
-       
+    	relativeFilename = relativeFilename.replace(' ', '_');
+    	if(!isValid(relativeFilename)) throw new IllegalArgumentException(relativeFilename+ " must match "+A_REGEX);
+    	
         String hashKey = relativeFilename + height;
 
         if (this.scaledImagesHashMap.containsKey(hashKey)) {
@@ -179,4 +148,52 @@ public class ImageManagerImpl implements ImageManager {
 		        height, Transparency.TRANSLUCENT);
 		return compatibleImage;
 	}
+
+    public void setImage(String relativeFilename, Image i) {
+        relativeFilename = relativeFilename.replace(' ', '_');
+
+        if (i == null) {
+            throw new NullPointerException(relativeFilename);
+        }
+
+        imageHashMap.put(relativeFilename, i);
+    }
+
+    public void setPathToReadFrom(String s) {
+        pathToReadFrom = s;
+    }
+
+    public void setPathToWriteTo(String s) {
+        pathToWriteTo = s;
+    }
+
+    public void writeAllImages() throws IOException {
+        Iterator it = imageHashMap.keySet().iterator();
+
+        while (it.hasNext()) {
+            String s = (String)it.next();
+            writeImage(s);
+        }
+    }
+
+    public void writeImage(String relativeFilename) throws IOException {
+    	
+    	if(null == pathToWriteTo) throw new NullPointerException("null == pathToWriteTo");
+    	
+        relativeFilename = relativeFilename.replace(' ', '_');
+
+        File f = new File(pathToWriteTo + File.separator + relativeFilename);
+
+        if (imageHashMap.containsKey(relativeFilename)) {
+            RenderedImage i = (RenderedImage)imageHashMap.get(relativeFilename);
+            String pathName = f.getPath();
+            File path = new File(pathName);
+            path.mkdirs();
+
+            ImageIO.write(i, "png", f);
+            logger.info("Writing "+f);
+        } else {
+            throw new NoSuchElementException(relativeFilename);
+        }
+    }
 }

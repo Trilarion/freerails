@@ -157,7 +157,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      * <p><b>Be extremely careful with the references of objects allocated in
      * this method to avoid memory leaks - see bug 967677 (OutOfMemoryError after starting several new games). </b></p>
      */
-    public void setup(ViewLists vl, ReadOnlyWorld w) {
+    public void setup(ViewLists vl, ReadOnlyWorld w) throws IOException{
         viewLists = vl;
         world = w;
         modelRoot.addMapListener(this);
@@ -176,11 +176,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         stationTypesPopup.setup(actionRoot, mainMap.getStationRadius());
         
-        try{
+      
         	mapViewJComponent.setup(mainMap, modelRoot, viewLists.getImageManager());
-        }catch (IOException e){
-        	e.printStackTrace();
-        }
+       
         
 
         //setup the the main and overview map JComponents

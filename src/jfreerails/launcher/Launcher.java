@@ -223,12 +223,17 @@ LauncherInterface {
             }
             
         };
+        try{
         Thread t = new Thread(run, "Client + server main loop");
         t.start();
+        }catch (Exception e){
+            exit(e);
+        }
     }
     
     /** Starts the client in a new thread.*/
     private static void startThread(final GUIClient client) {
+    	
         Runnable run = new Runnable(){
             
             public void run() {
@@ -250,12 +255,17 @@ LauncherInterface {
             }
             
         };
+        try{
         Thread t = new Thread(run, "Client main loop");
         t.start();
+        }catch (Exception e){
+            exit(e);
+        }
     }
     
     /** Starts the server in a new thread.*/
     private static void startThread(final FreerailsGameServer server) {
+    	
         
         Runnable r = new Runnable(){
             
@@ -277,9 +287,13 @@ LauncherInterface {
             }
             
         };
+        try{
         
         Thread t = new Thread(r, "FreerailsGameServer");
         t.start();
+    	}catch (Exception e){
+            exit(e);
+        }
     }
     
     private void initServer() {
@@ -557,8 +571,7 @@ LauncherInterface {
                         startGame();
                     }
                     break;
-                case 3:
-                	boolean recover = false;
+                case 3:                	
                 	try{
                 		/* Connection status screen */
                 		prevButton.setEnabled(false);
@@ -574,27 +587,27 @@ LauncherInterface {
                 		setNextEnabled(false);
                 	} catch (IOException e) {
                 		setInfoText(e.getMessage(), LauncherInterface.WARNING);
-                		recover = true;
-                	} finally {
-                		if (recover) {
-                			cop.setControlsEnabled(true);
-                			prevButton.setEnabled(true);
-                			setNextEnabled(true);
-                			currentPage = 1;
-                			cl.show(jPanel1, "1");
-                			return;
-                		}
-            }
+                		cop.setControlsEnabled(true);
+            			prevButton.setEnabled(true);
+            			setNextEnabled(true);
+            			currentPage = 1;
+            			cl.show(jPanel1, "1");
+            			return;
+                	}
                     break;
                 default:
                     throw new IllegalArgumentException(String.valueOf(currentPage));
             }
         }catch (Exception e){
-            logger.severe("Unexpected exception, can't recover");
-            e.printStackTrace();
-            System.exit(1);
+            exit(e);
         }
     }//GEN-LAST:event_nextButtonActionPerformed
+
+	private static void exit(Exception e) {
+		logger.severe("Unexpected exception, can't recover");
+		e.printStackTrace();
+		System.exit(1);
+	}
     
     /** Exit the Application. */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm

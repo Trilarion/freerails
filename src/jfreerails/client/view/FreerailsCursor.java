@@ -45,10 +45,10 @@ final public class FreerailsCursor {
 	public FreerailsCursor(ModelRoot mr, ImageManager im) throws IOException {
 		this.modelRoot = mr;
 		modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
-		buildTrack = im.getImage("/cursor/buildtrack.png");
-		upgradeTrack = im.getImage("/cursor/upgradetrack.png");
-		removeTrack = im.getImage("/cursor/removetrack.png");
-		infoMode = im.getImage("/cursor/infomode.png");
+		buildTrack = im.getImage("cursor/buildtrack.png");
+		upgradeTrack = im.getImage("cursor/upgradetrack.png");
+		removeTrack = im.getImage("cursor/removetrack.png");
+		infoMode = im.getImage("cursor/infomode.png");
 	}
 
 	/**
