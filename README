@@ -75,6 +75,9 @@ Don't forget to take a look in the Licence of the libraries you use.
 Compiling and installing:
 =========================
 
+If you have extracted fresh from CVS then you need at first to autogenerate the
+configuration scripts. Do this by typing "sh ./autogen.sh".
+
 Use the configure command to generate the makefiles with your configuration.
 Try "configure --help" to see all the options you can use.
 By standard configuration the Qt libraries are choosen as ground graphic library.

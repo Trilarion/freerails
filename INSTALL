@@ -9,6 +9,8 @@ Install
 There is no installation routine at the moment!
 
 Do the following:
+- "sh ./autogen.sh" to generate the automatic build scripts
+
 - "./configure" for using the Qt GUI
 or
 - "./configure --with-paragui-client" for using the paragui GUI

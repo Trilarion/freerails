@@ -1,3 +1,6 @@
+Mon Sep 16 10:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o Add autogen.sh as helper script.
+o add information in the instal and readme file
 Mon Sep 16 02:08:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o makes needed changes for using automake 1.6
 o add makefile.am for all subdirs in data
