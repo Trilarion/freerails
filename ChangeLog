@@ -1,3 +1,7 @@
+Wed Jan 09 15:15:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add send/receive to the network wrappers
+o the sdl_net wrapper sends at first a integer of the length of the package
+  the QT wrapper don't do this.
 Wed Jan 09 02:15:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add the first parts of the network wrappers
 o small headerfile bugfix in wrapper/qt
