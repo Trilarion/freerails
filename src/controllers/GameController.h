@@ -115,6 +115,11 @@ class GameController
     /** Returns current state of game */
     GameState getState() { return state; };
 
+    /** Adds element to the game
+      * It does not update the map immediately
+      * It returns ID given to element or 0 when error occures
+      */
+    bool addPlayer(Player* p);
     /** Returns vector containing pointers to all players */
     vector<Player*> getPlayers() { return players; };
 

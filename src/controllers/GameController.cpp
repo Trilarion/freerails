@@ -76,6 +76,12 @@ void GameController::removeElement(idtype id)
     elements.erase((GameElement**)e);
 }
 
+bool GameController::addPlayer(Player* p)
+{
+  // TODO: Check if action is valid ??
+  players.push_back(p);
+}
+
 bool GameController::startGame()
 {
   // Return some enum { GameStarted, NotInited, CannotInitNet ... } ???
