@@ -12,7 +12,6 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import jfreerails.move.status.MoveStatus;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.track.TrackRuleList;
 import jfreerails.world.misc.OneTileMoveVector;

@@ -10,7 +10,6 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import jfreerails.move.status.MoveStatus;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackTileMapImpl;

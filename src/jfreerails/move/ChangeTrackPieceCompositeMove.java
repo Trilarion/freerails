@@ -8,7 +8,6 @@ package jfreerails.move;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import jfreerails.move.status.MoveStatus;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.misc.OneTileMoveVector;
 import jfreerails.world.track.TrackConfiguration;
