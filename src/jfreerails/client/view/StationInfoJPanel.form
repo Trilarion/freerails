@@ -10,13 +10,13 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Dialog" size="12" style="0"/>
+          <Font name="Dialog" size="10" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;h2 align=&quot;center&quot;&gt;Supply and Demand at stationName&lt;/h2&gt;&#xa;&lt;table width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;5&quot;&gt;&#xa;  &lt;tr&gt;&#xa;    &lt;td&gt;&amp;nbsp;&lt;/td&gt;&#xa;    &lt;td&gt;Will pay for&lt;/td&gt;&#xa;    &lt;td&gt;Supplies / cars per year&lt;/td&gt;&#xa;    &lt;td&gt;Waiting for pickup / car loads&lt;/td&gt;&#xa;  &lt;/tr&gt;&#xa;   &lt;tr&gt;&#xa;    &lt;td&gt;Mail&lt;/td&gt;&#xa;    &lt;td&gt;Yes&lt;/td&gt;&#xa;    &lt;td&gt;&amp;nbsp;&lt;/td&gt;&#xa;    &lt;td&gt;&amp;nbsp;&lt;/td&gt;&#xa;  &lt;/tr&gt;&#xa;  &lt;tr&gt;&#xa;    &lt;td&gt;Passengers&lt;/td&gt;&#xa;    &lt;td&gt;No&lt;/td&gt;&#xa;    &lt;td&gt;3&lt;/td&gt;&#xa;    &lt;td&gt;2.5&lt;/td&gt;&#xa;  &lt;/tr&gt;&#xa; &#xa;&lt;/table&gt;&#xa;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-          <GridBagConstraints gridX="-1" gridY="-1" gridWidth="3" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="10" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
+          <GridBagConstraints gridX="-1" gridY="-1" gridWidth="3" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="10" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -24,6 +24,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="next -&gt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextStationActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
           <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="10" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
@@ -34,6 +37,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;- previous"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="previousStationActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
           <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="10" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>

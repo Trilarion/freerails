@@ -5,9 +5,11 @@
  */
 
 package jfreerails.client.view;
-import jfreerails.world.top.World;
+import jfreerails.world.top.*;
 import jfreerails.client.renderer.ViewLists;
 import java.awt.event.*;
+import jfreerails.world.station.*;
+import jfreerails.world.cargo.*;
 
 /** This JPanel displays the supply and demand at a station.
  *
@@ -16,6 +18,8 @@ import java.awt.event.*;
 public class StationInfoJPanel extends javax.swing.JPanel implements View {
     
     private ViewLists vl;
+    private World w;
+    private WorldIterator wi;
     
     /** Creates new form StationInfoJPanel */
     public StationInfoJPanel() {
@@ -37,15 +41,21 @@ public class StationInfoJPanel extends javax.swing.JPanel implements View {
 
         setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 10));
         jLabel1.setText("<html>\n<h2 align=\"center\">Supply and Demand at stationName</h2>\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">\n  <tr>\n    <td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies / cars per year</td>\n    <td>Waiting for pickup / car loads</td>\n  </tr>\n   <tr>\n    <td>Mail</td>\n    <td>Yes</td>\n    <td>&nbsp;</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Passengers</td>\n    <td>No</td>\n    <td>3</td>\n    <td>2.5</td>\n  </tr>\n \n</table>\n\n</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 10, 10);
         add(jLabel1, gridBagConstraints);
 
         nextStation.setText("next ->");
+        nextStation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextStationActionPerformed(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -53,6 +63,12 @@ public class StationInfoJPanel extends javax.swing.JPanel implements View {
         add(nextStation, gridBagConstraints);
 
         previousStation.setText("<- previous");
+        previousStation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                previousStationActionPerformed(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -68,10 +84,71 @@ public class StationInfoJPanel extends javax.swing.JPanel implements View {
 
     }//GEN-END:initComponents
 
+    private void previousStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousStationActionPerformed
+        // Add your handling code here:
+         if(wi.previous() ){
+            display();
+        }else{
+            throw new IllegalStateException();
+        }
+    }//GEN-LAST:event_previousStationActionPerformed
+
+    private void nextStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStationActionPerformed
+        // Add your handling code here:
+          if(wi.next()){
+            display();
+        }else{
+            throw new IllegalStateException();
+        }
+        
+    }//GEN-LAST:event_nextStationActionPerformed
+
     public void setup(World w, ViewLists vl, ActionListener submitButtonCallBack) {
         this.closejButton.addActionListener(submitButtonCallBack);
         this.vl = vl;
+        this.w = w;
+        this.wi = new NonNullElements(KEY.STATIONS, w);
     }    
+    
+    public void setStation(int stationNumber){
+        this.wi.gotoIndex(stationNumber);
+        display();
+    }
+    
+    public void display(){
+        
+        if(wi.getRowNumber()>0){
+            this.previousStation.setEnabled(true);
+        }else{
+            this.previousStation.setEnabled(false);
+        }
+        
+        if(wi.getRowNumber()<(wi.size()-1)){
+            this.nextStation.setEnabled(true);
+        }else{
+            this.nextStation.setEnabled(false);
+        }
+        
+        int stationNumber = wi.getIndex();
+        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber);        
+        String title = "<h2 align=\"center\">Supply and Demand at "+station.getStationName()+"</h2>";
+        String table ="<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies / cars per year</td><td>Waiting for pickup / car loads</td>  </tr>";
+        for(int i = 0 ; i < w.size(KEY.CARGO_TYPES) ; i++){         
+            CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, i);
+            table +="<tr><td>"+cargoType.getDisplayName()+"</td>";
+            String demanded = (station.getDemand().isCargoDemanded(stationNumber) ? "Yes" : "No");
+            table +="<td>"+demanded+ "</td>";            
+            int amountWaiting = station.getWaiting().getAmountWeighting(i);
+            String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting) : "&nbsp;";
+            table +="<td>"+waiting+"</td>";
+            int amountSupplied = station.getSupply().getSupply(i);
+            String supply = (amountSupplied > 0) ? String.valueOf(amountSupplied) : "&nbsp;";
+            table +="<td>"+supply+"</td></tr>";
+        }
+        table +="</table>";
+        String label = "<html>" + title + table + "</html>";
+        jLabel1.setText(label);
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

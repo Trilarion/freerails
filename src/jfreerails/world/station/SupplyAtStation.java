@@ -15,7 +15,7 @@ public class SupplyAtStation implements FreerailsSerializable {
 	/** Returns the number of car loads of the specified cargo that the station
 	 * supplies per year.	 	
 	 */
-	public int getAmountWeighting(int cargoType){
+	public int getSupply(int cargoType){
 		return supply[cargoType];
 	}
 

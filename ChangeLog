@@ -1,3 +1,10 @@
+05-May-2003 23:02:28 Luke
+	o Added station info dialogue.
+	o Fixed some bugs related to loading games and
+	starting new games.
+05-May-2003 18:00:53 Luke
+	o Changed map view classes to use a VolatileImage for 
+	a backbuffer.
 05-May-2003 00:47:52 Luke
 	o Added terrain info dialogue.
 03-May-2003 13:39:59 Luke

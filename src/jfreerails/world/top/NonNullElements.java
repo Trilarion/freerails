@@ -5,7 +5,7 @@
 package jfreerails.world.top;
 
 import jfreerails.world.common.FreerailsSerializable;
-
+import java.util.NoSuchElementException;
 /**
  * Iterates over one of the lists on the world object only
  * returning non null elements.
@@ -37,7 +37,7 @@ public class NonNullElements implements WorldIterator {
             if (nextIndex >= w.size(key)) {
                 return false;
             }
-        } while (null == w.get(key, nextIndex));
+        } while (!testCondition(nextIndex));
         row++;
         index = nextIndex;
         return true;
@@ -81,10 +81,30 @@ public class NonNullElements implements WorldIterator {
             if (previousIndex < 0) {
                 return false;
             }
-        } while (null == w.get(key, previousIndex));
+        } while (!testCondition(previousIndex));
         row--;
         index = previousIndex;
         return true;
     }
     
+    /** Moves the cursor to the specified index.  */
+    public void gotoIndex(int i) {
+       int newRow = -1;
+       for(int j = 0 ; j < w.size(key) ; j ++){
+           if(testCondition(j)){
+                newRow++;
+                if(i == j){
+					reset();
+                    this.index = i;
+                    this.row = newRow;
+                    return;
+                }
+           }          
+       }
+       throw new NoSuchElementException(String.valueOf(i));
+    }
+    
+    protected boolean testCondition(int i){
+        return null != w.get(key, i);
+    }    
 }

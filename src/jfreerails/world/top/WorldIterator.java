@@ -45,4 +45,7 @@ public interface WorldIterator {
 
 	/** Returns the number of rows */
 	int size();
+        
+        /** Moves the cursor to the specified index. */
+        void gotoIndex(int i);
 }

@@ -30,7 +30,7 @@ public class StationTypesPopup extends JPopupMenu {
 	public void setup(StationBuilder sb) {
 		stationBuilder = sb;
 		World w = sb.getWorld();
-		
+		this.removeAll();
 		for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
 			final int trackRuleNumber = i;
 			TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
