@@ -6,6 +6,7 @@ noinst_LIBRARIES = libwrapperbase.a
 
 libwrapperbase_a_SOURCES = BaseApplication.cpp \
     BaseDialog.cpp \
+    Base2DMapView.cpp \
     BaseMainWindow.cpp \
     BaseWidget.cpp \
     GuiEngine.cpp

@@ -153,7 +153,6 @@ void Engine::processMsg(Message* msg)
 
 void Engine::addElementToGame(Message* msg)
 {
-  #warning correct me ... I need the place to put the element on map!
   GameElement* element = (GameElement *)msg->getData();
   Controller* elementController = controllerDispatcher->getController(element->getTypeID());
   if (elementController==NULL)

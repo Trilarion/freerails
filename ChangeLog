@@ -1,3 +1,7 @@
+Mon Apr 21 02:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o add Base2DMapView (higher class for GameMapView)
+o ParaGUI Client uses Base2DMapView
+o ParaGUI Client do send BuildTrack/Station Message to Engine
 Fri Feb 14 13:30:00 2003  Alexander Opitz <opi@le-bit.de>:
 o add getOtherConnectionSide to GuiEngine (links to TrackController).
 o reuse it in paragui client.

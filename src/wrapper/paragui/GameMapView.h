@@ -9,11 +9,7 @@
 #include "WorldMap.h"
 #include "GuiEngine.h"
 #include "MapField.h"
-
-/*#include "TrackController.h"
-  #include "StationController.h"
-  #include "Track.h"
-  #include "Station.h"*/
+#include "Base2DMapView.h"
 
 #include <paragui_types.h>
 #include <pgthemewidget.h>
@@ -21,7 +17,7 @@
 #include <pgimage.h>
 #include <pgscrollbar.h>
 
-class GameMapView: public PG_ThemeWidget {
+class GameMapView: public PG_ThemeWidget, Base2DMapView {
 
   public:
   
@@ -35,8 +31,6 @@ class GameMapView: public PG_ThemeWidget {
     void setMouseType(MouseType type);
 
   private:
-    GuiEngine* guiEngine;
-    
     SDL_Surface* tilesImage;
     SDL_Surface* trackImage;
     
@@ -56,9 +50,6 @@ class GameMapView: public PG_ThemeWidget {
        StationController* stationcontroller; */
     
     void getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y);
-    int getImagePos(int x, int y, MapField::FieldType type);
-    int getRiverImagePos(int x, int y);
-    int get3DImagePos(int x, int y, MapField::FieldType type);
     
     void regenerateTile(int x, int y); // x and y are the position of the tile on which the mouse is now.
     void showTrack(int x, int y,int tracktileX, int tracktileY);

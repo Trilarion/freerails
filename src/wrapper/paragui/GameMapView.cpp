@@ -9,9 +9,8 @@
 #include "SDL_image.h"
 
 GameMapView::GameMapView(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine):
-PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
-
-  guiEngine=_guiEngine;
+PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget"),
+Base2DMapView(x,y,w,h,_guiEngine) {
 
   PG_Point p;
   
@@ -71,63 +70,63 @@ void GameMapView::getMapImage(SDL_Surface* surface, int offsetX, int offsetY, in
     }
     case MapField::dessert:
     {
-      xpos=getImagePos(x,y,MapField::dessert);
+      xpos=getPixmapPos(x,y,MapField::dessert);
       rectSRC.x=xpos*30;
       rectSRC.y=1*30;
       break;
     }
     case MapField::river:
     {
-      xpos=getRiverImagePos(x,y);
+      xpos=getRiverPixmapPos(x,y);
       rectSRC.x=xpos*30;
       rectSRC.y=4*30;
       break;
     }
     case MapField::ocean:
     {
-      xpos=getImagePos(x,y,MapField::ocean);
+      xpos=getPixmapPos(x,y,MapField::ocean);
       rectSRC.x=xpos*30;
       rectSRC.y=5*30;
       break;
     }
     case MapField::bog:
     {
-      xpos=getImagePos(x,y,MapField::bog);
+      xpos=getPixmapPos(x,y,MapField::bog);
       rectSRC.x=xpos*30;
       rectSRC.y=2*30;
       break;
     }
     case MapField::jungle:
     {
-      xpos=getImagePos(x,y,MapField::jungle);
+      xpos=getPixmapPos(x,y,MapField::jungle);
       rectSRC.x=xpos*30;
       rectSRC.y=3*30;
       break;
     }
     case MapField::wood:
     {
-      xpos=get3DImagePos(x,y,MapField::wood);
+      xpos=get3DPixmapPos(x,y,MapField::wood);
       rectSRC.x=(12+xpos)*30;
       rectSRC.y=6*30;
       break;
     }
     case MapField::foothills:
     {
-      xpos=get3DImagePos(x,y,MapField::foothills);
+      xpos=get3DPixmapPos(x,y,MapField::foothills);
       rectSRC.x=(0+xpos)*30;
       rectSRC.y=6*30;
       break;
     }
     case MapField::hills:
     {
-      xpos=get3DImagePos(x,y,MapField::hills);
+      xpos=get3DPixmapPos(x,y,MapField::hills);
       rectSRC.x=(4+xpos)*30;
       rectSRC.y=6*30;
       break;
     }
     case MapField::mountain:
     {
-      xpos=get3DImagePos(x,y,MapField::mountain);
+      xpos=get3DPixmapPos(x,y,MapField::mountain);
       rectSRC.x=(8+xpos)*30;
       rectSRC.y=6*30;
       break;
@@ -188,74 +187,6 @@ void GameMapView::getMapImage(SDL_Surface* surface, int offsetX, int offsetY, in
   SDL_BlitSurface(tilesImage, &rectSRC, surface, &rectDST);
 }
 
-int GameMapView::getImagePos(int x, int y, MapField::FieldType type)
-{
-  MapField* field;
-  int xpos=0;
-  
-  field=guiEngine->getWorldMap()->getMapField(x,y-1);
-  if (field!=NULL && field->getType()!=type) xpos+=1;
-  field=guiEngine->getWorldMap()->getMapField(x+1,y);
-  if (field!=NULL && field->getType()!=type) xpos+=2;
-  field=guiEngine->getWorldMap()->getMapField(x,y+1);
-  if (field!=NULL && field->getType()!=type) xpos+=4;
-  field=guiEngine->getWorldMap()->getMapField(x-1,y);
-  if (field!=NULL && field->getType()!=type) xpos+=8;
-
-  return xpos;
-}
-
-int GameMapView::getRiverImagePos(int x, int y)
-{
-  MapField* field;
-  int xpos=0;
-  
-  field=guiEngine->getWorldMap()->getMapField(x,y-1);
-  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=1;
-  field=guiEngine->getWorldMap()->getMapField(x+1,y);
-  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=2;
-  field=guiEngine->getWorldMap()->getMapField(x,y+1);
-  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=4;
-  field=guiEngine->getWorldMap()->getMapField(x-1,y);
-  if (field!=NULL && field->getType()!=MapField::river && field->getType()!=MapField::ocean) xpos+=8;
-
-  return xpos;
-}
-
-int GameMapView::get3DImagePos(int x, int y, MapField::FieldType type)
-{
-  MapField* fieldLeft;
-  MapField* fieldRight;
-  int xpos=0;
-  
-  fieldLeft=guiEngine->getWorldMap()->getMapField(x-1,y);
-  fieldRight=guiEngine->getWorldMap()->getMapField(x+1,y);
-  if (fieldLeft!=NULL && fieldRight!=NULL)
-  {
-    if (fieldLeft->getType()==type && fieldRight->getType()==type)
-    { xpos=2;
-    } else
-    if (fieldRight->getType()==type)
-    { xpos=1;
-    } else
-    if (fieldLeft->getType()==type)
-    { xpos=3;
-    } 
-  } else
-  if (fieldLeft==NULL)
-  { if (fieldRight->getType()==type)
-    { xpos=2;
-    } else xpos=3;
-  } else
-  if (fieldRight==NULL)
-  { if (fieldLeft->getType()==type)
-    { xpos=2;
-    } else xpos=1;
-  }
-
-  return xpos;
-}
-
 void GameMapView::setMouseType(MouseType type) {
 
   mouseType=type;
@@ -270,9 +201,25 @@ void GameMapView::eventMouseLeave() {
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 
   if (button->button==SDL_BUTTON_LEFT) {
-    int x = button->x;
-    int y = button->y;
-    // doBuild(what,x,y);
+
+    unsigned int mapx, mapy;
+    int dir;  
+    screen2map(button->x, button->y, &mapx, &mapy, &dir);
+
+    switch (mouseType) {
+  
+      case buildStation:
+        guiEngine->buildStation(mapx,mapy);
+      break;
+      case buildTrack:
+        guiEngine->buildTrack(mapx,mapy,dir);
+	guiEngine->getOtherConnectionSide(&mapx,&mapy,&dir);
+	guiEngine->buildTrack(mapx,mapy,dir);
+      break;
+    default:
+      return false;
+      break;
+    }
   }
   return false;
 }
@@ -305,56 +252,32 @@ void GameMapView::showTrack(int x, int y, int tilesetX, int tilesetY) {
 
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
-  unsigned int x,y;
-  int dir, helpx, helpy;
+  unsigned int mousex, mousey;
+  unsigned int mapx, mapy;
+  int dir;
   
   regenerateTile(mouseOldMapX,mouseOldMapY);
 
-  x = motion->x + viewPos.x;  // realScreenPosX
-  y = motion->y + viewPos.y;  // realScreenPosY
+  mousex = motion->x + viewPos.x;  // realScreenPosX
+  mousey = motion->y + viewPos.y;  // realScreenPosY
   
-  // Should be replaced with function in upper class
-  // All calculations are for a 30x30 tileset
-  helpx=x % 30;// for calculate the direction on the tile
-  helpy=y % 30;
-  x = x / 30;  // realMapPosX
-  y = y / 30;  // realMapPosY
+  screen2map(mousex, mousey, &mapx, &mapy, &dir);
 
-  // now calculate direction
-  if (helpx<10) {
-    if (helpy<10) { dir=8; }
-    else if (helpy<20) { dir=7; }
-    else dir=6;
-  } else
-  if (helpx<20) {
-    if (helpy<10) { dir=1; }
-    else if (helpy<20) { dir=1; }
-    else dir=5;
-  } else
-  {
-    if (helpy<10) { dir=2; }
-    else if (helpy<20) { dir=3; }
-    else dir=4;
-  };
-  // End of to be replace
-
-  mouseOldMapX = x;
-  mouseOldMapY = y;
+  mouseOldMapX = mapx;
+  mouseOldMapY = mapy;
 
   switch (mouseType) {
   
     case buildStation:
-      cerr << "BuildStation" << endl;
-      if(guiEngine->testBuildStation(x,y)){
-	showTrack(x,y,20*30+15,26*30+15);
+      if(guiEngine->testBuildStation(mapx,mapy)){
+	showTrack(mapx,mapy,20*30+15,26*30+15);
       }
       break;
     case buildTrack:
-      cerr << "BuildTrack" << endl;
-      if(guiEngine->testBuildTrack(x,y,dir)){
-        showTrack(x,y,(dir-1)*2*30+15,0*30+15);
-	guiEngine->getOtherConnectionSide(&x,&y,&dir);
-	showTrack(x,y,(dir-1)*2*30+15,0*30+15);
+      if(guiEngine->testBuildTrack(mapx,mapy,dir)){
+        showTrack(mapx,mapy,(dir-1)*2*30+15,0*30+15);
+	guiEngine->getOtherConnectionSide(&mapx,&mapy,&dir);
+	showTrack(mapx,mapy,(dir-1)*2*30+15,0*30+15);
       }
      
       break;
