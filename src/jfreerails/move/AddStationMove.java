@@ -83,14 +83,14 @@ public class AddStationMove extends CompositeMove {
                 //Do radii overlap?	                
                 boolean xOverlap = sumOfRadiiSquared >= (xDistance * xDistance);
                 boolean yOverlap = sumOfRadiiSquared >= (yDistance * yDistance);
-                
-                /* Fix for bug 948675	Can't upgrade station types
+
+                /* Fix for bug 948675        Can't upgrade station types
                  * If locations are the same, then we are upgrading a station so
-                 * it doesn't matter if the radii overlap.  
+                 * it doesn't matter if the radii overlap.
                  */
-                
-                boolean areLocationsDifferent = (xDistance != 0) || (yDistance != 0);
-                
+                boolean areLocationsDifferent = (xDistance != 0) ||
+                    (yDistance != 0);
+
                 if (xOverlap && yOverlap && areLocationsDifferent) {
                     String message = "Too close to " +
                         station.getStationName();

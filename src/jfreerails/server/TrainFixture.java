@@ -3,6 +3,7 @@ package jfreerails.server;
 import java.awt.Point;
 import java.util.ArrayList;
 import jfreerails.controller.ToAndFroPathIterator;
+import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsPathIterator;
@@ -12,6 +13,7 @@ import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.train.TrainModel;
+import jfreerails.world.train.TrainPositionOnMap;
 
 
 /**
@@ -41,8 +43,13 @@ public class TrainFixture {
         FreerailsPathIterator from = pathIterator();
         trainMover = new TrainMover(to, w, 0, MapFixtureFactory.TEST_PRINCIPAL);
 
-        Move move = trainMover.setInitialTrainPosition(train, from);
-        MoveStatus ms = move.doMove(w, Player.AUTHORITATIVE);
+        TrainPositionOnMap initialPosition = TrainBuilder.setInitialTrainPosition(train,
+                from);
+
+        Move positionMove = new InitialiseTrainPositionMove(0, initialPosition,
+                MapFixtureFactory.TEST_PRINCIPAL);
+
+        MoveStatus ms = positionMove.doMove(w, Player.AUTHORITATIVE);
 
         if (!ms.isOk()) {
             throw new IllegalStateException(ms.message);

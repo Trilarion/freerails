@@ -73,7 +73,8 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     /**
      * @return a move that initialises the trains schedule.
      */
-    public Move initTarget(TrainModel train, ImmutableSchedule currentSchedule) {
+    public static Move initTarget(TrainModel train, int trainID,
+        ImmutableSchedule currentSchedule, FreerailsPrincipal principal) {
         Vector moves = new Vector();
         int scheduleID = train.getScheduleID();
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
@@ -81,8 +82,8 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
         if (null != wagonsToAdd) {
             int engine = train.getEngineType();
-            ChangeTrainMove move = ChangeTrainMove.generateMove(this.trainId,
-                    train, engine, wagonsToAdd, principal);
+            ChangeTrainMove move = ChangeTrainMove.generateMove(trainID, train,
+                    engine, wagonsToAdd, principal);
             moves.add(move);
         }
 

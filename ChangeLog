@@ -1,4 +1,7 @@
-May 28, 2004Luke
+May 30, 2004 Luke
+	Bugs Fixed: 
+	o 948666 Crash when Building Train with Money < 0 and only one station
+May 28, 2004 Luke
 	Bugs Fixed: 
 	o 948655 Can't see consist when there are more than 6 wagons
 	o 948675 Can't upgrade station types
