@@ -20,15 +20,16 @@ public:
   void checkNext(int msec); // This is the function wich will called from ParaGUI or Qt by every idle Message 
                             // The function will check the time and connections and let then play all :-)
 			    
-  void startGame();  // starts the Game and sends out to all clients (if network/server mode)
-  
-  void sendMsg(Message* msg);
-  bool haveMsg();
-  Message* getMsg();
+  void sendMsg(Message* msg); // send a message to the engines MessageQueue
+  bool haveMsg();             // is true if the engine have a message for you
+  Message* getMsg();          // get the message for you, is NULL if there is no Message
 
 private:
 
-  void process();
+  void process();    // process one day in game
+  void startGame();  // starts the Game and sends out to all clients (if network/server mode)
+  void pauseGame();  // starts or ends pausing the Game and sends out to all clients (if network/server mode)
+  void processMsg(Message* msg); // processes one given message
   
   MessageQueue* gui2engine;
   MessageQueue* engine2gui;

@@ -8,6 +8,11 @@
 class Message {
 public:
 
+  enum MsgTypes { startGame=0, stopGame, pauseGame,
+
+                  newDay=100
+		};
+
   /** Constructor */
   Message(int _type, void* _data);
   /** Destructor */

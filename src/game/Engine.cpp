@@ -17,22 +17,12 @@ Engine::Engine(WorldMap* _worldMap, Player* _player) {
 
   gameCon=NULL;  
   gameCon=new GameController("default",1900,1,1);
-  cerr << "engine inited" << lastmsec << endl;
-//gameCon.addPlayer(_player);
+  gameCon->addPlayer(_player);
 
+  cerr << "engine inited" << lastmsec << endl;
 }
 
 Engine::~Engine() {
-
-}
-
-void Engine::startGame() {
-
-  if (gameCon->startGame()) {
-    if (isServer) {
-      // Server.sendAll("Game started");
-    }
-  }
 
 }
 
@@ -50,6 +40,7 @@ Message* Engine::getMsg() {
 
   return engine2gui->getMsg();
 }
+
 void Engine::checkNext(int msec) {
 
   if (gameCon->getState()==GameController::Running)
@@ -62,6 +53,12 @@ void Engine::checkNext(int msec) {
     }
   }
 
+  while (gui2engine->hasMoreElements()) {
+    Message* msg = gui2engine->getMsg();
+    processMsg(msg);
+    delete msg;
+  }
+
 }
 
 void Engine::process() {
@@ -69,4 +66,33 @@ void Engine::process() {
   cerr << ".";
   if(isServer) { }
 
+}
+
+void Engine::processMsg(Message* msg) {
+
+  switch (msg->getType()) {
+    case Message::startGame: startGame();
+    case Message::pauseGame: pauseGame();
+  }
+
+}
+
+void Engine::startGame() {
+
+  cerr << "Start Game" << endl;
+  if (gameCon->startGame()) {
+    if (isServer) {
+      // Server.sendAll("Game started");
+    }
+  }
+
+}
+
+void Engine::pauseGame() {
+
+  cerr << "Pause/Unpause Game" << endl;
+  gameCon->pauseGame();
+  if (isServer) {
+      // Server.sendAll("Game paused");
+  }
 }
