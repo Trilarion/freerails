@@ -62,7 +62,7 @@ public class GameServer {
                 /* Open our server socket */
                 try {
                     serverSocket = new InetConnection(engine.getWorld(),
-                            gameEngine.getGameMutex(),
+                            new Object(), //gameEngine.getGameMutex(),
                             InetConnection.SERVER_PORT);
                 } catch (IOException e) {
                     System.err.println("Couldn't open the server socket!!!" +

@@ -78,18 +78,14 @@ public class ServerGameEngine implements GameModel, Runnable {
      * this during the update loop. This mutex is also given to local
      * clients so that they can acquire the lock.
      */
-    private Object mutex;
 
+    //private Object mutex;
     public int getTargetTicksPerSecond() {
         return targetTicksPerSecond;
     }
 
-    public void setTargetTicksPerSecond(int targetTicksPerSecond) {
-        // Synchronize access to targetTicksPerSecond so we don't get divide
-        // by zero during the update.			
-        synchronized (mutex) {
-            this.targetTicksPerSecond = targetTicksPerSecond;
-        }
+    public synchronized void setTargetTicksPerSecond(int targetTicksPerSecond) {
+        this.targetTicksPerSecond = targetTicksPerSecond;
     }
 
     /**
@@ -110,7 +106,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         Vector serverAutomata) {
         this.world = w;
         this.serverAutomata = serverAutomata;
-        mutex = new Integer(1);
+        //mutex = new Integer(1);
         this.trainMovers = trainMovers;
 
         moveChainFork = new MoveChainFork();
@@ -188,91 +184,85 @@ public class ServerGameEngine implements GameModel, Runnable {
      * <li>repeat.
      * </ol>
      */
-    public void update() {
+    public synchronized void update() {
         if (targetTicksPerSecond > 0) {
-            synchronized (mutex) {
-                if (targetTicksPerSecond > 0) {
-                    moveExecuter.executeOutstandingMoves();
+            moveExecuter.executeOutstandingMoves();
 
-                    /*
-                     * start of server world update
-                     */
+            /*
+             * start of server world update
+             */
+            //update the time first, since other updates might need
+            //to know the current time.
+            updateGameTime();
 
-                    //update the time first, since other updates might need
-                    //to know the current time.
-                    updateGameTime();
+            //now do the other updates
+            moveTrains();
 
-                    //now do the other updates
-                    moveTrains();
+            /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
+             * without first calling moveExecuter.executeOutstandingMoves()
+             */
+            buildTrains();
 
-                    /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
-                     * without first calling moveExecuter.executeOutstandingMoves()
-                     */
-                    buildTrains();
+            //Check whether we have just started a new year..
+            GameTime time = (GameTime)world.get(ITEM.TIME);
+            GameCalendar calendar = (GameCalendar)world.get(ITEM.CALENDAR);
+            int currentYear = calendar.getYear(time.getTime());
 
-                    //Check whether we have just started a new year..
-                    GameTime time = (GameTime)world.get(ITEM.TIME);
-                    GameCalendar calendar = (GameCalendar)world.get(ITEM.CALENDAR);
-                    int currentYear = calendar.getYear(time.getTime());
+            if (this.currentYearLastTick != currentYear) {
+                this.currentYearLastTick = currentYear;
+                newYear();
+            }
 
-                    if (this.currentYearLastTick != currentYear) {
-                        this.currentYearLastTick = currentYear;
-                        newYear();
-                    }
+            if (ticksSinceUpdate % aLongTime == 0) {
+                infrequentUpdate();
+            }
 
-                    if (ticksSinceUpdate % aLongTime == 0) {
-                        infrequentUpdate();
-                    }
+            /*
+             * all world updates done... now schedule next tick
+             */
+            statUpdates++;
+            n++;
+            frameStartTime = System.currentTimeMillis();
 
-                    /*
-                     * all world updates done... now schedule next tick
-                     */
-                    statUpdates++;
-                    n++;
-                    frameStartTime = System.currentTimeMillis();
+            if (statUpdates == 100) {
+                /* every 100 ticks, calculate some stats and reset
+                 * the base time */
+                statUpdates = 0;
 
-                    if (statUpdates == 100) {
-                        /* every 100 ticks, calculate some stats and reset
-                         * the base time */
-                        statUpdates = 0;
+                int updatesPerSec = (int)(100000L / (frameStartTime -
+                    statLastTimestamp));
 
-                        int updatesPerSec = (int)(100000L / (frameStartTime -
-                            statLastTimestamp));
-
-                        if (statLastTimestamp > 0) {
-                            //	System.out.println(
-                            //		"Updates per sec " + updatesPerSec);
-                        }
-
-                        statLastTimestamp = frameStartTime;
-
-                        baseTime = frameStartTime;
-                        n = 0;
-                    }
-
-                    /* calculate "ideal world" time for next tick */
-                    nextModelUpdateDue = baseTime +
-                        (1000 * n) / targetTicksPerSecond;
-
-                    int delay = (int)(nextModelUpdateDue - frameStartTime);
-
-                    /* wake up any waiting client threads - we could be
-                     * more agressive, and only notify them if delay > 0? */
-                    mutex.notifyAll();
-
-                    try {
-                        if (delay > 0) {
-                            mutex.wait(delay);
-                        } else {
-                            mutex.wait(1);
-                        }
-                    } catch (InterruptedException e) {
-                        // do nothing
-                    }
+                if (statLastTimestamp > 0) {
+                    //	System.out.println(
+                    //		"Updates per sec " + updatesPerSec);
                 }
 
-                ticksSinceUpdate++;
+                statLastTimestamp = frameStartTime;
+
+                baseTime = frameStartTime;
+                n = 0;
             }
+
+            /* calculate "ideal world" time for next tick */
+            nextModelUpdateDue = baseTime + (1000 * n) / targetTicksPerSecond;
+
+            int delay = (int)(nextModelUpdateDue - frameStartTime);
+
+            /* wake up any waiting client threads - we could be
+             * more agressive, and only notify them if delay > 0? */
+            this.notifyAll();
+
+            try {
+                if (delay > 0) {
+                    this.wait(delay);
+                } else {
+                    this.wait(1);
+                }
+            } catch (InterruptedException e) {
+                // do nothing
+            }
+
+            ticksSinceUpdate++;
         } else {
             // desired tick rate was 0
             nextModelUpdateDue = frameStartTime;
@@ -348,7 +338,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         trainMovers.add(m);
     }
 
-    public void saveGame() {
+    public synchronized void saveGame() {
         try {
             System.out.print("Saving game..  ");
 
@@ -357,11 +347,9 @@ public class ServerGameEngine implements GameModel, Runnable {
 
             ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
 
-            synchronized (mutex) {
-                objectOut.writeObject(trainMovers);
-                objectOut.writeObject(this.world);
-                objectOut.writeObject(serverAutomata);
-            }
+            objectOut.writeObject(trainMovers);
+            objectOut.writeObject(this.world);
+            objectOut.writeObject(serverAutomata);
 
             objectOut.flush();
             objectOut.close();
@@ -399,10 +387,8 @@ public class ServerGameEngine implements GameModel, Runnable {
      * Returns the world.
      * @return World
      */
-    public World getWorld() {
-        synchronized (mutex) {
-            return world.defensiveCopy();
-        }
+    public synchronized World getWorld() {
+        return world.defensiveCopy();
     }
 
     /**
@@ -418,16 +404,6 @@ public class ServerGameEngine implements GameModel, Runnable {
      */
     public MoveChainFork getMoveChainFork() {
         return moveChainFork;
-    }
-
-    /**
-     * return the mutex that must be acquired by local clients before
-     * accessing the World.
-     *
-     * @deprecated
-     */
-    public Object getGameMutex() {
-        return mutex;
     }
 
     public void addServerAutomaton(ServerAutomaton sa) {
