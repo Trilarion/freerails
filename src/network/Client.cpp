@@ -11,4 +11,3 @@ Client::Client():TCPConnection() {
 Client::~Client() {
 
 }
-

@@ -11,7 +11,7 @@
 
 #include "BaseMainWindow.h"
 
-#include <iostream.h>
+#include <iostream>
 
 /* GameMainWindow class manages main window
  */

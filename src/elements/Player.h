@@ -18,7 +18,7 @@ public:
   /** Constructor
     * @param n: name of this player */
   Player();
-  Player(string _name, Type _type);
+  Player(std::string _name, Type _type);
   /** Destructor */
   virtual ~Player();
   
@@ -27,9 +27,9 @@ public:
   void deserialize(Serializer* _serializer);
 
   /** Gets the name of the player */
-  string getName() {return name;};
+  std::string getName() {return name;};
   /** Sets the name of the player */
-  void setName(string _name) {name = _name;};
+  void setName(std::string _name) {name = _name;};
 
   /** Gets the type of the player */
   Type getType() {return type;};
@@ -38,7 +38,7 @@ public:
 
 private:
   /** Name of the player */
-  string name;
+  std::string name;
   Type type;
 };
 

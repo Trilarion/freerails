@@ -8,7 +8,7 @@ Player::Player():GameElement(this, 1) {
 
 }
 
-Player::Player(string _name, Type _type):GameElement(this, 1) {
+Player::Player(std::string _name, Type _type):GameElement(this, 1) {
   name = _name;
   type = _type;
 }
@@ -19,7 +19,7 @@ Player::~Player() {
 void Player::serialize(Serializer* _serializer) {
 
   GameElement::serialize(_serializer);
-  *_serializer << (const string)name;
+  *_serializer << (const std::string)name;
   *_serializer << type;
 
 }

@@ -23,4 +23,3 @@ void Connection::close() {
 void Connection::open(char* c, int i) {
 
 }
-

@@ -1,5 +1,5 @@
 #include "game.h"
-#include "iostream.h"
+#include "iostream"
 
 #include "Player.h"
 #include "GameElement.h"
@@ -25,17 +25,17 @@ MyGameApplication::~MyGameApplication() {
 
 void MyGameApplication::initSingleGame() {
   cerr << "SingleGame" << endl;
-  playerSelf=new Player(string("me"),Player::HUMAN);
+  playerSelf=new Player(std::string("me"),Player::HUMAN);
   worldMap = MapGenerator().generateWorld(30,30);
 }
 
 void MyGameApplication::initServerGame() {
   cerr << "ServerGame" << endl;
-  playerSelf=new Player(string("me"),Player::HUMAN);
+  playerSelf=new Player(std::string("me"),Player::HUMAN);
   worldMap = MapGenerator().generateWorld(30,30);
 }
 
 void MyGameApplication::initClientGame() {
   cerr << "ClientGame" << endl;
-  playerSelf=new Player(string("me"),Player::HUMAN);
+  playerSelf=new Player(std::string("me"),Player::HUMAN);
 }

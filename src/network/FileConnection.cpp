@@ -20,14 +20,14 @@ void FileConnection::open(char* filename, Mode stat) {
   mode=stat;
   
   if(stat==READ){
-    file=new fstream(filename,fstream::in);
+    file=new std::fstream(filename,std::fstream::in);
   }else if(stat==OVERWRITE){
-    file=new fstream(filename,fstream::app|fstream::trunc);
+    file=new std::fstream(filename,std::fstream::app|std::fstream::trunc);
   }else if(stat==BACKUP){
     /* TODO: RENAME OLD FILE */
-    file=new fstream(filename,fstream::app|fstream::trunc);
+    file=new std::fstream(filename,std::fstream::app|std::fstream::trunc);
   }else if(stat==APPEND)
-    file=new fstream(filename,fstream::app);
+    file=new std::fstream(filename,std::fstream::app);
   else{
     /* throw some exception */
     
@@ -54,17 +54,17 @@ int FileConnection::write(void* data, int len) {
 
   if(mode!=READ){
     if (state==OPEN){
-      if(file->ios::good()){     /* Check if stream is good for i/o operations. */
-	file->write(data,len);
+/*    if(file->ios::good()){     // Check if stream is good for i/o operations.
+        file->write(data,len);
 	if(file->ios::fail()){
-	  error=OTHER;  /* write error */
+	  error=OTHER;  // write error
 	  return -1;  
 	} 
 	return 0;
       }else{
 	error=OTHER;
 	return -1;
-      }
+      }*/
     } else{
       error=NOT_OPEN;
       return -1;
@@ -80,17 +80,17 @@ int FileConnection::read(void* buf, int maxlen) {
   
   if(mode==READ){
     if (state==OPEN){
-      if(file->ios::good()){     /* Check if stream is good for i/o operations. */
+/*      if(file->ios::good()){     // Check if stream is good for i/o operations.
 	file->read(buf,maxlen);
 	if (file->ios::fail()){
-	  error=OTHER;  /* read error */
+	  error=OTHER;  // read error
 	  return -1;  
 	}
 	return 0;
       }else{
 	error=OTHER;
 	return -1;
-      }
+      }*/
     }else{
       error=NOT_OPEN;
       return -1;
@@ -104,6 +104,5 @@ int FileConnection::read(void* buf, int maxlen) {
 
 
 bool FileConnection::endOfFile(){
-  return file->ios::eof();  /* we could throw an exception if something goes wrong */
+//  return file->ios::eof();  /* we could throw an exception if something goes wrong */
 }
-

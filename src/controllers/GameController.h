@@ -112,14 +112,14 @@ class GameController
       */
     bool addPlayer(Player* p);
     /** Returns vector containing pointers to all players */
-    vector<Player*> getPlayers() { return players; };
+    std::vector<Player*> getPlayers() { return players; };
 
   private:
     // TODO: set capacity()'s
-    vector<Player*> players;
-    vector<GameElement*> elements;
+    std::vector<Player*> players;
+    std::vector<GameElement*> elements;
     // Stations needs to be processed first
-    vector<Station*> stations;
+    std::vector<Station*> stations;
 
     GameInfo* info;
     GameInfo* startinfo;
@@ -127,7 +127,7 @@ class GameController
     bool inited;
 
     // Will 4 millon id's be enough ???
-    map<idtype, GameElement*> idmap;
+    std::map<idtype, GameElement*> idmap;
     idtype lastid;
 
     GameState state;

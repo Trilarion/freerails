@@ -2,6 +2,7 @@
   */
 
 #include "Engine.h"
+#include <iostream>
 
 Engine::Engine(WorldMap* _worldMap, Player* _player) {
 
@@ -12,7 +13,7 @@ Engine::Engine(WorldMap* _worldMap, Player* _player) {
   
   Init(_player);
 
-  cerr << "engine(alone) inited" << endl;
+  std::cerr << "engine(alone) inited" << std::endl;
 }
 
 Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server) {
@@ -27,7 +28,7 @@ Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server) {
   
   Init(_player);
   
-   cerr << "engine(Server) inited" << endl;
+   std::cerr << "engine(Server) inited" << std::endl;
 }
 
 Engine::Engine(Player* _player, Client* _client) {
@@ -42,7 +43,7 @@ Engine::Engine(Player* _player, Client* _client) {
   
   Init(_player);
   
-   cerr << "engine(Client) inited" << endl;
+   std::cerr << "engine(Client) inited" << std::endl;
 }
 
 void Engine::Init(Player* _player) {
@@ -99,7 +100,7 @@ void Engine::checkNext(int msec) {
     { lastmsec=msec;
       frame++;
       process();
-      cerr << frame << endl;
+      std::cerr << frame << std::endl;
     }
   }
   while (gui2engine->hasMoreElements()) {
@@ -112,7 +113,7 @@ void Engine::checkNext(int msec) {
 
 void Engine::process() {
 
-  cerr << ".";
+  std::cerr << ".";
   if(isServer) { }
 
 }

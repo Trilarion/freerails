@@ -15,7 +15,7 @@ TCPConnection::TCPConnection():Connection() {
 TCPConnection::TCPConnection(int _socketID):Connection() {
 
   socketID=_socketID;
-
+  
 }
 
 TCPConnection::~TCPConnection() {

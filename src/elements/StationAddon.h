@@ -37,7 +37,7 @@ public:
   /** Constructor
     * @param file The configuration file
     * @todo Implement the configuration */
-  StationAddon(string file);
+  StationAddon(std::string file);
   /** Destructor */
   virtual ~StationAddon();
 
@@ -48,14 +48,14 @@ public:
   /** Get all the available addons
     * @param year Year in which to check the addons
     * @return The available addons */
-  vector<string> getAvailable(unsigned int year);
+  std::vector<std::string> getAvailable(unsigned int year);
 
 private:
   /** The current year */
   unsigned int year;
   /** All the addons
     * Name of the addon as key, year when available as value */
-  map<string, unsigned int> addons;
+  std::map<std::string, unsigned int> addons;
 
 };
 

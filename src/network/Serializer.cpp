@@ -35,7 +35,7 @@ size_t Serializer::write_char(char c) {
   return myConnection->write(&c, sizeof(char));
 }
 
-size_t Serializer::write_string(const string &s) {
+size_t Serializer::write_string(const std::string &s) {
 
   short size = s.length();
   size_t s1 = write_short(size);
@@ -77,7 +77,7 @@ size_t Serializer::read_char(char& c) {
   return myConnection->read(&c, sizeof(char));
 }
 
-size_t Serializer::read_string(string& s) {
+size_t Serializer::read_string(std::string& s) {
 
   short size;
   size_t s1 = read_short(size);
@@ -128,7 +128,7 @@ const Serializer& Serializer::operator << (char c) {
   return *this;
 }
 
-const Serializer& Serializer::operator << (const string &s) {
+const Serializer& Serializer::operator << (const std::string &s) {
 
   write_string(s);
   return *this;
@@ -168,7 +168,7 @@ const Serializer& Serializer::operator >> (char& c) {
   return *this;
 }
 
-const Serializer& Serializer::operator >> (string& s) {
+const Serializer& Serializer::operator >> (std::string& s) {
 
   read_string(s);
   return *this;

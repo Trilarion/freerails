@@ -32,7 +32,7 @@ class FileConnection: public Connection {
   bool endOfFile();
 
  private:
-  fstream *file;
+  std::fstream *file;
   Mode mode;
 
 };

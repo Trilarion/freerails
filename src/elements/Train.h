@@ -6,7 +6,7 @@
 #ifndef __TRAIN_H__
 #define __TRAIN_H__
 
-#include <vector.h>
+#include <vector>
 
 #include "Wagon.h"
 #include "TrainInfo.h"
@@ -41,7 +41,7 @@ class Train : public GameElement
     /** Return type of this element (RTTI_TRAIN) */
     virtual int rtti() { return RTTI_TRAIN; };
   private:
-    vector<Wagon*> wagons;
+    std::vector<Wagon*> wagons;
     TrainInfo* info;
 };
 

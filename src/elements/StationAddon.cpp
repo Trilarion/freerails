@@ -17,7 +17,7 @@
 
 #include "StationAddon.h"
 
-StationAddon::StationAddon(string file) {
+StationAddon::StationAddon(std::string file) {
   // TODO configuration file...
   // Just some data for now
   addons["Restaurant"]=1900;
@@ -29,9 +29,9 @@ StationAddon::StationAddon(string file) {
 StationAddon::~StationAddon(){
 }
 
-vector<string> StationAddon::getAvailable(unsigned int year) {
-  vector<string> availAddons;
-  for(map<string, unsigned int>::iterator It = addons.begin(); It != addons.end(); It++)
+std::vector<std::string> StationAddon::getAvailable(unsigned int year) {
+  std::vector<std::string> availAddons;
+  for(std::map<std::string, unsigned int>::iterator It = addons.begin(); It != addons.end(); It++)
     if(year >= (*It).second) availAddons.push_back((*It).first);
   return availAddons;
 }

@@ -30,7 +30,7 @@ private:
 
   int typeID;
   
-  map<long int, GameElement*> elementMap;
+  std::map<long int, GameElement*> elementMap;
 
 };
 

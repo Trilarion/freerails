@@ -22,7 +22,7 @@ void Controller::addGameElement (GameElement* _element) {
 
 GameElement* Controller::getGameElement (long int _elementID) {
 
-  map<long int, GameElement*>::iterator it;
+  std::map<long int, GameElement*>::iterator it;
   it = elementMap.find(_elementID);
   if ( it != elementMap.end())
     return (*it).second;

@@ -20,7 +20,7 @@
 #include "GameController.h"
 
 Station::Station(GameController* c, Player* p, char* n, Size s, char* t, StationAddon* sA)
-       : GameElement(c, p, t) {
+       : GameElement(p, 2) {
   size = s;
   name = n;
   stationAddon = sA;
@@ -30,26 +30,25 @@ Station::Station(GameController* c, Player* p, char* n, Size s, char* t, Station
 Station::~Station(){
 }
 
-void Station::addAddon(string addon) {
+void Station::addAddon(std::string addon) {
   // Not testing if addon is legal, should be OK ??
   addons[addon] = true;
 
 }
 
-void Station::removeAddon(string addon) {
+void Station::removeAddon(std::string addon) {
   // Not testing if addon is legal, should be OK ??
   addons[addon] = false;
 }
 
-bool Station::hasAddon(string addon) {
+bool Station::hasAddon(std::string addon) {
   if(addons.count(addon) == 0) return false;
   else return addons[addon];
 }
 
-map<string, bool> Station::giveAddons() {
-  vector<string> availAddons = stationAddon->getAvailable(year);
+std::map<std::string, bool> Station::giveAddons() {
+  std::vector<std::string> availAddons = stationAddon->getAvailable(year);
   for(int i = 0; i != availAddons.size(); i++)
     if(addons.count(availAddons[i]) == 0) addons[availAddons[i]] == false;
   return addons;
 }
-

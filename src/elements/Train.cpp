@@ -6,7 +6,7 @@
 
 #include "GameController.h"
 
-Train::Train(GameController* c, TrainInfo* i, Player* p) : GameElement(c, p, "")
+Train::Train(GameController* c, TrainInfo* i, Player* p) : GameElement(p, 3)
 {
   info = i;
 }

@@ -54,17 +54,17 @@ public:
   /** Adds a station addon
     * @warning There can only be one type of each addon
     * @param addon Addon to the station */
-  void addAddon(string addon);
+  void addAddon(std::string addon);
   /** Removes a station addon
     * @param addon Addon of the station */
-  void removeAddon(string addon);
+  void removeAddon(std::string addon);
   /** Check whether a station addon is built
     * @param addon Addon of the station */
-  bool hasAddon(string addon);
+  bool hasAddon(std::string addon);
   /** Gives all the possible addons.
     * This is only usefull for the UI when building/removing addons
     * @return Map with addon as key, true if build as value */
-  map<string, bool> giveAddons();
+  std::map<std::string, bool> giveAddons();
 
   /** The current year
     * @warning Just temporary, must be done with the GameController??
@@ -81,11 +81,11 @@ private:
   Size size;
   /** Vector containing all the possible station addons
     * @warning They don't have to be available right now, but may be eventually */
-  vector<string> allAddons;
+  std::vector<std::string> allAddons;
   /** Map containing all station addons
     * Value is true if built.
     * @warning Value is not really used except for giveAddons() */
-  map<string, bool> addons;
+  std::map<std::string, bool> addons;
 };
 
 #endif
