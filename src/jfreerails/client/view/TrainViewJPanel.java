@@ -179,7 +179,7 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         }
     }
 
-    public void listUpdated(KEY key, int index) {
+    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         if (showingOrder) {
             if (KEY.TRAIN_SCHEDULES == key && this.scheduleID == index) {
                 this.display(this.trainNumber, this.scheduleOrderNumber);
@@ -191,9 +191,9 @@ public class TrainViewJPanel extends JPanel implements View, ListCellRenderer,
         }
     }
 
-    public void itemAdded(KEY key, int index) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
     }
 
-    public void itemRemoved(KEY key, int index) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
     }
 }

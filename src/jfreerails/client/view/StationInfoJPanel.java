@@ -5,6 +5,7 @@
  */
 
 package jfreerails.client.view;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -16,6 +17,8 @@ import jfreerails.move.ListMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -319,5 +322,16 @@ implements MoveReceiver, View {
         }
         mapCursor = cursor;
     }
-    
+	    
+    private FreerailsSerializable lastCargoBundle = null;
+	
+	protected void paintComponent(Graphics g) {
+		/* We need to update if the cargo bundle has changed.*/
+		FreerailsPrincipal playerPrincipal = this.modelRoot.getPlayerPrincipal();
+		FreerailsSerializable currentCargoBundle = w.get(KEY.CARGO_BUNDLES, this.cargoBundleIndex, playerPrincipal);
+		if(lastCargoBundle != currentCargoBundle){
+			this.display();
+		}
+		super.paintComponent(g);
+	}
 }

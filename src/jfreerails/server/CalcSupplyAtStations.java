@@ -99,19 +99,19 @@ public class CalcSupplyAtStations implements WorldListListener {
         return station;
     }
 
-    public void listUpdated(KEY key, int index) {
+    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         if (key == KEY.STATIONS) {
             this.doProcessing();
         }
     }
 
-    public void itemAdded(KEY key, int index) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
         if (key == KEY.STATIONS) {
             this.doProcessing();
         }
     }
 
-    public void itemRemoved(KEY key, int index) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
         if (key == KEY.STATIONS) {
             this.doProcessing();
         }

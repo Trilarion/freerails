@@ -21,12 +21,14 @@ import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
+import jfreerails.world.top.WorldListListener;
 import jfreerails.world.track.FreerailsTile;
 
 
@@ -38,7 +40,7 @@ import jfreerails.world.track.FreerailsTile;
  *
  * @author  lindsal8
  */
-public class DialogueBoxController {
+public class DialogueBoxController implements WorldListListener{
     private JButton closeButton = new JButton("Close");
     private SelectEngineJPanel selectEngine;
     private MyGlassPanel glassPanel;
@@ -90,6 +92,7 @@ public class DialogueBoxController {
     public void setup(ReadOnlyWorld w, ViewLists vl,
         MoveChainFork moveChainFork, UntriedMoveReceiver mr, MapCursor mapCursor) {
         moveReceiver = mr;
+        moveChainFork.addListListener(this);  //When a new train gets built, we show the train info etc
 
         if (w == null)
             throw new NullPointerException();
@@ -113,7 +116,7 @@ public class DialogueBoxController {
         // setup the supply and demand at station dialogue.
         stationInfo = new StationInfoJPanel();
         stationInfo.setup(modelRoot, this.closeCurrentDialogue);
-        moveChainFork.addSplitMoveReceiver(stationInfo);
+        moveChainFork.addSplitMoveReceiver(stationInfo);       
         stationInfo.setMapCursor(mapCursor);
 
         // setup the 'show controls' dialogue
@@ -370,4 +373,27 @@ public class DialogueBoxController {
             this.showTerrainInfo(x, y);
         }
     }
+
+	public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
+		//do nothing
+	}
+
+	public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
+		/* Fix for: 
+		 * 910138 After building a train display train orders 
+		 * 910143 After building station show supply and demand 
+		 */
+		boolean rightPrincipal = principal.equals(this.modelRoot.getPlayerPrincipal());
+		if(KEY.TRAINS == key && rightPrincipal){			
+			this.showTrainOrders(index);
+		}else if(KEY.STATIONS == key && rightPrincipal){
+			this.showStationInfo(index);			
+		}		
+	}
+
+	public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
+		//do nothing
+	}
+
+	
 }

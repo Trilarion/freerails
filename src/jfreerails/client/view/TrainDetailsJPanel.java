@@ -121,7 +121,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         this.jLabel1.setText(s);
     }
         
-	public void listUpdated(KEY key, int index) {
+	public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
 		
 		if(KEY.TRAINS == key && index == trainNumber){
 			//The train has been updated.
@@ -130,15 +130,15 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
 			//The train's cargo has changed.
 			this.displayTrain(this.trainNumber);
 		}			
-		trainViewJPanel1.listUpdated(key, index);
+		trainViewJPanel1.listUpdated(key, index,p);
 	}
 
-	public void itemAdded(KEY key, int index) {
-		trainViewJPanel1.itemAdded(key, index);
+	public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
+		trainViewJPanel1.itemAdded(key, index,p);
 	}
 
-	public void itemRemoved(KEY key, int index) {
-	    trainViewJPanel1.itemRemoved(key, index);
+	public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
+	    trainViewJPanel1.itemRemoved(key, index,p);
 	}
                 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,5 +1,6 @@
 package jfreerails.move;
 
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.common.FreerailsSerializable;
 
@@ -11,20 +12,24 @@ public interface ListMove extends Move {
     /**
      * @return the type of object which was changed
      */
-    public KEY getKey();
+    KEY getKey();
 
     /**
      * @return the old item or null if not any.
      */
-    public FreerailsSerializable getBefore();
+    FreerailsSerializable getBefore();
 
     /**
      * @return the new item or null if not any.
      */
-    public FreerailsSerializable getAfter();
+    FreerailsSerializable getAfter();
 
     /**
      * @return the index of the item which changed.
      */
-    public int getIndex();
+    int getIndex();
+    
+    FreerailsPrincipal getPrincipal();
+    
+    
 }

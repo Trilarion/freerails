@@ -512,18 +512,18 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         this.modelRoot.getReceiver().processMove(m);        
     }
     
-    public void listUpdated(KEY key, int index) {
+    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         if(KEY.TRAIN_SCHEDULES == key && this.scheduleID == index){
             listModel.fireRefresh();
             enableButtons();
         }
     }
     
-    public void itemAdded(KEY key, int index) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
         //do nothing.
     }
     
-    public void itemRemoved(KEY key, int index) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
         //do nothing.
     }
     

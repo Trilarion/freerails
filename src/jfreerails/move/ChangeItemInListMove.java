@@ -126,4 +126,7 @@ public abstract class ChangeItemInListMove implements ListMove {
     public FreerailsSerializable getBefore() {
         return before;
     }
+	public FreerailsPrincipal getPrincipal() {
+		return principal;
+	}
 }

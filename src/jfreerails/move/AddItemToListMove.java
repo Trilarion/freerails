@@ -120,4 +120,7 @@ public class AddItemToListMove implements ListMove {
 
         return sb.toString();
     }
+	public FreerailsPrincipal getPrincipal() {
+		return principal;
+	}
 }

@@ -485,7 +485,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             }
             if(m instanceof ListMove){
                 ListMove lm = (ListMove)m;
-                trainDialogueJPanel.listUpdated(lm.getKey(), lm.getIndex());
+                trainDialogueJPanel.listUpdated(lm.getKey(), lm.getIndex(), lm.getPrincipal());
             }
             
         }

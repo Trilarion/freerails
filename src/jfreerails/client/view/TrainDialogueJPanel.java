@@ -149,15 +149,15 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
     
-    public void listUpdated(KEY key, int index) {
-        newTrainScheduleJPanel1.listUpdated(key, index);
-        trainDetailsJPanel1.listUpdated(key, index);
+    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
+        newTrainScheduleJPanel1.listUpdated(key, index,p);
+        trainDetailsJPanel1.listUpdated(key, index, p);
     }
     
-    public void itemAdded(KEY key, int index) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
     }
 
-    public void itemRemoved(KEY key, int index) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
     }
     
      
