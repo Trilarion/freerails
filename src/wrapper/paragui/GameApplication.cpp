@@ -60,7 +60,7 @@ int GameApplication::runEngine(void* data)
 {
 
   GameApplication* object = static_cast<GameApplication*>(data);
-  while (object->guiEngine->getGameState()<GuiEngine::Stopping) {
+  while (object->guiEngine->getGameState() < GuiEngine::Stopping) {
     object->guiEngine->checkNet();
     object->guiEngine->checkNext(SDL_GetTicks());
     SDL_Delay(10);
@@ -149,7 +149,7 @@ int GameApplication::run() {
     }
     if (result>0)
     {
-      timer = new GameTimerWidget(&mw, guiEngine, panel);
+      timer = new GameTimerWidget(&mw, guiEngine, panel, mapView);
 
       SDL_Thread* thread2 = SDL_CreateThread(GameApplication::runEngine, this);
 

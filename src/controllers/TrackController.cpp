@@ -197,7 +197,7 @@ bool TrackController::connectIsBuildable(unsigned int connect)
       case TrackGoNorth | TrackGoEast | TrackGoSouth | TrackGoWest:
       case TrackGoNorthEast | TrackGoSouthEast | TrackGoSouthWest | TrackGoNorthWest:
 
-/*      case TrackGoNorth | TrackGoEast:
+      case TrackGoNorth | TrackGoEast:
       case TrackGoNorthEast | TrackGoSouthEast:
       case TrackGoEast | TrackGoSouth:
       case TrackGoSouthEast | TrackGoSouthWest:
@@ -221,7 +221,7 @@ bool TrackController::connectIsBuildable(unsigned int connect)
       case TrackGoSouthEast | TrackGoSouthWest | TrackGoNorthWest:
       case TrackGoNorth | TrackGoSouth | TrackGoWest:
       case TrackGoNorthEast | TrackGoSouthWest | TrackGoNorthWest:
-*/
+
         status = true;
         break;
       default:

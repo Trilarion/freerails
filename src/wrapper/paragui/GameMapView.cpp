@@ -57,6 +57,11 @@ Base2DMapView(_guiEngine) {
     PG_Label* l = new PG_Label(view, PG_Rect(x*30-30,y*30+30,90,20),(*it)->getName().c_str());
     l->SetAlignment(PG_TA_CENTER);
   }
+
+  selected = false;
+  selectedX = -1;
+  selectedY = -1;
+
 }
 
 GameMapView::~GameMapView() {
@@ -76,6 +81,7 @@ void GameMapView::drawMapPixmap(int mapX, int mapY) {
   MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
   if (field==NULL) return;
   MapField::FieldType type=field->getType();
+  
   switch (type)
   { case MapField::grass:
     {
@@ -237,9 +243,9 @@ void GameMapView::drawElementsPixmap(int mapX, int mapY) {
 void GameMapView::drawTrackPixmap(int mapX, int mapY) {
 
   MapField* field = guiEngine->getWorldMap()->getMapField(mapX,mapY);
-  if (field==NULL) return;
+  if (field == NULL) return;
   Track* track = field->getTrack();
-  if (track==NULL) return;
+  if (track == NULL) return;
   drawTrackPixmap(mapX, mapY, track);  
 }
 
@@ -324,6 +330,7 @@ void GameMapView::drawStationPixmap(int mapX, int mapY, Station* station) {
 void GameMapView::drawTrackPixmap(int mapX, int mapY, Track* track) {
 
   int tilesetX, tilesetY;
+
   switch (track->getConnect())
   {
     case TrackGoNorth:
@@ -417,10 +424,11 @@ void GameMapView::drawTrackPixmap(int mapX, int mapY, Track* track) {
       tilesetX=(1)*2*30+15;
       tilesetY=6*30+15;
     break;
-    case TrackGoEast|TrackGoWest|TrackGoSouthWest:
+    
+  case TrackGoEast|TrackGoWest|TrackGoSouthWest:
       tilesetX=(2)*2*30+15;
       tilesetY=6*30+15;
-    break;
+      break;
     case TrackGoWest|TrackGoSouthEast|TrackGoNorthWest:
       tilesetX=(3)*2*30+15;
       tilesetY=6*30+15;
@@ -474,16 +482,97 @@ void GameMapView::drawTrackPixmap(int mapX, int mapY, Track* track) {
       tilesetX=(7)*2*30+15;
       tilesetY=8*30+15;
     break;
-
     case TrackGoNorth|TrackGoEast|TrackGoSouth|TrackGoWest:
       tilesetX=(0)*2*30+15;
       tilesetY=10*30+15;
     break;
-
-    case TrackGoNorthEast|TrackGoSouthEast|TrackGoSouthWest|TrackGoNorthWest:
+  case TrackGoNorthEast|TrackGoSouthEast|TrackGoSouthWest|TrackGoNorthWest:
       tilesetX=(1)*2*30+15;
       tilesetY=10*30+15;
-    break;
+      break;
+     
+  case TrackGoNorth|TrackGoEast:
+      tilesetX=(0)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+  case TrackGoNorth|TrackGoWest:
+      tilesetX=(6)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+  case TrackGoSouth|TrackGoEast:
+      tilesetX=(2)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+  case TrackGoSouth|TrackGoWest:
+      tilesetX=(4)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+  case TrackGoNorth|TrackGoEast|TrackGoWest:
+      tilesetX=(0)*2*30+15;
+      tilesetY=16*30+15;
+      break;
+  case TrackGoSouth|TrackGoEast|TrackGoWest:
+      tilesetX=(4)*2*30+15;
+      tilesetY=16*30+15;
+      break;
+  case TrackGoNorth|TrackGoSouth|TrackGoWest:
+      tilesetX=(6)*2*30+15;
+      tilesetY=16*30+15;
+      break;
+  case TrackGoNorth|TrackGoSouth|TrackGoEast:
+      tilesetX=(2)*2*30+15;
+      tilesetY=16*30+15;
+      break;
+
+  case TrackGoNorthEast|TrackGoSouthEast:
+      tilesetX=(1)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+  case TrackGoNorthWest|TrackGoSouthWest:
+      tilesetX=(5)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+  case TrackGoSouthWest|TrackGoSouthEast:
+      tilesetX=(3)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+  case TrackGoNorthWest|TrackGoNorthEast:
+      tilesetX=(7)*2*30+15;
+      tilesetY=12*30+15;
+      break;
+
+  case TrackGoNorthEast|TrackGoNorth:
+      tilesetX=(0)*2*30+15;
+      tilesetY=14*30+15;
+      break;
+  case TrackGoNorthEast|TrackGoEast:
+      tilesetX=(1)*2*30+15;
+      tilesetY=14*30+15;
+      break;
+  case TrackGoSouthEast|TrackGoEast:
+      tilesetX=(2)*2*30+15;
+      tilesetY=14*30+15;
+      break;
+  case TrackGoSouthEast|TrackGoSouth:
+      tilesetX=(3)*2*30+15;
+      tilesetY=14*30+15;
+      break;
+  case TrackGoSouthWest|TrackGoSouth:
+      tilesetX=(4)*2*30+15;
+      tilesetY=14*30+15;
+      break;
+  case TrackGoSouthWest|TrackGoWest:
+      tilesetX=(5)*2*30+15;
+      tilesetY=14*30+15;
+      break;
+  case TrackGoNorthWest|TrackGoWest:
+      tilesetX=(6)*2*30+15;
+      tilesetY=14*30+15;
+      break;
+  case TrackGoNorthWest|TrackGoNorth:
+      tilesetX=(7)*2*30+15;
+      tilesetY=14*30+15;
+      break;
 
     default:
       tilesetX=(7)*2*30+15;
@@ -491,6 +580,8 @@ void GameMapView::drawTrackPixmap(int mapX, int mapY, Track* track) {
     break;
   }
   drawPixmap(trackImage, tilesetX, tilesetY, mapX, mapY);
+
+  
   if (track->getConnect() & TrackGoNorthEast)
   {
     drawPixmap(trackImage, 3*30+15, 2*30+15, mapX+1, mapY);
@@ -507,6 +598,7 @@ void GameMapView::drawTrackPixmap(int mapX, int mapY, Track* track) {
   {
     drawPixmap(trackImage, 5*30+15, 2*30+15, mapX-1, mapY);
   }
+  
 }
 
 void GameMapView::drawPixmap(SDL_Surface* pixmap, int tilesetX, int tilesetY, int mapX, int mapY) {
@@ -526,6 +618,62 @@ void GameMapView::drawTilesPixmap(int tilesetPosX, int tilesetPosY, int mapX, in
   drawPixmap(tilesImage, tilesetPosX*30, tilesetPosY*30, mapX, mapY);
 }
 
+void GameMapView::drawSelected(int mapX, int mapY) {
+
+    if(!selected)
+	return;
+    
+    selected = false;
+    regenerateTile(selectedX, selectedY);
+    selected = true;
+
+    selectedX = mapX;
+    selectedY = mapY;
+
+    int viewX = selectedX * 30 - viewPos.x;
+    int viewY = selectedY * 30 - viewPos.y;
+
+    /*
+    std::cout << "view: " << viewPos.x <<   " " << viewPos.y << std::endl;
+    std::cout << "view: " << viewX <<   " " << viewY << std::endl;
+    */
+    if((viewX < 0) || (viewX > 630) ||
+       (viewY < 0) || (viewY > 600))
+	return;
+
+    /* std::cout << "DRAWING SELECTED" << std::endl; */
+
+    /* vertical line */
+    SDL_Rect r;
+    r.x = viewX;
+    r.y = viewY;
+    r.w = 1;
+    r.h = 30;
+    SDL_FillRect(imageSurface, &r, 0);
+
+    /* vertical line */
+    r.x = viewX + 30;
+    r.y = viewY;
+    r.w = 1;
+    r.h = 30;
+    SDL_FillRect(imageSurface, &r, 0);
+
+    /* horizontal line */
+    r.x = viewX;
+    r.y = viewY;
+    r.w = 30;
+    r.h = 1;
+    SDL_FillRect(imageSurface, &r, 0);
+
+    /* horizontal line */
+    r.x = viewX;
+    r.y = viewY + 30;
+    r.w = 30;
+    r.h = 1;
+    SDL_FillRect(imageSurface, &r, 0);
+
+}
+
 void GameMapView::drawTrainPixmap(int mapX, int mapY) {
   drawPixmap(trainImage, 0, 0, mapX, mapY);
 }
@@ -542,7 +690,7 @@ void GameMapView::setStationType(Station::Size type) {
 
 void GameMapView::eventMouseLeave() {
 
-  regenerateTile(mouseOldMapX,mouseOldMapY);
+    /*  regenerateTile(mouseOldMapX,mouseOldMapY); */
 }
 
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
@@ -553,23 +701,34 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
     int dir;  
     screen2map(button->x+viewPos.x, button->y+viewPos.y, &mapx, &mapy, &dir);
 
+    selected = true;
+
     switch (mouseType) {
-  
-      case buildStation:
-        guiEngine->buildStation(mapx,mapy,stationType);
-      break;
-      case buildTrack:
-        guiEngine->buildTrack(mapx,mapy,dir);
-	guiEngine->getOtherConnectionSide(&mapx,&mapy,&dir);
-	guiEngine->buildTrack(mapx,mapy,dir);
-      break;
-      case buildTrain:
+	
+    case buildStation:
+	guiEngine->buildStation(mapx,mapy,stationType);
+	break;
+    case buildTrack:
+	if(adjacentTile(mapx, mapy, &dir)){
+	    /* std::cout << "ADJACENT TILE " << 
+		selectedX << " " << selectedY << "    " <<
+		mapx << " " << mapy << std::endl; */
+	    if(guiEngine->buildTrack(selectedX,selectedY,dir)) {
+		unsigned int mx,my;
+		guiEngine->getOtherConnectionSide(&mx,&my,&dir);
+		guiEngine->buildTrack(mx,my,dir);
+	    }
+	}
+	break;
+    case buildTrain:
         guiEngine->buildTrain(mapx,mapy);
-      break;
+	break;
     default:
-      return false;
-      break;
+	drawSelected(mapx, mapy);
+	return false;
+	break;
     }
+    drawSelected(mapx, mapy);
   }
   return false;
 }
@@ -596,6 +755,10 @@ void GameMapView::regenerateTile(int x, int y)
       drawTrackPixmap(x+x1, y+y1);
     }
   }
+
+  if(selected)
+      drawSelected(selectedX, selectedY);
+  
 }
 
 void GameMapView::showTrack(int x, int y, unsigned int dir) {
@@ -647,8 +810,8 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
   unsigned int mapx, mapy;
   int dir;
   
-  regenerateTile(mouseOldMapX,mouseOldMapY);
-
+  /* regenerateTile(mouseOldMapX,mouseOldMapY); */
+  /*
   mousex = motion->x + viewPos.x;  // realScreenPosX
   mousey = motion->y + viewPos.y;  // realScreenPosY
   
@@ -680,6 +843,7 @@ bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
       return false;
     break;
   }
+  */
   return true;
 }
 
@@ -744,6 +908,8 @@ void GameMapView::redrawMap(int x, int y, int w, int h) {
   int startXsurface = - (x);
   int startYsurface = - (y);
 
+  std::cout << "REDRAWING" << std::endl; 
+
   // First Map & Buildings  
   for (int y1=0;y1<=countY;y1++)
   {
@@ -762,6 +928,10 @@ void GameMapView::redrawMap(int x, int y, int w, int h) {
       drawTrackPixmap(x1+startXmap, y1+startYmap);
     }
   }
+  
+  if(selected)
+      drawSelected(selectedX, selectedY);
+  
 }
 
 void GameMapView::writeCities() {
@@ -777,4 +947,41 @@ void GameMapView::writeCities() {
     l->SetAlignment(PG_TA_CENTER);
     l->Show();
   }
+}
+
+bool GameMapView::adjacentTile(int mapX, int mapY, int *dir) {
+
+    if(selected){
+	int x = selectedX - mapX;
+	int y = selectedY - mapY;
+
+	if(((x <= 1) && (x >= -1)) &&
+	   ((y <= 1) && (y >= -1))){
+
+	    if(x == 0){
+		if(y == 0)
+		    return false;
+		else if(y == 1)
+		    *dir = 1; /* NORTH */
+		else 
+		    *dir = 5; /* SOUTH */
+	    }else if(x == 1){
+		if(y == 0)
+		    *dir = 7; /* WEST */
+		else if(y == 1)
+		    *dir = 8; /* NORTHWEST */
+		else
+		    *dir = 6; /* SOUTHWEST */
+	    }else{ 
+		if(y == 0)
+		    *dir = 3; /* EAST */
+		else if(y == 1)
+		    *dir = 2; /* NORTHEAST */
+		else
+		    *dir = 4; /* SOUTHEAST */
+	    }
+	    return true;
+	}
+    }
+    return false;
 }

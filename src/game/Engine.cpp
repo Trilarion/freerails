@@ -133,7 +133,7 @@ void Engine::checkNext(int msec)
       lastmsec = msec;
       frame++;
       process();
-//      std::cerr << frame << std::endl;
+      /* std::cerr << frame << std::endl; */
     }
   }
   while (gui2engine->hasMoreElements())
@@ -147,7 +147,7 @@ void Engine::checkNext(int msec)
 
 void Engine::process()
 {
-  std::cerr << ".";
+    /*  std::cerr << "."; */
   if(isServer)
   {
   }
@@ -155,18 +155,18 @@ void Engine::process()
 
 void Engine::processMsg(Message* msg)
 {
-  std::cerr << "\nin processMsg(Message*)\n";
+    /*  std::cerr << "\nin processMsg(Message*)\n"; */
   if (gameState == Running)
   {
     switch (msg->getMsgType())
     {
       case Message::addElement:
-        std::cerr << "\nadd element\n";
+	  /*        std::cerr << "\nadd element\n"; */
         addElementToGame(msg);
 //	if (msg->getData() != NULL) delete (GameElement*)msg->getData();
       break;
       case Message::stateOfGame:
-        std::cerr << "change state of the game";
+	  /*        std::cerr << "change state of the game"; */
         changeStateOfGame(msg);
 //	if (msg->getData() != NULL) delete (GameState *)msg->getData();
       break;

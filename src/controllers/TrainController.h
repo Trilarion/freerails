@@ -10,6 +10,7 @@
 #include "Station.h"
 #include "Train.h"
 #include "TrainInfo.h"
+#include "Wagon.h"
 #include "WorldMap.h"
 
 class TrainController : public Controller

@@ -87,12 +87,14 @@ int Base2DMapView::get3DPixmapPos(int x, int y, MapField::FieldType type)
 
 void Base2DMapView::screen2map(int screenX, int screenY, unsigned int* mapX, unsigned int* mapY, int* dir)
 {
+    /*
   int helpx, helpy;
   helpx=screenX % 30;// for calculate the direction on the tile
   helpy=screenY % 30;
+    */
   *mapX = screenX / 30;  // realMapPosX
   *mapY = screenY / 30;  // realMapPosY
-
+  /*
   // now calculate direction
   if (helpx<10) {
     if (helpy<10) { *dir=8; }
@@ -109,5 +111,6 @@ void Base2DMapView::screen2map(int screenX, int screenY, unsigned int* mapX, uns
     else if (helpy<20) { *dir=3; }
     else *dir=4;
   };
+  */
   // End of to be replace
 }

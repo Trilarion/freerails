@@ -49,7 +49,7 @@ void TrainController::removeGameElement(long int _elementID)
 
 void TrainController::trainDoBuild(Train* train)
 {
-  std::cerr << "BuildTrain: x, y: " << train->getPosX() << ":" << train->getPosY() << std::endl;
   Controller::addGameElement(train);
+  train->addWagon(new Wagon(Wagon::Mail, NULL));
 }
 

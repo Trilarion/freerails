@@ -32,6 +32,8 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     void setMouseType(MouseType type);
     void setStationType(Station::Size type);
 
+    void regenerateTile(int x, int y);
+
   private:
     SDL_Surface* tilesImage;
     SDL_Surface* trackImage;
@@ -49,6 +51,11 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     int mouseOldMapX;
     int mouseOldMapY;
     
+    bool selected;
+    int selectedX;
+    int selectedY;
+	
+
     PG_Point viewPos;
     
     void drawMapPixmap(int mapX, int mapY);
@@ -60,8 +67,9 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     void drawTrainPixmap(int mapX, int mapY);
     void drawPixmap(SDL_Surface* pixmap, int tilesetX, int tilesetY, int mapX, int mapY);
     void drawTilesPixmap(int tilesetPosX, int tilesetPosY, int mapX, int mapY);
-    
-    void regenerateTile(int x, int y); // x and y are the position of the tile on which the mouse is now.
+
+    void drawSelected(int mapX, int mapY);
+ 
     void showTrack(int x, int y, unsigned int dir);
 
     void eventMouseLeave();
@@ -76,6 +84,8 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     
     void writeCities();
     void redrawMap(int x, int y, int w, int h);
+
+    bool adjacentTile(int mapX, int mapY, int *dir);
 
 };
 
