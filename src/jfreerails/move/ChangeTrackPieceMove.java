@@ -100,7 +100,11 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         TerrainType tt = (TerrainType)w.get(KEY.TERRAIN_TYPES, terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getTerrainCategory())) {
-            return MoveStatus.moveFailed("Can't build track on water!");
+            String thisTrackType = newTrackPiece.getTrackRule().getTypeName();
+            String terrainCategory = tt.getTerrainCategory().toLowerCase();
+
+            return MoveStatus.moveFailed("Can't build " + thisTrackType +
+                " on " + terrainCategory);
         }
 
         return MoveStatus.MOVE_OK;

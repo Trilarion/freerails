@@ -3,6 +3,7 @@ package jfreerails.controller;
 import java.awt.Point;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
+import jfreerails.move.MoveStatus;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.top.KEY;
@@ -14,7 +15,7 @@ import jfreerails.world.track.TrackRule;
 final public class TrackMoveProducer {
     private TrackRule trackRule;
     private ReadOnlyWorld w;
-    private MoveReceiver moveReceiver;
+    private UntriedMoveReceiver moveTester;
     public final static int BUILD_TRACK = 1;
     public final static int REMOVE_TRACK = 2;
     public final static int UPGRADE_TRACK = 3;
@@ -26,43 +27,31 @@ final public class TrackMoveProducer {
     /** This generates the transactions - the charge - for the track being built.*/
     private TrackMoveTransactionsGenerator transactionsGenerator;
 
-    public MoveReceiver getMoveReceiver() {
-        return moveReceiver;
-    }
-
-    public void setMoveReceiver(MoveReceiver moveReceiver) {
-        this.moveReceiver = moveReceiver;
-    }
-
-    public boolean buildTrack(Point from, OneTileMoveVector trackVector) {
-        if (trackBuilderMode == BUILD_TRACK) {
-            //trackBuilder.buildTrack(from, trackVector, trackRule);
-            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
-                    trackVector, trackRule, w);
-
-            moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-
-            return true;
-        }
-
-        if (trackBuilderMode == REMOVE_TRACK) {
-            //trackBuilder.removeTrack(from, trackVector);
-            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from,
-                    trackVector, w);
-            moveReceiver.processMove(transactionsGenerator.addTransactions(move));
-
-            return true;
-        }
-
+    public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
         if (trackBuilderMode == UPGRADE_TRACK) {
             Point point = new Point(from.x + trackVector.getDx(),
                     from.y + trackVector.getDy());
-            upgradeTrack(point, trackRule);
 
-            return true;
-        } else {
-            return false;
+            return upgradeTrack(point, trackRule);
         }
+
+        ChangeTrackPieceCompositeMove move = null;
+
+        if (trackBuilderMode == BUILD_TRACK) {
+            move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
+                    trackVector, trackRule, w);
+        } else if (trackBuilderMode == REMOVE_TRACK) {
+            move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from,
+                    trackVector, w);
+        } else {
+            throw new IllegalArgumentException(String.valueOf(trackBuilderMode));
+        }
+
+        Move moveAndTransaction = transactionsGenerator.addTransactions(move);
+        MoveStatus ms = moveTester.tryDoMove(moveAndTransaction);
+        moveTester.processMove(moveAndTransaction);
+
+        return ms;
     }
 
     public boolean upgradeTrack(Point point) {
@@ -120,21 +109,24 @@ final public class TrackMoveProducer {
         this.w = world;
     }
 
-    public TrackMoveProducer(ReadOnlyWorld world, MoveReceiver moveReceiver) {
+    public TrackMoveProducer(ReadOnlyWorld world,
+        UntriedMoveReceiver moveReceiver) {
         if (null == world || null == moveReceiver) {
             throw new NullPointerException();
         }
 
-        this.moveReceiver = moveReceiver;
+        this.moveTester = moveReceiver;
         this.w = world;
         this.trackRule = (TrackRule)w.get(KEY.TRACK_RULES, 0);
         transactionsGenerator = new TrackMoveTransactionsGenerator(world);
     }
 
-    private void upgradeTrack(Point point, TrackRule trackRule) {
+    private MoveStatus upgradeTrack(Point point, TrackRule trackRule) {
         TrackPiece before = (TrackPiece)w.getTile(point.x, point.y);
         TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration());
         Move move = UpgradeTrackMove.generateMove(before, after, point);
-        moveReceiver.processMove(transactionsGenerator.addTransactions(move));
+        moveTester.processMove(transactionsGenerator.addTransactions(move));
+
+        return moveTester.tryDoMove(move);
     }
 }

@@ -3,15 +3,15 @@ package jfreerails.client.top;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import jfreerails.client.top.GUIClient;
 import jfreerails.client.view.CursorEvent;
 import jfreerails.client.view.CursorEventListener;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.MapViewJComponent;
 import jfreerails.client.view.ModelRoot;
-import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.TrackMoveProducer;
+import jfreerails.controller.UncommittedMoveReceiver;
+import jfreerails.move.MoveStatus;
 
 
 public class UserInputOnMapController implements CursorEventListener {
@@ -29,7 +29,13 @@ public class UserInputOnMapController implements CursorEventListener {
 
     public void cursorOneTileMove(CursorEvent ce) {
         if (null != trackBuilder) {
-            trackBuilder.buildTrack(ce.oldPosition, ce.vector);
+            MoveStatus ms = trackBuilder.buildTrack(ce.oldPosition, ce.vector);
+
+            if (ms.ok) {
+                cursor.setMessage("");
+            } else {
+                cursor.setMessage(ms.message);
+            }
 
             Point tile = new Point();
 
