@@ -1,3 +1,7 @@
+Thu Jan 17 15:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o in ParaGUI let the buttons function
+o Messaged ParaGUI mailing list, cause of bug in PG_Button
+o I'm on the way to add a Track/Station on the WorldMap :-)
 Wed Jan 16 02:14:00 2002  Alexander Opitz <opi@le-bit.de>:
 o Add some Message types
 o Add in Engine reaction on some MessageTypes
