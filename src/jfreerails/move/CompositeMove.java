@@ -37,7 +37,7 @@ public class CompositeMove implements Move {
         return m_moves;
     }
 
-    CompositeMove(ArrayList movesArrayList) {
+    CompositeMove(ArrayList<Move> movesArrayList) {
         //I have used a temporary variable here to stop ConstJava complaining, LL
         Move[] moves = new Move[movesArrayList.size()];
 

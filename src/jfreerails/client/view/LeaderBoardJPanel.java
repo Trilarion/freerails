@@ -34,7 +34,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 	
 	private ActionListener m_submitButtonCallBack = null;
 	
-	private Vector values;
+	private Vector<PlayerDetails> values;
 	/**
 	 * This method initializes 
 	 * 
@@ -42,7 +42,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 	public LeaderBoardJPanel() {
 		super();
 		
-		values = new Vector();
+		values = new Vector<PlayerDetails>();
 		Random rand = new Random();
 		for(int i = 0 ; i < 5; i ++){
 		    PlayerDetails p = new PlayerDetails();

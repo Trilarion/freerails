@@ -1,3 +1,6 @@
+Nov 15, 2004 Luke
+	o Started using java 1.5 language features
+	o Updated build.xml to use 1.5 and removed 'format' and 'ConstJava' ant targets.
 Oct 27, 2004 Luke	
 	Bugs Fixed:
 	o 1054729	Can't build bridges using mouse

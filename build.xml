@@ -38,8 +38,8 @@
 				<include name="**/*.xml" />
 
 				<include name="**/*.png" />
-                                
-                                <include name="**/*.jpg" />
+
+				<include name="**/*.jpg" />
 
 				<include name="**/*.dtd" />
 
@@ -66,14 +66,14 @@
 	</target>
 
 	<target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
-		<javac destdir="${build}" fork="true" source="1.4" srcdir="${src}">
+		<javac destdir="${build}" fork="true" source="1.5" srcdir="${src}">
 			<exclude name="**/*Test.java" />
 			<exclude name="**/*TestCase.java" />
 		</javac>
 	</target>
 
 	<target depends="copydata" description="Build everything including JUnit    test-classes. Include debugging symbols" name="debugcompile">
-		<javac debug="true" destdir="${build}" fork="true" source="1.4" srcdir="${src}" />
+		<javac debug="true" destdir="${build}" fork="true" source="1.5" srcdir="${src}" classpath="jars/junit.jar"/>
 	</target>
 
 	<target depends="debugcompile" description="Run all junit tests" name="runtests">
@@ -82,6 +82,7 @@
 				<pathelement location="${build}" />
 
 				<pathelement path="${java.class.path}" />
+				<pathelement path="jars/junit.jar"/>
 			</classpath>
 
 			<formatter type="brief" usefile="no" />
@@ -122,8 +123,8 @@
 			<include name="src/jfreerails/**/*.xml" />
 
 			<include name="src/**/*.png" />
-                        
-                        <include name="src/**/*.jpg" />
+
+			<include name="src/**/*.jpg" />
 
 			<include name="src/**/*.wav" />
 
@@ -181,7 +182,7 @@
 	</target>
 
 	<target depends="mkdirs" name="javadoc" description="Generate javadoc">
-		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.4" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
+		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />
 				<exclude name="**/*Test.java" />
@@ -225,27 +226,7 @@
 	</target>
 
 
-	<!-- You can download jalopy from: http://jalopy.sourceforge.net/  -->
-	<target depends="compile" description="formats the source code files using jalopy" name="format">
-		<taskdef classname="de.hunsicker.jalopy.plugin.ant.AntPlugin" name="jalopy" />
-		<jalopy convention="freerails_code_convention.xml" history="file" historymethod="adler32">
-			<fileset dir="${src}">
-				<include name="**/*.java" />
-				<!-- Exclude forms since formatting may break the protected code regions. -->
-				<exclude name="**/*Form.java" />
-				<exclude name="jfreerails/client/view/**" />
-				<exclude name="jfreerails/launcher/**" />
-				<exclude name="**/ProgressJPanel.java" />
-				<exclude name="**/RunFreerailsJFrame.java" />
-				<exclude name="**/StartUpOptionsJPanel.java" />
-				<exclude name="**/ClientJFrame.java" />
-				<exclude name="**/DialogueBoxTester.java" />
 
-				<!-- Exclude GenerateDependenciesXmlAndHtml since line splitting makes it less readable. -->
-				<exclude name="**/GenerateDependenciesXmlAndHtml.java" />
-			</fileset>
-		</jalopy>
-	</target>
 
 	<target name="zip_website" depends="signjar">
 		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz" tarfile="website.tar.gz" />
@@ -276,139 +257,29 @@
 		<exec executable="C:\Dev\key\sign_jfreerails.bat" />
 	</target>
 
-	<!-- Requires anstatic.jar in the working directory. -->
-
-	<target name="ConstJava" depends="init" description="ConstJava based mutablility checking.">
-		<delete dir="ConstJava" />
-
-		<mkdir dir="ConstJava" />
-
-		<copy todir="ConstJava">
-			<mapper type="glob" from="*.java" to="*.javax" />
-
-			<fileset dir="${src}">
-				<include name="jfreerails/util/*.java" />
-
-				<include name="jfreerails/world/common/*.java" />
-
-				<include name="jfreerails/world/terrain/*.java" />
-				<include name="jfreerails/world/cargo/*.java" />
-				<include name="jfreerails/world/train/*.java" />
-				<include name="jfreerails/world/train/*.java" />
-				<include name="jfreerails/world/station/*.java" />
-				<include name="jfreerails/world/track/*.java" />
-				<include name="jfreerails/world/accounts/*.java" />
-				<include name="jfreerails/world/player/*.java" />
-				<include name="jfreerails/world/top/*.java" />
-				<include name="jfreerails/move/*.java" />
 
 
-				<exclude name="**/*Test.java" />
-				<exclude name="**/*TestCase.java" />
+	<target name="zip_dev" description="Zips up development environment." depends="clean">
+		<delete file="dev_jfreerails.zip" />
+		<zip destfile="dev_jfreerails.zip" defaultexcludes="no">
 
+			<fileset dir="." defaultexcludes="no">
+
+				<exclude name="**/*.class" />
+				<exclude name="**/*.gz" />
+				<exclude name="**/*.zip" />
+				<exclude name="**/*.jar" />
+				<exclude name="www/javadoc/**" />
+				<exclude name="dev_jfreerails/**" />
+				<exclude name="dist/**" />
+				<exclude name="eclipsebuild/**" />
+				<exclude name="build/**" />
+				<exclude name="**/.nbattrs" />
+				<exclude name="**/Thumbs.db" />
 			</fileset>
-		</copy>
 
-		<!-- Comment out asserts since ConstJava doesn't seem to support them. -->
-		<replace dir="ConstJava">
-			<replacefilter token="assert " value="//assert " />
-			<replacefilter token="assert(" value="//assert(" />
-			<include name="**/*.javax" />
-		</replace>
-
-
-		<!-- Tags classes as immutable, mutable classes must be explicitly excluded.-->
-		<replace dir="ConstJava">
-			<replacefilter token=" class " value=" const class " />
-			<replacefilter token="interface" value="const interface" />
-
-			<include name="jfreerails/world/common/*" />
-			<exclude name="jfreerails/world/common/FreerailsPathIterator*" />
-
-			<exclude name="jfreerails/world/common/PositionOnTrack.javax" />
-			<exclude name="jfreerails/world/common/FreerailsMutableSerializable.javax" />
-
-			<include name="jfreerails/world/terrain/*" />
-
-			<include name="jfreerails/world/cargo/*" />
-			<exclude name="jfreerails/world/cargo/MutableCargoBundle.javax" />
-
-			<include name="jfreerails/world/train/*" />
-			<exclude name="jfreerails/world/train/Schedule.javax" />
-			<exclude name="jfreerails/world/train/MutableSchedule.javax" />
-			<exclude name="jfreerails/world/train/PathWalker*" />
-			<exclude name="jfreerails/world/train/TrainPathIterator.javax" />
-			<exclude name="jfreerails/world/train/SimplePathIteratorImpl.javax" />
-
-
-			<include name="jfreerails/world/station/*.javax" />
-			<include name="jfreerails/world/track/*.javax" />
-			<include name="jfreerails/world/accounts/*.javax" />
-			<!-- bank account is mutable! -->
-			<exclude name="jfreerails/world/accounts/BankAccount.javax" />
-
-
-			<include name="jfreerails/world/player/*.javax" />
-
-			<include name="jfreerails/world/top/*.javax" />
-
-
-			<exclude name="jfreerails/world/top/World*" />
-			<exclude name="jfreerails/world/top/NonNullElements.javax" />
-			<exclude name="jfreerails/world/top/TransactionAggregator.javax" />
-			<exclude name="jfreerails/world/top/ItemsTransactionAggregator.javax" />
-			<exclude name="jfreerails/world/top/ReadOnlyWorld.javax" />
-
-
-			<include name="jfreerails/move/*.javax" />
-			<exclude name="jfreerails/move/TrackMoveTransactionsGenerator.javax" />
-
-
-		</replace>
-		<java classname="anstatic.TypeCheck" fork="true" dir="ConstJava">
-			<arg value="jfreerails/util/*.javax" />
-			<arg value="jfreerails/world/common/*.javax" />
-			<arg value="jfreerails/world/terrain/*.javax" />
-			<arg value="jfreerails/world/cargo/*.javax" />
-			<arg value="jfreerails/world/train/*.javax" />
-			<arg value="jfreerails/world/station/*.javax" />
-			<arg value="jfreerails/world/track/*.javax" />
-			<arg value="jfreerails/world/accounts/*.javax" />
-			<arg value="jfreerails/world/player/*.javax" />
-			<arg value="jfreerails/world/top/*.javax" />
-			<arg value="jfreerails/move/*.javax" />
-
-			<classpath>
-				<pathelement location="ConstJava" />
-				<pathelement path="anstatic.jar" />
-			</classpath>
-		</java>
-		
-		<delete dir="ConstJava" />
-
+		</zip>
 	</target>
-	
-	<target name = "zip_dev" description="Zips up development environment." depends ="clean">
-		<delete file="dev_jfreerails.zip"/>
-	 <zip destfile="dev_jfreerails.zip" defaultexcludes="no">
-	 	
-	 	<fileset dir="." defaultexcludes="no">
-
-	 		<exclude name="**/*.class" />
-	 		<exclude name="**/*.gz" />
-	 		<exclude name="**/*.zip" />
-	 		<exclude name="**/*.jar" />
-	 		<exclude name="www/javadoc/**" />
-	 		<exclude name="dev_jfreerails/**" />
-	 		<exclude name="dist/**" />
-	 		<exclude name="eclipsebuild/**" />
-	 		<exclude name="build/**" />
-	 		<exclude name="**/.nbattrs" />	 		
-	 		<exclude name="**/Thumbs.db" />
-	 				</fileset>
-	  
-	  </zip>
-		</target>
 
 
 </project>
