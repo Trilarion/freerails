@@ -183,8 +183,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 			int newNumberOfTrains = this.world.size( KEY.TRAINS,principal);
 			if(newNumberOfTrains != this.lastNumberOfTrains){
 				jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
-				lastNumberOfTrains = newNumberOfTrains;
-				System.out.println("New train");				
+				lastNumberOfTrains = newNumberOfTrains;								
 			}					
 		}	
 		super.paint(g);

@@ -55,18 +55,13 @@ public class ServerGameEngine implements GameModel, Runnable {
     private Vector serverAutomata;
 
     /**
-     * Number of ticks which is A Long Time for infrequently updated things.
-     * TODO Ideally we should calculate this from the calendar
-     */
-    private final static int aLongTime = 1000;
-
-    /**
      * Number of ticks since the last time we did an infrequent update
      */
     private int ticksSinceUpdate = 0;
     private long nextModelUpdateDue = System.currentTimeMillis();
     ArrayList trainMovers = new ArrayList();
     private int currentYearLastTick = -1;
+    private int currentMonthLastTick = -1;
     private boolean keepRunning = true;
 
     public int getTargetTicksPerSecond() {
@@ -142,10 +137,6 @@ public class ServerGameEngine implements GameModel, Runnable {
         keepRunning = false;
     }
 
-    public void infrequentUpdate() {
-        calcSupplyAtStations.doProcessing();
-    }
-
     /**
      * This is the main server update method, which does all the
      * "simulation".
@@ -203,8 +194,12 @@ public class ServerGameEngine implements GameModel, Runnable {
                 newYear();
             }
 
-            if (ticksSinceUpdate % aLongTime == 0) {
-                infrequentUpdate();
+            //And then checks for a new month.,,
+            int currentMonth = calendar.getMonth(time.getTime());
+
+            if (this.currentMonthLastTick != currentMonth) {
+                this.currentMonthLastTick = currentMonth;
+                newMonth();
             }
 
             /* calculate "ideal world" time for next tick */
@@ -244,9 +239,14 @@ public class ServerGameEngine implements GameModel, Runnable {
     private void newYear() {
         TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(moveExecuter);
         tmmg.update(world);
+    }
 
-        CargoAtStationsGenerator cargoAtStationsGenerator = new CargoAtStationsGenerator(moveExecuter);
-        cargoAtStationsGenerator.update(world);
+    /** This is called at the start of each new month. */
+    private void newMonth() {
+        calcSupplyAtStations.doProcessing();
+
+        CargoAtStationsGenerator cargoAtStationsGenerator = new CargoAtStationsGenerator();
+        cargoAtStationsGenerator.update(world, moveExecuter);
     }
 
     /** Iterator over the stations
@@ -371,10 +371,6 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @return World
      */
     public synchronized World getWorld() {
-        /* Nobody in their right minds would expect this to return a clone ...
-         * Would they???
-        return world.defensiveCopy();
-         */
         return world;
     }
 
@@ -393,12 +389,8 @@ public class ServerGameEngine implements GameModel, Runnable {
         return moveChainFork;
     }
 
-    public void addServerAutomaton(ServerAutomaton sa) {
+    private void addServerAutomaton(ServerAutomaton sa) {
         serverAutomata.add(sa);
-    }
-
-    public void removeServerAutomaton(ServerAutomaton sa) {
-        serverAutomata.remove(sa);
     }
 
     public IdentityProvider getIdentityProvider() {

@@ -34,8 +34,7 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     public String getYearAndMonth(int i) {
-        int ticksPerMonth = ticksPerYear / 12;
-        int month = getMonth(i, ticksPerMonth);
+        int month = getMonth(i);
         String monthAbrev = null;
 
         switch (month) {
@@ -115,7 +114,10 @@ final public class GameCalendar implements FreerailsSerializable {
         return monthAbrev + " " + getYearAsString(i);
     }
 
-    public int getMonth(int i, int ticksPerMonth) {
+    /** Returns the month, 0=Jan, 1=Feb, etc.*/
+    public int getMonth(int i) {
+        int ticksPerMonth = ticksPerYear / 12;
+
         return (i % ticksPerYear) / ticksPerMonth;
     }
 

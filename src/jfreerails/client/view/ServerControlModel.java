@@ -2,13 +2,14 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
 import java.util.Enumeration;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.controller.ServerControlInterface;
-import java.awt.event.ActionListener;
 
 
 /**

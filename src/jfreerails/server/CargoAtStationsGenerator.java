@@ -11,9 +11,12 @@ import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
+import jfreerails.world.common.GameCalendar;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.station.SupplyAtStation;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.SKEY;
@@ -28,13 +31,11 @@ import jfreerails.world.top.World;
  *
  */
 public class CargoAtStationsGenerator implements FreerailsServerSerializable {
-    private final MoveReceiver moveReceiver;
-
-    public CargoAtStationsGenerator(MoveReceiver moveExecuter) {
-        moveReceiver = moveExecuter;
+    public CargoAtStationsGenerator() {
     }
 
-    public void update(World w) {
+    /** Call this method once a month.*/
+    public void update(World w, MoveReceiver moveReceiver) {
         for (int k = 0; k < w.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = w.getPlayer(k).getPrincipal();
 
@@ -50,7 +51,6 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                 CargoBundle after = cargoBundle.getCopy();
                 int stationNumber = nonNullStations.getIndex();
 
-                /* Let the cargo have a half life of one year, so half the existing cargo wastes away.*/
                 Iterator it = after.cargoBatchIterator();
 
                 while (it.hasNext()) {
@@ -58,7 +58,8 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                     int amount = after.getAmount(cb);
 
                     if (amount > 0) {
-                        after.setAmount(cb, amount / 2);
+                        //(23/24)^12 = 0.60 
+                        after.setAmount(cb, amount * 23 / 24);
                     }
                 }
 
@@ -69,7 +70,15 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                         CargoBatch cb = new CargoBatch(i, station.x, station.y,
                                 0, stationNumber);
                         int amountAlready = after.getAmount(cb);
-                        after.setAmount(cb, amountSupplied + amountAlready);
+
+                        //Obtain the month
+                        GameTime time = (GameTime)w.get(ITEM.TIME);
+                        GameCalendar calendar = (GameCalendar)w.get(ITEM.CALENDAR);
+                        int month = calendar.getMonth(time.getTime());
+
+                        int amountAfter = calculateAmountToAdd(amountSupplied,
+                                month) + amountAlready;
+                        after.setAmount(cb, amountAfter);
                     }
                 }
 
@@ -78,5 +87,14 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                 moveReceiver.processMove(m);
             }
         }
+    }
+
+    int calculateAmountToAdd(int amountSuppliedPerYear, int month) {
+        //Note, jan is month 0.
+        int totalAtMonthEnd = amountSuppliedPerYear * (month + 1) / 12;
+        int totalAtMonthStart = amountSuppliedPerYear * (month) / 12;
+        int amount = totalAtMonthEnd - totalAtMonthStart;
+
+        return amount;
     }
 }

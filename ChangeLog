@@ -1,3 +1,5 @@
+Mar 14, 2004 11:47:50 PM Luke
+	o Implemented 910123 (Add/remove cargo to cities more frequently). 
 Mar 13, 2004 3:45:44 PM Luke
 	o Fixed various bugs where exceptions were getting thrown.
 	o Stopped the client window getting displayed before the world
