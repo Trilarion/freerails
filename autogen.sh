@@ -1,7 +1,4 @@
 echo "Generating build information ..."
-aclocal
-autoheader
-automake --include-deps
-autoconf
+make -f Makefile.dist
 echo "Please run ./configure now."
 
