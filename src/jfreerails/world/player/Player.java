@@ -178,8 +178,17 @@ public class Player implements FreerailsSerializable {
             return false;
         }
 
-        return (name.equals(((Player)o).name) &&
-        Arrays.equals(publicKey.getEncoded(), ((Player)o).publicKey.getEncoded()));
+        boolean keysEqual;
+
+        if (null != publicKey) {
+            byte[] encoded = publicKey.getEncoded();
+            byte[] encoded2 = ((Player)o).publicKey.getEncoded();
+            keysEqual = Arrays.equals(encoded, encoded2);
+        } else {
+            keysEqual = null == ((Player)o).publicKey;
+        }
+
+        return (name.equals(((Player)o).name) && keysEqual);
     }
 
     public int hashCode() {
