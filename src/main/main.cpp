@@ -5,6 +5,7 @@
 #include "game.h"
 #include "i18n.h"
 #include "GameMainWindow.h"
+#include "GameModeSelectDialog.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -34,11 +35,10 @@ int main(int argc, char *argv[])
 
   app.hideSplash();
 
-  // What is this for ?
-  //GameDialog dialog(&mw, 250,150,300,300, "Spielart wählen");
-  //dialog.show();
-
-  printf("choose\n");
+  // Ask's for user choose
+  // Must insert in GameApplication, only for testing/demonstration here.
+  GameModeSelectDialog dialog(&mw, 250,150,300,300, "Choose game mode");
+  dialog.show();
 
   return app.run();
 }
