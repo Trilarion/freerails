@@ -3,47 +3,39 @@ Freerails Java - build @version@
 
 Bugs Fixed:
 
-839349 Launcher GUI is unclear
-846841 Launcher needs to provide map list
-863496 Launcher "Start Game" button is redundant in single-player
-891378 Initial game speed shown as moderate when really paused
-880496 User stuck after connection refused
-891371 No help for new users
-891377 No 'About' dialogue box
-891427 Scheduling trains difficult
-868552 'Load game' and 'New game' fail
-891428 Divide by zero exception when window resized
-891431 No link between train list and train orders screens
-891362 Cancel button on select engine dialogue doesn't work
-839361 Several industries of the same type in same city.
-874416 station icon hides after track-ugrade
-891368 Trains don't get built when game is paused
-839331 Game starts frozen
-867473 Intermittent deadlocks
-880450 Deadlocks in InetConnection
-839371 Goods & livestock wagons appear the same on train orders
-891432 Description on train orders doesn’t update properly
-891359 Javadoc package dependencies out of date
-880515 Can go back on launcher after starting game
-910135 Trains jump when game un paused
-891360 Trains don't get built while game is paused
-900039 No clear indication game is paused 
+910134 Demand for mail and passengers
+910902 Gamespeed (Applied Jan Tozicka's 2 patches)
+910130 Placement of harbours
 
 
 Features implemented:
 
-905446 Track should be continuous
-905444 Multi player support: different track
-905443 Multi player support: different trains
-905441 Multi player support: different bank accounts
+930716 Scale overview map (incorporating code from Railz)
+915945 Stations should not overlap
+915952 Boxes showing cargo waiting at stations
+927152 Show change station popup when add station is clicked 
+915947 Implement ‘wait until full’
+910138 After building a train display train orders 
+910143 After building station show supply and demand
+915949 Balance sheet
+915948 Income statement
+910123 Add/remove cargo to cities more frequently.
+910126 Train list on RHS panel
+915303 Icons for tabs (still need to do icons for buttons)
 
 
 Changes not in tracker
 
-Shortcuts for gamespeed
+Fix selection of track type and build mode that was broken by the gamespeed patch.
+Increased the quality of scaled images returned by ImageManagerImpl
+Updated javadoc comments in jfreerails.server.parser.
+Made trains stop for a couple of seconds at stations.
+Fixed bug where an exception was thrown if you moved the cursor when 'View Mode' was selected on the build menu.
 Updated coding guidelines
-Terrain randomisation
-OSX work arounds
+Added 'Show java properties' to about menu.
+Stopped the client window getting displayed before the world is loaded from the server.
+Increased client performance.  93FPS to 111FPS on my machine.
+Readded 640x480 fixed size windowed mode.
 
 Getting it, either:
 

@@ -14,7 +14,7 @@
 
       <property location="dist" name="dist"/>
 
-      <property location="javadoc" name="doc"/>
+      <property location="www/javadoc" name="doc"/>
 
       <property location="temp" name="temp"/>
    </target>
@@ -26,7 +26,7 @@
 
       <mkdir dir="${dist}/lib"/>
       
-      <mkdir dir="${dist}/latest"/>
+      <mkdir dir="${dist}/latest"/>            
       
    </target>
 
@@ -94,7 +94,8 @@
    </target>
 
    <target depends="compile, mkdirs" description="Generate binary distribution" name="bindist">
-      <jar basedir="${build}" destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar">
+    <property name="bin.dist" value="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" />
+      <jar basedir="${build}" destfile="${bin.dist}">
          <manifest>
             <attribute name="Main-Class" value="jfreerails.launcher.Launcher"/>
          </manifest>
@@ -104,7 +105,7 @@
       		<fileset dir="${dist}/latest/" includes="jFreeRails-*-bin.jar"/>      		
       	</delete>      	      
       <copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" todir="${dist}/latest"/>      
-      
+      <copy file="${bin.dist}" tofile="www/signed_jfreerails.jar"/>
    </target>
 
    <target depends="mkdirs" description="Generate source distribution" name="srcdist">
@@ -194,7 +195,7 @@
 
   
    <target depends="javadoc" description="Jar up javadoc" name="jar_doc">
-      <jar basedir="." destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar">
+      <jar basedir="www" destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar">
          <include name="javadoc/**/*"/>
       </jar>
       <!-- Replace current latest with the jar file we have just created. -->
@@ -264,5 +265,34 @@
       </fileset>
     </jalopy>
   </target>
+   
+   <target name="zip_website" depends="signjar">
+      	<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz" tarfile="website.tar.gz"/>   		
+      </target>
+      
+      <target name="deploy_website" depends="zip_website">
+         	<echo message="Usage: ant -Du=me -Dp=mypassword deploy_website"/>
+         	 <scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
+   	    	    <fileset dir=".">
+   	    	    
+   	    	     <include name="website.tar.gz"/>
+   	    	    </fileset>
+      	 </scp>
+      </target>
+      
+      <target name="upload_screenshots">
+            	<echo message="Usage: ant -Du=me -Dp=mypassword upload_screenshots"/>
+            	 <scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
+      	    	    <fileset dir="www">
+      	    	    <include name="*.jnlp"/>
+      	    	       <!--<include name="screenshots/**"/> 	 -->    
+      	    	    </fileset>
+         	 </scp>
+   </target>
+   
+    <target name="signjar" description="Sign the jar file so it can be used with webstart">      			        
+       <!-- Not the proper way to do it but it works -->
+       <exec executable="C:\Dev\key\sign_jfreerails.bat"/>           
+    </target>        
    
 </project>

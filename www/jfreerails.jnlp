@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!-- JNLP File for jfreerails --> 
+<jnlp 
+  spec="1.0+" 
+  codebase="http://freerails.sourceforge.net/" 
+  href="jfreerails.jnlp"> 
+  <information> 
+    <title>JFreerails</title> 
+    <vendor>JFreerails Developers</vendor> 
+    <homepage href="index.html"/> 
+    <description>JFreerails</description> 
+    <description kind="short">JFreerails</description>    
+    <offline-allowed/> 
+  </information> 
+  <security> 
+      <all-permissions/>
+  </security> 
+  <resources> 
+     <j2se version="1.4+" initial-heap-size="64m" max-heap-size="256m"/>        
+    <jar href="signed_jfreerails.jar"/> 
+  </resources> 
+  <application-desc main-class="jfreerails.launcher.Launcher"/> 
+</jnlp> 

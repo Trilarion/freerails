@@ -1,3 +1,6 @@
+Apr 8, 2004 10:52:32 PM Luke
+	o Added website to CVS
+	o Added website deployment targets to build.xml
 Apr 7, 2004 8:18:36 PM Luke
 	o Implemented  930716 (Scale overview map) by
 	incorporating code from Railz.
