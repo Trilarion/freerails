@@ -1,5 +1,6 @@
 Oct 13, 2004 Luke
 	Bugs Fixed:
+	o 1047425 2 servers, same port -> Exception
 	o 1046385 pressing Backspace causes IllegalStateException
 Oct 12, 2004 Luke
 	o Made map scroll when mouse is dragged outside the view port
