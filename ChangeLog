@@ -1,3 +1,6 @@
+Mon Aug 10 13:00:00 2001  Alexander Opitz <opi@sputnik.de>:
+o reorgenice wrapper directory and Makefiles (incl. Rules.make)
+o WrapperBase -> BaseApplication
 Mon Aug 10 01:30:00 2001  Alexander Opitz <opi@sputnik.de>:
 o starting porting to C++
 o starting to make the wrapper's

@@ -1,23 +1,17 @@
 #include "game.h"
 
-#ifdef USE_PARAGUI
-Game_Application::Game_Application(int argc, char *argv[]): WrapperParaGUI(argc,argv) {
-#endif
-
-#ifdef USE_QT
-Game_Application::Game_Application(int argc, char *argv[]): WrapperQt(argc,argv) {
-#endif
+MyGameApplication::MyGameApplication(int argc, char *argv[]):GameApplication(argc, argv) {
 
 }
 
-Game_Application::~Game_Application() {
+MyGameApplication::~MyGameApplication() {
 
 }
 
-void Game_Application::InitGame() {
+void MyGameApplication::InitGame() {
 
 }
 
-void Game_Application::AskUser() {
+void MyGameApplication::AskUser() {
 
 }

@@ -13,23 +13,15 @@
 #define GAME_VERSION	"0.0.7"
 #endif
 
-#ifdef USE_PARAGUI
-#include "WrapperParaGUI.h"
-class Game_Application : public WrapperParaGUI {
-#endif
-
-#ifdef USE_QT
-#include "WrapperQt.h"
-class Game_Application : public WrapperQt {
-#endif
-
+#include "GameApplication.h"
+class MyGameApplication : public GameApplication {
 
 public:
     /**  */
-    Game_Application(int argc, char *argv[]);
+    MyGameApplication(int argc, char *argv[]);
 
     /**  */
-    ~Game_Application();
+    ~MyGameApplication();
     
     void InitGame();
     void AskUser();

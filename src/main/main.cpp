@@ -1,9 +1,9 @@
 #include "game.h"
-#include "WrapperBase.h"
+#include "BaseApplication.h"
 
 //#include <pgwidgetlist.h>
 
-void Splash(Game_Application* app) {
+void Splash(GameApplication* app) {
 /*  PG_GradientWidget splash(NULL, PG_Rect(100,100,600,400));
   char file[]="data/graphics/ui/title.png";
   splash.SetBackground(file,BKMODE_STRETCH);
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
   strcpy(versionString,"FreeRails v"GAME_VERSION"");
 
   // construct the application object
-  Game_Application app(argc,argv);
+  MyGameApplication app(argc,argv);
 
   if(!app.InitScreen(0,0,800,600)){
     printf("Resolution not supported\n");
