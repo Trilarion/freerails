@@ -21,7 +21,7 @@ import jfreerails.world.train.WagonType;
 
 /**
  * This class generates moves that transfer cargo between train and the stations it stops at - it also
- * handles cargo converions that occur when cargo is dropped off.
+ * handles cargo conversions that occur when cargo is dropped off.
  *
  * @author Scott Bennett
  * @author Luke Lindsay

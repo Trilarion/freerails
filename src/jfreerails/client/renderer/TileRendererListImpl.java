@@ -11,7 +11,7 @@ import jfreerails.world.top.SKEY;
 
 
 /**
- * A list of TileRenderers stored in an array and created from a ArrayList.
+ * A list of TileRenderers stored in an array and created from an ArrayList.
 *@author Luke Lindsay
 *           09 October 2001
 */

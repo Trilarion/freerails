@@ -24,7 +24,7 @@ import jfreerails.world.track.NullTrackPiece;
 import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.TrainOrdersModel;
 /**
- * This JPanel lets the user select a stations from a map and add it to a train
+ * This JPanel lets the user select a station from a map and add it to a train
  *  schedule.
  *
  * @author  Luke

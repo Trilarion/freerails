@@ -4,7 +4,7 @@ import java.io.ObjectStreamException;
 import jfreerails.world.common.FreerailsSerializable;
 
 
-/** Defines the mehtods to access the properties of a type of terrains.
+/** Defines the methods to access the properties of a type of terrains.
  * @author Luke
  */
 public interface TerrainType extends FreerailsSerializable {

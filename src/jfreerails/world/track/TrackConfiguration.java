@@ -9,7 +9,7 @@ import jfreerails.world.common.OneTileMoveVector;
 
 /**
  * An instance of this class represents one of the possible track configurations
- * in a map square - the cobinations of directions in which track can be
+ * in a map square - the combinations of directions in which track can be
  * laid. Instances of this class cannot be created and must be obtained via the
  * static methods herein.
  *

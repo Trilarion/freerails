@@ -3,7 +3,7 @@ package jfreerails.world.common;
 import java.text.DecimalFormat;
 
 
-/** This class converts time meansured in ticks since the game began into time represented
+/** This class converts time measured in ticks since the game began into time represented
  * as <i>Month, Year</i> and <i>hour:minute</i>.
  * @author Luke
  */

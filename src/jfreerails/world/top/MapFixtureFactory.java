@@ -12,7 +12,7 @@ import jfreerails.world.track.TrackRuleImpl;
 import jfreerails.world.track.TrackRuleProperties;
 
 
-/** This class is used to generate fixures for Junit tests.
+/** This class is used to generate fixtures for Junit tests.
  *
  * @author Luke
  *

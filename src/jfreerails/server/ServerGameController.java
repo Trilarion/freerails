@@ -20,7 +20,7 @@ import jfreerails.util.FreerailsProgressMonitor;
 
 
 /**
- * associates an instance of ServerGameEngine with a set of game controls.
+ * Associates an instance of ServerGameEngine with a set of game controls.
  * Manages connectivity to the ServerGameEngine.
  * @author rob
  */

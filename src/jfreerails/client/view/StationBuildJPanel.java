@@ -12,7 +12,7 @@ import javax.swing.Action;
 import javax.swing.JButton;
 
 /**
- * JPanel shown on the RHS that lets you pick a staton type.
+ * JPanel shown on the RHS that lets you pick a station type.
  * @author  bob
  */
 class StationBuildJPanel extends javax.swing.JPanel {

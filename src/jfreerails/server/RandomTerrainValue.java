@@ -1,7 +1,7 @@
 package jfreerails.server;
 
 
-/** Stores a location and terrian type.
+/** Stores a location and terrain type.
  * @author Scott?
  */
 public class RandomTerrainValue {

@@ -9,8 +9,8 @@ import jfreerails.world.top.WorldImpl;
 
 
 /**
- * The main method on this classes uses CargoAndTerrainParser to the parse cargo and terrain types xml file - use
- * it to test the parser and xml file work togther.
+ * The main method on this class uses CargoAndTerrainParser to the parse cargo and terrain types xml file - use
+ * it to test the parser and xml file work together.
  * @author  Luke
  */
 public class RunTypesParser {

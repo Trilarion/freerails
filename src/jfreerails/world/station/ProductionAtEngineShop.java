@@ -8,7 +8,7 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- * This class represents the blue print for what a engine shop
+ * This class represents the blue print for what an engine shop
  * is producing.
  *
  * @author Luke

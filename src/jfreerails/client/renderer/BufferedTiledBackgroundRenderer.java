@@ -13,7 +13,7 @@ import java.awt.image.VolatileImage;
 
 
 /**
- *  This abstract class stores a buffer of the backgound of the current visible
+ *  This abstract class stores a buffer of the background of the current visible
  *  rectangle of the map. Code that is independent of how tiles are represented,
  *  e.g. whether they are square or isometric, should go here.
  *

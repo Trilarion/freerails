@@ -4,7 +4,7 @@ import java.util.Arrays;
 import jfreerails.world.common.FreerailsSerializable;
 
 
-/** Represents a trains.
+/** Represents a train.
  * @author Luke
  */
 public class TrainModel implements FreerailsSerializable {

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import jfreerails.world.common.FreerailsSerializable;
 
 
-/** Stores the legal track configuations for a type of track.
+/** Stores the legal track configurations for a type of track.
  * @author Luke.
  */
 final public class LegalTrackConfigurations implements FreerailsSerializable {

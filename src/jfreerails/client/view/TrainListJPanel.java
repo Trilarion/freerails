@@ -15,7 +15,7 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 /**
- * JPanel that diaplays a trainlist, used for the train list window and the train list tab.
+ * JPanel that didplays a list of trains, used for the train list window and the train list tab.
  * @author  Luke
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {

@@ -23,7 +23,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 
 
-/** Implemenatation of ViewLists whose constructor loads graphics and provides feed back
+/** Implementation of ViewLists whose constructor loads graphics and provides feed back
  * using a FreerailsProgressMonitor.
  * @author Luke
  */

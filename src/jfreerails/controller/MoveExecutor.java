@@ -10,7 +10,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 
 
 /**
- * Lets the caller try and exectute Moves.
+ * Lets the caller try and execute Moves.
  *  @author Luke
  *
  */

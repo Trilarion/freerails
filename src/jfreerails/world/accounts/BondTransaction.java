@@ -7,7 +7,7 @@ import jfreerails.world.common.Money;
 
 
 /**
- * A Transaction that adds or removes a Bonds.
+ * A Transaction that adds or removes a Bond.
  * @author Luke
  *
  */

@@ -3,7 +3,7 @@ package jfreerails.world.track;
 import jfreerails.world.common.FreerailsSerializable;
 
 
-/** Defines the interface of a the track on a tile.
+/** Defines methods to access the properties of the track on a tile.
  * @author Luke
  */
 public interface TrackPiece extends FreerailsSerializable {

@@ -16,7 +16,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 
 
-/** Paints the cusor on the map, note the cursor's position is stored on the ModelRoot
+/** Paints the cursor on the map, note the cursor's position is stored on the ModelRoot
  * under the key CURSOR_POSITION.
  * @author Luke
  */

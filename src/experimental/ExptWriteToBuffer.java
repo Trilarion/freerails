@@ -13,7 +13,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Experiment to try out reading and writing to a buffer to
- * test serialisaton code.
+ * test serialization code.
  * @author Luke
  *
  */
