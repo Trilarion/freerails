@@ -51,7 +51,7 @@ public class AddItemToListMove implements ListMove {
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         if (w.size(listKey, this.principal) != index) {
-            return MoveStatus.moveFailed("Expected size of list is " + index +
+            return MoveStatus.moveFailed("Expected size of "+listKey.toString()+" list is " + index +
                 " but actual size is " + w.size(listKey, this.principal));
         }
 
@@ -62,7 +62,7 @@ public class AddItemToListMove implements ListMove {
         int expectListSize = index + 1;
 
         if (w.size(listKey, this.principal) != expectListSize) {
-            return MoveStatus.moveFailed("Expected size of list is " +
+            return MoveStatus.moveFailed("Expected size of "+listKey.toString()+" list is " +
                 expectListSize + " but actual size is " +
                 w.size(listKey, this.principal));
         }

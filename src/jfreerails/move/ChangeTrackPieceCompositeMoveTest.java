@@ -7,13 +7,13 @@
 package jfreerails.move;
 
 import java.awt.Point;
+
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
-import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
@@ -84,8 +84,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /** All track except the first piece built should be connected to existing track.*/
-    public void testMustConnect2ExistingTrack() {
-        World world = getWorld();
+    public void testMustConnect2ExistingTrack() {      
         TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
 
         int numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PRINCIPAL);
@@ -108,8 +107,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackFails(new Point(4, 8), east, trackRule);
     }
 
-    public void testCannotConnect2OtherRRsTrack() {
-        World world = getWorld();
+    public void testCannotConnect2OtherRRsTrack() {        
         assertFalse(ChangeTrackPieceMove.canConnect2OtherRRsTrack(world));
 
         final int TRACK_RULE_ID = 0;

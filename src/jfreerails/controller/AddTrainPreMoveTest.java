@@ -7,20 +7,21 @@ package jfreerails.controller;
 import java.awt.Point;
 import java.util.Arrays;
 
+import jfreerails.move.AbstractMoveTestCase;
+import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
 import static jfreerails.world.common.OneTileMoveVector.EAST;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.World;
+import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.TrainOrdersModel;
 import jfreerails.world.train.TrainPositionOnMap;
-import junit.framework.TestCase;
 
 /**
  * Junit test for AddTrainPreMove.
@@ -28,22 +29,25 @@ import junit.framework.TestCase;
  * @author Luke
  * 
  */
-public class AddTrainPreMoveTest extends TestCase {
-
-	World w;
-
+public class AddTrainPreMoveTest extends AbstractMoveTestCase {
+	
 	TrackMoveProducer trackBuilder;
 
 	StationBuilder stationBuilder;
 
 	FreerailsPrincipal principal;
 
-	protected void setUp() throws Exception {
-		super.setUp();
-		w = MapFixtureFactory2.getCopy();
-		MoveExecutor me = new SimpleMoveExecutor(w, 0);
+	private Point stationA;
+
+	private Point stationB;
+	
+	ImmutableSchedule defaultSchedule;
+
+	protected void setupWorld() {		
+		world = MapFixtureFactory2.getCopy();
+		MoveExecutor me = new SimpleMoveExecutor(world, 0);
 		principal = me.getPrincipal();
-		trackBuilder = new TrackMoveProducer(me, w);
+		trackBuilder = new TrackMoveProducer(me, world);
 		stationBuilder = new StationBuilder(me);
 
 		// Build track.
@@ -51,32 +55,36 @@ public class AddTrainPreMoveTest extends TestCase {
 				.setStationType(stationBuilder.getTrackTypeID("terminal"));
 		OneTileMoveVector[] track = { EAST, EAST, EAST, EAST, EAST, EAST, EAST,
 				EAST, EAST };
-		Point start = new Point(10, 10);
-		MoveStatus ms0 = trackBuilder.buildTrack(start, track);
+		stationA = new Point(10, 10);
+		MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
 		assertTrue(ms0.ok);
 
 		// Build 2 stations.
-		MoveStatus ms1 = stationBuilder.buildStation(start);
+		MoveStatus ms1 = stationBuilder.buildStation(stationA);
 		assertTrue(ms1.ok);
-		MoveStatus ms2 = stationBuilder.buildStation(new Point(19, 10));
+		stationB = new Point(19, 10);
+		MoveStatus ms2 = stationBuilder.buildStation(stationB);
 		assertTrue(ms2.ok);
 
+		TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
+		TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);
+		MutableSchedule s = new MutableSchedule();
+		s.addOrder(order0);
+		s.addOrder(order1);				
+		defaultSchedule = s.toImmutableSchedule();
+		
 	}
 
 	public void testInitPosition() {
 
 		//Test step 1
-		TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
-		TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);
-		MutableSchedule s = new MutableSchedule();
-		s.addOrder(order0);
-		s.addOrder(order1);
+		
 		TrainModel train = new TrainModel(0, new int[] { 0, 0 }, 0);
 		assertEquals(24 * 3, train.getLength());
 		Point start = new Point(10, 10);
 		AddTrainPreMove preMove = new AddTrainPreMove(0, new int[] { 0, 0 },
-				start, principal, s.toImmutableSchedule());
-		PathOnTiles path = preMove.initPositionStep1(w);
+				start, principal, defaultSchedule);
+		PathOnTiles path = preMove.initPositionStep1(world);
 		assertEquals(start, path.getStart());
 		assertEquals(3, path.steps());
 		assertEquals(EAST, path.getStep(0));
@@ -109,6 +117,19 @@ public class AddTrainPreMoveTest extends TestCase {
 		TrainPositionOnMap pos = tm.getPosition(new GameTime(0));
 		assertNotNull(pos);
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see jfreerails.move.AbstractMoveTestCase#testMove()
+	 */
+	public void testMove() {
+		AddTrainPreMove preMove = new AddTrainPreMove(0, new int[]{0,0}, stationA, principal, defaultSchedule);
+		Move m = preMove.generateMove(world);
+		assertDoMoveIsOk(m);
+		
+		assertUndoMoveIsOk(m);
+		
+		assertEqualsSurvivesSerialisation(m);
 	}
 		
 

@@ -69,6 +69,24 @@ public class TrainMotion implements FreerailsSerializable {
 		this.trainLength = trainLength;
 
 	}
+	
+	private void checkT(GameTime t){
+		if(t.getTime() < getStart().getTime()) throw new IllegalArgumentException();
+		if(t.getTime() > getEnd().getTime()) throw new IllegalArgumentException();
+	}
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TrainMotion)) return false;
+
+        final TrainMotion trainMotion = (TrainMotion) o;
+
+        if (trainLength != trainMotion.trainLength) return false;
+        if (!path.equals(trainMotion.path)) return false;
+        if (!speeds.equals(trainMotion.speeds)) return false;
+
+        return true;
+    }
 
 	/**
 	 * Returns the train's distance along the track from the point the train was
@@ -82,7 +100,7 @@ public class TrainMotion implements FreerailsSerializable {
 	 */
 	public int getDistance(GameTime t) {
 		checkT(t);
-		return 0;
+		return speeds.getDistance(t);
 	}
 
 	/** Returns the time at which the interval ends. */
@@ -117,7 +135,7 @@ public class TrainMotion implements FreerailsSerializable {
 	 */
 	public int getSpeed(GameTime t) {
 		checkT(t);
-		return 0;
+		return speeds.getSpeed(t);
 	}
 
 	/** Returns the time at which the interval starts. */
@@ -154,10 +172,13 @@ public class TrainMotion implements FreerailsSerializable {
 		}
 		return returnValue;
 	}
-	
-	private void checkT(GameTime t){
-		if(t.getTime() < getStart().getTime()) throw new IllegalArgumentException();
-		if(t.getTime() > getEnd().getTime()) throw new IllegalArgumentException();
-	}
+
+    public int hashCode() {
+        int result;
+        result = path.hashCode();
+        result = 29 * result + speeds.hashCode();
+        result = 29 * result + trainLength;
+        return result;
+    }
 
 }

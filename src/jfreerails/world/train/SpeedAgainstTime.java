@@ -8,6 +8,8 @@ import jfreerails.util.Utils;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
 
+import java.util.Arrays;
+
 /**
  * <p>
  * This class stores the values you could use to draw a graph of speed against
@@ -40,7 +42,23 @@ public class SpeedAgainstTime implements FreerailsSerializable {
 
 	private static final long serialVersionUID = 3618423722025891641L;
 
-	private final GameTime[] times;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SpeedAgainstTime)) return false;
+
+        final SpeedAgainstTime speedAgainstTime = (SpeedAgainstTime) o;
+
+        if (!Arrays.equals(speeds, speedAgainstTime.speeds)) return false;
+        if (!Arrays.equals(times, speedAgainstTime.times)) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        return 0;
+    }
+
+    private final GameTime[] times;
 
 	private final int[] speeds;
 

@@ -23,7 +23,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     private int wagonType;
     private int[] wagons;
 
-    protected void setUp() {
+    protected void setUp() throws Exception {
         super.setUp();
         getWorld().add(KEY.STATIONS, new StationModel(),
             MapFixtureFactory.TEST_PRINCIPAL);

@@ -48,7 +48,7 @@ public class AddItemToSharedListMove implements Move {
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         if (w.size(listKey) != index) {
-            return MoveStatus.moveFailed("Expected size of list is " + index +
+            return MoveStatus.moveFailed("Expected size of "+listKey.toString()+" list is " + index +
                 " but actual size is " + w.size(listKey));
         }
 
@@ -59,7 +59,7 @@ public class AddItemToSharedListMove implements Move {
         int expectListSize = index + 1;
 
         if (w.size(listKey) != expectListSize) {
-            return MoveStatus.moveFailed("Expected size of list is " +
+            return MoveStatus.moveFailed("Expected size of "+listKey.toString()+" list is " +
                 expectListSize + " but actual size is " + w.size(listKey));
         }
 
