@@ -22,8 +22,8 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
   PG_Point p;
   SetBackgroundBlend(0);
-  tilesImage=IMG_Load("data/graphics/tiles.png");
-  trackImage=IMG_Load("data/graphics/track.png");
+  tilesImage=IMG_Load("data/graphics/tilesets/default/terrain_tiles.png");
+  trackImage=IMG_Load("data/graphics/tilesets/default/track_tiles.png");
   
   imageSurface=SDL_CreateRGBSurface(SDL_SWSURFACE,engine->getWorldMap()->getWidth()*30,engine->getWorldMap()->getHeight()*30,32,0,0,0,0);
   for (int y=0;y<engine->getWorldMap()->getHeight();y++)
@@ -38,7 +38,6 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "ThemeWidget") {
   p.y=0;
   view=new PG_Image(this, p, imageSurface, false);
   WidgetList->AddWidget(view);
-  cerr << view->GetName() << endl;
   mouseType=0;
   mouseOldX=0;
   mouseOldY=0;

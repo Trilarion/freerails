@@ -1,3 +1,6 @@
+Thu Sep 05 10:00:00 2002  Alexander Opitz <opi@le-bit.de>:
+o add missing images/tilesets
+o change hard link to the tilesets
 Tue Jul 16 16:45:00 2002  Alexander Opitz <opi@le-bit.de>:
 o add "std::" where needed
 o add missing new lines on the end of some files
