@@ -72,7 +72,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
         if (status.isOk()) {
             StationModel station = (StationModel)w.get(KEY.STATIONS,
                     stationNumber);
-            station.setProduction(this.after);
+            station = new StationModel(station, this.after);
+            w.set(KEY.STATIONS, stationNumber, station);
         }
 
         return status;
@@ -84,7 +85,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
         if (status.isOk()) {
             StationModel station = (StationModel)w.get(KEY.STATIONS,
                     stationNumber);
-            station.setProduction(this.before);
+            station = new StationModel(station, this.before);
+            w.set(KEY.STATIONS, stationNumber, station);
         }
 
         return status;

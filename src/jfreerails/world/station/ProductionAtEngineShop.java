@@ -60,4 +60,12 @@ public class ProductionAtEngineShop implements FreerailsSerializable {
 
         return true;
     }
+
+    /**
+     *
+     */
+    public String toString() {
+        return "engine type: " + this.engineType + ", with " +
+        wagonTypes.length + "wagons";
+    }
 }

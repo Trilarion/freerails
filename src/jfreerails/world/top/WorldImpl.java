@@ -1,5 +1,9 @@
 package jfreerails.world.top;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.track.FreerailsTile;
@@ -152,5 +156,26 @@ public class WorldImpl implements World {
 
     public void set(ITEM item, FreerailsSerializable element) {
         items[item.getKeyNumber()] = element;
+    }
+
+    public World defensiveCopy() {
+        try {
+            Object m = this;
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream objectOut = new ObjectOutputStream(out);
+            objectOut.writeObject(m);
+            objectOut.flush();
+
+            byte[] bytes = out.toByteArray();
+
+            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+            ObjectInputStream objectIn = new ObjectInputStream(in);
+            Object o = objectIn.readObject();
+
+            return (World)o;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException(e.getMessage());
+        }
     }
 }

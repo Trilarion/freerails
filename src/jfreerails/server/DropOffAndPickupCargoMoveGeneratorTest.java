@@ -164,7 +164,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         DemandAtStation demand = new DemandAtStation(new boolean[] {
                     true, false, false, false
                 });
-        station.setDemand(demand);
+        station = new StationModel(station, demand);
+        w.set(KEY.STATIONS, 0, station);
 
         //Check that the station demadns what we think it does.		
         assertTrue("The station should demand cargo type 0.",
@@ -254,7 +255,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         DemandAtStation demand = new DemandAtStation(new boolean[] {
                     true, false, false, false
                 });
-        station.setDemand(demand);
+        station = new StationModel(station, demand);
+        w.set(KEY.STATIONS, 0, station);
 
         assertTrue(station.getDemand().isCargoDemanded(0));
         stopAtStation();

@@ -1,3 +1,6 @@
+Dec 29, 2003 9:12:42 PM Luke
+	o Apply Robert Tuck's patch to BufferedTiledBackgroundRenderer.
+	o Make the client keep its own copy of the world object even when it is in the same VM as the server.
 Dec 24, 2003 9:36:36 AM Luke
 	o Prepare for release.
 Dec 23, 2003 23:15:58 PM Luke

@@ -35,7 +35,7 @@ import jfreerails.world.top.World;
  *
  */
 public class ServerGameEngine implements GameModel, Runnable {
-    World world;
+    private World world;
     private MoveExecuter moveExecuter;
 
     /* some stats for monitoring sim speed */
@@ -351,7 +351,7 @@ public class ServerGameEngine implements GameModel, Runnable {
 
             synchronized (mutex) {
                 objectOut.writeObject(trainMovers);
-                objectOut.writeObject(getWorld());
+                objectOut.writeObject(this.world);
                 objectOut.writeObject(serverAutomata);
             }
 
@@ -392,7 +392,7 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @return World
      */
     public World getWorld() {
-        return world;
+        return world.defensiveCopy();
     }
 
     /**

@@ -34,4 +34,9 @@ public interface World extends ReadOnlyWorld {
     /** Replaces the tile at the specified position on the map with the specified tile.
      */
     void setTile(int x, int y, FreerailsTile tile);
+
+    /**
+     * Returns a copy of this world object - making changes to this copy will not change this object.
+     */
+    World defensiveCopy();
 }

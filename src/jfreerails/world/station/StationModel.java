@@ -10,23 +10,32 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public class StationModel implements FreerailsSerializable {
-    public int x;
-    public int y;
+    public final int x;
+    public final int y;
     private final String name;
-    private SupplyAtStation supply;
-    private DemandAtStation demand;
-    private ConvertedAtStation converted;
-    private int cargoBundleNumber;
+    private final SupplyAtStation supply;
+    private final DemandAtStation demand;
+    private final ConvertedAtStation converted;
+    private final int cargoBundleNumber;
 
     /** What this station is building. */
-    private ProductionAtEngineShop production;
+    private final ProductionAtEngineShop production;
 
     public ConvertedAtStation getConverted() {
         return converted;
     }
 
-    public void setConverted(ConvertedAtStation converted) {
+    public StationModel(StationModel s, ConvertedAtStation converted) {
         this.converted = converted;
+
+        this.cargoBundleNumber = s.cargoBundleNumber;
+
+        this.demand = s.demand;
+        this.name = s.name;
+        this.production = s.production;
+        this.supply = s.supply;
+        this.x = s.x;
+        this.y = s.y;
     }
 
     public StationModel(int x, int y, String stationName,
@@ -34,6 +43,7 @@ public class StationModel implements FreerailsSerializable {
         this.name = stationName;
         this.x = x;
         this.y = y;
+        production = null;
 
         supply = new SupplyAtStation(new int[numberOfCargoTypes]);
         demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
@@ -45,6 +55,22 @@ public class StationModel implements FreerailsSerializable {
         this.name = "No name";
         x = 0;
         y = 0;
+        this.demand = new DemandAtStation(new boolean[0]);
+        this.supply = new SupplyAtStation(new int[0]);
+        this.converted = new ConvertedAtStation(new int[0]);
+        production = null;
+        this.cargoBundleNumber = 0;
+    }
+
+    public StationModel(StationModel s) {
+        this.cargoBundleNumber = s.cargoBundleNumber;
+        this.converted = s.converted;
+        this.demand = s.demand;
+        this.name = s.name;
+        this.production = s.production;
+        this.supply = s.supply;
+        this.x = s.x;
+        this.y = s.y;
     }
 
     public String getStationName() {
@@ -63,8 +89,15 @@ public class StationModel implements FreerailsSerializable {
         return production;
     }
 
-    public void setProduction(ProductionAtEngineShop production) {
+    public StationModel(StationModel s, ProductionAtEngineShop production) {
         this.production = production;
+        this.demand = s.demand;
+        this.cargoBundleNumber = s.cargoBundleNumber;
+        this.converted = s.converted;
+        this.name = s.name;
+        this.supply = s.supply;
+        this.x = s.x;
+        this.y = s.y;
     }
 
     public DemandAtStation getDemand() {
@@ -79,16 +112,29 @@ public class StationModel implements FreerailsSerializable {
         return cargoBundleNumber;
     }
 
-    public void setDemand(DemandAtStation demand) {
+    public StationModel(StationModel s, DemandAtStation demand) {
         this.demand = demand;
+
+        this.cargoBundleNumber = s.cargoBundleNumber;
+        this.converted = s.converted;
+
+        this.name = s.name;
+        this.production = s.production;
+        this.supply = s.supply;
+        this.x = s.x;
+        this.y = s.y;
     }
 
-    public void setSupply(SupplyAtStation supply) {
+    public StationModel(StationModel s, SupplyAtStation supply) {
         this.supply = supply;
-    }
+        this.demand = s.demand;
 
-    public void setWaiting(int waiting) {
-        this.cargoBundleNumber = waiting;
+        this.cargoBundleNumber = s.cargoBundleNumber;
+        this.converted = s.converted;
+        this.name = s.name;
+        this.production = s.production;
+        this.x = s.x;
+        this.y = s.y;
     }
 
     public int getCargoBundleNumber() {

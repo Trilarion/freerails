@@ -155,15 +155,15 @@ public class ConnectionAdapter implements UntriedMoveReceiver {
             world = connection.loadWorldFromServer();
             modelRoot.setWorld(world);
 
-            if (!(connection instanceof LocalConnection)) {
-                NonAuthoritativeMoveExecuter moveExecuter = new NonAuthoritativeMoveExecuter(world,
-                        moveReceiver, mutex, modelRoot);
-                worldUpdater.setMoveReceiver(moveExecuter);
-                uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
-                ((NonAuthoritativeMoveExecuter.PendingQueue)uncommittedReceiver).addMoveReceiver(connection);
-            } else {
-                uncommittedReceiver = connection;
-            }
+            //  if (!(connection instanceof LocalConnection)) {
+            NonAuthoritativeMoveExecuter moveExecuter = new NonAuthoritativeMoveExecuter(world,
+                    moveReceiver, mutex, modelRoot);
+            worldUpdater.setMoveReceiver(moveExecuter);
+            uncommittedReceiver = moveExecuter.getUncommittedMoveReceiver();
+            ((NonAuthoritativeMoveExecuter.PendingQueue)uncommittedReceiver).addMoveReceiver(connection);
+            //  } else {
+            //      uncommittedReceiver = connection;
+            //  }
         }
     }
 
