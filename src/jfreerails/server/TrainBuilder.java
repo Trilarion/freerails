@@ -19,7 +19,6 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
-import jfreerails.world.top.World;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
@@ -41,12 +40,10 @@ import jfreerails.world.train.TrainPositionOnMap;
  * @author Luke Lindsay 13-Oct-2002
  *
  */
-public class TrainBuilder {
-    private final World world;
-    private final MoveReceiver moveReceiver;
+public class TrainBuilder implements ServerAutomaton {
+    private MoveReceiver moveReceiver;
 
-    public TrainBuilder(World w, MoveReceiver mr) {
-        this.world = w;
+    public TrainBuilder(MoveReceiver mr) {
         moveReceiver = mr;
 
         if (null == mr) {
@@ -66,7 +63,7 @@ public class TrainBuilder {
      *
      */
     public TrainMover buildTrain(int engineTypeId, int[] wagons, Point p,
-        FreerailsPrincipal principal) {
+        FreerailsPrincipal principal, ReadOnlyWorld world) {
         /* Check that the specified position is on the track.*/
         FreerailsTile tile = world.getTile(p.x, p.y);
         TrackRule tr = tile.getTrackRule();
@@ -84,7 +81,7 @@ public class TrainBuilder {
                     scheduleId, cargoBundleId);
 
             /* Create the move that sets up the train's schedule.*/
-            ImmutableSchedule is = generateInitialSchedule(principal);
+            ImmutableSchedule is = generateInitialSchedule(principal, world);
             int trainId = world.size(KEY.TRAINS, principal);
             Move setupScheduleMove = TrainPathFinder.initTarget(train, trainId,
                     is, principal);
@@ -127,7 +124,7 @@ public class TrainBuilder {
     }
 
     private ImmutableSchedule generateInitialSchedule(
-        FreerailsPrincipal principal) {
+        FreerailsPrincipal principal, ReadOnlyWorld world) {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, world, principal);
 
         MutableSchedule s = new MutableSchedule();
@@ -152,9 +149,9 @@ public class TrainBuilder {
     */
     private TrainPathFinder getPathToFollow(Point p, ReadOnlyWorld w,
         int trainNumber, FreerailsPrincipal principal) {
-        PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(world, p)[0];
+        PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(w, p)[0];
 
-        FlatTrackExplorer explorer = new FlatTrackExplorer(pot, world);
+        FlatTrackExplorer explorer = new FlatTrackExplorer(pot, w);
 
         TrainPathFinder tpf = new TrainPathFinder(explorer, w, trainNumber,
                 moveReceiver, principal);
@@ -190,5 +187,9 @@ public class TrainBuilder {
         TrainPositionOnMap initialPosition = TrainPositionOnMap.createInSameDirectionAsPath(fromPathWalker);
 
         return initialPosition;
+    }
+
+    public void initAutomaton(MoveReceiver mr) {
+        moveReceiver = mr;
     }
 }

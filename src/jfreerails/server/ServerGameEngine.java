@@ -105,7 +105,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         identityProvider = new IdentityProvider(this, moveExecuter);
         queuedMoveReceiver = new QueuedMoveReceiver(moveExecuter,
                 identityProvider);
-        tb = new TrainBuilder(world, moveExecuter);
+        tb = new TrainBuilder(moveExecuter);
         calcSupplyAtStations = new CalcSupplyAtStations(w, moveExecuter);
         moveChainFork.addListListener(calcSupplyAtStations);
 
@@ -288,7 +288,8 @@ public class ServerGameEngine implements GameModel, Runnable {
 
                     for (int j = 0; j < production.length; j++) {
                         TrainMover trainMover = tb.buildTrain(production[j].getEngineType(),
-                                production[j].getWagonTypes(), p, principal);
+                                production[j].getWagonTypes(), p, principal,
+                                world);
 
                         //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
                         TrainPathFinder tpf = trainMover.getTrainPathFinder();
