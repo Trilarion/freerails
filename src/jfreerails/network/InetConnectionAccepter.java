@@ -36,6 +36,7 @@ public class InetConnectionAccepter implements Runnable {
 
     public InetConnectionAccepter(int port, GameServer gameServer)
         throws IOException {
+    	if(null == gameServer) throw new NullPointerException();
         this.gameServer = gameServer;
         serverSocket = new ServerSocket(port);
     }

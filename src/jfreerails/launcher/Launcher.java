@@ -551,6 +551,10 @@ LauncherInterface {
                         if(msp.validateInput()){
                             prevButton.setEnabled(false);
                             try{
+                            	if(!isNewGame()){
+                            		initServer();
+                            		server.loadgame(ServerControlInterface.FREERAILS_SAV);
+                            	}
                                 prepare2HostNetworkGame(msp.getServerPort());
                             }catch (BindException be){
                                 //When the port is already in use.

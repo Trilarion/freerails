@@ -1,3 +1,7 @@
+Jan 26, 2005 Luke
+    Bugs Fixed:
+	1105494	Load game with wrong player
+	1105488	Attempting to join game in progress
 Jan 25, 2005 Luke
 	Work on bug 1105494	(Load game with wrong player).
 Jan 24, 2005 Luke		
