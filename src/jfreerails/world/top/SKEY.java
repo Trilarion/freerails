@@ -14,29 +14,21 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class SKEY implements FreerailsSerializable {
-    public static final SKEY CARGO_TYPES = new SKEY();
-    public static final SKEY CITIES = new SKEY();
-    public static final SKEY ENGINE_TYPES = new SKEY();
+    private static final long serialVersionUID = 3257847679739506737L;
 
 	/** Maps key numbers to KEYs. */
     private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
 
-    //END OF SKEYS		
-    private static int numberOfKeys;
-    private static final long serialVersionUID = 3257847679739506737L;
-
     //START OF KEYS
     public static final SKEY TERRAIN_TYPES = new SKEY();
-    public static final SKEY TRACK_RULES = new SKEY();
     public static final SKEY WAGON_TYPES = new SKEY();
+    public static final SKEY CARGO_TYPES = new SKEY();
+    public static final SKEY CITIES = new SKEY();
+    public static final SKEY ENGINE_TYPES = new SKEY();
+    public static final SKEY TRACK_RULES = new SKEY();
 
-    static SKEY getKey(int keyNum) {
-        return keys[keyNum];
-    }
-
-    static int getNumberOfKeys() {
-        return SKEY.class.getFields().length;
-    }
+    //END OF SKEYS		
+    private static int numberOfKeys;
     private final int keyNumber;
 
     private SKEY() {
@@ -45,15 +37,23 @@ public class SKEY implements FreerailsSerializable {
         numberOfKeys++;
     }
 
+    static int getNumberOfKeys() {
+        return SKEY.class.getFields().length;
+    }
+
     int getKeyID() {
         return keyNumber;
     }
 
     private Object readResolve() throws ObjectStreamException {
         return keys[this.keyNumber];
-    }
+    }   
 
     public String toString() {
-    	return Utils.findConstantFieldName(this);
+        return Utils.findConstantFieldName(this);
+    }
+
+    static SKEY getKey(int keyNum) {
+        return keys[keyNum];
     }
 }

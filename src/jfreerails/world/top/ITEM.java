@@ -14,30 +14,30 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class ITEM implements FreerailsSerializable {
-    public static final ITEM CALENDAR = new ITEM();
-    public static final ITEM ECONOMIC_CLIMATE = new ITEM();
-    public static final ITEM GAME_RULES = new ITEM();
-    public static final ITEM GAME_SPEED = new ITEM();
+    private static final long serialVersionUID = 3257846593180151859L;
 
 	/** Maps key numbers to KEYs. */
     private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
 
-    //END OF KEYS
-    private static int numberOfKeys = 0;
-    private static final long serialVersionUID = 3257846593180151859L;
-
     //START OF KEYS
     public static final ITEM TIME = new ITEM();
+    public static final ITEM CALENDAR = new ITEM();
+    public static final ITEM GAME_RULES = new ITEM();
+    public static final ITEM GAME_SPEED = new ITEM();
+    public static final ITEM ECONOMIC_CLIMATE = new ITEM();
 
-    static int getNumberOfKeys() {
-        return ITEM.class.getFields().length;
-    }
+    //END OF KEYS
+    private static int numberOfKeys = 0;
     private final int keyNumber;
 
     private ITEM() {
         this.keyNumber = numberOfKeys;
         keys[keyNumber] = this;
         numberOfKeys++;
+    }
+
+    static int getNumberOfKeys() {
+        return ITEM.class.getFields().length;
     }
 
     int getKeyID() {
@@ -47,8 +47,8 @@ public class ITEM implements FreerailsSerializable {
     private Object readResolve() throws ObjectStreamException {
         return keys[this.keyNumber];
     }
-	
-	public String toString() {
-		return Utils.findConstantFieldName(this);
-	}
+    
+    public String toString() {
+        return Utils.findConstantFieldName(this);
+    }
 }
