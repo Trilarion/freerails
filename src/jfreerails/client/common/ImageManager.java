@@ -9,7 +9,9 @@ import java.io.IOException;
 
 
 /**
- * This interface defines methods for loading and saving images.
+ * This interface defines methods for loading and saving images, and producing scaled images whose quality
+ * may be controlled.
+ *
  * @author Luke
  *
  */

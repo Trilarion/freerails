@@ -5,9 +5,11 @@
 package jfreerails.client.common;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -19,7 +21,10 @@ import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
 
-/**
+/** Implementation of ImageManager that returns images that are compatible with the
+ * current graphics configuration and whose transparency is set to TRANSLUCENT, the scaled
+ * images it returns are rendered with renderingHints set for quality.
+ *
  * @author Luke
  *
  */
@@ -28,6 +33,7 @@ public class ImageManagerImpl implements ImageManager {
     private String pathToWriteTo;
     private HashMap imageHashMap = new HashMap();
     private HashMap scaledImagesHashMap = new HashMap();
+    private RenderingHints renderingHints;
     private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                             .getDefaultScreenDevice()
                                                                             .getDefaultConfiguration();
@@ -35,6 +41,13 @@ public class ImageManagerImpl implements ImageManager {
     public ImageManagerImpl(String readpath, String writePath) {
         pathToReadFrom = readpath;
         pathToWriteTo = writePath;
+        //Attempt to increase quality..
+        renderingHints = new RenderingHints(RenderingHints.KEY_ALPHA_INTERPOLATION,
+                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        renderingHints.put(RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON);
+        renderingHints.put(RenderingHints.KEY_INTERPOLATION,
+            RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     }
 
     public void setPathToReadFrom(String s) {
@@ -139,8 +152,9 @@ public class ImageManagerImpl implements ImageManager {
             } else {
                 int width = (i.getWidth(null) * height) / i.getHeight(null);
                 Image compatibleImage = defaultConfiguration.createCompatibleImage(width,
-                        height, Transparency.BITMASK);
-                Graphics g = compatibleImage.getGraphics();
+                        height, Transparency.TRANSLUCENT);
+                Graphics2D g = (Graphics2D)compatibleImage.getGraphics();
+                g.setRenderingHints(this.renderingHints);
                 g.drawImage(i, 0, 0, width, height, null);
                 scaledImagesHashMap.put(hashKey, compatibleImage);
 
