@@ -200,7 +200,7 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
         modelRoot.getUserMessageLogger().println("Attempting to " +
             "authenticate " + player.getName() + " with server");
         authenticated = false;
-        connection.send(new AddPlayerCommand(player, player.sign()));
+        connection.sendCommand(new AddPlayerCommand(player, player.sign()));
     }
 
     private void playerConfirmed() {

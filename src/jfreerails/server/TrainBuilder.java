@@ -47,13 +47,13 @@ public class TrainBuilder {
         }
     }
 
-    /** Warning, this method assumes that no other threads are accessing the world object! 
-     * 
+    /** Warning, this method assumes that no other threads are accessing the world object!
+     *
      * @param engineTypeNumber type of the engine
      * @param wagons array of wagon types
      * @param p point at which to add train on map.
-     *      
-     * 
+     *
+     *
      */
     public TrainMover buildTrain(int engineTypeNumber, int[] wagons, Point p) {
         FreerailsTile tile = (FreerailsTile)world.getTile(p.x, p.y);
@@ -108,13 +108,13 @@ public class TrainBuilder {
             /*
              * We can't set the trains initial position yet because
              * TrainPathFinder.nextInt() requires that the train exists
-             * in the world DB.  To get arround this we temporarily do the move 
-             * directly on world.  We will undo it before sending it to the client as 
-			 * one composite move.
-			 */
-			//compositeMove.doMove(world);
-			moveReceiver.processMove(compositeMove);
-            
+             * in the world DB.  To get arround this we temporarily do the move
+             * directly on world.  We will undo it before sending it to the client as
+                         * one composite move.
+                         */
+            //compositeMove.doMove(world);
+            moveReceiver.processMove(compositeMove);
+
             FreerailsPathIterator from = new TrainPathIterator(tpf);
 
             tpf = getPathToFollow(p, world, trainNumber);
@@ -122,19 +122,21 @@ public class TrainBuilder {
             tpf.initTarget(train, is);
 
             TrainMover trainMover = new TrainMover(tpf, world, trainNumber);
-            
+
             Move positionMove = trainMover.setInitialTrainPosition(train, from);
-            
-            /* Undo the move so that all the moves can be sent to the client as one 
+
+            /* Undo the move so that all the moves can be sent to the client as one
              * composite move.
              */
-			//compositeMove.undoMove(world);
-			
-			Move compositeMovePlusPositionMove = new CompositeMove(new Move[] {
-									addCargoBundleMove, addTrainMove, setupScheduleMove, positionMove
-								});            
+
+            //compositeMove.undoMove(world);
+            Move compositeMovePlusPositionMove = new CompositeMove(new Move[] {
+                        addCargoBundleMove, addTrainMove, setupScheduleMove,
+                        positionMove
+                    });
+
             //moveReceiver.processMove(compositeMovePlusPositionMove);  
-			moveReceiver.processMove(positionMove);
+            moveReceiver.processMove(positionMove);
 
             return trainMover;
         } else {

@@ -23,7 +23,6 @@ class QueuedMoveReceiver implements SourcedMoveReceiver {
         identityProvider = p;
     }
 
-    
     public void processMove(Move move) {
         moveQueue.write(move);
         principalQueue.write(Player.NOBODY);
@@ -31,7 +30,9 @@ class QueuedMoveReceiver implements SourcedMoveReceiver {
 
     public void processMove(Move move, ConnectionToServer c) {
         moveQueue.write(move);
-        principalQueue.write(identityProvider.getPrincipal(c));
+
+        FreerailsPrincipal principal = identityProvider.getPrincipal(c);
+        principalQueue.write(principal);
     }
 
     public void executeOutstandingMoves() {

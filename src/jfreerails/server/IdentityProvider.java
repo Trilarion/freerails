@@ -2,18 +2,12 @@ package jfreerails.server;
 
 import java.util.HashMap;
 import jfreerails.controller.ConnectionToServer;
-import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.MoveChainFork;
-import jfreerails.controller.SourcedMoveReceiver;
-import jfreerails.world.player.Player;
 import jfreerails.move.AddPlayerMove;
-import jfreerails.move.MoveStatus;
-import jfreerails.move.Move;
-import jfreerails.move.RejectedMove;
-import jfreerails.world.top.NonNullElements;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
+import jfreerails.world.top.World;
 
 
 /**
@@ -21,58 +15,6 @@ import jfreerails.world.player.FreerailsPrincipal;
  */
 class IdentityProvider {
     private final AuthoritativeMoveExecuter moveExecuter;
-
-    /**
-     * submits a move to the queue, sleeps until confirmation that a move has
-     * been implemented (un)successfully received
-     */
-    private class MoveConfirmer implements MoveReceiver {
-        boolean confirmed = false;
-        MoveStatus result = MoveStatus.moveFailed("not executed!");
-        SourcedMoveReceiver executer;
-        private Move move;
-        private MoveChainFork moveChainFork;
-
-        public MoveConfirmer(SourcedMoveReceiver me, MoveChainFork mcf) {
-            executer = me;
-            moveChainFork = mcf;
-            mcf.add(this);
-        }
-
-        public synchronized void processMove(Move m) {
-            if (move.equals(m)) {
-                confirmed = true;
-                result = MoveStatus.MOVE_OK;
-                notify();
-            } else if (m instanceof RejectedMove) {
-                RejectedMove rm = (RejectedMove)m;
-
-                if (move.equals(rm.getAttemptedMove())) {
-                    confirmed = true;
-                    result = rm.getMoveStatus();
-                    notify();
-                }
-            }
-        }
-
-        public synchronized MoveStatus confirmMove(Move m, ConnectionToServer c) {
-            System.err.println("In thread " + Thread.currentThread().getName());
-            move = m;
-            executer.processMove(m, c);
-
-            while (!confirmed) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    // ignore
-                }
-            }
-
-            moveChainFork.remove(this);
-
-            return result;
-        }
-    }
 
     /**
      * A HashMap in which the keys are instances of ConnectionToServer and the

@@ -1,3 +1,5 @@
+Feb 20, 2004 12:31:15 PM Luke
+	o Fix bugs 867473 and 880450 (Intermittent deadlocks).
 Feb 18, 2004 8:49:34 PM Luke
 	o Fix bug 839331 - set initial gamespeed to 'slow' instead of paused
 	o Fix bug 874416 (station icon hides after track-upgrade)

@@ -83,5 +83,5 @@ public interface ConnectionToServer extends UncommittedMoveReceiver {
      */
     public ConnectionState getConnectionState();
 
-    public void send(ServerCommand s);
+    public void sendCommand(ServerCommand s);
 }

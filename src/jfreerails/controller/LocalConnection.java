@@ -195,7 +195,7 @@ public class LocalConnection implements ConnectionToServer {
     /**
      * send a server command to the remote peer
      */
-    public void send(ServerCommand s) {
+    public void sendCommand(ServerCommand s) {
         peer.sendServerCommand(s);
     }
 }
