@@ -113,22 +113,20 @@ bool TrackController::testBuildElement(int x, int y, int dir)
   return true;
 }
 
-void TrackController::addGameElement(void *_data)
+void TrackController::addGameElement(GameElement* _element)
 {
   int x, y, dir;
-  
-//  if(!(canBuildElement(_data, &x, &y, &dir)))
-//    return;
-  trackDoBuild(x, y, dir);
+  Track* track = (Track*)_element;
+  trackDoBuild(track->getPosX(), track->getPosY(), track->getConnect());
 }
 
-void TrackController::removeGameElement(void */*_data*/)
+void TrackController::removeGameElement(long int _elementID)
 {
 }
 
 bool TrackController::connectIsBuildable(unsigned int connect)
 {
-  int c = connect & 0x000000ff;
+  int c = connect;// & 0x000000ff;
   bool status;
 
   if (connect & (TrackIsBlocked))
@@ -166,10 +164,12 @@ bool TrackController::connectIsBuildable(unsigned int connect)
       case TrackGoSouthWest:
       case TrackGoWest:
       case TrackGoNorthWest:
+
       case TrackGoNorth | TrackGoSouth:
       case TrackGoNorthEast | TrackGoSouthWest:
       case TrackGoEast | TrackGoWest:
       case TrackGoSouthEast | TrackGoNorthWest:
+
       case TrackGoNorth | TrackGoSouthEast:
       case TrackGoNorthEast | TrackGoSouth:
       case TrackGoEast | TrackGoSouthWest:
@@ -178,6 +178,7 @@ bool TrackController::connectIsBuildable(unsigned int connect)
       case TrackGoNorth | TrackGoSouthWest:
       case TrackGoNorthEast | TrackGoWest:
       case TrackGoNorthWest | TrackGoEast:
+
       case TrackGoNorth | TrackGoSouth | TrackGoSouthEast:
       case TrackGoNorthEast | TrackGoSouth | TrackGoSouthWest:
       case TrackGoEast | TrackGoSouthWest | TrackGoWest:
@@ -196,7 +197,8 @@ bool TrackController::connectIsBuildable(unsigned int connect)
       case TrackGoNorthWest | TrackGoSouthEast | TrackGoSouth:
       case TrackGoNorth | TrackGoEast | TrackGoSouth | TrackGoWest:
       case TrackGoNorthEast | TrackGoSouthEast | TrackGoSouthWest | TrackGoNorthWest:
-      case TrackGoNorth | TrackGoEast:
+
+/*      case TrackGoNorth | TrackGoEast:
       case TrackGoNorthEast | TrackGoSouthEast:
       case TrackGoEast | TrackGoSouth:
       case TrackGoSouthEast | TrackGoSouthWest:
@@ -220,6 +222,7 @@ bool TrackController::connectIsBuildable(unsigned int connect)
       case TrackGoSouthEast | TrackGoSouthWest | TrackGoNorthWest:
       case TrackGoNorth | TrackGoSouth | TrackGoWest:
       case TrackGoNorthEast | TrackGoSouthWest | TrackGoNorthWest:
+*/
         status = true;
         break;
       default:
@@ -322,7 +325,6 @@ void TrackController::trackUpdate(int x, int y, int dir)
   connect = track->getConnect();
   connect = doConnect(connect, connectTo);
   track->setConnect(connect);
-//  setCorner(x, y);
 }
 
 void TrackController::trackDoBuild(int x,int y, int dir)
@@ -331,21 +333,19 @@ void TrackController::trackDoBuild(int x,int y, int dir)
   Track *track;
   unsigned int connect;
 
+  std::cerr << "Build: x, y, dir: " << x << ":" << y << ":" << dir << std::endl;
   field = worldMap->getMapField(x, y);
   if (field == NULL)
     return;
   track = field->getTrack();
   if (track == NULL )
   {
-    #warning complete me
     track = new Track(x, y, NULL, 0);
     field->setTrack(track);
   }
   connect = doConnect(track->getConnect(), dir);
   track->setConnect(connect);
-//  setCorner(x, y);
   trackUpdate(x, y, dir);
-//    PlayerMoneyDecrement(ThisPlayer,1000);
 }
 
 /*
@@ -442,11 +442,3 @@ void TrackController::setCorner(int x, int y)
   }
 }
 */
-
-//void TrackBuildDrawPanelInfo() {
-//
-//    DrawText(PanelInfo.Box.X+2,PanelInfo.Box.Y+2,SmallFont,"Build: Track");
-//    DrawText(PanelInfo.Box.X+2,PanelInfo.Box.Y+17,SmallFont,"Cost: 1.000 $");
-//    DrawText(PanelInfo.Box.X+2,PanelInfo.Box.Y+32,SmallFont,"Monthly Cost: 1.000 $");
-//
-//}

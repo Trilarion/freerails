@@ -40,8 +40,8 @@ class TrackController : public Controller
 
     GameElement* CreateElement(Serializer* _serializer);
     bool canBuildElement(GameElement* _element);
-    void addGameElement(void *_data);
-    void removeGameElement(void *_data);
+    void addGameElement(GameElement* _element);
+    void removeGameElement(long int _elementID);
 
     void getOtherConnectionSide(unsigned int* x, unsigned int* y, int* dir);
 

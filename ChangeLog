@@ -1,3 +1,6 @@
+Tue Apr 22 02:00:00 2003  Alexander Opitz <opi@le-bit.de>:
+o repair some functions in TrackController
+o tracks are now build to the Map (but seems not all go well)
 Mon Apr 21 02:00:00 2003  Alexander Opitz <opi@le-bit.de>:
 o add Base2DMapView (higher class for GameMapView)
 o ParaGUI Client uses Base2DMapView

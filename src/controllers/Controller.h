@@ -5,6 +5,8 @@
 #define __CONTROLLER_H__
 
 #include <map>
+#include <iostream>
+// For std::cerr messages in the controller classes
 
 #include "GameElement.h"
 #include "Serializer.h"
@@ -20,7 +22,7 @@ class Controller
     /** Destructor */
     virtual ~Controller();
 
-    void addGameElement(GameElement* _element);
+    virtual void addGameElement(GameElement* _element);
     void removeGameElement(long int _elementID);
     GameElement* getGameElement(long int _elementID);
 
