@@ -96,15 +96,13 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     }//GEN-END:initComponents
 
-	private void canceljButtonMouseClicked(
-		java.awt.event.MouseEvent evt) { //GEN-FIRST:event_canceljButtonMouseClicked
+	private void canceljButtonMouseClicked(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_canceljButtonMouseClicked
 		//Close this dialogue.
 		dialogueBoxController.closeContent();
 
 	} //GEN-LAST:event_canceljButtonMouseClicked
 
-	private void jList1ValueChanged(
-		javax.swing.event.ListSelectionEvent evt) { //GEN-FIRST:event_jList1ValueChanged
+	private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) { //GEN-FIRST:event_jList1ValueChanged
 		//We need to disable the OK button if no engine type is selected.
 
 		if (-1 == jList1.getSelectedIndex()) {
