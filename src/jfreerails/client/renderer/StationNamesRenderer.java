@@ -1,0 +1,91 @@
+/**@author Scott Bennett
+ * Date: 14th April 2003
+ *
+ * Class to render the station names on the game map. Names are retrieved
+ * from the KEY.STATIONS object.
+ */
+
+package jfreerails.client.renderer;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.font.TextLayout;
+import java.awt.font.FontRenderContext;
+import java.awt.Graphics2D;
+
+import jfreerails.client.common.Painter;
+import jfreerails.world.station.StationModel;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.World;
+
+public class StationNamesRenderer implements Painter {
+
+	private World w;
+	
+	private int fontSize;
+	private Color bgColor;
+	private Color textColor;
+	
+	public StationNamesRenderer(World world) {
+		this.w = world;
+		
+		this.fontSize = 10;
+		this.bgColor = Color.BLACK;
+		this.textColor = Color.WHITE;
+	}
+	
+	public void paint(Graphics2D g) {
+		
+		int rectWidth;
+		int rectHeight;
+		int rectX;
+		int rectY;
+		float visibleAdvance;
+		float textX;
+		float textY;
+		
+		StationModel tempStation;
+		String stationName;		
+		int positionX;
+		int positionY;
+		
+		Font font = new Font("Arial",0,fontSize);
+		FontRenderContext frc = g.getFontRenderContext();
+		TextLayout layout;
+		
+		//draw station names onto map
+	  	for (int i=0; i<w.size(KEY.STATIONS); i++) {
+	
+		  	tempStation = (StationModel)w.get(KEY.STATIONS, i);
+	
+		  	stationName = tempStation.getStationName();
+		  	positionX = tempStation.getStationX() * 30;
+		  	positionY = tempStation.getStationY() * 30;
+	
+			layout = new TextLayout(stationName, font, frc);
+			visibleAdvance = layout.getVisibleAdvance();
+			
+			rectWidth = (int)(visibleAdvance*1.2);		
+			rectHeight = (int)(fontSize*1.5);
+			rectX = (int)(positionX - (rectWidth/2));
+			rectY = positionY;
+			
+			g.setColor(bgColor);
+			g.fillRect(rectX,rectY,rectWidth,rectHeight);
+			
+			textX = (float)(positionX - (visibleAdvance/2));
+			textY = positionY + fontSize + 1;
+			
+			g.setColor(textColor);
+			layout.draw(g,textX,textY);
+			
+	  	} //end FOR loop
+	  	
+	} //paint method
+	
+}
+
+
+
+		
+
