@@ -1,3 +1,8 @@
+Wed Aug 22 20:00:00 2001 Bart Vandereycken <bart.vandereycken@student.kuleuven.ac.be>
+o Added the GameModeSelectDialog in Qt
+o Small change in main.cpp
+o Small changes in Rules.make
+o Use of moc in Qt's Makefile
 Mon Aug 20 23:30:00 2001  Alexander Opitz <opi@sputnik.de>:
 o remove some unused .c and .h files
 o add in paraGUI the GameModeSelectDialog
