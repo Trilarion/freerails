@@ -1,11 +1,8 @@
-Freerails Java - version 0.1.5
+Freerails Java - version 0.1.6
 
 What's new:
-o	Cargo types read from xml file.
-o	Terrain info dialogue box press 'i' on a tile.
-o	Station info dialogue box, shows supply and demand.
-o	Train graphics are read from files rather
-	than generated on the fly.
+o	Trains pickup and drop off cargo.
+o	'No change' option added to train orders.
  
 Getting it, either:
 

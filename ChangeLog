@@ -1,3 +1,23 @@
+28-Jun-2003 21:46:40 Luke
+	o Moved 'show game controls' menu item to the Help menu.
+	o Removed 'add cargo to stations' menu item from the game
+	menu.  Now cargo is added to stations at the start of each 
+	year.
+	o Set the intial game speed to 'moderate'.
+	o Added junit test for DropOffAndPickupCargoMoveGenerator
+28-Jun-2003 13:18:04 Luke
+	o Moved classes to remove circular dependencies between
+	packages and updated the 'checkdep' ant target. 
+27-Jun-2003 23:46:15 Luke
+	o Added 'station of origin' field to CargoBatch and updated
+	the classes that use CargoBatch as appropriate.  It lets us
+	check whether a train has brought cargo back to the station
+	that it came from.
+27-Jun-2003 23:25:54 Luke
+	o Added 'no change' option to train orders - it indicates 
+	that a train should keep whatever wagons it has when it stops 
+	at a station.
+	o Made 'no change' the default order for new trains. 
 15-Jun_2003 23:17:00 Luke
 	o Improved the train oders dialogue to show
 	the current train consist and what cargo the

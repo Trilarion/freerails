@@ -17,10 +17,10 @@ import javax.swing.border.LineBorder;
 
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.CalcSupplyAtStations;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.server.CalcSupplyAtStations;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
