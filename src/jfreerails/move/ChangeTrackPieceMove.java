@@ -223,15 +223,31 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     public Rectangle getUpdatedTiles() {
+    	//If we are building or removing a station, 
+    	//we need to repaint/remove the station radius 
+    	//that appears on the map.
+    	int radius = 1;
+    	TrackRule trackRuleAfter = this.trackPieceAfter.getTrackRule();
+		if(trackRuleAfter.isStation()){
+    		radius = Math.max(radius, trackRuleAfter.getStationRadius());
+    	}
+		TrackRule trackRuleBefore = this.trackPieceBefore.getTrackRule();
+		if(trackRuleAfter.isStation()){
+    		radius = Math.max(radius, trackRuleBefore.getStationRadius());
+    	}
+		
+		//Just to be safe.
+		radius++;
+		
         int x;
         int y;
         int width;
         int height;
 
-        x = location.x - 1;
-        y = location.y - 1;
-        width = 3;
-        height = 3;
+        x = location.x - radius;
+        y = location.y - radius;
+        width = radius * 2 +1;
+        height = radius * 2 +1;
 
         return new Rectangle(x, y, width, height);
     }
