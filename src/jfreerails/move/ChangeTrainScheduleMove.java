@@ -1,7 +1,8 @@
 
 package jfreerails.move;
 
-import jfreerails.element.Schedule;
+import jfreerails.world.train.*;
+import jfreerails.world.train.Schedule;
 
 
 /**
