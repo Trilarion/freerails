@@ -20,7 +20,7 @@ AC_CANONICAL_TARGET([])
 AM_INIT_AUTOMAKE
 
 dnl Perform program name transformation
-AC_PROG_CXX
+AC_CHECK_COMPILERS
 AC_PROG_RANLIB
 
 AC_PREFIX_DEFAULT(/usr/local)
@@ -42,6 +42,7 @@ AC_ENABLE_STATIC(no)
 dnl for NLS support. Call them in this order!
 dnl WITH_NLS is for the po files
 AM_KDE_WITH_NLS
+KDE_CHECK_FINAL
 
 all_libraries="$all_libraries $USER_LDFLAGS"
 all_includes="$all_includes $USER_INCLUDES"

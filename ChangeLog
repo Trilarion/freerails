@@ -1,4 +1,9 @@
 Thu Sep 26 23:10:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
+o update of Makefile.dist and acinclude.m4.in, so it works now also for QT
+o improve logic for building tracks (include building different stationtypes 
+  and tracks, also bridges and tunnel)
+  (at this time it's only the logic and definitions)
+Thu Sep 26 23:10:00 2002  Frank Schmischke <frank.schmischke@t-online.de>:
 o update for autoconf 2.54 and automake 1.7
 Thu Sep 24 12:30:00 2002  Alexander Opitz <opi@le-bit.de>:
 o using TypeID in messages from paraGUI client

@@ -3,17 +3,18 @@ default: dist
 dist:
 	@echo "This file is to make it easier for you to create all you need"
 	@echo "Creating acinclude.m4"
-	cat admin/acinclude.m4.in admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in >acinclude.m4
+	@cat admin/acinclude.m4.in admin/ac-sdl.m4 admin/ac-paragui.m4 admin/libtool.m4.in >acinclude.m4
 	@echo "Creating aclocal.m4"
 	aclocal
 	@echo "Creating config.h.in"
 	autoheader
 	@echo "Creating makefiles"
-	@automake --foreign --include-deps
+	automake --foreign --include-deps
 	@echo "*** Postprocessing Makefile templates"
-#	@perl admin/am_edit
+	perl admin/am_edit
 	@echo "Creating configure"
-	autoconf
+	autoconf 
+	## acinclude.m4
 	LIST=`find ./po -name "*.po"`; \
 	for i in $$LIST; do \
 	 file2=`echo $$i | sed -e "s#\.po#\.gmo#"`; \

@@ -61,7 +61,7 @@ dnl Now check if the installed PARAGUI is sufficiently new. (Also sanity
 dnl checks the results of paragui-config to some extent
 dnl
       rm -f conf.paraguitest
-      AC_LANG_CPLUSPLUS
+      AC_LANG([C++])
       AC_TRY_RUN([
 #include "paragui.h"
 #include "pgapplication.h"
