@@ -26,18 +26,18 @@ public:
     /** Should destroy application */
     ~BaseApplication();
     /** Should create and show splash screen */
-    virtual void showSplash() = 0;
+    virtual void showSplash() {};
     /** Should hide (destroy) splash screen */
-    virtual void hideSplash() = 0;
+    virtual void hideSplash() {};
     /** Should run application. Return value will be used as exit value */
-    virtual int run() = 0;
+    virtual int run() {};
     /** Should return type of wrapper as int */
     // Probably this must be made pure too
     virtual int wrapperType() { return WRAPPERTYPE_BASE; };
     /** Should make @ref mw 'main widget' - when user closes it, app
       * will exit
       */
-    virtual void setMainWindow(GameMainWindow* mw) = 0;
+    virtual void setMainWindow(GameMainWindow* mw) {};
     
     virtual void initSingleGame() {};
     virtual void initClientGame() {};
