@@ -154,14 +154,16 @@ void GameApplication::hideSplash()
     splash->hide(); // deleted splash (WDestructiveClose flag in splash!!)
 }
 
-// Obsolote, because we call directly application->setMainWidget()
-// It crashed, too, but don't know why
-void GameApplication::setMainWindow(GameMainWindow* mw)
-{
-  application->setMainWidget((QWidget*)mw->getWidget());
-}
-
+// get messages from engine
 void GameApplication::retrieveMessage()
 {
-  
+  Message *msg;
+
+//  qDebug("in retrieveMessage");  
+  while(engine->haveMsg())
+  {
+    msg = engine->getMsg();
+    qDebug("MsgType is %d", int(msg->getMsgType()));
+    qDebug("MsgID is %ld", msg->getMsgID());
+  }
 }

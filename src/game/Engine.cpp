@@ -96,18 +96,20 @@ void Engine::checkNet() {
   }
 }
 
-void Engine::checkNext(int msec) {
-
-  if (gameState==Running)
+void Engine::checkNext(int msec)
+{
+  if (gameState == Running)
   {
-    if ((msec-lastmsec)>10)
-    { lastmsec=msec;
+    if ((msec - lastmsec) > 10)
+    {
+      lastmsec = msec;
       frame++;
       process();
 //      std::cerr << frame << std::endl;
     }
   }
-  while (gui2engine->hasMoreElements()) {
+  while (gui2engine->hasMoreElements())
+  {
     Message* msg = gui2engine->getMsg();
     processMsg(msg);
     delete msg;
@@ -115,15 +117,17 @@ void Engine::checkNext(int msec) {
 
 }
 
-void Engine::process() {
-
+void Engine::process()
+{
   std::cerr << ".";
-  if(isServer) { }
-
+  if(isServer)
+  {
+  }
 }
 
 void Engine::processMsg(Message* msg)
 {
+  std::cerr << "\nin processMsg(Message*)\n";
   switch (msg->getMsgID())
   {
     case Message::addElement:
@@ -132,6 +136,7 @@ void Engine::processMsg(Message* msg)
         delete (track_data*)msg->getData();
       break;
     case Message::stateOfGame:
+      std::cerr << "change state of the game";
       changeStateOfGame(msg);
       break;
     default:
@@ -146,15 +151,16 @@ void Engine::addElementToGame(Message* msg)
   Controller* elementController = controllerDispatcher->getController(element->getTypeID());
 //  if (isServer)
 //  {
-//    if (elementController->canBuildElement(element)) {
+//    if (elementController->canBuildElement(element))
+//    {
       elementController->addGameElement(element);
-//      Message* msg = new Message(Message::addElement, 0, element);
-//      SendAll(msg);
+      Message* msgBack = new Message(Message::addElement, 0, element);
+      SendAll(msgBack);
 //    }
 //  }
 //  else
 //  {
-//  //  elementController->addGameElement(element);
+//    elementController->addGameElement(element);
 //  }
 }
 
@@ -186,6 +192,7 @@ void Engine::changeStateOfGame(Message* msg)
 
 void Engine::SendAll(Message* msg)
 {
+   std::cerr << "in SendAll(Message*)\n Server is " << isServer << std::endl;
   if (isServer)
   {
     // Server

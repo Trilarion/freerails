@@ -3,15 +3,15 @@
  */
 
 #include "Server.h"
-#include <iostream.h>
+#include <iostream>
 
-Server::Server(int port):TCPConnection() {
-
+Server::Server(int port):TCPConnection()
+{
   listen(port);
-  
 }
 
-Server::~Server() {
+Server::~Server()
+{
 
 }
 

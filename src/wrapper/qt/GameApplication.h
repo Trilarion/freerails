@@ -48,13 +48,6 @@ class GameApplication : public BaseApplication
     void showSplash();
     /** Hides splash screen */
     void hideSplash();
-    /** Sets main window to be @ref mw
-      * Main window will be main widget. When it's destroyed, application
-      * will exit
-      * This is obsolete. We use applicaton->setMainWidget() instead!
-      */
-    void setMainWindow(GameMainWindow* mw);
-//    void* runEngine(void*);
     void retrieveMessage();
 
   private:
