@@ -9,17 +9,58 @@ Engine::Engine(WorldMap* _worldMap, Player* _player) {
   isSingle = true;
   isClient = false;
   isServer = false;
+  
+  Init(_player);
+
+  cerr << "engine(alone) inited" << endl;
+}
+
+Engine::Engine(WorldMap* _worldMap, Player* _player, Server* _server) {
+
+  gameState = Initializing;
+
+  worldMap = _worldMap;
+  server=_server;
+  isSingle = false;
+  isClient = false;
+  isServer = true;
+  
+  Init(_player);
+  
+   cerr << "engine(Server) inited" << endl;
+}
+
+Engine::Engine(Player* _player, Client* _client) {
+
+  gameState = Initializing;
+
+  worldMap = NULL;
+  client=_client;
+  isSingle = false;
+  isClient = true;
+  isServer = false;
+  
+  Init(_player);
+  
+   cerr << "engine(Client) inited" << endl;
+}
+
+void Engine::Init(Player* _player) {
+
   lastmsec = 0;
   frame = 0;
-  
   gui2engine=new MessageQueue();
   engine2gui=new MessageQueue();
 
-  gameCon=NULL;  
-  gameCon=new GameController("default",1900,1,1);
-  gameCon->addPlayer(_player);
+  controllerDispatcher = new ControllerDispatcher();
+  
+  controllerDispatcher->addController(new PlayerController());
+  
+  controllerDispatcher->getController(1)->addGameElement(_player);
 
-  cerr << "engine inited" << lastmsec << endl;
+  gameState = Waiting;
+
+  gameCon=new GameController("default",1900,1,1);
 }
 
 Engine::~Engine() {
@@ -41,9 +82,18 @@ Message* Engine::getMsg() {
   return engine2gui->getMsg();
 }
 
+void Engine::checkNet() {
+  if (isServer) {
+      // Server.check();
+  } else
+  if (isClient) {
+    //Client.check();
+  }
+}
+
 void Engine::checkNext(int msec) {
 
-  if (gameCon->getState()==GameController::Running)
+  if (gameState==Running)
   {
     if ((msec-lastmsec)>10)
     { lastmsec=msec;
@@ -52,7 +102,6 @@ void Engine::checkNext(int msec) {
       cerr << frame << endl;
     }
   }
-
   while (gui2engine->hasMoreElements()) {
     Message* msg = gui2engine->getMsg();
     processMsg(msg);
@@ -71,37 +120,57 @@ void Engine::process() {
 void Engine::processMsg(Message* msg) {
 
   switch (msg->getType()) {
-    case Message::startGame: startGame();
-    case Message::pauseGame: pauseGame();
+    case Message::addElement: addElementToGame(msg);
+    case Message::stateOfGame: changeStateOfGame(msg);
   }
-
 }
 
-void Engine::startGame() {
+void Engine::addElementToGame(Message* msg) {
 
-  cerr << "Start Game" << endl;
-  if (gameCon->startGame()) {
-    if (isServer) {
-      // Server.sendAll("Game started");
-    }
-  }
-
-}
-
-void Engine::pauseGame() {
-
-  cerr << "Pause/Unpause Game" << endl;
-  gameCon->pauseGame();
+  GameElement* element = (GameElement *)msg->getData();
+  Controller* elementController = controllerDispatcher->getController(element->getTypeID());
   if (isServer) {
-      // Server.sendAll("Game paused");
+    if (elementController->canBuildElement(element)) {
+      elementController->addGameElement(element);
+      Message* msg = new Message(Message::addElement, 0, element);
+      SendAll(msg);
+    }
+  } else {
+    elementController->addGameElement(element);
   }
 }
 
-int Engine::canBuildTrack(int x, int y, int type, int dir) {
+void Engine::changeStateOfGame(Message* msg) {
 
-  MapField* field=worldMap->getMapField(x,y);
-  
-  if (worldMap->isMapFieldOcean(x,y)) return -1;
+  GameState state = *(GameState *)msg->getData();
+  Message* Msg = new Message(Message::stateOfGame,0,&state);
+  if (gameState==Waiting && state==Running)
+  {
+    gameState=state;
+    SendAll(Msg);
+  }
+  if (gameState==Running && state==Pausing)
+  {
+    gameState=state;
+    SendAll(Msg);
+  }
+  if (gameState==Pausing && state==Running)
+  {
+    gameState=state;
+    SendAll(Msg);
+  }
+  if ((gameState==Pausing || gameState==Running) && state==Stopping)
+  {
+    gameState=state;
+    SendAll(Msg);
+  }
+}
 
-  return 0;
+void Engine::SendAll(Message* msg) {
+
+  if (isServer) {
+    // Server
+  } else {
+    engine2gui->addMsg(msg);
+  }
 }
