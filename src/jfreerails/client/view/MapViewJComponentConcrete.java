@@ -14,8 +14,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
@@ -23,6 +21,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
+import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.MapRenderer;
 
 
@@ -33,7 +32,7 @@ import jfreerails.client.renderer.MapRenderer;
  *
  */
 final public class MapViewJComponentConcrete extends MapViewJComponent
-    implements PropertyChangeListener {
+    implements ModelRootListener {
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
     private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);   
 
@@ -298,20 +297,19 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
      * <p>(2) If it was ModelRoot.QUICK_MESSAGE, display or hide the message as appropriate.</p>
      * <p>(3) If it was ModelRoot.PERMANENT_MESSAGE, display or hide the message as appropriate.</p>
     */
-    public void propertyChange(PropertyChangeEvent evt) {
-        String propertyName = evt.getPropertyName();
+    public void propertyChange(ModelRoot.Property p, Object before, Object after) {     
 
-        if (propertyName.equals(ModelRoot.CURSOR_POSITION)) {
-            Point newPoint = (Point)evt.getNewValue();
-            Point oldPoint = (Point)evt.getOldValue();
+        if (p.equals(ModelRoot.Property.CURSOR_POSITION)) {
+            Point newPoint = (Point)after;
+            Point oldPoint = (Point)before;
 
             if (null == oldPoint) {
                 oldPoint = new Point();
             }
 
             react2curorMove(newPoint, oldPoint);
-        } else if (propertyName.equals(ModelRoot.QUICK_MESSAGE)) {
-            String newMessage = (String)evt.getNewValue();
+        } else if (p.equals(ModelRoot.Property.QUICK_MESSAGE)) {
+            String newMessage = (String)after;
 
             if (null != newMessage) {
                 println(newMessage);
@@ -319,8 +317,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
                 //Its null, so stop displaying whatever we where displaying.
                 displayMessageUntil = Long.MIN_VALUE;
             }
-        } else if (propertyName.equals(ModelRoot.PERMANENT_MESSAGE)) {
-            message = (String)evt.getNewValue();
+        } else if (p.equals(ModelRoot.Property.PERMANENT_MESSAGE)) {
+            message = (String)after;
         }
     }
+
 }

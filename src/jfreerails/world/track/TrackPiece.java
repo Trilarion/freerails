@@ -7,7 +7,9 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public interface TrackPiece extends FreerailsSerializable {
-    int getTrackGraphicNumber();
+    int getTrackGraphicID();
+    
+    int getTrackTypeID();
 
     TrackRule getTrackRule();
 

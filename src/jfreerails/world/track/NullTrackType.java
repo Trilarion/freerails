@@ -9,6 +9,7 @@ import java.io.ObjectStreamException;
 import java.util.Iterator;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.terrain.TerrainType;
 
 
 /**
@@ -31,7 +32,7 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
         return nullTrackType;
     }
 
-    public boolean canBuildOnThisTerrainType(String TerrainType) {
+    public boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType) {
         return true; //No track is possible anywhere.
     }
 
@@ -43,10 +44,7 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
     public int getMaximumConsecutivePieces() {
         return -1;
     }
-
-    public int getRuleNumber() {
-        return NULL_TRACK_TYPE_RULE_NUMBER;
-    }
+    
 
     public String getTypeName() {
         return "NullTrackType";
@@ -61,7 +59,7 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
     }
 
     public boolean trackPieceIsLegal(TrackConfiguration config) {
-        return testTrackPieceLegality(config.getTrackGraphicsNumber());
+        return testTrackPieceLegality(config.getTrackGraphicsID());
     }
 
     public Iterator getLegalConfigurationsIterator() {

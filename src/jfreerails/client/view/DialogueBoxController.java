@@ -20,7 +20,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 
 import jfreerails.client.common.ModelRootImpl;
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
@@ -34,7 +33,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.track.FreerailsTile;
-
+import static jfreerails.client.common.ModelRoot.Property;
 
 /**This class is responsible for displaying dialogue boxes, adding borders to them as appropriate, and
  * returning focus to the last focus owner after a dialogue box has been closed.  It is also responsible for
@@ -214,7 +213,7 @@ public class DialogueBoxController implements WorldListListener {
                 modelRoot.getPrincipal());
 
         if (!wi.next()) {
-            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+            modelRoot.setProperty(Property.QUICK_MESSAGE,
                 "Cannot" + " show train orders since there are no" +
                 " trains!");
         } else {
@@ -228,7 +227,7 @@ public class DialogueBoxController implements WorldListListener {
                 modelRoot.getPrincipal());
 
         if (!wi.next()) {
-            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+            modelRoot.setProperty(Property.QUICK_MESSAGE,
                 "Can't" + " build train since there are no stations");
         } else {
             showContent(selectEngine);
@@ -276,7 +275,7 @@ public class DialogueBoxController implements WorldListListener {
 
     public void showTerrainInfo(int x, int y) {
         FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
-        int terrainType = tile.getTerrainTypeNumber();
+        int terrainType = tile.getTerrainTypeID();
         showTerrainInfo(terrainType);
     }
 
@@ -311,7 +310,7 @@ public class DialogueBoxController implements WorldListListener {
 
             showContent(trainList);
         } else {
-            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+            modelRoot.setProperty(Property.QUICK_MESSAGE,
                 "There are" + " no trains to display!");
         }
     }

@@ -8,6 +8,7 @@ package jfreerails.world.track;
 import java.util.Iterator;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.terrain.TerrainType;
 
 
 /**
@@ -46,7 +47,7 @@ final public class TrackRuleImpl implements TrackRule {
         legalTrackPlacement = ltp;
     }
 
-    public boolean canBuildOnThisTerrainType(String TerrainType) {
+    public boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType) {
         return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
     }
 
@@ -102,20 +103,11 @@ final public class TrackRuleImpl implements TrackRule {
         return properties;
     }
 
-    public int getRuleNumber() {
-        return properties.getRuleNumber();
-    }
-
-    /* (non-Javadoc)
-     * @see jfreerails.world.track.TrackRule#getStationRadius()
-     */
+    
     public int getStationRadius() {
         return this.properties.getStationRadius();
     }
-
-    public TrackPiece getTrackPiece(TrackConfiguration config, int owner) {
-        return new TrackPieceImpl(config, this, owner);
-    }
+   
 
     public String getTypeName() {
         return properties.getTypeName();

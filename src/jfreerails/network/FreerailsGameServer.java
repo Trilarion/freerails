@@ -105,7 +105,7 @@ public class FreerailsGameServer implements ServerControlInterface,
 
                 synchronized (acceptedConnections) {
                     acceptedConnections.put(new Integer(
-                            response.getPlayerNumber()), connection);
+                            response.getPlayerID()), connection);
                 }
 
                 /* Just send to the new client. */

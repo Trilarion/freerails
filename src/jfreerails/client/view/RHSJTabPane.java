@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -14,19 +12,21 @@ import javax.swing.JTabbedPane;
 
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
+import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 
 
-/**  The tabbed panel that sits in the lower right hand corner of the screen, note does not only display trains.
+/**  The tabbed panel that sits in the lower right hand corner of the screen.
  * @author rob
  */
 public class RHSJTabPane extends JTabbedPane
-    implements PropertyChangeListener {
+    implements ModelRootListener {
     private final TerrainInfoJPanel terrainInfoPanel;
     private final StationInfoJPanel stationInfoPanel;
     private final TrainListJPanel trainListPanel;
+    private final BuildTrackJPanel buildTrackPanel;
     private ReadOnlyWorld world;
     private final BuildJPane buildJPane;    
     private int stationInfoIndex;
@@ -42,6 +42,7 @@ public class RHSJTabPane extends JTabbedPane
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         terrainInfoPanel = new TerrainInfoJPanel();
         trainListPanel = new TrainListJPanel();
+        buildTrackPanel = new BuildTrackJPanel();
         trainListPanel.removeButtons();
 
         URL terrainInfoIconUrl = getClass().getResource("/jfreerails/client/graphics/icons/terrain_info.png");
@@ -68,6 +69,7 @@ public class RHSJTabPane extends JTabbedPane
         buildJPane = new BuildJPane();
         trainListPanel.setTrainViewHeight(20);
         addTab(null, buildTrackIcon, buildJPane, "Build Track");
+        addTab(null, buildTrackIcon, buildTrackPanel, "New Build Track");
         addTab(null, trainListIcon, trainListPanel, "Train List");
         this.trainListIndex= this.getTabCount()-1;
         
@@ -93,16 +95,18 @@ public class RHSJTabPane extends JTabbedPane
         trainListPanel.setShowTrainDetailsActionListener(showTrain);
         trainListPanel.setup(modelRoot, vl, null);
         modelRoot.addPropertyChangeListener(this);
+        
+        buildTrackPanel.setup(modelRoot, vl, null);
     }
 
     /** Updates the Terrain Info Panel if the specfied PropertyChangeEvent
      * was triggered by the cursor moving.
      */
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(ModelRoot.CURSOR_POSITION)) {
-            Point p = (Point)evt.getNewValue();
+    public void propertyChange(ModelRoot.Property prop, Object before, Object after) {
+        if (prop.equals(ModelRoot.Property.CURSOR_POSITION)) {
+            Point p = (Point)after;
             terrainInfoPanel.setTerrainType(((FreerailsTile) world.getTile(p.x, p.y))
-                                                 .getTerrainTypeNumber());
+                                                 .getTerrainTypeID());
         }
     }
     
@@ -113,4 +117,5 @@ public class RHSJTabPane extends JTabbedPane
     public void setStationTabEnabled(boolean enabled){
     	//this.setEnabledAt(this.stationInfoIndex, enabled);    	
     }
+
 }

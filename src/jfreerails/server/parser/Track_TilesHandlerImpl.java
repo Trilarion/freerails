@@ -6,8 +6,10 @@ package jfreerails.server.parser;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
+import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.LegalTrackPlacement;
@@ -32,12 +34,12 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     protected jfreerails.world.track.TrackRuleProperties trackRuleProperties;
     protected jfreerails.world.track.LegalTrackConfigurations legalTrackConfigurations;
     protected ArrayList legalTemplates;
-    protected java.util.HashSet terrainTypes;
+    protected HashSet<TerrainType.Category> terrainTypes;
     protected LegalTrackPlacement legalTrackPlacement;
 
     public void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta)
         throws SAXException {
-        terrainTypes = new java.util.HashSet();
+        terrainTypes = new HashSet<TerrainType.Category>();
     }
 
     public void end_CanOnlyBuildOnTheseTerrainTypes() throws SAXException {
@@ -95,8 +97,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
         boolean enableDoubleTrack = Boolean.valueOf(meta.getValue("doubleTrack"))
                                            .booleanValue();
-        String typeName = meta.getValue("type");
-        int ruleNumber = ruleList.size();
+        String typeName = meta.getValue("type");     
         maxConsequ = Integer.parseInt(meta.getValue("maxConsecuativePieces"));
 
         String stationRadiusString = meta.getValue("stationRadius");
@@ -115,7 +116,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         int maintenance = Integer.parseInt(maintenanceString);
 
         trackRuleProperties = new TrackRuleProperties(rGBvalue,
-                enableDoubleTrack, typeName, ruleNumber, category,
+                enableDoubleTrack, typeName, category,
                 stationRadius, price, maintenance);
     }
 
@@ -132,7 +133,8 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void handle_TerrainType(final Attributes meta)
         throws SAXException {
-        terrainTypes.add(meta.getValue("name"));
+    	TerrainType.Category cat = TerrainType.Category.valueOf(meta.getValue("name"));
+        terrainTypes.add(cat);
     }
 
     public void start_Tiles(final Attributes meta) throws SAXException {

@@ -37,7 +37,7 @@ public class EightRotationsOfTrackPieceProducer extends java.lang.Object {
 
             boolean[][] trackTemplateBooleanArray = getTrackBooleanArray(trackTemplate);
             trackTemplateBooleanArray = rotateTrackNodeClockwise(trackTemplateBooleanArray);
-            trackTemplate = getTrackGraphicNumber(trackTemplateBooleanArray);
+            trackTemplate = getTrackGraphicID(trackTemplateBooleanArray);
         }
 
         return derivedTrackPieces;
@@ -57,7 +57,7 @@ public class EightRotationsOfTrackPieceProducer extends java.lang.Object {
         return trackBooleanArray;
     }
 
-    private static int getTrackGraphicNumber(boolean[][] railsList) {
+    private static int getTrackGraphicID(boolean[][] railsList) {
         int trackGraphicNumber = 0;
 
         for (int y = 0; y < 3; y++) {

@@ -30,7 +30,7 @@ public class LogOnResponse implements FreerailsSerializable {
         return new LogOnResponse(false, -1, reason);
     }
 
-    public int getPlayerNumber() {
+    public int getPlayerID() {
         return playerNumber;
     }
 

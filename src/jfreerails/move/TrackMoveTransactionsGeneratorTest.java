@@ -51,7 +51,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         TrackRule r = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
         int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL,
                 world);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, owner);
+        newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
 

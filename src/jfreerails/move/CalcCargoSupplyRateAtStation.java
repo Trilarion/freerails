@@ -81,7 +81,7 @@ public class CalcCargoSupplyRateAtStation {
     }
 
     private void incrementSupplyAndDemand(int i, int j) {
-        int tileTypeNumber = ((FreerailsTile)w.getTile(i, j)).getTerrainTypeNumber();
+        int tileTypeNumber = ((FreerailsTile)w.getTile(i, j)).getTerrainTypeID();
 
         TerrainType terrainType = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
                 tileTypeNumber);
@@ -162,7 +162,7 @@ public class CalcCargoSupplyRateAtStation {
 
     private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
         FreerailsTile tile = (FreerailsTile)w.getTile(xx, yy);
-        int ruleNumber = tile.getTrackRule().getRuleNumber();
+        int ruleNumber = tile.getTrackTypeID();
 
         return ruleNumber;
     }

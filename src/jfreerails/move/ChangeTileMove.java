@@ -37,9 +37,9 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         FreerailsTile before = (FreerailsTile)w.getTile(m_x, m_y);
         TerrainType type = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
-                before.getTerrainTypeNumber());
+                before.getTerrainTypeID());
 
-        if (!type.getTerrainCategory().equals("Country")) {
+        if (!type.getCategory().equals(TerrainType.Category.Country)) {
             return MoveStatus.moveFailed("Can only build on clear terrain.");
         }
 

@@ -28,7 +28,7 @@ public class RemoveTrainMove extends CompositeMove {
         int scheduleId = train.getScheduleID();
         ImmutableSchedule schedule = (ImmutableSchedule)world.get(KEY.TRAIN_SCHEDULES,
                 scheduleId, p);
-        int cargoBundleId = train.getCargoBundleNumber();
+        int cargoBundleId = train.getCargoBundleID();
         ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle)world.get(KEY.CARGO_BUNDLES,
                 cargoBundleId, p);
         Move removeTrain = new RemoveItemFromListMove(KEY.TRAINS, index, train,

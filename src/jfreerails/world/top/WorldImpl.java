@@ -87,16 +87,16 @@ public class WorldImpl implements World {
     }
 
     public FreerailsSerializable get(SKEY key, int index) {
-        return (FreerailsSerializable)sharedLists[key.getKeyNumber()].get(index);
+        return (FreerailsSerializable)sharedLists[key.getKeyID()].get(index);
     }
 
     public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p) {
-        return (FreerailsSerializable)((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(
+        return (FreerailsSerializable)((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(
                 p))).get(index);
     }
 
     public void set(SKEY key, int index, FreerailsSerializable element) {
-        sharedLists[key.getKeyNumber()].set(index, element);
+        sharedLists[key.getKeyID()].set(index, element);
     }
 
     public void set(KEY key, int index, FreerailsSerializable element,
@@ -104,12 +104,12 @@ public class WorldImpl implements World {
         logger.finer("Setting " + element + " of type " + key + " at index " +
             index + " for " + p);
 
-        ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).set(index,
+        ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).set(index,
             element);
     }
 
     public int add(SKEY key, FreerailsSerializable element) {
-        sharedLists[key.getKeyNumber()].add(element);
+        sharedLists[key.getKeyID()].add(element);
 
         return size(key) - 1;
     }
@@ -120,17 +120,17 @@ public class WorldImpl implements World {
         //        if (key == KEY.PLAYERS) {
         //            return addPlayer((Player)element, p);
         //        }
-        ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).add(element);
+        ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).add(element);
 
         return size(key, p) - 1;
     }
 
     public int size(SKEY key) {
-        return sharedLists[key.getKeyNumber()].size();
+        return sharedLists[key.getKeyID()].size();
     }
 
     public int size(KEY key, FreerailsPrincipal p) {
-        return ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).size();
+        return ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).size();
     }
 
     public int getMapWidth() {
@@ -178,9 +178,9 @@ public class WorldImpl implements World {
     }
 
     public FreerailsSerializable removeLast(SKEY key) {
-        int size = lists[key.getKeyNumber()].size();
+        int size = lists[key.getKeyID()].size();
 
-        return (FreerailsSerializable)sharedLists[key.getKeyNumber()].remove(size -
+        return (FreerailsSerializable)sharedLists[key.getKeyID()].remove(size -
             1);
     }
 
@@ -188,11 +188,11 @@ public class WorldImpl implements World {
         logger.finer("Removing last " + key + " for " + p);
 
         int size;
-        size = ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).size();
+        size = ((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(p))).size();
 
         int index = size - 1;
 
-        return (FreerailsSerializable)((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(
+        return (FreerailsSerializable)((ArrayList)lists[key.getKeyID()].get(getPlayerIndex(
                 p))).remove(index);
     }
 
@@ -259,11 +259,11 @@ public class WorldImpl implements World {
     }
 
     public FreerailsSerializable get(ITEM item) {
-        return items[item.getKeyNumber()];
+        return items[item.getKeyID()];
     }
 
     public void set(ITEM item, FreerailsSerializable element) {
-        items[item.getKeyNumber()] = element;
+        items[item.getKeyID()] = element;
     }
 
     /**

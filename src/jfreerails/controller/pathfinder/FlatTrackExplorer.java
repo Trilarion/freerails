@@ -53,7 +53,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             TrackConfiguration conf = tp.getTrackConfiguration();
             OneTileMoveVector[] vectors = OneTileMoveVector.getList();
 
-            int i = v.getNumber();
+            int i = v.getID();
 
             int loopCounter = 0;
 
@@ -102,7 +102,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             OneTileMoveVector oppositeToCurrentDirection = this.currentPosition.getDirection()
                                                                                .getOpposite();
 
-            if (oppositeToCurrentDirection.getNumber() == currentBranchDirection.getNumber()) {
+            if (oppositeToCurrentDirection.getID() == currentBranchDirection.getID()) {
                 return false;
             } else {
                 return true;
@@ -168,7 +168,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             OneTileMoveVector v = this.currentPosition.getDirection();
             v = v.getOpposite();
 
-            int i = v.getNumber();
+            int i = v.getID();
             i++;
             i = i % 8;
             v = OneTileMoveVector.getInstance(i);
@@ -178,7 +178,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             //Return the vector that is 45 degrees clockwise from the direction  
             //of the current branch.
             OneTileMoveVector v = this.currentBranch.getDirection();
-            int i = v.getNumber();
+            int i = v.getID();
             i++;
             i = i % 8;
             v = OneTileMoveVector.getInstance(i);

@@ -18,24 +18,19 @@ import jfreerails.world.top.WorldMapListener;
  *
  */
 public interface ModelRoot extends MoveExecutor, ServerCommandReceiver {
-    public static final String CURSOR_POSITION = "CURSOR_POSITION";
-    public static final String CURSOR_MODE = "CURSOR_MODE";
-    public static final String PREVIOUS_CURSOR_MODE = "PREVIOUS_CURSOR_MODE";
-    public static final String PLACE_STATION_CURSOR_MODE = "PLACE_STATION_CURSOR_MODE";
-    public static final String BUILD_TRACK_CURSOR_MODE = "BUILD_TRACK_CURSOR_MODE";
-    public static final String CURSOR_MESSAGE = "CURSOR_MESSAGE";
-    public static final String QUICK_MESSAGE = "QUICK_MESSAGE";
-    public static final String PERMANENT_MESSAGE = "PERMANENT_MESSAGE";
-    public static final String SHOW_STATION_NAMES = "SHOW_STATION_NAMES";
-    public static final String SHOW_CARGO_AT_STATIONS = "SHOW_CARGO_AT_STATIONS";
-    public static final String SHOW_STATION_BORDERS = "SHOW_STATION_BORDERS";
-    public static final String SERVER = "SERVER";
-    public static final String PLAY_SOUNDS = "PLAY_SOUNDS";
-    public static final String SELECTED_TRACK_TYPE = "SELECTED_TRACK_TYPE";
+	
+	public enum Property {CURSOR_POSITION, CURSOR_MODE, PREVIOUS_CURSOR_MODE, 
+		 CURSOR_MESSAGE,QUICK_MESSAGE, PERMANENT_MESSAGE, SHOW_STATION_NAMES, SHOW_CARGO_AT_STATIONS, SHOW_STATION_BORDERS,
+		SERVER, PLAY_SOUNDS, BUILD_TRACK_STRATEGY};
 
-    void setProperty(String property, Object newValue);
+	public enum Value {PLACE_STATION_CURSOR_MODE, BUILD_TRACK_CURSOR_MODE};
 
-    Object getProperty(String property);
+    void setProperty(Property property, Object newValue);
+    
+    /** Tests whether the specified property has the specified value.*/
+    boolean is(Property property, Object value);
+
+    Object getProperty(Property property);
 
     void addListListener(WorldListListener listener);
 

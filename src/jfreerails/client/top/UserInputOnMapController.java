@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import jfreerails.client.common.ModelRoot;
+import static jfreerails.client.common.ModelRoot.Property;
 import jfreerails.client.common.SoundManager;
 import jfreerails.client.renderer.BuildTrackRenderer;
 import jfreerails.client.view.DialogueBoxController;
@@ -144,15 +145,6 @@ public class UserInputOnMapController extends KeyAdapter {
                 setCursorMessage(ms.message);
             }
 
-            Point tile = new Point();
-
-            //            for (tile.x = oldPosition.x - 1; tile.x < oldPosition.x + 2;
-            //                    tile.x++) {
-            //                for (tile.y = oldPosition.y - 1; tile.y < oldPosition.y + 2;
-            //                        tile.y++) {
-            //                    mapView.refreshTile(tile.x, tile.y);
-            //                }
-            //            }
         } else {
             logger.warning("No track builder available!");
         }
@@ -205,7 +197,7 @@ public class UserInputOnMapController extends KeyAdapter {
     }
 
     private Point getCursorPosition() {
-        Point point = (Point)modelRoot.getProperty(ModelRoot.CURSOR_POSITION);
+        Point point = (Point)modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
 
         //Check for null & make a defensive copy
         point = null == point ? new Point() : new Point(point);
@@ -216,11 +208,11 @@ public class UserInputOnMapController extends KeyAdapter {
     private void setCursorPosition(Point p) {
         //Make a defensive copy.
         Point point = new Point(p);
-        modelRoot.setProperty(ModelRoot.CURSOR_POSITION, point);
+        modelRoot.setProperty(Property.CURSOR_POSITION, point);
     }
 
     private void setCursorMessage(String s) {
-        modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, s);
+        modelRoot.setProperty(Property.CURSOR_MESSAGE, s);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -276,7 +268,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 int y = cursorPosition.y * tileSize.height;
                 stationTypesPopup.showMenu(mapView, x, y, cursorPosition);
             } else {
-                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+                modelRoot.setProperty(Property.QUICK_MESSAGE,
                     "Can't" + " build station here!");
             }
 

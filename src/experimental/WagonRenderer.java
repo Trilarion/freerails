@@ -137,7 +137,7 @@ public class WagonRenderer {
                 ".png";
             File file = new File("src/jfreerails/data/trains/" + fileName);
 
-            RenderedImage image = wagonRenderer.trains[type][vectors[i].getNumber()];
+            RenderedImage image = wagonRenderer.trains[type][vectors[i].getID()];
             ImageIO.write(image, "PNG", file);
         }
     }
@@ -187,7 +187,7 @@ public class WagonRenderer {
             for (int i = 0; i < vectors.length; i++) {
                 String fileName = TrainImages.generateOverheadFilename(name, i);
 
-                Image image = wagonRenderer.trains[type][vectors[i].getNumber()];
+                Image image = wagonRenderer.trains[type][vectors[i].getID()];
                 imageManager.setImage(fileName, image);
             }
 

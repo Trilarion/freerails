@@ -73,7 +73,7 @@ public class TrackBuildModel {
 
             TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES,
                     actionId);
-            int ruleNumber = trackRule.getRuleNumber();
+            int ruleNumber = actionId;
             TrackPieceRenderer renderer = trackPieceRendererList.getTrackPieceView(ruleNumber);
 
             /* create a scaled image */
@@ -96,7 +96,8 @@ public class TrackBuildModel {
                 return;
 
             trackMoveProducer.setTrackRule(actionId);
-            modelRoot.setProperty(ModelRoot.SELECTED_TRACK_TYPE, new Integer(actionId));
+            System.err.println("SELECTED_TRACK_TYPE="+actionId);
+            //modelRoot.setProperty(ModelRoot.Property.SELECTED_TRACK_TYPE, new Integer(actionId));
            
         }
     }

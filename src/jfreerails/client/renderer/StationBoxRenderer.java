@@ -45,7 +45,7 @@ public class StationBoxRenderer implements Painter {
     }
 
     public void paint(Graphics2D g) {
-        Boolean showCargoWaiting = (Boolean)modelRoot.getProperty(ModelRoot.SHOW_CARGO_AT_STATIONS);
+        Boolean showCargoWaiting = (Boolean)modelRoot.getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
 
         if (showCargoWaiting.booleanValue()) {
             for (int i = 0; i < w.getNumberOfPlayers(); i++) {
@@ -68,7 +68,7 @@ public class StationBoxRenderer implements Painter {
                         5 * (WAGON_IMAGE_HEIGHT + SPACING));
 
                     ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                            station.getCargoBundleNumber(), principal);
+                            station.getCargoBundleID(), principal);
 
                     for (int category = 0;
                             category < CargoType.getNumberOfCategories();

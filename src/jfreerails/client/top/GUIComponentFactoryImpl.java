@@ -210,7 +210,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         countTrains();
 
         String name = modelRoot.getPrincipal().getName();
-        String serverDetails = (String)modelRoot.getProperty(ModelRoot.SERVER);
+        String serverDetails = (String)modelRoot.getProperty(ModelRoot.Property.SERVER);
         clientJFrame.setTitle(name + " - " + serverDetails + " - JFreerails");
     }
 
@@ -280,7 +280,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         displayMenu.add(showCargoMenuItem);
         showCargoMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    modelRoot.setProperty(ModelRoot.SHOW_CARGO_AT_STATIONS,
+                    modelRoot.setProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS,
                         new Boolean(showCargoMenuItem.isSelected()));
                     mapViewJComponent.refreshAll();
                 }
@@ -291,7 +291,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         displayMenu.add(showStationNamesMenuItem);
         showStationNamesMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    modelRoot.setProperty(ModelRoot.SHOW_STATION_NAMES,
+                    modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_NAMES,
                         new Boolean(showStationNamesMenuItem.isSelected()));
                     mapViewJComponent.refreshAll();
                 }
@@ -302,7 +302,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         displayMenu.add(showStationBordersMenuItem);
         showStationBordersMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    modelRoot.setProperty(ModelRoot.SHOW_STATION_BORDERS,
+                    modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_BORDERS,
                         new Boolean(showStationBordersMenuItem.isSelected()));
                     mapViewJComponent.refreshAll();
                 }
@@ -313,7 +313,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         displayMenu.add(playSoundsMenuItem);
         playSoundsMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    modelRoot.setProperty(ModelRoot.PLAY_SOUNDS,
+                    modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS,
                         new Boolean(playSoundsMenuItem.isSelected()));
                 }
             });

@@ -59,9 +59,10 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
-        TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
-
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0);
+        final int trackRuleID = 0;
+        final TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, trackRuleID);
+        
+        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
@@ -92,8 +93,8 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         //Try building an illegal track configuration.
         newConfig = TrackConfiguration.getFlatInstance("000011111");
 
-        r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0);
+      
+        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
@@ -116,7 +117,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0);
+        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
 
         assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
     }
@@ -143,7 +144,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
 
         TrackRule r = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0);
+        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
 
         Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point(0, 0));

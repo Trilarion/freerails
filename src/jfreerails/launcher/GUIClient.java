@@ -133,7 +133,7 @@ implements FreerailsProgressMonitor {
             }
         }
         
-        modelRoot.setProperty(ModelRoot.SERVER,
+        modelRoot.setProperty(ModelRoot.Property.SERVER,
         connection2Server.getServerDetails());
         actionRoot.setup(modelRoot, vl);
         factory.setup(vl, w);

@@ -11,9 +11,12 @@ import jfreerails.world.common.Money;
  * @author Luke
  */
 public interface TerrainType extends FreerailsSerializable {
+	
+	enum Category {Urban , River , Ocean , Hill , Country , Special , Industry , Resource};
+	
     String getTerrainTypeName();
 
-    String getTerrainCategory();
+    Category getCategory();
 
     Money getBuildCost();
 
@@ -46,8 +49,8 @@ public interface TerrainType extends FreerailsSerializable {
                 return null;
             }
 
-            public String getTerrainCategory() {
-                return "TerrainType NULL";
+            public Category getCategory() {
+                return Category.Country;
             }
 
             public int getRGB() {

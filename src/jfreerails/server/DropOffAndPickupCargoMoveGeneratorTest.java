@@ -299,7 +299,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
         ImmutableCargoBundle cargoAtStation = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                station.getCargoBundleNumber(), MapFixtureFactory.TEST_PRINCIPAL);
+                station.getCargoBundleID(), MapFixtureFactory.TEST_PRINCIPAL);
 
         return cargoAtStation;
     }
@@ -309,7 +309,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
         ImmutableCargoBundle cargoOnTrain = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES,
-                train.getCargoBundleNumber(), MapFixtureFactory.TEST_PRINCIPAL);
+                train.getCargoBundleID(), MapFixtureFactory.TEST_PRINCIPAL);
 
         return cargoOnTrain;
     }
@@ -319,7 +319,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
         MutableCargoBundle bundle = new MutableCargoBundle(getCargoAtStation());
         bundle.setAmount(cb, amount);
-        w.set(KEY.CARGO_BUNDLES, station.getCargoBundleNumber(),
+        w.set(KEY.CARGO_BUNDLES, station.getCargoBundleID(),
             bundle.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
     }
 
@@ -328,7 +328,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
         MutableCargoBundle bundle = new MutableCargoBundle(getCargoOnTrain());
         bundle.setAmount(cb, amount);
-        w.set(KEY.CARGO_BUNDLES, train.getCargoBundleNumber(),
+        w.set(KEY.CARGO_BUNDLES, train.getCargoBundleID(),
             bundle.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
     }
 

@@ -140,13 +140,13 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     public void display(int trainNumber){
         wi = new NonNullElements(KEY.TRAINS, w, principal);
         wi.gotoIndex(trainNumber);
-        if (wi.getRowNumber() > 0) {
+        if (wi.getRowID() > 0) {
             this.previousJButton.setEnabled(true);
         } else {
             this.previousJButton.setEnabled(false);
         }
         
-        if (wi.getRowNumber() < (wi.size() - 1)) {
+        if (wi.getRowID() < (wi.size() - 1)) {
             this.nextJButton.setEnabled(true);
         } else {
             this.nextJButton.setEnabled(false);

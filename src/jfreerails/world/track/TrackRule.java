@@ -5,6 +5,7 @@ import java.util.Iterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.terrain.TerrainType;
 
 
 /**
@@ -19,7 +20,7 @@ public interface TrackRule extends FreerailsSerializable, Comparable {
 	
 	TrackCategories getCategory();
 	
-    boolean canBuildOnThisTerrainType(String TerrainType);
+    boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType);
 
     boolean isStation();
 
@@ -27,9 +28,7 @@ public interface TrackRule extends FreerailsSerializable, Comparable {
 
     Money getMaintenanceCost();
 
-    int getStationRadius();
-
-    int getRuleNumber();
+    int getStationRadius();   
 
     String getTypeName();
 

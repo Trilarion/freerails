@@ -3,13 +3,16 @@ package jfreerails.server.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
 import jfreerails.world.terrain.Production;
+import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -28,7 +31,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     //Parsing variables for Tile
     String tileID;
-    String tileCategory;
+    TerrainType.Category tileCategory;
     int tileRGB;
     int tileROW;
     int tileBuildCost;
@@ -45,8 +48,8 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         String inputCargo = meta.getValue("input");
         String outputCargo = meta.getValue("output");
 
-        int input = string2CargoNumber(inputCargo);
-        int output = string2CargoNumber(outputCargo);
+        int input = string2CargoID(inputCargo);
+        int output = string2CargoID(outputCargo);
         Conversion conversion = new Conversion(input, output);
         typeConverts.add(conversion);
     }
@@ -57,7 +60,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         typeConverts.clear();
 
         tileID = meta.getValue("id");
-        tileCategory = meta.getValue("Category");
+        tileCategory = TerrainType.Category.valueOf(meta.getValue("Category"));
 
         String rgbString = meta.getValue("rgb");
         tileRGB = string2RGBValue(rgbString);
@@ -147,7 +150,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     public void handle_Consumes(final Attributes meta)
         throws SAXException {
-        int cargoConsumed = string2CargoNumber(meta.getValue("Cargo"));
+        int cargoConsumed = string2CargoID(meta.getValue("Cargo"));
         String prerequisiteString = meta.getValue("Prerequisite");
 
         //"Prerequisite" is an optional attribute, so may be null.
@@ -160,7 +163,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     public void handle_Produces(final Attributes meta)
         throws SAXException {
-        int cargoProduced = string2CargoNumber(meta.getValue("Cargo"));
+        int cargoProduced = string2CargoID(meta.getValue("Cargo"));
         int rateOfProduction = Integer.parseInt(meta.getValue("Rate"));
         Production production = new Production(cargoProduced, rateOfProduction);
         typeProduces.add(production);
@@ -179,7 +182,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     }
 
     /** Returns the index number of the cargo with the specified name. */
-    private int string2CargoNumber(String cargoName) throws SAXException {
+    private int string2CargoID(String cargoName) throws SAXException {
         if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
             Integer integer = (Integer)cargoName2cargoTypeNumber.get(cargoName);
 

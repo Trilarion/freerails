@@ -43,13 +43,13 @@ final public class FreerailsCursor implements KeyListener {
             g2.setColor(java.awt.Color.black);
         }
 
-        Point cursorMapPosition = (Point)modelRoot.getProperty(ModelRoot.CURSOR_POSITION);
+        Point cursorMapPosition = (Point)modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
         int x = cursorMapPosition.x * tileSize.width;
         int y = cursorMapPosition.y * tileSize.height;
         g2.drawRect(x, y, tileSize.width, tileSize.height);
 
         //Second, draw a message below the cursor if appropriate.
-        String message = (String)modelRoot.getProperty(ModelRoot.CURSOR_MESSAGE);
+        String message = (String)modelRoot.getProperty(ModelRoot.Property.CURSOR_MESSAGE);
 
         if (null != message && !message.equals("")) {
             int fontSize = 12;
@@ -88,6 +88,6 @@ final public class FreerailsCursor implements KeyListener {
     */
     public FreerailsCursor(ModelRoot mr) {
         this.modelRoot = mr;
-        modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, null);
+        modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
     }
 }

@@ -74,8 +74,8 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
     /*
      * @see TrackPiece#getTrackGraphicNumber()
      */
-    public int getTrackGraphicNumber() {
-        return trackPiece.getTrackGraphicNumber();
+    public int getTrackGraphicID() {
+        return trackPiece.getTrackGraphicID();
     }
 
     /*
@@ -98,7 +98,7 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
 
             boolean trackPieceFieldsEqual = (this.trackPiece.equals(test.trackPiece));
 
-            boolean terrainTypeFieldsEqual = (terrainType == test.getTerrainTypeNumber());
+            boolean terrainTypeFieldsEqual = (terrainType == test.getTerrainTypeID());
 
             if (trackPieceFieldsEqual && terrainTypeFieldsEqual) {
                 return true;
@@ -110,7 +110,7 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
         }
     }
 
-    public int getTerrainTypeNumber() {
+    public int getTerrainTypeID() {
         return terrainType;
     }
 
@@ -126,4 +126,8 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
     public int getOwnerID() {
         return trackPiece.getOwnerID();
     }
+
+	public int getTrackTypeID() {		
+		return trackPiece.getTrackTypeID();
+	}
 }

@@ -121,7 +121,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
         FreerailsTile tt = (FreerailsTile)w.getTile(tile.x, tile.y);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-            int typeNumber = tt.getTerrainTypeNumber();
+            int typeNumber = tt.getTerrainTypeID();
             TerrainType terrainType = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
                     typeNumber);
             one2oneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
@@ -174,7 +174,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
                 FreerailsTile tt = (FreerailsTile)w.getTile(tile.x, tile.y);
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-                    int typeNumber = tt.getTerrainTypeNumber();
+                    int typeNumber = tt.getTerrainTypeID();
                     TerrainType terrainType = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
                             typeNumber);
                     one2oneImage.setRGB(tile.x - mapX, tile.y - mapY,

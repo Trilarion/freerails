@@ -8,6 +8,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.util.IntArray;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
@@ -60,7 +62,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private int[] findTargets(Point targetPoint) {
         FreerailsTile tile = (FreerailsTile)m_world.getTile(targetPoint.x,
                 targetPoint.y);
-        int ruleNumber = tile.getTrackRule().getRuleNumber();
+        int ruleNumber = tile.getTrackTypeID();
 
         int[] targetInts;
 
@@ -110,8 +112,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     public List generatePath(Point startPoint, Point targetPoint,
-        int trackRuleNumber) throws PathNotFoundException {
-        setupSearch(startPoint, targetPoint, trackRuleNumber);
+        BuildTrackStrategy bts ) throws PathNotFoundException {
+        setupSearch(startPoint, targetPoint, bts);
         m_pathFinder.search(-1);
 
         IntArray path = m_pathFinder.retrievePath();
@@ -136,7 +138,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     public void setupSearch(Point startPoint, Point targetPoint,
-        int trackRuleNumber) throws PathNotFoundException {
+        BuildTrackStrategy bts) throws PathNotFoundException {
         logger.fine("Find track path from " + startPoint + " to " +
             targetPoint);
 
@@ -148,7 +150,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(m_world,
                 startPoint, targetPoint);
-        explorer.setTrackRule(trackRuleNumber);
+        explorer.setBuildTrackStrategy(bts);
+       
 
         m_pathFinder.setupSearch(startInts, targetInts, explorer);
     }

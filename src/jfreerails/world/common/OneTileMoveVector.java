@@ -288,7 +288,7 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
      * @return a number representing the compass point this vector
      * indicates, with 0 representing North, 1 NorthEast, 2 East and so on.
      */
-    public int getNumber() {
+    public int getID() {
         int i = 0;
 
         while (this != list[i]) {
@@ -365,6 +365,6 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
     }
 
     public int get8bitTemplate() {
-        return 1 << this.getNumber();
+        return 1 << this.getID();
     }
 }

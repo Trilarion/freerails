@@ -89,10 +89,10 @@ public class TrackMoveTransactionsGenerator {
     private void processMove(ChangeTrackPieceMove move) {
         TrackPiece newTrackPiece = move.getNewTrackPiece();
         TrackRule newTrackRule = newTrackPiece.getTrackRule();
-        final int ruleAfter = newTrackRule.getRuleNumber();
+        final int ruleAfter = newTrackPiece.getTrackTypeID();
         TrackPiece oldTrackPiece = move.getOldTrackPiece();
         TrackRule oldTrackRule = oldTrackPiece.getTrackRule();
-        final int ruleBefore = oldTrackRule.getRuleNumber();
+        final int ruleBefore = oldTrackPiece.getTrackTypeID();
 
         final int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
         final int newLength = newTrackPiece.getTrackConfiguration().getLength();

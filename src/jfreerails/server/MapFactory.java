@@ -65,15 +65,15 @@ public class MapFactory {
         for (int c = 0; c < w.size(SKEY.TERRAIN_TYPES); c++) {
             terrainTypeTile = (TerrainType)w.get(SKEY.TERRAIN_TYPES, c);
 
-            if (terrainTypeTile.getTerrainCategory().equals("Country")) {
+            if (terrainTypeTile.getCategory().equals(TerrainType.Category.Country)) {
                 if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {
                     countryTypes.add(new Integer(c));
                 }
             }
 
-            if (terrainTypeTile.getTerrainCategory().equals("Ocean") ||
-                    terrainTypeTile.getTerrainCategory().equals("River") ||
-                    terrainTypeTile.getTerrainCategory().equals("Hill")) {
+            if (terrainTypeTile.getCategory().equals(TerrainType.Category.Ocean) ||
+                    terrainTypeTile.getCategory().equals(TerrainType.Category.River) ||
+                    terrainTypeTile.getCategory().equals(TerrainType.Category.Hill)) {
                 non_countryTypes.add(new Integer(c));
             }
         }
@@ -104,9 +104,9 @@ public class MapFactory {
                             type.intValue()));
 
                 if (countryTypes.contains(
-                            new Integer(tile.getTerrainTypeNumber()))) {
+                            new Integer(tile.getTerrainTypeID()))) {
                     locations.add(new RandomTerrainValue(x, y,
-                            tile.getTerrainTypeNumber()));
+                            tile.getTerrainTypeID()));
                 }
 
                 w.setTile(x, y, tile);
@@ -139,7 +139,7 @@ public class MapFactory {
     private static void setTile(int x, int y, FreerailsTile tile) {
         if (!non_countryTypes.contains(
                     new Integer(
-                        ((FreerailsTile)world.getTile(x, y)).getTerrainTypeNumber()))) {
+                        ((FreerailsTile)world.getTile(x, y)).getTerrainTypeID()))) {
             world.setTile(x, y, tile);
         }
     }

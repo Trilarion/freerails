@@ -71,7 +71,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         int shiftedY = y << BITS_FOR_COORINATE;
         i = i | shiftedY;
 
-        int directionAsInt = direction.getNumber();
+        int directionAsInt = direction.getID();
         int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORINATE));
         i = i | shiftedDirection;
 

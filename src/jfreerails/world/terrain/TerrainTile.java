@@ -6,5 +6,5 @@ package jfreerails.world.terrain;
  * @author Luke
  */
 public interface TerrainTile {
-    int getTerrainTypeNumber();
+    int getTerrainTypeID();
 }

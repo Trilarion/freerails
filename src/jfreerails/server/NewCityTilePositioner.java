@@ -28,13 +28,16 @@ public class NewCityTilePositioner {
         //get the different types of Urban/Industry/Resource terrain
         for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
             TerrainType type = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
-
-            if (type.getTerrainCategory().equals("Urban")) {
+            switch (type.getCategory().ordinal()){
+            case 0:
                 urbanTerrainTypes.add(type);
-            } else if (type.getTerrainCategory().equals("Industry")) {
+                break;
+            case 6:
                 industryTerrainTypes.add(type);
-            } else if (type.getTerrainCategory().equals("Resource")) {
+                break;
+           case 7:
                 resourceTerrainTypes.add(type);
+                break;            
             }
         }
     }

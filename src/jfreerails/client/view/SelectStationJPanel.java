@@ -176,7 +176,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         this.schedule = schedule;
         this.selectedOrderNumber = orderNumber;
         TrainOrdersModel order = schedule.getOrder(selectedOrderNumber);
-        this.selectedStationID = order.getStationNumber();
+        this.selectedStationID = order.getStationID();
         
         //Set the text on the title JLabel.
         this.jLabel1.setText("Stop "+String.valueOf(selectedOrderNumber+1));
@@ -269,7 +269,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
             String stopNumbersString ="";
             boolean stationIsOnSchedule = false;
             for(int orderNumber = 0; orderNumber < schedule.getNumOrders(); orderNumber++){
-                int stationID = orderNumber == this.selectedOrderNumber ? this.selectedStationID : schedule.getOrder(orderNumber).getStationNumber();
+                int stationID = orderNumber == this.selectedOrderNumber ? this.selectedStationID : schedule.getOrder(orderNumber).getStationID();
                 if(it.getIndex() == stationID){
                     if(stationIsOnSchedule){
                         stopNumbersString = stopNumbersString+", "+String.valueOf(orderNumber+1);

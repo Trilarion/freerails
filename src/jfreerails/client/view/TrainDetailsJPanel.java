@@ -91,13 +91,13 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         trainViewJPanel1.display(trainNumber);
         TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
         
-        this.bundleID = train.getCargoBundleNumber();
+        this.bundleID = train.getCargoBundleID();
         
         
         for(int i = 0 ; i < train.getNumberOfWagons() ; i++ ){
             //this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
         }
-        ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleNumber(), principal);
+        ImmutableCargoBundle cb = (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleID(), principal);
         String s="Train #"+trainNumber+": ";
         int numberOfTypesInBundle = 0;
         for (int i = 0 ; i < w.size(SKEY.CARGO_TYPES) ; i ++){

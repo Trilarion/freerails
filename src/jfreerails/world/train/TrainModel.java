@@ -26,7 +26,7 @@ public class TrainModel implements FreerailsSerializable {
     public TrainModel getNewInstance(int newEngine, /*=const*/
         int[] newWagons) {
         return new TrainModel(newEngine, newWagons, this.getScheduleID(),
-            this.getCargoBundleNumber());
+            this.getCargoBundleID());
     }
 
     public TrainModel(int engine, /*=const*/
@@ -80,7 +80,7 @@ public class TrainModel implements FreerailsSerializable {
         return m_engineType;
     }
 
-    public int getCargoBundleNumber() {
+    public int getCargoBundleID() {
         return m_cargoBundleNumber;
     }
 

@@ -200,7 +200,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             assertFalse(client0.getWorld().equals(client1.getWorld()));
             response0 = client0.connect(server, "client0", "password");
             assertTrue(response0.isSuccessful());
-            assertEquals(0, response0.getPlayerNumber());
+            assertEquals(0, response0.getPlayerID());
         } catch (Exception e) {
             e.printStackTrace();
             fail();

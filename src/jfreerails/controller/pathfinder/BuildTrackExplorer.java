@@ -6,8 +6,11 @@ package jfreerails.controller.pathfinder;
 
 import java.awt.Point;
 import java.util.NoSuchElementException;
+
+import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -33,8 +36,8 @@ public class BuildTrackExplorer implements GraphExplorer {
     final private PositionOnTrack m_currentPosition = new PositionOnTrack(0, 0,
             OneTileMoveVector.NORTH);
     private int m_direction = 0;
-    private final Point m_target;
-    private int m_trackRule = 0;
+    private final Point m_target;       
+    private BuildTrackStrategy m_buildTrackStrategy;
     private boolean m_usingExistingTrack = false;
     private final ReadOnlyWorld m_world;
 
@@ -56,6 +59,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         m_currentPosition.setValuesFromInt(pos.toInt());
         m_direction = 0;
         m_target = target;
+        m_buildTrackStrategy = BuildTrackStrategy.getDefault(w);
     }
 
     /**
@@ -81,7 +85,7 @@ public class BuildTrackExplorer implements GraphExplorer {
                                                               .getOpposite();
         int currentX = m_currentPosition.getX();
         int currentY = m_currentPosition.getY();
-        int directionWeCameFrom = opposite2current.getNumber();
+        int directionWeCameFrom = opposite2current.getID();
         int directionWeCameFromPlus = (directionWeCameFrom + 1) % 8;
         int directionWeCameFromMinus = (directionWeCameFrom + 7) % 8;
 
@@ -104,13 +108,18 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         //Check that we can build track on the tile.
         FreerailsTile newTile = (FreerailsTile)m_world.getTile(newX, newY);
-        int terrainTypeNumber = newTile.getTerrainTypeNumber();
+        int terrainTypeNumber = newTile.getTerrainTypeID();
         TileTypeImpl terrainType = (TileTypeImpl)m_world.get(SKEY.TERRAIN_TYPES,
                 terrainTypeNumber);
-        String category = terrainType.getTerrainCategory();
+        TerrainType.Category category = terrainType.getCategory();
 
+        int trackRuleID = m_buildTrackStrategy.getRule(terrainTypeNumber);
+        if(trackRuleID == -1){
+        	return false; //Can't build on this terrain!
+        }
+        
         TrackRule defaultRule = (TrackRule)m_world.get(SKEY.TRACK_RULES,
-                m_trackRule);
+        		trackRuleID);
         FreerailsTile nextTile = (FreerailsTile)m_world.getTile(newX, newY);
         TrackConfiguration trackAlreadyPresent2 = nextTile.getTrackConfiguration();
 
@@ -221,10 +230,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     public int getPosition() {
         return m_currentPosition.toInt();
     }
-
-    public int getTrackRule() {
-        return m_trackRule;
-    }
+   
 
     public int getVertexConnectedByEdge() {
         if (m_beforeFirst) {
@@ -274,8 +280,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         m_currentPosition.setValuesFromInt(vertex);
         m_direction = 0;
     }
-
-    public void setTrackRule(int trackRule) {
-        this.m_trackRule = trackRule;
-    }
+  
+	public BuildTrackStrategy getBuildTrackStrategy() {
+		return m_buildTrackStrategy;
+	}
+	public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
+		m_buildTrackStrategy = trackStrategy;
+	}
 }

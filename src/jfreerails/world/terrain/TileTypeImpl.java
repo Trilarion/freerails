@@ -17,7 +17,7 @@ import jfreerails.world.common.Money;
 */
 final public class TileTypeImpl implements TerrainType {
     private final int rgb;
-    private final String terrainCategory;
+    private final TerrainType.Category terrainCategory;
 
     public int hashCode() {
         int result;
@@ -40,11 +40,11 @@ final public class TileTypeImpl implements TerrainType {
         return terrainType;
     }
 
-    public String getTerrainCategory() {
+    public Category getCategory() {
         return terrainCategory;
     }
 
-    public TileTypeImpl(int rgb, String terrainCategory, String terrainType,
+    public TileTypeImpl(int rgb, TerrainType.Category terrainCategory, String terrainType,
         int rightOfWay, Production[] production, Consumption[] consumption,
         Conversion[] conversion, int tileBuildCost) {
         this.terrainType = terrainType;
@@ -63,7 +63,7 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     /** Lets unit tests create terrain types without bothering with all the details.*/
-    public TileTypeImpl(String terrainCategory, String terrainType) {
+    public TileTypeImpl(TerrainType.Category terrainCategory, String terrainType) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = 0;
@@ -87,7 +87,7 @@ final public class TileTypeImpl implements TerrainType {
 
             if (rgb == test.getRGB() &&
                     terrainType.equals(test.getTerrainTypeName()) &&
-                    terrainCategory.equals(test.getTerrainCategory())) {
+                    terrainCategory.equals(test.getCategory())) {
                 return true;
             } else {
                 return false;

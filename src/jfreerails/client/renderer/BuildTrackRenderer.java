@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
 import jfreerails.client.common.SoundManager;
+import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.pathfinder.IncrementalPathFinder;
 import jfreerails.controller.pathfinder.PathNotFoundException;
@@ -49,6 +50,7 @@ public class BuildTrackRenderer implements Painter {
     private TrackPathFinder trackPathFinder;
     private TrackPieceRendererList trackPieceViewList;
     private WorldDifferences worldDifferences;
+	private BuildTrackStrategy bts;
 
     /**
      * BuildTrackRenderer
@@ -61,11 +63,14 @@ public class BuildTrackRenderer implements Painter {
         this.trackPieceViewList = trackPieceViewList;
         realWorld = readOnlyWorld;
         trackPathFinder = new TrackPathFinder(readOnlyWorld);
+        bts = BuildTrackStrategy.getDefault(realWorld);
     }
 
     private MoveStatus buildTrack(Point point, OneTileMoveVector vector) {
+    	FreerailsTile tile = (FreerailsTile)worldDifferences.getTile(point.x + vector.deltaX, point.y+ vector.deltaY);
+    	int trackTypeID = bts.getRule(tile.getTerrainTypeID());
         TrackRule trackRule = (TrackRule)worldDifferences.get(SKEY.TRACK_RULES,
-                getTrackRule());
+        		trackTypeID);
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point,
                 vector, trackRule, worldDifferences, principal);
 
@@ -124,7 +129,7 @@ public class BuildTrackRenderer implements Painter {
     }
 
     private Point getCursorPosition() {
-        Point point = (Point)modelRoot.getProperty(ModelRoot.CURSOR_POSITION);
+        Point point = (Point)modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
 
         //Check for null & make a defensive copy
         point = null == point ? new Point() : new Point(point);
@@ -136,12 +141,12 @@ public class BuildTrackRenderer implements Painter {
         return point;
     }
 
-    private int getTrackRule() {
-        Integer trackType = (Integer)modelRoot.getProperty(ModelRoot.SELECTED_TRACK_TYPE);
-        int intValue = trackType.intValue();
-
-        return intValue;
-    }
+//    private int getTrackRule() {
+//        Integer trackType = (Integer)modelRoot.getProperty(ModelRoot.SELECTED_TRACK_TYPE);
+//        int intValue = trackType.intValue();
+//
+//        return intValue;
+//    }
 
     public void hide() {
         this.show = false;
@@ -260,9 +265,9 @@ public class BuildTrackRenderer implements Painter {
                 TrackPiece tp = (TrackPiece)worldDifferences.getTile(point.x,
                         point.y);
 
-                int graphicsNumber = tp.getTrackGraphicNumber();
+                int graphicsNumber = tp.getTrackGraphicID();
 
-                int ruleNumber = tp.getTrackRule().getRuleNumber();
+                int ruleNumber = tp.getTrackTypeID();
                 jfreerails.client.renderer.TrackPieceRenderer trackPieceView = trackPieceViewList.getTrackPieceView(ruleNumber);
                 trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x,
                     point.y, tileSize);
@@ -309,13 +314,13 @@ public class BuildTrackRenderer implements Painter {
     }
 
     private void setCursorMessage(String s) {
-        modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, s);
+        modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, s);
     }
 
     private void setCursorPosition(Point p) {
         //Make a defensive copy.
         Point point = new Point(p);
-        modelRoot.setProperty(ModelRoot.CURSOR_POSITION, point);
+        modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, point);
     }
 
     public void setTrack(Point startPoint, Point endPoint) {
@@ -352,8 +357,8 @@ public class BuildTrackRenderer implements Painter {
         m_startPoint = new Point(startPoint);
 
         try {
-            int intValue = getTrackRule();
-            trackPathFinder.setupSearch(startPoint, endPoint, intValue);
+          
+			trackPathFinder.setupSearch(startPoint, endPoint, bts);
         } catch (PathNotFoundException e) {
             setCursorMessage(e.getMessage());
 

@@ -9,6 +9,7 @@ import java.io.ObjectStreamException;
 import java.util.HashSet;
 import java.util.Iterator;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.terrain.TerrainType;
 
 
 /**
@@ -19,25 +20,24 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 public final class LegalTrackPlacement implements FreerailsSerializable {
     /** We tell ConstJava that this field is mutable because HashSet is not annotated.*/
-    private final /*=mutable*/ HashSet terrainTypes = new HashSet();
+    private final /*=mutable*/ HashSet<TerrainType.Category> terrainTypes = new HashSet<TerrainType.Category>();
     private final PlacementRule placementRule;
 
     public int hashCode() {
         return (placementRule != null ? placementRule.hashCode() : 0);
     }
 
-    public LegalTrackPlacement(HashSet types, PlacementRule placementRule) {
+    public LegalTrackPlacement(HashSet<TerrainType.Category> types, PlacementRule placementRule) {
         this.placementRule = placementRule;
 
-        Iterator iterator = types.iterator();
+        Iterator<TerrainType.Category> iterator = types.iterator();
 
-        while (iterator.hasNext()) {
-            String typeName = (String)(iterator.next());
-            terrainTypes.add(typeName);
+        while (iterator.hasNext()) {            
+            terrainTypes.add(iterator.next());
         }
     }
 
-    public boolean canBuildOnThisTerrain(String terrainType) {
+    public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
         if (PlacementRule.ONLY_ON_THESE == placementRule) {
             return terrainTypes.contains(terrainType);
         } else {

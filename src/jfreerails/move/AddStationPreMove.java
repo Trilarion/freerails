@@ -60,7 +60,7 @@ public class AddStationPreMove implements PreMove {
 
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
-                trackRule, owner);
+                trackRule, owner, ruleNumber);
         ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,
                 after, p);
 

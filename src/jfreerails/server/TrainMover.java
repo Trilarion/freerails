@@ -57,7 +57,7 @@ public class TrainMover implements FreerailsServerSerializable, ServerAutomaton 
         return walker;
     }
 
-    public int getTrainNumber() {
+    public int getTrainID() {
         return trainNumber;
     }
 

@@ -5,6 +5,7 @@ package jfreerails.client.top;
 
 import java.text.DecimalFormat;
 import jfreerails.client.common.ModelRoot;
+import static jfreerails.client.common.ModelRoot.Property;
 import jfreerails.client.common.SoundManager;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.move.ChangeGameSpeedMove;
@@ -74,7 +75,7 @@ public class UserMessageGenerator implements MoveReceiver {
                 while (trains.next()) {
                     TrainModel train = (TrainModel)trains.getElement();
 
-                    if (train.getCargoBundleNumber() == trainCargoBundle) {
+                    if (train.getCargoBundleID() == trainCargoBundle) {
                         trainNumber = trains.getIndex() + 1;
 
                         break;
@@ -84,7 +85,7 @@ public class UserMessageGenerator implements MoveReceiver {
                 while (stations.next()) {
                     StationModel station = (StationModel)stations.getElement();
 
-                    if (station.getCargoBundleNumber() == stationCargoBundle) {
+                    if (station.getCargoBundleID() == stationCargoBundle) {
                         stationName = station.getStationName();
 
                         break;
@@ -119,7 +120,7 @@ public class UserMessageGenerator implements MoveReceiver {
                     e.printStackTrace();
                 }
 
-                modelRoot.setProperty(ModelRoot.QUICK_MESSAGE, message);
+                modelRoot.setProperty(Property.QUICK_MESSAGE, message);
             } else {
                 //If there is no revenue and we are not waiting for a full
                 // load, whistle!
@@ -142,19 +143,19 @@ public class UserMessageGenerator implements MoveReceiver {
         int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
 
         if (gameSpeed <= 0) {
-            modelRoot.setProperty(ModelRoot.PERMANENT_MESSAGE, "Game is paused.");
+            modelRoot.setProperty(Property.PERMANENT_MESSAGE, "Game is paused.");
 
             /*
              * Also hide any other message. It looks silly if it says "Game is
              * paused." and "Game speed: fast" on screen at the same time!
              */
-            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE, "");
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "");
         } else {
-            modelRoot.setProperty(ModelRoot.PERMANENT_MESSAGE, null);
+            modelRoot.setProperty(Property.PERMANENT_MESSAGE, null);
 
             String gameSpeedDesc = actionRoot.getServerControls()
                                              .getGameSpeedDesc(gameSpeed);
-            modelRoot.setProperty(ModelRoot.QUICK_MESSAGE,
+            modelRoot.setProperty(Property.QUICK_MESSAGE,
                 "Game speed: " + gameSpeedDesc);
         }
     }

@@ -15,6 +15,7 @@ import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
 
 
@@ -82,13 +83,15 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                             (tile.y >= 0) && (tile.y < mapSize.height)) {
                         TrackPiece tp = (TrackPiece)w.getTile(tile.x, tile.y);
 
-                        int graphicsNumber = tp.getTrackGraphicNumber();
+                        int graphicsNumber = tp.getTrackGraphicID();
 
-                        int ruleNumber = tp.getTrackRule().getRuleNumber();
-                        jfreerails.client.renderer.TrackPieceRenderer trackPieceView =
+                        int ruleNumber = tp.getTrackTypeID();
+                        if(ruleNumber != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER){
+                        	jfreerails.client.renderer.TrackPieceRenderer trackPieceView =
                             trackPieceViewList.getTrackPieceView(ruleNumber);
                         trackPieceView.drawTrackPieceIcon(graphicsNumber,
                             tempG, tile.x, tile.y, tileSize);
+                        }
                     }
                 }
             }
@@ -143,7 +146,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                     (tile.y < mapSize.height)) {
                 TerrainTile tt = (TerrainTile)w.getTile(tile.x, tile.y);
 
-                int typeNumber = tt.getTerrainTypeNumber();
+                int typeNumber = tt.getTerrainTypeID();
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
 
                 if (null == tr) {

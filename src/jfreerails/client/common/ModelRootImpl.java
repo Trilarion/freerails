@@ -1,9 +1,9 @@
 package jfreerails.client.common;
 
 import java.awt.Point;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.HashMap;
+
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.PreMove;
@@ -16,7 +16,6 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.top.WorldMapListener;
-
 
 /**
  * Provides access to the World object and other data that is shared by GUI components (for instance
@@ -42,21 +41,20 @@ public final class ModelRootImpl implements ModelRoot {
         };
 
     private FreerailsPrincipal playerPrincipal;
-    private final HashMap properties = new HashMap();
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private final HashMap<Property, Object> properties = new HashMap<Property, Object>();   
     private ServerCommandReceiver serverCommandReceiver;
     private ReadOnlyWorld world;
+    private final ArrayList<ModelRootListener> listeners = new ArrayList<ModelRootListener>(); 
 
     public ModelRootImpl() {
-        properties.put(CURSOR_POSITION, new Point());
-        properties.put(SHOW_STATION_NAMES, Boolean.TRUE);
-        properties.put(SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
-        properties.put(SHOW_STATION_BORDERS, Boolean.TRUE);
-        properties.put(CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
-        properties.put(PREVIOUS_CURSOR_MODE, BUILD_TRACK_CURSOR_MODE);
-        properties.put(SERVER, "server details not set!");
-        properties.put(PLAY_SOUNDS, Boolean.TRUE);
-        properties.put(SELECTED_TRACK_TYPE, new Integer(0));
+        properties.put(Property.CURSOR_POSITION, new Point());
+        properties.put(Property.SHOW_STATION_NAMES, Boolean.TRUE);
+        properties.put(Property.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
+        properties.put(Property.SHOW_STATION_BORDERS, Boolean.TRUE);
+        properties.put(Property.CURSOR_MODE, Value.BUILD_TRACK_CURSOR_MODE);
+        properties.put(Property.PREVIOUS_CURSOR_MODE, Value.BUILD_TRACK_CURSOR_MODE);
+        properties.put(Property.SERVER, "server details not set!");
+        properties.put(Property.PLAY_SOUNDS, Boolean.TRUE);        
         addPropertyChangeListener(SoundManager.getSoundManager());
     }
 
@@ -72,8 +70,8 @@ public final class ModelRootImpl implements ModelRoot {
         this.moveFork.addMapListener(l);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        propertyChangeSupport.addPropertyChangeListener(l);
+    public void addPropertyChangeListener(ModelRootListener l) {
+       listeners.add(l);
     }
 
     public void addSplitMoveReceiver(MoveReceiver l) {
@@ -103,16 +101,16 @@ public final class ModelRootImpl implements ModelRoot {
         return playerPrincipal;
     }
 
-    public Object getProperty(String property) {
-        return properties.get(property);
+    public Object getProperty(Property p) {
+        return properties.get(p);
     }
 
     public ReadOnlyWorld getWorld() {
         return world;
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener l) {
-        propertyChangeSupport.removePropertyChangeListener(l);
+    public void removePropertyChangeListener(ModelRootListener l) {
+    	listeners.remove(l);
     }
 
     public void sendCommand(ServerCommand c) {
@@ -131,10 +129,13 @@ public final class ModelRootImpl implements ModelRoot {
         this.moveReceiver = moveReceiver;
     }
 
-    public void setProperty(String property, Object newValue) {
-        Object oldValue = properties.get(property);
-        properties.put(property, newValue);
-        propertyChangeSupport.firePropertyChange(property, oldValue, newValue);
+    public void setProperty(Property p, Object newValue) {
+        Object oldValue = properties.get(p);
+        properties.put(p, newValue);
+        for(ModelRootListener listener : listeners){
+        	listener.propertyChange(p, oldValue, newValue);
+        }
+        
     }
 
     public void setServerCommandReceiver(
@@ -158,9 +159,14 @@ public final class ModelRootImpl implements ModelRoot {
         }
 
         hasBeenSetup = true;
+        
     }
 
     public MoveStatus tryDoMove(Move m) {
         return this.moveReceiver.tryDoMove(m);
     }
+
+	public boolean is(ModelRoot.Property p, Object value) {
+		return getProperty(p).equals(value);
+	}
 }

@@ -149,7 +149,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         final ImmutableCargoBundle cargoWaiting =
         (ImmutableCargoBundle) world.get(
         KEY.CARGO_BUNDLES,
-        station.getCargoBundleNumber(), principal);
+        station.getCargoBundleID(), principal);
         
         //count the number of cargo types waiting and demanded.
         final ArrayList typeWaiting = new ArrayList();

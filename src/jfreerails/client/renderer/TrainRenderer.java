@@ -83,9 +83,9 @@ public class TrainRenderer {
         Image image;
 
         if (engine) {
-            image = trainImages.getOverheadEngineImage(type, v.getNumber());
+            image = trainImages.getOverheadEngineImage(type, v.getID());
         } else {
-            image = trainImages.getOverheadWagonImage(type, v.getNumber());
+            image = trainImages.getOverheadWagonImage(type, v.getID());
         }
 
         g.drawImage(image, p.x - 15, p.y - 15, null);

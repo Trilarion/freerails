@@ -10,6 +10,7 @@ import jfreerails.move.MoveStatus;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.Player;
+import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
@@ -80,13 +81,13 @@ public class BuildTrackExplorerTest extends TestCase {
         int occeanTypeNumber = 4;
         TileTypeImpl ocean = (TileTypeImpl)world.get(SKEY.TERRAIN_TYPES,
                 occeanTypeNumber);
-        assertEquals("Ocean", ocean.getTerrainCategory());
+        assertEquals(TerrainType.Category.Ocean, ocean.getCategory());
 
         //Check that track cannot be built on ocean.
         for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
             TrackRule rule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
             assertFalse(rule.canBuildOnThisTerrainType(
-                    ocean.getTerrainCategory()));
+                    ocean.getCategory()));
         }
 
         //Place some occean.

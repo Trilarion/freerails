@@ -21,13 +21,13 @@ public class FreerailsGameServerTest extends TestCase {
         LogOnRequest request1 = new LogOnRequest("Name", "password");
         response = server.logon(request1);
         assertTrue("Simple case, should go through.", response.isSuccessful());
-        assertEquals("1st logon is player 0", 0, response.getPlayerNumber());
+        assertEquals("1st logon is player 0", 0, response.getPlayerID());
 
         /* Test 2 */
         LogOnRequest request2 = new LogOnRequest("Name2", "password2");
         response = server.logon(request2);
         assertTrue("Simple case, should go through.", response.isSuccessful());
-        assertEquals("2nd logon is player 1", 1, response.getPlayerNumber());
+        assertEquals("2nd logon is player 1", 1, response.getPlayerID());
 
         /* Test 3: When player is already logged on.*/
         LogOnRequest request3 = new LogOnRequest("Name", "password");
@@ -49,7 +49,7 @@ public class FreerailsGameServerTest extends TestCase {
         assertTrue("Player 0 has logged off, so should succeed.",
             response.isSuccessful());
         assertEquals("Should keep the same player id", 0,
-            response.getPlayerNumber());
+            response.getPlayerID());
 
         /* Test 6: When the player has logged off, then tries to log on with wrong password.*/
         server.logoff(0);

@@ -143,7 +143,7 @@ public class StationBuildModel {
             	message = ms.message;            	
             }
 
-            modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE, message);
+            modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, message);
             
         }
     }

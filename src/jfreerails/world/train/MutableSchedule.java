@@ -148,7 +148,7 @@ public class MutableSchedule implements Schedule {
     /** Returns the station number of the next station the train is scheduled to
      * stop at. */
     public int getStationToGoto() {
-        return ((TrainOrdersModel)orders.get(nextScheduledOrder)).getStationNumber();
+        return ((TrainOrdersModel)orders.get(nextScheduledOrder)).getStationID();
     }
 
     /** Returns the wagons to add at the next scheduled stop. */
@@ -256,7 +256,7 @@ public class MutableSchedule implements Schedule {
         while (i < this.getNumOrders()) {
             TrainOrdersModel order = this.getOrder(i);
 
-            if (order.getStationNumber() == stationNumber) {
+            if (order.getStationID() == stationNumber) {
                 this.removeOrder(i);
             } else {
                 i++;

@@ -11,9 +11,11 @@ import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackPieceImpl;
 import jfreerails.world.track.TrackRule;
@@ -23,7 +25,8 @@ import jfreerails.world.track.TrackRule;
  * @author Luke
  */
 final public class TrackMoveProducer {
-    private TrackRule trackRule;
+	private BuildTrackStrategy buildTrackStrategy;
+   // private TrackRule trackRule;
     private final MoveExecutor executor;
     public final static int BUILD_TRACK = 1;
     public final static int REMOVE_TRACK = 2;
@@ -41,17 +44,29 @@ final public class TrackMoveProducer {
     private final TrackMoveTransactionsGenerator transactionsGenerator;
 
     public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
+    	 ReadOnlyWorld w = executor.getWorld();
+    	int x = from.x + trackVector.deltaX;
+    	int y = from.y + trackVector.deltaY;
+    	FreerailsTile tile = (FreerailsTile)w.getTile(x, y);
+    	int tt = tile.getTerrainTypeID();
+    	int trackRuleID = buildTrackStrategy.getRule(tt);
+    	
+    	if(trackRuleID == -1){
+    		TerrainType terrainType = (TerrainType)w.get(SKEY.TERRAIN_TYPES, tt);
+    		return MoveStatus.moveFailed("Non of the selected track types can be built on "+ terrainType.getDisplayName());
+    	}
+    	TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleID);
         if (trackBuilderMode == UPGRADE_TRACK) {
             Point point = new Point(from.x + trackVector.getDx(),
                     from.y + trackVector.getDy());
 
-            return upgradeTrack(point, trackRule);
+            return upgradeTrack(point, trackRuleID);
         }
 
         ChangeTrackPieceCompositeMove move = null;
 
         FreerailsPrincipal principal = executor.getPrincipal();
-        ReadOnlyWorld w = executor.getWorld();
+       
 
         switch (trackBuilderMode) {
         case BUILD_TRACK: {
@@ -88,7 +103,10 @@ final public class TrackMoveProducer {
 
     public MoveStatus upgradeTrack(Point point) {
         if (trackBuilderMode == UPGRADE_TRACK) {
-            return upgradeTrack(point, trackRule);
+        	 ReadOnlyWorld w = executor.getWorld();
+        	FreerailsTile tile = (FreerailsTile)w.getTile(point.x, point.y);
+        	int tt = tile.getTerrainTypeID();        	
+            return upgradeTrack(point, buildTrackStrategy.getRule(tt));
         } else {
             throw new IllegalStateException(
                 "Track builder not set to upgrade track!");
@@ -104,7 +122,7 @@ final public class TrackMoveProducer {
     */
     public void setTrackRule(int trackRuleNumber) {
         ReadOnlyWorld w = executor.getWorld();
-        this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNumber);
+        //this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNumber);
     }
 
     public void setTrackBuilderMode(int i) {
@@ -125,31 +143,34 @@ final public class TrackMoveProducer {
     public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world) {
         this.executor = executor;
 
-        this.trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
+        
 
         FreerailsPrincipal principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world,
                 principal);
+        buildTrackStrategy = BuildTrackStrategy.getDefault(world);
     }
 
     public TrackMoveProducer(MoveExecutor executor) {
         this.executor = executor;
 
         ReadOnlyWorld world = executor.getWorld();
-        this.trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
+        
 
         FreerailsPrincipal principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world,
                 principal);
+        buildTrackStrategy = BuildTrackStrategy.getDefault(world);
     }
 
-    private MoveStatus upgradeTrack(Point point, TrackRule trackRule) {
+    private MoveStatus upgradeTrack(Point point, int trackRuleID) {
         ReadOnlyWorld w = executor.getWorld();
         TrackPiece before = (TrackPiece)w.getTile(point.x, point.y);
         FreerailsPrincipal principal = executor.getPrincipal();
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
+        TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleID);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
-                trackRule, owner);
+                trackRule, owner, trackRuleID);
 
         /* We don't want to 'upgrade' a station to track. See bug 874416. */
         if (before.getTrackRule().isStation()) {

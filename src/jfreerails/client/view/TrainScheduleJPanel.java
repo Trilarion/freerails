@@ -432,7 +432,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), null, false, false);
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), null, false, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -443,7 +443,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
         boolean autoConsist = b ? false: oldOrders.autoConsist;
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), oldOrders.consist, b, autoConsist);
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), oldOrders.consist, b, autoConsist);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -453,7 +453,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);       
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), null, false, true);
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), null, false, true);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -477,7 +477,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         }else{
             newConsist = new int[]{wagonTypeNumber};
         }
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), newConsist, oldOrders.getWaitUntilFull(), false);
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), newConsist, oldOrders.getWaitUntilFull(), false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -487,7 +487,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), new int[0], false, false);
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), new int[0], false, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -506,7 +506,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         
         //Copy existing wagons
         System.arraycopy(oldConsist, 0, newConsist, 0, newConsist.length);
-        newOrders = new TrainOrdersModel(oldOrders.getStationNumber(), newConsist, oldOrders.waitUntilFull, false);
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), newConsist, oldOrders.waitUntilFull, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }

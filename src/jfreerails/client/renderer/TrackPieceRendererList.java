@@ -69,7 +69,7 @@ final public class TrackPieceRendererList {
             } else {
                 while (legalConfigurationsIterator.hasNext()) {
                     TrackConfiguration trackConfig = (TrackConfiguration)legalConfigurationsIterator.next();
-                    int trackGraphicsNo = trackConfig.getTrackGraphicsNumber();
+                    int trackGraphicsNo = trackConfig.getTrackGraphicsID();
                     Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
 
                     if (null == img) {

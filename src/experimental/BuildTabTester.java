@@ -38,15 +38,15 @@ public class BuildTabTester {
         
         Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
         List<TrackRule> rules = trackSetFactory.getRuleList();
-        for(TrackRule rule: rules){
-            System.out.println(rule);
-            String typeName = rule.getTypeName();
-            getImage(imageManager, typeName);
-        }
-        getImage(imageManager, "turn_off");
-        getImage(imageManager, "build_stations");
-        getImage(imageManager, "build_track");
-        getImage(imageManager, "bulldozer");
+//        for(TrackRule rule: rules){
+//            System.out.println(rule);
+//            String typeName = rule.getTypeName();
+//            getImage(imageManager, typeName);
+//        }
+//        getImage(imageManager, "turn_off");
+//        getImage(imageManager, "build_stations");
+//        getImage(imageManager, "build_track");
+//        getImage(imageManager, "bulldozer");
         
         World w = new WorldImpl();
         trackSetFactory.addTrackRules(w);

@@ -1,7 +1,5 @@
 package jfreerails.client.common;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,6 +8,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Logger;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -27,7 +26,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *  @author Luke
  *
  */
-public class SoundManager implements PropertyChangeListener {
+public class SoundManager implements ModelRootListener {
     private static final Logger logger = Logger.getLogger(SoundManager.class.getName());
     Random r = new Random();
     private boolean playSounds = true;
@@ -128,14 +127,12 @@ public class SoundManager implements PropertyChangeListener {
 
     public static SoundManager getSoundManager() {
         return instance;
-    }
+    }  
 
-    public void propertyChange(PropertyChangeEvent evt) {
-        String s = evt.getPropertyName();
-
-        if (s.equals(ModelRoot.PLAY_SOUNDS)) {
-            Boolean b = (Boolean)evt.getNewValue();
+	public void propertyChange(ModelRoot.Property p, Object before, Object after) {
+		if(p.equals(ModelRoot.Property.PLAY_SOUNDS)){
+			Boolean b = (Boolean)after;
             playSounds = b.booleanValue();
-        }
-    }
+		}
+	}
 }

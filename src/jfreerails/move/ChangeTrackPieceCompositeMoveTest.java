@@ -112,7 +112,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         World world = getWorld();
         assertFalse(ChangeTrackPieceMove.canConnect2OtherRRsTrack(world));
 
-        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
+        final int TRACK_RULE_ID = 0;
+		TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, TRACK_RULE_ID);
 
         assertBuildTrackSuceeds(new Point(0, 6), east, trackRule);
 
@@ -121,8 +122,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         FreerailsTile oldTile = (FreerailsTile)world.getTile(1, 6);
         TrackPiece tp = oldTile.getTrackPiece();
         TrackPiece newTrackPiece = new TrackPieceImpl(tp.getTrackConfiguration(),
-                tp.getTrackRule(), anotherPlayer);
-        FreerailsTile newTile = FreerailsTile.getInstance(oldTile.getTerrainTypeNumber(),
+                tp.getTrackRule(), anotherPlayer, TRACK_RULE_ID);
+        FreerailsTile newTile = FreerailsTile.getInstance(oldTile.getTerrainTypeID(),
                 newTrackPiece);
         world.setTile(1, 6, newTile);
         assertBuildTrackFails(new Point(1, 6), east, trackRule);

@@ -38,7 +38,7 @@ public class KEY implements FreerailsSerializable {
         return numberOfKeys;
     }
 
-    int getKeyNumber() {
+    int getKeyID() {
         return keyNumber;
     }
 
@@ -47,7 +47,7 @@ public class KEY implements FreerailsSerializable {
     }
 
     public String toString() {
-        return String.valueOf(getKeyNumber());
+        return String.valueOf(getKeyID());
     }
 
     static KEY getKey(int keyNum) {

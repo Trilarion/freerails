@@ -1,9 +1,11 @@
 package jfreerails.world.top;
 
 import java.util.HashSet;
+
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
+import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.terrain.TileTypeImpl;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.LegalTrackConfigurations;
@@ -47,8 +49,8 @@ public class MapFixtureFactory {
         TrackRuleProperties[] trackRuleProperties = new TrackRuleProperties[3];
         LegalTrackConfigurations[] legalTrackConfigurations = new LegalTrackConfigurations[3];
         LegalTrackPlacement[] legalTrackPlacement = new LegalTrackPlacement[3];
-        HashSet cannotBuildOnTheseTerrainTypes = new HashSet();
-        cannotBuildOnTheseTerrainTypes.add("Ocean");
+        HashSet<TerrainType.Category>  cannotBuildOnTheseTerrainTypes = new HashSet<TerrainType.Category> ();
+        cannotBuildOnTheseTerrainTypes.add(TerrainType.Category.Ocean);
 
         //1st track type..
         String[] trackTemplates0 = {
@@ -58,7 +60,7 @@ public class MapFixtureFactory {
 
         legalTrackConfigurations[0] = new LegalTrackConfigurations(-1,
                 trackTemplates0);
-        trackRuleProperties[0] = new TrackRuleProperties(1, false, "type0", 0,
+        trackRuleProperties[0] = new TrackRuleProperties(1, false, "type0",
         		TrackRule.TrackCategories.track, 0, 0, 10);
         legalTrackPlacement[0] = new LegalTrackPlacement(cannotBuildOnTheseTerrainTypes,
                 LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
@@ -69,7 +71,7 @@ public class MapFixtureFactory {
         String[] trackTemplates1 = {"000010000", "010010000", "010010010"};
         legalTrackConfigurations[1] = new LegalTrackConfigurations(-1,
                 trackTemplates1);
-        trackRuleProperties[1] = new TrackRuleProperties(2, false, "type1", 1,
+        trackRuleProperties[1] = new TrackRuleProperties(2, false, "type1",
         		TrackRule.TrackCategories.track, 0, 0, 20);
 
         legalTrackPlacement[1] = new LegalTrackPlacement(cannotBuildOnTheseTerrainTypes,
@@ -78,7 +80,7 @@ public class MapFixtureFactory {
                 legalTrackConfigurations[1], legalTrackPlacement[1]);
 
         //3rd track type..
-        trackRuleProperties[2] = new TrackRuleProperties(3, false, "type2", 2,
+        trackRuleProperties[2] = new TrackRuleProperties(3, false, "type2",
         		TrackRule.TrackCategories.track, 0, 0, 30);
 
         String[] trackTemplates2 = {"000010000"};
@@ -111,10 +113,10 @@ public class MapFixtureFactory {
 
     /** Adds hard coded terrain types.*/
     private static void generateTerrainTypesList(World world) {
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Country", "Grassland"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Urban", "City"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Resource", "Mine"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Industry", "Factory"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl("Ocean", "Ocean"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(TerrainType.Category.Country, "Grassland"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(TerrainType.Category.Urban, "City"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(TerrainType.Category.Resource, "Mine"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(TerrainType.Category.Industry, "Factory"));
+        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(TerrainType.Category.Ocean, "Ocean"));
     }
 }

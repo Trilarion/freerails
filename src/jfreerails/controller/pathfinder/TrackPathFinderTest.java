@@ -6,6 +6,8 @@ package jfreerails.controller.pathfinder;
 
 import java.awt.Point;
 import java.util.List;
+
+import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
@@ -33,15 +35,17 @@ public class TrackPathFinderTest extends TestCase {
 
     public void testGeneratePath() {
         try {
+        	BuildTrackStrategy bts = BuildTrackStrategy.getSinceRuleInstance(0, world);
+        	
             TrackPathFinder pathFinder = new TrackPathFinder(world);
-            List l = pathFinder.generatePath(new Point(0, 0), new Point(0, 5), 0);
+            List l = pathFinder.generatePath(new Point(0, 0), new Point(0, 5), bts);
             assertEquals(5, l.size());
 
             List list2 = pathFinder.generatePath(new Point(5, 5),
-                    new Point(5, 10), 0);
+                    new Point(5, 10), bts);
             assertEquals(5, list2.size());
 
-            list2 = pathFinder.generatePath(new Point(5, 10), new Point(5, 5), 0);
+            list2 = pathFinder.generatePath(new Point(5, 10), new Point(5, 5), bts);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {
             fail();

@@ -9,6 +9,7 @@ final public class TrackPieceImpl implements TrackPiece {
     private final TrackConfiguration configuration;
     private final TrackRule trackType;
     private final int ownerID;
+    private final int ruleNumber;
 
     public int hashCode() {
         int result;
@@ -20,14 +21,15 @@ final public class TrackPieceImpl implements TrackPiece {
     }
 
     public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c,
-        TrackRule type, int owner) {
+        TrackRule type, int owner, int rule) {
         configuration = c;
         trackType = type;
         ownerID = owner;
+        ruleNumber = rule;        
     }
 
-    public int getTrackGraphicNumber() {
-        return configuration.getTrackGraphicsNumber();
+    public int getTrackGraphicID() {
+        return configuration.getTrackGraphicsID();
     }
 
     public TrackRule getTrackRule() {
@@ -56,4 +58,8 @@ final public class TrackPieceImpl implements TrackPiece {
     public int getOwnerID() {
         return ownerID;
     }
+
+	public int getTrackTypeID() {		
+		return ruleNumber;
+	}
 }

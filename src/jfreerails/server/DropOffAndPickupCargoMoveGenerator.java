@@ -172,13 +172,13 @@ public class DropOffAndPickupCargoMoveGenerator {
     private void getBundles() {
         TrainModel trainModel = ((TrainModel)w.get(KEY.TRAINS, trainId,
                 principal));
-        trainBundleId = trainModel.getCargoBundleNumber();
+        trainBundleId = trainModel.getCargoBundleID();
         trainBefore = getCopyOfBundle(trainBundleId);
         trainAfter = getCopyOfBundle(trainBundleId);
 
         StationModel stationModel = ((StationModel)w.get(KEY.STATIONS,
                 stationId, principal));
-        stationBundleId = stationModel.getCargoBundleNumber();
+        stationBundleId = stationModel.getCargoBundleID();
         stationAfter = getCopyOfBundle(stationBundleId);
         stationBefore = getCopyOfBundle(stationBundleId);
     }

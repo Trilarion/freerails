@@ -84,7 +84,7 @@ public class TrainBuilder implements ServerAutomaton {
                 i.remove();
 
                 // (2) Remove the train.
-                int trainID = trainMover.getTrainNumber();
+                int trainID = trainMover.getTrainID();
                 FreerailsPrincipal principal = trainMover.getPrincipal();
                 TrainModel train = (TrainModel)world.get(KEY.TRAINS, trainID,
                         principal);
@@ -147,7 +147,7 @@ public class TrainBuilder implements ServerAutomaton {
         FreerailsTile tile = (FreerailsTile)world.getTile(p.x, p.y);
         TrackRule tr = tile.getTrackRule();
 
-        if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != tr.getRuleNumber()) {
+        if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != tile.getTrackTypeID()) {
             /* Create the move that sets up the train's cargo bundle.*/
             int cargoBundleId = world.size(KEY.CARGO_BUNDLES, principal);
             Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleId,

@@ -71,7 +71,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
                             MoveStatus ms = modelRoot.doMove(m3);
 
                             if (!ms.ok) {
-                                modelRoot.setProperty(ModelRoot.CURSOR_MESSAGE,
+                                modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE,
                                     ms.message);
                             }
                         }

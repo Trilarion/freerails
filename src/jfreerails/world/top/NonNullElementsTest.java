@@ -49,7 +49,7 @@ public class NonNullElementsTest extends TestCase {
     public void testNext() {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
+        assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
         //Look at first station
@@ -58,13 +58,13 @@ public class NonNullElementsTest extends TestCase {
 
         int index = wi.getIndex();
         assertEquals(0, index);
-        assertEquals(0, wi.getRowNumber());
+        assertEquals(0, wi.getRowID());
         assertEquals(station1, wi.getElement());
 
         //Look at seond station
         assertTrue(wi.next());
         assertEquals(2, wi.getIndex());
-        assertEquals(1, wi.getRowNumber());
+        assertEquals(1, wi.getRowID());
         assertEquals(station2, wi.getElement());
 
         WorldIterator wi2 = new NonNullElements(SKEY.TRACK_RULES, w);
@@ -74,12 +74,12 @@ public class NonNullElementsTest extends TestCase {
     public void testGotoIndex() {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
+        assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
         wi.gotoIndex(2);
         assertEquals(2, wi.getIndex());
-        assertEquals(1, wi.getRowNumber());
+        assertEquals(1, wi.getRowID());
 
         try {
             wi.gotoIndex(100);

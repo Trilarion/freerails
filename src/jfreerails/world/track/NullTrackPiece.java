@@ -25,7 +25,7 @@ final public class NullTrackPiece implements TrackPiece {
         return nullTrackPiece;
     }
 
-    public int getTrackGraphicNumber() {
+    public int getTrackGraphicID() {
         return 0;
     }
 
@@ -52,4 +52,8 @@ final public class NullTrackPiece implements TrackPiece {
     public int getOwnerID() {
         return NO_OWNER;
     }
+
+	public int getTrackTypeID() {		
+		return NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
+	}
 }

@@ -1,3 +1,6 @@
+Dec 14, 2004 Luke
+	o Work on track build system.  Appropriate track for the terrain
+	is now automatically selected.  Still some bugs.
 Dec 12, 2004 Luke
 	o Updated functional specification.
 Nov 16, 2004 Luke

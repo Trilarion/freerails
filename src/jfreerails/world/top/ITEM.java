@@ -36,7 +36,7 @@ public class ITEM implements FreerailsSerializable {
         return ITEM.class.getFields().length;
     }
 
-    int getKeyNumber() {
+    int getKeyID() {
         return keyNumber;
     }
 

@@ -193,7 +193,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
          */
         StationModel station = (StationModel)world.get(KEY.STATIONS, stationId,
                 principal);
-        int cargoBundleId = station.getCargoBundleNumber();
+        int cargoBundleId = station.getCargoBundleID();
         FreerailsSerializable currentCargoBundleAtStation = world.get(KEY.CARGO_BUNDLES,
                 cargoBundleId, principal);
 
@@ -211,7 +211,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
      * @return the number of the station the train is currently at, or -1 if no
      *         current station.
      */
-    private int getStationNumber(int x, int y) {
+    private int getStationID(int x, int y) {
         //loop thru the station list to check if train is at the same Point as
         // a station
         for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {
@@ -252,7 +252,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
             targetPoint = getTarget();
         }
 
-        int stationNumber = getStationNumber(tempP.getX(), tempP.getY());
+        int stationNumber = getStationID(tempP.getX(), tempP.getY());
 
         if (NOT_AT_STATION != stationNumber) {
             loadAndUnloadCargo(stationNumber, false, autoConsist);
@@ -341,7 +341,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainId,
                 principal);
         ImmutableCargoBundle bundleOnTrain = (ImmutableCargoBundle)world.get(KEY.CARGO_BUNDLES,
-                train.getCargoBundleNumber(), principal);
+                train.getCargoBundleID(), principal);
 
         //This array will store the amount of space available on the train for each cargo type.
         final int NUM_CARGO_TYPES = world.size(SKEY.CARGO_TYPES);

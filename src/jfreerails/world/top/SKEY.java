@@ -37,7 +37,7 @@ public class SKEY implements FreerailsSerializable {
         return SKEY.class.getFields().length;
     }
 
-    int getKeyNumber() {
+    int getKeyID() {
         return keyNumber;
     }
 
@@ -46,7 +46,7 @@ public class SKEY implements FreerailsSerializable {
     }
 
     public String toString() {
-        return String.valueOf(getKeyNumber());
+        return String.valueOf(getKeyID());
     }
 
     static SKEY getKey(int keyNum) {

@@ -64,8 +64,8 @@ public class StationNamesRenderer implements Painter {
         int positionX;
         int positionY;
 
-        Boolean showStationNames = (Boolean)modelRoot.getProperty(ModelRoot.SHOW_STATION_NAMES);
-        Boolean showStationBorders = (Boolean)modelRoot.getProperty(ModelRoot.SHOW_STATION_BORDERS);
+        Boolean showStationNames = (Boolean)modelRoot.getProperty(ModelRoot.Property.SHOW_STATION_NAMES);
+        Boolean showStationBorders = (Boolean)modelRoot.getProperty(ModelRoot.Property.SHOW_STATION_BORDERS);
 
         FontRenderContext frc = g.getFontRenderContext();
         TextLayout layout;

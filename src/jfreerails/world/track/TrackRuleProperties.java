@@ -9,8 +9,7 @@ import jfreerails.world.common.Money;
  */
 final public class TrackRuleProperties implements FreerailsSerializable {
     private final boolean enableDoubleTrack;
-    private final Money maintenanceCost;
-    private final int number; //This rule's position in the track rule list.
+    private final Money maintenanceCost;    
     private final Money price;
     private final TrackRule.TrackCategories category;
     private final int rGBvalue;
@@ -18,12 +17,11 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     private final String typeName;
 
     public TrackRuleProperties(int rgb, boolean doubleTrack, String name,
-        int n, TrackRule.TrackCategories c, int radius, int price, int maintenance) {
+        TrackRule.TrackCategories c, int radius, int price, int maintenance) {
         stationRadius = radius;
         rGBvalue = rgb;
         enableDoubleTrack = doubleTrack;
-        typeName = name;
-        number = n;
+        typeName = name;     
         category = c;
         this.price = new Money(price);
         this.maintenanceCost = new Money(maintenance);
@@ -33,7 +31,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         if (o instanceof TrackRuleProperties) {
             TrackRuleProperties test = (TrackRuleProperties)o;
 
-            if (rGBvalue == test.getRGBvalue() && number == test.getNumber() &&
+            if (rGBvalue == test.getRGBvalue() &&
                     enableDoubleTrack == test.isEnableDoubleTrack() &&
                     typeName.equals(test.getTypeName()) &&
                     category == test.category &&
@@ -51,9 +49,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         return maintenanceCost;
     }
 
-    private int getNumber() {
-        return number;
-    }
+ 
 
     public Money getPrice() {
         return price;
@@ -63,9 +59,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         return rGBvalue;
     }
 
-    public int getRuleNumber() {
-        return number;
-    }
 
     public int getStationRadius() {
         return stationRadius;
@@ -76,8 +69,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
 
     public int hashCode() {
         int result;
-        result = rGBvalue;
-        result = 29 * result + number;
+        result = rGBvalue;        
         result = 29 * result + (enableDoubleTrack ? 1 : 0);
         result = 29 * result + typeName.hashCode();
         result = 29 * result + category.hashCode();

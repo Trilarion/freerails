@@ -52,7 +52,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return TrackConfiguration.getFlatInstance(this.m_configuration);
     }
 
-    public int getTrackGraphicsNumber() {
+    public int getTrackGraphicsID() {
         return m_configuration;
     }
 

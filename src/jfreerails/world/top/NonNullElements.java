@@ -106,7 +106,7 @@ public class NonNullElements implements WorldIterator {
         return index;
     }
 
-    public int getRowNumber() {
+    public int getRowID() {
         return row;
     }
 

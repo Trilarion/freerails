@@ -48,7 +48,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         if (-1 == orderToGoto) {
             return -1;
         } else {
-            return m_orders[orderToGoto].getStationNumber();
+            return m_orders[orderToGoto].getStationID();
         }
     }
 
@@ -72,7 +72,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         for (int i = 0; i < this.getNumOrders(); i++) {
             TrainOrdersModel order = this.getOrder(i);
 
-            if (order.getStationNumber() == stationNumber) {
+            if (order.getStationID() == stationNumber) {
                 return true;
             }
         }

@@ -136,7 +136,7 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
             new Point(
             ((StationModel) wi.getElement()).getStationX(),
             ((StationModel) wi.getElement()).getStationY());
-            this.modelRoot.setProperty(ModelRoot.CURSOR_POSITION, p);
+            this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
             
             display();
         } else {
@@ -153,7 +153,7 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
             new Point(
             ((StationModel) wi.getElement()).getStationX(),
             ((StationModel) wi.getElement()).getStationY());
-            this.modelRoot.setProperty(ModelRoot.CURSOR_POSITION, p);
+            this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
             display();
         } else {
             throw new IllegalStateException();
@@ -176,13 +176,13 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
     
     private void display() {
         
-        if (wi.getRowNumber() > 0) {
+        if (wi.getRowID() > 0) {
             this.previousStation.setEnabled(true);
         } else {
             this.previousStation.setEnabled(false);
         }
         
-        if (wi.getRowNumber() < (wi.size() - 1)) {
+        if (wi.getRowID() < (wi.size() - 1)) {
             this.nextStation.setEnabled(true);
         } else {
             this.nextStation.setEnabled(false);
@@ -195,11 +195,11 @@ public class StationInfoJPanel extends JPanel implements View, WorldListListener
             (StationModel) w.get(KEY.STATIONS, stationNumber, modelRoot.getPrincipal());
             FreerailsTile tile = (FreerailsTile) w.getTile(station.x, station.y);
             String stationTypeName = tile.getTrackRule().getTypeName();
-            cargoBundleIndex = station.getCargoBundleNumber();
+            cargoBundleIndex = station.getCargoBundleID();
             ImmutableCargoBundle cargoWaiting =
             (ImmutableCargoBundle) w.get(
             KEY.CARGO_BUNDLES,
-            station.getCargoBundleNumber(), modelRoot.getPrincipal());
+            station.getCargoBundleID(), modelRoot.getPrincipal());
             String title =
             "<h2 align=\"center\">"
             + station.getStationName()

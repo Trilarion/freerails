@@ -77,20 +77,20 @@ public class ViewListsImpl implements ViewLists {
             try {
                 //XXX hack to make rivers flow into ocean and habours & occean
                 // treate habours as the same type.
-                String thisTerrainCategory = t.getTerrainCategory();
+            	TerrainType.Category thisTerrainCategory = t.getCategory();
 
-                if (thisTerrainCategory.equalsIgnoreCase("River") ||
-                        thisTerrainCategory.equalsIgnoreCase("Ocean")) {
+                if (thisTerrainCategory.equals(TerrainType.Category.River) ||
+                        thisTerrainCategory.equals(TerrainType.Category.Ocean)) {
                     //Count number of types with category "water"
                     int count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
                         TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
                                 j);
-                        String terrainCategory = t2.getTerrainCategory();
+                        TerrainType.Category  terrainCategory = t2.getCategory();
 
-                        if (terrainCategory.equalsIgnoreCase("Ocean") ||
-                                terrainCategory.equalsIgnoreCase(
+                        if (terrainCategory.equals(TerrainType.Category.Ocean) ||
+                                terrainCategory.equals(
                                     thisTerrainCategory)) {
                             count++;
                         }
@@ -102,10 +102,10 @@ public class ViewListsImpl implements ViewLists {
                     for (int j = 0; j < numberOfTypes; j++) {
                         TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
                                 j);
-                        String terrainCategory = t2.getTerrainCategory();
+                        TerrainType.Category terrainCategory = t2.getCategory();
 
-                        if (terrainCategory.equalsIgnoreCase("Ocean") ||
-                                terrainCategory.equalsIgnoreCase(
+                        if (terrainCategory.equals(TerrainType.Category.Ocean) ||
+                                terrainCategory.equals(
                                     thisTerrainCategory)) {
                             typesTreatedAsTheSame[count] = j;
                             count++;

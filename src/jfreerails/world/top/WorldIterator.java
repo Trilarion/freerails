@@ -41,7 +41,7 @@ public interface WorldIterator {
 
     /** Returns the number of the row where the cursor is.
      */
-    int getRowNumber();
+    int getRowID();
 
     /** Returns the number of rows. */
     int size();

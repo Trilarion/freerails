@@ -138,7 +138,7 @@ public class StationModel implements FreerailsSerializable {
         this.y = s.y;
     }
 
-    public int getCargoBundleNumber() {
+    public int getCargoBundleID() {
         return cargoBundleNumber;
     }
 
