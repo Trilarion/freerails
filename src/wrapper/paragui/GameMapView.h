@@ -46,10 +46,11 @@ class GameMapView: public PG_ThemeWidget, Base2DMapView {
     
     PG_Point viewPos;
     
-    /* TrackController* trackcontroller;
-       StationController* stationcontroller; */
-    
-    void getMapImage(SDL_Surface* surface, int offsetX, int offsetY, int x, int y);
+    void drawMapPixmap(int mapX, int mapY);
+    void drawTrackPixmap(int mapX, int mapY);
+    void drawTrackPixmap(int mapX, int mapY, Track* track);
+    void drawPixmap(SDL_Surface* pixmap, int tilesetX, int tilesetY, int mapX, int mapY);
+    void drawTilesPixmap(int tilesetPosX, int tilesetPosY, int mapX, int mapY);
     
     void regenerateTile(int x, int y); // x and y are the position of the tile on which the mouse is now.
     void showTrack(int x, int y, unsigned int dir);

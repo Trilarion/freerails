@@ -1,3 +1,8 @@
+Thu Apr 24 14:30:00 2003  Alexander Opitz <opi@le-bit.de>:
+o now builded Track's are shown up in ParaGUI Client
+o needs an idea for the track corner drawing problem
+o the track tileset is hard written
+o QT Client should become the same state
 Thu Apr 24 12:33:00 2003  Goncalo Garcia <ghfg@rnl.ist.utl.pt>:
 o add FreeRailsLog, we can start to write a log(easier for debugging).
 o created an initial version of a netBuffer.
