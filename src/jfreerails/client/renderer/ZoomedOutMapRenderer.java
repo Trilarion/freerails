@@ -6,7 +6,6 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
@@ -18,7 +17,7 @@ import jfreerails.world.track.NullTrackPiece;
 /** This class draws the voerview map.        */
 final public class ZoomedOutMapRenderer implements MapRenderer {
     private ReadOnlyWorld w;
-    private BufferedImage mapImage; //, scaledMapImage;
+    private BufferedImage mapImage;
     protected GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                               .getDefaultScreenDevice()
                                                                               .getDefaultConfiguration();
@@ -26,7 +25,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     public ZoomedOutMapRenderer(ReadOnlyWorld world) {
         this.w = world;
         this.refresh();
-        //mapImage.setRGB(0, 0, mapWidth, mapHeight, rgbArrary, 0, mapWidth);
     }
 
     /*
@@ -56,9 +54,12 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
             TerrainType terrainType = (TerrainType)w.get(KEY.TERRAIN_TYPES,
                     typeNumber);
             rgb = terrainType.getRGB();
+            assert (mapImage != null);
+            assert (tile != null);
             mapImage.setRGB(tile.x, tile.y, rgb);
         } else {
-            mapImage.setRGB(tile.x, tile.y, 0);
+            /* black with alpha of 1 */
+            mapImage.setRGB(tile.x, tile.y, 0xff000000);
         }
     }
 
@@ -69,15 +70,13 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
         int mapWidth = w.getMapWidth();
         int mapHeight = w.getMapHeight();
         mapImage = defaultConfiguration.createCompatibleImage(mapWidth,
-                mapHeight, Transparency.OPAQUE);
+                mapHeight);
 
-        //int[] rgbArrary=new int[mapWidth*mapWidth];
         Point tile = new Point();
 
         for (tile.x = 0; tile.x < mapWidth; tile.x++) {
             for (tile.y = 0; tile.y < mapHeight; tile.y++) {
                 refreshTile(tile);
-                //rgbArrary[x+(y*mapWidth)]=terrainMap.getTerrainTileType(x,y);
             }
         }
     }

@@ -106,6 +106,7 @@ public class DialogueBoxController {
 		});
 
 		closeButton.addActionListener(closeCurrentDialogue);
+		modelRoot.setDialogueBoxController(this);
 	}
 
 	public void setup(

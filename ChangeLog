@@ -1,3 +1,6 @@
+Feb 5, 2004 12:09:19 AM Luke
+	o Apply Robert Tuck's Mac OS X fixes.
+	o Uncomment out code in TrackMaintenanceMoveGenerator
 Feb 4, 2004 4:07:21 PM Luke
 	o Add testDefensiveCopy() to WorldImplTest
 Jan 19, 2004 7:21:04 PM Luke

@@ -152,7 +152,7 @@ public class GameServer {
         }
 
         public String[] getMapNames() {
-            return GameServer.this.getMapNames();
+            return GameServer.getMapNames();
         }
 
         public void setTargetTicksPerSecond(int ticksPerSecond) {

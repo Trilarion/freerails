@@ -39,11 +39,11 @@ public class TrackMaintenanceMoveGenerator {
             TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
-            //            if (track[i] > 0) {
-            //                System.out.println(track[i] + " " + trackRule.getTypeName() +
-            //                    " maintenance cost of " + maintenanceCost * track[i]);
-            //                amount += maintenanceCost * track[i];
-            //            }
+                        if (track[i] > 0) {
+//                            System.out.println(track[i] + " " + trackRule.getTypeName() +
+//                                " maintenance cost of " + maintenanceCost * track[i]);
+                            amount += maintenanceCost * track[i];
+                        }
         }
 
         Transaction t = new Bill(new Money(amount));

@@ -104,7 +104,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
                 wagonTypesJListKeyTyped(evt);
             }
         });
-
         wagonTypesJList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 wagonTypesJListMouseClicked(evt);
@@ -114,10 +113,13 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         jScrollPane1.setViewportView(wagonTypesJList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         jPanel1.add(jScrollPane1, gridBagConstraints);
 
         okjButton.setText("OK");
@@ -128,10 +130,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanel1.add(okjButton, gridBagConstraints);
 
         clearjButton.setText("Clear");
@@ -143,10 +145,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(clearjButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -161,119 +163,132 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     }//GEN-END:initComponents
 
-	private void okButtonAction(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_okButtonAction
-		// Add your handling code here:
-		
+    private void okButtonAction(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_okButtonAction
+	// Add your handling code here:
 
-	} //GEN-LAST:event_okButtonAction
 
-	private void wagonTypesJListMouseClicked(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_wagonTypesJListMouseClicked
-		// Add your handling code here:
-		addwagon();
-	} //GEN-LAST:event_wagonTypesJListMouseClicked
+    } //GEN-LAST:event_okButtonAction
 
-	private void wagonTypesJListKeyTyped(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_wagonTypesJListKeyTyped
-		// Add your handling code here:
-		if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
-			addwagon();
-		} else {
-			
-		}
+    private void wagonTypesJListMouseClicked(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_wagonTypesJListMouseClicked
+	// Add your handling code here:
+	addwagon();
+    } //GEN-LAST:event_wagonTypesJListMouseClicked
 
-	} //GEN-LAST:event_wagonTypesJListKeyTyped
+    private void wagonTypesJListKeyTyped(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_wagonTypesJListKeyTyped
+	// Add your handling code here:
+	if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
+	    addwagon();
+	} else {
 
-	//Adds the wagon selected in the list to the train consist.
-	private void addwagon() {
-		int type = wagonTypesJList.getSelectedIndex();	
-		wagons.add(new Integer(type));
-		this.repaint();
 	}
 
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_jButton1ActionPerformed
-		// Add your handling code here:
-		wagons.clear();
-		this.repaint();
-	} //GEN-LAST:event_jButton1ActionPerformed
+    } //GEN-LAST:event_wagonTypesJListKeyTyped
 
-	public void paint(Graphics g) {
-		//paint the background
-		g.drawImage(this.stationView, 0, 0, null);
+    //Adds the wagon selected in the list to the train consist.
+    private void addwagon() {
+	int type = wagonTypesJList.getSelectedIndex();	
+	wagons.add(new Integer(type));
+	this.repaint();
+    }
 
-		int x = 0;
-		
-		int y = 330;
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_jButton1ActionPerformed
+	// Add your handling code here:
+	wagons.clear();
+	this.repaint();
+    } //GEN-LAST:event_jButton1ActionPerformed
 
-		
+    public void paint(Graphics g) {
+	//paint the background
+	g.drawImage(this.stationView, 0, 0, null);
 
-		final int SCALED_IMAGE_HEIGHT = 50;
-		//paint the wagons
-		for (int i = this.wagons.size()-1; i >= 0; i--) {  //Count down so we paint the wagon at the end of the train first. 
-			
-			Integer type = (Integer)wagons.get(i);
-			Image image = viewLists.getTrainImages().getSideOnWagonImage(type.intValue());
-			int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
-			
-			g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
-			x += scaledWidth;			
-		}
+	int x = 0;
 
-		//paint the engine		
-		Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
-		int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
-		g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);					
-		this.paintChildren(g);
+	int y = 330;
+
+
+
+	final int SCALED_IMAGE_HEIGHT = 50;
+	//paint the wagons
+	for (int i = this.wagons.size()-1; i >= 0; i--) {  //Count down so we paint the wagon at the end of the train first. 
+
+	    Integer type = (Integer)wagons.get(i);
+	    Image image = viewLists.getTrainImages().getSideOnWagonImage(type.intValue());
+	    int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
+
+	    g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
+	    x += scaledWidth;			
 	}
+
+	//paint the engine		
+	Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
+	int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
+	g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);					
+	this.paintChildren(g);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton okjButton;
     private javax.swing.JButton clearjButton;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton okjButton;
     private javax.swing.JList wagonTypesJList;
     // End of variables declaration//GEN-END:variables
-	final private class WagonCellRenderer implements ListCellRenderer {
+    final private class WagonCellRenderer implements ListCellRenderer {
+	private Component[] labels;
 
-		Image tempImage;
-		JLabel label;
-		TrainImages trainImages;
+	Image tempImage;
+	TrainImages trainImages;
 
-		public WagonCellRenderer(TrainImages s) {
-			trainImages = s;
+	public WagonCellRenderer(World2ListModelAdapter w2lma, TrainImages s) {
+	    trainImages = s;
 
-			label = new JLabel(); //"text", new ImageIcon( tempImage ), SwingConstants.LEFT );
+	    labels = new Component[w2lma.getSize()];
+	    for (int i = 0; i < w2lma.getSize(); i++) {
+		JLabel label = new JLabel();
+		label.setFont(new java.awt.Font("Dialog", 0, 12));
+		Image image = trainImages.getSideOnWagonImage(i);
+		int height = image.getHeight(null);
+		int width = image.getWidth(null);
+		int scale = height/10;
+		
+		ImageIcon icon = new
+		    ImageIcon(image.getScaledInstance(width/scale,
+				height/scale, Image.SCALE_FAST));			
+		label.setIcon(icon);
+		labels[i] = label;
+	    }
+	}
 
-		}
-
-		public Component getListCellRendererComponent(JList list, Object value, /* value to display*/
+	public Component getListCellRendererComponent(JList list, Object value, /* value to display*/
 		int index, /* cell index*/
 		boolean isSelected, /* is the cell selected*/
 		boolean cellHasFocus) /* the list and the cell have the focus*/ {
-			CargoType cargoType = (CargoType) value;
-			label.setFont(new java.awt.Font("Dialog", 0, 12));
-			String text = "<html><body>" + (isSelected ? "<strong>" : "") + cargoType.getDisplayName() + (isSelected ? "</strong>" : "&nbsp;&nbsp;&nbsp;&nbsp;"/*padding to stop word wrap due to greater wodth of strong font*/) + "</body></html>";
-			label.setText(text);
-			Image image = trainImages.getSideOnWagonImage(index);
-			int height = image.getHeight(null);
-			int width = image.getWidth(null);
-			int scale = height/10;
-			ImageIcon icon = new ImageIcon(image.getScaledInstance(width/scale, height/scale, Image.SCALE_FAST));			
-			label.setIcon(icon);
-			return label;
-		}
+	    if (index >= 0 && index < labels.length) {
+		CargoType cargoType = (CargoType) value;
+		String text = "<html><body>" + (isSelected ? "<strong>" : "") + cargoType.getDisplayName() + (isSelected ? "</strong>" : "&nbsp;&nbsp;&nbsp;&nbsp;"/*padding to stop word wrap due to greater wodth of strong font*/) + "</body></html>";
+		((JLabel) labels[index]).setText(text);
+		return labels[index];
+	    }
+	    return null;
 	}
+    }
 
-	public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
-		this.w = w;
-		this.viewLists = vl;
-		this.wagonTypesJList.setModel(new World2ListModelAdapter(w, KEY.CARGO_TYPES) );
-		TrainImages trainImages = viewLists.getTrainImages();
-		WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(trainImages);
-		this.wagonTypesJList.setCellRenderer(wagonCellRenderer);
-		this.okjButton.addActionListener(submitButtonCallBack);
-	}
-	public int getEngineType() {
-		return engineType;
-	}
+    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
+	this.w = w;
+	this.viewLists = vl;
+	World2ListModelAdapter w2lma = new World2ListModelAdapter(w,
+		KEY.CARGO_TYPES); 
+	this.wagonTypesJList.setModel(w2lma);
+	TrainImages trainImages = viewLists.getTrainImages();
+	WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma,
+		trainImages);
+	this.wagonTypesJList.setCellRenderer(wagonCellRenderer);
+	this.okjButton.addActionListener(submitButtonCallBack);
+    }
+    
+    public int getEngineType() {
+	return engineType;
+    }
 
 	public int[] getWagons(){
 		int [] wagonsArray = new int[wagons.size()];

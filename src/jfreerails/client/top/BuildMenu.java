@@ -66,5 +66,8 @@ final public class BuildMenu extends javax.swing.JMenu {
             buttonGroup2.add(menuItem);
             add(menuItem);
         }
+
+        addSeparator();
+        add(modelRoot.getBuildTrainDialogAction());
     }
 }

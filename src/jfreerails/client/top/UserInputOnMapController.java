@@ -72,12 +72,6 @@ public class UserInputOnMapController implements CursorEventListener {
 
     public void cursorKeyPressed(CursorEvent ce) {
         switch (ce.keyEvent.getKeyCode()) {
-        case KeyEvent.VK_F7: {
-            buildTrain(ce);
-
-            break;
-        }
-
         case KeyEvent.VK_F8: {
             //defensive copy.
             Point tile = new Point(ce.newPosition);
@@ -115,10 +109,5 @@ public class UserInputOnMapController implements CursorEventListener {
             break;
         }
         }
-    }
-
-    private void buildTrain(CursorEvent ce) {
-        dialogueBoxController.showSelectEngine();
-        //trainBuilder.buildTrain(ce.newPosition);
     }
 }
