@@ -11,9 +11,7 @@ final public class Money implements FreerailsSerializable {
     
     public long getAmount() {
         return amount;
-    }
-    
-    
+    }        
     
     public String toString() {
         return df.format(amount);

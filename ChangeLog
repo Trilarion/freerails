@@ -1,3 +1,5 @@
+01-Jun-2003 21:01:14 Luke
+	o The game times passes as real time passes.
 01-Jun-2003 18:45:42 Luke
 	o Rewrote  ClientJFrame using Netbean's GUI editor.
 	o Added JLabels to show the date and available cash to ClientJFrame. 

@@ -11,14 +11,14 @@ package jfreerails.world.common;
  */
 public class GameTime implements FreerailsSerializable {
 	
-	private final long time;
+	private final int time;
 	
-	public GameTime(long l){
+	public GameTime(int l){
 		this.time = l;
 	}
 	
 		
-	public long getTime() {
+	public int getTime() {
 		return time;
 	}
 	
