@@ -24,6 +24,7 @@ import javax.swing.ListCellRenderer;
 import jfreerails.client.renderer.TrainImages;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.top.SKEY;
+import jfreerails.world.train.TrainModel;
 /**
  * This JPanel lets the user add wagons to a train.
  *
@@ -46,6 +47,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     
     public SelectWagonsJPanel() {
         initComponents();
+        updateMaxWagonsText();
+        
         URL url = SelectWagonsJPanel.class.getResource("/jfreerails/data/station.gif");
         Image tempImage = (new javax.swing.ImageIcon(url)).getImage();
         
@@ -73,6 +76,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         wagonTypesJList = new javax.swing.JList();
         okjButton = new javax.swing.JButton();
         clearjButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -81,9 +85,8 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         setPreferredSize(new java.awt.Dimension(620, 380));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(100, 100));
-        jPanel1.setMinimumSize(new java.awt.Dimension(200, 250));
-        jPanel1.setPreferredSize(new java.awt.Dimension(100, 1000));
+        jPanel1.setMinimumSize(new java.awt.Dimension(170, 300));
+        jPanel1.setPreferredSize(new java.awt.Dimension(170, 300));
         wagonTypesJList.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 wagonTypesJListKeyTyped(evt);
@@ -102,9 +105,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         jPanel1.add(jScrollPane1, gridBagConstraints);
 
         okjButton.setText("OK");
@@ -116,9 +119,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         jPanel1.add(okjButton, gridBagConstraints);
 
         clearjButton.setText("Clear");
@@ -131,15 +134,24 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(clearjButton, gridBagConstraints);
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 10));
+        jLabel1.setText("The maximum train length is 6 wagons");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 8, 8);
+        jPanel1.add(jLabel1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 400, 100, 10);
+        gridBagConstraints.insets = new java.awt.Insets(20, 400, 70, 10);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         add(jPanel1, gridBagConstraints);
 
@@ -168,14 +180,28 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     
     //Adds the wagon selected in the list to the train consist.
     private void addwagon() {
-        int type = wagonTypesJList.getSelectedIndex();
-        wagons.add(new Integer(type));
-        this.repaint();
+        if(wagons.size() < TrainModel.MAX_NUMBER_OF_WAGONS){
+            int type = wagonTypesJList.getSelectedIndex();
+            wagons.add(new Integer(type));
+            
+            updateMaxWagonsText();
+            this.repaint();
+        }
+        
+    }
+    
+    private void updateMaxWagonsText(){
+        if(wagons.size() >= TrainModel.MAX_NUMBER_OF_WAGONS){
+            jLabel1.setText("Max train length is "+TrainModel.MAX_NUMBER_OF_WAGONS+" wagons");
+        }else{
+            jLabel1.setText("");
+        }
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_jButton1ActionPerformed
         // Add your handling code here:
         wagons.clear();
+        jLabel1.setText("");
         this.repaint();
     } //GEN-LAST:event_jButton1ActionPerformed
     
@@ -198,7 +224,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
             int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
-          
+            
         }
         
         //paint the engine
@@ -214,6 +240,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearjButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton okjButton;

@@ -47,6 +47,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
 
         setLayout(new java.awt.GridBagLayout());
 
+        setPreferredSize(new java.awt.Dimension(510, 400));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

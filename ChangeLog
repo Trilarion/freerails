@@ -1,8 +1,12 @@
+May 28, 2004Luke
+	Bugs Fixed: 
+	o 948655 Can't see consist when there are more than 6 wagons
 May 27, 2004 PM Luke
 	Bugs Fixed:
 	o 948676 Waiting list is cut off 
 	o 948673 Cost of Building track/stations not shown 
 	o 948670 Removing non-existant track
+	o 948654 Locomotive graphic backwards
 May 24, 2004 PM Luke
 	o Bug fixes for jfreerails.world.top.WorldDifferences
 May 24, 2004 PM Luke

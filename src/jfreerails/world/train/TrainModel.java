@@ -8,7 +8,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class TrainModel implements FreerailsSerializable {
-    public static final int MAX_NUMBER_OF_WAGONS = 10;
+    public static final int MAX_NUMBER_OF_WAGONS = 6;
     private int scheduleID;
     private TrainPositionOnMap trainposition;
     private int engineType = 0;
