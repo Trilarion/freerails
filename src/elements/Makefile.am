@@ -2,9 +2,10 @@
 
 noinst_LIBRARIES = libelements.a
 
-INCLUDES = -I$(srcdir) -I$(srcdir)/../controllers
+INCLUDES = -I$(srcdir) -I$(srcdir)/../controllers -I$(srcdir)/../network
 
-libelements_a_SOURCES = GameElement.cpp \
+libelements_a_SOURCES = Serializable.cpp \
+    GameElement.cpp \
     Player.cpp \
     Station.cpp \
     StationAddon.cpp \
