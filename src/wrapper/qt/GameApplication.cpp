@@ -100,7 +100,7 @@ int GameApplication::run()
 
     if (status == QDialog::Accepted)
     {
-      initSingleGame(tmp_name, tmp_width, tmp_height, 0);
+      initSingleGame(tmp_name.latin1(), tmp_width, tmp_height, 0);
 
       /* engine = new Engine(worldMap, playerSelf); */
       guiEngine=new GuiEngine(playerSelf, tmp_width, tmp_height);
