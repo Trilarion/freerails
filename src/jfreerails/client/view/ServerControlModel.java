@@ -52,7 +52,6 @@ public class ServerControlModel {
         public LoadGameAction() {
             putValue(NAME, "Load Game");
             putValue(MNEMONIC_KEY, new Integer(76));
-           
         }
     }
 
@@ -127,10 +126,10 @@ public class ServerControlModel {
         serverInterface = i;
 
         boolean enabled = (serverInterface != null);
-        
+
         //Check that there is a file to load..
         boolean canLoadGame = ServerGameEngine.isSaveGameAvailable();
-               
+
         loadGameAction.setEnabled(enabled && canLoadGame);
         saveGameAction.setEnabled(enabled);
 

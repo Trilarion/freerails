@@ -8,12 +8,10 @@ package jfreerails.client.view;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.SKEY;
@@ -35,8 +33,8 @@ public class WagonView extends JLabel implements View, ListCellRenderer {
     public WagonView() {
     }
 
-    public void setup(ModelRoot mr,
-    		 ViewLists vl, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot mr, ViewLists vl,
+        ActionListener submitButtonCallBack) {
         this.vl = vl;
     }
 

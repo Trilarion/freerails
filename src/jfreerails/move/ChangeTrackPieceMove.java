@@ -163,7 +163,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         //FIXME why is oldTrackPiece not used???
         FreerailsTile oldTile = w.getTile(location.x, location.y);
         int terrain = oldTile.getTerrainTypeNumber();
-        FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece);
+        FreerailsTile newTile = FreerailsTile.getInstance(terrain, newTrackPiece);
         w.setTile(location.x, location.y, newTile);
     }
 

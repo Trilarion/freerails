@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ServerControlInterface;
@@ -56,10 +55,9 @@ public class ActionRoot {
 
         if (world.size(SKEY.TRACK_RULES) > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
-            trackBuildModel = new TrackBuildModel(trackMoveProducer, world,
-                    vl);
+            trackBuildModel = new TrackBuildModel(trackMoveProducer, world, vl);
             stationBuildModel = new StationBuildModel(new StationBuilder(
-                        modelRoot),vl,  modelRoot);
+                        modelRoot), vl, modelRoot);
         }
     }
 

@@ -100,7 +100,7 @@ public class MapFactory {
                         " at location " + x + ", " + y);
                 }
 
-                tile = new FreerailsTile(terrainRandomiser.getNewType(
+                tile = FreerailsTile.getInstance(terrainRandomiser.getNewType(
                             type.intValue()));
 
                 if (countryTypes.contains(
@@ -115,7 +115,7 @@ public class MapFactory {
 
         for (int i = 0; i < locations.size(); i++) {
             RandomTerrainValue rtv = (RandomTerrainValue)locations.elementAt(i);
-            FreerailsTile tile = new FreerailsTile(rtv.getType());
+            FreerailsTile tile = FreerailsTile.getInstance(rtv.getType());
 
             int x = rtv.getX();
             int y = rtv.getY();

@@ -1,4 +1,3 @@
-
 /*
 * Interface.java
 *
@@ -6,17 +5,15 @@
 */
 package jfreerails.client.view;
 
+
 /**
 *
 * @author  Luke Lindsay
 */
-
-
 public interface CursorEventListener extends java.util.EventListener {
+    void cursorOneTileMove(CursorEvent ce);
 
-     void cursorOneTileMove( CursorEvent ce );
+    void cursorJumped(CursorEvent ce);
 
-     void cursorJumped( CursorEvent ce );
-
-     void cursorKeyPressed( CursorEvent ce );
+    void cursorKeyPressed(CursorEvent ce);
 }

@@ -12,7 +12,6 @@ import java.awt.Image;
 import java.awt.Transparency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 
@@ -24,24 +23,29 @@ import jfreerails.client.renderer.ViewLists;
  */
 public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                                  .getDefaultScreenDevice()
-                                                                                  .getDefaultConfiguration();
+    .getDefaultScreenDevice()
+    .getDefaultConfiguration();
     private ActionListener callBack;
     private final Image pieceOfNewspaper;
-
+    
     public NewsPaperJPanel() {
         initComponents();
-
+        
         Image tempImage = (new javax.swing.ImageIcon(getClass().getResource("/jfreerails/data/newspaper.png"))).getImage();
-
+        
         pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage.getWidth(
-                    null), tempImage.getHeight(null), Transparency.BITMASK);
-
+        null), tempImage.getHeight(null), Transparency.BITMASK);
+        
         Graphics g = pieceOfNewspaper.getGraphics();
-
+        
         g.drawImage(tempImage, 0, 0, null);
+        this.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                callBack.actionPerformed(new ActionEvent(this, 0, null));
+            }
+        });
     }
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -86,30 +90,26 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     }
 
     //GEN-END:initComponents
-    private void formKeyPressed(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_formKeyPressed
-        // Add your handling code here:
-        this.setVerifyInputWhenFocusTarget(false);
-    }
-
+        private void formKeyPressed(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_formKeyPressed
+            // Add your handling code here:
+            this.setVerifyInputWhenFocusTarget(false);
+        }
+        
     //GEN-LAST:event_formKeyPressed
-    public void paint(Graphics g) {
-        g.drawImage(this.pieceOfNewspaper, 0, 0, null);
-        this.paintChildren(g);
-    }
-
-    public void setHeadline(String s) {
-        this.headline.setText(s);
-    }
-
-    public void setup(ModelRoot mr,  ViewLists vl, ActionListener submitButtonCallBack) {
-        this.callBack = submitButtonCallBack;
-        this.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mousePressed(java.awt.event.MouseEvent evt) {
-                    callBack.actionPerformed(new ActionEvent(this, 0, null));
-                }
-            });
-    }
-
+        public void paint(Graphics g) {
+            g.drawImage(this.pieceOfNewspaper, 0, 0, null);
+            this.paintChildren(g);
+        }
+        
+        public void setHeadline(String s) {
+            this.headline.setText(s);
+        }
+        
+        public void setup(ModelRoot mr, ViewLists vl,
+        ActionListener submitButtonCallBack) {
+            this.callBack = submitButtonCallBack;
+        }
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel headline;
     private javax.swing.JPanel jPanel1;

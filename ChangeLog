@@ -1,4 +1,7 @@
-Jun 5, 2004 Luke
+Jun 6, 2004 Luke 
+	Bugs Fixed: 
+ 	o 967677 OutOfMemoryError after starting several new games
+Jun 6, 2004 Luke
 	RFE implemented:
 	o 915960 Logging 
 Jun 5, 2004 Luke

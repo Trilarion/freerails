@@ -3,7 +3,6 @@ package jfreerails.client.view;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-
 import jfreerails.client.common.Painter;
 import jfreerails.client.renderer.TrainRenderer;
 import jfreerails.client.renderer.ViewLists;

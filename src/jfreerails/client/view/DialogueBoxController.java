@@ -11,14 +11,12 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.border.LineBorder;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
@@ -58,7 +56,7 @@ public class DialogueBoxController implements WorldListListener {
     private TrainDialogueJPanel trainDialogueJPanel;
     private ReadOnlyWorld world;
     private ModelRoot modelRoot;
-    private  ViewLists vl;
+    private ViewLists vl;
     private Component defaultFocusOwner = null;
     private final LineBorder defaultBorder = new LineBorder(new java.awt.Color(
                 0, 0, 0), 3);
@@ -71,10 +69,48 @@ public class DialogueBoxController implements WorldListListener {
                 closeContent();
             }
         };
-	private JInternalFrame dialogueJInternalFrame;
+
+    private final ActionListener selectEngineActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                closeContent();
+                showSelectWagons();
+            }
+        };
+
+    private final ActionListener trainDetailsButtonActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                closeContent();
+                showTrainList();
+            }
+        };
+
+    private final ActionListener selectWagonsActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                WorldIterator wi = new NonNullElements(KEY.STATIONS,
+                        modelRoot.getWorld(), modelRoot.getPrincipal());
+
+                if (wi.next()) {
+                    StationModel station = (StationModel)wi.getElement();
+
+                    ProductionAtEngineShop before = station.getProduction();
+                    int engineType = selectEngine.getEngineType();
+                    int[] wagonTypes = selectWagons.getWagons();
+                    ProductionAtEngineShop after = new ProductionAtEngineShop(engineType,
+                            wagonTypes);
+
+                    Move m = new ChangeProductionAtEngineShopMove(before,
+                            after, wi.getIndex(), modelRoot.getPrincipal());
+                    modelRoot.doMove(m);
+                }
+
+                closeContent();
+            }
+        };
+
+    private JInternalFrame dialogueJInternalFrame;
 
     public DialogueBoxController(JFrame frame, ModelRoot mr, ActionRoot ar) {
-    	this.frame = frame;
+        this.frame = frame;
         modelRoot = mr;
         actionRoot = ar;
         //Setup glass panel..
@@ -94,15 +130,35 @@ public class DialogueBoxController implements WorldListListener {
 
         closeButton.addActionListener(closeCurrentDialogue);
         actionRoot.setDialogueBoxController(this);
+
+        showControls = new HtmlJPanel(DialogueBoxController.class.getResource(
+                    "/jfreerails/client/view/game_controls.html"));
+        about = new HtmlJPanel(DialogueBoxController.class.getResource(
+                    "/jfreerails/client/view/about.htm"));
+        how2play = new HtmlJPanel(DialogueBoxController.class.getResource(
+                    "/jfreerails/client/view/how_to_play.htm"));
+
+        terrainInfo = new TerrainInfoJPanel();
+        stationInfo = new StationInfoJPanel();
+        javaProperties = new HtmlJPanel(ShowJavaProperties.getPropertiesHtmlString());
+        newspaper = new NewsPaperJPanel();
+        selectWagons = new SelectWagonsJPanel();
+        selectEngine = new SelectEngineJPanel();
+        trainDialogueJPanel = new TrainDialogueJPanel();
     }
 
-    public void setup(ModelRoot mr,  ViewLists vl ) {
+    /** Called when a new game is started or a game is loaded.
+     * <p><b>Be extremely careful with the references of objects allocated in
+     * this method to avoid memory leaks - see bug 967677
+     * (OutOfMemoryError after starting several new games). </b></p>
+     */
+    public void setup(ModelRoot mr, ViewLists vl) {
         this.modelRoot = mr;
         this.vl = vl;
         modelRoot.addListListener(this); //When a new train gets built, we show the train info etc
 
         this.world = modelRoot.getWorld();
-     
+
         if (world == null)
             throw new NullPointerException();
 
@@ -110,29 +166,20 @@ public class DialogueBoxController implements WorldListListener {
             throw new NullPointerException();
 
         //Setup the various dialogue boxes.
-        // setup the terrain info dialogue.
-        terrainInfo = new TerrainInfoJPanel();
+        // setup the terrain info dialogue.       
         terrainInfo.setup(world, vl);
 
         // setup the supply and demand at station dialogue.
-        stationInfo = new StationInfoJPanel();
         stationInfo.setup(modelRoot, vl, this.closeCurrentDialogue);
         modelRoot.addListListener(stationInfo);
 
-        // setup the 'show controls' dialogue
-        showControls = new HtmlJPanel(DialogueBoxController.class.getResource(
-                    "/jfreerails/client/view/game_controls.html"));
+        // setup the 'show controls' dialogue       
         showControls.setup(this.modelRoot, vl, this.closeCurrentDialogue);
 
-        about = new HtmlJPanel(DialogueBoxController.class.getResource(
-                    "/jfreerails/client/view/about.htm"));
         about.setup(this.modelRoot, vl, this.closeCurrentDialogue);
 
-        how2play = new HtmlJPanel(DialogueBoxController.class.getResource(
-                    "/jfreerails/client/view/how_to_play.htm"));
         how2play.setup(this.modelRoot, vl, this.closeCurrentDialogue);
 
-        javaProperties = new HtmlJPanel(ShowJavaProperties.getPropertiesHtmlString());
         javaProperties.setup(this.modelRoot, vl, this.closeCurrentDialogue);
 
         //Set up train orders dialogue
@@ -140,56 +187,16 @@ public class DialogueBoxController implements WorldListListener {
         //trainScheduleJPanel.setup(w, vl);
         //moveChainFork.add(trainScheduleJPanel);
         //Set up select engine dialogue.
-        selectEngine = new SelectEngineJPanel();
         selectEngine.setCancelButtonActionListener(this.closeCurrentDialogue);
-        selectEngine.setup(modelRoot, vl,
-            new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    closeContent();
-                    showSelectWagons();
-                }
-            });
-        newspaper = new NewsPaperJPanel();
+        selectEngine.setup(modelRoot, vl, selectEngineActionListener);
+
         newspaper.setup(modelRoot, vl, closeCurrentDialogue);
 
-        selectWagons = new SelectWagonsJPanel();
+        selectWagons.setup(modelRoot, vl, selectWagonsActionListener);
 
-        final ReadOnlyWorld finalROW = this.world;
-
-        //So that inner class can reference it.
-        selectWagons.setup(modelRoot, vl,
-            new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    WorldIterator wi = new NonNullElements(KEY.STATIONS,
-                            finalROW, modelRoot.getPrincipal());
-
-                    if (wi.next()) {
-                        StationModel station = (StationModel)wi.getElement();
-
-                        ProductionAtEngineShop before = station.getProduction();
-                        int engineType = selectEngine.getEngineType();
-                        int[] wagonTypes = selectWagons.getWagons();
-                        ProductionAtEngineShop after = new ProductionAtEngineShop(engineType,
-                                wagonTypes);
-
-                        Move m = new ChangeProductionAtEngineShopMove(before,
-                                after, wi.getIndex(), modelRoot.getPrincipal());
-                        modelRoot.doMove(m);
-                    }
-
-                    closeContent();
-                }
-            });
-
-        trainDialogueJPanel = new TrainDialogueJPanel();
         trainDialogueJPanel.setup(modelRoot, vl, this.closeCurrentDialogue);
         modelRoot.addListListener(trainDialogueJPanel);
-        trainDialogueJPanel.setTrainDetailsButtonActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    closeContent();
-                    showTrainList();
-                }
-            });
+        trainDialogueJPanel.setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
         trainDialogueJPanel.setCancelButtonActionListener(this.closeCurrentDialogue);
     }
 
@@ -306,61 +313,64 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     public void showContent(JComponent component) {
-		JComponent contentPanel;
+        JComponent contentPanel;
 
-		if (!(component instanceof View)) {
-			contentPanel = new javax.swing.JPanel();
-			contentPanel.setLayout(new java.awt.GridBagLayout());
+        if (!(component instanceof View)) {
+            contentPanel = new javax.swing.JPanel();
+            contentPanel.setLayout(new java.awt.GridBagLayout());
 
-			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 0;
-			constraints.weightx = 1.0;
-			constraints.weighty = 1.0;
-			contentPanel.add(component, constraints);
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            constraints.weightx = 1.0;
+            constraints.weighty = 1.0;
+            contentPanel.add(component, constraints);
 
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
-			contentPanel.add(closeButton, constraints);
-		} else {
-			contentPanel = component;
-		}
+            constraints = new GridBagConstraints();
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            contentPanel.add(closeButton, constraints);
+        } else {
+            contentPanel = component;
+        }
 
-		dialogueJInternalFrame = new JInternalFrame();
-		dialogueJInternalFrame.setFrameIcon(null);
-		dialogueJInternalFrame.getContentPane().add(contentPanel);
-		dialogueJInternalFrame.pack();
+        dialogueJInternalFrame = new JInternalFrame();
+        dialogueJInternalFrame.setFrameIcon(null);
+        dialogueJInternalFrame.getContentPane().add(contentPanel);
+        dialogueJInternalFrame.pack();
 
-		/*
-		 * Make sure the size of the dialogue does not exceed the size of the
-		 * frames content pane.
-		 */
-		int parentWidth = frame.getContentPane().getWidth();
-		int parentHeight = frame.getContentPane().getHeight();
+        /*
+         * Make sure the size of the dialogue does not exceed the size of the
+         * frames content pane.
+         */
+        int parentWidth = frame.getContentPane().getWidth();
+        int parentHeight = frame.getContentPane().getHeight();
 
-		Dimension size = dialogueJInternalFrame.getSize();
-		if (size.width > parentWidth) {
-			size.width = parentWidth;
-		}
-		if (size.height > parentHeight) {
-			size.height = parentHeight;
-		}
-		dialogueJInternalFrame.setSize(size);
+        Dimension size = dialogueJInternalFrame.getSize();
 
-		dialogueJInternalFrame.setLocation(
-				(frame.getWidth() - dialogueJInternalFrame.getWidth()) / 2,
-				(frame.getHeight() - dialogueJInternalFrame.getHeight()) / 2);
+        if (size.width > parentWidth) {
+            size.width = parentWidth;
+        }
 
-		frame.getLayeredPane().add(dialogueJInternalFrame,
-				JLayeredPane.MODAL_LAYER);
+        if (size.height > parentHeight) {
+            size.height = parentHeight;
+        }
 
-		dialogueJInternalFrame.show();
+        dialogueJInternalFrame.setSize(size);
 
-	}
+        dialogueJInternalFrame.setLocation((frame.getWidth() -
+            dialogueJInternalFrame.getWidth()) / 2,
+            (frame.getHeight() - dialogueJInternalFrame.getHeight()) / 2);
+
+        frame.getLayeredPane().add(dialogueJInternalFrame,
+            JLayeredPane.MODAL_LAYER);
+
+        dialogueJInternalFrame.show();
+    }
 
     public void closeContent() {
-    	dialogueJInternalFrame.setVisible(false);    	
+        dialogueJInternalFrame.setVisible(false);
+
         if (null != defaultFocusOwner) {
             defaultFocusOwner.requestFocus();
         }

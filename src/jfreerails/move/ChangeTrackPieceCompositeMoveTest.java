@@ -122,7 +122,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         TrackPiece tp = oldTile.getTrackPiece();
         TrackPiece newTrackPiece = new TrackPieceImpl(tp.getTrackConfiguration(),
                 tp.getTrackRule(), anotherPlayer);
-        FreerailsTile newTile = new FreerailsTile(oldTile.getTerrainTypeNumber(),
+        FreerailsTile newTile = FreerailsTile.getInstance(oldTile.getTerrainTypeNumber(),
                 newTrackPiece);
         world.setTile(1, 6, newTile);
         assertBuildTrackFails(new Point(1, 6), east, trackRule);

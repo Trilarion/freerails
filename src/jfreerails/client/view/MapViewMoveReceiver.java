@@ -17,11 +17,14 @@ public class MapViewMoveReceiver implements WorldMapListener {
         mapView = mv;
     }
 
-    public void tilesChanged(Rectangle r) {
+    public void tilesChanged(Rectangle tilesChanged) {
         Point tile = new Point();
 
-        for (tile.x = r.x; tile.x < (r.x + r.width); tile.x++) {
-            for (tile.y = r.y; tile.y < (r.y + r.height); tile.y++) {
+        for (tile.x = tilesChanged.x;
+                tile.x < (tilesChanged.x + tilesChanged.width); tile.x++) {
+            for (tile.y = tilesChanged.y;
+                    tile.y < (tilesChanged.y + tilesChanged.height);
+                    tile.y++) {
                 mapView.refreshTile(tile.x, tile.y);
             }
         }

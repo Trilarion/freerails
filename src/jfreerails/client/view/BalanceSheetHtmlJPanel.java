@@ -6,7 +6,6 @@ package jfreerails.client.view;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -31,8 +30,9 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
         template = loadText(url);
     }
 
-    public void setup(ModelRoot modelRoot,  ViewLists vl, ActionListener submitButtonCallBack) {
-        super.setup(modelRoot,vl, submitButtonCallBack);
+    public void setup(ModelRoot modelRoot, ViewLists vl,
+        ActionListener submitButtonCallBack) {
+        super.setup(modelRoot, vl, submitButtonCallBack);
         this.modelRoot = modelRoot;
         updateHtml();
     }

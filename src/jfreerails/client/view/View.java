@@ -5,7 +5,6 @@
 package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 
@@ -17,5 +16,6 @@ import jfreerails.client.renderer.ViewLists;
  *
  */
 public interface View {
-    void setup(ModelRoot modelRoot, ViewLists vl, ActionListener submitButtonCallBack);
+    void setup(ModelRoot modelRoot, ViewLists vl,
+        ActionListener submitButtonCallBack);
 }

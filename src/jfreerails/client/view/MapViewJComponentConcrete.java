@@ -19,7 +19,6 @@ import java.beans.PropertyChangeListener;
 import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Stats;
 import jfreerails.client.renderer.MapRenderer;
@@ -262,19 +261,19 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     public void paintTile(Graphics g, int tileX, int tileY) {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void refreshTile(int x, int y) {
-    	throw new UnsupportedOperationException(); 
+        throw new UnsupportedOperationException();
     }
-    
+
     public void refreshAll() {
-		this.getMapView().refreshAll();
-	}
+        this.getMapView().refreshAll();
+    }
 
     public void paintRect(Graphics g, Rectangle visibleRect) {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public FreerailsCursor getMapCursor() {
@@ -326,6 +325,4 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
             message = (String)evt.getNewValue();
         }
     }
-
-	
 }

@@ -168,7 +168,7 @@ public class CityTilePositioner {
                                 }
 
                                 if (typeToAdd != null) {
-                                    tile = new FreerailsTile(typeToAdd.intValue());
+                                    tile = FreerailsTile.getInstance(typeToAdd.intValue());
                                     w.setTile(X, Y, tile);
                                 }
                             }

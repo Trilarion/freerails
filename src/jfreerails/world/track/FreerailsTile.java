@@ -1,10 +1,14 @@
 package jfreerails.world.track;
 
+import java.io.ObjectStreamException;
+import java.util.HashMap;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.terrain.TerrainTile;
 
 
 /** A tile on the map.
+ *
+ * Instances are stored in a HashMap to avoid creating 100,000s of objects.
  * @author Luke
  */
 public class FreerailsTile implements TrackPiece, TerrainTile,
@@ -12,8 +16,44 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
     public static final FreerailsTile NULL = new FreerailsTile(0);
     private final TrackPiece trackPiece;
     private final int terrainType;
+    private static HashMap instances = new HashMap();
 
-    public FreerailsTile(int terrainType) {
+    public static FreerailsTile getInstance(int terrainType) {
+        FreerailsTile tile = new FreerailsTile(terrainType);
+
+        if (instances.containsKey(tile)) {
+            return (FreerailsTile)instances.get(tile);
+        } else {
+            instances.put(tile, tile);
+
+            return tile;
+        }
+    }
+
+    public static FreerailsTile getInstance(int terrainType,
+        TrackPiece trackPiece) {
+        FreerailsTile tile = new FreerailsTile(terrainType, trackPiece);
+
+        if (instances.containsKey(tile)) {
+            return (FreerailsTile)instances.get(tile);
+        } else {
+            instances.put(tile, tile);
+
+            return tile;
+        }
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        if (instances.containsKey(this)) {
+            return (FreerailsTile)instances.get(this);
+        } else {
+            instances.put(this, this);
+
+            return this;
+        }
+    }
+
+    private FreerailsTile(int terrainType) {
         this.terrainType = terrainType;
         this.trackPiece = NullTrackPiece.getInstance();
     }
@@ -26,7 +66,7 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
         return result;
     }
 
-    public FreerailsTile(int terrainType, TrackPiece trackPiece) {
+    private FreerailsTile(int terrainType, TrackPiece trackPiece) {
         this.terrainType = terrainType;
         this.trackPiece = trackPiece;
     }

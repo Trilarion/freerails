@@ -156,7 +156,7 @@ public class WorldDifferencesTest extends TestCase {
         assertNotNull(tile);
         assertEquals(tile, worldDiff.getTile(2, 2));
 
-        FreerailsTile newTile = new FreerailsTile(999);
+        FreerailsTile newTile = FreerailsTile.getInstance(999);
         worldDiff.setTile(3, 5, newTile);
         assertEquals(newTile, worldDiff.getTile(3, 5));
 

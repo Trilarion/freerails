@@ -6,9 +6,7 @@ package jfreerails.client.view;
 
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
-
 import javax.swing.JLabel;
-
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.common.Money;
@@ -29,7 +27,8 @@ public class CashJLabel extends JLabel implements View {
         this.setText("         ");
     }
 
-    public void setup(ModelRoot model, ViewLists vl, ActionListener submitButtonCallBack) {
+    public void setup(ModelRoot model, ViewLists vl,
+        ActionListener submitButtonCallBack) {
         this.w = model.getWorld();
         principal = model.getPrincipal();
     }

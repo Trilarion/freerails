@@ -1,10 +1,12 @@
 package jfreerails.client.top;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -27,11 +29,10 @@ import jfreerails.client.renderer.ZoomedOutMapRenderer;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.CashJLabel;
 import jfreerails.client.view.DateJLabel;
-import jfreerails.client.view.DetailMapView;
+import jfreerails.client.view.DetailMapRenderer;
 import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.MainMapAndOverviewMapMediator;
 import jfreerails.client.view.MapViewJComponentConcrete;
-import jfreerails.client.view.MapViewMoveReceiver;
 import jfreerails.client.view.OverviewMapJComponent;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationPlacementCursor;
@@ -42,13 +43,16 @@ import jfreerails.move.Move;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.WorldMapListener;
 
 
 /**
  * Creates and wires up the GUI components.
  * @author Luke
  */
-public class GUIComponentFactoryImpl implements GUIComponentFactory {
+public class GUIComponentFactoryImpl implements GUIComponentFactory,
+    WorldMapListener {
+    private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
     private final ModelRoot modelRoot;
     private final ActionRoot actionRoot;
     private ServerControlModel sc;
@@ -71,7 +75,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
     private final MapViewJComponentConcrete mapViewJComponent;
     private final JScrollPane mainMapScrollPane1;
     private MapRenderer overviewMap;
-    private DetailMapView mainMap;
+    private DetailMapRenderer mainMap;
     private final Rectangle r = new Rectangle(10, 10, 10, 10);
     private final ClientJFrame clientJFrame;
     private UserMessageGenerator userMessageGenerator;
@@ -99,11 +103,40 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
         clientJFrame = new ClientJFrame(this);
         dialogueBoxController = new DialogueBoxController(clientJFrame,
                 modelRoot, actionRoot);
+
+        modelRoot.addSplitMoveReceiver(new MoveReceiver() {
+                public void processMove(Move move) {
+                    if (move instanceof ChangeGameSpeedMove) {
+                        ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove)move;
+
+                        for (Enumeration enum = speedActions.getActions();
+                                enum.hasMoreElements();) {
+                            Action action = (Action)enum.nextElement();
+                            String actionName = (String)action.getValue(Action.NAME);
+
+                            if (actionName.equals(actionRoot.getServerControls()
+                                                                .getGameSpeedDesc(speedMove.getNewSpeed()))) {
+                                speedActions.setSelectedItem(actionName);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            });
+        userMessageGenerator = new UserMessageGenerator(this.modelRoot,
+                this.actionRoot);
+        modelRoot.addCompleteMoveReceiver(userMessageGenerator);
     }
 
+    /** Called when a new game is started or a game is loaded.
+     * <p><b>Be extremely careful with the references of objects allocated in
+     * this method to avoid memory leaks - see bug 967677 (OutOfMemoryError after starting several new games). </b></p>
+     */
     public void setup(ViewLists vl, ReadOnlyWorld w) {
         viewLists = vl;
         world = w;
+        modelRoot.addMapListener(this);
 
         if (!vl.validate(world)) {
             throw new IllegalArgumentException("The specified" +
@@ -111,13 +144,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
         }
 
         //create the main and overview maps
-        mainMap = new DetailMapView(world, viewLists, modelRoot);
+        mainMap = new DetailMapRenderer(world, viewLists, modelRoot);
 
         Dimension maxSize = new Dimension(200, 200);
         overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
-
-        modelRoot.addMapListener(new MapViewMoveReceiver(mainMap));
-        modelRoot.addMapListener(new MapViewMoveReceiver(overviewMap));
 
         stationTypesPopup.setup(actionRoot, mainMap.getStationRadius());
 
@@ -145,37 +175,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
         StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(actionRoot,
                 mainMap.getStationRadius(), mapViewJComponent);
 
-        userMessageGenerator = new UserMessageGenerator(this.modelRoot,
-                this.actionRoot);
-        modelRoot.addCompleteMoveReceiver(userMessageGenerator);
-
         int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
 
         /* Set the selected game speed radio button.*/
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
         speedActions.setSelectedItem(actionName);
         userMessageGenerator.logSpeed();
-
-        modelRoot.addSplitMoveReceiver(new MoveReceiver() {
-                public void processMove(Move move) {
-                    if (move instanceof ChangeGameSpeedMove) {
-                        ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove)move;
-
-                        for (Enumeration enum = speedActions.getActions();
-                                enum.hasMoreElements();) {
-                            Action action = (Action)enum.nextElement();
-                            String actionName = (String)action.getValue(Action.NAME);
-
-                            if (actionName.equals(actionRoot.getServerControls()
-                                                                .getGameSpeedDesc(speedMove.getNewSpeed()))) {
-                                speedActions.setSelectedItem(actionName);
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            });
     }
 
     public JPanel createOverviewMap() {
@@ -408,5 +413,23 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory {
 
     public JLabel createDateJLabel() {
         return datejLabel;
+    }
+
+    /** Listens for changes on the map, for instance when track is built, and
+         * refreshes the map views.
+         */
+    public void tilesChanged(Rectangle tilesChanged) {
+        Point tile = new Point();
+        logger.fine("TilesChanged = " + tilesChanged);
+
+        for (tile.x = tilesChanged.x;
+                tile.x < (tilesChanged.x + tilesChanged.width); tile.x++) {
+            for (tile.y = tilesChanged.y;
+                    tile.y < (tilesChanged.y + tilesChanged.height);
+                    tile.y++) {
+                mainMap.refreshTile(tile.x, tile.y);
+                overviewMap.refreshTile(tile.x, tile.y);
+            }
+        }
     }
 }
