@@ -24,8 +24,9 @@ import jfreerails.world.top.World;
  *  after the change.</p>
  *<p>(6) The tryDoMove and tryUndoMove methods should test whether the move is valid
  * but leave the gameworld unchanged</p>
- *
- *
+ * @see MoveStatus
+ * @see jfreerails.world.top.World
+ * @see jfreerails.controller.PreMove
  * @author lindsal
  */
 public interface Move extends FreerailsSerializable {

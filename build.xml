@@ -3,8 +3,6 @@
 
 	<description>The aim of the FreeRails project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.</description>
 
-
-
 	<target name="init">
 		<tstamp />
 
@@ -17,9 +15,12 @@
 		<property location="www/javadoc" name="doc" />
 
 		<property location="temp" name="temp" />
+
+		<property location="datafiles" name="datafiles" />
+
 	</target>
 
-	<target depends="init" description="Make build directories" name="mkdirs">
+	<target name="mkdirs" depends="init" description="Make build directories">
 		<tstamp />
 
 		<mkdir dir="${build}" />
@@ -28,61 +29,76 @@
 
 		<mkdir dir="${dist}/latest" />
 
+
 		<mkdir dir="${doc}" />
 
 	</target>
 
-	<target depends="init" description="Copy data files" name="copydata">
-		<copy todir="${build}/jfreerails">
-			<fileset dir="${src}/jfreerails">
+	<target name="data2temp" depends="mkdirs" description="Copy data files to datafiles directory.">
+		<delete dir="${datafiles}" />
+		<mkdir dir="${datafiles}" />
+		<copy todir="${datafiles}/src">
+			<fileset dir="${src}">
 				<include name="**/*.xml" />
-
 				<include name="**/*.png" />
-
 				<include name="**/*.jpg" />
-
 				<include name="**/*.dtd" />
-
 				<include name="**/*.gif" />
-				<include name="client/view/game_controls.html" />
 				<include name="**/*.htm" />
+				<include name="**/*.html" />
 				<include name="**/*.wav" />
 			</fileset>
 		</copy>
 
-		<copy todir="${build}">
+		<copy todir="${datafiles}/www">
+			<fileset dir="www">
+				<include name="**/*.png" />
+				<include name="**/*.jnlp" />
+				<include name="**/*.html" />
+				<exclude name="javadoc/**/*" />
+			</fileset>
+		</copy>
+
+		<copy todir="${datafiles}">
 			<fileset dir=".">
 				<include name="README" />
-
 				<include name="ChangeLog" />
-
 				<include name="logging.properties" />
 			</fileset>
 		</copy>
 
-		<replace file="${build}/README" token="@version@" value="${DSTAMP}-${TSTAMP}" />
-		<replace file="${build}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		<replace file="${datafiles}/README" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		<replace file="${datafiles}/src/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
 
 	</target>
 
-	<target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
-		<javac destdir="${build}" fork="true" source="1.5" srcdir="${src}">
+	<target name="data2build" depends="data2temp" description="Copy data files from datafiles directory to build directory.">
+		<copy todir="${build}/jfreerails">
+			<fileset dir="${datafiles}/src/jfreerails">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+	
+
+	<target name="compile" depends="data2build" description="Build everything except JUnit test-classes">
+		<javac destdir="${build}" debug="true" fork="true" source="1.5" srcdir="${src}">
 			<exclude name="**/*Test.java" />
 			<exclude name="**/*TestCase.java" />
 		</javac>
 	</target>
 
-	<target depends="copydata" description="Build everything including JUnit    test-classes. Include debugging symbols" name="debugcompile">
-		<javac debug="true" destdir="${build}" fork="true" source="1.5" srcdir="${src}" classpath="jars/junit.jar"/>
+	<target name="debugcompile" depends="data2build" description="Build everything including JUnit    test-classes. Include debugging symbols">
+		<javac debug="true" destdir="${build}" fork="true" source="1.5" srcdir="${src}" classpath="jars/junit.jar" />
 	</target>
 
-	<target depends="debugcompile" description="Run all junit tests" name="runtests">
+	<target name="tests" depends="debugcompile" description="Run all junit tests">
 		<junit haltonfailure="yes" printsummary="yes">
 			<classpath>
 				<pathelement location="${build}" />
 
 				<pathelement path="${java.class.path}" />
-				<pathelement path="jars/junit.jar"/>
+				<pathelement path="jars/junit.jar" />
 			</classpath>
 
 			<formatter type="brief" usefile="no" />
@@ -95,8 +111,8 @@
 		</junit>
 	</target>
 
-	<target depends="compile, mkdirs" description="Generate binary distribution" name="bindist">
-		<property name="bin.dist" value="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" />
+	<target name="bindist" depends="compile, mkdirs" description="Generate binary distribution">
+		<property name="bin.dist" value="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
 		<jar basedir="${build}" destfile="${bin.dist}">
 			<manifest>
 				<attribute name="Main-Class" value="jfreerails.launcher.Launcher" />
@@ -104,49 +120,36 @@
 		</jar>
 		<!-- Replace current latest with the jar file we have just created. -->
 		<delete>
-			<fileset dir="${dist}/latest/" includes="jFreeRails-*-bin.jar" />
+			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />
+			<fileset dir="${dist}/latest/" includes="jfreerails-*.zip" />
 		</delete>
-		<copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" todir="${dist}/latest" />
+		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" todir="${dist}/latest" />
 		<copy file="${bin.dist}" tofile="www/signed_jfreerails.jar" />
 	</target>
 
-	<target depends="mkdirs" description="Generate source distribution" name="srcdist">
-		<jar basedir="." destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar">
+	<target name="srcdist" depends="data2temp" description="Generate source distribution">
+		<zip basedir="." destfile="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-src.zip">
 			<include name="src/**/*.java" />
-
-			<include name="src/**/*.html" />
 
 			<include name="src/**/*.form" />
 
-			<include name="build.xml" />
+			<include name="*.xml" />
 
-			<include name="src/jfreerails/**/*.xml" />
 
-			<include name="src/**/*.png" />
+			<fileset dir="${datafiles}">
+				<include name="**/*" />
+			</fileset>
 
-			<include name="src/**/*.jpg" />
-
-			<include name="src/**/*.wav" />
-
-			<include name="src/**/*.dtd" />
-
-			<include name="src/**/*.gif" />
-
-			<include name="README" />
-
-			<include name="TODO" />
-
-			<include name="ChangeLog" />
-		</jar>
+		</zip>
 
 		<!-- Replace current latest with the jar file we have just created. -->
 		<delete>
-			<fileset dir="${dist}/latest/" includes="jFreeRails-*-src.jar" />
+			<fileset dir="${dist}/latest/" includes="jfreerails-*-src.zip" />
 		</delete>
-		<copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-src.jar" todir="${dist}/latest" />
+		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-src.zip" todir="${dist}/latest" />
 	</target>
 
-	<target depends="init" description="Clean up build and distribution" name="clean">
+	<target name="clean" depends="init" description="Clean up build and distribution">
 		<delete dir="${build}" />
 
 		<delete dir="${dist}/latest" />
@@ -154,6 +157,8 @@
 		<delete dir="${doc}" />
 
 		<delete dir="${temp}" />
+
+		<delete dir="${datafiles}" />
 
 		<!-- also delete any .class etc under the src directory -->
 		<delete>
@@ -167,7 +172,7 @@
 		</delete>
 	</target>
 
-	<target depends="mkdirs, compile" description="Test run based on compile" name="run">
+	<target name="run" depends="mkdirs, compile" description="Test run based on compile">
 		<java classname="jfreerails.launcher.Launcher" fork="true">
 			<classpath>
 				<pathelement path="${build}" />
@@ -177,12 +182,12 @@
 		</java>
 	</target>
 
-	<target depends="bindist" description="Test run based on bindist" name="rundist">
-		<java fork="true" jar="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-bin.jar" />
+	<target name="rundist" depends="bindist" description="Test run based on bindist">
+		<java fork="true" jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
 	</target>
 
-	<target depends="mkdirs" name="javadoc" description="Generate javadoc">
-		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
+	<target name="javadoc" depends="mkdirs" description="Generate javadoc">
+		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}-${TSTAMP}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />
 				<exclude name="**/*Test.java" />
@@ -193,50 +198,50 @@
 			<fileset dir="${src}">
 				<include name="**/*.html" />
 				<include name="**/*.htm" />
-				
+
 				<!--Copy the images used by the functional specification but don't copy all the tile graphics etc.-->
 				<include name="docs/*.png" />
-				
+
 
 				<!--Don't copy these since the javadoc tool processes them -->
 				<exclude name="**/overview.html" />
 				<exclude name="**/package.html" />
 			</fileset>
 		</copy>
+		<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
 	</target>
 
 
-	<target depends="javadoc" description="Jar up javadoc" name="jar_doc">
-		<jar basedir="www" destfile="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar">
+	<target name="zip_doc" depends="javadoc" description="zip up javadoc">
+		<zip basedir="www" destfile="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-javadoc.zip">
 			<include name="javadoc/**/*" />
-		</jar>
-		<!-- Replace current latest with the jar file we have just created. -->
+		</zip>
+		<!-- Replace current latest with the zip file we have just created. -->
 		<delete>
-			<fileset dir="${dist}/latest/" includes="jFreeRails-*-javadoc.jar" />
+			<fileset dir="${dist}/latest/" includes="jfreerails-*-javadoc.zip" />
 		</delete>
-		<copy file="${dist}/lib/jFreeRails-${DSTAMP}-${TSTAMP}-javadoc.jar" todir="${dist}/latest" />
+		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-javadoc.zip" todir="${dist}/latest" />
 	</target>
 
-	<target depends="jar_doc, bindist, srcdist" description="Create binary, source, and javadoc jars" name="all_dist">
+	<target name="all_dist" depends="zip_doc, bindist, srcdist" description="Create binary jar, and source and javadoc zips">
 	</target>
 
 	<!-- Requires that NetComponents.jar is in ant/lib -->
-	<target depends="all_dist" description="Upload source, binary, and javadocs jar files to sourcforge" name="upload">
+	<target name="upload" depends="all_dist" description="Upload source, binary, and javadocs jar files to sourcforge">
 		<ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous">
 			<fileset dir="${dist}/latest">
 				<include name="*.jar" />
+				<include name="*.zip" />
 			</fileset>
 		</ftp>
 	</target>
-
-
 
 
 	<target name="zip_website" depends="signjar">
 		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz" tarfile="website.tar.gz" />
 	</target>
 
-	<target name="deploy_website" depends="zip_website" description="Upload webiste to sourceforge">
+	<target name="deploy_website" depends="zip_website" description="Upload website to sourceforge">
 		<echo message="Usage: ant -Du=me -Dp=mypassword deploy_website" />
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir=".">
