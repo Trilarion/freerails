@@ -66,7 +66,7 @@ public class InetConnection implements ConnectionToServer {
         System.out.println("Server listening for new connections on port " +
             port);
         serverSocket = new ServerSocket();
-        serverSocket.setReuseAddress(true);
+        serverSocket.setReuseAddress(false);
         serverSocket.bind(new InetSocketAddress(port));
         setState(ConnectionState.WAITING);
     }

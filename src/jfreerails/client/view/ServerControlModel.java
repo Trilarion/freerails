@@ -74,20 +74,21 @@ public class ServerControlModel {
     private class SetTargetTicksPerSecondAction extends AbstractAction {
         protected int speed;
 
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {        	               	
             if (serverInterface != null) {
-                if (speed == 0) // pausing/unpausing
-                  serverInterface.setTargetTicksPerSecond(-1* serverInterface.getTargetTicksPerSecond());
-                else
+                
+				if (speed == 0){ // pausing/unpausing
+				 int newSpeed = -1* serverInterface.getTargetTicksPerSecond();				
+                  serverInterface.setTargetTicksPerSecond(newSpeed);
+				}else{
                   serverInterface.setTargetTicksPerSecond(speed);
+				}
             }
         }
 
 
         public SetTargetTicksPerSecondAction(String name, int speed) {
-          this(name, speed, KeyEvent.VK_UNDEFINED); // by MystiqueAgent: + commented next 2 lines
-//          putValue(NAME, name);
-//          this.speed = speed;
+          this(name, speed, KeyEvent.VK_UNDEFINED);
         }
 
         /**
@@ -105,34 +106,22 @@ public class ServerControlModel {
             this.speed = speed;
             putValue(ACCELERATOR_KEY,
                 KeyStroke.getKeyStroke(keyEvent, 0));
-        }
-
-        public boolean equals(Object object) {
-          if (super.equals(object)) return true;
-          if (object instanceof Integer) {
-            Integer sp = (Integer) object;
-            return (speed == sp.intValue());
-          }
-          return false;
-        }
-
+        }      
     }
 
-/* PAUSEDCheckBox
-        private Action pauseAction = new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P);
-*/
 
-    // Should be sorted   
-    private ActionAdapter targetTicksPerSecondActions = new ActionAdapter(new Action[] {
-                new SetTargetTicksPerSecondAction( "Pause" , 0, KeyEvent.VK_P),      // by MystiqueAgent: added keyEvent parameter
-                new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),      // by MystiqueAgent: added keyEvent parameter
-                new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),  // by MystiqueAgent: added keyEvent parameter
-                new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3),      // by MystiqueAgent: added keyEvent parameter
+    private SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[] {
+            new SetTargetTicksPerSecondAction( "Pause" , 0, KeyEvent.VK_P),      // by MystiqueAgent: added keyEvent parameter
+            new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),      // by MystiqueAgent: added keyEvent parameter
+            new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),  // by MystiqueAgent: added keyEvent parameter
+            new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3),      // by MystiqueAgent: added keyEvent parameter
 
 
-            /* TODO one day we will make turbo faster :) */
-            new SetTargetTicksPerSecondAction("Turbo", 50)
-            }, 0);
+        /* TODO one day we will make turbo faster :) */
+        new SetTargetTicksPerSecondAction("Turbo", 50)
+        };
+  
+    private ActionAdapter targetTicksPerSecondActions = new ActionAdapter(speedActions, 0);
 
     public void setServerControlInterface(ServerControlInterface i) {
         serverInterface = i;
@@ -141,9 +130,6 @@ public class ServerControlModel {
         loadGameAction.setEnabled(enabled);
         saveGameAction.setEnabled(enabled);
 
-/* PAUSED  CheckBox
-        pauseAction.setEnabled(enabled);
-*/
         Enumeration e = targetTicksPerSecondActions.getActions();
         targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
 
@@ -213,25 +199,14 @@ public class ServerControlModel {
      */
     public String getGameSpeedDesc(int tickPerSecond) {
       SetTargetTicksPerSecondAction action = null;
-      for (Enumeration enum = targetTicksPerSecondActions.getActions(); enum.hasMoreElements(); ) {
-        action = (SetTargetTicksPerSecondAction)enum.nextElement();
-        if (action.speed >= tickPerSecond)
-          return (String) action.getValue(Action.NAME);
-      }
+      for(int i = 0; i < speedActions.length; i++){
+      	action = speedActions[i];
+      	if(action.speed >=tickPerSecond)
+      		break;
+      }    
       return (String) action.getValue(Action.NAME);
     }
-
-
-    /**
-     *
-     * @return an action to pause/unpase the game
-     */
-/* PAUSED CheckBox
-    public Action getPauseAction() {
-        return pauseAction;
-    }
-*/
-
+   
     /**
      * When calling this action, set the action command string to the desired
      * map name, or call the appropriate selectMapAction.

@@ -103,19 +103,29 @@ public class UserMessageGenerator implements MoveReceiver {
                 modelRoot.getUserMessageLogger().println(message);
             }
         } else if (move instanceof ChangeGameSpeedMove) {
-            ReadOnlyWorld world = modelRoot.getWorld();
-            int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
+            logSpeed();
+        }
+    }
 
-            if (gameSpeed <= 0) {
-                modelRoot.getUserMessageLogger().showMessage("Game is paused.");
-            } else {
-                modelRoot.getUserMessageLogger().hideMessage();
+    public void logSpeed() {
+        ReadOnlyWorld world = modelRoot.getWorld();
+        int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
 
-                String gameSpeedDesc = modelRoot.getServerControls()
-                                                .getGameSpeedDesc(gameSpeed);
-                modelRoot.getUserMessageLogger().println("Game speed: " +
-                    gameSpeedDesc);
-            }
+        if (gameSpeed <= 0) {
+            modelRoot.getUserMessageLogger().showMessage("Game is paused.");
+
+            /* Also hide any other message.  It looks silly if it says
+             * "Game is paused." and "Game speed: fast" on screen at the same
+             * time!
+             */
+            modelRoot.getUserMessageLogger().println("");
+        } else {
+            modelRoot.getUserMessageLogger().hideMessage();
+
+            String gameSpeedDesc = modelRoot.getServerControls()
+                                            .getGameSpeedDesc(gameSpeed);
+            modelRoot.getUserMessageLogger().println("Game speed: " +
+                gameSpeedDesc);
         }
     }
 }

@@ -46,7 +46,6 @@ import jfreerails.world.common.GameSpeed;
 import jfreerails.world.top.ITEM;
 
 
-//PAUSE Check Box   import javax.swing.JCheckBoxMenuItem;
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
     ModelRootListener {
     private ModelRoot modelRoot;
@@ -125,9 +124,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         MoveReceiver mainmapMoveReceiver = new MapViewMoveReceiver(overviewMap);
         moveFork.addSplitMoveReceiver(mainmapMoveReceiver);
 
-        //Never read!
-        //StationBuilder sb = new StationBuilder(receiver, w,
-        //        modelRoot.getPlayerPrincipal());
         stationTypesPopup.setup(modelRoot, mainMap.getStationRadius());
 
         mapViewJComponent.setup(mainMap, w);
@@ -164,31 +160,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         int gameSpeed = ((GameSpeed)world.get(ITEM.GAME_SPEED)).getSpeed();
 
-        // selecting action radio button
-        for (Enumeration enum = speedActions.getActions();
-                enum.hasMoreElements();) {
-            Action action = (Action)enum.nextElement();
-
-            if (action.equals(new Integer(gameSpeed))) {
-                String actionName = (String)action.getValue(Action.NAME);
-                speedActions.setSelectedItem(actionName);
-            }
-        }
-
-        /**
-         *  @todo FIX ME   -- is there better possibility to pritne the same text as in UserMessageGenerator.processMove ?
-         *                    maybe: to add logSpeed(int) into MessageLogger ?
-         */
-        if (gameSpeed <= 0) {
-            modelRoot.getUserMessageLogger().showMessage("Game is paused.");
-        } else {
-            modelRoot.getUserMessageLogger().hideMessage();
-
-            String gameSpeedDesc = modelRoot.getServerControls()
-                                            .getGameSpeedDesc(gameSpeed);
-            modelRoot.getUserMessageLogger().println("Game speed: " +
-                gameSpeedDesc);
-        }
+        /* Set the selected game speed radio button.*/
+        String actionName = modelRoot.getServerControls().getGameSpeedDesc(gameSpeed);
+        speedActions.setSelectedItem(actionName);
+        userMessageGenerator.logSpeed();
 
         moveFork.addSplitMoveReceiver(new MoveReceiver() {
                 public void processMove(Move move) {
@@ -322,11 +297,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         //Set up the gamespeed submenu.
         JMenu gameSpeedSubMenu = new JMenu("Game Speed");
 
-        /* PAUSE CheckBox
-                final JCheckBoxMenuItem speedMI = new JCheckBoxMenuItem(sc.getPauseAction());
-        //        mi.setModel((ButtonModel)buttonModels.nextElement());
-                gameSpeedSubMenu.add(speedMI);
-        */
         ButtonGroup group = new ButtonGroup();
 
         speedActions = sc.getSetTargetTickPerSecondActions();
@@ -337,17 +307,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         while (buttonModels.hasMoreElements()) {
             JRadioButtonMenuItem mi = new JRadioButtonMenuItem((Action)actions.nextElement());
             mi.setModel((ButtonModel)buttonModels.nextElement());
-
-            /* PAUSE CheckBox
-                        mi.addActionListener(new ActionListener() {
-                          public void actionPerformed(ActionEvent e) {
-                            if (speedMI.isSelected()) {
-                              // paused => unchecking the pause checkBox
-                              speedMI.setSelected(false);
-                            }
-                          }
-                        });
-            */
             group.add(mi);
             gameSpeedSubMenu.add(mi);
         }

@@ -109,12 +109,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
         }
     }
 
-    public synchronized void undoLastMove() {
-        if (uncommittedReceiver != null) {
-            uncommittedReceiver.undoLastMove();
-        }
-    }
-
     public synchronized MoveStatus tryDoMove(Move move) {
         /* TODO
          * return move.tryDoMove(world, move.getPrincipal());

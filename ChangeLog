@@ -1,3 +1,8 @@
+Apr 9, 2004 11:42:12 PM Luke
+	o Fixed bug 891452 (2 servers same port, no error message) 
+	o Fixed bug 868555 (Undo move by pressing backspace doesn't work)
+	o Fix for bug 910132 (Too easy to make money!)  
+	o More work on bug 910902 (Game speed not stored on world object)
 Apr 8, 2004 10:52:32 PM Luke
 	o Added website to CVS
 	o Added website deployment targets to build.xml

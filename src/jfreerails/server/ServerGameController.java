@@ -107,13 +107,13 @@ class ServerGameController implements ServerControlInterface,
      * this game to the new one.
      */
     public void loadGame() {
-        int ticksPerSec = gameEngine.getTargetTicksPerSecond();
-
+        /* Note this method no longer sets the target ticks per second.
+             * Instead, the new game has whatever game speed was set when
+             * the game was saved.
+             */
         /* open a new controller */
         ServerGameEngine newGame = ServerGameEngine.loadGame();
-
         transferClients(newGame);
-        setTargetTicksPerSecond(ticksPerSec);
     }
 
     public void saveGame() {

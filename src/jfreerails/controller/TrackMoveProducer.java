@@ -1,9 +1,11 @@
 package jfreerails.controller;
 
 import java.awt.Point;
+import java.util.Stack;
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.move.UndoMove;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -18,9 +20,9 @@ final public class TrackMoveProducer {
     private ReadOnlyWorld w;
 
     /**
-     * The principal on behalf of which this TrackMoveProducer is producing
-     * moves
-     */
+ * The principal on behalf of which this TrackMoveProducer is producing
+ * moves
+ */
     private FreerailsPrincipal principal;
     private UntriedMoveReceiver moveTester;
     public final static int BUILD_TRACK = 1;
@@ -30,10 +32,11 @@ final public class TrackMoveProducer {
     /* Don't build any track */
     public final static int IGNORE_TRACK = 4;
     private int trackBuilderMode = BUILD_TRACK;
+    public Stack moveStack = new Stack();
 
     /**
-     * This generates the transactions - the charge - for the track being built.
-     */
+ * This generates the transactions - the charge - for the track being built.
+ */
     private TrackMoveTransactionsGenerator transactionsGenerator;
 
     public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
@@ -61,17 +64,16 @@ final public class TrackMoveProducer {
             break;
         }
 
-        case IGNORE_TRACK:return MoveStatus.MOVE_OK;
+        case IGNORE_TRACK:
+            return MoveStatus.MOVE_OK;
 
-        default:throw new IllegalArgumentException(String.valueOf(
-                    trackBuilderMode));
+        default:
+            throw new IllegalArgumentException(String.valueOf(trackBuilderMode));
         }
 
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-        MoveStatus ms = moveTester.tryDoMove(moveAndTransaction);
-        moveTester.processMove(moveAndTransaction);
 
-        return ms;
+        return sendMove(moveAndTransaction);
     }
 
     public MoveStatus upgradeTrack(Point point) {
@@ -84,12 +86,12 @@ final public class TrackMoveProducer {
     }
 
     /**
-     * Sets the current track rule. E.g. there are different rules governing the
-     * track-configurations that are legal for double and single track.
-     *
-     * @param trackRuleNumber
-     *            The new trackRule value
-     */
+ * Sets the current track rule. E.g. there are different rules governing the
+ * track-configurations that are legal for double and single track.
+ *
+ * @param trackRuleNumber
+ *            The new trackRule value
+ */
     public void setTrackRule(int trackRuleNumber) {
         this.trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, trackRuleNumber);
     }
@@ -110,9 +112,9 @@ final public class TrackMoveProducer {
     }
 
     /**
-     * @param p
-     *            the principal which this TrackMoveProducer generates moves for
-     */
+ * @param p
+ *            the principal which this TrackMoveProducer generates moves for
+ */
     public TrackMoveProducer(ReadOnlyWorld world,
         UntriedMoveReceiver moveReceiver, FreerailsPrincipal p) {
         if (null == world || null == moveReceiver) {
@@ -139,12 +141,40 @@ final public class TrackMoveProducer {
         }
 
         Move move = UpgradeTrackMove.generateMove(before, after, point);
-        moveTester.processMove(transactionsGenerator.addTransactions(move));
+        Move move2 = transactionsGenerator.addTransactions(move);
 
-        return moveTester.tryDoMove(move);
+        return sendMove(move2);
+    }
+
+    public MoveStatus undoLastTrackMove() {
+        if (moveStack.size() > 0) {
+            Move m = (Move)moveStack.pop();
+            UndoMove undoMove = new UndoMove(m);
+            MoveStatus ms = moveTester.tryDoMove(undoMove);
+            moveTester.processMove(undoMove);
+
+            if (!ms.ok) {
+                return MoveStatus.moveFailed("Can not undo building track!");
+            } else {
+                return ms;
+            }
+        } else {
+            return MoveStatus.moveFailed("No track to undo building!");
+        }
     }
 
     public int getTrackBuilderMode() {
         return trackBuilderMode;
+    }
+
+    private MoveStatus sendMove(Move m) {
+        MoveStatus ms = moveTester.tryDoMove(m);
+
+        if (ms.isOk()) {
+            moveTester.processMove(m);
+            moveStack.add(m);
+        }
+
+        return ms;
     }
 }

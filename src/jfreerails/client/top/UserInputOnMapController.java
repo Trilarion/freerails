@@ -20,7 +20,6 @@ public class UserInputOnMapController implements CursorEventListener {
     private TrackMoveProducer trackBuilder;
     private MapCursor cursor;
     private DialogueBoxController dialogueBoxController;
-    private UncommittedMoveReceiver trackMoveExecutor;
     private ModelRoot modelRoot;
 
     public UserInputOnMapController(ModelRoot mr) {
@@ -54,7 +53,6 @@ public class UserInputOnMapController implements CursorEventListener {
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
         StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
         UncommittedMoveReceiver tx) {
-        trackMoveExecutor = tx;
         this.dialogueBoxController = dbc;
         this.mapView = mv;
         this.stationTypesPopup = stPopup;
@@ -100,7 +98,12 @@ public class UserInputOnMapController implements CursorEventListener {
         }
 
         case KeyEvent.VK_BACK_SPACE:
-            trackMoveExecutor.undoLastMove();
+
+            MoveStatus ms = trackBuilder.undoLastTrackMove();
+
+            if (!ms.isOk()) {
+                cursor.setMessage(ms.message);
+            }
 
             break;
 

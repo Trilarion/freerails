@@ -45,7 +45,7 @@ class Dispatcher implements Runnable {
 
                     break;
                 } else {
-                    System.out.println("Received garbage whilst loading world:" +
+                    System.err.println("Received garbage whilst loading world:" +
                         o);
                 }
             }

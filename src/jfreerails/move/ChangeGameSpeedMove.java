@@ -52,7 +52,6 @@ public class ChangeGameSpeedMove implements Move {
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
         MoveStatus status = tryDoMove(w, p);
 
-        //System.out.println(w + ": " + toString());
         if (status.ok) {
             w.set(ITEM.GAME_SPEED, newSpeed);
         }

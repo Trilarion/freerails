@@ -2,7 +2,6 @@ package jfreerails.client.top;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import jfreerails.client.view.ModelRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.SychronizedQueue;
@@ -10,7 +9,7 @@ import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.RejectedMove;
-import jfreerails.move.UndoneMove;
+import jfreerails.move.UndoMove;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.Player;
@@ -114,7 +113,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                     System.err.println("undoing " + attempted.toString());
                     attempted.undoMove(world, Player.AUTHORITATIVE);
                     rejectedMoves.remove(i);
-                    forwardMove(new UndoneMove(attempted), ms);
+                    forwardMove(new UndoMove(attempted), ms);
                     n++;
                 }
             }
@@ -198,18 +197,6 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                 }
 
                 return;
-            }
-        }
-
-        public synchronized void undoLastMove() {
-            if (moveReceiver != null) {
-                try {
-                    pendingMoves.removeLast();
-                } catch (NoSuchElementException e) {
-                    // ignore
-                }
-
-                moveReceiver.undoLastMove();
             }
         }
 

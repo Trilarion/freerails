@@ -6,7 +6,7 @@ import jfreerails.move.ChangeItemInListMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.RemoveItemFromListMove;
-import jfreerails.move.UndoneMove;
+import jfreerails.move.UndoMove;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
@@ -72,6 +72,11 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     private void splitMove(Move move) {
+        if (move instanceof UndoMove) {
+            UndoMove undoneMove = (UndoMove)move;
+            move = undoneMove.getUndoneMove();
+        }
+
         if (move instanceof CompositeMove) {
             Move[] moves = ((CompositeMove)move).getMoves();
 
@@ -93,8 +98,8 @@ final public class MoveChainFork implements MoveReceiver {
             } else if (move instanceof RemoveItemFromListMove) {
                 RemoveItemFromListMove mm = (RemoveItemFromListMove)move;
                 sendItemRemoved(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof UndoneMove) {
-                Move m = ((UndoneMove)move).getUndoneMove();
+            } else if (move instanceof UndoMove) {
+                Move m = ((UndoMove)move).getUndoneMove();
 
                 if (m instanceof AddItemToListMove) {
                     AddItemToListMove mm = (AddItemToListMove)m;
