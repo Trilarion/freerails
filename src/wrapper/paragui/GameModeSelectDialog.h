@@ -12,8 +12,9 @@
 #include <pgwidget.h>
 #include <pgwindow.h>
 #include <pgrect.h>
+#include <pgrectlist.h>
 
-class GameModeSelectDialog: public BaseDialog {
+class GameModeSelectDialog: public PG_Window {
 
   public:
     /**  */
@@ -22,19 +23,15 @@ class GameModeSelectDialog: public BaseDialog {
     ~GameModeSelectDialog();
 
     int show();
-    void setButtonflag(int i) { buttonflag=i;};    
-
-    PARAGUI_CALLBACK(handle_dialog_exit) {
-      PG_Button* but = (PG_Button*)clientdata;
-      buttonflag = id;
-      return true;
-    }
+    bool eventButtonClick(int id, PG_Widget* widget);
 
   private:
 
-    PG_Widget* widget;
     int buttonflag;
     int WaitForEvent();
+    PG_Button* single;
+    PG_Button* multi;
+    PG_Button* quit;
 };
 
 #endif

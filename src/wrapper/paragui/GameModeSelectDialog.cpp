@@ -4,42 +4,39 @@
 
 #include "GameModeSelectDialog.h"
 
-PARAGUI_CALLBACK(handle_dialog_close) {
-  GameModeSelectDialog* dialog = (GameModeSelectDialog*)clientdata;
-  dialog->setButtonflag(-1);
-  return true;
-}
-
-GameModeSelectDialog::GameModeSelectDialog(GameMainWindow* parent, int x, int y, int w, int h, char* titel) {
-  widget=new PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,true);
-  widget->SetEventCallback(MSG_WINDOWCLOSE,handle_dialog_close,this);
+GameModeSelectDialog::GameModeSelectDialog(GameMainWindow* parent, int x, int y, int w, int h, char* titel):
+PG_Window(parent->getWidget(), PG_Rect(x,y,w,h),titel,0, "Window") {
+  single=new PG_Button(this, 1, PG_Rect(10,100,280,20), "Single Player Mode");
+  multi=new PG_Button(this, 2, PG_Rect(10,130,280,20), "Multi Player Mode");
+  quit=new PG_Button(this, -1, PG_Rect(10,170,280,20), "Quit Game");
+  buttonflag=0;
 }
 
 GameModeSelectDialog::~GameModeSelectDialog() {
-  if (widget)
-    delete widget;
+    delete single;
+    delete multi;
+    delete quit;
 }
 
 int GameModeSelectDialog::show() {
 
   buttonflag=0;
 
-  PG_Button single(widget, 1, PG_Rect(10,130,280,40), "Single Player Mode");
-  single.SetEventCallback(MSG_BUTTONCLICK, handle_dialog_close, this);
-  single.Show();
-
-  PG_Button multi(widget, 2, PG_Rect(10,180,280,40), "Multi Player Mode");
-  multi.SetEventCallback(MSG_BUTTONCLICK, handle_dialog_close, this);
-  multi.Show();
-
-  PG_Button quit(widget, -1, PG_Rect(10,250,280,40), "Quit Game");
-  quit.SetEventCallback(MSG_BUTTONCLICK, handle_dialog_close, this);
-  quit.Show();
-
-  widget->Show();
+  Show();
   int i = WaitForEvent();
-  widget->Hide();
+  Hide();
   return i;
+}
+
+//Event?
+bool GameModeSelectDialog::eventButtonClick(int id, PG_Widget* widget) {
+	//Button clicked?
+	if(widget==single || widget==multi || widget==quit) {
+		//Set Buttonflag to ButtonID
+		buttonflag=id;
+		return true;
+	}
+	return false;
 }
 
 int GameModeSelectDialog::WaitForEvent() {
@@ -49,7 +46,15 @@ int GameModeSelectDialog::WaitForEvent() {
   
   while(!buttonflag){
     SDL_WaitEvent(&event);
-    widget->ProcessEvent(&event);
+    PG_RectList* childlist = GetChildList();
+    if(childlist) {
+      PG_RectList::iterator i = childlist->begin();
+      while(i != childlist->end()) {
+        (*i)->ProcessEvent(&event);
+        i++;
+      }
+    }
+    Update();
   }
   
   help = buttonflag;

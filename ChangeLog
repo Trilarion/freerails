@@ -1,3 +1,5 @@
+Mon Aug 27 21:30:00 2001  Alexander Opitz <opi@sputnik.de>:
+o clean up in paragui the GameModeSelectDialog()
 Fri Aug 24 23:30:00 2001  Alexander Opitz <opi@sputnik.de>:
 o Let paragui version work again (after changes cause of Qt version
 o panel implementation comes in the next days

@@ -29,20 +29,27 @@ GameApplication::GameApplication(int argc, char *argv[]):BaseApplication(argc, a
 }
 
 GameApplication::~GameApplication() {
-    delete pGlobalApp;
-    if (splash) delete splash;
+    if (pGlobalApp) delete pGlobalApp;
 }
 
 int GameApplication::run() {
 
+int result;
   showSplash();
-  sleep(1);
   setCaption("FreeRails");
+  sleep(1);
   hideSplash();
-  GameMainWindow mw( 0, 0, 800, 600);
-  GameModeSelectDialog dialog(&mw, 250, 150, 300, 200, "Choose game mode");
-  pGlobalApp->Run();
-  return 0;
+  while (1) {
+    GameMainWindow mw( 0, 0, 800, 600);
+    GameModeSelectDialog dialog(&mw, 250, 150, 300, 200, "Choose game mode");
+    result=dialog.show();
+    printf("Result=%i\n",result);
+    if (result==-1) {
+      pGlobalApp->Quit();
+      return 0;
+    }
+    pGlobalApp->Run();
+  }
 }
 
 bool GameApplication::initScreen(int x, int y, int w, int h) {
