@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -17,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
@@ -33,6 +35,7 @@ import jfreerails.client.view.ModelRoot;
 import jfreerails.client.view.ModelRootListener;
 import jfreerails.client.view.OverviewMapJComponent;
 import jfreerails.client.view.ServerControlModel;
+import jfreerails.client.view.StationPlacementCursor;
 import jfreerails.client.view.TrainsJTabPane;
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.MoveReceiver;
@@ -147,9 +150,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         dialogueBoxController.setup(world, vl, modelRoot.getMoveChainFork(),
             modelRoot.getReceiver(), mapCursor);
 
-        //Never read!
-        //StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(modelRoot,
-        //        mainMap.getStationRadius(), mapViewJComponent);
+        StationPlacementCursor stationPlacementCursor = new StationPlacementCursor(modelRoot,
+                mainMap.getStationRadius(), mapViewJComponent);
         modelRoot.setUserMessageLogger(this.mapViewJComponent);
 
         userMessageGenerator = new UserMessageGenerator(this.modelRoot);
