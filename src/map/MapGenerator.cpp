@@ -40,8 +40,9 @@ void MapGenerator::generateHeight(WorldMap* worldMap)
 bool MapGenerator::generateStartPoint(WorldMap* worldMap, int* x, int* y)
 {
   for (int i=0; i < 10; i++)
-  { *x=(int) (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
-    *y=(int) (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
+  {
+    *x = int (((double)worldMap->getWidth())*rand()/(RAND_MAX+1.0));
+    *y = int (((double)worldMap->getHeight())*rand()/(RAND_MAX+1.0));
     if (worldMap->getMapField(*x,*y)->getType()==MapField::grass)
     {
       return true;

@@ -56,11 +56,8 @@ class GameApplication : public BaseApplication
     void setMainWindow(GameMainWindow* mw);
 
   private:
-    GameMainWindow* mW;
     QApplication* application;
     QLabel* splash;
-
-    Engine *engine;
 };
 
 #endif

@@ -25,10 +25,19 @@ MyGameApplication::~MyGameApplication() {
 
 }
 
-void MyGameApplication::initSingleGame() {
+void MyGameApplication::initSingleGame(const std::string name, int playFieldWidth, int playFieldHeight, int numberOfAi)
+{
 //  cerr << "SingleGame" << endl;
-  playerSelf=new Player(std::string("me"),Player::HUMAN);
-  worldMap = MapGenerator().generateWorld(30,30);
+  playerSelf = new Player(name, Player::HUMAN);
+
+  if(playFieldWidth == -1)
+  {
+    // we will play a scenario
+  }
+  else
+  {
+    worldMap = MapGenerator().generateWorld(playFieldWidth, playFieldHeight);
+  }
 }
 
 void MyGameApplication::initServerGame() {

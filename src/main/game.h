@@ -27,8 +27,13 @@ public:
 
     /**  */
     ~MyGameApplication();
-    
-    void initSingleGame();
+
+    // definition of a single game    
+    // for future use:
+    //     numberOfAi: select the number of your Ai's
+    //     playFieldWidth = -1 mean we will play a scenario,
+    //     where playFieldHeight is the number of scenario
+    void initSingleGame(const std::string name, int playFieldWidth, int playFieldHeight, int numberOfAi);
     void initClientGame();
     void initServerGame();
 

@@ -84,7 +84,7 @@ int result;
     // Ask for Playername
     // get Player Name
     if (result==1) {  // Single Player
-      initSingleGame();
+      initSingleGame(std::string("me"), 30, 30, 0);
       engine=new Engine(worldMap, playerSelf);
       mapView=new GameMapView(&mw, 0, 0, 650, 600 , engine);
       panel=new GamePanel(&mw, 650, 0, 150, 600, engine, mapView);

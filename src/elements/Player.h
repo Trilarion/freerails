@@ -11,35 +11,36 @@
 #include "GameElement.h"
 #include "Serializer.h"
 
-class Player : public GameElement {
-public:
+class Player : public GameElement
+{
+  public:
 
-  enum Type {NATUR=0, AI, HUMAN};
-  /** Constructor
-    * @param n: name of this player */
-  Player();
-  Player(std::string _name, Type _type);
-  /** Destructor */
-  virtual ~Player();
-  
-  /** Serialization */
-  void serialize(Serializer* _serializer);
-  void deserialize(Serializer* _serializer);
+    enum Type {NATUR=0, AI, HUMAN};
+    /** Constructor
+      * @param n: name of this player */
+    Player();
+    Player(std::string _name, Type _type);
+    /** Destructor */
+    virtual ~Player();
 
-  /** Gets the name of the player */
-  std::string getName() {return name;};
-  /** Sets the name of the player */
-  void setName(std::string _name) {name = _name;};
+    /** Serialization */
+    void serialize(Serializer* _serializer);
+    void deserialize(Serializer* _serializer);
 
-  /** Gets the type of the player */
-  Type getType() {return type;};
-  /** Sets the type of the player */
-  void setType(Type _type) {type = _type;};
+    /** Gets the name of the player */
+    std::string getName() {return name;};
+    /** Sets the name of the player */
+    void setName(std::string _name) {name = _name;};
 
-private:
-  /** Name of the player */
-  std::string name;
-  Type type;
+    /** Gets the type of the player */
+    Type getType() {return type;};
+    /** Sets the type of the player */
+    void setType(Type _type) {type = _type;};
+
+  private:
+    /** Name of the player */
+    std::string name;
+    Type type;
 };
 
 #endif // __PLAYER_H__

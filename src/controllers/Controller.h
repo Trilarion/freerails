@@ -24,7 +24,7 @@ public:
   int getTypeID() {return typeID;};
   
   virtual GameElement* CreateElement(Serializer* _serializer) {return NULL;};
-  virtual bool canBuildElement(GameElement* _element) {return false;};
+  virtual bool canBuildElement(GameElement*) {return false;};
 
 private:
 

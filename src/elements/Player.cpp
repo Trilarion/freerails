@@ -4,19 +4,24 @@
 
 #include "Player.h"
 
-Player::Player():GameElement(this, 1) {
-
+Player::Player() : GameElement(this, 1)
+{
+  name = "";
+  type = HUMAN;
 }
 
-Player::Player(std::string _name, Type _type):GameElement(this, 1) {
+Player::Player(std::string _name, Type _type) : GameElement(this, 1)
+{
   name = _name;
   type = _type;
 }
 
-Player::~Player() {
+Player::~Player()
+{
 }
 
-void Player::serialize(Serializer* _serializer) {
+void Player::serialize(Serializer* _serializer)
+{
 
   GameElement::serialize(_serializer);
   *_serializer << (const std::string)name;

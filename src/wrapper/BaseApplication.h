@@ -39,16 +39,17 @@ public:
       */
     virtual void setMainWindow(GameMainWindow* mw) {};
     
-    virtual void initSingleGame() {};
+    virtual void initSingleGame(const std::string, int, int, int) {};
     virtual void initClientGame() {};
     virtual void initServerGame() {};
     
 protected:
+    GameMainWindow* mW;
     WorldMap* worldMap;
     Engine* engine;
     Player* playerSelf;
     Client* client;
-//  Server* server;
+//    Server* server;
 };
 
 #endif

@@ -57,6 +57,7 @@ class GameMapView : public QCanvasView
     MouseButton mouseButton;
 
     QPoint oldMousePos;
+    QPoint oldMousePos2;
 };
 
 #endif // __GAMEMAPVIEW_H__

@@ -16,7 +16,6 @@ GameModeSelector::GameModeSelector(GameMainWindow* parent)
     : QDialog(parent->getWidget(), 0, true,
       Qt::WStyle_Customize | Qt::WStyle_NoBorder)
 {
-
   setBackgroundMode(Qt::FixedPixmap);
   QPixmap pixBackground("/usr/local/share/freerails/menu_background.png");
   setPaletteBackgroundPixmap(pixBackground);
@@ -25,8 +24,7 @@ GameModeSelector::GameModeSelector(GameMainWindow* parent)
 
   label = new QLabel(this);
   label->setPaletteForegroundColor(QColor("red"));
-  label->setPaletteBackgroundColor(QColor("color0"));
-  label->setBackgroundMode(Qt::NoBackground);
+  label->setBackgroundMode(Qt::FixedPixmap, Qt::FixedPixmap);
   label->setText(_("Please select game mode"));
   
   btnSingle = new QPushButton(_("Single player mode"),this);
@@ -61,11 +59,21 @@ GameModeSelector::GameModeSelector(GameMainWindow* parent)
   layout_h->addStretch(1);
   layout->addLayout(layout_h);
   layout->addStretch(1);
-
+  layout->activate();
+  
   connect(btnMulti, SIGNAL(clicked()), this, SLOT(setMulti()));
   connect(btnSingle, SIGNAL(clicked()), this, SLOT(setSingle()));
   connect(btnQuit, SIGNAL(clicked()), this, SLOT(setQuit()));
   
+  // redo background for label and buttons
+  QPixmap pix_tmp;
+
+  pix_tmp.resize(label->size());
+  bitBlt(&pix_tmp, 0, 0, &pixBackground,
+    label->pos().x(), label->pos().y(),
+    label->size().width(), label->size().height());
+  label->setPaletteBackgroundPixmap(pix_tmp);
+
   // Center it
   move((parentWidget()->width() - this->width()) / 2,
       (parentWidget()->height() - this->height()) / 2 );

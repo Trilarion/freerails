@@ -114,6 +114,8 @@ void GameMapView::getMapPixmap(QPixmap *pixPaint, int x, int y)
 //  qDebug("offset in Tiles.png is %i, %i", ox, oy);
   
   bitBlt(pixPaint, 0, 0, pixTiles, ox, oy, 30, 30, Qt::CopyROP, true);
+
+  #warning complete me: tracks and stations missing
 }
 
 int GameMapView::getPixmapPos(int x, int y, MapField::FieldType type)
@@ -229,7 +231,7 @@ void GameMapView::contentsMousePressEvent(QMouseEvent* e)
   if(e->button() == Qt::RightButton)
   {
     mouseButton = right;
-    #warning complete me
+    oldMousePos2 = e->pos();
   }
 }
 
@@ -261,7 +263,28 @@ void GameMapView::contentsMouseMoveEvent(QMouseEvent *e)
 
   if(mouseButton == right)
   {
-     scrollBy(30, 30);
+    QPoint diff = e->pos() - oldMousePos2;
+//    if(diff.x() > 0)
+//    {
+//    }
+//    else
+//    {
+//      if(contentsX() == 0)
+//        diff.setX(0);
+//    }
+//    if(diff.y() > 0)
+//    {
+//    }
+//    else
+//    {
+//      if(contentsY() == 0)
+//        diff.setY(0);
+//    }
+    if(!diff.isNull())
+    {
+      scrollBy(diff.x(), diff.y());
+      oldMousePos2 = e->pos();
+    }
   }
 
   if(mouseButton == left)
@@ -420,11 +443,27 @@ void GameMapView::drawContents(QPainter *p, int cx, int cy, int cw, int ch)
   pixPaint.resize(30, 30);
 
   int x, y;
+  int x1, y1, x2, y2;
 
-  for(x=0;x<30;x++)
-    for(y=0;y<30;y++)
+  x1 = cx / 30;
+  y1 = cy / 30;
+  x2 = cw / 30;
+  x2++;
+  x2 += x1;
+  if(x2 < engine->getWorldMap()->getWidth())
+    x2++;
+
+  y2 = ch / 30;
+  y2++;
+  y2 += y1;
+  if(y2 < engine->getWorldMap()->getHeight())
+    y2++;
+
+  for(x=x1;x<x2;x++)
+    for(y=y1;y<y2;y++)
     {
       getMapPixmap(&pixPaint, x, y);
+      qDebug("zeichne bei: %i, %i", x * 30, y * 30);
       p->drawPixmap(x * 30, y * 30, pixPaint);
     }
 }

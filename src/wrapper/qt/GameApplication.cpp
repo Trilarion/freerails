@@ -34,7 +34,7 @@ int GameApplication::run()
   // Show the splash
   showSplash();
   application->processEvents();
-  sleep(2);
+  sleep(1);
 
   hideSplash();
   application->processEvents();
@@ -47,6 +47,7 @@ int GameApplication::run()
 
   //setMainWindow(mW);
   application->setMainWidget((QWidget*)mW->getWidget());
+  application->processEvents();
   hideSplash();
 
   // Show dialog menu for game mode
@@ -64,7 +65,7 @@ int GameApplication::run()
   }
 
   #warning complete me
-  initSingleGame();
+  initSingleGame(std::string("frank"), 1000, 1000, 0);
   
   engine = new Engine(worldMap, playerSelf);
   CHECK_PTR(engine);

@@ -4,10 +4,12 @@
 
 #include "BaseApplication.h"
 
-BaseApplication::BaseApplication(int argc, char *argv[]) {
+BaseApplication::BaseApplication(int argc, char *argv[])
+{
 
 }
 
-BaseApplication::~BaseApplication() {
+BaseApplication::~BaseApplication()
+{
 
 }
