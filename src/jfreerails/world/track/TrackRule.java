@@ -14,7 +14,7 @@ import jfreerails.world.terrain.TerrainType;
 *@author     Luke Lindsay
 *     09 October 2001
 */
-public interface TrackRule extends FreerailsSerializable, Comparable {
+public interface TrackRule extends FreerailsSerializable, Comparable<TrackRule> {
 	
 	public enum TrackCategories{track,  bridge, tunnel, station, non};
 	

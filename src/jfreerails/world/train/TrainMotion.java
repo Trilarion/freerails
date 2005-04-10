@@ -214,9 +214,14 @@ public class TrainMotion implements FreerailsSerializable {
 		return result;
 	}
 
+	/**
+	 * @param newSpeeds 	specifies the train's speed at different points in time.
+	 * @param newPathSection The path the engine is about to start moving along.
+	 */
 	public TrainMotion next(SpeedAgainstTime newSpeeds,
-			OneTileMoveVector[] newPathSection) {
+			OneTileMoveVector... newPathSection) {
 		GameTime start = newSpeeds.getStart();
+		//The tiles the train is sitting on before it starts moving along the new path section.
 		Point[] tiles = getTiles(start);
 		final int OLD = tiles.length - 1;
 		OneTileMoveVector[] newPath = new OneTileMoveVector[newPathSection.length
@@ -232,7 +237,7 @@ public class TrainMotion implements FreerailsSerializable {
 			}
 		}
 		PathOnTiles pathOnTiles = new PathOnTiles(tiles[0], newPath);
-		return new TrainMotion(pathOnTiles, pathOnTiles.getDistance(OLD),
+		return new TrainMotion(pathOnTiles, OLD,
 				trainLength, newSpeeds);
 	}
 

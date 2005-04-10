@@ -47,7 +47,7 @@ public class PathOnTiles implements FreerailsSerializable {
 				throw new NullPointerException();
 			vectors[i] = vectorsList.get(i);
 		}
-		this.start = start;
+		this.start = new Point(start);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class PathOnTiles implements FreerailsSerializable {
 			if (null == vectors[i])
 				throw new NullPointerException();
 		}
-		this.start = start;
+		this.start = new Point(start);
 		this.vectors = vectors;
 	}
 
@@ -115,8 +115,8 @@ public class PathOnTiles implements FreerailsSerializable {
 		if (0 > distance)
 			throw new IllegalArgumentException("distance < 0");
 
-		int x = TILE_DIAMETER / 2;
-		int y = TILE_DIAMETER / 2;
+		int x = start.x * TILE_DIAMETER + TILE_DIAMETER / 2;
+		int y = start.y * TILE_DIAMETER + TILE_DIAMETER / 2;
 		int distanceSoFar = 0;
 		for (int i = 0; i < vectors.length; i++) {
 			OneTileMoveVector v = vectors[i];
@@ -217,7 +217,9 @@ public class PathOnTiles implements FreerailsSerializable {
 		}
 
 		Point first = getPoint(offset);
-		if (!points.getFirst().equals(first)) {
+		if(points.size() ==0){
+			points.addFirst(first);
+		}else if(!points.getFirst().equals(first)) {
 			points.addFirst(first);
 		}
 

@@ -48,6 +48,31 @@ public class TrainMotionTest extends TestCase {
 		
 	}
 	
+	public void testNext(){
+		OneTileMoveVector[] vectors = {EAST, EAST, EAST};
+		PathOnTiles path = new PathOnTiles(new Point(0,0), vectors);
+		int trainLength = TrainModel.WAGON_LENGTH;
+		TrainMotion motion = new TrainMotion(path, 1, trainLength, SpeedAgainstTime.STOPPED);
+		Point[] tiles = motion.getTiles(new GameTime(0));
+		GameTime[] times = {new GameTime(0), new GameTime(3)};
+		int[] speeds = {10, 10};
+		SpeedAgainstTime newSpeeds = new SpeedAgainstTime(times, speeds);
+		
+		TrainMotion motion2 = motion.next(newSpeeds, OneTileMoveVector.EAST);
+		tiles = motion2.getTiles(new GameTime(0));
+		assertNotNull(tiles);
+		assertEquals(2, tiles.length);		
+		assertEquals(new Point(0,0), tiles[0]);
+		assertEquals(new Point(1,0), tiles[1]);
+		
+		tiles = motion2.getTiles(new GameTime(1));
+		assertNotNull(tiles);
+		assertEquals(3, tiles.length);		
+		assertEquals(new Point(0,0), tiles[0]);
+		assertEquals(new Point(1,0), tiles[1]);
+		assertEquals(new Point(2,0), tiles[2]);
+	}
+	
 	public void testGetTiles(){
 		OneTileMoveVector[] vectors = {EAST, EAST, EAST};
 		PathOnTiles path = new PathOnTiles(new Point(0,0), vectors);

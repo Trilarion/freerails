@@ -31,18 +31,8 @@ final public class TrackMoveProducer {
 	private BuildTrackStrategy buildTrackStrategy;
 	
 	private final MoveExecutor executor;
-	
-	//TODO Replace ints with enum.
-	public enum BuildMode{BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION};
-	
-//	public final static int BUILD_TRACK = 1;
-//
-//	public final static int REMOVE_TRACK = 2;
-//
-//	public final static int UPGRADE_TRACK = 3;
-//
-//	/* Don't build any track */
-//	public final static int IGNORE_TRACK = 4;
+		
+	public enum BuildMode{BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION};	
 
 	private BuildMode buildMode = BuildMode.BUILD_TRACK;
 

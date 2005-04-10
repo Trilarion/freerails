@@ -96,6 +96,33 @@ public class PathOnTilesTest extends TestCase {
 		expected = new Point[] { new Point(18, 15), new Point(45, 15),
 				new Point(75, 15), new Point(98, 15) };
 		checkPath(pathIt, expected);
+		
+		// 4th check, with a path just 1 tile long.
+		start = new Point(5, 5);
+		vectors = new OneTileMoveVector[] { SOUTH_WEST};
+		path = new PathOnTiles(start, vectors);
+		pathIt = path.subPath(18, 24);
+		IntLine line = new IntLine();
+		assertTrue(pathIt.hasNext());
+		pathIt.nextSegment(line);
+		assertEquals("The length of the train.", 24, line.getLength(), 0.1d);
+		assertFalse(pathIt.hasNext());
+		
+		// 5th check, same as 2nd but with different starting position.
+		vectors = new OneTileMoveVector[] { EAST, EAST,
+				EAST };
+		
+		start = new Point(4, 7);	
+		path = new PathOnTiles(start, vectors);
+		
+		pathIt = path.subPath(3, path.getLength() - 3);
+		expected = new Point[] { new Point(18, 15), new Point(45, 15),
+				new Point(75, 15), new Point(105, 15) };
+		for(Point point: expected){
+			point.x += start.x * TILE_DIAMETER;
+			point.y += start.y * TILE_DIAMETER;
+		}
+		checkPath(pathIt, expected);
 
 	}
 

@@ -3,6 +3,8 @@ package experimental;
 import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
 
@@ -29,6 +31,7 @@ public class AnimationExpt extends JComponent {
         System.setProperty("SHOWFPS", "true");
 
         JFrame f = new JFrame();
+		f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         f.getContentPane().add(new AnimationExpt());
 
         ScreenHandler screenHandler = new ScreenHandler(f,

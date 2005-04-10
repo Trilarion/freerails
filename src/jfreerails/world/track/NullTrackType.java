@@ -98,7 +98,7 @@ final public class NullTrackType implements TrackRule {
 		return TrackCategories.non;
 	}
 
-	public int compareTo(Object arg0) {
+	public int compareTo(TrackRule arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
