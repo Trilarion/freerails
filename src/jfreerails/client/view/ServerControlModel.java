@@ -195,16 +195,14 @@ public class ServerControlModel {
         loadGameAction.setEnabled(enabled && canLoadGame);
         saveGameAction.setEnabled(enabled);
         
-        Enumeration e = targetTicksPerSecondActions.getActions();
+        Enumeration<Action> e = targetTicksPerSecondActions.getActions();
         targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
         
         while (e.hasMoreElements()) {
-            ((Action)e.nextElement()).setEnabled(true);
+            e.nextElement().setEnabled(true);
         }
         
-        //        if (i == null) {
-        //            selectMapActions = new ActionAdapter(new Action[0]);
-        //        } else {
+      
         String[] mapNames = NewGameServerCommand.getMapNames();
         Action[] actions = new Action[mapNames.length];
         
@@ -214,8 +212,7 @@ public class ServerControlModel {
         }
         
         selectMapActions = new ActionAdapter(actions);
-        //        }
-        
+      
         newGameAction.setEnabled(true);
         
     }

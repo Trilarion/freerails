@@ -211,7 +211,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 	}
 
 	private void processTrainBundle() {
-		Iterator batches = trainAfter.toImmutableCargoBundle()
+		Iterator<CargoBatch> batches = trainAfter.toImmutableCargoBundle()
 				.cargoBatchIterator();
 		StationModel station = (StationModel) w.get(KEY.STATIONS, stationId,
 				principal);
@@ -219,7 +219,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 		// Unload the cargo that the station demands
 		while (batches.hasNext()) {
-			CargoBatch cb = (CargoBatch) batches.next();
+			CargoBatch cb = batches.next();
 
 			// if the cargo is demanded and its not from this station
 			// originally...
@@ -304,11 +304,11 @@ public class DropOffAndPickupCargoMoveGenerator {
 		if (0 == amountToTransfer) {
 			return;
 		}
-		Iterator batches = from.toImmutableCargoBundle().cargoBatchIterator();
+		Iterator<CargoBatch> batches = from.toImmutableCargoBundle().cargoBatchIterator();
 		int amountTransferedSoFar = 0;
 
 		while (batches.hasNext() && amountTransferedSoFar < amountToTransfer) {
-			CargoBatch cb = (CargoBatch) batches.next();
+			CargoBatch cb = batches.next();
 
 			if (cb.getCargoType() == cargoTypeToTransfer) {
 				int amount = from.getAmount(cb);

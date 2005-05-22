@@ -29,7 +29,7 @@ public class BrokerScreenGenerator {
     
     private GameCalendar cal;
     
-    private HashMap otherRRShares;
+    private HashMap<Integer, Integer> otherRRShares;
     
     public String playername;
     
@@ -79,7 +79,7 @@ public class BrokerScreenGenerator {
         if(otherRRShares.size() > 0){
             othersRRBuffer.append("<tr><td colspan=\"2\">&nbsp;</td><td><div align=\"right\"><table>");
             for(int i = 0; i < w.getNumberOfPlayers();i++){
-                Integer totalstock = (Integer) otherRRShares.get(i);
+                Integer totalstock = otherRRShares.get(i);
                 if(totalstock != null){
                     othersRRBuffer.append("<tr><td>");
                     Player tempPlayer = w.getPlayer(i);

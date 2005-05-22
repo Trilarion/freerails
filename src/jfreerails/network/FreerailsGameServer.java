@@ -152,7 +152,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     }
 
     public synchronized int countOpenConnections() {
-        Iterator it = acceptedConnections.keySet().iterator();
+        Iterator<NameAndPassword> it = acceptedConnections.keySet().iterator();
         int numConnections = 0;
 
         while (it.hasNext()) {

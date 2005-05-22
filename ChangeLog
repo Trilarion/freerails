@@ -1,4 +1,7 @@
 May 22, 2005 Luke
+	Code cleanup
+	Improve pathfinder - finding paths for track is now
+	upto 20 times faster.
 	More of the same
 Apr 10, 2005 Luke
 	More work on new train movement classes

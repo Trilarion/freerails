@@ -1,10 +1,9 @@
 package jfreerails.controller;
 
-import it.unimi.dsi.fastUtil.Int2IntHashMap;
-import it.unimi.dsi.fastUtil.IntHashSet;
-import it.unimi.dsi.fastUtil.IntIterator;
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.logging.Logger;
+
 import jfreerails.util.IntArray;
 import jfreerails.world.common.FreerailsSerializable;
 
@@ -21,9 +20,9 @@ public class SimpleAStarPathFinder implements FreerailsSerializable,
     private static final long serialVersionUID = 3257565105200576310L;
 	private static final Logger logger = Logger.getLogger(SimpleAStarPathFinder.class.getName());
     private OpenList openList = new OpenList();
-    private final IntHashSet startingPositions = new IntHashSet();
-    private final Int2IntHashMap closedList = new Int2IntHashMap();
-    private final Int2IntHashMap shortestPath = new Int2IntHashMap();
+    private final HashSet<Integer> startingPositions = new HashSet<Integer> ();
+    private final HashMap<Integer, Integer> closedList = new HashMap<Integer, Integer>();
+    private final HashMap<Integer, Integer> shortestPath = new HashMap<Integer, Integer>();
     private int status = SEARCH_NOT_STARTED;
 
     /** Note, IntArray is not Serializable. */
@@ -216,69 +215,5 @@ public class SimpleAStarPathFinder implements FreerailsSerializable,
         startingPositions.clear();
 
         status = SEARCH_NOT_STARTED;
-    }
-
-    /** An OpenList for SimpleAStarPathFinder which store nodes and f values in a Int2IntHashMap.
-     * 
-     * @author Luke
-     *
-     */
-    private static class OpenList implements Serializable {
-        private static final long serialVersionUID = 3257282539419611442L;
-		private final Int2IntHashMap openList = new Int2IntHashMap();
-
-        void clear() {
-            openList.clear();
-        }
-
-        int getF(int node) {
-            return openList.get(node);
-        }
-
-        void add(int node, int f) {
-            openList.put(node, f);
-        }
-
-        boolean contains(int node) {
-            return openList.containsKey(node);
-        }
-
-        int smallestF() {
-            int node = findNodeWithSmallestFOnOpenList();
-
-            int f = openList.get(node);
-
-            return f;
-        }
-
-        int popNodeWithSmallestF() {
-            int node = findNodeWithSmallestFOnOpenList();
-            openList.remove(node);
-
-            return node;
-        }
-
-        int size() {
-            return openList.size();
-        }
-
-        private int findNodeWithSmallestFOnOpenList() {
-            IntIterator it = (IntIterator)openList.keySet().iterator();
-
-            int nodeWithSmallestF = 0;
-            int smallestF = Integer.MAX_VALUE;
-
-            while (it.hasNext()) {
-                int node = it.nextInt();
-                int f = openList.get(node);
-
-                if (f < smallestF) {
-                    smallestF = f;
-                    nodeWithSmallestF = node;
-                }
-            }
-
-            return nodeWithSmallestF;
-        }
     }
 }

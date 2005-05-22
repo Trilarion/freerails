@@ -19,12 +19,12 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     private final int maximumConsecutivePieces;
 
     public LegalTrackConfigurations(int max,
-        ArrayList legalTrackTemplatesArrayList) {
+        ArrayList<String> legalTrackTemplatesArrayList) {
         maximumConsecutivePieces = max;
 
         //Iterate over the track templates.
         for (int i = 0; i < legalTrackTemplatesArrayList.size(); i++) {
-            String trackTemplateString = (String)(legalTrackTemplatesArrayList.get(i));
+            String trackTemplateString = legalTrackTemplatesArrayList.get(i);
             processTemplate(trackTemplateString);
         }
     }

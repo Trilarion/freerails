@@ -36,11 +36,11 @@ import java.util.Vector;
      22) Mountain (Hill)
  */
 public class TerrainRandomiser {
-    private final Vector terrainTypes;
-    private final Vector non_terrainTypes;
+    private final Vector<Integer> terrainTypes;
+    private final Vector<Integer> non_terrainTypes;
     private final double CLEAR_PERCENTAGE = 0.98; //ie. % of map that is clear (on avg.)
 
-    public TerrainRandomiser(Vector num, Vector num2) {
+    public TerrainRandomiser(Vector<Integer> num, Vector<Integer> num2) {
         terrainTypes = num;
         non_terrainTypes = num2;
     }
@@ -66,7 +66,7 @@ public class TerrainRandomiser {
 			for (int i = 0; i < terrainTypes.size(); i++) {
 			    if ((value > (i * divide)) &&
 			            (value <= ((i + 1) * divide))) {
-			        return ((Integer)terrainTypes.elementAt(i)).intValue();
+			        return terrainTypes.elementAt(i).intValue();
 			    }
 			}
         }

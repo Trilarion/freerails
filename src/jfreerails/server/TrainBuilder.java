@@ -270,14 +270,14 @@ public class TrainBuilder implements ServerAutomaton {
 	// are moving. Still does not account for double track situations
 	void crashTrains(TrainMover moverA, ReadOnlyWorld w)
 			throws TrainCrashException {
-		Iterator i = trainMovers.iterator();
+		Iterator<TrainMover> i = trainMovers.iterator();
 		int trainAId = moverA.getTrainID();
 		FreerailsPrincipal p = moverA.getPrincipal();
 		TrainPositionOnMap currentPosition = (TrainPositionOnMap) w.get(
 				KEY.TRAIN_POSITIONS, trainAId, p);
 		if (!currentPosition.isCrashSite()) {
 			while (i.hasNext()) {
-				TrainMover moverB = (TrainMover) i.next();
+				TrainMover moverB = i.next();
 				int trainBId = moverB.getTrainID();
 				Point currentHead = new Point(currentPosition.getX(0),
 						currentPosition.getY(0));
@@ -371,10 +371,10 @@ public class TrainBuilder implements ServerAutomaton {
 	public void initAutomaton(MoveReceiver mr) {
 		moveReceiver = mr;
 
-		Iterator it = trainMovers.iterator();
+		Iterator<TrainMover> it = trainMovers.iterator();
 
 		while (it.hasNext()) {
-			TrainMover tm = (TrainMover) it.next();
+			TrainMover tm = it.next();
 			tm.initAutomaton(mr);
 		}
 	}
@@ -382,11 +382,10 @@ public class TrainBuilder implements ServerAutomaton {
 	void moveTrains(ReadOnlyWorld world) {
 		int deltaDistance = 5;
 
-		Iterator i = trainMovers.iterator();
-		ArrayList crashedTrains = new ArrayList();
-		while (i.hasNext()) {
-			Object o = i.next();
-			TrainMover trainMover = (TrainMover) o;
+		Iterator<TrainMover>  i = trainMovers.iterator();
+		ArrayList<Integer> crashedTrains = new ArrayList<Integer>();
+		while (i.hasNext()) {		
+			TrainMover trainMover = i.next();
 
 			try {
 				crashTrains(trainMover, world);
@@ -409,9 +408,9 @@ public class TrainBuilder implements ServerAutomaton {
 		}
 
 		// remove the crashed trains and their train movers
-		Iterator j = trainMovers.iterator();
+		Iterator<TrainMover> j = trainMovers.iterator();
 		while (j.hasNext()) {
-			TrainMover tMover = (TrainMover) j.next();
+			TrainMover tMover = j.next();
 			int trainId = tMover.getTrainID();
 			if (crashedTrains.contains(trainId)) {
 				j.remove();

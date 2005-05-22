@@ -1,7 +1,9 @@
 package jfreerails.controller;
 
+import java.awt.Point;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsPathIteratorImpl;
 import jfreerails.world.common.IntLine;
@@ -16,9 +18,9 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256442525337202993L;
 	private FreerailsPathIterator path;
     private boolean forwards = true;
-    private final List list;
+    private final List<Point> list;
 
-    public ToAndFroPathIterator(List l) {
+    public ToAndFroPathIterator(List<Point> l) {
         list = l;
         nextIterator();
     }

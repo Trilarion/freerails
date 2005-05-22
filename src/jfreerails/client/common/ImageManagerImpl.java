@@ -171,10 +171,10 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     public void writeAllImages() throws IOException {
-        Iterator it = imageHashMap.keySet().iterator();
+        Iterator<String> it = imageHashMap.keySet().iterator();
 
         while (it.hasNext()) {
-            String s = (String)it.next();
+            String s = it.next();
             writeImage(s);
         }
     }

@@ -18,16 +18,16 @@ import java.util.NoSuchElementException;
 public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     private static final long serialVersionUID = 3258411750679720758L;
 
-	public static FreerailsPathIterator forwardsIterator(List l) {
+	public static FreerailsPathIterator forwardsIterator(List<Point> l) {
         return new FreerailsPathIteratorImpl(l, true);
     }
 
-    public static FreerailsPathIterator backwardsIterator(List l) {
+    public static FreerailsPathIterator backwardsIterator(List<Point> l) {
         return new FreerailsPathIteratorImpl(l, false);
     }
 
     /** Creates new FreerailsPathIteratorImpl */
-    public FreerailsPathIteratorImpl(List l, boolean f) {
+    public FreerailsPathIteratorImpl(List<Point> l, boolean f) {
         points = l;
         forwards = f;
 
@@ -40,7 +40,7 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
 
     private final boolean forwards;
     private int position;
-    private final List points;
+    private final List<Point> points;
 
     public boolean hasNext() {
         if (forwards) {
@@ -56,12 +56,12 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
 
             if (forwards) {
                 position++;
-                a = (Point)points.get(position - 1);
-                b = (Point)points.get(position);
+                a = points.get(position - 1);
+                b = points.get(position);
             } else {
                 position--;
-                a = (Point)points.get(position + 1);
-                b = (Point)points.get(position);
+                a = points.get(position + 1);
+                b = points.get(position);
             }
 
             line.x1 = a.x;

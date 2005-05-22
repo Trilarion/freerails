@@ -176,7 +176,7 @@ public class WorldDifferencesTest extends TestCase {
         worldDiff.setTile(3, 5, newTile);
         assertEquals(newTile, worldDiff.getTile(3, 5));
 
-        Iterator it = worldDiff.getMapDifferences();
+        Iterator<Point> it = worldDiff.getMapDifferences();
         assertEquals(new Point(3, 5), it.next());
     }
 }

@@ -22,11 +22,11 @@ final public class TileRendererListImpl implements TileRendererList {
         return tiles[i];
     }
 
-    public TileRendererListImpl(ArrayList t) {
+    public TileRendererListImpl(ArrayList<TileRenderer> t) {
         tiles = new TileRenderer[t.size()];
 
         for (int i = 0; i < t.size(); i++) {
-            tiles[i] = (TileRenderer)t.get(i);
+            tiles[i] = t.get(i);
         }
     }
 

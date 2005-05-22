@@ -38,7 +38,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     /**
      * List of the ServerAutomaton objects connected to this game.
      */
-    private final Vector serverAutomata;
+    private final Vector<ServerAutomaton> serverAutomata;
 
     /**
      * Number of ticks since the last time we did an infrequent update.
@@ -48,11 +48,11 @@ public class ServerGameModelImpl implements ServerGameModel {
     private transient MoveReceiver moveExecuter;
 
     public ServerGameModelImpl() {
-        this(new ArrayList<TrainMover>(), null, new Vector());
+        this(new ArrayList<TrainMover>(), null, new Vector<ServerAutomaton>());
     }
 
     public ServerGameModelImpl(ArrayList<TrainMover> trainMovers, World w,
-        Vector serverAutomata) {
+        Vector<ServerAutomaton> serverAutomata) {
         this.world = w;
         this.serverAutomata = serverAutomata;
         this.trainMovers = trainMovers;
@@ -181,7 +181,7 @@ public class ServerGameModelImpl implements ServerGameModel {
         calcSupplyAtStations = new CalcSupplyAtStations(world, newMoveExecuter);
 
         for (int i = 0; i < serverAutomata.size(); i++) {
-            ((ServerAutomaton)serverAutomata.get(i)).initAutomaton(newMoveExecuter);
+            serverAutomata.get(i).initAutomaton(newMoveExecuter);
         }
 
         tb.initAutomaton(newMoveExecuter);

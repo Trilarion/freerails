@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,6 +27,7 @@ import javax.swing.event.MenuListener;
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
+import jfreerails.client.common.ActionAdapter.MappedButtonModel;
 import jfreerails.client.renderer.BuildTrackController;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.ViewLists;
@@ -170,9 +170,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 				if (move instanceof ChangeGameSpeedMove) {
 					ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
-					for (Enumeration actionsEnum = speedActions.getActions(); actionsEnum
+					for (Enumeration<Action> actionsEnum = speedActions.getActions(); actionsEnum
 							.hasMoreElements();) {
-						Action action = (Action) actionsEnum.nextElement();
+						Action action = actionsEnum.nextElement();
 						String actionName = (String) action
 								.getValue(Action.NAME);
 
@@ -362,10 +362,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 			public void menuSelected(MenuEvent e) {
 				newGameJMenu.removeAll();
 
-				Enumeration actions = sc.getMapNames().getActions();
+				Enumeration<Action> actions = sc.getMapNames().getActions();
 
 				while (actions.hasMoreElements()) {
-					JMenuItem mi = new JMenuItem((Action) actions.nextElement());
+					JMenuItem mi = new JMenuItem(actions.nextElement());
 					newGameJMenu.add(mi);
 				}
 			}
@@ -393,13 +393,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
 		speedActions = sc.getSetTargetTickPerSecondActions();
 
-		Enumeration buttonModels = speedActions.getButtonModels();
-		Enumeration actions = speedActions.getActions();
+		Enumeration<MappedButtonModel> buttonModels = speedActions.getButtonModels();
+		Enumeration<Action> actions = speedActions.getActions();
 
 		while (buttonModels.hasMoreElements()) {
-			JRadioButtonMenuItem mi = new JRadioButtonMenuItem((Action) actions
+			JRadioButtonMenuItem mi = new JRadioButtonMenuItem(actions
 					.nextElement());
-			mi.setModel((ButtonModel) buttonModels.nextElement());
+			mi.setModel(buttonModels.nextElement());
 			group.add(mi);
 			gameSpeedSubMenu.add(mi);
 		}

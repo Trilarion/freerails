@@ -28,8 +28,8 @@ public class FinancialDataGatherer extends TransactionAggregator {
     private int treasuryStock;
     private final int playerID;
     private int bonds;
-    private HashMap otherRRSharesHashMap = new HashMap();
-    private HashMap otherRRsWithStakeHashMap = new HashMap();
+    private HashMap<Integer, Integer> otherRRSharesHashMap = new HashMap<Integer, Integer>();
+    private HashMap<Integer, Integer> otherRRsWithStakeHashMap = new HashMap<Integer, Integer>();
     
 
     protected void incrementRunningTotal(int transactionID) {
@@ -58,7 +58,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
                 totalShares -= ist.getQuantity();
                  int playerId = ist.getType();
                 if(otherRRsWithStakeHashMap.containsKey(playerId)){
-                    Integer totalOwnedShares = (Integer) otherRRsWithStakeHashMap.get(playerId);
+                    Integer totalOwnedShares = otherRRsWithStakeHashMap.get(playerId);
                     otherRRsWithStakeHashMap.remove(playerId);
                     otherRRsWithStakeHashMap.put(playerId, (ist.getQuantity() + totalOwnedShares.intValue()));
                 } else {
@@ -70,7 +70,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
                 IssueStockTransaction ist = (IssueStockTransaction)t;
                 totalShares += ist.getQuantity();
                 int playerId = ist.getType();
-                Integer totalOwnedShares = (Integer) otherRRsWithStakeHashMap.get(playerId);
+                Integer totalOwnedShares = otherRRsWithStakeHashMap.get(playerId);
                 otherRRsWithStakeHashMap.remove(playerId);
                 if((totalOwnedShares.intValue() - ist.getQuantity()) > 0){
                     otherRRsWithStakeHashMap.put(playerId, (ist.getQuantity() - totalOwnedShares.intValue()));
@@ -81,7 +81,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
                 IssueStockTransaction ist = (IssueStockTransaction)t;
                 int playerId = ist.getType();
                 if(otherRRSharesHashMap.containsKey(playerId)){
-                    Integer totalOwnedShares = (Integer) otherRRSharesHashMap.get(playerId);
+                    Integer totalOwnedShares = otherRRSharesHashMap.get(playerId);
                     otherRRSharesHashMap.remove(playerId);
                     otherRRSharesHashMap.put(playerId, (ist.getQuantity() + totalOwnedShares.intValue()));
                 } else {
@@ -92,7 +92,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
                 //When this player sells stock from another Player
                 IssueStockTransaction ist = (IssueStockTransaction)t;
                 int playerId = ist.getType();
-                Integer totalOwnedShares = (Integer) otherRRSharesHashMap.get(playerId);
+                Integer totalOwnedShares = otherRRSharesHashMap.get(playerId);
                 otherRRSharesHashMap.remove(playerId);
                 if(totalOwnedShares != null && (totalOwnedShares.intValue() - ist.getQuantity()) > 0){
                     otherRRSharesHashMap.put(playerId, (ist.getQuantity() - totalOwnedShares.intValue()));
@@ -154,7 +154,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
         return totalShares;
     }
     /** Returns the stakes that The player has in other players*/
-    public HashMap otherRRShares() {
+    public HashMap<Integer, Integer> otherRRShares() {
         return otherRRSharesHashMap;
     }
 

@@ -64,10 +64,10 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
         ImmutableCargoBundle test = (ImmutableCargoBundle)arg0;
 
         /* Note, the two bundles are equal if they contain the same cargo but ordered differently.*/
-        Iterator it = cargoBatchIterator();
+        Iterator<CargoBatch> it = cargoBatchIterator();
 
         while (it.hasNext()) {
-            CargoBatch batch = (CargoBatch)it.next();
+            CargoBatch batch = it.next();
 
             if (getAmount(batch) != test.getAmount(batch)) {
                 return false;

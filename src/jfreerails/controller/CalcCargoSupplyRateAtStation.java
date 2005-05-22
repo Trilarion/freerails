@@ -133,7 +133,7 @@ public class CalcCargoSupplyRateAtStation {
         }
     }
 
-    public Vector scanAdjacentTiles() {
+    public Vector<CargoElementObject> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
         Rectangle stationRadiusRect = new Rectangle(x - stationRadius,
@@ -189,14 +189,14 @@ public class CalcCargoSupplyRateAtStation {
      *
      */
     public StationModel calculations(StationModel station) {       
-        Vector supply = new Vector();
+        Vector<CargoElementObject> supply = new Vector<CargoElementObject>();
         int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];
 
         supply = scanAdjacentTiles();
 
         //grab the supply rates from the vector
         for (int i = 0; i < supply.size(); i++) {
-            cargoSupplied[i] = ((CargoElementObject)supply.elementAt(i)).getRate();
+            cargoSupplied[i] = supply.elementAt(i).getRate();
         }
 
         //set the supply rates for the current station	

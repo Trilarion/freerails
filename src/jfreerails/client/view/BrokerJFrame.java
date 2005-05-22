@@ -66,8 +66,8 @@ public class BrokerJFrame extends javax.swing.JInternalFrame implements View {
     public void addJMenuItems(){
         sellTreasuryStockJMenuItem = new JMenuItem();
         buyTreasuryStockJMenuItem = new JMenuItem();
-        buyPlayerStockJMenuItems = new HashMap();
-        sellPlayerStockJMenuItems = new HashMap();
+        buyPlayerStockJMenuItems = new HashMap<String, JMenuItem>();
+        sellPlayerStockJMenuItems = new HashMap<String, JMenuItem>();
     }
     
     /** This method is called from within the constructor to
@@ -173,7 +173,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame implements View {
     }
     
     void setBuyPlayerStockActionlistener(ActionListener l,Player p){
-        JMenuItem playersJMenuItem = (JMenuItem) buyPlayerStockJMenuItems.get(p.getName());
+        JMenuItem playersJMenuItem = buyPlayerStockJMenuItems.get(p.getName());
         if(playersJMenuItem != null) {
             ActionListener[] oldListeners = playersJMenuItem.getActionListeners();
             for(int i = 0; i < oldListeners.length; i++){
@@ -184,7 +184,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame implements View {
     }
     
     void setSellPlayerStockActionlistener(ActionListener l,Player p){
-        JMenuItem playersJMenuItem = (JMenuItem) sellPlayerStockJMenuItems.get(p.getName());
+        JMenuItem playersJMenuItem = sellPlayerStockJMenuItems.get(p.getName());
         if(playersJMenuItem != null) {
             ActionListener[] oldListeners = playersJMenuItem.getActionListeners();
             for(int i = 0; i < oldListeners.length; i++){
@@ -210,7 +210,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame implements View {
             Stocks.add(buyPlayerStock);
         }
         else if(buyPlayerStockJMenuItems.containsKey(p.getName())){
-            JMenuItem buyPlayerStock = (JMenuItem) buyPlayerStockJMenuItems.get(p.getName());
+            JMenuItem buyPlayerStock = buyPlayerStockJMenuItems.get(p.getName());
             Stocks.add(buyPlayerStock);
          }
     }
@@ -228,7 +228,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame implements View {
             Stocks.add(buyPlayerStock);
         }
         else if(sellPlayerStockJMenuItems.containsKey(p.getName())){
-            JMenuItem buyPlayerStock = (JMenuItem) sellPlayerStockJMenuItems.get(p.getName());
+            JMenuItem buyPlayerStock = sellPlayerStockJMenuItems.get(p.getName());
             Stocks.add(buyPlayerStock);
         }
     }
@@ -323,6 +323,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame implements View {
     // End of variables declaration//GEN-END:variables
     private javax.swing.JMenuItem sellTreasuryStockJMenuItem;
     private javax.swing.JMenuItem buyTreasuryStockJMenuItem;
-    private HashMap buyPlayerStockJMenuItems;
-    private HashMap sellPlayerStockJMenuItems;
+    private HashMap<String, JMenuItem> buyPlayerStockJMenuItems;
+    private HashMap<String, JMenuItem> sellPlayerStockJMenuItems;
 }

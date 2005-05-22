@@ -60,10 +60,10 @@ public class EchoGameServer implements GameServer, Runnable {
     }
 
     public synchronized int countOpenConnections() {
-        Iterator it = connections.iterator();
+        Iterator<Connection2Client> it = connections.iterator();
 
         while (it.hasNext()) {
-            Connection2Client connection = (Connection2Client)it.next();
+            Connection2Client connection = it.next();
 
             if (!connection.isOpen()) {
                 it.remove();
@@ -151,10 +151,10 @@ public class EchoGameServer implements GameServer, Runnable {
             }
 
             /* Send messages. */
-            Iterator messagesIterator = messsages2send.iterator();
+            Iterator<FreerailsSerializable> messagesIterator = messsages2send.iterator();
 
             while (messagesIterator.hasNext()) {
-                FreerailsSerializable message = (FreerailsSerializable)messagesIterator.next();
+                FreerailsSerializable message = messagesIterator.next();
                 sendMessage(message);
             }
         }

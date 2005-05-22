@@ -53,8 +53,8 @@ public class BuildTrackRenderer implements Painter {
 
 		WorldDifferences worldDiffs = getWorldDiffs();	
 		if (null != worldDiffs) {
-			for (Iterator iter = worldDiffs.getMapDifferences(); iter.hasNext();) {
-				Point point = (Point) iter.next();
+			for (Iterator<Point> iter = worldDiffs.getMapDifferences(); iter.hasNext();) {
+				Point point = iter.next();
 				TrackPiece tp = (TrackPiece) worldDiffs.getTile(point.x,
 						point.y);
 

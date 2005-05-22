@@ -56,7 +56,7 @@ final public class TrackPieceRendererList {
 
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
             TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
-            Iterator legalConfigurationsIterator = trackRule.getLegalConfigurationsIterator();
+            Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule.getLegalConfigurationsIterator();
             TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
 
             if (null == trackPieceView) {
@@ -67,7 +67,7 @@ final public class TrackPieceRendererList {
                 return false;
             }
 			while (legalConfigurationsIterator.hasNext()) {
-			    TrackConfiguration trackConfig = (TrackConfiguration)legalConfigurationsIterator.next();
+			    TrackConfiguration trackConfig = legalConfigurationsIterator.next();
 			    int trackGraphicsNo = trackConfig.getTrackGraphicsID();
 			    Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
 

@@ -115,7 +115,7 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(!pw.hasNext());
     }
 
-    void assertHasNextEqualsFalse(ArrayList points) {
+    void assertHasNextEqualsFalse(ArrayList<Point> points) {
         FreerailsPathIterator it2 = FreerailsPathIteratorImpl.forwardsIterator(points);
 
         assertTrue(!it2.hasNext());

@@ -25,7 +25,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  */
 public class ProcessCargoAtStationMoveGenerator {
     /** Determines how much the player gets for delivering cargo.
-     * Changeed from 100 to 75 to fix bug 910132 (Too easy to make money!)
+     * Changed from 100 to 75 to fix bug 910132 (Too easy to make money!)
      */
     private final static int MAGIC_NUMBER = 75;
 
@@ -33,12 +33,12 @@ public class ProcessCargoAtStationMoveGenerator {
         MutableCargoBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
         StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
                 p);
-        Iterator batches = bundle.cargoBatchIterator();
+        Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 
         ArrayList<Move> moves = new ArrayList<Move>();
 
         while (batches.hasNext()) {
-            CargoBatch batch = (CargoBatch)batches.next();
+            CargoBatch batch = batches.next();
             double distanceSquared = (batch.getSourceX() - thisStation.x) * (batch.getSourceX() -
                 thisStation.x) +
                 (batch.getSourceY() - thisStation.y) * (batch.getSourceY() -

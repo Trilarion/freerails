@@ -41,9 +41,9 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
      * specified values.
      */
     public void removeDisplayModesBelow(int width, int height, int bitdepth){
-    	 Iterator it = modes.iterator();
+    	 Iterator<MyDisplayMode> it = modes.iterator();
     	 while (it.hasNext()) {
-        	MyDisplayMode mode = (MyDisplayMode)it.next();
+        	MyDisplayMode mode = it.next();
         	DisplayMode displayMode = mode.displayMode;        	
         	final boolean tooNarrow = displayMode.getWidth() < width;
         	final boolean tooShort = displayMode.getHeight() < height;

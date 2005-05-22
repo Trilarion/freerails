@@ -34,10 +34,10 @@ public class MutableCargoBundle {
     public MutableCargoBundle(ImmutableCargoBundle imcb) {
         this();
 
-        Iterator it = imcb.cargoBatchIterator();
+        Iterator<CargoBatch> it = imcb.cargoBatchIterator();
 
         while (it.hasNext()) {
-            CargoBatch cb = (CargoBatch)it.next();
+            CargoBatch cb = it.next();
             addCargo(cb, imcb.getAmount(cb));
         }
     }
@@ -47,11 +47,11 @@ public class MutableCargoBundle {
     }
 
     public int getAmount(int cargoType) {
-        Iterator it = cargoBatchIterator();
+        Iterator<CargoBatch> it = cargoBatchIterator();
         int amount = 0;
 
         while (it.hasNext()) {
-            CargoBatch cb = (CargoBatch)it.next();
+            CargoBatch cb = it.next();
 
             if (cb.getCargoType() == cargoType) {
                 amount += getAmount(cb);
@@ -88,7 +88,7 @@ public class MutableCargoBundle {
      * if this CargoBundle has changed since the iterator was aquired.
      */
     public Iterator<CargoBatch> cargoBatchIterator() {
-        final Iterator it = hashMap.keySet().iterator();
+        final Iterator<CargoBatch> it = hashMap.keySet().iterator();
 
         /* A ConcurrentModificationException used to get thrown when the amount
              * of cargo was set to 0, since this resulted in the key being removed
@@ -118,7 +118,7 @@ public class MutableCargoBundle {
                         throw new ConcurrentModificationException();
                     }
 
-                    return (CargoBatch)it.next();
+                    return it.next();
                 }
             };
     }
@@ -142,11 +142,11 @@ public class MutableCargoBundle {
         int size = hashMap.keySet().size();
         CargoBatch[] batches = new CargoBatch[size];
         int[] amounts = new int[size];
-        Iterator it = cargoBatchIterator();
+        Iterator<CargoBatch> it = cargoBatchIterator();
         int i = 0;
 
         while (it.hasNext()) {
-            CargoBatch batch = (CargoBatch)it.next();
+            CargoBatch batch = it.next();
             int amount = getAmount(batch);
             batches[i] = batch;
             amounts[i] = amount;

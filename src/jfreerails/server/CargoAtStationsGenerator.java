@@ -59,10 +59,10 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                  * gets set to zero and the CargoBatch removed from
                  * the cargo bundle. LL
                  */
-                Iterator it = after.toImmutableCargoBundle().cargoBatchIterator();
+                Iterator<CargoBatch> it = after.toImmutableCargoBundle().cargoBatchIterator();
 
                 while (it.hasNext()) {
-                    CargoBatch cb = (CargoBatch)it.next();
+                    CargoBatch cb = it.next();
                     int amount = after.getAmount(cb);
 
                     if (amount > 0) {

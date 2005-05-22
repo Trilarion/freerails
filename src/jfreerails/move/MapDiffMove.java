@@ -26,10 +26,10 @@ public class MapDiffMove implements Move, MapUpdateMove {
         before = new ArrayList<FreerailsTile>();
         after = new ArrayList<FreerailsTile>();
 
-        Iterator it = diffs.getMapDifferences();
+        Iterator<Point> it = diffs.getMapDifferences();
 
         while (it.hasNext()) {
-            Point p = (Point)it.next();
+            Point p = it.next();
             points.add(p);
 
             FreerailsTile oldTile = (FreerailsTile)world.getTile(p.x, p.y);
@@ -47,12 +47,12 @@ public class MapDiffMove implements Move, MapUpdateMove {
         return tryMove(w, before);
     }
 
-    private MoveStatus tryMove(World w, ArrayList arrayList) {
+    private MoveStatus tryMove(World w, ArrayList<FreerailsTile> arrayList) {
         for (int i = 0; i < points.size(); i++) {
             Point point = points.get(i);
             FreerailsTile actual = (FreerailsTile)w.getTile(point.x, point.y);
 
-            FreerailsTile expected = (FreerailsTile)arrayList.get(i);
+            FreerailsTile expected = arrayList.get(i);
 
             if (!actual.equals(expected)) {
                 return MoveStatus.moveFailed("expected =" + expected +

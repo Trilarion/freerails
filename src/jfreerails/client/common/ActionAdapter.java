@@ -5,6 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JToggleButton;
@@ -87,7 +88,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     /**
      * @return an enumeration of MappedButtonModel
      */
-    public Enumeration getButtonModels() {
+    public Enumeration<MappedButtonModel> getButtonModels() {
         return buttonModels.elements();
     }
 

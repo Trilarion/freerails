@@ -148,7 +148,7 @@ public class BuildTrackController implements GameModel {
     }
     
     /** Moves cursor which causes track to be built on the worldDiff object. */
-    private void moveCursorMoreTiles(List track) {
+    private void moveCursorMoreTiles(List<Point> track) {
         moveCursorMoreTiles(track, null);
     }
     
@@ -162,7 +162,7 @@ public class BuildTrackController implements GameModel {
      * @param trackBuilder
      *            TrackMoveProducer
      */
-    private MoveStatus moveCursorMoreTiles(List track,
+    private MoveStatus moveCursorMoreTiles(List<Point> track,
             TrackMoveProducer trackBuilder) {
         Point oldPosition = getCursorPosition();
         
@@ -173,8 +173,8 @@ public class BuildTrackController implements GameModel {
             trackBuilder.setBuildTrackStrategy(getBts());
         }
         
-        for (Iterator iter = track.iterator(); iter.hasNext();) {
-            Point point = (Point) iter.next();
+        for (Iterator<Point> iter = track.iterator(); iter.hasNext();) {
+            Point point = iter.next();
             LOGGER.fine("point" + point);
             LOGGER.fine("oldPosition" + oldPosition);
             

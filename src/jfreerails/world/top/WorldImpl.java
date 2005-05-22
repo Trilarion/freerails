@@ -92,10 +92,10 @@ public class WorldImpl implements World {
     }
 
     public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p) {
-        ArrayList arrayList2 = lists[key.getKeyID()];
+        ArrayList<ArrayList<FreerailsSerializable>> arrayList2 = lists[key.getKeyID()];
 		int playerIndex = getPlayerIndex(p);
-		ArrayList arrayList = (ArrayList)arrayList2.get(playerIndex);
-		return (FreerailsSerializable)(arrayList).get(index);
+		ArrayList<FreerailsSerializable> arrayList = arrayList2.get(playerIndex);
+		return arrayList.get(index);
     }
 
     public void set(SKEY key, int index, FreerailsSerializable element) {
