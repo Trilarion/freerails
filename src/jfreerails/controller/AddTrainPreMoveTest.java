@@ -4,8 +4,9 @@
  */
 package jfreerails.controller;
 
+import static jfreerails.world.common.OneTileMoveVector.EAST;
+
 import java.awt.Point;
-import java.util.Arrays;
 
 import jfreerails.move.AbstractMoveTestCase;
 import jfreerails.move.Move;
@@ -13,7 +14,6 @@ import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
-import static jfreerails.world.common.OneTileMoveVector.EAST;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
@@ -97,10 +97,14 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 		assertEquals(GameTime.END_OF_THE_WORLD, tm.getEnd());
 		
 		
-		GameTime t = GameTime.BIG_BANG;
-		Point[] expected =  new Point[]{new Point(10,10), new Point(11,10), new Point(12,10), new Point(13,10)};
-		Point[] actual = tm.getTiles(t);
-		assertTrue(Arrays.equals(actual,expected) );
+		GameTime t = GameTime.BIG_BANG;		
+		PathOnTiles actual = tm.getTiles(t);
+		assertEquals(new Point(10,10), actual.getStart());
+		assertEquals(3, actual.steps());
+		assertEquals(EAST, actual.getStep(0));
+		assertEquals(EAST, actual.getStep(1));
+		assertEquals(EAST, actual.getStep(2));
+		
 		
 		//Check distance
 		assertEquals(0, tm.getDistance(new GameTime(0)));

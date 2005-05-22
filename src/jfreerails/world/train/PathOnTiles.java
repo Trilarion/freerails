@@ -4,8 +4,11 @@
  */
 package jfreerails.world.train;
 
+import static jfreerails.world.common.OneTileMoveVector.TILE_DIAMETER;
+
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,7 +17,7 @@ import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.common.OneTileMoveVector;
-import static jfreerails.world.common.OneTileMoveVector.TILE_DIAMETER;
+import jfreerails.world.common.PositionOnTrack;
 
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
@@ -144,6 +147,18 @@ public class PathOnTiles implements FreerailsSerializable {
 	public OneTileMoveVector getStep(int i) {
 		return vectors[i];
 	}
+	
+	public PositionOnTrack getFinalPosition(){
+		int x = start.x;
+		int y = start.y;
+		for(OneTileMoveVector v: vectors){		
+			x+=v.deltaX;
+			y+=v.deltaY;
+		}
+		OneTileMoveVector finalStep = vectors[vectors.length-1];
+		PositionOnTrack p = PositionOnTrack.createFacing(x, y, finalStep);
+		return p;
+	}
 
 	/**
 	 * Returns the index of the step that takes the distance travelled over the
@@ -173,6 +188,18 @@ public class PathOnTiles implements FreerailsSerializable {
 
 	public int steps() {
 		return vectors.length;
+	}
+	
+	public PathOnTiles addSteps(OneTileMoveVector... newSteps){
+		int oldLength = vectors.length;
+		OneTileMoveVector[] newPath = new OneTileMoveVector[oldLength + newSteps.length];
+		for(int i = 0 ; i < oldLength; i++){
+			newPath[i] = vectors[i];
+		}
+		for(int i = 0 ; i < newSteps.length; i++){
+			newPath[i+oldLength] = newSteps[i];
+		}
+		return new PathOnTiles(start, newPath);
 	}
 
 	/**
@@ -256,6 +283,34 @@ public class PathOnTiles implements FreerailsSerializable {
 				index++;
 			}
 
+		};
+	}
+	
+	public Iterator<Point> tiles(){
+		return new Iterator<Point>(){			
+			int index = 0;
+			Point p = new Point(start);
+			public boolean hasNext() {				
+				return p != null;
+			}
+
+			public Point next() {	
+				if(p == null) throw new NoSuchElementException();
+				Point returnValue = new Point(p);
+				if(index < vectors.length){
+					p.x += vectors[index].deltaX;
+					p.y += vectors[index].deltaY;
+				}else{
+					p = null;
+				}
+				index++;
+				return returnValue;
+			}
+
+			public void remove() {
+				throw new UnsupportedOperationException();				
+			}
+			
 		};
 	}
 

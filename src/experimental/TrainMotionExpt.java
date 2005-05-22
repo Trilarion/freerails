@@ -12,6 +12,7 @@ import static jfreerails.world.common.OneTileMoveVector.WEST;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Iterator;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -33,12 +34,18 @@ import jfreerails.world.common.IntLine;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
+import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.TrainPositionOnMap;
 
 
 /**
  * This class is a visual test for the train movement code.
+ * 
+ * TODO
+ * (1)	Start train moving on first track section.  Use modulus operator
+ * on t value.
+ * (2)	Update the train's motion when the current time inteval is coming to an end.
  * 
  * @author Luke Lindsay
  *
@@ -59,9 +66,10 @@ public class TrainMotionExpt extends JComponent {
 		TrainMotion motion = ta.findCurrentMotion(gameTime);
 		TrainPositionOnMap pos = motion.getPosition(gameTime);
 		
-		Point[] tiles = motion.getTiles(new GameTime(0));
-		
-		for(Point tile : tiles){
+		PathOnTiles pathOT = motion.getTiles(new GameTime(0));	
+		Iterator<Point> it = pathOT.tiles();
+		while(it.hasNext()){
+			Point tile = it.next(); 
 			int x = tile.x * OneTileMoveVector.TILE_DIAMETER;
 			int y = tile.y * OneTileMoveVector.TILE_DIAMETER;
 			int w = OneTileMoveVector.TILE_DIAMETER;

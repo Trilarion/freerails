@@ -4,9 +4,12 @@
  */
 package jfreerails.controller;
 
+import java.awt.Point;
+
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.ImmutableSchedule;
@@ -105,6 +108,29 @@ public class TrainAccessor {
 	
 	public TrainStatus getStatus(){
 		return (TrainStatus)w.get(KEY.TRAIN_STATUS, id, p);
+	}
+	
+	/**
+	 * @return the location of the station the train is currently heading
+	 *         towards.
+	 */
+	public Point getTarget() {
+		TrainModel train = (TrainModel) w.get(KEY.TRAINS, id,
+				p);
+		int scheduleID = train.getScheduleID();
+		ImmutableSchedule schedule = (ImmutableSchedule) w.get(
+				KEY.TRAIN_SCHEDULES, scheduleID, p);
+		int stationNumber = schedule.getStationToGoto();
+
+		if (-1 == stationNumber) {
+			// There are no stations on the schedule.
+			return new Point(0, 0);
+		}
+
+		StationModel station = (StationModel) w.get(KEY.STATIONS,
+				stationNumber, p);
+
+		return new Point(station.x, station.y);
 	}
 	
 }

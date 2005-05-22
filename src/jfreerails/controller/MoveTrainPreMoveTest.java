@@ -4,17 +4,20 @@
  */
 package jfreerails.controller;
 
+import static jfreerails.world.common.OneTileMoveVector.EAST;
+
 import java.awt.Point;
 
 import jfreerails.move.AbstractMoveTestCase;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
-import static jfreerails.world.common.OneTileMoveVector.EAST;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
+import jfreerails.world.train.SpeedAgainstTime;
 import jfreerails.world.train.TrainOrdersModel;
 
 /**
@@ -68,17 +71,36 @@ public class MoveTrainPreMoveTest extends AbstractMoveTestCase {
 		s.addOrder(order1);				
 		defaultSchedule = s.toImmutableSchedule();
 		
-	}
-	
-	
-	public void testMove() {
-		
 		Point start = new Point(10, 10);
 		AddTrainPreMove preMove = new AddTrainPreMove(0, new int[] { 0, 0 },
 				start, principal, defaultSchedule);
 		Move m = preMove.generateMove(world);
 		MoveStatus ms = m.doMove(world, principal);
-		assertTrue(ms.ok);
+		assertTrue(ms.ok);				
+	}
+	
+	public void testNextVector(){
+		
+		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+		OneTileMoveVector actual = preMove.nextVector(world);
+		assertNotNull(actual);
+		//The train is at station A, so should head east to station B.
+		assertEquals(EAST, actual);
+	}
+	
+	public void testNextSpeeds(){
+		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+		GameTime t0 = new GameTime(0);
+		SpeedAgainstTime speeds = preMove.nextSpeeds(world, EAST, t0);
+		assertNotNull(speeds);
+		assertEquals(t0, speeds.getStart());
+		assertEquals(0, speeds.getDistance(t0));
+	}
+	
+	
+	public void testMove() {
+		
+		
 		
 	}
 

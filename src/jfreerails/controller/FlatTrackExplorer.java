@@ -67,7 +67,7 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
 		}
 
 		OneTileMoveVector branchDirection = OneTileMoveVector.getInstance(i);
-		this.currentBranch.setDirection(branchDirection);
+		this.currentBranch.setCameFrom(branchDirection);
 
 		int x = this.currentPosition.getX() + branchDirection.deltaX;
 		int y = this.currentPosition.getY() + branchDirection.deltaY;

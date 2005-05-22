@@ -32,15 +32,12 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
 	private final int trainId;
 
-	private final ReadOnlyWorld world;
-
 	public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
 			int trainNumber, MoveReceiver mr, FreerailsPrincipal p) {
 		this.trackExplorer = tx;
 		this.trainId = trainNumber;
-		this.world = w;
 		principal = p;
-		stopsHandler = new TrainStopsHandler(trainId, principal, world, mr);
+		stopsHandler = new TrainStopsHandler(trainId, principal, w, mr);
 	}
 
 	public boolean hasNextInt() {
@@ -64,13 +61,13 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 	public int nextInt() {
 		PositionOnTrack tempP = new PositionOnTrack(trackExplorer.getPosition());
 		int x = tempP.getX();
-		int y = tempP.getY();		
+		int y = tempP.getY();
 		Point targetPoint = stopsHandler.arrivesAtPoint(x, y);
 
 		int currentPosition = tempP.getOpposite().toInt();
-		PositionOnTrack[] t = FlatTrackExplorer.getPossiblePositions(
-				trackExplorer.getWorld(), new Point(targetPoint.x,
-						targetPoint.y));
+		ReadOnlyWorld world = trackExplorer.getWorld();
+		PositionOnTrack[] t = FlatTrackExplorer.getPossiblePositions(world,
+				targetPoint);
 		int[] targets = new int[t.length];
 
 		for (int i = 0; i < t.length; i++) {
@@ -83,8 +80,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 			targets[i] = target;
 		}
 
-		FlatTrackExplorer tempExplorer = new FlatTrackExplorer(trackExplorer
-				.getWorld(), tempP);
+		FlatTrackExplorer tempExplorer = new FlatTrackExplorer(world, tempP);
 		int next = pathFinder.findstep(currentPosition, targets, tempExplorer);
 
 		if (next == IncrementalPathFinder.PATH_NOT_FOUND) {
@@ -101,7 +97,5 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
 		return nextPosition;
 	}
-
-	
 
 }

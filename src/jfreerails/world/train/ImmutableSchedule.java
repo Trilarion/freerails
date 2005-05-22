@@ -49,7 +49,8 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         if (-1 == orderToGoto) {
             return -1;
         }
-		return m_orders[orderToGoto].getStationID();
+		TrainOrdersModel order = m_orders[orderToGoto];
+		return order.getStationID();
     }
 
     public /*=const*/ int[] getWagonsToAdd() {

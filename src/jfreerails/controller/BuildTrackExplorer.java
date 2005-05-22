@@ -288,7 +288,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 		//The direction we are moving relative to the current position.
 		OneTileMoveVector direction = OneTileMoveVector.getInstance(m_direction);
 
-		m_currentBranch.setDirection(direction);
+		m_currentBranch.setCameFrom(direction);
 		m_currentBranch.setX(m_currentPosition.getX() + direction.getDx());
 		m_currentBranch.setY(m_currentPosition.getY() + direction.getDy());
 

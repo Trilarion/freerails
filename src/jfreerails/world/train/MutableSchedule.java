@@ -18,7 +18,7 @@ public class MutableSchedule implements Schedule {
      * Vector of TrainOrdersModel.
      */
     private final Vector<TrainOrdersModel> orders = new Vector<TrainOrdersModel>();
-    private int nextScheduledOrder = 0;
+    private int nextScheduledOrder = -1;
 
     /** Whether the train should ignore the stationToGoto
      *and goto the first station in the list.

@@ -84,8 +84,16 @@ public class AddTrainPreMove implements PreMove{
     	return tm;
     }
 
-	/* (non-Javadoc)
-	 * @see jfreerails.controller.PreMove#generateMove(jfreerails.world.top.ReadOnlyWorld)
+	/** Generates a move that does the following.
+	 *<ol>
+	 *<li>Adds the train</li>
+	 *<li>Adds a cargo bundle to represent the cargo the train is carrying</li>
+	 *<li>Adds a schedule for the train</li>
+	 *<li>Adds transaction to pay for the train</li>
+	 *<li>Init. the trains position and motion</li>
+	 *</ol>
+	 * 
+	 * 
 	 */
 	public Move generateMove(ReadOnlyWorld w) {
 		//Add cargo bundle.

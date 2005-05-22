@@ -11,6 +11,7 @@ import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.PositionOnTrack;
 
 /**
  * <p>
@@ -175,7 +176,7 @@ public class TrainMotion implements FreerailsSerializable {
 	}
 
 	/**
-	 * Returns an array of the tiles the train is on at the specified time.
+	 * Returns a PathOnTiles object that identifies the tiles the train is on at the specified time.
 	 * 
 	 * @param t
 	 *            the time.
@@ -183,27 +184,34 @@ public class TrainMotion implements FreerailsSerializable {
 	 * @throws IllegalArgumentException
 	 *             if t is outside the interval
 	 */
-	public Point[] getTiles(GameTime t) {
+	public PathOnTiles getTiles(GameTime t) {
 		checkT(t);
 		int start = calcOffSet(t);
 		int end = start + trainLength;
-		ArrayList<Point> points = new ArrayList<Point>();
+		ArrayList<OneTileMoveVector> steps = new ArrayList<OneTileMoveVector>();
 		int distanceSoFar = 0;
 		Point p = path.getStart();
+		Point startPoint = null;
 		for (int i = 0; i < path.steps(); i++) {
 			OneTileMoveVector step = path.getStep(i);
 			distanceSoFar += step.getLength();
 			if (distanceSoFar > start) {
-				points.add(new Point(p));
+				steps.add(step);
+				if(null == startPoint){
+					startPoint = new Point(p);
+				}
 			}
 			p.x += step.deltaX;
 			p.y += step.deltaY;
-			if (distanceSoFar >= end) {
-				points.add(new Point(p));
+			if (distanceSoFar >= end) {				
 				break;
 			}
 		}
-		return points.toArray(new Point[points.size()]);
+		return new PathOnTiles(startPoint, steps);
+	}
+	
+	public PositionOnTrack getFinalPosition(){
+		return path.getFinalPosition();
 	}
 
 	public int hashCode() {
@@ -222,22 +230,9 @@ public class TrainMotion implements FreerailsSerializable {
 			OneTileMoveVector... newPathSection) {
 		GameTime start = newSpeeds.getStart();
 		//The tiles the train is sitting on before it starts moving along the new path section.
-		Point[] tiles = getTiles(start);
-		final int OLD = tiles.length - 1;
-		OneTileMoveVector[] newPath = new OneTileMoveVector[newPathSection.length
-				+ OLD];
-		for (int i = 0; i < newPath.length; i++) {
-			if (i < OLD) {
-				Point a = tiles[i];
-				Point b = tiles[i + 1];
-				newPath[i] = OneTileMoveVector
-						.getInstance(b.x - a.x, b.y - a.y);
-			} else {
-				newPath[i] = newPathSection[i - OLD];
-			}
-		}
-		PathOnTiles pathOnTiles = new PathOnTiles(tiles[0], newPath);
-		return new TrainMotion(pathOnTiles, OLD,
+		PathOnTiles currentTiles = getTiles(start);		
+		PathOnTiles pathOnTiles = currentTiles.addSteps(newPathSection);
+		return new TrainMotion(pathOnTiles, currentTiles.steps(),
 				trainLength, newSpeeds);
 	}
 
