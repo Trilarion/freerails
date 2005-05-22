@@ -10,7 +10,6 @@ public class OpenListTest extends TestCase {
 
 	public void testGetF() {
 	}
-	
 
 	public void testContains() {
 		OpenList openList = new OpenList();
@@ -34,7 +33,7 @@ public class OpenListTest extends TestCase {
 		assertEquals(4, openList.smallestF());
 		openList.popNodeWithSmallestF();
 		assertEquals(5, openList.smallestF());
-		
+
 	}
 
 	public void testSize() {
@@ -46,4 +45,14 @@ public class OpenListTest extends TestCase {
 		assertEquals(0, openList.size());
 	}
 
+	public void testAdd() {
+		OpenList openList = new OpenList();
+		openList.add(1, 4);
+		assertEquals(1, openList.size());
+		assertEquals(4, openList.smallestF());
+		openList.add(1, 6);
+		assertEquals(1, openList.size());
+		assertEquals(6, openList.smallestF());
+	}
+	
 }

@@ -186,7 +186,7 @@ public class TrackBuildingTest extends TestCase {
 			path = pathFinder.pathAsVectors();			
 			assertEquals(2, path.length);			
 			assertEquals(SOUTH, path[0]);
-			assertEquals(SOUTH, path[0]);
+			assertEquals(SOUTH, path[1]);
 		} catch (PathNotFoundException e) {
 			fail();
 		}
