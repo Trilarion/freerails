@@ -64,8 +64,8 @@ short NetBuffer::findLastBuffer(short _id){
 
   do{
     
-    if( _id == (short)buffer[pointer][ID]){ 
-      if( (int)buffer[pointer][SIZE] == (int)buffer[pointer][FILLED] )
+    if( _id == *(short *)buffer[pointer][ID]){ 
+      if( *(int*)buffer[pointer][SIZE] == *(int*)buffer[pointer][FILLED] )
 	return -1; 
       else
 	return pointer;
@@ -116,7 +116,7 @@ void NetBuffer::incStart(){
   do{
     if( ++start == BUFFERS_MAX_SIZE)
       start=0;
-  }while( buffer[start][ID] == 0 );
+  }while(*(short *)buffer[start][ID] == 0 );
  
 }
 
