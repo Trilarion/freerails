@@ -76,7 +76,7 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
   stationViewButton->SetToggle(true);
   stationViewButton->sigClick.connect(slot(*this, &GamePanel::handleViewButtonClick));
 
-  trainList=new PG_WidgetList(this, PG_Rect(2,225,161, 200));
+  trainList=new PG_WidgetList(this, PG_Rect(2, 225, 161, 200));
   trainList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
   trainList->SetTransparency(128);
   trainList->SetBackgroundBlend(255);
@@ -85,7 +85,7 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
   trainList->SetDirtyUpdate(false);
   trainListSize=0;
 
-  stationList=new PG_WidgetList(this, PG_Rect(2,225,161, 200));
+  stationList=new PG_WidgetList(this, PG_Rect(2, 225, 161, 200));
   stationList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
   stationList->SetTransparency(128);
   stationList->SetBackgroundBlend(255);
@@ -94,29 +94,19 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
   stationList->SetDirtyUpdate(false);
   stationListSize=0;
   
-  infoPane=new TerrainInfoPane(this, 2,225,161, 200, guiEngine, mapHelper);
+  infoPane=new TerrainInfoPane(this, 2, 225, 161, 200, guiEngine, mapHelper);
   infoPane->SetTransparency(128);
   infoPane->SetBackgroundBlend(255);
   infoPane->SetHidden(true);
   infoPane->SetVisible(true);
+
+  buildPane=new TerrainBuildPane(this, 2, 225, 161, 200, guiEngine, mapHelper);
+  buildPane->SetTransparency(128);
+  buildPane->SetBackgroundBlend(255);
+  buildPane->SetHidden(true);
+  buildPane->SetVisible(true);
   
   parent->getWidget()->setInfoPane(infoPane);
-  
-  buildButton=new PG_Button(this, PG_Rect(5,400,38,38));
-  buildButton->SetIcon("graphics/icons/build_track.png");
-  buildButton->SetToggle(true);
-
-  upgradeButton=new PG_Button(this, PG_Rect(45,400,38,38));
-  upgradeButton->SetIcon("graphics/icons/upgrade_track.png");
-  upgradeButton->SetToggle(true);
-
-  stationButton=new PG_Button(this, PG_Rect(85,400,38,38));
-  stationButton->SetIcon("graphics/icons/build_stations.png");
-  stationButton->SetToggle(true);
-
-  removeButton=new PG_Button(this, PG_Rect(125,400,38,38));
-  removeButton->SetIcon("graphics/icons/bulldozer.png");
-  removeButton->SetToggle(true);
   
   pauseButton=new PG_Button(this, PG_Rect(5,y+h-30,75,25),"PAUSE");
   pauseButton->SetToggle(true);
@@ -132,23 +122,24 @@ GamePanel::~GamePanel() {
 }
 
 void GamePanel::releaseAllBuildButtons(PG_Button* button) {
-  if (button!=buildButton) buildButton->SetPressed(false);
+/*  if (button!=buildButton) buildButton->SetPressed(false);
   if (button!=upgradeButton) upgradeButton->SetPressed(false);
   if (button!=stationButton) stationButton->SetPressed(false);
-  if (button!=removeButton) removeButton->SetPressed(false);
+  if (button!=removeButton) removeButton->SetPressed(false);*/
 }
 
 void GamePanel::releaseAllViewButtons(PG_Button* button) {
-  if (button!=stationViewButton) stationViewButton->SetPressed(false);
-  if (button!=trainViewButton) trainViewButton->SetPressed(false);
   if (button!=terrainViewButton) terrainViewButton->SetPressed(false);
   if (button!=buildViewButton) buildViewButton->SetPressed(false);
+  if (button!=trainViewButton) trainViewButton->SetPressed(false);
+  if (button!=stationViewButton) stationViewButton->SetPressed(false);
 }
 
 void GamePanel::releaseAllViews() {
   infoPane->Hide();
   trainList->Hide();
   stationList->Hide();
+  buildPane->Hide();
 }
 
 bool GamePanel::handleViewButtonClick(PG_Button* button) {
@@ -158,6 +149,7 @@ bool GamePanel::handleViewButtonClick(PG_Button* button) {
   if (!button->GetPressed()) return true;
   if (button==terrainViewButton)
   {
+    buildPane->Hide();
     trainList->Hide();
     stationList->Hide();
     infoPane->Show();
@@ -166,14 +158,17 @@ bool GamePanel::handleViewButtonClick(PG_Button* button) {
     infoPane->Hide();
     trainList->Hide();
     stationList->Hide();
+    buildPane->Show();
   } else if (button==trainViewButton)
   {
     infoPane->Hide();
+    buildPane->Hide();
     trainList->Hide();
     stationList->Show();
   } else if (button==stationViewButton)
   {
     infoPane->Hide();
+    buildPane->Hide();
     stationList->Hide();
     trainList->Show();
   }

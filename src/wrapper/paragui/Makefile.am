@@ -19,6 +19,7 @@ libwrapper_a_SOURCES = GameApplication.cpp \
     GameFrameHandler.cpp \
     \
     TerrainInfoPane.cpp \
+    TerrainBuildPane.cpp \
     MapHelper.cpp \
     \
     pgframeapplication.cpp \

@@ -7,6 +7,7 @@
 
 #include "GameMainWindow.h"
 #include "TerrainInfoPane.h"
+#include "TerrainBuildPane.h"
 
 #include <pgthemewidget.h>
 #include <pgradiobutton.h>
@@ -57,11 +58,6 @@ class GamePanel: public PG_ThemeWidget {//, public PG_EventObject {
     int stationListSize;
     int trainListSize;
 
-    PG_Button* buildButton;
-    PG_Button* upgradeButton;
-    PG_Button* stationButton;
-    PG_Button* removeButton;
-
     PG_Button* pauseButton;
     PG_Button* quitButton;
     
@@ -74,6 +70,7 @@ class GamePanel: public PG_ThemeWidget {//, public PG_EventObject {
     GameMainWindow* my_parent;
     
     TerrainInfoPane* infoPane;
+    TerrainBuildPane* buildPane;
 };
 
 #endif
