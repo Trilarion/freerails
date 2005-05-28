@@ -67,11 +67,12 @@ int GameApplication::runEngine(void* data)
 int GameApplication::run() {
 
   int result;
+  char title[50];
   char file[]="data/graphics/splash_screen.jpg";
   pGlobalApp->SetBackground(file);
   
   showSplash();
-  setCaption("FreeRails");
+  setCaption("FreeRails 0.1.1");
   sleep(1);
   hideSplash();
   while (1) {
@@ -162,7 +163,7 @@ bool GameApplication::initScreen(int x, int y, int w, int h) {
 }
 
 void GameApplication::setCaption(const char *title) {
-//  pGlobalApp->SetCaption(title,NULL);
+  pGlobalApp->SetCaption(title,"");
 }
 
 void GameApplication::showSplash() {

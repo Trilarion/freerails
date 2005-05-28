@@ -1,3 +1,7 @@
+Sat May 28 04:30:00 2005  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Add all buttons to TerrainBuildPane and give some functionality
+           Add caption with Version Number (Not best solution)
+
 Fri May 27 03:45:00 2005  Alexander Opitz <opi@le-bit.de>:
 o Data:    Adding some graphics from the jfreerails data dir to cvs
 o ParaGUI: Adding TerrainBuildPane so the build buttons are in buildPane

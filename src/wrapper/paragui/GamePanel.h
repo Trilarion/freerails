@@ -21,7 +21,7 @@
 #include "Station.h"
 #include "Train.h"
 
-class GamePanel: public PG_ThemeWidget {//, public PG_EventObject {
+class GamePanel: public PG_ThemeWidget {
 
   public:
     enum WidgetID {ViewStations = 10000, ViewTrains, BuildTrack, BuildStation, BuildTrain };

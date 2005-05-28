@@ -100,7 +100,7 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
   infoPane->SetHidden(true);
   infoPane->SetVisible(true);
 
-  buildPane=new TerrainBuildPane(this, 2, 225, 161, 200, guiEngine, mapHelper);
+  buildPane=new TerrainBuildPane(this, 2, 225, 161, 200, guiEngine, parent->getWidget());
   buildPane->SetTransparency(128);
   buildPane->SetBackgroundBlend(255);
   buildPane->SetHidden(true);
