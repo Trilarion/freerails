@@ -29,25 +29,36 @@ class TerrainBuildPane: public PG_ThemeWidget {
   private:
 
     void releaseAllOptionButtons(PG_Button* button);
+    void hideTrackAndBridgeButtons();
+    void hideTunnelButtons();
+    void hideStationButtons();
+
+    void showTrackAndBridgeButtons();
+    void showTunnelButtons();
+    void showStationButtons();
 
     GuiEngine* guiEngine;
     GameMapView* mapView;
 
     PG_Button* buildButton;
     PG_Button* upgradeButton;
-    PG_Button* stationButton;
+    PG_Button* buildStationButton;
     PG_Button* removeButton;
 
     PG_Button* singleTrackButton;
     PG_Button* doubleTrackButton;
 
-    PG_Button* woodenBridgeButton;;
-    PG_Button* steelBridgeButton;;
-    PG_Button* stoneBridgeButton;;
-    PG_Button* noBridgeButton;;
+    PG_Button* woodenBridgeButton;
+    PG_Button* steelBridgeButton;
+    PG_Button* stoneBridgeButton;
+    PG_Button* noBridgeButton;
 
-    PG_Button* tunnelButton;;
-    PG_Button* noTunnelButton;;
+    PG_Button* tunnelButton;
+    PG_Button* noTunnelButton;
+
+    PG_Button* depotButton;
+    PG_Button* stationButton;
+    PG_Button* terminalButton;
 };
 
 #endif // __TERRAINBUILDPANE_H__

@@ -1,3 +1,6 @@
+Sat May 28 19:00:00 2005  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Connect build buttons with Map so tracks&stations can be build again
+
 Sat May 28 04:30:00 2005  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Add all buttons to TerrainBuildPane and give some functionality
            Add caption with Version Number (Not best solution)

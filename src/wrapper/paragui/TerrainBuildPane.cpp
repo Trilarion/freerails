@@ -3,6 +3,7 @@
  */
 
 #include "TerrainBuildPane.h"
+#include "Station.h"
 
 TerrainBuildPane::TerrainBuildPane(PG_Widget* parent, int _x, int _y, int _w, int _h,
                                  GuiEngine* _guiEngine, GameMapView* _mapView):
@@ -21,10 +22,10 @@ PG_ThemeWidget(parent, PG_Rect(_x,_y,_w,_h), "Widget") {
   upgradeButton->SetToggle(true);
   upgradeButton->sigClick.connect(slot(*this, &TerrainBuildPane::handleOptionButtonClick));
 
-  stationButton=new PG_Button(this, PG_Rect(83,5,38,38));
-  stationButton->SetIcon("graphics/icons/build_stations.png");
-  stationButton->SetToggle(true);
-  stationButton->sigClick.connect(slot(*this, &TerrainBuildPane::handleOptionButtonClick));
+  buildStationButton=new PG_Button(this, PG_Rect(83,5,38,38));
+  buildStationButton->SetIcon("graphics/icons/build_stations.png");
+  buildStationButton->SetToggle(true);
+  buildStationButton->sigClick.connect(slot(*this, &TerrainBuildPane::handleOptionButtonClick));
 
   removeButton=new PG_Button(this, PG_Rect(123,5,38,38));
   removeButton->SetIcon("graphics/icons/bulldozer.png");
@@ -62,12 +63,31 @@ PG_ThemeWidget(parent, PG_Rect(_x,_y,_w,_h), "Widget") {
   noTunnelButton=new PG_Button(this, PG_Rect(43,125,38,38));
   noTunnelButton->SetIcon("graphics/icons/no_tunnels.png");
   noTunnelButton->SetToggle(true);
+
+  depotButton=new PG_Button(this, PG_Rect(43,45,38,38));
+  depotButton->SetIcon("graphics/icons/depot.png");
+  depotButton->SetToggle(true);
+
+  stationButton=new PG_Button(this, PG_Rect(83,45,38,38));
+  stationButton->SetIcon("graphics/icons/station.png");
+  stationButton->SetToggle(true);
+
+  terminalButton=new PG_Button(this, PG_Rect(123,45,38,38));
+  terminalButton->SetIcon("graphics/icons/terminal.png");
+  terminalButton->SetToggle(true);
   
   // Startconfig
-  buildButton->SetPressed(true);
+  hideTrackAndBridgeButtons();
+  hideTunnelButtons();
+  hideStationButtons();
+
   singleTrackButton->SetPressed(true);
   noBridgeButton->SetPressed(true);
   noTunnelButton->SetPressed(true);
+  depotButton->SetPressed(true);
+
+  mapView->setMouseType(GameMapView::normal);
+  mapView->setStationType(Station::Small);
 }
 
 TerrainBuildPane::~TerrainBuildPane() {
@@ -76,22 +96,85 @@ TerrainBuildPane::~TerrainBuildPane() {
 void TerrainBuildPane::releaseAllOptionButtons(PG_Button* button) {
   if (button!=buildButton) buildButton->SetPressed(false);
   if (button!=upgradeButton) upgradeButton->SetPressed(false);
-  if (button!=stationButton) stationButton->SetPressed(false);
+  if (button!=buildStationButton) buildStationButton->SetPressed(false);
   if (button!=removeButton) removeButton->SetPressed(false);
+}
+
+void TerrainBuildPane::hideTrackAndBridgeButtons() {
+  singleTrackButton->Hide();
+  doubleTrackButton->Hide();
+  woodenBridgeButton->Hide();
+  steelBridgeButton->Hide();
+  stoneBridgeButton->Hide();
+  noBridgeButton->Hide();
+}
+
+void TerrainBuildPane::showTrackAndBridgeButtons() {
+  singleTrackButton->Show();
+  doubleTrackButton->Show();
+  woodenBridgeButton->Show();
+  steelBridgeButton->Show();
+  stoneBridgeButton->Show();
+  noBridgeButton->Show();
+}
+
+void TerrainBuildPane::hideTunnelButtons() {
+  tunnelButton->Hide();
+  noTunnelButton->Hide();
+}
+
+void TerrainBuildPane::showTunnelButtons() {
+  tunnelButton->Show();
+  noTunnelButton->Show();
+}
+
+void TerrainBuildPane::hideStationButtons() {
+  depotButton->Hide();
+  stationButton->Hide();
+  terminalButton->Hide();
+}
+
+void TerrainBuildPane::showStationButtons() {
+  depotButton->Show();
+  stationButton->Show();
+  terminalButton->Show();
 }
 
 bool TerrainBuildPane::handleOptionButtonClick(PG_Button* button) {
 
   releaseAllOptionButtons(button);
-  if (!button->GetPressed()) return true;
+  if (!button->GetPressed())
+  {
+    hideTrackAndBridgeButtons();
+    hideTunnelButtons();
+    hideStationButtons();
+    mapView->setMouseType(GameMapView::normal);
+    return true;
+  }
   if (button==buildButton)
   {
+    mapView->setMouseType(GameMapView::buildTrack);
+    hideStationButtons();
+    showTrackAndBridgeButtons();
+    showTunnelButtons();
   } else if (button==upgradeButton)
   {
-  } else if (button==stationButton)
+    mapView->setMouseType(GameMapView::updateTrack);
+    hideTunnelButtons();
+    hideStationButtons();
+    showTrackAndBridgeButtons();
+  } else if (button==buildStationButton)
   {
+    mapView->setMouseType(GameMapView::buildStation);
+    hideTrackAndBridgeButtons();
+    hideTunnelButtons();
+    showStationButtons();
   } else if (button==removeButton)
   {
+    mapView->setMouseType(GameMapView::removeTrack);
+    hideTrackAndBridgeButtons();
+    hideTunnelButtons();
+    hideStationButtons();
   }
   return true;
 }

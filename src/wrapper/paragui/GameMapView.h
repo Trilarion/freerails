@@ -29,7 +29,7 @@ class GameMapView: public PG_Widget, Base2DMapView {
   public:
   
     enum MouseType {normal=0,
-                    buildTrack=10, buildStation, buildTrain};
+                    buildTrack=10, updateTrack, removeTrack, buildStation, buildTrain};
     /**  */
     GameMapView(PG_FrameApplication* _app, int x, int y, int w, int h);
     /**  */

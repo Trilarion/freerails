@@ -163,14 +163,14 @@ bool GamePanel::handleViewButtonClick(PG_Button* button) {
   {
     infoPane->Hide();
     buildPane->Hide();
-    trainList->Hide();
-    stationList->Show();
+    stationList->Hide();
+    trainList->Show();
   } else if (button==stationViewButton)
   {
     infoPane->Hide();
     buildPane->Hide();
-    stationList->Hide();
-    trainList->Show();
+    trainList->Hide();
+    stationList->Show();
   }
   return true;
 }
