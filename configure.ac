@@ -4,7 +4,7 @@ dnl acinclude.m4 makes the job for all programs ;-)
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.54)
-AC_INIT([freerails],[0.0.7],[bugs])
+AC_INIT([freerails],[0.1.1],[bugs])
 
 AC_CONFIG_SRCDIR([acinclude.m4]) dnl a source file from your sub dir
 

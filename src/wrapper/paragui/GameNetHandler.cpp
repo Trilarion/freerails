@@ -3,6 +3,7 @@
  */
 
 #include "GameNetHandler.h"
+#include "TrainFrame.h"
 
 GameNetHandler::GameNetHandler(GameMainWindow* _mw, GuiEngine* _guiEngine, GamePanel* _panel, GameMapView *_mapView):
 PG_NetHandler(NULL) {
@@ -42,13 +43,14 @@ std::cerr << "Add Station" << std::endl;
 	mw->getApp()->GetFrameHandler()->UpdateTiles(((Station*)element)->getPosX(),((Station*)element)->getPosY());
       break;
       case GameElement::idTrain:
-std::cerr << "Add Train" << std::endl;
+std::cerr << "Add Train start" << std::endl;
         panel->addTrain((Train*)element);
-//	framehandler->AddFrameObject(new TrainFrame(guiEngine->getWorldMap(),(Train*)element));
+	mw->getApp()->GetFrameHandler()->AddFrameObject(new TrainFrame(guiEngine->getWorldMap(),(Train*)element));
+std::cerr << "Add Train done" << std::endl;
       break;
     case GameElement::idTrack:
-std::cerr << "Add Track start" << (Train*)element << ":" << ((Train*)element)->getPosX() << ":" << ((Train*)element)->getPosY() << std::endl;
-	mw->getApp()->GetFrameHandler()->UpdateTiles(((Train*)element)->getPosX(),((Train*)element)->getPosY());
+std::cerr << "Add Track start" << std::endl;
+	mw->getApp()->GetFrameHandler()->UpdateTiles(((Track*)element)->getPosX(),((Track*)element)->getPosY());
 std::cerr << "Add Track end" << std::endl;
 	break;
     }

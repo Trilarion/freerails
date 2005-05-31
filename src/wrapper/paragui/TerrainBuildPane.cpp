@@ -32,6 +32,11 @@ PG_ThemeWidget(parent, PG_Rect(_x,_y,_w,_h), "Widget") {
   removeButton->SetToggle(true);
   removeButton->sigClick.connect(slot(*this, &TerrainBuildPane::handleOptionButtonClick));
 
+  buildTrainButton=new PG_Button(this, PG_Rect(3,165,38,38));
+  buildTrainButton->SetIcon("graphics/ui/buttons/build_train.png");
+  buildTrainButton->SetToggle(true);
+  buildTrainButton->sigClick.connect(slot(*this, &TerrainBuildPane::handleOptionButtonClick));
+
   singleTrackButton=new PG_Button(this, PG_Rect(3,45,38,38));
   singleTrackButton->SetIcon("graphics/icons/standard_track.png");
   singleTrackButton->SetToggle(true);
@@ -98,6 +103,7 @@ void TerrainBuildPane::releaseAllOptionButtons(PG_Button* button) {
   if (button!=upgradeButton) upgradeButton->SetPressed(false);
   if (button!=buildStationButton) buildStationButton->SetPressed(false);
   if (button!=removeButton) removeButton->SetPressed(false);
+  if (button!=buildTrainButton) buildTrainButton->SetPressed(false);
 }
 
 void TerrainBuildPane::hideTrackAndBridgeButtons() {
@@ -172,6 +178,12 @@ bool TerrainBuildPane::handleOptionButtonClick(PG_Button* button) {
   } else if (button==removeButton)
   {
     mapView->setMouseType(GameMapView::removeTrack);
+    hideTrackAndBridgeButtons();
+    hideTunnelButtons();
+    hideStationButtons();
+  } else if (button==buildTrainButton)
+  {
+    mapView->setMouseType(GameMapView::buildTrain);
     hideTrackAndBridgeButtons();
     hideTunnelButtons();
     hideStationButtons();

@@ -12,6 +12,7 @@
 #include "GamePanel.h"
 #include "GameMapView.h"
 #include "GameElement.h"
+#include "GameFrameHandler.h"
 #include "GuiEngine.h"
 #include "Message.h"
 #include "Station.h"
@@ -34,6 +35,7 @@ class GameNetHandler : public PG_NetHandler {
     GamePanel* panel;
     GameMainWindow* mw;
     GameMapView *mapView;
+    GameFrameHandler *framehandler;
 };
 
 #endif

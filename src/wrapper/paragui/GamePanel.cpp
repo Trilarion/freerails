@@ -4,50 +4,6 @@
 
 #include "GamePanel.h"
 
-/*
-PARAGUI_CALLBACK(GamePanel::clickBuildButton) {
-
-  PG_Button* button = (PG_Button*)widget;
-  if (button->GetPressed()) {
-    releaseAllBuildButtons(button);
-    switch (id)
-    {
-      case GamePanel::BuildTrack:
-        my_parent->getWidget()->setMouseType(GameMapView::buildTrack);
-      break;
-      case GamePanel::BuildStation:
-        my_parent->getWidget()->setMouseType(GameMapView::buildStation);
-      break;
-      case GamePanel::BuildTrain:
-        my_parent->getWidget()->setMouseType(GameMapView::buildTrain);
-      break;
-    }
-    Update();
-  } else {
-    my_parent->getWidget()->setMouseType(GameMapView::normal);
-  }
-}
-
-PARAGUI_CALLBACK(GamePanel::clickStationSelect) {
-
-  switch (id)
-  {
-    case 4:
-      my_parent->getWidget()->setStationType(Station::Signal);
-    break;
-    case 5:
-      my_parent->getWidget()->setStationType(Station::Small);
-    break;
-    case 6:
-      my_parent->getWidget()->setStationType(Station::Medium);
-    break;
-    case 7:
-      my_parent->getWidget()->setStationType(Station::Big);
-    break;
-  }
-}*/
-
-
 GamePanel::GamePanel(GameMainWindow* parent, int x, int y, int w, int h, GuiEngine* _guiEngine, MapHelper* mapHelper):
 PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
   my_parent = parent;
@@ -119,13 +75,6 @@ PG_ThemeWidget(parent->getWidget(), PG_Rect(x,y,w,h), "Widget") {
 }
 
 GamePanel::~GamePanel() {
-}
-
-void GamePanel::releaseAllBuildButtons(PG_Button* button) {
-/*  if (button!=buildButton) buildButton->SetPressed(false);
-  if (button!=upgradeButton) upgradeButton->SetPressed(false);
-  if (button!=stationButton) stationButton->SetPressed(false);
-  if (button!=removeButton) removeButton->SetPressed(false);*/
 }
 
 void GamePanel::releaseAllViewButtons(PG_Button* button) {
@@ -213,7 +162,7 @@ void GamePanel::addStation(Station* station)
     case Station::Small:
     case Station::Medium:
     case Station::Big:
-      button=new PG_Button(NULL, PG_Rect(0,0,150,30),station->getName().c_str());
+      button=new PG_Button(NULL, PG_Rect(0,0,145,30),station->getName().c_str());
       button->SetFontSize(11);
       button->SetTransparency(128,128,240);
     break;
@@ -242,7 +191,7 @@ void GamePanel::addTrain(Train* train)
     break;
   }
 */
-  button=new PG_Button(NULL, PG_Rect(0,0,150,30),"");
+  button=new PG_Button(NULL, PG_Rect(0,0,145,30),"");
   button->SetFontSize(11);
   button->SetTransparency(128,128,240);
   trainList->AddChild(button);

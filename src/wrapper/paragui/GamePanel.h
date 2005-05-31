@@ -43,7 +43,6 @@ class GamePanel: public PG_ThemeWidget {
     
   private:
   
-    void releaseAllBuildButtons(PG_Button* button);
     void releaseAllViewButtons(PG_Button* button);
     void releaseAllViews();
 

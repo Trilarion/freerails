@@ -44,6 +44,7 @@ class TerrainBuildPane: public PG_ThemeWidget {
     PG_Button* upgradeButton;
     PG_Button* buildStationButton;
     PG_Button* removeButton;
+    PG_Button* buildTrainButton;
 
     PG_Button* singleTrackButton;
     PG_Button* doubleTrackButton;

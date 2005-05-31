@@ -181,7 +181,7 @@ AC_DEFUN(AM_FREERAILS_PARAGUI,
   dnl I assume, that if SDL/ParaGUI isn't found, then user can't build FreeRails
   dnl (ParaGUI is last chance)
   SDL_MINVERSION=1.2.0
-  PARAGUI_MINVERSION=1.0.0
+  PARAGUI_MINVERSION=1.1.0
   
   dnl Check for SDL
   AM_PATH_SDL($SDL_MINVERSION, sdl_found=yes, sdl_found=no)

@@ -46,18 +46,14 @@ void GameMapView::setInfoPane(TerrainInfoPane* _infoPane) {
 }
 
 void GameMapView::eventMouseLeave() {
-  std::cerr << "leave map" << std::endl;
   PG_Widget::eventMouseLeave();
 }
 
 void GameMapView::eventMouseEnter() {
-  std::cerr << "enter map" << std::endl;
   PG_Widget::eventMouseEnter();
 }
 
 bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
-  std::cerr << "mouse down map" << std::endl;
-
 
   if (button->button==SDL_BUTTON_LEFT) {
 
@@ -89,8 +85,6 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 
 
 bool GameMapView::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
-
-  std::cerr << "mouse move map" << std::endl;
   return true;
 }
 

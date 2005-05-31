@@ -1,3 +1,7 @@
+Tue May 31 02:15:00 2005  Alexander Opitz <opi@le-bit.de>:
+o ParaGUI: Add Train Build Button, add Train Movement Class
+           The Class makes a client side self calculating of next position
+
 Sat May 28 19:00:00 2005  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Connect build buttons with Map so tracks&stations can be build again
 
