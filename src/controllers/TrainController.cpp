@@ -12,8 +12,8 @@
 TrainController::TrainController(WorldMap *_map) : Controller(_map, GameElement::idTrain)
 {
 // TODO ... The TrainInfo should be loaded from XML File or Server
-  engine1 = new TrainInfo("Grasshopper", TrainType::Steam, 1900, 10000, 100);
-  engine2 = new TrainInfo("Norris", TrainType::Steam, 1900, 10000, 100);
+  TrainInfo* engine1 = new TrainInfo("Grasshopper", TrainInfo::Steam, 1900, 10000, 100);
+  TrainInfo* engine2 = new TrainInfo("Norris", TrainInfo::Steam, 1900, 10000, 100);
   trainInfos.push_back(engine1);
   trainInfos.push_back(engine2);
 }
@@ -60,5 +60,5 @@ void TrainController::trainDoBuild(Train* train)
 
 std::vector<TrainInfo*> TrainController::getTrainInfos()
 {
-  return trainInfos();
+  return trainInfos;
 }

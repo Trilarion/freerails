@@ -102,8 +102,8 @@ void GameMapView::updatePixmapPos(int x, int y)
       ox = 0 * 30;
       oy = 0 * 30;
       break;
-    case MapField::dessert:
-      xpos = getPixmapPos(x, y, MapField::dessert);
+    case MapField::desert:
+      xpos = getPixmapPos(x, y, MapField::desert);
       ox = xpos * 30;
       oy = 1 * 30;
       break;
