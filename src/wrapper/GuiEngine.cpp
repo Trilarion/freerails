@@ -96,7 +96,6 @@ bool GuiEngine::testBuildTrain(int x, int y){
     
   GameElement* new_element = new Train(x,y,NULL,player);
   return trainController->canBuildElement(new_element);
-
 }
 
 
@@ -110,7 +109,6 @@ bool GuiEngine::buildTrain(int x, int y){
       return true;
     }else
       return false;
-    
 }
 
 

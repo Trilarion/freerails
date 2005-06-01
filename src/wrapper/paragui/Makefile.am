@@ -30,5 +30,4 @@ libwrapper_a_SOURCES = GameApplication.cpp \
     pgframehandler.cpp \
     pgnethandler.cpp
 
-#    TrainFrame.cpp \
 #    pgframeapplicationhandler.cpp 
