@@ -1,5 +1,7 @@
 Wed Jun 01 02:30:00 2005  Alexander Opitz <opi@le-bit.de>:
 o Ctrl:    Add some TrainInfos, give TrainController a function
+o Data:    Add missing tiles.conf files, they should later replaced by the XML files.
+o ParaGUI: Add missing pgsprite classes. They depend on the tiles.confs yet.
 
 Tue May 31 02:15:00 2005  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Add Train Build Button, add Train Movement Class
