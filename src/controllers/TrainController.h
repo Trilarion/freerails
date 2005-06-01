@@ -24,10 +24,14 @@ class TrainController : public Controller
     bool canBuildElement(GameElement* _element);
     void addGameElement(GameElement* _element);
     void removeGameElement(long int _elementID);
+    
+    std::vector<TrainInfo*> getTrainInfos();
 
   private:
     bool testBuildElement(int x, int y);
     void trainDoBuild(Train* train);
+    
+    std::vector<TrainInfo*> trainInfos;
 };
 
 #endif

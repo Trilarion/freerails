@@ -1,3 +1,6 @@
+Wed Jun 01 02:30:00 2005  Alexander Opitz <opi@le-bit.de>:
+o Ctrl:    Add some TrainInfos, give TrainController a function
+
 Tue May 31 02:15:00 2005  Alexander Opitz <opi@le-bit.de>:
 o ParaGUI: Add Train Build Button, add Train Movement Class
            The Class makes a client side self calculating of next position
