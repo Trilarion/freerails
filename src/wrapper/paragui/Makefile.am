@@ -22,6 +22,7 @@ libwrapper_a_SOURCES = GameApplication.cpp \
     TerrainBuildPane.cpp \
     MapHelper.cpp \
     TrainFrame.cpp \
+    SelectTrainTypeDialog.cpp \
     \
     pgframeapplication.cpp \
     pgframeobject.cpp \

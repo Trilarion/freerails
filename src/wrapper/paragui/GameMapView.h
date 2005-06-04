@@ -11,6 +11,7 @@
 #include "MapField.h"
 #include "Base2DMapView.h"
 #include "TerrainInfoPane.h"
+#include "SelectTrainTypeDialog.h"
 
 //#include <paragui_types.h>
 #include <pgimage.h>
@@ -60,6 +61,8 @@ class GameMapView: public PG_Widget, Base2DMapView {
 
     void drawSelected(int mapX, int mapY);
     bool adjacentTile(int mapX, int mapY, int *dir);
+
+    SelectTrainTypeDialog* sTrainTypeDlg;
 };
 
 #endif

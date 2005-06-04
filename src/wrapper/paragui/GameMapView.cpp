@@ -23,6 +23,7 @@ Base2DMapView(NULL) {
   selectedsprite->startAnim();
   selectedsprite->set(0,0);
   selectedsprite->setSpeed(1);
+  sTrainTypeDlg = new SelectTrainTypeDialog(this, (w - 300) / 2, (h - 250) / 2, 300, 250, NULL);
 }
 
 GameMapView::~GameMapView() {
@@ -71,6 +72,7 @@ bool GameMapView::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 	}
 	break;
     case buildTrain:
+        sTrainTypeDlg->show();
         guiEngine->buildTrain(mapx,mapy);
 	break;
     default:
