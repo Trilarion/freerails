@@ -20,27 +20,57 @@ import java.util.StringTokenizer;
  * 
  */
 public class Utils {
-	public static Serializable cloneBySerialisation(Object m)
-			throws IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ObjectOutputStream objectOut = new ObjectOutputStream(out);
-		objectOut.writeObject(m);
-		objectOut.flush();
 
-		byte[] bytes = out.toByteArray();
+	public static boolean equalsBySerialization(Serializable a, Serializable b) {
+	
+		byte[] bytesA = write2ByteArray(a);
+		byte[] bytesB = write2ByteArray(b);
+		if (bytesA.length != bytesB.length)
+			return false;
 
-		ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-		ObjectInputStream objectIn = new ObjectInputStream(in);
-		Serializable o;
+		for (int i = 0; i < bytesA.length; i++) {
+			if (bytesA[i] != bytesB[i])
+				return false;
+		}
 
+		return true;
+
+	}
+
+	public static Serializable cloneBySerialisation(Object m) {
 		try {
+			byte[] bytes = write2ByteArray(m);
+
+			ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+			ObjectInputStream objectIn = new ObjectInputStream(in);
+			Serializable o;
+
 			o = (Serializable) objectIn.readObject();
+			return o;
 		} catch (ClassNotFoundException e) {
+			// Should never happen.
+			throw new IllegalStateException();
+		} catch (IOException e) {
 			// Should never happen.
 			throw new IllegalStateException();
 		}
 
-		return o;
+	}
+
+	private static byte[] write2ByteArray(Object m) {
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try {
+			ObjectOutputStream objectOut = new ObjectOutputStream(out);
+			objectOut.writeObject(m);
+			objectOut.flush();
+		} catch (IOException e) {
+			// Should never happen.
+			throw new IllegalStateException();
+		}
+
+		byte[] bytes = out.toByteArray();
+		return bytes;
 	}
 
 	public static String capitalizeEveryWord(String str) {
@@ -76,12 +106,17 @@ public class Utils {
 		return null;
 	}
 
-	/** Returns the largest solution of the quadratic equation ax<sup><font size="-1">2</font></sup> + bx + c = 0.
-	 * @throws IllegalArgumentException if <code>a == 0</code>
-	 * @throws IllegalArgumentException if <code>(b * b - 4 * a * c) < 0</code> 
+	/**
+	 * Returns the largest solution of the quadratic equation ax<sup><font
+	 * size="-1">2</font></sup> + bx + c = 0.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if <code>a == 0</code>
+	 * @throws IllegalArgumentException
+	 *             if <code>(b * b - 4 * a * c) < 0</code>
 	 */
 	public static double solveQuadratic(double a, double b, double c)
-			throws IllegalArgumentException {		
+			throws IllegalArgumentException {
 		if (a == 0) {
 			throw new IllegalArgumentException("a == 0");
 		}
@@ -90,10 +125,10 @@ public class Utils {
 			throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
 		return (-b + Math.sqrt(disc)) / (2 * a);
 
-	}	
-	
-	public static int hypotenuse(int a, int b){
+	}
+
+	public static int hypotenuse(int a, int b) {
 		double d = Math.hypot(a, b);
-		return (int)Math.round(d);
+		return (int) Math.round(d);
 	}
 }

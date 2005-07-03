@@ -118,9 +118,9 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements ListCellRe
     }
     private String findMaintenanceCost() {
         
-        GameTime time = (GameTime)w.get(ITEM.TIME);
+        GameTime time = w.currentTime();
         GameCalendar gameCalendar = (GameCalendar)w.get(ITEM.CALENDAR);
-        double month = gameCalendar.getMonth(time.getTime());
+        double month = gameCalendar.getMonth(time.getTicks());
         long cost = (long)(month / 12 * 5000);
         
         Money m = new Money(cost);

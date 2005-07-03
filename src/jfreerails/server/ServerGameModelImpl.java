@@ -112,18 +112,18 @@ public class ServerGameModelImpl implements ServerGameModel {
                 tb.moveTrains(world);
 
                 //Check whether we are about to start a new year..
-                GameTime time = (GameTime)world.get(ITEM.TIME);
+                GameTime time = world.currentTime();
                 GameCalendar calendar = (GameCalendar)world.get(ITEM.CALENDAR);
-                int yearNextTick = calendar.getYear(time.getTime() + 1);
-                int yearThisTick = calendar.getYear(time.getTime());
+                int yearNextTick = calendar.getYear(time.getTicks() + 1);
+                int yearThisTick = calendar.getYear(time.getTicks());
 
                 if (yearThisTick != yearNextTick) {
                     yearEnd();
                 }
 
                 //And a new month..
-                int monthThisTick = calendar.getMonth(time.getTime());
-                int monthNextTick = calendar.getMonth(time.getTime() + 1);
+                int monthThisTick = calendar.getMonth(time.getTicks());
+                int monthNextTick = calendar.getMonth(time.getTicks() + 1);
 
                 if (monthNextTick != monthThisTick) {
                     monthEnd();

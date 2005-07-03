@@ -57,8 +57,8 @@ public class BrokerScreenGenerator {
         this.playername = w.getPlayer(w.getID(principal)).getName();
         
         this.cal = (GameCalendar) w.get(ITEM.CALENDAR);
-        GameTime time = (GameTime) w.get(ITEM.TIME);
-        final int startyear = cal.getYear(time.getTime());
+        GameTime time = w.currentTime();
+        final int startyear = cal.getYear(time.getTicks());
 	this.year = String.valueOf(startyear);
         this.cash = w.getCurrentBalance(principal);
         

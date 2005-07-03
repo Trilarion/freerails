@@ -10,12 +10,12 @@ package jfreerails.network;
  *  @author Luke
  *
  */
-public class LoadGameServerCommand implements ServerCommand {
+public class LoadGameMessage2Server implements Message2Server {
     private static final long serialVersionUID = 3256726186552930869L;
 	private final int id;
     private final String filename;
 
-    public LoadGameServerCommand(int id, String s) {
+    public LoadGameMessage2Server(int id, String s) {
         this.id = id;
         this.filename = s;
     }
@@ -24,15 +24,15 @@ public class LoadGameServerCommand implements ServerCommand {
         return id;
     }
 
-    public CommandStatus execute(ServerControlInterface server) {
+    public MessageStatus execute(ServerControlInterface server) {
         try {
             server.loadgame(filename);
 
-            return new CommandStatus(id, true);
+            return new MessageStatus(id, true);
         } catch (Exception e) {
             e.printStackTrace();
 
-            return new CommandStatus(id, false, e.getMessage());
+            return new MessageStatus(id, false, e.getMessage());
         }
     }
 }

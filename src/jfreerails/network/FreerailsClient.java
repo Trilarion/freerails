@@ -189,10 +189,10 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /** Processes a message received from the server.*/
     final void processMessage(FreerailsSerializable message)
         throws IOException {
-        if (message instanceof ClientCommand) {
-            ClientCommand command = (ClientCommand)message;
-            CommandStatus status = command.execute(this);
-            logger.fine(command.toString());
+        if (message instanceof Message2Client) {
+            Message2Client request = (Message2Client)message;
+            MessageStatus status = request.execute(this);
+            logger.fine(request.toString());
             connection2Server.writeToServer(status);
         } else if (message instanceof Move) {
             Move m = (Move)message;
@@ -229,7 +229,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 
-    public void sendCommand(ServerCommand c) {
+    public void sendCommand(Message2Server c) {
         write(c);
     }
 

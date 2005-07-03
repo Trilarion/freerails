@@ -18,10 +18,10 @@ import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRoot.Property;
 import jfreerails.move.ChangeGameSpeedMove;
-import jfreerails.network.LoadGameServerCommand;
-import jfreerails.network.NewGameServerCommand;
-import jfreerails.network.SaveGameServerCommand;
-import jfreerails.network.ServerCommand;
+import jfreerails.network.LoadGameMessage2Server;
+import jfreerails.network.NewGameMessage2Server;
+import jfreerails.network.SaveGameMessage2Server;
+import jfreerails.network.Message2Server;
 import jfreerails.network.ServerControlInterface;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.top.ITEM;
@@ -57,8 +57,8 @@ public class ServerControlModel {
             String mapName = e.getActionCommand();
             
             if (mapName != null) {
-                ServerCommand command = new NewGameServerCommand(1, mapName);
-                modelRoot.sendCommand(command);
+                Message2Server message2 = new NewGameMessage2Server(1, mapName);
+                modelRoot.sendCommand(message2);
             }
             
         }
@@ -92,8 +92,8 @@ public class ServerControlModel {
             try{
                 String filename = (JOptionPane.showInputDialog(null,"Saved Games:","Select game to load",JOptionPane.INFORMATION_MESSAGE,null,saves,saves[0])).toString();
                 // Load the game chosen
-                ServerCommand command = new LoadGameServerCommand(1, filename);
-                modelRoot.sendCommand(command);
+                Message2Server message2 = new LoadGameMessage2Server(1, filename);
+                modelRoot.sendCommand(message2);
             } catch(Exception exept){
                 // <Hack>
                 // When no saved game is selected, or one that doesnt exist, nothing changes
@@ -119,9 +119,9 @@ public class ServerControlModel {
                 String filename = JOptionPane.showInputDialog(null, "Saved Game Name:","Save Game",JOptionPane.QUESTION_MESSAGE,null,null,modelRoot.getPrincipal().getName()).toString();
                 // Save the current game using the string 
                 modelRoot.setProperty(Property.QUICK_MESSAGE, "Saved game "+filename);
-                ServerCommand command = new SaveGameServerCommand(1, filename+".sav");
+                Message2Server message2 = new SaveGameMessage2Server(1, filename+".sav");
                 
-                modelRoot.sendCommand(command);
+                modelRoot.sendCommand(message2);
                 loadGameAction.setEnabled(true);
             } catch(Exception except){
                 
@@ -203,7 +203,7 @@ public class ServerControlModel {
         }
         
       
-        String[] mapNames = NewGameServerCommand.getMapNames();
+        String[] mapNames = NewGameMessage2Server.getMapNames();
         Action[] actions = new Action[mapNames.length];
         
         for (int j = 0; j < actions.length; j++) {

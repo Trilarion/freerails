@@ -142,6 +142,11 @@ public class TrainMover implements FreerailsServerSerializable, ServerAutomaton 
 			walker.stepForward(distance);
 
 			checkTrainPosition();
+			if(!walker.hasNext()){
+				logger.warning("Train "+trainNumber+" can't move!");
+				return;
+			}
+			
 			ChangeTrainPositionMove m = ChangeTrainPositionMove.generate(w,
 					walker, trainNumber, principal);
 

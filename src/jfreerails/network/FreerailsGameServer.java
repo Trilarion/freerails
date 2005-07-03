@@ -62,7 +62,7 @@ public class FreerailsGameServer implements ServerControlInterface,
     private int commandID = 0;
 
     /**
-     * ID of the last SetWorldClientCommand sent out. Used to keep track of
+     * ID of the last SetWorldMessage2Client sent out. Used to keep track of
      * which clients have updated their world object to the current version.
      */
     private int confirmationID = Integer.MIN_VALUE; /*Don't default 0 to avoid mistaken confirmations.*/
@@ -108,10 +108,10 @@ public class FreerailsGameServer implements ServerControlInterface,
                 }
 
                 /* Just send to the new client. */
-                ClientCommand setMaps = new SetPropertyClientCommand(getNextClientCommandId(),
+                Message2Client setMaps = new SetPropertyMessage2Client(getNextClientCommandId(),
                         ClientControlInterface.MAPS_AVAILABLE,
                         savedGamesManager.getNewMapNames());
-                ClientCommand setSaveGames = new SetPropertyClientCommand(getNextClientCommandId(),
+                Message2Client setSaveGames = new SetPropertyMessage2Client(getNextClientCommandId(),
                         ClientControlInterface.SAVED_GAMES,
                         savedGamesManager.getSaveGameNames());
                 connection.writeToClient(setMaps);
@@ -124,7 +124,7 @@ public class FreerailsGameServer implements ServerControlInterface,
                  * send the client a copy of the world object.
                  */
                 if (null != serverGameModel && null != getWorld()) {
-                    SetWorldClientCommand command = new SetWorldClientCommand(confirmationID,
+                    SetWorldMessage2Client command = new SetWorldMessage2Client(confirmationID,
                             getWorld());
                     connection.writeToClient(command);
                 }
@@ -383,17 +383,17 @@ public class FreerailsGameServer implements ServerControlInterface,
         /* Send the client the list of players. */
         String[] playerNames = getPlayerNames();
 
-        ClientCommand command = new SetPropertyClientCommand(getNextClientCommandId(),
+        Message2Client request = new SetPropertyMessage2Client(getNextClientCommandId(),
                 ClientControlInterface.CONNECTED_CLIENTS, playerNames);
 
-        send2All(command);
+        send2All(request);
     }
 
     private void sendWorldUpdatedCommand() {
         /* Send the world to the clients. */
         confirmationID = getNextClientCommandId();
 
-        SetWorldClientCommand command = new SetWorldClientCommand(confirmationID,
+        SetWorldMessage2Client command = new SetWorldMessage2Client(confirmationID,
                 getWorld());
 
         send2All(command);
@@ -449,15 +449,15 @@ public class FreerailsGameServer implements ServerControlInterface,
                     FreerailsSerializable[] messages = connection.readFromClient();
 
                     for (int i = 0; i < messages.length; i++) {
-                        if (messages[i] instanceof ServerCommand) {
-                            ServerCommand command = (ServerCommand)messages[i];
-                            CommandStatus cStatus = command.execute(this);
-                            logger.fine(command.toString());
+                        if (messages[i] instanceof Message2Server) {
+                            Message2Server message2 = (Message2Server)messages[i];
+                            MessageStatus cStatus = message2.execute(this);
+                            logger.fine(message2.toString());
                             connection.writeToClient(cStatus);
-                        } else if (messages[i] instanceof CommandStatus) {
-                            CommandStatus commandStatus = (CommandStatus)messages[i];
+                        } else if (messages[i] instanceof MessageStatus) {
+                            MessageStatus messageStatus = (MessageStatus)messages[i];
 
-                            if (commandStatus.getId() == this.confirmationID) {
+                            if (messageStatus.getId() == this.confirmationID) {
                                 /*
                                  * The client is confirming that they have
                                  * updated their world object to the current

@@ -45,7 +45,7 @@ public abstract class TransactionAggregator {
         m_times[0] = times[0]; //since we start counting at 1.
 
         for (int i = 1; i < times.length; i++) {
-            if (times[i].getTime() < times[i - 1].getTime()) {
+            if (times[i].getTicks() < times[i - 1].getTicks()) {
                 throw new IllegalArgumentException("Time at index " + (i - 1) +
                     " > time at index " + i + ".");
             }
@@ -78,9 +78,9 @@ public abstract class TransactionAggregator {
 
         for (int i = 0; i < numberOfTransactions; i++) {
             GameTime time = w.getTransactionTimeStamp(i, principal);
-            int transactionTime = time.getTime();
+            int transactionTime = time.getTicks();
 
-            while (m_times[timeIndex].getTime() <= transactionTime) {
+            while (m_times[timeIndex].getTicks() <= transactionTime) {
                 storeTotalIfAppropriate(timeIndex);
                 timeIndex++;
 

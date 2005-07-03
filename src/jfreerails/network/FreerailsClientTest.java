@@ -57,8 +57,8 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
     private void assertConnectClientsEquals(FreerailsClient client,
         String[] expectedPlayerNames) throws IOException, InterruptedException {
-        ClientCommand clientCommand = (ClientCommand)client.read();
-        clientCommand.execute(client);
+        Message2Client message2Client = (Message2Client)client.read();
+        message2Client.execute(client);
 
         String[] actualPlayerNames = (String[])client.getProperty(ClientControlInterface.CONNECTED_CLIENTS);
         assertNotNull(actualPlayerNames);
@@ -68,10 +68,10 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     private void assertMapsAndSaveGamesReceived(FreerailsClient client)
         throws IOException, InterruptedException {
         //2 commands to read.
-        ClientCommand clientCommand = (ClientCommand)client.read();
-        clientCommand.execute(client);
-        clientCommand = (ClientCommand)client.read();
-        clientCommand.execute(client);
+        Message2Client message2Client = (Message2Client)client.read();
+        message2Client.execute(client);
+        message2Client = (Message2Client)client.read();
+        message2Client.execute(client);
 
         Object maps = client.getProperty(ClientControlInterface.MAPS_AVAILABLE);
         assertNotNull(maps);

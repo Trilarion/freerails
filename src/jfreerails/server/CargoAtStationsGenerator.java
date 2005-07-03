@@ -80,9 +80,9 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
                         int amountAlready = after.getAmount(cb);
 
                         //Obtain the month
-                        GameTime time = (GameTime)w.get(ITEM.TIME);
+                        GameTime time = w.currentTime();
                         GameCalendar calendar = (GameCalendar)w.get(ITEM.CALENDAR);
-                        int month = calendar.getMonth(time.getTime());
+                        int month = calendar.getMonth(time.getTicks());
 
                         int amountAfter = calculateAmountToAdd(amountSupplied,
                                 month) + amountAlready;

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import jfreerails.network.NewGameServerCommand;
+import jfreerails.network.NewGameMessage2Server;
 import jfreerails.network.SavedGamesManager;
 import jfreerails.network.ServerControlInterface;
 import jfreerails.util.FreerailsProgressMonitor;
@@ -35,7 +35,7 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
     }
 
     public String[] getNewMapNames() {
-        return NewGameServerCommand.getMapNames();
+        return NewGameMessage2Server.getMapNames();
     }
 
     public void saveGame(Serializable w, String s) throws IOException {

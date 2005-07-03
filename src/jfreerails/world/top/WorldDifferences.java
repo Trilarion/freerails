@@ -21,7 +21,8 @@ import jfreerails.world.track.FreerailsTile;
  * Below is some stylised code showing what this class does.  The <code>key</code> object could be
  * a location on the map, a position in a list etc.
  * <code><pre>
-         HashMap underlyingWorldObject;
+ 
+        HashMap underlyingWorldObject;
         HashMap differences;
 
         public void put(Object key, Object value){
@@ -57,11 +58,9 @@ public class WorldDifferences implements World {
 
 	private static final Object NUMBER_OF_PLAYERS_KEY = new Integer(0);
     private enum KeyType {LIST, PLAYER, BANK_ACCOUNT, LIST_LENGTH};
-//    private static int i = 0;
-//    private final int LIST = i++;
-//    private final int PLAYER = i++;
-//    private final int BANK_ACCOUNT = i++;
-//    private final int LIST_LENGTH = i++;
+    
+    private GameTime time;
+
 
     /** Instances of this class are used as the keys in the hashmap listDifferences.*/
     public class DiffKey {
@@ -143,6 +142,7 @@ public class WorldDifferences implements World {
      * corresponding methods on the underlying world object.
      */
     public void reset() {
+    	time = underlyingWorld.currentTime();
         mapDifferences.clear();
         listDifferences.clear();
     }
@@ -407,8 +407,7 @@ public class WorldDifferences implements World {
         return playerID;
     }
 
-    public void addTransaction(Transaction t, FreerailsPrincipal p) {
-        GameTime time = (GameTime)this.get(ITEM.TIME);
+    public void addTransaction(Transaction t, FreerailsPrincipal p) {       
         addAccountIfNecessary(p).addTransaction(t, time);
     }
 
@@ -613,5 +612,49 @@ public class WorldDifferences implements World {
 			return null == a && null == b;
 		}
 		return a.equals(b);		
+	}
+
+	public void setTime(GameTime t) {
+		time = t;		
+	}
+
+	public GameTime currentTime() {		
+		return time;
+	}
+
+	public int addActiveEntity(AKEY key, Activity element, FreerailsPrincipal principal) {
+		
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void add(AKEY key, int index, Activity element, FreerailsPrincipal principal) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Activity removeLastActiveEntity(AKEY key, FreerailsPrincipal principal) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Activity removeLastActivity(AKEY key, int index, FreerailsPrincipal principal) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public ActivityIterator getActivities(AKEY key, int index, FreerailsPrincipal p) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public int size(AKEY key, FreerailsPrincipal p) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Player removeLastPlayer() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 }

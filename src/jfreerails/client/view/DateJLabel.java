@@ -31,9 +31,9 @@ public class DateJLabel extends JLabel implements View {
 
     protected void paintComponent(Graphics g) {
         if (null != w) {
-            GameTime time = (GameTime)w.get(ITEM.TIME);
+            GameTime time = w.currentTime();
             GameCalendar gameCalendar = (GameCalendar)w.get(ITEM.CALENDAR);
-            String s = gameCalendar.getYearAndMonth(time.getTime());
+            String s = gameCalendar.getYearAndMonth(time.getTicks());
             super.setText(s);
         }
 

@@ -70,7 +70,7 @@ public class OldWorldImpl {
 
         //Set the time..
         w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-        w.set(ITEM.TIME, new GameTime(0));
+        w.setTime(new GameTime(0));        
         w.set(ITEM.GAME_SPEED, new GameSpeed(10));
         w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 

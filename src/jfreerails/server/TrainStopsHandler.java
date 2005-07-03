@@ -17,7 +17,6 @@ import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
-import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -158,9 +157,9 @@ public class TrainStopsHandler implements ServerAutomaton {
 		if (isWaitingForFullLoad()) {
 			return false;
 		}
-		GameTime time = (GameTime) world.get(ITEM.TIME);
+		GameTime time = world.currentTime();
 
-		return time.getTime() > this.timeLoadingFinished.getTime();
+		return time.getTicks() > this.timeLoadingFinished.getTicks();
 	}
 
 	boolean isWaitingForFullLoad() {
@@ -213,8 +212,8 @@ public class TrainStopsHandler implements ServerAutomaton {
 	}
 
 	void makeTrainWait(int ticks) {
-		GameTime currentTime = (GameTime) world.get(ITEM.TIME);
-		timeLoadingFinished = new GameTime(currentTime.getTime() + ticks);
+		GameTime currentTime = world.currentTime();
+		timeLoadingFinished = new GameTime(currentTime.getTicks() + ticks);
 	}
 
 	private void scheduledStop() {

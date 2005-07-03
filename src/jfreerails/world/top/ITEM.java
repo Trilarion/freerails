@@ -19,8 +19,7 @@ public class ITEM implements FreerailsSerializable {
 	/** Maps key numbers to KEYs. */
     private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
 
-    //START OF KEYS
-    public static final ITEM TIME = new ITEM();
+    //START OF KEYS 
     public static final ITEM CALENDAR = new ITEM();
     public static final ITEM GAME_RULES = new ITEM();
     public static final ITEM GAME_SPEED = new ITEM();

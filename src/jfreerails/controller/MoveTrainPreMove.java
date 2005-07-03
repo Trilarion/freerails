@@ -5,9 +5,8 @@
 package jfreerails.controller;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
 
+import jfreerails.move.ChangeItemInListMove;
 import jfreerails.move.Move;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
@@ -17,6 +16,7 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.SpeedAgainstTime;
 import jfreerails.world.train.TrainMotion;
+import jfreerails.world.train.SpeedTimeAndStatus.Activity;
 
 /**
  * Generates moves for changes in train position and stops at stations.
@@ -27,10 +27,8 @@ import jfreerails.world.train.TrainMotion;
 public class MoveTrainPreMove implements PreMove {
 
 	private static final long serialVersionUID = 3545516188269491250L;
-	private static final long interval = 1000; //1 second.
 	private final int trainID;
 	private  final FreerailsPrincipal principal;
-	private List<Move> moves = new ArrayList<Move>();
 	
 	public MoveTrainPreMove(int id, FreerailsPrincipal p){		
 		trainID = id;
@@ -45,28 +43,42 @@ public class MoveTrainPreMove implements PreMove {
 	 * </ol>
 	 */
 	public boolean canGenerateMove(ReadOnlyWorld w){
-		return false;
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+		GameTime currentTime = w.currentTime();
+		Activity a = ta.getActivity(currentTime);
+		return a.equals(Activity.NEEDS_UPDATING);
 	}
 	
-	public Move generateMove(ReadOnlyWorld w) {	
-		//Get current position.
+	public Move generateMove(ReadOnlyWorld w) {
 		
+		//Check that we can generate a move.		
+		if(!canGenerateMove(w))
+			throw new IllegalStateException();
 		
-		return null;
+		//Find the next vector.
+		OneTileMoveVector nextVector = nextVector(w);
+		GameTime currentTime = w.currentTime();
+		
+		//Create a new train motion object.
+		TrainMotion nextMotion = nextMotion(w, nextVector, currentTime);
+		
+		//Create a new Move object.
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+		KEY k = ta.getFirstKEY();
+		TrainMotion oldMotion = (TrainMotion)w.get(k, trainID, principal);
+		
+		ChangeItemInListMove move = new ChangeItemInListMove(k, trainID, oldMotion, nextMotion, principal);
+		
+		return move;
 	}
 	
 	OneTileMoveVector nextVector(ReadOnlyWorld w){
 		//Find current position.
-		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		KEY k = ta.getLastKEY();
-		TrainMotion lastMotion = (TrainMotion)w.get(k, trainID, principal);				
-		PositionOnTrack currentPosition = lastMotion.getFinalPosition();
-	
+		PositionOnTrack currentPosition = currentTrainPosition(w);	
 		//Find targets						
-		Point targetPoint = ta.getTarget();
-		//Code copied from TrainPathFinder
+		Point targetPoint = currentTrainTarget(w);		
 		PositionOnTrack[] t = FlatTrackExplorer.getPossiblePositions(w,
-				targetPoint);
+			targetPoint);
 		int[] targets = new int[t.length];
 
 		for (int i = 0; i < t.length; i++) {
@@ -84,6 +96,19 @@ public class MoveTrainPreMove implements PreMove {
 		//I.e. the code somewhere else has facing and camefrom the wrong way round.
 		return nextPosition.cameFrom();
 	}
+
+	private PositionOnTrack currentTrainPosition(ReadOnlyWorld w) {
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+		KEY k = ta.getLastKEY();
+		TrainMotion lastMotion = (TrainMotion)w.get(k, trainID, principal);				
+		PositionOnTrack currentPosition = lastMotion.getFinalPosition();
+		return currentPosition;
+	}
+	
+	private Point currentTrainTarget(ReadOnlyWorld w) {
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);		
+		return ta.getTarget();
+	}
 		
 	
 	SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, OneTileMoveVector v, GameTime t){
@@ -95,7 +120,7 @@ public class MoveTrainPreMove implements PreMove {
 		int wagons = ta.getTrain().getNumberOfWagons();
 		int a0 = acceleration(wagons);
 		int v1 = topSpeed(wagons);
-		int t0 = t.getTime();
+		int t0 = t.getTicks();
 		int t1 = ((v1  - u) / a0) + t0;
 		
 		//Over estimate the time to travel distance.
@@ -111,9 +136,10 @@ public class MoveTrainPreMove implements PreMove {
 		
 	
 	TrainMotion nextMotion(ReadOnlyWorld w, OneTileMoveVector v, GameTime t){
-		
-		
-		return null;
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);	
+		TrainMotion lastMotion = ta.findCurrentMotion(t);
+		SpeedAgainstTime speeds = nextSpeeds(w, v, t);		
+		return lastMotion.next(speeds, v);
 	}
 	
 	int acceleration(int wagons){
@@ -122,8 +148,5 @@ public class MoveTrainPreMove implements PreMove {
 	
 	int topSpeed(int wagons){
 		return 100 / wagons;
-	}
-	
-	
-
+	}		
 }

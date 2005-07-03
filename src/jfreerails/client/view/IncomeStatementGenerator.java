@@ -78,8 +78,8 @@ public class IncomeStatementGenerator {
 
         profitTotal = new Money(profit);
 
-        GameTime time = (GameTime)w.get(ITEM.TIME);
-        startyear = cal.getYear(time.getTime());
+        GameTime time = w.currentTime();
+        startyear = cal.getYear(time.getTicks());
 
         year = String.valueOf(startyear);
 
@@ -115,7 +115,7 @@ public class IncomeStatementGenerator {
             GameTime time = w.getTransactionTimeStamp(i, principal);
 
             if (t instanceof DeliverCargoReceipt &&
-                    cal.getYear(time.getTime()) >= this.startyear) {
+                    cal.getYear(time.getTicks()) >= this.startyear) {
                 DeliverCargoReceipt dcr = (DeliverCargoReceipt)t;
                 int cargoType = dcr.getCb().getCargoType();
                 CargoType ct = (CargoType)w.get(SKEY.CARGO_TYPES, cargoType);
@@ -136,7 +136,7 @@ public class IncomeStatementGenerator {
             Transaction t = w.getTransaction(i, principal);
             GameTime time = w.getTransactionTimeStamp(i, principal);
 
-            if (t instanceof DeliverCargoReceipt && cal.getYear(time.getTime()) >= this.startyear) {
+            if (t instanceof DeliverCargoReceipt && cal.getYear(time.getTicks()) >= this.startyear) {
                 DeliverCargoReceipt dcr = (DeliverCargoReceipt)t;
                 if(dcr.getTrainId() == trainId) {
                     amount += dcr.getValue().getAmount();
@@ -155,7 +155,7 @@ public class IncomeStatementGenerator {
             GameTime time = w.getTransactionTimeStamp(i, principal);
 
             if (t.getCategory() == transactionCategory &&
-                    cal.getYear(time.getTime()) >= this.startyear) {
+                    cal.getYear(time.getTicks()) >= this.startyear) {
                 amount += t.getValue().getAmount();
             }
         }

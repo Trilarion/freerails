@@ -28,8 +28,10 @@ public class HtmlJPanelTest extends TestCase {
         assertEquals(expectedOutput, output);
 
         Object objectContext = new Object() {
-                public String name = "Luke";
-                public String question = "how are you?";
+                @SuppressWarnings("unused")
+				public String name = "Luke";
+                @SuppressWarnings("unused")
+				public String question = "how are you?";
             };
 
         output = HtmlJPanel.populateTokens(template, objectContext);

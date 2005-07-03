@@ -102,8 +102,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 				.getProperty(ClientControlInterface.MAPS_AVAILABLE);
 
 		final int commandID = 66;
-		ServerCommand command = new NewGameServerCommand(commandID, mapNames[0]);
-		client0.write(command);
+		Message2Server message2 = new NewGameMessage2Server(commandID, mapNames[0]);
+		client0.write(message2);
 		assertTrue(server.isNewPlayersAllowed());
 		server.update();
 		assertFalse("New players cannot be added once the game has started.",
@@ -114,15 +114,15 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 		 * gets called.
 		 */
 		FreerailsSerializable obj = client0.read();
-		ClientCommand cc = (ClientCommand) obj;
+		Message2Client cc = (Message2Client) obj;
 		client0.write(cc.execute(client0));
 
 		obj = client0.read();
-		CommandStatus status = (CommandStatus) obj;
+		MessageStatus status = (MessageStatus) obj;
 		assertTrue(status.isSuccessful());
 		assertEquals(commandID, status.getId());
 
-		/* The server should have sent a command that sets the world object. */
+		/* The server should have sent a message2 that sets the world object. */
 		client0.update();
 		client1.update();
 		assertNotNull(client0.getWorld());
@@ -181,8 +181,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
 			String[] mapNames = (String[]) client0
 					.getProperty(ClientControlInterface.MAPS_AVAILABLE);
-			ServerCommand command = new NewGameServerCommand(99, mapNames[0]);
-			client0.write(command);
+			Message2Server message2 = new NewGameMessage2Server(99, mapNames[0]);
+			client0.write(message2);
 			server.update();
 			client0.update();
 			client1.update();
@@ -256,8 +256,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
 			String[] mapNames = (String[]) client0
 					.getProperty(ClientControlInterface.MAPS_AVAILABLE);
-			ServerCommand command = new NewGameServerCommand(99, mapNames[0]);
-			client0.write(command);
+			Message2Server message2 = new NewGameMessage2Server(99, mapNames[0]);
+			client0.write(message2);
 			server.update();
 			client0.update();
 			client1.update();
@@ -306,16 +306,16 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 			// Start game
 			String[] mapNames = (String[]) client0
 					.getProperty(ClientControlInterface.MAPS_AVAILABLE);
-			ServerCommand newGameCommand = new NewGameServerCommand(
+			Message2Server newGameMessage2 = new NewGameMessage2Server(
 					commandID++, mapNames[0]);
-			CommandStatus cm = newGameCommand.execute(server);
+			MessageStatus cm = newGameMessage2.execute(server);
 			assertTrue(cm.isSuccessful());
 
 			// Save game and stop server
 			String savedGameName = "game1";
-			ServerCommand saveGameCommand = new SaveGameServerCommand(
+			Message2Server saveGameMessage2 = new SaveGameMessage2Server(
 					commandID++, savedGameName);
-			cm = saveGameCommand.execute(server);
+			cm = saveGameMessage2.execute(server);
 			assertTrue(cm.isSuccessful());
 			server.stopGame();
 

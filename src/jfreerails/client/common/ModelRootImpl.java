@@ -10,7 +10,7 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.network.MoveChainFork;
 import jfreerails.network.MoveReceiver;
-import jfreerails.network.ServerCommand;
+import jfreerails.network.Message2Server;
 import jfreerails.network.ServerCommandReceiver;
 import jfreerails.network.UntriedMoveReceiver;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -116,7 +116,7 @@ public final class ModelRootImpl implements ModelRoot {
     	listeners.remove(l);
     }
 
-    public void sendCommand(ServerCommand c) {
+    public void sendCommand(Message2Server c) {
         if (null != serverCommandReceiver) {
             serverCommandReceiver.sendCommand(c);
         } else {

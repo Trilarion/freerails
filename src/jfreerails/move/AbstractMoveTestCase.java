@@ -6,7 +6,7 @@ package jfreerails.move;
 
 import jfreerails.util.Utils;
 import jfreerails.world.common.GameCalendar;
-import jfreerails.world.common.GameTime;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.MapFixtureFactory;
@@ -22,51 +22,14 @@ import junit.framework.TestCase;
  *
  */
 public abstract class AbstractMoveTestCase extends TestCase {
-	protected World world;
-    private boolean hasSetupBeenCalled = false;
+	private boolean hasSetupBeenCalled = false;
+    protected World world;
 
-    protected void setUp() throws Exception {
-        setHasSetupBeenCalled(true);
-        setupWorld();
+    protected AbstractMoveTestCase() {
     }
 
-	protected void setupWorld() {
-		setWorld(new WorldImpl(10, 10));
-		//		Set the time..
-        getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
-		getWorld().set(ITEM.TIME, new GameTime(0));
-		getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
-	}
-
-    abstract public void testMove();
-
-    protected void assertTryMoveIsOk(Move m) {
-        assertSetupHasBeenCalled();
-
-        MoveStatus ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
-
-        ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
-            MoveStatus.MOVE_OK, ms);
-    }
-
-    protected void assertTryMoveFails(Move m) {
-        assertSetupHasBeenCalled();
-
-        MoveStatus ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertTrue("Move went through when it should have failed", !ms.ok);
-    }
-
-    protected void assertDoMoveIsOk(Move m) {
-        assertSetupHasBeenCalled();
-
-        MoveStatus ms = m.doMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertEquals(MoveStatus.MOVE_OK, ms);
+	public AbstractMoveTestCase(String str) {
+        super(str);
     }
 
     protected void assertDoMoveFails(Move m) {
@@ -77,60 +40,35 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
 
-    protected void assertTryUndoMoveIsOk(Move m) {
+    protected void assertDoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
-
-        ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
-            MoveStatus.MOVE_OK, ms);
-    }
-
-    protected void assertTryUndoMoveFails(Move m) {
-        assertSetupHasBeenCalled();
-
-        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertTrue("Move went through when it should have failed", !ms.ok);
-    }
-
-    protected void assertUndoMoveIsOk(Move m) {
-        assertSetupHasBeenCalled();
-
-        MoveStatus ms = m.undoMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.doMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(MoveStatus.MOVE_OK, ms);
+    }        
+
+    protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
+        try {
+            World w = getWorld();
+			World before = (World)Utils.cloneBySerialisation(w);
+           
+            assertEquals(before, w);
+                        
+            assertTrue(m.doMove(w, Player.AUTHORITATIVE).ok);
+            World after = (World)Utils.cloneBySerialisation(w);
+            assertFalse(after.equals(before));
+            
+            
+            assertTrue(m.undoMove(w, Player.AUTHORITATIVE).ok);
+            assertEquals(before, w);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
     }
-
-    protected void assertUndoMoveFails(Move m) {
-        assertSetupHasBeenCalled();
-
-        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertTrue("Move went through when it should have failed", !ms.ok);
-    }
-
-    /** Generally moves should not be repeatable.  For example,
-     * if we have just removed a piece of track, that piece of
-     * track is gone, so we cannot remove it again.
-     */
-    protected void assertOkButNotRepeatable(Move m) {
-        assertSetupHasBeenCalled();
-
-        assertTryMoveIsOk(m);
-        assertDoMoveIsOk(m);
-        assertTryMoveFails(m);
-        assertDoMoveFails(m);
-        assertTryUndoMoveIsOk(m);
-        assertUndoMoveIsOk(m);
-        assertTryUndoMoveFails(m);
-        assertTryMoveIsOk(m);
-        assertDoMoveIsOk(m);
-    }
+    
+   
 
     /** This method asserts that if we serialise then deserialise the
      * specified move, the specified move is equal to the deserialised move.
@@ -154,20 +92,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
         }
     }
 
-    protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
-        try {
-            World copyOfWorldBefore = (World)Utils.cloneBySerialisation(getWorld());
-            assertEquals("The world objects equals method did not survive serialization!",
-                copyOfWorldBefore, getWorld());
-            assertTrue(m.doMove(getWorld(), Player.AUTHORITATIVE).ok);
-            assertTrue(m.undoMove(getWorld(), Player.AUTHORITATIVE).ok);
-            assertEquals(copyOfWorldBefore, getWorld());
-        } catch (Exception e) {
-            e.printStackTrace();
-            assertTrue(false);
-        }
-    }
-
     protected void assertOkAndRepeatable(Move m) {
         assertSetupHasBeenCalled();
 
@@ -185,31 +109,118 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertUndoMoveIsOk(m);
     }
 
+    /** Generally moves should not be repeatable.  For example,
+     * if we have just removed a piece of track, that piece of
+     * track is gone, so we cannot remove it again.
+     */
+    protected void assertOkButNotRepeatable(Move m) {
+        assertSetupHasBeenCalled();
+
+        assertTryMoveIsOk(m);
+        assertDoMoveIsOk(m);
+        assertTryMoveFails(m);
+        assertDoMoveFails(m);
+        assertTryUndoMoveIsOk(m);
+        assertUndoMoveIsOk(m);
+        assertTryUndoMoveFails(m);
+        assertTryMoveIsOk(m);
+        assertDoMoveIsOk(m);
+    }
+
     private void assertSetupHasBeenCalled() {
         assertTrue("AbstractMoveTestCase.setUp has not been called!",
             hasSetupBeenCalled());
     }
 
-    protected AbstractMoveTestCase() {
+    protected void assertTryMoveFails(Move m) {
+        assertSetupHasBeenCalled();
+
+        MoveStatus ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertTrue("Move went through when it should have failed", !ms.ok);
     }
 
-    public AbstractMoveTestCase(String str) {
-        super(str);
+    protected void assertTryMoveIsOk(Move m) {
+        assertSetupHasBeenCalled();
+
+        MoveStatus ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
+
+        ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
+            MoveStatus.MOVE_OK, ms);
     }
 
-    protected void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
-        this.hasSetupBeenCalled = hasSetupBeenCalled;
+    protected void assertTryUndoMoveFails(Move m) {
+        assertSetupHasBeenCalled();
+
+        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertTrue("Move went through when it should have failed", !ms.ok);
+    }
+
+    protected void assertTryUndoMoveIsOk(Move m) {
+        assertSetupHasBeenCalled();
+
+        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
+
+        ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
+            MoveStatus.MOVE_OK, ms);
+    }
+
+    protected void assertUndoMoveFails(Move m) {
+        assertSetupHasBeenCalled();
+
+        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertTrue("Move went through when it should have failed", !ms.ok);
+    }
+
+    protected void assertUndoMoveIsOk(Move m) {
+        assertSetupHasBeenCalled();
+
+        MoveStatus ms = m.undoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(ms);
+        assertEquals(MoveStatus.MOVE_OK, ms);
+    }
+
+    FreerailsPrincipal getPrincipal(){
+    	return world.getPlayer(0).getPrincipal();
+    }
+
+    World getWorld() {
+        return world;
     }
 
     protected boolean hasSetupBeenCalled() {
         return hasSetupBeenCalled;
     }
 
+    protected void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
+        this.hasSetupBeenCalled = hasSetupBeenCalled;
+    }
+
+    protected void setUp() throws Exception {
+        setHasSetupBeenCalled(true);
+        setupWorld();
+    }
+
+    protected void setupWorld() {
+		setWorld(new WorldImpl(10, 10));
+		//		Set the time..
+        getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));		
+		getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
+	}
+
     void setWorld(World world) {
         this.world = world;
     }
-
-    World getWorld() {
-        return world;
-    }
+    
+    abstract public void testMove();
 }

@@ -28,7 +28,6 @@ import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.SpeedAgainstTime;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
-import jfreerails.world.train.TrainStatus;
 
 /**
  * @author Luke
@@ -130,15 +129,9 @@ public class AddTrainPreMove implements PreMove{
         AddItemToListMove addPosition1 = new AddItemToListMove(KEY.TRAIN_MOTION1, motionId1, motion, principal);
 		
         int motionId2 = w.size(KEY.TRAIN_MOTION2, principal);
-        AddItemToListMove addPosition2 = new AddItemToListMove(KEY.TRAIN_MOTION2, motionId2, motion, principal);
+        AddItemToListMove addPosition2 = new AddItemToListMove(KEY.TRAIN_MOTION2, motionId2, motion, principal);                        
         
-        int statusId = w.size(KEY.TRAIN_STATUS, principal);
-        TrainStatus status = new TrainStatus(TrainStatus.Status.STOPPED_AT_SIGNAL);
-        AddItemToListMove addStatus = new AddItemToListMove(KEY.TRAIN_STATUS, statusId, status, principal);
-        
-        Move[] moves = {addCargoBundle, addSchedule, addTrain, transactionMove, addPosition1, addPosition2, addStatus};
-        
-		return new CompositeMove(moves);
+		return new CompositeMove(addCargoBundle, addSchedule, addTrain, transactionMove, addPosition1, addPosition2);
 	}
     
     

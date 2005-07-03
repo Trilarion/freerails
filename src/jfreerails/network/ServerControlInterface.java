@@ -7,8 +7,8 @@ import java.io.IOException;
 
 
 /**
- *  Defines the methods that a client can call on the server using a ServerCommand.
- * @see ServerCommand
+ *  Defines the methods that a client can call on the server using a Message2Server.
+ * @see Message2Server
  *  @author Luke
  *
  */

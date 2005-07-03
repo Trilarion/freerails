@@ -17,6 +17,8 @@ import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.FreerailsTile;
 
+import javax.swing.*;
+
 
 /**
  * This class has a static method that converts an image file into a map.
@@ -42,7 +44,7 @@ public class MapFactory {
 
         world = w;
 
-        Image mapImage = (new javax.swing.ImageIcon(map_url)).getImage();
+        Image mapImage = (new ImageIcon(map_url)).getImage();
         Rectangle mapRect = new java.awt.Rectangle(0, 0,
                 mapImage.getWidth(null), mapImage.getHeight(null));
         BufferedImage mapBufferedImage = new BufferedImage(mapRect.width,

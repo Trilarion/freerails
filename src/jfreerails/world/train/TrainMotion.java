@@ -19,19 +19,21 @@ import jfreerails.world.common.PositionOnTrack;
  * speed at any time within an interval. An instance of this class will be
  * stored on the world object for each train rather the train’s position. The
  * reasons for this are as follows.
- * </p>
  * 
- * <p>
- * (1) It decouples the number of game updates per second and number of frames
+ * <ol type="i">
+ * <li>
+ * It decouples the number of game updates per second and number of frames
  * per second shown by the client. If the train’s position were stored on the
  * world object, it would get updated each game tick. But this would mean that
  * if the game was being updated 10 times per second, even if the client was
  * displaying 50 FPS, the train’s motion would still appear jerky since its
  * position would only change 10 times per second.
- * </p>
- * <p>
- * (2) It makes supporting low bandwidth networks easier since it allows the
+ * </li>
+ * <li>
+ * 
+ * It makes supporting low bandwidth networks easier since it allows the
  * server to send updates less frequently.
+ * </li>
  * </p>
  * 
  * 
@@ -95,9 +97,9 @@ public class TrainMotion implements FreerailsSerializable {
 	}
 
 	private void checkT(GameTime t) {
-		if (t.getTime() < getStart().getTime())
+		if (t.getTicks() < getStart().getTicks())
 			throw new IllegalArgumentException();
-		if (t.getTime() > getEnd().getTime())
+		if (t.getTicks() > getEnd().getTicks())
 			throw new IllegalArgumentException();
 	}
 
@@ -234,6 +236,10 @@ public class TrainMotion implements FreerailsSerializable {
 		PathOnTiles pathOnTiles = currentTiles.addSteps(newPathSection);
 		return new TrainMotion(pathOnTiles, currentTiles.steps(),
 				trainLength, newSpeeds);
+	}
+	
+	public SpeedTimeAndStatus.Activity getActivity(GameTime time){
+		return speeds.getActivity(time);
 	}
 
 }

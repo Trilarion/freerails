@@ -10,12 +10,12 @@ package jfreerails.network;
  *  @author Luke
  *
  */
-public class SaveGameServerCommand implements ServerCommand {
+public class SaveGameMessage2Server implements Message2Server {
     private static final long serialVersionUID = 3257281452725777209L;
 	private final int id;
     private final String filename;
 
-    public SaveGameServerCommand(int id, String s) {
+    public SaveGameMessage2Server(int id, String s) {
         this.id = id;
         this.filename = s;
     }
@@ -24,13 +24,13 @@ public class SaveGameServerCommand implements ServerCommand {
         return id;
     }
 
-    public CommandStatus execute(ServerControlInterface server) {
+    public MessageStatus execute(ServerControlInterface server) {
         try {
             server.savegame(filename);
 
-            return new CommandStatus(id, true);
+            return new MessageStatus(id, true);
         } catch (Exception e) {
-            return new CommandStatus(id, false, e.getMessage());
+            return new MessageStatus(id, false, e.getMessage());
         }
     }
 }

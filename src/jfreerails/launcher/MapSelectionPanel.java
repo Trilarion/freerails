@@ -10,7 +10,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import jfreerails.client.view.ServerControlModel;
-import jfreerails.network.NewGameServerCommand;
+import jfreerails.network.NewGameMessage2Server;
 
 
 /**
@@ -49,7 +49,7 @@ class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
         initComponents();
         
         /* initialise the map list */
-        mapsJList.setListData(NewGameServerCommand.getMapNames());
+        mapsJList.setListData(NewGameMessage2Server.getMapNames());
         mapsJList.setSelectedIndex(0);
         
         owner.setNextEnabled(true);

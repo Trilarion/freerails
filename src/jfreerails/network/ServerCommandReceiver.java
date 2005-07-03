@@ -12,5 +12,5 @@ package jfreerails.network;
  *
  */
 public interface ServerCommandReceiver {
-    void sendCommand(ServerCommand c);
+    void sendCommand(Message2Server c);
 }

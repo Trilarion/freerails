@@ -18,33 +18,33 @@ public class GameTime implements FreerailsSerializable {
 
     /** The last possible time.*/
     public static final GameTime END_OF_THE_WORLD = new GameTime(Integer.MAX_VALUE);
-    private final int time;
+    private final int ticks;
 
     public String toString() {
-        return "GameTime:" + String.valueOf(time);
+        return "GameTime:" + String.valueOf(ticks);
     }
 
     public int hashCode() {
-        return time;
+        return ticks;
     }
 
     public GameTime(int l) {
-        this.time = l;
+        this.ticks = l;
     }
 
     public GameTime nextTick() {
-        return new GameTime(time + 1);
+        return new GameTime(ticks + 1);
     }
 
-    public int getTime() {
-        return time;
+    public int getTicks() {
+        return ticks;
     }
 
     public boolean equals(Object o) {
         if (o instanceof GameTime) {
             GameTime test = (GameTime)o;
 
-            return this.time == test.time;
+            return this.ticks == test.ticks;
         }
 		return false;
     }

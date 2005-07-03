@@ -19,6 +19,21 @@ public class AddPlayerMove implements Move, ServerMove {
         player2add = p;
     }
 
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AddPlayerMove)) return false;
+
+        final AddPlayerMove addPlayerMove = (AddPlayerMove) o;
+
+        if (!player2add.equals(addPlayerMove.player2add)) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        return player2add.hashCode();
+    }
+
     public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
         /**
          * create a new player with a corresponding Principal
@@ -30,27 +45,53 @@ public class AddPlayerMove implements Move, ServerMove {
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        // TODO Auto-generated method stub
+    	if(isAlreadyASimilarPlayer(w))
+    		return MoveStatus.moveFailed("There is already a player with the same name.");
+    	
         return MoveStatus.MOVE_OK;
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        // TODO Auto-generated method stub
-        return MoveStatus.MOVE_OK;
+    	int numPlayers = w.getNumberOfPlayers();
+    	Player pp = w.getPlayer(numPlayers -1);
+    	if(pp.equals(player2add)){
+    		return MoveStatus.MOVE_OK;
+    	}    	
+        return MoveStatus.moveFailed("The last player is "+pp.getName()+ "not "+ player2add.getName());
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
+    	MoveStatus ms = tryDoMove(w, p);
+    	if(!ms.ok)
+    		return ms;
         w.addPlayer(this.player2add);
 
         //Sell the player 2 $500,000 bonds at 5% interest.        
         w.addTransaction(BondTransaction.issueBond(5), player2add.getPrincipal());
         w.addTransaction(BondTransaction.issueBond(5), player2add.getPrincipal());
 
-        return MoveStatus.MOVE_OK;
+        return ms;
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        // TODO Auto-generated method stub
-        return MoveStatus.MOVE_OK;
+    	MoveStatus ms = tryUndoMove(w, p);
+    	if(!ms.ok)
+    		return ms;
+    	
+    	w.removeLastTransaction(player2add.getPrincipal());
+    	w.removeLastTransaction(player2add.getPrincipal());
+    	w.removeLastPlayer();
+    	
+    	return ms;
+    }
+    
+    private boolean isAlreadyASimilarPlayer(World w){
+    	for(int i = 0; i < w.getNumberOfPlayers(); i++){
+    		Player pp = w.getPlayer(i);
+    		if(pp.getName().equalsIgnoreCase(this.player2add.getName())){
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }

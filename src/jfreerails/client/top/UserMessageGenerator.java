@@ -92,9 +92,9 @@ public class UserMessageGenerator implements MoveReceiver {
                     }
                 }
 
-                GameTime gt = (GameTime)world.get(ITEM.TIME);
+                GameTime gt = world.currentTime();
                 GameCalendar gc = (GameCalendar)world.get(ITEM.CALENDAR);
-                String message = gc.getTimeOfDay(gt.getTime()) + "  Train #" +
+                String message = gc.getTimeOfDay(gt.getTicks()) + "  Train #" +
                     trainNumber + " arrives at " + stationName + "\n";
 
                 for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {

@@ -11,8 +11,8 @@ import jfreerails.world.common.FreerailsSerializable;
  *  @author Luke
  *
  */
-public interface ServerCommand extends FreerailsSerializable {
+public interface Message2Server extends FreerailsSerializable {
     int getID();
 
-    CommandStatus execute(ServerControlInterface server);
+    MessageStatus execute(ServerControlInterface server);
 }

@@ -69,7 +69,7 @@ public class MapFixtureFactory2 {
 							.getPrincipal());
 		}
 		world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-		world.set(ITEM.TIME, new GameTime(0));
+		world.setTime(new GameTime(0));		
 		world.set(ITEM.GAME_SPEED, new GameSpeed(10));
 		world.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 

@@ -49,7 +49,7 @@ public class CompositeMove implements Move {
         m_moves = moves;
     }
 
-    public CompositeMove(Move[] moves) {
+    public CompositeMove(Move... moves) {
         this.m_moves = moves;
     }
 

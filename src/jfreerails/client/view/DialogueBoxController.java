@@ -306,7 +306,7 @@ public class DialogueBoxController implements WorldListListener {
 		int numberOfPlayers = modelRoot.getWorld().getNumberOfPlayers();
 		for (int i = 0; i < numberOfPlayers; i++) {
 			final Player temp = modelRoot.getWorld().getPlayer(i);
-			FinancialDataGatherer finacialDataGatherer = new FinancialDataGatherer(
+			@SuppressWarnings("unused") FinancialDataGatherer finacialDataGatherer = new FinancialDataGatherer(
 					world, temp.getPrincipal());
 			if (temp != null
 					&& !(modelRoot.getPrincipal().equals(temp.getPrincipal()))) {

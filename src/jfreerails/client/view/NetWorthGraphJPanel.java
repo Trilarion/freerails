@@ -351,8 +351,8 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         GameCalendar calender  = (GameCalendar)world.get(ITEM.CALENDAR);
         int startYear = calender.getYear(0);
         int endYear = startYear + 100;        
-        GameTime currentTime = (GameTime)world.get(ITEM.TIME);
-        int currentYear = calender.getYear(currentTime.getTime());
+        GameTime currentTime = world.currentTime();
+        int currentYear = calender.getYear(currentTime.getTicks());
         xAxisLabel1.setText(String.valueOf(startYear));
         xAxisLabel2.setText(String.valueOf(startYear+50));
         xAxisLabel3.setText(String.valueOf(endYear));

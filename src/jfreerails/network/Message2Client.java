@@ -11,9 +11,9 @@ import jfreerails.world.common.FreerailsSerializable;
  *  @author Luke
  *
  */
-public interface ClientCommand extends FreerailsSerializable {
+public interface Message2Client extends FreerailsSerializable {
     /** Executes this command on the specified ClientControlInterface.*/
-    CommandStatus execute(ClientControlInterface client);
+    MessageStatus execute(ClientControlInterface client);
 
     /** Returns the id of this command.*/
     int getID();

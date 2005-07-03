@@ -256,11 +256,7 @@ public class PathOnTiles implements FreerailsSerializable {
 		}
 
 		return new FreerailsPathIterator() {
-			private static final long serialVersionUID = 1L;
-
-			int distanceTravelled = 0;
-
-			boolean hasNext = true;
+			private static final long serialVersionUID = 1L;			
 
 			int index = 0;
 

@@ -10,12 +10,12 @@ package jfreerails.network;
  *  @author Luke
  *
  */
-public class NewGameServerCommand implements ServerCommand {
+public class NewGameMessage2Server implements Message2Server {
     private static final long serialVersionUID = 3256723961743422513L;
 	private final int id;
     private final String mapName;
 
-    public NewGameServerCommand(int id, String s) {
+    public NewGameMessage2Server(int id, String s) {
         this.id = id;
         this.mapName = s;
     }
@@ -24,13 +24,13 @@ public class NewGameServerCommand implements ServerCommand {
         return id;
     }
 
-    public CommandStatus execute(ServerControlInterface server) {
+    public MessageStatus execute(ServerControlInterface server) {
         try {
             server.newGame(mapName);
 
-            return new CommandStatus(id, true);
+            return new MessageStatus(id, true);
         } catch (Exception e) {
-            return new CommandStatus(id, false, e.getMessage());
+            return new MessageStatus(id, false, e.getMessage());
         }
     }
 

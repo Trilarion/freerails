@@ -2,7 +2,6 @@ package jfreerails.move;
 
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 
@@ -18,8 +17,8 @@ public class TimeTickMove implements Move {
     private final GameTime m_newTime;
 
     public static TimeTickMove getMove(ReadOnlyWorld w) {
-        GameTime oldTime = (GameTime)w.get(ITEM.TIME);
-        GameTime newTime = new GameTime(oldTime.getTime() + 1);
+        GameTime oldTime = w.currentTime();
+        GameTime newTime = new GameTime(oldTime.getTicks() + 1);
 
         return new TimeTickMove(oldTime, newTime);
     }
@@ -30,17 +29,17 @@ public class TimeTickMove implements Move {
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (w.get(ITEM.TIME).equals(m_oldTime)) {
+        if ( w.currentTime().equals(m_oldTime)) {
             return MoveStatus.MOVE_OK;
         }
-		String string = "oldTime = " + m_oldTime.getTime() + " <=> " +
-		    "currentTime " + ((GameTime)w.get(ITEM.TIME)).getTime();
+		String string = "oldTime = " + m_oldTime.getTicks() + " <=> " +
+		    "currentTime " + ( w.currentTime()).getTicks();
 
 		return MoveStatus.moveFailed(string);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        GameTime time = ((GameTime)w.get(ITEM.TIME));
+        GameTime time = w.currentTime();
 
         if (time.equals(m_newTime)) {
             return MoveStatus.MOVE_OK;
@@ -52,8 +51,8 @@ public class TimeTickMove implements Move {
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
         MoveStatus status = tryDoMove(w, p);
 
-        if (status.ok) {
-            w.set(ITEM.TIME, m_newTime);
+        if (status.ok) {            
+            w.setTime(m_newTime);
         }
 
         return status;
@@ -63,7 +62,7 @@ public class TimeTickMove implements Move {
         MoveStatus status = tryUndoMove(w, p);
 
         if (status.isOk()) {
-            w.set(ITEM.TIME, m_oldTime);
+        	w.setTime(m_oldTime);            
         }
 
         return status;

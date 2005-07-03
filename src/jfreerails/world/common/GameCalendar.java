@@ -22,7 +22,7 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     public GameTime getStartOfYear(GameTime t) {
-        int year = getYear(t.getTime());
+        int year = getYear(t.getTicks());
         int ticks = getTicks(year);
 
         return new GameTime(ticks);

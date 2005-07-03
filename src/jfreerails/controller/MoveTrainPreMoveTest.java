@@ -95,8 +95,14 @@ public class MoveTrainPreMoveTest extends AbstractMoveTestCase {
 		assertNotNull(speeds);
 		assertEquals(t0, speeds.getStart());
 		assertEquals(0, speeds.getDistance(t0));
+		
+		assertEquals(1, speeds.getSpeed(new GameTime(1)));
 	}
 	
+//	public void testCanGenerateMove(){
+//		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+//		assertTrue(preMove.canGenerateMove(world));
+//	}
 	
 	public void testMove() {
 		

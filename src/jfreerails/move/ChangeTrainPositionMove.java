@@ -42,18 +42,7 @@ public class ChangeTrainPositionMove implements Move {
         return new Point(m_changeToHead.getX(0), m_changeToHead.getY(0));
     }
 
-    public static ChangeTrainPositionMove getNullMove(int trainNumber,
-        FreerailsPrincipal p) {
-        return new ChangeTrainPositionMove(null, null, trainNumber, false,
-            false, p) {
-                private static final long serialVersionUID = 3906926759780956466L;
-
-				MoveStatus move(World w, boolean updateTrainPosition,
-                    boolean isDoMove) {
-                    return MoveStatus.MOVE_OK;
-                }
-            };
-    }
+   
 
     
     public static ChangeTrainPositionMove generate(ReadOnlyWorld w,
@@ -61,7 +50,7 @@ public class ChangeTrainPositionMove implements Move {
         FreerailsPrincipal p) throws PreMoveException {
         try {
             if (!nextPathSection.hasNext()) {
-                return getNullMove(trainNumber, p);
+                throw new IllegalStateException();
             }
 
             TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, p);

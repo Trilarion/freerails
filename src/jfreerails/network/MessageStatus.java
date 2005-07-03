@@ -7,26 +7,26 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- *  An instance of this class is returned to the client (the server) when a ServerCommand (ClientCommand)
+ *  An instance of this class is returned to the client (the server) when a Message2Server (Message2Client)
  * is executed by the server (the client).
- * @see ClientCommand
- * @see ServerCommand
+ * @see Message2Client
+ * @see Message2Server
  *  @author Luke
  *
  */
-public class CommandStatus implements FreerailsSerializable {
+public class MessageStatus implements FreerailsSerializable {
     private static final long serialVersionUID = 3257285842216103987L;
 	private final int id;
     private final String reason;
     private final boolean successful;
 
-    CommandStatus(int id, boolean successful, String reason) {
+    MessageStatus(int id, boolean successful, String reason) {
         this.id = id;
         this.reason = reason;
         this.successful = successful;
     }
 
-    CommandStatus(int id, boolean successful) {
+    MessageStatus(int id, boolean successful) {
         this.id = id;
         this.reason = null;
         this.successful = successful;

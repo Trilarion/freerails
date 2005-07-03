@@ -12,7 +12,6 @@ import jfreerails.move.MoveStatus;
 import jfreerails.move.TimeTickMove;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.ITEM;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
@@ -198,6 +197,6 @@ public class MovePrecommitterTest extends TestCase {
     }
 
     private GameTime getTime() {
-        return (GameTime)w.get(ITEM.TIME);
+        return w.currentTime();
     }
 }

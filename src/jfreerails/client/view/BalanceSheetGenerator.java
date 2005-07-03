@@ -75,8 +75,8 @@ public class BalanceSheetGenerator {
 		this.principal = principal;
 		cal = (GameCalendar) w.get(ITEM.CALENDAR);
 		// Calculate totals
-		GameTime time = (GameTime) w.get(ITEM.TIME);
-		final int startyear = cal.getYear(time.getTime());
+		GameTime time = w.currentTime();
+		final int startyear = cal.getYear(time.getTicks());
 		year = String.valueOf(startyear);
 		GameTime startOfYear = new GameTime(cal.getTicks(startyear));
 
@@ -116,7 +116,7 @@ public class BalanceSheetGenerator {
 				principal) {
 			protected boolean condition(int i) {
 				int transactionYear = cal.getYear(w.getTransactionTimeStamp(i,
-						principal).getTime());
+						principal).getTicks());
 
 				return transactionYear >= startyear;
 			}

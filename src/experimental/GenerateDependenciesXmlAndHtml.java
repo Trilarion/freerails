@@ -48,7 +48,7 @@ public class GenerateDependenciesXmlAndHtml {
 		File htmlFile = new File(htmlFilename);
 		htmlWriter = new PrintWriter(new FileOutputStream(htmlFilename));
 		
-		String[] basePackages = {"jfreerails/util/*", "it/unimi/dsi/fastUtil/*"};
+		String[] basePackages = {"jfreerails/util/*"};
 		start();
 		
 		startBlock("All");		

@@ -12,7 +12,7 @@ import jfreerails.world.top.World;
  *  @author Luke
  *
  */
-public class SetWorldClientCommand implements ClientCommand {
+public class SetWorldMessage2Client implements Message2Client {
     private static final long serialVersionUID = 3257570619972269362L;
 	private final int id;
     private final World world;
@@ -20,15 +20,15 @@ public class SetWorldClientCommand implements ClientCommand {
     /** Note, makes a defensive copy of the
      * world object passed to it.
      */
-    public SetWorldClientCommand(int id, World world) {
+    public SetWorldMessage2Client(int id, World world) {
         this.id = id;
         this.world = world.defensiveCopy();
     }
 
-    public CommandStatus execute(ClientControlInterface client) {
+    public MessageStatus execute(ClientControlInterface client) {
         client.setGameModel(world.defensiveCopy());
 
-        return new CommandStatus(id, true);
+        return new MessageStatus(id, true);
     }
 
     public int getID() {

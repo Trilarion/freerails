@@ -16,8 +16,9 @@ import jfreerails.world.top.World;
  * @author Luke
  *
  */
-public abstract class ChangeItemInListMove implements ListMove {
-    private final KEY m_listKey;
+public class ChangeItemInListMove implements ListMove {
+    private static final long serialVersionUID = -4457694821370844051L;
+	private final KEY m_listKey;
     private final int m_index;
     private final FreerailsSerializable m_before;
     private final FreerailsSerializable m_after;
@@ -42,7 +43,7 @@ public abstract class ChangeItemInListMove implements ListMove {
         return m_listKey;
     }
 
-    protected ChangeItemInListMove(KEY k, int index,
+    public ChangeItemInListMove(KEY k, int index,
         FreerailsSerializable before, FreerailsSerializable after,
         FreerailsPrincipal p) {
         m_before = before;

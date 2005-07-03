@@ -8,8 +8,8 @@ import jfreerails.world.common.FreerailsMutableSerializable;
 
 
 /**
- *  Defines the methods that the server can call on a client using a ClientCommand.
- * @see ClientCommand
+ *  Defines the methods that the server can call on a client using a Message2Client.
+ * @see Message2Client
  *  @author Luke
  *
  */

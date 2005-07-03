@@ -13,7 +13,6 @@ import jfreerails.world.common.GameTime;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
@@ -240,7 +239,7 @@ final public class TrackMoveProducer {
 	 */
 	private void clearStackIfStale() {
 		ReadOnlyWorld w = executor.getWorld();
-		GameTime currentTime = (GameTime) w.get(ITEM.TIME);
+		GameTime currentTime = w.currentTime();
 
 		if (!currentTime.equals(lastMoveTime)) {
 			moveStack.clear();
