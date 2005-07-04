@@ -18,224 +18,234 @@ import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
 
-
 /**
- *  A client for FreerailsGameServer.
- *  @author Luke
- *
+ * A client for FreerailsGameServer.
+ * 
+ * @author Luke
+ * 
  */
 public class FreerailsClient implements ClientControlInterface, GameModel,
-    UntriedMoveReceiver, ServerCommandReceiver {
-    private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
-    protected Connection2Server connection2Server;
-    private final HashMap<String, Serializable> properties = new HashMap<String, Serializable>();
-    private final MoveChainFork moveFork;
-    private World world;
-    private MovePrecommitter committer;
+		UntriedMoveReceiver, ServerCommandReceiver {
+	private static final Logger logger = Logger.getLogger(FreerailsClient.class
+			.getName());
 
-    public FreerailsClient() {
-        moveFork = new MoveChainFork();
-    }
+	protected Connection2Server connection2Server;
 
-    public final MoveChainFork getMoveFork() {
-        return moveFork;
-    }
+	private final HashMap<String, Serializable> properties = new HashMap<String, Serializable>();
 
-    /**
-     * Connects this client to a remote server.
-     */
-    public final LogOnResponse connect(String address, int port,
-        String username, String password) {
-        logger.fine("Connect to remote server.  " + address + ":" + port);
+	private final MoveChainFork moveFork;
 
-        try {
-            connection2Server = new InetConnection2Server(address, port);
-        } catch (IOException e) {
-            return LogOnResponse.rejected(e.getMessage());
-        }
+	private World world;
 
-        try {
-            LogOnRequest request = new LogOnRequest(username, password);
-            connection2Server.writeToServer(request);
-            connection2Server.flush();
+	private MovePrecommitter committer;
 
-            LogOnResponse response = (LogOnResponse)connection2Server.waitForObjectFromServer();
+	public FreerailsClient() {
+		moveFork = new MoveChainFork();
+	}
 
-            return response;
-        } catch (Exception e) {
-            try {
-                connection2Server.disconnect();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+	public final MoveChainFork getMoveFork() {
+		return moveFork;
+	}
 
-            return LogOnResponse.rejected(e.getMessage());
-        }
-    }
+	/**
+	 * Connects this client to a remote server.
+	 */
+	public final LogOnResponse connect(String address, int port,
+			String username, String password) {
+		logger.fine("Connect to remote server.  " + address + ":" + port);
 
-    /**
-     * Connects this client to a local server.
-     */
-    public final LogOnResponse connect(GameServer server, String username,
-        String password) {
-        try {
-            LogOnRequest request = new LogOnRequest(username, password);
-            connection2Server = new LocalConnection();
-            connection2Server.writeToServer(request);
-            server.addConnection((LocalConnection)connection2Server);
+		try {
+			connection2Server = new InetConnection2Server(address, port);
+		} catch (IOException e) {
+			return LogOnResponse.rejected(e.getMessage());
+		}
 
-            LogOnResponse response = (LogOnResponse)connection2Server.waitForObjectFromServer();
+		try {
+			LogOnRequest request = new LogOnRequest(username, password);
+			connection2Server.writeToServer(request);
+			connection2Server.flush();
 
-            return response;
-        } catch (Exception e) {
-            try {
-                connection2Server.disconnect();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+			LogOnResponse response = (LogOnResponse) connection2Server
+					.waitForObjectFromServer();
 
-            return LogOnResponse.rejected(e.getMessage());
-        }
-    }
+			return response;
+		} catch (Exception e) {
+			try {
+				connection2Server.disconnect();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
-    /**
-     * Disconnect the client from the server.
-     */
-    public final void disconnect() {
-        try {
-            connection2Server.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+			return LogOnResponse.rejected(e.getMessage());
+		}
+	}
 
-    public final void setGameModel(FreerailsMutableSerializable o) {
-        world = (World)o;
-        committer = new MovePrecommitter(world);
-        newWorld(world);
-    }
+	/**
+	 * Connects this client to a local server.
+	 */
+	public final LogOnResponse connect(GameServer server, String username,
+			String password) {
+		try {
+			LogOnRequest request = new LogOnRequest(username, password);
+			connection2Server = new LocalConnection();
+			connection2Server.writeToServer(request);
+			server.addConnection((LocalConnection) connection2Server);
 
-    /** Subclasses should override this method if they need to respond the the world
-     * being changed.
-     */
-    protected void newWorld(World w) {
-    }
+			LogOnResponse response = (LogOnResponse) connection2Server
+					.waitForObjectFromServer();
 
-    public final void setProperty(String propertyName, Serializable value) {
-        properties.put(propertyName, value);
-    }
+			return response;
+		} catch (Exception e) {
+			try {
+				connection2Server.disconnect();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
-    public final Serializable getProperty(String propertyName) {
-        return properties.get(propertyName);
-    }
+			return LogOnResponse.rejected(e.getMessage());
+		}
+	}
 
-    public final void resetProperties(HashMap newProperties) {
-        // TODO Auto-generated method stub
-    }
+	/**
+	 * Disconnect the client from the server.
+	 */
+	public final void disconnect() {
+		try {
+			connection2Server.disconnect();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public final void showMenu() {
-        // TODO Auto-generated method stub
-    }
+	public final void setGameModel(FreerailsMutableSerializable o) {
+		world = (World) o;
+		committer = new MovePrecommitter(world);
+		newWorld(world);
+	}
 
-    final FreerailsSerializable read() {
-        try {
-            return this.connection2Server.waitForObjectFromServer();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+	/**
+	 * Subclasses should override this method if they need to respond the the
+	 * world being changed.
+	 */
+	protected void newWorld(World w) {
+	}
 
-        throw new IllegalStateException();
-    }
+	public final void setProperty(String propertyName, Serializable value) {
+		properties.put(propertyName, value);
+	}
 
-    final void write(FreerailsSerializable fs) {
-        try {
-            connection2Server.writeToServer(fs);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-    }
+	public final Serializable getProperty(String propertyName) {
+		return properties.get(propertyName);
+	}
 
-    /** Reads and deals with all outstanding messages from the server.*/
-    final public void update() {
-        try {
-            FreerailsSerializable[] messages = connection2Server.readFromServer();
+	public final void resetProperties(HashMap newProperties) {
+		// TODO Auto-generated method stub
+	}
 
-            for (int i = 0; i < messages.length; i++) {
-                FreerailsSerializable message = messages[i];
-                processMessage(message);
-            }
+	public final void showMenu() {
+		// TODO Auto-generated method stub
+	}
 
-            connection2Server.flush();
-            clientUpdates();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
+	final FreerailsSerializable read() {
+		try {
+			return this.connection2Server.waitForObjectFromServer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    /** Empty method called by update(), subclasses should override this
-     * method instead of overriding update().
-     *
-     */ 
-    protected void clientUpdates(){
-    	
-    }
-    
-    /** Processes a message received from the server.*/
-    final void processMessage(FreerailsSerializable message)
-        throws IOException {
-        if (message instanceof Message2Client) {
-            Message2Client request = (Message2Client)message;
-            MessageStatus status = request.execute(this);
-            logger.fine(request.toString());
-            connection2Server.writeToServer(status);
-        } else if (message instanceof Move) {
-            Move m = (Move)message;
-            committer.fromServer(m);
-            moveFork.processMove(m);
-        } else if (message instanceof MoveStatus) {
-            MoveStatus ms = (MoveStatus)message;
-            committer.fromServer(ms);
-        } else if (message instanceof PreMove) {
-            PreMove pm = (PreMove)message;
-            Move m = committer.fromServer(pm);
-            moveFork.processMove(m);
-        } else if (message instanceof PreMoveStatus) {
-            PreMoveStatus pms = (PreMoveStatus)message;
-            committer.fromServer(pms);
-        } else {
-            logger.fine(message.toString());
-        }
-    }
+		throw new IllegalStateException();
+	}
 
-    final public World getWorld() {
-        return world;
-    }
+	final void write(FreerailsSerializable fs) {
+		try {
+			connection2Server.writeToServer(fs);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new IllegalStateException();
+		}
+	}
 
-    /** Sends move to the server.*/
-    final public void processMove(Move move) {
-        committer.toServer(move);
-        moveFork.processMove(move);
-        write(move);
-    }
+	/** Reads and deals with all outstanding messages from the server. */
+	final public void update() {
+		try {
+			FreerailsSerializable[] messages = connection2Server
+					.readFromServer();
 
-    /** Tests a move before sending it to the server.*/
-    final public MoveStatus tryDoMove(Move move) {
-        return move.tryDoMove(world, Player.AUTHORITATIVE);
-    }
+			for (int i = 0; i < messages.length; i++) {
+				FreerailsSerializable message = messages[i];
+				processMessage(message);
+			}
 
-    public void sendCommand(Message2Server c) {
-        write(c);
-    }
+			connection2Server.flush();
+			clientUpdates();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 
-    public void processPreMove(PreMove pm) {
-        Move m = committer.toServer(pm);
-        moveFork.processMove(m);
-        write(pm);
-    }
+	/**
+	 * Empty method called by update(), subclasses should override this method
+	 * instead of overriding update().
+	 * 
+	 */
+	protected void clientUpdates() {
+
+	}
+
+	/** Processes a message received from the server. */
+	final void processMessage(FreerailsSerializable message) throws IOException {
+		if (message instanceof Message2Client) {
+			Message2Client request = (Message2Client) message;
+			MessageStatus status = request.execute(this);
+			logger.fine(request.toString());
+			connection2Server.writeToServer(status);
+		} else if (message instanceof Move) {
+			Move m = (Move) message;
+			committer.fromServer(m);
+			moveFork.processMove(m);
+		} else if (message instanceof MoveStatus) {
+			MoveStatus ms = (MoveStatus) message;
+			committer.fromServer(ms);
+		} else if (message instanceof PreMove) {
+			PreMove pm = (PreMove) message;
+			Move m = committer.fromServer(pm);
+			moveFork.processMove(m);
+		} else if (message instanceof PreMoveStatus) {
+			PreMoveStatus pms = (PreMoveStatus) message;
+			committer.fromServer(pms);
+		} else {
+			logger.fine(message.toString());
+		}
+	}
+
+	final public World getWorld() {
+		return world;
+	}
+
+	/** Sends move to the server. */
+	final public void processMove(Move move) {
+		committer.toServer(move);
+		moveFork.processMove(move);
+		write(move);
+	}
+
+	/** Tests a move before sending it to the server. */
+	final public MoveStatus tryDoMove(Move move) {
+		return move.tryDoMove(world, Player.AUTHORITATIVE);
+	}
+
+	public void sendCommand(Message2Server c) {
+		write(c);
+	}
+
+	public void processPreMove(PreMove pm) {
+		Move m = committer.toServer(pm);
+		moveFork.processMove(m);
+		write(pm);
+	}
 }

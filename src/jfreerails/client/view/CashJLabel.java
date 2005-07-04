@@ -6,6 +6,7 @@ package jfreerails.client.view;
 
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
+
 import javax.swing.JLabel;
 
 import jfreerails.client.common.ModelRoot;
@@ -14,34 +15,36 @@ import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
  * This JLabel shows the amount of cash available.
+ * 
  * @author Luke
- *
+ * 
  */
 public class CashJLabel extends JLabel implements View {
-    private static final long serialVersionUID = 3257853181542412341L;
+	private static final long serialVersionUID = 3257853181542412341L;
+
 	private ReadOnlyWorld w;
-    private FreerailsPrincipal principal;
 
-    public CashJLabel() {
-        this.setText("          ");
-    }
+	private FreerailsPrincipal principal;
 
-    public void setup(ModelRoot model, ViewLists vl,
-        ActionListener submitButtonCallBack) {
-        this.w = model.getWorld();
-        principal = model.getPrincipal();
-    }
+	public CashJLabel() {
+		this.setText("          ");
+	}
 
-    protected void paintComponent(Graphics g) {
-        if (null != w) {
-            Money m = w.getCurrentBalance(principal);
-            String s = m.toString();
-            this.setText("$"+s);
-        }
+	public void setup(ModelRoot model, ViewLists vl,
+			ActionListener submitButtonCallBack) {
+		this.w = model.getWorld();
+		principal = model.getPrincipal();
+	}
 
-        super.paintComponent(g);
-    }
+	protected void paintComponent(Graphics g) {
+		if (null != w) {
+			Money m = w.getCurrentBalance(principal);
+			String s = m.toString();
+			this.setText("$" + s);
+		}
+
+		super.paintComponent(g);
+	}
 }

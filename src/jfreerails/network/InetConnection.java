@@ -10,104 +10,108 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+
 import jfreerails.world.common.FreerailsSerializable;
 
-
 /**
- * Provides methods send objects over the Internet, and connect and disconnect gracefully.
- *
+ * Provides methods send objects over the Internet, and connect and disconnect
+ * gracefully.
+ * 
  * @author Luke
- *
+ * 
  */
 class InetConnection {
-    private final Socket socket;
+	private final Socket socket;
 
-    //Note compression commented out since it was causing junit tests to fail.  Not
-    //sure why. LL
-    //private DeflaterOutputStream deflaterOutputStream;
-    //private InflaterInputStream inflaterInputStream;
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
-    private static final String CONNECTION_OPEN = "CONNECTION_OPEN";
+	// Note compression commented out since it was causing junit tests to fail.
+	// Not
+	// sure why. LL
+	// private DeflaterOutputStream deflaterOutputStream;
+	// private InflaterInputStream inflaterInputStream;
+	private ObjectOutputStream objectOutputStream;
 
-    InetConnection(Socket acceptedConnection) throws IOException {
-        socket = acceptedConnection;
-    }
+	private ObjectInputStream objectInputStream;
 
-    InetConnection(String s, int port) throws IOException {
-        this(new Socket(s, port));
-    }
+	private static final String CONNECTION_OPEN = "CONNECTION_OPEN";
 
-    /**
-     * Sets up the input and output streams, then sends the String
-     * "CONNECTION_OPEN" and attempts to read the same String back.
-     */
-    synchronized void open() throws IOException {
-        OutputStream outputStream = socket.getOutputStream();
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+	InetConnection(Socket acceptedConnection) throws IOException {
+		socket = acceptedConnection;
+	}
 
-        //deflaterOutputStream = new DeflaterOutputStream(outputStream);
-        //objectOutputStream = new ObjectOutputStream(deflaterOutputStream);
-        objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
-        objectOutputStream.writeObject(CONNECTION_OPEN);
-        objectOutputStream.flush();
+	InetConnection(String s, int port) throws IOException {
+		this(new Socket(s, port));
+	}
 
-        InputStream inputStream = socket.getInputStream();
+	/**
+	 * Sets up the input and output streams, then sends the String
+	 * "CONNECTION_OPEN" and attempts to read the same String back.
+	 */
+	synchronized void open() throws IOException {
+		OutputStream outputStream = socket.getOutputStream();
+		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
+				outputStream);
 
-        // inflaterInputStream = new InflaterInputStream(inputStream);
-        // objectInputStream = new ObjectInputStream(inflaterInputStream);
-        objectInputStream = new ObjectInputStream(inputStream);
+		// deflaterOutputStream = new DeflaterOutputStream(outputStream);
+		// objectOutputStream = new ObjectOutputStream(deflaterOutputStream);
+		objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
+		objectOutputStream.writeObject(CONNECTION_OPEN);
+		objectOutputStream.flush();
 
-        try {
-            String s = (String)objectInputStream.readObject();
+		InputStream inputStream = socket.getInputStream();
 
-            if (!s.equals(CONNECTION_OPEN)) {
-                throw new IllegalStateException(s);
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-    }
+		// inflaterInputStream = new InflaterInputStream(inputStream);
+		// objectInputStream = new ObjectInputStream(inflaterInputStream);
+		objectInputStream = new ObjectInputStream(inputStream);
 
-    synchronized void send(FreerailsSerializable object)
-        throws IOException {
-        objectOutputStream.writeObject(object);
-        flush();
-    }
+		try {
+			String s = (String) objectInputStream.readObject();
 
-    FreerailsSerializable receive() throws IOException, ClassNotFoundException {
-        Object object = objectInputStream.readObject();
+			if (!s.equals(CONNECTION_OPEN)) {
+				throw new IllegalStateException(s);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new IOException(e.getMessage());
+		}
+	}
 
-        return (FreerailsSerializable)object;
-    }
+	synchronized void send(FreerailsSerializable object) throws IOException {
+		objectOutputStream.writeObject(object);
+		flush();
+	}
 
-    synchronized boolean isOpen() {
-        boolean isClosed = socket.isClosed();
+	FreerailsSerializable receive() throws IOException, ClassNotFoundException {
+		Object object = objectInputStream.readObject();
 
-        return !isClosed;
-    }
+		return (FreerailsSerializable) object;
+	}
 
-    synchronized void flush() throws IOException {
-        objectOutputStream.flush();
-        //deflaterOutputStream.flush();
-        // deflaterOutputStream.finish();
-        // deflaterOutputStream.flush();
-    }
+	synchronized boolean isOpen() {
+		boolean isClosed = socket.isClosed();
 
-    synchronized void shutdownOutput() throws IOException {
-        socket.shutdownOutput();
+		return !isClosed;
+	}
 
-        if (socket.isInputShutdown() && socket.isOutputShutdown()) {
-            socket.close();
-        }
-    }
+	synchronized void flush() throws IOException {
+		objectOutputStream.flush();
+		// deflaterOutputStream.flush();
+		// deflaterOutputStream.finish();
+		// deflaterOutputStream.flush();
+	}
 
-    synchronized void shutdownInput() throws IOException {
-        socket.shutdownInput();
+	synchronized void shutdownOutput() throws IOException {
+		socket.shutdownOutput();
 
-        if (socket.isInputShutdown() && socket.isOutputShutdown()) {
-            socket.close();
-        }
-    }
+		if (socket.isInputShutdown() && socket.isOutputShutdown()) {
+			socket.close();
+		}
+	}
+
+	synchronized void shutdownInput() throws IOException {
+		socket.shutdownInput();
+
+		if (socket.isInputShutdown() && socket.isOutputShutdown()) {
+			socket.close();
+		}
+	}
 }

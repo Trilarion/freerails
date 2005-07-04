@@ -3,13 +3,14 @@ package jfreerails.server;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.Move;
 import jfreerails.move.TransferCargoAtStationMove;
 import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.cargo.ImmutableCargoBundle;
+import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ConvertedAtStation;
@@ -304,7 +305,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 		if (0 == amountToTransfer) {
 			return;
 		}
-		Iterator<CargoBatch> batches = from.toImmutableCargoBundle().cargoBatchIterator();
+		Iterator<CargoBatch> batches = from.toImmutableCargoBundle()
+				.cargoBatchIterator();
 		int amountTransferedSoFar = 0;
 
 		while (batches.hasNext() && amountTransferedSoFar < amountToTransfer) {

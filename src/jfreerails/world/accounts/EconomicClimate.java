@@ -6,65 +6,72 @@ package jfreerails.world.accounts;
 
 import jfreerails.world.common.FreerailsSerializable;
 
-
 /**
  * Represents the state of the economy.
- *
+ * 
  * @author Luke
- *
+ * 
  */
 public class EconomicClimate implements FreerailsSerializable {
-    private static final long serialVersionUID = 3834025840475321136L;
+	private static final long serialVersionUID = 3834025840475321136L;
+
 	private static int i = 2;
-    private final String name;
-    public static final EconomicClimate BOOM = new EconomicClimate(i++, "BOOM");
-    public static final EconomicClimate PROSPERITY = new EconomicClimate(i++,
-            "PROSPERITY");
-    public static final EconomicClimate MODERATION = new EconomicClimate(i++,
-            "MODERATION");
-    public static final EconomicClimate RECESSION = new EconomicClimate(i++,
-            "RECESSION");
-    public static final EconomicClimate PANIC = new EconomicClimate(i++, "PANIC");
 
-    public int getBaseInterestRate() {
-        return baseInterestRate;
-    }
+	private final String name;
 
-    private final int baseInterestRate;
+	public static final EconomicClimate BOOM = new EconomicClimate(i++, "BOOM");
 
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
+	public static final EconomicClimate PROSPERITY = new EconomicClimate(i++,
+			"PROSPERITY");
 
-        if (!(o instanceof EconomicClimate)) {
-            return false;
-        }
+	public static final EconomicClimate MODERATION = new EconomicClimate(i++,
+			"MODERATION");
 
-        final EconomicClimate economicClimate = (EconomicClimate)o;
+	public static final EconomicClimate RECESSION = new EconomicClimate(i++,
+			"RECESSION");
 
-        if (baseInterestRate != economicClimate.baseInterestRate) {
-            return false;
-        }
+	public static final EconomicClimate PANIC = new EconomicClimate(i++,
+			"PANIC");
 
-        if (name != null ? !name.equals(economicClimate.name)
-                             : economicClimate.name != null) {
-            return false;
-        }
+	public int getBaseInterestRate() {
+		return baseInterestRate;
+	}
 
-        return true;
-    }
+	private final int baseInterestRate;
 
-    public int hashCode() {
-        int result;
-        result = (name != null ? name.hashCode() : 0);
-        result = 29 * result + baseInterestRate;
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
 
-        return result;
-    }
+		if (!(o instanceof EconomicClimate)) {
+			return false;
+		}
 
-    private EconomicClimate(int r, String s) {
-        baseInterestRate = r;
-        name = s;
-    }
+		final EconomicClimate economicClimate = (EconomicClimate) o;
+
+		if (baseInterestRate != economicClimate.baseInterestRate) {
+			return false;
+		}
+
+		if (name != null ? !name.equals(economicClimate.name)
+				: economicClimate.name != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public int hashCode() {
+		int result;
+		result = (name != null ? name.hashCode() : 0);
+		result = 29 * result + baseInterestRate;
+
+		return result;
+	}
+
+	private EconomicClimate(int r, String s) {
+		baseInterestRate = r;
+		name = s;
+	}
 }

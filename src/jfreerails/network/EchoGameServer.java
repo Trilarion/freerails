@@ -8,155 +8,163 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 import java.util.logging.Logger;
-import jfreerails.world.common.FreerailsSerializable;
 
+import jfreerails.world.common.FreerailsSerializable;
 
 /**
  * Implementation of GameServer that simply echoes whatever clients send it.
- *
+ * 
  * @author Luke
- *
+ * 
  */
 public class EchoGameServer implements GameServer, Runnable {
-    private static final Logger logger = Logger.getLogger(EchoGameServer.class.getName());
-    private final Vector<Connection2Client> connections = new Vector<Connection2Client>();
-    private final SynchronizedFlag status = new SynchronizedFlag(false);
-    private final LinkedList<FreerailsSerializable> messsages2send = new LinkedList<FreerailsSerializable>();
+	private static final Logger logger = Logger.getLogger(EchoGameServer.class
+			.getName());
 
-    private EchoGameServer() {
-    }
+	private final Vector<Connection2Client> connections = new Vector<Connection2Client>();
 
-    /** Creates an EchoGameServer, starts it in a new Thread,
-     *  and waits for its status to change to isOpen before returning.
-     */
-    public static EchoGameServer startServer() {
-        EchoGameServer server = new EchoGameServer();
-        Thread t = new Thread(server);
-        t.start();
+	private final SynchronizedFlag status = new SynchronizedFlag(false);
 
-        try {
-            /* Wait for the server to start before returning. */
-            synchronized (server.status) {
-                server.status.wait();
-            }
+	private final LinkedList<FreerailsSerializable> messsages2send = new LinkedList<FreerailsSerializable>();
 
-            return server;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-    }
+	private EchoGameServer() {
+	}
 
-    public synchronized void addConnection(Connection2Client connection) {
-        if (null == connection) {
-            throw new NullPointerException();
-        }
+	/**
+	 * Creates an EchoGameServer, starts it in a new Thread, and waits for its
+	 * status to change to isOpen before returning.
+	 */
+	public static EchoGameServer startServer() {
+		EchoGameServer server = new EchoGameServer();
+		Thread t = new Thread(server);
+		t.start();
 
-        if (!status.isOpen()) {
-            throw new IllegalArgumentException();
-        }
+		try {
+			/* Wait for the server to start before returning. */
+			synchronized (server.status) {
+				server.status.wait();
+			}
 
-        connections.add(connection);
-    }
+			return server;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			throw new IllegalStateException();
+		}
+	}
 
-    public synchronized int countOpenConnections() {
-        Iterator<Connection2Client> it = connections.iterator();
+	public synchronized void addConnection(Connection2Client connection) {
+		if (null == connection) {
+			throw new NullPointerException();
+		}
 
-        while (it.hasNext()) {
-            Connection2Client connection = it.next();
+		if (!status.isOpen()) {
+			throw new IllegalArgumentException();
+		}
 
-            if (!connection.isOpen()) {
-                it.remove();
-            }
-        }
+		connections.add(connection);
+	}
 
-        return connections.size();
-    }
+	public synchronized int countOpenConnections() {
+		Iterator<Connection2Client> it = connections.iterator();
 
-    public synchronized void stop() {
-        status.close();
+		while (it.hasNext()) {
+			Connection2Client connection = it.next();
 
-        for (int i = 0; i < connections.size(); i++) {
-            AbstractInetConnection connection = (AbstractInetConnection)connections.get(i);
+			if (!connection.isOpen()) {
+				it.remove();
+			}
+		}
 
-            if (connection.isOpen()) {
-                try {
-                    connection.setTimeOut(0);
-                    connection.disconnect();
-                } catch (Exception e) {
-                    //Do nothing.
-                }
-            }
-        }
-    }
+		return connections.size();
+	}
 
-    public void run() {
-        status.open();
+	public synchronized void stop() {
+		status.close();
 
-        while (status.isOpen()) {
-            update();
+		for (int i = 0; i < connections.size(); i++) {
+			AbstractInetConnection connection = (AbstractInetConnection) connections
+					.get(i);
 
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                //do nothing.
-            }
-        }
-    }
+			if (connection.isOpen()) {
+				try {
+					connection.setTimeOut(0);
+					connection.disconnect();
+				} catch (Exception e) {
+					// Do nothing.
+				}
+			}
+		}
+	}
 
-    synchronized void sendMessage(FreerailsSerializable m) {
-        /* Send messages. */
-        for (int i = 0; i < connections.size(); i++) {
-            Connection2Client connection = connections.get(i);
+	public void run() {
+		status.open();
 
-            try {
-                connection.writeToClient(m);
-                connection.flush();
-                logger.fine("Sent ok: " + m);
-            } catch (IOException e) {
-                try {
-                    if (connection.isOpen()) {
-                        connection.disconnect();
-                    }
-                } catch (IOException e1) {
-                    //hope this doesn't happen.
-                    e1.printStackTrace();
-                }
-            }
-        }
-    }
+		while (status.isOpen()) {
+			update();
 
-    public void update() {
-        synchronized (this) {
-            /* Read messages. */
-            for (int i = 0; i < connections.size(); i++) {
-                Connection2Client connection = connections.get(i);
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				// do nothing.
+			}
+		}
+	}
 
-                try {
-                    FreerailsSerializable[] messages = connection.readFromClient();
+	synchronized void sendMessage(FreerailsSerializable m) {
+		/* Send messages. */
+		for (int i = 0; i < connections.size(); i++) {
+			Connection2Client connection = connections.get(i);
 
-                    for (int j = 0; j < messages.length; j++) {
-                        messsages2send.add(messages[j]);
-                    }
-                } catch (IOException e) {
-                    try {
-                        if (connection.isOpen()) {
-                            connection.disconnect();
-                        }
-                    } catch (IOException e1) {
-                        // 
-                        e1.printStackTrace();
-                    }
-                }
-            }
+			try {
+				connection.writeToClient(m);
+				connection.flush();
+				logger.fine("Sent ok: " + m);
+			} catch (IOException e) {
+				try {
+					if (connection.isOpen()) {
+						connection.disconnect();
+					}
+				} catch (IOException e1) {
+					// hope this doesn't happen.
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
 
-            /* Send messages. */
-            Iterator<FreerailsSerializable> messagesIterator = messsages2send.iterator();
+	public void update() {
+		synchronized (this) {
+			/* Read messages. */
+			for (int i = 0; i < connections.size(); i++) {
+				Connection2Client connection = connections.get(i);
 
-            while (messagesIterator.hasNext()) {
-                FreerailsSerializable message = messagesIterator.next();
-                sendMessage(message);
-            }
-        }
-    }
+				try {
+					FreerailsSerializable[] messages = connection
+							.readFromClient();
+
+					for (int j = 0; j < messages.length; j++) {
+						messsages2send.add(messages[j]);
+					}
+				} catch (IOException e) {
+					try {
+						if (connection.isOpen()) {
+							connection.disconnect();
+						}
+					} catch (IOException e1) {
+						// 
+						e1.printStackTrace();
+					}
+				}
+			}
+
+			/* Send messages. */
+			Iterator<FreerailsSerializable> messagesIterator = messsages2send
+					.iterator();
+
+			while (messagesIterator.hasNext()) {
+				FreerailsSerializable message = messagesIterator.next();
+				sendMessage(message);
+			}
+		}
+	}
 }

@@ -2,43 +2,47 @@ package jfreerails.world.common;
 
 import java.text.DecimalFormat;
 
-
-/** Represents an amount of Money.
+/**
+ * Represents an amount of Money.
+ * 
  * @author Luke
  */
 final public class Money implements FreerailsSerializable {
-	
+
 	private static final long serialVersionUID = 3258697615163338805L;
+
 	public static final Money ZERO = new Money(0);
-    private static final DecimalFormat df = new DecimalFormat("#,###");
-    private final long amount;
 
-    public long getAmount() {
-        return amount;
-    }
+	private static final DecimalFormat df = new DecimalFormat("#,###");
 
-    public int hashCode() {
-        return (int)(amount ^ (amount >>> 32));
-    }
+	private final long amount;
 
-    public String toString() {
-        return df.format(amount);
-    }
+	public long getAmount() {
+		return amount;
+	}
 
-    public Money(long amount) {
-        this.amount = amount;
-    }
+	public int hashCode() {
+		return (int) (amount ^ (amount >>> 32));
+	}
 
-    public Money changeSign() {
-        return new Money(-amount);
-    }
+	public String toString() {
+		return df.format(amount);
+	}
 
-    public boolean equals(Object obj) {
-        if (obj instanceof Money) {
-            Money test = (Money)obj;
+	public Money(long amount) {
+		this.amount = amount;
+	}
 
-            return test.amount == this.amount;
-        }
+	public Money changeSign() {
+		return new Money(-amount);
+	}
+
+	public boolean equals(Object obj) {
+		if (obj instanceof Money) {
+			Money test = (Money) obj;
+
+			return test.amount == this.amount;
+		}
 		return false;
-    }
+	}
 }

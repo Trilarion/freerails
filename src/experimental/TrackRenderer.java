@@ -19,11 +19,12 @@ import java.util.List;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.track.TrackConfiguration;
 
 /**
- * Provides methods that render track pieces. 
+ * Provides methods that render track pieces.
+ * 
  * @see experimental.TrackTilesGenerator
  * @author Luke Lindsay
  * 
@@ -60,19 +61,19 @@ public class TrackRenderer {
 	boolean tunnel = false;
 
 	void paintTrackConf(Graphics2D g2, TrackConfiguration conf) {
-		
+
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// Draw title
-//		String title = BinaryNumberFormatter.formatWithLowBitOnLeft(conf
-//				.get9bitTemplate(), 9);
-//		g.setColor(Color.BLACK);
-//		g.setFont(font);
-//
-//		g.drawString(title, 10, 10);
+		// String title = BinaryNumberFormatter.formatWithLowBitOnLeft(conf
+		// .get9bitTemplate(), 9);
+		// g.setColor(Color.BLACK);
+		// g.setFont(font);
+		//
+		// g.drawString(title, 10, 10);
 
-		OneTileMoveVector[] directions = OneTileMoveVector.getList();
+		Step[] directions = Step.getList();
 		List<CubicCurve2D.Double> sections = new ArrayList<CubicCurve2D.Double>();
 		int matches = 0;
 		for (int i = 0; i < directions.length - 2; i++) {
@@ -121,7 +122,7 @@ public class TrackRenderer {
 
 	}
 
-	CubicCurve2D.Double toCurve(OneTileMoveVector a) {
+	CubicCurve2D.Double toCurve(Step a) {
 		float halfTile = tileWidth / 2;
 		Point2D.Double start, end, one;
 		start = new Point2D.Double();
@@ -134,7 +135,7 @@ public class TrackRenderer {
 		return returnValue;
 	}
 
-	CubicCurve2D.Double toCurve(OneTileMoveVector a, OneTileMoveVector b) {
+	CubicCurve2D.Double toCurve(Step a, Step b) {
 		float halfTile = tileWidth / 2;
 		Point2D.Double start, end, one, two;
 		start = new Point2D.Double();
@@ -179,8 +180,6 @@ public class TrackRenderer {
 			g.draw(rail1);
 			g.draw(rail2);
 		}
-
-		
 
 	}
 

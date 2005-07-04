@@ -4,130 +4,136 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldDifferences;
 import jfreerails.world.track.FreerailsTile;
 
-
-/** A move that makes a number of changes to the map.
+/**
+ * A move that makes a number of changes to the map.
+ * 
  * @author Luke
-  */
+ */
 public class MapDiffMove implements Move, MapUpdateMove {
-    private static final long serialVersionUID = 3905245632406239544L;
-	private /*=mutable*/ final ArrayList<Point> points;
-    private /*=mutable*/ final ArrayList<FreerailsTile> before;
-    private /*=mutable*/ final ArrayList<FreerailsTile> after;
-    private final Rectangle updateTiles;
+	private static final long serialVersionUID = 3905245632406239544L;
 
-    public MapDiffMove(ReadOnlyWorld world, WorldDifferences diffs) {
-        points = new ArrayList<Point>();
-        before = new ArrayList<FreerailsTile>();
-        after = new ArrayList<FreerailsTile>();
+	private/* =mutable */final ArrayList<Point> points;
 
-        Iterator<Point> it = diffs.getMapDifferences();
+	private/* =mutable */final ArrayList<FreerailsTile> before;
 
-        while (it.hasNext()) {
-            Point p = it.next();
-            points.add(p);
+	private/* =mutable */final ArrayList<FreerailsTile> after;
 
-            FreerailsTile oldTile = (FreerailsTile)world.getTile(p.x, p.y);
-            before.add(oldTile);
+	private final Rectangle updateTiles;
 
-            FreerailsTile newTile = (FreerailsTile)diffs.getTile(p.x, p.y);
-            after.add(newTile);
-        }
+	public MapDiffMove(ReadOnlyWorld world, WorldDifferences diffs) {
+		points = new ArrayList<Point>();
+		before = new ArrayList<FreerailsTile>();
+		after = new ArrayList<FreerailsTile>();
 
-        updateTiles = new Rectangle(0, 0, world.getMapWidth(),
-                world.getMapHeight());
-    }
+		Iterator<Point> it = diffs.getMapDifferences();
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, before);
-    }
+		while (it.hasNext()) {
+			Point p = it.next();
+			points.add(p);
 
-    private MoveStatus tryMove(World w, ArrayList<FreerailsTile> arrayList) {
-        for (int i = 0; i < points.size(); i++) {
-            Point point = points.get(i);
-            FreerailsTile actual = (FreerailsTile)w.getTile(point.x, point.y);
+			FreerailsTile oldTile = (FreerailsTile) world.getTile(p.x, p.y);
+			before.add(oldTile);
 
-            FreerailsTile expected = arrayList.get(i);
+			FreerailsTile newTile = (FreerailsTile) diffs.getTile(p.x, p.y);
+			after.add(newTile);
+		}
 
-            if (!actual.equals(expected)) {
-                return MoveStatus.moveFailed("expected =" + expected +
-                    ", actual = " + actual);
-            }
-        }
+		updateTiles = new Rectangle(0, 0, world.getMapWidth(), world
+				.getMapHeight());
+	}
 
-        return MoveStatus.MOVE_OK;
-    }
+	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
+		return tryMove(w, before);
+	}
 
-    private void doMove(World w, ArrayList<FreerailsTile> arrayList) {
-        for (int i = 0; i < points.size(); i++) {
-            Point point = points.get(i);
-            FreerailsTile tile = arrayList.get(i);
-            w.setTile(point.x, point.y, tile);
-        }
-    }
+	private MoveStatus tryMove(World w, ArrayList<FreerailsTile> arrayList) {
+		for (int i = 0; i < points.size(); i++) {
+			Point point = points.get(i);
+			FreerailsTile actual = (FreerailsTile) w.getTile(point.x, point.y);
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, after);
-    }
+			FreerailsTile expected = arrayList.get(i);
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryMove(w, before);
+			if (!actual.equals(expected)) {
+				return MoveStatus.moveFailed("expected =" + expected
+						+ ", actual = " + actual);
+			}
+		}
 
-        if (ms.isOk()) {
-            doMove(w, after);
-        }
+		return MoveStatus.MOVE_OK;
+	}
 
-        return ms;
-    }
+	private void doMove(World w, ArrayList<FreerailsTile> arrayList) {
+		for (int i = 0; i < points.size(); i++) {
+			Point point = points.get(i);
+			FreerailsTile tile = arrayList.get(i);
+			w.setTile(point.x, point.y, tile);
+		}
+	}
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryMove(w, after);
+	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
+		return tryMove(w, after);
+	}
 
-        if (ms.isOk()) {
-            doMove(w, before);
-        }
+	public MoveStatus doMove(World w, FreerailsPrincipal p) {
+		MoveStatus ms = tryMove(w, before);
 
-        return ms;
-    }
+		if (ms.isOk()) {
+			doMove(w, after);
+		}
 
-    public boolean equals(Object arg0) {
-        if (null == arg0) {
-            return false;
-        }
+		return ms;
+	}
 
-        if (!(arg0 instanceof MapDiffMove)) {
-            return false;
-        }
+	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+		MoveStatus ms = tryMove(w, after);
 
-        MapDiffMove test = (MapDiffMove)arg0;
+		if (ms.isOk()) {
+			doMove(w, before);
+		}
 
-        for (int i = 0; i < points.size(); i++) {
-            if (!points.get(i).equals(test.points.get(i))) {
-                return false;
-            }
+		return ms;
+	}
 
-            if (!before.get(i).equals(test.before.get(i))) {
-                return false;
-            }
+	public boolean equals(Object arg0) {
+		if (null == arg0) {
+			return false;
+		}
 
-            if (!after.get(i).equals(test.after.get(i))) {
-                return false;
-            }
-        }
+		if (!(arg0 instanceof MapDiffMove)) {
+			return false;
+		}
 
-        return true;
-    }
+		MapDiffMove test = (MapDiffMove) arg0;
 
-    public int hashCode() {
-        return points.size();
-    }
+		for (int i = 0; i < points.size(); i++) {
+			if (!points.get(i).equals(test.points.get(i))) {
+				return false;
+			}
 
-    public /*=const*/ Rectangle getUpdatedTiles() {
-        return updateTiles;
-    }
+			if (!before.get(i).equals(test.before.get(i))) {
+				return false;
+			}
+
+			if (!after.get(i).equals(test.after.get(i))) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public int hashCode() {
+		return points.size();
+	}
+
+	public Rectangle getUpdatedTiles() {
+		return updateTiles;
+	}
 }

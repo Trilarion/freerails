@@ -242,7 +242,7 @@ public class DialogueBoxController implements WorldListListener {
 		this.modelRoot = mr;
 		this.vl = vl;
 		modelRoot.addListListener(this); // When a new train gets built, we
-											// show the train info etc
+		// show the train info etc
 
 		this.world = modelRoot.getWorld();
 
@@ -306,7 +306,8 @@ public class DialogueBoxController implements WorldListListener {
 		int numberOfPlayers = modelRoot.getWorld().getNumberOfPlayers();
 		for (int i = 0; i < numberOfPlayers; i++) {
 			final Player temp = modelRoot.getWorld().getPlayer(i);
-			@SuppressWarnings("unused") FinancialDataGatherer finacialDataGatherer = new FinancialDataGatherer(
+			@SuppressWarnings("unused")
+			FinancialDataGatherer finacialDataGatherer = new FinancialDataGatherer(
 					world, temp.getPrincipal());
 			if (temp != null
 					&& !(modelRoot.getPrincipal().equals(temp.getPrincipal()))) {

@@ -1,59 +1,61 @@
 /*
-* RiverStyleTileIconSelecter.java
-*
-* Created on 07 July 2001, 12:36
-*/
+ * RiverStyleTileIconSelecter.java
+ *
+ * Created on 07 July 2001, 12:36
+ */
 package jfreerails.client.renderer;
 
 import java.awt.Image;
 import java.io.IOException;
+
 import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
-* Selects a tile icon to use based on the type of the tiles to the
- * North, East, South and West.
-* @author  Luke Lindsay
-*/
-final public class RiverStyleTileRenderer
-    extends jfreerails.client.renderer.AbstractTileRenderer {
-    private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
-    private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
+ * Selects a tile icon to use based on the type of the tiles to the North, East,
+ * South and West.
+ * 
+ * @author Luke Lindsay
+ */
+final public class RiverStyleTileRenderer extends
+		jfreerails.client.renderer.AbstractTileRenderer {
+	private static final int[] Y_LOOK_AT = { 0, 1, 0, -1 };
 
-    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
-        TerrainType tileModel) throws IOException {
-        super(tileModel, rgbValues);
-        this.setTileIcons(new Image[16]);
+	private static final int[] X_LOOK_AT = { -1, 0, 1, 0 };
 
-        for (int i = 0; i < this.getTileIcons().length; i++) {
-            String fileName = generateRelativeFileName(i);
-            this.getTileIcons()[i] = imageManager.getImage(fileName);
-        }
-    }
+	public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
+			TerrainType tileModel) throws IOException {
+		super(tileModel, rgbValues);
+		this.setTileIcons(new Image[16]);
 
-    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-        int iconNumber = 0;
+		for (int i = 0; i < this.getTileIcons().length; i++) {
+			String fileName = generateRelativeFileName(i);
+			this.getTileIcons()[i] = imageManager.getImage(fileName);
+		}
+	}
 
-        for (int i = 0; i < 4; i++) {
-            iconNumber = iconNumber << 1;
-            iconNumber = iconNumber |
-                checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
-        }
+	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+		int iconNumber = 0;
 
-        return iconNumber;
-    }
+		for (int i = 0; i < 4; i++) {
+			iconNumber = iconNumber << 1;
+			iconNumber = iconNumber
+					| checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
+		}
 
-    public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < this.getTileIcons().length; i++) {
-            imageManager.setImage(generateRelativeFileName(i),
-                this.getTileIcons()[i]);
-        }
-    }
+		return iconNumber;
+	}
 
-    protected String generateFileNameNumber(int i) {
-        return BinaryNumberFormatter.formatWithLowBitOnLeft(i, 4);
-    }
+	public void dumpImages(ImageManager imageManager) {
+		for (int i = 0; i < this.getTileIcons().length; i++) {
+			imageManager.setImage(generateRelativeFileName(i), this
+					.getTileIcons()[i]);
+		}
+	}
+
+	protected String generateFileNameNumber(int i) {
+		return BinaryNumberFormatter.formatWithLowBitOnLeft(i, 4);
+	}
 }

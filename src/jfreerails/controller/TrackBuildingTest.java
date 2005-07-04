@@ -1,12 +1,15 @@
 package jfreerails.controller;
 
+import static jfreerails.world.common.Step.EAST;
+import static jfreerails.world.common.Step.SOUTH;
+import static jfreerails.world.common.Step.SOUTH_EAST;
+
 import java.awt.Point;
 import java.util.Arrays;
 
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
-import jfreerails.world.common.OneTileMoveVector;
-import static jfreerails.world.common.OneTileMoveVector.*;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
 import jfreerails.world.track.NullTrackType;
@@ -20,9 +23,10 @@ public class TrackBuildingTest extends TestCase {
 	TrackMoveProducer producer;
 
 	TrackPathFinder pathFinder;
-	
+
 	StationBuilder stationBuilder;
-	BuildTrackStrategy bts ;
+
+	BuildTrackStrategy bts;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -37,7 +41,7 @@ public class TrackBuildingTest extends TestCase {
 
 	/** Tests building track from 5,5 to 10,5 */
 	public void testBuildingStraight() {
-		
+
 		Point from = new Point(5, 5);
 		Point to = new Point(10, 5);
 		try {
@@ -51,10 +55,10 @@ public class TrackBuildingTest extends TestCase {
 			pathFinder.search(-1);
 			assertEquals(pathFinder.getStatus(),
 					IncrementalPathFinder.PATH_FOUND);
-			OneTileMoveVector[] path = pathFinder.pathAsVectors();
+			Step[] path = pathFinder.pathAsVectors();
 			assertEquals(path.length, 5);
 			for (int i = 0; i < 5; i++) {
-				assertEquals(OneTileMoveVector.EAST, path[i]);
+				assertEquals(Step.EAST, path[i]);
 			}
 			MoveStatus ms = producer.buildTrack(from, path);
 			assertTrue(ms.message, ms.ok);
@@ -71,7 +75,7 @@ public class TrackBuildingTest extends TestCase {
 
 	/** Tests building track from 5,5 to 6,5 */
 	public void testBuildingOneTrackPiece() {
-		
+
 		Point from = new Point(5, 5);
 		Point to = new Point(6, 5);
 		try {
@@ -89,10 +93,10 @@ public class TrackBuildingTest extends TestCase {
 			pathFinder.search(-1);
 			assertEquals(pathFinder.getStatus(),
 					IncrementalPathFinder.PATH_FOUND);
-			OneTileMoveVector[] path = pathFinder.pathAsVectors();
+			Step[] path = pathFinder.pathAsVectors();
 			assertEquals(path.length, 1);
 
-			assertEquals(OneTileMoveVector.EAST, path[0]);
+			assertEquals(Step.EAST, path[0]);
 
 			MoveStatus ms = producer.buildTrack(from, path);
 			assertTrue(ms.message, ms.ok);
@@ -107,15 +111,17 @@ public class TrackBuildingTest extends TestCase {
 		}
 
 	}
-	/** There is a bug where if a section of track has a terminal on
-	 * the end, you cannot extend the track through the terminal.  Instead,
-	 * the track path finder finds a route that misses out the terminal. 
-	 *
+
+	/**
+	 * There is a bug where if a section of track has a terminal on the end, you
+	 * cannot extend the track through the terminal. Instead, the track path
+	 * finder finds a route that misses out the terminal.
+	 * 
 	 */
-	public void testTerminalProblem(){
-		try{
+	public void testTerminalProblem() {
+		try {
 			Point from = new Point(5, 5);
-			OneTileMoveVector[] path = {EAST, EAST, EAST};
+			Step[] path = { EAST, EAST, EAST };
 			MoveStatus ms = producer.buildTrack(from, path);
 			assertTrue(ms.ok);
 			int terminalStationType = stationBuilder.getTrackTypeID("terminal");
@@ -126,65 +132,69 @@ public class TrackBuildingTest extends TestCase {
 			pathFinder.search(-1);
 			path = pathFinder.pathAsVectors();
 			assertEquals(2, path.length);
-			OneTileMoveVector[] expectedPath = {EAST, EAST};
+			Step[] expectedPath = { EAST, EAST };
 			assertTrue(Arrays.equals(expectedPath, path));
 		} catch (PathNotFoundException e) {
 			fail();
 		}
 	}
-	
-	/** There is a bug where if you build a straight section of double track going E, then move 
-	 * the curor to the end and attempt to build more double track going SE, the track path finder
-	 * builds a loop rather than just building track going SE 
-	 *
+
+	/**
+	 * There is a bug where if you build a straight section of double track
+	 * going E, then move the curor to the end and attempt to build more double
+	 * track going SE, the track path finder builds a loop rather than just
+	 * building track going SE
+	 * 
 	 */
-	public void testDoubleTrackProblem(){
-		try{
-			
+	public void testDoubleTrackProblem() {
+		try {
+
 			int trackTypeID = stationBuilder.getTrackTypeID("double track");
 			bts = BuildTrackStrategy.getSingleRuleInstance(trackTypeID, w);
 			producer.setBuildTrackStrategy(bts);
 			Point a = new Point(5, 5);
 			Point b = new Point(6, 5);
 			Point c = new Point(7, 6);
-			
+
 			pathFinder.setupSearch(a, b, bts);
 			pathFinder.search(-1);
-			OneTileMoveVector[] path = pathFinder.pathAsVectors();
-			OneTileMoveVector[] expectedPath = {EAST};
+			Step[] path = pathFinder.pathAsVectors();
+			Step[] expectedPath = { EAST };
 			assertTrue(Arrays.equals(expectedPath, path));
 			MoveStatus ms = producer.buildTrack(a, path);
-			assertTrue(ms.ok);	
-			
-			TrackPiece tp = (TrackPiece)w.getTile(b.x, b.y);
-			assertEquals("We just build double track here.", trackTypeID, tp.getTrackTypeID());
-			
+			assertTrue(ms.ok);
+
+			TrackPiece tp = (TrackPiece) w.getTile(b.x, b.y);
+			assertEquals("We just build double track here.", trackTypeID, tp
+					.getTrackTypeID());
+
 			pathFinder.setupSearch(b, c, bts);
 			pathFinder.search(-1);
 			path = pathFinder.pathAsVectors();
-			assertEquals(1, path.length);		
-			
-			expectedPath = new OneTileMoveVector[]{SOUTH_EAST};
+			assertEquals(1, path.length);
+
+			expectedPath = new Step[] { SOUTH_EAST };
 			assertTrue(Arrays.equals(expectedPath, path));
 		} catch (PathNotFoundException e) {
 			fail();
 		}
 	}
-	
-	/** There is a bug where if you try to start building track on a 90 degree
+
+	/**
+	 * There is a bug where if you try to start building track on a 90 degree
 	 * bend, no track path is found even when one should exist.
-	 *
+	 * 
 	 */
-	public void testStartSearchOnSharpCurve(){
-		try{
+	public void testStartSearchOnSharpCurve() {
+		try {
 			Point from = new Point(5, 5);
-			OneTileMoveVector[] path = {EAST, SOUTH};
+			Step[] path = { EAST, SOUTH };
 			MoveStatus ms = producer.buildTrack(from, path);
-			assertTrue(ms.ok);									
+			assertTrue(ms.ok);
 			pathFinder.setupSearch(new Point(6, 5), new Point(6, 7), bts);
 			pathFinder.search(-1);
-			path = pathFinder.pathAsVectors();			
-			assertEquals(2, path.length);			
+			path = pathFinder.pathAsVectors();
+			assertEquals(2, path.length);
 			assertEquals(SOUTH, path[0]);
 			assertEquals(SOUTH, path[1]);
 		} catch (PathNotFoundException e) {

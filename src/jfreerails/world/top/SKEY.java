@@ -5,55 +5,67 @@ import java.io.ObjectStreamException;
 import jfreerails.util.Utils;
 import jfreerails.world.common.FreerailsSerializable;
 
-
-/** <p>This class provides a set of keys to access the lists of elements
- * in the game world that are shared by all players.</P>
- *
- * <p>It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
- * item 21)</p>
+/**
+ * <p>
+ * This class provides a set of keys to access the lists of elements in the game
+ * world that are shared by all players.
+ * </P>
+ * 
+ * <p>
+ * It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
+ * item 21)
+ * </p>
+ * 
  * @author Luke
  */
+@jfreerails.util.InstanceControlled
 public class SKEY implements FreerailsSerializable {
-    private static final long serialVersionUID = 3257847679739506737L;
+	private static final long serialVersionUID = 3257847679739506737L;
 
 	/** Maps key numbers to KEYs. */
-    private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
+	private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
 
-    //START OF KEYS
-    public static final SKEY TERRAIN_TYPES = new SKEY();
-    public static final SKEY WAGON_TYPES = new SKEY();
-    public static final SKEY CARGO_TYPES = new SKEY();
-    public static final SKEY CITIES = new SKEY();
-    public static final SKEY ENGINE_TYPES = new SKEY();
-    public static final SKEY TRACK_RULES = new SKEY();
+	// START OF KEYS
+	public static final SKEY TERRAIN_TYPES = new SKEY();
 
-    //END OF SKEYS		
-    private static int numberOfKeys;
-    private final int keyNumber;
+	public static final SKEY WAGON_TYPES = new SKEY();
 
-    private SKEY() {
-        this.keyNumber = numberOfKeys;
-        keys[keyNumber] = this;
-        numberOfKeys++;
-    }
+	public static final SKEY CARGO_TYPES = new SKEY();
 
-    static int getNumberOfKeys() {
-        return SKEY.class.getFields().length;
-    }
+	public static final SKEY CITIES = new SKEY();
 
-    int getKeyID() {
-        return keyNumber;
-    }
+	public static final SKEY ENGINE_TYPES = new SKEY();
 
-    private Object readResolve() throws ObjectStreamException {
-        return keys[this.keyNumber];
-    }   
+	public static final SKEY TRACK_RULES = new SKEY();
 
-    public String toString() {
-        return Utils.findConstantFieldName(this);
-    }
+	// END OF SKEYS
+	private static int numberOfKeys;
 
-    static SKEY getKey(int keyNum) {
-        return keys[keyNum];
-    }
+	private final int keyNumber;
+
+	private SKEY() {
+		this.keyNumber = numberOfKeys;
+		keys[keyNumber] = this;
+		numberOfKeys++;
+	}
+
+	static int getNumberOfKeys() {
+		return SKEY.class.getFields().length;
+	}
+
+	int getKeyID() {
+		return keyNumber;
+	}
+
+	private Object readResolve() throws ObjectStreamException {
+		return keys[this.keyNumber];
+	}
+
+	public String toString() {
+		return Utils.findConstantFieldName(this);
+	}
+
+	static SKEY getKey(int keyNum) {
+		return keys[keyNum];
+	}
 }

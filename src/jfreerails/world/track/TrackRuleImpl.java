@@ -6,8 +6,9 @@
 package jfreerails.world.track;
 
 import java.util.Iterator;
+
 import jfreerails.world.common.Money;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.terrain.TerrainType;
 
 /**
@@ -94,8 +95,8 @@ final public class TrackRuleImpl implements TrackRule {
 		return legalConfigurations.getLegalConfigurationsIterator();
 	}
 
-	public OneTileMoveVector[] getLegalRoutes(
-			OneTileMoveVector directionComingFrom) {
+	public Step[] getLegalRoutes(
+			Step directionComingFrom) {
 		// TODO add code..
 		return null;
 	}

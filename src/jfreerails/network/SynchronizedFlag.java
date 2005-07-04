@@ -3,32 +3,31 @@
  */
 package jfreerails.network;
 
-
 /**
  * Synchronized flag - used to tell threads whether they should keep going.
  * Note, thought about using volatile keyword but wasn't sure if it is
  * implemented on all JVMs
- *
+ * 
  * @author Luke
  */
 class SynchronizedFlag {
-    SynchronizedFlag(boolean b) {
-        this.isOpen = b;
-    }
+	SynchronizedFlag(boolean b) {
+		this.isOpen = b;
+	}
 
-    private boolean isOpen = true;
+	private boolean isOpen = true;
 
-    public synchronized boolean isOpen() {
-        return isOpen;
-    }
+	public synchronized boolean isOpen() {
+		return isOpen;
+	}
 
-    public synchronized void close() {
-        this.isOpen = false;
-        notifyAll();
-    }
+	public synchronized void close() {
+		this.isOpen = false;
+		notifyAll();
+	}
 
-    public synchronized void open() {
-        this.isOpen = true;
-        notifyAll();
-    }
+	public synchronized void open() {
+		this.isOpen = true;
+		notifyAll();
+	}
 }

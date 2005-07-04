@@ -1,78 +1,35 @@
 package jfreerails.world.terrain;
 
-import java.io.ObjectStreamException;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
 
-
-/** Defines the methods to access the properties of a type of terrains.
- * Note, this interface has been annotated for use with ConstJava.
- *
+/**
+ * Defines the methods to access the properties of a type of terrains.
+ * 
+ * 
  * @author Luke
  */
 public interface TerrainType extends FreerailsSerializable {
-	
-	enum Category {Urban , River , Ocean , Hill , Country , Special , Industry , Resource};
-	
-    String getTerrainTypeName();
 
-    Category getCategory();
+	enum Category {
+		Urban, River, Ocean, Hill, Country, Special, Industry, Resource
+	};
 
-    Money getBuildCost();
+	String getTerrainTypeName();
 
-    int getRightOfWay();
+	Category getCategory();
 
-    int getRGB();
+	Money getBuildCost();
 
-    /*=const*/ Production[] getProduction();
+	int getRightOfWay();
 
-    /*=const*/ Consumption[] getConsumption();
+	int getRGB();
 
-    /*=const*/ Conversion[] getConversion();
+	Production[] getProduction();
 
-    String getDisplayName();
+	Consumption[] getConsumption();
 
-    static final TerrainType NULL = (new TerrainType() {
-            private static final long serialVersionUID = 3834874680581369912L;
+	Conversion[] getConversion();
 
-			public /*=const*/ Production[] getProduction() {
-                return new Production[0];
-            }
-
-            public /*=const*/ Consumption[] getConsumption() {
-                return new Consumption[0];
-            }
-
-            public /*=const*/ Conversion[] getConversion() {
-                return new Conversion[0];
-            }
-
-            public String getTerrainTypeName() {
-                return null;
-            }
-
-            public Category getCategory() {
-                return Category.Country;
-            }
-
-            public int getRGB() {
-                return 0;
-            }
-
-            public int getRightOfWay() {
-                return 0;
-            }
-
-            public String getDisplayName() {
-                return "";
-            }
-
-            private Object readResolve() throws ObjectStreamException {
-                return NULL;
-            }
-
-            public Money getBuildCost() {
-                return null;
-            }
-        });
+	String getDisplayName();
 }

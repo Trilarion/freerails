@@ -7,162 +7,184 @@ import java.text.DecimalFormat;
 import java.util.logging.Logger;
 
 /**
-*  A FilterInputStream that measures flow rate.
-* @author Patrice Espie
-* Licensing: LGPL
-*/
+ * A FilterInputStream that measures flow rate.
+ * 
+ * @author Patrice Espie Licensing: LGPL
+ */
 public class FlowRateInputStream extends FilterInputStream implements Runnable {
-    private static final Logger logger = Logger.getLogger(FlowRateInputStream.class.getName());
+	private static final Logger logger = Logger
+			.getLogger(FlowRateInputStream.class.getName());
 
-    public FlowRateInputStream(InputStream in, String streamName) {
-        this(in, streamName, 60, 1000);
-    }
+	public FlowRateInputStream(InputStream in, String streamName) {
+		this(in, streamName, 60, 1000);
+	}
 
-    public FlowRateInputStream(InputStream in, String streamName,
-        int measureDuration, int measureInterval) {
-        super(in);
-        byteReceivedCumul = 0L;
-        totalByteReceived = 0L;
-        previousTotalByteReceived = 0L;
-        openTimeMillis = System.currentTimeMillis();
-        nextFree = 0;
-        nbUsed = 0;
-        running = false;
-        closeRequested = false;
-        byteReceived = new long[measureDuration];
-        measureIntervall = measureInterval;
-        this.streamName = streamName;
+	public FlowRateInputStream(InputStream in, String streamName,
+			int measureDuration, int measureInterval) {
+		super(in);
+		byteReceivedCumul = 0L;
+		totalByteReceived = 0L;
+		previousTotalByteReceived = 0L;
+		openTimeMillis = System.currentTimeMillis();
+		nextFree = 0;
+		nbUsed = 0;
+		running = false;
+		closeRequested = false;
+		byteReceived = new long[measureDuration];
+		measureIntervall = measureInterval;
+		this.streamName = streamName;
 
-        if (measureIntervall == 0) {
-            showTrace = false;
-            measureIntervall = 1000L;
-        } else {
-            showTrace = true;
-        }
+		if (measureIntervall == 0) {
+			showTrace = false;
+			measureIntervall = 1000L;
+		} else {
+			showTrace = true;
+		}
 
-        (new Thread(this)).start();
-    }
+		(new Thread(this)).start();
+	}
 
-    public FlowRateInputStream(InputStream in) {
-        this(in, "FlowRateInputStream", 60, 1000);
-    }
+	public FlowRateInputStream(InputStream in) {
+		this(in, "FlowRateInputStream", 60, 1000);
+	}
 
-    public void close() throws IOException {
-        closeRequested = true;
-        super.close();
+	public void close() throws IOException {
+		closeRequested = true;
+		super.close();
 
-        do {
-            try {
-                Thread.currentThread();
-                Thread.sleep(50L);
-            } catch (InterruptedException interruptedexception) {
-            }
-        } while (running);
+		do {
+			try {
+				Thread.currentThread();
+				Thread.sleep(50L);
+			} catch (InterruptedException interruptedexception) {
+			}
+		} while (running);
 
-        logger.info(String.valueOf(String.valueOf((new StringBuffer("Stream ")).append(
-                        streamName).append(": Open duration = ")
-                                                   .append((System.currentTimeMillis() -
-                        openTimeMillis) / 1000D).append(", Byte received = ")
-                                                   .append(totalByteReceived)
-                                                   .append(" (")
-                                                   .append((int)(totalByteReceived / 1024D))
-                                                   .append(" Ko), overall flow rate = ")
-                                                   .append(overallRate())
-                                                   .append(" Ko/s"))));
-    }
+		logger.info(String.valueOf(String.valueOf((new StringBuffer("Stream "))
+				.append(streamName).append(": Open duration = ").append(
+						(System.currentTimeMillis() - openTimeMillis) / 1000D)
+				.append(", Byte received = ").append(totalByteReceived).append(
+						" (").append((int) (totalByteReceived / 1024D)).append(
+						" Ko), overall flow rate = ").append(overallRate())
+				.append(" Ko/s"))));
+	}
 
-    public int read() throws IOException {
-        int r = super.in.read();
-        totalByteReceived += r;
+	public int read() throws IOException {
+		int r = super.in.read();
+		totalByteReceived += r;
 
-        return r;
-    }
+		return r;
+	}
 
-    public int read(byte[] b) throws IOException {
-        int r = super.in.read(b);
-        totalByteReceived += r;
+	public int read(byte[] b) throws IOException {
+		int r = super.in.read(b);
+		totalByteReceived += r;
 
-        return r;
-    }
+		return r;
+	}
 
-    public int read(byte[] b, int off, int len) throws IOException {
-        int r = super.in.read(b, off, len);
-        totalByteReceived += r;
+	public int read(byte[] b, int off, int len) throws IOException {
+		int r = super.in.read(b, off, len);
+		totalByteReceived += r;
 
-        return r;
-    }
+		return r;
+	}
 
-    public int currentRate() {
-        return (int)(byteReceivedCumul / 1024D / (nbUsed * (measureIntervall / 1000D)));
-    }
+	public int currentRate() {
+		return (int) (byteReceivedCumul / 1024D / (nbUsed * (measureIntervall / 1000D)));
+	}
 
-    public String currentRateString() {
-        double d = (byteReceivedCumul / 1024D / (nbUsed * (measureIntervall / 1000D)));
+	public String currentRateString() {
+		double d = (byteReceivedCumul / 1024D / (nbUsed * (measureIntervall / 1000D)));
 
-        return decimalFormat.format(d);
-    }
+		return decimalFormat.format(d);
+	}
 
-    public int overallRate() {
-        return (int)(totalByteReceived / 1024D / ((System.currentTimeMillis() -
-        openTimeMillis) / 1000D));
-    }
+	public int overallRate() {
+		return (int) (totalByteReceived / 1024D / ((System.currentTimeMillis() - openTimeMillis) / 1000D));
+	}
 
-    public void run() {
-        if (running || measureIntervall == 0x7fffffffffffffffL) {
-            return;
-        }
+	public void run() {
+		if (running || measureIntervall == 0x7fffffffffffffffL) {
+			return;
+		}
 
-        running = true;
+		running = true;
 
-        try {
-            do {
-                try {
-                    Thread.currentThread();
-                    Thread.sleep(measureIntervall);
-                } catch (InterruptedException interruptedexception) {
-                }
+		try {
+			do {
+				try {
+					Thread.currentThread();
+					Thread.sleep(measureIntervall);
+				} catch (InterruptedException interruptedexception) {
+				}
 
-                if (!closeRequested) {
-                    long totalByteReceivedCopy = totalByteReceived;
-                    long byteSentThisTime = totalByteReceivedCopy -
-                        previousTotalByteReceived;
-                    previousTotalByteReceived = totalByteReceivedCopy;
-                    byteReceivedCumul -= byteReceived[nextFree];
-                    byteReceived[nextFree] = byteSentThisTime;
-                    byteReceivedCumul += byteSentThisTime;
-                    nextFree = (nextFree + 1) % byteReceived.length;
-                    nbUsed = Math.min(byteReceived.length, nbUsed + 1);
+				if (!closeRequested) {
+					long totalByteReceivedCopy = totalByteReceived;
+					long byteSentThisTime = totalByteReceivedCopy
+							- previousTotalByteReceived;
+					previousTotalByteReceived = totalByteReceivedCopy;
+					byteReceivedCumul -= byteReceived[nextFree];
+					byteReceived[nextFree] = byteSentThisTime;
+					byteReceivedCumul += byteSentThisTime;
+					nextFree = (nextFree + 1) % byteReceived.length;
+					nbUsed = Math.min(byteReceived.length, nbUsed + 1);
 
-                    if (showTrace) {
-                        logger.info(String.valueOf(String.valueOf(
-                                    (new StringBuffer("Stream ")).append(
-                                        streamName).append(": Open duration = ")
-                                     .append((System.currentTimeMillis() -
-                                        openTimeMillis) / 1000D)
-                                     .append(", Byte sent = ")
-                                     .append(totalByteReceived).append(" (")
-                                     .append((int)(totalByteReceived / 1024D))
-                                     .append(" Ko), current flow rate = ")
-                                     .append(currentRateString()).append(" Ko/s"))));
-                    }
-                }
-            } while (!closeRequested);
-        } finally {
-            running = false;
-        }
-    }
+					if (showTrace) {
+						logger
+								.info(String
+										.valueOf(String
+												.valueOf((new StringBuffer(
+														"Stream "))
+														.append(streamName)
+														.append(
+																": Open duration = ")
+														.append(
+																(System
+																		.currentTimeMillis() - openTimeMillis) / 1000D)
+														.append(
+																", Byte sent = ")
+														.append(
+																totalByteReceived)
+														.append(" (")
+														.append(
+																(int) (totalByteReceived / 1024D))
+														.append(
+																" Ko), current flow rate = ")
+														.append(
+																currentRateString())
+														.append(" Ko/s"))));
+					}
+				}
+			} while (!closeRequested);
+		} finally {
+			running = false;
+		}
+	}
 
-    private long[] byteReceived;
-    private long byteReceivedCumul;
-    private long totalByteReceived;
-    private long previousTotalByteReceived;
-    private long openTimeMillis;
-    private long measureIntervall;
-    private int nextFree;
-    private int nbUsed;
-    private boolean running;
-    private boolean closeRequested;
-    private String streamName;
-    private boolean showTrace;
-    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+	private long[] byteReceived;
+
+	private long byteReceivedCumul;
+
+	private long totalByteReceived;
+
+	private long previousTotalByteReceived;
+
+	private long openTimeMillis;
+
+	private long measureIntervall;
+
+	private int nextFree;
+
+	private int nbUsed;
+
+	private boolean running;
+
+	private boolean closeRequested;
+
+	private String streamName;
+
+	private boolean showTrace;
+
+	private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 }

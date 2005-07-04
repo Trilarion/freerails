@@ -5,6 +5,7 @@
 package jfreerails.move;
 
 import java.awt.Point;
+
 import jfreerails.world.player.Player;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
@@ -16,46 +17,47 @@ import jfreerails.world.track.TrackPieceImpl;
 import jfreerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
-
 /**
  * JUnit test case for TrackMoveTransactionsGenerator.
- *
+ * 
  * @author Luke Lindsay
- *
+ * 
  */
 public class TrackMoveTransactionsGeneratorTest extends TestCase {
-    private World world;
-    private TrackMoveTransactionsGenerator transactionGenerator;
-    private Player player;
+	private World world;
 
-    protected void setUp() throws Exception {
-        world = new WorldImpl(20, 20);
-        MapFixtureFactory.generateTrackRuleList(world);
-        player = new Player("test player",
-                (new Player("test player")).getPublicKey(), 0);
-        world.addPlayer(player);
-        transactionGenerator = new TrackMoveTransactionsGenerator(world,
-                player.getPrincipal());
-    }
+	private TrackMoveTransactionsGenerator transactionGenerator;
 
-    public void testAddTrackMove() {
-        TrackPiece oldTrackPiece;
-        TrackPiece newTrackPiece;
-        TrackConfiguration newConfig;
-        TrackMove move;
+	private Player player;
 
-        //Try building the simplest piece of track.
-        newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = (TrackPiece)world.getTile(0, 0);
+	protected void setUp() throws Exception {
+		world = new WorldImpl(20, 20);
+		MapFixtureFactory.generateTrackRuleList(world);
+		player = new Player("test player", (new Player("test player"))
+				.getPublicKey(), 0);
+		world.addPlayer(player);
+		transactionGenerator = new TrackMoveTransactionsGenerator(world, player
+				.getPrincipal());
+	}
 
-        TrackRule r = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
-        int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL,
-                world);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
-        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point(0, 0));
+	public void testAddTrackMove() {
+		TrackPiece oldTrackPiece;
+		TrackPiece newTrackPiece;
+		TrackConfiguration newConfig;
+		TrackMove move;
 
-        Move m = transactionGenerator.addTransactions(move);
-        assertNotNull(m);
-    }
+		// Try building the simplest piece of track.
+		newConfig = TrackConfiguration.getFlatInstance("000010000");
+		oldTrackPiece = (TrackPiece) world.getTile(0, 0);
+
+		TrackRule r = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
+		int owner = ChangeTrackPieceCompositeMove.getOwner(
+				MapFixtureFactory.TEST_PRINCIPAL, world);
+		newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
+		move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
+				new Point(0, 0));
+
+		Move m = transactionGenerator.addTransactions(move);
+		assertNotNull(m);
+	}
 }

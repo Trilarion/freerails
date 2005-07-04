@@ -4,48 +4,50 @@
  */
 package jfreerails.world.common;
 
-
-/**This class represents a specific instant in time during a game.
- *
+/**
+ * This class represents a specific instant in time during a game.
+ * 
  * @author Luke
- *
+ * 
  */
 public class GameTime implements FreerailsSerializable {
-    private static final long serialVersionUID = 3691035461301055541L;
+	private static final long serialVersionUID = 3691035461301055541L;
 
-	/** The first possible time.*/
-    public static final GameTime BIG_BANG = new GameTime(Integer.MIN_VALUE);
+	/** The first possible time. */
+	public static final GameTime BIG_BANG = new GameTime(Integer.MIN_VALUE);
 
-    /** The last possible time.*/
-    public static final GameTime END_OF_THE_WORLD = new GameTime(Integer.MAX_VALUE);
-    private final int ticks;
+	/** The last possible time. */
+	public static final GameTime END_OF_THE_WORLD = new GameTime(
+			Integer.MAX_VALUE);
 
-    public String toString() {
-        return "GameTime:" + String.valueOf(ticks);
-    }
+	private final int ticks;
 
-    public int hashCode() {
-        return ticks;
-    }
+	public String toString() {
+		return "GameTime:" + String.valueOf(ticks);
+	}
 
-    public GameTime(int l) {
-        this.ticks = l;
-    }
+	public int hashCode() {
+		return ticks;
+	}
 
-    public GameTime nextTick() {
-        return new GameTime(ticks + 1);
-    }
+	public GameTime(int l) {
+		this.ticks = l;
+	}
 
-    public int getTicks() {
-        return ticks;
-    }
+	public GameTime nextTick() {
+		return new GameTime(ticks + 1);
+	}
 
-    public boolean equals(Object o) {
-        if (o instanceof GameTime) {
-            GameTime test = (GameTime)o;
+	public int getTicks() {
+		return ticks;
+	}
 
-            return this.ticks == test.ticks;
-        }
+	public boolean equals(Object o) {
+		if (o instanceof GameTime) {
+			GameTime test = (GameTime) o;
+
+			return this.ticks == test.ticks;
+		}
 		return false;
-    }
+	}
 }

@@ -12,53 +12,57 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
  * A HtmlJPanel that displays the income statement.
+ * 
  * @author Luke
- *
+ * 
  */
 public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
-    private static final long serialVersionUID = 3257846588885120057L;
+	private static final long serialVersionUID = 3257846588885120057L;
+
 	private String template;
-    private int lastNumTransactions = 0;
-    private ModelRoot modelRoot;
 
-    public IncomeStatementHtmlJPanel() {
-        super();
+	private int lastNumTransactions = 0;
 
-        URL url = IncomeStatementHtmlJPanel.class.getResource(
-                "/jfreerails/client/view/income_statement.htm");
-        template = loadText(url);
-    }
+	private ModelRoot modelRoot;
 
-    public void setup(ModelRoot modelRoot, ViewLists vl,
-        ActionListener submitButtonCallBack) {
-        super.setup(modelRoot, vl, submitButtonCallBack);
-        this.modelRoot = modelRoot;
-        updateHtml();
-    }
+	public IncomeStatementHtmlJPanel() {
+		super();
 
-    private void updateHtml() {
-        ReadOnlyWorld world = modelRoot.getWorld();
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(world,
-                playerPrincipal);
-        String populatedTemplate = populateTokens(template,
-                balanceSheetGenerator);
-        setHtml(populatedTemplate);
-    }
+		URL url = IncomeStatementHtmlJPanel.class
+				.getResource("/jfreerails/client/view/income_statement.htm");
+		template = loadText(url);
+	}
 
-    protected void paintComponent(Graphics g) {
-        /* Check to see if the text needs updating before painting. */
-        ReadOnlyWorld world = modelRoot.getWorld();
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
+	public void setup(ModelRoot modelRoot, ViewLists vl,
+			ActionListener submitButtonCallBack) {
+		super.setup(modelRoot, vl, submitButtonCallBack);
+		this.modelRoot = modelRoot;
+		updateHtml();
+	}
 
-        if (currentNumberOfTransactions != lastNumTransactions) {
-            updateHtml();
-        }
+	private void updateHtml() {
+		ReadOnlyWorld world = modelRoot.getWorld();
+		FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+		IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(
+				world, playerPrincipal);
+		String populatedTemplate = populateTokens(template,
+				balanceSheetGenerator);
+		setHtml(populatedTemplate);
+	}
 
-        super.paintComponent(g);
-    }
+	protected void paintComponent(Graphics g) {
+		/* Check to see if the text needs updating before painting. */
+		ReadOnlyWorld world = modelRoot.getWorld();
+		FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+		int currentNumberOfTransactions = world
+				.getNumberOfTransactions(playerPrincipal);
+
+		if (currentNumberOfTransactions != lastNumTransactions) {
+			updateHtml();
+		}
+
+		super.paintComponent(g);
+	}
 }

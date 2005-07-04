@@ -49,6 +49,7 @@ public class ActionRoot {
 			null);
 
 	private StationBuildModel stationBuildModel;
+
 	private TrackBuildModel trackBuildModel;
 
 	private TrackMoveProducer trackMoveProducer;

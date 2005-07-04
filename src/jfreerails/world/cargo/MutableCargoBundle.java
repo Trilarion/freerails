@@ -8,151 +8,156 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-
-/**This CargoBundle implementation uses a <code>java.util.HashMap</code> to
+/**
+ * This CargoBundle implementation uses a <code>java.util.HashMap</code> to
  * map quantities to cargo batches.
- *
+ * 
  * @author Luke
- *
+ * 
  */
 public class MutableCargoBundle {
-    private final HashMap<CargoBatch, Integer> hashMap;
-    private int updateID = 0;
+	private final HashMap<CargoBatch, Integer> hashMap;
 
-    public int hashCode() {
-        return hashMap.size();
-    }
+	private int updateID = 0;
 
-    public String toString() {
-        return toImmutableCargoBundle().toString();
-    }
+	public int hashCode() {
+		return hashMap.size();
+	}
 
-    public MutableCargoBundle() {
-        hashMap = new HashMap<CargoBatch, Integer>();
-    }
+	public String toString() {
+		return toImmutableCargoBundle().toString();
+	}
 
-    public MutableCargoBundle(ImmutableCargoBundle imcb) {
-        this();
+	public MutableCargoBundle() {
+		hashMap = new HashMap<CargoBatch, Integer>();
+	}
 
-        Iterator<CargoBatch> it = imcb.cargoBatchIterator();
+	public MutableCargoBundle(ImmutableCargoBundle imcb) {
+		this();
 
-        while (it.hasNext()) {
-            CargoBatch cb = it.next();
-            addCargo(cb, imcb.getAmount(cb));
-        }
-    }
+		Iterator<CargoBatch> it = imcb.cargoBatchIterator();
 
-    private HashMap getHashMap() {
-        return hashMap;
-    }
+		while (it.hasNext()) {
+			CargoBatch cb = it.next();
+			addCargo(cb, imcb.getAmount(cb));
+		}
+	}
 
-    public int getAmount(int cargoType) {
-        Iterator<CargoBatch> it = cargoBatchIterator();
-        int amount = 0;
+	private HashMap getHashMap() {
+		return hashMap;
+	}
 
-        while (it.hasNext()) {
-            CargoBatch cb = it.next();
+	public int getAmount(int cargoType) {
+		Iterator<CargoBatch> it = cargoBatchIterator();
+		int amount = 0;
 
-            if (cb.getCargoType() == cargoType) {
-                amount += getAmount(cb);
-            }
-        }
+		while (it.hasNext()) {
+			CargoBatch cb = it.next();
 
-        return amount;
-    }
+			if (cb.getCargoType() == cargoType) {
+				amount += getAmount(cb);
+			}
+		}
 
-    public int getAmount(CargoBatch cb) {
-        if (contains(cb)) {
-            Integer i = hashMap.get(cb);
+		return amount;
+	}
 
-            return i.intValue();
-        }
+	public int getAmount(CargoBatch cb) {
+		if (contains(cb)) {
+			Integer i = hashMap.get(cb);
+
+			return i.intValue();
+		}
 		return 0;
-    }
+	}
 
-    public void setAmount(CargoBatch cb, int amount) {
-        if (0 == amount) {
-            hashMap.remove(cb);
-        } else {
-            hashMap.put(cb, new Integer(amount));
-        }
+	public void setAmount(CargoBatch cb, int amount) {
+		if (0 == amount) {
+			hashMap.remove(cb);
+		} else {
+			hashMap.put(cb, new Integer(amount));
+		}
 
-        updateID++;
-    }
+		updateID++;
+	}
 
-    public boolean contains(CargoBatch cb) {
-        return hashMap.containsKey(cb);
-    }
+	public boolean contains(CargoBatch cb) {
+		return hashMap.containsKey(cb);
+	}
 
-    /** Note, calling  hasNext() or next() on the returned iterator throws a ConcurrentModificationException
-     * if this CargoBundle has changed since the iterator was aquired.
-     */
-    public Iterator<CargoBatch> cargoBatchIterator() {
-        final Iterator<CargoBatch> it = hashMap.keySet().iterator();
+	/**
+	 * Note, calling hasNext() or next() on the returned iterator throws a
+	 * ConcurrentModificationException if this CargoBundle has changed since the
+	 * iterator was aquired.
+	 */
+	public Iterator<CargoBatch> cargoBatchIterator() {
+		final Iterator<CargoBatch> it = hashMap.keySet().iterator();
 
-        /* A ConcurrentModificationException used to get thrown when the amount
-             * of cargo was set to 0, since this resulted in the key being removed
-             * from the hashmap.  The iterator below throws a ConcurrentModificationException
-             * whenever this CargoBundle has been changed since the iterator was aquired.  This should
-             * mean that if the cargo bundle gets changed while the iterator is in use, you will know
-             * about it straight away.
-             */
-        return new Iterator<CargoBatch>() {
-                final int updateIDAtCreation = updateID;
+		/*
+		 * A ConcurrentModificationException used to get thrown when the amount
+		 * of cargo was set to 0, since this resulted in the key being removed
+		 * from the hashmap. The iterator below throws a
+		 * ConcurrentModificationException whenever this CargoBundle has been
+		 * changed since the iterator was aquired. This should mean that if the
+		 * cargo bundle gets changed while the iterator is in use, you will know
+		 * about it straight away.
+		 */
+		return new Iterator<CargoBatch>() {
+			final int updateIDAtCreation = updateID;
 
-                public void remove() {
-                    throw new UnsupportedOperationException(
-                        "Use CargoBundle.setAmount(CargoBatch cb, 0)");
-                }
+			public void remove() {
+				throw new UnsupportedOperationException(
+						"Use CargoBundle.setAmount(CargoBatch cb, 0)");
+			}
 
-                public boolean hasNext() {
-                    if (updateIDAtCreation != updateID) {
-                        throw new ConcurrentModificationException();
-                    }
+			public boolean hasNext() {
+				if (updateIDAtCreation != updateID) {
+					throw new ConcurrentModificationException();
+				}
 
-                    return it.hasNext();
-                }
+				return it.hasNext();
+			}
 
-                public CargoBatch next() {
-                    if (updateIDAtCreation != updateID) {
-                        throw new ConcurrentModificationException();
-                    }
+			public CargoBatch next() {
+				if (updateIDAtCreation != updateID) {
+					throw new ConcurrentModificationException();
+				}
 
-                    return it.next();
-                }
-            };
-    }
+				return it.next();
+			}
+		};
+	}
 
-    public boolean equals(Object o) {
-        if (o instanceof MutableCargoBundle) {
-            MutableCargoBundle test = (MutableCargoBundle)o;
+	public boolean equals(Object o) {
+		if (o instanceof MutableCargoBundle) {
+			MutableCargoBundle test = (MutableCargoBundle) o;
 
-            return hashMap.equals(test.getHashMap());
-        }
+			return hashMap.equals(test.getHashMap());
+		}
 		return false;
-    }
+	}
 
-    public void addCargo(CargoBatch cb, int amount) {
-        int amountAlready = this.getAmount(cb);
-        this.setAmount(cb, amount + amountAlready);
-        updateID++;
-    }
+	public void addCargo(CargoBatch cb, int amount) {
+		int amountAlready = this.getAmount(cb);
+		this.setAmount(cb, amount + amountAlready);
+		updateID++;
+	}
 
-    public ImmutableCargoBundle toImmutableCargoBundle() {
-        int size = hashMap.keySet().size();
-        CargoBatch[] batches = new CargoBatch[size];
-        int[] amounts = new int[size];
-        Iterator<CargoBatch> it = cargoBatchIterator();
-        int i = 0;
+	public ImmutableCargoBundle toImmutableCargoBundle() {
+		int size = hashMap.keySet().size();
+		CargoBatch[] batches = new CargoBatch[size];
+		int[] amounts = new int[size];
+		Iterator<CargoBatch> it = cargoBatchIterator();
+		int i = 0;
 
-        while (it.hasNext()) {
-            CargoBatch batch = it.next();
-            int amount = getAmount(batch);
-            batches[i] = batch;
-            amounts[i] = amount;
-            i++;
-        }
+		while (it.hasNext()) {
+			CargoBatch batch = it.next();
+			int amount = getAmount(batch);
+			batches[i] = batch;
+			amounts[i] = amount;
+			i++;
+		}
 
-        return new ImmutableCargoBundle(batches, amounts);
-    }
+		return new ImmutableCargoBundle(batches, amounts);
+	}
 }

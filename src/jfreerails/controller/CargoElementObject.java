@@ -1,29 +1,29 @@
 package jfreerails.controller;
 
-
 /**
  * Small data object to store the rate of supply of a cargo.
- * @author Scott Bennett
- * Date: 14 May 2003
+ * 
+ * @author Scott Bennett Date: 14 May 2003
  */
 public class CargoElementObject {
-    private int rate;
-    private final int type;
+	private int rate;
 
-    public CargoElementObject(int rate, int type) {
-        this.rate = rate;
-        this.type = type;
-    }
+	private final int type;
 
-    public int getRate() {
-        return rate;
-    }
+	public CargoElementObject(int rate, int type) {
+		this.rate = rate;
+		this.type = type;
+	}
 
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
+	public int getRate() {
+		return rate;
+	}
 
-    public int getType() {
-        return type;
-    }
+	public void setRate(int rate) {
+		this.rate = rate;
+	}
+
+	public int getType() {
+		return type;
+	}
 }

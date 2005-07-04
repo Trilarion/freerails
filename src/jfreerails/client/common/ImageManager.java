@@ -7,32 +7,31 @@ package jfreerails.client.common;
 import java.awt.Image;
 import java.io.IOException;
 
-
 /**
- * This interface defines methods for loading and saving images, and producing scaled images whose quality
- * may be controlled.
- *
+ * This interface defines methods for loading and saving images, and producing
+ * scaled images whose quality may be controlled.
+ * 
  * @author Luke
- *
+ * 
  */
 public interface ImageManager {
-	
+
 	Image newBlankImage(int height, int width);
-	
-    void setPathToReadFrom(String s);
 
-    void setPathToWriteTo(String s);
+	void setPathToReadFrom(String s);
 
-    Image getImage(String relativeFilename) throws IOException;
+	void setPathToWriteTo(String s);
 
-    boolean contains(String relativeFilename);
+	Image getImage(String relativeFilename) throws IOException;
 
-    void setImage(String relativeFilename, Image i);
+	boolean contains(String relativeFilename);
 
-    void writeImage(String relativeFilename) throws IOException;
+	void setImage(String relativeFilename, Image i);
 
-    void writeAllImages() throws IOException;
+	void writeImage(String relativeFilename) throws IOException;
 
-    Image getScaledImage(String relativeFilename, int height)
-        throws IOException;
+	void writeAllImages() throws IOException;
+
+	Image getScaledImage(String relativeFilename, int height)
+			throws IOException;
 }

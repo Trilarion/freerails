@@ -6,78 +6,88 @@
 package jfreerails.world.train;
 
 import java.util.Arrays;
-import jfreerails.world.common.FreerailsSerializable;
 
+import jfreerails.world.common.FreerailsSerializable;
 
 /**
  * This class encapsulates the orders for a train.
- * @author  Luke
+ * 
+ * @author Luke
  */
 public class TrainOrdersModel implements FreerailsSerializable {
-    private static final long serialVersionUID = 3616453397155559472L;
+	private static final long serialVersionUID = 3616453397155559472L;
+
 	private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
-    public final boolean waitUntilFull;
-    public final boolean autoConsist;
-    public final int[] consist; //The wagon types to add; if null, then no change.
-    public final int m_station; //The number of the station to goto.
 
-    public int hashCode() {
-        int result;
-        result = (waitUntilFull ? 1 : 0);
-        result = 29 * result + m_station;
+	public final boolean waitUntilFull;
 
-        return result;
-    }
+	public final boolean autoConsist;
 
-    public TrainOrdersModel(int station, int[] newConsist, boolean wait,
-        boolean auto) {
-        //If there are no wagons, set wait = false.
-        wait = (null == newConsist || 0 == newConsist.length) ? false : wait;
+	public final int[] consist; // The wagon types to add; if null, then no
+								// change.
 
-        waitUntilFull = wait;
-        consist = newConsist;
-        m_station = station;
-        autoConsist = auto;
-    }
+	public final int m_station; // The number of the station to goto.
 
-    /** @return either (1) an array of cargo type ids or (2) null to represent 'no change'.*/
-    public /*=const */ int[] getConsist() {
-        return this.consist;
-    }
+	public int hashCode() {
+		int result;
+		result = (waitUntilFull ? 1 : 0);
+		result = 29 * result + m_station;
 
-    public int getStationID() {
-        return m_station;
-    }
+		return result;
+	}
 
-    public boolean isNoConsistChange() {
-        return null == consist;
-    }
+	public TrainOrdersModel(int station, int[] newConsist, boolean wait,
+			boolean auto) {
+		// If there are no wagons, set wait = false.
+		wait = (null == newConsist || 0 == newConsist.length) ? false : wait;
 
-    public boolean getWaitUntilFull() {
-        return waitUntilFull;
-    }
+		waitUntilFull = wait;
+		consist = newConsist;
+		m_station = station;
+		autoConsist = auto;
+	}
 
-    public boolean orderHasWagons() {
-        return null != consist && 0 != consist.length;
-    }
+	/**
+	 * @return either (1) an array of cargo type ids or (2) null to represent
+	 *         'no change'.
+	 */
+	public/* =const */int[] getConsist() {
+		return this.consist;
+	}
 
-    public boolean hasLessThanMaxiumNumberOfWagons() {
-        return null == consist || consist.length < MAXIMUM_NUMBER_OF_WAGONS;
-    }
+	public int getStationID() {
+		return m_station;
+	}
 
-    public boolean equals(Object obj) {
-        if (obj instanceof TrainOrdersModel) {
-            TrainOrdersModel test = (TrainOrdersModel)obj;
+	public boolean isNoConsistChange() {
+		return null == consist;
+	}
 
-            return this.waitUntilFull == test.waitUntilFull &&
-            this.m_station == test.m_station &&
-            autoConsist == test.autoConsist &&
-            Arrays.equals(this.consist, test.consist);
-        }
+	public boolean getWaitUntilFull() {
+		return waitUntilFull;
+	}
+
+	public boolean orderHasWagons() {
+		return null != consist && 0 != consist.length;
+	}
+
+	public boolean hasLessThanMaxiumNumberOfWagons() {
+		return null == consist || consist.length < MAXIMUM_NUMBER_OF_WAGONS;
+	}
+
+	public boolean equals(Object obj) {
+		if (obj instanceof TrainOrdersModel) {
+			TrainOrdersModel test = (TrainOrdersModel) obj;
+
+			return this.waitUntilFull == test.waitUntilFull
+					&& this.m_station == test.m_station
+					&& autoConsist == test.autoConsist
+					&& Arrays.equals(this.consist, test.consist);
+		}
 		return false;
-    }
+	}
 
-    public boolean isAutoConsist() {
-        return autoConsist;
-    }
+	public boolean isAutoConsist() {
+		return autoConsist;
+	}
 }

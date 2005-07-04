@@ -1,103 +1,109 @@
 package jfreerails.move;
 
 import java.util.ArrayList;
+
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 
-
 /**
- * This {@link CompositeMove} transfers cargo from a train to a station and vice-versa.
- *
+ * This {@link CompositeMove} transfers cargo from a train to a station and
+ * vice-versa.
+ * 
  * @author Luke Lindsay
- *
- *
+ * 
+ * 
  */
 public class TransferCargoAtStationMove extends CompositeMove {
-    private static final long serialVersionUID = 3257291318215456563L;
+	private static final long serialVersionUID = 3257291318215456563L;
+
 	public static final int CHANGE_ON_TRAIN_INDEX = 1;
-    public static final int CHANGE_AT_STATION_INDEX = 0;
-    private final boolean m_waitingForFullLoad;
 
-    private TransferCargoAtStationMove(Move[] moves, boolean waiting) {
-        super(moves);
-        m_waitingForFullLoad = waiting;
-    }
+	public static final int CHANGE_AT_STATION_INDEX = 0;
 
-    public static TransferCargoAtStationMove generateMove(
-        ChangeCargoBundleMove changeAtStation,
-        ChangeCargoBundleMove changeOnTrain, CompositeMove payment,
-        boolean waiting) {
-        return new TransferCargoAtStationMove(new Move[] {
-                changeAtStation, changeOnTrain, payment
-            }, waiting);
-    }
+	private final boolean m_waitingForFullLoad;
 
-    public ChangeCargoBundleMove getChangeAtStation() {
-        return (ChangeCargoBundleMove)super.getMoves()[CHANGE_AT_STATION_INDEX];
-    }
+	private TransferCargoAtStationMove(Move[] moves, boolean waiting) {
+		super(moves);
+		m_waitingForFullLoad = waiting;
+	}
 
-    public ChangeCargoBundleMove getChangeOnTrain() {
-        return (ChangeCargoBundleMove)super.getMoves()[CHANGE_ON_TRAIN_INDEX];
-    }
+	public static TransferCargoAtStationMove generateMove(
+			ChangeCargoBundleMove changeAtStation,
+			ChangeCargoBundleMove changeOnTrain, CompositeMove payment,
+			boolean waiting) {
+		return new TransferCargoAtStationMove(new Move[] { changeAtStation,
+				changeOnTrain, payment }, waiting);
+	}
 
-    public Money getRevenue() {
-        /*=const*/ Move[] moves = super.getMoves();
-        long amount = CHANGE_AT_STATION_INDEX;
+	public ChangeCargoBundleMove getChangeAtStation() {
+		return (ChangeCargoBundleMove) super.getMoves()[CHANGE_AT_STATION_INDEX];
+	}
 
-        for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
-            if (moves[i] instanceof AddTransactionMove) {
-                AddTransactionMove move = (AddTransactionMove)moves[i];
-                DeliverCargoReceipt receipt = (DeliverCargoReceipt)move.getTransaction();
-                amount += receipt.getValue().getAmount();
-            }
-        }
+	public ChangeCargoBundleMove getChangeOnTrain() {
+		return (ChangeCargoBundleMove) super.getMoves()[CHANGE_ON_TRAIN_INDEX];
+	}
 
-        return new Money(amount);
-    }
+	public Money getRevenue() {
+		Move[] moves = super.getMoves();
+		long amount = CHANGE_AT_STATION_INDEX;
 
-    public int getQuantityOfCargo(int cargoType) {
-        /*=const*/ Move[] moves = super.getMoves();
-        int quantity = CHANGE_AT_STATION_INDEX;
+		for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
+			if (moves[i] instanceof AddTransactionMove) {
+				AddTransactionMove move = (AddTransactionMove) moves[i];
+				DeliverCargoReceipt receipt = (DeliverCargoReceipt) move
+						.getTransaction();
+				amount += receipt.getValue().getAmount();
+			}
+		}
 
-        for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
-            if (moves[i] instanceof AddTransactionMove) {
-                AddTransactionMove move = (AddTransactionMove)moves[i];
-                DeliverCargoReceipt receipt = (DeliverCargoReceipt)move.getTransaction();
-                CargoBatch cb = receipt.getCb();
+		return new Money(amount);
+	}
 
-                if (cb.getCargoType() == cargoType) {
-                    quantity += receipt.getQuantity();
-                }
-            }
-        }
+	public int getQuantityOfCargo(int cargoType) {
+		Move[] moves = super.getMoves();
+		int quantity = CHANGE_AT_STATION_INDEX;
 
-        return quantity;
-    }
+		for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
+			if (moves[i] instanceof AddTransactionMove) {
+				AddTransactionMove move = (AddTransactionMove) moves[i];
+				DeliverCargoReceipt receipt = (DeliverCargoReceipt) move
+						.getTransaction();
+				CargoBatch cb = receipt.getCb();
 
-    /** The player who is getting paid for the delivery.*/
-    public FreerailsPrincipal getPrincipal() {
-        /*=const*/ Move[] moves = super.getMoves();
+				if (cb.getCargoType() == cargoType) {
+					quantity += receipt.getQuantity();
+				}
+			}
+		}
 
-        for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
-            if (moves[i] instanceof AddTransactionMove) {
-                AddTransactionMove move = (AddTransactionMove)moves[i];
+		return quantity;
+	}
 
-                return move.getPrincipal();
-            }
-        }
+	/** The player who is getting paid for the delivery. */
+	public FreerailsPrincipal getPrincipal() {
+		Move[] moves = super.getMoves();
 
-        return Player.NOBODY;
-    }
+		for (int i = CHANGE_AT_STATION_INDEX; i < moves.length; i++) {
+			if (moves[i] instanceof AddTransactionMove) {
+				AddTransactionMove move = (AddTransactionMove) moves[i];
 
-    public TransferCargoAtStationMove(ArrayList<Move> movesArrayList, boolean waiting) {
-        super(movesArrayList);
-        this.m_waitingForFullLoad = waiting;
-    }
+				return move.getPrincipal();
+			}
+		}
 
-    public boolean isWaitingForFullLoad() {
-        return m_waitingForFullLoad;
-    }
+		return Player.NOBODY;
+	}
+
+	public TransferCargoAtStationMove(ArrayList<Move> movesArrayList,
+			boolean waiting) {
+		super(movesArrayList);
+		this.m_waitingForFullLoad = waiting;
+	}
+
+	public boolean isWaitingForFullLoad() {
+		return m_waitingForFullLoad;
+	}
 }

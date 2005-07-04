@@ -1,64 +1,68 @@
 package jfreerails.world.track;
 
-
 /**
  * Represents the track on a tile.
+ * 
  * @author Luke
  */
 final public class TrackPieceImpl implements TrackPiece {
-    private static final long serialVersionUID = 4049080423458027569L;
+	private static final long serialVersionUID = 4049080423458027569L;
+
 	private final TrackConfiguration configuration;
-    private final TrackRule trackType;
-    private final int ownerID;
-    private final int ruleNumber;
 
-    public int hashCode() {
-        int result;
-        result = configuration.hashCode();
-        result = 29 * result + trackType.hashCode();
-        result = 29 * result + ownerID;
+	private final TrackRule trackType;
 
-        return result;
-    }
+	private final int ownerID;
 
-    public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c,
-        TrackRule type, int owner, int rule) {
-        configuration = c;
-        trackType = type;
-        ownerID = owner;
-        ruleNumber = rule;        
-    }
+	private final int ruleNumber;
 
-    public int getTrackGraphicID() {
-        return configuration.getTrackGraphicsID();
-    }
+	public int hashCode() {
+		int result;
+		result = configuration.hashCode();
+		result = 29 * result + trackType.hashCode();
+		result = 29 * result + ownerID;
 
-    public TrackRule getTrackRule() {
-        return trackType;
-    }
+		return result;
+	}
 
-    public TrackConfiguration getTrackConfiguration() {
-        return configuration;
-    }
+	public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c,
+			TrackRule type, int owner, int rule) {
+		configuration = c;
+		trackType = type;
+		ownerID = owner;
+		ruleNumber = rule;
+	}
 
-    public boolean equals(Object o) {
-        if (o instanceof TrackPieceImpl) {
-            TrackPieceImpl trackPieceImpl = (TrackPieceImpl)o;
+	public int getTrackGraphicID() {
+		return configuration.getTrackGraphicsID();
+	}
 
-            if (configuration.equals(trackPieceImpl.getTrackConfiguration()) &&
-                    trackType.equals(trackPieceImpl.getTrackRule())) {
-                return true;
-            }
+	public TrackRule getTrackRule() {
+		return trackType;
+	}
+
+	public TrackConfiguration getTrackConfiguration() {
+		return configuration;
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof TrackPieceImpl) {
+			TrackPieceImpl trackPieceImpl = (TrackPieceImpl) o;
+
+			if (configuration.equals(trackPieceImpl.getTrackConfiguration())
+					&& trackType.equals(trackPieceImpl.getTrackRule())) {
+				return true;
+			}
 			return false;
-        }
+		}
 		return false;
-    }
+	}
 
-    public int getOwnerID() {
-        return ownerID;
-    }
+	public int getOwnerID() {
+		return ownerID;
+	}
 
-	public int getTrackTypeID() {		
+	public int getTrackTypeID() {
 		return ruleNumber;
 	}
 }

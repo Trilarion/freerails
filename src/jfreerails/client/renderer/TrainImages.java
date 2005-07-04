@@ -11,7 +11,7 @@ import java.io.IOException;
 import jfreerails.client.common.ImageManager;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoType;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.EngineType;
@@ -148,7 +148,7 @@ public class TrainImages {
 	}
 
 	public static String generateOverheadFilename(String name, int i) {
-		OneTileMoveVector[] vectors = OneTileMoveVector.getList();
+		Step[] vectors = Step.getList();
 
 		return "trains" + File.separator + "overhead" + File.separator + name
 				+ "_" + vectors[i].toAbrvString() + ".png";

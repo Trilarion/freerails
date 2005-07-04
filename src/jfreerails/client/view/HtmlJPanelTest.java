@@ -4,37 +4,39 @@
 package jfreerails.client.view;
 
 import java.util.HashMap;
-import junit.framework.TestCase;
 
+import junit.framework.TestCase;
 
 /**
  * Tests the populateTokens method on HtmlJPanel.
- *  @author Luke
- *
+ * 
+ * @author Luke
+ * 
  */
 public class HtmlJPanelTest extends TestCase {
-    public void testPopulateTokens() {
-        String template = "test";
-        HashMap<String, String> context = new HashMap<String, String>();
-        String output = HtmlJPanel.populateTokens(template, context);
-        assertEquals(template, output);
+	public void testPopulateTokens() {
+		String template = "test";
+		HashMap<String, String> context = new HashMap<String, String>();
+		String output = HtmlJPanel.populateTokens(template, context);
+		assertEquals(template, output);
 
-        template = "Hello $name$, $question$";
-        context.put("name", "Luke");
-        context.put("question", "how are you?");
+		template = "Hello $name$, $question$";
+		context.put("name", "Luke");
+		context.put("question", "how are you?");
 
-        String expectedOutput = "Hello Luke, how are you?";
-        output = HtmlJPanel.populateTokens(template, context);
-        assertEquals(expectedOutput, output);
+		String expectedOutput = "Hello Luke, how are you?";
+		output = HtmlJPanel.populateTokens(template, context);
+		assertEquals(expectedOutput, output);
 
-        Object objectContext = new Object() {
-                @SuppressWarnings("unused")
-				public String name = "Luke";
-                @SuppressWarnings("unused")
-				public String question = "how are you?";
-            };
+		Object objectContext = new Object() {
+			@SuppressWarnings("unused")
+			public String name = "Luke";
 
-        output = HtmlJPanel.populateTokens(template, objectContext);
-        assertEquals(expectedOutput, output);
-    }
+			@SuppressWarnings("unused")
+			public String question = "how are you?";
+		};
+
+		output = HtmlJPanel.populateTokens(template, objectContext);
+		assertEquals(expectedOutput, output);
+	}
 }

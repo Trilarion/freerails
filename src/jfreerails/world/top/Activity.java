@@ -9,7 +9,7 @@ import jfreerails.world.common.FreerailsSerializable;
 public interface Activity extends FreerailsSerializable {
 
 	int duration();
-	
+
 	FreerailsSerializable getState(int dt);
-	
+
 }

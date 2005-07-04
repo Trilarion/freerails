@@ -2,6 +2,7 @@ package jfreerails.network;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.ChangeItemInListMove;
 import jfreerails.move.CompositeMove;
@@ -14,132 +15,135 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.top.WorldMapListener;
 
-
 /**
- *
+ * 
  * A central point at which a client may register to receive moves which have
  * been committed.
+ * 
  * @author Luke
  * @author rob
  */
 final public class MoveChainFork implements MoveReceiver {
-    private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<MoveReceiver>();
-    private final ArrayList<MoveReceiver> splitMoveReceivers = new ArrayList<MoveReceiver>();
-    private final ArrayList<WorldListListener> listListeners = new ArrayList<WorldListListener>();
-    private final ArrayList<WorldMapListener> mapListeners = new ArrayList<WorldMapListener>();
+	private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<MoveReceiver>();
 
-    public MoveChainFork() {
-        // do nothing
-    }
+	private final ArrayList<MoveReceiver> splitMoveReceivers = new ArrayList<MoveReceiver>();
 
-    public void addMapListener(WorldMapListener l) {
-        mapListeners.add(l);
-    }
+	private final ArrayList<WorldListListener> listListeners = new ArrayList<WorldListListener>();
 
-    public void removeMapListener(WorldMapListener l) {
-        mapListeners.remove(l);
-    }
+	private final ArrayList<WorldMapListener> mapListeners = new ArrayList<WorldMapListener>();
 
-    public void removeCompleteMoveReceiver(MoveReceiver moveReceiver) {
-        if (null == moveReceiver) {
-            throw new NullPointerException();
-        }
+	public MoveChainFork() {
+		// do nothing
+	}
 
-        moveReceivers.remove(moveReceiver);
-    }
+	public void addMapListener(WorldMapListener l) {
+		mapListeners.add(l);
+	}
 
-    public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
-        if (null == moveReceiver) {
-            throw new NullPointerException();
-        }
+	public void removeMapListener(WorldMapListener l) {
+		mapListeners.remove(l);
+	}
 
-        moveReceivers.add(moveReceiver);
-    }
+	public void removeCompleteMoveReceiver(MoveReceiver moveReceiver) {
+		if (null == moveReceiver) {
+			throw new NullPointerException();
+		}
 
-    public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
-        if (null == moveReceiver) {
-            throw new NullPointerException();
-        }
+		moveReceivers.remove(moveReceiver);
+	}
 
-        splitMoveReceivers.add(moveReceiver);
-    }
+	public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
+		if (null == moveReceiver) {
+			throw new NullPointerException();
+		}
 
-    public void addListListener(WorldListListener listener) {
-        if (null == listener) {
-            throw new NullPointerException();
-        }
+		moveReceivers.add(moveReceiver);
+	}
 
-        listListeners.add(listener);
-    }
+	public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
+		if (null == moveReceiver) {
+			throw new NullPointerException();
+		}
 
-    public void processMove(Move move) {
-        for (int i = 0; i < moveReceivers.size(); i++) {
-            MoveReceiver m = moveReceivers.get(i);
-            m.processMove(move);
-        }
+		splitMoveReceivers.add(moveReceiver);
+	}
 
-        splitMove(move);
-    }
+	public void addListListener(WorldListListener listener) {
+		if (null == listener) {
+			throw new NullPointerException();
+		}
 
-    private void splitMove(Move move) {
-        if (move instanceof UndoMove) {
-            UndoMove undoneMove = (UndoMove)move;
-            move = undoneMove.getUndoneMove();
-        }
+		listListeners.add(listener);
+	}
 
-        if (move instanceof CompositeMove) {
-            Move[] moves = ((CompositeMove)move).getMoves();
+	public void processMove(Move move) {
+		for (int i = 0; i < moveReceivers.size(); i++) {
+			MoveReceiver m = moveReceivers.get(i);
+			m.processMove(move);
+		}
 
-            for (int i = 0; i < moves.length; i++) {
-                splitMove(moves[i]);
-            }
-        } else {
-            for (int i = 0; i < splitMoveReceivers.size(); i++) {
-                MoveReceiver m = splitMoveReceivers.get(i);
-                m.processMove(move);
-            }
+		splitMove(move);
+	}
 
-            if (move instanceof AddItemToListMove) {
-                AddItemToListMove mm = (AddItemToListMove)move;
-                sendItemAdded(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof ChangeItemInListMove) {
-                ChangeItemInListMove mm = (ChangeItemInListMove)move;
-                sendListUpdated(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof RemoveItemFromListMove) {
-                RemoveItemFromListMove mm = (RemoveItemFromListMove)move;
-                sendItemRemoved(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof MapUpdateMove) {
-                Rectangle r = ((MapUpdateMove)move).getUpdatedTiles();
-                sendMapUpdated(r);
-            }
-        }
-    }
+	private void splitMove(Move move) {
+		if (move instanceof UndoMove) {
+			UndoMove undoneMove = (UndoMove) move;
+			move = undoneMove.getUndoneMove();
+		}
 
-    private void sendMapUpdated(Rectangle r) {
-        for (int i = 0; i < mapListeners.size(); i++) {
-            WorldMapListener l = mapListeners.get(i);
-            l.tilesChanged(r);
-        }
-    }
+		if (move instanceof CompositeMove) {
+			Move[] moves = ((CompositeMove) move).getMoves();
 
-    private void sendItemAdded(KEY key, int index, FreerailsPrincipal p) {
-        for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = listListeners.get(i);
-            l.itemAdded(key, index, p);
-        }
-    }
+			for (int i = 0; i < moves.length; i++) {
+				splitMove(moves[i]);
+			}
+		} else {
+			for (int i = 0; i < splitMoveReceivers.size(); i++) {
+				MoveReceiver m = splitMoveReceivers.get(i);
+				m.processMove(move);
+			}
 
-    private void sendItemRemoved(KEY key, int index, FreerailsPrincipal p) {
-        for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = listListeners.get(i);
-            l.itemRemoved(key, index, p);
-        }
-    }
+			if (move instanceof AddItemToListMove) {
+				AddItemToListMove mm = (AddItemToListMove) move;
+				sendItemAdded(mm.getKey(), mm.getIndex(), mm.getPrincipal());
+			} else if (move instanceof ChangeItemInListMove) {
+				ChangeItemInListMove mm = (ChangeItemInListMove) move;
+				sendListUpdated(mm.getKey(), mm.getIndex(), mm.getPrincipal());
+			} else if (move instanceof RemoveItemFromListMove) {
+				RemoveItemFromListMove mm = (RemoveItemFromListMove) move;
+				sendItemRemoved(mm.getKey(), mm.getIndex(), mm.getPrincipal());
+			} else if (move instanceof MapUpdateMove) {
+				Rectangle r = ((MapUpdateMove) move).getUpdatedTiles();
+				sendMapUpdated(r);
+			}
+		}
+	}
 
-    private void sendListUpdated(KEY key, int index, FreerailsPrincipal p) {
-        for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = listListeners.get(i);
-            l.listUpdated(key, index, p);
-        }
-    }
+	private void sendMapUpdated(Rectangle r) {
+		for (int i = 0; i < mapListeners.size(); i++) {
+			WorldMapListener l = mapListeners.get(i);
+			l.tilesChanged(r);
+		}
+	}
+
+	private void sendItemAdded(KEY key, int index, FreerailsPrincipal p) {
+		for (int i = 0; i < listListeners.size(); i++) {
+			WorldListListener l = listListeners.get(i);
+			l.itemAdded(key, index, p);
+		}
+	}
+
+	private void sendItemRemoved(KEY key, int index, FreerailsPrincipal p) {
+		for (int i = 0; i < listListeners.size(); i++) {
+			WorldListListener l = listListeners.get(i);
+			l.itemRemoved(key, index, p);
+		}
+	}
+
+	private void sendListUpdated(KEY key, int index, FreerailsPrincipal p) {
+		for (int i = 0; i < listListeners.size(); i++) {
+			WorldListListener l = listListeners.get(i);
+			l.listUpdated(key, index, p);
+		}
+	}
 }

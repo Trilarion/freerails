@@ -6,61 +6,62 @@ import jfreerails.world.terrain.CityModel;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 
-
 /**
- *
- *
- * Class to find the nearest city and return that name, so that a station
- * can be named appropriately.
- * Date: 12th April 2003
+ * 
+ * 
+ * Class to find the nearest city and return that name, so that a station can be
+ * named appropriately. Date: 12th April 2003
+ * 
  * @author Scott Bennett
  */
 public class CalcNearestCity {
-    private final int x;
-    private final int y;
-    private final ReadOnlyWorld w;
+	private final int x;
 
-    public CalcNearestCity(ReadOnlyWorld world, int x, int y) {
-        this.w = world;
-        this.x = x;
-        this.y = y;
-    }
+	private final int y;
 
-    public String findNearestCity() {
-        double cityDistance;
-        String cityName = null;
-        double tempDistance;
-        CityModel tempCity;
+	private final ReadOnlyWorld w;
 
-        if (w.size(SKEY.CITIES) > 0) {
-            tempCity = (CityModel)w.get(SKEY.CITIES, 0);
-            cityDistance = getDistance(tempCity.getCityX(), tempCity.getCityY());
-            cityName = tempCity.getCityName();
+	public CalcNearestCity(ReadOnlyWorld world, int x, int y) {
+		this.w = world;
+		this.x = x;
+		this.y = y;
+	}
 
-            for (int i = 1; i < w.size(SKEY.CITIES); i++) {
-                tempCity = (CityModel)w.get(SKEY.CITIES, i);
-                tempDistance = getDistance(tempCity.getCityX(),
-                        tempCity.getCityY());
+	public String findNearestCity() {
+		double cityDistance;
+		String cityName = null;
+		double tempDistance;
+		CityModel tempCity;
 
-                if (tempDistance < cityDistance) {
-                    cityDistance = tempDistance;
-                    cityName = tempCity.getCityName();
-                }
-            }
+		if (w.size(SKEY.CITIES) > 0) {
+			tempCity = (CityModel) w.get(SKEY.CITIES, 0);
+			cityDistance = getDistance(tempCity.getCityX(), tempCity.getCityY());
+			cityName = tempCity.getCityName();
 
-            return cityName;
-        }
+			for (int i = 1; i < w.size(SKEY.CITIES); i++) {
+				tempCity = (CityModel) w.get(SKEY.CITIES, i);
+				tempDistance = getDistance(tempCity.getCityX(), tempCity
+						.getCityY());
 
-        throw new NoSuchElementException();
-    }
+				if (tempDistance < cityDistance) {
+					cityDistance = tempDistance;
+					cityName = tempCity.getCityName();
+				}
+			}
 
-    private double getDistance(int cityX, int cityY) {
-        double distance = 0;
-        double a = (this.x - cityX) * (this.x - cityX);
-        double b = (this.y - cityY) * (this.y - cityY);
+			return cityName;
+		}
 
-        distance = Math.sqrt(a + b);
+		throw new NoSuchElementException();
+	}
 
-        return distance;
-    }
+	private double getDistance(int cityX, int cityY) {
+		double distance = 0;
+		double a = (this.x - cityX) * (this.x - cityX);
+		double b = (this.y - cityY) * (this.y - cityY);
+
+		distance = Math.sqrt(a + b);
+
+		return distance;
+	}
 }

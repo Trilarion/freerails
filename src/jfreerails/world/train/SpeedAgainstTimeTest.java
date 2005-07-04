@@ -163,7 +163,8 @@ public class SpeedAgainstTimeTest extends TestCase {
 		try {
 			times = new GameTime[] { new GameTime(0), GameTime.END_OF_THE_WORLD };
 			speeds = new int[] { 10, 10 };
-			@SuppressWarnings("unused") SpeedAgainstTime newSpeeds;
+			@SuppressWarnings("unused")
+			SpeedAgainstTime newSpeeds;
 			newSpeeds = new SpeedAgainstTime(times, speeds);
 			fail();
 		} catch (ArithmeticException e) {
@@ -171,21 +172,30 @@ public class SpeedAgainstTimeTest extends TestCase {
 		}
 
 	}
-	
-	public void testGetActivity(){
-		
-		SpeedTimeAndStatus[] points = {new SpeedTimeAndStatus(new GameTime(0), 5, SpeedTimeAndStatus.Activity.READY),
-				new SpeedTimeAndStatus(new GameTime(10), 0, SpeedTimeAndStatus.Activity.STOPPED_AT_SIGNAL),
-				new SpeedTimeAndStatus(new GameTime(25), 0, SpeedTimeAndStatus.Activity.NEEDS_UPDATING)};
+
+	public void testGetActivity() {
+
+		SpeedTimeAndStatus[] points = {
+				new SpeedTimeAndStatus(new GameTime(0), 5,
+						SpeedTimeAndStatus.Activity.READY),
+				new SpeedTimeAndStatus(new GameTime(10), 0,
+						SpeedTimeAndStatus.Activity.STOPPED_AT_SIGNAL),
+				new SpeedTimeAndStatus(new GameTime(25), 0,
+						SpeedTimeAndStatus.Activity.NEEDS_UPDATING) };
 		SpeedAgainstTime newSpeeds = new SpeedAgainstTime(points);
-		assertEquals(SpeedTimeAndStatus.Activity.READY, newSpeeds.getActivity(new GameTime(0)));
-		assertEquals(SpeedTimeAndStatus.Activity.READY, newSpeeds.getActivity(new GameTime(9)));
-		
-		assertEquals(SpeedTimeAndStatus.Activity.STOPPED_AT_SIGNAL, newSpeeds.getActivity(new GameTime(10)));
-		assertEquals(SpeedTimeAndStatus.Activity.STOPPED_AT_SIGNAL, newSpeeds.getActivity(new GameTime(24)));
-		
-		assertEquals(SpeedTimeAndStatus.Activity.NEEDS_UPDATING, newSpeeds.getActivity(new GameTime(25)));
-		
+		assertEquals(SpeedTimeAndStatus.Activity.READY, newSpeeds
+				.getActivity(new GameTime(0)));
+		assertEquals(SpeedTimeAndStatus.Activity.READY, newSpeeds
+				.getActivity(new GameTime(9)));
+
+		assertEquals(SpeedTimeAndStatus.Activity.STOPPED_AT_SIGNAL, newSpeeds
+				.getActivity(new GameTime(10)));
+		assertEquals(SpeedTimeAndStatus.Activity.STOPPED_AT_SIGNAL, newSpeeds
+				.getActivity(new GameTime(24)));
+
+		assertEquals(SpeedTimeAndStatus.Activity.NEEDS_UPDATING, newSpeeds
+				.getActivity(new GameTime(25)));
+
 	}
 
 	private boolean throwsException(GameTime[] times, int[] speeds) {

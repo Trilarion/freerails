@@ -21,12 +21,12 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 	private static final long serialVersionUID = 3257853198755707184L;
 
 	public static PositionOnTrack createComingFrom(int x, int y,
-			OneTileMoveVector direction) {
+			Step direction) {
 		return new PositionOnTrack(x, y, direction);
 	}
 
 	public static PositionOnTrack createFacing(int x, int y,
-			OneTileMoveVector direction) {
+			Step direction) {
 		return new PositionOnTrack(x, y, direction.getOpposite());
 	}
 
@@ -48,7 +48,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 	}
 
 	/** The direction from which we entered the tile. */
-	private OneTileMoveVector cameFrom = OneTileMoveVector.NORTH;
+	private Step cameFrom = Step.NORTH;
 
 	private int x = 0;
 
@@ -61,7 +61,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 		this.setValuesFromInt(i);
 	}
 
-	private PositionOnTrack(int x, int y, OneTileMoveVector direction) {
+	private PositionOnTrack(int x, int y, Step direction) {
 		if (x > MAX_COORINATE || x < 0) {
 			throw new IllegalArgumentException("x=" + x);
 		}
@@ -79,7 +79,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 	/**
 	 * @return The direction the entity came from.
 	 */
-	public OneTileMoveVector cameFrom() {
+	public Step cameFrom() {
 		return cameFrom;
 	}
 
@@ -104,7 +104,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 	/**
 	 * @return The direction the entity is facing.
 	 */
-	public OneTileMoveVector facing() {
+	public Step facing() {
 		return cameFrom.getOpposite();
 	}
 
@@ -114,7 +114,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 	public PositionOnTrack getOpposite() {
 		int newX = this.getX() - this.cameFrom.deltaX;
 		int newY = this.getY() - this.cameFrom.deltaY;
-		OneTileMoveVector newDirection = this.cameFrom.getOpposite();
+		Step newDirection = this.cameFrom.getOpposite();
 
 		return createComingFrom(newX, newY, newDirection);
 	}
@@ -136,11 +136,11 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 		return result;
 	}
 
-	public void setCameFrom(OneTileMoveVector v) {
+	public void setCameFrom(Step v) {
 		this.cameFrom = v;
 	}
 
-	public void setFacing(OneTileMoveVector v) {
+	public void setFacing(Step v) {
 		this.cameFrom = v.getOpposite();
 	}
 
@@ -152,15 +152,13 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 
 		int shiftedDirection = i & (MAX_DIRECTION << (2 * BITS_FOR_COORINATE));
 		int directionAsInt = shiftedDirection >> (2 * BITS_FOR_COORINATE);
-		cameFrom = OneTileMoveVector.getInstance(directionAsInt);
+		cameFrom = Step.getInstance(directionAsInt);
 	}
 
-	
 	public void setX(int x) {
 		this.x = x;
 	}
 
-	
 	public void setY(int y) {
 		this.y = y;
 	}

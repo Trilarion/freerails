@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 public class Utils {
 
 	public static boolean equalsBySerialization(Serializable a, Serializable b) {
-	
+
 		byte[] bytesA = write2ByteArray(a);
 		byte[] bytesB = write2ByteArray(b);
 		if (bytesA.length != bytesB.length)

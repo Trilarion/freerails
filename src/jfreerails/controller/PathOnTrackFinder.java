@@ -7,7 +7,7 @@ package jfreerails.controller;
 import java.awt.Point;
 import java.util.logging.Logger;
 
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
@@ -43,14 +43,15 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 		return m_pathFinder.getStatus();
 	}
 
-	public OneTileMoveVector[] pathAsVectors() {
+	public Step[] pathAsVectors() {
 		int[] pathAsInts = m_pathFinder.retrievePath().toArray();
-		OneTileMoveVector[] vectors = new  OneTileMoveVector[pathAsInts.length];
+		Step[] vectors = new Step[pathAsInts.length];
 		int x = m_startPoint.x;
 		int y = m_startPoint.y;
-		for(int i = 0; i < pathAsInts.length; i++){
+		for (int i = 0; i < pathAsInts.length; i++) {
 			PositionOnTrack p2 = new PositionOnTrack(pathAsInts[i]);
-			vectors[i] = OneTileMoveVector.getInstance(p2.getX() - x, p2.getY()- y);
+			vectors[i] = Step.getInstance(p2.getX() - x, p2.getY()
+					- y);
 			x = p2.getX();
 			y = p2.getY();
 		}
@@ -67,20 +68,28 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 		logger
 				.fine("Find track path from " + startPoint + " to "
 						+ targetPoint);
-		/* Check there is track at both the points.*/
-		FreerailsTile tileA = (FreerailsTile)m_world.getTile(startPoint.x, startPoint.y);
-		FreerailsTile tileB = (FreerailsTile)m_world.getTile(targetPoint.x, targetPoint.y);
-		if(tileA.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER){
-			throw new PathNotFoundException("No track at "+startPoint.x+", "+startPoint.y+".");
+		/* Check there is track at both the points. */
+		FreerailsTile tileA = (FreerailsTile) m_world.getTile(startPoint.x,
+				startPoint.y);
+		FreerailsTile tileB = (FreerailsTile) m_world.getTile(targetPoint.x,
+				targetPoint.y);
+		if (tileA.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+			throw new PathNotFoundException("No track at " + startPoint.x
+					+ ", " + startPoint.y + ".");
 		}
-		if(tileB.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER){
-			throw new PathNotFoundException("No track at "+targetPoint.x+", "+targetPoint.y+".");
+		if (tileB.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+			throw new PathNotFoundException("No track at " + targetPoint.x
+					+ ", " + targetPoint.y + ".");
 		}
-		
-		PositionOnTrack[] startPoints = FlatTrackExplorer.getPossiblePositions(m_world, startPoint);
-		PositionOnTrack[] targetPoints = FlatTrackExplorer.getPossiblePositions(m_world, targetPoint);
-		FlatTrackExplorer explorer = new FlatTrackExplorer(m_world, startPoints[0]);
-		m_pathFinder.setupSearch(PositionOnTrack.toInts(startPoints), PositionOnTrack.toInts(targetPoints), explorer);		
+
+		PositionOnTrack[] startPoints = FlatTrackExplorer.getPossiblePositions(
+				m_world, startPoint);
+		PositionOnTrack[] targetPoints = FlatTrackExplorer
+				.getPossiblePositions(m_world, targetPoint);
+		FlatTrackExplorer explorer = new FlatTrackExplorer(m_world,
+				startPoints[0]);
+		m_pathFinder.setupSearch(PositionOnTrack.toInts(startPoints),
+				PositionOnTrack.toInts(targetPoints), explorer);
 	}
 
 }

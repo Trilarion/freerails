@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainModel;
@@ -96,7 +96,7 @@ public class TrainRenderer {
 		wagon.x2 = line.x2;
 		wagon.y2 = line.y2;
 
-		OneTileMoveVector v = OneTileMoveVector.getNearestVector(wagon.x2
+		Step v = Step.getNearestVector(wagon.x2
 				- wagon.x1, wagon.y2 - wagon.y1);
 		Point p = new Point((wagon.x2 + wagon.x1) / 2,
 				(wagon.y2 + wagon.y1) / 2);

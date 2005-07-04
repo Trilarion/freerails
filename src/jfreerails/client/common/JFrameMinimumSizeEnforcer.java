@@ -4,53 +4,54 @@ import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-
-/** Since there is no setMinimum size method on JFrame, we use
- * an instance of this class to do the job.
- *
+/**
+ * Since there is no setMinimum size method on JFrame, we use an instance of
+ * this class to do the job.
+ * 
  * @author Luke
- *
+ * 
  */
 public class JFrameMinimumSizeEnforcer implements ComponentListener {
-    private final int minWidth;
-    private final int minHeight;
+	private final int minWidth;
 
-    public JFrameMinimumSizeEnforcer(int w, int h) {
-        this.minHeight = h;
-        this.minWidth = w;
-    }
+	private final int minHeight;
 
-    public void componentResized(ComponentEvent arg0) {
-        Component c = arg0.getComponent();
+	public JFrameMinimumSizeEnforcer(int w, int h) {
+		this.minHeight = h;
+		this.minWidth = w;
+	}
 
-        int width = c.getWidth();
-        int height = c.getHeight();
+	public void componentResized(ComponentEvent arg0) {
+		Component c = arg0.getComponent();
 
-        //we check if either the width
-        //or the height are below minimum
-        boolean resize = false;
+		int width = c.getWidth();
+		int height = c.getHeight();
 
-        if (width < minWidth) {
-            resize = true;
-            width = minWidth;
-        }
+		// we check if either the width
+		// or the height are below minimum
+		boolean resize = false;
 
-        if (height < minHeight) {
-            resize = true;
-            height = minHeight;
-        }
+		if (width < minWidth) {
+			resize = true;
+			width = minWidth;
+		}
 
-        if (resize) {
-            c.setSize(width, height);
-        }
-    }
+		if (height < minHeight) {
+			resize = true;
+			height = minHeight;
+		}
 
-    public void componentMoved(ComponentEvent arg0) {
-    }
+		if (resize) {
+			c.setSize(width, height);
+		}
+	}
 
-    public void componentShown(ComponentEvent arg0) {
-    }
+	public void componentMoved(ComponentEvent arg0) {
+	}
 
-    public void componentHidden(ComponentEvent arg0) {
-    }
+	public void componentShown(ComponentEvent arg0) {
+	}
+
+	public void componentHidden(ComponentEvent arg0) {
+	}
 }

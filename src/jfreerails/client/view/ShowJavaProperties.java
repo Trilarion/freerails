@@ -7,40 +7,47 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-
 /**
- *        This class returns the Java System Properties as an HTML table.
- *  @author Luke
- *
+ * This class returns the Java System Properties as an HTML table.
+ * 
+ * @author Luke
+ * 
  */
 public class ShowJavaProperties {
-	
+
 	public static final int TABLE_WIDTH = 500;
+
 	private static final Logger logger = Logger
-			.getLogger(ShowJavaProperties.class.getName()); 
-    public static void main(String[] args) {
-    	logger.info(getPropertiesHtmlString());
-    }
+			.getLogger(ShowJavaProperties.class.getName());
 
-    public static String getPropertiesHtmlString() {
-        Properties p = System.getProperties();
-        StringBuffer sb = new StringBuffer();
-        /*  We set the width of the table so that its text word-wraps.*/
-        sb.append("<html><h3>Java System Properties</h3><table width =\""+TABLE_WIDTH+"\" align = \"left\" valign = \"top\">\n");
+	public static void main(String[] args) {
+		logger.info(getPropertiesHtmlString());
+	}
 
-        Enumeration keys = p.keys();
+	public static String getPropertiesHtmlString() {
+		Properties p = System.getProperties();
+		StringBuffer sb = new StringBuffer();
+		/* We set the width of the table so that its text word-wraps. */
+		sb.append("<html><h3>Java System Properties</h3><table width =\""
+				+ TABLE_WIDTH + "\" align = \"left\" valign = \"top\">\n");
 
-        while (keys.hasMoreElements()) {
-            String key = (String)keys.nextElement();
-            String value = p.getProperty(key);
-            /* Insert a line break after each ";".  This makes reading classpath elements easier.*/
-            value= value.replaceAll(";", ";<br>"); 
-            sb.append("<tr><td>" + key + " </td><td> " + value +
-                "</td></tr>\n");
-        }
+		Enumeration keys = p.keys();
 
-        sb.append("</table></html>\n");
+		while (keys.hasMoreElements()) {
+			String key = (String) keys.nextElement();
+			String value = p.getProperty(key);
+			/*
+			 * Insert a line break after each ";". This makes reading classpath
+			 * elements easier.
+			 */
+			value = value.replaceAll(";", ";<br>");
+			sb
+					.append("<tr><td>" + key + " </td><td> " + value
+							+ "</td></tr>\n");
+		}
 
-        return sb.toString();
-    }
+		sb.append("</table></html>\n");
+
+		return sb.toString();
+	}
 }

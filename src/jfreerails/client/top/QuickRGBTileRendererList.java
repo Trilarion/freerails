@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.HashMap;
+
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.TileRenderer;
 import jfreerails.client.renderer.TileRendererList;
@@ -15,99 +16,102 @@ import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 
-
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
- *
+ * 
  * @author Luke
- *
+ * 
  */
 public class QuickRGBTileRendererList implements TileRendererList {
-    private final int[] rgbValues;
-    private final Image[] images;
-    private final HashMap<Integer, Integer> rgb2index = new HashMap<Integer, Integer>();
-    private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
-    private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                                                           .getDefaultScreenDevice()
-                                                                                                           .getDefaultConfiguration();
+	private final int[] rgbValues;
 
-    public QuickRGBTileRendererList(ReadOnlyWorld w) {
-        int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
-        rgbValues = new int[numberOfTerrainTypes];
-        images = new Image[numberOfTerrainTypes];
+	private final Image[] images;
 
-        for (int i = 0; i < numberOfTerrainTypes; i++) {
-            TerrainType t = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
-            rgbValues[i] = t.getRGB();
-            images[i] = createImageFor(t);
-            rgb2index.put(new Integer(t.getRGB()), new Integer(i));
-        }
-    }
+	private final HashMap<Integer, Integer> rgb2index = new HashMap<Integer, Integer>();
 
-    public static Image createImageFor(TerrainType t) {
-        Image image = defaultConfiguration.createCompatibleImage(30, 30);
-        Color c = new Color(t.getRGB());
-        Graphics g = image.getGraphics();
-        g.setColor(c);
-        g.fillRect(0, 0, 30, 30);
-        g.dispose();
+	private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
 
-        return image;
-    }
+	private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment
+			.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+			.getDefaultConfiguration();
 
-    public TileRenderer getTileViewWithNumber(int i) {
-        throw new UnsupportedOperationException();
-    }
+	public QuickRGBTileRendererList(ReadOnlyWorld w) {
+		int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
+		rgbValues = new int[numberOfTerrainTypes];
+		images = new Image[numberOfTerrainTypes];
 
-    public TileRenderer getTileViewWithRGBValue(int rgb) {
-        Integer i = rgb2index.get(new Integer(rgb));
-        this.simpleTileRenderer.setImage(images[i.intValue()]);
+		for (int i = 0; i < numberOfTerrainTypes; i++) {
+			TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
+			rgbValues[i] = t.getRGB();
+			images[i] = createImageFor(t);
+			rgb2index.put(new Integer(t.getRGB()), new Integer(i));
+		}
+	}
 
-        return simpleTileRenderer;
-    }
+	public static Image createImageFor(TerrainType t) {
+		Image image = defaultConfiguration.createCompatibleImage(30, 30);
+		Color c = new Color(t.getRGB());
+		Graphics g = image.getGraphics();
+		g.setColor(c);
+		g.fillRect(0, 0, 30, 30);
+		g.dispose();
 
-    public boolean validate(ReadOnlyWorld world) {
-        return true;
-    }
+		return image;
+	}
 
-    class SimpleTileRenderer implements TileRenderer {
-        Image i;
+	public TileRenderer getTileViewWithNumber(int i) {
+		throw new UnsupportedOperationException();
+	}
 
-        public SimpleTileRenderer() {
-        }
+	public TileRenderer getTileViewWithRGBValue(int rgb) {
+		Integer i = rgb2index.get(new Integer(rgb));
+		this.simpleTileRenderer.setImage(images[i.intValue()]);
 
-        public void setImage(Image i) {
-            this.i = i;
-        }
+		return simpleTileRenderer;
+	}
 
-        public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-            return 0;
-        }
+	public boolean validate(ReadOnlyWorld world) {
+		return true;
+	}
 
-        public int getTileWidth() {
-            return 30;
-        }
+	class SimpleTileRenderer implements TileRenderer {
+		Image i;
 
-        public int getTileHeight() {
-            return 30;
-        }
+		public SimpleTileRenderer() {
+		}
 
-        public Image getIcon(int x, int y, ReadOnlyWorld w) {
-            return i;
-        }
+		public void setImage(Image i) {
+			this.i = i;
+		}
 
-        public Image getDefaultIcon() {
-            return i;
-        }
+		public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+			return 0;
+		}
 
-        public void renderTile(Graphics g, int renderX, int renderY, int mapX,
-            int mapY, ReadOnlyWorld w) {
-            g.drawImage(i, renderX, renderY, null);
-        }
+		public int getTileWidth() {
+			return 30;
+		}
 
-        public void dumpImages(ImageManager imageManager) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException();
-        }
-    }
+		public int getTileHeight() {
+			return 30;
+		}
+
+		public Image getIcon(int x, int y, ReadOnlyWorld w) {
+			return i;
+		}
+
+		public Image getDefaultIcon() {
+			return i;
+		}
+
+		public void renderTile(Graphics g, int renderX, int renderY, int mapX,
+				int mapY, ReadOnlyWorld w) {
+			g.drawImage(i, renderX, renderY, null);
+		}
+
+		public void dumpImages(ImageManager imageManager) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException();
+		}
+	}
 }

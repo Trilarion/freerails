@@ -13,82 +13,93 @@ import jfreerails.world.top.World;
 public class AddActiveEntityMove implements Move {
 
 	private static final long serialVersionUID = 8732702087937675013L;
-	
-	private final Activity activity;
-	
-	private final FreerailsPrincipal principal;
-	
-	private final AKEY listKey;
-    private final int index;
 
-	public AddActiveEntityMove(Activity activity, int index, AKEY key, FreerailsPrincipal principal) {		
+	private final Activity activity;
+
+	private final FreerailsPrincipal principal;
+
+	private final AKEY listKey;
+
+	private final int index;
+
+	public AddActiveEntityMove(Activity activity, int index, AKEY key,
+			FreerailsPrincipal principal) {
 		this.activity = activity;
 		this.index = index;
 		listKey = key;
 		this.principal = principal;
 	}
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AddActiveEntityMove)) return false;
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof AddActiveEntityMove))
+			return false;
 
-        final AddActiveEntityMove addActiveEntityMove = (AddActiveEntityMove) o;
+		final AddActiveEntityMove addActiveEntityMove = (AddActiveEntityMove) o;
 
-        if (index != addActiveEntityMove.index) return false;
-        if (!activity.equals(addActiveEntityMove.activity)) return false;
-        if (!listKey.equals(addActiveEntityMove.listKey)) return false;
-        if (!principal.equals(addActiveEntityMove.principal)) return false;
+		if (index != addActiveEntityMove.index)
+			return false;
+		if (!activity.equals(addActiveEntityMove.activity))
+			return false;
+		if (!listKey.equals(addActiveEntityMove.listKey))
+			return false;
+		if (!principal.equals(addActiveEntityMove.principal))
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    public int hashCode() {
-        int result;
-        result = activity.hashCode();
-        result = 29 * result + principal.hashCode();
-        result = 29 * result + listKey.hashCode();
-        result = 29 * result + index;
-        return result;
-    }
+	public int hashCode() {
+		int result;
+		result = activity.hashCode();
+		result = 29 * result + principal.hashCode();
+		result = 29 * result + listKey.hashCode();
+		result = 29 * result + index;
+		return result;
+	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		if(index != w.size(listKey, principal))
-			return MoveStatus.moveFailed("index != w.size(listKey, p)");				
-		
+		if (index != w.size(listKey, principal))
+			return MoveStatus.moveFailed("index != w.size(listKey, p)");
+
 		return MoveStatus.MOVE_OK;
 	}
 
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
 		int expectedSize = index + 1;
-		if(expectedSize != w.size(listKey, principal))
-			return MoveStatus.moveFailed("(index + 1) != w.size(listKey, principal)");				
-		
+		if (expectedSize != w.size(listKey, principal))
+			return MoveStatus
+					.moveFailed("(index + 1) != w.size(listKey, principal)");
+
 		ActivityIterator ai = w.getActivities(listKey, index, principal);
-		if(ai.hasNext())
-			return MoveStatus.moveFailed("There should be exactly one activity!");
-		
+		if (ai.hasNext())
+			return MoveStatus
+					.moveFailed("There should be exactly one activity!");
+
 		Activity act = ai.getActivity();
-		
-		if(!act.equals(activity))
-			return MoveStatus.moveFailed("Expected "+activity.toString()+" but found "+act.toString());
-		
+
+		if (!act.equals(activity))
+			return MoveStatus.moveFailed("Expected " + activity.toString()
+					+ " but found " + act.toString());
+
 		return MoveStatus.MOVE_OK;
 	}
 
 	public MoveStatus doMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = tryDoMove(w, p);
-		if(ms.ok)
+		if (ms.ok)
 			w.addActiveEntity(listKey, activity, principal);
-		
+
 		return ms;
 	}
 
 	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = tryUndoMove(w, p);
-		if(ms.ok)
+		if (ms.ok)
 			w.removeLastActiveEntity(listKey, principal);
-		
-		return ms;		
+
+		return ms;
 	}
 
 }

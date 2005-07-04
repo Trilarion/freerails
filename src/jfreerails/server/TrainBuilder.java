@@ -382,9 +382,9 @@ public class TrainBuilder implements ServerAutomaton {
 	void moveTrains(ReadOnlyWorld world) {
 		int deltaDistance = 5;
 
-		Iterator<TrainMover>  i = trainMovers.iterator();
+		Iterator<TrainMover> i = trainMovers.iterator();
 		ArrayList<Integer> crashedTrains = new ArrayList<Integer>();
-		while (i.hasNext()) {		
+		while (i.hasNext()) {
 			TrainMover trainMover = i.next();
 
 			try {

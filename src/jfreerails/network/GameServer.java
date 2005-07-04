@@ -5,16 +5,16 @@ package jfreerails.network;
 
 import jfreerails.util.GameModel;
 
-
 /**
- *  Defines a server that can accept connections to clients.
- *  @author Luke
- *
+ * Defines a server that can accept connections to clients.
+ * 
+ * @author Luke
+ * 
  */
 public interface GameServer extends GameModel {
-    void addConnection(Connection2Client connection);
+	void addConnection(Connection2Client connection);
 
-    int countOpenConnections();
+	int countOpenConnections();
 
-    void stop();
+	void stop();
 }

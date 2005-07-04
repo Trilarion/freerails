@@ -18,7 +18,7 @@ import jfreerails.world.track.TrackPiece;
  * 
  * @author MystiqueAgent
  * @author Luke
- *  
+ * 
  */
 public class BuildTrackRenderer implements Painter {
 	public static final int BIG_DOT_WIDTH = 12;
@@ -30,8 +30,9 @@ public class BuildTrackRenderer implements Painter {
 	private final Dimension m_tileSize = new Dimension(30, 30);
 
 	private TrackPieceRendererList m_trackPieceViewList;
-	
-	public BuildTrackRenderer(TrackPieceRendererList trackPieceViewList, ModelRoot modelRoot) {
+
+	public BuildTrackRenderer(TrackPieceRendererList trackPieceViewList,
+			ModelRoot modelRoot) {
 		m_modelRoot = modelRoot;
 		m_trackPieceViewList = trackPieceViewList;
 
@@ -51,9 +52,10 @@ public class BuildTrackRenderer implements Painter {
 	 */
 	public void paint(Graphics2D g) {
 
-		WorldDifferences worldDiffs = getWorldDiffs();	
+		WorldDifferences worldDiffs = getWorldDiffs();
 		if (null != worldDiffs) {
-			for (Iterator<Point> iter = worldDiffs.getMapDifferences(); iter.hasNext();) {
+			for (Iterator<Point> iter = worldDiffs.getMapDifferences(); iter
+					.hasNext();) {
 				Point point = iter.next();
 				TrackPiece tp = (TrackPiece) worldDiffs.getTile(point.x,
 						point.y);
@@ -68,8 +70,10 @@ public class BuildTrackRenderer implements Painter {
 			}
 
 			ReadOnlyWorld realWorld = m_modelRoot.getWorld();
-			/* Draw small dots for each tile whose track has changed.  The dots
-			 * are white if track has been added or upgraded and red if it has been removed.
+			/*
+			 * Draw small dots for each tile whose track has changed. The dots
+			 * are white if track has been added or upgraded and red if it has
+			 * been removed.
 			 */
 			for (Iterator<Point> iter = worldDiffs.getMapDifferences(); iter
 					.hasNext();) {
@@ -78,10 +82,13 @@ public class BuildTrackRenderer implements Painter {
 						+ (m_tileSize.width - SMALL_DOT_WIDTH) / 2;
 				int y = p.y * m_tileSize.width
 						+ (m_tileSize.height - SMALL_DOT_WIDTH) / 2;
-				FreerailsTile before = (FreerailsTile)realWorld.getTile(p.x, p.y);
-				FreerailsTile after = (FreerailsTile)worldDiffs.getTile(p.x, p.y);
-				
-				boolean trackRemoved = !after.getTrackConfiguration().contains(before.getTrackConfiguration());
+				FreerailsTile before = (FreerailsTile) realWorld.getTile(p.x,
+						p.y);
+				FreerailsTile after = (FreerailsTile) worldDiffs.getTile(p.x,
+						p.y);
+
+				boolean trackRemoved = !after.getTrackConfiguration().contains(
+						before.getTrackConfiguration());
 				Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
 				g.setColor(dotColor);
 				g.fillOval(x, y, SMALL_DOT_WIDTH, SMALL_DOT_WIDTH);

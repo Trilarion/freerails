@@ -4,13 +4,19 @@
  */
 package jfreerails.world.train;
 
+import static jfreerails.world.common.Step.EAST;
+import static jfreerails.world.common.Step.NORTH;
+import static jfreerails.world.common.Step.SOUTH;
+import static jfreerails.world.common.Step.SOUTH_EAST;
+import static jfreerails.world.common.Step.SOUTH_WEST;
+import static jfreerails.world.common.Step.TILE_DIAMETER;
+
 import java.awt.Point;
 
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import junit.framework.TestCase;
-import static jfreerails.world.common.OneTileMoveVector.*;
 
 /**
  * JUnit test for PathOnTiles.
@@ -22,20 +28,20 @@ public class PathOnTilesTest extends TestCase {
 
 	public void testPathOnTiles() {
 		Point start = null;
-		OneTileMoveVector[] vectors = null;
+		Step[] vectors = null;
 		assertTrue(throwsException(start, vectors));
 		start = new Point();
 		assertTrue(throwsException(start, vectors));
-		vectors = new OneTileMoveVector[] { null, null };
+		vectors = new Step[] { null, null };
 		assertTrue(throwsException(start, vectors));
-		vectors = new OneTileMoveVector[] { NORTH, SOUTH };
+		vectors = new Step[] { NORTH, SOUTH };
 		assertFalse(throwsException(start, vectors));
 
 	}
 
 	public void testGetStepIndex() {
 		Point start = new Point();
-		OneTileMoveVector[] vectors = new OneTileMoveVector[] { SOUTH_EAST,
+		Step[] vectors = new Step[] { SOUTH_EAST,
 				EAST, EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
 		assertEquals(0, path.getStepIndex(0));
@@ -47,16 +53,16 @@ public class PathOnTilesTest extends TestCase {
 
 	public void testGetLength() {
 		Point start = new Point();
-		OneTileMoveVector[] vectors = new OneTileMoveVector[] { EAST, EAST,
+		Step[] vectors = new Step[] { EAST, EAST,
 				EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
-		assertEquals(3 * OneTileMoveVector.TILE_DIAMETER, path.getLength());
+		assertEquals(3 * Step.TILE_DIAMETER, path.getLength());
 
 	}
 
 	public void testGetPoint() {
 		Point start = new Point();
-		OneTileMoveVector[] vectors = new OneTileMoveVector[] { EAST, EAST,
+		Step[] vectors = new Step[] { EAST, EAST,
 				EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
 		Point expected = new Point(15, 15);
@@ -74,7 +80,7 @@ public class PathOnTilesTest extends TestCase {
 
 	public void testSubPath() {
 		Point start = new Point();
-		OneTileMoveVector[] vectors = new OneTileMoveVector[] { EAST, EAST,
+		Step[] vectors = new Step[] { EAST, EAST,
 				EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
 
@@ -96,10 +102,10 @@ public class PathOnTilesTest extends TestCase {
 		expected = new Point[] { new Point(18, 15), new Point(45, 15),
 				new Point(75, 15), new Point(98, 15) };
 		checkPath(pathIt, expected);
-		
+
 		// 4th check, with a path just 1 tile long.
 		start = new Point(5, 5);
-		vectors = new OneTileMoveVector[] { SOUTH_WEST};
+		vectors = new Step[] { SOUTH_WEST };
 		path = new PathOnTiles(start, vectors);
 		pathIt = path.subPath(18, 24);
 		IntLine line = new IntLine();
@@ -107,18 +113,17 @@ public class PathOnTilesTest extends TestCase {
 		pathIt.nextSegment(line);
 		assertEquals("The length of the train.", 24, line.getLength(), 0.1d);
 		assertFalse(pathIt.hasNext());
-		
+
 		// 5th check, same as 2nd but with different starting position.
-		vectors = new OneTileMoveVector[] { EAST, EAST,
-				EAST };
-		
-		start = new Point(4, 7);	
+		vectors = new Step[] { EAST, EAST, EAST };
+
+		start = new Point(4, 7);
 		path = new PathOnTiles(start, vectors);
-		
+
 		pathIt = path.subPath(3, path.getLength() - 3);
 		expected = new Point[] { new Point(18, 15), new Point(45, 15),
 				new Point(75, 15), new Point(105, 15) };
-		for(Point point: expected){
+		for (Point point : expected) {
 			point.x += start.x * TILE_DIAMETER;
 			point.y += start.y * TILE_DIAMETER;
 		}
@@ -139,7 +144,7 @@ public class PathOnTilesTest extends TestCase {
 		assertFalse(pathIt.hasNext());
 	}
 
-	boolean throwsException(Point start, OneTileMoveVector[] vectors) {
+	boolean throwsException(Point start, Step[] vectors) {
 		try {
 			new PathOnTiles(start, vectors);
 			return false;

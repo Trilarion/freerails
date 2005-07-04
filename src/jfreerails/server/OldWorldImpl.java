@@ -1,6 +1,7 @@
 package jfreerails.server;
 
 import java.net.URL;
+
 import jfreerails.server.common.TileSetFactory;
 import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.util.FreerailsProgressMonitor;
@@ -12,71 +13,75 @@ import jfreerails.world.top.ITEM;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
+
 import org.xml.sax.SAXException;
 
-
-/** This class sets up a World object.
+/**
+ * This class sets up a World object.
+ * 
  * @author luke
- * */
+ */
 public class OldWorldImpl {
-    public static World createWorldFromMapFile(String mapName,
-        FreerailsProgressMonitor pm) {
-        pm.setMessage("Setting up world.");
-        pm.setValue(0);
-        pm.setMax(7);
+	public static World createWorldFromMapFile(String mapName,
+			FreerailsProgressMonitor pm) {
+		pm.setMessage("Setting up world.");
+		pm.setValue(0);
+		pm.setMax(7);
 
-        int progess = 0;
+		int progess = 0;
 
-        TileSetFactory tileFactory = new TileSetFactoryImpl();
-        pm.setValue(++progess);
+		TileSetFactory tileFactory = new TileSetFactoryImpl();
+		pm.setValue(++progess);
 
-        WorldImpl w = new WorldImpl();
-        pm.setValue(++progess);
+		WorldImpl w = new WorldImpl();
+		pm.setValue(++progess);
 
-        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        pm.setValue(++progess);
-        wetf.addTypesToWorld(w);
-        pm.setValue(++progess);
+		WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
+		pm.setValue(++progess);
+		wetf.addTypesToWorld(w);
+		pm.setValue(++progess);
 
-        tileFactory.addTerrainTileTypesList(w);
-        pm.setValue(++progess);
+		tileFactory.addTerrainTileTypesList(w);
+		pm.setValue(++progess);
 
-        URL track_xml_url = OldWorldImpl.class.getResource(
-                "/jfreerails/data/track_tiles.xml");
+		URL track_xml_url = OldWorldImpl.class
+				.getResource("/jfreerails/data/track_tiles.xml");
 
-        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
-        pm.setValue(++progess);
+		Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
+				track_xml_url);
+		pm.setValue(++progess);
 
-        trackSetFactory.addTrackRules(w);
-        pm.setValue(++progess);
+		trackSetFactory.addTrackRules(w);
+		pm.setValue(++progess);
 
-        //Load the terrain map
-        URL map_url = OldWorldImpl.class.getResource("/jfreerails/data/" +
-                mapName + ".png");
-        MapFactory.setupMap(map_url, w, pm);
+		// Load the terrain map
+		URL map_url = OldWorldImpl.class.getResource("/jfreerails/data/"
+				+ mapName + ".png");
+		MapFactory.setupMap(map_url, w, pm);
 
-        //Load the city names
-        URL cities_xml_url = OldWorldImpl.class.getResource("/jfreerails/data/" +
-                mapName + "_cities.xml");
+		// Load the city names
+		URL cities_xml_url = OldWorldImpl.class.getResource("/jfreerails/data/"
+				+ mapName + "_cities.xml");
 
-        try {
-            InputCityNames.readCityNames(w, cities_xml_url);
-        } catch (SAXException e) {
-        }
+		try {
+			InputCityNames.readCityNames(w, cities_xml_url);
+		} catch (SAXException e) {
+		}
 
-        //Randomly position the city tiles
-        CityTilePositioner ctp = new CityTilePositioner(w);
-        ctp.initCities();
+		// Randomly position the city tiles
+		CityTilePositioner ctp = new CityTilePositioner(w);
+		ctp.initCities();
 
-        //Set the time..
-        w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-        w.setTime(new GameTime(0));        
-        w.set(ITEM.GAME_SPEED, new GameSpeed(10));
-        w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+		// Set the time..
+		w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+		w.setTime(new GameTime(0));
+		w.set(ITEM.GAME_SPEED, new GameSpeed(10));
+		w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 
-        /* Note, money used to get added to player accounts here, now
-         * it is done when players are added. See AddPlayerMove
-         */
-        return w;
-    }
+		/*
+		 * Note, money used to get added to player accounts here, now it is done
+		 * when players are added. See AddPlayerMove
+		 */
+		return w;
+	}
 }

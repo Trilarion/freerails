@@ -20,87 +20,88 @@ import jfreerails.network.SavedGamesManager;
 import jfreerails.network.ServerControlInterface;
 import jfreerails.util.FreerailsProgressMonitor;
 
-
 /**
- *  A SavedGamesManager reads and writes gzipped saved games to the working directory.
+ * A SavedGamesManager reads and writes gzipped saved games to the working
+ * directory.
  * 
  * @author Luke
- *
+ * 
  */
 public class SavedGamesManagerImpl implements SavedGamesManager {
-    private static final Logger logger = Logger.getLogger(SavedGamesManagerImpl.class.getName());
+	private static final Logger logger = Logger
+			.getLogger(SavedGamesManagerImpl.class.getName());
 
-    public String[] getSaveGameNames() {
-        return new String[0];
-    }
+	public String[] getSaveGameNames() {
+		return new String[0];
+	}
 
-    public String[] getNewMapNames() {
-        return NewGameMessage2Server.getMapNames();
-    }
+	public String[] getNewMapNames() {
+		return NewGameMessage2Server.getMapNames();
+	}
 
-    public void saveGame(Serializable w, String s) throws IOException {
-        long startTime = System.currentTimeMillis();
-        logger.info("Saving game..  " + s);
+	public void saveGame(Serializable w, String s) throws IOException {
+		long startTime = System.currentTimeMillis();
+		logger.info("Saving game..  " + s);
 
-        FileOutputStream out = new FileOutputStream(s);
-        GZIPOutputStream zipout = new GZIPOutputStream(out);
+		FileOutputStream out = new FileOutputStream(s);
+		GZIPOutputStream zipout = new GZIPOutputStream(out);
 
-        ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
+		ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
 
-        objectOut.writeObject(ServerControlInterface.VERSION);
-        objectOut.writeObject(w);
+		objectOut.writeObject(ServerControlInterface.VERSION);
+		objectOut.writeObject(w);
 
-        objectOut.flush();
-        objectOut.close();
-        out.close();
+		objectOut.flush();
+		objectOut.close();
+		out.close();
 
-        long finishTime = System.currentTimeMillis();
-        long deltaTime = finishTime - startTime;
-        logger.info("done, " + deltaTime + "ms");
-    }
+		long finishTime = System.currentTimeMillis();
+		long deltaTime = finishTime - startTime;
+		logger.info("done, " + deltaTime + "ms");
+	}
 
-    public Serializable loadGame(String name) throws IOException {
-        long startTime = System.currentTimeMillis();
-        logger.info("Loading game..  " + name);
+	public Serializable loadGame(String name) throws IOException {
+		long startTime = System.currentTimeMillis();
+		logger.info("Loading game..  " + name);
 
-        FileInputStream in = new FileInputStream(name);
-        GZIPInputStream zipin = new GZIPInputStream(in);
-        ObjectInputStream objectIn = new ObjectInputStream(zipin);
-        String version_string;
+		FileInputStream in = new FileInputStream(name);
+		GZIPInputStream zipin = new GZIPInputStream(in);
+		ObjectInputStream objectIn = new ObjectInputStream(zipin);
+		String version_string;
 
-        try {
-            version_string = (String)objectIn.readObject();
+		try {
+			version_string = (String) objectIn.readObject();
 
-            if (!ServerControlInterface.VERSION.equals(version_string)) {
-                throw new IOException(version_string);
-            }
+			if (!ServerControlInterface.VERSION.equals(version_string)) {
+				throw new IOException(version_string);
+			}
 
-            Serializable game = (Serializable)objectIn.readObject();
+			Serializable game = (Serializable) objectIn.readObject();
 
-            /**
-             * load player private data
-             */
+			/**
+			 * load player private data
+			 */
 
-            //            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            //                Player player = world.getPlayer(i);
-            //                player.loadSession(objectIn);
-            //            }
-            long finishTime = System.currentTimeMillis();
-            long deltaTime = finishTime - startTime;
-            logger.info("done, " + deltaTime + "ms");
+			// for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+			// Player player = world.getPlayer(i);
+			// player.loadSession(objectIn);
+			// }
+			long finishTime = System.currentTimeMillis();
+			long deltaTime = finishTime - startTime;
+			logger.info("done, " + deltaTime + "ms");
 
-            return game;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new IOException(e.getMessage());
-        } catch (InvalidClassException e){
-        	//e.printStackTrace();
-            throw new IOException(e.getMessage());
-        }
-    }
+			return game;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new IOException(e.getMessage());
+		} catch (InvalidClassException e) {
+			// e.printStackTrace();
+			throw new IOException(e.getMessage());
+		}
+	}
 
-    public Serializable newMap(String name) throws IOException {
-        return OldWorldImpl.createWorldFromMapFile(name,
-            FreerailsProgressMonitor.NULL_INSTANCE);
-    }
+	public Serializable newMap(String name) throws IOException {
+		return OldWorldImpl.createWorldFromMapFile(name,
+				FreerailsProgressMonitor.NULL_INSTANCE);
+	}
 }

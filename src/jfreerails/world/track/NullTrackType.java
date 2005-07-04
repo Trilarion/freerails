@@ -7,92 +7,94 @@ package jfreerails.world.track;
 
 import java.io.ObjectStreamException;
 import java.util.Iterator;
+
 import jfreerails.world.common.Money;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.terrain.TerrainType;
 
-
 /**
- * The type of a Null track piece.
- * TODO maybe it would be simplier to get rid of this and jsut check against null!
- * @author  lindsal
+ * The type of a Null track piece. TODO maybe it would be simplier to get rid of
+ * this and jsut check against null!
+ * 
+ * @author lindsal
  */
 final public class NullTrackType implements TrackRule {
-    private static final long serialVersionUID = 3257849891614306614L;
+	private static final long serialVersionUID = 3257849891614306614L;
+
 	public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
-    private static final NullTrackType nullTrackType = new NullTrackType();
 
-    private NullTrackType() {
-    }
+	private static final NullTrackType nullTrackType = new NullTrackType();
 
-    private Object readResolve() throws ObjectStreamException {
-        return nullTrackType;
-    }
+	private NullTrackType() {
+	}
 
-    public static NullTrackType getInstance() {
-        return nullTrackType;
-    }
+	private Object readResolve() throws ObjectStreamException {
+		return nullTrackType;
+	}
 
-    public boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType) {
-        return true; //No track is possible anywhere.
-    }
+	public static NullTrackType getInstance() {
+		return nullTrackType;
+	}
 
-    public OneTileMoveVector[] getLegalRoutes(
-        jfreerails.world.common.OneTileMoveVector directionComingFrom) {
-        return new OneTileMoveVector[0];
-    }
+	public boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType) {
+		return true; // No track is possible anywhere.
+	}
 
-    public int getMaximumConsecutivePieces() {
-        return -1;
-    }
-    
+	public Step[] getLegalRoutes(
+			jfreerails.world.common.Step directionComingFrom) {
+		return new Step[0];
+	}
 
-    public String getTypeName() {
-        return "NullTrackType";
-    }
+	public int getMaximumConsecutivePieces() {
+		return -1;
+	}
 
-    public boolean testTrackPieceLegality(int trackTemplateToTest) {
-        if (trackTemplateToTest != 0) {
-            return false;
-        }
+	public String getTypeName() {
+		return "NullTrackType";
+	}
+
+	public boolean testTrackPieceLegality(int trackTemplateToTest) {
+		if (trackTemplateToTest != 0) {
+			return false;
+		}
 		return true;
-    }
+	}
 
-    public boolean trackPieceIsLegal(TrackConfiguration config) {
-        return testTrackPieceLegality(config.getTrackGraphicsID());
-    }
+	public boolean trackPieceIsLegal(TrackConfiguration config) {
+		return testTrackPieceLegality(config.getTrackGraphicsID());
+	}
 
-    public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
-        throw new UnsupportedOperationException("Method not implemented yet!");
-    }
+	public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
+		throw new UnsupportedOperationException("Method not implemented yet!");
+	}
 
-    public TrackPiece getTrackPiece(TrackConfiguration config, int owner) {
-        throw new UnsupportedOperationException("Method not implemented yet!");
-    }
+	public TrackPiece getTrackPiece(TrackConfiguration config, int owner) {
+		throw new UnsupportedOperationException("Method not implemented yet!");
+	}
 
-    public boolean isStation() {
-        return false;
-    }
+	public boolean isStation() {
+		return false;
+	}
 
-    public boolean equals(Object o) {
-        return o == this;
-    }
+	public boolean equals(Object o) {
+		return o == this;
+	}
 
-    public int hashCode() {
-        return 666;
-    }
+	public int hashCode() {
+		return 666;
+	}
 
-    public int getStationRadius() {
-        return 0;
-    }
+	public int getStationRadius() {
+		return 0;
+	}
 
-    public Money getPrice() {
-        return new Money(0);
-    }
+	public Money getPrice() {
+		return new Money(0);
+	}
 
-    public Money getMaintenanceCost() {
-        return new Money(0);
-    }
+	public Money getMaintenanceCost() {
+		return new Money(0);
+	}
 
 	public TrackCategories getCategory() {
 		return TrackCategories.non;
@@ -103,9 +105,8 @@ final public class NullTrackType implements TrackRule {
 		return 0;
 	}
 
-	
 	public boolean isDouble() {
-		
+
 		return false;
 	}
 

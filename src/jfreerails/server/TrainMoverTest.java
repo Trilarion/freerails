@@ -9,57 +9,60 @@ import jfreerails.world.top.World;
 import jfreerails.world.train.PathWalker;
 import junit.framework.TestCase;
 
-
-/**    JUnit test for TrainMover.
+/**
+ * JUnit test for TrainMover.
+ * 
  * @author Luke Lindsay 30-Oct-2002
- *
+ * 
  */
 public class TrainMoverTest extends TestCase implements MoveReceiver {
-    private TrainMover trainMover;
-    private World w;
+	private TrainMover trainMover;
 
-    /**
-     * Constructor for TrainMoverTest.
-     * @param arg0
-     */
-    public TrainMoverTest(String arg0) {
-        super(arg0);
-    }
+	private World w;
 
-    protected void setUp() {
-        TrainFixture trainFixture = new TrainFixture();
+	/**
+	 * Constructor for TrainMoverTest.
+	 * 
+	 * @param arg0
+	 */
+	public TrainMoverTest(String arg0) {
+		super(arg0);
+	}
 
-        trainMover = trainFixture.getTrainMover();
+	protected void setUp() {
+		TrainFixture trainFixture = new TrainFixture();
 
-        w = trainFixture.getWorld();
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
-    }
+		trainMover = trainFixture.getTrainMover();
 
-    public void testTrainMover() {
-        setUp();
+		w = trainFixture.getWorld();
+		w.addPlayer(MapFixtureFactory.TEST_PLAYER);
+	}
 
-        PathWalker pw = trainMover.getWalker();
+	public void testTrainMover() {
+		setUp();
 
-        pw.stepForward(10);
+		PathWalker pw = trainMover.getWalker();
 
-        IntLine line = new IntLine();
+		pw.stepForward(10);
 
-        pw.nextSegment(line);
+		IntLine line = new IntLine();
 
-        assertEquals(line.x1, 0);
-        assertEquals(line.y1, 0);
-    }
+		pw.nextSegment(line);
 
-    public void testUpdate() {
-     //   setUp();
-     //   try{
-     //   	trainMover.update(30, this);
-     //   }catch (PreMoveException e){
-     //   	fail();
-     //   }
-    }
+		assertEquals(line.x1, 0);
+		assertEquals(line.y1, 0);
+	}
 
-    public void processMove(Move move) {
-        move.doMove(w, Player.AUTHORITATIVE);
-    }
+	public void testUpdate() {
+		// setUp();
+		// try{
+		// trainMover.update(30, this);
+		// }catch (PreMoveException e){
+		// fail();
+		// }
+	}
+
+	public void processMove(Move move) {
+		move.doMove(w, Player.AUTHORITATIVE);
+	}
 }

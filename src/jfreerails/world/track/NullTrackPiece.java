@@ -7,54 +7,55 @@ package jfreerails.world.track;
 
 import java.io.ObjectStreamException;
 
-
 /**
- * A track piece that doesn't exist - using this avoids needing to check against null
- * before calling the methods on a track piece.
- *
- * @author  lindsal
+ * A track piece that doesn't exist - using this avoids needing to check against
+ * null before calling the methods on a track piece.
+ * 
+ * @author lindsal
  */
 final public class NullTrackPiece implements TrackPiece {
-    private static final long serialVersionUID = 3258413915376268599L;
+	private static final long serialVersionUID = 3258413915376268599L;
+
 	private static final TrackPiece nullTrackPiece = new NullTrackPiece();
-    private static final int NO_OWNER = Integer.MIN_VALUE;
 
-    private NullTrackPiece() {
-    }
+	private static final int NO_OWNER = Integer.MIN_VALUE;
 
-    public static TrackPiece getInstance() {
-        return nullTrackPiece;
-    }
+	private NullTrackPiece() {
+	}
 
-    public int getTrackGraphicID() {
-        return 0;
-    }
+	public static TrackPiece getInstance() {
+		return nullTrackPiece;
+	}
 
-    public TrackRule getTrackRule() {
-        return NullTrackType.getInstance();
-    }
+	public int getTrackGraphicID() {
+		return 0;
+	}
 
-    public TrackConfiguration getTrackConfiguration() {
-        return TrackConfiguration.from9bitTemplate(0);
-    }
+	public TrackRule getTrackRule() {
+		return NullTrackType.getInstance();
+	}
 
-    private Object readResolve() throws ObjectStreamException {
-        return nullTrackPiece;
-    }
+	public TrackConfiguration getTrackConfiguration() {
+		return TrackConfiguration.from9bitTemplate(0);
+	}
 
-    public boolean equals(Object o) {
-        return o == this;
-    }
+	private Object readResolve() throws ObjectStreamException {
+		return nullTrackPiece;
+	}
 
-    public int hashCode() {
-        return 777;
-    }
+	public boolean equals(Object o) {
+		return o == this;
+	}
 
-    public int getOwnerID() {
-        return NO_OWNER;
-    }
+	public int hashCode() {
+		return 777;
+	}
 
-	public int getTrackTypeID() {		
+	public int getOwnerID() {
+		return NO_OWNER;
+	}
+
+	public int getTrackTypeID() {
 		return NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
 	}
 }

@@ -6,49 +6,50 @@ package jfreerails.network;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+
 import jfreerails.util.Utils;
 import jfreerails.world.top.WorldImpl;
 
-
 /**
  * Stores saved games in memory rather than on disk.
- *
- *  @author Luke
- *
+ * 
+ * @author Luke
+ * 
  */
 public class SavedGamesManager4UnitTests implements SavedGamesManager {
-    private String[] mapsAvailable = {"map1", "map2"};
-    private final HashMap<String, Serializable> savedGames = new HashMap<String, Serializable>();
+	private String[] mapsAvailable = { "map1", "map2" };
 
-    public String[] getSaveGameNames() {
-        Object[] keys = savedGames.keySet().toArray();
+	private final HashMap<String, Serializable> savedGames = new HashMap<String, Serializable>();
 
-        String[] names = new String[keys.length];
+	public String[] getSaveGameNames() {
+		Object[] keys = savedGames.keySet().toArray();
 
-        for (int i = 0; i < names.length; i++) {
-            names[i] = (String)keys[i];
-        }
+		String[] names = new String[keys.length];
 
-        return names;
-    }
+		for (int i = 0; i < names.length; i++) {
+			names[i] = (String) keys[i];
+		}
 
-    public String[] getNewMapNames() {
-        return mapsAvailable.clone();
-    }
+		return names;
+	}
 
-    public void saveGame(Serializable w, String name) throws IOException {
-        //Make a copy so that the saved version's state cannot be changed.
-    	Serializable copy = Utils.cloneBySerialisation(w);
-        this.savedGames.put(name, copy);
-    }
+	public String[] getNewMapNames() {
+		return mapsAvailable.clone();
+	}
 
-    public Serializable loadGame(String name) throws IOException {
-        Object o = savedGames.get(name);
+	public void saveGame(Serializable w, String name) throws IOException {
+		// Make a copy so that the saved version's state cannot be changed.
+		Serializable copy = Utils.cloneBySerialisation(w);
+		this.savedGames.put(name, copy);
+	}
 
-        return Utils.cloneBySerialisation(o);
-    }
+	public Serializable loadGame(String name) throws IOException {
+		Object o = savedGames.get(name);
 
-    public Serializable newMap(String name) throws IOException {
-        return new WorldImpl(10, 10);
-    }
+		return Utils.cloneBySerialisation(o);
+	}
+
+	public Serializable newMap(String name) throws IOException {
+		return new WorldImpl(10, 10);
+	}
 }

@@ -3,99 +3,105 @@
  */
 package jfreerails.client.view;
 
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
- * Provides methods that find the nearest station in a given direction, used by the
- * select station popup window.
+ * Provides methods that find the nearest station in a given direction, used by
+ * the select station popup window.
+ * 
  * @author Luke
- *
+ * 
  */
 public class NearestStationFinder {
-    public static final int NOT_FOUND = Integer.MIN_VALUE;
-    private final ReadOnlyWorld world;
-    private final FreerailsPrincipal principal;
-    private final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
+	public static final int NOT_FOUND = Integer.MIN_VALUE;
 
-    public NearestStationFinder(ReadOnlyWorld w, FreerailsPrincipal player) {
-        world = w;
-        this.principal = player;
-    }
+	private final ReadOnlyWorld world;
 
-    public int findNearestStation(int x, int y) {
-        //Find nearest station.
-        int distanceToClosestSquared = Integer.MAX_VALUE;
+	private final FreerailsPrincipal principal;
 
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
-        int nearestStation = NOT_FOUND;
+	private final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
 
-        while (it.next()) {
-            StationModel station = (StationModel)it.getElement();
+	public NearestStationFinder(ReadOnlyWorld w, FreerailsPrincipal player) {
+		world = w;
+		this.principal = player;
+	}
 
-            int deltaX = x - station.x;
+	public int findNearestStation(int x, int y) {
+		// Find nearest station.
+		int distanceToClosestSquared = Integer.MAX_VALUE;
 
-            int deltaY = y - station.y;
-            int distanceSquared = deltaX * deltaX + deltaY * deltaY;
+		NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
+		int nearestStation = NOT_FOUND;
 
-            if (distanceSquared < distanceToClosestSquared &&
-                    MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
-                distanceToClosestSquared = distanceSquared;
-                nearestStation = it.getIndex();
-            }
-        }
+		while (it.next()) {
+			StationModel station = (StationModel) it.getElement();
 
-        return nearestStation;
-    }
+			int deltaX = x - station.x;
 
-    public int findNearestStationInDirection(int startStation,
-        OneTileMoveVector direction) {
-        int distanceToClosestSquared = Integer.MAX_VALUE;
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
+			int deltaY = y - station.y;
+			int distanceSquared = deltaX * deltaX + deltaY * deltaY;
 
-        StationModel currentStation = (StationModel)world.get(KEY.STATIONS,
-                startStation, principal);
+			if (distanceSquared < distanceToClosestSquared
+					&& MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
+				distanceToClosestSquared = distanceSquared;
+				nearestStation = it.getIndex();
+			}
+		}
 
-        int nearestStation = NOT_FOUND;
+		return nearestStation;
+	}
 
-        while (it.next()) {
-            StationModel station = (StationModel)it.getElement();
-            int deltaX = station.x - currentStation.x;
-            int deltaY = station.y - currentStation.y;
-            int distanceSquared = deltaX * deltaX + deltaY * deltaY;
-            boolean closer = distanceSquared < distanceToClosestSquared;
-            boolean notTheSameStation = startStation != it.getIndex();
-            boolean inRightDirection = isInRightDirection(direction, deltaX,
-                    deltaY);
+	public int findNearestStationInDirection(int startStation,
+			Step direction) {
+		int distanceToClosestSquared = Integer.MAX_VALUE;
+		NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
 
-            if (closer && inRightDirection && notTheSameStation) {
-                distanceToClosestSquared = distanceSquared;
-                nearestStation = it.getIndex();
-            }
-        }
+		StationModel currentStation = (StationModel) world.get(KEY.STATIONS,
+				startStation, principal);
 
-        return nearestStation;
-    }
+		int nearestStation = NOT_FOUND;
 
-    /** Returns true if the angle between direction and the vector (deltaX, deltaY) is less than 45 degrees. */
-    private boolean isInRightDirection(OneTileMoveVector direction, int deltaX,
-        int deltaY) {
-        boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
-        boolean sameXDirection = (direction.deltaX * deltaX) > 0;
-        boolean sameYDirection = (direction.deltaY * deltaY > 0);
-        boolean deltaXisLongerThanDeltaY = deltaX * deltaX < deltaY * deltaY;
+		while (it.next()) {
+			StationModel station = (StationModel) it.getElement();
+			int deltaX = station.x - currentStation.x;
+			int deltaY = station.y - currentStation.y;
+			int distanceSquared = deltaX * deltaX + deltaY * deltaY;
+			boolean closer = distanceSquared < distanceToClosestSquared;
+			boolean notTheSameStation = startStation != it.getIndex();
+			boolean inRightDirection = isInRightDirection(direction, deltaX,
+					deltaY);
 
-        if (isDiagonal) {
-            return sameXDirection && sameYDirection;
-        }
+			if (closer && inRightDirection && notTheSameStation) {
+				distanceToClosestSquared = distanceSquared;
+				nearestStation = it.getIndex();
+			}
+		}
+
+		return nearestStation;
+	}
+
+	/**
+	 * Returns true if the angle between direction and the vector (deltaX,
+	 * deltaY) is less than 45 degrees.
+	 */
+	private boolean isInRightDirection(Step direction, int deltaX,
+			int deltaY) {
+		boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
+		boolean sameXDirection = (direction.deltaX * deltaX) > 0;
+		boolean sameYDirection = (direction.deltaY * deltaY > 0);
+		boolean deltaXisLongerThanDeltaY = deltaX * deltaX < deltaY * deltaY;
+
+		if (isDiagonal) {
+			return sameXDirection && sameYDirection;
+		}
 		if (0 == direction.deltaX) {
-		    return deltaXisLongerThanDeltaY && sameYDirection;
+			return deltaXisLongerThanDeltaY && sameYDirection;
 		}
 		return !deltaXisLongerThanDeltaY && sameXDirection;
-    }
+	}
 }

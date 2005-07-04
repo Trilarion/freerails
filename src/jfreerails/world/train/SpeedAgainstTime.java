@@ -4,12 +4,13 @@
  */
 package jfreerails.world.train;
 
+import static jfreerails.world.train.SpeedTimeAndStatus.Activity.READY;
+
 import java.util.Arrays;
 
 import jfreerails.util.Utils;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
-import static jfreerails.world.train.SpeedTimeAndStatus.Activity.*;
 
 /**
  * <p>
@@ -29,7 +30,6 @@ import static jfreerails.world.train.SpeedTimeAndStatus.Activity.*;
  * speed = sat.getSpeed(new GameTime(5)); //speed == 10;
  * speed = sat.getSpeed(new GameTime(10)); //speed == 20;
  * int acceleration = sat.getAcceleration(new GameTime(7)); //acceleration == 2
- * 
  * 
  * </pre>
  * </code>
@@ -109,10 +109,10 @@ public class SpeedAgainstTime implements FreerailsSerializable {
 					/ 2;
 
 		}
-if (s < Integer.MAX_VALUE && s >= 0)
+		if (s < Integer.MAX_VALUE && s >= 0)
 			return s;
 		throw new ArithmeticException(String.valueOf(s));
-		
+
 	}
 
 	public boolean equals(Object o) {

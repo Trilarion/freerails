@@ -1,13 +1,13 @@
 package experimental;
 
-import static jfreerails.world.common.OneTileMoveVector.EAST;
-import static jfreerails.world.common.OneTileMoveVector.NORTH;
-import static jfreerails.world.common.OneTileMoveVector.NORTH_EAST;
-import static jfreerails.world.common.OneTileMoveVector.NORTH_WEST;
-import static jfreerails.world.common.OneTileMoveVector.SOUTH;
-import static jfreerails.world.common.OneTileMoveVector.SOUTH_EAST;
-import static jfreerails.world.common.OneTileMoveVector.SOUTH_WEST;
-import static jfreerails.world.common.OneTileMoveVector.WEST;
+import static jfreerails.world.common.Step.EAST;
+import static jfreerails.world.common.Step.NORTH;
+import static jfreerails.world.common.Step.NORTH_EAST;
+import static jfreerails.world.common.Step.NORTH_WEST;
+import static jfreerails.world.common.Step.SOUTH;
+import static jfreerails.world.common.Step.SOUTH_EAST;
+import static jfreerails.world.common.Step.SOUTH_WEST;
+import static jfreerails.world.common.Step.WEST;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -31,7 +31,7 @@ import jfreerails.server.MapFixtureFactory2;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.IntLine;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
 import jfreerails.world.train.PathOnTiles;
@@ -70,10 +70,10 @@ public class TrainMotionExpt extends JComponent {
 		Iterator<Point> it = pathOT.tiles();
 		while (it.hasNext()) {
 			Point tile = it.next();
-			int x = tile.x * OneTileMoveVector.TILE_DIAMETER;
-			int y = tile.y * OneTileMoveVector.TILE_DIAMETER;
-			int w = OneTileMoveVector.TILE_DIAMETER;
-			int h = OneTileMoveVector.TILE_DIAMETER;
+			int x = tile.x * Step.TILE_DIAMETER;
+			int y = tile.y * Step.TILE_DIAMETER;
+			int w = Step.TILE_DIAMETER;
+			int h = Step.TILE_DIAMETER;
 			g.setColor(Color.WHITE);
 			g.fillRect(x, y, w, h);
 			g.setColor(Color.LIGHT_GRAY);
@@ -94,7 +94,7 @@ public class TrainMotionExpt extends JComponent {
 		MoveExecutor me = new SimpleMoveExecutor(world, 0);
 		principal = me.getPrincipal();
 		TrackMoveProducer producer = new TrackMoveProducer(me, world);
-		OneTileMoveVector[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST,
+		Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST,
 				WEST, NORTH_WEST, NORTH, NORTH_EAST };
 		Point from = new Point(5, 5);
 		MoveStatus ms = producer.buildTrack(from, trackPath);

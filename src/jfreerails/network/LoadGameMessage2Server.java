@@ -3,36 +3,60 @@
  */
 package jfreerails.network;
 
-
 /**
  * Request to load a game.
- *
- *  @author Luke
- *
+ * 
+ * @author Luke
+ * 
  */
 public class LoadGameMessage2Server implements Message2Server {
-    private static final long serialVersionUID = 3256726186552930869L;
+	private static final long serialVersionUID = 3256726186552930869L;
+
 	private final int id;
-    private final String filename;
 
-    public LoadGameMessage2Server(int id, String s) {
-        this.id = id;
-        this.filename = s;
-    }
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof LoadGameMessage2Server))
+			return false;
 
-    public int getID() {
-        return id;
-    }
+		final LoadGameMessage2Server loadGameMessage2Server = (LoadGameMessage2Server) o;
 
-    public MessageStatus execute(ServerControlInterface server) {
-        try {
-            server.loadgame(filename);
+		if (id != loadGameMessage2Server.id)
+			return false;
+		if (!filename.equals(loadGameMessage2Server.filename))
+			return false;
 
-            return new MessageStatus(id, true);
-        } catch (Exception e) {
-            e.printStackTrace();
+		return true;
+	}
 
-            return new MessageStatus(id, false, e.getMessage());
-        }
-    }
+	public int hashCode() {
+		int result;
+		result = id;
+		result = 29 * result + filename.hashCode();
+		return result;
+	}
+
+	private final String filename;
+
+	public LoadGameMessage2Server(int id, String s) {
+		this.id = id;
+		this.filename = s;
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public MessageStatus execute(ServerControlInterface server) {
+		try {
+			server.loadgame(filename);
+
+			return new MessageStatus(id, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return new MessageStatus(id, false, e.getMessage());
+		}
+	}
 }

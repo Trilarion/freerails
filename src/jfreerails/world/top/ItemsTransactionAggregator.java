@@ -8,106 +8,110 @@ import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 
-
 /**
  * Adds up the number of assets.
- *
+ * 
  * @author Luke
- *
+ * 
  */
 public class ItemsTransactionAggregator extends TransactionAggregator {
-    public static final int ANY_VALUE = Integer.MIN_VALUE;
-    private int type = ANY_VALUE;
-    private Transaction.Category category = null;
-    
-    private int[] quantities;
-    private int quantityRunningTotal;
+	public static final int ANY_VALUE = Integer.MIN_VALUE;
 
-    /**
-     * Stores the quantities and monetary values of a series of items.
-     * @author Luke
-     *
-     */
-    public static class QuantitiesAndValues {
-        public int[] quantities;
-        public Money[] values;
-    }
+	private int type = ANY_VALUE;
 
-    public ItemsTransactionAggregator(ReadOnlyWorld w,
-        FreerailsPrincipal principal) {
-        super(w, principal);
-    }
+	private Transaction.Category category = null;
 
-    /**
-     * Returns true if the transaction with the specified ID has an acceptable
-     * type and category.
-     */
-    protected boolean condition(int transactionID) {
-        Transaction t = w.getTransaction(transactionID, principal);
+	private int[] quantities;
 
-        if (!(t instanceof AddItemTransaction)) {
-            return false;
-        }
+	private int quantityRunningTotal;
 
-        AddItemTransaction addItemTransaction = (AddItemTransaction)t;
-        boolean isTypeAcceptable = (type == ANY_VALUE) ||
-            (type == addItemTransaction.getType());
-        boolean isCategoryAcceptable = (category == null) ||
-            (category == addItemTransaction.getCategory());
+	/**
+	 * Stores the quantities and monetary values of a series of items.
+	 * 
+	 * @author Luke
+	 * 
+	 */
+	public static class QuantitiesAndValues {
+		public int[] quantities;
 
-        return isCategoryAcceptable && isTypeAcceptable;
-    }
+		public Money[] values;
+	}
 
-    public int calculateQuantity() {
-        QuantitiesAndValues qnv = calculateQuantitiesAndValues();
+	public ItemsTransactionAggregator(ReadOnlyWorld w,
+			FreerailsPrincipal principal) {
+		super(w, principal);
+	}
 
-        return qnv.quantities[0];
-    }
+	/**
+	 * Returns true if the transaction with the specified ID has an acceptable
+	 * type and category.
+	 */
+	protected boolean condition(int transactionID) {
+		Transaction t = w.getTransaction(transactionID, principal);
 
-    public QuantitiesAndValues calculateQuantitiesAndValues() {
-        QuantitiesAndValues returnValue = new QuantitiesAndValues();
-        returnValue.values = super.calculateValues();
-        returnValue.quantities = this.quantities;
+		if (!(t instanceof AddItemTransaction)) {
+			return false;
+		}
 
-        return returnValue;
-    }
+		AddItemTransaction addItemTransaction = (AddItemTransaction) t;
+		boolean isTypeAcceptable = (type == ANY_VALUE)
+				|| (type == addItemTransaction.getType());
+		boolean isCategoryAcceptable = (category == null)
+				|| (category == addItemTransaction.getCategory());
 
-    protected void incrementRunningTotal(int transactionID) {
-        super.incrementRunningTotal(transactionID);
+		return isCategoryAcceptable && isTypeAcceptable;
+	}
 
-        Transaction t = w.getTransaction(transactionID, principal);
-        AddItemTransaction addItemTransaction = (AddItemTransaction)t;
-        quantityRunningTotal += addItemTransaction.getQuantity();
-    }
+	public int calculateQuantity() {
+		QuantitiesAndValues qnv = calculateQuantitiesAndValues();
 
-    protected void setTotalsArrayLength(int length) {
-        super.setTotalsArrayLength(length);
-        quantities = new int[length];
-        quantityRunningTotal = 0;
-    }
+		return qnv.quantities[0];
+	}
 
-    protected void storeRunningTotal(int timeIndex) {
-        /*Note, a negative sign since we are totalling
-         * the value of assets not their impact on the
-         * operating funds.
-         */
-        monetaryTotals[timeIndex] = new Money(-runningTotal);
-        quantities[timeIndex] = quantityRunningTotal;
-    }
+	public QuantitiesAndValues calculateQuantitiesAndValues() {
+		QuantitiesAndValues returnValue = new QuantitiesAndValues();
+		returnValue.values = super.calculateValues();
+		returnValue.quantities = this.quantities;
 
-    public Transaction.Category getCategory() {
-        return category;
-    }
+		return returnValue;
+	}
 
-    public void setCategory(Transaction.Category category) {
-        this.category = category;
-    }
+	protected void incrementRunningTotal(int transactionID) {
+		super.incrementRunningTotal(transactionID);
 
-    public int getType() {
-        return type;
-    }
+		Transaction t = w.getTransaction(transactionID, principal);
+		AddItemTransaction addItemTransaction = (AddItemTransaction) t;
+		quantityRunningTotal += addItemTransaction.getQuantity();
+	}
 
-    public void setType(int type) {
-        this.type = type;
-    }
+	protected void setTotalsArrayLength(int length) {
+		super.setTotalsArrayLength(length);
+		quantities = new int[length];
+		quantityRunningTotal = 0;
+	}
+
+	protected void storeRunningTotal(int timeIndex) {
+		/*
+		 * Note, a negative sign since we are totalling the value of assets not
+		 * their impact on the operating funds.
+		 */
+		monetaryTotals[timeIndex] = new Money(-runningTotal);
+		quantities[timeIndex] = quantityRunningTotal;
+	}
+
+	public Transaction.Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Transaction.Category category) {
+		this.category = category;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 }

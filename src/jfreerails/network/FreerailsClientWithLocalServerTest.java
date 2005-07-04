@@ -102,7 +102,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 				.getProperty(ClientControlInterface.MAPS_AVAILABLE);
 
 		final int commandID = 66;
-		Message2Server message2 = new NewGameMessage2Server(commandID, mapNames[0]);
+		Message2Server message2 = new NewGameMessage2Server(commandID,
+				mapNames[0]);
 		client0.write(message2);
 		assertTrue(server.isNewPlayersAllowed());
 		server.update();
@@ -266,7 +267,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 			Player player0 = client0.getWorld().getPlayer(0);
 			FreerailsPrincipal principal0 = player0.getPrincipal();
 
-			PreMove pm = new TimeTickPreMove();
+			PreMove pm = TimeTickPreMove.INSTANCE;
 
 			World copyOfWorld = client0.getWorld().defensiveCopy();
 			assertEquals(copyOfWorld, client0.getWorld());
@@ -328,13 +329,14 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 			response0 = client0.connect(server, "client0", "batman");
 			assertFalse("bad password", response0.isSuccessful());
 			assertEquals(0, server.countOpenConnections());
-			
+
 			response0 = client0.connect(server, "client1", "password");
 			assertFalse("bad username", response0.isSuccessful());
 			assertEquals(0, server.countOpenConnections());
-			
+
 			response0 = client0.connect(server, "client0", "password");
-			assertTrue("Ok, same username and password as before.", response0.isSuccessful());
+			assertTrue("Ok, same username and password as before.", response0
+					.isSuccessful());
 			assertEquals(1, server.countOpenConnections());
 
 		} catch (Exception e) {

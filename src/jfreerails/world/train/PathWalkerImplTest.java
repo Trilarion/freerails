@@ -2,139 +2,145 @@ package jfreerails.world.train;
 
 import java.awt.Point;
 import java.util.ArrayList;
+
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsPathIteratorImpl;
 import jfreerails.world.common.IntLine;
 import junit.framework.TestCase;
 
-
-/** JUnit test.
+/**
+ * JUnit test.
+ * 
  * @author Luke
  */
 public class PathWalkerImplTest extends TestCase {
-    FreerailsPathIterator it;
-    PathWalker pw;
+	FreerailsPathIterator it;
 
-    public PathWalkerImplTest(String arg0) {
-        super(arg0);
-    }
+	PathWalker pw;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(PathWalkerImplTest.class);
-    }
+	public PathWalkerImplTest(String arg0) {
+		super(arg0);
+	}
 
-    /*
-     * Test for boolean canStepForward()
-     */
-    public void testCanStepForward() {
-        setup();
+	public static void main(String[] args) {
+		junit.textui.TestRunner.run(PathWalkerImplTest.class);
+	}
 
-        assertTrue(pw.canStepForward());
-        pw.stepForward(500); //The path length is 200;
-        moveToNextLimit();
+	/*
+	 * Test for boolean canStepForward()
+	 */
+	public void testCanStepForward() {
+		setup();
 
-        assertTrue(!pw.canStepForward());
+		assertTrue(pw.canStepForward());
+		pw.stepForward(500); // The path length is 200;
+		moveToNextLimit();
 
-        setup();
-        assertTrue(pw.canStepForward());
-        pw.stepForward(10);
-        assertTrue(pw.canStepForward());
+		assertTrue(!pw.canStepForward());
 
-        IntLine line = new IntLine();
-        assertTrue(pw.hasNext());
-        pw.nextSegment(line);
-        assertLineEquals(0, 0, 10, 0, line);
-        assertTrue(!pw.hasNext());
-        assertTrue(pw.canStepForward());
+		setup();
+		assertTrue(pw.canStepForward());
+		pw.stepForward(10);
+		assertTrue(pw.canStepForward());
 
-        pw.stepForward(500); //The path length is 200;
-        assertTrue(pw.hasNext());
-        pw.nextSegment(line);
-        assertLineEquals(10, 0, 100, 0, line);
-        assertTrue(pw.hasNext());
-        pw.nextSegment(line);
-        assertLineEquals(100, 0, 100, 100, line);
+		IntLine line = new IntLine();
+		assertTrue(pw.hasNext());
+		pw.nextSegment(line);
+		assertLineEquals(0, 0, 10, 0, line);
+		assertTrue(!pw.hasNext());
+		assertTrue(pw.canStepForward());
 
-        assertTrue(!pw.canStepForward());
-    }
+		pw.stepForward(500); // The path length is 200;
+		assertTrue(pw.hasNext());
+		pw.nextSegment(line);
+		assertLineEquals(10, 0, 100, 0, line);
+		assertTrue(pw.hasNext());
+		pw.nextSegment(line);
+		assertLineEquals(100, 0, 100, 100, line);
 
-    private void moveToNextLimit() {
-        IntLine line = new IntLine();
+		assertTrue(!pw.canStepForward());
+	}
 
-        while (pw.hasNext()) {
-            pw.nextSegment(line);
-        }
-    }
+	private void moveToNextLimit() {
+		IntLine line = new IntLine();
 
-    public void testHasNext() {
-        IntLine line = new IntLine();
+		while (pw.hasNext()) {
+			pw.nextSegment(line);
+		}
+	}
 
-        setup();
-        assertTrue(!pw.hasNext());
-        pw.stepForward(10);
-        assertTrue(pw.hasNext());
+	public void testHasNext() {
+		IntLine line = new IntLine();
 
-        pw.nextSegment(line);
-        assertLineEquals(0, 0, 10, 0, line);
-        assertTrue(!pw.hasNext());
+		setup();
+		assertTrue(!pw.hasNext());
+		pw.stepForward(10);
+		assertTrue(pw.hasNext());
 
-        setup();
-        assertTrue(!pw.hasNext());
-        pw.stepForward(110);
-        assertTrue(pw.hasNext());
-        line = new IntLine();
-        pw.nextSegment(line);
-        assertLineEquals(0, 0, 100, 0, line);
-        assertTrue(pw.hasNext());
-        pw.nextSegment(line);
-        assertLineEquals(100, 0, 100, 10, line);
-        assertTrue(!pw.hasNext());
+		pw.nextSegment(line);
+		assertLineEquals(0, 0, 10, 0, line);
+		assertTrue(!pw.hasNext());
 
-        /* Now test with underlying pathIterators with few elements.
-         */
-        ArrayList<Point> points = new ArrayList<Point>();
+		setup();
+		assertTrue(!pw.hasNext());
+		pw.stepForward(110);
+		assertTrue(pw.hasNext());
+		line = new IntLine();
+		pw.nextSegment(line);
+		assertLineEquals(0, 0, 100, 0, line);
+		assertTrue(pw.hasNext());
+		pw.nextSegment(line);
+		assertLineEquals(100, 0, 100, 10, line);
+		assertTrue(!pw.hasNext());
 
-        assertHasNextEqualsFalse(points);
+		/*
+		 * Now test with underlying pathIterators with few elements.
+		 */
+		ArrayList<Point> points = new ArrayList<Point>();
 
-        points = new ArrayList<Point>();
-        points.add(new Point(0, 0));
+		assertHasNextEqualsFalse(points);
 
-        assertHasNextEqualsFalse(points);
+		points = new ArrayList<Point>();
+		points.add(new Point(0, 0));
 
-        points = new ArrayList<Point>();
-        points.add(new Point(0, 0));
-        points.add(new Point(100, 0));
+		assertHasNextEqualsFalse(points);
 
-        FreerailsPathIterator it2 = FreerailsPathIteratorImpl.forwardsIterator(points);
-        assertTrue(it2.hasNext());
-        pw = new PathWalkerImpl(it2);
-        assertTrue(!pw.hasNext());
-        pw.stepForward(1000);
-        assertTrue(pw.hasNext());
-        pw.nextSegment(line);
-        assertTrue(!pw.hasNext());
-    }
+		points = new ArrayList<Point>();
+		points.add(new Point(0, 0));
+		points.add(new Point(100, 0));
 
-    void assertHasNextEqualsFalse(ArrayList<Point> points) {
-        FreerailsPathIterator it2 = FreerailsPathIteratorImpl.forwardsIterator(points);
+		FreerailsPathIterator it2 = FreerailsPathIteratorImpl
+				.forwardsIterator(points);
+		assertTrue(it2.hasNext());
+		pw = new PathWalkerImpl(it2);
+		assertTrue(!pw.hasNext());
+		pw.stepForward(1000);
+		assertTrue(pw.hasNext());
+		pw.nextSegment(line);
+		assertTrue(!pw.hasNext());
+	}
 
-        assertTrue(!it2.hasNext());
-        pw = new PathWalkerImpl(it2);
-        pw.stepForward(100);
-        assertTrue(!pw.hasNext());
-    }
+	void assertHasNextEqualsFalse(ArrayList<Point> points) {
+		FreerailsPathIterator it2 = FreerailsPathIteratorImpl
+				.forwardsIterator(points);
 
-    public void setup() {
-        int[] xpoints = {0, 100, 100};
-        int[] ypoints = {0, 0, 100};
-        it = new SimplePathIteratorImpl(xpoints, ypoints);
-        pw = new PathWalkerImpl(it);
-    }
+		assertTrue(!it2.hasNext());
+		pw = new PathWalkerImpl(it2);
+		pw.stepForward(100);
+		assertTrue(!pw.hasNext());
+	}
 
-    private void assertLineEquals(int x1, int y1, int x2, int y2, IntLine line) {
-        assertEquals(x1, line.x1);
-        assertEquals(x2, line.x2);
-        assertEquals(y1, line.y1);
-        assertEquals(y2, line.y2);
-    }
+	public void setup() {
+		int[] xpoints = { 0, 100, 100 };
+		int[] ypoints = { 0, 0, 100 };
+		it = new SimplePathIteratorImpl(xpoints, ypoints);
+		pw = new PathWalkerImpl(it);
+	}
+
+	private void assertLineEquals(int x1, int y1, int x2, int y2, IntLine line) {
+		assertEquals(x1, line.x1);
+		assertEquals(x2, line.x2);
+		assertEquals(y1, line.y1);
+		assertEquals(y2, line.y2);
+	}
 }

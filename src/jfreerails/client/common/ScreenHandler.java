@@ -10,195 +10,212 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.logging.Logger;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-
 /**
  * Handles going into fullscreen mode and setting buffer strategy etc.
+ * 
  * @author Luke
  */
 final public class ScreenHandler {
-    private static final Logger logger = Logger.getLogger(ScreenHandler.class.getName());
-    public static final int FULL_SCREEN = 0;
-    public static final int WINDOWED_MODE = 1;
-    public static final int FIXED_SIZE_WINDOWED_MODE = 2;
-    public final JFrame frame;
-    private BufferStrategy bufferStrategy;
-    private DisplayMode displayMode;
-    private final int mode;
-    private boolean isInUse = false;
+	private static final Logger logger = Logger.getLogger(ScreenHandler.class
+			.getName());
 
-    /** Whether the window is minimised. */
-    private boolean isMinimised = false;
+	public static final int FULL_SCREEN = 0;
 
-    public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
-        this.displayMode = displayMode;
-        frame = f;
-        this.mode = mode;
-    }
+	public static final int WINDOWED_MODE = 1;
 
-    public ScreenHandler(JFrame f, int mode) {
-        frame = f;
-        this.mode = mode;
-    }
+	public static final int FIXED_SIZE_WINDOWED_MODE = 2;
 
-    private static void goFullScreen(JFrame frame, DisplayMode displayMode) {
-        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                   .getDefaultScreenDevice();
-        setRepaintOffAndDisableDoubleBuffering(frame);
+	public final JFrame frame;
 
-        /* We need to make the frame not displayable before calling
- * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
- * will get thrown.
- */
-        if (frame.isDisplayable()) {
-            frame.dispose();
-        }
+	private BufferStrategy bufferStrategy;
 
-        frame.setUndecorated(true);
-        device.setFullScreenWindow(frame);
+	private DisplayMode displayMode;
 
-        if (device.isDisplayChangeSupported()) {
-            if (null == displayMode) {
-                displayMode = getBestDisplayMode(device);
-            }
+	private final int mode;
 
-            logger.info("Setting display mode to:  " +
-                (new MyDisplayMode(displayMode).toString()));
-            device.setDisplayMode(displayMode);
-        }
+	private boolean isInUse = false;
 
-        frame.validate();
-    }
+	/** Whether the window is minimised. */
+	private boolean isMinimised = false;
 
-    public void apply() {
-        switch (mode) {
-        case FULL_SCREEN: {
-            goFullScreen(frame, displayMode);
+	public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
+		this.displayMode = displayMode;
+		frame = f;
+		this.mode = mode;
+	}
 
-            break;
-        }
+	public ScreenHandler(JFrame f, int mode) {
+		frame = f;
+		this.mode = mode;
+	}
 
-        case WINDOWED_MODE: {
-            //Some of the dialogue boxes do not get layed out properly if they are smaller than their
-            //minimum size.  JFrameMinimumSizeEnforcer increases the size of the Jframe when its size falls
-            //below the specified size.
-            frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
+	private static void goFullScreen(JFrame frame, DisplayMode displayMode) {
+		GraphicsDevice device = GraphicsEnvironment
+				.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		setRepaintOffAndDisableDoubleBuffering(frame);
 
-            frame.setSize(640, 480);
-            frame.setVisible(true);
+		/*
+		 * We need to make the frame not displayable before calling
+		 * setUndecorated(true) otherwise a
+		 * java.awt.IllegalComponentStateException will get thrown.
+		 */
+		if (frame.isDisplayable()) {
+			frame.dispose();
+		}
 
-            break;
-        }
+		frame.setUndecorated(true);
+		device.setFullScreenWindow(frame);
 
-        case FIXED_SIZE_WINDOWED_MODE: {
-            /* We need to make the frame not displayable before calling
-* setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
-* will get thrown.
-*/
-            if (frame.isDisplayable()) {
-                frame.dispose();
-            }
+		if (device.isDisplayChangeSupported()) {
+			if (null == displayMode) {
+				displayMode = getBestDisplayMode(device);
+			}
 
-            frame.setUndecorated(true);
-            frame.setResizable(false);
-            frame.setSize(640, 480);
-            frame.setVisible(true);
+			logger.info("Setting display mode to:  "
+					+ (new MyDisplayMode(displayMode).toString()));
+			device.setDisplayMode(displayMode);
+		}
 
-            break;
-        }
+		frame.validate();
+	}
 
-        default:
-            throw new IllegalArgumentException(String.valueOf(mode));
-        }
+	public void apply() {
+		switch (mode) {
+		case FULL_SCREEN: {
+			goFullScreen(frame, displayMode);
 
-        createBufferStrategy();
+			break;
+		}
 
-        frame.addComponentListener(new java.awt.event.ComponentAdapter() {
-                public void componentResized(java.awt.event.ComponentEvent evt) {
-                    createBufferStrategy();
-                }
-            });
+		case WINDOWED_MODE: {
+			// Some of the dialogue boxes do not get layed out properly if they
+			// are smaller than their
+			// minimum size. JFrameMinimumSizeEnforcer increases the size of the
+			// Jframe when its size falls
+			// below the specified size.
+			frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
 
-        frame.addWindowListener(new WindowAdapter() {
-                public void windowIconified(WindowEvent e) {
-                    isMinimised = true;
-                }
+			frame.setSize(640, 480);
+			frame.setVisible(true);
 
-                public void windowDeiconified(WindowEvent e) {
-                    isMinimised = false;
-                }
-            });
-        isInUse = true;
-    }
+			break;
+		}
 
-    private void createBufferStrategy() {
-        //Use 2 backbuffers to avoid using too much VRAM.
-        frame.createBufferStrategy(2);
-        bufferStrategy = frame.getBufferStrategy();
-        setRepaintOffAndDisableDoubleBuffering(frame);
-    }
+		case FIXED_SIZE_WINDOWED_MODE: {
+			/*
+			 * We need to make the frame not displayable before calling
+			 * setUndecorated(true) otherwise a
+			 * java.awt.IllegalComponentStateException will get thrown.
+			 */
+			if (frame.isDisplayable()) {
+				frame.dispose();
+			}
 
-    public Graphics getDrawGraphics() {
-        return bufferStrategy.getDrawGraphics();
-    }
+			frame.setUndecorated(true);
+			frame.setResizable(false);
+			frame.setSize(640, 480);
+			frame.setVisible(true);
 
-    public void swapScreens() {
-        if (!bufferStrategy.contentsLost()) {
-            bufferStrategy.show();
-        }
-    }
+			break;
+		}
 
-    private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
-        c.setIgnoreRepaint(true);
+		default:
+			throw new IllegalArgumentException(String.valueOf(mode));
+		}
 
-        //Since we are using a buffer strategy we don't want Swing
-        //to double buffer any JComponents.
-        if (c instanceof JComponent) {
-            JComponent jComponent = (JComponent)c;
-            jComponent.setDoubleBuffered(false);
-        }
+		createBufferStrategy();
 
-        if (c instanceof java.awt.Container) {
-            Component[] children = ((Container)c).getComponents();
+		frame.addComponentListener(new java.awt.event.ComponentAdapter() {
+			public void componentResized(java.awt.event.ComponentEvent evt) {
+				createBufferStrategy();
+			}
+		});
 
-            for (int i = 0; i < children.length; i++) {
-                setRepaintOffAndDisableDoubleBuffering(children[i]);
-            }
-        }
-    }
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowIconified(WindowEvent e) {
+				isMinimised = true;
+			}
 
-    private static DisplayMode getBestDisplayMode(GraphicsDevice device) {
-        for (int x = 0; x < BEST_DISPLAY_MODES.length; x++) {
-            DisplayMode[] modes = device.getDisplayModes();
+			public void windowDeiconified(WindowEvent e) {
+				isMinimised = false;
+			}
+		});
+		isInUse = true;
+	}
 
-            for (int i = 0; i < modes.length; i++) {
-                if (modes[i].getWidth() == BEST_DISPLAY_MODES[x].getWidth() &&
-                        modes[i].getHeight() == BEST_DISPLAY_MODES[x].getHeight() &&
-                        modes[i].getBitDepth() == BEST_DISPLAY_MODES[x].getBitDepth()) {
-                    logger.fine("Best display mode is " +
-                        (new MyDisplayMode(BEST_DISPLAY_MODES[x])).toString());
+	private void createBufferStrategy() {
+		// Use 2 backbuffers to avoid using too much VRAM.
+		frame.createBufferStrategy(2);
+		bufferStrategy = frame.getBufferStrategy();
+		setRepaintOffAndDisableDoubleBuffering(frame);
+	}
 
-                    return BEST_DISPLAY_MODES[x];
-                }
-            }
-        }
+	public Graphics getDrawGraphics() {
+		return bufferStrategy.getDrawGraphics();
+	}
 
-        return null;
-    }
+	public void swapScreens() {
+		if (!bufferStrategy.contentsLost()) {
+			bufferStrategy.show();
+		}
+	}
 
-    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[] {
-            new DisplayMode(640, 400, 8, 60), new DisplayMode(800, 600, 16, 60),
-            new DisplayMode(1024, 768, 8, 60),
-            new DisplayMode(1024, 768, 16, 60),
-        };
+	private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
+		c.setIgnoreRepaint(true);
 
-    public boolean isMinimised() {
-        return isMinimised;
-    }
+		// Since we are using a buffer strategy we don't want Swing
+		// to double buffer any JComponents.
+		if (c instanceof JComponent) {
+			JComponent jComponent = (JComponent) c;
+			jComponent.setDoubleBuffered(false);
+		}
 
-    public boolean isInUse() {
-        return isInUse;
-    }
+		if (c instanceof java.awt.Container) {
+			Component[] children = ((Container) c).getComponents();
+
+			for (int i = 0; i < children.length; i++) {
+				setRepaintOffAndDisableDoubleBuffering(children[i]);
+			}
+		}
+	}
+
+	private static DisplayMode getBestDisplayMode(GraphicsDevice device) {
+		for (int x = 0; x < BEST_DISPLAY_MODES.length; x++) {
+			DisplayMode[] modes = device.getDisplayModes();
+
+			for (int i = 0; i < modes.length; i++) {
+				if (modes[i].getWidth() == BEST_DISPLAY_MODES[x].getWidth()
+						&& modes[i].getHeight() == BEST_DISPLAY_MODES[x]
+								.getHeight()
+						&& modes[i].getBitDepth() == BEST_DISPLAY_MODES[x]
+								.getBitDepth()) {
+					logger.fine("Best display mode is "
+							+ (new MyDisplayMode(BEST_DISPLAY_MODES[x]))
+									.toString());
+
+					return BEST_DISPLAY_MODES[x];
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[] {
+			new DisplayMode(640, 400, 8, 60),
+			new DisplayMode(800, 600, 16, 60),
+			new DisplayMode(1024, 768, 8, 60),
+			new DisplayMode(1024, 768, 16, 60), };
+
+	public boolean isMinimised() {
+		return isMinimised;
+	}
+
+	public boolean isInUse() {
+		return isInUse;
+	}
 }

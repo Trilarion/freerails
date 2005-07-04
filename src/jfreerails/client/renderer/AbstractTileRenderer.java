@@ -1,113 +1,118 @@
 /*
-* TileView.java
-*
-* Created on 04 July 2001, 07:01
-*/
+ * TileView.java
+ *
+ * Created on 04 July 2001, 07:01
+ */
 package jfreerails.client.renderer;
 
 import java.awt.Image;
 import java.io.File;
+
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
-*  This class encapsulates the visible properties of a tile.
-* @author  Luke Lindsay
-*/
+ * This class encapsulates the visible properties of a tile.
+ * 
+ * @author Luke Lindsay
+ */
 public abstract class AbstractTileRenderer implements TileRenderer {
-    private final int[] typeNumbers;
-    private Image[] tileIcons;
-    private final TerrainType tileModel;
+	private final int[] typeNumbers;
 
-    AbstractTileRenderer(TerrainType t, int[] rgbValues) {
-        tileModel = t;
-        this.typeNumbers = rgbValues;
+	private Image[] tileIcons;
 
-        if (null == t) {
-            throw new NullPointerException();
-        }
+	private final TerrainType tileModel;
 
-        if (null == rgbValues) {
-            throw new NullPointerException();
-        }
-    }
+	AbstractTileRenderer(TerrainType t, int[] rgbValues) {
+		tileModel = t;
+		this.typeNumbers = rgbValues;
 
-    public void renderTile(java.awt.Graphics g, int screenX, int screenY,
-        int mapX, int mapY, ReadOnlyWorld w) {
-        Image icon = this.getIcon(mapX, mapY, w);
+		if (null == t) {
+			throw new NullPointerException();
+		}
 
-        if (null != icon) {
-            g.drawImage(icon, screenX, screenY, null);
-        }
-    }
+		if (null == rgbValues) {
+			throw new NullPointerException();
+		}
+	}
 
-    public Image getDefaultIcon() {
-        return getTileIcons()[0];
-    }
+	public void renderTile(java.awt.Graphics g, int screenX, int screenY,
+			int mapX, int mapY, ReadOnlyWorld w) {
+		Image icon = this.getIcon(mapX, mapY, w);
 
-    String getTerrainType() {
-        return tileModel.getTerrainTypeName();
-    }
+		if (null != icon) {
+			g.drawImage(icon, screenX, screenY, null);
+		}
+	}
 
-    /** Returns an icon for the tile at x,y, which may depend on the terrain types of
-     * of the surrounding tiles.
-     */
-    Image getIcon(int x, int y, ReadOnlyWorld w) {
-        int tile = selectTileIcon(x, y, w);
+	public Image getDefaultIcon() {
+		return getTileIcons()[0];
+	}
 
-        if (getTileIcons()[tile] != null) {
-            return getTileIcons()[tile];
-        }
-		throw new NullPointerException(
-		    "Error in TileView.getIcon: icon no. " + tile + "==null");
-    }
+	String getTerrainType() {
+		return tileModel.getTerrainTypeName();
+	}
 
-    int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-        return 0;
-    }
+	/**
+	 * Returns an icon for the tile at x,y, which may depend on the terrain
+	 * types of of the surrounding tiles.
+	 */
+	Image getIcon(int x, int y, ReadOnlyWorld w) {
+		int tile = selectTileIcon(x, y, w);
 
-    int checkTile(int x, int y, ReadOnlyWorld w) {
-        int match = 0;
+		if (getTileIcons()[tile] != null) {
+			return getTileIcons()[tile];
+		}
+		throw new NullPointerException("Error in TileView.getIcon: icon no. "
+				+ tile + "==null");
+	}
 
-        if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight()) &&
-                (y >= 0)) {
-            for (int i = 0; i < typeNumbers.length; i++) {
-                TerrainTile tt = (TerrainTile)w.getTile(x, y);
+	int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+		return 0;
+	}
 
-                if (tt.getTerrainTypeID() == typeNumbers[i]) {
-                    match = 1;
+	int checkTile(int x, int y, ReadOnlyWorld w) {
+		int match = 0;
 
-                    //A match
-                }
-            }
-        } else {
-            match = 1; //A match
+		if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight())
+				&& (y >= 0)) {
+			for (int i = 0; i < typeNumbers.length; i++) {
+				TerrainTile tt = (TerrainTile) w.getTile(x, y);
 
-            /*If the tile we are checking is off the map, let it be a match.
-            This stops coast appearing where the ocean meets the map edge.
-            */
-        }
+				if (tt.getTerrainTypeID() == typeNumbers[i]) {
+					match = 1;
 
-        return match;
-    }
+					// A match
+				}
+			}
+		} else {
+			match = 1; // A match
 
-    abstract public void dumpImages(ImageManager imageManager);
+			/*
+			 * If the tile we are checking is off the map, let it be a match.
+			 * This stops coast appearing where the ocean meets the map edge.
+			 */
+		}
 
-    String generateRelativeFileName(int i) {
-        return "terrain" + File.separator + this.getTerrainType() + "_" +
-        generateFileNameNumber(i) + ".png";
-    }
+		return match;
+	}
 
-    protected abstract String generateFileNameNumber(int i);
+	abstract public void dumpImages(ImageManager imageManager);
 
-    void setTileIcons(Image[] tileIcons) {
-        this.tileIcons = tileIcons;
-    }
+	String generateRelativeFileName(int i) {
+		return "terrain" + File.separator + this.getTerrainType() + "_"
+				+ generateFileNameNumber(i) + ".png";
+	}
 
-    Image[] getTileIcons() {
-        return tileIcons;
-    }
+	protected abstract String generateFileNameNumber(int i);
+
+	void setTileIcons(Image[] tileIcons) {
+		this.tileIcons = tileIcons;
+	}
+
+	Image[] getTileIcons() {
+		return tileIcons;
+	}
 }

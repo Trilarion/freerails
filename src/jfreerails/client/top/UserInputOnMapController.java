@@ -1,5 +1,8 @@
 package jfreerails.client.top;
 
+import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -24,11 +27,8 @@ import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationBuildModel;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.TrackMoveProducer;
-import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
-import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
-
 import jfreerails.move.MoveStatus;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.top.ReadOnlyWorld;
 
 /**
@@ -189,7 +189,7 @@ public class UserInputOnMapController extends KeyAdapter {
 		}
 	}
 
-	private void cursorOneTileMove(Point oldPosition, OneTileMoveVector vector) {
+	private void cursorOneTileMove(Point oldPosition, Step vector) {
 		boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 
 		if (null != trackBuilder && b) {
@@ -293,74 +293,74 @@ public class UserInputOnMapController extends KeyAdapter {
 
 		switch (keyCode) {
 		case KeyEvent.VK_NUMPAD1:
-			moveCursorOneTile(OneTileMoveVector.SOUTH_WEST);
+			moveCursorOneTile(Step.SOUTH_WEST);
 
 			break;
 
 		case KeyEvent.VK_NUMPAD2:
-			moveCursorOneTile(OneTileMoveVector.SOUTH);
+			moveCursorOneTile(Step.SOUTH);
 
 			break;
 
 		// @SonnyZ
 		case KeyEvent.VK_DOWN:
 			if (e.getModifiers() == 2)
-				moveCursorOneTile(OneTileMoveVector.SOUTH);
+				moveCursorOneTile(Step.SOUTH);
 
 			break;
 		// --
 
 		case KeyEvent.VK_NUMPAD3:
-			moveCursorOneTile(OneTileMoveVector.SOUTH_EAST);
+			moveCursorOneTile(Step.SOUTH_EAST);
 
 			break;
 
 		case KeyEvent.VK_NUMPAD4:
-			moveCursorOneTile(OneTileMoveVector.WEST);
+			moveCursorOneTile(Step.WEST);
 
 			break;
 
 		// @SonnyZ
 		case KeyEvent.VK_LEFT:
 			if (e.getModifiers() == 2)
-				moveCursorOneTile(OneTileMoveVector.WEST);
+				moveCursorOneTile(Step.WEST);
 
 			break;
 		// --
 
 		case KeyEvent.VK_NUMPAD6:
-			moveCursorOneTile(OneTileMoveVector.EAST);
+			moveCursorOneTile(Step.EAST);
 
 			break;
 
 		// @SonnyZ
 		case KeyEvent.VK_RIGHT:
 			if (e.getModifiers() == 2)
-				moveCursorOneTile(OneTileMoveVector.EAST);
+				moveCursorOneTile(Step.EAST);
 
 			break;
 		// --
 
 		case KeyEvent.VK_NUMPAD7:
-			moveCursorOneTile(OneTileMoveVector.NORTH_WEST);
+			moveCursorOneTile(Step.NORTH_WEST);
 
 			break;
 
 		case KeyEvent.VK_NUMPAD8:
-			moveCursorOneTile(OneTileMoveVector.NORTH);
+			moveCursorOneTile(Step.NORTH);
 
 			break;
 
 		// @SonnyZ
 		case KeyEvent.VK_UP:
 			if (e.getModifiers() == 2)
-				moveCursorOneTile(OneTileMoveVector.NORTH);
+				moveCursorOneTile(Step.NORTH);
 
 			break;
 		// --
 
 		case KeyEvent.VK_NUMPAD9:
-			moveCursorOneTile(OneTileMoveVector.NORTH_EAST);
+			moveCursorOneTile(Step.NORTH_EAST);
 
 			break;
 
@@ -508,7 +508,7 @@ public class UserInputOnMapController extends KeyAdapter {
 		return legalRectangle.contains(tryThisPoint);
 	}
 
-	private void moveCursorOneTile(OneTileMoveVector v) {
+	private void moveCursorOneTile(Step v) {
 		setCursorMessage(null);
 
 		Point cursorMapPosition = this.getCursorPosition();

@@ -7,265 +7,268 @@ package jfreerails.world.train;
 
 import java.util.Vector;
 
-
-/** This class represents a train's schedule.  That is, which stations that the
+/**
+ * This class represents a train's schedule. That is, which stations that the
  * train should visit and what wagons the engine should pull.
- *
- * @author  lindsal
+ * 
+ * @author lindsal
  */
 public class MutableSchedule implements Schedule {
-    /**
-     * Vector of TrainOrdersModel.
-     */
-    private final Vector<TrainOrdersModel> orders = new Vector<TrainOrdersModel>();
-    private int nextScheduledOrder = -1;
+	/**
+	 * Vector of TrainOrdersModel.
+	 */
+	private final Vector<TrainOrdersModel> orders = new Vector<TrainOrdersModel>();
 
-    /** Whether the train should ignore the stationToGoto
-     *and goto the first station in the list.
-     */
-    private boolean hasPriorityOrders = false;
+	private int nextScheduledOrder = -1;
 
-    public MutableSchedule() {
-    }
+	/**
+	 * Whether the train should ignore the stationToGoto and goto the first
+	 * station in the list.
+	 */
+	private boolean hasPriorityOrders = false;
 
-    public MutableSchedule(ImmutableSchedule s) {
-        nextScheduledOrder = s.getNextScheduledOrder();
-        hasPriorityOrders = s.hasPriorityOrders();
+	public MutableSchedule() {
+	}
 
-        for (int i = 0; i < s.getNumOrders(); i++) {
-            orders.add(s.getOrder(i));
-        }
-    }
+	public MutableSchedule(ImmutableSchedule s) {
+		nextScheduledOrder = s.getNextScheduledOrder();
+		hasPriorityOrders = s.hasPriorityOrders();
 
-    public ImmutableSchedule toImmutableSchedule() {
-        TrainOrdersModel[] ordersArray = new TrainOrdersModel[orders.size()];
+		for (int i = 0; i < s.getNumOrders(); i++) {
+			orders.add(s.getOrder(i));
+		}
+	}
 
-        for (int i = 0; i < ordersArray.length; i++) {
-            ordersArray[i] = orders.get(i);
-        }
+	public ImmutableSchedule toImmutableSchedule() {
+		TrainOrdersModel[] ordersArray = new TrainOrdersModel[orders.size()];
 
-        return new ImmutableSchedule(ordersArray, this.nextScheduledOrder,
-            this.hasPriorityOrders);
-    }
+		for (int i = 0; i < ordersArray.length; i++) {
+			ordersArray[i] = orders.get(i);
+		}
 
-    public void setPriorityOrders(TrainOrdersModel order) {
-        if (hasPriorityOrders) {
-            //Replace existing priority orders.
-            orders.set(PRIORITY_ORDERS, order);
-        } else {
-            //Insert priority orders at position 0;
-            hasPriorityOrders = true;
-            orders.add(PRIORITY_ORDERS, order);
-            nextScheduledOrder++;
-        }
-    }
+		return new ImmutableSchedule(ordersArray, this.nextScheduledOrder,
+				this.hasPriorityOrders);
+	}
 
-    /**
-     * Removes the order at the specified position.
-     */
-    public void removeOrder(int orderNumber) {
-        if (PRIORITY_ORDERS == orderNumber && hasPriorityOrders) {
-            //If we are removing the prority stop.
-            hasPriorityOrders = false;
-        }
+	public void setPriorityOrders(TrainOrdersModel order) {
+		if (hasPriorityOrders) {
+			// Replace existing priority orders.
+			orders.set(PRIORITY_ORDERS, order);
+		} else {
+			// Insert priority orders at position 0;
+			hasPriorityOrders = true;
+			orders.add(PRIORITY_ORDERS, order);
+			nextScheduledOrder++;
+		}
+	}
 
-        orders.remove(orderNumber);
+	/**
+	 * Removes the order at the specified position.
+	 */
+	public void removeOrder(int orderNumber) {
+		if (PRIORITY_ORDERS == orderNumber && hasPriorityOrders) {
+			// If we are removing the prority stop.
+			hasPriorityOrders = false;
+		}
 
-        /* shift current station down */
-        if (nextScheduledOrder > orderNumber) {
-            nextScheduledOrder--;
-        }
+		orders.remove(orderNumber);
 
-        if (orders.size() <= nextScheduledOrder) {
-            nextScheduledOrder = firstScheduleStop();
-        }
+		/* shift current station down */
+		if (nextScheduledOrder > orderNumber) {
+			nextScheduledOrder--;
+		}
 
-        if (0 == numberOfScheduledStops()) {
-            nextScheduledOrder = -1;
-        }
-    }
+		if (orders.size() <= nextScheduledOrder) {
+			nextScheduledOrder = firstScheduleStop();
+		}
 
-    private int firstScheduleStop() {
-        return hasPriorityOrders ? 1 : 0;
-    }
+		if (0 == numberOfScheduledStops()) {
+			nextScheduledOrder = -1;
+		}
+	}
 
-    private int numberOfScheduledStops() {
-        return orders.size() - firstScheduleStop();
-    }
+	private int firstScheduleStop() {
+		return hasPriorityOrders ? 1 : 0;
+	}
 
-    /**
-     * Inserts an order at the specified position. Note you must call
-     * setPriorityOrders() to set the priority orders.
-     */
-    public void addOrder(int orderNumber, TrainOrdersModel order) {
-        orders.add(orderNumber, order);
+	private int numberOfScheduledStops() {
+		return orders.size() - firstScheduleStop();
+	}
 
-        if (nextScheduledOrder >= orderNumber) {
-            nextScheduledOrder++;
-        }
+	/**
+	 * Inserts an order at the specified position. Note you must call
+	 * setPriorityOrders() to set the priority orders.
+	 */
+	public void addOrder(int orderNumber, TrainOrdersModel order) {
+		orders.add(orderNumber, order);
 
-        if (-1 == nextScheduledOrder && 0 < numberOfScheduledStops()) {
-            nextScheduledOrder = firstScheduleStop();
-        }
-    }
+		if (nextScheduledOrder >= orderNumber) {
+			nextScheduledOrder++;
+		}
 
-    public int addOrder(TrainOrdersModel order) {
-        if (!canAddOrder()) {
-            throw new IllegalStateException();
-        }
+		if (-1 == nextScheduledOrder && 0 < numberOfScheduledStops()) {
+			nextScheduledOrder = firstScheduleStop();
+		}
+	}
 
-        int newOrderNumber = orders.size();
-        addOrder(newOrderNumber, order);
+	public int addOrder(TrainOrdersModel order) {
+		if (!canAddOrder()) {
+			throw new IllegalStateException();
+		}
 
-        return newOrderNumber;
-    }
+		int newOrderNumber = orders.size();
+		addOrder(newOrderNumber, order);
 
-    public void setOrder(int orderNumber, TrainOrdersModel order) {
-        if (orderNumber >= orders.size()) {
-            orders.add(order);
-        } else {
-            orders.set(orderNumber, order);
-        }
-    }
+		return newOrderNumber;
+	}
 
-    public TrainOrdersModel getOrder(int i) {
-        return orders.get(i);
-    }
+	public void setOrder(int orderNumber, TrainOrdersModel order) {
+		if (orderNumber >= orders.size()) {
+			orders.add(order);
+		} else {
+			orders.set(orderNumber, order);
+		}
+	}
 
-    /** Returns the number of the order the train is currently carry out. */
-    public int getOrderToGoto() {
-        return nextScheduledOrder;
-    }
+	public TrainOrdersModel getOrder(int i) {
+		return orders.get(i);
+	}
 
-    public void setOrderToGoto(int i) {
-        if (i < 0 || i >= orders.size()) {
-            throw new IllegalArgumentException(String.valueOf(i));
-        }
+	/** Returns the number of the order the train is currently carry out. */
+	public int getOrderToGoto() {
+		return nextScheduledOrder;
+	}
 
-        nextScheduledOrder = i;
-    }
+	public void setOrderToGoto(int i) {
+		if (i < 0 || i >= orders.size()) {
+			throw new IllegalArgumentException(String.valueOf(i));
+		}
 
-    /** Returns the station number of the next station the train is scheduled to
-     * stop at. */
-    public int getStationToGoto() {
-        return orders.get(nextScheduledOrder).getStationID();
-    }
+		nextScheduledOrder = i;
+	}
 
-    /** Returns the wagons to add at the next scheduled stop. */
-    public /*=const*/ int[] getWagonsToAdd() {
-        return orders.get(nextScheduledOrder).getConsist();
-    }
+	/**
+	 * Returns the station number of the next station the train is scheduled to
+	 * stop at.
+	 */
+	public int getStationToGoto() {
+		return orders.get(nextScheduledOrder).getStationID();
+	}
 
-    /** If there are no priority orders, sets the station to goto to the next station
-     *in the list of orders or if there are no more stations, the first station in the list.
-     * If priority orders are set, the priority orders orders are removed from the schedule
-     * and the goto station is not changed.
-     */
-    public void gotoNextStaton() {
-        if (hasPriorityOrders) {
-            if (nextScheduledOrder != PRIORITY_ORDERS) {
-                removeOrder(PRIORITY_ORDERS);
+	/** Returns the wagons to add at the next scheduled stop. */
+	public int[] getWagonsToAdd() {
+		return orders.get(nextScheduledOrder).getConsist();
+	}
 
-                return;
-            }
-        }
+	/**
+	 * If there are no priority orders, sets the station to goto to the next
+	 * station in the list of orders or if there are no more stations, the first
+	 * station in the list. If priority orders are set, the priority orders
+	 * orders are removed from the schedule and the goto station is not changed.
+	 */
+	public void gotoNextStaton() {
+		if (hasPriorityOrders) {
+			if (nextScheduledOrder != PRIORITY_ORDERS) {
+				removeOrder(PRIORITY_ORDERS);
 
-        nextScheduledOrder++;
+				return;
+			}
+		}
 
-        if (orders.size() <= nextScheduledOrder) {
-            nextScheduledOrder = 0;
-        }
-    }
+		nextScheduledOrder++;
 
-    public /*=const*/ boolean hasPriorityOrders() {
-        return this.hasPriorityOrders;
-    }
+		if (orders.size() <= nextScheduledOrder) {
+			nextScheduledOrder = 0;
+		}
+	}
 
-    /**
-     * Returns number of non priority orders + number of priority orders.
-     * @return Number of orders.
-     */
-    public int getNumOrders() {
-        return orders.size();
-    }
+	public boolean hasPriorityOrders() {
+		return this.hasPriorityOrders;
+	}
 
-    public boolean canPullUp(int orderNumber) {
-        boolean isAlreadyAtTop = 0 == orderNumber;
-        boolean isPriorityOrdersAbove = (orderNumber == 1 &&
-            this.hasPriorityOrders);
+	/**
+	 * Returns number of non priority orders + number of priority orders.
+	 * 
+	 * @return Number of orders.
+	 */
+	public int getNumOrders() {
+		return orders.size();
+	}
 
-        return !isAlreadyAtTop && !isPriorityOrdersAbove;
-    }
+	public boolean canPullUp(int orderNumber) {
+		boolean isAlreadyAtTop = 0 == orderNumber;
+		boolean isPriorityOrdersAbove = (orderNumber == 1 && this.hasPriorityOrders);
 
-    public boolean canPushDown(int orderNumber) {
-        boolean isOrderPriorityOrders = (orderNumber == 0 &&
-            this.hasPriorityOrders);
-        boolean isAlreadyAtBottom = orderNumber == this.orders.size() - 1;
+		return !isAlreadyAtTop && !isPriorityOrdersAbove;
+	}
 
-        return !isOrderPriorityOrders && !isAlreadyAtBottom;
-    }
+	public boolean canPushDown(int orderNumber) {
+		boolean isOrderPriorityOrders = (orderNumber == 0 && this.hasPriorityOrders);
+		boolean isAlreadyAtBottom = orderNumber == this.orders.size() - 1;
 
-    public void pullUp(int orderNumber) {
-        if (!canPullUp(orderNumber)) {
-            throw new IllegalArgumentException(String.valueOf(orderNumber));
-        }
+		return !isOrderPriorityOrders && !isAlreadyAtBottom;
+	}
 
-        boolean isGoingToThisStation = getOrderToGoto() == orderNumber;
-        TrainOrdersModel order = getOrder(orderNumber);
-        removeOrder(orderNumber);
-        addOrder(orderNumber - 1, order);
+	public void pullUp(int orderNumber) {
+		if (!canPullUp(orderNumber)) {
+			throw new IllegalArgumentException(String.valueOf(orderNumber));
+		}
 
-        if (isGoingToThisStation) {
-            setOrderToGoto(orderNumber - 1);
-        }
-    }
+		boolean isGoingToThisStation = getOrderToGoto() == orderNumber;
+		TrainOrdersModel order = getOrder(orderNumber);
+		removeOrder(orderNumber);
+		addOrder(orderNumber - 1, order);
 
-    public void pushDown(int orderNumber) {
-        if (!canPushDown(orderNumber)) {
-            throw new IllegalArgumentException(String.valueOf(orderNumber));
-        }
+		if (isGoingToThisStation) {
+			setOrderToGoto(orderNumber - 1);
+		}
+	}
 
-        boolean isGoingToThisStation = getOrderToGoto() == orderNumber;
-        TrainOrdersModel order = getOrder(orderNumber);
-        removeOrder(orderNumber);
-        addOrder(orderNumber + 1, order);
+	public void pushDown(int orderNumber) {
+		if (!canPushDown(orderNumber)) {
+			throw new IllegalArgumentException(String.valueOf(orderNumber));
+		}
 
-        if (isGoingToThisStation) {
-            setOrderToGoto(orderNumber + 1);
-        }
-    }
+		boolean isGoingToThisStation = getOrderToGoto() == orderNumber;
+		TrainOrdersModel order = getOrder(orderNumber);
+		removeOrder(orderNumber);
+		addOrder(orderNumber + 1, order);
 
-    public boolean canAddOrder() {
-        int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1
-                                    : MAXIMUM_NUMBER_OF_ORDER;
+		if (isGoingToThisStation) {
+			setOrderToGoto(orderNumber + 1);
+		}
+	}
 
-        return max > getNumOrders();
-    }
+	public boolean canAddOrder() {
+		int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1
+				: MAXIMUM_NUMBER_OF_ORDER;
 
-    public boolean canSetGotoStation(int orderNumber) {
-        return !(orderNumber == 0 && hasPriorityOrders);
-    }
+		return max > getNumOrders();
+	}
 
-    public int getNextScheduledOrder() {
-        return this.nextScheduledOrder;
-    }
+	public boolean canSetGotoStation(int orderNumber) {
+		return !(orderNumber == 0 && hasPriorityOrders);
+	}
 
-    public void removeAllStopsAtStation(int stationNumber) {
-        int i = 0;
+	public int getNextScheduledOrder() {
+		return this.nextScheduledOrder;
+	}
 
-        while (i < this.getNumOrders()) {
-            TrainOrdersModel order = this.getOrder(i);
+	public void removeAllStopsAtStation(int stationNumber) {
+		int i = 0;
 
-            if (order.getStationID() == stationNumber) {
-                this.removeOrder(i);
-            } else {
-                i++;
-            }
-        }
-    }
+		while (i < this.getNumOrders()) {
+			TrainOrdersModel order = this.getOrder(i);
 
-	
-	public boolean autoConsist() {	
-		 return orders.get(nextScheduledOrder).autoConsist;
+			if (order.getStationID() == stationNumber) {
+				this.removeOrder(i);
+			} else {
+				i++;
+			}
+		}
+	}
+
+	public boolean autoConsist() {
+		return orders.get(nextScheduledOrder).autoConsist;
 	}
 }

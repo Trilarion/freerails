@@ -170,8 +170,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 				if (move instanceof ChangeGameSpeedMove) {
 					ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
-					for (Enumeration<Action> actionsEnum = speedActions.getActions(); actionsEnum
-							.hasMoreElements();) {
+					for (Enumeration<Action> actionsEnum = speedActions
+							.getActions(); actionsEnum.hasMoreElements();) {
 						Action action = actionsEnum.nextElement();
 						String actionName = (String) action
 								.getValue(Action.NAME);
@@ -393,7 +393,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
 		speedActions = sc.getSetTargetTickPerSecondActions();
 
-		Enumeration<MappedButtonModel> buttonModels = speedActions.getButtonModels();
+		Enumeration<MappedButtonModel> buttonModels = speedActions
+				.getButtonModels();
 		Enumeration<Action> actions = speedActions.getActions();
 
 		while (buttonModels.hasMoreElements()) {

@@ -6,31 +6,31 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-
 /**
  * Defines methods that create the GUI components used by the game.
+ * 
  * @author Luke
  */
 public interface GUIComponentFactory {
-    JPanel createOverviewMap();
+	JPanel createOverviewMap();
 
-    JTabbedPane createTrainsJTabPane();
+	JTabbedPane createTrainsJTabPane();
 
-    JScrollPane createMainMap();
+	JScrollPane createMainMap();
 
-    JLabel createCashJLabel();
+	JLabel createCashJLabel();
 
-    JLabel createDateJLabel();
+	JLabel createDateJLabel();
 
-    JMenu createBuildMenu();
-    
-    JMenu createReportsMenu();
+	JMenu createBuildMenu();
 
-    JMenu createGameMenu();
+	JMenu createReportsMenu();
 
-    JMenu createDisplayMenu();
+	JMenu createGameMenu();
 
-    JMenu createHelpMenu();
-    
-    JMenu createBrokerMenu();
+	JMenu createDisplayMenu();
+
+	JMenu createHelpMenu();
+
+	JMenu createBrokerMenu();
 }

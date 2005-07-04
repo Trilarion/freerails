@@ -5,86 +5,90 @@
 package jfreerails.world.top;
 
 import java.util.NoSuchElementException;
+
 import jfreerails.world.station.StationModel;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-
 /**
  * This junit TestCase tests NonNullElements.
+ * 
  * @author Luke
- *
+ * 
  */
 public class NonNullElementsTest extends TestCase {
-    World w;
-    StationModel station1;
-    StationModel station2;
-    StationModel station3;
+	World w;
 
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
+	StationModel station1;
 
-    public static Test suite() {
-        TestSuite testSuite = new TestSuite(NonNullElementsTest.class);
+	StationModel station2;
 
-        return testSuite;
-    }
+	StationModel station3;
 
-    protected void setUp() {
-        w = new WorldImpl();
-        station1 = new StationModel(10, 20, "Station1", 4, 0);
-        station2 = new StationModel(15, 16, "Station2", 4, 1);
-        station3 = new StationModel(30, 50, "Station3", 4, 2);
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        w.add(KEY.STATIONS, station1, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, station2, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, station3, MapFixtureFactory.TEST_PRINCIPAL);
-    }
+	public static void main(java.lang.String[] args) {
+		junit.textui.TestRunner.run(suite());
+	}
 
-    public void testNext() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
+	public static Test suite() {
+		TestSuite testSuite = new TestSuite(NonNullElementsTest.class);
 
-        //Look at first station
-        boolean b = wi.next();
-        assertTrue(b);
+		return testSuite;
+	}
 
-        int index = wi.getIndex();
-        assertEquals(0, index);
-        assertEquals(0, wi.getRowID());
-        assertEquals(station1, wi.getElement());
+	protected void setUp() {
+		w = new WorldImpl();
+		station1 = new StationModel(10, 20, "Station1", 4, 0);
+		station2 = new StationModel(15, 16, "Station2", 4, 1);
+		station3 = new StationModel(30, 50, "Station3", 4, 2);
+		w.addPlayer(MapFixtureFactory.TEST_PLAYER);
+		w.add(KEY.STATIONS, station1, MapFixtureFactory.TEST_PRINCIPAL);
+		w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
+		w.add(KEY.STATIONS, station2, MapFixtureFactory.TEST_PRINCIPAL);
+		w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
+		w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
+		w.add(KEY.STATIONS, station3, MapFixtureFactory.TEST_PRINCIPAL);
+	}
 
-        //Look at seond station
-        assertTrue(wi.next());
-        assertEquals(2, wi.getIndex());
-        assertEquals(1, wi.getRowID());
-        assertEquals(station2, wi.getElement());
+	public void testNext() {
+		WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
+				MapFixtureFactory.TEST_PRINCIPAL);
+		assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
+		assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
-        WorldIterator wi2 = new NonNullElements(SKEY.TRACK_RULES, w);
-        assertTrue(!wi2.next());
-    }
+		// Look at first station
+		boolean b = wi.next();
+		assertTrue(b);
 
-    public void testGotoIndex() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
+		int index = wi.getIndex();
+		assertEquals(0, index);
+		assertEquals(0, wi.getRowID());
+		assertEquals(station1, wi.getElement());
 
-        wi.gotoIndex(2);
-        assertEquals(2, wi.getIndex());
-        assertEquals(1, wi.getRowID());
+		// Look at seond station
+		assertTrue(wi.next());
+		assertEquals(2, wi.getIndex());
+		assertEquals(1, wi.getRowID());
+		assertEquals(station2, wi.getElement());
 
-        try {
-            wi.gotoIndex(100);
-            assertTrue(false);
-        } catch (NoSuchElementException e) {
-        }
-    }
+		WorldIterator wi2 = new NonNullElements(SKEY.TRACK_RULES, w);
+		assertTrue(!wi2.next());
+	}
+
+	public void testGotoIndex() {
+		WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
+				MapFixtureFactory.TEST_PRINCIPAL);
+		assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
+		assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
+
+		wi.gotoIndex(2);
+		assertEquals(2, wi.getIndex());
+		assertEquals(1, wi.getRowID());
+
+		try {
+			wi.gotoIndex(100);
+			assertTrue(false);
+		} catch (NoSuchElementException e) {
+		}
+	}
 }

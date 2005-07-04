@@ -18,107 +18,111 @@ import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 
 /**
- * Provides convenience methods to access the properties of a train from the world object.
+ * Provides convenience methods to access the properties of a train from the
+ * world object.
  * 
  * @author Luke
- *
+ * 
  */
 public class TrainAccessor {
-	
+
 	private final ReadOnlyWorld w;
+
 	private final FreerailsPrincipal p;
+
 	private final int id;
 
 	public TrainAccessor(final ReadOnlyWorld w, final FreerailsPrincipal p,
-			final int id) {		
+			final int id) {
 		this.w = w;
 		this.p = p;
 		this.id = id;
-	}	
+	}
 
 	public int getId() {
 		return id;
 	}
-		
-		
+
 	public TrainMotion findCurrentMotion(GameTime time) {
 		int t = time.getTicks();
 		TrainMotion motionA, motionB;
-		motionA = (TrainMotion)w.get(KEY.TRAIN_MOTION1, id, p);
-		motionB = (TrainMotion)w.get(KEY.TRAIN_MOTION2, id, p);
-		TrainMotion first, second;		
+		motionA = (TrainMotion) w.get(KEY.TRAIN_MOTION1, id, p);
+		motionB = (TrainMotion) w.get(KEY.TRAIN_MOTION2, id, p);
+		TrainMotion first, second;
 		int startA = motionA.getStart().getTicks();
 		int startB = motionB.getStart().getTicks();
-		if(startA < startB){
+		if (startA < startB) {
 			first = motionA;
 			second = motionB;
-		}else{
+		} else {
 			first = motionB;
 			second = motionA;
 		}
 		int start = first.getStart().getTicks();
 		int end = second.getEnd().getTicks();
-		
-		if(t > end) throw new IllegalArgumentException();
-		if(t < start) throw new IllegalArgumentException();
-		
+
+		if (t > end)
+			throw new IllegalArgumentException();
+		if (t < start)
+			throw new IllegalArgumentException();
+
 		int secondStart = second.getStart().getTicks();
-		
+
 		TrainMotion currentMotion = secondStart > t ? first : second;
 		return currentMotion;
 	}
-	
-	public KEY getFirstKEY(){
+
+	public KEY getFirstKEY() {
 		TrainMotion motionA, motionB;
-		motionA = (TrainMotion)w.get(KEY.TRAIN_MOTION1, id, p);
-		motionB = (TrainMotion)w.get(KEY.TRAIN_MOTION2, id, p);		
+		motionA = (TrainMotion) w.get(KEY.TRAIN_MOTION1, id, p);
+		motionB = (TrainMotion) w.get(KEY.TRAIN_MOTION2, id, p);
 		int startA = motionA.getStart().getTicks();
 		int startB = motionB.getStart().getTicks();
-		if(startA < startB){
+		if (startA < startB) {
 			return KEY.TRAIN_MOTION1;
 		}
-		return KEY.TRAIN_MOTION2;		
+		return KEY.TRAIN_MOTION2;
 	}
-	
-	public KEY getLastKEY(){
+
+	public KEY getLastKEY() {
 		TrainMotion motionA, motionB;
-		motionA = (TrainMotion)w.get(KEY.TRAIN_MOTION1, id, p);
-		motionB = (TrainMotion)w.get(KEY.TRAIN_MOTION2, id, p);		
+		motionA = (TrainMotion) w.get(KEY.TRAIN_MOTION1, id, p);
+		motionB = (TrainMotion) w.get(KEY.TRAIN_MOTION2, id, p);
 		int startA = motionA.getStart().getTicks();
 		int startB = motionB.getStart().getTicks();
-		if(startA < startB){
+		if (startA < startB) {
 			return KEY.TRAIN_MOTION2;
 		}
-		return KEY.TRAIN_MOTION1;		
+		return KEY.TRAIN_MOTION1;
 	}
-	
-	public TrainModel getTrain(){
-		return (TrainModel)w.get(KEY.TRAINS, id, p);
+
+	public TrainModel getTrain() {
+		return (TrainModel) w.get(KEY.TRAINS, id, p);
 	}
-	
-	public ImmutableSchedule getSchedule(){
+
+	public ImmutableSchedule getSchedule() {
 		TrainModel train = getTrain();
-		return (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), p);
+		return (ImmutableSchedule) w.get(KEY.TRAIN_SCHEDULES, train
+				.getScheduleID(), p);
 	}
-	
-	public ImmutableCargoBundle getCargoBundle(){
+
+	public ImmutableCargoBundle getCargoBundle() {
 		TrainModel train = getTrain();
-		return (ImmutableCargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleID(), p);
+		return (ImmutableCargoBundle) w.get(KEY.CARGO_BUNDLES, train
+				.getCargoBundleID(), p);
 	}
-	
-	public SpeedTimeAndStatus.Activity getActivity(GameTime time){
+
+	public SpeedTimeAndStatus.Activity getActivity(GameTime time) {
 		TrainMotion motion = findCurrentMotion(time);
 		return motion.getActivity(time);
 	}
-		
-	
+
 	/**
 	 * @return the location of the station the train is currently heading
 	 *         towards.
 	 */
 	public Point getTarget() {
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, id,
-				p);
+		TrainModel train = (TrainModel) w.get(KEY.TRAINS, id, p);
 		int scheduleID = train.getScheduleID();
 		ImmutableSchedule schedule = (ImmutableSchedule) w.get(
 				KEY.TRAIN_SCHEDULES, scheduleID, p);
@@ -134,5 +138,5 @@ public class TrainAccessor {
 
 		return new Point(station.x, station.y);
 	}
-	
+
 }

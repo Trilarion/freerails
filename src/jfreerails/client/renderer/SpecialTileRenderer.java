@@ -1,66 +1,69 @@
 /*
-* SpecialTileView.java
-*
-* Created on 20 August 2001, 15:41
-*/
+ * SpecialTileView.java
+ *
+ * Created on 20 August 2001, 15:41
+ */
 package jfreerails.client.renderer;
 
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
+
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
-* A special tile's icon gets drawn over the icon of a normal tile.
-* @author  Luke Lindsay
-*/
+ * A special tile's icon gets drawn over the icon of a normal tile.
+ * 
+ * @author Luke Lindsay
+ */
 final public class SpecialTileRenderer extends AbstractTileRenderer {
-    private static final Logger logger = Logger.getLogger(SpecialTileRenderer.class.getName());
-    final private TileRenderer parentTileView;
+	private static final Logger logger = Logger
+			.getLogger(SpecialTileRenderer.class.getName());
 
-    public void renderTile(java.awt.Graphics g, int renderX, int renderY,
-        int mapX, int mapY, ReadOnlyWorld w) {
-        if (parentTileView != null) {
-            parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
-        } else {
-            logger.warning("parent tileView==null");
-        }
+	final private TileRenderer parentTileView;
 
-        Image icon = this.getIcon(mapX, mapX, w);
+	public void renderTile(java.awt.Graphics g, int renderX, int renderY,
+			int mapX, int mapY, ReadOnlyWorld w) {
+		if (parentTileView != null) {
+			parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
+		} else {
+			logger.warning("parent tileView==null");
+		}
 
-        if (null != icon) {
-            g.drawImage(icon, renderX, renderY, null);
-        } else {
-            logger.warning("special tileView icon==null");
-        }
-    }
+		Image icon = this.getIcon(mapX, mapX, w);
 
-    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-        return 0;
-    }
+		if (null != icon) {
+			g.drawImage(icon, renderX, renderY, null);
+		} else {
+			logger.warning("special tileView icon==null");
+		}
+	}
 
-    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
-        TerrainType tileModel, TileRenderer parentTileView)
-        throws IOException {
-        super(tileModel, rgbValues);
-        this.setTileIcons(new Image[1]);
-        this.getTileIcons()[0] = imageManager.getImage(generateFilename());
-        this.parentTileView = parentTileView;
-    }
+	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+		return 0;
+	}
 
-    public void dumpImages(ImageManager imageManager) {
-        imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
-    }
+	public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
+			TerrainType tileModel, TileRenderer parentTileView)
+			throws IOException {
+		super(tileModel, rgbValues);
+		this.setTileIcons(new Image[1]);
+		this.getTileIcons()[0] = imageManager.getImage(generateFilename());
+		this.parentTileView = parentTileView;
+	}
 
-    private String generateFilename() {
-        return "terrain" + File.separator + this.getTerrainType() + ".png";
-    }
+	public void dumpImages(ImageManager imageManager) {
+		imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
+	}
 
-    protected String generateFileNameNumber(int i) {
-        throw new UnsupportedOperationException();
-    }
+	private String generateFilename() {
+		return "terrain" + File.separator + this.getTerrainType() + ".png";
+	}
+
+	protected String generateFileNameNumber(int i) {
+		throw new UnsupportedOperationException();
+	}
 }

@@ -56,11 +56,10 @@ public interface World extends ReadOnlyWorld {
 	 */
 	World defensiveCopy();
 
-	
 	Activity removeLastActiveEntity(AKEY key, FreerailsPrincipal principal);
 
-	
-	Activity removeLastActivity(AKEY key, int index, FreerailsPrincipal principal);
+	Activity removeLastActivity(AKEY key, int index,
+			FreerailsPrincipal principal);
 
 	/**
 	 * Removes the last element from the specified list.
@@ -79,7 +78,7 @@ public interface World extends ReadOnlyWorld {
 	 * transactions can be undone.
 	 */
 	Transaction removeLastTransaction(FreerailsPrincipal p);
-	
+
 	Player removeLastPlayer();
 
 	/**

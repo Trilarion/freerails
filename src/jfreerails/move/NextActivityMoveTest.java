@@ -12,8 +12,6 @@ import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImplTest;
 
-
-
 public class NextActivityMoveTest extends AbstractMoveTestCase {
 
 	@Override
@@ -22,51 +20,55 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 		FreerailsPrincipal principal = getPrincipal();
 		Activity act = new WorldImplTest.TestActivity(50);
 		w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
-		
+
 		Activity act2 = new WorldImplTest.TestActivity(60);
-		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS, principal);
-		assertEqualsSurvivesSerialisation(move);		
+		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS,
+				principal);
+		assertSurvivesSerialisation(move);
 		assertOkAndRepeatable(move);
-				
+
 	}
-	
+
 	public void testMove2() {
 		World w = getWorld();
 		FreerailsPrincipal principal = getPrincipal();
 		Activity act = new WorldImplTest.TestActivity(50);
 		w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
-		
+
 		Activity act2 = new WorldImplTest.TestActivity(60);
-		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS, principal);
+		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS,
+				principal);
 		assertDoThenUndoLeavesWorldUnchanged(move);
-				
+
 	}
-	
-	public void testStackingOfActivities(){
+
+	public void testStackingOfActivities() {
 		World w = getWorld();
 		FreerailsPrincipal principal = getPrincipal();
 		Activity act = new WorldImplTest.TestActivity(50);
 		w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
-		
+
 		Activity act2 = new WorldImplTest.TestActivity(60);
-		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS, principal);
+		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS,
+				principal);
 		assertDoMoveIsOk(move);
-		
+
 		GameTime currentTime = new GameTime(0);
 		assertEquals(currentTime, w.currentTime());
-		ActivityIterator it = w.getActivities(AKEY.TRAIN_POSITIONS, 0, principal);
-				
+		ActivityIterator it = w.getActivities(AKEY.TRAIN_POSITIONS, 0,
+				principal);
+
 		assertEquals(it.getActivity(), act);
 		assertEquals(it.getStartTime(), currentTime);
 		assertEquals(50, it.getDuration());
 		assertEquals(new GameTime(50), it.getFinishTime());
-		
+
 		assertTrue(it.hasNext());
 		it.nextActivity();
 		assertEquals(it.getActivity(), act2);
 		assertEquals(new GameTime(50), it.getStartTime());
 		assertEquals(60, it.getDuration());
-		assertEquals( new GameTime(110), it.getFinishTime());
+		assertEquals(new GameTime(110), it.getFinishTime());
 	}
 
 }

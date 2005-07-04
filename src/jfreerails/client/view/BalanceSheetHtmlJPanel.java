@@ -12,54 +12,58 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
  * A HtmlJPanel that displays the balance sheet.
+ * 
  * @author Luke
- *
+ * 
  */
 public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
-    
-    private static final long serialVersionUID = 3257009873370886964L;
+
+	private static final long serialVersionUID = 3257009873370886964L;
+
 	private String template;
-    private int lastNumTransactions = 0;
-    private ModelRoot modelRoot;
 
-    public BalanceSheetHtmlJPanel() {
-        super();
+	private int lastNumTransactions = 0;
 
-        URL url = BalanceSheetHtmlJPanel.class.getResource(
-                "/jfreerails/client/view/balance_sheet.htm");
-        template = loadText(url);
-    }
+	private ModelRoot modelRoot;
 
-    public void setup(ModelRoot modelRoot, ViewLists vl,
-        ActionListener submitButtonCallBack) {
-        super.setup(modelRoot, vl, submitButtonCallBack);
-        this.modelRoot = modelRoot;
-        updateHtml();
-    }
+	public BalanceSheetHtmlJPanel() {
+		super();
 
-    private void updateHtml() {
-        ReadOnlyWorld world = modelRoot.getWorld();
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(world,
-                playerPrincipal);
-        String populatedTemplate = populateTokens(template,
-                balanceSheetGenerator);
-        setHtml(populatedTemplate);
-    }
+		URL url = BalanceSheetHtmlJPanel.class
+				.getResource("/jfreerails/client/view/balance_sheet.htm");
+		template = loadText(url);
+	}
 
-    protected void paintComponent(Graphics g) {
-        /* Check to see if the text needs updating before painting. */
-        ReadOnlyWorld world = modelRoot.getWorld();
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
+	public void setup(ModelRoot modelRoot, ViewLists vl,
+			ActionListener submitButtonCallBack) {
+		super.setup(modelRoot, vl, submitButtonCallBack);
+		this.modelRoot = modelRoot;
+		updateHtml();
+	}
 
-        if (currentNumberOfTransactions != lastNumTransactions) {
-            updateHtml();
-        }
+	private void updateHtml() {
+		ReadOnlyWorld world = modelRoot.getWorld();
+		FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+		BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(
+				world, playerPrincipal);
+		String populatedTemplate = populateTokens(template,
+				balanceSheetGenerator);
+		setHtml(populatedTemplate);
+	}
 
-        super.paintComponent(g);
-    }
+	protected void paintComponent(Graphics g) {
+		/* Check to see if the text needs updating before painting. */
+		ReadOnlyWorld world = modelRoot.getWorld();
+		FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+		int currentNumberOfTransactions = world
+				.getNumberOfTransactions(playerPrincipal);
+
+		if (currentNumberOfTransactions != lastNumTransactions) {
+			updateHtml();
+		}
+
+		super.paintComponent(g);
+	}
 }

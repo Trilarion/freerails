@@ -10,7 +10,7 @@ import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.move.UndoMove;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.GameTime;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -28,10 +28,12 @@ import jfreerails.world.track.TrackRule;
  */
 final public class TrackMoveProducer {
 	private BuildTrackStrategy buildTrackStrategy;
-	
+
 	private final MoveExecutor executor;
-		
-	public enum BuildMode{BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION};	
+
+	public enum BuildMode {
+		BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION
+	};
 
 	private BuildMode buildMode = BuildMode.BUILD_TRACK;
 
@@ -43,25 +45,25 @@ final public class TrackMoveProducer {
 	 * This generates the transactions - the charge - for the track being built.
 	 */
 	private final TrackMoveTransactionsGenerator transactionsGenerator;
-	
-	public MoveStatus buildTrack(Point from, OneTileMoveVector[] path){		
-		MoveStatus returnValue = MoveStatus.MOVE_OK;	
+
+	public MoveStatus buildTrack(Point from, Step[] path) {
+		MoveStatus returnValue = MoveStatus.MOVE_OK;
 		int x = from.x;
 		int y = from.y;
-		for(int i = 0; i < path.length; i++){
-			
-			returnValue = buildTrack(new Point(x, y), path[i]);			
-			x+= path[i].deltaX;
-			y+= path[i].deltaY;
-			if(!returnValue.ok){
+		for (int i = 0; i < path.length; i++) {
+
+			returnValue = buildTrack(new Point(x, y), path[i]);
+			x += path[i].deltaX;
+			y += path[i].deltaY;
+			if (!returnValue.ok) {
 				return returnValue;
 			}
 		}
 		return returnValue;
 	}
 
-	public MoveStatus buildTrack(Point from, OneTileMoveVector trackVector) {
-		
+	public MoveStatus buildTrack(Point from, Step trackVector) {
+
 		ReadOnlyWorld w = executor.getWorld();
 		FreerailsPrincipal principal = executor.getPrincipal();
 		switch (buildMode) {
@@ -78,7 +80,7 @@ final public class TrackMoveProducer {
 						.addTransactions(move);
 
 				return sendMove(moveAndTransaction);
-			} catch (Exception e) {				
+			} catch (Exception e) {
 				// thrown when there is no track to remove.
 				// Fix for bug [ 948670 ] Removing non-existant track
 				return MoveStatus.moveFailed("No track to remove.");
@@ -97,9 +99,9 @@ final public class TrackMoveProducer {
 
 		int[] ruleIDs = new int[2];
 		TrackRule[] rules = new TrackRule[2];
-		int[] xs = { from.x, from.x + trackVector.deltaX};
-		int[] ys = {from.y, from.y + trackVector.deltaY};
-		for(int i = 0; i < ruleIDs.length ; i++){
+		int[] xs = { from.x, from.x + trackVector.deltaX };
+		int[] ys = { from.y, from.y + trackVector.deltaY };
+		for (int i = 0; i < ruleIDs.length; i++) {
 			int x = xs[i];
 			int y = ys[i];
 			FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
@@ -110,46 +112,47 @@ final public class TrackMoveProducer {
 				TerrainType terrainType = (TerrainType) w.get(
 						SKEY.TERRAIN_TYPES, tt);
 				String message = "Non of the selected track types can be built on "
-								+ terrainType.getDisplayName();
+						+ terrainType.getDisplayName();
 				return MoveStatus.moveFailed(message);
 			}
 			rules[i] = (TrackRule) w.get(SKEY.TRACK_RULES, ruleIDs[i]);
-		}				
+		}
 
 		switch (buildMode) {
 		case UPGRADE_TRACK: {
-			//upgrade the from tile if necessary.			
+			// upgrade the from tile if necessary.
 			FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
-			if(tileA.getTrackTypeID() != ruleIDs[0]  && !isStationHere(from)){
+			if (tileA.getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
 				MoveStatus ms = upgradeTrack(new Point(from), ruleIDs[0]);
-				if(!ms.ok){
+				if (!ms.ok) {
 					return ms;
-				}				
+				}
 			}
 			Point point = new Point(from.x + trackVector.getDx(), from.y
-					+ trackVector.getDy());					
+					+ trackVector.getDy());
 			FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
-			if(tileB.getTrackTypeID() != ruleIDs[1] && !isStationHere(point)){
+			if (tileB.getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
 				MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
-				if(!ms.ok){
+				if (!ms.ok) {
 					return ms;
-				}				
-			}					
-			return MoveStatus.MOVE_OK;			
+				}
+			}
+			return MoveStatus.MOVE_OK;
 		}
 		case BUILD_TRACK: {
-			ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from,
-					trackVector, rules[0], rules[1], w, principal);
+			ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
+					.generateBuildTrackMove(from, trackVector, rules[0],
+							rules[1], w, principal);
 
-			Move moveAndTransaction = transactionsGenerator.addTransactions(move);
+			Move moveAndTransaction = transactionsGenerator
+					.addTransactions(move);
 
 			return sendMove(moveAndTransaction);
-		}	
+		}
 		default:
 			throw new IllegalArgumentException(String.valueOf(buildMode));
 		}
 
-		
 	}
 
 	public MoveStatus upgradeTrack(Point point) {
@@ -162,8 +165,6 @@ final public class TrackMoveProducer {
 		throw new IllegalStateException(
 				"Track builder not set to upgrade track!");
 	}
-
-	
 
 	public void setTrackBuilderMode(BuildMode i) {
 		buildMode = i;
@@ -192,12 +193,11 @@ final public class TrackMoveProducer {
 	private MoveStatus upgradeTrack(Point point, int trackRuleID) {
 		ReadOnlyWorld w = executor.getWorld();
 		TrackPiece before = (TrackPiece) w.getTile(point.x, point.y);
-		/* Check whether there is track here.*/
-		if(before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER){
-			return MoveStatus
-			.moveFailed("No track to upgrade.");
+		/* Check whether there is track here. */
+		if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+			return MoveStatus.moveFailed("No track to upgrade.");
 		}
-		 
+
 		FreerailsPrincipal principal = executor.getPrincipal();
 		int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
 		TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleID);
@@ -261,18 +261,19 @@ final public class TrackMoveProducer {
 
 		return ms;
 	}
+
 	public BuildTrackStrategy getBuildTrackStrategy() {
 		return buildTrackStrategy;
 	}
+
 	public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
 		this.buildTrackStrategy = buildTrackStrategy;
 	}
-	
-	
-	private boolean isStationHere(Point p){		
+
+	private boolean isStationHere(Point p) {
 		ReadOnlyWorld w = executor.getWorld();
 		FreerailsTile tile = (FreerailsTile) w.getTile(p.x, p.y);
-		return tile.getTrackRule().isStation();		
+		return tile.getTrackRule().isStation();
 	}
 
 }

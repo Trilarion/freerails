@@ -9,11 +9,15 @@ import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
+import jfreerails.world.terrain.TerrainTile;
+import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
+import jfreerails.world.track.FreerailsTile;
 
 /**
  * Stores a static world object and provides copies to clients.
@@ -69,9 +73,25 @@ public class MapFixtureFactory2 {
 							.getPrincipal());
 		}
 		world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-		world.setTime(new GameTime(0));		
+		world.setTime(new GameTime(0));
 		world.set(ITEM.GAME_SPEED, new GameSpeed(10));
 		world.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+
+		int clearTypeID = 0;
+		// Fill the world with clear terrain.
+		for (int i = 0; i < world.size(SKEY.TERRAIN_TYPES); i++) {
+			TerrainType tt = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
+			if ("Clear".equals(tt.getTerrainTypeName())) {
+				clearTypeID = i;
+				break;
+			}
+		}
+		TerrainTile tile = FreerailsTile.getInstance(clearTypeID);
+		for (int x = 0; x < world.getMapWidth(); x++) {
+			for (int y = 0; y < world.getMapHeight(); y++) {
+				world.setTile(x, y, tile);
+			}
+		}
 
 		return world;
 	}

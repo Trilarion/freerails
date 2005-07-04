@@ -12,17 +12,17 @@ import jfreerails.world.common.GameTime;
 public interface ActivityIterator {
 
 	boolean hasNext();
-	
+
 	void nextActivity() throws NoSuchElementException;
-	
+
 	GameTime getStartTime();
-	
+
 	GameTime getFinishTime();
-	
+
 	int getDuration();
-	
+
 	FreerailsSerializable getState(GameTime t);
-	
+
 	Activity getActivity();
-	
+
 }

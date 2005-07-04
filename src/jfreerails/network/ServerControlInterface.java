@@ -5,22 +5,24 @@ package jfreerails.network;
 
 import java.io.IOException;
 
-
 /**
- *  Defines the methods that a client can call on the server using a Message2Server.
+ * Defines the methods that a client can call on the server using a
+ * Message2Server.
+ * 
  * @see Message2Server
- *  @author Luke
- *
+ * @author Luke
+ * 
  */
 public interface ServerControlInterface {
-    public static final String FREERAILS_SAV = "freerails.sav";
-    public static final String VERSION = "CVS";
+	public static final String FREERAILS_SAV = "freerails.sav";
 
-    void loadgame(String saveGameName) throws IOException;
+	public static final String VERSION = "CVS";
 
-    void savegame(String saveGameName);
+	void loadgame(String saveGameName) throws IOException;
 
-    void stopGame();
+	void savegame(String saveGameName);
 
-    void newGame(String mapName);
+	void stopGame();
+
+	void newGame(String mapName);
 }

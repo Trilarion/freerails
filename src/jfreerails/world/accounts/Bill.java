@@ -6,45 +6,47 @@ package jfreerails.world.accounts;
 
 import jfreerails.world.common.Money;
 
-
 /**
  * For example, the cost of buying a trains.
+ * 
  * @author Luke Lindsay
- *
+ * 
  */
 public class Bill implements Transaction {
-    private static final long serialVersionUID = 3258416144497782835L;
+	private static final long serialVersionUID = 3258416144497782835L;
+
 	private final Money m_amount;
-    private final Category m_category;
 
-    public Bill(Money amount, Category category) {
-        m_amount = new Money(-amount.getAmount());
-        m_category = category;
-    }
+	private final Category m_category;
 
-    public Money getValue() {
-        return m_amount;
-    }
+	public Bill(Money amount, Category category) {
+		m_amount = new Money(-amount.getAmount());
+		m_category = category;
+	}
 
-    public int hashCode() {
-        int result;
-        result = m_amount.hashCode();
-        result = 29 * result + m_category.hashCode();
+	public Money getValue() {
+		return m_amount;
+	}
 
-        return result;
-    }
+	public int hashCode() {
+		int result;
+		result = m_amount.hashCode();
+		result = 29 * result + m_category.hashCode();
 
-    public boolean equals(Object o) {
-        if (o instanceof Bill) {
-            Bill test = (Bill)o;
+		return result;
+	}
 
-            return test.m_amount.equals(m_amount) &&
-            m_category == test.m_category;
-        }
+	public boolean equals(Object o) {
+		if (o instanceof Bill) {
+			Bill test = (Bill) o;
+
+			return test.m_amount.equals(m_amount)
+					&& m_category == test.m_category;
+		}
 		return false;
-    }
+	}
 
-    public Category getCategory() {
-        return m_category;
-    }
+	public Category getCategory() {
+		return m_category;
+	}
 }

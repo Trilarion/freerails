@@ -15,27 +15,33 @@ import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
-/**JUnit test for BalanceSheetGenerator.
+/**
+ * JUnit test for BalanceSheetGenerator.
+ * 
  * @author Luke
- *
+ * 
  */
 public class BalanceSheetGeneratorTest extends TestCase {
 
-    public void test1(){
-        Player player = MapFixtureFactory.TEST_PLAYER;     
-        World world = new WorldImpl(10, 10);
-        world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-        world.setTime( new GameTime(0));
-        world.addPlayer(player);
-        world.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
-        world.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
-        world.setTime(new GameTime(100));
-        
-        BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
-        Money expectedBondValue = new Money(BondTransaction.BOND_VALUE_ISSUE.getAmount() * 2);
-        assertEquals(expectedBondValue.changeSign(),  generator.loansTotal);
-        assertEquals(expectedBondValue.changeSign(),  generator.loansYtd);
-        
-    }
-    
+	public void test1() {
+		Player player = MapFixtureFactory.TEST_PLAYER;
+		World world = new WorldImpl(10, 10);
+		world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+		world.setTime(new GameTime(0));
+		world.addPlayer(player);
+		world.addTransaction(BondTransaction.issueBond(5), player
+				.getPrincipal());
+		world.addTransaction(BondTransaction.issueBond(5), player
+				.getPrincipal());
+		world.setTime(new GameTime(100));
+
+		BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
+				player.getPrincipal());
+		Money expectedBondValue = new Money(BondTransaction.BOND_VALUE_ISSUE
+				.getAmount() * 2);
+		assertEquals(expectedBondValue.changeSign(), generator.loansTotal);
+		assertEquals(expectedBondValue.changeSign(), generator.loansYtd);
+
+	}
+
 }

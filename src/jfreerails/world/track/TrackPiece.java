@@ -2,18 +2,19 @@ package jfreerails.world.track;
 
 import jfreerails.world.common.FreerailsSerializable;
 
-
-/** Defines methods to access the properties of the track on a tile.
+/**
+ * Defines methods to access the properties of the track on a tile.
+ * 
  * @author Luke
  */
 public interface TrackPiece extends FreerailsSerializable {
-    int getTrackGraphicID();
-    
-    int getTrackTypeID();
+	int getTrackGraphicID();
 
-    TrackRule getTrackRule();
+	int getTrackTypeID();
 
-    TrackConfiguration getTrackConfiguration();
+	TrackRule getTrackRule();
 
-    int getOwnerID();
+	TrackConfiguration getTrackConfiguration();
+
+	int getOwnerID();
 }

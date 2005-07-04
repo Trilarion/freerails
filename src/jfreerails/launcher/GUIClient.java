@@ -85,7 +85,7 @@ public class GUIClient extends FreerailsClient implements
 	}
 
 	protected void clientUpdates() {
-		if(factory.isSetup()){
+		if (factory.isSetup()) {
 			factory.getBuildTrackController().update();
 		}
 	}

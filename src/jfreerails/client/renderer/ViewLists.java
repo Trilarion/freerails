@@ -3,18 +3,19 @@ package jfreerails.client.renderer;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
-/** Provides access to the objects that render terrain, track, and trains.
+/**
+ * Provides access to the objects that render terrain, track, and trains.
+ * 
  * @author Luke
  */
 public interface ViewLists {
-    TileRendererList getTileViewList();
+	TileRendererList getTileViewList();
 
-    TrackPieceRendererList getTrackPieceViewList();
+	TrackPieceRendererList getTrackPieceViewList();
 
-    TrainImages getTrainImages();
+	TrainImages getTrainImages();
 
-    boolean validate(ReadOnlyWorld world);
-    
-    ImageManager getImageManager();
+	boolean validate(ReadOnlyWorld world);
+
+	ImageManager getImageManager();
 }

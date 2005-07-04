@@ -64,7 +64,7 @@ public class TrainStopsHandler implements ServerAutomaton {
 
 	Point arrivesAtPoint(int x, int y) {
 		TrainAccessor ta = new TrainAccessor(world, principal, trainId);
-		
+
 		Point targetPoint = ta.getTarget();
 
 		if (x == targetPoint.x && y == targetPoint.y) {
@@ -99,29 +99,29 @@ public class TrainStopsHandler implements ServerAutomaton {
 		// there are no stations that exist where the train is currently
 	}
 
-//	/**
-//	 * @return the location of the station the train is currently heading
-//	 *         towards.
-//	 */
-//	Point getTarget() {
-//		TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId,
-//				principal);
-//		int scheduleID = train.getScheduleID();
-//		ImmutableSchedule schedule = (ImmutableSchedule) world.get(
-//				KEY.TRAIN_SCHEDULES, scheduleID, principal);
-//		int stationNumber = schedule.getStationToGoto();
-//
-//		if (-1 == stationNumber) {
-//			// There are no stations on the schedule.
-//			return new Point(0, 0);
-//		}
-//
-//		StationModel station = (StationModel) world.get(KEY.STATIONS,
-//				stationNumber, principal);
-//
-//		return new Point(station.x, station.y);
-//	}
-	
+	// /**
+	// * @return the location of the station the train is currently heading
+	// * towards.
+	// */
+	// Point getTarget() {
+	// TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId,
+	// principal);
+	// int scheduleID = train.getScheduleID();
+	// ImmutableSchedule schedule = (ImmutableSchedule) world.get(
+	// KEY.TRAIN_SCHEDULES, scheduleID, principal);
+	// int stationNumber = schedule.getStationToGoto();
+	//
+	// if (-1 == stationNumber) {
+	// // There are no stations on the schedule.
+	// return new Point(0, 0);
+	// }
+	//
+	// StationModel station = (StationModel) world.get(KEY.STATIONS,
+	// stationNumber, principal);
+	//
+	// return new Point(station.x, station.y);
+	// }
+
 	public void initAutomaton(MoveReceiver mr) {
 		moveReceiver = mr;
 

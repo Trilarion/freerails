@@ -4,7 +4,7 @@
  */
 package jfreerails.world.train;
 
-import static jfreerails.world.common.OneTileMoveVector.TILE_DIAMETER;
+import static jfreerails.world.common.Step.TILE_DIAMETER;
 
 import java.awt.Point;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.IntLine;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.common.PositionOnTrack;
 
 /**
@@ -31,7 +31,7 @@ public class PathOnTiles implements FreerailsSerializable {
 
 	private final Point start;
 
-	private final OneTileMoveVector[] vectors;
+	private final Step[] vectors;
 
 	/**
 	 * @throws NullPointerException
@@ -41,10 +41,10 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * @throws NullPointerException
 	 *             if null == vectorsList.get(i) for any i;
 	 */
-	public PathOnTiles(Point start, List<OneTileMoveVector> vectorsList) {
+	public PathOnTiles(Point start, List<Step> vectorsList) {
 		if (null == start)
 			throw new NullPointerException();
-		vectors = new OneTileMoveVector[vectorsList.size()];
+		vectors = new Step[vectorsList.size()];
 		for (int i = 0; i < vectorsList.size(); i++) {
 			if (null == vectorsList.get(i))
 				throw new NullPointerException();
@@ -61,7 +61,7 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * @throws NullPointerException
 	 *             if null == vectors[i] for any i;
 	 */
-	public PathOnTiles(Point start, OneTileMoveVector[] vectors) {
+	public PathOnTiles(Point start, Step[] vectors) {
 		if (null == start)
 			throw new NullPointerException();
 		for (int i = 0; i < vectors.length; i++) {
@@ -92,14 +92,14 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * Returns the distance you would travel if you walked the all the way along
 	 * the path.
 	 */
-	public int getLength() {		
+	public int getLength() {
 		return getDistance(vectors.length);
 	}
 
 	public int getDistance(int steps) {
 		int distanceSoFar = 0;
 		for (int i = 0; i < steps; i++) {
-			OneTileMoveVector v = vectors[i];
+			Step v = vectors[i];
 			distanceSoFar += v.getLength();
 		}
 		return distanceSoFar;
@@ -122,7 +122,7 @@ public class PathOnTiles implements FreerailsSerializable {
 		int y = start.y * TILE_DIAMETER + TILE_DIAMETER / 2;
 		int distanceSoFar = 0;
 		for (int i = 0; i < vectors.length; i++) {
-			OneTileMoveVector v = vectors[i];
+			Step v = vectors[i];
 			distanceSoFar += v.getLength();
 			x += v.deltaX * TILE_DIAMETER;
 			y += v.deltaY * TILE_DIAMETER;
@@ -144,18 +144,18 @@ public class PathOnTiles implements FreerailsSerializable {
 		return new Point(start);
 	}
 
-	public OneTileMoveVector getStep(int i) {
+	public Step getStep(int i) {
 		return vectors[i];
 	}
-	
-	public PositionOnTrack getFinalPosition(){
+
+	public PositionOnTrack getFinalPosition() {
 		int x = start.x;
 		int y = start.y;
-		for(OneTileMoveVector v: vectors){		
-			x+=v.deltaX;
-			y+=v.deltaY;
+		for (Step v : vectors) {
+			x += v.deltaX;
+			y += v.deltaY;
 		}
-		OneTileMoveVector finalStep = vectors[vectors.length-1];
+		Step finalStep = vectors[vectors.length - 1];
 		PositionOnTrack p = PositionOnTrack.createFacing(x, y, finalStep);
 		return p;
 	}
@@ -174,7 +174,7 @@ public class PathOnTiles implements FreerailsSerializable {
 			throw new IllegalArgumentException("distance < 0");
 		int distanceSoFar = 0;
 		for (int i = 0; i < vectors.length; i++) {
-			OneTileMoveVector v = vectors[i];
+			Step v = vectors[i];
 			distanceSoFar += v.getLength();
 			if (distanceSoFar >= distance)
 				return i;
@@ -189,15 +189,16 @@ public class PathOnTiles implements FreerailsSerializable {
 	public int steps() {
 		return vectors.length;
 	}
-	
-	public PathOnTiles addSteps(OneTileMoveVector... newSteps){
+
+	public PathOnTiles addSteps(Step... newSteps) {
 		int oldLength = vectors.length;
-		OneTileMoveVector[] newPath = new OneTileMoveVector[oldLength + newSteps.length];
-		for(int i = 0 ; i < oldLength; i++){
+		Step[] newPath = new Step[oldLength
+				+ newSteps.length];
+		for (int i = 0; i < oldLength; i++) {
 			newPath[i] = vectors[i];
 		}
-		for(int i = 0 ; i < newSteps.length; i++){
-			newPath[i+oldLength] = newSteps[i];
+		for (int i = 0; i < newSteps.length; i++) {
+			newPath[i + oldLength] = newSteps[i];
 		}
 		return new PathOnTiles(start, newPath);
 	}
@@ -236,7 +237,7 @@ public class PathOnTiles implements FreerailsSerializable {
 				points.add(new Point(x, y));
 			}
 
-			OneTileMoveVector v = vectors[i];
+			Step v = vectors[i];
 			tile.x += v.deltaX;
 			tile.y += v.deltaY;
 			distanceSoFar += v.getLength();
@@ -244,9 +245,9 @@ public class PathOnTiles implements FreerailsSerializable {
 		}
 
 		Point first = getPoint(offset);
-		if(points.size() ==0){
+		if (points.size() == 0) {
 			points.addFirst(first);
-		}else if(!points.getFirst().equals(first)) {
+		} else if (!points.getFirst().equals(first)) {
 			points.addFirst(first);
 		}
 
@@ -256,7 +257,7 @@ public class PathOnTiles implements FreerailsSerializable {
 		}
 
 		return new FreerailsPathIterator() {
-			private static final long serialVersionUID = 1L;			
+			private static final long serialVersionUID = 1L;
 
 			int index = 0;
 
@@ -281,22 +282,25 @@ public class PathOnTiles implements FreerailsSerializable {
 
 		};
 	}
-	
-	public Iterator<Point> tiles(){
-		return new Iterator<Point>(){			
+
+	public Iterator<Point> tiles() {
+		return new Iterator<Point>() {
 			int index = 0;
+
 			Point p = new Point(start);
-			public boolean hasNext() {				
+
+			public boolean hasNext() {
 				return p != null;
 			}
 
-			public Point next() {	
-				if(p == null) throw new NoSuchElementException();
+			public Point next() {
+				if (p == null)
+					throw new NoSuchElementException();
 				Point returnValue = new Point(p);
-				if(index < vectors.length){
+				if (index < vectors.length) {
 					p.x += vectors[index].deltaX;
 					p.y += vectors[index].deltaY;
-				}else{
+				} else {
 					p = null;
 				}
 				index++;
@@ -304,9 +308,9 @@ public class PathOnTiles implements FreerailsSerializable {
 			}
 
 			public void remove() {
-				throw new UnsupportedOperationException();				
+				throw new UnsupportedOperationException();
 			}
-			
+
 		};
 	}
 

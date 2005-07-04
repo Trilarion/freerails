@@ -48,7 +48,6 @@ import jfreerails.world.player.Player;
  * Code that loops through lists should handle null values gracefully
  * </p>
  * 
- * Note, this class has been annotated for use with ConstJava.
  * 
  * @author Luke
  * @author Rob
@@ -122,7 +121,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 	 * Returns the number of elements in the specified list.
 	 */
 	int size(SKEY key);
-	
+
 	/**
 	 * Returns the number of elements in the specified list.
 	 */

@@ -2,139 +2,144 @@ package jfreerails.server;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 
-
 /**
- * This class initialises cities and controls their growth.  It makes changes to directly
- * to the world object, so if the game has already started, use WorldDifferences and MapDiffMove to
- * pass changes to the clients.
- *
+ * This class initialises cities and controls their growth. It makes changes to
+ * directly to the world object, so if the game has already started, use
+ * WorldDifferences and MapDiffMove to pass changes to the clients.
+ * 
  * @author Luke
- *
+ * 
  */
 public class CityTilePositioner {
-    Random random = new Random();
-    ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<TerrainType> ();
-    ArrayList<TerrainType>  industryTerrainTypes = new ArrayList<TerrainType> ();
-    ArrayList<TerrainType>  resourceTerrainTypes = new ArrayList<TerrainType> ();
-    World w;
+	Random random = new Random();
 
-    public CityTilePositioner(World w) {
-        this.w = w;
+	ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<TerrainType>();
 
-        //get the different types of Urban/Industry/Resource terrain
-        for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
-            TerrainType type = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
-            switch (type.getCategory().ordinal()){
-            case 0:
-                urbanTerrainTypes.add(type);
-                break;
-            case 6:
-                industryTerrainTypes.add(type);
-                break;
-           case 7:
-                resourceTerrainTypes.add(type);
-                break;            
-            }
-        }
-    }
+	ArrayList<TerrainType> industryTerrainTypes = new ArrayList<TerrainType>();
 
-    void initCities() {
-        final int numCities = w.size(SKEY.CITIES);
-        CityEconomicModel[] cities = new CityEconomicModel[numCities];
+	ArrayList<TerrainType> resourceTerrainTypes = new ArrayList<TerrainType>();
 
-        for (int cityId = 0; cityId < numCities; cityId++) {
-            CityEconomicModel city = new CityEconomicModel();
-            city.loadFromMap(w, cityId);
+	World w;
 
-            final int urbanTiles = 2 + random.nextInt(3);
+	public CityTilePositioner(World w) {
+		this.w = w;
 
-            for (int i = 0; i < urbanTiles; i++) {
-                addUrbanTile(city);
-            }
+		// get the different types of Urban/Industry/Resource terrain
+		for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
+			TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
+			switch (type.getCategory().ordinal()) {
+			case 0:
+				urbanTerrainTypes.add(type);
+				break;
+			case 6:
+				industryTerrainTypes.add(type);
+				break;
+			case 7:
+				resourceTerrainTypes.add(type);
+				break;
+			}
+		}
+	}
 
-            final int industryTiles = random.nextInt(3);
+	void initCities() {
+		final int numCities = w.size(SKEY.CITIES);
+		CityEconomicModel[] cities = new CityEconomicModel[numCities];
 
-            for (int i = 0; i < industryTiles; i++) {
-                addIndustryTile(city);
-            }
+		for (int cityId = 0; cityId < numCities; cityId++) {
+			CityEconomicModel city = new CityEconomicModel();
+			city.loadFromMap(w, cityId);
 
-            final int resourceTiles = random.nextInt(3);
+			final int urbanTiles = 2 + random.nextInt(3);
 
-            for (int i = 0; i < resourceTiles; i++) {
-                addResourceTile(city);
-            }
+			for (int i = 0; i < urbanTiles; i++) {
+				addUrbanTile(city);
+			}
 
-            city.write2map(w);
-            cities[cityId] = city;
-        }
-    }
+			final int industryTiles = random.nextInt(3);
 
-    private void addResourceTile(CityEconomicModel city) {
-        int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
-        TerrainType type = resourceTerrainTypes.get(tileTypeNo);
-        city.addTile(type);
-    }
+			for (int i = 0; i < industryTiles; i++) {
+				addIndustryTile(city);
+			}
 
-    private void addIndustryTile(CityEconomicModel city) {
-        int size = city.industriesNotAtCity.size();
+			final int resourceTiles = random.nextInt(3);
 
-        if (size > 0) {
-            int tileTypeNo = random.nextInt(size);
-            TerrainType type = city.industriesNotAtCity.get(tileTypeNo);
-            city.addTile(type);
-        }
-    }
+			for (int i = 0; i < resourceTiles; i++) {
+				addResourceTile(city);
+			}
 
-    private void addUrbanTile(CityEconomicModel city) {
-        int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
-        TerrainType type = urbanTerrainTypes.get(tileTypeNo);
-        city.addTile(type);
-    }
+			city.write2map(w);
+			cities[cityId] = city;
+		}
+	}
 
-    void growCities() {
-        final int numCities = w.size(SKEY.CITIES);
+	private void addResourceTile(CityEconomicModel city) {
+		int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
+		TerrainType type = resourceTerrainTypes.get(tileTypeNo);
+		city.addTile(type);
+	}
 
-        /* At some stage this will be refined to take into account
-         * how much cargo has been picked up and delivered and what
-         * city tiles are already present.
-         */
-        for (int cityId = 0; cityId < numCities; cityId++) {
-            CityEconomicModel city = new CityEconomicModel();
-            city.loadFromMap(w, cityId);
+	private void addIndustryTile(CityEconomicModel city) {
+		int size = city.industriesNotAtCity.size();
 
-            //Only increase cities with stations and less than 16 tiles
-            if (city.size() < 16 && city.stations > 0) {
-                switch (random.nextInt(10)) {
-                case 0:
-                case 1:
-                    addResourceTile(city); //20% chance
+		if (size > 0) {
+			int tileTypeNo = random.nextInt(size);
+			TerrainType type = city.industriesNotAtCity.get(tileTypeNo);
+			city.addTile(type);
+		}
+	}
 
-                    break;
+	private void addUrbanTile(CityEconomicModel city) {
+		int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
+		TerrainType type = urbanTerrainTypes.get(tileTypeNo);
+		city.addTile(type);
+	}
 
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                    addUrbanTile(city); //40% chance
+	void growCities() {
+		final int numCities = w.size(SKEY.CITIES);
 
-                    break;
+		/*
+		 * At some stage this will be refined to take into account how much
+		 * cargo has been picked up and delivered and what city tiles are
+		 * already present.
+		 */
+		for (int cityId = 0; cityId < numCities; cityId++) {
+			CityEconomicModel city = new CityEconomicModel();
+			city.loadFromMap(w, cityId);
 
-                case 6:
-                    addIndustryTile(city); //10% chance
+			// Only increase cities with stations and less than 16 tiles
+			if (city.size() < 16 && city.stations > 0) {
+				switch (random.nextInt(10)) {
+				case 0:
+				case 1:
+					addResourceTile(city); // 20% chance
 
-                    break;
+					break;
 
-                default:
-                    //do nothing, 30% chance
-                    break;
-                }
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+					addUrbanTile(city); // 40% chance
 
-                city.write2map(w);
-            }
-        }
-    }
+					break;
+
+				case 6:
+					addIndustryTile(city); // 10% chance
+
+					break;
+
+				default:
+					// do nothing, 30% chance
+					break;
+				}
+
+				city.write2map(w);
+			}
+		}
+	}
 }

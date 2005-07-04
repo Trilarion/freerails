@@ -2,6 +2,7 @@ package jfreerails.server;
 
 import java.awt.Point;
 import java.util.ArrayList;
+
 import jfreerails.controller.ToAndFroPathIterator;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
@@ -15,61 +16,64 @@ import jfreerails.world.top.WorldImpl;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPositionOnMap;
 
-
 /**
  * Used by TrainMoverTest.
+ * 
  * @author Luke Lindsay 30-Oct-2002
- *
+ * 
  */
 public class TrainFixture {
-    private TrainMover trainMover;
-    private final ArrayList<Point> points = new ArrayList<Point>();
-    private final World w = new WorldImpl(0, 0);
+	private TrainMover trainMover;
 
-    public TrainFixture() {
-        points.add(new Point(0, 0));
-        points.add(new Point(80, 80));
-        points.add(new Point(150, 100));
+	private final ArrayList<Point> points = new ArrayList<Point>();
 
-        TrainModel train = new TrainModel(0);
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        w.add(KEY.TRAINS, train, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.TRAIN_POSITIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
+	private final World w = new WorldImpl(0, 0);
 
-        if (null == w.get(KEY.TRAINS, 0, MapFixtureFactory.TEST_PRINCIPAL)) {
-            throw new NullPointerException();
-        }
+	public TrainFixture() {
+		points.add(new Point(0, 0));
+		points.add(new Point(80, 80));
+		points.add(new Point(150, 100));
 
-        FreerailsPathIterator to = pathIterator();
-        FreerailsPathIterator from = pathIterator();
-        trainMover = new TrainMover(to, w, 0, MapFixtureFactory.TEST_PRINCIPAL);
+		TrainModel train = new TrainModel(0);
+		w.addPlayer(MapFixtureFactory.TEST_PLAYER);
+		w.add(KEY.TRAINS, train, MapFixtureFactory.TEST_PRINCIPAL);
+		w.add(KEY.TRAIN_POSITIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
 
-        TrainPositionOnMap initialPosition = TrainBuilder.setInitialTrainPosition(train,
-                from);
+		if (null == w.get(KEY.TRAINS, 0, MapFixtureFactory.TEST_PRINCIPAL)) {
+			throw new NullPointerException();
+		}
 
-        Move positionMove = new InitialiseTrainPositionMove(0, initialPosition,
-                MapFixtureFactory.TEST_PRINCIPAL);
+		FreerailsPathIterator to = pathIterator();
+		FreerailsPathIterator from = pathIterator();
+		trainMover = new TrainMover(to, w, 0, MapFixtureFactory.TEST_PRINCIPAL);
 
-        MoveStatus ms = positionMove.doMove(w, Player.AUTHORITATIVE);
+		TrainPositionOnMap initialPosition = TrainBuilder
+				.setInitialTrainPosition(train, from);
 
-        if (!ms.isOk()) {
-            throw new IllegalStateException(ms.message);
-        }
-    }
+		Move positionMove = new InitialiseTrainPositionMove(0, initialPosition,
+				MapFixtureFactory.TEST_PRINCIPAL);
 
-    private FreerailsPathIterator pathIterator() {
-        return new ToAndFroPathIterator(points);
-    }
+		MoveStatus ms = positionMove.doMove(w, Player.AUTHORITATIVE);
 
-    public World getWorld() {
-        return w;
-    }
+		if (!ms.isOk()) {
+			throw new IllegalStateException(ms.message);
+		}
+	}
 
-    /**
- * Returns the trainMover.
- * @return TrainMover
- */
-    public TrainMover getTrainMover() {
-        return trainMover;
-    }
+	private FreerailsPathIterator pathIterator() {
+		return new ToAndFroPathIterator(points);
+	}
+
+	public World getWorld() {
+		return w;
+	}
+
+	/**
+	 * Returns the trainMover.
+	 * 
+	 * @return TrainMover
+	 */
+	public TrainMover getTrainMover() {
+		return trainMover;
+	}
 }

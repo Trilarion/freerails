@@ -11,47 +11,53 @@ import jfreerails.world.common.Money;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.MapFixtureFactory;
 
-
 /**
- *  JUnit test.
+ * JUnit test.
+ * 
  * @author Luke Lindsay
- *
+ * 
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
-    public void testMove() {
-        Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(new Money(0), currentBalance);
+	public void testMove() {
+		Money currentBalance = getWorld().getCurrentBalance(
+				MapFixtureFactory.TEST_PRINCIPAL);
+		assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new Receipt(new Money(100), Transaction.Category.MISC_INCOME);
-        Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t);
-        assertTryMoveIsOk(m);
-        assertTryUndoMoveFails(m);
-        assertDoMoveIsOk(m);
-        currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(new Money(100), currentBalance);
+		Transaction t = new Receipt(new Money(100),
+				Transaction.Category.MISC_INCOME);
+		Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t);
+		assertTryMoveIsOk(m);
+		assertTryUndoMoveFails(m);
+		assertDoMoveIsOk(m);
+		currentBalance = getWorld().getCurrentBalance(
+				MapFixtureFactory.TEST_PRINCIPAL);
+		assertEquals(new Money(100), currentBalance);
 
-        final Player PLAYER_WITHOUT_ACCOUNT = new Player("PLAYER_WITHOUT_ACCOUNT",
-                (new Player("PLAYER_WITHOUT_ACCOUNT")).getPublicKey(), 4);
+		final Player PLAYER_WITHOUT_ACCOUNT = new Player(
+				"PLAYER_WITHOUT_ACCOUNT",
+				(new Player("PLAYER_WITHOUT_ACCOUNT")).getPublicKey(), 4);
 
-        assertEqualsSurvivesSerialisation(m);
+		assertSurvivesSerialisation(m);
 
-        Move m2 = new AddTransactionMove(PLAYER_WITHOUT_ACCOUNT.getPrincipal(),
-                t);
-        assertTryMoveFails(m2);
+		Move m2 = new AddTransactionMove(PLAYER_WITHOUT_ACCOUNT.getPrincipal(),
+				t);
+		assertTryMoveFails(m2);
 
-        assertOkAndRepeatable(m);
-    }
+		assertOkAndRepeatable(m);
+	}
 
-    public void testConstrainedMove() {
-        Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(new Money(0), currentBalance);
+	public void testConstrainedMove() {
+		Money currentBalance = getWorld().getCurrentBalance(
+				MapFixtureFactory.TEST_PRINCIPAL);
+		assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new Bill(new Money(100), Transaction.Category.MISC_INCOME);
-        Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t,
-                true);
+		Transaction t = new Bill(new Money(100),
+				Transaction.Category.MISC_INCOME);
+		Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t,
+				true);
 
-        //This move should fail since there is no money in the account and 
-        //it is constrained is set to true.
-        assertTryMoveFails(m);
-    }
+		// This move should fail since there is no money in the account and
+		// it is constrained is set to true.
+		assertTryMoveFails(m);
+	}
 }

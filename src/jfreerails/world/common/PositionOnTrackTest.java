@@ -2,100 +2,113 @@ package jfreerails.world.common;
 
 import junit.framework.TestCase;
 
-
 /**
  * Junit test for PositionOnTrack.
+ * 
  * @author Luke Lindsay
- *
+ * 
  */
 public class PositionOnTrackTest extends TestCase {
-    /**
-     * Constructor for PositionOnTrackTest.
-     * @param arg0
-     */
-    public PositionOnTrackTest(String arg0) {
-        super(arg0);
-    }
+	/**
+	 * Constructor for PositionOnTrackTest.
+	 * 
+	 * @param arg0
+	 */
+	public PositionOnTrackTest(String arg0) {
+		super(arg0);
+	}
 
-    public void testValidation() {
-        assertTrue(PositionOnTrack.MAX_COORINATE < 70000);
-        assertTrue(PositionOnTrack.MAX_COORINATE > 10000);
-        assertEquals(PositionOnTrack.MAX_DIRECTION, 7);
+	public void testValidation() {
+		assertTrue(PositionOnTrack.MAX_COORINATE < 70000);
+		assertTrue(PositionOnTrack.MAX_COORINATE > 10000);
+		assertEquals(PositionOnTrack.MAX_DIRECTION, 7);
 
-        assertNoException(0, 0, OneTileMoveVector.EAST);
-        assertNoException(PositionOnTrack.MAX_COORINATE,
-            PositionOnTrack.MAX_COORINATE, OneTileMoveVector.NORTH_WEST);
+		assertNoException(0, 0, Step.EAST);
+		assertNoException(PositionOnTrack.MAX_COORINATE,
+				PositionOnTrack.MAX_COORINATE, Step.NORTH_WEST);
 
-        assertException(-1, 0, OneTileMoveVector.EAST);
-        assertException(0, -1, OneTileMoveVector.EAST);
+		assertException(-1, 0, Step.EAST);
+		assertException(0, -1, Step.EAST);
 
-        assertException(PositionOnTrack.MAX_COORINATE + 1,
-            PositionOnTrack.MAX_COORINATE, OneTileMoveVector.NORTH_WEST);
+		assertException(PositionOnTrack.MAX_COORINATE + 1,
+				PositionOnTrack.MAX_COORINATE, Step.NORTH_WEST);
 
-        assertException(PositionOnTrack.MAX_COORINATE,
-            PositionOnTrack.MAX_COORINATE + 1, OneTileMoveVector.NORTH_WEST);
-    }
+		assertException(PositionOnTrack.MAX_COORINATE,
+				PositionOnTrack.MAX_COORINATE + 1, Step.NORTH_WEST);
+	}
 
-    public void testToInt() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
-        PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 30, OneTileMoveVector.NORTH);
+	public void testToInt() {
+		PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
+				Step.NORTH);
+		PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 30,
+				Step.NORTH);
 
-        assertTrue(p1.toInt() != p2.toInt());
-    }
+		assertTrue(p1.toInt() != p2.toInt());
+	}
 
-    public void testSetValuesFromInt() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
+	public void testSetValuesFromInt() {
+		PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
+				Step.NORTH);
 
-        int i = p1.toInt();
-        PositionOnTrack p2 = PositionOnTrack.createComingFrom(60, 70, OneTileMoveVector.EAST);
-        assertTrue(!p1.equals(p2));
-        p2.setValuesFromInt(i);
+		int i = p1.toInt();
+		PositionOnTrack p2 = PositionOnTrack.createComingFrom(60, 70,
+				Step.EAST);
+		assertTrue(!p1.equals(p2));
+		p2.setValuesFromInt(i);
 
-        assertEquals(p1, p2);
+		assertEquals(p1, p2);
 
-        OneTileMoveVector v = OneTileMoveVector.getInstance(7); //7 is the maximum vector number.
+		Step v = Step.getInstance(7); // 7 is the
+																// maximum
+																// vector
+																// number.
 
-        p1 = PositionOnTrack.createComingFrom(PositionOnTrack.MAX_COORINATE, PositionOnTrack.MAX_COORINATE, v);
+		p1 = PositionOnTrack.createComingFrom(PositionOnTrack.MAX_COORINATE,
+				PositionOnTrack.MAX_COORINATE, v);
 
-        i = p1.toInt();
-    }
+		i = p1.toInt();
+	}
 
-    /*
-     * Test for boolean equals(Object)
-     */
-    public void testEqualsObject() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
-        PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
-        assertEquals(p1, p2);
+	/*
+	 * Test for boolean equals(Object)
+	 */
+	public void testEqualsObject() {
+		PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
+				Step.NORTH);
+		PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 20,
+				Step.NORTH);
+		assertEquals(p1, p2);
 
-        p1 = PositionOnTrack.createComingFrom(10, 50, OneTileMoveVector.NORTH);
-        p2 = PositionOnTrack.createComingFrom(10, 20, OneTileMoveVector.NORTH);
+		p1 = PositionOnTrack.createComingFrom(10, 50, Step.NORTH);
+		p2 = PositionOnTrack.createComingFrom(10, 20, Step.NORTH);
 
-        assertTrue(!p1.equals(p2));
-    }
+		assertTrue(!p1.equals(p2));
+	}
 
-    private void assertNoException(int x, int y, OneTileMoveVector v) {
-        try {
-            PositionOnTrack.createComingFrom(x, y, v);
-        } catch (Exception e) {
-            assertTrue(false);
-        }
-    }
+	private void assertNoException(int x, int y, Step v) {
+		try {
+			PositionOnTrack.createComingFrom(x, y, v);
+		} catch (Exception e) {
+			assertTrue(false);
+		}
+	}
 
-    private void assertException(int x, int y, OneTileMoveVector v) {
-        try {
-            PositionOnTrack.createComingFrom(x, y, v);
-            assertTrue(false);
-        } catch (Exception e) {
-        }
-    }
+	private void assertException(int x, int y, Step v) {
+		try {
+			PositionOnTrack.createComingFrom(x, y, v);
+			assertTrue(false);
+		} catch (Exception e) {
+		}
+	}
 
-    public void testGetOpposite() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 10, OneTileMoveVector.NORTH);
-        PositionOnTrack p2 = p1.getOpposite();
-        assertNotNull(p2);
+	public void testGetOpposite() {
+		PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 10,
+				Step.NORTH);
+		PositionOnTrack p2 = p1.getOpposite();
+		assertNotNull(p2);
 
-        PositionOnTrack p3 = PositionOnTrack.createComingFrom(10, 11, OneTileMoveVector.SOUTH);
-        assertEquals(p3, p2);
-    }
+		PositionOnTrack p3 = PositionOnTrack.createComingFrom(10, 11,
+				Step.SOUTH);
+		assertEquals(p3, p2);
+	}
 }

@@ -15,101 +15,106 @@ import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
-
 /**
  * JUnit test for FinancialDataGatherer.
+ * 
  * @author Luke
- *
+ * 
  */
 public class FinancialDataGathererTest extends TestCase {
-    World w;
-    Player player = MapFixtureFactory.TEST_PLAYER;
+	World w;
 
-    protected void setUp() throws Exception {
-        w = new WorldImpl();
+	Player player = MapFixtureFactory.TEST_PLAYER;
 
-        w.addPlayer(player);
-        w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
-        w.addTransaction(IssueStockTransaction.issueStock(FinancialMoveProducer.IPO_SIZE, 5), player.getPrincipal());
-    }
+	protected void setUp() throws Exception {
+		w = new WorldImpl();
 
-    public void testChangeTreasuryStock() {
-    }
+		w.addPlayer(player);
+		w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
+		w.addTransaction(IssueStockTransaction.issueStock(
+				FinancialMoveProducer.IPO_SIZE, 5), player.getPrincipal());
+	}
 
-    public void testChangeStake() {
-    }
+	public void testChangeTreasuryStock() {
+	}
 
-    public void testCanIssueBond() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w,
-                player.getPrincipal());
-        assertTrue(fdg.canIssueBond()); //5%
+	public void testChangeStake() {
+	}
 
-        assertTrue(addBond()); //6%
-        assertTrue(addBond()); //7%		
-        assertFalse(addBond()); //8% so can't	
-        fdg = new FinancialDataGatherer(w, player.getPrincipal());
-        assertEquals(8, fdg.nextBondInterestRate());
-    }
+	public void testCanIssueBond() {
+		FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
+				.getPrincipal());
+		assertTrue(fdg.canIssueBond()); // 5%
 
-    /** Adds a bond and returns true if another bond can be added. Written to
-     * avoid copy & paste in testCanIssueBond().*/
-    private boolean addBond() {
-        FinancialDataGatherer fdg;
-        w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
-        fdg = new FinancialDataGatherer(w, player.getPrincipal());
+		assertTrue(addBond()); // 6%
+		assertTrue(addBond()); // 7%
+		assertFalse(addBond()); // 8% so can't
+		fdg = new FinancialDataGatherer(w, player.getPrincipal());
+		assertEquals(8, fdg.nextBondInterestRate());
+	}
 
-        boolean canIssueBond = fdg.canIssueBond();
+	/**
+	 * Adds a bond and returns true if another bond can be added. Written to
+	 * avoid copy & paste in testCanIssueBond().
+	 */
+	private boolean addBond() {
+		FinancialDataGatherer fdg;
+		w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
+		fdg = new FinancialDataGatherer(w, player.getPrincipal());
 
-        return canIssueBond;
-    }
+		boolean canIssueBond = fdg.canIssueBond();
 
-    public void testNextBondInterestRate() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w,
-                player.getPrincipal());
-        assertEquals(5, fdg.nextBondInterestRate());
-        w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
-        fdg = new FinancialDataGatherer(w, player.getPrincipal());
-        assertEquals(6, fdg.nextBondInterestRate());
-    }
+		return canIssueBond;
+	}
 
-    public void testBondInterestRates() {
-    }
+	public void testNextBondInterestRate() {
+		FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
+				.getPrincipal());
+		assertEquals(5, fdg.nextBondInterestRate());
+		w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
+		fdg = new FinancialDataGatherer(w, player.getPrincipal());
+		assertEquals(6, fdg.nextBondInterestRate());
+	}
 
-    public void testTreasuryStock() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w,
-                player.getPrincipal());
-        assertEquals(0, fdg.treasuryStock());
+	public void testBondInterestRates() {
+	}
 
-        Transaction t = new AddItemTransaction(Transaction.Category.ISSUE_STOCK, 0,
-                FinancialMoveProducer.SHARE_BUNDLE_SIZE, new Money(0));
-        w.addTransaction(t, player.getPrincipal());
-        fdg = new FinancialDataGatherer(w, player.getPrincipal());
-//        assertEquals(FinancialMoveProducer.SHARE_BUNDLE_SIZE,
-//            fdg.treasuryStock());
-    }
+	public void testTreasuryStock() {
+		FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
+				.getPrincipal());
+		assertEquals(0, fdg.treasuryStock());
 
-    public void testTotalShares() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w,
-                player.getPrincipal());
-        int expected = FinancialMoveProducer.IPO_SIZE;
-        assertEquals(expected, fdg.totalShares());
-    }
+		Transaction t = new AddItemTransaction(
+				Transaction.Category.ISSUE_STOCK, 0,
+				FinancialMoveProducer.SHARE_BUNDLE_SIZE, new Money(0));
+		w.addTransaction(t, player.getPrincipal());
+		fdg = new FinancialDataGatherer(w, player.getPrincipal());
+		// assertEquals(FinancialMoveProducer.SHARE_BUNDLE_SIZE,
+		// fdg.treasuryStock());
+	}
 
-    public void testOtherRRShares() {
-    }
+	public void testTotalShares() {
+		FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
+				.getPrincipal());
+		int expected = FinancialMoveProducer.IPO_SIZE;
+		assertEquals(expected, fdg.totalShares());
+	}
 
-    public void testOtherRRsWithStake() {
-    }
+	public void testOtherRRShares() {
+	}
 
-    public void testShareHolderEquity() {
-    }
+	public void testOtherRRsWithStake() {
+	}
 
-    public void testSharePrice() {
-    }
+	public void testShareHolderEquity() {
+	}
 
-    public void testProfitLastYear() {
-    }
+	public void testSharePrice() {
+	}
 
-    public void testNetWorth() {
-    }
+	public void testProfitLastYear() {
+	}
+
+	public void testNetWorth() {
+	}
 }

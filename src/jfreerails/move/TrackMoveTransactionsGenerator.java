@@ -4,11 +4,14 @@
  */
 package jfreerails.move;
 
+import static jfreerails.world.accounts.Transaction.Category.BRIDGES;
+import static jfreerails.world.accounts.Transaction.Category.STATIONS;
+import static jfreerails.world.accounts.Transaction.Category.TRACK;
+
 import java.util.ArrayList;
 
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
-import static jfreerails.world.accounts.Transaction.Category.*;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -17,7 +20,6 @@ import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
-
 
 /**
  * This class calculates the cost of a series of track moves. The motivation for
@@ -89,7 +91,7 @@ public class TrackMoveTransactionsGenerator {
 			CompositeMove cm = (CompositeMove) move;
 			cm.getMoves();
 
-			/* =const */Move[] moves = cm.getMoves();
+			Move[] moves = cm.getMoves();
 
 			for (int i = 0; i < moves.length; i++) {
 				unpackMove(moves[i]);
@@ -119,7 +121,7 @@ public class TrackMoveTransactionsGenerator {
 				break;
 			}
 			default: {
-				//Do nothing.
+				// Do nothing.
 			}
 
 			}
@@ -180,12 +182,14 @@ public class TrackMoveTransactionsGenerator {
 				transactions.add(t);
 			}
 		}
-		if( 0 != fixedCostsStations){
-			Transaction t = new AddItemTransaction(STATIONS, -1, -1, new Money(fixedCostsStations));
+		if (0 != fixedCostsStations) {
+			Transaction t = new AddItemTransaction(STATIONS, -1, -1, new Money(
+					fixedCostsStations));
 			transactions.add(t);
 		}
-		if( 0 != fixedCostsBridges){
-			Transaction t = new AddItemTransaction(BRIDGES, -1, -1, new Money(fixedCostsBridges));
+		if (0 != fixedCostsBridges) {
+			Transaction t = new AddItemTransaction(BRIDGES, -1, -1, new Money(
+					fixedCostsBridges));
 			transactions.add(t);
 		}
 	}

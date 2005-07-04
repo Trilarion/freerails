@@ -11,74 +11,76 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
 
-
 /**
- * Class to build a station at a given point, names station after nearest
- * city. If that name is taken then a "Junction" or "Siding" is added to
- * the name.
+ * Class to build a station at a given point, names station after nearest city.
+ * If that name is taken then a "Junction" or "Siding" is added to the name.
+ * 
  * @author Luke Lindsay 08-Nov-2002
- *
+ * 
  * Updated 12th April 2003 by Scott Bennett to include nearest city names.
- *
+ * 
  */
 public class StationBuilder {
-    private static final Logger logger = Logger.getLogger(StationBuilder.class.getName());
-    private int ruleNumber;
-    private final MoveExecutor executor;
+	private static final Logger logger = Logger.getLogger(StationBuilder.class
+			.getName());
 
-    public StationBuilder(MoveExecutor executor) {
-        this.executor = executor;
+	private int ruleNumber;
 
-        TrackRule trackRule;
+	private final MoveExecutor executor;
 
-        int i = -1;
+	public StationBuilder(MoveExecutor executor) {
+		this.executor = executor;
 
-        ReadOnlyWorld world = executor.getWorld();
+		TrackRule trackRule;
 
-        do {
-            i++;
-            trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, i);
-        } while (!trackRule.isStation());
+		int i = -1;
 
-        ruleNumber = i;
-    }
+		ReadOnlyWorld world = executor.getWorld();
 
-    public MoveStatus tryBuildingStation(Point p) {
-        ReadOnlyWorld world = executor.getWorld();
-        
-        FreerailsPrincipal principal = executor.getPrincipal();
-        AddStationPreMove preMove = AddStationPreMove.newStation(p,
-                this.ruleNumber, principal);
-        Move m = preMove.generateMove(world);
-       
-        MoveStatus ms = executor.tryDoMove(m);
+		do {
+			i++;
+			trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+		} while (!trackRule.isStation());
 
-        return ms;
-    }
+		ruleNumber = i;
+	}
 
-    public MoveStatus buildStation(Point p) {
-        //Only build a station if there is track at the specified point.
-    	MoveStatus status = tryBuildingStation(p);
-        if (status.ok) {
-            FreerailsPrincipal principal = executor.getPrincipal();
-            AddStationPreMove preMove = AddStationPreMove.newStation(p,
-                    this.ruleNumber, principal);          
-            return executor.doPreMove(preMove);           
-        }		
+	public MoveStatus tryBuildingStation(Point p) {
+		ReadOnlyWorld world = executor.getWorld();
+
+		FreerailsPrincipal principal = executor.getPrincipal();
+		AddStationPreMove preMove = AddStationPreMove.newStation(p,
+				this.ruleNumber, principal);
+		Move m = preMove.generateMove(world);
+
+		MoveStatus ms = executor.tryDoMove(m);
+
+		return ms;
+	}
+
+	public MoveStatus buildStation(Point p) {
+		// Only build a station if there is track at the specified point.
+		MoveStatus status = tryBuildingStation(p);
+		if (status.ok) {
+			FreerailsPrincipal principal = executor.getPrincipal();
+			AddStationPreMove preMove = AddStationPreMove.newStation(p,
+					this.ruleNumber, principal);
+			return executor.doPreMove(preMove);
+		}
 		logger.warning(status.message);
 		return status;
-    }
+	}
 
-    public void setStationType(int ruleNumber) {
-        this.ruleNumber = ruleNumber;
-    }
-    
-    int getTrackTypeID(String string){
-    	ReadOnlyWorld w = executor.getWorld();
-		for(int i = 0 ; i < w.size(SKEY.TRACK_RULES); i++){
-			TrackRule r = (TrackRule)w.get(SKEY.TRACK_RULES, i);
-			
-			if(string.equals(r.getTypeName())){
+	public void setStationType(int ruleNumber) {
+		this.ruleNumber = ruleNumber;
+	}
+
+	int getTrackTypeID(String string) {
+		ReadOnlyWorld w = executor.getWorld();
+		for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
+			TrackRule r = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+
+			if (string.equals(r.getTypeName())) {
 				return i;
 			}
 		}

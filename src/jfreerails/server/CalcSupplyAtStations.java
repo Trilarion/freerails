@@ -10,55 +10,57 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 
-
 /**
- * This class loops through all of the known stations and recalculates
- * the cargoes that they supply, demand, and convert.
- *
- * @author Scott Bennett
- * Created: 19th May 2003
+ * This class loops through all of the known stations and recalculates the
+ * cargoes that they supply, demand, and convert.
+ * 
+ * @author Scott Bennett Created: 19th May 2003
  */
 public class CalcSupplyAtStations {
-    private final World w;
-    private final MoveReceiver moveReceiver;
+	private final World w;
 
-    /**
-     *
-     * Constructor, currently called from GUIComponentFactory.
-     *
-     * @param world The World object that contains all about the game world
-     *
-     */
-    public CalcSupplyAtStations(World world, MoveReceiver mr) {
-        this.w = world;
-        this.moveReceiver = mr;
-    }
+	private final MoveReceiver moveReceiver;
 
-    /**
-     *
-     * Loop through each known station, call calculations method.
-     *
-     */
-    public void doProcessing() {
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
-            NonNullElements iterator = new NonNullElements(KEY.STATIONS, w,
-                    principal);
+	/**
+	 * 
+	 * Constructor, currently called from GUIComponentFactory.
+	 * 
+	 * @param world
+	 *            The World object that contains all about the game world
+	 * 
+	 */
+	public CalcSupplyAtStations(World world, MoveReceiver mr) {
+		this.w = world;
+		this.moveReceiver = mr;
+	}
 
-            while (iterator.next()) {
-                StationModel stationBefore = (StationModel)iterator.getElement();
-                CalcCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalcCargoSupplyRateAtStation(w,
-                        stationBefore.x, stationBefore.y);
+	/**
+	 * 
+	 * Loop through each known station, call calculations method.
+	 * 
+	 */
+	public void doProcessing() {
+		for (int i = 0; i < w.getNumberOfPlayers(); i++) {
+			FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
+			NonNullElements iterator = new NonNullElements(KEY.STATIONS, w,
+					principal);
 
-                StationModel stationAfter = supplyRate.calculations(stationBefore);
+			while (iterator.next()) {
+				StationModel stationBefore = (StationModel) iterator
+						.getElement();
+				CalcCargoSupplyRateAtStation supplyRate;
+				supplyRate = new CalcCargoSupplyRateAtStation(w,
+						stationBefore.x, stationBefore.y);
 
-                if (!stationAfter.equals(stationBefore)) {
-                    Move move = new ChangeStationMove(iterator.getIndex(),
-                            stationBefore, stationAfter, principal);
-                    this.moveReceiver.processMove(move);
-                }
-            }
-        }
-    }
+				StationModel stationAfter = supplyRate
+						.calculations(stationBefore);
+
+				if (!stationAfter.equals(stationBefore)) {
+					Move move = new ChangeStationMove(iterator.getIndex(),
+							stationBefore, stationAfter, principal);
+					this.moveReceiver.processMove(move);
+				}
+			}
+		}
+	}
 }

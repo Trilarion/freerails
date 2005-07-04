@@ -8,20 +8,20 @@ import jfreerails.move.MoveStatus;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 
-
 /**
  * Lets the caller try and execute Moves.
- *  @author Luke
- *
+ * 
+ * @author Luke
+ * 
  */
 public interface MoveExecutor {
-    MoveStatus doMove(Move m);
+	MoveStatus doMove(Move m);
 
-    MoveStatus doPreMove(PreMove pm);
+	MoveStatus doPreMove(PreMove pm);
 
-    MoveStatus tryDoMove(Move m);
+	MoveStatus tryDoMove(Move m);
 
-    ReadOnlyWorld getWorld();
+	ReadOnlyWorld getWorld();
 
-    FreerailsPrincipal getPrincipal();
+	FreerailsPrincipal getPrincipal();
 }

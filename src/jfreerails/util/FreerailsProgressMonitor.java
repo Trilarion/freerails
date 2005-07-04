@@ -5,31 +5,32 @@
  */
 package jfreerails.util;
 
-
-/** This interface defines callbacks that can be used to let the user know how a slow task is progressing.
- *
- * @author  Luke Lindsay
+/**
+ * This interface defines callbacks that can be used to let the user know how a
+ * slow task is progressing.
+ * 
+ * @author Luke Lindsay
  */
 public interface FreerailsProgressMonitor {
-    public static final FreerailsProgressMonitor NULL_INSTANCE = new FreerailsProgressMonitor() {
-            public void setMessage(String s) {
-            }
+	public static final FreerailsProgressMonitor NULL_INSTANCE = new FreerailsProgressMonitor() {
+		public void setMessage(String s) {
+		}
 
-            public void setValue(int i) {
-            }
+		public void setValue(int i) {
+		}
 
-            public void setMax(int max) {
-            }
+		public void setMax(int max) {
+		}
 
-            public void finished() {
-            }
-        };
+		public void finished() {
+		}
+	};
 
-    void setMessage(String s);
+	void setMessage(String s);
 
-    void setValue(int i);
+	void setValue(int i);
 
-    void setMax(int max);
+	void setMax(int max);
 
-    void finished();
+	void finished();
 }

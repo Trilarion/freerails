@@ -5,33 +5,58 @@ package jfreerails.network;
 
 import jfreerails.world.top.World;
 
-
 /**
- * Sent from the server to the client when (i) a new game is started, (ii) a game is loaded, or (iii)
- * the client connects to a game in progress.
- *  @author Luke
- *
+ * Sent from the server to the client when (i) a new game is started, (ii) a
+ * game is loaded, or (iii) the client connects to a game in progress.
+ * 
+ * @author Luke
+ * 
  */
 public class SetWorldMessage2Client implements Message2Client {
-    private static final long serialVersionUID = 3257570619972269362L;
+	private static final long serialVersionUID = 3257570619972269362L;
+
 	private final int id;
-    private final World world;
 
-    /** Note, makes a defensive copy of the
-     * world object passed to it.
-     */
-    public SetWorldMessage2Client(int id, World world) {
-        this.id = id;
-        this.world = world.defensiveCopy();
-    }
+	private final World world;
 
-    public MessageStatus execute(ClientControlInterface client) {
-        client.setGameModel(world.defensiveCopy());
+	/**
+	 * Note, makes a defensive copy of the world object passed to it.
+	 */
+	public SetWorldMessage2Client(int id, World world) {
+		this.id = id;
+		this.world = world.defensiveCopy();
+	}
 
-        return new MessageStatus(id, true);
-    }
+	public MessageStatus execute(ClientControlInterface client) {
+		client.setGameModel(world.defensiveCopy());
 
-    public int getID() {
-        return id;
-    }
+		return new MessageStatus(id, true);
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof SetWorldMessage2Client))
+			return false;
+
+		final SetWorldMessage2Client setWorldMessage2Client = (SetWorldMessage2Client) o;
+
+		if (id != setWorldMessage2Client.id)
+			return false;
+		if (!world.equals(setWorldMessage2Client.world))
+			return false;
+
+		return true;
+	}
+
+	public int hashCode() {
+		int result;
+		result = id;
+		result = 29 * result + world.hashCode();
+		return result;
+	}
 }

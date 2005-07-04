@@ -3,6 +3,12 @@
  */
 package jfreerails.client.view;
 
+import static jfreerails.world.accounts.Transaction.Category.BOND;
+import static jfreerails.world.accounts.Transaction.Category.INDUSTRIES;
+import static jfreerails.world.accounts.Transaction.Category.ISSUE_STOCK;
+import static jfreerails.world.accounts.Transaction.Category.STATIONS;
+import static jfreerails.world.accounts.Transaction.Category.TRACK;
+import static jfreerails.world.accounts.Transaction.Category.TRAIN;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
@@ -15,7 +21,6 @@ import jfreerails.world.top.SKEY;
 import jfreerails.world.top.TransactionAggregator;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
-import static jfreerails.world.accounts.Transaction.Category.*;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so

@@ -7,8 +7,8 @@ package jfreerails.world.train;
 import junit.framework.TestCase;
 
 public class MutableScheduleTest extends TestCase {
-	
-	public void test1(){
+
+	public void test1() {
 		TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
 		TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);
 		MutableSchedule s = new MutableSchedule();

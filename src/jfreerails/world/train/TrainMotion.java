@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.common.Step;
 import jfreerails.world.common.PositionOnTrack;
 
 /**
@@ -21,19 +21,16 @@ import jfreerails.world.common.PositionOnTrack;
  * reasons for this are as follows.
  * 
  * <ol type="i">
- * <li>
- * It decouples the number of game updates per second and number of frames
+ * <li> It decouples the number of game updates per second and number of frames
  * per second shown by the client. If the train’s position were stored on the
  * world object, it would get updated each game tick. But this would mean that
  * if the game was being updated 10 times per second, even if the client was
  * displaying 50 FPS, the train’s motion would still appear jerky since its
- * position would only change 10 times per second.
- * </li>
+ * position would only change 10 times per second. </li>
  * <li>
  * 
- * It makes supporting low bandwidth networks easier since it allows the
- * server to send updates less frequently.
- * </li>
+ * It makes supporting low bandwidth networks easier since it allows the server
+ * to send updates less frequently. </li>
  * </p>
  * 
  * 
@@ -178,7 +175,8 @@ public class TrainMotion implements FreerailsSerializable {
 	}
 
 	/**
-	 * Returns a PathOnTiles object that identifies the tiles the train is on at the specified time.
+	 * Returns a PathOnTiles object that identifies the tiles the train is on at
+	 * the specified time.
 	 * 
 	 * @param t
 	 *            the time.
@@ -190,29 +188,29 @@ public class TrainMotion implements FreerailsSerializable {
 		checkT(t);
 		int start = calcOffSet(t);
 		int end = start + trainLength;
-		ArrayList<OneTileMoveVector> steps = new ArrayList<OneTileMoveVector>();
+		ArrayList<Step> steps = new ArrayList<Step>();
 		int distanceSoFar = 0;
 		Point p = path.getStart();
 		Point startPoint = null;
 		for (int i = 0; i < path.steps(); i++) {
-			OneTileMoveVector step = path.getStep(i);
+			Step step = path.getStep(i);
 			distanceSoFar += step.getLength();
 			if (distanceSoFar > start) {
 				steps.add(step);
-				if(null == startPoint){
+				if (null == startPoint) {
 					startPoint = new Point(p);
 				}
 			}
 			p.x += step.deltaX;
 			p.y += step.deltaY;
-			if (distanceSoFar >= end) {				
+			if (distanceSoFar >= end) {
 				break;
 			}
 		}
 		return new PathOnTiles(startPoint, steps);
 	}
-	
-	public PositionOnTrack getFinalPosition(){
+
+	public PositionOnTrack getFinalPosition() {
 		return path.getFinalPosition();
 	}
 
@@ -225,20 +223,23 @@ public class TrainMotion implements FreerailsSerializable {
 	}
 
 	/**
-	 * @param newSpeeds 	specifies the train's speed at different points in time.
-	 * @param newPathSection The path the engine is about to start moving along.
+	 * @param newSpeeds
+	 *            specifies the train's speed at different points in time.
+	 * @param newPathSection
+	 *            The path the engine is about to start moving along.
 	 */
 	public TrainMotion next(SpeedAgainstTime newSpeeds,
-			OneTileMoveVector... newPathSection) {
+			Step... newPathSection) {
 		GameTime start = newSpeeds.getStart();
-		//The tiles the train is sitting on before it starts moving along the new path section.
-		PathOnTiles currentTiles = getTiles(start);		
+		// The tiles the train is sitting on before it starts moving along the
+		// new path section.
+		PathOnTiles currentTiles = getTiles(start);
 		PathOnTiles pathOnTiles = currentTiles.addSteps(newPathSection);
-		return new TrainMotion(pathOnTiles, currentTiles.steps(),
-				trainLength, newSpeeds);
+		return new TrainMotion(pathOnTiles, currentTiles.steps(), trainLength,
+				newSpeeds);
 	}
-	
-	public SpeedTimeAndStatus.Activity getActivity(GameTime time){
+
+	public SpeedTimeAndStatus.Activity getActivity(GameTime time) {
 		return speeds.getActivity(time);
 	}
 

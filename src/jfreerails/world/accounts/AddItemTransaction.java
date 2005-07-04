@@ -6,15 +6,14 @@ package jfreerails.world.accounts;
 
 import jfreerails.world.common.Money;
 
-
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
- *
+ * 
  * @author Luke Lindsay
- *
+ * 
  */
 public class AddItemTransaction implements Transaction {
-	
+
 	private static final long serialVersionUID = 3690471411852326457L;
 
 	public String toString() {
@@ -29,57 +28,60 @@ public class AddItemTransaction implements Transaction {
 		sb.append(m_amount);
 		return sb.toString();
 	}
-    /** For example track. */
-    private final Category m_category;
 
-    public int hashCode() {
-        int result;
-        result = m_category.hashCode();
-        result = 29 * result + m_type;
-        result = 29 * result + m_quantity;
-        result = 29 * result + m_amount.hashCode();
+	/** For example track. */
+	private final Category m_category;
 
-        return result;
-    }
+	public int hashCode() {
+		int result;
+		result = m_category.hashCode();
+		result = 29 * result + m_type;
+		result = 29 * result + m_quantity;
+		result = 29 * result + m_amount.hashCode();
 
-    /** For example, standard track. */
-    private final int m_type;
+		return result;
+	}
 
-    /** For example, 4 tiles. */
-    private final int m_quantity;
-    private final Money m_amount;
+	/** For example, standard track. */
+	private final int m_type;
 
-    public boolean equals(Object obj) {
-        if (obj instanceof AddItemTransaction) {
-            AddItemTransaction test = (AddItemTransaction)obj;
+	/** For example, 4 tiles. */
+	private final int m_quantity;
 
-            return this.m_amount.equals(test.m_amount) &&
-            m_category == test.m_category && m_type == test.m_type &&
-            m_quantity == test.m_quantity;
-        }
+	private final Money m_amount;
+
+	public boolean equals(Object obj) {
+		if (obj instanceof AddItemTransaction) {
+			AddItemTransaction test = (AddItemTransaction) obj;
+
+			return this.m_amount.equals(test.m_amount)
+					&& m_category == test.m_category && m_type == test.m_type
+					&& m_quantity == test.m_quantity;
+		}
 		return false;
-    }
+	}
 
-    public AddItemTransaction(Category category, int type, int quantity, Money amount) {
-        m_category = category;
-        m_type = type;
-        m_quantity = quantity;
-        m_amount = amount;
-    }
+	public AddItemTransaction(Category category, int type, int quantity,
+			Money amount) {
+		m_category = category;
+		m_type = type;
+		m_quantity = quantity;
+		m_amount = amount;
+	}
 
-    public Category getCategory() {
-        return m_category;
-    }
+	public Category getCategory() {
+		return m_category;
+	}
 
-    public int getQuantity() {
-        return m_quantity;
-    }
+	public int getQuantity() {
+		return m_quantity;
+	}
 
-    public int getType() {
-        return m_type;
-    }
+	public int getType() {
+		return m_type;
+	}
 
-    public Money getValue() {
-        return m_amount;
-    }
+	public Money getValue() {
+		return m_amount;
+	}
 }

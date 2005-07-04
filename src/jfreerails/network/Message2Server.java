@@ -5,14 +5,14 @@ package jfreerails.network;
 
 import jfreerails.world.common.FreerailsSerializable;
 
-
 /**
  * Defines a command sent from a client to the server.
- *  @author Luke
- *
+ * 
+ * @author Luke
+ * 
  */
 public interface Message2Server extends FreerailsSerializable {
-    int getID();
+	int getID();
 
-    MessageStatus execute(ServerControlInterface server);
+	MessageStatus execute(ServerControlInterface server);
 }

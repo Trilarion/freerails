@@ -23,11 +23,13 @@ import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
 
-/** Generates track graphic image files.
+/**
+ * Generates track graphic image files.
+ * 
  * @author Luke
- * */
+ */
 public class TrackTilesGenerator extends JPanel {
-	
+
 	private static final long serialVersionUID = 3618982273966487859L;
 
 	public static void main(String[] args) {
@@ -45,9 +47,9 @@ public class TrackTilesGenerator extends JPanel {
 		frame.setVisible(true);
 
 	}
-	
+
 	private final ImageManager imageManager = new ImageManagerImpl(
-	"/experimental/", "/experimental/");
+			"/experimental/", "/experimental/");
 
 	private List<TrackRule> rules;
 
@@ -74,7 +76,7 @@ public class TrackTilesGenerator extends JPanel {
 		Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
 				track_xml_url);
 		rules = trackSetFactory.getRuleList();
-		generateTiles(); 
+		generateTiles();
 
 	}
 
@@ -85,49 +87,49 @@ public class TrackTilesGenerator extends JPanel {
 		return new Point2D.Double(x, y);
 	}
 
-	
 	private void generateTiles() {
-		
+
 		for (TrackRule rule : rules) {
 			TrackRule.TrackCategories category = rule.getCategory();
 			Image icon;
-			if(category.equals(TrackRule.TrackCategories.bridge) || category.equals(TrackRule.TrackCategories.station)){
+			if (category.equals(TrackRule.TrackCategories.bridge)
+					|| category.equals(TrackRule.TrackCategories.station)) {
 				tr.setIcon(rule.getTypeName());
 				icon = tr.icon;
-			}else{
+			} else {
 				icon = null;
 			}
-			if(category.equals(TrackRule.TrackCategories.tunnel)){
+			if (category.equals(TrackRule.TrackCategories.tunnel)) {
 				tr.tunnel = true;
-			}else{
+			} else {
 				tr.tunnel = false;
 			}
 			tr.doubleTrack = rule.isDouble();
-			
+
 			for (int i = 0; i < 512; i++) {
-	            if (rule.testTrackPieceLegality(i)) {
-	            	
-	                String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getTypeName());
-	                TrackConfiguration conf = TrackConfiguration.from9bitTemplate(i);
-	                
-	                Image smallImage = imageManager.newBlankImage(60, 60);
-	                Graphics2D g2 = (Graphics2D)smallImage.getGraphics();
+				if (rule.testTrackPieceLegality(i)) {
+
+					String fileName = TrackPieceRendererImpl.generateFilename(
+							i, rule.getTypeName());
+					TrackConfiguration conf = TrackConfiguration
+							.from9bitTemplate(i);
+
+					Image smallImage = imageManager.newBlankImage(60, 60);
+					Graphics2D g2 = (Graphics2D) smallImage.getGraphics();
 					tr.paintTrackConf(g2, conf);
-	                
-	              
-	                
-//	              Draw icon. Used for bridges and stations.
-	        		if (null != icon) {
-	        			int x = 30 - icon.getWidth(null) / 2;
-	        			int y = 30 - icon.getHeight(null) / 2;
-	        			g2.drawImage(icon,  x, y, null);
-	        		}
-	                
-	        		g2.dispose();
+
+					// Draw icon. Used for bridges and stations.
+					if (null != icon) {
+						int x = 30 - icon.getWidth(null) / 2;
+						int y = 30 - icon.getHeight(null) / 2;
+						g2.drawImage(icon, x, y, null);
+					}
+
+					g2.dispose();
 					imageManager.setImage(fileName, smallImage);
-	            }
-	        }
-		
+				}
+			}
+
 		}
 		try {
 			imageManager.writeAllImages();
@@ -157,33 +159,33 @@ public class TrackTilesGenerator extends JPanel {
 		super.paintComponent(g);
 
 		for (TrackRule rule : rules) {
-			
+
 			String typeName = rule.getTypeName();
-			typeName += rule.isDouble() ? " (Double) ": " (Single)";
-			
-			g.drawString(typeName, 10 ,10);
+			typeName += rule.isDouble() ? " (Double) " : " (Single)";
+
+			g.drawString(typeName, 10, 10);
 			g.translate(0, 30);
-			Graphics2D g2 = (Graphics2D)g.create();
-			
+			Graphics2D g2 = (Graphics2D) g.create();
+
 			for (int i = 0; i < 512; i++) {
-	            if (rule.testTrackPieceLegality(i)) {
-	                String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getTypeName());
-	                Image tile;
+				if (rule.testTrackPieceLegality(i)) {
+					String fileName = TrackPieceRendererImpl.generateFilename(
+							i, rule.getTypeName());
+					Image tile;
 					try {
 						tile = imageManager.getImage(fileName);
-						g2.drawImage(tile, 0 ,0, null);
+						g2.drawImage(tile, 0, 0, null);
 						g2.translate(60, 0);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-	            }
-	        }
-			
+
+				}
+			}
+
 			g.translate(0, 60);
-			
-			
+
 		}
 
 	}
