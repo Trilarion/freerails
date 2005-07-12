@@ -4,12 +4,11 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
-
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.MoveStatus;
-import jfreerails.world.common.Step;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
@@ -32,8 +31,7 @@ import junit.framework.TestCase;
 public class BuildTrackExplorerTest extends TestCase {
 	private WorldImpl world;
 
-	private Player testPlayer = new Player("test", (new Player("test"))
-			.getPublicKey(), 0);
+	private Player testPlayer = new Player("test", 0);
 
 	private FreerailsPrincipal principle;
 
@@ -53,8 +51,7 @@ public class BuildTrackExplorerTest extends TestCase {
 		PositionOnTrack start;
 
 		// Test starting in the middle of the map.
-		start = PositionOnTrack.createComingFrom(10, 10,
-				Step.NORTH);
+		start = PositionOnTrack.createComingFrom(10, 10, Step.NORTH);
 
 		BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
 		explorer.setPosition(start.toInt());
@@ -68,8 +65,7 @@ public class BuildTrackExplorerTest extends TestCase {
 		assertFalse(explorer.hasNextEdge());
 
 		// Test starting in the top left of the map.
-		start = PositionOnTrack.createComingFrom(0, 0,
-				Step.SOUTH_EAST);
+		start = PositionOnTrack.createComingFrom(0, 0, Step.SOUTH_EAST);
 		explorer.setPosition(start.toInt());
 		assertNextVertexIs(Step.EAST, 1, 0, explorer);
 		assertNextVertexIs(Step.SOUTH_EAST, 1, 1, explorer);
@@ -77,8 +73,7 @@ public class BuildTrackExplorerTest extends TestCase {
 		assertFalse(explorer.hasNextEdge());
 
 		// Test starting in the bottom right of the map.
-		start = PositionOnTrack.createComingFrom(19, 19,
-				Step.NORTH_WEST);
+		start = PositionOnTrack.createComingFrom(19, 19, Step.NORTH_WEST);
 		explorer.setPosition(start.toInt());
 		assertNextVertexIs(Step.NORTH, 19, 18, explorer);
 		assertNextVertexIs(Step.WEST, 18, 19, explorer);
@@ -108,8 +103,7 @@ public class BuildTrackExplorerTest extends TestCase {
 		PositionOnTrack start;
 
 		// Test starting in the middle of the map.
-		start = PositionOnTrack.createComingFrom(10, 10,
-				Step.NORTH);
+		start = PositionOnTrack.createComingFrom(10, 10, Step.NORTH);
 
 		BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
 		explorer.setPosition(start.toInt());
@@ -148,8 +142,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
 		// If we enter 10, 11 from the north, we should be able to build track
 		// N, E, W, & NW.
-		start = PositionOnTrack.createComingFrom(10, 11,
-				Step.NORTH);
+		start = PositionOnTrack.createComingFrom(10, 11, Step.NORTH);
 		explorer.setPosition(start.toInt());
 		assertNextVertexIs(Step.NORTH, 10, 10, explorer);
 		assertNextVertexIs(Step.EAST, 11, 11, explorer);
@@ -159,8 +152,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
 		// If we enter 10, 12 from the north, we also should be able to build
 		// track N, E, W, & NW.
-		start = PositionOnTrack.createComingFrom(10, 12,
-				Step.NORTH);
+		start = PositionOnTrack.createComingFrom(10, 12, Step.NORTH);
 		explorer.setPosition(start.toInt());
 		assertNextVertexIs(Step.NORTH, 10, 11, explorer);
 		assertNextVertexIs(Step.EAST, 11, 12, explorer);
@@ -169,8 +161,8 @@ public class BuildTrackExplorerTest extends TestCase {
 		assertFalse(explorer.hasNextEdge());
 	}
 
-	private void assertNextVertexIs(Step oneTileMoveVector, int x,
-			int y, BuildTrackExplorer explorer) {
+	private void assertNextVertexIs(Step oneTileMoveVector, int x, int y,
+			BuildTrackExplorer explorer) {
 		assertTrue(explorer.hasNextEdge());
 		explorer.nextEdge();
 
@@ -183,8 +175,8 @@ public class BuildTrackExplorerTest extends TestCase {
 	private void buildTrack(int x, int y, Step direction) {
 		TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
 		ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-				.generateBuildTrackMove(new Point(x, y), direction, rule, rule,
-						world, MapFixtureFactory.TEST_PRINCIPAL);
+				.generateBuildTrackMove(new ImPoint(x, y), direction, rule,
+						rule, world, MapFixtureFactory.TEST_PRINCIPAL);
 		MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
 		assertTrue(ms.ok);
 	}

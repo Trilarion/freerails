@@ -96,8 +96,8 @@ public class TrainRenderer {
 		wagon.x2 = line.x2;
 		wagon.y2 = line.y2;
 
-		Step v = Step.getNearestVector(wagon.x2
-				- wagon.x1, wagon.y2 - wagon.y1);
+		Step v = Step
+				.getNearestVector(wagon.x2 - wagon.x1, wagon.y2 - wagon.y1);
 		Point p = new Point((wagon.x2 + wagon.x1) / 2,
 				(wagon.y2 + wagon.y1) / 2);
 

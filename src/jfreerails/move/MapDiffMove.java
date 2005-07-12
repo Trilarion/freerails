@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
@@ -19,47 +21,71 @@ import jfreerails.world.track.FreerailsTile;
 public class MapDiffMove implements Move, MapUpdateMove {
 	private static final long serialVersionUID = 3905245632406239544L;
 
-	private/* =mutable */final ArrayList<Point> points;
+	private final ImList<Diff> diffs;
 
-	private/* =mutable */final ArrayList<FreerailsTile> before;
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof MapDiffMove))
+			return false;
 
-	private/* =mutable */final ArrayList<FreerailsTile> after;
+		final MapDiffMove mapDiffMove = (MapDiffMove) o;
 
-	private final Rectangle updateTiles;
+		if (h != mapDiffMove.h)
+			return false;
+		if (w != mapDiffMove.w)
+			return false;
+		if (x != mapDiffMove.x)
+			return false;
+		if (y != mapDiffMove.y)
+			return false;
+		if (!diffs.equals(mapDiffMove.diffs))
+			return false;
 
-	public MapDiffMove(ReadOnlyWorld world, WorldDifferences diffs) {
-		points = new ArrayList<Point>();
-		before = new ArrayList<FreerailsTile>();
-		after = new ArrayList<FreerailsTile>();
+		return true;
+	}
 
-		Iterator<Point> it = diffs.getMapDifferences();
+	public int hashCode() {
+		int result;
+		result = diffs.hashCode();
+		result = 29 * result + x;
+		result = 29 * result + y;
+		result = 29 * result + w;
+		result = 29 * result + h;
+		return result;
+	}
 
+	private final int x, y, w, h;
+
+	public MapDiffMove(ReadOnlyWorld world, WorldDifferences worldDiffs) {
+
+		Iterator<Point> it = worldDiffs.getMapDifferences();
+		ArrayList<Diff> diffsArrayList = new ArrayList<Diff>();
 		while (it.hasNext()) {
 			Point p = it.next();
-			points.add(p);
-
 			FreerailsTile oldTile = (FreerailsTile) world.getTile(p.x, p.y);
-			before.add(oldTile);
-
-			FreerailsTile newTile = (FreerailsTile) diffs.getTile(p.x, p.y);
-			after.add(newTile);
+			FreerailsTile newTile = (FreerailsTile) worldDiffs
+					.getTile(p.x, p.y);
+			diffsArrayList.add(new Diff(oldTile, newTile, p));
 		}
+		diffs = new ImList<Diff>(diffsArrayList);
 
-		updateTiles = new Rectangle(0, 0, world.getMapWidth(), world
-				.getMapHeight());
+		x = 0;
+		y = 0;
+		w = world.getMapWidth();
+		h = world.getMapHeight();
 	}
 
-	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		return tryMove(w, before);
+	public MoveStatus tryDoMove(World world, FreerailsPrincipal p) {
+		return tryMove(world, false);
 	}
 
-	private MoveStatus tryMove(World w, ArrayList<FreerailsTile> arrayList) {
-		for (int i = 0; i < points.size(); i++) {
-			Point point = points.get(i);
-			FreerailsTile actual = (FreerailsTile) w.getTile(point.x, point.y);
-
-			FreerailsTile expected = arrayList.get(i);
-
+	private MoveStatus tryMove(World world, boolean undo) {
+		for (int i = 0; i < diffs.size(); i++) {
+			Diff diff = diffs.get(i);
+			FreerailsTile actual = (FreerailsTile) world
+					.getTile(diff.x, diff.y);
+			FreerailsTile expected = undo ? diff.after : diff.before;
 			if (!actual.equals(expected)) {
 				return MoveStatus.moveFailed("expected =" + expected
 						+ ", actual = " + actual);
@@ -69,71 +95,83 @@ public class MapDiffMove implements Move, MapUpdateMove {
 		return MoveStatus.MOVE_OK;
 	}
 
-	private void doMove(World w, ArrayList<FreerailsTile> arrayList) {
-		for (int i = 0; i < points.size(); i++) {
-			Point point = points.get(i);
-			FreerailsTile tile = arrayList.get(i);
-			w.setTile(point.x, point.y, tile);
+	private void doMove(World world, boolean undo) {
+		for (int i = 0; i < diffs.size(); i++) {
+			Diff diff = diffs.get(i);
+			FreerailsTile tile = undo ? diff.before : diff.after;
+			world.setTile(diff.x, diff.y, tile);
 		}
 	}
 
-	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		return tryMove(w, after);
+	public MoveStatus tryUndoMove(World world, FreerailsPrincipal p) {
+		return tryMove(world, true);
 	}
 
-	public MoveStatus doMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = tryMove(w, before);
+	public MoveStatus doMove(World world, FreerailsPrincipal p) {
+		MoveStatus ms = tryMove(world, false);
 
 		if (ms.isOk()) {
-			doMove(w, after);
+			doMove(world, false);
 		}
 
 		return ms;
 	}
 
-	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = tryMove(w, after);
+	public MoveStatus undoMove(World world, FreerailsPrincipal p) {
+		MoveStatus ms = tryMove(world, true);
 
 		if (ms.isOk()) {
-			doMove(w, before);
+			doMove(world, true);
 		}
 
 		return ms;
-	}
-
-	public boolean equals(Object arg0) {
-		if (null == arg0) {
-			return false;
-		}
-
-		if (!(arg0 instanceof MapDiffMove)) {
-			return false;
-		}
-
-		MapDiffMove test = (MapDiffMove) arg0;
-
-		for (int i = 0; i < points.size(); i++) {
-			if (!points.get(i).equals(test.points.get(i))) {
-				return false;
-			}
-
-			if (!before.get(i).equals(test.before.get(i))) {
-				return false;
-			}
-
-			if (!after.get(i).equals(test.after.get(i))) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public int hashCode() {
-		return points.size();
 	}
 
 	public Rectangle getUpdatedTiles() {
-		return updateTiles;
+		return new Rectangle(x, y, w, h);
+	}
+
+	static class Diff implements FreerailsSerializable {
+		private static final long serialVersionUID = -5935670372745313360L;
+
+		final int x, y;
+
+		final FreerailsTile before, after;
+
+		Diff(FreerailsTile before, FreerailsTile after, Point p) {
+			this.after = after;
+			this.before = before;
+			this.x = p.x;
+			this.y = p.y;
+		}
+
+		public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (!(o instanceof Diff))
+				return false;
+
+			final Diff diff = (Diff) o;
+
+			if (x != diff.x)
+				return false;
+			if (y != diff.y)
+				return false;
+			if (!after.equals(diff.after))
+				return false;
+			if (!before.equals(diff.before))
+				return false;
+
+			return true;
+		}
+
+		public int hashCode() {
+			int result;
+			result = x;
+			result = 29 * result + y;
+			result = 29 * result + before.hashCode();
+			result = 29 * result + after.hashCode();
+			return result;
+		}
 	}
 }

@@ -6,6 +6,7 @@ package jfreerails.move;
 
 import java.util.ArrayList;
 
+import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
 
@@ -21,37 +22,45 @@ import jfreerails.world.top.World;
 public class CompositeMove implements Move {
 	private static final long serialVersionUID = 3257289149391517489L;
 
-	private final Move[] m_moves;
+	private final ImList<Move> m_moves;
+
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof CompositeMove))
+			return false;
+
+		final CompositeMove compositeMove = (CompositeMove) o;
+
+		if (!m_moves.equals(compositeMove.m_moves))
+			return false;
+
+		return true;
+	}
 
 	/**
 	 * This method lets sub classes look at the moves.
 	 */
 	final Move getMove(int i) {
-		return m_moves[i];
+		return m_moves.get(i);
 	}
 
 	public int hashCode() {
 		// This will do for now.
-		return m_moves.length;
+		return m_moves.size();
 	}
 
-	public final Move[] getMoves() {
+	public final ImList<Move> getMoves() {
 		return m_moves;
 	}
 
 	CompositeMove(ArrayList<Move> movesArrayList) {
 
-		Move[] moves = new Move[movesArrayList.size()];
-
-		for (int i = 0; i < movesArrayList.size(); i++) {
-			moves[i] = movesArrayList.get(i);
-		}
-
-		m_moves = moves;
+		m_moves = new ImList<Move>(movesArrayList);
 	}
 
 	public CompositeMove(Move... moves) {
-		this.m_moves = moves;
+		this.m_moves = new ImList<Move>(moves);
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -63,7 +72,7 @@ public class CompositeMove implements Move {
 
 		if (ms.ok) {
 			// We just wanted to see if we could do them so we undo them again.
-			undoMoves(w, m_moves.length - 1, p);
+			undoMoves(w, m_moves.size() - 1, p);
 		}
 
 		// If its not ok, then doMove would have undone the moves so we don't
@@ -88,8 +97,8 @@ public class CompositeMove implements Move {
 			return ms;
 		}
 
-		for (int i = 0; i < m_moves.length; i++) {
-			ms = m_moves[i].doMove(w, p);
+		for (int i = 0; i < m_moves.size(); i++) {
+			ms = m_moves.get(i).doMove(w, p);
 
 			if (!ms.ok) {
 				// Undo any moves we have already done.
@@ -105,8 +114,8 @@ public class CompositeMove implements Move {
 	public final MoveStatus undoMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = MoveStatus.MOVE_OK;
 
-		for (int i = m_moves.length - 1; i >= 0; i--) {
-			ms = m_moves[i].undoMove(w, p);
+		for (int i = m_moves.size() - 1; i >= 0; i--) {
+			ms = m_moves.get(i).undoMove(w, p);
 
 			if (!ms.ok) {
 				// Redo any moves we have already undone.
@@ -121,7 +130,7 @@ public class CompositeMove implements Move {
 
 	private final void undoMoves(World w, int number, FreerailsPrincipal p) {
 		for (int i = number; i >= 0; i--) {
-			MoveStatus ms = m_moves[i].undoMove(w, p);
+			MoveStatus ms = m_moves.get(i).undoMove(w, p);
 
 			if (!ms.ok) {
 				throw new IllegalStateException(ms.message);
@@ -130,31 +139,13 @@ public class CompositeMove implements Move {
 	}
 
 	private final void redoMoves(World w, int number, FreerailsPrincipal p) {
-		for (int i = number; i < m_moves.length; i++) {
-			MoveStatus ms = m_moves[i].doMove(w, p);
+		for (int i = number; i < m_moves.size(); i++) {
+			MoveStatus ms = m_moves.get(i).doMove(w, p);
 
 			if (!ms.ok) {
 				throw new IllegalStateException(ms.message);
 			}
 		}
-	}
-
-	public final boolean equals(Object o) {
-		if (o instanceof CompositeMove) {
-			CompositeMove test = (CompositeMove) o;
-
-			if (this.m_moves.length != test.m_moves.length) {
-				return false;
-			}
-			for (int i = 0; i < this.m_moves.length; i++) {
-				if (!this.m_moves[i].equals(test.m_moves[i])) {
-					return false;
-				}
-			}
-
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -168,8 +159,8 @@ public class CompositeMove implements Move {
 	public final String toString() {
 		String s = "";
 
-		for (int i = 0; i < m_moves.length; i++) {
-			s += m_moves[i].toString() + ((i > 0) ? ", " : "");
+		for (int i = 0; i < m_moves.size(); i++) {
+			s += m_moves.get(i).toString() + ((i > 0) ? ", " : "");
 		}
 
 		return s;

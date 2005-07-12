@@ -3,7 +3,7 @@
  */
 package jfreerails.network;
 
-import java.io.Serializable;
+import jfreerails.world.common.FreerailsSerializable;
 
 /**
  * A Message2Client that lets the server set a property (for example, the list
@@ -16,6 +16,19 @@ public class SetPropertyMessage2Client implements Message2Client {
 	private static final long serialVersionUID = 3544392521746034740L;
 
 	private final int id;
+
+	private final String key;
+
+	private final FreerailsSerializable value;
+
+	public SetPropertyMessage2Client(int id, String key,
+			FreerailsSerializable value) {
+		if (null == key || null == value)
+			throw new NullPointerException();
+		this.id = id;
+		this.key = key;
+		this.value = value;
+	}
 
 	public boolean equals(Object o) {
 		if (this == o)
@@ -35,26 +48,6 @@ public class SetPropertyMessage2Client implements Message2Client {
 		return true;
 	}
 
-	public int hashCode() {
-		int result;
-		result = id;
-		result = 29 * result + key.hashCode();
-		result = 29 * result + value.hashCode();
-		return result;
-	}
-
-	private final String key;
-
-	private final Serializable value;
-
-	public SetPropertyMessage2Client(int id, String key, Serializable value) {
-		if (null == key || null == value)
-			throw new NullPointerException();
-		this.id = id;
-		this.key = key;
-		this.value = value;
-	}
-
 	public MessageStatus execute(ClientControlInterface client) {
 		client.setProperty(key, value);
 
@@ -63,5 +56,13 @@ public class SetPropertyMessage2Client implements Message2Client {
 
 	public int getID() {
 		return id;
+	}
+
+	public int hashCode() {
+		int result;
+		result = id;
+		result = 29 * result + key.hashCode();
+		result = 29 * result + value.hashCode();
+		return result;
 	}
 }

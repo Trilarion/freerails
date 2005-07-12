@@ -4,6 +4,8 @@
  */
 package jfreerails.world.train;
 
+import jfreerails.world.common.ImInts;
+
 /**
  * Defines methods to access a train's schedule.
  * 
@@ -28,7 +30,7 @@ public interface Schedule {
 
 	/** Returns the wagons to add at the next scheduled stop. */
 
-	int[] getWagonsToAdd();
+	ImInts getWagonsToAdd();
 
 	/** Returns the value for the autoconsist flag at the next scheduled stop. */
 	boolean autoConsist();

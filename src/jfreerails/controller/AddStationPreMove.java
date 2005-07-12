@@ -4,7 +4,6 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.NoSuchElementException;
 
 import jfreerails.move.AddItemToListMove;
@@ -14,6 +13,8 @@ import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.TrackMoveTransactionsGenerator;
+import jfreerails.world.common.ImList;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -34,7 +35,7 @@ public class AddStationPreMove implements PreMove {
 
 	private static final long serialVersionUID = 3258131349411148085L;
 
-	private final Point p;
+	private final ImPoint p;
 
 	private final int ruleNumber;
 
@@ -66,19 +67,19 @@ public class AddStationPreMove implements PreMove {
 		return result;
 	}
 
-	private AddStationPreMove(Point p, int trackRule,
+	private AddStationPreMove(ImPoint p, int trackRule,
 			FreerailsPrincipal principal) {
 		this.p = p;
 		this.ruleNumber = trackRule;
 		this.principal = principal;
 	}
 
-	public static AddStationPreMove newStation(Point p, int trackRule,
+	public static AddStationPreMove newStation(ImPoint p, int trackRule,
 			FreerailsPrincipal principal) {
 		return new AddStationPreMove(p, trackRule, principal);
 	}
 
-	public static AddStationPreMove upgradeStation(Point p, int trackRule,
+	public static AddStationPreMove upgradeStation(ImPoint p, int trackRule,
 			FreerailsPrincipal principal) {
 		return new AddStationPreMove(p, trackRule, principal);
 	}
@@ -137,7 +138,11 @@ public class AddStationPreMove implements PreMove {
 	}
 
 	private CompositeMove addSupplyAndDemand(CompositeMove m, ReadOnlyWorld w) {
-		Move[] moves = m.getMoves();
+		ImList<Move> moves2 = m.getMoves();
+		Move[] moves = new Move[moves2.size()];
+		for (int i = 0; i < moves2.size(); i++) {
+			moves[i] = moves2.get(i);
+		}
 
 		for (int i = 0; i < moves.length; i++) {
 			if (moves[i] instanceof AddItemToListMove) {

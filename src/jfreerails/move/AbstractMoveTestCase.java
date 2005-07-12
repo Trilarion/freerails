@@ -7,12 +7,17 @@ package jfreerails.move;
 import jfreerails.util.Utils;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameCalendar;
+import jfreerails.world.common.ImPoint;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
+import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.NullTrackType;
+import jfreerails.world.train.PathOnTiles;
 import junit.framework.TestCase;
 
 /**
@@ -226,4 +231,23 @@ public abstract class AbstractMoveTestCase extends TestCase {
 	}
 
 	abstract public void testMove();
+
+	protected void assertTrackHere(int x, int y) {
+
+		FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
+		assertFalse(tile.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER);
+	}
+
+	protected void assertTrackHere(PathOnTiles path) {
+		ImPoint start = path.getStart();
+		int x = start.x;
+		int y = start.y;
+		for (int i = 0; i < path.steps(); i++) {
+			assertTrackHere(x, y);
+			Step step = path.getStep(i);
+			x += step.deltaX;
+			y += step.deltaY;
+			assertTrackHere(x, y);
+		}
+	}
 }

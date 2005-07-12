@@ -5,6 +5,7 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.train.TrainModel;
@@ -24,7 +25,7 @@ public class ChangeTrainMove extends ChangeItemInListMove {
 	}
 
 	public static ChangeTrainMove generateMove(int id, TrainModel before,
-			int newEngine, int[] newWagons, FreerailsPrincipal p) {
+			int newEngine, ImInts newWagons, FreerailsPrincipal p) {
 		TrainModel after = before.getNewInstance(newEngine, newWagons);
 
 		return new ChangeTrainMove(id, before, after, p);

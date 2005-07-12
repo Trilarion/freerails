@@ -1,9 +1,9 @@
 package jfreerails.move;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.terrain.TerrainType;
@@ -34,9 +34,9 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
 	private final TrackPiece trackPieceAfter;
 
-	private final Point location;
+	private final ImPoint location;
 
-	public Point getLocation() {
+	public ImPoint getLocation() {
 		return location;
 	}
 
@@ -58,10 +58,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		return trackPieceAfter;
 	}
 
-	public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point p) {
+	public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, ImPoint p) {
 		trackPieceBefore = before;
 		trackPieceAfter = after;
-		location = new Point(p);
+		location = p;
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -156,8 +156,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
 		// Check 4 overlapping stations.
 		if (newTrackPiece.getTrackRule().isStation()) {
-			MoveStatus ms = ChangeTrackPieceMove.check4overlap(w, new Point(
-					location), newTrackPiece);
+			MoveStatus ms = ChangeTrackPieceMove.check4overlap(w, location,
+					newTrackPiece);
 			if (!ms.ok)
 				return ms;
 		}
@@ -202,7 +202,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		return moveStatus;
 	}
 
-	private boolean noDiagonalTrackConflicts(Point point, int trackTemplate,
+	private boolean noDiagonalTrackConflicts(ImPoint point, int trackTemplate,
 			World w) {
 		/*
 		 * This method is needs replacing. It only deals with flat track pieces,
@@ -308,7 +308,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 	 * is getting built, (2) when a station is getting upgraded, (3) when a
 	 * staton is getting removed.
 	 */
-	protected static MoveStatus check4overlap(World w, Point location,
+	protected static MoveStatus check4overlap(World w, ImPoint location,
 			TrackPiece trackPiece) {
 		/*
 		 * Fix for 915945 (Stations should not overlap) Check that there is not

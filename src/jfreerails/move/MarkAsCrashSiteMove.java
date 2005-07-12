@@ -30,8 +30,8 @@ public class MarkAsCrashSiteMove extends ChangeItemInListMove {
 			FreerailsPrincipal p) {
 		TrainPositionOnMap pos = (TrainPositionOnMap) w.get(
 				KEY.TRAIN_POSITIONS, index, p);
-		TrainPositionOnMap newPos = TrainPositionOnMap.createInstance(pos
-				.getXPoints(), pos.getYPoints());
+		TrainPositionOnMap newPos = new TrainPositionOnMap(pos.getXPoints(),
+				pos.getYPoints());
 		newPos.setCrashSite(true);
 
 		return new MarkAsCrashSiteMove(index, pos, newPos, p);

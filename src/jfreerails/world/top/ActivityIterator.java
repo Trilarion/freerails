@@ -7,7 +7,6 @@ package jfreerails.world.top;
 import java.util.NoSuchElementException;
 
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.GameTime;
 
 public interface ActivityIterator {
 
@@ -15,13 +14,15 @@ public interface ActivityIterator {
 
 	void nextActivity() throws NoSuchElementException;
 
-	GameTime getStartTime();
+	/** Returns the time the current activity starts. */
+	double getStartTime();
 
-	GameTime getFinishTime();
+	/** Returns the time the current activity ends. */
+	double getFinishTime();
 
-	int getDuration();
+	double getDuration();
 
-	FreerailsSerializable getState(GameTime t);
+	FreerailsSerializable getState(double t);
 
 	Activity getActivity();
 

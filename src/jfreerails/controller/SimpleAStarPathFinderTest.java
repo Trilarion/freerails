@@ -104,10 +104,10 @@ class Map implements GraphExplorer {
 	private final Node[] nodes = new Node[] {
 			new Node(new int[] { 1 }, new int[] { 11 }), // 0
 			new Node(new int[] { 0, 5, 2 }, new int[] { 11, 4, 8 }), // 1 //
-																		// try
-																		// {11,4,4}
+			// try
+			// {11,4,4}
 			new Node(new int[] { 5, 3, 4, 1 }, new int[] { 5, 10, 12, 8 }), // 2
-																			// //try{5,10,12,4}
+			// //try{5,10,12,4}
 			new Node(new int[] { 2 }, new int[] { 10 }), // 3
 			new Node(new int[] { 5, 2 }, new int[] { 18, 12 }), // 4
 			new Node(new int[] { 1, 6, 4, 2 }, new int[] { 4, 3, 18, 5 }), // 5

@@ -170,7 +170,7 @@ public class WorldDifferences implements World {
 	}
 
 	/** Used by unit tests. */
-	int numberOfMapDifferences() {
+	public int numberOfMapDifferences() {
 		return this.mapDifferences.size();
 	}
 

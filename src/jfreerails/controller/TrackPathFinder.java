@@ -4,14 +4,14 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import jfreerails.util.IntArray;
-import jfreerails.world.common.Step;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -34,7 +34,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
 	private final ReadOnlyWorld m_world;
 
-	private Point m_startPoint;
+	private ImPoint m_startPoint;
 
 	private final FreerailsPrincipal m_principal;
 
@@ -47,14 +47,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
 		m_pathFinder.abandonSearch();
 	}
 
-	private List<Point> convertPath2Points(IntArray path) {
+	private List<ImPoint> convertPath2Points(IntArray path) {
 		PositionOnTrack progress = new PositionOnTrack();
-		List<Point> proposedTrack = new ArrayList<Point>();
+		List<ImPoint> proposedTrack = new ArrayList<ImPoint>();
 
-		Point p;
+		ImPoint p;
 		for (int i = 0; i < path.size(); i++) {
 			progress.setValuesFromInt(path.get(i));
-			p = new Point(progress.getX(), progress.getY());
+			p = new ImPoint(progress.getX(), progress.getY());
 			proposedTrack.add(p);
 			logger.fine("Adding point " + p);
 		}
@@ -62,7 +62,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 		return proposedTrack;
 	}
 
-	private int[] findTargets(Point targetPoint) {
+	private int[] findTargets(ImPoint targetPoint) {
 		FreerailsTile tile = (FreerailsTile) m_world.getTile(targetPoint.x,
 				targetPoint.y);
 		int ruleNumber = tile.getTrackTypeID();
@@ -106,8 +106,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
 			for (int i = 0; i < 8; i++) {
 				PositionOnTrack targetPot = PositionOnTrack.createComingFrom(
-						targetPoint.x, targetPoint.y, Step
-								.getInstance(i));
+						targetPoint.x, targetPoint.y, Step.getInstance(i));
 				targetInts[i] = targetPot.toInt();
 			}
 		}
@@ -115,7 +114,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 		return targetInts;
 	}
 
-	public List generatePath(Point startPoint, Point targetPoint,
+	public List generatePath(ImPoint startPoint, ImPoint targetPoint,
 			BuildTrackStrategy bts) throws PathNotFoundException {
 		setupSearch(startPoint, targetPoint, bts);
 		m_pathFinder.search(-1);
@@ -131,7 +130,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 		return m_pathFinder.getStatus();
 	}
 
-	public List<Point> pathAsPoints() {
+	public List<ImPoint> pathAsPoints() {
 		IntArray path = m_pathFinder.retrievePath();
 
 		return convertPath2Points(path);
@@ -161,7 +160,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 		m_pathFinder.search(maxDuration);
 	}
 
-	public void setupSearch(Point startPoint, Point targetPoint,
+	public void setupSearch(ImPoint startPoint, ImPoint targetPoint,
 			BuildTrackStrategy bts) throws PathNotFoundException {
 		logger
 				.fine("Find track path from " + startPoint + " to "

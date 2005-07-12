@@ -35,9 +35,10 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 	private int lastNumberOfTrains = -1;
 
 	private boolean rhsjTabPane = false; // if the train list is for the
-											// rhsjTabPane then use the original
-											// renderer, if not use the
-											// trainsummaryjpanel
+
+	// rhsjTabPane then use the original
+	// renderer, if not use the
+	// trainsummaryjpanel
 
 	/** Creates new form TrainListJPanel. */
 	public TrainListJPanel() {

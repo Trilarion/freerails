@@ -20,13 +20,11 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 
 	private static final long serialVersionUID = 3257853198755707184L;
 
-	public static PositionOnTrack createComingFrom(int x, int y,
-			Step direction) {
+	public static PositionOnTrack createComingFrom(int x, int y, Step direction) {
 		return new PositionOnTrack(x, y, direction);
 	}
 
-	public static PositionOnTrack createFacing(int x, int y,
-			Step direction) {
+	public static PositionOnTrack createFacing(int x, int y, Step direction) {
 		return new PositionOnTrack(x, y, direction.getOpposite());
 	}
 
@@ -161,6 +159,12 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public void move(Step step) {
+		this.x += step.deltaX;
+		this.y += step.deltaY;
+		this.cameFrom = step.getOpposite();
 	}
 
 	/**

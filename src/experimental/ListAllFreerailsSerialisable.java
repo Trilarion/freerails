@@ -4,30 +4,84 @@
  */
 package experimental;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
 import java.util.logging.Logger;
 
 import jfreerails.util.ClassLocater;
+import jfreerails.util.Immutable;
 import jfreerails.util.InstanceControlled;
 import jfreerails.world.common.FreerailsSerializable;
 
 public class ListAllFreerailsSerialisable {
 
+	static final HashSet<Class> immutableTypes = new HashSet<Class>();
+
+	static final HashSet<Class> mutableTypes = new HashSet<Class>();
+
 	static Logger logger = Logger.getLogger(ListAllFreerailsSerialisable.class
 			.getName());
 
 	public static void main(String[] args) {
+		immutableTypes.clear();
+		mutableTypes.clear();
 
-		// Class clazz = KEY.class;
+		immutableTypes.add(String.class);
+
+		// Class clazz = StationModel.class;
 		// System.err.println(overridesHashCodeAndEquals(clazz));
 		// System.out.println(clazz.isAnnotationPresent(InstanceControlled.class));
-		// Annotation[] ans =clazz.getAnnotations();
-		// for(Annotation an : ans){
+		// Annotation[] ans = clazz.getAnnotations();
+		// for (Annotation an : ans) {
 		// System.err.println(an);
 		// }
+		// System.err.println(checkFields(clazz));
+
 		testAllClasses();
 
+		for (Class c : mutableTypes) {
+			System.err.println(c.getName());
+		}
+
+	}
+
+	static boolean checkFields(Class<?> clazz) {
+		Field[] fields = clazz.getDeclaredFields();
+		boolean okSoFar = true;
+		boolean assertImmutable = clazz.isAnnotationPresent(Immutable.class);
+
+		for (Field field : fields) {
+			int modifiers = field.getModifiers();
+			if (Modifier.isStatic(modifiers)) {
+				logger.fine("Skipping static field " + field.getName());
+				continue;
+			}
+
+			Class<?> type = field.getType();
+			if (type.isPrimitive()) {
+				continue;
+			}
+			// if(!Modifier.isPrivate(modifiers)){
+			// System.err.println(clazz.getName()+field.getName()+" should be
+			// private!");
+			// okSoFar = false;
+			// }
+			if (!FreerailsSerializable.class.isAssignableFrom(type)
+					&& !assertImmutable) {
+				if (!immutableTypes.contains(type) && !type.isEnum()
+						&& !type.isAnnotationPresent(Immutable.class)) {
+					System.err.println(clazz.getName() + "." + field.getName()
+							+ " {" + type.getName()
+							+ "} might not be immutable!");
+					okSoFar = false;
+					if (!type.isArray())
+						mutableTypes.add(type);
+				}
+			}
+		}
+		return okSoFar;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -53,6 +107,7 @@ public class ListAllFreerailsSerialisable {
 			}
 
 			boolean b = overridesHashCodeAndEquals(clazz);
+			b = b && checkFields(clazz);
 			if (!b) {
 				classesWithProblems++;
 			}

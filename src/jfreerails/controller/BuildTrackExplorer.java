@@ -4,11 +4,11 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.NoSuchElementException;
 
-import jfreerails.world.common.Step;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -38,7 +38,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
 	private int m_direction = 0;
 
-	private final Point m_target;
+	private final ImPoint m_target;
 
 	private BuildTrackStrategy m_buildTrackStrategy;
 
@@ -49,11 +49,11 @@ public class BuildTrackExplorer implements GraphExplorer {
 	private final FreerailsPrincipal m_principle;
 
 	public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle) {
-		this(w, principle, null, new Point(0, 0));
+		this(w, principle, null, new ImPoint(0, 0));
 	}
 
 	public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle,
-			Point start, Point target) {
+			ImPoint start, ImPoint target) {
 		m_world = w;
 		m_principle = principle;
 		PositionOnTrack pos;
@@ -61,8 +61,8 @@ public class BuildTrackExplorer implements GraphExplorer {
 		if (null == start) {
 			pos = new PositionOnTrack();
 		} else {
-			pos = PositionOnTrack.createComingFrom(start.x, start.y,
-					Step.NORTH);
+			pos = PositionOnTrack
+					.createComingFrom(start.x, start.y, Step.NORTH);
 		}
 
 		m_currentPosition.setValuesFromInt(pos.toInt());
@@ -90,8 +90,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 	 */
 	private boolean canBuildTrack() {
 		// Check that we are not doubling back on ourselves.
-		Step opposite2current = m_currentPosition.cameFrom()
-				.getOpposite();
+		Step opposite2current = m_currentPosition.cameFrom().getOpposite();
 		int currentX = m_currentPosition.getX();
 		int currentY = m_currentPosition.getY();
 		int directionWeCameFrom = opposite2current.getID();
@@ -105,8 +104,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 		}
 
 		// Check that we are not going off the map.
-		Step directionOfNextTile = Step
-				.getInstance(m_direction);
+		Step directionOfNextTile = Step.getInstance(m_direction);
 
 		int newX = currentX + directionOfNextTile.getDx();
 
@@ -174,8 +172,8 @@ public class BuildTrackExplorer implements GraphExplorer {
 					y2check);
 			TrackConfiguration config2check = tile2Check
 					.getTrackConfiguration();
-			Step vector2check = Step.getInstance(
-					directionOfNextTile.deltaX, -directionOfNextTile.deltaY);
+			Step vector2check = Step.getInstance(directionOfNextTile.deltaX,
+					-directionOfNextTile.deltaY);
 
 			if (config2check.contains(vector2check)) {
 				// then we have a diagonal conflict.
@@ -188,8 +186,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
 		fromConfig2 = TrackConfiguration.add(fromConfig2, TILE_CENTER);
 
-		Step goingBack = Step
-				.getInstance(m_direction).getOpposite();
+		Step goingBack = Step.getInstance(m_direction).getOpposite();
 		fromConfig2 = TrackConfiguration.add(fromConfig2, goingBack);
 
 		if (!rule4nextTile.trackPieceIsLegal(fromConfig2)) {
@@ -230,12 +227,11 @@ public class BuildTrackExplorer implements GraphExplorer {
 		if (m_beforeFirst) {
 			throw new IllegalStateException();
 		}
-		Step edgeDirection = Step
-				.getInstance(m_direction - 1);
-		int length = edgeDirection.getLength();
+		Step edgeDirection = Step.getInstance(m_direction - 1);
+		double length = edgeDirection.getLength();
 		final int DISTANCE_COST = 10000; // Same as the cost of standard
-											// track.
-		int cost = DISTANCE_COST * length;
+		// track.
+		int cost = (int) Math.round(DISTANCE_COST * length);
 
 		if (!m_usingExistingTrack) {
 			int[] x = { m_currentPosition.getX(),
@@ -257,9 +253,8 @@ public class BuildTrackExplorer implements GraphExplorer {
 			TrackRule currentRuleA = a.getTrackRule();
 			if (!currentRuleA.equals(ruleA)) {
 				assert (!currentRuleA.isStation()); // We shouldn't be upgrading
-													// a station.
-				cost += ruleA.getFixedCost().getAmount()
-						* Step.TILE_DIAMETER;
+				// a station.
+				cost += ruleA.getFixedCost().getAmount() * Step.TILE_DIAMETER;
 			}
 		}
 		return cost;
@@ -310,8 +305,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 			throw new NoSuchElementException();
 		}
 		// The direction we are moving relative to the current position.
-		Step direction = Step
-				.getInstance(m_direction);
+		Step direction = Step.getInstance(m_direction);
 
 		m_currentBranch.setCameFrom(direction);
 		m_currentBranch.setX(m_currentPosition.getX() + direction.getDx());

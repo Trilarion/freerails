@@ -193,15 +193,15 @@ public class ServerControlModel {
 			new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),
 			new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),
 			new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3), // by
-																			// MystiqueAgent:
-																			// added
-																			// keyEvent
-																			// parameter
+			// MystiqueAgent:
+			// added
+			// keyEvent
+			// parameter
 			new SetTargetTicksPerSecondAction("Git'r Dun", 80, KeyEvent.VK_4), // by
-																				// SonnyZ:
-																				// Pretty
-																				// funny
-																				// eh?
+	// SonnyZ:
+	// Pretty
+	// funny
+	// eh?
 	};
 
 	private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(

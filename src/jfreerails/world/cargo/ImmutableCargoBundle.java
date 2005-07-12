@@ -3,6 +3,8 @@ package jfreerails.world.cargo;
 import java.util.Iterator;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImInts;
+import jfreerails.world.common.ImList;
 
 /**
  * This class represents a bundle of cargo made up of quantities of cargo from
@@ -43,10 +45,10 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
 		StringBuffer sb = new StringBuffer();
 		sb.append("CargoBundle {\n");
 
-		for (int i = 0; i < m_batches.length; i++) {
-			sb.append(m_amounts[i]);
+		for (int i = 0; i < m_batches.size(); i++) {
+			sb.append(m_amounts.get(i));
 			sb.append(" units of cargo type ");
-			sb.append(m_batches[i]);
+			sb.append(m_batches.get(i));
 			sb.append("\n");
 		}
 
@@ -84,31 +86,31 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
 	}
 
 	public int hashCode() {
-		return m_amounts.length;
+		return m_amounts.size();
 	}
 
 	public static final ImmutableCargoBundle EMPTY_BUNDLE = new ImmutableCargoBundle(
 			new CargoBatch[0], new int[0]);
 
-	private final CargoBatch[] m_batches;
+	private final ImList<CargoBatch> m_batches;
 
-	private final int[] m_amounts;
+	private final ImInts m_amounts;
 
 	public ImmutableCargoBundle(CargoBatch[] batches, int[] amounts) {
 		if (batches.length != amounts.length) {
 			throw new IllegalArgumentException();
 		}
 
-		m_batches = batches;
-		m_amounts = amounts;
+		m_batches = new ImList<CargoBatch>(batches);
+		m_amounts = new ImInts(amounts);
 	}
 
 	public int getAmount(int cargoType) {
 		int amount = 0;
 
-		for (int i = 0; i < m_batches.length; i++) {
-			if (m_batches[i].getCargoType() == cargoType) {
-				amount += m_amounts[i];
+		for (int i = 0; i < m_batches.size(); i++) {
+			if (m_batches.get(i).getCargoType() == cargoType) {
+				amount += m_amounts.get(i);
 			}
 		}
 
@@ -118,9 +120,9 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
 	public int getAmount(CargoBatch cb) {
 		int amount = 0;
 
-		for (int i = 0; i < m_batches.length; i++) {
-			if (m_batches[i].equals(cb)) {
-				amount += m_amounts[i];
+		for (int i = 0; i < m_batches.size(); i++) {
+			if (m_batches.get(i).equals(cb)) {
+				amount += m_amounts.get(i);
 			}
 		}
 
@@ -128,8 +130,8 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
 	}
 
 	public boolean contains(CargoBatch cb) {
-		for (int i = 0; i < m_batches.length; i++) {
-			if (m_batches[i].equals(cb)) {
+		for (int i = 0; i < m_batches.size(); i++) {
+			if (m_batches.get(i).equals(cb)) {
 				return true;
 			}
 		}
@@ -146,11 +148,11 @@ public class ImmutableCargoBundle implements FreerailsSerializable {
 			}
 
 			public boolean hasNext() {
-				return index < m_batches.length;
+				return index < m_batches.size();
 			}
 
 			public CargoBatch next() {
-				CargoBatch o = m_batches[index];
+				CargoBatch o = m_batches.get(index);
 				index++;
 
 				return o;

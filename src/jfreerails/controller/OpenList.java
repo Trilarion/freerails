@@ -14,7 +14,10 @@ class OpenList implements Serializable {
 
 	private static final long serialVersionUID = 3257282539419611442L;
 
-	static class OpenListEntry implements Comparable<OpenListEntry> {
+	static class OpenListEntry implements Comparable<OpenListEntry>,
+			Serializable {
+		private static final long serialVersionUID = -4873508719707382681L;
+
 		final int f;
 
 		final int node;

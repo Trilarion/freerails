@@ -5,6 +5,7 @@
 package jfreerails.world.station;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImInts;
 
 /**
  * This class represents the blue print for what an engine shop is producing.
@@ -17,57 +18,43 @@ public class ProductionAtEngineShop implements FreerailsSerializable {
 
 	private final int engineType;
 
-	private final int[] wagonTypes;
+	private final ImInts wagonTypes;
 
 	public ProductionAtEngineShop(int e, int[] wagons) {
 		engineType = e;
-		wagonTypes = wagons;
+		wagonTypes = new ImInts(wagons);
 	}
 
 	public int hashCode() {
 		return engineType;
 	}
 
-	public int getEngineType() {
-		return engineType;
-	}
-
-	public int[] getWagonTypes() {
-		return wagonTypes.clone(); // Defensive copy.
-	}
-
 	public boolean equals(Object o) {
-		if (null == o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof ProductionAtEngineShop))
 			return false;
-		}
 
-		if (!(o instanceof ProductionAtEngineShop)) {
+		final ProductionAtEngineShop productionAtEngineShop = (ProductionAtEngineShop) o;
+
+		if (engineType != productionAtEngineShop.engineType)
 			return false;
-		}
-
-		ProductionAtEngineShop other = (ProductionAtEngineShop) o;
-
-		if (other.getEngineType() != this.engineType) {
+		if (!wagonTypes.equals(productionAtEngineShop.wagonTypes))
 			return false;
-		}
-
-		if (other.getWagonTypes().length != this.getWagonTypes().length) {
-			return false;
-		}
-
-		int[] otherWagonTypes = other.getWagonTypes();
-
-		for (int i = 0; i < this.getWagonTypes().length; i++) {
-			if (wagonTypes[i] != otherWagonTypes[i]) {
-				return false;
-			}
-		}
 
 		return true;
 	}
 
+	public int getEngineType() {
+		return engineType;
+	}
+
+	public ImInts getWagonTypes() {
+		return wagonTypes;
+	}
+
 	public String toString() {
 		return "engine type: " + this.engineType + ", with "
-				+ wagonTypes.length + "wagons";
+				+ wagonTypes.size() + "wagons";
 	}
 }

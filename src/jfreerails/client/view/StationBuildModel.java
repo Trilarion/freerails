@@ -18,6 +18,7 @@ import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.StationBuilder;
 import jfreerails.move.MoveStatus;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
@@ -155,9 +156,10 @@ public class StationBuildModel {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			MoveStatus ms = stationBuilder
-					.buildStation((Point) stationBuildAction
-							.getValue(StationBuildAction.STATION_POSITION_KEY));
+			Point value = (Point) stationBuildAction
+					.getValue(StationBuildAction.STATION_POSITION_KEY);
+			MoveStatus ms = stationBuilder.buildStation(new ImPoint(value.x,
+					value.y));
 			String message = null;
 
 			if (ms.isOk()) {
@@ -175,7 +177,7 @@ public class StationBuildModel {
 		Point p = (Point) stationBuildAction
 				.getValue(StationBuildAction.STATION_POSITION_KEY);
 
-		return stationBuilder.tryBuildingStation(p).ok;
+		return stationBuilder.tryBuildingStation(new ImPoint(p.x, p.y)).ok;
 	}
 
 	public Action getStationCancelAction() {

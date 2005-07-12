@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @author Luke
  * 
  */
-public class Utils {
+strictfp public class Utils {
 
 	public static boolean equalsBySerialization(Serializable a, Serializable b) {
 
@@ -123,7 +123,7 @@ public class Utils {
 		double disc = b * b - 4 * a * c;
 		if (disc < 0)
 			throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
-		return (-b + Math.sqrt(disc)) / (2 * a);
+		return (-b + StrictMath.sqrt(disc)) / (2 * a);
 
 	}
 

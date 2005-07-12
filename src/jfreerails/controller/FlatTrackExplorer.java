@@ -4,9 +4,12 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
-import jfreerails.world.common.Step;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 
@@ -92,7 +95,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 	}
 
 	public int getEdgeCost() {
-		return currentBranch.cameFrom().getLength();
+		return (int) Math.round(currentBranch.cameFrom().getLength());
 	}
 
 	public boolean hasNextEdge() {
@@ -105,10 +108,9 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 		// Since we can always go back the way we have come, if the direction of
 		// current branch is not equal to the opposite of the current direction,
 		// there must be another branch.
-		Step currentBranchDirection = this.currentBranch
-				.cameFrom();
-		Step oppositeToCurrentDirection = this.currentPosition
-				.cameFrom().getOpposite();
+		Step currentBranchDirection = this.currentBranch.cameFrom();
+		Step oppositeToCurrentDirection = this.currentPosition.cameFrom()
+				.getOpposite();
 
 		if (oppositeToCurrentDirection.getID() == currentBranchDirection
 				.getID()) {
@@ -119,6 +121,11 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
 	public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) {
 		w = world;
+		FreerailsTile tile = (FreerailsTile) world.getTile(p.getX(), p.getY());
+		if (tile.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+			throw new IllegalArgumentException(p.toString());
+		}
+
 		this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p
 				.getY(), p.cameFrom());
 	}
@@ -131,7 +138,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 	 *            location of track to consider.
 	 */
 	public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
-			Point p) {
+			ImPoint p) {
 		TrackPiece tp = (TrackPiece) w.getTile(p.x, p.y);
 		TrackConfiguration conf = tp.getTrackConfiguration();
 		Step[] vectors = Step.getList();

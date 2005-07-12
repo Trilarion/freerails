@@ -7,6 +7,7 @@ package jfreerails.world.terrain;
 import java.io.ObjectStreamException;
 
 import jfreerails.util.InstanceControlled;
+import jfreerails.world.common.ImList;
 import jfreerails.world.common.Money;
 
 @InstanceControlled
@@ -20,16 +21,16 @@ public class NullTerrainType implements TerrainType {
 
 	private static final long serialVersionUID = 3834874680581369912L;
 
-	public Production[] getProduction() {
-		return new Production[0];
+	public ImList<Production> getProduction() {
+		return new ImList<Production>();
 	}
 
-	public Consumption[] getConsumption() {
-		return new Consumption[0];
+	public ImList<Consumption> getConsumption() {
+		return new ImList<Consumption>();
 	}
 
-	public Conversion[] getConversion() {
-		return new Conversion[0];
+	public ImList<Conversion> getConversion() {
+		return new ImList<Conversion>();
 	}
 
 	public String getTerrainTypeName() {

@@ -42,8 +42,7 @@ public class AddPlayerMove implements Move, ServerMove {
 		/**
 		 * create a new player with a corresponding Principal
 		 */
-		Player player2add = new Player(player.getName(), player.getPublicKey(),
-				w.getNumberOfPlayers());
+		Player player2add = new Player(player.getName(), w.getNumberOfPlayers());
 
 		return new AddPlayerMove(player2add);
 	}

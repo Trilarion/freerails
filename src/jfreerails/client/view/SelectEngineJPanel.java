@@ -33,7 +33,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 	public SelectEngineJPanel() {
 		initComponents();
 		jList1ValueChanged(null); // Disable the ok button if no engine type
-									// is selected.
+		// is selected.
 	}
 
 	/**

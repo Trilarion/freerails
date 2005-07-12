@@ -23,7 +23,8 @@ public class TerrainRandomiser {
 	private final Vector<Integer> non_terrainTypes;
 
 	private final double CLEAR_PERCENTAGE = 0.98; // ie. % of map that is
-													// clear (on avg.)
+
+	// clear (on avg.)
 
 	public TerrainRandomiser(Vector<Integer> num, Vector<Integer> num2) {
 		terrainTypes = num;

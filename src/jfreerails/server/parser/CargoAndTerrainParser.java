@@ -19,8 +19,8 @@ import org.xml.sax.XMLReader;
  * Usage sample:
  * 
  * <pre>
- *     RulesParser parser = new RulesParser(...);
- *     parser.parse(new InputSource(&quot;...&quot;));
+ *      RulesParser parser = new RulesParser(...);
+ *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
  * 
  * <p>
@@ -270,7 +270,7 @@ public class CargoAndTerrainParser implements ContentHandler {
 				.newInstance();
 		factory.setValidating(true); // the code was generated according DTD
 		factory.setNamespaceAware(true); // the code was generated according
-											// DTD
+		// DTD
 
 		XMLReader parser = factory.newSAXParser().getXMLReader();
 		parser.setContentHandler(recognizer);

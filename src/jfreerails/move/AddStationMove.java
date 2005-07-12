@@ -4,9 +4,8 @@
  */
 package jfreerails.move;
 
-import java.awt.Point;
-
 import jfreerails.world.cargo.ImmutableCargoBundle;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -35,8 +34,8 @@ public class AddStationMove extends CompositeMove {
 	}
 
 	public static AddStationMove generateMove(ReadOnlyWorld w,
-			String stationName, Point p, ChangeTrackPieceMove upgradeTrackMove,
-			FreerailsPrincipal principal) {
+			String stationName, ImPoint p,
+			ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
 		int cargoBundleNumber = w.size(KEY.CARGO_BUNDLES, principal);
 		Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
 				ImmutableCargoBundle.EMPTY_BUNDLE, principal);

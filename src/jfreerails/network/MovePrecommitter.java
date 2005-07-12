@@ -27,7 +27,7 @@ import jfreerails.world.top.World;
  * 
  */
 public class MovePrecommitter {
-	private class PreMoveAndMove implements FreerailsSerializable {
+	private static class PreMoveAndMove implements FreerailsSerializable {
 		private static final long serialVersionUID = 3256443607635342897L;
 
 		final Move m;

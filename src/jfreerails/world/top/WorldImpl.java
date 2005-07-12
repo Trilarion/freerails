@@ -445,21 +445,24 @@ public class WorldImpl implements World {
 	public int addActiveEntity(AKEY key, Activity element, FreerailsPrincipal p) {
 		LinkedList<ActivityAndTime> activities = new LinkedList<ActivityAndTime>();
 
-		ActivityAndTime ant = new ActivityAndTime(element, currentTime());
+		ActivityAndTime ant = new ActivityAndTime(element, currentTime()
+				.getTicks());
 		activities.add(ant);
 		activityLists[key.getKeyID()].get(getPlayerIndex(p)).add(activities);
 		return size(key, p) - 1;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void add(AKEY key, int index, Activity element, FreerailsPrincipal p) {
 		ArrayList<LinkedList<ActivityAndTime>> list = activityLists[key
 				.getKeyID()].get(getPlayerIndex(p));
 		LinkedList<ActivityAndTime> activities = list.get(index);
 		ActivityAndTime last = activities.getLast();
-		int lastFinishTime = last.startTime.getTicks() + last.act.duration();
-		int thisStartTime = Math.max(lastFinishTime, currentTime().getTicks());
-		ActivityAndTime ant = new ActivityAndTime(element, new GameTime(
-				thisStartTime));
+		double duration = last.act.duration();
+		double lastFinishTime = last.startTime + duration;
+		double thisStartTime = Math.max(lastFinishTime, currentTime()
+				.getTicks());
+		ActivityAndTime ant = new ActivityAndTime(element, thisStartTime);
 		activities.add(ant);
 	}
 
@@ -507,21 +510,21 @@ public class WorldImpl implements World {
 				ant = activities.get(activityIndex);
 			}
 
-			public GameTime getStartTime() {
+			public double getStartTime() {
 				return ant.startTime;
 			}
 
-			public GameTime getFinishTime() {
-				int ticks = ant.startTime.getTicks() + ant.act.duration();
-				return new GameTime(ticks);
+			public double getFinishTime() {
+				double ticks = ant.startTime + ant.act.duration();
+				return ticks;
 			}
 
-			public int getDuration() {
+			public double getDuration() {
 				return ant.act.duration();
 			}
 
-			public FreerailsSerializable getState(GameTime t) {
-				int dt = t.getTicks() - ant.startTime.getTicks();
+			public FreerailsSerializable getState(double t) {
+				double dt = t - ant.startTime;
 				dt = Math.min(dt, ant.act.duration());
 				return ant.act.getState(dt);
 			}
@@ -551,7 +554,7 @@ public class WorldImpl implements World {
 
 			if (!act.equals(activityAndTime.act))
 				return false;
-			if (!startTime.equals(activityAndTime.startTime))
+			if (startTime != activityAndTime.startTime)
 				return false;
 
 			return true;
@@ -560,15 +563,15 @@ public class WorldImpl implements World {
 		public int hashCode() {
 			int result;
 			result = act.hashCode();
-			result = 29 * result + startTime.hashCode();
+			result = 29 * result + (int) startTime;
 			return result;
 		}
 
 		final Activity act;
 
-		final GameTime startTime;
+		final double startTime;
 
-		ActivityAndTime(Activity act, GameTime time) {
+		ActivityAndTime(Activity act, double time) {
 			this.act = act;
 			startTime = time;
 		}

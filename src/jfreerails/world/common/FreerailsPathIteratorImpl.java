@@ -34,7 +34,7 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
 			this.position = 0;
 		} else {
 			this.position = l.size() - 1; // The last element of a list of
-											// size 7 is at position 6.
+			// size 7 is at position 6.
 		}
 	}
 

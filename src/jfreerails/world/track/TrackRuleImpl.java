@@ -95,8 +95,7 @@ final public class TrackRuleImpl implements TrackRule {
 		return legalConfigurations.getLegalConfigurationsIterator();
 	}
 
-	public Step[] getLegalRoutes(
-			Step directionComingFrom) {
+	public Step[] getLegalRoutes(Step directionComingFrom) {
 		// TODO add code..
 		return null;
 	}

@@ -4,8 +4,7 @@
  */
 package jfreerails.move;
 
-import java.awt.Point;
-
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
@@ -33,8 +32,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 	protected void setUp() throws Exception {
 		world = new WorldImpl(20, 20);
 		MapFixtureFactory.generateTrackRuleList(world);
-		player = new Player("test player", (new Player("test player"))
-				.getPublicKey(), 0);
+		player = new Player("test player", 0);
 		world.addPlayer(player);
 		transactionGenerator = new TrackMoveTransactionsGenerator(world, player
 				.getPrincipal());
@@ -55,7 +53,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 				MapFixtureFactory.TEST_PRINCIPAL, world);
 		newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
 		move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-				new Point(0, 0));
+				new ImPoint(0, 0));
 
 		Move m = transactionGenerator.addTransactions(move);
 		assertNotNull(m);

@@ -18,6 +18,7 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -618,19 +619,19 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 		int[] newConsist;
 		// The consist will be null if old orders were 'no change'.
 		if (null != oldOrders.consist) {
-			int oldLength = oldOrders.consist.length;
+			int oldLength = oldOrders.consist.size();
 			newConsist = new int[oldLength + 1];
 			// Copy existing wagons
 			for (int i = 0; i < oldLength; i++) {
-				newConsist[i] = oldOrders.consist[i];
+				newConsist[i] = oldOrders.consist.get(i);
 			}
 			// Then add specified wagon.
 			newConsist[oldLength] = wagonTypeNumber;
 		} else {
 			newConsist = new int[] { wagonTypeNumber };
 		}
-		newOrders = new TrainOrdersModel(oldOrders.getStationID(), newConsist,
-				oldOrders.getWaitUntilFull(), false);
+		newOrders = new TrainOrdersModel(oldOrders.getStationID(), new ImInts(
+				newConsist), oldOrders.getWaitUntilFull(), false);
 		s.setOrder(orderNumber, newOrders);
 		sendUpdateMove(s);
 	}
@@ -640,8 +641,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 		MutableSchedule s = getSchedule();
 		int orderNumber = this.orders.getSelectedIndex();
 		oldOrders = s.getOrder(orderNumber);
-		newOrders = new TrainOrdersModel(oldOrders.getStationID(), new int[0],
-				false, false);
+		newOrders = new TrainOrdersModel(oldOrders.getStationID(),
+				new ImInts(), false, false);
 		s.setOrder(orderNumber, newOrders);
 		sendUpdateMove(s);
 	}
@@ -651,15 +652,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 		MutableSchedule s = getSchedule();
 		int orderNumber = this.orders.getSelectedIndex();
 		oldOrders = s.getOrder(orderNumber);
-		int[] oldConsist = oldOrders.consist;
-		int newLength = oldConsist.length - 1;
+		ImInts oldConsist = oldOrders.consist;
+		int newLength = oldConsist.size() - 1;
 		if (newLength < 0) {
 			throw new NoSuchElementException("No wagons to remove!");
 		}
-		int[] newConsist = new int[newLength];
+		ImInts newConsist = oldConsist.removeLast();
 
-		// Copy existing wagons
-		System.arraycopy(oldConsist, 0, newConsist, 0, newConsist.length);
 		newOrders = new TrainOrdersModel(oldOrders.getStationID(), newConsist,
 				oldOrders.waitUntilFull, false);
 		s.setOrder(orderNumber, newOrders);

@@ -5,11 +5,9 @@
 package jfreerails.controller;
 
 import static jfreerails.world.common.Step.EAST;
-
-import java.awt.Point;
-
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
 import jfreerails.world.top.World;
 import junit.framework.TestCase;
@@ -45,14 +43,14 @@ public class StationBuilderTest extends TestCase {
 		stationBuilder
 				.setStationType(stationBuilder.getTrackTypeID("terminal"));
 		Step[] track = { EAST, EAST, EAST };
-		MoveStatus ms = trackBuilder.buildTrack(new Point(10, 10), track);
+		MoveStatus ms = trackBuilder.buildTrack(new ImPoint(10, 10), track);
 		assertTrue(ms.ok);
-		assertTrue(stationBuilder.tryBuildingStation(new Point(10, 10)).ok);
-		assertTrue(stationBuilder.tryBuildingStation(new Point(13, 10)).ok);
-		MoveStatus ms1 = stationBuilder.buildStation(new Point(10, 10));
+		assertTrue(stationBuilder.tryBuildingStation(new ImPoint(10, 10)).ok);
+		assertTrue(stationBuilder.tryBuildingStation(new ImPoint(13, 10)).ok);
+		MoveStatus ms1 = stationBuilder.buildStation(new ImPoint(10, 10));
 		assertTrue(ms1.ok);
 
-		MoveStatus ms2 = stationBuilder.buildStation(new Point(13, 10));
+		MoveStatus ms2 = stationBuilder.buildStation(new ImPoint(13, 10));
 		assertFalse(ms2.ok);
 	}
 

@@ -37,8 +37,7 @@ public class TrackConfigurationTest extends TestCase {
 
 	public void testAdd() {
 		TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
-		TrackConfiguration b = TrackConfiguration.add(a,
-				Step.NORTH_WEST);
+		TrackConfiguration b = TrackConfiguration.add(a, Step.NORTH_WEST);
 		assertEquals(TrackConfiguration.getFlatInstance("100010000"), b);
 		assertEquals(false, a == b);
 	}
@@ -68,8 +67,7 @@ public class TrackConfigurationTest extends TestCase {
 
 	public void testSubtract() {
 		TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
-		TrackConfiguration b = TrackConfiguration.subtract(a,
-				Step.NORTH_WEST);
+		TrackConfiguration b = TrackConfiguration.subtract(a, Step.NORTH_WEST);
 		assertEquals(TrackConfiguration.getFlatInstance("000010000"), b);
 	}
 

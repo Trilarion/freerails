@@ -154,7 +154,9 @@ else:
 	</target>
 
 	<target name="test" depends="debugcompile" description="Run all junit tests">
-		<junit haltonfailure="yes" printsummary="yes">
+		
+		 
+		<junit haltonfailure="yes" printsummary="yes" >
 			<classpath>
 				<pathelement location="${build}" />
 

@@ -25,6 +25,7 @@ import jfreerails.server.common.TileSetFactory;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.MutableCargoBundle;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.DemandAtStation;
@@ -48,8 +49,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 4050764909631780659L;
 
-	private static final Player TEST_PLAYER = new Player("test player",
-			(new Player("test player")).getPublicKey(), 0);
+	private static final Player TEST_PLAYER = new Player("test player", 0);
 
 	private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER
 			.getPrincipal();
@@ -133,30 +133,30 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 		w.add(KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle(), TEST_PRINCIPAL);
 
 		MutableSchedule schedule = new MutableSchedule();
-		TrainOrdersModel order = new TrainOrdersModel(0, new int[] { 0, 0, 0 },
+		TrainOrdersModel order = new TrainOrdersModel(0, new ImInts(0, 0, 0),
 				false, false);
-		TrainOrdersModel order2 = new TrainOrdersModel(1, new int[] { 1, 2, 0,
-				0, 0 }, true, false);
+		TrainOrdersModel order2 = new TrainOrdersModel(1, new ImInts(1, 2, 0,
+				0, 0), true, false);
 		TrainOrdersModel order3 = new TrainOrdersModel(2, null, true, false);
 		schedule.setOrder(0, order);
 		schedule.setOrder(1, order2);
 
 		int scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule
 				.toImmutableSchedule(), TEST_PRINCIPAL);
-		w.add(KEY.TRAINS, new TrainModel(0, new int[] { 0, 0 }, scheduleID),
+		w.add(KEY.TRAINS, new TrainModel(0, new ImInts(0, 0), scheduleID),
 				TEST_PRINCIPAL);
 		schedule.setOrder(2, order2);
 		schedule.setOrder(3, order3);
 		scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(),
 				TEST_PRINCIPAL);
-		w.add(KEY.TRAINS, new TrainModel(1, new int[] { 1, 1 }, scheduleID),
+		w.add(KEY.TRAINS, new TrainModel(1, new ImInts(1, 1), scheduleID),
 				TEST_PRINCIPAL);
 		schedule.setOrder(4, order2);
 		schedule.setOrderToGoto(3);
 		schedule.setPriorityOrders(order);
 		scheduleID = w.add(KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule(),
 				TEST_PRINCIPAL);
-		w.add(KEY.TRAINS, new TrainModel(0, new int[] { 1, 2, 0 }, scheduleID),
+		w.add(KEY.TRAINS, new TrainModel(0, new ImInts(1, 2, 0), scheduleID),
 				TEST_PRINCIPAL);
 
 		final MyGlassPanel glassPanel = new MyGlassPanel();

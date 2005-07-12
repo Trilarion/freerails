@@ -51,17 +51,17 @@ public class PositionOnTrackTest extends TestCase {
 				Step.NORTH);
 
 		int i = p1.toInt();
-		PositionOnTrack p2 = PositionOnTrack.createComingFrom(60, 70,
-				Step.EAST);
+		PositionOnTrack p2 = PositionOnTrack
+				.createComingFrom(60, 70, Step.EAST);
 		assertTrue(!p1.equals(p2));
 		p2.setValuesFromInt(i);
 
 		assertEquals(p1, p2);
 
 		Step v = Step.getInstance(7); // 7 is the
-																// maximum
-																// vector
-																// number.
+		// maximum
+		// vector
+		// number.
 
 		p1 = PositionOnTrack.createComingFrom(PositionOnTrack.MAX_COORINATE,
 				PositionOnTrack.MAX_COORINATE, v);

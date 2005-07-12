@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import jfreerails.world.common.ImList;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
@@ -100,13 +101,13 @@ public class CalcCargoSupplyRateAtStation {
 				tileTypeNumber);
 
 		// Calculate supply.
-		Production[] production = terrainType.getProduction();
+		ImList<Production> production = terrainType.getProduction();
 
 		// loop throught the production array and increment
 		// the supply rates for the station
-		for (int m = 0; m < production.length; m++) {
-			int type = production[m].getCargoType();
-			int rate = production[m].getRate();
+		for (int m = 0; m < production.size(); m++) {
+			int type = production.get(m).getCargoType();
+			int rate = production.get(m).getRate();
 
 			// loop through supplies vector and increment the cargo values as
 			// required
@@ -114,11 +115,11 @@ public class CalcCargoSupplyRateAtStation {
 		}
 
 		// Now calculate demand.
-		Consumption[] consumption = terrainType.getConsumption();
+		ImList<Consumption> consumption = terrainType.getConsumption();
 
-		for (int m = 0; m < consumption.length; m++) {
-			int type = consumption[m].getCargoType();
-			int prerequisite = consumption[m].getPrerequisite();
+		for (int m = 0; m < consumption.size(); m++) {
+			int type = consumption.get(m).getCargoType();
+			int prerequisite = consumption.get(m).getPrerequisite();
 
 			// The prerequisite is the number tiles of this type that must
 			// be within the station radius before the station demands the
@@ -126,15 +127,15 @@ public class CalcCargoSupplyRateAtStation {
 			demand[type] += PREREQUISITE_FOR_DEMAND / prerequisite;
 		}
 
-		Conversion[] conversion = terrainType.getConversion();
+		ImList<Conversion> conversion = terrainType.getConversion();
 
-		for (int m = 0; m < conversion.length; m++) {
-			int type = conversion[m].getInput();
+		for (int m = 0; m < conversion.size(); m++) {
+			int type = conversion.get(m).getInput();
 
 			// Only one tile that converts the cargo type is needed for the
 			// station to demand the cargo type.
 			demand[type] += PREREQUISITE_FOR_DEMAND;
-			converts[type] = conversion[m].getOutput();
+			converts[type] = conversion.get(m).getOutput();
 		}
 	}
 

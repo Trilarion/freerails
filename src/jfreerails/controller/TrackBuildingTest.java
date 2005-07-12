@@ -4,11 +4,11 @@ import static jfreerails.world.common.Step.EAST;
 import static jfreerails.world.common.Step.SOUTH;
 import static jfreerails.world.common.Step.SOUTH_EAST;
 
-import java.awt.Point;
 import java.util.Arrays;
 
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
@@ -42,8 +42,8 @@ public class TrackBuildingTest extends TestCase {
 	/** Tests building track from 5,5 to 10,5 */
 	public void testBuildingStraight() {
 
-		Point from = new Point(5, 5);
-		Point to = new Point(10, 5);
+		ImPoint from = new ImPoint(5, 5);
+		ImPoint to = new ImPoint(10, 5);
 		try {
 			// Check there is no track before we build it.
 			for (int x = 5; x <= 10; x++) {
@@ -76,8 +76,8 @@ public class TrackBuildingTest extends TestCase {
 	/** Tests building track from 5,5 to 6,5 */
 	public void testBuildingOneTrackPiece() {
 
-		Point from = new Point(5, 5);
-		Point to = new Point(6, 5);
+		ImPoint from = new ImPoint(5, 5);
+		ImPoint to = new ImPoint(6, 5);
 		try {
 			// Check there is no track before we build it.
 
@@ -120,15 +120,15 @@ public class TrackBuildingTest extends TestCase {
 	 */
 	public void testTerminalProblem() {
 		try {
-			Point from = new Point(5, 5);
+			ImPoint from = new ImPoint(5, 5);
 			Step[] path = { EAST, EAST, EAST };
 			MoveStatus ms = producer.buildTrack(from, path);
 			assertTrue(ms.ok);
 			int terminalStationType = stationBuilder.getTrackTypeID("terminal");
 			stationBuilder.setStationType(terminalStationType);
-			ms = stationBuilder.buildStation(new Point(8, 5));
+			ms = stationBuilder.buildStation(new ImPoint(8, 5));
 			assertTrue(ms.ok);
-			pathFinder.setupSearch(new Point(7, 5), new Point(9, 5), bts);
+			pathFinder.setupSearch(new ImPoint(7, 5), new ImPoint(9, 5), bts);
 			pathFinder.search(-1);
 			path = pathFinder.pathAsVectors();
 			assertEquals(2, path.length);
@@ -152,9 +152,9 @@ public class TrackBuildingTest extends TestCase {
 			int trackTypeID = stationBuilder.getTrackTypeID("double track");
 			bts = BuildTrackStrategy.getSingleRuleInstance(trackTypeID, w);
 			producer.setBuildTrackStrategy(bts);
-			Point a = new Point(5, 5);
-			Point b = new Point(6, 5);
-			Point c = new Point(7, 6);
+			ImPoint a = new ImPoint(5, 5);
+			ImPoint b = new ImPoint(6, 5);
+			ImPoint c = new ImPoint(7, 6);
 
 			pathFinder.setupSearch(a, b, bts);
 			pathFinder.search(-1);
@@ -187,11 +187,11 @@ public class TrackBuildingTest extends TestCase {
 	 */
 	public void testStartSearchOnSharpCurve() {
 		try {
-			Point from = new Point(5, 5);
+			ImPoint from = new ImPoint(5, 5);
 			Step[] path = { EAST, SOUTH };
 			MoveStatus ms = producer.buildTrack(from, path);
 			assertTrue(ms.ok);
-			pathFinder.setupSearch(new Point(6, 5), new Point(6, 7), bts);
+			pathFinder.setupSearch(new ImPoint(6, 5), new ImPoint(6, 7), bts);
 			pathFinder.search(-1);
 			path = pathFinder.pathAsVectors();
 			assertEquals(2, path.length);

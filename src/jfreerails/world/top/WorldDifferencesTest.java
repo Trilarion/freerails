@@ -20,11 +20,11 @@ import junit.framework.TestCase;
  * 
  */
 public class WorldDifferencesTest extends TestCase {
-	Player player0 = new Player("player0", null, 0);
+	Player player0 = new Player("player0", 0);
 
-	Player player1 = new Player("player1", null, 1);
+	Player player1 = new Player("player1", 1);
 
-	Player player2 = new Player("player2", null, 2);
+	Player player2 = new Player("player2", 2);
 
 	public void testSharedLists() {
 		WorldImpl underlyingWorld = new WorldImpl(10, 10);

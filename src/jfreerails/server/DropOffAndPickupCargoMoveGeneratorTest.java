@@ -10,6 +10,7 @@ import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.cargo.MutableCargoBundle;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
@@ -69,7 +70,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 				MapFixtureFactory.TEST_PRINCIPAL);
 
 		// 3 wagons to carry cargo type 0.
-		int[] wagons = new int[] { 0, 0, 0 };
+		ImInts wagons = new ImInts(0, 0, 0);
 		TrainModel train = new TrainModel(wagons, trainCargoBundleId);
 		w.add(KEY.TRAINS, train, MapFixtureFactory.TEST_PRINCIPAL);
 	}
@@ -135,7 +136,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 	 * the type of wagons it has when it is picking up cargo.
 	 */
 	public void testPickUpCargo3() {
-		int[] wagons = new int[] { 0, 0, 2, 2 };
+		ImInts wagons = new ImInts(0, 0, 2, 2);
 
 		// 2 wagons for cargo type 0; 2 wagons for cargo type 2.
 		addWagons(wagons);
@@ -191,7 +192,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 				.getDemand().isCargoDemanded(1));
 
 		// Add 2 wagons for cargo type 0 and 1 for cargo type 1 to train.
-		int[] wagons = new int[] { 0, 0, 1, 1 };
+		ImInts wagons = new ImInts(0, 0, 1, 1);
 		addWagons(wagons);
 
 		// Add quantities of cargo type 0 and 2 to the train.
@@ -301,10 +302,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 	}
 
 	private void removeAllWagonsFromTrain() {
-		addWagons(new int[] {});
+		addWagons(new ImInts());
 	}
 
-	private void addWagons(int[] wagons) {
+	private void addWagons(ImInts wagons) {
 		TrainModel train = (TrainModel) w.get(KEY.TRAINS, 0,
 				MapFixtureFactory.TEST_PRINCIPAL);
 		TrainModel newTrain = train.getNewInstance(train.getEngineType(),

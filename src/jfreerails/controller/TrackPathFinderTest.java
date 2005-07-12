@@ -4,9 +4,9 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.List;
 
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
@@ -23,8 +23,7 @@ import junit.framework.TestCase;
 public class TrackPathFinderTest extends TestCase {
 	private WorldImpl world;
 
-	private Player testPlayer = new Player("test", (new Player("test"))
-			.getPublicKey(), 0);
+	private Player testPlayer = new Player("test", 0);
 
 	protected void setUp() throws Exception {
 		world = new WorldImpl(20, 20);
@@ -40,16 +39,16 @@ public class TrackPathFinderTest extends TestCase {
 
 			TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer
 					.getPrincipal());
-			List l = pathFinder.generatePath(new Point(0, 0), new Point(0, 5),
-					bts);
+			List l = pathFinder.generatePath(new ImPoint(0, 0), new ImPoint(0,
+					5), bts);
 			assertEquals(5, l.size());
 
-			List list2 = pathFinder.generatePath(new Point(5, 5), new Point(5,
-					10), bts);
+			List list2 = pathFinder.generatePath(new ImPoint(5, 5),
+					new ImPoint(5, 10), bts);
 			assertEquals(5, list2.size());
 
-			list2 = pathFinder.generatePath(new Point(5, 10), new Point(5, 5),
-					bts);
+			list2 = pathFinder.generatePath(new ImPoint(5, 10), new ImPoint(5,
+					5), bts);
 			assertEquals(5, list2.size());
 		} catch (PathNotFoundException e) {
 			fail();

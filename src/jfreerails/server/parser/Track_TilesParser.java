@@ -15,8 +15,8 @@ import org.xml.sax.SAXException;
  * Usage sample:
  * 
  * <pre>
- *     Track_TilesParser parser = new Track_TilesParser(...);
- *     parser.parse(new InputSource(&quot;...&quot;));
+ *      Track_TilesParser parser = new Track_TilesParser(...);
+ *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
  * 
  * Date: 21 January 2002 18:00
@@ -216,7 +216,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
 				.newInstance();
 		factory.setValidating(true); // the code was generated according DTD
 		factory.setNamespaceAware(false); // the code was generated according
-											// DTD
+		// DTD
 
 		org.xml.sax.XMLReader parser = factory.newSAXParser().getXMLReader();
 		parser.setContentHandler(recognizer);

@@ -10,7 +10,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.io.IOException;
@@ -19,6 +18,7 @@ import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.BuildTrackRenderer;
 import jfreerails.controller.TrackMoveProducer;
+import jfreerails.world.common.ImPoint;
 
 /**
  * Paints the cursor on the map, note the cursor's position is stored on the
@@ -32,7 +32,7 @@ final public class FreerailsCursor {
 	private final ModelRoot modelRoot;
 
 	/** The location of the cursor last time paintCursor(.) was called. */
-	private Point lastCursorPosition = new Point();
+	private ImPoint lastCursorPosition = new ImPoint();
 
 	/** The time in ms the cursor arrived at its current position. */
 	private long timeArrived = 0;
@@ -66,12 +66,12 @@ final public class FreerailsCursor {
 		TrackMoveProducer.BuildMode buildMode = (TrackMoveProducer.BuildMode) modelRoot
 				.getProperty(ModelRoot.Property.TRACK_BUILDER_MODE);
 
-		Point cursorMapPosition = (Point) modelRoot
+		ImPoint cursorMapPosition = (ImPoint) modelRoot
 				.getProperty(ModelRoot.Property.CURSOR_POSITION);
 
 		/* Has the cursor moved since we last painted it? */
 		if (!cursorMapPosition.equals(lastCursorPosition)) {
-			lastCursorPosition = new Point(cursorMapPosition);
+			lastCursorPosition = cursorMapPosition;
 			timeArrived = System.currentTimeMillis();
 		}
 
@@ -124,7 +124,7 @@ final public class FreerailsCursor {
 		}
 
 		// Draw a big white dot at the target point.
-		Point targetPoint = (Point) modelRoot
+		ImPoint targetPoint = (ImPoint) modelRoot
 				.getProperty(ModelRoot.Property.THINKING_POINT);
 		if (null != targetPoint) {
 			time = System.currentTimeMillis();

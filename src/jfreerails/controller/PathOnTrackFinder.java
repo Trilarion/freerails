@@ -4,11 +4,11 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.logging.Logger;
 
-import jfreerails.world.common.Step;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
@@ -27,7 +27,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 
 	private SimpleAStarPathFinder m_pathFinder = new SimpleAStarPathFinder();
 
-	private Point m_startPoint;
+	private ImPoint m_startPoint;
 
 	private final ReadOnlyWorld m_world;
 
@@ -50,8 +50,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 		int y = m_startPoint.y;
 		for (int i = 0; i < pathAsInts.length; i++) {
 			PositionOnTrack p2 = new PositionOnTrack(pathAsInts[i]);
-			vectors[i] = Step.getInstance(p2.getX() - x, p2.getY()
-					- y);
+			vectors[i] = Step.getInstance(p2.getX() - x, p2.getY() - y);
 			x = p2.getX();
 			y = p2.getY();
 		}
@@ -62,9 +61,9 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 		m_pathFinder.search(maxDuration);
 	}
 
-	public void setupSearch(Point startPoint, Point targetPoint,
+	public void setupSearch(ImPoint startPoint, ImPoint targetPoint,
 			BuildTrackStrategy bts) throws PathNotFoundException {
-		m_startPoint = new Point(startPoint);
+		m_startPoint = startPoint;
 		logger
 				.fine("Find track path from " + startPoint + " to "
 						+ targetPoint);

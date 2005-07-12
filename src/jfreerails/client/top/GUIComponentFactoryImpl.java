@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.swing.Action;
@@ -44,19 +43,15 @@ import jfreerails.client.view.RHSJTabPane;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationPlacementCursor;
 import jfreerails.move.ChangeGameSpeedMove;
-import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.GameSpeed;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.station.ProductionAtEngineShop;
-import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
-import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.top.WorldMapListener;
 
@@ -67,9 +62,6 @@ import jfreerails.world.top.WorldMapListener;
  */
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
 		WorldMapListener, WorldListListener {
-
-	/** Whether to show certain 'cheat' menus used for testing. */
-	private static final boolean CHEAT = (System.getProperty("cheat") != null);
 
 	private static final Logger logger = Logger
 			.getLogger(GUIComponentFactoryImpl.class.getName());
@@ -416,49 +408,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 		gameMenu.addSeparator();
 		gameMenu.add(quitJMenuItem);
 
-		if (CHEAT) {
-			/** For testing. */
-			final ActionListener build200trains = new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					WorldIterator wi = new NonNullElements(KEY.STATIONS,
-							modelRoot.getWorld(), modelRoot.getPrincipal());
-
-					if (wi.next()) {
-						Random randy = new Random();
-						StationModel station = (StationModel) wi.getElement();
-
-						ProductionAtEngineShop[] before = station
-								.getProduction();
-						int numberOfEngineTypes = modelRoot.getWorld().size(
-								SKEY.ENGINE_TYPES) - 1;
-						int numberOfcargoTypes = modelRoot.getWorld().size(
-								SKEY.CARGO_TYPES) - 1;
-						ProductionAtEngineShop[] after = new ProductionAtEngineShop[200];
-
-						for (int i = 0; i < after.length; i++) {
-							int engineType = randy.nextInt(numberOfEngineTypes);
-							int[] wagonTypes = new int[] {
-									randy.nextInt(numberOfcargoTypes),
-									randy.nextInt(numberOfcargoTypes),
-									randy.nextInt(numberOfcargoTypes) };
-							ProductionAtEngineShop paes = new ProductionAtEngineShop(
-									engineType, wagonTypes);
-							after[i] = paes;
-						}
-
-						Move m = new ChangeProductionAtEngineShopMove(before,
-								after, wi.getIndex(), modelRoot.getPrincipal());
-						modelRoot.doMove(m);
-					}
-				}
-			};
-
-			JMenuItem build200TrainsMenuItem = new JMenuItem(
-					"Build 200 trains!");
-			build200TrainsMenuItem.addActionListener(build200trains);
-			gameMenu.add(build200TrainsMenuItem);
-		}
-
 		return gameMenu;
 	}
 
@@ -601,11 +550,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 		 * same as the last map size, then the cursor should take the position
 		 * it had on the last map.
 		 */
-		Point cursorPosition = new Point(0, 0);
+		ImPoint cursorPosition = new ImPoint(0, 0);
 		if (null != world) {
 			if (w.getMapWidth() == world.getMapWidth()
 					&& w.getMapHeight() == world.getMapHeight()) {
-				cursorPosition = (Point) modelRoot
+				cursorPosition = (ImPoint) modelRoot
 						.getProperty(ModelRoot.Property.CURSOR_POSITION);
 			}
 		}

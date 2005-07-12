@@ -1,8 +1,7 @@
 package jfreerails.world.station;
 
-import java.util.Arrays;
-
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImList;
 
 /**
  * This class represents a station.
@@ -17,6 +16,38 @@ public class StationModel implements FreerailsSerializable {
 
 	public final int y;
 
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof StationModel))
+			return false;
+
+		final StationModel stationModel = (StationModel) o;
+
+		if (cargoBundleNumber != stationModel.cargoBundleNumber)
+			return false;
+		if (x != stationModel.x)
+			return false;
+		if (y != stationModel.y)
+			return false;
+		if (converted != null ? !converted.equals(stationModel.converted)
+				: stationModel.converted != null)
+			return false;
+		if (demand != null ? !demand.equals(stationModel.demand)
+				: stationModel.demand != null)
+			return false;
+		if (!name.equals(stationModel.name))
+			return false;
+		if (production != null ? !production.equals(stationModel.production)
+				: stationModel.production != null)
+			return false;
+		if (supply != null ? !supply.equals(stationModel.supply)
+				: stationModel.supply != null)
+			return false;
+
+		return true;
+	}
+
 	private final String name;
 
 	private final SupplyAtStation supply;
@@ -28,7 +59,7 @@ public class StationModel implements FreerailsSerializable {
 	private final int cargoBundleNumber;
 
 	/** What this station is building. */
-	private final ProductionAtEngineShop[] production;
+	private final ImList<ProductionAtEngineShop> production;
 
 	public ConvertedAtStation getConverted() {
 		return converted;
@@ -43,7 +74,7 @@ public class StationModel implements FreerailsSerializable {
 		result = 29 * result + (demand != null ? demand.hashCode() : 0);
 		result = 29 * result + (converted != null ? converted.hashCode() : 0);
 		result = 29 * result + cargoBundleNumber;
-		result = 29 * result + production.length;
+		result = 29 * result + production.size();
 
 		return result;
 	}
@@ -66,7 +97,7 @@ public class StationModel implements FreerailsSerializable {
 		this.name = stationName;
 		this.x = x;
 		this.y = y;
-		production = new ProductionAtEngineShop[0];
+		production = new ImList<ProductionAtEngineShop>();
 
 		supply = new SupplyAtStation(new int[numberOfCargoTypes]);
 		demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
@@ -81,7 +112,7 @@ public class StationModel implements FreerailsSerializable {
 		this.demand = new DemandAtStation(new boolean[0]);
 		this.supply = new SupplyAtStation(new int[0]);
 		this.converted = new ConvertedAtStation(new int[0]);
-		production = new ProductionAtEngineShop[0];
+		production = new ImList<ProductionAtEngineShop>();
 		this.cargoBundleNumber = 0;
 	}
 
@@ -97,11 +128,12 @@ public class StationModel implements FreerailsSerializable {
 		return y;
 	}
 
-	public ProductionAtEngineShop[] getProduction() {
-		return production.clone();
+	public ImList<ProductionAtEngineShop> getProduction() {
+		return production;
 	}
 
-	public StationModel(StationModel s, ProductionAtEngineShop[] production) {
+	public StationModel(StationModel s,
+			ImList<ProductionAtEngineShop> production) {
 		this.production = production;
 		this.demand = s.demand;
 		this.cargoBundleNumber = s.cargoBundleNumber;
@@ -149,40 +181,4 @@ public class StationModel implements FreerailsSerializable {
 		return cargoBundleNumber;
 	}
 
-	public boolean equals(Object o) {
-		if (o instanceof StationModel) {
-			StationModel test = (StationModel) o;
-
-			if (this.cargoBundleNumber != test.cargoBundleNumber) {
-				return false;
-			}
-
-			if (!this.demand.equals(test.demand)) {
-				return false;
-			}
-
-			if (!this.converted.equals(test.converted)) {
-				return false;
-			}
-
-			if (!this.name.equals(test.name)) {
-				return false;
-			}
-
-			if (!Arrays.equals(this.production, test.production)) {
-				return false;
-			}
-
-			if (!this.supply.equals(test.supply)) {
-				return false;
-			}
-
-			if (this.x != test.x || this.y != test.y) {
-				return false;
-			}
-
-			return true;
-		}
-		return false;
-	}
 }

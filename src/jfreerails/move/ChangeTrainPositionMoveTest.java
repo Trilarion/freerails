@@ -1,5 +1,6 @@
 package jfreerails.move;
 
+import jfreerails.world.common.ImInts;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
@@ -54,7 +55,7 @@ public class ChangeTrainPositionMoveTest extends AbstractMoveTestCase {
 		world = new WorldImpl(1, 1);
 		world.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
-		TrainModel train1 = new TrainModel(0, new int[] {}, 0);
+		TrainModel train1 = new TrainModel(0, new ImInts(), 0);
 		world.add(KEY.TRAINS, train1, MapFixtureFactory.TEST_PRINCIPAL);
 		world.add(KEY.TRAIN_POSITIONS, FIXTURE1_BEFORE_MOVE1,
 				MapFixtureFactory.TEST_PRINCIPAL);

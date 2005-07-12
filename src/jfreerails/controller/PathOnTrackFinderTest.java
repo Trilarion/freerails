@@ -8,10 +8,10 @@ import static jfreerails.world.common.Step.EAST;
 import static jfreerails.world.common.Step.NORTH_EAST;
 import static jfreerails.world.common.Step.SOUTH_EAST;
 
-import java.awt.Point;
 import java.util.Arrays;
 
 import jfreerails.server.MapFixtureFactory2;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
 import jfreerails.world.top.World;
 import junit.framework.TestCase;
@@ -48,8 +48,8 @@ public class PathOnTrackFinderTest extends TestCase {
 
 	public void testPathAsVectors1() {
 		Step[] path = { EAST, EAST, SOUTH_EAST };
-		Point start = new Point(5, 5);
-		Point end = Step.move(start, path);
+		ImPoint start = new ImPoint(5, 5);
+		ImPoint end = Step.move(start, path);
 		producer.buildTrack(start, path);
 		try {
 			pathFinder.setupSearch(start, end, bts);
@@ -64,10 +64,9 @@ public class PathOnTrackFinderTest extends TestCase {
 	}
 
 	public void testPathAsVectors2() {
-		Step[] path = { EAST, EAST, SOUTH_EAST, EAST, EAST,
-				NORTH_EAST };
-		Point start = new Point(5, 5);
-		Point end = Step.move(start, path);
+		Step[] path = { EAST, EAST, SOUTH_EAST, EAST, EAST, NORTH_EAST };
+		ImPoint start = new ImPoint(5, 5);
+		ImPoint end = Step.move(start, path);
 		producer.buildTrack(start, path);
 		try {
 			pathFinder.setupSearch(start, end, bts);
@@ -83,8 +82,8 @@ public class PathOnTrackFinderTest extends TestCase {
 
 	public void testSetupSearch() {
 		Step[] path = { EAST, EAST, SOUTH_EAST };
-		Point start = new Point(5, 5);
-		Point end = Step.move(start, path);
+		ImPoint start = new ImPoint(5, 5);
+		ImPoint end = Step.move(start, path);
 		producer.buildTrack(start, path);
 		try {
 			pathFinder.setupSearch(start, end, bts);
@@ -92,13 +91,13 @@ public class PathOnTrackFinderTest extends TestCase {
 			fail("Track at both of the points so no excepton should be thrown");
 		}
 		try {
-			pathFinder.setupSearch(start, new Point(10, 10), bts);
+			pathFinder.setupSearch(start, new ImPoint(10, 10), bts);
 			fail("No track at one of the points so an excepton should be thrown");
 		} catch (PathNotFoundException e) {
 
 		}
 		try {
-			pathFinder.setupSearch(new Point(10, 10), end, bts);
+			pathFinder.setupSearch(new ImPoint(10, 10), end, bts);
 			fail("No track at one of the points so an excepton should be thrown");
 		} catch (PathNotFoundException e) {
 

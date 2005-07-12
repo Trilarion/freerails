@@ -4,14 +4,13 @@
  */
 package jfreerails.world.train;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 import jfreerails.world.common.FreerailsPathIterator;
-import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.GameTime;
-import jfreerails.world.common.Step;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
+import jfreerails.world.top.Activity;
 
 /**
  * <p>
@@ -36,13 +35,15 @@ import jfreerails.world.common.PositionOnTrack;
  * 
  * @author Luke
  * @see jfreerails.world.train.PathOnTiles
- * @see jfreerails.world.train.SpeedAgainstTime
+ * @see jfreerails.world.train.CompositeSpeedAgainstTime
  */
-public class TrainMotion implements FreerailsSerializable {
+public class TrainMotion implements Activity<TrainPositionOnMap> {
 
 	private static final long serialVersionUID = 3618423722025891641L;
 
-	private final int initialPosition;
+	private final double duration, distanceEngineWillTravel;
+
+	private final double initialPosition;
 
 	private final PathOnTiles path;
 
@@ -69,7 +70,7 @@ public class TrainMotion implements FreerailsSerializable {
 	 *             <code>path.getDistance(enginePosition) &lt; trainLength</code>.
 	 * @throws IllegalArgumentException
 	 *             if
-	 *             <code>path.getDistance(enginePosition) + speeds.getDistance(speeds.getEnd))&lt;  path.getLength</code>.
+	 *             <code>(path.getLength() - initialPosition) &gt; speeds.getTotalDistance()</code>.
 	 */
 
 	public TrainMotion(PathOnTiles path, int enginePosition, int trainLength,
@@ -82,22 +83,29 @@ public class TrainMotion implements FreerailsSerializable {
 		this.trainLength = trainLength;
 		initialPosition = path.getDistance(enginePosition);
 		if (initialPosition < trainLength)
-			throw new IllegalArgumentException();
-		if (path.getLength() < initialPosition
-				+ speeds.getDistance(speeds.getEnd()))
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+					"The engine's initial position is not far enough along the path for "
+							+ "the train's initial position to be specified.");
+		distanceEngineWillTravel = path.getLength() - initialPosition;
+		if (distanceEngineWillTravel > speeds.getS())
+			throw new IllegalArgumentException(
+					"The train's speed is not defined for the whole of the journey.");
+
+		duration = distanceEngineWillTravel == 0 ? 0d : speeds
+				.calcT(distanceEngineWillTravel);
 	}
 
-	private int calcOffSet(GameTime t) {
-		int offset = getDistance(t) + initialPosition - trainLength;
+	private double calcOffSet(double t) {
+		double offset = getDistance(t) + initialPosition - trainLength;
 		return offset;
 	}
 
-	private void checkT(GameTime t) {
-		if (t.getTicks() < getStart().getTicks())
-			throw new IllegalArgumentException();
-		if (t.getTicks() > getEnd().getTicks())
-			throw new IllegalArgumentException();
+	private void checkT(double t) {
+
+	}
+
+	public double duration() {
+		return duration;
 	}
 
 	public boolean equals(Object o) {
@@ -128,14 +136,17 @@ public class TrainMotion implements FreerailsSerializable {
 	 * @throws IllegalArgumentException
 	 *             if t is outside the interval
 	 */
-	public int getDistance(GameTime t) {
+	public double getDistance(double t) {
 		checkT(t);
-		return speeds.getDistance(t);
+		return speeds.calcS(t);
 	}
 
-	/** Returns the time at which the interval ends. */
-	public GameTime getEnd() {
-		return speeds.getEnd();
+	public PositionOnTrack getFinalPosition() {
+		return path.getFinalPosition();
+	}
+
+	public double getSpeedAtEnd() {
+		return speeds.calcV(duration);
 	}
 
 	/**
@@ -147,31 +158,16 @@ public class TrainMotion implements FreerailsSerializable {
 	 * @throws IllegalArgumentException
 	 *             if t is outside the interval
 	 */
-	public TrainPositionOnMap getPosition(GameTime t) {
-		int offset = calcOffSet(t);
+	public TrainPositionOnMap getState(double t) {
+		double offset = calcOffSet(t);
 		FreerailsPathIterator pathIt = path.subPath(offset, trainLength);
+		double speed = speeds.calcV(t);
+		double acceleration = speeds.calcA(t);
+		SpeedTimeAndStatus.Activity activity = SpeedTimeAndStatus.Activity.READY;
 		TrainPositionOnMap tpom = TrainPositionOnMap
-				.createInSameDirectionAsPath(pathIt);
+				.createInSameDirectionAsPath(pathIt, speed, acceleration,
+						activity);
 		return tpom.reverse();
-	}
-
-	/**
-	 * Returns the train's speed in MPH at the specified time.
-	 * 
-	 * @param t
-	 *            the time.
-	 * @return the speed
-	 * @throws IllegalArgumentException
-	 *             if t is outside the interval
-	 */
-	public int getSpeed(GameTime t) {
-		checkT(t);
-		return speeds.getSpeed(t);
-	}
-
-	/** Returns the time at which the interval starts. */
-	public GameTime getStart() {
-		return speeds.getStart();
 	}
 
 	/**
@@ -184,34 +180,56 @@ public class TrainMotion implements FreerailsSerializable {
 	 * @throws IllegalArgumentException
 	 *             if t is outside the interval
 	 */
-	public PathOnTiles getTiles(GameTime t) {
+	public PathOnTiles getTiles(double t) {
 		checkT(t);
-		int start = calcOffSet(t);
-		int end = start + trainLength;
+		double start = calcOffSet(t);
+		double end = start + trainLength;
 		ArrayList<Step> steps = new ArrayList<Step>();
-		int distanceSoFar = 0;
-		Point p = path.getStart();
-		Point startPoint = null;
+		double distanceSoFar = 0;
+
+		int stepsBeforeStart = 0;
+		int stepsAfterEnd = 0;
+
 		for (int i = 0; i < path.steps(); i++) {
+			if (distanceSoFar > end)
+				stepsAfterEnd++;
+
 			Step step = path.getStep(i);
 			distanceSoFar += step.getLength();
-			if (distanceSoFar > start) {
-				steps.add(step);
-				if (null == startPoint) {
-					startPoint = new Point(p);
-				}
-			}
-			p.x += step.deltaX;
-			p.y += step.deltaY;
-			if (distanceSoFar >= end) {
-				break;
-			}
+
+			if (distanceSoFar < start)
+				stepsBeforeStart++;
+
 		}
-		return new PathOnTiles(startPoint, steps);
+
+		if (distanceSoFar < start) {
+			// throw new IllegalStateException();
+		}
+		if (distanceSoFar < (end - 0.1)) {
+			// throw new IllegalStateException();
+		}
+		int lastStep = path.steps() - stepsAfterEnd;
+		for (int i = stepsBeforeStart; i < lastStep; i++) {
+			steps.add(path.getStep(i));
+		}
+
+		ImPoint p = path.getStart();
+		int x = p.x;
+		int y = p.y;
+		for (int i = 0; i < stepsBeforeStart; i++) {
+			Step step = path.getStep(i);
+			x += step.deltaX;
+			y += step.deltaY;
+		}
+
+		ImPoint startPoint = new ImPoint(x, y);
+
+		PathOnTiles pathOnTiles = new PathOnTiles(startPoint, steps);
+		return pathOnTiles;
 	}
 
-	public PositionOnTrack getFinalPosition() {
-		return path.getFinalPosition();
+	public int getTrainLength() {
+		return trainLength;
 	}
 
 	public int hashCode() {
@@ -222,25 +240,8 @@ public class TrainMotion implements FreerailsSerializable {
 		return result;
 	}
 
-	/**
-	 * @param newSpeeds
-	 *            specifies the train's speed at different points in time.
-	 * @param newPathSection
-	 *            The path the engine is about to start moving along.
-	 */
-	public TrainMotion next(SpeedAgainstTime newSpeeds,
-			Step... newPathSection) {
-		GameTime start = newSpeeds.getStart();
-		// The tiles the train is sitting on before it starts moving along the
-		// new path section.
-		PathOnTiles currentTiles = getTiles(start);
-		PathOnTiles pathOnTiles = currentTiles.addSteps(newPathSection);
-		return new TrainMotion(pathOnTiles, currentTiles.steps(), trainLength,
-				newSpeeds);
-	}
-
-	public SpeedTimeAndStatus.Activity getActivity(GameTime time) {
-		return speeds.getActivity(time);
+	public PathOnTiles getPath() {
+		return path;
 	}
 
 }

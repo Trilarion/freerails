@@ -1,6 +1,5 @@
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.Stack;
 
 import jfreerails.move.ChangeTrackPieceCompositeMove;
@@ -10,6 +9,7 @@ import jfreerails.move.TrackMoveTransactionsGenerator;
 import jfreerails.move.UndoMove;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.terrain.TerrainType;
@@ -46,13 +46,13 @@ final public class TrackMoveProducer {
 	 */
 	private final TrackMoveTransactionsGenerator transactionsGenerator;
 
-	public MoveStatus buildTrack(Point from, Step[] path) {
+	public MoveStatus buildTrack(ImPoint from, Step[] path) {
 		MoveStatus returnValue = MoveStatus.MOVE_OK;
 		int x = from.x;
 		int y = from.y;
 		for (int i = 0; i < path.length; i++) {
 
-			returnValue = buildTrack(new Point(x, y), path[i]);
+			returnValue = buildTrack(new ImPoint(x, y), path[i]);
 			x += path[i].deltaX;
 			y += path[i].deltaY;
 			if (!returnValue.ok) {
@@ -62,7 +62,7 @@ final public class TrackMoveProducer {
 		return returnValue;
 	}
 
-	public MoveStatus buildTrack(Point from, Step trackVector) {
+	public MoveStatus buildTrack(ImPoint from, Step trackVector) {
 
 		ReadOnlyWorld w = executor.getWorld();
 		FreerailsPrincipal principal = executor.getPrincipal();
@@ -123,12 +123,12 @@ final public class TrackMoveProducer {
 			// upgrade the from tile if necessary.
 			FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
 			if (tileA.getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
-				MoveStatus ms = upgradeTrack(new Point(from), ruleIDs[0]);
+				MoveStatus ms = upgradeTrack(from, ruleIDs[0]);
 				if (!ms.ok) {
 					return ms;
 				}
 			}
-			Point point = new Point(from.x + trackVector.getDx(), from.y
+			ImPoint point = new ImPoint(from.x + trackVector.getDx(), from.y
 					+ trackVector.getDy());
 			FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
 			if (tileB.getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
@@ -155,7 +155,7 @@ final public class TrackMoveProducer {
 
 	}
 
-	public MoveStatus upgradeTrack(Point point) {
+	public MoveStatus upgradeTrack(ImPoint point) {
 		if (buildMode == BuildMode.UPGRADE_TRACK) {
 			ReadOnlyWorld w = executor.getWorld();
 			FreerailsTile tile = (FreerailsTile) w.getTile(point.x, point.y);
@@ -190,7 +190,7 @@ final public class TrackMoveProducer {
 		buildTrackStrategy = BuildTrackStrategy.getDefault(world);
 	}
 
-	private MoveStatus upgradeTrack(Point point, int trackRuleID) {
+	private MoveStatus upgradeTrack(ImPoint point, int trackRuleID) {
 		ReadOnlyWorld w = executor.getWorld();
 		TrackPiece before = (TrackPiece) w.getTile(point.x, point.y);
 		/* Check whether there is track here. */
@@ -270,7 +270,7 @@ final public class TrackMoveProducer {
 		this.buildTrackStrategy = buildTrackStrategy;
 	}
 
-	private boolean isStationHere(Point p) {
+	private boolean isStationHere(ImPoint p) {
 		ReadOnlyWorld w = executor.getWorld();
 		FreerailsTile tile = (FreerailsTile) w.getTile(p.x, p.y);
 		return tile.getTrackRule().isStation();

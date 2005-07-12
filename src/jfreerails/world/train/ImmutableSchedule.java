@@ -4,9 +4,9 @@
  */
 package jfreerails.world.train;
 
-import java.util.Arrays;
-
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImInts;
+import jfreerails.world.common.ImList;
 
 /**
  * A Schedule that is immutable.
@@ -17,7 +17,7 @@ import jfreerails.world.common.FreerailsSerializable;
 public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 	private static final long serialVersionUID = 3977858458324318264L;
 
-	private final TrainOrdersModel[] m_orders;
+	private final ImList<TrainOrdersModel> m_orders;
 
 	private final int nextScheduledOrder;
 
@@ -33,13 +33,13 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 
 	public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
 			boolean hasPriorityOrders) {
-		m_orders = orders;
+		m_orders = new ImList<TrainOrdersModel>(orders);
 		nextScheduledOrder = gotoStation;
 		m_hasPriorityOrders = hasPriorityOrders;
 	}
 
 	public TrainOrdersModel getOrder(int i) {
-		return m_orders[i];
+		return m_orders.get(i);
 	}
 
 	public int getOrderToGoto() {
@@ -52,12 +52,13 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 		if (-1 == orderToGoto) {
 			return -1;
 		}
-		TrainOrdersModel order = m_orders[orderToGoto];
+		TrainOrdersModel order = m_orders.get(orderToGoto);
 		return order.getStationID();
 	}
 
-	public int[] getWagonsToAdd() {
-		return m_orders[getOrderToGoto()].consist;
+	public ImInts getWagonsToAdd() {
+		TrainOrdersModel order = m_orders.get(getOrderToGoto());
+		return order.consist;
 	}
 
 	public boolean hasPriorityOrders() {
@@ -65,7 +66,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 	}
 
 	public int getNumOrders() {
-		return m_orders.length;
+		return m_orders.size();
 	}
 
 	public int getNextScheduledOrder() {
@@ -90,12 +91,13 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 
 			return this.m_hasPriorityOrders == test.m_hasPriorityOrders
 					&& this.nextScheduledOrder == test.nextScheduledOrder
-					&& Arrays.equals(this.m_orders, test.m_orders);
+					&& this.m_orders.equals(test.m_orders);
 		}
 		return false;
 	}
 
 	public boolean autoConsist() {
-		return m_orders[getOrderToGoto()].autoConsist;
+		TrainOrdersModel order = m_orders.get(getOrderToGoto());
+		return order.autoConsist;
 	}
 }

@@ -18,6 +18,7 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.accounts.BondTransaction;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImStringList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
@@ -124,11 +125,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 				Message2Client setMaps = new SetPropertyMessage2Client(
 						getNextClientCommandId(),
 						ClientControlInterface.MAPS_AVAILABLE,
-						savedGamesManager.getNewMapNames());
+						new ImStringList(savedGamesManager.getNewMapNames()));
 				Message2Client setSaveGames = new SetPropertyMessage2Client(
 						getNextClientCommandId(),
-						ClientControlInterface.SAVED_GAMES, savedGamesManager
-								.getSaveGameNames());
+						ClientControlInterface.SAVED_GAMES, new ImStringList(
+								savedGamesManager.getSaveGameNames()));
 				connection.writeToClient(setMaps);
 				connection.writeToClient(setSaveGames);
 
@@ -306,8 +307,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 			/* Add players to world. */
 			for (int i = 0; i < players.size(); i++) {
 				String name = players.get(i).username;
-				Player p = new Player(name, null, i); // public key set to
-														// null!
+				Player p = new Player(name, i);
+
 				int index = world.addPlayer(p);
 
 				world.addTransaction(BondTransaction.issueBond(5), p
@@ -407,7 +408,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
 		Message2Client request = new SetPropertyMessage2Client(
 				getNextClientCommandId(),
-				ClientControlInterface.CONNECTED_CLIENTS, playerNames);
+				ClientControlInterface.CONNECTED_CLIENTS, new ImStringList(
+						playerNames));
 
 		send2All(request);
 	}

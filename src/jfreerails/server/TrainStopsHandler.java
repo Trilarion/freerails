@@ -4,7 +4,6 @@
  */
 package jfreerails.server;
 
-import java.awt.Point;
 import java.util.logging.Logger;
 
 import jfreerails.controller.TrainAccessor;
@@ -15,6 +14,8 @@ import jfreerails.network.MoveReceiver;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.common.ImInts;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -62,10 +63,10 @@ public class TrainStopsHandler implements ServerAutomaton {
 		moveReceiver = mr;
 	}
 
-	Point arrivesAtPoint(int x, int y) {
+	ImPoint arrivesAtPoint(int x, int y) {
 		TrainAccessor ta = new TrainAccessor(world, principal, trainId);
 
-		Point targetPoint = ta.getTarget();
+		ImPoint targetPoint = ta.getTarget();
 
 		if (x == targetPoint.x && y == targetPoint.y) {
 			updateTarget();
@@ -84,7 +85,8 @@ public class TrainStopsHandler implements ServerAutomaton {
 	 *         current station.
 	 */
 	int getStationID(int x, int y) {
-		// loop thru the station list to check if train is at the same Point as
+		// loop thru the station list to check if train is at the same ImPoint
+		// as
 		// a station
 		for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {
 			StationModel tempPoint = (StationModel) world.get(KEY.STATIONS, i,
@@ -103,7 +105,7 @@ public class TrainStopsHandler implements ServerAutomaton {
 	// * @return the location of the station the train is currently heading
 	// * towards.
 	// */
-	// Point getTarget() {
+	// ImPoint getTarget() {
 	// TrainModel train = (TrainModel) world.get(KEY.TRAINS, this.trainId,
 	// principal);
 	// int scheduleID = train.getScheduleID();
@@ -113,13 +115,13 @@ public class TrainStopsHandler implements ServerAutomaton {
 	//
 	// if (-1 == stationNumber) {
 	// // There are no stations on the schedule.
-	// return new Point(0, 0);
+	// return new ImPoint(0, 0);
 	// }
 	//
 	// StationModel station = (StationModel) world.get(KEY.STATIONS,
 	// stationNumber, principal);
 	//
-	// return new Point(station.x, station.y);
+	// return new ImPoint(station.x, station.y);
 	// }
 
 	public void initAutomaton(MoveReceiver mr) {
@@ -223,7 +225,7 @@ public class TrainStopsHandler implements ServerAutomaton {
 		Schedule schedule = (ImmutableSchedule) world.get(KEY.TRAIN_SCHEDULES,
 				train.getScheduleID(), principal);
 
-		int[] wagonsToAdd = schedule.getWagonsToAdd();
+		ImInts wagonsToAdd = schedule.getWagonsToAdd();
 
 		// Loading and unloading cargo takes time, so we make the train wait for
 		// a few ticks.

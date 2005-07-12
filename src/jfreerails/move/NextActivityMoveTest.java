@@ -59,16 +59,16 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 				principal);
 
 		assertEquals(it.getActivity(), act);
-		assertEquals(it.getStartTime(), currentTime);
-		assertEquals(50, it.getDuration());
-		assertEquals(new GameTime(50), it.getFinishTime());
+		assertEquals(it.getStartTime(), currentTime.getTicks(), 0.00001);
+		assertEquals(50d, it.getDuration(), 0.00001);
+		assertEquals(50d, it.getFinishTime(), 0.00001);
 
 		assertTrue(it.hasNext());
 		it.nextActivity();
 		assertEquals(it.getActivity(), act2);
-		assertEquals(new GameTime(50), it.getStartTime());
-		assertEquals(60, it.getDuration());
-		assertEquals(new GameTime(110), it.getFinishTime());
+		assertEquals(50, it.getStartTime(), 0.00001);
+		assertEquals(60, it.getDuration(), 0.0001d);
+		assertEquals(110, it.getFinishTime(), 0.00001);
 	}
 
 }

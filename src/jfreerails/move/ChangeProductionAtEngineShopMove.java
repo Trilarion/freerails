@@ -4,8 +4,7 @@
  */
 package jfreerails.move;
 
-import java.util.Arrays;
-
+import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
@@ -22,28 +21,51 @@ import jfreerails.world.top.World;
 public class ChangeProductionAtEngineShopMove implements Move {
 	private static final long serialVersionUID = 3905519384997737520L;
 
-	private final ProductionAtEngineShop[] m_before;
+	private final ImList<ProductionAtEngineShop> m_before;
 
-	private final ProductionAtEngineShop[] m_after;
+	private final ImList<ProductionAtEngineShop> m_after;
 
 	private final int m_stationNumber;
 
 	private final FreerailsPrincipal m_principal;
 
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof ChangeProductionAtEngineShopMove))
+			return false;
+
+		final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) o;
+
+		if (m_stationNumber != changeProductionAtEngineShopMove.m_stationNumber)
+			return false;
+		if (m_after != null ? !m_after
+				.equals(changeProductionAtEngineShopMove.m_after)
+				: changeProductionAtEngineShopMove.m_after != null)
+			return false;
+		if (m_before != null ? !m_before
+				.equals(changeProductionAtEngineShopMove.m_before)
+				: changeProductionAtEngineShopMove.m_before != null)
+			return false;
+		if (!m_principal.equals(changeProductionAtEngineShopMove.m_principal))
+			return false;
+
+		return true;
+	}
+
 	public int hashCode() {
 		int result;
-		result = m_before.length;
-		result = 29 * result + m_after.length;
+		result = (m_before != null ? m_before.hashCode() : 0);
+		result = 29 * result + (m_after != null ? m_after.hashCode() : 0);
 		result = 29 * result + m_stationNumber;
 		result = 29 * result + m_principal.hashCode();
-
 		return result;
 	}
 
-	public ChangeProductionAtEngineShopMove(ProductionAtEngineShop[] b,
-			ProductionAtEngineShop[] a, int station, FreerailsPrincipal p) {
-		m_before = b.clone();
-		m_after = a.clone();
+	public ChangeProductionAtEngineShopMove(ImList<ProductionAtEngineShop> b,
+			ImList<ProductionAtEngineShop> a, int station, FreerailsPrincipal p) {
+		m_before = b;
+		m_after = a;
 		m_stationNumber = station;
 		m_principal = p;
 	}
@@ -52,7 +74,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
 		return tryMove(w, m_before);
 	}
 
-	private MoveStatus tryMove(World w, ProductionAtEngineShop[] stateA) {
+	private MoveStatus tryMove(World w, ImList<ProductionAtEngineShop> stateA) {
 		// Check that the specified station exists.
 		if (!w.boundsContain(KEY.STATIONS, this.m_stationNumber, m_principal)) {
 			return MoveStatus.moveFailed(this.m_stationNumber + " "
@@ -75,7 +97,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
 			return MoveStatus.moveFailed(this.m_stationNumber + " "
 					+ m_principal);
 		}
-		if (Arrays.equals(station.getProduction(), (stateA))) {
+		if (station.getProduction().equals(stateA)) {
 			return MoveStatus.MOVE_OK;
 		}
 		return MoveStatus.moveFailed(this.m_stationNumber + " " + m_principal);
@@ -111,19 +133,4 @@ public class ChangeProductionAtEngineShopMove implements Move {
 		return status;
 	}
 
-	public boolean equals(Object o) {
-		if (o instanceof ChangeProductionAtEngineShopMove) {
-			ChangeProductionAtEngineShopMove arg = (ChangeProductionAtEngineShopMove) o;
-			boolean stationNumbersEqual = (this.m_stationNumber == arg.m_stationNumber);
-			boolean beforeFieldsEqual = Arrays.equals(this.m_before,
-					arg.m_before);
-			boolean afterFieldsEqual = Arrays.equals(this.m_after, arg.m_after);
-
-			if (stationNumbersEqual && beforeFieldsEqual && afterFieldsEqual) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
 }

@@ -4,9 +4,9 @@
  */
 package jfreerails.move;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.track.TrackPiece;
 
 /**
@@ -24,7 +24,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
 	}
 
 	public static UpgradeTrackMove generateMove(TrackPiece before,
-			TrackPiece after, Point p) {
+			TrackPiece after, ImPoint p) {
 		ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
 
 		return new UpgradeTrackMove(m);

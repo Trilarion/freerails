@@ -7,7 +7,6 @@
 package jfreerails.client.view;
 
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -19,6 +18,7 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -138,8 +138,9 @@ public class StationInfoJPanel extends JPanel implements View,
 		// GEN-FIRST:event_previousStationActionPerformed
 		// Add your handling code here:
 		if (wi.previous()) {
-			Point p = new Point(((StationModel) wi.getElement()).getStationX(),
-					((StationModel) wi.getElement()).getStationY());
+			ImPoint p = new ImPoint(((StationModel) wi.getElement())
+					.getStationX(), ((StationModel) wi.getElement())
+					.getStationY());
 			this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
 
 			display();
@@ -152,8 +153,9 @@ public class StationInfoJPanel extends JPanel implements View,
 		// GEN-FIRST:event_nextStationActionPerformed
 		// Add your handling code here:
 		if (wi.next()) {
-			Point p = new Point(((StationModel) wi.getElement()).getStationX(),
-					((StationModel) wi.getElement()).getStationY());
+			ImPoint p = new ImPoint(((StationModel) wi.getElement())
+					.getStationX(), ((StationModel) wi.getElement())
+					.getStationY());
 			this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
 			display();
 		} else {

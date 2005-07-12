@@ -1,7 +1,6 @@
 package jfreerails.client.view;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -15,6 +14,7 @@ import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 
@@ -121,7 +121,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 	public void propertyChange(ModelRoot.Property prop, Object before,
 			Object after) {
 		if (prop.equals(ModelRoot.Property.CURSOR_POSITION)) {
-			Point p = (Point) after;
+			ImPoint p = (ImPoint) after;
 			terrainInfoPanel.setTerrainType(((FreerailsTile) world.getTile(p.x,
 					p.y)).getTerrainTypeID());
 		}

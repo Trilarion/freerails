@@ -4,16 +4,15 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
-
 import jfreerails.world.cargo.ImmutableCargoBundle;
-import jfreerails.world.common.GameTime;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
+import jfreerails.world.top.AKEY;
+import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.ImmutableSchedule;
-import jfreerails.world.train.SpeedTimeAndStatus;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 
@@ -43,57 +42,13 @@ public class TrainAccessor {
 		return id;
 	}
 
-	public TrainMotion findCurrentMotion(GameTime time) {
-		int t = time.getTicks();
-		TrainMotion motionA, motionB;
-		motionA = (TrainMotion) w.get(KEY.TRAIN_MOTION1, id, p);
-		motionB = (TrainMotion) w.get(KEY.TRAIN_MOTION2, id, p);
-		TrainMotion first, second;
-		int startA = motionA.getStart().getTicks();
-		int startB = motionB.getStart().getTicks();
-		if (startA < startB) {
-			first = motionA;
-			second = motionB;
-		} else {
-			first = motionB;
-			second = motionA;
+	public TrainMotion findCurrentMotion(double time) {
+		ActivityIterator ai = w.getActivities(AKEY.TRAIN_POSITIONS, id, p);
+		boolean afterFinish = ai.getFinishTime() < time;
+		while (afterFinish && ai.hasNext()) {
+			ai.nextActivity();
 		}
-		int start = first.getStart().getTicks();
-		int end = second.getEnd().getTicks();
-
-		if (t > end)
-			throw new IllegalArgumentException();
-		if (t < start)
-			throw new IllegalArgumentException();
-
-		int secondStart = second.getStart().getTicks();
-
-		TrainMotion currentMotion = secondStart > t ? first : second;
-		return currentMotion;
-	}
-
-	public KEY getFirstKEY() {
-		TrainMotion motionA, motionB;
-		motionA = (TrainMotion) w.get(KEY.TRAIN_MOTION1, id, p);
-		motionB = (TrainMotion) w.get(KEY.TRAIN_MOTION2, id, p);
-		int startA = motionA.getStart().getTicks();
-		int startB = motionB.getStart().getTicks();
-		if (startA < startB) {
-			return KEY.TRAIN_MOTION1;
-		}
-		return KEY.TRAIN_MOTION2;
-	}
-
-	public KEY getLastKEY() {
-		TrainMotion motionA, motionB;
-		motionA = (TrainMotion) w.get(KEY.TRAIN_MOTION1, id, p);
-		motionB = (TrainMotion) w.get(KEY.TRAIN_MOTION2, id, p);
-		int startA = motionA.getStart().getTicks();
-		int startB = motionB.getStart().getTicks();
-		if (startA < startB) {
-			return KEY.TRAIN_MOTION2;
-		}
-		return KEY.TRAIN_MOTION1;
+		return (TrainMotion) ai.getActivity();
 	}
 
 	public TrainModel getTrain() {
@@ -112,16 +67,11 @@ public class TrainAccessor {
 				.getCargoBundleID(), p);
 	}
 
-	public SpeedTimeAndStatus.Activity getActivity(GameTime time) {
-		TrainMotion motion = findCurrentMotion(time);
-		return motion.getActivity(time);
-	}
-
 	/**
 	 * @return the location of the station the train is currently heading
 	 *         towards.
 	 */
-	public Point getTarget() {
+	public ImPoint getTarget() {
 		TrainModel train = (TrainModel) w.get(KEY.TRAINS, id, p);
 		int scheduleID = train.getScheduleID();
 		ImmutableSchedule schedule = (ImmutableSchedule) w.get(
@@ -130,13 +80,13 @@ public class TrainAccessor {
 
 		if (-1 == stationNumber) {
 			// There are no stations on the schedule.
-			return new Point(0, 0);
+			return new ImPoint(0, 0);
 		}
 
 		StationModel station = (StationModel) w.get(KEY.STATIONS,
 				stationNumber, p);
 
-		return new Point(station.x, station.y);
+		return new ImPoint(station.x, station.y);
 	}
 
 }

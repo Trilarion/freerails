@@ -3,6 +3,7 @@
  */
 package jfreerails.network;
 
+import jfreerails.util.Immutable;
 import jfreerails.world.top.World;
 
 /**
@@ -12,6 +13,7 @@ import jfreerails.world.top.World;
  * @author Luke
  * 
  */
+@Immutable
 public class SetWorldMessage2Client implements Message2Client {
 	private static final long serialVersionUID = 3257570619972269362L;
 

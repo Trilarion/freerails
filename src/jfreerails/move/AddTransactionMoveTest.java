@@ -34,8 +34,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
 		assertEquals(new Money(100), currentBalance);
 
 		final Player PLAYER_WITHOUT_ACCOUNT = new Player(
-				"PLAYER_WITHOUT_ACCOUNT",
-				(new Player("PLAYER_WITHOUT_ACCOUNT")).getPublicKey(), 4);
+				"PLAYER_WITHOUT_ACCOUNT", 4);
 
 		assertSurvivesSerialisation(m);
 

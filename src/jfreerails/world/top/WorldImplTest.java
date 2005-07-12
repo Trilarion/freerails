@@ -60,7 +60,7 @@ public class WorldImplTest extends TestCase {
 		original = new WorldImpl();
 		copy = original.defensiveCopy();
 
-		Player player = new Player("Name", null, 0);
+		Player player = new Player("Name", 0);
 		int index = copy.addPlayer(player);
 		assertEquals(index, 0);
 		assertFalse(copy.equals(original));
@@ -99,7 +99,7 @@ public class WorldImplTest extends TestCase {
 
 	public void testActivityLists() {
 		World w = new WorldImpl();
-		Player player = new Player("Name", null, 0);
+		Player player = new Player("Name", 0);
 		w.addPlayer(player);
 		FreerailsPrincipal principal = player.getPrincipal();
 
@@ -157,7 +157,7 @@ public class WorldImplTest extends TestCase {
 
 		private static final long serialVersionUID = 1298936498785131183L;
 
-		private final int duration;
+		private final double duration;
 
 		public boolean equals(Object o) {
 			if (this == o)
@@ -174,19 +174,19 @@ public class WorldImplTest extends TestCase {
 		}
 
 		public int hashCode() {
-			return duration;
+			return (int) duration;
 		}
 
 		public TestActivity(int duration) {
 			this.duration = duration;
 		}
 
-		public int duration() {
+		public double duration() {
 			return duration;
 		}
 
-		public FreerailsSerializable getState(int dt) {
-			return new TestState(dt);
+		public FreerailsSerializable getState(double dt) {
+			return new TestState((int) dt);
 		}
 
 		@Override

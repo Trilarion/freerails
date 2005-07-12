@@ -95,16 +95,16 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 		String row = "<p>Right-of-Way costs $" + type.getRightOfWay()
 				+ " per mile. </p>";
 		String tableString = "";
-		int cargosProduced = type.getProduction().length;
-		int cargosConsumed = type.getConsumption().length;
-		int cargosConverted = type.getConversion().length;
+		int cargosProduced = type.getProduction().size();
+		int cargosConsumed = type.getConsumption().size();
+		int cargosConverted = type.getConversion().size();
 		if ((cargosProduced + cargosConsumed + cargosConverted) > 0) {
 			// if the terrain type produces, consumes, or converts anything.
 			tableString = "<table width=\"75%\" >";
 			if (cargosProduced != 0) {
 				tableString += "<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>";
 				for (int i = 0; i < cargosProduced; i++) {
-					Production p = type.getProduction()[i];
+					Production p = type.getProduction().get(i);
 					CargoType c = (CargoType) w.get(SKEY.CARGO_TYPES, p
 							.getCargoType());
 					String supply = String.valueOf(p.getRate()
@@ -116,7 +116,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 			if (cargosConsumed != 0) {
 				tableString += "<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>";
 				for (int i = 0; i < cargosConsumed; i++) {
-					Consumption p = type.getConsumption()[i];
+					Consumption p = type.getConsumption().get(i);
 					CargoType c = (CargoType) w.get(SKEY.CARGO_TYPES, p
 							.getCargoType());
 					tableString += "<tr> <td>" + c.getDisplayName()
@@ -126,7 +126,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 			if (cargosConverted != 0) {
 				tableString += "<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>";
 				for (int i = 0; i < cargosConverted; i++) {
-					Conversion p = type.getConversion()[i];
+					Conversion p = type.getConversion().get(i);
 					CargoType input = (CargoType) w.get(SKEY.CARGO_TYPES, p
 							.getInput());
 					CargoType output = (CargoType) w.get(SKEY.CARGO_TYPES, p

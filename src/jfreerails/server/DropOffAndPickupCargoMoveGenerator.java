@@ -12,6 +12,7 @@ import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
@@ -62,7 +63,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
 	private boolean m_autoConsist;
 
-	private int[] consist = new int[0];
+	private ImInts consist = new ImInts();
 
 	/**
 	 * Stores the type and quanity of cargo in a wagon.
@@ -148,12 +149,13 @@ public class DropOffAndPickupCargoMoveGenerator {
 			Collections.sort(wagonsAvailable);
 
 			int numWagons2add = Math.min(wagonsAvailable.size(), 3);
-			consist = new int[numWagons2add];
 
+			int[] temp = new int[numWagons2add];
 			for (int i = 0; i < numWagons2add; i++) {
 				WagonLoad wagonload = wagonsAvailable.get(i);
-				consist[i] = wagonload.cargoType;
+				temp[i] = wagonload.cargoType;
 			}
+			consist = new ImInts(temp);
 		}
 
 		processStationBundle(); // ie. load train / pickup cargo
@@ -281,8 +283,8 @@ public class DropOffAndPickupCargoMoveGenerator {
 		int[] spaceAvailable = new int[w.size(SKEY.CARGO_TYPES)];
 
 		// First calculate the train's total capacity.
-		for (int j = 0; j < consist.length; j++) {
-			int cargoType = consist[j];
+		for (int j = 0; j < consist.size(); j++) {
+			int cargoType = consist.get(j);
 
 			spaceAvailable[cargoType] += WagonType.UNITS_OF_CARGO_PER_WAGON;
 		}

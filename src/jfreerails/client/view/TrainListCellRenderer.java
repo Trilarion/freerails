@@ -124,13 +124,13 @@ public class TrainListCellRenderer extends JPanel implements View,
 
 		// Set up the array of images.
 		if (null != order.consist) {
-			images = new Image[1 + order.consist.length];
+			images = new Image[1 + order.consist.size()];
 			images[0] = vl.getTrainImages().getSideOnEngineImage(
 					train.getEngineType(), height);
 
-			for (int i = 0; i < order.consist.length; i++) {
+			for (int i = 0; i < order.consist.size(); i++) {
 				images[i + 1] = vl.getTrainImages().getSideOnWagonImage(
-						order.consist[i], height);
+						order.consist.get(i), height);
 			}
 		} else {
 			images = new Image[0];

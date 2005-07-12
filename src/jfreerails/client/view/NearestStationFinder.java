@@ -56,8 +56,7 @@ public class NearestStationFinder {
 		return nearestStation;
 	}
 
-	public int findNearestStationInDirection(int startStation,
-			Step direction) {
+	public int findNearestStationInDirection(int startStation, Step direction) {
 		int distanceToClosestSquared = Integer.MAX_VALUE;
 		NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
 
@@ -89,8 +88,7 @@ public class NearestStationFinder {
 	 * Returns true if the angle between direction and the vector (deltaX,
 	 * deltaY) is less than 45 degrees.
 	 */
-	private boolean isInRightDirection(Step direction, int deltaX,
-			int deltaY) {
+	private boolean isInRightDirection(Step direction, int deltaX, int deltaY) {
 		boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
 		boolean sameXDirection = (direction.deltaX * deltaX) > 0;
 		boolean sameYDirection = (direction.deltaY * deltaY > 0);

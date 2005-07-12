@@ -6,7 +6,6 @@ import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
 import static jfreerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +24,7 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.UpgradeTrackMove;
 import jfreerails.util.GameModel;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -52,7 +52,7 @@ public class BuildTrackController implements GameModel {
 
 	private boolean m_buildNewTrack = true;
 
-	private List<Point> m_builtTrack = new ArrayList<Point>();
+	private List<ImPoint> m_builtTrack = new ArrayList<ImPoint>();
 
 	private boolean m_isBuildTrackSuccessful = false;
 
@@ -70,9 +70,9 @@ public class BuildTrackController implements GameModel {
 
 	private SoundManager m_soundManager = SoundManager.getSoundManager();
 
-	private Point m_startPoint;
+	private ImPoint m_startPoint;
 
-	private Point m_targetPoint;
+	private ImPoint m_targetPoint;
 
 	private boolean m_visible = false;
 
@@ -96,7 +96,7 @@ public class BuildTrackController implements GameModel {
 	}
 
 	/** Called when we want to upgrade or remove track between two points. */
-	public MoveStatus changeTrack(Point a, Point b,
+	public MoveStatus changeTrack(ImPoint a, ImPoint b,
 			TrackMoveProducer trackBuilder) {
 		TrackMoveProducer.BuildMode mode = trackBuilder.getTrackBuilderMode();
 		assert (mode == REMOVE_TRACK || mode == UPGRADE_TRACK);
@@ -113,12 +113,12 @@ public class BuildTrackController implements GameModel {
 	}
 
 	/** Utility method that gets the cursor position from the model root. */
-	private Point getCursorPosition() {
-		Point point = (Point) m_modelRoot
+	private ImPoint getCursorPosition() {
+		ImPoint point = (ImPoint) m_modelRoot
 				.getProperty(ModelRoot.Property.CURSOR_POSITION);
 
 		// Check for null & make a defensive copy
-		point = null == point ? new Point() : new Point(point);
+		point = null == point ? new ImPoint() : point;
 
 		if (!m_modelRoot.getWorld().boundsContain(point.x, point.y)) {
 			throw new IllegalStateException(String.valueOf(point));
@@ -150,7 +150,7 @@ public class BuildTrackController implements GameModel {
 	}
 
 	/** Moves cursor which causes track to be built on the worldDiff object. */
-	private void moveCursorMoreTiles(List<Point> track) {
+	private void moveCursorMoreTiles(List<ImPoint> track) {
 		moveCursorMoreTiles(track, null);
 	}
 
@@ -164,9 +164,9 @@ public class BuildTrackController implements GameModel {
 	 * @param trackBuilder
 	 *            TrackMoveProducer
 	 */
-	private MoveStatus moveCursorMoreTiles(List<Point> track,
+	private MoveStatus moveCursorMoreTiles(List<ImPoint> track,
 			TrackMoveProducer trackBuilder) {
-		Point oldPosition = getCursorPosition();
+		ImPoint oldPosition = getCursorPosition();
 
 		MoveStatus ms = null;
 		int piecesOfNewTrack = 0;
@@ -175,8 +175,8 @@ public class BuildTrackController implements GameModel {
 			trackBuilder.setBuildTrackStrategy(getBts());
 		}
 
-		for (Iterator<Point> iter = track.iterator(); iter.hasNext();) {
-			Point point = iter.next();
+		for (Iterator<ImPoint> iter = track.iterator(); iter.hasNext();) {
+			ImPoint point = iter.next();
 			LOGGER.fine("point" + point);
 			LOGGER.fine("oldPosition" + oldPosition);
 
@@ -186,8 +186,8 @@ public class BuildTrackController implements GameModel {
 				continue;
 			}
 
-			Step vector = Step.getInstance(point.x
-					- oldPosition.x, point.y - oldPosition.y);
+			Step vector = Step.getInstance(point.x - oldPosition.x, point.y
+					- oldPosition.y);
 
 			// If there is already track between the two tiles, do nothing
 			FreerailsTile tile = (FreerailsTile) m_realWorld.getTile(
@@ -243,7 +243,7 @@ public class BuildTrackController implements GameModel {
 	 * Attempts to building track from the specified point in the specified
 	 * direction on the worldDiff object.
 	 */
-	private MoveStatus planBuildingTrack(Point point, Step vector) {
+	private MoveStatus planBuildingTrack(ImPoint point, Step vector) {
 		WorldDifferences worldDiffs = m_worldDiffs;
 		FreerailsTile tileA = (FreerailsTile) worldDiffs.getTile(point.x,
 				point.y);
@@ -286,7 +286,7 @@ public class BuildTrackController implements GameModel {
 	}
 
 	/** Sets the proposed track. */
-	public void setProposedTrack(Point startPoint, Point endPoint,
+	public void setProposedTrack(ImPoint startPoint, ImPoint endPoint,
 			TrackMoveProducer trackBuilder) {
 		assert (trackBuilder.getTrackBuilderMode() != IGNORE_TRACK);
 		assert (trackBuilder.getTrackBuilderMode() != BUILD_STATION);
@@ -321,8 +321,8 @@ public class BuildTrackController implements GameModel {
 			return;
 		}
 
-		setTargetPoint(new Point(endPoint));
-		m_startPoint = new Point(startPoint);
+		setTargetPoint(endPoint);
+		m_startPoint = startPoint;
 
 		try {
 
@@ -346,9 +346,9 @@ public class BuildTrackController implements GameModel {
 	 * @param newTargetPoint
 	 *            The m_targetPoint to set.
 	 */
-	private void setTargetPoint(Point newTargetPoint) {
+	private void setTargetPoint(ImPoint newTargetPoint) {
 		this.m_targetPoint = newTargetPoint;
-		Point p = null == newTargetPoint ? null : new Point(newTargetPoint);
+		ImPoint p = null == newTargetPoint ? null : newTargetPoint;
 		m_modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, p);
 	}
 
@@ -405,7 +405,8 @@ public class BuildTrackController implements GameModel {
 				m_path = m_pathOnExistingTrackFinder.pathAsVectors();
 				TrackMoveProducer.BuildMode mode = getBuildMode();
 
-				Point location = new Point(m_startPoint);
+				int locationX = m_startPoint.x;
+				int locationY = m_startPoint.y;
 				FreerailsPrincipal principal = m_modelRoot.getPrincipal();
 				for (Step v : m_path) {
 					Move move;
@@ -416,7 +417,8 @@ public class BuildTrackController implements GameModel {
 
 							try {
 								move = ChangeTrackPieceCompositeMove
-										.generateRemoveTrackMove(location, v,
+										.generateRemoveTrackMove(new ImPoint(
+												locationX, locationY), v,
 												m_worldDiffs, principal);
 								break;
 
@@ -430,7 +432,7 @@ public class BuildTrackController implements GameModel {
 							int owner = ChangeTrackPieceCompositeMove.getOwner(
 									principal, m_worldDiffs);
 							FreerailsTile tile = (FreerailsTile) m_worldDiffs
-									.getTile(location.x, location.y);
+									.getTile(locationX, locationY);
 							int tt = tile.getTerrainTypeID();
 							int trackRuleID = getBts().getRule(tt);
 
@@ -457,7 +459,8 @@ public class BuildTrackController implements GameModel {
 							}
 
 							move = UpgradeTrackMove.generateMove(tile
-									.getTrackPiece(), after, location);
+									.getTrackPiece(), after, new ImPoint(
+									locationX, locationY));
 							break;
 
 						default:
@@ -467,9 +470,10 @@ public class BuildTrackController implements GameModel {
 						MoveStatus ms = move.doMove(m_worldDiffs, principal);
 						okSoFar = ms.ok ? okSoFar : false;
 					}// end of attemptMove
-					location.x += v.deltaX;
-					location.y += v.deltaY;
+					locationX += v.deltaX;
+					locationY += v.deltaY;
 				}// end for loop
+				m_startPoint = new ImPoint(locationX, locationY);
 				m_isBuildTrackSuccessful = okSoFar;
 				if (okSoFar) {
 					setCursorMessage("");
@@ -489,8 +493,8 @@ public class BuildTrackController implements GameModel {
 	/**
 	 * Saves track into real world
 	 */
-	public Point updateWorld(TrackMoveProducer trackBuilder) {
-		Point actPoint = getCursorPosition();
+	public ImPoint updateWorld(TrackMoveProducer trackBuilder) {
+		ImPoint actPoint = getCursorPosition();
 
 		if (m_buildNewTrack) {
 			if (m_builtTrack.size() > 0) {
@@ -499,14 +503,14 @@ public class BuildTrackController implements GameModel {
 				/* Note, reset() will have been called if ms.ok == false */
 				if (ms.ok) {
 					actPoint = m_builtTrack.get(m_builtTrack.size() - 1);
-					m_builtTrack = new ArrayList<Point>();
+					m_builtTrack = new ArrayList<ImPoint>();
 				}
 			}
 		} else {
 			trackBuilder.setBuildTrackStrategy(getBts());
 			MoveStatus ms = trackBuilder.buildTrack(m_startPoint, m_path);
 			if (ms.ok) {
-				actPoint = new Point(m_targetPoint);
+				actPoint = m_targetPoint;
 				setCursorMessage("");
 				if (REMOVE_TRACK == getBuildMode()) {
 					m_soundManager.playSound(

@@ -22,8 +22,7 @@ import jfreerails.world.track.TrackRuleProperties;
  */
 public class MapFixtureFactory {
 	/** Only subclasses should use these constants. */
-	public static final Player TEST_PLAYER = new Player("test player",
-			(new Player("test player")).getPublicKey(), 0);
+	public static final Player TEST_PLAYER = new Player("test player", 0);
 
 	public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER
 			.getPrincipal();

@@ -4,7 +4,8 @@
 package jfreerails.network;
 
 import java.io.IOException;
-import java.util.Arrays;
+
+import jfreerails.world.common.ImStringList;
 
 /**
  * Tests FreerailsClient with a network server.
@@ -26,7 +27,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 			assertEquals(1, server.countOpenConnections());
 
 			assertMapsAndSaveGamesReceived(client);
-			assertConnectClientsEquals(client, new String[] { "name" });
+			assertConnectClientsEquals(client, new ImStringList("name"));
 
 			/* Test 2 : a client that has already logged on. */
 			FreerailsClient client2 = new FreerailsClient();
@@ -44,10 +45,11 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 			assertEquals(2, server.countOpenConnections());
 
 			/* read list of connected clients. */
-			assertConnectClientsEquals(client, new String[] { "name", "name3" });
+			assertConnectClientsEquals(client,
+					new ImStringList("name", "name3"));
 			assertMapsAndSaveGamesReceived(client3);
-			assertConnectClientsEquals(client3,
-					new String[] { "name", "name3" });
+			assertConnectClientsEquals(client3, new ImStringList("name",
+					"name3"));
 
 			/* Test 4 : disconnect the client from test 1. */
 			client.disconnect();
@@ -59,15 +61,15 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 	}
 
 	private void assertConnectClientsEquals(FreerailsClient client,
-			String[] expectedPlayerNames) throws IOException,
+			ImStringList expectedPlayerNames) throws IOException,
 			InterruptedException {
 		Message2Client message2Client = (Message2Client) client.read();
 		message2Client.execute(client);
 
-		String[] actualPlayerNames = (String[]) client
+		ImStringList actualPlayerNames = (ImStringList) client
 				.getProperty(ClientControlInterface.CONNECTED_CLIENTS);
 		assertNotNull(actualPlayerNames);
-		assertTrue(Arrays.equals(expectedPlayerNames, actualPlayerNames));
+		assertEquals(expectedPlayerNames, actualPlayerNames);
 	}
 
 	private void assertMapsAndSaveGamesReceived(FreerailsClient client)

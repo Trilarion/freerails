@@ -41,8 +41,7 @@ public class StepTest extends TestCase {
 
 		for (int i = 0; i < vectors.length; i++) {
 			Step v = vectors[i];
-			Step v2 = Step.getNearestVector(v.deltaX,
-					v.deltaY);
+			Step v2 = Step.getNearestVector(v.deltaX, v.deltaY);
 			assertEquals(v, v2);
 		}
 

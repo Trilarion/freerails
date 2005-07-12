@@ -1,8 +1,7 @@
 package jfreerails.world.train;
 
-import java.util.Arrays;
-
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImInts;
 
 /**
  * Represents a train.
@@ -23,7 +22,7 @@ public class TrainModel implements FreerailsSerializable {
 
 	private final int m_engineType;
 
-	private final int[] m_wagonTypes;
+	private final ImInts m_wagonTypes;
 
 	private final int m_cargoBundleNumber;
 
@@ -36,26 +35,26 @@ public class TrainModel implements FreerailsSerializable {
 		return result;
 	}
 
-	public TrainModel getNewInstance(int newEngine, int[] newWagons) {
+	public TrainModel getNewInstance(int newEngine, ImInts newWagons) {
 		return new TrainModel(newEngine, newWagons, this.getScheduleID(), this
 				.getCargoBundleID());
 	}
 
-	public TrainModel(int engine, int[] wagons, int scheduleID, int BundleId) {
+	public TrainModel(int engine, ImInts wagons, int scheduleID, int BundleId) {
 		m_engineType = engine;
 		m_wagonTypes = wagons;
 		m_scheduleID = scheduleID;
 		m_cargoBundleNumber = BundleId;
 	}
 
-	public TrainModel(int[] wagons, int BundleId) {
+	public TrainModel(ImInts wagons, int BundleId) {
 		m_wagonTypes = wagons;
 		m_cargoBundleNumber = BundleId;
 		m_engineType = 0;
 		m_scheduleID = 0;
 	}
 
-	public TrainModel(int engine, int[] wagons, int scheduleID) {
+	public TrainModel(int engine, ImInts wagons, int scheduleID) {
 		m_engineType = engine;
 		m_wagonTypes = wagons;
 		m_scheduleID = scheduleID;
@@ -64,25 +63,25 @@ public class TrainModel implements FreerailsSerializable {
 
 	public TrainModel(int engine) {
 		m_engineType = engine;
-		m_wagonTypes = new int[] { 0, 1, 2 };
+		m_wagonTypes = new ImInts(0, 1, 2);
 		m_scheduleID = 0;
 		m_cargoBundleNumber = 0;
 	}
 
 	public int getLength() {
-		return (1 + m_wagonTypes.length) * WAGON_LENGTH; // Engine + wagons.
+		return (1 + m_wagonTypes.size()) * WAGON_LENGTH; // Engine + wagons.
 	}
 
 	public boolean canAddWagon() {
-		return m_wagonTypes.length < MAX_NUMBER_OF_WAGONS;
+		return m_wagonTypes.size() < MAX_NUMBER_OF_WAGONS;
 	}
 
 	public int getNumberOfWagons() {
-		return m_wagonTypes.length;
+		return m_wagonTypes.size();
 	}
 
 	public int getWagon(int i) {
-		return m_wagonTypes[i];
+		return m_wagonTypes.get(i);
 	}
 
 	public int getEngineType() {
@@ -97,8 +96,8 @@ public class TrainModel implements FreerailsSerializable {
 		return m_scheduleID;
 	}
 
-	public int[] getConsist() {
-		return m_wagonTypes.clone();
+	public ImInts getConsist() {
+		return m_wagonTypes;
 	}
 
 	public boolean equals(Object obj) {
@@ -106,7 +105,7 @@ public class TrainModel implements FreerailsSerializable {
 			TrainModel test = (TrainModel) obj;
 			boolean b = this.m_cargoBundleNumber == test.m_cargoBundleNumber
 					&& this.m_engineType == test.m_engineType
-					&& Arrays.equals(this.m_wagonTypes, test.m_wagonTypes)
+					&& this.m_wagonTypes.equals(test.m_wagonTypes)
 					&& this.m_scheduleID == test.m_scheduleID;
 
 			return b;

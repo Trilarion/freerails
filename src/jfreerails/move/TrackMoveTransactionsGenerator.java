@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.ImList;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -91,10 +92,10 @@ public class TrackMoveTransactionsGenerator {
 			CompositeMove cm = (CompositeMove) move;
 			cm.getMoves();
 
-			Move[] moves = cm.getMoves();
+			ImList<Move> moves = cm.getMoves();
 
-			for (int i = 0; i < moves.length; i++) {
-				unpackMove(moves[i]);
+			for (int i = 0; i < moves.size(); i++) {
+				unpackMove(moves.get(i));
 			}
 		}
 	}

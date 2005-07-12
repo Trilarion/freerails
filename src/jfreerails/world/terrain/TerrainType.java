@@ -1,6 +1,7 @@
 package jfreerails.world.terrain;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImList;
 import jfreerails.world.common.Money;
 
 /**
@@ -11,7 +12,7 @@ import jfreerails.world.common.Money;
  */
 public interface TerrainType extends FreerailsSerializable {
 
-	enum Category {
+	enum Category implements FreerailsSerializable {
 		Urban, River, Ocean, Hill, Country, Special, Industry, Resource
 	};
 
@@ -25,11 +26,11 @@ public interface TerrainType extends FreerailsSerializable {
 
 	int getRGB();
 
-	Production[] getProduction();
+	ImList<Production> getProduction();
 
-	Consumption[] getConsumption();
+	ImList<Consumption> getConsumption();
 
-	Conversion[] getConversion();
+	ImList<Conversion> getConversion();
 
 	String getDisplayName();
 }

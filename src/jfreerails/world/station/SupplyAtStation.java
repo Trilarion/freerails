@@ -1,6 +1,7 @@
 package jfreerails.world.station;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImInts;
 
 /**
  * This class represents the supply at a station.
@@ -10,10 +11,10 @@ import jfreerails.world.common.FreerailsSerializable;
 public class SupplyAtStation implements FreerailsSerializable {
 	private static final long serialVersionUID = 4049918272826847286L;
 
-	private final int[] supply;
+	private final ImInts supply;
 
 	public SupplyAtStation(int[] cargoWaiting) {
-		supply = cargoWaiting.clone();
+		supply = new ImInts(cargoWaiting);
 	}
 
 	/**
@@ -21,35 +22,25 @@ public class SupplyAtStation implements FreerailsSerializable {
 	 * supplies per year.
 	 */
 	public int getSupply(int cargoType) {
-		return supply[cargoType];
-	}
-
-	public int hashCode() {
-		int result = 0;
-
-		for (int i = 0; i < supply.length; i++) {
-			result = 29 * result + supply[i];
-		}
-
-		return result;
+		return supply.get(cargoType);
 	}
 
 	public boolean equals(Object o) {
-		if (o instanceof SupplyAtStation) {
-			SupplyAtStation test = (SupplyAtStation) o;
-
-			if (this.supply.length != test.supply.length) {
-				return false;
-			}
-
-			for (int i = 0; i < supply.length; i++) {
-				if (supply[i] != test.supply[i]) {
-					return false;
-				}
-			}
-
+		if (this == o)
 			return true;
-		}
-		return false;
+		if (!(o instanceof SupplyAtStation))
+			return false;
+
+		final SupplyAtStation supplyAtStation = (SupplyAtStation) o;
+
+		if (!supply.equals(supplyAtStation.supply))
+			return false;
+
+		return true;
 	}
+
+	public int hashCode() {
+		return supply.hashCode();
+	}
+
 }

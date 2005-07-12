@@ -1,11 +1,13 @@
 package jfreerails.world.common;
 
+import java.io.Serializable;
+
 /**
  * This class defines a straight line between two points. Units are arbitrary.
  * 
  * @author Luke
  */
-public class IntLine implements FreerailsSerializable {
+public class IntLine implements Serializable {
 	private static final long serialVersionUID = 3257853198755705393L;
 
 	public int x1;

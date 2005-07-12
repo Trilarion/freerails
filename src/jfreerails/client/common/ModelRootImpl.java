@@ -1,6 +1,5 @@
 package jfreerails.client.common;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,6 +12,7 @@ import jfreerails.network.MoveChainFork;
 import jfreerails.network.MoveReceiver;
 import jfreerails.network.ServerCommandReceiver;
 import jfreerails.network.UntriedMoveReceiver;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldListListener;
@@ -53,7 +53,7 @@ public final class ModelRootImpl implements ModelRoot {
 	private final ArrayList<ModelRootListener> listeners = new ArrayList<ModelRootListener>();
 
 	public ModelRootImpl() {
-		properties.put(Property.CURSOR_POSITION, new Point());
+		properties.put(Property.CURSOR_POSITION, new ImPoint());
 		properties.put(Property.SHOW_STATION_NAMES, Boolean.TRUE);
 		properties.put(Property.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
 		properties.put(Property.SHOW_STATION_BORDERS, Boolean.TRUE);

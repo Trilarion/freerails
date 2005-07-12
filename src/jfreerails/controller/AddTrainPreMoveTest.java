@@ -5,23 +5,30 @@
 package jfreerails.controller;
 
 import static jfreerails.world.common.Step.EAST;
-
-import java.awt.Point;
-
+import static jfreerails.world.common.Step.NORTH;
+import static jfreerails.world.common.Step.NORTH_EAST;
+import static jfreerails.world.common.Step.NORTH_WEST;
+import static jfreerails.world.common.Step.SOUTH;
+import static jfreerails.world.common.Step.SOUTH_EAST;
+import static jfreerails.world.common.Step.SOUTH_WEST;
+import static jfreerails.world.common.Step.WEST;
 import jfreerails.move.AbstractMoveTestCase;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
-import jfreerails.world.common.GameTime;
+import jfreerails.world.common.ImInts;
+import jfreerails.world.common.ImPoint;
+import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
+import jfreerails.world.top.AKEY;
+import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.PathOnTiles;
-import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.TrainOrdersModel;
-import jfreerails.world.train.TrainPositionOnMap;
 
 /**
  * Junit test for AddTrainPreMove.
@@ -37,9 +44,9 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
 	FreerailsPrincipal principal;
 
-	private Point stationA;
+	private ImPoint stationA;
 
-	private Point stationB;
+	private ImPoint stationB;
 
 	ImmutableSchedule defaultSchedule;
 
@@ -53,16 +60,15 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 		// Build track.
 		stationBuilder
 				.setStationType(stationBuilder.getTrackTypeID("terminal"));
-		Step[] track = { EAST, EAST, EAST, EAST, EAST, EAST, EAST,
-				EAST, EAST };
-		stationA = new Point(10, 10);
+		Step[] track = { EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST };
+		stationA = new ImPoint(10, 10);
 		MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
 		assertTrue(ms0.ok);
 
 		// Build 2 stations.
 		MoveStatus ms1 = stationBuilder.buildStation(stationA);
 		assertTrue(ms1.ok);
-		stationB = new Point(19, 10);
+		stationB = new ImPoint(19, 10);
 		MoveStatus ms2 = stationBuilder.buildStation(stationB);
 		assertTrue(ms2.ok);
 
@@ -75,60 +81,8 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
 	}
 
-	public void testInitPosition() {
-
-		// Test step 1
-
-		TrainModel train = new TrainModel(0, new int[] { 0, 0 }, 0);
-		assertEquals(24 * 3, train.getLength());
-		Point start = new Point(10, 10);
-		AddTrainPreMove preMove = new AddTrainPreMove(0, new int[] { 0, 0 },
-				start, principal, defaultSchedule);
-		PathOnTiles path = preMove.initPositionStep1(world);
-		assertEquals(start, path.getStart());
-		assertEquals(3, path.steps());
-		assertEquals(EAST, path.getStep(0));
-		assertEquals(EAST, path.getStep(1));
-		assertEquals(EAST, path.getStep(2));
-
-		// Test step 2
-		TrainMotion tm = preMove.initPositionStep2(path);
-		assertEquals(GameTime.BIG_BANG, tm.getStart());
-		assertEquals(GameTime.END_OF_THE_WORLD, tm.getEnd());
-
-		GameTime t = GameTime.BIG_BANG;
-		PathOnTiles actual = tm.getTiles(t);
-		assertEquals(new Point(10, 10), actual.getStart());
-		assertEquals(3, actual.steps());
-		assertEquals(EAST, actual.getStep(0));
-		assertEquals(EAST, actual.getStep(1));
-		assertEquals(EAST, actual.getStep(2));
-
-		// Check distance
-		assertEquals(0, tm.getDistance(new GameTime(0)));
-		assertEquals(0, tm.getDistance(new GameTime(100)));
-		assertEquals(0, tm.getDistance(GameTime.BIG_BANG));
-		assertEquals(0, tm.getDistance(GameTime.END_OF_THE_WORLD));
-
-		// Check speed
-		assertEquals(0, tm.getSpeed(new GameTime(0)));
-		assertEquals(0, tm.getSpeed(new GameTime(100)));
-		assertEquals(0, tm.getSpeed(GameTime.BIG_BANG));
-		assertEquals(0, tm.getSpeed(GameTime.END_OF_THE_WORLD));
-
-		// Check train position.
-		TrainPositionOnMap pos = tm.getPosition(new GameTime(0));
-		assertNotNull(pos);
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see jfreerails.move.AbstractMoveTestCase#testMove()
-	 */
 	public void testMove() {
-		AddTrainPreMove preMove = new AddTrainPreMove(0, new int[] { 0, 0 },
+		AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
 				stationA, principal, defaultSchedule);
 		Move m = preMove.generateMove(world);
 		assertDoMoveIsOk(m);
@@ -136,6 +90,72 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 		assertUndoMoveIsOk(m);
 
 		assertSurvivesSerialisation(m);
+	}
+
+	/**
+	 * Check that the path on tiles created for the new train is actually on the
+	 * track.
+	 */
+	public void testPathOnTiles() {
+		AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
+				stationA, principal, defaultSchedule);
+		Move m = preMove.generateMove(world);
+		MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
+		assertTrue(ms.ok);
+
+		TrainAccessor ta = new TrainAccessor(world, principal, 0);
+		TrainMotion motion = ta.findCurrentMotion(0);
+		assertNotNull(motion);
+		PathOnTiles path = motion.getTiles(motion.duration());
+		assertTrackHere(path);
+
+	}
+
+	public void testMove2() {
+		AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
+				stationA, principal, defaultSchedule);
+		Move m = preMove.generateMove(world);
+		MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
+		assertTrue(ms.ok);
+		ActivityIterator ai = world.getActivities(AKEY.TRAIN_POSITIONS, 0,
+				principal);
+		TrainMotion tm = (TrainMotion) ai.getActivity();
+		assertEquals(0d, tm.duration());
+		assertEquals(0d, tm.getSpeedAtEnd());
+		assertEquals(0d, tm.getDistance(100));
+		assertEquals(0d, tm.getDistance(0));
+		PositionOnTrack pot = tm.getFinalPosition();
+		assertNotNull(pot);
+		assertEquals(EAST, pot.facing());
+		assertEquals(13, pot.getX());
+		assertEquals(10, pot.getY());
+
+	}
+
+	public void testGetSchedule() {
+		world = MapFixtureFactory2.getCopy();
+		MoveExecutor me = new SimpleMoveExecutor(world, 0);
+		principal = me.getPrincipal();
+		TrackMoveProducer producer = new TrackMoveProducer(me, world);
+		Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
+				NORTH_WEST, NORTH, NORTH_EAST };
+		ImPoint from = new ImPoint(5, 5);
+		MoveStatus ms = producer.buildTrack(from, trackPath);
+		if (!ms.ok)
+			throw new IllegalStateException(ms.message);
+
+		TrainOrdersModel[] orders = {};
+		ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
+		AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
+				principal, is);
+		Move m = addTrain.generateMove(world);
+		ms = m.doMove(world, principal);
+		if (!ms.ok)
+			throw new IllegalStateException(ms.message);
+
+		TrainAccessor ta = new TrainAccessor(world, principal, 0);
+		assertNotNull(ta.getTarget());
+
 	}
 
 }

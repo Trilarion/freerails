@@ -1,6 +1,5 @@
 package jfreerails.server;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
@@ -23,6 +22,9 @@ import jfreerails.move.TrainCrashException;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.ImInts;
+import jfreerails.world.common.ImList;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Money;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -57,7 +59,7 @@ public class TrainBuilder implements ServerAutomaton {
 
 	private static final long serialVersionUID = 3258410646839243577L;
 
-	private static FreerailsPathIterator getRandomPathToFollow(Point p,
+	private static FreerailsPathIterator getRandomPathToFollow(ImPoint p,
 			ReadOnlyWorld w) {
 		PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(w, p)[0];
 
@@ -83,7 +85,7 @@ public class TrainBuilder implements ServerAutomaton {
 		Vector<Move> moves = new Vector<Move>();
 		int scheduleID = train.getScheduleID();
 		MutableSchedule schedule = new MutableSchedule(currentSchedule);
-		int[] wagonsToAdd = schedule.getWagonsToAdd();
+		ImInts wagonsToAdd = schedule.getWagonsToAdd();
 
 		if (null != wagonsToAdd) {
 			int engine = train.getEngineType();
@@ -115,11 +117,11 @@ public class TrainBuilder implements ServerAutomaton {
 		return initialPosition;
 	}
 
-	public static Point[] trainPos2Tiles(TrainPositionOnMap pos) {
-		Point[] returnValue = new Point[pos.getLength()];
+	public static ImPoint[] trainPos2Tiles(TrainPositionOnMap pos) {
+		ImPoint[] returnValue = new ImPoint[pos.getLength()];
 		final int TILE_WIDTH = 30;
 		for (int i = 0; i < returnValue.length; i++) {
-			returnValue[i] = new Point(pos.getX(i) / TILE_WIDTH, pos.getY(i)
+			returnValue[i] = new ImPoint(pos.getX(i) / TILE_WIDTH, pos.getY(i)
 					/ TILE_WIDTH);
 		}
 
@@ -159,7 +161,7 @@ public class TrainBuilder implements ServerAutomaton {
 	 * 
 	 * 
 	 */
-	public TrainMover buildTrain(int engineTypeId, int[] wagons, Point p,
+	public TrainMover buildTrain(int engineTypeId, ImInts wagons, ImPoint p,
 			FreerailsPrincipal principal, ReadOnlyWorld world) {
 		/* Check that the specified position is on the track. */
 		FreerailsTile tile = (FreerailsTile) world.getTile(p.x, p.y);
@@ -171,13 +173,14 @@ public class TrainBuilder implements ServerAutomaton {
 
 			/* Create the train model object. */
 			int scheduleId = world.size(KEY.TRAIN_SCHEDULES, principal);
+
 			TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId,
 					cargoBundleId);
 
 			/* Create the move that sets up the train's schedule. */
 
 			// If there are no wagons, setup an automatic schedule.
-			boolean autoSchedule = 0 == wagons.length;
+			boolean autoSchedule = 0 == wagons.size();
 
 			ImmutableSchedule is = generateInitialSchedule(principal, world,
 					autoSchedule);
@@ -234,22 +237,21 @@ public class TrainBuilder implements ServerAutomaton {
 						i, principal);
 
 				if (null != station && null != station.getProduction()) {
-					ProductionAtEngineShop[] production = station
+					ImList<ProductionAtEngineShop> production = station
 							.getProduction();
-					Point p = new Point(station.x, station.y);
+					ImPoint p = new ImPoint(station.x, station.y);
 
-					for (int j = 0; j < production.length; j++) {
-						TrainMover trainMover = this.buildTrain(production[j]
-								.getEngineType(),
-								production[j].getWagonTypes(), p, principal,
-								world);
+					for (int j = 0; j < production.size(); j++) {
+						TrainMover trainMover = this.buildTrain(production.get(
+								j).getEngineType(), production.get(j)
+								.getWagonTypes(), p, principal, world);
 
 						this.addTrainMover(trainMover);
 					}
 
 					ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(
-							production, new ProductionAtEngineShop[0], i,
-							principal);
+							production, new ImList<ProductionAtEngineShop>(),
+							i, principal);
 					moveReceiver.processMove(move);
 				}
 			}
@@ -257,7 +259,7 @@ public class TrainBuilder implements ServerAutomaton {
 	}
 
 	private boolean checkTrackType(TrainPositionOnMap pos, ReadOnlyWorld world) {
-		Point[] positionA = trainPos2Tiles(pos);
+		ImPoint[] positionA = trainPos2Tiles(pos);
 		FreerailsTile tileA = (FreerailsTile) world.getTile(positionA[0].x,
 				positionA[0].y);
 		if (!(tileA.getTrackRule().isDouble())) {
@@ -279,17 +281,17 @@ public class TrainBuilder implements ServerAutomaton {
 			while (i.hasNext()) {
 				TrainMover moverB = i.next();
 				int trainBId = moverB.getTrainID();
-				Point currentHead = new Point(currentPosition.getX(0),
+				ImPoint currentHead = new ImPoint(currentPosition.getX(0),
 						currentPosition.getY(0));
-				Point currentTail = new Point(currentPosition
+				ImPoint currentTail = new ImPoint(currentPosition
 						.getX(currentPosition.getLength() - 1), currentPosition
 						.getY(currentPosition.getLength() - 1));
 				if (trainAId != trainBId) {
 					TrainPositionOnMap trainBposition = (TrainPositionOnMap) w
 							.get(KEY.TRAIN_POSITIONS, trainBId, p);
-					Point trainBhead = new Point(trainBposition.getX(0),
+					ImPoint trainBhead = new ImPoint(trainBposition.getX(0),
 							trainBposition.getY(0));
-					Point trainBtail = new Point(trainBposition
+					ImPoint trainBtail = new ImPoint(trainBposition
 							.getX(trainBposition.getLength() - 1),
 							trainBposition.getY(trainBposition.getLength() - 1));
 					if (moverA.isTrainMoving() && moverB.isTrainMoving()) {
@@ -352,7 +354,7 @@ public class TrainBuilder implements ServerAutomaton {
 	 * @param p
 	 *            the point at which the path iterator starts.
 	 */
-	private TrainPathFinder getPathToFollow(Point p, ReadOnlyWorld w,
+	private TrainPathFinder getPathToFollow(ImPoint p, ReadOnlyWorld w,
 			int trainNumber, FreerailsPrincipal principal) {
 		PositionOnTrack pot = FlatTrackExplorer.getPossiblePositions(w, p)[0];
 
@@ -422,7 +424,8 @@ public class TrainBuilder implements ServerAutomaton {
 		}
 	}
 
-	private boolean willTrainsCrash(Point trainA, Point trainB, int tolerance) {
+	private boolean willTrainsCrash(ImPoint trainA, ImPoint trainB,
+			int tolerance) {
 		return (Math.abs(trainA.y - trainB.y) < tolerance && Math.abs(trainA.x
 				- trainB.x) < tolerance);
 	}

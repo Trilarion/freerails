@@ -109,7 +109,6 @@ public class TrainPositionOnMapTest extends TestCase {
 	 * 11, 33, 55 }); j = TrainPosition.add(f, g); assertEquals(i, j);
 	 * 
 	 * 
-	 * 
 	 *  }
 	 */
 	/*
@@ -138,8 +137,7 @@ public class TrainPositionOnMapTest extends TestCase {
 	 * 
 	 * k = TrainPosition.remove(h, i);
 	 * 
-	 * assertEquals(k, j);
-	 *  }
+	 * assertEquals(k, j); }
 	 * 
 	 */
 	/*

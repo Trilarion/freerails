@@ -225,9 +225,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 		final int SCALED_IMAGE_HEIGHT = 50;
 		// paint the wagons
 		for (int i = this.wagons.size() - 1; i >= 0; i--) { // Count down so we
-															// paint the wagon
-															// at the end of the
-															// train first.
+			// paint the wagon
+			// at the end of the
+			// train first.
 
 			Integer type = wagons.get(i);
 			Image image = vl.getTrainImages().getSideOnWagonImage(
@@ -309,8 +309,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 															 * word wrap due to
 															 * greater wodth of
 															 * strong font
-															 */)
-						+ "</body></html>";
+															 */) + "</body></html>";
 				((JLabel) labels[index]).setText(text);
 				return labels[index];
 			}

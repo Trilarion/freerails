@@ -4,16 +4,17 @@
  */
 package jfreerails.world.train;
 
-import static jfreerails.world.common.Step.EAST;
+import static jfreerails.world.common.Step.*;
 import static jfreerails.world.common.Step.NORTH;
 import static jfreerails.world.common.Step.SOUTH;
 import static jfreerails.world.common.Step.SOUTH_EAST;
 import static jfreerails.world.common.Step.SOUTH_WEST;
 import static jfreerails.world.common.Step.TILE_DIAMETER;
 
-import java.awt.Point;
+import java.util.Iterator;
 
 import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.common.Step;
 import junit.framework.TestCase;
@@ -27,10 +28,10 @@ import junit.framework.TestCase;
 public class PathOnTilesTest extends TestCase {
 
 	public void testPathOnTiles() {
-		Point start = null;
+		ImPoint start = null;
 		Step[] vectors = null;
 		assertTrue(throwsException(start, vectors));
-		start = new Point();
+		start = new ImPoint();
 		assertTrue(throwsException(start, vectors));
 		vectors = new Step[] { null, null };
 		assertTrue(throwsException(start, vectors));
@@ -40,9 +41,8 @@ public class PathOnTilesTest extends TestCase {
 	}
 
 	public void testGetStepIndex() {
-		Point start = new Point();
-		Step[] vectors = new Step[] { SOUTH_EAST,
-				EAST, EAST };
+		ImPoint start = new ImPoint();
+		Step[] vectors = new Step[] { SOUTH_EAST, EAST, EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
 		assertEquals(0, path.getStepIndex(0));
 		assertEquals(0, path.getStepIndex(1));
@@ -52,86 +52,88 @@ public class PathOnTilesTest extends TestCase {
 	}
 
 	public void testGetLength() {
-		Point start = new Point();
-		Step[] vectors = new Step[] { EAST, EAST,
-				EAST };
+		ImPoint start = new ImPoint();
+		Step[] vectors = new Step[] { EAST, EAST, EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
-		assertEquals(3 * Step.TILE_DIAMETER, path.getLength());
+		assertEquals(3 * Step.TILE_DIAMETER, path.getLength(), 0.001);
 
 	}
 
 	public void testGetPoint() {
-		Point start = new Point();
-		Step[] vectors = new Step[] { EAST, EAST,
-				EAST };
+		ImPoint start = new ImPoint();
+		Step[] vectors = new Step[] { EAST, EAST, EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
-		Point expected = new Point(15, 15);
-		Point actual = path.getPoint(0);
+		ImPoint expected = new ImPoint(15, 15);
+		ImPoint actual = path.getPoint(0);
 		assertEquals(expected, actual);
-		expected = new Point(45, 15);
+		expected = new ImPoint(45, 15);
 		actual = path.getPoint(30);
 		assertEquals(expected, actual);
 
-		expected = new Point(60, 15);
+		expected = new ImPoint(60, 15);
 		actual = path.getPoint(45);
 		assertEquals(expected, actual);
 
 	}
 
 	public void testSubPath() {
-		Point start = new Point();
-		Step[] vectors = new Step[] { EAST, EAST,
-				EAST };
+		ImPoint start = new ImPoint();
+		Step[] vectors = new Step[] { EAST, EAST, EAST };
 		PathOnTiles path = new PathOnTiles(start, vectors);
 
 		// First check.
 		FreerailsPathIterator pathIt = path.subPath(0, path.getLength());
-		Point[] expected = { new Point(15, 15), new Point(45, 15),
-				new Point(75, 15), new Point(105, 15) };
+		ImPoint[] expected = { new ImPoint(15, 15), new ImPoint(45, 15),
+				new ImPoint(75, 15), new ImPoint(105, 15) };
 		checkPath(pathIt, expected);
 
 		// Second check
 		pathIt = path.subPath(3, path.getLength() - 3);
-		expected = new Point[] { new Point(18, 15), new Point(45, 15),
-				new Point(75, 15), new Point(105, 15) };
+		expected = new ImPoint[] { new ImPoint(18, 15), new ImPoint(45, 15),
+				new ImPoint(75, 15), new ImPoint(105, 15) };
 		checkPath(pathIt, expected);
 
 		// 3rd check
-		int i = path.getLength() - 10;
+		double i = path.getLength() - 10;
 		pathIt = path.subPath(3, i);
-		expected = new Point[] { new Point(18, 15), new Point(45, 15),
-				new Point(75, 15), new Point(98, 15) };
+		expected = new ImPoint[] { new ImPoint(18, 15), new ImPoint(45, 15),
+				new ImPoint(75, 15), new ImPoint(98, 15) };
 		checkPath(pathIt, expected);
 
 		// 4th check, with a path just 1 tile long.
-		start = new Point(5, 5);
+		start = new ImPoint(5, 5);
 		vectors = new Step[] { SOUTH_WEST };
 		path = new PathOnTiles(start, vectors);
 		pathIt = path.subPath(18, 24);
 		IntLine line = new IntLine();
 		assertTrue(pathIt.hasNext());
 		pathIt.nextSegment(line);
-		assertEquals("The length of the train.", 24, line.getLength(), 0.1d);
+		assertEquals("The length of the train.", 24, line.getLength(), 1d);
 		assertFalse(pathIt.hasNext());
 
 		// 5th check, same as 2nd but with different starting position.
 		vectors = new Step[] { EAST, EAST, EAST };
 
-		start = new Point(4, 7);
+		start = new ImPoint(4, 7);
 		path = new PathOnTiles(start, vectors);
 
 		pathIt = path.subPath(3, path.getLength() - 3);
-		expected = new Point[] { new Point(18, 15), new Point(45, 15),
-				new Point(75, 15), new Point(105, 15) };
-		for (Point point : expected) {
-			point.x += start.x * TILE_DIAMETER;
-			point.y += start.y * TILE_DIAMETER;
+		expected = new ImPoint[] { new ImPoint(18, 15), new ImPoint(45, 15),
+				new ImPoint(75, 15), new ImPoint(105, 15) };
+		for (int j = 0; j < expected.length; j++) {
+			int x = expected[j].x + start.x * TILE_DIAMETER;
+			int y = expected[j].y + start.y * TILE_DIAMETER;
+			expected[j] = new ImPoint(x, y);
 		}
+		// for (ImPoint point : expected) {
+		// point.x += start.x * TILE_DIAMETER;
+		// point.y += start.y * TILE_DIAMETER;
+		// }
 		checkPath(pathIt, expected);
 
 	}
 
-	private void checkPath(FreerailsPathIterator pathIt, Point[] expected) {
+	private void checkPath(FreerailsPathIterator pathIt, ImPoint[] expected) {
 		IntLine line = new IntLine();
 		for (int i = 0; i < expected.length - 1; i++) {
 			assertTrue(pathIt.hasNext());
@@ -144,13 +146,25 @@ public class PathOnTilesTest extends TestCase {
 		assertFalse(pathIt.hasNext());
 	}
 
-	boolean throwsException(Point start, Step[] vectors) {
+	boolean throwsException(ImPoint start, Step[] vectors) {
 		try {
 			new PathOnTiles(start, vectors);
 			return false;
 		} catch (Exception e) {
 			return true;
 		}
+	}
+
+	public void testTiles() {
+		PathOnTiles path = new PathOnTiles(new ImPoint(5, 5), SOUTH_WEST,
+				NORTH_EAST);
+		Iterator<ImPoint> it = path.tiles();
+
+		assertEquals(new ImPoint(5, 5), it.next());
+		assertEquals(new ImPoint(4, 6), it.next());
+		assertEquals(new ImPoint(5, 5), it.next());
+		assertFalse(it.hasNext());
+
 	}
 
 }

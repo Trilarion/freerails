@@ -1,12 +1,12 @@
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.HashSet;
 
 import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.MoveStatus;
-import jfreerails.world.common.Step;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
@@ -31,8 +31,7 @@ public class FlatTrackExplorerTest extends TestCase {
 		super(arg0);
 	}
 
-	private Player testPlayer = new Player("test", (new Player("test"))
-			.getPublicKey(), 0);
+	private Player testPlayer = new Player("test", 0);
 
 	protected void setUp() {
 		world = new WorldImpl(20, 20);
@@ -42,10 +41,9 @@ public class FlatTrackExplorerTest extends TestCase {
 
 		TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
 
-		Step[] vectors = { Step.WEST,
-				Step.EAST, Step.NORTH_EAST };
-		Point p = new Point(10, 10);
-		Point[] points = { p, p, p };
+		Step[] vectors = { Step.WEST, Step.EAST, Step.NORTH_EAST };
+		ImPoint p = new ImPoint(10, 10);
+		ImPoint[] points = { p, p, p };
 
 		for (int i = 0; i < points.length; i++) {
 			ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
@@ -106,8 +104,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
 		FlatTrackExplorer fte;
 
-		PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10,
-				Step.EAST);
+		PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10, Step.EAST);
 		fte = new FlatTrackExplorer(world, p);
 
 		PositionOnTrack pos = new PositionOnTrack(fte.getPosition());
@@ -142,8 +139,7 @@ public class FlatTrackExplorerTest extends TestCase {
 		setUp();
 
 		FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-				PositionOnTrack
-						.createComingFrom(10, 10, Step.EAST));
+				PositionOnTrack.createComingFrom(10, 10, Step.EAST));
 		assertTrue(explorer.hasNextEdge());
 	}
 
@@ -151,7 +147,7 @@ public class FlatTrackExplorerTest extends TestCase {
 		setUp();
 
 		PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(
-				world, new Point(10, 10));
+				world, new ImPoint(10, 10));
 		assertNotNull(positions);
 		assertEquals(3, positions.length);
 

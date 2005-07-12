@@ -138,7 +138,7 @@ public class StationBoxRenderer implements Painter {
 		}
 
 		assert returnValue.length == arrayIndex; // We should have filled up
-													// the array.
+		// the array.
 
 		return returnValue;
 	}

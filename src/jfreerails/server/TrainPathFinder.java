@@ -1,12 +1,11 @@
 package jfreerails.server;
 
-import java.awt.Point;
-
 import jfreerails.controller.FlatTrackExplorer;
 import jfreerails.controller.IncrementalPathFinder;
 import jfreerails.controller.SimpleAStarPathFinder;
 import jfreerails.network.MoveReceiver;
 import jfreerails.util.FreerailsIntIterator;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -62,7 +61,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 		PositionOnTrack tempP = new PositionOnTrack(trackExplorer.getPosition());
 		int x = tempP.getX();
 		int y = tempP.getY();
-		Point targetPoint = stopsHandler.arrivesAtPoint(x, y);
+		ImPoint targetPoint = stopsHandler.arrivesAtPoint(x, y);
 
 		int currentPosition = tempP.getOpposite().toInt();
 		ReadOnlyWorld world = trackExplorer.getWorld();

@@ -116,7 +116,7 @@ public class NonNullElements implements WorldIterator {
 
 	public int size() {
 		if (-1 == size) { // lazy loading, if we have already calculated the
-							// size don't do it again.
+			// size don't do it again.
 
 			int tempSize = 0;
 

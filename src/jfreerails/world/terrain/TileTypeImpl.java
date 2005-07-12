@@ -5,8 +5,7 @@
  */
 package jfreerails.world.terrain;
 
-import java.util.Arrays;
-
+import jfreerails.world.common.ImList;
 import jfreerails.world.common.Money;
 
 /**
@@ -17,11 +16,11 @@ import jfreerails.world.common.Money;
 final public class TileTypeImpl implements TerrainType {
 	private static final long serialVersionUID = 4049919380945253945L;
 
-	private final Consumption[] consumption;
+	private final ImList<Consumption> consumption;
 
-	private final Conversion[] conversion;
+	private final ImList<Conversion> conversion;
 
-	private final Production[] production;
+	private final ImList<Production> production;
 
 	private final int rgb;
 
@@ -37,11 +36,11 @@ final public class TileTypeImpl implements TerrainType {
 			return false;
 		if (rightOfWay != tileType.rightOfWay)
 			return false;
-		if (!Arrays.equals(consumption, tileType.consumption))
+		if (!consumption.equals(tileType.consumption))
 			return false;
-		if (!Arrays.equals(conversion, tileType.conversion))
+		if (!conversion.equals(tileType.conversion))
 			return false;
-		if (!Arrays.equals(production, tileType.production))
+		if (!production.equals(tileType.production))
 			return false;
 		if (!terrainCategory.equals(tileType.terrainCategory))
 			return false;
@@ -57,7 +56,10 @@ final public class TileTypeImpl implements TerrainType {
 
 	public int hashCode() {
 		int result;
-		result = rgb;
+		result = consumption.hashCode();
+		result = 29 * result + conversion.hashCode();
+		result = 29 * result + production.hashCode();
+		result = 29 * result + rgb;
 		result = 29 * result + rightOfWay;
 		result = 29 * result + terrainCategory.hashCode();
 		result = 29 * result + terrainType.hashCode();
@@ -86,9 +88,9 @@ final public class TileTypeImpl implements TerrainType {
 		this.terrainCategory = terrainCategory;
 		this.rgb = rgb;
 		this.rightOfWay = rightOfWay;
-		this.production = production;
-		this.consumption = consumption;
-		this.conversion = conversion;
+		this.production = new ImList<Production>(production);
+		this.consumption = new ImList<Consumption>(consumption);
+		this.conversion = new ImList<Conversion>(conversion);
 
 		if (tileBuildCost > 0) {
 			this.tileBuildCost = new Money(tileBuildCost);
@@ -106,9 +108,9 @@ final public class TileTypeImpl implements TerrainType {
 		this.terrainCategory = terrainCategory;
 		this.rgb = 0;
 		this.rightOfWay = 0;
-		this.production = new Production[0];
-		this.consumption = new Consumption[0];
-		this.conversion = new Conversion[0];
+		this.production = new ImList<Production>();
+		this.consumption = new ImList<Consumption>();
+		this.conversion = new ImList<Conversion>();
 		this.tileBuildCost = null;
 	}
 
@@ -120,11 +122,11 @@ final public class TileTypeImpl implements TerrainType {
 		return terrainCategory;
 	}
 
-	public Consumption[] getConsumption() {
+	public ImList<Consumption> getConsumption() {
 		return consumption;
 	}
 
-	public Conversion[] getConversion() {
+	public ImList<Conversion> getConversion() {
 		return conversion;
 	}
 
@@ -133,7 +135,7 @@ final public class TileTypeImpl implements TerrainType {
 		return terrainType.replace('_', ' ');
 	}
 
-	public Production[] getProduction() {
+	public ImList<Production> getProduction() {
 		return production;
 	}
 

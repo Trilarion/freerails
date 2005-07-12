@@ -5,10 +5,7 @@
  */
 package jfreerails.world.common;
 
-import java.awt.Point;
 import java.io.ObjectStreamException;
-
-import jfreerails.util.Utils;
 
 /**
  * This class represents a movement from a tile to any one of the surrounding
@@ -22,7 +19,7 @@ final public class Step implements FlatTrackTemplate {
 
 	public static final int TILE_DIAMETER = 30;
 
-	public static final int TILE_DIAGONAL = Utils.hypotenuse(TILE_DIAMETER,
+	public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER,
 			TILE_DIAMETER);
 
 	/** North. */
@@ -102,13 +99,14 @@ final public class Step implements FlatTrackTemplate {
 		return tvectors;
 	}
 
-	public static Point move(Point start, Step[] path) {
-		Point returnValue = new Point(start);
+	public static ImPoint move(ImPoint p, Step[] path) {
+		int x = p.x;
+		int y = p.y;
 		for (Step v : path) {
-			returnValue.x += v.deltaX;
-			returnValue.y += v.deltaY;
+			x += v.deltaX;
+			y += v.deltaY;
 		}
-		return returnValue;
+		return new ImPoint(x, y);
 	}
 
 	/** The X and Y components of the vector. */
@@ -119,7 +117,7 @@ final public class Step implements FlatTrackTemplate {
 
 	private final int flatTrackTemplate;
 
-	private final int length;
+	private final double length;
 
 	/** Returns the X component of the vector. */
 	public int getDx() {
@@ -269,8 +267,8 @@ final public class Step implements FlatTrackTemplate {
 		return true;
 	}
 
-	public Point createRelocatedPoint(Point from) {
-		return new Point(from.x + deltaX, from.y + deltaY);
+	public ImPoint createRelocatedPoint(ImPoint from) {
+		return new ImPoint(from.x + deltaX, from.y + deltaY);
 	}
 
 	public boolean contains(FlatTrackTemplate ftt) {
@@ -295,7 +293,7 @@ final public class Step implements FlatTrackTemplate {
 	/**
 	 * @return the length of this vector. Each tile is 100 units x 100 units.
 	 */
-	public int getLength() {
+	public double getLength() {
 		return length;
 	}
 

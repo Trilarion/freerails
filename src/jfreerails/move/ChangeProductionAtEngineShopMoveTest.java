@@ -4,6 +4,7 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.common.ImList;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -17,9 +18,9 @@ import jfreerails.world.top.WagonAndEngineTypesFactory;
  * 
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
-	private ProductionAtEngineShop[] before;
+	private ImList<ProductionAtEngineShop> before;
 
-	private ProductionAtEngineShop[] after;
+	private ImList<ProductionAtEngineShop> after;
 
 	private int engineType;
 
@@ -41,12 +42,12 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 		engineType = 0;
 		wagonType = 0;
 		wagons = new int[] { wagonType, wagonType };
-		after = new ProductionAtEngineShop[] { new ProductionAtEngineShop(
-				engineType, wagons) };
+		after = new ImList<ProductionAtEngineShop>(new ProductionAtEngineShop(
+				engineType, wagons));
 	}
 
 	public void testMove() {
-		before = new ProductionAtEngineShop[0];
+		before = new ImList<ProductionAtEngineShop>();
 
 		ChangeProductionAtEngineShopMove m;
 

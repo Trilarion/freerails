@@ -10,6 +10,15 @@ import jfreerails.world.top.Activity;
 import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.World;
 
+/**
+ * A move that adds an active entity. An active entity is something whose state
+ * may be continually changing. An example is a train - it is an active entity
+ * since while it is moving its position is continually changing.
+ * 
+ * @author Luke
+ * @see NextActivityMove
+ */
+
 public class AddActiveEntityMove implements Move {
 
 	private static final long serialVersionUID = 8732702087937675013L;

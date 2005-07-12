@@ -3,6 +3,7 @@ package jfreerails.world.train;
 import java.util.NoSuchElementException;
 
 import jfreerails.world.common.FreerailsPathIterator;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.common.IntLine;
 
 /**
@@ -13,19 +14,29 @@ import jfreerails.world.common.IntLine;
 public class SimplePathIteratorImpl implements FreerailsPathIterator {
 	private static final long serialVersionUID = 3618420406261003576L;
 
-	private final/* =const */int[] x;
+	private final ImInts x;
 
-	private final/* =const */int[] y;
+	private final ImInts y;
 
 	private int position = 0;
+
+	public SimplePathIteratorImpl(ImInts xpoints, ImInts ypoints) {
+		x = xpoints;
+		y = ypoints;
+
+		if (x.size() != y.size()) {
+			throw new IllegalArgumentException(
+					"The array length of the array must be even");
+		}
+	}
 
 	public SimplePathIteratorImpl( /* =const */
 	int[] xpoints, /* =const */
 	int[] ypoints) {
-		x = xpoints;
-		y = ypoints; // defensive copy.
+		x = new ImInts(xpoints);
+		y = new ImInts(ypoints); // defensive copy.
 
-		if (x.length != y.length) {
+		if (x.size() != y.size()) {
 			throw new IllegalArgumentException(
 					"The array length of the array must be even");
 		}
@@ -33,10 +44,10 @@ public class SimplePathIteratorImpl implements FreerailsPathIterator {
 
 	public void nextSegment(IntLine line) {
 		if (hasNext()) {
-			line.x1 = x[position];
-			line.y1 = y[position];
-			line.x2 = x[position + 1];
-			line.y2 = y[position + 1];
+			line.x1 = x.get(position);
+			line.y1 = y.get(position);
+			line.x2 = x.get(position + 1);
+			line.y2 = y.get(position + 1);
 			position++;
 		} else {
 			throw new NoSuchElementException();
@@ -44,6 +55,6 @@ public class SimplePathIteratorImpl implements FreerailsPathIterator {
 	}
 
 	public boolean hasNext() {
-		return (position + 1) < x.length;
+		return (position + 1) < x.size();
 	}
 }

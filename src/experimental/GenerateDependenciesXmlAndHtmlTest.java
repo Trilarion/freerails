@@ -29,7 +29,7 @@ public class GenerateDependenciesXmlAndHtmlTest extends TestCase {
 				.isPackageNameOk("jfreerails/trees/branches/**/*"));
 		assertTrue(GenerateDependenciesXmlAndHtml
 				.isPackageNameOk("it/unimi/dsi/fastUtil/*")); // note upper
-																// case in
-																// package name.
+		// case in
+		// package name.
 	}
 }

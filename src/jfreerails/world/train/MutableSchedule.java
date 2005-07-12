@@ -7,6 +7,8 @@ package jfreerails.world.train;
 
 import java.util.Vector;
 
+import jfreerails.world.common.ImInts;
+
 /**
  * This class represents a train's schedule. That is, which stations that the
  * train should visit and what wagons the engine should pull.
@@ -156,7 +158,7 @@ public class MutableSchedule implements Schedule {
 	}
 
 	/** Returns the wagons to add at the next scheduled stop. */
-	public int[] getWagonsToAdd() {
+	public ImInts getWagonsToAdd() {
 		return orders.get(nextScheduledOrder).getConsist();
 	}
 

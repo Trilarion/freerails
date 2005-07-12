@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImHashSet;
 import jfreerails.world.terrain.TerrainType;
 
 /**
@@ -20,7 +21,8 @@ import jfreerails.world.terrain.TerrainType;
 public final class LegalTrackPlacement implements FreerailsSerializable {
 	private static final long serialVersionUID = 3616445687756437049L;
 
-	private final HashSet<TerrainType.Category> terrainTypes = new HashSet<TerrainType.Category>();
+	private final ImHashSet<TerrainType.Category> terrainTypes;// = new
+																// HashSet<TerrainType.Category>();
 
 	public enum PlacementRule {
 		ONLY_ON_THESE, ANYWHERE_EXCEPT_ON_THESE
@@ -38,9 +40,11 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
 
 		Iterator<TerrainType.Category> iterator = types.iterator();
 
+		HashSet<TerrainType.Category> temp = new HashSet<TerrainType.Category>();
 		while (iterator.hasNext()) {
-			terrainTypes.add(iterator.next());
+			temp.add(iterator.next());
 		}
+		terrainTypes = new ImHashSet<TerrainType.Category>(temp);
 	}
 
 	public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {

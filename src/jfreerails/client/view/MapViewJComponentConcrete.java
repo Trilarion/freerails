@@ -25,6 +25,7 @@ import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.MapRenderer;
+import jfreerails.world.common.ImPoint;
 
 /**
  * Displays the map, the cursor, and user messages (which are stored on the
@@ -249,7 +250,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 		super.setMapView(mv);
 	}
 
-	private void react2curorMove(Point newPoint, Point oldPoint) {
+	private void react2curorMove(ImPoint newPoint, ImPoint oldPoint) {
 		float scale = getMapView().getScale();
 		Dimension tileSize = new Dimension((int) scale, (int) scale);
 		Rectangle vr = this.getVisibleRect();
@@ -326,11 +327,11 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 	public void propertyChange(ModelRoot.Property p, Object before, Object after) {
 
 		if (p.equals(ModelRoot.Property.CURSOR_POSITION)) {
-			Point newPoint = (Point) after;
-			Point oldPoint = (Point) before;
+			ImPoint newPoint = (ImPoint) after;
+			ImPoint oldPoint = (ImPoint) before;
 
 			if (null == oldPoint) {
-				oldPoint = new Point();
+				oldPoint = new ImPoint();
 			}
 
 			react2curorMove(newPoint, oldPoint);

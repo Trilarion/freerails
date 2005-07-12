@@ -4,11 +4,10 @@
  */
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import jfreerails.move.AddActiveEntityMove;
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.CompositeMove;
@@ -16,17 +15,20 @@ import jfreerails.move.Move;
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.cargo.ImmutableCargoBundle;
+import jfreerails.world.common.ImInts;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Money;
-import jfreerails.world.common.Step;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.AKEY;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
+import jfreerails.world.train.ConstAcc;
 import jfreerails.world.train.EngineType;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.PathOnTiles;
-import jfreerails.world.train.SpeedAgainstTime;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 
@@ -40,7 +42,7 @@ public class AddTrainPreMove implements PreMove {
 
 	private final int engineTypeId;
 
-	private final int[] wagons;
+	private final ImInts wagons;
 
 	public boolean equals(Object o) {
 		if (this == o)
@@ -58,7 +60,7 @@ public class AddTrainPreMove implements PreMove {
 			return false;
 		if (!schedule.equals(addTrainPreMove.schedule))
 			return false;
-		if (!Arrays.equals(wagons, addTrainPreMove.wagons))
+		if (!wagons.equals(addTrainPreMove.wagons))
 			return false;
 
 		return true;
@@ -73,19 +75,27 @@ public class AddTrainPreMove implements PreMove {
 		return result;
 	}
 
-	private final Point point;
+	private final ImPoint point;
 
 	private final FreerailsPrincipal principal;
 
 	private final ImmutableSchedule schedule;
 
-	public AddTrainPreMove(int e, int[] wags, Point p, FreerailsPrincipal fp,
-			ImmutableSchedule s) {
+	public AddTrainPreMove(int e, ImInts wags, ImPoint p,
+			FreerailsPrincipal fp, ImmutableSchedule s) {
 		engineTypeId = e;
 		wagons = wags;
 		point = p;
 		principal = fp;
 		schedule = s;
+		if (null == wags)
+			throw new NullPointerException();
+		if (null == p)
+			throw new NullPointerException();
+		if (null == fp)
+			throw new NullPointerException();
+		if (null == s)
+			throw new NullPointerException();
 	}
 
 	PathOnTiles initPositionStep1(ReadOnlyWorld w) {
@@ -115,8 +125,9 @@ public class AddTrainPreMove implements PreMove {
 	}
 
 	TrainMotion initPositionStep2(PathOnTiles path) {
+		// TODO fix code.
 		TrainMotion tm = new TrainMotion(path, path.steps(), calTrainLength(),
-				SpeedAgainstTime.STOPPED);
+				ConstAcc.STOPPED);
 		return tm;
 	}
 
@@ -168,16 +179,11 @@ public class AddTrainPreMove implements PreMove {
 		PathOnTiles path = initPositionStep1(w);
 		TrainMotion motion = initPositionStep2(path);
 
-		int motionId1 = w.size(KEY.TRAIN_MOTION1, principal);
-		AddItemToListMove addPosition1 = new AddItemToListMove(
-				KEY.TRAIN_MOTION1, motionId1, motion, principal);
-
-		int motionId2 = w.size(KEY.TRAIN_MOTION2, principal);
-		AddItemToListMove addPosition2 = new AddItemToListMove(
-				KEY.TRAIN_MOTION2, motionId2, motion, principal);
+		Move addPosition = new AddActiveEntityMove(motion, trainId,
+				AKEY.TRAIN_POSITIONS, principal);
 
 		return new CompositeMove(addCargoBundle, addSchedule, addTrain,
-				transactionMove, addPosition1, addPosition2);
+				transactionMove, addPosition);
 	}
 
 }

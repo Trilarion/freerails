@@ -62,7 +62,7 @@ public class MapFixtureFactory2 {
 		// Add 4 players
 		for (int i = 0; i < 4; i++) {
 			String name = "player" + i;
-			Player p = new Player(name, null, i); // public key set to null!
+			Player p = new Player(name, i);
 			int index = world.addPlayer(p);
 			assert (index == i);
 			world

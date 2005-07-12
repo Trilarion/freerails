@@ -6,8 +6,6 @@ package jfreerails.world.train;
 
 import static jfreerails.world.common.Step.TILE_DIAMETER;
 
-import java.awt.Point;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,9 +13,11 @@ import java.util.NoSuchElementException;
 
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImList;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.IntLine;
-import jfreerails.world.common.Step;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
@@ -29,9 +29,9 @@ public class PathOnTiles implements FreerailsSerializable {
 
 	private static final long serialVersionUID = 3544386994122536753L;
 
-	private final Point start;
+	private final ImPoint start;
 
-	private final Step[] vectors;
+	private final ImList<Step> vectors;
 
 	/**
 	 * @throws NullPointerException
@@ -41,16 +41,12 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * @throws NullPointerException
 	 *             if null == vectorsList.get(i) for any i;
 	 */
-	public PathOnTiles(Point start, List<Step> vectorsList) {
+	public PathOnTiles(ImPoint start, List<Step> vectorsList) {
 		if (null == start)
 			throw new NullPointerException();
-		vectors = new Step[vectorsList.size()];
-		for (int i = 0; i < vectorsList.size(); i++) {
-			if (null == vectorsList.get(i))
-				throw new NullPointerException();
-			vectors[i] = vectorsList.get(i);
-		}
-		this.start = new Point(start);
+		vectors = new ImList<Step>(vectorsList);
+		vectors.checkForNulls();
+		this.start = start;
 	}
 
 	/**
@@ -61,15 +57,12 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * @throws NullPointerException
 	 *             if null == vectors[i] for any i;
 	 */
-	public PathOnTiles(Point start, Step[] vectors) {
+	public PathOnTiles(ImPoint start, Step... vectors) {
 		if (null == start)
 			throw new NullPointerException();
-		for (int i = 0; i < vectors.length; i++) {
-			if (null == vectors[i])
-				throw new NullPointerException();
-		}
-		this.start = new Point(start);
-		this.vectors = vectors;
+		this.vectors = new ImList<Step>(vectors);
+		this.vectors.checkForNulls();
+		this.start = start;
 	}
 
 	public boolean equals(Object o) {
@@ -82,7 +75,7 @@ public class PathOnTiles implements FreerailsSerializable {
 
 		if (!start.equals(pathOnTiles.start))
 			return false;
-		if (!Arrays.equals(vectors, pathOnTiles.vectors))
+		if (!vectors.equals(pathOnTiles.vectors))
 			return false;
 
 		return true;
@@ -92,14 +85,14 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * Returns the distance you would travel if you walked the all the way along
 	 * the path.
 	 */
-	public int getLength() {
-		return getDistance(vectors.length);
+	public double getLength() {
+		return getDistance(vectors.size());
 	}
 
-	public int getDistance(int steps) {
-		int distanceSoFar = 0;
+	public double getDistance(int steps) {
+		double distanceSoFar = 0;
 		for (int i = 0; i < steps; i++) {
-			Step v = vectors[i];
+			Step v = vectors.get(i);
 			distanceSoFar += v.getLength();
 		}
 		return distanceSoFar;
@@ -114,48 +107,50 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * @throws IllegalArgumentException
 	 *             if distance > getLength()
 	 */
-	public Point getPoint(int distance) {
+	public ImPoint getPoint(double distance) {
 		if (0 > distance)
 			throw new IllegalArgumentException("distance < 0");
 
 		int x = start.x * TILE_DIAMETER + TILE_DIAMETER / 2;
 		int y = start.y * TILE_DIAMETER + TILE_DIAMETER / 2;
-		int distanceSoFar = 0;
-		for (int i = 0; i < vectors.length; i++) {
-			Step v = vectors[i];
+		double distanceSoFar = 0;
+		for (int i = 0; i < vectors.size(); i++) {
+			Step v = vectors.get(i);
 			distanceSoFar += v.getLength();
 			x += v.deltaX * TILE_DIAMETER;
 			y += v.deltaY * TILE_DIAMETER;
 			if (distanceSoFar == distance) {
-				return new Point(x, y);
+				return new ImPoint(x, y);
 			}
 
 			if (distanceSoFar > distance) {
-				int excess = distanceSoFar - distance;
+				double excess = distanceSoFar - distance;
 				x -= v.deltaX * TILE_DIAMETER * excess / v.getLength();
 				y -= v.deltaY * TILE_DIAMETER * excess / v.getLength();
-				return new Point(x, y);
+				return new ImPoint(x, y);
 			}
 		}
 		throw new IllegalArgumentException("distance > getLength()");
 	}
 
-	public Point getStart() {
-		return new Point(start);
+	public ImPoint getStart() {
+		return start;
 	}
 
 	public Step getStep(int i) {
-		return vectors[i];
+		return vectors.get(i);
 	}
 
 	public PositionOnTrack getFinalPosition() {
 		int x = start.x;
 		int y = start.y;
-		for (Step v : vectors) {
+		for (int i = 0; i < vectors.size(); i++) {
+			Step v = vectors.get(i);
 			x += v.deltaX;
 			y += v.deltaY;
 		}
-		Step finalStep = vectors[vectors.length - 1];
+		int i = vectors.size() - 1;
+		Step finalStep = vectors.get(i);
 		PositionOnTrack p = PositionOnTrack.createFacing(x, y, finalStep);
 		return p;
 	}
@@ -173,8 +168,8 @@ public class PathOnTiles implements FreerailsSerializable {
 		if (0 > distance)
 			throw new IllegalArgumentException("distance < 0");
 		int distanceSoFar = 0;
-		for (int i = 0; i < vectors.length; i++) {
-			Step v = vectors[i];
+		for (int i = 0; i < vectors.size(); i++) {
+			Step v = vectors.get(i);
 			distanceSoFar += v.getLength();
 			if (distanceSoFar >= distance)
 				return i;
@@ -187,15 +182,14 @@ public class PathOnTiles implements FreerailsSerializable {
 	}
 
 	public int steps() {
-		return vectors.length;
+		return vectors.size();
 	}
 
 	public PathOnTiles addSteps(Step... newSteps) {
-		int oldLength = vectors.length;
-		Step[] newPath = new Step[oldLength
-				+ newSteps.length];
+		int oldLength = vectors.size();
+		Step[] newPath = new Step[oldLength + newSteps.length];
 		for (int i = 0; i < oldLength; i++) {
-			newPath[i] = vectors[i];
+			newPath[i] = vectors.get(i);
 		}
 		for (int i = 0; i < newSteps.length; i++) {
 			newPath[i + oldLength] = newSteps[i];
@@ -215,7 +209,7 @@ public class PathOnTiles implements FreerailsSerializable {
 	 *             if offset + length > getLength()
 	 * 
 	 */
-	public FreerailsPathIterator subPath(int offset, int length) {
+	public FreerailsPathIterator subPath(double offset, double length) {
 		if (offset < 0)
 			throw new IllegalArgumentException();
 		if (length <= 0)
@@ -223,35 +217,37 @@ public class PathOnTiles implements FreerailsSerializable {
 		if ((offset + length) > getLength())
 			throw new IllegalArgumentException();
 
-		final LinkedList<Point> points = new LinkedList<Point>();
-		Point tile = getStart();
+		final LinkedList<ImPoint> points = new LinkedList<ImPoint>();
+		ImPoint tile = getStart();
+		int tileX = tile.x;
+		int tileY = tile.y;
 		int distanceSoFar = 0;
-		for (int i = 0; i < vectors.length; i++) {
+		for (int i = 0; i < vectors.size(); i++) {
 
 			if (distanceSoFar > offset + length) {
 				break;
 			}
 			if (distanceSoFar >= offset) {
-				int x = TILE_DIAMETER / 2 + TILE_DIAMETER * tile.x;
-				int y = TILE_DIAMETER / 2 + TILE_DIAMETER * tile.y;
-				points.add(new Point(x, y));
+				int x = TILE_DIAMETER / 2 + TILE_DIAMETER * tileX;
+				int y = TILE_DIAMETER / 2 + TILE_DIAMETER * tileY;
+				points.add(new ImPoint(x, y));
 			}
 
-			Step v = vectors[i];
-			tile.x += v.deltaX;
-			tile.y += v.deltaY;
+			Step v = vectors.get(i);
+			tileX += v.deltaX;
+			tileY += v.deltaY;
 			distanceSoFar += v.getLength();
 
 		}
 
-		Point first = getPoint(offset);
+		ImPoint first = getPoint(offset);
 		if (points.size() == 0) {
 			points.addFirst(first);
 		} else if (!points.getFirst().equals(first)) {
 			points.addFirst(first);
 		}
 
-		Point last = getPoint(offset + length);
+		ImPoint last = getPoint(offset + length);
 		if (!points.getLast().equals(last)) {
 			points.addLast(last);
 		}
@@ -269,11 +265,11 @@ public class PathOnTiles implements FreerailsSerializable {
 				if (!hasNext()) {
 					throw new NoSuchElementException();
 				}
-				Point a = points.get(index);
+				ImPoint a = points.get(index);
 				line.x1 = a.x;
 				line.y1 = a.y;
 
-				Point b = points.get(index + 1);
+				ImPoint b = points.get(index + 1);
 				line.x2 = b.x;
 				line.y2 = b.y;
 
@@ -283,27 +279,33 @@ public class PathOnTiles implements FreerailsSerializable {
 		};
 	}
 
-	public Iterator<Point> tiles() {
-		return new Iterator<Point>() {
+	public Iterator<ImPoint> tiles() {
+		return new Iterator<ImPoint>() {
 			int index = 0;
 
-			Point p = new Point(start);
+			ImPoint next = start;
 
 			public boolean hasNext() {
-				return p != null;
+				return next != null;
 			}
 
-			public Point next() {
-				if (p == null)
+			public ImPoint next() {
+				if (next == null)
 					throw new NoSuchElementException();
-				Point returnValue = new Point(p);
-				if (index < vectors.length) {
-					p.x += vectors[index].deltaX;
-					p.y += vectors[index].deltaY;
+
+				ImPoint returnValue = next;
+				int x = next.x;
+				int y = next.y;
+				if (index < vectors.size()) {
+					Step s = vectors.get(index);
+					x += s.deltaX;
+					y += s.deltaY;
+					next = new ImPoint(x, y);
 				} else {
-					p = null;
+					next = null;
 				}
 				index++;
+
 				return returnValue;
 			}
 
@@ -312,6 +314,21 @@ public class PathOnTiles implements FreerailsSerializable {
 			}
 
 		};
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer(getClass().getName());
+		sb.append("{");
+		sb.append(start.x);
+		sb.append(", ");
+		sb.append(start.y);
+		for (int i = 0; i < vectors.size(); i++) {
+			sb.append(", ");
+			sb.append(vectors.get(i));
+		}
+		sb.append("}");
+		return sb.toString();
 	}
 
 }

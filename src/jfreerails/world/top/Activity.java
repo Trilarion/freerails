@@ -6,10 +6,11 @@ package jfreerails.world.top;
 
 import jfreerails.world.common.FreerailsSerializable;
 
-public interface Activity extends FreerailsSerializable {
+public interface Activity<E extends FreerailsSerializable> extends
+		FreerailsSerializable {
 
-	int duration();
+	double duration();
 
-	FreerailsSerializable getState(int dt);
+	E getState(double dt);
 
 }

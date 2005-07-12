@@ -5,10 +5,10 @@
  */
 package jfreerails.move;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.GameRules;
@@ -35,20 +35,24 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 		implements TrackMove, MapUpdateMove {
 	private static final long serialVersionUID = 3616443518780978743L;
 
-	private final Rectangle updatedTiles;
+	private final int x, y, w, h;
 
 	private final FreerailsPrincipal builder;
 
 	private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b,
 			FreerailsPrincipal fp) {
 		super(new Move[] { a, b });
-		updatedTiles = a.getUpdatedTiles().union(b.getUpdatedTiles());
+		Rectangle r = a.getUpdatedTiles().union(b.getUpdatedTiles());
+		x = r.x;
+		y = r.y;
+		w = r.width;
+		h = r.height;
 		builder = fp;
 	}
 
 	public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
-			Point from, Step direction, TrackRule ruleA,
-			TrackRule ruleB, ReadOnlyWorld w, FreerailsPrincipal principal) {
+			ImPoint from, Step direction, TrackRule ruleA, TrackRule ruleB,
+			ReadOnlyWorld w, FreerailsPrincipal principal) {
 		ChangeTrackPieceMove a;
 		ChangeTrackPieceMove b;
 		a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, w,
@@ -61,7 +65,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 	}
 
 	public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
-			Point from, Step direction, ReadOnlyWorld w,
+			ImPoint from, Step direction, ReadOnlyWorld w,
 			FreerailsPrincipal principal) throws Exception {
 		TrackMove a;
 		TrackMove b;
@@ -76,8 +80,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
 	// utility method.
 	private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(
-			Point p, Step direction, TrackRule trackRule,
-			ReadOnlyWorld w, FreerailsPrincipal principle) {
+			ImPoint p, Step direction, TrackRule trackRule, ReadOnlyWorld w,
+			FreerailsPrincipal principle) {
 		TrackPiece oldTrackPiece;
 		TrackPiece newTrackPiece;
 
@@ -107,9 +111,9 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 	}
 
 	// utility method.
-	private static TrackMove getRemoveTrackChangeTrackPieceMove(Point p,
-			Step direction, ReadOnlyWorld w,
-			FreerailsPrincipal principal) throws Exception {
+	private static TrackMove getRemoveTrackChangeTrackPieceMove(ImPoint p,
+			Step direction, ReadOnlyWorld w, FreerailsPrincipal principal)
+			throws Exception {
 		TrackPiece oldTrackPiece;
 		TrackPiece newTrackPiece;
 
@@ -153,8 +157,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 	}
 
 	private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(
-			Step direction, TrackRule trackRule, int owner,
-			int ruleNumber) {
+			Step direction, TrackRule trackRule, int owner, int ruleNumber) {
 		TrackConfiguration simplestConfig = TrackConfiguration
 				.getFlatInstance("000010000");
 		TrackConfiguration trackConfiguration = TrackConfiguration.add(
@@ -165,7 +168,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 	}
 
 	public Rectangle getUpdatedTiles() {
-		return updatedTiles;
+		return new Rectangle(x, y, w, h);
 	}
 
 	public static int getOwner(FreerailsPrincipal p, ReadOnlyWorld w) {
@@ -194,9 +197,9 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 		return rules.isMustConnect2ExistingTrack();
 	}
 
-	protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
-		if (mustConnectToExistingTrack(w)) {
-			if (hasAnyTrackBeenBuilt(w, this.builder)) {
+	protected MoveStatus compositeTest(World world, FreerailsPrincipal p) {
+		if (mustConnectToExistingTrack(world)) {
+			if (hasAnyTrackBeenBuilt(world, this.builder)) {
 				try {
 					ChangeTrackPieceMove a = (ChangeTrackPieceMove) super
 							.getMove(0);

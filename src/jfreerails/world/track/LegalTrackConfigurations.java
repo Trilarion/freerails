@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.common.ImHashSet;
 
 /**
  * Stores the legal track configurations for a type of track.
@@ -15,7 +16,8 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 
 	private static final long serialVersionUID = 3617295631735928119L;
 
-	private final HashSet<TrackConfiguration> legalConfigs = new HashSet<TrackConfiguration>();
+	private final ImHashSet<TrackConfiguration> legalConfigs;// = new
+																// HashSet<TrackConfiguration>();
 
 	private final int maximumConsecutivePieces;
 
@@ -23,19 +25,22 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 			ArrayList<String> legalTrackTemplatesArrayList) {
 		maximumConsecutivePieces = max;
 
+		HashSet<TrackConfiguration> temp = new HashSet<TrackConfiguration>();
 		// Iterate over the track templates.
 		for (int i = 0; i < legalTrackTemplatesArrayList.size(); i++) {
 			String trackTemplateString = legalTrackTemplatesArrayList.get(i);
-			processTemplate(trackTemplateString);
+			processTemplate(trackTemplateString, temp);
 		}
+		legalConfigs = new ImHashSet<TrackConfiguration>(temp);
 	}
 
 	public LegalTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
 		maximumConsecutivePieces = max;
-
+		HashSet<TrackConfiguration> temp = new HashSet<TrackConfiguration>();
 		for (int i = 0; i < legalTrackTemplatesArray.length; i++) {
-			processTemplate(legalTrackTemplatesArray[i]);
+			processTemplate(legalTrackTemplatesArray[i], temp);
 		}
+		legalConfigs = new ImHashSet<TrackConfiguration>(temp);
 	}
 
 	public boolean equals(Object o) {
@@ -69,7 +74,8 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 		return result;
 	}
 
-	private void processTemplate(String trackTemplateString) {
+	static private void processTemplate(String trackTemplateString,
+			HashSet<TrackConfiguration> temp) {
 		int trackTemplate = Integer.parseInt(trackTemplateString, 2);
 
 		// Check for invalid parameters.
@@ -86,8 +92,8 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 			TrackConfiguration trackConfiguration = TrackConfiguration
 					.from9bitTemplate(i);
 
-			if (!legalConfigs.contains(trackConfiguration)) {
-				legalConfigs.add(trackConfiguration);
+			if (!temp.contains(trackConfiguration)) {
+				temp.add(trackConfiguration);
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import jfreerails.move.MapUpdateMove;
 import jfreerails.move.Move;
 import jfreerails.move.RemoveItemFromListMove;
 import jfreerails.move.UndoMove;
+import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
@@ -92,10 +93,10 @@ final public class MoveChainFork implements MoveReceiver {
 		}
 
 		if (move instanceof CompositeMove) {
-			Move[] moves = ((CompositeMove) move).getMoves();
+			ImList<Move> moves = ((CompositeMove) move).getMoves();
 
-			for (int i = 0; i < moves.length; i++) {
-				splitMove(moves[i]);
+			for (int i = 0; i < moves.size(); i++) {
+				splitMove(moves.get(i));
 			}
 		} else {
 			for (int i = 0; i < splitMoveReceivers.size(); i++) {

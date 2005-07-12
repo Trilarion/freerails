@@ -1,11 +1,11 @@
 package jfreerails.controller;
 
-import java.awt.Point;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -45,7 +45,7 @@ public class StationBuilder {
 		ruleNumber = i;
 	}
 
-	public MoveStatus tryBuildingStation(Point p) {
+	public MoveStatus tryBuildingStation(ImPoint p) {
 		ReadOnlyWorld world = executor.getWorld();
 
 		FreerailsPrincipal principal = executor.getPrincipal();
@@ -58,7 +58,7 @@ public class StationBuilder {
 		return ms;
 	}
 
-	public MoveStatus buildStation(Point p) {
+	public MoveStatus buildStation(ImPoint p) {
 		// Only build a station if there is track at the specified point.
 		MoveStatus status = tryBuildingStation(p);
 		if (status.ok) {
@@ -67,7 +67,7 @@ public class StationBuilder {
 					this.ruleNumber, principal);
 			return executor.doPreMove(preMove);
 		}
-		logger.warning(status.message);
+		logger.fine(status.message);
 		return status;
 	}
 
