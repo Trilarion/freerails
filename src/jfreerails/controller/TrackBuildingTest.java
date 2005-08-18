@@ -6,6 +6,7 @@ import static jfreerails.world.common.Step.SOUTH_EAST;
 
 import java.util.Arrays;
 
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
 import jfreerails.world.common.ImPoint;
@@ -32,7 +33,8 @@ public class TrackBuildingTest extends TestCase {
 		super.setUp();
 		w = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(w, 0);
-		producer = new TrackMoveProducer(me, w);
+		ModelRoot mr = new ModelRootImpl();
+		producer = new TrackMoveProducer(me, w, mr);
 		FreerailsPrincipal principle = w.getPlayer(0).getPrincipal();
 		pathFinder = new TrackPathFinder(w, principle);
 		stationBuilder = new StationBuilder(me);

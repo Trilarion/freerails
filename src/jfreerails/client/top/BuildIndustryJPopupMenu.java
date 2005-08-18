@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.View;
+import jfreerails.controller.ModelRoot;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.ChangeTileMove;
 import jfreerails.move.CompositeMove;

@@ -28,9 +28,9 @@ import javax.swing.JToggleButton;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.BuildTrackStrategy;
+import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.util.Utils;
 import jfreerails.world.common.Money;
@@ -212,27 +212,13 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 		// });
 	}
 
-	public void setSelectedButton() {
-
-		// viewModeKeyPressed(evt);
-		viewMode.doClick();
-		// jfreerails.client.view.RHSJTabPane pane = new RHSJTabPane();
-		// pane.setTrainTabEnabled(true);
-		// buildModeButtonGroup.setSelected(addTrack.getModel(), false);
-		// buildModeButtonGroup.setSelected(viewMode.getModel(), true);
-		// setVisible(false, false, false, false);
-		// cancelStationPlacement();
-		setTrackBuilderMode(IGNORE_TRACK);
-
-	}
-
-	/** Calls setFocusable(false) for each button in the button group. */
-	private void setFocusableFalse(ButtonGroup bg) {
-		for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons
-				.hasMoreElements();) {
-			buttons.nextElement().setFocusable(false);
-		}
-	}
+    /** Calls setFocusable(false) for each button in the button group. */
+    private void setFocusableFalse(ButtonGroup bg) {
+        for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons
+                .hasMoreElements();) {
+            buttons.nextElement().setFocusable(false);
+        }
+    }
 
 	private void addNoTunnelsButton() {
 		JToggleButton toggleButton = new JToggleButton();

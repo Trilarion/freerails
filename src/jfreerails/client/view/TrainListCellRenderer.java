@@ -16,8 +16,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -93,8 +93,8 @@ public class TrainListCellRenderer extends JPanel implements View,
 		showingOrder = false;
 		this.trainNumber = newTrainNumber;
 
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber,
-				principal);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				trainNumber);
 
 		// Set up the array of images.
 		images = new Image[1 + train.getNumberOfWagons()];
@@ -114,12 +114,12 @@ public class TrainListCellRenderer extends JPanel implements View,
 		this.trainNumber = newTrainNumber;
 		this.scheduleOrderNumber = newScheduleOrderID;
 
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber,
-				principal);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				trainNumber);
 		this.scheduleID = train.getScheduleID();
 
-		ImmutableSchedule s = (ImmutableSchedule) w.get(KEY.TRAIN_SCHEDULES,
-				scheduleID, principal);
+		ImmutableSchedule s = (ImmutableSchedule) w.get(principal,
+				KEY.TRAIN_SCHEDULES, scheduleID);
 		TrainOrdersModel order = s.getOrder(newScheduleOrderID);
 
 		// Set up the array of images.

@@ -21,10 +21,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
 import jfreerails.client.common.ImageManager;
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.MapRenderer;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.ImPoint;
 
 /**

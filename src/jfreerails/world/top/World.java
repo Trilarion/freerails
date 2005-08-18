@@ -1,6 +1,7 @@
 package jfreerails.world.top;
 
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.Activity;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -26,15 +27,15 @@ import jfreerails.world.player.Player;
  * @author rob
  */
 public interface World extends ReadOnlyWorld {
-	int addActiveEntity(AKEY key, Activity element, FreerailsPrincipal principal);
+	int addActiveEntity(FreerailsPrincipal principal, Activity element);
 
-	void add(AKEY key, int index, Activity element, FreerailsPrincipal principal);
+	void add(FreerailsPrincipal principal, int index, Activity element);
 
 	/**
 	 * Appends the specified element to the end of the specifed list and returns
 	 * the index that can be used to retrieve it.
 	 */
-	int add(KEY key, FreerailsSerializable element, FreerailsPrincipal principal);
+	int add(FreerailsPrincipal principal, KEY key, FreerailsSerializable element);
 
 	/**
 	 * Appends the specified element to the end of the specifed list and returns
@@ -48,7 +49,7 @@ public interface World extends ReadOnlyWorld {
 	/**
 	 * Adds the specified transaction to the specified principal's bank account.
 	 */
-	void addTransaction(Transaction t, FreerailsPrincipal p);
+	void addTransaction(FreerailsPrincipal p, Transaction t);
 
 	/**
 	 * Returns a copy of this world object - making changes to this copy will
@@ -56,15 +57,14 @@ public interface World extends ReadOnlyWorld {
 	 */
 	World defensiveCopy();
 
-	Activity removeLastActiveEntity(AKEY key, FreerailsPrincipal principal);
+	Activity removeLastActiveEntity(FreerailsPrincipal principal);
 
-	Activity removeLastActivity(AKEY key, int index,
-			FreerailsPrincipal principal);
+	Activity removeLastActivity(FreerailsPrincipal principal, int index);
 
 	/**
 	 * Removes the last element from the specified list.
 	 */
-	FreerailsSerializable removeLast(KEY key, FreerailsPrincipal principal);
+	FreerailsSerializable removeLast(FreerailsPrincipal principal, KEY key);
 
 	/**
 	 * Removes the last element from the specified list.
@@ -92,8 +92,8 @@ public interface World extends ReadOnlyWorld {
 	 * Replaces the element at the specified position in the specified list with
 	 * the specified element.
 	 */
-	void set(KEY key, int index, FreerailsSerializable element,
-			FreerailsPrincipal principal);
+	void set(FreerailsPrincipal principal, KEY key, int index,
+			FreerailsSerializable element);
 
 	/**
 	 * Replaces the element at the specified position in the specified list with

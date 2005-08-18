@@ -53,12 +53,12 @@ public class RemoveItemFromListMove implements ListMove {
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		if (w.size(listKey, principal) < (index + 1)) {
+		if (w.size(principal, listKey) < (index + 1)) {
 			return MoveStatus.moveFailed("w.size(listKey)="
-					+ w.size(listKey, principal) + " but index =" + index);
+					+ w.size(principal, listKey) + " but index =" + index);
 		}
 
-		FreerailsSerializable item2remove = w.get(listKey, index, principal);
+		FreerailsSerializable item2remove = w.get(principal, listKey, index);
 
 		if (null == item2remove) {
 			return MoveStatus.moveFailed("The item at position " + index
@@ -76,14 +76,14 @@ public class RemoveItemFromListMove implements ListMove {
 	}
 
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		if (w.size(listKey, principal) < (index + 1)) {
+		if (w.size(principal, listKey) < (index + 1)) {
 			return MoveStatus.moveFailed("w.size(listKey)="
-					+ w.size(listKey, principal) + " but index =" + index);
+					+ w.size(principal, listKey) + " but index =" + index);
 		}
 
-		if (null != w.get(listKey, index, principal)) {
+		if (null != w.get(principal, listKey, index)) {
 			String reason = "The item at position " + index + " in the list ("
-					+ w.get(listKey, index, principal).toString()
+					+ w.get(principal, listKey, index).toString()
 					+ ") is not the expected item (null).";
 
 			return MoveStatus.moveFailed(reason);
@@ -95,7 +95,7 @@ public class RemoveItemFromListMove implements ListMove {
 		MoveStatus ms = tryDoMove(w, p);
 
 		if (ms.isOk()) {
-			w.set(listKey, index, null, principal);
+			w.set(principal, listKey, index, null);
 		}
 
 		return ms;
@@ -105,7 +105,7 @@ public class RemoveItemFromListMove implements ListMove {
 		MoveStatus ms = tryUndoMove(w, p);
 
 		if (ms.isOk()) {
-			w.set(listKey, index, this.item, principal);
+			w.set(principal, listKey, index, this.item);
 		}
 
 		return ms;

@@ -16,10 +16,10 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 
 import jfreerails.client.common.ActionAdapter;
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -52,33 +52,25 @@ public class TrackBuildModel {
 
 	private final HashMap<TrackMoveProducer.BuildMode, Action> buildModeActionsHM = new HashMap<TrackMoveProducer.BuildMode, Action>();
 
-	public ActionAdapter getBuildModeActionAdapter() {
-		return buildModeAdapter;
-	}
+    private class BuildModeAction extends AbstractAction {
+        private static final long serialVersionUID = 3689073962638324024L;
 
-	public ActionAdapter getTrackRuleAdapter() {
-		return trackRuleAdapter;
-	}
+        private final TrackMoveProducer.BuildMode mode;
 
-	private class BuildModeAction extends AbstractAction {
-		private static final long serialVersionUID = 3689073962638324024L;
+        private BuildModeAction(TrackMoveProducer.BuildMode mode, String name) {
+            putValue(NAME, name);
+            putValue(ACTION_COMMAND_KEY, name);
+            this.mode = mode;
+        }
 
-		private final TrackMoveProducer.BuildMode mode;
+        public void actionPerformed(ActionEvent e) {
+            cancelStationPlacement();
+            if (!(e.getSource() instanceof ActionAdapter))
+                return;
 
-		private BuildModeAction(TrackMoveProducer.BuildMode mode, String name) {
-			putValue(NAME, name);
-			putValue(ACTION_COMMAND_KEY, name);
-			this.mode = mode;
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			cancelStationPlacement();
-			if (!(e.getSource() instanceof ActionAdapter))
-				return;
-
-			trackMoveProducer.setTrackBuilderMode(mode);
-		}
-	}
+            trackMoveProducer.setTrackBuilderMode(mode);
+        }
+    }
 
 	private class TrackRuleAction extends AbstractAction {
 		private static final long serialVersionUID = 3256719576464046128L;
@@ -124,45 +116,41 @@ public class TrackBuildModel {
 		}
 	}
 
-	public Action getBuildModeAction(int id) {
-		return buildModeActionsHM.get(new Integer(id));
-	}
+    public TrackBuildModel(TrackMoveProducer tmp, ModelRoot modelRoot,
+                           ViewLists vl, StationBuildModel stationBuildModel) {
+        this.world = modelRoot.getWorld();
+        viewLists = vl;
+        trackMoveProducer = tmp;
+        this.stationBuildModel = stationBuildModel;
 
-	public TrackBuildModel(TrackMoveProducer tmp, ModelRoot modelRoot,
-			ViewLists vl, StationBuildModel stationBuildModel) {
-		this.world = modelRoot.getWorld();
-		viewLists = vl;
-		trackMoveProducer = tmp;
-		this.stationBuildModel = stationBuildModel;
+        BuildModeAction[] buildModeActions = new BuildModeAction[] {
+                new BuildModeAction(BUILD_TRACK, "Build Track"),
+                new BuildModeAction(REMOVE_TRACK, "Remove Track"),
+                new BuildModeAction(UPGRADE_TRACK, "Upgrade Track"),
+                new BuildModeAction(IGNORE_TRACK, "View Mode"),
+                new BuildModeAction(BUILD_STATION, "Build station") };
+        buildModeAdapter = new ActionAdapter(buildModeActions);
 
-		BuildModeAction[] buildModeActions = new BuildModeAction[] {
-				new BuildModeAction(BUILD_TRACK, "Build Track"),
-				new BuildModeAction(REMOVE_TRACK, "Remove Track"),
-				new BuildModeAction(UPGRADE_TRACK, "Upgrade Track"),
-				new BuildModeAction(IGNORE_TRACK, "View Mode"),
-				new BuildModeAction(BUILD_STATION, "Build station") };
-		buildModeAdapter = new ActionAdapter(buildModeActions);
+        buildModeActionsHM.put(BUILD_TRACK, buildModeActions[0]);
+        buildModeActionsHM.put(REMOVE_TRACK, buildModeActions[1]);
+        buildModeActionsHM.put(UPGRADE_TRACK, buildModeActions[2]);
+        buildModeActionsHM.put(IGNORE_TRACK, buildModeActions[3]);
 
-		buildModeActionsHM.put(BUILD_TRACK, buildModeActions[0]);
-		buildModeActionsHM.put(REMOVE_TRACK, buildModeActions[1]);
-		buildModeActionsHM.put(UPGRADE_TRACK, buildModeActions[2]);
-		buildModeActionsHM.put(IGNORE_TRACK, buildModeActions[3]);
+        /* set up track actions */
+        Vector<Action> actionsVector = new Vector<Action>();
 
-		/* set up track actions */
-		Vector<Action> actionsVector = new Vector<Action>();
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
 
-		for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-			TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+            if (!trackRule.isStation()) {
+                actionsVector.add(new TrackRuleAction(i, trackRule
+                        .getTypeName()));
+            }
+        }
 
-			if (!trackRule.isStation()) {
-				actionsVector.add(new TrackRuleAction(i, trackRule
-						.getTypeName()));
-			}
-		}
-
-		trackRuleAdapter = new ActionAdapter(actionsVector
-				.toArray(new Action[0]));
-	}
+        trackRuleAdapter = new ActionAdapter(actionsVector
+                .toArray(new Action[0]));
+    }
 
 	private void cancelStationPlacement() {
 		// Cancel build station mode..

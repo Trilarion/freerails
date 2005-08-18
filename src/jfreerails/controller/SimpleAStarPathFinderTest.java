@@ -155,12 +155,8 @@ class Map implements GraphExplorer {
 		this.setPosition(this.getVertexConnectedByEdge());
 	}
 
-	public boolean isAtStation() {
-		return false;
-	}
-
-	public int getH() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public int getH() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

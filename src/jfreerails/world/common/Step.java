@@ -243,6 +243,12 @@ final public class Step implements FlatTrackTemplate {
 	public static Step getInstance(int number) {
 		return list[number];
 	}
+	
+	public static boolean checkValidity(ImPoint a, ImPoint b) {
+		int dx = b.x - a.x;
+		int dy = b.y - a.y;
+		return checkValidity(dx, dy);
+	}
 
 	public static Step getInstance(int dx, int dy) {
 		if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1)))

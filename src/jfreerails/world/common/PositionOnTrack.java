@@ -184,8 +184,8 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 	}
 
 	public String toString() {
-		String s = "PositionOnTrack: " + x + ", " + y + ", "
-				+ cameFrom.toString();
+		String s = "PositionOnTrack: " + x + ", " + y + " facing "
+				+ cameFrom.getOpposite().toString();
 
 		return s;
 	}

@@ -4,8 +4,8 @@
  */
 package jfreerails.world.train;
 
+import jfreerails.world.common.Activity;
 import jfreerails.world.common.ImList;
-import jfreerails.world.top.Activity;
 
 public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 		SpeedAgainstTime {
@@ -63,6 +63,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	public SpeedTimeAndStatus getState(final double dt) {
+		checkT(dt);
 		double acceleration;
 		SpeedTimeAndStatus.Activity activity = SpeedTimeAndStatus.Activity.READY;
 		double s = 0;
@@ -78,6 +79,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	public double calcS(double t) {
+		checkT(t);
 		TandI tai = getIndex(t);
 		double s = 0;
 		for (int i = 0; i < tai.i; i++) {
@@ -90,6 +92,9 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	public double calcT(double s) {
+		if (s > totalDistance)
+			throw new IllegalArgumentException(String.valueOf(s));
+
 		double sSoFar = 0;
 		double tSoFar = 0;
 		int i = 0;
@@ -107,12 +112,14 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	public double calcV(double t) {
+		checkT(t);
 		TandI tai = getIndex(t);
 		SpeedAgainstTime acc = values.get(tai.i);
 		return acc.calcV(tai.offset);
 	}
 
 	public double calcA(double t) {
+		checkT(t);
 		TandI tai = getIndex(t);
 		SpeedAgainstTime acc = values.get(tai.i);
 		return acc.calcA(tai.offset);
@@ -127,6 +134,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	private TandI getIndex(double t) {
+		checkT(t);
 		double tSoFar = 0;
 		for (int i = 0; i < values.size(); i++) {
 			SpeedAgainstTime acc = values.get(i);
@@ -137,7 +145,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 			}
 			tSoFar += acc.getT();
 		}
-		throw new IllegalArgumentException(String.valueOf(t));
+		// Should never happen since we call checkT() above!
+		throw new IllegalStateException(String.valueOf(t));
 	}
 
 	/** Used to enable 2 values to be returned from the method getIndex(double t) */
@@ -151,6 +160,11 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 			this.offset = t;
 		}
 
+	}
+
+	void checkT(double t) {
+		if (t < 0d || t > duration)
+			throw new IllegalArgumentException("t="+t+", but duration="+duration);
 	}
 
 }

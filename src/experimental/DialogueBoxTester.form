@@ -2,14 +2,14 @@
 
 <Form version="1.0" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+    <Menu class="javax.swing.JMenuBar" name="MenuBar">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="show">
           <Properties>
             <Property name="text" type="java.lang.String" value="Show"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="newspaper">
+            <MenuItem class="javax.swing.JMenuItem" name="showBrokerScreen">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Newspaper"/>
               </Properties>
@@ -19,7 +19,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="selectEngine">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Select Engine"/>
+                <Property name="text" type="java.lang.String" value="Select Engine Screen"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectEngineActionPerformed"/>
@@ -89,12 +89,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showJavaSystemPropertiesActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="showNetworthGraph">
+            <MenuItem class="javax.swing.JMenuItem" name="showNetWorthGraph">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Show networth graph"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showNetworthGraphActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showNetWorthGraphActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -103,7 +103,7 @@
     </Menu>
   </NonVisualComponents>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="MenuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
   </SyntheticProperties>
   <Events>

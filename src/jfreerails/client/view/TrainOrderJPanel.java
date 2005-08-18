@@ -14,8 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -130,9 +130,9 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View,
 		TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement) value;
 
 		// Set station name
-		int stationNumber = trainOrders.order.m_station;
-		StationModel station = (StationModel) w.get(KEY.STATIONS,
-				stationNumber, principal);
+		int stationNumber = trainOrders.order.stationId;
+		StationModel station = (StationModel) w.get(principal,
+				KEY.STATIONS, stationNumber);
 		String stationName = station.getStationName();
 		this.stationNameJLabel.setText(stationName);
 

@@ -60,7 +60,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 		}
 	}
 
-	private HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<NameAndPassword, Connection2Client>();
+	private final HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<NameAndPassword, Connection2Client>();
 
 	private int commandID = 0;
 
@@ -311,10 +311,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
 				int index = world.addPlayer(p);
 
-				world.addTransaction(BondTransaction.issueBond(5), p
-						.getPrincipal());
-				world.addTransaction(BondTransaction.issueBond(5), p
-						.getPrincipal());
+				world.addTransaction(p
+						.getPrincipal(), BondTransaction.issueBond(5));
+				world.addTransaction(p
+						.getPrincipal(), BondTransaction.issueBond(5));
 				assert i == index;
 				passwords[i] = players.get(i).password;
 			}

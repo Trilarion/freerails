@@ -21,7 +21,6 @@ import jfreerails.world.common.Money;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.AKEY;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -102,7 +101,7 @@ public class AddTrainPreMove implements PreMove {
 		PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(w, point);
 		FlatTrackExplorer fte = new FlatTrackExplorer(w, pp[0]);
 
-		List<Step> vectors = new ArrayList<Step>();
+		List<Step> steps = new ArrayList<Step>();
 		int length = calTrainLength();
 		int distanceTravelled = 0;
 		PositionOnTrack p = new PositionOnTrack();
@@ -112,10 +111,10 @@ public class AddTrainPreMove implements PreMove {
 			p.setValuesFromInt(fte.getPosition());
 			Step v = p.cameFrom();
 			distanceTravelled += v.getLength();
-			vectors.add(v);
+			steps.add(v);
 
 		}
-		return new PathOnTiles(point, vectors);
+		return new PathOnTiles(point, steps);
 	}
 
 	private int calTrainLength() {
@@ -145,20 +144,20 @@ public class AddTrainPreMove implements PreMove {
 	 */
 	public Move generateMove(ReadOnlyWorld w) {
 		// Add cargo bundle.
-		int bundleId = w.size(KEY.CARGO_BUNDLES, principal);
+		int bundleId = w.size(principal, KEY.CARGO_BUNDLES);
 		ImmutableCargoBundle cargo = ImmutableCargoBundle.EMPTY_BUNDLE;
 		AddItemToListMove addCargoBundle = new AddItemToListMove(
 				KEY.CARGO_BUNDLES, bundleId, cargo, principal);
 
 		// Add schedule
-		int scheduleId = w.size(KEY.TRAIN_SCHEDULES, principal);
+		int scheduleId = w.size(principal, KEY.TRAIN_SCHEDULES);
 		AddItemToListMove addSchedule = new AddItemToListMove(
 				KEY.TRAIN_SCHEDULES, scheduleId, schedule, principal);
 
 		// Add train to train list.
 		TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId,
 				bundleId);
-		int trainId = w.size(KEY.TRAINS, principal);
+		int trainId = w.size(principal, KEY.TRAINS);
 		AddItemToListMove addTrain = new AddItemToListMove(KEY.TRAINS, trainId,
 				train, principal);
 
@@ -180,7 +179,7 @@ public class AddTrainPreMove implements PreMove {
 		TrainMotion motion = initPositionStep2(path);
 
 		Move addPosition = new AddActiveEntityMove(motion, trainId,
-				AKEY.TRAIN_POSITIONS, principal);
+				 principal);
 
 		return new CompositeMove(addCargoBundle, addSchedule, addTrain,
 				transactionMove, addPosition);

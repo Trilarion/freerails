@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.renderer.ViewLists;
@@ -18,6 +17,8 @@ import jfreerails.client.top.GUIComponentFactoryImpl;
 import jfreerails.client.top.GameLoop;
 import jfreerails.client.top.ViewListsImpl;
 import jfreerails.client.view.ActionRoot;
+import jfreerails.controller.ModelRoot;
+import jfreerails.controller.ModelRoot.Property;
 import jfreerails.network.FreerailsClient;
 import jfreerails.network.FreerailsGameServer;
 import jfreerails.network.SavedGamesManager;
@@ -25,7 +26,11 @@ import jfreerails.server.SavedGamesManagerImpl;
 import jfreerails.server.ServerGameModelImpl;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
+import jfreerails.world.common.GameSpeed;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
+import jfreerails.world.top.ITEM;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 
 /**
@@ -87,7 +92,23 @@ public class GUIClient extends FreerailsClient implements
 	protected void clientUpdates() {
 		if (factory.isSetup()) {
 			factory.getBuildTrackController().update();
+//			Update sub tick time.
+			long currentTime = System.currentTimeMillis();
+			long lastTick = getLastTickTime();
+			double dt = currentTime - lastTick;
+			ReadOnlyWorld world2 = modelRoot.getWorld();
+			GameSpeed gameSpeed = (GameSpeed) world2.get(ITEM.GAME_SPEED);
+			GameTime currentGameTime  = world2.currentTime();
+			double ticks = currentGameTime.getTicks();
+			if(!gameSpeed.isPaused()){			
+				double milliSecondsPerTick = 1000/ gameSpeed.getSpeed();			
+				double subTicks = dt / milliSecondsPerTick;			
+				subTicks = Math.min(dt, 1d);				
+				ticks += subTicks;		
+			}
+			modelRoot.setProperty(Property.TIME, new Double(ticks));
 		}
+		
 	}
 
 	public void finished() {

@@ -21,13 +21,13 @@ import jfreerails.world.top.World;
 public class ChangeProductionAtEngineShopMove implements Move {
 	private static final long serialVersionUID = 3905519384997737520L;
 
-	private final ImList<ProductionAtEngineShop> m_before;
+	private final ImList<ProductionAtEngineShop> before;
 
-	private final ImList<ProductionAtEngineShop> m_after;
+	private final ImList<ProductionAtEngineShop> after;
 
-	private final int m_stationNumber;
+	private final int stationNumber;
 
-	private final FreerailsPrincipal m_principal;
+	private final FreerailsPrincipal principal;
 
 	public boolean equals(Object o) {
 		if (this == o)
@@ -37,17 +37,17 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
 		final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) o;
 
-		if (m_stationNumber != changeProductionAtEngineShopMove.m_stationNumber)
+		if (stationNumber != changeProductionAtEngineShopMove.stationNumber)
 			return false;
-		if (m_after != null ? !m_after
-				.equals(changeProductionAtEngineShopMove.m_after)
-				: changeProductionAtEngineShopMove.m_after != null)
+		if (after != null ? !after
+				.equals(changeProductionAtEngineShopMove.after)
+				: changeProductionAtEngineShopMove.after != null)
 			return false;
-		if (m_before != null ? !m_before
-				.equals(changeProductionAtEngineShopMove.m_before)
-				: changeProductionAtEngineShopMove.m_before != null)
+		if (before != null ? !before
+				.equals(changeProductionAtEngineShopMove.before)
+				: changeProductionAtEngineShopMove.before != null)
 			return false;
-		if (!m_principal.equals(changeProductionAtEngineShopMove.m_principal))
+		if (!principal.equals(changeProductionAtEngineShopMove.principal))
 			return false;
 
 		return true;
@@ -55,38 +55,38 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
 	public int hashCode() {
 		int result;
-		result = (m_before != null ? m_before.hashCode() : 0);
-		result = 29 * result + (m_after != null ? m_after.hashCode() : 0);
-		result = 29 * result + m_stationNumber;
-		result = 29 * result + m_principal.hashCode();
+		result = (before != null ? before.hashCode() : 0);
+		result = 29 * result + (after != null ? after.hashCode() : 0);
+		result = 29 * result + stationNumber;
+		result = 29 * result + principal.hashCode();
 		return result;
 	}
 
 	public ChangeProductionAtEngineShopMove(ImList<ProductionAtEngineShop> b,
 			ImList<ProductionAtEngineShop> a, int station, FreerailsPrincipal p) {
-		m_before = b;
-		m_after = a;
-		m_stationNumber = station;
-		m_principal = p;
+		this.before = b;
+		this.after = a;
+		this.stationNumber = station;
+		this.principal = p;
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		return tryMove(w, m_before);
+		return tryMove(w, before);
 	}
 
 	private MoveStatus tryMove(World w, ImList<ProductionAtEngineShop> stateA) {
 		// Check that the specified station exists.
-		if (!w.boundsContain(KEY.STATIONS, this.m_stationNumber, m_principal)) {
-			return MoveStatus.moveFailed(this.m_stationNumber + " "
-					+ m_principal);
+		if (!w.boundsContain(principal, KEY.STATIONS, this.stationNumber)) {
+			return MoveStatus.moveFailed(this.stationNumber + " "
+					+ principal);
 		}
 
-		StationModel station = (StationModel) w.get(KEY.STATIONS,
-				m_stationNumber, m_principal);
+		StationModel station = (StationModel) w.get(principal,
+				KEY.STATIONS, stationNumber);
 
 		if (null == station) {
-			return MoveStatus.moveFailed(this.m_stationNumber + " "
-					+ m_principal + " is does null");
+			return MoveStatus.moveFailed(this.stationNumber + " "
+					+ principal + " is does null");
 		}
 
 		// Check that the station is building what we expect.
@@ -94,27 +94,27 @@ public class ChangeProductionAtEngineShopMove implements Move {
 			if (null == stateA) {
 				return MoveStatus.MOVE_OK;
 			}
-			return MoveStatus.moveFailed(this.m_stationNumber + " "
-					+ m_principal);
+			return MoveStatus.moveFailed(this.stationNumber + " "
+					+ principal);
 		}
 		if (station.getProduction().equals(stateA)) {
 			return MoveStatus.MOVE_OK;
 		}
-		return MoveStatus.moveFailed(this.m_stationNumber + " " + m_principal);
+		return MoveStatus.moveFailed(this.stationNumber + " " + principal);
 	}
 
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		return tryMove(w, m_after);
+		return tryMove(w, after);
 	}
 
 	public MoveStatus doMove(World w, FreerailsPrincipal p) {
 		MoveStatus status = tryDoMove(w, p);
 
 		if (status.isOk()) {
-			StationModel station = (StationModel) w.get(KEY.STATIONS,
-					m_stationNumber, m_principal);
-			station = new StationModel(station, this.m_after);
-			w.set(KEY.STATIONS, m_stationNumber, station, m_principal);
+			StationModel station = (StationModel) w.get(principal,
+					KEY.STATIONS, stationNumber);
+			station = new StationModel(station, this.after);
+			w.set(principal, KEY.STATIONS, stationNumber, station);
 		}
 
 		return status;
@@ -124,10 +124,10 @@ public class ChangeProductionAtEngineShopMove implements Move {
 		MoveStatus status = tryUndoMove(w, p);
 
 		if (status.isOk()) {
-			StationModel station = (StationModel) w.get(KEY.STATIONS,
-					m_stationNumber, m_principal);
-			station = new StationModel(station, this.m_before);
-			w.set(KEY.STATIONS, m_stationNumber, station, m_principal);
+			StationModel station = (StationModel) w.get(principal,
+					KEY.STATIONS, stationNumber);
+			station = new StationModel(station, this.before);
+			w.set(principal, KEY.STATIONS, stationNumber, station);
 		}
 
 		return status;

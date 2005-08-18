@@ -121,7 +121,7 @@ public class AddStationPreMove implements PreMove {
 				// some of the unit tests create stations when there are no
 				// cities.
 				stationName = "Central Station #"
-						+ world.size(KEY.STATIONS, principal);
+						+ world.size(principal, KEY.STATIONS);
 			}
 
 			// check the terrain to see if we can build a station on it...

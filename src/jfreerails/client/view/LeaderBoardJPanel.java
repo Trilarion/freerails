@@ -13,8 +13,8 @@ import java.util.Vector;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -33,7 +33,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
 	private JList playersList = null;
 
-	private ActionListener m_submitButtonCallBack = null;
+	private ActionListener submitButtonCallBack = null;
 
 	private Vector<PlayerDetails> values;
 
@@ -60,10 +60,10 @@ public class LeaderBoardJPanel extends JPanel implements View {
 		this.add(getPlayersList(), null);
 		java.awt.event.MouseAdapter mouseAdapter = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
-				if (null == m_submitButtonCallBack) {
+				if (null == submitButtonCallBack) {
 					System.err.println("mouseClicked");
 				} else {
-					m_submitButtonCallBack.actionPerformed(new ActionEvent(
+					submitButtonCallBack.actionPerformed(new ActionEvent(
 							this, 0, null));
 				}
 			}
@@ -97,7 +97,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 			ActionListener submitButtonCallBack) {
 		ReadOnlyWorld w = modelRoot.getWorld();
 		values.clear();
-		m_submitButtonCallBack = submitButtonCallBack;
+		this.submitButtonCallBack = submitButtonCallBack;
 		for (int player = 0; player < w.getNumberOfPlayers(); player++) {
 			PlayerDetails details = new PlayerDetails();
 			FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();

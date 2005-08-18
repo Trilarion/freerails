@@ -185,15 +185,12 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 		}
 	}
 
-	protected Track_TilesHandlerImpl() {
-	}
-
-	public void addTrackRules(World w) {
-		for (int i = 0; i < this.ruleList.size(); i++) {
-			TrackRule r = ruleList.get(i);
-			w.add(SKEY.TRACK_RULES, r);
-		}
-	}
+    public void addTrackRules(World w) {
+        for (int i = 0; i < this.ruleList.size(); i++) {
+            TrackRule r = ruleList.get(i);
+            w.add(SKEY.TRACK_RULES, r);
+        }
+    }
 
 	public List<TrackRule> getRuleList() {
 		return ruleList;

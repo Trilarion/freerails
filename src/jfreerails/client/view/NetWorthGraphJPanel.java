@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.GameCalendar;
@@ -417,8 +417,8 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 		}
 
 		protected boolean condition(int transactionID) {
-			Transaction t = super.w.getTransaction(transactionID,
-					super.principal);
+			Transaction t = super.w.getTransaction(super.principal,
+					transactionID);
 			if (t instanceof AddItemTransaction) {
 				// Since buying something is just converting one asset type to
 				// another.

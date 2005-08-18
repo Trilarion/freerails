@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import jfreerails.client.common.ActionAdapter;
-import jfreerails.client.common.ModelRoot;
-import jfreerails.client.common.ModelRoot.Property;
+import jfreerails.client.common.ModelRootImpl;
+import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.network.LoadGameMessage2Server;
 import jfreerails.network.Message2Server;
@@ -43,9 +43,9 @@ class SavFileFilter implements FilenameFilter {
 
 public class ServerControlModel {
 
-	private ModelRoot modelRoot;
+	private ModelRootImpl modelRoot;		
 
-	public void setModelRoot(ModelRoot modelRoot) {
+	public void setModelRoot(ModelRootImpl modelRoot) {
 		this.modelRoot = modelRoot;
 	}
 
@@ -162,46 +162,33 @@ public class ServerControlModel {
 					new GameSpeed(speed2set)));
 		}
 
-		public SetTargetTicksPerSecondAction(String name, int speed) {
-			this(name, speed, KeyEvent.VK_UNDEFINED);
-		}
-
-		/**
-		 * Same as the constructor above but it enables also to associate a
-		 * <code>keyEvent</code> with the action.
-		 * 
-		 * @param name
-		 *            action name
-		 * @param speed
-		 *            speed
-		 * @param keyEvent
-		 *            associated key event. Use values from
-		 *            <code>KeyEvent</class>.
-		 *
-		 * by MystiqueAgent
-		 */
-		public SetTargetTicksPerSecondAction(String name, int speed,
-				int keyEvent) {
-			putValue(NAME, name);
-			this.speed = speed;
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));
-		}
+        /**
+         * Same as the constructor above but it enables also to associate a
+         * <code>keyEvent</code> with the action.
+         *
+         * @param name
+         *            action name
+         * @param speed
+         *            speed
+         * @param keyEvent
+         *            associated key event. Use values from
+         *            <code>KeyEvent</class>.
+         *
+         * by MystiqueAgent
+         */
+        public SetTargetTicksPerSecondAction(String name, int speed,
+                                             int keyEvent) {
+            putValue(NAME, name);
+            this.speed = speed;
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));
+        }
 	}
 
 	private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[] {
 			new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),
 			new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),
 			new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),
-			new SetTargetTicksPerSecondAction("Fast", 50, KeyEvent.VK_3), // by
-			// MystiqueAgent:
-			// added
-			// keyEvent
-			// parameter
-			new SetTargetTicksPerSecondAction("Git'r Dun", 80, KeyEvent.VK_4), // by
-	// SonnyZ:
-	// Pretty
-	// funny
-	// eh?
+			new SetTargetTicksPerSecondAction("Fast", 70, KeyEvent.VK_3),
 	};
 
 	private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(
@@ -238,7 +225,7 @@ public class ServerControlModel {
 
 	}
 
-	public ServerControlModel(ModelRoot mr) {
+	public ServerControlModel(ModelRootImpl mr) {
 		setServerControlInterface();
 		this.modelRoot = mr;
 	}

@@ -21,8 +21,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JMenuItem;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.Player;
 
 /**
@@ -241,16 +241,12 @@ public class BrokerJFrame extends javax.swing.JInternalFrame implements View {
 		}
 	}
 
-	public void visibleSellPlayerStock(Player P) {
-
-	}
-
-	public void disableSellPlayerStock(Player p) {
-		if (sellPlayerStockJMenuItems.containsKey(p.getName())) {
-			Stocks.remove((Component) sellPlayerStockJMenuItems
-					.get(p.getName()));
-		}
-	}
+    public void disableSellPlayerStock(Player p) {
+        if (sellPlayerStockJMenuItems.containsKey(p.getName())) {
+            Stocks.remove((Component) sellPlayerStockJMenuItems
+                    .get(p.getName()));
+        }
+    }
 
 	public void enableSellTreasuryStockJMenuItem() {
 		sellTreasuryStockJMenuItem.setText("Sell 10,000 of Treasury Stock");

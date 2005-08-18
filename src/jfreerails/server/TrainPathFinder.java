@@ -3,12 +3,14 @@ package jfreerails.server;
 import jfreerails.controller.FlatTrackExplorer;
 import jfreerails.controller.IncrementalPathFinder;
 import jfreerails.controller.SimpleAStarPathFinder;
+import jfreerails.controller.TrainStopsHandler;
 import jfreerails.network.MoveReceiver;
 import jfreerails.util.FreerailsIntIterator;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.WorldDiffs;
 
 /**
  * This class provides methods that generate a path to a target as a series of
@@ -31,37 +33,53 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
 	private final int trainId;
 
+	private transient MoveReceiver mr = null;
+
+	ReadOnlyWorld w;
+
 	public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
-			int trainNumber, MoveReceiver mr, FreerailsPrincipal p) {
+			int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
 		this.trackExplorer = tx;
 		this.trainId = trainNumber;
 		principal = p;
-		stopsHandler = new TrainStopsHandler(trainId, principal, w, mr);
+		stopsHandler = new TrainStopsHandler(trainId, principal, new WorldDiffs(w));
+		this.mr = newMr;
+		this.w = w;
 	}
 
 	public boolean hasNextInt() {
-		if (stopsHandler.isTrainMoving()) {
+		
+		boolean moving = stopsHandler.isTrainMoving();
+		
+		if (moving) {
 			return trackExplorer.hasNextEdge();
 		}
+		mr.processMove(stopsHandler.getMoves());
 		return false;
 	}
 
-	public void initAutomaton(MoveReceiver mr) {
-		stopsHandler.initAutomaton(mr);
+	public void initAutomaton(MoveReceiver newMr) {
+		 this.mr = newMr;	
 	}
 
 	boolean isTrainMoving() {
-		return stopsHandler.isTrainMoving();
+		
+		boolean moving = stopsHandler.isTrainMoving();
+		
+		mr.processMove(stopsHandler.getMoves());
+		return moving;
 	}
 
 	/**
 	 * @return a PositionOnTrack packed into an int
 	 */
 	public int nextInt() {
+	
 		PositionOnTrack tempP = new PositionOnTrack(trackExplorer.getPosition());
 		int x = tempP.getX();
 		int y = tempP.getY();
 		ImPoint targetPoint = stopsHandler.arrivesAtPoint(x, y);
+	
 
 		int currentPosition = tempP.getOpposite().toInt();
 		ReadOnlyWorld world = trackExplorer.getWorld();
@@ -73,7 +91,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 			int target = t[i].getOpposite().toInt();
 
 			if (target == currentPosition) {
-				stopsHandler.updateTarget();
+				stopsHandler.updateTarget();	
 			}
 
 			targets[i] = target;
@@ -93,8 +111,8 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
 		int nextPosition = tempP.toInt();
 		trackExplorer.setPosition(nextPosition);
-
+		
+		mr.processMove(stopsHandler.getMoves());
 		return nextPosition;
-	}
-
+	}	
 }

@@ -17,10 +17,10 @@ public interface Transaction extends FreerailsSerializable {
 
 	public enum Category {
 		TRACK, CARGO_DELIVERY, TRACK_MAINTENANCE, TRAIN_MAINTENANCE, STATION_MAINTENANCE, TRAIN, MISC_INCOME, INTEREST_CHARGE, BOND, ISSUE_STOCK, SELL_STOCK, BUY_PLAYER_STOCK, SELL_PLAYER_STOCK, INDUSTRIES, STATIONS, BRIDGES
-	};
+	}
 
-	/** Positive means credit. */
-	Money getValue();
+    /** Positive means credit. */
+    Money getValue();
 
 	Category getCategory();
 }

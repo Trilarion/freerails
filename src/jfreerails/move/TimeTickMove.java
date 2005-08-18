@@ -14,9 +14,9 @@ import jfreerails.world.top.World;
 public class TimeTickMove implements Move {
 	private static final long serialVersionUID = 3257290240212153393L;
 
-	private final GameTime m_oldTime;
+	private final GameTime oldTime;
 
-	private final GameTime m_newTime;
+	private final GameTime newTime;
 
 	public boolean equals(Object o) {
 		if (this == o)
@@ -26,9 +26,9 @@ public class TimeTickMove implements Move {
 
 		final TimeTickMove timeTickMove = (TimeTickMove) o;
 
-		if (!m_newTime.equals(timeTickMove.m_newTime))
+		if (!newTime.equals(timeTickMove.newTime))
 			return false;
-		if (!m_oldTime.equals(timeTickMove.m_oldTime))
+		if (!oldTime.equals(timeTickMove.oldTime))
 			return false;
 
 		return true;
@@ -36,8 +36,8 @@ public class TimeTickMove implements Move {
 
 	public int hashCode() {
 		int result;
-		result = m_oldTime.hashCode();
-		result = 29 * result + m_newTime.hashCode();
+		result = oldTime.hashCode();
+		result = 29 * result + newTime.hashCode();
 		return result;
 	}
 
@@ -49,15 +49,15 @@ public class TimeTickMove implements Move {
 	}
 
 	public TimeTickMove(GameTime oldTime, GameTime newTime) {
-		m_oldTime = oldTime;
-		m_newTime = newTime;
+		this.oldTime = oldTime;
+		this.newTime = newTime;
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		if (w.currentTime().equals(m_oldTime)) {
+		if (w.currentTime().equals(oldTime)) {
 			return MoveStatus.MOVE_OK;
 		}
-		String string = "oldTime = " + m_oldTime.getTicks() + " <=> "
+		String string = "oldTime = " + oldTime.getTicks() + " <=> "
 				+ "currentTime " + (w.currentTime()).getTicks();
 
 		return MoveStatus.moveFailed(string);
@@ -66,10 +66,10 @@ public class TimeTickMove implements Move {
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
 		GameTime time = w.currentTime();
 
-		if (time.equals(m_newTime)) {
+		if (time.equals(newTime)) {
 			return MoveStatus.MOVE_OK;
 		}
-		return MoveStatus.moveFailed("Expected " + m_newTime + ", found "
+		return MoveStatus.moveFailed("Expected " + newTime + ", found "
 				+ time);
 	}
 
@@ -77,7 +77,7 @@ public class TimeTickMove implements Move {
 		MoveStatus status = tryDoMove(w, p);
 
 		if (status.ok) {
-			w.setTime(m_newTime);
+			w.setTime(newTime);
 		}
 
 		return status;
@@ -87,13 +87,13 @@ public class TimeTickMove implements Move {
 		MoveStatus status = tryUndoMove(w, p);
 
 		if (status.isOk()) {
-			w.setTime(m_oldTime);
+			w.setTime(oldTime);
 		}
 
 		return status;
 	}
 
 	public String toString() {
-		return "TimeTickMove: " + m_oldTime + "=>" + m_newTime;
+		return "TimeTickMove: " + oldTime + "=>" + newTime;
 	}
 }

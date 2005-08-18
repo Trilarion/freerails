@@ -14,10 +14,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.StationRadiusRenderer;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.StationBuildModel;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackRule;
 

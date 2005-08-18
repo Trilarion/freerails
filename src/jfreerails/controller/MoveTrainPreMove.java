@@ -4,19 +4,28 @@
  */
 package jfreerails.controller;
 
+import static jfreerails.world.train.SpeedTimeAndStatus.Activity.STOPPED_AT_STATION;
+import static jfreerails.world.train.SpeedTimeAndStatus.Activity.WAITING_FOR_FULL_LOAD;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.NextActivityMove;
+import jfreerails.world.common.ActivityIterator;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.AKEY;
-import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.WorldDiffs;
 import jfreerails.world.train.CompositeSpeedAgainstTime;
 import jfreerails.world.train.ConstAcc;
 import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.SpeedAgainstTime;
+import jfreerails.world.train.SpeedTimeAndStatus;
 import jfreerails.world.train.TrainMotion;
 
 /**
@@ -28,6 +37,30 @@ import jfreerails.world.train.TrainMotion;
 public class MoveTrainPreMove implements PreMove {
 	private static final long serialVersionUID = 3545516188269491250L;
 
+	/** Uses static method to make testing easier.*/
+	public static Step findNextStep(ReadOnlyWorld world,
+			PositionOnTrack currentPosition, ImPoint target) {
+		PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
+
+		try {
+			ImPoint location = new ImPoint(currentPosition.getX(),
+					currentPosition.getY());
+			pathFinder.setupSearch(location, target);
+			pathFinder.search(-1);
+			return pathFinder.pathAsVectors()[0];
+		} catch (PathNotFoundException e) {
+			// The pathfinder couldn't find a path so we
+			// go in any legal direction.
+			FlatTrackExplorer explorer = new FlatTrackExplorer(world,
+					currentPosition);
+			explorer.nextEdge();
+			int next = explorer.getVertexConnectedByEdge();
+			PositionOnTrack nextPosition = new PositionOnTrack(next);
+			return nextPosition.cameFrom();
+		}
+
+	}
+
 	private final FreerailsPrincipal principal;
 
 	private final int trainID;
@@ -38,19 +71,33 @@ public class MoveTrainPreMove implements PreMove {
 	}
 
 	double acceleration(int wagons) {
-		return 1;
+		return 0.5d/(wagons + 1);
 	}
 
 	/**
-	 * Returns true if
-	 * <ol type="i">
-	 * <li>the train is moving and a new train position is due.</li>
-	 * <li>the train is waiting for a full load and there is more cargo to add.</li>
-	 * <li>the train is stopped but due to start moving.</li>
-	 * </ol>
+	 * Returns true iff if an updated is due.
+	 * 
 	 */
 	public boolean canGenerateMove(ReadOnlyWorld w) {
-		return true;
+		GameTime currentTime = w.currentTime();
+		ActivityIterator ai = w.getActivities(principal, trainID);
+		while (ai.hasNext())
+			ai.nextActivity();
+				
+		double finishTime = ai.getFinishTime();
+		double ticks = currentTime.getTicks();
+		Math.floor(finishTime);
+
+		return Math.floor(finishTime) <= ticks;
+	}
+
+	private TrainMotion currentMotion(ReadOnlyWorld w) {
+		ActivityIterator ai = w.getActivities(principal, trainID);
+		while (ai.hasNext())
+			ai.nextActivity();
+
+		TrainMotion lastMotion = (TrainMotion) ai.getActivity();
+		return lastMotion;
 	}
 
 	private ImPoint currentTrainTarget(ReadOnlyWorld w) {
@@ -80,18 +127,112 @@ public class MoveTrainPreMove implements PreMove {
 		if (!canGenerateMove(w))
 			throw new IllegalStateException();
 
-		// Find the next vector.
-		Step nextVector = nextVector(w);
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+		TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
 
-		// Create a new train motion object.
-		TrainMotion nextMotion = nextMotion(w, nextVector);
+		SpeedTimeAndStatus.Activity activity = tm.getActivity();
 
-		// Create a new Move object.
-		Move move = new NextActivityMove(nextMotion, trainID,
-				AKEY.TRAIN_POSITIONS, principal);
+		switch (activity) {
+		case STOPPED_AT_STATION:
+			return moveTrain(w);
+		case READY:
+		{
+			// Are we at a station?
+			TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
+					principal, new WorldDiffs(w));
+			PositionOnTrack pot = tm.getFinalPosition();
+			int x = pot.getX();
+			int y = pot.getY();
+			boolean atStation = stopsHandler.getStationID(x, y) >= 0;
 
-		return move;
+			TrainMotion nextMotion;
+			if (atStation) {
+				// We have just arrived at a station.
+				double durationOfStationStop = 10;
+								
+				stopsHandler.arrivesAtPoint(x, y);
+				SpeedTimeAndStatus.Activity status = stopsHandler.isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD : STOPPED_AT_STATION;
+				PathOnTiles path = tm.getPath();
+				int lastTrainLength = tm.getTrainLength();
+				int currentTrainLength = stopsHandler.getTrainLength();
+				
+				//If we are adding wagons we may need to lengthen the path.
+				if(lastTrainLength < currentTrainLength){
+					double pathDistance = path.getTotalDistance();
+					double extraDistanceNeeded = currentTrainLength - pathDistance;
+					
+					List<Step> steps = new ArrayList<Step>();
+					ImPoint start = path.getStart();
+					Step firstStep = path.getStep(0);
+					PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x, start.y, firstStep);
+					
+					while( extraDistanceNeeded > 0){
+						
+						FlatTrackExplorer fte = new FlatTrackExplorer(w, nextPot);
+						fte.nextEdge();
+						nextPot.setValuesFromInt(fte.getVertexConnectedByEdge());
+						Step cameFrom = nextPot.facing();
+						steps.add(0, cameFrom);
+						extraDistanceNeeded -= cameFrom.getLength();
+						
+					}
+					
+					//Add existing steps
+					for (int i = 0; i < path.steps(); i++) {
+						Step step = path.getStep(i);	
+						steps.add(step);
+					}
+					
+					ImPoint newStart = new ImPoint(nextPot.getX(), nextPot.getY());
+					path = new PathOnTiles(newStart, steps);
+				}
+				
+				nextMotion = new TrainMotion(path, currentTrainLength,
+						durationOfStationStop, status);
+				
+				// Create a new Move object.
+				Move trainMove = new NextActivityMove(nextMotion, trainID,
+						principal);
+
+				Move cargoMove = stopsHandler.getMoves();
+				return new CompositeMove(trainMove, cargoMove);
+			}
+			return moveTrain(w);
+		}	
+		case WAITING_FOR_FULL_LOAD:
+		{
+			TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
+					principal, new WorldDiffs(w));
+			
+			//If we don't call setWaiting4FullLoad(true), then refreshWaitingForFullLoad();
+			//will return false straight away.
+			stopsHandler.setWaiting4FullLoad(true);
+			boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
+			Move cargoMove = stopsHandler.getMoves();
+			if(!waiting4fullLoad){
+				Move trainMove = moveTrain(w);
+				return new CompositeMove(trainMove, cargoMove);
+			}
+			return cargoMove;
+			
+		}
+		default:
+			throw new UnsupportedOperationException(activity.toString());
+		}
+
+		// then stop train and unload cargo.
+		// Are we waiting?
+		// Have orders changed?
+		// Yes, then updated schedule.
+
+		// Load/Unload any cargo.
+		// Decide whether to start moving.
+
 	}
+
+	// boolean isTrainAtStation(){
+	//		
+	// }
 
 	public int hashCode() {
 		int result;
@@ -100,24 +241,19 @@ public class MoveTrainPreMove implements PreMove {
 		return result;
 	}
 
-	private PositionOnTrack lastPosition(ReadOnlyWorld w) {
-		ActivityIterator ai = w.getActivities(AKEY.TRAIN_POSITIONS, trainID,
-				principal);
-		while (ai.hasNext())
-			ai.nextActivity();
+	private Move moveTrain(ReadOnlyWorld w) {
+		// Find the next vector.
+		Step nextVector = nextStep(w);
 
-		TrainMotion lastMotion = (TrainMotion) ai.getActivity();
-		PositionOnTrack currentPosition = lastMotion.getFinalPosition();
-		return currentPosition;
+		// Create a new train motion object.
+		TrainMotion nextMotion = nextMotion(w, nextVector);
+
+		return new NextActivityMove(nextMotion, trainID, principal);
+
 	}
 
 	TrainMotion nextMotion(ReadOnlyWorld w, Step v) {
-		ActivityIterator ai = w.getActivities(AKEY.TRAIN_POSITIONS, trainID,
-				principal);
-		while (ai.hasNext())
-			ai.nextActivity();
-
-		TrainMotion motion = (TrainMotion) ai.getActivity();
+		TrainMotion motion = currentMotion(w);
 
 		SpeedAgainstTime speeds = nextSpeeds(w, v);
 
@@ -129,13 +265,7 @@ public class MoveTrainPreMove implements PreMove {
 
 	SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, Step v) {
 		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		ActivityIterator ai = w.getActivities(AKEY.TRAIN_POSITIONS, trainID,
-				principal);
-
-		while (ai.hasNext())
-			ai.nextActivity();
-
-		TrainMotion lastMotion = (TrainMotion) ai.getActivity();
+		TrainMotion lastMotion = currentMotion(w);
 
 		double u = lastMotion.getSpeedAtEnd();
 		double s = v.getLength();
@@ -160,53 +290,29 @@ public class MoveTrainPreMove implements PreMove {
 		return newSpeeds;
 	}
 
-	Step nextVector(ReadOnlyWorld w) {
+	Step nextStep(ReadOnlyWorld w) {
 		// Find current position.
-		PositionOnTrack currentPosition = lastPosition(w);
+		TrainMotion currentMotion = currentMotion(w);
+		PositionOnTrack currentPosition = currentMotion.getFinalPosition();
 		// Find targets
 		ImPoint targetPoint = currentTrainTarget(w);
-		return findNextVector(w, currentPosition, targetPoint);
-	}
+		return findNextStep(w, currentPosition, targetPoint);
+	}	
+	
+	public Move stopTrain(ReadOnlyWorld w) {
+		TrainMotion motion = currentMotion(w);
+		SpeedAgainstTime stopped = ConstAcc.STOPPED;
+		double duration = motion.duration();
 
-	static Step findNextVector(ReadOnlyWorld w,
-			PositionOnTrack currentPosition, ImPoint targetPoint) {
-		PositionOnTrack[] t = FlatTrackExplorer.getPossiblePositions(w,
-				targetPoint);
-		int[] targets = new int[t.length];
-
-		for (int i = 0; i < t.length; i++) {
-			int target = t[i].getOpposite().toInt();
-			targets[i] = target;
-		}
-
-		// Use path finder to decide where to go.
-
-		FlatTrackExplorer tempExplorer = new FlatTrackExplorer(w,
-				currentPosition);
-		SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
-		int next = pathFinder.findstep(currentPosition.toInt(), targets,
-				tempExplorer);
-
-		if (next == IncrementalPathFinder.PATH_NOT_FOUND) {
-			// The pathfinder couldn't find a path so we
-			// go in any legal direction.
-			FlatTrackExplorer explorer = new FlatTrackExplorer(w,
-					currentPosition);
-			explorer.nextEdge();
-			next = explorer.getVertexConnectedByEdge();
-			// PositionOnTrack nextPosition = new PositionOnTrack(next);
-			// return nextPosition.facing();
-		}
-
-		PositionOnTrack nextPosition = new PositionOnTrack(next);
-		// XXX should really be nextPosition.facing(), but that produces the
-		// wrong result!
-		// I.e. the code somewhere else has facing and camefrom the wrong way
-		// round.
-		return nextPosition.cameFrom();
+		int trainLength = motion.getTrainLength();
+		PathOnTiles tiles = motion.getTiles(duration);
+		int engineDist = tiles.steps();
+		TrainMotion nextMotion = new TrainMotion(tiles, engineDist,
+				trainLength, stopped);
+		return new NextActivityMove(nextMotion, trainID, principal);
 	}
 
 	double topSpeed(int wagons) {
-		return 100 / (wagons + 1);
+		return 10 / (wagons + 1);
 	}
 }

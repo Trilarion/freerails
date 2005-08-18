@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioFormat;
@@ -20,6 +19,8 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import jfreerails.controller.ModelRoot;
 
 /**
  * This class is responsible for loading and playing sounds. Samples are read
@@ -75,9 +76,7 @@ public class SoundManager implements ModelRootListener, LineListener {
 
 	private boolean playSounds = true;
 
-	Random r = new Random();
-
-	private HashMap<String, Sample> samples = new HashMap<String, Sample>();
+    private HashMap<String, Sample> samples = new HashMap<String, Sample>();
 
 	private final LinkedList<Clip> voices = new LinkedList<Clip>();
 

@@ -6,11 +6,10 @@ package jfreerails.server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Vector;
 
-import jfreerails.move.MapDiffMove;
 import jfreerails.move.TimeTickMove;
+import jfreerails.move.WorldDiffMove;
 import jfreerails.network.MoveReceiver;
 import jfreerails.network.ServerGameModel;
 import jfreerails.world.common.GameCalendar;
@@ -19,7 +18,7 @@ import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.World;
-import jfreerails.world.top.WorldDifferences;
+import jfreerails.world.top.WorldDiffs;
 
 /**
  * A ServerGameModel that contains the automations used in the actual game.
@@ -35,8 +34,7 @@ public class ServerGameModelImpl implements ServerGameModel {
 	private transient CalcSupplyAtStations calcSupplyAtStations;
 
 	private TrainBuilder tb;
-
-	private final ArrayList<TrainMover> trainMovers;
+	
 
 	private String[] passwords;
 
@@ -55,14 +53,14 @@ public class ServerGameModelImpl implements ServerGameModel {
 	private transient MoveReceiver moveExecuter;
 
 	public ServerGameModelImpl() {
-		this(new ArrayList<TrainMover>(), null, new Vector<ServerAutomaton>());
+		this(null, new Vector<ServerAutomaton>());
 	}
 
-	public ServerGameModelImpl(ArrayList<TrainMover> trainMovers, World w,
+	public ServerGameModelImpl( World w,
 			Vector<ServerAutomaton> serverAutomata) {
 		this.world = w;
 		this.serverAutomata = serverAutomata;
-		this.trainMovers = trainMovers;
+		
 		nextModelUpdateDue = System.currentTimeMillis();
 	}
 
@@ -81,11 +79,11 @@ public class ServerGameModelImpl implements ServerGameModel {
 		interestChargeMoveGenerator.update(world);
 
 		// Grow cities.
-		WorldDifferences wd = new WorldDifferences(world);
+		WorldDiffs wd = new WorldDiffs(world);
 		CityTilePositioner ctp = new CityTilePositioner(wd);
 		ctp.growCities();
 
-		MapDiffMove move = new MapDiffMove(world, wd);
+		WorldDiffMove move = new WorldDiffMove(world, wd, WorldDiffMove.Cause.YearEnd);
 		moveExecuter.processMove(move);
 	}
 
@@ -177,7 +175,7 @@ public class ServerGameModelImpl implements ServerGameModel {
 	}
 
 	public void write(ObjectOutputStream objectOut) throws IOException {
-		objectOut.writeObject(tb.getTrainMovers());
+	
 		objectOut.writeObject(world);
 		objectOut.writeObject(serverAutomata);
 
@@ -192,7 +190,7 @@ public class ServerGameModelImpl implements ServerGameModel {
 
 	public void init(MoveReceiver newMoveExecuter) {
 		this.moveExecuter = newMoveExecuter;
-		tb = new TrainBuilder(newMoveExecuter, trainMovers);
+		tb = new TrainBuilder(newMoveExecuter);
 		calcSupplyAtStations = new CalcSupplyAtStations(world, newMoveExecuter);
 
 		for (int i = 0; i < serverAutomata.size(); i++) {
@@ -208,8 +206,7 @@ public class ServerGameModelImpl implements ServerGameModel {
 	}
 
 	public void setWorld(World w, String[] passwords) {
-		this.world = w;
-		this.trainMovers.clear();
+		this.world = w;		
 		this.serverAutomata.clear();
 		this.passwords = passwords.clone();
 	}

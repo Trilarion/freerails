@@ -31,7 +31,7 @@ public class ChangeCargoBundleMoveTest extends AbstractMoveTestCase {
 
 		assertTryMoveFails(m);
 		assertTryUndoMoveFails(m);
-		getWorld().add(KEY.CARGO_BUNDLES, before.toImmutableCargoBundle(),
-				MapFixtureFactory.TEST_PRINCIPAL);
+		getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES,
+				before.toImmutableCargoBundle());
 	}
 }

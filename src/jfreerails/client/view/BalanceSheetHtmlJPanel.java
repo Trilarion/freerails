@@ -7,8 +7,8 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 

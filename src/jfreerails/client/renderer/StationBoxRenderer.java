@@ -5,8 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -75,8 +75,8 @@ public class StationBoxRenderer implements Painter {
 						5 * (WAGON_IMAGE_HEIGHT + SPACING));
 
 				ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
-						KEY.CARGO_BUNDLES, station.getCargoBundleID(),
-						principal);
+						principal, KEY.CARGO_BUNDLES,
+						station.getCargoBundleID());
 
 				for (int category = 0; category < CargoType
 						.getNumberOfCategories(); category++) {

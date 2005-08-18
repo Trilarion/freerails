@@ -49,8 +49,8 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
 		add(title, gridBagConstraints);
 
 		jList1.setModel(new javax.swing.AbstractListModel() {
-			private static final long serialVersionUID = 4049080453489111344L;
 
+            private static final long serialVersionUID = 1L;
 			String[] strings = { "No players are logged on!" };
 
 			public int getSize() {

@@ -218,35 +218,35 @@ public class GenerateDependenciesXmlAndHtml {
 				+ "\"/>\n");
 
 		// Include the source files we are going to compile.
-		for (int i = 0; i < packageNames.length; i++) {
-			xmlWriter.write("\t\t<echo message=\"Check dependencies for "
-					+ packageNames[i] + "\"/>\n");
+        for (String packageName : packageNames) {
+            xmlWriter.write("\t\t<echo message=\"Check dependencies for "
+                    + packageName + "\"/>\n");
 
-			xmlWriter.write("\t\t<delete dir=\"temp\" />\n");
-			xmlWriter.write("\t\t<mkdir dir=\"temp\" />\n");
+            xmlWriter.write("\t\t<delete dir=\"temp\" />\n");
+            xmlWriter.write("\t\t<mkdir dir=\"temp\" />\n");
 
-			// First copy the files we are testing.
-			xmlWriter.write("\t\t<copy todir=\"temp\">\n");
-			xmlWriter.write("\t\t<fileset dir=\"src\">\n");
+            // First copy the files we are testing.
+            xmlWriter.write("\t\t<copy todir=\"temp\">\n");
+            xmlWriter.write("\t\t<fileset dir=\"src\">\n");
 
-			xmlWriter.write("\t\t\t<include name=\"" + packageNames[i]
-					+ ".java\" />\n");
+            xmlWriter.write("\t\t\t<include name=\"" + packageName
+                    + ".java\" />\n");
 
-			// Exclude unit tests.
-			xmlWriter.write("\t\t\t<exclude name=\"**/*Test.java\" />\n");
+            // Exclude unit tests.
+            xmlWriter.write("\t\t\t<exclude name=\"**/*Test.java\" />\n");
 
-			xmlWriter.write("\t\t</fileset>\n");
-			xmlWriter.write("\t\t</copy>\n");
+            xmlWriter.write("\t\t</fileset>\n");
+            xmlWriter.write("\t\t</copy>\n");
 
-			xmlWriter
-					.write("\t\t<javac fork=\"true\" srcdir=\"temp\" source=\"1.5\" classpath=\"dependencies\">\n");
-			// Include the files we are going to compile.
-			xmlWriter.write("\t\t\t<include name=\"" + packageNames[i]
-					+ ".java\" />\n");
+            xmlWriter
+                    .write("\t\t<javac fork=\"true\" srcdir=\"temp\" source=\"1.5\" classpath=\"dependencies\">\n");
+            // Include the files we are going to compile.
+            xmlWriter.write("\t\t\t<include name=\"" + packageName
+                    + ".java\" />\n");
 
-			xmlWriter.write("\t\t</javac>\n");
-			xmlWriter.write("\t\t<delete dir=\"temp\" />\n");
-		}
+            xmlWriter.write("\t\t</javac>\n");
+            xmlWriter.write("\t\t<delete dir=\"temp\" />\n");
+        }
 
 		// Copy the files we have just tested to the dependencies directory.
 		xmlWriter.write("\t\t<copy todir=\"dependencies\">\n");

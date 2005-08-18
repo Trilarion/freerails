@@ -8,7 +8,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  * @author Luke
  */
-public class CargoBatch implements FreerailsSerializable {
+public class CargoBatch implements FreerailsSerializable,
+		Comparable<CargoBatch> {
 	private static final long serialVersionUID = 3257006557605540149L;
 
 	private final int cargoType;
@@ -75,5 +76,19 @@ public class CargoBatch implements FreerailsSerializable {
 				+ (int) (this.timeCreated ^ (this.timeCreated >>> 32));
 
 		return result;
+	}
+
+	public int compareTo(CargoBatch o) {
+		if (timeCreated != o.timeCreated)
+			return (int) (timeCreated - o.timeCreated);
+		if (cargoType != o.cargoType)
+			return (cargoType - o.cargoType);
+		if (stationOfOrigin != o.stationOfOrigin)
+			return (stationOfOrigin - o.stationOfOrigin);
+		if (sourceX != o.sourceX)
+			return (sourceX - o.sourceX);
+		if (sourceY != o.sourceY)
+			return (sourceY - o.sourceY);
+		return 0;
 	}
 }

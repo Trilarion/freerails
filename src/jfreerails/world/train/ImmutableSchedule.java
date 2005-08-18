@@ -17,33 +17,33 @@ import jfreerails.world.common.ImList;
 public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 	private static final long serialVersionUID = 3977858458324318264L;
 
-	private final ImList<TrainOrdersModel> m_orders;
+	private final ImList<TrainOrdersModel> orders;
 
 	private final int nextScheduledOrder;
 
 	public int hashCode() {
 		int result;
 		result = nextScheduledOrder;
-		result = 29 * result + (m_hasPriorityOrders ? 1 : 0);
+		result = 29 * result + (hasPriorityOrders ? 1 : 0);
 
 		return result;
 	}
 
-	private final boolean m_hasPriorityOrders;
+	private final boolean hasPriorityOrders;
 
 	public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
 			boolean hasPriorityOrders) {
-		m_orders = new ImList<TrainOrdersModel>(orders);
-		nextScheduledOrder = gotoStation;
-		m_hasPriorityOrders = hasPriorityOrders;
+		this.orders = new ImList<TrainOrdersModel>(orders);
+		this.nextScheduledOrder = gotoStation;
+		this.hasPriorityOrders = hasPriorityOrders;
 	}
 
 	public TrainOrdersModel getOrder(int i) {
-		return m_orders.get(i);
+		return orders.get(i);
 	}
 
 	public int getOrderToGoto() {
-		return m_hasPriorityOrders ? 0 : nextScheduledOrder;
+		return hasPriorityOrders ? 0 : nextScheduledOrder;
 	}
 
 	public int getStationToGoto() {
@@ -52,21 +52,21 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 		if (-1 == orderToGoto) {
 			return -1;
 		}
-		TrainOrdersModel order = m_orders.get(orderToGoto);
+		TrainOrdersModel order = orders.get(orderToGoto);
 		return order.getStationID();
 	}
 
 	public ImInts getWagonsToAdd() {
-		TrainOrdersModel order = m_orders.get(getOrderToGoto());
+		TrainOrdersModel order = orders.get(getOrderToGoto());
 		return order.consist;
 	}
 
 	public boolean hasPriorityOrders() {
-		return m_hasPriorityOrders;
+		return hasPriorityOrders;
 	}
 
 	public int getNumOrders() {
-		return m_orders.size();
+		return orders.size();
 	}
 
 	public int getNextScheduledOrder() {
@@ -89,15 +89,15 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 		if (o instanceof ImmutableSchedule) {
 			ImmutableSchedule test = (ImmutableSchedule) o;
 
-			return this.m_hasPriorityOrders == test.m_hasPriorityOrders
+			return this.hasPriorityOrders == test.hasPriorityOrders
 					&& this.nextScheduledOrder == test.nextScheduledOrder
-					&& this.m_orders.equals(test.m_orders);
+					&& this.orders.equals(test.orders);
 		}
 		return false;
 	}
 
 	public boolean autoConsist() {
-		TrainOrdersModel order = m_orders.get(getOrderToGoto());
+		TrainOrdersModel order = orders.get(getOrderToGoto());
 		return order.autoConsist;
 	}
 }

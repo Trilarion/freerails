@@ -15,38 +15,38 @@ import jfreerails.world.common.Money;
 public class Receipt implements Transaction {
 	private static final long serialVersionUID = 3617576007066924596L;
 
-	private final Money m_amount;
+	private final Money amount;
 
-	private final Category m_category;
+	private final Category category;
 
 	public Receipt(Money m, Category category) {
-		m_amount = m;
-		m_category = category;
+		this.amount = m;
+		this.category = category;
 	}
 
 	public int hashCode() {
 		int result;
-		result = m_amount.hashCode();
-		result = 29 * result + m_category.hashCode();
+		result = amount.hashCode();
+		result = 29 * result + category.hashCode();
 
 		return result;
 	}
 
 	public Money getValue() {
-		return m_amount;
+		return amount;
 	}
 
 	public boolean equals(Object o) {
 		if (o instanceof Receipt) {
 			Receipt test = (Receipt) o;
 
-			return test.m_amount.equals(m_amount)
-					&& m_category == test.m_category;
+			return test.amount.equals(amount)
+					&& category == test.category;
 		}
 		return false;
 	}
 
 	public Category getCategory() {
-		return m_category;
+		return category;
 	}
 }

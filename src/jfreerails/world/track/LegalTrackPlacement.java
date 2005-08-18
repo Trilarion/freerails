@@ -26,9 +26,9 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
 
 	public enum PlacementRule {
 		ONLY_ON_THESE, ANYWHERE_EXCEPT_ON_THESE
-	};
+	}
 
-	private final PlacementRule placementRule;
+    private final PlacementRule placementRule;
 
 	public int hashCode() {
 		return (placementRule != null ? placementRule.hashCode() : 0);

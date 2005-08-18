@@ -30,21 +30,21 @@ public class TrackPathFinder implements IncrementalPathFinder {
 	private static final Logger logger = Logger.getLogger(TrackPathFinder.class
 			.getName());
 
-	private SimpleAStarPathFinder m_pathFinder = new SimpleAStarPathFinder();
+	private SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
 
-	private final ReadOnlyWorld m_world;
+	private final ReadOnlyWorld world;
 
-	private ImPoint m_startPoint;
+	private ImPoint startPoint;
 
-	private final FreerailsPrincipal m_principal;
+	private final FreerailsPrincipal principal;
 
 	public TrackPathFinder(ReadOnlyWorld world, FreerailsPrincipal principal) {
-		m_world = world;
-		m_principal = principal;
+		this.world = world;
+		this.principal = principal;
 	}
 
 	public void abandonSearch() {
-		m_pathFinder.abandonSearch();
+		pathFinder.abandonSearch();
 	}
 
 	private List<ImPoint> convertPath2Points(IntArray path) {
@@ -63,7 +63,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 	}
 
 	private int[] findTargets(ImPoint targetPoint) {
-		FreerailsTile tile = (FreerailsTile) m_world.getTile(targetPoint.x,
+		FreerailsTile tile = (FreerailsTile) world.getTile(targetPoint.x,
 				targetPoint.y);
 		int ruleNumber = tile.getTrackTypeID();
 
@@ -74,7 +74,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 			 * If there is already track here, we need to check what directions
 			 * we can build in without creating an illegel track config.
 			 */
-			TrackRule trackRule = (TrackRule) m_world.get(SKEY.TRACK_RULES,
+			TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
 					ruleNumber);
 
 			/* Count number of possible directions. */
@@ -114,12 +114,12 @@ public class TrackPathFinder implements IncrementalPathFinder {
 		return targetInts;
 	}
 
-	public List generatePath(ImPoint startPoint, ImPoint targetPoint,
+	public List generatePath(ImPoint start, ImPoint targetPoint,
 			BuildTrackStrategy bts) throws PathNotFoundException {
-		setupSearch(startPoint, targetPoint, bts);
-		m_pathFinder.search(-1);
+		setupSearch(start, targetPoint, bts);
+		pathFinder.search(-1);
 
-		IntArray path = m_pathFinder.retrievePath();
+		IntArray path = pathFinder.retrievePath();
 
 		List proposedTrack = convertPath2Points(path);
 
@@ -127,23 +127,23 @@ public class TrackPathFinder implements IncrementalPathFinder {
 	}
 
 	public int getStatus() {
-		return m_pathFinder.getStatus();
+		return pathFinder.getStatus();
 	}
 
 	public List<ImPoint> pathAsPoints() {
-		IntArray path = m_pathFinder.retrievePath();
+		IntArray path = pathFinder.retrievePath();
 
 		return convertPath2Points(path);
 	}
 
 	public Step[] pathAsVectors() {
-		IntArray path = m_pathFinder.retrievePath();
+		IntArray path = pathFinder.retrievePath();
 		int size = path.size();
 		Step[] vectors = new Step[size];
 		PositionOnTrack progress = new PositionOnTrack();
 
-		int x = m_startPoint.x;
-		int y = m_startPoint.y;
+		int x = startPoint.x;
+		int y = startPoint.y;
 		for (int i = 0; i < size; i++) {
 			progress.setValuesFromInt(path.get(i));
 			int x2 = progress.getX();
@@ -157,7 +157,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 	}
 
 	public void search(long maxDuration) throws PathNotFoundException {
-		m_pathFinder.search(maxDuration);
+		pathFinder.search(maxDuration);
 	}
 
 	public void setupSearch(ImPoint startPoint, ImPoint targetPoint,
@@ -166,14 +166,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
 				.fine("Find track path from " + startPoint + " to "
 						+ targetPoint);
 
-		m_startPoint = startPoint;
+		this.startPoint = startPoint;
 		int[] targetInts = findTargets(targetPoint);
 		int[] startInts = findTargets(startPoint);
 
-		BuildTrackExplorer explorer = new BuildTrackExplorer(m_world,
-				m_principal, startPoint, targetPoint);
+		BuildTrackExplorer explorer = new BuildTrackExplorer(world,
+				principal, startPoint, targetPoint);
 		explorer.setBuildTrackStrategy(bts);
 
-		m_pathFinder.setupSearch(startInts, targetInts, explorer);
+		pathFinder.setupSearch(startInts, targetInts, explorer);
 	}
 }

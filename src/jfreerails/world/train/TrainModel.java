@@ -18,19 +18,19 @@ public class TrainModel implements FreerailsSerializable {
 	public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS)
 			* WAGON_LENGTH;
 
-	private final int m_scheduleID;
+	private final int scheduleId;
 
-	private final int m_engineType;
+	private final int engineTypeId;
 
-	private final ImInts m_wagonTypes;
+	private final ImInts wagonTypes;
 
-	private final int m_cargoBundleNumber;
+	private final int cargoBundleId;
 
 	public int hashCode() {
 		int result;
-		result = m_scheduleID;
-		result = 29 * result + m_engineType;
-		result = 29 * result + m_cargoBundleNumber;
+		result = scheduleId;
+		result = 29 * result + engineTypeId;
+		result = 29 * result + cargoBundleId;
 
 		return result;
 	}
@@ -41,72 +41,72 @@ public class TrainModel implements FreerailsSerializable {
 	}
 
 	public TrainModel(int engine, ImInts wagons, int scheduleID, int BundleId) {
-		m_engineType = engine;
-		m_wagonTypes = wagons;
-		m_scheduleID = scheduleID;
-		m_cargoBundleNumber = BundleId;
+		engineTypeId = engine;
+		wagonTypes = wagons;
+		scheduleId = scheduleID;
+		cargoBundleId = BundleId;
 	}
 
 	public TrainModel(ImInts wagons, int BundleId) {
-		m_wagonTypes = wagons;
-		m_cargoBundleNumber = BundleId;
-		m_engineType = 0;
-		m_scheduleID = 0;
+		wagonTypes = wagons;
+		cargoBundleId = BundleId;
+		engineTypeId = 0;
+		scheduleId = 0;
 	}
 
 	public TrainModel(int engine, ImInts wagons, int scheduleID) {
-		m_engineType = engine;
-		m_wagonTypes = wagons;
-		m_scheduleID = scheduleID;
-		m_cargoBundleNumber = 0;
+		engineTypeId = engine;
+		wagonTypes = wagons;
+		scheduleId = scheduleID;
+		cargoBundleId = 0;
 	}
 
 	public TrainModel(int engine) {
-		m_engineType = engine;
-		m_wagonTypes = new ImInts(0, 1, 2);
-		m_scheduleID = 0;
-		m_cargoBundleNumber = 0;
+		engineTypeId = engine;
+		wagonTypes = new ImInts(0, 1, 2);
+		scheduleId = 0;
+		cargoBundleId = 0;
 	}
 
 	public int getLength() {
-		return (1 + m_wagonTypes.size()) * WAGON_LENGTH; // Engine + wagons.
+		return (1 + wagonTypes.size()) * WAGON_LENGTH; // Engine + wagons.
 	}
 
 	public boolean canAddWagon() {
-		return m_wagonTypes.size() < MAX_NUMBER_OF_WAGONS;
+		return wagonTypes.size() < MAX_NUMBER_OF_WAGONS;
 	}
 
 	public int getNumberOfWagons() {
-		return m_wagonTypes.size();
+		return wagonTypes.size();
 	}
 
 	public int getWagon(int i) {
-		return m_wagonTypes.get(i);
+		return wagonTypes.get(i);
 	}
 
 	public int getEngineType() {
-		return m_engineType;
+		return engineTypeId;
 	}
 
 	public int getCargoBundleID() {
-		return m_cargoBundleNumber;
+		return cargoBundleId;
 	}
 
 	public int getScheduleID() {
-		return m_scheduleID;
+		return scheduleId;
 	}
 
 	public ImInts getConsist() {
-		return m_wagonTypes;
+		return wagonTypes;
 	}
 
 	public boolean equals(Object obj) {
 		if (obj instanceof TrainModel) {
 			TrainModel test = (TrainModel) obj;
-			boolean b = this.m_cargoBundleNumber == test.m_cargoBundleNumber
-					&& this.m_engineType == test.m_engineType
-					&& this.m_wagonTypes.equals(test.m_wagonTypes)
-					&& this.m_scheduleID == test.m_scheduleID;
+			boolean b = this.cargoBundleId == test.cargoBundleId
+					&& this.engineTypeId == test.engineTypeId
+					&& this.wagonTypes.equals(test.wagonTypes)
+					&& this.scheduleId == test.scheduleId;
 
 			return b;
 		}

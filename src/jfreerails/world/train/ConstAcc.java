@@ -78,25 +78,17 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 		return u * dt + a * dt * dt / 2;
 	}
 
-	public double getU() {
-		return u;
-	}
-
-	public double getV() {
-		return u + a * dt;
-	}
-
-	public int hashCode() {
-		int result;
-		long temp;
-		temp = u != +0.0d ? Double.doubleToLongBits(u) : 0l;
-		result = (int) (temp ^ (temp >>> 32));
-		temp = a != +0.0d ? Double.doubleToLongBits(a) : 0l;
-		result = 29 * result + (int) (temp ^ (temp >>> 32));
-		temp = dt != +0.0d ? Double.doubleToLongBits(dt) : 0l;
-		result = 29 * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = u != +0.0d ? Double.doubleToLongBits(u) : 0l;
+        result = (int) (temp ^ (temp >>> 32));
+        temp = a != +0.0d ? Double.doubleToLongBits(a) : 0l;
+        result = 29 * result + (int) (temp ^ (temp >>> 32));
+        temp = dt != +0.0d ? Double.doubleToLongBits(dt) : 0l;
+        result = 29 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
 	@Override
 	public String toString() {

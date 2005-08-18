@@ -30,12 +30,12 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		getWorld().add(KEY.STATIONS, new StationModel(),
-				MapFixtureFactory.TEST_PRINCIPAL);
-		getWorld().add(KEY.STATIONS, new StationModel(),
-				MapFixtureFactory.TEST_PRINCIPAL);
-		getWorld().add(KEY.STATIONS, new StationModel(),
-				MapFixtureFactory.TEST_PRINCIPAL);
+		getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
+				new StationModel());
+		getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
+				new StationModel());
+		getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
+				new StationModel());
 
 		WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
 		wetf.addTypesToWorld(getWorld());

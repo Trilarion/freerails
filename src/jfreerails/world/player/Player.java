@@ -31,22 +31,22 @@ public class Player implements FreerailsSerializable {
 	private static class WorldPrincipal extends FreerailsPrincipal {
 		private static final long serialVersionUID = 1;
 
-		private final String m_name;
+		private final String principalName;
 
 		public WorldPrincipal(String name) {
-			m_name = name;
+			this.principalName = name;
 		}
 
 		public String getName() {
-			return m_name;
+			return principalName;
 		}
 
 		public String toString() {
-			return m_name;
+			return principalName;
 		}
 
 		public int hashCode() {
-			return m_name.hashCode();
+			return principalName.hashCode();
 		}
 
 		public boolean equals(Object o) {
@@ -54,7 +54,7 @@ public class Player implements FreerailsSerializable {
 				return false;
 			}
 
-			return (m_name.equals(((WorldPrincipal) o).m_name));
+			return (principalName.equals(((WorldPrincipal) o).principalName));
 		}
 	}
 
@@ -76,16 +76,8 @@ public class Player implements FreerailsSerializable {
 	 */
 	private final String name;
 
-	/**
-	 * Private data (eg private keys) that should not be serialized in normal
-	 * use. Instead, when the client needs to save their session they should
-	 * call saveSession().
-	 */
-	// private/* =mutable */transient PrivateData privateData;
-	/**
-	 * This is the clients public key.
-	 */
-	// private PublicKey publicKey;
+	
+
 	/**
 	 * Used by the client to generate a player with a particular name.
 	 */
@@ -106,9 +98,7 @@ public class Player implements FreerailsSerializable {
 	/**
 	 * Used by the server to generate a player with a particular name and public
 	 * key.
-	 * 
-	 * @param publicKey
-	 *            the client's public key. certificate.
+	 * 	
 	 */
 	public Player(String name, int id) {
 		this.name = name;

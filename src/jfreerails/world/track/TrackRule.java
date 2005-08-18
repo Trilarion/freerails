@@ -16,9 +16,9 @@ public interface TrackRule extends FreerailsSerializable, Comparable<TrackRule> 
 
 	public enum TrackCategories {
 		track, bridge, tunnel, station, non
-	};
+	}
 
-	TrackCategories getCategory();
+    TrackCategories getCategory();
 
 	boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType);
 

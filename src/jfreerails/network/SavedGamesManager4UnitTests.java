@@ -44,7 +44,7 @@ public class SavedGamesManager4UnitTests implements SavedGamesManager {
 	}
 
 	public Serializable loadGame(String name) throws IOException {
-		Object o = savedGames.get(name);
+		Serializable o = savedGames.get(name);
 
 		return Utils.cloneBySerialisation(o);
 	}

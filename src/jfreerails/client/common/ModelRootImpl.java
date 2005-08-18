@@ -3,6 +3,8 @@ package jfreerails.client.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jfreerails.controller.BuildTrackStrategy;
+import jfreerails.controller.ModelRoot;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.Move;
@@ -25,7 +27,7 @@ import jfreerails.world.top.WorldMapListener;
  * @author Luke
  * @author Rob
  */
-public final class ModelRootImpl implements ModelRoot {
+public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 	public boolean hasBeenSetup = false;
 
 	private MoveChainFork moveFork = new MoveChainFork();
@@ -63,6 +65,7 @@ public final class ModelRootImpl implements ModelRoot {
 		properties.put(Property.SERVER, "server details not set!");
 		properties.put(Property.PLAY_SOUNDS, Boolean.TRUE);
 		properties.put(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
+		properties.put(Property.TIME, new Double(0));
 		properties.put(Property.TRACK_BUILDER_MODE,
 				TrackMoveProducer.BuildMode.BUILD_TRACK);
 		addPropertyChangeListener(SoundManager.getSoundManager());
@@ -119,17 +122,13 @@ public final class ModelRootImpl implements ModelRoot {
 		return world;
 	}
 
-	public void removePropertyChangeListener(ModelRootListener l) {
-		listeners.remove(l);
-	}
-
-	public void sendCommand(Message2Server c) {
-		if (null != serverCommandReceiver) {
-			serverCommandReceiver.sendCommand(c);
-		} else {
-			System.err.println(c.toString());
-		}
-	}
+    public void sendCommand(Message2Server c) {
+        if (null != serverCommandReceiver) {
+            serverCommandReceiver.sendCommand(c);
+        } else {
+            System.err.println(c.toString());
+        }
+    }
 
 	public void setMoveFork(MoveChainFork moveFork) {
 		this.moveFork = moveFork;
@@ -168,6 +167,10 @@ public final class ModelRootImpl implements ModelRoot {
 			throw new NullPointerException();
 		}
 
+		BuildTrackStrategy bts = BuildTrackStrategy.getDefault(world);
+		setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);
+
+		
 		hasBeenSetup = true;
 
 	}

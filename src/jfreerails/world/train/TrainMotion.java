@@ -6,11 +6,11 @@ package jfreerails.world.train;
 
 import java.util.ArrayList;
 
+import jfreerails.world.common.Activity;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
-import jfreerails.world.top.Activity;
 
 /**
  * <p>
@@ -37,7 +37,7 @@ import jfreerails.world.top.Activity;
  * @see jfreerails.world.train.PathOnTiles
  * @see jfreerails.world.train.CompositeSpeedAgainstTime
  */
-public class TrainMotion implements Activity<TrainPositionOnMap> {
+public class TrainMotion implements Activity<TrainPositionOnMap> {		
 
 	private static final long serialVersionUID = 3618423722025891641L;
 
@@ -50,13 +50,15 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 	private final SpeedAgainstTime speeds;
 
 	private final int trainLength;
+	
+	private final SpeedTimeAndStatus.Activity activity;
 
 	/**
 	 * Creates a new TrainMotion instance.
 	 * 
 	 * @param path
 	 *            the path the train will take.
-	 * @param enginePosition
+	 * @param engineStep
 	 *            the position measured in tiles that trains engine is along the
 	 *            path
 	 * @param trainLength
@@ -67,13 +69,13 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 	 *             <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
 	 * @throws IllegalArgumentException
 	 *             if
-	 *             <code>path.getDistance(enginePosition) &lt; trainLength</code>.
+	 *             <code>path.getDistance(engineStep) &lt; trainLength</code>.
 	 * @throws IllegalArgumentException
 	 *             if
 	 *             <code>(path.getLength() - initialPosition) &gt; speeds.getTotalDistance()</code>.
 	 */
 
-	public TrainMotion(PathOnTiles path, int enginePosition, int trainLength,
+	public TrainMotion(PathOnTiles path, int engineStep, int trainLength,
 			SpeedAgainstTime speeds) {
 		if (trainLength < TrainModel.WAGON_LENGTH
 				|| trainLength > TrainModel.MAX_TRAIN_LENGTH)
@@ -81,27 +83,45 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 		this.path = path;
 		this.speeds = speeds;
 		this.trainLength = trainLength;
-		initialPosition = path.getDistance(enginePosition);
+		
+		if(engineStep > path.steps())
+			throw new ArrayIndexOutOfBoundsException(String.valueOf(engineStep));
+		
+		initialPosition = path.getDistance(engineStep);
 		if (initialPosition < trainLength)
 			throw new IllegalArgumentException(
 					"The engine's initial position is not far enough along the path for "
 							+ "the train's initial position to be specified.");
-		distanceEngineWillTravel = path.getLength() - initialPosition;
+		distanceEngineWillTravel = path.getTotalDistance() - initialPosition;
 		if (distanceEngineWillTravel > speeds.getS())
 			throw new IllegalArgumentException(
 					"The train's speed is not defined for the whole of the journey.");
 
 		duration = distanceEngineWillTravel == 0 ? 0d : speeds
 				.calcT(distanceEngineWillTravel);
+		
+		activity = SpeedTimeAndStatus.Activity.READY;
 	}
 
+	public TrainMotion(PathOnTiles path,  int trainLength, double duration, SpeedTimeAndStatus.Activity act){
+		this.path = path;
+		this.trainLength = trainLength;
+		this.activity = act;
+		this.distanceEngineWillTravel = 0;
+		this.initialPosition = path.getTotalDistance();
+		this.speeds = ConstAcc.STOPPED;
+		this.duration = duration;
+	}
+	
 	private double calcOffSet(double t) {
 		double offset = getDistance(t) + initialPosition - trainLength;
 		return offset;
 	}
 
-	private void checkT(double t) {
-
+	void checkT(double t) {
+		if (t < 0d || t > duration)
+			throw new IllegalArgumentException("t=" + t + ", but duration="
+					+ duration);
 	}
 
 	public double duration() {
@@ -162,8 +182,7 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 		double offset = calcOffSet(t);
 		FreerailsPathIterator pathIt = path.subPath(offset, trainLength);
 		double speed = speeds.calcV(t);
-		double acceleration = speeds.calcA(t);
-		SpeedTimeAndStatus.Activity activity = SpeedTimeAndStatus.Activity.READY;
+		double acceleration = speeds.calcA(t);		
 		TrainPositionOnMap tpom = TrainPositionOnMap
 				.createInSameDirectionAsPath(pathIt, speed, acceleration,
 						activity);
@@ -242,6 +261,14 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 
 	public PathOnTiles getPath() {
 		return path;
+	}
+
+	public SpeedTimeAndStatus.Activity getActivity() {
+		return activity;
+	}
+
+	public double getInitialPosition() {
+		return initialPosition;
 	}
 
 }

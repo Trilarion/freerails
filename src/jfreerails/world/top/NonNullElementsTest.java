@@ -42,12 +42,12 @@ public class NonNullElementsTest extends TestCase {
 		station2 = new StationModel(15, 16, "Station2", 4, 1);
 		station3 = new StationModel(30, 50, "Station3", 4, 2);
 		w.addPlayer(MapFixtureFactory.TEST_PLAYER);
-		w.add(KEY.STATIONS, station1, MapFixtureFactory.TEST_PRINCIPAL);
-		w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-		w.add(KEY.STATIONS, station2, MapFixtureFactory.TEST_PRINCIPAL);
-		w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-		w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-		w.add(KEY.STATIONS, station3, MapFixtureFactory.TEST_PRINCIPAL);
+		w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station1);
+		w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);
+		w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station2);
+		w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);
+		w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);
+		w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station3);
 	}
 
 	public void testNext() {

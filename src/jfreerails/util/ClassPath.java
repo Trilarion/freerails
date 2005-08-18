@@ -72,7 +72,6 @@ public class ClassPath {
 	/**
 	 * Clones the supplied list, then goes through it processing every element.
 	 * 
-	 * @param elements
 	 */
 	protected LinkedList<String> processPendingElement(String pathElement) {
 		LinkedList<String> discoveredClasses = new LinkedList<String>();
@@ -166,7 +165,7 @@ public class ClassPath {
 	 * @return a fully qualified Class name.
 	 */
 	private String getClassNameFrom(String entryName) {
-		String foo = new String(entryName).replace('/', '.');
+		String foo = entryName.replace('/', '.');
 		foo = foo.replace('\\', '.');
 		return foo.substring(0, foo.lastIndexOf('.'));
 	}

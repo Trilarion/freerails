@@ -4,10 +4,9 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.common.Activity;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.AKEY;
-import jfreerails.world.top.Activity;
-import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.World;
 
 public class NextActivityMove implements Move {
@@ -16,17 +15,15 @@ public class NextActivityMove implements Move {
 
 	private final Activity activity;
 
-	private final FreerailsPrincipal principal;
-
-	private final AKEY listKey;
+	private final FreerailsPrincipal principal;	
 
 	private final int index;
 
-	public NextActivityMove(Activity activity, int index, AKEY key,
+	public NextActivityMove(Activity activity, int index, 
 			FreerailsPrincipal principal) {
 		this.activity = activity;
 		this.index = index;
-		listKey = key;
+		
 		this.principal = principal;
 	}
 
@@ -41,9 +38,7 @@ public class NextActivityMove implements Move {
 		if (index != nextActivityMove.index)
 			return false;
 		if (!activity.equals(nextActivityMove.activity))
-			return false;
-		if (!listKey.equals(nextActivityMove.listKey))
-			return false;
+			return false;	
 		if (!principal.equals(nextActivityMove.principal))
 			return false;
 
@@ -54,21 +49,21 @@ public class NextActivityMove implements Move {
 		int result;
 		result = activity.hashCode();
 		result = 29 * result + principal.hashCode();
-		result = 29 * result + listKey.hashCode();
+		
 		result = 29 * result + index;
 		return result;
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
 		// Check that active entity exists.
-		if (w.size(listKey, principal) <= index)
-			return MoveStatus.moveFailed("Index out of range.");
+		if (w.size(principal) <= index)
+			return MoveStatus.moveFailed("Index out of range. "+w.size(principal)+"<= "+index);
 
 		return MoveStatus.MOVE_OK;
 	}
 
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		ActivityIterator ai = w.getActivities(listKey, index, principal);
+		ActivityIterator ai = w.getActivities(principal, index);
 		while (ai.hasNext())
 			ai.nextActivity();
 
@@ -83,14 +78,14 @@ public class NextActivityMove implements Move {
 	public MoveStatus doMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = tryDoMove(w, p);
 		if (ms.ok)
-			w.add(listKey, index, activity, principal);
+			w.add(principal, index, activity);
 		return ms;
 	}
 
 	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = tryUndoMove(w, p);
 		if (ms.ok)
-			w.removeLastActivity(listKey, index, principal);
+			w.removeLastActivity(principal, index);
 		return ms;
 	}
 

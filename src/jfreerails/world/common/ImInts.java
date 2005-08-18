@@ -6,7 +6,6 @@ package jfreerails.world.common;
 
 import java.util.Arrays;
 
-import jfreerails.controller.FreerailsServerSerializable;
 import jfreerails.util.Immutable;
 
 /**
@@ -16,7 +15,7 @@ import jfreerails.util.Immutable;
  * 
  */
 @Immutable
-public class ImInts implements FreerailsServerSerializable {
+public class ImInts implements FreerailsSerializable {
 
 	private static final long serialVersionUID = -7171552118713000676L;
 
@@ -71,6 +70,19 @@ public class ImInts implements FreerailsServerSerializable {
 		System.arraycopy(ints, 0, newInts, 0, ints.length);
 		System.arraycopy(extra, 0, newInts, ints.length, extra.length);
 		return new ImInts(newInts);
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer(getClass().getName());
+		sb.append("[");
+		for (int i = 0; i < ints.length; i++) {
+			sb.append(ints[i]);
+			if (i + 1 < ints.length)
+				sb.append(", ");
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 
 }

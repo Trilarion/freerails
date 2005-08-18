@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
 import jfreerails.client.renderer.BuildTrackController;
 import jfreerails.client.renderer.BuildTrackRenderer;
@@ -16,6 +15,7 @@ import jfreerails.client.renderer.SquareTileBackgroundRenderer;
 import jfreerails.client.renderer.StationBoxRenderer;
 import jfreerails.client.renderer.StationRadiusRenderer;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.top.ReadOnlyWorld;
 
 /**
@@ -43,7 +43,7 @@ public class DetailMapRenderer implements MapRenderer {
 
 	public DetailMapRenderer(ReadOnlyWorld world, ViewLists vl,
 			ModelRoot modelRoot) {
-		trainsview = new OverHeadTrainView(world, vl);
+		trainsview = new OverHeadTrainView(world, vl, modelRoot);
 
 		MapBackgroundRender render = new MapBackgroundRender(world, vl,
 				modelRoot);

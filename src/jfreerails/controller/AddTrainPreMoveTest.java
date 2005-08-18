@@ -12,18 +12,18 @@ import static jfreerails.world.common.Step.SOUTH;
 import static jfreerails.world.common.Step.SOUTH_EAST;
 import static jfreerails.world.common.Step.SOUTH_WEST;
 import static jfreerails.world.common.Step.WEST;
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.move.AbstractMoveTestCase;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.AKEY;
-import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.PathOnTiles;
@@ -54,7 +54,8 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 		world = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(world, 0);
 		principal = me.getPrincipal();
-		trackBuilder = new TrackMoveProducer(me, world);
+		ModelRoot mr = new ModelRootImpl();
+		trackBuilder = new TrackMoveProducer(me, world, mr);
 		stationBuilder = new StationBuilder(me);
 
 		// Build track.
@@ -117,12 +118,10 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 		Move m = preMove.generateMove(world);
 		MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 		assertTrue(ms.ok);
-		ActivityIterator ai = world.getActivities(AKEY.TRAIN_POSITIONS, 0,
-				principal);
+		ActivityIterator ai = world.getActivities(principal, 0);
 		TrainMotion tm = (TrainMotion) ai.getActivity();
 		assertEquals(0d, tm.duration());
-		assertEquals(0d, tm.getSpeedAtEnd());
-		assertEquals(0d, tm.getDistance(100));
+		assertEquals(0d, tm.getSpeedAtEnd());		
 		assertEquals(0d, tm.getDistance(0));
 		PositionOnTrack pot = tm.getFinalPosition();
 		assertNotNull(pot);
@@ -136,7 +135,8 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 		world = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(world, 0);
 		principal = me.getPrincipal();
-		TrackMoveProducer producer = new TrackMoveProducer(me, world);
+		ModelRoot mr = new ModelRootImpl();
+		TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
 		Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
 				NORTH_WEST, NORTH, NORTH_EAST };
 		ImPoint from = new ImPoint(5, 5);

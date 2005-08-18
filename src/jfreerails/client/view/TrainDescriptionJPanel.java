@@ -6,8 +6,8 @@
 
 package jfreerails.client.view;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -100,8 +100,8 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View,
 		this.trainNumber = newTrainNumber;
 
 		trainViewJPanel1.display(newTrainNumber);
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, newTrainNumber,
-				principal);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				newTrainNumber);
 
 		this.bundleID = train.getCargoBundleID();
 
@@ -109,7 +109,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View,
 			// this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
 		}
 		ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
-				KEY.CARGO_BUNDLES, train.getCargoBundleID(), principal);
+				principal, KEY.CARGO_BUNDLES, train.getCargoBundleID());
 		String s = "Train #" + it.getNaturalNumber() + ": ";
 		int numberOfTypesInBundle = 0;
 		for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {

@@ -15,36 +15,36 @@ import jfreerails.world.common.Money;
 public class DeliverCargoReceipt extends Receipt {
 	private static final long serialVersionUID = 3257009851963160372L;
 
-	private final CargoBatch m_cb;
+	private final CargoBatch cb;
 
-	private final int m_quantity;
+	private final int quantity;
 
-	private final int m_stationId;
+	private final int stationId;
 
-	private final int m_trainId;
+	private final int trainId;
 
 	public DeliverCargoReceipt(Money m, int quantity, int stationId,
 			CargoBatch cb, int trainId) {
 		super(m, Category.CARGO_DELIVERY);
-		m_stationId = stationId;
-		m_quantity = quantity;
-		m_cb = cb;
-		m_trainId = trainId;
+		this.stationId = stationId;
+		this.quantity = quantity;
+		this.cb = cb;
+		this.trainId = trainId;
 	}
 
 	public int getTrainId() {
-		return m_trainId;
+		return trainId;
 	}
 
 	public CargoBatch getCb() {
-		return m_cb;
+		return cb;
 	}
 
 	public int getQuantity() {
-		return m_quantity;
+		return quantity;
 	}
 
 	public int getStationId() {
-		return m_stationId;
+		return stationId;
 	}
 }

@@ -5,8 +5,11 @@
 package jfreerails.world.top;
 
 import jfreerails.util.Utils;
+import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.accounts.Transaction.Category;
+import jfreerails.world.common.Activity;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -71,7 +74,7 @@ public class WorldImplTest extends TestCase {
 
 		Transaction t = new Receipt(new Money(100),
 				Transaction.Category.MISC_INCOME);
-		copy.addTransaction(t, player.getPrincipal());
+		copy.addTransaction(player.getPrincipal(), t);
 		assertEquals(new Money(100), copy.getCurrentBalance(player
 				.getPrincipal()));
 		assertFalse(copy.equals(original));
@@ -104,22 +107,21 @@ public class WorldImplTest extends TestCase {
 		FreerailsPrincipal principal = player.getPrincipal();
 
 		// Test adding activities.
-		assertEquals(0, w.size(AKEY.TRAIN_POSITIONS, principal));
+		assertEquals(0, w.size(principal));
 		Activity act = new TestActivity(30);
-		int actIndex = w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
+		int actIndex = w.addActiveEntity(principal, act);
 		assertEquals(0, actIndex);
-		assertEquals(1, w.size(AKEY.TRAIN_POSITIONS, principal));
-		actIndex = w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
+		assertEquals(1, w.size(principal));
+		actIndex = w.addActiveEntity(principal, act);
 		assertEquals(1, actIndex);
-		assertEquals(2, w.size(AKEY.TRAIN_POSITIONS, principal));
+		assertEquals(2, w.size(principal));
 
 		// Then removing them.
 		Activity expected = new TestActivity(30);
 		assertEquals(expected, act);
-		Activity actual = w.removeLastActiveEntity(AKEY.TRAIN_POSITIONS,
-				principal);
+		Activity actual = w.removeLastActiveEntity(principal);
 		assertEquals(actual, expected);
-		assertEquals(1, w.size(AKEY.TRAIN_POSITIONS, principal));
+		assertEquals(1, w.size(principal));
 
 	}
 
@@ -194,5 +196,36 @@ public class WorldImplTest extends TestCase {
 			return getClass().getName() + "{" + duration + "}";
 		}
 
+	}
+	
+	public void testBoundsContain(){
+		World w = new WorldImpl();
+		assertFalse(w.boundsContain(1, 1));
+		assertFalse(w.boundsContain(0, 0));
+		assertFalse(w.boundsContain(-1, -1));
+		w = new WorldImpl(5, 10);
+		assertTrue(w.boundsContain(0, 0));
+		assertTrue(w.boundsContain(4, 9));
+		assertFalse(w.boundsContain(-1, -1));
+		assertFalse(w.boundsContain(5, 10));				
+	}
+	
+	public void testBankAccount(){
+		WorldImpl world = new WorldImpl();
+		Player p = new Player("Test", 0);
+		int playerID = world.addPlayer(p);		
+		assertEquals(0, playerID);
+		FreerailsPrincipal fp = world.getPlayer(playerID).getPrincipal();
+		Transaction t = new AddItemTransaction(Category.BOND, 1, 2, new Money(100));
+		assertEquals(new Money(0), world.getCurrentBalance(fp));
+		world.addTransaction(fp, t);
+		assertEquals(1, world.getNumberOfTransactions(fp));
+		assertEquals(new Money(100), world.getCurrentBalance(fp));
+		Transaction t2 = world.getTransaction(fp, 0);
+		assertEquals(t, t2);
+		Transaction t3 = world.removeLastTransaction(fp);
+		assertEquals(t, t3);
+		assertEquals(new Money(0), world.getCurrentBalance(fp));
+		
 	}
 }

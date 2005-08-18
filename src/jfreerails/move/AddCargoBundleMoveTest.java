@@ -28,8 +28,8 @@ public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
 		Move m = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(),
 				MapFixtureFactory.TEST_PRINCIPAL);
 		assertDoMoveIsOk(m);
-		assertEquals(getWorld().size(KEY.CARGO_BUNDLES,
-				MapFixtureFactory.TEST_PRINCIPAL), 1);
+		assertEquals(getWorld().size(MapFixtureFactory.TEST_PRINCIPAL,
+				KEY.CARGO_BUNDLES), 1);
 		assertUndoMoveIsOk(m);
 		assertSurvivesSerialisation(m);
 		assertOkButNotRepeatable(m);

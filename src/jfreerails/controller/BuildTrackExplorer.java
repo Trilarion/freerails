@@ -28,25 +28,25 @@ public class BuildTrackExplorer implements GraphExplorer {
 	private static final TrackConfiguration TILE_CENTER = TrackConfiguration
 			.getFlatInstance("000010000");
 
-	private boolean m_beforeFirst = true;
+	private boolean beforeFirst = true;
 
-	final PositionOnTrack m_currentBranch = PositionOnTrack.createComingFrom(0,
+	final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
 			0, Step.NORTH);
 
-	final private PositionOnTrack m_currentPosition = PositionOnTrack
+	final private PositionOnTrack currentPosition = PositionOnTrack
 			.createComingFrom(0, 0, Step.NORTH);
 
-	private int m_direction = 0;
+	private int directionInt = 0;
 
-	private final ImPoint m_target;
+	private final ImPoint target;
 
-	private BuildTrackStrategy m_buildTrackStrategy;
+	private BuildTrackStrategy buildTrackStrategy;
 
-	private boolean m_usingExistingTrack = false;
+	private boolean usingExistingTrack = false;
 
-	private final ReadOnlyWorld m_world;
+	private final ReadOnlyWorld world;
 
-	private final FreerailsPrincipal m_principle;
+	private final FreerailsPrincipal principle;
 
 	public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle) {
 		this(w, principle, null, new ImPoint(0, 0));
@@ -54,8 +54,8 @@ public class BuildTrackExplorer implements GraphExplorer {
 
 	public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle,
 			ImPoint start, ImPoint target) {
-		m_world = w;
-		m_principle = principle;
+		world = w;
+		this.principle = principle;
 		PositionOnTrack pos;
 
 		if (null == start) {
@@ -65,10 +65,10 @@ public class BuildTrackExplorer implements GraphExplorer {
 					.createComingFrom(start.x, start.y, Step.NORTH);
 		}
 
-		m_currentPosition.setValuesFromInt(pos.toInt());
-		m_direction = 0;
-		m_target = target;
-		m_buildTrackStrategy = BuildTrackStrategy.getDefault(w);
+		currentPosition.setValuesFromInt(pos.toInt());
+		directionInt = 0;
+		this.target = target;
+		buildTrackStrategy = BuildTrackStrategy.getDefault(w);
 	}
 
 	/**
@@ -90,27 +90,27 @@ public class BuildTrackExplorer implements GraphExplorer {
 	 */
 	private boolean canBuildTrack() {
 		// Check that we are not doubling back on ourselves.
-		Step opposite2current = m_currentPosition.cameFrom().getOpposite();
-		int currentX = m_currentPosition.getX();
-		int currentY = m_currentPosition.getY();
+		Step opposite2current = currentPosition.cameFrom().getOpposite();
+		int currentX = currentPosition.getX();
+		int currentY = currentPosition.getY();
 		int directionWeCameFrom = opposite2current.getID();
 		int directionWeCameFromPlus = (directionWeCameFrom + 1) % 8;
 		int directionWeCameFromMinus = (directionWeCameFrom + 7) % 8;
 
-		if (m_direction == directionWeCameFrom
-				|| m_direction == directionWeCameFromPlus
-				|| m_direction == directionWeCameFromMinus) {
+		if (directionInt == directionWeCameFrom
+				|| directionInt == directionWeCameFromPlus
+				|| directionInt == directionWeCameFromMinus) {
 			return false;
 		}
 
 		// Check that we are not going off the map.
-		Step directionOfNextTile = Step.getInstance(m_direction);
+		Step directionOfNextTile = Step.getInstance(directionInt);
 
 		int newX = currentX + directionOfNextTile.getDx();
 
 		int newY = currentY + directionOfNextTile.getDy();
 
-		if (!m_world.boundsContain(newX, newY)) {
+		if (!world.boundsContain(newX, newY)) {
 			return false;
 		}
 
@@ -118,12 +118,12 @@ public class BuildTrackExplorer implements GraphExplorer {
 		TrackRule rule4lastTile;
 
 		// Determine the track rule for the next tile.
-		final FreerailsTile nextTile = (FreerailsTile) m_world.getTile(newX,
+		final FreerailsTile nextTile = (FreerailsTile) world.getTile(newX,
 				newY);
 
 		// Check there is not another players track at nextTile.
 		if (nextTile.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-			if (nextTile.getOwnerID() != m_world.getID(m_principle)) {
+			if (nextTile.getOwnerID() != world.getID(principle)) {
 				return false;
 			}
 		}
@@ -140,7 +140,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 			return false; // We can't build track on the tile.
 		}
 		// Determine the track rule for the current tile.
-		FreerailsTile currentTile = (FreerailsTile) m_world.getTile(currentX,
+		FreerailsTile currentTile = (FreerailsTile) world.getTile(currentX,
 				currentY);
 
 		// Check for illegal track configurations.
@@ -153,7 +153,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 		fromConfig = TrackConfiguration.add(fromConfig, opposite2current);
 		fromConfig = TrackConfiguration.add(fromConfig, TILE_CENTER);
 
-		Step goingTo = Step.getInstance(m_direction);
+		Step goingTo = Step.getInstance(directionInt);
 		fromConfig = TrackConfiguration.add(fromConfig, goingTo);
 
 		if (!rule4lastTile.trackPieceIsLegal(fromConfig)) {
@@ -166,9 +166,9 @@ public class BuildTrackExplorer implements GraphExplorer {
 			int y2check = currentY + directionOfNextTile.deltaY;
 
 			// We did a bounds check above.
-			assert (m_world.boundsContain(x2check, y2check));
+			assert (world.boundsContain(x2check, y2check));
 
-			FreerailsTile tile2Check = (FreerailsTile) m_world.getTile(x2check,
+			FreerailsTile tile2Check = (FreerailsTile) world.getTile(x2check,
 					y2check);
 			TrackConfiguration config2check = tile2Check
 					.getTrackConfiguration();
@@ -186,7 +186,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
 		fromConfig2 = TrackConfiguration.add(fromConfig2, TILE_CENTER);
 
-		Step goingBack = Step.getInstance(m_direction).getOpposite();
+		Step goingBack = Step.getInstance(directionInt).getOpposite();
 		fromConfig2 = TrackConfiguration.add(fromConfig2, goingBack);
 
 		if (!rule4nextTile.trackPieceIsLegal(fromConfig2)) {
@@ -197,21 +197,21 @@ public class BuildTrackExplorer implements GraphExplorer {
 		 * Set the using existing track. We do this because a path that uses
 		 * existing track is cheaper to build.
 		 */
-		m_usingExistingTrack = trackAlreadyPresent1.contains(goingTo);
+		usingExistingTrack = trackAlreadyPresent1.contains(goingTo);
 
 		return true;
 	}
 
 	private TrackRule getAppropriateTrackRule(int x, int y) {
-		final FreerailsTile tile = (FreerailsTile) m_world.getTile(x, y);
+		final FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
 		TrackRule rule;
 		if (tile.getTrackRule().equals(NullTrackType.getInstance())) {
 			int terrainTypeID = tile.getTerrainTypeID();
-			int trackRuleID = m_buildTrackStrategy.getRule(terrainTypeID);
+			int trackRuleID = buildTrackStrategy.getRule(terrainTypeID);
 			if (trackRuleID == -1) {
 				return null; // Can't build on this terrain!
 			}
-			rule = (TrackRule) m_world.get(SKEY.TRACK_RULES, trackRuleID);
+			rule = (TrackRule) world.get(SKEY.TRACK_RULES, trackRuleID);
 
 		} else {
 			rule = tile.getTrackRule();
@@ -224,20 +224,20 @@ public class BuildTrackExplorer implements GraphExplorer {
 	 * new track.
 	 */
 	public int getEdgeCost() {
-		if (m_beforeFirst) {
+		if (beforeFirst) {
 			throw new IllegalStateException();
 		}
-		Step edgeDirection = Step.getInstance(m_direction - 1);
+		Step edgeDirection = Step.getInstance(directionInt - 1);
 		double length = edgeDirection.getLength();
 		final int DISTANCE_COST = 10000; // Same as the cost of standard
 		// track.
 		int cost = (int) Math.round(DISTANCE_COST * length);
 
-		if (!m_usingExistingTrack) {
-			int[] x = { m_currentPosition.getX(),
-					m_currentPosition.getX() + edgeDirection.deltaX };
-			int[] y = { m_currentPosition.getY(),
-					m_currentPosition.getY() + edgeDirection.deltaY };
+		if (!usingExistingTrack) {
+			int[] x = { currentPosition.getX(),
+					currentPosition.getX() + edgeDirection.deltaX };
+			int[] y = { currentPosition.getY(),
+					currentPosition.getY() + edgeDirection.deltaY };
 			TrackRule ruleA = getAppropriateTrackRule(x[0], y[0]);
 			TrackRule ruleB = getAppropriateTrackRule(x[1], y[1]);
 			/*
@@ -249,7 +249,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 			long priceB = ruleB.getPrice().getAmount();
 			cost += length * (priceA + priceB);
 			// Add fixed cost if tile b does not have the desired track type.
-			FreerailsTile a = (FreerailsTile) m_world.getTile(x[0], y[0]);
+			FreerailsTile a = (FreerailsTile) world.getTile(x[0], y[0]);
 			TrackRule currentRuleA = a.getTrackRule();
 			if (!currentRuleA.equals(ruleA)) {
 				assert (!currentRuleA.isStation()); // We shouldn't be upgrading
@@ -261,9 +261,9 @@ public class BuildTrackExplorer implements GraphExplorer {
 	}
 
 	public int getH() {
-		int xDistance = (m_target.x - m_currentPosition.getX())
+		int xDistance = (target.x - currentPosition.getX())
 				* Step.TILE_DIAMETER;
-		int yDistance = (m_target.y - m_currentPosition.getY())
+		int yDistance = (target.y - currentPosition.getY())
 				* Step.TILE_DIAMETER;
 		int sumOfSquares = (xDistance * xDistance + yDistance * yDistance);
 
@@ -271,30 +271,30 @@ public class BuildTrackExplorer implements GraphExplorer {
 	}
 
 	public int getPosition() {
-		return m_currentPosition.toInt();
+		return currentPosition.toInt();
 	}
 
 	public int getVertexConnectedByEdge() {
-		if (m_beforeFirst) {
+		if (beforeFirst) {
 			throw new IllegalStateException();
 		}
-		return m_currentBranch.toInt();
+		return currentBranch.toInt();
 	}
 
 	public boolean hasNextEdge() {
-		while (m_direction < 8) {
+		while (directionInt < 8) {
 			if (canBuildTrack()) {
 				return true;
 			}
 
-			m_direction++;
+			directionInt++;
 		}
 
 		return false;
 	}
 
 	public void moveForward() {
-		if (m_beforeFirst) {
+		if (beforeFirst) {
 			throw new IllegalStateException();
 		}
 		setPosition(this.getVertexConnectedByEdge());
@@ -305,28 +305,24 @@ public class BuildTrackExplorer implements GraphExplorer {
 			throw new NoSuchElementException();
 		}
 		// The direction we are moving relative to the current position.
-		Step direction = Step.getInstance(m_direction);
+		Step direction = Step.getInstance(directionInt);
 
-		m_currentBranch.setCameFrom(direction);
-		m_currentBranch.setX(m_currentPosition.getX() + direction.getDx());
-		m_currentBranch.setY(m_currentPosition.getY() + direction.getDy());
+		currentBranch.setCameFrom(direction);
+		currentBranch.setX(currentPosition.getX() + direction.getDx());
+		currentBranch.setY(currentPosition.getY() + direction.getDy());
 
-		m_direction++;
-		m_beforeFirst = false;
+		directionInt++;
+		beforeFirst = false;
 	}
 
 	public void setPosition(int vertex) {
-		m_currentPosition.setValuesFromInt(vertex);
-		m_direction = 0;
+		currentPosition.setValuesFromInt(vertex);
+		directionInt = 0;
 	}
 
-	public BuildTrackStrategy getBuildTrackStrategy() {
-		return m_buildTrackStrategy;
-	}
-
-	public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
-		if (null == trackStrategy)
-			throw new NullPointerException();
-		m_buildTrackStrategy = trackStrategy;
-	}
+    public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
+        if (null == trackStrategy)
+            throw new NullPointerException();
+        buildTrackStrategy = trackStrategy;
+    }
 }

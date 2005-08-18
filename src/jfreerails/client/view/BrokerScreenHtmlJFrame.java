@@ -7,12 +7,17 @@
 package jfreerails.client.view;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.FinancialDataGatherer;
+import jfreerails.controller.ModelRoot;
+import jfreerails.move.AddTransactionMove;
+import jfreerails.move.Move;
+import jfreerails.world.accounts.BondTransaction;
+import jfreerails.world.accounts.IssueStockTransaction;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -32,6 +37,8 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 	private ModelRoot modelRoot;
 
 	public static BrokerScreenGenerator brokerScreenGenerator;
+	
+	private FinancialDataGatherer financialDataGatherer;
 
 	/** Creates a new instance of BrokerScreenHtmlJPanel */
 	public BrokerScreenHtmlJFrame() {
@@ -41,12 +48,123 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 				.getResource("/jfreerails/client/view/Broker_Screen.html");
 		template = loadText(url);
 	}
+	
+	private final ActionListener issueBondActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
 
-	public void setup(ModelRoot modelRoot, ViewLists vl,
+			if (financialDataGatherer.canIssueBond()) {
+				Move bondTransaction = new AddTransactionMove(modelRoot
+						.getPrincipal(),
+						BondTransaction.issueBond(financialDataGatherer
+								.nextBondInterestRate()));
+				modelRoot.doMove(bondTransaction);
+			}
+		}
+	};
+
+	private final ActionListener repayBondActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+
+			Move bondTransaction = new AddTransactionMove(modelRoot
+					.getPrincipal(), BondTransaction.repayBond(5));
+			modelRoot.doMove(bondTransaction);
+		}
+	};
+
+	private final ActionListener buyTreasuryStockActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+
+			Move StockTransaction = new AddTransactionMove(modelRoot
+					.getPrincipal(), IssueStockTransaction.issueStock(modelRoot
+					.getWorld().getID(modelRoot.getPrincipal()), 10000,
+					financialDataGatherer.sharePrice()));
+			modelRoot.doMove(StockTransaction);
+		}
+	};
+
+	private final ActionListener sellTreasuryStockActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			Move StockTransaction = new AddTransactionMove(modelRoot
+					.getPrincipal(), IssueStockTransaction.sellStock(modelRoot
+					.getWorld().getID(modelRoot.getPrincipal()), 10000,
+					financialDataGatherer.sharePrice()));
+			modelRoot.doMove(StockTransaction);
+		}
+	};
+
+	public void setup(final ModelRoot modelRoot, ViewLists vl,
 			ActionListener submitButtonCallBack) {
 		super.setup(modelRoot, vl, submitButtonCallBack);
+		financialDataGatherer = new FinancialDataGatherer(
+				modelRoot.getWorld(), modelRoot.getPrincipal());
 		this.modelRoot = modelRoot;
 		updateHtml();
+//		 Sets up the BrokerScreen and Adds ActionListeners to the Menu
+		this
+				.setIssueBondActionListener(this.issueBondActionListener);
+		this
+				.setRepayBondActionListener(this.repayBondActionListener);
+		this
+				.setBuytreasuryStockActionListener(this.buyTreasuryStockActionListener);
+		this
+				.setSellTreasuryStockActionlistener(this.sellTreasuryStockActionListener);
+
+		// for every player this is seting up an ActionListener to Buy and Sell
+		// there stock
+		int numberOfPlayers = modelRoot.getWorld().getNumberOfPlayers();
+		for (int i = 0; i < numberOfPlayers; i++) {
+			final Player temp = modelRoot.getWorld().getPlayer(i);
+			@SuppressWarnings("unused")
+			FinancialDataGatherer data4tempPlayer = new FinancialDataGatherer(
+					modelRoot.getWorld(), temp.getPrincipal());
+			if (temp != null
+					&& !(modelRoot.getPrincipal().equals(temp.getPrincipal()))) {
+				this.enableBuyPlayerStock(temp);
+				this.enableSellPlayerStock(temp);
+			}
+
+			this.setBuyPlayerStockActionlistener(
+					new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							Move StockTransaction = new AddTransactionMove(
+									modelRoot.getPrincipal(),
+									IssueStockTransaction.issueStock(modelRoot
+											.getWorld().getID(
+													temp.getPrincipal()),
+											10000, (new FinancialDataGatherer(
+													modelRoot.getWorld(), temp
+															.getPrincipal()))
+													.sharePrice()));
+							modelRoot.doMove(StockTransaction);
+							Move buyPlayerStock = new AddTransactionMove(temp
+									.getPrincipal(), IssueStockTransaction
+									.buyPlayerStock(modelRoot.getWorld().getID(
+											modelRoot.getPrincipal()), 10000));
+							modelRoot.doMove(buyPlayerStock);
+						}
+					}, temp);
+			this.setSellPlayerStockActionlistener(
+					new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							Move StockTransaction = new AddTransactionMove(
+									modelRoot.getPrincipal(),
+									IssueStockTransaction.sellStock(modelRoot
+											.getWorld().getID(
+													temp.getPrincipal()),
+											10000, (new FinancialDataGatherer(
+													modelRoot.getWorld(), temp
+															.getPrincipal()))
+													.sharePrice()));
+							modelRoot.doMove(StockTransaction);
+							Move sellPlayerStock = new AddTransactionMove(temp
+									.getPrincipal(), IssueStockTransaction
+									.sellPlayerStock(modelRoot.getWorld()
+											.getID(modelRoot.getPrincipal()),
+											10000));
+							modelRoot.doMove(sellPlayerStock);
+						}
+					}, temp);
+		}
 	}
 
 	private void updateHtml() {

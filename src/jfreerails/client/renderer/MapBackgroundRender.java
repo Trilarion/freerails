@@ -12,8 +12,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.logging.Logger;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.NullTrackType;

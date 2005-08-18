@@ -14,6 +14,8 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class LocalConnection implements Connection2Client, Connection2Server {
+	public static final String SERVER_IN_SAME_JVM = "server in same JVM";
+
 	private final SychronizedQueue fromServer = new SychronizedQueue();
 
 	private final SychronizedQueue fromClient = new SychronizedQueue();
@@ -96,11 +98,7 @@ public class LocalConnection implements Connection2Client, Connection2Server {
 		status.close();
 	}
 
-	public synchronized void connect() {
-		status.open();
-	}
-
-	public String getServerDetails() {
-		return "server in same JVM";
-	}
+    public String getServerDetails() {
+        return SERVER_IN_SAME_JVM;
+    }
 }

@@ -38,7 +38,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	private static final long serialVersionUID = 3258408426391418681L;
 
 	/** The underlying array used for storing the data. */
-	protected int[] m_baseArray;
+	protected int[] baseArray;
 
 	/**
 	 * Constructor with full specification.
@@ -86,7 +86,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 * @return backing array object
 	 */
 	protected final Object getArray() {
-		return m_baseArray;
+		return baseArray;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 * 
 	 */
 	protected final void setArray(Object array) {
-		m_baseArray = (int[]) array;
+		baseArray = (int[]) array;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 */
 	public final int add(int value) {
 		int index = getAddIndex();
-		m_baseArray[index] = value;
+		baseArray[index] = value;
 
 		return index;
 	}
@@ -122,7 +122,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 */
 	public void add(int index, int value) {
 		makeInsertSpace(index);
-		m_baseArray[index] = value;
+		baseArray[index] = value;
 	}
 
 	/**
@@ -133,8 +133,8 @@ public class IntArray extends ArrayBase implements Serializable {
 	 * @return value from position in the array
 	 */
 	public final int get(int index) {
-		if (index < m_countPresent) {
-			return m_baseArray[index];
+		if (index < countPresent) {
+			return baseArray[index];
 		}
 		throw new ArrayIndexOutOfBoundsException("Invalid index value");
 	}
@@ -148,8 +148,8 @@ public class IntArray extends ArrayBase implements Serializable {
 	 *            value to be set
 	 */
 	public final void set(int index, int value) {
-		if (index < m_countPresent) {
-			m_baseArray[index] = value;
+		if (index < countPresent) {
+			baseArray[index] = value;
 		} else {
 			throw new ArrayIndexOutOfBoundsException("Invalid index value");
 		}
@@ -162,7 +162,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 * @return array containing a copy of the data
 	 */
 	public int[] toArray() {
-		return (int[]) buildArray(int.class, 0, m_countPresent);
+		return (int[]) buildArray(int.class, 0, countPresent);
 	}
 
 	/**

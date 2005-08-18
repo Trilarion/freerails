@@ -78,6 +78,6 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
 		AddItemTransaction t = new AddItemTransaction(
 				Transaction.Category.TRACK, trackType, quantity, new Money(
 						trackType));
-		w.addTransaction(t, MapFixtureFactory.TEST_PRINCIPAL);
+		w.addTransaction(MapFixtureFactory.TEST_PRINCIPAL, t);
 	}
 }

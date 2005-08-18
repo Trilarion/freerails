@@ -60,8 +60,8 @@ public class NearestStationFinder {
 		int distanceToClosestSquared = Integer.MAX_VALUE;
 		NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
 
-		StationModel currentStation = (StationModel) world.get(KEY.STATIONS,
-				startStation, principal);
+		StationModel currentStation = (StationModel) world.get(principal,
+				KEY.STATIONS, startStation);
 
 		int nearestStation = NOT_FOUND;
 

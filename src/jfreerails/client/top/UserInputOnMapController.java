@@ -14,9 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.SoundManager;
-import jfreerails.client.common.ModelRoot.Property;
 import jfreerails.client.renderer.BuildTrackController;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.DialogueBoxController;
@@ -25,7 +23,9 @@ import jfreerails.client.view.MapViewJComponent;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationBuildModel;
 import jfreerails.controller.BuildTrackStrategy;
+import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
+import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
@@ -151,8 +151,9 @@ public class UserInputOnMapController extends KeyAdapter {
 					mapView.scrollRectToVisible(r);
 				}
 
-				buildTrack.setProposedTrack(getCursorPosition(), new ImPoint(
-						tileX, tileY), trackBuilder);
+				ImPoint to = new ImPoint(
+						tileX, tileY);
+				buildTrack.setProposedTrack(to, trackBuilder);
 				mapView.requestFocus();
 			}
 		}

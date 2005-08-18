@@ -36,8 +36,8 @@ public class MapFixtureFactory2Test extends TestCase {
 	public void testMap() {
 		World w1;
 		w1 = getCopy();
-		assertEquals(w1.getMapWidth(), 25);
-		assertEquals(w1.getMapWidth(), 25);
+		assertEquals(w1.getMapWidth(), 50);
+		assertEquals(w1.getMapWidth(), 50);
 
 	}
 

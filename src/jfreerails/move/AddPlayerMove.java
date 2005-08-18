@@ -72,10 +72,10 @@ public class AddPlayerMove implements Move, ServerMove {
 		w.addPlayer(this.player2add);
 
 		// Sell the player 2 $500,000 bonds at 5% interest.
-		w.addTransaction(BondTransaction.issueBond(5), player2add
-				.getPrincipal());
-		w.addTransaction(BondTransaction.issueBond(5), player2add
-				.getPrincipal());
+		w.addTransaction(player2add
+				.getPrincipal(), BondTransaction.issueBond(5));
+		w.addTransaction(player2add
+				.getPrincipal(), BondTransaction.issueBond(5));
 
 		return ms;
 	}

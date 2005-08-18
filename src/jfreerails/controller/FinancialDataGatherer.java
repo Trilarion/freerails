@@ -37,7 +37,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
 	private HashMap<Integer, Integer> otherRRsWithStakeHashMap = new HashMap<Integer, Integer>();
 
 	protected void incrementRunningTotal(int transactionID) {
-		Transaction t = super.w.getTransaction(transactionID, super.principal);
+		Transaction t = super.w.getTransaction(super.principal, transactionID);
 
 		if (t instanceof AddItemTransaction) {
 			AddItemTransaction ait = (AddItemTransaction) t;

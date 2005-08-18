@@ -22,5 +22,16 @@ public class ImIntsTest extends TestCase {
 		assertEquals(ci, ai.append(b));
 
 	}
+	
+	public void testEquals(){
+		int[] a = { 1, 2, 3 };
+		int[] b = { 1, 2, 3 };
+		ImInts ai = new ImInts(a);
+		ImInts bi = new ImInts(b);
+		assertEquals(ai, bi);
+		ImInts ci = new ImInts(1, 2, 3 );
+		assertEquals(ai, ci);
+		
+	}
 
 }

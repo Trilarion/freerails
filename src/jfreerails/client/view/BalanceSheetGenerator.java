@@ -120,8 +120,8 @@ public class BalanceSheetGenerator {
 		TransactionAggregator ytdOperatingFunds = new TransactionAggregator(w,
 				principal) {
 			protected boolean condition(int i) {
-				int transactionYear = cal.getYear(w.getTransactionTimeStamp(i,
-						principal).getTicks());
+				int transactionYear = cal.getYear(w.getTransactionTimeStamp(principal,
+						i).getTicks());
 
 				return transactionYear >= startyear;
 			}

@@ -8,8 +8,8 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 
 /**
  * JPanel that didplays confirmation of exiting, used when the exit menu item is
@@ -87,21 +87,8 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 		closeJButton.addActionListener(submitButtonCallBack);
 	}
 
-	/** When the train list is shown on a tab we don't want the buttons. */
-	void removeButtons() {
-		this.removeAll();
-
-		java.awt.GridBagConstraints gridBagConstraints;
-		setLayout(new java.awt.GridBagLayout());
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.weighty = 1.0;
-
-	}
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton closeJButton;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton closeJButton;
 
 	private javax.swing.JButton confirmExit;
 

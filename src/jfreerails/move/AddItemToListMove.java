@@ -53,10 +53,10 @@ public class AddItemToListMove implements ListMove {
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		if (w.size(listKey, this.principal) != index) {
+		if (w.size(this.principal, listKey) != index) {
 			return MoveStatus.moveFailed("Expected size of "
 					+ listKey.toString() + " list is " + index
-					+ " but actual size is " + w.size(listKey, this.principal));
+					+ " but actual size is " + w.size(this.principal, listKey));
 		}
 
 		return MoveStatus.MOVE_OK;
@@ -65,10 +65,10 @@ public class AddItemToListMove implements ListMove {
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
 		int expectListSize = index + 1;
 
-		if (w.size(listKey, this.principal) != expectListSize) {
+		if (w.size(this.principal, listKey) != expectListSize) {
 			return MoveStatus.moveFailed("Expected size of "
 					+ listKey.toString() + " list is " + expectListSize
-					+ " but actual size is " + w.size(listKey, this.principal));
+					+ " but actual size is " + w.size(this.principal, listKey));
 		}
 
 		return MoveStatus.MOVE_OK;
@@ -78,7 +78,7 @@ public class AddItemToListMove implements ListMove {
 		MoveStatus ms = tryDoMove(w, p);
 
 		if (ms.isOk()) {
-			w.add(listKey, this.item, this.principal);
+			w.add(this.principal, listKey, this.item);
 		}
 
 		return ms;
@@ -88,7 +88,7 @@ public class AddItemToListMove implements ListMove {
 		MoveStatus ms = tryUndoMove(w, p);
 
 		if (ms.isOk()) {
-			w.removeLast(listKey, this.principal);
+			w.removeLast(this.principal, listKey);
 		}
 
 		return ms;

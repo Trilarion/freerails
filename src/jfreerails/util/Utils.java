@@ -37,7 +37,7 @@ strictfp public class Utils {
 
 	}
 
-	public static Serializable cloneBySerialisation(Object m) {
+	public static Serializable cloneBySerialisation(Serializable m) {
 		try {
 			byte[] bytes = write2ByteArray(m);
 
@@ -52,12 +52,13 @@ strictfp public class Utils {
 			throw new IllegalStateException();
 		} catch (IOException e) {
 			// Should never happen.
+			e.printStackTrace();
 			throw new IllegalStateException();
 		}
 
 	}
 
-	private static byte[] write2ByteArray(Object m) {
+	private static byte[] write2ByteArray(Serializable m) {
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
@@ -66,6 +67,7 @@ strictfp public class Utils {
 			objectOut.flush();
 		} catch (IOException e) {
 			// Should never happen.
+			e.printStackTrace();
 			throw new IllegalStateException();
 		}
 
@@ -130,5 +132,18 @@ strictfp public class Utils {
 	public static int hypotenuse(int a, int b) {
 		double d = Math.hypot(a, b);
 		return (int) Math.round(d);
+	}
+
+	/**
+	 * Returns true if the objects are equal or both null, otherwise returns
+	 * false. Does not throw null pointer exceptions when either of the objects
+	 * is null.
+	 */
+	public static boolean equal(Object a,
+			Object b) {
+		if (null == a || null == b) {
+			return null == a && null == b;
+		}
+		return a.equals(b);
 	}
 }

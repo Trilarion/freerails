@@ -47,7 +47,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 	 * type and category.
 	 */
 	protected boolean condition(int transactionID) {
-		Transaction t = w.getTransaction(transactionID, principal);
+		Transaction t = w.getTransaction(principal, transactionID);
 
 		if (!(t instanceof AddItemTransaction)) {
 			return false;
@@ -79,7 +79,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 	protected void incrementRunningTotal(int transactionID) {
 		super.incrementRunningTotal(transactionID);
 
-		Transaction t = w.getTransaction(transactionID, principal);
+		Transaction t = w.getTransaction(principal, transactionID);
 		AddItemTransaction addItemTransaction = (AddItemTransaction) t;
 		quantityRunningTotal += addItemTransaction.getQuantity();
 	}

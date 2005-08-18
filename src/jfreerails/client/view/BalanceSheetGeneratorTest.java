@@ -29,10 +29,10 @@ public class BalanceSheetGeneratorTest extends TestCase {
 		world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
 		world.setTime(new GameTime(0));
 		world.addPlayer(player);
-		world.addTransaction(BondTransaction.issueBond(5), player
-				.getPrincipal());
-		world.addTransaction(BondTransaction.issueBond(5), player
-				.getPrincipal());
+		world.addTransaction(player
+				.getPrincipal(), BondTransaction.issueBond(5));
+		world.addTransaction(player
+				.getPrincipal(), BondTransaction.issueBond(5));
 		world.setTime(new GameTime(100));
 
 		BalanceSheetGenerator generator = new BalanceSheetGenerator(world,

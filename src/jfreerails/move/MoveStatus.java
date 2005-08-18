@@ -1,5 +1,6 @@
 package jfreerails.move;
 
+import jfreerails.util.Immutable;
 import jfreerails.world.common.FreerailsSerializable;
 
 /**
@@ -7,6 +8,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  * @author lindsal
  */
+@Immutable
 final public class MoveStatus implements FreerailsSerializable {
 	private static final long serialVersionUID = 3258129171879309624L;
 
@@ -16,6 +18,8 @@ final public class MoveStatus implements FreerailsSerializable {
 	public final boolean ok;
 
 	public final String message;
+	
+	private final Throwable t;
 
 	public boolean equals(Object o) {
 		if (this == o)
@@ -52,20 +56,27 @@ final public class MoveStatus implements FreerailsSerializable {
 	}
 
 	private MoveStatus(boolean ok, String mess) {
+		if(ok){
+			t = null;
+		}else{
+			t = new Throwable();
+			t.fillInStackTrace();
+		}
 		this.ok = ok;
 		this.message = mess;
 	}
 
-	public static MoveStatus moveFailed(String reason) {
-		// Next 2 lines are just for debuging.
-		// It lets us see where moves are failing.
-		// Exception e = new Exception();
-		// e.printStackTrace();
+	public static MoveStatus moveFailed(String reason) {	
 		return new MoveStatus(false, reason);
 	}
 
 	public boolean isOk() {
 		return ok;
+	}
+	
+	public void printStackTrack(){
+		if(null != t)
+			t.printStackTrace();
 	}
 
 	public String toString() {

@@ -9,8 +9,8 @@ package jfreerails.client.view;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;

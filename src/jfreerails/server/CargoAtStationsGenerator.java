@@ -50,8 +50,8 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
 						.getElement();
 				SupplyAtStation supply = station.getSupply();
 				ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle) w
-						.get(KEY.CARGO_BUNDLES, station.getCargoBundleID(),
-								principal);
+						.get(principal, KEY.CARGO_BUNDLES,
+								station.getCargoBundleID());
 				MutableCargoBundle before = new MutableCargoBundle(cargoBundle);
 				MutableCargoBundle after = new MutableCargoBundle(cargoBundle);
 				int stationNumber = nonNullStations.getIndex();

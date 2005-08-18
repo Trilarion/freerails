@@ -16,7 +16,7 @@ import java.awt.Point;
  * @author Luke Lindsay
  * @version 1.0
  */
-public class EightRotationsOfTrackPieceProducer extends java.lang.Object {
+public class EightRotationsOfTrackPieceProducer {
 	/**
 	 * The method that returns the rotations.
 	 * 

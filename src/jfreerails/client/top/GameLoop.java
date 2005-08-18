@@ -2,6 +2,7 @@ package jfreerails.client.top;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.util.logging.Logger;
 
@@ -16,12 +17,10 @@ import jfreerails.util.GameModel;
  * @author Luke
  */
 final public class GameLoop implements Runnable {
-	/** Whether to display the FPS counter on the top left of the screen. */
+
 	private static final Logger logger = Logger.getLogger(GameLoop.class
 			.getName());
-
-	private boolean SHOWFPS = (System.getProperty("SHOWFPS") != null);
-
+	
 	private final static boolean LIMIT_FRAME_RATE = false;
 
 	private boolean gameNotDone = false;
@@ -38,7 +37,6 @@ final public class GameLoop implements Runnable {
 
 	private final Integer loopMonitor = new Integer(0);
 
-	// PerformanceStats stats = new PerformanceStats();
 	public GameLoop(ScreenHandler s) {
 		screenHandler = s;
 		model = new GameModel[0];
@@ -106,9 +104,9 @@ final public class GameLoop implements Runnable {
 							try {
 								screenHandler.frame.paintComponents(g);
 
-								if (SHOWFPS) {
-									fPScounter.updateFPSCounter(frameStartTime,
-											g);
+								boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
+								if (showFps) {
+									fPScounter.drawFPS((Graphics2D) g);
 								}
 							} catch (RuntimeException re) {
 								/*
@@ -126,6 +124,7 @@ final public class GameLoop implements Runnable {
 							}
 
 							screenHandler.swapScreens();
+							fPScounter.updateFPSCounter();
 						}
 					}
 				}
@@ -175,46 +174,122 @@ final public class GameLoop implements Runnable {
  * 
  */
 final class FPScounter {
-	private final long TIME_INTERVAL = 5000;
 
-	private int frameCount = 0;
+	private final double[] fpsValues = new double[400];
 
-	private int averageFPS = 0;
+	private int newFrameCount = 0;
 
-	private long averageFPSStartTime = System.currentTimeMillis();
+	private String newFPSstr = "starting..";
 
-	private String fPSstr = "starting..";
+	private long lastFrameTime;
+	
+	
+	private final int fontSize;
 
-	private boolean dot = true;
+	private final Color bgColor;
+	FPScounter() {	
+		this.fontSize = 10;		
+		bgColor = new Color(0, 0, 128);
+	}
 
 	// Display the average number of FPS.
-	void updateFPSCounter(long frameStartTime, Graphics g) {
-		if (frameCount == 0) {
-			averageFPSStartTime = frameStartTime;
+	void updateFPSCounter() {
+		long currentTime = System.nanoTime();
+
+		if (newFrameCount == 0) {
+			lastFrameTime = currentTime;
 		}
+		double dt = currentTime - lastFrameTime;
+		double fps = 1000000000d / dt;
+		fpsValues[newFrameCount % fpsValues.length] = fps;
+		newFrameCount++;
 
-		frameCount++;
+		int n = fpsValues.length;
+		if (newFrameCount > fpsValues.length) {
+			double min = Double.MAX_VALUE;
+			double max = Double.MIN_VALUE;
 
-		if (averageFPSStartTime + TIME_INTERVAL < frameStartTime) {
-			int time = (int) (frameStartTime - averageFPSStartTime);
+			double mean = 0;
+			for (int i = 0; i < fpsValues.length; i++) {
+				min = Math.min(min, fpsValues[i]);
+				max = Math.max(max, fpsValues[i]);
+				mean += fpsValues[i];
+			}
+			mean = mean / n;
+			if (mean > max)
+				throw new IllegalStateException();
 
-			if (0 != time) {
-				averageFPS = frameCount * 1000 / time;
+			if (mean < min)
+				throw new IllegalStateException();
+
+			double variance = 0;
+			for (int i = 0; i < fpsValues.length; i++) {
+				double xMinusU = fpsValues[i] - mean;
+				variance += xMinusU * xMinusU;
+			}
+			variance = variance / n;
+			if (newFrameCount % 20 == 0) {
+				StringBuffer sb = new StringBuffer();
+				sb.append("FPS\n");		
+				sb.append(" n  ");
+				sb.append(n);
+				sb.append('\n');
+				sb.append(" \u03BC  ");				
+				sb.append(Math.round(mean));
+				sb.append('\n');				
+				sb.append(" \u03C3  ");
+				sb.append(Math.round(Math.sqrt(variance) ));
+				sb.append('\n');	
+				sb.append(" min  ");
+				sb.append(Math.round(min) );
+				sb.append('\n');	
+				sb.append(" max  ");
+				sb.append(Math.round(max) );
+				sb.append('\n');	
+				
+				newFPSstr = sb.toString();
+				
 			}
 
-			if (dot) {
-				fPSstr = averageFPS + " FPS";
-			} else {
-				fPSstr = averageFPS + ":FPS";
-			}
-
-			frameCount = 0;
-			dot = !dot;
 		}
-
-		g.setColor(Color.WHITE);
-		g.fillRect(50, 50, 50, 20);
-		g.setColor(Color.BLACK);
-		g.drawString(fPSstr, 50, 65);
+		
+		
+		
+//		g.setColor(Color.WHITE);
+//		g.fillRect(50, 50, 50, 20);
+//		g.setColor(Color.BLACK);
+//		g.drawString(newFPSstr, 50, 65);
+		lastFrameTime = currentTime;
 	}
+
+	void drawFPS(Graphics2D g) {
+		int rectWidth;
+		int rectHeight;
+		int rectX;
+		int rectY;
+		
+		int positionX = 50;
+		int positionY = 70;
+		
+		Color textColor = Color.WHITE;
+		
+		
+		String[] lines = newFPSstr.split("\n");		
+		rectWidth = 60;
+		rectHeight = (int) ((fontSize + 1) * 1.2 * lines.length);
+		rectY = (int) (positionY - fontSize * 1.2)  ;
+		rectX = positionX;
+
+		g.setColor(bgColor);
+		g.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+	
+		g.setColor(textColor);
+		//g.setFont(font);
+		for(String s: lines){
+			g.drawString(s, positionX, positionY);
+			positionY += fontSize * 1.2;
+		}
+	}
+
 }

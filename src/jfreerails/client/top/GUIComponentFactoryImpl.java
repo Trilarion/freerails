@@ -24,7 +24,6 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import jfreerails.client.common.ActionAdapter;
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ActionAdapter.MappedButtonModel;
 import jfreerails.client.renderer.BuildTrackController;
@@ -42,8 +41,10 @@ import jfreerails.client.view.OverviewMapJComponent;
 import jfreerails.client.view.RHSJTabPane;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationPlacementCursor;
+import jfreerails.controller.ModelRoot;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.Move;
+import jfreerails.network.LocalConnection;
 import jfreerails.network.MoveReceiver;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.ImPoint;
@@ -323,6 +324,19 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 						new Boolean(playSoundsMenuItem.isSelected()));
 			}
 		});
+		;
+		boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
+		
+		final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem(
+				"Show FPS stats", showFps);
+		displayMenu.add(showFPSMenuItem);
+		showFPSMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String newValue = String.valueOf(showFPSMenuItem.isSelected());
+				System.setProperty("SHOWFPS", newValue);
+			}
+		});
+
 
 		return displayMenu;
 	}
@@ -621,7 +635,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 		String name = modelRoot.getPrincipal().getName();
 		String serverDetails = (String) modelRoot
 				.getProperty(ModelRoot.Property.SERVER);
-		clientJFrame.setTitle(name + " - " + serverDetails + " - JFreerails");
+		String frameTitle;
+		if(serverDetails.equals(LocalConnection.SERVER_IN_SAME_JVM)){
+			 frameTitle = name + " - Freerails";
+		}else{
+			 frameTitle = name + " - " + serverDetails + " - Freerails";
+		}
+		
+		clientJFrame.setTitle(frameTitle);
 		isSetup = true;
 		modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION,
 				cursorPosition);

@@ -148,8 +148,8 @@ public class IncomeStatementGenerator {
 		long amount = 0;
 
 		for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-			Transaction t = w.getTransaction(i, principal);
-			GameTime time = w.getTransactionTimeStamp(i, principal);
+			Transaction t = w.getTransaction(principal, i);
+			GameTime time = w.getTransactionTimeStamp(principal, i);
 
 			if (t instanceof DeliverCargoReceipt
 					&& cal.getYear(time.getTicks()) >= this.startyear) {
@@ -170,8 +170,8 @@ public class IncomeStatementGenerator {
 		long amount = 0;
 
 		for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-			Transaction t = w.getTransaction(i, principal);
-			GameTime time = w.getTransactionTimeStamp(i, principal);
+			Transaction t = w.getTransaction(principal, i);
+			GameTime time = w.getTransactionTimeStamp(principal, i);
 
 			if (t instanceof DeliverCargoReceipt
 					&& cal.getYear(time.getTicks()) >= this.startyear) {
@@ -189,8 +189,8 @@ public class IncomeStatementGenerator {
 		long amount = 0;
 
 		for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-			Transaction t = w.getTransaction(i, principal);
-			GameTime time = w.getTransactionTimeStamp(i, principal);
+			Transaction t = w.getTransaction(principal, i);
+			GameTime time = w.getTransactionTimeStamp(principal, i);
 
 			if (t.getCategory() == transactionCategory
 					&& cal.getYear(time.getTicks()) >= this.startyear) {

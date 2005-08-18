@@ -18,9 +18,9 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
 
 	public enum Activity {
 		STOPPED_AT_STATION, READY, WAITING_FOR_FULL_LOAD, STOPPED_AT_SIGNAL, CRASHED, NEEDS_UPDATING
-	};
+	}
 
-	public final double dt;
+    public final double dt;
 
 	public final double speed;
 

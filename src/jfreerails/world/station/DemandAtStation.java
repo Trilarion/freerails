@@ -11,10 +11,10 @@ import jfreerails.world.common.ImInts;
 public class DemandAtStation implements FreerailsSerializable {
 	private static final long serialVersionUID = 3257565088071038009L;
 
-	private final ImInts m_demand;
+	private final ImInts demand;
 
-	public DemandAtStation(boolean[] demand) {
-		m_demand = ImInts.fromBoolean(demand);
+	public DemandAtStation(boolean[] demandArray) {
+		demand = ImInts.fromBoolean(demandArray);
 	}
 
 	public boolean equals(Object o) {
@@ -25,7 +25,7 @@ public class DemandAtStation implements FreerailsSerializable {
 
 		final DemandAtStation demandAtStation = (DemandAtStation) o;
 
-		if (!m_demand.equals(demandAtStation.m_demand))
+		if (!demand.equals(demandAtStation.demand))
 			return false;
 
 		return true;
@@ -34,15 +34,15 @@ public class DemandAtStation implements FreerailsSerializable {
 	public int hashCode() {
 		int result = 0;
 
-		for (int i = 0; i < m_demand.size(); i++) {
-			result = 29 * result + m_demand.get(i);
+		for (int i = 0; i < demand.size(); i++) {
+			result = 29 * result + demand.get(i);
 		}
 
 		return result;
 	}
 
 	public boolean isCargoDemanded(int cargoNumber) {
-		return m_demand.get(cargoNumber) == 1;
+		return demand.get(cargoNumber) == 1;
 	}
 
 }

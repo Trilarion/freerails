@@ -4,10 +4,9 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.common.Activity;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.AKEY;
-import jfreerails.world.top.Activity;
-import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.World;
 
 /**
@@ -27,15 +26,15 @@ public class AddActiveEntityMove implements Move {
 
 	private final FreerailsPrincipal principal;
 
-	private final AKEY listKey;
+	
 
 	private final int index;
 
-	public AddActiveEntityMove(Activity activity, int index, AKEY key,
+	public AddActiveEntityMove(Activity activity, int index, 
 			FreerailsPrincipal principal) {
 		this.activity = activity;
 		this.index = index;
-		listKey = key;
+		
 		this.principal = principal;
 	}
 
@@ -51,8 +50,7 @@ public class AddActiveEntityMove implements Move {
 			return false;
 		if (!activity.equals(addActiveEntityMove.activity))
 			return false;
-		if (!listKey.equals(addActiveEntityMove.listKey))
-			return false;
+		
 		if (!principal.equals(addActiveEntityMove.principal))
 			return false;
 
@@ -63,13 +61,13 @@ public class AddActiveEntityMove implements Move {
 		int result;
 		result = activity.hashCode();
 		result = 29 * result + principal.hashCode();
-		result = 29 * result + listKey.hashCode();
+	
 		result = 29 * result + index;
 		return result;
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		if (index != w.size(listKey, principal))
+		if (index != w.size(principal))
 			return MoveStatus.moveFailed("index != w.size(listKey, p)");
 
 		return MoveStatus.MOVE_OK;
@@ -77,11 +75,11 @@ public class AddActiveEntityMove implements Move {
 
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
 		int expectedSize = index + 1;
-		if (expectedSize != w.size(listKey, principal))
+		if (expectedSize != w.size(principal))
 			return MoveStatus
 					.moveFailed("(index + 1) != w.size(listKey, principal)");
 
-		ActivityIterator ai = w.getActivities(listKey, index, principal);
+		ActivityIterator ai = w.getActivities(principal, index);
 		if (ai.hasNext())
 			return MoveStatus
 					.moveFailed("There should be exactly one activity!");
@@ -98,7 +96,7 @@ public class AddActiveEntityMove implements Move {
 	public MoveStatus doMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = tryDoMove(w, p);
 		if (ms.ok)
-			w.addActiveEntity(listKey, activity, principal);
+			w.addActiveEntity(principal, activity);
 
 		return ms;
 	}
@@ -106,7 +104,7 @@ public class AddActiveEntityMove implements Move {
 	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = tryUndoMove(w, p);
 		if (ms.ok)
-			w.removeLastActiveEntity(listKey, principal);
+			w.removeLastActiveEntity(principal);
 
 		return ms;
 	}

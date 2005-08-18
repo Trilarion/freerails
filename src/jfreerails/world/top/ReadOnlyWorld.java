@@ -1,6 +1,7 @@
 package jfreerails.world.top;
 
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameTime;
@@ -55,7 +56,7 @@ import jfreerails.world.player.Player;
 public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 	boolean boundsContain(int x, int y);
 
-	boolean boundsContain(KEY k, int index, FreerailsPrincipal p);
+	boolean boundsContain(FreerailsPrincipal p, KEY k, int index);
 
 	boolean boundsContain(SKEY k, int index);
 
@@ -71,7 +72,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 	 * Returns the element at the specified position in the specified list.
 	 */
 
-	FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p);
+	FreerailsSerializable get(FreerailsPrincipal p, KEY key, int index);
 
 	/**
 	 * Returns the element at the specified position in the specified list.
@@ -79,7 +80,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
 	FreerailsSerializable get(SKEY key, int index);
 
-	ActivityIterator getActivities(AKEY key, int index, FreerailsPrincipal p);
+	ActivityIterator getActivities(FreerailsPrincipal p, int index);
 
 	Money getCurrentBalance(FreerailsPrincipal p);
 
@@ -98,6 +99,8 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 	int getNumberOfPlayers();
 
 	int getNumberOfTransactions(FreerailsPrincipal p);
+	
+	int getNumberOfActiveEntities(FreerailsPrincipal p);
 
 	Player getPlayer(int i);
 
@@ -106,16 +109,16 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 	 */
 	FreerailsSerializable getTile(int x, int y);
 
-	Transaction getTransaction(int i, FreerailsPrincipal p);
+	Transaction getTransaction(FreerailsPrincipal p, int i);
 
-	GameTime getTransactionTimeStamp(int i, FreerailsPrincipal p);
+	GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i);
 
 	boolean isPlayer(FreerailsPrincipal p);
 
 	/**
 	 * Returns the number of elements in the specified list.
 	 */
-	int size(KEY key, FreerailsPrincipal p);
+	int size(FreerailsPrincipal p, KEY key);
 
 	/**
 	 * Returns the number of elements in the specified list.
@@ -123,7 +126,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 	int size(SKEY key);
 
 	/**
-	 * Returns the number of elements in the specified list.
+	 * Returns number of active entities belonging to the specified principal.
 	 */
-	int size(AKEY key, FreerailsPrincipal p);
+	int size(FreerailsPrincipal p);
 }

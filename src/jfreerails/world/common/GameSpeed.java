@@ -4,6 +4,7 @@
  */
 package jfreerails.world.common;
 
+
 /**
  * This class represents actual game speed. If the game speed <code>speed</code>
  * is lesser then zero, game is paused. After unpausing, the speed should be
@@ -31,6 +32,10 @@ public class GameSpeed implements FreerailsSerializable {
 		return speed;
 	}
 
+	public boolean isPaused(){
+		return speed < 1;
+	}
+	
 	public boolean equals(Object o) {
 		if (o instanceof GameSpeed) {
 			GameSpeed test = (GameSpeed) o;

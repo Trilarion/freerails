@@ -85,7 +85,7 @@ public class PathOnTiles implements FreerailsSerializable {
 	 * Returns the distance you would travel if you walked the all the way along
 	 * the path.
 	 */
-	public double getLength() {
+	public double getTotalDistance() {
 		return getDistance(vectors.size());
 	}
 
@@ -214,7 +214,7 @@ public class PathOnTiles implements FreerailsSerializable {
 			throw new IllegalArgumentException();
 		if (length <= 0)
 			throw new IllegalArgumentException();
-		if ((offset + length) > getLength())
+		if ((offset + length) > getTotalDistance())
 			throw new IllegalArgumentException();
 
 		final LinkedList<ImPoint> points = new LinkedList<ImPoint>();

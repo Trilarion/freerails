@@ -38,10 +38,10 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
 		assertSurvivesSerialisation(compositeMove);
 		assertTryMoveIsOk(compositeMove);
 		assertEquals("The stations should not have been add yet.", 0,
-				getWorld().size(KEY.STATIONS, MapFixtureFactory.TEST_PRINCIPAL));
+				getWorld().size(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS));
 		assertDoMoveIsOk(compositeMove);
 		assertEquals("The stations should have been add now.", 4, getWorld()
-				.size(KEY.STATIONS, MapFixtureFactory.TEST_PRINCIPAL));
+				.size(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS));
 		assertTryUndoMoveIsOk(compositeMove);
 		assertUndoMoveIsOk(compositeMove);
 

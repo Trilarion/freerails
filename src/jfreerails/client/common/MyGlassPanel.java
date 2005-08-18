@@ -5,7 +5,6 @@
  */
 package jfreerails.client.common;
 
-import javax.swing.JComponent;
 
 /**
  * A transparent JPanel that catches key presses and mouse clicks.
@@ -73,22 +72,8 @@ public class MyGlassPanel extends javax.swing.JPanel {
 		// Add your handling code here:
 	}
 
-	// GEN-LAST:event_formKeyPressed
-	public void showContent(JComponent panel) {
-		this.remove(contentPanel);
-		contentPanel = panel;
-
-		java.awt.GridBagConstraints gridBagConstraints1 = new java.awt.GridBagConstraints();
-		gridBagConstraints1.gridx = 2;
-		gridBagConstraints1.gridy = 1;
-		add(contentPanel, gridBagConstraints1);
-
-		this.revalidate();
-		this.requestFocus();
-	}
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JComponent contentPanel;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComponent contentPanel;
 
 	// End of variables declaration//GEN-END:variables
 }

@@ -37,10 +37,10 @@ public abstract class GrowableBase {
 	public static final int DEFAULT_SIZE = 8;
 
 	/** Size of the current array. */
-	protected int m_countLimit;
+	protected int countLimit;
 
 	/** Maximum size increment for growing array. */
-	protected int m_maximumGrowth;
+	protected int maximumGrowth;
 
 	/**
 	 * Constructor with full specification.
@@ -54,8 +54,8 @@ public abstract class GrowableBase {
 	 */
 	public GrowableBase(int size, int growth, Class type) {
 		Object array = Array.newInstance(type, size);
-		m_countLimit = size;
-		m_maximumGrowth = growth;
+		countLimit = size;
+		maximumGrowth = growth;
 		setArray(array);
 	}
 
@@ -78,7 +78,7 @@ public abstract class GrowableBase {
 	 *            instance being copied
 	 */
 	public GrowableBase(GrowableBase base) {
-		this(base.m_countLimit, base.m_maximumGrowth, base.getArray()
+		this(base.countLimit, base.maximumGrowth, base.getArray()
 				.getClass().getComponentType());
 	}
 
@@ -150,12 +150,12 @@ public abstract class GrowableBase {
 	 */
 	protected void growArray(int required) {
 		Object base = getArray();
-		int size = Math.max(required, m_countLimit
-				+ Math.min(m_countLimit, m_maximumGrowth));
+		int size = Math.max(required, countLimit
+				+ Math.min(countLimit, maximumGrowth));
 		Class type = base.getClass().getComponentType();
 		Object grown = Array.newInstance(type, size);
 		resizeCopy(base, grown);
-		m_countLimit = size;
+		countLimit = size;
 		setArray(grown);
 	}
 
@@ -167,7 +167,7 @@ public abstract class GrowableBase {
 	 *            minimum capacity to be guaranteed
 	 */
 	public final void ensureCapacity(int min) {
-		if (min > m_countLimit) {
+		if (min > countLimit) {
 			growArray(min);
 		}
 	}

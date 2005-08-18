@@ -31,8 +31,8 @@ public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
 
 		assertTryMoveFails(m);
 		assertTryUndoMoveFails(m);
-		getWorld().add(KEY.CARGO_BUNDLES, bundleA.toImmutableCargoBundle(),
-				MapFixtureFactory.TEST_PRINCIPAL);
+		getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES,
+				bundleA.toImmutableCargoBundle());
 		assertTryMoveIsOk(m);
 
 		assertOkButNotRepeatable(m);

@@ -30,9 +30,9 @@ public class FinancialDataGathererTest extends TestCase {
 		w = new WorldImpl();
 
 		w.addPlayer(player);
-		w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
-		w.addTransaction(IssueStockTransaction.issueStock(
-				FinancialMoveProducer.IPO_SIZE, 5), player.getPrincipal());
+		w.addTransaction(player.getPrincipal(), BondTransaction.issueBond(5));
+		w.addTransaction(player.getPrincipal(), IssueStockTransaction.issueStock(
+						FinancialMoveProducer.IPO_SIZE, 5));
 	}
 
 	public void testChangeTreasuryStock() {
@@ -59,7 +59,7 @@ public class FinancialDataGathererTest extends TestCase {
 	 */
 	private boolean addBond() {
 		FinancialDataGatherer fdg;
-		w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
+		w.addTransaction(player.getPrincipal(), BondTransaction.issueBond(5));
 		fdg = new FinancialDataGatherer(w, player.getPrincipal());
 
 		boolean canIssueBond = fdg.canIssueBond();
@@ -71,7 +71,7 @@ public class FinancialDataGathererTest extends TestCase {
 		FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
 				.getPrincipal());
 		assertEquals(5, fdg.nextBondInterestRate());
-		w.addTransaction(BondTransaction.issueBond(5), player.getPrincipal());
+		w.addTransaction(player.getPrincipal(), BondTransaction.issueBond(5));
 		fdg = new FinancialDataGatherer(w, player.getPrincipal());
 		assertEquals(6, fdg.nextBondInterestRate());
 	}
@@ -87,7 +87,7 @@ public class FinancialDataGathererTest extends TestCase {
 		Transaction t = new AddItemTransaction(
 				Transaction.Category.ISSUE_STOCK, 0,
 				FinancialMoveProducer.SHARE_BUNDLE_SIZE, new Money(0));
-		w.addTransaction(t, player.getPrincipal());
+		w.addTransaction(player.getPrincipal(), t);
 		fdg = new FinancialDataGatherer(w, player.getPrincipal());
 		// assertEquals(FinancialMoveProducer.SHARE_BUNDLE_SIZE,
 		// fdg.treasuryStock());

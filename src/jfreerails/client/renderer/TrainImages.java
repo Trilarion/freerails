@@ -37,68 +37,64 @@ public class TrainImages {
 
 	private final Image[] explosionImages;
 
-	public int getCrashFramesCt() {
-		return explosionImages.length;
-	}
+    public TrainImages(ReadOnlyWorld w, ImageManager imageManager,
+                       FreerailsProgressMonitor pm) throws IOException {
+        this.w = w;
+        this.imageManager = imageManager;
 
-	public TrainImages(ReadOnlyWorld w, ImageManager imageManager,
-			FreerailsProgressMonitor pm) throws IOException {
-		this.w = w;
-		this.imageManager = imageManager;
+        final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
+        final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);
 
-		final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
-		final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);
+        // Setup progress monitor..
+        pm.setMessage("Loading train images.");
+        pm.setMax(numberOfWagonTypes + numberOfEngineTypes);
 
-		// Setup progress monitor..
-		pm.setMessage("Loading train images.");
-		pm.setMax(numberOfWagonTypes + numberOfEngineTypes);
+        int progress = 0;
+        pm.setValue(progress);
 
-		int progress = 0;
-		pm.setValue(progress);
+        sideOnWagonImages = new Image[numberOfWagonTypes];
+        overheadWagonImages = new Image[numberOfWagonTypes][8];
+        sideOnEngineImages = new Image[numberOfEngineTypes];
+        overheadEngineImages = new Image[numberOfEngineTypes][8];
+        // @SonnyZ
+        explosionImages = new Image[15];
 
-		sideOnWagonImages = new Image[numberOfWagonTypes];
-		overheadWagonImages = new Image[numberOfWagonTypes][8];
-		sideOnEngineImages = new Image[numberOfEngineTypes];
-		overheadEngineImages = new Image[numberOfEngineTypes][8];
-		// @SonnyZ
-		explosionImages = new Image[15];
+        for (int i = 0; i < numberOfWagonTypes; i++) {
+            CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+            String sideOnFileName = generateSideOnFilename(cargoType.getName());
+            sideOnWagonImages[i] = imageManager.getImage(sideOnFileName);
 
-		for (int i = 0; i < numberOfWagonTypes; i++) {
-			CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
-			String sideOnFileName = generateSideOnFilename(cargoType.getName());
-			sideOnWagonImages[i] = imageManager.getImage(sideOnFileName);
+            for (int direction = 0; direction < 8; direction++) {
+                String overheadOnFileName = generateOverheadFilename(cargoType
+                        .getName(), direction);
+                overheadWagonImages[i][direction] = imageManager
+                        .getImage(overheadOnFileName);
+            }
 
-			for (int direction = 0; direction < 8; direction++) {
-				String overheadOnFileName = generateOverheadFilename(cargoType
-						.getName(), direction);
-				overheadWagonImages[i][direction] = imageManager
-						.getImage(overheadOnFileName);
-			}
+            pm.setValue(++progress);
+        }
 
-			pm.setValue(++progress);
-		}
+        for (int i = 0; i < numberOfEngineTypes; i++) {
+            EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES, i);
+            String sideOnFileName = generateSideOnFilename(engineType
+                    .getEngineTypeName());
+            sideOnEngineImages[i] = imageManager.getImage(sideOnFileName);
 
-		for (int i = 0; i < numberOfEngineTypes; i++) {
-			EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES, i);
-			String sideOnFileName = generateSideOnFilename(engineType
-					.getEngineTypeName());
-			sideOnEngineImages[i] = imageManager.getImage(sideOnFileName);
+            for (int direction = 0; direction < 8; direction++) {
+                String overheadOnFileName = generateOverheadFilename(engineType
+                        .getEngineTypeName(), direction);
+                overheadEngineImages[i][direction] = imageManager
+                        .getImage(overheadOnFileName);
+            }
 
-			for (int direction = 0; direction < 8; direction++) {
-				String overheadOnFileName = generateOverheadFilename(engineType
-						.getEngineTypeName(), direction);
-				overheadEngineImages[i][direction] = imageManager
-						.getImage(overheadOnFileName);
-			}
-
-			pm.setValue(++progress);
-		}
-		// @SonnyZ
-		for (int i = 1; i <= 15; i++) {
-			String explosionFileName = generateExplosionFileName(i);
-			explosionImages[i - 1] = imageManager.getImage(explosionFileName);
-		}
-	}
+            pm.setValue(++progress);
+        }
+        // @SonnyZ
+        for (int i = 1; i <= 15; i++) {
+            String explosionFileName = generateExplosionFileName(i);
+            explosionImages[i - 1] = imageManager.getImage(explosionFileName);
+        }
+    }
 
 	public Image getSideOnWagonImage(int cargoTypeNumber) {
 		return sideOnWagonImages[cargoTypeNumber];

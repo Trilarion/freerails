@@ -142,23 +142,19 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 		// TODO Auto-generated method stub
 	}
 
-	public final void showMenu() {
-		// TODO Auto-generated method stub
-	}
+    final FreerailsSerializable read() {
+        try {
+            return this.connection2Server.waitForObjectFromServer();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	final FreerailsSerializable read() {
-		try {
-			return this.connection2Server.waitForObjectFromServer();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		throw new IllegalStateException();
-	}
+        throw new IllegalStateException();
+    }
 
 	final void write(FreerailsSerializable fs) {
 		try {
@@ -247,5 +243,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 		Move m = committer.toServer(pm);
 		moveFork.processMove(m);
 		write(pm);
+	}
+	
+	protected long getLastTickTime(){
+		return moveFork.getLastTickTime();
 	}
 }

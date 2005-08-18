@@ -12,13 +12,16 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.controller.StationBuilder;
 import jfreerails.move.MoveStatus;
+import jfreerails.util.Utils;
 import jfreerails.world.common.ImPoint;
+import jfreerails.world.common.Money;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackRule;
@@ -71,8 +74,9 @@ public class StationBuildModel {
 		TrackPieceRendererList trackPieceRendererList = vl
 				.getTrackPieceViewList();
 
-		for (int i = 0; i < modelRoot.getWorld().size(SKEY.TRACK_RULES); i++) {
-			TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(
+		ReadOnlyWorld world = modelRoot.getWorld();
+		for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+			final TrackRule trackRule = (TrackRule) world.get(
 					SKEY.TRACK_RULES, i);
 
 			if (trackRule.isStation()) {
@@ -80,8 +84,10 @@ public class StationBuildModel {
 						.getTrackPieceView(i);
 				StationChooseAction action = new StationChooseAction(i);
 				String trackType = trackRule.getTypeName();
-				action.putValue(Action.SHORT_DESCRIPTION, trackType + " \n $"
-						+ trackRule.getPrice());
+				Money price = trackRule.getFixedCost();				
+				String shortDescrpt = Utils.capitalizeEveryWord(trackType)
+				+ " $" + price.toString();								
+				action.putValue(Action.SHORT_DESCRIPTION, shortDescrpt);
 				action.putValue(Action.NAME, "Build " + trackType);
 
 				action.putValue(Action.SMALL_ICON, new ImageIcon(renderer

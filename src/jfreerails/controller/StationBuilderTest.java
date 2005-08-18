@@ -5,6 +5,7 @@
 package jfreerails.controller;
 
 import static jfreerails.world.common.Step.EAST;
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
 import jfreerails.world.common.ImPoint;
@@ -31,7 +32,8 @@ public class StationBuilderTest extends TestCase {
 		super.setUp();
 		w = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(w, 0);
-		trackBuilder = new TrackMoveProducer(me, w);
+		ModelRoot mr = new ModelRootImpl();
+		trackBuilder = new TrackMoveProducer(me, w, mr);
 		stationBuilder = new StationBuilder(me);
 	}
 

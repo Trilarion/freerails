@@ -230,7 +230,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 		this.world = world;
 	}
 
-	abstract public void testMove();
+	public void testMove(){}
 
 	protected void assertTrackHere(int x, int y) {
 

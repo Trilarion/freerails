@@ -27,13 +27,13 @@ public class RemoveTrainMove extends CompositeMove {
 
 	public static RemoveTrainMove getInstance(int index, FreerailsPrincipal p,
 			ReadOnlyWorld world) {
-		TrainModel train = (TrainModel) world.get(KEY.TRAINS, index, p);
+		TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, index);
 		int scheduleId = train.getScheduleID();
 		ImmutableSchedule schedule = (ImmutableSchedule) world.get(
-				KEY.TRAIN_SCHEDULES, scheduleId, p);
+				p, KEY.TRAIN_SCHEDULES, scheduleId);
 		int cargoBundleId = train.getCargoBundleID();
 		ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle) world.get(
-				KEY.CARGO_BUNDLES, cargoBundleId, p);
+				p, KEY.CARGO_BUNDLES, cargoBundleId);
 		// TrainPositionOnMap position =
 		// (TrainPositionOnMap)world.get(KEY.TRAIN_POSITIONS, index, p);
 		Move removeTrain = new RemoveItemFromListMove(KEY.TRAINS, index, train,

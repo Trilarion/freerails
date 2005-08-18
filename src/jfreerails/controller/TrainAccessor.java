@@ -5,16 +5,17 @@
 package jfreerails.controller;
 
 import jfreerails.world.cargo.ImmutableCargoBundle;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
-import jfreerails.world.top.AKEY;
-import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.ImmutableSchedule;
+import jfreerails.world.train.SpeedTimeAndStatus;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
+import jfreerails.world.train.TrainPositionOnMap;
 
 /**
  * Provides convenience methods to access the properties of a train from the
@@ -41,9 +42,27 @@ public class TrainAccessor {
 	public int getId() {
 		return id;
 	}
+	
+	public SpeedTimeAndStatus.Activity getStatus(double time){
+		TrainMotion tm = findCurrentMotion(time);
+		return tm.getActivity();
+	}
+	
+	public TrainPositionOnMap findPosition(double time) {
+		ActivityIterator ai = w.getActivities(p, id);
+		boolean afterFinish = ai.getFinishTime() < time;
+		while (afterFinish && ai.hasNext()) {
+			ai.nextActivity();
+			afterFinish = ai.getFinishTime() < time;
+		}		
+		double dt = time - ai.getStartTime();
+		dt = Math.min(dt, ai.getDuration());
+		TrainMotion tm = (TrainMotion) ai.getActivity();
+		return tm.getState(dt);
+	}
 
 	public TrainMotion findCurrentMotion(double time) {
-		ActivityIterator ai = w.getActivities(AKEY.TRAIN_POSITIONS, id, p);
+		ActivityIterator ai = w.getActivities(p, id);
 		boolean afterFinish = ai.getFinishTime() < time;
 		while (afterFinish && ai.hasNext()) {
 			ai.nextActivity();
@@ -52,19 +71,19 @@ public class TrainAccessor {
 	}
 
 	public TrainModel getTrain() {
-		return (TrainModel) w.get(KEY.TRAINS, id, p);
+		return (TrainModel) w.get(p, KEY.TRAINS, id);
 	}
 
 	public ImmutableSchedule getSchedule() {
 		TrainModel train = getTrain();
-		return (ImmutableSchedule) w.get(KEY.TRAIN_SCHEDULES, train
-				.getScheduleID(), p);
+		return (ImmutableSchedule) w.get(p, KEY.TRAIN_SCHEDULES, train
+						.getScheduleID());
 	}
 
 	public ImmutableCargoBundle getCargoBundle() {
 		TrainModel train = getTrain();
-		return (ImmutableCargoBundle) w.get(KEY.CARGO_BUNDLES, train
-				.getCargoBundleID(), p);
+		return (ImmutableCargoBundle) w.get(p, KEY.CARGO_BUNDLES, train
+						.getCargoBundleID());
 	}
 
 	/**
@@ -72,10 +91,10 @@ public class TrainAccessor {
 	 *         towards.
 	 */
 	public ImPoint getTarget() {
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, id, p);
+		TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
 		int scheduleID = train.getScheduleID();
 		ImmutableSchedule schedule = (ImmutableSchedule) w.get(
-				KEY.TRAIN_SCHEDULES, scheduleID, p);
+				p, KEY.TRAIN_SCHEDULES, scheduleID);
 		int stationNumber = schedule.getStationToGoto();
 
 		if (-1 == stationNumber) {
@@ -83,8 +102,8 @@ public class TrainAccessor {
 			return new ImPoint(0, 0);
 		}
 
-		StationModel station = (StationModel) w.get(KEY.STATIONS,
-				stationNumber, p);
+		StationModel station = (StationModel) w.get(p,
+				KEY.STATIONS, stationNumber);
 
 		return new ImPoint(station.x, station.y);
 	}

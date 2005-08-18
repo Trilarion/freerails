@@ -86,7 +86,7 @@ public class AddTransactionMove implements Move {
 		}
 
 		Transaction lastTransaction = w
-				.getTransaction(size - 1, this.principal);
+				.getTransaction(this.principal, size - 1);
 
 		if (lastTransaction.equals(this.transaction)) {
 			return MoveStatus.MOVE_OK;
@@ -99,7 +99,7 @@ public class AddTransactionMove implements Move {
 		MoveStatus ms = tryDoMove(w, p);
 
 		if (ms.ok) {
-			w.addTransaction(this.transaction, this.principal);
+			w.addTransaction(this.principal, this.transaction);
 		}
 
 		return ms;

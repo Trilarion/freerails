@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -186,12 +185,10 @@ public class ImageManagerImpl implements ImageManager {
 	}
 
 	public void writeAllImages() throws IOException {
-		Iterator<String> it = imageHashMap.keySet().iterator();
 
-		while (it.hasNext()) {
-			String s = it.next();
-			writeImage(s);
-		}
+        for (String s : imageHashMap.keySet()) {
+            writeImage(s);
+        }
 	}
 
 	public void writeImage(String relativeFilename) throws IOException {

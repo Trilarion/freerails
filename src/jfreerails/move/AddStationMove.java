@@ -36,10 +36,10 @@ public class AddStationMove extends CompositeMove {
 	public static AddStationMove generateMove(ReadOnlyWorld w,
 			String stationName, ImPoint p,
 			ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
-		int cargoBundleNumber = w.size(KEY.CARGO_BUNDLES, principal);
+		int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
 		Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
 				ImmutableCargoBundle.EMPTY_BUNDLE, principal);
-		int stationNumber = w.size(KEY.STATIONS, principal);
+		int stationNumber = w.size(principal, KEY.STATIONS);
 		StationModel station = new StationModel(p.x, p.y, stationName, w
 				.size(SKEY.CARGO_TYPES), cargoBundleNumber);
 

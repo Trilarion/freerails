@@ -2,7 +2,6 @@ package experimental;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -50,9 +49,7 @@ public class TrackRenderer {
 
 	BasicStroke rail = new BasicStroke(1f);
 
-	Font font = new Font("Monospaced", 0, 7);
-
-	boolean doubleTrack = false;
+    boolean doubleTrack = false;
 
 	float doubleTrackGap = 4f;
 

@@ -6,8 +6,8 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 
 /**
  * Defines a standard method to initiate GUI components that need access to the

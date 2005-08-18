@@ -29,7 +29,7 @@ public class InterestChargeMoveGenerator {
 		long interestDue = 0;
 
 		for (int i = 0; i < w.getNumberOfTransactions(principal); i++) {
-			Transaction t = w.getTransaction(i, principal);
+			Transaction t = w.getTransaction(principal, i);
 
 			if (t instanceof BondTransaction) {
 				BondTransaction bt = (BondTransaction) t;

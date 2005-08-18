@@ -1,7 +1,7 @@
 package jfreerails.move;
 
 import jfreerails.world.top.World;
-import jfreerails.world.top.WorldDifferences;
+import jfreerails.world.top.WorldDiffs;
 import jfreerails.world.track.FreerailsTile;
 
 /**
@@ -12,7 +12,7 @@ import jfreerails.world.track.FreerailsTile;
 public class MapDiffMoveTest extends AbstractMoveTestCase {
 	public void testMove() {
 		World world2 = this.getWorld();
-		WorldDifferences worldDiff = new WorldDifferences(world2);
+		WorldDiffs worldDiff = new WorldDiffs(world2);
 
 		FreerailsTile tile = (FreerailsTile) world2.getTile(2, 2);
 		assertNotNull(tile);
@@ -22,7 +22,7 @@ public class MapDiffMoveTest extends AbstractMoveTestCase {
 		worldDiff.setTile(3, 5, newTile);
 		assertEquals(newTile, worldDiff.getTile(3, 5));
 
-		Move m = new MapDiffMove(world2, worldDiff);
+		Move m = new WorldDiffMove(world2, worldDiff, WorldDiffMove.Cause.Other);
 		this.assertDoMoveIsOk(m);
 		this.assertUndoMoveIsOk(m);
 		this.assertDoThenUndoLeavesWorldUnchanged(m);

@@ -12,9 +12,9 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.TrainImages;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoType;
@@ -498,8 +498,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 		this.trainNumber = newTrainNumber;
 		FreerailsPrincipal principal = modelRoot.getPrincipal();
 		ReadOnlyWorld w = modelRoot.getWorld();
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, newTrainNumber,
-				principal);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				newTrainNumber);
 		this.scheduleID = train.getScheduleID();
 		listModel = new TrainOrdersListModel(w, newTrainNumber, principal);
 		orders.setModel(listModel);
@@ -519,10 +519,10 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 	private MutableSchedule getSchedule() {
 		FreerailsPrincipal principal = modelRoot.getPrincipal();
 		ReadOnlyWorld w = modelRoot.getWorld();
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber,
-				principal);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				trainNumber);
 		ImmutableSchedule immutableSchedule = (ImmutableSchedule) w.get(
-				KEY.TRAIN_SCHEDULES, train.getScheduleID(), principal);
+				principal, KEY.TRAIN_SCHEDULES, train.getScheduleID());
 		return new MutableSchedule(immutableSchedule);
 	}
 
@@ -668,12 +668,12 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 	private void sendUpdateMove(MutableSchedule mutableSchedule) {
 		FreerailsPrincipal principal = modelRoot.getPrincipal();
 		ReadOnlyWorld w = modelRoot.getWorld();
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, this.trainNumber,
-				principal);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				this.trainNumber);
 		// int scheduleID = train.getScheduleID();
 		assert (scheduleID == train.getScheduleID());
 		ImmutableSchedule before = (ImmutableSchedule) w.get(
-				KEY.TRAIN_SCHEDULES, scheduleID, principal);
+				principal, KEY.TRAIN_SCHEDULES, scheduleID);
 		ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
 		Move m = new ChangeTrainScheduleMove(scheduleID, before, after,
 				principal);

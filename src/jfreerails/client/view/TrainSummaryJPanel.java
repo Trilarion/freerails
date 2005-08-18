@@ -10,9 +10,9 @@ import java.awt.Color;
 
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.view.TrainOrdersListModel.TrainOrdersListElement;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
@@ -71,8 +71,8 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 				break;
 			}
 		}
-		StationModel station = (StationModel) w.get(KEY.STATIONS, orders
-				.getStationID(), principal);
+		StationModel station = (StationModel) w.get(principal, KEY.STATIONS, orders
+						.getStationID());
 		return station.getStationName();
 	}
 
@@ -90,7 +90,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 		int trainID = NonNullElements
 				.row2index(w, KEY.TRAINS, principal, index);
 
-		trainNumLabel.setText("#" + new Integer(trainID + 1).toString());
+		trainNumLabel.setText("#" + (trainID + 1));
 		headingLabel.setText(findStationName(trainID));
 		trainMaintenanceCostLabel.setText(findMaintenanceCost());
 		trainIncomeLabel.setText(findTrainIncome(trainID));

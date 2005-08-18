@@ -73,13 +73,9 @@ public class ActionRoot {
 		return stationBuildModel;
 	}
 
-	public TrackBuildModel getTrackBuildModel() {
-		return trackBuildModel;
-	}
-
-	public TrackMoveProducer getTrackMoveProducer() {
-		return trackMoveProducer;
-	}
+    public TrackMoveProducer getTrackMoveProducer() {
+        return trackMoveProducer;
+    }
 
 	public void setDialogueBoxController(
 			DialogueBoxController dialogueBoxController) {

@@ -35,7 +35,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
 
 		if (autoConsist != trainOrdersModel.autoConsist)
 			return false;
-		if (m_station != trainOrdersModel.m_station)
+		if (stationId != trainOrdersModel.stationId)
 			return false;
 		if (waitUntilFull != trainOrdersModel.waitUntilFull)
 			return false;
@@ -51,21 +51,21 @@ public class TrainOrdersModel implements FreerailsSerializable {
 		result = (waitUntilFull ? 1 : 0);
 		result = 29 * result + (autoConsist ? 1 : 0);
 		result = 29 * result + (consist != null ? consist.hashCode() : 0);
-		result = 29 * result + m_station;
+		result = 29 * result + stationId;
 		return result;
 	}
 
-	public final int m_station; // The number of the station to goto.
+	public final int stationId; // The number of the station to goto.
 
 	public TrainOrdersModel(int station, ImInts newConsist, boolean wait,
 			boolean auto) {
 		// If there are no wagons, set wait = false.
 		wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
 
-		waitUntilFull = wait;
-		consist = newConsist;
-		m_station = station;
-		autoConsist = auto;
+		this.waitUntilFull = wait;
+		this.consist = newConsist;
+		this.stationId = station;
+		this.autoConsist = auto;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
 	}
 
 	public int getStationID() {
-		return m_station;
+		return stationId;
 	}
 
 	public boolean isNoConsistChange() {

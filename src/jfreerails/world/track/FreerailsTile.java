@@ -134,4 +134,8 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
 	public int getTrackTypeID() {
 		return trackPiece.getTrackTypeID();
 	}
+	
+	public boolean hasTrack(){
+		return getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
+	}
 }

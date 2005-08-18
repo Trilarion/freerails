@@ -23,19 +23,19 @@ import jfreerails.world.track.FreerailsTile;
 public class ChangeTileMove implements Move, MapUpdateMove {
 	private static final long serialVersionUID = 3256726169272662320L;
 
-	private final int m_x;
+	private final int x;
 
-	private final int m_y;
+	private final int y;
 
-	private final FreerailsTile m_before;
+	private final FreerailsTile before;
 
-	private final FreerailsTile m_after;
+	private final FreerailsTile after;
 
 	public ChangeTileMove(ReadOnlyWorld w, Point p, int terrainTypeAfter) {
-		m_x = p.x;
-		m_y = p.y;
-		m_before = (FreerailsTile) w.getTile(m_x, m_y);
-		m_after = FreerailsTile.getInstance(terrainTypeAfter, m_before
+		this.x = p.x;
+		this.y = p.y;
+		this.before = (FreerailsTile) w.getTile(x, y);
+		this.after = FreerailsTile.getInstance(terrainTypeAfter, before
 				.getTrackPiece());
 	}
 
@@ -47,13 +47,13 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 
 		final ChangeTileMove changeTileMove = (ChangeTileMove) o;
 
-		if (m_x != changeTileMove.m_x)
+		if (x != changeTileMove.x)
 			return false;
-		if (m_y != changeTileMove.m_y)
+		if (y != changeTileMove.y)
 			return false;
-		if (!m_after.equals(changeTileMove.m_after))
+		if (!after.equals(changeTileMove.after))
 			return false;
-		if (!m_before.equals(changeTileMove.m_before))
+		if (!before.equals(changeTileMove.before))
 			return false;
 
 		return true;
@@ -61,44 +61,44 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 
 	public int hashCode() {
 		int result;
-		result = m_x;
-		result = 29 * result + m_y;
-		result = 29 * result + m_before.hashCode();
-		result = 29 * result + m_after.hashCode();
+		result = x;
+		result = 29 * result + y;
+		result = 29 * result + before.hashCode();
+		result = 29 * result + after.hashCode();
 		return result;
 	}
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		FreerailsTile before = (FreerailsTile) w.getTile(m_x, m_y);
-		TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, before
+		FreerailsTile actual = (FreerailsTile) w.getTile(x, y);
+		TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, actual
 				.getTerrainTypeID());
 
 		if (!type.getCategory().equals(TerrainType.Category.Country)) {
 			return MoveStatus.moveFailed("Can only build on clear terrain.");
 		}
 
-		if (before.equals(m_before)) {
+		if (actual.equals(before)) {
 			return MoveStatus.MOVE_OK;
 		}
-		return MoveStatus.moveFailed("Expected " + m_before + " but found "
-				+ before);
+		return MoveStatus.moveFailed("Expected " + before + " but found "
+				+ actual);
 	}
 
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		FreerailsTile after = (FreerailsTile) w.getTile(m_x, m_y);
+		FreerailsTile actual = (FreerailsTile) w.getTile(x, y);
 
-		if (after.equals(m_after)) {
+		if (actual.equals(after)) {
 			return MoveStatus.MOVE_OK;
 		}
-		return MoveStatus.moveFailed("Expected " + m_after + " but found "
-				+ after);
+		return MoveStatus.moveFailed("Expected " + after + " but found "
+				+ actual);
 	}
 
 	public MoveStatus doMove(World w, FreerailsPrincipal p) {
 		MoveStatus ms = tryDoMove(w, p);
 
 		if (ms.isOk()) {
-			w.setTile(m_x, m_y, m_after);
+			w.setTile(x, y, after);
 		}
 
 		return ms;
@@ -108,14 +108,14 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 		MoveStatus ms = tryUndoMove(w, p);
 
 		if (ms.isOk()) {
-			w.setTile(m_x, m_y, m_before);
+			w.setTile(x, y, before);
 		}
 
 		return ms;
 	}
 
 	public Rectangle getUpdatedTiles() {
-		Rectangle r = new Rectangle(m_x, m_y, 1, 1);
+		Rectangle r = new Rectangle(x, y, 1, 1);
 
 		return r;
 	}

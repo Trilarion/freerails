@@ -107,12 +107,12 @@ public class TrainOrdersListModel extends AbstractListModel {
 	}
 
 	private Schedule getSchedule() {
-		TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber,
-				principal);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				trainNumber);
 		ImmutableSchedule sched = null;
 		if (train != null) {
-			sched = (ImmutableSchedule) w.get(KEY.TRAIN_SCHEDULES, train
-					.getScheduleID(), principal);
+			sched = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, train
+							.getScheduleID());
 		}
 		return sched;
 	}

@@ -24,11 +24,11 @@ public class TransferCargoAtStationMove extends CompositeMove {
 
 	public static final int CHANGE_AT_STATION_INDEX = 0;
 
-	private final boolean m_waitingForFullLoad;
+	private final boolean waitingForFullLoad;
 
 	private TransferCargoAtStationMove(Move[] moves, boolean waiting) {
 		super(moves);
-		m_waitingForFullLoad = waiting;
+		waitingForFullLoad = waiting;
 	}
 
 	public static TransferCargoAtStationMove generateMove(
@@ -103,10 +103,10 @@ public class TransferCargoAtStationMove extends CompositeMove {
 	public TransferCargoAtStationMove(ArrayList<Move> movesArrayList,
 			boolean waiting) {
 		super(movesArrayList);
-		this.m_waitingForFullLoad = waiting;
+		this.waitingForFullLoad = waiting;
 	}
 
 	public boolean isWaitingForFullLoad() {
-		return m_waitingForFullLoad;
+		return waitingForFullLoad;
 	}
 }

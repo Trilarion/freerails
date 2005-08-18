@@ -31,11 +31,11 @@ public abstract class TransactionAggregator {
 	private final GameTime[] DEFAULT_INTERVAL = new GameTime[] {
 			GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD };
 
-	private GameTime[] m_times = DEFAULT_INTERVAL;
+	private GameTime[] timeValues = DEFAULT_INTERVAL;
 
 	public GameTime[] getTimes() {
 		// return defensive copy.
-		return m_times.clone();
+		return timeValues.clone();
 	}
 
 	public void setTimes(GameTime[] times) {
@@ -44,9 +44,9 @@ public abstract class TransactionAggregator {
 					"There must be at least two values.");
 		}
 
-		m_times = new GameTime[times.length];
+		timeValues = new GameTime[times.length];
 
-		m_times[0] = times[0]; // since we start counting at 1.
+		timeValues[0] = times[0]; // since we start counting at 1.
 
 		for (int i = 1; i < times.length; i++) {
 			if (times[i].getTicks() < times[i - 1].getTicks()) {
@@ -54,7 +54,7 @@ public abstract class TransactionAggregator {
 						+ " > time at index " + i + ".");
 			}
 
-			m_times[i] = times[i];
+			timeValues[i] = times[i];
 		}
 	}
 
@@ -75,21 +75,21 @@ public abstract class TransactionAggregator {
 	 * the specified times. Do not override.
 	 */
 	final public Money[] calculateValues() {
-		setTotalsArrayLength(m_times.length - 1);
+		setTotalsArrayLength(timeValues.length - 1);
 
 		int timeIndex = 0;
 		int numberOfTransactions = w.getNumberOfTransactions(this.principal);
-		setTotalsArrayLength(m_times.length - 1);
+		setTotalsArrayLength(timeValues.length - 1);
 
 		for (int i = 0; i < numberOfTransactions; i++) {
-			GameTime time = w.getTransactionTimeStamp(i, principal);
+			GameTime time = w.getTransactionTimeStamp(principal, i);
 			int transactionTime = time.getTicks();
 
-			while (m_times[timeIndex].getTicks() <= transactionTime) {
+			while (timeValues[timeIndex].getTicks() <= transactionTime) {
 				storeTotalIfAppropriate(timeIndex);
 				timeIndex++;
 
-				if (timeIndex >= m_times.length) {
+				if (timeIndex >= timeValues.length) {
 					/*
 					 * The current transaction occured after the last of the
 					 * specifed times.
@@ -107,7 +107,7 @@ public abstract class TransactionAggregator {
 		 * There are no more transactions and the last transaction occured
 		 * before one or more of the specified times.
 		 */
-		while (timeIndex < m_times.length) {
+		while (timeIndex < timeValues.length) {
 			storeTotalIfAppropriate(timeIndex);
 			timeIndex++;
 		}
@@ -132,7 +132,7 @@ public abstract class TransactionAggregator {
 	}
 
 	protected void incrementRunningTotal(int transactionID) {
-		Transaction t = w.getTransaction(transactionID, principal);
+		Transaction t = w.getTransaction(principal, transactionID);
 		runningTotal += t.getValue().getAmount();
 	}
 

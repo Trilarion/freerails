@@ -4,11 +4,10 @@
  */
 package jfreerails.move;
 
+import jfreerails.world.common.Activity;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.AKEY;
-import jfreerails.world.top.Activity;
-import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImplTest;
 
@@ -19,10 +18,10 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 		World w = getWorld();
 		FreerailsPrincipal principal = getPrincipal();
 		Activity act = new WorldImplTest.TestActivity(50);
-		w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
+		w.addActiveEntity(principal, act);
 
 		Activity act2 = new WorldImplTest.TestActivity(60);
-		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS,
+		Move move = new NextActivityMove(act2, 0, 
 				principal);
 		assertSurvivesSerialisation(move);
 		assertOkAndRepeatable(move);
@@ -33,10 +32,10 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 		World w = getWorld();
 		FreerailsPrincipal principal = getPrincipal();
 		Activity act = new WorldImplTest.TestActivity(50);
-		w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
+		w.addActiveEntity(principal, act);
 
 		Activity act2 = new WorldImplTest.TestActivity(60);
-		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS,
+		Move move = new NextActivityMove(act2, 0, 
 				principal);
 		assertDoThenUndoLeavesWorldUnchanged(move);
 
@@ -46,17 +45,16 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 		World w = getWorld();
 		FreerailsPrincipal principal = getPrincipal();
 		Activity act = new WorldImplTest.TestActivity(50);
-		w.addActiveEntity(AKEY.TRAIN_POSITIONS, act, principal);
+		w.addActiveEntity(principal, act);
 
 		Activity act2 = new WorldImplTest.TestActivity(60);
-		Move move = new NextActivityMove(act2, 0, AKEY.TRAIN_POSITIONS,
+		Move move = new NextActivityMove(act2, 0, 
 				principal);
 		assertDoMoveIsOk(move);
 
 		GameTime currentTime = new GameTime(0);
 		assertEquals(currentTime, w.currentTime());
-		ActivityIterator it = w.getActivities(AKEY.TRAIN_POSITIONS, 0,
-				principal);
+		ActivityIterator it = w.getActivities(principal, 0);
 
 		assertEquals(it.getActivity(), act);
 		assertEquals(it.getStartTime(), currentTime.getTicks(), 0.00001);

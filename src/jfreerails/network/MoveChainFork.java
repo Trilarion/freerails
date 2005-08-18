@@ -9,6 +9,7 @@ import jfreerails.move.CompositeMove;
 import jfreerails.move.MapUpdateMove;
 import jfreerails.move.Move;
 import jfreerails.move.RemoveItemFromListMove;
+import jfreerails.move.TimeTickMove;
 import jfreerails.move.UndoMove;
 import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -32,6 +33,12 @@ final public class MoveChainFork implements MoveReceiver {
 	private final ArrayList<WorldListListener> listListeners = new ArrayList<WorldListListener>();
 
 	private final ArrayList<WorldMapListener> mapListeners = new ArrayList<WorldMapListener>();
+	
+	private long lastTickTime = System.currentTimeMillis();	
+
+	public long getLastTickTime() {
+		return lastTickTime;
+	}
 
 	public MoveChainFork() {
 		// do nothing
@@ -116,7 +123,10 @@ final public class MoveChainFork implements MoveReceiver {
 			} else if (move instanceof MapUpdateMove) {
 				Rectangle r = ((MapUpdateMove) move).getUpdatedTiles();
 				sendMapUpdated(r);
-			}
+			} else if (move instanceof TimeTickMove) {
+				long currentTime = System.currentTimeMillis();							
+				lastTickTime = currentTime;				
+			} 
 		}
 	}
 

@@ -4,10 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
-import jfreerails.client.common.ModelRoot.Property;
-import jfreerails.client.common.ModelRoot.Value;
+import jfreerails.controller.ModelRoot;
+import jfreerails.controller.ModelRoot.Property;
+import jfreerails.controller.ModelRoot.Value;
 
 /**
  * This class draws the radius of a station on the map.

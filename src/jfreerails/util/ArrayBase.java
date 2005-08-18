@@ -45,7 +45,7 @@ package jfreerails.util;
  */
 public abstract class ArrayBase extends GrowableBase {
 	/** The number of values currently present in the array. */
-	protected int m_countPresent;
+	protected int countPresent;
 
 	/**
 	 * Constructor with full specification.
@@ -83,8 +83,8 @@ public abstract class ArrayBase extends GrowableBase {
 		super(base);
 		System
 				.arraycopy(base.getArray(), 0, getArray(), 0,
-						base.m_countPresent);
-		m_countPresent = base.m_countPresent;
+						base.countPresent);
+		countPresent = base.countPresent;
 	}
 
 	/**
@@ -109,10 +109,10 @@ public abstract class ArrayBase extends GrowableBase {
 	 * @return index position for added element
 	 */
 	protected final int getAddIndex() {
-		int index = m_countPresent++;
+		int index = countPresent++;
 
-		if (m_countPresent > m_countLimit) {
-			growArray(m_countPresent);
+		if (countPresent > countLimit) {
+			growArray(countPresent);
 		}
 
 		return index;
@@ -125,14 +125,14 @@ public abstract class ArrayBase extends GrowableBase {
 	 *            index position at which to insert element
 	 */
 	protected void makeInsertSpace(int index) {
-		if (index >= 0 && index <= m_countPresent) {
-			if (++m_countPresent > m_countLimit) {
-				growArray(m_countPresent);
+		if (index >= 0 && index <= countPresent) {
+			if (++countPresent > countLimit) {
+				growArray(countPresent);
 			}
 
-			if (index < m_countPresent - 1) {
+			if (index < countPresent - 1) {
 				Object array = getArray();
-				System.arraycopy(array, index, array, index + 1, m_countPresent
+				System.arraycopy(array, index, array, index + 1, countPresent
 						- index - 1);
 			}
 		} else {
@@ -150,13 +150,13 @@ public abstract class ArrayBase extends GrowableBase {
 	 *            index number past last value to be removed
 	 */
 	public void remove(int from, int to) {
-		if (from >= 0 && to <= m_countPresent && from <= to) {
-			if (to < m_countPresent) {
+		if (from >= 0 && to <= countPresent && from <= to) {
+			if (to < countPresent) {
 				int change = from - to;
 				Object base = getArray();
-				System.arraycopy(base, to, base, from, m_countPresent - to);
-				discardValues(m_countPresent + change, m_countPresent);
-				m_countPresent += change;
+				System.arraycopy(base, to, base, from, countPresent - to);
+				discardValues(countPresent + change, countPresent);
+				countPresent += change;
 			}
 		} else {
 			throw new ArrayIndexOutOfBoundsException("Invalid remove range");
@@ -180,7 +180,7 @@ public abstract class ArrayBase extends GrowableBase {
 	 * @return count of values present
 	 */
 	public final int size() {
-		return m_countPresent;
+		return countPresent;
 	}
 
 	/**
@@ -193,13 +193,13 @@ public abstract class ArrayBase extends GrowableBase {
 	 *            number of values to be set
 	 */
 	public void setSize(int count) {
-		if (count > m_countLimit) {
+		if (count > countLimit) {
 			growArray(count);
-		} else if (count < m_countPresent) {
-			discardValues(count, m_countPresent);
+		} else if (count < countPresent) {
+			discardValues(count, countPresent);
 		}
 
-		m_countPresent = count;
+		countPresent = count;
 	}
 
 	/**
@@ -224,7 +224,7 @@ public abstract class ArrayBase extends GrowableBase {
 	 * @return array containing a copy of the data
 	 */
 	protected Object buildArray(Class type, int offset, int length) {
-		if (offset + length <= m_countPresent) {
+		if (offset + length <= countPresent) {
 			return super.buildArray(type, offset, length);
 		}
 		throw new ArrayIndexOutOfBoundsException();

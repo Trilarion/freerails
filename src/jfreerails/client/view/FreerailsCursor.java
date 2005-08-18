@@ -15,8 +15,8 @@ import java.awt.font.TextLayout;
 import java.io.IOException;
 
 import jfreerails.client.common.ImageManager;
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.BuildTrackRenderer;
+import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.common.ImPoint;
 

@@ -31,12 +31,9 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
 		return move.tryDoMove(w, Player.AUTHORITATIVE);
 	}
 
-	public void undoLastMove() {
-	}
-
-	public void processMove(Move move) {
-		move.doMove(w, Player.AUTHORITATIVE);
-	}
+    public void processMove(Move move) {
+        move.doMove(w, Player.AUTHORITATIVE);
+    }
 
 	public void processPreMove(PreMove pm) {
 		processMove(pm.generateMove(w));

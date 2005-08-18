@@ -12,14 +12,17 @@ import static jfreerails.world.common.Step.WEST;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
 import jfreerails.controller.AddTrainPreMove;
+import jfreerails.controller.ModelRoot;
 import jfreerails.controller.MoveExecutor;
 import jfreerails.controller.MoveTrainPreMove;
 import jfreerails.controller.SimpleMoveExecutor;
@@ -27,14 +30,13 @@ import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.server.MapFixtureFactory2;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.top.AKEY;
-import jfreerails.world.top.ActivityIterator;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
@@ -47,9 +49,8 @@ import jfreerails.world.train.TrainPositionOnMap;
 /**
  * This class is a visual test for the train movement code.
  * 
- * TODO (1) Start train moving on first track section. Use modulus operator on t
- * value. (2) Update the train's motion when the current time inteval is coming
- * to an end. see MoveTrainPreMove.
+ * TODO: Update the trains position when necessary. Make the train stop at
+ * intevals, and slowly accelerate.
  * 
  * @author Luke Lindsay
  * 
@@ -62,9 +63,9 @@ public class TrainMotionExpt extends JComponent {
 
 	private final FreerailsPrincipal principal;
 
-	static final int REPEAT = 10;
+    private double finishTime = 0;
 
-	private double finishTime;
+	private long startTime;
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -84,37 +85,29 @@ public class TrainMotionExpt extends JComponent {
 			}
 		}
 
-		long l = System.currentTimeMillis();
+		long l = System.currentTimeMillis() - startTime;
 
 		double ticks = (double) l / 1000;
-		ticks = ticks % finishTime;
 
-		ActivityIterator ai = world.getActivities(AKEY.TRAIN_POSITIONS, 0,
-				principal);
+		while (ticks > finishTime) {
+
+			updateTrainPosition();
+
+		}
+
+		ActivityIterator ai = world.getActivities(principal, 0);
 		while (ai.getFinishTime() < ticks && ai.hasNext()) {
 			ai.nextActivity();
 		}
+		double t = Math.min(ticks, ai.getFinishTime());
+		t = t - ai.getStartTime();
+
 		TrainMotion motion = (TrainMotion) ai.getActivity();
 
 		TrainPositionOnMap pos = (TrainPositionOnMap) ai.getState(ticks);
 
 		PathOnTiles pathOT = motion.getPath();
 		Iterator<ImPoint> it = pathOT.tiles();
-		// while (it.hasNext()) {
-		// ImPoint tile = it.next();
-		// int x = tile.x * Step.TILE_DIAMETER;
-		// int y = tile.y * Step.TILE_DIAMETER;
-		// int w = Step.TILE_DIAMETER;
-		// int h = Step.TILE_DIAMETER;
-		// g.setColor(Color.WHITE);
-		// g.fillRect(x, y, w, h);
-		// g.setColor(Color.LIGHT_GRAY);
-		// g.drawRect(x, y, w, h);
-		// }
-
-		pathOT = motion.getTiles(ticks);
-		pathOT = motion.getPath();
-		it = pathOT.tiles();
 		while (it.hasNext()) {
 			ImPoint tile = it.next();
 			int x = tile.x * Step.TILE_DIAMETER;
@@ -122,6 +115,20 @@ public class TrainMotionExpt extends JComponent {
 			int w = Step.TILE_DIAMETER;
 			int h = Step.TILE_DIAMETER;
 			g.setColor(Color.WHITE);
+			g.fillRect(x, y, w, h);
+			g.setColor(Color.DARK_GRAY);
+			g.drawRect(x, y, w, h);
+		}
+
+		pathOT = motion.getTiles(t);
+		it = pathOT.tiles();
+		while (it.hasNext()) {
+			ImPoint tile = it.next();
+			int x = tile.x * Step.TILE_DIAMETER;
+			int y = tile.y * Step.TILE_DIAMETER;
+			int w = Step.TILE_DIAMETER;
+			int h = Step.TILE_DIAMETER;
+			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(x, y, w, h);
 			g.setColor(Color.DARK_GRAY);
 			g.drawRect(x, y, w, h);
@@ -135,13 +142,38 @@ public class TrainMotionExpt extends JComponent {
 			g.drawLine(line.x1, line.y1, line.x2, line.y2);
 		}
 
+		int speed = (int) Math.round(pos.getSpeed());
+		g.drawString("Speed: " + speed, 260, 60);
+
+	}
+
+	private void updateTrainPosition() {
+		Random rand = new Random(System.currentTimeMillis());
+		MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+		Move m;
+		if (rand.nextInt(10) == 0) {
+			m = moveTrain.stopTrain(world);
+		} else {
+			m = moveTrain.generateMove(world);
+		}
+		MoveStatus ms = m.doMove(world, principal);
+		if (!ms.ok)
+			throw new IllegalStateException(ms.message);
+
+		ActivityIterator ai = world.getActivities(principal, 0);
+
+		while (ai.hasNext()) {
+			ai.nextActivity();
+			finishTime = ai.getFinishTime();
+		}
 	}
 
 	public TrainMotionExpt() {
 		world = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(world, 0);
 		principal = me.getPrincipal();
-		TrackMoveProducer producer = new TrackMoveProducer(me, world);
+		ModelRoot mr = new ModelRootImpl();
+		TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
 		Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
 				NORTH_WEST, NORTH, NORTH_EAST };
 		ImPoint from = new ImPoint(5, 5);
@@ -159,23 +191,7 @@ public class TrainMotionExpt extends JComponent {
 		if (!ms.ok)
 			throw new IllegalStateException(ms.message);
 
-		for (int i = 0; i < 10; i++) {
-			MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
-			m = moveTrain.generateMove(world);
-			ms = m.doMove(world, principal);
-			if (!ms.ok)
-				throw new IllegalStateException(ms.message);
-		}
-
-		ActivityIterator ai = world.getActivities(AKEY.TRAIN_POSITIONS, 0,
-				principal);
-
-		finishTime = 0;
-		while (ai.hasNext()) {
-			ai.nextActivity();
-			finishTime = ai.getFinishTime();
-		}
-
+		startTime = System.currentTimeMillis();
 	}
 
 	public static void main(String[] args) {

@@ -84,25 +84,9 @@ public class QuickRGBTileRendererList implements TileRendererList {
 			this.i = i;
 		}
 
-		public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-			return 0;
-		}
-
-		public int getTileWidth() {
-			return 30;
-		}
-
-		public int getTileHeight() {
-			return 30;
-		}
-
-		public Image getIcon(int x, int y, ReadOnlyWorld w) {
-			return i;
-		}
-
-		public Image getDefaultIcon() {
-			return i;
-		}
+        public Image getDefaultIcon() {
+            return i;
+        }
 
 		public void renderTile(Graphics g, int renderX, int renderY, int mapX,
 				int mapY, ReadOnlyWorld w) {

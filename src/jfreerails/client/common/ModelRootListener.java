@@ -4,6 +4,8 @@
  */
 package jfreerails.client.common;
 
+import jfreerails.controller.ModelRoot;
+
 /**
  * @author Luke
  * 

@@ -3,13 +3,13 @@ package jfreerails.client.renderer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.util.Iterator;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.common.Painter;
+import jfreerails.controller.ModelRoot;
+import jfreerails.world.common.ImPoint;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.WorldDifferences;
+import jfreerails.world.top.WorldDiffs;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackPiece;
 
@@ -25,24 +25,24 @@ public class BuildTrackRenderer implements Painter {
 
 	public static final int SMALL_DOT_WIDTH = 6;
 
-	private final ModelRoot m_modelRoot;
+	private final ModelRoot modelRoot;
 
-	private final Dimension m_tileSize = new Dimension(30, 30);
+	private final Dimension tileSize = new Dimension(30, 30);
 
-	private TrackPieceRendererList m_trackPieceViewList;
+	private TrackPieceRendererList trackPieceViewList;
 
 	public BuildTrackRenderer(TrackPieceRendererList trackPieceViewList,
 			ModelRoot modelRoot) {
-		m_modelRoot = modelRoot;
-		m_trackPieceViewList = trackPieceViewList;
+		this.modelRoot = modelRoot;
+		this.trackPieceViewList = trackPieceViewList;
 
 	}
 
-	private WorldDifferences getWorldDiffs() {
-		if (m_modelRoot == null) {
+	private WorldDiffs getWorldDiffs() {
+		if (modelRoot == null) {
 			return null;
 		}
-		return (WorldDifferences) m_modelRoot
+		return (WorldDiffs) modelRoot
 				.getProperty(ModelRoot.Property.PROPOSED_TRACK);
 	}
 
@@ -52,36 +52,36 @@ public class BuildTrackRenderer implements Painter {
 	 */
 	public void paint(Graphics2D g) {
 
-		WorldDifferences worldDiffs = getWorldDiffs();
+		WorldDiffs worldDiffs = getWorldDiffs();
 		if (null != worldDiffs) {
-			for (Iterator<Point> iter = worldDiffs.getMapDifferences(); iter
+			for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
 					.hasNext();) {
-				Point point = iter.next();
+				ImPoint point = iter.next();
 				TrackPiece tp = (TrackPiece) worldDiffs.getTile(point.x,
 						point.y);
 
 				int graphicsNumber = tp.getTrackGraphicID();
 
 				int ruleNumber = tp.getTrackTypeID();
-				jfreerails.client.renderer.TrackPieceRenderer trackPieceView = m_trackPieceViewList
+				jfreerails.client.renderer.TrackPieceRenderer trackPieceView = trackPieceViewList
 						.getTrackPieceView(ruleNumber);
 				trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x,
-						point.y, m_tileSize);
+						point.y, tileSize);
 			}
 
-			ReadOnlyWorld realWorld = m_modelRoot.getWorld();
+			ReadOnlyWorld realWorld = modelRoot.getWorld();
 			/*
 			 * Draw small dots for each tile whose track has changed. The dots
 			 * are white if track has been added or upgraded and red if it has
 			 * been removed.
 			 */
-			for (Iterator<Point> iter = worldDiffs.getMapDifferences(); iter
+			for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
 					.hasNext();) {
-				Point p = iter.next();
-				int x = p.x * m_tileSize.width
-						+ (m_tileSize.width - SMALL_DOT_WIDTH) / 2;
-				int y = p.y * m_tileSize.width
-						+ (m_tileSize.height - SMALL_DOT_WIDTH) / 2;
+				ImPoint p = iter.next();
+				int x = p.x * tileSize.width
+						+ (tileSize.width - SMALL_DOT_WIDTH) / 2;
+				int y = p.y * tileSize.width
+						+ (tileSize.height - SMALL_DOT_WIDTH) / 2;
 				FreerailsTile before = (FreerailsTile) realWorld.getTile(p.x,
 						p.y);
 				FreerailsTile after = (FreerailsTile) worldDiffs.getTile(p.x,

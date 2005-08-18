@@ -42,7 +42,7 @@ public class MapFixtureFactory2 {
 	}
 
 	private static World generateWorld() {
-		World world = new WorldImpl(25, 25);
+		World world = new WorldImpl(50, 50);
 		TileSetFactory tileFactory = new TileSetFactoryImpl();
 
 		WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
@@ -66,11 +66,11 @@ public class MapFixtureFactory2 {
 			int index = world.addPlayer(p);
 			assert (index == i);
 			world
-					.addTransaction(BondTransaction.issueBond(5), p
-							.getPrincipal());
+					.addTransaction(p
+							.getPrincipal(), BondTransaction.issueBond(5));
 			world
-					.addTransaction(BondTransaction.issueBond(5), p
-							.getPrincipal());
+					.addTransaction(p
+							.getPrincipal(), BondTransaction.issueBond(5));
 		}
 		world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
 		world.setTime(new GameTime(0));

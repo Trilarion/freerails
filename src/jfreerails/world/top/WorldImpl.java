@@ -1,14 +1,19 @@
 package jfreerails.world.top;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
 
+import jfreerails.util.List1D;
+import jfreerails.util.List1DImpl;
+import jfreerails.util.List2D;
+import jfreerails.util.List2DImpl;
+import jfreerails.util.List3D;
+import jfreerails.util.List3DImpl;
 import jfreerails.util.Utils;
-import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.EconomicClimate;
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.accounts.TransactionAndTimeStamp;
+import jfreerails.world.common.Activity;
+import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
@@ -25,524 +30,18 @@ import jfreerails.world.track.FreerailsTile;
  * 
  */
 public class WorldImpl implements World {
-	private static final long serialVersionUID = 3544393612684505393L;
-
-	private static final Logger logger = Logger.getLogger(WorldImpl.class
-			.getName());
-
-	private GameTime time = GameTime.BIG_BANG;
-
-	public int hashCode() {
-		int result;
-		result = players.size();
-
-		return result;
-	}
-
-	/**
-	 * An array of ArrayList indexed by keyNumber. If the key is shared, then
-	 * the ArrayList consists of instances of the class corresponding to the KEY
-	 * type. Otherwise, the ArrayList is indexed by Player index, and contains
-	 * instances of ArrayList which themselves contain instances of the class
-	 * corresponding to the KEY type.
-	 */
-	private final ArrayList<Player> players = new ArrayList<Player>();
-
-	private final ArrayList<BankAccount> bankAccounts = new ArrayList<BankAccount>();
-
-	@SuppressWarnings("unchecked")
-	private final ArrayList<ArrayList<FreerailsSerializable>>[] lists = new ArrayList[KEY
-			.getNumberOfKeys()];
-
-	@SuppressWarnings("unchecked")
-	private final ArrayList<ArrayList<LinkedList<ActivityAndTime>>>[] activityLists = new ArrayList[AKEY
-			.getNumberOfKeys()];
-
-	@SuppressWarnings("unchecked")
-	private final ArrayList<FreerailsSerializable>[] sharedLists = new ArrayList[SKEY
-			.getNumberOfKeys()];
-
-	private final FreerailsSerializable[] items = new FreerailsSerializable[ITEM
-			.getNumberOfKeys()];
-
-	private FreerailsSerializable[][] map;
-
-	public WorldImpl() {
-		setupItems();
-		this.setupMap(0, 0);
-		this.setupLists();
-	}
-
-	private void setupItems() {
-		this.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-		time = new GameTime(0);
-		this.set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
-	}
-
-	public WorldImpl(int mapWidth, int mapHeight) {
-		setupItems();
-		this.setupMap(mapWidth, mapHeight);
-		this.setupLists();
-	}
-
-	public void setupMap(int mapWidth, int mapHeight) {
-		map = new FreerailsSerializable[mapWidth][mapHeight];
-
-		for (int x = 0; x < mapWidth; x++) {
-			for (int y = 0; y < mapHeight; y++) {
-				map[x][y] = FreerailsTile.NULL;
-			}
-		}
-	}
-
-	private void setupLists() {
-		for (int i = 0; i < lists.length; i++) {
-			lists[i] = new ArrayList<ArrayList<FreerailsSerializable>>();
-		}
-
-		for (int i = 0; i < sharedLists.length; i++) {
-			sharedLists[i] = new ArrayList<FreerailsSerializable>();
-		}
-
-		for (int i = 0; i < activityLists.length; i++) {
-			activityLists[i] = new ArrayList<ArrayList<LinkedList<ActivityAndTime>>>();
-		}
-	}
-
-	public FreerailsSerializable get(SKEY key, int index) {
-		return sharedLists[key.getKeyID()].get(index);
-	}
-
-	public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p) {
-		ArrayList<ArrayList<FreerailsSerializable>> arrayList2 = lists[key
-				.getKeyID()];
-		int playerIndex = getPlayerIndex(p);
-		ArrayList<FreerailsSerializable> arrayList = arrayList2
-				.get(playerIndex);
-		return arrayList.get(index);
-	}
-
-	public void set(SKEY key, int index, FreerailsSerializable element) {
-		sharedLists[key.getKeyID()].set(index, element);
-	}
-
-	public void set(KEY key, int index, FreerailsSerializable element,
-			FreerailsPrincipal p) {
-		logger.finer("Setting " + element + " of type " + key + " at index "
-				+ index + " for " + p);
-
-		int playerIndex = getPlayerIndex(p);
-		ArrayList<FreerailsSerializable> arrayList = lists[key.getKeyID()]
-				.get(playerIndex);
-		arrayList.set(index, element);
-	}
-
-	public int add(SKEY key, FreerailsSerializable element) {
-		sharedLists[key.getKeyID()].add(element);
-		return size(key) - 1;
-	}
-
-	public int add(KEY key, FreerailsSerializable element, FreerailsPrincipal p) {
-		logger.finer("Adding " + element + " to " + key + " for " + p);
-
-		lists[key.getKeyID()].get(getPlayerIndex(p)).add(element);
-
-		return size(key, p) - 1;
-	}
-
-	public int size(SKEY key) {
-		return sharedLists[key.getKeyID()].size();
-	}
-
-	public int size(KEY key, FreerailsPrincipal p) {
-		return lists[key.getKeyID()].get(getPlayerIndex(p)).size();
-	}
-
-	public int getMapWidth() {
-		return map.length;
-	}
-
-	public int getMapHeight() {
-		if (map.length == 0) {
-			// When the map size is 0*0 we get a
-			// java.lang.ArrayIndexOutOfBoundsException: 0
-			// if we don't have check above.
-			return 0;
-		}
-		return map[0].length;
-	}
-
-	public void setTile(int x, int y, FreerailsSerializable element) {
-		map[x][y] = element;
-	}
-
-	public FreerailsSerializable getTile(int x, int y) {
-		return map[x][y];
-	}
-
-	public boolean boundsContain(int x, int y) {
-		if (x >= 0 && x < map.length && y >= 0 && y < map[0].length) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean boundsContain(KEY k, int index, FreerailsPrincipal p) {
-		if (!isPlayer(p)) {
-			return false;
-		} else if (index >= 0 && index < this.size(k, p)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean boundsContain(SKEY k, int index) {
-		return (index >= 0 && index < this.size(k));
-	}
-
-	public FreerailsSerializable removeLast(SKEY key) {
-		int size = lists[key.getKeyID()].size();
-
-		return sharedLists[key.getKeyID()].remove(size - 1);
-	}
-
-	public FreerailsSerializable removeLast(KEY key, FreerailsPrincipal p) {
-		logger.finer("Removing last " + key + " for " + p);
-
-		int size;
-		size = lists[key.getKeyID()].get(getPlayerIndex(p)).size();
-
-		int index = size - 1;
-
-		return lists[key.getKeyID()].get(getPlayerIndex(p)).remove(index);
-	}
-
-	public boolean equals(Object o) {
-		if (o instanceof WorldImpl) {
-			WorldImpl test = (WorldImpl) o;
-
-			// Compare players
-			int numberOfPlayers = getNumberOfPlayers();
-			if (numberOfPlayers != test.getNumberOfPlayers())
-				return false;
-
-			for (int i = 0; i < numberOfPlayers; i++) {
-				if (!getPlayer(i).equals(test.getPlayer(i)))
-					return false;
-			}
-
-			// Compare lists
-			if (lists.length != test.lists.length) {
-				return false;
-			}
-			for (int i = 0; i < lists.length; i++) {
-				if (!lists[i].equals(test.lists[i])) {
-					return false;
-				}
-			}
-
-			if (sharedLists.length != test.sharedLists.length) {
-				return false;
-			}
-			for (int i = 0; i < sharedLists.length; i++) {
-				if (!sharedLists[i].equals(test.sharedLists[i])) {
-					return false;
-				}
-			}
-
-			// Compare maps
-			if ((this.getMapWidth() != test.getMapWidth())
-					|| (this.getMapHeight() != test.getMapHeight())) {
-				return false;
-			}
-			for (int x = 0; x < this.getMapWidth(); x++) {
-				for (int y = 0; y < this.getMapHeight(); y++) {
-					if (!getTile(x, y).equals(test.getTile(x, y))) {
-						return false;
-					}
-				}
-			}
-
-			if (this.items.length != test.items.length) {
-				return false;
-			}
-			for (int i = 0; i < this.items.length; i++) {
-				// Some of the elements in the items array might be null, so we
-				// check for this before
-				// calling equals to avoid NullPointerExceptions.
-				if (!(null == items[i] ? null == test.items[i] : items[i]
-						.equals(test.items[i]))) {
-					return false;
-				}
-			}
-
-			/* Compare bank accounts. */
-			if (!this.bankAccounts.equals(test.bankAccounts)) {
-				return false;
-			}
-
-			// Compare activity lists.
-
-			assert (activityLists.length == test.activityLists.length);
-
-			for (int key = 0; key < activityLists.length; key++) {
-				// E.g. key could be 'train positions'.
-
-				// This should have been checked above.
-				int numPlayers = activityLists[key].size();
-				assert (numPlayers == test.activityLists[key].size());
-
-				for (int player = 0; player < numPlayers; player++) {
-
-					int numEntities = activityLists[key].get(player).size();
-					if (numEntities != test.activityLists[key].get(player)
-							.size())
-						return false;
-
-					for (int entity = 0; entity < numEntities; entity++) {
-						// E.g. entity could be 'train#1'.
-						int numIntervals = activityLists[key].get(player).get(
-								entity).size();
-						if (numIntervals != test.activityLists[key].get(player)
-								.get(entity).size())
-							return false;
-
-						for (int interval = 0; interval < numIntervals; interval++) {
-							// E.g. interval could be 't=0 to t=10'.
-							ActivityAndTime antA = activityLists[key].get(
-									player).get(entity).get(interval);
-							ActivityAndTime antB = test.activityLists[key].get(
-									player).get(entity).get(interval);
-							if (!antA.equals(antB)) {
-								return false;
-							}
-						}
-					}
-				}
-			}
-
-			// phew!
-			return true;
-		}
-		return false;
-	}
-
-	public FreerailsSerializable get(ITEM item) {
-		return items[item.getKeyID()];
-	}
-
-	public void set(ITEM item, FreerailsSerializable element) {
-		items[item.getKeyID()] = element;
-	}
-
-	/**
-	 * @param player
-	 *            Player to add
-	 * @return index of the player
-	 */
-	public int addPlayer(Player player) {
-		if (null == player) {
-			throw new NullPointerException();
-		}
-
-		players.add(player);
-		bankAccounts.add(new BankAccount());
-
-		int index = players.size() - 1;
-
-		for (int i = 0; i < KEY.getNumberOfKeys(); i++) {
-			lists[i].add(new ArrayList<FreerailsSerializable>());
-		}
-
-		for (int i = 0; i < AKEY.getNumberOfKeys(); i++) {
-
-			activityLists[i].add(new ArrayList<LinkedList<ActivityAndTime>>());
-		}
-
-		return index;
-	}
-
-	private int getPlayerIndex(FreerailsPrincipal p) {
-		for (int i = 0; i < players.size(); i++) {
-			Player player = (players.get(i));
-
-			if (p.equals(player.getPrincipal())) {
-				return i;
-			}
-		}
-
-		throw new ArrayIndexOutOfBoundsException("No matching principal for "
-				+ p.toString());
-	}
-
-	public World defensiveCopy() {
-		return (World) Utils.cloneBySerialisation(this);
-	}
-
-	public int getNumberOfPlayers() {
-		return players.size();
-	}
-
-	public Player getPlayer(int i) {
-		return players.get(i);
-	}
-
-	public void addTransaction(Transaction t, FreerailsPrincipal p) {
-		getBankAccount(p).addTransaction(t, time);
-	}
-
-	public Transaction removeLastTransaction(FreerailsPrincipal p) {
-		return getBankAccount(p).removeLastTransaction();
-	}
-
-	public Transaction getTransaction(int i, FreerailsPrincipal p) {
-		return getBankAccount(p).getTransaction(i);
-	}
-
-	public Money getCurrentBalance(FreerailsPrincipal p) {
-		return getBankAccount(p).getCurrentBalance();
-	}
-
-	public int getNumberOfTransactions(FreerailsPrincipal p) {
-		return getBankAccount(p).size();
-	}
-
-	private BankAccount getBankAccount(FreerailsPrincipal p) {
-		int index = this.getPlayerIndex(p);
-
-		return bankAccounts.get(index);
-	}
-
-	public boolean isPlayer(FreerailsPrincipal p) {
-		try {
-			this.getPlayerIndex(p);
-
-			return true;
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return false;
-		}
-	}
-
-	public GameTime getTransactionTimeStamp(int i, FreerailsPrincipal p) {
-		return getBankAccount(p).getTimeStamp(i);
-	}
-
-	public int getID(FreerailsPrincipal p) {
-
-		return this.getPlayerIndex(p);
-	}
-
-	public void setTime(GameTime t) {
-		time = t;
-
-	}
-
-	public GameTime currentTime() {
-		return time;
-	}
-
-	public int addActiveEntity(AKEY key, Activity element, FreerailsPrincipal p) {
-		LinkedList<ActivityAndTime> activities = new LinkedList<ActivityAndTime>();
-
-		ActivityAndTime ant = new ActivityAndTime(element, currentTime()
-				.getTicks());
-		activities.add(ant);
-		activityLists[key.getKeyID()].get(getPlayerIndex(p)).add(activities);
-		return size(key, p) - 1;
-	}
-
-	@SuppressWarnings("unchecked")
-	public void add(AKEY key, int index, Activity element, FreerailsPrincipal p) {
-		ArrayList<LinkedList<ActivityAndTime>> list = activityLists[key
-				.getKeyID()].get(getPlayerIndex(p));
-		LinkedList<ActivityAndTime> activities = list.get(index);
-		ActivityAndTime last = activities.getLast();
-		double duration = last.act.duration();
-		double lastFinishTime = last.startTime + duration;
-		double thisStartTime = Math.max(lastFinishTime, currentTime()
-				.getTicks());
-		ActivityAndTime ant = new ActivityAndTime(element, thisStartTime);
-		activities.add(ant);
-	}
-
-	public Activity removeLastActiveEntity(AKEY key, FreerailsPrincipal p) {
-		ArrayList<LinkedList<ActivityAndTime>> list = activityLists[key
-				.getKeyID()].get(getPlayerIndex(p));
-		int indexOfLast = list.size() - 1;
-		LinkedList<ActivityAndTime> activities = list.get(indexOfLast);
-		list.remove(indexOfLast);
-		return activities.getFirst().act;
-	}
-
-	public Activity removeLastActivity(AKEY key, int index, FreerailsPrincipal p) {
-		ArrayList<LinkedList<ActivityAndTime>> list = activityLists[key
-				.getKeyID()].get(getPlayerIndex(p));
-		LinkedList<ActivityAndTime> activities = list.get(index);
-		if (activities.size() < 2)
-			throw new IllegalStateException();
-
-		return activities.removeLast().act;
-	}
-
-	public ActivityIterator getActivities(final AKEY key, final int index,
-			final FreerailsPrincipal p) {
-
-		return new ActivityIterator() {
-			ArrayList<LinkedList<ActivityAndTime>> list = activityLists[key
-					.getKeyID()].get(getPlayerIndex(p));
-
-			LinkedList<ActivityAndTime> activities = list.get(index);
-
-			int activityIndex = 0;
-
-			ActivityAndTime ant = activities.get(activityIndex);
-
-			public boolean hasNext() {
-				return (activityIndex + 1) < activities.size();
-			}
-
-			public void nextActivity() {
-				if (!hasNext())
-					throw new NoSuchElementException();
-
-				activityIndex++;
-				ant = activities.get(activityIndex);
-			}
-
-			public double getStartTime() {
-				return ant.startTime;
-			}
-
-			public double getFinishTime() {
-				double ticks = ant.startTime + ant.act.duration();
-				return ticks;
-			}
-
-			public double getDuration() {
-				return ant.act.duration();
-			}
-
-			public FreerailsSerializable getState(double t) {
-				double dt = t - ant.startTime;
-				dt = Math.min(dt, ant.act.duration());
-				return ant.act.getState(dt);
-			}
-
-			public Activity getActivity() {
-				return ant.act;
-			}
-
-		};
-	}
-
-	public int size(AKEY key, FreerailsPrincipal p) {
-		return activityLists[key.getKeyID()].get(getPlayerIndex(p)).size();
-	}
-
-	static class ActivityAndTime implements FreerailsSerializable {
+	public static class ActivityAndTime implements FreerailsSerializable {
 
 		private static final long serialVersionUID = -5149207279086814649L;
+
+		public final Activity act;
+
+		public final double startTime;
+
+		ActivityAndTime(Activity act, double time) {
+			this.act = act;
+			startTime = time;
+		}
 
 		public boolean equals(Object o) {
 			if (this == o)
@@ -567,15 +66,369 @@ public class WorldImpl implements World {
 			return result;
 		}
 
-		final Activity act;
+	}
 
-		final double startTime;
+	private static final long serialVersionUID = 3544393612684505393L;
 
-		ActivityAndTime(Activity act, double time) {
-			this.act = act;
-			startTime = time;
+	/** A 3D list: D1 is player, D2 is train id, D3 is train position. */
+	 List3D<ActivityAndTime> activityLists;
+
+	/** A 2D list: D1 is player, D2 is transaction. */
+	 List2D<TransactionAndTimeStamp> bankAccounts;
+
+	 List1D<Money> currentBalance;
+
+	 List1D<FreerailsSerializable> items;
+
+	/** A 3D list: D1 is player, D2 is type, D3 is element. */
+	 List3D<FreerailsSerializable> lists;
+
+	FreerailsSerializable[][] map;
+
+	 List1D<Player> players;
+
+	/** A 2D list: D1 is type, D2 is element. */
+	 List2D<FreerailsSerializable> sharedLists;
+
+	GameTime time = GameTime.BIG_BANG;
+
+	public WorldImpl() {
+		this(0, 0);
+	}
+
+	public WorldImpl(int mapWidth, int mapHeight) {
+		activityLists = new List3DImpl<ActivityAndTime>(0, 0);
+		bankAccounts = new List2DImpl<TransactionAndTimeStamp>(0);
+		currentBalance = new List1DImpl<Money>();
+		items = new List1DImpl<FreerailsSerializable>(ITEM.getNumberOfKeys());
+		lists = new List3DImpl<FreerailsSerializable>(0, KEY.getNumberOfKeys());
+		players = new List1DImpl<Player>();
+		sharedLists = new List2DImpl<FreerailsSerializable>(SKEY
+				.getNumberOfKeys());
+		time = GameTime.BIG_BANG;
+		setupItems();
+		setupMap(mapWidth, mapHeight);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public void add(FreerailsPrincipal p, int index, Activity element) {
+		int playerIndex = getPlayerIndex(p);
+		int lastID = activityLists.sizeD3(playerIndex, index) - 1;
+		ActivityAndTime last = activityLists.get(playerIndex, index, lastID);
+		double duration = last.act.duration();
+		double lastFinishTime = last.startTime + duration;
+		double thisStartTime = Math.max(lastFinishTime, currentTime()
+				.getTicks());
+		ActivityAndTime ant = new ActivityAndTime(element, thisStartTime);
+		activityLists.addD3(playerIndex, index, ant);
+	}
+
+	public int add(FreerailsPrincipal p, KEY key, FreerailsSerializable element) {
+		int playerIndex = getPlayerIndex(p);
+		return lists.addD3(playerIndex, key.getKeyID(), element);
+	}
+
+	public int add(SKEY key, FreerailsSerializable element) {
+		return sharedLists.addD2(key.getKeyID(), element);
+	}
+
+	public int addActiveEntity(FreerailsPrincipal p, Activity element) {
+		int playerIndex = getPlayerIndex(p);
+		int index = activityLists.addD2(playerIndex);
+		ActivityAndTime ant = new ActivityAndTime(element, currentTime()
+				.getTicks());
+		activityLists.addD3(playerIndex, index, ant);
+		return index;
+	}
+
+	/**
+	 * @param player
+	 *            Player to add
+	 * @return index of the player
+	 */
+	public int addPlayer(Player player) {
+		if (null == player) {
+			throw new NullPointerException();
 		}
 
+		int index = players.add(player);
+		bankAccounts.addD1();
+		currentBalance.add(new Money(0));
+
+		lists.addD1();
+		for (int i = 0; i < KEY.getNumberOfKeys(); i++) {
+			lists.addD2(index);
+		}
+		activityLists.addD1();
+
+		return index;
+	}
+
+	public void addTransaction(FreerailsPrincipal p, Transaction t) {
+		int playerIndex = getPlayerIndex(p);
+		TransactionAndTimeStamp tats = new TransactionAndTimeStamp(t, time);
+		bankAccounts.addD2(playerIndex, tats);
+		Money oldBalance = currentBalance.get(playerIndex);
+		Money newBalance = new Money(t.getValue().getAmount()
+				+ oldBalance.getAmount());
+		currentBalance.set(playerIndex, newBalance);
+	}
+
+	public boolean boundsContain(FreerailsPrincipal p, KEY k, int index) {
+		if (!isPlayer(p)) {
+			return false;
+		} else if (index >= 0 && index < this.size(p, k)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean boundsContain(int x, int y) {
+		if (x >= 0 && x < getMapWidth() && y >= 0 && y < getMapHeight()) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean boundsContain(SKEY k, int index) {
+		return (index >= 0 && index < this.size(k));
+	}
+
+	public GameTime currentTime() {
+		return time;
+	}
+
+	public World defensiveCopy() {
+		return (World) Utils.cloneBySerialisation(this);
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof WorldImpl) {
+			WorldImpl test = (WorldImpl) o;
+
+			// Compare players
+			int numberOfPlayers = getNumberOfPlayers();
+			if (numberOfPlayers != test.getNumberOfPlayers())
+				return false;
+
+			for (int i = 0; i < numberOfPlayers; i++) {
+				if (!getPlayer(i).equals(test.getPlayer(i)))
+					return false;
+			}
+
+			// Compare lists
+			if (!lists.equals(test.lists)) {
+				return false;
+			}
+			if (!sharedLists.equals(test.sharedLists)) {
+				return false;
+			}
+			if (!activityLists.equals(test.activityLists)) {
+				return false;
+			}
+			if (!items.equals(test.items)) {
+				return false;
+			}
+			if (!bankAccounts.equals(test.bankAccounts)) {
+				return false;
+			}
+
+			// Compare maps
+			if ((this.getMapWidth() != test.getMapWidth())
+					|| (this.getMapHeight() != test.getMapHeight())) {
+				return false;
+			}
+			for (int x = 0; x < this.getMapWidth(); x++) {
+				for (int y = 0; y < this.getMapHeight(); y++) {
+					if (!getTile(x, y).equals(test.getTile(x, y))) {
+						return false;
+					}
+				}
+			}
+
+			// phew!
+			return true;
+		}
+		return false;
+	}
+
+	public FreerailsSerializable get(FreerailsPrincipal p, KEY key, int index) {
+
+		int playerIndex = getPlayerIndex(p);
+		return lists.get(playerIndex, key.getKeyID(), index);
+	}
+
+	public FreerailsSerializable get(ITEM item) {
+		return items.get(item.getKeyID());
+	}
+
+	public FreerailsSerializable get(SKEY key, int index) {
+		return sharedLists.get(key.getKeyID(), index);
+	}
+
+	public ActivityIterator getActivities(final FreerailsPrincipal p,
+			final int index) {
+		final int playerIndex = getPlayerIndex(p);
+		return new ActivityIterator() {
+			int activityIndex = 0;
+
+			ActivityAndTime ant = activityLists.get(playerIndex, index,
+					activityIndex);
+
+			public double absolute2relativeTime(double t) {
+				double dt = t - ant.startTime;
+				dt = Math.min(dt, ant.act.duration());
+				return dt;
+			}
+
+			public Activity getActivity() {
+				return ant.act;
+			}
+
+			public double getDuration() {
+				return ant.act.duration();
+			}
+
+			public double getFinishTime() {
+				double ticks = ant.startTime + ant.act.duration();
+				return ticks;
+			}
+
+			public double getStartTime() {
+				return ant.startTime;
+			}
+
+			public FreerailsSerializable getState(double t) {
+				double dt = absolute2relativeTime(t);
+				return ant.act.getState(dt);
+			}
+
+			public boolean hasNext() {
+				return (activityIndex + 1) < activityLists.sizeD3(playerIndex,
+						index);
+			}
+
+			public void nextActivity() {
+				if (!hasNext())
+					throw new NoSuchElementException();
+
+				activityIndex++;
+				ant = activityLists.get(playerIndex, index, activityIndex);
+			}
+
+		};
+	}
+
+	public Money getCurrentBalance(FreerailsPrincipal p) {
+		int playerIndex = getPlayerIndex(p);
+		return currentBalance.get(playerIndex);
+	}
+
+	public int getID(FreerailsPrincipal p) {
+
+		return this.getPlayerIndex(p);
+	}
+
+	public int getMapHeight() {
+		if (map.length == 0) {
+			// When the map size is 0*0 we get a
+			// java.lang.ArrayIndexOutOfBoundsException: 0
+			// if we don't have the check above.
+			return 0;
+		}
+		return map[0].length;
+	}
+
+	public int getMapWidth() {
+		return map.length;
+	}
+
+	public int getNumberOfPlayers() {
+		return players.size();
+	}
+
+	public int getNumberOfTransactions(FreerailsPrincipal p) {
+		int playerIndex = getPlayerIndex(p);
+		return bankAccounts.sizeD2(playerIndex);
+	}
+
+	public Player getPlayer(int i) {
+		return players.get(i);
+	}
+
+	private int getPlayerIndex(FreerailsPrincipal p) {
+		for (int i = 0; i < players.size(); i++) {
+			Player player = (players.get(i));
+
+			if (p.equals(player.getPrincipal())) {
+				return i;
+			}
+		}
+
+		throw new ArrayIndexOutOfBoundsException("No matching principal for "
+				+ p.toString());
+	}
+
+	public FreerailsSerializable getTile(int x, int y) {
+		return map[x][y];
+	}
+
+	public Transaction getTransaction(FreerailsPrincipal p, int i) {
+		int playerIndex = getPlayerIndex(p);
+		TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
+		return tats.getT();
+	}
+
+	public GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i) {
+		int playerIndex = getPlayerIndex(p);
+		TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
+		return tats.getTimeStamp();
+	}
+
+	public int hashCode() {
+		int result;
+		result = players.size();
+
+		return result;
+	}
+
+	public boolean isPlayer(FreerailsPrincipal p) {
+		try {
+			this.getPlayerIndex(p);
+
+			return true;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
+	}
+
+	public FreerailsSerializable removeLast(FreerailsPrincipal p, KEY key) {
+		int playerIndex = getPlayerIndex(p);
+		return lists.removeLastD3(playerIndex, key.getKeyID());
+	}
+
+	public FreerailsSerializable removeLast(SKEY key) {
+
+		return sharedLists.removeLastD2(key.getKeyID());
+	}
+
+	public Activity removeLastActiveEntity(FreerailsPrincipal p) {
+		int playerIndex = getPlayerIndex(p);
+		int lastID = activityLists.sizeD2(playerIndex) - 1;
+		Activity act = activityLists.removeLastD3(playerIndex, lastID).act;
+		activityLists.removeLastD2(playerIndex);
+		return act;
+	}
+
+	public Activity removeLastActivity(FreerailsPrincipal p, int index) {
+		int playerIndex = getPlayerIndex(p);
+		if (activityLists.sizeD3(playerIndex, index) < 2)
+			throw new IllegalStateException();
+
+		Activity act = activityLists.removeLastD3(playerIndex, index).act;
+		return act;
 	}
 
 	/**
@@ -588,25 +441,82 @@ public class WorldImpl implements World {
 	 */
 	public Player removeLastPlayer() {
 
-		int index = players.size() - 1;
+		int playerID = bankAccounts.removeLastD1();
+		while (lists.sizeD2(playerID) > 0)
+			lists.removeLastD2(playerID);
 
-		BankAccount account = bankAccounts.remove(index);
-		if (account.size() != 0)
-			throw new IllegalStateException();
+		lists.removeLastD1();
+		currentBalance.removeLast();
+		activityLists.removeLastD1();
 
-		for (int i = 0; i < KEY.getNumberOfKeys(); i++) {
-			ArrayList<FreerailsSerializable> list = lists[i].remove(index);
-			if (list.size() != 0)
-				throw new IllegalStateException();
+		return players.removeLast();
+	}
+
+	public Transaction removeLastTransaction(FreerailsPrincipal p) {
+		int playerIndex = getPlayerIndex(p);
+		TransactionAndTimeStamp tats = bankAccounts.removeLastD2(playerIndex);
+		Money oldBalance = currentBalance.get(playerIndex);
+		Money newBalance = new Money(oldBalance.getAmount()
+				- tats.getT().getValue().getAmount());
+		currentBalance.set(playerIndex, newBalance);
+		return tats.getT();
+	}
+
+	public void set(FreerailsPrincipal p, KEY key, int index,
+			FreerailsSerializable element) {		
+		int playerIndex = getPlayerIndex(p);
+		lists.set(playerIndex, key.getKeyID(), index, element);
+	}
+
+	public void set(ITEM item, FreerailsSerializable element) {
+		items.set(item.getKeyID(), element);
+	}
+
+	public void set(SKEY key, int index, FreerailsSerializable element) {
+		sharedLists.set(key.getKeyID(), index, element);
+	}
+
+	public void setTile(int x, int y, FreerailsSerializable element) {
+		map[x][y] = element;
+	}
+
+	public void setTime(GameTime t) {
+		time = t;
+
+	}
+
+	void setupItems() {
+		this.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+		time = new GameTime(0);
+		this.set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
+	}
+
+	public void setupMap(int mapWidth, int mapHeight) {
+		map = new FreerailsSerializable[mapWidth][mapHeight];
+
+		for (int x = 0; x < mapWidth; x++) {
+			for (int y = 0; y < mapHeight; y++) {
+				map[x][y] = FreerailsTile.NULL;
+			}
 		}
+	}
 
-		for (int i = 0; i < AKEY.getNumberOfKeys(); i++) {
-			ArrayList<LinkedList<ActivityAndTime>> list = activityLists[i]
-					.remove(index);
-			if (list.size() != 0)
-				throw new IllegalStateException();
-		}
+	public int size(FreerailsPrincipal p) {
+		int playerIndex = getPlayerIndex(p);
+		return activityLists.sizeD2(playerIndex);
+	}
 
-		return players.remove(index);
+	public int size(FreerailsPrincipal p, KEY key) {
+		int playerIndex = getPlayerIndex(p);
+		return lists.sizeD3(playerIndex, key.getKeyID());
+	}
+
+	public int size(SKEY key) {
+		return sharedLists.sizeD2(key.getKeyID());
+	}
+
+	public int getNumberOfActiveEntities(FreerailsPrincipal p) {	
+		int playerIndex = getPlayerIndex(p);
+		return activityLists.sizeD2(playerIndex);
 	}
 }

@@ -13,8 +13,8 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 
-import jfreerails.client.common.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.FreerailsSerializable;
@@ -195,15 +195,15 @@ public class StationInfoJPanel extends JPanel implements View,
 		int stationNumber = wi.getIndex();
 		String label;
 		if (stationNumber != WorldIterator.BEFORE_FIRST) {
-			StationModel station = (StationModel) w.get(KEY.STATIONS,
-					stationNumber, modelRoot.getPrincipal());
+			StationModel station = (StationModel) w.get(modelRoot.getPrincipal(),
+					KEY.STATIONS, stationNumber);
 			FreerailsTile tile = (FreerailsTile) w
 					.getTile(station.x, station.y);
 			String stationTypeName = tile.getTrackRule().getTypeName();
 			cargoBundleIndex = station.getCargoBundleID();
 			ImmutableCargoBundle cargoWaiting = (ImmutableCargoBundle) w.get(
-					KEY.CARGO_BUNDLES, station.getCargoBundleID(), modelRoot
-							.getPrincipal());
+					modelRoot
+							.getPrincipal(), KEY.CARGO_BUNDLES, station.getCargoBundleID());
 			String title = "<h2 align=\"center\">" + station.getStationName()
 					+ " (" + stationTypeName + ")</h2>";
 			String table = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies / cars per year</td><td>Waiting for pickup / car loads</td>  </tr>";
@@ -270,10 +270,10 @@ public class StationInfoJPanel extends JPanel implements View,
 		 * Avoid a array out of bounds exception when there are no stations and
 		 * the stations tab is visible.
 		 */
-		if (w.boundsContain(KEY.CARGO_BUNDLES, cargoBundleIndex,
-				playerPrincipal)) {
-			FreerailsSerializable currentCargoBundle = w.get(KEY.CARGO_BUNDLES,
-					this.cargoBundleIndex, playerPrincipal);
+		if (w.boundsContain(playerPrincipal, KEY.CARGO_BUNDLES,
+				cargoBundleIndex)) {
+			FreerailsSerializable currentCargoBundle = w.get(playerPrincipal,
+					KEY.CARGO_BUNDLES, this.cargoBundleIndex);
 			if (lastCargoBundle != currentCargoBundle) {
 				this.display();
 				lastCargoBundle = currentCargoBundle;

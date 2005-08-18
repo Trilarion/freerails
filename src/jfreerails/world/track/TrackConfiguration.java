@@ -88,12 +88,12 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		return from9bitTemplate(newTemplate);
 	}
 
-	private final int m_length;
+	private final int length;
 
-	private final int m_configuration;
+	private final int configuration;
 
 	private TrackConfiguration(int configuration) {
-		m_configuration = configuration;
+		this.configuration = configuration;
 
 		// Calculate length.
 		int tempLength = 0;
@@ -105,7 +105,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 			}
 		}
 
-		m_length = tempLength;
+		length = tempLength;
 	}
 
 	public boolean contains(FlatTrackTemplate ftt) {
@@ -115,7 +115,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 	}
 
 	public boolean contains(int trackTemplate) {
-		if ((trackTemplate | this.m_configuration) == this.m_configuration) {
+		if ((trackTemplate | this.configuration) == this.configuration) {
 			return true;
 		}
 		return false;
@@ -142,7 +142,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 	 * @return an int representing this track configuration.
 	 */
 	public int get9bitTemplate() {
-		return m_configuration;
+		return configuration;
 	}
 
 	/**
@@ -150,7 +150,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 	 * the cost of building track.
 	 */
 	public int getLength() {
-		return m_length;
+		return length;
 	}
 
 	public Iterator getPossibleConfigurationsIterator() {
@@ -158,15 +158,15 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 	}
 
 	public int getTrackGraphicsID() {
-		return m_configuration;
+		return configuration;
 	}
 
 	public int hashCode() {
-		return m_configuration;
+		return configuration;
 	}
 
 	private Object readResolve() throws ObjectStreamException {
-		return TrackConfiguration.from9bitTemplate(this.m_configuration);
+		return TrackConfiguration.from9bitTemplate(this.configuration);
 	}
 
 	/**

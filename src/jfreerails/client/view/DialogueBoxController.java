@@ -22,17 +22,12 @@ import javax.swing.JLayeredPane;
 
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
-import jfreerails.client.common.ModelRoot.Property;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.controller.FinancialDataGatherer;
-import jfreerails.move.AddTransactionMove;
+import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
-import jfreerails.world.accounts.BondTransaction;
-import jfreerails.world.accounts.IssueStockTransaction;
 import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -81,9 +76,7 @@ public class DialogueBoxController implements WorldListListener {
 
 	private StationInfoJPanel stationInfo;
 
-	private TrainDialogueJPanel trainDialogueJPanel;
-
-	private BrokerScreenHtmlJFrame brokerScreenHtmlJFrame;
+	private TrainDialogueJPanel trainDialogueJPanel;	
 
 	private ReadOnlyWorld world;
 
@@ -91,9 +84,7 @@ public class DialogueBoxController implements WorldListListener {
 
 	private ViewLists vl;
 
-	private Component defaultFocusOwner = null;
-
-	private FinancialDataGatherer financialDataGatherer;
+	private Component defaultFocusOwner = null;	
 
 	private final JFrame frame;
 
@@ -143,48 +134,7 @@ public class DialogueBoxController implements WorldListListener {
 		}
 	};
 
-	private final ActionListener issueBondActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-
-			if (financialDataGatherer.canIssueBond()) {
-				Move bondTransaction = new AddTransactionMove(modelRoot
-						.getPrincipal(),
-						BondTransaction.issueBond(financialDataGatherer
-								.nextBondInterestRate()));
-				modelRoot.doMove(bondTransaction);
-			}
-		}
-	};
-
-	private final ActionListener repayBondActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-
-			Move bondTransaction = new AddTransactionMove(modelRoot
-					.getPrincipal(), BondTransaction.repayBond(5));
-			modelRoot.doMove(bondTransaction);
-		}
-	};
-
-	private final ActionListener buyTreasuryStockActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-
-			Move StockTransaction = new AddTransactionMove(modelRoot
-					.getPrincipal(), IssueStockTransaction.issueStock(modelRoot
-					.getWorld().getID(modelRoot.getPrincipal()), 10000,
-					financialDataGatherer.sharePrice()));
-			modelRoot.doMove(StockTransaction);
-		}
-	};
-
-	private final ActionListener sellTreasuryStockActionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			Move StockTransaction = new AddTransactionMove(modelRoot
-					.getPrincipal(), IssueStockTransaction.sellStock(modelRoot
-					.getWorld().getID(modelRoot.getPrincipal()), 10000,
-					financialDataGatherer.sharePrice()));
-			modelRoot.doMove(StockTransaction);
-		}
-	};
+	
 
 	public DialogueBoxController(JFrame frame, ModelRootImpl mr) {
 		this.frame = frame;
@@ -227,8 +177,7 @@ public class DialogueBoxController implements WorldListListener {
 		selectWagons = new SelectWagonsJPanel();
 		selectEngine = new SelectEngineJPanel();
 		trainDialogueJPanel = new TrainDialogueJPanel();
-		brokerScreenHtmlJFrame = new BrokerScreenHtmlJFrame();
-
+		
 	}
 
 	/**
@@ -251,10 +200,7 @@ public class DialogueBoxController implements WorldListListener {
 			throw new NullPointerException();
 
 		if (vl == null)
-			throw new NullPointerException();
-
-		financialDataGatherer = new FinancialDataGatherer(modelRoot.getWorld(),
-				modelRoot.getPrincipal());
+			throw new NullPointerException();		
 
 		// Setup the various dialogue boxes.
 		// setup the terrain info dialogue.
@@ -292,91 +238,21 @@ public class DialogueBoxController implements WorldListListener {
 		trainDialogueJPanel
 				.setCancelButtonActionListener(this.closeCurrentDialogue);
 
-		// Sets up the BrokerScreen and Adds ActionListeners to the Menu
-		brokerScreenHtmlJFrame
-				.setIssueBondActionListener(this.issueBondActionListener);
-		brokerScreenHtmlJFrame
-				.setRepayBondActionListener(this.repayBondActionListener);
-		brokerScreenHtmlJFrame
-				.setBuytreasuryStockActionListener(this.buyTreasuryStockActionListener);
-		brokerScreenHtmlJFrame
-				.setSellTreasuryStockActionlistener(this.sellTreasuryStockActionListener);
-
-		// for every player this is seting up an ActionListener to Buy and Sell
-		// there stock
-		int numberOfPlayers = modelRoot.getWorld().getNumberOfPlayers();
-		for (int i = 0; i < numberOfPlayers; i++) {
-			final Player temp = modelRoot.getWorld().getPlayer(i);
-			@SuppressWarnings("unused")
-			FinancialDataGatherer finacialDataGatherer = new FinancialDataGatherer(
-					world, temp.getPrincipal());
-			if (temp != null
-					&& !(modelRoot.getPrincipal().equals(temp.getPrincipal()))) {
-				brokerScreenHtmlJFrame.enableBuyPlayerStock(temp);
-				brokerScreenHtmlJFrame.enableSellPlayerStock(temp);
-			}
-
-			brokerScreenHtmlJFrame.setBuyPlayerStockActionlistener(
-					new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							Move StockTransaction = new AddTransactionMove(
-									modelRoot.getPrincipal(),
-									IssueStockTransaction.issueStock(modelRoot
-											.getWorld().getID(
-													temp.getPrincipal()),
-											10000, (new FinancialDataGatherer(
-													modelRoot.getWorld(), temp
-															.getPrincipal()))
-													.sharePrice()));
-							modelRoot.doMove(StockTransaction);
-							Move buyPlayerStock = new AddTransactionMove(temp
-									.getPrincipal(), IssueStockTransaction
-									.buyPlayerStock(modelRoot.getWorld().getID(
-											modelRoot.getPrincipal()), 10000));
-							modelRoot.doMove(buyPlayerStock);
-						}
-					}, temp);
-			brokerScreenHtmlJFrame.setSellPlayerStockActionlistener(
-					new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							Move StockTransaction = new AddTransactionMove(
-									modelRoot.getPrincipal(),
-									IssueStockTransaction.sellStock(modelRoot
-											.getWorld().getID(
-													temp.getPrincipal()),
-											10000, (new FinancialDataGatherer(
-													modelRoot.getWorld(), temp
-															.getPrincipal()))
-													.sharePrice()));
-							modelRoot.doMove(StockTransaction);
-							Move sellPlayerStock = new AddTransactionMove(temp
-									.getPrincipal(), IssueStockTransaction
-									.sellPlayerStock(modelRoot.getWorld()
-											.getID(modelRoot.getPrincipal()),
-											10000));
-							modelRoot.doMove(sellPlayerStock);
-						}
-					}, temp);
-		}
+		
 	}
 
-	public void showNewspaper(String headline) {
-		newspaper.setHeadline(headline);
-		showContent(newspaper);
-	}
+    public void showTrainOrders() {
+        WorldIterator wi = new NonNullElements(KEY.TRAINS, world, modelRoot
+                .getPrincipal());
 
-	public void showTrainOrders() {
-		WorldIterator wi = new NonNullElements(KEY.TRAINS, world, modelRoot
-				.getPrincipal());
-
-		if (!wi.next()) {
-			modelRoot.setProperty(Property.QUICK_MESSAGE, "Cannot"
-					+ " show train orders since there are no" + " trains!");
-		} else {
-			trainDialogueJPanel.display(wi.getIndex());
-			this.showContent(trainDialogueJPanel);
-		}
-	}
+        if (!wi.next()) {
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "Cannot"
+                    + " show train orders since there are no" + " trains!");
+        } else {
+            trainDialogueJPanel.display(wi.getIndex());
+            this.showContent(trainDialogueJPanel);
+        }
+    }
 
 	public void showSelectEngine() {
 		WorldIterator wi = new NonNullElements(KEY.STATIONS, world, modelRoot
@@ -408,29 +284,12 @@ public class DialogueBoxController implements WorldListListener {
 
 	public void showBrokerScreen() {
 		// this is Creating a BrokerScreen Internal Frame in the Main Frame
+                BrokerScreenHtmlJFrame brokerScreenHtmlJFrame = new BrokerScreenHtmlJFrame();
 		brokerScreenHtmlJFrame.setup(this.modelRoot, vl,
 				this.closeCurrentDialogue);
 		brokerScreenHtmlJFrame.setFrameIcon(null);
 
-		int parentWidth = frame.getContentPane().getWidth();
-		int parentHeight = frame.getContentPane().getHeight();
-
-		Dimension size = brokerScreenHtmlJFrame.getSize();
-		if (size.width > parentWidth) {
-			size.width = parentWidth;
-		}
-		if (size.height > parentHeight) {
-			size.height = parentHeight;
-		}
-
-		brokerScreenHtmlJFrame.setSize(size);
-		brokerScreenHtmlJFrame.setLocation(
-				(frame.getWidth() - brokerScreenHtmlJFrame.getWidth()) / 2,
-				(frame.getHeight() - brokerScreenHtmlJFrame.getHeight()) / 2);
-		frame.getLayeredPane().add(brokerScreenHtmlJFrame,
-				JLayeredPane.MODAL_LAYER);
-
-		brokerScreenHtmlJFrame.setVisible(true);
+		showContent(brokerScreenHtmlJFrame);
 	}
 
 	// Shows the Exit Dialog -- @author SonnyZ
@@ -488,7 +347,7 @@ public class DialogueBoxController implements WorldListListener {
 	}
 
 	public void showTrainList() {
-		if (world.size(KEY.TRAINS, modelRoot.getPrincipal()) > 0) {
+		if (world.size(modelRoot.getPrincipal(), KEY.TRAINS) > 0) {
 			final TrainListJPanel trainList = new TrainListJPanel();
 			trainList.setup(modelRoot, vl, closeCurrentDialogue);
 			trainList.setShowTrainDetailsActionListener(new ActionListener() {
@@ -525,31 +384,37 @@ public class DialogueBoxController implements WorldListListener {
 		closeContent();
 		JComponent contentPanel;
 
-		if (!(component instanceof View)) {
-			contentPanel = new javax.swing.JPanel();
-			contentPanel.setLayout(new java.awt.GridBagLayout());
+		
 
-			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 0;
-			constraints.weightx = 1.0;
-			constraints.weighty = 1.0;
-			constraints.insets = new Insets(7, 7, 7, 7);
-			contentPanel.add(component, constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(7, 7, 7, 7);
-			contentPanel.add(closeButton, constraints);
+		if (component instanceof JInternalFrame) {
+			dialogueJInternalFrame = (JInternalFrame) component;
 		} else {
-			contentPanel = component;
-		}
+			if (!(component instanceof View)) {
+				contentPanel = new javax.swing.JPanel();
+				contentPanel.setLayout(new java.awt.GridBagLayout());
 
-		dialogueJInternalFrame = new JInternalFrame();
-		dialogueJInternalFrame.setFrameIcon(null);
-		dialogueJInternalFrame.getContentPane().add(contentPanel);
-		dialogueJInternalFrame.pack();
+				GridBagConstraints constraints = new GridBagConstraints();
+				constraints.gridx = 0;
+				constraints.gridy = 0;
+				constraints.weightx = 1.0;
+				constraints.weighty = 1.0;
+				constraints.insets = new Insets(7, 7, 7, 7);
+				contentPanel.add(component, constraints);
+
+				constraints = new GridBagConstraints();
+				constraints.gridx = 0;
+				constraints.gridy = 1;
+				constraints.insets = new Insets(7, 7, 7, 7);
+				contentPanel.add(closeButton, constraints);
+			} else {
+				contentPanel = component;
+			}
+			dialogueJInternalFrame = new JInternalFrame();
+			dialogueJInternalFrame.setFrameIcon(null);
+			dialogueJInternalFrame.getContentPane().add(contentPanel);
+			dialogueJInternalFrame.pack();
+		}
+        
 
 		/*
 		 * Make sure the size of the dialogue does not exceed the size of the
@@ -604,9 +469,9 @@ public class DialogueBoxController implements WorldListListener {
 		if (trackRule.isStation()
 				&& tile.getOwnerID() == world.getID(principal)) {
 
-			for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {
-				StationModel station = (StationModel) world.get(KEY.STATIONS,
-						i, principal);
+			for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
+				StationModel station = (StationModel) world.get(principal,
+						KEY.STATIONS, i);
 
 				if (null != station && station.x == x && station.y == y) {
 					this.showStationInfo(i);

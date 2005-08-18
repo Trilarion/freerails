@@ -11,20 +11,20 @@ package jfreerails.world.top;
  * @author Luke Lindsay
  */
 public class TypeID {
-	private final int m_id;
+	private final int id;
 
-	private final SKEY m_key;
+	private final SKEY key;
 
 	public TypeID(int id, SKEY key) {
-		m_id = id;
-		m_key = key;
+		this.id = id;
+		this.key = key;
 	}
 
 	public SKEY getKey() {
-		return m_key;
+		return key;
 	}
 
 	public int getID() {
-		return m_id;
+		return id;
 	}
 }
