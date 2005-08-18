@@ -121,22 +121,18 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		return false;
 	}
 
-	public boolean equals(Object o) {
-		return o == this;
-	}
+    public int get8bitTemplate() {
+        int newTemplate = 0;
+        Step[] vectors = Step.getList();
 
-	public int get8bitTemplate() {
-		int newTemplate = 0;
-		Step[] vectors = Step.getList();
+        for (int i = 0; i < vectors.length; i++) {
+            if (this.contains(vectors[i])) {
+                newTemplate = newTemplate | vectors[i].get8bitTemplate();
+            }
+        }
 
-		for (int i = 0; i < vectors.length; i++) {
-			if (this.contains(vectors[i])) {
-				newTemplate = newTemplate | vectors[i].get8bitTemplate();
-			}
-		}
-
-		return newTemplate;
-	}
+        return newTemplate;
+    }
 
 	/**
 	 * @return an int representing this track configuration.
@@ -161,13 +157,24 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		return configuration;
 	}
 
-	public int hashCode() {
-		return configuration;
-	}
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-	private Object readResolve() throws ObjectStreamException {
-		return TrackConfiguration.from9bitTemplate(this.configuration);
-	}
+        final TrackConfiguration that = (TrackConfiguration) o;
+
+        if (configuration != that.configuration) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        return configuration;
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        return TrackConfiguration.from9bitTemplate(this.configuration);
+    }
 
 	/**
 	 * Returns a String representing this configuration, for example "north,

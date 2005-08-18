@@ -15,7 +15,26 @@ import jfreerails.world.terrain.TerrainTile;
  */
 public class FreerailsTile implements TrackPiece, TerrainTile,
 		FreerailsSerializable {
-	private static final long serialVersionUID = 3617574907538847544L;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final FreerailsTile that = (FreerailsTile) o;
+
+        if (terrainType != that.terrainType) return false;
+        if (trackPiece != null ? !trackPiece.equals(that.trackPiece) : that.trackPiece != null) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = (trackPiece != null ? trackPiece.hashCode() : 0);
+        result = 29 * result + terrainType;
+        return result;
+    }
+
+    private static final long serialVersionUID = 3617574907538847544L;
 
 	public static final FreerailsTile NULL = new FreerailsTile(0);
 
@@ -62,18 +81,10 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
 		this.trackPiece = NullTrackPiece.getInstance();
 	}
 
-	public int hashCode() {
-		int result;
-		result = (trackPiece != null ? trackPiece.hashCode() : 0);
-		result = 29 * result + terrainType;
-
-		return result;
-	}
-
-	private FreerailsTile(int terrainType, TrackPiece trackPiece) {
-		this.terrainType = terrainType;
-		this.trackPiece = trackPiece;
-	}
+    private FreerailsTile(int terrainType, TrackPiece trackPiece) {
+        this.terrainType = terrainType;
+        this.trackPiece = trackPiece;
+    }
 
 	/*
 	 * @see TrackPiece#getTrackGraphicNumber()
@@ -96,27 +107,9 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
 		return trackPiece.getTrackConfiguration();
 	}
 
-	public boolean equals(Object o) {
-		if (o instanceof FreerailsTile) {
-			FreerailsTile test = (FreerailsTile) o;
-
-			boolean trackPieceFieldsEqual = (this.trackPiece
-					.equals(test.trackPiece));
-
-			boolean terrainTypeFieldsEqual = (terrainType == test
-					.getTerrainTypeID());
-
-			if (trackPieceFieldsEqual && terrainTypeFieldsEqual) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	public int getTerrainTypeID() {
-		return terrainType;
-	}
+    public int getTerrainTypeID() {
+        return terrainType;
+    }
 
 	public String toString() {
 		return "trackPiece=" + trackPiece.toString() + " and terrainType is "

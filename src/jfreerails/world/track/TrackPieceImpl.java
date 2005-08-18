@@ -16,16 +16,30 @@ final public class TrackPieceImpl implements TrackPiece {
 
 	private final int ruleNumber;
 
-	public int hashCode() {
-		int result;
-		result = configuration.hashCode();
-		result = 29 * result + trackType.hashCode();
-		result = 29 * result + ownerID;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		return result;
-	}
+        final TrackPieceImpl that = (TrackPieceImpl) o;
 
-	public TrackPieceImpl(jfreerails.world.track.TrackConfiguration c,
+        if (ownerID != that.ownerID) return false;
+        if (ruleNumber != that.ruleNumber) return false;
+        if (!configuration.equals(that.configuration)) return false;
+        if (!trackType.equals(that.trackType)) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = configuration.hashCode();
+        result = 29 * result + trackType.hashCode();
+        result = 29 * result + ownerID;
+        result = 29 * result + ruleNumber;
+        return result;
+    }
+
+    public TrackPieceImpl(TrackConfiguration c,
 			TrackRule type, int owner, int rule) {
 		configuration = c;
 		trackType = type;
@@ -45,18 +59,7 @@ final public class TrackPieceImpl implements TrackPiece {
 		return configuration;
 	}
 
-	public boolean equals(Object o) {
-		if (o instanceof TrackPieceImpl) {
-			TrackPieceImpl trackPieceImpl = (TrackPieceImpl) o;
 
-			if (configuration.equals(trackPieceImpl.getTrackConfiguration())
-					&& trackType.equals(trackPieceImpl.getTrackRule())) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
 
 	public int getOwnerID() {
 		return ownerID;
