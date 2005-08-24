@@ -24,7 +24,7 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 		return a == 0 ? s / u : Utils.solveQuadratic(a * 0.5d, u, -s);
 	}
 
-	public static SpeedAgainstTime uat(double u, double a, double t) {
+	public static ConstAcc uat(double u, double a, double t) {
 		return new ConstAcc(a, t, u);
 	}
 

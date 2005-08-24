@@ -6,7 +6,7 @@ package jfreerails.move;
 
 import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.station.ProductionAtEngineShop;
+import jfreerails.world.station.PlannedTrain;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
@@ -21,9 +21,9 @@ import jfreerails.world.top.World;
 public class ChangeProductionAtEngineShopMove implements Move {
 	private static final long serialVersionUID = 3905519384997737520L;
 
-	private final ImList<ProductionAtEngineShop> before;
+	private final ImList<PlannedTrain> before;
 
-	private final ImList<ProductionAtEngineShop> after;
+	private final ImList<PlannedTrain> after;
 
 	private final int stationNumber;
 
@@ -62,8 +62,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
 		return result;
 	}
 
-	public ChangeProductionAtEngineShopMove(ImList<ProductionAtEngineShop> b,
-			ImList<ProductionAtEngineShop> a, int station, FreerailsPrincipal p) {
+	public ChangeProductionAtEngineShopMove(ImList<PlannedTrain> b,
+			ImList<PlannedTrain> a, int station, FreerailsPrincipal p) {
 		this.before = b;
 		this.after = a;
 		this.stationNumber = station;
@@ -74,7 +74,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
 		return tryMove(w, before);
 	}
 
-	private MoveStatus tryMove(World w, ImList<ProductionAtEngineShop> stateA) {
+	private MoveStatus tryMove(World w, ImList<PlannedTrain> stateA) {
 		// Check that the specified station exists.
 		if (!w.boundsContain(principal, KEY.STATIONS, this.stationNumber)) {
 			return MoveStatus.moveFailed(this.stationNumber + " "

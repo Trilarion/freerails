@@ -59,7 +59,7 @@ public class StationModel implements FreerailsSerializable {
 	private final int cargoBundleNumber;
 
 	/** What this station is building. */
-	private final ImList<ProductionAtEngineShop> production;
+	private final ImList<PlannedTrain> production;
 
 	public ConvertedAtStation getConverted() {
 		return converted;
@@ -97,7 +97,7 @@ public class StationModel implements FreerailsSerializable {
 		this.name = stationName;
 		this.x = x;
 		this.y = y;
-		production = new ImList<ProductionAtEngineShop>();
+		production = new ImList<PlannedTrain>();
 
 		supply = new SupplyAtStation(new int[numberOfCargoTypes]);
 		demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
@@ -112,7 +112,7 @@ public class StationModel implements FreerailsSerializable {
 		this.demand = new DemandAtStation(new boolean[0]);
 		this.supply = new SupplyAtStation(new int[0]);
 		this.converted = new ConvertedAtStation(new int[0]);
-		production = new ImList<ProductionAtEngineShop>();
+		production = new ImList<PlannedTrain>();
 		this.cargoBundleNumber = 0;
 	}
 
@@ -128,12 +128,12 @@ public class StationModel implements FreerailsSerializable {
 		return y;
 	}
 
-	public ImList<ProductionAtEngineShop> getProduction() {
+	public ImList<PlannedTrain> getProduction() {
 		return production;
 	}
 
 	public StationModel(StationModel s,
-			ImList<ProductionAtEngineShop> production) {
+			ImList<PlannedTrain> production) {
 		this.production = production;
 		this.demand = s.demand;
 		this.cargoBundleNumber = s.cargoBundleNumber;

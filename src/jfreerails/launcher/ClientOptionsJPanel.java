@@ -22,7 +22,7 @@ import jfreerails.client.view.DisplayModesComboBoxModels;
 /**
  * The Launcher panel that lets you choose fullscreen or windowed mode and the
  * screen resolution etc.
- * 
+ *
  * @author rtuck99@users.sourceforge.net
  * @author Luke Lindsay
  */
@@ -170,6 +170,11 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
 		/* Everything is ok. */
 		owner.hideErrorMessages();
+
+                owner.setProperty("freerails.server.port", this.remotePort.getText());
+                owner.setProperty("freerails.player.name", this.playerName.getText());
+                owner.setProperty("freerails.server.ip.address", this.remoteIP.getText());
+                owner.saveProps();
 		return true;
 	}
 
@@ -260,7 +265,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 		jPanel3.add(jLabel1);
 
 		playerName.setColumns(12);
-		playerName.setText(System.getProperty("user.name"));
+		playerName.setText(owner.getProperty("freerails.player.name"));
 		jPanel3.add(playerName);
 
 		playerNames.setToolTipText("Select a player from the saved game.");
@@ -281,7 +286,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 		jPanel4.add(jLabel2, new java.awt.GridBagConstraints());
 
 		remoteIP.setColumns(15);
-		remoteIP.setText("127.0.0.1");
+		remoteIP.setText(owner.getProperty("freerails.server.ip.address"));
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
 		gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -296,7 +301,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 		jPanel4.add(jLabel3, gridBagConstraints);
 
 		remotePort.setColumns(5);
-		remotePort.setText("55000");
+		remotePort.setText(owner.getProperty("freerails.server.port"));
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
 		gridBagConstraints.gridy = 1;

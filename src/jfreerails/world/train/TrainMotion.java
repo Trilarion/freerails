@@ -96,11 +96,39 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 		if (distanceEngineWillTravel > speeds.getS())
 			throw new IllegalArgumentException(
 					"The train's speed is not defined for the whole of the journey.");
-
-		duration = distanceEngineWillTravel == 0 ? 0d : speeds
-				.calcT(distanceEngineWillTravel);
+				
+		if(distanceEngineWillTravel == 0){
+			duration = 0d;
+		}else{
+			double totalPathDistance = path.getTotalDistance();
+			double tempDuration = speeds.calcT(distanceEngineWillTravel);
+			double excessDistance = speeds.calcS(tempDuration) + initialPosition - totalPathDistance;
+			//Note, if excessDistance > 0, then sanityCheck() will an IllegalStateException
+			while(excessDistance > 0){
+				double finalSpeed = speeds.calcV(tempDuration);
+				double excessTime = excessDistance / finalSpeed;
+				tempDuration -= excessTime;
+				excessDistance = speeds.calcS(tempDuration) + initialPosition - totalPathDistance;
+			}
+			duration = tempDuration;
+		}
 		
 		activity = SpeedTimeAndStatus.Activity.READY;
+				
+	
+		sanityCheck();
+			
+		
+	}
+
+	/** Checks we are not creating an object with an inconsistent state.  That is, at the
+	 * time stored in the field duration, the engine must not have gone off the end of the path.*/
+	private void sanityCheck() {
+		double offset = calcOffSet(duration);
+		double totalLength = path.getTotalDistance();
+		double trainLengthDouble = trainLength;
+		if(totalLength < offset + trainLengthDouble)
+			throw new IllegalStateException(offset +" + "+ trainLengthDouble+" > " +totalLength);			
 	}
 
 	public TrainMotion(PathOnTiles path,  int trainLength, double duration, SpeedTimeAndStatus.Activity act){

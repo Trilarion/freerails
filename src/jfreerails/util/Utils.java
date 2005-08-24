@@ -5,9 +5,12 @@ package jfreerails.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -35,6 +38,20 @@ strictfp public class Utils {
 
 		return true;
 
+	}
+	
+	/** Used when debugging.*/
+	public static void write(Serializable m, String fileName){
+		try{
+			File f = new File(fileName);
+			OutputStream out = new FileOutputStream(f);
+			ObjectOutputStream objectOut = new ObjectOutputStream(out);
+			objectOut.writeObject(m);
+			objectOut.flush();
+			objectOut.close();					
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	public static Serializable cloneBySerialisation(Serializable m) {

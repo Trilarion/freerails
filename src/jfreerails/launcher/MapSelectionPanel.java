@@ -15,7 +15,7 @@ import jfreerails.network.NewGameMessage2Server;
 /**
  * The Launcher panel that lets you load a game or start a new game with a
  * choice of maps.
- * 
+ *
  * @author rtuck99@users.sourceforge.net
  */
 class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
@@ -96,6 +96,8 @@ class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
 
 		/* Everything is ok. */
 		owner.hideErrorMessages();
+                owner.setProperty("freerails.server.port", this.serverPort.getText());
+                owner.saveProps();
 		return true;
 	}
 
@@ -174,7 +176,7 @@ class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
 		jPanel3.add(jLabel3);
 
 		serverPort.setColumns(6);
-		serverPort.setText("55000");
+		serverPort.setText(owner.getProperty("freerails.server.port"));
 		serverPort.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				serverPortActionPerformed(evt);

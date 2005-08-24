@@ -1,3 +1,14 @@
+Aug	24, 2005 Luke
+	RFEs implemented
+	1223234	Add show FTP to 'Display' menu.
+	1223235	Save launcher input
+	
+	Fixed bugs
+	1266695	Unexpected exception during network game
+	1266637 OutOfMemoryError
+	1110270 Reproducible Crash Bug
+	1223230 Incorrect station price on popup
+	1223228	NotSerializableException when saving game with trains
 Jul 03, 2005 Luke
 	More code cleanup.
 Jul 03, 2005 Luke

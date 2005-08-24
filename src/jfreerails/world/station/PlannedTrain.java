@@ -13,14 +13,14 @@ import jfreerails.world.common.ImInts;
  * @author Luke
  * 
  */
-public class ProductionAtEngineShop implements FreerailsSerializable {
+public class PlannedTrain implements FreerailsSerializable {
 	private static final long serialVersionUID = 3545515106038592057L;
 
 	private final int engineType;
 
 	private final ImInts wagonTypes;
 
-	public ProductionAtEngineShop(int e, int[] wagons) {
+	public PlannedTrain(int e, int[] wagons) {
 		engineType = e;
 		wagonTypes = new ImInts(wagons);
 	}
@@ -32,10 +32,10 @@ public class ProductionAtEngineShop implements FreerailsSerializable {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof ProductionAtEngineShop))
+		if (!(o instanceof PlannedTrain))
 			return false;
 
-		final ProductionAtEngineShop productionAtEngineShop = (ProductionAtEngineShop) o;
+		final PlannedTrain productionAtEngineShop = (PlannedTrain) o;
 
 		if (engineType != productionAtEngineShop.engineType)
 			return false;

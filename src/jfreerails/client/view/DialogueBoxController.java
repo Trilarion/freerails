@@ -28,7 +28,7 @@ import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.station.ProductionAtEngineShop;
+import jfreerails.world.station.PlannedTrain;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -120,11 +120,11 @@ public class DialogueBoxController implements WorldListListener {
 			if (wi.next()) {
 				StationModel station = (StationModel) wi.getElement();
 
-				ImList<ProductionAtEngineShop> before = station.getProduction();
+				ImList<PlannedTrain> before = station.getProduction();
 				int engineType = selectEngine.getEngineType();
 				int[] wagonTypes = selectWagons.getWagons();
-				ImList<ProductionAtEngineShop> after = new ImList<ProductionAtEngineShop>(
-						new ProductionAtEngineShop(engineType, wagonTypes));
+				ImList<PlannedTrain> after = new ImList<PlannedTrain>(
+						new PlannedTrain(engineType, wagonTypes));
 
 				Move m = new ChangeProductionAtEngineShopMove(before, after, wi
 						.getIndex(), modelRoot.getPrincipal());

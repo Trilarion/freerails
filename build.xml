@@ -333,6 +333,7 @@ else:
 	<target name="updatesite" description="Uploads modified files to website, skips javadoc and jar files." depends="check_username_and_password">
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir="www">
+				<include name="**/*.pdf" />
 				<include name="**/*.html" />
 				<include name="**/*.shtml" />
 				<include name="**/*.css" />

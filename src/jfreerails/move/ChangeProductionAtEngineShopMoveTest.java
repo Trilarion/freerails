@@ -5,7 +5,7 @@
 package jfreerails.move;
 
 import jfreerails.world.common.ImList;
-import jfreerails.world.station.ProductionAtEngineShop;
+import jfreerails.world.station.PlannedTrain;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
@@ -18,9 +18,9 @@ import jfreerails.world.top.WagonAndEngineTypesFactory;
  * 
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
-	private ImList<ProductionAtEngineShop> before;
+	private ImList<PlannedTrain> before;
 
-	private ImList<ProductionAtEngineShop> after;
+	private ImList<PlannedTrain> after;
 
 	private int engineType;
 
@@ -42,12 +42,12 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 		engineType = 0;
 		wagonType = 0;
 		wagons = new int[] { wagonType, wagonType };
-		after = new ImList<ProductionAtEngineShop>(new ProductionAtEngineShop(
+		after = new ImList<PlannedTrain>(new PlannedTrain(
 				engineType, wagons));
 	}
 
 	public void testMove() {
-		before = new ImList<ProductionAtEngineShop>();
+		before = new ImList<PlannedTrain>();
 
 		ChangeProductionAtEngineShopMove m;
 
@@ -78,10 +78,10 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 	}
 
 	public void testProductionAtEngineShopEquals() {
-		ProductionAtEngineShop b;
-		ProductionAtEngineShop c;
-		b = new ProductionAtEngineShop(engineType, wagons);
-		c = new ProductionAtEngineShop(engineType, wagons);
+		PlannedTrain b;
+		PlannedTrain c;
+		b = new PlannedTrain(engineType, wagons);
+		c = new PlannedTrain(engineType, wagons);
 		assertEquals(c, b);
 		assertEquals(b, c);
 	}

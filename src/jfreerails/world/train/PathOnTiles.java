@@ -215,7 +215,7 @@ public class PathOnTiles implements FreerailsSerializable {
 		if (length <= 0)
 			throw new IllegalArgumentException();
 		if ((offset + length) > getTotalDistance())
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(offset +" + "+ length+" > " +getTotalDistance());
 
 		final LinkedList<ImPoint> points = new LinkedList<ImPoint>();
 		ImPoint tile = getStart();
