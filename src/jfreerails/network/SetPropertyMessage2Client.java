@@ -3,6 +3,7 @@
  */
 package jfreerails.network;
 
+import jfreerails.network.ClientControlInterface.ClientProperty;
 import jfreerails.world.common.FreerailsSerializable;
 
 /**
@@ -17,11 +18,11 @@ public class SetPropertyMessage2Client implements Message2Client {
 
 	private final int id;
 
-	private final String key;
+	private final ClientProperty key;
 
 	private final FreerailsSerializable value;
 
-	public SetPropertyMessage2Client(int id, String key,
+	public SetPropertyMessage2Client(int id, ClientProperty key,
 			FreerailsSerializable value) {
 		if (null == key || null == value)
 			throw new NullPointerException();

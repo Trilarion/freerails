@@ -124,12 +124,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 				/* Just send to the new client. */
 				Message2Client setMaps = new SetPropertyMessage2Client(
 						getNextClientCommandId(),
-						ClientControlInterface.MAPS_AVAILABLE,
+						ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
 						new ImStringList(savedGamesManager.getNewMapNames()));
+				ImStringList savedGameNames = new ImStringList(
+								savedGamesManager.getSaveGameNames());
 				Message2Client setSaveGames = new SetPropertyMessage2Client(
 						getNextClientCommandId(),
-						ClientControlInterface.SAVED_GAMES, new ImStringList(
-								savedGamesManager.getSaveGameNames()));
+						ClientControlInterface.ClientProperty.SAVED_GAMES, savedGameNames);
 				connection.writeToClient(setMaps);
 				connection.writeToClient(setSaveGames);
 
@@ -408,7 +409,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
 		Message2Client request = new SetPropertyMessage2Client(
 				getNextClientCommandId(),
-				ClientControlInterface.CONNECTED_CLIENTS, new ImStringList(
+				ClientControlInterface.ClientProperty.CONNECTED_CLIENTS, new ImStringList(
 						playerNames));
 
 		send2All(request);

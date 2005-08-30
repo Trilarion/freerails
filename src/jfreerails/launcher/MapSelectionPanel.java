@@ -6,11 +6,15 @@
 
 package jfreerails.launcher;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.zip.GZIPInputStream;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import jfreerails.client.view.ServerControlModel;
 import jfreerails.network.NewGameMessage2Server;
+import jfreerails.network.ServerControlInterface;
 
 /**
  * The Launcher panel that lets you load a game or start a new game with a
@@ -56,7 +60,7 @@ class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
 		mapsJList.setSelectedIndex(0);
 
 		owner.setNextEnabled(true);
-		this.loadMapButton.setEnabled(ServerControlModel.isSaveGameAvailable());
+		this.loadMapButton.setEnabled(MapSelectionPanel.isSaveGameAvailable());
 
 		// Listen for changes in the server port text box.
 		serverPort.getDocument().addDocumentListener(new DocumentListener() {
@@ -219,6 +223,26 @@ class MapSelectionPanel extends javax.swing.JPanel implements LauncherPanel {
 	int getServerPort() {
 		String s = serverPort.getText();
 		return Integer.parseInt(s);
+	}
+
+	public static boolean isSaveGameAvailable() {
+		try {
+			FileInputStream in = new FileInputStream(
+					ServerControlInterface.FREERAILS_SAV);
+			GZIPInputStream zipin = new GZIPInputStream(in);
+			ObjectInputStream objectIn = new ObjectInputStream(zipin);
+			String version_string = (String) objectIn.readObject();
+	
+			if (!ServerControlInterface.VERSION.equals(version_string)) {
+				throw new Exception(version_string);
+			}
+	
+			in.close();
+	
+			return true;
+		} catch (Exception e) {
+			return true;
+		}
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

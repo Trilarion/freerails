@@ -4,8 +4,10 @@
  */
 package jfreerails.server;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
@@ -27,12 +29,20 @@ import jfreerails.util.FreerailsProgressMonitor;
  * @author Luke
  * 
  */
+class SavFileFilter implements FilenameFilter {
+	public boolean accept(File dir, String name) {
+		return (name.endsWith(".sav"));
+	}
+}
 public class SavedGamesManagerImpl implements SavedGamesManager {
 	private static final Logger logger = Logger
 			.getLogger(SavedGamesManagerImpl.class.getName());
 
-	public String[] getSaveGameNames() {
-		return new String[0];
+	public String[] getSaveGameNames() {		
+		java.io.File dir = new File("./");
+		FilenameFilter filter = new SavFileFilter();
+		String[] files = dir.list(filter);
+		return files;
 	}
 
 	public String[] getNewMapNames() {

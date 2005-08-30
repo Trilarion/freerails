@@ -5,6 +5,7 @@ package jfreerails.network;
 
 import java.io.IOException;
 
+import jfreerails.network.ClientControlInterface.ClientProperty;
 import jfreerails.world.common.ImStringList;
 
 /**
@@ -67,7 +68,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 		message2Client.execute(client);
 
 		ImStringList actualPlayerNames = (ImStringList) client
-				.getProperty(ClientControlInterface.CONNECTED_CLIENTS);
+				.getProperty(ClientProperty.CONNECTED_CLIENTS);
 		assertNotNull(actualPlayerNames);
 		assertEquals(expectedPlayerNames, actualPlayerNames);
 	}
@@ -80,11 +81,11 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 		message2Client = (Message2Client) client.read();
 		message2Client.execute(client);
 
-		Object maps = client.getProperty(ClientControlInterface.MAPS_AVAILABLE);
+		Object maps = client.getProperty(ClientProperty.MAPS_AVAILABLE);
 		assertNotNull(maps);
 
 		Object savedGames = client
-				.getProperty(ClientControlInterface.SAVED_GAMES);
+				.getProperty(ClientProperty.SAVED_GAMES);
 		assertNotNull(savedGames);
 	}
 }

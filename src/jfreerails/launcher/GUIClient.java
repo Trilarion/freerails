@@ -6,6 +6,7 @@ package jfreerails.launcher;
 
 import java.awt.DisplayMode;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
@@ -55,17 +56,17 @@ public class GUIClient extends FreerailsClient implements
 		}
 	}
 
-	private ActionRoot actionRoot;
+	private final ActionRoot actionRoot;
 
-	private GUIComponentFactoryImpl factory;
+	private final GUIComponentFactoryImpl factory;
 
-	private ModelRootImpl modelRoot;
+	private final ModelRootImpl modelRoot;
 
 	private final FreerailsProgressMonitor monitor;
 
 	private final String name;
 
-	private ScreenHandler screenHandler;
+	private final ScreenHandler screenHandler;
 
 	private ViewLists vl;
 
@@ -78,7 +79,7 @@ public class GUIClient extends FreerailsClient implements
 		modelRoot.setMoveFork(this.getMoveFork());
 		modelRoot.setMoveReceiver(this);
 		modelRoot.setServerCommandReceiver(this);
-		actionRoot = new ActionRoot();
+		actionRoot = new ActionRoot(modelRoot);
 
 		// Create GUI components
 		factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);
@@ -162,6 +163,19 @@ public class GUIClient extends FreerailsClient implements
 
 	public void setValue(int i) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void setProperty(ClientProperty propertyName, Serializable value) {		
+		super.setProperty(propertyName, value);
+		switch (propertyName) {
+		case SAVED_GAMES:
+			modelRoot.setProperty(Property.SAVED_GAMES_LIST, value);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	void start() {

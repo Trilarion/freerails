@@ -12,11 +12,11 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 
 	private static final long serialVersionUID = -2180666310811530761L;
 
-	public static final ConstAcc STOPPED = new ConstAcc(0, 0, 0);
+	public static final ConstAcc STOPPED = new ConstAcc(0, 0, 0, 0);
 
-	public static SpeedAgainstTime uas(double u, double a, double s) {
+	public static ConstAcc uas(double u, double a, double s) {
 		double t = calcT(u, a, s);
-		return new ConstAcc(a, t, u);
+		return new ConstAcc(a, t, u, s);
 	}
 
 	private static double calcT(double u, double a, double s) {
@@ -25,26 +25,38 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 	}
 
 	public static ConstAcc uat(double u, double a, double t) {
-		return new ConstAcc(a, t, u);
+		double s = u * t + a * t * t / 2;
+		return new ConstAcc(a, t, u, s);
 	}
 
-	private final double u, a, dt;
+	private final double u, a, finalS, finalT;
 
-	private ConstAcc(double a, double t, double u) {
+	private ConstAcc(double a, double t, double u, double s) {
 		this.a = a;
-		this.dt = t;
+		this.finalT = t;
 		this.u = u;
+		this.finalS = s;
 	}
 
 	public double calcS(double t) {
-		return u * t + a * t * t / 2;
+		if(t == finalT) return finalS;
+		validateT(t);
+		double ds = u * t + a * t * t / 2;
+		ds = Math.min(ds, finalS);
+		return ds;
 	}
 
 	public double calcT(double s) {
-		return calcT(u, a, s);
+		if(s == finalS ) return finalT;
+		if(s < 0 || s > this.finalS ) 
+			throw new IllegalArgumentException(s+" < 0 || "+s+" > "+finalS );
+		double returnValue = calcT(u, a, s);
+		returnValue = Math.min(returnValue, finalT);
+		return returnValue;
 	}
 
 	public double calcV(double t) {
+		validateT(t);
 		return u + a * t;
 	}
 
@@ -58,7 +70,7 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 
 		if (a != constAcc.a)
 			return false;
-		if (dt != constAcc.dt)
+		if (finalT != constAcc.finalT)
 			return false;
 		if (u != constAcc.u)
 			return false;
@@ -67,15 +79,16 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 	}
 
 	public double calcA(double t) {
+		validateT(t);
 		return a;
 	}
 
 	public double getT() {
-		return dt;
+		return finalT;
 	}
 
 	public double getS() {
-		return u * dt + a * dt * dt / 2;
+		return finalS;
 	}
 
     public int hashCode() {
@@ -85,15 +98,21 @@ strictfp public class ConstAcc implements FreerailsSerializable,
         result = (int) (temp ^ (temp >>> 32));
         temp = a != +0.0d ? Double.doubleToLongBits(a) : 0l;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
-        temp = dt != +0.0d ? Double.doubleToLongBits(dt) : 0l;
+        temp = finalT != +0.0d ? Double.doubleToLongBits(finalT) : 0l;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+    
+    private void validateT(double t){
+    	if(t < 0 || t > finalT)
+    		throw new IllegalArgumentException("("+t+" < 0 || "+t+" > "+finalT+")");
+    	
     }
 
 	@Override
 	public String toString() {
-		String s = "ConstAcc [a=" + a + ", u=" + u + ", dt=" + dt + "]";
-		return s;
+		String str = "ConstAcc [a=" + a + ", u=" + u + ", dt=" + finalT + "]";
+		return str;
 	}
 
 }

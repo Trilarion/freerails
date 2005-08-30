@@ -45,14 +45,15 @@ public class ActionRoot {
 
 	private DialogueBoxController dialogueBoxController = null;
 
-	private final ServerControlModel serverControls = new ServerControlModel(
-			null);
+	private final ServerControlModel serverControls;
 
 	private StationBuildModel stationBuildModel;
 
 	private TrackMoveProducer trackMoveProducer;
 
-	public ActionRoot() {
+	public ActionRoot(ModelRootImpl mr) {
+		 this.serverControls= new ServerControlModel(
+					mr);
 	}
 
 	public Action getBuildTrainDialogAction() {

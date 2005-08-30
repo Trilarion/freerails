@@ -4,6 +4,8 @@
  */
 package jfreerails.world.train;
 
+import java.util.Random;
+
 import junit.framework.TestCase;
 
 public class CompositeSpeedAgainstTimeTest extends TestCase {
@@ -20,6 +22,18 @@ public class CompositeSpeedAgainstTimeTest extends TestCase {
 		assertEquals(0d, t3);
 	}
 	
+	public void testContract(){
+		Random r = new Random(123);
+		for(int i = 0 ; i < 1000; i++){
+			int numberOfParts = r.nextInt(10) + 1; 
+			SpeedAgainstTime[] parts = new SpeedAgainstTime[numberOfParts];
+			for(int j = 0; j < numberOfParts; j++){
+				parts[j] = ConstAcc.uat(r.nextDouble(), r.nextDouble(), r.nextDouble());
+			}
+			CompositeSpeedAgainstTime csat = new CompositeSpeedAgainstTime(parts);
+			ConstAccTest.checkContract(csat);
+		}
+	}
 	
 
 }

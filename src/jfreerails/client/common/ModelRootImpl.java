@@ -15,6 +15,7 @@ import jfreerails.network.MoveReceiver;
 import jfreerails.network.ServerCommandReceiver;
 import jfreerails.network.UntriedMoveReceiver;
 import jfreerails.world.common.ImPoint;
+import jfreerails.world.common.ImStringList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldListListener;
@@ -68,6 +69,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 		properties.put(Property.TIME, new Double(0));
 		properties.put(Property.TRACK_BUILDER_MODE,
 				TrackMoveProducer.BuildMode.BUILD_TRACK);
+		properties.put(Property.SAVED_GAMES_LIST, new ImStringList());
 		addPropertyChangeListener(SoundManager.getSoundManager());
 	}
 

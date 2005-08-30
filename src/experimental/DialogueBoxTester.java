@@ -91,7 +91,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             e.printStackTrace();
         }
         modelRoot.setup(w, TEST_PLAYER.getPrincipal());
-        ActionRoot actionRoot = new ActionRoot();
+        ActionRoot actionRoot = new ActionRoot(modelRoot);
         actionRoot.setup(modelRoot, vl);
         dialogueBoxController = new DialogueBoxController(this, modelRoot);
         actionRoot.setDialogueBoxController(dialogueBoxController);

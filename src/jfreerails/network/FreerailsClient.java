@@ -130,16 +130,17 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 	protected void newWorld(World w) {
 	}
 
-	public final void setProperty(String propertyName, Serializable value) {
-		properties.put(propertyName, value);
+	public void setProperty(ClientProperty propertyName, Serializable value) {
+		properties.put(propertyName.name(), value);
 	}
 
-	public final Serializable getProperty(String propertyName) {
-		return properties.get(propertyName);
+	public final Serializable getProperty(ClientProperty propertyName) {
+		return properties.get(propertyName.name());
 	}
 
 	public final void resetProperties(HashMap newProperties) {
 		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
     final FreerailsSerializable read() {

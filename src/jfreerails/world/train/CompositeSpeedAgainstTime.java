@@ -14,7 +14,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 
 	private final ImList<SpeedAgainstTime> values;
 
-	private final double duration, totalDistance;
+	private final double finalT, finalS;
 
 	public CompositeSpeedAgainstTime(SpeedAgainstTime... accs) {
 		values = new ImList<SpeedAgainstTime>(accs);
@@ -24,8 +24,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 			tempDuration += accs[i].getT();
 			tempTotalDistance += accs[i].getS();
 		}
-		duration = tempDuration;
-		totalDistance = tempTotalDistance;
+		finalT = tempDuration;
+		finalS = tempTotalDistance;
 	}
 
 	public boolean equals(Object o) {
@@ -36,9 +36,9 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 
 		final CompositeSpeedAgainstTime compositeSpeedAgainstTime = (CompositeSpeedAgainstTime) o;
 
-		if (duration != compositeSpeedAgainstTime.duration)
+		if (finalT != compositeSpeedAgainstTime.finalT)
 			return false;
-		if (totalDistance != compositeSpeedAgainstTime.totalDistance)
+		if (finalS != compositeSpeedAgainstTime.finalS)
 			return false;
 		if (!values.equals(compositeSpeedAgainstTime.values))
 			return false;
@@ -50,16 +50,16 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 		int result;
 		long temp;
 		result = values.hashCode();
-		temp = duration != +0.0d ? Double.doubleToLongBits(duration) : 0l;
+		temp = finalT != +0.0d ? Double.doubleToLongBits(finalT) : 0l;
 		result = 29 * result + (int) (temp ^ (temp >>> 32));
-		temp = totalDistance != +0.0d ? Double.doubleToLongBits(totalDistance)
+		temp = finalS != +0.0d ? Double.doubleToLongBits(finalS)
 				: 0l;
 		result = 29 * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 
 	public double duration() {
-		return duration;
+		return finalT;
 	}
 
 	public SpeedTimeAndStatus getState(final double dt) {
@@ -79,6 +79,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	public double calcS(double t) {
+		if(t == this.finalT) return this.finalS;
 		checkT(t);
 		TandI tai = getIndex(t);
 		double s = 0;
@@ -87,12 +88,19 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 			s += acc.getS();
 		}
 		SpeedAgainstTime acc = values.get(tai.i);
-		s += acc.calcS(tai.offset);
+		if(tai.offset >= acc.getT()){
+			//Note, it is possible for tai.offset > acc.getT()
+			//even though we called checkT(t) above
+			s += acc.getS();
+		}else{
+			s += acc.calcS(tai.offset);
+		}
 		return s;
 	}
 
 	public double calcT(double s) {
-		if (s > totalDistance)
+		if(s == this.finalS) return this.finalT;
+		if (s > finalS)
 			throw new IllegalArgumentException(String.valueOf(s));
 
 		double sSoFar = 0;
@@ -107,7 +115,11 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 			acc = values.get(i);
 		}
 		double sOffset = s - sSoFar;
-		tSoFar += acc.calcT(sOffset);
+		if(sOffset >= acc.getS()){
+			tSoFar += acc.getT();
+		}else{
+			tSoFar += acc.calcT(sOffset);
+		}
 		return tSoFar;
 	}
 
@@ -126,11 +138,11 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	public double getT() {
-		return duration;
+		return finalT;
 	}
 
 	public double getS() {
-		return totalDistance;
+		return finalS;
 	}
 
 	private TandI getIndex(double t) {
@@ -163,8 +175,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	}
 
 	void checkT(double t) {
-		if (t < 0d || t > duration)
-			throw new IllegalArgumentException("t="+t+", but duration="+duration);
+		if (t < 0d || t > finalT)
+			throw new IllegalArgumentException("t="+t+", but duration="+finalT);
 	}
 
 }

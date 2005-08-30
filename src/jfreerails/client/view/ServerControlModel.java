@@ -2,12 +2,7 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.ObjectInputStream;
 import java.util.Enumeration;
-import java.util.zip.GZIPInputStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -16,14 +11,15 @@ import javax.swing.KeyStroke;
 
 import jfreerails.client.common.ActionAdapter;
 import jfreerails.client.common.ModelRootImpl;
+import jfreerails.client.common.ModelRootListener;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.network.LoadGameMessage2Server;
 import jfreerails.network.Message2Server;
 import jfreerails.network.NewGameMessage2Server;
 import jfreerails.network.SaveGameMessage2Server;
-import jfreerails.network.ServerControlInterface;
 import jfreerails.world.common.GameSpeed;
+import jfreerails.world.common.ImStringList;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -34,23 +30,52 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author Luke
  * @author MystiqueAgent
  */
+public class ServerControlModel implements ModelRootListener{
 
-class SavFileFilter implements FilenameFilter {
-	public boolean accept(File dir, String name) {
-		return (name.endsWith(".sav"));
-	}
-}
+	private class LoadGameAction extends AbstractAction {
+		private static final long serialVersionUID = 3616451215278682931L;
 
-public class ServerControlModel {
+		public LoadGameAction() {
+			putValue(NAME, "Load Game");
+			putValue(MNEMONIC_KEY, new Integer(76));
+		}
 
-	private ModelRootImpl modelRoot;		
-
-	public void setModelRoot(ModelRootImpl modelRoot) {
-		this.modelRoot = modelRoot;
-	}
+		public void actionPerformed(ActionEvent e) {
+			ImStringList files = (ImStringList)modelRoot.getProperty(Property.SAVED_GAMES_LIST);
+			Object[] saves = new Object[files.size()];
+			for (int i = 0; i < files.size(); i++) {
+				saves[i] = files.get(i);
+			}
+			// Display a JOptionPane that lists the existing saved games
+			try {
+				Object showInputDialog = JOptionPane.showInputDialog(null,
+						"Saved Games:", "Select game to load",
+						JOptionPane.INFORMATION_MESSAGE, null, saves, saves[0]);
+				String filename = showInputDialog.toString();
+				// Load the game chosen
+				Message2Server message2 = new LoadGameMessage2Server(1,
+						filename);
+				modelRoot.sendCommand(message2);
+			} catch (Exception exept) {
+				// <Hack>
+				// When no saved game is selected, or one that doesnt exist,
+				// nothing changes
+				// </.Hack>
+			}
+		}
+	}		
 
 	private class NewGameAction extends AbstractAction {
 		private static final long serialVersionUID = 3690758388631745337L;
+
+		public NewGameAction(String s) {
+			if (s == null) {
+				putValue(NAME, "New Game...");
+			} else {
+				putValue(NAME, s);
+				putValue(ACTION_COMMAND_KEY, s);
+			}
+		}
 
 		public void actionPerformed(ActionEvent e) {
 
@@ -62,60 +87,15 @@ public class ServerControlModel {
 			}
 
 		}
-
-		public NewGameAction(String s) {
-			if (s == null) {
-				putValue(NAME, "New Game...");
-			} else {
-				putValue(NAME, s);
-				putValue(ACTION_COMMAND_KEY, s);
-			}
-		}
 	}
-
-	private ActionAdapter selectMapActions;
-
-	private final Action newGameAction = new NewGameAction(null);
-
-	private class LoadGameAction extends AbstractAction {
-		private static final long serialVersionUID = 3616451215278682931L;
-
-		public void actionPerformed(ActionEvent e) {
-			java.io.File dir = new File("./");
-			FilenameFilter filter = new SavFileFilter();
-			String[] files = dir.list(filter);
-			Object[] saves = new Object[files.length + 1];
-			for (int i = 0; i < files.length; i++) {
-				saves[i] = files[i];
-			}
-			// Display a JOptionPane that lists the existing saved games
-			try {
-				String filename = (JOptionPane.showInputDialog(null,
-						"Saved Games:", "Select game to load",
-						JOptionPane.INFORMATION_MESSAGE, null, saves, saves[0]))
-						.toString();
-				// Load the game chosen
-				Message2Server message2 = new LoadGameMessage2Server(1,
-						filename);
-				modelRoot.sendCommand(message2);
-			} catch (Exception exept) {
-				// <Hack>
-				// When no saved game is selected, or one that doesnt exist,
-				// nothing changes
-				// </Hack>
-			}
-		}
-
-		public LoadGameAction() {
-			putValue(NAME, "Load Game");
-			putValue(MNEMONIC_KEY, new Integer(76));
-		}
-	}
-
-	private final Action loadGameAction = new LoadGameAction();
 
 	private class SaveGameAction extends AbstractAction {
 		private static final long serialVersionUID = 3905808578064562480L;
+
+		public SaveGameAction() {
+			putValue(NAME, "Save Game");
+			putValue(MNEMONIC_KEY, new Integer(83));
+		}
 
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -137,32 +117,14 @@ public class ServerControlModel {
 
 			}
 		}
-
-		public SaveGameAction() {
-			putValue(NAME, "Save Game");
-			putValue(MNEMONIC_KEY, new Integer(83));
-		}
 	}
-
-	private final Action saveGameAction = new SaveGameAction();
 
 	private class SetTargetTicksPerSecondAction extends AbstractAction {
 		private static final long serialVersionUID = 3256437014978048052L;
 
 		final int speed;
 
-		public void actionPerformed(ActionEvent e) {
-			int speed2set = speed;
-			if (speed == 0) { // pausing/unpausing
-
-				speed2set = -1 * getTargetTicksPerSecond();
-
-			}
-			modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(),
-					new GameSpeed(speed2set)));
-		}
-
-        /**
+		/**
          * Same as the constructor above but it enables also to associate a
          * <code>keyEvent</code> with the action.
          *
@@ -182,7 +144,28 @@ public class ServerControlModel {
             this.speed = speed;
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));
         }
+
+        public void actionPerformed(ActionEvent e) {
+			int speed2set = speed;
+			if (speed == 0) { // pausing/unpausing
+
+				speed2set = -1 * getTargetTicksPerSecond();
+
+			}
+			modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(),
+					new GameSpeed(speed2set)));
+		}
 	}
+
+	private final Action loadGameAction = new LoadGameAction();
+
+	private ModelRootImpl modelRoot;
+
+	private final Action newGameAction = new NewGameAction(null);
+
+	private final Action saveGameAction = new SaveGameAction();
+
+	private ActionAdapter selectMapActions;
 
 	private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[] {
 			new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),
@@ -194,63 +177,10 @@ public class ServerControlModel {
 	private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(
 			speedActions, 0);
 
-	public void setServerControlInterface() {
-
-		boolean enabled = true;
-
-		// Check that there is a file to load..
-		boolean canLoadGame = ServerControlModel.isSaveGameAvailable();
-
-		loadGameAction.setEnabled(enabled && canLoadGame);
-		saveGameAction.setEnabled(enabled);
-
-		Enumeration<Action> e = targetTicksPerSecondActions.getActions();
-		targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
-
-		while (e.hasMoreElements()) {
-			e.nextElement().setEnabled(true);
-		}
-
-		String[] mapNames = NewGameMessage2Server.getMapNames();
-		Action[] actions = new Action[mapNames.length];
-
-		for (int j = 0; j < actions.length; j++) {
-			actions[j] = new NewGameAction(mapNames[j]);
-			actions[j].setEnabled(true);
-		}
-
-		selectMapActions = new ActionAdapter(actions);
-
-		newGameAction.setEnabled(true);
-
-	}
-
 	public ServerControlModel(ModelRootImpl mr) {
-		setServerControlInterface();
 		this.modelRoot = mr;
-	}
-
-	/**
-	 * @return an action to load a game. TODO The action produces a file
-	 *         selector dialog to load the game
-	 */
-	public Action getLoadGameAction() {
-		return loadGameAction;
-	}
-
-	/**
-	 * @return an action to save a game TODO The action produces a file selector
-	 *         dialog to save the game
-	 */
-	public Action getSaveGameAction() {
-		return saveGameAction;
-	}
-
-	/**
-	 * @return an action adapter to set the target ticks per second
-	 */
-	public ActionAdapter getSetTargetTickPerSecondActions() {
-		return targetTicksPerSecondActions;
+		mr.addPropertyChangeListener(this);
+		setServerControlInterface();			
 	}
 
 	/**
@@ -277,13 +207,10 @@ public class ServerControlModel {
 	}
 
 	/**
-	 * When calling this action, set the action command string to the desired
-	 * map name, or call the appropriate selectMapAction.
-	 * 
-	 * @return an action to start a new game
+	 * @return an action to load a game.
 	 */
-	public Action getNewGameAction() {
-		return newGameAction;
+	public Action getLoadGameAction() {
+		return loadGameAction;
 	}
 
 	/**
@@ -294,28 +221,85 @@ public class ServerControlModel {
 		return selectMapActions;
 	}
 
-	public static boolean isSaveGameAvailable() {
-		try {
-			FileInputStream in = new FileInputStream(
-					ServerControlInterface.FREERAILS_SAV);
-			GZIPInputStream zipin = new GZIPInputStream(in);
-			ObjectInputStream objectIn = new ObjectInputStream(zipin);
-			String version_string = (String) objectIn.readObject();
+	/**
+	 * When calling this action, set the action command string to the desired
+	 * map name, or call the appropriate selectMapAction.
+	 * 
+	 * @return an action to start a new game
+	 */
+	public Action getNewGameAction() {
+		return newGameAction;
+	}
 
-			if (!ServerControlInterface.VERSION.equals(version_string)) {
-				throw new Exception(version_string);
-			}
+	/**
+	 * @return an action to save a game TODO The action produces a file selector
+	 *         dialog to save the game
+	 */
+	public Action getSaveGameAction() {
+		return saveGameAction;
+	}
 
-			in.close();
-
-			return true;
-		} catch (Exception e) {
-			return true;
-		}
+	/**
+	 * @return an action adapter to set the target ticks per second
+	 */
+	public ActionAdapter getSetTargetTickPerSecondActions() {
+		return targetTicksPerSecondActions;
 	}
 
 	public int getTargetTicksPerSecond() {
 		ReadOnlyWorld world = modelRoot.getWorld();
 		return ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+	}
+
+	public void propertyChange(Property p, Object oldValue, Object newValue) {
+		switch (p) {
+		case SAVED_GAMES_LIST:
+			updateLoadGameAction();
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+	public void setModelRoot(ModelRootImpl modelRoot) {
+		this.modelRoot = modelRoot;
+		modelRoot.addPropertyChangeListener(this);
+	}
+	
+	public void setServerControlInterface() {		
+		// Check that there is a file to load..
+		saveGameAction.setEnabled(true);
+
+		Enumeration<Action> e = targetTicksPerSecondActions.getActions();
+		targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
+
+		while (e.hasMoreElements()) {
+			e.nextElement().setEnabled(true);
+		}
+
+		String[] mapNames = NewGameMessage2Server.getMapNames();
+		Action[] actions = new Action[mapNames.length];
+
+		for (int j = 0; j < actions.length; j++) {
+			actions[j] = new NewGameAction(mapNames[j]);
+			actions[j].setEnabled(true);
+		}
+
+		selectMapActions = new ActionAdapter(actions);
+
+		newGameAction.setEnabled(true);
+		
+		updateLoadGameAction();
+	}
+
+	private void updateLoadGameAction(){
+		ImStringList gameNames = (ImStringList) modelRoot.getProperty(Property.SAVED_GAMES_LIST);
+		if(gameNames.size() ==0){
+			this.loadGameAction.setEnabled(false);
+		}else{
+			this.loadGameAction.setEnabled(true);
+		}
 	}
 }

@@ -37,7 +37,7 @@ import jfreerails.world.common.Step;
  * @see jfreerails.world.train.PathOnTiles
  * @see jfreerails.world.train.CompositeSpeedAgainstTime
  */
-public class TrainMotion implements Activity<TrainPositionOnMap> {		
+strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {		
 
 	private static final long serialVersionUID = 3618423722025891641L;
 
@@ -92,33 +92,24 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 			throw new IllegalArgumentException(
 					"The engine's initial position is not far enough along the path for "
 							+ "the train's initial position to be specified.");
-		distanceEngineWillTravel = path.getTotalDistance() - initialPosition;
+		double totalPathDistance = path.getTotalDistance();
+		distanceEngineWillTravel = totalPathDistance - initialPosition;
 		if (distanceEngineWillTravel > speeds.getS())
 			throw new IllegalArgumentException(
 					"The train's speed is not defined for the whole of the journey.");
 				
 		if(distanceEngineWillTravel == 0){
 			duration = 0d;
-		}else{
-			double totalPathDistance = path.getTotalDistance();
-			double tempDuration = speeds.calcT(distanceEngineWillTravel);
-			double excessDistance = speeds.calcS(tempDuration) + initialPosition - totalPathDistance;
-			//Note, if excessDistance > 0, then sanityCheck() will an IllegalStateException
-			while(excessDistance > 0){
-				double finalSpeed = speeds.calcV(tempDuration);
-				double excessTime = excessDistance / finalSpeed;
-				tempDuration -= excessTime;
-				excessDistance = speeds.calcS(tempDuration) + initialPosition - totalPathDistance;
+		}else{			
+			double tempDuration = speeds.calcT(distanceEngineWillTravel);			
+			while((speeds.calcS(tempDuration) - distanceEngineWillTravel) > 0){								
+				tempDuration -= Math.ulp(tempDuration);				
 			}
 			duration = tempDuration;
 		}
 		
-		activity = SpeedTimeAndStatus.Activity.READY;
-				
-	
-		sanityCheck();
-			
-		
+		activity = SpeedTimeAndStatus.Activity.READY;					
+		sanityCheck();					
 	}
 
 	/** Checks we are not creating an object with an inconsistent state.  That is, at the
@@ -186,6 +177,7 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 	 */
 	public double getDistance(double t) {
 		checkT(t);
+		t = Math.min(t, speeds.getT());
 		return speeds.calcS(t);
 	}
 
@@ -194,7 +186,8 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 	}
 
 	public double getSpeedAtEnd() {
-		return speeds.calcV(duration);
+		double finalT = speeds.getT();
+		return speeds.calcV(finalT);
 	}
 
 	/**
@@ -207,6 +200,7 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 	 *             if t is outside the interval
 	 */
 	public TrainPositionOnMap getState(double t) {
+		t = Math.min(t, speeds.getT());
 		double offset = calcOffSet(t);
 		FreerailsPathIterator pathIt = path.subPath(offset, trainLength);
 		double speed = speeds.calcV(t);
@@ -229,6 +223,7 @@ public class TrainMotion implements Activity<TrainPositionOnMap> {
 	 */
 	public PathOnTiles getTiles(double t) {
 		checkT(t);
+		t = Math.min(t, speeds.getT());
 		double start = calcOffSet(t);
 		double end = start + trainLength;
 		ArrayList<Step> steps = new ArrayList<Step>();

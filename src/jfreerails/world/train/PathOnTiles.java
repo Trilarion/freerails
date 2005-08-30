@@ -25,7 +25,7 @@ import jfreerails.world.common.Step;
  * @author Luke
  * 
  */
-public class PathOnTiles implements FreerailsSerializable {
+strictfp public class PathOnTiles implements FreerailsSerializable {
 
 	private static final long serialVersionUID = 3544386994122536753L;
 

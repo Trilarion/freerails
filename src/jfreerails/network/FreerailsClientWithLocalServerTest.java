@@ -9,6 +9,7 @@ import jfreerails.controller.TimeTickPreMove;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.network.ClientControlInterface.ClientProperty;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
@@ -51,11 +52,11 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 			// Check the client gets its properties updated.
 			client.update();
 			assertNotNull(client
-					.getProperty(ClientControlInterface.CONNECTED_CLIENTS));
+					.getProperty(ClientControlInterface.ClientProperty.CONNECTED_CLIENTS));
 			assertNotNull(client
-					.getProperty(ClientControlInterface.MAPS_AVAILABLE));
+					.getProperty(ClientControlInterface.ClientProperty.MAPS_AVAILABLE));
 			assertNotNull(client
-					.getProperty(ClientControlInterface.SAVED_GAMES));
+					.getProperty(ClientControlInterface.ClientProperty.SAVED_GAMES));
 
 			/* Test 2 : a client that has already logged on. */
 			FreerailsClient client1 = new FreerailsClient();
@@ -100,7 +101,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 		assertNull(client1.getWorld());
 
 		ImStringList mapNames = (ImStringList) client0
-				.getProperty(ClientControlInterface.MAPS_AVAILABLE);
+				.getProperty(ClientProperty.MAPS_AVAILABLE);
 
 		final int commandID = 66;
 		Message2Server message2 = new NewGameMessage2Server(commandID, mapNames
@@ -145,7 +146,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 		 * key
 		 */
 		int connectedPlayers = ((ImStringList) client0
-				.getProperty(ClientControlInterface.CONNECTED_CLIENTS)).size();
+				.getProperty(ClientProperty.CONNECTED_CLIENTS)).size();
 		int playersOnWorldObject = client0.getWorld().getNumberOfPlayers();
 		assertEquals(connectedPlayers, playersOnWorldObject);
 
@@ -182,7 +183,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 			client1.update();
 
 			ImStringList mapNames = (ImStringList) client0
-					.getProperty(ClientControlInterface.MAPS_AVAILABLE);
+					.getProperty(ClientProperty.MAPS_AVAILABLE);
 			Message2Server message2 = new NewGameMessage2Server(99, mapNames
 					.get(0));
 			client0.write(message2);
@@ -258,7 +259,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 			client1.update();
 
 			ImStringList mapNames = (ImStringList) client0
-					.getProperty(ClientControlInterface.MAPS_AVAILABLE);
+					.getProperty(ClientProperty.MAPS_AVAILABLE);
 			Message2Server message2 = new NewGameMessage2Server(99, mapNames
 					.get(0));
 			client0.write(message2);
@@ -309,7 +310,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
 			// Start game
 			ImStringList mapNames = (ImStringList) client0
-					.getProperty(ClientControlInterface.MAPS_AVAILABLE);
+					.getProperty(ClientProperty.MAPS_AVAILABLE);
 			Message2Server newGameMessage2 = new NewGameMessage2Server(
 					commandID++, mapNames.get(0));
 			MessageStatus cm = newGameMessage2.execute(server);
