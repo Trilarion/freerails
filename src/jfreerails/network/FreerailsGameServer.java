@@ -365,6 +365,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 		logger.info("save game as " + saveGameName);
 		try {
 			savedGamesManager.saveGame(serverGameModel, saveGameName);
+                        String[] saves = savedGamesManager.getSaveGameNames();
+                        Message2Client request = new SetPropertyMessage2Client(
+				getNextClientCommandId(),
+				ClientControlInterface.ClientProperty.SAVED_GAMES, new ImStringList(
+						saves));
+                        send2All(request);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -85,7 +85,7 @@ public class ActionRoot {
 	 * Call this method when a new game is started or a game is loaded.
 	 */
 	public void setup(ModelRootImpl modelRoot, ViewLists vl) {
-		serverControls.setModelRoot(modelRoot);
+		serverControls.setup(modelRoot, dialogueBoxController);                
 		if (!modelRoot.hasBeenSetup)
 			throw new IllegalStateException();
 

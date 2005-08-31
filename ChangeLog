@@ -1,6 +1,12 @@
+Aug	31, 2005 Luke
+	Fixed bugs
+	1266584 Can't select which saved game on launcher 
+	1269683 Load game when no saved games.
+	1269688 Load game in full screen
+	1269689 Load game across network
 Aug	24, 2005 Luke
 	RFEs implemented
-	1223234	Add show FTP to 'Display' menu.
+	1223234	Add show FPS to 'Display' menu.
 	1223235	Save launcher input
 	
 	Fixed bugs

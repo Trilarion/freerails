@@ -3,7 +3,7 @@
  *
  */
 package jfreerails.controller;
-
+import jfreerails.network.Message2Server;
 
 /**
  * Defines methods and constants that GUI classes can use to access shared data.
@@ -20,6 +20,8 @@ public interface ModelRoot extends MoveExecutor {
     public enum Value {
         PLACE_STATION_CURSOR_MODE, BUILD_TRACK_CURSOR_MODE
     }
+    
+     void sendCommand(Message2Server c);
 
     void setProperty(Property property, Object newValue);
 

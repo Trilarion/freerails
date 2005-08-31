@@ -80,7 +80,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         
         setNextEnabled(false);
         LauncherPanel1 lp = (LauncherPanel1) wizardPages[0];
-        MapSelectionPanel msp = (MapSelectionPanel) wizardPages[1];
+        SelectMapJPanel msp = (SelectMapJPanel) wizardPages[1];
         ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
         ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
         
@@ -217,8 +217,8 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         
         ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
         if (isNewGame()) {
-            MapSelectionPanel msp2 = (MapSelectionPanel) wizardPages[1];
-            server.newGame(msp2.getMapName());
+            SelectMapJPanel msp2 = (SelectMapJPanel) wizardPages[1];
+            server.newGame(msp2.getNewMapName());
             cop.limitPlayerNames(null);
         } else {
             // Do nothing since the server is already set up.
@@ -226,9 +226,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
     
     private boolean isNewGame() {
-        MapSelectionPanel msp2 = (MapSelectionPanel) wizardPages[1];
+        SelectMapJPanel msp2 = (SelectMapJPanel) wizardPages[1];
         
-        return msp2.getMapAction() == MapSelectionPanel.START_NEW_MAP;
+        return msp2.getSelection().equals(SelectMapJPanel.Selection.NEW_GAME);
     }
     
     /** Starts the client and server in the same thread. */
@@ -403,7 +403,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         initComponents();
         
         wizardPages[0] = new LauncherPanel1(this);
-        wizardPages[1] = new MapSelectionPanel(this);
+        wizardPages[1] = new SelectMapJPanel(this);
         wizardPages[2] = new ClientOptionsJPanel(this);
         wizardPages[3] = new ConnectedPlayersJPanel();
         
@@ -531,7 +531,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         try {
             CardLayout cl = (CardLayout) jPanel1.getLayout();
             LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
-            MapSelectionPanel msp = (MapSelectionPanel) wizardPages[1];
+            SelectMapJPanel msp = (SelectMapJPanel) wizardPages[1];
             ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
             hideAllMessages();
             
@@ -597,7 +597,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                             cop.limitPlayerNames(null);
                         } else {
                             initServer();
-                            server.loadgame(ServerControlInterface.FREERAILS_SAV);
+                            server.loadgame(msp.getSaveGameName());
                             String[] playernames = server.getPlayerNames();
                             cop.limitPlayerNames(playernames);
                         }
