@@ -6,16 +6,18 @@
 
 package jfreerails.client.view;
 
+import java.awt.Graphics;
+
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
-import jfreerails.world.top.WorldListListener;
 import jfreerails.world.train.TrainModel;
 
 /**
@@ -24,8 +26,7 @@ import jfreerails.world.train.TrainModel;
  * 
  * @author Luke Lindsay
  */
-public class TrainDescriptionJPanel extends javax.swing.JPanel implements View,
-		WorldListListener {
+public class TrainDescriptionJPanel extends javax.swing.JPanel implements View{
 
 	private static final long serialVersionUID = 3977018444325664049L;
 
@@ -35,14 +36,33 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View,
 
 	private int trainNumber = -1;
 
-	/**
-	 * The id of the bundle of cargo that the train is carrying - we need to
-	 * update the view when the bundle is updated.
-	 */
-	private int bundleID = -1;
-
+	private FreerailsSerializable lastTrain, lastCargoBundle;
+	
 	public TrainDescriptionJPanel() {
 		initComponents();
+	}
+
+	@Override
+	protected void paintComponent(Graphics arg0) {
+		//Check whether the train or its cargo have changed since the last call to this method.
+		updateIfNecessary();
+		
+		super.paintComponent(arg0);
+	}
+
+	private void updateIfNecessary() {
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
+				trainNumber);	
+
+		for (int i = 0; i < train.getNumberOfWagons(); i++) {
+			// this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
+		}
+		int cargoBundleID = train.getCargoBundleID();
+		FreerailsSerializable cb = w.get(
+				principal, KEY.CARGO_BUNDLES, cargoBundleID);
+		
+		if(train != lastTrain || cb != lastCargoBundle)
+			displayTrain(trainNumber);
 	}
 
 	/**
@@ -103,13 +123,14 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View,
 		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
 				newTrainNumber);
 
-		this.bundleID = train.getCargoBundleID();
+		
 
 		for (int i = 0; i < train.getNumberOfWagons(); i++) {
 			// this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
 		}
+		int cargoBundleID = train.getCargoBundleID();
 		ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
-				principal, KEY.CARGO_BUNDLES, train.getCargoBundleID());
+				principal, KEY.CARGO_BUNDLES, cargoBundleID);
 		String s = "Train #" + it.getNaturalNumber() + ": ";
 		int numberOfTypesInBundle = 0;
 		for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
@@ -130,28 +151,11 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View,
 		}
 		s += ".";
 		this.jLabel1.setText(s);
+		this.lastCargoBundle = cb;
+		this.lastTrain = train;
 	}
 
-	public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
-
-		if (KEY.TRAINS == key && index == trainNumber && principal.equals(p)) {
-			// The train has been updated.
-			this.displayTrain(this.trainNumber);
-		} else if (KEY.CARGO_BUNDLES == key && index == bundleID
-				&& principal.equals(p)) {
-			// The train's cargo has changed.
-			this.displayTrain(this.trainNumber);
-		}
-		trainViewJPanel1.listUpdated(key, index, p);
-	}
-
-	public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
-		trainViewJPanel1.itemAdded(key, index, p);
-	}
-
-	public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
-		trainViewJPanel1.itemRemoved(key, index, p);
-	}
+	
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JLabel jLabel1;

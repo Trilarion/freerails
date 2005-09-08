@@ -163,8 +163,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
 	}
 
 	public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
-		newTrainScheduleJPanel1.listUpdated(key, index, p);
-		trainDetailsJPanel1.listUpdated(key, index, p);
+		newTrainScheduleJPanel1.listUpdated(key, index, p);		
 	}
 
 	public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
