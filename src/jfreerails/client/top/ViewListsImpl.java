@@ -66,9 +66,8 @@ public class ViewListsImpl implements ViewLists {
 		String[] soundsFiles = { "/jfreerails/client/sounds/buildtrack.wav",
 				"/jfreerails/client/sounds/cash.wav",
 				"/jfreerails/client/sounds/removetrack.wav",
-				"/jfreerails/client/sounds/whistle.wav" };
-		pm.setMessage("Loading sounds");
-		pm.setMax(soundsFiles.length);
+				"/jfreerails/client/sounds/whistle.wav" };		
+		pm.nextStep(soundsFiles.length);
 		SoundManager sm = SoundManager.getSoundManager();
 		for (int i = 0; i < soundsFiles.length; i++) {
 			try {
@@ -96,11 +95,10 @@ public class ViewListsImpl implements ViewLists {
 			FreerailsProgressMonitor pm) throws IOException {
 		ArrayList<TileRenderer> tileRenderers = new ArrayList<TileRenderer>();
 
-		// Setup progress monitor..
-		pm.setMessage("Loading terrain graphics.");
+		// Setup progress monitor..		
 
 		int numberOfTypes = w.size(SKEY.TERRAIN_TYPES);
-		pm.setMax(numberOfTypes);
+		pm.nextStep(numberOfTypes);
 
 		int progress = 0;
 		pm.setValue(progress);

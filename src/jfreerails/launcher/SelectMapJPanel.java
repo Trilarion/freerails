@@ -212,16 +212,14 @@ public class SelectMapJPanel extends javax.swing.JPanel implements LauncherPanel
     }
     // </editor-fold>//GEN-END:initComponents
 
-    private void savedmapsJListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_savedmapsJListValueChanged
-        System.out.println("savedmapsJListValueChanged");
+    private void savedmapsJListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_savedmapsJListValueChanged        
         if(savedmapsJList.getSelectedIndex() != -1)
             newmapsJList.clearSelection();
         
         validateInput();
     }//GEN-LAST:event_savedmapsJListValueChanged
     
-    private void newmapsJListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_newmapsJListValueChanged
-          System.out.println("newmapsJListValueChanged");
+    private void newmapsJListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_newmapsJListValueChanged        
         if(newmapsJList.getSelectedIndex() != -1)
             savedmapsJList.clearSelection();
           

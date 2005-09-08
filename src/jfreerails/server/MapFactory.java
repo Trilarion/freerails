@@ -41,8 +41,7 @@ public class MapFactory {
 
 	public static void setupMap(URL map_url, WorldImpl w,
 			FreerailsProgressMonitor pm) {
-		// Setup progress monitor..
-		pm.setMessage("Setting up map.");
+		// Setup progress monitor..		
 		pm.setValue(0);
 
 		world = w;
@@ -56,7 +55,7 @@ public class MapFactory {
 		g.drawImage(mapImage, 0, 0, null);
 		w.setupMap(mapRect.width, mapRect.height);
 
-		pm.setMax(mapRect.width);
+		pm.nextStep(mapRect.width);
 
 		HashMap<Integer, Integer> rgb2TerrainType = new HashMap<Integer, Integer>();
 

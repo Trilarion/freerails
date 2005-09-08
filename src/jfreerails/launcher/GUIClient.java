@@ -153,7 +153,7 @@ public class GUIClient extends FreerailsClient implements
 		}
 	}
 
-	public void setMax(int max) {
+	public void nextStep(int max) {
 		// TODO Auto-generated method stub
 	}
 

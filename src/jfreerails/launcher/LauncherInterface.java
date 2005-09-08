@@ -20,11 +20,13 @@ public interface LauncherInterface {
 	void setNextEnabled(boolean enabled);
 
 	void hideErrorMessages();
-        
-        void setProperty(String key, String value);
-        
-        String getProperty(String key);
-        
-         void saveProps();
+
+	void hideAllMessages();
+
+	void setProperty(String key, String value);
+
+	String getProperty(String key);
+
+	void saveProps();
 
 }

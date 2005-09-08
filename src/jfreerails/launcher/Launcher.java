@@ -59,9 +59,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     .getResource("/jfreerails/client/graphics/icons/warning.gif"));
     
     private final ImageIcon infoIcon = new javax.swing.ImageIcon(getClass()
-    .getResource("/jfreerails/client/graphics/icons/error.gif"));
+    .getResource("/jfreerails/client/graphics/icons/info.gif"));
     
-    private final ProgressPanel progressPanel = new ProgressPanel();
+    private final ProgressJPanel progressPanel = new ProgressJPanel(this);
     
     public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
@@ -160,9 +160,11 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
+                    setInfoText("Connecting to server...", LauncherInterface.INFO);
                     LogOnResponse logOnResponse = client.connect(hostname, port,
                             playerName, "password");
                     if (logOnResponse.isSuccessful()) {
+                    	setInfoText("Logged on and waiting for game to start.", LauncherInterface.INFO);
                         startThread(client);
                     } else {
                         recover = true;
@@ -260,22 +262,21 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
     
     /** Starts the client in a new thread. */
-    private static void startThread(final GUIClient client) {
+    private void startThread(final GUIClient guiClient) {
         
         Runnable run = new Runnable() {
             
             public void run() {
-                while (null == client.getWorld()) {
-                    client.update();
+                while (null == guiClient.getWorld()) {
+                    guiClient.update();                    
                     try {
                         Thread.sleep(20);
                     } catch (InterruptedException e) {
                         // do nothing
                     }
-                }
-                
-                GameModel[] models = new GameModel[] { client };
-                ScreenHandler screenHandler = client.getScreenHandler();
+                }                
+                GameModel[] models = new GameModel[] { guiClient };
+                ScreenHandler screenHandler = guiClient.getScreenHandler();
                 GameLoop gameLoop = new GameLoop(screenHandler, models);
                 screenHandler.apply();
                 

@@ -23,10 +23,9 @@ import org.xml.sax.SAXException;
  */
 public class OldWorldImpl {
 	public static World createWorldFromMapFile(String mapName,
-			FreerailsProgressMonitor pm) {
-		pm.setMessage("Setting up world.");
+			FreerailsProgressMonitor pm) {		
 		pm.setValue(0);
-		pm.setMax(7);
+		pm.nextStep(7);
 
 		int progess = 0;
 

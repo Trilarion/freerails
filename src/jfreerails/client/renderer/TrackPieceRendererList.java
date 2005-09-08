@@ -39,8 +39,8 @@ final public class TrackPieceRendererList {
 	public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
 			FreerailsProgressMonitor pm) throws IOException {
 		// Setup progress monitor..
-		pm.setMessage("Loading track graphics.");
-		pm.setMax(w.size(SKEY.TRACK_RULES));
+		
+		pm.nextStep(w.size(SKEY.TRACK_RULES));
 
 		int progress = 0;
 		pm.setValue(progress);

@@ -46,8 +46,8 @@ public class TrainImages {
         final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);
 
         // Setup progress monitor..
-        pm.setMessage("Loading train images.");
-        pm.setMax(numberOfWagonTypes + numberOfEngineTypes);
+     
+        pm.nextStep(numberOfWagonTypes + numberOfEngineTypes);
 
         int progress = 0;
         pm.setValue(progress);
