@@ -40,7 +40,7 @@ public class NewGameMessage2Server implements Message2Server {
 	 * dynamically determined by scanning the directory.
 	 */
 	public static String[] getMapNames() {
-		return new String[] { "south_america", "small_south_america" };
+		return new String[] { "South America", "Small South America" };
 	}
 
 	public boolean equals(Object o) {

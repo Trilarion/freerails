@@ -1,3 +1,8 @@
+Sept 8, 2005 Luke
+	Fixed bugs
+	1266581 Underscores in map names
+	1223231 "waiting" message on launcher unclear
+	1266582  Progress bar
 Aug	31, 2005 Luke
 	Fixed bugs
 	1266584 Can't select which saved game on launcher 

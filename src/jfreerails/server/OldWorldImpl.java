@@ -22,8 +22,16 @@ import org.xml.sax.SAXException;
  * @author luke
  */
 public class OldWorldImpl {
+	/** Note, the map name is converted to lower case and any spaces
+	 * are replaced with underscores.
+	 * 
+	 */
 	public static World createWorldFromMapFile(String mapName,
 			FreerailsProgressMonitor pm) {		
+		
+		mapName = mapName.toLowerCase();
+		mapName = mapName.replace(' ', '_');
+		
 		pm.setValue(0);
 		pm.nextStep(7);
 
