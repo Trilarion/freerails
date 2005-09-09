@@ -3,7 +3,6 @@
  *
  */
 package jfreerails.controller;
-import jfreerails.network.Message2Server;
 
 /**
  * Defines methods and constants that GUI classes can use to access shared data.

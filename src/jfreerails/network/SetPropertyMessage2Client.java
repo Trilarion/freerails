@@ -3,7 +3,10 @@
  */
 package jfreerails.network;
 
-import jfreerails.network.ClientControlInterface.ClientProperty;
+import jfreerails.controller.ClientControlInterface;
+import jfreerails.controller.Message2Client;
+import jfreerails.controller.MessageStatus;
+import jfreerails.controller.ClientControlInterface.ClientProperty;
 import jfreerails.world.common.FreerailsSerializable;
 
 /**

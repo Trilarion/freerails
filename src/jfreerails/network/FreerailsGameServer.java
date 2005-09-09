@@ -12,8 +12,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import jfreerails.controller.ClientControlInterface;
+import jfreerails.controller.Message2Client;
+import jfreerails.controller.Message2Server;
+import jfreerails.controller.MessageStatus;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.PreMoveStatus;
+import jfreerails.controller.ServerControlInterface;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.accounts.BondTransaction;

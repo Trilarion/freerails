@@ -8,6 +8,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import jfreerails.controller.ClientControlInterface;
+import jfreerails.controller.Message2Client;
+import jfreerails.controller.Message2Server;
+import jfreerails.controller.MessageStatus;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.PreMoveStatus;
 import jfreerails.move.Move;

@@ -23,6 +23,7 @@ import javax.swing.JLayeredPane;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.ReportBugTextGenerator;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
@@ -292,6 +293,12 @@ public class DialogueBoxController implements WorldListListener {
         BalanceSheetHtmlJPanel bs = new BalanceSheetHtmlJPanel();
         bs.setup(this.modelRoot, vl, this.closeCurrentDialogue);
         this.showContent(bs);
+    }
+    
+    public void showReportBug(){
+    	CopyableTextJPanel ct = new CopyableTextJPanel();
+    	ct.setText(ReportBugTextGenerator.genText());
+    	showContent(ct);
     }
     
     public void showBrokerScreen() {

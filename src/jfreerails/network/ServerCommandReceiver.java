@@ -4,6 +4,8 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.Message2Server;
+
 /**
  * Defines a method that accepts a command to be sent to the server.
  * 

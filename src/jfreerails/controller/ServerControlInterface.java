@@ -1,7 +1,7 @@
 /*
  * Created on Apr 14, 2004
  */
-package jfreerails.network;
+package jfreerails.controller;
 
 import java.io.IOException;
 

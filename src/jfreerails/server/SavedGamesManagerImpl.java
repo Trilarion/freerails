@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import jfreerails.controller.ServerControlInterface;
 import jfreerails.network.NewGameMessage2Server;
 import jfreerails.network.SavedGamesManager;
-import jfreerails.network.ServerControlInterface;
 import jfreerails.util.FreerailsProgressMonitor;
 
 /**

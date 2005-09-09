@@ -5,7 +5,8 @@ package jfreerails.network;
 
 import java.io.IOException;
 
-import jfreerails.network.ClientControlInterface.ClientProperty;
+import jfreerails.controller.Message2Client;
+import jfreerails.controller.ClientControlInterface.ClientProperty;
 import jfreerails.world.common.ImStringList;
 
 /**

@@ -3,6 +3,10 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.Message2Server;
+import jfreerails.controller.MessageStatus;
+import jfreerails.controller.ServerControlInterface;
+
 /**
  * Request to load a game.
  * 

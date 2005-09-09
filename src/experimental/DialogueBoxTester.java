@@ -183,6 +183,8 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         showTerrainInfo = new javax.swing.JMenuItem();
         showStationInfo = new javax.swing.JMenuItem();
         showTrainList = new javax.swing.JMenuItem();
+        showReportBug = new javax.swing.JMenuItem();
+        throwException = new javax.swing.JMenuItem();
         showCargoWaitingAndDemand = new javax.swing.JMenuItem();
         showJavaSystemProperties = new javax.swing.JMenuItem();
         showNetworthGraph = new javax.swing.JMenuItem();
@@ -296,6 +298,13 @@ public class DialogueBoxTester extends javax.swing.JFrame {
                 showJavaSystemPropertiesActionPerformed(evt);
             }
         });
+        
+        throwException.setText("Throw Exception");
+        throwException.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+               throw new IllegalArgumentException();
+            }
+        });
 
         show.add(showJavaSystemProperties);
 
@@ -308,6 +317,17 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         });
 
         show.add(showNetworthGraph);
+        
+        showReportBug.setText("Report Bug");
+        showReportBug
+                .addActionListener(new java.awt.event.ActionListener() {
+                	 public void actionPerformed(java.awt.event.ActionEvent evt) {
+                			dialogueBoxController.showReportBug();
+                     }
+                
+        });
+
+        show.add(showReportBug);
 
         jMenuBar1.add(show);
 
@@ -426,6 +446,10 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 	javax.swing.JMenuItem showTerrainInfo;
 
 	javax.swing.JMenuItem showTrainList;
+	
+	javax.swing.JMenuItem showReportBug;
+	
+	javax.swing.JMenuItem throwException;
 	// End of variables declaration//GEN-END:variables
 
 }

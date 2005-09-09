@@ -1,7 +1,7 @@
 /*
  * Created on Apr 14, 2004
  */
-package jfreerails.network;
+package jfreerails.controller;
 
 import jfreerails.world.common.FreerailsSerializable;
 
@@ -50,13 +50,13 @@ public class MessageStatus implements FreerailsSerializable {
 
 	private final boolean successful;
 
-	MessageStatus(int id, boolean successful, String reason) {
+	public MessageStatus(int id, boolean successful, String reason) {
 		this.id = id;
 		this.reason = reason;
 		this.successful = successful;
 	}
 
-	MessageStatus(int id, boolean successful) {
+	public MessageStatus(int id, boolean successful) {
 		this.id = id;
 		this.reason = null;
 		this.successful = successful;

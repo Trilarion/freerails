@@ -326,7 +326,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 		});
 		;
 		boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
-		
+
 		final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem(
 				"Show FPS stats", showFps);
 		displayMenu.add(showFPSMenuItem);
@@ -336,7 +336,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 				System.setProperty("SHOWFPS", newValue);
 			}
 		});
-
 
 		return displayMenu;
 	}
@@ -457,9 +456,17 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 					}
 				});
 
+		JMenuItem showReportBug = new JMenuItem("Report Bug");
+		showReportBug.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				dialogueBoxController.showReportBug();
+			}
+		});
+
 		helpMenu.add(showControls);
 		helpMenu.add(how2play);
 		helpMenu.add(showJavaProperties);
+		helpMenu.add(showReportBug);
 		helpMenu.add(about);
 
 		return helpMenu;
@@ -636,12 +643,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 		String serverDetails = (String) modelRoot
 				.getProperty(ModelRoot.Property.SERVER);
 		String frameTitle;
-		if(serverDetails.equals(LocalConnection.SERVER_IN_SAME_JVM)){
-			 frameTitle = name + " - Freerails";
-		}else{
-			 frameTitle = name + " - " + serverDetails + " - Freerails";
+		if (serverDetails.equals(LocalConnection.SERVER_IN_SAME_JVM)) {
+			frameTitle = name + " - Freerails";
+		} else {
+			frameTitle = name + " - " + serverDetails + " - Freerails";
 		}
-		
+
 		clientJFrame.setTitle(frameTitle);
 		isSetup = true;
 		modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION,

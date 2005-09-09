@@ -106,6 +106,7 @@ else:
 				<include name="**/*.html" />
 				<include name="**/*.css" />
 				<include name="**/*.wav" />
+				<include name="**/*.properties" />
 			</fileset>
 		</copy>
 
@@ -114,7 +115,7 @@ else:
 				<include name="**/*.png" />
 				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
-				<include name="**/*.css" />
+				<include name="**/*.css" />				
 				<exclude name="javadoc/**/*" />
 			</fileset>
 		</copy>
@@ -129,6 +130,8 @@ else:
 
 		<replace file="${datafiles}/README" token="@version@" value="${DSTAMP}-${TSTAMP}" />
 		<replace file="${datafiles}/src/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		<replace file="${datafiles}/src/build.properties" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		<replace file="${datafiles}/src/build.properties" token="@freerails.built.by@" value="${user.name}" />
 
 	</target>
 
@@ -139,6 +142,7 @@ else:
 				<include name="**/*" />
 			</fileset>
 		</copy>
+		<copy todir="${build}" file="${datafiles}/src/build.properties"/>					
 	</target>
 
 
@@ -146,7 +150,7 @@ else:
 		<javac destdir="${build}" debug="true" fork="true" source="1.5" srcdir="${src}">
 			<exclude name="**/*Test.java" />
 			<exclude name="**/*TestCase.java" />
-		</javac>
+		</javac>		
 	</target>
 
 	<target name="debugcompile" depends="data2build" description="Build everything including JUnit    test-classes. Include debugging symbols">
@@ -186,6 +190,13 @@ else:
 			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />
 		</delete>
 		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" todir="${dist}/latest" />
+	</target>
+	
+	<target name="beansjar" depends="compile, mkdirs" >
+
+			<jar basedir="${build}" destfile="${dist}/lib/jfreerails-beans.jar">					
+				<include name="**/CopyableTextJPanel.class" />
+			</jar>
 	</target>
 
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
@@ -333,7 +344,7 @@ else:
 	<target name="updatesite" description="Uploads modified files to website, skips javadoc and jar files." depends="check_username_and_password">
 		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
 			<fileset dir="www">
-				<include name="**/*.pdf" />
+				<include name="functional_specification.pdf" />
 				<include name="**/*.html" />
 				<include name="**/*.shtml" />
 				<include name="**/*.css" />

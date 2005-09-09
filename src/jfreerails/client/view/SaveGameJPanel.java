@@ -8,9 +8,9 @@ package jfreerails.client.view;
 import java.awt.event.ActionListener;
 
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.Message2Server;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.ModelRoot.Property;
-import jfreerails.network.Message2Server;
 import jfreerails.network.SaveGameMessage2Server;
 /**
  *

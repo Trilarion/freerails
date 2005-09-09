@@ -3,6 +3,10 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.Message2Server;
+import jfreerails.controller.MessageStatus;
+import jfreerails.controller.ServerControlInterface;
+
 /**
  * Request to start a game on a new map.
  * 

@@ -5,6 +5,7 @@
  */
 
 package jfreerails.client.view;
+import jfreerails.controller.Message2Server;
 import jfreerails.controller.ModelRoot;
 import static jfreerails.controller.ModelRoot.Property;
 import jfreerails.client.renderer.ViewLists;

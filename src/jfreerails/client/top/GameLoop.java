@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 
 import jfreerails.client.common.RepaintManagerForActiveRendering;
 import jfreerails.client.common.ScreenHandler;
-import jfreerails.client.common.SynchronizedEventQueue;
+import jfreerails.client.view.UnexpectedExceptionForm;
+import jfreerails.controller.ReportBugTextGenerator;
 import jfreerails.util.GameModel;
 
 /**
@@ -158,11 +159,19 @@ final public class GameLoop implements Runnable {
 			synchronized (loopMonitor) {
 				loopMonitor.notify();
 			}
-		} catch (Exception e) {
-			logger.severe("Unexpected exception, quitting..");
-			e.printStackTrace();
-			System.exit(1);
+		} catch (Exception e) {			
+			unexpectedException(e);			
 		}
+	}
+
+	public static void unexpectedException(Exception e) {
+		ScreenHandler.exitFullScreenMode();		
+		          
+		String str = ReportBugTextGenerator.genText(e);
+		System.err.print(str);
+		UnexpectedExceptionForm unexpectedExceptionForm = new UnexpectedExceptionForm(); 
+		unexpectedExceptionForm.setText(str);
+		unexpectedExceptionForm.setVisible(true);
 	}
 }
 

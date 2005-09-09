@@ -3,6 +3,10 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.Message2Server;
+import jfreerails.controller.MessageStatus;
+import jfreerails.controller.ServerControlInterface;
+
 /**
  * A request to save the game.
  * 

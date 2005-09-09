@@ -1,3 +1,6 @@
+Sept 9, 2005 Luke
+	Fixed bugs
+	1269676 Stacktraces often lost
 Sept 8, 2005 Luke
 	Fixed bugs
 	1266581 Underscores in map names

@@ -3,13 +3,17 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.ClientControlInterface;
+import jfreerails.controller.Message2Client;
+import jfreerails.controller.Message2Server;
+import jfreerails.controller.MessageStatus;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.PreMoveStatus;
 import jfreerails.controller.TimeTickPreMove;
+import jfreerails.controller.ClientControlInterface.ClientProperty;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.network.ClientControlInterface.ClientProperty;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;

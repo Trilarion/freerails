@@ -3,6 +3,9 @@
  */
 package jfreerails.network;
 
+import jfreerails.controller.ClientControlInterface;
+import jfreerails.controller.Message2Client;
+import jfreerails.controller.MessageStatus;
 import jfreerails.util.Immutable;
 import jfreerails.world.top.World;
 

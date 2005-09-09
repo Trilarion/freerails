@@ -41,6 +41,9 @@ final public class ScreenHandler {
 
 	/** Whether the window is minimised. */
 	private boolean isMinimised = false;
+	
+	static GraphicsDevice device = GraphicsEnvironment
+	.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
 	public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
 		this.displayMode = displayMode;
@@ -54,8 +57,7 @@ final public class ScreenHandler {
 	}
 
 	private static void goFullScreen(JFrame frame, DisplayMode displayMode) {
-		GraphicsDevice device = GraphicsEnvironment
-				.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		
 		setRepaintOffAndDisableDoubleBuffering(frame);
 
 		/*
@@ -72,7 +74,7 @@ final public class ScreenHandler {
 
 		if (device.isDisplayChangeSupported()) {
 			if (null == displayMode) {
-				displayMode = getBestDisplayMode(device);
+				displayMode = getBestDisplayMode();
 			}
 
 			logger.info("Setting display mode to:  "
@@ -183,7 +185,7 @@ final public class ScreenHandler {
 		}
 	}
 
-	private static DisplayMode getBestDisplayMode(GraphicsDevice device) {
+	private static DisplayMode getBestDisplayMode() {
 		for (int x = 0; x < BEST_DISPLAY_MODES.length; x++) {
 			DisplayMode[] modes = device.getDisplayModes();
 
@@ -217,5 +219,9 @@ final public class ScreenHandler {
 
 	public boolean isInUse() {
 		return isInUse;
+	}
+	
+	public static void exitFullScreenMode(){
+		device.setFullScreenWindow(null);
 	}
 }

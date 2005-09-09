@@ -1,9 +1,9 @@
-package jfreerails.client.common;
+package jfreerails.client.top;
 
 import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-import java.util.logging.Logger;
+
 
 /**
  * This event queue is synchronized on the MUTEX. This lets one control when
@@ -15,9 +15,6 @@ import java.util.logging.Logger;
  * 
  */
 final public class SynchronizedEventQueue extends EventQueue {
-	private static final Logger logger = Logger
-			.getLogger(SynchronizedEventQueue.class.getName());
-
 	public static final Object MUTEX = new Object();
 
 	private static final SynchronizedEventQueue instance = new SynchronizedEventQueue();
@@ -47,9 +44,7 @@ final public class SynchronizedEventQueue extends EventQueue {
 				 * If something goes wrong, lets kill the game straight away to
 				 * avoid hard-to-track-down bugs.
 				 */
-				logger.severe("Unexpected exception, quitting..");
-				e.printStackTrace();
-				System.exit(1);
+				GameLoop.unexpectedException(e);
 			}
 		}
 	}
