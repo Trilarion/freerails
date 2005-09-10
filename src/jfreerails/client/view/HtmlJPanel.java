@@ -134,7 +134,9 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 		String output = "";
 
 		while (tokenizer.hasMoreTokens()) {
-			output += tokenizer.nextToken();
+			
+				output += tokenizer.nextToken();
+			
 			if (tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
 				String value;
@@ -142,12 +144,20 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 					value = (String) ((HashMap) context).get(token);
 				} else {
 					try {
-						Field field = context.getClass().getField(token);
-						value = field.get(context).toString();
+						StringTokenizer t2 = new StringTokenizer(token, ".");
+						value = null;
+						Object o = context;
+						while (t2.hasMoreTokens()) {
+							String subToken = t2.nextToken();
+							Field field = o.getClass().getField(subToken);
+							o = field.get(o);
+						}
+						value = o.toString();
 					} catch (Exception e) {
 						e.printStackTrace();
 						throw new NoSuchElementException(token);
 					}
+
 				}
 				output += value;
 			}

@@ -55,7 +55,8 @@ public class BrokerScreenGenerator {
 	public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
 		dataGatherer = new FinancialDataGatherer(w, principal);
 
-		this.playername = w.getPlayer(w.getID(principal)).getName();
+		int playerId= w.getID(principal);
+		this.playername = w.getPlayer(playerId).getName();
 
 		this.cal = (GameCalendar) w.get(ITEM.CALENDAR);
 		GameTime time = w.currentTime();
@@ -69,12 +70,20 @@ public class BrokerScreenGenerator {
 		aggregator.setCategory(BOND);
 		this.loansTotal = aggregator.calculateValue();
 
-		this.publicShares = dataGatherer.totalShares();
+		this.publicShares = dataGatherer.sharesHeldByPublic();
 		this.netWorth = dataGatherer.netWorth();
 		this.pricePerShare = dataGatherer.sharePrice();
 		this.treasuryStock = dataGatherer.treasuryStock();
 
-		this.otherRRShares = dataGatherer.otherRRShares();
+		this.otherRRShares = new HashMap<Integer, Integer>(); 
+		
+		int[] otherRRSharesArray = dataGatherer.getStockInThisRRs();
+		for (int i = 0; i < otherRRSharesArray.length; i++) {
+			if(i != playerId && otherRRSharesArray[i] > 0){
+				otherRRShares.put(i,  otherRRSharesArray[i]);
+			}						
+		}
+			
 
 		StringBuffer othersRRBuffer = new StringBuffer("");
 		if (otherRRShares.size() > 0) {

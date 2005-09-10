@@ -39,4 +39,27 @@ public class HtmlJPanelTest extends TestCase {
 		output = HtmlJPanel.populateTokens(template, objectContext);
 		assertEquals(expectedOutput, output);
 	}
+	
+	public void testPopulateTokens2(){				
+		String template = "Hey $a.name$ I would like you to meet $b.name$";		
+		String expectedOutput = "Hey Tom I would like you to meet Claire";
+		
+		Object objectContext = new Object() {
+			@SuppressWarnings("unused")
+			public Person a = new Person("Tom");
+
+			@SuppressWarnings("unused")
+			public Person b = new Person("Claire");
+		};
+		
+		String output = HtmlJPanel.populateTokens(template, objectContext);
+		assertEquals(expectedOutput, output);		
+	}
+	public static class Person{
+		public String name;
+		public Person(String name){
+			this.name = name;
+		}
+	}
+	
 }

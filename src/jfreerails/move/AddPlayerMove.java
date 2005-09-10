@@ -1,6 +1,9 @@
 package jfreerails.move;
 
 import jfreerails.world.accounts.BondTransaction;
+import jfreerails.world.accounts.StockTransaction;
+import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -69,14 +72,16 @@ public class AddPlayerMove implements Move, ServerMove {
 		MoveStatus ms = tryDoMove(w, p);
 		if (!ms.ok)
 			return ms;
-		w.addPlayer(this.player2add);
-
+		int playerId = w.addPlayer(this.player2add);		
 		// Sell the player 2 $500,000 bonds at 5% interest.
-		w.addTransaction(player2add
-				.getPrincipal(), BondTransaction.issueBond(5));
-		w.addTransaction(player2add
-				.getPrincipal(), BondTransaction.issueBond(5));
-
+		FreerailsPrincipal principal = player2add
+				.getPrincipal();
+		w.addTransaction(principal, BondTransaction.issueBond(5));
+		//Issue stock
+		Money initialStockPrice = new Money(5);
+		Transaction t = StockTransaction.issueStock(playerId, 100000,
+				initialStockPrice);
+		w.addTransaction(principal, t);
 		return ms;
 	}
 

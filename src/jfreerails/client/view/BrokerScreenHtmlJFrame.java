@@ -17,7 +17,9 @@ import jfreerails.controller.ModelRoot;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
 import jfreerails.world.accounts.BondTransaction;
-import jfreerails.world.accounts.IssueStockTransaction;
+import jfreerails.world.accounts.StockTransaction;
+import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -25,6 +27,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 /**
  * 
  * @author smackay
+ * @author Luke
  */
 public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
@@ -34,7 +37,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
 	private int lastNumTransactions = 0;
 
-	private ModelRoot modelRoot;
+	private ModelRoot modelRoot;	
 
 	public static BrokerScreenGenerator brokerScreenGenerator;
 	
@@ -47,6 +50,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		URL url = BrokerScreenHtmlJFrame.class
 				.getResource("/jfreerails/client/view/Broker_Screen.html");
 		template = loadText(url);
+		
 	}
 	
 	private final ActionListener issueBondActionListener = new ActionListener() {
@@ -74,21 +78,24 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 	private final ActionListener buyTreasuryStockActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 
-			Move StockTransaction = new AddTransactionMove(modelRoot
-					.getPrincipal(), IssueStockTransaction.issueStock(modelRoot
-					.getWorld().getID(modelRoot.getPrincipal()), 10000,
-					financialDataGatherer.sharePrice()));
+			FreerailsPrincipal principal = modelRoot
+					.getPrincipal();
+			
+			Money sharePrice = financialDataGatherer.sharePrice();
+			int playerId = modelRoot.getWorld().getID(modelRoot.getPrincipal());
+			Transaction t = StockTransaction.buyOrSellStock(playerId, 10000, sharePrice);
+			Move StockTransaction = new AddTransactionMove(principal, t);
 			modelRoot.doMove(StockTransaction);
 		}
 	};
 
 	private final ActionListener sellTreasuryStockActionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			Move StockTransaction = new AddTransactionMove(modelRoot
-					.getPrincipal(), IssueStockTransaction.sellStock(modelRoot
-					.getWorld().getID(modelRoot.getPrincipal()), 10000,
+			int playerId = modelRoot.getWorld().getID(modelRoot.getPrincipal());
+			Move move = new AddTransactionMove(modelRoot
+					.getPrincipal(), StockTransaction.buyOrSellStock(playerId, -10000,
 					financialDataGatherer.sharePrice()));
-			modelRoot.doMove(StockTransaction);
+			modelRoot.doMove(move);
 		}
 	};
 
@@ -109,61 +116,47 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		this
 				.setSellTreasuryStockActionlistener(this.sellTreasuryStockActionListener);
 
-		// for every player this is seting up an ActionListener to Buy and Sell
-		// there stock
+		//Sets up Actions listeners for buy/sell players' stock
 		int numberOfPlayers = modelRoot.getWorld().getNumberOfPlayers();
 		for (int i = 0; i < numberOfPlayers; i++) {
-			final Player temp = modelRoot.getWorld().getPlayer(i);
-			@SuppressWarnings("unused")
-			FinancialDataGatherer data4tempPlayer = new FinancialDataGatherer(
-					modelRoot.getWorld(), temp.getPrincipal());
-			if (temp != null
-					&& !(modelRoot.getPrincipal().equals(temp.getPrincipal()))) {
-				this.enableBuyPlayerStock(temp);
-				this.enableSellPlayerStock(temp);
+			final Player otherPlayer = modelRoot.getWorld().getPlayer(i);
+			final int otherPlayerId = i;
+			final FreerailsPrincipal principal = modelRoot.getPrincipal();			
+			final FinancialDataGatherer otherPlayersData = new FinancialDataGatherer(
+					modelRoot.getWorld(), otherPlayer.getPrincipal());
+			if (otherPlayer != null
+					&& !(principal.equals(otherPlayer.getPrincipal()))) {
+				this.enableBuyPlayerStock(otherPlayer);
+				this.enableSellPlayerStock(otherPlayer);
 			}
 
-			this.setBuyPlayerStockActionlistener(
-					new ActionListener() {
+			ActionListener buyStockAl = new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							Move StockTransaction = new AddTransactionMove(
-									modelRoot.getPrincipal(),
-									IssueStockTransaction.issueStock(modelRoot
-											.getWorld().getID(
-													temp.getPrincipal()),
-											10000, (new FinancialDataGatherer(
-													modelRoot.getWorld(), temp
-															.getPrincipal()))
-													.sharePrice()));
-							modelRoot.doMove(StockTransaction);
-							Move buyPlayerStock = new AddTransactionMove(temp
-									.getPrincipal(), IssueStockTransaction
-									.buyPlayerStock(modelRoot.getWorld().getID(
-											modelRoot.getPrincipal()), 10000));
-							modelRoot.doMove(buyPlayerStock);
+							Money sharePrice = otherPlayersData.sharePrice();
+							StockTransaction issueStock = StockTransaction.buyOrSellStock(otherPlayerId,
+											10000, sharePrice);
+							Move move = new AddTransactionMove(
+									principal,
+									issueStock);
+							modelRoot.doMove(move);													
 						}
-					}, temp);
+					};
+			this.setBuyPlayerStockActionlistener(					
+					buyStockAl, otherPlayer);
+			
+			ActionListener sellStockAl = new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							Money sharePrice = otherPlayersData.sharePrice();
+							StockTransaction sellStock = StockTransaction.buyOrSellStock(otherPlayerId,
+											-10000, sharePrice);
+							Move move = new AddTransactionMove(
+									principal,
+									sellStock);
+							modelRoot.doMove(move);							
+						}
+					};
 			this.setSellPlayerStockActionlistener(
-					new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							Move StockTransaction = new AddTransactionMove(
-									modelRoot.getPrincipal(),
-									IssueStockTransaction.sellStock(modelRoot
-											.getWorld().getID(
-													temp.getPrincipal()),
-											10000, (new FinancialDataGatherer(
-													modelRoot.getWorld(), temp
-															.getPrincipal()))
-													.sharePrice()));
-							modelRoot.doMove(StockTransaction);
-							Move sellPlayerStock = new AddTransactionMove(temp
-									.getPrincipal(), IssueStockTransaction
-									.sellPlayerStock(modelRoot.getWorld()
-											.getID(modelRoot.getPrincipal()),
-											10000));
-							modelRoot.doMove(sellPlayerStock);
-						}
-					}, temp);
+					sellStockAl, otherPlayer);
 		}
 	}
 
@@ -176,7 +169,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
 		// this is where the Menu get Enable and Disable by if you own any stock
 		// or if the TotalShares are 0
-		if (finacialDataGatherer.totalShares() <= 0) {
+		if (finacialDataGatherer.sharesHeldByPublic() <= 0) {
 			disableBuyTreasuryStockJMenuitem();
 		} else
 			enableBuyTreasuryStockJMenuItem();
@@ -196,8 +189,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 					disableBuyPlayerStock(temp);
 				} else
 					enableBuyPlayerStock(temp);
-				if (finacialDataGatherer.otherRRsWithStake().containsKey(
-						world.getID(p))) {
+				if (finacialDataGatherer.thisRRHasStakeIn(i)) {
 					enableSellPlayerStock(temp);
 				} else
 					disableSellPlayerStock(temp);

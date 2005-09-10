@@ -1,3 +1,7 @@
+Sept 10, 2005 Luke
+	Fixed bugs
+	1269664 Can't tell other player has my stock
+	1266575 Stock holder equity not shown properly on the balance sheet.
 Sept 9, 2005 Luke
 	Fixed bugs
 	1269676 Stacktraces often lost

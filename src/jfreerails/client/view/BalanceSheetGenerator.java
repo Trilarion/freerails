@@ -3,12 +3,13 @@
  */
 package jfreerails.client.view;
 
-import static jfreerails.world.accounts.Transaction.Category.BOND;
+import static jfreerails.world.accounts.Transaction.Category.*;
 import static jfreerails.world.accounts.Transaction.Category.INDUSTRIES;
 import static jfreerails.world.accounts.Transaction.Category.ISSUE_STOCK;
 import static jfreerails.world.accounts.Transaction.Category.STATIONS;
 import static jfreerails.world.accounts.Transaction.Category.TRACK;
 import static jfreerails.world.accounts.Transaction.Category.TRAIN;
+import jfreerails.controller.FinancialDataGatherer;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
@@ -40,40 +41,12 @@ public class BalanceSheetGenerator {
 	final FreerailsPrincipal principal;
 
 	private GameCalendar cal;
-
-	public Money operatingFundsTotal;
-
-	public Money operatingFundsYtd;
-
-	public Money trackTotal;
-
-	public Money trackYtd;
-
-	public Money stationsTotal;
-
-	public Money stationsYtd;
-
-	public Money rollingStockTotal;
-
-	public Money rollingStockYtd;
-
-	public Money industriesTotal;
-
-	public Money industriesYtd;
-
-	public Money loansTotal;
-
-	public Money loansYtd;
-
-	public Money equityTotal;
-
-	public Money equityYtd;
-
-	public Money profitTotal;
-
-	public Money profitYtd;
-
+	
 	public String year;
+
+	public Stats total;
+	
+	public Stats ytd;
 
 	BalanceSheetGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
 		this.w = w;
@@ -84,75 +57,75 @@ public class BalanceSheetGenerator {
 		final int startyear = cal.getYear(time.getTicks());
 		year = String.valueOf(startyear);
 		GameTime startOfYear = new GameTime(cal.getTicks(startyear));
-
-		operatingFundsTotal = w.getCurrentBalance(principal);
-		trackTotal = calTrackTotal(TRACK, w, principal, GameTime.BIG_BANG);
-
-		ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-				w, principal);
-
+		
 		GameTime[] totalTimeInteval = new GameTime[] { GameTime.BIG_BANG,
 				GameTime.END_OF_THE_WORLD };
 
-		aggregator.setTimes(totalTimeInteval);
+		total = calulateValues(totalTimeInteval);
+		GameTime[] ytdTimeInteval = new GameTime[] { startOfYear,
+				GameTime.END_OF_THE_WORLD };
+		ytd = calulateValues(ytdTimeInteval);		
+	}
 
-		aggregator.setCategory(STATIONS);
-		stationsTotal = aggregator.calculateValue();
-
-		aggregator.setCategory(TRAIN);
-		rollingStockTotal = aggregator.calculateValue();
-
-		aggregator.setCategory(INDUSTRIES);
-		industriesTotal = aggregator.calculateValue();
-		aggregator.setCategory(BOND);
-		loansTotal = aggregator.calculateValue();
-		aggregator.setCategory(ISSUE_STOCK);
-		equityTotal = aggregator.calculateValue();
-
-		long profit = operatingFundsTotal.getAmount() + trackTotal.getAmount()
-				+ stationsTotal.getAmount() + rollingStockTotal.getAmount()
-				+ industriesTotal.getAmount() + loansTotal.getAmount()
-				+ equityTotal.getAmount();
-		profitTotal = new Money(profit);
-
-		// Calculate ytd changes
-
+	private Stats  calulateValues(final GameTime[] totalTimeInteval) {
+		
+		Stats returnValue = new Stats();
+		
+		
 		TransactionAggregator ytdOperatingFunds = new TransactionAggregator(w,
 				principal) {
 			protected boolean condition(int i) {
-				int transactionYear = cal.getYear(w.getTransactionTimeStamp(principal,
-						i).getTicks());
+				int transactionYear = w.getTransactionTimeStamp(
+						principal, i).getTicks();
 
-				return transactionYear >= startyear;
+				return transactionYear >= totalTimeInteval[0].getTicks();
 			}
 		};
+		
+		returnValue.operatingFunds= ytdOperatingFunds.calculateValue();
+		
+		returnValue.track = calTrackTotal(TRACK, w, principal, totalTimeInteval[0]);
 
-		GameTime[] ytdTimeInteval = new GameTime[] { startOfYear,
-				GameTime.END_OF_THE_WORLD };
-		aggregator.setTimes(ytdTimeInteval);
-
-		operatingFundsYtd = ytdOperatingFunds.calculateValue();
-		trackYtd = calTrackTotal(TRACK, w, principal, startOfYear);
+		ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
+				w, principal);		
+		aggregator.setTimes(totalTimeInteval);
 
 		aggregator.setCategory(STATIONS);
-		stationsYtd = aggregator.calculateValue();
+		returnValue.stations = aggregator.calculateValue();
 
 		aggregator.setCategory(TRAIN);
-		rollingStockYtd = aggregator.calculateValue();
+		returnValue.rollingStock = aggregator.calculateValue();
 
 		aggregator.setCategory(INDUSTRIES);
-		industriesYtd = aggregator.calculateValue();
-
+		returnValue.industries = aggregator.calculateValue();
 		aggregator.setCategory(BOND);
-		loansYtd = aggregator.calculateValue();
+		returnValue.loans = aggregator.calculateValue();
 		aggregator.setCategory(ISSUE_STOCK);
-		equityYtd = aggregator.calculateValue();
+		returnValue.equity= aggregator.calculateValue();
 
-		profit = operatingFundsYtd.getAmount() + trackYtd.getAmount()
-				+ stationsYtd.getAmount() + rollingStockYtd.getAmount()
-				+ industriesYtd.getAmount() + loansYtd.getAmount()
-				+ equityYtd.getAmount();
-		profitYtd = new Money(profit);
+		//If we don't initialize this variable 
+		//we get a NPE when we don't own any stock in others RRs
+		returnValue.otherRrStock = new Money(0); 
+		
+		int thisPlayerId = w.getID(principal);
+		for (int playerId = 0; playerId < w.getNumberOfPlayers(); playerId++) {
+			FinancialDataGatherer fda = new FinancialDataGatherer(w, w
+					.getPlayer(playerId).getPrincipal());
+			Money stockPrice = fda.sharePrice();
+			aggregator.setCategory(TRANSFER_STOCK);
+			aggregator.setType(thisPlayerId);
+			int quantity = aggregator.calculateQuantity();
+			if (playerId == thisPlayerId) {
+				returnValue.treasuryStock = new Money(quantity
+						* stockPrice.getAmount());
+			} else {
+				returnValue.otherRrStock = new Money(quantity
+						* stockPrice.getAmount()
+						+ returnValue.otherRrStock.getAmount());
+			}
+		}
+		returnValue.calProfit();
+		return returnValue;
 	}
 
 	public static Money calTrackTotal(Transaction.Category category,
@@ -182,4 +155,37 @@ public class BalanceSheetGenerator {
 
 		return new Money(amount);
 	}
+
+	public static class Stats {
+		public Money operatingFunds;
+
+		public Money track;
+
+		public Money stations;
+
+		public Money rollingStock;
+
+		public Money industries;
+
+		public Money loans;
+
+		public Money equity;		
+
+		public Money treasuryStock;
+
+		public Money otherRrStock;
+		
+		public Money profit;
+
+		public void calProfit(){
+			long profitValue = operatingFunds.getAmount() + track.getAmount()
+			+ stations.getAmount() + rollingStock.getAmount()
+			+ industries.getAmount() + loans.getAmount()
+			+ equity.getAmount() + treasuryStock.getAmount()
+			+ otherRrStock.getAmount();
+			profit= new Money(profitValue);
+		}
+		
+	}
+
 }

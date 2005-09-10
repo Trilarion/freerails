@@ -19,9 +19,9 @@ import jfreerails.controller.MessageStatus;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.PreMoveStatus;
 import jfreerails.controller.ServerControlInterface;
+import jfreerails.move.AddPlayerMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.world.accounts.BondTransaction;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.ImStringList;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -314,14 +314,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 			for (int i = 0; i < players.size(); i++) {
 				String name = players.get(i).username;
 				Player p = new Player(name, i);
-
-				int index = world.addPlayer(p);
-
-				world.addTransaction(p
-						.getPrincipal(), BondTransaction.issueBond(5));
-				world.addTransaction(p
-						.getPrincipal(), BondTransaction.issueBond(5));
-				assert i == index;
+				
+				Move addPlayerMove = AddPlayerMove.generateMove(world, p);
+				MoveStatus ms = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
+				if(!ms.ok) throw new IllegalStateException();				
 				passwords[i] = players.get(i).password;
 			}
 
