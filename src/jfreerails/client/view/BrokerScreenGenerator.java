@@ -7,15 +7,11 @@
 package jfreerails.client.view;
 
 import static jfreerails.world.accounts.Transaction.Category.BOND;
-
-import java.util.HashMap;
-
 import jfreerails.controller.FinancialDataGatherer;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ItemsTransactionAggregator;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -23,6 +19,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 /**
  * 
  * @author smackay
+ * @author Luke
  */
 
 public class BrokerScreenGenerator {
@@ -30,8 +27,6 @@ public class BrokerScreenGenerator {
 	private FinancialDataGatherer dataGatherer;
 
 	private GameCalendar cal;
-
-	private HashMap<Integer, Integer> otherRRShares;
 
 	public String playername;
 
@@ -49,13 +44,13 @@ public class BrokerScreenGenerator {
 
 	public int treasuryStock;
 
-	public String othersRRsStockTable;
+	public String othersRRsStockRows;
 
 	/** Creates a new instance of BrokerScreenGenerator */
 	public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
 		dataGatherer = new FinancialDataGatherer(w, principal);
 
-		int playerId= w.getID(principal);
+		int playerId = w.getID(principal);
 		this.playername = w.getPlayer(playerId).getName();
 
 		this.cal = (GameCalendar) w.get(ITEM.CALENDAR);
@@ -75,33 +70,21 @@ public class BrokerScreenGenerator {
 		this.pricePerShare = dataGatherer.sharePrice();
 		this.treasuryStock = dataGatherer.treasuryStock();
 
-		this.otherRRShares = new HashMap<Integer, Integer>(); 
-		
-		int[] otherRRSharesArray = dataGatherer.getStockInThisRRs();
-		for (int i = 0; i < otherRRSharesArray.length; i++) {
-			if(i != playerId && otherRRSharesArray[i] > 0){
-				otherRRShares.put(i,  otherRRSharesArray[i]);
-			}						
-		}
-			
+		StringBuffer otherRRsStakes = new StringBuffer();
+		int[] stockInThisRRs = dataGatherer.getStockInThisRRs();
 
-		StringBuffer othersRRBuffer = new StringBuffer("");
-		if (otherRRShares.size() > 0) {
-			othersRRBuffer
-					.append("<tr><td colspan=\"2\">&nbsp;</td><td><div align=\"right\"><table>");
-			for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-				Integer totalstock = otherRRShares.get(i);
-				if (totalstock != null) {
-					othersRRBuffer.append("<tr><td>");
-					Player tempPlayer = w.getPlayer(i);
-					othersRRBuffer.append(tempPlayer.getName());
-					othersRRBuffer.append("</td><td>");
-					othersRRBuffer.append(totalstock);
-					othersRRBuffer.append("</td></tr>");
-				}
+		for (int i = 0; i < stockInThisRRs.length; i++) {
+			if (i != playerId && stockInThisRRs[i] > 0) {
+				String otherRRName = w.getPlayer(i).getName();
+				String otherRRStake = String.valueOf(stockInThisRRs[i]);
+				otherRRsStakes.append("<tr> ");
+				otherRRsStakes.append("<td> </td>");
+				otherRRsStakes.append("<td> </td>");
+				otherRRsStakes.append("<td>" + otherRRName + "</td>");
+				otherRRsStakes.append("<td>" + otherRRStake + "</td>");
+				otherRRsStakes.append("</tr>");
 			}
-			othersRRBuffer.append("</table></td></tr>");
 		}
-		othersRRsStockTable = othersRRBuffer.toString();
+		othersRRsStockRows = otherRRsStakes.toString();
 	}
 }

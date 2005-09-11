@@ -81,7 +81,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "4");
         
-        setNextEnabled(false);
+        setButtonsVisible(false);
         LauncherPanel1 lp = (LauncherPanel1) wizardPages[0];
         SelectMapJPanel msp = (SelectMapJPanel) wizardPages[1];
         ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
@@ -111,7 +111,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     if (recover) {
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
-                        setNextEnabled(true);
+                        setButtonsVisible(true);
                         currentPage = 1;
                         cl.show(jPanel1, "1");
                         return;
@@ -142,6 +142,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         prevButton.setEnabled(true);
                         setNextEnabled(true);
                         currentPage = 1;
+                        setButtonsVisible(true);
                         cl.show(jPanel1, "1");
                         return;
                     }
@@ -166,7 +167,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     setInfoText("Connecting to server...", LauncherInterface.INFO);
                     LogOnResponse logOnResponse = client.connect(hostname, port,
                             playerName, "password");
-                    if (logOnResponse.isSuccessful()) {
+                    if (logOnResponse.isSuccessful()) {                    	
                     	setInfoText("Logged on and waiting for game to start.", LauncherInterface.INFO);
                         startThread(client);
                     } else {
@@ -184,7 +185,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     if (recover) {
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
-                        setNextEnabled(true);
+                        setButtonsVisible(true);
                         cl.show(jPanel1, "2");
                         return;
                     }
@@ -209,7 +210,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         if (recover) {
                             cop.setControlsEnabled(true);
                             prevButton.setEnabled(true);
-                            setNextEnabled(true);
+                            setButtonsVisible(true);
                             return;
                         }
                     }
@@ -646,6 +647,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                             startThread(server);
                             setVisible(false);
                         }
+                        setButtonsVisible(false);
                         setNextEnabled(false);
                     } catch (IOException e) {
                         setInfoText(e.getMessage(), LauncherInterface.WARNING);
@@ -713,6 +715,11 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             infoLabel.setIcon(null);
             nextButton.setEnabled(true);
             
+        }
+        
+        public void setButtonsVisible(boolean b){
+        	nextButton.setVisible(b);
+        	prevButton.setVisible(b);
         }
         
         public void hideErrorMessages() {
