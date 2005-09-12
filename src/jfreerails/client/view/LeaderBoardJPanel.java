@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
@@ -94,10 +95,10 @@ public class LeaderBoardJPanel extends JPanel implements View {
 	}
 
 	public void setup(ModelRoot modelRoot, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		ReadOnlyWorld w = modelRoot.getWorld();
 		values.clear();
-		this.submitButtonCallBack = submitButtonCallBack;
+		this.submitButtonCallBack = closeAction;
 		for (int player = 0; player < w.getNumberOfPlayers(); player++) {
 			PlayerDetails details = new PlayerDetails();
 			FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();

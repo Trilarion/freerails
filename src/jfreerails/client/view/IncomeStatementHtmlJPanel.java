@@ -4,8 +4,9 @@
 package jfreerails.client.view;
 
 import java.awt.Graphics;
-import java.awt.event.ActionListener;
 import java.net.URL;
+
+import javax.swing.Action;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
@@ -36,8 +37,8 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
 	}
 
 	public void setup(ModelRoot modelRoot, ViewLists vl,
-			ActionListener submitButtonCallBack) {
-		super.setup(modelRoot, vl, submitButtonCallBack);
+			Action closeAction) {
+		super.setup(modelRoot, vl, closeAction);
 		this.modelRoot = modelRoot;
 		updateHtml();
 	}

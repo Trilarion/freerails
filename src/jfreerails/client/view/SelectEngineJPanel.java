@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -153,12 +154,12 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 	}
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 
 		jList1.setModel(new World2ListModelAdapter(mr.getWorld(),
 				SKEY.ENGINE_TYPES));
 		jList1.setCellRenderer(new TrainCellRenderer(vl));
-		okjButton.addActionListener(submitButtonCallBack);
+		okjButton.addActionListener(closeAction);
 	}
 
 	/**

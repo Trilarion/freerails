@@ -13,6 +13,8 @@ import java.awt.Transparency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
+
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
 
@@ -113,8 +115,8 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 	}
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
-		this.callBack = submitButtonCallBack;
+			Action closeAction) {
+		this.callBack = closeAction;
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

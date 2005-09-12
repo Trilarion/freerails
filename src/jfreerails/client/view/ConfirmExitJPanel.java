@@ -6,7 +6,7 @@
 
 package jfreerails.client.view;
 
-import java.awt.event.ActionListener;
+import javax.swing.Action;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
@@ -79,12 +79,8 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 	}// GEN-LAST:event_confirmExitActionPerformed
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
-		ActionListener[] oldListeners = closeJButton.getActionListeners();
-		for (int i = 0; i < oldListeners.length; i++) {
-			closeJButton.removeActionListener(oldListeners[i]);
-		}
-		closeJButton.addActionListener(submitButtonCallBack);
+			Action closeAction) {
+		closeJButton.setAction(closeAction);		
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

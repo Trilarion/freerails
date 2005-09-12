@@ -6,10 +6,10 @@
 
 package jfreerails.client.view;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -145,7 +145,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 	}// GEN-END:initComponents
 
 	public void setup(ModelRoot model, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		this.world = model.getWorld();
 		this.principal = model.getPrincipal();
 	}

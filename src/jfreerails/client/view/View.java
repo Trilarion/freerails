@@ -4,8 +4,7 @@
  */
 package jfreerails.client.view;
 
-import java.awt.event.ActionListener;
-
+import javax.swing.Action;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
 
@@ -18,5 +17,5 @@ import jfreerails.controller.ModelRoot;
  */
 public interface View {
 	void setup(ModelRoot modelRoot, ViewLists vl,
-			ActionListener submitButtonCallBack);
+			Action closeAction);
 }

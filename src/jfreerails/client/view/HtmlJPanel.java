@@ -6,7 +6,6 @@
 
 package jfreerails.client.view;
 
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -17,6 +16,8 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
+
+import javax.swing.Action;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
@@ -102,8 +103,8 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 	}// GEN-LAST:event_doneActionPerformed
 
 	public void setup(ModelRoot m, ViewLists vl,
-			ActionListener submitButtonCallBack) {
-		this.done.addActionListener(submitButtonCallBack);
+			Action closeAction) {
+		this.done.setAction(closeAction);
 	}
 
 	/** Load the help text from file. */

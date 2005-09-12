@@ -8,6 +8,8 @@ package jfreerails.client.view;
 
 import java.awt.Graphics;
 
+import javax.swing.Action;
+
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
@@ -103,9 +105,9 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View{
 	}// GEN-END:initComponents
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			java.awt.event.ActionListener submitButtonCallBack) {
+			Action closeAction) {
 
-		this.trainViewJPanel1.setup(mr, vl, submitButtonCallBack);
+		this.trainViewJPanel1.setup(mr, vl, closeAction);
 		trainViewJPanel1.setHeight(30);
 		trainViewJPanel1.setCenterTrain(true);
 		this.w = mr.getWorld();

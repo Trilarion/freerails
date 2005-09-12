@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
 
+import javax.swing.Action;
+
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.Step;
@@ -324,10 +326,10 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 	}
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		cargoWaitingAndDemandedJPanel1.setup(mr, vl, null);
 		this.world = mr.getWorld();
-		this.submitButtonCallBack = submitButtonCallBack;
+		this.submitButtonCallBack = closeAction;
 		principal = mr.getPrincipal();
 	}
 

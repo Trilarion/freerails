@@ -7,6 +7,8 @@
 package jfreerails.client.view;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
+
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.Message2Server;
 import jfreerails.controller.ModelRoot;
@@ -116,8 +118,8 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View{
     
     
     public void setup(ModelRoot m, ViewLists vl,
-            ActionListener submitButtonCallBack) {
-        this.close = submitButtonCallBack;
+            Action closeAction) {
+        this.close = closeAction;
         this.modelRoot = m;
     }
     

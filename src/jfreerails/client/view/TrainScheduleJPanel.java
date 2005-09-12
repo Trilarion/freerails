@@ -4,11 +4,12 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 
@@ -475,14 +476,16 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 		orders.setSelectedIndex(i - 1);
 	}// GEN-LAST:event_pullUpJMenuItemActionPerformed
 
-	public void setup(ModelRoot mr, ViewLists vl, ActionListener al) {
+	public void setup(ModelRoot mr, ViewLists vl, Action al) {
 		trainOrderJPanel1.setup(mr, vl, null);
 		this.modelRoot = mr;
 		this.vl = vl;
 
 		// This actionListener is fired by the select station popup when a
 		// station is selected.
-		ActionListener actionListener = new ActionListener() {
+		Action action = new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(ActionEvent evt) {
 				sendUpdateMove(selectStationJPanel1.generateNewSchedule());
 				selectStationJPopupMenu.setVisible(false);
@@ -491,7 +494,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
 			}
 		};
-		this.selectStationJPanel1.setup(mr, vl, actionListener);
+		this.selectStationJPanel1.setup(mr, vl, action);
 	}
 
 	public void display(int newTrainNumber) {

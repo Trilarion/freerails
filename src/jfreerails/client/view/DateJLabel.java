@@ -5,8 +5,8 @@
 package jfreerails.client.view;
 
 import java.awt.Graphics;
-import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.JLabel;
 
 import jfreerails.client.renderer.ViewLists;
@@ -43,7 +43,7 @@ public class DateJLabel extends JLabel implements View {
 	}
 
 	public void setup(ModelRoot model, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		this.w = model.getWorld();
 	}
 }

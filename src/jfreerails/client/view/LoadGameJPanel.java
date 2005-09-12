@@ -10,6 +10,9 @@ import jfreerails.controller.ModelRoot;
 import static jfreerails.controller.ModelRoot.Property;
 import jfreerails.client.renderer.ViewLists;
 import java.awt.event.ActionListener;
+
+import javax.swing.Action;
+
 import jfreerails.world.common.ImStringList;
 import jfreerails.network.*;
 /**
@@ -127,8 +130,8 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         okButton.setEnabled(jList1.getSelectedIndex() != -1);
     }//GEN-LAST:event_jList1ValueChanged
     public void setup(ModelRoot m, ViewLists vl,
-            ActionListener submitButtonCallBack) {
-        this.close = submitButtonCallBack;
+            Action closeAction) {    	
+        this.close = closeAction;
         modelRoot = m;
                 ImStringList files = (ImStringList)modelRoot.getProperty(Property.SAVED_GAMES_LIST);
         Object[] saves = new Object[files.size()];

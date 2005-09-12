@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -45,7 +46,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
 	}
 
 	public void setup(final ModelRoot modelRoot, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		this.removeAll();
 
 		final NonNullElements it = new NonNullElements(SKEY.TERRAIN_TYPES,

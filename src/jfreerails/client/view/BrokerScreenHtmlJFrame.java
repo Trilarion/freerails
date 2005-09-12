@@ -8,10 +8,10 @@ package jfreerails.client.view;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
-import javax.swing.JMenuItem;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.FinancialDataGatherer;
@@ -44,7 +44,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
 	private FinancialDataGatherer financialDataGatherer;
 	
-	private JMenuItem[] buyStock, sellStock;
+	private Action[] buyStock, sellStock;
 
 	/** Creates a new instance of BrokerScreenHtmlJPanel */
 	public BrokerScreenHtmlJFrame() {
@@ -57,7 +57,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
 	}
 
-	private final ActionListener issueBondActionListener = new ActionListener() {
+	private final Action issueBondAction = new AbstractAction("Issue bond") {
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent arg0) {
 
 			if (financialDataGatherer.canIssueBond()) {
@@ -70,7 +72,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		}
 	};
 
-	private final ActionListener repayBondActionListener = new ActionListener() {
+	private final Action repayBondAction = new AbstractAction("Repay bond") {
+		private static final long serialVersionUID = 1L;
+
 		public void actionPerformed(ActionEvent arg0) {
 
 			Move bondTransaction = new AddTransactionMove(modelRoot
@@ -78,10 +82,10 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 			modelRoot.doMove(bondTransaction);
 		}
 	};
-
+	
 	public void setup(final ModelRoot modelRoot, ViewLists vl,
-			ActionListener submitButtonCallBack) {
-		super.setup(modelRoot, vl, submitButtonCallBack);
+			Action closeAction) {
+		super.setup(modelRoot, vl, closeAction);
 		financialDataGatherer = new FinancialDataGatherer(modelRoot.getWorld(),
 				modelRoot.getPrincipal());
 		this.modelRoot = modelRoot;
@@ -89,10 +93,8 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		setupStockMenu();
 		updateHtml();
 		// Sets up the BrokerScreen and Adds ActionListeners to the Menu
-		this.setIssueBondActionListener(this.issueBondActionListener);
-		this.setRepayBondActionListener(this.repayBondActionListener);
-		
-		
+		issueBond.setAction(issueBondAction);
+		repayBond.setAction(repayBondAction);	
 	}
 
 	private void setupStockMenu(){		
@@ -100,8 +102,8 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		ReadOnlyWorld world = modelRoot.getWorld();
 		int thisPlayerId = world.getID(modelRoot.getPrincipal());
 		int numberOfPlayers = world.getNumberOfPlayers();
-		buyStock = new JMenuItem[numberOfPlayers];
-		sellStock = new JMenuItem[numberOfPlayers];
+		buyStock = new Action[numberOfPlayers];
+		sellStock = new Action[numberOfPlayers];
 		for(int playerId = 0 ; playerId < numberOfPlayers; playerId++){
 			boolean isThisPlayer = playerId == thisPlayerId;
 			final int otherPlayerId = playerId;
@@ -109,13 +111,12 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 			String playerLabel = isThisPlayer ? "Treasury stock" : otherPlayer.getName();
 			String buyLabel = "Buy 10,000 shares of " + playerLabel;
 			String sellLabel = "Sell 10,000 shares of " + playerLabel;
-			buyStock[playerId] = new JMenuItem(buyLabel);
-			sellStock[playerId] = new JMenuItem(sellLabel);
-			stocks.add(buyStock[playerId]);
-			stocks.add(sellStock[playerId]);
+					
 			final FinancialDataGatherer otherPlayersData = new FinancialDataGatherer(
 					modelRoot.getWorld(), otherPlayer.getPrincipal());
-			buyStock[playerId].addActionListener( new ActionListener() {
+			buyStock[playerId] = new AbstractAction(buyLabel) {
+				private static final long serialVersionUID = 1L;
+
 				public void actionPerformed(ActionEvent arg0) {
 					Money sharePrice = otherPlayersData.sharePrice();
 					StockTransaction t = StockTransaction
@@ -124,9 +125,11 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 					modelRoot.doMove(move);
 					updateHtml();
 				}
-			});
+			};
 		
-			sellStock[playerId].addActionListener(  new ActionListener() {
+			sellStock[playerId] = new AbstractAction(sellLabel) {
+				private static final long serialVersionUID = 1L;
+
 				public void actionPerformed(ActionEvent arg0) {
 					Money sharePrice = otherPlayersData.sharePrice();
 					StockTransaction t = StockTransaction
@@ -135,7 +138,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 					modelRoot.doMove(move);
 					updateHtml();
 				}
-			});
+			};
+			stocks.add(buyStock[playerId]);
+			stocks.add(sellStock[playerId]);
 		}		
 		enableAndDisableStockMenuItems();
 	}

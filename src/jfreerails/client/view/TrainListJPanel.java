@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.Action;
+
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -189,7 +191,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 	}// GEN-LAST:event_jList1KeyPressed
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		world = mr.getWorld();
 		trainSummaryJPanel1.setup(mr, vl, null);
 
@@ -205,7 +207,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 		for (int i = 0; i < oldListeners.length; i++) {
 			closeJButton.removeActionListener(oldListeners[i]);
 		}
-		closeJButton.addActionListener(submitButtonCallBack);
+		closeJButton.addActionListener(closeAction);
 		principal = mr.getPrincipal();
 	}
 

@@ -8,8 +8,8 @@ package jfreerails.client.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -116,7 +116,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View,
 	}// GEN-END:initComponents
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		this.w = mr.getWorld();
 		TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) consistChangeJPanel;
 		trainViewJPanel.setHeight(15);

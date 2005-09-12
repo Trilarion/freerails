@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -92,17 +94,21 @@ public class DialogueBoxController implements WorldListListener {
     private JInternalFrame dialogueJInternalFrame;
     
     /**
-     * Use this ActionListener to close a dialogue without performing any other
+     * Use this Action to close a dialogue without performing any other
      * action.
      */
-    private final ActionListener closeCurrentDialogue = new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
+    private final Action closeCurrentDialogue = new AbstractAction("Close") {
+        private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(ActionEvent arg0) {
             closeContent();
         }
     };
     
-    private final ActionListener selectEngineActionListener = new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
+    private final Action selectEngineAction = new AbstractAction() {
+        private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(ActionEvent arg0) {
             showSelectWagons();
         }
     };
@@ -113,8 +119,10 @@ public class DialogueBoxController implements WorldListListener {
         }
     };
     
-    private final ActionListener selectWagonsActionListener = new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
+    private final Action selectWagonsAction = new AbstractAction("Next") {
+        private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(ActionEvent arg0) {
             WorldIterator wi = new NonNullElements(KEY.STATIONS, modelRoot
                     .getWorld(), modelRoot.getPrincipal());
             
@@ -228,11 +236,11 @@ public class DialogueBoxController implements WorldListListener {
         // moveChainFork.add(trainScheduleJPanel);
         // Set up select engine dialogue.
         selectEngine.setCancelButtonActionListener(this.closeCurrentDialogue);
-        selectEngine.setup(modelRoot, vl, selectEngineActionListener);
+        selectEngine.setup(modelRoot, vl, selectEngineAction);
         
         newspaper.setup(modelRoot, vl, closeCurrentDialogue);
         
-        selectWagons.setup(modelRoot, vl, selectWagonsActionListener);
+        selectWagons.setup(modelRoot, vl, selectWagonsAction);
         
         trainDialogueJPanel.setup(modelRoot, vl, this.closeCurrentDialogue);
         modelRoot.addListListener(trainDialogueJPanel);

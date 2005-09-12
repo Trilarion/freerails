@@ -6,7 +6,6 @@
 
 package jfreerails.client.view;
 
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -17,6 +16,8 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
+
+import javax.swing.Action;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
@@ -55,27 +56,11 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
        
     
     public void setup(ModelRoot m, ViewLists vl,
-            ActionListener submitButtonCallBack) {
-        this.done.addActionListener(submitButtonCallBack);
+            Action closeAction) {
+        this.done.setAction(closeAction);
     }
     
-    void setIssueBondActionListener(ActionListener l) {
-        ActionListener[] oldListeners = issueBond.getActionListeners();
-        for (int i = 0; i < oldListeners.length; i++) {
-            issueBond.removeActionListener(oldListeners[i]);
-        }
-        this.issueBond.addActionListener(l);
-    }
-    
-    
-    
-    void setRepayBondActionListener(ActionListener l) {
-        ActionListener[] oldListeners = repayBond.getActionListeners();
-        for (int i = 0; i < oldListeners.length; i++) {
-            repayBond.removeActionListener(oldListeners[i]);
-        }
-        this.repayBond.addActionListener(l);
-    }
+   
     
     
     

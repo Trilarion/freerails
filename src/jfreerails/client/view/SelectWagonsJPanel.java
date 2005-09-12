@@ -12,11 +12,11 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Transparency;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -318,7 +318,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 	}
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		World2ListModelAdapter w2lma = new World2ListModelAdapter(
 				mr.getWorld(), SKEY.CARGO_TYPES);
 		this.wagonTypesJList.setModel(w2lma);
@@ -327,7 +327,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 		WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma,
 				trainImages);
 		this.wagonTypesJList.setCellRenderer(wagonCellRenderer);
-		this.okjButton.addActionListener(submitButtonCallBack);
+		this.okjButton.addActionListener(closeAction);
 	}
 
 	public int[] getWagons() {

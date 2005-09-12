@@ -1,8 +1,10 @@
 package experimental;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import jfreerails.client.common.JFrameMinimumSizeEnforcer;
 import jfreerails.client.common.ModelRootImpl;
@@ -59,8 +61,10 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
     private ModelRootImpl modelRoot;
 
-    private ActionListener closeCurrentDialogue = new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
+    private Action closeCurrentDialogue = new AbstractAction("Close") {
+   private static final long serialVersionUID = 1L;
+
+		     public void actionPerformed(ActionEvent arg0) {
             dialogueBoxController.closeContent();
         }
     };

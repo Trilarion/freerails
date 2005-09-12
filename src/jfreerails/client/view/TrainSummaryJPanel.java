@@ -8,6 +8,7 @@ package jfreerails.client.view;
 
 import java.awt.Color;
 
+import javax.swing.Action;
 import javax.swing.ListCellRenderer;
 
 import jfreerails.client.renderer.ViewLists;
@@ -52,7 +53,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 	}
 
 	public void setup(ModelRoot modelRoot, ViewLists vl,
-			java.awt.event.ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		this.principal = modelRoot.getPrincipal();
 		this.w = modelRoot.getWorld();
 		trainListCellRenderer1 = new TrainListCellRenderer(modelRoot, vl);

@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -361,8 +362,8 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 	}
 
 	public void setup(ModelRoot modelRoot, ViewLists vl,
-			ActionListener submitButtonCallBack) {
-		this.submitButtonCallBack = submitButtonCallBack;
+			Action closeAction) {
+		this.submitButtonCallBack = closeAction;
 		ReadOnlyWorld world = modelRoot.getWorld();
 		companies = new ArrayList<CompanyDetails>();
 		GameCalendar calender = (GameCalendar) world.get(ITEM.CALENDAR);

@@ -7,10 +7,10 @@
 package jfreerails.client.view;
 
 import java.awt.Graphics;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import javax.swing.Action;
 import javax.swing.JPanel;
 
 import jfreerails.client.renderer.ViewLists;
@@ -164,7 +164,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
 	} // GEN-LAST:event_nextStationActionPerformed
 
-	public void setup(ModelRoot mr, ViewLists vl, ActionListener al) {
+	public void setup(ModelRoot mr, ViewLists vl, Action al) {
 		this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr
 				.getPrincipal());
 		addComponentListener(componentListener);

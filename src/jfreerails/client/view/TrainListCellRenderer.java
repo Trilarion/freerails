@@ -10,8 +10,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
@@ -151,7 +151,7 @@ public class TrainListCellRenderer extends JPanel implements View,
 	}
 
 	public void setup(ModelRoot mr, ViewLists vl,
-			ActionListener submitButtonCallBack) {
+			Action closeAction) {
 		this.w = mr.getWorld();
 		this.vl = vl;
 		this.principal = mr.getPrincipal();
