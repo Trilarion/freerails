@@ -16,11 +16,13 @@ import jfreerails.world.common.Money;
 public interface Transaction extends FreerailsSerializable {
 
 	public enum Category {
-		TRACK, CARGO_DELIVERY, TRACK_MAINTENANCE, TRAIN_MAINTENANCE, STATION_MAINTENANCE, TRAIN, MISC_INCOME, INTEREST_CHARGE, BOND, ISSUE_STOCK, TRANSFER_STOCK, INDUSTRIES, STATIONS, BRIDGES
+		BOND, BRIDGES, CARGO_DELIVERY, INDUSTRIES, INTEREST_CHARGE, ISSUE_STOCK, MISC_INCOME, STATION_MAINTENANCE, STATIONS, TRACK, TRACK_MAINTENANCE, TRAIN, TRAIN_MAINTENANCE, TRANSFER_STOCK
 	}
 
+    Money deltaAssets();
+    
     /** Positive means credit. */
-    Money getValue();
+    Money deltaCash();
 
 	Category getCategory();
 }

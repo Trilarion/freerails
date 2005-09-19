@@ -63,7 +63,7 @@ public class AddTransactionMove implements Move {
 		if (w.isPlayer(principal)) {
 			if (this.constrained) {
 				long bankBalance = w.getCurrentBalance(principal).getAmount();
-				long transactionAmount = this.transaction.getValue()
+				long transactionAmount = this.transaction.deltaCash()
 						.getAmount();
 				long balanceAfter = bankBalance + transactionAmount;
 

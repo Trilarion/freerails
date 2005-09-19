@@ -16,39 +16,32 @@ public class AddItemTransaction implements Transaction {
 
 	private static final long serialVersionUID = 3690471411852326457L;
 
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("AddItemTransaction ");
-		sb.append(category);
-		sb.append(", type ");
-		sb.append(type);
-		sb.append(", quantity ");
-		sb.append(quantity);
-		sb.append(", amount ");
-		sb.append(amount);
-		return sb.toString();
-	}
+	private final Money amount;
 
 	/** For example track. */
 	private final Category category;
 
-	public int hashCode() {
-		int result;
-		result = category.hashCode();
-		result = 29 * result + type;
-		result = 29 * result + quantity;
-		result = 29 * result + amount.hashCode();
-
-		return result;
-	}
+	/** For example, 4 tiles. */
+	private final int quantity;
 
 	/** For example, standard track. */
 	private final int type;
 
-	/** For example, 4 tiles. */
-	private final int quantity;
+	public AddItemTransaction(Category category, int type, int quantity,
+			Money amount) {
+		this.category = category;
+		this.type = type;
+		this.quantity = quantity;
+		this.amount = amount;
+	}
 
-	private final Money amount;
+	public Money deltaAssets() {		
+		return amount.changeSign();
+	}
+
+	public Money deltaCash() {
+		return amount;
+	}
 
 	public boolean equals(Object obj) {
 		if (obj instanceof AddItemTransaction) {
@@ -59,14 +52,6 @@ public class AddItemTransaction implements Transaction {
 					&& quantity == test.quantity;
 		}
 		return false;
-	}
-
-	public AddItemTransaction(Category category, int type, int quantity,
-			Money amount) {
-		this.category = category;
-		this.type = type;
-		this.quantity = quantity;
-		this.amount = amount;
 	}
 
 	public Category getCategory() {
@@ -81,7 +66,26 @@ public class AddItemTransaction implements Transaction {
 		return type;
 	}
 
-	public Money getValue() {
-		return amount;
+	public int hashCode() {
+		int result;
+		result = category.hashCode();
+		result = 29 * result + type;
+		result = 29 * result + quantity;
+		result = 29 * result + amount.hashCode();
+
+		return result;
+	}
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("AddItemTransaction ");
+		sb.append(category);
+		sb.append(", type ");
+		sb.append(type);
+		sb.append(", quantity ");
+		sb.append(quantity);
+		sb.append(", amount ");
+		sb.append(amount);
+		return sb.toString();
 	}
 }

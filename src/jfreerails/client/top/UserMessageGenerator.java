@@ -115,7 +115,7 @@ public class UserMessageGenerator implements MoveReceiver {
 					SKEY.CARGO_TYPES)];
 			for (DeliverCargoReceipt receipt : cargoDelivered) {
 				CargoBatch batch = receipt.getCb();
-				revenue += receipt.getValue().getAmount();
+				revenue += receipt.deltaCash().getAmount();
 				cargoQuantities[batch.getCargoType()] = receipt
 						.getQuantity();
 			}

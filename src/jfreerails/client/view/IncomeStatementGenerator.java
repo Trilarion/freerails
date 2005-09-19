@@ -158,7 +158,7 @@ public class IncomeStatementGenerator {
 				CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
 
 				if (ct.getCategory().equals(cargoCategory)) {
-					amount += dcr.getValue().getAmount();
+					amount += dcr.deltaCash().getAmount();
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class IncomeStatementGenerator {
 					&& cal.getYear(time.getTicks()) >= this.startyear) {
 				DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
 				if (dcr.getTrainId() == trainId) {
-					amount += dcr.getValue().getAmount();
+					amount += dcr.deltaCash().getAmount();
 				}
 			}
 		}
@@ -194,7 +194,7 @@ public class IncomeStatementGenerator {
 
 			if (t.getCategory() == transactionCategory
 					&& cal.getYear(time.getTicks()) >= this.startyear) {
-				amount += t.getValue().getAmount();
+				amount += t.deltaCash().getAmount();
 			}
 		}
 

@@ -170,7 +170,7 @@ public class WorldImpl implements World {
 		TransactionAndTimeStamp tats = new TransactionAndTimeStamp(t, time);
 		bankAccounts.addD2(playerIndex, tats);
 		Money oldBalance = currentBalance.get(playerIndex);
-		Money newBalance = new Money(t.getValue().getAmount()
+		Money newBalance = new Money(t.deltaCash().getAmount()
 				+ oldBalance.getAmount());
 		currentBalance.set(playerIndex, newBalance);
 	}
@@ -457,7 +457,7 @@ public class WorldImpl implements World {
 		TransactionAndTimeStamp tats = bankAccounts.removeLastD2(playerIndex);
 		Money oldBalance = currentBalance.get(playerIndex);
 		Money newBalance = new Money(oldBalance.getAmount()
-				- tats.getT().getValue().getAmount());
+				- tats.getT().deltaCash().getAmount());
 		currentBalance.set(playerIndex, newBalance);
 		return tats.getT();
 	}

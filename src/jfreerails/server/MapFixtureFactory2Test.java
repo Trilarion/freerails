@@ -1,6 +1,10 @@
 package jfreerails.server;
 
 import static jfreerails.server.MapFixtureFactory2.getCopy;
+import jfreerails.world.accounts.AddItemTransaction;
+import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.Money;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import junit.framework.TestCase;
@@ -12,9 +16,10 @@ import junit.framework.TestCase;
  * 
  */
 public class MapFixtureFactory2Test extends TestCase {
+	World w1;
 
 	public void testGetCopy() {
-		World w1, w2;
+		World  w2;
 		w1 = getCopy();
 		assertNotNull(w1);
 		w2 = getCopy();
@@ -25,8 +30,7 @@ public class MapFixtureFactory2Test extends TestCase {
 	}
 
 	public void testLists() {
-		World w1;
-		w1 = getCopy();
+		
 		assertTrue(w1.size(SKEY.CARGO_TYPES) > 0);
 		assertTrue(w1.size(SKEY.TRACK_RULES) > 0);
 		assertTrue(w1.size(SKEY.TERRAIN_TYPES) > 0);
@@ -34,17 +38,40 @@ public class MapFixtureFactory2Test extends TestCase {
 	}
 
 	public void testMap() {
-		World w1;
-		w1 = getCopy();
+		
 		assertEquals(w1.getMapWidth(), 50);
 		assertEquals(w1.getMapWidth(), 50);
 
 	}
 
 	public void testPlayers() {
-		World w1;
-		w1 = getCopy();
+		
+		
 		assertEquals(4, w1.getNumberOfPlayers());
+	}
+	
+	public void testThatStockIsIssued(){
+		FreerailsPrincipal p = w1.getPlayer(0).getPrincipal();
+		int stock = 0;
+		Money cash = w1.getCurrentBalance(p);
+		assertEquals(new Money(1000000), cash);
+		int numberOfTransactions = w1.getNumberOfTransactions(p);
+		assertTrue(numberOfTransactions > 0);
+		for(int i = 0; i < numberOfTransactions; i++){
+			Transaction t = w1.getTransaction(p, i);
+			if(t.getCategory().equals(Transaction.Category.ISSUE_STOCK)){
+				AddItemTransaction ait = (AddItemTransaction)t;
+				stock += ait.getQuantity();
+			}
+		}
+		assertEquals(100000, stock);
+	}
+
+	@Override
+	protected void setUp() throws Exception {
+		// TODO Auto-generated method stub
+		super.setUp();
+		w1 = getCopy();
 	}
 
 }

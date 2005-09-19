@@ -58,7 +58,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
 				AddTransactionMove move = (AddTransactionMove) moves.get(i);
 				DeliverCargoReceipt receipt = (DeliverCargoReceipt) move
 						.getTransaction();
-				amount += receipt.getValue().getAmount();
+				amount += receipt.deltaCash().getAmount();
 			}
 		}
 

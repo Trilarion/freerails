@@ -15,6 +15,7 @@ import jfreerails.world.common.Money;
  */
 public class StockTransaction extends AddItemTransaction {
 	private static final long serialVersionUID = 3256441412924224824L;
+	public static final int STOCK_BUNDLE_SIZE = 10000;
 
 	private StockTransaction(Category category, int playerId,
 			int quantity, Money amount) {

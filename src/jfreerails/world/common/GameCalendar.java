@@ -166,4 +166,8 @@ final public class GameCalendar implements FreerailsSerializable {
 		}
 		return false;
 	}
+
+	public int getTicksPerYear() {
+		return ticksPerYear;
+	}
 }

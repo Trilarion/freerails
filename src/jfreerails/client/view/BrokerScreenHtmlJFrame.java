@@ -16,6 +16,8 @@ import javax.swing.Action;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.FinancialDataGatherer;
 import jfreerails.controller.ModelRoot;
+import jfreerails.controller.StockPriceCalculator;
+import jfreerails.controller.StockPriceCalculator.StockPrice;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
 import jfreerails.world.accounts.BondTransaction;
@@ -31,8 +33,6 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author Luke
  */
 public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
-
-	private static final int STOCK_BUNDLE_SIZE = 10000;
 
 	private static final long serialVersionUID = 3257003246252800050L;
 
@@ -105,24 +105,24 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		int thisPlayerId = world.getID(modelRoot.getPrincipal());
 		int numberOfPlayers = world.getNumberOfPlayers();
 		buyStock = new Action[numberOfPlayers];
-		sellStock = new Action[numberOfPlayers];
+		sellStock = new Action[numberOfPlayers];		
 		for(int playerId = 0 ; playerId < numberOfPlayers; playerId++){
-			boolean isThisPlayer = playerId == thisPlayerId;
+			final boolean isThisPlayer = playerId == thisPlayerId;
 			final int otherPlayerId = playerId;
 			Player otherPlayer = world.getPlayer(playerId);
 			String playerLabel = isThisPlayer ? "Treasury stock" : otherPlayer.getName();
 			String buyLabel = "Buy 10,000 shares of " + playerLabel;
 			String sellLabel = "Sell 10,000 shares of " + playerLabel;
 					
-			final FinancialDataGatherer otherPlayersData = new FinancialDataGatherer(
-					modelRoot.getWorld(), otherPlayer.getPrincipal());
+			
 			buyStock[playerId] = new AbstractAction(buyLabel) {
 				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(ActionEvent arg0) {
-					Money sharePrice = otherPlayersData.sharePrice();
+					StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
+					Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice : stockPrice.buyPrice;
 					StockTransaction t = StockTransaction
-							.buyOrSellStock(otherPlayerId, STOCK_BUNDLE_SIZE, sharePrice);
+							.buyOrSellStock(otherPlayerId, StockTransaction.STOCK_BUNDLE_SIZE, sharePrice);
 					Move move = new AddTransactionMove(modelRoot.getPrincipal(), t);
 					modelRoot.doMove(move);
 					updateHtml();
@@ -133,9 +133,10 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(ActionEvent arg0) {
-					Money sharePrice = otherPlayersData.sharePrice();
+					StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
+					Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice : stockPrice.sellPrice;
 					StockTransaction t = StockTransaction
-							.buyOrSellStock(otherPlayerId, -STOCK_BUNDLE_SIZE, sharePrice);
+							.buyOrSellStock(otherPlayerId, -StockTransaction.STOCK_BUNDLE_SIZE, sharePrice);
 					Move move = new AddTransactionMove(modelRoot.getPrincipal(), t);
 					modelRoot.doMove(move);
 					updateHtml();
@@ -146,6 +147,8 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		}		
 		enableAndDisableActions();	
 	}
+	
+	
 		
 	private void enableAndDisableActions(){
 		ReadOnlyWorld world = modelRoot.getWorld();
@@ -154,7 +157,8 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(
 				world, p);
 		
-		
+		StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
+		long highestAffordablePrice = world.getCurrentBalance(p).getAmount() / StockTransaction.STOCK_BUNDLE_SIZE;
 		//Enable and disable stock actions.
 		for(int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++){
 			Player temp = modelRoot.getWorld().getPlayer(playerId);
@@ -173,9 +177,14 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 			if(otherPrincipal.equals(p)){
 				int treasuryStock = otherDataGatherer.treasuryStock();
 				int totalStock = otherDataGatherer.totalShares();
-				if(STOCK_BUNDLE_SIZE + treasuryStock >= totalStock){
+				if(StockTransaction.STOCK_BUNDLE_SIZE + treasuryStock >= totalStock){
 					buyStock[playerId].setEnabled(false);
 				}
+			}
+			
+			//Don't let the player buy stock if they cannot afford it.
+			if(stockPrices[playerId].currentPrice.getAmount() > highestAffordablePrice){
+				buyStock[playerId].setEnabled(false);
 			}
 		}			
 		

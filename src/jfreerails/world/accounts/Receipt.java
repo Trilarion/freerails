@@ -24,15 +24,11 @@ public class Receipt implements Transaction {
 		this.category = category;
 	}
 
-	public int hashCode() {
-		int result;
-		result = amount.hashCode();
-		result = 29 * result + category.hashCode();
-
-		return result;
+	public Money deltaAssets() {		
+		return amount.changeSign();
 	}
 
-	public Money getValue() {
+	public Money deltaCash() {
 		return amount;
 	}
 
@@ -48,5 +44,13 @@ public class Receipt implements Transaction {
 
 	public Category getCategory() {
 		return category;
+	}
+
+	public int hashCode() {
+		int result;
+		result = amount.hashCode();
+		result = 29 * result + category.hashCode();
+
+		return result;
 	}
 }

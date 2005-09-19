@@ -21,12 +21,10 @@ import javax.swing.JPanel;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
-import jfreerails.world.accounts.AddItemTransaction;
-import jfreerails.world.accounts.Transaction;
+import jfreerails.controller.NetWorthCalculator;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -402,36 +400,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
 		setAppropriateScale();
 
-	}
-
-	/**
-	 * A TransactionAggregator that calculates the networth of a player by
-	 * totalling the value of their assets.
-	 * 
-	 * @author Luke
-	 * 
-	 */
-	public static class NetWorthCalculator extends TransactionAggregator {
-
-		public NetWorthCalculator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-			super(w, principal);
-		}
-
-		protected boolean condition(int transactionID) {
-			Transaction t = super.w.getTransaction(super.principal,
-					transactionID);
-			
-			if (t instanceof AddItemTransaction) {
-				if(t.getCategory().equals(Transaction.Category.ISSUE_STOCK)){
-					return true;
-				}
-				// Since buying something is just converting one asset type to
-				// another.
-				return false;
-			}
-			
-			return true;
-		}
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

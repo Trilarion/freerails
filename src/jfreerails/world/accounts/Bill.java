@@ -24,16 +24,12 @@ public class Bill implements Transaction {
 		this.category = category;
 	}
 
-	public Money getValue() {
-		return amount;
+	public Money deltaAssets() {		
+		return amount.changeSign();
 	}
-
-	public int hashCode() {
-		int result;
-		result = amount.hashCode();
-		result = 29 * result + category.hashCode();
-
-		return result;
+	
+	public Money deltaCash() {
+		return amount;
 	}
 
 	public boolean equals(Object o) {
@@ -48,5 +44,13 @@ public class Bill implements Transaction {
 
 	public Category getCategory() {
 		return category;
+	}
+
+	public int hashCode() {
+		int result;
+		result = amount.hashCode();
+		result = 29 * result + category.hashCode();
+
+		return result;
 	}
 }

@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.Action;
 
 import jfreerails.client.renderer.ViewLists;
+import jfreerails.controller.BalanceSheetGenerator;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;

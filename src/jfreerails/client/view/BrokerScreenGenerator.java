@@ -11,6 +11,8 @@ import static jfreerails.world.accounts.Transaction.Category.BOND;
 import java.text.DecimalFormat;
 
 import jfreerails.controller.FinancialDataGatherer;
+import jfreerails.controller.StockPriceCalculator;
+import jfreerails.controller.StockPriceCalculator.StockPrice;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
@@ -72,7 +74,8 @@ public class BrokerScreenGenerator {
 
 		this.publicShares = DC.format(dataGatherer.sharesHeldByPublic());
 		this.netWorth = dataGatherer.netWorth();
-		this.pricePerShare = dataGatherer.sharePrice();
+		StockPrice[] stockPrices = (new StockPriceCalculator(w)).calculate();
+		this.pricePerShare = stockPrices[playerId].currentPrice;
 		this.treasuryStock = DC.format(dataGatherer.treasuryStock());
 
 		StringBuffer otherRRsStakes = new StringBuffer();

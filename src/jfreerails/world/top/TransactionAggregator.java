@@ -133,7 +133,7 @@ public abstract class TransactionAggregator {
 
 	protected void incrementRunningTotal(int transactionID) {
 		Transaction t = w.getTransaction(principal, transactionID);
-		runningTotal += t.getValue().getAmount();
+		runningTotal += t.deltaCash().getAmount();
 	}
 
 	/**

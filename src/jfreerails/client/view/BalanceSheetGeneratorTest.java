@@ -4,6 +4,7 @@
  */
 package jfreerails.client.view;
 
+import jfreerails.controller.BalanceSheetGenerator;
 import jfreerails.move.AddPlayerMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;

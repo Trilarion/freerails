@@ -4,7 +4,6 @@
  */
 package jfreerails.controller;
 
-import jfreerails.client.view.NetWorthGraphJPanel.NetWorthCalculator;
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.BondTransaction;
 import jfreerails.world.accounts.EconomicClimate;
@@ -33,7 +32,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
 	private int[] stockInRRs;
 	
-	private int[] stockInThisRRs;		
+	private int[] stockInThisRRs;				
 	
 	protected void incrementRunningTotal(int transactionID) {
 		Transaction t = super.w.getTransaction(super.principal, transactionID);
@@ -123,12 +122,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
 	public boolean thisRRHasStakeIn(int otherReId){
 		return stockInRRs[otherReId] > 0;
-	}
-
-
-	public Money sharePrice() {
-		// TODO: Find out the True Share Price.
-		return new Money(5);
 	}
 
 	

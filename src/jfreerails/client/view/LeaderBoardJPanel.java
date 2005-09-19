@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
+import jfreerails.controller.NetWorthCalculator;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -106,7 +107,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 			NonNullElements stations = new NonNullElements(KEY.STATIONS, w,
 					principle);
 			details.stations = stations.size();
-			TransactionAggregator networth = new NetWorthGraphJPanel.NetWorthCalculator(
+			TransactionAggregator networth = new NetWorthCalculator(
 					w, principle);
 			details.networth = networth.calculateValue();
 			values.add(details);

@@ -2,9 +2,10 @@ package jfreerails.server;
 
 import java.net.URL;
 
+import jfreerails.move.AddPlayerMove;
+import jfreerails.move.MoveStatus;
 import jfreerails.server.common.TileSetFactory;
 import jfreerails.server.parser.Track_TilesHandlerImpl;
-import jfreerails.world.accounts.BondTransaction;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.GameTime;
@@ -62,15 +63,10 @@ public class MapFixtureFactory2 {
 		// Add 4 players
 		for (int i = 0; i < 4; i++) {
 			String name = "player" + i;
-			Player p = new Player(name, i);
-			int index = world.addPlayer(p);
-			assert (index == i);
-			world
-					.addTransaction(p
-							.getPrincipal(), BondTransaction.issueBond(5));
-			world
-					.addTransaction(p
-							.getPrincipal(), BondTransaction.issueBond(5));
+			Player p = new Player(name, i);						
+			AddPlayerMove move = AddPlayerMove.generateMove(world, p);
+			MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
+			assert(ms.ok);
 		}
 		world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
 		world.setTime(new GameTime(0));

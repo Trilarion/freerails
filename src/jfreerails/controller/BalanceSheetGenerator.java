@@ -1,7 +1,7 @@
 /*
  * Created on Mar 28, 2004
  */
-package jfreerails.client.view;
+package jfreerails.controller;
 
 import static jfreerails.world.accounts.Transaction.Category.*;
 import static jfreerails.world.accounts.Transaction.Category.INDUSTRIES;
@@ -9,7 +9,7 @@ import static jfreerails.world.accounts.Transaction.Category.ISSUE_STOCK;
 import static jfreerails.world.accounts.Transaction.Category.STATIONS;
 import static jfreerails.world.accounts.Transaction.Category.TRACK;
 import static jfreerails.world.accounts.Transaction.Category.TRAIN;
-import jfreerails.controller.FinancialDataGatherer;
+import jfreerails.controller.StockPriceCalculator.StockPrice;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
@@ -48,7 +48,7 @@ public class BalanceSheetGenerator {
 	
 	public Stats ytd;
 
-	BalanceSheetGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
+	public BalanceSheetGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
 		this.w = w;
 		this.principal = principal;
 		cal = (GameCalendar) w.get(ITEM.CALENDAR);
@@ -61,72 +61,15 @@ public class BalanceSheetGenerator {
 		GameTime[] totalTimeInteval = new GameTime[] { GameTime.BIG_BANG,
 				GameTime.END_OF_THE_WORLD };
 
-		total = calulateValues(totalTimeInteval);
+		total = new Stats(w, principal, totalTimeInteval);
+		
 		GameTime[] ytdTimeInteval = new GameTime[] { startOfYear,
 				GameTime.END_OF_THE_WORLD };
-		ytd = calulateValues(ytdTimeInteval);		
+		ytd = new Stats(w, principal, ytdTimeInteval);	
+		
 	}
 
-	private Stats  calulateValues(final GameTime[] totalTimeInteval) {
-		
-		Stats returnValue = new Stats();
-		
-		
-		TransactionAggregator ytdOperatingFunds = new TransactionAggregator(w,
-				principal) {
-			protected boolean condition(int i) {
-				int transactionYear = w.getTransactionTimeStamp(
-						principal, i).getTicks();
-
-				return transactionYear >= totalTimeInteval[0].getTicks();
-			}
-		};
-		
-		returnValue.operatingFunds= ytdOperatingFunds.calculateValue();
-		
-		returnValue.track = calTrackTotal(TRACK, w, principal, totalTimeInteval[0]);
-
-		ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-				w, principal);		
-		aggregator.setTimes(totalTimeInteval);
-
-		aggregator.setCategory(STATIONS);
-		returnValue.stations = aggregator.calculateValue();
-
-		aggregator.setCategory(TRAIN);
-		returnValue.rollingStock = aggregator.calculateValue();
-
-		aggregator.setCategory(INDUSTRIES);
-		returnValue.industries = aggregator.calculateValue();
-		aggregator.setCategory(BOND);
-		returnValue.loans = aggregator.calculateValue();
-		aggregator.setCategory(ISSUE_STOCK);
-		returnValue.equity= aggregator.calculateValue();
-
-		//If we don't initialize this variable 
-		//we get a NPE when we don't own any stock in others RRs
-		returnValue.otherRrStock = new Money(0); 
-		
-		int thisPlayerId = w.getID(principal);
-		for (int playerId = 0; playerId < w.getNumberOfPlayers(); playerId++) {
-			FinancialDataGatherer fda = new FinancialDataGatherer(w, w
-					.getPlayer(playerId).getPrincipal());
-			Money stockPrice = fda.sharePrice();
-			aggregator.setCategory(TRANSFER_STOCK);
-			aggregator.setType(thisPlayerId);
-			int quantity = aggregator.calculateQuantity();
-			if (playerId == thisPlayerId) {
-				returnValue.treasuryStock = new Money(quantity
-						* stockPrice.getAmount());
-			} else {
-				returnValue.otherRrStock = new Money(quantity
-						* stockPrice.getAmount()
-						+ returnValue.otherRrStock.getAmount());
-			}
-		}
-		returnValue.calProfit();
-		return returnValue;
-	}
+	
 
 	public static Money calTrackTotal(Transaction.Category category,
 			ReadOnlyWorld w, FreerailsPrincipal principal, GameTime startTime) {
@@ -156,7 +99,67 @@ public class BalanceSheetGenerator {
 		return new Money(amount);
 	}
 
-	public static class Stats {
+	public static class Stats {				
+		
+		public Stats(ReadOnlyWorld w, FreerailsPrincipal principal, final GameTime[] totalTimeInteval){
+			TransactionAggregator operatingFundsAggregator = new TransactionAggregator(w,
+					principal) {
+				protected boolean condition(int i) {
+					int transactionTicks = w.getTransactionTimeStamp(
+							principal, i).getTicks();
+
+					int from = totalTimeInteval[0].getTicks();
+					int to = totalTimeInteval[1].getTicks();
+					return transactionTicks >= from && transactionTicks <=to;
+				}
+			};
+			
+			operatingFunds= operatingFundsAggregator.calculateValue();
+			
+			track = calTrackTotal(TRACK, w, principal, totalTimeInteval[0]);
+
+			ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
+					w, principal);		
+			aggregator.setTimes(totalTimeInteval);
+
+			aggregator.setCategory(STATIONS);
+			stations = aggregator.calculateValue();
+
+			aggregator.setCategory(TRAIN);
+			rollingStock = aggregator.calculateValue();
+
+			aggregator.setCategory(INDUSTRIES);
+			industries = aggregator.calculateValue();
+			aggregator.setCategory(BOND);
+			loans = aggregator.calculateValue();
+			aggregator.setCategory(ISSUE_STOCK);
+			equity= aggregator.calculateValue();
+
+			//If we don't initialize this variable 
+			//we get a NPE when we don't own any stock in others RRs
+			otherRrStock = new Money(0); 
+			
+			int thisPlayerId = w.getID(principal);
+			
+			StockPrice[] stockPrices = (new StockPriceCalculator(w)).calculate();
+			for (int playerId = 0; playerId < w.getNumberOfPlayers(); playerId++) {				
+				
+				aggregator.setCategory(TRANSFER_STOCK);
+				aggregator.setType(thisPlayerId);
+				int quantity = aggregator.calculateQuantity();
+				if (playerId == thisPlayerId) {
+					treasuryStock = new Money(quantity
+							* stockPrices[playerId].currentPrice.getAmount());
+				} else {
+					otherRrStock = new Money(quantity
+							* stockPrices[playerId].currentPrice.getAmount()
+							+ otherRrStock.getAmount());
+				}
+			}
+			calProfit();
+			
+		}
+		
 		public Money operatingFunds;
 
 		public Money track;
@@ -177,7 +180,7 @@ public class BalanceSheetGenerator {
 		
 		public Money profit;
 
-		public void calProfit(){
+		private void calProfit(){
 			long profitValue = operatingFunds.getAmount() + track.getAmount()
 			+ stations.getAmount() + rollingStock.getAmount()
 			+ industries.getAmount() + loans.getAmount()
