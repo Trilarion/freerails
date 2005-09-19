@@ -2,6 +2,7 @@ Sept 19, 2005 Luke
 	Fixed bugs
 	1289010 Networth on broker screen is wrong
 	1289014 Can buy 100% of treasury stock
+	1289012 No limits on issuing/repaying bonds
 Sept 11, 2005 Luke
 	Fixed bugs
 	1266577 Broker screen layout

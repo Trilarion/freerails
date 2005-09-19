@@ -33,7 +33,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
 	private int[] stockInRRs;
 	
-	private int[] stockInThisRRs;	
+	private int[] stockInThisRRs;		
 	
 	protected void incrementRunningTotal(int transactionID) {
 		Transaction t = super.w.getTransaction(super.principal, transactionID);
@@ -160,5 +160,9 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
 	public int[] getStockInRRs() {
 		return stockInRRs;
+	}
+
+	public int getBonds() {
+		return bonds;
 	}
 }

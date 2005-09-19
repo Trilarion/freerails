@@ -144,16 +144,18 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 			stocks.add(buyStock[playerId]);
 			stocks.add(sellStock[playerId]);
 		}		
-		enableAndDisableStockMenuItems();
+		enableAndDisableActions();	
 	}
-	
-	private void enableAndDisableStockMenuItems(){
+		
+	private void enableAndDisableActions(){
 		ReadOnlyWorld world = modelRoot.getWorld();
 		FreerailsPrincipal p = modelRoot.getPrincipal();
 		
 		FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(
 				world, p);
 		
+		
+		//Enable and disable stock actions.
 		for(int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++){
 			Player temp = modelRoot.getWorld().getPlayer(playerId);
 			FreerailsPrincipal otherPrincipal = temp.getPrincipal();
@@ -176,6 +178,11 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 				}
 			}
 		}			
+		
+		//Enable and diable bond actions.	
+		int outstandingBonds = thisDataGatherer.getBonds();
+		repayBondAction.setEnabled(outstandingBonds > 0);
+		issueBondAction.setEnabled(outstandingBonds < 4);
 		
 	}
 	
@@ -206,7 +213,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		populatedTemplate.append("</html>");
 		String html = populatedTemplate.toString();
 		setHtml(html);		
-		enableAndDisableStockMenuItems();
+		enableAndDisableActions();		
 	}
 
 	protected void paintComponent(Graphics g) {
