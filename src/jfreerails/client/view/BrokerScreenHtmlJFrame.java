@@ -32,6 +32,8 @@ import jfreerails.world.top.ReadOnlyWorld;
  */
 public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
+	private static final int STOCK_BUNDLE_SIZE = 10000;
+
 	private static final long serialVersionUID = 3257003246252800050L;
 
 	private String template;
@@ -120,7 +122,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 				public void actionPerformed(ActionEvent arg0) {
 					Money sharePrice = otherPlayersData.sharePrice();
 					StockTransaction t = StockTransaction
-							.buyOrSellStock(otherPlayerId, 10000, sharePrice);
+							.buyOrSellStock(otherPlayerId, STOCK_BUNDLE_SIZE, sharePrice);
 					Move move = new AddTransactionMove(modelRoot.getPrincipal(), t);
 					modelRoot.doMove(move);
 					updateHtml();
@@ -133,7 +135,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 				public void actionPerformed(ActionEvent arg0) {
 					Money sharePrice = otherPlayersData.sharePrice();
 					StockTransaction t = StockTransaction
-							.buyOrSellStock(otherPlayerId, -10000, sharePrice);
+							.buyOrSellStock(otherPlayerId, -STOCK_BUNDLE_SIZE, sharePrice);
 					Move move = new AddTransactionMove(modelRoot.getPrincipal(), t);
 					modelRoot.doMove(move);
 					updateHtml();
@@ -154,8 +156,8 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		
 		for(int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++){
 			Player temp = modelRoot.getWorld().getPlayer(playerId);
-			FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, temp
-					.getPrincipal());
+			FreerailsPrincipal otherPrincipal = temp.getPrincipal();
+			FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, otherPrincipal);
 			
 			//If this RR has stock in other RR, then enable sell stock
 			boolean hasStockInRR = thisDataGatherer.getStockInRRs()[playerId] > 0;
@@ -165,9 +167,16 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 			boolean isStockAvailable = otherDataGatherer.sharesHeldByPublic() > 0;
 			buyStock[playerId].setEnabled(isStockAvailable);
 			
-			
-			
-		}					
+			//Don't let player buy 100% of treasury stock.
+			if(otherPrincipal.equals(p)){
+				int treasuryStock = otherDataGatherer.treasuryStock();
+				int totalStock = otherDataGatherer.totalShares();
+				if(STOCK_BUNDLE_SIZE + treasuryStock >= totalStock){
+					buyStock[playerId].setEnabled(false);
+				}
+			}
+		}			
+		
 	}
 	
 	private void updateHtml() {
