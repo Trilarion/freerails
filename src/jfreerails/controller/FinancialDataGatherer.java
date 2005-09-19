@@ -4,11 +4,13 @@
  */
 package jfreerails.controller;
 
+import jfreerails.client.view.NetWorthGraphJPanel.NetWorthCalculator;
 import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.BondTransaction;
 import jfreerails.world.accounts.EconomicClimate;
 import jfreerails.world.accounts.StockTransaction;
 import jfreerails.world.accounts.Transaction;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
@@ -132,8 +134,10 @@ public class FinancialDataGatherer extends TransactionAggregator {
 	
 
 	public Money netWorth() {
-		// TODO: find out the True NetWorth!!
-		return w.getCurrentBalance(principal);
+		NetWorthCalculator nwc = new NetWorthCalculator(w, principal);
+		GameTime[] times = {GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD};
+		nwc.setTimes(times);
+		return nwc.calculateValue();
 	}
 
 	protected boolean condition(int transactionID) {

@@ -238,32 +238,33 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
     
     /** Starts the client and server in the same thread. */
-    private static void startThread(final FreerailsGameServer server,
-            final GUIClient client) {
-        Runnable run = new Runnable() {
-            
-            public void run() {
-                while (null == client.getWorld()) {
-                    client.update();
-                    server.update();
-                }
-                
-                GameModel[] models = new GameModel[] { client, server };
-                ScreenHandler screenHandler = client.getScreenHandler();
-                GameLoop gameLoop = new GameLoop(screenHandler, models);
-                screenHandler.apply();
-                
-                gameLoop.run();
-            }
-            
-        };
-        try {
-            Thread t = new Thread(run, "Client + server main loop");
-            t.start();
-        } catch (Exception e) {
-            exit(e);
-        }
-    }
+	private static void startThread(final FreerailsGameServer server,
+			final GUIClient client) {
+		try {
+			Runnable run = new Runnable() {
+
+				public void run() {
+					while (null == client.getWorld()) {
+						client.update();
+						server.update();
+					}
+
+					GameModel[] models = new GameModel[] { client, server };
+					ScreenHandler screenHandler = client.getScreenHandler();
+					GameLoop gameLoop = new GameLoop(screenHandler, models);
+					screenHandler.apply();
+
+					gameLoop.run();
+				}
+
+			};
+
+			Thread t = new Thread(run, "Client + server main loop");
+			t.start();
+		} catch (Exception e) {
+			exit(e);
+		}
+	}
     
     /** Starts the client in a new thread. */
     private void startThread(final GUIClient guiClient) {
@@ -668,9 +669,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }// GEN-LAST:event_nextButtonActionPerformed
     
     private static void exit(Exception e) {
-        logger.severe("Unexpected exception, can't recover");
-        e.printStackTrace();
-        System.exit(1);
+       GameLoop.unexpectedException(e);
     }
     
     /** Exit the Application. */

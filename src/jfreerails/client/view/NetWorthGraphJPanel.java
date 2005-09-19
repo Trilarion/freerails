@@ -411,7 +411,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 	 * @author Luke
 	 * 
 	 */
-	static class NetWorthCalculator extends TransactionAggregator {
+	public static class NetWorthCalculator extends TransactionAggregator {
 
 		public NetWorthCalculator(ReadOnlyWorld w, FreerailsPrincipal principal) {
 			super(w, principal);
@@ -420,11 +420,16 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 		protected boolean condition(int transactionID) {
 			Transaction t = super.w.getTransaction(super.principal,
 					transactionID);
+			
 			if (t instanceof AddItemTransaction) {
+				if(t.getCategory().equals(Transaction.Category.ISSUE_STOCK)){
+					return true;
+				}
 				// Since buying something is just converting one asset type to
 				// another.
 				return false;
 			}
+			
 			return true;
 		}
 	}

@@ -7,6 +7,9 @@
 package jfreerails.client.view;
 
 import static jfreerails.world.accounts.Transaction.Category.BOND;
+
+import java.text.DecimalFormat;
+
 import jfreerails.controller.FinancialDataGatherer;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
@@ -23,6 +26,8 @@ import jfreerails.world.top.ReadOnlyWorld;
  */
 
 public class BrokerScreenGenerator {
+	
+	private static final DecimalFormat DC = new DecimalFormat("#,###");
 
 	private FinancialDataGatherer dataGatherer;
 
@@ -40,9 +45,9 @@ public class BrokerScreenGenerator {
 
 	public Money pricePerShare;
 
-	public int publicShares;
+	public String publicShares;
 
-	public int treasuryStock;
+	public String treasuryStock;
 
 	public String othersRRsStockRows;
 
@@ -65,10 +70,10 @@ public class BrokerScreenGenerator {
 		aggregator.setCategory(BOND);
 		this.loansTotal = aggregator.calculateValue();
 
-		this.publicShares = dataGatherer.sharesHeldByPublic();
+		this.publicShares = DC.format(dataGatherer.sharesHeldByPublic());
 		this.netWorth = dataGatherer.netWorth();
 		this.pricePerShare = dataGatherer.sharePrice();
-		this.treasuryStock = dataGatherer.treasuryStock();
+		this.treasuryStock = DC.format(dataGatherer.treasuryStock());
 
 		StringBuffer otherRRsStakes = new StringBuffer();
 		int[] stockInThisRRs = dataGatherer.getStockInThisRRs();
@@ -76,7 +81,7 @@ public class BrokerScreenGenerator {
 		for (int i = 0; i < stockInThisRRs.length; i++) {
 			if (i != playerId && stockInThisRRs[i] > 0) {
 				String otherRRName = w.getPlayer(i).getName();
-				String otherRRStake = String.valueOf(stockInThisRRs[i]);
+				String otherRRStake = DC.format(stockInThisRRs[i]);
 				otherRRsStakes.append("<tr> ");
 				otherRRsStakes.append("<td> </td>");
 				otherRRsStakes.append("<td> </td>");
