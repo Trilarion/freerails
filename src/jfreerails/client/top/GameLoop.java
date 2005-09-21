@@ -1,6 +1,7 @@
 package jfreerails.client.top;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -21,7 +22,7 @@ final public class GameLoop implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(GameLoop.class
 			.getName());
-	
+
 	private final static boolean LIMIT_FRAME_RATE = false;
 
 	private boolean gameNotDone = false;
@@ -105,7 +106,8 @@ final public class GameLoop implements Runnable {
 							try {
 								screenHandler.frame.paintComponents(g);
 
-								boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
+								boolean showFps = Boolean.parseBoolean(System
+										.getProperty("SHOWFPS"));
 								if (showFps) {
 									fPScounter.drawFPS((Graphics2D) g);
 								}
@@ -116,10 +118,7 @@ final public class GameLoop implements Runnable {
 								 * straight away to avoid hard-to-track-down
 								 * bugs.
 								 */
-								logger
-										.severe("Unexpected exception, quitting..");
-								re.printStackTrace();
-								System.exit(1);
+								unexpectedException(re);
 							} finally {
 								g.dispose();
 							}
@@ -159,19 +158,23 @@ final public class GameLoop implements Runnable {
 			synchronized (loopMonitor) {
 				loopMonitor.notify();
 			}
-		} catch (Exception e) {			
-			unexpectedException(e);			
+		} catch (Exception e) {
+			unexpectedException(e);
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void unexpectedException(Exception e) {
-		ScreenHandler.exitFullScreenMode();		
-		          
+		ScreenHandler.exitFullScreenMode();
+
 		String str = ReportBugTextGenerator.genText(e);
 		System.err.print(str);
-		UnexpectedExceptionForm unexpectedExceptionForm = new UnexpectedExceptionForm(); 
+		UnexpectedExceptionForm unexpectedExceptionForm = new UnexpectedExceptionForm();
 		unexpectedExceptionForm.setText(str);
 		unexpectedExceptionForm.setVisible(true);
+		if(!EventQueue.isDispatchThread()){
+			Thread.currentThread().stop();
+		}
 	}
 }
 
@@ -191,13 +194,13 @@ final class FPScounter {
 	private String newFPSstr = "starting..";
 
 	private long lastFrameTime;
-	
-	
+
 	private final int fontSize;
 
 	private final Color bgColor;
-	FPScounter() {	
-		this.fontSize = 10;		
+
+	FPScounter() {
+		this.fontSize = 10;
 		bgColor = new Color(0, 0, 128);
 	}
 
@@ -239,35 +242,33 @@ final class FPScounter {
 			variance = variance / n;
 			if (newFrameCount % 20 == 0) {
 				StringBuffer sb = new StringBuffer();
-				sb.append("FPS\n");		
+				sb.append("FPS\n");
 				sb.append(" n  ");
 				sb.append(n);
 				sb.append('\n');
-				sb.append(" \u03BC  ");				
+				sb.append(" \u03BC  ");
 				sb.append(Math.round(mean));
-				sb.append('\n');				
+				sb.append('\n');
 				sb.append(" \u03C3  ");
-				sb.append(Math.round(Math.sqrt(variance) ));
-				sb.append('\n');	
+				sb.append(Math.round(Math.sqrt(variance)));
+				sb.append('\n');
 				sb.append(" min  ");
-				sb.append(Math.round(min) );
-				sb.append('\n');	
+				sb.append(Math.round(min));
+				sb.append('\n');
 				sb.append(" max  ");
-				sb.append(Math.round(max) );
-				sb.append('\n');	
-				
+				sb.append(Math.round(max));
+				sb.append('\n');
+
 				newFPSstr = sb.toString();
-				
+
 			}
 
 		}
-		
-		
-		
-//		g.setColor(Color.WHITE);
-//		g.fillRect(50, 50, 50, 20);
-//		g.setColor(Color.BLACK);
-//		g.drawString(newFPSstr, 50, 65);
+
+		// g.setColor(Color.WHITE);
+		// g.fillRect(50, 50, 50, 20);
+		// g.setColor(Color.BLACK);
+		// g.drawString(newFPSstr, 50, 65);
 		lastFrameTime = currentTime;
 	}
 
@@ -276,26 +277,24 @@ final class FPScounter {
 		int rectHeight;
 		int rectX;
 		int rectY;
-		
+
 		int positionX = 50;
 		int positionY = 70;
-		
+
 		Color textColor = Color.WHITE;
-		
-		
-		String[] lines = newFPSstr.split("\n");		
+
+		String[] lines = newFPSstr.split("\n");
 		rectWidth = 60;
 		rectHeight = (int) ((fontSize + 1) * 1.2 * lines.length);
-		rectY = (int) (positionY - fontSize * 1.2)  ;
+		rectY = (int) (positionY - fontSize * 1.2);
 		rectX = positionX;
 
 		g.setColor(bgColor);
 		g.fillRect(rectX, rectY, rectWidth, rectHeight);
 
-	
 		g.setColor(textColor);
-		//g.setFont(font);
-		for(String s: lines){
+		// g.setFont(font);
+		for (String s : lines) {
 			g.drawString(s, positionX, positionY);
 			positionY += fontSize * 1.2;
 		}

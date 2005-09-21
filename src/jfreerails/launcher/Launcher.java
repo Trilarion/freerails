@@ -268,7 +268,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     
     /** Starts the client in a new thread. */
     private void startThread(final GUIClient guiClient) {
-        
+    	try {
         Runnable run = new Runnable() {
             
             public void run() {
@@ -289,7 +289,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             }
             
         };
-        try {
+        
             Thread t = new Thread(run, "Client main loop");
             t.start();
         } catch (Exception e) {
@@ -299,7 +299,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     
     /** Starts the server in a new thread. */
     private static void startThread(final FreerailsGameServer server) {
-        
+    	 try {
         Runnable r = new Runnable() {
             
             public void run() {
@@ -320,7 +320,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             }
             
         };
-        try {
+       
             
             Thread t = new Thread(r, "FreerailsGameServer");
             t.start();

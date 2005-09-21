@@ -7,7 +7,6 @@ package jfreerails.launcher;
 import java.awt.DisplayMode;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
@@ -42,9 +41,6 @@ import jfreerails.world.top.World;
  */
 public class GUIClient extends FreerailsClient implements
 		FreerailsProgressMonitor {
-
-	private static final Logger logger = Logger.getLogger(GUIClient.class
-			.getName());
 
 	public static void main(String[] args) {
 		try {
@@ -147,9 +143,7 @@ public class GUIClient extends FreerailsClient implements
 
 			factory.setup(vl, w);
 		} catch (Exception e) {
-			logger.severe("Unexpected exception, can't recover");
-			e.printStackTrace();
-			System.exit(1);
+			GameLoop.unexpectedException(e);	
 		}
 	}
 

@@ -56,9 +56,8 @@ public class ReportBugTextGenerator {
 		sb.append("\n");
 		sb.append("\n");
 		sb.append("Please:\n");
-		sb.append("  1. Use the following as the title of the bug report:\n\t");
-		sb.append(e.getClass().getName());
-		sb.append(" at ");
+		sb.append("  1. Use the following as the title of the bug report:\n\t");		
+		sb.append(" Unexpected Exception: ");
 		sb.append(s[0].getFileName());
 		sb.append(" line ");
 		sb.append(s[0].getLineNumber());
