@@ -18,8 +18,9 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
+import jfreerails.controller.ReportBugTextGenerator;
+import jfreerails.controller.ScreenHandler;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.network.FreerailsGameServer;
 import jfreerails.network.InetConnectionAccepter;
@@ -669,7 +670,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }// GEN-LAST:event_nextButtonActionPerformed
     
     private static void exit(Exception e) {
-       GameLoop.unexpectedException(e);
+       ReportBugTextGenerator.unexpectedException(e);
     }
     
     /** Exit the Application. */

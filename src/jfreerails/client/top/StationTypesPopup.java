@@ -19,7 +19,6 @@ import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.StationBuildModel;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.TrackRule;
 
 /**
  * This JPopupMenu displays the list of station types that are available and
@@ -50,7 +49,7 @@ public class StationTypesPopup extends JPopupMenu {
 
 		FreerailsTile tile = (FreerailsTile) modelRoot.getWorld().getTile(p.x,
 				p.y);
-		return tile.getTrackRule().getCategory() != TrackRule.TrackCategories.non;
+		return tile.hasTrack();
 	}
 
 	private class StationBuildMenuItem extends JMenuItem {

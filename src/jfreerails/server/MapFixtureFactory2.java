@@ -10,7 +10,6 @@ import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
-import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
@@ -82,7 +81,7 @@ public class MapFixtureFactory2 {
 				break;
 			}
 		}
-		TerrainTile tile = FreerailsTile.getInstance(clearTypeID);
+		FreerailsTile tile = FreerailsTile.getInstance(clearTypeID);
 		for (int x = 0; x < world.getMapWidth(); x++) {
 			for (int y = 0; y < world.getMapHeight(); y++) {
 				world.setTile(x, y, tile);

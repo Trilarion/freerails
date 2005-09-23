@@ -4,7 +4,7 @@
  * Created on 09 September 2005, 17:58
  */
 
-package jfreerails.client.view;
+package jfreerails.controller;
 
 import javax.swing.SwingUtilities;
 

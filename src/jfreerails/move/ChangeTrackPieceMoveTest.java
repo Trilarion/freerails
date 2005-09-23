@@ -13,6 +13,7 @@ import jfreerails.world.top.ITEM;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackPieceImpl;
@@ -58,7 +59,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
 		// Try building the simplest piece of track.
 		newConfig = TrackConfiguration.getFlatInstance("000010000");
-		oldTrackPiece = (TrackPiece) getWorld().getTile(0, 0);
+		oldTrackPiece = ((FreerailsTile) getWorld().getTile(0, 0)).getTrackPiece();
 
 		final int trackRuleID = 0;
 		final TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES,
@@ -117,7 +118,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
 		// Try building the simplest piece of track.
 		newConfig = TrackConfiguration.getFlatInstance("000010000");
-		oldTrackPiece = (TrackPiece) getWorld().getTile(0, 0);
+		oldTrackPiece = ((FreerailsTile)  getWorld().getTile(0, 0)).getTrackPiece();
 
 		TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
 		newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
@@ -135,8 +136,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 		moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
 		assertNotNull(moveStatus);
 		assertEquals(true, moveStatus.isOk());
+		TrackConfiguration actual = ((FreerailsTile)getWorld().getTile(0, 0)).getTrackPiece().getTrackConfiguration();
 		assertEquals(newTrackPiece.getTrackConfiguration(),
-				((TrackPiece) getWorld().getTile(0, 0)).getTrackConfiguration());
+				actual);
 	}
 
 	public void testMove() {
@@ -144,7 +146,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 		TrackPiece newTrackPiece;
 		TrackConfiguration newConfig;
 		newConfig = TrackConfiguration.getFlatInstance("000010000");
-		oldTrackPiece = (TrackPiece) getWorld().getTile(0, 0);
+		oldTrackPiece = ((FreerailsTile)  getWorld().getTile(0, 0)).getTrackPiece();
 
 		TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
 		newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);

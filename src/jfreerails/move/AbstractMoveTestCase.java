@@ -16,7 +16,6 @@ import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.NullTrackType;
 import jfreerails.world.train.PathOnTiles;
 import junit.framework.TestCase;
 
@@ -235,7 +234,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 	protected void assertTrackHere(int x, int y) {
 
 		FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
-		assertFalse(tile.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER);
+		assertTrue(tile.hasTrack());
 	}
 
 	protected void assertTrackHere(PathOnTiles path) {

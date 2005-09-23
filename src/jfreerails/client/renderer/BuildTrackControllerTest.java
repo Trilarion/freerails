@@ -109,19 +109,19 @@ public class BuildTrackControllerTest extends TestCase {
 
 		FreerailsTile tile = (FreerailsTile) w.getTile(10, 10);
 
-		assertEquals(singleTrackRuleID, tile.getTrackTypeID());
+		assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
 		tile = (FreerailsTile) w.getTile(15, 10);
 
-		assertEquals(doubleTrackRuleID, tile.getTrackTypeID());
+		assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
 		tile = (FreerailsTile) w.getTile(17, 10);
 
-		assertEquals(doubleTrackRuleID, tile.getTrackTypeID());
+		assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
 		tile = (FreerailsTile) w.getTile(20, 10);
 
-		assertEquals(doubleTrackRuleID, tile.getTrackTypeID());
+		assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
 	}
 

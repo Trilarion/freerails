@@ -3,7 +3,7 @@
  *
  * Created on 31 August 2003, 00:03
  */
-package jfreerails.client.common;
+package jfreerails.controller;
 
 import java.awt.DisplayMode;
 

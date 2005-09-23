@@ -21,7 +21,6 @@ import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.NullTrackType;
 import junit.framework.TestCase;
 /** Unit test for MoveTrainPreMove, tests pathfinding.*/
 public class MoveTrainPreMove3rdTest extends TestCase {
@@ -73,7 +72,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
 
 	private void findPath2Target(ImPoint target1, Step[] expectedPath) {
 		FreerailsTile tile = (FreerailsTile)world.getTile(target1.x, target1.y);
-		assertTrue(tile.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER);
+		assertTrue(tile.hasTrack());
 		PositionOnTrack pot = PositionOnTrack.createFacing(10, 10, EAST);
 		for (int i = 0; i < expectedPath.length; i++) {			
 			Step expected = expectedPath[i];			

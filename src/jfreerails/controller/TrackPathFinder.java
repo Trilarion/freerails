@@ -16,8 +16,8 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
+import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
 
 /**
@@ -65,11 +65,12 @@ public class TrackPathFinder implements IncrementalPathFinder {
 	private int[] findTargets(ImPoint targetPoint) {
 		FreerailsTile tile = (FreerailsTile) world.getTile(targetPoint.x,
 				targetPoint.y);
-		int ruleNumber = tile.getTrackTypeID();
+		TrackPiece trackPiece = tile.getTrackPiece();
+		int ruleNumber = trackPiece.getTrackTypeID();
 
 		int[] targetInts;
 
-		if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != ruleNumber) {
+		if (tile.hasTrack()) {
 			/*
 			 * If there is already track here, we need to check what directions
 			 * we can build in without creating an illegel track config.
@@ -82,7 +83,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
 			for (int i = 0; i < 8; i++) {
 				Step direction = Step.getInstance(i);
-				TrackConfiguration config = tile.getTrackConfiguration();
+				TrackConfiguration config = trackPiece.getTrackConfiguration();
 				TrackConfiguration testConfig = TrackConfiguration.add(config,
 						direction);
 

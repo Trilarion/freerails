@@ -103,7 +103,7 @@ class CityEconomicModel {
 				FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
 
 				/* Count the number of stations at the city. */
-				if (tile.getTrackRule().isStation()) {
+				if (tile.getTrackPiece().getTrackRule().isStation()) {
 					stations++;
 				}
 

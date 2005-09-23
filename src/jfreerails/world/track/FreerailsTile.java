@@ -13,7 +13,7 @@ import jfreerails.world.terrain.TerrainTile;
  * 
  * @author Luke
  */
-public class FreerailsTile implements TrackPiece, TerrainTile,
+public class FreerailsTile implements TerrainTile,
 		FreerailsSerializable {
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,28 +84,7 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
     private FreerailsTile(int terrainType, TrackPiece trackPiece) {
         this.terrainType = terrainType;
         this.trackPiece = trackPiece;
-    }
-
-	/*
-	 * @see TrackPiece#getTrackGraphicNumber()
-	 */
-	public int getTrackGraphicID() {
-		return trackPiece.getTrackGraphicID();
-	}
-
-	/*
-	 * @see TrackPiece#getTrackRule()
-	 */
-	public TrackRule getTrackRule() {
-		return trackPiece.getTrackRule();
-	}
-
-	/*
-	 * @see TrackPiece#getTrackConfiguration()
-	 */
-	public TrackConfiguration getTrackConfiguration() {
-		return trackPiece.getTrackConfiguration();
-	}
+    }		
 
     public int getTerrainTypeID() {
         return terrainType;
@@ -120,15 +99,8 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
 		return trackPiece;
 	}
 
-	public int getOwnerID() {
-		return trackPiece.getOwnerID();
-	}
-
-	public int getTrackTypeID() {
-		return trackPiece.getTrackTypeID();
-	}
 	
 	public boolean hasTrack(){
-		return getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
+		return trackPiece.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
 	}
 }

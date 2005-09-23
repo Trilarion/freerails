@@ -19,12 +19,12 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import jfreerails.client.common.ModelRootImpl;
-import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
 import jfreerails.controller.AddTrainPreMove;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.MoveExecutor;
 import jfreerails.controller.MoveTrainPreMove;
+import jfreerails.controller.ScreenHandler;
 import jfreerails.controller.SimpleMoveExecutor;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.move.Move;
@@ -75,7 +75,7 @@ public class TrainMotionExpt extends JComponent {
 		for (int x = 0; x < world.getMapWidth(); x++) {
 			for (int y = 0; y < world.getMapHeight(); y++) {
 				FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
-				if (tile.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+				if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
 					int w = Step.TILE_DIAMETER;
 					int h = Step.TILE_DIAMETER;
 					g.drawRect(x * Step.TILE_DIAMETER, y * Step.TILE_DIAMETER,

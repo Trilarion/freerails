@@ -7,8 +7,8 @@ package experimental;
 
 import javax.swing.JFrame;
 
-import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.top.GameLoop;
+import jfreerails.controller.ScreenHandler;
 
 /**
  * Tests that ClientJFrame and ScreenHandler work together.

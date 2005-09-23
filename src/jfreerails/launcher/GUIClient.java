@@ -11,13 +11,14 @@ import java.io.Serializable;
 import javax.swing.JFrame;
 
 import jfreerails.client.common.ModelRootImpl;
-import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.top.GUIComponentFactoryImpl;
 import jfreerails.client.top.GameLoop;
 import jfreerails.client.top.ViewListsImpl;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.controller.ModelRoot;
+import jfreerails.controller.ReportBugTextGenerator;
+import jfreerails.controller.ScreenHandler;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.network.FreerailsClient;
 import jfreerails.network.FreerailsGameServer;
@@ -143,7 +144,7 @@ public class GUIClient extends FreerailsClient implements
 
 			factory.setup(vl, w);
 		} catch (Exception e) {
-			GameLoop.unexpectedException(e);	
+			ReportBugTextGenerator.unexpectedException(e);	
 		}
 	}
 

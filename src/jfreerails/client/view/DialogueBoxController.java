@@ -40,6 +40,7 @@ import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackRule;
+import jfreerails.controller.CopyableTextJPanel;
 
 /**
  * This class is responsible for displaying dialogue boxes, adding borders to
@@ -491,10 +492,10 @@ public class DialogueBoxController implements WorldListListener {
     public void showStationOrTerrainInfo(int x, int y) {
         FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
         
-        TrackRule trackRule = tile.getTrackRule();
+        TrackRule trackRule = tile.getTrackPiece().getTrackRule();
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         if (trackRule.isStation()
-        && tile.getOwnerID() == world.getID(principal)) {
+        && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
             
             for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
                 StationModel station = (StationModel) world.get(principal,

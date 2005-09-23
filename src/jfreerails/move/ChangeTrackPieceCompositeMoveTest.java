@@ -16,6 +16,7 @@ import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldImpl;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackPiece;
+import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackPieceImpl;
 import jfreerails.world.track.TrackRule;
@@ -82,12 +83,16 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
 		// Remove only track piece built.
 		assertRemoveTrackSuceeds(new ImPoint(0, 5), east);
-		assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(),
-				((FreerailsTile) getWorld().getTile(0, 5))
-						.getTrackConfiguration());
-		assertEquals(NullTrackPiece.getInstance().getTrackConfiguration(),
-				((FreerailsTile) getWorld().getTile(1, 5))
-						.getTrackConfiguration());
+		TrackConfiguration trackConfiguration = ((FreerailsTile) getWorld().getTile(0, 5))
+						.getTrackPiece().getTrackConfiguration();
+		TrackConfiguration expected = NullTrackPiece.getInstance().getTrackConfiguration();
+		assertEquals(expected,
+				trackConfiguration);
+		TrackConfiguration trackConfiguration2 = ((FreerailsTile) getWorld().getTile(1, 5))
+						.getTrackPiece().getTrackConfiguration();
+		
+		assertEquals(expected,
+				trackConfiguration2);
 	}
 
 	/**

@@ -11,7 +11,6 @@ import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.NullTrackType;
 
 /**
  * Finds a path along existing track. Used for upgrading or removing track
@@ -71,11 +70,11 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 				from.y);
 		FreerailsTile tileB = (FreerailsTile) world.getTile(target.x,
 				target.y);
-		if (tileA.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+		if (!tileA.hasTrack()) {
 			throw new PathNotFoundException("No track at " + from.x
 					+ ", " + from.y + ".");
 		}
-		if (tileB.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+		if (!tileB.hasTrack()) {
 			throw new PathNotFoundException("No track at " + target.x
 					+ ", " + target.y + ".");
 		}

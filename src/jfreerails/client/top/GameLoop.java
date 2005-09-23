@@ -1,16 +1,14 @@
 package jfreerails.client.top;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.util.logging.Logger;
 
 import jfreerails.client.common.RepaintManagerForActiveRendering;
-import jfreerails.client.common.ScreenHandler;
-import jfreerails.client.view.UnexpectedExceptionForm;
 import jfreerails.controller.ReportBugTextGenerator;
+import jfreerails.controller.ScreenHandler;
 import jfreerails.util.GameModel;
 
 /**
@@ -118,7 +116,7 @@ final public class GameLoop implements Runnable {
 								 * straight away to avoid hard-to-track-down
 								 * bugs.
 								 */
-								unexpectedException(re);
+								ReportBugTextGenerator.unexpectedException(re);
 							} finally {
 								g.dispose();
 							}
@@ -159,21 +157,7 @@ final public class GameLoop implements Runnable {
 				loopMonitor.notify();
 			}
 		} catch (Exception e) {
-			unexpectedException(e);
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public static void unexpectedException(Exception e) {
-		ScreenHandler.exitFullScreenMode();
-
-		String str = ReportBugTextGenerator.genText(e);
-		System.err.print(str);
-		UnexpectedExceptionForm unexpectedExceptionForm = new UnexpectedExceptionForm();
-		unexpectedExceptionForm.setText(str);
-		unexpectedExceptionForm.setVisible(true);
-		if(!EventQueue.isDispatchThread()){
-			Thread.currentThread().stop();
+			ReportBugTextGenerator.unexpectedException(e);
 		}
 	}
 }

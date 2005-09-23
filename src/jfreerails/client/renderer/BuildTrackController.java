@@ -188,7 +188,7 @@ public class BuildTrackController implements GameModel {
 			FreerailsTile tile = (FreerailsTile) realWorld.getTile(
 					oldPosition.x, oldPosition.y);
 
-			if (tile.getTrackConfiguration().contains(vector)) {
+			if (tile.getTrackPiece().getTrackConfiguration().contains(vector)) {
 				oldPosition = point;
 
 				continue;
@@ -442,21 +442,21 @@ public class BuildTrackController implements GameModel {
 							 * Skip tiles that already have the right track
 							 * type.
 							 */
-							if (trackRuleID == tile.getTrackTypeID()) {
+							if (trackRuleID == tile.getTrackPiece().getTrackTypeID()) {
 								break attemptMove;
 							}
 
 							TrackRule trackRule = (TrackRule) worldDiffs.get(
 									SKEY.TRACK_RULES, trackRuleID);
 							TrackPiece after = new TrackPieceImpl(tile
-									.getTrackConfiguration(), trackRule, owner,
+									.getTrackPiece().getTrackConfiguration(), trackRule, owner,
 									trackRuleID);
 
 							/*
 							 * We don't want to 'upgrade' a station to track.
 							 * See bug 874416.
 							 */
-							if (tile.getTrackRule().isStation()) {
+							if (tile.getTrackPiece().getTrackRule().isStation()) {
 								break attemptMove;
 							}
 

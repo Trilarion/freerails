@@ -122,7 +122,7 @@ final public class TrackMoveProducer {
 		case UPGRADE_TRACK: {
 			// upgrade the from tile if necessary.
 			FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
-			if (tileA.getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
+			if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
 				MoveStatus ms = upgradeTrack(from, ruleIDs[0]);
 				if (!ms.ok) {
 					return ms;
@@ -131,7 +131,7 @@ final public class TrackMoveProducer {
 			ImPoint point = new ImPoint(from.x + trackVector.getDx(), from.y
 					+ trackVector.getDy());
 			FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
-			if (tileB.getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
+			if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
 				MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
 				if (!ms.ok) {
 					return ms;
@@ -198,7 +198,7 @@ final public class TrackMoveProducer {
 
 	private MoveStatus upgradeTrack(ImPoint point, int trackRuleID) {
 		ReadOnlyWorld w = executor.getWorld();
-		TrackPiece before = (TrackPiece) w.getTile(point.x, point.y);
+		TrackPiece before = ((FreerailsTile) w.getTile(point.x, point.y)).getTrackPiece();
 		/* Check whether there is track here. */
 		if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
 			return MoveStatus.moveFailed("No track to upgrade.");
@@ -279,7 +279,7 @@ final public class TrackMoveProducer {
 	private boolean isStationHere(ImPoint p) {
 		ReadOnlyWorld w = executor.getWorld();
 		FreerailsTile tile = (FreerailsTile) w.getTile(p.x, p.y);
-		return tile.getTrackRule().isStation();
+		return tile.getTrackPiece().getTrackRule().isStation();
 	}
 
 	public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {

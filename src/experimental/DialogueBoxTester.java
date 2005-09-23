@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import jfreerails.client.common.JFrameMinimumSizeEnforcer;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.ViewLists;
@@ -17,6 +16,7 @@ import jfreerails.client.view.DialogueBoxController;
 import jfreerails.client.view.HtmlJPanel;
 import jfreerails.client.view.ShowJavaProperties;
 import jfreerails.client.view.TrainDialogueJPanel;
+import jfreerails.controller.JFrameMinimumSizeEnforcer;
 import jfreerails.network.MoveChainFork;
 import jfreerails.network.UntriedMoveReceiver;
 import jfreerails.server.TileSetFactoryImpl;

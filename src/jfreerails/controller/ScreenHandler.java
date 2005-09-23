@@ -1,4 +1,4 @@
-package jfreerails.client.common;
+package jfreerails.controller;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+
 
 /**
  * Handles going into fullscreen mode and setting buffer strategy etc.

@@ -4,9 +4,8 @@
  * Created on 09 September 2005, 21:44
  */
 
-package jfreerails.client.view;
+package jfreerails.controller;
 
-import jfreerails.controller.ReportBugTextGenerator;
 
 /**
  *
@@ -33,7 +32,7 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        copyableTextJPanel1 = new jfreerails.client.view.CopyableTextJPanel();
+        copyableTextJPanel1 = new jfreerails.controller.CopyableTextJPanel();
         closebutton = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -85,7 +84,7 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JButton closebutton;
-    jfreerails.client.view.CopyableTextJPanel copyableTextJPanel1;
+    jfreerails.controller.CopyableTextJPanel copyableTextJPanel1;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -92,7 +92,8 @@ public class AddStationPreMove implements PreMove {
 		String cityName;
 		String stationName;
 
-		TrackPiece before = (TrackPiece) world.getTile(p.x, p.y);
+		FreerailsTile ft = (FreerailsTile)world.getTile(p.x, p.y);
+		TrackPiece before = ft.getTrackPiece();
 		TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
 				this.ruleNumber);
 
@@ -104,7 +105,7 @@ public class AddStationPreMove implements PreMove {
 
 		CompositeMove move;
 
-		if (!oldTile.getTrackRule().isStation()) {
+		if (!oldTile.getTrackPiece().getTrackRule().isStation()) {
 			// There isn't already a station here, we need to pick a name and
 			// add an entry
 			// to the station list.

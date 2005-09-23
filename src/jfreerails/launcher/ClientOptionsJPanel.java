@@ -15,9 +15,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import jfreerails.client.common.MyDisplayMode;
-import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.view.DisplayModesComboBoxModels;
+import jfreerails.controller.MyDisplayMode;
+import jfreerails.controller.ScreenHandler;
 
 /**
  * The Launcher panel that lets you choose fullscreen or windowed mode and the

@@ -11,7 +11,7 @@ import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import jfreerails.client.common.MyDisplayMode;
+import jfreerails.controller.MyDisplayMode;
 
 /**
  * ComboBoxModel that provides access to the screen resolutions and bit depths

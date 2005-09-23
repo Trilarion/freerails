@@ -57,8 +57,9 @@ public class BuildTrackRenderer implements Painter {
 			for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
 					.hasNext();) {
 				ImPoint point = iter.next();
-				TrackPiece tp = (TrackPiece) worldDiffs.getTile(point.x,
+				FreerailsTile fp = (FreerailsTile)worldDiffs.getTile(point.x,
 						point.y);
+				TrackPiece tp = fp.getTrackPiece();
 
 				int graphicsNumber = tp.getTrackGraphicID();
 
@@ -87,8 +88,8 @@ public class BuildTrackRenderer implements Painter {
 				FreerailsTile after = (FreerailsTile) worldDiffs.getTile(p.x,
 						p.y);
 
-				boolean trackRemoved = !after.getTrackConfiguration().contains(
-						before.getTrackConfiguration());
+				boolean trackRemoved = !after.getTrackPiece().getTrackConfiguration().contains(
+						before.getTrackPiece().getTrackConfiguration());
 				Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
 				g.setColor(dotColor);
 				g.fillOval(x, y, SMALL_DOT_WIDTH, SMALL_DOT_WIDTH);

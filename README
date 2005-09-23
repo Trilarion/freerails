@@ -1,68 +1,43 @@
 Freerails Java - build @version@
 
 Bugs Fixed:
-	1103632	Sound on Linux
-	1103633	Build station mode
-	1103634	'P' sets priority orders
-	1102801	keys on train orders
-	1102803	Blank schedule after adding stations
-	1102797	Pause 1st time track is built
-	1103154	Building track quickly with keyboard fails
-	1103150	Can build track in station placement mode
-	1102804	Cursor on map edges
-	1103155	Can't upgrade station with F8
-	1102800	Turbo game speed does nothing
-	1102806	Newspaper does nothing
-	1102798	Building track out of station too expensive
-	1102799	"Can't afford to remove station"
-	1099092	Station influence remains after station removed
-	1099091	Station placement cursor wrong colour
-	1099083	Remove train, then click train list-> Exception
-	1099093	Upgrade track starting at station fails
-	1099095	Remove track not cancelled
-	1098767	Can't remove bridges when 'no bridges' selected
-	1098769	Blinking cursor
-	1087429	Same icon for info, no tunnels, no bridges
-	1096168	No tooltips on build tab
-	1087432	Can't remove or upgrade track using mouse
-	1087428	Wrong cursor message
-	1087431	Message "Illegal track config..	
-	1087373	Stations influence should not overlap
-	1087427	Terrain info dialogue close button
-	1087409	java.io.InvalidClassException
-	1087414	Upgrade track on Occean -> ArrayIndexOutOfBoundsException
-	1087425	NullPointerException
-	1087426	Can see stations boxes for other players
-	1087433	Can't tell that train roster has focus
-	1087434	Building track out of station
-	1087437	java properties window should word wrap.
-	1087422	Pressing 'I' on other's station ->crash	
-	1054729	Can't build bridges using mouse
-	1046399	No supply and demand at new stations
-	1005144	java.lang.IllegalArgumentException: Tried to add TrainPosition
-	1047412	2 players, same name -> Exception
-	1047422	java.net.SocketException: Connection reset
-	1047431	No server but no error message.
-	1047440	Progress bar not visible when starting network game
-	1047445	Invalid port but next button enabled.
-	1047435	Can't rejoin game
-	1047428	"no players" message goes away
-	1047414	Connected players list should auto update
-	1047439	Shutting down remote client crashes server
-	1047425	2 servers, same port -> Exception
-	1046385	pressing Backspace causes IllegalStateException
+1297824	java.lang.IllegalStateException 
+1295855	Can buy stock when can't afford to
+1289008	Stock price never changes
+1289012	No limits on issuing/repaying bonds
+1289010	Networth on broker screen is wrong
+1289014	Can buy 100% of treasury stock
+1266577	Broker screen layout
+1269664	Can't tell other player has my stock 
+1266575	Stock holder equity not shown properly on the balance sheet.
+1269676	Stacktraces often lost
+1269679	Train Info doesn't update
+1266581	Underscores in map names
+1223231	"waiting" message on launcher unclear
+1266582	Progress bar
+1266584	Can't select which saved game on launcher
+1269683	Load game when no saved games.
+1269688	Load game in full screen
+1269689	Load game across network
+1266695	Unexpected exception during network game
+1266637	OutOfMemoryError
+1223228	NotSerializableException when saving game with trains
+1223230	Incorrect station price on popup
+1110270	Reproducible Crash Bug
+1105499	Word wrapping in Html components
+1105494	Load game with wrong player
+1105488	Attempting to join game in progress	
 
 Features implemented:
-	927146	Display natural numbers for trains, stations, etc
-	931570	Improve Cursor
-	915940	Tunnels options GUI
-	1055501	Automatically build bridges & tunnels
-	915941	Bridge types GUI
-	1048913	Option to turn off sound..
-	972863	Launcher: progress bar should be on new page
 
-Other changes:
-	New track graphics
+1223234 Add show FTP to 'Display' menu.
+1223235 Save launcher input
+1266591 Store launcher settings
+927154 	Add more info to train list
+1007703 Ability to pay off loan
+927156 	Add stock and bond market
+948662 	Name for Saved Games
+	
 
 There are 3 ways of getting jfreerails.
 (1) Java Webstart:

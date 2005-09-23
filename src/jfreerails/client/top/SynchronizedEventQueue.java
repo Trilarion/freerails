@@ -4,6 +4,8 @@ import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
+import jfreerails.controller.ReportBugTextGenerator;
+
 
 /**
  * This event queue is synchronized on the MUTEX. This lets one control when
@@ -44,7 +46,7 @@ final public class SynchronizedEventQueue extends EventQueue {
 				 * If something goes wrong, lets kill the game straight away to
 				 * avoid hard-to-track-down bugs.
 				 */
-				GameLoop.unexpectedException(e);
+				ReportBugTextGenerator.unexpectedException(e);
 			}
 		}
 	}

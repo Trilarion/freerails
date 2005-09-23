@@ -58,7 +58,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 		}
 		Step v = this.getFirstVectorToTry();
 		Point p = new Point(currentPosition.getX(), currentPosition.getY());
-		TrackPiece tp = (TrackPiece) w.getTile(p.x, p.y);
+		FreerailsTile ft = (FreerailsTile)w.getTile(p.x, p.y);
+		TrackPiece tp = ft.getTrackPiece();
 		TrackConfiguration conf = tp.getTrackConfiguration();
 		Step[] vectors = Step.getList();
 
@@ -122,7 +123,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 	public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) {
 		w = world;
 		FreerailsTile tile = (FreerailsTile) world.getTile(p.getX(), p.getY());
-		if (tile.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+		if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
 			throw new IllegalArgumentException(p.toString());
 		}
 
@@ -139,7 +140,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 	 */
 	public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
 			ImPoint p) {
-		TrackPiece tp = (TrackPiece) w.getTile(p.x, p.y);
+		TrackPiece tp = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
 		TrackConfiguration conf = tp.getTrackConfiguration();
 		Step[] vectors = Step.getList();
 

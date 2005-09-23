@@ -8,13 +8,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import jfreerails.client.top.GameLoop;
 import jfreerails.controller.ClientControlInterface;
 import jfreerails.controller.Message2Client;
 import jfreerails.controller.Message2Server;
 import jfreerails.controller.MessageStatus;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.PreMoveStatus;
+import jfreerails.controller.ReportBugTextGenerator;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.util.GameModel;
@@ -185,7 +185,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 			connection2Server.flush();
 			clientUpdates();
 		} catch (IOException e) {
-			GameLoop.unexpectedException(e);
+			ReportBugTextGenerator.unexpectedException(e);
 		}
 	}
 

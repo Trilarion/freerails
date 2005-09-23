@@ -16,6 +16,7 @@ import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
 
@@ -90,7 +91,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 						+ tilesToPaint.height + 1); tile.y++) {
 					if ((tile.x >= 0) && (tile.x < mapSize.width)
 							&& (tile.y >= 0) && (tile.y < mapSize.height)) {
-						TrackPiece tp = (TrackPiece) w.getTile(tile.x, tile.y);
+						FreerailsTile ft = (FreerailsTile)w.getTile(tile.x, tile.y);
+						TrackPiece tp = ft.getTrackPiece();
 
 						int graphicsNumber = tp.getTrackGraphicID();
 

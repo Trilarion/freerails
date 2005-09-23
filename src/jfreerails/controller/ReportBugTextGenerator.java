@@ -1,6 +1,9 @@
 package jfreerails.controller;
+import java.awt.EventQueue;
 import java.io.InputStream;
 import java.util.Properties;
+
+import jfreerails.controller.UnexpectedExceptionForm;
 
 /*
  * Created on 09-Sep-2005
@@ -110,6 +113,20 @@ public class ReportBugTextGenerator {
 		sb.append(version);
 		sb.append("  compiled by ");
 		sb.append(builtBy);
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void unexpectedException(Exception e) {
+		ScreenHandler.exitFullScreenMode();
+	
+		String str = genText(e);
+		System.err.print(str);
+		UnexpectedExceptionForm unexpectedExceptionForm = new UnexpectedExceptionForm();
+		unexpectedExceptionForm.setText(str);
+		unexpectedExceptionForm.setVisible(true);
+		if(!EventQueue.isDispatchThread()){
+			Thread.currentThread().stop();
+		}
 	}
 
 }

@@ -118,7 +118,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 		TrackPiece newTrackPiece;
 
 		if (w.boundsContain(p.x, p.y)) {
-			oldTrackPiece = (TrackPiece) w.getTile(p.x, p.y);
+			oldTrackPiece = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
 
 			if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
 				TrackConfiguration trackConfiguration = TrackConfiguration

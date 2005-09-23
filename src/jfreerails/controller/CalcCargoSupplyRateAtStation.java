@@ -178,7 +178,7 @@ public class CalcCargoSupplyRateAtStation {
 
 	private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
 		FreerailsTile tile = (FreerailsTile) w.getTile(xx, yy);
-		int ruleNumber = tile.getTrackTypeID();
+		int ruleNumber = tile.getTrackPiece().getTrackTypeID();
 
 		return ruleNumber;
 	}

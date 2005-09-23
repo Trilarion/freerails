@@ -10,6 +10,7 @@ import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackPieceImpl;
@@ -46,7 +47,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
 		// Try building the simplest piece of track.
 		newConfig = TrackConfiguration.getFlatInstance("000010000");
-		oldTrackPiece = (TrackPiece) world.getTile(0, 0);
+		oldTrackPiece = ((FreerailsTile) world.getTile(0, 0)).getTrackPiece();
 
 		TrackRule r = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
 		int owner = ChangeTrackPieceCompositeMove.getOwner(

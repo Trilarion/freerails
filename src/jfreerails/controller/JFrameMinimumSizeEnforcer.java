@@ -1,4 +1,4 @@
-package jfreerails.client.common;
+package jfreerails.controller;
 
 import java.awt.Component;
 import java.awt.event.ComponentEvent;

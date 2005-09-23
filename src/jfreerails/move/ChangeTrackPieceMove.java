@@ -220,14 +220,16 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
 		// Avoid array-out-of-bounds exceptions.
 		if (point.y > 0) {
-			TrackPiece tp = (TrackPiece) w.getTile(point.x, point.y - 1);
+			FreerailsTile ft = (FreerailsTile)w.getTile(point.x, point.y - 1);
+			TrackPiece tp = ft.getTrackPiece();
 			trackTemplateAbove = tp.getTrackGraphicID();
 		} else {
 			trackTemplateAbove = 0;
 		}
 
 		if ((point.y + 1) < mapSize.height) {
-			TrackPiece tp = (TrackPiece) w.getTile(point.x, point.y + 1);
+			FreerailsTile ft = (FreerailsTile)w.getTile(point.x, point.y + 1);
+			TrackPiece tp = ft.getTrackPiece();
 			trackTemplateBelow = tp.getTrackGraphicID();
 		} else {
 			trackTemplateBelow = 0;
@@ -336,7 +338,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
 				FreerailsTile tile = (FreerailsTile) w.getTile(station.x,
 						station.y);
-				TrackRule otherStationType = tile.getTrackRule();
+				TrackRule otherStationType = tile.getTrackPiece().getTrackRule();
 				assert otherStationType.isStation();
 
 				int sumOfRadii = otherStationType.getStationRadius()

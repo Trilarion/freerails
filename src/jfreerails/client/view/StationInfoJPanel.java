@@ -199,7 +199,7 @@ public class StationInfoJPanel extends JPanel implements View,
 					KEY.STATIONS, stationNumber);
 			FreerailsTile tile = (FreerailsTile) w
 					.getTile(station.x, station.y);
-			String stationTypeName = tile.getTrackRule().getTypeName();
+			String stationTypeName = tile.getTrackPiece().getTrackRule().getTypeName();
 			cargoBundleIndex = station.getCargoBundleID();
 			ImmutableCargoBundle cargoWaiting = (ImmutableCargoBundle) w.get(
 					modelRoot
