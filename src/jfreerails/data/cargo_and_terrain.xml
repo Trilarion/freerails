@@ -86,7 +86,7 @@
 
          <Converts input="Grain" output="Food" />
 
-         <Converts input="Export_Goods" output="Export_Goods" />
+         <Converts input="Export_Goods" output="Mfg._Goods" />
 
          <Consumes Cargo="Grain" />
 
