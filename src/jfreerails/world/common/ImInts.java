@@ -61,7 +61,7 @@ public class ImInts implements FreerailsSerializable {
 
 	public ImInts removeLast() {
 		int[] newInts = new int[ints.length - 1];
-		System.arraycopy(ints, 0, ints, 0, newInts.length);
+		System.arraycopy(ints, 0, newInts, 0, newInts.length);
 		return new ImInts(newInts);
 	}
 

@@ -1,3 +1,10 @@
+Dec 5, 2005 Luke
+	Fixed bugs
+	1313227 Remove last wagon doesn't work with more than 2 wagons
+	1313225 Harbour: Conversion makes no sense
+	1341365 Exception when calculating stock price after buying shares
+	1303162 Unexpected Exception in SquareTileBackgroundRenderer
+	
 Sept 21, 2005 Luke
 	Improve exception reporting
 Sept 19, 2005 Luke

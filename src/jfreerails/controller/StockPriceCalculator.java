@@ -142,7 +142,7 @@ public class StockPriceCalculator {
 	}
 	
 	static Money calStockPrice(long netWorth, long profitLastyear, int publicShares, int otherRRShares){
-		if((publicShares + otherRRShares) == 0 ) throw new IllegalStateException();
+		if((publicShares + otherRRShares) == 0 ) return new Money(Long.MAX_VALUE);
 		long price = 2 * (5 * profitLastyear + netWorth) /(2 * publicShares + otherRRShares);
 		return new Money(price);
 	}

@@ -4,6 +4,7 @@
  */
 package jfreerails.world.common;
 
+import jfreerails.util.Utils;
 import junit.framework.TestCase;
 
 public class ImIntsTest extends TestCase {
@@ -21,6 +22,30 @@ public class ImIntsTest extends TestCase {
 		assertFalse(ci.equals(ai));
 		assertEquals(ci, ai.append(b));
 
+	}
+	
+	public void testRemoveLast(){	
+		//Test method does not change original 
+		ImInts original = new ImInts(1,2, 3, 4);
+		ImInts clone = (ImInts) Utils.cloneBySerialisation(original);
+		
+		
+		assertEquals(original, clone);
+		original.removeLast();
+		assertEquals(original, clone);
+		
+		ImInts actual, expected;
+		 actual = (new ImInts( 1, 2, 3)).removeLast();
+		 expected = new ImInts(1,2);
+		assertEquals(expected, actual);
+		
+		actual = (new ImInts( 1, 2)).removeLast();
+		expected = new ImInts(1);
+		assertEquals(expected, actual);
+		
+		actual = (new ImInts( 1, 2, 4, 3)).removeLast();
+		expected = new ImInts(1, 2, 4);
+		assertEquals(expected, actual);
 	}
 	
 	public void testEquals(){

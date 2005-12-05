@@ -15,15 +15,18 @@ import java.awt.Graphics;
  * @author Luke Lindsay 01 November 2001
  * @version 1.0
  */
-final public class SquareTileBackgroundRenderer extends
-		BufferedTiledBackgroundRenderer {
+final public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRenderer {
 	private final MapLayerRenderer mapView;
 
 	protected void paintBufferRectangle(int x, int y, int width, int height) {
-		Graphics gg = bg.create();
-		gg.setClip(x, y, width, height);
-		gg.translate(-bufferRect.x, -bufferRect.y);
-		mapView.paintRect(gg, bufferRect);
+		// Fix for bug [ 1303162 ]
+		// If the buffer hasn't been set yet, don't try and refresh it!
+		if (null != super.backgroundBuffer) {
+			Graphics gg = bg.create();
+			gg.setClip(x, y, width, height);
+			gg.translate(-bufferRect.x, -bufferRect.y);
+			mapView.paintRect(gg, bufferRect);
+		}
 	}
 
 	public SquareTileBackgroundRenderer(MapLayerRenderer mv) {

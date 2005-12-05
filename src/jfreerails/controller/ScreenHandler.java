@@ -46,13 +46,13 @@ final public class ScreenHandler {
 	static GraphicsDevice device = GraphicsEnvironment
 	.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
-	public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
+	public  ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
 		this.displayMode = displayMode;
 		frame = f;
 		this.mode = mode;
 	}
 
-	public ScreenHandler(JFrame f, int mode) {
+	public  ScreenHandler(JFrame f, int mode) {
 		frame = f;
 		this.mode = mode;
 	}
@@ -86,7 +86,7 @@ final public class ScreenHandler {
 		frame.validate();
 	}
 
-	public void apply() {
+	public synchronized void apply() {
 		switch (mode) {
 		case FULL_SCREEN: {
 			goFullScreen(frame, displayMode);
@@ -147,7 +147,9 @@ final public class ScreenHandler {
 				isMinimised = false;
 			}
 		});
+		
 		isInUse = true;
+				
 	}
 
 	private void createBufferStrategy() {
@@ -157,11 +159,11 @@ final public class ScreenHandler {
 		setRepaintOffAndDisableDoubleBuffering(frame);
 	}
 
-	public Graphics getDrawGraphics() {
+	public synchronized Graphics getDrawGraphics() {
 		return bufferStrategy.getDrawGraphics();
 	}
 
-	public void swapScreens() {
+	public synchronized void swapScreens() {
 		if (!bufferStrategy.contentsLost()) {
 			bufferStrategy.show();
 		}
@@ -214,15 +216,15 @@ final public class ScreenHandler {
 			new DisplayMode(1024, 768, 8, 60),
 			new DisplayMode(1024, 768, 16, 60), };
 
-	public boolean isMinimised() {
+	public synchronized boolean isMinimised() {
 		return isMinimised;
 	}
 
-	public boolean isInUse() {
+	public synchronized boolean isInUse() {
 		return isInUse;
 	}
 	
-	public static void exitFullScreenMode(){
+	public synchronized static void exitFullScreenMode(){
 		device.setFullScreenWindow(null);
 	}
 }
