@@ -1,42 +1,10 @@
 Freerails Java - build @version@
 
 Bugs Fixed:
-1297824	java.lang.IllegalStateException 
-1295855	Can buy stock when can't afford to
-1289008	Stock price never changes
-1289012	No limits on issuing/repaying bonds
-1289010	Networth on broker screen is wrong
-1289014	Can buy 100% of treasury stock
-1266577	Broker screen layout
-1269664	Can't tell other player has my stock 
-1266575	Stock holder equity not shown properly on the balance sheet.
-1269676	Stacktraces often lost
-1269679	Train Info doesn't update
-1266581	Underscores in map names
-1223231	"waiting" message on launcher unclear
-1266582	Progress bar
-1266584	Can't select which saved game on launcher
-1269683	Load game when no saved games.
-1269688	Load game in full screen
-1269689	Load game across network
-1266695	Unexpected exception during network game
-1266637	OutOfMemoryError
-1223228	NotSerializableException when saving game with trains
-1223230	Incorrect station price on popup
-1110270	Reproducible Crash Bug
-1105499	Word wrapping in Html components
-1105494	Load game with wrong player
-1105488	Attempting to join game in progress	
 
 Features implemented:
 
-1223234 Add show FTP to 'Display' menu.
-1223235 Save launcher input
-1266591 Store launcher settings
-927154 	Add more info to train list
-1007703 Ability to pay off loan
-927156 	Add stock and bond market
-948662 	Name for Saved Games
+
 	
 
 There are 3 ways of getting jfreerails.
