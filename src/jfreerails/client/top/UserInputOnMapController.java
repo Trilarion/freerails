@@ -1,7 +1,8 @@
 package jfreerails.client.top;
 
 import static jfreerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
-import static jfreerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
+import static jfreerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -26,6 +27,7 @@ import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.ModelRoot.Property;
+import jfreerails.controller.TrackMoveProducer.BuildMode;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
@@ -113,11 +115,15 @@ public class UserInputOnMapController extends KeyAdapter {
 
 		@Override
 		public void mouseDragged(MouseEvent evt) {
+			BuildMode trackBuilderMode = trackBuilder.getTrackBuilderMode();
 			/*
 			 * Fix for bug [ 972866 ] Build track by dragging - only when build
 			 * track selected
+			 * Fix for bug [1537413 ] Exception when building station.
 			 */
-			boolean trackBuildingOn = trackBuilder.getTrackBuilderMode() != IGNORE_TRACK;
+			boolean trackBuildingOn = (trackBuilderMode == BUILD_TRACK)
+					|| (trackBuilderMode == REMOVE_TRACK)
+					|| (trackBuilderMode == UPGRADE_TRACK);
 			trackBuildingOn = trackBuildingOn
 					&& (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 			if (SwingUtilities.isLeftMouseButton(evt) && pressedInside

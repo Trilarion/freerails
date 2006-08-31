@@ -1,3 +1,6 @@
+Aug 31, 2006 Luke
+	Fixed bugs
+	1537413 Exception when building station.
 Jul 24, 2006 Luke
 	Fixed bug where list of saved games didn't get updated when files were added, 
 	removed, or renamed.
