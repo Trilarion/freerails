@@ -155,6 +155,7 @@ public class TrackTilesGenerator extends JPanel {
 		return new Dimension(width, height);
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 

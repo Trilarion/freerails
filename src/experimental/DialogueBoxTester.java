@@ -8,8 +8,8 @@ import javax.swing.Action;
 
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
-import jfreerails.client.renderer.ViewLists;
-import jfreerails.client.top.ViewListsImpl;
+import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.client.top.RenderersRootImpl;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
 import jfreerails.client.view.DialogueBoxController;
@@ -27,7 +27,7 @@ import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
-import jfreerails.world.station.DemandAtStation;
+import jfreerails.world.station.Demand4Cargo;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.SKEY;
@@ -57,7 +57,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
     private World w;
 
-    private ViewLists vl;
+    private RenderersRoot vl;
 
     private ModelRootImpl modelRoot;
 
@@ -90,7 +90,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         wetf.addTypesToWorld(w);
         w.addPlayer(TEST_PLAYER);
         try {
-            vl = new ViewListsImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
+            vl = new RenderersRootImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,7 +111,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             demandArray[i] = true;
         }
 
-        DemandAtStation demand = new DemandAtStation(demandArray);
+        Demand4Cargo demand = new Demand4Cargo(demandArray);
         bristol = new StationModel(bristol, demand);
         w.add(TEST_PRINCIPAL, KEY.STATIONS, bristol);
         w.add(TEST_PRINCIPAL, KEY.STATIONS, new StationModel(50, 100, "Bath",
@@ -194,12 +194,14 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         showNetworthGraph = new javax.swing.JMenuItem();
 
         addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+            @Override
+			public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            @Override
+			public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
             }
         });

@@ -21,6 +21,7 @@ public class AnimationExpt extends JComponent {
 
 	private static final long serialVersionUID = 3690191057862473264L;
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 

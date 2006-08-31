@@ -67,6 +67,7 @@ public class TrainMotionExpt extends JComponent {
 
 	private long startTime;
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 

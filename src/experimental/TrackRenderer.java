@@ -157,7 +157,7 @@ public class TrackRenderer {
 			// Draw sleepers
 			g.setColor(sleepersColor);
 			for (CubicCurve2D.Double section : sections) {
-				BasicStroke dashed = dashed = getStroke4Curve(section);
+				BasicStroke dashed = getStroke4Curve(section);
 				g.setStroke(dashed);
 				g.draw(section);
 			}
