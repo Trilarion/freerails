@@ -2,9 +2,12 @@ Freerails Java - build @version@
 
 Bugs Fixed:
 
-Features implemented:
-
-
+Fixed bugs
+	1537413 Exception when building station.
+	1384250 Wait until full slows frame rate.
+	1384249 Unexpected Exception when removing last wagon.
+	xxxxxxx	list of saved games doesn't get updated when files are added, 
+	removed, or renamed.	
 	
 
 There are 3 ways of getting jfreerails.
