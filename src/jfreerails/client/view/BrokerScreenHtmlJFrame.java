@@ -13,7 +13,7 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.FinancialDataGatherer;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.StockPriceCalculator;
@@ -85,7 +85,8 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		}
 	};
 	
-	public void setup(final ModelRoot modelRoot, ViewLists vl,
+	@Override
+	public void setup(final ModelRoot modelRoot, RenderersRoot vl,
 			Action closeAction) {
 		super.setup(modelRoot, vl, closeAction);
 		financialDataGatherer = new FinancialDataGatherer(modelRoot.getWorld(),
@@ -225,6 +226,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 		enableAndDisableActions();		
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		/* Check to see if the text needs updating before painting. */
 		ReadOnlyWorld world = modelRoot.getWorld();

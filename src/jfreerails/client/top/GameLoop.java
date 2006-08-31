@@ -18,8 +18,7 @@ import jfreerails.util.GameModel;
  */
 final public class GameLoop implements Runnable {
 
-	private static final Logger logger = Logger.getLogger(GameLoop.class
-			.getName());
+	private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
 
 	private final static boolean LIMIT_FRAME_RATE = false;
 
@@ -53,15 +52,16 @@ final public class GameLoop implements Runnable {
 
 	public void run() {
 		try {
+			
 			SynchronizedEventQueue.use();
+			RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
+			RepaintManagerForActiveRendering.setAsCurrentManager();
 
 			if (!screenHandler.isInUse()) {
 				screenHandler.apply();
 			}
-
+			
 			gameNotDone = true;
-			RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
-			RepaintManagerForActiveRendering.setAsCurrentManager();
 
 			fPScounter = new FPScounter();
 
@@ -136,8 +136,7 @@ final public class GameLoop implements Runnable {
 						// do nothing.
 					}
 				} else if (LIMIT_FRAME_RATE) {
-					long deltatime = System.currentTimeMillis()
-							- frameStartTime;
+					long deltatime = System.currentTimeMillis() - frameStartTime;
 
 					while (deltatime < (1000 / TARGET_FPS)) {
 						try {

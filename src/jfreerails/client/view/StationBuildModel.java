@@ -12,9 +12,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.renderer.TrackPieceRenderer;
-import jfreerails.client.renderer.TrackPieceRendererList;
-import jfreerails.client.renderer.ViewLists;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.StationBuilder;
 import jfreerails.move.MoveStatus;
@@ -67,12 +66,10 @@ public class StationBuildModel {
 
 	private final HashMap<Integer, Action> id2Action = new HashMap<Integer, Action>();
 
-	public StationBuildModel(StationBuilder sb, ViewLists vl, ModelRoot mr) {
+	public StationBuildModel(StationBuilder sb, RenderersRoot rr, ModelRoot mr) {
 		stationBuilder = sb;
 		modelRoot = mr;
-
-		TrackPieceRendererList trackPieceRendererList = vl
-				.getTrackPieceViewList();
+	
 
 		ReadOnlyWorld world = modelRoot.getWorld();
 		for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
@@ -80,8 +77,7 @@ public class StationBuildModel {
 					SKEY.TRACK_RULES, i);
 
 			if (trackRule.isStation()) {
-				TrackPieceRenderer renderer = trackPieceRendererList
-						.getTrackPieceView(i);
+				TrackPieceRenderer renderer = rr.getTrackPieceView(i);
 				StationChooseAction action = new StationChooseAction(i);
 				String trackType = trackRule.getTypeName();
 				Money price = trackRule.getFixedCost();				

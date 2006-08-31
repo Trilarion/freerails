@@ -20,10 +20,10 @@ import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
-import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.MapRenderer;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.ImPoint;
 
@@ -115,6 +115,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 		 */
 		private Point tiledelta = new Point();
 
+		@Override
 		public void mousePressed(MouseEvent evt) {
 			/*
 			 * Note, moving the cursor using the mouse is now handled in
@@ -136,11 +137,13 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 			}
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent evt) {
 			MapViewJComponentConcrete.this.setCursor(Cursor
 					.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent evt) {
 			if (SwingUtilities.isRightMouseButton(evt)) {
 				sigmadelta.x += evt.getX() - lastMouseLocation.x;
@@ -194,6 +197,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 		}
 	}
 
+	@Override
 	protected void paintComponent(java.awt.Graphics g) {
 		super.paintComponent(g);
 
@@ -234,13 +238,13 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 		this.addMouseMotionListener(mva);
 	}
 
-	public void setup(MapRenderer mv, ModelRootImpl mr, ImageManager im)
+	public void setup(MapRenderer mv, ModelRootImpl mr, RenderersRoot rr)
 			throws IOException {
 		super.setMapView(mv);
 
 		this.setBorder(null);
 
-		this.mapCursor = new FreerailsCursor(mr, im);
+		this.mapCursor = new FreerailsCursor(mr, rr);
 
 		mr.addPropertyChangeListener(this);
 

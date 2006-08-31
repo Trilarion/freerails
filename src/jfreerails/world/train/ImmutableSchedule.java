@@ -21,6 +21,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 
 	private final int nextScheduledOrder;
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = nextScheduledOrder;
@@ -85,6 +86,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 		return false;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof ImmutableSchedule) {
 			ImmutableSchedule test = (ImmutableSchedule) o;

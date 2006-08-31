@@ -15,7 +15,8 @@ import jfreerails.world.terrain.TerrainTile;
  */
 public class FreerailsTile implements TerrainTile,
 		FreerailsSerializable {
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -27,7 +28,8 @@ public class FreerailsTile implements TerrainTile,
         return true;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         int result;
         result = (trackPiece != null ? trackPiece.hashCode() : 0);
         result = 29 * result + terrainType;
@@ -90,6 +92,7 @@ public class FreerailsTile implements TerrainTile,
         return terrainType;
     }
 
+	@Override
 	public String toString() {
 		return "trackPiece=" + trackPiece.toString() + " and terrainType is "
 				+ terrainType;

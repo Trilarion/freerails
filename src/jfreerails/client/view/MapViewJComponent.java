@@ -32,6 +32,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
 		return getMapView().getScale();
 	}
 
+	@Override
 	protected void paintComponent(java.awt.Graphics g) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 		java.awt.Rectangle r = this.getVisibleRect();
@@ -100,6 +101,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
 		return getMapView().getMapSizeInPixels();
 	}
 
+	@Override
 	public Dimension getPreferredSize() {
 		return getMapSizeInPixels();
 	}

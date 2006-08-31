@@ -18,6 +18,7 @@ import java.awt.Graphics;
 final public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRenderer {
 	private final MapLayerRenderer mapView;
 
+	@Override
 	protected void paintBufferRectangle(int x, int y, int width, int height) {
 		// Fix for bug [ 1303162 ]
 		// If the buffer hasn't been set yet, don't try and refresh it!

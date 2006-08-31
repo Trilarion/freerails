@@ -113,6 +113,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
 				buildActionListener);
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		int button = e.getButton();
 
@@ -127,14 +128,17 @@ public class StationPlacementCursor extends MouseInputAdapter {
 		}
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 		stationRadiusRenderer.show();
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 		stationRadiusRenderer.hide();
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (stationBuildModel.isPositionFollowsMouse()) {
 			Point p = e.getPoint();

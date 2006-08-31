@@ -55,6 +55,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
 		throw new IllegalArgumentException(category);
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		w = new WorldImpl();
 		w.addPlayer(MapFixtureFactory.TEST_PLAYER);

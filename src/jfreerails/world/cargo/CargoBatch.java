@@ -50,6 +50,7 @@ public class CargoBatch implements FreerailsSerializable,
 		return timeCreated;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof CargoBatch) {
 			CargoBatch test = (CargoBatch) o;
@@ -66,6 +67,7 @@ public class CargoBatch implements FreerailsSerializable,
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 17;
 		result = 37 * result + this.cargoType;

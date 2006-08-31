@@ -39,6 +39,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 				.getTrackPiece());
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -59,6 +60,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = x;

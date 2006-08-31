@@ -36,6 +36,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
 	private SavedGamesManager4UnitTests savedGamesManager;
 
+	@Override
 	protected void setUp() throws Exception {
 		savedGamesManager = new SavedGamesManager4UnitTests();
 		server = new FreerailsGameServer(savedGamesManager);

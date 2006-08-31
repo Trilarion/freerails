@@ -12,7 +12,7 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.view.View;
 import jfreerails.controller.ModelRoot;
 import jfreerails.move.AddTransactionMove;
@@ -45,7 +45,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
 		cursorLocation.y = p.y;
 	}
 
-	public void setup(final ModelRoot modelRoot, ViewLists vl,
+	public void setup(final ModelRoot modelRoot, RenderersRoot vl,
 			Action closeAction) {
 		this.removeAll();
 
@@ -70,8 +70,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
 								1, price.changeSign());
 						Move m2 = new AddTransactionMove(modelRoot
 								.getPrincipal(), t);
-						CompositeMove m3 = new CompositeMove(new Move[] { m1,
-								m2 });
+						CompositeMove m3 = new CompositeMove(m1, m2);
 						MoveStatus ms = modelRoot.doMove(m3);
 
 						if (!ms.ok) {

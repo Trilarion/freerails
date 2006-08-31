@@ -38,6 +38,7 @@ public class WagonType implements FreerailsSerializable {
 		typeCategory = category;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof WagonType))
 			return false;
@@ -54,6 +55,7 @@ public class WagonType implements FreerailsSerializable {
 		return typeName;
 	}
 
+	@Override
 	public int hashCode() {
 
 		int result;
@@ -64,6 +66,7 @@ public class WagonType implements FreerailsSerializable {
 
 	}
 
+	@Override
 	public String toString() {
 		return typeName;
 	}

@@ -25,6 +25,7 @@ public class SupplyAtStation implements FreerailsSerializable {
 		return supply.get(cargoType);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -39,6 +40,7 @@ public class SupplyAtStation implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		return supply.hashCode();
 	}

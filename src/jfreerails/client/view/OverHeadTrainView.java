@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import jfreerails.client.common.Painter;
 import jfreerails.client.common.SoundManager;
 import jfreerails.client.renderer.TrainRenderer;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrainAccessor;
 import jfreerails.controller.ModelRoot.Property;
@@ -31,9 +31,9 @@ public class OverHeadTrainView implements Painter {
 	
 	private ModelRoot mr;
 
-	public OverHeadTrainView(ReadOnlyWorld world, ViewLists vl, ModelRoot mr) {
+	public OverHeadTrainView(ReadOnlyWorld world, RenderersRoot rr, ModelRoot mr) {
 		this.w = world;
-		trainPainter = new TrainRenderer(vl.getTrainImages());
+		trainPainter = new TrainRenderer(rr);
 		this.mr = mr;
 	}
 

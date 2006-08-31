@@ -22,9 +22,10 @@ public class TrainOrdersModel implements FreerailsSerializable {
 
 	public final boolean autoConsist;
 
-	public final ImInts consist; // The wagon types to add; if null, then no
+	/**  The wagon types to add; if null, then no  change.*/
+	public final ImInts consist; 
 
-	// change.
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -46,6 +47,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (waitUntilFull ? 1 : 0);

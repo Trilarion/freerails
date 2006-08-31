@@ -24,11 +24,14 @@ import javax.swing.JLayeredPane;
 
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.controller.CopyableTextJPanel;
+import jfreerails.controller.Message2Server;
 import jfreerails.controller.ReportBugTextGenerator;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
+import jfreerails.network.RefreshListOfGamesMessage2Server;
 import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.PlannedTrain;
@@ -40,7 +43,6 @@ import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackRule;
-import jfreerails.controller.CopyableTextJPanel;
 
 /**
  * This class is responsible for displaying dialogue boxes, adding borders to
@@ -86,7 +88,7 @@ public class DialogueBoxController implements WorldListListener {
     
     private ModelRootImpl modelRoot;
     
-    private ViewLists vl;
+    private RenderersRoot vl;
     
     private Component defaultFocusOwner = null;
     
@@ -160,7 +162,8 @@ public class DialogueBoxController implements WorldListListener {
         // We need to resize the glass panel when its parent resizes.
         frame.getLayeredPane().addComponentListener(
                 new java.awt.event.ComponentAdapter() {
-            public void componentResized(
+            @Override
+			public void componentResized(
                     java.awt.event.ComponentEvent evt) {
                 glassPanel.setSize(glassPanel.getParent().getSize());
                 glassPanel.revalidate();
@@ -200,7 +203,7 @@ public class DialogueBoxController implements WorldListListener {
      * starting several new games). </b>
      * </p>
      */
-    public void setup(ModelRootImpl mr, ViewLists vl) {
+    public void setup(ModelRootImpl mr, RenderersRoot vl) {
         this.modelRoot = mr;
         this.vl = vl;
         modelRoot.addListListener(this); // When a new train gets built, we
@@ -258,6 +261,8 @@ public class DialogueBoxController implements WorldListListener {
     }
     
     public void showSelectSavedGame2Load(){
+    	Message2Server refreshGames = new RefreshListOfGamesMessage2Server(2);    	     
+        modelRoot.sendCommand(refreshGames);
         LoadGameJPanel  loadGameJPane = new LoadGameJPanel();
         loadGameJPane.setup(modelRoot, vl, this.closeCurrentDialogue);
         showContent(loadGameJPane);

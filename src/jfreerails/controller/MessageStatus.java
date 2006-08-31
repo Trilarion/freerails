@@ -19,6 +19,7 @@ public class MessageStatus implements FreerailsSerializable {
 
 	private final int id;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -38,6 +39,7 @@ public class MessageStatus implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = id;

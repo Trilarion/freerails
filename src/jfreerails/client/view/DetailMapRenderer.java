@@ -14,7 +14,7 @@ import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.SquareTileBackgroundRenderer;
 import jfreerails.client.renderer.StationBoxRenderer;
 import jfreerails.client.renderer.StationRadiusRenderer;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -41,11 +41,11 @@ public class DetailMapRenderer implements MapRenderer {
 
 	private final Painter stationBoxes;
 
-	public DetailMapRenderer(ReadOnlyWorld world, ViewLists vl,
+	public DetailMapRenderer(ReadOnlyWorld world, RenderersRoot rr,
 			ModelRoot modelRoot) {
-		trainsview = new OverHeadTrainView(world, vl, modelRoot);
+		trainsview = new OverHeadTrainView(world, rr, modelRoot);
 
-		MapBackgroundRender render = new MapBackgroundRender(world, vl,
+		MapBackgroundRender render = new MapBackgroundRender(world, rr,
 				modelRoot);
 
 		if (OSXWorkaround) {
@@ -59,10 +59,10 @@ public class DetailMapRenderer implements MapRenderer {
 				.getMapHeight());
 		mapSizeInPixels = new Dimension(mapSize.width * 30, mapSize.height * 30);
 		stationRadius = new StationRadiusRenderer(modelRoot);
-		buildTrackRenderer = new BuildTrackRenderer(vl.getTrackPieceViewList(),
+		buildTrackRenderer = new BuildTrackRenderer(rr,
 				modelRoot);
 		buildTrackController = new BuildTrackController(world, modelRoot);
-		stationBoxes = new StationBoxRenderer(world, vl, modelRoot);
+		stationBoxes = new StationBoxRenderer(world, rr, modelRoot);
 	}
 
 	public StationRadiusRenderer getStationRadius() {

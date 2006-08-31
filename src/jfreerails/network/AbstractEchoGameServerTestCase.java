@@ -18,6 +18,7 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
 
 	final String ipAddress = "127.0.0.1";
 
+	@Override
 	protected synchronized void setUp() throws Exception {
 		echoGameServer = EchoGameServer.startServer();
 
@@ -34,6 +35,7 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
 		serverThread.start();
 	}
 
+	@Override
 	protected synchronized void tearDown() throws Exception {
 		server.stop();
 	}

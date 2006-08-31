@@ -28,6 +28,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
 	private int[] wagons;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
@@ -46,6 +47,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 				engineType, wagons));
 	}
 
+	@Override
 	public void testMove() {
 		before = new ImList<PlannedTrain>();
 

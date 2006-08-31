@@ -20,6 +20,7 @@ public class LogOnResponse implements FreerailsSerializable {
 
 	private final String message;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -39,6 +40,7 @@ public class LogOnResponse implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (successful ? 1 : 0);

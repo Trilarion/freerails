@@ -36,6 +36,7 @@ public class BuildTrackControllerTest extends TestCase {
 
 	int doubleTrackRuleID = -1;
 
+	@Override
 	protected void setUp() throws Exception {
 		w = MapFixtureFactory2.getCopy();
 		modelRoot = new ModelRootImpl();

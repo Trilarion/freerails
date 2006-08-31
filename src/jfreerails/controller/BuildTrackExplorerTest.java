@@ -35,6 +35,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
 	private FreerailsPrincipal principle;
 
+	@Override
 	protected void setUp() throws Exception {
 		world = new WorldImpl(20, 20);
 		world.addPlayer(testPlayer);

@@ -29,6 +29,7 @@ public class CityModel implements FreerailsSerializable {
 		y = yy;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -47,6 +48,7 @@ public class CityModel implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = name.hashCode();

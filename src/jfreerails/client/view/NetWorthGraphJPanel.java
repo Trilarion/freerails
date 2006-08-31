@@ -19,7 +19,7 @@ import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.NetWorthCalculator;
 import jfreerails.world.common.GameCalendar;
@@ -192,6 +192,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 		this.add(yAxisLabel3, null);
 		this.add(yAxisLabel2, null);
 		this.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (null == submitButtonCallBack) {
 					System.err.println("mouseClicked");
@@ -205,6 +206,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -359,7 +361,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 		return "$" + String.valueOf(value) + abv;
 	}
 
-	public void setup(ModelRoot modelRoot, ViewLists vl,
+	public void setup(ModelRoot modelRoot, RenderersRoot vl,
 			Action closeAction) {
 		this.submitButtonCallBack = closeAction;
 		ReadOnlyWorld world = modelRoot.getWorld();

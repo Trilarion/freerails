@@ -18,6 +18,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author Luke Lindsay
  */
 final public class ChequeredTileRenderer extends AbstractTileRenderer {
+	@Override
 	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
 		return (x + y) % 2;
 	}
@@ -32,6 +33,7 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
 				.getImage(generateRelativeFileName(1));
 	}
 
+	@Override
 	public void dumpImages(ImageManager imageManager) {
 		for (int i = 0; i < this.getTileIcons().length; i++) {
 			String fileName = generateRelativeFileName(i);
@@ -39,6 +41,7 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
 		}
 	}
 
+	@Override
 	protected String generateFileNameNumber(int i) {
 		return String.valueOf(i);
 	}

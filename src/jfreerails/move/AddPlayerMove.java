@@ -23,6 +23,7 @@ public class AddPlayerMove implements Move, ServerMove {
 		player2add = p;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -37,6 +38,7 @@ public class AddPlayerMove implements Move, ServerMove {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		return player2add.hashCode();
 	}

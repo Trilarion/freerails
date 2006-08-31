@@ -253,7 +253,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 					GameModel[] models = new GameModel[] { client, server };
 					ScreenHandler screenHandler = client.getScreenHandler();
 					GameLoop gameLoop = new GameLoop(screenHandler, models);
-					screenHandler.apply();
+					//screenHandler.apply();
 
 					gameLoop.run();
 				}
@@ -283,9 +283,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                 }                
                 GameModel[] models = new GameModel[] { guiClient };
                 ScreenHandler screenHandler = guiClient.getScreenHandler();
-                GameLoop gameLoop = new GameLoop(screenHandler, models);
-                screenHandler.apply();
-                
+                GameLoop gameLoop = new GameLoop(screenHandler, models);                                
                 gameLoop.run();
             }
             
@@ -350,6 +348,8 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
      * Runs the game.
      */
     public static void main(String args[]) {
+    	
+    	//SynchronizedEventQueue.use();
         
         // Let the user know if we are using a custom logging config.
         String loggingProperties = System
@@ -446,7 +446,8 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         
         setTitle("Freerails Launcher");
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            @Override
+			public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
             }
         });

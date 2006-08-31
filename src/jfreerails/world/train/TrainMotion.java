@@ -51,7 +51,7 @@ strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {
 
 	private final int trainLength;
 	
-	private final SpeedTimeAndStatus.Activity activity;
+	private final SpeedTimeAndStatus.TrainActivity activity;
 
 	/**
 	 * Creates a new TrainMotion instance.
@@ -108,7 +108,7 @@ strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {
 			duration = tempDuration;
 		}
 		
-		activity = SpeedTimeAndStatus.Activity.READY;					
+		activity = SpeedTimeAndStatus.TrainActivity.READY;					
 		sanityCheck();					
 	}
 
@@ -122,7 +122,7 @@ strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {
 			throw new IllegalStateException(offset +" + "+ trainLengthDouble+" > " +totalLength);			
 	}
 
-	public TrainMotion(PathOnTiles path,  int trainLength, double duration, SpeedTimeAndStatus.Activity act){
+	public TrainMotion(PathOnTiles path,  int trainLength, double duration, SpeedTimeAndStatus.TrainActivity act){
 		this.path = path;
 		this.trainLength = trainLength;
 		this.activity = act;
@@ -147,6 +147,7 @@ strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {
 		return duration;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -274,6 +275,7 @@ strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {
 		return trainLength;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = path.hashCode();
@@ -286,7 +288,7 @@ strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {
 		return path;
 	}
 
-	public SpeedTimeAndStatus.Activity getActivity() {
+	public SpeedTimeAndStatus.TrainActivity getActivity() {
 		return activity;
 	}
 

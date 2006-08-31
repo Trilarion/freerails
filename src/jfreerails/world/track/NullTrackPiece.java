@@ -43,10 +43,12 @@ final public class NullTrackPiece implements TrackPiece {
 		return nullTrackPiece;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		return o == this;
 	}
 
+	@Override
 	public int hashCode() {
 		return 777;
 	}

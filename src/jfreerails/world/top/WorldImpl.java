@@ -43,6 +43,7 @@ public class WorldImpl implements World {
 			startTime = time;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -59,6 +60,7 @@ public class WorldImpl implements World {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			int result;
 			result = act.hashCode();
@@ -204,6 +206,7 @@ public class WorldImpl implements World {
 		return (World) Utils.cloneBySerialisation(this);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof WorldImpl) {
 			WorldImpl test = (WorldImpl) o;
@@ -387,6 +390,7 @@ public class WorldImpl implements World {
 		return tats.getTimeStamp();
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = players.size();

@@ -46,6 +46,7 @@ public class ConvertedAtStation implements FreerailsSerializable {
 		return convertedTo.get(cargoNumber);
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 0;
 
@@ -56,6 +57,7 @@ public class ConvertedAtStation implements FreerailsSerializable {
 		return result;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof ConvertedAtStation) {
 			ConvertedAtStation test = (ConvertedAtStation) o;

@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import javax.swing.Action;
 import javax.swing.JLabel;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -32,12 +32,13 @@ public class CashJLabel extends JLabel implements View {
 		this.setText("          ");
 	}
 
-	public void setup(ModelRoot model, ViewLists vl,
+	public void setup(ModelRoot model, RenderersRoot vl,
 			Action closeAction) {
 		this.w = model.getWorld();
 		principal = model.getPrincipal();
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		if (null != w) {
 			Money m = w.getCurrentBalance(principal);

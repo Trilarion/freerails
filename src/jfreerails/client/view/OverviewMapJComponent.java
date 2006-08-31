@@ -38,6 +38,7 @@ public class OverviewMapJComponent extends JPanel {
 		}
 	}
 
+	@Override
 	protected void paintComponent(java.awt.Graphics g) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 		java.awt.Rectangle r = this.getVisibleRect();
@@ -47,6 +48,7 @@ public class OverviewMapJComponent extends JPanel {
 				mainMapVisRect.height);
 	}
 
+	@Override
 	public Dimension getPreferredSize() {
 		return mapView.getMapSizeInPixels();
 	}

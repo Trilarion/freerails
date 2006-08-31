@@ -46,6 +46,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 	 * Returns true if the transaction with the specified ID has an acceptable
 	 * type and category.
 	 */
+	@Override
 	protected boolean condition(int transactionID) {
 		Transaction t = w.getTransaction(principal, transactionID);
 
@@ -76,6 +77,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 		return returnValue;
 	}
 
+	@Override
 	protected void incrementRunningTotal(int transactionID) {
 		super.incrementRunningTotal(transactionID);
 
@@ -84,12 +86,14 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 		quantityRunningTotal += addItemTransaction.getQuantity();
 	}
 
+	@Override
 	protected void setTotalsArrayLength(int length) {
 		super.setTotalsArrayLength(length);
 		quantities = new int[length];
 		quantityRunningTotal = 0;
 	}
 
+	@Override
 	protected void storeRunningTotal(int timeIndex) {
 		/*
 		 * Note, a negative sign since we are totalling the value of assets not

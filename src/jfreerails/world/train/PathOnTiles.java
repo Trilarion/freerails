@@ -65,6 +65,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
 		this.start = start;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -177,6 +178,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
 		throw new IllegalArgumentException("distance > getLength()");
 	}
 
+	@Override
 	public int hashCode() {
 		return start.hashCode();
 	}

@@ -18,6 +18,7 @@ import jfreerails.world.top.MapFixtureFactory;
  * 
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
+	@Override
 	public void testMove() {
 		Money currentBalance = getWorld().getCurrentBalance(
 				MapFixtureFactory.TEST_PRINCIPAL);

@@ -13,7 +13,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.Action;
 import javax.swing.JPanel;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
@@ -164,7 +164,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
 	} // GEN-LAST:event_nextStationActionPerformed
 
-	public void setup(ModelRoot mr, ViewLists vl, Action al) {
+	public void setup(ModelRoot mr, RenderersRoot vl, Action al) {
 		this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr
 				.getPrincipal());
 		addComponentListener(componentListener);
@@ -245,10 +245,12 @@ public class StationInfoJPanel extends JPanel implements View,
 	}
 
 	private final ComponentAdapter componentListener = new ComponentAdapter() {
+		@Override
 		public void componentHidden(ComponentEvent e) {
 
 		}
 
+		@Override
 		public void componentShown(ComponentEvent e) {
 
 			int i = wi.getIndex();
@@ -262,6 +264,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
 	private FreerailsSerializable lastCargoBundle = null;
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		/* We need to update if the cargo bundle has changed. */
 		FreerailsPrincipal playerPrincipal = this.modelRoot.getPrincipal();

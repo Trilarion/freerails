@@ -16,10 +16,10 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public enum Activity {
+	public enum TrainActivity {
 		STOPPED_AT_STATION, READY, WAITING_FOR_FULL_LOAD, STOPPED_AT_SIGNAL, CRASHED, NEEDS_UPDATING
 	}
-
+	
     public final double dt;
 
 	public final double speed;
@@ -28,6 +28,7 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
 
 	public final double s;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -51,6 +52,7 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		long temp;
@@ -67,9 +69,9 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
 		return result;
 	}
 
-	private final Activity activity;
+	private final TrainActivity activity;
 
-	SpeedTimeAndStatus(double acceleration, Activity activity, double dt,
+	SpeedTimeAndStatus(double acceleration, TrainActivity activity, double dt,
 			double s, double speed) {
 		if (dt < 0)
 			throw new IllegalArgumentException(String.valueOf(dt));
@@ -80,7 +82,7 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
 		this.speed = speed;
 	}
 
-	public Activity getActivity() {
+	public TrainActivity getActivity() {
 		return activity;
 	}
 

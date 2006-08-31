@@ -42,6 +42,7 @@ public class SetWorldMessage2Client implements Message2Client {
 		return id;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -58,6 +59,7 @@ public class SetWorldMessage2Client implements Message2Client {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = id;

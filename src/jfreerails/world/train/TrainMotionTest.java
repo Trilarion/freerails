@@ -16,7 +16,7 @@ public class TrainMotionTest extends TestCase {
 	/*
 	 	
 this= TrainMotion  (id=49)
-	activity= SpeedTimeAndStatus$Activity  (id=107)
+	activity= SpeedTimeAndStatus$TrainActivity  (id=107)
 		name= "READY"
 		ordinal= 1
 	distanceEngineWillTravel= 30.0

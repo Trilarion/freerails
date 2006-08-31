@@ -28,7 +28,7 @@ import javax.swing.JToggleButton;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
@@ -65,7 +65,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 		initComponents();
 	}
 
-	public void setup(ModelRoot mr, ActionRoot ar, ViewLists vl,
+	public void setup(ModelRoot mr, ActionRoot ar, RenderersRoot vl,
 			ActionListener al) {
 
 		modelRoot = mr;
@@ -298,10 +298,12 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
 		setFocusable(false);
 		addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				formKeyPressed(evt);
 			}
 
+			@Override
 			public void keyTyped(java.awt.event.KeyEvent evt) {
 				formKeyTyped(evt);
 			}

@@ -38,6 +38,7 @@ public class AddActiveEntityMove implements Move {
 		this.principal = principal;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -57,6 +58,7 @@ public class AddActiveEntityMove implements Move {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = activity.hashCode();

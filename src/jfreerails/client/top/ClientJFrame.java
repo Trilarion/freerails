@@ -56,6 +56,7 @@ public class ClientJFrame extends javax.swing.JFrame {
 		getContentPane().setLayout(new java.awt.GridBagLayout());
 
 		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				exitForm(evt);
 			}

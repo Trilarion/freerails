@@ -33,7 +33,7 @@ public class ServerGameModelImpl implements ServerGameModel {
 
 	private transient CalcSupplyAtStations calcSupplyAtStations;
 
-	private TrainBuilder tb;
+	private TrainUpdater tb;
 	
 
 	private String[] passwords;
@@ -190,7 +190,7 @@ public class ServerGameModelImpl implements ServerGameModel {
 
 	public void init(MoveReceiver newMoveExecuter) {
 		this.moveExecuter = newMoveExecuter;
-		tb = new TrainBuilder(newMoveExecuter);
+		tb = new TrainUpdater(newMoveExecuter);
 		calcSupplyAtStations = new CalcSupplyAtStations(world, newMoveExecuter);
 
 		for (int i = 0; i < serverAutomata.size(); i++) {

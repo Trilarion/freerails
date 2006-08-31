@@ -43,6 +43,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 		legalConfigs = new ImHashSet<TrackConfiguration>(temp);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof LegalTrackConfigurations) {
 			LegalTrackConfigurations test = (LegalTrackConfigurations) o;
@@ -65,6 +66,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 		return maximumConsecutivePieces;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = maximumConsecutivePieces;

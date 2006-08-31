@@ -20,16 +20,19 @@ public class MyDisplayMode {
 		this.displayMode = displayMode;
 	}
 
+	@Override
 	public String toString() {
 		return displayMode.getWidth() + "x" + displayMode.getHeight() + " "
 				+ displayMode.getBitDepth() + " bit "
 				+ displayMode.getRefreshRate() + "Hz";
 	}
 
+	@Override
 	public int hashCode() {
 		return displayMode.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof MyDisplayMode) {
 			MyDisplayMode test = (MyDisplayMode) o;

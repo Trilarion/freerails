@@ -30,6 +30,7 @@ public class RemoveItemFromListMove implements ListMove {
 		return index;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (item != null ? item.hashCode() : 0);
@@ -111,6 +112,7 @@ public class RemoveItemFromListMove implements ListMove {
 		return ms;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof RemoveItemFromListMove) {
 			RemoveItemFromListMove test = (RemoveItemFromListMove) o;

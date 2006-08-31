@@ -223,6 +223,7 @@ public abstract class ArrayBase extends GrowableBase {
 	 *            number of characters to use
 	 * @return array containing a copy of the data
 	 */
+	@Override
 	protected Object buildArray(Class type, int offset, int length) {
 		if (offset + length <= countPresent) {
 			return super.buildArray(type, offset, length);

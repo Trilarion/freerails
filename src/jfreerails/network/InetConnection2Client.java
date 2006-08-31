@@ -30,6 +30,7 @@ public class InetConnection2Client extends AbstractInetConnection implements
 		send(object);
 	}
 
+	@Override
 	String getThreadName() {
 		return "InetConnection2Client";
 	}

@@ -49,6 +49,7 @@ public class FlowRateOutputStream extends FilterOutputStream implements
 		this(out, "FlowRateOutputStream", 60, 1000);
 	}
 
+	@Override
 	public void close() throws IOException {
 		closeRequested = true;
 		super.close();
@@ -70,16 +71,19 @@ public class FlowRateOutputStream extends FilterOutputStream implements
 						overallRateString()).append(" Ko/s"))));
 	}
 
+	@Override
 	public void write(byte[] b) throws IOException {
 		super.out.write(b, 0, b.length);
 		totalByteSent += b.length;
 	}
 
+	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
 		super.out.write(b, off, len);
 		totalByteSent += len;
 	}
 
+	@Override
 	public void write(int b) throws IOException {
 		super.out.write(b);
 		totalByteSent++;

@@ -24,6 +24,7 @@ public class NameAndPassword implements Serializable {
 		password = p;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof NameAndPassword))
 			return false;
@@ -31,6 +32,7 @@ public class NameAndPassword implements Serializable {
 		return test.password.equals(password) && test.username.equals(username);
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 17;
 		result = result * 37 + password.hashCode();
@@ -38,6 +40,7 @@ public class NameAndPassword implements Serializable {
 		return result;
 	}
 
+	@Override
 	public String toString() {
 		return username;
 	}

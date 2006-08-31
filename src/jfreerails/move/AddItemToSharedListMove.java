@@ -28,6 +28,7 @@ public class AddItemToSharedListMove implements Move {
 		return index;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = listKey.hashCode();
@@ -90,6 +91,7 @@ public class AddItemToSharedListMove implements Move {
 		return ms;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof AddItemToSharedListMove) {
 			AddItemToSharedListMove test = (AddItemToSharedListMove) o;
@@ -119,6 +121,7 @@ public class AddItemToSharedListMove implements Move {
 		return item;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer(this.getClass().getName());
 		sb.append("\nlist=");

@@ -252,6 +252,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 		setLayout(new java.awt.GridBagLayout());
 
 		addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
 			public void componentShown(java.awt.event.ComponentEvent evt) {
 				formComponentShown(evt);
 			}

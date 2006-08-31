@@ -55,6 +55,7 @@ public class StationTypesPopup extends JPopupMenu {
 	private class StationBuildMenuItem extends JMenuItem {
 		private static final long serialVersionUID = 3256721792751120946L;
 
+		@Override
 		public void configurePropertiesFromAction(Action a) {
 			super.configurePropertiesFromAction(a);
 		}
@@ -146,6 +147,7 @@ public class StationTypesPopup extends JPopupMenu {
 		super.show(invoker, x, y);
 	}
 
+	@Override
 	public void setVisible(boolean b) {
 		// If this popup is visible, we don't want the station's position to
 		// follow the mouse.

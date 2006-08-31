@@ -114,6 +114,7 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
 		return false;
 	}
 
+	@Override
 	public boolean equals(Object arg0) {
 		if (null == arg0) {
 			return false;
@@ -150,6 +151,7 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
 		return amount;
 	}
 
+	@Override
 	public int hashCode() {
 		return amounts.size();
 	}
@@ -158,6 +160,7 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
 		return batches.size();
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("CargoBundle {\n");

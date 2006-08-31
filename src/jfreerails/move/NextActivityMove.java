@@ -27,6 +27,7 @@ public class NextActivityMove implements Move {
 		this.principal = principal;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -45,6 +46,7 @@ public class NextActivityMove implements Move {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = activity.hashCode();

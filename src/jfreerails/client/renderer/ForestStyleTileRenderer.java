@@ -36,6 +36,7 @@ final public class ForestStyleTileRenderer extends
 		}
 	}
 
+	@Override
 	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
 		int iconNumber = 0;
 
@@ -50,6 +51,7 @@ final public class ForestStyleTileRenderer extends
 		return iconNumber;
 	}
 
+	@Override
 	public void dumpImages(ImageManager imageManager) {
 		for (int i = 0; i < this.getTileIcons().length; i++) {
 			String fileName = generateRelativeFileName(i);
@@ -57,6 +59,7 @@ final public class ForestStyleTileRenderer extends
 		}
 	}
 
+	@Override
 	protected String generateFileNameNumber(int i) {
 		return BinaryNumberFormatter.format(i, 2);
 	}

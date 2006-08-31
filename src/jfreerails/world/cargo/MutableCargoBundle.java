@@ -90,6 +90,7 @@ public class MutableCargoBundle implements CargoBundle {
 		return sortedMap.containsKey(cb);
 	}
 
+	@Override
 	public boolean equals(Object arg0) {
 		if (null == arg0) {
 			return false;
@@ -126,6 +127,7 @@ public class MutableCargoBundle implements CargoBundle {
 		return amount;
 	}
 
+	@Override
 	public int hashCode() {
 		return sortedMap.size();
 	}
@@ -148,6 +150,7 @@ public class MutableCargoBundle implements CargoBundle {
 		return new ImmutableCargoBundle(sortedMap);
 	}
 
+	@Override
 	public String toString() {
 		return toImmutableCargoBundle().toString();
 	}

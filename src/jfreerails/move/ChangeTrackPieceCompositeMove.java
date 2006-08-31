@@ -41,7 +41,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
 	private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b,
 			FreerailsPrincipal fp) {
-		super(new Move[] { a, b });
+		super(a, b);
 		Rectangle r = a.getUpdatedTiles().union(b.getUpdatedTiles());
 		x = r.x;
 		y = r.y;
@@ -197,6 +197,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 		return rules.isMustConnect2ExistingTrack();
 	}
 
+	@Override
 	protected MoveStatus compositeTest(World world, FreerailsPrincipal p) {
 		if (mustConnectToExistingTrack(world)) {
 			if (hasAnyTrackBeenBuilt(world, this.builder)) {

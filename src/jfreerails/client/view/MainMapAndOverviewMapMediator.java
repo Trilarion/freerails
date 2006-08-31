@@ -70,33 +70,39 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
 
 		overviewMapJPanel
 				.addComponentListener(new java.awt.event.ComponentAdapter() {
+					@Override
 					public void componentResized(
 							java.awt.event.ComponentEvent evt) {
 						updateObservedRect();
 					}
 
+					@Override
 					public void componentShown(java.awt.event.ComponentEvent evt) {
 						updateObservedRect();
 					}
 				});
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent evt) {
 		lastMouseLocation.x = evt.getX();
 		lastMouseLocation.y = evt.getY();
 		updateInside(evt);
 	}
 
+	@Override
 	public void mousePressed(MouseEvent evt) {
 		if (inside) {
 			draggingAndStartedInside = true;
 		}
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent evt) {
 		draggingAndStartedInside = false;
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent evt) {
 		if (draggingAndStartedInside) {
 			/*
@@ -129,6 +135,7 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
 		}
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent evt) {
 		/*
 		 * Rectangle r= overviewMapJPanel.mainMapVisibleRect;

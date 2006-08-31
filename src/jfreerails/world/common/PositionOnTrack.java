@@ -81,6 +81,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 		return cameFrom;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (null == o) {
 			return false;
@@ -125,6 +126,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 		return y;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = x;
@@ -183,6 +185,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 		return i;
 	}
 
+	@Override
 	public String toString() {
 		String s = "PositionOnTrack: " + x + ", " + y + " facing "
 				+ cameFrom.getOpposite().toString();

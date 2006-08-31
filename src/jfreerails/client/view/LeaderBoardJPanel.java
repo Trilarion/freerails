@@ -14,7 +14,7 @@ import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.NetWorthCalculator;
 import jfreerails.world.common.Money;
@@ -61,6 +61,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 	private void initialize() {
 		this.add(getPlayersList(), null);
 		java.awt.event.MouseAdapter mouseAdapter = new java.awt.event.MouseAdapter() {
+			@Override
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				if (null == submitButtonCallBack) {
 					System.err.println("mouseClicked");
@@ -95,7 +96,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 		return playersList;
 	}
 
-	public void setup(ModelRoot modelRoot, ViewLists vl,
+	public void setup(ModelRoot modelRoot, RenderersRoot vl,
 			Action closeAction) {
 		ReadOnlyWorld w = modelRoot.getWorld();
 		values.clear();
@@ -130,6 +131,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
 		int stations = 0;
 
+		@Override
 		public String toString() {
 			StringBuffer sb = new StringBuffer();
 			sb.append(name);

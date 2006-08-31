@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -115,7 +115,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View,
 
 	}// GEN-END:initComponents
 
-	public void setup(ModelRoot mr, ViewLists vl,
+	public void setup(ModelRoot mr, RenderersRoot vl,
 			Action closeAction) {
 		this.w = mr.getWorld();
 		TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) consistChangeJPanel;

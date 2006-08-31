@@ -29,6 +29,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
 	private final FreerailsPrincipal principal;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -53,6 +54,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (before != null ? before.hashCode() : 0);

@@ -22,6 +22,7 @@ public class ImHashSet<E extends FreerailsSerializable> implements
 		this.hashSet = new HashSet<E>(hashSet);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -36,6 +37,7 @@ public class ImHashSet<E extends FreerailsSerializable> implements
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		return hashSet.hashCode();
 	}

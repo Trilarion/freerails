@@ -30,6 +30,7 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
 
     private final PlacementRule placementRule;
 
+	@Override
 	public int hashCode() {
 		return (placementRule != null ? placementRule.hashCode() : 0);
 	}
@@ -54,6 +55,7 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
 		return !terrainTypes.contains(terrainType);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof LegalTrackPlacement) {
 			LegalTrackPlacement test = (LegalTrackPlacement) o;

@@ -21,6 +21,7 @@ final public class MoveStatus implements FreerailsSerializable {
 	
 	private final Throwable t;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -38,6 +39,7 @@ final public class MoveStatus implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (ok ? 1 : 0);
@@ -79,6 +81,7 @@ final public class MoveStatus implements FreerailsSerializable {
 			t.printStackTrace();
 	}
 
+	@Override
 	public String toString() {
 		return message;
 	}

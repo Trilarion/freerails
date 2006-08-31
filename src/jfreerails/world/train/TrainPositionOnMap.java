@@ -80,7 +80,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
 	private final double speed, acceleration;
 
-	private final SpeedTimeAndStatus.Activity activity;
+	private final SpeedTimeAndStatus.TrainActivity activity;
 
 	private boolean crashSite = false;
 
@@ -113,6 +113,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 		frameCt++;
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 0;
 
@@ -128,6 +129,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 		return result;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (null == o) {
 			return false;
@@ -243,12 +245,12 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 		this.ypoints = ys;
 		this.acceleration = 0d;
 		this.speed = 0d;
-		this.activity = SpeedTimeAndStatus.Activity.READY;
+		this.activity = SpeedTimeAndStatus.TrainActivity.READY;
 
 	}
 
 	private TrainPositionOnMap(int[] xs, int[] ys, double speed,
-			double acceleration, SpeedTimeAndStatus.Activity activity) {
+			double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
 		if (xs.length != ys.length) {
 			throw new IllegalArgumentException();
 		}
@@ -262,7 +264,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
 	public static TrainPositionOnMap createInstance(int[] xpoints, int[] ypoints) {
 		return new TrainPositionOnMap(xpoints, ypoints, 0d, 0d,
-				SpeedTimeAndStatus.Activity.READY);
+				SpeedTimeAndStatus.TrainActivity.READY);
 	}
 
 	public TrainPositionOnMap addToHead(TrainPositionOnMap b) {
@@ -411,12 +413,12 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 	public static TrainPositionOnMap createInSameDirectionAsPath(
 			FreerailsPathIterator path) {
 		return createInSameDirectionAsPath(path, 0d, 0d,
-				SpeedTimeAndStatus.Activity.READY);
+				SpeedTimeAndStatus.TrainActivity.READY);
 	}
 
 	public static TrainPositionOnMap createInSameDirectionAsPath(
 			FreerailsPathIterator path, double speed, double acceleration,
-			SpeedTimeAndStatus.Activity activity) {
+			SpeedTimeAndStatus.TrainActivity activity) {
 		IntArray xPointsIntArray = new IntArray();
 		IntArray yPointsIntArray = new IntArray();
 		IntLine line = new IntLine();
@@ -492,6 +494,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 		return aHeadEqualsBTail(b, a);
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("TrainPosition {");
@@ -513,7 +516,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 		return acceleration;
 	}
 
-	public SpeedTimeAndStatus.Activity getActivity() {
+	public SpeedTimeAndStatus.TrainActivity getActivity() {
 		return activity;
 	}
 

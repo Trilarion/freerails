@@ -6,7 +6,7 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 
 /**
@@ -17,6 +17,6 @@ import jfreerails.controller.ModelRoot;
  * 
  */
 public interface ActiveView {
-	void setup(ModelRoot modelRoot, ActionRoot ar, ViewLists vl,
+	void setup(ModelRoot modelRoot, ActionRoot ar, RenderersRoot vl,
 			ActionListener submitButtonCallBack);
 }

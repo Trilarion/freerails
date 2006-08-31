@@ -157,7 +157,8 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 		return configuration;
 	}
 
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -168,7 +169,8 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return true;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return configuration;
     }
 
@@ -180,6 +182,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 	 * Returns a String representing this configuration, for example "north,
 	 * south".
 	 */
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		int matches = 0;

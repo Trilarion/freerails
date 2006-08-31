@@ -28,7 +28,7 @@ import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ActionAdapter.MappedButtonModel;
 import jfreerails.client.renderer.BuildTrackController;
 import jfreerails.client.renderer.MapRenderer;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.renderer.ZoomedOutMapRenderer;
 import jfreerails.client.view.ActionRoot;
 import jfreerails.client.view.CashJLabel;
@@ -130,7 +130,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
 	private UserMessageGenerator userMessageGenerator;
 
-	private ViewLists viewLists;
+	private RenderersRoot renderers;
 
 	private ReadOnlyWorld world;
 
@@ -564,7 +564,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 	 * starting several new games). </b>
 	 * </p>
 	 */
-	public void setup(ViewLists vl, ReadOnlyWorld w) throws IOException {
+	public void setup(RenderersRoot vl, ReadOnlyWorld w) throws IOException {
 		/*
 		 * Set the cursor position. The initial cursor position is 0,0. However,
 		 * if a game is loaded or a new game is started and the map size is the
@@ -579,19 +579,19 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 						.getProperty(ModelRoot.Property.CURSOR_POSITION);
 			}
 		}
-		viewLists = vl;
+		renderers = vl;
 		world = w;
 		modelRoot.addMapListener(this);
 		modelRoot.addListListener(this);
 
 		if (!vl.validate(world)) {
 			throw new IllegalArgumentException("The specified"
-					+ " ViewLists are not compatible with the clients"
+					+ " RenderersRoot are not compatible with the clients"
 					+ "world!");
 		}
 
 		// create the main and overview maps
-		mainMap = new DetailMapRenderer(world, viewLists, modelRoot);
+		mainMap = new DetailMapRenderer(world, renderers, modelRoot);
 
 		Dimension maxSize = new Dimension(200, 200);
 		overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
@@ -600,7 +600,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 				.getStationRadius());
 
 		mapViewJComponent
-				.setup(mainMap, modelRoot, viewLists.getImageManager());
+				.setup(mainMap, modelRoot, renderers);
 
 		// setup the the main and overview map JComponents
 		dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);

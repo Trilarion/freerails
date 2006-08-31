@@ -40,6 +40,7 @@ final public class CargoType implements FreerailsSerializable {
 		name = s;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof CargoType))
 			return false;
@@ -69,6 +70,7 @@ final public class CargoType implements FreerailsSerializable {
 		return unitWeight;
 	}
 
+	@Override
 	public int hashCode() {
 
 		int result;
@@ -79,6 +81,7 @@ final public class CargoType implements FreerailsSerializable {
 
 	}
 
+	@Override
 	public String toString() {
 		return name;
 	}

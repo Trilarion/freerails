@@ -14,51 +14,86 @@ import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.common.SoundManager;
 import jfreerails.client.renderer.ChequeredTileRenderer;
 import jfreerails.client.renderer.ForestStyleTileRenderer;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.renderer.RiverStyleTileRenderer;
 import jfreerails.client.renderer.SpecialTileRenderer;
 import jfreerails.client.renderer.StandardTileRenderer;
 import jfreerails.client.renderer.TileRenderer;
 import jfreerails.client.renderer.TileRendererList;
 import jfreerails.client.renderer.TileRendererListImpl;
+import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.TrainImages;
-import jfreerails.client.renderer.ViewLists;
 import jfreerails.util.FreerailsProgressMonitor;
+import jfreerails.world.cargo.CargoType;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
+import jfreerails.world.train.EngineType;
 
 /**
- * Implementation of ViewLists whose constructor loads graphics and provides
+ * Implementation of RenderersRoot whose constructor loads graphics and provides
  * feed back using a FreerailsProgressMonitor.
  * 
  * @author Luke
  */
-public class ViewListsImpl implements ViewLists {
-	private static final Logger logger = Logger.getLogger(ViewListsImpl.class
+public class RenderersRootImpl implements RenderersRoot {
+	private static final Logger logger = Logger.getLogger(RenderersRootImpl.class
 			.getName());
 
 	private final TileRendererList tiles;
 
 	private final TrackPieceRendererList trackPieceViewList;
 
-	private final TrainImages trainImages;
-
 	private final ImageManager imageManager;
+	
+	private final ArrayList<TrainImages> wagonImages = new ArrayList<TrainImages>();
+	
+	private final ArrayList<TrainImages> engineImages = new ArrayList<TrainImages>();
 
-	public ViewListsImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+	public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
 			throws IOException {
-		URL out = ViewListsImpl.class.getResource("/experimental");
+		URL out = RenderersRootImpl.class.getResource("/experimental");
 		imageManager = new ImageManagerImpl("/jfreerails/client/graphics/", out
 				.getPath());
 		tiles = loadNewTileViewList(w, pm);
 
 		trackPieceViewList = loadTrackViews(w, pm);
 
-		trainImages = new TrainImages(w, imageManager, pm);
-
+		//rr = new OldTrainImages(w, imageManager, pm);
+		loadTrainImages(w, pm);
 		preloadSounds(pm);
 
+	}
+	
+	private void loadTrainImages(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+	throws IOException {
+		// Setup progress monitor..
+        final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
+        final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);            
+        pm.nextStep(numberOfWagonTypes + numberOfEngineTypes);
+        int progress = 0;
+        pm.setValue(progress);
+        
+        //Load wagon images.
+        for (int i = 0; i < numberOfWagonTypes; i++) {
+            CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+            String name = cargoType.getName();
+			TrainImages ti = new TrainImages(imageManager, name);
+            wagonImages.add(ti);
+            pm.setValue(++progress);
+        }
+        
+        //Load engine images
+        for (int i = 0; i < numberOfEngineTypes; i++) {
+            EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES, i);
+            String engineTypeName = engineType
+                        .getEngineTypeName();
+            TrainImages ti = new TrainImages(imageManager, engineTypeName);
+            engineImages.add(ti);
+            pm.setValue(++progress);
+        }
+		
 	}
 
 	private void preloadSounds(FreerailsProgressMonitor pm) {
@@ -260,11 +295,35 @@ public class ViewListsImpl implements ViewLists {
 		return okSoFar;
 	}
 
-	public TrainImages getTrainImages() {
-		return trainImages;
-	}
+//	public OldTrainImages getTrainImages() {
+//		return rr;
+//	}
 
 	public ImageManager getImageManager() {
 		return imageManager;
+	}
+
+	public Image getImage(String relativeFilename) throws IOException {		
+		return imageManager.getImage(relativeFilename);
+	}
+
+	public TileRenderer getTileViewWithNumber(int i) {
+		return tiles.getTileViewWithNumber(i);		
+	}
+
+	public TrackPieceRenderer getTrackPieceView(int i) {		
+		return trackPieceViewList.getTrackPieceView(i);
+	}
+
+	public TrainImages getWagonImages(int type) {		
+		return wagonImages.get(type);
+	}
+
+	public TrainImages getEngineImages(int type) {
+		return engineImages.get(type);		
+	}
+
+	public Image getScaledImage(String relativeFilename, int height) throws IOException {
+		return imageManager.getScaledImage(relativeFilename, height);
 	}
 }

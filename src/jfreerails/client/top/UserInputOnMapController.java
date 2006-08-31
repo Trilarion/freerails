@@ -75,6 +75,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
 		private boolean pressedInside = false;
 
+		@Override
 		public void mousePressed(MouseEvent evt) {
 			if (SwingUtilities.isLeftMouseButton(evt)) {
 				ignoreDragging = false;
@@ -110,6 +111,7 @@ public class UserInputOnMapController extends KeyAdapter {
 			}
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent evt) {
 			/*
 			 * Fix for bug [ 972866 ] Build track by dragging - only when build
@@ -158,6 +160,7 @@ public class UserInputOnMapController extends KeyAdapter {
 			}
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent evt) {
 
 			if (SwingUtilities.isLeftMouseButton(evt)) {
@@ -280,6 +283,7 @@ public class UserInputOnMapController extends KeyAdapter {
 		modelRoot.setProperty(Property.CURSOR_MESSAGE, s);
 	}
 
+	@Override
 	public void keyPressed(KeyEvent e) {
 
 		int keyCode = e.getKeyCode();

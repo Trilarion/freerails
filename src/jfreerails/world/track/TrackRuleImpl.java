@@ -64,6 +64,7 @@ final public class TrackRuleImpl implements TrackRule {
 
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof TrackRuleImpl) {
 			TrackRuleImpl trackRuleImpl = (TrackRuleImpl) o;
@@ -128,6 +129,7 @@ final public class TrackRuleImpl implements TrackRule {
 		return properties.getTypeName();
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = properties.hashCode();
@@ -149,6 +151,7 @@ final public class TrackRuleImpl implements TrackRule {
 				.trackConfigurationIsLegal(trackConfiguration);
 	}
 
+	@Override
 	public String toString() {
 		return getTypeName();
 	}

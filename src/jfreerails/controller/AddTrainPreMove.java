@@ -43,6 +43,7 @@ public class AddTrainPreMove implements PreMove {
 
 	private final ImInts wagons;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -65,6 +66,7 @@ public class AddTrainPreMove implements PreMove {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = engineTypeId;

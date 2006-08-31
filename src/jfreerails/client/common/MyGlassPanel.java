@@ -31,16 +31,19 @@ public class MyGlassPanel extends javax.swing.JPanel {
 		java.awt.GridBagConstraints gridBagConstraints1;
 		setOpaque(false);
 		addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				formKeyPressed(evt);
 			}
 		});
 		addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mousePressed(java.awt.event.MouseEvent evt) {
 				formMousePressed(evt);
 			}
 		});
 		addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+			@Override
 			public void mouseMoved(java.awt.event.MouseEvent evt) {
 				formMouseMoved(evt);
 			}

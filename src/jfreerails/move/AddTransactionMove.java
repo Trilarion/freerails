@@ -29,6 +29,7 @@ public class AddTransactionMove implements Move {
 		return transaction;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = transaction.hashCode();
@@ -115,6 +116,7 @@ public class AddTransactionMove implements Move {
 		return ms;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AddTransactionMove) {
 			AddTransactionMove test = (AddTransactionMove) obj;

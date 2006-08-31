@@ -30,6 +30,7 @@ public class TrackBuildingTest extends TestCase {
 
 	BuildTrackStrategy bts;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		w = MapFixtureFactory2.getCopy();

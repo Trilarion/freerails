@@ -25,10 +25,12 @@ public class PlannedTrain implements FreerailsSerializable {
 		wagonTypes = new ImInts(wagons);
 	}
 
+	@Override
 	public int hashCode() {
 		return engineType;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -53,6 +55,7 @@ public class PlannedTrain implements FreerailsSerializable {
 		return wagonTypes;
 	}
 
+	@Override
 	public String toString() {
 		return "engine type: " + this.engineType + ", with "
 				+ wagonTypes.size() + "wagons";

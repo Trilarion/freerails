@@ -27,6 +27,7 @@ public class CitySAXParser extends DefaultHandler {
 		cities = new Vector<CityModel>();
 	}
 
+	@Override
 	public void endDocument() throws SAXException {
 		for (int i = 0; i < cities.size(); i++) {
 			CityModel tempCity = cities.elementAt(i);
@@ -35,6 +36,7 @@ public class CitySAXParser extends DefaultHandler {
 		}
 	}
 
+	@Override
 	public void startElement(String namespaceURI, String sName, String qName,
 			Attributes attrs) throws SAXException {
 		String eName = sName; // element name

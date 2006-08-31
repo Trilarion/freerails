@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.io.IOException;
 
 import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
@@ -34,22 +35,22 @@ public class StationBoxRenderer implements Painter {
 
 	private final Color bgColor;
 
-	private final ViewLists vl;
+	private final RenderersRoot vl;
 
 	private final int wagonImageWidth;
 
 	private final ModelRoot modelRoot;
 
-	public StationBoxRenderer(ReadOnlyWorld world, ViewLists vl,
+	public StationBoxRenderer(ReadOnlyWorld world, RenderersRoot vl,
 			ModelRoot modelRoot) {
 		this.w = world;
 		this.vl = vl;
 		this.bgColor = new Color(0, 0, 200, 60);
 		this.modelRoot = modelRoot;
 
-		Image wagonImage = vl.getTrainImages().getSideOnWagonImage(0,
-				WAGON_IMAGE_HEIGHT);
-		wagonImageWidth = wagonImage.getWidth(null);
+		//How wide will the wagon images be if we scale them so their height is WAGON_IMAGE_HEIGHT?
+		Image wagonImage = vl.getWagonImages(0).getSideOnImage();
+		wagonImageWidth = wagonImage.getWidth(null) * WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null); 
 	}
 
 	public void paint(Graphics2D g) {
@@ -91,9 +92,13 @@ public class StationBoxRenderer implements Painter {
 						int y = positionY
 								+ (category * (WAGON_IMAGE_HEIGHT + SPACING));
 						int cargoType = carsLoads[car];
-						Image wagonImage = vl.getTrainImages()
-								.getSideOnWagonImage(cargoType,
-										WAGON_IMAGE_HEIGHT);
+						String wagonFilename = vl.getWagonImages(cargoType).sideOnFileName;
+						Image wagonImage;
+						try {
+							wagonImage = vl.getScaledImage(wagonFilename, WAGON_IMAGE_HEIGHT);
+						} catch (IOException e) {
+							throw new IllegalArgumentException(wagonFilename);
+						}
 						g.drawImage(wagonImage, x, y, null);
 					}
 				}

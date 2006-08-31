@@ -34,6 +34,7 @@ public class WorldDiffsMoveTest extends TestCase {
 
 	CityModel city2 = new CityModel("City 2", 9, 4);
 
+	@Override
 	protected void setUp() throws Exception {
 		world = new WorldImpl(10, 10);
 		// Set the time..

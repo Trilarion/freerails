@@ -40,6 +40,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 	private RepaintManagerForActiveRendering() {
 	}
 
+	@Override
 	public synchronized void addDirtyRegion(JComponent c, int x, int y, int w,
 			int h) {
 		if (hasDifferentAncester(c)) {
@@ -53,6 +54,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 		activelyRendereredComponents.add(f);
 	}
 
+	@Override
 	public synchronized void addInvalidComponent(JComponent invalidComponent) {
 		if (hasDifferentAncester(invalidComponent)) {
 			super.addInvalidComponent(invalidComponent);
@@ -61,6 +63,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 		}
 	}
 
+	@Override
 	public void markCompletelyClean(JComponent aComponent) {
 		if (hasDifferentAncester(aComponent)) {
 			super.markCompletelyClean(aComponent);
@@ -69,6 +72,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 		}
 	}
 
+	@Override
 	public void markCompletelyDirty(JComponent aComponent) {
 		if (hasDifferentAncester(aComponent)) {
 			super.markCompletelyDirty(aComponent);

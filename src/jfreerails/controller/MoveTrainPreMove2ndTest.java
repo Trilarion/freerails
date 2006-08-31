@@ -5,9 +5,9 @@
 package jfreerails.controller;
 
 import static jfreerails.world.common.Step.EAST;
-import static jfreerails.world.train.SpeedTimeAndStatus.Activity.READY;
-import static jfreerails.world.train.SpeedTimeAndStatus.Activity.STOPPED_AT_STATION;
-import static jfreerails.world.train.SpeedTimeAndStatus.Activity.WAITING_FOR_FULL_LOAD;
+import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.READY;
+import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
+import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.move.AbstractMoveTestCase;
 import jfreerails.move.Move;
@@ -33,7 +33,8 @@ import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.TrainOrdersModel;
-/** Unit test for MoveTrainPreMove, tests stopping at stations.*/
+
+/** Unit test for MoveTrainPreMove, tests stopping at stations. */
 public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
 	TrackMoveProducer trackBuilder;
@@ -50,6 +51,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
 	ImmutableSchedule defaultSchedule;
 
+	@Override
 	protected void setUp() throws Exception {
 		world = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(world, 0);
@@ -59,8 +61,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		stationBuilder = new StationBuilder(me);
 
 		// Build track.
-		stationBuilder
-				.setStationType(stationBuilder.getTrackTypeID("terminal"));
+		stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
 		Step[] track = new Step[20];
 		for (int i = 0; i < track.length; i++) {
 			track[i] = EAST;
@@ -87,8 +88,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		defaultSchedule = s.toImmutableSchedule();
 
 		ImPoint start = new ImPoint(10, 10);
-		AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
-				start, principal, defaultSchedule);
+		AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0), start, principal,
+				defaultSchedule);
 		Move m = preMove.generateMove(world);
 		MoveStatus ms = m.doMove(world, principal);
 		assertTrue(ms.ok);
@@ -132,7 +133,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		TrainAccessor ta = new TrainAccessor(world, principal, 0);
 		TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
 		return tm;
-	}
+	}		
 
 	/**
 	 * Test that when the train arrives at a non sheduled station tile it stops,
@@ -190,12 +191,10 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		CargoBatch cb = new CargoBatch(0, 6, 6, 0, stationId);
 		MutableCargoBundle mb = new MutableCargoBundle();
 		mb.addCargo(cb, amount);
-		StationModel station1Model = (StationModel) world.get(principal,
-				KEY.STATIONS, stationId);
+		StationModel station1Model = (StationModel) world.get(principal, KEY.STATIONS, stationId);
 		ImmutableCargoBundle cargoAtStationBefore = mb.toImmutableCargoBundle();
 		int station1BundleId = station1Model.getCargoBundleID();
-		world.set(principal, KEY.CARGO_BUNDLES, station1BundleId,
-				cargoAtStationBefore);
+		world.set(principal, KEY.CARGO_BUNDLES, station1BundleId, cargoAtStationBefore);
 	}
 
 	/**
@@ -265,26 +264,23 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		PositionOnTrack pot;
 		TrainMotion tm;
 		putTrainAtStationWaiting4FullLoad();
-		
-		//Add enough cargo to fill up the train.
+
+		// Add enough cargo to fill up the train.
 		addCargoAtStation(2, 70);
-		
+
 		tm = moveTrain();
 		pot = tm.getFinalPosition();
 
-		assertEquals(station2.x -1, pot.getX());
+		assertEquals(station2.x - 1, pot.getX());
 		assertEquals(station2.y, pot.getY());
 		assertEquals(READY, tm.getActivity());
-		
-		
 
 	}
 
 	private void putTrainAtStationWaiting4FullLoad() {
 		// Set wait until full on schedule.
 		ImInts newConsist = new ImInts(0, 0);
-		TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, true,
-				false);
+		TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, true, false);
 		TrainAccessor ta = new TrainAccessor(world, principal, 0);
 		MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
 		schedule.setOrder(0, order0);
@@ -306,17 +302,19 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		assertEquals(station2.x, pot.getX());
 		assertEquals(station2.y, pot.getY());
 		assertEquals(READY, tm.getActivity());
+
+		// The train should now stop at the station
+		// and wait for a full load.
+
+		tm = moveTrain();
+		pot = tm.getFinalPosition();
+
+		assertEquals(station2.y, pot.getY());
+		assertEquals(WAITING_FOR_FULL_LOAD, tm.getActivity());
 		
-		//The train should now stop at the station
-		//and wait for a full load.
-		for(int i = 0; i < 4; i++){
-			tm = moveTrain();
-			pot = tm.getFinalPosition();
-	
-			assertEquals(String.valueOf(i), station2.x, pot.getX());
-			assertEquals(station2.y, pot.getY());
-			assertEquals(WAITING_FOR_FULL_LOAD, tm.getActivity());
-		}
+		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+		assertFalse("The train isn't full and there is no cargo to add, so we should be able to generate a move.", preMove.canGenerateMove(world));
+
 	}
 
 	/** Test that a waiting train whose orders change behaves correctly. */
@@ -324,11 +322,10 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		PositionOnTrack pot;
 		TrainMotion tm;
 		putTrainAtStationWaiting4FullLoad();
-		
-		//Now change the train's orders.
+
+		// Now change the train's orders.
 		ImInts newConsist = new ImInts(0, 0);
-		TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, false,
-				false);
+		TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, false, false);
 		TrainAccessor ta = new TrainAccessor(world, principal, 0);
 		MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
 		schedule.setOrder(0, order0);
@@ -336,8 +333,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		world.set(principal, KEY.TRAIN_SCHEDULES, 0, imSchedule);
 		assertEquals(0, ta.getSchedule().getOrderToGoto());
 		assertFalse(ta.getSchedule().getOrder(0).waitUntilFull);
-		
-		//Then the train should continue.
+
+		// Then the train should continue.
 		tm = moveTrain();
 		pot = tm.getFinalPosition();
 		assertEquals(station2.x - 1, pot.getX());
@@ -345,42 +342,42 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		assertEquals(READY, tm.getActivity());
 
 	}
-	
-	public void testCanGenerateMove(){
+
+	public void testCanGenerateMove() {
 		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
 		assertTrue(preMove.canGenerateMove(world));
 		Move m = preMove.generateMove(world);
 		MoveStatus ms = m.doMove(world, principal);
 		assertTrue(ms.message, ms.ok);
 		assertFalse(preMove.canGenerateMove(world));
-	}	
-	
-	static void incrTime(World w, FreerailsPrincipal p){
+	}
+
+	static void incrTime(World w, FreerailsPrincipal p) {
 		ActivityIterator ai = w.getActivities(p, 0);
 		while (ai.hasNext())
 			ai.nextActivity();
-				
+
 		double finishTime = ai.getFinishTime();
 		GameTime newTime = new GameTime((int) Math.floor(finishTime));
 		w.setTime(newTime);
 	}
-	
-	/** Tests that we extra wagons are added, the TrainMotion lengthens to
+
+	/**
+	 * Tests that we extra wagons are added, the TrainMotion lengthens to
 	 * accomodate them.
 	 */
-	public void testLengtheningTrain(){
-		//Set the train to add wagons at station2.
+	public void testLengtheningTrain() {
+		// Set the train to add wagons at station2.
 		ImInts newConsist = new ImInts(0, 0, 0, 0, 0, 0);
-		TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, false,
-				false);
+		TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, false, false);
 		TrainAccessor ta = new TrainAccessor(world, principal, 0);
 		MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
 		schedule.setOrder(0, order0);
 		ImmutableSchedule imSchedule = schedule.toImmutableSchedule();
 		world.set(principal, KEY.TRAIN_SCHEDULES, 0, imSchedule);
 		assertEquals(0, ta.getSchedule().getOrderToGoto());
-		
-		//Move the train to the station.
+
+		// Move the train to the station.
 		PositionOnTrack pot;
 		TrainMotion tm;
 		do {
@@ -390,21 +387,18 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		assertEquals(station2.x, pot.getX());
 		assertEquals(station2.y, pot.getY());
 		assertEquals(READY, tm.getActivity());
-		
+
 		TrainModel train = ta.getTrain();
 		assertEquals(2, train.getNumberOfWagons());
-		
+
 		assertTrue(tm.getInitialPosition() >= train.getLength());
-		
-		
+
 		tm = moveTrain();
 		tm = moveTrain();
 		train = ta.getTrain();
 		assertEquals(6, ta.getTrain().getNumberOfWagons());
 		assertTrue(tm.getInitialPosition() >= train.getLength());
-		
+
 	}
-		
-	
 
 }

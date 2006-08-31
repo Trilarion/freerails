@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 
 /**
@@ -49,6 +49,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 
 		g.drawImage(tempImage, 0, 0, null);
 		this.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mousePressed(java.awt.event.MouseEvent evt) {
 				callBack.actionPerformed(new ActionEvent(this, 0, null));
 			}
@@ -70,6 +71,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 		setMaximumSize(new java.awt.Dimension(640, 400));
 		setOpaque(false);
 		addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				formKeyPressed(evt);
 			}
@@ -105,6 +107,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 	}
 
 	// GEN-LAST:event_formKeyPressed
+	@Override
 	public void paint(Graphics g) {
 		g.drawImage(this.pieceOfNewspaper, 0, 0, null);
 		this.paintChildren(g);
@@ -114,7 +117,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 		this.headline.setText(s);
 	}
 
-	public void setup(ModelRoot mr, ViewLists vl,
+	public void setup(ModelRoot mr, RenderersRoot vl,
 			Action closeAction) {
 		this.callBack = closeAction;
 	}

@@ -36,6 +36,7 @@ public final class ImPoint implements FreerailsSerializable {
 		this.y = y;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -56,6 +57,7 @@ public final class ImPoint implements FreerailsSerializable {
 		return new Point(x, y);
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = x;

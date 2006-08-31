@@ -24,6 +24,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
 		super(arg0);
 	}
 
+	@Override
 	protected void setUp() {
 		this.map = new Map();
 		pathFinder = new SimpleAStarPathFinder();

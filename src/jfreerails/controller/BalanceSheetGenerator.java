@@ -104,6 +104,7 @@ public class BalanceSheetGenerator {
 		public Stats(ReadOnlyWorld w, FreerailsPrincipal principal, final GameTime[] totalTimeInteval){
 			TransactionAggregator operatingFundsAggregator = new TransactionAggregator(w,
 					principal) {
+				@Override
 				protected boolean condition(int i) {
 					int transactionTicks = w.getTransactionTimeStamp(
 							principal, i).getTicks();

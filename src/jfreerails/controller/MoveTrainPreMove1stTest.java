@@ -49,6 +49,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
 	ImmutableSchedule defaultSchedule;
 
+	@Override
 	protected void setupWorld() {
 		world = MapFixtureFactory2.getCopy();
 		MoveExecutor me = new SimpleMoveExecutor(world, 0);
@@ -108,6 +109,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 		assertTrue(speeds.calcV(t) > 0);
 	}
 
+	@Override
 	public void testMove() {
 		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
 		Move m = preMove.generateMove(world);

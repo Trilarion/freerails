@@ -33,6 +33,7 @@ public class PathOnTrackFinderTest extends TestCase {
 
 	BuildTrackStrategy bts;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		w = MapFixtureFactory2.getCopy();
@@ -44,6 +45,7 @@ public class PathOnTrackFinderTest extends TestCase {
 		bts = BuildTrackStrategy.getDefault(w);
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}

@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.EngineType;
@@ -116,11 +116,11 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
 		final JLabel label;
 
-		final ViewLists viewLists;
+		final RenderersRoot rr;
 
-		public TrainCellRenderer(ViewLists vl) {
+		public TrainCellRenderer(RenderersRoot vl) {
 
-			viewLists = vl;
+			rr = vl;
 
 			label = new JLabel();
 		}
@@ -140,8 +140,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 					+ engine.getPrice().toString()
 					+ (isSelected ? "</strong>" : "") + "</body></html>";
 			label.setText(text);
-			Image image = viewLists.getTrainImages()
-					.getSideOnEngineImage(index);
+			Image image = rr.getEngineImages(index).getSideOnImage();
 			int height = image.getHeight(null);
 			int width = image.getWidth(null);
 			int scale = height / 50;
@@ -153,7 +152,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 		}
 	}
 
-	public void setup(ModelRoot mr, ViewLists vl,
+	public void setup(ModelRoot mr, RenderersRoot vl,
 			Action closeAction) {
 
 		jList1.setModel(new World2ListModelAdapter(mr.getWorld(),

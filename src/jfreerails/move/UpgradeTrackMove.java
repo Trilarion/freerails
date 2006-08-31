@@ -20,7 +20,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
 	private static final long serialVersionUID = 3907215961470875442L;
 
 	private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
-		super(new Move[] { trackMove });
+		super(trackMove);
 	}
 
 	public static UpgradeTrackMove generateMove(TrackPiece before,

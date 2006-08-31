@@ -106,6 +106,7 @@ public class StockPriceCalculator {
 		GameTime[] inteval = {new GameTime(ticksAtStartOfLastYear), new GameTime(ticksAtStartOfyear)};
 	
 		TransactionAggregator aggregator = new TransactionAggregator(w, pr){
+			@Override
 			protected boolean condition(int transactionID) {
 				Transaction t = super.w.getTransaction(super.principal,
 						transactionID);				

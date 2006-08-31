@@ -30,7 +30,8 @@ public class ListKey implements Comparable<ListKey>, Serializable{
 		return index.clone();
 	}
 
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ListKey)) return false;
 
@@ -43,7 +44,8 @@ public class ListKey implements Comparable<ListKey>, Serializable{
         return true;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         int result;
         result = type.hashCode();
         result = 29 * result + listID.hashCode();

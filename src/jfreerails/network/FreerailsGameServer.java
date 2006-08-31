@@ -36,7 +36,7 @@ import jfreerails.world.top.World;
  * @see InetConnectionAccepter
  * @see Connection2Client
  * 
- * @author Luke Fizzle
+ * @author Luke 
  * 
  */
 public class FreerailsGameServer implements ServerControlInterface, GameServer,
@@ -553,5 +553,19 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void refreshSavedGames() {		
+		Message2Client setMaps = new SetPropertyMessage2Client(
+				getNextClientCommandId(),
+				ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
+				new ImStringList(savedGamesManager.getNewMapNames()));
+		ImStringList savedGameNames = new ImStringList(
+						savedGamesManager.getSaveGameNames());
+		Message2Client setSaveGames = new SetPropertyMessage2Client(
+				getNextClientCommandId(),
+				ClientControlInterface.ClientProperty.SAVED_GAMES, savedGameNames);
+		send2All(setMaps);
+		send2All(setSaveGames);		
 	}
 }

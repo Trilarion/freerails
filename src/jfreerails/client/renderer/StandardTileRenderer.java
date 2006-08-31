@@ -26,6 +26,7 @@ final public class StandardTileRenderer extends
 		this.getTileIcons()[0] = imageManager.getImage(generateFilename());
 	}
 
+	@Override
 	public void dumpImages(ImageManager imageManager) {
 		imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
 	}
@@ -38,6 +39,7 @@ final public class StandardTileRenderer extends
 		return "terrain" + File.separator + typeName + ".png";
 	}
 
+	@Override
 	protected String generateFileNameNumber(int i) {
 		throw new UnsupportedOperationException();
 	}

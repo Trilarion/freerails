@@ -32,6 +32,7 @@ public class Receipt implements Transaction {
 		return amount;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Receipt) {
 			Receipt test = (Receipt) o;
@@ -46,6 +47,7 @@ public class Receipt implements Transaction {
 		return category;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = amount.hashCode();

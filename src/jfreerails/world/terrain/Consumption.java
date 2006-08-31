@@ -28,6 +28,7 @@ public class Consumption implements FreerailsSerializable {
 		prerequisite = pq; // default value.
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -44,6 +45,7 @@ public class Consumption implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = cargoType;

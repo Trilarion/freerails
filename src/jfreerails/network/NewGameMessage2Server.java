@@ -47,6 +47,7 @@ public class NewGameMessage2Server implements Message2Server {
 		return new String[] { "South America", "Small South America" };
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -63,6 +64,7 @@ public class NewGameMessage2Server implements Message2Server {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = id;

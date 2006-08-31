@@ -13,6 +13,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class LogOnRequest implements FreerailsSerializable {
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -31,6 +32,7 @@ public class LogOnRequest implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (username != null ? username.hashCode() : 0);

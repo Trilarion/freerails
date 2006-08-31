@@ -30,6 +30,7 @@ public class AddItemToListMove implements ListMove {
 		return index;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = listKey.hashCode();
@@ -94,6 +95,7 @@ public class AddItemToListMove implements ListMove {
 		return ms;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof AddItemToListMove) {
 			AddItemToListMove test = (AddItemToListMove) o;
@@ -127,6 +129,7 @@ public class AddItemToListMove implements ListMove {
 		return item;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer(this.getClass().getName());
 		sb.append("\n list=");

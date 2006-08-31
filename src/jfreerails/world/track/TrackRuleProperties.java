@@ -40,6 +40,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
 		this.fixedCost = new Money(fixedCost);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof TrackRuleProperties) {
 			TrackRuleProperties test = (TrackRuleProperties) o;
@@ -76,6 +77,7 @@ final public class TrackRuleProperties implements FreerailsSerializable {
 		return typeName;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = rGBvalue;

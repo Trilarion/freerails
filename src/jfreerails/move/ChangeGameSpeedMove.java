@@ -72,6 +72,7 @@ public class ChangeGameSpeedMove implements Move {
 		return status;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -88,6 +89,7 @@ public class ChangeGameSpeedMove implements Move {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = oldSpeed.hashCode();
@@ -99,6 +101,7 @@ public class ChangeGameSpeedMove implements Move {
 		return newSpeed.getSpeed();
 	}
 
+	@Override
 	public String toString() {
 		return "ChangeGameSpeedMove: " + oldSpeed + "=>" + newSpeed;
 	}

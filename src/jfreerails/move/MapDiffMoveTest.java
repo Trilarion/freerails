@@ -10,6 +10,7 @@ import jfreerails.world.track.FreerailsTile;
  * @author Luke
  */
 public class MapDiffMoveTest extends AbstractMoveTestCase {
+	@Override
 	public void testMove() {
 		World world2 = this.getWorld();
 		WorldDiffs worldDiff = new WorldDiffs(world2);

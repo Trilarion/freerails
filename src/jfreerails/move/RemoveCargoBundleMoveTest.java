@@ -16,6 +16,7 @@ import jfreerails.world.top.MapFixtureFactory;
  * 
  */
 public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
+	@Override
 	public void testMove() {
 		MutableCargoBundle bundleA;
 		MutableCargoBundle bundleB;

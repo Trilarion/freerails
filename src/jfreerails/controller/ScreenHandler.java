@@ -133,16 +133,19 @@ final public class ScreenHandler {
 		createBufferStrategy();
 
 		frame.addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
 			public void componentResized(java.awt.event.ComponentEvent evt) {
 				createBufferStrategy();
 			}
 		});
 
 		frame.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowIconified(WindowEvent e) {
 				isMinimised = true;
 			}
 
+			@Override
 			public void windowDeiconified(WindowEvent e) {
 				isMinimised = false;
 			}

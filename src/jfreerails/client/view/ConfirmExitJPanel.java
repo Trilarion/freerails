@@ -8,7 +8,7 @@ package jfreerails.client.view;
 
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 
 /**
@@ -78,7 +78,7 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 		System.exit(0);
 	}// GEN-LAST:event_confirmExitActionPerformed
 
-	public void setup(ModelRoot mr, ViewLists vl,
+	public void setup(ModelRoot mr, RenderersRoot vl,
 			Action closeAction) {
 		closeJButton.setAction(closeAction);		
 	}

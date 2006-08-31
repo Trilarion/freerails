@@ -10,7 +10,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
@@ -29,7 +29,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = 3258131375164045363L;
 
-	private ViewLists vl;
+	private RenderersRoot rr;
 
 	private ReadOnlyWorld w;
 
@@ -83,9 +83,9 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
 	}// GEN-END:initComponents
 
-	public void setup(ReadOnlyWorld w, ViewLists vl) {
+	public void setup(ReadOnlyWorld w, RenderersRoot vl) {
 		this.w = w;
-		this.vl = vl;
+		this.rr = vl;
 	}
 
 	public void setTerrainType(int typeNumber) {
@@ -142,7 +142,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 		terrainDescription.setText(labelString);
 		terrainName.setText(type.getDisplayName());
 
-		Image tileIcon = vl.getTileViewList().getTileViewWithNumber(typeNumber)
+		Image tileIcon = rr.getTileViewWithNumber(typeNumber)
 				.getDefaultIcon();
 		terrainImage.setIcon(new ImageIcon(tileIcon));
 

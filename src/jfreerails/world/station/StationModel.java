@@ -16,6 +16,7 @@ public class StationModel implements FreerailsSerializable {
 
 	public final int y;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -52,7 +53,7 @@ public class StationModel implements FreerailsSerializable {
 
 	private final SupplyAtStation supply;
 
-	private final DemandAtStation demand;
+	private final Demand4Cargo demand;
 
 	private final ConvertedAtStation converted;
 
@@ -65,6 +66,7 @@ public class StationModel implements FreerailsSerializable {
 		return converted;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = x;
@@ -100,7 +102,7 @@ public class StationModel implements FreerailsSerializable {
 		production = new ImList<PlannedTrain>();
 
 		supply = new SupplyAtStation(new int[numberOfCargoTypes]);
-		demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
+		demand = new Demand4Cargo(new boolean[numberOfCargoTypes]);
 		converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
 		cargoBundleNumber = cargoBundle;
 	}
@@ -109,7 +111,7 @@ public class StationModel implements FreerailsSerializable {
 		this.name = "No name";
 		x = 0;
 		y = 0;
-		this.demand = new DemandAtStation(new boolean[0]);
+		this.demand = new Demand4Cargo(new boolean[0]);
 		this.supply = new SupplyAtStation(new int[0]);
 		this.converted = new ConvertedAtStation(new int[0]);
 		production = new ImList<PlannedTrain>();
@@ -144,7 +146,7 @@ public class StationModel implements FreerailsSerializable {
 		this.y = s.y;
 	}
 
-	public DemandAtStation getDemand() {
+	public Demand4Cargo getDemand() {
 		return demand;
 	}
 
@@ -152,7 +154,7 @@ public class StationModel implements FreerailsSerializable {
 		return supply;
 	}
 
-	public StationModel(StationModel s, DemandAtStation demand) {
+	public StationModel(StationModel s, Demand4Cargo demand) {
 		this.demand = demand;
 
 		this.cargoBundleNumber = s.cargoBundleNumber;

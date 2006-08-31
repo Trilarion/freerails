@@ -23,6 +23,8 @@ public interface ServerControlInterface {
 	void savegame(String saveGameName);
 
 	void stopGame();
+	
+	void refreshSavedGames();
 
 	void newGame(String mapName);
 }

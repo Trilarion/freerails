@@ -11,7 +11,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import jfreerails.client.common.ModelRootImpl;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.StationBuilder;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -84,7 +84,7 @@ public class ActionRoot {
 	/**
 	 * Call this method when a new game is started or a game is loaded.
 	 */
-	public void setup(ModelRootImpl modelRoot, ViewLists vl) {
+	public void setup(ModelRootImpl modelRoot, RenderersRoot vl) {
 		serverControls.setup(modelRoot, dialogueBoxController);                
 		if (!modelRoot.hasBeenSetup)
 			throw new IllegalStateException();

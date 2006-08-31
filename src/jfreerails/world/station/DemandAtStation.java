@@ -17,6 +17,7 @@ public class DemandAtStation implements FreerailsSerializable {
 		demand = ImInts.fromBoolean(demandArray);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -31,6 +32,7 @@ public class DemandAtStation implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 0;
 

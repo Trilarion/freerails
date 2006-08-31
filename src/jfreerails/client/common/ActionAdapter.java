@@ -100,6 +100,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
 	 * @param item
 	 *            The NAME of the Action selected
 	 */
+	@Override
 	public void setSelectedItem(Object item) {
 		// only set the item if not already selected
 		if ((item != null) && item.equals(getSelectedItem())) {
@@ -147,6 +148,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
 			setEnabled(action.isEnabled());
 		}
 
+		@Override
 		public void setSelected(boolean b) {
 			if (isSelected() != b) {
 				super.setSelected(b);

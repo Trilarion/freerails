@@ -11,7 +11,7 @@ import java.awt.Color;
 import javax.swing.Action;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.view.TrainOrdersListModel.TrainOrdersListElement;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.GameCalendar;
@@ -52,7 +52,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 		initComponents();
 	}
 
-	public void setup(ModelRoot modelRoot, ViewLists vl,
+	public void setup(ModelRoot modelRoot, RenderersRoot vl,
 			Action closeAction) {
 		this.principal = modelRoot.getPrincipal();
 		this.w = modelRoot.getWorld();

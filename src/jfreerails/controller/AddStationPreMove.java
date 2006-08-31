@@ -41,6 +41,7 @@ public class AddStationPreMove implements PreMove {
 
 	private final FreerailsPrincipal principal;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -59,6 +60,7 @@ public class AddStationPreMove implements PreMove {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = p.hashCode();

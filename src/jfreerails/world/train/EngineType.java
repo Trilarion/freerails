@@ -39,6 +39,7 @@ final public class EngineType implements FreerailsSerializable {
 		maintenance = maint;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof EngineType))
 			return false;
@@ -71,6 +72,7 @@ final public class EngineType implements FreerailsSerializable {
 		return price;
 	}
 
+	@Override
 	public int hashCode() {
 
 		int result;
@@ -83,6 +85,7 @@ final public class EngineType implements FreerailsSerializable {
 
 	}
 
+	@Override
 	public String toString() {
 		return engineTypeName;
 	}

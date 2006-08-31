@@ -18,6 +18,7 @@ public class IntLine implements Serializable {
 
 	public int y2;
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = x1;
@@ -60,6 +61,7 @@ public class IntLine implements Serializable {
 	public IntLine() {
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (null == o) {
 			return false;
@@ -81,6 +83,7 @@ public class IntLine implements Serializable {
 		return false;
 	}
 
+	@Override
 	public String toString() {
 		return "(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")";
 	}

@@ -23,6 +23,7 @@ public class GameRules implements FreerailsSerializable {
 
 	public static final GameRules NO_RESTRICTIONS = new GameRules(false, true);
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (canConnect2OtherRRTrack ? 1 : 0);
@@ -44,6 +45,7 @@ public class GameRules implements FreerailsSerializable {
 		return mustConnect2ExistingTrack;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof GameRules)) {
 			return false;

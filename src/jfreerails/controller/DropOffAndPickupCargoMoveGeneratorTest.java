@@ -12,7 +12,7 @@ import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.cargo.MutableCargoBundle;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.player.Player;
-import jfreerails.world.station.DemandAtStation;
+import jfreerails.world.station.Demand4Cargo;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
@@ -41,6 +41,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 	private final CargoBatch cargoType0FromStation0 = new CargoBatch(0, 0, 0,
 			0, 0);
 
+	@Override
 	protected void setUp() throws Exception {
 		// Set up the world object with three cargo types, one station, and one
 		// train.
@@ -180,7 +181,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		// Set the station to demand cargo type 0.
 		StationModel station = (StationModel) w.get(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
 				0);
-		DemandAtStation demand = new DemandAtStation(new boolean[] { true,
+		Demand4Cargo demand = new Demand4Cargo(new boolean[] { true,
 				false, false, false });
 		station = new StationModel(station, demand);
 		w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
@@ -281,7 +282,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		// Set station to demand cargo 0.
 		StationModel station = (StationModel) w.get(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
 				0);
-		DemandAtStation demand = new DemandAtStation(new boolean[] { true,
+		Demand4Cargo demand = new Demand4Cargo(new boolean[] { true,
 				false, false, false });
 		station = new StationModel(station, demand);
 		w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
@@ -295,10 +296,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		MutableCargoBundle expectedAtStation = new MutableCargoBundle();
 		expectedAtStation.setAmount(this.cargoType0FromStation0, 80);
 
-		assertEquals(expectedAtStation.toImmutableCargoBundle(),
-				getCargoAtStation());
 		assertEquals(expectedOnTrain.toImmutableCargoBundle(),
 				getCargoOnTrain());
+		assertEquals(expectedAtStation.toImmutableCargoBundle(),
+				getCargoAtStation());
+		
 	}
 
 	private void removeAllWagonsFromTrain() {
@@ -317,8 +319,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(
 				0, 0, w, MapFixtureFactory.TEST_PRINCIPAL, false, false);
 		Move m = moveGenerator.generateMove();
-		MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
-		assertEquals(MoveStatus.MOVE_OK, ms);
+		if(null != m){
+			MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+			assertEquals(MoveStatus.MOVE_OK, ms);
+		}
 	}
 
 	/**

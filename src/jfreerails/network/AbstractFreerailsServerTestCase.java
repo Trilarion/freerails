@@ -19,6 +19,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
 
 	private final String ipAddress = "127.0.0.1";
 
+	@Override
 	protected synchronized void setUp() throws Exception {
 		server = FreerailsGameServer
 				.startServer(new SavedGamesManager4UnitTests());
@@ -28,6 +29,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
 		serverThread.start();
 	}
 
+	@Override
 	protected synchronized void tearDown() throws Exception {
 		connectionAccepter.stop();
 	}

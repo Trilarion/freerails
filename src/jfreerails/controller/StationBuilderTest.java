@@ -28,6 +28,7 @@ public class StationBuilderTest extends TestCase {
 
 	StationBuilder stationBuilder;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		w = MapFixtureFactory2.getCopy();

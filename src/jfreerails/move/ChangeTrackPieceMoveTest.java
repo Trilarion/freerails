@@ -41,6 +41,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 		return testSuite;
 	}
 
+	@Override
 	protected void setUp() {
 		setHasSetupBeenCalled(true);
 		setWorld(new WorldImpl(20, 20));
@@ -141,6 +142,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 				actual);
 	}
 
+	@Override
 	public void testMove() {
 		TrackPiece oldTrackPiece;
 		TrackPiece newTrackPiece;

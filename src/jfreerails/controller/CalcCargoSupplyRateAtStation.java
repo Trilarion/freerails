@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import jfreerails.world.common.ImList;
 import jfreerails.world.station.ConvertedAtStation;
-import jfreerails.world.station.DemandAtStation;
+import jfreerails.world.station.Demand4Cargo;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.station.SupplyAtStation;
 import jfreerails.world.terrain.Consumption;
@@ -81,7 +81,7 @@ public class CalcCargoSupplyRateAtStation {
 		return new ConvertedAtStation(this.converts);
 	}
 
-	public DemandAtStation getDemand() {
+	public Demand4Cargo getDemand() {
 		boolean[] demandboolean = new boolean[w.size(SKEY.CARGO_TYPES)];
 
 		for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
@@ -90,7 +90,7 @@ public class CalcCargoSupplyRateAtStation {
 			}
 		}
 
-		return new DemandAtStation(demandboolean);
+		return new Demand4Cargo(demandboolean);
 	}
 
 	private void incrementSupplyAndDemand(int i, int j) {

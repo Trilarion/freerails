@@ -10,14 +10,16 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 
 import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -32,13 +34,13 @@ import jfreerails.world.train.TrainOrdersModel;
  * 
  * @author Luke Lindsay
  */
-public class TrainListCellRenderer extends JPanel implements View,
-		ListCellRenderer, WorldListListener {
+public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer,
+		WorldListListener {
 	private static final long serialVersionUID = 3546076964969591093L;
 
 	private ReadOnlyWorld w;
 
-	private ViewLists vl;
+	private RenderersRoot vl;
 
 	private int trainNumber = -1;
 
@@ -68,11 +70,11 @@ public class TrainListCellRenderer extends JPanel implements View,
 
 	private boolean selected = false;
 
-	private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
-			.getDefaults().get("List.background");
+	private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get(
+			"List.background");
 
-	private final Color selectedColor = (java.awt.Color) javax.swing.UIManager
-			.getDefaults().get("List.selectionBackground");
+	private final Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get(
+			"List.selectionBackground");
 
 	private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
 
@@ -80,7 +82,7 @@ public class TrainListCellRenderer extends JPanel implements View,
 		this.setOpaque(false);
 	}
 
-	public TrainListCellRenderer(ModelRoot mr, ViewLists vl) {
+	public TrainListCellRenderer(ModelRoot mr, RenderersRoot vl) {
 		setup(mr, vl, null);
 		this.setBackground(backgoundColor);
 	}
@@ -93,20 +95,35 @@ public class TrainListCellRenderer extends JPanel implements View,
 		showingOrder = false;
 		this.trainNumber = newTrainNumber;
 
-		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
-				trainNumber);
-
-		// Set up the array of images.
-		images = new Image[1 + train.getNumberOfWagons()];
-		images[0] = vl.getTrainImages().getSideOnEngineImage(
-				train.getEngineType(), height);
-
-		for (int i = 0; i < train.getNumberOfWagons(); i++) {
-			images[i + 1] = vl.getTrainImages().getSideOnWagonImage(
-					train.getWagon(i), height);
-		}
-
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);		
+		display(train.getEngineType(), train.getConsist());
 		resetPreferredSize();
+	}
+	
+	private void display(int engine, ImInts wagons){
+		images = new Image[1 + wagons.size()];
+		// images[0] = vl.getTrainImages().getSideOnEngineImage(
+		// train.getEngineType(), height);
+		String engineFilename = vl.getEngineImages(engine).sideOnFileName;
+		try {
+			images[0] = vl.getScaledImage(engineFilename, height);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException(engineFilename);
+		}
+		for (int i = 0; i < wagons.size(); i++) {
+			// images[i + 1] = vl.getTrainImages().getSideOnWagonImage(
+			// order.consist.get(i), height);
+			int wagonType = wagons.get(i);
+			String wagonFilename = vl.getWagonImages(wagonType).sideOnFileName;
+			try {
+				images[i + 1] = vl.getScaledImage(wagonFilename, height);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new IllegalArgumentException(wagonFilename);
+			}
+
+		}
 	}
 
 	public void display(int newTrainNumber, int newScheduleOrderID) {
@@ -114,24 +131,15 @@ public class TrainListCellRenderer extends JPanel implements View,
 		this.trainNumber = newTrainNumber;
 		this.scheduleOrderNumber = newScheduleOrderID;
 
-		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
-				trainNumber);
+		TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
 		this.scheduleID = train.getScheduleID();
 
-		ImmutableSchedule s = (ImmutableSchedule) w.get(principal,
-				KEY.TRAIN_SCHEDULES, scheduleID);
+		ImmutableSchedule s = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
 		TrainOrdersModel order = s.getOrder(newScheduleOrderID);
 
 		// Set up the array of images.
 		if (null != order.consist) {
-			images = new Image[1 + order.consist.size()];
-			images[0] = vl.getTrainImages().getSideOnEngineImage(
-					train.getEngineType(), height);
-
-			for (int i = 0; i < order.consist.size(); i++) {
-				images[i + 1] = vl.getTrainImages().getSideOnWagonImage(
-						order.consist.get(i), height);
-			}
+			display(train.getEngineType(), order.consist);
 		} else {
 			images = new Image[0];
 		}
@@ -150,18 +158,16 @@ public class TrainListCellRenderer extends JPanel implements View,
 		this.setPreferredSize(new Dimension(width, height));
 	}
 
-	public void setup(ModelRoot mr, ViewLists vl,
-			Action closeAction) {
+	public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
 		this.w = mr.getWorld();
 		this.vl = vl;
 		this.principal = mr.getPrincipal();
 	}
 
-	public Component getListCellRendererComponent(JList list, Object value,
-			int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList list, Object value, int index,
+			boolean isSelected, boolean cellHasFocus) {
 
-		int trainID = NonNullElements
-				.row2index(w, KEY.TRAINS, principal, index);
+		int trainID = NonNullElements.row2index(w, KEY.TRAINS, principal, index);
 		display(trainID);
 
 		selected = isSelected;
@@ -179,6 +185,7 @@ public class TrainListCellRenderer extends JPanel implements View,
 		return this;
 	}
 
+	@Override
 	public int getHeight() {
 		return height;
 	}
@@ -187,6 +194,7 @@ public class TrainListCellRenderer extends JPanel implements View,
 		height = i;
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 

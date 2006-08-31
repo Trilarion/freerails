@@ -57,6 +57,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 		return testSuite;
 	}
 
+	@Override
 	protected void setUp() {
 		super.setHasSetupBeenCalled(true);
 		setWorld(new WorldImpl(10, 10));
@@ -218,6 +219,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 		}
 	}
 
+	@Override
 	public void testMove() {
 		ImPoint pointA = new ImPoint(0, 0);
 		TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);

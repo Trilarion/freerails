@@ -25,6 +25,7 @@ public class TrackPathFinderTest extends TestCase {
 
 	private Player testPlayer = new Player("test", 0);
 
+	@Override
 	protected void setUp() throws Exception {
 		world = new WorldImpl(20, 20);
 		world.addPlayer(testPlayer);

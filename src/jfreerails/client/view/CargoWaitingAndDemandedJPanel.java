@@ -14,7 +14,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
@@ -144,7 +144,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
 	}// GEN-END:initComponents
 
-	public void setup(ModelRoot model, ViewLists vl,
+	public void setup(ModelRoot model, RenderersRoot vl,
 			Action closeAction) {
 		this.world = model.getWorld();
 		this.principal = model.getPrincipal();

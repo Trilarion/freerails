@@ -30,6 +30,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
 	private Player player;
 
+	@Override
 	protected void setUp() throws Exception {
 		world = new WorldImpl(20, 20);
 		MapFixtureFactory.generateTrackRuleList(world);

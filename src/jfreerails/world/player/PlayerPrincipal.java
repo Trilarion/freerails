@@ -21,10 +21,12 @@ public class PlayerPrincipal extends FreerailsPrincipal {
 		return name;
 	}
 
+	@Override
 	public int hashCode() {
 		return id;
 	}
 
+	@Override
 	public String toString() {
 		return "Player " + id;
 	}
@@ -36,6 +38,7 @@ public class PlayerPrincipal extends FreerailsPrincipal {
 		return id;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof PlayerPrincipal)) {
 			return false;

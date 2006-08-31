@@ -43,6 +43,7 @@ public class AddItemTransaction implements Transaction {
 		return amount;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AddItemTransaction) {
 			AddItemTransaction test = (AddItemTransaction) obj;
@@ -66,6 +67,7 @@ public class AddItemTransaction implements Transaction {
 		return type;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = category.hashCode();
@@ -76,6 +78,7 @@ public class AddItemTransaction implements Transaction {
 		return result;
 	}
 	
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("AddItemTransaction ");

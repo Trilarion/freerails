@@ -22,10 +22,12 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
 
 	private final int ticks;
 
+	@Override
 	public String toString() {
 		return "GameTime:" + String.valueOf(ticks);
 	}
 
+	@Override
 	public int hashCode() {
 		return ticks;
 	}
@@ -42,6 +44,7 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
 		return ticks;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof GameTime) {
 			GameTime test = (GameTime) o;

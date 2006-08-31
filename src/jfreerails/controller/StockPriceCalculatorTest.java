@@ -24,6 +24,7 @@ public class StockPriceCalculatorTest extends TestCase {
 
 	StockPriceCalculator calc;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		w = MapFixtureFactory2.getCopy();

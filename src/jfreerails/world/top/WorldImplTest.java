@@ -135,6 +135,7 @@ public class WorldImplTest extends TestCase {
 			this.x = x;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -149,6 +150,7 @@ public class WorldImplTest extends TestCase {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			return x;
 		}
@@ -161,6 +163,7 @@ public class WorldImplTest extends TestCase {
 
 		private final double duration;
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -175,6 +178,7 @@ public class WorldImplTest extends TestCase {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			return (int) duration;
 		}

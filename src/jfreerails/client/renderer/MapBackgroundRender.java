@@ -64,7 +64,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 	final public class TrackLayer implements MapLayerRenderer {
 		private final ReadOnlyWorld w;
 
-		private final TrackPieceRendererList trackPieceViewList;
+		private final RenderersRoot rr;
 
 		/**
 		 * Paints a rectangle of tiles onto the supplied graphics context.
@@ -98,8 +98,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
 						int ruleNumber = tp.getTrackTypeID();
 						if (ruleNumber != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-							jfreerails.client.renderer.TrackPieceRenderer trackPieceView = trackPieceViewList
-									.getTrackPieceView(ruleNumber);
+							TrackPieceRenderer trackPieceView = rr.getTrackPieceView(ruleNumber);
+									
 							trackPieceView.drawTrackPieceIcon(graphicsNumber,
 									tempG, tile.x, tile.y, tileSize);
 						}
@@ -131,8 +131,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 		}
 
 		public TrackLayer(ReadOnlyWorld world,
-				TrackPieceRendererList trackPieceViewList) {
-			this.trackPieceViewList = trackPieceViewList;
+				RenderersRoot trackPieceViewList) {
+			this.rr = trackPieceViewList;
 			this.w = world;
 		}
 
@@ -213,10 +213,10 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 		}
 	}
 
-	public MapBackgroundRender(ReadOnlyWorld w, ViewLists vl,
+	public MapBackgroundRender(ReadOnlyWorld w, RenderersRoot rr,
 			ModelRoot modelRoot) {
-		trackLayer = new TrackLayer(w, vl.getTrackPieceViewList());
-		terrainLayer = new TerrainLayer(w, vl.getTileViewList());
+		trackLayer = new TrackLayer(w, rr);
+		terrainLayer = new TerrainLayer(w, rr);
 		mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
 		cityNames = new CityNamesRenderer(w);
 		stationNames = new StationNamesRenderer(w, modelRoot);

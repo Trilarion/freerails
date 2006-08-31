@@ -39,6 +39,7 @@ public class EconomicClimate implements FreerailsSerializable {
 
 	private final int baseInterestRate;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
@@ -62,6 +63,7 @@ public class EconomicClimate implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (name != null ? name.hashCode() : 0);

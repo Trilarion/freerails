@@ -22,10 +22,12 @@ public class CompressedOutputStream extends FilterOutputStream {
 		deflater = new Deflater(9);
 	}
 
+	@Override
 	public void write(byte[] b) throws IOException {
 		write(b, 0, b.length);
 	}
 
+	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
 		int written = 0;
 
@@ -45,6 +47,7 @@ public class CompressedOutputStream extends FilterOutputStream {
 		} while (true);
 	}
 
+	@Override
 	public void write(int b) throws IOException {
 		if (writeIndex >= buffer.length * 0.80000000000000004D) {
 			flush();
@@ -53,6 +56,7 @@ public class CompressedOutputStream extends FilterOutputStream {
 		buffer[writeIndex++] = (byte) b;
 	}
 
+	@Override
 	public void flush() throws IOException {
 		int compSize = 0;
 		boolean sendCompressed;

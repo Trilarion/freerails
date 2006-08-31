@@ -48,6 +48,7 @@ public class FlowRateInputStream extends FilterInputStream implements Runnable {
 		this(in, "FlowRateInputStream", 60, 1000);
 	}
 
+	@Override
 	public void close() throws IOException {
 		closeRequested = true;
 		super.close();
@@ -69,6 +70,7 @@ public class FlowRateInputStream extends FilterInputStream implements Runnable {
 				.append(" Ko/s"))));
 	}
 
+	@Override
 	public int read() throws IOException {
 		int r = super.in.read();
 		totalByteReceived += r;
@@ -76,6 +78,7 @@ public class FlowRateInputStream extends FilterInputStream implements Runnable {
 		return r;
 	}
 
+	@Override
 	public int read(byte[] b) throws IOException {
 		int r = super.in.read(b);
 		totalByteReceived += r;
@@ -83,6 +86,7 @@ public class FlowRateInputStream extends FilterInputStream implements Runnable {
 		return r;
 	}
 
+	@Override
 	public int read(byte[] b, int off, int len) throws IOException {
 		int r = super.in.read(b, off, len);
 		totalByteReceived += r;

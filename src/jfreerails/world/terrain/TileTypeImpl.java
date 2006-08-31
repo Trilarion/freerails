@@ -24,6 +24,7 @@ final public class TileTypeImpl implements TerrainType {
 
 	private final int rgb;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -54,6 +55,7 @@ final public class TileTypeImpl implements TerrainType {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = consumption.hashCode();

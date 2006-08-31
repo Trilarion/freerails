@@ -37,7 +37,7 @@
 
 	</target>
 	<!-- Copies html etc and sets last modified date in html files.-->
-	<target name="html2docs" depends="mkdirs">
+	<target name="html2docs" depends="mkdirs" unless="skipdocs">
 		<copy todir="${doc}" preservelastmodified="true" overwrite="true">
 					<fileset dir="${src}">
 						<include name="**/*.html" />
@@ -251,7 +251,7 @@ else:
 		</delete>
 	</target>
 
-	<target name="run" depends="mkdirs, compile" description="Test run based on compile">
+	<target name="run_old" depends="mkdirs, compile" description="Test run based on compile">
 		<java classname="jfreerails.launcher.Launcher" fork="true">
 			<classpath>
 				<pathelement path="${build}" />
@@ -265,7 +265,7 @@ else:
 		<java fork="true" jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
 	</target>
 
-	<target name="javadoc" depends="mkdirs, html2docs" description="Generate javadoc">
+	<target name="javadoc" depends="mkdirs, html2docs" description="Generate javadoc" unless="skipdocs">
 		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}-${TSTAMP}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />
@@ -395,6 +395,25 @@ else:
 
 		</zip>
 	</target>
+        
+        <!-- Profiles the game using the NetBeans profiler.  Note, the location of the profiler is hard coded and
+        will need to be changed for the target to work on other machines.-->
+        
+        <target name="run" depends="compile" description="Profile Project">
+            <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
+
+            <nbprofiledirect>
+                <classpath> <pathelement location="C:\Program Files\netbeans-5.0\profiler1\lib"/> </classpath>
+            </nbprofiledirect>
+
+            <java classname="jfreerails.launcher.Launcher" fork="true">
+                <jvmarg value="${profiler.info.jvmargs.agent}"/>
+                <classpath>
+                    <pathelement path="${build}" />
+                </classpath>
+                <sysproperty key="java.util.logging.config.file" value="logging.properties" />
+            </java>
+        </target>
 
 
 </project>

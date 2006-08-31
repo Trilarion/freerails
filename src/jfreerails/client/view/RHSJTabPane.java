@@ -12,7 +12,7 @@ import javax.swing.ScrollPaneConstants;
 
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -94,7 +94,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
 	}
 
-	public void setup(final ActionRoot actionRoot, ViewLists vl,
+	public void setup(final ActionRoot actionRoot, RenderersRoot vl,
 			final ModelRootImpl modelRoot) {
 		world = modelRoot.getWorld();
 		terrainInfoPanel.setup(world, vl);

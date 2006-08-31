@@ -22,10 +22,12 @@ public class CompressedInputStream extends FilterInputStream {
 		inflater = new Inflater();
 	}
 
+	@Override
 	public boolean markSupported() {
 		return false;
 	}
 
+	@Override
 	public int available() throws IOException {
 		if (maxReadIndex - readIndex == 0 && super.in.available() > 0
 				&& !readNextBuffer()) {
@@ -34,6 +36,7 @@ public class CompressedInputStream extends FilterInputStream {
 		return maxReadIndex - readIndex;
 	}
 
+	@Override
 	public int read() throws IOException {
 		if (maxReadIndex - readIndex == 0 && !readNextBuffer()) {
 			return -1;
@@ -47,10 +50,12 @@ public class CompressedInputStream extends FilterInputStream {
 		return b;
 	}
 
+	@Override
 	public int read(byte[] b) throws IOException {
 		return read(b, 0, b.length);
 	}
 
+	@Override
 	public int read(byte[] b, int off, int len) throws IOException {
 		if (maxReadIndex - readIndex == 0 && !readNextBuffer()) {
 			return -1;

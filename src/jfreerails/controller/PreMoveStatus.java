@@ -16,6 +16,7 @@ final public class PreMoveStatus implements FreerailsSerializable {
 
 	public final MoveStatus ms;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -30,6 +31,7 @@ final public class PreMoveStatus implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		return ms.hashCode();
 	}

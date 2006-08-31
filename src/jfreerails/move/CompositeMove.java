@@ -24,6 +24,7 @@ public class CompositeMove implements Move {
 
 	private final ImList<Move> moves;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -45,6 +46,7 @@ public class CompositeMove implements Move {
 		return moves.get(i);
 	}
 
+	@Override
 	public int hashCode() {
 		// This will do for now.
 		return moves.size();
@@ -160,6 +162,7 @@ public class CompositeMove implements Move {
 		return moves.size();
 	}
 
+	@Override
 	public final String toString() {
 		String s = "";
 

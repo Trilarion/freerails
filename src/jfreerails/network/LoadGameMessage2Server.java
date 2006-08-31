@@ -18,6 +18,7 @@ public class LoadGameMessage2Server implements Message2Server {
 
 	private final int id;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -34,6 +35,7 @@ public class LoadGameMessage2Server implements Message2Server {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = id;

@@ -16,8 +16,7 @@ import javax.swing.SwingUtilities;
 public class CopyableTextJPanel extends javax.swing.JPanel {
     
     private static final long serialVersionUID = 4076159955353400345L;
-	java.awt.event.ActionListener closeAction;
-    
+
     /** Creates new form CopyableTextJPanel */
     public CopyableTextJPanel() {
         initComponents();
@@ -70,7 +69,8 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
         jTextArea1.setWrapStyleWord(true);
         jTextArea1.setOpaque(false);
         jTextArea1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            @Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTextArea1MouseClicked(evt);
             }
         });

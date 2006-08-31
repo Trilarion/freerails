@@ -37,6 +37,7 @@ final public class SynchronizedEventQueue extends EventQueue {
 		}
 	}
 
+	@Override
 	protected void dispatchEvent(AWTEvent aEvent) {
 		synchronized (MUTEX) {
 			try {

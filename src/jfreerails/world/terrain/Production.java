@@ -25,6 +25,7 @@ public class Production implements FreerailsSerializable {
 		rate = r;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -41,6 +42,7 @@ public class Production implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = cargoType;

@@ -1,3 +1,11 @@
+Jul 24, 2006 Luke
+	Fixed bug where list of saved games didn't get updated when files were added, 
+	removed, or renamed.
+Jul 16, 2006 Luke
+	Fixed bugs
+	1384250 Wait until full slows frame rate.
+	1384249 Unexpected Exception when removing last wagon.
+
 Dec 5, 2005 Luke
 	Fixed bugs
 	1313227 Remove last wagon doesn't work with more than 2 wagons

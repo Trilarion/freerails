@@ -16,7 +16,8 @@ final public class TrackPieceImpl implements TrackPiece {
 
 	private final int ruleNumber;
 
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -30,7 +31,8 @@ final public class TrackPieceImpl implements TrackPiece {
         return true;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         int result;
         result = configuration.hashCode();
         result = 29 * result + trackType.hashCode();

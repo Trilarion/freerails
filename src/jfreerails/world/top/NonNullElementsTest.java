@@ -36,6 +36,7 @@ public class NonNullElementsTest extends TestCase {
 		return testSuite;
 	}
 
+	@Override
 	protected void setUp() {
 		w = new WorldImpl();
 		station1 = new StationModel(10, 20, "Station1", 4, 0);

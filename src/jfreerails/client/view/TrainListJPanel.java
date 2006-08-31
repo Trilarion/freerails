@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -103,6 +103,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 		jList1.setCellRenderer(trainSummaryJPanel1);
 		jList1.setDoubleBuffered(true);
 		jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				jList1KeyPressed(evt);
 			}
@@ -115,6 +116,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 					}
 				});
 		jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				jList1MouseClicked(evt);
 			}
@@ -190,7 +192,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 		}
 	}// GEN-LAST:event_jList1KeyPressed
 
-	public void setup(ModelRoot mr, ViewLists vl,
+	public void setup(ModelRoot mr, RenderersRoot vl,
 			Action closeAction) {
 		world = mr.getWorld();
 		trainSummaryJPanel1.setup(mr, vl, null);
@@ -268,6 +270,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 
 	private int trainViewHeight = 50;
 
+	@Override
 	public void setVisible(boolean aFlag) {
 		if (aFlag && null != world) {
 			// jList1.setModel(new World2ListModelAdapter(world,
@@ -280,6 +283,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 		this.trainViewHeight = trainViewHeight;
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		if (null != world) {
 			NonNullElements trains = new NonNullElements(KEY.TRAINS, world,

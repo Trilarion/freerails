@@ -36,6 +36,7 @@ final public class RiverStyleTileRenderer extends
 		}
 	}
 
+	@Override
 	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
 		int iconNumber = 0;
 
@@ -48,6 +49,7 @@ final public class RiverStyleTileRenderer extends
 		return iconNumber;
 	}
 
+	@Override
 	public void dumpImages(ImageManager imageManager) {
 		for (int i = 0; i < this.getTileIcons().length; i++) {
 			imageManager.setImage(generateRelativeFileName(i), this
@@ -55,6 +57,7 @@ final public class RiverStyleTileRenderer extends
 		}
 	}
 
+	@Override
 	protected String generateFileNameNumber(int i) {
 		return BinaryNumberFormatter.formatWithLowBitOnLeft(i, 4);
 	}

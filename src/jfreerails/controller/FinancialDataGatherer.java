@@ -34,6 +34,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
 	
 	private int[] stockInThisRRs;				
 	
+	@Override
 	protected void incrementRunningTotal(int transactionID) {
 		Transaction t = super.w.getTransaction(super.principal, transactionID);
 
@@ -61,11 +62,13 @@ public class FinancialDataGatherer extends TransactionAggregator {
 		}
 	}
 
+	@Override
 	protected void setTotalsArrayLength(int length) {
 		// TODO Auto-generated method stub
 		super.setTotalsArrayLength(length);
 	}
 
+	@Override
 	protected void storeRunningTotal(int timeIndex) {
 		// TODO Auto-generated method stub
 		super.storeRunningTotal(timeIndex);
@@ -133,6 +136,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
 		return nwc.calculateValue();
 	}
 
+	@Override
 	protected boolean condition(int transactionID) {
 		// We'll do the work when incrementRunningTotal gets called.
 		return true;

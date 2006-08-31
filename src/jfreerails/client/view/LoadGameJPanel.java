@@ -8,7 +8,9 @@ package jfreerails.client.view;
 import jfreerails.controller.Message2Server;
 import jfreerails.controller.ModelRoot;
 import static jfreerails.controller.ModelRoot.Property;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
+
+import java.awt.Graphics;
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
@@ -22,7 +24,9 @@ import jfreerails.network.*;
 public class LoadGameJPanel extends javax.swing.JPanel implements View {
     
     private static final long serialVersionUID = -6810248272441137826L;
-	/** Creates new form LoadGameJPanel */
+    
+    private ImStringList lastFiles;
+    /** Creates new form LoadGameJPanel */
     public LoadGameJPanel() {
         initComponents();
     }
@@ -41,11 +45,13 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         jLabel1 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
+            @Override
+			public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
@@ -62,7 +68,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -71,7 +77,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
         jLabel1.setText("Please select a game to load.");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
@@ -103,12 +109,29 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(cancelButton, gridBagConstraints);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        add(refreshButton, gridBagConstraints);
+
+    }// </editor-fold>//GEN-END:initComponents
+    
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+    	Message2Server refreshGames = new RefreshListOfGamesMessage2Server(2);    	     
+        modelRoot.sendCommand(refreshGames);
+    }//GEN-LAST:event_refreshButtonActionPerformed
+    
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
- 
-      
+        
+        
     }//GEN-LAST:event_formComponentShown
     
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -119,7 +142,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         String filename = (String)jList1.getSelectedValue();
         Message2Server message2 = new LoadGameMessage2Server(1,
-                filename);        
+                filename);
         modelRoot.sendCommand(message2);
         
         if(null != close)
@@ -129,21 +152,34 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         okButton.setEnabled(jList1.getSelectedIndex() != -1);
     }//GEN-LAST:event_jList1ValueChanged
-    public void setup(ModelRoot m, ViewLists vl,
-            Action closeAction) {    	
+    public void setup(ModelRoot m, RenderersRoot vl, Action closeAction) {
         this.close = closeAction;
         modelRoot = m;
-                ImStringList files = (ImStringList)modelRoot.getProperty(Property.SAVED_GAMES_LIST);
+        updateListOfFiles();
+    }
+    
+    private void updateListOfFiles() {
+        ImStringList files = (ImStringList) modelRoot.getProperty(Property.SAVED_GAMES_LIST);
         Object[] saves = new Object[files.size()];
         for (int i = 0; i < files.size(); i++) {
             saves[i] = files.get(i);
         }
         jList1.setListData(saves);
-          System.err.println(saves.length);
         okButton.setEnabled(jList1.getSelectedIndex() != -1);
+        lastFiles = files;
     }
     
-   
+    
+    @Override
+            protected void paintComponent(Graphics g) {
+        ImStringList files = (ImStringList) modelRoot.getProperty(Property.SAVED_GAMES_LIST);
+        if(!lastFiles.equals(files)){
+            updateListOfFiles();
+        }
+        super.paintComponent(g);
+    }
+    
+
     ModelRoot modelRoot;
     ActionListener close;
     
@@ -153,6 +189,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     javax.swing.JList jList1;
     javax.swing.JScrollPane jScrollPane1;
     javax.swing.JButton okButton;
+    javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
     
 }

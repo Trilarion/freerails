@@ -26,6 +26,7 @@ public class TrainModel implements FreerailsSerializable {
 
 	private final int cargoBundleId;
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = scheduleId;
@@ -100,6 +101,7 @@ public class TrainModel implements FreerailsSerializable {
 		return wagonTypes;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof TrainModel) {
 			TrainModel test = (TrainModel) obj;

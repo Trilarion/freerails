@@ -29,12 +29,12 @@ public class BuildTrackRenderer implements Painter {
 
 	private final Dimension tileSize = new Dimension(30, 30);
 
-	private TrackPieceRendererList trackPieceViewList;
+	private RenderersRoot rr;
 
-	public BuildTrackRenderer(TrackPieceRendererList trackPieceViewList,
+	public BuildTrackRenderer(RenderersRoot trackPieceViewList,
 			ModelRoot modelRoot) {
 		this.modelRoot = modelRoot;
-		this.trackPieceViewList = trackPieceViewList;
+		this.rr = trackPieceViewList;
 
 	}
 
@@ -64,7 +64,7 @@ public class BuildTrackRenderer implements Painter {
 				int graphicsNumber = tp.getTrackGraphicID();
 
 				int ruleNumber = tp.getTrackTypeID();
-				jfreerails.client.renderer.TrackPieceRenderer trackPieceView = trackPieceViewList
+				jfreerails.client.renderer.TrackPieceRenderer trackPieceView = rr
 						.getTrackPieceView(ruleNumber);
 				trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x,
 						point.y, tileSize);

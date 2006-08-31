@@ -34,6 +34,7 @@ public class SetPropertyMessage2Client implements Message2Client {
 		this.value = value;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -62,6 +63,7 @@ public class SetPropertyMessage2Client implements Message2Client {
 		return id;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = id;

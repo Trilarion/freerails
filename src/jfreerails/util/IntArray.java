@@ -85,6 +85,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 * 
 	 * @return backing array object
 	 */
+	@Override
 	protected final Object getArray() {
 		return baseArray;
 	}
@@ -94,6 +95,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 * class code to set the array used for type-specific storage.
 	 * 
 	 */
+	@Override
 	protected final void setArray(Object array) {
 		baseArray = (int[]) array;
 	}
@@ -184,6 +186,7 @@ public class IntArray extends ArrayBase implements Serializable {
 	 * 
 	 * @return a copy of the object
 	 */
+	@Override
 	public Object clone() {
 		return new IntArray(this);
 	}

@@ -19,6 +19,7 @@ public class NetWorthCalculator extends TransactionAggregator {
 		super(w, principal);
 	}
 
+	@Override
 	protected boolean condition(int transactionID) {
 		Transaction t = super.w.getTransaction(super.principal,
 				transactionID);

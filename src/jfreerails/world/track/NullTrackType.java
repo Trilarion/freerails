@@ -76,10 +76,12 @@ final public class NullTrackType implements TrackRule {
 		return false;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		return o == this;
 	}
 
+	@Override
 	public int hashCode() {
 		return 666;
 	}

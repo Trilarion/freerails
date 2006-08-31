@@ -13,8 +13,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 
-import jfreerails.client.renderer.TrainImages;
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.Move;
@@ -54,7 +53,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
 	private ModelRoot modelRoot;
 
-	private ViewLists vl;
+	private RenderersRoot vl;
 
 	public TrainScheduleJPanel() {
 		initComponents();
@@ -266,11 +265,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 				.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		orders.setCellRenderer(trainOrderJPanel1);
 		orders.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				ordersKeyPressed(evt);
 			}
 		});
 		orders.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				ordersMouseClicked(evt);
 			}
@@ -476,7 +477,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 		orders.setSelectedIndex(i - 1);
 	}// GEN-LAST:event_pullUpJMenuItemActionPerformed
 
-	public void setup(ModelRoot mr, ViewLists vl, Action al) {
+	public void setup(ModelRoot mr, RenderersRoot vl, Action al) {
 		trainOrderJPanel1.setup(mr, vl, null);
 		this.modelRoot = mr;
 		this.vl = vl;
@@ -546,16 +547,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 	private void setupWagonsPopup() {
 		addWagonJMenu.removeAll(); // Remove existing menu items.
 		NonNullElements cargoTypes = new NonNullElements(SKEY.CARGO_TYPES,
-				modelRoot.getWorld());
-
-		TrainImages trainImages = vl.getTrainImages();
+				modelRoot.getWorld());		
 
 		while (cargoTypes.next()) {
 			final CargoType wagonType = (CargoType) cargoTypes.getElement();
 			JMenuItem wagonMenuItem = new JMenuItem();
 			final int wagonTypeNumber = cargoTypes.getIndex();
 			wagonMenuItem.setText(wagonType.getDisplayName());
-			Image image = trainImages.getSideOnWagonImage(wagonTypeNumber);
+			Image image = vl.getWagonImages(wagonTypeNumber).getSideOnImage();
 			int height = image.getHeight(null);
 			int width = image.getWidth(null);
 			int scale = height / 10;
@@ -658,7 +657,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 		ImInts oldConsist = oldOrders.consist;
 		int newLength = oldConsist.size() - 1;
 		if (newLength < 0) {
-			throw new NoSuchElementException("No wagons to remove!");
+			//No wagons to remove!
+			return;
 		}
 		ImInts newConsist = oldConsist.removeLast();
 

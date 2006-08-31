@@ -57,6 +57,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 			this.y = p.y;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -77,6 +78,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			int result;
 			result = x;
@@ -263,6 +265,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 		return ms;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -289,6 +292,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 		return new Rectangle(x, y, w, h);
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = diffs.hashCode();

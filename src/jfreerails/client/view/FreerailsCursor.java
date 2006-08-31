@@ -14,8 +14,8 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.io.IOException;
 
-import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.BuildTrackRenderer;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.world.common.ImPoint;
@@ -42,13 +42,13 @@ final public class FreerailsCursor {
 	 * 
 	 * @throws IOException
 	 */
-	public FreerailsCursor(ModelRoot mr, ImageManager im) throws IOException {
+	public FreerailsCursor(ModelRoot mr, RenderersRoot rr) throws IOException {
 		this.modelRoot = mr;
 		modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
-		buildTrack = im.getImage("cursor/buildtrack.png");
-		upgradeTrack = im.getImage("cursor/upgradetrack.png");
-		removeTrack = im.getImage("cursor/removetrack.png");
-		infoMode = im.getImage("cursor/infomode.png");
+		buildTrack = rr.getImage("cursor/buildtrack.png");
+		upgradeTrack = rr.getImage("cursor/upgradetrack.png");
+		removeTrack = rr.getImage("cursor/removetrack.png");
+		infoMode = rr.getImage("cursor/infomode.png");
 	}
 
 	/**

@@ -10,7 +10,7 @@ import java.awt.Graphics;
 
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
@@ -104,7 +104,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View{
 
 	}// GEN-END:initComponents
 
-	public void setup(ModelRoot mr, ViewLists vl,
+	public void setup(ModelRoot mr, RenderersRoot vl,
 			Action closeAction) {
 
 		this.trainViewJPanel1.setup(mr, vl, closeAction);

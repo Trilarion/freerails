@@ -33,6 +33,7 @@ public class ImStringList implements FreerailsSerializable {
 		return strings.length;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -47,6 +48,7 @@ public class ImStringList implements FreerailsSerializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		return strings.length;
 	}

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 
 /**
@@ -102,7 +102,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 		// TODO add your handling code here:
 	}// GEN-LAST:event_doneActionPerformed
 
-	public void setup(ModelRoot m, ViewLists vl,
+	public void setup(ModelRoot m, RenderersRoot vl,
 			Action closeAction) {
 		this.done.setAction(closeAction);
 	}

@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -78,25 +78,30 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 
 		setPreferredSize(new java.awt.Dimension(500, 350));
 		addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
 			public void componentResized(java.awt.event.ComponentEvent evt) {
 				formComponentResized(evt);
 			}
 
+			@Override
 			public void componentShown(java.awt.event.ComponentEvent evt) {
 				formComponentShown(evt);
 			}
 		});
 		addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				formKeyPressed(evt);
 			}
 		});
 		addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				formMouseClicked(evt);
 			}
 		});
 		addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+			@Override
 			public void mouseMoved(java.awt.event.MouseEvent evt) {
 				formMouseMoved(evt);
 			}
@@ -247,6 +252,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 		needsUpdating = false;
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
 		if (needsUpdating) {
 			this.setZoom();
@@ -325,7 +331,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 		}
 	}
 
-	public void setup(ModelRoot mr, ViewLists vl,
+	public void setup(ModelRoot mr, RenderersRoot vl,
 			Action closeAction) {
 		cargoWaitingAndDemandedJPanel1.setup(mr, vl, null);
 		this.world = mr.getWorld();

@@ -20,6 +20,7 @@ public class GameSpeed implements FreerailsSerializable {
 
 	private final int speed;
 
+	@Override
 	public String toString() {
 		return "GameSpeed:" + String.valueOf(speed);
 	}
@@ -36,6 +37,7 @@ public class GameSpeed implements FreerailsSerializable {
 		return speed < 1;
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof GameSpeed) {
 			GameSpeed test = (GameSpeed) o;
@@ -45,6 +47,7 @@ public class GameSpeed implements FreerailsSerializable {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		return speed;
 	}

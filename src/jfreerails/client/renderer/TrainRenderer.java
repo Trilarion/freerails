@@ -19,10 +19,10 @@ import jfreerails.world.train.TrainPositionOnMap;
  * 
  */
 public class TrainRenderer {
-	private final TrainImages trainImages;
+	private final RenderersRoot rr;
 
-	public TrainRenderer(TrainImages trainImages) {
-		this.trainImages = trainImages;
+	public TrainRenderer(RenderersRoot trainImages) {
+		this.rr = trainImages;
 	}
 
 	public void paintTrain(Graphics g, TrainModel train, TrainPositionOnMap s) {
@@ -58,20 +58,20 @@ public class TrainRenderer {
 	// map
 	public void paintTrainCrash(Graphics g, TrainPositionOnMap s) {
 		// check to see if there is a train
-		if (s == null) {
-			return;
-		}
-		// Get the image for that frame of the explosion
-		Image explosionImage = trainImages
-				.getExplosionImage(s.getFrameCt() - 1);
-		// draw the image
-		for (int i = 0; i < s.getLength() - 1; i++) {
-			Point p = new Point(s.getX(i), s.getY(i));
-			g.drawImage(explosionImage, p.x - 15, p.y - 15, null);
-
-		}
-		// increment the frame count
-		s.incrementFramCt();
+//		if (s == null) {
+//			return;
+//		}
+//		// Get the image for that frame of the explosion
+//		Image explosionImage = rr
+//				.getExplosionImage(s.getFrameCt() - 1);
+//		// draw the image
+//		for (int i = 0; i < s.getLength() - 1; i++) {
+//			Point p = new Point(s.getX(i), s.getY(i));
+//			g.drawImage(explosionImage, p.x - 15, p.y - 15, null);
+//
+//		}
+//		// increment the frame count
+//		s.incrementFramCt();
 	}
 
 	private void renderWagon(Graphics g, PathWalker pw, int type, boolean engine) {
@@ -104,9 +104,9 @@ public class TrainRenderer {
 		Image image;
 
 		if (engine) {
-			image = trainImages.getOverheadEngineImage(type, v.getID());
+			image = rr.getEngineImages(type).getOverheadImage(v.getID());
 		} else {
-			image = trainImages.getOverheadWagonImage(type, v.getID());
+			image = rr.getWagonImages(type).getOverheadImage(v.getID());
 		}
 
 		g.drawImage(image, p.x - 15, p.y - 15, null);

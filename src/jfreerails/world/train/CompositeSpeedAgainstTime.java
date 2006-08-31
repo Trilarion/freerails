@@ -28,6 +28,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 		finalS = tempTotalDistance;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -46,6 +47,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		long temp;
@@ -65,7 +67,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 	public SpeedTimeAndStatus getState(final double dt) {
 		checkT(dt);
 		double acceleration;
-		SpeedTimeAndStatus.Activity activity = SpeedTimeAndStatus.Activity.READY;
+		SpeedTimeAndStatus.TrainActivity activity = SpeedTimeAndStatus.TrainActivity.READY;
 		double s = 0;
 		double speed;
 

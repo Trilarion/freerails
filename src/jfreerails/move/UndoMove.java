@@ -13,6 +13,7 @@ public class UndoMove implements Move {
 
 	private Move move2undo;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -27,6 +28,7 @@ public class UndoMove implements Move {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		return move2undo.hashCode();
 	}

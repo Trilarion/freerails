@@ -39,6 +39,7 @@ public class MovePrecommitter {
 			pm = preMove;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -57,6 +58,7 @@ public class MovePrecommitter {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			int result;
 			result = (m != null ? m.hashCode() : 0);

@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 public class TrackMaintenanceMoveGeneratorTest extends TestCase {
 	private World w;
 
+	@Override
 	protected void setUp() throws Exception {
 		w = new WorldImpl(20, 20);
 		w.addPlayer(MapFixtureFactory.TEST_PLAYER);

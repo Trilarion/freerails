@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import jfreerails.client.renderer.ViewLists;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -137,7 +137,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
 		}
 	}// GEN-LAST:event_nextJButtonActionPerformed
 
-	public void setup(ModelRoot mr, ViewLists vl, Action al) {
+	public void setup(ModelRoot mr, RenderersRoot vl, Action al) {
 		newTrainScheduleJPanel1.setup(mr, vl, al);
 		trainDetailsJPanel1.setup(mr, vl, al);
 		this.setCancelButtonActionListener(al);

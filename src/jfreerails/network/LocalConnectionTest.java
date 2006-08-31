@@ -124,6 +124,7 @@ public class LocalConnectionTest extends TestCase {
 		assertTrue(localConnection.isOpen());
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		localConnection = new LocalConnection();
 		server = new Server(this.localConnection);
@@ -132,6 +133,7 @@ public class LocalConnectionTest extends TestCase {
 		t.start(); // Start the sever thread.
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		// TODO Auto-generated method stub
 		super.tearDown();

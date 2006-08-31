@@ -40,6 +40,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		return location;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (trackPieceBefore != null ? trackPieceBefore.hashCode() : 0);
@@ -281,6 +282,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 		return new Rectangle(x, y, width, height);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof ChangeTrackPieceMove) {
 			ChangeTrackPieceMove m = (ChangeTrackPieceMove) o;

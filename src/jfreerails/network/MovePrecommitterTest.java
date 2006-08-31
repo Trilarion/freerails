@@ -25,6 +25,7 @@ public class MovePrecommitterTest extends TestCase {
 
 	private MovePrecommitter committer;
 
+	@Override
 	protected void setUp() throws Exception {
 		w = new WorldImpl(10, 10);
 		committer = new MovePrecommitter(w);

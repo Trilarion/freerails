@@ -60,6 +60,7 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 		return u + a * t;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -91,7 +92,8 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 		return finalS;
 	}
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         int result;
         long temp;
         temp = u != +0.0d ? Double.doubleToLongBits(u) : 0l;

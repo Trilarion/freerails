@@ -21,10 +21,12 @@ final public class Money implements FreerailsSerializable {
 		return amount;
 	}
 
+	@Override
 	public int hashCode() {
 		return (int) (amount ^ (amount >>> 32));
 	}
 
+	@Override
 	public String toString() {
 		return df.format(amount);
 	}
@@ -37,6 +39,7 @@ final public class Money implements FreerailsSerializable {
 		return new Money(-amount);
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Money) {
 			Money test = (Money) obj;

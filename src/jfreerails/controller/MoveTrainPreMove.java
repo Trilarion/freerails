@@ -4,21 +4,24 @@
  */
 package jfreerails.controller;
 
-import static jfreerails.world.train.SpeedTimeAndStatus.Activity.STOPPED_AT_STATION;
-import static jfreerails.world.train.SpeedTimeAndStatus.Activity.WAITING_FOR_FULL_LOAD;
+import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
+import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger;
 
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.NextActivityMove;
+import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.common.ImInts;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.station.StationModel;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldDiffs;
 import jfreerails.world.train.CompositeSpeedAgainstTime;
@@ -27,6 +30,7 @@ import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.SpeedAgainstTime;
 import jfreerails.world.train.SpeedTimeAndStatus;
 import jfreerails.world.train.TrainMotion;
+import jfreerails.world.train.SpeedTimeAndStatus.TrainActivity;
 
 /**
  * Generates moves for changes in train position and stops at stations.
@@ -36,6 +40,8 @@ import jfreerails.world.train.TrainMotion;
  */
 public class MoveTrainPreMove implements PreMove {
 	private static final long serialVersionUID = 3545516188269491250L;
+	private static final Logger logger = Logger.getLogger(MoveTrainPreMove.class
+			.getName());
 
 	/** Uses static method to make testing easier.*/
 	public static Step findNextStep(ReadOnlyWorld world,
@@ -75,29 +81,43 @@ public class MoveTrainPreMove implements PreMove {
 	}
 
 	/**
-	 * Returns true iff if an updated is due.
+	 * Returns true iff an updated is due.
 	 * 
 	 */
 	public boolean canGenerateMove(ReadOnlyWorld w) {
 		GameTime currentTime = w.currentTime();
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
 		ActivityIterator ai = w.getActivities(principal, trainID);
 		while (ai.hasNext())
 			ai.nextActivity();
-				
+
 		double finishTime = ai.getFinishTime();
 		double ticks = currentTime.getTicks();
-		Math.floor(finishTime);
 
-		return Math.floor(finishTime) <= ticks;
-	}
-
-	private TrainMotion currentMotion(ReadOnlyWorld w) {
-		ActivityIterator ai = w.getActivities(principal, trainID);
-		while (ai.hasNext())
-			ai.nextActivity();
-
-		TrainMotion lastMotion = (TrainMotion) ai.getActivity();
-		return lastMotion;
+		boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
+		TrainActivity trainActivity = ta.getStatus(finishTime);
+		if(trainActivity == TrainActivity.WAITING_FOR_FULL_LOAD){
+			//Check whether there is any cargo that can be added to the train.
+			ImInts spaceAvailable = ta.spaceAvailable();
+			int stationId = ta.getStationId(ticks);
+			if(stationId == -1)
+				throw new IllegalStateException();
+			
+			StationModel station = (StationModel)w.get(principal, KEY.STATIONS, stationId);
+			CargoBundle cb = (CargoBundle)w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+			
+			for(int i = 0; i < spaceAvailable.size(); i++){
+				int space = spaceAvailable.get(i);
+				int atStation = cb.getAmount(i);
+				if(space * atStation > 0){
+					logger.fine("There is cargo to transfer!");
+					return true;
+				}
+			}
+			
+			return !ta.keepWaiting();
+		}
+		return hasFinishedLastActivity;
 	}
 
 	private ImPoint currentTrainTarget(ReadOnlyWorld w) {
@@ -105,6 +125,7 @@ public class MoveTrainPreMove implements PreMove {
 		return ta.getTarget();
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -130,7 +151,7 @@ public class MoveTrainPreMove implements PreMove {
 		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
 		TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
 
-		SpeedTimeAndStatus.Activity activity = tm.getActivity();
+		SpeedTimeAndStatus.TrainActivity activity = tm.getActivity();
 
 		switch (activity) {
 		case STOPPED_AT_STATION:
@@ -140,6 +161,7 @@ public class MoveTrainPreMove implements PreMove {
 			// Are we at a station?
 			TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
 					principal, new WorldDiffs(w));
+			ta.getStationId(Integer.MAX_VALUE);
 			PositionOnTrack pot = tm.getFinalPosition();
 			int x = pot.getX();
 			int y = pot.getY();
@@ -151,40 +173,15 @@ public class MoveTrainPreMove implements PreMove {
 				double durationOfStationStop = 10;
 								
 				stopsHandler.arrivesAtPoint(x, y);
-				SpeedTimeAndStatus.Activity status = stopsHandler.isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD : STOPPED_AT_STATION;
+				
+				SpeedTimeAndStatus.TrainActivity status = stopsHandler.isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD : STOPPED_AT_STATION;
 				PathOnTiles path = tm.getPath();
 				int lastTrainLength = tm.getTrainLength();
 				int currentTrainLength = stopsHandler.getTrainLength();
 				
 				//If we are adding wagons we may need to lengthen the path.
 				if(lastTrainLength < currentTrainLength){
-					double pathDistance = path.getTotalDistance();
-					double extraDistanceNeeded = currentTrainLength - pathDistance;
-					
-					List<Step> steps = new ArrayList<Step>();
-					ImPoint start = path.getStart();
-					Step firstStep = path.getStep(0);
-					PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x, start.y, firstStep);
-					
-					while( extraDistanceNeeded > 0){
-						
-						FlatTrackExplorer fte = new FlatTrackExplorer(w, nextPot);
-						fte.nextEdge();
-						nextPot.setValuesFromInt(fte.getVertexConnectedByEdge());
-						Step cameFrom = nextPot.facing();
-						steps.add(0, cameFrom);
-						extraDistanceNeeded -= cameFrom.getLength();
-						
-					}
-					
-					//Add existing steps
-					for (int i = 0; i < path.steps(); i++) {
-						Step step = path.getStep(i);	
-						steps.add(step);
-					}
-					
-					ImPoint newStart = new ImPoint(nextPot.getX(), nextPot.getY());
-					path = new PathOnTiles(newStart, steps);
+					path = TrainStopsHandler.lengthenPath(w, path, currentTrainLength);
 				}
 				
 				nextMotion = new TrainMotion(path, currentTrainLength,
@@ -204,41 +201,43 @@ public class MoveTrainPreMove implements PreMove {
 			TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
 					principal, new WorldDiffs(w));
 			
-			//If we don't call setWaiting4FullLoad(true), then refreshWaitingForFullLoad();
-			//will return false straight away.
-			stopsHandler.setWaiting4FullLoad(true);
+			
 			boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
 			Move cargoMove = stopsHandler.getMoves();
 			if(!waiting4fullLoad){
 				Move trainMove = moveTrain(w);
 				return new CompositeMove(trainMove, cargoMove);
 			}
+			stopsHandler.makeTrainWait(30);
 			return cargoMove;
 			
 		}
 		default:
 			throw new UnsupportedOperationException(activity.toString());
 		}
-
-		// then stop train and unload cargo.
-		// Are we waiting?
-		// Have orders changed?
-		// Yes, then updated schedule.
-
-		// Load/Unload any cargo.
-		// Decide whether to start moving.
-
+	}
+	
+	public SpeedTimeAndStatus.TrainActivity getActivity(ReadOnlyWorld w){
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+		TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
+		return tm.getActivity();		
 	}
 
-	// boolean isTrainAtStation(){
-	//		
-	// }
-
+	@Override
 	public int hashCode() {
 		int result;
 		result = trainID;
 		result = 29 * result + principal.hashCode();
 		return result;
+	}
+
+	private TrainMotion lastMotion(ReadOnlyWorld w) {
+		ActivityIterator ai = w.getActivities(principal, trainID);
+		while (ai.hasNext())
+			ai.nextActivity();
+
+		TrainMotion lastMotion = (TrainMotion) ai.getActivity();
+		return lastMotion;
 	}
 
 	private Move moveTrain(ReadOnlyWorld w) {
@@ -253,7 +252,7 @@ public class MoveTrainPreMove implements PreMove {
 	}
 
 	TrainMotion nextMotion(ReadOnlyWorld w, Step v) {
-		TrainMotion motion = currentMotion(w);
+		TrainMotion motion = lastMotion(w);
 
 		SpeedAgainstTime speeds = nextSpeeds(w, v);
 
@@ -265,7 +264,7 @@ public class MoveTrainPreMove implements PreMove {
 
 	SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, Step v) {
 		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		TrainMotion lastMotion = currentMotion(w);
+		TrainMotion lastMotion = lastMotion(w);
 
 		double u = lastMotion.getSpeedAtEnd();
 		double s = v.getLength();
@@ -292,7 +291,7 @@ public class MoveTrainPreMove implements PreMove {
 
 	Step nextStep(ReadOnlyWorld w) {
 		// Find current position.
-		TrainMotion currentMotion = currentMotion(w);
+		TrainMotion currentMotion = lastMotion(w);
 		PositionOnTrack currentPosition = currentMotion.getFinalPosition();
 		// Find targets
 		ImPoint targetPoint = currentTrainTarget(w);
@@ -300,7 +299,7 @@ public class MoveTrainPreMove implements PreMove {
 	}	
 	
 	public Move stopTrain(ReadOnlyWorld w) {
-		TrainMotion motion = currentMotion(w);
+		TrainMotion motion = lastMotion(w);
 		SpeedAgainstTime stopped = ConstAcc.STOPPED;
 		double duration = motion.duration();
 

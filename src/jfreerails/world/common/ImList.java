@@ -23,6 +23,7 @@ public final class ImList<E extends FreerailsSerializable> implements
 
 	private final E[] elementData;
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -37,6 +38,7 @@ public final class ImList<E extends FreerailsSerializable> implements
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		return elementData.length;
 	}

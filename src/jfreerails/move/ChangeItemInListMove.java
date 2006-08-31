@@ -4,6 +4,7 @@
  */
 package jfreerails.move;
 
+import jfreerails.util.Utils;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -29,10 +30,70 @@ public class ChangeItemInListMove implements ListMove {
 
 	private final FreerailsPrincipal principal;
 
+	public ChangeItemInListMove(KEY k, int index, FreerailsSerializable before,
+			FreerailsSerializable after, FreerailsPrincipal p) {
+		this.before = before;
+		this.after = after;
+		this.index = index;
+		this.listKey = k;
+		this.principal = p;
+	}
+
+	public boolean beforeEqualsAfter(){
+		return Utils.equal(this.before, this.after);
+	}
+
+	public MoveStatus doMove(World w, FreerailsPrincipal p) {
+		return move(after, before, w);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof ChangeItemInListMove) {
+			ChangeItemInListMove test = (ChangeItemInListMove) o;
+
+			if (!before.equals(test.getBefore())) {
+				return false;
+			}
+
+			if (!after.equals(test.getAfter())) {
+				return false;
+			}
+
+			if (index != test.index) {
+				return false;
+			}
+
+			if (listKey != test.listKey) {
+				return false;
+			}
+
+			return true;
+		}
+		return false;
+	}
+	
+	public FreerailsSerializable getAfter() {
+		return after;
+	}
+
+	public FreerailsSerializable getBefore() {
+		return before;
+	}
+
 	public int getIndex() {
 		return index;
 	}
 
+	public KEY getKey() {
+		return listKey;
+	}
+
+	public FreerailsPrincipal getPrincipal() {
+		return principal;
+	}
+
+	@Override
 	public int hashCode() {
 		int result;
 		result = listKey.hashCode();
@@ -44,17 +105,15 @@ public class ChangeItemInListMove implements ListMove {
 		return result;
 	}
 
-	public KEY getKey() {
-		return listKey;
-	}
+	protected MoveStatus move(FreerailsSerializable to,
+			FreerailsSerializable from, World w) {
+		MoveStatus ms = tryMove(to, from, w);
 
-	public ChangeItemInListMove(KEY k, int index, FreerailsSerializable before,
-			FreerailsSerializable after, FreerailsPrincipal p) {
-		this.before = before;
-		this.after = after;
-		this.index = index;
-		this.listKey = k;
-		this.principal = p;
+		if (ms.ok) {
+			w.set(principal, listKey, index, to);
+		}
+
+		return ms;
 	}
 
 	@Override
@@ -70,18 +129,6 @@ public class ChangeItemInListMove implements ListMove {
 
 	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
 		return tryMove(after, before, w);
-	}
-
-	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		return tryMove(before, after, w);
-	}
-
-	public MoveStatus doMove(World w, FreerailsPrincipal p) {
-		return move(after, before, w);
-	}
-
-	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-		return move(before, after, w);
 	}
 
 	protected MoveStatus tryMove(FreerailsSerializable to,
@@ -109,51 +156,11 @@ public class ChangeItemInListMove implements ListMove {
 		return MoveStatus.MOVE_OK;
 	}
 
-	protected MoveStatus move(FreerailsSerializable to,
-			FreerailsSerializable from, World w) {
-		MoveStatus ms = tryMove(to, from, w);
-
-		if (ms.ok) {
-			w.set(principal, listKey, index, to);
-		}
-
-		return ms;
+	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
+		return tryMove(before, after, w);
 	}
 
-	public boolean equals(Object o) {
-		if (o instanceof ChangeItemInListMove) {
-			ChangeItemInListMove test = (ChangeItemInListMove) o;
-
-			if (!before.equals(test.getBefore())) {
-				return false;
-			}
-
-			if (!after.equals(test.getAfter())) {
-				return false;
-			}
-
-			if (index != test.index) {
-				return false;
-			}
-
-			if (listKey != test.listKey) {
-				return false;
-			}
-
-			return true;
-		}
-		return false;
-	}
-
-	public FreerailsSerializable getAfter() {
-		return after;
-	}
-
-	public FreerailsSerializable getBefore() {
-		return before;
-	}
-
-	public FreerailsPrincipal getPrincipal() {
-		return principal;
+	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+		return move(before, after, w);
 	}
 }
