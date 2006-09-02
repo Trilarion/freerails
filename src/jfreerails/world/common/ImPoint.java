@@ -15,7 +15,7 @@ import jfreerails.util.Immutable;
  * 
  */
 @Immutable
-public final class ImPoint implements FreerailsSerializable {
+public final class ImPoint implements FreerailsSerializable, Comparable<ImPoint> {
 
 	private static final long serialVersionUID = -3053020239886388576L;
 
@@ -68,5 +68,12 @@ public final class ImPoint implements FreerailsSerializable {
 	@Override
 	public String toString() {
 		return "ImPoint{" + x + ", " + y + "}";
+	}
+
+	public int compareTo(ImPoint o) {
+		if (o.y != y)
+			return y - o.y;
+		else
+			return x - o.x;
 	}
 }

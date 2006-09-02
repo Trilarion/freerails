@@ -274,14 +274,18 @@ public class TrainUpdater implements ServerAutomaton {
 		for (int k = 0; k < world.getNumberOfPlayers(); k++) {
 			FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
+			//TODO  Create a HashMap mapping track section -> number of moving trains.
+			
 			for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
+								
+				
 				TrainModel train = (TrainModel) world.get(principal,
 						KEY.TRAINS, i);
 				if (null == train)
 					continue;
 
 				MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal);
-				if (moveTrain.canGenerateMove(world)) {					
+				if (moveTrain.isUpdateDue(world)) {					
 					Move m = moveTrain.generateMove(world);
 					moveReceiver.processMove(m);
 				}

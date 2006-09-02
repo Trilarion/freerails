@@ -236,7 +236,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="false" category="station" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008" price="10000" fixedCost="100000" maintenance="2000">
+      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="true" category="station" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008" price="10000" fixedCost="100000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 
@@ -263,7 +263,7 @@
          </ListOfTrackPieceTemplates>
       </TrackType>
 
-      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="false" category="station" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009" price="10000" fixedCost="200000" maintenance="2000">
+      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="true" category="station" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009" price="10000" fixedCost="200000" maintenance="2000">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Urban" />
 

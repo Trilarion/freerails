@@ -99,7 +99,7 @@ final public class Step implements FlatTrackTemplate {
 		return tvectors;
 	}
 
-	public static ImPoint move(ImPoint p, Step[] path) {
+	public static ImPoint move(ImPoint p, Step... path) {
 		int x = p.x;
 		int y = p.y;
 		for (Step v : path) {

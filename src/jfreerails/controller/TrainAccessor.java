@@ -4,17 +4,22 @@
  */
 package jfreerails.controller;
 
+import java.util.HashSet;
+
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.common.ActivityIterator;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
+import jfreerails.world.common.Step;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
+import jfreerails.world.track.TrackSection;
 import jfreerails.world.train.ImmutableSchedule;
+import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.SpeedTimeAndStatus;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
@@ -131,13 +136,17 @@ public class TrainAccessor {
 	public boolean keepWaiting(){
 		double time = w.currentTime().getTicks();
 		int stationId = getStationId(time);
-		if(stationId == -1) return false;
+		if (stationId == -1)
+			return false;
 		SpeedTimeAndStatus.TrainActivity act = getStatus(time);
-		if(act != TrainActivity.WAITING_FOR_FULL_LOAD) return false;
+		if (act != TrainActivity.WAITING_FOR_FULL_LOAD)
+			return false;
 		ImmutableSchedule shedule = getSchedule();
 		TrainOrdersModel order = shedule.getOrder(shedule.getOrderToGoto());
-		if(order.stationId != stationId) return false;
-		if(!order.waitUntilFull) return false;
+		if (order.stationId != stationId)
+			return false;
+		if (!order.waitUntilFull)
+			return false;
 		TrainModel train = getTrain();
 		return order.getConsist().equals(train.getConsist());				
 	}
@@ -162,6 +171,29 @@ public class TrainAccessor {
 				KEY.STATIONS, stationNumber);
 
 		return new ImPoint(station.x, station.y);
+	}
+	
+	public HashSet<TrackSection> occupiedTrackSection(double time){
+		TrainMotion tm = findCurrentMotion(time);
+		PathOnTiles path = tm.getPath();
+		 HashSet<TrackSection>  sections = new  HashSet<TrackSection>();
+		ImPoint start = path.getStart();
+		int x = start.x;
+		int y = start.y;
+		for (int i = 0; i < path.steps(); i++) {
+			Step s = path.getStep(i);
+			ImPoint tile = new ImPoint(x, y);
+			x+=s.deltaX;
+			y+=s.deltaY;
+			sections.add(new  TrackSection(s, tile));			
+		}		
+		return sections;
+	}
+	
+	public boolean isMoving(double time){
+		TrainMotion tm = findCurrentMotion(time);
+		double speed = tm.getSpeedAtEnd();
+		return speed != 0;
 	}
 	
 	/** The space available on the train measured in cargo units.*/

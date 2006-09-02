@@ -7,6 +7,8 @@ package jfreerails.controller;
 import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
 import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.logging.Logger;
 
 import jfreerails.move.CompositeMove;
@@ -24,11 +26,15 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldDiffs;
+import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.TrackPiece;
+import jfreerails.world.track.TrackSection;
 import jfreerails.world.train.CompositeSpeedAgainstTime;
 import jfreerails.world.train.ConstAcc;
 import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.SpeedAgainstTime;
 import jfreerails.world.train.SpeedTimeAndStatus;
+import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.SpeedTimeAndStatus.TrainActivity;
 
@@ -84,7 +90,50 @@ public class MoveTrainPreMove implements PreMove {
 	 * Returns true iff an updated is due.
 	 * 
 	 */
-	public boolean canGenerateMove(ReadOnlyWorld w) {
+	public boolean isUpdateDue(ReadOnlyWorld w) {
+		GameTime currentTime = w.currentTime();
+		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+		ActivityIterator ai = w.getActivities(principal, trainID);
+		while (ai.hasNext())
+			ai.nextActivity();
+
+		double finishTime = ai.getFinishTime();
+		double ticks = currentTime.getTicks();
+
+		boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
+		TrainActivity trainActivity = ta.getStatus(finishTime);
+		if(trainActivity == TrainActivity.WAITING_FOR_FULL_LOAD){
+			//Check whether there is any cargo that can be added to the train.
+			ImInts spaceAvailable = ta.spaceAvailable();
+			int stationId = ta.getStationId(ticks);
+			if(stationId == -1)
+				throw new IllegalStateException();
+			
+			StationModel station = (StationModel)w.get(principal, KEY.STATIONS, stationId);
+			CargoBundle cb = (CargoBundle)w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+			
+			for(int i = 0; i < spaceAvailable.size(); i++){
+				int space = spaceAvailable.get(i);
+				int atStation = cb.getAmount(i);
+				if(space * atStation > 0){
+					logger.fine("There is cargo to transfer!");
+					return true;
+				}
+			}
+			
+			return !ta.keepWaiting();
+		}
+		return hasFinishedLastActivity;
+	}
+	
+	/**
+	 * Returns true iff the following hold.
+	 *  <ol>
+	 * <li>The train is waiting for a full load at some station X.</li>	 
+	 * </ol>
+	 * 
+	 */
+	public boolean isStationUpdateDue(ReadOnlyWorld w) {
 		GameTime currentTime = w.currentTime();
 		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
 		ActivityIterator ai = w.getActivities(principal, trainID);
@@ -145,11 +194,11 @@ public class MoveTrainPreMove implements PreMove {
 	public Move generateMove(ReadOnlyWorld w) {
 
 		// Check that we can generate a move.
-		if (!canGenerateMove(w))
+		if (!isUpdateDue(w))
 			throw new IllegalStateException();
 
 		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
+		TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
 
 		SpeedTimeAndStatus.TrainActivity activity = tm.getActivity();
 
@@ -206,7 +255,11 @@ public class MoveTrainPreMove implements PreMove {
 			Move cargoMove = stopsHandler.getMoves();
 			if(!waiting4fullLoad){
 				Move trainMove = moveTrain(w);
+				if(null != trainMove){
 				return new CompositeMove(trainMove, cargoMove);
+				}else{
+					return cargoMove;
+				}
 			}
 			stopsHandler.makeTrainWait(30);
 			return cargoMove;
@@ -243,12 +296,61 @@ public class MoveTrainPreMove implements PreMove {
 	private Move moveTrain(ReadOnlyWorld w) {
 		// Find the next vector.
 		Step nextVector = nextStep(w);
+		HashMap<TrackSection, Integer> occupiedTrackSections = occupiedTrackSections(w);
+		TrainMotion motion = lastMotion(w);
+		PositionOnTrack pot = motion.getFinalPosition();
+		ImPoint tile = new ImPoint(pot.getX(), pot.getY());
+		TrackSection desiredTrackSection = new TrackSection(nextVector, tile);
 
+		// Check whether the desired track section is single or double track.
+		ImPoint tileA = desiredTrackSection.tileA();
+		ImPoint tileB = desiredTrackSection.tileB();
+		FreerailsTile fta = (FreerailsTile) w.getTile(tileA.x, tileA.y);
+		FreerailsTile ftb = (FreerailsTile) w.getTile(tileB.x, tileB.y);
+		TrackPiece tpa = fta.getTrackPiece();
+		TrackPiece tpb = ftb.getTrackPiece();
+		int tracks = 1;
+		if (tpa.getTrackRule().isDouble() && tpb.getTrackRule().isDouble()) {
+			tracks = 2;
+		}
+
+		if (occupiedTrackSections.containsKey(desiredTrackSection)) {
+			int trains = occupiedTrackSections.get(desiredTrackSection);
+			if (trains >= tracks) {
+				// We need to wait for the track ahead to clear.
+				return stopTrain(w);
+			}
+		}
 		// Create a new train motion object.
 		TrainMotion nextMotion = nextMotion(w, nextVector);
-
 		return new NextActivityMove(nextMotion, trainID, principal);
 
+	}
+
+	private HashMap<TrackSection, Integer> occupiedTrackSections(ReadOnlyWorld w) {
+		HashMap<TrackSection, Integer> occupiedTrackSections = new HashMap<TrackSection, Integer>();
+		for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {						
+			TrainModel train = (TrainModel) w.get(principal,
+					KEY.TRAINS, i);
+			if (null == train)
+				continue;
+			
+			TrainAccessor ta = new TrainAccessor(w, principal, i);
+			GameTime gt = w.currentTime();
+			if(ta.isMoving(gt.getTicks())){
+				HashSet<TrackSection> sections = ta.occupiedTrackSection(gt.getTicks());
+				for (TrackSection section : sections) {
+					if(occupiedTrackSections.containsKey(section)){
+						int count = occupiedTrackSections.get(section);
+						count++;
+						occupiedTrackSections.put(section, count);
+					}else{
+						occupiedTrackSections.put(section, 1);
+					}
+				}						
+			}
+		}
+		return occupiedTrackSections;
 	}
 
 	TrainMotion nextMotion(ReadOnlyWorld w, Step v) {

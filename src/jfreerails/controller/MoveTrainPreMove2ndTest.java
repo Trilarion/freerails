@@ -313,7 +313,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 		assertEquals(WAITING_FOR_FULL_LOAD, tm.getActivity());
 		
 		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
-		assertFalse("The train isn't full and there is no cargo to add, so we should be able to generate a move.", preMove.canGenerateMove(world));
+		assertFalse("The train isn't full and there is no cargo to add, so we should be able to generate a move.", preMove.isUpdateDue(world));
 
 	}
 
@@ -345,11 +345,11 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
 	public void testCanGenerateMove() {
 		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
-		assertTrue(preMove.canGenerateMove(world));
+		assertTrue(preMove.isUpdateDue(world));
 		Move m = preMove.generateMove(world);
 		MoveStatus ms = m.doMove(world, principal);
 		assertTrue(ms.message, ms.ok);
-		assertFalse(preMove.canGenerateMove(world));
+		assertFalse(preMove.isUpdateDue(world));
 	}
 
 	static void incrTime(World w, FreerailsPrincipal p) {
