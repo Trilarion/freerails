@@ -30,7 +30,7 @@ import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.TrainOrdersModel;
 
 /**
- * JUnit test for MoveTrainPreMove.
+ * JUnit test for MoveTrainPreMove, tests moving round a loop of track.
  * 
  * @author Luke
  * 

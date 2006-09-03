@@ -266,7 +266,8 @@ public class TrainStopsHandler implements Serializable {
 			m.doMove(worldDiffs, principal);
 		}
 		updateSchedule();
-		loadAndUnloadCargo(schedule.getStationToGoto(), true, autoConsist);
+		int stationToGoto = schedule.getStationToGoto();
+		loadAndUnloadCargo(stationToGoto, true, autoConsist);
 	}
 
 	void updateSchedule() {

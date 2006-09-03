@@ -255,7 +255,6 @@ public class DropOffAndPickupCargoMoveGenerator {
 	/** Transfer cargo from the station to the train subject to the space available on the train.	
 	 */
 	private void processStationBundle() {
-		ImInts consist = train.getTrain().getConsist();
 		ImInts spaceAvailable = TrainAccessor.spaceAvailable2(w, trainAfter.toImmutableCargoBundle(), consist);
 		for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
 			int quantity = spaceAvailable.get(cargoType);

@@ -1,3 +1,6 @@
+Sep 3, 2006, Luke
+	Fixed bugs
+	1551106  Trains with 'auto consist' set don't pickup cargo
 Sep 1, 2006, Luke
 	Features implemented:
 	987520 Track Contention

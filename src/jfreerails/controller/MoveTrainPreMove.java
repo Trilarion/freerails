@@ -124,50 +124,7 @@ public class MoveTrainPreMove implements PreMove {
 			return !ta.keepWaiting();
 		}
 		return hasFinishedLastActivity;
-	}
-	
-	/**
-	 * Returns true iff the following hold.
-	 *  <ol>
-	 * <li>The train is waiting for a full load at some station X.</li>	 
-	 * </ol>
-	 * 
-	 */
-	public boolean isStationUpdateDue(ReadOnlyWorld w) {
-		GameTime currentTime = w.currentTime();
-		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		ActivityIterator ai = w.getActivities(principal, trainID);
-		while (ai.hasNext())
-			ai.nextActivity();
-
-		double finishTime = ai.getFinishTime();
-		double ticks = currentTime.getTicks();
-
-		boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
-		TrainActivity trainActivity = ta.getStatus(finishTime);
-		if(trainActivity == TrainActivity.WAITING_FOR_FULL_LOAD){
-			//Check whether there is any cargo that can be added to the train.
-			ImInts spaceAvailable = ta.spaceAvailable();
-			int stationId = ta.getStationId(ticks);
-			if(stationId == -1)
-				throw new IllegalStateException();
-			
-			StationModel station = (StationModel)w.get(principal, KEY.STATIONS, stationId);
-			CargoBundle cb = (CargoBundle)w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
-			
-			for(int i = 0; i < spaceAvailable.size(); i++){
-				int space = spaceAvailable.get(i);
-				int atStation = cb.getAmount(i);
-				if(space * atStation > 0){
-					logger.fine("There is cargo to transfer!");
-					return true;
-				}
-			}
-			
-			return !ta.keepWaiting();
-		}
-		return hasFinishedLastActivity;
-	}
+	}		
 
 	private ImPoint currentTrainTarget(ReadOnlyWorld w) {
 		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
