@@ -1,10 +1,12 @@
 package jfreerails.server;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import jfreerails.controller.AddTrainPreMove;
 import jfreerails.controller.MoveTrainPreMove;
 import jfreerails.controller.PreMove;
+import jfreerails.controller.TrainAccessor;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.ChangeTrainScheduleMove;
@@ -271,10 +273,15 @@ public class TrainUpdater implements ServerAutomaton {
 	}
 
 	void moveTrains(ReadOnlyWorld world) {
+		int time = world.currentTime().getTicks();
 		for (int k = 0; k < world.getNumberOfPlayers(); k++) {
 			FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
-			//TODO  Create a HashMap mapping track section -> number of moving trains.
+			//If a train is moving, we want it to keep moving rather than stop
+			//to allow an already stationary train to start moving.  To achieve this
+			//we process moving trains first.
+			ArrayList<MoveTrainPreMove> movingTrains = new ArrayList<MoveTrainPreMove>();
+			ArrayList<MoveTrainPreMove> stoppedTrains = new ArrayList<MoveTrainPreMove>();
 			
 			for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
 								
@@ -285,10 +292,23 @@ public class TrainUpdater implements ServerAutomaton {
 					continue;
 
 				MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal);
-				if (moveTrain.isUpdateDue(world)) {					
-					Move m = moveTrain.generateMove(world);
-					moveReceiver.processMove(m);
+				if (moveTrain.isUpdateDue(world)) {	
+					TrainAccessor ta = new TrainAccessor(world, principal, i);
+					if(ta.isMoving(time)){
+						movingTrains.add(moveTrain);
+					}else{
+						stoppedTrains.add(moveTrain);
+					}
+					
 				}
+			}
+			for (MoveTrainPreMove preMove : movingTrains) {
+				Move m = preMove.generateMove(world);
+				moveReceiver.processMove(m);
+			}
+			for (MoveTrainPreMove preMove : stoppedTrains) {
+				Move m = preMove.generateMove(world);
+				moveReceiver.processMove(m);
 			}
 		}
 
