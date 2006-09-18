@@ -22,6 +22,7 @@
 package jfreerails.util;
 
 import java.lang.reflect.Array;
+import java.io.Serializable;
 
 /**
  * Base class for various types of collections based on type-specific growable
@@ -32,7 +33,7 @@ import java.lang.reflect.Array;
  * @author Dennis M. Sosnoski
  * @version 1.0
  */
-public abstract class GrowableBase {
+public abstract class GrowableBase implements Serializable {
 	/** Default initial array size. */
 	public static final int DEFAULT_SIZE = 8;
 

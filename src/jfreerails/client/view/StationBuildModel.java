@@ -99,7 +99,7 @@ public class StationBuildModel {
 	}
 
 	public Action[] getStationChooseActions() {
-		return stationChooseActions.toArray(new Action[0]);
+		return stationChooseActions.toArray(new Action[stationChooseActions.size()]);
 	}
 
 	private class StationChooseAction extends AbstractAction {

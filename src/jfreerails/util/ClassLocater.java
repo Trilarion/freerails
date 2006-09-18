@@ -296,7 +296,7 @@ public class ClassLocater {
 			}
 		}
 		logger.info("found " + matches.size() + " classes.");
-		return matches.toArray(new Class[0]);
+		return matches.toArray(new Class[matches.size()]);
 
 	}
 }

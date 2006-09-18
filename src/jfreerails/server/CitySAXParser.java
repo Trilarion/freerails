@@ -39,15 +39,10 @@ public class CitySAXParser extends DefaultHandler {
 	@Override
 	public void startElement(String namespaceURI, String sName, String qName,
 			Attributes attrs) throws SAXException {
-		String eName = sName; // element name
 
 		String cityName = null;
 		int x = 0;
 		int y = 0;
-
-		if (eName.equals("")) {
-			eName = qName;
-		}
 
 		if (attrs != null) {
 			for (int i = 0; i < attrs.getLength(); i++) {

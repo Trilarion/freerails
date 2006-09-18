@@ -21,6 +21,8 @@
  */
 package jfreerails.util;
 
+import java.io.Serializable;
+
 /**
  * Base class for type-specific growable array classes with any type of values
  * (including primitive types). This class builds on the basic structure
@@ -43,7 +45,7 @@ package jfreerails.util;
  * @author Dennis M. Sosnoski
  * @version 1.0
  */
-public abstract class ArrayBase extends GrowableBase {
+public abstract class ArrayBase extends GrowableBase implements Serializable {
 	/** The number of values currently present in the array. */
 	protected int countPresent;
 

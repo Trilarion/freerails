@@ -1,3 +1,5 @@
+Sep 18, 2006, Luke
+	o Apply patch  1557521 (simple cleanups)
 Sep 3, 2006, Luke
 	o Give moving trains priority over stationary trains.
 	Fixed bugs		

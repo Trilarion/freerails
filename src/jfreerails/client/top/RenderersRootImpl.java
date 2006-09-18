@@ -263,9 +263,6 @@ public class RenderersRootImpl implements RenderersRoot {
 				TileRenderer tr = new SpecialTileRenderer(imageManager,
 						new int[] { j }, t, occeanTileRenderer);
 				tileRenderers.set(j, tr);
-
-				occeanTileRenderer = tileRenderers.get(j);
-
 				break;
 			}
 		}

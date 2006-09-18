@@ -208,14 +208,13 @@ public class CalcCargoSupplyRateAtStation {
 	 * 
 	 */
 	public StationModel calculations(StationModel station) {
-		Vector<CargoElementObject> supply = new Vector<CargoElementObject>();
 		int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];
 
-		supply = scanAdjacentTiles();
+		Vector<CargoElementObject> supply = scanAdjacentTiles();
 
 		// grab the supply rates from the vector
 		for (int i = 0; i < supply.size(); i++) {
-			cargoSupplied[i] = supply.elementAt(i).getRate();
+			cargoSupplied[i] = supply.get(i).getRate();
 		}
 
 		// set the supply rates for the current station
