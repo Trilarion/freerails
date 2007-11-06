@@ -10,6 +10,7 @@ import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.cargo.MutableCargoBundle;
+import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.Demand4Cargo;
@@ -50,9 +51,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 		w.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
 		// set up the cargo types.
-		w.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", "Mail"));
-		w.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers", "Passengers"));
-		w.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", "Fast_Freight"));
+		w.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", Categories.Mail));
+		w.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers", Categories.Passengers));
+		w.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", Categories.Fast_Freight));
 
 		// Set up station
 		int x = 10;

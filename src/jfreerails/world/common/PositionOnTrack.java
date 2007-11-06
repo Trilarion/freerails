@@ -10,9 +10,9 @@ package jfreerails.world.common;
  * @author Luke
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
-	private static final int BITS_FOR_COORINATE = 14;
+    public static final int BITS_FOR_COORINATE = 14;
 
-	private static final int BITS_FOR_DIRECTION = 3;
+	public static final int BITS_FOR_DIRECTION = 3;
 
 	public static final int MAX_COORINATE = (1 << BITS_FOR_COORINATE) - 1;
 
@@ -173,10 +173,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 	 * @return an integer representing this PositionOnTrack object
 	 */
 	public int toInt() {
-		int i = x;
-
-		int shiftedY = y << BITS_FOR_COORINATE;
-		i = i | shiftedY;
+	    int i = x | (y << BITS_FOR_COORINATE);
 
 		int directionAsInt = cameFrom.getID();
 		int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORINATE));
@@ -185,6 +182,11 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 		return i;
 	}
 
+	public static int toInt(int x, int y) {
+        int i = x | (y << BITS_FOR_COORINATE);
+        return i;    
+	}
+	
 	@Override
 	public String toString() {
 		String s = "PositionOnTrack: " + x + ", " + y + " facing "

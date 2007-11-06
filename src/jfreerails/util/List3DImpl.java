@@ -5,6 +5,7 @@
 package jfreerails.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class List3DImpl<T> implements List3D<T> {
 
@@ -95,5 +96,9 @@ public class List3DImpl<T> implements List3D<T> {
 	public int hashCode() {		
 		return sizeD1();
 	}
+
+    public List<T> get(int d1, int d2) {
+        return elementData.get(d1).get(d2);
+    }
 
 }

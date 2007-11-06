@@ -3,6 +3,7 @@ package jfreerails.client.renderer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Iterator;
 
 import jfreerails.client.common.Painter;
@@ -50,7 +51,7 @@ public class BuildTrackRenderer implements Painter {
 	 * Paints the proposed track and dots to distinguish the proposed track from
 	 * any existing track.
 	 */
-	public void paint(Graphics2D g) {
+	public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
 
 		WorldDiffs worldDiffs = getWorldDiffs();
 		if (null != worldDiffs) {

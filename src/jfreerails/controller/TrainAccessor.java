@@ -17,6 +17,7 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
+import jfreerails.world.top.WorldImpl.ActivityIteratorImpl;
 import jfreerails.world.track.TrackSection;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.PathOnTiles;
@@ -87,11 +88,22 @@ public class TrainAccessor {
 	
 	public TrainPositionOnMap findPosition(double time) {
 		ActivityIterator ai = w.getActivities(p, id);
+		
+		// goto last
+	//	int count = 0;
+		ai.gotoLastActivity();
+		// search backwards
+		while(ai.getFinishTime() >= time && ai.hasPrevious()) {
+		    ai.previousActivity();
+		//    count++;
+		}
 		boolean afterFinish = ai.getFinishTime() < time;
 		while (afterFinish && ai.hasNext()) {
 			ai.nextActivity();
 			afterFinish = ai.getFinishTime() < time;
-		}		
+         //   count++;
+		}	
+		//System.out.println(count);
 		double dt = time - ai.getStartTime();
 		dt = Math.min(dt, ai.getDuration());
 		TrainMotion tm = (TrainMotion) ai.getActivity();
@@ -101,8 +113,8 @@ public class TrainAccessor {
 	public TrainMotion findCurrentMotion(double time) {
 		ActivityIterator ai = w.getActivities(p, id);
 		boolean afterFinish = ai.getFinishTime() < time;
-		while (afterFinish && ai.hasNext()) {
-			ai.nextActivity();
+		if(afterFinish) {
+		    ai.gotoLastActivity();
 		}
 		return (TrainMotion) ai.getActivity();
 	}

@@ -26,8 +26,7 @@ public class List2DImpl<T> implements List2D<T> {
 	}
 
     public T get(int d1, int d2) {
-		ArrayList<T> dim2 = elementData.get(d1);
-		return dim2.get(d2);		
+		return elementData.get(d1).get(d2);		
 	}
 
 	public T removeLastD2(int d1) {

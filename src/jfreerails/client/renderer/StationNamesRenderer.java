@@ -56,7 +56,7 @@ public class StationNamesRenderer implements Painter {
 		font = new Font("Arial", 0, fontSize);
 	}
 
-	public void paint(Graphics2D g) {
+	public void paint(Graphics2D g,Rectangle newVisibleRectectangle) {
 		int rectWidth;
 		int rectHeight;
 		int rectX;

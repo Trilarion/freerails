@@ -102,6 +102,7 @@ final public class GameLoop implements Runnable {
 							Graphics g = screenHandler.getDrawGraphics();
 
 							try {
+							    
 								screenHandler.frame.paintComponents(g);
 
 								boolean showFps = Boolean.parseBoolean(System
@@ -241,6 +242,9 @@ final class FPScounter {
 				sb.append(" max  ");
 				sb.append(Math.round(max));
 				sb.append('\n');
+				sb.append(" Last ");
+				sb.append(Math.round(fps));
+                sb.append('\n');
 
 				newFPSstr = sb.toString();
 

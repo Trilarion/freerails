@@ -48,10 +48,25 @@ public class MoveTrainPreMove implements PreMove {
 	private static final long serialVersionUID = 3545516188269491250L;
 	private static final Logger logger = Logger.getLogger(MoveTrainPreMove.class
 			.getName());
-
+	/** 666 Performance cache must be cleared if track on map is build !**/
+	private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<Integer, HashMap<Integer,Step>>();
+	
 	/** Uses static method to make testing easier.*/
 	public static Step findNextStep(ReadOnlyWorld world,
 			PositionOnTrack currentPosition, ImPoint target) {
+	    int startPos = PositionOnTrack.toInt(currentPosition.getX(), currentPosition.getY());
+	    int endPos = PositionOnTrack.toInt(target.x, target.y);
+	    HashMap<Integer, Step> destPaths = pathCache.get(endPos);
+	    Step nextStep = null;
+	    if(destPaths != null) {
+	        nextStep = destPaths.get(startPos);
+	        if(nextStep != null) {
+	            return nextStep;
+	        }
+	    } else {
+	        destPaths = new HashMap<Integer, Step>();
+	        pathCache.put(endPos, destPaths);
+	    } 
 		PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
 
 		try {
@@ -59,7 +74,15 @@ public class MoveTrainPreMove implements PreMove {
 					currentPosition.getY());
 			pathFinder.setupSearch(location, target);
 			pathFinder.search(-1);
-			return pathFinder.pathAsVectors()[0];
+			Step[] pathAsVectors = pathFinder.pathAsVectors();
+			int[] pathAsInts = pathFinder.pathAsInts();
+			for(int i = 0; i < pathAsInts.length-1; i++) {
+			    int calcPos = pathAsInts[i] & (PositionOnTrack.MAX_COORINATE | (PositionOnTrack.MAX_COORINATE 
+			            << PositionOnTrack.BITS_FOR_COORINATE));			    
+			    destPaths.put(calcPos, pathAsVectors[i+1]);
+			}
+            nextStep = pathAsVectors[0];
+			return nextStep;
 		} catch (PathNotFoundException e) {
 			// The pathfinder couldn't find a path so we
 			// go in any legal direction.
@@ -87,15 +110,14 @@ public class MoveTrainPreMove implements PreMove {
 	}
 
 	/**
-	 * Returns true iff an updated is due.
+	 * Returns true if an updated is due.
 	 * 
 	 */
 	public boolean isUpdateDue(ReadOnlyWorld w) {
 		GameTime currentTime = w.currentTime();
 		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
 		ActivityIterator ai = w.getActivities(principal, trainID);
-		while (ai.hasNext())
-			ai.nextActivity();
+		ai.gotoLastActivity();
 
 		double finishTime = ai.getFinishTime();
 		double ticks = currentTime.getTicks();
@@ -243,9 +265,7 @@ public class MoveTrainPreMove implements PreMove {
 
 	private TrainMotion lastMotion(ReadOnlyWorld w) {
 		ActivityIterator ai = w.getActivities(principal, trainID);
-		while (ai.hasNext())
-			ai.nextActivity();
-
+		ai.gotoLastActivity();
 		TrainMotion lastMotion = (TrainMotion) ai.getActivity();
 		return lastMotion;
 	}
@@ -283,7 +303,7 @@ public class MoveTrainPreMove implements PreMove {
 		return new NextActivityMove(nextMotion, trainID, principal);
 
 	}
-
+/** 666 Performance !**/
 	private HashMap<TrackSection, Integer> occupiedTrackSections(ReadOnlyWorld w) {
 		HashMap<TrackSection, Integer> occupiedTrackSections = new HashMap<TrackSection, Integer>();
 		for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {						

@@ -55,6 +55,10 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 		}
 		return vectors;
 	}
+	
+	public int[] pathAsInts() {
+	   return pathFinder.retrievePath().toArray(); 
+	}
 
 	public void search(long maxDuration) throws PathNotFoundException {
 		pathFinder.search(maxDuration);

@@ -1,0 +1,11 @@
+Started:
+70% FreerailGameServer.update -> 5% (Mainloop!) Optimizing list access
+MapViewJComponent.paint -> from 28ms to 10ms
+Overhead Train view 2-4x faster
+StationBoxPainter: 2-4x faster
+
+18 ZoomedOutMapRenderer.refresh->1mio world gets! -> Move refactored
+
+paint only what is visible
+
+trainupdater->movetrains

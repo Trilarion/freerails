@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.IOException;
 
 import jfreerails.client.common.Painter;
@@ -25,126 +26,135 @@ import jfreerails.world.train.WagonType;
  * @author Luke
  */
 public class StationBoxRenderer implements Painter {
-	private static final int WAGON_IMAGE_HEIGHT = 10;
 
-	private static final int SPACING = 3;
+    private static final int WAGON_IMAGE_HEIGHT = 10;
 
-	private static final int MAX_WIDTH = 80;
+    private static final int SPACING = 3;
 
-	private final ReadOnlyWorld w;
+    private static final int MAX_WIDTH = 80;
 
-	private final Color bgColor;
+    private final ReadOnlyWorld w;
 
-	private final RenderersRoot vl;
+    private final Color bgColor;
 
-	private final int wagonImageWidth;
+    private final RenderersRoot vl;
 
-	private final ModelRoot modelRoot;
+    private final int wagonImageWidth;
 
-	public StationBoxRenderer(ReadOnlyWorld world, RenderersRoot vl,
-			ModelRoot modelRoot) {
-		this.w = world;
-		this.vl = vl;
-		this.bgColor = new Color(0, 0, 200, 60);
-		this.modelRoot = modelRoot;
+    private final ModelRoot modelRoot;
 
-		//How wide will the wagon images be if we scale them so their height is WAGON_IMAGE_HEIGHT?
-		Image wagonImage = vl.getWagonImages(0).getSideOnImage();
-		wagonImageWidth = wagonImage.getWidth(null) * WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null); 
-	}
+    private final Image[] cargoImages;
 
-	public void paint(Graphics2D g) {
-		Boolean showCargoWaiting = (Boolean) modelRoot
-				.getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
+    private static final int MAX_HEIGHT = 5 * (WAGON_IMAGE_HEIGHT + SPACING);
 
-		if (showCargoWaiting.booleanValue()) {
-			/* We only show the station boxes for the current player. */
-			FreerailsPrincipal principal = modelRoot.getPrincipal();
-			WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
+    public StationBoxRenderer(ReadOnlyWorld world, RenderersRoot vl,
+            ModelRoot modelRoot) {
+        this.w = world;
+        this.vl = vl;
+        this.bgColor = new Color(0, 0, 200, 60);
+        this.modelRoot = modelRoot;
 
-			while (wi.next()) { // loop over non null stations
+        // How wide will the wagon images be if we scale them so their height is
+        // WAGON_IMAGE_HEIGHT?
+        Image wagonImage = vl.getWagonImages(0).getSideOnImage();
+        wagonImageWidth = wagonImage.getWidth(null) * WAGON_IMAGE_HEIGHT
+                / wagonImage.getHeight(null);
 
-				StationModel station = (StationModel) wi.getElement();
-				int positionX = (station.getStationX() * 30) + 15;
-				int positionY = (station.getStationY() * 30) + 60;
-				g.setColor(bgColor);
-				g.fillRect(positionX, positionY, MAX_WIDTH,
-						5 * (WAGON_IMAGE_HEIGHT + SPACING));
-				g.setColor(Color.WHITE);
-				g.setStroke(new BasicStroke(1f));
-				g.drawRect(positionX, positionY, MAX_WIDTH,
-						5 * (WAGON_IMAGE_HEIGHT + SPACING));
+        int nrOfCargoTypes = w.size(SKEY.CARGO_TYPES);
+        cargoImages = new Image[nrOfCargoTypes];
+        for (int i = 0; i < nrOfCargoTypes; i++) {
+            String wagonFilename = vl.getWagonImages(i).sideOnFileName;
+            try {
+                wagonImage = vl.getScaledImage(wagonFilename,
+                        WAGON_IMAGE_HEIGHT);
+            } catch (IOException e) {
+                throw new IllegalArgumentException(wagonFilename);
+            }
+            cargoImages[i] = wagonImage;
+        }
+    }
 
-				ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
-						principal, KEY.CARGO_BUNDLES,
-						station.getCargoBundleID());
+    
+    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+        Boolean showCargoWaiting = (Boolean) modelRoot
+                .getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
 
-				for (int category = 0; category < CargoType
-						.getNumberOfCategories(); category++) {
-					int[] carsLoads = calculateCarLoads(cb, category);
-					int alternateWidth = (MAX_WIDTH - 2 * SPACING)
-							/ (carsLoads.length + 1);
-					int xOffsetPerWagon = Math.min(wagonImageWidth,
-							alternateWidth);
+        if (showCargoWaiting.booleanValue()) {
+            /* We only show the station boxes for the current player. */
+            FreerailsPrincipal principal = modelRoot.getPrincipal();
+            WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
 
-					for (int car = 0; car < carsLoads.length; car++) {
-						int x = positionX + (car * xOffsetPerWagon) + SPACING;
-						int y = positionY
-								+ (category * (WAGON_IMAGE_HEIGHT + SPACING));
-						int cargoType = carsLoads[car];
-						String wagonFilename = vl.getWagonImages(cargoType).sideOnFileName;
-						Image wagonImage;
-						try {
-							wagonImage = vl.getScaledImage(wagonFilename, WAGON_IMAGE_HEIGHT);
-						} catch (IOException e) {
-							throw new IllegalArgumentException(wagonFilename);
-						}
-						g.drawImage(wagonImage, x, y, null);
-					}
-				}
-			}
-		}
-	}
+            while (wi.next()) { // loop over non null stations
+                StationModel station = (StationModel) wi.getElement();
+                int positionX = (station.getStationX() * 30) + 15;
+                int positionY = (station.getStationY() * 30) + 60;
+                Rectangle r = new Rectangle(positionX, positionY, MAX_WIDTH,
+                        MAX_HEIGHT);
+                if (newVisibleRectectangle.intersects(r)) {
+                    g.setColor(bgColor);
+                    g.fillRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
+                    g.setColor(Color.WHITE);
+                    g.setStroke(new BasicStroke(1f));
+                    g.drawRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
 
-	/**
-	 * The length of the returned array is the number of complete carloads of
-	 * the specified cargo category in the specified bundle. The values in the
-	 * array are the type of the cargo. E.g. if the bundle contained 2 carloads
-	 * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
-	 */
-	private int[] calculateCarLoads(ImmutableCargoBundle cb, int category) {
-		int numCargoTypes = w.size(SKEY.CARGO_TYPES);
-		int numberOfCarLoads = 0;
+                    ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
+                            principal, KEY.CARGO_BUNDLES, station
+                                    .getCargoBundleID());
+                   /** 666 do only if something changed */
+                    int[][] carsLoads = calculateCarLoads(cb);
+                    for (int category = 0; category < CargoType
+                            .getNumberOfCategories(); category++) {
+                        int alternateWidth = (MAX_WIDTH - 2 * SPACING)
+                                / (carsLoads[category].length + 1);
+                        int xOffsetPerWagon = Math.min(wagonImageWidth,
+                                alternateWidth);
 
-		for (int i = 0; i < numCargoTypes; i++) {
-			CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+                        for (int car = 0; car < carsLoads[category].length; car++) {
+                            int x = positionX + (car * xOffsetPerWagon)
+                                    + SPACING;
+                            int y = positionY
+                                    + (category * (WAGON_IMAGE_HEIGHT + SPACING));
+                            int cargoType = carsLoads[category][car];
+                            g.drawImage(cargoImages[cargoType], x, y, null);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-			if (ct.getCategoryNumber() == category) {
-				numberOfCarLoads += cb.getAmount(i)
-						/ WagonType.UNITS_OF_CARGO_PER_WAGON;
-			}
-		}
+    /**
+     * The length of the returned array is the number of complete carloads of
+     * the specified cargo category in the specified bundle. The values in the
+     * array are the type of the cargo. E.g. if the bundle contained 2 carloads
+     * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
+     */
+    private int[][] calculateCarLoads(ImmutableCargoBundle cb) {
+        int categories = CargoType.getNumberOfCategories();
+        int numCargoTypes = w.size(SKEY.CARGO_TYPES);
+        int[] numberOfCarLoads = new int[categories];
+        int[][] cars = new int[categories][numCargoTypes];
+        for (int i = 0; i < numCargoTypes; i++) {
+            CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+            int carsOfThisCargo = cb.getAmount(i)
+                    / WagonType.UNITS_OF_CARGO_PER_WAGON;
+            numberOfCarLoads[ct.getCategory().getNumber()] += carsOfThisCargo;
+            cars[ct.getCategory().getNumber()][i] += carsOfThisCargo;
+        }
 
-		int[] returnValue = new int[numberOfCarLoads];
-		int arrayIndex = 0;
+        int[][] returnMatrix = new int[categories][];
+        for (int category = 0; category < categories; category++) {
+            int[] returnValue = new int[numberOfCarLoads[category]];
+            int arrayIndex = 0;
 
-		for (int cargoType = 0; cargoType < numCargoTypes; cargoType++) {
-			CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
-
-			if (ct.getCategoryNumber() == category) {
-				int carsOfThisCargo = cb.getAmount(cargoType)
-						/ WagonType.UNITS_OF_CARGO_PER_WAGON;
-
-				for (int j = 0; j < carsOfThisCargo; j++) {
-					returnValue[arrayIndex] = cargoType;
-					arrayIndex++;
-				}
-			}
-		}
-
-		assert returnValue.length == arrayIndex; // We should have filled up
-		// the array.
-
-		return returnValue;
-	}
+            for (int cargoType = 0; cargoType < numCargoTypes; cargoType++) {
+                for (int j = 0; j < cars[category][cargoType]; j++) {
+                    returnValue[arrayIndex] = cargoType;
+                    arrayIndex++;
+                }
+            }
+            returnMatrix[category] = returnValue;
+        }
+        return returnMatrix;
+    }
 }

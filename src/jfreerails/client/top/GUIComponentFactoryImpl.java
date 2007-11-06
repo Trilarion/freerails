@@ -713,8 +713,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 	 * refreshes the map views.
 	 */
 	public void tilesChanged(Rectangle tilesChanged) {
-		logger.fine("TilesChanged = " + tilesChanged);
-
+		logger.fine("TilesChanged = " + tilesChanged);	
 		// If lots of tiles have changed, do a complete refresh.
 		int size = tilesChanged.width * tilesChanged.height;
 

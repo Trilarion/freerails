@@ -34,7 +34,6 @@ public class IntLine implements Serializable {
 	 */
 	public double getLength() {
 		int sumOfSquares = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
-
 		return Math.sqrt(sumOfSquares);
 	}
 
@@ -59,7 +58,7 @@ public class IntLine implements Serializable {
 	 * Default constructor - defines a dot at 0,0.
 	 */
 	public IntLine() {
-	}
+    }
 
 	@Override
 	public boolean equals(Object o) {

@@ -9,6 +9,7 @@ package jfreerails.client.renderer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import jfreerails.client.common.Painter;
 import jfreerails.world.terrain.CityModel;
@@ -27,7 +28,7 @@ public class CityNamesRenderer implements Painter {
 		this.w = world;
 	}
 
-	public void paint(Graphics2D g) {
+	public void paint(Graphics2D g,Rectangle newVisibleRectectangle) {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", 0, 20));
 

@@ -3,6 +3,7 @@ package jfreerails.client.renderer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
@@ -79,7 +80,7 @@ public class StationRadiusRenderer implements Painter {
 		modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
 	}
 
-	public void paint(Graphics2D g) {
+	public void paint(Graphics2D g,Rectangle newVisibleRectectangle) {
 		if (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE).equals(
 				Value.PLACE_STATION_CURSOR_MODE)) {
 			g.setStroke(new BasicStroke(2f));

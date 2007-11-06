@@ -31,4 +31,10 @@ public interface ActivityIterator {
 
 	Activity getActivity();
 
+	void gotoLastActivity();
+	
+	
+	void previousActivity() throws NoSuchElementException;
+	
+	boolean hasPrevious();
 }

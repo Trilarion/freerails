@@ -3,6 +3,7 @@ package jfreerails.world.top;
 import java.util.HashSet;
 
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
@@ -107,12 +108,12 @@ public class MapFixtureFactory {
 
 	/** Adds hard coded cargo types. */
 	public static void generateCargoTypesList(World world) {
-		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", "Mail"));
+		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", Categories.Mail));
 		world.add(SKEY.CARGO_TYPES,
-				new CargoType(0, "Passengers", "Passengers"));
-		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", "Fast_Freight"));
-		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Steel", "Slow_Freight"));
-		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Coal", "Bulk_Freight"));
+				new CargoType(0, "Passengers", Categories.Passengers));
+		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", Categories.Fast_Freight));
+		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Steel", Categories.Slow_Freight));
+		world.add(SKEY.CARGO_TYPES, new CargoType(0, "Coal", Categories.Bulk_Freight));
 	}
 
 	/** Adds hard coded terrain types. */

@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import jfreerails.util.ListKey;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.Player;
@@ -31,8 +32,8 @@ public class WorldDiffsTest extends TestCase {
 
     public void testSharedLists() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
-        CargoType mailCT = new CargoType(10, "Mail", "Mail");
-        CargoType passengersCT = new CargoType(10, "Passengers", "Passengers");
+        CargoType mailCT = new CargoType(10, "Mail", Categories.Mail);
+        CargoType passengersCT = new CargoType(10, "Passengers", Categories.Passengers);
         underlyingWorld.add(SKEY.CARGO_TYPES, mailCT);
 
         WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);

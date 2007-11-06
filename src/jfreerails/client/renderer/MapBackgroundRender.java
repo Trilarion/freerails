@@ -225,8 +225,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 	public void paintTile(Graphics g, int x, int y) {
 		terrainLayer.paintTile(g, x, y);
 		trackLayer.paintTile(g, x, y);
-		cityNames.paint((Graphics2D) g);
-		stationNames.paint((Graphics2D) g);
+		cityNames.paint((Graphics2D) g, null);
+		stationNames.paint((Graphics2D) g, null);
 	}
 
 	public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -241,16 +241,16 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 		int height = (clipRectangle.height) / tileHeight + 2;
 
 		paintRectangleOfTiles(g, x, y, width, height);
-		cityNames.paint((Graphics2D) g);
-		stationNames.paint((Graphics2D) g);
+		cityNames.paint((Graphics2D) g, null);
+		stationNames.paint((Graphics2D) g, null);
 	}
 
 	private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
 			int height) {
 		terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
 		trackLayer.paintRectangleOfTiles(g, x, y, width, height);
-		cityNames.paint((Graphics2D) g);
-		stationNames.paint((Graphics2D) g);
+		cityNames.paint((Graphics2D) g, null);
+		stationNames.paint((Graphics2D) g, null);
 	}
 
 	public void refreshTile(int x, int y) {

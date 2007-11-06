@@ -72,7 +72,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 	int selectTileIcon(int x, int y, ReadOnlyWorld w) {
 		return 0;
 	}
-
+/** 666 performance */
 	int checkTile(int x, int y, ReadOnlyWorld w) {
 		int match = 0;
 
