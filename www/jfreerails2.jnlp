@@ -5,11 +5,11 @@
   codebase="http://freerails2.sourceforge.net/" 
   href="jfreerails.jnlp"> 
   <information> 
-    <title>JFreerails</title> 
-    <vendor>JFreerails Developers</vendor> 
+    <title>JFreerails 2</title> 
+    <vendor>JFreerails 2 Developers</vendor> 
     <homepage href="index.html"/> 
-    <description>JFreerails</description> 
-    <description kind="short">JFreerails</description>    
+    <description>JFreerails 2</description> 
+    <description kind="short">JFreerails 2</description>    
     <offline-allowed/> 
   </information> 
   <security> 
