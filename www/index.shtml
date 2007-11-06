@@ -8,6 +8,10 @@
 <META NAME="CHANGED" CONTENT="20040530;23581553">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
+<H1>UNDER CONSTRUCTION </H1>
+This is the Homepage of the freerails2 project. It's based on the freerails project, but has many speed improvements.
+<br>
+
 <H1><img src="FreeRails.png" width="242" height="149"></H1>
 <P> 
   <!--#config timefmt="%d  %B  %Y" -->
@@ -32,24 +36,8 @@
   message to the mailing list. Before writing any code, have a look at the <a href="javadoc/docs/coding_guidelines.html">coding 
   guidelines</a>.</P>
 <P><STRONG>Links</STRONG></P>
-<P><A HREF="http://sourceforge.net/projects/freerails/">Freerails Sourceforge 
+<P><A HREF="http://sourceforge.net/projects/freerails2/">Freerails Sourceforge 
   page</A><BR>
-  <A HREF="http://sourceforge.net/project/showfiles.php?group_id=9495">Download</A><BR>
-  <A HREF="http://sourceforge.net/mail/?group_id=9495">Mailing List</A><BR>
-  <A HREF="http://cvs.sourceforge.net/viewcvs.py/*checkout*/freerails/jfreerails/ChangeLog">Change 
-  Log</A><BR>
-  <A HREF="http://sourceforge.net/cvs/?group_id=9495">CVS</A><BR>
-  <A HREF="http://sourceforge.net/tracker/?atid=109495&amp;group_id=9495&amp;func=browse">Bugs</A><BR>
-  <A HREF="http://sourceforge.net/tracker/?atid=359495&amp;group_id=9495&amp;func=browse">Feature 
-  Requests</A><BR>
-  <A HREF="javadoc/index.html">JFreerails Javadoc</A><BR>
-   <A HREF="functional_specification.pdf">Functional Specification </A>
-<font size="-1"> (PDF; size 
-  <!--#fsize file="functional_specification.pdf"-->;
-   updated  
-  <!--#config timefmt="%d  %b"   -->
-  <!--#flastmod file="functional_specification.pdf" -->)
-</font>   <BR>
   <A HREF="screenshots/index.shtml">Screenshots</A></P>
 
 <P><A HREF="http://sourceforge.net/"><IMG SRC="http://sourceforge.net/sflogo.php?group_id=9495&amp;type=1" NAME="Graphic2" ALT="SourceForge Logo" ALIGN=BOTTOM BORDER=0></A> 

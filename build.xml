@@ -331,13 +331,14 @@ else:
 		<fail unless="u" message="Usage: ant -Du=me -Dp=mypassword target" />
 		<fail unless="p" message="Usage: ant -Du=me -Dp=mypassword target" />
 
-		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails" trust="yes">
+		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2" trust="yes">
 			<fileset dir=".">
 				<include name="website.tar.gz" />
+				<include name="deploysite.sh" />
 			</fileset>
 		</scp>
 
-		<sshexec host="shell.sourceforge.net" username="${u}" password="${p}" command="/home/groups/f/fr/freerails/deploy.sh" trust="yes" />
+		<sshexec host="shell.sourceforge.net" username="${u}" password="${p}" command="/home/groups/f/fr/freerails2/deploy.sh" trust="yes" />
 	</target>
 
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
