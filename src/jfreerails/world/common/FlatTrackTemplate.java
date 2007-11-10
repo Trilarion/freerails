@@ -6,17 +6,17 @@ package jfreerails.world.common;
  * @author Luke
  */
 public interface FlatTrackTemplate extends FreerailsSerializable {
-	/**
-	 * @param ftt
-	 *            the FlatTrackTemplate which may be a subset of this
-	 *            FlatTrackTemplate.
-	 * @return true if the vectors represented by this FlatTrackTemplate are a
-	 *         superset of the vectors of the specified FlatTrackTemplate
-	 */
-	boolean contains(FlatTrackTemplate ftt);
+    /**
+     * @param ftt
+     *            the FlatTrackTemplate which may be a subset of this
+     *            FlatTrackTemplate.
+     * @return true if the vectors represented by this FlatTrackTemplate are a
+     *         superset of the vectors of the specified FlatTrackTemplate
+     */
+    boolean contains(FlatTrackTemplate ftt);
 
-	/**
-	 * @return the integer representing the vector(s) of this object.
-	 */
-	int get9bitTemplate();
+    /**
+     * @return the integer representing the vector(s) of this object.
+     */
+    int get9bitTemplate();
 }

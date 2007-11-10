@@ -14,22 +14,22 @@ import java.awt.Color;
  */
 public class PlayerColors {
 
-	private static final Color[] colors = new Color[] { Color.BLUE,
-			Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW };// Save
+    private static final Color[] colors = new Color[] { Color.BLUE,
+            Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW };// Save
 
-	// red
-	// for
-	// when
-	// we
-	// need
-	// to
-	// grab
-	// the
-	// player's
-	// attention!
+    // red
+    // for
+    // when
+    // we
+    // need
+    // to
+    // grab
+    // the
+    // player's
+    // attention!
 
-	public static Color getColor(int playerNumber) {
-		return colors[playerNumber % colors.length];
-	}
+    public static Color getColor(int playerNumber) {
+        return colors[playerNumber % colors.length];
+    }
 
 }

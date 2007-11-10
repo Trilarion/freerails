@@ -12,46 +12,46 @@ import java.awt.event.ComponentListener;
  * 
  */
 public class JFrameMinimumSizeEnforcer implements ComponentListener {
-	private final int minWidth;
+    private final int minWidth;
 
-	private final int minHeight;
+    private final int minHeight;
 
-	public JFrameMinimumSizeEnforcer(int w, int h) {
-		this.minHeight = h;
-		this.minWidth = w;
-	}
+    public JFrameMinimumSizeEnforcer(int w, int h) {
+        this.minHeight = h;
+        this.minWidth = w;
+    }
 
-	public void componentResized(ComponentEvent arg0) {
-		Component c = arg0.getComponent();
+    public void componentResized(ComponentEvent arg0) {
+        Component c = arg0.getComponent();
 
-		int width = c.getWidth();
-		int height = c.getHeight();
+        int width = c.getWidth();
+        int height = c.getHeight();
 
-		// we check if either the width
-		// or the height are below minimum
-		boolean resize = false;
+        // we check if either the width
+        // or the height are below minimum
+        boolean resize = false;
 
-		if (width < minWidth) {
-			resize = true;
-			width = minWidth;
-		}
+        if (width < minWidth) {
+            resize = true;
+            width = minWidth;
+        }
 
-		if (height < minHeight) {
-			resize = true;
-			height = minHeight;
-		}
+        if (height < minHeight) {
+            resize = true;
+            height = minHeight;
+        }
 
-		if (resize) {
-			c.setSize(width, height);
-		}
-	}
+        if (resize) {
+            c.setSize(width, height);
+        }
+    }
 
-	public void componentMoved(ComponentEvent arg0) {
-	}
+    public void componentMoved(ComponentEvent arg0) {
+    }
 
-	public void componentShown(ComponentEvent arg0) {
-	}
+    public void componentShown(ComponentEvent arg0) {
+    }
 
-	public void componentHidden(ComponentEvent arg0) {
-	}
+    public void componentHidden(ComponentEvent arg0) {
+    }
 }

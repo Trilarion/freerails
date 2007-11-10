@@ -32,166 +32,166 @@ import jfreerails.world.track.TrackRule;
  * 
  */
 public class TrackMoveTransactionsGenerator {
-	/** Number of each of the track types added. */
-	private int[] trackAdded;
+    /** Number of each of the track types added. */
+    private int[] trackAdded;
 
-	private long fixedCostsStations = 0;
+    private long fixedCostsStations = 0;
 
-	private long fixedCostsBridges = 0;
+    private long fixedCostsBridges = 0;
 
-	/** Number of each of the track types removed. */
-	private int[] trackRemoved;
+    /** Number of each of the track types removed. */
+    private int[] trackRemoved;
 
-	private final FreerailsPrincipal principal;
+    private final FreerailsPrincipal principal;
 
-	/*
-	 * Note, trackAdded and trackRemoved cannot be combined, since it may cost
-	 * more to added a unit of track than is refunded when you removed it.
-	 */
-	private final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    /*
+     * Note, trackAdded and trackRemoved cannot be combined, since it may cost
+     * more to added a unit of track than is refunded when you removed it.
+     */
+    private final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
-	private final ReadOnlyWorld w;
+    private final ReadOnlyWorld w;
 
-	/**
-	 * @param p
-	 *            the Principal on behalf of which this object generates
-	 *            transactions for
-	 */
-	public TrackMoveTransactionsGenerator(ReadOnlyWorld world,
-			FreerailsPrincipal p) {
-		w = world;
-		principal = p;
-	}
+    /**
+     * @param p
+     *            the Principal on behalf of which this object generates
+     *            transactions for
+     */
+    public TrackMoveTransactionsGenerator(ReadOnlyWorld world,
+            FreerailsPrincipal p) {
+        w = world;
+        principal = p;
+    }
 
-	public CompositeMove addTransactions(Move move) {
-		int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
-		trackAdded = new int[numberOfTrackTypes];
-		trackRemoved = new int[numberOfTrackTypes];
-		fixedCostsStations = 0;
-		fixedCostsBridges = 0;
-		unpackMove(move);
-		generateTransactions();
+    public CompositeMove addTransactions(Move move) {
+        int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
+        trackAdded = new int[numberOfTrackTypes];
+        trackRemoved = new int[numberOfTrackTypes];
+        fixedCostsStations = 0;
+        fixedCostsBridges = 0;
+        unpackMove(move);
+        generateTransactions();
 
-		int numberOfMoves = 1 + transactions.size();
-		Move[] moves = new Move[numberOfMoves];
-		moves[0] = move;
+        int numberOfMoves = 1 + transactions.size();
+        Move[] moves = new Move[numberOfMoves];
+        moves[0] = move;
 
-		for (int i = 0; i < transactions.size(); i++) {
-			Transaction t = transactions.get(i);
-			moves[i + 1] = new AddTransactionMove(principal, t, true);
-		}
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction t = transactions.get(i);
+            moves[i + 1] = new AddTransactionMove(principal, t, true);
+        }
 
-		return new CompositeMove(moves);
-	}
+        return new CompositeMove(moves);
+    }
 
-	private void unpackMove(Move move) {
-		if (move instanceof ChangeTrackPieceMove) {
-			ChangeTrackPieceMove tm = (ChangeTrackPieceMove) move;
-			processMove(tm);
-		} else if (move instanceof CompositeMove) {
-			CompositeMove cm = (CompositeMove) move;
-			cm.getMoves();
+    private void unpackMove(Move move) {
+        if (move instanceof ChangeTrackPieceMove) {
+            ChangeTrackPieceMove tm = (ChangeTrackPieceMove) move;
+            processMove(tm);
+        } else if (move instanceof CompositeMove) {
+            CompositeMove cm = (CompositeMove) move;
+            cm.getMoves();
 
-			ImList<Move> moves = cm.getMoves();
+            ImList<Move> moves = cm.getMoves();
 
-			for (int i = 0; i < moves.size(); i++) {
-				unpackMove(moves.get(i));
-			}
-		}
-	}
+            for (int i = 0; i < moves.size(); i++) {
+                unpackMove(moves.get(i));
+            }
+        }
+    }
 
-	private void processMove(ChangeTrackPieceMove move) {
-		TrackPiece newTrackPiece = move.getNewTrackPiece();
-		TrackRule newTrackRule = newTrackPiece.getTrackRule();
-		final int ruleAfter = newTrackPiece.getTrackTypeID();
-		TrackPiece oldTrackPiece = move.getOldTrackPiece();
-		final int ruleBefore = oldTrackPiece.getTrackTypeID();
+    private void processMove(ChangeTrackPieceMove move) {
+        TrackPiece newTrackPiece = move.getNewTrackPiece();
+        TrackRule newTrackRule = newTrackPiece.getTrackRule();
+        final int ruleAfter = newTrackPiece.getTrackTypeID();
+        TrackPiece oldTrackPiece = move.getOldTrackPiece();
+        final int ruleBefore = oldTrackPiece.getTrackTypeID();
 
-		final int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
-		final int newLength = newTrackPiece.getTrackConfiguration().getLength();
+        final int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
+        final int newLength = newTrackPiece.getTrackConfiguration().getLength();
 
-		if (ruleAfter != ruleBefore) {
-			TrackRule.TrackCategories category = newTrackRule.getCategory();
-			switch (category) {
-			case station: {
-				fixedCostsStations -= newTrackRule.getFixedCost().getAmount();
-				break;
-			}
-			case bridge: {
-				fixedCostsBridges -= newTrackRule.getFixedCost().getAmount();
-				break;
-			}
-			default: {
-				// Do nothing.
-			}
+        if (ruleAfter != ruleBefore) {
+            TrackRule.TrackCategories category = newTrackRule.getCategory();
+            switch (category) {
+            case station: {
+                fixedCostsStations -= newTrackRule.getFixedCost().getAmount();
+                break;
+            }
+            case bridge: {
+                fixedCostsBridges -= newTrackRule.getFixedCost().getAmount();
+                break;
+            }
+            default: {
+                // Do nothing.
+            }
 
-			}
+            }
 
-		}
+        }
 
-		if (ruleAfter == ruleBefore) {
-			if (oldLength < newLength) {
-				trackAdded[ruleAfter] += (newLength - oldLength);
-			} else if (oldLength > newLength) {
-				trackRemoved[ruleAfter] += (oldLength - newLength);
-			}
+        if (ruleAfter == ruleBefore) {
+            if (oldLength < newLength) {
+                trackAdded[ruleAfter] += (newLength - oldLength);
+            } else if (oldLength > newLength) {
+                trackRemoved[ruleAfter] += (oldLength - newLength);
+            }
 
-			return;
-		}
+            return;
+        }
 
-		if (ruleAfter != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-			trackAdded[ruleAfter] += newLength;
-		}
+        if (ruleAfter != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+            trackAdded[ruleAfter] += newLength;
+        }
 
-		if (ruleBefore != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-			trackRemoved[ruleBefore] += oldLength;
-		}
-	}
+        if (ruleBefore != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+            trackRemoved[ruleBefore] += oldLength;
+        }
+    }
 
-	private void generateTransactions() {
-		transactions.clear();
+    private void generateTransactions() {
+        transactions.clear();
 
-		// For each track type, generate a transaction if any pieces of the type
-		// have been added or removed.
-		for (int i = 0; i < trackAdded.length; i++) {
-			int numberAdded = trackAdded[i];
+        // For each track type, generate a transaction if any pieces of the type
+        // have been added or removed.
+        for (int i = 0; i < trackAdded.length; i++) {
+            int numberAdded = trackAdded[i];
 
-			if (0 != numberAdded) {
-				TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
-				Money m = rule.getPrice();
-				Money total = new Money(-m.getAmount() * numberAdded
-						/ TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-				Transaction t = new AddItemTransaction(TRACK, i, numberAdded,
-						total);
-				transactions.add(t);
-			}
+            if (0 != numberAdded) {
+                TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+                Money m = rule.getPrice();
+                Money total = new Money(-m.getAmount() * numberAdded
+                        / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Transaction t = new AddItemTransaction(TRACK, i, numberAdded,
+                        total);
+                transactions.add(t);
+            }
 
-			int numberRemoved = trackRemoved[i];
+            int numberRemoved = trackRemoved[i];
 
-			if (0 != numberRemoved) {
-				TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
-				Money m = rule.getPrice();
+            if (0 != numberRemoved) {
+                TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+                Money m = rule.getPrice();
 
-				Money total = new Money((m.getAmount() * numberRemoved)
-						/ TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money total = new Money((m.getAmount() * numberRemoved)
+                        / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
-				// You only get half the money back.
-				total = new Money(total.getAmount() / 2);
+                // You only get half the money back.
+                total = new Money(total.getAmount() / 2);
 
-				Transaction t = new AddItemTransaction(TRACK, i,
-						-numberRemoved, total);
-				transactions.add(t);
-			}
-		}
-		if (0 != fixedCostsStations) {
-			Transaction t = new AddItemTransaction(STATIONS, -1, -1, new Money(
-					fixedCostsStations));
-			transactions.add(t);
-		}
-		if (0 != fixedCostsBridges) {
-			Transaction t = new AddItemTransaction(BRIDGES, -1, -1, new Money(
-					fixedCostsBridges));
-			transactions.add(t);
-		}
-	}
+                Transaction t = new AddItemTransaction(TRACK, i,
+                        -numberRemoved, total);
+                transactions.add(t);
+            }
+        }
+        if (0 != fixedCostsStations) {
+            Transaction t = new AddItemTransaction(STATIONS, -1, -1, new Money(
+                    fixedCostsStations));
+            transactions.add(t);
+        }
+        if (0 != fixedCostsBridges) {
+            Transaction t = new AddItemTransaction(BRIDGES, -1, -1, new Money(
+                    fixedCostsBridges));
+            transactions.add(t);
+        }
+    }
 }

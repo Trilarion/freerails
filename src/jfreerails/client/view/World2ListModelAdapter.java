@@ -23,58 +23,58 @@ import jfreerails.world.top.SKEY;
  */
 public class World2ListModelAdapter implements ListModel {
 
-	private final ReadOnlyWorld w;
+    private final ReadOnlyWorld w;
 
-	private final NonNullElements elements;
+    private final NonNullElements elements;
 
-	public World2ListModelAdapter(ReadOnlyWorld world, SKEY key) {
+    public World2ListModelAdapter(ReadOnlyWorld world, SKEY key) {
 
-		this.w = world;
+        this.w = world;
 
-		if (null == key)
-			throw new NullPointerException();
+        if (null == key)
+            throw new NullPointerException();
 
-		if (null == w)
-			throw new NullPointerException();
+        if (null == w)
+            throw new NullPointerException();
 
-		elements = new NonNullElements(key, world);
-	}
+        elements = new NonNullElements(key, world);
+    }
 
-	public World2ListModelAdapter(ReadOnlyWorld world, KEY key,
-			FreerailsPrincipal p) {
+    public World2ListModelAdapter(ReadOnlyWorld world, KEY key,
+            FreerailsPrincipal p) {
 
-		this.w = world;
+        this.w = world;
 
-		if (null == key)
-			throw new NullPointerException();
+        if (null == key)
+            throw new NullPointerException();
 
-		if (null == p)
-			throw new NullPointerException();
+        if (null == p)
+            throw new NullPointerException();
 
-		if (null == w)
-			throw new NullPointerException();
+        if (null == w)
+            throw new NullPointerException();
 
-		// Check that the principal exists.
-		if (!world.isPlayer(p))
-			throw new IllegalArgumentException(p.getName());
+        // Check that the principal exists.
+        if (!world.isPlayer(p))
+            throw new IllegalArgumentException(p.getName());
 
-		elements = new NonNullElements(key, world, p);
-	}
+        elements = new NonNullElements(key, world, p);
+    }
 
-	public int getSize() {
-		return elements.size();
-	}
+    public int getSize() {
+        return elements.size();
+    }
 
-	public Object getElementAt(int i) {
-		elements.gotoRow(i);
-		return elements.getElement();
-	}
+    public Object getElementAt(int i) {
+        elements.gotoRow(i);
+        return elements.getElement();
+    }
 
-	public void addListDataListener(ListDataListener arg0) {
-		// TODO Auto-generated method stub
-	}
+    public void addListDataListener(ListDataListener arg0) {
+        // TODO Auto-generated method stub
+    }
 
-	public void removeListDataListener(ListDataListener arg0) {
-		// TODO Auto-generated method stub
-	}
+    public void removeListDataListener(ListDataListener arg0) {
+        // TODO Auto-generated method stub
+    }
 }

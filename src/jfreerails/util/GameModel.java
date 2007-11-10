@@ -7,5 +7,5 @@ package jfreerails.util;
  * 
  */
 public interface GameModel {
-	void update();
+    void update();
 }

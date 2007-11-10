@@ -13,32 +13,32 @@ import junit.framework.TestCase;
  * 
  */
 public abstract class AbstractFreerailsServerTestCase extends TestCase {
-	private InetConnectionAccepter connectionAccepter;
+    private InetConnectionAccepter connectionAccepter;
 
-	FreerailsGameServer server;
+    FreerailsGameServer server;
 
-	private final String ipAddress = "127.0.0.1";
+    private final String ipAddress = "127.0.0.1";
 
-	@Override
-	protected synchronized void setUp() throws Exception {
-		server = FreerailsGameServer
-				.startServer(new SavedGamesManager4UnitTests());
-		connectionAccepter = new InetConnectionAccepter(0, server);
+    @Override
+    protected synchronized void setUp() throws Exception {
+        server = FreerailsGameServer
+                .startServer(new SavedGamesManager4UnitTests());
+        connectionAccepter = new InetConnectionAccepter(0, server);
 
-		Thread serverThread = new Thread(connectionAccepter);
-		serverThread.start();
-	}
+        Thread serverThread = new Thread(connectionAccepter);
+        serverThread.start();
+    }
 
-	@Override
-	protected synchronized void tearDown() throws Exception {
-		connectionAccepter.stop();
-	}
+    @Override
+    protected synchronized void tearDown() throws Exception {
+        connectionAccepter.stop();
+    }
 
-	int getPort() {
-		return connectionAccepter.getLocalPort();
-	}
+    int getPort() {
+        return connectionAccepter.getLocalPort();
+    }
 
-	String getIpAddress() {
-		return ipAddress;
-	}
+    String getIpAddress() {
+        return ipAddress;
+    }
 }

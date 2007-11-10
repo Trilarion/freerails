@@ -17,151 +17,151 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 abstract class AbstractInetConnection implements Runnable {
-	private static final Logger logger = Logger
-			.getLogger(AbstractInetConnection.class.getName());
+    private static final Logger logger = Logger
+            .getLogger(AbstractInetConnection.class.getName());
 
-	private final SychronizedQueue inbound = new SychronizedQueue();
+    private final SychronizedQueue inbound = new SychronizedQueue();
 
-	private final InetConnection inetConnection;
+    private final InetConnection inetConnection;
 
-	private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(
-			false);
+    private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(
+            false);
 
-	private final SynchronizedFlag status = new SynchronizedFlag(true);
+    private final SynchronizedFlag status = new SynchronizedFlag(true);
 
-	private int timeout = 1000 * 5; // 5 seconds.
+    private int timeout = 1000 * 5; // 5 seconds.
 
-	public AbstractInetConnection(Socket s) throws IOException {
-		inetConnection = new InetConnection(s);
-		open();
-	}
+    public AbstractInetConnection(Socket s) throws IOException {
+        inetConnection = new InetConnection(s);
+        open();
+    }
 
-	public AbstractInetConnection(String ip, int port) throws IOException {
-		inetConnection = new InetConnection(ip, port);
-		open();
-	}
+    public AbstractInetConnection(String ip, int port) throws IOException {
+        inetConnection = new InetConnection(ip, port);
+        open();
+    }
 
-	public void disconnect() throws IOException {
-		logger.fine(this + "Initiating shutdown..");
-		shutdownOutput();
+    public void disconnect() throws IOException {
+        logger.fine(this + "Initiating shutdown..");
+        shutdownOutput();
 
-		long waitUntil = System.currentTimeMillis() + timeout;
+        long waitUntil = System.currentTimeMillis() + timeout;
 
-		synchronized (readerThreadStatus) {
-			while (readerThreadStatus.isOpen()) {
-				long currentTime = System.currentTimeMillis();
+        synchronized (readerThreadStatus) {
+            while (readerThreadStatus.isOpen()) {
+                long currentTime = System.currentTimeMillis();
 
-				if (currentTime >= waitUntil) {
-					shutDownInput();
-					throw new IOException(
-							"Time-out while trying to disconnect.");
-				}
+                if (currentTime >= waitUntil) {
+                    shutDownInput();
+                    throw new IOException(
+                            "Time-out while trying to disconnect.");
+                }
 
-				try {
-					readerThreadStatus.wait(timeout);
-				} catch (InterruptedException e) {
-					// do nothing.
-				}
-			}
-		}
+                try {
+                    readerThreadStatus.wait(timeout);
+                } catch (InterruptedException e) {
+                    // do nothing.
+                }
+            }
+        }
 
-		logger.fine(this + "Finished shutdown!! --status="
-				+ String.valueOf(status.isOpen()));
-	}
+        logger.fine(this + "Finished shutdown!! --status="
+                + String.valueOf(status.isOpen()));
+    }
 
-	public void flush() throws IOException {
-		inetConnection.flush();
-	}
+    public void flush() throws IOException {
+        inetConnection.flush();
+    }
 
-	public synchronized boolean isOpen() {
-		return status.isOpen();
-	}
+    public synchronized boolean isOpen() {
+        return status.isOpen();
+    }
 
-	public void run() {
-		try {
-			while (true) {
-				FreerailsSerializable fs = inetConnection.receive();
+    public void run() {
+        try {
+            while (true) {
+                FreerailsSerializable fs = inetConnection.receive();
 
-				synchronized (inbound) {
-					inbound.write(fs);
-					inbound.notifyAll();
-				}
-			}
-		} catch (EOFException e) {
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+                synchronized (inbound) {
+                    inbound.write(fs);
+                    inbound.notifyAll();
+                }
+            }
+        } catch (EOFException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-		logger.fine(this + "Recipricating shutdown..");
-		shutDownInput();
-		readerThreadStatus.close();
-	}
+        logger.fine(this + "Recipricating shutdown..");
+        shutDownInput();
+        readerThreadStatus.close();
+    }
 
-	private synchronized void open() throws IOException {
-		Thread t = new Thread(this);
-		t.setName(getThreadName());
-		inetConnection.open();
-		t.start();
-		readerThreadStatus.open();
-	}
+    private synchronized void open() throws IOException {
+        Thread t = new Thread(this);
+        t.setName(getThreadName());
+        inetConnection.open();
+        t.start();
+        readerThreadStatus.open();
+    }
 
-	private synchronized void shutDownInput() {
-		try {
-			inetConnection.shutdownInput();
-			logger.fine(this + "Shut down input.");
+    private synchronized void shutDownInput() {
+        try {
+            inetConnection.shutdownInput();
+            logger.fine(this + "Shut down input.");
 
-			if (status.isOpen()) {
-				shutdownOutput();
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
+            if (status.isOpen()) {
+                shutdownOutput();
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
 
-	private synchronized void shutdownOutput() throws IOException {
-		if (!status.isOpen()) {
-			throw new IllegalStateException();
-		}
+    private synchronized void shutdownOutput() throws IOException {
+        if (!status.isOpen()) {
+            throw new IllegalStateException();
+        }
 
-		status.close();
-		inetConnection.shutdownOutput();
-		logger.fine(this + "Shut down output.");
-	}
+        status.close();
+        inetConnection.shutdownOutput();
+        logger.fine(this + "Shut down output.");
+    }
 
-	abstract String getThreadName();
+    abstract String getThreadName();
 
-	FreerailsSerializable[] read() throws IOException {
-		if (status.isOpen()) {
-			return inbound.read();
-		}
-		throw new IOException();
-	}
+    FreerailsSerializable[] read() throws IOException {
+        if (status.isOpen()) {
+            return inbound.read();
+        }
+        throw new IOException();
+    }
 
-	void send(FreerailsSerializable object) throws IOException {
-		inetConnection.send(object);
-	}
+    void send(FreerailsSerializable object) throws IOException {
+        inetConnection.send(object);
+    }
 
-	void setTimeOut(int i) {
-		timeout = i;
-	}
+    void setTimeOut(int i) {
+        timeout = i;
+    }
 
-	FreerailsSerializable waitForObject() throws InterruptedException,
-			IOException {
-		if (status.isOpen()) {
-			synchronized (inbound) {
-				if (inbound.size() > 0) {
-					return inbound.getFirst();
-				}
-				inbound.wait();
+    FreerailsSerializable waitForObject() throws InterruptedException,
+            IOException {
+        if (status.isOpen()) {
+            synchronized (inbound) {
+                if (inbound.size() > 0) {
+                    return inbound.getFirst();
+                }
+                inbound.wait();
 
-				if (inbound.size() > 0) {
-					return inbound.getFirst();
-				}
-				throw new IllegalStateException();
-			}
-		}
-		throw new IOException("The connection is close.");
-	}
+                if (inbound.size() > 0) {
+                    return inbound.getFirst();
+                }
+                throw new IllegalStateException();
+            }
+        }
+        throw new IOException("The connection is close.");
+    }
 }

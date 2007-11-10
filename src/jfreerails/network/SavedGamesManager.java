@@ -14,13 +14,13 @@ import java.io.Serializable;
  * 
  */
 public interface SavedGamesManager {
-	String[] getSaveGameNames();
+    String[] getSaveGameNames();
 
-	String[] getNewMapNames();
+    String[] getNewMapNames();
 
-	void saveGame(Serializable w, String s) throws IOException;
+    void saveGame(Serializable w, String s) throws IOException;
 
-	Serializable loadGame(String name) throws IOException;
+    Serializable loadGame(String name) throws IOException;
 
-	Serializable newMap(String name) throws IOException;
+    Serializable newMap(String name) throws IOException;
 }

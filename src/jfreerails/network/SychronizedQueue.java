@@ -14,28 +14,28 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class SychronizedQueue {
-	private final LinkedList<FreerailsSerializable> queue = new LinkedList<FreerailsSerializable>();
+    private final LinkedList<FreerailsSerializable> queue = new LinkedList<FreerailsSerializable>();
 
-	public synchronized void write(FreerailsSerializable f) {
-		queue.add(f);
-	}
+    public synchronized void write(FreerailsSerializable f) {
+        queue.add(f);
+    }
 
-	public synchronized FreerailsSerializable[] read() {
-		int length = queue.size();
-		FreerailsSerializable[] read = new FreerailsSerializable[length];
+    public synchronized FreerailsSerializable[] read() {
+        int length = queue.size();
+        FreerailsSerializable[] read = new FreerailsSerializable[length];
 
-		for (int i = 0; i < length; i++) {
-			read[i] = queue.removeFirst();
-		}
+        for (int i = 0; i < length; i++) {
+            read[i] = queue.removeFirst();
+        }
 
-		return read;
-	}
+        return read;
+    }
 
-	public synchronized int size() {
-		return queue.size();
-	}
+    public synchronized int size() {
+        return queue.size();
+    }
 
-	public synchronized FreerailsSerializable getFirst() {
-		return queue.removeFirst();
-	}
+    public synchronized FreerailsSerializable getFirst() {
+        return queue.removeFirst();
+    }
 }

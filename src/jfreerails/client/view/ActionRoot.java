@@ -25,77 +25,76 @@ import jfreerails.world.top.SKEY;
  */
 public class ActionRoot {
 
-	private class BuildTrainDialogAction extends AbstractAction {
-		private static final long serialVersionUID = 3257853173002416948L;
+    private class BuildTrainDialogAction extends AbstractAction {
+        private static final long serialVersionUID = 3257853173002416948L;
 
-		public BuildTrainDialogAction() {
-			super("Build Train");
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
-			putValue(SHORT_DESCRIPTION, "Build a new train");
-		}
+        public BuildTrainDialogAction() {
+            super("Build Train");
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
+            putValue(SHORT_DESCRIPTION, "Build a new train");
+        }
 
-		public void actionPerformed(ActionEvent e) {
-			if (dialogueBoxController != null) {
-				dialogueBoxController.showSelectEngine();
-			}
-		}
-	}
+        public void actionPerformed(ActionEvent e) {
+            if (dialogueBoxController != null) {
+                dialogueBoxController.showSelectEngine();
+            }
+        }
+    }
 
-	private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
+    private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
 
-	private DialogueBoxController dialogueBoxController = null;
+    private DialogueBoxController dialogueBoxController = null;
 
-	private final ServerControlModel serverControls;
+    private final ServerControlModel serverControls;
 
-	private StationBuildModel stationBuildModel;
+    private StationBuildModel stationBuildModel;
 
-	private TrackMoveProducer trackMoveProducer;
+    private TrackMoveProducer trackMoveProducer;
 
-	public ActionRoot(ModelRootImpl mr) {
-		 this.serverControls= new ServerControlModel(
-					mr);
-	}
+    public ActionRoot(ModelRootImpl mr) {
+        this.serverControls = new ServerControlModel(mr);
+    }
 
-	public Action getBuildTrainDialogAction() {
-		return buildTrainDialogAction;
-	}
+    public Action getBuildTrainDialogAction() {
+        return buildTrainDialogAction;
+    }
 
-	public DialogueBoxController getDialogueBoxController() {
-		return dialogueBoxController;
-	}
+    public DialogueBoxController getDialogueBoxController() {
+        return dialogueBoxController;
+    }
 
-	public ServerControlModel getServerControls() {
-		return serverControls;
-	}
+    public ServerControlModel getServerControls() {
+        return serverControls;
+    }
 
-	public StationBuildModel getStationBuildModel() {
-		return stationBuildModel;
-	}
+    public StationBuildModel getStationBuildModel() {
+        return stationBuildModel;
+    }
 
     public TrackMoveProducer getTrackMoveProducer() {
         return trackMoveProducer;
     }
 
-	public void setDialogueBoxController(
-			DialogueBoxController dialogueBoxController) {
-		this.dialogueBoxController = dialogueBoxController;
-	}
+    public void setDialogueBoxController(
+            DialogueBoxController dialogueBoxController) {
+        this.dialogueBoxController = dialogueBoxController;
+    }
 
-	/**
-	 * Call this method when a new game is started or a game is loaded.
-	 */
-	public void setup(ModelRootImpl modelRoot, RenderersRoot vl) {
-		serverControls.setup(modelRoot, dialogueBoxController);                
-		if (!modelRoot.hasBeenSetup)
-			throw new IllegalStateException();
+    /**
+     * Call this method when a new game is started or a game is loaded.
+     */
+    public void setup(ModelRootImpl modelRoot, RenderersRoot vl) {
+        serverControls.setup(modelRoot, dialogueBoxController);
+        if (!modelRoot.hasBeenSetup)
+            throw new IllegalStateException();
 
-		ReadOnlyWorld world = modelRoot.getWorld();
+        ReadOnlyWorld world = modelRoot.getWorld();
 
-		if (world.size(SKEY.TRACK_RULES) > 0) {
-			trackMoveProducer = new TrackMoveProducer(modelRoot);
-			stationBuildModel = new StationBuildModel(new StationBuilder(
-					modelRoot), vl, modelRoot);
-	}
-	}
+        if (world.size(SKEY.TRACK_RULES) > 0) {
+            trackMoveProducer = new TrackMoveProducer(modelRoot);
+            stationBuildModel = new StationBuildModel(new StationBuilder(
+                    modelRoot), vl, modelRoot);
+        }
+    }
 
 }

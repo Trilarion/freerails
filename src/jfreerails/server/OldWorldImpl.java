@@ -22,73 +22,74 @@ import org.xml.sax.SAXException;
  * @author luke
  */
 public class OldWorldImpl {
-	/** Note, the map name is converted to lower case and any spaces
-	 * are replaced with underscores.
-	 * 
-	 */
-	public static World createWorldFromMapFile(String mapName,
-			FreerailsProgressMonitor pm) {		
-		
-		mapName = mapName.toLowerCase();
-		mapName = mapName.replace(' ', '_');
-		
-		pm.setValue(0);
-		pm.nextStep(7);
+    /**
+     * Note, the map name is converted to lower case and any spaces are replaced
+     * with underscores.
+     * 
+     */
+    public static World createWorldFromMapFile(String mapName,
+            FreerailsProgressMonitor pm) {
 
-		int progess = 0;
+        mapName = mapName.toLowerCase();
+        mapName = mapName.replace(' ', '_');
 
-		TileSetFactory tileFactory = new TileSetFactoryImpl();
-		pm.setValue(++progess);
+        pm.setValue(0);
+        pm.nextStep(7);
 
-		WorldImpl w = new WorldImpl();
-		pm.setValue(++progess);
+        int progess = 0;
 
-		WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-		pm.setValue(++progess);
-		wetf.addTypesToWorld(w);
-		pm.setValue(++progess);
+        TileSetFactory tileFactory = new TileSetFactoryImpl();
+        pm.setValue(++progess);
 
-		tileFactory.addTerrainTileTypesList(w);
-		pm.setValue(++progess);
+        WorldImpl w = new WorldImpl();
+        pm.setValue(++progess);
 
-		URL track_xml_url = OldWorldImpl.class
-				.getResource("/jfreerails/data/track_tiles.xml");
+        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
+        pm.setValue(++progess);
+        wetf.addTypesToWorld(w);
+        pm.setValue(++progess);
 
-		Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
-				track_xml_url);
-		pm.setValue(++progess);
+        tileFactory.addTerrainTileTypesList(w);
+        pm.setValue(++progess);
 
-		trackSetFactory.addTrackRules(w);
-		pm.setValue(++progess);
+        URL track_xml_url = OldWorldImpl.class
+                .getResource("/jfreerails/data/track_tiles.xml");
 
-		// Load the terrain map
-		URL map_url = OldWorldImpl.class.getResource("/jfreerails/data/"
-				+ mapName + ".png");
-		MapFactory.setupMap(map_url, w, pm);
+        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
+                track_xml_url);
+        pm.setValue(++progess);
 
-		// Load the city names
-		URL cities_xml_url = OldWorldImpl.class.getResource("/jfreerails/data/"
-				+ mapName + "_cities.xml");
+        trackSetFactory.addTrackRules(w);
+        pm.setValue(++progess);
 
-		try {
-			InputCityNames.readCityNames(w, cities_xml_url);
-		} catch (SAXException e) {
-		}
+        // Load the terrain map
+        URL map_url = OldWorldImpl.class.getResource("/jfreerails/data/"
+                + mapName + ".png");
+        MapFactory.setupMap(map_url, w, pm);
 
-		// Randomly position the city tiles
-		CityTilePositioner ctp = new CityTilePositioner(w);
-		ctp.initCities();
+        // Load the city names
+        URL cities_xml_url = OldWorldImpl.class.getResource("/jfreerails/data/"
+                + mapName + "_cities.xml");
 
-		// Set the time..
-		w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-		w.setTime(new GameTime(0));
-		w.set(ITEM.GAME_SPEED, new GameSpeed(10));
-		w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+        try {
+            InputCityNames.readCityNames(w, cities_xml_url);
+        } catch (SAXException e) {
+        }
 
-		/*
-		 * Note, money used to get added to player accounts here, now it is done
-		 * when players are added. See AddPlayerMove
-		 */
-		return w;
-	}
+        // Randomly position the city tiles
+        CityTilePositioner ctp = new CityTilePositioner(w);
+        ctp.initCities();
+
+        // Set the time..
+        w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        w.setTime(new GameTime(0));
+        w.set(ITEM.GAME_SPEED, new GameSpeed(10));
+        w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+
+        /*
+         * Note, money used to get added to player accounts here, now it is done
+         * when players are added. See AddPlayerMove
+         */
+        return w;
+    }
 }

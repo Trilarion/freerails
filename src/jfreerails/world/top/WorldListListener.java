@@ -14,9 +14,9 @@ import jfreerails.world.player.FreerailsPrincipal;
  * 
  */
 public interface WorldListListener {
-	void listUpdated(KEY key, int index, FreerailsPrincipal principal);
+    void listUpdated(KEY key, int index, FreerailsPrincipal principal);
 
-	void itemAdded(KEY key, int index, FreerailsPrincipal principal);
+    void itemAdded(KEY key, int index, FreerailsPrincipal principal);
 
-	void itemRemoved(KEY key, int index, FreerailsPrincipal principal);
+    void itemRemoved(KEY key, int index, FreerailsPrincipal principal);
 }

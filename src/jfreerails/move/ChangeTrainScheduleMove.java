@@ -14,10 +14,10 @@ import jfreerails.world.train.ImmutableSchedule;
  * 
  */
 public class ChangeTrainScheduleMove extends ChangeItemInListMove {
-	private static final long serialVersionUID = 3691043187930052149L;
+    private static final long serialVersionUID = 3691043187930052149L;
 
-	public ChangeTrainScheduleMove(int id, ImmutableSchedule before,
-			ImmutableSchedule after, FreerailsPrincipal p) {
-		super(KEY.TRAIN_SCHEDULES, id, before, after, p);
-	}
+    public ChangeTrainScheduleMove(int id, ImmutableSchedule before,
+            ImmutableSchedule after, FreerailsPrincipal p) {
+        super(KEY.TRAIN_SCHEDULES, id, before, after, p);
+    }
 }

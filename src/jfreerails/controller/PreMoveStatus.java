@@ -9,55 +9,55 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author lindsal
  */
 final public class PreMoveStatus implements FreerailsSerializable {
-	private static final long serialVersionUID = 3978145456646009140L;
+    private static final long serialVersionUID = 3978145456646009140L;
 
-	public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(
-			MoveStatus.MOVE_OK);
+    public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(
+            MoveStatus.MOVE_OK);
 
-	public final MoveStatus ms;
+    public final MoveStatus ms;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof PreMoveStatus))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof PreMoveStatus))
+            return false;
 
-		final PreMoveStatus preMoveStatus = (PreMoveStatus) o;
+        final PreMoveStatus preMoveStatus = (PreMoveStatus) o;
 
-		if (!ms.equals(preMoveStatus.ms))
-			return false;
+        if (!ms.equals(preMoveStatus.ms))
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		return ms.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return ms.hashCode();
+    }
 
-	/**
-	 * Avoid creating a duplicate when deserializing.
-	 */
-	private Object readResolve() {
-		if (ms.ok) {
-			return PRE_MOVE_OK;
-		}
-		return this;
-	}
+    /**
+     * Avoid creating a duplicate when deserializing.
+     */
+    private Object readResolve() {
+        if (ms.ok) {
+            return PRE_MOVE_OK;
+        }
+        return this;
+    }
 
-	private PreMoveStatus(MoveStatus ms) {
-		this.ms = ms;
-	}
+    private PreMoveStatus(MoveStatus ms) {
+        this.ms = ms;
+    }
 
-	public static PreMoveStatus failed(String reason) {
-		return new PreMoveStatus(MoveStatus.moveFailed(reason));
-	}
+    public static PreMoveStatus failed(String reason) {
+        return new PreMoveStatus(MoveStatus.moveFailed(reason));
+    }
 
-	public static PreMoveStatus fromMoveStatus(MoveStatus ms) {
-		if (ms.ok) {
-			return PRE_MOVE_OK;
-		}
-		return new PreMoveStatus(ms);
-	}
+    public static PreMoveStatus fromMoveStatus(MoveStatus ms) {
+        if (ms.ok) {
+            return PRE_MOVE_OK;
+        }
+        return new PreMoveStatus(ms);
+    }
 }

@@ -45,352 +45,356 @@ import jfreerails.world.train.SpeedTimeAndStatus.TrainActivity;
  * 
  */
 public class MoveTrainPreMove implements PreMove {
-	private static final long serialVersionUID = 3545516188269491250L;
-	private static final Logger logger = Logger.getLogger(MoveTrainPreMove.class
-			.getName());
-	/** 666 Performance cache must be cleared if track on map is build !**/
-	private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<Integer, HashMap<Integer,Step>>();
-	
-	/** Uses static method to make testing easier.*/
-	public static Step findNextStep(ReadOnlyWorld world,
-			PositionOnTrack currentPosition, ImPoint target) {
-	    int startPos = PositionOnTrack.toInt(currentPosition.getX(), currentPosition.getY());
-	    int endPos = PositionOnTrack.toInt(target.x, target.y);
-	    HashMap<Integer, Step> destPaths = pathCache.get(endPos);
-	    Step nextStep = null;
-	    if(destPaths != null) {
-	        nextStep = destPaths.get(startPos);
-	        if(nextStep != null) {
-	            return nextStep;
-	        }
-	    } else {
-	        destPaths = new HashMap<Integer, Step>();
-	        pathCache.put(endPos, destPaths);
-	    } 
-		PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
+    private static final long serialVersionUID = 3545516188269491250L;
+    private static final Logger logger = Logger
+            .getLogger(MoveTrainPreMove.class.getName());
+    /** 666 Performance cache must be cleared if track on map is build !* */
+    private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<Integer, HashMap<Integer, Step>>();
 
-		try {
-			ImPoint location = new ImPoint(currentPosition.getX(),
-					currentPosition.getY());
-			pathFinder.setupSearch(location, target);
-			pathFinder.search(-1);
-			Step[] pathAsVectors = pathFinder.pathAsVectors();
-			int[] pathAsInts = pathFinder.pathAsInts();
-			for(int i = 0; i < pathAsInts.length-1; i++) {
-			    int calcPos = pathAsInts[i] & (PositionOnTrack.MAX_COORINATE | (PositionOnTrack.MAX_COORINATE 
-			            << PositionOnTrack.BITS_FOR_COORINATE));			    
-			    destPaths.put(calcPos, pathAsVectors[i+1]);
-			}
+    /** Uses static method to make testing easier. */
+    public static Step findNextStep(ReadOnlyWorld world,
+            PositionOnTrack currentPosition, ImPoint target) {
+        int startPos = PositionOnTrack.toInt(currentPosition.getX(),
+                currentPosition.getY());
+        int endPos = PositionOnTrack.toInt(target.x, target.y);
+        HashMap<Integer, Step> destPaths = pathCache.get(endPos);
+        Step nextStep = null;
+        if (destPaths != null) {
+            nextStep = destPaths.get(startPos);
+            if (nextStep != null) {
+                return nextStep;
+            }
+        } else {
+            destPaths = new HashMap<Integer, Step>();
+            pathCache.put(endPos, destPaths);
+        }
+        PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
+
+        try {
+            ImPoint location = new ImPoint(currentPosition.getX(),
+                    currentPosition.getY());
+            pathFinder.setupSearch(location, target);
+            pathFinder.search(-1);
+            Step[] pathAsVectors = pathFinder.pathAsVectors();
+            int[] pathAsInts = pathFinder.pathAsInts();
+            for (int i = 0; i < pathAsInts.length - 1; i++) {
+                int calcPos = pathAsInts[i]
+                        & (PositionOnTrack.MAX_COORINATE | (PositionOnTrack.MAX_COORINATE << PositionOnTrack.BITS_FOR_COORINATE));
+                destPaths.put(calcPos, pathAsVectors[i + 1]);
+            }
             nextStep = pathAsVectors[0];
-			return nextStep;
-		} catch (PathNotFoundException e) {
-			// The pathfinder couldn't find a path so we
-			// go in any legal direction.
-			FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-					currentPosition);
-			explorer.nextEdge();
-			int next = explorer.getVertexConnectedByEdge();
-			PositionOnTrack nextPosition = new PositionOnTrack(next);
-			return nextPosition.cameFrom();
-		}
+            return nextStep;
+        } catch (PathNotFoundException e) {
+            // The pathfinder couldn't find a path so we
+            // go in any legal direction.
+            FlatTrackExplorer explorer = new FlatTrackExplorer(world,
+                    currentPosition);
+            explorer.nextEdge();
+            int next = explorer.getVertexConnectedByEdge();
+            PositionOnTrack nextPosition = new PositionOnTrack(next);
+            return nextPosition.cameFrom();
+        }
 
-	}
+    }
 
-	private final FreerailsPrincipal principal;
+    private final FreerailsPrincipal principal;
 
-	private final int trainID;
+    private final int trainID;
 
-	public MoveTrainPreMove(int id, FreerailsPrincipal p) {
-		trainID = id;
-		principal = p;
-	}
+    public MoveTrainPreMove(int id, FreerailsPrincipal p) {
+        trainID = id;
+        principal = p;
+    }
 
-	double acceleration(int wagons) {
-		return 0.5d/(wagons + 1);
-	}
+    double acceleration(int wagons) {
+        return 0.5d / (wagons + 1);
+    }
 
-	/**
-	 * Returns true if an updated is due.
-	 * 
-	 */
-	public boolean isUpdateDue(ReadOnlyWorld w) {
-		GameTime currentTime = w.currentTime();
-		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		ActivityIterator ai = w.getActivities(principal, trainID);
-		ai.gotoLastActivity();
+    /**
+     * Returns true if an updated is due.
+     * 
+     */
+    public boolean isUpdateDue(ReadOnlyWorld w) {
+        GameTime currentTime = w.currentTime();
+        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+        ActivityIterator ai = w.getActivities(principal, trainID);
+        ai.gotoLastActivity();
 
-		double finishTime = ai.getFinishTime();
-		double ticks = currentTime.getTicks();
+        double finishTime = ai.getFinishTime();
+        double ticks = currentTime.getTicks();
 
-		boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
-		TrainActivity trainActivity = ta.getStatus(finishTime);
-		if(trainActivity == TrainActivity.WAITING_FOR_FULL_LOAD){
-			//Check whether there is any cargo that can be added to the train.
-			ImInts spaceAvailable = ta.spaceAvailable();
-			int stationId = ta.getStationId(ticks);
-			if(stationId == -1)
-				throw new IllegalStateException();
-			
-			StationModel station = (StationModel)w.get(principal, KEY.STATIONS, stationId);
-			CargoBundle cb = (CargoBundle)w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
-			
-			for(int i = 0; i < spaceAvailable.size(); i++){
-				int space = spaceAvailable.get(i);
-				int atStation = cb.getAmount(i);
-				if(space * atStation > 0){
-					logger.fine("There is cargo to transfer!");
-					return true;
-				}
-			}
-			
-			return !ta.keepWaiting();
-		}
-		return hasFinishedLastActivity;
-	}		
+        boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
+        TrainActivity trainActivity = ta.getStatus(finishTime);
+        if (trainActivity == TrainActivity.WAITING_FOR_FULL_LOAD) {
+            // Check whether there is any cargo that can be added to the train.
+            ImInts spaceAvailable = ta.spaceAvailable();
+            int stationId = ta.getStationId(ticks);
+            if (stationId == -1)
+                throw new IllegalStateException();
 
-	private ImPoint currentTrainTarget(ReadOnlyWorld w) {
-		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		return ta.getTarget();
-	}
+            StationModel station = (StationModel) w.get(principal,
+                    KEY.STATIONS, stationId);
+            CargoBundle cb = (CargoBundle) w.get(principal, KEY.CARGO_BUNDLES,
+                    station.getCargoBundleID());
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof MoveTrainPreMove))
-			return false;
+            for (int i = 0; i < spaceAvailable.size(); i++) {
+                int space = spaceAvailable.get(i);
+                int atStation = cb.getAmount(i);
+                if (space * atStation > 0) {
+                    logger.fine("There is cargo to transfer!");
+                    return true;
+                }
+            }
 
-		final MoveTrainPreMove moveTrainPreMove = (MoveTrainPreMove) o;
+            return !ta.keepWaiting();
+        }
+        return hasFinishedLastActivity;
+    }
 
-		if (trainID != moveTrainPreMove.trainID)
-			return false;
-		if (!principal.equals(moveTrainPreMove.principal))
-			return false;
+    private ImPoint currentTrainTarget(ReadOnlyWorld w) {
+        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+        return ta.getTarget();
+    }
 
-		return true;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof MoveTrainPreMove))
+            return false;
 
-	public Move generateMove(ReadOnlyWorld w) {
+        final MoveTrainPreMove moveTrainPreMove = (MoveTrainPreMove) o;
 
-		// Check that we can generate a move.
-		if (!isUpdateDue(w))
-			throw new IllegalStateException();
+        if (trainID != moveTrainPreMove.trainID)
+            return false;
+        if (!principal.equals(moveTrainPreMove.principal))
+            return false;
 
-		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
+        return true;
+    }
 
-		SpeedTimeAndStatus.TrainActivity activity = tm.getActivity();
+    public Move generateMove(ReadOnlyWorld w) {
 
-		switch (activity) {
-		case STOPPED_AT_STATION:
-			return moveTrain(w);
-		case READY:
-		{
-			// Are we at a station?
-			TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
-					principal, new WorldDiffs(w));
-			ta.getStationId(Integer.MAX_VALUE);
-			PositionOnTrack pot = tm.getFinalPosition();
-			int x = pot.getX();
-			int y = pot.getY();
-			boolean atStation = stopsHandler.getStationID(x, y) >= 0;
+        // Check that we can generate a move.
+        if (!isUpdateDue(w))
+            throw new IllegalStateException();
 
-			TrainMotion nextMotion;
-			if (atStation) {
-				// We have just arrived at a station.
-				double durationOfStationStop = 10;
-								
-				stopsHandler.arrivesAtPoint(x, y);
-				
-				SpeedTimeAndStatus.TrainActivity status = stopsHandler.isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD : STOPPED_AT_STATION;
-				PathOnTiles path = tm.getPath();
-				int lastTrainLength = tm.getTrainLength();
-				int currentTrainLength = stopsHandler.getTrainLength();
-				
-				//If we are adding wagons we may need to lengthen the path.
-				if(lastTrainLength < currentTrainLength){
-					path = TrainStopsHandler.lengthenPath(w, path, currentTrainLength);
-				}
-				
-				nextMotion = new TrainMotion(path, currentTrainLength,
-						durationOfStationStop, status);
-				
-				// Create a new Move object.
-				Move trainMove = new NextActivityMove(nextMotion, trainID,
-						principal);
+        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+        TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
 
-				Move cargoMove = stopsHandler.getMoves();
-				return new CompositeMove(trainMove, cargoMove);
-			}
-			return moveTrain(w);
-		}	
-		case WAITING_FOR_FULL_LOAD:
-		{
-			TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
-					principal, new WorldDiffs(w));
-			
-			
-			boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
-			Move cargoMove = stopsHandler.getMoves();
-			if(!waiting4fullLoad){
-				Move trainMove = moveTrain(w);
-				if(null != trainMove){
-				return new CompositeMove(trainMove, cargoMove);
-				}else{
-					return cargoMove;
-				}
-			}
-			stopsHandler.makeTrainWait(30);
-			return cargoMove;
-			
-		}
-		default:
-			throw new UnsupportedOperationException(activity.toString());
-		}
-	}
-	
-	public SpeedTimeAndStatus.TrainActivity getActivity(ReadOnlyWorld w){
-		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
-		return tm.getActivity();		
-	}
+        SpeedTimeAndStatus.TrainActivity activity = tm.getActivity();
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = trainID;
-		result = 29 * result + principal.hashCode();
-		return result;
-	}
+        switch (activity) {
+        case STOPPED_AT_STATION:
+            return moveTrain(w);
+        case READY: {
+            // Are we at a station?
+            TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
+                    principal, new WorldDiffs(w));
+            ta.getStationId(Integer.MAX_VALUE);
+            PositionOnTrack pot = tm.getFinalPosition();
+            int x = pot.getX();
+            int y = pot.getY();
+            boolean atStation = stopsHandler.getStationID(x, y) >= 0;
 
-	private TrainMotion lastMotion(ReadOnlyWorld w) {
-		ActivityIterator ai = w.getActivities(principal, trainID);
-		ai.gotoLastActivity();
-		TrainMotion lastMotion = (TrainMotion) ai.getActivity();
-		return lastMotion;
-	}
+            TrainMotion nextMotion;
+            if (atStation) {
+                // We have just arrived at a station.
+                double durationOfStationStop = 10;
 
-	private Move moveTrain(ReadOnlyWorld w) {
-		// Find the next vector.
-		Step nextVector = nextStep(w);
-		HashMap<TrackSection, Integer> occupiedTrackSections = occupiedTrackSections(w);
-		TrainMotion motion = lastMotion(w);
-		PositionOnTrack pot = motion.getFinalPosition();
-		ImPoint tile = new ImPoint(pot.getX(), pot.getY());
-		TrackSection desiredTrackSection = new TrackSection(nextVector, tile);
+                stopsHandler.arrivesAtPoint(x, y);
 
-		// Check whether the desired track section is single or double track.
-		ImPoint tileA = desiredTrackSection.tileA();
-		ImPoint tileB = desiredTrackSection.tileB();
-		FreerailsTile fta = (FreerailsTile) w.getTile(tileA.x, tileA.y);
-		FreerailsTile ftb = (FreerailsTile) w.getTile(tileB.x, tileB.y);
-		TrackPiece tpa = fta.getTrackPiece();
-		TrackPiece tpb = ftb.getTrackPiece();
-		int tracks = 1;
-		if (tpa.getTrackRule().isDouble() && tpb.getTrackRule().isDouble()) {
-			tracks = 2;
-		}
+                SpeedTimeAndStatus.TrainActivity status = stopsHandler
+                        .isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD
+                        : STOPPED_AT_STATION;
+                PathOnTiles path = tm.getPath();
+                int lastTrainLength = tm.getTrainLength();
+                int currentTrainLength = stopsHandler.getTrainLength();
 
-		if (occupiedTrackSections.containsKey(desiredTrackSection)) {
-			int trains = occupiedTrackSections.get(desiredTrackSection);
-			if (trains >= tracks) {
-				// We need to wait for the track ahead to clear.
-				return stopTrain(w);
-			}
-		}
-		// Create a new train motion object.
-		TrainMotion nextMotion = nextMotion(w, nextVector);
-		return new NextActivityMove(nextMotion, trainID, principal);
+                // If we are adding wagons we may need to lengthen the path.
+                if (lastTrainLength < currentTrainLength) {
+                    path = TrainStopsHandler.lengthenPath(w, path,
+                            currentTrainLength);
+                }
 
-	}
-/** 666 Performance !**/
-	private HashMap<TrackSection, Integer> occupiedTrackSections(ReadOnlyWorld w) {
-		HashMap<TrackSection, Integer> occupiedTrackSections = new HashMap<TrackSection, Integer>();
-		for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {						
-			TrainModel train = (TrainModel) w.get(principal,
-					KEY.TRAINS, i);
-			if (null == train)
-				continue;
-			
-			TrainAccessor ta = new TrainAccessor(w, principal, i);
-			GameTime gt = w.currentTime();
-			if(ta.isMoving(gt.getTicks())){
-				HashSet<TrackSection> sections = ta.occupiedTrackSection(gt.getTicks());
-				for (TrackSection section : sections) {
-					if(occupiedTrackSections.containsKey(section)){
-						int count = occupiedTrackSections.get(section);
-						count++;
-						occupiedTrackSections.put(section, count);
-					}else{
-						occupiedTrackSections.put(section, 1);
-					}
-				}						
-			}
-		}
-		return occupiedTrackSections;
-	}
+                nextMotion = new TrainMotion(path, currentTrainLength,
+                        durationOfStationStop, status);
 
-	TrainMotion nextMotion(ReadOnlyWorld w, Step v) {
-		TrainMotion motion = lastMotion(w);
+                // Create a new Move object.
+                Move trainMove = new NextActivityMove(nextMotion, trainID,
+                        principal);
 
-		SpeedAgainstTime speeds = nextSpeeds(w, v);
+                Move cargoMove = stopsHandler.getMoves();
+                return new CompositeMove(trainMove, cargoMove);
+            }
+            return moveTrain(w);
+        }
+        case WAITING_FOR_FULL_LOAD: {
+            TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
+                    principal, new WorldDiffs(w));
 
-		PathOnTiles currentTiles = motion.getTiles(motion.duration());
-		PathOnTiles pathOnTiles = currentTiles.addSteps(v);
-		return new TrainMotion(pathOnTiles, currentTiles.steps(), motion
-				.getTrainLength(), speeds);
-	}
+            boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
+            Move cargoMove = stopsHandler.getMoves();
+            if (!waiting4fullLoad) {
+                Move trainMove = moveTrain(w);
+                if (null != trainMove) {
+                    return new CompositeMove(trainMove, cargoMove);
+                } else {
+                    return cargoMove;
+                }
+            }
+            stopsHandler.makeTrainWait(30);
+            return cargoMove;
 
-	SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, Step v) {
-		TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-		TrainMotion lastMotion = lastMotion(w);
+        }
+        default:
+            throw new UnsupportedOperationException(activity.toString());
+        }
+    }
 
-		double u = lastMotion.getSpeedAtEnd();
-		double s = v.getLength();
+    public SpeedTimeAndStatus.TrainActivity getActivity(ReadOnlyWorld w) {
+        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+        TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
+        return tm.getActivity();
+    }
 
-		int wagons = ta.getTrain().getNumberOfWagons();
-		double a0 = acceleration(wagons);
-		double topSpeed = topSpeed(wagons);
+    @Override
+    public int hashCode() {
+        int result;
+        result = trainID;
+        result = 29 * result + principal.hashCode();
+        return result;
+    }
 
-		SpeedAgainstTime newSpeeds;
-		if (u < topSpeed) {
-			double t = (topSpeed - u) / a0;
-			SpeedAgainstTime a = ConstAcc.uat(u, a0, t);
-			t = s / topSpeed + 1; // Slightly overestimate the time
-			SpeedAgainstTime b = ConstAcc.uat(topSpeed, 0, t);
-			newSpeeds = new CompositeSpeedAgainstTime(a, b);
-		} else {
-			double t;
-			t = s / topSpeed + 1; // Slightly overestimate the time
-			newSpeeds = ConstAcc.uat(topSpeed, 0, t);
-		}
+    private TrainMotion lastMotion(ReadOnlyWorld w) {
+        ActivityIterator ai = w.getActivities(principal, trainID);
+        ai.gotoLastActivity();
+        TrainMotion lastMotion = (TrainMotion) ai.getActivity();
+        return lastMotion;
+    }
 
-		return newSpeeds;
-	}
+    private Move moveTrain(ReadOnlyWorld w) {
+        // Find the next vector.
+        Step nextVector = nextStep(w);
+        HashMap<TrackSection, Integer> occupiedTrackSections = occupiedTrackSections(w);
+        TrainMotion motion = lastMotion(w);
+        PositionOnTrack pot = motion.getFinalPosition();
+        ImPoint tile = new ImPoint(pot.getX(), pot.getY());
+        TrackSection desiredTrackSection = new TrackSection(nextVector, tile);
 
-	Step nextStep(ReadOnlyWorld w) {
-		// Find current position.
-		TrainMotion currentMotion = lastMotion(w);
-		PositionOnTrack currentPosition = currentMotion.getFinalPosition();
-		// Find targets
-		ImPoint targetPoint = currentTrainTarget(w);
-		return findNextStep(w, currentPosition, targetPoint);
-	}	
-	
-	public Move stopTrain(ReadOnlyWorld w) {
-		TrainMotion motion = lastMotion(w);
-		SpeedAgainstTime stopped = ConstAcc.STOPPED;
-		double duration = motion.duration();
+        // Check whether the desired track section is single or double track.
+        ImPoint tileA = desiredTrackSection.tileA();
+        ImPoint tileB = desiredTrackSection.tileB();
+        FreerailsTile fta = (FreerailsTile) w.getTile(tileA.x, tileA.y);
+        FreerailsTile ftb = (FreerailsTile) w.getTile(tileB.x, tileB.y);
+        TrackPiece tpa = fta.getTrackPiece();
+        TrackPiece tpb = ftb.getTrackPiece();
+        int tracks = 1;
+        if (tpa.getTrackRule().isDouble() && tpb.getTrackRule().isDouble()) {
+            tracks = 2;
+        }
 
-		int trainLength = motion.getTrainLength();
-		PathOnTiles tiles = motion.getTiles(duration);
-		int engineDist = tiles.steps();
-		TrainMotion nextMotion = new TrainMotion(tiles, engineDist,
-				trainLength, stopped);
-		return new NextActivityMove(nextMotion, trainID, principal);
-	}
+        if (occupiedTrackSections.containsKey(desiredTrackSection)) {
+            int trains = occupiedTrackSections.get(desiredTrackSection);
+            if (trains >= tracks) {
+                // We need to wait for the track ahead to clear.
+                return stopTrain(w);
+            }
+        }
+        // Create a new train motion object.
+        TrainMotion nextMotion = nextMotion(w, nextVector);
+        return new NextActivityMove(nextMotion, trainID, principal);
 
-	double topSpeed(int wagons) {
-		return 10 / (wagons + 1);
-	}
+    }
+
+    /** 666 Performance !* */
+    private HashMap<TrackSection, Integer> occupiedTrackSections(ReadOnlyWorld w) {
+        HashMap<TrackSection, Integer> occupiedTrackSections = new HashMap<TrackSection, Integer>();
+        for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {
+            TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, i);
+            if (null == train)
+                continue;
+
+            TrainAccessor ta = new TrainAccessor(w, principal, i);
+            GameTime gt = w.currentTime();
+            if (ta.isMoving(gt.getTicks())) {
+                HashSet<TrackSection> sections = ta.occupiedTrackSection(gt
+                        .getTicks());
+                for (TrackSection section : sections) {
+                    if (occupiedTrackSections.containsKey(section)) {
+                        int count = occupiedTrackSections.get(section);
+                        count++;
+                        occupiedTrackSections.put(section, count);
+                    } else {
+                        occupiedTrackSections.put(section, 1);
+                    }
+                }
+            }
+        }
+        return occupiedTrackSections;
+    }
+
+    TrainMotion nextMotion(ReadOnlyWorld w, Step v) {
+        TrainMotion motion = lastMotion(w);
+
+        SpeedAgainstTime speeds = nextSpeeds(w, v);
+
+        PathOnTiles currentTiles = motion.getTiles(motion.duration());
+        PathOnTiles pathOnTiles = currentTiles.addSteps(v);
+        return new TrainMotion(pathOnTiles, currentTiles.steps(), motion
+                .getTrainLength(), speeds);
+    }
+
+    SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, Step v) {
+        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+        TrainMotion lastMotion = lastMotion(w);
+
+        double u = lastMotion.getSpeedAtEnd();
+        double s = v.getLength();
+
+        int wagons = ta.getTrain().getNumberOfWagons();
+        double a0 = acceleration(wagons);
+        double topSpeed = topSpeed(wagons);
+
+        SpeedAgainstTime newSpeeds;
+        if (u < topSpeed) {
+            double t = (topSpeed - u) / a0;
+            SpeedAgainstTime a = ConstAcc.uat(u, a0, t);
+            t = s / topSpeed + 1; // Slightly overestimate the time
+            SpeedAgainstTime b = ConstAcc.uat(topSpeed, 0, t);
+            newSpeeds = new CompositeSpeedAgainstTime(a, b);
+        } else {
+            double t;
+            t = s / topSpeed + 1; // Slightly overestimate the time
+            newSpeeds = ConstAcc.uat(topSpeed, 0, t);
+        }
+
+        return newSpeeds;
+    }
+
+    Step nextStep(ReadOnlyWorld w) {
+        // Find current position.
+        TrainMotion currentMotion = lastMotion(w);
+        PositionOnTrack currentPosition = currentMotion.getFinalPosition();
+        // Find targets
+        ImPoint targetPoint = currentTrainTarget(w);
+        return findNextStep(w, currentPosition, targetPoint);
+    }
+
+    public Move stopTrain(ReadOnlyWorld w) {
+        TrainMotion motion = lastMotion(w);
+        SpeedAgainstTime stopped = ConstAcc.STOPPED;
+        double duration = motion.duration();
+
+        int trainLength = motion.getTrainLength();
+        PathOnTiles tiles = motion.getTiles(duration);
+        int engineDist = tiles.steps();
+        TrainMotion nextMotion = new TrainMotion(tiles, engineDist,
+                trainLength, stopped);
+        return new NextActivityMove(nextMotion, trainID, principal);
+    }
+
+    double topSpeed(int wagons) {
+        return 10 / (wagons + 1);
+    }
 }

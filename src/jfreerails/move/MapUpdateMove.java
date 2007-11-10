@@ -11,5 +11,5 @@ import java.awt.Rectangle;
  * 
  */
 public interface MapUpdateMove extends Move {
-	Rectangle getUpdatedTiles();
+    Rectangle getUpdatedTiles();
 }

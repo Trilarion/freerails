@@ -21,37 +21,37 @@ import jfreerails.world.top.SKEY;
  * 
  */
 public class AddStationMove extends CompositeMove {
-	private static final long serialVersionUID = 3256728398461089080L;
+    private static final long serialVersionUID = 3256728398461089080L;
 
-	private AddStationMove(Move[] moves) {
-		super(moves);
-	}
+    private AddStationMove(Move[] moves) {
+        super(moves);
+    }
 
-	public StationModel getNewStation() {
-		AddItemToListMove addStation = (AddItemToListMove) super.getMove(2);
+    public StationModel getNewStation() {
+        AddItemToListMove addStation = (AddItemToListMove) super.getMove(2);
 
-		return (StationModel) addStation.getAfter();
-	}
+        return (StationModel) addStation.getAfter();
+    }
 
-	public static AddStationMove generateMove(ReadOnlyWorld w,
-			String stationName, ImPoint p,
-			ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
-		int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
-		Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
-				ImmutableCargoBundle.EMPTY_BUNDLE, principal);
-		int stationNumber = w.size(principal, KEY.STATIONS);
-		StationModel station = new StationModel(p.x, p.y, stationName, w
-				.size(SKEY.CARGO_TYPES), cargoBundleNumber);
+    public static AddStationMove generateMove(ReadOnlyWorld w,
+            String stationName, ImPoint p,
+            ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
+        int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
+        Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
+                ImmutableCargoBundle.EMPTY_BUNDLE, principal);
+        int stationNumber = w.size(principal, KEY.STATIONS);
+        StationModel station = new StationModel(p.x, p.y, stationName, w
+                .size(SKEY.CARGO_TYPES), cargoBundleNumber);
 
-		Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber,
-				station, principal);
+        Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber,
+                station, principal);
 
-		return new AddStationMove(new Move[] { upgradeTrackMove,
-				addCargoBundleMove, addStation });
-	}
+        return new AddStationMove(new Move[] { upgradeTrackMove,
+                addCargoBundleMove, addStation });
+    }
 
-	public static AddStationMove upgradeStation(
-			ChangeTrackPieceMove upgradeTrackMove) {
-		return new AddStationMove(new Move[] { upgradeTrackMove });
-	}
+    public static AddStationMove upgradeStation(
+            ChangeTrackPieceMove upgradeTrackMove) {
+        return new AddStationMove(new Move[] { upgradeTrackMove });
+    }
 }

@@ -40,13 +40,13 @@ import jfreerails.world.train.TrainOrdersModel;
 
 /**
  * This class lets you test dialogue boxes without running the whole game.
- *
+ * 
  * @author lindsal8
- *
+ * 
  */
 public class DialogueBoxTester extends javax.swing.JFrame {
 
-     private static final long serialVersionUID = 4050764909631780659L;
+    private static final long serialVersionUID = 4050764909631780659L;
 
     private static final Player TEST_PLAYER = new Player("test player", 0);
 
@@ -62,9 +62,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private ModelRootImpl modelRoot;
 
     private Action closeCurrentDialogue = new AbstractAction("Close") {
-   private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		     public void actionPerformed(ActionEvent arg0) {
+        public void actionPerformed(ActionEvent arg0) {
             dialogueBoxController.closeContent();
         }
     };
@@ -90,7 +90,8 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         wetf.addTypesToWorld(w);
         w.addPlayer(TEST_PLAYER);
         try {
-            vl = new RenderersRootImpl(w, FreerailsProgressMonitor.NULL_INSTANCE);
+            vl = new RenderersRootImpl(w,
+                    FreerailsProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,21 +145,21 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         int scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS,
-                new TrainModel(0, new ImInts(0, 0), scheduleID));
+        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImInts(0, 0),
+                scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES,
-                schedule.toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS,
-                new TrainModel(1, new ImInts(1, 1), scheduleID));
+        scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
+                .toImmutableSchedule());
+        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImInts(1, 1),
+                scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES,
-                schedule.toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS,
-                new TrainModel(0, new ImInts(1, 2, 0), scheduleID));
+        scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
+                .toImmutableSchedule());
+        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0,
+                new ImInts(1, 2, 0), scheduleID));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);
@@ -195,13 +196,13 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-			public void keyPressed(java.awt.event.KeyEvent evt) {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
-			public void windowClosing(java.awt.event.WindowEvent evt) {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
             }
         });
@@ -244,10 +245,10 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         selectTrainOrders.setText("Train Orders");
         selectTrainOrders
                 .addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectTrainOrdersActionPerformed(evt);
-            }
-        });
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        selectTrainOrdersActionPerformed(evt);
+                    }
+                });
 
         show.add(selectTrainOrders);
 
@@ -290,25 +291,25 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         showCargoWaitingAndDemand.setText("Cargo waiting & demand");
         showCargoWaitingAndDemand
                 .addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showCargoWaitingAndDemandActionPerformed(evt);
-            }
-        });
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        showCargoWaitingAndDemandActionPerformed(evt);
+                    }
+                });
 
         show.add(showCargoWaitingAndDemand);
 
         showJavaSystemProperties.setText("Java System Properties");
         showJavaSystemProperties
                 .addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showJavaSystemPropertiesActionPerformed(evt);
-            }
-        });
-        
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        showJavaSystemPropertiesActionPerformed(evt);
+                    }
+                });
+
         throwException.setText("Throw Exception");
         throwException.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-               throw new IllegalArgumentException();
+                throw new IllegalArgumentException();
             }
         });
 
@@ -317,20 +318,19 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         showNetworthGraph.setText("Show networth graph");
         showNetworthGraph
                 .addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showNetworthGraphActionPerformed(evt);
-            }
-        });
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        showNetworthGraphActionPerformed(evt);
+                    }
+                });
 
         show.add(showNetworthGraph);
-        
+
         showReportBug.setText("Report Bug");
-        showReportBug
-                .addActionListener(new java.awt.event.ActionListener() {
-                	 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                			dialogueBoxController.showReportBug();
-                     }
-                
+        showReportBug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dialogueBoxController.showReportBug();
+            }
+
         });
 
         show.add(showReportBug);
@@ -412,7 +412,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private void newspaperActionPerformed(java.awt.event.ActionEvent evt) { // GEN-FIRST:event_newspaperActionPerformed
         // Add your handling code here:
         dialogueBoxController.showBrokerScreen();
-        //dialogueBoxController.showNewspaper("New headline!");
+        // dialogueBoxController.showNewspaper("New headline!");
     }// GEN-LAST:event_newspaperActionPerformed
 
     /** Exit the Application. */
@@ -424,38 +424,39 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         DialogueBoxTester test = new DialogueBoxTester();
         test.setVisible(true);
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JLabel jLabel1;
 
-	javax.swing.JMenuBar jMenuBar1;
+    javax.swing.JMenuBar jMenuBar1;
 
-	javax.swing.JMenuItem showBrokerScreen;
+    javax.swing.JMenuItem showBrokerScreen;
 
-	javax.swing.JMenuItem selectEngine;
+    javax.swing.JMenuItem selectEngine;
 
-	javax.swing.JMenuItem selectTrainOrders;
+    javax.swing.JMenuItem selectTrainOrders;
 
-	javax.swing.JMenuItem selectWagons;
+    javax.swing.JMenuItem selectWagons;
 
-	javax.swing.JMenu show;
+    javax.swing.JMenu show;
 
-	javax.swing.JMenuItem showCargoWaitingAndDemand;
+    javax.swing.JMenuItem showCargoWaitingAndDemand;
 
-	javax.swing.JMenuItem showControls;
+    javax.swing.JMenuItem showControls;
 
-	javax.swing.JMenuItem showJavaSystemProperties;
+    javax.swing.JMenuItem showJavaSystemProperties;
 
-	javax.swing.JMenuItem showNetworthGraph;
+    javax.swing.JMenuItem showNetworthGraph;
 
-	javax.swing.JMenuItem showStationInfo;
+    javax.swing.JMenuItem showStationInfo;
 
-	javax.swing.JMenuItem showTerrainInfo;
+    javax.swing.JMenuItem showTerrainInfo;
 
-	javax.swing.JMenuItem showTrainList;
-	
-	javax.swing.JMenuItem showReportBug;
-	
-	javax.swing.JMenuItem throwException;
-	// End of variables declaration//GEN-END:variables
+    javax.swing.JMenuItem showTrainList;
+
+    javax.swing.JMenuItem showReportBug;
+
+    javax.swing.JMenuItem throwException;
+    // End of variables declaration//GEN-END:variables
 
 }

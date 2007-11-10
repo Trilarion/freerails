@@ -19,14 +19,14 @@ import jfreerails.world.top.World;
  * 
  */
 public interface ServerGameModel extends GameModel, Serializable {
-	void setWorld(World w, String[] passwords);
+    void setWorld(World w, String[] passwords);
 
-	World getWorld();
+    World getWorld();
 
-	String[] getPasswords();
+    String[] getPasswords();
 
-	void init(MoveReceiver moveExecuter);
+    void init(MoveReceiver moveExecuter);
 
-	void write(ObjectOutputStream objectOut) throws IOException;
+    void write(ObjectOutputStream objectOut) throws IOException;
 
 }

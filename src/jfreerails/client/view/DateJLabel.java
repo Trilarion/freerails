@@ -23,28 +23,27 @@ import jfreerails.world.top.ReadOnlyWorld;
  * 
  */
 public class DateJLabel extends JLabel implements View {
-	private static final long serialVersionUID = 3689348840578757942L;
+    private static final long serialVersionUID = 3689348840578757942L;
 
-	private ReadOnlyWorld w;
+    private ReadOnlyWorld w;
 
-	public DateJLabel() {
-		this.setText("          ");
-	}
+    public DateJLabel() {
+        this.setText("          ");
+    }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		if (null != w) {
-			GameTime time = w.currentTime();
-			GameCalendar gameCalendar = (GameCalendar) w.get(ITEM.CALENDAR);
-			String s = gameCalendar.getYearAndMonth(time.getTicks());
-			super.setText(s);
-		}
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (null != w) {
+            GameTime time = w.currentTime();
+            GameCalendar gameCalendar = (GameCalendar) w.get(ITEM.CALENDAR);
+            String s = gameCalendar.getYearAndMonth(time.getTicks());
+            super.setText(s);
+        }
 
-		super.paintComponent(g);
-	}
+        super.paintComponent(g);
+    }
 
-	public void setup(ModelRoot model, RenderersRoot vl,
-			Action closeAction) {
-		this.w = model.getWorld();
-	}
+    public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
+        this.w = model.getWorld();
+    }
 }

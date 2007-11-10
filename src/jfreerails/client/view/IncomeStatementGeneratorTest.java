@@ -20,47 +20,47 @@ import junit.framework.TestCase;
  * 
  */
 public class IncomeStatementGeneratorTest extends TestCase {
-	World w;
+    World w;
 
-	IncomeStatementGenerator balanceSheetGenerator;
+    IncomeStatementGenerator balanceSheetGenerator;
 
-	public void testCalExpense() {
-		String mail = "Mail";
-		Money m = balanceSheetGenerator.calRevenue(mail);
-		assertEquals(0, m.getAmount());
+    public void testCalExpense() {
+        String mail = "Mail";
+        Money m = balanceSheetGenerator.calRevenue(mail);
+        assertEquals(0, m.getAmount());
 
-		CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, 0);
-		assertEquals(mail, ct.getCategory());
+        CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, 0);
+        assertEquals(mail, ct.getCategory());
 
-		Money amount = new Money(100);
-		addTrans(mail, amount);
-		addTrans("Passengers", amount);
-		m = balanceSheetGenerator.calRevenue(mail);
-		assertEquals(amount, m);
-	}
+        Money amount = new Money(100);
+        addTrans(mail, amount);
+        addTrans("Passengers", amount);
+        m = balanceSheetGenerator.calRevenue(mail);
+        assertEquals(amount, m);
+    }
 
-	private void addTrans(String category, Money amount) {
-		for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
-			CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+    private void addTrans(String category, Money amount) {
+        for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
+            CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
 
-			if (ct.getCategory().equals(category)) {
-				CargoBatch cb = new CargoBatch(i, 0, 0, 0, 0);
-				w.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
-						new DeliverCargoReceipt(amount, 10, 0, cb, 1));
+            if (ct.getCategory().equals(category)) {
+                CargoBatch cb = new CargoBatch(i, 0, 0, 0, 0);
+                w.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
+                        new DeliverCargoReceipt(amount, 10, 0, cb, 1));
 
-				return;
-			}
-		}
+                return;
+            }
+        }
 
-		throw new IllegalArgumentException(category);
-	}
+        throw new IllegalArgumentException(category);
+    }
 
-	@Override
-	protected void setUp() throws Exception {
-		w = new WorldImpl();
-		w.addPlayer(MapFixtureFactory.TEST_PLAYER);
-		MapFixtureFactory.generateCargoTypesList(w);
-		balanceSheetGenerator = new IncomeStatementGenerator(w,
-				MapFixtureFactory.TEST_PRINCIPAL);
-	}
+    @Override
+    protected void setUp() throws Exception {
+        w = new WorldImpl();
+        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
+        MapFixtureFactory.generateCargoTypesList(w);
+        balanceSheetGenerator = new IncomeStatementGenerator(w,
+                MapFixtureFactory.TEST_PRINCIPAL);
+    }
 }

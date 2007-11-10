@@ -9,7 +9,7 @@ import java.awt.Dimension;
  * @author Luke
  */
 public interface MapRenderer extends MapLayerRenderer {
-	float getScale();
+    float getScale();
 
-	Dimension getMapSizeInPixels();
+    Dimension getMapSizeInPixels();
 }

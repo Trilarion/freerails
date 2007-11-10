@@ -13,46 +13,45 @@ import jfreerails.world.common.Money;
  * 
  */
 public class Bill implements Transaction {
-	private static final long serialVersionUID = 3258416144497782835L;
+    private static final long serialVersionUID = 3258416144497782835L;
 
-	private final Money amount;
+    private final Money amount;
 
-	private final Category category;
+    private final Category category;
 
-	public Bill(Money amount, Category category) {
-		this.amount = new Money(-amount.getAmount());
-		this.category = category;
-	}
+    public Bill(Money amount, Category category) {
+        this.amount = new Money(-amount.getAmount());
+        this.category = category;
+    }
 
-	public Money deltaAssets() {		
-		return amount.changeSign();
-	}
-	
-	public Money deltaCash() {
-		return amount;
-	}
+    public Money deltaAssets() {
+        return amount.changeSign();
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Bill) {
-			Bill test = (Bill) o;
+    public Money deltaCash() {
+        return amount;
+    }
 
-			return test.amount.equals(amount)
-					&& category == test.category;
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Bill) {
+            Bill test = (Bill) o;
 
-	public Category getCategory() {
-		return category;
-	}
+            return test.amount.equals(amount) && category == test.category;
+        }
+        return false;
+    }
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = amount.hashCode();
-		result = 29 * result + category.hashCode();
+    public Category getCategory() {
+        return category;
+    }
 
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result;
+        result = amount.hashCode();
+        result = 29 * result + category.hashCode();
+
+        return result;
+    }
 }

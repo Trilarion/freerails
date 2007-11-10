@@ -22,39 +22,39 @@ import junit.framework.TestCase;
  */
 public class StationBuilderTest extends TestCase {
 
-	World w;
+    World w;
 
-	TrackMoveProducer trackBuilder;
+    TrackMoveProducer trackBuilder;
 
-	StationBuilder stationBuilder;
+    StationBuilder stationBuilder;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		w = MapFixtureFactory2.getCopy();
-		MoveExecutor me = new SimpleMoveExecutor(w, 0);
-		ModelRoot mr = new ModelRootImpl();
-		trackBuilder = new TrackMoveProducer(me, w, mr);
-		stationBuilder = new StationBuilder(me);
-	}
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        w = MapFixtureFactory2.getCopy();
+        MoveExecutor me = new SimpleMoveExecutor(w, 0);
+        ModelRoot mr = new ModelRootImpl();
+        trackBuilder = new TrackMoveProducer(me, w, mr);
+        stationBuilder = new StationBuilder(me);
+    }
 
-	public void testCanBuiltStationHere() {
+    public void testCanBuiltStationHere() {
 
-	}
+    }
 
-	public void testBuildStation() {
-		stationBuilder
-				.setStationType(stationBuilder.getTrackTypeID("terminal"));
-		Step[] track = { EAST, EAST, EAST };
-		MoveStatus ms = trackBuilder.buildTrack(new ImPoint(10, 10), track);
-		assertTrue(ms.ok);
-		assertTrue(stationBuilder.tryBuildingStation(new ImPoint(10, 10)).ok);
-		assertTrue(stationBuilder.tryBuildingStation(new ImPoint(13, 10)).ok);
-		MoveStatus ms1 = stationBuilder.buildStation(new ImPoint(10, 10));
-		assertTrue(ms1.ok);
+    public void testBuildStation() {
+        stationBuilder
+                .setStationType(stationBuilder.getTrackTypeID("terminal"));
+        Step[] track = { EAST, EAST, EAST };
+        MoveStatus ms = trackBuilder.buildTrack(new ImPoint(10, 10), track);
+        assertTrue(ms.ok);
+        assertTrue(stationBuilder.tryBuildingStation(new ImPoint(10, 10)).ok);
+        assertTrue(stationBuilder.tryBuildingStation(new ImPoint(13, 10)).ok);
+        MoveStatus ms1 = stationBuilder.buildStation(new ImPoint(10, 10));
+        assertTrue(ms1.ok);
 
-		MoveStatus ms2 = stationBuilder.buildStation(new ImPoint(13, 10));
-		assertFalse(ms2.ok);
-	}
+        MoveStatus ms2 = stationBuilder.buildStation(new ImPoint(13, 10));
+        assertFalse(ms2.ok);
+    }
 
 }

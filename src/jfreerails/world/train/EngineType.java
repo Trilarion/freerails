@@ -11,82 +11,82 @@ import jfreerails.world.common.Money;
  * 
  */
 final public class EngineType implements FreerailsSerializable {
-	private static final long serialVersionUID = 3617014130905592630L;
+    private static final long serialVersionUID = 3617014130905592630L;
 
-	private final String engineTypeName;
+    private final String engineTypeName;
 
-	private final Money maintenance;
+    private final Money maintenance;
 
-	private final int maxSpeed; // speed in mph
+    private final int maxSpeed; // speed in mph
 
-	private final int powerAtDrawbar;
+    private final int powerAtDrawbar;
 
-	private final Money price;
+    private final Money price;
 
-	public EngineType(String name, int power, Money m, int speed) {
-		engineTypeName = name;
-		powerAtDrawbar = power;
-		price = m;
-		maxSpeed = speed;
-		maintenance = new Money(0);
-	}
+    public EngineType(String name, int power, Money m, int speed) {
+        engineTypeName = name;
+        powerAtDrawbar = power;
+        price = m;
+        maxSpeed = speed;
+        maintenance = new Money(0);
+    }
 
-	public EngineType(String name, int power, Money m, int speed, Money maint) {
-		engineTypeName = name;
-		powerAtDrawbar = power;
-		price = m;
-		maxSpeed = speed;
-		maintenance = maint;
-	}
+    public EngineType(String name, int power, Money m, int speed, Money maint) {
+        engineTypeName = name;
+        powerAtDrawbar = power;
+        price = m;
+        maxSpeed = speed;
+        maintenance = maint;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof EngineType))
-			return false;
-		EngineType other = (EngineType) obj;
-		return engineTypeName.equals(other.engineTypeName)
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof EngineType))
+            return false;
+        EngineType other = (EngineType) obj;
+        return engineTypeName.equals(other.engineTypeName)
 
-		&& powerAtDrawbar == other.powerAtDrawbar && price.equals(other.price)
-				&& maintenance.equals(other.maintenance)
-				&& maxSpeed == other.maxSpeed;
+        && powerAtDrawbar == other.powerAtDrawbar && price.equals(other.price)
+                && maintenance.equals(other.maintenance)
+                && maxSpeed == other.maxSpeed;
 
-	}
+    }
 
-	public String getEngineTypeName() {
-		return engineTypeName;
-	}
+    public String getEngineTypeName() {
+        return engineTypeName;
+    }
 
-	public Money getMaintenance() {
-		return maintenance;
-	}
+    public Money getMaintenance() {
+        return maintenance;
+    }
 
-	public int getMaxSpeed() {
-		return maxSpeed;
-	}
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
 
-	public int getPowerAtDrawbar() {
-		return powerAtDrawbar;
-	}
+    public int getPowerAtDrawbar() {
+        return powerAtDrawbar;
+    }
 
-	public Money getPrice() {
-		return price;
-	}
+    public Money getPrice() {
+        return price;
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		int result;
-		result = powerAtDrawbar;
-		result = 29 * result + engineTypeName.hashCode();
-		result = 29 * result + price.hashCode();
-		result = 29 * result + maintenance.hashCode();
-		result = 29 * result + maxSpeed;
-		return result;
+        int result;
+        result = powerAtDrawbar;
+        result = 29 * result + engineTypeName.hashCode();
+        result = 29 * result + price.hashCode();
+        result = 29 * result + maintenance.hashCode();
+        result = 29 * result + maxSpeed;
+        return result;
 
-	}
+    }
 
-	@Override
-	public String toString() {
-		return engineTypeName;
-	}
+    @Override
+    public String toString() {
+        return engineTypeName;
+    }
 }

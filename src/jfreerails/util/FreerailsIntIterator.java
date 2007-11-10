@@ -7,7 +7,7 @@ package jfreerails.util;
  * 
  */
 public interface FreerailsIntIterator {
-	boolean hasNextInt();
+    boolean hasNextInt();
 
-	int nextInt();
+    int nextInt();
 }

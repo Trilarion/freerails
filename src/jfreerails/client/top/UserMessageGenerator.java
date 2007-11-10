@@ -36,139 +36,138 @@ import jfreerails.world.top.SKEY;
  * 
  */
 public class UserMessageGenerator implements MoveReceiver {
-	private ModelRoot modelRoot;
+    private ModelRoot modelRoot;
 
-	private ActionRoot actionRoot;
+    private ActionRoot actionRoot;
 
-	private final DecimalFormat formatter = new DecimalFormat("#,###,###");
+    private final DecimalFormat formatter = new DecimalFormat("#,###,###");
 
-	private SoundManager soundManager = SoundManager.getSoundManager();
+    private SoundManager soundManager = SoundManager.getSoundManager();
 
-	public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
-		if (null == mr || null == actionRoot) {
-			throw new NullPointerException();
-		}
+    public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
+        if (null == mr || null == actionRoot) {
+            throw new NullPointerException();
+        }
 
-		this.actionRoot = actionRoot;
-		this.modelRoot = mr;
-	}
+        this.actionRoot = actionRoot;
+        this.modelRoot = mr;
+    }
 
-	public void processMove(Move move) {
-		if (move instanceof CompositeMove) {
-			ImList<Move> moves = ((CompositeMove) move).getMoves();
+    public void processMove(Move move) {
+        if (move instanceof CompositeMove) {
+            ImList<Move> moves = ((CompositeMove) move).getMoves();
 
-			for (int i = 0; i < moves.size(); i++) {
-				processMove(moves.get(i));
-			}
-		}
+            for (int i = 0; i < moves.size(); i++) {
+                processMove(moves.get(i));
+            }
+        }
 
-		if (move instanceof WorldDiffMove) {
-			WorldDiffMove wdm = (WorldDiffMove) move;
-			if (wdm.getCause().equals(WorldDiffMove.Cause.TrainArrives)) {
-				trainArrives(wdm);
-			}
+        if (move instanceof WorldDiffMove) {
+            WorldDiffMove wdm = (WorldDiffMove) move;
+            if (wdm.getCause().equals(WorldDiffMove.Cause.TrainArrives)) {
+                trainArrives(wdm);
+            }
 
-		} else if (move instanceof ChangeGameSpeedMove) {
-			logSpeed();
-		}
-	}
+        } else if (move instanceof ChangeGameSpeedMove) {
+            logSpeed();
+        }
+    }
 
-	/** Generates a message giving details of any cargo delivered and plays 
-	 * a cash register sound to indicate that revenue is coming in.
-	 */
-	private void trainArrives(WorldDiffMove wdm) {
-		ArrayList<DeliverCargoReceipt> cargoDelivered = new ArrayList<DeliverCargoReceipt>();
-		CompositeMove listChanges = wdm.getListChanges();
-		for (int i = 0; i < listChanges.size(); i++) {
-			Move m = listChanges.getMoves().get(i);
-			if (m instanceof AddTransactionMove) {
-				AddTransactionMove atm = (AddTransactionMove) m;
-				if(!atm.getPrincipal().equals(modelRoot.getPrincipal())){
-					//We don't want to know about other players' income!
-					return;
-				}
-				
-				Transaction t = atm.getTransaction();
-				if (t instanceof DeliverCargoReceipt) {
-					DeliverCargoReceipt receipt = (DeliverCargoReceipt) t;
-					cargoDelivered.add(receipt);
-				}
-			}
-		}
-		if (cargoDelivered.size() > 0) {
-			ReadOnlyWorld world = modelRoot.getWorld();
+    /**
+     * Generates a message giving details of any cargo delivered and plays a
+     * cash register sound to indicate that revenue is coming in.
+     */
+    private void trainArrives(WorldDiffMove wdm) {
+        ArrayList<DeliverCargoReceipt> cargoDelivered = new ArrayList<DeliverCargoReceipt>();
+        CompositeMove listChanges = wdm.getListChanges();
+        for (int i = 0; i < listChanges.size(); i++) {
+            Move m = listChanges.getMoves().get(i);
+            if (m instanceof AddTransactionMove) {
+                AddTransactionMove atm = (AddTransactionMove) m;
+                if (!atm.getPrincipal().equals(modelRoot.getPrincipal())) {
+                    // We don't want to know about other players' income!
+                    return;
+                }
 
-			StringBuffer message = new StringBuffer();
-			DeliverCargoReceipt first = cargoDelivered.get(0);
-			int stationId = first.getStationId();
-			int trainId = first.getTrainId();
-			message.append("Train #");
-			message.append(trainId + 1); // So that the first train
-			// is #1, not #0.
-			message.append(" arrives at ");
-			StationModel station = (StationModel) world.get(modelRoot
-					.getPrincipal(), KEY.STATIONS, stationId);
-			message.append(station.getStationName());
-			message.append("\n");
-			long revenue = 0;
-			int[] cargoQuantities = new int[modelRoot.getWorld().size(
-					SKEY.CARGO_TYPES)];
-			for (DeliverCargoReceipt receipt : cargoDelivered) {
-				CargoBatch batch = receipt.getCb();
-				revenue += receipt.deltaCash().getAmount();
-				cargoQuantities[batch.getCargoType()] = receipt
-						.getQuantity();
-			}
-			for (int i = 0; i < cargoQuantities.length; i++) {
-				int j = cargoQuantities[i];
-				if (j > 0) {
-					CargoType cargoType = (CargoType) world.get(
-							SKEY.CARGO_TYPES, i);
-					message.append(j);
-					message.append(" ");
-					message.append(cargoType.getDisplayName());
-					message.append("\n");
-				}
-			}
-			message.append("Revenue $");
-			message.append(formatter.format(revenue));
-			modelRoot.setProperty(Property.QUICK_MESSAGE, message
-					.toString());
-			// Play the sound of cash coming in. The greater the
-			// revenue,
-			// the more loops of the sample we play.
-			int loops = (int) revenue / 4000;
+                Transaction t = atm.getTransaction();
+                if (t instanceof DeliverCargoReceipt) {
+                    DeliverCargoReceipt receipt = (DeliverCargoReceipt) t;
+                    cargoDelivered.add(receipt);
+                }
+            }
+        }
+        if (cargoDelivered.size() > 0) {
+            ReadOnlyWorld world = modelRoot.getWorld();
 
-			try {
-				soundManager.playSound(
-						"/jfreerails/client/sounds/cash.wav", loops);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            StringBuffer message = new StringBuffer();
+            DeliverCargoReceipt first = cargoDelivered.get(0);
+            int stationId = first.getStationId();
+            int trainId = first.getTrainId();
+            message.append("Train #");
+            message.append(trainId + 1); // So that the first train
+            // is #1, not #0.
+            message.append(" arrives at ");
+            StationModel station = (StationModel) world.get(modelRoot
+                    .getPrincipal(), KEY.STATIONS, stationId);
+            message.append(station.getStationName());
+            message.append("\n");
+            long revenue = 0;
+            int[] cargoQuantities = new int[modelRoot.getWorld().size(
+                    SKEY.CARGO_TYPES)];
+            for (DeliverCargoReceipt receipt : cargoDelivered) {
+                CargoBatch batch = receipt.getCb();
+                revenue += receipt.deltaCash().getAmount();
+                cargoQuantities[batch.getCargoType()] = receipt.getQuantity();
+            }
+            for (int i = 0; i < cargoQuantities.length; i++) {
+                int j = cargoQuantities[i];
+                if (j > 0) {
+                    CargoType cargoType = (CargoType) world.get(
+                            SKEY.CARGO_TYPES, i);
+                    message.append(j);
+                    message.append(" ");
+                    message.append(cargoType.getDisplayName());
+                    message.append("\n");
+                }
+            }
+            message.append("Revenue $");
+            message.append(formatter.format(revenue));
+            modelRoot.setProperty(Property.QUICK_MESSAGE, message.toString());
+            // Play the sound of cash coming in. The greater the
+            // revenue,
+            // the more loops of the sample we play.
+            int loops = (int) revenue / 4000;
 
-	public void logSpeed() {
-		ReadOnlyWorld world = modelRoot.getWorld();
-		GameSpeed speed = ((GameSpeed) world.get(ITEM.GAME_SPEED));
-		int gameSpeed = speed.getSpeed();
+            try {
+                soundManager.playSound("/jfreerails/client/sounds/cash.wav",
+                        loops);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-		if (gameSpeed <= 0) {
-			modelRoot
-					.setProperty(Property.PERMANENT_MESSAGE, "Game is paused.");
+    public void logSpeed() {
+        ReadOnlyWorld world = modelRoot.getWorld();
+        GameSpeed speed = ((GameSpeed) world.get(ITEM.GAME_SPEED));
+        int gameSpeed = speed.getSpeed();
 
-			/*
-			 * Also hide any other message. It looks silly if it says "Game is
-			 * paused." and "Game speed: fast" on screen at the same time!
-			 */
-			modelRoot.setProperty(Property.QUICK_MESSAGE, "");
-		} else {
-			modelRoot.setProperty(Property.PERMANENT_MESSAGE, null);
+        if (gameSpeed <= 0) {
+            modelRoot
+                    .setProperty(Property.PERMANENT_MESSAGE, "Game is paused.");
 
-			String gameSpeedDesc = actionRoot.getServerControls()
-					.getGameSpeedDesc(gameSpeed);
-			modelRoot.setProperty(Property.QUICK_MESSAGE, "Game speed: "
-					+ gameSpeedDesc);
-		}
-	}
+            /*
+             * Also hide any other message. It looks silly if it says "Game is
+             * paused." and "Game speed: fast" on screen at the same time!
+             */
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "");
+        } else {
+            modelRoot.setProperty(Property.PERMANENT_MESSAGE, null);
+
+            String gameSpeedDesc = actionRoot.getServerControls()
+                    .getGameSpeedDesc(gameSpeed);
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "Game speed: "
+                    + gameSpeedDesc);
+        }
+    }
 }

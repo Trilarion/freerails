@@ -24,70 +24,70 @@ import jfreerails.world.track.TrackRule;
  * @author Luke
  */
 final public class TrackPieceRendererList {
-	private static final Logger logger = Logger
-			.getLogger(TrackPieceRendererList.class.getName());
+    private static final Logger logger = Logger
+            .getLogger(TrackPieceRendererList.class.getName());
 
-	private final TrackPieceRenderer[] trackPieceViewArray;
+    private final TrackPieceRenderer[] trackPieceViewArray;
 
-	public TrackPieceRenderer getTrackPieceView(int i) {
-		if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER == i) {
-			return NullTrackPieceRenderer.instance;
-		}
-		return trackPieceViewArray[i];
-	}
+    public TrackPieceRenderer getTrackPieceView(int i) {
+        if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER == i) {
+            return NullTrackPieceRenderer.instance;
+        }
+        return trackPieceViewArray[i];
+    }
 
-	public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
-			FreerailsProgressMonitor pm) throws IOException {
-		// Setup progress monitor..
-		
-		pm.nextStep(w.size(SKEY.TRACK_RULES));
+    public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
+            FreerailsProgressMonitor pm) throws IOException {
+        // Setup progress monitor..
 
-		int progress = 0;
-		pm.setValue(progress);
+        pm.nextStep(w.size(SKEY.TRACK_RULES));
 
-		int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
-		trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
+        int progress = 0;
+        pm.setValue(progress);
 
-		for (int i = 0; i < numberOfTrackTypes; i++) {
-			trackPieceViewArray[i] = new TrackPieceRendererImpl(w,
-					imageManager, i);
-			pm.setValue(++progress);
-		}
-	}
+        int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
+        trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
 
-	public boolean validate(ReadOnlyWorld w) {
-		boolean okSoFar = true;
+        for (int i = 0; i < numberOfTrackTypes; i++) {
+            trackPieceViewArray[i] = new TrackPieceRendererImpl(w,
+                    imageManager, i);
+            pm.setValue(++progress);
+        }
+    }
 
-		for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-			TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
-			Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule
-					.getLegalConfigurationsIterator();
-			TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
+    public boolean validate(ReadOnlyWorld w) {
+        boolean okSoFar = true;
 
-			if (null == trackPieceView) {
-				logger
-						.warning("No track piece view for the following track type: "
-								+ trackRule.getTypeName());
+        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
+            TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+            Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule
+                    .getLegalConfigurationsIterator();
+            TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
 
-				return false;
-			}
-			while (legalConfigurationsIterator.hasNext()) {
-				TrackConfiguration trackConfig = legalConfigurationsIterator
-						.next();
-				int trackGraphicsNo = trackConfig.getTrackGraphicsID();
-				Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
+            if (null == trackPieceView) {
+                logger
+                        .warning("No track piece view for the following track type: "
+                                + trackRule.getTypeName());
 
-				if (null == img) {
-					logger
-							.warning("No track piece image for the following track type: "
-									+ trackRule.getTypeName()
-									+ ", with configuration: "
-									+ trackGraphicsNo);
-					okSoFar = false;
-				}
-			}
-		}
+                return false;
+            }
+            while (legalConfigurationsIterator.hasNext()) {
+                TrackConfiguration trackConfig = legalConfigurationsIterator
+                        .next();
+                int trackGraphicsNo = trackConfig.getTrackGraphicsID();
+                Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
 
-		return okSoFar;
-	}
+                if (null == img) {
+                    logger
+                            .warning("No track piece image for the following track type: "
+                                    + trackRule.getTypeName()
+                                    + ", with configuration: "
+                                    + trackGraphicsNo);
+                    okSoFar = false;
+                }
+            }
+        }
+
+        return okSoFar;
+    }
 }

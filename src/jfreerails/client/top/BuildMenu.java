@@ -13,16 +13,16 @@ import jfreerails.client.view.ActionRoot;
  * @author Luke Lindsay
  */
 final public class BuildMenu extends javax.swing.JMenu {
-	private static final long serialVersionUID = 3617850859305055542L;
+    private static final long serialVersionUID = 3617850859305055542L;
 
-	public BuildMenu() {
-		super();
-	}
+    public BuildMenu() {
+        super();
+    }
 
-	public void setup(ActionRoot actionRoot) {
-		this.removeAll();
-		this.setText("Build");
+    public void setup(ActionRoot actionRoot) {
+        this.removeAll();
+        this.setText("Build");
 
-		add(actionRoot.getBuildTrainDialogAction());
-	}
+        add(actionRoot.getBuildTrainDialogAction());
+    }
 }

@@ -74,7 +74,6 @@ public class StationBoxRenderer implements Painter {
         }
     }
 
-    
     public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
         Boolean showCargoWaiting = (Boolean) modelRoot
                 .getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
@@ -100,7 +99,7 @@ public class StationBoxRenderer implements Painter {
                     ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
                             principal, KEY.CARGO_BUNDLES, station
                                     .getCargoBundleID());
-                   /** 666 do only if something changed */
+                    /** 666 do only if something changed */
                     int[][] carsLoads = calculateCarLoads(cb);
                     for (int category = 0; category < CargoType
                             .getNumberOfCategories(); category++) {

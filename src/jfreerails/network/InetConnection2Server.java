@@ -11,33 +11,33 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class InetConnection2Server extends AbstractInetConnection implements
-		Connection2Server {
-	final String serverDetails;
+        Connection2Server {
+    final String serverDetails;
 
-	public InetConnection2Server(String ip, int port) throws IOException {
-		super(ip, port);
-		serverDetails = "server at " + ip + ":" + port;
-	}
+    public InetConnection2Server(String ip, int port) throws IOException {
+        super(ip, port);
+        serverDetails = "server at " + ip + ":" + port;
+    }
 
-	public FreerailsSerializable[] readFromServer() throws IOException {
-		return read();
-	}
+    public FreerailsSerializable[] readFromServer() throws IOException {
+        return read();
+    }
 
-	public FreerailsSerializable waitForObjectFromServer() throws IOException,
-			InterruptedException {
-		return waitForObject();
-	}
+    public FreerailsSerializable waitForObjectFromServer() throws IOException,
+            InterruptedException {
+        return waitForObject();
+    }
 
-	public void writeToServer(FreerailsSerializable object) throws IOException {
-		send(object);
-	}
+    public void writeToServer(FreerailsSerializable object) throws IOException {
+        send(object);
+    }
 
-	@Override
-	String getThreadName() {
-		return "InetConnection2Server";
-	}
+    @Override
+    String getThreadName() {
+        return "InetConnection2Server";
+    }
 
-	public String getServerDetails() {
-		return serverDetails;
-	}
+    public String getServerDetails() {
+        return serverDetails;
+    }
 }

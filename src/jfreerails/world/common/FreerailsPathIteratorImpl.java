@@ -15,63 +15,63 @@ import java.util.NoSuchElementException;
  * @author Luke Lindsay
  */
 public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
-	private static final long serialVersionUID = 3258411750679720758L;
+    private static final long serialVersionUID = 3258411750679720758L;
 
-	public static FreerailsPathIterator forwardsIterator(List<Point> l) {
-		return new FreerailsPathIteratorImpl(l, true);
-	}
+    public static FreerailsPathIterator forwardsIterator(List<Point> l) {
+        return new FreerailsPathIteratorImpl(l, true);
+    }
 
-	public static FreerailsPathIterator backwardsIterator(List<Point> l) {
-		return new FreerailsPathIteratorImpl(l, false);
-	}
+    public static FreerailsPathIterator backwardsIterator(List<Point> l) {
+        return new FreerailsPathIteratorImpl(l, false);
+    }
 
-	/** Creates new FreerailsPathIteratorImpl */
-	public FreerailsPathIteratorImpl(List<Point> l, boolean f) {
-		points = l;
-		forwards = f;
+    /** Creates new FreerailsPathIteratorImpl */
+    public FreerailsPathIteratorImpl(List<Point> l, boolean f) {
+        points = l;
+        forwards = f;
 
-		if (forwards) {
-			this.position = 0;
-		} else {
-			this.position = l.size() - 1; // The last element of a list of
-			// size 7 is at position 6.
-		}
-	}
+        if (forwards) {
+            this.position = 0;
+        } else {
+            this.position = l.size() - 1; // The last element of a list of
+            // size 7 is at position 6.
+        }
+    }
 
-	private final boolean forwards;
+    private final boolean forwards;
 
-	private int position;
+    private int position;
 
-	private final List<Point> points;
+    private final List<Point> points;
 
-	public boolean hasNext() {
-		if (forwards) {
-			return (position + 1) < points.size();
-		}
-		return (position - 1) >= 0;
-	}
+    public boolean hasNext() {
+        if (forwards) {
+            return (position + 1) < points.size();
+        }
+        return (position - 1) >= 0;
+    }
 
-	public void nextSegment(IntLine line) {
-		if (hasNext()) {
-			Point a;
-			Point b;
+    public void nextSegment(IntLine line) {
+        if (hasNext()) {
+            Point a;
+            Point b;
 
-			if (forwards) {
-				position++;
-				a = points.get(position - 1);
-				b = points.get(position);
-			} else {
-				position--;
-				a = points.get(position + 1);
-				b = points.get(position);
-			}
+            if (forwards) {
+                position++;
+                a = points.get(position - 1);
+                b = points.get(position);
+            } else {
+                position--;
+                a = points.get(position + 1);
+                b = points.get(position);
+            }
 
-			line.x1 = a.x;
-			line.y1 = a.y;
-			line.x2 = b.x;
-			line.y2 = b.y;
-		} else {
-			throw new NoSuchElementException();
-		}
-	}
+            line.x1 = a.x;
+            line.y1 = a.y;
+            line.x2 = b.x;
+            line.y2 = b.y;
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
 }

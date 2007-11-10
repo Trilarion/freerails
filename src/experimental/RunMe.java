@@ -16,15 +16,15 @@ import jfreerails.controller.ScreenHandler;
  * @author Luke Lindsay
  */
 public class RunMe {
-	public static void main(String[] args) {
-		JFrame jFrame = new jfreerails.client.top.ClientJFrame(
-				new SimpleComponentFactoryImpl2());
+    public static void main(String[] args) {
+        JFrame jFrame = new jfreerails.client.top.ClientJFrame(
+                new SimpleComponentFactoryImpl2());
 
-		// jFrame.show();
-		ScreenHandler screenHandler = new ScreenHandler(jFrame,
-				ScreenHandler.WINDOWED_MODE);
-		GameLoop gameLoop = new GameLoop(screenHandler);
-		Thread t = new Thread(gameLoop);
-		t.start();
-	}
+        // jFrame.show();
+        ScreenHandler screenHandler = new ScreenHandler(jFrame,
+                ScreenHandler.WINDOWED_MODE);
+        GameLoop gameLoop = new GameLoop(screenHandler);
+        Thread t = new Thread(gameLoop);
+        t.start();
+    }
 }

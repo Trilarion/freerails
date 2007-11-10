@@ -7,8 +7,8 @@ import java.awt.Rectangle;
 
 import jfreerails.client.common.Painter;
 import jfreerails.client.common.SoundManager;
-import jfreerails.client.renderer.TrainRenderer;
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.client.renderer.TrainRenderer;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrainAccessor;
 import jfreerails.controller.ModelRoot.Property;

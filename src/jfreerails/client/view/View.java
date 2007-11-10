@@ -5,6 +5,7 @@
 package jfreerails.client.view;
 
 import javax.swing.Action;
+
 import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 
@@ -16,6 +17,5 @@ import jfreerails.controller.ModelRoot;
  * 
  */
 public interface View {
-	void setup(ModelRoot modelRoot, RenderersRoot vl,
-			Action closeAction);
+    void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction);
 }

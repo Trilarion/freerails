@@ -9,5 +9,5 @@ import java.awt.Rectangle;
  * @author Luke
  */
 public interface Painter {
-	void paint(Graphics2D g, Rectangle newVisibleRectectangle);
+    void paint(Graphics2D g, Rectangle newVisibleRectectangle);
 }

@@ -13,67 +13,67 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class EconomicClimate implements FreerailsSerializable {
-	private static final long serialVersionUID = 3834025840475321136L;
+    private static final long serialVersionUID = 3834025840475321136L;
 
-	private static int i = 2;
+    private static int i = 2;
 
-	private final String name;
+    private final String name;
 
-	public static final EconomicClimate BOOM = new EconomicClimate(i++, "BOOM");
+    public static final EconomicClimate BOOM = new EconomicClimate(i++, "BOOM");
 
-	public static final EconomicClimate PROSPERITY = new EconomicClimate(i++,
-			"PROSPERITY");
+    public static final EconomicClimate PROSPERITY = new EconomicClimate(i++,
+            "PROSPERITY");
 
-	public static final EconomicClimate MODERATION = new EconomicClimate(i++,
-			"MODERATION");
+    public static final EconomicClimate MODERATION = new EconomicClimate(i++,
+            "MODERATION");
 
-	public static final EconomicClimate RECESSION = new EconomicClimate(i++,
-			"RECESSION");
+    public static final EconomicClimate RECESSION = new EconomicClimate(i++,
+            "RECESSION");
 
-	public static final EconomicClimate PANIC = new EconomicClimate(i++,
-			"PANIC");
+    public static final EconomicClimate PANIC = new EconomicClimate(i++,
+            "PANIC");
 
-	public int getBaseInterestRate() {
-		return baseInterestRate;
-	}
+    public int getBaseInterestRate() {
+        return baseInterestRate;
+    }
 
-	private final int baseInterestRate;
+    private final int baseInterestRate;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
-		if (!(o instanceof EconomicClimate)) {
-			return false;
-		}
+        if (!(o instanceof EconomicClimate)) {
+            return false;
+        }
 
-		final EconomicClimate economicClimate = (EconomicClimate) o;
+        final EconomicClimate economicClimate = (EconomicClimate) o;
 
-		if (baseInterestRate != economicClimate.baseInterestRate) {
-			return false;
-		}
+        if (baseInterestRate != economicClimate.baseInterestRate) {
+            return false;
+        }
 
-		if (name != null ? !name.equals(economicClimate.name)
-				: economicClimate.name != null) {
-			return false;
-		}
+        if (name != null ? !name.equals(economicClimate.name)
+                : economicClimate.name != null) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = (name != null ? name.hashCode() : 0);
-		result = 29 * result + baseInterestRate;
+    @Override
+    public int hashCode() {
+        int result;
+        result = (name != null ? name.hashCode() : 0);
+        result = 29 * result + baseInterestRate;
 
-		return result;
-	}
+        return result;
+    }
 
-	private EconomicClimate(int r, String s) {
-		baseInterestRate = r;
-		name = s;
-	}
+    private EconomicClimate(int r, String s) {
+        baseInterestRate = r;
+        name = s;
+    }
 }

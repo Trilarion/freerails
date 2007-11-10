@@ -22,30 +22,29 @@ import jfreerails.world.top.ReadOnlyWorld;
  * 
  */
 public class CashJLabel extends JLabel implements View {
-	private static final long serialVersionUID = 3257853181542412341L;
+    private static final long serialVersionUID = 3257853181542412341L;
 
-	private ReadOnlyWorld w;
+    private ReadOnlyWorld w;
 
-	private FreerailsPrincipal principal;
+    private FreerailsPrincipal principal;
 
-	public CashJLabel() {
-		this.setText("          ");
-	}
+    public CashJLabel() {
+        this.setText("          ");
+    }
 
-	public void setup(ModelRoot model, RenderersRoot vl,
-			Action closeAction) {
-		this.w = model.getWorld();
-		principal = model.getPrincipal();
-	}
+    public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
+        this.w = model.getWorld();
+        principal = model.getPrincipal();
+    }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		if (null != w) {
-			Money m = w.getCurrentBalance(principal);
-			String s = m.toString();
-			this.setText("$" + s);
-		}
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (null != w) {
+            Money m = w.getCurrentBalance(principal);
+            String s = m.toString();
+            this.setText("$" + s);
+        }
 
-		super.paintComponent(g);
-	}
+        super.paintComponent(g);
+    }
 }

@@ -30,112 +30,113 @@ import jfreerails.world.track.FreerailsTile;
  * 
  */
 public class StationNamesRenderer implements Painter {
-	private final ReadOnlyWorld w;
+    private final ReadOnlyWorld w;
 
-	private final ModelRoot modelRoot;
+    private final ModelRoot modelRoot;
 
-	private final int fontSize;
+    private final int fontSize;
 
-	private final Color bgColor;
+    private final Color bgColor;
 
-	private final Color textColor;
+    private final Color textColor;
 
-	final static float[] dash1 = { 5.0f };
+    final static float[] dash1 = { 5.0f };
 
-	final static BasicStroke dashed = new BasicStroke(1.0f,
-			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+    final static BasicStroke dashed = new BasicStroke(1.0f,
+            BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
 
-	private final Font font;
+    private final Font font;
 
-	public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {
-		this.w = world;
-		this.modelRoot = modelRoot;
-		this.fontSize = 10;
-		this.bgColor = Color.BLACK;
-		this.textColor = Color.WHITE;
-		font = new Font("Arial", 0, fontSize);
-	}
+    public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {
+        this.w = world;
+        this.modelRoot = modelRoot;
+        this.fontSize = 10;
+        this.bgColor = Color.BLACK;
+        this.textColor = Color.WHITE;
+        font = new Font("Arial", 0, fontSize);
+    }
 
-	public void paint(Graphics2D g,Rectangle newVisibleRectectangle) {
-		int rectWidth;
-		int rectHeight;
-		int rectX;
-		int rectY;
-		float visibleAdvance;
-		float textX;
-		float textY;
+    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+        int rectWidth;
+        int rectHeight;
+        int rectX;
+        int rectY;
+        float visibleAdvance;
+        float textX;
+        float textY;
 
-		StationModel tempStation;
-		String stationName;
-		int positionX;
-		int positionY;
+        StationModel tempStation;
+        String stationName;
+        int positionX;
+        int positionY;
 
-		Boolean showStationNames = (Boolean) modelRoot
-				.getProperty(ModelRoot.Property.SHOW_STATION_NAMES);
-		Boolean showStationBorders = (Boolean) modelRoot
-				.getProperty(ModelRoot.Property.SHOW_STATION_BORDERS);
+        Boolean showStationNames = (Boolean) modelRoot
+                .getProperty(ModelRoot.Property.SHOW_STATION_NAMES);
+        Boolean showStationBorders = (Boolean) modelRoot
+                .getProperty(ModelRoot.Property.SHOW_STATION_BORDERS);
 
-		FontRenderContext frc = g.getFontRenderContext();
-		TextLayout layout;
+        FontRenderContext frc = g.getFontRenderContext();
+        TextLayout layout;
 
-		for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-			FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
+        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
+            FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
 
-			// draw station names onto map
-			WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
+            // draw station names onto map
+            WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
 
-			while (wi.next()) { // loop over non null stations
-				tempStation = (StationModel) wi.getElement();
+            while (wi.next()) { // loop over non null stations
+                tempStation = (StationModel) wi.getElement();
 
-				int x = tempStation.getStationX();
-				int y = tempStation.getStationY();
+                int x = tempStation.getStationX();
+                int y = tempStation.getStationY();
 
-				// First draw station sphere of influence
-				if (showStationBorders.booleanValue()) {
-					FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
-					int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
-					int diameterInPixels = (radius * 2 + 1) * 30;
-					int radiusX = (x - radius) * 30;
-					int radiusY = (y - radius) * 30;
-					g.setColor(Color.WHITE);
-					g.setStroke(dashed);
-					g.draw(new RoundRectangle2D.Double(radiusX, radiusY,
-							diameterInPixels, diameterInPixels, 10, 10));
-				}
+                // First draw station sphere of influence
+                if (showStationBorders.booleanValue()) {
+                    FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
+                    int radius = tile.getTrackPiece().getTrackRule()
+                            .getStationRadius();
+                    int diameterInPixels = (radius * 2 + 1) * 30;
+                    int radiusX = (x - radius) * 30;
+                    int radiusY = (y - radius) * 30;
+                    g.setColor(Color.WHITE);
+                    g.setStroke(dashed);
+                    g.draw(new RoundRectangle2D.Double(radiusX, radiusY,
+                            diameterInPixels, diameterInPixels, 10, 10));
+                }
 
-				// Then draw the station name.
-				if (showStationNames.booleanValue()) {
-					stationName = tempStation.getStationName();
+                // Then draw the station name.
+                if (showStationNames.booleanValue()) {
+                    stationName = tempStation.getStationName();
 
-					positionX = (x * 30) + 15;
-					positionY = (y * 30) + 30;
+                    positionX = (x * 30) + 15;
+                    positionY = (y * 30) + 30;
 
-					layout = new TextLayout(stationName, font, frc);
-					visibleAdvance = layout.getVisibleAdvance();
+                    layout = new TextLayout(stationName, font, frc);
+                    visibleAdvance = layout.getVisibleAdvance();
 
-					rectWidth = (int) (visibleAdvance * 1.2);
-					rectHeight = (int) (fontSize * 1.5);
-					rectX = (positionX - (rectWidth / 2));
-					rectY = positionY;
+                    rectWidth = (int) (visibleAdvance * 1.2);
+                    rectHeight = (int) (fontSize * 1.5);
+                    rectX = (positionX - (rectWidth / 2));
+                    rectY = positionY;
 
-					g.setColor(bgColor);
-					g.fillRect(rectX, rectY, rectWidth, rectHeight);
+                    g.setColor(bgColor);
+                    g.fillRect(rectX, rectY, rectWidth, rectHeight);
 
-					textX = (positionX - (visibleAdvance / 2));
-					textY = positionY + fontSize + 1;
+                    textX = (positionX - (visibleAdvance / 2));
+                    textY = positionY + fontSize + 1;
 
-					g.setColor(textColor);
-					layout.draw(g, textX, textY);
+                    g.setColor(textColor);
+                    layout.draw(g, textX, textY);
 
-					g.setStroke(new BasicStroke(1.0f));
-					// draw a border 1 pixel inside the edges of the rectangle
-					g.draw(new Rectangle(rectX + 1, rectY + 1, rectWidth - 3,
-							rectHeight - 3));
-				}
-			}
-		}
+                    g.setStroke(new BasicStroke(1.0f));
+                    // draw a border 1 pixel inside the edges of the rectangle
+                    g.draw(new Rectangle(rectX + 1, rectY + 1, rectWidth - 3,
+                            rectHeight - 3));
+                }
+            }
+        }
 
-		// end FOR loop
-	}
-	// paint method
+        // end FOR loop
+    }
+    // paint method
 }

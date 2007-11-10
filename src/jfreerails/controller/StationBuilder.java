@@ -21,69 +21,69 @@ import jfreerails.world.track.TrackRule;
  * 
  */
 public class StationBuilder {
-	private static final Logger logger = Logger.getLogger(StationBuilder.class
-			.getName());
+    private static final Logger logger = Logger.getLogger(StationBuilder.class
+            .getName());
 
-	private int ruleNumber;
+    private int ruleNumber;
 
-	private final MoveExecutor executor;
+    private final MoveExecutor executor;
 
-	public StationBuilder(MoveExecutor executor) {
-		this.executor = executor;
+    public StationBuilder(MoveExecutor executor) {
+        this.executor = executor;
 
-		TrackRule trackRule;
+        TrackRule trackRule;
 
-		int i = -1;
+        int i = -1;
 
-		ReadOnlyWorld world = executor.getWorld();
+        ReadOnlyWorld world = executor.getWorld();
 
-		do {
-			i++;
-			trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
-		} while (!trackRule.isStation());
+        do {
+            i++;
+            trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+        } while (!trackRule.isStation());
 
-		ruleNumber = i;
-	}
+        ruleNumber = i;
+    }
 
-	public MoveStatus tryBuildingStation(ImPoint p) {
-		ReadOnlyWorld world = executor.getWorld();
+    public MoveStatus tryBuildingStation(ImPoint p) {
+        ReadOnlyWorld world = executor.getWorld();
 
-		FreerailsPrincipal principal = executor.getPrincipal();
-		AddStationPreMove preMove = AddStationPreMove.newStation(p,
-				this.ruleNumber, principal);
-		Move m = preMove.generateMove(world);
+        FreerailsPrincipal principal = executor.getPrincipal();
+        AddStationPreMove preMove = AddStationPreMove.newStation(p,
+                this.ruleNumber, principal);
+        Move m = preMove.generateMove(world);
 
-		MoveStatus ms = executor.tryDoMove(m);
+        MoveStatus ms = executor.tryDoMove(m);
 
-		return ms;
-	}
+        return ms;
+    }
 
-	public MoveStatus buildStation(ImPoint p) {
-		// Only build a station if there is track at the specified point.
-		MoveStatus status = tryBuildingStation(p);
-		if (status.ok) {
-			FreerailsPrincipal principal = executor.getPrincipal();
-			AddStationPreMove preMove = AddStationPreMove.newStation(p,
-					this.ruleNumber, principal);
-			return executor.doPreMove(preMove);
-		}
-		logger.fine(status.message);
-		return status;
-	}
+    public MoveStatus buildStation(ImPoint p) {
+        // Only build a station if there is track at the specified point.
+        MoveStatus status = tryBuildingStation(p);
+        if (status.ok) {
+            FreerailsPrincipal principal = executor.getPrincipal();
+            AddStationPreMove preMove = AddStationPreMove.newStation(p,
+                    this.ruleNumber, principal);
+            return executor.doPreMove(preMove);
+        }
+        logger.fine(status.message);
+        return status;
+    }
 
-	public void setStationType(int ruleNumber) {
-		this.ruleNumber = ruleNumber;
-	}
+    public void setStationType(int ruleNumber) {
+        this.ruleNumber = ruleNumber;
+    }
 
-	int getTrackTypeID(String string) {
-		ReadOnlyWorld w = executor.getWorld();
-		for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-			TrackRule r = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+    int getTrackTypeID(String string) {
+        ReadOnlyWorld w = executor.getWorld();
+        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
+            TrackRule r = (TrackRule) w.get(SKEY.TRACK_RULES, i);
 
-			if (string.equals(r.getTypeName())) {
-				return i;
-			}
-		}
-		throw new NoSuchElementException();
-	}
+            if (string.equals(r.getTypeName())) {
+                return i;
+            }
+        }
+        throw new NoSuchElementException();
+    }
 }

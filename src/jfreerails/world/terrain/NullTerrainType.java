@@ -13,51 +13,51 @@ import jfreerails.world.common.Money;
 @InstanceControlled
 public class NullTerrainType implements TerrainType {
 
-	public static final TerrainType INSTANCE = new NullTerrainType();
+    public static final TerrainType INSTANCE = new NullTerrainType();
 
-	private NullTerrainType() {
+    private NullTerrainType() {
 
-	}
+    }
 
-	private static final long serialVersionUID = 3834874680581369912L;
+    private static final long serialVersionUID = 3834874680581369912L;
 
-	public ImList<Production> getProduction() {
-		return new ImList<Production>();
-	}
+    public ImList<Production> getProduction() {
+        return new ImList<Production>();
+    }
 
-	public ImList<Consumption> getConsumption() {
-		return new ImList<Consumption>();
-	}
+    public ImList<Consumption> getConsumption() {
+        return new ImList<Consumption>();
+    }
 
-	public ImList<Conversion> getConversion() {
-		return new ImList<Conversion>();
-	}
+    public ImList<Conversion> getConversion() {
+        return new ImList<Conversion>();
+    }
 
-	public String getTerrainTypeName() {
-		return "null";
-	}
+    public String getTerrainTypeName() {
+        return "null";
+    }
 
-	public Category getCategory() {
-		return Category.Country;
-	}
+    public Category getCategory() {
+        return Category.Country;
+    }
 
-	public int getRGB() {
-		return 0;
-	}
+    public int getRGB() {
+        return 0;
+    }
 
-	public int getRightOfWay() {
-		return 0;
-	}
+    public int getRightOfWay() {
+        return 0;
+    }
 
-	public String getDisplayName() {
-		return "";
-	}
+    public String getDisplayName() {
+        return "";
+    }
 
-	private Object readResolve() throws ObjectStreamException {
-		return INSTANCE;
-	}
+    private Object readResolve() throws ObjectStreamException {
+        return INSTANCE;
+    }
 
-	public Money getBuildCost() {
-		return new Money(0);
-	}
+    public Money getBuildCost() {
+        return new Money(0);
+    }
 }

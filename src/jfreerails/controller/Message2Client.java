@@ -12,9 +12,9 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public interface Message2Client extends FreerailsSerializable {
-	/** Executes this command on the specified ClientControlInterface. */
-	MessageStatus execute(ClientControlInterface client);
+    /** Executes this command on the specified ClientControlInterface. */
+    MessageStatus execute(ClientControlInterface client);
 
-	/** Returns the id of this command. */
-	int getID();
+    /** Returns the id of this command. */
+    int getID();
 }

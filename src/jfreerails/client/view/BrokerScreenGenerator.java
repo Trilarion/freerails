@@ -28,71 +28,71 @@ import jfreerails.world.top.ReadOnlyWorld;
  */
 
 public class BrokerScreenGenerator {
-	
-	private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-	private FinancialDataGatherer dataGatherer;
+    private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-	private GameCalendar cal;
+    private FinancialDataGatherer dataGatherer;
 
-	public String playername;
+    private GameCalendar cal;
 
-	public String year;
+    public String playername;
 
-	public Money cash;
+    public String year;
 
-	public Money loansTotal;
+    public Money cash;
 
-	public Money netWorth;
+    public Money loansTotal;
 
-	public Money pricePerShare;
+    public Money netWorth;
 
-	public String publicShares;
+    public Money pricePerShare;
 
-	public String treasuryStock;
+    public String publicShares;
 
-	public String othersRRsStockRows;
+    public String treasuryStock;
 
-	/** Creates a new instance of BrokerScreenGenerator */
-	public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-		dataGatherer = new FinancialDataGatherer(w, principal);
+    public String othersRRsStockRows;
 
-		int playerId = w.getID(principal);
-		this.playername = w.getPlayer(playerId).getName();
+    /** Creates a new instance of BrokerScreenGenerator */
+    public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
+        dataGatherer = new FinancialDataGatherer(w, principal);
 
-		this.cal = (GameCalendar) w.get(ITEM.CALENDAR);
-		GameTime time = w.currentTime();
-		final int startyear = cal.getYear(time.getTicks());
-		this.year = String.valueOf(startyear);
-		this.cash = w.getCurrentBalance(principal);
+        int playerId = w.getID(principal);
+        this.playername = w.getPlayer(playerId).getName();
 
-		ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-				w, principal);
+        this.cal = (GameCalendar) w.get(ITEM.CALENDAR);
+        GameTime time = w.currentTime();
+        final int startyear = cal.getYear(time.getTicks());
+        this.year = String.valueOf(startyear);
+        this.cash = w.getCurrentBalance(principal);
 
-		aggregator.setCategory(BOND);
-		this.loansTotal = aggregator.calculateValue();
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
+                w, principal);
 
-		this.publicShares = DC.format(dataGatherer.sharesHeldByPublic());
-		this.netWorth = dataGatherer.netWorth();
-		StockPrice[] stockPrices = (new StockPriceCalculator(w)).calculate();
-		this.pricePerShare = stockPrices[playerId].currentPrice;
-		this.treasuryStock = DC.format(dataGatherer.treasuryStock());
+        aggregator.setCategory(BOND);
+        this.loansTotal = aggregator.calculateValue();
 
-		StringBuffer otherRRsStakes = new StringBuffer();
-		int[] stockInThisRRs = dataGatherer.getStockInThisRRs();
+        this.publicShares = DC.format(dataGatherer.sharesHeldByPublic());
+        this.netWorth = dataGatherer.netWorth();
+        StockPrice[] stockPrices = (new StockPriceCalculator(w)).calculate();
+        this.pricePerShare = stockPrices[playerId].currentPrice;
+        this.treasuryStock = DC.format(dataGatherer.treasuryStock());
 
-		for (int i = 0; i < stockInThisRRs.length; i++) {
-			if (i != playerId && stockInThisRRs[i] > 0) {
-				String otherRRName = w.getPlayer(i).getName();
-				String otherRRStake = DC.format(stockInThisRRs[i]);
-				otherRRsStakes.append("<tr> ");
-				otherRRsStakes.append("<td> </td>");
-				otherRRsStakes.append("<td> </td>");
-				otherRRsStakes.append("<td>" + otherRRName + "</td>");
-				otherRRsStakes.append("<td>" + otherRRStake + "</td>");
-				otherRRsStakes.append("</tr>");
-			}
-		}
-		othersRRsStockRows = otherRRsStakes.toString();
-	}
+        StringBuffer otherRRsStakes = new StringBuffer();
+        int[] stockInThisRRs = dataGatherer.getStockInThisRRs();
+
+        for (int i = 0; i < stockInThisRRs.length; i++) {
+            if (i != playerId && stockInThisRRs[i] > 0) {
+                String otherRRName = w.getPlayer(i).getName();
+                String otherRRStake = DC.format(stockInThisRRs[i]);
+                otherRRsStakes.append("<tr> ");
+                otherRRsStakes.append("<td> </td>");
+                otherRRsStakes.append("<td> </td>");
+                otherRRsStakes.append("<td>" + otherRRName + "</td>");
+                otherRRsStakes.append("<td>" + otherRRStake + "</td>");
+                otherRRsStakes.append("</tr>");
+            }
+        }
+        othersRRsStockRows = otherRRsStakes.toString();
+    }
 }

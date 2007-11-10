@@ -14,13 +14,13 @@ import java.awt.Rectangle;
  * 
  */
 public interface WorldMapListener {
-	/**
-	 * Called when tiles have changed.
-	 * 
-	 * @param tilesChanged
-	 *            rectangle containing the tiles that have change; all the
-	 *            points contained by the rectangle must be within the map's
-	 *            bounds.
-	 */
-	void tilesChanged(Rectangle tilesChanged);
+    /**
+     * Called when tiles have changed.
+     * 
+     * @param tilesChanged
+     *            rectangle containing the tiles that have change; all the
+     *            points contained by the rectangle must be within the map's
+     *            bounds.
+     */
+    void tilesChanged(Rectangle tilesChanged);
 }

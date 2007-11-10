@@ -17,39 +17,39 @@ import jfreerails.world.top.WorldImpl;
  * 
  */
 public class SavedGamesManager4UnitTests implements SavedGamesManager {
-	private String[] mapsAvailable = { "map1", "map2" };
+    private String[] mapsAvailable = { "map1", "map2" };
 
-	private final HashMap<String, Serializable> savedGames = new HashMap<String, Serializable>();
+    private final HashMap<String, Serializable> savedGames = new HashMap<String, Serializable>();
 
-	public String[] getSaveGameNames() {
-		Object[] keys = savedGames.keySet().toArray();
+    public String[] getSaveGameNames() {
+        Object[] keys = savedGames.keySet().toArray();
 
-		String[] names = new String[keys.length];
+        String[] names = new String[keys.length];
 
-		for (int i = 0; i < names.length; i++) {
-			names[i] = (String) keys[i];
-		}
+        for (int i = 0; i < names.length; i++) {
+            names[i] = (String) keys[i];
+        }
 
-		return names;
-	}
+        return names;
+    }
 
-	public String[] getNewMapNames() {
-		return mapsAvailable.clone();
-	}
+    public String[] getNewMapNames() {
+        return mapsAvailable.clone();
+    }
 
-	public void saveGame(Serializable w, String name) throws IOException {
-		// Make a copy so that the saved version's state cannot be changed.
-		Serializable copy = Utils.cloneBySerialisation(w);
-		this.savedGames.put(name, copy);
-	}
+    public void saveGame(Serializable w, String name) throws IOException {
+        // Make a copy so that the saved version's state cannot be changed.
+        Serializable copy = Utils.cloneBySerialisation(w);
+        this.savedGames.put(name, copy);
+    }
 
-	public Serializable loadGame(String name) throws IOException {
-		Serializable o = savedGames.get(name);
+    public Serializable loadGame(String name) throws IOException {
+        Serializable o = savedGames.get(name);
 
-		return Utils.cloneBySerialisation(o);
-	}
+        return Utils.cloneBySerialisation(o);
+    }
 
-	public Serializable newMap(String name) throws IOException {
-		return new WorldImpl(10, 10);
-	}
+    public Serializable newMap(String name) throws IOException {
+        return new WorldImpl(10, 10);
+    }
 }

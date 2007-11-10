@@ -14,11 +14,11 @@ import java.awt.Rectangle;
  * @author Luke Lindsay
  */
 public interface MapLayerRenderer {
-	void paintTile(Graphics g, int tileX, int tileY);
+    void paintTile(Graphics g, int tileX, int tileY);
 
-	void refreshTile(int x, int y);
+    void refreshTile(int x, int y);
 
-	void refreshAll();
+    void refreshAll();
 
-	void paintRect(Graphics g, Rectangle visibleRect);
+    void paintRect(Graphics g, Rectangle visibleRect);
 }

@@ -17,28 +17,28 @@ import jfreerails.world.train.WagonType;
  * 
  */
 public class WagonAndEngineTypesFactory {
-	public void addTypesToWorld(World w) {
-		// Wagon types
-		WagonType[] wagonTypes = new WagonType[] {
-				new WagonType("Mail", WagonType.MAIL),
-				new WagonType("Passengers", WagonType.PASSENGER),
-				new WagonType("Livestock", WagonType.FAST_FREIGHT),
-				new WagonType("Coffee", WagonType.SLOW_FREIGHT),
-				new WagonType("Wood", WagonType.BULK_FREIGHT), };
+    public void addTypesToWorld(World w) {
+        // Wagon types
+        WagonType[] wagonTypes = new WagonType[] {
+                new WagonType("Mail", WagonType.MAIL),
+                new WagonType("Passengers", WagonType.PASSENGER),
+                new WagonType("Livestock", WagonType.FAST_FREIGHT),
+                new WagonType("Coffee", WagonType.SLOW_FREIGHT),
+                new WagonType("Wood", WagonType.BULK_FREIGHT), };
 
-		for (int i = 0; i < wagonTypes.length; i++) {
-			w.add(SKEY.WAGON_TYPES, wagonTypes[i]);
-		}
+        for (int i = 0; i < wagonTypes.length; i++) {
+            w.add(SKEY.WAGON_TYPES, wagonTypes[i]);
+        }
 
-		// Engine types
-		EngineType[] engineTypes = new EngineType[] {
-				new EngineType("Grasshopper", 1000, new Money(10000), 10,
-						new Money(100)),
-				new EngineType("Norris", 1000, new Money(10000), 15, new Money(
-						100)), };
+        // Engine types
+        EngineType[] engineTypes = new EngineType[] {
+                new EngineType("Grasshopper", 1000, new Money(10000), 10,
+                        new Money(100)),
+                new EngineType("Norris", 1000, new Money(10000), 15, new Money(
+                        100)), };
 
-		for (int i = 0; i < engineTypes.length; i++) {
-			w.add(SKEY.ENGINE_TYPES, engineTypes[i]);
-		}
-	}
+        for (int i = 0; i < engineTypes.length; i++) {
+            w.add(SKEY.ENGINE_TYPES, engineTypes[i]);
+        }
+    }
 }

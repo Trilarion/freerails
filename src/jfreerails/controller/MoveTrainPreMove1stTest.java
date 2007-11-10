@@ -37,245 +37,244 @@ import jfreerails.world.train.TrainOrdersModel;
  */
 public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
-	TrackMoveProducer trackBuilder;
+    TrackMoveProducer trackBuilder;
 
-	StationBuilder stationBuilder;
+    StationBuilder stationBuilder;
 
-	FreerailsPrincipal principal;
+    FreerailsPrincipal principal;
 
-	private ImPoint stationA;
+    private ImPoint stationA;
 
-	private ImPoint stationB;
+    private ImPoint stationB;
 
-	ImmutableSchedule defaultSchedule;
+    ImmutableSchedule defaultSchedule;
 
-	@Override
-	protected void setupWorld() {
-		world = MapFixtureFactory2.getCopy();
-		MoveExecutor me = new SimpleMoveExecutor(world, 0);
-		principal = me.getPrincipal();
-		ModelRoot mr = new ModelRootImpl();
-		trackBuilder = new TrackMoveProducer(me, world, mr);
-		stationBuilder = new StationBuilder(me);
+    @Override
+    protected void setupWorld() {
+        world = MapFixtureFactory2.getCopy();
+        MoveExecutor me = new SimpleMoveExecutor(world, 0);
+        principal = me.getPrincipal();
+        ModelRoot mr = new ModelRootImpl();
+        trackBuilder = new TrackMoveProducer(me, world, mr);
+        stationBuilder = new StationBuilder(me);
 
-		// Build track.
-		stationBuilder
-				.setStationType(stationBuilder.getTrackTypeID("terminal"));
-		Step[] track = { EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST };
-		stationA = new ImPoint(10, 10);
-		MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
-		assertTrue(ms0.ok);
+        // Build track.
+        stationBuilder
+                .setStationType(stationBuilder.getTrackTypeID("terminal"));
+        Step[] track = { EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST };
+        stationA = new ImPoint(10, 10);
+        MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
+        assertTrue(ms0.ok);
 
-		// Build 2 stations.
-		MoveStatus ms1 = stationBuilder.buildStation(stationA);
-		assertTrue(ms1.ok);
-		stationB = new ImPoint(19, 10);
-		MoveStatus ms2 = stationBuilder.buildStation(stationB);
-		assertTrue(ms2.ok);
+        // Build 2 stations.
+        MoveStatus ms1 = stationBuilder.buildStation(stationA);
+        assertTrue(ms1.ok);
+        stationB = new ImPoint(19, 10);
+        MoveStatus ms2 = stationBuilder.buildStation(stationB);
+        assertTrue(ms2.ok);
 
-		TrainOrdersModel order0 = new TrainOrdersModel(1, null, false, false);
-		TrainOrdersModel order1 = new TrainOrdersModel(0, null, false, false);
-		MutableSchedule s = new MutableSchedule();
-		s.addOrder(order0);
-		s.addOrder(order1);
-		defaultSchedule = s.toImmutableSchedule();
+        TrainOrdersModel order0 = new TrainOrdersModel(1, null, false, false);
+        TrainOrdersModel order1 = new TrainOrdersModel(0, null, false, false);
+        MutableSchedule s = new MutableSchedule();
+        s.addOrder(order0);
+        s.addOrder(order1);
+        defaultSchedule = s.toImmutableSchedule();
 
-		ImPoint start = new ImPoint(10, 10);
-		AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
-				start, principal, defaultSchedule);
-		Move m = preMove.generateMove(world);
-		MoveStatus ms = m.doMove(world, principal);
-		assertTrue(ms.ok);
-	}
+        ImPoint start = new ImPoint(10, 10);
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
+                start, principal, defaultSchedule);
+        Move m = preMove.generateMove(world);
+        MoveStatus ms = m.doMove(world, principal);
+        assertTrue(ms.ok);
+    }
 
-	public void testNextVector() {
+    public void testNextVector() {
 
-		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
-		Step actual = preMove.nextStep(world);
-		assertNotNull(actual);
-		// The train is at station A, so should head east to station B.
-		assertEquals(EAST, actual);
-	}
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        Step actual = preMove.nextStep(world);
+        assertNotNull(actual);
+        // The train is at station A, so should head east to station B.
+        assertEquals(EAST, actual);
+    }
 
-	public void testNextSpeeds() {
+    public void testNextSpeeds() {
 
-		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
-		SpeedAgainstTime speeds = preMove.nextSpeeds(world, EAST);
-		assertNotNull(speeds);
-		assertEquals(speeds.calcV(0), 0d);
-		assertTrue(speeds.getS() >= EAST.getLength());
-		double t = speeds.getT();
-		assertTrue(t > 0);
-		assertTrue(speeds.calcV(t) > 0);
-	}
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        SpeedAgainstTime speeds = preMove.nextSpeeds(world, EAST);
+        assertNotNull(speeds);
+        assertEquals(speeds.calcV(0), 0d);
+        assertTrue(speeds.getS() >= EAST.getLength());
+        double t = speeds.getT();
+        assertTrue(t > 0);
+        assertTrue(speeds.calcV(t) > 0);
+    }
 
-	@Override
-	public void testMove() {
-		MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
-		Move m = preMove.generateMove(world);
-		assertNotNull(m);
-		assertSurvivesSerialisation(m);
+    @Override
+    public void testMove() {
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        Move m = preMove.generateMove(world);
+        assertNotNull(m);
+        assertSurvivesSerialisation(m);
 
-	}
+    }
 
-	public void testMove2() {
-		MoveStatus ms;
-		Move m;
-		setupLoopOfTrack();
+    public void testMove2() {
+        MoveStatus ms;
+        Move m;
+        setupLoopOfTrack();
 
-		TrainAccessor ta = new TrainAccessor(world, principal, 0);
-		TrainMotion tm = ta.findCurrentMotion(3);
+        TrainAccessor ta = new TrainAccessor(world, principal, 0);
+        TrainMotion tm = ta.findCurrentMotion(3);
 
-		assertEquals(0d, tm.duration());
+        assertEquals(0d, tm.duration());
 
-		PathOnTiles expected = new PathOnTiles(new ImPoint(5, 5), SOUTH_WEST);
-		assertEquals(expected, tm.getPath());
-		PositionOnTrack pot = tm.getFinalPosition();
-		int x = pot.getX();
-		assertEquals(4, x);
-		int y = pot.getY();
-		assertEquals(6, y);
-		assertEquals(SOUTH_WEST, pot.facing());
+        PathOnTiles expected = new PathOnTiles(new ImPoint(5, 5), SOUTH_WEST);
+        assertEquals(expected, tm.getPath());
+        PositionOnTrack pot = tm.getFinalPosition();
+        int x = pot.getX();
+        assertEquals(4, x);
+        int y = pot.getY();
+        assertEquals(6, y);
+        assertEquals(SOUTH_WEST, pot.facing());
 
-		MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
 
-		assertEquals(NORTH_EAST, moveTrain.nextStep(world));
+        assertEquals(NORTH_EAST, moveTrain.nextStep(world));
 
-		m = moveTrain.generateMove(world);
-		ms = m.doMove(world, principal);
-		assertTrue(ms.ok);
+        m = moveTrain.generateMove(world);
+        ms = m.doMove(world, principal);
+        assertTrue(ms.ok);
 
-		TrainMotion tm2 = ta.findCurrentMotion(3);
-		assertFalse(tm.equals(tm2));
+        TrainMotion tm2 = ta.findCurrentMotion(3);
+        assertFalse(tm.equals(tm2));
 
-		expected = new PathOnTiles(new ImPoint(5, 5), SOUTH_WEST, NORTH_EAST);
-		assertEquals(expected, tm2.getPath());
+        expected = new PathOnTiles(new ImPoint(5, 5), SOUTH_WEST, NORTH_EAST);
+        assertEquals(expected, tm2.getPath());
 
-		assertTrue(tm2.duration() > 3d);
-		// The expected value is 3.481641930846211, found from
-		// stepping thu code in debugger.
-		assertTrackHere(tm2.getTiles(tm2.duration()));
+        assertTrue(tm2.duration() > 3d);
+        // The expected value is 3.481641930846211, found from
+        // stepping thu code in debugger.
+        assertTrackHere(tm2.getTiles(tm2.duration()));
 
-		pot = tm2.getFinalPosition();
-		assertEquals(4, x);
-		assertEquals(6, y);
-		// assertEquals(SOUTH, pot.facing());
+        pot = tm2.getFinalPosition();
+        assertEquals(4, x);
+        assertEquals(6, y);
+        // assertEquals(SOUTH, pot.facing());
 
-		assertTrackHere(x, y);
+        assertTrackHere(x, y);
 
-		assertEquals(EAST, moveTrain.nextStep(world));
+        assertEquals(EAST, moveTrain.nextStep(world));
 
-		MoveTrainPreMove2ndTest.incrTime(world, principal);
-		m = moveTrain.generateMove(world);
-		ms = m.doMove(world, principal);
-		assertTrue(ms.ok);
+        MoveTrainPreMove2ndTest.incrTime(world, principal);
+        m = moveTrain.generateMove(world);
+        ms = m.doMove(world, principal);
+        assertTrue(ms.ok);
 
-		TrainMotion tm3 = ta.findCurrentMotion(100);
-		assertFalse(tm3.equals(tm2));
-		expected = new PathOnTiles(new ImPoint(4, 6), NORTH_EAST, EAST);
-		assertEquals(expected, tm3.getPath());
+        TrainMotion tm3 = ta.findCurrentMotion(100);
+        assertFalse(tm3.equals(tm2));
+        expected = new PathOnTiles(new ImPoint(4, 6), NORTH_EAST, EAST);
+        assertEquals(expected, tm3.getPath());
 
-		assertTrackHere(tm3.getTiles(tm3.duration()));
-		assertTrackHere(tm3.getTiles(tm3.duration() / 2));
-		assertTrackHere(tm3.getTiles(0));
-		assertTrackHere(tm3.getPath());
+        assertTrackHere(tm3.getTiles(tm3.duration()));
+        assertTrackHere(tm3.getTiles(tm3.duration() / 2));
+        assertTrackHere(tm3.getTiles(0));
+        assertTrackHere(tm3.getPath());
 
-		assertEquals(SOUTH_EAST, moveTrain.nextStep(world));
+        assertEquals(SOUTH_EAST, moveTrain.nextStep(world));
 
-		MoveTrainPreMove2ndTest.incrTime(world, principal);
-		m = moveTrain.generateMove(world);
-		
-		ms = m.doMove(world, principal);
-		assertTrue(ms.ok);
+        MoveTrainPreMove2ndTest.incrTime(world, principal);
+        m = moveTrain.generateMove(world);
 
-	}
+        ms = m.doMove(world, principal);
+        assertTrue(ms.ok);
 
-	private void setupLoopOfTrack() {
-		world = MapFixtureFactory2.getCopy();
-		MoveExecutor me = new SimpleMoveExecutor(world, 0);
-		principal = me.getPrincipal();
-		ModelRoot mr = new ModelRootImpl();
-		TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-		Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
-				NORTH_WEST, NORTH, NORTH_EAST };
-		ImPoint from = new ImPoint(5, 5);
-		MoveStatus ms = producer.buildTrack(from, trackPath);
-		assertTrue(ms.ok);
+    }
 
-		TrainOrdersModel[] orders = {};
-		ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-		AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
-				principal, is);
+    private void setupLoopOfTrack() {
+        world = MapFixtureFactory2.getCopy();
+        MoveExecutor me = new SimpleMoveExecutor(world, 0);
+        principal = me.getPrincipal();
+        ModelRoot mr = new ModelRootImpl();
+        TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
+        Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
+                NORTH_WEST, NORTH, NORTH_EAST };
+        ImPoint from = new ImPoint(5, 5);
+        MoveStatus ms = producer.buildTrack(from, trackPath);
+        assertTrue(ms.ok);
 
-		Move m = addTrain.generateMove(world);
-		ms = m.doMove(world, principal);
-		assertTrue(ms.ok);
-		TrainAccessor ta = new TrainAccessor(world, principal, 0);
-		TrainMotion motion = ta.findCurrentMotion(0);
-		assertNotNull(motion);
+        TrainOrdersModel[] orders = {};
+        ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
+        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
+                principal, is);
 
-		PathOnTiles expected = new PathOnTiles(from, SOUTH_WEST);
-		PathOnTiles actual = motion.getTiles(motion.duration());
-		assertEquals(expected, actual);
+        Move m = addTrain.generateMove(world);
+        ms = m.doMove(world, principal);
+        assertTrue(ms.ok);
+        TrainAccessor ta = new TrainAccessor(world, principal, 0);
+        TrainMotion motion = ta.findCurrentMotion(0);
+        assertNotNull(motion);
 
-	}
+        PathOnTiles expected = new PathOnTiles(from, SOUTH_WEST);
+        PathOnTiles actual = motion.getTiles(motion.duration());
+        assertEquals(expected, actual);
 
-	public void testMovingRoundLoop() {
-		setupLoopOfTrack();
+    }
 
-		MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
-		Move m = moveTrain.generateMove(world);
-		assertTrue(m.doMove(world, principal).ok);
+    public void testMovingRoundLoop() {
+        setupLoopOfTrack();
 
-	}
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+        Move m = moveTrain.generateMove(world);
+        assertTrue(m.doMove(world, principal).ok);
 
-	public void testGetTiles() {
-		setupLoopOfTrack();
+    }
 
-		MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
-		Move m = moveTrain.generateMove(world);
-		assertTrue(m.doMove(world, principal).ok);
+    public void testGetTiles() {
+        setupLoopOfTrack();
 
-		TrainAccessor ta = new TrainAccessor(world, principal, 0);
-		TrainMotion motion = ta.findCurrentMotion(1);
-		double duration = motion.duration();
-		assertTrue(duration > 1);
-		int trainLength = motion.getTrainLength();
-		for (int i = 0; i < 10; i++) {
-			double t = i == 0 ? 0 : duration * i / 10;
-			PathOnTiles tiles = motion.getTiles(t);
-			assertTrue("t=" + t, tiles.steps() > 0);
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+        Move m = moveTrain.generateMove(world);
+        assertTrue(m.doMove(world, principal).ok);
 
-			assertTrue("t=" + t, tiles.getTotalDistance() >= trainLength);
+        TrainAccessor ta = new TrainAccessor(world, principal, 0);
+        TrainMotion motion = ta.findCurrentMotion(1);
+        double duration = motion.duration();
+        assertTrue(duration > 1);
+        int trainLength = motion.getTrainLength();
+        for (int i = 0; i < 10; i++) {
+            double t = i == 0 ? 0 : duration * i / 10;
+            PathOnTiles tiles = motion.getTiles(t);
+            assertTrue("t=" + t, tiles.steps() > 0);
 
-		}
-	}
+            assertTrue("t=" + t, tiles.getTotalDistance() >= trainLength);
 
-	public void testFindNextVector() {
-		setupLoopOfTrack();
-		PositionOnTrack pot = PositionOnTrack.createFacing(4, 6, SOUTH_WEST);
+        }
+    }
 
-		ImPoint target = new ImPoint();
-		Step expected = NORTH_EAST;
-		assertEquals(expected, MoveTrainPreMove.findNextStep(world, pot,
-				target));
-		pot.move(expected);
-		expected = EAST;
-		assertEquals(expected, MoveTrainPreMove.findNextStep(world, pot,
-				target));
-		pot.move(expected);
+    public void testFindNextVector() {
+        setupLoopOfTrack();
+        PositionOnTrack pot = PositionOnTrack.createFacing(4, 6, SOUTH_WEST);
 
-		expected = SOUTH_EAST;
-		assertEquals(expected, MoveTrainPreMove.findNextStep(world, pot,
-				target));
-		pot.move(expected);
+        ImPoint target = new ImPoint();
+        Step expected = NORTH_EAST;
+        assertEquals(expected, MoveTrainPreMove
+                .findNextStep(world, pot, target));
+        pot.move(expected);
+        expected = EAST;
+        assertEquals(expected, MoveTrainPreMove
+                .findNextStep(world, pot, target));
+        pot.move(expected);
 
-		expected = SOUTH;
-		assertEquals(expected, MoveTrainPreMove.findNextStep(world, pot,
-				target));
-		pot.move(expected);
+        expected = SOUTH_EAST;
+        assertEquals(expected, MoveTrainPreMove
+                .findNextStep(world, pot, target));
+        pot.move(expected);
 
-	}
-	
-		
+        expected = SOUTH;
+        assertEquals(expected, MoveTrainPreMove
+                .findNextStep(world, pot, target));
+        pot.move(expected);
+
+    }
+
 }

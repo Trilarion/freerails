@@ -10,33 +10,33 @@ package jfreerails.controller;
  * @author Luke Lindsay
  */
 public interface GraphExplorer {
-	void setPosition(int vertex);
+    void setPosition(int vertex);
 
-	/** Return the current edge. */
-	int getPosition();
+    /** Return the current edge. */
+    int getPosition();
 
-	/**
-	 * Sets the current edge to the current vertex's next edge. Throws a
-	 * NoSuchElementException if the vertex does not have another edge.
-	 */
-	void nextEdge();
+    /**
+     * Sets the current edge to the current vertex's next edge. Throws a
+     * NoSuchElementException if the vertex does not have another edge.
+     */
+    void nextEdge();
 
-	/**
-	 * Returns the vertex that is connected to the current vertex by the current
-	 * edge.
-	 */
-	int getVertexConnectedByEdge();
+    /**
+     * Returns the vertex that is connected to the current vertex by the current
+     * edge.
+     */
+    int getVertexConnectedByEdge();
 
-	/** Returns the cost of the current edge. */
-	int getEdgeCost();
+    /** Returns the cost of the current edge. */
+    int getEdgeCost();
 
-	boolean hasNextEdge();
+    boolean hasNextEdge();
 
-	/**
-	 * Moves this GraphExplorer from the current vertex to the vertex that is
-	 * connected to the current vertex by the current edge.
-	 */
-	void moveForward();
+    /**
+     * Moves this GraphExplorer from the current vertex to the vertex that is
+     * connected to the current vertex by the current edge.
+     */
+    void moveForward();
 
-	int getH();
+    int getH();
 }

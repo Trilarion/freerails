@@ -19,34 +19,34 @@ import jfreerails.world.train.TrainModel;
  * 
  */
 public class RemoveTrainMove extends CompositeMove {
-	private static final long serialVersionUID = 3979265867567544114L;
+    private static final long serialVersionUID = 3979265867567544114L;
 
-	private RemoveTrainMove(Move[] moves) {
-		super(moves);
-	}
+    private RemoveTrainMove(Move[] moves) {
+        super(moves);
+    }
 
-	public static RemoveTrainMove getInstance(int index, FreerailsPrincipal p,
-			ReadOnlyWorld world) {
-		TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, index);
-		int scheduleId = train.getScheduleID();
-		ImmutableSchedule schedule = (ImmutableSchedule) world.get(
-				p, KEY.TRAIN_SCHEDULES, scheduleId);
-		int cargoBundleId = train.getCargoBundleID();
-		ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle) world.get(
-				p, KEY.CARGO_BUNDLES, cargoBundleId);
-		// TrainPositionOnMap position =
-		// (TrainPositionOnMap)world.get(KEY.TRAIN_POSITIONS, index, p);
-		Move removeTrain = new RemoveItemFromListMove(KEY.TRAINS, index, train,
-				p);
-		Move removeCargobundle = new RemoveItemFromListMove(KEY.CARGO_BUNDLES,
-				cargoBundleId, cargoBundle, p);
-		Move removeSchedule = new RemoveItemFromListMove(KEY.TRAIN_SCHEDULES,
-				scheduleId, schedule, p);
-		// Move removePosition = new RemoveItemFromListMove(KEY.TRAIN_POSITIONS,
-		// index, position, p);
+    public static RemoveTrainMove getInstance(int index, FreerailsPrincipal p,
+            ReadOnlyWorld world) {
+        TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, index);
+        int scheduleId = train.getScheduleID();
+        ImmutableSchedule schedule = (ImmutableSchedule) world.get(p,
+                KEY.TRAIN_SCHEDULES, scheduleId);
+        int cargoBundleId = train.getCargoBundleID();
+        ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle) world.get(p,
+                KEY.CARGO_BUNDLES, cargoBundleId);
+        // TrainPositionOnMap position =
+        // (TrainPositionOnMap)world.get(KEY.TRAIN_POSITIONS, index, p);
+        Move removeTrain = new RemoveItemFromListMove(KEY.TRAINS, index, train,
+                p);
+        Move removeCargobundle = new RemoveItemFromListMove(KEY.CARGO_BUNDLES,
+                cargoBundleId, cargoBundle, p);
+        Move removeSchedule = new RemoveItemFromListMove(KEY.TRAIN_SCHEDULES,
+                scheduleId, schedule, p);
+        // Move removePosition = new RemoveItemFromListMove(KEY.TRAIN_POSITIONS,
+        // index, position, p);
 
-		return new RemoveTrainMove(new Move[] { removeTrain, removeCargobundle,
-				removeSchedule /* , removePosition */
-		});
-	}
+        return new RemoveTrainMove(new Move[] { removeTrain, removeCargobundle,
+                removeSchedule /* , removePosition */
+        });
+    }
 }

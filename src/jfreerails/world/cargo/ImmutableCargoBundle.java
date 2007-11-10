@@ -40,140 +40,140 @@ import jfreerails.world.common.ImList;
  * 
  */
 public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable {
-	public static final ImmutableCargoBundle EMPTY_BUNDLE = new ImmutableCargoBundle();
+    public static final ImmutableCargoBundle EMPTY_BUNDLE = new ImmutableCargoBundle();
 
-	private static final long serialVersionUID = 3257566187666814009L;
+    private static final long serialVersionUID = 3257566187666814009L;
 
-	public static boolean equals(CargoBundle a, CargoBundle b) {
-		Iterator<CargoBatch> it = a.cargoBatchIterator();
-		if (a.size() != b.size())
-			return false;
-		while (it.hasNext()) {
-			CargoBatch batch = it.next();
+    public static boolean equals(CargoBundle a, CargoBundle b) {
+        Iterator<CargoBatch> it = a.cargoBatchIterator();
+        if (a.size() != b.size())
+            return false;
+        while (it.hasNext()) {
+            CargoBatch batch = it.next();
 
-			if (a.getAmount(batch) != b.getAmount(batch)) {
-				return false;
-			}
-		}
-		return true;
+            if (a.getAmount(batch) != b.getAmount(batch)) {
+                return false;
+            }
+        }
+        return true;
 
-	}
+    }
 
-	private final ImInts amounts;
+    private final ImInts amounts;
 
-	private final ImList<CargoBatch> batches;
+    private final ImList<CargoBatch> batches;
 
-	private ImmutableCargoBundle() {
-		batches = new ImList<CargoBatch>();
-		amounts = new ImInts();
-	}
+    private ImmutableCargoBundle() {
+        batches = new ImList<CargoBatch>();
+        amounts = new ImInts();
+    }
 
-	public ImmutableCargoBundle(SortedMap<CargoBatch, Integer> sortedMap) {
-		int size = sortedMap.size();
-		int[] amountsArray = new int[size];
-		CargoBatch[] batchesArray = new CargoBatch[size];
-		int i = 0;
-		for (CargoBatch batch : sortedMap.keySet()) {
-			batchesArray[i] = batch;
-			amountsArray[i] = sortedMap.get(batch);
-			i++;
-		}
+    public ImmutableCargoBundle(SortedMap<CargoBatch, Integer> sortedMap) {
+        int size = sortedMap.size();
+        int[] amountsArray = new int[size];
+        CargoBatch[] batchesArray = new CargoBatch[size];
+        int i = 0;
+        for (CargoBatch batch : sortedMap.keySet()) {
+            batchesArray[i] = batch;
+            amountsArray[i] = sortedMap.get(batch);
+            i++;
+        }
 
-		batches = new ImList<CargoBatch>(batchesArray);
-		amounts = new ImInts(amountsArray);
-	}
+        batches = new ImList<CargoBatch>(batchesArray);
+        amounts = new ImInts(amountsArray);
+    }
 
-	public Iterator<CargoBatch> cargoBatchIterator() {
-		return new Iterator<CargoBatch>() {
-			int index = 0;
+    public Iterator<CargoBatch> cargoBatchIterator() {
+        return new Iterator<CargoBatch>() {
+            int index = 0;
 
-			public boolean hasNext() {
-				return index < batches.size();
-			}
+            public boolean hasNext() {
+                return index < batches.size();
+            }
 
-			public CargoBatch next() {
-				CargoBatch o = batches.get(index);
-				index++;
+            public CargoBatch next() {
+                CargoBatch o = batches.get(index);
+                index++;
 
-				return o;
-			}
+                return o;
+            }
 
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
-	}
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
 
-	public boolean contains(CargoBatch cb) {
-		for (int i = 0; i < batches.size(); i++) {
-			if (batches.get(i).equals(cb)) {
-				return true;
-			}
-		}
+    public boolean contains(CargoBatch cb) {
+        for (int i = 0; i < batches.size(); i++) {
+            if (batches.get(i).equals(cb)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean equals(Object arg0) {
-		if (null == arg0) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object arg0) {
+        if (null == arg0) {
+            return false;
+        }
 
-		if (!(arg0 instanceof CargoBundle)) {
-			return false;
-		}
+        if (!(arg0 instanceof CargoBundle)) {
+            return false;
+        }
 
-		return equals(this, (CargoBundle) arg0);
-	}
+        return equals(this, (CargoBundle) arg0);
+    }
 
-	public int getAmount(CargoBatch cb) {
-		int amount = 0;
+    public int getAmount(CargoBatch cb) {
+        int amount = 0;
 
-		for (int i = 0; i < batches.size(); i++) {
-			if (batches.get(i).equals(cb)) {
-				amount += amounts.get(i);
-			}
-		}
+        for (int i = 0; i < batches.size(); i++) {
+            if (batches.get(i).equals(cb)) {
+                amount += amounts.get(i);
+            }
+        }
 
-		return amount;
-	}
+        return amount;
+    }
 
-	public int getAmount(int cargoType) {
-		int amount = 0;
+    public int getAmount(int cargoType) {
+        int amount = 0;
 
-		for (int i = 0; i < batches.size(); i++) {
-			if (batches.get(i).getCargoType() == cargoType) {
-				amount += amounts.get(i);
-			}
-		}
+        for (int i = 0; i < batches.size(); i++) {
+            if (batches.get(i).getCargoType() == cargoType) {
+                amount += amounts.get(i);
+            }
+        }
 
-		return amount;
-	}
+        return amount;
+    }
 
-	@Override
-	public int hashCode() {
-		return amounts.size();
-	}
+    @Override
+    public int hashCode() {
+        return amounts.size();
+    }
 
-	public int size() {
-		return batches.size();
-	}
+    public int size() {
+        return batches.size();
+    }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("CargoBundle {\n");
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("CargoBundle {\n");
 
-		for (int i = 0; i < batches.size(); i++) {
-			sb.append(amounts.get(i));
-			sb.append(" units of cargo type ");
-			sb.append(batches.get(i));
-			sb.append("\n");
-		}
+        for (int i = 0; i < batches.size(); i++) {
+            sb.append(amounts.get(i));
+            sb.append(" units of cargo type ");
+            sb.append(batches.get(i));
+            sb.append("\n");
+        }
 
-		sb.append("}");
+        sb.append("}");
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 }

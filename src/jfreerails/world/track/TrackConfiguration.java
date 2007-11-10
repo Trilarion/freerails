@@ -16,110 +16,110 @@ import jfreerails.world.common.Step;
  * @author Luke
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
-	private static final long serialVersionUID = 3618695301330974512L;
+    private static final long serialVersionUID = 3618695301330974512L;
 
-	private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
+    private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
 
-	public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
+    public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
 
-	/**
-	 * @return the superposition of two track templates
-	 */
-	public static TrackConfiguration add(FlatTrackTemplate c,
-			FlatTrackTemplate v) {
-		/*
-		 * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
-		 * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate | (1 <<
-		 * (3 * y + x));
-		 */
-		int newTemplate = c.get9bitTemplate() | v.get9bitTemplate();
+    /**
+     * @return the superposition of two track templates
+     */
+    public static TrackConfiguration add(FlatTrackTemplate c,
+            FlatTrackTemplate v) {
+        /*
+         * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
+         * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate | (1 <<
+         * (3 * y + x));
+         */
+        int newTemplate = c.get9bitTemplate() | v.get9bitTemplate();
 
-		return from9bitTemplate(newTemplate);
-	}
+        return from9bitTemplate(newTemplate);
+    }
 
-	public static TrackConfiguration from9bitTemplate(int i) {
-		return flatTrackConfigurations.get(i);
-	}
+    public static TrackConfiguration from9bitTemplate(int i) {
+        return flatTrackConfigurations.get(i);
+    }
 
-	public static TrackConfiguration getFlatInstance(Step v) {
-		return from9bitTemplate(v.get9bitTemplate());
-	}
+    public static TrackConfiguration getFlatInstance(Step v) {
+        return from9bitTemplate(v.get9bitTemplate());
+    }
 
-	public static TrackConfiguration getFlatInstance(String trackTemplate) {
-		int i = TrackConfiguration.stringTemplate2Int(trackTemplate);
+    public static TrackConfiguration getFlatInstance(String trackTemplate) {
+        int i = TrackConfiguration.stringTemplate2Int(trackTemplate);
 
-		return (flatTrackConfigurations.get(i));
-	}
+        return (flatTrackConfigurations.get(i));
+    }
 
-	private static ArrayList<TrackConfiguration> setupConfigurations() {
-		ArrayList<TrackConfiguration> configurations = new ArrayList<TrackConfiguration>(
-				512);
+    private static ArrayList<TrackConfiguration> setupConfigurations() {
+        ArrayList<TrackConfiguration> configurations = new ArrayList<TrackConfiguration>(
+                512);
 
-		for (int i = 0; i < 512; i++) {
-			configurations.add(i, new TrackConfiguration(i));
-		}
+        for (int i = 0; i < 512; i++) {
+            configurations.add(i, new TrackConfiguration(i));
+        }
 
-		return configurations;
-	}
+        return configurations;
+    }
 
-	public static int stringTemplate2Int(String templateString) {
-		// Hack - so that result is as expected by earlier written code.
-		StringBuffer strb = new StringBuffer(templateString);
-		strb = strb.reverse();
-		templateString = strb.toString();
+    public static int stringTemplate2Int(String templateString) {
+        // Hack - so that result is as expected by earlier written code.
+        StringBuffer strb = new StringBuffer(templateString);
+        strb = strb.reverse();
+        templateString = strb.toString();
 
-		// End of hack
-		return Integer.parseInt(templateString, 2);
-	}
+        // End of hack
+        return Integer.parseInt(templateString, 2);
+    }
 
-	/**
-	 * @return the TrackConfiguration representing the track section c minus the
-	 *         track sections represented by v.
-	 */
-	public static TrackConfiguration subtract(FlatTrackTemplate c,
-			FlatTrackTemplate v) {
-		/*
-		 * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
-		 * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate ^ (1 <<
-		 * (3 * y + x));
-		 */
-		int newTemplate = c.get9bitTemplate() & (~v.get9bitTemplate());
+    /**
+     * @return the TrackConfiguration representing the track section c minus the
+     *         track sections represented by v.
+     */
+    public static TrackConfiguration subtract(FlatTrackTemplate c,
+            FlatTrackTemplate v) {
+        /*
+         * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
+         * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate ^ (1 <<
+         * (3 * y + x));
+         */
+        int newTemplate = c.get9bitTemplate() & (~v.get9bitTemplate());
 
-		return from9bitTemplate(newTemplate);
-	}
+        return from9bitTemplate(newTemplate);
+    }
 
-	private final int length;
+    private final int length;
 
-	private final int configuration;
+    private final int configuration;
 
-	private TrackConfiguration(int configuration) {
-		this.configuration = configuration;
+    private TrackConfiguration(int configuration) {
+        this.configuration = configuration;
 
-		// Calculate length.
-		int tempLength = 0;
-		Step[] vectors = Step.getList();
+        // Calculate length.
+        int tempLength = 0;
+        Step[] vectors = Step.getList();
 
-		for (int i = 0; i < vectors.length; i++) {
-			if (this.contains(vectors[i].get9bitTemplate())) {
-				tempLength += vectors[i].getLength();
-			}
-		}
+        for (int i = 0; i < vectors.length; i++) {
+            if (this.contains(vectors[i].get9bitTemplate())) {
+                tempLength += vectors[i].getLength();
+            }
+        }
 
-		length = tempLength;
-	}
+        length = tempLength;
+    }
 
-	public boolean contains(FlatTrackTemplate ftt) {
-		int trackTemplate = ftt.get9bitTemplate();
+    public boolean contains(FlatTrackTemplate ftt) {
+        int trackTemplate = ftt.get9bitTemplate();
 
-		return contains(trackTemplate);
-	}
+        return contains(trackTemplate);
+    }
 
-	public boolean contains(int trackTemplate) {
-		if ((trackTemplate | this.configuration) == this.configuration) {
-			return true;
-		}
-		return false;
-	}
+    public boolean contains(int trackTemplate) {
+        if ((trackTemplate | this.configuration) == this.configuration) {
+            return true;
+        }
+        return false;
+    }
 
     public int get8bitTemplate() {
         int newTemplate = 0;
@@ -134,43 +134,46 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return newTemplate;
     }
 
-	/**
-	 * @return an int representing this track configuration.
-	 */
-	public int get9bitTemplate() {
-		return configuration;
-	}
+    /**
+     * @return an int representing this track configuration.
+     */
+    public int get9bitTemplate() {
+        return configuration;
+    }
 
-	/**
-	 * Returns the length of track used in this configuration. Used to calculate
-	 * the cost of building track.
-	 */
-	public int getLength() {
-		return length;
-	}
+    /**
+     * Returns the length of track used in this configuration. Used to calculate
+     * the cost of building track.
+     */
+    public int getLength() {
+        return length;
+    }
 
-	public Iterator getPossibleConfigurationsIterator() {
-		return flatTrackConfigurations.iterator();
-	}
+    public Iterator getPossibleConfigurationsIterator() {
+        return flatTrackConfigurations.iterator();
+    }
 
-	public int getTrackGraphicsID() {
-		return configuration;
-	}
+    public int getTrackGraphicsID() {
+        return configuration;
+    }
 
     @Override
-	public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         final TrackConfiguration that = (TrackConfiguration) o;
 
-        if (configuration != that.configuration) return false;
+        if (configuration != that.configuration)
+            return false;
 
         return true;
     }
 
     @Override
-	public int hashCode() {
+    public int hashCode() {
         return configuration;
     }
 
@@ -178,31 +181,31 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return TrackConfiguration.from9bitTemplate(this.configuration);
     }
 
-	/**
-	 * Returns a String representing this configuration, for example "north,
-	 * south".
-	 */
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		int matches = 0;
+    /**
+     * Returns a String representing this configuration, for example "north,
+     * south".
+     */
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        int matches = 0;
 
-		if (contains(TrackConfiguration.getFlatInstance("000010000"))) {
-			sb.append("tile center");
-		} else {
-			sb.append("no tile center");
-		}
+        if (contains(TrackConfiguration.getFlatInstance("000010000"))) {
+            sb.append("tile center");
+        } else {
+            sb.append("no tile center");
+        }
 
-		for (int i = 0; i < 8; i++) {
-			Step v = Step.getInstance(i);
+        for (int i = 0; i < 8; i++) {
+            Step v = Step.getInstance(i);
 
-			if (contains(v)) {
-				sb.append(",");
-				sb.append(v);
-				matches++;
-			}
-		}
+            if (contains(v)) {
+                sb.append(",");
+                sb.append(v);
+                matches++;
+            }
+        }
 
-		return sb.toString().trim();
-	}
+        return sb.toString().trim();
+    }
 }

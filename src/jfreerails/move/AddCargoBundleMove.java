@@ -15,10 +15,10 @@ import jfreerails.world.top.KEY;
  * 
  */
 public class AddCargoBundleMove extends AddItemToListMove {
-	private static final long serialVersionUID = 3257288049795674934L;
+    private static final long serialVersionUID = 3257288049795674934L;
 
-	public AddCargoBundleMove(int i, ImmutableCargoBundle item,
-			FreerailsPrincipal p) {
-		super(KEY.CARGO_BUNDLES, i, item, p);
-	}
+    public AddCargoBundleMove(int i, ImmutableCargoBundle item,
+            FreerailsPrincipal p) {
+        super(KEY.CARGO_BUNDLES, i, item, p);
+    }
 }

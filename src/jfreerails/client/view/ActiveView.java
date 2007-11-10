@@ -17,6 +17,6 @@ import jfreerails.controller.ModelRoot;
  * 
  */
 public interface ActiveView {
-	void setup(ModelRoot modelRoot, ActionRoot ar, RenderersRoot vl,
-			ActionListener submitButtonCallBack);
+    void setup(ModelRoot modelRoot, ActionRoot ar, RenderersRoot vl,
+            ActionListener submitButtonCallBack);
 }

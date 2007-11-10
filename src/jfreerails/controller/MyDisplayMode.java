@@ -14,31 +14,31 @@ import java.awt.DisplayMode;
  * @author Luke Lindsay
  */
 public class MyDisplayMode {
-	public final DisplayMode displayMode;
+    public final DisplayMode displayMode;
 
-	public MyDisplayMode(DisplayMode displayMode) {
-		this.displayMode = displayMode;
-	}
+    public MyDisplayMode(DisplayMode displayMode) {
+        this.displayMode = displayMode;
+    }
 
-	@Override
-	public String toString() {
-		return displayMode.getWidth() + "x" + displayMode.getHeight() + " "
-				+ displayMode.getBitDepth() + " bit "
-				+ displayMode.getRefreshRate() + "Hz";
-	}
+    @Override
+    public String toString() {
+        return displayMode.getWidth() + "x" + displayMode.getHeight() + " "
+                + displayMode.getBitDepth() + " bit "
+                + displayMode.getRefreshRate() + "Hz";
+    }
 
-	@Override
-	public int hashCode() {
-		return displayMode.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return displayMode.hashCode();
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof MyDisplayMode) {
-			MyDisplayMode test = (MyDisplayMode) o;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof MyDisplayMode) {
+            MyDisplayMode test = (MyDisplayMode) o;
 
-			return test.displayMode.equals(this.displayMode);
-		}
-		return false;
-	}
+            return test.displayMode.equals(this.displayMode);
+        }
+        return false;
+    }
 }

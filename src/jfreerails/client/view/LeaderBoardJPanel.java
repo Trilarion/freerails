@@ -31,122 +31,121 @@ import jfreerails.world.top.TransactionAggregator;
  */
 public class LeaderBoardJPanel extends JPanel implements View {
 
-	private static final long serialVersionUID = 3258131375298066229L;
+    private static final long serialVersionUID = 3258131375298066229L;
 
-	private JList playersList = null;
+    private JList playersList = null;
 
-	private ActionListener submitButtonCallBack = null;
+    private ActionListener submitButtonCallBack = null;
 
-	private Vector<PlayerDetails> values;
+    private Vector<PlayerDetails> values;
 
-	/**
-	 * This method initializes
-	 */
-	public LeaderBoardJPanel() {
-		super();
+    /**
+     * This method initializes
+     */
+    public LeaderBoardJPanel() {
+        super();
 
-		values = new Vector<PlayerDetails>();
-		Random rand = new Random();
-		for (int i = 0; i < 5; i++) {
-			PlayerDetails p = new PlayerDetails();
-			p.networth = new Money(rand.nextInt(100));
-			values.add(p);
-		}
-		initialize();
-	}
+        values = new Vector<PlayerDetails>();
+        Random rand = new Random();
+        for (int i = 0; i < 5; i++) {
+            PlayerDetails p = new PlayerDetails();
+            p.networth = new Money(rand.nextInt(100));
+            values.add(p);
+        }
+        initialize();
+    }
 
-	/**
-	 * This method initializes this
-	 */
-	private void initialize() {
-		this.add(getPlayersList(), null);
-		java.awt.event.MouseAdapter mouseAdapter = new java.awt.event.MouseAdapter() {
-			@Override
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				if (null == submitButtonCallBack) {
-					System.err.println("mouseClicked");
-				} else {
-					submitButtonCallBack.actionPerformed(new ActionEvent(
-							this, 0, null));
-				}
-			}
-		};
-		this.addMouseListener(mouseAdapter);
-		this.playersList.addMouseListener(mouseAdapter);
-		this.setSize(getPreferredSize());
+    /**
+     * This method initializes this
+     */
+    private void initialize() {
+        this.add(getPlayersList(), null);
+        java.awt.event.MouseAdapter mouseAdapter = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (null == submitButtonCallBack) {
+                    System.err.println("mouseClicked");
+                } else {
+                    submitButtonCallBack.actionPerformed(new ActionEvent(this,
+                            0, null));
+                }
+            }
+        };
+        this.addMouseListener(mouseAdapter);
+        this.playersList.addMouseListener(mouseAdapter);
+        this.setSize(getPreferredSize());
 
-	}
+    }
 
-	/**
-	 * This method initializes jList
-	 * 
-	 * @return javax.swing.JList
-	 */
-	private JList getPlayersList() {
-		if (playersList == null) {
-			playersList = new JList();
-			playersList
-					.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-			playersList.setRequestFocusEnabled(false);
-			playersList.setEnabled(true);
+    /**
+     * This method initializes jList
+     * 
+     * @return javax.swing.JList
+     */
+    private JList getPlayersList() {
+        if (playersList == null) {
+            playersList = new JList();
+            playersList
+                    .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+            playersList.setRequestFocusEnabled(false);
+            playersList.setEnabled(true);
 
-			Collections.sort(values);
-			playersList.setListData(values);
-		}
-		return playersList;
-	}
+            Collections.sort(values);
+            playersList.setListData(values);
+        }
+        return playersList;
+    }
 
-	public void setup(ModelRoot modelRoot, RenderersRoot vl,
-			Action closeAction) {
-		ReadOnlyWorld w = modelRoot.getWorld();
-		values.clear();
-		this.submitButtonCallBack = closeAction;
-		for (int player = 0; player < w.getNumberOfPlayers(); player++) {
-			PlayerDetails details = new PlayerDetails();
-			FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();
-			details.name = principle.getName();
-			NonNullElements stations = new NonNullElements(KEY.STATIONS, w,
-					principle);
-			details.stations = stations.size();
-			TransactionAggregator networth = new NetWorthCalculator(
-					w, principle);
-			details.networth = networth.calculateValue();
-			values.add(details);
-		}
-		Collections.sort(values);
-		playersList.setListData(values);
-		setSize(getPreferredSize());
-	}
+    public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
+        ReadOnlyWorld w = modelRoot.getWorld();
+        values.clear();
+        this.submitButtonCallBack = closeAction;
+        for (int player = 0; player < w.getNumberOfPlayers(); player++) {
+            PlayerDetails details = new PlayerDetails();
+            FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();
+            details.name = principle.getName();
+            NonNullElements stations = new NonNullElements(KEY.STATIONS, w,
+                    principle);
+            details.stations = stations.size();
+            TransactionAggregator networth = new NetWorthCalculator(w,
+                    principle);
+            details.networth = networth.calculateValue();
+            values.add(details);
+        }
+        Collections.sort(values);
+        playersList.setListData(values);
+        setSize(getPreferredSize());
+    }
 
-	/**
-	 * Stores the details a player that are shown on the leaderboard.
-	 * 
-	 * @author Luke
-	 */
-	static class PlayerDetails implements Comparable<PlayerDetails> {
+    /**
+     * Stores the details a player that are shown on the leaderboard.
+     * 
+     * @author Luke
+     */
+    static class PlayerDetails implements Comparable<PlayerDetails> {
 
-		String name = "player";
+        String name = "player";
 
-		Money networth = new Money(0);
+        Money networth = new Money(0);
 
-		int stations = 0;
+        int stations = 0;
 
-		@Override
-		public String toString() {
-			StringBuffer sb = new StringBuffer();
-			sb.append(name);
-			sb.append(", ");
-			sb.append(networth.toString());
-			sb.append(" net worth, ");
-			sb.append(stations);
-			sb.append("  stations.");
-			return sb.toString();
-		}
+        @Override
+        public String toString() {
+            StringBuffer sb = new StringBuffer();
+            sb.append(name);
+            sb.append(", ");
+            sb.append(networth.toString());
+            sb.append(" net worth, ");
+            sb.append(stations);
+            sb.append("  stations.");
+            return sb.toString();
+        }
 
-		public int compareTo(PlayerDetails test) {
-			long l = test.networth.getAmount() - networth.getAmount();
-			return (int) l;
-		}
+        public int compareTo(PlayerDetails test) {
+            long l = test.networth.getAmount() - networth.getAmount();
+            return (int) l;
+        }
 
-	}
+    }
 } // @jve:decl-index=0:visual-constraint="67,32"

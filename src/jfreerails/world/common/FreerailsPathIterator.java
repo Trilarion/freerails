@@ -9,18 +9,18 @@ package jfreerails.world.common;
  * @author luke
  */
 public interface FreerailsPathIterator extends FreerailsMutableSerializable {
-	/**
-	 * Tests whether the path has another segment.
-	 */
-	boolean hasNext();
+    /**
+     * Tests whether the path has another segment.
+     */
+    boolean hasNext();
 
-	/**
-	 * Gets the next segment of the path and places its coordinates in the
-	 * specified IntLine; then moves the iterator forwards by one path segment.
-	 * (The coordinates are placed the passed-in IntLine rather than a new
-	 * object to avoid the cost of object creation.)
-	 * 
-	 * @param line
-	 */
-	void nextSegment(IntLine line);
+    /**
+     * Gets the next segment of the path and places its coordinates in the
+     * specified IntLine; then moves the iterator forwards by one path segment.
+     * (The coordinates are placed the passed-in IntLine rather than a new
+     * object to avoid the cost of object creation.)
+     * 
+     * @param line
+     */
+    void nextSegment(IntLine line);
 }

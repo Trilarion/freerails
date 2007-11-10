@@ -14,35 +14,35 @@ import jfreerails.world.terrain.TerrainType;
  */
 public interface TrackRule extends FreerailsSerializable, Comparable<TrackRule> {
 
-	public enum TrackCategories {
-		track, bridge, tunnel, station, non
-	}
+    public enum TrackCategories {
+        track, bridge, tunnel, station, non
+    }
 
     TrackCategories getCategory();
 
-	boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType);
+    boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType);
 
-	boolean isStation();
+    boolean isStation();
 
-	boolean isDouble();
+    boolean isDouble();
 
-	Money getPrice();
+    Money getPrice();
 
-	Money getFixedCost();
+    Money getFixedCost();
 
-	Money getMaintenanceCost();
+    Money getMaintenanceCost();
 
-	int getStationRadius();
+    int getStationRadius();
 
-	String getTypeName();
+    String getTypeName();
 
-	boolean testTrackPieceLegality(int a9bitTemplate);
+    boolean testTrackPieceLegality(int a9bitTemplate);
 
-	boolean trackPieceIsLegal(TrackConfiguration config);
+    boolean trackPieceIsLegal(TrackConfiguration config);
 
-	int getMaximumConsecutivePieces();
+    int getMaximumConsecutivePieces();
 
-	Step[] getLegalRoutes(Step directionComingFrom);
+    Step[] getLegalRoutes(Step directionComingFrom);
 
-	Iterator<TrackConfiguration> getLegalConfigurationsIterator();
+    Iterator<TrackConfiguration> getLegalConfigurationsIterator();
 }

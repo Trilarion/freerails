@@ -9,5 +9,5 @@ import jfreerails.move.Move;
  * @author Luke
  */
 public interface MoveReceiver {
-	void processMove(Move move);
+    void processMove(Move move);
 }

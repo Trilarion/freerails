@@ -26,44 +26,44 @@ import junit.framework.TestCase;
  */
 public class BalanceSheetGeneratorTest extends TestCase {
 
-	Player player;
+    Player player;
 
-	World world;
+    World world;
 
-	public void testBondsFigure() {
+    public void testBondsFigure() {
 
-		BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
-				player.getPrincipal());
-		Money expectedBondValue = new Money(BondTransaction.BOND_VALUE_ISSUE
-				.getAmount());
-		assertEquals(expectedBondValue.changeSign(), generator.total.loans);
-		assertEquals(expectedBondValue.changeSign(), generator.ytd.loans);
-	}
+        BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
+                player.getPrincipal());
+        Money expectedBondValue = new Money(BondTransaction.BOND_VALUE_ISSUE
+                .getAmount());
+        assertEquals(expectedBondValue.changeSign(), generator.total.loans);
+        assertEquals(expectedBondValue.changeSign(), generator.ytd.loans);
+    }
 
-	public void testStochHolderEquityFigure() {
+    public void testStochHolderEquityFigure() {
 
-		BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
-				player.getPrincipal());
+        BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
+                player.getPrincipal());
 
-		Money expectStockHolderEquity = new Money(-500000);
-		
-		assertEquals(expectStockHolderEquity, generator.total.equity);
+        Money expectStockHolderEquity = new Money(-500000);
 
-	}
+        assertEquals(expectStockHolderEquity, generator.total.equity);
 
-	@Override
-	protected void setUp() throws Exception {
-		
-		world = new WorldImpl(10, 10);
-		player = new Player("Player X", world.getNumberOfPlayers());
-		world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-		world.setTime(new GameTime(0));	
+    }
 
-		Move addPlayerMove = AddPlayerMove.generateMove(world, player);
-		MoveStatus ms = addPlayerMove.doMove(world, player.getPrincipal());
-		assertTrue(ms.message, ms.ok);
+    @Override
+    protected void setUp() throws Exception {
 
-		world.setTime(new GameTime(100));
-	}
+        world = new WorldImpl(10, 10);
+        player = new Player("Player X", world.getNumberOfPlayers());
+        world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        world.setTime(new GameTime(0));
+
+        Move addPlayerMove = AddPlayerMove.generateMove(world, player);
+        MoveStatus ms = addPlayerMove.doMove(world, player.getPrincipal());
+        assertTrue(ms.message, ms.ok);
+
+        world.setTime(new GameTime(100));
+    }
 
 }

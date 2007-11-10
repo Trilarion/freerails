@@ -54,79 +54,79 @@ import jfreerails.world.player.Player;
  * @author Rob
  */
 public interface ReadOnlyWorld extends FreerailsMutableSerializable {
-	boolean boundsContain(int x, int y);
+    boolean boundsContain(int x, int y);
 
-	boolean boundsContain(FreerailsPrincipal p, KEY k, int index);
+    boolean boundsContain(FreerailsPrincipal p, KEY k, int index);
 
-	boolean boundsContain(SKEY k, int index);
+    boolean boundsContain(SKEY k, int index);
 
-	GameTime currentTime();
+    GameTime currentTime();
 
-	/**
-	 * Returns the element mapped to the specified item.
-	 */
+    /**
+     * Returns the element mapped to the specified item.
+     */
 
-	FreerailsSerializable get(ITEM item);
+    FreerailsSerializable get(ITEM item);
 
-	/**
-	 * Returns the element at the specified position in the specified list.
-	 */
+    /**
+     * Returns the element at the specified position in the specified list.
+     */
 
-	FreerailsSerializable get(FreerailsPrincipal p, KEY key, int index);
+    FreerailsSerializable get(FreerailsPrincipal p, KEY key, int index);
 
-	/**
-	 * Returns the element at the specified position in the specified list.
-	 */
+    /**
+     * Returns the element at the specified position in the specified list.
+     */
 
-	FreerailsSerializable get(SKEY key, int index);
+    FreerailsSerializable get(SKEY key, int index);
 
-	ActivityIterator getActivities(FreerailsPrincipal p, int index);
+    ActivityIterator getActivities(FreerailsPrincipal p, int index);
 
-	Money getCurrentBalance(FreerailsPrincipal p);
+    Money getCurrentBalance(FreerailsPrincipal p);
 
-	int getID(FreerailsPrincipal p);
+    int getID(FreerailsPrincipal p);
 
-	/**
-	 * Returns the height of the map in tiles.
-	 */
-	int getMapHeight();
+    /**
+     * Returns the height of the map in tiles.
+     */
+    int getMapHeight();
 
-	/**
-	 * Returns the width of the map in tiles.
-	 */
-	int getMapWidth();
+    /**
+     * Returns the width of the map in tiles.
+     */
+    int getMapWidth();
 
-	int getNumberOfPlayers();
+    int getNumberOfPlayers();
 
-	int getNumberOfTransactions(FreerailsPrincipal p);
-	
-	int getNumberOfActiveEntities(FreerailsPrincipal p);
+    int getNumberOfTransactions(FreerailsPrincipal p);
 
-	Player getPlayer(int i);
+    int getNumberOfActiveEntities(FreerailsPrincipal p);
 
-	/**
-	 * Returns the tile at the specified position on the map.
-	 */
-	FreerailsSerializable getTile(int x, int y);
+    Player getPlayer(int i);
 
-	Transaction getTransaction(FreerailsPrincipal p, int i);
+    /**
+     * Returns the tile at the specified position on the map.
+     */
+    FreerailsSerializable getTile(int x, int y);
 
-	GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i);
+    Transaction getTransaction(FreerailsPrincipal p, int i);
 
-	boolean isPlayer(FreerailsPrincipal p);
+    GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i);
 
-	/**
-	 * Returns the number of elements in the specified list.
-	 */
-	int size(FreerailsPrincipal p, KEY key);
+    boolean isPlayer(FreerailsPrincipal p);
 
-	/**
-	 * Returns the number of elements in the specified list.
-	 */
-	int size(SKEY key);
+    /**
+     * Returns the number of elements in the specified list.
+     */
+    int size(FreerailsPrincipal p, KEY key);
 
-	/**
-	 * Returns number of active entities belonging to the specified principal.
-	 */
-	int size(FreerailsPrincipal p);
+    /**
+     * Returns the number of elements in the specified list.
+     */
+    int size(SKEY key);
+
+    /**
+     * Returns number of active entities belonging to the specified principal.
+     */
+    int size(FreerailsPrincipal p);
 }

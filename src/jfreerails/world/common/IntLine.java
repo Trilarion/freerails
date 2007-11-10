@@ -8,82 +8,82 @@ import java.io.Serializable;
  * @author Luke
  */
 public class IntLine implements Serializable {
-	private static final long serialVersionUID = 3257853198755705393L;
+    private static final long serialVersionUID = 3257853198755705393L;
 
-	public int x1;
+    public int x1;
 
-	public int x2;
+    public int x2;
 
-	public int y1;
+    public int y1;
 
-	public int y2;
+    public int y2;
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = x1;
-		result = 29 * result + x2;
-		result = 29 * result + y1;
-		result = 29 * result + y2;
+    @Override
+    public int hashCode() {
+        int result;
+        result = x1;
+        result = 29 * result + x2;
+        result = 29 * result + y1;
+        result = 29 * result + y2;
 
-		return result;
-	}
-
-	/**
-	 * @return the length of the line
-	 */
-	public double getLength() {
-		int sumOfSquares = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
-		return Math.sqrt(sumOfSquares);
-	}
-
-	/**
-	 * @param xx1
-	 *            x of the first point
-	 * @param yy1
-	 *            y of the first point
-	 * @param xx2
-	 *            x of the second point
-	 * @param yy2
-	 *            y of the second point
-	 */
-	public IntLine(int xx1, int yy1, int xx2, int yy2) {
-		x1 = xx1;
-		y1 = yy1;
-		x2 = xx2;
-		y2 = yy2;
-	}
-
-	/**
-	 * Default constructor - defines a dot at 0,0.
-	 */
-	public IntLine() {
+        return result;
     }
 
-	@Override
-	public boolean equals(Object o) {
-		if (null == o) {
-			return false;
-		}
+    /**
+     * @return the length of the line
+     */
+    public double getLength() {
+        int sumOfSquares = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+        return Math.sqrt(sumOfSquares);
+    }
 
-		if (o == this) {
-			return true;
-		}
+    /**
+     * @param xx1
+     *            x of the first point
+     * @param yy1
+     *            y of the first point
+     * @param xx2
+     *            x of the second point
+     * @param yy2
+     *            y of the second point
+     */
+    public IntLine(int xx1, int yy1, int xx2, int yy2) {
+        x1 = xx1;
+        y1 = yy1;
+        x2 = xx2;
+        y2 = yy2;
+    }
 
-		if (o instanceof IntLine) {
-			IntLine line = (IntLine) o;
+    /**
+     * Default constructor - defines a dot at 0,0.
+     */
+    public IntLine() {
+    }
 
-			if (line.x1 == this.x1 && line.x2 == this.x2 && line.y1 == this.y1
-					&& line.y2 == this.y2) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (null == o) {
+            return false;
+        }
 
-	@Override
-	public String toString() {
-		return "(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")";
-	}
+        if (o == this) {
+            return true;
+        }
+
+        if (o instanceof IntLine) {
+            IntLine line = (IntLine) o;
+
+            if (line.x1 == this.x1 && line.x2 == this.x2 && line.y1 == this.y1
+                    && line.y2 == this.y2) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")";
+    }
 }

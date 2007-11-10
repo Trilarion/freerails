@@ -18,7 +18,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author rob
  */
 public abstract class FreerailsPrincipal implements Principal,
-		FreerailsSerializable {
+        FreerailsSerializable {
     private Integer worldIndex = null;
 
     public Integer getWorldIndex() {
@@ -28,5 +28,5 @@ public abstract class FreerailsPrincipal implements Principal,
     public void setWorldIndex(Integer worldIndex) {
         this.worldIndex = worldIndex;
     }
-    
+
 }

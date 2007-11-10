@@ -9,10 +9,10 @@ package jfreerails.move;
  */
 public class PreMoveException extends Exception {
 
-	private static final long serialVersionUID = 3257007635675755061L;
+    private static final long serialVersionUID = 3257007635675755061L;
 
-	public PreMoveException(String s) {
-		super(s);
-	}
+    public PreMoveException(String s) {
+        super(s);
+    }
 
 }

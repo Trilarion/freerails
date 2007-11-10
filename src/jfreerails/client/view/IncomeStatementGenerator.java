@@ -26,178 +26,178 @@ import jfreerails.world.top.SKEY;
  * 
  */
 public class IncomeStatementGenerator {
-	GameTime from;
+    GameTime from;
 
-	GameTime to;
+    GameTime to;
 
-	final ReadOnlyWorld w;
+    final ReadOnlyWorld w;
 
-	final FreerailsPrincipal principal;
+    final FreerailsPrincipal principal;
 
-	private int startyear = 0;
+    private int startyear = 0;
 
-	private GameCalendar cal;
+    private GameCalendar cal;
 
-	public Money mailTotal;
+    public Money mailTotal;
 
-	public Money passengersTotal;
+    public Money passengersTotal;
 
-	public Money fastFreightTotal;
+    public Money fastFreightTotal;
 
-	public Money slowFreightTotal;
+    public Money slowFreightTotal;
 
-	public Money bulkFreightTotal;
+    public Money bulkFreightTotal;
 
-	public Money interestTotal;
+    public Money interestTotal;
 
-	public Money trainMaintenanceTotal;
+    public Money trainMaintenanceTotal;
 
-	public Money trackMaintenanceTotal;
+    public Money trackMaintenanceTotal;
 
-	public Money stationMaintenanceTotal;
+    public Money stationMaintenanceTotal;
 
-	public Money profitTotal;
+    public Money profitTotal;
 
-	public Money mailYtd;
+    public Money mailYtd;
 
-	public Money passengersYtd;
+    public Money passengersYtd;
 
-	public Money fastFreightYtd;
+    public Money fastFreightYtd;
 
-	public Money slowFreightYtd;
+    public Money slowFreightYtd;
 
-	public Money bulkFreightYtd;
+    public Money bulkFreightYtd;
 
-	public Money interestYtd;
+    public Money interestYtd;
 
-	public Money trainMaintenanceYtd;
+    public Money trainMaintenanceYtd;
 
-	public Money trackMaintenanceYtd;
+    public Money trackMaintenanceYtd;
 
-	public Money stationMaintenanceYtd;
+    public Money stationMaintenanceYtd;
 
-	public Money profitYtd;
+    public Money profitYtd;
 
-	public String year;
+    public String year;
 
-	IncomeStatementGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-		this.w = w;
-		this.principal = principal;
-		cal = (GameCalendar) w.get(ITEM.CALENDAR);
+    IncomeStatementGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
+        this.w = w;
+        this.principal = principal;
+        cal = (GameCalendar) w.get(ITEM.CALENDAR);
 
-		// Income from cargo delivery
-		mailTotal = calRevenue("Mail");
-		passengersTotal = calRevenue("Passengers");
-		fastFreightTotal = calRevenue("Fast_Freight");
-		slowFreightTotal = calRevenue("Slow_Freight");
-		bulkFreightTotal = calRevenue("Bulk_Freight");
+        // Income from cargo delivery
+        mailTotal = calRevenue("Mail");
+        passengersTotal = calRevenue("Passengers");
+        fastFreightTotal = calRevenue("Fast_Freight");
+        slowFreightTotal = calRevenue("Slow_Freight");
+        bulkFreightTotal = calRevenue("Bulk_Freight");
 
-		// Expenses.
-		interestTotal = calTotal(INTEREST_CHARGE);
-		trainMaintenanceTotal = calTotal(TRAIN_MAINTENANCE);
-		trackMaintenanceTotal = calTotal(TRACK_MAINTENANCE);
-		stationMaintenanceTotal = calTotal(STATION_MAINTENANCE);
+        // Expenses.
+        interestTotal = calTotal(INTEREST_CHARGE);
+        trainMaintenanceTotal = calTotal(TRAIN_MAINTENANCE);
+        trackMaintenanceTotal = calTotal(TRACK_MAINTENANCE);
+        stationMaintenanceTotal = calTotal(STATION_MAINTENANCE);
 
-		/*
-		 * Note, expenses are stored as negative values so we just add
-		 * everything up.
-		 */
-		long profit = mailTotal.getAmount() + passengersTotal.getAmount()
-				+ fastFreightTotal.getAmount() + slowFreightTotal.getAmount()
-				+ bulkFreightTotal.getAmount() + interestTotal.getAmount()
-				+ trainMaintenanceTotal.getAmount()
-				+ trackMaintenanceTotal.getAmount()
-				+ stationMaintenanceTotal.getAmount();
+        /*
+         * Note, expenses are stored as negative values so we just add
+         * everything up.
+         */
+        long profit = mailTotal.getAmount() + passengersTotal.getAmount()
+                + fastFreightTotal.getAmount() + slowFreightTotal.getAmount()
+                + bulkFreightTotal.getAmount() + interestTotal.getAmount()
+                + trainMaintenanceTotal.getAmount()
+                + trackMaintenanceTotal.getAmount()
+                + stationMaintenanceTotal.getAmount();
 
-		profitTotal = new Money(profit);
+        profitTotal = new Money(profit);
 
-		GameTime time = w.currentTime();
-		startyear = cal.getYear(time.getTicks());
+        GameTime time = w.currentTime();
+        startyear = cal.getYear(time.getTicks());
 
-		year = String.valueOf(startyear);
+        year = String.valueOf(startyear);
 
-		// Income from cargo delivery
-		mailYtd = calRevenue("Mail");
-		passengersYtd = calRevenue("Passengers");
-		fastFreightYtd = calRevenue("Fast_Freight");
-		slowFreightYtd = calRevenue("Slow_Freight");
-		bulkFreightYtd = calRevenue("Bulk_Freight");
+        // Income from cargo delivery
+        mailYtd = calRevenue("Mail");
+        passengersYtd = calRevenue("Passengers");
+        fastFreightYtd = calRevenue("Fast_Freight");
+        slowFreightYtd = calRevenue("Slow_Freight");
+        bulkFreightYtd = calRevenue("Bulk_Freight");
 
-		// Expenses.
-		interestYtd = calTotal(INTEREST_CHARGE);
-		trainMaintenanceYtd = calTotal(TRAIN_MAINTENANCE);
-		trackMaintenanceYtd = calTotal(TRACK_MAINTENANCE);
-		stationMaintenanceYtd = calTotal(STATION_MAINTENANCE);
+        // Expenses.
+        interestYtd = calTotal(INTEREST_CHARGE);
+        trainMaintenanceYtd = calTotal(TRAIN_MAINTENANCE);
+        trackMaintenanceYtd = calTotal(TRACK_MAINTENANCE);
+        stationMaintenanceYtd = calTotal(STATION_MAINTENANCE);
 
-		/*
-		 * Note, expenses are stored as negative values so we just add
-		 * everything up.
-		 */
-		profit = mailYtd.getAmount() + passengersYtd.getAmount()
-				+ fastFreightYtd.getAmount() + slowFreightYtd.getAmount()
-				+ bulkFreightYtd.getAmount() + interestYtd.getAmount()
-				+ trainMaintenanceYtd.getAmount()
-				+ trackMaintenanceYtd.getAmount()
-				+ stationMaintenanceYtd.getAmount();
+        /*
+         * Note, expenses are stored as negative values so we just add
+         * everything up.
+         */
+        profit = mailYtd.getAmount() + passengersYtd.getAmount()
+                + fastFreightYtd.getAmount() + slowFreightYtd.getAmount()
+                + bulkFreightYtd.getAmount() + interestYtd.getAmount()
+                + trainMaintenanceYtd.getAmount()
+                + trackMaintenanceYtd.getAmount()
+                + stationMaintenanceYtd.getAmount();
 
-		profitYtd = new Money(profit);
-	}
+        profitYtd = new Money(profit);
+    }
 
-	/* Calulates the total revenue from the specified cargo type. */
-	Money calRevenue(String cargoCategory) {
-		long amount = 0;
+    /* Calulates the total revenue from the specified cargo type. */
+    Money calRevenue(String cargoCategory) {
+        long amount = 0;
 
-		for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-			Transaction t = w.getTransaction(principal, i);
-			GameTime time = w.getTransactionTimeStamp(principal, i);
+        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
+            Transaction t = w.getTransaction(principal, i);
+            GameTime time = w.getTransactionTimeStamp(principal, i);
 
-			if (t instanceof DeliverCargoReceipt
-					&& cal.getYear(time.getTicks()) >= this.startyear) {
-				DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
-				int cargoType = dcr.getCb().getCargoType();
-				CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
+            if (t instanceof DeliverCargoReceipt
+                    && cal.getYear(time.getTicks()) >= this.startyear) {
+                DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
+                int cargoType = dcr.getCb().getCargoType();
+                CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
 
-				if (ct.getCategory().equals(cargoCategory)) {
-					amount += dcr.deltaCash().getAmount();
-				}
-			}
-		}
+                if (ct.getCategory().equals(cargoCategory)) {
+                    amount += dcr.deltaCash().getAmount();
+                }
+            }
+        }
 
-		return new Money(amount);
-	}
+        return new Money(amount);
+    }
 
-	Money calTrainRevenue(int trainId) {
-		long amount = 0;
+    Money calTrainRevenue(int trainId) {
+        long amount = 0;
 
-		for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-			Transaction t = w.getTransaction(principal, i);
-			GameTime time = w.getTransactionTimeStamp(principal, i);
+        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
+            Transaction t = w.getTransaction(principal, i);
+            GameTime time = w.getTransactionTimeStamp(principal, i);
 
-			if (t instanceof DeliverCargoReceipt
-					&& cal.getYear(time.getTicks()) >= this.startyear) {
-				DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
-				if (dcr.getTrainId() == trainId) {
-					amount += dcr.deltaCash().getAmount();
-				}
-			}
-		}
+            if (t instanceof DeliverCargoReceipt
+                    && cal.getYear(time.getTicks()) >= this.startyear) {
+                DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
+                if (dcr.getTrainId() == trainId) {
+                    amount += dcr.deltaCash().getAmount();
+                }
+            }
+        }
 
-		return new Money(amount);
-	}
+        return new Money(amount);
+    }
 
-	private Money calTotal(Transaction.Category transactionCategory) {
-		long amount = 0;
+    private Money calTotal(Transaction.Category transactionCategory) {
+        long amount = 0;
 
-		for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-			Transaction t = w.getTransaction(principal, i);
-			GameTime time = w.getTransactionTimeStamp(principal, i);
+        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
+            Transaction t = w.getTransaction(principal, i);
+            GameTime time = w.getTransactionTimeStamp(principal, i);
 
-			if (t.getCategory() == transactionCategory
-					&& cal.getYear(time.getTicks()) >= this.startyear) {
-				amount += t.deltaCash().getAmount();
-			}
-		}
+            if (t.getCategory() == transactionCategory
+                    && cal.getYear(time.getTicks()) >= this.startyear) {
+                amount += t.deltaCash().getAmount();
+            }
+        }
 
-		return new Money(amount);
-	}
+        return new Money(amount);
+    }
 }

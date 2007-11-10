@@ -16,12 +16,14 @@ import jfreerails.world.common.FreerailsMutableSerializable;
  * 
  */
 public interface ClientControlInterface {
-		
-	public enum ClientProperty {CONNECTED_CLIENTS, MAPS_AVAILABLE, SAVED_GAMES}
 
-	/** Called when a new game is started or a game is loaded. */
-	void setGameModel(FreerailsMutableSerializable world);
+    public enum ClientProperty {
+        CONNECTED_CLIENTS, MAPS_AVAILABLE, SAVED_GAMES
+    }
 
-	/** Sets a property, for example, the list of saved games. */
-	void setProperty(ClientProperty propertyName, Serializable value);
+    /** Called when a new game is started or a game is loaded. */
+    void setGameModel(FreerailsMutableSerializable world);
+
+    /** Sets a property, for example, the list of saved games. */
+    void setProperty(ClientProperty propertyName, Serializable value);
 }

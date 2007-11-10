@@ -12,25 +12,25 @@ import javax.swing.JTabbedPane;
  * @author Luke
  */
 public interface GUIComponentFactory {
-	JPanel createOverviewMap();
+    JPanel createOverviewMap();
 
-	JTabbedPane createTrainsJTabPane();
+    JTabbedPane createTrainsJTabPane();
 
-	JScrollPane createMainMap();
+    JScrollPane createMainMap();
 
-	JLabel createCashJLabel();
+    JLabel createCashJLabel();
 
-	JLabel createDateJLabel();
+    JLabel createDateJLabel();
 
-	JMenu createBuildMenu();
+    JMenu createBuildMenu();
 
-	JMenu createReportsMenu();
+    JMenu createReportsMenu();
 
-	JMenu createGameMenu();
+    JMenu createGameMenu();
 
-	JMenu createDisplayMenu();
+    JMenu createDisplayMenu();
 
-	JMenu createHelpMenu();
+    JMenu createHelpMenu();
 
-	JMenu createBrokerMenu();
+    JMenu createBrokerMenu();
 }

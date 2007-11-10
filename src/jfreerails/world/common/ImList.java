@@ -4,8 +4,8 @@
  */
 package jfreerails.world.common;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 import jfreerails.util.Immutable;
 
@@ -17,61 +17,61 @@ import jfreerails.util.Immutable;
  */
 @Immutable
 public final class ImList<E extends FreerailsSerializable> implements
-		FreerailsSerializable {
+        FreerailsSerializable {
 
-	private static final long serialVersionUID = 2669191159273299313L;
+    private static final long serialVersionUID = 2669191159273299313L;
 
-	private final E[] elementData;
+    private final E[] elementData;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof ImList))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof ImList))
+            return false;
 
-		final ImList imList = (ImList) o;
+        final ImList imList = (ImList) o;
 
-		if (!Arrays.equals(elementData, imList.elementData))
-			return false;
+        if (!Arrays.equals(elementData, imList.elementData))
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		return elementData.length;
-	}
+    @Override
+    public int hashCode() {
+        return elementData.length;
+    }
 
-	@SuppressWarnings("unchecked")
-	public ImList(E... items) {
-		elementData = (E[]) new FreerailsSerializable[items.length];
-		for (int i = 0; i < items.length; i++) {
-			elementData[i] = items[i];
-		}
-	}
+    @SuppressWarnings("unchecked")
+    public ImList(E... items) {
+        elementData = (E[]) new FreerailsSerializable[items.length];
+        for (int i = 0; i < items.length; i++) {
+            elementData[i] = items[i];
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	public ImList(List<E> list) {
-		elementData = (E[]) new FreerailsSerializable[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-			elementData[i] = list.get(i);
-		}
-	}
+    @SuppressWarnings("unchecked")
+    public ImList(List<E> list) {
+        elementData = (E[]) new FreerailsSerializable[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            elementData[i] = list.get(i);
+        }
+    }
 
-	public void checkForNulls() throws NullPointerException {
-		for (int i = 0; i < elementData.length; i++) {
-			if (null == elementData[i])
-				throw new NullPointerException();
-		}
-	}
+    public void checkForNulls() throws NullPointerException {
+        for (int i = 0; i < elementData.length; i++) {
+            if (null == elementData[i])
+                throw new NullPointerException();
+        }
+    }
 
-	public int size() {
-		return elementData.length;
-	}
+    public int size() {
+        return elementData.length;
+    }
 
-	public E get(int i) {
-		return elementData[i];
-	}
+    public E get(int i) {
+        return elementData[i];
+    }
 
 }

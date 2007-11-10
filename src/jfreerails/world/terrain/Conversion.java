@@ -13,47 +13,47 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class Conversion implements FreerailsSerializable {
-	private static final long serialVersionUID = 3546356219414853689L;
+    private static final long serialVersionUID = 3546356219414853689L;
 
-	private final int input;
+    private final int input;
 
-	private final int output;
+    private final int output;
 
-	public Conversion(int in, int out) {
-		input = in;
-		output = out;
-	}
+    public Conversion(int in, int out) {
+        input = in;
+        output = out;
+    }
 
-	public int getInput() {
-		return input;
-	}
+    public int getInput() {
+        return input;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof Conversion))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Conversion))
+            return false;
 
-		final Conversion conversion = (Conversion) o;
+        final Conversion conversion = (Conversion) o;
 
-		if (input != conversion.input)
-			return false;
-		if (output != conversion.output)
-			return false;
+        if (input != conversion.input)
+            return false;
+        if (output != conversion.output)
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = input;
-		result = 29 * result + output;
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result;
+        result = input;
+        result = 29 * result + output;
+        return result;
+    }
 
-	public int getOutput() {
-		return output;
-	}
+    public int getOutput() {
+        return output;
+    }
 }

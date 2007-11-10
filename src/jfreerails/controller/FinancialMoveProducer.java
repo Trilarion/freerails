@@ -15,20 +15,20 @@ import jfreerails.world.top.ReadOnlyWorld;
  * 
  */
 public class FinancialMoveProducer {
-	public static final Money IPO_SHARE_PRICE = new Money(5);
+    public static final Money IPO_SHARE_PRICE = new Money(5);
 
-	public static final int SHARE_BUNDLE_SIZE = 10000;
+    public static final int SHARE_BUNDLE_SIZE = 10000;
 
-	public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
+    public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
 
-	FinancialMoveProducer(ReadOnlyWorld row) {
-	}
+    FinancialMoveProducer(ReadOnlyWorld row) {
+    }
 
-	EconomicClimate worsen() {
-		return null;
-	}
+    EconomicClimate worsen() {
+        return null;
+    }
 
-	EconomicClimate improve() {
-		return null;
-	}
+    EconomicClimate improve() {
+        return null;
+    }
 }

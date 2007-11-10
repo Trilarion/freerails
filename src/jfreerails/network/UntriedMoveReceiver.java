@@ -11,7 +11,7 @@ import jfreerails.move.MoveStatus;
  * 
  */
 public interface UntriedMoveReceiver extends MoveReceiver {
-	MoveStatus tryDoMove(Move move);
+    MoveStatus tryDoMove(Move move);
 
-	void processPreMove(PreMove pm);
+    void processPreMove(PreMove pm);
 }

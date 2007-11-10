@@ -16,10 +16,10 @@ import jfreerails.world.top.KEY;
  * 
  */
 public class ChangeCargoBundleMove extends ChangeItemInListMove {
-	private static final long serialVersionUID = 3258126960072143408L;
+    private static final long serialVersionUID = 3258126960072143408L;
 
-	public ChangeCargoBundleMove(ImmutableCargoBundle before,
-			ImmutableCargoBundle after, int bundleNumber, FreerailsPrincipal p) {
-		super(KEY.CARGO_BUNDLES, bundleNumber, before, after, p);
-	}
+    public ChangeCargoBundleMove(ImmutableCargoBundle before,
+            ImmutableCargoBundle after, int bundleNumber, FreerailsPrincipal p) {
+        super(KEY.CARGO_BUNDLES, bundleNumber, before, after, p);
+    }
 }

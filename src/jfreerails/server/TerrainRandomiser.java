@@ -18,46 +18,46 @@ import java.util.Vector;
  *         Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
  */
 public class TerrainRandomiser {
-	private final Vector<Integer> terrainTypes;
+    private final Vector<Integer> terrainTypes;
 
-	private final Vector<Integer> non_terrainTypes;
+    private final Vector<Integer> non_terrainTypes;
 
-	private final double CLEAR_PERCENTAGE = 0.98; // ie. % of map that is
+    private final double CLEAR_PERCENTAGE = 0.98; // ie. % of map that is
 
-	// clear (on avg.)
+    // clear (on avg.)
 
-	public TerrainRandomiser(Vector<Integer> num, Vector<Integer> num2) {
-		terrainTypes = num;
-		non_terrainTypes = num2;
-	}
+    public TerrainRandomiser(Vector<Integer> num, Vector<Integer> num2) {
+        terrainTypes = num;
+        non_terrainTypes = num2;
+    }
 
-	public int getNewType(int type) {
-		int newType = type;
-		double value;
-		double divide = 1.0 / terrainTypes.size();
+    public int getNewType(int type) {
+        int newType = type;
+        double value;
+        double divide = 1.0 / terrainTypes.size();
 
-		// allow any terrain type to be drawn over except those listed in
-		// non_terrainTypes
-		if (!non_terrainTypes.contains(new Integer(newType))) {
-			if (Math.random() < CLEAR_PERCENTAGE) {
-				// make the tile Clear
-				return 4;
-			}
-			value = Math.random();
+        // allow any terrain type to be drawn over except those listed in
+        // non_terrainTypes
+        if (!non_terrainTypes.contains(new Integer(newType))) {
+            if (Math.random() < CLEAR_PERCENTAGE) {
+                // make the tile Clear
+                return 4;
+            }
+            value = Math.random();
 
-			/*
-			 * at the moment, this logic produces a balanced and even
-			 * distribution of the different country tiles (currently 3).
-			 * somehow it would be better to have the actual proportions of
-			 * Farms, Jungle and Desert etc vary. dunno how.
-			 */
-			for (int i = 0; i < terrainTypes.size(); i++) {
-				if ((value > (i * divide)) && (value <= ((i + 1) * divide))) {
-					return terrainTypes.elementAt(i).intValue();
-				}
-			}
-		}
+            /*
+             * at the moment, this logic produces a balanced and even
+             * distribution of the different country tiles (currently 3).
+             * somehow it would be better to have the actual proportions of
+             * Farms, Jungle and Desert etc vary. dunno how.
+             */
+            for (int i = 0; i < terrainTypes.size(); i++) {
+                if ((value > (i * divide)) && (value <= ((i + 1) * divide))) {
+                    return terrainTypes.elementAt(i).intValue();
+                }
+            }
+        }
 
-		return newType;
-	}
+        return newType;
+    }
 }

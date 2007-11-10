@@ -25,37 +25,36 @@ import jfreerails.world.top.ReadOnlyWorld;
  * 
  */
 public class ProcessCargoAtStationMoveGenerator {
-	/**
-	 * Determines how much the player gets for delivering cargo. Changed from
-	 * 100 to 75 to fix bug 910132 (Too easy to make money!)
-	 */
-	private final static int MAGIC_NUMBER = 75;
+    /**
+     * Determines how much the player gets for delivering cargo. Changed from
+     * 100 to 75 to fix bug 910132 (Too easy to make money!)
+     */
+    private final static int MAGIC_NUMBER = 75;
 
-	public static ArrayList<Move> processCargo(ReadOnlyWorld w,
-			CargoBundle bundle, int stationID, FreerailsPrincipal p,
-			int trainId) {
-		StationModel thisStation = (StationModel) w.get(p,
-				KEY.STATIONS, stationID);
-		Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
+    public static ArrayList<Move> processCargo(ReadOnlyWorld w,
+            CargoBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
+        StationModel thisStation = (StationModel) w.get(p, KEY.STATIONS,
+                stationID);
+        Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 
-		ArrayList<Move> moves = new ArrayList<Move>();
+        ArrayList<Move> moves = new ArrayList<Move>();
 
-		while (batches.hasNext()) {
-			CargoBatch batch = batches.next();
-			double distanceSquared = (batch.getSourceX() - thisStation.x)
-					* (batch.getSourceX() - thisStation.x)
-					+ (batch.getSourceY() - thisStation.y)
-					* (batch.getSourceY() - thisStation.y);
-			double dist = Math.sqrt(distanceSquared);
-			int quantity = bundle.getAmount(batch);
+        while (batches.hasNext()) {
+            CargoBatch batch = batches.next();
+            double distanceSquared = (batch.getSourceX() - thisStation.x)
+                    * (batch.getSourceX() - thisStation.x)
+                    + (batch.getSourceY() - thisStation.y)
+                    * (batch.getSourceY() - thisStation.y);
+            double dist = Math.sqrt(distanceSquared);
+            int quantity = bundle.getAmount(batch);
 
-			double amount = quantity * Math.log(dist) * MAGIC_NUMBER;
-			Money money = new Money((long) amount);
-			DeliverCargoReceipt receipt = new DeliverCargoReceipt(money,
-					quantity, stationID, batch, trainId);
-			moves.add(new AddTransactionMove(p, receipt));
-		}
+            double amount = quantity * Math.log(dist) * MAGIC_NUMBER;
+            Money money = new Money((long) amount);
+            DeliverCargoReceipt receipt = new DeliverCargoReceipt(money,
+                    quantity, stationID, batch, trainId);
+            moves.add(new AddTransactionMove(p, receipt));
+        }
 
-		return moves;
-	}
+        return moves;
+    }
 }

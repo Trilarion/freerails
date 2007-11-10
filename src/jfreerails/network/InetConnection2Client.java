@@ -12,26 +12,26 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class InetConnection2Client extends AbstractInetConnection implements
-		Connection2Client {
-	public InetConnection2Client(Socket s) throws IOException {
-		super(s);
-	}
+        Connection2Client {
+    public InetConnection2Client(Socket s) throws IOException {
+        super(s);
+    }
 
-	public FreerailsSerializable[] readFromClient() throws IOException {
-		return read();
-	}
+    public FreerailsSerializable[] readFromClient() throws IOException {
+        return read();
+    }
 
-	public FreerailsSerializable waitForObjectFromClient() throws IOException,
-			InterruptedException {
-		return waitForObject();
-	}
+    public FreerailsSerializable waitForObjectFromClient() throws IOException,
+            InterruptedException {
+        return waitForObject();
+    }
 
-	public void writeToClient(FreerailsSerializable object) throws IOException {
-		send(object);
-	}
+    public void writeToClient(FreerailsSerializable object) throws IOException {
+        send(object);
+    }
 
-	@Override
-	String getThreadName() {
-		return "InetConnection2Client";
-	}
+    @Override
+    String getThreadName() {
+        return "InetConnection2Client";
+    }
 }

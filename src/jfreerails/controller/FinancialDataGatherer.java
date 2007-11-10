@@ -24,142 +24,140 @@ import jfreerails.world.top.TransactionAggregator;
  * @author smackay
  */
 public class FinancialDataGatherer extends TransactionAggregator {
-	private int totalShares = 100000;	
+    private int totalShares = 100000;
 
-	private final int playerID;
+    private final int playerID;
 
-	private int bonds;
+    private int bonds;
 
-	private int[] stockInRRs;
-	
-	private int[] stockInThisRRs;				
-	
-	@Override
-	protected void incrementRunningTotal(int transactionID) {
-		Transaction t = super.w.getTransaction(super.principal, transactionID);
+    private int[] stockInRRs;
 
-		if (t instanceof AddItemTransaction) {
-			AddItemTransaction ait = (AddItemTransaction) t;
+    private int[] stockInThisRRs;
 
-			if (t instanceof StockTransaction
-					&& ait.getCategory() == Transaction.Category.ISSUE_STOCK
-					&& ait.getType() == -1) {
-				// If it is a change in the total number of shares issued.
-				StockTransaction ist = (StockTransaction) t;
-				totalShares += ist.getQuantity();
+    @Override
+    protected void incrementRunningTotal(int transactionID) {
+        Transaction t = super.w.getTransaction(super.principal, transactionID);
 
-			} else if (t instanceof StockTransaction
-					&& ait.getCategory() == Transaction.Category.TRANSFER_STOCK
-					) {
-				//
-				stockInRRs[ait.getType()] += ait.getQuantity();				
-			
-			} else if (t instanceof BondTransaction) {
-				bonds += ait.getQuantity();
-			}
-		} else {
-			super.incrementRunningTotal(transactionID);
-		}
-	}
+        if (t instanceof AddItemTransaction) {
+            AddItemTransaction ait = (AddItemTransaction) t;
 
-	@Override
-	protected void setTotalsArrayLength(int length) {
-		// TODO Auto-generated method stub
-		super.setTotalsArrayLength(length);
-	}
+            if (t instanceof StockTransaction
+                    && ait.getCategory() == Transaction.Category.ISSUE_STOCK
+                    && ait.getType() == -1) {
+                // If it is a change in the total number of shares issued.
+                StockTransaction ist = (StockTransaction) t;
+                totalShares += ist.getQuantity();
 
-	@Override
-	protected void storeRunningTotal(int timeIndex) {
-		// TODO Auto-generated method stub
-		super.storeRunningTotal(timeIndex);
-	}
+            } else if (t instanceof StockTransaction
+                    && ait.getCategory() == Transaction.Category.TRANSFER_STOCK) {
+                //
+                stockInRRs[ait.getType()] += ait.getQuantity();
 
-	public FinancialDataGatherer(ReadOnlyWorld w, FreerailsPrincipal principal) {
-		super(w, principal);
-		stockInRRs = new int [w.getNumberOfPlayers()];		
-		calculateValues();
-		this.playerID = w.getID(principal);
-	}
+            } else if (t instanceof BondTransaction) {
+                bonds += ait.getQuantity();
+            }
+        } else {
+            super.incrementRunningTotal(transactionID);
+        }
+    }
 
-	public void changeTreasuryStock(int deltaStock) {
-	}
+    @Override
+    protected void setTotalsArrayLength(int length) {
+        // TODO Auto-generated method stub
+        super.setTotalsArrayLength(length);
+    }
 
-	public void changeStake(int stakeHolder, int deltaStock) {
-	}
+    @Override
+    protected void storeRunningTotal(int timeIndex) {
+        // TODO Auto-generated method stub
+        super.storeRunningTotal(timeIndex);
+    }
 
-	public boolean canIssueBond() {
-		return nextBondInterestRate() <= 7;
-	}
+    public FinancialDataGatherer(ReadOnlyWorld w, FreerailsPrincipal principal) {
+        super(w, principal);
+        stockInRRs = new int[w.getNumberOfPlayers()];
+        calculateValues();
+        this.playerID = w.getID(principal);
+    }
 
-	public boolean canBuyStock() {
-		return totalShares > 0;
-	}
+    public void changeTreasuryStock(int deltaStock) {
+    }
 
-	public int nextBondInterestRate() {
-		EconomicClimate ec = (EconomicClimate) w.get(ITEM.ECONOMIC_CLIMATE);
-		return bonds + ec.getBaseInterestRate();
-	}
+    public void changeStake(int stakeHolder, int deltaStock) {
+    }
 
-	public int[] bondInterestRates() {
-		return null;
-	}
+    public boolean canIssueBond() {
+        return nextBondInterestRate() <= 7;
+    }
 
-	/** Returns the number of stock in the Treasury */
-	public int treasuryStock() {
-		return stockInRRs[playerID];
-	}
+    public boolean canBuyStock() {
+        return totalShares > 0;
+    }
 
-	/** Returns The number of open Shares */
-	public int totalShares() {
-		return totalShares;
-	}
-	
-	public int sharesHeldByPublic(){
-		int[]stock = getStockInThisRRs();
-		int returnValue = this.totalShares;
-		for (int i = 0; i < stock.length; i++) {
-			returnValue -= stock[i];			
-		}
-		return returnValue;
-	}
+    public int nextBondInterestRate() {
+        EconomicClimate ec = (EconomicClimate) w.get(ITEM.ECONOMIC_CLIMATE);
+        return bonds + ec.getBaseInterestRate();
+    }
 
-	public boolean thisRRHasStakeIn(int otherReId){
-		return stockInRRs[otherReId] > 0;
-	}
+    public int[] bondInterestRates() {
+        return null;
+    }
 
-	
+    /** Returns the number of stock in the Treasury */
+    public int treasuryStock() {
+        return stockInRRs[playerID];
+    }
 
-	public Money netWorth() {
-		NetWorthCalculator nwc = new NetWorthCalculator(w, principal);
-		GameTime[] times = {GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD};
-		nwc.setTimes(times);
-		return nwc.calculateValue();
-	}
+    /** Returns The number of open Shares */
+    public int totalShares() {
+        return totalShares;
+    }
 
-	@Override
-	protected boolean condition(int transactionID) {
-		// We'll do the work when incrementRunningTotal gets called.
-		return true;
-	}
+    public int sharesHeldByPublic() {
+        int[] stock = getStockInThisRRs();
+        int returnValue = this.totalShares;
+        for (int i = 0; i < stock.length; i++) {
+            returnValue -= stock[i];
+        }
+        return returnValue;
+    }
 
-	public int[] getStockInThisRRs() {
-		if(null == stockInThisRRs){
-			stockInThisRRs = new int[w.getNumberOfPlayers()];
-			for(int i = 0; i < w.getNumberOfPlayers(); i++){
-				Player p = w.getPlayer(i);
-				FinancialDataGatherer temp = new FinancialDataGatherer(w, p.getPrincipal());
-				stockInThisRRs[i] = temp.stockInRRs[this.playerID];
-			}
-		}
-		
-		return stockInThisRRs;
-	}
+    public boolean thisRRHasStakeIn(int otherReId) {
+        return stockInRRs[otherReId] > 0;
+    }
 
-	public int[] getStockInRRs() {
-		return stockInRRs;
-	}
+    public Money netWorth() {
+        NetWorthCalculator nwc = new NetWorthCalculator(w, principal);
+        GameTime[] times = { GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD };
+        nwc.setTimes(times);
+        return nwc.calculateValue();
+    }
 
-	public int getBonds() {
-		return bonds;
-	}
+    @Override
+    protected boolean condition(int transactionID) {
+        // We'll do the work when incrementRunningTotal gets called.
+        return true;
+    }
+
+    public int[] getStockInThisRRs() {
+        if (null == stockInThisRRs) {
+            stockInThisRRs = new int[w.getNumberOfPlayers()];
+            for (int i = 0; i < w.getNumberOfPlayers(); i++) {
+                Player p = w.getPlayer(i);
+                FinancialDataGatherer temp = new FinancialDataGatherer(w, p
+                        .getPrincipal());
+                stockInThisRRs[i] = temp.stockInRRs[this.playerID];
+            }
+        }
+
+        return stockInThisRRs;
+    }
+
+    public int[] getStockInRRs() {
+        return stockInRRs;
+    }
+
+    public int getBonds() {
+        return bonds;
+    }
 }

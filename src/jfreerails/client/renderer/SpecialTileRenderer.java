@@ -20,54 +20,54 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author Luke Lindsay
  */
 final public class SpecialTileRenderer extends AbstractTileRenderer {
-	private static final Logger logger = Logger
-			.getLogger(SpecialTileRenderer.class.getName());
+    private static final Logger logger = Logger
+            .getLogger(SpecialTileRenderer.class.getName());
 
-	final private TileRenderer parentTileView;
+    final private TileRenderer parentTileView;
 
-	@Override
-	public void renderTile(java.awt.Graphics g, int renderX, int renderY,
-			int mapX, int mapY, ReadOnlyWorld w) {
-		if (parentTileView != null) {
-			parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
-		} else {
-			logger.warning("parent tileView==null");
-		}
+    @Override
+    public void renderTile(java.awt.Graphics g, int renderX, int renderY,
+            int mapX, int mapY, ReadOnlyWorld w) {
+        if (parentTileView != null) {
+            parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
+        } else {
+            logger.warning("parent tileView==null");
+        }
 
-		Image icon = this.getIcon(mapX, mapX, w);
+        Image icon = this.getIcon(mapX, mapX, w);
 
-		if (null != icon) {
-			g.drawImage(icon, renderX, renderY, null);
-		} else {
-			logger.warning("special tileView icon==null");
-		}
-	}
+        if (null != icon) {
+            g.drawImage(icon, renderX, renderY, null);
+        } else {
+            logger.warning("special tileView icon==null");
+        }
+    }
 
-	@Override
-	public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-		return 0;
-	}
+    @Override
+    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+        return 0;
+    }
 
-	public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
-			TerrainType tileModel, TileRenderer parentTileView)
-			throws IOException {
-		super(tileModel, rgbValues);
-		this.setTileIcons(new Image[1]);
-		this.getTileIcons()[0] = imageManager.getImage(generateFilename());
-		this.parentTileView = parentTileView;
-	}
+    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
+            TerrainType tileModel, TileRenderer parentTileView)
+            throws IOException {
+        super(tileModel, rgbValues);
+        this.setTileIcons(new Image[1]);
+        this.getTileIcons()[0] = imageManager.getImage(generateFilename());
+        this.parentTileView = parentTileView;
+    }
 
-	@Override
-	public void dumpImages(ImageManager imageManager) {
-		imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
-	}
+    @Override
+    public void dumpImages(ImageManager imageManager) {
+        imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
+    }
 
-	private String generateFilename() {
-		return "terrain" + File.separator + this.getTerrainType() + ".png";
-	}
+    private String generateFilename() {
+        return "terrain" + File.separator + this.getTerrainType() + ".png";
+    }
 
-	@Override
-	protected String generateFileNameNumber(int i) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    protected String generateFileNameNumber(int i) {
+        throw new UnsupportedOperationException();
+    }
 }

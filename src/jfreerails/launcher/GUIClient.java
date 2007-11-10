@@ -41,164 +41,164 @@ import jfreerails.world.top.World;
  * 
  */
 public class GUIClient extends FreerailsClient implements
-		FreerailsProgressMonitor {
+        FreerailsProgressMonitor {
 
-	public static void main(String[] args) {
-		try {
-			GUIClient client = new GUIClient("Test", null,
-					ScreenHandler.WINDOWED_MODE, null);
-			client.start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public static void main(String[] args) {
+        try {
+            GUIClient client = new GUIClient("Test", null,
+                    ScreenHandler.WINDOWED_MODE, null);
+            client.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	private final ActionRoot actionRoot;
+    private final ActionRoot actionRoot;
 
-	private final GUIComponentFactoryImpl factory;
+    private final GUIComponentFactoryImpl factory;
 
-	private final ModelRootImpl modelRoot;
+    private final ModelRootImpl modelRoot;
 
-	private final FreerailsProgressMonitor monitor;
+    private final FreerailsProgressMonitor monitor;
 
-	private final String name;
+    private final String name;
 
-	private final ScreenHandler screenHandler;
+    private final ScreenHandler screenHandler;
 
-	private RenderersRoot vl;
+    private RenderersRoot vl;
 
-	public GUIClient(String name, FreerailsProgressMonitor fm, int screenMode,
-			DisplayMode dm) throws IOException {
-		this.name = name;
-		this.monitor = null == fm ? this : fm;
-		// Set up model root and action root.
-		modelRoot = new ModelRootImpl();
-		modelRoot.setMoveFork(this.getMoveFork());
-		modelRoot.setMoveReceiver(this);
-		modelRoot.setServerCommandReceiver(this);
-		actionRoot = new ActionRoot(modelRoot);
+    public GUIClient(String name, FreerailsProgressMonitor fm, int screenMode,
+            DisplayMode dm) throws IOException {
+        this.name = name;
+        this.monitor = null == fm ? this : fm;
+        // Set up model root and action root.
+        modelRoot = new ModelRootImpl();
+        modelRoot.setMoveFork(this.getMoveFork());
+        modelRoot.setMoveReceiver(this);
+        modelRoot.setServerCommandReceiver(this);
+        actionRoot = new ActionRoot(modelRoot);
 
-		// Create GUI components
-		factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);
+        // Create GUI components
+        factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);
 
-		JFrame createClientJFrame = factory.createClientJFrame(name);
+        JFrame createClientJFrame = factory.createClientJFrame(name);
 
-		screenHandler = new ScreenHandler(createClientJFrame, screenMode, dm);
+        screenHandler = new ScreenHandler(createClientJFrame, screenMode, dm);
 
-	}
+    }
 
-	@Override
-	protected void clientUpdates() {
-		if (factory.isSetup()) {
-			factory.getBuildTrackController().update();
-//			Update sub tick time.
-			long currentTime = System.currentTimeMillis();
-			long lastTick = getLastTickTime();
-			double dt = currentTime - lastTick;
-			ReadOnlyWorld world2 = modelRoot.getWorld();
-			GameSpeed gameSpeed = (GameSpeed) world2.get(ITEM.GAME_SPEED);
-			GameTime currentGameTime  = world2.currentTime();
-			double ticks = currentGameTime.getTicks();
-			if(!gameSpeed.isPaused()){			
-				double milliSecondsPerTick = 1000/ gameSpeed.getSpeed();			
-				double subTicks = dt / milliSecondsPerTick;			
-				subTicks = Math.min(dt, 1d);				
-				ticks += subTicks;		
-			}
-			modelRoot.setProperty(Property.TIME, new Double(ticks));
-		}
-		
-	}
+    @Override
+    protected void clientUpdates() {
+        if (factory.isSetup()) {
+            factory.getBuildTrackController().update();
+            // Update sub tick time.
+            long currentTime = System.currentTimeMillis();
+            long lastTick = getLastTickTime();
+            double dt = currentTime - lastTick;
+            ReadOnlyWorld world2 = modelRoot.getWorld();
+            GameSpeed gameSpeed = (GameSpeed) world2.get(ITEM.GAME_SPEED);
+            GameTime currentGameTime = world2.currentTime();
+            double ticks = currentGameTime.getTicks();
+            if (!gameSpeed.isPaused()) {
+                double milliSecondsPerTick = 1000 / gameSpeed.getSpeed();
+                double subTicks = dt / milliSecondsPerTick;
+                subTicks = Math.min(dt, 1d);
+                ticks += subTicks;
+            }
+            modelRoot.setProperty(Property.TIME, new Double(ticks));
+        }
 
-	public void finished() {
-		// TODO Auto-generated method stub
-	}
+    }
 
-	public ScreenHandler getScreenHandler() {
-		return screenHandler;
-	}
+    public void finished() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	protected void newWorld(World w) {
-		try {
-			if (null == vl || !vl.validate(w)) {
-				try {
-					vl = new RenderersRootImpl(w, monitor);
-					monitor.finished();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+    public ScreenHandler getScreenHandler() {
+        return screenHandler;
+    }
 
-			// Should be a smarter way of doing this..
-			for (int player = 0; player < w.getNumberOfPlayers(); player++) {
-				Player p = w.getPlayer(player);
+    @Override
+    protected void newWorld(World w) {
+        try {
+            if (null == vl || !vl.validate(w)) {
+                try {
+                    vl = new RenderersRootImpl(w, monitor);
+                    monitor.finished();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
 
-				if (p.getName().equals(this.name)) {
-					modelRoot.setup(w, p.getPrincipal());
-				}
-			}
+            // Should be a smarter way of doing this..
+            for (int player = 0; player < w.getNumberOfPlayers(); player++) {
+                Player p = w.getPlayer(player);
 
-			modelRoot.setProperty(ModelRoot.Property.SERVER, connection2Server
-					.getServerDetails());
-			actionRoot.setup(modelRoot, vl);
+                if (p.getName().equals(this.name)) {
+                    modelRoot.setup(w, p.getPrincipal());
+                }
+            }
 
-			factory.setup(vl, w);
-		} catch (Exception e) {
-			ReportBugTextGenerator.unexpectedException(e);	
-		}
-	}
+            modelRoot.setProperty(ModelRoot.Property.SERVER, connection2Server
+                    .getServerDetails());
+            actionRoot.setup(modelRoot, vl);
 
-	public void nextStep(int max) {
-		// TODO Auto-generated method stub
-	}
+            factory.setup(vl, w);
+        } catch (Exception e) {
+            ReportBugTextGenerator.unexpectedException(e);
+        }
+    }
 
-	public void setMessage(String s) {
-		System.out.println(s);
-	}
+    public void nextStep(int max) {
+        // TODO Auto-generated method stub
+    }
 
-	public void setValue(int i) {
-		// TODO Auto-generated method stub
-	}
+    public void setMessage(String s) {
+        System.out.println(s);
+    }
 
-	@Override
-	public void setProperty(ClientProperty propertyName, Serializable value) {		
-		super.setProperty(propertyName, value);
-		switch (propertyName) {
-		case SAVED_GAMES:
-			modelRoot.setProperty(Property.SAVED_GAMES_LIST, value);
-			break;
+    public void setValue(int i) {
+        // TODO Auto-generated method stub
+    }
 
-		default:
-			break;
-		}
-	}
+    @Override
+    public void setProperty(ClientProperty propertyName, Serializable value) {
+        super.setProperty(propertyName, value);
+        switch (propertyName) {
+        case SAVED_GAMES:
+            modelRoot.setProperty(Property.SAVED_GAMES_LIST, value);
+            break;
 
-	void start() {
-		// Set up world.
-		SavedGamesManager gamesManager = new SavedGamesManagerImpl();
-		FreerailsGameServer server = new FreerailsGameServer(gamesManager);
-		String mapName = gamesManager.getNewMapNames()[0];
+        default:
+            break;
+        }
+    }
 
-		ServerGameModelImpl serverGameModel = new ServerGameModelImpl();
-		server.setServerGameModel(serverGameModel);
+    void start() {
+        // Set up world.
+        SavedGamesManager gamesManager = new SavedGamesManagerImpl();
+        FreerailsGameServer server = new FreerailsGameServer(gamesManager);
+        String mapName = gamesManager.getNewMapNames()[0];
 
-		this.connect(server, name, "password");
+        ServerGameModelImpl serverGameModel = new ServerGameModelImpl();
+        server.setServerGameModel(serverGameModel);
 
-		server.newGame(mapName);
+        this.connect(server, name, "password");
 
-		while (null == this.getWorld()) {
-			this.update();
-			server.update();
-		}
+        server.newGame(mapName);
 
-		GameModel[] models = new GameModel[] { this, server };
+        while (null == this.getWorld()) {
+            this.update();
+            server.update();
+        }
 
-		// Start the game loop
-		GameLoop gameLoop = new GameLoop(screenHandler, models);		
+        GameModel[] models = new GameModel[] { this, server };
 
-		Thread t = new Thread(gameLoop);
-		t.start();
-	}
+        // Start the game loop
+        GameLoop gameLoop = new GameLoop(screenHandler, models);
+
+        Thread t = new Thread(gameLoop);
+        t.start();
+    }
 }

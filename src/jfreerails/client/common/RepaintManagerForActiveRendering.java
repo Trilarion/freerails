@@ -26,72 +26,72 @@ import javax.swing.RepaintManager;
  * 
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {
-	/** The JFrame(s) that are being actively rendered in the game loop(s). */
-	private static final HashSet<JFrame> activelyRendereredComponents = new HashSet<JFrame>();
+    /** The JFrame(s) that are being actively rendered in the game loop(s). */
+    private static final HashSet<JFrame> activelyRendereredComponents = new HashSet<JFrame>();
 
-	private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
+    private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
 
-	private static long numRepaintRequests = 0;
+    private static long numRepaintRequests = 0;
 
-	public static void setAsCurrentManager() {
-		RepaintManager.setCurrentManager(instance);
-	}
+    public static void setAsCurrentManager() {
+        RepaintManager.setCurrentManager(instance);
+    }
 
-	private RepaintManagerForActiveRendering() {
-	}
+    private RepaintManagerForActiveRendering() {
+    }
 
-	@Override
-	public synchronized void addDirtyRegion(JComponent c, int x, int y, int w,
-			int h) {
-		if (hasDifferentAncester(c)) {
-			super.addDirtyRegion(c, x, y, w, h);
-		} else {
-			numRepaintRequests++;
-		}
-	}
+    @Override
+    public synchronized void addDirtyRegion(JComponent c, int x, int y, int w,
+            int h) {
+        if (hasDifferentAncester(c)) {
+            super.addDirtyRegion(c, x, y, w, h);
+        } else {
+            numRepaintRequests++;
+        }
+    }
 
-	public static synchronized void addJFrame(JFrame f) {
-		activelyRendereredComponents.add(f);
-	}
+    public static synchronized void addJFrame(JFrame f) {
+        activelyRendereredComponents.add(f);
+    }
 
-	@Override
-	public synchronized void addInvalidComponent(JComponent invalidComponent) {
-		if (hasDifferentAncester(invalidComponent)) {
-			super.addInvalidComponent(invalidComponent);
-		} else {
-			numRepaintRequests++;
-		}
-	}
+    @Override
+    public synchronized void addInvalidComponent(JComponent invalidComponent) {
+        if (hasDifferentAncester(invalidComponent)) {
+            super.addInvalidComponent(invalidComponent);
+        } else {
+            numRepaintRequests++;
+        }
+    }
 
-	@Override
-	public void markCompletelyClean(JComponent aComponent) {
-		if (hasDifferentAncester(aComponent)) {
-			super.markCompletelyClean(aComponent);
-		} else {
-			numRepaintRequests++;
-		}
-	}
+    @Override
+    public void markCompletelyClean(JComponent aComponent) {
+        if (hasDifferentAncester(aComponent)) {
+            super.markCompletelyClean(aComponent);
+        } else {
+            numRepaintRequests++;
+        }
+    }
 
-	@Override
-	public void markCompletelyDirty(JComponent aComponent) {
-		if (hasDifferentAncester(aComponent)) {
-			super.markCompletelyDirty(aComponent);
-		} else {
-			numRepaintRequests++;
-		}
-	}
+    @Override
+    public void markCompletelyDirty(JComponent aComponent) {
+        if (hasDifferentAncester(aComponent)) {
+            super.markCompletelyDirty(aComponent);
+        } else {
+            numRepaintRequests++;
+        }
+    }
 
-	private boolean hasDifferentAncester(JComponent aComponent) {
-		Container topLevelAncestor = aComponent.getTopLevelAncestor();
+    private boolean hasDifferentAncester(JComponent aComponent) {
+        Container topLevelAncestor = aComponent.getTopLevelAncestor();
 
-		if (null == topLevelAncestor
-				|| activelyRendereredComponents.contains(topLevelAncestor)) {
-			return false;
-		}
-		return true;
-	}
+        if (null == topLevelAncestor
+                || activelyRendereredComponents.contains(topLevelAncestor)) {
+            return false;
+        }
+        return true;
+    }
 
-	public static long getNumRepaintRequests() {
-		return numRepaintRequests;
-	}
+    public static long getNumRepaintRequests() {
+        return numRepaintRequests;
+    }
 }

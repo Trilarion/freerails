@@ -46,190 +46,188 @@ import java.io.Serializable;
  * @version 1.0
  */
 public abstract class ArrayBase extends GrowableBase implements Serializable {
-	/** The number of values currently present in the array. */
-	protected int countPresent;
+    /** The number of values currently present in the array. */
+    protected int countPresent;
 
-	/**
-	 * Constructor with full specification.
-	 * 
-	 * @param size
-	 *            number of elements initially allowed in array
-	 * @param growth
-	 *            maximum size increment for growing array
-	 * @param type
-	 *            array element type
-	 */
-	public ArrayBase(int size, int growth, Class type) {
-		super(size, growth, type);
-	}
+    /**
+     * Constructor with full specification.
+     * 
+     * @param size
+     *            number of elements initially allowed in array
+     * @param growth
+     *            maximum size increment for growing array
+     * @param type
+     *            array element type
+     */
+    public ArrayBase(int size, int growth, Class type) {
+        super(size, growth, type);
+    }
 
-	/**
-	 * Constructor with partial specification.
-	 * 
-	 * @param size
-	 *            number of elements initially allowed in array
-	 * @param type
-	 *            array element type
-	 */
-	public ArrayBase(int size, Class type) {
-		this(size, Integer.MAX_VALUE, type);
-	}
+    /**
+     * Constructor with partial specification.
+     * 
+     * @param size
+     *            number of elements initially allowed in array
+     * @param type
+     *            array element type
+     */
+    public ArrayBase(int size, Class type) {
+        this(size, Integer.MAX_VALUE, type);
+    }
 
-	/**
-	 * Copy (clone) constructor.
-	 * 
-	 * @param base
-	 *            instance being copied
-	 */
-	public ArrayBase(ArrayBase base) {
-		super(base);
-		System
-				.arraycopy(base.getArray(), 0, getArray(), 0,
-						base.countPresent);
-		countPresent = base.countPresent;
-	}
+    /**
+     * Copy (clone) constructor.
+     * 
+     * @param base
+     *            instance being copied
+     */
+    public ArrayBase(ArrayBase base) {
+        super(base);
+        System.arraycopy(base.getArray(), 0, getArray(), 0, base.countPresent);
+        countPresent = base.countPresent;
+    }
 
-	/**
-	 * Get the array for another instance of this class. This is a convenience
-	 * method to allow subclasses access to the backing array of other
-	 * subclasses.
-	 * 
-	 * @param other
-	 *            subclass instance to get array from
-	 * @return backing array object
-	 */
-	protected static Object getArray(ArrayBase other) {
-		return other.getArray();
-	}
+    /**
+     * Get the array for another instance of this class. This is a convenience
+     * method to allow subclasses access to the backing array of other
+     * subclasses.
+     * 
+     * @param other
+     *            subclass instance to get array from
+     * @return backing array object
+     */
+    protected static Object getArray(ArrayBase other) {
+        return other.getArray();
+    }
 
-	/**
-	 * Gets the array offset for appending a value to those in the array. If the
-	 * underlying array is full, it is grown by the appropriate size increment
-	 * so that the index value returned is always valid for the array in use by
-	 * the time of the return.
-	 * 
-	 * @return index position for added element
-	 */
-	protected final int getAddIndex() {
-		int index = countPresent++;
+    /**
+     * Gets the array offset for appending a value to those in the array. If the
+     * underlying array is full, it is grown by the appropriate size increment
+     * so that the index value returned is always valid for the array in use by
+     * the time of the return.
+     * 
+     * @return index position for added element
+     */
+    protected final int getAddIndex() {
+        int index = countPresent++;
 
-		if (countPresent > countLimit) {
-			growArray(countPresent);
-		}
+        if (countPresent > countLimit) {
+            growArray(countPresent);
+        }
 
-		return index;
-	}
+        return index;
+    }
 
-	/**
-	 * Makes room to insert a value at a specified index in the array.
-	 * 
-	 * @param index
-	 *            index position at which to insert element
-	 */
-	protected void makeInsertSpace(int index) {
-		if (index >= 0 && index <= countPresent) {
-			if (++countPresent > countLimit) {
-				growArray(countPresent);
-			}
+    /**
+     * Makes room to insert a value at a specified index in the array.
+     * 
+     * @param index
+     *            index position at which to insert element
+     */
+    protected void makeInsertSpace(int index) {
+        if (index >= 0 && index <= countPresent) {
+            if (++countPresent > countLimit) {
+                growArray(countPresent);
+            }
 
-			if (index < countPresent - 1) {
-				Object array = getArray();
-				System.arraycopy(array, index, array, index + 1, countPresent
-						- index - 1);
-			}
-		} else {
-			throw new ArrayIndexOutOfBoundsException("Invalid index value");
-		}
-	}
+            if (index < countPresent - 1) {
+                Object array = getArray();
+                System.arraycopy(array, index, array, index + 1, countPresent
+                        - index - 1);
+            }
+        } else {
+            throw new ArrayIndexOutOfBoundsException("Invalid index value");
+        }
+    }
 
-	/**
-	 * Remove a range of value from the array. The index positions for values
-	 * above the range removed are decreased by the number of values removed.
-	 * 
-	 * @param from
-	 *            index number of first value to be removed
-	 * @param to
-	 *            index number past last value to be removed
-	 */
-	public void remove(int from, int to) {
-		if (from >= 0 && to <= countPresent && from <= to) {
-			if (to < countPresent) {
-				int change = from - to;
-				Object base = getArray();
-				System.arraycopy(base, to, base, from, countPresent - to);
-				discardValues(countPresent + change, countPresent);
-				countPresent += change;
-			}
-		} else {
-			throw new ArrayIndexOutOfBoundsException("Invalid remove range");
-		}
-	}
+    /**
+     * Remove a range of value from the array. The index positions for values
+     * above the range removed are decreased by the number of values removed.
+     * 
+     * @param from
+     *            index number of first value to be removed
+     * @param to
+     *            index number past last value to be removed
+     */
+    public void remove(int from, int to) {
+        if (from >= 0 && to <= countPresent && from <= to) {
+            if (to < countPresent) {
+                int change = from - to;
+                Object base = getArray();
+                System.arraycopy(base, to, base, from, countPresent - to);
+                discardValues(countPresent + change, countPresent);
+                countPresent += change;
+            }
+        } else {
+            throw new ArrayIndexOutOfBoundsException("Invalid remove range");
+        }
+    }
 
-	/**
-	 * Remove a value from the array. All values above the index removed are
-	 * moved down one index position.
-	 * 
-	 * @param index
-	 *            index number of value to be removed
-	 */
-	public void remove(int index) {
-		remove(index, index + 1);
-	}
+    /**
+     * Remove a value from the array. All values above the index removed are
+     * moved down one index position.
+     * 
+     * @param index
+     *            index number of value to be removed
+     */
+    public void remove(int index) {
+        remove(index, index + 1);
+    }
 
-	/**
-	 * Get the number of values currently present in the array.
-	 * 
-	 * @return count of values present
-	 */
-	public final int size() {
-		return countPresent;
-	}
+    /**
+     * Get the number of values currently present in the array.
+     * 
+     * @return count of values present
+     */
+    public final int size() {
+        return countPresent;
+    }
 
-	/**
-	 * Sets the number of values currently present in the array. If the new size
-	 * is greater than the current size, the added values are initialized to the
-	 * default values. If the new size is less than the current size, all values
-	 * dropped from the array are discarded.
-	 * 
-	 * @param count
-	 *            number of values to be set
-	 */
-	public void setSize(int count) {
-		if (count > countLimit) {
-			growArray(count);
-		} else if (count < countPresent) {
-			discardValues(count, countPresent);
-		}
+    /**
+     * Sets the number of values currently present in the array. If the new size
+     * is greater than the current size, the added values are initialized to the
+     * default values. If the new size is less than the current size, all values
+     * dropped from the array are discarded.
+     * 
+     * @param count
+     *            number of values to be set
+     */
+    public void setSize(int count) {
+        if (count > countLimit) {
+            growArray(count);
+        } else if (count < countPresent) {
+            discardValues(count, countPresent);
+        }
 
-		countPresent = count;
-	}
+        countPresent = count;
+    }
 
-	/**
-	 * Set the array to the empty state.
-	 */
-	public final void clear() {
-		setSize(0);
-	}
+    /**
+     * Set the array to the empty state.
+     */
+    public final void clear() {
+        setSize(0);
+    }
 
-	/**
-	 * Constructs and returns a simple array containing the same data as held in
-	 * a portion of this growable array. This override of the base class method
-	 * checks that the portion specified actually has data present before
-	 * constructing the returned array.
-	 * 
-	 * @param type
-	 *            element type for constructed array
-	 * @param offset
-	 *            start offset in array
-	 * @param length
-	 *            number of characters to use
-	 * @return array containing a copy of the data
-	 */
-	@Override
-	protected Object buildArray(Class type, int offset, int length) {
-		if (offset + length <= countPresent) {
-			return super.buildArray(type, offset, length);
-		}
-		throw new ArrayIndexOutOfBoundsException();
-	}
+    /**
+     * Constructs and returns a simple array containing the same data as held in
+     * a portion of this growable array. This override of the base class method
+     * checks that the portion specified actually has data present before
+     * constructing the returned array.
+     * 
+     * @param type
+     *            element type for constructed array
+     * @param offset
+     *            start offset in array
+     * @param length
+     *            number of characters to use
+     * @return array containing a copy of the data
+     */
+    @Override
+    protected Object buildArray(Class type, int offset, int length) {
+        if (offset + length <= countPresent) {
+            return super.buildArray(type, offset, length);
+        }
+        throw new ArrayIndexOutOfBoundsException();
+    }
 }

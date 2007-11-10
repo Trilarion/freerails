@@ -10,19 +10,20 @@ import jfreerails.world.top.ReadOnlyWorld;
  * 
  * @author Luke
  */
-public interface RenderersRoot extends TileRendererList {			
-	
-	TrackPieceRenderer getTrackPieceView(int i);
-	
-	TrainImages getWagonImages(int type);
-	
-	TrainImages getEngineImages(int type);
+public interface RenderersRoot extends TileRendererList {
 
-	//OldTrainImages getTrainImages();
+    TrackPieceRenderer getTrackPieceView(int i);
 
-	boolean validate(ReadOnlyWorld world);	
-	
-	Image getImage(String relativeFilename) throws IOException;
-	
-	Image getScaledImage(String relativeFilename, int height) throws IOException;
+    TrainImages getWagonImages(int type);
+
+    TrainImages getEngineImages(int type);
+
+    // OldTrainImages getTrainImages();
+
+    boolean validate(ReadOnlyWorld world);
+
+    Image getImage(String relativeFilename) throws IOException;
+
+    Image getScaledImage(String relativeFilename, int height)
+            throws IOException;
 }

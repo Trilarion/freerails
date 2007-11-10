@@ -10,6 +10,6 @@ package jfreerails.launcher;
  */
 public interface LauncherPanel {
 
-	boolean validateInput();
+    boolean validateInput();
 
 }

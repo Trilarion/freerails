@@ -20,19 +20,19 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Scott Bennett Date: 31st March 2003
  */
 public class InputCityNames {
-	public static void readCityNames(World w, URL filename) throws SAXException {
-		InputSource is = new InputSource(filename.toString());
+    public static void readCityNames(World w, URL filename) throws SAXException {
+        InputSource is = new InputSource(filename.toString());
 
-		DefaultHandler handler = new CitySAXParser(w);
-		SAXParserFactory factory = SAXParserFactory.newInstance();
+        DefaultHandler handler = new CitySAXParser(w);
+        SAXParserFactory factory = SAXParserFactory.newInstance();
 
-		try {
-			SAXParser saxParser = factory.newSAXParser();
-			saxParser.parse(is, handler);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
-		}
-	}
+        try {
+            SAXParser saxParser = factory.newSAXParser();
+            saxParser.parse(is, handler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        }
+    }
 }

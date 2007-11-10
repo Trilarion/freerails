@@ -11,10 +11,10 @@ import jfreerails.client.renderer.BuildTrackRenderer;
 import jfreerails.client.renderer.MapBackgroundRender;
 import jfreerails.client.renderer.MapLayerRenderer;
 import jfreerails.client.renderer.MapRenderer;
+import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.renderer.SquareTileBackgroundRenderer;
 import jfreerails.client.renderer.StationBoxRenderer;
 import jfreerails.client.renderer.StationRadiusRenderer;
-import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -24,85 +24,84 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author Luke
  */
 public class DetailMapRenderer implements MapRenderer {
-	private static final boolean OSXWorkaround = (System
-			.getProperty("OSXWorkaround") != null);
+    private static final boolean OSXWorkaround = (System
+            .getProperty("OSXWorkaround") != null);
 
-	private final MapLayerRenderer background;
+    private final MapLayerRenderer background;
 
-	private final Dimension mapSizeInPixels;
+    private final Dimension mapSizeInPixels;
 
-	private final OverHeadTrainView trainsview;
+    private final OverHeadTrainView trainsview;
 
-	private final StationRadiusRenderer stationRadius;
+    private final StationRadiusRenderer stationRadius;
 
-	private final BuildTrackRenderer buildTrackRenderer;
+    private final BuildTrackRenderer buildTrackRenderer;
 
-	private final BuildTrackController buildTrackController;
+    private final BuildTrackController buildTrackController;
 
-	private final Painter stationBoxes;
+    private final Painter stationBoxes;
 
-	public DetailMapRenderer(ReadOnlyWorld world, RenderersRoot rr,
-			ModelRoot modelRoot) {
-		trainsview = new OverHeadTrainView(world, rr, modelRoot);
+    public DetailMapRenderer(ReadOnlyWorld world, RenderersRoot rr,
+            ModelRoot modelRoot) {
+        trainsview = new OverHeadTrainView(world, rr, modelRoot);
 
-		MapBackgroundRender render = new MapBackgroundRender(world, rr,
-				modelRoot);
+        MapBackgroundRender render = new MapBackgroundRender(world, rr,
+                modelRoot);
 
-		if (OSXWorkaround) {
-			// Don't buffer the mapviews background.
-			background = render;
-		} else {
-			background = new SquareTileBackgroundRenderer(render);
-		}
+        if (OSXWorkaround) {
+            // Don't buffer the mapviews background.
+            background = render;
+        } else {
+            background = new SquareTileBackgroundRenderer(render);
+        }
 
-		Dimension mapSize = new Dimension(world.getMapWidth(), world
-				.getMapHeight());
-		mapSizeInPixels = new Dimension(mapSize.width * 30, mapSize.height * 30);
-		stationRadius = new StationRadiusRenderer(modelRoot);
-		buildTrackRenderer = new BuildTrackRenderer(rr,
-				modelRoot);
-		buildTrackController = new BuildTrackController(world, modelRoot);
-		stationBoxes = new StationBoxRenderer(world, rr, modelRoot);
-	}
+        Dimension mapSize = new Dimension(world.getMapWidth(), world
+                .getMapHeight());
+        mapSizeInPixels = new Dimension(mapSize.width * 30, mapSize.height * 30);
+        stationRadius = new StationRadiusRenderer(modelRoot);
+        buildTrackRenderer = new BuildTrackRenderer(rr, modelRoot);
+        buildTrackController = new BuildTrackController(world, modelRoot);
+        stationBoxes = new StationBoxRenderer(world, rr, modelRoot);
+    }
 
-	public StationRadiusRenderer getStationRadius() {
-		return stationRadius;
-	}
+    public StationRadiusRenderer getStationRadius() {
+        return stationRadius;
+    }
 
-	public BuildTrackController getBuildTrackController() {
-		return buildTrackController;
-	}
+    public BuildTrackController getBuildTrackController() {
+        return buildTrackController;
+    }
 
-	public float getScale() {
-		return 30;
-	}
+    public float getScale() {
+        return 30;
+    }
 
-	public Dimension getMapSizeInPixels() {
-		return mapSizeInPixels;
-	}
+    public Dimension getMapSizeInPixels() {
+        return mapSizeInPixels;
+    }
 
-	public void paintTile(Graphics g, int tileX, int tileY) {
-		background.paintTile(g, tileX, tileY);
-		trainsview.paint((Graphics2D) g, null);
-		stationRadius.paint((Graphics2D) g, null);
-		stationBoxes.paint((Graphics2D) g, null);
+    public void paintTile(Graphics g, int tileX, int tileY) {
+        background.paintTile(g, tileX, tileY);
+        trainsview.paint((Graphics2D) g, null);
+        stationRadius.paint((Graphics2D) g, null);
+        stationBoxes.paint((Graphics2D) g, null);
 
-		buildTrackRenderer.paint((Graphics2D) g, null);
-	}
+        buildTrackRenderer.paint((Graphics2D) g, null);
+    }
 
-	public void refreshTile(int x, int y) {
-		background.refreshTile(x, y);
-	}
+    public void refreshTile(int x, int y) {
+        background.refreshTile(x, y);
+    }
 
-	public void paintRect(Graphics g, Rectangle visibleRect) {
-		background.paintRect(g, visibleRect);
-		trainsview.paint((Graphics2D) g, visibleRect);
-		stationRadius.paint((Graphics2D) g, null);
-		stationBoxes.paint((Graphics2D) g, visibleRect);
-		buildTrackRenderer.paint((Graphics2D) g, null);
-	}
+    public void paintRect(Graphics g, Rectangle visibleRect) {
+        background.paintRect(g, visibleRect);
+        trainsview.paint((Graphics2D) g, visibleRect);
+        stationRadius.paint((Graphics2D) g, null);
+        stationBoxes.paint((Graphics2D) g, visibleRect);
+        buildTrackRenderer.paint((Graphics2D) g, null);
+    }
 
-	public void refreshAll() {
-		background.refreshAll();
-	}
+    public void refreshAll() {
+        background.refreshAll();
+    }
 }

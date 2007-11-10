@@ -27,88 +27,88 @@ import jfreerails.world.player.Player;
  * @author rob
  */
 public interface World extends ReadOnlyWorld {
-	int addActiveEntity(FreerailsPrincipal principal, Activity element);
+    int addActiveEntity(FreerailsPrincipal principal, Activity element);
 
-	void add(FreerailsPrincipal principal, int index, Activity element);
+    void add(FreerailsPrincipal principal, int index, Activity element);
 
-	/**
-	 * Appends the specified element to the end of the specifed list and returns
-	 * the index that can be used to retrieve it.
-	 */
-	int add(FreerailsPrincipal principal, KEY key, FreerailsSerializable element);
+    /**
+     * Appends the specified element to the end of the specifed list and returns
+     * the index that can be used to retrieve it.
+     */
+    int add(FreerailsPrincipal principal, KEY key, FreerailsSerializable element);
 
-	/**
-	 * Appends the specified element to the end of the specifed list and returns
-	 * the index that can be used to retrieve it.
-	 * 
-	 */
-	int add(SKEY key, FreerailsSerializable element);
+    /**
+     * Appends the specified element to the end of the specifed list and returns
+     * the index that can be used to retrieve it.
+     * 
+     */
+    int add(SKEY key, FreerailsSerializable element);
 
-	int addPlayer(Player player);
+    int addPlayer(Player player);
 
-	/**
-	 * Adds the specified transaction to the specified principal's bank account.
-	 */
-	void addTransaction(FreerailsPrincipal p, Transaction t);
+    /**
+     * Adds the specified transaction to the specified principal's bank account.
+     */
+    void addTransaction(FreerailsPrincipal p, Transaction t);
 
-	/**
-	 * Returns a copy of this world object - making changes to this copy will
-	 * not change this object.
-	 */
-	World defensiveCopy();
+    /**
+     * Returns a copy of this world object - making changes to this copy will
+     * not change this object.
+     */
+    World defensiveCopy();
 
-	Activity removeLastActiveEntity(FreerailsPrincipal principal);
+    Activity removeLastActiveEntity(FreerailsPrincipal principal);
 
-	Activity removeLastActivity(FreerailsPrincipal principal, int index);
+    Activity removeLastActivity(FreerailsPrincipal principal, int index);
 
-	/**
-	 * Removes the last element from the specified list.
-	 */
-	FreerailsSerializable removeLast(FreerailsPrincipal principal, KEY key);
+    /**
+     * Removes the last element from the specified list.
+     */
+    FreerailsSerializable removeLast(FreerailsPrincipal principal, KEY key);
 
-	/**
-	 * Removes the last element from the specified list.
-	 * 
-	 */
-	FreerailsSerializable removeLast(SKEY key);
+    /**
+     * Removes the last element from the specified list.
+     * 
+     */
+    FreerailsSerializable removeLast(SKEY key);
 
-	/**
-	 * Removes and returns the last transaction added the the specified
-	 * principal's bank account. This method is only here so that moves that add
-	 * transactions can be undone.
-	 */
-	Transaction removeLastTransaction(FreerailsPrincipal p);
+    /**
+     * Removes and returns the last transaction added the the specified
+     * principal's bank account. This method is only here so that moves that add
+     * transactions can be undone.
+     */
+    Transaction removeLastTransaction(FreerailsPrincipal p);
 
-	Player removeLastPlayer();
+    Player removeLastPlayer();
 
-	/**
-	 * Replaces the element mapped to the specified item with the specified
-	 * element.
-	 * 
-	 */
-	void set(ITEM item, FreerailsSerializable element);
+    /**
+     * Replaces the element mapped to the specified item with the specified
+     * element.
+     * 
+     */
+    void set(ITEM item, FreerailsSerializable element);
 
-	/**
-	 * Replaces the element at the specified position in the specified list with
-	 * the specified element.
-	 */
-	void set(FreerailsPrincipal principal, KEY key, int index,
-			FreerailsSerializable element);
+    /**
+     * Replaces the element at the specified position in the specified list with
+     * the specified element.
+     */
+    void set(FreerailsPrincipal principal, KEY key, int index,
+            FreerailsSerializable element);
 
-	/**
-	 * Replaces the element at the specified position in the specified list with
-	 * the specified element.
-	 * 
-	 */
-	void set(SKEY key, int index, FreerailsSerializable element);
+    /**
+     * Replaces the element at the specified position in the specified list with
+     * the specified element.
+     * 
+     */
+    void set(SKEY key, int index, FreerailsSerializable element);
 
-	/**
-	 * Replaces the tile at the specified position on the map with the specified
-	 * tile.
-	 * 
-	 */
-	void setTile(int x, int y, FreerailsSerializable tile);
+    /**
+     * Replaces the tile at the specified position on the map with the specified
+     * tile.
+     * 
+     */
+    void setTile(int x, int y, FreerailsSerializable tile);
 
-	void setTime(GameTime t);
+    void setTime(GameTime t);
 
 }

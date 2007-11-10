@@ -18,15 +18,15 @@ import jfreerails.world.top.World;
  * 
  */
 public class TileSetFactoryImpl implements TileSetFactory {
-	public void addTerrainTileTypesList(World w) {
-		try {
-			java.net.URL url = RunTypesParser.class
-					.getResource("/jfreerails/data/cargo_and_terrain.xml");
+    public void addTerrainTileTypesList(World w) {
+        try {
+            java.net.URL url = RunTypesParser.class
+                    .getResource("/jfreerails/data/cargo_and_terrain.xml");
 
-			CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(w));
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IllegalStateException();
-		}
-	}
+            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(w));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException();
+        }
+    }
 }

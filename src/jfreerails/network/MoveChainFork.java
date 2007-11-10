@@ -11,8 +11,6 @@ import jfreerails.move.Move;
 import jfreerails.move.RemoveItemFromListMove;
 import jfreerails.move.TimeTickMove;
 import jfreerails.move.UndoMove;
-import jfreerails.move.WorldDiffMove;
-import jfreerails.move.WorldDiffMove.MapDiff;
 import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -125,16 +123,16 @@ final public class MoveChainFork implements MoveReceiver {
             } else if (move instanceof MapUpdateMove) {
                 Rectangle r = ((MapUpdateMove) move).getUpdatedTiles();
                 if (r.x != 0 && r.y != 0 && r.width != 0 && r.height != 0) {
-//                    System.out.println("TilesChanged = " + r + " "
-//                            + move.getClass().getCanonicalName());
-//                    if (move instanceof WorldDiffMove) {
-//                        WorldDiffMove wm = (WorldDiffMove) move;
-//                        ImList<MapDiff> diffs = wm.getDiffs();
-//                        for (int i = 0; i < diffs.size(); i++) {
-//                            System.out.println(" " + diffs.get(i).x + "/"
-//                                    + diffs.get(i).y);
-//                        }
-//                    }
+                    // System.out.println("TilesChanged = " + r + " "
+                    // + move.getClass().getCanonicalName());
+                    // if (move instanceof WorldDiffMove) {
+                    // WorldDiffMove wm = (WorldDiffMove) move;
+                    // ImList<MapDiff> diffs = wm.getDiffs();
+                    // for (int i = 0; i < diffs.size(); i++) {
+                    // System.out.println(" " + diffs.get(i).x + "/"
+                    // + diffs.get(i).y);
+                    // }
+                    // }
                     sendMapUpdated(r);
                 }
             } else if (move instanceof TimeTickMove) {

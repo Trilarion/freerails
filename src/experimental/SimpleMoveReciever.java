@@ -19,23 +19,23 @@ import jfreerails.world.top.World;
  * 
  */
 public final class SimpleMoveReciever implements UntriedMoveReceiver {
-	private final World w;
+    private final World w;
 
-	public SimpleMoveReciever(World w) {
-		this.w = w;
-		if (null == w)
-			throw new NullPointerException();
-	}
+    public SimpleMoveReciever(World w) {
+        this.w = w;
+        if (null == w)
+            throw new NullPointerException();
+    }
 
-	public MoveStatus tryDoMove(Move move) {
-		return move.tryDoMove(w, Player.AUTHORITATIVE);
-	}
+    public MoveStatus tryDoMove(Move move) {
+        return move.tryDoMove(w, Player.AUTHORITATIVE);
+    }
 
     public void processMove(Move move) {
         move.doMove(w, Player.AUTHORITATIVE);
     }
 
-	public void processPreMove(PreMove pm) {
-		processMove(pm.generateMove(w));
-	}
+    public void processPreMove(PreMove pm) {
+        processMove(pm.generateMove(w));
+    }
 }

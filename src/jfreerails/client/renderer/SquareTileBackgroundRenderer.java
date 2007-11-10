@@ -15,41 +15,42 @@ import java.awt.Graphics;
  * @author Luke Lindsay 01 November 2001
  * @version 1.0
  */
-final public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRenderer {
-	private final MapLayerRenderer mapView;
+final public class SquareTileBackgroundRenderer extends
+        BufferedTiledBackgroundRenderer {
+    private final MapLayerRenderer mapView;
 
-	@Override
-	protected void paintBufferRectangle(int x, int y, int width, int height) {
-		// Fix for bug [ 1303162 ]
-		// If the buffer hasn't been set yet, don't try and refresh it!
-		if (null != super.backgroundBuffer) {
-			Graphics gg = bg.create();
-			gg.setClip(x, y, width, height);
-			gg.translate(-bufferRect.x, -bufferRect.y);
-			mapView.paintRect(gg, bufferRect);
-		}
-	}
+    @Override
+    protected void paintBufferRectangle(int x, int y, int width, int height) {
+        // Fix for bug [ 1303162 ]
+        // If the buffer hasn't been set yet, don't try and refresh it!
+        if (null != super.backgroundBuffer) {
+            Graphics gg = bg.create();
+            gg.setClip(x, y, width, height);
+            gg.translate(-bufferRect.x, -bufferRect.y);
+            mapView.paintRect(gg, bufferRect);
+        }
+    }
 
-	public SquareTileBackgroundRenderer(MapLayerRenderer mv) {
-		if (null == mv) {
-			throw new NullPointerException();
-		}
+    public SquareTileBackgroundRenderer(MapLayerRenderer mv) {
+        if (null == mv) {
+            throw new NullPointerException();
+        }
 
-		this.mapView = mv;
-	}
+        this.mapView = mv;
+    }
 
-	public void paintTile(Graphics g, int tileX, int tileY) {
-		mapView.paintTile(g, tileX, tileY);
-	}
+    public void paintTile(Graphics g, int tileX, int tileY) {
+        mapView.paintTile(g, tileX, tileY);
+    }
 
-	public void refreshTile(int x, int y) {
-		// The backgroundBuffer gets created on the first call to
-		// backgroundBuffer.paintRect(..)
-		// so we need a check here to avoid a null pointer exception.
-		if (null != super.backgroundBuffer) {
-			Graphics gg = bg.create();
-			gg.translate(-bufferRect.x, -bufferRect.y);
-			mapView.paintTile(gg, x, y);
-		}
-	}
+    public void refreshTile(int x, int y) {
+        // The backgroundBuffer gets created on the first call to
+        // backgroundBuffer.paintRect(..)
+        // so we need a check here to avoid a null pointer exception.
+        if (null != super.backgroundBuffer) {
+            Graphics gg = bg.create();
+            gg.translate(-bufferRect.x, -bufferRect.y);
+            mapView.paintTile(gg, x, y);
+        }
+    }
 }

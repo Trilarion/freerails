@@ -16,40 +16,40 @@ import jfreerails.client.renderer.MapRenderer;
  * @author Luke
  */
 public class OverviewMapJComponent extends JPanel {
-	private static final long serialVersionUID = 3258697585148376888L;
+    private static final long serialVersionUID = 3258697585148376888L;
 
-	private MapRenderer mapView = new BlankMapRenderer(0.4F);
+    private MapRenderer mapView = new BlankMapRenderer(0.4F);
 
-	private final Rectangle mainMapVisRect;
+    private final Rectangle mainMapVisRect;
 
-	public OverviewMapJComponent(Rectangle r) {
-		this.setPreferredSize(mapView.getMapSizeInPixels());
-		mainMapVisRect = r;
-	}
+    public OverviewMapJComponent(Rectangle r) {
+        this.setPreferredSize(mapView.getMapSizeInPixels());
+        mainMapVisRect = r;
+    }
 
-	public void setup(MapRenderer mv) {
-		mapView = mv;
-		this.setPreferredSize(mapView.getMapSizeInPixels());
-		this.setMinimumSize(this.getPreferredSize());
-		this.setSize(this.getPreferredSize());
+    public void setup(MapRenderer mv) {
+        mapView = mv;
+        this.setPreferredSize(mapView.getMapSizeInPixels());
+        this.setMinimumSize(this.getPreferredSize());
+        this.setSize(this.getPreferredSize());
 
-		if (null != this.getParent()) {
-			this.getParent().validate();
-		}
-	}
+        if (null != this.getParent()) {
+            this.getParent().validate();
+        }
+    }
 
-	@Override
-	protected void paintComponent(java.awt.Graphics g) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-		java.awt.Rectangle r = this.getVisibleRect();
-		mapView.paintRect(g2, r);
-		g2.setColor(Color.WHITE);
-		g2.drawRect(mainMapVisRect.x, mainMapVisRect.y, mainMapVisRect.width,
-				mainMapVisRect.height);
-	}
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+        java.awt.Rectangle r = this.getVisibleRect();
+        mapView.paintRect(g2, r);
+        g2.setColor(Color.WHITE);
+        g2.drawRect(mainMapVisRect.x, mainMapVisRect.y, mainMapVisRect.width,
+                mainMapVisRect.height);
+    }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return mapView.getMapSizeInPixels();
-	}
+    @Override
+    public Dimension getPreferredSize() {
+        return mapView.getMapSizeInPixels();
+    }
 }

@@ -17,5 +17,5 @@ import jfreerails.world.top.ReadOnlyWorld;
  * 
  */
 public interface PreMove extends FreerailsSerializable {
-	Move generateMove(ReadOnlyWorld w);
+    Move generateMove(ReadOnlyWorld w);
 }

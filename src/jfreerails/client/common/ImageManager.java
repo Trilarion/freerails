@@ -16,22 +16,22 @@ import java.io.IOException;
  */
 public interface ImageManager {
 
-	Image newBlankImage(int height, int width);
+    Image newBlankImage(int height, int width);
 
-	void setPathToReadFrom(String s);
+    void setPathToReadFrom(String s);
 
-	void setPathToWriteTo(String s);
+    void setPathToWriteTo(String s);
 
-	Image getImage(String relativeFilename) throws IOException;
+    Image getImage(String relativeFilename) throws IOException;
 
-	boolean contains(String relativeFilename);
+    boolean contains(String relativeFilename);
 
-	void setImage(String relativeFilename, Image i);
+    void setImage(String relativeFilename, Image i);
 
-	void writeImage(String relativeFilename) throws IOException;
+    void writeImage(String relativeFilename) throws IOException;
 
-	void writeAllImages() throws IOException;
+    void writeAllImages() throws IOException;
 
-	Image getScaledImage(String relativeFilename, int height)
-			throws IOException;
+    Image getScaledImage(String relativeFilename, int height)
+            throws IOException;
 }

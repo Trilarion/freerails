@@ -12,7 +12,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public interface Message2Server extends FreerailsSerializable {
-	int getID();
+    int getID();
 
-	MessageStatus execute(ServerControlInterface server);
+    MessageStatus execute(ServerControlInterface server);
 }

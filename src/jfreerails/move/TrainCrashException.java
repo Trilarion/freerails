@@ -11,26 +11,26 @@ package jfreerails.move;
  * @author mduarte-leon
  */
 public class TrainCrashException extends Exception {
-	private static final long serialVersionUID = 3978710596948342065L;
+    private static final long serialVersionUID = 3978710596948342065L;
 
-	private int trainA;
+    private int trainA;
 
-	private int trainB;
+    private int trainB;
 
-	public TrainCrashException() {
+    public TrainCrashException() {
 
-	}
+    }
 
-	public TrainCrashException(int aTrain, int bTrain) {
-		trainA = aTrain;
-		trainB = bTrain;
-	}
+    public TrainCrashException(int aTrain, int bTrain) {
+        trainA = aTrain;
+        trainB = bTrain;
+    }
 
-	public int getTrainA() {
-		return trainA;
-	}
+    public int getTrainA() {
+        return trainA;
+    }
 
-	public int getTrainB() {
-		return trainB;
-	}
+    public int getTrainB() {
+        return trainB;
+    }
 }

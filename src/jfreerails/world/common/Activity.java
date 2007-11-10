@@ -4,12 +4,11 @@
  */
 package jfreerails.world.common;
 
-
 public interface Activity<E extends FreerailsSerializable> extends
-		FreerailsSerializable {
+        FreerailsSerializable {
 
-	double duration();
+    double duration();
 
-	E getState(double dt);
+    E getState(double dt);
 
 }

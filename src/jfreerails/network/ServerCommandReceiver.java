@@ -13,5 +13,5 @@ import jfreerails.controller.Message2Server;
  * 
  */
 public interface ServerCommandReceiver {
-	void sendCommand(Message2Server c);
+    void sendCommand(Message2Server c);
 }

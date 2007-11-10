@@ -19,57 +19,58 @@ import jfreerails.world.terrain.TerrainType;
  * @author lindsal
  */
 public final class LegalTrackPlacement implements FreerailsSerializable {
-	private static final long serialVersionUID = 3616445687756437049L;
+    private static final long serialVersionUID = 3616445687756437049L;
 
-	private final ImHashSet<TerrainType.Category> terrainTypes;// = new
-																// HashSet<TerrainType.Category>();
+    private final ImHashSet<TerrainType.Category> terrainTypes;// = new
 
-	public enum PlacementRule {
-		ONLY_ON_THESE, ANYWHERE_EXCEPT_ON_THESE
-	}
+    // HashSet<TerrainType.Category>();
+
+    public enum PlacementRule {
+        ONLY_ON_THESE, ANYWHERE_EXCEPT_ON_THESE
+    }
 
     private final PlacementRule placementRule;
 
-	@Override
-	public int hashCode() {
-		return (placementRule != null ? placementRule.hashCode() : 0);
-	}
+    @Override
+    public int hashCode() {
+        return (placementRule != null ? placementRule.hashCode() : 0);
+    }
 
-	public LegalTrackPlacement(HashSet<TerrainType.Category> types,
-			PlacementRule placementRule) {
-		this.placementRule = placementRule;
+    public LegalTrackPlacement(HashSet<TerrainType.Category> types,
+            PlacementRule placementRule) {
+        this.placementRule = placementRule;
 
-		Iterator<TerrainType.Category> iterator = types.iterator();
+        Iterator<TerrainType.Category> iterator = types.iterator();
 
-		HashSet<TerrainType.Category> temp = new HashSet<TerrainType.Category>();
-		while (iterator.hasNext()) {
-			temp.add(iterator.next());
-		}
-		terrainTypes = new ImHashSet<TerrainType.Category>(temp);
-	}
+        HashSet<TerrainType.Category> temp = new HashSet<TerrainType.Category>();
+        while (iterator.hasNext()) {
+            temp.add(iterator.next());
+        }
+        terrainTypes = new ImHashSet<TerrainType.Category>(temp);
+    }
 
-	public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
-		if (PlacementRule.ONLY_ON_THESE == placementRule) {
-			return terrainTypes.contains(terrainType);
-		}
-		return !terrainTypes.contains(terrainType);
-	}
+    public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
+        if (PlacementRule.ONLY_ON_THESE == placementRule) {
+            return terrainTypes.contains(terrainType);
+        }
+        return !terrainTypes.contains(terrainType);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof LegalTrackPlacement) {
-			LegalTrackPlacement test = (LegalTrackPlacement) o;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof LegalTrackPlacement) {
+            LegalTrackPlacement test = (LegalTrackPlacement) o;
 
-			if (this.placementRule.equals(test.getPlacementRule())
-					&& this.terrainTypes.equals(test.terrainTypes)) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
+            if (this.placementRule.equals(test.getPlacementRule())
+                    && this.terrainTypes.equals(test.terrainTypes)) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 
-	public PlacementRule getPlacementRule() {
-		return placementRule;
-	}
+    public PlacementRule getPlacementRule() {
+        return placementRule;
+    }
 }

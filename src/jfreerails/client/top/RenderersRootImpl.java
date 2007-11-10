@@ -38,289 +38,289 @@ import jfreerails.world.train.EngineType;
  * @author Luke
  */
 public class RenderersRootImpl implements RenderersRoot {
-	private static final Logger logger = Logger.getLogger(RenderersRootImpl.class
-			.getName());
+    private static final Logger logger = Logger
+            .getLogger(RenderersRootImpl.class.getName());
 
-	private final TileRendererList tiles;
+    private final TileRendererList tiles;
 
-	private final TrackPieceRendererList trackPieceViewList;
+    private final TrackPieceRendererList trackPieceViewList;
 
-	private final ImageManager imageManager;
-	
-	private final ArrayList<TrainImages> wagonImages = new ArrayList<TrainImages>();
-	
-	private final ArrayList<TrainImages> engineImages = new ArrayList<TrainImages>();
+    private final ImageManager imageManager;
 
-	public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
-			throws IOException {
-		URL out = RenderersRootImpl.class.getResource("/experimental");
-		imageManager = new ImageManagerImpl("/jfreerails/client/graphics/", out
-				.getPath());
-		tiles = loadNewTileViewList(w, pm);
+    private final ArrayList<TrainImages> wagonImages = new ArrayList<TrainImages>();
 
-		trackPieceViewList = loadTrackViews(w, pm);
+    private final ArrayList<TrainImages> engineImages = new ArrayList<TrainImages>();
 
-		//rr = new OldTrainImages(w, imageManager, pm);
-		loadTrainImages(w, pm);
-		preloadSounds(pm);
+    public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+            throws IOException {
+        URL out = RenderersRootImpl.class.getResource("/experimental");
+        imageManager = new ImageManagerImpl("/jfreerails/client/graphics/", out
+                .getPath());
+        tiles = loadNewTileViewList(w, pm);
 
-	}
-	
-	private void loadTrainImages(ReadOnlyWorld w, FreerailsProgressMonitor pm)
-	throws IOException {
-		// Setup progress monitor..
+        trackPieceViewList = loadTrackViews(w, pm);
+
+        // rr = new OldTrainImages(w, imageManager, pm);
+        loadTrainImages(w, pm);
+        preloadSounds(pm);
+
+    }
+
+    private void loadTrainImages(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+            throws IOException {
+        // Setup progress monitor..
         final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
-        final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);            
+        final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);
         pm.nextStep(numberOfWagonTypes + numberOfEngineTypes);
         int progress = 0;
         pm.setValue(progress);
-        
-        //Load wagon images.
+
+        // Load wagon images.
         for (int i = 0; i < numberOfWagonTypes; i++) {
             CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
             String name = cargoType.getName();
-			TrainImages ti = new TrainImages(imageManager, name);
+            TrainImages ti = new TrainImages(imageManager, name);
             wagonImages.add(ti);
             pm.setValue(++progress);
         }
-        
-        //Load engine images
+
+        // Load engine images
         for (int i = 0; i < numberOfEngineTypes; i++) {
             EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES, i);
-            String engineTypeName = engineType
-                        .getEngineTypeName();
+            String engineTypeName = engineType.getEngineTypeName();
             TrainImages ti = new TrainImages(imageManager, engineTypeName);
             engineImages.add(ti);
             pm.setValue(++progress);
         }
-		
-	}
 
-	private void preloadSounds(FreerailsProgressMonitor pm) {
-		// Pre-load sounds..
-		String[] soundsFiles = { "/jfreerails/client/sounds/buildtrack.wav",
-				"/jfreerails/client/sounds/cash.wav",
-				"/jfreerails/client/sounds/removetrack.wav",
-				"/jfreerails/client/sounds/whistle.wav" };		
-		pm.nextStep(soundsFiles.length);
-		SoundManager sm = SoundManager.getSoundManager();
-		for (int i = 0; i < soundsFiles.length; i++) {
-			try {
-				sm.addClip(soundsFiles[i]);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnsupportedAudioFileException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			pm.setValue(i + 1);
-		}
-	}
+    }
 
-	private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
-			FreerailsProgressMonitor pm) throws IOException {
-		return new TrackPieceRendererList(w, imageManager, pm);
-	}
+    private void preloadSounds(FreerailsProgressMonitor pm) {
+        // Pre-load sounds..
+        String[] soundsFiles = { "/jfreerails/client/sounds/buildtrack.wav",
+                "/jfreerails/client/sounds/cash.wav",
+                "/jfreerails/client/sounds/removetrack.wav",
+                "/jfreerails/client/sounds/whistle.wav" };
+        pm.nextStep(soundsFiles.length);
+        SoundManager sm = SoundManager.getSoundManager();
+        for (int i = 0; i < soundsFiles.length; i++) {
+            try {
+                sm.addClip(soundsFiles[i]);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (UnsupportedAudioFileException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (LineUnavailableException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            pm.setValue(i + 1);
+        }
+    }
 
-	private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
-			FreerailsProgressMonitor pm) throws IOException {
-		ArrayList<TileRenderer> tileRenderers = new ArrayList<TileRenderer>();
+    private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
+            FreerailsProgressMonitor pm) throws IOException {
+        return new TrackPieceRendererList(w, imageManager, pm);
+    }
 
-		// Setup progress monitor..		
+    private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
+            FreerailsProgressMonitor pm) throws IOException {
+        ArrayList<TileRenderer> tileRenderers = new ArrayList<TileRenderer>();
 
-		int numberOfTypes = w.size(SKEY.TERRAIN_TYPES);
-		pm.nextStep(numberOfTypes);
+        // Setup progress monitor..
 
-		int progress = 0;
-		pm.setValue(progress);
+        int numberOfTypes = w.size(SKEY.TERRAIN_TYPES);
+        pm.nextStep(numberOfTypes);
 
-		for (int i = 0; i < numberOfTypes; i++) {
-			TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
-			int[] typesTreatedAsTheSame = new int[] { i };
+        int progress = 0;
+        pm.setValue(progress);
 
-			TileRenderer tr = null;
-			pm.setValue(++progress);
+        for (int i = 0; i < numberOfTypes; i++) {
+            TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
+            int[] typesTreatedAsTheSame = new int[] { i };
 
-			try {
-				// XXX hack to make rivers flow into ocean and habours & occean
-				// treate habours as the same type.
-				TerrainType.Category thisTerrainCategory = t.getCategory();
+            TileRenderer tr = null;
+            pm.setValue(++progress);
 
-				if (thisTerrainCategory.equals(TerrainType.Category.River)
-						|| thisTerrainCategory
-								.equals(TerrainType.Category.Ocean)) {
-					// Count number of types with category "water"
-					int count = 0;
+            try {
+                // XXX hack to make rivers flow into ocean and habours & occean
+                // treate habours as the same type.
+                TerrainType.Category thisTerrainCategory = t.getCategory();
 
-					for (int j = 0; j < numberOfTypes; j++) {
-						TerrainType t2 = (TerrainType) w.get(
-								SKEY.TERRAIN_TYPES, j);
-						TerrainType.Category terrainCategory = t2.getCategory();
+                if (thisTerrainCategory.equals(TerrainType.Category.River)
+                        || thisTerrainCategory
+                                .equals(TerrainType.Category.Ocean)) {
+                    // Count number of types with category "water"
+                    int count = 0;
 
-						if (terrainCategory.equals(TerrainType.Category.Ocean)
-								|| terrainCategory.equals(thisTerrainCategory)) {
-							count++;
-						}
-					}
+                    for (int j = 0; j < numberOfTypes; j++) {
+                        TerrainType t2 = (TerrainType) w.get(
+                                SKEY.TERRAIN_TYPES, j);
+                        TerrainType.Category terrainCategory = t2.getCategory();
 
-					typesTreatedAsTheSame = new int[count];
-					count = 0;
+                        if (terrainCategory.equals(TerrainType.Category.Ocean)
+                                || terrainCategory.equals(thisTerrainCategory)) {
+                            count++;
+                        }
+                    }
 
-					for (int j = 0; j < numberOfTypes; j++) {
-						TerrainType t2 = (TerrainType) w.get(
-								SKEY.TERRAIN_TYPES, j);
-						TerrainType.Category terrainCategory = t2.getCategory();
+                    typesTreatedAsTheSame = new int[count];
+                    count = 0;
 
-						if (terrainCategory.equals(TerrainType.Category.Ocean)
-								|| terrainCategory.equals(thisTerrainCategory)) {
-							typesTreatedAsTheSame[count] = j;
-							count++;
-						}
-					}
-				}
+                    for (int j = 0; j < numberOfTypes; j++) {
+                        TerrainType t2 = (TerrainType) w.get(
+                                SKEY.TERRAIN_TYPES, j);
+                        TerrainType.Category terrainCategory = t2.getCategory();
 
-				tr = new RiverStyleTileRenderer(imageManager,
-						typesTreatedAsTheSame, t);
-				tileRenderers.add(tr);
+                        if (terrainCategory.equals(TerrainType.Category.Ocean)
+                                || terrainCategory.equals(thisTerrainCategory)) {
+                            typesTreatedAsTheSame[count] = j;
+                            count++;
+                        }
+                    }
+                }
 
-				continue;
-			} catch (IOException io) {
-			}
+                tr = new RiverStyleTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-			try {
-				tr = new ForestStyleTileRenderer(imageManager,
-						typesTreatedAsTheSame, t);
-				tileRenderers.add(tr);
+                continue;
+            } catch (IOException io) {
+            }
 
-				continue;
-			} catch (IOException io) {
-			}
+            try {
+                tr = new ForestStyleTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-			try {
-				tr = new ChequeredTileRenderer(imageManager,
-						typesTreatedAsTheSame, t);
-				tileRenderers.add(tr);
+                continue;
+            } catch (IOException io) {
+            }
 
-				continue;
-			} catch (IOException io) {
-			}
+            try {
+                tr = new ChequeredTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-			try {
-				tr = new StandardTileRenderer(imageManager,
-						typesTreatedAsTheSame, t);
-				tileRenderers.add(tr);
+                continue;
+            } catch (IOException io) {
+            }
 
-				continue;
-			} catch (IOException io) {
-				// If the image is missing, we generate it.
-				logger
-						.warning("No tile renderer for "
-								+ t.getTerrainTypeName());
+            try {
+                tr = new StandardTileRenderer(imageManager,
+                        typesTreatedAsTheSame, t);
+                tileRenderers.add(tr);
 
-				String filename = StandardTileRenderer.generateFilename(t
-						.getTerrainTypeName());
-				Image image = QuickRGBTileRendererList.createImageFor(t);
-				imageManager.setImage(filename, image);
+                continue;
+            } catch (IOException io) {
+                // If the image is missing, we generate it.
+                logger
+                        .warning("No tile renderer for "
+                                + t.getTerrainTypeName());
 
-				// generatedImages.setImage(filename, image);
-				try {
-					tr = new StandardTileRenderer(imageManager,
-							typesTreatedAsTheSame, t);
-					tileRenderers.add(tr);
+                String filename = StandardTileRenderer.generateFilename(t
+                        .getTerrainTypeName());
+                Image image = QuickRGBTileRendererList.createImageFor(t);
+                imageManager.setImage(filename, image);
 
-					continue;
-				} catch (IOException io2) {
-					io2.printStackTrace();
-					throw new IllegalStateException();
-				}
-			}
-		}
+                // generatedImages.setImage(filename, image);
+                try {
+                    tr = new StandardTileRenderer(imageManager,
+                            typesTreatedAsTheSame, t);
+                    tileRenderers.add(tr);
 
-		// XXXX add special tile renderer for habours
-		TileRenderer occeanTileRenderer = null;
+                    continue;
+                } catch (IOException io2) {
+                    io2.printStackTrace();
+                    throw new IllegalStateException();
+                }
+            }
+        }
 
-		for (int j = 0; j < numberOfTypes; j++) {
-			TerrainType t2 = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
-			String terrainName = t2.getTerrainTypeName();
+        // XXXX add special tile renderer for habours
+        TileRenderer occeanTileRenderer = null;
 
-			if (terrainName.equalsIgnoreCase("Ocean")) {
-				occeanTileRenderer = tileRenderers.get(j);
+        for (int j = 0; j < numberOfTypes; j++) {
+            TerrainType t2 = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
+            String terrainName = t2.getTerrainTypeName();
 
-				break;
-			}
-		}
+            if (terrainName.equalsIgnoreCase("Ocean")) {
+                occeanTileRenderer = tileRenderers.get(j);
 
-		for (int j = 0; j < numberOfTypes; j++) {
-			TerrainType t2 = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
-			String terrainName = t2.getTerrainTypeName();
+                break;
+            }
+        }
 
-			if (terrainName.equalsIgnoreCase("Harbour")) {
-				TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
-				TileRenderer tr = new SpecialTileRenderer(imageManager,
-						new int[] { j }, t, occeanTileRenderer);
-				tileRenderers.set(j, tr);
-				break;
-			}
-		}
+        for (int j = 0; j < numberOfTypes; j++) {
+            TerrainType t2 = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
+            String terrainName = t2.getTerrainTypeName();
 
-		return new TileRendererListImpl(tileRenderers);
-	}
+            if (terrainName.equalsIgnoreCase("Harbour")) {
+                TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
+                TileRenderer tr = new SpecialTileRenderer(imageManager,
+                        new int[] { j }, t, occeanTileRenderer);
+                tileRenderers.set(j, tr);
+                break;
+            }
+        }
 
-	public TileRendererList getTileViewList() {
-		return this.tiles;
-	}
+        return new TileRendererListImpl(tileRenderers);
+    }
 
-	public TrackPieceRendererList getTrackPieceViewList() {
-		return this.trackPieceViewList;
-	}
+    public TileRendererList getTileViewList() {
+        return this.tiles;
+    }
 
-	public boolean validate(ReadOnlyWorld w) {
-		boolean okSoFar = true;
+    public TrackPieceRendererList getTrackPieceViewList() {
+        return this.trackPieceViewList;
+    }
 
-		if (!this.tiles.validate(w)) {
-			okSoFar = false;
-		}
+    public boolean validate(ReadOnlyWorld w) {
+        boolean okSoFar = true;
 
-		if (!this.trackPieceViewList.validate(w)) {
-			okSoFar = false;
-		}
+        if (!this.tiles.validate(w)) {
+            okSoFar = false;
+        }
 
-		return okSoFar;
-	}
+        if (!this.trackPieceViewList.validate(w)) {
+            okSoFar = false;
+        }
 
-//	public OldTrainImages getTrainImages() {
-//		return rr;
-//	}
+        return okSoFar;
+    }
 
-	public ImageManager getImageManager() {
-		return imageManager;
-	}
+    // public OldTrainImages getTrainImages() {
+    // return rr;
+    // }
 
-	public Image getImage(String relativeFilename) throws IOException {		
-		return imageManager.getImage(relativeFilename);
-	}
+    public ImageManager getImageManager() {
+        return imageManager;
+    }
 
-	public TileRenderer getTileViewWithNumber(int i) {
-		return tiles.getTileViewWithNumber(i);		
-	}
+    public Image getImage(String relativeFilename) throws IOException {
+        return imageManager.getImage(relativeFilename);
+    }
 
-	public TrackPieceRenderer getTrackPieceView(int i) {		
-		return trackPieceViewList.getTrackPieceView(i);
-	}
+    public TileRenderer getTileViewWithNumber(int i) {
+        return tiles.getTileViewWithNumber(i);
+    }
 
-	public TrainImages getWagonImages(int type) {		
-		return wagonImages.get(type);
-	}
+    public TrackPieceRenderer getTrackPieceView(int i) {
+        return trackPieceViewList.getTrackPieceView(i);
+    }
 
-	public TrainImages getEngineImages(int type) {
-		return engineImages.get(type);		
-	}
+    public TrainImages getWagonImages(int type) {
+        return wagonImages.get(type);
+    }
 
-	public Image getScaledImage(String relativeFilename, int height) throws IOException {
-		return imageManager.getScaledImage(relativeFilename, height);
-	}
+    public TrainImages getEngineImages(int type) {
+        return engineImages.get(type);
+    }
+
+    public Image getScaledImage(String relativeFilename, int height)
+            throws IOException {
+        return imageManager.getScaledImage(relativeFilename, height);
+    }
 }

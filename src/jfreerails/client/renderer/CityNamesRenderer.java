@@ -22,21 +22,21 @@ import jfreerails.world.top.SKEY;
  * @author Scott
  */
 public class CityNamesRenderer implements Painter {
-	private final ReadOnlyWorld w;
+    private final ReadOnlyWorld w;
 
-	public CityNamesRenderer(ReadOnlyWorld world) {
-		this.w = world;
-	}
+    public CityNamesRenderer(ReadOnlyWorld world) {
+        this.w = world;
+    }
 
-	public void paint(Graphics2D g,Rectangle newVisibleRectectangle) {
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Arial", 0, 20));
+    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", 0, 20));
 
-		// draw city names onto map
-		for (int i = 0; i < w.size(SKEY.CITIES); i++) {
-			CityModel tempCity = (CityModel) w.get(SKEY.CITIES, i);
-			g.drawString(tempCity.getCityName(), tempCity.getCityX() * 30,
-					tempCity.getCityY() * 30 + 10);
-		}
-	}
+        // draw city names onto map
+        for (int i = 0; i < w.size(SKEY.CITIES); i++) {
+            CityModel tempCity = (CityModel) w.get(SKEY.CITIES, i);
+            g.drawString(tempCity.getCityName(), tempCity.getCityX() * 30,
+                    tempCity.getCityY() * 30 + 10);
+        }
+    }
 }

@@ -13,18 +13,19 @@ import junit.framework.TestCase;
  * 
  */
 public class CargoTypeTest extends TestCase {
-	public void testCargoType() {
-		// Test that invalid categories get rejected.
-		try {
-			new CargoType(10, "Test", Categories.getCategory("Non valid catgeory"));
-			fail();
-		} catch (Exception e) {
-		}
+    public void testCargoType() {
+        // Test that invalid categories get rejected.
+        try {
+            new CargoType(10, "Test", Categories
+                    .getCategory("Non valid catgeory"));
+            fail();
+        } catch (Exception e) {
+        }
 
-		try {
-			new CargoType(10, "Test", Categories.Mail);
-		} catch (Exception e) {
-			fail();
-		}
-	}
+        try {
+            new CargoType(10, "Test", Categories.Mail);
+        } catch (Exception e) {
+            fail();
+        }
+    }
 }

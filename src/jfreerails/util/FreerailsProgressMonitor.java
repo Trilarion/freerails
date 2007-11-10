@@ -12,21 +12,21 @@ package jfreerails.util;
  * @author Luke Lindsay
  */
 public interface FreerailsProgressMonitor {
-	public static final FreerailsProgressMonitor NULL_INSTANCE = new FreerailsProgressMonitor() {		
+    public static final FreerailsProgressMonitor NULL_INSTANCE = new FreerailsProgressMonitor() {
 
-		public void setValue(int i) {
-		}
+        public void setValue(int i) {
+        }
 
-		public void nextStep(int max) {
-		}
+        public void nextStep(int max) {
+        }
 
-		public void finished() {
-		}
-	};	
+        public void finished() {
+        }
+    };
 
-	void setValue(int i);
+    void setValue(int i);
 
-	void nextStep(int max);
+    void nextStep(int max);
 
-	void finished();
+    void finished();
 }

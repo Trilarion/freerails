@@ -40,181 +40,181 @@ import jfreerails.world.track.NullTrackPiece;
  * @author Robert Tuck
  */
 final public class ZoomedOutMapRenderer implements MapRenderer {
-	private final int imageWidth;
+    private final int imageWidth;
 
-	private final int imageHeight;
+    private final int imageHeight;
 
-	private final int mapWidth;
+    private final int mapWidth;
 
-	private final int mapHeight;
+    private final int mapHeight;
 
-	private final int mapX;
+    private final int mapX;
 
-	private final int mapY;
+    private final int mapY;
 
-	private final ReadOnlyWorld w;
+    private final ReadOnlyWorld w;
 
-	private BufferedImage one2oneImage;
+    private BufferedImage one2oneImage;
 
-	private BufferedImage mapImage;
+    private BufferedImage mapImage;
 
-	private final AffineTransform affineTransform;
+    private final AffineTransform affineTransform;
 
-	// private Graphics2D mapGraphics;
-	private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-			.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-			.getDefaultConfiguration();
+    // private Graphics2D mapGraphics;
+    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
+            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
+            .getDefaultConfiguration();
 
-	private boolean isDirty = true;
+    private boolean isDirty = true;
 
-	public static ZoomedOutMapRenderer getInstance(ReadOnlyWorld world,
-			Dimension maxSize) {
-		// Work with doubles to avoid rounding errors.
-		double worldWidth = world.getMapWidth();
-		double worldHeight = world.getMapHeight();
-		double scale;
+    public static ZoomedOutMapRenderer getInstance(ReadOnlyWorld world,
+            Dimension maxSize) {
+        // Work with doubles to avoid rounding errors.
+        double worldWidth = world.getMapWidth();
+        double worldHeight = world.getMapHeight();
+        double scale;
 
-		if (worldWidth / worldHeight > maxSize.getWidth() / maxSize.getHeight()) {
-			scale = maxSize.getWidth() / worldWidth;
-		} else {
-			scale = maxSize.getHeight() / worldHeight;
-		}
+        if (worldWidth / worldHeight > maxSize.getWidth() / maxSize.getHeight()) {
+            scale = maxSize.getWidth() / worldWidth;
+        } else {
+            scale = maxSize.getHeight() / worldHeight;
+        }
 
-		double height = scale * worldHeight;
-		double width = scale * worldWidth;
+        double height = scale * worldHeight;
+        double width = scale * worldWidth;
 
-		return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0,
-				world.getMapWidth(), world.getMapHeight());
-	}
+        return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0,
+                world.getMapWidth(), world.getMapHeight());
+    }
 
-	private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
-			int mapX, int mapY, int mapWidth, int mapHeight) {
-		w = world;
-		this.mapWidth = mapWidth;
-		this.mapHeight = mapHeight;
-		imageHeight = height;
-		imageWidth = width;
+    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
+            int mapX, int mapY, int mapWidth, int mapHeight) {
+        w = world;
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
+        imageHeight = height;
+        imageWidth = width;
 
-		double scalingFactor = ((double) imageHeight) / mapHeight;
-		affineTransform = AffineTransform.getScaleInstance(scalingFactor,
-				scalingFactor);
-		this.mapX = mapX;
-		this.mapY = mapY;
-		refresh();
-	}
+        double scalingFactor = ((double) imageHeight) / mapHeight;
+        affineTransform = AffineTransform.getScaleInstance(scalingFactor,
+                scalingFactor);
+        this.mapX = mapX;
+        this.mapY = mapY;
+        refresh();
+    }
 
-	public float getScale() {
-		return (float) imageHeight / (float) mapHeight;
-	}
+    public float getScale() {
+        return (float) imageHeight / (float) mapHeight;
+    }
 
-	public void paintRect(Graphics g, Rectangle visibleRect) {
-		renderOffScreenImage();
+    public void paintRect(Graphics g, Rectangle visibleRect) {
+        renderOffScreenImage();
 
-		g.drawImage(mapImage, 0, 0, null);
-	}
+        g.drawImage(mapImage, 0, 0, null);
+    }
 
-	private void renderOffScreenImage() {
-		if (isDirty) {
-			Graphics2D mapGraphics = mapImage.createGraphics();
+    private void renderOffScreenImage() {
+        if (isDirty) {
+            Graphics2D mapGraphics = mapImage.createGraphics();
 
-			mapGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            mapGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-			mapGraphics.setClip(0, 0, imageWidth, imageHeight);
-			mapGraphics.clearRect(0, 0, imageWidth, imageHeight);
-			mapGraphics.drawImage(one2oneImage, affineTransform, null);
-			isDirty = false;
-		}
-	}
+            mapGraphics.setClip(0, 0, imageWidth, imageHeight);
+            mapGraphics.clearRect(0, 0, imageWidth, imageHeight);
+            mapGraphics.drawImage(one2oneImage, affineTransform, null);
+            isDirty = false;
+        }
+    }
 
-	private void refreshTile(Point tile) {
-		FreerailsTile tt = (FreerailsTile) w.getTile(tile.x, tile.y);
+    private void refreshTile(Point tile) {
+        FreerailsTile tt = (FreerailsTile) w.getTile(tile.x, tile.y);
 
-		if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-			int typeNumber = tt.getTerrainTypeID();
-			TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES,
-					typeNumber);
-			one2oneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
-		} else {
-			/* black with alpha of 1 */
-			one2oneImage.setRGB(tile.x, tile.y, 0xff000000);
-		}
+        if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
+            int typeNumber = tt.getTerrainTypeID();
+            TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES,
+                    typeNumber);
+            one2oneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
+        } else {
+            /* black with alpha of 1 */
+            one2oneImage.setRGB(tile.x, tile.y, 0xff000000);
+        }
 
-		isDirty = true;
-		// int scaledX = (tile.x - mapX) * imageWidth / mapWidth;
-		// int scaledY = (tile.y - mapY) * imageHeight / mapHeight;
-		// int minx = scaledX < 2 ? 0 : scaledX - 2;
-		// int miny = scaledY < 2 ? 0 : scaledY - 2;
-		// int maxx = scaledX > imageWidth - 4 ? imageWidth : scaledX + 4;
-		// int maxy = scaledY > imageHeight - 4 ? imageHeight : scaledY + 4;
-		// mapGraphics.setClip(minx, miny, maxx - minx, maxy - miny);
-		// mapGraphics.clearRect(minx, miny, maxx - minx, maxy - miny);
-		// mapGraphics.drawImage(one2oneImage, affineTransform, null);
-	}
+        isDirty = true;
+        // int scaledX = (tile.x - mapX) * imageWidth / mapWidth;
+        // int scaledY = (tile.y - mapY) * imageHeight / mapHeight;
+        // int minx = scaledX < 2 ? 0 : scaledX - 2;
+        // int miny = scaledY < 2 ? 0 : scaledY - 2;
+        // int maxx = scaledX > imageWidth - 4 ? imageWidth : scaledX + 4;
+        // int maxy = scaledY > imageHeight - 4 ? imageHeight : scaledY + 4;
+        // mapGraphics.setClip(minx, miny, maxx - minx, maxy - miny);
+        // mapGraphics.clearRect(minx, miny, maxx - minx, maxy - miny);
+        // mapGraphics.drawImage(one2oneImage, affineTransform, null);
+    }
 
-	/**
-	 * Redraw the whole map onto a new buffer.
-	 */
-	private void refresh() {
-		isDirty = true;
+    /**
+     * Redraw the whole map onto a new buffer.
+     */
+    private void refresh() {
+        isDirty = true;
 
-		/* free up memory used by the old image */
-		if (mapImage != null) {
-			mapImage.flush();
-		}
+        /* free up memory used by the old image */
+        if (mapImage != null) {
+            mapImage.flush();
+        }
 
-		if (one2oneImage != null) {
-			one2oneImage.flush();
-		}
+        if (one2oneImage != null) {
+            one2oneImage.flush();
+        }
 
-		// if (mapGraphics != null) {
-		// mapGraphics.dispose();
-		// }
-		/* generate a 1:1 map of the terrain layer */
-		one2oneImage = defaultConfiguration.createCompatibleImage(mapWidth,
-				mapHeight, Transparency.TRANSLUCENT);
-		mapImage = defaultConfiguration.createCompatibleImage(imageWidth,
-				imageHeight, Transparency.OPAQUE);
+        // if (mapGraphics != null) {
+        // mapGraphics.dispose();
+        // }
+        /* generate a 1:1 map of the terrain layer */
+        one2oneImage = defaultConfiguration.createCompatibleImage(mapWidth,
+                mapHeight, Transparency.TRANSLUCENT);
+        mapImage = defaultConfiguration.createCompatibleImage(imageWidth,
+                imageHeight, Transparency.OPAQUE);
 
-		Point tile = new Point();
+        Point tile = new Point();
 
-		for (tile.x = mapX; tile.x < mapWidth + mapX; tile.x++) {
-			for (tile.y = mapY; tile.y < mapHeight + mapY; tile.y++) {
-				FreerailsTile tt = (FreerailsTile) w.getTile(tile.x, tile.y);
+        for (tile.x = mapX; tile.x < mapWidth + mapX; tile.x++) {
+            for (tile.y = mapY; tile.y < mapHeight + mapY; tile.y++) {
+                FreerailsTile tt = (FreerailsTile) w.getTile(tile.x, tile.y);
 
-				if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-					int typeNumber = tt.getTerrainTypeID();
-					TerrainType terrainType = (TerrainType) w.get(
-							SKEY.TERRAIN_TYPES, typeNumber);
-					one2oneImage.setRGB(tile.x - mapX, tile.y - mapY,
-							terrainType.getRGB());
-				} else {
-					/* black with alpha of 1 */
-					one2oneImage.setRGB(tile.x - mapX, tile.y - mapY,
-							0xff000000);
-				}
-			}
-		}
+                if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
+                    int typeNumber = tt.getTerrainTypeID();
+                    TerrainType terrainType = (TerrainType) w.get(
+                            SKEY.TERRAIN_TYPES, typeNumber);
+                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY,
+                            terrainType.getRGB());
+                } else {
+                    /* black with alpha of 1 */
+                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY,
+                            0xff000000);
+                }
+            }
+        }
 
-		renderOffScreenImage();
-	}
+        renderOffScreenImage();
+    }
 
-	/*
-	 * @see NewMapView#getMapSizeInPixels()
-	 */
-	public Dimension getMapSizeInPixels() {
-		return new Dimension(imageWidth, imageHeight);
-	}
+    /*
+     * @see NewMapView#getMapSizeInPixels()
+     */
+    public Dimension getMapSizeInPixels() {
+        return new Dimension(imageWidth, imageHeight);
+    }
 
-	public void paintTile(Graphics g, int tileX, int tileY) {
-		g.drawImage(mapImage, 0, 0, null);
-	}
+    public void paintTile(Graphics g, int tileX, int tileY) {
+        g.drawImage(mapImage, 0, 0, null);
+    }
 
-	public void refreshTile(int x, int y) {
-		refreshTile(new Point(x, y));
-	}
+    public void refreshTile(int x, int y) {
+        refreshTile(new Point(x, y));
+    }
 
-	public void refreshAll() {
-		refresh();
-	}
+    public void refreshAll() {
+        refresh();
+    }
 }

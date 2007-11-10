@@ -17,58 +17,58 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  */
 public class SetPropertyMessage2Client implements Message2Client {
-	private static final long serialVersionUID = 3544392521746034740L;
+    private static final long serialVersionUID = 3544392521746034740L;
 
-	private final int id;
+    private final int id;
 
-	private final ClientProperty key;
+    private final ClientProperty key;
 
-	private final FreerailsSerializable value;
+    private final FreerailsSerializable value;
 
-	public SetPropertyMessage2Client(int id, ClientProperty key,
-			FreerailsSerializable value) {
-		if (null == key || null == value)
-			throw new NullPointerException();
-		this.id = id;
-		this.key = key;
-		this.value = value;
-	}
+    public SetPropertyMessage2Client(int id, ClientProperty key,
+            FreerailsSerializable value) {
+        if (null == key || null == value)
+            throw new NullPointerException();
+        this.id = id;
+        this.key = key;
+        this.value = value;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof SetPropertyMessage2Client))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof SetPropertyMessage2Client))
+            return false;
 
-		final SetPropertyMessage2Client setPropertyMessage2Client = (SetPropertyMessage2Client) o;
+        final SetPropertyMessage2Client setPropertyMessage2Client = (SetPropertyMessage2Client) o;
 
-		if (id != setPropertyMessage2Client.id)
-			return false;
-		if (!key.equals(setPropertyMessage2Client.key))
-			return false;
-		if (!value.equals(setPropertyMessage2Client.value))
-			return false;
+        if (id != setPropertyMessage2Client.id)
+            return false;
+        if (!key.equals(setPropertyMessage2Client.key))
+            return false;
+        if (!value.equals(setPropertyMessage2Client.value))
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	public MessageStatus execute(ClientControlInterface client) {
-		client.setProperty(key, value);
+    public MessageStatus execute(ClientControlInterface client) {
+        client.setProperty(key, value);
 
-		return new MessageStatus(id, true);
-	}
+        return new MessageStatus(id, true);
+    }
 
-	public int getID() {
-		return id;
-	}
+    public int getID() {
+        return id;
+    }
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = id;
-		result = 29 * result + key.hashCode();
-		result = 29 * result + value.hashCode();
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result;
+        result = id;
+        result = 29 * result + key.hashCode();
+        result = 29 * result + value.hashCode();
+        return result;
+    }
 }

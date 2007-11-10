@@ -47,256 +47,256 @@ import java.util.logging.Logger;
  * @see java.util.regex.Pattern
  */
 public class ClassLocater {
-	protected static Logger logger = Logger.getLogger("jgf.classlocater");
+    protected static Logger logger = Logger.getLogger("jgf.classlocater");
 
-	protected LinkedList<String> skipPrefixes = new LinkedList<String>();
+    protected LinkedList<String> skipPrefixes = new LinkedList<String>();
 
-	/**
-	 * Finds all classes that implement or extend a given class name, and
-	 * instantiates precisely one copy of each
-	 * 
-	 * @param className
-	 *            fully qualified class or interface to find subclasses of, e.g.
-	 *            "java.lang.String"
-	 * @param skipPrefixes
-	 *            prefixes of fully qualified packages or class names to
-	 *            completely ignore (i.e. not bother to check), making it
-	 *            faster, e.g. "java.", "com.sun"
-	 * @return instantiated objects
-	 */
-	public static List instantiateOneOfEach(String className,
-			String[] skipPrefixes) {
-		Class[] classes = null;
-		LinkedList<Object> instances = new LinkedList<Object>();
+    /**
+     * Finds all classes that implement or extend a given class name, and
+     * instantiates precisely one copy of each
+     * 
+     * @param className
+     *            fully qualified class or interface to find subclasses of, e.g.
+     *            "java.lang.String"
+     * @param skipPrefixes
+     *            prefixes of fully qualified packages or class names to
+     *            completely ignore (i.e. not bother to check), making it
+     *            faster, e.g. "java.", "com.sun"
+     * @return instantiated objects
+     */
+    public static List instantiateOneOfEach(String className,
+            String[] skipPrefixes) {
+        Class[] classes = null;
+        LinkedList<Object> instances = new LinkedList<Object>();
 
-		try {
-			ClassLocater locater = new ClassLocater();
+        try {
+            ClassLocater locater = new ClassLocater();
 
-			for (int i = 0; i < skipPrefixes.length; i++) {
-				locater.addSkipPrefix(skipPrefixes[i]);
-			}
-			classes = locater.getSubclassesOf(Class.forName(className));
+            for (int i = 0; i < skipPrefixes.length; i++) {
+                locater.addSkipPrefix(skipPrefixes[i]);
+            }
+            classes = locater.getSubclassesOf(Class.forName(className));
 
-			logger.info("Found " + classes.length + " classes that implement "
-					+ className + "...");
-			if (logger.getLevel().equals(Level.FINE))
-				for (int i = 0; i < classes.length; i++) {
-					logger.fine("Found " + classes[i].getName()
-							+ " that implements " + className + "...");
-				}
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Attempting to find " + className
-					+ " implementers", e);
-		}
+            logger.info("Found " + classes.length + " classes that implement "
+                    + className + "...");
+            if (logger.getLevel().equals(Level.FINE))
+                for (int i = 0; i < classes.length; i++) {
+                    logger.fine("Found " + classes[i].getName()
+                            + " that implements " + className + "...");
+                }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Attempting to find " + className
+                    + " implementers", e);
+        }
 
-		// Iterate through all, instantiating them
-		logger.fine("Instantiating each class");
-		for (int i = 0; i < classes.length; i++) {
-			try {
-				Object o = classes[i].newInstance();
-				instances.add(o);
-			} catch (Throwable e) {
-				logger.log(Level.SEVERE, "Failed to process: "
-						+ classes[i].getName(), e);
-			}
-		}
+        // Iterate through all, instantiating them
+        logger.fine("Instantiating each class");
+        for (int i = 0; i < classes.length; i++) {
+            try {
+                Object o = classes[i].newInstance();
+                instances.add(o);
+            } catch (Throwable e) {
+                logger.log(Level.SEVERE, "Failed to process: "
+                        + classes[i].getName(), e);
+            }
+        }
 
-		return instances;
-	}
+        return instances;
+    }
 
-	/**
-	 * Automatically adds sun's classes, the java library classes, and the
-	 * Apache log4j classes (a lib used by ClassLocater!) to the skip list; it's
-	 * very unlikely that you're trying to locate any of these!
-	 */
-	public ClassLocater() {
-		addSkipPrefix("org.apache.log4j.");
-		addSkipPrefix("com.sun.");
-		addSkipPrefix("java");
-		addSkipPrefix("junit");
-	}
+    /**
+     * Automatically adds sun's classes, the java library classes, and the
+     * Apache log4j classes (a lib used by ClassLocater!) to the skip list; it's
+     * very unlikely that you're trying to locate any of these!
+     */
+    public ClassLocater() {
+        addSkipPrefix("org.apache.log4j.");
+        addSkipPrefix("com.sun.");
+        addSkipPrefix("java");
+        addSkipPrefix("junit");
+    }
 
-	/**
-	 * Adds a prefix for classes (and packages) to completely ignore, based on
-	 * their package + class name.
-	 * <p>
-	 * For example, "org.apache.log4j".
-	 * <P>
-	 * The advantage of this method is that you don't have to bother with regex
-	 * syntax. Also, it is remembered between calls to getSubclassesOf - so it's
-	 * useful if you know you never care about certain packages.
-	 * 
-	 * @param s
-	 *            prefix of fully qualified class names to ignore
-	 */
-	public void addSkipPrefix(String s) {
-		skipPrefixes.add(s);
-	}
+    /**
+     * Adds a prefix for classes (and packages) to completely ignore, based on
+     * their package + class name.
+     * <p>
+     * For example, "org.apache.log4j".
+     * <P>
+     * The advantage of this method is that you don't have to bother with regex
+     * syntax. Also, it is remembered between calls to getSubclassesOf - so it's
+     * useful if you know you never care about certain packages.
+     * 
+     * @param s
+     *            prefix of fully qualified class names to ignore
+     */
+    public void addSkipPrefix(String s) {
+        skipPrefixes.add(s);
+    }
 
-	/**
-	 * Find all instances of the given <code>Class</code> or interface by
-	 * loading all classes on the class path.
-	 * <P>
-	 * Delegates to the other version, but passing in ".*" as the regex, i.e.
-	 * "anything at all"
-	 * 
-	 * @param targetType
-	 *            the superclass of all returned classes.
-	 * @return an array of all subclasses of <code>targetType</code>
-	 */
-	public Class[] getSubclassesOf(Class targetType) {
-		return getSubclassesOf(targetType, ".*");
-	}
+    /**
+     * Find all instances of the given <code>Class</code> or interface by
+     * loading all classes on the class path.
+     * <P>
+     * Delegates to the other version, but passing in ".*" as the regex, i.e.
+     * "anything at all"
+     * 
+     * @param targetType
+     *            the superclass of all returned classes.
+     * @return an array of all subclasses of <code>targetType</code>
+     */
+    public Class[] getSubclassesOf(Class targetType) {
+        return getSubclassesOf(targetType, ".*");
+    }
 
-	/**
-	 * Find all subclasses of the given <code>Class</code> or interface by
-	 * loading only those classes with names that match the given regular
-	 * expression.
-	 * <P>
-	 * Once all classes have been checked, it will output at WARN a list of all
-	 * the classes that were referenced by other classes but are not installed
-	 * in the classpath. This can be incredibly useful - it catches situations
-	 * where e.g. you thought a class was on the classpath but you put it in the
-	 * wrong directory etc.
-	 * <P>
-	 * It can also be very annoying because java uses dynamic linking so it is
-	 * LEGAL for many classes to be missing, just so long as you never use them
-	 * at runtime. Because this class tries to use *every* class, it triggers
-	 * errors on lots that you don't care about - use addSkipPrefix( class or
-	 * package you dont use even though its on the classpath ) and they will be
-	 * skipped (i.e. not even examined by this method).
-	 * <P>
-	 * OR improve your regex so that it is more selective about the packages
-	 * where your classes could conceivable be located!
-	 * 
-	 * @param targetType
-	 *            the superclass of all returned classes.
-	 * @param regex
-	 *            a regular expression that will match with every subclass
-	 * @return an array of all subclasses of <code>targetType</code>
-	 */
-	@SuppressWarnings("unchecked")
-	public Class[] getSubclassesOf(Class targetType, String regex) {
-		logger.info("Looking for all classes with names matching regex = "
-				+ regex + " and which are subtypes of " + targetType.getName());
-		StringBuffer sbSkips = new StringBuffer();
-		for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext();) {
-			sbSkips.append(i2.next().toString() + "*");
-			if (i2.hasNext())
-				sbSkips.append(", ");
-		}
-		logger.info("...unless they match: " + sbSkips.toString());
+    /**
+     * Find all subclasses of the given <code>Class</code> or interface by
+     * loading only those classes with names that match the given regular
+     * expression.
+     * <P>
+     * Once all classes have been checked, it will output at WARN a list of all
+     * the classes that were referenced by other classes but are not installed
+     * in the classpath. This can be incredibly useful - it catches situations
+     * where e.g. you thought a class was on the classpath but you put it in the
+     * wrong directory etc.
+     * <P>
+     * It can also be very annoying because java uses dynamic linking so it is
+     * LEGAL for many classes to be missing, just so long as you never use them
+     * at runtime. Because this class tries to use *every* class, it triggers
+     * errors on lots that you don't care about - use addSkipPrefix( class or
+     * package you dont use even though its on the classpath ) and they will be
+     * skipped (i.e. not even examined by this method).
+     * <P>
+     * OR improve your regex so that it is more selective about the packages
+     * where your classes could conceivable be located!
+     * 
+     * @param targetType
+     *            the superclass of all returned classes.
+     * @param regex
+     *            a regular expression that will match with every subclass
+     * @return an array of all subclasses of <code>targetType</code>
+     */
+    @SuppressWarnings("unchecked")
+    public Class[] getSubclassesOf(Class targetType, String regex) {
+        logger.info("Looking for all classes with names matching regex = "
+                + regex + " and which are subtypes of " + targetType.getName());
+        StringBuffer sbSkips = new StringBuffer();
+        for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext();) {
+            sbSkips.append(i2.next().toString() + "*");
+            if (i2.hasNext())
+                sbSkips.append(", ");
+        }
+        logger.info("...unless they match: " + sbSkips.toString());
 
-		LinkedList<Class> matches = new LinkedList<Class>();
+        LinkedList<Class> matches = new LinkedList<Class>();
 
-		HashMap<String, LinkedList<String>> missingRequiredClasses = new HashMap<String, LinkedList<String>>();
-		// maps class name to list of classes that needed it
+        HashMap<String, LinkedList<String>> missingRequiredClasses = new HashMap<String, LinkedList<String>>();
+        // maps class name to list of classes that needed it
 
-		logger.fine("Creating ClassPath object to do class search...");
+        logger.fine("Creating ClassPath object to do class search...");
 
-		ClassPath cp = new ClassPath();
-		logger.fine("Iterating through all classes in ClassPath...");
+        ClassPath cp = new ClassPath();
+        logger.fine("Iterating through all classes in ClassPath...");
 
-		for (Iterator iter = cp.getAllClassNames().iterator(); iter.hasNext();) {
-			String className = (String) iter.next();
+        for (Iterator iter = cp.getAllClassNames().iterator(); iter.hasNext();) {
+            String className = (String) iter.next();
 
-			boolean skip = false;
-			for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext();) {
-				String prefix = (String) i2.next();
-				if (className.startsWith(prefix)) {
-					logger.fine("Skipping class = " + className
-							+ " because it has a prefix of " + prefix);
-					skip = true;
-					break;
-				}
-			}
-			if (skip)
-				continue;
+            boolean skip = false;
+            for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext();) {
+                String prefix = (String) i2.next();
+                if (className.startsWith(prefix)) {
+                    logger.fine("Skipping class = " + className
+                            + " because it has a prefix of " + prefix);
+                    skip = true;
+                    break;
+                }
+            }
+            if (skip)
+                continue;
 
-			logger.fine("Processing class: " + className);
-			if (className.matches(regex)
-					&& !className.equals(targetType.getName())) {
-				logger
-						.fine("...matches regex; instantiating and checking type");
-				Class clazz = null;
-				try {
-					clazz = Class.forName(className);
-				}
-				/*
-				 * catch (ClassNotFoundException cnfx ) { continue; }
-				 */
-				catch (NoClassDefFoundError cnfx) {
-					/*
-					 * This is ridiculous. Please, everyone, ask sun to add a
-					 * "getMissingClass()" method to NoClassDefFoundError: Sun,
-					 * you have had TEN YEARS to fix this!
-					 */
-					if (cnfx.getMessage() == null) {
-						logger
-								.log(
-										Level.WARNING,
-										"NoClassDefFoundError but Sun didn't fill-in the message; no idea which class it was; ignoring it and moving on",
-										cnfx);
-						continue;
-					}
-					String missingClassName = cnfx.getMessage().replace('/',
-							'.');
+            logger.fine("Processing class: " + className);
+            if (className.matches(regex)
+                    && !className.equals(targetType.getName())) {
+                logger
+                        .fine("...matches regex; instantiating and checking type");
+                Class clazz = null;
+                try {
+                    clazz = Class.forName(className);
+                }
+                /*
+                 * catch (ClassNotFoundException cnfx ) { continue; }
+                 */
+                catch (NoClassDefFoundError cnfx) {
+                    /*
+                     * This is ridiculous. Please, everyone, ask sun to add a
+                     * "getMissingClass()" method to NoClassDefFoundError: Sun,
+                     * you have had TEN YEARS to fix this!
+                     */
+                    if (cnfx.getMessage() == null) {
+                        logger
+                                .log(
+                                        Level.WARNING,
+                                        "NoClassDefFoundError but Sun didn't fill-in the message; no idea which class it was; ignoring it and moving on",
+                                        cnfx);
+                        continue;
+                    }
+                    String missingClassName = cnfx.getMessage().replace('/',
+                            '.');
 
-					LinkedList<String> misses = missingRequiredClasses
-							.get(missingClassName);
-					if (misses == null) {
-						misses = new LinkedList<String>();
-						missingRequiredClasses.put(missingClassName, misses);
-					}
+                    LinkedList<String> misses = missingRequiredClasses
+                            .get(missingClassName);
+                    if (misses == null) {
+                        misses = new LinkedList<String>();
+                        missingRequiredClasses.put(missingClassName, misses);
+                    }
 
-					misses.add(className);
+                    misses.add(className);
 
-					continue;
-				} catch (UnsatisfiedLinkError cnfx) {
-					continue;
-				} catch (Throwable t) {
-					logger.log(Level.WARNING,
-							"Unexpected error - REMOVING this class ("
-									+ className + ") without checking it", t);
-					continue;
-				} finally {
-					if (clazz != null && targetType.isAssignableFrom(clazz)) {
-						logger
-								.fine(className
-										+ " matches and is correct type; adding to results");
-						matches.add(clazz);
-					}
-				}
+                    continue;
+                } catch (UnsatisfiedLinkError cnfx) {
+                    continue;
+                } catch (Throwable t) {
+                    logger.log(Level.WARNING,
+                            "Unexpected error - REMOVING this class ("
+                                    + className + ") without checking it", t);
+                    continue;
+                } finally {
+                    if (clazz != null && targetType.isAssignableFrom(clazz)) {
+                        logger
+                                .fine(className
+                                        + " matches and is correct type; adding to results");
+                        matches.add(clazz);
+                    }
+                }
 
-			}
+            }
 
-		}
+        }
 
-		if (missingRequiredClasses.size() > 0) {
-			logger
-					.warning("The following classes were needed by some of the classes I found, but could not themselves be found."
-							+ "Check you have the required libraries, that they are on the classpath, and that all JAR's are in your manifest as needed");
-			logger
-					.warning("If you don't care about some of the classes that used these missing classes, add the users to the skip list and you will get no errors from them");
-			for (Iterator<String> iter = missingRequiredClasses.keySet()
-					.iterator(); iter.hasNext();) {
-				String className = iter.next();
-				LinkedList<String> neededBy = missingRequiredClasses
-						.get(className);
-				StringBuffer sb = new StringBuffer();
-				for (Iterator<String> iterator = neededBy.iterator(); iterator
-						.hasNext();) {
-					String referencingClass = iterator.next();
-					sb.append(referencingClass);
-					if (iterator.hasNext())
-						sb.append(", ");
-				}
-				logger.warning("class: " + className + " was needed by class"
-						+ (neededBy.size() == 1 ? "" : "es") + ": " + sb);
-			}
-		}
-		logger.info("found " + matches.size() + " classes.");
-		return matches.toArray(new Class[matches.size()]);
+        if (missingRequiredClasses.size() > 0) {
+            logger
+                    .warning("The following classes were needed by some of the classes I found, but could not themselves be found."
+                            + "Check you have the required libraries, that they are on the classpath, and that all JAR's are in your manifest as needed");
+            logger
+                    .warning("If you don't care about some of the classes that used these missing classes, add the users to the skip list and you will get no errors from them");
+            for (Iterator<String> iter = missingRequiredClasses.keySet()
+                    .iterator(); iter.hasNext();) {
+                String className = iter.next();
+                LinkedList<String> neededBy = missingRequiredClasses
+                        .get(className);
+                StringBuffer sb = new StringBuffer();
+                for (Iterator<String> iterator = neededBy.iterator(); iterator
+                        .hasNext();) {
+                    String referencingClass = iterator.next();
+                    sb.append(referencingClass);
+                    if (iterator.hasNext())
+                        sb.append(", ");
+                }
+                logger.warning("class: " + className + " was needed by class"
+                        + (neededBy.size() == 1 ? "" : "es") + ": " + sb);
+            }
+        }
+        logger.info("found " + matches.size() + " classes.");
+        return matches.toArray(new Class[matches.size()]);
 
-	}
+    }
 }

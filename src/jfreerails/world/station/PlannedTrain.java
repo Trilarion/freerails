@@ -14,50 +14,50 @@ import jfreerails.world.common.ImInts;
  * 
  */
 public class PlannedTrain implements FreerailsSerializable {
-	private static final long serialVersionUID = 3545515106038592057L;
+    private static final long serialVersionUID = 3545515106038592057L;
 
-	private final int engineType;
+    private final int engineType;
 
-	private final ImInts wagonTypes;
+    private final ImInts wagonTypes;
 
-	public PlannedTrain(int e, int[] wagons) {
-		engineType = e;
-		wagonTypes = new ImInts(wagons);
-	}
+    public PlannedTrain(int e, int[] wagons) {
+        engineType = e;
+        wagonTypes = new ImInts(wagons);
+    }
 
-	@Override
-	public int hashCode() {
-		return engineType;
-	}
+    @Override
+    public int hashCode() {
+        return engineType;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof PlannedTrain))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof PlannedTrain))
+            return false;
 
-		final PlannedTrain productionAtEngineShop = (PlannedTrain) o;
+        final PlannedTrain productionAtEngineShop = (PlannedTrain) o;
 
-		if (engineType != productionAtEngineShop.engineType)
-			return false;
-		if (!wagonTypes.equals(productionAtEngineShop.wagonTypes))
-			return false;
+        if (engineType != productionAtEngineShop.engineType)
+            return false;
+        if (!wagonTypes.equals(productionAtEngineShop.wagonTypes))
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	public int getEngineType() {
-		return engineType;
-	}
+    public int getEngineType() {
+        return engineType;
+    }
 
-	public ImInts getWagonTypes() {
-		return wagonTypes;
-	}
+    public ImInts getWagonTypes() {
+        return wagonTypes;
+    }
 
-	@Override
-	public String toString() {
-		return "engine type: " + this.engineType + ", with "
-				+ wagonTypes.size() + "wagons";
-	}
+    @Override
+    public String toString() {
+        return "engine type: " + this.engineType + ", with "
+                + wagonTypes.size() + "wagons";
+    }
 }

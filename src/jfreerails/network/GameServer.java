@@ -12,9 +12,9 @@ import jfreerails.util.GameModel;
  * 
  */
 public interface GameServer extends GameModel {
-	void addConnection(Connection2Client connection);
+    void addConnection(Connection2Client connection);
 
-	int countOpenConnections();
+    int countOpenConnections();
 
-	void stop();
+    void stop();
 }

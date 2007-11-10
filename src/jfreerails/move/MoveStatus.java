@@ -10,79 +10,79 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 @Immutable
 final public class MoveStatus implements FreerailsSerializable {
-	private static final long serialVersionUID = 3258129171879309624L;
+    private static final long serialVersionUID = 3258129171879309624L;
 
-	public static final MoveStatus MOVE_OK = new MoveStatus(true,
-			"Move accepted");
+    public static final MoveStatus MOVE_OK = new MoveStatus(true,
+            "Move accepted");
 
-	public final boolean ok;
+    public final boolean ok;
 
-	public final String message;
-	
-	private final Throwable t;
+    public final String message;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof MoveStatus))
-			return false;
+    private final Throwable t;
 
-		final MoveStatus moveStatus = (MoveStatus) o;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof MoveStatus))
+            return false;
 
-		if (ok != moveStatus.ok)
-			return false;
-		if (message != null ? !message.equals(moveStatus.message)
-				: moveStatus.message != null)
-			return false;
+        final MoveStatus moveStatus = (MoveStatus) o;
 
-		return true;
-	}
+        if (ok != moveStatus.ok)
+            return false;
+        if (message != null ? !message.equals(moveStatus.message)
+                : moveStatus.message != null)
+            return false;
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = (ok ? 1 : 0);
-		result = 29 * result + (message != null ? message.hashCode() : 0);
-		return result;
-	}
+        return true;
+    }
 
-	/**
-	 * Avoid creating a duplicate when deserializing.
-	 */
-	private Object readResolve() {
-		if (ok) {
-			return MOVE_OK;
-		}
-		return this;
-	}
+    @Override
+    public int hashCode() {
+        int result;
+        result = (ok ? 1 : 0);
+        result = 29 * result + (message != null ? message.hashCode() : 0);
+        return result;
+    }
 
-	private MoveStatus(boolean ok, String mess) {
-		if(ok){
-			t = null;
-		}else{
-			t = new Throwable();
-			t.fillInStackTrace();
-		}
-		this.ok = ok;
-		this.message = mess;
-	}
+    /**
+     * Avoid creating a duplicate when deserializing.
+     */
+    private Object readResolve() {
+        if (ok) {
+            return MOVE_OK;
+        }
+        return this;
+    }
 
-	public static MoveStatus moveFailed(String reason) {	
-		return new MoveStatus(false, reason);
-	}
+    private MoveStatus(boolean ok, String mess) {
+        if (ok) {
+            t = null;
+        } else {
+            t = new Throwable();
+            t.fillInStackTrace();
+        }
+        this.ok = ok;
+        this.message = mess;
+    }
 
-	public boolean isOk() {
-		return ok;
-	}
-	
-	public void printStackTrack(){
-		if(null != t)
-			t.printStackTrace();
-	}
+    public static MoveStatus moveFailed(String reason) {
+        return new MoveStatus(false, reason);
+    }
 
-	@Override
-	public String toString() {
-		return message;
-	}
+    public boolean isOk() {
+        return ok;
+    }
+
+    public void printStackTrack() {
+        if (null != t)
+            t.printStackTrace();
+    }
+
+    @Override
+    public String toString() {
+        return message;
+    }
 }

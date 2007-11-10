@@ -20,156 +20,156 @@ import jfreerails.world.top.World;
  * @author Luke
  */
 public class CompositeMove implements Move {
-	private static final long serialVersionUID = 3257289149391517489L;
+    private static final long serialVersionUID = 3257289149391517489L;
 
-	private final ImList<Move> moves;
+    private final ImList<Move> moves;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof CompositeMove))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof CompositeMove))
+            return false;
 
-		final CompositeMove compositeMove = (CompositeMove) o;
+        final CompositeMove compositeMove = (CompositeMove) o;
 
-		if (!moves.equals(compositeMove.moves))
-			return false;
+        if (!moves.equals(compositeMove.moves))
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * This method lets sub classes look at the moves.
-	 */
-	final Move getMove(int i) {
-		return moves.get(i);
-	}
+    /**
+     * This method lets sub classes look at the moves.
+     */
+    final Move getMove(int i) {
+        return moves.get(i);
+    }
 
-	@Override
-	public int hashCode() {
-		// This will do for now.
-		return moves.size();
-	}
+    @Override
+    public int hashCode() {
+        // This will do for now.
+        return moves.size();
+    }
 
-	public final ImList<Move> getMoves() {
-		return moves;
-	}
+    public final ImList<Move> getMoves() {
+        return moves;
+    }
 
-	public CompositeMove(List<Move> movesArrayList) {
+    public CompositeMove(List<Move> movesArrayList) {
 
-		moves = new ImList<Move>(movesArrayList);
-	}
+        moves = new ImList<Move>(movesArrayList);
+    }
 
-	public CompositeMove(Move... moves) {
-		this.moves = new ImList<Move>(moves);
-	}
+    public CompositeMove(Move... moves) {
+        this.moves = new ImList<Move>(moves);
+    }
 
-	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		// Since whether a move later in the list goes through could
-		// depend on whether an ealier move has been executed, we need
-		// actually execute moves, then undo them to test whether the
-		// array of moves can be excuted ok.
-		MoveStatus ms = doMove(w, p);
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
+        // Since whether a move later in the list goes through could
+        // depend on whether an ealier move has been executed, we need
+        // actually execute moves, then undo them to test whether the
+        // array of moves can be excuted ok.
+        MoveStatus ms = doMove(w, p);
 
-		if (ms.ok) {
-			// We just wanted to see if we could do them so we undo them again.
-			undoMoves(w, moves.size() - 1, p);
-		}
+        if (ms.ok) {
+            // We just wanted to see if we could do them so we undo them again.
+            undoMoves(w, moves.size() - 1, p);
+        }
 
-		// If its not ok, then doMove would have undone the moves so we don't
-		// need to undo them.
-		return ms;
-	}
+        // If its not ok, then doMove would have undone the moves so we don't
+        // need to undo them.
+        return ms;
+    }
 
-	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = undoMove(w, p);
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
+        MoveStatus ms = undoMove(w, p);
 
-		if (ms.isOk()) {
-			redoMoves(w, 0, p);
-		}
+        if (ms.isOk()) {
+            redoMoves(w, 0, p);
+        }
 
-		return ms;
-	}
+        return ms;
+    }
 
-	public final MoveStatus doMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = compositeTest(w, p);
+    public final MoveStatus doMove(World w, FreerailsPrincipal p) {
+        MoveStatus ms = compositeTest(w, p);
 
-		if (!ms.ok) {
-			return ms;
-		}
+        if (!ms.ok) {
+            return ms;
+        }
 
-		for (int i = 0; i < moves.size(); i++) {
-			ms = moves.get(i).doMove(w, p);
+        for (int i = 0; i < moves.size(); i++) {
+            ms = moves.get(i).doMove(w, p);
 
-			if (!ms.ok) {
-				// Undo any moves we have already done.
-				undoMoves(w, i - 1, p);
+            if (!ms.ok) {
+                // Undo any moves we have already done.
+                undoMoves(w, i - 1, p);
 
-				return ms;
-			}
-		}
+                return ms;
+            }
+        }
 
-		return ms;
-	}
+        return ms;
+    }
 
-	public final MoveStatus undoMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = MoveStatus.MOVE_OK;
+    public final MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        MoveStatus ms = MoveStatus.MOVE_OK;
 
-		for (int i = moves.size() - 1; i >= 0; i--) {
-			ms = moves.get(i).undoMove(w, p);
+        for (int i = moves.size() - 1; i >= 0; i--) {
+            ms = moves.get(i).undoMove(w, p);
 
-			if (!ms.ok) {
-				// Redo any moves we have already undone.
-				redoMoves(w, i + 1, p);
+            if (!ms.ok) {
+                // Redo any moves we have already undone.
+                redoMoves(w, i + 1, p);
 
-				return ms;
-			}
-		}
+                return ms;
+            }
+        }
 
-		return ms;
-	}
+        return ms;
+    }
 
-	private void undoMoves(World w, int number, FreerailsPrincipal p) {
-		for (int i = number; i >= 0; i--) {
-			MoveStatus ms = moves.get(i).undoMove(w, p);
+    private void undoMoves(World w, int number, FreerailsPrincipal p) {
+        for (int i = number; i >= 0; i--) {
+            MoveStatus ms = moves.get(i).undoMove(w, p);
 
-			if (!ms.ok) {
-				throw new IllegalStateException(ms.message);
-			}
-		}
-	}
+            if (!ms.ok) {
+                throw new IllegalStateException(ms.message);
+            }
+        }
+    }
 
-	private void redoMoves(World w, int number, FreerailsPrincipal p) {
-		for (int i = number; i < moves.size(); i++) {
-			MoveStatus ms = moves.get(i).doMove(w, p);
+    private void redoMoves(World w, int number, FreerailsPrincipal p) {
+        for (int i = number; i < moves.size(); i++) {
+            MoveStatus ms = moves.get(i).doMove(w, p);
 
-			if (!ms.ok) {
-				throw new IllegalStateException(ms.message);
-			}
-		}
-	}
+            if (!ms.ok) {
+                throw new IllegalStateException(ms.message);
+            }
+        }
+    }
 
-	/**
-	 * Subclasses may override this method to perform tests which pass or fail
-	 * depending on the combination of moves making up this composite move.
-	 */
-	MoveStatus compositeTest(World w, FreerailsPrincipal p) {
-		return MoveStatus.MOVE_OK;
-	}
-	
-	public int size(){
-		return moves.size();
-	}
+    /**
+     * Subclasses may override this method to perform tests which pass or fail
+     * depending on the combination of moves making up this composite move.
+     */
+    MoveStatus compositeTest(World w, FreerailsPrincipal p) {
+        return MoveStatus.MOVE_OK;
+    }
 
-	@Override
-	public final String toString() {
-		String s = "";
+    public int size() {
+        return moves.size();
+    }
 
-		for (int i = 0; i < moves.size(); i++) {
-			s += moves.get(i).toString() + ((i > 0) ? ", " : "");
-		}
+    @Override
+    public final String toString() {
+        String s = "";
 
-		return s;
-	}
+        for (int i = 0; i < moves.size(); i++) {
+            s += moves.get(i).toString() + ((i > 0) ? ", " : "");
+        }
+
+        return s;
+    }
 }

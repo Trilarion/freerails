@@ -16,121 +16,121 @@ import jfreerails.world.top.World;
  * 
  */
 public class AddItemToSharedListMove implements Move {
-	private static final long serialVersionUID = 3762256352759722807L;
+    private static final long serialVersionUID = 3762256352759722807L;
 
-	private final SKEY listKey;
+    private final SKEY listKey;
 
-	private final int index;
+    private final int index;
 
-	private final FreerailsSerializable item;
+    private final FreerailsSerializable item;
 
-	public int getIndex() {
-		return index;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = listKey.hashCode();
-		result = 29 * result + index;
-		result = 29 * result + (item != null ? item.hashCode() : 0);
+    @Override
+    public int hashCode() {
+        int result;
+        result = listKey.hashCode();
+        result = 29 * result + index;
+        result = 29 * result + (item != null ? item.hashCode() : 0);
 
-		return result;
-	}
+        return result;
+    }
 
-	public SKEY getKey() {
-		return listKey;
-	}
+    public SKEY getKey() {
+        return listKey;
+    }
 
-	protected AddItemToSharedListMove(SKEY key, int i,
-			FreerailsSerializable item) {
-		this.listKey = key;
-		this.index = i;
-		this.item = item;
-	}
+    protected AddItemToSharedListMove(SKEY key, int i,
+            FreerailsSerializable item) {
+        this.listKey = key;
+        this.index = i;
+        this.item = item;
+    }
 
-	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		if (w.size(listKey) != index) {
-			return MoveStatus.moveFailed("Expected size of "
-					+ listKey.toString() + " list is " + index
-					+ " but actual size is " + w.size(listKey));
-		}
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
+        if (w.size(listKey) != index) {
+            return MoveStatus.moveFailed("Expected size of "
+                    + listKey.toString() + " list is " + index
+                    + " but actual size is " + w.size(listKey));
+        }
 
-		return MoveStatus.MOVE_OK;
-	}
+        return MoveStatus.MOVE_OK;
+    }
 
-	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		int expectListSize = index + 1;
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
+        int expectListSize = index + 1;
 
-		if (w.size(listKey) != expectListSize) {
-			return MoveStatus.moveFailed("Expected size of "
-					+ listKey.toString() + " list is " + expectListSize
-					+ " but actual size is " + w.size(listKey));
-		}
+        if (w.size(listKey) != expectListSize) {
+            return MoveStatus.moveFailed("Expected size of "
+                    + listKey.toString() + " list is " + expectListSize
+                    + " but actual size is " + w.size(listKey));
+        }
 
-		return MoveStatus.MOVE_OK;
-	}
+        return MoveStatus.MOVE_OK;
+    }
 
-	public MoveStatus doMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = tryDoMove(w, p);
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        MoveStatus ms = tryDoMove(w, p);
 
-		if (ms.isOk()) {
-			w.add(listKey, this.item);
-		}
+        if (ms.isOk()) {
+            w.add(listKey, this.item);
+        }
 
-		return ms;
-	}
+        return ms;
+    }
 
-	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = tryUndoMove(w, p);
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        MoveStatus ms = tryUndoMove(w, p);
 
-		if (ms.isOk()) {
-			w.removeLast(listKey);
-		}
+        if (ms.isOk()) {
+            w.removeLast(listKey);
+        }
 
-		return ms;
-	}
+        return ms;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof AddItemToSharedListMove) {
-			AddItemToSharedListMove test = (AddItemToSharedListMove) o;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof AddItemToSharedListMove) {
+            AddItemToSharedListMove test = (AddItemToSharedListMove) o;
 
-			if (!this.item.equals(test.getAfter())) {
-				return false;
-			}
+            if (!this.item.equals(test.getAfter())) {
+                return false;
+            }
 
-			if (this.index != test.index) {
-				return false;
-			}
+            if (this.index != test.index) {
+                return false;
+            }
 
-			if (this.listKey != test.listKey) {
-				return false;
-			}
+            if (this.listKey != test.listKey) {
+                return false;
+            }
 
-			return true;
-		}
-		return false;
-	}
+            return true;
+        }
+        return false;
+    }
 
-	public FreerailsSerializable getBefore() {
-		return null;
-	}
+    public FreerailsSerializable getBefore() {
+        return null;
+    }
 
-	public FreerailsSerializable getAfter() {
-		return item;
-	}
+    public FreerailsSerializable getAfter() {
+        return item;
+    }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer(this.getClass().getName());
-		sb.append("\nlist=");
-		sb.append(listKey.toString());
-		sb.append("\n index =");
-		sb.append(this.index);
-		sb.append("\n item =");
-		sb.append(this.item.toString());
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer(this.getClass().getName());
+        sb.append("\nlist=");
+        sb.append(listKey.toString());
+        sb.append("\n index =");
+        sb.append(this.index);
+        sb.append("\n item =");
+        sb.append(this.item.toString());
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 }

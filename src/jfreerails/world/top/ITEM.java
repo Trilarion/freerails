@@ -21,45 +21,45 @@ import jfreerails.world.common.FreerailsSerializable;
  */
 @jfreerails.util.InstanceControlled
 public class ITEM implements FreerailsSerializable {
-	private static final long serialVersionUID = 3257846593180151859L;
+    private static final long serialVersionUID = 3257846593180151859L;
 
-	/** Maps key numbers to KEYs. */
-	private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
+    /** Maps key numbers to KEYs. */
+    private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
 
-	// START OF KEYS
-	public static final ITEM CALENDAR = new ITEM();
+    // START OF KEYS
+    public static final ITEM CALENDAR = new ITEM();
 
-	public static final ITEM GAME_RULES = new ITEM();
+    public static final ITEM GAME_RULES = new ITEM();
 
-	public static final ITEM GAME_SPEED = new ITEM();
+    public static final ITEM GAME_SPEED = new ITEM();
 
-	public static final ITEM ECONOMIC_CLIMATE = new ITEM();
+    public static final ITEM ECONOMIC_CLIMATE = new ITEM();
 
-	// END OF KEYS
-	private static int numberOfKeys = 0;
+    // END OF KEYS
+    private static int numberOfKeys = 0;
 
-	private final int keyNumber;
+    private final int keyNumber;
 
-	private ITEM() {
-		this.keyNumber = numberOfKeys;
-		keys[keyNumber] = this;
-		numberOfKeys++;
-	}
+    private ITEM() {
+        this.keyNumber = numberOfKeys;
+        keys[keyNumber] = this;
+        numberOfKeys++;
+    }
 
-	static int getNumberOfKeys() {
-		return ITEM.class.getFields().length;
-	}
+    static int getNumberOfKeys() {
+        return ITEM.class.getFields().length;
+    }
 
-	int getKeyID() {
-		return keyNumber;
-	}
+    int getKeyID() {
+        return keyNumber;
+    }
 
-	private Object readResolve() throws ObjectStreamException {
-		return keys[this.keyNumber];
-	}
+    private Object readResolve() throws ObjectStreamException {
+        return keys[this.keyNumber];
+    }
 
-	@Override
-	public String toString() {
-		return Utils.findConstantFieldName(this);
-	}
+    @Override
+    public String toString() {
+        return Utils.findConstantFieldName(this);
+    }
 }

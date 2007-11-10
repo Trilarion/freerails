@@ -6,35 +6,34 @@ package jfreerails.world.common;
 
 import java.util.NoSuchElementException;
 
-
 public interface ActivityIterator {
 
-	boolean hasNext();
+    boolean hasNext();
 
-	void nextActivity() throws NoSuchElementException;
+    void nextActivity() throws NoSuchElementException;
 
-	/** Returns the time the current activity starts. */
-	double getStartTime();
+    /** Returns the time the current activity starts. */
+    double getStartTime();
 
-	/** Returns the time the current activity ends. */
-	double getFinishTime();
+    /** Returns the time the current activity ends. */
+    double getFinishTime();
 
-	double getDuration();
-	
-	/** Converts an absolute time value to a time value relative to the
-	 * start of the current activity.  If absoluteTime > getFinishTime(),
-	 * getDuration() is returned.
-	 */
-	double absolute2relativeTime(double absoluteTime);
+    double getDuration();
 
-	FreerailsSerializable getState(double absoluteTime);
+    /**
+     * Converts an absolute time value to a time value relative to the start of
+     * the current activity. If absoluteTime > getFinishTime(), getDuration() is
+     * returned.
+     */
+    double absolute2relativeTime(double absoluteTime);
 
-	Activity getActivity();
+    FreerailsSerializable getState(double absoluteTime);
 
-	void gotoLastActivity();
-	
-	
-	void previousActivity() throws NoSuchElementException;
-	
-	boolean hasPrevious();
+    Activity getActivity();
+
+    void gotoLastActivity();
+
+    void previousActivity() throws NoSuchElementException;
+
+    boolean hasPrevious();
 }

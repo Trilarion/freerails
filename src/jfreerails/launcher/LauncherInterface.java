@@ -9,24 +9,24 @@ package jfreerails.launcher;
 
 public interface LauncherInterface {
 
-	public static final int INFO = 0;
+    public static final int INFO = 0;
 
-	public static final int WARNING = 1;
+    public static final int WARNING = 1;
 
-	public static final int ERROR = 2;
+    public static final int ERROR = 2;
 
-	void setInfoText(String text, int status);
+    void setInfoText(String text, int status);
 
-	void setNextEnabled(boolean enabled);
+    void setNextEnabled(boolean enabled);
 
-	void hideErrorMessages();
+    void hideErrorMessages();
 
-	void hideAllMessages();
+    void hideAllMessages();
 
-	void setProperty(String key, String value);
+    void setProperty(String key, String value);
 
-	String getProperty(String key);
+    String getProperty(String key);
 
-	void saveProps();
+    void saveProps();
 
 }

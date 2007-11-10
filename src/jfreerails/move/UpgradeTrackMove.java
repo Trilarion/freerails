@@ -17,22 +17,22 @@ import jfreerails.world.track.TrackPiece;
  * 
  */
 public class UpgradeTrackMove extends CompositeMove implements TrackMove {
-	private static final long serialVersionUID = 3907215961470875442L;
+    private static final long serialVersionUID = 3907215961470875442L;
 
-	private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
-		super(trackMove);
-	}
+    private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
+        super(trackMove);
+    }
 
-	public static UpgradeTrackMove generateMove(TrackPiece before,
-			TrackPiece after, ImPoint p) {
-		ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
+    public static UpgradeTrackMove generateMove(TrackPiece before,
+            TrackPiece after, ImPoint p) {
+        ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
 
-		return new UpgradeTrackMove(m);
-	}
+        return new UpgradeTrackMove(m);
+    }
 
-	public Rectangle getUpdatedTiles() {
-		ChangeTrackPieceMove m = (ChangeTrackPieceMove) this.getMove(0);
+    public Rectangle getUpdatedTiles() {
+        ChangeTrackPieceMove m = (ChangeTrackPieceMove) this.getMove(0);
 
-		return m.getUpdatedTiles();
-	}
+        return m.getUpdatedTiles();
+    }
 }

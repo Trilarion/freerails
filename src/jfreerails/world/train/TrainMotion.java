@@ -37,263 +37,267 @@ import jfreerails.world.common.Step;
  * @see jfreerails.world.train.PathOnTiles
  * @see jfreerails.world.train.CompositeSpeedAgainstTime
  */
-strictfp public  class TrainMotion implements Activity<TrainPositionOnMap> {		
+strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
 
-	private static final long serialVersionUID = 3618423722025891641L;
+    private static final long serialVersionUID = 3618423722025891641L;
 
-	private final double duration, distanceEngineWillTravel;
+    private final double duration, distanceEngineWillTravel;
 
-	private final double initialPosition;
+    private final double initialPosition;
 
-	private final PathOnTiles path;
+    private final PathOnTiles path;
 
-	private final SpeedAgainstTime speeds;
+    private final SpeedAgainstTime speeds;
 
-	private final int trainLength;
-	
-	private final SpeedTimeAndStatus.TrainActivity activity;
+    private final int trainLength;
 
-	/**
-	 * Creates a new TrainMotion instance.
-	 * 
-	 * @param path
-	 *            the path the train will take.
-	 * @param engineStep
-	 *            the position measured in tiles that trains engine is along the
-	 *            path
-	 * @param trainLength
-	 *            the length of the train, as returned by
-	 *            <code>TrainModel.getLength()</code>.
-	 * @throws IllegalArgumentException
-	 *             if trainLength is out the range
-	 *             <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
-	 * @throws IllegalArgumentException
-	 *             if
-	 *             <code>path.getDistance(engineStep) &lt; trainLength</code>.
-	 * @throws IllegalArgumentException
-	 *             if
-	 *             <code>(path.getLength() - initialPosition) &gt; speeds.getTotalDistance()</code>.
-	 */
+    private final SpeedTimeAndStatus.TrainActivity activity;
 
-	public TrainMotion(PathOnTiles path, int engineStep, int trainLength,
-			SpeedAgainstTime speeds) {
-		if (trainLength < TrainModel.WAGON_LENGTH
-				|| trainLength > TrainModel.MAX_TRAIN_LENGTH)
-			throw new IllegalArgumentException();
-		this.path = path;
-		this.speeds = speeds;
-		this.trainLength = trainLength;
-		
-		if(engineStep > path.steps())
-			throw new ArrayIndexOutOfBoundsException(String.valueOf(engineStep));
-		
-		initialPosition = path.getDistance(engineStep);
-		if (initialPosition < trainLength)
-			throw new IllegalArgumentException(
-					"The engine's initial position is not far enough along the path for "
-							+ "the train's initial position to be specified.");
-		double totalPathDistance = path.getTotalDistance();
-		distanceEngineWillTravel = totalPathDistance - initialPosition;
-		if (distanceEngineWillTravel > speeds.getS())
-			throw new IllegalArgumentException(
-					"The train's speed is not defined for the whole of the journey.");
-				
-		if(distanceEngineWillTravel == 0){
-			duration = 0d;
-		}else{			
-			double tempDuration = speeds.calcT(distanceEngineWillTravel);			
-			while((speeds.calcS(tempDuration) - distanceEngineWillTravel) > 0){								
-				tempDuration -= Math.ulp(tempDuration);				
-			}
-			duration = tempDuration;
-		}
-		
-		activity = SpeedTimeAndStatus.TrainActivity.READY;					
-		sanityCheck();					
-	}
+    /**
+     * Creates a new TrainMotion instance.
+     * 
+     * @param path
+     *            the path the train will take.
+     * @param engineStep
+     *            the position measured in tiles that trains engine is along the
+     *            path
+     * @param trainLength
+     *            the length of the train, as returned by
+     *            <code>TrainModel.getLength()</code>.
+     * @throws IllegalArgumentException
+     *             if trainLength is out the range
+     *             <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
+     * @throws IllegalArgumentException
+     *             if <code>path.getDistance(engineStep) &lt; trainLength</code>.
+     * @throws IllegalArgumentException
+     *             if
+     *             <code>(path.getLength() - initialPosition) &gt; speeds.getTotalDistance()</code>.
+     */
 
-	/** Checks we are not creating an object with an inconsistent state.  That is, at the
-	 * time stored in the field duration, the engine must not have gone off the end of the path.*/
-	private void sanityCheck() {
-		double offset = calcOffSet(duration);
-		double totalLength = path.getTotalDistance();
-		double trainLengthDouble = trainLength;
-		if(totalLength < offset + trainLengthDouble)
-			throw new IllegalStateException(offset +" + "+ trainLengthDouble+" > " +totalLength);			
-	}
+    public TrainMotion(PathOnTiles path, int engineStep, int trainLength,
+            SpeedAgainstTime speeds) {
+        if (trainLength < TrainModel.WAGON_LENGTH
+                || trainLength > TrainModel.MAX_TRAIN_LENGTH)
+            throw new IllegalArgumentException();
+        this.path = path;
+        this.speeds = speeds;
+        this.trainLength = trainLength;
 
-	public TrainMotion(PathOnTiles path,  int trainLength, double duration, SpeedTimeAndStatus.TrainActivity act){
-		this.path = path;
-		this.trainLength = trainLength;
-		this.activity = act;
-		this.distanceEngineWillTravel = 0;
-		this.initialPosition = path.getTotalDistance();
-		this.speeds = ConstAcc.STOPPED;
-		this.duration = duration;
-	}
-	
-	private double calcOffSet(double t) {
-		double offset = getDistance(t) + initialPosition - trainLength;
-		return offset;
-	}
+        if (engineStep > path.steps())
+            throw new ArrayIndexOutOfBoundsException(String.valueOf(engineStep));
 
-	void checkT(double t) {
-		if (t < 0d || t > duration)
-			throw new IllegalArgumentException("t=" + t + ", but duration="
-					+ duration);
-	}
+        initialPosition = path.getDistance(engineStep);
+        if (initialPosition < trainLength)
+            throw new IllegalArgumentException(
+                    "The engine's initial position is not far enough along the path for "
+                            + "the train's initial position to be specified.");
+        double totalPathDistance = path.getTotalDistance();
+        distanceEngineWillTravel = totalPathDistance - initialPosition;
+        if (distanceEngineWillTravel > speeds.getS())
+            throw new IllegalArgumentException(
+                    "The train's speed is not defined for the whole of the journey.");
 
-	public double duration() {
-		return duration;
-	}
+        if (distanceEngineWillTravel == 0) {
+            duration = 0d;
+        } else {
+            double tempDuration = speeds.calcT(distanceEngineWillTravel);
+            while ((speeds.calcS(tempDuration) - distanceEngineWillTravel) > 0) {
+                tempDuration -= Math.ulp(tempDuration);
+            }
+            duration = tempDuration;
+        }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof TrainMotion))
-			return false;
+        activity = SpeedTimeAndStatus.TrainActivity.READY;
+        sanityCheck();
+    }
 
-		final TrainMotion trainMotion = (TrainMotion) o;
+    /**
+     * Checks we are not creating an object with an inconsistent state. That is,
+     * at the time stored in the field duration, the engine must not have gone
+     * off the end of the path.
+     */
+    private void sanityCheck() {
+        double offset = calcOffSet(duration);
+        double totalLength = path.getTotalDistance();
+        double trainLengthDouble = trainLength;
+        if (totalLength < offset + trainLengthDouble)
+            throw new IllegalStateException(offset + " + " + trainLengthDouble
+                    + " > " + totalLength);
+    }
 
-		if (trainLength != trainMotion.trainLength)
-			return false;
-		if (!path.equals(trainMotion.path))
-			return false;
-		if (!speeds.equals(trainMotion.speeds))
-			return false;
+    public TrainMotion(PathOnTiles path, int trainLength, double duration,
+            SpeedTimeAndStatus.TrainActivity act) {
+        this.path = path;
+        this.trainLength = trainLength;
+        this.activity = act;
+        this.distanceEngineWillTravel = 0;
+        this.initialPosition = path.getTotalDistance();
+        this.speeds = ConstAcc.STOPPED;
+        this.duration = duration;
+    }
 
-		return true;
-	}
+    private double calcOffSet(double t) {
+        double offset = getDistance(t) + initialPosition - trainLength;
+        return offset;
+    }
 
-	/**
-	 * Returns the train's distance along the track from the point the train was
-	 * at at time <code>getStart()</code> at the specified time.
-	 * 
-	 * @param t
-	 *            the time.
-	 * @return the distance
-	 * @throws IllegalArgumentException
-	 *             if t is outside the interval
-	 */
-	public double getDistance(double t) {
-		checkT(t);
-		t = Math.min(t, speeds.getT());
-		return speeds.calcS(t);
-	}
+    void checkT(double t) {
+        if (t < 0d || t > duration)
+            throw new IllegalArgumentException("t=" + t + ", but duration="
+                    + duration);
+    }
 
-	public PositionOnTrack getFinalPosition() {
-		return path.getFinalPosition();
-	}
+    public double duration() {
+        return duration;
+    }
 
-	public double getSpeedAtEnd() {
-		double finalT = speeds.getT();
-		return speeds.calcV(finalT);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof TrainMotion))
+            return false;
 
-	/**
-	 * Returns the train's position at the specified time.
-	 * 
-	 * @param t
-	 *            the time.
-	 * @return the train's position.
-	 * @throws IllegalArgumentException
-	 *             if t is outside the interval
-	 */
-	public TrainPositionOnMap getState(double t) {
-		t = Math.min(t, speeds.getT());
-		double offset = calcOffSet(t);
-		FreerailsPathIterator pathIt = path.subPath(offset, trainLength);
-		double speed = speeds.calcV(t);
-		double acceleration = speeds.calcA(t);		
-		TrainPositionOnMap tpom = TrainPositionOnMap
-				.createInSameDirectionAsPath(pathIt, speed, acceleration,
-						activity);
-		return tpom.reverse();
-	}
+        final TrainMotion trainMotion = (TrainMotion) o;
 
-	/**
-	 * Returns a PathOnTiles object that identifies the tiles the train is on at
-	 * the specified time.
-	 * 
-	 * @param t
-	 *            the time.
-	 * @return an array of the tiles the train is on
-	 * @throws IllegalArgumentException
-	 *             if t is outside the interval
-	 */
-	public PathOnTiles getTiles(double t) {
-		checkT(t);
-		t = Math.min(t, speeds.getT());
-		double start = calcOffSet(t);
-		double end = start + trainLength;
-		ArrayList<Step> steps = new ArrayList<Step>();
-		double distanceSoFar = 0;
+        if (trainLength != trainMotion.trainLength)
+            return false;
+        if (!path.equals(trainMotion.path))
+            return false;
+        if (!speeds.equals(trainMotion.speeds))
+            return false;
 
-		int stepsBeforeStart = 0;
-		int stepsAfterEnd = 0;
+        return true;
+    }
 
-		for (int i = 0; i < path.steps(); i++) {
-			if (distanceSoFar > end)
-				stepsAfterEnd++;
+    /**
+     * Returns the train's distance along the track from the point the train was
+     * at at time <code>getStart()</code> at the specified time.
+     * 
+     * @param t
+     *            the time.
+     * @return the distance
+     * @throws IllegalArgumentException
+     *             if t is outside the interval
+     */
+    public double getDistance(double t) {
+        checkT(t);
+        t = Math.min(t, speeds.getT());
+        return speeds.calcS(t);
+    }
 
-			Step step = path.getStep(i);
-			distanceSoFar += step.getLength();
+    public PositionOnTrack getFinalPosition() {
+        return path.getFinalPosition();
+    }
 
-			if (distanceSoFar < start)
-				stepsBeforeStart++;
+    public double getSpeedAtEnd() {
+        double finalT = speeds.getT();
+        return speeds.calcV(finalT);
+    }
 
-		}
+    /**
+     * Returns the train's position at the specified time.
+     * 
+     * @param t
+     *            the time.
+     * @return the train's position.
+     * @throws IllegalArgumentException
+     *             if t is outside the interval
+     */
+    public TrainPositionOnMap getState(double t) {
+        t = Math.min(t, speeds.getT());
+        double offset = calcOffSet(t);
+        FreerailsPathIterator pathIt = path.subPath(offset, trainLength);
+        double speed = speeds.calcV(t);
+        double acceleration = speeds.calcA(t);
+        TrainPositionOnMap tpom = TrainPositionOnMap
+                .createInSameDirectionAsPath(pathIt, speed, acceleration,
+                        activity);
+        return tpom.reverse();
+    }
 
-		if (distanceSoFar < start) {
-			// throw new IllegalStateException();
-		}
-		if (distanceSoFar < (end - 0.1)) {
-			// throw new IllegalStateException();
-		}
-		int lastStep = path.steps() - stepsAfterEnd;
-		for (int i = stepsBeforeStart; i < lastStep; i++) {
-			steps.add(path.getStep(i));
-		}
+    /**
+     * Returns a PathOnTiles object that identifies the tiles the train is on at
+     * the specified time.
+     * 
+     * @param t
+     *            the time.
+     * @return an array of the tiles the train is on
+     * @throws IllegalArgumentException
+     *             if t is outside the interval
+     */
+    public PathOnTiles getTiles(double t) {
+        checkT(t);
+        t = Math.min(t, speeds.getT());
+        double start = calcOffSet(t);
+        double end = start + trainLength;
+        ArrayList<Step> steps = new ArrayList<Step>();
+        double distanceSoFar = 0;
 
-		ImPoint p = path.getStart();
-		int x = p.x;
-		int y = p.y;
-		for (int i = 0; i < stepsBeforeStart; i++) {
-			Step step = path.getStep(i);
-			x += step.deltaX;
-			y += step.deltaY;
-		}
+        int stepsBeforeStart = 0;
+        int stepsAfterEnd = 0;
 
-		ImPoint startPoint = new ImPoint(x, y);
+        for (int i = 0; i < path.steps(); i++) {
+            if (distanceSoFar > end)
+                stepsAfterEnd++;
 
-		PathOnTiles pathOnTiles = new PathOnTiles(startPoint, steps);
-		return pathOnTiles;
-	}
+            Step step = path.getStep(i);
+            distanceSoFar += step.getLength();
 
-	public int getTrainLength() {
-		return trainLength;
-	}
+            if (distanceSoFar < start)
+                stepsBeforeStart++;
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = path.hashCode();
-		result = 29 * result + speeds.hashCode();
-		result = 29 * result + trainLength;
-		return result;
-	}
+        }
 
-	public PathOnTiles getPath() {
-		return path;
-	}
+        if (distanceSoFar < start) {
+            // throw new IllegalStateException();
+        }
+        if (distanceSoFar < (end - 0.1)) {
+            // throw new IllegalStateException();
+        }
+        int lastStep = path.steps() - stepsAfterEnd;
+        for (int i = stepsBeforeStart; i < lastStep; i++) {
+            steps.add(path.getStep(i));
+        }
 
-	public SpeedTimeAndStatus.TrainActivity getActivity() {
-		return activity;
-	}
+        ImPoint p = path.getStart();
+        int x = p.x;
+        int y = p.y;
+        for (int i = 0; i < stepsBeforeStart; i++) {
+            Step step = path.getStep(i);
+            x += step.deltaX;
+            y += step.deltaY;
+        }
 
-	public double getInitialPosition() {
-		return initialPosition;
-	}
+        ImPoint startPoint = new ImPoint(x, y);
+
+        PathOnTiles pathOnTiles = new PathOnTiles(startPoint, steps);
+        return pathOnTiles;
+    }
+
+    public int getTrainLength() {
+        return trainLength;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = path.hashCode();
+        result = 29 * result + speeds.hashCode();
+        result = 29 * result + trainLength;
+        return result;
+    }
+
+    public PathOnTiles getPath() {
+        return path;
+    }
+
+    public SpeedTimeAndStatus.TrainActivity getActivity() {
+        return activity;
+    }
+
+    public double getInitialPosition() {
+        return initialPosition;
+    }
 
 }

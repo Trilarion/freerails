@@ -11,25 +11,25 @@ import jfreerails.world.top.KEY;
  * @author rob?
  */
 public interface ListMove extends Move {
-	/**
-	 * @return the type of object which was changed
-	 */
-	KEY getKey();
+    /**
+     * @return the type of object which was changed
+     */
+    KEY getKey();
 
-	/**
-	 * @return the old item or null if not any.
-	 */
-	FreerailsSerializable getBefore();
+    /**
+     * @return the old item or null if not any.
+     */
+    FreerailsSerializable getBefore();
 
-	/**
-	 * @return the new item or null if not any.
-	 */
-	FreerailsSerializable getAfter();
+    /**
+     * @return the new item or null if not any.
+     */
+    FreerailsSerializable getAfter();
 
-	/**
-	 * @return the index of the item which changed.
-	 */
-	int getIndex();
+    /**
+     * @return the index of the item which changed.
+     */
+    int getIndex();
 
-	FreerailsPrincipal getPrincipal();
+    FreerailsPrincipal getPrincipal();
 }

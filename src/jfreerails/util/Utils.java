@@ -24,143 +24,142 @@ import java.util.StringTokenizer;
  */
 strictfp public class Utils {
 
-	public static boolean equalsBySerialization(Serializable a, Serializable b) {
+    public static boolean equalsBySerialization(Serializable a, Serializable b) {
 
-		byte[] bytesA = write2ByteArray(a);
-		byte[] bytesB = write2ByteArray(b);
-		if (bytesA.length != bytesB.length)
-			return false;
+        byte[] bytesA = write2ByteArray(a);
+        byte[] bytesB = write2ByteArray(b);
+        if (bytesA.length != bytesB.length)
+            return false;
 
-		for (int i = 0; i < bytesA.length; i++) {
-			if (bytesA[i] != bytesB[i])
-				return false;
-		}
+        for (int i = 0; i < bytesA.length; i++) {
+            if (bytesA[i] != bytesB[i])
+                return false;
+        }
 
-		return true;
+        return true;
 
-	}
-	
-	/** Used when debugging.*/
-	public static void write(Serializable m, String fileName){
-		try{
-			File f = new File(fileName);
-			OutputStream out = new FileOutputStream(f);
-			ObjectOutputStream objectOut = new ObjectOutputStream(out);
-			objectOut.writeObject(m);
-			objectOut.flush();
-			objectOut.close();					
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-	}
+    }
 
-	public static Serializable cloneBySerialisation(Serializable m) {
-		try {
-			byte[] bytes = write2ByteArray(m);
+    /** Used when debugging. */
+    public static void write(Serializable m, String fileName) {
+        try {
+            File f = new File(fileName);
+            OutputStream out = new FileOutputStream(f);
+            ObjectOutputStream objectOut = new ObjectOutputStream(out);
+            objectOut.writeObject(m);
+            objectOut.flush();
+            objectOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-			ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-			ObjectInputStream objectIn = new ObjectInputStream(in);
-			Serializable o;
+    public static Serializable cloneBySerialisation(Serializable m) {
+        try {
+            byte[] bytes = write2ByteArray(m);
 
-			o = (Serializable) objectIn.readObject();
-			return o;
-		} catch (ClassNotFoundException e) {
-			// Should never happen.
-			throw new IllegalStateException();
-		} catch (IOException e) {
-			// Should never happen.
-			e.printStackTrace();
-			throw new IllegalStateException();
-		}
+            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+            ObjectInputStream objectIn = new ObjectInputStream(in);
+            Serializable o;
 
-	}
+            o = (Serializable) objectIn.readObject();
+            return o;
+        } catch (ClassNotFoundException e) {
+            // Should never happen.
+            throw new IllegalStateException();
+        } catch (IOException e) {
+            // Should never happen.
+            e.printStackTrace();
+            throw new IllegalStateException();
+        }
 
-	private static byte[] write2ByteArray(Serializable m) {
+    }
 
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream objectOut = new ObjectOutputStream(out);
-			objectOut.writeObject(m);
-			objectOut.flush();
-		} catch (IOException e) {
-			// Should never happen.
-			e.printStackTrace();
-			throw new IllegalStateException();
-		}
+    private static byte[] write2ByteArray(Serializable m) {
 
-		byte[] bytes = out.toByteArray();
-		return bytes;
-	}
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream objectOut = new ObjectOutputStream(out);
+            objectOut.writeObject(m);
+            objectOut.flush();
+        } catch (IOException e) {
+            // Should never happen.
+            e.printStackTrace();
+            throw new IllegalStateException();
+        }
 
-	public static String capitalizeEveryWord(String str) {
-		StringBuffer result = new StringBuffer();
-		StringTokenizer tok = new StringTokenizer(str);
+        byte[] bytes = out.toByteArray();
+        return bytes;
+    }
 
-		while (tok.hasMoreTokens()) {
-			String token = tok.nextToken().toLowerCase();
-			result.append(Character.toUpperCase(token.charAt(0))
-					+ token.substring(1) + " ");
-		}
-		return result.toString().trim();
-	}
+    public static String capitalizeEveryWord(String str) {
+        StringBuffer result = new StringBuffer();
+        StringTokenizer tok = new StringTokenizer(str);
 
-	public static String findConstantFieldName(Object o) {
-		Field[] fields = o.getClass().getFields();
-		for (int i = 0; i < fields.length; i++) {
-			int modifiers = fields[i].getModifiers();
+        while (tok.hasMoreTokens()) {
+            String token = tok.nextToken().toLowerCase();
+            result.append(Character.toUpperCase(token.charAt(0))
+                    + token.substring(1) + " ");
+        }
+        return result.toString().trim();
+    }
 
-			try {
-				if (Modifier.isStatic(modifiers)
-						&& Modifier.isPublic(modifiers)) {
-					Object o2 = fields[i].get(null);
-					if (o2.equals(o)) {
-						return fields[i].getName();
-					}
-				}
-			} catch (IllegalAccessException e) {
-				throw new IllegalStateException();
-			}
-		}
+    public static String findConstantFieldName(Object o) {
+        Field[] fields = o.getClass().getFields();
+        for (int i = 0; i < fields.length; i++) {
+            int modifiers = fields[i].getModifiers();
 
-		return null;
-	}
+            try {
+                if (Modifier.isStatic(modifiers)
+                        && Modifier.isPublic(modifiers)) {
+                    Object o2 = fields[i].get(null);
+                    if (o2.equals(o)) {
+                        return fields[i].getName();
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException();
+            }
+        }
 
-	/**
-	 * Returns the largest solution of the quadratic equation ax<sup><font
-	 * size="-1">2</font></sup> + bx + c = 0.
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if <code>a == 0</code>
-	 * @throws IllegalArgumentException
-	 *             if <code>(b * b - 4 * a * c) < 0</code>
-	 */
-	public static double solveQuadratic(double a, double b, double c)
-			throws IllegalArgumentException {
-		if (a == 0) {
-			throw new IllegalArgumentException("a == 0");
-		}
-		double disc = b * b - 4 * a * c;
-		if (disc < 0)
-			throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
-		return (-b + StrictMath.sqrt(disc)) / (2 * a);
+        return null;
+    }
 
-	}
+    /**
+     * Returns the largest solution of the quadratic equation ax<sup><font
+     * size="-1">2</font></sup> + bx + c = 0.
+     * 
+     * @throws IllegalArgumentException
+     *             if <code>a == 0</code>
+     * @throws IllegalArgumentException
+     *             if <code>(b * b - 4 * a * c) < 0</code>
+     */
+    public static double solveQuadratic(double a, double b, double c)
+            throws IllegalArgumentException {
+        if (a == 0) {
+            throw new IllegalArgumentException("a == 0");
+        }
+        double disc = b * b - 4 * a * c;
+        if (disc < 0)
+            throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
+        return (-b + StrictMath.sqrt(disc)) / (2 * a);
 
-	public static int hypotenuse(int a, int b) {
-		double d = Math.hypot(a, b);
-		return (int) Math.round(d);
-	}
+    }
 
-	/**
-	 * Returns true if the objects are equal or both null, otherwise returns
-	 * false. Does not throw null pointer exceptions when either of the objects
-	 * is null.
-	 */
-	public static boolean equal(Object a,
-			Object b) {
-		if (null == a || null == b) {
-			return null == a && null == b;
-		}
-		return a.equals(b);
-	}
+    public static int hypotenuse(int a, int b) {
+        double d = Math.hypot(a, b);
+        return (int) Math.round(d);
+    }
+
+    /**
+     * Returns true if the objects are equal or both null, otherwise returns
+     * false. Does not throw null pointer exceptions when either of the objects
+     * is null.
+     */
+    public static boolean equal(Object a, Object b) {
+        if (null == a || null == b) {
+            return null == a && null == b;
+        }
+        return a.equals(b);
+    }
 }

@@ -28,144 +28,144 @@ import jfreerails.client.view.OverviewMapJComponent;
  * @author Luke Lindsay
  */
 public class SimpleComponentFactoryImpl2 implements
-		jfreerails.client.top.GUIComponentFactory {
-	private OverviewMapJComponent overviewMap;
+        jfreerails.client.top.GUIComponentFactory {
+    private OverviewMapJComponent overviewMap;
 
-	private JScrollPane mainMapScrollPane1;
+    private JScrollPane mainMapScrollPane1;
 
-	private MapViewJComponentConcrete mainMap;
+    private MapViewJComponentConcrete mainMap;
 
-	private MainMapAndOverviewMapMediator mediator;
+    private MainMapAndOverviewMapMediator mediator;
 
-	private Rectangle r = new Rectangle();
+    private Rectangle r = new Rectangle();
 
-	/** Creates new SimpleComponentFactoryImpl */
-	public SimpleComponentFactoryImpl2() {
-	}
+    /** Creates new SimpleComponentFactoryImpl */
+    public SimpleComponentFactoryImpl2() {
+    }
 
-	public JMenu createBuildMenu() {
-		return new JMenu("Build");
-	}
+    public JMenu createBuildMenu() {
+        return new JMenu("Build");
+    }
 
-	public JMenu createGameMenu() {
-		return new JMenu("Game");
-	}
+    public JMenu createGameMenu() {
+        return new JMenu("Game");
+    }
 
-	public JMenu createDisplayMenu() {
-		JMenu displayMenu = new JMenu("Display");
+    public JMenu createDisplayMenu() {
+        JMenu displayMenu = new JMenu("Display");
 
-		addMainmapzoomMenuItem(displayMenu, 5);
-		addMainmapzoomMenuItem(displayMenu, 10);
+        addMainmapzoomMenuItem(displayMenu, 5);
+        addMainmapzoomMenuItem(displayMenu, 10);
 
-		addOverviewmapzoomMenuItem(displayMenu, 0.2F);
-		addOverviewmapzoomMenuItem(displayMenu, 0.6F);
+        addOverviewmapzoomMenuItem(displayMenu, 0.2F);
+        addOverviewmapzoomMenuItem(displayMenu, 0.6F);
 
-		return displayMenu;
-	}
+        return displayMenu;
+    }
 
-	public JMenu createBrokerMenu() {
-		JMenu brokerMenu = new JMenu("Broker");
-		return brokerMenu;
-	}
+    public JMenu createBrokerMenu() {
+        JMenu brokerMenu = new JMenu("Broker");
+        return brokerMenu;
+    }
 
-	private void addOverviewmapzoomMenuItem(JMenu displayMenu, final float scale) {
-		String menuItemName = "Set overview map scale=" + scale;
-		JMenuItem menuItem = new JMenuItem(menuItemName);
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				overviewMap.setup(new BlankMapRenderer(scale));
-			}
-		});
-		displayMenu.add(menuItem);
-	}
+    private void addOverviewmapzoomMenuItem(JMenu displayMenu, final float scale) {
+        String menuItemName = "Set overview map scale=" + scale;
+        JMenuItem menuItem = new JMenuItem(menuItemName);
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                overviewMap.setup(new BlankMapRenderer(scale));
+            }
+        });
+        displayMenu.add(menuItem);
+    }
 
-	private void addMainmapzoomMenuItem(JMenu displayMenu, final float scale) {
-		String menuItemName = "Set main map scale=" + scale;
-		JMenuItem menuItem = new JMenuItem(menuItemName);
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Rectangle visRect = mainMap.getVisibleRect();
+    private void addMainmapzoomMenuItem(JMenu displayMenu, final float scale) {
+        String menuItemName = "Set main map scale=" + scale;
+        JMenuItem menuItem = new JMenuItem(menuItemName);
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Rectangle visRect = mainMap.getVisibleRect();
 
-				int oldWidth = mainMap.getWidth();
-				mainMap.setup(new BlankMapRenderer(scale));
+                int oldWidth = mainMap.getWidth();
+                mainMap.setup(new BlankMapRenderer(scale));
 
-				int newWidth = mainMap.getPreferredSize().width;
+                int newWidth = mainMap.getPreferredSize().width;
 
-				int oldCenterX = visRect.x + (visRect.width / 2);
-				int newCenterX = oldCenterX * newWidth / oldWidth;
-				visRect.x = newCenterX - visRect.width / 2;
+                int oldCenterX = visRect.x + (visRect.width / 2);
+                int newCenterX = oldCenterX * newWidth / oldWidth;
+                visRect.x = newCenterX - visRect.width / 2;
 
-				int oldCenterY = visRect.y + (visRect.height / 2);
-				int newCenterY = oldCenterY * newWidth / oldWidth;
-				visRect.y = newCenterY - visRect.height / 2;
+                int oldCenterY = visRect.y + (visRect.height / 2);
+                int newCenterY = oldCenterY * newWidth / oldWidth;
+                visRect.y = newCenterY - visRect.height / 2;
 
-				/*
-				 * LL: I'm not sure why the 'if' is necessary in the following,
-				 * but the view does not center on the right spot without it.
-				 */
-				if (oldWidth < newWidth) {
-					mainMap.setSize(mainMap.getPreferredSize());
-					mainMap.scrollRectToVisible(visRect);
-				} else {
-					mainMap.scrollRectToVisible(visRect);
-					mainMap.setSize(mainMap.getPreferredSize());
-				}
-			}
-		});
-		displayMenu.add(menuItem);
-	}
+                /*
+                 * LL: I'm not sure why the 'if' is necessary in the following,
+                 * but the view does not center on the right spot without it.
+                 */
+                if (oldWidth < newWidth) {
+                    mainMap.setSize(mainMap.getPreferredSize());
+                    mainMap.scrollRectToVisible(visRect);
+                } else {
+                    mainMap.scrollRectToVisible(visRect);
+                    mainMap.setSize(mainMap.getPreferredSize());
+                }
+            }
+        });
+        displayMenu.add(menuItem);
+    }
 
-	public JScrollPane createMainMap() {
-		if (null == this.mainMap) {
-			// this.mainMap = new MapJPanel();
-			this.mainMap = new MapViewJComponentConcrete();
-			mainMapScrollPane1 = new JScrollPane();
-			mainMapScrollPane1.setViewportView(this.mainMap);
-			addMainMapAndOverviewMapMediatorIfNecessary();
-		}
+    public JScrollPane createMainMap() {
+        if (null == this.mainMap) {
+            // this.mainMap = new MapJPanel();
+            this.mainMap = new MapViewJComponentConcrete();
+            mainMapScrollPane1 = new JScrollPane();
+            mainMapScrollPane1.setViewportView(this.mainMap);
+            addMainMapAndOverviewMapMediatorIfNecessary();
+        }
 
-		return mainMapScrollPane1;
-	}
+        return mainMapScrollPane1;
+    }
 
-	public JPanel createOverviewMap() {
-		if (null == this.overviewMap) {
-			// this.overviewMap = new OverviewMapJPanel();
-			this.overviewMap = new OverviewMapJComponent(r);
-			this.overviewMap.setup(new BlankMapRenderer(0.4F));
-			addMainMapAndOverviewMapMediatorIfNecessary();
-		}
+    public JPanel createOverviewMap() {
+        if (null == this.overviewMap) {
+            // this.overviewMap = new OverviewMapJPanel();
+            this.overviewMap = new OverviewMapJComponent(r);
+            this.overviewMap.setup(new BlankMapRenderer(0.4F));
+            addMainMapAndOverviewMapMediatorIfNecessary();
+        }
 
-		return overviewMap;
-		// return new TestPanel();
-	}
+        return overviewMap;
+        // return new TestPanel();
+    }
 
-	private void addMainMapAndOverviewMapMediatorIfNecessary() {
-		if (this.mainMap != null && this.overviewMap != null
-				&& null == this.mediator) {
-			// Rectangle r = this.overviewMap.getMainMapVisibleRect();
-			this.mediator = new MainMapAndOverviewMapMediator(overviewMap,
-					mainMapScrollPane1.getViewport(), mainMap, r);
-		}
-	}
+    private void addMainMapAndOverviewMapMediatorIfNecessary() {
+        if (this.mainMap != null && this.overviewMap != null
+                && null == this.mediator) {
+            // Rectangle r = this.overviewMap.getMainMapVisibleRect();
+            this.mediator = new MainMapAndOverviewMapMediator(overviewMap,
+                    mainMapScrollPane1.getViewport(), mainMap, r);
+        }
+    }
 
-	public JLabel createCashJLabel() {
-		return null;
-	}
+    public JLabel createCashJLabel() {
+        return null;
+    }
 
-	public JLabel createDateJLabel() {
-		return null;
-	}
+    public JLabel createDateJLabel() {
+        return null;
+    }
 
-	public JMenu createHelpMenu() {
-		return null;
-	}
+    public JMenu createHelpMenu() {
+        return null;
+    }
 
-	public JTabbedPane createTrainsJTabPane() {
-		return null;
-	}
+    public JTabbedPane createTrainsJTabPane() {
+        return null;
+    }
 
-	public JMenu createReportsMenu() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public JMenu createReportsMenu() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

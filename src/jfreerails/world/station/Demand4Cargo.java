@@ -9,42 +9,42 @@ import jfreerails.world.common.ImInts;
  * @author Luke
  */
 public class Demand4Cargo implements FreerailsSerializable {
-	private static final long serialVersionUID = 3257565088071038009L;
+    private static final long serialVersionUID = 3257565088071038009L;
 
-	private final ImInts demand;
+    private final ImInts demand;
 
-	public Demand4Cargo(boolean[] demandArray) {
-		demand = ImInts.fromBoolean(demandArray);
-	}
+    public Demand4Cargo(boolean[] demandArray) {
+        demand = ImInts.fromBoolean(demandArray);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof Demand4Cargo))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Demand4Cargo))
+            return false;
 
-		final Demand4Cargo demandAtStation = (Demand4Cargo) o;
+        final Demand4Cargo demandAtStation = (Demand4Cargo) o;
 
-		if (!demand.equals(demandAtStation.demand))
-			return false;
+        if (!demand.equals(demandAtStation.demand))
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = 0;
+    @Override
+    public int hashCode() {
+        int result = 0;
 
-		for (int i = 0; i < demand.size(); i++) {
-			result = 29 * result + demand.get(i);
-		}
+        for (int i = 0; i < demand.size(); i++) {
+            result = 29 * result + demand.get(i);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public boolean isCargoDemanded(int cargoNumber) {
-		return demand.get(cargoNumber) == 1;
-	}
+    public boolean isCargoDemanded(int cargoNumber) {
+        return demand.get(cargoNumber) == 1;
+    }
 
 }

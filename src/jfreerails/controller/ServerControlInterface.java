@@ -14,17 +14,17 @@ import java.io.IOException;
  * 
  */
 public interface ServerControlInterface {
-	public static final String FREERAILS_SAV = "freerails.sav";
+    public static final String FREERAILS_SAV = "freerails.sav";
 
-	public static final String VERSION = "CVS";
+    public static final String VERSION = "CVS";
 
-	void loadgame(String saveGameName) throws IOException;
+    void loadgame(String saveGameName) throws IOException;
 
-	void savegame(String saveGameName);
+    void savegame(String saveGameName);
 
-	void stopGame();
-	
-	void refreshSavedGames();
+    void stopGame();
 
-	void newGame(String mapName);
+    void refreshSavedGames();
+
+    void newGame(String mapName);
 }

@@ -20,95 +20,93 @@ import jfreerails.world.top.World;
 
 public class AddActiveEntityMove implements Move {
 
-	private static final long serialVersionUID = 8732702087937675013L;
+    private static final long serialVersionUID = 8732702087937675013L;
 
-	private final Activity activity;
+    private final Activity activity;
 
-	private final FreerailsPrincipal principal;
+    private final FreerailsPrincipal principal;
 
-	
+    private final int index;
 
-	private final int index;
+    public AddActiveEntityMove(Activity activity, int index,
+            FreerailsPrincipal principal) {
+        this.activity = activity;
+        this.index = index;
 
-	public AddActiveEntityMove(Activity activity, int index, 
-			FreerailsPrincipal principal) {
-		this.activity = activity;
-		this.index = index;
-		
-		this.principal = principal;
-	}
+        this.principal = principal;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof AddActiveEntityMove))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof AddActiveEntityMove))
+            return false;
 
-		final AddActiveEntityMove addActiveEntityMove = (AddActiveEntityMove) o;
+        final AddActiveEntityMove addActiveEntityMove = (AddActiveEntityMove) o;
 
-		if (index != addActiveEntityMove.index)
-			return false;
-		if (!activity.equals(addActiveEntityMove.activity))
-			return false;
-		
-		if (!principal.equals(addActiveEntityMove.principal))
-			return false;
+        if (index != addActiveEntityMove.index)
+            return false;
+        if (!activity.equals(addActiveEntityMove.activity))
+            return false;
 
-		return true;
-	}
+        if (!principal.equals(addActiveEntityMove.principal))
+            return false;
 
-	@Override
-	public int hashCode() {
-		int result;
-		result = activity.hashCode();
-		result = 29 * result + principal.hashCode();
-	
-		result = 29 * result + index;
-		return result;
-	}
+        return true;
+    }
 
-	public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-		if (index != w.size(principal))
-			return MoveStatus.moveFailed("index != w.size(listKey, p)");
+    @Override
+    public int hashCode() {
+        int result;
+        result = activity.hashCode();
+        result = 29 * result + principal.hashCode();
 
-		return MoveStatus.MOVE_OK;
-	}
+        result = 29 * result + index;
+        return result;
+    }
 
-	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-		int expectedSize = index + 1;
-		if (expectedSize != w.size(principal))
-			return MoveStatus
-					.moveFailed("(index + 1) != w.size(listKey, principal)");
+    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
+        if (index != w.size(principal))
+            return MoveStatus.moveFailed("index != w.size(listKey, p)");
 
-		ActivityIterator ai = w.getActivities(principal, index);
-		if (ai.hasNext())
-			return MoveStatus
-					.moveFailed("There should be exactly one activity!");
+        return MoveStatus.MOVE_OK;
+    }
 
-		Activity act = ai.getActivity();
+    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
+        int expectedSize = index + 1;
+        if (expectedSize != w.size(principal))
+            return MoveStatus
+                    .moveFailed("(index + 1) != w.size(listKey, principal)");
 
-		if (!act.equals(activity))
-			return MoveStatus.moveFailed("Expected " + activity.toString()
-					+ " but found " + act.toString());
+        ActivityIterator ai = w.getActivities(principal, index);
+        if (ai.hasNext())
+            return MoveStatus
+                    .moveFailed("There should be exactly one activity!");
 
-		return MoveStatus.MOVE_OK;
-	}
+        Activity act = ai.getActivity();
 
-	public MoveStatus doMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = tryDoMove(w, p);
-		if (ms.ok)
-			w.addActiveEntity(principal, activity);
+        if (!act.equals(activity))
+            return MoveStatus.moveFailed("Expected " + activity.toString()
+                    + " but found " + act.toString());
 
-		return ms;
-	}
+        return MoveStatus.MOVE_OK;
+    }
 
-	public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-		MoveStatus ms = tryUndoMove(w, p);
-		if (ms.ok)
-			w.removeLastActiveEntity(principal);
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        MoveStatus ms = tryDoMove(w, p);
+        if (ms.ok)
+            w.addActiveEntity(principal, activity);
 
-		return ms;
-	}
+        return ms;
+    }
+
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        MoveStatus ms = tryUndoMove(w, p);
+        if (ms.ok)
+            w.removeLastActiveEntity(principal);
+
+        return ms;
+    }
 
 }

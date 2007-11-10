@@ -8,5 +8,5 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public interface TerrainTile extends FreerailsSerializable {
-	int getTerrainTypeID();
+    int getTerrainTypeID();
 }

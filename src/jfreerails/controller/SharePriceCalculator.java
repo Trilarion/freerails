@@ -9,31 +9,31 @@ package jfreerails.controller;
  * 
  */
 public class SharePriceCalculator {
-	public int totalShares;
+    public int totalShares;
 
-	public int treasuryStock;
+    public int treasuryStock;
 
-	public int otherRRStakes;
+    public int otherRRStakes;
 
-	public long profitsLastYear;
+    public long profitsLastYear;
 
-	public long networth;
+    public long networth;
 
-	public long stockholderEquity;
+    public long stockholderEquity;
 
-	public long calulatePrice() {
-		assert totalShares > 0;
-		assert totalShares >= treasuryStock + otherRRStakes;
-		assert stockholderEquity > 0;
+    public long calulatePrice() {
+        assert totalShares > 0;
+        assert totalShares >= treasuryStock + otherRRStakes;
+        assert stockholderEquity > 0;
 
-		long price;
-		long currentValue = networth + stockholderEquity;
-		long expectedIncrease = profitsLastYear * 5;
+        long price;
+        long currentValue = networth + stockholderEquity;
+        long expectedIncrease = profitsLastYear * 5;
 
-		int publicOwnedShares = totalShares - treasuryStock - otherRRStakes;
-		price = 2 * (currentValue + expectedIncrease)
-				/ (2 * publicOwnedShares + otherRRStakes);
+        int publicOwnedShares = totalShares - treasuryStock - otherRRStakes;
+        price = 2 * (currentValue + expectedIncrease)
+                / (2 * publicOwnedShares + otherRRStakes);
 
-		return price;
-	}
+        return price;
+    }
 }

@@ -12,6 +12,6 @@ import jfreerails.controller.ModelRoot;
  */
 public interface ModelRootListener {
 
-	void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue);
+    void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue);
 
 }

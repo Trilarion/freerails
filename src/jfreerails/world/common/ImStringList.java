@@ -17,40 +17,40 @@ import jfreerails.util.Immutable;
 @Immutable
 public class ImStringList implements FreerailsSerializable {
 
-	private static final long serialVersionUID = 5211786598838212188L;
+    private static final long serialVersionUID = 5211786598838212188L;
 
-	private final String[] strings;
+    private final String[] strings;
 
-	public ImStringList(String... strings) {
-		this.strings = strings.clone();
-	}
+    public ImStringList(String... strings) {
+        this.strings = strings.clone();
+    }
 
-	public String get(int i) {
-		return strings[i];
-	}
+    public String get(int i) {
+        return strings[i];
+    }
 
-	public int size() {
-		return strings.length;
-	}
+    public int size() {
+        return strings.length;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof ImStringList))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof ImStringList))
+            return false;
 
-		final ImStringList imStringList = (ImStringList) o;
+        final ImStringList imStringList = (ImStringList) o;
 
-		if (!Arrays.equals(strings, imStringList.strings))
-			return false;
+        if (!Arrays.equals(strings, imStringList.strings))
+            return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		return strings.length;
-	}
+    @Override
+    public int hashCode() {
+        return strings.length;
+    }
 
 }
