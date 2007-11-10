@@ -1,0 +1,3 @@
+the explosion graphics was taken from ROBOCODE   
+
+http://robocode.alphaworks.ibm.com/myfirstrobot/MyFirstRobot.html

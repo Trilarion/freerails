@@ -1,0 +1,55 @@
+<!DOCTYPE Tiles SYSTEM "cities.dtd">
+
+<!--This file specifies the name and co-ordinates of the cities on a map-->
+
+<Cities>
+	<City name="Rio De Janeiro" x="178" y="150"/>
+	<City name="Montevideo" x="132" y="194"/>
+	<City name="Santiago" x="77" y="205"/>
+	<City name="Lima" x="50" y="105"/>
+	<City name="Caracus" x="92" y="14"/>
+	<City name="Buenos Aires" x="121" y="196"/>
+	<City name="Porto Alegre" x="146" y="179"/>
+	<City name="Mar del Plata" x="123" y="207"/>
+	<City name="Cordoba" x="100" y="186"/>
+	<City name="Barranquilla" x="60" y="10"/>
+	<City name="Salvador" x="200" y="109"/>
+	<City name="San Jose" x="21" y="12"/>
+	<City name="Manaus" x="107" y="63"/>
+	<City name="Managua" x="13" y="4"/>
+	<City name="Medelin" x="50" y="30"/>
+	<City name="Cali" x="45" y="44"/>
+	<City name="Monteria" x="54" y="17"/>
+	<City name="Barquisimeto" x="80" y="9"/>
+	<City name="Maceio" x="209" y="96"/>
+	<City name="Recife" x="214" y="88"/>	
+	<City name="Natal" x="212" y="78"/>
+	<City name="Fortaleza" x="197" y="69"/>
+	<City name="Teresina" x="190" y="76"/>
+	<City name="Belem" x="170" y="62"/>
+	<City name="Sao-Paulo" x="165" y="152"/>
+	<City name="Curitiba" x="156" y="161"/>
+	<City name="Asuncion" x="138" y="160"/>
+	<City name="La Serena" x="79" y="186"/>
+	<City name="Talca" x="76" y="215"/>
+	<City name="Temuco" x="79" y="229"/>
+	<City name="Coihaique" x="83" y="254"/>
+	<City name="Trelew" x="99" y="247"/>
+	<City name="Salta" x="112" y="158"/>
+	<City name="Antofagasta" x="80" y="143"/>
+	<City name="San Miguel" x="115" y="178"/>
+	<City name="Arica" x="60" y="117"/>
+	<City name="La Paz" x="72" y="105"/>
+	<City name="Puno" x="65" y="101"/>
+	<City name="Guayaquil" x="33" y="63"/>
+	<City name="Piura" x="30" y="80"/>
+	<City name="Iquitos" x="59" y="70"/>
+	<City name="Bogota" x="71" y="31"/>
+	<City name="Boa Vista" x="108" y="40"/>
+	<City name="Cayenne" x="151" y="39"/>
+	<City name="Paramaribo" x="135" y="29"/>
+	<City name="Campo Grande" x="140" y="140"/>
+	<City name="Brasilia" x="155" y="119"/>
+	<City name="Belo Horizonte" x="174" y="133"/>
+	<City name="Porto Velho" x="97" y="80"/>
+</Cities>

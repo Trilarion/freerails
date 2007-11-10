@@ -1,0 +1,63 @@
+<!--
+    Typical usage:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE Tiles SYSTEM "Track_Tiles.dtd">
+
+    <Tiles>
+    ...
+    </Tiles>
+-->
+
+  <!ELEMENT CanOnlyBuildOnTheseTerrainTypes (TerrainType)*>
+
+  <!ELEMENT CannotBuildOnTheseTerrainTypes (TerrainType)*>
+  
+  <!ELEMENT ListOfTrackPieceTemplates (TrackPieceTemplate)*>
+
+  <!ELEMENT LegalRouteAcrossNode EMPTY>
+  <!ATTLIST LegalRouteAcrossNode
+    RouteTemplate CDATA #REQUIRED
+  >
+
+  <!ELEMENT ListOfLegalRoutesAcrossNode (LegalRouteAcrossNode)*>
+
+
+
+  <!ELEMENT Tiles (TrackSet)>
+
+  <!ELEMENT TerrainType EMPTY>
+  <!ATTLIST TerrainType
+    name CDATA #REQUIRED
+  >
+
+  <!ELEMENT TrackType ((CannotBuildOnTheseTerrainTypes|CanOnlyBuildOnTheseTerrainTypes),ListOfTrackPieceTemplates)>
+  <!ATTLIST TrackType
+    RGBvalue CDATA #REQUIRED
+    doubleTrack (true|false)  #REQUIRED
+    maxConsecuativePieces CDATA #REQUIRED
+    category (track|tunnel|bridge|station) #REQUIRED
+    stationRadius (0|1|2|3) #IMPLIED
+    fixedCost CDATA #IMPLIED
+    type CDATA #REQUIRED
+    Y CDATA #REQUIRED
+    signalTower (true|false)  #REQUIRED
+    X CDATA #REQUIRED
+    price CDATA #REQUIRED
+    maintenance CDATA #REQUIRED
+  >
+
+  <!ELEMENT TrackPieceTemplate (ListOfLegalRoutesAcrossNode)>
+  <!ATTLIST TrackPieceTemplate
+    trackTemplate CDATA #REQUIRED
+  >
+
+  <!ELEMENT TrackSet (TrackType)*>
+  <!ATTLIST TrackSet
+    Width CDATA #REQUIRED
+    Class CDATA #REQUIRED
+    Y CDATA #REQUIRED
+    Height CDATA #REQUIRED
+    X CDATA #REQUIRED
+  >
