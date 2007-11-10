@@ -9,3 +9,8 @@ StationBoxPainter: 2-4x faster
 paint only what is visible
 
 trainupdater->movetrains
+
+
+
+Original game ... 4 Stations, 5 trains, 1200x1000 resolution, all visible
+13fps
