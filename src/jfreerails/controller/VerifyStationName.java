@@ -1,6 +1,6 @@
 package jfreerails.controller;
 
-import java.util.Vector;
+import java.util.LinkedList;
 
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -24,19 +24,19 @@ public class VerifyStationName {
 
     private final String nameToVerify;
 
-    private final Vector<String> stationAlternatives;
+    private final LinkedList<String> stationAlternatives;
 
     public VerifyStationName(ReadOnlyWorld world, String name) {
         this.w = world;
         this.nameToVerify = name;
-        this.stationAlternatives = new Vector<String>();
+        this.stationAlternatives = new LinkedList<String>();
 
-        stationAlternatives.addElement("Junction");
-        stationAlternatives.addElement("Siding");
-        stationAlternatives.addElement("North");
-        stationAlternatives.addElement("East");
-        stationAlternatives.addElement("South");
-        stationAlternatives.addElement("West");
+        stationAlternatives.add("Junction");
+        stationAlternatives.add("Siding");
+        stationAlternatives.add("North");
+        stationAlternatives.add("East");
+        stationAlternatives.add("South");
+        stationAlternatives.add("West");
     }
 
     public String getName() {
@@ -44,10 +44,6 @@ public class VerifyStationName {
         boolean found = false;
         String tempName = null;
 
-        // if (w.size(KEY.STATIONS) <= 0) {
-        // //if there are no stations, then obviously the name isn't taken
-        // return appropriateName;
-        // }
         found = checkStationExists(appropriateName);
 
         if (!found) {
@@ -55,11 +51,9 @@ public class VerifyStationName {
         }
         // a station with that name already exists, so we need to find another
         // name
-        for (int i = 0; i < stationAlternatives.size(); i++) {
-            tempName = appropriateName + " " + stationAlternatives.elementAt(i);
-
+        for (String stationAlternative : stationAlternatives) {
+            tempName = appropriateName + " " + stationAlternative;
             found = checkStationExists(tempName);
-
             if (!found) {
                 return tempName;
             }

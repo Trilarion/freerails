@@ -7,7 +7,7 @@
 package jfreerails.client.view;
 
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.ScrollPaneConstants;
@@ -159,7 +159,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         // count the number of cargo types waiting and demanded.
         final ArrayList<String> typeWaiting = new ArrayList<String>();
         final ArrayList<Integer> quantityWaiting = new ArrayList<Integer>();
-        final Vector<String> typeDemanded = new Vector<String>();
+        final List<String> typeDemanded = new ArrayList<String>();
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
             CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);
             int amountWaiting = cargoWaiting.getAmount(i);
@@ -201,7 +201,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         this.waitingJTable.setModel(tableModel);
 
         /* The list shows the cargo demanded by the station. */
-        this.demandsJList.setListData(typeDemanded);
+        this.demandsJList.setListData(typeDemanded.toArray());
 
         this.invalidate();
     }

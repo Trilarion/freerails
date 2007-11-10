@@ -6,9 +6,10 @@ package jfreerails.client.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.JList;
@@ -37,7 +38,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
     private ActionListener submitButtonCallBack = null;
 
-    private Vector<PlayerDetails> values;
+    private List<PlayerDetails> values;
 
     /**
      * This method initializes
@@ -45,7 +46,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
     public LeaderBoardJPanel() {
         super();
 
-        values = new Vector<PlayerDetails>();
+        values = new ArrayList<PlayerDetails>();
         Random rand = new Random();
         for (int i = 0; i < 5; i++) {
             PlayerDetails p = new PlayerDetails();
@@ -91,7 +92,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
             playersList.setEnabled(true);
 
             Collections.sort(values);
-            playersList.setListData(values);
+            playersList.setListData(values.toArray());
         }
         return playersList;
     }
@@ -113,7 +114,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
             values.add(details);
         }
         Collections.sort(values);
-        playersList.setListData(values);
+        playersList.setListData(values.toArray());
         setSize(getPreferredSize());
     }
 

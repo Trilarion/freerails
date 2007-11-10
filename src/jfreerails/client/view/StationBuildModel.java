@@ -5,8 +5,9 @@ package jfreerails.client.view;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -49,7 +50,7 @@ public class StationBuildModel {
      * Vector of StationBuildAction. Actions which represent stations which can
      * be built
      */
-    private final Vector<Action> stationChooseActions = new Vector<Action>();
+    private final List<Action> stationChooseActions = new ArrayList<Action>();
 
     /**
      * Whether the station's position can should change when the mouse moves.
