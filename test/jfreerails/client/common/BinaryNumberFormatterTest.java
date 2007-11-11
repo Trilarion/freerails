@@ -1,5 +1,6 @@
 package jfreerails.client.common;
 
+
 import junit.framework.TestCase;
 
 /**

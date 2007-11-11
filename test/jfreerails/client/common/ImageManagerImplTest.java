@@ -1,8 +1,5 @@
-/*
- * Created on 14-Jan-2005
- *
- */
 package jfreerails.client.common;
+
 
 import junit.framework.TestCase;
 

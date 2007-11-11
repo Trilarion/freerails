@@ -396,12 +396,10 @@ public class WorldImpl implements World {
             for (int i = 0; i < players.size(); i++) {
                 Player player = (players.get(i));
                 if (p.equals(player.getPrincipal())) {
-                    System.out.println("Lost");
                     p.setWorldIndex(i);
                     return i;
                 }
             }
-
             throw new ArrayIndexOutOfBoundsException(
                     "No matching principal for " + p.toString());
         } else {
