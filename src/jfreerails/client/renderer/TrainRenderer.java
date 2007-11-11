@@ -74,7 +74,6 @@ public class TrainRenderer {
         // s.incrementFramCt();
     }
 
-    /** 666 10% */
     private void renderWagon(Graphics g, PathWalker pw, int type, boolean engine) {
         IntLine wagon = new IntLine();
 

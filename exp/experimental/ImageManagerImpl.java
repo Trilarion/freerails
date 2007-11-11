@@ -2,7 +2,7 @@
  * Created on 30-Apr-2003
  *
  */
-package jfreerails.client.common;
+package experimental;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -22,6 +22,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+
+import jfreerails.client.common.ImageManager;
 
 /**
  * Implementation of ImageManager that returns images that are compatible with
@@ -58,12 +60,19 @@ public class ImageManagerImpl implements ImageManager {
 
     private String pathToReadFrom;
 
+    private String pathToWriteTo;
+
     private final RenderingHints renderingHints;
 
     private final HashMap<String, Image> scaledImagesHashMap = new HashMap<String, Image>();
 
     public ImageManagerImpl(String readpath) {
+        this(readpath, null);
+    }
+
+    public ImageManagerImpl(String readpath, String writePath) {
         pathToReadFrom = readpath;
+        pathToWriteTo = writePath;
         // Attempt to increase quality..
         renderingHints = new RenderingHints(
                 RenderingHints.KEY_ALPHA_INTERPOLATION,
@@ -76,7 +85,13 @@ public class ImageManagerImpl implements ImageManager {
 
     public boolean contains(String relativeFilename) {
         relativeFilename = relativeFilename.replace(' ', '_');
+
         if (imageHashMap.containsKey(relativeFilename)) {
+            return true;
+        }
+        File f = new File(pathToWriteTo + File.separator + relativeFilename);
+
+        if (f.isFile()) {
             return true;
         }
         return false;
@@ -168,5 +183,39 @@ public class ImageManagerImpl implements ImageManager {
 
     public void setPathToReadFrom(String s) {
         pathToReadFrom = s;
+    }
+
+    public void setPathToWriteTo(String s) {
+        pathToWriteTo = s;
+    }
+
+    public void writeAllImages() throws IOException {
+
+        for (String s : imageHashMap.keySet()) {
+            writeImage(s);
+        }
+    }
+
+    public void writeImage(String relativeFilename) throws IOException {
+
+        if (null == pathToWriteTo)
+            throw new NullPointerException("null == pathToWriteTo");
+
+        relativeFilename = relativeFilename.replace(' ', '_');
+
+        File f = new File(pathToWriteTo + File.separator + relativeFilename);
+
+        if (imageHashMap.containsKey(relativeFilename)) {
+            RenderedImage i = (RenderedImage) imageHashMap
+                    .get(relativeFilename);
+            String pathName = f.getPath();
+            File path = new File(pathName);
+            path.mkdirs();
+
+            ImageIO.write(i, "png", f);
+            logger.info("Writing " + f);
+        } else {
+            throw new NoSuchElementException(relativeFilename);
+        }
     }
 }

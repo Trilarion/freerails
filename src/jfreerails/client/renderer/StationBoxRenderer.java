@@ -96,7 +96,6 @@ public class StationBoxRenderer implements Painter {
                     ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
                             principal, KEY.CARGO_BUNDLES, station
                                     .getCargoBundleID());
-                    /** 666 do only if something changed */
                     int[][] carsLoads = calculateCarLoads(cb);
                     for (int category = 0; category < CargoType
                             .getNumberOfCategories(); category++) {

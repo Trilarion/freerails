@@ -3,6 +3,7 @@ package jfreerails.move;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import jfreerails.controller.PathCacheController;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -171,6 +172,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        PathCacheController.clearTrackCache();
         MoveStatus moveStatus = tryDoMove(w, p);
 
         if (!moveStatus.isOk()) {
@@ -193,6 +195,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        PathCacheController.clearTrackCache();
         MoveStatus moveStatus = tryUndoMove(w, p);
 
         if (!moveStatus.isOk()) {

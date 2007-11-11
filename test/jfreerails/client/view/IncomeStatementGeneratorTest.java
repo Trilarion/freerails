@@ -39,7 +39,6 @@ public class IncomeStatementGeneratorTest extends TestCase {
         assertEquals(amount, m);
     }
 
-    /** 666 String ->Categories */
     private void addTrans(Categories category, Money amount) {
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
             CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);

@@ -3,7 +3,7 @@
 <jnlp 
   spec="1.0+" 
   codebase="http://freerails2.sourceforge.net/" 
-  href="jfreerails.jnlp"> 
+  href="jfreerails2.jnlp"> 
   <information> 
     <title>JFreerails 2</title> 
     <vendor>JFreerails 2 Developers</vendor> 

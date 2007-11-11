@@ -92,7 +92,7 @@ public class CompositeMove implements Move {
         return ms;
     }
 
-    public final MoveStatus doMove(World w, FreerailsPrincipal p) {
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
         MoveStatus ms = compositeTest(w, p);
 
         if (!ms.ok) {
@@ -113,7 +113,7 @@ public class CompositeMove implements Move {
         return ms;
     }
 
-    public final MoveStatus undoMove(World w, FreerailsPrincipal p) {
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
         MoveStatus ms = MoveStatus.MOVE_OK;
 
         for (int i = moves.size() - 1; i >= 0; i--) {

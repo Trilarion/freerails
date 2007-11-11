@@ -48,8 +48,12 @@ public class MoveTrainPreMove implements PreMove {
     private static final long serialVersionUID = 3545516188269491250L;
     private static final Logger logger = Logger
             .getLogger(MoveTrainPreMove.class.getName());
-    /** 666 Performance cache must be cleared if track on map is build !* */
+    /** 666 Performance cache must be cleared if track on map is build ! make a change listener! */
     private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<Integer, HashMap<Integer, Step>>();
+    private static int cacheCleared = 0;
+    private static int cacheHit = 0;
+    private static int cacheMiss = 0;
+    
 
     /** Uses static method to make testing easier. */
     public static Step findNextStep(ReadOnlyWorld world,
@@ -62,12 +66,14 @@ public class MoveTrainPreMove implements PreMove {
         if (destPaths != null) {
             nextStep = destPaths.get(startPos);
             if (nextStep != null) {
+                cacheHit++;
                 return nextStep;
             }
         } else {
             destPaths = new HashMap<Integer, Step>();
             pathCache.put(endPos, destPaths);
         }
+        cacheMiss++;
         PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
 
         try {
@@ -79,7 +85,7 @@ public class MoveTrainPreMove implements PreMove {
             int[] pathAsInts = pathFinder.pathAsInts();
             for (int i = 0; i < pathAsInts.length - 1; i++) {
                 int calcPos = pathAsInts[i]
-                        & (PositionOnTrack.MAX_COORINATE | (PositionOnTrack.MAX_COORINATE << PositionOnTrack.BITS_FOR_COORINATE));
+                        & (PositionOnTrack.MAX_COORDINATE | (PositionOnTrack.MAX_COORDINATE << PositionOnTrack.BITS_FOR_COORDINATE));
                 destPaths.put(calcPos, pathAsVectors[i + 1]);
             }
             nextStep = pathAsVectors[0];
@@ -307,7 +313,6 @@ public class MoveTrainPreMove implements PreMove {
 
     }
 
-    /** 666 Performance !* */
     private HashMap<TrackSection, Integer> occupiedTrackSections(ReadOnlyWorld w) {
         HashMap<TrackSection, Integer> occupiedTrackSections = new HashMap<TrackSection, Integer>();
         for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {
@@ -396,5 +401,11 @@ public class MoveTrainPreMove implements PreMove {
 
     double topSpeed(int wagons) {
         return 10 / (wagons + 1);
+    }
+
+    public static void clearCache() {
+        pathCache.clear();  
+        cacheCleared ++;
+ //       System.out.println("CH:"+cacheHit+" CM:"+cacheMiss+" CC:"+cacheCleared);
     }
 }

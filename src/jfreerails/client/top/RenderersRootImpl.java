@@ -53,9 +53,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
     public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
             throws IOException {
-        URL out = RenderersRootImpl.class.getResource("/experimental");
-        imageManager = new ImageManagerImpl("/jfreerails/client/graphics/", out
-                .getPath());
+        imageManager = new ImageManagerImpl("/jfreerails/client/graphics/");
         tiles = loadNewTileViewList(w, pm);
 
         trackPieceViewList = loadTrackViews(w, pm);
@@ -63,7 +61,6 @@ public class RenderersRootImpl implements RenderersRoot {
         // rr = new OldTrainImages(w, imageManager, pm);
         loadTrainImages(w, pm);
         preloadSounds(pm);
-
     }
 
     private void loadTrainImages(ReadOnlyWorld w, FreerailsProgressMonitor pm)

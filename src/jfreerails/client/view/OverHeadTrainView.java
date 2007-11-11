@@ -54,7 +54,6 @@ public class OverHeadTrainView implements Painter {
                 // TrainPositionOnMap pos = (TrainPositionOnMap) w.get(
                 // principal, KEY.TRAIN_POSITIONS, i);
                 TrainAccessor ta = new TrainAccessor(w, principal, i);
-                /** 666 10% */
                 TrainPositionOnMap pos = ta.findPosition(time);
                 if (pos.isCrashSite()
                         && (pos.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {
@@ -86,7 +85,6 @@ public class OverHeadTrainView implements Painter {
                         Rectangle r = new Rectangle(minx - 15, miny - 15, maxx
                                 - minx + 30, maxy - miny + 35);
                         if (newVisibleRectectangle.intersects(r)) {
-                            /** 666 10% */
                             trainPainter.paintTrain(g, train, pos);
                         }
                     } else {

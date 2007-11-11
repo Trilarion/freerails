@@ -15,8 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import jfreerails.client.common.ImageManager;
-import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.renderer.TrackPieceRendererImpl;
 import jfreerails.server.OldWorldImpl;
 import jfreerails.server.parser.Track_TilesHandlerImpl;
@@ -48,7 +46,7 @@ public class TrackTilesGenerator extends JPanel {
 
     }
 
-    private final ImageManager imageManager = new ImageManagerImpl(
+    private final ImageManagerImpl imageManager = new ImageManagerImpl(
             "/experimental/", "/experimental/");
 
     private List<TrackRule> rules;

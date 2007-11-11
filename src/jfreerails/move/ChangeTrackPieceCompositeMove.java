@@ -7,6 +7,7 @@ package jfreerails.move;
 
 import java.awt.Rectangle;
 
+import jfreerails.controller.PathCacheController;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.Step;
@@ -234,5 +235,17 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
             }
         }
         throw new IllegalStateException();
+    }
+
+    @Override
+    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+        PathCacheController.clearTrackCache();
+        return super.doMove(w, p);
+    }
+
+    @Override
+    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+        PathCacheController.clearTrackCache();
+        return super.undoMove(w, p);
     }
 }

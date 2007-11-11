@@ -1,67 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="bindist" name="jFreeRails">
+<project basedir=".." default="bindist" name="jFreeRails2">
 
-	<description>The aim of the FreeRails project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.</description>
+	<description>The aim of the FreeRails2 project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.</description>
 
 	<!-- Used by other targets, sets properties -->
 	<target name="init">
 		<tstamp />
-
 		<property location="src" name="src" />
-
+		<property location="res" name="res" />
+		<property location="test" name="test" />
 		<property location="build" name="build" />
-
 		<property location="dist" name="dist" />
-
 		<property location="www/javadoc" name="doc" />
-
 		<property location="temp" name="temp" />
-
 		<property location="datafiles" name="datafiles" />
-
 	</target>
 
 	<!-- Used by other targets, makes build directories -->
 	<target name="mkdirs" depends="init">
 		<tstamp />
-
 		<mkdir dir="${build}" />
-
 		<mkdir dir="${dist}/lib" />
-
 		<mkdir dir="${dist}/latest" />
-
-
 		<mkdir dir="${doc}" />
 		<mkdir dir="${datafiles}" />
-
 	</target>
 	<!-- Copies html etc and sets last modified date in html files.-->
 	<target name="html2docs" depends="mkdirs" unless="skipdocs">
 		<copy todir="${doc}" preservelastmodified="true" overwrite="true">
-					<fileset dir="${src}">
-						<include name="**/*.html" />
-						<include name="**/*.css" />
-						<include name="**/*.htm" />
+			<fileset dir="${src}">
+				<include name="**/*.html" />
+				<include name="**/*.css" />
+				<include name="**/*.htm" />
 
-						<!--Copy the images used by the functional specification but don't copy all the tile graphics etc.-->
-						<include name="docs/*.png" />
+				<!--Copy the images used by the functional specification but don't copy all the tile graphics etc.-->
+				<include name="docs/*.png" />
 
 
-						<!--Don't copy these since the javadoc tool processes them -->
-						<exclude name="**/overview.html" />
-						<exclude name="**/package.html" />
-					</fileset>
-				</copy>
-				<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
-		
-		
+				<!--Don't copy these since the javadoc tool processes them -->
+				<exclude name="**/overview.html" />
+				<exclude name="**/package.html" />
+			</fileset>
+		</copy>
+		<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+
+<!--
 		<taskdef resource="net/sf/antcontrib/antlib.xml" />
 		<for param="file">
 			<fileset dir="${doc}/docs">
 				<include name="**/*.html" />
 				<include name="**/*.htm" />
-				
+
 			</fileset>
 
 			<sequential>
@@ -82,19 +71,15 @@ else:
 ]]>
 				</script>
 				<echo>@{file}  ${date}</echo>
-				
-				<replace file="@{file}" token="@lastModified@" value="${date}"/>
-						
+
+				<replace file="@{file}" token="@lastModified@" value="${date}" />
 			</sequential>
-
 		</for>
-
+		-->
 	</target>
 
 	<!-- Used by other targets, copies data files to a temporary directory. -->
 	<target name="data2temp" depends="mkdirs">
-
-
 		<copy todir="${datafiles}/src">
 			<fileset dir="${src}">
 				<include name="**/*.xml" />
@@ -115,7 +100,7 @@ else:
 				<include name="**/*.png" />
 				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
-				<include name="**/*.css" />				
+				<include name="**/*.css" />
 				<exclude name="javadoc/**/*" />
 			</fileset>
 		</copy>
@@ -142,25 +127,25 @@ else:
 				<include name="**/*" />
 			</fileset>
 		</copy>
-		<copy todir="${build}" file="${datafiles}/src/build.properties"/>					
+		<copy todir="${build}" file="${datafiles}/src/build.properties" />
 	</target>
 
 
 	<target name="compile" depends="data2build" description="Build everything except JUnit test-classes">
-		<javac destdir="${build}" debug="true" debuglevel="lines,vars,source" fork="true" source="1.5" srcdir="${src}">
-			<exclude name="**/*Test.java" />
-			<exclude name="**/*TestCase.java" />
-		</javac>		
+		<javac destdir="${build}" debug="true" debuglevel="lines,vars,source" fork="true" source="1.5">
+			<src path="${src}"/>
+		</javac>
 	</target>
 
 	<target name="debugcompile" depends="data2build" description="Build everything including JUnit    test-classes. Include debugging symbols">
-		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.5" srcdir="${src}" classpath="jars/junit.jar" />
+		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.5" classpath="jars/junit.jar" >
+			<src path="${src}"/>
+			<src path="${test}"/>
+		</javac>
 	</target>
 
 	<target name="test" depends="debugcompile" description="Run all junit tests">
-		
-		 
-		<junit haltonfailure="yes" printsummary="yes" >
+		<junit haltonfailure="yes" printsummary="yes">
 			<classpath>
 				<pathelement location="${build}" />
 
@@ -180,23 +165,18 @@ else:
 
 	<target name="bindist" depends="compile, mkdirs" description="Generate binary distribution">
 		<property name="bin.dist" value="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
-		<jar basedir="${build}" destfile="${bin.dist}">
+		<jar destfile="${bin.dist}">
 			<manifest>
 				<attribute name="Main-Class" value="jfreerails.launcher.Launcher" />
 			</manifest>
+			 <fileset dir="${build}" />
+			 <fileset dir="${res}"/>
 		</jar>
 		<!-- Replace current latest with the jar file we have just created. -->
 		<delete>
 			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />
 		</delete>
 		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" todir="${dist}/latest" />
-	</target>
-	
-	<target name="beansjar" depends="compile, mkdirs" >
-
-			<jar basedir="${build}" destfile="${dist}/lib/jfreerails-beans.jar">					
-				<include name="**/CopyableTextJPanel.class" />
-			</jar>
 	</target>
 
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
@@ -223,15 +203,10 @@ else:
 
 	<target name="clean" depends="init" description="Clean up build and distribution">
 		<delete dir="${build}" />
-
 		<delete dir="${dist}/latest" />
-
 		<delete dir="${doc}" />
-
 		<delete dir="${temp}" />
-
 		<delete dir="${datafiles}" />
-
 		<delete file="website.tar.gz" />
 
 		<!-- also delete any .class etc under the src directory -->
@@ -251,28 +226,18 @@ else:
 		</delete>
 	</target>
 
-	<target name="run_old" depends="mkdirs, compile" description="Test run based on compile">
-		<java classname="jfreerails.launcher.Launcher" fork="true">
-			<classpath>
-				<pathelement path="${build}" />
-			</classpath>
-			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
-
-		</java>
-	</target>
-
 	<target name="rundist" depends="bindist" description="Test run based on bindist">
 		<java fork="true" jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
 	</target>
 
 	<target name="javadoc" depends="mkdirs, html2docs" description="Generate javadoc" unless="skipdocs">
-		<javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}-${TSTAMP}">
+		<!-- not now <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}-${TSTAMP}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />
 				<exclude name="**/*Test.java" />
 			</fileset>
 		</javadoc>
-		
+-->
 		<copy todir="${doc}">
 			<fileset dir="${src}">
 				<include name="**/*.html" />
@@ -322,16 +287,13 @@ else:
 		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz, **/Thumbs.db" tarfile="website.tar.gz" />
 	</target>
 
-
-
-
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
 	<target name="deploysite" description="Upload website to sourceforge" depends="webdist, check_username_and_password, srcdist">
 
 		<fail unless="u" message="Usage: ant -Du=me -Dp=mypassword target" />
 		<fail unless="p" message="Usage: ant -Du=me -Dp=mypassword target" />
 
-		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2" trust="yes">
+		<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2" trust="yes">
 			<fileset dir=".">
 				<include name="website.tar.gz" />
 				<include name="deploysite.sh" />
@@ -343,7 +305,7 @@ else:
 
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
 	<target name="updatesite" description="Uploads modified files to website, skips javadoc and jar files." depends="check_username_and_password">
-		<scp todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails/htdocs" trust="yes">
+		<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
 			<fileset dir="www">
 				<include name="functional_specification.pdf" />
 				<include name="**/*.html" />
@@ -352,10 +314,7 @@ else:
 				<include name="**/*.png" />
 				<include name="**/*.jnpl" />
 				<exclude name="signed_jfreerails.jar" />
-				<exclude name="javadoc/jfreerails/**/*" />
-				<exclude name="javadoc/experimental/**/*" />
-				<exclude name="javadoc/experimental/**/*" />
-				<exclude name="javadoc/it/**/*" />
+				<exclude name="javadoc/**" />
 				<modified />
 			</fileset>
 		</scp>
@@ -396,25 +355,27 @@ else:
 
 		</zip>
 	</target>
-        
-        <!-- Profiles the game using the NetBeans profiler.  Note, the location of the profiler is hard coded and
+
+	<!-- Profiles the game using the NetBeans profiler.  Note, the location of the profiler is hard coded and
         will need to be changed for the target to work on other machines.-->
-        
-        <target name="run" depends="compile" description="Profile Project">
-            <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
 
-            <nbprofiledirect>
-                <classpath> <pathelement location="C:\Program Files\netbeans-5.0\profiler1\lib"/> </classpath>
-            </nbprofiledirect>
+	<target name="run" depends="compile" description="Profile Project">
+		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
 
-            <java classname="jfreerails.launcher.Launcher" fork="true">
-                <jvmarg value="${profiler.info.jvmargs.agent}"/>
-                <classpath>
-                    <pathelement path="${build}" />
-                </classpath>
-                <sysproperty key="java.util.logging.config.file" value="logging.properties" />
-            </java>
-        </target>
+		<nbprofiledirect>
+			<classpath>
+				<pathelement location="C:\Program Files\netbeans-5.0\profiler1\lib" />
+			</classpath>
+		</nbprofiledirect>
+
+		<java classname="jfreerails.launcher.Launcher" fork="true">
+			<jvmarg value="${profiler.info.jvmargs.agent}" />
+			<classpath>
+				<pathelement path="${build}" />
+			</classpath>
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+		</java>
+	</target>
 
 
 </project>
