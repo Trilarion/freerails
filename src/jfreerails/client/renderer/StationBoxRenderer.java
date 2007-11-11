@@ -37,8 +37,6 @@ public class StationBoxRenderer implements Painter {
 
     private final Color bgColor;
 
-    private final RenderersRoot vl;
-
     private final int wagonImageWidth;
 
     private final ModelRoot modelRoot;
@@ -50,7 +48,6 @@ public class StationBoxRenderer implements Painter {
     public StationBoxRenderer(ReadOnlyWorld world, RenderersRoot vl,
             ModelRoot modelRoot) {
         this.w = world;
-        this.vl = vl;
         this.bgColor = new Color(0, 0, 200, 60);
         this.modelRoot = modelRoot;
 

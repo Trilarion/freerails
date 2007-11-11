@@ -1,5 +1,6 @@
 package jfreerails.world.cargo;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.SortedMap;
 
@@ -139,9 +140,9 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
         return amount;
     }
 
+    // 666 use dynamic cache (growing arraylist)->breaks save games
     public int getAmount(int cargoType) {
         int amount = 0;
-
         for (int i = 0; i < batches.size(); i++) {
             if (batches.get(i).getCargoType() == cargoType) {
                 amount += amounts.get(i);
