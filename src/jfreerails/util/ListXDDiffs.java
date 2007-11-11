@@ -132,7 +132,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
         if (b && Utils.equal(uGet(i), element)) {
             if (diffs.containsKey(elementKey))
                 diffs.remove(elementKey);
-
         } else {
             diffs.put(elementKey, element);
         }

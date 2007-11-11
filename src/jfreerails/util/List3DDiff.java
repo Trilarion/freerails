@@ -4,6 +4,7 @@
  */
 package jfreerails.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -84,7 +85,6 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
     }
 
     public int sizeD2(int d1) {
-
         return super.size(d1);
     }
 
@@ -112,7 +112,11 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
     }
 
     public List<T> get(int d1, int d2) {
-        throw new RuntimeException("Not yet implemented");
+        List<T> list = new ArrayList<T>();
+        for(int d3 = 0; d3 < sizeD3(d1, d2); d3++) {
+            list.add(get(d1, d2, d3));
+        }
+        return list;
     }
 
 }
