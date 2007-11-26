@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class ReportBugTextGenerator {
 
-    private static final String TRACKER_URL = "http://sourceforge.net/tracker/?group_id=9495&atid=109495";
+    private static final String TRACKER_URL = "http://sourceforge.net/tracker/?func=add&group_id=209321&atid=1009246";
 
     public static void main(String[] args) {
         Exception e = genException();

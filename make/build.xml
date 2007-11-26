@@ -182,16 +182,12 @@ else:
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
 		<zip basedir="." destfile="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-src.zip">
 			<include name="src/**/*.java" />
-
+			<include name="res/**/*.png"/>
 			<include name="src/**/*.form" />
-
 			<include name="*.xml" />
-
-
 			<fileset dir="${datafiles}">
 				<include name="**/*" />
 			</fileset>
-
 		</zip>
 
 		<!-- Replace current latest with the jar file we have just created. -->
