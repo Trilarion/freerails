@@ -312,6 +312,7 @@ else:
 				<include name="**/*.shtml" />
 				<include name="**/*.css" />
 				<include name="**/*.png" />
+				<include name="**/*.gif" />
 				<include name="**/*.jnpl" />
 				<exclude name="signed_jfreerails.jar" />
 				<exclude name="javadoc/**" />
