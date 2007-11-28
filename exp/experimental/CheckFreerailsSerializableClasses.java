@@ -10,7 +10,6 @@ import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
-import jfreerails.util.ClassLocater;
 import jfreerails.util.Immutable;
 import jfreerails.util.InstanceControlled;
 import jfreerails.world.common.FreerailsSerializable;

@@ -1,4 +1,4 @@
-package jfreerails.util;
+package experimental;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  * An essential part of Java - locates any Class, anywhere.

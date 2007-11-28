@@ -1,4 +1,4 @@
-package jfreerails.util;
+package experimental;
 
 import java.io.File;
 import java.io.IOException;

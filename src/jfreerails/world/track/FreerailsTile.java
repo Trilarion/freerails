@@ -52,9 +52,9 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
 
     public static FreerailsTile getInstance(int terrainType) {
         FreerailsTile tile = new FreerailsTile(terrainType);
-
-        if (instances.containsKey(tile)) {
-            return instances.get(tile);
+        FreerailsTile storedTile = instances.get(tile);
+        if (storedTile != null) {
+            return storedTile;
         }
         instances.put(tile, tile);
 
@@ -65,20 +65,21 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
             TrackPiece trackPiece) {
         FreerailsTile tile = new FreerailsTile(terrainType, trackPiece);
 
-        if (instances.containsKey(tile)) {
-            return instances.get(tile);
+        FreerailsTile storedTile = instances.get(tile);
+        if (storedTile != null) {
+            return storedTile;
         }
         instances.put(tile, tile);
 
         return tile;
     }
-
+   
     private Object readResolve() throws ObjectStreamException {
-        if (instances.containsKey(this)) {
-            return instances.get(this);
+        FreerailsTile storedTile = instances.get(this);
+        if (storedTile != null) {
+            return storedTile;
         }
         instances.put(this, this);
-
         return this;
     }
 
