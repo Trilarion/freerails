@@ -38,7 +38,8 @@ final public class SynchronizedEventQueue extends EventQueue {
 
     @Override
     protected void dispatchEvent(AWTEvent aEvent) {
-        synchronized (MUTEX) {
+        // 666 depending on the rendering pipeline use different strategies!
+     //   synchronized (MUTEX) {
             try {
                 super.dispatchEvent(aEvent);
             } catch (Exception e) {
@@ -48,6 +49,6 @@ final public class SynchronizedEventQueue extends EventQueue {
                  */
                 ReportBugTextGenerator.unexpectedException(e);
             }
-        }
+      //  }
     }
 }

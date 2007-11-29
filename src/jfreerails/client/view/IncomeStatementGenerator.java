@@ -143,7 +143,7 @@ public class IncomeStatementGenerator {
 
         profitYtd = new Money(profit);
     }
-
+    /**666 needs optimization */
     /* Calculates the total revenue from the specified cargo type. */
     Money calRevenue(Categories cargoCategory) {
         long amount = 0;
@@ -185,7 +185,7 @@ public class IncomeStatementGenerator {
 
         return new Money(amount);
     }
-
+    /**666 needs optimization */
     private Money calTotal(Transaction.Category transactionCategory) {
         long amount = 0;
 

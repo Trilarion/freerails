@@ -96,6 +96,8 @@ public class DialogueBoxController implements WorldListListener {
 
     private JInternalFrame dialogueJInternalFrame;
 
+    private Component lastShownComponent = null;
+    
     /**
      * Use this Action to close a dialogue without performing any other action.
      */
@@ -187,6 +189,11 @@ public class DialogueBoxController implements WorldListListener {
         selectWagons = new SelectWagonsJPanel();
         selectEngine = new SelectEngineJPanel();
         trainDialogueJPanel = new TrainDialogueJPanel();
+        /*
+         * 666 needed ?? trainDialogueJPanel.setIgnoreRepaint(true);
+         * selectEngine.setIgnoreRepaint(true);
+         * selectWagons.setIgnoreRepaint(true);
+         */
 
     }
 
@@ -435,6 +442,8 @@ public class DialogueBoxController implements WorldListListener {
             } else {
                 contentPanel = component;
             }
+            lastShownComponent = component;
+            lastShownComponent.setVisible(true);
             dialogueJInternalFrame = new JInternalFrame();
             dialogueJInternalFrame.setFrameIcon(null);
             dialogueJInternalFrame.getContentPane().add(contentPanel);
@@ -475,6 +484,11 @@ public class DialogueBoxController implements WorldListListener {
             dialogueJInternalFrame.setVisible(false);
             frame.getLayeredPane().remove(dialogueJInternalFrame);
             dialogueJInternalFrame.dispose();
+            if(lastShownComponent != null) {
+                lastShownComponent.setVisible(false);
+                lastShownComponent = null;
+            }
+            dialogueJInternalFrame = null;
         }
 
         if (null != defaultFocusOwner) {
