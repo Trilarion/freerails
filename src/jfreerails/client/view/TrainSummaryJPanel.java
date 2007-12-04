@@ -9,11 +9,13 @@ package jfreerails.client.view;
 import java.awt.Color;
 
 import javax.swing.Action;
+import javax.swing.JLabel;
 import javax.swing.ListCellRenderer;
 
 import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.view.TrainOrdersListModel.TrainOrdersListElement;
 import jfreerails.controller.ModelRoot;
+import jfreerails.util.LRUCache;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
@@ -49,6 +51,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 
     /** Creates new form TrainSummaryJPanel */
     public TrainSummaryJPanel() {
+        jLabels = new LRUCache<String, JLabel>(1000);
         initComponents();
     }
 
@@ -82,15 +85,17 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         Money m = income.calTrainRevenue(trainNum);
         return "$" + m.toString();
     }
-
+    LRUCache<String , JLabel> jLabels;
+    
     public java.awt.Component getListCellRendererComponent(
             javax.swing.JList list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {
 
         int trainID = NonNullElements
                 .row2index(w, KEY.TRAINS, principal, index);
-
-        trainNumLabel.setText("#" + (trainID + 1));
+        String trainNumText = "#" + (trainID + 1);
+        
+        trainNumLabel.setText(trainNumText);
         headingLabel.setText(findStationName(trainID));
         trainMaintenanceCostLabel.setText(findMaintenanceCost());
         trainIncomeLabel.setText(findTrainIncome(trainID));

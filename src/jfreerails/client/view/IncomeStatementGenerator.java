@@ -35,8 +35,6 @@ public class IncomeStatementGenerator {
 
     final FreerailsPrincipal principal;
 
-    private int startyear = 0;
-
     private GameCalendar cal;
 
     public Money mailTotal;
@@ -81,93 +79,170 @@ public class IncomeStatementGenerator {
 
     public String year;
 
+    private int startyear;
+
     IncomeStatementGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         this.w = w;
         this.principal = principal;
-        cal = (GameCalendar) w.get(ITEM.CALENDAR);
-
-        // Income from cargo delivery
-        mailTotal = calRevenue(Categories.Mail);
-        passengersTotal = calRevenue(Categories.Passengers);
-        fastFreightTotal = calRevenue(Categories.Fast_Freight);
-        slowFreightTotal = calRevenue(Categories.Slow_Freight);
-        bulkFreightTotal = calRevenue(Categories.Bulk_Freight);
-
-        // Expenses.
-        interestTotal = calTotal(INTEREST_CHARGE);
-        trainMaintenanceTotal = calTotal(TRAIN_MAINTENANCE);
-        trackMaintenanceTotal = calTotal(TRACK_MAINTENANCE);
-        stationMaintenanceTotal = calTotal(STATION_MAINTENANCE);
-
-        /*
-         * Note, expenses are stored as negative values so we just add
-         * everything up.
-         */
-        long profit = mailTotal.getAmount() + passengersTotal.getAmount()
-                + fastFreightTotal.getAmount() + slowFreightTotal.getAmount()
-                + bulkFreightTotal.getAmount() + interestTotal.getAmount()
-                + trainMaintenanceTotal.getAmount()
-                + trackMaintenanceTotal.getAmount()
-                + stationMaintenanceTotal.getAmount();
-
-        profitTotal = new Money(profit);
-
+        cal = (GameCalendar) w.get(ITEM.CALENDAR);  
         GameTime time = w.currentTime();
         startyear = cal.getYear(time.getTicks());
-
         year = String.valueOf(startyear);
-
-        // Income from cargo delivery
-        mailYtd = calRevenue(Categories.Mail);
-        passengersYtd = calRevenue(Categories.Passengers);
-        fastFreightYtd = calRevenue(Categories.Fast_Freight);
-        slowFreightYtd = calRevenue(Categories.Slow_Freight);
-        bulkFreightYtd = calRevenue(Categories.Bulk_Freight);
-
-        // Expenses.
-        interestYtd = calTotal(INTEREST_CHARGE);
-        trainMaintenanceYtd = calTotal(TRAIN_MAINTENANCE);
-        trackMaintenanceYtd = calTotal(TRACK_MAINTENANCE);
-        stationMaintenanceYtd = calTotal(STATION_MAINTENANCE);
-
-        /*
-         * Note, expenses are stored as negative values so we just add
-         * everything up.
-         */
-        profit = mailYtd.getAmount() + passengersYtd.getAmount()
-                + fastFreightYtd.getAmount() + slowFreightYtd.getAmount()
-                + bulkFreightYtd.getAmount() + interestYtd.getAmount()
-                + trainMaintenanceYtd.getAmount()
-                + trackMaintenanceYtd.getAmount()
-                + stationMaintenanceYtd.getAmount();
-
-        profitYtd = new Money(profit);
     }
-    /**666 needs optimization */
-    /* Calculates the total revenue from the specified cargo type. */
-    Money calRevenue(Categories cargoCategory) {
-        long amount = 0;
+/**
+ * calculates all public values
+ */
+    public void calculateAll() {
+
+        long mailTotal = 0;
+
+        long passengersTotal = 0;
+
+        long fastFreightTotal = 0;
+
+        long slowFreightTotal = 0;
+
+        long bulkFreightTotal = 0;
+
+        long interestTotal = 0;
+
+        long trainMaintenanceTotal = 0;
+
+        long trackMaintenanceTotal = 0;
+
+        long stationMaintenanceTotal = 0;
+
+        long mailYtd = 0;
+
+        long passengersYtd = 0;
+
+        long fastFreightYtd = 0;
+
+        long slowFreightYtd = 0;
+
+        long bulkFreightYtd = 0;
+
+        long interestYtd = 0;
+
+        long trainMaintenanceYtd = 0;
+
+        long trackMaintenanceYtd = 0;
+
+        long stationMaintenanceYtd = 0;
 
         for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
             Transaction t = w.getTransaction(principal, i);
             GameTime time = w.getTransactionTimeStamp(principal, i);
-
-            if (t instanceof DeliverCargoReceipt
-                    && cal.getYear(time.getTicks()) >= this.startyear) {
+            if (t instanceof DeliverCargoReceipt) {
                 DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
                 int cargoType = dcr.getCb().getCargoType();
                 CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
-
-                if (ct.getCategory().equals(cargoCategory)) {
-                    amount += dcr.deltaCash().getAmount();
+                switch (ct.getCategory()) {
+                case Bulk_Freight:
+                    bulkFreightTotal += dcr.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        bulkFreightYtd += dcr.deltaCash().getAmount();
+                    }
+                    break;
+                case Fast_Freight:
+                    fastFreightTotal += dcr.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        fastFreightYtd += dcr.deltaCash().getAmount();
+                    }
+                    break;
+                case Mail:
+                    mailTotal += dcr.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        mailYtd += dcr.deltaCash().getAmount();
+                    }
+                    break;
+                case Passengers:
+                    passengersTotal += dcr.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        passengersYtd += dcr.deltaCash().getAmount();
+                    }
+                    break;
+                case Slow_Freight:
+                    slowFreightTotal += dcr.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        slowFreightYtd += dcr.deltaCash().getAmount();
+                    }
+                    break;
                 }
+
+            }
+            switch (t.getCategory()) {
+            case INTEREST_CHARGE:
+                interestTotal += t.deltaCash().getAmount();
+                if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    interestYtd += t.deltaCash().getAmount();
+                }
+                break;
+            case TRAIN_MAINTENANCE:
+                trainMaintenanceTotal += t.deltaCash().getAmount();
+                if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    trainMaintenanceYtd += t.deltaCash().getAmount();
+                }
+                break;
+            case TRACK_MAINTENANCE:
+                trackMaintenanceTotal += t.deltaCash().getAmount();
+                if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    trackMaintenanceYtd += t.deltaCash().getAmount();
+                }
+                break;
+            case STATION_MAINTENANCE:
+                stationMaintenanceTotal += t.deltaCash().getAmount();
+                if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    stationMaintenanceYtd += t.deltaCash().getAmount();
+                }
+                break;
             }
         }
+        this.mailTotal = new Money(mailTotal);
+        this.passengersTotal = new Money(passengersTotal);
+        this.fastFreightTotal = new Money(fastFreightTotal);
+        this.slowFreightTotal = new Money(slowFreightTotal);
+        this.bulkFreightTotal = new Money(bulkFreightTotal);
+        this.mailYtd = new Money(mailYtd);
+        this.passengersYtd = new Money(passengersYtd);
+        this.fastFreightYtd = new Money(fastFreightYtd);
+        this.slowFreightYtd = new Money(slowFreightYtd);
+        this.bulkFreightYtd = new Money(bulkFreightYtd);
 
-        return new Money(amount);
+        this.interestTotal = new Money(interestTotal);
+        this.interestYtd = new Money(interestYtd);
+        this.trainMaintenanceTotal = new Money(trainMaintenanceTotal);
+        this.trainMaintenanceYtd = new Money(trainMaintenanceYtd);
+        this.trackMaintenanceTotal = new Money(trackMaintenanceTotal);
+        this.trackMaintenanceYtd = new Money(trackMaintenanceYtd);
+        this.stationMaintenanceTotal = new Money(stationMaintenanceTotal);
+        this.stationMaintenanceYtd = new Money(stationMaintenanceYtd);
+
+        long profit = this.mailTotal.getAmount()
+                + this.passengersTotal.getAmount()
+                + this.fastFreightTotal.getAmount()
+                + this.slowFreightTotal.getAmount()
+                + this.bulkFreightTotal.getAmount()
+                + this.interestTotal.getAmount()
+                + this.trainMaintenanceTotal.getAmount()
+                + this.trackMaintenanceTotal.getAmount()
+                + this.stationMaintenanceTotal.getAmount();
+
+        profitTotal = new Money(profit);
+
+        profit = this.mailYtd.getAmount() + this.passengersYtd.getAmount()
+                + this.fastFreightYtd.getAmount()
+                + this.slowFreightYtd.getAmount()
+                + this.bulkFreightYtd.getAmount()
+                + this.interestYtd.getAmount()
+                + this.trainMaintenanceYtd.getAmount()
+                + this.trackMaintenanceYtd.getAmount()
+                + this.stationMaintenanceYtd.getAmount();
+
+        profitYtd = new Money(profit);
     }
 
-    Money calTrainRevenue(int trainId) {
+    public Money calTrainRevenue(int trainId) {
         long amount = 0;
 
         for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
@@ -180,22 +255,6 @@ public class IncomeStatementGenerator {
                 if (dcr.getTrainId() == trainId) {
                     amount += dcr.deltaCash().getAmount();
                 }
-            }
-        }
-
-        return new Money(amount);
-    }
-    /**666 needs optimization */
-    private Money calTotal(Transaction.Category transactionCategory) {
-        long amount = 0;
-
-        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-            Transaction t = w.getTransaction(principal, i);
-            GameTime time = w.getTransactionTimeStamp(principal, i);
-
-            if (t.getCategory() == transactionCategory
-                    && cal.getYear(time.getTicks()) >= this.startyear) {
-                amount += t.deltaCash().getAmount();
             }
         }
 

@@ -26,7 +26,8 @@ public class IncomeStatementGeneratorTest extends TestCase {
     IncomeStatementGenerator balanceSheetGenerator;
 
     public void testCalExpense() {
-        Money m = balanceSheetGenerator.calRevenue(Categories.Mail);
+        balanceSheetGenerator.calculateAll();
+        Money m = balanceSheetGenerator.mailTotal;
         assertEquals(0, m.getAmount());
 
         CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, 0);
@@ -35,7 +36,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money amount = new Money(100);
         addTrans(Categories.Mail, amount);
         addTrans(Categories.Passengers, amount);
-        m = balanceSheetGenerator.calRevenue(Categories.Mail);
+        m = balanceSheetGenerator.mailTotal;
         assertEquals(amount, m);
     }
 

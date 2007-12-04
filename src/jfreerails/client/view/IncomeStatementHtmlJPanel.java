@@ -48,6 +48,7 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
         IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(
                 world, playerPrincipal);
+        balanceSheetGenerator.calculateAll();
         String populatedTemplate = populateTokens(template,
                 balanceSheetGenerator);
         setHtml(populatedTemplate);
