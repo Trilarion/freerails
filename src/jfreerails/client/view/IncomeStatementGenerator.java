@@ -132,7 +132,8 @@ public class IncomeStatementGenerator {
 
         long stationMaintenanceYtd = 0;
 
-        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
+        int numberOfTransactions = w.getNumberOfTransactions(this.principal);
+        for (int i = 0; i < numberOfTransactions; i++) {
             Pair<Transaction, GameTime> transactionAndTimeStamp = w
                     .getTransactionAndTimeStamp(principal, i);
             Transaction t = transactionAndTimeStamp.getA();
