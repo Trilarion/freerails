@@ -36,6 +36,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money amount = new Money(100);
         addTrans(Categories.Mail, amount);
         addTrans(Categories.Passengers, amount);
+        balanceSheetGenerator.calculateAll();
         m = balanceSheetGenerator.mailTotal;
         assertEquals(amount, m);
     }
