@@ -7,6 +7,7 @@ import static jfreerails.world.accounts.Transaction.Category.INTEREST_CHARGE;
 import static jfreerails.world.accounts.Transaction.Category.STATION_MAINTENANCE;
 import static jfreerails.world.accounts.Transaction.Category.TRACK_MAINTENANCE;
 import static jfreerails.world.accounts.Transaction.Category.TRAIN_MAINTENANCE;
+import jfreerails.util.Pair;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.cargo.CargoType;
@@ -84,14 +85,15 @@ public class IncomeStatementGenerator {
     IncomeStatementGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         this.w = w;
         this.principal = principal;
-        cal = (GameCalendar) w.get(ITEM.CALENDAR);  
+        cal = (GameCalendar) w.get(ITEM.CALENDAR);
         GameTime time = w.currentTime();
         startyear = cal.getYear(time.getTicks());
         year = String.valueOf(startyear);
     }
-/**
- * calculates all public values
- */
+
+    /**
+     * calculates all public values
+     */
     public void calculateAll() {
 
         long mailTotal = 0;
@@ -131,8 +133,10 @@ public class IncomeStatementGenerator {
         long stationMaintenanceYtd = 0;
 
         for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-            Transaction t = w.getTransaction(principal, i);
-            GameTime time = w.getTransactionTimeStamp(principal, i);
+            Pair<Transaction, GameTime> transactionAndTimeStamp = w
+                    .getTransactionAndTimeStamp(principal, i);
+            Transaction t = transactionAndTimeStamp.getA();
+            GameTime time = transactionAndTimeStamp.getB();
             if (t instanceof DeliverCargoReceipt) {
                 DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
                 int cargoType = dcr.getCb().getCargoType();
@@ -245,10 +249,12 @@ public class IncomeStatementGenerator {
     public Money calTrainRevenue(int trainId) {
         long amount = 0;
 
-        for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {
-            Transaction t = w.getTransaction(principal, i);
-            GameTime time = w.getTransactionTimeStamp(principal, i);
-
+        int numberOfTransactions = w.getNumberOfTransactions(this.principal);
+        for (int i = 0; i < numberOfTransactions; i++) {
+            Pair<Transaction, GameTime> transactionAndTimeStamp = w
+                    .getTransactionAndTimeStamp(principal, i);
+            Transaction t = transactionAndTimeStamp.getA();
+            GameTime time = transactionAndTimeStamp.getB();
             if (t instanceof DeliverCargoReceipt
                     && cal.getYear(time.getTicks()) >= this.startyear) {
                 DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;

@@ -9,6 +9,7 @@ import jfreerails.util.List2D;
 import jfreerails.util.List2DImpl;
 import jfreerails.util.List3D;
 import jfreerails.util.List3DImpl;
+import jfreerails.util.Pair;
 import jfreerails.util.Utils;
 import jfreerails.world.accounts.EconomicClimate;
 import jfreerails.world.accounts.Transaction;
@@ -421,6 +422,13 @@ public class WorldImpl implements World {
         int playerIndex = getPlayerIndex(p);
         TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
         return tats.getTimeStamp();
+    }
+
+    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(
+            FreerailsPrincipal p, int i) {
+        int playerIndex = getPlayerIndex(p);
+        TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
+        return new Pair<Transaction, GameTime>(tats.getT(), tats.getTimeStamp());
     }
 
     @Override
