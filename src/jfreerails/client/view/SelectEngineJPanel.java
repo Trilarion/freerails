@@ -9,6 +9,8 @@ package jfreerails.client.view;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -114,15 +116,13 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     final private class TrainCellRenderer implements ListCellRenderer {
 
-        final JLabel label;
-
         final RenderersRoot rr;
 
+        private Map<String, JLabel> savesJLabels;
+        
         public TrainCellRenderer(RenderersRoot vl) {
-
             rr = vl;
-
-            label = new JLabel();
+            savesJLabels = new HashMap<String, JLabel>();
         }
 
         public Component getListCellRendererComponent(JList list, Object value,
@@ -132,22 +132,26 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         boolean cellHasFocus) /* the list and the cell have the focus */{
 
             EngineType engine = (EngineType) value;
-            label.setFont(new java.awt.Font("Dialog", 0, 12));
             String text = "<html><body>" + (isSelected ? "<strong>" : "")
                     + engine.getEngineTypeName() + "<br>"
                     + engine.getMaxSpeed() + " m.p.h. "
                     + engine.getPowerAtDrawbar() + " hp $"
                     + engine.getPrice().toString()
                     + (isSelected ? "</strong>" : "") + "</body></html>";
-            label.setText(text);
-            Image image = rr.getEngineImages(index).getSideOnImage();
-            int height = image.getHeight(null);
-            int width = image.getWidth(null);
-            int scale = height / 50;
-            ImageIcon icon = new ImageIcon(image.getScaledInstance(width
-                    / scale, height / scale, Image.SCALE_FAST));
-            label.setIcon(icon);
-
+            
+            JLabel label = savesJLabels.get(text);
+            if(label == null) {
+                label = new JLabel(text);
+                label.setFont(new java.awt.Font("Dialog", 0, 12));
+                Image image = rr.getEngineImages(index).getSideOnImage();
+                int height = image.getHeight(null);
+                int width = image.getWidth(null);
+                int scale = height / 50;
+                ImageIcon icon = new ImageIcon(image.getScaledInstance(width
+                        / scale, height / scale, Image.SCALE_FAST));
+                label.setIcon(icon);
+                savesJLabels.put(text, label);
+            }
             return label;
         }
     }

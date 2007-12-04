@@ -12,7 +12,7 @@ final public class CargoType implements FreerailsSerializable {
 
     public enum Categories {
         Mail(0), Passengers(1), Fast_Freight(2), Slow_Freight(3), Bulk_Freight(
-                4), LAST(5);
+                4);
         private int nr;
 
         private Categories(int nr) {
@@ -34,7 +34,7 @@ final public class CargoType implements FreerailsSerializable {
     };
 
     public static int getNumberOfCategories() {
-        return Categories.LAST.getNumber();
+        return Categories.values().length;
     }
 
     private final Categories category;

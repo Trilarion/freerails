@@ -25,8 +25,7 @@ public class TileSetFactoryImpl implements TileSetFactory {
 
             CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(w));
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
     }
 }

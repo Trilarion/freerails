@@ -24,7 +24,7 @@ public abstract class FreerailsPrincipal implements Principal,
     public Integer getWorldIndex() {
         return worldIndex;
     }
-
+// 666 change to int ...
     public void setWorldIndex(Integer worldIndex) {
         this.worldIndex = worldIndex;
     }

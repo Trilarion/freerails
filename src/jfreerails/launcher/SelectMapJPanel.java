@@ -63,8 +63,13 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         /* initialise the map list */
         SavedGamesManagerImpl sgm = new SavedGamesManagerImpl();
         newmapsJList.setListData(sgm.getNewMapNames());
-        newmapsJList.setSelectedIndex(0);
         savedmapsJList.setListData(sgm.getSaveGameNames());
+        if (sgm.getSaveGameNames().length > 0) {
+            savedmapsJList.setSelectedIndex(0);
+        } else {
+            newmapsJList.setSelectedIndex(0);
+        }
+
         owner.setNextEnabled(true);
 
         // Listen for changes in the server port text box.

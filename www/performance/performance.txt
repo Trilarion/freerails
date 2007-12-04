@@ -16,3 +16,7 @@ Original game ... 4 Stations, 5 trains, 1200x1000 resolution, all visible
 13fps
 
 now 23fps
+
+
+2do:
+- transaction is a mess, will grow infinite during game ...

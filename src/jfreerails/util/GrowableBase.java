@@ -23,7 +23,6 @@ package jfreerails.util;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.Arrays;
 
 /**
  * Base class for various types of collections based on type-specific growable

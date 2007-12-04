@@ -3,6 +3,8 @@ package jfreerails.client.top;
 import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import jfreerails.controller.ReportBugTextGenerator;
 
@@ -24,6 +26,7 @@ final public class SynchronizedEventQueue extends EventQueue {
 
     /** Enforce singleton property. */
     private SynchronizedEventQueue() {
+        list = new LinkedHashMap<AWTEvent, Throwable>();
     }
 
     public static synchronized void use() {
@@ -36,10 +39,38 @@ final public class SynchronizedEventQueue extends EventQueue {
         }
     }
 
+    private int count;
+    private long last;
+    private LinkedHashMap<AWTEvent, Throwable> list;
+
+    public void postEvent(AWTEvent aEvent) {
+        synchronized (list) {
+            count++;
+            list.put(aEvent, new RuntimeException("X"));
+            if (System.currentTimeMillis() - last > 1000) {
+                last = System.currentTimeMillis();
+                System.out.println(count);
+                int i = 10;
+                for (Map.Entry<AWTEvent, Throwable> e : list.entrySet()) {
+                    // System.out.println(e.getKey().getClass().getCanonicalName()+"/"+e.getKey().getSource().getClass().getCanonicalName());
+                    // System.out.println(aEvent.paramString());
+                    e.getValue().printStackTrace();
+                    i--;
+                    if (i == 0) {
+                        break;
+                    }
+
+                }
+                count = 0;
+                list.clear();
+            }
+        }
+        super.postEvent(aEvent);
+    }
+
     @Override
     protected void dispatchEvent(AWTEvent aEvent) {
-        // 666 depending on the rendering pipeline use different strategies!
-     //   synchronized (MUTEX) {
+        synchronized (MUTEX) {
             try {
                 super.dispatchEvent(aEvent);
             } catch (Exception e) {
@@ -49,6 +80,6 @@ final public class SynchronizedEventQueue extends EventQueue {
                  */
                 ReportBugTextGenerator.unexpectedException(e);
             }
-      //  }
+        }
     }
 }

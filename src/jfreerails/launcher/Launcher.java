@@ -87,7 +87,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         SelectMapJPanel msp = (SelectMapJPanel) wizardPages[1];
         ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
         ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
-
+        
         boolean recover = false;
         int mode;
 

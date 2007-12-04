@@ -2,7 +2,6 @@ package jfreerails.client.top;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
