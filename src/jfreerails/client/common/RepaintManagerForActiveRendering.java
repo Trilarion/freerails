@@ -37,7 +37,14 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         RepaintManager.setCurrentManager(instance);
     }
 
+    private static long numDirtyRequests;
+
     private RepaintManagerForActiveRendering() {
+    }
+
+    @Override
+    public boolean isDoubleBufferingEnabled() {
+        return false;
     }
 
     @Override
@@ -45,6 +52,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
             int h) {
         if (hasDifferentAncester(c)) {
             super.addDirtyRegion(c, x, y, w, h);
+            numDirtyRequests++;
         } else {
             numRepaintRequests++;
         }
@@ -58,6 +66,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     public synchronized void addInvalidComponent(JComponent invalidComponent) {
         if (hasDifferentAncester(invalidComponent)) {
             super.addInvalidComponent(invalidComponent);
+            numDirtyRequests++;
         } else {
             numRepaintRequests++;
         }
@@ -67,6 +76,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     public void markCompletelyClean(JComponent aComponent) {
         if (hasDifferentAncester(aComponent)) {
             super.markCompletelyClean(aComponent);
+            numDirtyRequests++;
         } else {
             numRepaintRequests++;
         }
@@ -76,6 +86,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     public void markCompletelyDirty(JComponent aComponent) {
         if (hasDifferentAncester(aComponent)) {
             super.markCompletelyDirty(aComponent);
+            numDirtyRequests++;
         } else {
             numRepaintRequests++;
         }
@@ -93,5 +104,8 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 
     public static long getNumRepaintRequests() {
         return numRepaintRequests;
+    }
+    public static long getNumDirtyRequests() {
+        return numDirtyRequests;
     }
 }

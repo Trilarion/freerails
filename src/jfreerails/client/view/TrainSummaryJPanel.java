@@ -39,6 +39,8 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 
     private FreerailsPrincipal principal;
 
+    private TrainSummeryModel model;
+    
     private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.background");
 
@@ -52,6 +54,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
     /** Creates new form TrainSummaryJPanel */
     public TrainSummaryJPanel() {
         jLabels = new LRUCache<String, JLabel>(1000);
+        model = new TrainSummeryModel();
         initComponents();
     }
 
@@ -60,31 +63,19 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         this.w = modelRoot.getWorld();
         trainListCellRenderer1 = new TrainListCellRenderer(modelRoot, vl);
         trainListCellRenderer1.setHeight(15);
+        model.setWorld(w, principal);
     }
 
     private String findStationName(int trainNum) {
-        TrainOrdersModel orders = null;
-        TrainOrdersListModel ordersList = new TrainOrdersListModel(w, trainNum,
-                principal);
-        for (int i = 0; i < ordersList.getSize(); ++i) {
-            TrainOrdersListElement element = (TrainOrdersListElement) ordersList
-                    .getElementAt(i);
-            if (element.gotoStatus == TrainOrdersListModel.GOTO_NOW) {
-                orders = element.order;
-                break;
-            }
-        }
-        StationModel station = (StationModel) w.get(principal, KEY.STATIONS,
-                orders.getStationID());
-        return station.getStationName();
+        return model.getStationName(trainNum);
     }
 
+
     private String findTrainIncome(int trainNum) {
-        IncomeStatementGenerator income = new IncomeStatementGenerator(w,
-                principal);
-        Money m = income.calTrainRevenue(trainNum);
+        Money m = model.findTrainIncome(trainNum);
         return "$" + m.toString();
     }
+    
     LRUCache<String , JLabel> jLabels;
     
     public java.awt.Component getListCellRendererComponent(
@@ -127,7 +118,6 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
             trainListCellRenderer1.setBackground(backgoundColor);
         }
         // Set selected
-
         return this;
     }
 

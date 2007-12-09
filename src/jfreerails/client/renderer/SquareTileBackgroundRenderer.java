@@ -6,6 +6,7 @@
 package jfreerails.client.renderer;
 
 import java.awt.Graphics;
+import java.awt.image.VolatileImage;
 
 /**
  * This class stores a buffer containing the terrain and track layers of current
@@ -28,6 +29,7 @@ final public class SquareTileBackgroundRenderer extends
             gg.setClip(x, y, width, height);
             gg.translate(-bufferRect.x, -bufferRect.y);
             mapView.paintRect(gg, bufferRect);
+            gg.dispose();
         }
     }
 
@@ -51,6 +53,7 @@ final public class SquareTileBackgroundRenderer extends
             Graphics gg = bg.create();
             gg.translate(-bufferRect.x, -bufferRect.y);
             mapView.paintTile(gg, x, y);
+            gg.dispose();
         }
     }
 }

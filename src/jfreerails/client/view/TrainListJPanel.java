@@ -21,8 +21,8 @@ import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 
 /**
- * JPanel that didplays a list of trains, used for the train list window and the
- * train roster tab.
+ * JPanel that displays a list of trains, used for the train list window and the
+ * train roaster tab.
  * 
  * @author Luke
  */
@@ -298,7 +298,6 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
             }
         }
         super.paint(g);
-
     }
 
 }

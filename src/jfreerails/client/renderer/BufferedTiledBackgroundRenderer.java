@@ -27,7 +27,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * graphics configuration. Such images can be drawn to the screen quickly
      * since no conversion is needed.
      */
-    private final GraphicsConfiguration defaultConfig = GraphicsEnvironment
+    protected final GraphicsConfiguration defaultConfig = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
 
@@ -57,7 +57,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
     VolatileImage backgroundBuffer;
 
     /**
-     * Updates the backbuffer as necessay, then draws it on to the Graphics
+     * Updates the backbuffer as necessary, then draws it on to the Graphics
      * object passed.
      * 
      * @param outputGraphics
@@ -69,6 +69,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
      */
     public void paintRect(Graphics outputGraphics,
             Rectangle newVisibleRectectangle) {
+        boolean contentsLost = false;
         do {
             /*
              * If this is the first call to the paint method or the component
@@ -113,7 +114,8 @@ public abstract class BufferedTiledBackgroundRenderer implements
             outputGraphics.drawImage(backgroundBuffer,
                     newVisibleRectectangle.x, newVisibleRectectangle.y, null);
             bufferRect.setBounds(newVisibleRectectangle);
-        } while (backgroundBuffer.contentsLost());
+            contentsLost = backgroundBuffer.contentsLost();
+        } while (contentsLost);
     }
 
     private void refreshBackground() {

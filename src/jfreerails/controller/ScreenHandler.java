@@ -168,7 +168,7 @@ final public class ScreenHandler {
     public synchronized void swapScreens() {
         if (!bufferStrategy.contentsLost()) {
             bufferStrategy.show();
-        }
+        } 
     }
 
     private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
@@ -228,5 +228,9 @@ final public class ScreenHandler {
 
     public synchronized static void exitFullScreenMode() {
         device.setFullScreenWindow(null);
+    }
+
+    public boolean contentsRestored() {
+        return bufferStrategy.contentsRestored();
     }
 }

@@ -3,15 +3,10 @@
  */
 package jfreerails.client.view;
 
-import static jfreerails.world.accounts.Transaction.Category.INTEREST_CHARGE;
-import static jfreerails.world.accounts.Transaction.Category.STATION_MAINTENANCE;
-import static jfreerails.world.accounts.Transaction.Category.TRACK_MAINTENANCE;
-import static jfreerails.world.accounts.Transaction.Category.TRAIN_MAINTENANCE;
 import jfreerails.util.Pair;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.cargo.CargoType;
-import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.common.Money;
@@ -247,6 +242,7 @@ public class IncomeStatementGenerator {
         profitYtd = new Money(profit);
     }
 
+    // 666 save old values -> if numberOfTransactions not changed -> do nothing
     public Money calTrainRevenue(int trainId) {
         long amount = 0;
 
@@ -264,7 +260,35 @@ public class IncomeStatementGenerator {
                 }
             }
         }
-
         return new Money(amount);
+    }
+
+    /**
+     * returns the revenue for all trains with id from 1 to money.length-1
+     * 
+     * @param money
+     */
+    public void calTrainRevenue(Money[] money) {
+        long[] amount = new long[money.length];
+
+        int numberOfTransactions = w.getNumberOfTransactions(this.principal);
+        for (int i = 0; i < numberOfTransactions; i++) {
+            Pair<Transaction, GameTime> transactionAndTimeStamp = w
+                    .getTransactionAndTimeStamp(principal, i);
+            Transaction t = transactionAndTimeStamp.getA();
+            GameTime time = transactionAndTimeStamp.getB();
+            if (t instanceof DeliverCargoReceipt
+                    && cal.getYear(time.getTicks()) >= this.startyear) {
+                DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
+                int trainId = dcr.getTrainId();
+                if (trainId < money.length) {
+                    amount[trainId] += dcr.deltaCash().getAmount();
+                }
+            }
+        }
+        int i = 0;
+        for (long a : amount) {
+            money[i++] = new Money(a);
+        }
     }
 }

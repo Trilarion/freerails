@@ -138,7 +138,7 @@ else:
 	</target>
 
 	<target name="debugcompile" depends="data2build" description="Build everything including JUnit    test-classes. Include debugging symbols">
-		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.5" classpath="jars/junit.jar" >
+		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.6" classpath="jars/junit.jar" >
 			<src path="${src}"/>
 			<src path="${test}"/>
 		</javac>
