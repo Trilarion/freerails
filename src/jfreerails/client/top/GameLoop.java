@@ -99,29 +99,34 @@ final public class GameLoop implements Runnable {
 
                     if (!screenHandler.isMinimised()) {
                         if (screenHandler.isInUse()) {
-                            Graphics g = screenHandler.getDrawGraphics();
+                            boolean contentsRestored = false;
+                            do {
+                                Graphics g = screenHandler.getDrawGraphics();
 
-                            try {
+                                try {
 
-                                screenHandler.frame.paintComponents(g);
+                                    screenHandler.frame.paintComponents(g);
 
-                                boolean showFps = Boolean.parseBoolean(System
-                                        .getProperty("SHOWFPS"));
-                                if (showFps) {
-                                    fPScounter.drawFPS((Graphics2D) g);
+                                    boolean showFps = Boolean
+                                            .parseBoolean(System
+                                                    .getProperty("SHOWFPS"));
+                                    if (showFps) {
+                                        fPScounter.drawFPS((Graphics2D) g);
+                                    }
+                                } catch (RuntimeException re) {
+                                    /*
+                                     * We are not expecting a RuntimeException
+                                     * here. If something goes wrong, lets kill
+                                     * the game straight away to avoid
+                                     * hard-to-track-down bugs.
+                                     */
+                                    ReportBugTextGenerator
+                                            .unexpectedException(re);
+                                } finally {
+                                    g.dispose();
                                 }
-                            } catch (RuntimeException re) {
-                                /*
-                                 * We are not expecting a RuntimeException here.
-                                 * If something goes wrong, lets kill the game
-                                 * straight away to avoid hard-to-track-down
-                                 * bugs.
-                                 */
-                                ReportBugTextGenerator.unexpectedException(re);
-                            } finally {
-                                g.dispose();
-                            }
-
+                                contentsRestored = screenHandler.contentsRestored();
+                            } while (contentsRestored);
                             screenHandler.swapScreens();
                             fPScounter.updateFPSCounter();
                         }

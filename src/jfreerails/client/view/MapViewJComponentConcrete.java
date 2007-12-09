@@ -8,6 +8,7 @@ package jfreerails.client.view;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -199,6 +200,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 
     @Override
     protected void paintComponent(java.awt.Graphics g) {
+      if(EventQueue.isDispatchThread()) {
+          return;
+      }
         super.paintComponent(g);
 
         if (null != mapCursor && this.isFocusOwner()) {
