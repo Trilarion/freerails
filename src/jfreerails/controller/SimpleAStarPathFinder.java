@@ -3,9 +3,10 @@ package jfreerails.controller;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.logging.Logger;
 
 import jfreerails.util.IntArray;
+
+import org.apache.log4j.Logger;
 
 /**
  * A simple A* pathfinder implementation. It uses int's to avoid the cost of
@@ -62,8 +63,10 @@ public class SimpleAStarPathFinder implements Serializable,
 
     public IntArray findpath(int[] currentPosition, int[] targets,
             GraphExplorer e) throws PathNotFoundException {
-        logger.fine(currentPosition.length + " starting points; "
-                + targets.length + " targets.");
+        if (logger.isDebugEnabled()) {
+            logger.debug(currentPosition.length + " starting points; "
+                    + targets.length + " targets.");
+        }
 
         setupSearch(currentPosition, targets, e);
 
@@ -145,8 +148,10 @@ public class SimpleAStarPathFinder implements Serializable,
                     // less than that of the node with the smallest F value on
                     // the open list, then the best path so far is the shortest
                     // path.
-                    logger.fine("Path successfully found after " + loopCounter
-                            + " iterations.");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Path successfully found after "
+                                + loopCounter + " iterations.");
+                    }
                     path.add(bestPath);
 
                     int step = bestPath;
@@ -156,7 +161,9 @@ public class SimpleAStarPathFinder implements Serializable,
                         path.add(step);
                     }
 
-                    logger.fine("Path found!");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Path found!");
+                    }
                     status = PATH_FOUND;
 
                     return;
@@ -184,8 +191,10 @@ public class SimpleAStarPathFinder implements Serializable,
         }
 
         status = PATH_NOT_FOUND;
-        logger.fine("No path found and open list empty after " + loopCounter
-                + " iterations.");
+        if (logger.isDebugEnabled()) {
+            logger.debug("No path found and open list empty after "
+                    + loopCounter + " iterations.");
+        }
         throw new PathNotFoundException("Path not found.");
     }
 

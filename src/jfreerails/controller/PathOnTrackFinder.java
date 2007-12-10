@@ -4,13 +4,13 @@
  */
 package jfreerails.controller;
 
-import java.util.logging.Logger;
-
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.common.Step;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
+
+import org.apache.log4j.Logger;
 
 /**
  * Finds a path along existing track. Used for upgrading or removing track
@@ -67,7 +67,9 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     public void setupSearch(ImPoint from, ImPoint target)
             throws PathNotFoundException {
         startPoint = from;
-        logger.fine("Find track path from " + from + " to " + target);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Find track path from " + from + " to " + target);
+        }
         /* Check there is track at both the points. */
         FreerailsTile tileA = (FreerailsTile) world.getTile(from.x, from.y);
         FreerailsTile tileB = (FreerailsTile) world.getTile(target.x, target.y);

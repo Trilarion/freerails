@@ -1,7 +1,7 @@
 package jfreerails.server.parser;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -193,7 +193,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
             public void error(org.xml.sax.SAXParseException ex)
                     throws SAXException {
                 if (context.isEmpty()) {
-                    logger.severe("Missing DOCTYPE.");
+                    logger.error("Missing DOCTYPE.");
                 }
 
                 throw ex;

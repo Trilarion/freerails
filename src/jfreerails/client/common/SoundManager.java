@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -21,6 +20,8 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import jfreerails.controller.ModelRoot;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class is responsible for loading and playing sounds. Samples are read
@@ -90,8 +91,10 @@ public class SoundManager implements ModelRootListener, LineListener {
             if (maxLines >= 32)
                 break; // Java Sound Audio Engine, version 1.0 satisfies this.
         }
-        logger.fine("Sound Mixer: " + mixer.getMixerInfo() + "(" + maxLines
-                + " voices).");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + "("
+                    + maxLines + " voices).");
+        }
 
     }
 
@@ -156,7 +159,7 @@ public class SoundManager implements ModelRootListener, LineListener {
                 clip.loop(loops);
                 voices.add(clip);
             } catch (LineUnavailableException e) {
-                logger.warning(e.getMessage());
+                logger.warn(e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
             }

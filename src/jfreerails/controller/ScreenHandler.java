@@ -9,10 +9,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+
+import org.apache.log4j.Logger;
 
 /**
  * Handles going into fullscreen mode and setting buffer strategy etc.
@@ -168,7 +169,7 @@ final public class ScreenHandler {
     public synchronized void swapScreens() {
         if (!bufferStrategy.contentsLost()) {
             bufferStrategy.show();
-        } 
+        }
     }
 
     private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
@@ -200,9 +201,11 @@ final public class ScreenHandler {
                                 .getHeight()
                         && modes[i].getBitDepth() == BEST_DISPLAY_MODES[x]
                                 .getBitDepth()) {
-                    logger.fine("Best display mode is "
-                            + (new MyDisplayMode(BEST_DISPLAY_MODES[x]))
-                                    .toString());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Best display mode is "
+                                + (new MyDisplayMode(BEST_DISPLAY_MODES[x]))
+                                        .toString());
+                    }
 
                     return BEST_DISPLAY_MODES[x];
                 }

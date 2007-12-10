@@ -6,7 +6,8 @@ package jfreerails.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 /**
  * When this class is run in a thread it accepts new connections to its Server
@@ -49,13 +50,17 @@ public class InetConnectionAccepter implements Runnable {
                 "InetConnectionAccepter, port " + serverSocket.getLocalPort());
 
         try {
-            logger.fine("Accepting connections on port "
-                    + serverSocket.getLocalPort());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Accepting connections on port "
+                        + serverSocket.getLocalPort());
+            }
 
             while (isKeepRunning()) {
                 Socket socket = serverSocket.accept();
-                logger.fine("Incoming connection from "
-                        + socket.getRemoteSocketAddress());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Incoming connection from "
+                            + socket.getRemoteSocketAddress());
+                }
 
                 synchronized (this) {
                     synchronized (gameServer) {

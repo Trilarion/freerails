@@ -8,11 +8,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
-import java.util.logging.Logger;
 
 import jfreerails.util.Immutable;
 import jfreerails.util.InstanceControlled;
 import jfreerails.world.common.FreerailsSerializable;
+
+import org.apache.log4j.Logger;
 
 /**
  * Checks that all class that implement FreerailsSerializable are immutable and
@@ -60,7 +61,9 @@ public class CheckFreerailsSerializableClasses {
         for (Field field : fields) {
             int modifiers = field.getModifiers();
             if (Modifier.isStatic(modifiers)) {
-                logger.fine("Skipping static field " + field.getName());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Skipping static field " + field.getName());
+                }
                 continue;
             }
 
@@ -96,18 +99,24 @@ public class CheckFreerailsSerializableClasses {
         int classesWithProblems = 0;
         for (Class clazz : classes) {
             if (clazz.isInterface()) {
-                logger.fine("Skipping inferface " + clazz.getName());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Skipping inferface " + clazz.getName());
+                }
                 continue;
             }
 
             int mods = clazz.getModifiers();
             if ((mods & Modifier.ABSTRACT) != 0) {
-                logger.fine("Skipping abstract class " + clazz.getName());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Skipping abstract class " + clazz.getName());
+                }
                 continue;
             }
             if (clazz.isAnnotationPresent(InstanceControlled.class)) {
-                logger.fine("Skipping InstanceControlled class "
-                        + clazz.getName());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Skipping InstanceControlled class "
+                            + clazz.getName());
+                }
                 continue;
             }
 

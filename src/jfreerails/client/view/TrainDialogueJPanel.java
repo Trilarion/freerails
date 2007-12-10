@@ -7,7 +7,7 @@
 package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.swing.Action;
 
@@ -124,7 +124,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         if (wi.previous()) {
             display(wi.getIndex());
         } else {
-            logger.warning("Couldn't get previous");
+            logger.warn("Couldn't get previous");
         }
     }// GEN-LAST:event_previousJButtonActionPerformed
 
@@ -133,7 +133,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         if (wi.next()) {
             display(wi.getIndex());
         } else {
-            logger.warning("Couldn't get next");
+            logger.warn("Couldn't get next");
         }
     }// GEN-LAST:event_nextJButtonActionPerformed
 

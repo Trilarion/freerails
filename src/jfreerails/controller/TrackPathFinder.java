@@ -6,7 +6,6 @@ package jfreerails.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import jfreerails.util.IntArray;
 import jfreerails.world.common.ImPoint;
@@ -19,6 +18,8 @@ import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
+
+import org.apache.log4j.Logger;
 
 /**
  * Finds the best route to build track between two points.
@@ -56,7 +57,9 @@ public class TrackPathFinder implements IncrementalPathFinder {
             progress.setValuesFromInt(path.get(i));
             p = new ImPoint(progress.getX(), progress.getY());
             proposedTrack.add(p);
-            logger.fine("Adding point " + p);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Adding point " + p);
+            }
         }
 
         return proposedTrack;
@@ -163,9 +166,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
     public void setupSearch(ImPoint startPoint, ImPoint targetPoint,
             BuildTrackStrategy bts) throws PathNotFoundException {
-        logger
-                .fine("Find track path from " + startPoint + " to "
-                        + targetPoint);
+        logger.debug("Find track path from " + startPoint + " to "
+                + targetPoint);
 
         this.startPoint = startPoint;
         int[] targetInts = findTargets(targetPoint);

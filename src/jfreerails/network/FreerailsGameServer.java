@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import jfreerails.controller.ClientControlInterface;
 import jfreerails.controller.Message2Client;
@@ -27,6 +26,8 @@ import jfreerails.world.common.ImStringList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
+
+import org.apache.log4j.Logger;
 
 /**
  * When executed by a thread, this class does the following: reads and executes
@@ -74,9 +75,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      * which clients have updated their world object to the current version.
      */
     private int confirmationID = Integer.MIN_VALUE; /*
-                                                     * Don't default 0 to avoid
-                                                     * mistaken confirmations.
-                                                     */
+     * Don't default 0 to avoid
+     * mistaken confirmations.
+     */
 
     /**
      * The players who have confirmed that they have received the last copy of
@@ -106,13 +107,21 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     public synchronized void addConnection(Connection2Client connection) {
         String[] before = getPlayerNames();
-        logger.fine("Adding connection..");
-        logger.fine("Waiting for login details..");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Adding connection..");
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Waiting for login details..");
+        }
 
         try {
             LogOnRequest request = (LogOnRequest) connection
                     .waitForObjectFromClient();
-            logger.fine("Trying to login player: " + request.getUsername());
+            if (logger.isDebugEnabled()) {
+                logger
+                        .debug("Trying to login player: "
+                                + request.getUsername());
+            }
 
             LogOnResponse response = this.logon(request);
             connection.writeToClient(response);
@@ -120,7 +129,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             NameAndPassword p = new NameAndPassword(request.getUsername(),
                     request.getPassword());
             if (response.isSuccessful()) {
-                logger.fine("Login successful");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Login successful");
+                }
 
                 synchronized (acceptedConnections) {
                     acceptedConnections.put(p, connection);
@@ -213,7 +224,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     boolean isConfirmed(int player) {
-        logger.fine("confirmedPlayers.size()=" + confirmedPlayers.size());
+        if (logger.isDebugEnabled()) {
+            logger.debug("confirmedPlayers.size()=" + confirmedPlayers.size());
+        }
 
         boolean isConfirmed = confirmedPlayers.contains(players.get(player));
 
@@ -333,7 +346,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
         sendWorldUpdatedCommand();
 
-        logger.fine("newGame");
+        if (logger.isDebugEnabled()) {
+            logger.debug("newGame");
+        }
     }
 
     private void removeConnection(NameAndPassword p) throws IOException {
@@ -449,7 +464,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 if (ms.ok) {
                     send2All(move);
                 } else {
-                    logger.warning(ms.message);
+                    logger.warn(ms.message);
                 }
             }
         };
@@ -490,7 +505,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                         if (messages[i] instanceof Message2Server) {
                             Message2Server message2 = (Message2Server) messages[i];
                             MessageStatus cStatus = message2.execute(this);
-                            logger.fine(message2.toString());
+                            if (logger.isDebugEnabled()) {
+                                logger.debug(message2.toString());
+                            }
                             connection.writeToClient(cStatus);
                         } else if (messages[i] instanceof MessageStatus) {
                             MessageStatus messageStatus = (MessageStatus) messages[i];
@@ -502,10 +519,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                                  * version.
                                  */
                                 this.confirmedPlayers.add(player);
-                                logger.fine("Confirmed player " + player);
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("Confirmed player " + player);
+                                }
                             }
 
-                            logger.fine(messages[i].toString());
+                            if (logger.isDebugEnabled()) {
+                                logger.debug(messages[i].toString());
+                            }
                         } else if (messages[i] instanceof Move
                                 || messages[i] instanceof PreMove) {
                             Player player2 = getWorld().getPlayer(
@@ -543,7 +564,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                                         .fromMoveStatus(mStatus));
                             }
                         } else {
-                            logger.fine(messages[i].toString());
+                            if (logger.isDebugEnabled()) {
+                                logger.debug(messages[i].toString());
+                            }
                         }
                     }
 

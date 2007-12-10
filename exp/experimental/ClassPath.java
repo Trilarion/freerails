@@ -12,9 +12,10 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.apache.log4j.Logger;
 
 /**
  * ClassPath finds and records the fully qualified name of every Class on the
@@ -94,9 +95,11 @@ public class ClassPath {
                 // class-path...
                 if (!(jarsThatHAveAlreadyBeenProcessed.contains(elementFile))) {
                     if (man != null) {
-                        logger.fine("Jarfile = " + elementFile
-                                + " was not in jarsalreadydone (size = "
-                                + jarsThatHAveAlreadyBeenProcessed.size());
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Jarfile = " + elementFile
+                                    + " was not in jarsalreadydone (size = "
+                                    + jarsThatHAveAlreadyBeenProcessed.size());
+                        }
                         jarsThatHAveAlreadyBeenProcessed.add(elementFile);
                         List extraPathElements = findPathElementsInJar(man,
                                 jar, elementFile);
@@ -188,7 +191,9 @@ public class ClassPath {
             Object key = i.next();
             String value = (String) atts.get(key);
 
-            logger.fine(jar.getName() + "  " + key + ": " + value);
+            if (logger.isDebugEnabled()) {
+                logger.debug(jar.getName() + "  " + key + ": " + value);
+            }
 
             if (key.toString().equals("Class-Path")) {
                 logger.info("scanning " + jar.getName()

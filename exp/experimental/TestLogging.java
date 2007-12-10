@@ -1,6 +1,6 @@
 package experimental;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /*
  * Created on 30-May-2004
@@ -25,11 +25,11 @@ public class TestLogging {
         logger1.info("Logging properties file: "
                 + System.getProperty("java.util.logging.config.file"));
 
-        logger1.severe("Hello severe logging");
-        logger1.warning("Hello warning logging");
+        logger1.error("Hello severe logging");
+        logger1.warn("Hello warning logging");
         logger1.info("Hello info logging");
-        logger1.fine("Hello fine logging");
-        logger1.finer("Hello finer logging");
-        logger1.finest("Hello finest logging");
+        logger1.debug("Hello fine logging");
+        logger1.debug("Hello finer logging");
+        logger1.debug("Hello finest logging");
     }
 }

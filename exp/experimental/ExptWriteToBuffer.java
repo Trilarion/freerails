@@ -9,7 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * Experiment to try out reading and writing to a buffer to test serialization

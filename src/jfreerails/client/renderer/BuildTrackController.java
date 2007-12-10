@@ -8,7 +8,7 @@ import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import jfreerails.client.common.SoundManager;
 import jfreerails.controller.BuildTrackStrategy;
@@ -173,11 +173,11 @@ public class BuildTrackController implements GameModel {
 
         for (Iterator<ImPoint> iter = track.iterator(); iter.hasNext();) {
             ImPoint point = iter.next();
-            LOGGER.fine("point" + point);
-            LOGGER.fine("oldPosition" + oldPosition);
+            LOGGER.debug("point" + point);
+            LOGGER.debug("oldPosition" + oldPosition);
 
             if (oldPosition.equals(point)) {
-                LOGGER.fine("(oldPosition.equals(point))" + point);
+                LOGGER.debug("(oldPosition.equals(point))" + point);
 
                 continue;
             }

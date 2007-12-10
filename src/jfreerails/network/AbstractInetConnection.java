@@ -6,9 +6,10 @@ package jfreerails.network;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 import jfreerails.world.common.FreerailsSerializable;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class has the code that is shared by the client and server versions of
@@ -42,7 +43,9 @@ abstract class AbstractInetConnection implements Runnable {
     }
 
     public void disconnect() throws IOException {
-        logger.fine(this + "Initiating shutdown..");
+        if (logger.isDebugEnabled()) {
+            logger.debug(this + "Initiating shutdown..");
+        }
         shutdownOutput();
 
         long waitUntil = System.currentTimeMillis() + timeout;
@@ -65,8 +68,10 @@ abstract class AbstractInetConnection implements Runnable {
             }
         }
 
-        logger.fine(this + "Finished shutdown!! --status="
-                + String.valueOf(status.isOpen()));
+        if (logger.isDebugEnabled()) {
+            logger.debug(this + "Finished shutdown!! --status="
+                    + String.valueOf(status.isOpen()));
+        }
     }
 
     public void flush() throws IOException {
@@ -94,7 +99,9 @@ abstract class AbstractInetConnection implements Runnable {
             e.printStackTrace();
         }
 
-        logger.fine(this + "Recipricating shutdown..");
+        if (logger.isDebugEnabled()) {
+            logger.debug(this + "Recipricating shutdown..");
+        }
         shutDownInput();
         readerThreadStatus.close();
     }
@@ -110,7 +117,9 @@ abstract class AbstractInetConnection implements Runnable {
     private synchronized void shutDownInput() {
         try {
             inetConnection.shutdownInput();
-            logger.fine(this + "Shut down input.");
+            if (logger.isDebugEnabled()) {
+                logger.debug(this + "Shut down input.");
+            }
 
             if (status.isOpen()) {
                 shutdownOutput();
@@ -127,7 +136,9 @@ abstract class AbstractInetConnection implements Runnable {
 
         status.close();
         inetConnection.shutdownOutput();
-        logger.fine(this + "Shut down output.");
+        if (logger.isDebugEnabled()) {
+            logger.debug(this + "Shut down output.");
+        }
     }
 
     abstract String getThreadName();

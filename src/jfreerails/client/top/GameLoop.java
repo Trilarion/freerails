@@ -3,7 +3,7 @@ package jfreerails.client.top;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import jfreerails.client.common.RepaintManagerForActiveRendering;
 import jfreerails.controller.ReportBugTextGenerator;
@@ -72,7 +72,7 @@ final public class GameLoop implements Runnable {
             try {
                 Thread.currentThread().setPriority(Thread.NORM_PRIORITY - 1);
             } catch (SecurityException e) {
-                logger.warning("Couldn't lower priority of redraw thread");
+                logger.warn("Couldn't lower priority of redraw thread");
             }
 
             while (true) {

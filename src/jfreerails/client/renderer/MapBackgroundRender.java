@@ -10,7 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
@@ -163,7 +163,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
 
                 if (null == tr) {
-                    logger.warning("No tile renderer for " + typeNumber);
+                    logger.warn("No tile renderer for " + typeNumber);
                 } else {
                     tr.renderTile(g, screenX, screenY, tile.x, tile.y, w);
                 }

@@ -13,7 +13,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.JLabel;
@@ -29,6 +28,8 @@ import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.TransactionAggregator;
+
+import org.apache.log4j.Logger;
 
 /**
  * A JPanel that displays a graph of the net worth of each of the players
@@ -380,7 +381,9 @@ public class NetWorthGraphJPanel extends JPanel implements View {
             Player player = world.getPlayer(i);
             String name = player.getName();
 
-            logger.fine("Adding player " + name + " to net worth graph.");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Adding player " + name + " to net worth graph.");
+            }
             CompanyDetails cd = new CompanyDetails(name, c);
             GameTime[] times = new GameTime[101];
             for (int year = 0; year < 101; year++) {

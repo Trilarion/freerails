@@ -3,7 +3,7 @@ package jfreerails.client.top;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -213,7 +213,7 @@ public class RenderersRootImpl implements RenderersRoot {
             } catch (IOException io) {
                 // If the image is missing, we generate it.
                 logger
-                        .warning("No tile renderer for "
+                        .warn("No tile renderer for "
                                 + t.getTerrainTypeName());
 
                 String filename = StandardTileRenderer.generateFilename(t

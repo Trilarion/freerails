@@ -10,7 +10,7 @@ import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FO
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.Move;
@@ -311,7 +311,7 @@ public class TrainStopsHandler implements Serializable {
                     stationNumber);
 
             if (null == station) {
-                logger.warning("null == station, train " + trainId
+                logger.warn("null == station, train " + trainId
                         + " doesn't know where to go next!");
             }
         }

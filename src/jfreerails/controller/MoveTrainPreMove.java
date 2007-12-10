@@ -9,7 +9,6 @@ import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FO
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.logging.Logger;
 
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
@@ -38,6 +37,8 @@ import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.SpeedTimeAndStatus.TrainActivity;
 
+import org.apache.log4j.Logger;
+
 /**
  * Generates moves for changes in train position and stops at stations.
  * 
@@ -48,12 +49,14 @@ public class MoveTrainPreMove implements PreMove {
     private static final long serialVersionUID = 3545516188269491250L;
     private static final Logger logger = Logger
             .getLogger(MoveTrainPreMove.class.getName());
-    /** 666 Performance cache must be cleared if track on map is build ! make a change listener! */
+    /**
+     * 666 Performance cache must be cleared if track on map is build ! make a
+     * change listener!
+     */
     private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<Integer, HashMap<Integer, Step>>();
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
-    
 
     /** Uses static method to make testing easier. */
     public static Step findNextStep(ReadOnlyWorld world,
@@ -147,7 +150,9 @@ public class MoveTrainPreMove implements PreMove {
                 int space = spaceAvailable.get(i);
                 int atStation = cb.getAmount(i);
                 if (space * atStation > 0) {
-                    logger.fine("There is cargo to transfer!");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("There is cargo to transfer!");
+                    }
                     return true;
                 }
             }
@@ -404,8 +409,9 @@ public class MoveTrainPreMove implements PreMove {
     }
 
     public static void clearCache() {
-        pathCache.clear();  
-        cacheCleared ++;
- //       System.out.println("CH:"+cacheHit+" CM:"+cacheMiss+" CC:"+cacheCleared);
+        pathCache.clear();
+        cacheCleared++;
+        // System.out.println("CH:"+cacheHit+" CM:"+cacheMiss+"
+        // CC:"+cacheCleared);
     }
 }

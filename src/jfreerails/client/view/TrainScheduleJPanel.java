@@ -6,7 +6,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -406,7 +406,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
             showSelectStation(s, Schedule.PRIORITY_ORDERS);
         } catch (NoSuchElementException e) {
             logger
-                    .warning("No stations exist so can't add station to schedule!");
+                    .warn("No stations exist so can't add station to schedule!");
         }
     }// GEN-LAST:event_priorityOrdersJButtonActionPerformed
 
@@ -418,7 +418,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
             showSelectStation(s, newOrderNumber);
         } catch (NoSuchElementException e) {
             logger
-                    .warning("No stations exist so can't add station to schedule!");
+                    .warn("No stations exist so can't add station to schedule!");
         }
     }// GEN-LAST:event_addStationJButtonActionPerformed
 

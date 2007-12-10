@@ -12,7 +12,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -368,7 +368,7 @@ public class DialogueBoxController implements WorldListListener {
             stationInfo.setStation(stationNumber);
             showContent(stationInfo);
         } catch (NoSuchElementException e) {
-            logger.warning("Station " + stationNumber + " does not exist!");
+            logger.warn("Station " + stationNumber + " does not exist!");
         }
     }
 

@@ -1,7 +1,6 @@
 package jfreerails.controller;
 
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
 
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
@@ -10,6 +9,8 @@ import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.TrackRule;
+
+import org.apache.log4j.Logger;
 
 /**
  * Class to build a station at a given point, names station after nearest city.
@@ -67,7 +68,9 @@ public class StationBuilder {
                     this.ruleNumber, principal);
             return executor.doPreMove(preMove);
         }
-        logger.fine(status.message);
+        if (logger.isDebugEnabled()) {
+            logger.debug(status.message);
+        }
         return status;
     }
 

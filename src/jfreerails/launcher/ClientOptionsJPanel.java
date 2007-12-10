@@ -8,7 +8,6 @@ package jfreerails.launcher;
 
 import java.awt.DisplayMode;
 import java.net.InetSocketAddress;
-import java.util.logging.Logger;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -19,6 +18,8 @@ import jfreerails.client.view.DisplayModesComboBoxModels;
 import jfreerails.controller.MyDisplayMode;
 import jfreerails.controller.ScreenHandler;
 import jfreerails.launcher.LauncherInterface.MSG_TYPE;
+
+import org.apache.log4j.Logger;
 
 /**
  * The Launcher panel that lets you choose fullscreen or windowed mode and the
@@ -96,8 +97,10 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         if (this.fullScreenButton.isSelected()) {
             MyDisplayMode displayMode = ((MyDisplayMode) jList1
                     .getSelectedValue());
-            logger.fine("The selected display mode is "
-                    + displayMode.toString());
+            if (logger.isDebugEnabled()) {
+                logger.debug("The selected display mode is "
+                        + displayMode.toString());
+            }
             return displayMode.displayMode;
         }
         return null;

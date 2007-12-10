@@ -6,7 +6,6 @@ package jfreerails.network;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import jfreerails.controller.ClientControlInterface;
 import jfreerails.controller.Message2Client;
@@ -22,6 +21,8 @@ import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
+
+import org.apache.log4j.Logger;
 
 /**
  * A client for FreerailsGameServer.
@@ -57,7 +58,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      */
     public final LogOnResponse connect(String address, int port,
             String username, String password) {
-        logger.fine("Connect to remote server.  " + address + ":" + port);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Connect to remote server.  " + address + ":" + port);
+        }
 
         try {
             connection2Server = new InetConnection2Server(address, port);
@@ -203,7 +206,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         if (message instanceof Message2Client) {
             Message2Client request = (Message2Client) message;
             MessageStatus status = request.execute(this);
-            logger.fine(request.toString());
+            if (logger.isDebugEnabled()) {
+                logger.debug(request.toString());
+            }
             connection2Server.writeToServer(status);
         } else if (message instanceof Move) {
             Move m = (Move) message;
@@ -220,7 +225,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             PreMoveStatus pms = (PreMoveStatus) message;
             committer.fromServer(pms);
         } else {
-            logger.fine(message.toString());
+            if (logger.isDebugEnabled()) {
+                logger.debug(message.toString());
+            }
         }
     }
 

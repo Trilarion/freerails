@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.swing.Action;
 
@@ -72,7 +72,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
             return text;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.warning(htmlUrl.toString());
+            logger.warn(htmlUrl.toString());
             return "Couldn't read: " + htmlUrl;
         }
     }

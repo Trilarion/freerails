@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -62,6 +61,8 @@ import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.top.WorldMapListener;
+
+import org.apache.log4j.Logger;
 
 /**
  * Creates and wires up the GUI components.
@@ -710,10 +711,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     /**
      * Listens for changes on the map, for instance when track is built, and
-     * refreshes the map views.
+     * refreshes the map views. 666 changes to often -> 10% of time
      */
     public void tilesChanged(Rectangle tilesChanged) {
-        logger.fine("TilesChanged = " + tilesChanged);
+        if (logger.isDebugEnabled()) {
+            logger.debug("TilesChanged = " + tilesChanged);
+        }
         // If lots of tiles have changed, do a complete refresh.
         int size = tilesChanged.width * tilesChanged.height;
 

@@ -5,7 +5,6 @@
 package jfreerails.network;
 
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 import jfreerails.controller.PreMove;
 import jfreerails.controller.PreMoveStatus;
@@ -14,6 +13,8 @@ import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
+
+import org.apache.log4j.Logger;
 
 /**
  * The class pre-commits moves we intend to send to the server and either fully
@@ -95,7 +96,11 @@ public class MovePrecommitter {
     }
 
     void fromServer(Move m) {
-        logger.finest("Move from server: " + m.toString());
+        if (logger.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Move from server: " + m.toString());
+            }
+        }
         rollBackPrecommittedMoves();
 
         MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
@@ -121,11 +126,15 @@ public class MovePrecommitter {
                     throw new IllegalStateException();
                 }
             } else {
-                logger.finest("Move accepted by server: " + m.toString());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Move accepted by server: " + m.toString());
+                }
             }
         } else {
             if (!ms.ok) {
-                logger.fine("Clear the blockage " + ms.message);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Clear the blockage " + ms.message);
+                }
                 uncomitted.removeFirst();
                 precommitMoves();
             } else {
@@ -147,7 +156,9 @@ public class MovePrecommitter {
         PreMove pm = (PreMove) uncomitted.removeFirst();
 
         if (pms.ms.ok) {
-            logger.finest("PreMove accepted by server: " + pms.toString());
+            if (logger.isDebugEnabled()) {
+                logger.debug("PreMove accepted by server: " + pms.toString());
+            }
             Move m = pm.generateMove(w);
             MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
 

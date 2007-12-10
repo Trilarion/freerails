@@ -2,7 +2,6 @@ package jfreerails.controller;
 
 import java.awt.Rectangle;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import jfreerails.world.common.ImList;
 import jfreerails.world.station.ConvertedAtStation;
@@ -17,6 +16,8 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackRule;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class probes the tiles adjacent to a station for what cargo they supply,
@@ -159,9 +160,15 @@ public class CalcCargoSupplyRateAtStation {
         Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w
                 .getMapHeight());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
-        logger.fine("stationRadiusRect=" + stationRadiusRect);
-        logger.fine("mapRect=" + mapRect);
-        logger.fine("tiles2scan=" + tiles2scan);
+        if (logger.isDebugEnabled()) {
+            logger.debug("stationRadiusRect=" + stationRadiusRect);
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("mapRect=" + mapRect);
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("tiles2scan=" + tiles2scan);
+        }
 
         // Look at the terrain type of each tile and retrieve the cargo
         // supplied.

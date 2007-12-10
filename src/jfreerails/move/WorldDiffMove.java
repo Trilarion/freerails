@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import jfreerails.util.ListKey;
 import jfreerails.world.accounts.Transaction;
@@ -22,6 +21,8 @@ import jfreerails.world.top.World;
 import jfreerails.world.top.WorldDiffs;
 import jfreerails.world.top.WorldDiffs.LISTID;
 import jfreerails.world.top.WorldImpl.ActivityAndTime;
+
+import org.apache.log4j.Logger;
 
 /**
  * A move that makes a number of changes to the map and to the lists.
@@ -216,7 +217,9 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                 FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
                         .getPrincipal();
                 Object o = worldDiffs.getDiff(lkey);
-                logger.fine(lkey.toString() + " --> " + o.toString());
+                if (logger.isDebugEnabled()) {
+                    logger.debug(lkey.toString() + " --> " + o.toString());
+                }
 
                 switch (lkey.getIndex().length) {
                 case 1: {
@@ -241,12 +244,16 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                     int activityID = lkey.getIndex()[2];
                     if (entityId >= world.getNumberOfActiveEntities(fp)
                             && 0 == activityID) {
-                        logger.fine("AddActiveEntityMove: " + act
-                                + " entityId=" + entityId);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("AddActiveEntityMove: " + act
+                                    + " entityId=" + entityId);
+                        }
                         m = new AddActiveEntityMove(act, entityId, fp);
                     } else {
-                        logger.fine("NextActivityMove: " + act + " entityId="
-                                + entityId);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("NextActivityMove: " + act
+                                    + " entityId=" + entityId);
+                        }
                         m = new NextActivityMove(act, entityId, fp);
                     }
                     tempList.add(m);

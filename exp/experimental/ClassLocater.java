@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * An essential part of Java - locates any Class, anywhere.
@@ -80,25 +80,29 @@ public class ClassLocater {
 
             logger.info("Found " + classes.length + " classes that implement "
                     + className + "...");
-            if (logger.getLevel().equals(Level.FINE))
+            if (logger.getLevel().equals(Level.DEBUG))
                 for (int i = 0; i < classes.length; i++) {
-                    logger.fine("Found " + classes[i].getName()
-                            + " that implements " + className + "...");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Found " + classes[i].getName()
+                                + " that implements " + className + "...");
+                    }
                 }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Attempting to find " + className
-                    + " implementers", e);
+            logger
+                    .error("Attempting to find " + className + " implementers",
+                            e);
         }
 
         // Iterate through all, instantiating them
-        logger.fine("Instantiating each class");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Instantiating each class");
+        }
         for (int i = 0; i < classes.length; i++) {
             try {
                 Object o = classes[i].newInstance();
                 instances.add(o);
             } catch (Throwable e) {
-                logger.log(Level.SEVERE, "Failed to process: "
-                        + classes[i].getName(), e);
+                logger.error("Failed to process: " + classes[i].getName(), e);
             }
         }
 
@@ -193,10 +197,14 @@ public class ClassLocater {
         HashMap<String, LinkedList<String>> missingRequiredClasses = new HashMap<String, LinkedList<String>>();
         // maps class name to list of classes that needed it
 
-        logger.fine("Creating ClassPath object to do class search...");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Creating ClassPath object to do class search...");
+        }
 
         ClassPath cp = new ClassPath();
-        logger.fine("Iterating through all classes in ClassPath...");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Iterating through all classes in ClassPath...");
+        }
 
         for (Iterator iter = cp.getAllClassNames().iterator(); iter.hasNext();) {
             String className = (String) iter.next();
@@ -205,8 +213,10 @@ public class ClassLocater {
             for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext();) {
                 String prefix = (String) i2.next();
                 if (className.startsWith(prefix)) {
-                    logger.fine("Skipping class = " + className
-                            + " because it has a prefix of " + prefix);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Skipping class = " + className
+                                + " because it has a prefix of " + prefix);
+                    }
                     skip = true;
                     break;
                 }
@@ -214,11 +224,13 @@ public class ClassLocater {
             if (skip)
                 continue;
 
-            logger.fine("Processing class: " + className);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Processing class: " + className);
+            }
             if (className.matches(regex)
                     && !className.equals(targetType.getName())) {
                 logger
-                        .fine("...matches regex; instantiating and checking type");
+                        .debug("...matches regex; instantiating and checking type");
                 Class clazz = null;
                 try {
                     clazz = Class.forName(className);
@@ -234,8 +246,7 @@ public class ClassLocater {
                      */
                     if (cnfx.getMessage() == null) {
                         logger
-                                .log(
-                                        Level.WARNING,
+                                .warn(
                                         "NoClassDefFoundError but Sun didn't fill-in the message; no idea which class it was; ignoring it and moving on",
                                         cnfx);
                         continue;
@@ -256,14 +267,13 @@ public class ClassLocater {
                 } catch (UnsatisfiedLinkError cnfx) {
                     continue;
                 } catch (Throwable t) {
-                    logger.log(Level.WARNING,
-                            "Unexpected error - REMOVING this class ("
-                                    + className + ") without checking it", t);
+                    logger.warn("Unexpected error - REMOVING this class ("
+                            + className + ") without checking it", t);
                     continue;
                 } finally {
                     if (clazz != null && targetType.isAssignableFrom(clazz)) {
                         logger
-                                .fine(className
+                                .debug(className
                                         + " matches and is correct type; adding to results");
                         matches.add(clazz);
                     }
@@ -275,10 +285,10 @@ public class ClassLocater {
 
         if (missingRequiredClasses.size() > 0) {
             logger
-                    .warning("The following classes were needed by some of the classes I found, but could not themselves be found."
+                    .warn("The following classes were needed by some of the classes I found, but could not themselves be found."
                             + "Check you have the required libraries, that they are on the classpath, and that all JAR's are in your manifest as needed");
             logger
-                    .warning("If you don't care about some of the classes that used these missing classes, add the users to the skip list and you will get no errors from them");
+                    .warn("If you don't care about some of the classes that used these missing classes, add the users to the skip list and you will get no errors from them");
             for (Iterator<String> iter = missingRequiredClasses.keySet()
                     .iterator(); iter.hasNext();) {
                 String className = iter.next();
@@ -292,7 +302,7 @@ public class ClassLocater {
                     if (iterator.hasNext())
                         sb.append(", ");
                 }
-                logger.warning("class: " + className + " was needed by class"
+                logger.warn("class: " + className + " was needed by class"
                         + (neededBy.size() == 1 ? "" : "es") + ": " + sb);
             }
         }

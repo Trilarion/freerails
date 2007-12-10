@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
@@ -213,7 +213,7 @@ public class UserInputOnMapController extends KeyAdapter {
             }
 
         } else {
-            logger.warning("No track builder available!");
+            logger.warn("No track builder available!");
         }
     }
 

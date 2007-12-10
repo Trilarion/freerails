@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
@@ -29,6 +28,13 @@ import jfreerails.network.SavedGamesManager;
 import jfreerails.server.SavedGamesManagerImpl;
 import jfreerails.server.ServerGameModelImpl;
 import jfreerails.util.GameModel;
+
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.SimpleLayout;
 
 /**
  * Launcher GUI for both the server and/or client.
@@ -88,7 +94,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         SelectMapJPanel msp = (SelectMapJPanel) wizardPages[1];
         ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
         ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
-        
+
         boolean recover = false;
         int mode;
 
@@ -175,8 +181,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     startThread(client);
                 } else {
                     recover = true;
-                    setInfoText(logOnResponse.getMessage(),
-                            MSG_TYPE.WARNING);
+                    setInfoText(logOnResponse.getMessage(), MSG_TYPE.WARNING);
                 }
             } catch (IOException e) {
                 setInfoText(e.getMessage(), MSG_TYPE.WARNING);
@@ -353,13 +358,23 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         // SynchronizedEventQueue.use();
 
         // Let the user know if we are using a custom logging config.
-        String loggingProperties = System
-                .getProperty("java.util.logging.config.file");
-        if (null != loggingProperties) {
-            logger.info("Logging properties file: " + loggingProperties);
+
+        try {
+            PatternLayout patternLayout = new PatternLayout(
+                    "%r [%t] %-5p %m -- at %l%n");
+            SimpleLayout layout = new SimpleLayout();
+            ConsoleAppender consoleAppender = new ConsoleAppender(patternLayout);
+            Logger rootLogger = LogManager.getRootLogger();
+            rootLogger.addAppender(consoleAppender);
+            rootLogger.setLevel(Level.DEBUG);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return;
         }
 
-        logger.fine("Started launcher.");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Started launcher.");
+        }
         boolean quickstart = false;
         if (args.length > 0) {
             for (int i = 0; i < args.length; i++) {
@@ -597,8 +612,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         } catch (BindException be) {
                             // When the port is already in use.
                             prevButton.setEnabled(true);
-                            setInfoText(be.getMessage(),
-                                    MSG_TYPE.WARNING);
+                            setInfoText(be.getMessage(), MSG_TYPE.WARNING);
                         }
                     }
                 } else {
@@ -764,7 +778,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             System.getProperties().putAll(props);
 
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            logger.warn(e.getMessage(), e);
         }
     }
 

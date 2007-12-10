@@ -8,7 +8,7 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
@@ -31,7 +31,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         if (parentTileView != null) {
             parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
         } else {
-            logger.warning("parent tileView==null");
+            logger.warn("parent tileView==null");
         }
 
         Image icon = this.getIcon(mapX, mapX, w);
@@ -39,7 +39,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         if (null != icon) {
             g.drawImage(icon, renderX, renderY, null);
         } else {
-            logger.warning("special tileView icon==null");
+            logger.warn("special tileView icon==null");
         }
     }
 

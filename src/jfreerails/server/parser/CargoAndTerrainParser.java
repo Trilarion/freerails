@@ -1,6 +1,6 @@
 package jfreerails.server.parser;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -255,7 +255,7 @@ public class CargoAndTerrainParser implements ContentHandler {
         return new ErrorHandler() {
             public void error(SAXParseException ex) throws SAXException {
                 if (context.isEmpty()) {
-                    logger.severe("Missing DOCTYPE.");
+                    logger.error("Missing DOCTYPE.");
                 }
 
                 throw ex;
