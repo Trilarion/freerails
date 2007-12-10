@@ -45,18 +45,20 @@ public final class ImList<E extends FreerailsSerializable> implements
 
     @SuppressWarnings("unchecked")
     public ImList(E... items) {
-        elementData = (E[]) new FreerailsSerializable[items.length];
-        for (int i = 0; i < items.length; i++) {
-            elementData[i] = items[i];
-        }
+        elementData = items.clone();
+//        elementData = (E[]) new FreerailsSerializable[items.length];
+//        for (int i = 0; i < items.length; i++) {
+//            elementData[i] = items[i];
+//        }
     }
 
     @SuppressWarnings("unchecked")
     public ImList(List<E> list) {
-        elementData = (E[]) new FreerailsSerializable[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            elementData[i] = list.get(i);
-        }
+        elementData = list.toArray((E[]) new FreerailsSerializable[list.size()]);
+//        elementData = (E[]) new FreerailsSerializable[list.size()];
+//        for (int i = 0; i < list.size(); i++) {
+//            elementData[i] = list.get(i);
+//        }
     }
 
     public void checkForNulls() throws NullPointerException {

@@ -169,7 +169,11 @@ public class TrainStopsHandler implements Serializable {
         int scheduleID = train.getScheduleID();
         ImmutableSchedule schedule = (ImmutableSchedule) worldDiffs.get(
                 principal, KEY.TRAIN_SCHEDULES, scheduleID);
-        TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
+        int orderToGoto = schedule.getOrderToGoto();
+        if(orderToGoto < 0) {
+            return false;
+        }
+        TrainOrdersModel order = schedule.getOrder(orderToGoto);
         return !isTrainFull() && order.waitUntilFull;
     }
 

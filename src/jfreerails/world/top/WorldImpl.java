@@ -422,7 +422,7 @@ public class WorldImpl implements World {
     }
 
     public boolean isPlayer(FreerailsPrincipal p) {
-        if (p.getWorldIndex() >= 0) {
+        if (p.getWorldIndex() >= 0 && p.getWorldIndex() < players.size()) {
             return true;
         } else {
             return false;

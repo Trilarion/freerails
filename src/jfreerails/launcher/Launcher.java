@@ -39,6 +39,7 @@ import jfreerails.util.GameModel;
  * @author Luke
  */
 public class Launcher extends javax.swing.JFrame implements LauncherInterface {
+
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = Logger.getLogger(Launcher.class
@@ -106,7 +107,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
                 setServerGameModel();
             } catch (IOException e) {
-                setInfoText(e.getMessage(), LauncherInterface.WARNING);
+                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                 recover = true;
             } finally {
                 if (recover) {
@@ -135,7 +136,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             } catch (IOException e) {
                 // We end up here if an Exception was thrown when loading a
                 // saved game.
-                setInfoText(e.getMessage(), LauncherInterface.WARNING);
+                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                 recover = true;
             } finally {
                 if (recover) {
@@ -165,23 +166,23 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
                 String hostname = serverInetAddress.getHostName();
                 int port = serverInetAddress.getPort();
-                setInfoText("Connecting to server...", LauncherInterface.INFO);
+                setInfoText("Connecting to server...", MSG_TYPE.INFO);
                 LogOnResponse logOnResponse = client.connect(hostname, port,
                         playerName, "password");
                 if (logOnResponse.isSuccessful()) {
                     setInfoText("Logged on and waiting for game to start.",
-                            LauncherInterface.INFO);
+                            MSG_TYPE.INFO);
                     startThread(client);
                 } else {
                     recover = true;
                     setInfoText(logOnResponse.getMessage(),
-                            LauncherInterface.WARNING);
+                            MSG_TYPE.WARNING);
                 }
             } catch (IOException e) {
-                setInfoText(e.getMessage(), LauncherInterface.WARNING);
+                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                 recover = true;
             } catch (NullPointerException e) {
-                setInfoText(e.getMessage(), LauncherInterface.WARNING);
+                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                 recover = true;
             } finally {
                 if (recover) {
@@ -203,10 +204,10 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     prepare2HostNetworkGame(msp.getServerPort());
                     setNextEnabled(true);
                 } catch (NullPointerException e) {
-                    setInfoText(e.getMessage(), LauncherInterface.WARNING);
+                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                     recover = true;
                 } catch (IOException e) {
-                    setInfoText(e.getMessage(), LauncherInterface.WARNING);
+                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                     recover = true;
                 } finally {
                     if (recover) {
@@ -597,7 +598,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                             // When the port is already in use.
                             prevButton.setEnabled(true);
                             setInfoText(be.getMessage(),
-                                    LauncherInterface.WARNING);
+                                    MSG_TYPE.WARNING);
                         }
                     }
                 } else {
@@ -653,7 +654,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     setButtonsVisible(false);
                     setNextEnabled(false);
                 } catch (IOException e) {
-                    setInfoText(e.getMessage(), LauncherInterface.WARNING);
+                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                     cop.setControlsEnabled(true);
                     prevButton.setEnabled(true);
                     setNextEnabled(true);
@@ -690,18 +691,18 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
     // End of variables declaration//GEN-END:variables
 
-    public void setInfoText(String text, int status) {
+    public void setInfoText(String text, MSG_TYPE status) {
         infoLabel.setText(text);
         switch (status) {
-        case LauncherInterface.ERROR:
+        case ERROR:
             infoLabel.setIcon(errorIcon);
             nextButton.setEnabled(false);
             break;
-        case LauncherInterface.INFO:
+        case INFO:
             infoLabel.setIcon(infoIcon);
             nextButton.setEnabled(true);
             break;
-        case LauncherInterface.WARNING:
+        case WARNING:
             infoLabel.setIcon(warningIcon);
             nextButton.setEnabled(true);
             break;
@@ -734,26 +735,26 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     private void loadProps() {
         try {
             props = new Properties();
-            FileInputStream in = new FileInputStream("freerails.properties");
+            FileInputStream in = new FileInputStream(PROPERTIES_FILENAME);
             props.load(in);
             in.close();
-            if (!props.containsKey("freerails.server.port")
-                    || !props.containsKey("freerails.server.port")
-                    || !props.containsKey("freerails.server.port")) {
+            if (!props.containsKey(SERVER_PORT_PROPERTY)
+                    || !props.containsKey(PLAYER_NAME_PROPERTY)
+                    || !props.containsKey(SERVER_IP_ADDRESS_PROPERTY)) {
                 throw new Exception();
             }
         } catch (Exception e) {
             props = new Properties();
-            props.setProperty("freerails.server.port", "55000");
-            props.setProperty("freerails.player.name", System
+            props.setProperty(SERVER_PORT_PROPERTY, "55000");
+            props.setProperty(PLAYER_NAME_PROPERTY, System
                     .getProperty("user.name"));
-            props.setProperty("freerails.server.ip.address", "127.0.0.1");
+            props.setProperty(SERVER_IP_ADDRESS_PROPERTY, "127.0.0.1");
         }
     }
 
     public void saveProps() {
         try {
-            FileOutputStream out = new FileOutputStream("freerails.properties");
+            FileOutputStream out = new FileOutputStream(PROPERTIES_FILENAME);
             props.store(out, "---No Comment---");
             out.close();
 

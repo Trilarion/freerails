@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import jfreerails.client.view.DisplayModesComboBoxModels;
 import jfreerails.controller.MyDisplayMode;
 import jfreerails.controller.ScreenHandler;
+import jfreerails.launcher.LauncherInterface.MSG_TYPE;
 
 /**
  * The Launcher panel that lets you choose fullscreen or windowed mode and the
@@ -132,14 +133,13 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         /* Validate player name. */
         if (playerName.getText() == null || playerName.getText().equals("")) {
             owner.setInfoText("Please set a name for your player",
-                    LauncherInterface.ERROR);
+                    MSG_TYPE.ERROR);
             return false;
         }
 
         /* Validate host name. */
         if (remoteIP.getText() == null || remoteIP.getText().equals("")) {
-            owner.setInfoText("Please enter a host name",
-                    LauncherInterface.ERROR);
+            owner.setInfoText("Please enter a host name", MSG_TYPE.ERROR);
             return false;
         }
 
@@ -147,11 +147,11 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         try {
             int port = Integer.parseInt(remotePort.getText());
             if (port < 0 || port > 65535) {
-                owner.setInfoText(INVALID_PORT, LauncherInterface.ERROR);
+                owner.setInfoText(INVALID_PORT, MSG_TYPE.ERROR);
                 return false;
             }
         } catch (Exception e) {
-            owner.setInfoText(INVALID_PORT, LauncherInterface.ERROR);
+            owner.setInfoText(INVALID_PORT, MSG_TYPE.ERROR);
             return false;
         }
 
@@ -162,19 +162,25 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
          */
         if (fullScreenButton.isSelected() && jList1.getModel().getSize() > 0
                 && jList1.getSelectedIndex() == -1) {
-            owner
-                    .setInfoText("Select a display-mode.",
-                            LauncherInterface.ERROR);
+            owner.setInfoText("Select a display-mode.", MSG_TYPE.ERROR);
             return false;
         }
 
         /* Everything is ok. */
         owner.hideErrorMessages();
 
-        owner.setProperty("freerails.server.port", this.remotePort.getText());
-        owner.setProperty("freerails.player.name", this.playerName.getText());
-        owner.setProperty("freerails.server.ip.address", this.remoteIP
-                .getText());
+        owner.setProperty(LauncherInterface.SERVER_PORT_PROPERTY,
+                this.remotePort.getText());
+        owner.setProperty(LauncherInterface.PLAYER_NAME_PROPERTY,
+                this.playerName.getText());
+        owner.setProperty(LauncherInterface.SERVER_IP_ADDRESS_PROPERTY,
+                this.remoteIP.getText());
+        owner.setProperty(LauncherInterface.CLIENT_FULLSCREEN_PROPERTY, Boolean
+                .toString(fullScreenButton.isSelected()));
+        if (this.getDisplayMode() != null) {
+            owner.setProperty(LauncherInterface.CLIENT_DISPLAY_PROPERTY,
+                    new MyDisplayMode(this.getDisplayMode()).toString());
+        }
         owner.saveProps();
         return true;
     }
@@ -200,7 +206,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         }
     }
 
-    private final DisplayModesComboBoxModels listModel;
+    private DisplayModesComboBoxModels listModel;
 
     void setRemoteServerPanelVisible(boolean b) {
         this.jPanel4.setVisible(b);
@@ -209,13 +215,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
     public ClientOptionsJPanel(LauncherInterface owner) {
         this.owner = owner;
         initComponents();
-        listModel = new DisplayModesComboBoxModels();
-        listModel.removeDisplayModesBelow(640, 480, 16);
-        jList1.setModel(listModel);
-        jList1.setSelectedIndex(0);
-
         validateInput();
-
         // Listen for changes in the server port text box.
         remotePort.getDocument().addDocumentListener(documentListener);
         remoteIP.getDocument().addDocumentListener(documentListener);
@@ -267,7 +267,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         jPanel3.add(jLabel1);
 
         playerName.setColumns(12);
-        playerName.setText(owner.getProperty("freerails.player.name"));
+        playerName.setText(owner
+                .getProperty(LauncherInterface.PLAYER_NAME_PROPERTY));
         jPanel3.add(playerName);
 
         playerNames.setToolTipText("Select a player from the saved game.");
@@ -288,7 +289,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         jPanel4.add(jLabel2, new java.awt.GridBagConstraints());
 
         remoteIP.setColumns(15);
-        remoteIP.setText(owner.getProperty("freerails.server.ip.address"));
+        remoteIP.setText(owner
+                .getProperty(LauncherInterface.SERVER_IP_ADDRESS_PROPERTY));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -303,7 +305,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         jPanel4.add(jLabel3, gridBagConstraints);
 
         remotePort.setColumns(5);
-        remotePort.setText(owner.getProperty("freerails.server.port"));
+        remotePort.setText(owner
+                .getProperty(LauncherInterface.SERVER_PORT_PROPERTY));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -329,9 +332,24 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
                 new javax.swing.border.EtchedBorder(), "Select Display Mode"));
         jScrollPane1.setBorder(new javax.swing.border.BevelBorder(
                 javax.swing.border.BevelBorder.LOWERED));
+
+        String displayMode = owner
+                .getProperty(LauncherInterface.CLIENT_DISPLAY_PROPERTY);
+        String fullscreenProp = owner
+                .getProperty(LauncherInterface.CLIENT_FULLSCREEN_PROPERTY);
+        boolean fullscreen = false;
+        if (displayMode != null && displayMode.trim().length() > 0) {
+            fullscreen = Boolean.valueOf(fullscreenProp);
+        }
+
         jList1
                 .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList1.setEnabled(false);
+        if (!fullscreen) {
+            jList1.setEnabled(false);
+        } else {
+            jList1.setEnabled(true);
+        }
+
         jList1
                 .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
                     public void valueChanged(
@@ -348,7 +366,9 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
                 javax.swing.BoxLayout.Y_AXIS));
 
         buttonGroup1.add(windowedButton);
-        windowedButton.setSelected(true);
+        if (!fullscreen) {
+            windowedButton.setSelected(true);
+        }
         windowedButton.setText("Windowed");
         jPanel2.add(windowedButton);
 
@@ -357,6 +377,9 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         jPanel2.add(fixedSizeButton);
 
         buttonGroup1.add(fullScreenButton);
+        if (fullscreen) {
+            fullScreenButton.setSelected(true);
+        }
         fullScreenButton.setText("Full screen");
         fullScreenButton
                 .addChangeListener(new javax.swing.event.ChangeListener() {
@@ -377,6 +400,18 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
 
+        listModel = new DisplayModesComboBoxModels();
+        listModel.removeDisplayModesBelow(640, 480, 16);
+        jList1.setModel(listModel);
+        int pos = 0;
+        for (int i = 0; i < listModel.getSize(); i++) {
+            if (listModel.getElementAt(i).toString().equals(displayMode)) {
+                pos = i;
+                break;
+            }
+        }
+        jList1.setSelectedIndex(pos);
+        jList1.ensureIndexIsVisible(jList1.getSelectedIndex());
     }// GEN-END:initComponents
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_jList1ValueChanged

@@ -9,6 +9,7 @@ package jfreerails.launcher;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import jfreerails.launcher.LauncherInterface.MSG_TYPE;
 import jfreerails.server.SavedGamesManagerImpl;
 
 /**
@@ -97,7 +98,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
     public boolean validateInput() {
         /* Validate map selection. */
         if (this.getSelection().equals(Selection.NONE)) {
-            owner.setInfoText(SELECT_A_MAP, LauncherInterface.ERROR);
+            owner.setInfoText(SELECT_A_MAP, MSG_TYPE.ERROR);
             return false;
         }
 
@@ -105,17 +106,17 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         try {
             int port = getServerPort();
             if (port < 0 || port > 65535) {
-                owner.setInfoText(INVALID_PORT, LauncherInterface.ERROR);
+                owner.setInfoText(INVALID_PORT, MSG_TYPE.ERROR);
                 return false;
             }
         } catch (Exception e) {
-            owner.setInfoText(INVALID_PORT, LauncherInterface.ERROR);
+            owner.setInfoText(INVALID_PORT, MSG_TYPE.ERROR);
             return false;
         }
 
         /* Everything is ok. */
         owner.hideErrorMessages();
-        owner.setProperty("freerails.server.port", this.serverPort.getText());
+        owner.setProperty(LauncherInterface.SERVER_PORT_PROPERTY, this.serverPort.getText());
         owner.saveProps();
         return true;
     }
@@ -212,7 +213,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         jPanel3.add(portLabel, gridBagConstraints);
 
         serverPort.setColumns(6);
-        serverPort.setText(owner.getProperty("freerails.server.port"));
+        serverPort.setText(owner.getProperty(LauncherInterface.SERVER_PORT_PROPERTY));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
