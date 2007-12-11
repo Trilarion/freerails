@@ -14,6 +14,7 @@ import static jfreerails.world.common.Step.TILE_DIAMETER;
 
 import java.util.Iterator;
 
+import jfreerails.util.Pair;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.IntLine;
@@ -83,23 +84,27 @@ public class PathOnTilesTest extends TestCase {
         PathOnTiles path = new PathOnTiles(start, vectors);
 
         // First check.
-        FreerailsPathIterator pathIt = path.subPath(0, path.getTotalDistance());
+        Pair<FreerailsPathIterator, Integer> pathIt = path.subPath(0, path
+                .getTotalDistance());
         ImPoint[] expected = { new ImPoint(15, 15), new ImPoint(45, 15),
                 new ImPoint(75, 15), new ImPoint(105, 15) };
-        checkPath(pathIt, expected);
+        assertEquals(Integer.valueOf(expected.length), pathIt.getB());
+        checkPath(pathIt.getA(), expected);
 
         // Second check
         pathIt = path.subPath(3, path.getTotalDistance() - 3);
         expected = new ImPoint[] { new ImPoint(18, 15), new ImPoint(45, 15),
                 new ImPoint(75, 15), new ImPoint(105, 15) };
-        checkPath(pathIt, expected);
+        assertEquals(Integer.valueOf(expected.length), pathIt.getB());
+        checkPath(pathIt.getA(), expected);
 
         // 3rd check
         double i = path.getTotalDistance() - 10;
         pathIt = path.subPath(3, i);
         expected = new ImPoint[] { new ImPoint(18, 15), new ImPoint(45, 15),
                 new ImPoint(75, 15), new ImPoint(98, 15) };
-        checkPath(pathIt, expected);
+        assertEquals(Integer.valueOf(expected.length), pathIt.getB());
+        checkPath(pathIt.getA(), expected);
 
         // 4th check, with a path just 1 tile long.
         start = new ImPoint(5, 5);
@@ -107,10 +112,10 @@ public class PathOnTilesTest extends TestCase {
         path = new PathOnTiles(start, vectors);
         pathIt = path.subPath(18, 24);
         IntLine line = new IntLine();
-        assertTrue(pathIt.hasNext());
-        pathIt.nextSegment(line);
+        assertTrue(pathIt.getA().hasNext());
+        pathIt.getA().nextSegment(line);
         assertEquals("The length of the train.", 24, line.getLength(), 1d);
-        assertFalse(pathIt.hasNext());
+        assertFalse(pathIt.getA().hasNext());
 
         // 5th check, same as 2nd but with different starting position.
         vectors = new Step[] { EAST, EAST, EAST };
@@ -130,7 +135,8 @@ public class PathOnTilesTest extends TestCase {
         // point.x += start.x * TILE_DIAMETER;
         // point.y += start.y * TILE_DIAMETER;
         // }
-        checkPath(pathIt, expected);
+        assertEquals(Integer.valueOf(expected.length), pathIt.getB());
+        checkPath(pathIt.getA(), expected);
 
     }
 

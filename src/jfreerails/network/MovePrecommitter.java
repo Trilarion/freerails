@@ -96,11 +96,6 @@ public class MovePrecommitter {
     }
 
     void fromServer(Move m) {
-        if (logger.isDebugEnabled()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Move from server: " + m.toString());
-            }
-        }
         rollBackPrecommittedMoves();
 
         MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);

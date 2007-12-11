@@ -89,20 +89,16 @@ public class TrainAccessor {
         ActivityIterator ai = w.getActivities(p, id);
 
         // goto last
-        // int count = 0;
         ai.gotoLastActivity();
         // search backwards
         while (ai.getFinishTime() >= time && ai.hasPrevious()) {
             ai.previousActivity();
-            // count++;
         }
         boolean afterFinish = ai.getFinishTime() < time;
         while (afterFinish && ai.hasNext()) {
             ai.nextActivity();
             afterFinish = ai.getFinishTime() < time;
-            // count++;
         }
-        // System.out.println(count);
         double dt = time - ai.getStartTime();
         dt = Math.min(dt, ai.getDuration());
         TrainMotion tm = (TrainMotion) ai.getActivity();

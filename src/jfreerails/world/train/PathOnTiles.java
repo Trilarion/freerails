@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import jfreerails.util.Pair;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.ImList;
@@ -211,7 +212,8 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      *             if offset + length > getLength()
      * 
      */
-    public FreerailsPathIterator subPath(double offset, double length) {
+    public Pair<FreerailsPathIterator, Integer> subPath(double offset,
+            double length) {
         if (offset < 0)
             throw new IllegalArgumentException();
         if (length <= 0)
@@ -255,31 +257,32 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
             points.addLast(last);
         }
 
-        return new FreerailsPathIterator() {
-            private static final long serialVersionUID = 1L;
+        return new Pair<FreerailsPathIterator, Integer>(
+                new FreerailsPathIterator() {
+                    private static final long serialVersionUID = 1L;
 
-            int index = 0;
+                    int index = 0;
 
-            public boolean hasNext() {
-                return (index + 1) < points.size();
-            }
+                    public boolean hasNext() {
+                        return (index + 1) < points.size();
+                    }
 
-            public void nextSegment(IntLine line) {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                ImPoint a = points.get(index);
-                line.x1 = a.x;
-                line.y1 = a.y;
+                    public void nextSegment(IntLine line) {
+                        if (!hasNext()) {
+                            throw new NoSuchElementException();
+                        }
+                        ImPoint a = points.get(index);
+                        line.x1 = a.x;
+                        line.y1 = a.y;
 
-                ImPoint b = points.get(index + 1);
-                line.x2 = b.x;
-                line.y2 = b.y;
+                        ImPoint b = points.get(index + 1);
+                        line.x2 = b.x;
+                        line.y2 = b.y;
 
-                index++;
-            }
+                        index++;
+                    }
 
-        };
+                }, points.size());
     }
 
     public Iterator<ImPoint> tiles() {

@@ -20,7 +20,7 @@ public class TrainPathIterator implements FreerailsPathIterator {
 
     private final PositionOnTrack p2 = new PositionOnTrack();
 
-    private static final int tileSize = 30;
+    private static final int tileSize = 30; // 666 define somewhere else!
 
     public TrainPathIterator(FreerailsIntIterator i) {
         intIterator = i;

@@ -1,6 +1,7 @@
 package jfreerails.world.train;
 
 import jfreerails.util.IntArray;
+import jfreerails.util.Pair;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.ImInts;
@@ -414,6 +415,39 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             FreerailsPathIterator path) {
         return createInSameDirectionAsPath(path, 0d, 0d,
                 SpeedTimeAndStatus.TrainActivity.READY);
+    }
+
+    public static TrainPositionOnMap createInSameDirectionAsPathReversed(
+            Pair<FreerailsPathIterator, Integer> path, double speed,
+            double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
+
+        IntLine line = new IntLine();
+
+        FreerailsPathIterator pathIt = path.getA();
+        int pathSize = path.getB();
+
+        if (pathSize > 10000) {
+            throw new IllegalStateException(
+                    "The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
+        }
+        int[] xPoints = new int[pathSize];
+        int[] yPoints = new int[pathSize];
+
+        for (int i = pathSize - 1; i > 0; i--) {
+            if (!pathIt.hasNext()) {
+                throw new IllegalStateException("Programming error at:" + i
+                        + " from:" + pathSize);
+            }
+            pathIt.nextSegment(line);
+            xPoints[i] = line.x1;
+            yPoints[i] = line.y1;
+        }
+
+        xPoints[0] = line.x2;
+        yPoints[0] = line.y2;
+
+        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
+                activity);
     }
 
     public static TrainPositionOnMap createInSameDirectionAsPath(

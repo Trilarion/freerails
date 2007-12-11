@@ -327,7 +327,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         });
 
         final JCheckBoxMenuItem playSoundsMenuItem = new JCheckBoxMenuItem(
-                "Play sounds", true);
+                "Play sounds", false);
+        modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS, Boolean.FALSE);
         displayMenu.add(playSoundsMenuItem);
         playSoundsMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -23,4 +23,5 @@ public interface FreerailsPathIterator extends FreerailsMutableSerializable {
      * @param line
      */
     void nextSegment(IntLine line);
+
 }

@@ -366,7 +366,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             ConsoleAppender consoleAppender = new ConsoleAppender(patternLayout);
             Logger rootLogger = LogManager.getRootLogger();
             rootLogger.addAppender(consoleAppender);
-            rootLogger.setLevel(Level.DEBUG);
+            rootLogger.setLevel(Level.INFO);
         } catch (Exception ex) {
             ex.printStackTrace();
             return;

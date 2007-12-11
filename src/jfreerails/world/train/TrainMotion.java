@@ -6,6 +6,7 @@ package jfreerails.world.train;
 
 import java.util.ArrayList;
 
+import jfreerails.util.Pair;
 import jfreerails.world.common.Activity;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.ImPoint;
@@ -207,13 +208,14 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     public TrainPositionOnMap getState(double t) {
         t = Math.min(t, speeds.getT());
         double offset = calcOffSet(t);
-        FreerailsPathIterator pathIt = path.subPath(offset, trainLength);
+        Pair<FreerailsPathIterator, Integer> pathIt = path.subPath(offset,
+                trainLength); // 666
         double speed = speeds.calcV(t);
         double acceleration = speeds.calcA(t);
         TrainPositionOnMap tpom = TrainPositionOnMap
-                .createInSameDirectionAsPath(pathIt, speed, acceleration,
-                        activity);
-        return tpom.reverse();
+                .createInSameDirectionAsPathReversed(pathIt, speed,
+                        acceleration, activity);
+        return tpom;
     }
 
     /**
