@@ -171,11 +171,17 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
         select, selectNoFocus, unselect
     };
 
+    // 666 model still not correct ...
+    /**
+     * contains all data which is displayed for one station (order). This is
+     * used to find prebuilt Panels
+     */
     private class TrainOrderModel {
         String stationName;
         String waitUntilFull;
         Selection selected;
         int gotoStatus;
+        String orderText;
 
         /**
          * @param stationName
@@ -184,12 +190,13 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
          * @param gotoStatus
          */
         public TrainOrderModel(String stationName, String waitUntilFull,
-                Selection selected, int gotoStatus) {
+                Selection selected, int gotoStatus, String orderText) {
             super();
             this.stationName = stationName;
             this.waitUntilFull = waitUntilFull;
             this.selected = selected;
             this.gotoStatus = gotoStatus;
+            this.orderText = orderText;
         }
 
         @Override
@@ -217,14 +224,17 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
                     && !waitUntilFull.equals(cmp.waitUntilFull)) {
                 return false;
             }
+            if (orderText != null && !orderText.equals(cmp.orderText)) {
+                return false;
+            }
             return true;
         }
 
         @Override
         public int hashCode() {
-            String x = waitUntilFull + ":" + stationName + ":" + selected + ":"
-                    + gotoStatus;
-            return x.hashCode();
+            int hashCode = waitUntilFull.hashCode() + stationName.hashCode()
+                    + selected.hashCode() + gotoStatus + orderText.hashCode();
+            return hashCode;
         }
 
     }
@@ -252,8 +262,19 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
         } else {
             select = Selection.unselect;
         }
+        String orderText = null;
+        if (null == trainOrders.order.consist) {
+            if (trainOrders.order.autoConsist) {
+                orderText = "Select wagons automatically";
+            } else {
+                orderText = "No Change";
+            }
+        } else {
+            orderText = "";
+        }
+
         TrainOrderModel tm = new TrainOrderModel(stationName, waitUntilFull,
-                select, trainOrders.gotoStatus);
+                select, trainOrders.gotoStatus, orderText);
         TrainOrderJPanelSingle panelSingle = lines.get(tm);
         if (panelSingle == null) {
             panelSingle = new TrainOrderJPanelSingle();
@@ -304,14 +325,15 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             // Check for 'No change'
             if (null == trainOrders.order.consist) {
                 if (trainOrders.order.autoConsist) {
-                    panelSingle.noChangeJLabel.setText("Select wagons automatically");
+                    panelSingle.noChangeJLabel
+                            .setText("Select wagons automatically");
                 } else {
                     panelSingle.noChangeJLabel.setText("No Change");
                 }
             } else {
                 panelSingle.noChangeJLabel.setText(null);
-            }   
-            lines.put(tm,panelSingle);
+            }
+            lines.put(tm, panelSingle);
         } else {
             TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) panelSingle.consistChangeJPanel;
             trainViewJPanel.display(trainOrders.trainNumber, index);
