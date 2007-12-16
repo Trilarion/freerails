@@ -78,6 +78,26 @@ public class PathOnTilesTest extends TestCase {
 
     }
 
+    public void testGetPointPair() {
+        ImPoint start = new ImPoint();
+        Step[] vectors = new Step[] { EAST, EAST, EAST };
+        PathOnTiles path = new PathOnTiles(start, vectors);
+        ImPoint expected15 = new ImPoint(15, 15);
+        Pair<ImPoint, ImPoint> actual = path.getPoint(0, 0);
+        assertEquals(expected15, actual.getA());
+        assertEquals(expected15, actual.getB());
+        ImPoint expected45 = new ImPoint(45, 15);
+        actual = path.getPoint(0, 30);
+        assertEquals(expected15, actual.getA());
+        assertEquals(expected45, actual.getB());
+
+        ImPoint expected60 = new ImPoint(60, 15);
+        actual = path.getPoint(30, 45);
+        assertEquals(expected45, actual.getA());
+        assertEquals(expected60, actual.getB());
+
+    }
+
     public void testSubPath() {
         ImPoint start = new ImPoint();
         Step[] vectors = new Step[] { EAST, EAST, EAST };

@@ -111,28 +111,129 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      */
     public ImPoint getPoint(double distance) {
         if (0 > distance)
-            throw new IllegalArgumentException("distance < 0");
+            throw new IllegalArgumentException("distance:" + distance + " < 0");
 
-        int x = start.x * TILE_DIAMETER + TILE_DIAMETER / 2;
-        int y = start.y * TILE_DIAMETER + TILE_DIAMETER / 2;
+        int x = start.x;
+        int y = start.y;
         double distanceSoFar = 0;
         for (int i = 0; i < vectors.size(); i++) {
             Step v = vectors.get(i);
             distanceSoFar += v.getLength();
-            x += v.deltaX * TILE_DIAMETER;
-            y += v.deltaY * TILE_DIAMETER;
+            x += v.deltaX;
+            y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new ImPoint(x, y);
+                return new ImPoint(x * TILE_DIAMETER + TILE_DIAMETER / 2, y
+                        * TILE_DIAMETER + TILE_DIAMETER / 2);
             }
-
             if (distanceSoFar > distance) {
-                double excess = distanceSoFar - distance;
-                x -= v.deltaX * TILE_DIAMETER * excess / v.getLength();
-                y -= v.deltaY * TILE_DIAMETER * excess / v.getLength();
-                return new ImPoint(x, y);
+                int excess = (int) (TILE_DIAMETER * (distanceSoFar - distance) / v
+                        .getLength());
+                x = x * TILE_DIAMETER - v.deltaX * excess;
+                y = y * TILE_DIAMETER - v.deltaY * excess;
+                return new ImPoint(x + TILE_DIAMETER / 2, y + TILE_DIAMETER / 2);
             }
         }
-        throw new IllegalArgumentException("distance > getLength()");
+        throw new IllegalArgumentException("distance:" + distance
+                + " > getLength():" + vectors.size() + " distanceSoFar:"
+                + distanceSoFar);
+    }
+
+    /**
+     * Returns the coordinates of the point you would be standing at if you
+     * walked the specified distance along the path from the start point.
+     * 
+     * @throws IllegalArgumentException
+     *             if distance < 0
+     * @throws IllegalArgumentException
+     *             if distance > getLength()
+     */
+    public Pair<ImPoint, ImPoint> getPoint(double firstdistance,
+            double lastdistance) {
+        if (0 > firstdistance) {
+            throw new IllegalArgumentException("firstdistance:" + firstdistance
+                    + " < 0");
+        }
+        if (0 > lastdistance) {
+            throw new IllegalArgumentException("lastdistance:" + lastdistance
+                    + " < 0");
+        }
+        if (firstdistance > lastdistance) {
+            throw new IllegalArgumentException("firstdistance:" + firstdistance
+                    + " > lastdistance:" + lastdistance);
+        }
+        int x = start.x;
+        int y = start.y;
+        double distanceSoFar = 0;
+        ImPoint firstPoint = null;
+        int i;
+        Step v = null;
+        final int vectorsSize = vectors.size();
+        for (i = 0; i < vectorsSize; i++) {
+            v = vectors.get(i);
+            distanceSoFar += v.getLength();
+            x += v.deltaX;
+            y += v.deltaY;
+            if (distanceSoFar == firstdistance) {
+                firstPoint = new ImPoint(x * TILE_DIAMETER + TILE_DIAMETER / 2,
+                        y * TILE_DIAMETER + TILE_DIAMETER / 2);
+                break;
+            }
+            if (distanceSoFar > firstdistance) {
+                int excess = (int) (TILE_DIAMETER
+                        * (distanceSoFar - firstdistance) / v.getLength());
+                int nx = x * TILE_DIAMETER - v.deltaX * excess + TILE_DIAMETER
+                        / 2;
+                int ny = y * TILE_DIAMETER - v.deltaY * excess + TILE_DIAMETER
+                        / 2;
+                firstPoint = new ImPoint(nx, ny);
+                break;
+            }
+        }
+        if (firstPoint == null) {
+            throw new IllegalArgumentException("firstdistance:" + firstdistance
+                    + " > getLength():" + vectorsSize + " distanceSoFar:"
+                    + distanceSoFar);
+        }
+        if (firstdistance == lastdistance) {
+            return new Pair<ImPoint, ImPoint>(firstPoint, firstPoint);
+        }
+        ImPoint secondPoint = null;
+
+        do {
+
+            if (distanceSoFar == lastdistance) {
+                secondPoint = new ImPoint(
+                        x * TILE_DIAMETER + TILE_DIAMETER / 2, y
+                                * TILE_DIAMETER + TILE_DIAMETER / 2);
+                break;
+            }
+            if (distanceSoFar > lastdistance) {
+                int excess = (int) (TILE_DIAMETER
+                        * (distanceSoFar - lastdistance) / v.getLength());
+                int nx = x * TILE_DIAMETER - v.deltaX * excess + TILE_DIAMETER
+                        / 2;
+                int ny = y * TILE_DIAMETER - v.deltaY * excess + TILE_DIAMETER
+                        / 2;
+                secondPoint = new ImPoint(nx, ny);
+                break;
+            }
+            i++;
+            if (i >= vectorsSize) {
+                break;
+            }
+            v = vectors.get(i);
+            distanceSoFar += v.getLength();
+            x += v.deltaX;
+            y += v.deltaY;
+        } while (true);
+
+        if (secondPoint == null) {
+            throw new IllegalArgumentException("lastdistance:" + lastdistance
+                    + " > getLength():" + vectorsSize + " distanceSoFar:"
+                    + distanceSoFar);
+        }
+
+        return new Pair<ImPoint, ImPoint>(firstPoint, secondPoint);
     }
 
     public ImPoint getStart() {
@@ -245,14 +346,18 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
 
         }
 
-        ImPoint first = getPoint(offset);
+        Pair<ImPoint, ImPoint> point = getPoint(offset, offset + length);
+
+        ImPoint first = point.getA();
+
         if (points.size() == 0) {
             points.addFirst(first);
         } else if (!points.getFirst().equals(first)) {
             points.addFirst(first);
         }
 
-        ImPoint last = getPoint(offset + length);
+        ImPoint last = point.getB();
+
         if (!points.getLast().equals(last)) {
             points.addLast(last);
         }
