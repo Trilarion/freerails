@@ -9,6 +9,7 @@ package jfreerails.client.view;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.NoSuchElementException;
 
 import javax.swing.Action;
 import javax.swing.JPanel;
@@ -30,6 +31,8 @@ import jfreerails.world.top.WorldListListener;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.train.WagonType;
 
+import org.apache.log4j.Logger;
+
 /**
  * This JPanel displays the supply and demand at a station.
  * 
@@ -37,6 +40,9 @@ import jfreerails.world.train.WagonType;
  */
 public class StationInfoJPanel extends JPanel implements View,
         WorldListListener {
+
+    private static final Logger logger = Logger
+            .getLogger(StationInfoJPanel.class.getName());
 
     private static final long serialVersionUID = 4050759377680150585L;
 
@@ -257,7 +263,13 @@ public class StationInfoJPanel extends JPanel implements View,
             int i = wi.getIndex();
             wi.reset();
             if (i != WorldIterator.BEFORE_FIRST) {
-                wi.gotoIndex(i);
+                try {
+                    wi.gotoIndex(i);
+                } catch (NoSuchElementException ex) {
+                    logger
+                            .info("Exception ignored in StationInfoJPanel (NoSuchElement).");
+                    return; // ignore silently
+                }
             }
             display();
         }
