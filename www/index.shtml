@@ -26,13 +26,22 @@ Look in the <a href="http://freerails2.wiki.sourceforge.net/">Wiki</a> for the l
   is not yet complete.</P>
 
 <P><IMG SRC="screenshots/jfreerails_0_2_6_320x240.png" NAME="Graphic1" ALIGN=BOTTOM WIDTH=320 HEIGHT=240 BORDER=0></P>
-<P><A HREF="jfreerails2.jnlp">Play now (first optimized version)</A><font size="-1"> 
+<P><A HREF="jfreerails2.jnlp">Play now (V0.3.2 for jdk1.6)</A><font size="-1"> 
 (Size 
   <!--#fsize file="signed_jfreerails.jar"-->;
    updated 
   <!--#config timefmt="%d  %b"   -->
   <!--#flastmod file="signed_jfreerails.jar" -->; 
-  requires <A HREF="http://java.sun.com/j2se/1.5.0/download.jsp">Java 1.5</A>)</font></P>
+  requires Java 1.6)</font></P>
+  
+ <P><A HREF="jfreerails2-opengl.jnlp">Play now (V0.3.2 for jdk1.6 and OpenGL)</A><font size="-1"> 
+(Size 
+  <!--#fsize file="signed_jfreerails-1.6.0.jar"-->;
+   updated 
+  <!--#config timefmt="%d  %b"   -->
+  <!--#flastmod file="signed_jfreerails-1.6.0.jar" -->; 
+  requires Java 1.6)</font></P>
+  
 <P>If you are interested in getting involved in the Freerails2 project, go to the sourceforge web page</a>.</P>
 <P><STRONG>Links</STRONG></P>
 <P><A HREF="http://sourceforge.net/projects/freerails2/">Freerails2 Sourceforge 

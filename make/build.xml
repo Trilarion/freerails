@@ -3,6 +3,12 @@
 
 	<description>The aim of the FreeRails2 project is to create a fun game based off the RailRoad Tycoon and RailRoad Tycoon II games.</description>
 
+	<path id="CLASSPATH">
+		<fileset dir="libs">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
 	<!-- Used by other targets, sets properties -->
 	<target name="init">
 		<tstamp />
@@ -44,7 +50,7 @@
 		</copy>
 		<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
 
-<!--
+		<!--
 		<taskdef resource="net/sf/antcontrib/antlib.xml" />
 		<for param="file">
 			<fileset dir="${doc}/docs">
@@ -131,16 +137,18 @@ else:
 	</target>
 
 
-	<target name="compile" depends="data2build" description="Build everything except JUnit test-classes">
-		<javac destdir="${build}" debug="true" debuglevel="lines,vars,source" fork="true" source="1.5">
-			<src path="${src}"/>
+	<target name="compile" depends="init" description="Build everything except JUnit test-classes">
+		<javac destdir="${build}" debug="true" debuglevel="lines,vars,source" fork="true" source="1.6">
+			<src path="${src}" />
+			<classpath refid="CLASSPATH">
+			</classpath>
 		</javac>
 	</target>
 
 	<target name="debugcompile" depends="data2build" description="Build everything including JUnit    test-classes. Include debugging symbols">
-		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.6" classpath="jars/junit.jar" >
-			<src path="${src}"/>
-			<src path="${test}"/>
+		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.6" classpath="jars/junit.jar">
+			<src path="${src}" />
+			<src path="${test}" />
 		</javac>
 	</target>
 
@@ -169,8 +177,8 @@ else:
 			<manifest>
 				<attribute name="Main-Class" value="jfreerails.launcher.Launcher" />
 			</manifest>
-			 <fileset dir="${build}" />
-			 <fileset dir="${res}"/>
+			<fileset dir="${build}" />
+			<fileset dir="${res}" />
 		</jar>
 		<!-- Replace current latest with the jar file we have just created. -->
 		<delete>
@@ -182,7 +190,7 @@ else:
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
 		<zip basedir="." destfile="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-src.zip">
 			<include name="src/**/*.java" />
-			<include name="res/**/*.png"/>
+			<include name="res/**/*.png" />
 			<include name="src/**/*.form" />
 			<include name="*.xml" />
 			<fileset dir="${datafiles}">
@@ -303,7 +311,7 @@ else:
 	<target name="updatesite" description="Uploads modified files to website, skips javadoc and jar files." depends="check_username_and_password">
 		<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
 			<fileset dir="www">
-				<include name="functional_specification.pdf" />
+				<exclude name="functional_specification.pdf" />
 				<include name="**/*.html" />
 				<include name="**/*.shtml" />
 				<include name="**/*.css" />
@@ -316,13 +324,31 @@ else:
 			</fileset>
 		</scp>
 	</target>
-
+	<target name="updatejarsite" description="Uploads modified jars to website, skips all other" depends="check_username_and_password">
+			<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
+				<fileset dir="www">
+					<exclude name="**/*.pdf" />
+					<exclude name="**/*.html" />
+					<include name="**/*.shtml" />
+					<exclude name="**/*.css" />
+					<exclude name="**/*.png" />
+					<exclude name="**/*.gif" />
+					<include name="**/*.jnlp" />
+					<include name="**/*.jar" />
+					<exclude name="javadoc/**" />
+					<exclude name="performance/**" />
+					<modified />
+				</fileset>
+			</scp>
+		</target>
 
 	<target name="signjar" depends="bindist" description="Sign the jar file so it can be used with webstart">
 		<!-- To generate key, use the following:
 		keytool -keystore freerailsKeyStore -genkey -alias Freerails-Developers -keypass friend -storepass friend
 		-->
 		<signjar jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" signedjar="www/signed_jfreerails.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
+		<signjar jar="libs/log4j-1.2.15.jar" signedjar="www/log4j-1.2.15.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
+			
 	</target>
 
 	<target name="check_username_and_password">

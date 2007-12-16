@@ -3,7 +3,7 @@
 <jnlp 
   spec="1.0+" 
   codebase="http://freerails2.sourceforge.net/" 
-  href="jfreerails2.jnlp"> 
+  href="jfreerails2-opengl.jnlp"> 
   <information> 
     <title>JFreerails 2</title> 
     <vendor>JFreerails 2 Developers</vendor> 
@@ -16,9 +16,11 @@
       <all-permissions/>
   </security> 
   <resources> 
-     <j2se version="1.6+" initial-heap-size="64m" max-heap-size="256m"/>        
-    <jar href="signed_jfreerails.jar"/> 
-    <jar href="log4j-1.2.15.jar"/> 
+     <j2se version="1.6+" initial-heap-size="64m" max-heap-size="256m" /> 
+     <jar href="signed_jfreerails-1.6.0.jar"/> 
+     <jar href="log4j-1.2.15.jar"/> 
+       <property name="sun.java2d.opengl" value="True"/>
+   <property name="sun.java2d.opengl.fbobject" value="false"/>
   </resources> 
   <application-desc main-class="jfreerails.launcher.Launcher"/> 
 </jnlp> 
