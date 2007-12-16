@@ -12,7 +12,6 @@ import jfreerails.client.renderer.TrainRenderer;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrainAccessor;
 import jfreerails.controller.ModelRoot.Property;
-import jfreerails.world.common.ImInts;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -54,7 +53,10 @@ public class OverHeadTrainView implements Painter {
                 // TrainPositionOnMap pos = (TrainPositionOnMap) w.get(
                 // principal, KEY.TRAIN_POSITIONS, i);
                 TrainAccessor ta = new TrainAccessor(w, principal, i);
-                TrainPositionOnMap pos = ta.findPosition(time);
+                TrainPositionOnMap pos = ta.findPosition(time,
+                        newVisibleRectectangle);
+                if (pos == null)
+                    continue;
                 if (pos.isCrashSite()
                         && (pos.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {
                     trainPainter.paintTrainCrash(g, pos);
@@ -68,28 +70,7 @@ public class OverHeadTrainView implements Painter {
                         }
                     }
                 } else {
-                    if (newVisibleRectectangle != null) {
-                        // test if its visible
-                        ImInts xpoints = pos.getXPoints();
-                        ImInts ypoints = pos.getYPoints();
-                        int minx = Integer.MAX_VALUE;
-                        int miny = Integer.MAX_VALUE;
-                        int maxx = 0;
-                        int maxy = 0;
-                        for (int c = 0; c < pos.getLength(); c++) {
-                            minx = Math.min(minx, xpoints.get(c));
-                            miny = Math.min(miny, ypoints.get(c));
-                            maxx = Math.max(maxx, xpoints.get(c));
-                            maxy = Math.max(maxy, ypoints.get(c));
-                        }
-                        Rectangle r = new Rectangle(minx - 15, miny - 15, maxx
-                                - minx + 30, maxy - miny + 35);
-                        if (newVisibleRectectangle.intersects(r)) {
-                            trainPainter.paintTrain(g, train, pos);
-                        }
-                    } else {
-                        trainPainter.paintTrain(g, train, pos);
-                    }
+                    trainPainter.paintTrain(g, train, pos);
                 }
             }
         }

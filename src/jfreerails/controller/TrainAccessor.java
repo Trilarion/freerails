@@ -4,6 +4,9 @@
  */
 package jfreerails.controller;
 
+import static jfreerails.world.common.Step.TILE_DIAMETER;
+
+import java.awt.Rectangle;
 import java.util.HashSet;
 
 import jfreerails.world.cargo.ImmutableCargoBundle;
@@ -85,7 +88,7 @@ public class TrainAccessor {
         return -1;
     }
 
-    public TrainPositionOnMap findPosition(double time) {
+    public TrainPositionOnMap findPosition(double time, Rectangle view) {
         ActivityIterator ai = w.getActivities(p, id);
 
         // goto last
@@ -102,6 +105,15 @@ public class TrainAccessor {
         double dt = time - ai.getStartTime();
         dt = Math.min(dt, ai.getDuration());
         TrainMotion tm = (TrainMotion) ai.getActivity();
+
+        ImPoint start = tm.getPath().getStart();
+        int trainLength = tm.getTrainLength();
+        Rectangle trainBox = new Rectangle(start.x * TILE_DIAMETER
+                - trainLength * 2, start.y * TILE_DIAMETER - trainLength * 2,
+                trainLength * 4, trainLength * 4);
+        if (!view.intersects(trainBox)) {
+            return null; // 666 doesn't work
+        }
         return tm.getState(dt);
     }
 
