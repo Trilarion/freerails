@@ -26,6 +26,7 @@ import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.Constants;
 import jfreerails.world.common.ImPoint;
 
 /**
@@ -200,13 +201,14 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 
     @Override
     protected void paintComponent(java.awt.Graphics g) {
-      if(EventQueue.isDispatchThread()) {
-          return;
-      }
+        if (EventQueue.isDispatchThread()) {
+            return;
+        }
         super.paintComponent(g);
 
         if (null != mapCursor && this.isFocusOwner()) {
-            mapCursor.paintCursor(g, new java.awt.Dimension(30, 30));
+            mapCursor.paintCursor(g, new java.awt.Dimension(
+                    Constants.TILE_SIZE, Constants.TILE_SIZE));
         }
 
         if (System.currentTimeMillis() < this.displayMessageUntil) {

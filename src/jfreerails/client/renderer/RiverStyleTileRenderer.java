@@ -26,8 +26,8 @@ final public class RiverStyleTileRenderer extends
     private static final int[] X_LOOK_AT = { -1, 0, 1, 0 };
 
     public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel) throws IOException {
-        super(tileModel, rgbValues);
+            TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+        super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[16]);
 
         for (int i = 0; i < this.getTileIcons().length; i++) {

@@ -24,8 +24,8 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
     }
 
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel) throws IOException {
-        super(tileModel, rgbValues);
+            TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+        super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[2]);
         this.getTileIcons()[0] = imageManager
                 .getImage(generateRelativeFileName(0));

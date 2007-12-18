@@ -3,7 +3,6 @@ package jfreerails.client.top;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.apache.log4j.Logger;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -29,6 +28,8 @@ import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
 import jfreerails.world.train.EngineType;
+
+import org.apache.log4j.Logger;
 
 /**
  * Implementation of RenderersRoot whose constructor loads graphics and provides
@@ -179,7 +180,7 @@ public class RenderersRootImpl implements RenderersRoot {
                 }
 
                 tr = new RiverStyleTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t);
+                        typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
                 continue;
@@ -188,7 +189,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
             try {
                 tr = new ForestStyleTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t);
+                        typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
                 continue;
@@ -197,7 +198,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
             try {
                 tr = new ChequeredTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t);
+                        typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
                 continue;
@@ -206,15 +207,13 @@ public class RenderersRootImpl implements RenderersRoot {
 
             try {
                 tr = new StandardTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t);
+                        typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
                 continue;
             } catch (IOException io) {
                 // If the image is missing, we generate it.
-                logger
-                        .warn("No tile renderer for "
-                                + t.getTerrainTypeName());
+                logger.warn("No tile renderer for " + t.getTerrainTypeName());
 
                 String filename = StandardTileRenderer.generateFilename(t
                         .getTerrainTypeName());
@@ -224,7 +223,7 @@ public class RenderersRootImpl implements RenderersRoot {
                 // generatedImages.setImage(filename, image);
                 try {
                     tr = new StandardTileRenderer(imageManager,
-                            typesTreatedAsTheSame, t);
+                            typesTreatedAsTheSame, t, w);
                     tileRenderers.add(tr);
 
                     continue;
@@ -256,7 +255,7 @@ public class RenderersRootImpl implements RenderersRoot {
             if (terrainName.equalsIgnoreCase("Harbour")) {
                 TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
                 TileRenderer tr = new SpecialTileRenderer(imageManager,
-                        new int[] { j }, t, occeanTileRenderer);
+                        new int[] { j }, t, occeanTileRenderer, w);
                 tileRenderers.set(j, tr);
                 break;
             }

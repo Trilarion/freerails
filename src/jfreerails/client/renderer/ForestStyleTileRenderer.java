@@ -26,8 +26,8 @@ final public class ForestStyleTileRenderer extends
     private static final int[] Y_LOOK_AT = { 0, 0 };
 
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel) throws IOException {
-        super(tileModel, rgbValues);
+            TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+        super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[4]);
 
         for (int i = 0; i < this.getTileIcons().length; i++) {

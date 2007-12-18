@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.Constants;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -82,8 +83,10 @@ public class StationBoxRenderer implements Painter {
 
             while (wi.next()) { // loop over non null stations
                 StationModel station = (StationModel) wi.getElement();
-                int positionX = (station.getStationX() * 30) + 15;
-                int positionY = (station.getStationY() * 30) + 60;
+                int positionX = (station.getStationX() * Constants.TILE_SIZE)
+                        + Constants.TILE_SIZE / 2;
+                int positionY = (station.getStationY() * Constants.TILE_SIZE)
+                        + Constants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, MAX_WIDTH,
                         MAX_HEIGHT);
                 if (newVisibleRectectangle.intersects(r)) {

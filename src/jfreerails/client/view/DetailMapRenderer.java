@@ -16,6 +16,7 @@ import jfreerails.client.renderer.SquareTileBackgroundRenderer;
 import jfreerails.client.renderer.StationBoxRenderer;
 import jfreerails.client.renderer.StationRadiusRenderer;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.Constants;
 import jfreerails.world.top.ReadOnlyWorld;
 
 /**
@@ -57,7 +58,8 @@ public class DetailMapRenderer implements MapRenderer {
 
         Dimension mapSize = new Dimension(world.getMapWidth(), world
                 .getMapHeight());
-        mapSizeInPixels = new Dimension(mapSize.width * 30, mapSize.height * 30);
+        mapSizeInPixels = new Dimension(mapSize.width * Constants.TILE_SIZE,
+                mapSize.height * Constants.TILE_SIZE);
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rr, modelRoot);
         buildTrackController = new BuildTrackController(world, modelRoot);
@@ -73,7 +75,7 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     public float getScale() {
-        return 30;
+        return Constants.TILE_SIZE;
     }
 
     public Dimension getMapSizeInPixels() {

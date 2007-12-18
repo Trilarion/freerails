@@ -10,15 +10,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import org.apache.log4j.Logger;
 
 import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.Constants;
 import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class encapsulates the objects that make-up and paint the background of
@@ -42,7 +44,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
      */
     private final TrackLayer trackLayer;
 
-    private final Dimension tileSize = new Dimension(30, 30);
+    private final Dimension tileSize = new Dimension(Constants.TILE_SIZE,
+            Constants.TILE_SIZE);
 
     private final Dimension mapSize;
 
@@ -231,8 +234,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     public void paintRect(Graphics g, Rectangle visibleRect) {
-        int tileWidth = 30;
-        int tileHeight = 30;
+        int tileWidth = Constants.TILE_SIZE;
+        int tileHeight = Constants.TILE_SIZE;
 
         clipRectangle = g.getClipBounds(clipRectangle);
 
@@ -242,16 +245,19 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         int height = (clipRectangle.height) / tileHeight + 2;
 
         paintRectangleOfTiles(g, x, y, width, height);
-        cityNames.paint((Graphics2D) g, null);
-        stationNames.paint((Graphics2D) g, null);
+        cityNames.paint((Graphics2D) g, visibleRect);
+        stationNames.paint((Graphics2D) g, visibleRect);
     }
 
     private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
             int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, x, y, width, height);
-        cityNames.paint((Graphics2D) g, null);
-        stationNames.paint((Graphics2D) g, null);
+        Rectangle visibleRectangle = new Rectangle(x * Constants.TILE_SIZE, y
+                * Constants.TILE_SIZE, width * Constants.TILE_SIZE, height
+                * Constants.TILE_SIZE);
+        cityNames.paint((Graphics2D) g, visibleRectangle);
+        stationNames.paint((Graphics2D) g, visibleRectangle);
     }
 
     public void refreshTile(int x, int y) {

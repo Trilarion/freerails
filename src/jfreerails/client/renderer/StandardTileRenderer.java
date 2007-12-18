@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.ReadOnlyWorld;
 
 /**
  * Paints a tile for which there only one tile icon.
@@ -20,8 +21,8 @@ import jfreerails.world.terrain.TerrainType;
 final public class StandardTileRenderer extends
         jfreerails.client.renderer.AbstractTileRenderer {
     public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel) throws IOException {
-        super(tileModel, rgbValues);
+            TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+        super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[1]);
         this.getTileIcons()[0] = imageManager.getImage(generateFilename());
     }

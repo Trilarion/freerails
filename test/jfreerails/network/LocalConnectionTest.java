@@ -54,6 +54,9 @@ public class LocalConnectionTest extends TestCase {
 
     private Server server;
 
+    /**
+     * sometimes it works ...
+     */
     public void testReadFromClient() {
         FreerailsSerializable[] objectsRead;
 

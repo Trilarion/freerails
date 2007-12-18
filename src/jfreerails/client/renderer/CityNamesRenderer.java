@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import jfreerails.client.common.Painter;
+import jfreerails.world.Constants;
 import jfreerails.world.terrain.CityModel;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -33,10 +34,18 @@ public class CityNamesRenderer implements Painter {
         g.setFont(new Font("Arial", 0, 20));
 
         // draw city names onto map
-        for (int i = 0; i < w.size(SKEY.CITIES); i++) {
+        int size = w.size(SKEY.CITIES);
+        for (int i = 0; i < size; i++) {
             CityModel tempCity = (CityModel) w.get(SKEY.CITIES, i);
-            g.drawString(tempCity.getCityName(), tempCity.getCityX() * 30,
-                    tempCity.getCityY() * 30 + 10);
+            final int xpos = tempCity.getCityX() * Constants.TILE_SIZE;
+            final int ypos = tempCity.getCityY() * Constants.TILE_SIZE + 10;
+            Rectangle cityNameBox = new Rectangle(xpos, ypos,
+                    Constants.TILE_SIZE * 8, 20);
+            if (newVisibleRectectangle != null
+                    && !newVisibleRectectangle.intersects(cityNameBox)) {
+                continue;
+            }
+            g.drawString(tempCity.getCityName(), xpos, ypos);
         }
     }
 }

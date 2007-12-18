@@ -184,6 +184,7 @@ public class MoveTrainPreMove implements PreMove {
         return true;
     }
 
+    // 666 optimize
     public Move generateMove(ReadOnlyWorld w) {
 
         // Check that we can generate a move.

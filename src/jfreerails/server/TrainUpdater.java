@@ -13,6 +13,7 @@ import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.network.MoveReceiver;
+import jfreerails.world.Constants;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.common.ImList;
@@ -87,7 +88,7 @@ public class TrainUpdater implements ServerAutomaton {
 
     public static ImPoint[] trainPos2Tiles(TrainPositionOnMap pos) {
         ImPoint[] returnValue = new ImPoint[pos.getLength()];
-        final int TILE_WIDTH = 30;
+        final int TILE_WIDTH = Constants.TILE_SIZE;
         for (int i = 0; i < returnValue.length; i++) {
             returnValue[i] = new ImPoint(pos.getX(i) / TILE_WIDTH, pos.getY(i)
                     / TILE_WIDTH);

@@ -8,11 +8,12 @@ package jfreerails.client.renderer;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import org.apache.log4j.Logger;
 
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
+
+import org.apache.log4j.Logger;
 
 /**
  * A special tile's icon gets drawn over the icon of a normal tile.
@@ -49,9 +50,9 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel, TileRenderer parentTileView)
+            TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
             throws IOException {
-        super(tileModel, rgbValues);
+        super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[1]);
         this.getTileIcons()[0] = imageManager.getImage(generateFilename());
         this.parentTileView = parentTileView;

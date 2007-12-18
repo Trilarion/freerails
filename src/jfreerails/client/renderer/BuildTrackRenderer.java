@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.Constants;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldDiffs;
@@ -28,7 +29,8 @@ public class BuildTrackRenderer implements Painter {
 
     private final ModelRoot modelRoot;
 
-    private final Dimension tileSize = new Dimension(30, 30);
+    private final Dimension tileSize = new Dimension(Constants.TILE_SIZE,
+            Constants.TILE_SIZE);
 
     private RenderersRoot rr;
 

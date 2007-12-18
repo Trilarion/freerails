@@ -11,6 +11,7 @@ import java.awt.geom.RoundRectangle2D;
 
 import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.Constants;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
@@ -89,15 +90,24 @@ public class StationNamesRenderer implements Painter {
 
                 int x = tempStation.getStationX();
                 int y = tempStation.getStationY();
-
+                int xdisp = x * Constants.TILE_SIZE;
+                int ydisp = y * Constants.TILE_SIZE;
+                Rectangle stationBox = new Rectangle(xdisp
+                        - Constants.TILE_SIZE * 3, ydisp - Constants.TILE_SIZE
+                        * 3, Constants.TILE_SIZE * 7, Constants.TILE_SIZE * 7);
+                if (newVisibleRectectangle != null
+                        && !newVisibleRectectangle.intersects(stationBox)) {
+                    continue; // station box not visible
+                }
                 // First draw station sphere of influence
                 if (showStationBorders.booleanValue()) {
                     FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
                     int radius = tile.getTrackPiece().getTrackRule()
                             .getStationRadius();
-                    int diameterInPixels = (radius * 2 + 1) * 30;
-                    int radiusX = (x - radius) * 30;
-                    int radiusY = (y - radius) * 30;
+                    int diameterInPixels = (radius * 2 + 1)
+                            * Constants.TILE_SIZE;
+                    int radiusX = (x - radius) * Constants.TILE_SIZE;
+                    int radiusY = (y - radius) * Constants.TILE_SIZE;
                     g.setColor(Color.WHITE);
                     g.setStroke(dashed);
                     g.draw(new RoundRectangle2D.Double(radiusX, radiusY,
@@ -108,8 +118,8 @@ public class StationNamesRenderer implements Painter {
                 if (showStationNames.booleanValue()) {
                     stationName = tempStation.getStationName();
 
-                    positionX = (x * 30) + 15;
-                    positionY = (y * 30) + 30;
+                    positionX = xdisp + Constants.TILE_SIZE / 2;
+                    positionY = ydisp + Constants.TILE_SIZE;
 
                     layout = new TextLayout(stationName, font, frc);
                     visibleAdvance = layout.getVisibleAdvance();

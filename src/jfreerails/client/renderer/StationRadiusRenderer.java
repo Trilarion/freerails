@@ -9,6 +9,7 @@ import jfreerails.client.common.Painter;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.controller.ModelRoot.Value;
+import jfreerails.world.Constants;
 
 /**
  * This class draws the radius of a station on the map.
@@ -31,7 +32,7 @@ public class StationRadiusRenderer implements Painter {
      */
     private Color borderColor = COLOR_OK;
 
-    private static final int tileSize = 30;
+    private static final int tileSize = Constants.TILE_SIZE;
 
     private int radius = 2;
 

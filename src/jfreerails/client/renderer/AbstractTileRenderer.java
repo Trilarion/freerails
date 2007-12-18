@@ -23,9 +23,15 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     private Image[] tileIcons;
 
+    private int mapWidth;
+    private int mapHeight;
+
     private final TerrainType tileModel;
 
-    AbstractTileRenderer(TerrainType t, int[] rgbValues) {
+    AbstractTileRenderer(TerrainType t, int[] rgbValues, ReadOnlyWorld w) {
+        mapWidth = w.getMapWidth();
+        mapHeight = w.getMapHeight();
+
         tileModel = t;
         this.typeNumbers = rgbValues;
 
@@ -73,30 +79,26 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         return 0;
     }
 
-
+    // 666 remove wo !
     int checkTile(int x, int y, ReadOnlyWorld w) {
         int match = 0;
 
-        if (((x < w.getMapWidth()) && (x >= 0)) && (y < w.getMapHeight())
-                && (y >= 0)) {
+        if ((x < mapWidth) && (x >= 0) && (y < mapHeight) && (y >= 0)) {
             for (int i = 0; i < typeNumbers.length; i++) {
                 TerrainTile tt = (TerrainTile) w.getTile(x, y);
 
                 if (tt.getTerrainTypeID() == typeNumbers[i]) {
                     match = 1;
-
                     // A match
                 }
             }
         } else {
             match = 1; // A match
-
             /*
              * If the tile we are checking is off the map, let it be a match.
              * This stops coast appearing where the ocean meets the map edge.
              */
         }
-
         return match;
     }
 
