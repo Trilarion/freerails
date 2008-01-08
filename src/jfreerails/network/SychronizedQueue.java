@@ -8,7 +8,8 @@ import java.util.LinkedList;
 import jfreerails.world.common.FreerailsSerializable;
 
 /**
- * Intended to let objects be safely passed between threads.
+ * Intended to let objects be safely passed between threads. 666 perhaps an
+ * arrayList is better (-> profile it)
  * 
  * @author Luke
  * 

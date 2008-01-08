@@ -46,6 +46,11 @@ import org.apache.log4j.SimpleLayout;
  */
 public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
+    /**
+     * server sleeptime in ms (1000/SERVERUPDATE is the frame rate)
+     */
+    private static final int SERVERUPDATE = 50;
+
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = Logger.getLogger(Launcher.class
@@ -248,6 +253,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     /** Starts the client and server in the same thread. */
     private static void startThread(final FreerailsGameServer server,
             final GUIClient client) {
+        startThread(server);
         try {
             Runnable run = new Runnable() {
 
@@ -257,17 +263,16 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         server.update();
                     }
 
-                    GameModel[] models = new GameModel[] { client, server };
+                    GameModel[] models = new GameModel[] { client };
                     ScreenHandler screenHandler = client.getScreenHandler();
                     GameLoop gameLoop = new GameLoop(screenHandler, models);
                     // screenHandler.apply();
-
                     gameLoop.run();
                 }
 
             };
 
-            Thread t = new Thread(run, "Client + server main loop");
+            Thread t = new Thread(run, "Client main loop");
             t.start();
         } catch (Exception e) {
             exit(e);
@@ -314,9 +319,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         long startTime = System.currentTimeMillis();
                         server.update();
                         long deltatime = System.currentTimeMillis() - startTime;
-                        if (deltatime < 20) {
+                        if (deltatime < SERVERUPDATE) {
                             try {
-                                Thread.sleep(20 - deltatime);
+                                Thread.sleep(SERVERUPDATE - deltatime);
                             } catch (InterruptedException e) {
                                 // do nothing.
                             }
