@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import jfreerails.controller.AddTrainPreMove;
 import jfreerails.controller.MoveTrainPreMove;
+import jfreerails.controller.NoTrackException;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.TrainAccessor;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
@@ -302,7 +303,13 @@ public class TrainUpdater implements ServerAutomaton {
                 }
             }
             for (MoveTrainPreMove preMove : movingTrains) {
-                Move m = preMove.generateMove(world);
+                Move m;
+                try {
+                    m = preMove.generateMove(world);
+                } catch (NoTrackException e) {
+                    continue; // user deleted track, continue and ignore
+                                // train!
+                }
                 moveReceiver.processMove(m);
             }
             for (MoveTrainPreMove preMove : stoppedTrains) {

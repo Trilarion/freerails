@@ -86,8 +86,12 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
                 world, from);
         PositionOnTrack[] targetPoints = FlatTrackExplorer
                 .getPossiblePositions(world, target);
-        FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-                startPoints[0]);
+        FlatTrackExplorer explorer;
+        try {
+            explorer = new FlatTrackExplorer(world, startPoints[0]);
+        } catch (NoTrackException e) {
+            throw new PathNotFoundException(e.getMessage(), e);
+        }
         pathFinder.setupSearch(PositionOnTrack.toInts(startPoints),
                 PositionOnTrack.toInts(targetPoints), explorer);
     }

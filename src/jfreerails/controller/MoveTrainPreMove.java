@@ -58,7 +58,11 @@ public class MoveTrainPreMove implements PreMove {
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
 
-    /** Uses static method to make testing easier. */
+    /**
+     * Uses static method to make testing easier.
+     * 
+     * @throws NoTrackException
+     */
     public static Step findNextStep(ReadOnlyWorld world,
             PositionOnTrack currentPosition, ImPoint target) {
         int startPos = PositionOnTrack.toInt(currentPosition.getX(),

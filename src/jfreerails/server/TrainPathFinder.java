@@ -2,6 +2,7 @@ package jfreerails.server;
 
 import jfreerails.controller.FlatTrackExplorer;
 import jfreerails.controller.IncrementalPathFinder;
+import jfreerails.controller.NoTrackException;
 import jfreerails.controller.SimpleAStarPathFinder;
 import jfreerails.controller.TrainStopsHandler;
 import jfreerails.network.MoveReceiver;
@@ -97,7 +98,12 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
             targets[i] = target;
         }
 
-        FlatTrackExplorer tempExplorer = new FlatTrackExplorer(world, tempP);
+        FlatTrackExplorer tempExplorer;
+        try {
+            tempExplorer = new FlatTrackExplorer(world, tempP);
+        } catch (NoTrackException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
         int next = pathFinder.findstep(currentPosition, targets, tempExplorer);
 
         if (next == IncrementalPathFinder.PATH_NOT_FOUND) {

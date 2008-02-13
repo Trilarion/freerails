@@ -120,11 +120,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return true;
     }
 
-    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) {
+    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p)
+            throws NoTrackException {
         w = world;
         FreerailsTile tile = (FreerailsTile) world.getTile(p.getX(), p.getY());
         if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-            throw new IllegalArgumentException(p.toString());
+            throw new NoTrackException(p.toString());
         }
 
         this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p

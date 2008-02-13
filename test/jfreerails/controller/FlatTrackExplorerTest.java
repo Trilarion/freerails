@@ -55,7 +55,7 @@ public class FlatTrackExplorerTest extends TestCase {
         }
     }
 
-    public void testGetFirstVectorToTry() {
+    public void testGetFirstVectorToTry() throws NoTrackException {
         setUp();
 
         PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10,
@@ -68,8 +68,10 @@ public class FlatTrackExplorerTest extends TestCase {
     /**
      * Tests that the track explorer at point 10,10 tells us that we can move
      * west, east, or northeast.
+     * 
+     * @throws NoTrackException
      */
-    public void testGetPossibleDirections() {
+    public void testGetPossibleDirections() throws NoTrackException {
         setUp();
 
         FlatTrackExplorer fte;
@@ -99,8 +101,10 @@ public class FlatTrackExplorerTest extends TestCase {
     /**
      * Tests that we can move the track explorer at point 10,10 northeast, and
      * that when we have done this, we can move it back again.
+     * 
+     * @throws NoTrackException
      */
-    public void testMoveTrackExplorer() {
+    public void testMoveTrackExplorer() throws NoTrackException {
         setUp();
 
         FlatTrackExplorer fte;
@@ -136,12 +140,24 @@ public class FlatTrackExplorerTest extends TestCase {
         assertEquals(10, pos.getY());
     }
 
-    public void testHasNext() {
+    public void testHasNext() throws NoTrackException {
         setUp();
 
         FlatTrackExplorer explorer = new FlatTrackExplorer(world,
                 PositionOnTrack.createComingFrom(10, 10, Step.EAST));
         assertTrue(explorer.hasNextEdge());
+    }
+
+    public void testNoTrack() {
+        setUp();
+
+        try {
+            FlatTrackExplorer explorer = new FlatTrackExplorer(world,
+                    PositionOnTrack.createComingFrom(4, 7, Step.EAST));
+            fail("Expected an Exception");
+        } catch (NoTrackException e) {
+            // ignore
+        }
     }
 
     public void testGetPossiblePositions() {

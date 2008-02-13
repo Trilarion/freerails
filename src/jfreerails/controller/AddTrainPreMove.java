@@ -101,7 +101,12 @@ public class AddTrainPreMove implements PreMove {
 
     PathOnTiles initPositionStep1(ReadOnlyWorld w) {
         PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(w, point);
-        FlatTrackExplorer fte = new FlatTrackExplorer(w, pp[0]);
+        FlatTrackExplorer fte;
+        try {
+            fte = new FlatTrackExplorer(w, pp[0]);
+        } catch (NoTrackException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
 
         List<Step> steps = new ArrayList<Step>();
         int length = calTrainLength();

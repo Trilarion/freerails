@@ -10,7 +10,6 @@ import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FO
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.Move;
@@ -36,6 +35,8 @@ import jfreerails.world.train.SpeedTimeAndStatus;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.TrainOrdersModel;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author Luke
@@ -64,7 +65,12 @@ public class TrainStopsHandler implements Serializable {
 
         while (extraDistanceNeeded > 0) {
 
-            FlatTrackExplorer fte = new FlatTrackExplorer(w, nextPot);
+            FlatTrackExplorer fte;
+            try {
+                fte = new FlatTrackExplorer(w, nextPot);
+            } catch (NoTrackException e) {
+                throw new IllegalArgumentException(e.getMessage(), e);
+            }
             fte.nextEdge();
             nextPot.setValuesFromInt(fte.getVertexConnectedByEdge());
             Step cameFrom = nextPot.facing();
@@ -170,7 +176,7 @@ public class TrainStopsHandler implements Serializable {
         ImmutableSchedule schedule = (ImmutableSchedule) worldDiffs.get(
                 principal, KEY.TRAIN_SCHEDULES, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
-        if(orderToGoto < 0) {
+        if (orderToGoto < 0) {
             return false;
         }
         TrainOrdersModel order = schedule.getOrder(orderToGoto);
