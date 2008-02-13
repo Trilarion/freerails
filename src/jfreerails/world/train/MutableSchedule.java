@@ -69,10 +69,13 @@ public class MutableSchedule implements Schedule {
      */
     public void removeOrder(int orderNumber) {
         if (PRIORITY_ORDERS == orderNumber && hasPriorityOrders) {
-            // If we are removing the prority stop.
+            // If we are removing the priority stop.
             hasPriorityOrders = false;
         }
-
+        if (orderNumber >= orders.size()) {
+            // cannot remove an order thats already removed!
+            return;
+        }
         orders.remove(orderNumber);
 
         /* shift current station down */
