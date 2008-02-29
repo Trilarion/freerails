@@ -2,7 +2,7 @@
  * Created on Sep 11, 2004
  *
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import java.util.LinkedList;
 import java.util.logging.Logger;

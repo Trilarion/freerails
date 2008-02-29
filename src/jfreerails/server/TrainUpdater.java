@@ -12,7 +12,7 @@ import jfreerails.move.ChangeTrainMove;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.ImInts;
 import jfreerails.world.common.ImList;

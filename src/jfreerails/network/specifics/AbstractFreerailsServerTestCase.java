@@ -1,8 +1,9 @@
 /*
  * Created on Apr 13, 2004
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
+import jfreerails.network.InetConnectionAccepter;
 import junit.framework.TestCase;
 
 /**
@@ -15,7 +16,7 @@ import junit.framework.TestCase;
 public abstract class AbstractFreerailsServerTestCase extends TestCase {
 	private InetConnectionAccepter connectionAccepter;
 
-	FreerailsGameServer server;
+	protected FreerailsGameServer server;
 
 	private final String ipAddress = "127.0.0.1";
 
@@ -34,11 +35,11 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
 		connectionAccepter.stop();
 	}
 
-	int getPort() {
+	protected int getPort() {
 		return connectionAccepter.getLocalPort();
 	}
 
-	String getIpAddress() {
+	protected String getIpAddress() {
 		return ipAddress;
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * Created on Apr 17, 2004
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -22,6 +22,10 @@ import jfreerails.controller.ServerControlInterface;
 import jfreerails.move.AddPlayerMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.network.Connection2Client;
+import jfreerails.network.GameServer;
+import jfreerails.network.InetConnectionAccepter;
+import jfreerails.network.SynchronizedFlag;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.ImStringList;
 import jfreerails.world.player.FreerailsPrincipal;

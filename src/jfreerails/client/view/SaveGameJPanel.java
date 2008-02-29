@@ -13,7 +13,7 @@ import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.controller.Message2Server;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.ModelRoot.Property;
-import jfreerails.network.SaveGameMessage2Server;
+import jfreerails.network.specifics.SaveGameMessage2Server;
 /**
  *
  * @author  Luke

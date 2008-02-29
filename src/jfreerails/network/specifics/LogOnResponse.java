@@ -1,7 +1,7 @@
 /*
  * Created on Apr 17, 2004
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import jfreerails.world.common.FreerailsSerializable;
 

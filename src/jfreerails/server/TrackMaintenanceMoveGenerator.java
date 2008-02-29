@@ -9,7 +9,7 @@ import static jfreerails.world.accounts.Transaction.Category.TRACK;
 import static jfreerails.world.accounts.Transaction.Category.TRACK_MAINTENANCE;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.Money;

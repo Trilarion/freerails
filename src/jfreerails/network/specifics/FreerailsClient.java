@@ -1,7 +1,7 @@
 /*
  * Created on Apr 17, 2004
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -17,6 +17,10 @@ import jfreerails.controller.PreMoveStatus;
 import jfreerails.controller.ReportBugTextGenerator;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.network.Connection2Server;
+import jfreerails.network.GameServer;
+import jfreerails.network.InetConnection2Server;
+import jfreerails.network.LocalConnection;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.FreerailsMutableSerializable;
 import jfreerails.world.common.FreerailsSerializable;

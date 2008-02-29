@@ -47,7 +47,7 @@ import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
 import jfreerails.network.LocalConnection;
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.ImList;
 import jfreerails.world.common.ImPoint;

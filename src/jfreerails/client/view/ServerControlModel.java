@@ -14,7 +14,7 @@ import jfreerails.client.common.ModelRootListener;
 import jfreerails.controller.Message2Server;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.ChangeGameSpeedMove;
-import jfreerails.network.NewGameMessage2Server;
+import jfreerails.network.specifics.NewGameMessage2Server;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;

@@ -10,8 +10,8 @@ import java.util.Vector;
 
 import jfreerails.move.TimeTickMove;
 import jfreerails.move.WorldDiffMove;
-import jfreerails.network.MoveReceiver;
-import jfreerails.network.ServerGameModel;
+import jfreerails.network.specifics.MoveReceiver;
+import jfreerails.network.specifics.ServerGameModel;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameSpeed;
 import jfreerails.world.common.GameTime;

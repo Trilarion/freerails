@@ -3,6 +3,7 @@
  */
 package jfreerails.network;
 
+
 /**
  * Junit test for NewInetConnection.
  * 

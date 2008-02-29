@@ -2,7 +2,7 @@ package jfreerails.server;
 
 import java.io.Serializable;
 
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 
 /**
  * This interface is implemented by objects which are responsible for updating

@@ -31,7 +31,7 @@ import jfreerails.controller.ReportBugTextGenerator;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
 import jfreerails.move.Move;
-import jfreerails.network.RefreshListOfGamesMessage2Server;
+import jfreerails.network.specifics.RefreshListOfGamesMessage2Server;
 import jfreerails.world.common.ImList;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.PlannedTrain;

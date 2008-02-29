@@ -10,7 +10,7 @@ import java.awt.EventQueue;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import jfreerails.network.FreerailsGameServer;
+import jfreerails.network.specifics.FreerailsGameServer;
 
 /**
  * A JPanel that shows the players currently logged in to the server.

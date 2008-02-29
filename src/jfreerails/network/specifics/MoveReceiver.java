@@ -1,4 +1,4 @@
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import jfreerails.move.Move;
 

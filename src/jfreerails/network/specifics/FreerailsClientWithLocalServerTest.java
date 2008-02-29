@@ -1,7 +1,7 @@
 /*
  * Created on Apr 18, 2004
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import jfreerails.controller.ClientControlInterface;
 import jfreerails.controller.Message2Client;

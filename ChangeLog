@@ -1,3 +1,5 @@
+Feb 29 2008, Luke
+	o Separate the general network code and the freerails specific code into different packages.
 Sep 18, 2006, Luke
 	o Apply patch  1557521 (simple cleanups)
 Sep 3, 2006, Luke

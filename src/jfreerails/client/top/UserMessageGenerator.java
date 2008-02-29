@@ -15,7 +15,7 @@ import jfreerails.move.ChangeGameSpeedMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.WorldDiffMove;
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.cargo.CargoBatch;

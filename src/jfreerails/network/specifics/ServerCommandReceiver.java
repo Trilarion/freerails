@@ -2,7 +2,7 @@
  * Created on Sep 12, 2004
  *
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import jfreerails.controller.Message2Server;
 

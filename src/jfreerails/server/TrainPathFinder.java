@@ -4,7 +4,7 @@ import jfreerails.controller.FlatTrackExplorer;
 import jfreerails.controller.IncrementalPathFinder;
 import jfreerails.controller.SimpleAStarPathFinder;
 import jfreerails.controller.TrainStopsHandler;
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 import jfreerails.util.FreerailsIntIterator;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.common.PositionOnTrack;

@@ -1,4 +1,4 @@
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;

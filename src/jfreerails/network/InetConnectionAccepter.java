@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+
 /**
  * When this class is run in a thread it accepts new connections to its Server
  * Socket and adds them to the NewGameServer that was passed to its constructor.

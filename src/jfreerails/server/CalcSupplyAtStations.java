@@ -3,7 +3,7 @@ package jfreerails.server;
 import jfreerails.controller.CalcCargoSupplyRateAtStation;
 import jfreerails.move.ChangeStationMove;
 import jfreerails.move.Move;
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;

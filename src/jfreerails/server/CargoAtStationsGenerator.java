@@ -9,7 +9,7 @@ import java.util.Iterator;
 import jfreerails.controller.FreerailsServerSerializable;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
-import jfreerails.network.MoveReceiver;
+import jfreerails.network.specifics.MoveReceiver;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.ImmutableCargoBundle;
 import jfreerails.world.cargo.MutableCargoBundle;

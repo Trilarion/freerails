@@ -1,7 +1,7 @@
 /*
  * Created on Jun 26, 2004
  */
-package jfreerails.network;
+package jfreerails.network.specifics;
 
 import java.io.IOException;
 import java.io.Serializable;
