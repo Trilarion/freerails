@@ -89,8 +89,8 @@ public class ReportBugTextGenerator {
         String version = null;
 
         String builtBy = null;
-        ;
 
+        String versionnumber = null;
         try {
             Properties props = new Properties();
             InputStream in = ReportBugTextGenerator.class
@@ -101,11 +101,14 @@ public class ReportBugTextGenerator {
             in.close();
             version = props.getProperty("freerails.build");
             builtBy = props.getProperty("freerails.built.by");
+            versionnumber = props.getProperty("freerails.version");
         } catch (Exception e) {
             // ignore, there's nothing useful we can do.
         }
         version = null == version ? "not set" : version;
         builtBy = null == builtBy ? "not set" : builtBy;
+        versionnumber = null == versionnumber ? "not set" : versionnumber;
+
         sb.append("\t");
         sb.append(System.getProperty("os.name"));
         sb.append(" ");
@@ -117,8 +120,12 @@ public class ReportBugTextGenerator {
         sb.append("\n\t");
         sb.append("Freerails build ");
         sb.append(version);
-        sb.append("  compiled by ");
+        sb.append("\n\t");
+        sb.append("compiled by ");
         sb.append(builtBy);
+        sb.append("\n\t");
+        sb.append("Version: ");
+        sb.append(versionnumber);
     }
 
     @SuppressWarnings("deprecation")

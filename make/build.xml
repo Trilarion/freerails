@@ -8,6 +8,10 @@
 			<include name="**/*.jar" />
 		</fileset>
 	</path>
+	<!-- version of a distribution -->
+
+	<property name="VERSION" value="0.4.0">
+	</property>
 
 	<!-- Used by other targets, sets properties -->
 	<target name="init">
@@ -34,7 +38,7 @@
 	<!-- Copies html etc and sets last modified date in html files.-->
 	<target name="html2docs" depends="mkdirs" unless="skipdocs">
 		<copy todir="${doc}" preservelastmodified="true" overwrite="true">
-			<fileset dir="${src}">
+			<fileset dir="${res}">
 				<include name="**/*.html" />
 				<include name="**/*.css" />
 				<include name="**/*.htm" />
@@ -42,52 +46,18 @@
 				<!--Copy the images used by the functional specification but don't copy all the tile graphics etc.-->
 				<include name="docs/*.png" />
 
-
 				<!--Don't copy these since the javadoc tool processes them -->
 				<exclude name="**/overview.html" />
 				<exclude name="**/package.html" />
 			</fileset>
 		</copy>
-		<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
-
-		<!--
-		<taskdef resource="net/sf/antcontrib/antlib.xml" />
-		<for param="file">
-			<fileset dir="${doc}/docs">
-				<include name="**/*.html" />
-				<include name="**/*.htm" />
-
-			</fileset>
-
-			<sequential>
-				<script language="jython">
-					<![CDATA[
-from java.io import File
-from java.util import Date
-from java.text import SimpleDateFormat
-					
-file = File("@{file}")
-
-if file.lastModified() == 0:
-	project.setProperty("date", "unknown" )					
-else:
-	date = Date(file.lastModified())				
-	sdf = SimpleDateFormat("dd MMM yyyy") 				
-	project.setProperty("date", sdf.format(date) )					
-]]>
-				</script>
-				<echo>@{file}  ${date}</echo>
-
-				<replace file="@{file}" token="@lastModified@" value="${date}" />
-			</sequential>
-		</for>
-		-->
+		<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${VERSION}" />
 	</target>
 
 	<!-- Used by other targets, copies data files to a temporary directory. -->
 	<target name="data2temp" depends="mkdirs">
 		<copy todir="${datafiles}/src">
-			<fileset dir="${src}">
+			<fileset dir="${res}">
 				<include name="**/*.xml" />
 				<include name="**/*.png" />
 				<include name="**/*.jpg" />
@@ -119,10 +89,13 @@ else:
 			</fileset>
 		</copy>
 
-		<replace file="${datafiles}/README" token="@version@" value="${DSTAMP}-${TSTAMP}" />
-		<replace file="${datafiles}/src/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		<replace file="${datafiles}/README" token="@version@" value="${VERSION}" />
+		<replace file="${datafiles}/src/jfreerails/client/view/about.htm" token="@version@" value="${VERSION}" />
 		<replace file="${datafiles}/src/build.properties" token="@version@" value="${DSTAMP}-${TSTAMP}" />
 		<replace file="${datafiles}/src/build.properties" token="@freerails.built.by@" value="${user.name}" />
+		<replace file="${datafiles}/src/build.properties" token="@versionnumber@" value="${VERSION}" />
+		<replaceregexp file="www/jfreerails2.jnlp" match="signed_jfreerails-(.*).jar" replace="signed_jfreerails-${VERSION}.jar" byline="true" />
+		<replaceregexp file="www/jfreerails2-opengl.jnlp" match="signed_jfreerails-(.*).jar" replace="signed_jfreerails-${VERSION}.jar" byline="true" />
 
 	</target>
 
@@ -171,24 +144,23 @@ else:
 		</junit>
 	</target>
 
-	<target name="bindist" depends="compile, mkdirs" description="Generate binary distribution">
-		<property name="bin.dist" value="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
+	<target name="bindist" depends="data2build, mkdirs, compile" description="Generate binary distribution">
+		<property name="bin.dist" value="${dist}/lib/jfreerails-${VERSION}.jar" />
 		<jar destfile="${bin.dist}">
 			<manifest>
 				<attribute name="Main-Class" value="jfreerails.launcher.Launcher" />
 			</manifest>
 			<fileset dir="${build}" />
-			<fileset dir="${res}" />
 		</jar>
 		<!-- Replace current latest with the jar file we have just created. -->
 		<delete>
 			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />
 		</delete>
-		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" todir="${dist}/latest" />
+		<copy file="${dist}/lib/jfreerails-${VERSION}.jar" todir="${dist}/latest" />
 	</target>
 
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
-		<zip basedir="." destfile="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-src.zip">
+		<zip basedir="." destfile="${dist}/lib/jfreerails-${VERSION}-src.zip">
 			<include name="src/**/*.java" />
 			<include name="res/**/*.png" />
 			<include name="src/**/*.form" />
@@ -202,7 +174,7 @@ else:
 		<delete>
 			<fileset dir="${dist}/latest/" includes="jfreerails-*-src.zip" />
 		</delete>
-		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-src.zip" todir="${dist}/latest" />
+		<copy file="${dist}/lib/jfreerails-${VERSION}-src.zip" todir="${dist}/latest" />
 	</target>
 
 	<target name="clean" depends="init" description="Clean up build and distribution">
@@ -231,11 +203,11 @@ else:
 	</target>
 
 	<target name="rundist" depends="bindist" description="Test run based on bindist">
-		<java fork="true" jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" />
+		<java fork="true" jar="${dist}/lib/jfreerails-${VERSION}.jar" />
 	</target>
 
 	<target name="javadoc" depends="mkdirs, html2docs" description="Generate javadoc" unless="skipdocs">
-		<!-- not now <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}-${TSTAMP}">
+		<!-- not now <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.5" use="true" version="true" windowtitle="JFreerails API - build ${VERSION}">
 			<fileset defaultexcludes="yes" dir="${src}">
 				<include name="**/*.java" />
 				<exclude name="**/*Test.java" />
@@ -257,19 +229,19 @@ else:
 				<exclude name="**/package.html" />
 			</fileset>
 		</copy>
-		<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${DSTAMP}-${TSTAMP}" />
+		<replace file="${doc}/jfreerails/client/view/about.htm" token="@version@" value="${VERSION}" />
 	</target>
 
 
 	<target name="docdist" depends="javadoc" description="zip up javadoc">
-		<zip basedir="www" destfile="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-javadoc.zip">
+		<zip basedir="www" destfile="${dist}/lib/jfreerails-${VERSION}-javadoc.zip">
 			<include name="javadoc/**/*" />
 		</zip>
 		<!-- Replace current latest with the zip file we have just created. -->
 		<delete>
 			<fileset dir="${dist}/latest/" includes="jfreerails-*-javadoc.zip" />
 		</delete>
-		<copy file="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-javadoc.zip" todir="${dist}/latest" />
+		<copy file="${dist}/lib/jfreerails-${VERSION}-javadoc.zip" todir="${dist}/latest" />
 	</target>
 
 	<target name="alldist" depends="docdist, bindist, srcdist" description="Create binary jar, and source and javadoc zips">
@@ -279,9 +251,9 @@ else:
 	<target name="upload" depends="alldist" description="Upload source, binary, and javadocs jar files to sourcforge">
 		<ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous" verbose="yes">
 			<fileset dir="${dist}/latest">
-				<include name="jfreerails-${DSTAMP}-${TSTAMP}.jar" />
-				<include name="jfreerails-${DSTAMP}-${TSTAMP}-src.zip" />
-				<include name="jfreerails-${DSTAMP}-${TSTAMP}-javadoc.zip" />
+				<include name="jfreerails-${VERSION}.jar" />
+				<include name="jfreerails-${VERSION}-src.zip" />
+				<!--				<include name="jfreerails-${VERSION}-javadoc.zip" /> -->
 			</fileset>
 		</ftp>
 	</target>
@@ -325,30 +297,32 @@ else:
 		</scp>
 	</target>
 	<target name="updatejarsite" description="Uploads modified jars to website, skips all other" depends="check_username_and_password">
-			<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
-				<fileset dir="www">
-					<exclude name="**/*.pdf" />
-					<exclude name="**/*.html" />
-					<include name="**/*.shtml" />
-					<exclude name="**/*.css" />
-					<exclude name="**/*.png" />
-					<exclude name="**/*.gif" />
-					<include name="**/*.jnlp" />
-					<include name="**/*.jar" />
-					<exclude name="javadoc/**" />
-					<exclude name="performance/**" />
-					<modified />
-				</fileset>
-			</scp>
-		</target>
+		<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
+			<fileset dir="www">
+				<exclude name="**/*.pdf" />
+				<exclude name="**/*.html" />
+				<include name="**/*.shtml" />
+				<exclude name="**/*.css" />
+				<exclude name="**/*.png" />
+				<exclude name="**/*.gif" />
+				<include name="**/*.jnlp" />
+				<include name="**/*.jar" />
+				<exclude name="javadoc/**" />
+				<exclude name="performance/**" />
+				<modified />
+			</fileset>
+		</scp>
+	</target>
 
 	<target name="signjar" depends="bindist" description="Sign the jar file so it can be used with webstart">
 		<!-- To generate key, use the following:
 		keytool -keystore freerailsKeyStore -genkey -alias Freerails-Developers -keypass friend -storepass friend
 		-->
-		<signjar jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" signedjar="www/signed_jfreerails.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
+		<delete file="www/signed_jfreerails-${VERSION}.jar"></delete>
+		<delete file="www/log4j-1.2.15.jar"></delete>
+		<signjar jar="${dist}/lib/jfreerails-${VERSION}.jar" signedjar="www/signed_jfreerails-${VERSION}.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
 		<signjar jar="libs/log4j-1.2.15.jar" signedjar="www/log4j-1.2.15.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
-			
+
 	</target>
 
 	<target name="check_username_and_password">
@@ -362,7 +336,6 @@ else:
 		<zip destfile="dev_jfreerails.zip" defaultexcludes="no">
 
 			<fileset dir="." defaultexcludes="no">
-
 				<exclude name="**/*.class" />
 				<exclude name="**/*.gz" />
 				<exclude name="**/*.zip" />
@@ -378,27 +351,4 @@ else:
 
 		</zip>
 	</target>
-
-	<!-- Profiles the game using the NetBeans profiler.  Note, the location of the profiler is hard coded and
-        will need to be changed for the target to work on other machines.-->
-
-	<target name="run" depends="compile" description="Profile Project">
-		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
-
-		<nbprofiledirect>
-			<classpath>
-				<pathelement location="C:\Program Files\netbeans-5.0\profiler1\lib" />
-			</classpath>
-		</nbprofiledirect>
-
-		<java classname="jfreerails.launcher.Launcher" fork="true">
-			<jvmarg value="${profiler.info.jvmargs.agent}" />
-			<classpath>
-				<pathelement path="${build}" />
-			</classpath>
-			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
-		</java>
-	</target>
-
-
 </project>
