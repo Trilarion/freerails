@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
-import org.apache.log4j.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -30,6 +29,8 @@ import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.train.Schedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
+
+import org.apache.log4j.Logger;
 
 /**
  * This JPanel displays a train's schedule and provides controls that let you
@@ -405,8 +406,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
                     false, false));// TODO fix bug
             showSelectStation(s, Schedule.PRIORITY_ORDERS);
         } catch (NoSuchElementException e) {
-            logger
-                    .warn("No stations exist so can't add station to schedule!");
+            logger.warn("No stations exist so can't add station to schedule!");
         }
     }// GEN-LAST:event_priorityOrdersJButtonActionPerformed
 
@@ -417,8 +417,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
                     getFirstStationID(), null, false, false)); // TODO fix bug
             showSelectStation(s, newOrderNumber);
         } catch (NoSuchElementException e) {
-            logger
-                    .warn("No stations exist so can't add station to schedule!");
+            logger.warn("No stations exist so can't add station to schedule!");
         }
     }// GEN-LAST:event_addStationJButtonActionPerformed
 
@@ -654,6 +653,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
+        if (oldOrders.consist == null) {
+            return;
+        }
         ImInts oldConsist = oldOrders.consist;
         int newLength = oldConsist.size() - 1;
         if (newLength < 0) {
