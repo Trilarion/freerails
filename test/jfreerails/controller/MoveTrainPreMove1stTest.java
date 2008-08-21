@@ -90,7 +90,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     public void testNextVector() {
 
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         Step actual = preMove.nextStep(world);
         assertNotNull(actual);
         // The train is at station A, so should head east to station B.
@@ -99,7 +100,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     public void testNextSpeeds() {
 
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         SpeedAgainstTime speeds = preMove.nextSpeeds(world, EAST);
         assertNotNull(speeds);
         assertEquals(speeds.calcV(0), 0d);
@@ -111,7 +113,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     @Override
     public void testMove() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         Move m = preMove.generateMove(world);
         assertNotNull(m);
         assertSurvivesSerialisation(m);
@@ -137,7 +140,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         assertEquals(6, y);
         assertEquals(SOUTH_WEST, pot.facing());
 
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
 
         assertEquals(NORTH_EAST, moveTrain.nextStep(world));
 
@@ -223,7 +227,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
     public void testMovingRoundLoop() {
         setupLoopOfTrack();
 
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         Move m = moveTrain.generateMove(world);
         assertTrue(m.doMove(world, principal).ok);
 
@@ -232,7 +237,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
     public void testGetTiles() {
         setupLoopOfTrack();
 
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         Move m = moveTrain.generateMove(world);
         assertTrue(m.doMove(world, principal).ok);
 

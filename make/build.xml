@@ -35,6 +35,7 @@
 		<mkdir dir="${doc}" />
 		<mkdir dir="${datafiles}" />
 	</target>
+
 	<!-- Copies html etc and sets last modified date in html files.-->
 	<target name="html2docs" depends="mkdirs" unless="skipdocs">
 		<copy todir="${doc}" preservelastmodified="true" overwrite="true">
@@ -55,7 +56,8 @@
 	</target>
 
 	<!-- Used by other targets, copies data files to a temporary directory. -->
-	<target name="data2temp" depends="mkdirs">
+
+	<target name="data2temp" depends="mkdirs, update_version">
 		<copy todir="${datafiles}/src">
 			<fileset dir="${res}">
 				<include name="**/*.xml" />
@@ -94,11 +96,16 @@
 		<replace file="${datafiles}/src/build.properties" token="@version@" value="${DSTAMP}-${TSTAMP}" />
 		<replace file="${datafiles}/src/build.properties" token="@freerails.built.by@" value="${user.name}" />
 		<replace file="${datafiles}/src/build.properties" token="@versionnumber@" value="${VERSION}" />
-		<replaceregexp file="www/jfreerails2.jnlp" match="signed_jfreerails-(.*).jar" replace="signed_jfreerails-${VERSION}.jar" byline="true" />
-		<replaceregexp file="www/jfreerails2-opengl.jnlp" match="signed_jfreerails-(.*).jar" replace="signed_jfreerails-${VERSION}.jar" byline="true" />
+		
 
 	</target>
 
+	<target name="update_version">
+		<copy file="www/jfreerails2.jnlp" tofile="www/jfreerails2-${VERSION}.jnlp"/>
+		<copy file="www/jfreerails2-opengl.jnlp" tofile="www/jfreerails2-opengl-${VERSION}.jnlp"/>		
+		<replaceregexp file="www/jfreerails2-${VERSION}.jnlp" match="signed_jfreerails-(.*).jar" replace="signed_jfreerails-${VERSION}.jar" byline="true" />
+		<replaceregexp file="www/jfreerails2-opengl-${VERSION}.jnlp" match="signed_jfreerails-(.*).jar" replace="signed_jfreerails-${VERSION}.jar" byline="true" />
+	</target>
 	<!-- Used by other targets, copies data files from temporary directory to build directory.-->
 	<target name="data2build" depends="data2temp">
 		<copy todir="${build}/jfreerails">
@@ -118,6 +125,7 @@
 		</javac>
 	</target>
 
+	<!-- used by test -->
 	<target name="debugcompile" depends="data2build" description="Build everything including JUnit    test-classes. Include debugging symbols">
 		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.6" classpath="jars/junit.jar">
 			<src path="${src}" />
@@ -258,13 +266,13 @@
 		</ftp>
 	</target>
 
-
+<!--
 	<target name="webdist" depends="signjar, javadoc">
 		<tar basedir="www" compression="gzip" longfile="gnu" includes="**/*" excludes="build.xml, website.tar.gz, **/Thumbs.db" tarfile="website.tar.gz" />
 	</target>
-
+-->
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
-	<target name="deploysite" description="Upload website to sourceforge" depends="webdist, check_username_and_password, srcdist">
+<!--	<target name="deploysite" description="Upload website to sourceforge" depends="webdist, check_username_and_password, srcdist">
 
 		<fail unless="u" message="Usage: ant -Du=me -Dp=mypassword target" />
 		<fail unless="p" message="Usage: ant -Du=me -Dp=mypassword target" />
@@ -278,7 +286,7 @@
 
 		<sshexec host="shell.sourceforge.net" username="${u}" password="${p}" command="/home/groups/f/fr/freerails2/deploy.sh" trust="yes" />
 	</target>
-
+-->
 	<!-- Requires that jsch-0.1.19.jar is in ant/lib -->
 	<target name="updatesite" description="Uploads modified files to website, skips javadoc and jar files." depends="check_username_and_password">
 		<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
@@ -290,13 +298,14 @@
 				<include name="**/*.png" />
 				<include name="**/*.gif" />
 				<include name="**/*.jnpl" />
-				<exclude name="signed_jfreerails.jar" />
+				<exclude name="**/*.jar" />
 				<exclude name="javadoc/**" />
 				<modified />
 			</fileset>
 		</scp>
 	</target>
-	<target name="updatejarsite" description="Uploads modified jars to website, skips all other" depends="check_username_and_password">
+	
+	<target name="updatejarsite" description="Uploads modified jars to website, skips all other" depends="update_version, check_username_and_password">
 		<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
 			<fileset dir="www">
 				<exclude name="**/*.pdf" />
@@ -327,10 +336,10 @@
 
 	<target name="check_username_and_password">
 		<input message="Please enter username:" addproperty="u" />
-		<input message="Please enter password:" addproperty="p" />
+		<input message="Please enter password:" addproperty="p" /> 
 	</target>
 
-
+<!--
 	<target name="devdist" description="Zips up development environment." depends="clean">
 		<delete file="dev_jfreerails.zip" />
 		<zip destfile="dev_jfreerails.zip" defaultexcludes="no">
@@ -351,4 +360,5 @@
 
 		</zip>
 	</target>
+	-->
 </project>

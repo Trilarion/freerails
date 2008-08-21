@@ -24,6 +24,7 @@ import jfreerails.controller.AddTrainPreMove;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.MoveExecutor;
 import jfreerails.controller.MoveTrainPreMove;
+import jfreerails.controller.OccupiedTracks;
 import jfreerails.controller.ScreenHandler;
 import jfreerails.controller.SimpleMoveExecutor;
 import jfreerails.controller.TrackMoveProducer;
@@ -150,7 +151,8 @@ public class TrainMotionExpt extends JComponent {
 
     private void updateTrainPosition() {
         Random rand = new Random(System.currentTimeMillis());
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         Move m;
         if (rand.nextInt(10) == 0) {
             m = moveTrain.stopTrain(world);

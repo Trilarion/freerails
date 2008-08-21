@@ -6,6 +6,7 @@ import java.util.Vector;
 import jfreerails.controller.AddTrainPreMove;
 import jfreerails.controller.MoveTrainPreMove;
 import jfreerails.controller.NoTrackException;
+import jfreerails.controller.OccupiedTracks;
 import jfreerails.controller.PreMove;
 import jfreerails.controller.TrainAccessor;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
@@ -274,16 +275,16 @@ public class TrainUpdater implements ServerAutomaton {
 
     void moveTrains(ReadOnlyWorld world) {
         int time = world.currentTime().getTicks();
+
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
-
+            OccupiedTracks occupiedTracks = new OccupiedTracks(principal, world);
             // If a train is moving, we want it to keep moving rather than stop
             // to allow an already stationary train to start moving. To achieve
             // this
             // we process moving trains first.
             ArrayList<MoveTrainPreMove> movingTrains = new ArrayList<MoveTrainPreMove>();
             ArrayList<MoveTrainPreMove> stoppedTrains = new ArrayList<MoveTrainPreMove>();
-
             for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
 
                 TrainModel train = (TrainModel) world.get(principal,
@@ -291,7 +292,8 @@ public class TrainUpdater implements ServerAutomaton {
                 if (null == train)
                     continue;
 
-                MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal);
+                MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal,
+                        occupiedTracks);
                 if (moveTrain.isUpdateDue(world)) {
                     TrainAccessor ta = new TrainAccessor(world, principal, i);
                     if (ta.isMoving(time)) {
@@ -308,7 +310,7 @@ public class TrainUpdater implements ServerAutomaton {
                     m = preMove.generateMove(world);
                 } catch (NoTrackException e) {
                     continue; // user deleted track, continue and ignore
-                                // train!
+                    // train!
                 }
                 moveReceiver.processMove(m);
             }

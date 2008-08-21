@@ -8,7 +8,6 @@ import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT
 import static jfreerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
@@ -33,7 +32,6 @@ import jfreerails.world.train.ConstAcc;
 import jfreerails.world.train.PathOnTiles;
 import jfreerails.world.train.SpeedAgainstTime;
 import jfreerails.world.train.SpeedTimeAndStatus;
-import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainMotion;
 import jfreerails.world.train.SpeedTimeAndStatus.TrainActivity;
 
@@ -110,13 +108,16 @@ public class MoveTrainPreMove implements PreMove {
 
     }
 
-    private final FreerailsPrincipal principal;
+    final FreerailsPrincipal principal;
 
     private final int trainID;
+    private OccupiedTracks occupiedTracks;
 
-    public MoveTrainPreMove(int id, FreerailsPrincipal p) {
+    public MoveTrainPreMove(int id, FreerailsPrincipal p,
+            OccupiedTracks occupiedTracks) {
         trainID = id;
         principal = p;
+        this.occupiedTracks = occupiedTracks;
     }
 
     double acceleration(int wagons) {
@@ -192,8 +193,9 @@ public class MoveTrainPreMove implements PreMove {
     public Move generateMove(ReadOnlyWorld w) {
 
         // Check that we can generate a move.
-        if (!isUpdateDue(w))
+        if (!isUpdateDue(w)) {
             throw new IllegalStateException();
+        }
 
         TrainAccessor ta = new TrainAccessor(w, principal, trainID);
         TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
@@ -202,7 +204,7 @@ public class MoveTrainPreMove implements PreMove {
 
         switch (activity) {
         case STOPPED_AT_STATION:
-            return moveTrain(w);
+            return moveTrain(w, occupiedTracks);
         case READY: {
             // Are we at a station?
             TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
@@ -243,7 +245,7 @@ public class MoveTrainPreMove implements PreMove {
                 Move cargoMove = stopsHandler.getMoves();
                 return new CompositeMove(trainMove, cargoMove);
             }
-            return moveTrain(w);
+            return moveTrain(w, occupiedTracks);
         }
         case WAITING_FOR_FULL_LOAD: {
             TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
@@ -252,7 +254,7 @@ public class MoveTrainPreMove implements PreMove {
             boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
             Move cargoMove = stopsHandler.getMoves();
             if (!waiting4fullLoad) {
-                Move trainMove = moveTrain(w);
+                Move trainMove = moveTrain(w, occupiedTracks);
                 if (null != trainMove) {
                     return new CompositeMove(trainMove, cargoMove);
                 } else {
@@ -289,10 +291,10 @@ public class MoveTrainPreMove implements PreMove {
         return lastMotion;
     }
 
-    private Move moveTrain(ReadOnlyWorld w) {
+    private Move moveTrain(ReadOnlyWorld w, OccupiedTracks occupiedTracks) {
         // Find the next vector.
         Step nextVector = nextStep(w);
-        HashMap<TrackSection, Integer> occupiedTrackSections = occupiedTrackSections(w);
+
         TrainMotion motion = lastMotion(w);
         PositionOnTrack pot = motion.getFinalPosition();
         ImPoint tile = new ImPoint(pot.getX(), pot.getY());
@@ -309,11 +311,12 @@ public class MoveTrainPreMove implements PreMove {
         if (tpa.getTrackRule().isDouble() && tpb.getTrackRule().isDouble()) {
             tracks = 2;
         }
-
-        if (occupiedTrackSections.containsKey(desiredTrackSection)) {
-            int trains = occupiedTrackSections.get(desiredTrackSection);
+        Integer trains = occupiedTracks.occupiedTrackSections
+                .get(desiredTrackSection);
+        if (trains != null) {
             if (trains >= tracks) {
                 // We need to wait for the track ahead to clear.
+                occupiedTracks.stopTrain(trainID);
                 return stopTrain(w);
             }
         }
@@ -321,32 +324,6 @@ public class MoveTrainPreMove implements PreMove {
         TrainMotion nextMotion = nextMotion(w, nextVector);
         return new NextActivityMove(nextMotion, trainID, principal);
 
-    }
-
-    private HashMap<TrackSection, Integer> occupiedTrackSections(ReadOnlyWorld w) {
-        HashMap<TrackSection, Integer> occupiedTrackSections = new HashMap<TrackSection, Integer>();
-        for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {
-            TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, i);
-            if (null == train)
-                continue;
-
-            TrainAccessor ta = new TrainAccessor(w, principal, i);
-            GameTime gt = w.currentTime();
-            if (ta.isMoving(gt.getTicks())) {
-                HashSet<TrackSection> sections = ta.occupiedTrackSection(gt
-                        .getTicks());
-                for (TrackSection section : sections) {
-                    if (occupiedTrackSections.containsKey(section)) {
-                        int count = occupiedTrackSections.get(section);
-                        count++;
-                        occupiedTrackSections.put(section, count);
-                    } else {
-                        occupiedTrackSections.put(section, 1);
-                    }
-                }
-            }
-        }
-        return occupiedTrackSections;
     }
 
     TrainMotion nextMotion(ReadOnlyWorld w, Step v) {

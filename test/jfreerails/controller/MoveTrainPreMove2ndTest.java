@@ -120,7 +120,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     }
 
     private Step nextStep() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         Step step = preMove.nextStep(world);
         return step;
     }
@@ -139,7 +140,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     private TrainMotion moveTrain() {
         incrTime(world, principal);
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
         assertTrue(ms.message, ms.ok);
@@ -329,7 +331,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertEquals(station2Location.y, pot.getY());
         assertEquals(WAITING_FOR_FULL_LOAD, tm.getActivity());
 
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         assertFalse(
                 "The train isn't full and there is no cargo to add, so we should be able to generate a move.",
                 preMove.isUpdateDue(world));
@@ -431,7 +434,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     }
 
     public void testCanGenerateMove() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal);
+        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+                new OccupiedTracks(principal, world));
         assertTrue(preMove.isUpdateDue(world));
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
