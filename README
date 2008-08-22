@@ -1,25 +1,15 @@
-Freerails Java - build @version@
-
-Bugs Fixed:
-
-Fixed bugs
-	1537413 Exception when building station.
-	1384250 Wait until full slows frame rate.
-	1384249 Unexpected Exception when removing last wagon.
-	xxxxxxx	list of saved games doesn't get updated when files are added, 
-	removed, or renamed.	
-	
+Freerails II Java - build @version@
 
 There are 3 ways of getting jfreerails.
 (1) Java Webstart:
-http://freerails.sourceforge.net/jfreerails.jnlp
+http://freerails2.sourceforge.net/
 (2)	Download a package from the sourceforge page:
-http://sourceforge.net/project/showfiles.php?group_id=9495
-(3) Check-out the jfreerails module from CVS:
-http://sourceforge.net/cvs/?group_id=9495 	
+http://freerails2.sourceforge.net/
+(3) Check-out the jfreerails2 module from SVN:
+http://freerails2.sourceforge.net/
 
 Requires: 
-JDK 5 or later, which can be downloaded from:
+JDK 6 or later, which can be downloaded from:
 http://java.sun.com/j2se/
 
 
@@ -32,7 +22,7 @@ To run the binary distribution
 To compile and run the source distribution:
 (1) Extract zipped the source files
 (2)	The are 2 ways compile the source.
-	(i) go to the directory src, and type: javac -source 1.5 jfreerails/launcher/Launcher.java
+	(i) go to the directory src, and type: javac -source 1.6 jfreerails/launcher/Launcher.java
  	(ii) use the build.xml file and Ant version 1.5.
 (3)	To run, type: java jfreerails/launcher/Launcher
 
@@ -45,13 +35,6 @@ http://sourceforge.net/projects/freerails/
 
 Enabling logging
 =============
-Either type:
-java -Djava.util.logging.config.file=logging.properties jfreerails/launcher/Launcher
-or
-ant run
-
-Make sure that 'logging.properties' is in the working directory.
-
-A log file called something like 'JFreerailsLog0.txt' will be written in your home directory.
+todo
 
 	

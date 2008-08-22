@@ -17,6 +17,7 @@
 	<target name="init">
 		<tstamp />
 		<property location="src" name="src" />
+		<property location="libs" name="libs" />
 		<property location="res" name="res" />
 		<property location="test" name="test" />
 		<property location="build" name="build" />
@@ -152,11 +153,27 @@
 		</junit>
 	</target>
 
-	<target name="bindist" depends="data2build, mkdirs, compile" description="Generate binary distribution">
+	<pathconvert property="JARCLASSPATH" pathsep=" ">
+		<path refid="CLASSPATH" />
+		 <chainedmapper>
+		 	<!-- doesn't work with unix -->
+			<globmapper from="${basedir}\libs\*" to="*" />
+		</chainedmapper> 
+	</pathconvert>
+	
+	<target name="bindist" depends="data2build, mkdirs, compile, copy_libs, copy_notes" description="Generate binary distribution">
+	
 		<property name="bin.dist" value="${dist}/lib/jfreerails-${VERSION}.jar" />
 		<jar destfile="${bin.dist}">
 			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Main-Class" value="jfreerails.launcher.Launcher" />
+				<attribute name="Implementation-Title" value="jfreerails" />
+				<attribute name="Specification-Title" value="jfreerails" />
+				<attribute name="Implementation-Version" value="${VERSION} (${build.number})" />
+				<attribute name="Specification-Version" value="${VERSION} (${build.number})" />
+				<attribute name="Sealed" value="true" />
+				<attribute name="Class-Path" value="${JARCLASSPATH}" />
 			</manifest>
 			<fileset dir="${build}" />
 		</jar>
@@ -165,8 +182,28 @@
 			<fileset dir="${dist}/latest/" includes="jfreerails-*.jar" />
 		</delete>
 		<copy file="${dist}/lib/jfreerails-${VERSION}.jar" todir="${dist}/latest" />
+		<zip basedir="${dist}" destfile="${dist}/freerails2-${VERSION}.zip">
+			<include name="latest/**" />
+		</zip>
 	</target>
-
+	
+	<target name="copy_libs">
+		<copy todir="${dist}/latest" >
+			<fileset dir="${libs}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>			
+	</target>
+	<target name="copy_notes">
+			<copy todir="${dist}/latest" >
+				<fileset dir=".">
+					<include name="gpl.txt" />
+					<include name="README" />
+					<include name="ReleaseNotes" />
+					<include name="ChangeLog" />
+				</fileset>
+			</copy>			
+		</target>
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
 		<zip basedir="." destfile="${dist}/lib/jfreerails-${VERSION}-src.zip">
 			<include name="src/**/*.java" />
@@ -256,12 +293,10 @@
 	</target>
 
 	<!-- depends=""-->
-	<target name="upload" depends="alldist" description="Upload source, binary, and javadocs jar files to sourcforge">
+	<target name="upload" depends="bindist" description="Upload source, binary, and javadocs jar files to sourcforge">
 		<ftp binary="yes" password="me@myorg.com" remotedir="/incoming" server="upload.sourceforge.net" userid="anonymous" verbose="yes">
-			<fileset dir="${dist}/latest">
-				<include name="jfreerails-${VERSION}.jar" />
-				<include name="jfreerails-${VERSION}-src.zip" />
-				<!--				<include name="jfreerails-${VERSION}-javadoc.zip" /> -->
+			<fileset dir="${dist}">
+				<include name="freerails2-${VERSION}.zip" />
 			</fileset>
 		</ftp>
 	</target>
@@ -305,7 +340,7 @@
 		</scp>
 	</target>
 	
-	<target name="updatejarsite" description="Uploads modified jars to website, skips all other" depends="update_version, check_username_and_password">
+	<target name="updatejarsite" description="Uploads modified jars to website, skips all other" depends="update_version, signjar, check_username_and_password">
 		<scp verbose="true" todir="${u}:${p}@shell.sourceforge.net:/home/groups/f/fr/freerails2/htdocs" trust="yes">
 			<fileset dir="www">
 				<exclude name="**/*.pdf" />
