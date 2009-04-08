@@ -194,7 +194,7 @@ public class WorldImpl implements World {
 
 	@SuppressWarnings("unchecked")
 	public void add(FreerailsPrincipal p, int index, Activity element) {
-		int playerIndex = p.getWorldIndex();
+        int playerIndex = p.getWorldIndex();
 		int lastID = activityLists.sizeD3(playerIndex, index) - 1;
 		ActivityAndTime last = activityLists.get(playerIndex, index, lastID);
 		double duration = last.act.duration();
