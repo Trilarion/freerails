@@ -18,6 +18,14 @@
 		<property location="temp" name="temp" />
 
 		<property location="datafiles" name="datafiles" />
+		
+		<property name="key-alias" value="Freerails-Developers"/>
+		
+		<property name="keystore.location" value="freerails.keys"/>
+		
+		<property name="keystore.password" value="friend"/>
+		
+        <available file="${keystore.location}" property="keystore.present" />
 
 	</target>
 
@@ -359,13 +367,14 @@ else:
 			</fileset>
 		</scp>
 	</target>
+	
+	<target name="generatekey"  unless="keystore.present" depends="init" description="Generates a key for signing jar files">
+	          <genkey alias="${key-alias}" keystore="${keystore.location}" storepass="${keystore.password}" validity="3650" dname="CN=Luke Lindsay, OU=Luke Lindsay, O=University of Nottingham, C=UK"/>
+     	</target> 
 
 
-	<target name="signjar" depends="bindist" description="Sign the jar file so it can be used with webstart">
-		<!-- To generate key, use the following:
-		keytool -keystore freerailsKeyStore -genkey -alias Freerails-Developers -keypass friend -storepass friend
-		-->
-		<signjar jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" signedjar="www/signed_jfreerails.jar" alias="Freerails-Developers" keystore="freerailsKeyStore" storepass="friend" />
+	<target name="signjar" depends="bindist, generatekey" description="Sign the jar file so it can be used with webstart">		
+		<signjar jar="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}.jar" signedjar="www/signed_jfreerails.jar" alias="${key-alias}" keystore="${keystore.location}" storepass="friend" />
 	</target>
 
 	<target name="check_username_and_password">
