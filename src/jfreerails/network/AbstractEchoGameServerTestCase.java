@@ -27,7 +27,7 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
 		 * were run as a batch. I think it was to do with reusing ports in quick
 		 * succession. Passing 0 as the port allow us to listen on an
 		 * unspecified port whose number we obtain by calling getLocalPort().
-		 * This making this change, the problem has not occurred.
+		 * Since making this change, the problem has not occurred.
 		 */
 		server = new InetConnectionAccepter(0, echoGameServer);
 
