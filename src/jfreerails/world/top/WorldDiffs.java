@@ -52,8 +52,7 @@ import jfreerails.world.player.Player;
  * <ol>
  * <li> Uses less memory.</li>
  * <li>  Lets you pinpoint where differences on the map are, so you don't need to
- * check every tile.
- * </li>
+ * check every tile. </li>
  * </ol>
  * 
  * 
@@ -63,7 +62,9 @@ import jfreerails.world.player.Player;
  */
 public class WorldDiffs extends WorldImpl {
 
-	public enum LISTID{ACTIVITY_LISTS, BANK_ACCOUNTS, CURRENT_BALANCE, ITEMS, LISTS, PLAYERS, SHARED_LISTS }
+	public enum LISTID {
+		ACTIVITY_LISTS, BANK_ACCOUNTS, CURRENT_BALANCE, ITEMS, LISTS, PLAYERS, SHARED_LISTS
+	}
 
     private static final long serialVersionUID = -5993786533926919956L;
 	
@@ -83,14 +84,20 @@ public class WorldDiffs extends WorldImpl {
 		//Bit of a hack but it's not clear there is a better way, LL
 		underlying = (WorldImpl)row;
 		
-		
-		activityLists = new List3DDiff<ActivityAndTime>(listDiff, underlying.activityLists, LISTID.ACTIVITY_LISTS);
-		bankAccounts = new List2DDiff<TransactionAndTimeStamp>(listDiff, underlying.bankAccounts, LISTID.BANK_ACCOUNTS);
-		currentBalance = new List1DDiff<Money>(listDiff, underlying.currentBalance, LISTID.CURRENT_BALANCE);
-		items = new List1DDiff<FreerailsSerializable>(listDiff, underlying.items, LISTID.ITEMS);
-		lists = new List3DDiff<FreerailsSerializable>(listDiff, underlying.lists, LISTID.LISTS);
-		players = new List1DDiff<Player>(listDiff, underlying.players, LISTID.PLAYERS);
-		sharedLists = new List2DDiff<FreerailsSerializable>(listDiff, underlying.sharedLists, LISTID.SHARED_LISTS);
+        activityLists = new List3DDiff<ActivityAndTime>(listDiff,
+                underlying.activityLists, LISTID.ACTIVITY_LISTS);
+        bankAccounts = new List2DDiff<TransactionAndTimeStamp>(listDiff,
+                underlying.bankAccounts, LISTID.BANK_ACCOUNTS);
+        currentBalance = new List1DDiff<Money>(listDiff,
+                underlying.currentBalance, LISTID.CURRENT_BALANCE);
+        items = new List1DDiff<FreerailsSerializable>(listDiff,
+                underlying.items, LISTID.ITEMS);
+        lists = new List3DDiff<FreerailsSerializable>(listDiff,
+                underlying.lists, LISTID.LISTS);
+        players = new List1DDiff<Player>(listDiff, underlying.players,
+                LISTID.PLAYERS);
+        sharedLists = new List2DDiff<FreerailsSerializable>(listDiff,
+                underlying.sharedLists, LISTID.SHARED_LISTS);
 		time = underlying.time;
 	}
 	

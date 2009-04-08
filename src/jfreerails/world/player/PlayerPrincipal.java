@@ -13,6 +13,7 @@ public class PlayerPrincipal extends FreerailsPrincipal {
 	private final String name;
 
 	public PlayerPrincipal(int id, String name) {
+        super(id);
 		this.id = id;
 		this.name = name;
 	}

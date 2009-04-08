@@ -34,6 +34,7 @@ public class Player implements FreerailsSerializable {
 		private final String principalName;
 
 		public WorldPrincipal(String name) {
+            super(-1);
 			this.principalName = name;
 		}
 

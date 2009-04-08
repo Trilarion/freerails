@@ -18,5 +18,19 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author rob
  */
 public abstract class FreerailsPrincipal implements Principal,
-		FreerailsSerializable {
+        FreerailsSerializable {
+    private int worldIndex;
+
+    public FreerailsPrincipal(int worldIndex) {
+       this.worldIndex = worldIndex;
+    }
+    
+    /**
+     * returns -1 if it's not a player
+     * @return the index in the world structures
+     */
+    public int  getWorldIndex() {
+        return worldIndex;
+    }
+
 }

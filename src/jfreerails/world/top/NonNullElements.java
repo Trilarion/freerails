@@ -167,7 +167,8 @@ public class NonNullElements implements WorldIterator {
 			}
 		}
 
-		throw new NoSuchElementException(String.valueOf(i));
+		throw new NoSuchElementException("Index:" + String.valueOf(i)
+				+ " Size:" + listSize() + " Row:" + newRow);
 	}
 
 	protected boolean testCondition(int i) {
