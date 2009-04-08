@@ -21,8 +21,8 @@
  */
 package jfreerails.util;
 
-import java.lang.reflect.Array;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 
 /**
  * Base class for various types of collections based on type-specific growable
@@ -79,8 +79,8 @@ public abstract class GrowableBase implements Serializable {
 	 *            instance being copied
 	 */
 	public GrowableBase(GrowableBase base) {
-		this(base.countLimit, base.maximumGrowth, base.getArray()
-				.getClass().getComponentType());
+		this(base.countLimit, base.maximumGrowth, base.getArray().getClass()
+				.getComponentType());
 	}
 
 	/**
@@ -130,7 +130,6 @@ public abstract class GrowableBase implements Serializable {
 
 		if (!values.getClass().getComponentType().isPrimitive()) {
 			Object[] objects = (Object[]) values;
-
 			for (int i = from; i < to; i++) {
 				objects[i] = null;
 			}

@@ -10,7 +10,8 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T>  {
 
 	private final List2D<T>  underlyingList;
 	
-	public List2DDiff(SortedMap<ListKey, Object> diffs, List2D<T> list, Enum listID) {
+    public List2DDiff(SortedMap<ListKey, Object> diffs, List2D<T> list,
+            Enum listID) {
 		super(diffs, listID);
 		underlyingList = list;
 	}
@@ -57,7 +58,8 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T>  {
 
 	@Override
 	T uGet(int... i) {
-		if(i.length != 2) throw new IllegalArgumentException(String.valueOf(i.length));
+        if (i.length != 2)
+            throw new IllegalArgumentException(String.valueOf(i.length));
 		return underlyingList.get(i[0], i[1]);
 	}
 
@@ -67,7 +69,8 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T>  {
 		if(dim.length == 0)
 			return underlyingList.sizeD1();
 		if(dim.length == 1){
-			if(underlyingList.sizeD1() <= dim[0]) return -1;
+            if (underlyingList.sizeD1() <= dim[0])
+                return -1;
 			
 			return underlyingList.sizeD2(dim[0]);			
 		}
@@ -76,7 +79,8 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T>  {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof List2D)) return false;						
+        if (!(obj instanceof List2D))
+            return false;
 		return Lists.equals(this, (List2D)obj);
 	}
 

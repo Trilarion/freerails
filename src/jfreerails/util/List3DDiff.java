@@ -4,6 +4,8 @@
  */
 package jfreerails.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedMap;
 
 public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
@@ -12,7 +14,8 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
 
 	private final List3D<T> underlyingList;
 
-	public List3DDiff(SortedMap<ListKey, Object> diffs, List3D<T> list, Enum listID) {
+    public List3DDiff(SortedMap<ListKey, Object> diffs, List3D<T> list,
+            Enum listID) {
 		super(diffs, listID);
 		this.underlyingList = list;
 	}
@@ -43,13 +46,16 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
 		if(dim.length == 0)
 			return underlyingList.sizeD1();
 		if(dim.length == 1){
-			if(underlyingList.sizeD1() <= dim[0]) return -1;
+            if (underlyingList.sizeD1() <= dim[0])
+                return -1;
 			
 			return underlyingList.sizeD2(dim[0]);			
 		}
 		if(dim.length == 2){
-			if(underlyingList.sizeD1() <= dim[0]) return -1;
-			if(underlyingList.sizeD2(dim[0]) <= dim[1]) return -1;
+            if (underlyingList.sizeD1() <= dim[0])
+                return -1;
+            if (underlyingList.sizeD2(dim[0]) <= dim[1])
+                return -1;
 			return underlyingList.sizeD3(dim[0], dim[1]);
 			
 		}
@@ -89,13 +95,15 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
 
 	@Override
 	T uGet(int... i) {		
-		if(i.length != 3) throw new IllegalArgumentException();
+        if (i.length != 3)
+            throw new IllegalArgumentException();
 		return underlyingList.get(i[0], i[1], i[2]);
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof List3D)) return false;						
+        if (!(obj instanceof List3D))
+            return false;
 		return Lists.equals(this, (List3D)obj);
 	}
 
@@ -103,5 +111,13 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
 	public int hashCode() {		
 		return sizeD1();
 	}
+
+    public List<T> get(int d1, int d2) {
+        List<T> list = new ArrayList<T>();
+        for(int d3 = 0; d3 < sizeD3(d1, d2); d3++) {
+            list.add(get(d1, d2, d3));
+        }
+        return list;
+    }
 
 }

@@ -83,9 +83,7 @@ public abstract class ArrayBase extends GrowableBase implements Serializable {
 	 */
 	public ArrayBase(ArrayBase base) {
 		super(base);
-		System
-				.arraycopy(base.getArray(), 0, getArray(), 0,
-						base.countPresent);
+		System.arraycopy(base.getArray(), 0, getArray(), 0, base.countPresent);
 		countPresent = base.countPresent;
 	}
 
