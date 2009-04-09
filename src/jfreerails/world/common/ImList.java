@@ -4,8 +4,8 @@
  */
 package jfreerails.world.common;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 import jfreerails.util.Immutable;
 

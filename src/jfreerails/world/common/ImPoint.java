@@ -59,10 +59,7 @@ public final class ImPoint implements FreerailsSerializable, Comparable<ImPoint>
 
 	@Override
 	public int hashCode() {
-		int result;
-		result = x;
-		result = 29 * result + y;
-		return result;
+        return x * 1000 + y;
 	}
 
 	@Override

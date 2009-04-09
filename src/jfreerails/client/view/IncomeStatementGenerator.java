@@ -7,6 +7,7 @@ import static jfreerails.world.accounts.Transaction.Category.INTEREST_CHARGE;
 import static jfreerails.world.accounts.Transaction.Category.STATION_MAINTENANCE;
 import static jfreerails.world.accounts.Transaction.Category.TRACK_MAINTENANCE;
 import static jfreerails.world.accounts.Transaction.Category.TRAIN_MAINTENANCE;
+import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.accounts.Transaction;
 import jfreerails.world.cargo.CargoType;
@@ -86,11 +87,11 @@ public class IncomeStatementGenerator {
 		cal = (GameCalendar) w.get(ITEM.CALENDAR);
 
 		// Income from cargo delivery
-		mailTotal = calRevenue("Mail");
-		passengersTotal = calRevenue("Passengers");
-		fastFreightTotal = calRevenue("Fast_Freight");
-		slowFreightTotal = calRevenue("Slow_Freight");
-		bulkFreightTotal = calRevenue("Bulk_Freight");
+		mailTotal = calRevenue(Categories.Mail);
+		passengersTotal = calRevenue(Categories.Passengers);
+		fastFreightTotal = calRevenue(Categories.Fast_Freight);
+		slowFreightTotal = calRevenue(Categories.Slow_Freight);
+		bulkFreightTotal = calRevenue(Categories.Bulk_Freight);
 
 		// Expenses.
 		interestTotal = calTotal(INTEREST_CHARGE);
@@ -117,11 +118,11 @@ public class IncomeStatementGenerator {
 		year = String.valueOf(startyear);
 
 		// Income from cargo delivery
-		mailYtd = calRevenue("Mail");
-		passengersYtd = calRevenue("Passengers");
-		fastFreightYtd = calRevenue("Fast_Freight");
-		slowFreightYtd = calRevenue("Slow_Freight");
-		bulkFreightYtd = calRevenue("Bulk_Freight");
+		mailYtd = calRevenue(Categories.Mail);
+		passengersYtd = calRevenue(Categories.Passengers);
+		fastFreightYtd = calRevenue(Categories.Fast_Freight);
+		slowFreightYtd = calRevenue(Categories.Slow_Freight);
+		bulkFreightYtd = calRevenue(Categories.Bulk_Freight);
 
 		// Expenses.
 		interestYtd = calTotal(INTEREST_CHARGE);
@@ -144,7 +145,7 @@ public class IncomeStatementGenerator {
 	}
 
 	/* Calulates the total revenue from the specified cargo type. */
-	Money calRevenue(String cargoCategory) {
+	Money calRevenue(Categories cargoCategory) {
 		long amount = 0;
 
 		for (int i = 0; i < w.getNumberOfTransactions(this.principal); i++) {

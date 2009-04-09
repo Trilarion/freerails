@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import jfreerails.util.ListKey;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.player.Player;
@@ -31,8 +32,9 @@ public class WorldDiffsTest extends TestCase {
 
     public void testSharedLists() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
-        CargoType mailCT = new CargoType(10, "Mail", "Mail");
-        CargoType passengersCT = new CargoType(10, "Passengers", "Passengers");
+        CargoType mailCT = new CargoType(10, "Mail", Categories.Mail);
+        CargoType passengersCT = new CargoType(10, "Passengers",
+                Categories.Passengers);
         underlyingWorld.add(SKEY.CARGO_TYPES, mailCT);
 
         WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
@@ -52,14 +54,12 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(0, worldDiff.listDiffs());
         f = worldDiff.removeLast(SKEY.CARGO_TYPES);
         assertEquals(mailCT, f);
-        assertEquals("1 Diff: the list length.", 1, worldDiff
-                .listDiffs());
+        assertEquals("1 Diff: the list length.", 1, worldDiff.listDiffs());
         assertEquals(0 , worldDiff.size(SKEY.CARGO_TYPES));
         worldDiff.add(SKEY.CARGO_TYPES, mailCT);
         assertEquals(0, worldDiff.listDiffs());
         worldDiff.set(SKEY.CARGO_TYPES, 0, passengersCT);
-        assertEquals("1 Diff: element 0", 1, worldDiff
-                .listDiffs());
+        assertEquals("1 Diff: element 0", 1, worldDiff.listDiffs());
     }
 
 	public void testPlayers() {
@@ -100,8 +100,8 @@ public class WorldDiffsTest extends TestCase {
 		// First, for an existing player
 		assertEquals(1, worldDiff.size(player0.getPrincipal(), KEY.STATIONS));
 
-		FreerailsSerializable fs = worldDiff.get(player0
-				.getPrincipal(), KEY.STATIONS, 0);
+        FreerailsSerializable fs = worldDiff.get(player0.getPrincipal(),
+                KEY.STATIONS, 0);
 		assertEquals(station0, fs);
 
 		// Add a station.

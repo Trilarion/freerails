@@ -19,22 +19,22 @@ public class PositionOnTrackTest extends TestCase {
 	}
 
 	public void testValidation() {
-		assertTrue(PositionOnTrack.MAX_COORINATE < 70000);
-		assertTrue(PositionOnTrack.MAX_COORINATE > 10000);
+		assertTrue(PositionOnTrack.MAX_COORDINATE < 70000);
+		assertTrue(PositionOnTrack.MAX_COORDINATE > 10000);
 		assertEquals(PositionOnTrack.MAX_DIRECTION, 7);
 
 		assertNoException(0, 0, Step.EAST);
-		assertNoException(PositionOnTrack.MAX_COORINATE,
-				PositionOnTrack.MAX_COORINATE, Step.NORTH_WEST);
+		assertNoException(PositionOnTrack.MAX_COORDINATE,
+				PositionOnTrack.MAX_COORDINATE, Step.NORTH_WEST);
 
 		assertException(-1, 0, Step.EAST);
 		assertException(0, -1, Step.EAST);
 
-		assertException(PositionOnTrack.MAX_COORINATE + 1,
-				PositionOnTrack.MAX_COORINATE, Step.NORTH_WEST);
+		assertException(PositionOnTrack.MAX_COORDINATE + 1,
+				PositionOnTrack.MAX_COORDINATE, Step.NORTH_WEST);
 
-		assertException(PositionOnTrack.MAX_COORINATE,
-				PositionOnTrack.MAX_COORINATE + 1, Step.NORTH_WEST);
+		assertException(PositionOnTrack.MAX_COORDINATE,
+				PositionOnTrack.MAX_COORDINATE + 1, Step.NORTH_WEST);
 	}
 
 	public void testToInt() {
@@ -63,8 +63,8 @@ public class PositionOnTrackTest extends TestCase {
 		// vector
 		// number.
 
-		p1 = PositionOnTrack.createComingFrom(PositionOnTrack.MAX_COORINATE,
-				PositionOnTrack.MAX_COORINATE, v);
+		p1 = PositionOnTrack.createComingFrom(PositionOnTrack.MAX_COORDINATE,
+				PositionOnTrack.MAX_COORDINATE, v);
 
 		i = p1.toInt();
 	}

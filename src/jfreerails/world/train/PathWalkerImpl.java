@@ -76,7 +76,7 @@ public class PathWalkerImpl implements PathWalker {
 			throw new NoSuchElementException();
 		}
 
-		// If we are at the end of the current segemtn, start a new one.
+        // If we are at the end of the current segment, start a new one.
 		if (currentSegment.getLength() <= distanceAlongCurrentSegment) {
 			startNewSegment(line);
 		} else {

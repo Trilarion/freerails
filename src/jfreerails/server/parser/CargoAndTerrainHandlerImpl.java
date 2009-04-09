@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
 import jfreerails.world.terrain.Production;
@@ -124,7 +125,8 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 		String cargoID = meta.getValue("id");
 		String cargoCategory = meta.getValue("Category");
 		int unitWeight = Integer.parseInt(meta.getValue("unitWeight"));
-		CargoType cargoType = new CargoType(unitWeight, cargoID, cargoCategory);
+        CargoType cargoType = new CargoType(unitWeight, cargoID, Categories
+                .getCategory(cargoCategory));
 
 		int cargoNumber = world.size(SKEY.CARGO_TYPES);
 		cargoName2cargoTypeNumber.put(cargoID, new Integer(cargoNumber));

@@ -110,7 +110,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
 	 */
 	public ImPoint getPoint(double distance) {
 		if (0 > distance)
-			throw new IllegalArgumentException("distance < 0");
+            throw new IllegalArgumentException("distance:" + distance + " < 0");
 
 		int x = start.x * TILE_DIAMETER + TILE_DIAMETER / 2;
 		int y = start.y * TILE_DIAMETER + TILE_DIAMETER / 2;

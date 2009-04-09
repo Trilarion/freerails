@@ -159,12 +159,15 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 
     @Override
 	public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         final TrackConfiguration that = (TrackConfiguration) o;
 
-        if (configuration != that.configuration) return false;
+        if (configuration != that.configuration)
+            return false;
 
         return true;
     }

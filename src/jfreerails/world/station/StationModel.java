@@ -134,8 +134,7 @@ public class StationModel implements FreerailsSerializable {
 		return production;
 	}
 
-	public StationModel(StationModel s,
-			ImList<PlannedTrain> production) {
+    public StationModel(StationModel s, ImList<PlannedTrain> production) {
 		this.production = production;
 		this.demand = s.demand;
 		this.cargoBundleNumber = s.cargoBundleNumber;

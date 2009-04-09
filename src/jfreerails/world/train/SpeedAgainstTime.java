@@ -8,28 +8,32 @@ import jfreerails.world.common.FreerailsSerializable;
 
 public interface SpeedAgainstTime extends FreerailsSerializable {
 
-	/**Returns the distance travelled at time t.  The returned 
-	 * value, s, satisfies the following conditions:
+    /**
+     * Returns the distance travelled at time t. The returned value, s,
+     * satisfies the following conditions:
 	 * <ol>
 	 * <li>s >= 0</li>
 	 * <li>s <= getS()</li>
 	 * <li>s = 0 if t = 0 </li>
 	 * <li>s = getS() if t = getT()</li>  
 	 * </ol>	
+     * 
 	 * @throws IllegalArgumentException
 	 *             iff t < 0 or t > getT()
 	 * @return s
 	 */
 	double calcS(double t);
 	
-	/**Returns the time taken to travel distance s.  The returned 
-	 * value, t, satisfies the following conditions:
+    /**
+     * Returns the time taken to travel distance s. The returned value, t,
+     * satisfies the following conditions:
 	 * <ol>
 	 * <li>t >= 0</li>
 	 * <li>t <= getT()</li>
 	 * <li>t = 0 if s = 0 </li>
 	 * <li>t = getT() if s = getS()</li>  
 	 * </ol>	
+     * 
 	 * @throws IllegalArgumentException
 	 *             iff s < 0 or s > getS()
 	 * @return t

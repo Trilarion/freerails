@@ -6,6 +6,7 @@ package jfreerails.client.view;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.cargo.CargoType.Categories;
 import jfreerails.world.common.Money;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.SKEY;
@@ -25,7 +26,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
 	IncomeStatementGenerator balanceSheetGenerator;
 
 	public void testCalExpense() {
-		String mail = "Mail";
+		Categories mail = Categories.Mail;
 		Money m = balanceSheetGenerator.calRevenue(mail);
 		assertEquals(0, m.getAmount());
 
@@ -34,12 +35,12 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
 		Money amount = new Money(100);
 		addTrans(mail, amount);
-		addTrans("Passengers", amount);
+		addTrans(Categories.Passengers, amount);
 		m = balanceSheetGenerator.calRevenue(mail);
 		assertEquals(amount, m);
 	}
 
-	private void addTrans(String category, Money amount) {
+	private void addTrans(Categories category, Money amount) {
 		for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
 			CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
 
@@ -52,7 +53,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
 			}
 		}
 
-		throw new IllegalArgumentException(category);
+		throw new IllegalArgumentException(category.toString());
 	}
 
 	@Override

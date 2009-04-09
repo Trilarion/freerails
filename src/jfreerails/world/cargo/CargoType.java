@@ -8,81 +8,86 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author luke
  */
 final public class CargoType implements FreerailsSerializable {
-	private static final long serialVersionUID = 3834874680581369912L;
+    private static final long serialVersionUID = 3834874680581369912L;
 
-	private static final String[] categories = new String[] { "Mail",
-			"Passengers", "Fast_Freight", "Slow_Freight", "Bulk_Freight" };
+    public enum Categories {
+        Mail(0), Passengers(1), Fast_Freight(2), Slow_Freight(3), Bulk_Freight(
+                4);
+        private int nr;
 
-	public static int getCategoryNumber(String categoryName) {
-		for (int i = 0; i < categories.length; i++) {
-			if (categoryName.equals(categories[i])) {
-				return i;
-			}
-		}
+        private Categories(int nr) {
+            this.nr = nr;
+        }
 
-		throw new IllegalArgumentException(categoryName);
-	}
+        public int getNumber() {
+            return nr;
+        }
 
-	public static int getNumberOfCategories() {
-		return categories.length;
-	}
+        public static Categories getCategory(String cat) {
+            for (Categories cmp : values()) {
+                if (cmp.toString().equals(cat)) {
+                    return cmp;
+                }
+            }
+            throw new IllegalArgumentException("Category:" + cat + " unknown.");
+        }
+    };
 
-	private final String category;
+    public static int getNumberOfCategories() {
+        return Categories.values().length;
+    }
 
-	private final String name;
+    private final Categories category;
 
-	private final int unitWeight;
+    private final String name;
 
-	public CargoType(int weight, String s, String cat) {
-		getCategoryNumber(cat); // Check for invalid category
-		unitWeight = weight;
-		category = cat;
-		name = s;
-	}
+    private final int unitWeight;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof CargoType))
-			return false;
-		CargoType other = (CargoType) obj;
-		return other.unitWeight == this.unitWeight && other.name.equals(name)
-				&& other.category.equals(category);
-	}
+    public CargoType(int weight, String s, Categories cat) {
+        unitWeight = weight;
+        category = cat;
+        name = s;
+    }
 
-	public String getCategory() {
-		return category;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CargoType))
+            return false;
+        CargoType other = (CargoType) obj;
+        return other.unitWeight == this.unitWeight && other.name.equals(name)
+                && other.category.equals(category);
+    }
 
-	public int getCategoryNumber() {
-		return getCategoryNumber(this.category);
-	}
+    public Categories getCategory() {
+        return category;
+    }
 
-	/** Returns the name, replacing any underscores with spaces. */
-	public String getDisplayName() {
-		return this.name.replace('_', ' ');
-	}
+    /** Returns the name, replacing any underscores with spaces. */
+    public String getDisplayName() {
+        return this.name.replace('_', ' ');
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getUnitWeight() {
-		return unitWeight;
-	}
+    public int getUnitWeight() {
+        return unitWeight;
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		int result;
-		result = unitWeight;
-		result = 29 * result + category.hashCode();
-		result = 29 * result + name.hashCode();
-		return result;
+        int result;
+        result = unitWeight;
+        result = 29 * result + category.hashCode();
+        result = 29 * result + name.hashCode();
+        return result;
 
-	}
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 }

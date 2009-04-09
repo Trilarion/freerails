@@ -17,13 +17,18 @@ public class FreerailsTile implements TerrainTile,
 		FreerailsSerializable {
     @Override
 	public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         final FreerailsTile that = (FreerailsTile) o;
 
-        if (terrainType != that.terrainType) return false;
-        if (trackPiece != null ? !trackPiece.equals(that.trackPiece) : that.trackPiece != null) return false;
+        if (terrainType != that.terrainType)
+            return false;
+        if (trackPiece != null ? !trackPiece.equals(that.trackPiece)
+                : that.trackPiece != null)
+            return false;
 
         return true;
     }

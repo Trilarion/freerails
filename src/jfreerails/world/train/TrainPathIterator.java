@@ -1,6 +1,7 @@
 package jfreerails.world.train;
 
 import jfreerails.util.FreerailsIntIterator;
+import jfreerails.world.Constants;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.world.common.IntLine;
 import jfreerails.world.common.PositionOnTrack;
@@ -20,7 +21,7 @@ public class TrainPathIterator implements FreerailsPathIterator {
 
 	private final PositionOnTrack p2 = new PositionOnTrack();
 
-	private static final int tileSize = 30;
+    private static final int tileSize = Constants.TILE_SIZE;
 
 	public TrainPathIterator(FreerailsIntIterator i) {
 		intIterator = i;

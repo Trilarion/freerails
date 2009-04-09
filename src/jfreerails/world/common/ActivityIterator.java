@@ -21,9 +21,10 @@ public interface ActivityIterator {
 
 	double getDuration();
 	
-	/** Converts an absolute time value to a time value relative to the
-	 * start of the current activity.  If absoluteTime > getFinishTime(),
-	 * getDuration() is returned.
+    /**
+     * Converts an absolute time value to a time value relative to the start of
+     * the current activity. If absoluteTime > getFinishTime(), getDuration() is
+     * returned.
 	 */
 	double absolute2relativeTime(double absoluteTime);
 
@@ -31,4 +32,9 @@ public interface ActivityIterator {
 
 	Activity getActivity();
 
+    void gotoLastActivity();
+
+    void previousActivity() throws NoSuchElementException;
+
+    boolean hasPrevious();
 }
