@@ -280,37 +280,38 @@ public class TrainUpdater implements ServerAutomaton {
 			//If a train is moving, we want it to keep moving rather than stop
 			//to allow an already stationary train to start moving.  To achieve this
 			//we process moving trains first.
-			ArrayList<MoveTrainPreMove> movingTrains = new ArrayList<MoveTrainPreMove>();
-			ArrayList<MoveTrainPreMove> stoppedTrains = new ArrayList<MoveTrainPreMove>();
+			ArrayList<Integer> movingTrains = new ArrayList<Integer>();
+			ArrayList<Integer> stoppedTrains = new ArrayList<Integer>();
 			
-			for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
-								
-				
+			for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {												
 				TrainModel train = (TrainModel) world.get(principal,
 						KEY.TRAINS, i);
 				if (null == train)
 					continue;
-
-				MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal);
-				if (moveTrain.isUpdateDue(world)) {	
-					TrainAccessor ta = new TrainAccessor(world, principal, i);
-					if(ta.isMoving(time)){
-						movingTrains.add(moveTrain);
-					}else{
-						stoppedTrains.add(moveTrain);
-					}
-					
+							
+				TrainAccessor ta = new TrainAccessor(world, principal, i);
+				if(ta.isMoving(time)){
+					movingTrains.add(i);
+				}else{
+					stoppedTrains.add(i);
 				}
+					
 			}
-			for (MoveTrainPreMove preMove : movingTrains) {
-				Move m = preMove.generateMove(world);
-				moveReceiver.processMove(m);
+			for (int trainId : movingTrains) {
+				moveTrain(world, principal, trainId);
 			}
-			for (MoveTrainPreMove preMove : stoppedTrains) {
-				Move m = preMove.generateMove(world);
-				moveReceiver.processMove(m);
+			for (int trainId  : stoppedTrains) {
+				moveTrain(world, principal, trainId);
 			}
 		}
 
+	}
+
+	private void moveTrain(ReadOnlyWorld world, FreerailsPrincipal principal, int trainId) {
+		MoveTrainPreMove preMove = new MoveTrainPreMove(trainId, principal);
+		if (preMove.isUpdateDue(world)) {	
+			Move m = preMove.generateMove(world);
+			moveReceiver.processMove(m);
+		}
 	}
 }
