@@ -142,6 +142,11 @@ public class TrainAccessor {
 		if (act != TrainActivity.WAITING_FOR_FULL_LOAD)
 			return false;
 		ImmutableSchedule shedule = getSchedule();
+		if(shedule.getNumOrders() <1){
+			//We end up here if all the train orders are deleted while a train
+			//is waiting for a full load.
+			return false;
+		}
 		TrainOrdersModel order = shedule.getOrder(shedule.getOrderToGoto());
 		if (order.stationId != stationId)
 			return false;

@@ -1,5 +1,6 @@
 Apr 9 2009, Luke
-	Fixed bug
+	Fixed bugs
+	1829444 Unexpected Exception: ImList.java line 74
 	1663152 Unexpected exception upon hitting "1" to resume movement
 Apr 9 2009, Luke
 	Fixed bug

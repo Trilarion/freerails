@@ -424,8 +424,19 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
 	private void removeStationJMenuItemActionPerformed(
 			java.awt.event.ActionEvent evt) {// GEN-FIRST:event_removeStationJMenuItemActionPerformed
+		
 		MutableSchedule s = getSchedule();
+		if(s.getNumOrders() ==0){
+			logger.warning("Can't remove orders since non exist!");
+			return;
+		}
+	
+		
 		int i = orders.getSelectedIndex();
+		if(s.getNumOrders() <= i){
+			logger.warning("Order #"+String.valueOf(i)+" does not exist!");
+			return;
+		}
 		s.removeOrder(i);
 		sendUpdateMove(s);
 	}// GEN-LAST:event_removeStationJMenuItemActionPerformed
