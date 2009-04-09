@@ -17,11 +17,12 @@ public class StockTransaction extends AddItemTransaction {
 	private static final long serialVersionUID = 3256441412924224824L;
 	public static final int STOCK_BUNDLE_SIZE = 10000;
 
-	private StockTransaction(Category category, int playerId,
-			int quantity, Money amount) {
+    private StockTransaction(Category category, int playerId, int quantity,
+            Money amount) {
 		
 		super(category, playerId, quantity, amount);
-		if(playerId < 0 ) throw new IllegalArgumentException();
+        if (playerId < 0)
+            throw new IllegalArgumentException();
 	}
 
 	public static StockTransaction issueStock(int playerId, int quantity,
@@ -30,24 +31,19 @@ public class StockTransaction extends AddItemTransaction {
 		long temp = (pricePerShare.getAmount() * quantity);
 		temp = temp - temp - temp;
 		Money amount = new Money(temp).changeSign();
-		return new StockTransaction(Transaction.Category.ISSUE_STOCK,
-				playerId, quantity, amount);
+        return new StockTransaction(Transaction.Category.ISSUE_STOCK, playerId,
+                quantity, amount);
 	}
 
-	
-
-	public static StockTransaction buyOrSellStock(int playerId,
-			int quantity, Money stockPrice) {
+    public static StockTransaction buyOrSellStock(int playerId, int quantity,
+            Money stockPrice) {
 		// Buys another Players Stock, Uses another Category
 		Money value = new Money(stockPrice.getAmount() * quantity * -1);
 		return new StockTransaction(Transaction.Category.TRANSFER_STOCK,
 				playerId, quantity, value);
 	}
 
-	
-
-	public static StockTransaction issueStock(int quantity,
-			long pricePerShare) {
+    public static StockTransaction issueStock(int quantity, long pricePerShare) {
 		Money amount = new Money(pricePerShare * quantity);
 
 		return new StockTransaction(quantity, amount);

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.TileRenderer;
 import jfreerails.client.renderer.TileRendererList;
+import jfreerails.world.Constants;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.SKEY;
@@ -49,11 +50,12 @@ public class QuickRGBTileRendererList implements TileRendererList {
 	}
 
 	public static Image createImageFor(TerrainType t) {
-		Image image = defaultConfiguration.createCompatibleImage(30, 30);
+        Image image = defaultConfiguration.createCompatibleImage(
+                Constants.TILE_SIZE, Constants.TILE_SIZE);
 		Color c = new Color(t.getRGB());
 		Graphics g = image.getGraphics();
 		g.setColor(c);
-		g.fillRect(0, 0, 30, 30);
+        g.fillRect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
 		g.dispose();
 
 		return image;

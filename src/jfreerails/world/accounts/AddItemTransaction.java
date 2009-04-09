@@ -48,9 +48,8 @@ public class AddItemTransaction implements Transaction {
 		if (obj instanceof AddItemTransaction) {
 			AddItemTransaction test = (AddItemTransaction) obj;
 
-			return this.amount.equals(test.amount)
-					&& category == test.category && type == test.type
-					&& quantity == test.quantity;
+            return this.amount.equals(test.amount) && category == test.category
+                    && type == test.type && quantity == test.quantity;
 		}
 		return false;
 	}

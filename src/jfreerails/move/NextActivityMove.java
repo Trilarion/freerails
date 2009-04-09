@@ -66,8 +66,7 @@ public class NextActivityMove implements Move {
 
 	public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
 		ActivityIterator ai = w.getActivities(principal, index);
-		while (ai.hasNext())
-			ai.nextActivity();
+        ai.gotoLastActivity();
 
 		Activity act = ai.getActivity();
 		if (act.equals(activity))

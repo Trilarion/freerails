@@ -76,7 +76,7 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
 	public void addListDataListener(javax.swing.event.ListDataListener l) {
 	}
 
-	public Object getElementAt(int index) {
+    public MyDisplayMode getElementAt(int index) {
 		return modes.get(index);
 	}
 

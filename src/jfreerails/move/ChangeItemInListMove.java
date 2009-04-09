@@ -135,12 +135,10 @@ public class ChangeItemInListMove implements ListMove {
 			FreerailsSerializable from, World w) {
 		if (index >= w.size(principal, listKey)) {
 			return MoveStatus.moveFailed("w.size(listKey) is "
-					+ w.size(principal, listKey) + " but index is "
-					+ index);
+                    + w.size(principal, listKey) + " but index is " + index);
 		}
 
-		FreerailsSerializable item2change = w.get(principal, listKey,
-				index);
+        FreerailsSerializable item2change = w.get(principal, listKey, index);
 
 		if (null == item2change) {
 			if (null == from) {

@@ -51,4 +51,8 @@ final public class SynchronizedEventQueue extends EventQueue {
 			}
 		}
 	}
+
+    public static SynchronizedEventQueue getInstance() {
+        return instance;
+    }
 }

@@ -52,8 +52,7 @@ public class ActionRoot {
 	private TrackMoveProducer trackMoveProducer;
 
 	public ActionRoot(ModelRootImpl mr) {
-		 this.serverControls= new ServerControlModel(
-					mr);
+        this.serverControls = new ServerControlModel(mr);
 	}
 
 	public Action getBuildTrainDialogAction() {
