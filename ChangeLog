@@ -1,3 +1,5 @@
+Sep 23 2010  
+	o Put junit tests in a separate directory.
 Apr 9 2009, Luke
 	Fixed bugs
 	1829444 Unexpected Exception: ImList.java line 74

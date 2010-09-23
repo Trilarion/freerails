@@ -8,6 +8,8 @@
 		<tstamp />
 
 		<property location="src" name="src" />
+		
+		<property location="test" name="test" />
 
 		<property location="build" name="build" />
 
@@ -162,7 +164,7 @@ else:
 	</target>
 
 	<target name="debugcompile" depends="data2build" description="Build everything including JUnit    test-classes. Include debugging symbols">
-		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.5" srcdir="${src}" classpath="jars/junit.jar" />
+		<javac debug="true" destdir="${build}" fork="true" debuglevel="lines,vars,source" source="1.5" srcdir="${src}:${test}" classpath="jars/junit.jar" />
 	</target>
 
 	<target name="test" depends="debugcompile" description="Run all junit tests">
@@ -171,7 +173,7 @@ else:
 		<junit haltonfailure="yes" printsummary="yes" >
 			<classpath>
 				<pathelement location="${build}" />
-
+				
 				<pathelement path="${java.class.path}" />
 				<pathelement path="jars/junit.jar" />
 			</classpath>
@@ -210,7 +212,7 @@ else:
 	<target name="srcdist" depends="data2temp" description="Generate source distribution">
 		<zip basedir="." destfile="${dist}/lib/jfreerails-${DSTAMP}-${TSTAMP}-src.zip">
 			<include name="src/**/*.java" />
-
+			<include name="test/**/*.java" />
 			<include name="src/**/*.form" />
 
 			<include name="*.xml" />
@@ -382,6 +384,14 @@ else:
 		<input message="Please enter password:" addproperty="p" />
 	</target>
 
+	<target name="move_tests">
+		<move todir="test">
+		    <fileset dir="src/">
+		      <include name="**/*Test.java"/>		      
+		    </fileset>
+		  </move>
+		
+	</target>
 
 	<target name="devdist" description="Zips up development environment." depends="clean">
 		<delete file="dev_jfreerails.zip" />
