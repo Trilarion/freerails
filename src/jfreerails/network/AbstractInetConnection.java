@@ -16,7 +16,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * 
  * @author Luke
  */
-abstract class AbstractInetConnection implements Runnable {
+public abstract class AbstractInetConnection implements Runnable {
 	private static final Logger logger = Logger
 			.getLogger(AbstractInetConnection.class.getName());
 

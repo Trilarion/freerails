@@ -20,7 +20,7 @@ import jfreerails.world.common.FreerailsSerializable;
  * @author Luke
  * 
  */
-class InetConnection {
+public class InetConnection {
 	private final Socket socket;
 
 	// Note compression commented out since it was causing junit tests to fail.
