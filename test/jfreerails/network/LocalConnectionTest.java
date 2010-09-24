@@ -19,42 +19,14 @@ import junit.framework.TestCase;
 public class LocalConnectionTest extends TestCase {
 
     
-    private static class Server implements Runnable {
-
-        private boolean keepGoing = true;
-        private final LocalConnection connection;
-
-        public Server(LocalConnection l) {
-            connection = l;
-        }
-
-        public void run() {
-            try {
-                while (isKeepGoing()) {
-                    FreerailsSerializable fs = connection.waitForObjectFromClient();
-                    connection.writeToClient(fs);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail();
-            }
-        }
-
-        private synchronized boolean isKeepGoing() {
-            return keepGoing;
-        }
-
-        public synchronized void stop() {
-            this.keepGoing = false;
-        }
-    }
+   
     
     private LocalConnection localConnection;
     private final FreerailsSerializable[] EmptyArray = new FreerailsSerializable[0];
-    private Server server;
+    
 
     public void testReadFromClient() {
-        server.stop();
+        
         FreerailsSerializable[] objectsRead;
 
         try {
@@ -87,7 +59,7 @@ public class LocalConnectionTest extends TestCase {
             Object o = localConnection.waitForObjectFromClient();
             assertEquals(m, o);
 
-            localConnection.writeToServer(m);
+            localConnection.writeToClient(m);
             o = localConnection.waitForObjectFromServer();
 
             assertEquals(m, o);
@@ -129,16 +101,8 @@ public class LocalConnectionTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         localConnection = new LocalConnection();
-        server = new Server(this.localConnection);
-
-        Thread t = new Thread(server);
-        t.start(); // Start the sever thread.
+        
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        // TODO Auto-generated method stub
-       super.tearDown();
-       server.stop(); // Stop the server thread.
-    }
+    
 }
