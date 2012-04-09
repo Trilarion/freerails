@@ -47,6 +47,24 @@ final public class TrackMoveProducer {
     public final static int IGNORE_TRACK = 4;
     private int trackBuilderMode = BUILD_TRACK;
 
+    
+    /**
+     * @param p the principal which this TrackMoveProducer generates moves for
+     */
+    public TrackMoveProducer(ReadOnlyWorld world,
+        UntriedMoveReceiver moveReceiver, FreerailsPrincipal p) {
+        if (null == world || null == moveReceiver) {
+            throw new NullPointerException();
+        }
+
+        this.moveTester = moveReceiver;
+        this.w = world;
+        this.trackRule = 0;
+        principal = p;
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
+                principal);
+    }
+    
     /**
      * This generates the transactions - the charge - for the track being
      * built.
@@ -59,29 +77,29 @@ final public class TrackMoveProducer {
      */
     public MoveStatus buildTrack(Point from, byte trackVector) {
         ChangeTrackPieceCompositeMove move = null;
-	switch (trackBuilderMode) {
-	    case UPGRADE_TRACK:
-		Point point = new Point(from.x +
-			CompassPoints.getUnitDeltaX(trackVector),
-			from.y + CompassPoints.getUnitDeltaY(trackVector));
-		return upgradeTrack(point, trackRule);
-	    case BUILD_TRACK:
-		try {
-		    move = ChangeTrackPieceCompositeMove.generateBuildTrackMove
-			(from, trackVector, trackRule, w, principal);
-		} catch (IllegalArgumentException e) {
-		    return MoveStatus.moveFailed("Track already exists");
-		}
-		break;
-	    case REMOVE_TRACK:
-		move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove
-		    (from, trackVector, w, principal);
-		break;
-	    case IGNORE_TRACK:
-		return MoveStatus.MOVE_OK;
-	    default:
-		throw new IllegalStateException("Illegal trackBuilderMode " +
-			trackBuilderMode);
+		switch (trackBuilderMode) {
+		    case UPGRADE_TRACK:
+			Point point = new Point(from.x +
+				CompassPoints.getUnitDeltaX(trackVector),
+				from.y + CompassPoints.getUnitDeltaY(trackVector));
+			return upgradeTrack(point, trackRule);
+		    case BUILD_TRACK:
+			try {
+			    move = ChangeTrackPieceCompositeMove.generateBuildTrackMove
+				(from, trackVector, trackRule, w, principal);
+			} catch (IllegalArgumentException e) {
+			    return MoveStatus.moveFailed("Track already exists");
+			}
+			break;
+		    case REMOVE_TRACK:
+			move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove
+			    (from, trackVector, w, principal);
+			break;
+		    case IGNORE_TRACK:
+			return MoveStatus.MOVE_OK;
+		    default:
+			throw new IllegalStateException("Illegal trackBuilderMode " +
+				trackBuilderMode);
         }
 
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
@@ -124,22 +142,7 @@ final public class TrackMoveProducer {
         }
     }
 
-    /**
-     * @param p the principal which this TrackMoveProducer generates moves for
-     */
-    public TrackMoveProducer(ReadOnlyWorld world,
-        UntriedMoveReceiver moveReceiver, FreerailsPrincipal p) {
-        if (null == world || null == moveReceiver) {
-            throw new NullPointerException();
-        }
 
-        this.moveTester = moveReceiver;
-        this.w = world;
-        this.trackRule = 0;
-        principal = p;
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
-                principal);
-    }
 
     private MoveStatus upgradeTrack(Point point, int trackRule) {
         TrackTile before = w.getTile(point.x, point.y).getTrackTile();

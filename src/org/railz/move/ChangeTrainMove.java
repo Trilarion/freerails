@@ -125,13 +125,14 @@ public class ChangeTrainMove extends ChangeItemInListMove {
     public static ChangeTrainMove generateOutOfWaterMove(ObjectKey trainKey,
 	    ReadOnlyWorld w, boolean outOfWater, TrainPath pathToDestination,
 	    TrainPathFunction pathFunction) {
-	TrainModel before = (TrainModel) w.get(KEY.TRAINS, trainKey.index,
-		trainKey.principal);
-	GameTime now = (GameTime) w.get(ITEM.TIME, Player.AUTHORITATIVE);
-	TrainModel after = before.loadWater(now, outOfWater,
-		pathToDestination, pathFunction);
-	return new ChangeTrainMove(trainKey.index, before, after,
-		trainKey.principal);
+    	
+		TrainModel before = (TrainModel) w.get(KEY.TRAINS, trainKey.index,
+			trainKey.principal);
+		GameTime now = (GameTime) w.get(ITEM.TIME, Player.AUTHORITATIVE);
+		TrainModel after = before.loadWater(now, outOfWater,
+			pathToDestination, pathFunction);
+		return new ChangeTrainMove(trainKey.index, before, after,
+			trainKey.principal);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {

@@ -55,22 +55,22 @@ class DropOffAndPickupCargoMoveGenerator {
      * Cargo on board the train is unloaded and sold.
      */
     public void unloadTrain(ObjectKey trainKey, ObjectKey stationKey) {
-	TrainModel train = (TrainModel)w.get(trainKey.key, trainKey.index,
-		trainKey.principal);
-
-	int trainBundleId = train.getCargoBundleNumber();
-	CargoBundle trainBefore = (CargoBundle) w.get(KEY.CARGO_BUNDLES,
-		trainBundleId, Player.AUTHORITATIVE);
-	trainBefore = trainBefore.getCopy();
-	CargoBundle trainAfter = trainBefore.getCopy();
-
-	StationModel station = (StationModel) w.get(stationKey.key,
-		stationKey.index, stationKey.principal);
-	int stationBundleId = station.getCargoBundleNumber();
-	CargoBundle stationBefore = (CargoBundle) w.get(KEY.CARGO_BUNDLES,
-		stationBundleId, Player.AUTHORITATIVE);
-	stationBefore = stationBefore.getCopy();
-	CargoBundle stationAfter = stationBefore.getCopy();
+		TrainModel train = (TrainModel)w.get(trainKey.key, trainKey.index,
+			trainKey.principal);
+	
+		int trainBundleId = train.getCargoBundleNumber();
+		CargoBundle trainBefore = (CargoBundle) w.get(KEY.CARGO_BUNDLES,
+			trainBundleId, Player.AUTHORITATIVE);
+		trainBefore = trainBefore.getCopy();
+		CargoBundle trainAfter = trainBefore.getCopy();
+	
+		StationModel station = (StationModel) w.get(stationKey.key,
+			stationKey.index, stationKey.principal);
+		int stationBundleId = station.getCargoBundleNumber();
+		CargoBundle stationBefore = (CargoBundle) w.get(KEY.CARGO_BUNDLES,
+			stationBundleId, Player.AUTHORITATIVE);
+		stationBefore = stationBefore.getCopy();
+		CargoBundle stationAfter = stationBefore.getCopy();
 
         Iterator batches = trainAfter.cargoBatchIterator();
         CargoBundle cargoDroppedOff = new CargoBundleImpl();
@@ -82,22 +82,23 @@ class DropOffAndPickupCargoMoveGenerator {
             //if the cargo is demanded.
             DemandAtStation demand = station.getDemand();
             int cargoType = cb.getCargoType();
-	    logger.log(Level.INFO, "Unloading cargo " + cargoType);
+            logger.log(Level.INFO, "Unloading cargo " + cargoType);
 
             if (demand.isCargoDemanded(cargoType)) {
                 int amount = trainAfter.getAmount(cb);
-		cargoDroppedOff.addCargo(cb, amount);
+                
+                cargoDroppedOff.addCargo(cb, amount);
 
                 //Now perform any conversions..
                 ConvertedAtStation converted = station.getConverted();
 
                 if (converted.isCargoConverted(cargoType)) {
                     int newCargoType = converted.getConversion(cargoType);
-		    GameTime now = (GameTime) w.get(ITEM.TIME,
-			    Player.AUTHORITATIVE);
+                    GameTime now = (GameTime) w.get(ITEM.TIME,
+                    		Player.AUTHORITATIVE);
                     CargoBatch newCargoBatch = new CargoBatch(newCargoType,
                             station.x, station.y, now.getTime(),
-			    stationKey.index);
+                    stationKey.index);
                     stationAfter.addCargo(newCargoBatch, amount);
                 }
 

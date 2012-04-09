@@ -472,55 +472,55 @@ class TrainController {
     /** @return the trains destination, in deltas from the origin, or null if
      * there is no current destination */
     private Point getCurrentDestination(TrainModel tm) {
-	GameTime now = (GameTime) world.get(ITEM.TIME,
-		Player.AUTHORITATIVE);
-	TrainOrdersModel tom = tm.getScheduleIterator()
-	    .getCurrentOrder(world);
-	if (tom == null)
-	    return null;
-
-	ObjectKey stationKey = tom.getStationNumber();
-	StationModel station = (StationModel) world.get
-	    (stationKey.key, stationKey.index, stationKey.principal);
-	Point p = new Point(station.getStationX(), station.getStationY());
-	return TrackTile.tileCoordsToDeltas(p);
+		GameTime now = (GameTime) world.get(ITEM.TIME,
+			Player.AUTHORITATIVE);
+		TrainOrdersModel tom = tm.getScheduleIterator()
+		    .getCurrentOrder(world);
+		if (tom == null)
+		    return null;
+	
+		ObjectKey stationKey = tom.getStationNumber();
+		StationModel station = (StationModel) world.get
+		    (stationKey.key, stationKey.index, stationKey.principal);
+		Point p = new Point(station.getStationX(), station.getStationY());
+		return TrackTile.tileCoordsToDeltas(p);
     }
 
     /** @return true if we changed the trains state */
     private boolean checkWater(ObjectKey trainKey, TrainModel train) {
-	trainModelViewer.setTrainModel(train);
-	// get current water state
-
-	boolean isOutOfWater = train.getTrainMotionModel().isOutOfWater();
-
-	if (!isOutOfWater && trainModelViewer.getWaterRemaining() == 0) {
-	    // send a move to set out of water
-	    Point head = new Point();
-	    GameTime now = (GameTime) world.get(ITEM.TIME,
-		    Player.AUTHORITATIVE);
-	    TrainPath trainPos = train.getPosition(now);
-	    trainPos.getHead(head);
-	    Point dest = getCurrentDestination(train);
-	    Move m;
-	    if (dest == null) {
-		m = ChangeTrainMove.generateOutOfWaterMove(trainKey, world,
-			true, null, null);
-	    } else {
-		TrainPath newPathToDestination =
-		    pathFinder.findPath(dest, head);
-		TrainPathFunction pathFunction = buildPathFunction
-		    (newPathToDestination, train, true);
-		if (pathFunction == null) {
-		    m = ChangeTrainMove.generateOutOfWaterMove(trainKey,
-			    world, true, null, null);
-		} else {
-		    m = ChangeTrainMove.generateOutOfWaterMove(trainKey, world,
-			    true, newPathToDestination, pathFunction);
+		trainModelViewer.setTrainModel(train);
+		// get current water state
+	
+		boolean isOutOfWater = train.getTrainMotionModel().isOutOfWater();
+	
+		if (!isOutOfWater && trainModelViewer.getWaterRemaining() == 0) {
+		    // send a move to set out of water
+		    Point head = new Point();
+		    GameTime now = (GameTime) world.get(ITEM.TIME,
+			    Player.AUTHORITATIVE);
+		    TrainPath trainPos = train.getPosition(now);
+		    trainPos.getHead(head);
+		    Point dest = getCurrentDestination(train);
+		    Move m;
+		    if (dest == null) {
+			m = ChangeTrainMove.generateOutOfWaterMove(trainKey, world,
+				true, null, null);
+		    } else {
+			TrainPath newPathToDestination =
+			    pathFinder.findPath(dest, head);
+			TrainPathFunction pathFunction = buildPathFunction
+			    (newPathToDestination, train, true);
+			if (pathFunction == null) {
+			    m = ChangeTrainMove.generateOutOfWaterMove(trainKey,
+				    world, true, null, null);
+			} else {
+			    m = ChangeTrainMove.generateOutOfWaterMove(trainKey, world,
+				    true, newPathToDestination, pathFunction);
+			}
+		    }
+		    moveReceiver.processMove(m);
+		    return true;
 		}
-	    }
-	    moveReceiver.processMove(m);
-	    return true;
-	}
-	return false;
+		return false;
     }
 }

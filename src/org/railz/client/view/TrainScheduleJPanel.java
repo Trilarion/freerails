@@ -21,6 +21,8 @@ package org.railz.client.view;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JList;
@@ -31,6 +33,7 @@ import org.railz.client.renderer.TrainImages;
 import org.railz.client.renderer.ViewLists;
 import org.railz.client.model.ModelRoot;
 import org.railz.client.view.TrainOrdersListModel.TrainOrdersListElement;
+import org.railz.config.LogManager;
 import org.railz.move.*;
 import org.railz.util.*;
 import org.railz.world.cargo.CargoType;
@@ -46,6 +49,9 @@ import org.railz.world.train.*;
  */
 public class TrainScheduleJPanel extends javax.swing.JPanel implements
 WorldListListener {
+	
+	private static final String CLASS_NAME = TrainScheduleJPanel.class.getName();
+	private static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
     private ModelRoot modelRoot;
     private GUIRoot guiRoot;
 
@@ -350,28 +356,35 @@ WorldListListener {
     }
     
     public void display(int trainNumber){
-	if (wagonSelectionDialog != null &&
-		this.trainNumber != trainNumber) {
-	    /* close the dialog without saving changes */
-	    wagonSelectionDialog.removeComponentListener(changeConsistListener);
-	    wagonSelectionDialog.setVisible(false);
-	    wagonSelectionDialog = null;
-	}
-        this.trainNumber = trainNumber;
-	if (trainNumber >= 0) {
-	    TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber,
-		    modelRoot.getPlayerPrincipal());
-	    scheduleIterator = train.getScheduleIterator();
-	    listModel = new TrainOrdersListModel(modelRoot, guiRoot,
-		    trainNumber);
-	    orders.setModel(listModel);
-	    orders.setCellRenderer(listModel);
-	    // orders.setFixedCellWidth(250);
-	    listModel.fireRefresh();
-	    enableButtons();
-	} else {
-	    disableButtons();
-	}
+    	final String METHOD_NAME = "display";
+		if (wagonSelectionDialog != null &&
+			this.trainNumber != trainNumber) {
+		    /* close the dialog without saving changes */
+		    wagonSelectionDialog.removeComponentListener(changeConsistListener);
+		    wagonSelectionDialog.setVisible(false);
+		    wagonSelectionDialog = null;
+		}
+	    this.trainNumber = trainNumber;
+		if (trainNumber >= 0) {
+		    TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber,
+			    modelRoot.getPlayerPrincipal());
+		    scheduleIterator = train.getScheduleIterator();
+		    if (scheduleIterator == null) {
+		    	LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "Schedule Iterator is null !!!!!!");
+		    }
+		    else {
+		    	LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "Schedule Iterator is fine");
+		    }
+		    listModel = new TrainOrdersListModel(modelRoot, guiRoot,
+			    trainNumber);
+		    orders.setModel(listModel);
+		    orders.setCellRenderer(listModel);
+		    // orders.setFixedCellWidth(250);
+		    listModel.fireRefresh();
+		    enableButtons();
+		} else {
+		    disableButtons();
+		}
     }
     
     private void disableButtons() {
@@ -451,15 +464,60 @@ WorldListListener {
    } 
 
     public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
-        if ((KEY.TRAIN_SCHEDULES == key &&
-	       	scheduleIterator.getScheduleKey().index == index &&
-		scheduleIterator.getScheduleKey().principal.equals(p)) || 
-	    (KEY.TRAINS == key && 
-	     trainNumber == index &&
-	     modelRoot.getPlayerPrincipal().equals(p))) {
+    	final String METHOD_NAME = "listUpdated";
+    	boolean condition1 = false;
+    	boolean condition2 = false;
+    	
+    	if (p == null) {
+    		LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "p param (principle) is null");
+    		return;
+    		// TODO log and fail
+    	}
+    	if (modelRoot == null) {
+    		LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "model root is null");
+    		return;
+    	}
+    	if (key == null) {
+    		LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "key is null");
+    		return;
+    	}
+    	
+    	if (KEY.TRAIN_SCHEDULES == key) {
+    		ObjectKey temp = null;
+    		if (scheduleIterator != null) {
+        		temp = scheduleIterator.getScheduleKey();
+    		} else {
+        		LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "scheduleIterator is null. Known bug for change carriage consistancy.");
+    		}
+
+    		if (temp == null) {
+    			// TODO fail
+    			return;
+    		}
+    		
+    		if (temp.index == index &&
+    				temp.principal.equals(p)) {
+    			condition1 = true;
+    		}
+    		
+    	} else if (KEY.TRAINS == key) {
+    		FreerailsPrincipal principle = modelRoot.getPlayerPrincipal();
+    		if (trainNumber == index && principle.equals(p)) {
+    			condition2 = true;
+    		}
+    	} 
+    	
+    	if (condition1 || condition2) {
             listModel.fireRefresh();
             enableButtons();
+    	}
+    	
+    	/*
+        if ( || 
+	       	(KEY.TRAINS == key && trainNumber == index && modelRoot.getPlayerPrincipal().equals(p))) {
+
         }
+        */
     }
     
     public void itemAdded(KEY key, int index, FreerailsPrincipal p) {

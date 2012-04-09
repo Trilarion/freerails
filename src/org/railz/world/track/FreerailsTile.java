@@ -16,6 +16,11 @@
 
 package org.railz.world.track;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.railz.config.LogManager;
+import org.railz.config.LoggingConstants;
 import org.railz.world.building.*;
 import org.railz.world.common.FreerailsSerializable;
 import org.railz.world.player.FreerailsPrincipal;
@@ -30,6 +35,10 @@ import org.railz.world.top.ReadOnlyWorld;
  */
 public class FreerailsTile implements TerrainTile,
     FreerailsSerializable {
+
+	private static final String CLASS_NAME = FreerailsTile.class.getName();
+	private transient static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
+	
     private final TrackTile trackTile;
     private final int terrainType;
     private final BuildingTile buildingTile;
@@ -60,7 +69,14 @@ public class FreerailsTile implements TerrainTile,
      * @see TrackTile#getTrackRule()
      */
     public int getTrackRule() {
-        return trackTile.getTrackRule();
+    	final String METHOD_NAME = "getTrackRule";
+    	if (trackTile != null) {
+            return trackTile.getTrackRule();
+    	} else {
+    		LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "trackTile is null. Null pointer risk.");
+    		return 0;
+    	}
+
     }
 
     /*
@@ -98,10 +114,10 @@ public class FreerailsTile implements TerrainTile,
     }
 
     public FreerailsPrincipal getOwner() {
-	return owner;
+    	return owner;
     }
 
     public void setOwner(FreerailsPrincipal o) {
-	owner = o;
+    	owner = o;
     }
 }

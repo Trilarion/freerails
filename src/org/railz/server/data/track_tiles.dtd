@@ -36,7 +36,7 @@
     tunnel (true|false) "false"
   >
 
-  <!ELEMENT TrackPieceTemplate EMPTY>
+  <!ELEMENT TrackPieceTemplate ANY>
   <!--
     ++ trackTemplate is a 9 bit binary number which encodes a track template.
     ++ A 1 indicates the presence of track.

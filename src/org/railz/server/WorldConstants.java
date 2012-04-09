@@ -24,13 +24,14 @@ class WorldConstants {
     public static int SI_WATER_TOWER;
 
     public static void init(ReadOnlyWorld w) {
-	NonNullElements i = new NonNullElements(KEY.STATION_IMPROVEMENTS, w,
-		Player.AUTHORITATIVE);
-	while (i.next()) {
-	    StationImprovement si = (StationImprovement) i.getElement();
-	    if (si.getName().equals("WaterTower")) {
-		SI_WATER_TOWER = i.getIndex();
-	    }
-	}
+		NonNullElements i = new NonNullElements(KEY.STATION_IMPROVEMENTS, w,
+			Player.AUTHORITATIVE);
+		
+		while (i.next()) {
+		    StationImprovement si = (StationImprovement) i.getElement();
+		    if (si.getName().equals("WaterTower")) {
+		    	SI_WATER_TOWER = i.getIndex();
+		    }
+		}
     }
 }

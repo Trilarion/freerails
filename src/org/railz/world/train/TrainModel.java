@@ -218,20 +218,21 @@ public class TrainModel implements FreerailsSerializable {
 	    scheduleIterator, TrainMotionModel2 motionModel, int priority,
 	    boolean isBlocked, GameTime stateLastChanged, long ticksInService,
 	    int costTraversedSinceLoadingWater) {
-	engineType = engine;
-	wagonTypes = wagons;
-	cargoBundleNumber = bundleId;
-	this.creationDate = creationDate;
-	this.state = state;
-	if (scheduleIterator != null)
-	    this.scheduleIterator = new ScheduleIterator(scheduleIterator);
-	this.priority = priority;
-	this.isBlocked = isBlocked;
-	trainMotionModel = motionModel == null ? null : new
-	    TrainMotionModel2(motionModel);
-	this.stateLastChanged = stateLastChanged;
-	this.ticksInService = ticksInService;
-	this.costTraversedSinceLoadingWater = costTraversedSinceLoadingWater;
+
+    	engineType = engine;
+		wagonTypes = wagons;
+		cargoBundleNumber = bundleId;
+		this.creationDate = creationDate;
+		this.state = state;
+		if (scheduleIterator != null)
+		    this.scheduleIterator = new ScheduleIterator(scheduleIterator);
+		this.priority = priority;
+		this.isBlocked = isBlocked;
+		trainMotionModel = motionModel == null ? null : new
+		    TrainMotionModel2(motionModel);
+		this.stateLastChanged = stateLastChanged;
+		this.ticksInService = ticksInService;
+		this.costTraversedSinceLoadingWater = costTraversedSinceLoadingWater;
     }
 
     /**
@@ -395,12 +396,13 @@ public class TrainModel implements FreerailsSerializable {
     /** Change the full/empty state of the trains water */
     public TrainModel loadWater(GameTime t0, boolean empty, TrainPath
 	    pathToDestination, TrainPathFunction pathFunction) {
-	TrainMotionModel2 tmm = trainMotionModel.setOutOfWater(empty, t0,
-		pathToDestination, pathFunction);
-	return new TrainModel(engineType, wagonTypes, cargoBundleNumber,
-		creationDate, state, scheduleIterator, tmm,
-		priority, isBlocked, stateLastChanged, ticksInService,
-		empty ? costTraversedSinceLoadingWater +
-		trainMotionModel.getCostTraversed(t0) : 0);
+    	
+		TrainMotionModel2 tmm = trainMotionModel.setOutOfWater(empty, t0,
+			pathToDestination, pathFunction);
+		return new TrainModel(engineType, wagonTypes, cargoBundleNumber,
+			creationDate, state, scheduleIterator, tmm,
+			priority, isBlocked, stateLastChanged, ticksInService,
+			empty ? costTraversedSinceLoadingWater +
+			trainMotionModel.getCostTraversed(t0) : 0);
     }
 }

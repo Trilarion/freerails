@@ -23,10 +23,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.railz.config.LogManager;
+import org.railz.config.LoggingConstants;
 import org.railz.controller.*;
 import org.railz.move.*;
 import org.railz.util.FreerailsProgressMonitor;
@@ -48,6 +51,9 @@ import org.railz.world.train.*;
  */
 public class ServerGameEngine implements GameModel, Runnable,
     ServerCommandReceiver {
+	
+	private static final String CLASS_NAME = ServerGameEngine.class.getName();
+	private static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
     /**
      * Objects that run as part of the server should use this object as the
      * destination for moves, rather than queuedMoveReceiver
@@ -180,7 +186,8 @@ public class ServerGameEngine implements GameModel, Runnable,
     }
 
     public void run() {
-	logger.log(Level.INFO, "Railz server thread started.");
+    	final String METHOD_NAME = "run";
+    	logger.log(Level.INFO, "Railz server thread started.");
         Thread.currentThread().setName("Railz server");
 
         /*
@@ -189,14 +196,19 @@ public class ServerGameEngine implements GameModel, Runnable,
         Thread.currentThread().setPriority(Thread.currentThread().getPriority() +
             1);
 
-	try {
-	    while (keepRunning) {
-		update();
-	    }
-	} catch (Throwable t) {
-	    logger.log(Level.SEVERE, "Caught throwable " + t, t);
-	    return;
-	}
+		try {
+		    while (keepRunning) {
+		    	try {
+			    	update();
+		    	} catch (Exception ex) {
+		    		logger.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "Error: Unhandled exception in date ticker!!", ex);
+		    	}
+
+		    }
+		} catch (Throwable t) {
+		    logger.log(Level.SEVERE, "Caught throwable " + t, t);
+		    return;
+		}
     }
 
     /**
@@ -390,28 +402,28 @@ public class ServerGameEngine implements GameModel, Runnable,
     public synchronized void saveGame(File filename) {
         try {
             logger.log(Level.INFO, "Saving game..  ");
-	    NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
-                    Player.AUTHORITATIVE);
-	    GameTime t = (GameTime) world.get(ITEM.TIME,
-		    Player.AUTHORITATIVE);
-	    while (i.next()) {
-		NonNullElements j = new NonNullElements(KEY.TRAINS, world,
-			((Player) i.getElement()).getPrincipal());
-		while (j.next()) {
-		    TrainModel tm = ((TrainModel) j.getElement());
-		    trainMover.releaseAllLocks(world, tm.getPosition(t), tm); 
-		}
-	    }
+		    NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
+	                    Player.AUTHORITATIVE);
+		    GameTime t = (GameTime) world.get(ITEM.TIME,
+			    Player.AUTHORITATIVE);
+		    while (i.next()) {
+				NonNullElements j = new NonNullElements(KEY.TRAINS, world,
+					((Player) i.getElement()).getPrincipal());
+				while (j.next()) {
+				    TrainModel tm = ((TrainModel) j.getElement());
+				    trainMover.releaseAllLocks(world, tm.getPosition(t), tm); 
+				}
+		    }
 
             FileOutputStream out = new
-		FileOutputStream(filename.getCanonicalPath());
-            GZIPOutputStream zipout = new GZIPOutputStream(out);
+				FileOutputStream(filename.getCanonicalPath());
+		            GZIPOutputStream zipout = new GZIPOutputStream(out);
 
             ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
 
             objectOut.writeObject(world);
             objectOut.writeObject(serverAutomata);
-	    objectOut.writeObject(scenario);
+            objectOut.writeObject(scenario);
 
             /**
              * save player private data
@@ -442,12 +454,13 @@ public class ServerGameEngine implements GameModel, Runnable,
             System.out.print("Loading game..  ");
 
             FileInputStream in = new
-		FileInputStream(filename.getCanonicalPath());
+            		FileInputStream(filename.getCanonicalPath());
             GZIPInputStream zipin = new GZIPInputStream(in);
             ObjectInputStream objectIn = new ObjectInputStream(zipin);
+            
             WorldImpl world = (WorldImpl) objectIn.readObject();
             Vector serverAutomata = (Vector)objectIn.readObject();
-	    Scenario scenario = (Scenario) objectIn.readObject();
+            Scenario scenario = (Scenario) objectIn.readObject();
 
             /**
              * load player private data
@@ -476,7 +489,7 @@ public class ServerGameEngine implements GameModel, Runnable,
 
         } catch (Exception ex) {
             ex.printStackTrace();
-	    throw new IOException (ex.getMessage());
+            throw new IOException (ex.getMessage());
         }
 
         return engine;

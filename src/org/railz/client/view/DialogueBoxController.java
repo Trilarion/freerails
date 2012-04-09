@@ -214,8 +214,8 @@ public class DialogueBoxController {
     }
 
     public void showBalanceSheet() {
-	BalanceSheetJPanel bs = new BalanceSheetJPanel(modelRoot, guiRoot);
-	showContent(bs);
+    	BalanceSheetJPanel bs = new BalanceSheetJPanel(modelRoot, guiRoot);
+    	showContent(bs);
     }
     
     public void showProfitLoss() {

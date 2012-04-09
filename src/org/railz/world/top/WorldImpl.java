@@ -19,6 +19,10 @@ package org.railz.world.top;
 import java.awt.Point;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.railz.config.LogManager;
 import org.railz.world.common.FreerailsSerializable;
 import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
@@ -33,6 +37,10 @@ import org.railz.world.track.FreerailsTile;
  * no client will be able to view privileged information about other clients.
  */
 public class WorldImpl implements World {
+	
+	private static final String CLASS_NAME = WorldImpl.class.getName();
+	private static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
+	
     private static final boolean debug = (System.getProperty(
             "org.railz.world.top.WorldImpl.debug") != null);
 
@@ -181,7 +189,21 @@ public class WorldImpl implements World {
     }
 
     public FreerailsTile getTile(int x, int y) {
-        return map[x][y];
+    	final String METHOD_NAME = "getTile";
+    	if (x < map.length) {
+    		//FreerailsTile [] horizontal = map [x];
+    		if (y < map [x].length) {
+    	        return map[x][y];
+    		} else {
+    			LOGGER.logp(Level.WARNING, CLASS_NAME, METHOD_NAME, "y var is out of bounds for x=" + x + " and y=" + y);
+    			return null;
+    		}
+    	}
+    	else {
+			LOGGER.logp(Level.WARNING, CLASS_NAME, METHOD_NAME, "x var is out of bounds for x=" + x + " and y=" + y);
+    		return null;
+    	}
+
     }
 
     public FreerailsTile getTile(Point p) {
