@@ -17,15 +17,18 @@
 
 	
    <!-- Distribute with: rundist -->
-   <target depends="properties" name="init">
-      <tstamp/>
-      <property location="src" name="src"/>
-      <property location="dist" name="dist"/>
-      <property location="javadoc" name="doc"/>
-      <property location="temp" name="temp"/>
-      <property classpath="org.railz.build" name="org.railz.build" value="0.3.3"/>
-      <property location="${basedir}/proto" name="proto"/>
-		<property location="${proto}/railz-${org.railz.build}" name="proto-path"/>
+	<target depends="properties" name="init">
+      	<tstamp/>
+      	<property classpath="org.railz.build" name="org.railz.build" value="0.3.5"/>
+    	<property value="Railz2" name="game_name"/>
+		
+      	<property location="src" name="src"/>
+      	<property location="dist" name="dist"/>
+      	<property location="javadoc" name="doc"/>
+      	<property location="temp" name="temp"/>
+		
+      	<property location="${basedir}/proto" name="proto"/>
+		<property location="${proto}/${game_name}-${org.railz.build}" name="proto-path"/>
    </target>
 	
 	<path id="master-classpath">
@@ -135,22 +138,22 @@
    
    <target depends="debugcompile, mkdirs" description="Generate proto area" name="proto">
       <!-- Replace current latest with the jar file we have just created. -->
-      	<mkdir dir="${proto}/railz-${org.railz.build}"/>     
-   		<!--
-   		<jar basedir="${build}" destfile="${proto}/railz-${org.railz.build}/railz.jar">
-   		-->
-      <jar basedir="${build}" destfile="${proto-path}/railz.jar">
-         <manifest>
-            <attribute name="Main-Class" value="org.railz.launcher.Launcher"/>
-         </manifest>
-      </jar>
-       <copy todir="${proto}/railz-${org.railz.build}">
-          <fileset dir="${basedir}" includes="README.txt, COPYING.txt, ReleaseNotes.txt, ChangeLog.txt, ROADMAP.txt, README.l10n"/>
-      </copy>
+		<mkdir dir="${proto-path}"/> 
+
+      	<jar basedir="${build}" destfile="${proto-path}/${game_name}.jar">
+         	<manifest>
+            	<attribute name="Main-Class" value="org.railz.launcher.Launcher"/>
+         	</manifest>
+      	</jar>
+   	
+       	<copy todir="${proto}/${game_name}-${org.railz.build}">
+          	<fileset dir="${basedir}" includes="README.txt, COPYING.txt, ReleaseNotes.txt, ChangeLog.txt, ROADMAP.txt, README.l10n"/>
+      	</copy>
     </target>
+
 	
    <target depends="proto" description="Generate binary distribution" name="bindist">
-        <tar basedir="${proto}" compression="gzip" followsymlinks="true" includes="**" longfile="gnu" tarfile="${dist}/railz-bin-${org.railz.build}.tar.gz"/>
+        <tar basedir="${proto}" compression="gzip" followsymlinks="true" includes="**" longfile="gnu" tarfile="${dist}/${game_name}-bin-${org.railz.build}.tar.gz"/>
     </target>
 	
    <target depends="mkdirs" description="Generate source distribution" name="srcdist">
@@ -179,11 +182,11 @@
    </target>
    
    <target depends="proto" description="Test run based on bindist" name="rundist">
-      <java fork="true" jar="${proto-path}/railz.jar"/>
+      <java fork="true" jar="${proto-path}/${game_name}.jar"/>
    </target>
    
    <target depends="mkdirs, init" name="javadoc">
-      <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.4" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
+      <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.4" use="true" version="true" windowtitle="${game_name} API - build ${DSTAMP}">
          <fileset defaultexcludes="yes" dir="${src}">
             <include name="**/*.java"/>
             <exclude name="**/*Test.java"/>             
@@ -203,7 +206,7 @@
    
    <target depends="javadoc" description="Jar up javadoc" name="javadocdist">
       <!-- Replace current latest with the jar file we have just created. -->
-       <tar basedir="javadoc" compression="gzip" longfile="gnu" tarfile="${dist}/railz-javadoc.tar.gz">
+       <tar basedir="javadoc" compression="gzip" longfile="gnu" tarfile="${dist}/${game_name}-javadoc.tar.gz">
         </tar>
     </target>
 	

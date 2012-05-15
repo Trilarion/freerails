@@ -3,6 +3,7 @@
 
 Targeted features before next development release branch 0.5
 ============================================================
+Goal
 P2:
 Separate schedules from trains (assign trains to named routes)
 Station status screen
