@@ -17,47 +17,52 @@
 
 package org.railz.server;
 
-import java.util.*;
-import java.util.logging.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.railz.move.*;
-import org.railz.server.scripting.*;
-import org.railz.world.common.*;
-import org.railz.world.player.*;
-import org.railz.world.top.*;
+import org.railz.config.LogManager;
+import org.railz.move.Move;
+import org.railz.server.scripting.ScriptingEvent;
+import org.railz.world.common.GameTime;
+import org.railz.world.player.Player;
+import org.railz.world.top.ITEM;
+import org.railz.world.top.KEY;
+import org.railz.world.top.NonNullElements;
+import org.railz.world.top.ReadOnlyWorld;
+
 /**
- * This class processes pre-scripted gameworld events. Currently this class
- * is merely responsible for generating events at pre-determined times. At
- * some future point in time this may be extended to more complex conditional
- * event generation.
+ * This class processes pre-scripted gameworld events. Currently this class is
+ * merely responsible for generating events at pre-determined times. At some
+ * future point in time this may be extended to more complex conditional event
+ * generation.
  */
 class ScriptingEngine {
     private ReadOnlyWorld world;
     private AuthoritativeMoveExecuter moveExecuter;
-    private static final Logger logger = Logger.getLogger("global");
-
+    private static final String CLASS_NAME = ScriptingEngine.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     private LinkedList pendingEvents = new LinkedList();
-
+    
     ScriptingEngine(ReadOnlyWorld w, AuthoritativeMoveExecuter me) {
 	world = w;
 	moveExecuter = me;
-	NonNullElements i = new NonNullElements(KEY.SCRIPTING_EVENTS,
-		w, Player.AUTHORITATIVE);
+	NonNullElements i = new NonNullElements(KEY.SCRIPTING_EVENTS, w, Player.AUTHORITATIVE);
 	while (i.next()) {
 	    pendingEvents.add(i.getElement());
 	}
     }
-
+    
     public void processScripts() {
 	ListIterator i = pendingEvents.listIterator(0);
-	int now = ((GameTime) world.get(ITEM.TIME,
-		    Player.AUTHORITATIVE)).getTime();
+	int now = ((GameTime) world.get(ITEM.TIME, Player.AUTHORITATIVE)).getTime();
 	while (i.hasNext()) {
 	    ScriptingEvent se = (ScriptingEvent) i.next();
-	    logger.log(Level.FINE, "event start time " +
-		    se.getStartTime().getTime() + " now " + now);
-	    if (now >= se.getStartTime().getTime() &&
-		    se.getEndTime().getTime() >= now) {
+	    logger.log(Level.FINE, "event start time " + se.getStartTime().getTime() + " now "
+		    + now);
+	    if (now >= se.getStartTime().getTime() && se.getEndTime().getTime() >= now) {
 		Move m = se.getMove(world);
 		logger.log(Level.INFO, "sending move " + m);
 		moveExecuter.processMove(m);

@@ -17,58 +17,59 @@
 
 package org.railz.move;
 
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.railz.config.LogManager;
 import org.railz.world.common.FreerailsSerializable;
 
 /**
  * XXX DO NOT TEST == AGAINST MOVE_FAILED XXX
- *
+ * 
  * @author lindsal
  */
 final public class MoveStatus implements FreerailsSerializable {
-    private static final Logger logger = Logger.getLogger("global");
-
-    public static final MoveStatus MOVE_OK = new MoveStatus(true,
-            "Move accepted");
-
+    private static final String CLASS_NAME = MoveStatus.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
+    public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
+    
     /**
      * Not public - only instances of Move should need to access this.
      */
     static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
     
-    static final boolean debug =
-	(System.getProperty("org.railz.move.MoveStatus.debug") != null);
+    static final boolean debug = (System.getProperty("org.railz.move.MoveStatus.debug") != null);
     
     public final boolean ok;
     public final String message;
-
+    
     /**
      * Avoid creating a duplicate when deserializing.
      */
     private Object readResolve() {
-        if (ok) {
-            return MOVE_OK;
-        } else {
-            return this;
-        }
+	if (ok) {
+	    return MOVE_OK;
+	} else {
+	    return this;
+	}
     }
-
+    
     private MoveStatus(boolean ok, String mess) {
-        this.ok = ok;
-        this.message = mess;
+	this.ok = ok;
+	this.message = mess;
     }
-
+    
     public static MoveStatus moveFailed(String reason) {
 	logger.log(Level.FINE, "Move failed becase: " + reason);
-        return new MoveStatus(false, reason);
+	return new MoveStatus(false, reason);
     }
-
+    
     public boolean isOk() {
-        return ok;
+	return ok;
     }
-
+    
     public String toString() {
-        return message;
+	return message;
     }
 }

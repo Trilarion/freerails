@@ -335,11 +335,11 @@ elevation="250" roughness="300" />
 	dragCoeff="0.70" frictionCoeff="0.20" available="true" /> -->
 	<EngineType id="Grasshopper" fuelType="Coal" price="6000"
 	maintenance="5000" annualFuelConsumption="600"
-       waterCapacity="1000" mass="40" powerOutput="2000" maxTractiveForce="400"
+       waterCapacity="2000" mass="40" powerOutput="2000" maxTractiveForce="400"
        dragCoeff="0.70" frictionCoeff="0.20" available="true" />
 	<EngineType id="Norris" fuelType="Coal" price="10000"
 	maintenance="8000" annualFuelConsumption="700"
-	waterCapacity="1000" mass="45" powerOutput="2500"
+	waterCapacity="2000" mass="45" powerOutput="2500"
 	maxTractiveForce="400" dragCoeff="0.700" frictionCoeff="0.20"
 	available="false" />
    </EngineTypes>

@@ -24,8 +24,11 @@
  */
 package org.railz.server.parser;
 
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.railz.config.LogManager;
+import org.railz.world.top.World;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
@@ -36,18 +39,20 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-import org.railz.world.top.*;
-
 /**
- * The class reads XML documents according to specified DTD and
- * translates all related events into RulesHandler events.
- * <p>Usage sample:
+ * The class reads XML documents according to specified DTD and translates all
+ * related events into RulesHandler events.
+ * <p>
+ * Usage sample:
+ * 
  * <pre>
  *    RulesParser parser = new RulesParser(...);
  *    parser.parse(new InputSource("..."));
  * </pre>
- * <p><b>Warning:</b> the class is machine generated. DO NOT MODIFY</p>
- *
+ * <p>
+ * <b>Warning:</b> the class is machine generated. DO NOT MODIFY
+ * </p>
+ * 
  */
 public class CargoAndTerrainParser implements ContentHandler {
     private java.lang.StringBuffer buffer;
@@ -59,97 +64,93 @@ public class CargoAndTerrainParser implements ContentHandler {
     private EconomyHandler economyHandler;
     private StationImprovementsHandler stationImprovementsHandler;
     private WagonTypesHandler wagonTypesHandler;
-    private static final Logger logger = Logger.getLogger("global");
-
+    private static final String CLASS_NAME = CargoAndTerrainParser.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     /**
      * Creates a parser instance.
-     * @param w the world model to initialise.
-     * @param resolver SAX entity resolver implementation or <code>null</code>.
-     * It is recommended that it could be able to resolve at least the DTD.
+     * 
+     * @param w
+     *            the world model to initialise.
+     * @param resolver
+     *            SAX entity resolver implementation or <code>null</code>. It is
+     *            recommended that it could be able to resolve at least the DTD.
      */
-    private CargoAndTerrainParser(World w,
-        final EntityResolver resolver) {
-        handler = new CargoAndTerrainHandler(w);
+    private CargoAndTerrainParser(World w, final EntityResolver resolver) {
+	handler = new CargoAndTerrainHandler(w);
 	engineTypesHandler = new EngineTypesHandler(w);
 	economyHandler = new EconomyHandler(w);
 	stationImprovementsHandler = new StationImprovementsHandler(w);
 	wagonTypesHandler = new WagonTypesHandler(w);
-        this.resolver = resolver;
-
-        buffer = new StringBuffer(111);
-        context = new java.util.Stack();
+	this.resolver = resolver;
+	
+	buffer = new StringBuffer(111);
+	context = new java.util.Stack();
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
     public final void setDocumentLocator(Locator locator) {
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
     public final void startDocument() throws SAXException {
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
     public final void endDocument() throws SAXException {
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
     public final void startElement(java.lang.String ns, java.lang.String name,
-        java.lang.String qname, Attributes attrs) throws SAXException {
-        dispatch(true);
-        context.push(new Object[] {
-                qname, new org.xml.sax.helpers.AttributesImpl(attrs)
-            });
-
-	if ("Cargo_Types".equals(currentSection) ||
-		"Terrain_Types".equals(currentSection) ||
-		"Building_Types".equals(currentSection)) {
-	   handler.startElement(ns, name, qname, attrs);
+	    java.lang.String qname, Attributes attrs) throws SAXException {
+	dispatch(true);
+	context.push(new Object[] { qname, new org.xml.sax.helpers.AttributesImpl(attrs) });
+	
+	if ("Cargo_Types".equals(currentSection) || "Terrain_Types".equals(currentSection)
+		|| "Building_Types".equals(currentSection)) {
+	    handler.startElement(ns, name, qname, attrs);
 	} else if ("EngineTypes".equals(currentSection)) {
 	    engineTypesHandler.startElement(ns, name, qname, attrs);
 	} else if ("Economy".equals(currentSection)) {
-	   economyHandler.startElement(ns, name, qname, attrs);
+	    economyHandler.startElement(ns, name, qname, attrs);
 	} else if ("StationImprovements".equals(currentSection)) {
 	    stationImprovementsHandler.startElement(ns, name, qname, attrs);
 	} else if ("WagonTypes".equals(currentSection)) {
 	    wagonTypesHandler.startElement(ns, name, qname, attrs);
-	} else if ("EngineTypes".equals(name) ||
-		"Economy".equals(name) ||
-		"StationImprovements".equals(name) ||
-		"Cargo_Types".equals(name) ||
-		"Terrain_Types".equals(name) ||
-		"Building_Types".equals(name) ||
-		"WagonTypes".equals(name)) {
+	} else if ("EngineTypes".equals(name) || "Economy".equals(name)
+		|| "StationImprovements".equals(name) || "Cargo_Types".equals(name)
+		|| "Terrain_Types".equals(name) || "Building_Types".equals(name)
+		|| "WagonTypes".equals(name)) {
 	    currentSection = name;
 	    // recurse
 	    startElement(ns, name, qname, attrs);
 	}
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
-    public final void endElement(java.lang.String ns, java.lang.String name,
-        java.lang.String qname) throws SAXException {
-        dispatch(false);
-        context.pop();
-
-	if ("Cargo_Types".equals(currentSection) ||
-		"Terrain_Types".equals(currentSection) ||
-		"Building_Types".equals(currentSection)) {
-	   handler.endElement(ns, name, qname);
+    public final void endElement(java.lang.String ns, java.lang.String name, java.lang.String qname)
+	    throws SAXException {
+	dispatch(false);
+	context.pop();
+	
+	if ("Cargo_Types".equals(currentSection) || "Terrain_Types".equals(currentSection)
+		|| "Building_Types".equals(currentSection)) {
+	    handler.endElement(ns, name, qname);
 	} else if ("EngineTypes".equals(currentSection)) {
 	    engineTypesHandler.endElement(ns, name, qname);
 	} else if ("Economy".equals(currentSection)) {
@@ -159,193 +160,204 @@ public class CargoAndTerrainParser implements ContentHandler {
 	} else if ("WagonTypes".equals(currentSection)) {
 	    wagonTypesHandler.endElement(ns, name, qname);
 	}
-        if ("EngineTypes".equals(name) ||
-		"Economy".equals(name) ||
-		"StationImprovements".equals(name) ||
-		"Cargo_Types".equals(name) ||
-		"Terrain_Types".equals(name) ||
-		"Building_Types".equals(name) ||
-		"WagonTypes".equals(name)) {
+	if ("EngineTypes".equals(name) || "Economy".equals(name)
+		|| "StationImprovements".equals(name) || "Cargo_Types".equals(name)
+		|| "Terrain_Types".equals(name) || "Building_Types".equals(name)
+		|| "WagonTypes".equals(name)) {
 	    currentSection = null;
 	}
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
-    public final void characters(char[] chars, int start, int len)
-        throws SAXException {
-        buffer.append(chars, start, len);
+    public final void characters(char[] chars, int start, int len) throws SAXException {
+	buffer.append(chars, start, len);
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
-    public final void ignorableWhitespace(char[] chars, int start, int len)
-        throws SAXException {
+    public final void ignorableWhitespace(char[] chars, int start, int len) throws SAXException {
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
-    public final void processingInstruction(java.lang.String target,
-        java.lang.String data) throws SAXException {
+    public final void processingInstruction(java.lang.String target, java.lang.String data)
+	    throws SAXException {
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
-    public final void startPrefixMapping(final java.lang.String prefix,
-        final java.lang.String uri) throws SAXException {
+    public final void startPrefixMapping(final java.lang.String prefix, final java.lang.String uri)
+	    throws SAXException {
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
-    public final void endPrefixMapping(final java.lang.String prefix)
-        throws SAXException {
+    public final void endPrefixMapping(final java.lang.String prefix) throws SAXException {
     }
-
+    
     /**
      * This SAX interface method is implemented by the parser.
-     *
+     * 
      */
-    public final void skippedEntity(java.lang.String name)
-        throws SAXException {
+    public final void skippedEntity(java.lang.String name) throws SAXException {
     }
-
-    private void dispatch(final boolean fireOnlyIfMixed)
-        throws SAXException {
-        if (fireOnlyIfMixed && buffer.length() == 0) {
-            return; //skip it
-        }
-
-        Object[] ctx = (Object[])context.peek();
-        String here = (String)ctx[0];
-        Attributes attrs = (Attributes)ctx[1];
-        buffer.delete(0, buffer.length());
+    
+    private void dispatch(final boolean fireOnlyIfMixed) throws SAXException {
+	if (fireOnlyIfMixed && buffer.length() == 0) {
+	    return; // skip it
+	}
+	
+	Object[] ctx = (Object[]) context.peek();
+	String here = (String) ctx[0];
+	Attributes attrs = (Attributes) ctx[1];
+	buffer.delete(0, buffer.length());
     }
-
+    
     /**
      * The recognizer entry method taking an InputSource.
-     * @param input InputSource to be parsed.
-     * @throws java.io.IOException on I/O error.
-     * @throws SAXException propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
-     *
+     * 
+     * @param input
+     *            InputSource to be parsed.
+     * @throws java.io.IOException
+     *             on I/O error.
+     * @throws SAXException
+     *             propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException
+     *             a parser satisfining requested configuration can not be
+     *             created.
+     * @throws javax.xml.parsers.FactoryConfigurationRrror
+     *             if the implementation can not be instantiated.
+     * 
      */
-    public void parse(final InputSource input)
-        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
-            java.io.IOException {
-		    parse(input, this);
+    public void parse(final InputSource input) throws SAXException,
+	    javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+	parse(input, this);
     }
-
+    
     /**
      * The recognizer entry method taking a URL.
-     * @param url URL source to be parsed.
-     * @throws java.io.IOException on I/O error.
-     * @throws SAXException propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
-     *
+     * 
+     * @param url
+     *            URL source to be parsed.
+     * @throws java.io.IOException
+     *             on I/O error.
+     * @throws SAXException
+     *             propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException
+     *             a parser satisfining requested configuration can not be
+     *             created.
+     * @throws javax.xml.parsers.FactoryConfigurationRrror
+     *             if the implementation can not be instantiated.
+     * 
      */
-    public void parse(final java.net.URL url)
-        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
-            java.io.IOException {
-        parse(new InputSource(url.toExternalForm()), this);
+    public void parse(final java.net.URL url) throws SAXException,
+	    javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+	parse(new InputSource(url.toExternalForm()), this);
     }
-
+    
     /**
      * The recognizer entry method taking an Inputsource.
-     * @param input InputSource to be parsed.
-     * @throws java.io.IOException on I/O error.
-     * @throws SAXException propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
-     *
+     * 
+     * @param input
+     *            InputSource to be parsed.
+     * @throws java.io.IOException
+     *             on I/O error.
+     * @throws SAXException
+     *             propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException
+     *             a parser satisfining requested configuration can not be
+     *             created.
+     * @throws javax.xml.parsers.FactoryConfigurationRrror
+     *             if the implementation can not be instantiated.
+     * 
      */
-    public static void parse(final InputSource input,
-        World w)
-        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
-            java.io.IOException {
-        parse(input, new CargoAndTerrainParser(w, null));
+    public static void parse(final InputSource input, World w) throws SAXException,
+	    javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+	parse(input, new CargoAndTerrainParser(w, null));
     }
-
+    
     /**
      * The recognizer entry method taking a URL.
-     * @param url URL source to be parsed.
-     * @throws java.io.IOException on I/O error.
-     * @throws SAXException propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be created.
-     * @throws javax.xml.parsers.FactoryConfigurationRrror if the implementation can not be instantiated.
-     *
+     * 
+     * @param url
+     *            URL source to be parsed.
+     * @throws java.io.IOException
+     *             on I/O error.
+     * @throws SAXException
+     *             propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException
+     *             a parser satisfining requested configuration can not be
+     *             created.
+     * @throws javax.xml.parsers.FactoryConfigurationRrror
+     *             if the implementation can not be instantiated.
+     * 
      */
-    public static void parse(final java.net.URL url,
-        final World w)
-        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
-            java.io.IOException {
-		try {
-		    parse(new InputSource(url.toExternalForm()), w);
-		} catch (SAXParseException e) {
-		    logger.log(Level.WARNING,
-			    "Parse exception " + e.getMessage() +
-			    " at line " + e.getLineNumber());
-		    if (e.getException() != null)
-			e.getException().printStackTrace();
-		    throw e;
-		}
+    public static void parse(final java.net.URL url, final World w) throws SAXException,
+	    javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+	try {
+	    parse(new InputSource(url.toExternalForm()), w);
+	} catch (SAXParseException e) {
+	    logger.log(Level.WARNING,
+		    "Parse exception " + e.getMessage() + " at line " + e.getLineNumber());
+	    if (e.getException() != null)
+		e.getException().printStackTrace();
+	    throw e;
+	}
     }
-
-    private static void parse(final InputSource input,
-        final CargoAndTerrainParser recognizer)
-        throws SAXException, javax.xml.parsers.ParserConfigurationException, 
-            java.io.IOException {
-        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory.newInstance();
-        factory.setValidating(true); //the code was generated according DTD
-        factory.setNamespaceAware(true); //the code was generated according DTD
-
-        XMLReader parser = factory.newSAXParser().getXMLReader();
-        parser.setContentHandler(recognizer);
-        parser.setErrorHandler(recognizer.getDefaultErrorHandler());
-
-        if (recognizer.resolver != null) {
-            parser.setEntityResolver(recognizer.resolver);
-        }
-
-        parser.parse(input);
+    
+    private static void parse(final InputSource input, final CargoAndTerrainParser recognizer)
+	    throws SAXException, javax.xml.parsers.ParserConfigurationException,
+	    java.io.IOException {
+	javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory
+		.newInstance();
+	factory.setValidating(true); // the code was generated according DTD
+	factory.setNamespaceAware(true); // the code was generated according DTD
+	
+	XMLReader parser = factory.newSAXParser().getXMLReader();
+	parser.setContentHandler(recognizer);
+	parser.setErrorHandler(recognizer.getDefaultErrorHandler());
+	
+	if (recognizer.resolver != null) {
+	    parser.setEntityResolver(recognizer.resolver);
+	}
+	
+	parser.parse(input);
     }
-
+    
     /**
      * Creates default error handler used by this parser.
+     * 
      * @return org.xml.sax.ErrorHandler implementation
-     *
+     * 
      */
     protected ErrorHandler getDefaultErrorHandler() {
-        return new ErrorHandler() {
-                public void error(SAXParseException ex)
-                    throws SAXException {
-                    if (context.isEmpty()) {
-                        logger.log(Level.WARNING, "Missing DOCTYPE.");
-                    }
-
-                    throw ex;
-                }
-
-                public void fatalError(SAXParseException ex)
-                    throws SAXException {
-                    throw ex;
-                }
-
-                public void warning(SAXParseException ex)
-                    throws SAXException {
-                    // ignore
-                }
-            };
+	return new ErrorHandler() {
+	    public void error(SAXParseException ex) throws SAXException {
+		if (context.isEmpty()) {
+		    logger.log(Level.WARNING, "Missing DOCTYPE.");
+		}
+		
+		throw ex;
+	    }
+	    
+	    public void fatalError(SAXParseException ex) throws SAXException {
+		throw ex;
+	    }
+	    
+	    public void warning(SAXParseException ex) throws SAXException {
+		// ignore
+	    }
+	};
     }
 }

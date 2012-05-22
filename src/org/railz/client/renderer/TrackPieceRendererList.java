@@ -23,73 +23,72 @@ package org.railz.client.renderer;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.railz.client.common.ImageManager;
+import org.railz.config.LogManager;
 import org.railz.util.FreerailsProgressMonitor;
 import org.railz.world.top.KEY;
 import org.railz.world.top.ReadOnlyWorld;
 import org.railz.world.track.TrackRule;
 
-
 final public class TrackPieceRendererList {
-    private static final Logger logger = Logger.getLogger("global");
-
+    private static final String CLASS_NAME = TrackPieceRendererList.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     private final TrackPieceRenderer[] trackPieceViewArray;
-
+    
     public TrackPieceRenderer getTrackPieceView(int i) {
 	return trackPieceViewArray[i];
     }
-
+    
     public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
-        FreerailsProgressMonitor pm) throws IOException {
-        //		Setup progress monitor..
-        pm.setMessage("Loading track graphics.");
-        pm.setMax(w.size(KEY.TRACK_RULES));
-
-        int progress = 0;
-        pm.setValue(progress);
-
-        int numberOfTrackTypes = w.size(KEY.TRACK_RULES);
-        trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
-
-        for (int i = 0; i < numberOfTrackTypes; i++) {
-            trackPieceViewArray[i] = new TrackPieceRendererImpl(w,
-                    imageManager, i);
-            pm.setValue(++progress);
-        }
+	    FreerailsProgressMonitor pm) throws IOException {
+	// Setup progress monitor..
+	pm.setMessage("Loading track graphics.");
+	pm.setMax(w.size(KEY.TRACK_RULES));
+	
+	int progress = 0;
+	pm.setValue(progress);
+	
+	int numberOfTrackTypes = w.size(KEY.TRACK_RULES);
+	trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
+	
+	for (int i = 0; i < numberOfTrackTypes; i++) {
+	    trackPieceViewArray[i] = new TrackPieceRendererImpl(w, imageManager, i);
+	    pm.setValue(++progress);
+	}
     }
-
+    
     public boolean validate(ReadOnlyWorld w) {
-        boolean okSoFar = true;
-
-        for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
-            TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
-
-            if (null == trackPieceView) {
-                logger.log(Level.WARNING,
-                    "No track piece view for the following track type: " +
-                    trackRule.toString());
-
-                return false;
-            } else {
+	boolean okSoFar = true;
+	
+	for (int i = 0; i < w.size(KEY.TRACK_RULES); i++) {
+	    TrackRule trackRule = (TrackRule) w.get(KEY.TRACK_RULES, i);
+	    TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
+	    
+	    if (null == trackPieceView) {
+		logger.log(Level.WARNING, "No track piece view for the following track type: "
+			+ trackRule.toString());
+		
+		return false;
+	    } else {
 		for (byte j = Byte.MIN_VALUE; j < Byte.MAX_VALUE; j++) {
-			if (!trackRule.testTrackPieceLegality(j))
-			    continue;
-                    Image img = trackPieceView.getTrackPieceIcon(j);
-                    if (null == img) {
-                        logger.log(Level.WARNING, 
-                            "No track piece image for the following track type: " +
-                            trackRule.toString() + ", with configuration: " +
-                            j);
-                        okSoFar = false;
-                    }
-                }
-            }
-        }
-
-        return okSoFar;
+		    if (!trackRule.testTrackPieceLegality(j))
+			continue;
+		    Image img = trackPieceView.getTrackPieceIcon(j);
+		    if (null == img) {
+			logger.log(
+				Level.WARNING,
+				"No track piece image for the following track type: "
+					+ trackRule.toString() + ", with configuration: " + j);
+			okSoFar = false;
+		    }
+		}
+	    }
+	}
+	
+	return okSoFar;
     }
 }

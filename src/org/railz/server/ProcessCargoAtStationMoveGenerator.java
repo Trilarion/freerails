@@ -23,72 +23,103 @@ package org.railz.server;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.railz.config.LogManager;
 import org.railz.move.AddTransactionMove;
 import org.railz.world.accounts.DeliverCargoReceipt;
-import org.railz.world.cargo.*;
+import org.railz.world.cargo.CargoBatch;
+import org.railz.world.cargo.CargoBundle;
+import org.railz.world.cargo.CargoBundleImpl;
+import org.railz.world.cargo.CargoType;
 import org.railz.world.common.GameTime;
-import org.railz.world.station.StationModel;
-import org.railz.world.top.KEY;
-import org.railz.world.top.ITEM;
-import org.railz.world.top.ReadOnlyWorld;
-import org.railz.world.train.*;
 import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
+import org.railz.world.station.StationModel;
+import org.railz.world.top.ITEM;
+import org.railz.world.top.KEY;
+import org.railz.world.top.ReadOnlyWorld;
+import org.railz.world.train.TransportCategory;
 
-/** This class generates Moves that pay the player for delivering the cargo.
- *
+/**
+ * This class generates Moves that pay the player for delivering the cargo.
+ * 
  * @author Luke Lindsay
- *
+ * 
  */
 public class ProcessCargoAtStationMoveGenerator {
+    private static final String CLASS_NAME = ProcessCargoAtStationMoveGenerator.class.getName();
+    private static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
+    
     /**
-     * @param tp owner of the train
-     * @param sp owner of the station
+     * @param trainPrinciple
+     *            owner of the train
+     * @param stationPrinciple
+     *            owner of the station
      */
-    public static AddTransactionMove[] processCargo(ReadOnlyWorld w,
-	CargoBundle cargoBundle, FreerailsPrincipal tp, int stationID,
-	FreerailsPrincipal sp) {
-	StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
-		sp);
-        Iterator batches = cargoBundle.cargoBatchIterator();
-        int amountOfCargo = 0;
-        double passengerAmount = 0;
+    public static AddTransactionMove[] processCargo(ReadOnlyWorld w, CargoBundle cargoBundle,
+	    FreerailsPrincipal trainPrinciple, int stationID, FreerailsPrincipal stationPrinciple) {
+	final String methodName = "processCargo";
+	LOGGER.entering(CLASS_NAME, methodName);
+	
+	StationModel thisStation = (StationModel) w.get(KEY.STATIONS, stationID, stationPrinciple);
+	Iterator batches = cargoBundle.cargoBatchIterator();
+	
+	int amountOfCargo = 0;
+	double passengerAmount = 0;
 	double freightAmount = 0;
-
+	
 	CargoBundle passengerBundle = new CargoBundleImpl();
 	CargoBundle freightBundle = new CargoBundleImpl();
-
-	GameTime now = (GameTime) w.get(ITEM.TIME, tp);
-        while (batches.hasNext()) {
-            CargoBatch batch = (CargoBatch)((Entry) batches.next()).getKey();
-	    int dx = (batch.getSourceX() - thisStation.x);
-	    int dy = (batch.getSourceY() - thisStation.y);
-            double dist = Math.sqrt(dx*dx + dy*dy);
-	    int elapsedTime = now.getTime() - (int) batch.getTimeCreated();
-	    CargoType ct = (CargoType) w.get(KEY.CARGO_TYPES,
-		    batch.getCargoType(), Player.AUTHORITATIVE);
-            double amount = ((double) cargoBundle.getAmount(batch)) *
-	       	Math.log(1 + dist) *
-	       	(double) ct.getAgeAdjustedValue(elapsedTime);
-	    if (ct.getCategory() == TransportCategory.PASSENGER) {
+	
+	GameTime now = (GameTime) w.get(ITEM.TIME, trainPrinciple);
+	
+	while (batches.hasNext()) {
+	    CargoBatch currentBatch = (CargoBatch) ((Entry) batches.next()).getKey();
+	    
+	    // Distance
+	    int dx = (currentBatch.getSourceX() - thisStation.x);
+	    int dy = (currentBatch.getSourceY() - thisStation.y);
+	    double dist = Math.sqrt(dx * dx + dy * dy);
+	    
+	    // Time
+	    int elapsedTime = now.getTime() - (int) currentBatch.getTimeCreated();
+	    
+	    CargoType ct = (CargoType) w.get(KEY.CARGO_TYPES, currentBatch.getCargoType(),
+		    Player.AUTHORITATIVE);
+	    
+	    // Weird calculation
+	    double amount = ((double) cargoBundle.getAmount(currentBatch)) * Math.log(1 + dist)
+		    * (double) ct.getAgeAdjustedValue(elapsedTime);
+	    
+	    TransportCategory goodsCategory = ct.getCategory();
+	    // LOGGER.logp(Level.INFO, CLASS_NAME, methodName,
+	    // "ct.getCategory() = " + goodsCategory);
+	    if (TransportCategory.PASSENGER.equals(ct.getCategory())) {
 		passengerAmount += amount;
-		passengerBundle.addCargo(batch, cargoBundle.getAmount(batch));
+		passengerBundle.addCargo(currentBatch, cargoBundle.getAmount(currentBatch));
+		
+		LOGGER.logp(Level.INFO, CLASS_NAME, methodName, "ct.getCategory() = "
+			+ goodsCategory + ". Passenger amount = " + passengerAmount);
 	    } else {
 		freightAmount += amount;
-		freightBundle.addCargo(batch, cargoBundle.getAmount(batch));
+		freightBundle.addCargo(currentBatch, cargoBundle.getAmount(currentBatch));
+		LOGGER.logp(Level.INFO, CLASS_NAME, methodName, "ct.getCategory() = "
+			+ goodsCategory + ". Freight amount = " + freightAmount);
 	    }
-        }
-
+	}
+	
 	AddTransactionMove[] moves = new AddTransactionMove[2];
-        DeliverCargoReceipt receipt = new DeliverCargoReceipt(now, (long)
-		passengerAmount, passengerBundle,
-		DeliverCargoReceipt.SUBCATEGORY_PASSENGERS);
-        moves[0] = new AddTransactionMove(0, receipt, tp);
-	receipt = new DeliverCargoReceipt(now, (long)
-		freightAmount, freightBundle,
+	
+	DeliverCargoReceipt receipt = new DeliverCargoReceipt(now, (long) passengerAmount,
+		passengerBundle, DeliverCargoReceipt.SUBCATEGORY_PASSENGERS);
+	moves[0] = new AddTransactionMove(0, receipt, trainPrinciple);
+	
+	receipt = new DeliverCargoReceipt(now, (long) freightAmount, freightBundle,
 		DeliverCargoReceipt.SUBCATEGORY_FREIGHT);
-        moves[1] = new AddTransactionMove(0, receipt, tp);
+	moves[1] = new AddTransactionMove(0, receipt, trainPrinciple);
+	
 	return moves;
     }
 }

@@ -17,39 +17,46 @@
 
 package org.railz.util;
 
-import java.io.*;
-import java.net.*;
-import java.util.logging.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.railz.config.LogManager;
 
 /**
- * Provides a resource-finding facility for resources which may be bundled
- * with the application, or provided in user-customisations.
+ * Provides a resource-finding facility for resources which may be bundled with
+ * the application, or provided in user-customisations.
  */
 public class ModdableResourceFinder {
     private String prefix;
     private File prefixedHomeDir;
-    private static final Logger logger = Logger.getLogger("global");
-
+    
+    private static final String CLASS_NAME = ModdableResourceFinder.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     /**
-     * @param prefix a UNIX-style search path which is prefixed to all
-     * requests for resources.
+     * @param prefix
+     *            a UNIX-style search path which is prefixed to all requests for
+     *            resources.
      */
     public ModdableResourceFinder(String prefix) {
 	// chop off trailing '/' if any
-	if (prefix.length() > 0 &&
-		prefix.charAt(prefix.length() - 1) == '/')
+	if (prefix.length() > 0 && prefix.charAt(prefix.length() - 1) == '/')
 	    prefix = prefix.substring(0, prefix.length() - 1);
 	String homeDir = System.getProperty("user.home");
 	URI uri;
 	try {
-	    uri = (new File(homeDir)).toURI().resolve(new URI(prefix)); 
+	    uri = (new File(homeDir)).toURI().resolve(new URI(prefix));
 	} catch (URISyntaxException e) {
-	    throw new IllegalArgumentException
-		("Illegal argument " + prefix + ": " + e.getMessage());
+	    throw new IllegalArgumentException("Illegal argument " + prefix + ": " + e.getMessage());
 	}
-	// add initial '/'  if not already present
-	if (prefix.length() == 0 ||
-		prefix.charAt(0) != '/')
+	// add initial '/' if not already present
+	if (prefix.length() == 0 || prefix.charAt(0) != '/')
 	    prefix = "/" + prefix;
 	// append trailing '/'
 	if (prefix.charAt(prefix.length() - 1) != '/')
@@ -57,12 +64,14 @@ public class ModdableResourceFinder {
 	this.prefix = prefix;
 	prefixedHomeDir = new File(uri);
     }
-
+    
     /**
      * Searches for the resource first in the customisable resource area, then
      * using the ClassLoader for this class.
+     * 
      * @return a URL pointing to the desired resource.
-     * @param relPath relative path ('/' separated) to the resource
+     * @param relPath
+     *            relative path ('/' separated) to the resource
      */
     public URL getURLForReading(String relPath) {
 	/* first search user.home */
@@ -72,8 +81,8 @@ public class ModdableResourceFinder {
 	    try {
 		u = f.toURL();
 	    } catch (MalformedURLException e) {
-		throw new IllegalArgumentException
-		    ("Illegal argument " + relPath + ": " + e.getMessage());
+		throw new IllegalArgumentException("Illegal argument " + relPath + ": "
+			+ e.getMessage());
 	    }
 	    logger.log(Level.FINE, "Getting URL " + u);
 	    return u;
@@ -84,12 +93,14 @@ public class ModdableResourceFinder {
 	logger.log(Level.FINE, "Getting URL " + u + " for " + relPath);
 	return u;
     }
-
+    
     /**
      * Searches for the resource first in the customisable resource area, then
      * using the ClassLoader for this class.
+     * 
      * @return a File pointing to the desired resource.
-     * @param relPath relative path ('/' separated) to the resource
+     * @param relPath
+     *            relative path ('/' separated) to the resource
      */
     public File getFileForWriting(String relPath) throws IOException {
 	File f = new File(prefixedHomeDir, relPath);
@@ -98,11 +109,10 @@ public class ModdableResourceFinder {
 	    try {
 		parent.mkdirs();
 	    } catch (SecurityException e) {
-		throw new IOException("Couldn't create parent directories " +
-			"for " + f.toString());
+		throw new IOException("Couldn't create parent directories " + "for " + f.toString());
 	    }
 	}
 	return f;
     }
-
+    
 }

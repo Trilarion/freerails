@@ -21,61 +21,75 @@
  */
 package org.railz.world.accounts;
 
-import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.railz.config.LogManager;
 import org.railz.world.common.FreerailsSerializable;
 
 /**
  * @author Luke Lindsay
- *
+ * 
  */
 public class BankAccount implements FreerailsSerializable {
+    private static String CLASS_NAME = BankAccount.class.getName();
+    private static Logger LOGGER = LogManager.getLogger(CLASS_NAME);
+    
     private ArrayList transactions = new ArrayList();
     private long currentBalance = 0;
-
+    
     public BankAccount() {
     }
-
+    
     public synchronized long getCurrentBalance() {
-        return currentBalance;
+	return currentBalance;
     }
-
+    
     public synchronized int size() {
-        return transactions.size();
+	return transactions.size();
     }
-
+    
     public synchronized void addTransaction(Transaction t) {
-        transactions.add(t);
-        this.currentBalance = currentBalance + t.getValue();
+	final String methodName = "addTransaction";
+	LOGGER.entering(CLASS_NAME, methodName);
+	
+	transactions.add(t);
+	long startingBalance = currentBalance;
+	
+	// LOGGER.logp(Level.INFO, CLASS_NAME, methodName, );
+	this.currentBalance = currentBalance + t.getValue();
+	
+	LOGGER.logp(Level.INFO, CLASS_NAME, methodName,
+		"Starting account balance: " + startingBalance + ". End account balance: "
+			+ currentBalance + ". Added: " + t.getValue());
     }
-
+    
     public synchronized Transaction removeLastTransaction() {
-        int last = transactions.size() - 1;
-        Transaction t = (Transaction)transactions.remove(last);
-        this.currentBalance = currentBalance - t.getValue();
-
-        return t;
+	int last = transactions.size() - 1;
+	Transaction t = (Transaction) transactions.remove(last);
+	this.currentBalance = currentBalance - t.getValue();
+	
+	return t;
     }
-
+    
     public synchronized Transaction getTransaction(int i) {
-        return (Transaction)transactions.get(i);
+	return (Transaction) transactions.get(i);
     }
-
+    
     public synchronized int hashCode() {
-	return (int) (((currentBalance & 0xffff0000L) >> 32) ^
-	       	(currentBalance & 0xffff));
+	return (int) (((currentBalance & 0xffff0000L) >> 32) ^ (currentBalance & 0xffff));
     }
-
+    
     public synchronized boolean equals(Object o) {
-        if (o instanceof BankAccount) {
-            BankAccount test = (BankAccount)o;
-
-            return this.transactions.equals(test.transactions);
-            //No need to look at the current balance field since it 
-            //can be calculated by looking at the transactions.
-        } else {
-            return false;
-        }
+	if (o instanceof BankAccount) {
+	    BankAccount test = (BankAccount) o;
+	    
+	    return this.transactions.equals(test.transactions);
+	    // No need to look at the current balance field since it
+	    // can be calculated by looking at the transactions.
+	} else {
+	    return false;
+	}
     }
 }

@@ -16,14 +16,20 @@
  */
 package org.railz.server.parser;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.*;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.railz.util.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.railz.config.LogManager;
+import org.railz.util.ModdableResourceFinder;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Parses the serverConfiguration.xml file, which stores configuration
@@ -31,38 +37,34 @@ import org.railz.util.*;
  */
 public class ServerConfigurationParser extends DefaultHandler {
     private ArrayList mapNames = new ArrayList();
-    private static final Logger logger = Logger.getLogger("global");
+    private static final String CLASS_NAME = ServerConfigurationParser.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
     
     public String[] getMapNames() {
-	return (String []) mapNames.toArray(new String[mapNames.size()]);
+	return (String[]) mapNames.toArray(new String[mapNames.size()]);
     }
-
+    
     /** Create the class and start parsing */
     public ServerConfigurationParser(ModdableResourceFinder mrf) {
 	try {
 	    SAXParserFactory spf = SAXParserFactory.newInstance();
 	    SAXParser sp = spf.newSAXParser();
-	    sp.parse(mrf.getURLForReading("serverConfiguration.xml").toString(),
-		    this);
+	    sp.parse(mrf.getURLForReading("serverConfiguration.xml").toString(), this);
 	} catch (ParserConfigurationException e) {
-	    logger.log(Level.SEVERE, "ServerConfigurationParser() caught " +
-		    "ParserConfigurationException", e);
+	    logger.log(Level.SEVERE, "ServerConfigurationParser() caught "
+		    + "ParserConfigurationException", e);
 	} catch (SAXException e) {
-	    logger.log(Level.SEVERE, "ServerConfigurationParser() caught " +
-		    "SAXException", e);
+	    logger.log(Level.SEVERE, "ServerConfigurationParser() caught " + "SAXException", e);
 	} catch (IOException e) {
-	    logger.log(Level.SEVERE, "ServerConfigurationParser() caught " + 
-		    "IOException", e);
+	    logger.log(Level.SEVERE, "ServerConfigurationParser() caught " + "IOException", e);
 	}
     }
-
-    public void endElement(String uri, String localName, String qName) throws
-	SAXException {
-	    // do nothing
-	}
-
-    public void startElement(String uri, String localName, String qName,
-	    Attributes attributes) {
+    
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+	// do nothing
+    }
+    
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
 	if (qName.equals("Map")) {
 	    mapNames.add(attributes.getValue("name"));
 	}

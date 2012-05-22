@@ -18,15 +18,19 @@
 package org.railz.server;
 
 import java.net.URL;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.railz.server.parser.*;
-import org.railz.util.*;
-import org.railz.world.common.*;
-import org.railz.world.player.Player;
+import org.railz.config.LogManager;
+import org.railz.server.parser.CargoAndTerrainParser;
+import org.railz.server.parser.InputCityNames;
+import org.railz.server.parser.ServerConfigurationParser;
+import org.railz.server.parser.Track_TilesHandlerImpl;
+import org.railz.util.FreerailsProgressMonitor;
+import org.railz.util.ModdableResourceFinder;
+import org.railz.world.common.GameCalendar;
+import org.railz.world.common.GameTime;
 import org.railz.world.top.ITEM;
-import org.railz.world.top.KEY;
-import org.railz.world.top.World;
 import org.railz.world.top.WorldImpl;
 import org.xml.sax.SAXException;
 
@@ -34,77 +38,72 @@ import org.xml.sax.SAXException;
  * This class sets up a World object. It cannot be instantiated.
  */
 class WorldFactory {
-    private static final Logger logger = Logger.getLogger("global");
-    private static ModdableResourceFinder mrf = new ModdableResourceFinder
-	("org/railz/server/data");
-    private static ServerConfigurationParser serverConfigParser = new
-	ServerConfigurationParser(mrf);
+    
+    private static final String CLASS_NAME = WorldFactory.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
+    private static ModdableResourceFinder mrf = new ModdableResourceFinder("org/railz/server/data");
+    private static ServerConfigurationParser serverConfigParser = new ServerConfigurationParser(mrf);
     
     private WorldFactory() {
     }
-
+    
     /**
-     * TODO This would be better implemented in a config file, or better
-     * still dynamically determined by scanning the directory.
+     * TODO This would be better implemented in a config file, or better still
+     * dynamically determined by scanning the directory.
      */
     public static String[] getMapNames() {
-        return serverConfigParser.getMapNames();
+	return serverConfigParser.getMapNames();
     }
-
-    public static WorldImpl createWorldFromMapFile(String mapName,
-        FreerailsProgressMonitor pm) {
-
-        pm.setMessage("Setting up world.");
-        pm.setValue(0);
-        pm.setMax(5);
-
-        int progess = 0;
-
-        //Load the xml file specifying terrain types.
-
-        WorldImpl w = new WorldImpl();
-        pm.setValue(++progess);
-
-        //Set the time..
-        w.set(ITEM.CALENDAR, new GameCalendar(30, 1840, 0));
-        w.set(ITEM.TIME, new GameTime(0));
-
-        try {
-            java.net.URL url = mrf.getURLForReading
-		("cargo_and_terrain.xml");
-
-            CargoAndTerrainParser.parse(url, w);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-        pm.setValue(++progess);
-
-        URL track_xml_url = mrf.getURLForReading
-	    ("track_tiles.xml");
-
-	Track_TilesHandlerImpl trackSetFactory = new
-	    Track_TilesHandlerImpl(track_xml_url, w);
-        pm.setValue(++progess);
-
-        //Load the terrain map
-        URL map_url = mrf.getURLForReading
-	    ("maps/" + mapName + "/map.png");
-        MapFactory.setupMap(map_url, w, pm);
-
-        //Load the city names
-	URL cities_xml_url = mrf.getURLForReading
-	    ("maps/" + mapName + "/map.xml");
-
-        try {
-            InputCityNames r = new InputCityNames(w, cities_xml_url);
-        } catch (SAXException e) {
-	    logger.log(Level.WARNING,"Caught exception " + e.getMessage(), e);
-        }
-
-        //Randomly position the city tiles - no need to assign this object
-        new BuildingTilePositioner(w);
-
-        return w;
+    
+    public static WorldImpl createWorldFromMapFile(String mapName, FreerailsProgressMonitor pm) {
+	
+	pm.setMessage("Setting up world.");
+	pm.setValue(0);
+	pm.setMax(5);
+	
+	int progess = 0;
+	
+	// Load the xml file specifying terrain types.
+	
+	WorldImpl w = new WorldImpl();
+	pm.setValue(++progess);
+	
+	// Set the time..
+	w.set(ITEM.CALENDAR, new GameCalendar(30, 1840, 0));
+	w.set(ITEM.TIME, new GameTime(0));
+	
+	try {
+	    java.net.URL url = mrf.getURLForReading("cargo_and_terrain.xml");
+	    
+	    CargoAndTerrainParser.parse(url, w);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    throw new IllegalStateException();
+	}
+	pm.setValue(++progess);
+	
+	URL track_xml_url = mrf.getURLForReading("track_tiles.xml");
+	
+	Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url, w);
+	pm.setValue(++progess);
+	
+	// Load the terrain map
+	URL map_url = mrf.getURLForReading("maps/" + mapName + "/map.png");
+	MapFactory.setupMap(map_url, w, pm);
+	
+	// Load the city names
+	URL cities_xml_url = mrf.getURLForReading("maps/" + mapName + "/map.xml");
+	
+	try {
+	    InputCityNames r = new InputCityNames(w, cities_xml_url);
+	} catch (SAXException e) {
+	    logger.log(Level.WARNING, "Caught exception " + e.getMessage(), e);
+	}
+	
+	// Randomly position the city tiles - no need to assign this object
+	new BuildingTilePositioner(w);
+	
+	return w;
     }
 }

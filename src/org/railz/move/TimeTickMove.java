@@ -16,79 +16,80 @@
 
 package org.railz.move;
 
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.railz.config.LogManager;
+import org.railz.world.common.GameTime;
 import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
-import org.railz.world.top.World;
-import org.railz.world.top.ReadOnlyWorld;
-import org.railz.world.common.GameTime;
 import org.railz.world.top.ITEM;
-
+import org.railz.world.top.ReadOnlyWorld;
+import org.railz.world.top.World;
 
 public class TimeTickMove implements Move {
-    private static final Logger logger = Logger.getLogger("global");
-
+    private static final String CLASS_NAME = TimeTickMove.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     private GameTime oldTime = null;
     private GameTime newTime = null;
-
+    
     public GameTime getNewTime() {
 	return newTime;
     }
-
+    
     public static TimeTickMove getMove(ReadOnlyWorld w) {
-        TimeTickMove timeTickMove = new TimeTickMove();
-        timeTickMove.oldTime = (GameTime)w.get(ITEM.TIME);
-        timeTickMove.newTime = new GameTime(timeTickMove.oldTime.getTime() + 1);
-
-        return timeTickMove;
+	TimeTickMove timeTickMove = new TimeTickMove();
+	timeTickMove.oldTime = (GameTime) w.get(ITEM.TIME);
+	timeTickMove.newTime = new GameTime(timeTickMove.oldTime.getTime() + 1);
+	
+	return timeTickMove;
     }
-
+    
     public FreerailsPrincipal getPrincipal() {
 	return Player.NOBODY;
     }
-
+    
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (((GameTime)w.get(ITEM.TIME)).equals(oldTime)) {
-            return MoveStatus.MOVE_OK;
-        } else {
-	    logger.log(Level.FINER, "oldTime = " + oldTime.getTime() +
-		    " <=> " + "currentTime " +
-		    ((GameTime)w.get(ITEM.TIME)).getTime());
-
-            return MoveStatus.MOVE_FAILED;
-        }
+	if (((GameTime) w.get(ITEM.TIME)).equals(oldTime)) {
+	    return MoveStatus.MOVE_OK;
+	} else {
+	    logger.log(Level.FINER, "oldTime = " + oldTime.getTime() + " <=> " + "currentTime "
+		    + ((GameTime) w.get(ITEM.TIME)).getTime());
+	    
+	    return MoveStatus.MOVE_FAILED;
+	}
     }
-
+    
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        if (((GameTime)w.get(ITEM.TIME)).equals(newTime)) {
-            return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.MOVE_FAILED;
-        }
+	if (((GameTime) w.get(ITEM.TIME)).equals(newTime)) {
+	    return MoveStatus.MOVE_OK;
+	} else {
+	    return MoveStatus.MOVE_FAILED;
+	}
     }
-
+    
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        if (tryDoMove(w, p).equals(MoveStatus.MOVE_OK)) {
-            w.set(ITEM.TIME, newTime);
-
-            return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.MOVE_FAILED;
-        }
+	if (tryDoMove(w, p).equals(MoveStatus.MOVE_OK)) {
+	    w.set(ITEM.TIME, newTime);
+	    
+	    return MoveStatus.MOVE_OK;
+	} else {
+	    return MoveStatus.MOVE_FAILED;
+	}
     }
-
+    
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        if (tryUndoMove(w, p).equals(MoveStatus.MOVE_OK)) {
-            w.set(ITEM.TIME, oldTime);
-
-            return MoveStatus.MOVE_OK;
-        } else {
-            return MoveStatus.MOVE_FAILED;
-        }
+	if (tryUndoMove(w, p).equals(MoveStatus.MOVE_OK)) {
+	    w.set(ITEM.TIME, oldTime);
+	    
+	    return MoveStatus.MOVE_OK;
+	} else {
+	    return MoveStatus.MOVE_FAILED;
+	}
     }
-
+    
     public String toString() {
-        return "TimeTickMove: " + oldTime + "=>" + newTime;
+	return "TimeTickMove: " + oldTime + "=>" + newTime;
     }
 }

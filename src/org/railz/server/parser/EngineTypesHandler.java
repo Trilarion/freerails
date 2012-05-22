@@ -17,15 +17,16 @@
 
 package org.railz.server.parser;
 
-import org.xml.sax.*;
-
-import org.railz.world.player.*;
-import org.railz.world.top.*;
-import org.railz.world.train.*;
+import org.railz.world.player.Player;
+import org.railz.world.top.KEY;
+import org.railz.world.top.World;
+import org.railz.world.train.EngineType;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 class EngineTypesHandler {
     private World world;
-
+    
     private String name;
     private long price;
     private long maintenance;
@@ -38,11 +39,11 @@ class EngineTypesHandler {
     private boolean available;
     private float dragCoeff;
     private float frictionCoeff;
-
+    
     public EngineTypesHandler(World w) {
 	world = w;
     }
-
+    
     public void handleEngineType(Attributes meta) throws SAXException {
 	name = meta.getValue("id");
 	price = Long.parseLong(meta.getValue("price"));
@@ -50,8 +51,7 @@ class EngineTypesHandler {
 	waterCapacity = Integer.parseInt(meta.getValue("waterCapacity"));
 	mass = Integer.parseInt(meta.getValue("mass"));
 	powerOutput = Integer.parseInt(meta.getValue("powerOutput"));
-	annualFuelConsumption =
-	    Integer.parseInt(meta.getValue("annualFuelConsumption"));
+	annualFuelConsumption = Integer.parseInt(meta.getValue("annualFuelConsumption"));
 	String ft = meta.getValue("fuelType");
 	maxTractiveForce = Integer.parseInt(meta.getValue("maxTractiveForce"));
 	dragCoeff = Float.parseFloat(meta.getValue("dragCoeff"));
@@ -60,26 +60,25 @@ class EngineTypesHandler {
 	    fuelType = EngineType.FUEL_TYPE_COAL;
 	else if (ft.equals("Diesel"))
 	    fuelType = EngineType.FUEL_TYPE_DIESEL;
-	else 
+	else
 	    fuelType = EngineType.FUEL_TYPE_ELECTRIC;
 	available = "true".equals(meta.getValue("available"));
     }
-
-    public void startElement(String ns, String name, String qname, Attributes
-	    attrs) throws SAXException {
+    
+    public void startElement(String ns, String name, String qname, Attributes attrs)
+	    throws SAXException {
+	
 	if ("EngineType".equals(name))
 	    handleEngineType(attrs);
     }
-
-    public void endElement(String ns, String name, String qname) throws
-	SAXException {
-	    if ("EngineType".equals(name)) {
-		EngineType et = new EngineType(this.name, price,
-			maintenance, annualFuelConsumption, fuelType,
-			waterCapacity, mass, powerOutput, maxTractiveForce,
-			frictionCoeff, dragCoeff, available);
-		world.add(KEY.ENGINE_TYPES, et, Player.AUTHORITATIVE);
-	    }
+    
+    public void endElement(String ns, String name, String qname) throws SAXException {
+	if ("EngineType".equals(name)) {
+	    
+	    EngineType et = new EngineType(this.name, price, maintenance, annualFuelConsumption,
+		    fuelType, waterCapacity, mass, powerOutput, maxTractiveForce, frictionCoeff,
+		    dragCoeff, available);
+	    world.add(KEY.ENGINE_TYPES, et, Player.AUTHORITATIVE);
 	}
+    }
 }
-

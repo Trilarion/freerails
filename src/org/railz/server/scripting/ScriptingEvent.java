@@ -16,58 +16,58 @@
  */
 package org.railz.server.scripting;
 
-import java.lang.reflect.*;
-import java.util.*;
-import java.util.logging.*;
+import java.lang.reflect.Constructor;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.railz.move.*;
-import org.railz.world.common.*;
-import org.railz.world.top.*;
+import org.railz.config.LogManager;
+import org.railz.move.Move;
+import org.railz.world.common.FreerailsSerializable;
+import org.railz.world.common.GameTime;
+import org.railz.world.top.ReadOnlyWorld;
+
 /**
- * Defines an interface implemented by a Scripting Event.
- * All concrete classes of ScriptingEvent must have a constructor of the form
- * ClassName(ReadOnlyWorld w, GameTime startTime, GameTime endTime, Map params)
+ * Defines an interface implemented by a Scripting Event. All concrete classes
+ * of ScriptingEvent must have a constructor of the form ClassName(ReadOnlyWorld
+ * w, GameTime startTime, GameTime endTime, Map params)
  */
 public abstract class ScriptingEvent implements FreerailsSerializable {
     protected GameTime startTime;
     protected GameTime endTime;
-    private static final Logger logger = Logger.getLogger("global");
-
+    private static final String CLASS_NAME = ScriptingEvent.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     /** @return the scheduled start time of the event */
     public GameTime getStartTime() {
 	return startTime;
     }
-
+    
     /** @return the scheduled end time of the event */
     public GameTime getEndTime() {
 	return endTime;
     }
-
+    
     protected ScriptingEvent(GameTime startTime, GameTime endTime) {
 	this.startTime = startTime;
 	this.endTime = endTime;
     }
-
+    
     /** @return a Move to be executed when the event occurs */
     public abstract Move getMove(ReadOnlyWorld w);
-
+    
     /** Factory method for creating events */
-    public static ScriptingEvent createEvent(String className,
-	    ReadOnlyWorld w, 
-	    GameTime startTime, GameTime endTime, Map attributes) {
+    public static ScriptingEvent createEvent(String className, ReadOnlyWorld w, GameTime startTime,
+	    GameTime endTime, Map attributes) {
 	try {
-	    Class seClass = ScriptingEvent.class.getClassLoader().loadClass
-		("org.railz.server.scripting." + className);
-	    Constructor seConstructor = seClass.getConstructor
-		(new Class[] 
-		 {ReadOnlyWorld.class, GameTime.class, GameTime.class,
-		 Map.class});
-	    return (ScriptingEvent)
-		seConstructor.newInstance
-		(new Object[] {w, startTime, endTime, attributes});
+	    Class seClass = ScriptingEvent.class.getClassLoader().loadClass(
+		    "org.railz.server.scripting." + className);
+	    Constructor seConstructor = seClass.getConstructor(new Class[] { ReadOnlyWorld.class,
+		    GameTime.class, GameTime.class, Map.class });
+	    return (ScriptingEvent) seConstructor.newInstance(new Object[] { w, startTime, endTime,
+		    attributes });
 	} catch (Exception e) {
-	    logger.log(Level.WARNING, "ScriptingEvent caught " +
-		    e.getMessage(), e);
+	    logger.log(Level.WARNING, "ScriptingEvent caught " + e.getMessage(), e);
 	    return null;
 	}
     }

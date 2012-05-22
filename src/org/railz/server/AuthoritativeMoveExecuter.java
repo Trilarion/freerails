@@ -17,20 +17,22 @@
 package org.railz.server;
 
 import java.util.LinkedList;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.railz.config.LogManager;
 import org.railz.controller.MoveReceiver;
 import org.railz.controller.UncommittedMoveReceiver;
-import org.railz.move.*;
-import org.railz.world.top.*;
+import org.railz.move.Move;
+import org.railz.move.MoveStatus;
+import org.railz.move.RejectedMove;
 import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
-
+import org.railz.world.top.World;
 
 /**
- * A move executer which has the authority to reject moves
- * outright.
- *
+ * A move executer which has the authority to reject moves outright.
+ * 
  * During processing of moves, we must obtain a lock on the game world in order
  * to prevent the world changing when other threads are accessing the world (eg
  * when the world is being sent to a client by the network thread).
@@ -40,84 +42,86 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
     protected final World world;
     protected final MoveReceiver moveReceiver;
     private final LinkedList moveStack = new LinkedList();
-    private static final Logger logger = Logger.getLogger("global");
-
+    private static final String CLASS_NAME = AuthoritativeMoveExecuter.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     public AuthoritativeMoveExecuter(World w, MoveReceiver mr) {
-        world = w;
-        moveReceiver = mr;
+	world = w;
+	moveReceiver = mr;
     }
-
+    
     /**
      * forwards move as a RejectedMove if it failed.
      */
     private void forwardMove(Move move, MoveStatus status) {
-        if (moveReceiver == null) {
-            return;
-        }
-
-        if (status != MoveStatus.MOVE_OK) {
-	    logger.log(Level.INFO, "Server rejected move because " + status +
-		    ": " + move);
-            moveReceiver.processMove(new RejectedMove(move, status));
-        } else {
-            moveReceiver.processMove(move);
-        }
-    }
-
-    void processMove(Move move, FreerailsPrincipal p) {
-        /*
-	 * if the server is submitting the move, then act on behalf of whoever
-         * move was submitted for
-	 */
-        if (p.equals(Player.AUTHORITATIVE))
-            p = move.getPrincipal();
+	if (moveReceiver == null) {
+	    return;
+	}
 	
-        moveStack.add(move);
-
-        if (moveStack.size() > MAX_UNDOS) {
-            moveStack.removeFirst();
-        }
-
-        MoveStatus ms;
-
+	if (status != MoveStatus.MOVE_OK) {
+	    logger.log(Level.INFO, "Server rejected move because " + status + ": " + move);
+	    moveReceiver.processMove(new RejectedMove(move, status));
+	} else {
+	    moveReceiver.processMove(move);
+	}
+    }
+    
+    void processMove(Move move, FreerailsPrincipal p) {
+	/*
+	 * if the server is submitting the move, then act on behalf of whoever
+	 * move was submitted for
+	 */
+	if (p.equals(Player.AUTHORITATIVE))
+	    p = move.getPrincipal();
+	
+	moveStack.add(move);
+	
+	if (moveStack.size() > MAX_UNDOS) {
+	    moveStack.removeFirst();
+	}
+	
+	MoveStatus ms;
+	
 	synchronized (world) {
 	    ms = move.doMove(world, p);
 	}
-
-        forwardMove(move, ms);
+	
+	forwardMove(move, ms);
     }
-
+    
     /**
      * @see MoveReceiver#processMove(Move)
      */
     public void processMove(Move move) {
-        processMove(move, move.getPrincipal());
+	processMove(move, move.getPrincipal());
     }
-
+    
     /**
-     * FIXME clients can undo each others moves.
-     * FIXME information about the principal is lost.
+     * FIXME clients can undo each others moves. FIXME information about the
+     * principal is lost.
      */
     public void undoLastMove() {
-        if (moveStack.size() > 0) {
-            Move m = (Move)moveStack.removeLast();
-            MoveStatus ms;
-
+	if (moveStack.size() > 0) {
+	    Move m = (Move) moveStack.removeLast();
+	    MoveStatus ms;
+	    
 	    synchronized (world) {
 		ms = m.undoMove(world, Player.NOBODY);
 	    }
-
-            if (ms != MoveStatus.MOVE_OK) {
-                logger.log(Level.INFO, "Couldn't undo move!");
-
-                /* push it back on the stack to prevent further
-                 * out-of-order undos */
-                moveStack.add(m);
-            }
-
-            forwardMove(m, ms);
-        } else {
-            logger.log(Level.INFO, "No moves on stack.");
-        }
+	    
+	    if (ms != MoveStatus.MOVE_OK) {
+		logger.log(Level.INFO, "Couldn't undo move!");
+		
+		/*
+		 * push it back on the stack to prevent further out-of-order
+		 * undos
+		 */
+		moveStack.add(m);
+	    }
+	    
+	    forwardMove(m, ms);
+	} else {
+	    logger.log(Level.INFO, "No moves on stack.");
+	}
     }
 }

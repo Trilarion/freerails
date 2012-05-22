@@ -23,45 +23,51 @@
  */
 package org.railz.server.parser;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URL;
-import java.util.logging.*;
-import javax.xml.parsers.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
+import org.railz.config.LogManager;
+import org.railz.util.WorkaroundResolver;
 import org.railz.world.top.World;
-import org.railz.util.*;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class InputCityNames {
     private World world;
-    private static final Logger logger = Logger.getLogger("global");
-
+    private static final String CLASS_NAME = InputCityNames.class.getName();
+    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+    
     public InputCityNames(World w, URL filename) throws SAXException {
-        world = w;
-
-        InputSource is = new InputSource(filename.toString());
-
-        DefaultHandler handler = new MapHandler(world);
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+	world = w;
+	
+	InputSource is = new InputSource(filename.toString());
+	
+	DefaultHandler handler = new MapHandler(world);
+	SAXParserFactory factory = SAXParserFactory.newInstance();
 	factory.setValidating(true);
-
-        logger.log(Level.INFO, "\nLoading XML " + filename);
-
-        try {
-            SAXParser saxParser = factory.newSAXParser();
-	    EntityResolver er = new WorkaroundResolver
-		(saxParser.getXMLReader().getEntityResolver());
+	
+	logger.log(Level.INFO, "\nLoading XML " + filename);
+	
+	try {
+	    SAXParser saxParser = factory.newSAXParser();
+	    EntityResolver er = new WorkaroundResolver(saxParser.getXMLReader().getEntityResolver());
 	    saxParser.getXMLReader().setEntityResolver(er);
 	    // can't use saxParser.parse() as this causes our EntityResolver
 	    // to be ignored
 	    saxParser.getXMLReader().setContentHandler(handler);
-            saxParser.getXMLReader().parse(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        }
+	    saxParser.getXMLReader().parse(is);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} catch (ParserConfigurationException pce) {
+	    pce.printStackTrace();
+	}
     }
 }
