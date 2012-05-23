@@ -4,6 +4,12 @@
 Targeted features before next development release branch 0.5
 ============================================================
 Goal
+
+Drag and drop track
+Click selects train/stations
+UI Improvements to Build
+UI Additions for Finances
+
 P2:
 Separate schedules from trains (assign trains to named routes)
 Station status screen

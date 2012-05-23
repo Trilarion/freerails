@@ -11,6 +11,7 @@
 
 	<property location="build" name="build"/>
 	<property location="${build}/lib" name="lib"/>
+	<property name="java-version" value="1.6"/>
 
 	
 	
@@ -19,7 +20,7 @@
    <!-- Distribute with: rundist -->
 	<target depends="properties" name="init">
       	<tstamp/>
-      	<property classpath="org.railz.build" name="org.railz.build" value="0.3.5"/>
+      	<property classpath="org.railz.build" name="org.railz.build" value="0.3.6"/>
     	<property value="Railz2" name="game_name"/>
 		
       	<property location="src" name="src"/>
@@ -98,7 +99,7 @@
    </target>
    
    <target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
-      <javac deprecation="false" destdir="${build}" fork="true" source="1.4" srcdir="${src}">
+      <javac deprecation="false" destdir="${build}" fork="true" source="${java-version}" srcdir="${src}">
          <exclude name="**/*Test.java"/>
          <exclude name="**/*TestCase.java"/>     
      	<classpath refid="master-classpath"/>
@@ -107,7 +108,7 @@
    </target>
    
    <target depends="copydata" description="Build everything including JUnit    test-classes. Include debugging symbols" name="debugcompile">
-      <javac debug="true" deprecation="true" destdir="${build}" fork="true" source="1.4" srcdir="${src}">
+      <javac debug="true" deprecation="true" destdir="${build}" fork="true" source="${java-version}" srcdir="${src}">
   			<classpath refid="master-classpath" />
    		</javac>
    </target>
@@ -155,6 +156,10 @@
    <target depends="proto" description="Generate binary distribution" name="bindist">
         <tar basedir="${proto}" compression="gzip" followsymlinks="true" includes="**" longfile="gnu" tarfile="${dist}/${game_name}-bin-${org.railz.build}.tar.gz"/>
     </target>
+	
+	   <target description="Generate binary distribution" name="bin-proto-only">
+	        <tar basedir="${proto}" compression="gzip" followsymlinks="true" includes="**" longfile="gnu" tarfile="${dist}/${game_name}-bin-${org.railz.build}.tar.gz"/>
+	    </target>
 	
    <target depends="mkdirs" description="Generate source distribution" name="srcdist">
        <!-- Replace current latest with the jar file we have just created. -->
