@@ -121,50 +121,51 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     }//GEN-END:initComponents
     
     public void setTerrainLocation(Point point) {
-	FreerailsTile tile = w.getTile(point.x, point.y);
-	terrainTileViewer.setFreerailsTile(point.x, point.y);
-
-	TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES,
-		tile.getTerrainTypeNumber());
+		FreerailsTile tile = w.getTile(point.x, point.y);
+		terrainTileViewer.setFreerailsTile(point.x, point.y);
 	
-	String row = "";
-	if (! tile.getOwner().equals(Player.AUTHORITATIVE)) {
-	    NonNullElements i = new NonNullElements(KEY.PLAYERS, w,
-		    Player.AUTHORITATIVE);
-	    while (i.next()) {
-		Player player = (Player) i.getElement();
-		if (player.getPrincipal().equals(tile.getOwner())) {
-		    row += "<p>Owner: " + player.getName() + "<p>";
-		    break;
+		TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES,
+			tile.getTerrainTypeNumber());
+		
+		String row = "";
+		if (! tile.getOwner().equals(Player.AUTHORITATIVE)) {
+		    NonNullElements i = new NonNullElements(KEY.PLAYERS, w,
+			    Player.AUTHORITATIVE);
+		    while (i.next()) {
+			Player player = (Player) i.getElement();
+			if (player.getPrincipal().equals(tile.getOwner())) {
+			    row += "<p>Owner: " + player.getName() + "<p>";
+			    break;
+			}
+		    }
+		} else {
+		    row = "<p>Land Purchase cost: $" +
+		       	terrainTileViewer.getTerrainValue() + "</p>";
 		}
-	    }
-	} else {
-	    row = "<p>Land Purchase cost: $" +
-	       	terrainTileViewer.getTerrainValue() + "</p>";
-	}
+		
+		if (tile.getTrackTile() != null) {
+		    TrackRule tr = (TrackRule) w.get(KEY.TRACK_RULES,
+			    tile.getTrackRule(), Player.AUTHORITATIVE);
+		    row += Resources.get("Track Type:") + " " + 
+			Resources.get(tr.toString()) + "<br>";
+		    // TODO change tile to the train...
+		}
 	
-	if (tile.getTrackTile() != null) {
-	    TrackRule tr = (TrackRule) w.get(KEY.TRACK_RULES,
-		    tile.getTrackRule(), Player.AUTHORITATIVE);
-	    row += Resources.get("Track Type:") + " " + 
-		Resources.get(tr.toString()) + "<br>";
-	}
-
-	/* TODO print cost for building demolition/purchase */
+		/* TODO print cost for building demolition/purchase */
         String tableString = "";
-	int cargosProduced = 0;
-	int cargosConsumed = 0;
-	int cargosConverted = 0;
-	BuildingType bt = null;
-	if (tile.getBuildingTile() != null) {
-	    bt = (BuildingType) w.get(KEY.BUILDING_TYPES,
-		    tile.getBuildingTile().getType(), Player.AUTHORITATIVE);
-      
-	    row += "<b>" + bt.getName() + "</b><br>";
-	    cargosProduced = bt.getProduction().length;
-	    cargosConsumed = bt.getConsumption().length;
-	    cargosConverted = bt.getConversion().length;
-	}
+		int cargosProduced = 0;
+		int cargosConsumed = 0;
+		int cargosConverted = 0;
+		BuildingType bt = null;
+		if (tile.getBuildingTile() != null) {
+		    bt = (BuildingType) w.get(KEY.BUILDING_TYPES,
+			    tile.getBuildingTile().getType(), Player.AUTHORITATIVE);
+	      
+		    row += "<b>" + bt.getName() + "</b><br>";
+		    cargosProduced = bt.getProduction().length;
+		    cargosConsumed = bt.getConsumption().length;
+		    cargosConverted = bt.getConversion().length;
+		}
         if((cargosProduced +  cargosConsumed+ cargosConverted) > 0){
             //if the terrain type produces, consumes, or converts anything.
             tableString = "<table width=\"75%\" >";
@@ -199,20 +200,20 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         String labelString = "<html>" + row + tableString + "</html>";
         terrainDescription.setText(labelString);
         terrainName.setText(type. getDisplayName());
-        
-	if (tileImage == null) {
-	    tileImage = terrainImage.createImage(TileRenderer.TILE_SIZE.width,
-		    TileRenderer.TILE_SIZE.height);
-	    terrainImage.setIcon(new ImageIcon(tileImage));
-	}
-
-	if (tileImage != null) {
-	    Graphics g = tileImage.getGraphics();
-	    g.translate(-point.x * TileRenderer.TILE_SIZE.width, -point.y *
-		    TileRenderer.TILE_SIZE.height);
-	    mapBgRenderer.paintTile(g, point.x, point.y);
-	    g.dispose();
-	}
+	        
+		if (tileImage == null) {
+		    tileImage = terrainImage.createImage(TileRenderer.TILE_SIZE.width,
+			    TileRenderer.TILE_SIZE.height);
+		    terrainImage.setIcon(new ImageIcon(tileImage));
+		}
+	
+		if (tileImage != null) {
+		    Graphics g = tileImage.getGraphics();
+		    g.translate(-point.x * TileRenderer.TILE_SIZE.width, -point.y *
+			    TileRenderer.TILE_SIZE.height);
+		    mapBgRenderer.paintTile(g, point.x, point.y);
+		    g.dispose();
+		}
         
         repaint();
     }

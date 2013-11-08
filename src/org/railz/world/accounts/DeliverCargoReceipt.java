@@ -39,10 +39,10 @@ public class DeliverCargoReceipt extends Transaction {
 	    int subcat) {
         super(time, value);
         cargoDelivered = cb;
-	if (subcat != SUBCATEGORY_FREIGHT && subcat != SUBCATEGORY_PASSENGERS)
-	    throw new IllegalArgumentException();
-
-	subcategory = subcat;
+		if (subcat != SUBCATEGORY_FREIGHT && subcat != SUBCATEGORY_PASSENGERS)
+		    throw new IllegalArgumentException();
+	
+		subcategory = subcat;
     }
 
     public CargoBundle getCargoDelivered() {

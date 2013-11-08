@@ -79,8 +79,9 @@ public class LogManager {
 	
     }
     
-    public static Logger getLogger(String className) {
-	Logger newLogger = Logger.getLogger(className);
+
+    public static Logger getLogger(String CLASS_NAME) {
+	Logger newLogger = Logger.getLogger(CLASS_NAME);
 	newLogger.setLevel(LOG_LEVEL_DEFAULT);
 	return newLogger;
 	// return getDefault();

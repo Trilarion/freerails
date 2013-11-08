@@ -91,17 +91,17 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver, Ga
      * Processes moves confirmed or rejected by the server.
      */
     private void executeOutstandingMoves() {
-	FreerailsSerializable[] items = sychronizedQueue.read();
-	
-	for (int i = 0; i < items.length; i++) {
-	    Move move = (Move) items[i];
-	    pendingQueue.moveCommitted(move);
-	    if (move instanceof TimeTickMove)
-		timeTickElapsed();
-	    
-	    if (logger.isLoggable(Level.FINE) && !(move instanceof TimeTickMove))
-		logger.log(Level.FINE, "pending: " + pendingQueue.pendingMoves.size());
-	}
+		FreerailsSerializable[] items = sychronizedQueue.read();
+		
+		for (int i = 0; i < items.length; i++) {
+		    Move move = (Move) items[i];
+		    pendingQueue.moveCommitted(move);
+		    if (move instanceof TimeTickMove)
+			timeTickElapsed();
+		    
+		    if (logger.isLoggable(Level.FINE) && !(move instanceof TimeTickMove))
+			logger.log(Level.FINE, "pending: " + pendingQueue.pendingMoves.size());
+		}
     }
     
     /**

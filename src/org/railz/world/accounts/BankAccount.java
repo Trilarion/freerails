@@ -60,7 +60,7 @@ public class BankAccount implements FreerailsSerializable {
 	// LOGGER.logp(Level.INFO, CLASS_NAME, methodName, );
 	this.currentBalance = currentBalance + t.getValue();
 	
-	LOGGER.logp(Level.INFO, CLASS_NAME, methodName,
+	LOGGER.logp(Level.FINE, CLASS_NAME, methodName,
 		"Starting account balance: " + startingBalance + ". End account balance: "
 			+ currentBalance + ". Added: " + t.getValue());
     }

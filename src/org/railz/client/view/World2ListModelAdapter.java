@@ -24,10 +24,14 @@ package org.railz.client.view;
 import java.lang.ref.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.railz.config.LogManager;
 import org.railz.controller.*;
 import org.railz.move.*;
 import org.railz.util.*;
@@ -42,7 +46,8 @@ import org.railz.world.top.*;
  * 
  */
 public class World2ListModelAdapter implements ListModel {
-	
+	private static String CLASS_NAME = World2ListModelAdapter.class.getName();
+	private static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
 	private final KEY k;
 	
 	private final ReadOnlyWorld w;
@@ -134,7 +139,8 @@ public class World2ListModelAdapter implements ListModel {
 	}
 
 	public void addListDataListener(ListDataListener l) {
-	    System.out.println("listener added");
+		final String METHOD_NAME = "addListDataListener";
+	    LOGGER.logp(Level.SEVERE,CLASS_NAME, METHOD_NAME, "listener added");
 	    synchronized (listeners) {
 		listeners.add(l);
 	    }

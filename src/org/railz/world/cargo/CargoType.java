@@ -16,12 +16,23 @@
 
 package org.railz.world.cargo;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.railz.config.LogManager;
+import org.railz.util.StatsManager;
 import org.railz.world.common.FreerailsSerializable;
 import org.railz.world.train.TransportCategory;
 
 
 /** This class represents a type of cargo */
 final public class CargoType implements FreerailsSerializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6728150278059944968L;
+	private static final String CLASS_NAME = CargoType.class.getName();
+	private static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
     private final String name;
     private final TransportCategory category;
     /** Base value of 1 unit of cargo */
@@ -42,10 +53,50 @@ final public class CargoType implements FreerailsSerializable {
      * of elapsed time.
      */
     public long getAgeAdjustedValue(int elapsedTime) {
-	return (long) (baseValue * Math.pow(2, -((double) elapsedTime /
-			halfLife)));
+    	final String METHOD_NAME = "getAgeAdjustedValue";
+    	double halfLifeFactor = (double) elapsedTime / halfLife;
+    	
+    	long ageAdjustedValue =  (long) (baseValue * Math.pow(2, -(halfLifeFactor)));
+//    	
+//    	StatsManager man = StatsManager.getInstance(StatsManager.CARGO_TYPE);
+//    	man.addParameter("ageAdjustedValue", ageAdjustedValue);
+//    	man.addParameter("halfLifeFactor", halfLifeFactor);
+//    	man.printEntry();
+    	
+    	double weighting = 0.2;
+    	long ageAdjustedRetValue = (long) (ageAdjustedValue * weighting);
+    	//LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "halfLifeFactor = " + halfLifeFactor + " ageAdjustedValue = " + ageAdjustedValue);
+		return ageAdjustedRetValue;
     }
 
+    public long getAgeAdjustedValueOld(int elapsedTime) {
+    	final String METHOD_NAME = "getAgeAdjustedValue";
+    	double halfLifeFactor = (double) elapsedTime / halfLife;
+        	
+    	StatsManager man = StatsManager.getInstance(StatsManager.CARGO_TYPE);
+    	man.addParameter("elapsedTime", elapsedTime);
+    	man.addParameter("halfLife", halfLife);
+    	man.addParameter("halfLifeFactor", halfLifeFactor);
+    	man.addParameter("name" + getName(), 0L);
+    	man.printEntry();
+    	
+    	long ageAdjustedValue =  (long) (baseValue * Math.pow(2, -(halfLifeFactor)));
+    	
+    	StatsManager man2 = StatsManager.getInstance(StatsManager.CARGO_TYPE);
+    	man2.addParameter("baseValue", baseValue);
+    	man2.addParameter("halfLifeFactor", halfLifeFactor);
+    	man2.addParameter("ageAdjustedValue", ageAdjustedValue);
+    	man2.addParameter("totalCarriageVal", ageAdjustedValue * 40);
+    	man2.addParameter("name" + getName(), 0L);
+    	man2.printEntry();
+    	
+    	double weighting = 1;
+    	long ageAdjustedRetValue = (long) (ageAdjustedValue * weighting);
+    	//LOGGER.logp(Level.SEVERE, CLASS_NAME, METHOD_NAME, "halfLifeFactor = " + halfLifeFactor + " ageAdjustedValue = " + ageAdjustedValue);
+		return ageAdjustedRetValue;
+    }
+
+    
     /**
      * @return the value of a single unit of the cargo type
      */

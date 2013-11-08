@@ -71,134 +71,6 @@ implements MoveReceiver {
      */
     private int cargoBundleIndex;
     
-    private class StationTableCellRenderer implements TableCellRenderer {
-	public Component getTableCellRendererComponent(JTable table, Object
-		value, boolean isSelected, boolean hasFocus, int row, int
-		column) {
-	    StationTableRow str = stationTableModel.getStationTableRow(row);
-	    switch (column) {
-		case 0:
-		    return str.cargoTypeLabel;
-		case 1:
-		    return str.supplyRateLabel;
-		case 2:
-		    return str.cargoWaitingLabel;
-	    }
-	    throw new IllegalArgumentException();
-	}
-    }
-
-    private class StationTableRow {
-	public final JLabel cargoTypeLabel;
-	public final JLabel supplyRateLabel;
-	public final JLabel cargoWaitingLabel;
-	public final int cargoType;
-	public final int supplyRate;
-	public final int cargoWaiting;
-
-	public StationTableRow(int ct, int sr, int cw) {
-	    cargoType = ct;
-	    supplyRate = sr;
-	    cargoWaiting = cw;
-
-	    cargoTypeLabel = new JLabel();
-	    cargoTypeLabel.setIcon(modelRoot.getViewLists().getTrainImages()
-		    .getWagonImage(cargoType, ICON_HEIGHT));
-	    CargoType cType = (CargoType) world.get(KEY.CARGO_TYPES,
-		    cargoType, Player.AUTHORITATIVE);
-	    cargoTypeLabel.setToolTipText(cType.getDisplayName());
-
-	    supplyRateLabel = new JLabel(String.valueOf(supplyRate));
-	    cargoWaitingLabel = new JLabel(String.valueOf(cargoWaiting));
-	}
-    }
-
-    private class StationTableModel extends AbstractTableModel {
-	/**
-	 * Array of StationTableRow
-	 */
-	private ArrayList rows = new ArrayList();
-
-	public StationTableRow getStationTableRow(int row) {
-	    return (StationTableRow) rows.get(row);
-	}
-
-	public String getColumnName(int column) {
-	    switch (column) {
-		case 0:
-		    return Resources.get("Cargo");
-		case 1:
-		    return Resources.get("Supply rate");
-		case 2:
-		    return Resources.get("Cargo Waiting");
-	    }
-	    throw new IllegalArgumentException();
-	}
-
-	public StationTableModel() {
-	    updateModel();
-	}
-
-	public void updateModel() {
-	    rows.clear();
-	    if (wi.getIndex() == WorldIterator.BEFORE_FIRST) {
-		fireTableDataChanged();
-		return;
-	    }
-
-	    StationModel station = (StationModel) world.get(KEY.STATIONS,
-		    wi.getIndex(), modelRoot.getPlayerPrincipal());
-	    CargoBundle cb = (CargoBundle) world.get(KEY.CARGO_BUNDLES,
-		    station.getCargoBundleNumber(), Player.AUTHORITATIVE);
-	    for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
-		if (station.getSupply().getSupply(i) == 0)
-		    continue;
-
-		int supplyRate = station.getSupply().getSupply(i);
-		int waiting = cb.getAmount(i);
-		rows.add(new StationTableRow(i, supplyRate, waiting));
-	    }
-	    fireTableDataChanged();
-	}
-
-	public int getRowCount() {
-	    return rows.size();
-	}
-
-	public int getColumnCount() {
-	    return 3;
-	}
-
-	public Object getValueAt(int row, int column) {
-	    StationTableRow stm = (StationTableRow) rows.get(row);
-	    switch (column) {
-		case 0:
-		    return new Integer(stm.cargoType);
-		case 1:
-		    return new Integer(stm.supplyRate);
-		case 2:
-		    return new Integer(stm.cargoWaiting);
-	    }
-	    throw new IllegalArgumentException();
-	}
-    }
-
-    ActionListener infoJButtonListener = new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	    StationJPanel sjp = new StationJPanel();
-	    sjp.setup(modelRoot, new ObjectKey(KEY.STATIONS,
-			modelRoot.getPlayerPrincipal(), wi.getIndex()));
-	    guiRoot.getDialogueBoxController().showContent(sjp);
-	}
-    };
-
-    /** Creates new form StationInfoJPanel */
-    public StationInfoJPanel(GUIRoot gr) {
-        guiRoot = gr;
-        graphicsResourceFinder = gr.getGraphicsResourceFinder();
-        initComponents();
-	jButton1.addActionListener(infoJButtonListener);
-    }
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -327,6 +199,138 @@ implements MoveReceiver {
 
     }//GEN-END:initComponents
     
+    
+    private class StationTableCellRenderer implements TableCellRenderer {
+		public Component getTableCellRendererComponent(JTable table, Object
+			value, boolean isSelected, boolean hasFocus, int row, int
+			column) {
+		    StationTableRow str = stationTableModel.getStationTableRow(row);
+		    switch (column) {
+			case 0:
+			    return str.cargoTypeLabel;
+			case 1:
+			    return str.supplyRateLabel;
+			case 2:
+			    return str.cargoWaitingLabel;
+		    }
+		    throw new IllegalArgumentException();
+		}
+    }
+
+    private class StationTableRow {
+		public final JLabel cargoTypeLabel;
+		public final JLabel supplyRateLabel;
+		public final JLabel cargoWaitingLabel;
+		public final int cargoType;
+		public final int supplyRate;
+		public final int cargoWaiting;
+	
+		public StationTableRow(int ct, int sr, int cw) {
+		    cargoType = ct;
+		    supplyRate = sr;
+		    cargoWaiting = cw;
+	
+		    cargoTypeLabel = new JLabel();
+		    cargoTypeLabel.setIcon(modelRoot.getViewLists().getTrainImages()
+			    .getWagonImage(cargoType, ICON_HEIGHT));
+		    CargoType cType = (CargoType) world.get(KEY.CARGO_TYPES,
+			    cargoType, Player.AUTHORITATIVE);
+		    cargoTypeLabel.setToolTipText(cType.getDisplayName());
+	
+		    supplyRateLabel = new JLabel(String.valueOf(supplyRate));
+		    cargoWaitingLabel = new JLabel(String.valueOf(cargoWaiting));
+		}
+    }
+
+    private class StationTableModel extends AbstractTableModel {
+		/**
+		 * Array of StationTableRow
+		 */
+		private ArrayList rows = new ArrayList();
+	
+		public StationTableRow getStationTableRow(int row) {
+		    return (StationTableRow) rows.get(row);
+		}
+	
+		public String getColumnName(int column) {
+		    switch (column) {
+			case 0:
+			    return Resources.get("Cargo");
+			case 1:
+			    return Resources.get("Supply rate");
+			case 2:
+			    return Resources.get("Cargo Waiting");
+		    }
+		    throw new IllegalArgumentException();
+		}
+	
+		public StationTableModel() {
+		    updateModel();
+		}
+	
+		public void updateModel() {
+		    rows.clear();
+		    if (wi.getIndex() == WorldIterator.BEFORE_FIRST) {
+			fireTableDataChanged();
+			return;
+		    }
+	
+		    StationModel station = (StationModel) world.get(KEY.STATIONS,
+			    wi.getIndex(), modelRoot.getPlayerPrincipal());
+		    CargoBundle cb = (CargoBundle) world.get(KEY.CARGO_BUNDLES,
+			    station.getCargoBundleNumber(), Player.AUTHORITATIVE);
+		    for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
+			if (station.getSupply().getSupply(i) == 0)
+			    continue;
+	
+			int supplyRate = station.getSupply().getSupply(i);
+			int waiting = cb.getAmount(i);
+			rows.add(new StationTableRow(i, supplyRate, waiting));
+		    }
+		    fireTableDataChanged();
+		}
+	
+		public int getRowCount() {
+		    return rows.size();
+		}
+	
+		public int getColumnCount() {
+		    return 3;
+		}
+	
+		public Object getValueAt(int row, int column) {
+		    StationTableRow stm = (StationTableRow) rows.get(row);
+		    switch (column) {
+			case 0:
+			    return new Integer(stm.cargoType);
+			case 1:
+			    return new Integer(stm.supplyRate);
+			case 2:
+			    return new Integer(stm.cargoWaiting);
+		    }
+		    throw new IllegalArgumentException();
+		}
+    }
+
+    ActionListener infoJButtonListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    StationJPanel sjp = new StationJPanel();
+		    sjp.setup(modelRoot, new ObjectKey(KEY.STATIONS,
+				modelRoot.getPlayerPrincipal(), wi.getIndex()));
+		    guiRoot.getDialogueBoxController().showContent(sjp);
+		}
+    };
+
+    /** Creates new form StationInfoJPanel */
+    public StationInfoJPanel(GUIRoot gr) {
+        guiRoot = gr;
+        graphicsResourceFinder = gr.getGraphicsResourceFinder();
+        initComponents();
+        jButton1.addActionListener(infoJButtonListener);
+    }
+    
+
+    
     private void previousStationActionPerformed(
     java.awt.event.ActionEvent evt) {
 		//GEN-FIRST:event_previousStationActionPerformed
@@ -375,55 +379,60 @@ implements MoveReceiver {
 	    setCellRenderer(stationTableCellRenderer);
     }
     
-    public void setStation(int stationNumber) {
+    public void displayStation(Integer stationNumber) {
+    	if (stationNumber == null) {
+    		// TODO log
+    		return;
+    	}
         this.wi.gotoIndex(stationNumber);
         display();
     }
     
     public void display() {
-	jButton1.setEnabled(wi.getRowNumber() >= 0);
+    	jButton1.setEnabled(wi.getRowNumber() >= 0);
 
+    	// Update station buttons
         if (wi.getRowNumber() > 0) {
             this.previousStation.setEnabled(true);
         } else {
             this.previousStation.setEnabled(false);
         }
-        
         if (wi.getRowNumber() < (wi.size() - 1)) {
             this.nextStation.setEnabled(true);
         } else {
             this.nextStation.setEnabled(false);
         }
         stationTableModel.updateModel();
-	jPanel1.removeAll();
+        jPanel1.removeAll();
 
         int stationNumber = wi.getIndex();
-        String label;
+        
+        String label = null;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             StationModel station =
-	    (StationModel) world.get(KEY.STATIONS, stationNumber,
+            		(StationModel) world.get(KEY.STATIONS, stationNumber,
 				     modelRoot.getPlayerPrincipal());
             FreerailsTile tile = world.getTile(station.x, station.y);
-	    String stationTypeName = ((BuildingType)
-		    world.get(KEY.BUILDING_TYPES,
-			tile.getBuildingTile().getType(),
-			Player.AUTHORITATIVE)).getName();
+		    String stationTypeName = ((BuildingType)
+			    world.get(KEY.BUILDING_TYPES,
+				tile.getBuildingTile().getType(),
+				Player.AUTHORITATIVE)).getName();
             cargoBundleIndex = station.getCargoBundleNumber();
             CargoBundle cargoWaiting = (CargoBundle) world.get
-		(KEY.CARGO_BUNDLES, station.getCargoBundleNumber());
+            		(KEY.CARGO_BUNDLES, station.getCargoBundleNumber());
             String title = station.getStationName()
-		+ " (" + stationTypeName + ")";
+            		+ " (" + stationTypeName + ")";
             for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
                 //get the values
-		boolean isDemanded = station.getDemand().isCargoDemanded(i);
-		if (! isDemanded)
-		    continue;
-		JLabel jl = new JLabel(modelRoot.getViewLists()
-			.getTrainImages().getWagonImage(i, ICON_HEIGHT));
-		CargoType ct = (CargoType) world.get(KEY.CARGO_TYPES,
-			i, Player.AUTHORITATIVE);
-		jl.setToolTipText(ct.getDisplayName());
-		jPanel1.add(jl);
+				boolean isDemanded = station.getDemand().isCargoDemanded(i);
+				if (! isDemanded)
+				    continue;
+				JLabel jl = new JLabel(modelRoot.getViewLists()
+					.getTrainImages().getWagonImage(i, ICON_HEIGHT));
+				CargoType ct = (CargoType) world.get(KEY.CARGO_TYPES,
+					i, Player.AUTHORITATIVE);
+				jl.setToolTipText(ct.getDisplayName());
+				jPanel1.add(jl);
             }
             label = title;
         } else {

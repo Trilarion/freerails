@@ -23,6 +23,7 @@ import java.util.HashMap;
 import org.railz.controller.TrainPathFinder;
 import org.railz.move.ChangeTrainMove;
 import org.railz.move.Move;
+import org.railz.server.model.cargo.DropOffAndPickupCargoMoveGenerator;
 import org.railz.world.common.GameCalendar;
 import org.railz.world.common.GameTime;
 import org.railz.world.common.IntLine;

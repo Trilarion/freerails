@@ -26,6 +26,7 @@ import junit.framework.TestCase;
 import org.railz.controller.*;
 import org.railz.move.Move;
 import org.railz.move.MoveStatus;
+import org.railz.server.model.cargo.DropOffAndPickupCargoMoveGenerator;
 import org.railz.world.accounts.BankAccount;
 import org.railz.world.cargo.CargoBatch;
 import org.railz.world.cargo.CargoBundle;

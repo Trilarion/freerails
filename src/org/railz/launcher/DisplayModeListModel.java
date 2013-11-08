@@ -62,8 +62,11 @@ public class DisplayModeListModel implements ListModel {
      }
     
     public Object getElementAt(int index) {
-	if (index >= modes.length)
-	    return null;
+		if (index >= modes.length || index == -1) {
+			System.out.println("Length = " + modes.length);
+			System.out.println("index = " + index);
+		    return null;
+		}
 
         return modes[index];
     }

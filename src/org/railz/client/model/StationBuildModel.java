@@ -65,26 +65,27 @@ public class StationBuildModel {
  
     public StationBuildModel(StationBuilder sb, ReadOnlyWorld
 	    world, ViewLists vl) {
-	stationBuilder = sb;
-	this.world = world;
-	TileRendererList tileRendererList =
-	    vl.getBuildingViewList();
-	for (int i = 0; i < world.size(KEY.BUILDING_TYPES); i++) {
-	    BuildingType buildingType =
-		(BuildingType)world.get(KEY.BUILDING_TYPES, i);
-	    if (buildingType.getCategory() == BuildingType.CATEGORY_STATION) {
-		TileRenderer renderer =
-		    tileRendererList.getTileViewWithNumber(i);
-		StationChooseAction action = new StationChooseAction(i);
-		String stationType = buildingType.getName();
-		action.putValue(Action.SHORT_DESCRIPTION, stationType + " @ $" +
-			buildingType.getBaseValue());
-		action.putValue(Action.NAME, "Build " + stationType);
-		action.putValue(Action.SMALL_ICON, new
-			ImageIcon(renderer.getDefaultIcon()));
-		stationChooseActions.add(action);	
-	    }
-	}
+    	
+		stationBuilder = sb;
+		this.world = world;
+		TileRendererList tileRendererList =
+		    vl.getBuildingViewList();
+		for (int i = 0; i < world.size(KEY.BUILDING_TYPES); i++) {
+		    BuildingType buildingType =
+			(BuildingType)world.get(KEY.BUILDING_TYPES, i);
+		    if (buildingType.getCategory() == BuildingType.CATEGORY_STATION) {
+			TileRenderer renderer =
+			    tileRendererList.getTileViewWithNumber(i);
+			StationChooseAction action = new StationChooseAction(i);
+			String stationType = buildingType.getName();
+			action.putValue(Action.SHORT_DESCRIPTION, stationType + " @ $" +
+				buildingType.getBaseValue());
+			action.putValue(Action.NAME, "Build " + stationType);
+			action.putValue(Action.SMALL_ICON, new
+				ImageIcon(renderer.getDefaultIcon()));
+			stationChooseActions.add(action);	
+		    }
+		}
     }
 
     public Action[] getStationChooseActions() {

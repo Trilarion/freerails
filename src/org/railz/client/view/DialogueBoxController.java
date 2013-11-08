@@ -33,6 +33,7 @@ import javax.swing.event.*;
 import org.railz.client.common.ScreenHandler;
 import org.railz.client.model.ModelRoot;
 import org.railz.client.renderer.ViewLists;
+import org.railz.client.view.utils.StationHelper;
 import org.railz.controller.MoveChainFork;
 import org.railz.controller.UntriedMoveReceiver;
 import org.railz.move.ChangeProductionAtEngineShopMove;
@@ -251,7 +252,7 @@ public class DialogueBoxController {
     
     public void showStationInfo(int stationNumber) {
         try {
-            stationInfo.setStation(stationNumber);
+            stationInfo.displayStation(stationNumber);
             showContent(stationInfo);
         } catch (NoSuchElementException e) {
             System.err.println("Station " + stationNumber + " does not exist!");
@@ -388,27 +389,36 @@ public class DialogueBoxController {
     }
     
     public void showStationOrTerrainInfo(int x, int y) {
-        FreerailsTile tile = world.getTile(x, y);
-	BuildingTile bTile = tile.getBuildingTile();
-	if (bTile != null) {
-	    BuildingType bType = (BuildingType) world.get(KEY.BUILDING_TYPES,
-		    tile.getTrackRule(), Player.AUTHORITATIVE);
-	    if (bType.getCategory() == BuildingType.CATEGORY_STATION) {
-		for (int i = 0; i < world.size(KEY.STATIONS,
-			    modelRoot.getPlayerPrincipal()); i++) {
-		    StationModel station =
-			(StationModel) world.get(KEY.STATIONS, i,
-						 modelRoot.getPlayerPrincipal());
-		    if (null != station && station.x == x && station.y == y) {
-			this.showStationInfo(i);
+    	Integer stationNumber = StationHelper.retrieveStationAtLocation(x, y, world, modelRoot);
+    	
+    	if (stationNumber != null) {
+			this.showStationInfo(stationNumber);
 			return;
-		    }
-		}
-		throw new IllegalStateException(
-			"Could find station at " + x + ", " + y);
-	    }
-        }
-	this.showTerrainInfo(x, y);
+    	}
+    	else {
+    		this.showTerrainInfo(x, y);
+    	}
+    	// TODO verify and clean out
+//        FreerailsTile tile = world.getTile(x, y);
+//		BuildingTile bTile = tile.getBuildingTile();
+//		if (bTile != null) {
+//		    BuildingType bType = (BuildingType) world.get(KEY.BUILDING_TYPES,
+//			    tile.getTrackRule(), Player.AUTHORITATIVE);
+//		    if (bType.getCategory() == BuildingType.CATEGORY_STATION) {
+//			for (int i = 0; i < world.size(KEY.STATIONS,
+//				    modelRoot.getPlayerPrincipal()); i++) {
+//			    StationModel station =
+//				(StationModel) world.get(KEY.STATIONS, i,
+//							 modelRoot.getPlayerPrincipal());
+//			    if (null != station && station.x == x && station.y == y) {
+
+//			    }
+//			}
+//			throw new IllegalStateException(
+//				"Could find station at " + x + ", " + y);
+//		    }
+//	        }
+
     }
 
     public Component createDialog(JComponent content, String title) {

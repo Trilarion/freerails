@@ -163,28 +163,29 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 		private Point tiledelta = new Point();
 
 		public void mousePressed(MouseEvent evt) {
+			
 		    if (SwingUtilities.isLeftMouseButton(evt)) {
-			int x = evt.getX();
-			int y = evt.getY();
-			float scale = getScale();
-			Dimension tileSize = new Dimension((int)scale,
-				(int)scale);
-			mapCursor.tryMoveCursor(new Point(x / tileSize.width,
-				    y / tileSize.height));
-			MapViewJComponentConcrete.this.requestFocus();
+				int x = evt.getX();
+				int y = evt.getY();
+				float scale = getScale();
+				Dimension tileSize = new Dimension((int)scale,
+					(int)scale);
+				mapCursor.tryMoveCursor(new Point(x / tileSize.width,
+					    y / tileSize.height));
+				MapViewJComponentConcrete.this.requestFocus();
 		    }
 
 		    if (SwingUtilities.isRightMouseButton(evt)) {
-			MapViewJComponentConcrete.this.setCursor(Cursor.getPredefinedCursor((LINEAR_ACCEL > 0)
-				    ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
-			lastMouseLocation.x = evt.getX();
-			lastMouseLocation.y = evt.getY();
-			screenLocation.x = evt.getX();
-			screenLocation.y = evt.getY();
-			sigmadelta.x = 0;
-			sigmadelta.y = 0;
-			javax.swing.SwingUtilities.convertPointToScreen(screenLocation,
-				MapViewJComponentConcrete.this);
+				MapViewJComponentConcrete.this.setCursor(Cursor.getPredefinedCursor((LINEAR_ACCEL > 0)
+					    ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
+				lastMouseLocation.x = evt.getX();
+				lastMouseLocation.y = evt.getY();
+				screenLocation.x = evt.getX();
+				screenLocation.y = evt.getY();
+				sigmadelta.x = 0;
+				sigmadelta.y = 0;
+				javax.swing.SwingUtilities.convertPointToScreen(screenLocation,
+					MapViewJComponentConcrete.this);
 		    }
 		}
 

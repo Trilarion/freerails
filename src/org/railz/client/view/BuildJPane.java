@@ -75,32 +75,32 @@ public class BuildJPane extends javax.swing.JPanel {
 	}
     };
     
-    private void setBuildPanel(String s) {
-	/* TODO */
-	if (currentPanel != null) {
-	    remove(currentPanel);
-	}
-	if (s.equals("Track")) {
-		currentPanel = new TrackBuildJPanel();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = gbc.weighty = 1.0;
-
-		add(currentPanel, gbc);
-		((TrackBuildJPanel) currentPanel).setup(viewLists, modelRoot);
-		revalidate();
-	} else if (s.equals("Station")) {
-	    currentPanel = new StationBuildJPanel();
-	    GridBagConstraints gbc = new GridBagConstraints();
-	    gbc.gridx = 0;
-	    gbc.fill = GridBagConstraints.BOTH;
-	    gbc.weightx = gbc.weighty = 1.0;
-
-	    add(currentPanel, gbc);
-	    ((StationBuildJPanel) currentPanel).setup(viewLists, modelRoot);
-	    revalidate();
-	}
+    private void setBuildPanel(String panelType) {
+		/* TODO */
+		if (currentPanel != null) {
+		    remove(currentPanel);
+		}
+		if (panelType.equals("Track")) {
+			currentPanel = new TrackBuildJPanel();
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.gridx = 0;
+			gbc.fill = GridBagConstraints.BOTH;
+			gbc.weightx = gbc.weighty = 1.0;
+	
+			add(currentPanel, gbc);
+			((TrackBuildJPanel) currentPanel).setup(viewLists, modelRoot);
+			revalidate();
+		} else if (panelType.equals("Station")) {
+		    currentPanel = new StationBuildJPanel();
+		    GridBagConstraints gbc = new GridBagConstraints();
+		    gbc.gridx = 0;
+		    gbc.fill = GridBagConstraints.BOTH;
+		    gbc.weightx = gbc.weighty = 1.0;
+	
+		    add(currentPanel, gbc);
+		    ((StationBuildJPanel) currentPanel).setup(viewLists, modelRoot);
+		    revalidate();
+		}
     }
 
 
