@@ -17,44 +17,55 @@
 package org.railz.world.top;
 
 import java.io.ObjectStreamException;
+
 import org.railz.world.common.FreerailsSerializable;
 
-
-/** <p>This class provides a set of keys to access the items of which there can only be
- * one instance in the game world in the game world (for example, the current time).</P>
- *
- * <p>It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
- * item 21)</p>
+/**
+ * <p>
+ * This class provides a set of keys to access the items of which there can only
+ * be one instance in the game world in the game world (for example, the current
+ * time).
+ * </P>
+ * 
+ * <p>
+ * It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
+ * item 21)
+ * </p>
  */
 public class ITEM implements FreerailsSerializable {
-    /** Maps key numbers to KEYs */
-    private static ITEM[] keys = new ITEM[getNumberOfKeys()];
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9207996846965820452L;
 
-    //START OF KEYS
-    public static final ITEM TIME = new ITEM();
-    public static final ITEM CALENDAR = new ITEM();
-    public static final ITEM ECONOMY = new ITEM();
-    public static final ITEM VICTORY_CONDITIONS = new ITEM();
+	/** Maps key numbers to KEYs */
+	private static ITEM[] keys = new ITEM[getNumberOfKeys()];
 
-    //END OF KEYS		
-    private static int numberOfKeys = 0;
-    private final int keyNumber;
+	// START OF KEYS
+	public static final ITEM TIME = new ITEM();
+	public static final ITEM CALENDAR = new ITEM();
+	public static final ITEM ECONOMY = new ITEM();
+	public static final ITEM VICTORY_CONDITIONS = new ITEM();
 
-    private ITEM() {
-        this.keyNumber = numberOfKeys;
-        keys[keyNumber] = this;
-        numberOfKeys++;
-    }
+	// END OF KEYS
+	private static int numberOfKeys = 0;
+	private final int keyNumber;
 
-    static int getNumberOfKeys() {
-        return ITEM.class.getFields().length;
-    }
+	private ITEM() {
+		this.keyNumber = numberOfKeys;
+		keys[keyNumber] = this;
+		numberOfKeys++;
+	}
 
-    int getKeyNumber() {
-        return keyNumber;
-    }
+	static int getNumberOfKeys() {
+		return ITEM.class.getFields().length;
+	}
 
-    private Object readResolve() throws ObjectStreamException {
-        return keys[this.keyNumber];
-    }
+	int getKeyNumber() {
+		return keyNumber;
+	}
+
+	private Object readResolve() throws ObjectStreamException {
+		return keys[this.keyNumber];
+	}
 }

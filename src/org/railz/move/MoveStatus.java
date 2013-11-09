@@ -29,47 +29,54 @@ import org.railz.world.common.FreerailsSerializable;
  * @author lindsal
  */
 final public class MoveStatus implements FreerailsSerializable {
-    private static final String CLASS_NAME = MoveStatus.class.getName();
-    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
-    
-    public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
-    
-    /**
-     * Not public - only instances of Move should need to access this.
-     */
-    static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
-    
-    static final boolean debug = (System.getProperty("org.railz.move.MoveStatus.debug") != null);
-    
-    public final boolean ok;
-    public final String message;
-    
-    /**
-     * Avoid creating a duplicate when deserializing.
-     */
-    private Object readResolve() {
-	if (ok) {
-	    return MOVE_OK;
-	} else {
-	    return this;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5559262702680690458L;
+	private static final String CLASS_NAME = MoveStatus.class.getName();
+	private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+
+	public static final MoveStatus MOVE_OK = new MoveStatus(true,
+			"Move accepted");
+
+	/**
+	 * Not public - only instances of Move should need to access this.
+	 */
+	static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
+
+	static final boolean debug = (System
+			.getProperty("org.railz.move.MoveStatus.debug") != null);
+
+	public final boolean ok;
+	public final String message;
+
+	/**
+	 * Avoid creating a duplicate when deserializing.
+	 */
+	private Object readResolve() {
+		if (ok) {
+			return MOVE_OK;
+		} else {
+			return this;
+		}
 	}
-    }
-    
-    private MoveStatus(boolean ok, String mess) {
-	this.ok = ok;
-	this.message = mess;
-    }
-    
-    public static MoveStatus moveFailed(String reason) {
-	logger.log(Level.FINE, "Move failed becase: " + reason);
-	return new MoveStatus(false, reason);
-    }
-    
-    public boolean isOk() {
-	return ok;
-    }
-    
-    public String toString() {
-	return message;
-    }
+
+	private MoveStatus(boolean ok, String mess) {
+		this.ok = ok;
+		this.message = mess;
+	}
+
+	public static MoveStatus moveFailed(String reason) {
+		logger.log(Level.FINE, "Move failed becase: " + reason);
+		return new MoveStatus(false, reason);
+	}
+
+	public boolean isOk() {
+		return ok;
+	}
+
+	@Override
+	public String toString() {
+		return message;
+	}
 }

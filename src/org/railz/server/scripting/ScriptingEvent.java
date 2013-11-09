@@ -33,42 +33,48 @@ import org.railz.world.top.ReadOnlyWorld;
  * w, GameTime startTime, GameTime endTime, Map params)
  */
 public abstract class ScriptingEvent implements FreerailsSerializable {
-    protected GameTime startTime;
-    protected GameTime endTime;
-    private static final String CLASS_NAME = ScriptingEvent.class.getName();
-    private static final Logger logger = LogManager.getLogger(CLASS_NAME);
-    
-    /** @return the scheduled start time of the event */
-    public GameTime getStartTime() {
-	return startTime;
-    }
-    
-    /** @return the scheduled end time of the event */
-    public GameTime getEndTime() {
-	return endTime;
-    }
-    
-    protected ScriptingEvent(GameTime startTime, GameTime endTime) {
-	this.startTime = startTime;
-	this.endTime = endTime;
-    }
-    
-    /** @return a Move to be executed when the event occurs */
-    public abstract Move getMove(ReadOnlyWorld w);
-    
-    /** Factory method for creating events */
-    public static ScriptingEvent createEvent(String className, ReadOnlyWorld w, GameTime startTime,
-	    GameTime endTime, Map attributes) {
-	try {
-	    Class seClass = ScriptingEvent.class.getClassLoader().loadClass(
-		    "org.railz.server.scripting." + className);
-	    Constructor seConstructor = seClass.getConstructor(new Class[] { ReadOnlyWorld.class,
-		    GameTime.class, GameTime.class, Map.class });
-	    return (ScriptingEvent) seConstructor.newInstance(new Object[] { w, startTime, endTime,
-		    attributes });
-	} catch (Exception e) {
-	    logger.log(Level.WARNING, "ScriptingEvent caught " + e.getMessage(), e);
-	    return null;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4839492777012779949L;
+	protected GameTime startTime;
+	protected GameTime endTime;
+	private static final String CLASS_NAME = ScriptingEvent.class.getName();
+	private static final Logger logger = LogManager.getLogger(CLASS_NAME);
+
+	/** @return the scheduled start time of the event */
+	public GameTime getStartTime() {
+		return startTime;
 	}
-    }
+
+	/** @return the scheduled end time of the event */
+	public GameTime getEndTime() {
+		return endTime;
+	}
+
+	protected ScriptingEvent(GameTime startTime, GameTime endTime) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
+	/** @return a Move to be executed when the event occurs */
+	public abstract Move getMove(ReadOnlyWorld w);
+
+	/** Factory method for creating events */
+	public static ScriptingEvent createEvent(String className, ReadOnlyWorld w,
+			GameTime startTime, GameTime endTime, Map attributes) {
+		try {
+			Class seClass = ScriptingEvent.class.getClassLoader().loadClass(
+					"org.railz.server.scripting." + className);
+			Constructor seConstructor = seClass.getConstructor(new Class[] {
+					ReadOnlyWorld.class, GameTime.class, GameTime.class,
+					Map.class });
+			return (ScriptingEvent) seConstructor.newInstance(new Object[] { w,
+					startTime, endTime, attributes });
+		} catch (Exception e) {
+			logger.log(Level.WARNING,
+					"ScriptingEvent caught " + e.getMessage(), e);
+			return null;
+		}
+	}
 }

@@ -16,107 +16,118 @@
  */
 package org.railz.world.player;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
-import org.railz.world.common.*;
+import org.railz.world.common.FreerailsSerializable;
+import org.railz.world.common.GameTime;
+
 /**
  * Describes a statistic about the player.
  */
 public class Statistic implements FreerailsSerializable {
-    /** ArrayList of DataPoint */
-    private ArrayList dataPoints;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3373602532201465125L;
 
-    private String description;
-    private String name;
-    private String yUnit;
+	/** ArrayList of DataPoint */
+	private ArrayList dataPoints;
 
-    public static class DataPoint implements FreerailsSerializable {
-	/** x-value */
-	public final GameTime time;
+	private String description;
+	private String name;
+	private String yUnit;
 
-	/** y-value */
-	public final int y;
+	public static class DataPoint implements FreerailsSerializable {
+		/** x-value */
+		public final GameTime time;
 
-	DataPoint(GameTime x, int y) {
-	    time = x;
-	    this.y = y;
+		/** y-value */
+		public final int y;
+
+		DataPoint(GameTime x, int y) {
+			time = x;
+			this.y = y;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (o == null || !(o instanceof DataPoint))
+				return false;
+
+			DataPoint dp = (DataPoint) o;
+			return time.equals(dp.time) && y == dp.y;
+		}
+
+		@Override
+		public int hashCode() {
+			return y;
+		}
 	}
 
-	public boolean equals(Object o) {
-	    if (o == null || !(o instanceof DataPoint))
-		return false;
-
-	    DataPoint dp = (DataPoint) o;
-	    return time.equals(dp.time) && y == dp.y;
+	/**
+	 * @return an ArrayList of DataPoint
+	 */
+	public ArrayList getData() {
+		return dataPoints;
 	}
 
-	public int hashCode() {
-	    return y;
+	/**
+	 * @return a resource key to a description of the statistic
+	 */
+	public String getDescription() {
+		return description;
 	}
-    }
 
-    /**
-     * @return an ArrayList of DataPoint
-     */
-    public ArrayList getData() {
-	return dataPoints;
-    }
+	/**
+	 * Add a data point
+	 */
+	public void addDataPoint(GameTime x, int y) {
+		dataPoints.add(new DataPoint(x, y));
+	}
 
-    /**
-     * @return a resource key to a description of the statistic
-     */
-    public String getDescription() {
-	return description;
-    }
+	/**
+	 * Remove a data point
+	 */
+	public void removeDataPoint() {
+		dataPoints.remove(dataPoints.size() - 1);
+	}
 
-    /**
-     * Add a data point
-     */
-    public void addDataPoint(GameTime x, int y) {
-	dataPoints.add(new DataPoint(x, y));
-    }
+	/**
+	 * @return a resource key to the name of the statistic
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Remove a data point
-     */
-    public void removeDataPoint() {
-	dataPoints.remove(dataPoints.size() - 1);
-    }
+	/**
+	 * @return a resource key to the y unit name
+	 */
+	public String getYUnit() {
+		return yUnit;
+	}
 
-    /**
-     * @return a resource key to the name of the statistic
-     */
-    public String getName() {
-	return name;
-    }
+	public Statistic(String name, String description, String yUnit) {
+		dataPoints = new ArrayList();
+		this.description = description;
+		this.name = name;
+		this.yUnit = yUnit;
+	}
 
-    /**
-     * @return a resource key to the y unit name
-     */
-    public String getYUnit() {
-	return yUnit;
-    }
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.writeUnshared(dataPoints);
+		oos.writeObject(description);
+		oos.writeObject(name);
+		oos.writeObject(yUnit);
+	}
 
-    public Statistic(String name, String description, String yUnit) {
-	dataPoints = new ArrayList();
-	this.description = description;
-	this.name = name;
-	this.yUnit = yUnit;
-    }
-
-    private void writeObject(ObjectOutputStream oos) throws IOException {
-	oos.writeUnshared(dataPoints);
-	oos.writeObject(description);
-	oos.writeObject(name);
-	oos.writeObject(yUnit);
-    }
-
-    private void readObject(ObjectInputStream ois) throws IOException,
-    ClassNotFoundException {
-	dataPoints = (ArrayList) ois.readUnshared();
-	description = (String) ois.readObject();
-	name = (String) ois.readObject();
-	yUnit = (String) ois.readObject();
-    }
+	private void readObject(ObjectInputStream ois) throws IOException,
+			ClassNotFoundException {
+		dataPoints = (ArrayList) ois.readUnshared();
+		description = (String) ois.readObject();
+		name = (String) ois.readObject();
+		yUnit = (String) ois.readObject();
+	}
 }

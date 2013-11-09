@@ -18,9 +18,13 @@ package org.railz.controller;
 
 import org.railz.world.common.FreerailsSerializable;
 
-
 /**
  * Abstract root class from which client-server commands are subclassed.
  */
 public abstract class ServerCommand implements FreerailsSerializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4198682888256713638L;
 }

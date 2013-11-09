@@ -23,35 +23,41 @@ package org.railz.world.building;
 
 import org.railz.world.common.FreerailsSerializable;
 
-
-/** This class represents the demand for a certain cargo for consumption.
- *
+/**
+ * This class represents the demand for a certain cargo for consumption.
+ * 
  * @author Luke
- *
+ * 
  */
 public class Consumption implements FreerailsSerializable {
-    private final int cargoType;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7480278547248317691L;
 
-    /** The number of tiles that must be within the station radius before
-     * the station demands the cargo.
-     */
-    private final int prerequisite;
+	private final int cargoType;
 
-    public Consumption(int cargoType) {
-        this.cargoType = cargoType;
-        prerequisite = 1; //default value.
-    }
+	/**
+	 * The number of tiles that must be within the station radius before the
+	 * station demands the cargo.
+	 */
+	private final int prerequisite;
 
-    public Consumption(int cargoType, int prerequisite) {
-        this.cargoType = cargoType;
-        this.prerequisite = prerequisite; //default value.
-    }
+	public Consumption(int cargoType) {
+		this.cargoType = cargoType;
+		prerequisite = 1; // default value.
+	}
 
-    public int getCargoType() {
-        return cargoType;
-    }
+	public Consumption(int cargoType, int prerequisite) {
+		this.cargoType = cargoType;
+		this.prerequisite = prerequisite; // default value.
+	}
 
-    public int getPrerequisite() {
-        return prerequisite;
-    }
+	public int getCargoType() {
+		return cargoType;
+	}
+
+	public int getPrerequisite() {
+		return prerequisite;
+	}
 }

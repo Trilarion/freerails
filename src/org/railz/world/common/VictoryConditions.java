@@ -16,35 +16,36 @@
  */
 package org.railz.world.common;
 
-import org.railz.util.Resources.*;
-import org.railz.world.player.*;
-import org.railz.world.top.*;
+import org.railz.util.Resources.ResourceKey;
 
 /**
  * Provides a description of victory conditions for the game
  */
 public class VictoryConditions implements FreerailsSerializable {
-    private final ResourceKey description;
-    private final String name;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4467220166933287375L;
+	private final ResourceKey description;
+	private final String name;
 
-    /**
-     * @return a resource key to the name of this scenario.
-     */
-    public String getName() {
-	return name;
-    }
+	/**
+	 * @return a resource key to the name of this scenario.
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @return a resource key to a textual description of the conditions which
-     * must be met in order to be victorious
-     */
-    public ResourceKey getDescription() {
-	return description;
-    }
+	/**
+	 * @return a resource key to a textual description of the conditions which
+	 *         must be met in order to be victorious
+	 */
+	public ResourceKey getDescription() {
+		return description;
+	}
 
-    public VictoryConditions(String name, ResourceKey description) {
-	this.description = description;
-	this.name = name;
-    }
+	public VictoryConditions(String name, ResourceKey description) {
+		this.description = description;
+		this.name = name;
+	}
 }
-

@@ -18,119 +18,128 @@ package org.railz.world.track;
 
 import java.awt.Point;
 
-import org.railz.world.common.*;
+import org.railz.world.common.FreerailsSerializable;
 import org.railz.world.player.Player;
-import org.railz.world.top.*;
+import org.railz.world.top.KEY;
+import org.railz.world.top.ReadOnlyWorld;
 
 /**
  * The properties of a given tile which are specific to the track layer
+ * 
  * @author rtuck99@users.berlios.de
  */
 public abstract class TrackTile implements FreerailsSerializable {
-    /**
-     * Defines the number of Deltas per track tile. One track tile is defined
-     * to be this many "Deltas" in width / height. A Delta is a
-     * display-independent measurement of length. This allows clients to
-     * calculate fine positions regardless of zoom-level etc. Pick an odd
-     * number since integer division offsets the centre-point from the
-     * middle and makes northeasterly diagonals occupy the correct tiles along
-     * their length.
-     */
-    public static final int DELTAS_PER_TILE = 31;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7473078464554084033L;
 
-    protected byte trackLayout;
+	/**
+	 * Defines the number of Deltas per track tile. One track tile is defined to
+	 * be this many "Deltas" in width / height. A Delta is a display-independent
+	 * measurement of length. This allows clients to calculate fine positions
+	 * regardless of zoom-level etc. Pick an odd number since integer division
+	 * offsets the centre-point from the middle and makes northeasterly
+	 * diagonals occupy the correct tiles along their length.
+	 */
+	public static final int DELTAS_PER_TILE = 31;
 
-    /**
-     * The trackLock is used to control access to track. In order to traverse
-     * a track square, the train must acquire a lock for the track, which is
-     * dependent upon the directions the train is to travel in
-     */
-    protected transient byte trackLock;
+	protected byte trackLayout;
 
-    /**
-     * An index into the TRACK_RULES database
-     */
-    private int trackType;
+	/**
+	 * The trackLock is used to control access to track. In order to traverse a
+	 * track square, the train must acquire a lock for the track, which is
+	 * dependent upon the directions the train is to travel in
+	 */
+	protected transient byte trackLock;
 
-    /**
-     * Attempt to acquire the track lock for the specified directions
-     * @param directions specifies the directions of travel the train will
-     * take when traversing the tile.
-     * @return true if the lock could be acquired.
-     */
-    public abstract boolean getLock(byte directions);
+	/**
+	 * An index into the TRACK_RULES database
+	 */
+	private final int trackType;
 
-    /**
-     * Release the track lock for the specified directions
-     */
-    public abstract void releaseLock(byte directions);
+	/**
+	 * Attempt to acquire the track lock for the specified directions
+	 * 
+	 * @param directions
+	 *            specifies the directions of travel the train will take when
+	 *            traversing the tile.
+	 * @return true if the lock could be acquired.
+	 */
+	public abstract boolean getLock(byte directions);
 
-    /**
-     * @return an index into the TRACK_RULES database
-     */
-    public int getTrackRule() {
-	return trackType;
-    }
+	/**
+	 * Release the track lock for the specified directions
+	 */
+	public abstract void releaseLock(byte directions);
 
-    public byte getTrackConfiguration() {
-	return trackLayout;
-    }
-
-    public static TrackTile createTrackTile(ReadOnlyWorld w, byte trackLayout,
-	    int trackType) {
-	TrackRule tr = (TrackRule) w.get(KEY.TRACK_RULES, trackType,
-		Player.AUTHORITATIVE);
-	if (tr.isDoubleTrack()) {
-	    return new DoubleTrackTile(trackLayout, trackType);
+	/**
+	 * @return an index into the TRACK_RULES database
+	 */
+	public int getTrackRule() {
+		return trackType;
 	}
-	return new SingleTrackTile(trackLayout, trackType);
-    }
 
-    protected TrackTile(byte trackLayout, int trackType) {
-	this.trackLayout = trackLayout;
-	this.trackType = trackType;
-    }
+	public byte getTrackConfiguration() {
+		return trackLayout;
+	}
 
-    /**
-     * @return a new point at the centre of the map tile
-     */
-    public static final Point tileCoordsToDeltas(Point p) {
-	Point newP = new Point((p.x * TrackTile.DELTAS_PER_TILE +
-		    DELTAS_PER_TILE / 2),
-		(p.y * TrackTile.DELTAS_PER_TILE + DELTAS_PER_TILE / 2));
-	return newP;
-    }
+	public static TrackTile createTrackTile(ReadOnlyWorld w, byte trackLayout,
+			int trackType) {
+		TrackRule tr = (TrackRule) w.get(KEY.TRACK_RULES, trackType,
+				Player.AUTHORITATIVE);
+		if (tr.isDoubleTrack()) {
+			return new DoubleTrackTile(trackLayout, trackType);
+		}
+		return new SingleTrackTile(trackLayout, trackType);
+	}
 
-    public static final void deltasToTileCoords(Point p) {
-	p.x /= DELTAS_PER_TILE;
-	p.y /= DELTAS_PER_TILE;
-    }
+	protected TrackTile(byte trackLayout, int trackType) {
+		this.trackLayout = trackLayout;
+		this.trackType = trackType;
+	}
 
-    public static final boolean deltaCoordInMapTile(Point deltaCoord, Point
-	    mapTile) {
-	return (deltaCoord.x >= mapTile.x * TrackTile.DELTAS_PER_TILE &&
-		deltaCoord.x < (mapTile.x + 1) * TrackTile.DELTAS_PER_TILE &&
-		deltaCoord.y >= mapTile.y * TrackTile.DELTAS_PER_TILE &&
-		deltaCoord.y < (mapTile.y + 1) * TrackTile.DELTAS_PER_TILE);
-    }
+	/**
+	 * @return a new point at the centre of the map tile
+	 */
+	public static final Point tileCoordsToDeltas(Point p) {
+		Point newP = new Point(
+				(p.x * TrackTile.DELTAS_PER_TILE + DELTAS_PER_TILE / 2), (p.y
+						* TrackTile.DELTAS_PER_TILE + DELTAS_PER_TILE / 2));
+		return newP;
+	}
 
-    /**
-     * @return true if the tile is locked by a train passing over it
-     */
-    public boolean isLocked() {
-	return trackLock != 0;
-    }
+	public static final void deltasToTileCoords(Point p) {
+		p.x /= DELTAS_PER_TILE;
+		p.y /= DELTAS_PER_TILE;
+	}
 
-    public boolean equals(Object o) {
-	if (o == null || !(o instanceof TrackTile))
-	    return false;
-	TrackTile tt = (TrackTile) o;
-	
-	return (trackLayout == tt.trackLayout &&
-		trackType == tt.trackType);
-    }
+	public static final boolean deltaCoordInMapTile(Point deltaCoord,
+			Point mapTile) {
+		return (deltaCoord.x >= mapTile.x * TrackTile.DELTAS_PER_TILE
+				&& deltaCoord.x < (mapTile.x + 1) * TrackTile.DELTAS_PER_TILE
+				&& deltaCoord.y >= mapTile.y * TrackTile.DELTAS_PER_TILE && deltaCoord.y < (mapTile.y + 1)
+				* TrackTile.DELTAS_PER_TILE);
+	}
 
-    public int hashCode() {
-	return trackLayout ^ trackType;
-    }
+	/**
+	 * @return true if the tile is locked by a train passing over it
+	 */
+	public boolean isLocked() {
+		return trackLock != 0;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof TrackTile))
+			return false;
+		TrackTile tt = (TrackTile) o;
+
+		return (trackLayout == tt.trackLayout && trackType == tt.trackType);
+	}
+
+	@Override
+	public int hashCode() {
+		return trackLayout ^ trackType;
+	}
 }

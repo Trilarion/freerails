@@ -17,33 +17,40 @@
 package org.railz.world.building;
 
 import org.railz.world.common.FreerailsSerializable;
+
 /**
  * Represents a building in the game world.
+ * 
  * @author rtuck99@users.berlios.de
  */
 public class BuildingTile implements FreerailsSerializable {
-    /**
-     * index into the BUILDING_TYPES table
-     */
-    private int buildingType;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2328414258042705814L;
+	/**
+	 * index into the BUILDING_TYPES table
+	 */
+	private final int buildingType;
 
-    public BuildingTile(int type) {
-	buildingType = type;
-    }
-
-    public int getType() {
-	return buildingType;
-    }
-
-    public boolean equals(Object o) {
-	if (o != null &&
-		o instanceof BuildingTile) {
-	    return buildingType == ((BuildingTile) o).buildingType;
+	public BuildingTile(int type) {
+		buildingType = type;
 	}
-	return false;
-    }
 
-    public int hashCode() {
-	return buildingType;
-    }
+	public int getType() {
+		return buildingType;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o != null && o instanceof BuildingTile) {
+			return buildingType == ((BuildingTile) o).buildingType;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return buildingType;
+	}
 }

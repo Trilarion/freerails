@@ -23,66 +23,70 @@ package org.railz.world.station;
 
 import org.railz.world.common.FreerailsSerializable;
 
-
 /**
- * This class represents the blue print for what a engine shop
- * is producing.
- *
+ * This class represents the blue print for what a engine shop is producing.
+ * 
  * @author Luke
- *
+ * 
  */
 public class ProductionAtEngineShop implements FreerailsSerializable {
-    private final int engineType;
-    private final int[] wagonTypes;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1498676451910134777L;
+	private final int engineType;
+	private final int[] wagonTypes;
 
-    public ProductionAtEngineShop(int e, int[] wagons) {
-        engineType = e;
-        wagonTypes = wagons;
-    }
+	public ProductionAtEngineShop(int e, int[] wagons) {
+		engineType = e;
+		wagonTypes = wagons;
+	}
 
-    public int getEngineType() {
-        return engineType;
-    }
+	public int getEngineType() {
+		return engineType;
+	}
 
-    public int[] getWagonTypes() {
-        return (int[])wagonTypes.clone(); //Defensive copy.
-    }
+	public int[] getWagonTypes() {
+		return wagonTypes.clone(); // Defensive copy.
+	}
 
-    public boolean equals(Object o) {
-        if (null == o) {
-            return false;
-        }
+	@Override
+	public boolean equals(Object o) {
+		if (null == o) {
+			return false;
+		}
 
-        if (!(o instanceof ProductionAtEngineShop)) {
-            return false;
-        }
+		if (!(o instanceof ProductionAtEngineShop)) {
+			return false;
+		}
 
-        ProductionAtEngineShop other = (ProductionAtEngineShop)o;
+		ProductionAtEngineShop other = (ProductionAtEngineShop) o;
 
-        if (other.getEngineType() != this.engineType) {
-            return false;
-        }
+		if (other.getEngineType() != this.engineType) {
+			return false;
+		}
 
-        if (other.getWagonTypes().length != this.getWagonTypes().length) {
-            return false;
-        }
+		if (other.getWagonTypes().length != this.getWagonTypes().length) {
+			return false;
+		}
 
-        int[] otherWagonTypes = other.getWagonTypes();
+		int[] otherWagonTypes = other.getWagonTypes();
 
-        for (int i = 0; i < this.getWagonTypes().length; i++) {
-            if (wagonTypes[i] != otherWagonTypes[i]) {
-                return false;
-            }
-        }
+		for (int i = 0; i < this.getWagonTypes().length; i++) {
+			if (wagonTypes[i] != otherWagonTypes[i]) {
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
+	/**
      *
      */
-    public String toString() {
-        return "engine type: " + this.engineType + ", with " +
-        wagonTypes.length + "wagons";
-    }
+	@Override
+	public String toString() {
+		return "engine type: " + this.engineType + ", with "
+				+ wagonTypes.length + "wagons";
+	}
 }

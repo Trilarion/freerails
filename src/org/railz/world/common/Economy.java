@@ -18,65 +18,70 @@
 package org.railz.world.common;
 
 /**
- *A repository for attributes common to the Railz economy.
- *
+ * A repository for attributes common to the Railz economy.
+ * 
  * @author rtuck99@users.berlios.de
  */
 public class Economy implements FreerailsSerializable {
-    private long[] fuelUnitPrice = new long[3];
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7071935712374103316L;
 
-    /**
-     * Interest rates for bonds, loans, overdrafts and accounts in credit will
-     * be derived from this. Measured as annual %age rate.
-     */
-    private final float baseInterestRate;
+	private long[] fuelUnitPrice = new long[3];
 
-    /**
-     * Rate at which income tax is applied in %.
-     */
-    private final int incomeTaxRate;
+	/**
+	 * Interest rates for bonds, loans, overdrafts and accounts in credit will
+	 * be derived from this. Measured as annual %age rate.
+	 */
+	private final float baseInterestRate;
 
-    public Economy(int incomeTaxRate, float baseInterestRate) {
-	this(incomeTaxRate, baseInterestRate, new long[3]);
-    }
+	/**
+	 * Rate at which income tax is applied in %.
+	 */
+	private final int incomeTaxRate;
 
-    private Economy(int incomeTaxRate, float baseInterestRate, long
-	    fuelUnitPrice[]) {
-	this.incomeTaxRate = incomeTaxRate;
-	this.baseInterestRate = baseInterestRate;
-	this.fuelUnitPrice = fuelUnitPrice;
-    }
+	public Economy(int incomeTaxRate, float baseInterestRate) {
+		this(incomeTaxRate, baseInterestRate, new long[3]);
+	}
 
-    /**
-     * @return income tax rate in percent
-     */
-    public int getIncomeTaxRate() {
-	return incomeTaxRate;
-    }
+	private Economy(int incomeTaxRate, float baseInterestRate,
+			long fuelUnitPrice[]) {
+		this.incomeTaxRate = incomeTaxRate;
+		this.baseInterestRate = baseInterestRate;
+		this.fuelUnitPrice = fuelUnitPrice;
+	}
 
-    public float getBaseInterestRate() {
-	return baseInterestRate;
-    }
+	/**
+	 * @return income tax rate in percent
+	 */
+	public int getIncomeTaxRate() {
+		return incomeTaxRate;
+	}
 
-    public static double aerToMonthly(double rate) {
-	return (float) ((Math.pow((1 + rate / 100), (1.0 / 12)) - 1.0) *
-		100.0);
-    }
+	public float getBaseInterestRate() {
+		return baseInterestRate;
+	}
 
-    public Economy setFuelUnitPrice(int fuelType, long unitPrice) {
-	long[] unitPrices = (long[]) fuelUnitPrice.clone();
-	unitPrices[fuelType - 1] = unitPrice;
-	return new Economy(incomeTaxRate, baseInterestRate, unitPrices);
-    }
+	public static double aerToMonthly(double rate) {
+		return (float) ((Math.pow((1 + rate / 100), (1.0 / 12)) - 1.0) * 100.0);
+	}
 
-    /**
-     * @param fuelType defined in EngineType.java
-     * @return the unit price of the specified fuel
-     */
-    public long getFuelUnitPrice(int fuelType) {
-	if (fuelType < 1 || fuelType - 1 > fuelUnitPrice.length)
-	    throw new IllegalArgumentException();
+	public Economy setFuelUnitPrice(int fuelType, long unitPrice) {
+		long[] unitPrices = fuelUnitPrice.clone();
+		unitPrices[fuelType - 1] = unitPrice;
+		return new Economy(incomeTaxRate, baseInterestRate, unitPrices);
+	}
 
-	return fuelUnitPrice[fuelType - 1];
-    }
+	/**
+	 * @param fuelType
+	 *            defined in EngineType.java
+	 * @return the unit price of the specified fuel
+	 */
+	public long getFuelUnitPrice(int fuelType) {
+		if (fuelType < 1 || fuelType - 1 > fuelUnitPrice.length)
+			throw new IllegalArgumentException();
+
+		return fuelUnitPrice[fuelType - 1];
+	}
 }

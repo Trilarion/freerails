@@ -26,71 +26,79 @@ import org.railz.world.common.GameTime;
 
 /**
  * @author Luke Lindsay
- *
- * Represents a transaction of some sort.
+ * 
+ *         Represents a transaction of some sort.
  */
 public abstract class Transaction implements FreerailsSerializable {
-    public static final int CATEGORY_NO_CATEGORY = 0;
-    public static final int CATEGORY_REVENUE = 1;
-    public static final int CATEGORY_COST_OF_SALES = 2;
-    public static final int CATEGORY_OPERATING_EXPENSE = 3;
-    public static final int CATEGORY_INTEREST = 4;
-    public static final int CATEGORY_CAPITAL_EXPENSE = 5;
-    public static final int CATEGORY_TAX = 6;
-    public static final int CATEGORY_CAPITAL_GAIN = 7;
-    public static final int CATEGORY_OUTSIDE_INVESTMENT = 8;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1814563977867949856L;
+	public static final int CATEGORY_NO_CATEGORY = 0;
+	public static final int CATEGORY_REVENUE = 1;
+	public static final int CATEGORY_COST_OF_SALES = 2;
+	public static final int CATEGORY_OPERATING_EXPENSE = 3;
+	public static final int CATEGORY_INTEREST = 4;
+	public static final int CATEGORY_CAPITAL_EXPENSE = 5;
+	public static final int CATEGORY_TAX = 6;
+	public static final int CATEGORY_CAPITAL_GAIN = 7;
+	public static final int CATEGORY_OUTSIDE_INVESTMENT = 8;
 
-    public static final int SUBCATEGORY_NO_SUBCATEGORY = 0;
+	public static final int SUBCATEGORY_NO_SUBCATEGORY = 0;
 
-    private final GameTime time;
-    private final long value;
+	private final GameTime time;
+	private final long value;
 
-    /**
-     * @return value of the transaction. Positive means credit, negative
-     * means debit.
-     */
-    public final long getValue() {
-	return value;
-    }
+	/**
+	 * @return value of the transaction. Positive means credit, negative means
+	 *         debit.
+	 */
+	public final long getValue() {
+		return value;
+	}
 
-    protected Transaction(GameTime t, long value) {
+	protected Transaction(GameTime t, long value) {
 		assert Math.abs(value) < 10000000;
 		time = t;
 		this.value = value;
-    }
-    
-    /**
-     * @return the time at which the transaction occurred
-     */
-    public final GameTime getTime() {
-	return time;
-    }
+	}
 
-    /**
-     * @return Category of the transaction for accounting purposes
-     */
-    public abstract int getCategory();
+	/**
+	 * @return the time at which the transaction occurred
+	 */
+	public final GameTime getTime() {
+		return time;
+	}
 
-    /**
-     * @return Subcategory of the transaction. Defined by implementations.
-     */
-    public abstract int getSubcategory();
+	/**
+	 * @return Category of the transaction for accounting purposes
+	 */
+	public abstract int getCategory();
 
-    public boolean equals(Object o) {
-	if (! (o instanceof Transaction))
-	    return false;
-	Transaction t = (Transaction) o;
+	/**
+	 * @return Subcategory of the transaction. Defined by implementations.
+	 */
+	public abstract int getSubcategory();
 
-	return (time.equals(t.time) && value == t.value && getCategory() ==
-		t.getCategory() && getSubcategory() == t.getSubcategory());
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Transaction))
+			return false;
+		Transaction t = (Transaction) o;
 
-    public int hashCode() {
-	return time.hashCode() ^ (new Long(value)).hashCode() ^
-	    getCategory() ^ getSubcategory();
-    }
+		return (time.equals(t.time) && value == t.value
+				&& getCategory() == t.getCategory() && getSubcategory() == t
+					.getSubcategory());
+	}
 
-    public String toString() {
-	return "Transaction " + value;
-    }
+	@Override
+	public int hashCode() {
+		return time.hashCode() ^ (new Long(value)).hashCode() ^ getCategory()
+				^ getSubcategory();
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction " + value;
+	}
 }

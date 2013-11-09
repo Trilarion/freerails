@@ -26,27 +26,30 @@ package org.railz.world.city;
 
 import org.railz.world.common.FreerailsSerializable;
 
-
 public class CityModel implements FreerailsSerializable {
-    private String name;
-    private int x;
-    private int y;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4877921388352052539L;
+	private final String name;
+	private final int x;
+	private final int y;
 
-    public CityModel(String name, int x, int y) {
-        this.name = name;
-        this.x = x;
-        this.y = y;
-    }
+	public CityModel(String name, int x, int y) {
+		this.name = name;
+		this.x = x;
+		this.y = y;
+	}
 
-    public String getCityName() {
-        return name;
-    }
+	public String getCityName() {
+		return name;
+	}
 
-    public int getCityX() {
-        return x;
-    }
+	public int getCityX() {
+		return x;
+	}
 
-    public int getCityY() {
-        return y;
-    }
+	public int getCityY() {
+		return y;
+	}
 }
