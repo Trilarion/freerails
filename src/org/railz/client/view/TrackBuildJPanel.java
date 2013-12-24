@@ -34,144 +34,149 @@ import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JToggleButton;
 
-import org.railz.client.model.TrackBuildModel;
 import org.railz.client.model.ModelRoot;
+import org.railz.client.model.TrackBuildModel;
 import org.railz.client.renderer.ViewLists;
 
 /**
- *
- * @author  bob
+ * 
+ * @author bob
  */
 class TrackBuildJPanel extends javax.swing.JPanel {
-    private int numberOfButtons = 0;
-    private int widthOfButton = 30;
-    private ButtonGroup buttonGroup;
-    private TrackBuildModel buildModel;
+	private int numberOfButtons = 0;
+	private int widthOfButton = 30;
+	private ButtonGroup buttonGroup;
+	private TrackBuildModel buildModel;
 
-    public void validate() {
-    super.validate();
-    
-    }
+	@Override
+	public void validate() {
+		super.validate();
 
-    /**
-     * Workaround for completely broken FlowLayout behaviour.
-     */
-    private ComponentAdapter sizeListener = new ComponentAdapter () {
-	public void componentResized(ComponentEvent e) {
-	   
-	    /* determine max number of cols */
-	    Dimension d = trackBuildModesSP.getViewport().getSize();
-	    int numCols = (int) (d.getWidth() / (widthOfButton + 5));
-	    if (numCols < 1) {
-		numCols = 1;
-	    }
-	    int numRows = numberOfButtons / numCols + 1;
-	    d.setSize(d.getWidth(), numRows * (widthOfButton + 5));
-	    trackBuildModesPanel.setPreferredSize(d);
-	    trackBuildModesPanel.revalidate();
 	}
-    };
 
-    void setup(ViewLists vl, ModelRoot modelRoot) {
-	 // GridBagConstraints gbc = new GridBagConstraints();
-        buttonGroup = new ButtonGroup();
-	buildModel = modelRoot.getTrackBuildModel();
-	trackModeCB.setModel(buildModel.getBuildModeActionAdapter());
-	Enumeration e = buildModel.getTrackRuleAdapter().getActions();
-	Enumeration enumButtonModels = buildModel.getTrackRuleAdapter().getButtonModels();
-	while (e.hasMoreElements()) {
-	    // Stations get built in the station pane
-	    TrackRuleButton button = new TrackRuleButton((Action) e.nextElement());
-	    button.setModel((ButtonModel) enumButtonModels.nextElement());
-	    Dimension d = button.getSize();
-	    Dimension s = trackBuildModesPanel.getSize();
-	    int columns = (int) (s.getWidth() / d.getWidth());
-	    buttonGroup.add(button);
-	    trackBuildModesPanel.add(button);
-	    numberOfButtons++;
-	    /* this is OK since all buttons are same width */
-	    widthOfButton = (int) button.getPreferredSize().getWidth();
-	}
-	trackBuildModesPanel.revalidate();
-    }
-
-    private void setupTrackComponents() {
-	/*
-	 * setup the "mode" combo box
+	/**
+	 * Workaround for completely broken FlowLayout behaviour.
 	 */
+	private final ComponentAdapter sizeListener = new ComponentAdapter() {
+		@Override
+		public void componentResized(ComponentEvent e) {
 
-	trackBuildModesSP.setViewportView(trackBuildModesPanel);
-	trackBuildModesSP.addComponentListener(sizeListener);
-    }
+			/* determine max number of cols */
+			Dimension d = trackBuildModesSP.getViewport().getSize();
+			int numCols = (int) (d.getWidth() / (widthOfButton + 5));
+			if (numCols < 1) {
+				numCols = 1;
+			}
+			int numRows = numberOfButtons / numCols + 1;
+			d.setSize(d.getWidth(), numRows * (widthOfButton + 5));
+			trackBuildModesPanel.setPreferredSize(d);
+			trackBuildModesPanel.revalidate();
+		}
+	};
 
-    /** Creates new form JPanel */
-    public TrackBuildJPanel() {
-        initComponents();
-	setupTrackComponents();
-    }
-    
-    /**
-     * represents a track rule - contains a small icon representing the track
-     * and a text label
-     */
-    private class TrackRuleButton extends JToggleButton {
-	public TrackRuleButton(Action a) {
-	    super(a);
-	    setMargin(new Insets(0,0,0,0));
-	    setText(null);
+	void setup(ViewLists vl, ModelRoot modelRoot) {
+		// GridBagConstraints gbc = new GridBagConstraints();
+		buttonGroup = new ButtonGroup();
+		buildModel = modelRoot.getTrackBuildModel();
+		trackModeCB.setModel(buildModel.getBuildModeActionAdapter());
+		Enumeration e = buildModel.getTrackRuleAdapter().getActions();
+		Enumeration enumButtonModels = buildModel.getTrackRuleAdapter()
+				.getButtonModels();
+		while (e.hasMoreElements()) {
+			// Stations get built in the station pane
+			TrackRuleButton button = new TrackRuleButton(
+					(Action) e.nextElement());
+			button.setModel((ButtonModel) enumButtonModels.nextElement());
+			Dimension d = button.getSize();
+			Dimension s = trackBuildModesPanel.getSize();
+			int columns = (int) (s.getWidth() / d.getWidth());
+			buttonGroup.add(button);
+			trackBuildModesPanel.add(button);
+			numberOfButtons++;
+			/* this is OK since all buttons are same width */
+			widthOfButton = (int) button.getPreferredSize().getWidth();
+		}
+		trackBuildModesPanel.revalidate();
 	}
-    }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    private void initComponents() {//GEN-BEGIN:initComponents
-        java.awt.GridBagConstraints gridBagConstraints;
+	private void setupTrackComponents() {
+		/*
+		 * setup the "mode" combo box
+		 */
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        trackModeCB = new javax.swing.JComboBox();
-        jSeparator1 = new javax.swing.JSeparator();
-        trackBuildModesSP = new javax.swing.JScrollPane();
-        trackBuildModesPanel = new javax.swing.JPanel();
+		trackBuildModesSP.setViewportView(trackBuildModesPanel);
+		trackBuildModesSP.addComponentListener(sizeListener);
+	}
 
-        setLayout(new java.awt.GridBagLayout());
+	/** Creates new form JPanel */
+	public TrackBuildJPanel() {
+		initComponents();
+		setupTrackComponents();
+	}
 
-        jLabel2.setText("Mode:");
-        jPanel1.add(jLabel2);
+	/**
+	 * represents a track rule - contains a small icon representing the track
+	 * and a text label
+	 */
+	private class TrackRuleButton extends JToggleButton {
+		public TrackRuleButton(Action a) {
+			super(a);
+			setMargin(new Insets(0, 0, 0, 0));
+			setText(null);
+		}
+	}
 
-        jPanel1.add(trackModeCB);
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	private void initComponents() {// GEN-BEGIN:initComponents
+		java.awt.GridBagConstraints gridBagConstraints;
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(jPanel1, gridBagConstraints);
+		jPanel1 = new javax.swing.JPanel();
+		jLabel2 = new javax.swing.JLabel();
+		trackModeCB = new javax.swing.JComboBox();
+		jSeparator1 = new javax.swing.JSeparator();
+		trackBuildModesSP = new javax.swing.JScrollPane();
+		trackBuildModesPanel = new javax.swing.JPanel();
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(jSeparator1, gridBagConstraints);
+		setLayout(new java.awt.GridBagLayout());
 
-        trackBuildModesSP.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        trackBuildModesSP.setViewportView(trackBuildModesPanel);
+		jLabel2.setText("Mode:");
+		jPanel1.add(jLabel2);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(trackBuildModesSP, gridBagConstraints);
+		jPanel1.add(trackModeCB);
 
-    }//GEN-END:initComponents
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JPanel trackBuildModesPanel;
-    private javax.swing.JScrollPane trackBuildModesSP;
-    private javax.swing.JComboBox trackModeCB;
-    // End of variables declaration//GEN-END:variables
-    
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+		add(jPanel1, gridBagConstraints);
+
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+		add(jSeparator1, gridBagConstraints);
+
+		trackBuildModesSP
+				.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		trackBuildModesSP.setViewportView(trackBuildModesPanel);
+
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.weighty = 1.0;
+		add(trackBuildModesSP, gridBagConstraints);
+
+	}// GEN-END:initComponents
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JSeparator jSeparator1;
+	private javax.swing.JPanel trackBuildModesPanel;
+	private javax.swing.JScrollPane trackBuildModesSP;
+	private javax.swing.JComboBox trackModeCB;
+	// End of variables declaration//GEN-END:variables
+
 }
