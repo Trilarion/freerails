@@ -17,148 +17,168 @@
 
 package org.railz.world.top;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Point;
+import java.io.ObjectStreamException;
 
-import org.railz.world.common.*;
-import org.railz.world.player.*;
-import org.railz.world.track.*;
+import org.railz.world.common.FreerailsSerializable;
+import org.railz.world.player.FreerailsPrincipal;
+import org.railz.world.player.Player;
+import org.railz.world.track.FreerailsTile;
 
 /**
- * Represents a "View" of the world from the perspective of a player or
- * server. Delegates real work to WorldImpl, but filters out inappropriate
- * accesses. This class is never read, only written, and shares the same
- * serialVerUID as WorldImpl. Hence a view can be serialized and read in by a
- * client as representing the world in its entirety when it is in fact only a
- * portion.
+ * Represents a "View" of the world from the perspective of a player or server.
+ * Delegates real work to WorldImpl, but filters out inappropriate accesses.
+ * This class is never read, only written, and shares the same serialVerUID as
+ * WorldImpl. Hence a view can be serialized and read in by a client as
+ * representing the world in its entirety when it is in fact only a portion.
  */
 public class WorldView implements World {
-    private WorldImpl world;
-    private FreerailsPrincipal viewer;
+	private final WorldImpl world;
+	private final FreerailsPrincipal viewer;
 
-    public WorldView(WorldImpl w, FreerailsPrincipal viewer) {
-	world = w;
-	this.viewer = viewer;
-    }
-
-    public void set(ITEM item, FreerailsSerializable element,
-	    FreerailsPrincipal p) {
-	world.set(item, element, p);
-    }
-
-    public void set(ITEM item, FreerailsSerializable element) {
-	world.set(item, element, Player.AUTHORITATIVE);
-    }
-
-    public void set(KEY key, int index, FreerailsSerializable element,
-	    FreerailsPrincipal p) {
-	if (key.isPrivate && ! viewer.equals(p))
-	    return;
-
-	world.set(key, index, element, p);
-    }
-
-    public void set(KEY key, int index, FreerailsSerializable element) {
-	if (key.isPrivate && ! viewer.equals(Player.AUTHORITATIVE))
-	    return;
-	world.set(key, index, element, Player.AUTHORITATIVE);
-    }
-
-    public int add(KEY key, FreerailsSerializable element, FreerailsPrincipal
-	    p) {
-	if (key.isPrivate && ! viewer.equals(p))
-	    return -1;
-	return world.add(key, element, p);
-    }
-
-    public int add(KEY key, FreerailsSerializable element) {
-	if (key.isPrivate && ! viewer.equals(Player.AUTHORITATIVE))
-	    return -1;
-	return world.add(key, element, Player.AUTHORITATIVE);
-    }
-
-    public FreerailsSerializable removeLast(KEY key, FreerailsPrincipal p) {
-	if (key.isPrivate && ! viewer.equals(p))
-	    return null;
-	return world.removeLast(key, p);
-    }
-
-    public FreerailsSerializable removeLast(KEY key) {
-	if (key.isPrivate && ! viewer.equals(Player.AUTHORITATIVE))
-	    return null;
-	return world.removeLast(key, Player.AUTHORITATIVE);
-    }
-
-    public void setTile(int x, int y, FreerailsTile tile) {
-	setTile(x, y, tile);
-    }
-
-    public FreerailsSerializable get(ITEM item) {
-	return world.get(item, Player.AUTHORITATIVE);
-    }
-
-    public FreerailsSerializable get(ITEM item, FreerailsPrincipal p) {
-	return world.get(item, p);
-    }
-
-    public FreerailsSerializable get(KEY key, int index) {
-	if (key.isPrivate && ! viewer.equals(Player.AUTHORITATIVE))
-	    return null;
-	return world.get(key, index, Player.AUTHORITATIVE);
-    }
-
-    public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p)
-	{
-	    if (key.isPrivate && ! viewer.equals(p))
-		return null;
-	    return world.get(key, index, p);
+	public WorldView(WorldImpl w, FreerailsPrincipal viewer) {
+		world = w;
+		this.viewer = viewer;
 	}
 
-    public int size(KEY key) {
-	if (key.isPrivate && ! viewer.equals(Player.AUTHORITATIVE))
-	    return 0;
-	return world.size(key, Player.AUTHORITATIVE);
-    }
+	@Override
+	public void set(ITEM item, FreerailsSerializable element,
+			FreerailsPrincipal p) {
+		world.set(item, element, p);
+	}
 
-    public int size(KEY key, FreerailsPrincipal p) {
-	if (key.isPrivate && ! viewer.equals(p))
-	    return 0;
-	return world.size(key, p);
-    }
+	@Override
+	public void set(ITEM item, FreerailsSerializable element) {
+		world.set(item, element, Player.AUTHORITATIVE);
+	}
 
-    public int getMapWidth() {
-	return world.getMapWidth();
-    }
+	@Override
+	public void set(KEY key, int index, FreerailsSerializable element,
+			FreerailsPrincipal p) {
+		if (key.isPrivate && !viewer.equals(p))
+			return;
 
-    public int getMapHeight() {
-	return world.getMapHeight();
-    }
+		world.set(key, index, element, p);
+	}
 
-    public FreerailsTile getTile(int x, int y) {
-	return world.getTile(x, y);
-    }
+	@Override
+	public void set(KEY key, int index, FreerailsSerializable element) {
+		if (key.isPrivate && !viewer.equals(Player.AUTHORITATIVE))
+			return;
+		world.set(key, index, element, Player.AUTHORITATIVE);
+	}
 
-    public FreerailsTile getTile(Point p) {
-	return world.getTile(p);
-    }
+	@Override
+	public int add(KEY key, FreerailsSerializable element, FreerailsPrincipal p) {
+		if (key.isPrivate && !viewer.equals(p))
+			return -1;
+		return world.add(key, element, p);
+	}
 
-    public boolean boundsContain(int x, int y) {
-	return world.boundsContain(x, y);
-    }
+	@Override
+	public int add(KEY key, FreerailsSerializable element) {
+		if (key.isPrivate && !viewer.equals(Player.AUTHORITATIVE))
+			return -1;
+		return world.add(key, element, Player.AUTHORITATIVE);
+	}
 
-    public boolean boundsContain(KEY k, int index) {
-	if (k.isPrivate && ! viewer.equals(Player.AUTHORITATIVE))
-	    return false;
-	return world.boundsContain(k, index, Player.AUTHORITATIVE);
-    }
+	@Override
+	public FreerailsSerializable removeLast(KEY key, FreerailsPrincipal p) {
+		if (key.isPrivate && !viewer.equals(p))
+			return null;
+		return world.removeLast(key, p);
+	}
 
-    public boolean boundsContain(KEY k, int index, FreerailsPrincipal p) {
-	if (k.isPrivate && ! viewer.equals(p))
-	    return false;
-	return world.boundsContain(k, index, p);
-    }
+	@Override
+	public FreerailsSerializable removeLast(KEY key) {
+		if (key.isPrivate && !viewer.equals(Player.AUTHORITATIVE))
+			return null;
+		return world.removeLast(key, Player.AUTHORITATIVE);
+	}
 
-    private Object writeReplace() throws ObjectStreamException {
-	return world.getReadOnlyView(viewer);
-    }
+	@Override
+	public void setTile(int x, int y, FreerailsTile tile) {
+		setTile(x, y, tile);
+	}
+
+	@Override
+	public FreerailsSerializable get(ITEM item) {
+		return world.get(item, Player.AUTHORITATIVE);
+	}
+
+	@Override
+	public FreerailsSerializable get(ITEM item, FreerailsPrincipal p) {
+		return world.get(item, p);
+	}
+
+	@Override
+	public FreerailsSerializable get(KEY key, int index) {
+		if (key.isPrivate && !viewer.equals(Player.AUTHORITATIVE))
+			return null;
+		return world.get(key, index, Player.AUTHORITATIVE);
+	}
+
+	@Override
+	public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p) {
+		if (key.isPrivate && !viewer.equals(p))
+			return null;
+		return world.get(key, index, p);
+	}
+
+	@Override
+	public int size(KEY key) {
+		if (key.isPrivate && !viewer.equals(Player.AUTHORITATIVE))
+			return 0;
+		return world.size(key, Player.AUTHORITATIVE);
+	}
+
+	@Override
+	public int size(KEY key, FreerailsPrincipal p) {
+		if (key.isPrivate && !viewer.equals(p))
+			return 0;
+		return world.size(key, p);
+	}
+
+	@Override
+	public int getMapWidth() {
+		return world.getMapWidth();
+	}
+
+	@Override
+	public int getMapHeight() {
+		return world.getMapHeight();
+	}
+
+	@Override
+	public FreerailsTile getTile(int x, int y) {
+		return world.getTile(x, y);
+	}
+
+	@Override
+	public FreerailsTile getTile(Point p) {
+		return world.getTile(p);
+	}
+
+	@Override
+	public boolean boundsContain(int x, int y) {
+		return world.boundsContain(x, y);
+	}
+
+	@Override
+	public boolean boundsContain(KEY k, int index) {
+		if (k.isPrivate && !viewer.equals(Player.AUTHORITATIVE))
+			return false;
+		return world.boundsContain(k, index, Player.AUTHORITATIVE);
+	}
+
+	@Override
+	public boolean boundsContain(KEY k, int index, FreerailsPrincipal p) {
+		if (k.isPrivate && !viewer.equals(p))
+			return false;
+		return world.boundsContain(k, index, p);
+	}
+
+	private Object writeReplace() throws ObjectStreamException {
+		return world.getReadOnlyView(viewer);
+	}
 }
