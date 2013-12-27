@@ -60,10 +60,10 @@ public class TrackBuildModel {
 		return trackRuleAdapter;
 	}
 
-	private class BuildModeAction extends AbstractAction {
+	private class BuildModeImageAction extends AbstractAction {
 		private final int actionId;
 
-		private BuildModeAction(int actionId, String name) {
+		private BuildModeImageAction(int actionId, String name) {
 			putValue(NAME, name);
 			putValue(ACTION_COMMAND_KEY, name);
 			this.actionId = actionId;
@@ -78,20 +78,103 @@ public class TrackBuildModel {
 		}
 	}
 
+	private class BuildModeAction extends AbstractAction {
+		private final int actionId;
+
+		private BuildModeAction(int actionId, String name) {
+			putValue(NAME, name);
+			putValue(ACTION_COMMAND_KEY, name);
+			this.actionId = actionId;
+
+			Image image = getTileImage(actionId);
+			putValue(SMALL_ICON, new ImageIcon(image));
+
+			String tooltip = returnTooltip(actionId);
+			putValue(SHORT_DESCRIPTION, tooltip);
+		}
+
+		private Image getTileImage(int ruleNumber) {
+			// TODO constants
+			final String buildModeImagePrefix = "buildMode_";
+			String imageName = "";
+			// TODO case if
+			if (ruleNumber == 1) {
+				imageName = buildModeImagePrefix + "build";
+			} else if (ruleNumber == 2) {
+				imageName = buildModeImagePrefix + "remove";
+			} else if (ruleNumber == 3) {
+				imageName = buildModeImagePrefix + "upgrade";
+			} else if (ruleNumber == 4) {
+				imageName = buildModeImagePrefix + "view";
+			} else {
+				imageName = buildModeImagePrefix + "build";
+			}
+			ImageIcon icon = viewLists.getImageIcon(imageName);
+			Image tileImage = icon.getImage();
+
+			return tileImage;
+		}
+
+		private String returnTooltip(int actionId) {
+			// TODO tooltip
+			TrackRule trackRule = (TrackRule) world.get(KEY.TRACK_RULES,
+					actionId);
+			final String TRACK_SUFFIX = " track";
+			String tooltip = "tooltip";
+			if (actionId == 1) {
+				tooltip = "build" + TRACK_SUFFIX;
+			} else if (actionId == 2) {
+				tooltip = "remove" + TRACK_SUFFIX;
+			} else if (actionId == 3) {
+				tooltip = "upgrade" + TRACK_SUFFIX;
+			} else if (actionId == 4) {
+				tooltip = "view mode";
+			} else {
+				tooltip = "build";
+			}
+
+			return tooltip;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!(e.getSource() instanceof ActionAdapter))
+				return;
+
+			trackMoveProducer.setTrackBuilderMode(actionId);
+		}
+	}
+
+	// TODO action is created here... understand
 	private class TrackRuleAction extends AbstractAction {
 		private final int actionId;
 
 		private TrackRuleAction(int actionId, String name) {
-			TrackPieceRendererList trackPieceRendererList = viewLists
-					.getTrackPieceViewList();
 			putValue(NAME, name);
 			putValue(ACTION_COMMAND_KEY, name);
 			this.actionId = actionId;
+
+			// TODO polymorphism
+			Image image = getTileImage(actionId);
+			putValue(SMALL_ICON, new ImageIcon(image));
+
+			String tooltip = returnTooltip();
+			putValue(SHORT_DESCRIPTION, tooltip);
+		}
+
+		private String returnTooltip() {
 			TrackRule trackRule = (TrackRule) world.get(KEY.TRACK_RULES,
 					actionId);
-			int ruleNumber = actionId;
+			return trackRule.toString() + " @ $" + trackRule.getPrice();
+		}
+
+		private Image getTileImage(int ruleNumber) {
+			// Add image to button... assumption...
+			TrackPieceRendererList trackPieceRendererList = viewLists
+					.getTrackPieceViewList();
 			TrackPieceRenderer renderer = trackPieceRendererList
 					.getTrackPieceView(ruleNumber);
+
 			/* create a scaled image */
 			BufferedImage unscaledImage = renderer
 					.getTrackPieceIcon(trackTemplate);
@@ -99,9 +182,7 @@ public class TrackBuildModel {
 					unscaledImage.getWidth() * 3 / 4,
 					unscaledImage.getHeight() * 3 / 4, Image.SCALE_SMOOTH);
 
-			putValue(SMALL_ICON, new ImageIcon(scaledImage));
-			putValue(SHORT_DESCRIPTION, trackRule.toString() + " @ $"
-					+ trackRule.getPrice());
+			return scaledImage;
 		}
 
 		@Override
@@ -129,6 +210,7 @@ public class TrackBuildModel {
 						"Upgrade Track"),
 				new BuildModeAction(TrackMoveProducer.IGNORE_TRACK, "View Mode") };
 		buildModeAdapter = new ActionAdapter(actions);
+
 		/* set up track actions */
 		Vector actionsVector = new Vector();
 		for (int i = 0; i < world.size(KEY.TRACK_RULES); i++) {

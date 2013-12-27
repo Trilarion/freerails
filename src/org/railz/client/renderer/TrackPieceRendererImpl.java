@@ -18,73 +18,78 @@
 package org.railz.client.renderer;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+
 import org.railz.client.common.BinaryNumberFormatter;
 import org.railz.client.common.ImageManager;
+import org.railz.client.config.ClientConfigurationConstants;
 import org.railz.world.top.KEY;
 import org.railz.world.top.ReadOnlyWorld;
 import org.railz.world.track.TrackRule;
 
 /**
-*  This class renders a track piece.
-*
-*@author     Luke Lindsay
-*     09 October 2001
-*/
+ * This class renders a track piece.
+ * 
+ * @author Luke Lindsay 09 October 2001
+ */
 final public class TrackPieceRendererImpl implements TrackPieceRenderer {
-    BufferedImage[] trackPieceIcons = new BufferedImage[256];
-    private final String typeName;
 
-    public void drawTrackPieceIcon(byte trackConfig, java.awt.Graphics g,
-        int x, int y, java.awt.Dimension tileSize) {
-	int trackTemplate = (int) trackConfig & 0xFF;
-        if (trackPieceIcons[trackTemplate] != null) {
-            int drawX = x * tileSize.width - tileSize.width / 2;
-            int drawY = y * tileSize.height - tileSize.height / 2;
-            g.drawImage(trackPieceIcons[trackTemplate], drawX, drawY, null);
-        }
-    }
+	BufferedImage[] trackPieceIcons = new BufferedImage[256];
+	private final String typeName;
 
-    public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
-        int typeNumber) throws IOException {
-        TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, typeNumber);
-        this.typeName = trackRule.toString();
+	public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
+			int typeNumber) throws IOException {
 
-        for (byte i = Byte.MIN_VALUE; i < Byte.MAX_VALUE; i++) {
-            if (trackRule.testTrackPieceLegality(i)) {
-                String fileName = generateFilename(i);
-                trackPieceIcons[(int) i & 0xFF] = imageManager.getImage(fileName);
-            }
-        }
-    }
+		TrackRule trackRule = (TrackRule) w.get(KEY.TRACK_RULES, typeNumber);
+		this.typeName = trackRule.toString();
 
-    public BufferedImage getTrackPieceIcon(byte trackConfig) {
-	int trackTemplate = (int) trackConfig & 0xFF;
-        return trackPieceIcons[trackTemplate];
-    }
+		for (byte i = Byte.MIN_VALUE; i < Byte.MAX_VALUE; i++) {
+			if (trackRule.testTrackPieceLegality(i)) {
+				String fileName = generateFilename(i);
+				trackPieceIcons[i & 0xFF] = imageManager.getImage(fileName);
+			}
+		}
+	}
 
-    public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < 256; i++) {
-            if (trackPieceIcons[i] != null) {
-                String fileName = generateFilename((byte) i);
-                imageManager.setImage(fileName, trackPieceIcons[i]);
-            }
-        }
-    }
+	@Override
+	public void drawTrackPieceIcon(byte trackConfig, java.awt.Graphics g,
+			int x, int y, java.awt.Dimension tileSize) {
 
-    private String generateFilename(byte trackTemplate) {
-        String relativeFileNameBase = "track" + "/" +
-            this.getTrackTypeName();
-        int newTemplate = (int) trackTemplate & 0xFF;
-        String fileName = relativeFileNameBase + "_" +
-            BinaryNumberFormatter.format(newTemplate, 8) +
-            ".png";
+		int trackTemplate = trackConfig & 0xFF;
+		if (trackPieceIcons[trackTemplate] != null) {
+			int drawX = x * tileSize.width - tileSize.width / 2;
+			int drawY = y * tileSize.height - tileSize.height / 2;
+			g.drawImage(trackPieceIcons[trackTemplate], drawX, drawY, null);
+		}
+	}
 
-        return fileName;
-    }
+	@Override
+	public BufferedImage getTrackPieceIcon(byte trackConfig) {
+		int trackTemplate = trackConfig & 0xFF;
+		return trackPieceIcons[trackTemplate];
+	}
 
-    private String getTrackTypeName() {
-        return typeName;
-    }
+	@Override
+	public void dumpImages(ImageManager imageManager) {
+		for (int i = 0; i < 256; i++) {
+			if (trackPieceIcons[i] != null) {
+				String fileName = generateFilename((byte) i);
+				imageManager.setImage(fileName, trackPieceIcons[i]);
+			}
+		}
+	}
+
+	private String generateFilename(byte trackTemplate) {
+		String relativeFileNameBase = "track" + "/" + this.getTrackTypeName();
+		int newTemplate = trackTemplate & 0xFF;
+		String fileName = relativeFileNameBase + "_"
+				+ BinaryNumberFormatter.format(newTemplate, 8)
+				+ ClientConfigurationConstants.IMAGE_FILE_EXTENSION;
+
+		return fileName;
+	}
+
+	private String getTrackTypeName() {
+		return typeName;
+	}
 }

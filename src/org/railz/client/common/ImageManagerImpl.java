@@ -25,151 +25,157 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+
 import javax.imageio.ImageIO;
 
-import org.railz.util.*;
+import org.railz.util.ModdableResourceFinder;
 
 /**
  * @author Luke
- *
+ * 
  */
 public class ImageManagerImpl implements ImageManager {
-    private ModdableResourceFinder mrf;
+	private ModdableResourceFinder mrf;
 
-    /**
-     * HashMap of BufferedImage
-     */
-    private HashMap imageHashMap = new HashMap();
-    
-    /**
-     * HashMap of BufferedImage
-     */
-    private HashMap scaledImagesHashMap = new HashMap();
-    private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                                            .getDefaultScreenDevice()
-                                                                            .getDefaultConfiguration();
+	/**
+	 * HashMap of BufferedImage
+	 */
+	private final HashMap imageHashMap = new HashMap();
 
-    /**
-     * @param readpath UNIX-style path
-     */
-    public ImageManagerImpl(Component c, String readpath) {
-	mrf = new ModdableResourceFinder(readpath);
-	defaultConfiguration = c.getGraphicsConfiguration();
-    }
+	/**
+	 * HashMap of BufferedImage
+	 */
+	private final HashMap scaledImagesHashMap = new HashMap();
+	private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
+			.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+			.getDefaultConfiguration();
 
-    public void setPathToReadFrom(String s) {
-	mrf = new ModdableResourceFinder(s);
-    }
-
-    /**
-     * @param relativeFilename UNIX-style relative path
-     */
-    private BufferedImage loadImage(String relativeFilename) throws IOException {
-        String read = relativeFilename;
-
-        URL url = mrf.getURLForReading(read);
-
-        if (null == url) {
-	    BufferedImage bi;
-	    // see if there is a default graphic we can substitute
-	    if (read.startsWith("trains/overhead/")) {
-		int suffixIndex = read.lastIndexOf("_");
-
-		bi = getImage("trains/overhead/default" +
-			read.substring(suffixIndex));
-		imageHashMap.put(read, bi);
-		return bi;
-	    } else if (read.startsWith("trains/sideon/")) {
-		bi = getImage("trains/sideon/default.png");
-		imageHashMap.put(read, bi);
-		return bi;
-	    }
-            throw new IOException("Couldn't find: " + read);
-        }
-	// XXX This should improve performance, however uncommenting this line
-	// causes exceptions (due to a bug in the JDK?)
-	// ImageIO.setUseCache(false);
-        BufferedImage tempImage = ImageIO.read(url);
-	BufferedImage compatibleImage =
-	    defaultConfiguration.createCompatibleImage(tempImage.getWidth(
-                    null), tempImage.getHeight(null), Transparency.TRANSLUCENT);
-        Graphics g = compatibleImage.getGraphics();
-        g.drawImage(tempImage, 0, 0, null);
-	imageHashMap.put(relativeFilename, compatibleImage);
-	g.dispose();
-	compatibleImage.flush();
-
-        return compatibleImage;
-    }
-
-    /**
-     * @param relativeFilename UNIX-style relative path
-     */
-    public BufferedImage getImage(String relativeFilename) throws IOException {
-        relativeFilename = relativeFilename.replace(' ', '_');
-
-	if (imageHashMap.containsKey(relativeFilename)) {
-	    return (BufferedImage)imageHashMap.get(relativeFilename);
+	/**
+	 * @param readpath
+	 *            UNIX-style path
+	 */
+	public ImageManagerImpl(Component c, String readpath) {
+		mrf = new ModdableResourceFinder(readpath);
+		defaultConfiguration = c.getGraphicsConfiguration();
 	}
 
-	return loadImage(relativeFilename);
-    }
+	@Override
+	public void setPathToReadFrom(String s) {
+		mrf = new ModdableResourceFinder(s);
+	}
 
-    public boolean contains(String relativeFilename) {
-        relativeFilename = relativeFilename.replace(' ', '_');
+	/**
+	 * @param relativeFilename
+	 *            UNIX-style relative path
+	 */
+	private BufferedImage loadImage(String relativeFilename) throws IOException {
+		String read = relativeFilename;
 
-        if (imageHashMap.containsKey(relativeFilename)) {
-            return true;
-        } 
-	return false;
-    }
+		URL url = mrf.getURLForReading(read);
 
-    public void setImage(String relativeFilename, BufferedImage i) {
-        relativeFilename = relativeFilename.replace(' ', '_');
+		if (null == url) {
+			BufferedImage bi;
+			// see if there is a default graphic we can substitute
+			if (read.startsWith("trains/overhead/")) {
+				int suffixIndex = read.lastIndexOf("_");
 
-        if (i == null) {
-            throw new NullPointerException(relativeFilename);
-        }
+				bi = getImage("trains/overhead/default"
+						+ read.substring(suffixIndex));
+				imageHashMap.put(read, bi);
+				return bi;
+			} else if (read.startsWith("trains/sideon/")) {
+				bi = getImage("trains/sideon/default.png");
+				imageHashMap.put(read, bi);
+				return bi;
+			}
+			throw new IOException("Couldn't find: " + read);
+		}
+		// XXX This should improve performance, however uncommenting this line
+		// causes exceptions (due to a bug in the JDK?)
+		// ImageIO.setUseCache(false);
+		BufferedImage tempImage = ImageIO.read(url);
+		BufferedImage compatibleImage = defaultConfiguration
+				.createCompatibleImage(tempImage.getWidth(null),
+						tempImage.getHeight(null), Transparency.TRANSLUCENT);
+		Graphics g = compatibleImage.getGraphics();
+		g.drawImage(tempImage, 0, 0, null);
+		imageHashMap.put(relativeFilename, compatibleImage);
+		g.dispose();
+		compatibleImage.flush();
 
-        imageHashMap.put(relativeFilename, i);
-    }
+		return compatibleImage;
+	}
 
-    /**
-     *  Returns the specified image scaled so that its height is equal to the
-     * specified height.
-     * @param relativeFilename UNIX-style relative path
-     */
-    public BufferedImage getScaledImage(String relativeFilename, int height)
-        throws IOException {
-        BufferedImage i = getImage(relativeFilename);
-        String hashKey = relativeFilename + height;
+	/**
+	 * @param relativeFilename
+	 *            UNIX-style relative path
+	 */
+	@Override
+	public BufferedImage getImage(String relativeFilename) throws IOException {
+		relativeFilename = relativeFilename.replace(' ', '_');
 
-        if (this.scaledImagesHashMap.containsKey(hashKey)) {
-            return (BufferedImage)scaledImagesHashMap.get(hashKey);
-        } else {
-            if (i.getHeight(null) == height) {
-                return i;
-            } else {
-                int width = (i.getWidth() * height) / i.getHeight();
-		BufferedImage compatibleImage =
-		    defaultConfiguration.createCompatibleImage(width,
-                        height, Transparency.BITMASK);
-                Graphics g = compatibleImage.getGraphics();
-                g.drawImage(i, 0, 0, width, height, null);
-                scaledImagesHashMap.put(hashKey, compatibleImage);
+		if (imageHashMap.containsKey(relativeFilename)) {
+			return (BufferedImage) imageHashMap.get(relativeFilename);
+		}
 
-                return compatibleImage;
-            }
-        }
-    }
+		return loadImage(relativeFilename);
+	}
+
+	@Override
+	public boolean contains(String relativeFilename) {
+		relativeFilename = relativeFilename.replace(' ', '_');
+
+		if (imageHashMap.containsKey(relativeFilename)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void setImage(String relativeFilename, BufferedImage i) {
+		relativeFilename = relativeFilename.replace(' ', '_');
+
+		if (i == null) {
+			throw new NullPointerException(relativeFilename);
+		}
+
+		imageHashMap.put(relativeFilename, i);
+	}
+
+	/**
+	 * Returns the specified image scaled so that its height is equal to the
+	 * specified height.
+	 * 
+	 * @param relativeFilename
+	 *            UNIX-style relative path
+	 */
+	@Override
+	public BufferedImage getScaledImage(String relativeFilename, int height)
+			throws IOException {
+		BufferedImage i = getImage(relativeFilename);
+		String hashKey = relativeFilename + height;
+
+		if (this.scaledImagesHashMap.containsKey(hashKey)) {
+			return (BufferedImage) scaledImagesHashMap.get(hashKey);
+		} else {
+			if (i.getHeight(null) == height) {
+				return i;
+			} else {
+				int width = (i.getWidth() * height) / i.getHeight();
+				BufferedImage compatibleImage = defaultConfiguration
+						.createCompatibleImage(width, height,
+								Transparency.BITMASK);
+				Graphics g = compatibleImage.getGraphics();
+				g.drawImage(i, 0, 0, width, height, null);
+				scaledImagesHashMap.put(hashKey, compatibleImage);
+
+				return compatibleImage;
+			}
+		}
+	}
 }

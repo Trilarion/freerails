@@ -26,18 +26,19 @@ import java.io.IOException;
 
 /**
  * This interface defines methods for loading images.
+ * 
  * @author Luke
- *
+ * 
  */
 public interface ImageManager {
-    void setPathToReadFrom(String s);
+	void setPathToReadFrom(String s);
 
-    BufferedImage getImage(String relativeFilename) throws IOException;
+	BufferedImage getImage(String relativeFilename) throws IOException;
 
-    boolean contains(String relativeFilename);
+	boolean contains(String relativeFilename);
 
-    void setImage(String relativeFilename, BufferedImage i);
+	void setImage(String relativeFilename, BufferedImage i);
 
-    BufferedImage getScaledImage(String relativeFilename, int height)
-        throws IOException;
+	BufferedImage getScaledImage(String relativeFilename, int height)
+			throws IOException;
 }

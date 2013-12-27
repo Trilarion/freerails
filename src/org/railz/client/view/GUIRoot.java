@@ -16,128 +16,127 @@
 
 package org.railz.client.view;
 
-import java.awt.Rectangle;
+import java.util.Enumeration;
+
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import java.util.*;
+
 import org.railz.client.common.ScreenHandler;
-import org.railz.client.renderer.ViewLists;
-import org.railz.client.renderer.ZoomedOutMapRenderer;
-import org.railz.client.top.ClientJFrame;
+import org.railz.client.config.ClientConfigurationConstants;
 import org.railz.client.model.ModelRoot;
 import org.railz.client.model.ModelRootListener;
-import org.railz.controller.MoveChainFork;
-import org.railz.controller.MoveReceiver;
-import org.railz.controller.StationBuilder;
-import org.railz.controller.UntriedMoveReceiver;
-import org.railz.util.*;
+import org.railz.client.renderer.ViewLists;
+import org.railz.client.top.ClientJFrame;
+import org.railz.util.ModdableResourceFinder;
+import org.railz.util.WeakRefList;
 import org.railz.world.top.ReadOnlyWorld;
 
 /**
  * A central point for coordinating GUI components.
  */
 public class GUIRoot implements ModelRootListener {
-    private ModelRoot modelRoot;
+	private final ModelRoot modelRoot;
 
-    private DialogueBoxController dialogueBoxController;
-    private ReadOnlyWorld world;
-    private MapViewJComponentConcrete mapViewJComponent;
-    DetailMapView mainMap;
-    ClientJFrame clientJFrame;
-    private MainMapAndOverviewMapMediator mediator;
-    private ScreenHandler screenHandler;
-    private ModdableResourceFinder graphicsResourceFinder = 
-	 new ModdableResourceFinder ("org/railz/client/graphics");
+	private final DialogueBoxController dialogueBoxController;
+	private ReadOnlyWorld world;
+	private MapViewJComponentConcrete mapViewJComponent;
+	DetailMapView mainMap;
+	ClientJFrame clientJFrame;
+	private MainMapAndOverviewMapMediator mediator;
+	private ScreenHandler screenHandler;
+	private final ModdableResourceFinder graphicsResourceFinder = new ModdableResourceFinder(
+			ClientConfigurationConstants.IMAGE_PACKAGE_PATH);
 
-    public GUIRoot(ModelRoot mr) {
-        modelRoot = mr;
+	public GUIRoot(ModelRoot mr) {
+		modelRoot = mr;
 
-        modelRoot.addModelRootListener(this);
-        mediator = new MainMapAndOverviewMapMediator();
-        clientJFrame = new ClientJFrame(this, modelRoot);
-        dialogueBoxController = new DialogueBoxController(clientJFrame,
-                modelRoot, this);
-    }
-
-    private void setup() {
-        ViewLists viewLists = modelRoot.getViewLists();
-        world = modelRoot.getWorld();
-
-        if (!viewLists.validate(world)) {
-            throw new IllegalArgumentException("The specified" +
-                " ViewLists are not comaptible with the clients world!");
-        }
-
-        dialogueBoxController.setup();
-
-        clientJFrame.setup();
-    }
-
-    public ScreenHandler getScreenHandler() {
-	return screenHandler;
-    }
-
-    public void setScreenHandler(ScreenHandler sh) {
-	screenHandler = sh;
-    }
-
-    public DialogueBoxController getDialogueBoxController() {
-	return dialogueBoxController;
-    }
-
-    public MainMapAndOverviewMapMediator getMapMediator() {
-	return mediator;
-    }
-
-    public void setMapMediator(MainMapAndOverviewMapMediator m) {
-	mediator = m;
-    }
-
-    public MapViewJComponentConcrete getMapViewJComponent() {
-	return mapViewJComponent;
-    }
-
-    public void setMapViewJComponent(MapViewJComponentConcrete mapView) {
-	mapViewJComponent = mapView;
-    }
-
-    public JFrame getClientJFrame() {
-        return clientJFrame;
-    }
-
-    public void modelRootChanged() {
-        setup();
-    }
-
-    private WeakRefList refreshListeners = new WeakRefList();
-
-    /**
-     * called by the ClientJFrame periodically to update components which
-     * require regular refreshing.
-     */
-    public void update() {
-	Enumeration i = refreshListeners.elements();
-	while (i.hasMoreElements()) {
-	    RefreshListener l = (RefreshListener) i.nextElement();
-	    l.doRefresh();
+		modelRoot.addModelRootListener(this);
+		mediator = new MainMapAndOverviewMapMediator();
+		clientJFrame = new ClientJFrame(this, modelRoot);
+		dialogueBoxController = new DialogueBoxController(clientJFrame,
+				modelRoot, this);
 	}
-    }
 
-    public void addRefreshListener(RefreshListener l) {
-	refreshListeners.add(l);
-    }
+	private void setup() {
+		ViewLists viewLists = modelRoot.getViewLists();
+		world = modelRoot.getWorld();
 
-    /**
-     * Weak references are used so not strictly necessary to remove listeners
-     */
-    public void removeRefereshListener(RefreshListener l) {
-	refreshListeners.remove(l);
-    }
+		if (!viewLists.validate(world)) {
+			throw new IllegalArgumentException("The specified"
+					+ " ViewLists are not comaptible with the clients world!");
+		}
 
-    /** @return a ModdableResourceFinder that can be used to locate graphics
-     * resources */
-    public ModdableResourceFinder getGraphicsResourceFinder() {
-	return graphicsResourceFinder;
-    }
+		dialogueBoxController.setup();
+
+		clientJFrame.setup();
+	}
+
+	public ScreenHandler getScreenHandler() {
+		return screenHandler;
+	}
+
+	public void setScreenHandler(ScreenHandler sh) {
+		screenHandler = sh;
+	}
+
+	public DialogueBoxController getDialogueBoxController() {
+		return dialogueBoxController;
+	}
+
+	public MainMapAndOverviewMapMediator getMapMediator() {
+		return mediator;
+	}
+
+	public void setMapMediator(MainMapAndOverviewMapMediator m) {
+		mediator = m;
+	}
+
+	public MapViewJComponentConcrete getMapViewJComponent() {
+		return mapViewJComponent;
+	}
+
+	public void setMapViewJComponent(MapViewJComponentConcrete mapView) {
+		mapViewJComponent = mapView;
+	}
+
+	public JFrame getClientJFrame() {
+		return clientJFrame;
+	}
+
+	@Override
+	public void modelRootChanged() {
+		setup();
+	}
+
+	private final WeakRefList refreshListeners = new WeakRefList();
+
+	/**
+	 * called by the ClientJFrame periodically to update components which
+	 * require regular refreshing.
+	 */
+	public void update() {
+		Enumeration i = refreshListeners.elements();
+		while (i.hasMoreElements()) {
+			RefreshListener l = (RefreshListener) i.nextElement();
+			l.doRefresh();
+		}
+	}
+
+	public void addRefreshListener(RefreshListener l) {
+		refreshListeners.add(l);
+	}
+
+	/**
+	 * Weak references are used so not strictly necessary to remove listeners
+	 */
+	public void removeRefereshListener(RefreshListener l) {
+		refreshListeners.remove(l);
+	}
+
+	/**
+	 * @return a ModdableResourceFinder that can be used to locate graphics
+	 *         resources
+	 */
+	public ModdableResourceFinder getGraphicsResourceFinder() {
+		return graphicsResourceFinder;
+	}
 }

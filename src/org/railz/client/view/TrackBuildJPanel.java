@@ -32,8 +32,10 @@ import java.util.Enumeration;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import org.railz.client.common.ActionAdapter;
 import org.railz.client.model.ModelRoot;
 import org.railz.client.model.TrackBuildModel;
 import org.railz.client.renderer.ViewLists;
@@ -43,10 +45,15 @@ import org.railz.client.renderer.ViewLists;
  * @author bob
  */
 class TrackBuildJPanel extends javax.swing.JPanel {
+
 	private int numberOfButtons = 0;
 	private int widthOfButton = 30;
-	private ButtonGroup buttonGroup;
+
 	private TrackBuildModel buildModel;
+	private ButtonGroup buttonGroup;
+	private ButtonGroup buildModeButtonGroup;
+	// TODO newly created temp test.
+	private ButtonGroup buildType;
 
 	@Override
 	public void validate() {
@@ -75,28 +82,101 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 	};
 
 	void setup(ViewLists vl, ModelRoot modelRoot) {
+
+		buildModel = modelRoot.getTrackBuildModel();
+
 		// GridBagConstraints gbc = new GridBagConstraints();
 		buttonGroup = new ButtonGroup();
-		buildModel = modelRoot.getTrackBuildModel();
-		trackModeCB.setModel(buildModel.getBuildModeActionAdapter());
-		Enumeration e = buildModel.getTrackRuleAdapter().getActions();
-		Enumeration enumButtonModels = buildModel.getTrackRuleAdapter()
-				.getButtonModels();
-		while (e.hasMoreElements()) {
-			// Stations get built in the station pane
+
+		setupTrackRules(buildModel.getTrackRuleAdapter());
+
+		doNewSetup(buildModel.getBuildModeActionAdapter(), trackBuildModesPanel);
+
+		// Do at end of actions
+		trackBuildModesPanel.revalidate();
+	}
+
+	private void setupTrackRules(ActionAdapter trackRuleAdapter) {
+		Enumeration enumButtonModels = trackRuleAdapter.getButtonModels();
+
+		Enumeration trackRuleActionsEnum = trackRuleAdapter.getActions();
+
+		while (trackRuleActionsEnum.hasMoreElements()) {
+			// TODO - Comment move - Stations get built in the station pane
 			TrackRuleButton button = new TrackRuleButton(
-					(Action) e.nextElement());
+					(Action) trackRuleActionsEnum.nextElement());
 			button.setModel((ButtonModel) enumButtonModels.nextElement());
 			Dimension d = button.getSize();
 			Dimension s = trackBuildModesPanel.getSize();
-			int columns = (int) (s.getWidth() / d.getWidth());
+			// XXX verify
+			// int columns = (int) (s.getWidth() / d.getWidth());
 			buttonGroup.add(button);
 			trackBuildModesPanel.add(button);
 			numberOfButtons++;
 			/* this is OK since all buttons are same width */
 			widthOfButton = (int) button.getPreferredSize().getWidth();
 		}
-		trackBuildModesPanel.revalidate();
+	}
+
+	private void doNewSetup(ActionAdapter buildModeActionAdapter, JPanel panel) {
+
+		trackModeCB.setModel(buildModeActionAdapter);
+
+		ButtonGroup buttonGroup = new ButtonGroup();
+
+		Enumeration buildModeActions = buildModeActionAdapter.getActions();
+		Enumeration buildModeModels = buildModeActionAdapter.getButtonModels();
+
+		while (buildModeActions.hasMoreElements()) {
+			TrackRuleButton button = new TrackRuleButton(
+					(Action) buildModeActions.nextElement());
+			button.setModel((ButtonModel) buildModeModels.nextElement());
+
+			// XXX verify
+			// Dimension d = button.getSize();
+			// Dimension s = trackBuildModesPanel.getSize();
+			// int columns = (int) (s.getWidth() / d.getWidth());
+
+			buttonGroup.add(button);
+			jPanel1.add(button);
+			// trackBuildModesPanel.add(button);
+
+			// TODO readd in
+			// numberOfButtons++;
+			/* this is OK since all buttons are same width */
+			// widthOfButton = (int) button.getPreferredSize().getWidth();
+		}
+
+		buildModeButtonGroup = buttonGroup;
+		jPanel1.revalidate();
+		// Enumeration trackRuleActionsEnum =
+		// trackModeActionAdapter.getActions();
+
+		// TODO section below here is modified
+		// Add action name and an int key to the action adaptor
+		// trackRuleAdapter - Here are the business logic items from the world.
+
+		// Buttons constructed with actions
+		// action maps and sets mode in trackMoveProducer from actionPerformed
+		// Buttons have setModel();
+
+		// TODO Button group holds buttons Why? What does it do?
+		// Button also added to panel
+
+		// Enumeration enumButtonModels = buildModel.getTrackRuleAdapter()
+		// .getButtonModels();
+		// while (e.hasMoreElements()) {
+		//
+		// }
+		// TODO new ButtonModels
+		// TODO TrackRuleButton
+		// JToggleButton button = new JToggleButton(
+		// (Action) trackRuleActionsEnum.nextElement());
+		// // button.setModel((ButtonModel) enumButtonModels.nextElement());
+		// Dimension d = button.getSize();
+		// Dimension s = trackBuildModesPanel.getSize();
+		// buildType.add(button);
+
 	}
 
 	private void setupTrackComponents() {
@@ -114,6 +194,7 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 		setupTrackComponents();
 	}
 
+	// TODO should be a more generic name as no special functionality.
 	/**
 	 * represents a track rule - contains a small icon representing the track
 	 * and a text label

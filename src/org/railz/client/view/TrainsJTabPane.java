@@ -51,10 +51,12 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 	private TerrainInfoJPanel terrainInfoPanel;
 	private StationInfoJPanel stationInfoPanel;
 	private TrainDialogueJPanel trainSchedulePanel;
-	private ReadOnlyWorld world;
+
 	private final BuildJPane buildJPane;
 	private MappedButtonModel viewModeButtonModel;
 	private MappedButtonModel buildModeButtonModel;
+
+	private ReadOnlyWorld world;
 	private ModelRoot modelRoot;
 
 	public TrainsJTabPane() {
@@ -150,14 +152,22 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 	private void updateTerrainInfo(CursorEvent e) {
 		Point p = e.newPosition;
 		terrainInfoPanel.setTerrainLocation(p);
+		displayStationPanel(p);
+
+	}
+
+	/**
+	 * Display station if the selected tile is a station.
+	 * 
+	 * @param p
+	 */
+	private void displayStationPanel(Point p) {
 		boolean buildMode = modelRoot.getTrackMoveProducer().isBuilding();
 		if (!buildMode) {
 			FreerailsTile tile = world.getTile(p.x, p.y);
 			if (tile.getTrackTile() != null) {
 				TrackRule tr = (TrackRule) world.get(KEY.TRACK_RULES,
 						tile.getTrackRule(), Player.AUTHORITATIVE);
-
-				// TODO exempt building mode...
 
 				BuildingType bt = null;
 				if (tile.getBuildingTile() != null) {
@@ -168,7 +178,6 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 									modelRoot);
 					stationInfoPanel.displayStation(stationNumber);
 					setSelectedComponent(stationInfoPanel);
-					// TODO change tile to the train..
 				} else {
 					setSelectedComponent(terrainInfoPanel);
 				}
@@ -176,7 +185,6 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 				setSelectedComponent(terrainInfoPanel);
 			}
 		}
-
 	}
 
 	/**
