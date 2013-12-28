@@ -60,25 +60,11 @@ public class TrackBuildModel {
 		return trackRuleAdapter;
 	}
 
-	private class BuildModeImageAction extends AbstractAction {
-		private final int actionId;
-
-		private BuildModeImageAction(int actionId, String name) {
-			putValue(NAME, name);
-			putValue(ACTION_COMMAND_KEY, name);
-			this.actionId = actionId;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (!(e.getSource() instanceof ActionAdapter))
-				return;
-
-			trackMoveProducer.setTrackBuilderMode(actionId);
-		}
-	}
+	// Make Generic Action that can be subclassed to avoid code duplication
 
 	private class BuildModeAction extends AbstractAction {
+		final String BUILD_MODE_PREFIX = "buildMode_";
+
 		private final int actionId;
 
 		private BuildModeAction(int actionId, String name) {
@@ -94,21 +80,25 @@ public class TrackBuildModel {
 		}
 
 		private Image getTileImage(int ruleNumber) {
-			// TODO constants
-			final String buildModeImagePrefix = "buildMode_";
 			String imageName = "";
-			// TODO case if
-			if (ruleNumber == 1) {
-				imageName = buildModeImagePrefix + "build";
-			} else if (ruleNumber == 2) {
-				imageName = buildModeImagePrefix + "remove";
-			} else if (ruleNumber == 3) {
-				imageName = buildModeImagePrefix + "upgrade";
-			} else if (ruleNumber == 4) {
-				imageName = buildModeImagePrefix + "view";
-			} else {
-				imageName = buildModeImagePrefix + "build";
+
+			switch (ruleNumber) {
+			case (1):
+				imageName = BUILD_MODE_PREFIX + "build";
+				break;
+			case (2):
+				imageName = BUILD_MODE_PREFIX + "remove";
+				break;
+			case (3):
+				imageName = BUILD_MODE_PREFIX + "upgrade";
+				break;
+			case (4):
+				imageName = BUILD_MODE_PREFIX + "view";
+				break;
+			default:
+				imageName = BUILD_MODE_PREFIX + "build";
 			}
+
 			ImageIcon icon = viewLists.getImageIcon(imageName);
 			Image tileImage = icon.getImage();
 

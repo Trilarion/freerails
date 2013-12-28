@@ -53,11 +53,12 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 	private TrainDialogueJPanel trainSchedulePanel;
 
 	private final BuildJPane buildJPane;
-	private MappedButtonModel viewModeButtonModel;
-	private MappedButtonModel buildModeButtonModel;
 
 	private ReadOnlyWorld world;
 	private ModelRoot modelRoot;
+
+	private MappedButtonModel viewModeButtonModel;
+	private MappedButtonModel buildModeButtonModel;
 
 	public TrainsJTabPane() {
 		/* set up trainsJTabbedPane */
@@ -99,8 +100,8 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 		addTab(null, vl.getImageIcon("build"), buildJPane, "Build");
 
 		stationInfoPanel.setup(modelRoot);
-
 		stationInfoPanel.display();
+
 		TrackBuildModel tbm = modelRoot.getTrackBuildModel();
 		ActionAdapter aa = tbm.getBuildModeActionAdapter();
 		Enumeration e = aa.getButtonModels();

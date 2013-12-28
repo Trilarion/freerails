@@ -90,7 +90,8 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 
 		setupTrackRules(buildModel.getTrackRuleAdapter());
 
-		doNewSetup(buildModel.getBuildModeActionAdapter(), trackBuildModesPanel);
+		setupBuildMode(buildModel.getBuildModeActionAdapter(),
+				trackBuildModesPanel);
 
 		// Do at end of actions
 		trackBuildModesPanel.revalidate();
@@ -102,7 +103,6 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 		Enumeration trackRuleActionsEnum = trackRuleAdapter.getActions();
 
 		while (trackRuleActionsEnum.hasMoreElements()) {
-			// TODO - Comment move - Stations get built in the station pane
 			TrackRuleButton button = new TrackRuleButton(
 					(Action) trackRuleActionsEnum.nextElement());
 			button.setModel((ButtonModel) enumButtonModels.nextElement());
@@ -118,7 +118,8 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 		}
 	}
 
-	private void doNewSetup(ActionAdapter buildModeActionAdapter, JPanel panel) {
+	private void setupBuildMode(ActionAdapter buildModeActionAdapter,
+			JPanel panel) {
 
 		trackModeCB.setModel(buildModeActionAdapter);
 
@@ -132,19 +133,11 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 					(Action) buildModeActions.nextElement());
 			button.setModel((ButtonModel) buildModeModels.nextElement());
 
-			// XXX verify
-			// Dimension d = button.getSize();
-			// Dimension s = trackBuildModesPanel.getSize();
-			// int columns = (int) (s.getWidth() / d.getWidth());
-
 			buttonGroup.add(button);
 			jPanel1.add(button);
-			// trackBuildModesPanel.add(button);
 
 			// TODO readd in
 			// numberOfButtons++;
-			/* this is OK since all buttons are same width */
-			// widthOfButton = (int) button.getPreferredSize().getWidth();
 		}
 
 		buildModeButtonGroup = buttonGroup;
@@ -168,8 +161,8 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 		// while (e.hasMoreElements()) {
 		//
 		// }
-		// TODO new ButtonModels
-		// TODO TrackRuleButton
+		// new ButtonModels
+		// TrackRuleButton
 		// JToggleButton button = new JToggleButton(
 		// (Action) trackRuleActionsEnum.nextElement());
 		// // button.setModel((ButtonModel) enumButtonModels.nextElement());

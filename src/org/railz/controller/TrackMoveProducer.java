@@ -17,7 +17,10 @@
 package org.railz.controller;
 
 import java.awt.Point;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.railz.config.LogManager;
 import org.railz.move.ChangeTrackPieceCompositeMove;
 import org.railz.move.Move;
 import org.railz.move.MoveStatus;
@@ -30,6 +33,9 @@ import org.railz.world.track.TrackTile;
 final public class TrackMoveProducer {
 	private int trackRule;
 	private final ReadOnlyWorld w;
+
+	private static final String CLASS_NAME = TrackMoveProducer.class.getName();
+	private static final Logger LOGGER = LogManager.getLogger(CLASS_NAME);
 
 	/**
 	 * The principal on behalf of which this TrackMoveProducer is producing
@@ -74,9 +80,14 @@ final public class TrackMoveProducer {
 	 *            add track
 	 */
 	public MoveStatus buildTrack(Point from, byte trackVector) {
+		final String methodName = "buildTrack";
+
 		ChangeTrackPieceCompositeMove move = null;
+
 		switch (trackBuilderMode) {
 		case UPGRADE_TRACK:
+			// TODO Upgrade needs to upgrade on both relevent squares (not one)
+			// See remove for generating composite move
 			Point point = new Point(from.x
 					+ CompassPoints.getUnitDeltaX(trackVector), from.y
 					+ CompassPoints.getUnitDeltaY(trackVector));
@@ -90,8 +101,15 @@ final public class TrackMoveProducer {
 			}
 			break;
 		case REMOVE_TRACK:
-			move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from,
-					trackVector, w, principal);
+			try {
+				move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(
+						from, trackVector, w, principal);
+			} catch (IllegalArgumentException ex) {
+				LOGGER.logp(Level.INFO, CLASS_NAME, methodName,
+						"Invalid data building move.");
+				return MoveStatus.moveFailed("Track does not exist");
+			}
+
 			break;
 		case IGNORE_TRACK:
 			return MoveStatus.MOVE_OK;
@@ -99,10 +117,17 @@ final public class TrackMoveProducer {
 			throw new IllegalStateException("Illegal trackBuilderMode "
 					+ trackBuilderMode);
 		}
+		MoveStatus ms = null;
+		if (move != null) {
+			Move moveAndTransaction = transactionsGenerator
+					.addTransactions(move);
 
-		Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-		MoveStatus ms = moveTester.tryDoMove(moveAndTransaction);
-		moveTester.processMove(moveAndTransaction);
+			ms = moveTester.tryDoMove(moveAndTransaction);
+			moveTester.processMove(moveAndTransaction);
+		} else {
+			ms = MoveStatus.moveFailed("Investigate why move is null.");
+		}
+
 		return ms;
 	}
 
