@@ -17,15 +17,15 @@ import jfreerails.world.common.Step;
  * <p>
  * This immutable class provides methods that return a train's position and
  * speed at any time within an interval. An instance of this class will be
- * stored on the world object for each train rather the train’s position. The
+ * stored on the world object for each train rather the train's position. The
  * reasons for this are as follows.
  * 
  * <ol type="i">
  * <li> It decouples the number of game updates per second and number of frames
- * per second shown by the client. If the train’s position were stored on the
+ * per second shown by the client. If the train's position were stored on the
  * world object, it would get updated each game tick. But this would mean that
  * if the game was being updated 10 times per second, even if the client was
- * displaying 50 FPS, the train’s motion would still appear jerky since its
+ * displaying 50 FPS, the train's motion would still appear jerky since its
  * position would only change 10 times per second. </li>
  * <li>
  * 
