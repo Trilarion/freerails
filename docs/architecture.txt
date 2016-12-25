@@ -1,0 +1,1 @@
+UserInputOnMapController - Receives UI moves and triggers actions. UI entry point
