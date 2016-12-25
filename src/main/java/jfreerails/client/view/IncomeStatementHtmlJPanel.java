@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.Action;
 
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -32,7 +33,7 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
         super();
 
         URL url = IncomeStatementHtmlJPanel.class
-                .getResource("/jfreerails/client/view/income_statement.htm");
+                .getResource(ClientConfig.VIEW_INCOME_STATEMENT);
         template = loadText(url);
     }
 

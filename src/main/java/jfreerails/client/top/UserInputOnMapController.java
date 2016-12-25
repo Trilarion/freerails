@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+
 import org.apache.log4j.Logger;
 
 import javax.swing.SwingUtilities;
@@ -23,6 +24,7 @@ import jfreerails.client.view.FreerailsCursor;
 import jfreerails.client.view.MapViewJComponent;
 import jfreerails.client.view.ServerControlModel;
 import jfreerails.client.view.StationBuildModel;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
@@ -40,7 +42,6 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author Luke
  */
 public class UserInputOnMapController extends KeyAdapter {
-    private static final String JFREERAILS_CLIENT_SOUNDS_BUILDTRACK_WAV = "/jfreerails/client/sounds/buildtrack.wav";
 
     private static final Logger logger = Logger
             .getLogger(UserInputOnMapController.class.getName());
@@ -221,11 +222,10 @@ public class UserInputOnMapController extends KeyAdapter {
         switch (trackBuilder.getTrackBuilderMode()) {
         case BUILD_TRACK:
         case UPGRADE_TRACK:
-            soundManager.playSound(JFREERAILS_CLIENT_SOUNDS_BUILDTRACK_WAV, 0);
+            soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
             break;
         case REMOVE_TRACK:
-            soundManager.playSound("/jfreerails/client/sounds/removetrack.wav",
-                    0);
+            soundManager.playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
             break;
         default:
             // do nothing

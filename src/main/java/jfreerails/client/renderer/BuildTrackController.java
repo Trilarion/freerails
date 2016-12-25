@@ -8,9 +8,11 @@ import static jfreerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import jfreerails.client.common.SoundManager;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.IncrementalPathFinder;
 import jfreerails.controller.ModelRoot;
@@ -228,7 +230,7 @@ public class BuildTrackController implements GameModel {
         if (trackBuilder != null && ms.isOk()) {
             if (trackBuilder.getTrackBuilderMode() == BUILD_TRACK) {
                 this.soundManager.playSound(
-                        "/jfreerails/client/sounds/buildtrack.wav", 0);
+                        ClientConfig.SOUND_BUILD_TRACK, 0);
             }
         }
 
@@ -520,10 +522,10 @@ public class BuildTrackController implements GameModel {
                 setCursorMessage("");
                 if (REMOVE_TRACK == getBuildMode()) {
                     soundManager.playSound(
-                            "/jfreerails/client/sounds/removetrack.wav", 0);
+                            ClientConfig.SOUND_REMOVE_TRACK, 0);
                 } else {
                     soundManager.playSound(
-                            "/jfreerails/client/sounds/buildtrack.wav", 0);
+                            ClientConfig.SOUND_BUILD_TRACK, 0);
                 }
 
             } else {

@@ -14,6 +14,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.FinancialDataGatherer;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.StockPriceCalculator;
@@ -53,7 +54,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
         super();
 
         URL url = BrokerScreenHtmlJFrame.class
-                .getResource("/jfreerails/client/view/Broker_Screen.html");
+                .getResource(ClientConfig.VIEW_BROKER);
         template = loadText(url);
         this.setSize(550, 300);
 

@@ -29,6 +29,7 @@ import javax.swing.JToggleButton;
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.BuildTrackStrategy;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrackMoveProducer;
@@ -50,7 +51,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private static final long serialVersionUID = 3618701915647850036L;
 
     private final ImageManager imageManager = new ImageManagerImpl(
-            "/jfreerails/client/graphics/");
+            ClientConfig.GRAPHICS_PATH);
 
     private HashMap<TrackRule.TrackCategories, Integer> selectionSet;
 
@@ -253,8 +254,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private ImageIcon getIcon(String typeName) {
         try {
 
-            String relativeFileName = "icons" + File.separator + typeName
-                    + ".png";
+            String relativeFileName = ClientConfig.ICONS_FOLDER_NAME + File.separator + typeName
+                    + ClientConfig.ICON_FILE_EXTENSION;
             relativeFileName = relativeFileName.replace(' ', '_');
 
             Image im = imageManager.getImage(relativeFileName);

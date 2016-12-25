@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.Action;
 
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.BalanceSheetGenerator;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
@@ -34,7 +35,7 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
         super();
 
         URL url = BalanceSheetHtmlJPanel.class
-                .getResource("/jfreerails/client/view/balance_sheet.htm");
+                .getResource(ClientConfig.VIEW_BALANCE_SHEET);
         template = loadText(url);
     }
 

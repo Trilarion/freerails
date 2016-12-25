@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import jfreerails.client.common.SoundManager;
 import jfreerails.client.view.ActionRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.ModelRoot.Property;
 import jfreerails.move.AddTransactionMove;
@@ -139,8 +140,7 @@ public class UserMessageGenerator implements MoveReceiver {
             int loops = (int) revenue / 4000;
 
             try {
-                soundManager.playSound("/jfreerails/client/sounds/cash.wav",
-                        loops);
+                soundManager.playSound(ClientConfig.SOUND_CASH, loops);
             } catch (Exception e) {
                 e.printStackTrace();
             }

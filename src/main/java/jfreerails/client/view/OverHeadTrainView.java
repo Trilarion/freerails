@@ -9,6 +9,7 @@ import jfreerails.client.common.Painter;
 import jfreerails.client.common.SoundManager;
 import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.client.renderer.TrainRenderer;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.ModelRoot;
 import jfreerails.controller.TrainAccessor;
 import jfreerails.controller.ModelRoot.Property;
@@ -63,8 +64,7 @@ public class OverHeadTrainView implements Painter {
                     if (pos.getFrameCt() == 1) {
                         try {
                             soundManager.playSound(
-                                    "/jfreerails/client/sounds/traincrash.wav",
-                                    1);
+                                    ClientConfig.SOUND_TRAIN_CRASH, 1);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

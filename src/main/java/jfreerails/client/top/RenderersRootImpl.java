@@ -22,6 +22,7 @@ import jfreerails.client.renderer.TileRendererListImpl;
 import jfreerails.client.renderer.TrackPieceRenderer;
 import jfreerails.client.renderer.TrackPieceRendererList;
 import jfreerails.client.renderer.TrainImages;
+import jfreerails.config.ClientConfig;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.terrain.TerrainType;
@@ -53,7 +54,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
     public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
             throws IOException {
-        imageManager = new ImageManagerImpl("/jfreerails/client/graphics/");
+        imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
         tiles = loadNewTileViewList(w, pm);
 
         trackPieceViewList = loadTrackViews(w, pm);
@@ -94,10 +95,10 @@ public class RenderersRootImpl implements RenderersRoot {
 
     private void preloadSounds(FreerailsProgressMonitor pm) {
         // Pre-load sounds..
-        String[] soundsFiles = { "/jfreerails/client/sounds/buildtrack.wav",
-                "/jfreerails/client/sounds/cash.wav",
-                "/jfreerails/client/sounds/removetrack.wav",
-                "/jfreerails/client/sounds/whistle.wav" };
+        String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK,
+                ClientConfig.SOUND_CASH,
+                ClientConfig.SOUND_REMOVE_TRACK,
+                ClientConfig.SOUND_WHISTLE};
         pm.nextStep(soundsFiles.length);
         SoundManager sm = SoundManager.getSoundManager();
         for (int i = 0; i < soundsFiles.length; i++) {

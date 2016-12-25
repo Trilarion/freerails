@@ -5,3 +5,5 @@
 /target/
 /datafiles
 .settings
+.classpath
+.project

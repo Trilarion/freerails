@@ -13,6 +13,7 @@ import javax.swing.ScrollPaneConstants;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -58,14 +59,16 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         trainListPanel.removeButtons();
 
         URL terrainInfoIconUrl = getClass().getResource(
-                "/jfreerails/client/graphics/icons/terrain_info.png");
+                ClientConfig.ICON_TERRAIN_INFO);
         ImageIcon terrainInfoIcon = new ImageIcon(terrainInfoIconUrl);
 
         URL buildTrackIconUrl = getClass().getResource(
-                "/jfreerails/client/graphics/icons/track_new.png");
+                ClientConfig.ICON_NEW_TRACK);
         buildTrackIcon = new ImageIcon(buildTrackIconUrl);
         URL trainListIconUrl = getClass().getResource(
-                "/jfreerails/client/graphics/icons/train_list.png");
+                ClientConfig.ICON_TRAIN_LIST);
+        
+        
         trainListIcon = new ImageIcon(trainListIconUrl);
         // Note titles set to null so only the icon appears at the top of the
         // top.

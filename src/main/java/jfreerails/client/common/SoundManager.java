@@ -19,6 +19,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.ModelRoot;
 
 import org.apache.log4j.Logger;
@@ -61,7 +62,7 @@ public class SoundManager implements ModelRootListener, LineListener {
 
         SoundManager soundPlayer = getSoundManager();
         for (int i = 0; i < 100; i++) {
-            soundPlayer.playSound("/jfreerails/client/sounds/cash.wav", 10);
+            soundPlayer.playSound(ClientConfig.SOUND_CASH, 10);
 
             try {
                 Thread.sleep(40);

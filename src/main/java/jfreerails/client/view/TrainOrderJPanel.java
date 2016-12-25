@@ -17,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.ModelRoot;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
@@ -36,11 +37,11 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     private FreerailsPrincipal principal;
 
     private final ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class
-            .getResource("/jfreerails/client/graphics/selected_arrow.png"));
+            .getResource(ClientConfig.GRAPHIC_ARROW_SELECTED));
 
     private final ImageIcon gotoAfterPriorityOrders = new ImageIcon(
             TrainOrderJPanel.class
-                    .getResource("/jfreerails/client/graphics/deselected_arrow.png"));
+                    .getResource(ClientConfig.GRAPHIC_ARROW_DESELECTED));
 
     private final ImageIcon dontGoto = null;
 
@@ -83,7 +84,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             setLayout(new java.awt.GridBagLayout());
 
             gotoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                    "/jfreerails/client/graphics/selected_arrow.png")));
+                    ClientConfig.GRAPHIC_ARROW_SELECTED)));
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = 0;

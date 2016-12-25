@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
+
 import org.apache.log4j.Logger;
 
 import javax.swing.AbstractAction;
@@ -25,6 +26,7 @@ import javax.swing.JLayeredPane;
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.CopyableTextJPanel;
 import jfreerails.controller.Message2Server;
 import jfreerails.controller.ReportBugTextGenerator;
@@ -172,11 +174,11 @@ public class DialogueBoxController implements WorldListListener {
         closeButton.addActionListener(closeCurrentDialogue);
 
         showControls = new HtmlJPanel(DialogueBoxController.class
-                .getResource("/jfreerails/client/view/game_controls.html"));
+                .getResource(ClientConfig.VIEW_GAME_CONTROLS));
         about = new HtmlJPanel(DialogueBoxController.class
-                .getResource("/jfreerails/client/view/about.htm"));
+                .getResource(ClientConfig.VIEW_ABOUT));
         how2play = new HtmlJPanel(DialogueBoxController.class
-                .getResource("/jfreerails/client/view/how_to_play.htm"));
+                .getResource(ClientConfig.VIEW_HOW_TO_PLAY));
 
         terrainInfo = new TerrainInfoJPanel();
         stationInfo = new StationInfoJPanel();

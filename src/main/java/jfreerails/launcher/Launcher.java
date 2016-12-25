@@ -18,6 +18,7 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 
 import jfreerails.client.top.GameLoop;
+import jfreerails.config.ClientConfig;
 import jfreerails.controller.ReportBugTextGenerator;
 import jfreerails.controller.ScreenHandler;
 import jfreerails.controller.ServerControlInterface;
@@ -69,13 +70,13 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     private Properties props;
 
     private final ImageIcon errorIcon = new javax.swing.ImageIcon(getClass()
-            .getResource("/jfreerails/client/graphics/icons/error.gif"));
+            .getResource(ClientConfig.ICON_ERROR));
 
     private final ImageIcon warningIcon = new javax.swing.ImageIcon(getClass()
-            .getResource("/jfreerails/client/graphics/icons/warning.gif"));
+            .getResource(ClientConfig.ICON_WARNING));
 
     private final ImageIcon infoIcon = new javax.swing.ImageIcon(getClass()
-            .getResource("/jfreerails/client/graphics/icons/info.gif"));
+            .getResource(ClientConfig.ICON_INFO));
 
     private final ProgressJPanel progressPanel = new ProgressJPanel(this);
 
