@@ -213,7 +213,7 @@ public class StationInfoJPanel extends JPanel implements View,
                             .getCargoBundleID());
             String title = "<h2 align=\"center\">" + station.getStationName()
                     + " (" + stationTypeName + ")</h2>";
-            String table = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies / cars per year</td><td>Waiting for pickup / car loads</td>  </tr>";
+            String table = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>";
             for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
 
                 // get the values
@@ -221,7 +221,8 @@ public class StationInfoJPanel extends JPanel implements View,
                 String demanded = (station.getDemand().isCargoDemanded(i) ? "Yes"
                         : "No");
                 int amountSupplied = station.getSupply().getSupply(i);
-                String supply = (amountSupplied > 0) ? String
+                boolean isSupplied = (amountSupplied > 0);
+                String supply = isSupplied ? String
                         .valueOf(amountSupplied
                                 / WagonType.UNITS_OF_CARGO_PER_WAGON)
                         : "&nbsp;";
@@ -232,13 +233,16 @@ public class StationInfoJPanel extends JPanel implements View,
                         : "&nbsp;";
 
                 // build the html
-                table += "<tr>";
-                table += "<td>" + cargoType.getDisplayName() + "</td>";
-                table += "<td>" + demanded + "</td>";
-                table += "<td>" + supply + "</td>";
-                table += "<td>" + waiting + "</td>";
-                table += "</tr>";
-
+                if (station.getDemand().isCargoDemanded(i) || isSupplied) {
+                    // FIXME Should be string buffer
+                    table += "<tr>";
+                    table += "<td>" + cargoType.getDisplayName() + "</td>";
+                    table += "<td>" + demanded + "</td>";
+                    table += "<td>" + supply + "</td>";
+                    table += "<td>" + waiting + "</td>";
+                    table += "</tr>";
+                }
+                
             }
             table += "</table>";
             label = "<html>" + title + table + "</html>";

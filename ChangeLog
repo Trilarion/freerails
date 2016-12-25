@@ -1,3 +1,8 @@
+Dec 25, 2016, lukeyj
+	Re-added station info panel
+	Only show good supplied or demanded
+	Modernised build through maven
+	Pulled out file paths into constants
 Sep 18, 2006, Luke
 	o Apply patch  1557521 (simple cleanups)
 Sep 3, 2006, Luke
@@ -368,7 +373,7 @@ Apr 2, 2004 12:01:57 AM Luke
 	o Fixed bug 910130 (Placement of harbours) 
 Apr 1, 2004 8:16:48 PM Luke
 	o Made trains stop for a couple of seconds at stations.
-	o 915947 Implement ‘wait until full’.
+	o 915947 Implement ï¿½wait until fullï¿½.
 Apr 1, 2004 12:38:47 AM Luke
 	o Implemented
 		910138 After building a train display train orders 

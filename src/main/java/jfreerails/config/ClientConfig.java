@@ -34,10 +34,11 @@ public class ClientConfig {
     public static final String ICON_TERRAIN_INFO = PATH_ICONS + "terrain_info.png";
     public static final String ICON_NEW_TRACK = PATH_ICONS + "track_new.png";
     public static final String ICON_TRAIN_LIST = PATH_ICONS + "train_list.png";
+    public static final String ICON_STATION_LIST = PATH_ICONS + "station_info.png";
     
-    public static final String ICON_ERROR = PATH_ICONS + "error.png";
-    public static final String ICON_WARNING = PATH_ICONS + "warning.png";
-    public static final String ICON_INFO = PATH_ICONS + "info.png";
+    public static final String ICON_ERROR = PATH_ICONS + "error.gif";
+    public static final String ICON_WARNING = PATH_ICONS + "warning.gif";
+    public static final String ICON_INFO = PATH_ICONS + "info.gif";
     
     public static final String GRAPHIC_ARROW_SELECTED = GRAPHICS_PATH + "selected_arrow.png";
     public static final String GRAPHIC_ARROW_DESELECTED = GRAPHICS_PATH + "deselected_arrow.png";

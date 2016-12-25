@@ -1,3 +1,6 @@
+On click select station, and show statino info panel.
+On click, if no station or train, display terrain info tab and update.
+
  - add szenarios
  - make new release schema
  - add jnlp cache cleaner http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6566071

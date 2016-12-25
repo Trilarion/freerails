@@ -39,6 +39,8 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
     private int trainListIndex;
 
+    private int stationInfoIndex;
+    
     public RHSJTabPane() {
         /*
          * Dont accept keyboard focus since we want to leave it with the main
@@ -48,7 +50,8 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
         ImageIcon trainListIcon;
         ImageIcon buildTrackIcon;
-
+        ImageIcon stationInfoIcon;
+        
         /* set up trainsJTabbedPane */
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         terrainInfoPanel = new TerrainInfoJPanel();
@@ -65,11 +68,15 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         URL buildTrackIconUrl = getClass().getResource(
                 ClientConfig.ICON_NEW_TRACK);
         buildTrackIcon = new ImageIcon(buildTrackIconUrl);
+        
         URL trainListIconUrl = getClass().getResource(
                 ClientConfig.ICON_TRAIN_LIST);
-        
-        
         trainListIcon = new ImageIcon(trainListIconUrl);
+        
+        URL stationListIconUrl = getClass().getResource(
+                ClientConfig.ICON_STATION_LIST);
+        stationInfoIcon = new ImageIcon(stationListIconUrl);
+        
         // Note titles set to null so only the icon appears at the top of the
         // top.
         JScrollPane terrainInfoJScrollPane = new JScrollPane(terrainInfoPanel);
@@ -80,12 +87,10 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         stationInfoPanel.removeCloseButton();
         // Don't show the station info tab until it has been rewritten to take
         // up less space.
-        // JScrollPane stationInfoJScrollPane = new
-        // JScrollPane(stationInfoPanel);
-        // stationInfoJScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        // addTab(null, stationInfoIcon, stationInfoJScrollPane, "Station
-        // Info");
-        // this.stationInfoIndex= this.getTabCount()-1;
+         JScrollPane stationInfoJScrollPane = new JScrollPane(stationInfoPanel);
+         stationInfoJScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+         addTab(null, stationInfoIcon, stationInfoJScrollPane, "Station Info");
+         this.stationInfoIndex= this.getTabCount()-1;
 
         trainListPanel.setTrainViewHeight(20);
         addTab(null, buildTrackIcon, buildTrackPanel, "Build Track");
