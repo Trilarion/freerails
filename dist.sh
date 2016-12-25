@@ -1,2 +1,2 @@
 #!/bin/bash
-mvn clean compile assembly:single
+mvn -Duser.name=LukeyJ clean compile assembly:single
