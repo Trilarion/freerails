@@ -8,7 +8,9 @@ public class ClientConfig {
     
     public static final String PATH_VIEWS = "/jfreerails/client/view/";
     
-    public static final String PATH_ICONS = GRAPHICS_PATH + "icons/";
+    public static final String ICONS_FOLDER_NAME = "icons";
+    
+    public static final String PATH_ICONS = GRAPHICS_PATH + ICONS_FOLDER_NAME + "/";
     
     // Sound resource locations
     public static final String SOUND_CASH = PATH_SOUNDS + "cash.wav"; 
