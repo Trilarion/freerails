@@ -66,6 +66,10 @@ public class UserInputOnMapController extends KeyAdapter {
 
     private SoundManager soundManager = SoundManager.getSoundManager();
 
+    /**
+     * Ignores the dragging action for efficiency I think.
+     * Ignores mostly for right mouse button.
+     */
     private boolean ignoreDragging = false;
 
     public UserInputOnMapController(ModelRoot mr, ActionRoot ar) {
@@ -245,6 +249,7 @@ public class UserInputOnMapController extends KeyAdapter {
             }
     
             case KeyEvent.VK_M: {
+                // FIXME broker screen bug maybe?
                 // if the screen is not clicked after the broker screen is closed
                 // and 'M' is pressed
                 // again, the broker screen will never show up again.
@@ -372,10 +377,8 @@ public class UserInputOnMapController extends KeyAdapter {
     private ImPoint getCursorPosition() {
         ImPoint point = (ImPoint) modelRoot
                 .getProperty(ModelRoot.Property.CURSOR_POSITION);
-
         // Check for null
         point = null == point ? new ImPoint() : point;
-
         return point;
     }
 
@@ -407,16 +410,15 @@ public class UserInputOnMapController extends KeyAdapter {
 
         @Override
         public void mousePressed(MouseEvent evt) {
+            logger.debug("Mouse pressed");
             if (SwingUtilities.isLeftMouseButton(evt)) {
+                
                 ignoreDragging = false;
-                int x = evt.getX();
-                int y = evt.getY();
-
-                float scale = mapView.getScale();
-                Dimension tileSize = new Dimension((int) scale, (int) scale);
+                
+                Dimension tileSize = new Dimension((int) mapView.getScale(), (int) mapView.getScale());
 
                 // only jump - no track building
-                moveCursorJump(new ImPoint(x / tileSize.width, y
+                moveCursorJump(new ImPoint(evt.getX() / tileSize.width, evt.getY()
                         / tileSize.height));
 
                 mapView.requestFocus();
@@ -432,6 +434,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 if (isBuildTrackModeSet) {
                     buildTrack.show();
                 }
+                
             } else if (SwingUtilities.isRightMouseButton(evt)) {
                 // Cancel building track.
                 buildTrack.hide();
@@ -442,25 +445,66 @@ public class UserInputOnMapController extends KeyAdapter {
         }
 
         @Override
+        public void mouseReleased(MouseEvent evt) {
+
+            logger.debug("Mouse released");
+            if (SwingUtilities.isLeftMouseButton(evt)) {
+                
+                ignoreDragging = false;
+                setIgnoreKeyEvents(false);
+                
+                // build a railroad from x,y to current cursor position
+                if (pressedInside && buildTrack.isBuilding()
+                        && buildTrack.isBuildTrackSuccessful()) {
+                    
+                    // Fix for bug [ 997088 ]
+                    // Is current posisition different from original position?
+                    float scale = mapView.getScale();
+                    Dimension tileSize = new Dimension((int) scale, (int) scale);
+                    int tileX = evt.getX() / tileSize.width;
+                    int tileY = evt.getY() / tileSize.height;
+
+                    if (getCursorPosition().x != tileX
+                            || getCursorPosition().y != tileY) {
+                        // copy WorldDifferences from buildTrack to World
+                        ImPoint newPosition = buildTrack
+                                .updateWorld(trackBuilder);
+                        setCursorPosition(newPosition);
+                    }
+                }
+
+                pressedInside = false;
+                buildTrack.hide();
+            }
+        }
+
+        @Override
         public void mouseDragged(MouseEvent evt) {
+            
+            // Called a lot for a small area, not just every square... efficiency questions?
+            logger.debug("Mouse dragged");
+            
             BuildMode trackBuilderMode = trackBuilder.getTrackBuilderMode();
             /*
              * Fix for bug [ 972866 ] Build track by dragging - only when build
              * track selected Fix for bug [1537413 ] Exception when building
              * station.
              */
+            // TODO pull these next bits out into method
             boolean trackBuildingOn = (trackBuilderMode == BUILD_TRACK)
                     || (trackBuilderMode == REMOVE_TRACK)
                     || (trackBuilderMode == UPGRADE_TRACK);
             trackBuildingOn = trackBuildingOn
                     && (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
+            
             if (SwingUtilities.isLeftMouseButton(evt) && pressedInside
                     && trackBuildingOn && !ignoreDragging) {
 
                 setIgnoreKeyEvents(true);
+                
                 int x = evt.getX();
                 int y = evt.getY();
-
+                
                 float scale = mapView.getScale();
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
                 int tileX = x / tileSize.width;
@@ -491,39 +535,9 @@ public class UserInputOnMapController extends KeyAdapter {
                 buildTrack.setProposedTrack(to, trackBuilder);
                 mapView.requestFocus();
             }
+            
         }
 
-        @Override
-        public void mouseReleased(MouseEvent evt) {
-
-            if (SwingUtilities.isLeftMouseButton(evt)) {
-                ignoreDragging = false;
-                setIgnoreKeyEvents(false);
-                // build a railroad from x,y to current cursor position
-                if (pressedInside && buildTrack.isBuilding()
-                        && buildTrack.isBuildTrackSuccessful()) {
-                    // Fix for bug [ 997088 ]
-                    // Is current posisition different from original position?
-                    int x = evt.getX();
-                    int y = evt.getY();
-                    float scale = mapView.getScale();
-                    Dimension tileSize = new Dimension((int) scale, (int) scale);
-                    int tileX = x / tileSize.width;
-                    int tileY = y / tileSize.height;
-
-                    if (getCursorPosition().x != tileX
-                            || getCursorPosition().y != tileY) {
-                        // copy WorldDifferences from buildTrack to World
-                        ImPoint newPosition = buildTrack
-                                .updateWorld(trackBuilder);
-                        setCursorPosition(newPosition);
-                    }
-                }
-
-                pressedInside = false;
-                buildTrack.hide();
-            }
-        }
     }
 
 }

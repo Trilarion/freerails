@@ -25,6 +25,7 @@ import javax.swing.JLayeredPane;
 
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.MyGlassPanel;
+import jfreerails.client.common.StationHelper;
 import jfreerails.client.renderer.RenderersRoot;
 import jfreerails.config.ClientConfig;
 import jfreerails.controller.CopyableTextJPanel;
@@ -503,28 +504,36 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     public void showStationOrTerrainInfo(int x, int y) {
-        FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
-
-        TrackRule trackRule = tile.getTrackPiece().getTrackRule();
-        FreerailsPrincipal principal = modelRoot.getPrincipal();
-        if (trackRule.isStation()
-                && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
-
-            for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-                StationModel station = (StationModel) world.get(principal,
-                        KEY.STATIONS, i);
-
-                if (null != station && station.x == x && station.y == y) {
-                    this.showStationInfo(i);
-
-                    return;
-                }
-            }
-
-            throw new IllegalStateException("Couldn't find station at " + x
-                    + ", " + y);
+//        FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
+//
+//        TrackRule trackRule = tile.getTrackPiece().getTrackRule();
+//        FreerailsPrincipal principal = modelRoot.getPrincipal();
+//        if (trackRule.isStation()
+//                && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
+//
+//            for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
+//                StationModel station = (StationModel) world.get(principal,
+//                        KEY.STATIONS, i);
+//
+//                if (null != station && station.x == x && station.y == y) {
+//                    this.showStationInfo(i);
+//
+//                    return;
+//                }
+//            }
+//
+//            throw new IllegalStateException("Couldn't find station at " + x
+//                    + ", " + y);
+//        }
+        int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
+        if (stationNumberAtLocation > -1) {
+            this.showStationInfo(stationNumberAtLocation);
         }
-        this.showTerrainInfo(x, y);
+        else {
+            this.showTerrainInfo(x, y);
+        }
+        
+        
     }
 
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {

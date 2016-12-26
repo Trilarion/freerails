@@ -10,14 +10,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
 
+import org.apache.log4j.Logger;
+
 import jfreerails.client.common.ModelRootImpl;
 import jfreerails.client.common.ModelRootListener;
+import jfreerails.client.common.StationHelper;
 import jfreerails.client.renderer.RenderersRoot;
+import jfreerails.client.top.UserInputOnMapController;
 import jfreerails.config.ClientConfig;
 import jfreerails.controller.ModelRoot;
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.ImPoint;
 import jfreerails.world.top.ReadOnlyWorld;
+import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
+import jfreerails.world.track.TrackRule;
 
 /**
  * The tabbed panel that sits in the lower right hand corner of the screen.
@@ -25,7 +32,11 @@ import jfreerails.world.track.FreerailsTile;
  * @author rob
  */
 public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
+    
     private static final long serialVersionUID = 3906926798502965297L;
+
+    private static final Logger LOGGER = Logger
+            .getLogger(RHSJTabPane.class.getName());
 
     private final TerrainInfoJPanel terrainInfoPanel;
 
@@ -37,6 +48,10 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
     private ReadOnlyWorld world;
 
+    private ModelRoot modelRoot;
+    
+    private int terrainInfoIndex;
+    
     private int trainListIndex;
 
     private int stationInfoIndex;
@@ -83,6 +98,8 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         terrainInfoJScrollPane
                 .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         addTab(null, terrainInfoIcon, terrainInfoJScrollPane, "Terrain Info");
+        this.terrainInfoIndex = this.getTabCount()-1;
+        
         stationInfoPanel = new StationInfoJPanel();
         stationInfoPanel.removeCloseButton();
         // Don't show the station info tab until it has been rewritten to take
@@ -104,7 +121,10 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
     public void setup(final ActionRoot actionRoot, RenderersRoot vl,
             final ModelRootImpl modelRoot) {
+        
+        this.modelRoot = modelRoot;
         world = modelRoot.getWorld();
+        
         terrainInfoPanel.setup(world, vl);
         stationInfoPanel.setup(modelRoot, vl, null);
 
@@ -129,18 +149,63 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     public void propertyChange(ModelRoot.Property prop, Object before,
             Object after) {
         if (prop.equals(ModelRoot.Property.CURSOR_POSITION)) {
+            
             ImPoint p = (ImPoint) after;
-            terrainInfoPanel.setTerrainType(((FreerailsTile) world.getTile(p.x,
-                    p.y)).getTerrainTypeID());
+            
+            int x = p.x;
+            int y = p.y;
+            
+            // Select priority element at location
+            LOGGER.debug("Let's try to show the station.");
+
+//            FreerailsSerializable freerailsSerializable = world.get(SKEY.TRACK_RULES, 0);
+//            if (freerailsSerializable != null) {
+//                LOGGER.info("Track piece at location.");
+//                
+//                LOGGER.info("Type is: " + freerailsSerializable.getClass().getName());
+//                
+//                if (freerailsSerializable instanceof TrackRule) {
+//                    TrackRule trackRule = (TrackRule) freerailsSerializable;
+//                    boolean station = trackRule.isStation();
+//                    LOGGER.info("isStation: " + station);   
+//                }
+//
+//            }
+//            else {
+//                LOGGER.info("No piece at location.");
+//            }
+            
+
+            // select station at point and show stat info tab
+            // if not, then do terrain info and show that
+            int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
+            if (stationNumberAtLocation > -1) {
+                LOGGER.info("stationNumber: " + stationNumberAtLocation);   
+                stationInfoPanel.setStation(stationNumberAtLocation);
+                this.setSelectedIndex(stationInfoIndex);
+            }
+            else {
+                //terrainInfoPanel.showTerrainInfo(x, y);
+                LOGGER.info("Default behaviour show terrain.");
+                terrainInfoPanel.setTerrainType(((FreerailsTile) world.getTile(p.x,
+                        p.y)).getTerrainTypeID());
+                this.setSelectedIndex(terrainInfoIndex);
+            }
+            
         }
     }
 
+    public void setTerrainTabEnabled(boolean enabled) {
+        this.setEnabledAt(this.terrainInfoIndex, enabled);
+    }
+    
     public void setTrainTabEnabled(boolean enabled) {
         this.setEnabledAt(this.trainListIndex, enabled);
     }
 
+    // FIXME surely this is something?
     public void setStationTabEnabled(boolean enabled) {
-        // this.setEnabledAt(this.stationInfoIndex, enabled);
+        this.setEnabledAt(this.stationInfoIndex, enabled);
     }
 
 }

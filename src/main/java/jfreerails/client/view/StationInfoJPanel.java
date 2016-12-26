@@ -211,21 +211,33 @@ public class StationInfoJPanel extends JPanel implements View,
             ImmutableCargoBundle cargoWaiting = (ImmutableCargoBundle) w.get(
                     modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station
                             .getCargoBundleID());
-            String title = "<h2 align=\"center\">" + station.getStationName()
-                    + " (" + stationTypeName + ")</h2>";
-            String table = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>";
+            
+            StringBuilder table1 = new StringBuilder ();
+            
+            table1.append("<html>");
+            
+            table1.append("<h2 align=\"center\">");
+            table1.append(station.getStationName());
+            table1.append(" (");
+            table1.append(stationTypeName);
+            table1.append(")</h2>");
+            
+            table1.append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>");
+            
             for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
 
                 // get the values
                 CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
                 String demanded = (station.getDemand().isCargoDemanded(i) ? "Yes"
                         : "No");
+                
                 int amountSupplied = station.getSupply().getSupply(i);
                 boolean isSupplied = (amountSupplied > 0);
                 String supply = isSupplied ? String
                         .valueOf(amountSupplied
                                 / WagonType.UNITS_OF_CARGO_PER_WAGON)
                         : "&nbsp;";
+                        
                 int amountWaiting = cargoWaiting.getAmount(i);
                 String waiting = (amountWaiting > 0) ? String
                         .valueOf(amountWaiting
@@ -234,18 +246,18 @@ public class StationInfoJPanel extends JPanel implements View,
 
                 // build the html
                 if (station.getDemand().isCargoDemanded(i) || isSupplied) {
-                    // FIXME Should be string buffer
-                    table += "<tr>";
-                    table += "<td>" + cargoType.getDisplayName() + "</td>";
-                    table += "<td>" + demanded + "</td>";
-                    table += "<td>" + supply + "</td>";
-                    table += "<td>" + waiting + "</td>";
-                    table += "</tr>";
+                    table1.append("<tr>");
+                    table1.append("<td>").append(cargoType.getDisplayName()).append("</td>");
+                    table1.append("<td align=center>").append(demanded).append("</td>");
+                    table1.append("<td align=center>").append(supply).append("</td>");
+                    table1.append("<td align=center>").append(waiting).append("</td>");
+                    table1.append("</tr>");
                 }
                 
             }
-            table += "</table>";
-            label = "<html>" + title + table + "</html>";
+            table1.append("</table>");
+            table1.append("</html>");
+            label = table1.toString();
         } else {
             cargoBundleIndex = WorldIterator.BEFORE_FIRST;
             label = "<html><h2 align=\"center\">No Station "
