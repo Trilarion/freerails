@@ -7,6 +7,7 @@
 package jfreerails.client.view;
 
 import java.awt.*;
+import java.util.ArrayList;
 /**
  *
  * @author  Luke Lindsay
@@ -25,13 +26,23 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
      MyDisplayMode selection;
      
      public DisplayModesComboBoxModels(){
+	 ArrayList acceptableModes = new ArrayList();
          DisplayMode currentMode = defaultConfiguration.getDevice().getDisplayMode();
          selection = new MyDisplayMode(currentMode);
          DisplayMode[]  displayModes  = defaultConfiguration.getDevice().getDisplayModes();
-         modes = new MyDisplayMode[displayModes.length];
          for (int i = 0 ; i < displayModes.length ; i ++){
-             modes[i] = new MyDisplayMode(displayModes[i]);
+	     /*
+	      * don't support anything less than 800 x 600 or anything less
+	      * than 16 bits
+	      */
+	     if (displayModes[i].getWidth() < 800 ||
+		     displayModes[i].getHeight() < 600 ||
+		     displayModes[i].getBitDepth() < 16)
+		 continue;
+             acceptableModes.add(new MyDisplayMode(displayModes[i]));
          }       
+	 modes = (MyDisplayMode []) acceptableModes.toArray(new
+		 MyDisplayMode[acceptableModes.size()]);
      }
     
     

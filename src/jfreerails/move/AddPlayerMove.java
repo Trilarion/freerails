@@ -4,9 +4,10 @@ import jfreerails.world.player.Player;
 import jfreerails.world.player.PlayerPrincipal;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.accounts.BankAccount;
-import jfreerails.world.accounts.Receipt;
-import jfreerails.world.common.Money;
+import jfreerails.world.accounts.InitialDeposit;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
@@ -70,7 +71,8 @@ public class AddPlayerMove extends CompositeMove implements ServerMove {
                     Player.AUTHORITATIVE));
 
 	BankAccount ba = new BankAccount();
-	Receipt r = new Receipt(new Money(INITIAL_MONEY));
+	GameTime now = (GameTime) w.get(ITEM.TIME, Player.AUTHORITATIVE);
+	InitialDeposit r = new InitialDeposit(now, INITIAL_MONEY);
 	ba.addTransaction(r);
 
         return new Move[] {

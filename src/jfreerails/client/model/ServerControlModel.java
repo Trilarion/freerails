@@ -1,18 +1,28 @@
 package jfreerails.client.model;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.Action;
 import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import java.util.Enumeration;
-import jfreerails.client.common.ActionAdapter;
-import jfreerails.controller.ServerControlInterface;
 
+import jfreerails.client.common.ActionAdapter;
+import jfreerails.client.common.ScreenHandler;
+import jfreerails.controller.ServerControlInterface;
 
 /**
  * Exposes the ServerControlInterface to client UI implementations
  */
 public class ServerControlModel {
     private ServerControlInterface serverInterface;
+    private String currentDirectory = System.getProperty("user.home");
+    private ModelRoot modelRoot;
+    private ScreenHandler screenHandler;
+    private Component dialog;
 
     private class NewGameAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
@@ -38,11 +48,80 @@ public class ServerControlModel {
     private ActionAdapter selectMapActions;
     private Action newGameAction = new NewGameAction(null);
 
+    private class SaveListener implements ActionListener {
+	private JFileChooser chooser;
+
+	public SaveListener(JFileChooser c) {
+	    chooser = c;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    int option = JFileChooser.CANCEL_OPTION;
+	    if (JFileChooser.APPROVE_SELECTION.equals
+		    (e.getActionCommand())) {
+		option = JFileChooser.APPROVE_OPTION;
+	    }
+	    dialog.setVisible(false);
+	    if (option == JFileChooser.APPROVE_OPTION) {
+		File f = chooser.getSelectedFile();
+		currentDirectory =
+		    chooser.getCurrentDirectory().getPath();
+		serverInterface.saveGame(f);
+	    }
+	    synchronized (ServerControlModel.this) {
+		dialog = null;
+	    }
+	}
+    }
+
+    private class LoadListener implements ActionListener {
+	private JFileChooser chooser;
+
+	public LoadListener(JFileChooser c) {
+	    chooser = c;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    int option = JFileChooser.CANCEL_OPTION;
+	    if (JFileChooser.APPROVE_SELECTION.equals
+		    (e.getActionCommand())) {
+		option = JFileChooser.APPROVE_OPTION;
+	    }
+	    dialog.setVisible(false);
+	    if (option == JFileChooser.APPROVE_OPTION) {
+		File f = chooser.getSelectedFile();
+		if (! f.isFile()) {
+		    modelRoot.getUserMessageLogger().println("You must "
+			    + "select a valid file name");
+		    return;
+		}
+		currentDirectory =
+		    chooser.getCurrentDirectory().getPath();
+		serverInterface.loadGame(f);
+	    }
+	    synchronized (ServerControlModel.this) {
+		dialog = null;
+	    }
+	}
+    }
+
     private class LoadGameAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
-            if (serverInterface != null) {
-                serverInterface.loadGame();
-            }
+	    synchronized (ServerControlModel.this) {
+		if (dialog != null)
+		    return;
+
+		if (serverInterface != null) {
+		    JFileChooser chooser = new JFileChooser(currentDirectory);
+		    chooser.setMultiSelectionEnabled(false);
+		    int option;
+		    LoadListener listener = new LoadListener(chooser);
+		    chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+		    chooser.addActionListener(listener);
+		    dialog = screenHandler.showDialog(chooser,
+			    chooser.getDialogTitle());
+		}
+	    }
         }
 
         public LoadGameAction() {
@@ -55,10 +134,23 @@ public class ServerControlModel {
 
     private class SaveGameAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
-            if (serverInterface != null) {
-                serverInterface.saveGame();
-            }
-        }
+	    synchronized (ServerControlModel.this) {
+		if (dialog != null)
+		    return;
+
+		if (serverInterface != null) {
+		    JFileChooser chooser = new JFileChooser(currentDirectory);
+		    chooser.setMultiSelectionEnabled(false);
+		    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		    int option;
+		    chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		    SaveListener listener = new SaveListener(chooser);
+		    chooser.addActionListener(listener);
+		    dialog = screenHandler.showDialog(chooser,
+			    chooser.getDialogTitle());
+		}
+	    }
+	}
 
         public SaveGameAction() {
             putValue(NAME, "Save Game");
@@ -124,8 +216,9 @@ public class ServerControlModel {
         newGameAction.setEnabled(enabled);
     }
 
-    public ServerControlModel(ServerControlInterface i) {
+    public ServerControlModel(ServerControlInterface i, ModelRoot mr) {
         setServerControlInterface(i);
+	modelRoot = mr;
     }
 
     /**
@@ -166,5 +259,9 @@ public class ServerControlModel {
      */
     public ActionAdapter getMapNames() {
         return selectMapActions;
+    }
+
+    public void setScreenHandler(ScreenHandler sh) {
+	screenHandler = sh;
     }
 }

@@ -1,6 +1,8 @@
 package jfreerails.server;
 
+import java.io.File;
 import java.util.Vector;
+
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.util.FreerailsProgressMonitor;
 
@@ -37,8 +39,8 @@ public class GameServer {
      * no network connections.
      */
     public ServerControlInterface getSavedGame(FreerailsProgressMonitor pm,
-        int port) {
-        ServerGameEngine gameEngine = ServerGameEngine.loadGame();
+        int port, File filename) {
+        ServerGameEngine gameEngine = ServerGameEngine.loadGame(filename);
         ServerGameController sgc = new ServerGameController(gameEngine, port);
         gameControllers.add(sgc);
 

@@ -24,7 +24,8 @@ import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.train.WagonType;
 
-/** This JPanel displays the supply and demand at a station.
+/** 
+ * This JPanel displays the supply and demand at a station.
  *
  * @author  Luke
  */
@@ -146,7 +147,8 @@ implements MoveReceiver {
     
     public void setup(ModelRoot mr) {
 	modelRoot = mr;
-        this.wi = new NonNullElements(KEY.STATIONS, modelRoot.getWorld());
+	this.wi = new NonNullElements(KEY.STATIONS, modelRoot.getWorld(),
+		modelRoot.getPlayerPrincipal());
         addComponentListener(componentListener);
 	modelRoot.getMoveChainFork().addSplitMoveReceiver(this);
 	world = modelRoot.getWorld();
@@ -175,7 +177,8 @@ implements MoveReceiver {
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             StationModel station =
-            (StationModel) world.get(KEY.STATIONS, stationNumber);
+	    (StationModel) world.get(KEY.STATIONS, stationNumber,
+				     modelRoot.getPlayerPrincipal());
             FreerailsTile tile = world.getTile(station.x, station.y);
             String stationTypeName = tile.getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleNumber();

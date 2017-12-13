@@ -5,7 +5,10 @@
  */
 
 package jfreerails.client.view;
+
 import javax.swing.*;
+
+import jfreerails.client.model.ModelRoot;
 import jfreerails.world.top.*;
 import jfreerails.world.station.*;
 import java.awt.*;
@@ -13,7 +16,9 @@ import java.awt.*;
  *
  * @author  Luke Lindsay
  */
-public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCellRenderer{
+public class TrainOrderJPanel extends javax.swing.JPanel implements 
+ListCellRenderer {
+    private ModelRoot modelRoot;
     
     jfreerails.world.top.ReadOnlyWorld w;
     
@@ -47,8 +52,6 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
 
         setLayout(new java.awt.GridBagLayout());
 
-        setMinimumSize(new java.awt.Dimension(160, 28));
-        setPreferredSize(new java.awt.Dimension(160, 28));
         gotoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/selected_arrow.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -90,20 +93,21 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
 
     }//GEN-END:initComponents
     
-    public void setup(jfreerails.world.top.ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
-        this.w = w;
+    public void setup(ModelRoot mr, java.awt.event.ActionListener submitButtonCallBack) {
+	modelRoot = mr;
+        w = mr.getWorld();
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
-        trainViewJPanel.setup(w, vl, null);
-        
+        trainViewJPanel.setup(mr, null);
     }
     
     public java.awt.Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement)value;
         
         //Set station name
-        int stationNumber = trainOrders.order.station;
-        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber);
+        int stationNumber = trainOrders.order.station.index;
+	StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber,
+		modelRoot.getPlayerPrincipal());
         String stationName = station.getStationName();
         this.stationNameJLabel.setText(stationName);
         

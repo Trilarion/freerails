@@ -10,6 +10,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Transparency;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,15 @@ import javax.imageio.ImageIO;
  */
 public class ImageManagerImpl implements ImageManager {
     private String pathToReadFrom;
+
+    /**
+     * HashMap of BufferedImage
+     */
     private HashMap imageHashMap = new HashMap();
+    
+    /**
+     * HashMap of BufferedImage
+     */
     private HashMap scaledImagesHashMap = new HashMap();
     private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                             .getDefaultScreenDevice()
@@ -42,11 +51,11 @@ public class ImageManagerImpl implements ImageManager {
         pathToReadFrom = s;
     }
 
-    public Image getImage(String relativeFilename) throws IOException {
+    public BufferedImage getImage(String relativeFilename) throws IOException {
         relativeFilename = relativeFilename.replace(' ', '_');
 
         if (imageHashMap.containsKey(relativeFilename)) {
-            return (Image)imageHashMap.get(relativeFilename);
+            return (BufferedImage)imageHashMap.get(relativeFilename);
         }
 
         //File f = new File(pathToReadFrom+File.separator+relativeFilename);
@@ -59,8 +68,9 @@ public class ImageManagerImpl implements ImageManager {
             throw new IOException("Couldn't find: " + read);
         }
 
-        Image tempImage = ImageIO.read(url);
-        Image compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(
+        BufferedImage tempImage = ImageIO.read(url);
+	BufferedImage compatibleImage =
+	    defaultConfiguration.createCompatibleImage(tempImage.getWidth(
                     null), tempImage.getHeight(null), Transparency.TRANSLUCENT);
         Graphics g = compatibleImage.getGraphics();
         g.drawImage(tempImage, 0, 0, null);
@@ -78,7 +88,7 @@ public class ImageManagerImpl implements ImageManager {
 	return false;
     }
 
-    public void setImage(String relativeFilename, Image i) {
+    public void setImage(String relativeFilename, BufferedImage i) {
         relativeFilename = relativeFilename.replace(' ', '_');
 
         if (i == null) {
@@ -92,19 +102,20 @@ public class ImageManagerImpl implements ImageManager {
      *  Returns the specified image scaled so that its height is equal to the
      * specified height.
      */
-    public Image getScaledImage(String relativeFilename, int height)
+    public BufferedImage getScaledImage(String relativeFilename, int height)
         throws IOException {
-        Image i = getImage(relativeFilename);
+        BufferedImage i = getImage(relativeFilename);
         String hashKey = relativeFilename + height;
 
         if (this.scaledImagesHashMap.containsKey(hashKey)) {
-            return (Image)scaledImagesHashMap.get(hashKey);
+            return (BufferedImage)scaledImagesHashMap.get(hashKey);
         } else {
             if (i.getHeight(null) == height) {
                 return i;
             } else {
-                int width = (i.getWidth(null) * height) / i.getHeight(null);
-                Image compatibleImage = defaultConfiguration.createCompatibleImage(width,
+                int width = (i.getWidth() * height) / i.getHeight();
+		BufferedImage compatibleImage =
+		    defaultConfiguration.createCompatibleImage(width,
                         height, Transparency.BITMASK);
                 Graphics g = compatibleImage.getGraphics();
                 g.drawImage(i, 0, 0, width, height, null);

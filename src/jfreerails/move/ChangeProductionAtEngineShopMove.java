@@ -32,11 +32,11 @@ public class ChangeProductionAtEngineShopMove implements Move {
     }
 
     public ChangeProductionAtEngineShopMove(ProductionAtEngineShop b,
-        ProductionAtEngineShop a, int station) {
+        ProductionAtEngineShop a, int station, FreerailsPrincipal p) {
         this.before = b;
         this.after = a;
         this.stationNumber = station;
-	this.principal = Player.NOBODY;
+	this.principal = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

@@ -1,13 +1,11 @@
 package jfreerails.client.common;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.*;
 import java.awt.BufferCapabilities;
@@ -15,7 +13,9 @@ import java.awt.ImageCapabilities;
 import java.awt.image.BufferStrategy;
 import java.awt.image.VolatileImage;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
@@ -49,7 +49,6 @@ final public class ScreenHandler {
     DisplayMode displayMode;
     private UpdatedComponent updatedComponent;
     private boolean isVolatile;
-    private Image backBuffer;
     private int oldWidth;
     private int oldHeight;
     private BufferStrategy bufferStrategy;
@@ -79,13 +78,13 @@ final public class ScreenHandler {
     }
 
     /**
-     * @return one of FULL_SCREEN, WINDOWED_MODE or FIXED_SIZE_WINDOWED_MODE
+     * @return one of FULL_SCREEN, WINDOWED_MODE
      */
     public int getMode() {
 	return currentMode;
     }
 
-    public static void goFullScreen(JFrame frame, DisplayMode displayMode) {
+    private static void goFullScreen(JFrame frame, DisplayMode displayMode) {
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                    .getDefaultScreenDevice();
 
@@ -113,13 +112,12 @@ final public class ScreenHandler {
         frame.validate();
     }
 
-    public void apply(JFrame f, int mode) {
+    private void apply(JFrame f, int mode) {
         switch (mode) {
 	    case FULL_SCREEN:
             goFullScreen(f, displayMode);
             break;
         case WINDOWED_MODE:
-            frame.show();
             break;
         default:
             throw new IllegalArgumentException(String.valueOf(mode));
@@ -197,7 +195,7 @@ final public class ScreenHandler {
 
     private Runnable swingWorker = new Runnable() {
 	public void run() {
-	    if (isMinimised) {
+	    if (isMinimised || ! frame.isVisible()) {
 		return;
 	    }
 
@@ -247,5 +245,31 @@ final public class ScreenHandler {
 
     public boolean isVolatile() {
 	return isVolatile;
+    }
+
+    public Component showDialog(Component c, String title) {
+	switch (getMode()) {
+	    case ScreenHandler.FULL_SCREEN:
+		JInternalFrame jif = new JInternalFrame(title,
+			true);
+		jif.getContentPane().add(c);
+		jif.pack();
+		jif.setLocation((frame.getWidth() - jif.getWidth()) / 2,
+			(frame.getHeight() - jif.getHeight()) / 2);
+
+		frame.getLayeredPane().add(jif, JLayeredPane.MODAL_LAYER);
+		jif.show();
+		return jif;
+	    default:
+		JDialog jd = new JDialog(frame, title, false);
+		jd.getContentPane().add(c);
+		jd.pack();
+		jd.setLocation(frame.getX() +
+			(frame.getWidth() - jd.getWidth()) / 2,
+		       	frame.getY() +
+			(frame.getHeight() - jd.getHeight()) / 2);
+		jd.show();
+		return jd;
+	}
     }
 }

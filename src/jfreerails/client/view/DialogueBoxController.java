@@ -7,6 +7,7 @@
 package jfreerails.client.view;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
@@ -112,18 +113,15 @@ public class DialogueBoxController {
         
         // setup the 'show controls' dialogue
         showControls = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/game_controls.html"));
-        showControls.setup(w, vl, this.closeCurrentDialogue);
         
         about = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/about.htm"));
-        about.setup(w, vl, this.closeCurrentDialogue);
         
         how2play = new HtmlJPanel(DialogueBoxController.class.getResource("/jfreerails/client/view/how_to_play.htm"));
-        how2play.setup(w, vl, this.closeCurrentDialogue);
         
         //Set up select engine dialogue.
         selectEngine = new SelectEngineJPanel();
         selectEngine.setCancelButtonActionListener(this.closeCurrentDialogue);
-        selectEngine.setup(w, vl, new ActionListener() {
+        selectEngine.setup(modelRoot, new ActionListener() {
             
             public void actionPerformed(ActionEvent arg0) {
                 closeContent();
@@ -138,10 +136,11 @@ public class DialogueBoxController {
         
         final ReadOnlyWorld finalROW = this.world;
         //So that inner class can reference it.
-        selectWagons.setup(w, vl, new ActionListener() {
+        selectWagons.setup(modelRoot, new ActionListener() {
             
             public void actionPerformed(ActionEvent arg0) {
-                WorldIterator wi = new NonNullElements(KEY.STATIONS, finalROW);
+		WorldIterator wi = new NonNullElements(KEY.STATIONS, finalROW,
+		    modelRoot.getPlayerPrincipal());
                 if (wi.next()) {
                     
                     StationModel station = (StationModel) wi.getElement();
@@ -152,11 +151,9 @@ public class DialogueBoxController {
                     ProductionAtEngineShop after =
                     new ProductionAtEngineShop(engineType, wagonTypes);
                     
-                    Move m =
-                    new ChangeProductionAtEngineShopMove(
-                    before,
-                    after,
-                    wi.getIndex());
+                    Move m = new ChangeProductionAtEngineShopMove
+		    (before, after, wi.getIndex(),
+		     modelRoot.getPlayerPrincipal());
                     moveReceiver.processMove(m);
                 }
                 closeContent();
@@ -180,7 +177,8 @@ public class DialogueBoxController {
     }
     
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElements(KEY.TRAINS, world);
+	WorldIterator wi = new NonNullElements(KEY.TRAINS, world,
+		modelRoot.getPlayerPrincipal());
         if (!wi.next()) {
             modelRoot.getUserMessageLogger().println("Cannot" +
             " show train orders since there are no" +
@@ -192,7 +190,8 @@ public class DialogueBoxController {
     }
     
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, world);
+	WorldIterator wi = new NonNullElements(KEY.STATIONS, world,
+		modelRoot.getPlayerPrincipal());
         if (!wi.next()) {
             modelRoot.getUserMessageLogger().println("Can't" +
             " build train since there are no stations");
@@ -200,6 +199,12 @@ public class DialogueBoxController {
             
             showContent(selectEngine);
         }
+    }
+
+    public void showProfitLoss() {
+	ProfitLossJPanel pl = new ProfitLossJPanel();
+	pl.setup(modelRoot);
+	showContent(pl);
     }
     
     public void showGameControls() {
@@ -222,15 +227,9 @@ public class DialogueBoxController {
         showContent(selectWagons);
     }
     
-    public void showTerrainInfo(int terrainType) {
-        this.terrainInfo.setTerrainType(terrainType);
-        showContent(terrainInfo);
-    }
-    
     public void showTerrainInfo(int x, int y) {
-        FreerailsTile tile = world.getTile(x, y);
-        int terrainType = tile.getTerrainTypeNumber();
-        showTerrainInfo(terrainType);
+        terrainInfo.setLocation(new Point (x, y));
+	showContent(terrainInfo);
     }
     
     public void showStationInfo(int stationNumber) {
@@ -243,9 +242,9 @@ public class DialogueBoxController {
     }
     
     public void showTrainList() {
-	if (world.size(KEY.TRAINS) > 0) {
+	if (world.size(KEY.TRAINS, modelRoot.getPlayerPrincipal()) > 0) {
 	    final TrainListJPanel trainList = new TrainListJPanel();		
-	    trainList.setup(w, vl, closeCurrentDialogue);
+	    trainList.setup(modelRoot, closeCurrentDialogue);
 	    trainList.setShowTrainDetailsActionListener(
 		    new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
@@ -266,7 +265,9 @@ public class DialogueBoxController {
     
     public void showContent(JComponent component) {
         JComponent contentPanel;
-        if (!(component instanceof View)) {
+        if (!((component instanceof SelectEngineJPanel) ||
+		    (component instanceof SelectWagonsJPanel) ||
+		    (component instanceof TrainListJPanel))) {
             contentPanel = new javax.swing.JPanel();
             contentPanel.setLayout(new java.awt.GridBagLayout());
             GridBagConstraints constraints = new GridBagConstraints();
@@ -274,6 +275,7 @@ public class DialogueBoxController {
             constraints.gridy = 0;
             constraints.weightx = 1.0;
             constraints.weighty = 1.0;
+	    constraints.fill = GridBagConstraints.BOTH;
             contentPanel.add(component, constraints);
             
             constraints = new GridBagConstraints();
@@ -328,9 +330,11 @@ public class DialogueBoxController {
     public void showStationOrTerrainInfo(int x, int y) {
         FreerailsTile tile = world.getTile(x, y);
         if (tile.getTrackRule().isStation()) {
-            for (int i = 0; i < world.size(KEY.STATIONS); i++) {
+	    for (int i = 0; i < world.size(KEY.STATIONS,
+			modelRoot.getPlayerPrincipal()); i++) {
                 StationModel station =
-                (StationModel) world.get(KEY.STATIONS, i);
+		(StationModel) world.get(KEY.STATIONS, i,
+					 modelRoot.getPlayerPrincipal());
                 if (null != station && station.x == x && station.y == y) {
                     this.showStationInfo(i);
                     return;

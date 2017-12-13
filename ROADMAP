@@ -2,11 +2,11 @@
 
 Targeted features before next stable release branch 0.4
 ====================================================
-Full multiplayer support - ownership of all appropriate game world objects.
-Ability to place new trains on map
-Profit and loss
-I18N infrastructure
 Move to bugzilla bug database
+Balance sheet
+Income tax
+Ability to place new trains on map
+Cash Flow
 
 Optional 0.4 features
 =====================
@@ -15,17 +15,20 @@ Schedule in tab pane
 Icons in tab pane tabs
 "Paused" message when paused
 Better graphics
+Tile value map overlays
+Launcher/load/save cleanup.
+Network "robustness".
 Sound??
 
 Development features for 0.5 or later
 =====================================
+Separate Terrain and building layers
 Rename classe heirarchy from jfreerails.xx.xx.xx
 Rationalisation of package structure (split into client, server and common
 		packages)
 Rationalisation of train movement and timer
 Station improvements
 Train maintenance
-Balance sheet
 Train collision / track contention.
 Train / terrain track layout speed interaction.
 Trading between players

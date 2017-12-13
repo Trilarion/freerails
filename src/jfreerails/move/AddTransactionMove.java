@@ -53,8 +53,8 @@ public class AddTransactionMove implements Move {
             if (this.constrained) {
                 BankAccount bankAccount = (BankAccount)w.get(KEY.BANK_ACCOUNTS,
                         this.account, p);
-                long bankBalance = bankAccount.getCurrentBalance().getAmount();
-                long transactionAmount = this.transaction.getValue().getAmount();
+                long bankBalance = bankAccount.getCurrentBalance();
+                long transactionAmount = this.transaction.getValue();
                 long balanceAfter = bankBalance + transactionAmount;
 
                 if (transactionAmount < 0 && balanceAfter < 0) {

@@ -1,7 +1,7 @@
 package jfreerails.controller;
 
+import java.io.File;
 import javax.swing.table.TableModel;
-
 
 /**
  * This class exposes controls for a single game running on the server rather
@@ -31,9 +31,9 @@ public interface ServerControlInterface {
      */
     public void newGame(String mapName);
 
-    public void loadGame();
+    public void loadGame(File filename);
 
-    public void saveGame();
+    public void saveGame(File filename);
 
     public void quitGame();
 

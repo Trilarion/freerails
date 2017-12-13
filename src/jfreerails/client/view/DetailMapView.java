@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import jfreerails.client.model.ModelRoot;
 import jfreerails.client.renderer.CityNamesRenderer;
 import jfreerails.client.renderer.MapBackgroundRender;
 import jfreerails.client.renderer.MapLayerRenderer;
@@ -20,13 +21,15 @@ public class DetailMapView implements MapRenderer {
     private static boolean OSXWorkaround = (System.getProperty("OSXWorkaround") != null);
     private final MapLayerRenderer background;
     private final Dimension mapSizeInPixels;
-    private final TestOverHeadTrainView trainsview;
+    private final OverHeadTrainView trainsview;
     private final Painter cityNames;
     private final Painter stationNames;
     private final StationRadiusRenderer stationRadius;
 
-    public DetailMapView(ReadOnlyWorld world, ViewLists vl) {
-        trainsview = new TestOverHeadTrainView(world, vl);
+    public DetailMapView(ModelRoot mr) {
+	ReadOnlyWorld world = mr.getWorld();
+	ViewLists vl = mr.getViewLists();
+        trainsview = new OverHeadTrainView(mr);
 
         if (OSXWorkaround) {
             //Don't buffer the mapviews background.

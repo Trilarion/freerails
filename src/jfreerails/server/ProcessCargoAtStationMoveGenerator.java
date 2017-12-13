@@ -5,13 +5,16 @@
 package jfreerails.server;
 
 import java.util.Iterator;
+import java.util.Map.Entry;
+
 import jfreerails.move.AddTransactionMove;
 import jfreerails.world.accounts.DeliverCargoReceipt;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
-import jfreerails.world.common.Money;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
@@ -22,30 +25,33 @@ import jfreerails.world.player.Player;
  *
  */
 public class ProcessCargoAtStationMoveGenerator {
+    /**
+     * @param tp owner of the train
+     * @param sp owner of the station
+     */
     public static AddTransactionMove processCargo(ReadOnlyWorld w,
-        CargoBundle cargoBundle, int stationID) {
-        StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID);
+	CargoBundle cargoBundle, FreerailsPrincipal tp, int stationID,
+	FreerailsPrincipal sp) {
+	StationModel thisStation = (StationModel)w.get(KEY.STATIONS, stationID,
+		sp);
         Iterator batches = cargoBundle.cargoBatchIterator();
         int amountOfCargo = 0;
         double amount = 0;
 
         while (batches.hasNext()) {
-            CargoBatch batch = (CargoBatch)batches.next();
+            CargoBatch batch = (CargoBatch)((Entry) batches.next()).getKey();
 	    int dx = (batch.getSourceX() - thisStation.x);
 	    int dy = (batch.getSourceY() - thisStation.y);
             double dist = Math.sqrt(dx*dx + dy*dy);
             amount += cargoBundle.getAmount(batch) * Math.log(dist) * 100;
         }
 	System.out.println("amount for cargo is " + amount);
+	GameTime now = (GameTime) w.get(ITEM.TIME, tp);
 
-        DeliverCargoReceipt receipt = new DeliverCargoReceipt(new Money(
-                    (long)amount), cargoBundle);
+        DeliverCargoReceipt receipt = new DeliverCargoReceipt(now, (long)
+		amount, cargoBundle);
 
-	/* FIXME until stations or trains have owners we will credit the first
-	 * players account */
-	FreerailsPrincipal p = ((Player) w.get(KEY.PLAYERS, 0,
-		    Player.AUTHORITATIVE)).getPrincipal();	
-
-        return new AddTransactionMove(0, receipt, p);
+	/* credit owner of the train for cargo delivery */
+        return new AddTransactionMove(0, receipt, tp);
     }
 }

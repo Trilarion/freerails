@@ -21,38 +21,42 @@ public class ChangeTrainPositionMove implements Move {
     private final TrainPositionOnMap changeToTail;
     private final boolean addToHead;
     private final boolean addToTail;
+    private final FreerailsPrincipal principal;
     final int trainPositionNumber;
 
     public FreerailsPrincipal getPrincipal() {
-	return Player.NOBODY;
+	return principal;
     }
 
     public ChangeTrainPositionMove(TrainPositionOnMap pieceToAdd,
-        TrainPositionOnMap pieceToRemove, int trainNumber, boolean addToHead,
-        boolean addToTail) {
+        TrainPositionOnMap pieceToRemove, int trainNumber, FreerailsPrincipal p,
+       	boolean addToHead, boolean addToTail) {
         this.addToHead = addToHead;
         this.addToTail = addToTail;
         this.changeToHead = pieceToAdd;
         this.changeToTail = pieceToRemove;
         this.trainPositionNumber = trainNumber;
+	principal = p;
     }
 
     public static ChangeTrainPositionMove getNullMove(int trainNumber) {
-        return new ChangeTrainPositionMove(null, null, trainNumber, false, false) {
+	return new ChangeTrainPositionMove(null, null, trainNumber, null,
+	       	false, false) {
                 MoveStatus move(World w, boolean updateTrainPosition,
-                    boolean isDoMove) {
+                    boolean isDoMove, FreerailsPrincipal p) {
                     return MoveStatus.MOVE_OK;
                 }
             };
     }
 
     public static ChangeTrainPositionMove generate(ReadOnlyWorld w,
-        FreerailsPathIterator nextPathSection, int trainNumber) {
+        FreerailsPathIterator nextPathSection, int trainNumber,
+       	FreerailsPrincipal p) {
         if (!nextPathSection.hasNext()) {
             return getNullMove(trainNumber);
         }
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, p);
 
         TrainPositionOnMap currentPosition = train.getPosition();
 
@@ -89,8 +93,8 @@ public class ChangeTrainPositionMove implements Move {
 
         bitToRemove = getBitToRemove(intermediate, currentLength);
 
-        return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber,
-            true, false);
+	return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber,
+		p, true, false);
     }
 
     static TrainPositionOnMap getBitToRemove(TrainPositionOnMap intermediate,

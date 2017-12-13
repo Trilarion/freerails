@@ -100,4 +100,8 @@ public class GameMenu extends JMenu {
 	addSeparator();
 	add(quitJMenuItem);
     }
+
+    public void setup() {
+	sc.setScreenHandler(guiRoot.getScreenHandler());
+    }
 }

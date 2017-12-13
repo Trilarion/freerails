@@ -1,5 +1,7 @@
 package jfreerails.client.model;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
@@ -76,9 +78,16 @@ public class TrackBuildModel {
             int ruleNumber = trackRule.getRuleNumber();
             TrackPieceRenderer renderer =
 		trackPieceRendererList.getTrackPieceView(ruleNumber);
-	    putValue(SMALL_ICON, new
-		    ImageIcon(renderer.getTrackPieceIcon(trackTemplate)));
-            putValue(SHORT_DESCRIPTION, trackRule.getTypeName());
+	    /* create a scaled image */
+	    BufferedImage unscaledImage =
+		renderer.getTrackPieceIcon(trackTemplate);
+	    Image scaledImage = unscaledImage.getScaledInstance
+		(unscaledImage.getWidth() * 3 / 4, unscaledImage.getHeight() *
+		 3 / 4, Image.SCALE_SMOOTH);
+
+	    putValue(SMALL_ICON, new ImageIcon(scaledImage));
+            putValue(SHORT_DESCRIPTION, trackRule.getTypeName() + " @ $" +
+		    trackRule.getPrice());
 	}
 	    
 	public void actionPerformed(ActionEvent e) {

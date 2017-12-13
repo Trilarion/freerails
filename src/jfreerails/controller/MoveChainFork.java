@@ -7,6 +7,7 @@ import jfreerails.move.RemoveItemFromListMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.move.UndoneMove;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
 
@@ -97,48 +98,51 @@ final public class MoveChainFork implements MoveReceiver {
 
             if (move instanceof AddItemToListMove) {
                 AddItemToListMove mm = (AddItemToListMove)move;
-                sendItemAdded(mm.getKey(), mm.getIndex());
+                sendItemAdded(mm.getKey(), mm.getIndex(), mm.getPrincipal());
             } else if (move instanceof ChangeItemInListMove) {
                 ChangeItemInListMove mm = (ChangeItemInListMove)move;
-                sendListUpdated(mm.getKey(), mm.getIndex());
+                sendListUpdated(mm.getKey(), mm.getIndex(), mm.getPrincipal());
             } else if (move instanceof RemoveItemFromListMove) {
                 RemoveItemFromListMove mm = (RemoveItemFromListMove)move;
-                sendItemRemoved(mm.getKey(), mm.getIndex());
+                sendItemRemoved(mm.getKey(), mm.getIndex(), mm.getPrincipal());
             } else if (move instanceof UndoneMove) {
                 Move m = ((UndoneMove)move).getUndoneMove();
 
                 if (m instanceof AddItemToListMove) {
                     AddItemToListMove mm = (AddItemToListMove)m;
-                    sendItemRemoved(mm.getKey(), mm.getIndex());
+		    sendItemRemoved(mm.getKey(), mm.getIndex(),
+			    mm.getPrincipal());
                 } else if (m instanceof RemoveItemFromListMove) {
                     RemoveItemFromListMove mm = (RemoveItemFromListMove)m;
-                    sendItemAdded(mm.getKey(), mm.getIndex());
+		    sendItemAdded(mm.getKey(), mm.getIndex(),
+			    mm.getPrincipal());
                 } else if (move instanceof ChangeItemInListMove) {
                     ChangeItemInListMove mm = (ChangeItemInListMove)move;
-                    sendListUpdated(mm.getKey(), mm.getIndex());
+		    sendListUpdated(mm.getKey(), mm.getIndex(),
+			    mm.getPrincipal());
                 }
             }
         }
     }
 
-    private void sendItemAdded(KEY key, int index) {
+    private void sendItemAdded(KEY key, int index, FreerailsPrincipal p) {
         for (int i = 0; i < listListeners.size(); i++) {
             WorldListListener l = (WorldListListener)listListeners.get(i);
-            l.itemAdded(key, index);
+            l.itemAdded(key, index, p);
         }
     }
 
-    private void sendItemRemoved(KEY key, int index) {
+    private void sendItemRemoved(KEY key, int index, FreerailsPrincipal p) {
         for (int i = 0; i < listListeners.size(); i++) {
             WorldListListener l = (WorldListListener)listListeners.get(i);
-            l.itemRemoved(key, index);
+            l.itemRemoved(key, index, p);
         }
     }
 
-    private void sendListUpdated(KEY key, int index) {
+    private void sendListUpdated(KEY key, int index, FreerailsPrincipal p) {
         for (int i = 0; i < listListeners.size(); i++) {
             WorldListListener l = (WorldListListener)listListeners.get(i);
-            l.listUpdated(key, index);
+            l.listUpdated(key, index, p);
         }
     }
 }

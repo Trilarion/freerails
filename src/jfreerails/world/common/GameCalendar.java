@@ -1,126 +1,23 @@
 package jfreerails.world.common;
 
-import java.text.DecimalFormat;
+import java.util.GregorianCalendar;
 
-
-/** This class converts time meansured in ticks since the game began into time represented
- * as <i>Month, Year</i> and <i>hour:minute</i>.
+/** 
+ * This class stores constants which are properties of the way time is
+ * measured in the game world.
  */
 final public class GameCalendar implements FreerailsSerializable {
-    private static DecimalFormat decimalFormat = new DecimalFormat("00");
-    private final int ticksPerYear;
+    private final int ticksPerDay;
     private final int startYear;
 
-    public String getYearAsString(int ticks) {
-        int i = getYear(ticks);
-
-        return String.valueOf(i);
+    public GregorianCalendar getCalendar(GameTime time) {
+	GregorianCalendar c = new GregorianCalendar(startYear, 0, 1);
+	c.add(GregorianCalendar.HOUR, 24 * time.getTime() / ticksPerDay);
+	return c;
     }
 
-    public int getYear(int ticks) {
-        return startYear + (ticks / ticksPerYear);
-    }
-
-    /** Returns the time of day as a string, note that a year is made
-     * up of a representative day, so 1st June is equilavent to 12 noon.
-     */
-    public String getTimeOfDay(int i) {
-        int ticksPerHour = ticksPerYear / 24;
-        int hour = ticksPerHour == 0 ? 0 : (i % ticksPerYear) / ticksPerHour;
-        int ticksPerMinute = ticksPerYear / (24 * 60);
-        int minute = ticksPerMinute == 0 ? 0 : (i % (ticksPerMinute * 60));
-
-        return decimalFormat.format(hour) + ":" + decimalFormat.format(minute);
-    }
-
-    public String getYearAndMonth(int i) {
-        int ticksPerMonth = ticksPerYear / 12;
-        int month = getMonth(i, ticksPerMonth);
-        String monthAbrev = null;
-
-        switch (month) {
-        case 0: {
-            monthAbrev = "Jan";
-
-            break;
-        }
-
-        case 1: {
-            monthAbrev = "Feb";
-
-            break;
-        }
-
-        case 2: {
-            monthAbrev = "Mar";
-
-            break;
-        }
-
-        case 3: {
-            monthAbrev = "Apr";
-
-            break;
-        }
-
-        case 4: {
-            monthAbrev = "May";
-
-            break;
-        }
-
-        case 5: {
-            monthAbrev = "Jun";
-
-            break;
-        }
-
-        case 6: {
-            monthAbrev = "Jul";
-
-            break;
-        }
-
-        case 7: {
-            monthAbrev = "Aug";
-
-            break;
-        }
-
-        case 8: {
-            monthAbrev = "Sep";
-
-            break;
-        }
-
-        case 9: {
-            monthAbrev = "Oct";
-
-            break;
-        }
-
-        case 10: {
-            monthAbrev = "Nov";
-
-            break;
-        }
-
-        case 11: {
-            monthAbrev = "Dec";
-
-            break;
-        }
-        }
-
-        return monthAbrev + " " + getYearAsString(i);
-    }
-
-    public int getMonth(int i, int ticksPerMonth) {
-        return (i % ticksPerYear) / ticksPerMonth;
-    }
-
-    public GameCalendar(int ticksPerYear, int startYear) {
-        this.ticksPerYear = ticksPerYear;
+    public GameCalendar(int ticksPerDay, int startYear) {
+        this.ticksPerDay = ticksPerDay;
         this.startYear = startYear;
     }
 
@@ -129,7 +26,7 @@ final public class GameCalendar implements FreerailsSerializable {
             GameCalendar test = (GameCalendar)o;
 
             if (this.startYear != test.startYear ||
-                    this.ticksPerYear != test.ticksPerYear) {
+                    this.ticksPerDay != test.ticksPerDay) {
                 return false;
             } else {
                 return true;
@@ -137,5 +34,13 @@ final public class GameCalendar implements FreerailsSerializable {
         } else {
             return false;
         }
+    }
+
+    public int getTicksPerDay() {
+	return ticksPerDay;
+    }
+
+    public int getStartYear() {
+	return startYear;
     }
 }

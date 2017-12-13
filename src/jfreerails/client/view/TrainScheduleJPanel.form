@@ -154,13 +154,13 @@
     </Component>
     <Component class="jfreerails.client.view.SelectStationJPanel" name="selectStationJPanel1">
     </Component>
-    <Component class="jfreerails.client.view.TrainOrderJPanel" name="trainOrderJPanel1">
-    </Component>
     <Menu class="javax.swing.JPopupMenu" name="selectStationJPopupMenu">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="this.selectStationJPopupMenu.add(selectStationJPanel1);"/>
       </AuxValues>
     </Menu>
+    <Component class="jfreerails.client.view.TrainOrderJPanel" name="trainOrderJPanel1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

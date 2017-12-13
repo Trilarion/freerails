@@ -43,9 +43,21 @@ public class DisplayMenu extends JMenu {
                 }
             });
 
+        JMenuItem profitLossJMenuItem = new JMenuItem("Profit and Loss"
+		+ " Statement");
+        profitLossJMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+		    DialogueBoxController dbc =
+		    guiRoot.getDialogueBoxController();
+		    if (dbc != null)
+			dbc.showProfitLoss();
+                }
+            });
+
         add(trainOrdersJMenuItem);
         add(stationInfoJMenuItem);
         add(trainListJMenuItem);
+	add(profitLossJMenuItem);
     }
 
 }

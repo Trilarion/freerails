@@ -5,7 +5,7 @@
 */
 package jfreerails.client.renderer;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import jfreerails.client.common.ImageManager;
@@ -28,7 +28,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
             System.err.println("parent tileView==null");
         }
 
-        Image icon = this.getIcon(mapX, mapX, w);
+        BufferedImage icon = this.getIcon(mapX, mapX, w);
 
         if (null != icon) {
             g.drawImage(icon, renderX, renderY, null);
@@ -45,7 +45,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         TerrainType tileModel, TileRenderer parentTileView)
         throws IOException {
         super(tileModel, rgbValues);
-        this.setTileIcons(new Image[1]);
+        this.setTileIcons(new BufferedImage[1]);
         this.getTileIcons()[0] = imageManager.getImage(generateFilename());
         this.parentTileView = parentTileView;
     }

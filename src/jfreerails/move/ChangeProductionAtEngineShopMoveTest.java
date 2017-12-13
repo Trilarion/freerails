@@ -24,9 +24,12 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     protected void setUp() {
         super.setUp();
-        getWorld().add(KEY.STATIONS, new StationModel());
-        getWorld().add(KEY.STATIONS, new StationModel());
-        getWorld().add(KEY.STATIONS, new StationModel());
+        getWorld().add(KEY.STATIONS, new StationModel(),
+		testPlayer.getPrincipal());
+        getWorld().add(KEY.STATIONS, new StationModel(),
+		testPlayer.getPrincipal());
+        getWorld().add(KEY.STATIONS, new StationModel(),
+		testPlayer.getPrincipal());
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         wetf.addTypesToWorld(getWorld());
@@ -42,17 +45,20 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         ChangeProductionAtEngineShopMove m;
 
         //Should fail because current production at station 0 is null;
-        m = new ChangeProductionAtEngineShopMove(after, before, 0);
+        m = new ChangeProductionAtEngineShopMove(after, before, 0,
+		testPlayer.getPrincipal());
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         //Should fail because station 6 does not exist.
-        m = new ChangeProductionAtEngineShopMove(before, after, 6);
+        m = new ChangeProductionAtEngineShopMove(before, after, 6,
+		testPlayer.getPrincipal());
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         //Should go through
-        m = new ChangeProductionAtEngineShopMove(before, after, 0);
+        m = new ChangeProductionAtEngineShopMove(before, after, 0,
+		testPlayer.getPrincipal());
         assertTryMoveIsOk(m);
         assertDoMoveIsOk(m);
         assertTryUndoMoveIsOk(m);

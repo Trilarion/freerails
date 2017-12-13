@@ -5,17 +5,21 @@
  */
 
 package jfreerails.client.view;
-import java.awt.Image;
 
+import java.awt.Image;
+import java.awt.Point;
 import javax.swing.ImageIcon;
 
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.player.Player;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
 import jfreerails.world.terrain.Production;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.WagonType;
 
@@ -28,6 +32,11 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     private ViewLists vl;
 
     private ReadOnlyWorld w;
+
+    /**
+     * Map coordinate of tile we are showing
+     */
+    private Point location;
     
     /** Creates new form TerrainInfoJPanel */
     public TerrainInfoJPanel() {
@@ -83,11 +92,28 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         this.vl = vl;
     }    
     
-    public void setTerrainType(int typeNumber){
+    public void setTerrainLocation(Point point) {
+	FreerailsTile tile = w.getTile(point.x, point.y);
 
-        TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES, typeNumber);
+	TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES,
+		tile.getTerrainTypeNumber());
       
-        String row = "<p>Right-of-Way costs $"+type.getRightOfWay()+" per mile. </p>";
+	String row = "";
+	if (! tile.getOwner().equals(Player.AUTHORITATIVE)) {
+	    NonNullElements i = new NonNullElements(KEY.PLAYERS, w,
+		    Player.AUTHORITATIVE);
+	    while (i.next()) {
+		Player player = (Player) i.getElement();
+		if (player.getPrincipal().equals(tile.getOwner())) {
+		    row += "<p>Owner: " + player.getName() + "<p>";
+		    break;
+		}
+	    }
+	} else {
+	    row = "<p>Purchase cost: $" + tile.getTerrainValue(w, point.x,
+		    point.y) + "</p>";
+	}
+	
         String tableString = "";
         int cargosProduced = type.getProduction().length;
         int cargosConsumed = type.getConsumption().length;
@@ -127,7 +153,8 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         terrainDescription.setText(labelString);
         terrainName.setText(type. getDisplayName());
         
-        Image tileIcon = vl.getTileViewList().getTileViewWithNumber(typeNumber).getDefaultIcon();
+        Image tileIcon = vl.getTileViewList().getTileViewWithNumber
+	    (tile.getTerrainTypeNumber()).getDefaultIcon();
         terrainImage.setIcon(new ImageIcon(tileIcon));
         
         repaint();

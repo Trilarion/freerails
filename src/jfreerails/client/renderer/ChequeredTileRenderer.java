@@ -5,7 +5,7 @@
 */
 package jfreerails.client.renderer;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainType;
@@ -24,7 +24,7 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);
-        this.setTileIcons(new Image[2]);
+        this.setTileIcons(new BufferedImage[2]);
         this.getTileIcons()[0] = imageManager.getImage(generateRelativeFileName(
                     0));
         this.getTileIcons()[1] = imageManager.getImage(generateRelativeFileName(

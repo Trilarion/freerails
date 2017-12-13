@@ -1,6 +1,6 @@
 package jfreerails.client.renderer;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import jfreerails.client.common.BinaryNumberFormatter;
@@ -18,7 +18,7 @@ import jfreerails.world.track.TrackRule;
 *     09 October 2001
 */
 final public class TrackPieceRendererImpl implements TrackPieceRenderer {
-    Image[] trackPieceIcons = new Image[512];
+    BufferedImage[] trackPieceIcons = new BufferedImage[512];
     private final String typeName;
 
     public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g,
@@ -49,7 +49,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         }
     }
 
-    public Image getTrackPieceIcon(int trackTemplate) {
+    public BufferedImage getTrackPieceIcon(int trackTemplate) {
         if ((trackTemplate > 511) || (trackTemplate < 0)) {
             throw new java.lang.IllegalArgumentException("trackTemplate = " +
                 trackTemplate + ", it should be in the range 0-511");

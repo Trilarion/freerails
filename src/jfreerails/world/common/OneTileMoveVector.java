@@ -270,6 +270,9 @@ final public class OneTileMoveVector implements FlatTrackTemplate {
         }
     }
 
+    /**
+     * @return a point translated by this OneTileMoveVector
+     */
     public Point createRelocatedPoint(Point from) {
         return new Point(from.x + deltaX, from.y + deltaY);
     }

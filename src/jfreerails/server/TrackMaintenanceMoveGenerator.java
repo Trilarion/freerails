@@ -11,15 +11,17 @@ import jfreerails.world.accounts.AddItemTransaction;
 import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Bill;
 import jfreerails.world.accounts.Transaction;
-import jfreerails.world.common.Money;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.ITEM;
 import jfreerails.world.top.World;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.NonNullElements;
 
-/** This class iterates over the entries in the BankAccount
+/**
+ * This class iterates over the entries in the BankAccount
  * and counts the number of units of each track type, then
  * calculates the cost of maintenance.
  *
@@ -52,16 +54,16 @@ public class TrackMaintenanceMoveGenerator {
 
         for (int i = 0; i < track.length; i++) {
             TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
-            long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
+            long maintenanceCost = trackRule.getMaintenanceCost();
 
             if (track[i] > 0) {
-                //                            System.out.println(track[i] + " " + trackRule.getTypeName() +
-                //                                " maintenance cost of " + maintenanceCost * track[i]);
                 amount += maintenanceCost * track[i];
             }
         }
+	amount /= 12;
 
-        Transaction t = new Bill(new Money(amount));
+	GameTime now = (GameTime) w.get(ITEM.TIME, p);
+        Transaction t = new Bill(now, amount, Bill.TRACK_MAINTENANCE);
 
         return new AddTransactionMove(0, t, p);
     }
@@ -81,12 +83,13 @@ public class TrackMaintenanceMoveGenerator {
             if (t instanceof AddItemTransaction) {
                 AddItemTransaction addItemTransaction = (AddItemTransaction)t;
 
-                if (AddItemTransaction.TRACK == addItemTransaction.getCategory()) {
-                    unitsOfTrack[addItemTransaction.getType()] += addItemTransaction.getQuantity();
+                if (AddItemTransaction.TRACK ==
+		       	addItemTransaction.getSubcategory()) {
+		    unitsOfTrack[addItemTransaction.getType()] +=
+			addItemTransaction.getQuantity();
                 }
             }
         }
-
         return unitsOfTrack;
     }
 

@@ -6,9 +6,7 @@
 package jfreerails.world.track;
 
 import java.util.Iterator;
-import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
-
 
 /**
  *  This class encapsulates the rules that apply to a type of track node. They
@@ -127,11 +125,11 @@ final public class TrackRuleImpl implements TrackRule {
         return this.properties.getStationRadius();
     }
 
-    public Money getPrice() {
+    public long getPrice() {
         return this.properties.getPrice();
     }
 
-    public Money getMaintenanceCost() {
+    public long getMaintenanceCost() {
         return properties.getMaintenanceCost();
     }
 }

@@ -38,10 +38,12 @@ public final class ModelRoot {
 	BuildTrainDialogAction();
     private FreerailsPrincipal playerPrincipal;
     private ViewLists viewLists;
+    private UserMessageGenerator userMessageGenerator = null;
  
     private ArrayList listeners = new ArrayList();
 
-    protected ServerControlModel serverControls = new ServerControlModel(null);
+    protected ServerControlModel serverControls = new ServerControlModel(null,
+	    this);
     private ReadOnlyWorld world;
       
     public void addModelRootListener(ModelRootListener l) {
@@ -113,7 +115,8 @@ public final class ModelRoot {
     /**
      * Updates the ModelRoot with those properties which are dependent upon the
      * world model.
-     * Call this when the world model is changed (e.g. new map is loaded)
+     * Call this when the world model is changed (e.g. new map is loaded). At
+     * this point setWorld(ReadOnlyWorld) should already have been called.
      */
     public void setWorld(UntriedMoveReceiver receiver,
     ViewLists vl) {
@@ -132,6 +135,12 @@ public final class ModelRoot {
 		((ModelRootListener) listeners.get(i)).modelRootChanged();
 	    }
 	}
+
+	if (userMessageGenerator != null)
+	    moveFork.remove(userMessageGenerator);
+
+        userMessageGenerator = new UserMessageGenerator(this, world);
+        getMoveChainFork().add(userMessageGenerator);
     }
 
     public TrackBuildModel getTrackBuildModel() {

@@ -7,13 +7,14 @@ package jfreerails.move;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import jfreerails.world.station.StationModel;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.ObjectKey;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.MutableSchedule;
-
 
 /**
  * This Move removes a station from the station list and from the map.
@@ -26,8 +27,8 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
     }
 
     static RemoveStationMove getInstance(ReadOnlyWorld w,
-        ChangeTrackPieceMove removeTrackMove) {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
+        ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal p) {
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, w, p);
         int stationIndex = -1;
 
         while (wi.next()) {
@@ -49,11 +50,11 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         }
 
         StationModel station2remove = (StationModel)w.get(KEY.STATIONS,
-                stationIndex);
+                stationIndex, p);
         ArrayList moves = new ArrayList();
         moves.add(removeTrackMove);
         moves.add(new RemoveItemFromListMove(KEY.STATIONS, stationIndex,
-                station2remove));
+                station2remove, p));
 
         //Now update any train schedules that include this station.
         WorldIterator schedules = new NonNullElements(KEY.TRAIN_SCHEDULES, w);
@@ -61,9 +62,11 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         while (schedules.next()) {
             ImmutableSchedule schedule = (ImmutableSchedule)schedules.getElement();
 
-            if (schedule.stopsAtStation(stationIndex)) {
+	    ObjectKey stationKey = new ObjectKey(KEY.STATIONS, p,
+		    stationIndex);
+            if (schedule.stopsAtStation(stationKey)) {
                 MutableSchedule mutableSchedule = new MutableSchedule(schedule);
-                mutableSchedule.removeAllStopsAtStation(stationIndex);
+                mutableSchedule.removeAllStopsAtStation(stationKey);
 
                 Move changeScheduleMove = new ChangeTrainScheduleMove(schedules.getIndex(),
                         schedule, mutableSchedule.toImmutableSchedule());

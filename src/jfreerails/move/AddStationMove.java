@@ -6,8 +6,8 @@ package jfreerails.move;
 
 import java.awt.Point;
 import jfreerails.world.cargo.CargoBundleImpl;
-import jfreerails.world.common.Money;
 import jfreerails.world.station.StationModel;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackRule;
@@ -26,19 +26,18 @@ public class AddStationMove extends CompositeMove {
     }
 
     public static AddStationMove generateMove(ReadOnlyWorld w,
-        String stationName, Point p, ChangeTrackPieceMove upgradeTrackMove) {
+        String stationName, Point p, ChangeTrackPieceMove upgradeTrackMove,
+	FreerailsPrincipal owner) {
         int cargoBundleNumber = w.size(KEY.CARGO_BUNDLES);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
                 new CargoBundleImpl());
-        int stationNumber = w.size(KEY.STATIONS);
+        int stationNumber = w.size(KEY.STATIONS, owner);
         StationModel station = new StationModel(p.x, p.y, stationName,
                 w.size(KEY.CARGO_TYPES), cargoBundleNumber);
 
         Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber,
-                station);
+                station, owner);
         TrackRule typeAfter = upgradeTrackMove.getNewTrackPiece().getTrackRule();
-        Money cost = typeAfter.getPrice();
-
         return new AddStationMove(new Move[] {
                 upgradeTrackMove, addCargoBundleMove, addStation
             });

@@ -8,6 +8,7 @@ import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.OneTileMoveVector;
 import jfreerails.world.common.PositionOnTrack;
 import jfreerails.world.player.Player;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
@@ -33,6 +34,13 @@ public class FlatTrackExplorerTest extends TestCase {
 
     protected void setUp() {
         world = new WorldImpl(20, 20);
+	/*
+	 * create a set of tiles
+	 */
+	for (int x = 0; x < 20; x++)
+	    for (int y = 0; y < 20; y++)
+		world.setTile(x, y, new FreerailsTile(0));
+
         world.add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
         world.add(KEY.BANK_ACCOUNTS, new BankAccount(),
             testPlayer.getPrincipal());
@@ -48,16 +56,15 @@ public class FlatTrackExplorerTest extends TestCase {
         Point[] points = {p, p, p};
 
         for (int i = 0; i < points.length; i++) {
-            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(points[i],
-                    vectors[i], rule, world);
-            MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
+            ChangeTrackPieceCompositeMove move =
+	       	ChangeTrackPieceCompositeMove.generateBuildTrackMove(points[i],
+                    vectors[i], rule, world, testPlayer.getPrincipal());
+            MoveStatus ms = move.doMove(world, testPlayer.getPrincipal());
             assertTrue(ms.ok);
         }
     }
 
     public void testGetFirstVectorToTry() {
-        setUp();
-
         PositionOnTrack p = new PositionOnTrack(10, 10,
                 OneTileMoveVector.SOUTH_WEST);
         FlatTrackExplorer fte = new FlatTrackExplorer(world, p);
@@ -69,8 +76,6 @@ public class FlatTrackExplorerTest extends TestCase {
      * that we can move west, east, or northeast.
     */
     public void testGetPossibleDirections() {
-        setUp();
-
         FlatTrackExplorer fte;
 
         PositionOnTrack p = new PositionOnTrack(10, 10,
@@ -99,8 +104,6 @@ public class FlatTrackExplorerTest extends TestCase {
      * northeast, and that when we have done this, we can move it back again.
      */
     public void testMoveTrackExplorer() {
-        setUp();
-
         FlatTrackExplorer fte;
 
         PositionOnTrack p = new PositionOnTrack(10, 10, OneTileMoveVector.EAST);
@@ -136,16 +139,12 @@ public class FlatTrackExplorerTest extends TestCase {
     }
 
     public void testHasNext() {
-        setUp();
-
         FlatTrackExplorer explorer = new FlatTrackExplorer(world,
                 new PositionOnTrack(10, 10, OneTileMoveVector.EAST));
         assertTrue(explorer.hasNextEdge());
     }
 
     public void testGetPossiblePositions() {
-        setUp();
-
         PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(world,
                 new Point(10, 10));
         assertNotNull(positions);

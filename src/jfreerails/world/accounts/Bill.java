@@ -4,31 +4,50 @@
  */
 package jfreerails.world.accounts;
 
-import jfreerails.world.common.Money;
-
+import jfreerails.world.common.GameTime;
 
 /**
  * @author Luke Lindsay
- *
  */
-public class Bill implements Transaction {
-    private final Money amount;
+public class Bill extends Transaction {
+    /* for use with subcategory */
+    public static final int TRACK_MAINTENANCE = 1;
+    public static final int ROLLING_STOCK_MAINTENANCE = 2;
+    public static final int FUEL = 3;
 
-    public Bill(Money amount) {
-        this.amount = new Money(-amount.getAmount());
+    public final int subcategory;
+
+    /**
+     * @param amount amount to be debited from account
+     */
+    public Bill(GameTime time, long amount, int subcategory) {
+	super(time, -amount);
+	switch (subcategory) {
+	    case TRACK_MAINTENANCE:
+	    case ROLLING_STOCK_MAINTENANCE:
+	    case FUEL:
+		break;
+	    default:
+		throw new IllegalArgumentException();
+	}
+
+	this.subcategory = subcategory;
     }
 
-    public Money getValue() {
-        return amount;
+    public final int getCategory() {
+	switch (subcategory) {
+	    case TRACK_MAINTENANCE:
+	    case ROLLING_STOCK_MAINTENANCE:
+		return CATEGORY_OPERATING_EXPENSE;
+	    case FUEL:
+		return CATEGORY_COST_OF_SALES;
+	}
+	assert false;
+	// keep the compiler happy :)
+	return 0;
     }
 
-    public boolean equals(Object o) {
-        if (o instanceof Bill) {
-            Bill test = (Bill)o;
-
-            return test.amount.equals(this.amount);
-        } else {
-            return false;
-        }
+    public final int getSubcategory() {
+	return subcategory;
     }
 }

@@ -13,8 +13,10 @@ import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
 import jfreerails.world.player.Player;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
 import junit.framework.TestCase;
@@ -35,13 +37,18 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
     protected void setUp() {
         setHasSetupBeenCalled(true);
-        setWorld(new WorldImpl());
+        setWorld(new WorldImpl(10, 10));
+	for (int x = 0; x < 10; x++)
+	    for (int y = 0; y < 10; y++)
+		getWorld().setTile(x, y, new FreerailsTile(0));
+
 	getWorld().add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
         //		Set the time..
         getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
         getWorld().set(ITEM.TIME, new GameTime(0));
 	getWorld().add(KEY.BANK_ACCOUNTS, new BankAccount(),
 		testPlayer.getPrincipal());
+        MapFixtureFactory.generateTrackRuleList(getWorld());
     }
 
     abstract public void testMove();

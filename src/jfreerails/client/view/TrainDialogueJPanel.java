@@ -12,6 +12,7 @@ import java.awt.event.ComponentEvent;
 import java.util.NoSuchElementException;
 
 import jfreerails.client.model.ModelRoot;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
@@ -157,9 +158,9 @@ WorldListListener {
     public void setup(jfreerails.world.top.ReadOnlyWorld w,
 	    jfreerails.client.renderer.ViewLists vl, ModelRoot
 	    mr) {
-	wi = new NonNullElements(KEY.TRAINS, w);
+	wi = new NonNullElements(KEY.TRAINS, w, mr.getPlayerPrincipal());
         newTrainScheduleJPanel1.setup(mr);
-        trainDetailsJPanel1.setup(w, vl, null);
+        trainDetailsJPanel1.setup(mr, null);
         this.w = w;
 	modelRoot = mr;
 	addComponentListener(componentListener);
@@ -196,18 +197,19 @@ WorldListListener {
         trainDetailsJPanel1.displayTrain(wi.getIndex());
     }
     
-    public void listUpdated(KEY key, int index) {
-        newTrainScheduleJPanel1.listUpdated(key, index);
-        trainDetailsJPanel1.listUpdated(key, index);
+    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
+        newTrainScheduleJPanel1.listUpdated(key, index, p);
+        trainDetailsJPanel1.listUpdated(key, index, p);
     }
     
-    public void itemAdded(KEY key, int index) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
 	if (key == KEY.TRAINS) { 
 	    display();
 	}
     }
 
-    public void itemRemoved(KEY key, int index) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
+	// do nothing
     }
     
     ComponentAdapter componentListener = new ComponentAdapter() {

@@ -7,9 +7,11 @@
 package jfreerails.move;
 
 import java.awt.Point;
+
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.top.WorldImpl;
+import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
@@ -53,32 +55,33 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         //Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = (TrackPiece)getWorld().getTile(0, 0);
+	((FreerailsTile) oldTrackPiece).setOwner(testPlayer.getPrincipal());
 
         TrackRule r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point(0, 0));
+                new Point(0, 0), testPlayer.getPrincipal());
         moveStatus = move.tryDoMove(getWorld(), testPlayer.getPrincipal());
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
 
         //As above but with newTrackPiece and oldTrackPiece in the wrong order, should fail.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
-                new Point(0, 0));
+                new Point(0, 0), testPlayer.getPrincipal());
         moveStatus = move.tryDoMove(getWorld(), testPlayer.getPrincipal());
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece, should fail.
         move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece,
-                new Point(0, 0));
+                new Point(0, 0), testPlayer.getPrincipal());
         moveStatus = move.tryDoMove(getWorld(), testPlayer.getPrincipal());
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         //Try buildingtrack outside the map.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
-                new Point(100, 0));
+                new Point(100, 0), testPlayer.getPrincipal());
         moveStatus = move.tryDoMove(getWorld(), testPlayer.getPrincipal());
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
@@ -89,7 +92,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         r = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point(0, 0));
+                new Point(0, 0), testPlayer.getPrincipal());
         moveStatus = move.tryDoMove(getWorld(), testPlayer.getPrincipal());
         assertEquals(false, moveStatus.isOk());
     }
@@ -131,7 +134,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         MoveStatus moveStatus;
 
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point(0, 0));
+                new Point(0, 0), testPlayer.getPrincipal());
         moveStatus = move.doMove(getWorld(), testPlayer.getPrincipal());
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
@@ -169,7 +172,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newTrackPiece = r.getTrackPiece(newConfig);
 
         Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point(0, 0));
+                new Point(0, 0), testPlayer.getPrincipal());
 
         assertEqualsSurvivesSerialisation(move);
 

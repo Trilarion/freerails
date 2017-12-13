@@ -18,5 +18,9 @@ public class DebugMenu extends JMenu {
 		.getFrameRateDebugModel().getAction());
 	mi.setModel(debugModel.getFrameRateDebugModel());
 	add(mi);
+	mi = new
+	    JCheckBoxMenuItem(debugModel.getClientMoveDebugModel().getAction());
+	mi.setModel(debugModel.getClientMoveDebugModel());
+	add(mi);
     }
 }

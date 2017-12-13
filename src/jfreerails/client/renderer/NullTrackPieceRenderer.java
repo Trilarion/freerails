@@ -6,7 +6,7 @@ package jfreerails.client.renderer;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import jfreerails.client.common.ImageManager;
 
 
@@ -25,7 +25,7 @@ final public class NullTrackPieceRenderer implements TrackPieceRenderer {
     /*
      * @see TrackPieceView#getTrackPieceIcon(int)
      */
-    public Image getTrackPieceIcon(int trackTemplate) {
+    public BufferedImage getTrackPieceIcon(int trackTemplate) {
         return null;
     }
 

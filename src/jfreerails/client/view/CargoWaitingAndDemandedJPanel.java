@@ -12,6 +12,7 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import jfreerails.client.model.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
@@ -19,11 +20,13 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.WagonType;
+
 /**
  *
  * @author  Luke
  */
-public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements View {
+public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel {
+    private ModelRoot modelRoot;
     
     private ReadOnlyWorld world;
 
@@ -109,12 +112,14 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
     }//GEN-END:initComponents
     
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
-        this.world = w;
+    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+	modelRoot = mr;
+        this.world = modelRoot.getWorld();
     }
     
-    public void display(int newStationID){
-        StationModel station = (StationModel)world.get(KEY.STATIONS, newStationID);
+    public void display(int newStationID) {
+	StationModel station = (StationModel)world.get(KEY.STATIONS,
+		newStationID, modelRoot.getPlayerPrincipal());
         this.stationName.setText(station.getStationName());
         int cargoBundleIndex = station.getCargoBundleNumber();
         final CargoBundle cargoWaiting =
@@ -165,7 +170,6 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         
         this.invalidate();
     }
-    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel demands;

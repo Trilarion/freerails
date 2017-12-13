@@ -254,8 +254,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 	}
 
 	public void setup(GUIRoot gr, ModelRoot mr) {
-	    DetailMapView mv = new DetailMapView(mr.getWorld(),
-		    mr.getViewLists());
+	    DetailMapView mv = new DetailMapView(mr);
 	    super.setMapView(mv);
 	    guiRoot = gr;
 	    this.setBorder(null);

@@ -6,13 +6,13 @@ package jfreerails.client.view;
 
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 
 import javax.swing.JLabel;
 
 import jfreerails.client.model.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.accounts.BankAccount;
-import jfreerails.world.common.Money;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -25,6 +25,7 @@ public class CashJLabel extends JLabel {
 
 	private ReadOnlyWorld w;
 	private ModelRoot modelRoot;
+	private NumberFormat numberFormat = NumberFormat.getInstance();
 
 	public CashJLabel(){
 		this.setText("         ");
@@ -40,11 +41,10 @@ public class CashJLabel extends JLabel {
 			modelRoot.getPlayerPrincipal()) > 0){
 		BankAccount account = (BankAccount)w.get
 		    (KEY.BANK_ACCOUNTS, 0, modelRoot.getPlayerPrincipal());
-		Money m = account.getCurrentBalance();
-		String s = m.toString();			
+		long m = account.getCurrentBalance();
+		String s = numberFormat.format(m);			
 		this.setText(s);			
 	    }
 	    super.paint(g);
 	}
-
 }

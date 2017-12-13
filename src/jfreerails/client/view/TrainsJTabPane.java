@@ -3,7 +3,7 @@
  */
 
 /*
- * $Id: TrainsJTabPane.java,v 1.3 2004/03/09 08:53:01 rtuck99 Exp $
+ * $Id: TrainsJTabPane.java,v 1.4 2004/03/15 23:50:24 rtuck99 Exp $
  */
 
 package jfreerails.client.view;
@@ -61,10 +61,8 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
     }
 
     private void updateTerrainInfo(CursorEvent e) {
-        
 	Point p = e.newPosition;
-	terrainInfoPanel.setTerrainType(world.getTile(p.x,
-		    p.y).getTerrainTypeNumber());
+	terrainInfoPanel.setTerrainLocation(p);
     }
     
     /**

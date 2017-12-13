@@ -5,7 +5,7 @@
 */
 package jfreerails.client.renderer;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import jfreerails.client.common.BinaryNumberFormatter;
 import jfreerails.client.common.ImageManager;
@@ -25,7 +25,7 @@ final public class ForestStyleTileRenderer
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);
-        this.setTileIcons(new Image[4]);
+        this.setTileIcons(new BufferedImage[4]);
 
         for (int i = 0; i < this.getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);

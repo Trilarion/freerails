@@ -4,8 +4,6 @@
  *
  * This class loops through all of the known stations and recalculates
  * the cargoes that they supply.
- *
- * FIXME This class should really be in the jfreerails.server package.
  */
 package jfreerails.server;
 
@@ -14,6 +12,8 @@ import jfreerails.controller.CargoElementObject;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.ChangeStationMove;
 import jfreerails.move.Move;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.station.SupplyAtStation;
 import jfreerails.world.top.KEY;
@@ -44,19 +44,25 @@ public class CalcSupplyAtStations implements WorldListListener {
      *
      */
     public void doProcessing() {
-        NonNullElements iterator = new NonNullElements(KEY.STATIONS, w);
+	NonNullElements i = new NonNullElements(KEY.PLAYERS, w,
+		Player.AUTHORITATIVE);
+	while (i.next()) {
+	    FreerailsPrincipal p = (FreerailsPrincipal) ((Player)
+		    i.getElement()).getPrincipal();
+	    NonNullElements iterator = new NonNullElements(KEY.STATIONS, w, p);
+	    while (iterator.next()) {
+		StationModel stationBefore =
+		    (StationModel)iterator.getElement();
 
-        while (iterator.next()) {
-            StationModel stationBefore = (StationModel)iterator.getElement();
+		StationModel stationAfter = calculations(stationBefore);
 
-            StationModel stationAfter = calculations(stationBefore);
-
-            if (!stationAfter.equals(stationBefore)) {
-                Move move = new ChangeStationMove(iterator.getIndex(),
-                        stationBefore, stationAfter);
-                this.moveReceiver.processMove(move);
-            }
-        }
+		if (!stationAfter.equals(stationBefore)) {
+		    Move move = new ChangeStationMove(iterator.getIndex(),
+			    stationBefore, stationAfter, p);
+		    this.moveReceiver.processMove(move);
+		}
+	    }
+	}
     }
 
     /**
@@ -66,7 +72,7 @@ public class CalcSupplyAtStations implements WorldListListener {
      * @param station A StationModel ojbect to be processed
      *
      */
-    public StationModel calculations(StationModel station) {
+    private StationModel calculations(StationModel station) {
         int x = station.getStationX();
         int y = station.getStationY();
 
@@ -77,7 +83,7 @@ public class CalcSupplyAtStations implements WorldListListener {
 
         //calculate the supply rates and put information into a vector
         supplyRate = new CalcCargoSupplyRateAtStation(w, x, y);
-        supply = supplyRate.ScanAdjacentTiles();
+        supply = supplyRate.scanAdjacentTiles();
 
         //grab the supply rates from the vector
         for (int i = 0; i < supply.size(); i++) {
@@ -93,19 +99,19 @@ public class CalcSupplyAtStations implements WorldListListener {
         return station;
     }
 
-    public void listUpdated(KEY key, int index) {
+    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         if (key == KEY.STATIONS) {
             this.doProcessing();
         }
     }
 
-    public void itemAdded(KEY key, int index) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
         if (key == KEY.STATIONS) {
             this.doProcessing();
         }
     }
 
-    public void itemRemoved(KEY key, int index) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
         if (key == KEY.STATIONS) {
             this.doProcessing();
         }

@@ -84,7 +84,7 @@ FreerailsProgressMonitor {
 		if (msp.getMapAction() == MapSelectionPanel.START_NEW_MAP) {
 		    sci = gs.getNewGame(msp.getMapName(), this, 0);
 		} else {
-		    sci = gs.getSavedGame(this, 0);
+		    sci = gs.getSavedGame(this, 0, msp.getLoadFilename());
 		}
 		sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);  //Set initial game speed to slow.
 		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
@@ -116,7 +116,8 @@ FreerailsProgressMonitor {
 		    sci = gs.getNewGame(msp.getMapName(), this,
 			    lp.getServerPort());
 		} else {
-		    sci = gs.getSavedGame(this, lp.getServerPort());
+		    sci = gs.getSavedGame(this, lp.getServerPort(),
+			    msp.getLoadFilename());
 		}
 		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
 		    ScreenHandler.FULL_SCREEN;
@@ -176,7 +177,8 @@ FreerailsProgressMonitor {
 		    sci = gs.getNewGame(msp.getMapName(), this,
 			    lp.getServerPort());
 		} else {
-		    sci = gs.getSavedGame(this, lp.getServerPort());
+		    sci = gs.getSavedGame(this, lp.getServerPort(),
+			    msp.getLoadFilename());
 		}
 		ssp.setTableModel(sci.getClientConnectionTableModel());
 		nextIsStart = true;

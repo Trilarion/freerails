@@ -6,8 +6,6 @@ package jfreerails.world.accounts;
 
 import java.util.ArrayList;
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.Money;
-
 
 /**
  * @author Luke Lindsay
@@ -15,12 +13,12 @@ import jfreerails.world.common.Money;
  */
 public class BankAccount implements FreerailsSerializable {
     private final ArrayList transactions = new ArrayList();
-    private Money currentBalance = new Money(0);
+    private long currentBalance = 0;
 
     public BankAccount() {
     }
 
-    public Money getCurrentBalance() {
+    public long getCurrentBalance() {
         return currentBalance;
     }
 
@@ -29,18 +27,14 @@ public class BankAccount implements FreerailsSerializable {
     }
 
     public void addTransaction(Transaction t) {
-	System.out.println("Added transaction of " + t.getValue().toString());
         transactions.add(t);
-        this.currentBalance = new Money(currentBalance.getAmount() +
-                t.getValue().getAmount());
+        this.currentBalance = currentBalance + t.getValue();
     }
 
     public Transaction removeLastTransaction() {
         int last = transactions.size() - 1;
         Transaction t = (Transaction)transactions.remove(last);
-	System.out.println("Removed transaction of " + t.getValue().toString());
-        this.currentBalance = new Money(currentBalance.getAmount() -
-                t.getValue().getAmount());
+        this.currentBalance = currentBalance - t.getValue();
 
         return t;
     }

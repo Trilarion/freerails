@@ -34,19 +34,32 @@ import jfreerails.world.common.FreerailsSerializable;
  *
  */
 public interface CargoBundle extends FreerailsSerializable {
+    /**
+     * @param cargoType index into the CARGO_TYPES table
+     * @return amount of cargo of the specified type in tonnes
+     */
     int getAmount(int cargoType);
 
     int getAmount(CargoBatch cb);
 
+    /**
+     * @param amount Amount of cargo in tonnes
+     */
     void setAmount(CargoBatch cb, int amount);
 
-    /** Adds the specified amount of the specified CargoBatch to the
+    /**
+     * Adds the specified amount of the specified CargoBatch to the
      * amount already present in the Bundle.
+     * @param amount Amount of cargo in tonnes.
      */
     void addCargo(CargoBatch cb, int amount);
 
     boolean contains(CargoBatch cb);
 
+    /**
+     * @return an iterator over a set of Map.Entry. The keys are CargoBundle
+     * instances, the values are Integer amounts
+     */
     Iterator cargoBatchIterator();
 
     CargoBundle getCopy();

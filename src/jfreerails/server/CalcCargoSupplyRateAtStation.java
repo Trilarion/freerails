@@ -21,10 +21,13 @@ import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.TrackRule;
 
-
-public class CalcCargoSupplyRateAtStation {
-    /** The threshold that demand for a cargo must exceed before the station demands the cargo */
+class CalcCargoSupplyRateAtStation {
+    /**
+     * The threshold that demand for a cargo must exceed before the station
+     * demands the cargo
+     */
     private static final int PREREQUISITE_FOR_DEMAND = 16;
+
     private ReadOnlyWorld w;
     private int x;
     private int y;
@@ -32,7 +35,7 @@ public class CalcCargoSupplyRateAtStation {
     private int[] demand;
     private int[] converts;
 
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
+    CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
         this.w = world;
         this.x = X;
         this.y = Y;
@@ -46,16 +49,18 @@ public class CalcCargoSupplyRateAtStation {
         }
 
         supplies = new Vector();
-        PopulateSuppliesVector();
+        populateSuppliesVector();
 
         int numCargoTypes = w.size(KEY.CARGO_TYPES);
         demand = new int[numCargoTypes];
         converts = ConvertedAtStation.emptyConversionArray(numCargoTypes);
     }
 
-    public void PopulateSuppliesVector() {
-        //fill supplies vector with 0 values for all cargo types
-        //get the correct list of cargoes from the world object
+    /**
+     * Fill supplies vector with 0 values for all cargo types
+     * get the correct list of cargoes from the world object.
+     */
+    private void populateSuppliesVector() {
         CargoElementObject tempCargoElement;
 
         //CargoType cT;
@@ -68,7 +73,7 @@ public class CalcCargoSupplyRateAtStation {
         }
     }
 
-    public Vector ScanAdjacentTiles() {
+    Vector scanAdjacentTiles() {
         //Find the station radius.
         FreerailsTile tile = w.getTile(this.x, this.y);
         TrackRule trackRule = tile.getTrackRule();
@@ -86,21 +91,19 @@ public class CalcCargoSupplyRateAtStation {
         return supplies;
     }
 
-    public DemandAtStation getDemand() {
+    DemandAtStation getDemand() {
         boolean[] demandboolean = new boolean[w.size(KEY.CARGO_TYPES)];
 
         for (int i = 0; i < w.size(KEY.CARGO_TYPES); i++) {
             if (demand[i] >= PREREQUISITE_FOR_DEMAND) {
                 demandboolean[i] = true;
-
-                CargoType ct = (CargoType)w.get(KEY.CARGO_TYPES, i);
             }
         }
 
         return new DemandAtStation(demandboolean);
     }
 
-    public ConvertedAtStation getConversion() {
+    ConvertedAtStation getConversion() {
         return new ConvertedAtStation(this.converts);
     }
 

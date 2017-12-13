@@ -5,9 +5,10 @@
  */
 package jfreerails.world.train;
 
-import jfreerails.world.common.FreerailsSerializable;
 import java.util.Vector;
 
+import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.top.ObjectKey;
 
 /** This class represents a train's schedule.  That is, which stations that the
  * train should visit and what wagons the engine should pull.
@@ -144,9 +145,11 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
         nextScheduledOrder = i;
     }
 
-    /** Returns the station number of the next station the train is scheduled to
-     * stop at. */
-    public int getStationToGoto() {
+    /**
+     *  Returns the key of the next station the train is scheduled
+     * to stop at.
+     */
+    public ObjectKey getStationToGoto() {
         return ((TrainOrdersModel)orders.get(nextScheduledOrder)).getStationNumber();
     }
 
@@ -249,13 +252,13 @@ public class MutableSchedule implements FreerailsSerializable, Schedule {
         return this.nextScheduledOrder;
     }
 
-    public void removeAllStopsAtStation(int stationNumber) {
+    public void removeAllStopsAtStation(ObjectKey stationNumber) {
         int i = 0;
 
         while (i < this.getNumOrders()) {
             TrainOrdersModel order = this.getOrder(i);
 
-            if (order.getStationNumber() == stationNumber) {
+            if (order.getStationNumber().equals(stationNumber)) {
                 this.removeOrder(i);
             } else {
                 i++;

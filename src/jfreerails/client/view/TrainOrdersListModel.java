@@ -5,7 +5,10 @@
  */
 
 package jfreerails.client.view;
+
 import javax.swing.*;
+
+import jfreerails.client.model.ModelRoot;
 import jfreerails.world.top.*;
 import jfreerails.world.train.*;
 
@@ -15,11 +18,11 @@ import jfreerails.world.train.*;
  */
 
 public class TrainOrdersListModel extends AbstractListModel {
-    
-   	
     private int trainNumber;     
-    
-	private ReadOnlyWorld w;
+
+    private ReadOnlyWorld w;
+
+    private ModelRoot modelRoot;
     
     public static final int DONT_GOTO = 0;
     public static final int GOTO_NOW = 1;
@@ -42,10 +45,10 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
     
     /** Creates a new instance of TrainOrdersListModel */
-    public TrainOrdersListModel(ReadOnlyWorld w, int trainNumber) {
-       
-        this.trainNumber = trainNumber;
-		this.w = w;
+    public TrainOrdersListModel(ModelRoot mr, int trainNumber) {
+	modelRoot = mr;
+	w = mr.getWorld(); 
+	this.trainNumber = trainNumber;
     }
     
     public Object getElementAt(int index) {
@@ -89,7 +92,8 @@ public class TrainOrdersListModel extends AbstractListModel {
 	    return null;
 	}
 
-	TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);		
+	TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber,
+		modelRoot.getPlayerPrincipal());		
 	return (ImmutableSchedule)w.get(KEY.TRAIN_SCHEDULES,
 		train.getScheduleID());		
     }    		

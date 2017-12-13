@@ -216,8 +216,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
                     "viewLists!");
             }
 
-            modelRoot.setWorld(this, viewLists);
-
             /*
              * wait until the player the client represents has been created in
              * the model (this may not occur until we process the move creating
@@ -230,6 +228,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
                     world.size(KEY.PLAYERS));
                 moveExecuter.update();
             }
+
+            modelRoot.setWorld(this, viewLists);
 
             /* start the game loop */
             String threadName = "Railz client: " + guiClient.getTitle();

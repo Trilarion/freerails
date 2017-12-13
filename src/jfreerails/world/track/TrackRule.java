@@ -2,7 +2,6 @@ package jfreerails.world.track;
 
 import java.util.Iterator;
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.Money;
 
 
 /**
@@ -16,9 +15,9 @@ public interface TrackRule extends FreerailsSerializable {
 
     boolean isStation();
 
-    Money getPrice();
+    long getPrice();
 
-    Money getMaintenanceCost();
+    long getMaintenanceCost();
 
     int getStationRadius();
 

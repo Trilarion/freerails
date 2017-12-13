@@ -6,8 +6,9 @@ package jfreerails.move;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import jfreerails.world.track.TrackPiece;
 
+import jfreerails.world.track.TrackPiece;
+import jfreerails.world.player.FreerailsPrincipal;
 
 /**
  * This CompositeMove changes the track type at a point
@@ -23,8 +24,9 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
     }
 
     public static UpgradeTrackMove generateMove(TrackPiece before,
-        TrackPiece after, Point p) {
-        ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
+        TrackPiece after, Point p, FreerailsPrincipal trackOwner) {
+        ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p,
+		trackOwner);
 
         return new UpgradeTrackMove(m);
     }

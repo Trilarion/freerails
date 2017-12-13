@@ -1,15 +1,13 @@
 package jfreerails.world.terrain;
 
 import java.io.ObjectStreamException;
-import jfreerails.world.common.FreerailsSerializable;
 
+import jfreerails.world.common.FreerailsSerializable;
 
 public interface TerrainType extends FreerailsSerializable {
     String getTerrainTypeName();
 
     String getTerrainCategory();
-
-    int getRightOfWay();
 
     int getRGB();
 
@@ -20,6 +18,8 @@ public interface TerrainType extends FreerailsSerializable {
     Conversion[] getConversion();
 
     String getDisplayName();
+
+    long getBaseValue();
 
     static final TerrainType NULL = (new TerrainType() {
             public Production[] getProduction() {
@@ -57,5 +57,9 @@ public interface TerrainType extends FreerailsSerializable {
             private Object readResolve() throws ObjectStreamException {
                 return NULL;
             }
+
+	    public long getBaseValue() {
+		return 0;
+	    }
         });
 }

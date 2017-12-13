@@ -21,10 +21,11 @@ import jfreerails.world.track.TrackRule;
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     final TrackPiece trackPieceBefore;
     final TrackPiece trackPieceAfter;
+    final FreerailsPrincipal trackOwner;
     final Point location;
 
     public FreerailsPrincipal getPrincipal() {
-	return Player.NOBODY;
+	return trackOwner;
     }
 
     public Point getLocation() {
@@ -39,9 +40,11 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return trackPieceAfter;
     }
 
-    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point p) {
+    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point p,
+	    FreerailsPrincipal trackOwner) {
         trackPieceBefore = before;
         trackPieceAfter = after;
+	this.trackOwner = trackOwner;
         location = new Point(p);
     }
 
@@ -56,11 +59,15 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
             return MoveStatus.moveFailed(
                 "Tried to build track outside the map.");
         }
+	FreerailsTile currentTile = 
+	    (FreerailsTile)w.getTile(location.x, location.y);
+
+	if (! currentTile.getOwner().equals(trackOwner))
+	    return MoveStatus.moveFailed("You don't own this track");
 
         //Check that the current track piece at this.location is
         //the same as this.oldTrackPiece.
-	TrackPiece currentTrackPieceAtLocation = ((FreerailsTile)w.
-		getTile(location.x, location.y)).getTrackPiece();
+	TrackPiece currentTrackPieceAtLocation = currentTile.getTrackPiece();
 
         TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
         TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();
@@ -134,7 +141,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         TrackPiece newTrackPiece, FreerailsPrincipal p) {
         FreerailsTile oldTile = (FreerailsTile)w.getTile(location.x, location.y);
         int terrain = oldTile.getTerrainTypeNumber();
-        FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece);
+        FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece,
+		oldTile.getOwner());
         w.setTile(location.x, location.y, newTile);
     }
 
@@ -215,7 +223,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
             boolean fieldnewTrackPieceEqual = this.trackPieceAfter.equals(m.trackPieceAfter);
 
             if (fieldPointEqual && fieldoldTrackPieceEqual &&
-                    fieldnewTrackPieceEqual) {
+                    fieldnewTrackPieceEqual &&
+		    m.trackOwner.equals(trackOwner)) {
                 return true;
             } else {
                 return false;
@@ -223,5 +232,11 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         } else {
             return false;
         }
+    }
+
+    public String toString() {
+	return "ChangeTrackPieceMove: before=" + trackPieceBefore + ", after="
+	    + trackPieceAfter + ", owner=" + trackOwner + ", location=" +
+	    location;
     }
 }

@@ -6,6 +6,8 @@ package jfreerails.client.view;
 
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 import javax.swing.JLabel;
 
@@ -23,6 +25,9 @@ import jfreerails.world.top.ReadOnlyWorld;
  */
 public class DateJLabel extends JLabel {
 
+    private DateFormat dateFormat =
+	DateFormat.getDateInstance(DateFormat.MEDIUM);
+
 	private ReadOnlyWorld w;
 	
 	public DateJLabel(){
@@ -33,7 +38,9 @@ public class DateJLabel extends JLabel {
 		if (null != w) {
 			GameTime time = (GameTime) w.get(ITEM.TIME);
 			GameCalendar gameCalendar = (GameCalendar) w.get(ITEM.CALENDAR);
-			String s = gameCalendar.getYearAndMonth(time.getTime());
+			Calendar c = gameCalendar.getCalendar(time);
+				    
+			String s = dateFormat.format(c.getTime());
 			super.setText(s);
 		}
 		super.paint(g);

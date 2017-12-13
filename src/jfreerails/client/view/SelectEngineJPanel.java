@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import jfreerails.client.model.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
@@ -24,7 +25,7 @@ import jfreerails.world.train.EngineType;
  * @author  lindsal8
  *
  */
-public class SelectEngineJPanel extends javax.swing.JPanel implements View {
+public class SelectEngineJPanel extends javax.swing.JPanel {
     
     /** Creates new form SelectEngineJPanel */
     public SelectEngineJPanel() {
@@ -131,7 +132,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
             + " m.p.h. "
             + engine.getPowerAtDrawbar()
             + " hp $"
-            + engine.getPrice().toString()
+            + engine.getPrice()
             + (isSelected ? "</strong>" : "")
             + "</body></html>";
             label.setText(text);
@@ -146,10 +147,11 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         }
     }
     
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
-        
-        jList1.setModel(new World2ListModelAdapter(w, KEY.ENGINE_TYPES));
-        jList1.setCellRenderer(new TrainCellRenderer(vl));
+    public void setup(ModelRoot modelRoot,
+	    ActionListener submitButtonCallBack) {
+        jList1.setModel(new World2ListModelAdapter(modelRoot.getWorld(),
+		    KEY.ENGINE_TYPES, modelRoot.getPlayerPrincipal()));
+        jList1.setCellRenderer(new TrainCellRenderer(modelRoot.getViewLists()));
         okjButton.addActionListener(submitButtonCallBack);
     }
     

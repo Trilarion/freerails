@@ -19,7 +19,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  *  This JPanel displays a HTML document read from a URL.
  * @author  Luke
  */
-public class HtmlJPanel extends javax.swing.JPanel implements View {
+public class HtmlJPanel extends javax.swing.JPanel {
     
     private final URL htmlUrl;
     
@@ -40,7 +40,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         jScrollPane1 = new javax.swing.JScrollPane();
         htmlJLabel = new javax.swing.JLabel();
         loadText();
-        done = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -50,23 +49,12 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(jScrollPane1, gridBagConstraints);
 
-        done.setText("Close");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
-        add(done, gridBagConstraints);
-
     }//GEN-END:initComponents
-    
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
-        this.done.addActionListener(submitButtonCallBack);
-    }
     
     /** Load the help text from file.  */
     public void loadText() {
@@ -89,7 +77,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton done;
     private javax.swing.JLabel htmlJLabel;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

@@ -4,7 +4,7 @@
  */
 package jfreerails.client.common;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -15,12 +15,12 @@ import java.io.IOException;
 public interface ImageManager {
     void setPathToReadFrom(String s);
 
-    Image getImage(String relativeFilename) throws IOException;
+    BufferedImage getImage(String relativeFilename) throws IOException;
 
     boolean contains(String relativeFilename);
 
-    void setImage(String relativeFilename, Image i);
+    void setImage(String relativeFilename, BufferedImage i);
 
-    Image getScaledImage(String relativeFilename, int height)
+    BufferedImage getScaledImage(String relativeFilename, int height)
         throws IOException;
 }

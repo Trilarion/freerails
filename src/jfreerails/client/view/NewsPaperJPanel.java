@@ -20,7 +20,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author  lindsal8
  * 
  */
-public class NewsPaperJPanel extends javax.swing.JPanel implements View {
+public class NewsPaperJPanel extends javax.swing.JPanel {
 
 	private GraphicsConfiguration defaultConfiguration =
 		GraphicsEnvironment

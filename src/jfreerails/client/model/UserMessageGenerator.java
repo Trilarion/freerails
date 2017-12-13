@@ -1,6 +1,9 @@
 package jfreerails.client.model;
 
+import java.util.GregorianCalendar;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.Move;
@@ -10,6 +13,8 @@ import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
@@ -27,12 +32,12 @@ import jfreerails.world.train.TrainModel;
  * Created on Dec 13, 2003
  * 
  */
-public class UserMessageGenerator implements MoveReceiver {
+class UserMessageGenerator implements MoveReceiver {
     ModelRoot mr;
     ReadOnlyWorld world;
     DecimalFormat formatter = new DecimalFormat("#,###,###");
 
-    public UserMessageGenerator(ModelRoot mr, ReadOnlyWorld world) {
+    UserMessageGenerator(ModelRoot mr, ReadOnlyWorld world) {
         this.mr = mr;
         this.world = world;
     }
@@ -40,20 +45,30 @@ public class UserMessageGenerator implements MoveReceiver {
     public void processMove(Move move) {
         //Check whether it is a train arriving at a station.
         if (move instanceof TransferCargoAtStationMove) {
-            TransferCargoAtStationMove transferCargoAtStationMove = (TransferCargoAtStationMove)move;
+	    TransferCargoAtStationMove transferCargoAtStationMove =
+		(TransferCargoAtStationMove)move;
 
-            AddTransactionMove addTransactionMove = transferCargoAtStationMove.getPayment();
-            DeliverCargoReceipt deliverCargoReceipt = (DeliverCargoReceipt)addTransactionMove.getTransaction();
-            long revenue = deliverCargoReceipt.getValue().getAmount();
+	    AddTransactionMove addTransactionMove =
+		transferCargoAtStationMove.getPayment();
+	    DeliverCargoReceipt deliverCargoReceipt =
+		(DeliverCargoReceipt)addTransactionMove.getTransaction();
+            long revenue = deliverCargoReceipt.getValue();
+
+	    // ignore other player's trains
+	    if (! move.getPrincipal().equals(mr.getPlayerPrincipal()))
+		return;
 
             if (0 < revenue) {
-                int trainCargoBundle = transferCargoAtStationMove.getChangeOnTrain()
+                int trainCargoBundle =
+		    transferCargoAtStationMove.getChangeOnTrain()
                                                                  .getIndex();
-                int stationCargoBundle = transferCargoAtStationMove.getChangeAtStation()
+                int stationCargoBundle =
+		    transferCargoAtStationMove.getChangeAtStation()
                                                                    .getIndex();
-                NonNullElements trains = new NonNullElements(KEY.TRAINS, world);
-                NonNullElements stations = new NonNullElements(KEY.STATIONS,
-                        world);
+                NonNullElements trains = new NonNullElements(KEY.TRAINS, world,
+		       	mr.getPlayerPrincipal());
+		NonNullElements players = new NonNullElements(KEY.PLAYERS,
+			world);
 
                 int trainNumber = -1;
                 int statonNumber = -1;
@@ -69,22 +84,34 @@ public class UserMessageGenerator implements MoveReceiver {
                     }
                 }
 
-                while (stations.next()) {
-                    StationModel station = (StationModel)stations.getElement();
+		while (players.next()) {
+		    FreerailsPrincipal p = (FreerailsPrincipal)
+			((Player) players.getElement()).getPrincipal();
+		    NonNullElements stations = new NonNullElements(KEY.STATIONS,
+			    world, p);
+		    while (stations.next()) {
+			StationModel station = (StationModel)stations
+			    .getElement();
 
-                    if (station.getCargoBundleNumber() == stationCargoBundle) {
-                        statonNumber = stations.getRowNumber();
-                        stationName = station.getStationName();
-
-                        break;
-                    }
+			if (station.getCargoBundleNumber() ==
+				stationCargoBundle) {
+			    statonNumber = stations.getRowNumber();
+			    stationName = station.getStationName();
+			    break;
+			}
+		    }
                 }
 
                 CargoBundle cb = deliverCargoReceipt.getCargoDelivered();
 
                 GameTime gt = (GameTime)world.get(ITEM.TIME);
                 GameCalendar gc = (GameCalendar)world.get(ITEM.CALENDAR);
-                String message = gc.getTimeOfDay(gt.getTime()) + "  Train #" +
+		GregorianCalendar cal = gc.getCalendar(gt);
+		DateFormat df =
+		    DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+			    DateFormat.MEDIUM);
+
+                String message = df.format(cal.getTime()) + "  Train #" +
                     trainNumber + " arrives at " + stationName + "\n";
 
                 for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {

@@ -3,9 +3,11 @@
  */
 package jfreerails.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 import javax.swing.table.TableModel;
+
 import jfreerails.controller.AddPlayerCommand;
 import jfreerails.controller.AddPlayerResponseCommand;
 import jfreerails.controller.ConnectionListener;
@@ -105,31 +107,37 @@ class ServerGameController implements ServerControlInterface,
         }
     }
 
+    private abstract class LoadSaveAdapter extends Thread {
+	public File file;
+    }
+
     /**
      * Create a new ServerGameEngine instance and transfer all clients of
      * this game to the new one.
      */
-    public void loadGame() {
-	Thread t = new Thread() {
+    public void loadGame(File filename) {
+	LoadSaveAdapter t = new LoadSaveAdapter() {
 	    public void run() {
 		int ticksPerSec = gameEngine.getTargetTicksPerSecond();
 
 		/* open a new controller */
-		ServerGameEngine newGame = ServerGameEngine.loadGame();
+		ServerGameEngine newGame = ServerGameEngine.loadGame(file);
 
 		transferClients(newGame);
 		setTargetTicksPerSecond(ticksPerSec);
 	    }
 	};
+	t.file = filename;
 	t.start();
     }
 
-    public void saveGame() {
-	Thread t = new Thread() {
+    public void saveGame(File filename) {
+	LoadSaveAdapter t = new LoadSaveAdapter() {
 	    public void run() {
-		gameEngine.saveGame();
+		gameEngine.saveGame(file);
 	    }
 	};
+	t.file = filename;
 	t.start();
     }
 

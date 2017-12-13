@@ -1,3 +1,36 @@
+Mar 23, 2004:
+-------------
+Fixed some showstoppers found at the last minute
+Release of 0.2.2
+Mar 20, 2004:
+-------------
+Added Profit and loss dialog.
+Removed Money class.
+Reworked accounting system and game calendar.
+Added Economy class
+Fixed bug causing ConcurrentModificationExceptions during CargoBundle iterations.
+Added load/save dialogs.
+Mar 16, 2004:
+-------------
+Removed unused right-of-way charges.
+Fixed billing for tile purchases to debit
+Added prices to Track build tab pane tooltips.
+Resized build track buttons to make them smaller.
+Stopped client frame opening before display is ready.
+instead of credit!
+Mar 15, 2004:
+-------------
+Implemented tile ownership
+Mar 13, 2004:
+-------------
+Implemented multiplayer stations
+Mar 12, 2004:
+-------------
+Implemented multiplayer trains
+Mar 10, 2004:
+-------------
+Fixed 1603 Stations generate too much cargo
+Fixed 1604 Train Schedule Tab sizes layout is bad
 Mar 9, 2004:
 ------------
 Separated view and model client packages.

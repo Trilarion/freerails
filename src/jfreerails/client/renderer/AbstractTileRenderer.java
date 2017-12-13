@@ -5,7 +5,7 @@
 */
 package jfreerails.client.renderer;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.terrain.TerrainTile;
@@ -19,7 +19,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 */
 public abstract class AbstractTileRenderer implements TileRenderer {
     protected final int[] typeNumbers;
-    private Image[] tileIcons;
+    private BufferedImage[] tileIcons;
     protected final TerrainType tileModel;
 
     public AbstractTileRenderer(TerrainType t, int[] rgbValues) {
@@ -37,14 +37,14 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     public void renderTile(java.awt.Graphics g, int screenX, int screenY,
         int mapX, int mapY, ReadOnlyWorld w) {
-        Image icon = this.getIcon(mapX, mapY, w);
+        BufferedImage icon = this.getIcon(mapX, mapY, w);
 
         if (null != icon) {
             g.drawImage(icon, screenX, screenY, null);
         }
     }
 
-    public Image getDefaultIcon() {
+    public BufferedImage getDefaultIcon() {
         return getTileIcons()[0];
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     /** Returns an icon for the tile at x,y, which may depend on the terrain types of
      * of the surrounding tiles.
      */
-    public Image getIcon(int x, int y, ReadOnlyWorld w) {
+    public BufferedImage getIcon(int x, int y, ReadOnlyWorld w) {
         int tile = selectTileIcon(x, y, w);
 
         if (getTileIcons()[tile] != null) {
@@ -104,11 +104,11 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     protected abstract String generateFileNameNumber(int i);
 
-    protected void setTileIcons(Image[] tileIcons) {
+    protected void setTileIcons(BufferedImage[] tileIcons) {
         this.tileIcons = tileIcons;
     }
 
-    protected Image[] getTileIcons() {
+    protected BufferedImage[] getTileIcons() {
         return tileIcons;
     }
 }

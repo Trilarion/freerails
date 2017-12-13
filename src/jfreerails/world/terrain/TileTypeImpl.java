@@ -3,24 +3,24 @@
 *
 *  Created on 04 July 2001, 06:42
 */
+
 package jfreerails.world.terrain;
 
-
 /**
-*        This class represents a type of terrain
-*
-*@author     Luke Lindsay
-*     16 August 2001
-*@version    1.0
-*/
+ * This class represents a type of terrain
+ *
+ * @author     Luke Lindsay
+ *     16 August 2001
+ * @version    1.0
+ */
 final public class TileTypeImpl implements TerrainType {
     private final int rgb;
     private final String terrainCategory;
     private final String terrainType;
-    private final int rightOfWay;
     private final Production[] production;
     private final Consumption[] consumption;
     private final Conversion[] conversion;
+    private final long baseValue;
 
     public String getTerrainTypeName() {
         return terrainType;
@@ -31,15 +31,15 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     public TileTypeImpl(int rgb, String terrainCategory, String terrainType,
-        int rightOfWay, Production[] production, Consumption[] consumption,
-        Conversion[] conversion) {
+        Production[] production, Consumption[] consumption,
+        Conversion[] conversion, long baseValue) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
-        this.rightOfWay = rightOfWay;
         this.production = production;
         this.consumption = consumption;
         this.conversion = conversion;
+	this.baseValue = baseValue;
     }
 
     /**
@@ -65,10 +65,6 @@ final public class TileTypeImpl implements TerrainType {
         }
     }
 
-    public int getRightOfWay() {
-        return rightOfWay;
-    }
-
     public Consumption[] getConsumption() {
         return consumption;
     }
@@ -84,5 +80,9 @@ final public class TileTypeImpl implements TerrainType {
     /** Returns the name, replacing any underscores with spaces. */
     public String getDisplayName() {
         return this.terrainType.replace('_', ' ');
+    }
+
+    public long getBaseValue() {
+	return baseValue;
     }
 }

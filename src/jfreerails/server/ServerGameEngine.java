@@ -1,15 +1,18 @@
 package jfreerails.server;
 
 import java.awt.Point;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
 import jfreerails.controller.MoveChainFork;
 import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.move.ChangeProductionAtEngineShopMove;
@@ -19,6 +22,7 @@ import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
+import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
@@ -77,6 +81,7 @@ public class ServerGameEngine implements GameModel, Runnable {
     private int n;
     ArrayList trainMovers = new ArrayList();
     private int currentYearLastTick = -1;
+    private int currentMonthLastTick = -1;
     private boolean keepRunning = true;
 
     public int getTargetTicksPerSecond() {
@@ -203,8 +208,13 @@ public class ServerGameEngine implements GameModel, Runnable {
             //Check whether we have just started a new year..
             GameTime time = (GameTime)world.get(ITEM.TIME);
             GameCalendar calendar = (GameCalendar)world.get(ITEM.CALENDAR);
-            int currentYear = calendar.getYear(time.getTime());
+            int currentYear = calendar.getCalendar(time).get(Calendar.YEAR);
+	    int currentMonth = calendar.getCalendar(time).get(Calendar.MONTH);
 
+	    if (this.currentMonthLastTick != currentMonth) {
+		this.currentMonthLastTick = currentMonth;
+		newMonth();
+	    }
             if (this.currentYearLastTick != currentYear) {
                 this.currentYearLastTick = currentYear;
                 newYear();
@@ -280,8 +290,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         }
     }
 
-    /** This is called at the start of each new year. */
-    private void newYear() {
+    private void newMonth() {
         TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(moveExecuter);
         tmmg.update(world);
 
@@ -289,29 +298,41 @@ public class ServerGameEngine implements GameModel, Runnable {
         cargoAtStationsGenerator.update(world);
     }
 
-    /** Iterator over the stations
+    /** This is called at the start of each new year. */
+    private void newYear() {
+    }
+
+    /**
+     * Iterate over the stations
      * and build trains at any that have their production
      * field set.
-     *
      */
     private void buildTrains() {
-        for (int i = 0; i < world.size(KEY.STATIONS); i++) {
-            StationModel station = (StationModel)world.get(KEY.STATIONS, i);
+	NonNullElements j = new NonNullElements(KEY.PLAYERS, world);
+	while (j.next()) {
+	    FreerailsPrincipal principal = ((Player)
+		    j.getElement()).getPrincipal();
+	    for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {
+		StationModel station = (StationModel)world.get(KEY.STATIONS, i,
+			principal);
 
-            if (null != station && null != station.getProduction()) {
-                ProductionAtEngineShop production = station.getProduction();
-                Point p = new Point(station.x, station.y);
-                TrainMover trainMover = tb.buildTrain(production.getEngineType(),
-                        production.getWagonTypes(), p);
+		if (null != station && null != station.getProduction()) {
+		    ProductionAtEngineShop production = station.getProduction();
+		    Point p = new Point(station.x, station.y);
+		    
+		    TrainMover trainMover = tb.buildTrain
+			(production.getEngineType(),
+			 production.getWagonTypes(), p, principal);
 
-                //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
-                TrainPathFinder tpf = trainMover.getTrainPathFinder();
-                this.addServerAutomaton(tpf);
-                this.addTrainMover(trainMover);
-                moveExecuter.processMove(new ChangeProductionAtEngineShopMove(
-                        production, null, i));
-            }
-        }
+		    //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
+		    TrainPathFinder tpf = trainMover.getTrainPathFinder();
+		    this.addServerAutomaton(tpf);
+		    this.addTrainMover(trainMover);
+		    moveExecuter.processMove(new ChangeProductionAtEngineShopMove(
+				production, null, i, principal));
+		}
+	    }
+	}
     }
 
     private void moveTrains() {
@@ -337,11 +358,12 @@ public class ServerGameEngine implements GameModel, Runnable {
         trainMovers.add(m);
     }
 
-    public synchronized void saveGame() {
+    public synchronized void saveGame(File filename) {
         try {
             System.out.print("Saving game..  ");
 
-            FileOutputStream out = new FileOutputStream("freerails.sav");
+            FileOutputStream out = new
+		FileOutputStream(filename.getCanonicalPath());
             GZIPOutputStream zipout = new GZIPOutputStream(out);
 
             ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
@@ -372,13 +394,14 @@ public class ServerGameEngine implements GameModel, Runnable {
     /**
      * load a game from a saved position
      */
-    public static ServerGameEngine loadGame() {
+    public static ServerGameEngine loadGame(File filename) {
         ServerGameEngine engine = null;
 
         try {
             System.out.print("Loading game..  ");
 
-            FileInputStream in = new FileInputStream("freerails.sav");
+            FileInputStream in = new
+		FileInputStream(filename.getCanonicalPath());
             GZIPInputStream zipin = new GZIPInputStream(in);
             ObjectInputStream objectIn = new ObjectInputStream(zipin);
             ArrayList trainMovers = (ArrayList)objectIn.readObject();

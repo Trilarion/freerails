@@ -4,13 +4,67 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
-!=Project-Id-Version\: PACKAGE VERSION\nReport-Msgid-Bugs-To\: \nPOT-Creation-Date\: 2004-03-09 15\:56+0000\nPO-Revision-Date\: YEAR-MO-DA HO\:MI+ZONE\nLast-Translator\: FULL NAME <EMAIL@ADDRESS>\nLanguage-Team\: LANGUAGE <LL@li.org>\nMIME-Version\: 1.0\nContent-Type\: text/plain; charset\=UTF-8\nContent-Transfer-Encoding\: 8bit\n
+!=Project-Id-Version\: PACKAGE VERSION\nReport-Msgid-Bugs-To\: \nPOT-Creation-Date\: 2004-03-21 00\:06+0000\nPO-Revision-Date\: YEAR-MO-DA HO\:MI+ZONE\nLast-Translator\: FULL NAME <EMAIL@ADDRESS>\nLanguage-Team\: LANGUAGE <LL@li.org>\nMIME-Version\: 1.0\nContent-Type\: text/plain; charset\=UTF-8\nContent-Transfer-Encoding\: 8bit\n
 
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/model/DebugModel.java:17
 !Show\ Frame\ Rate=
 
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/DebugMenu.java:15
 !Debug=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:76
+!Profit\ and\ Loss=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:85
+!Previous\ Year=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:95
+!Next\ Year=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:113
+!Income\ Tax\ @=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:137
+!Track\ Maintenance=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:146
+!Rolling\ Stock\ Maintenance=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:155
+!Interest\ Payable=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:184
+!Profit\ Before\ Tax=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:206
+!Total\ Profit=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:214
+!Revenue=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:223
+!Freight\ Haulage=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:231
+!Passenger\ Ticket\ Sales=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:238
+!Expenses=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:246
+!Fuel=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:253
+!Gross\ Profit=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:261
+!Operating\ Expenses=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:396
+!Year\ to\ date=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/client/view/ProfitLossJPanel.java:397
+!Profit\ and\ Loss\ Statement\ -\ =
 
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/ClientOptionsJPanel.java:47
 !Please\ set\ a\ name\ for\ your\ player=
@@ -37,28 +91,28 @@
 !Start=
 
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:60
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:293
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:295
 !Next...=
 
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:96
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:127
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:157
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:128
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:158
 !Railz\ Client=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:197
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:199
 !Loading\ saved\ player\ keys=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:207
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:209
 !Saving\ player\ keys=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:212
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:215
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:214
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:217
 !Player\ KeyPair\ was\ corrupted\!=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:269
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:271
 !Railz\ Launcher=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:316
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/Launcher.java:318
 !Back...=
 
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/LauncherPanel1.java:83
@@ -98,13 +152,16 @@
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/LauncherPanel1.java:255
 !Server\ port=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/MapSelectionPanel.java:70
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/MapSelectionPanel.java:41
+!You\ must\ select\ a\ valid\ file\ name=
+
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/MapSelectionPanel.java:101
 !Load\ a\ saved\ game=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/MapSelectionPanel.java:75
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/MapSelectionPanel.java:135
 !Start\ a\ new\ map=
 
-#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/MapSelectionPanel.java:89
+#: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/MapSelectionPanel.java:151
 !Select\ Map=
 
 #: /Users/bob/programs/freerails/dev/railz/src/jfreerails/launcher/ServerStatusPanel.java:40

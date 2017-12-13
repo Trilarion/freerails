@@ -6,7 +6,7 @@ package jfreerails.client.top;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.TileRenderer;
@@ -24,7 +24,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  */
 public class QuickRGBTileRendererList implements TileRendererList {
     private int[] rgbValues;
-    private Image[] images;
+    private BufferedImage[] images;
     private HashMap rgb2index = new HashMap();
     private SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
     private static java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
@@ -34,7 +34,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
         int numberOfTerrainTypes = w.size(KEY.TERRAIN_TYPES);
         rgbValues = new int[numberOfTerrainTypes];
-        images = new Image[numberOfTerrainTypes];
+        images = new BufferedImage[numberOfTerrainTypes];
 
         for (int i = 0; i < numberOfTerrainTypes; i++) {
             TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
@@ -44,9 +44,10 @@ public class QuickRGBTileRendererList implements TileRendererList {
         }
     }
 
-    public static Image createImageFor(TerrainType t) {
+    public static BufferedImage createImageFor(TerrainType t) {
 	System.out.println("Creating QuickRGBImage");
-        Image image = defaultConfiguration.createCompatibleImage(30, 30);
+	BufferedImage image = defaultConfiguration.createCompatibleImage(30,
+		30);
         Color c = new Color(t.getRGB());
         Graphics g = image.getGraphics();
         g.setColor(c);
@@ -72,12 +73,12 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     class SimpleTileRenderer implements TileRenderer {
-        Image i;
+        BufferedImage i;
 
         public SimpleTileRenderer() {
         }
 
-        public void setImage(Image i) {
+        public void setImage(BufferedImage i) {
             this.i = i;
         }
 
@@ -93,11 +94,11 @@ public class QuickRGBTileRendererList implements TileRendererList {
             return 30;
         }
 
-        public Image getIcon(int x, int y, ReadOnlyWorld w) {
+        public BufferedImage getIcon(int x, int y, ReadOnlyWorld w) {
             return i;
         }
 
-        public Image getDefaultIcon() {
+        public BufferedImage getDefaultIcon() {
             return i;
         }
 

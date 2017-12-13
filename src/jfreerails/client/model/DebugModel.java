@@ -11,7 +11,24 @@ import jfreerails.client.common.ToggleActionAdapter;
  */
 public class DebugModel {
     private ToggleActionAdapter frameRateDebugModel;
+    private ToggleActionAdapter clientMoveDebugModel;
 
+    private class ClientMoveDebugAction extends AbstractAction {
+	public ClientMoveDebugAction() {
+	    putValue(NAME, Resources.get("Client move debug"));
+	    setEnabled(false);
+	    putValue("Selected", Boolean.FALSE);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    if (Boolean.FALSE == getValue("Selected")) {
+		putValue("Selected", Boolean.TRUE);
+	    } else {
+		putValue("Selected", Boolean.FALSE);
+	    }
+	}
+    }
+    
     private class FrameRateDebugAction extends AbstractAction {
 	public FrameRateDebugAction() {
 	    putValue(NAME, Resources.get("Show Frame Rate"));
@@ -26,6 +43,12 @@ public class DebugModel {
     DebugModel() {
 	frameRateDebugModel = new ToggleActionAdapter
 	    (new FrameRateDebugAction());
+	clientMoveDebugModel = new ToggleActionAdapter(new
+		ClientMoveDebugAction());
+    }
+
+    public ToggleActionAdapter getClientMoveDebugModel() {
+	return clientMoveDebugModel;
     }
 
     public ToggleActionAdapter getFrameRateDebugModel () {

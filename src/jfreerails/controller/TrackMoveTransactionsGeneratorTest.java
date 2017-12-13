@@ -54,7 +54,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         TrackRule r = (TrackRule)world.get(KEY.TRACK_RULES, 0);
         newTrackPiece = r.getTrackPiece(newConfig);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point(0, 0));
+                new Point(0, 0), player.getPrincipal());
 
         Move m = transactionGenerator.addTransactions(move);
         assertNotNull(m);

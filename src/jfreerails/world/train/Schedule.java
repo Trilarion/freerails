@@ -4,6 +4,7 @@
  */
 package jfreerails.world.train;
 
+import jfreerails.world.top.ObjectKey;
 
 /**
  * @author Luke Lindsay
@@ -19,7 +20,7 @@ public interface Schedule {
 
     /** Returns the station number of the next station the train is scheduled to
      * stop at. */
-    int getStationToGoto();
+    ObjectKey getStationToGoto();
 
     /** Returns the wagons to add at the next scheduled stop. */
     int[] getWagonsToAdd();

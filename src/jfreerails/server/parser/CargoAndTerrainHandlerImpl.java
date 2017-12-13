@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
@@ -32,10 +33,10 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     HashSet rgbValuesAlreadyUsed = new HashSet();
 
     //Parsing variables for Tile
+    long tileBaseValue;
     String tileID;
     String tileCategory;
     int tileRGB;
-    int tileROW;
     ArrayList typeConsumes = new ArrayList();
     ArrayList typeProduces = new ArrayList();
     ArrayList typeConverts = new ArrayList();
@@ -66,6 +67,9 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         String rgbString = meta.getValue("rgb");
         tileRGB = string2RGBValue(rgbString);
 
+	String baseValue = meta.getValue("baseValue");
+	tileBaseValue = Long.parseLong(baseValue);
+
         //Check if another type is already using this rgb value..
         Integer rgbInteger = new Integer(tileRGB);
 
@@ -75,8 +79,6 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         } else {
             rgbValuesAlreadyUsed.add(rgbInteger);
         }
-
-        tileROW = Integer.parseInt(meta.getValue("right-of-way"));
     }
 
     public void end_Tile() throws SAXException {
@@ -99,7 +101,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         }
 
         TileTypeImpl tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
-                tileROW, produces, consumes, converts);
+                produces, consumes, converts, tileBaseValue);
 
         world.add(KEY.TERRAIN_TYPES, tileType, Player.AUTHORITATIVE);
     }

@@ -5,7 +5,7 @@
 */
 package jfreerails.client.renderer;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import jfreerails.client.common.ImageManager;
@@ -21,7 +21,7 @@ final public class StandardTileRenderer
     public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
         TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues);
-        this.setTileIcons(new Image[1]);
+        this.setTileIcons(new BufferedImage[1]);
         this.getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
 

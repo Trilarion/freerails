@@ -7,8 +7,8 @@ import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.city.CityTilePositioner;
 import jfreerails.world.city.InputCityNames;
-import jfreerails.world.common.GameCalendar;
-import jfreerails.world.common.GameTime;
+import jfreerails.world.common.*;
+import jfreerails.world.player.Player;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
@@ -95,8 +95,14 @@ public class OldWorldImpl {
         CityTilePositioner ctp = new CityTilePositioner(w);
 
         //Set the time..
-        w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        w.set(ITEM.CALENDAR, new GameCalendar(30, 1840));
         w.set(ITEM.TIME, new GameTime(0));
+
+	//Create the economy
+	Economy economy = new Economy();
+	economy.setIncomeTaxRate(25);
+	economy.setBaseInterestRate((float) 5.0);
+	w.set(ITEM.ECONOMY, economy, Player.AUTHORITATIVE);
 
         return w;
     }

@@ -9,7 +9,7 @@
             <Property name="text" type="java.lang.String" value="Game"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new GameMenu(modelRoot, gUIComponentFactory);"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new GameMenu(modelRoot, guiRoot);"/>
           </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="buildMenu">
@@ -25,7 +25,7 @@
             <Property name="text" type="java.lang.String" value="Display"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DisplayMenu(gUIComponentFactory);"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DisplayMenu(guiRoot);"/>
           </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
@@ -33,7 +33,7 @@
             <Property name="text" type="java.lang.String" value="Help"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new HelpMenu(gUIComponentFactory);"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new HelpMenu(guiRoot);"/>
           </AuxValues>
         </Menu>
       </SubComponents>
@@ -41,7 +41,7 @@
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
-    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
   </SyntheticProperties>
   <Events>
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="exitForm"/>
@@ -75,7 +75,7 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="mapOverview">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new OverviewMapJComponent(gUIComponentFactory);"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new OverviewMapJComponent(guiRoot);"/>
               </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

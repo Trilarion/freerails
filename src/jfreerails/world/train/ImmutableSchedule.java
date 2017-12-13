@@ -5,8 +5,9 @@
 package jfreerails.world.train;
 
 import java.util.Arrays;
-import jfreerails.world.common.FreerailsSerializable;
 
+import jfreerails.world.top.ObjectKey;
+import jfreerails.world.common.FreerailsSerializable;
 
 /**
  * @author Luke Lindsay
@@ -17,6 +18,11 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private final int nextScheduledOrder;
     private final boolean hasPriorityOrders;
 
+    /**
+     * @param gotoStation index in the orders array of the next station to go
+     * to.
+     * @param orders Array of TrainOrdersModel representing stations to go to.
+     */
     public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
         boolean hasPriorityOrders) {
         this.orders = (TrainOrdersModel[])orders.clone();
@@ -32,11 +38,11 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         return hasPriorityOrders ? 0 : nextScheduledOrder;
     }
 
-    public int getStationToGoto() {
+    public ObjectKey getStationToGoto() {
         int orderToGoto = getOrderToGoto();
 
         if (-1 == orderToGoto) {
-            return -1;
+            return null;
         } else {
             return orders[orderToGoto].getStationNumber();
         }
@@ -58,11 +64,11 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         return this.nextScheduledOrder;
     }
 
-    public boolean stopsAtStation(int stationNumber) {
+    public boolean stopsAtStation(ObjectKey station) {
         for (int i = 0; i < this.getNumOrders(); i++) {
             TrainOrdersModel order = this.getOrder(i);
 
-            if (order.getStationNumber() == stationNumber) {
+            if (order.getStationNumber().equals(station)) {
                 return true;
             }
         }

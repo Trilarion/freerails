@@ -1,6 +1,6 @@
 package jfreerails.client.renderer;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import jfreerails.client.common.ImageManager;
 import jfreerails.world.top.ReadOnlyWorld;
 
@@ -12,7 +12,7 @@ import jfreerails.world.top.ReadOnlyWorld;
 *     09 October 2001
 */
 public interface TileRenderer {
-    Image getDefaultIcon();
+    BufferedImage getDefaultIcon();
 
     void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX,
         int mapY, ReadOnlyWorld w);

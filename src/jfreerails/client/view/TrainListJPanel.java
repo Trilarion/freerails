@@ -10,16 +10,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import jfreerails.client.model.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
+
 /**
  *
  * @author  Luke
  */
-public class TrainListJPanel extends javax.swing.JPanel implements View {
+public class TrainListJPanel extends javax.swing.JPanel {
+
+    private ModelRoot modelRoot;
 	
-	private ReadOnlyWorld world;
+    private ReadOnlyWorld world;
     
     /** Creates new form TrainListJPanel */
     public TrainListJPanel() {
@@ -102,11 +106,14 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
     }//GEN-LAST:event_jList1KeyPressed
     
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {  
-		world = w;
-        jList1.setModel(new World2ListModelAdapter(w, KEY.TRAINS));
-        TrainViewJPanel trainView =
-        new TrainViewJPanel(w, vl);
+    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {  
+	modelRoot = mr;
+	ReadOnlyWorld w = mr.getWorld();
+	ViewLists vl = mr.getViewLists(); 
+	world = w;
+	jList1.setModel(new World2ListModelAdapter(w, KEY.TRAINS,
+		    mr.getPlayerPrincipal()));
+        TrainViewJPanel trainView = new TrainViewJPanel(modelRoot);
         jList1.setCellRenderer(trainView);
         trainView.setHeight(50);               
         ActionListener[] oldListeners = closeJButton.getActionListeners();
@@ -140,11 +147,12 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     // End of variables declaration//GEN-END:variables
     
 	
-	public void setVisible(boolean aFlag) {
-		if(aFlag){
-			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS));
-		}
-		super.setVisible(aFlag);
+    public void setVisible(boolean aFlag) {
+	if(aFlag){
+	    jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,
+			modelRoot.getPlayerPrincipal()));
 	}
+	super.setVisible(aFlag);
+    }
 
 }

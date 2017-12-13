@@ -8,7 +8,6 @@ import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.renderer.ZoomedOutMapRenderer;
 import jfreerails.client.top.ClientJFrame;
-import jfreerails.client.model.UserMessageGenerator;
 import jfreerails.client.model.ModelRoot;
 import jfreerails.client.model.ModelRootListener;
 import jfreerails.controller.MoveChainFork;
@@ -28,7 +27,6 @@ public class GUIRoot implements ModelRootListener {
     private MapViewJComponentConcrete mapViewJComponent;
     DetailMapView mainMap;
     ClientJFrame clientJFrame;
-    UserMessageGenerator userMessageGenerator;
     private MainMapAndOverviewMapMediator mediator;
     private ScreenHandler screenHandler;
 
@@ -54,9 +52,6 @@ public class GUIRoot implements ModelRootListener {
         dialogueBoxController.setup();
 
         clientJFrame.setup();
-
-        userMessageGenerator = new UserMessageGenerator(this.modelRoot, world);
-        modelRoot.getMoveChainFork().add(userMessageGenerator);
     }
 
     public ScreenHandler getScreenHandler() {

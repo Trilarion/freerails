@@ -39,6 +39,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
         }
 
         if (status != MoveStatus.MOVE_OK) {
+	    System.err.println("forwarding rejected move " + move);
             moveReceiver.processMove(new RejectedMove(move, status));
         } else {
             moveReceiver.processMove(move);
@@ -65,7 +66,6 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
 	    ms = move.doMove(world, p);
 	}
 
-        /* retain mutex since order of forwarded moves is important */
         forwardMove(move, ms);
     }
 

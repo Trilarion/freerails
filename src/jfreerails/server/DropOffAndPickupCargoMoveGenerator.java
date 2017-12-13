@@ -1,6 +1,8 @@
 package jfreerails.server;
 
 import java.util.Iterator;
+import java.util.Map.Entry;
+
 import jfreerails.move.AddTransactionMove;
 import jfreerails.move.ChangeCargoBundleMove;
 import jfreerails.move.Move;
@@ -15,21 +17,24 @@ import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.WagonType;
-
+import jfreerails.world.player.FreerailsPrincipal;
 
 /**
- * This class generates moves that transfer cargo between train and the stations it stops at - it also
- * handles cargo converions that occur when cargo is dropped off.
- *
+ * This class generates moves that transfer cargo between train and the
+ * stations it stops at - it also handles cargo converions that occur when
+ * cargo is dropped off.
+ * 
  * @author Scott Bennett
  * Date Created: 4 June 2003
  *
  */
-public class DropOffAndPickupCargoMoveGenerator {
+class DropOffAndPickupCargoMoveGenerator {
     private ReadOnlyWorld w;
     private TrainModel train;
     private int trainId;
     private int trainBundleId;
+    private FreerailsPrincipal trainPrincipal;
+    private FreerailsPrincipal stationPrincipal;
     private int stationId;
     private int stationBundleId;
     private CargoBundle stationAfter;
@@ -43,14 +48,19 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param trainNo ID of the train
      * @param stationNo ID of the station
      * @param world The world object
+     * @param tp Player which owns the train
+     * @param sp Player which owns the station
      */
-    public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo,
-        ReadOnlyWorld world) {
+    public DropOffAndPickupCargoMoveGenerator(FreerailsPrincipal tp,
+	    int trainNo, FreerailsPrincipal sp, int stationNo, ReadOnlyWorld
+	    world) {
         trainId = trainNo;
         stationId = stationNo;
+	trainPrincipal = tp;
+	stationPrincipal = sp;
         w = world;
 
-        train = (TrainModel)w.get(KEY.TRAINS, trainId);
+        train = (TrainModel)w.get(KEY.TRAINS, trainId, trainPrincipal);
 
         getBundles();
 
@@ -58,36 +68,43 @@ public class DropOffAndPickupCargoMoveGenerator {
         processStationBundle(); //ie. load train / pickup cargo
     }
 
-    public Move generateMove() {
-        //The methods that calculate the before and after bundles could be called from here.
-        ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore,
-                stationAfter, stationBundleId);
-        ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore,
+    Move generateMove() {
+	// The methods that calculate the before and after bundles could be
+	// called from here.
+	ChangeCargoBundleMove changeAtStation = new
+	    ChangeCargoBundleMove(stationBefore, stationAfter,
+		    stationBundleId);
+
+	ChangeCargoBundleMove changeOnTrain = new
+	    ChangeCargoBundleMove(trainBefore,
                 trainAfter, trainBundleId);
 
         return TransferCargoAtStationMove.generateMove(changeAtStation,
             changeOnTrain, payment);
     }
 
-    public void getBundles() {
-        trainBundleId = ((TrainModel)w.get(KEY.TRAINS, trainId)).getCargoBundleNumber();
+    private void getBundles() {
+        trainBundleId = ((TrainModel)w.get(KEY.TRAINS, trainId, trainPrincipal))
+	    .getCargoBundleNumber();
         trainBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId)).getCopy();
         trainAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId)).getCopy();
-        stationBundleId = ((StationModel)w.get(KEY.STATIONS, stationId)).getCargoBundleNumber();
+	stationBundleId = ((StationModel)w.get(KEY.STATIONS, stationId,
+		    stationPrincipal)).getCargoBundleNumber();
         stationAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId)).getCopy();
         stationBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId)).getCopy();
     }
 
-    public void processTrainBundle() {
+    private void processTrainBundle() {
         Iterator batches = trainAfter.cargoBatchIterator();
 
-        StationModel station = (StationModel)w.get(KEY.STATIONS, stationId);
+	StationModel station = (StationModel)w.get(KEY.STATIONS, stationId,
+		stationPrincipal);
 
         CargoBundle cargoDroppedOff = new CargoBundleImpl();
 
         //Unload the cargo that the station demands
         while (batches.hasNext()) {
-            CargoBatch cb = (CargoBatch)batches.next();
+            CargoBatch cb = (CargoBatch)((Entry) batches.next()).getKey();
 
             //if the cargo is demanded and its not from this station originally...
             DemandAtStation demand = station.getDemand();
@@ -113,7 +130,8 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
 
         payment = ProcessCargoAtStationMoveGenerator.processCargo(w,
-                cargoDroppedOff, this.stationId);
+		cargoDroppedOff, trainPrincipal, this.stationId,
+		stationPrincipal);
 
         //Unload the cargo that there isn't space for on the train regardless of whether the station
         // demands it.
@@ -129,7 +147,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
     }
 
-    public void processStationBundle() {
+    private void processStationBundle() {
         int[] spaceAvailable = getSpaceAvailableOnTrain();
 
         //Third, transfer cargo from the station to the train subject to the space available on the train.
@@ -169,7 +187,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     /**
      * Move the specified quantity of the specifed cargotype from one bundle to another.
      */
-    public static void transferCargo(int cargoTypeToTransfer,
+    private static void transferCargo(int cargoTypeToTransfer,
         int amountToTransfer, CargoBundle from, CargoBundle to) {
         if (0 == amountToTransfer) {
             return;
@@ -179,7 +197,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             while (batches.hasNext() &&
                     amountTransferedSoFar < amountToTransfer) {
-                CargoBatch cb = (CargoBatch)batches.next();
+                CargoBatch cb = (CargoBatch)((Entry) batches.next()).getKey();
 
                 if (cb.getCargoType() == cargoTypeToTransfer) {
                     int amount = from.getAmount(cb);

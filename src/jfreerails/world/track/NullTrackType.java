@@ -7,7 +7,6 @@ package jfreerails.world.track;
 
 import java.io.ObjectStreamException;
 import java.util.Iterator;
-import jfreerails.world.common.Money;
 import jfreerails.world.common.OneTileMoveVector;
 
 
@@ -84,11 +83,11 @@ final public class NullTrackType implements jfreerails.world.track.TrackRule {
         return 0;
     }
 
-    public Money getPrice() {
-        return new Money(0);
+    public long getPrice() {
+        return 0;
     }
 
-    public Money getMaintenanceCost() {
-        return new Money(0);
+    public long getMaintenanceCost() {
+        return 0;
     }
 }

@@ -92,8 +92,6 @@ public class CompositeMove implements Move {
             ms = moves[i].doMove(w, p);
 
             if (!ms.ok) {
-		System.err.println("Move " + moves[i].toString() + " failed" +
-		" because " + ms.toString());
                 //Undo any moves we have already done.
                 undoMoves(w, i - 1, p);
 

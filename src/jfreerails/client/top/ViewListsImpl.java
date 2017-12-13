@@ -1,6 +1,7 @@
 package jfreerails.client.top;
 
 import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
@@ -155,7 +156,7 @@ public class ViewListsImpl implements ViewLists {
                     t.getTerrainTypeName());
 
                 String filename = StandardTileRenderer.generateFilename(t.getTerrainTypeName());
-                Image image = QuickRGBTileRendererList.createImageFor(t);
+                BufferedImage image = QuickRGBTileRendererList.createImageFor(t);
                 imageManager.setImage(filename, image);
 
                 //generatedImages.setImage(filename, image);

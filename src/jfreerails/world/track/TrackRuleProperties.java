@@ -1,8 +1,6 @@
 package jfreerails.world.track;
 
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.Money;
-
 
 final public class TrackRuleProperties implements FreerailsSerializable {
     public String getTypeName() {
@@ -23,10 +21,10 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     private final String typeName;
     private final boolean isStation;
     private final int stationRadius;
-    private final Money price;
-    private final Money maintenanceCost;
+    private final long price;
+    private final long maintenanceCost;
 
-    public Money getMaintenanceCost() {
+    public long getMaintenanceCost() {
         return maintenanceCost;
     }
 
@@ -38,11 +36,11 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         typeName = name;
         number = n;
         isStation = station;
-        this.price = new Money(price);
-        this.maintenanceCost = new Money(maintenance);
+        this.price = price;
+        this.maintenanceCost = maintenance;
     }
 
-    public Money getPrice() {
+    public long getPrice() {
         return price;
     }
 

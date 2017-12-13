@@ -31,9 +31,9 @@
 <!ELEMENT Tile (Converts|Consumes|Produces)*>
 <!ATTLIST Tile
     Category (Urban | River | Ocean | Hill | Country | Special | Industry | Resource) #REQUIRED
-    right-of-way CDATA #REQUIRED
     rgb CDATA #REQUIRED
     id ID #REQUIRED
+    baseValue CDATA #REQUIRED
   >
 
 <!ELEMENT Types (Cargo_Types, Terrain_Types)>

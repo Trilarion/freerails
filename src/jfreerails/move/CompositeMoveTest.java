@@ -20,19 +20,23 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
 
     public void testMove() {
         Move[] moves = new Move[4];
-        moves[0] = new AddItemToListMove(KEY.STATIONS, 0, station1);
-        moves[1] = new AddItemToListMove(KEY.STATIONS, 1, station2);
-        moves[2] = new AddItemToListMove(KEY.STATIONS, 2, station3);
-        moves[3] = new AddItemToListMove(KEY.STATIONS, 3, station4);
+        moves[0] = new AddItemToListMove(KEY.STATIONS, 0, station1,
+		testPlayer.getPrincipal());
+        moves[1] = new AddItemToListMove(KEY.STATIONS, 1, station2,
+		testPlayer.getPrincipal());
+        moves[2] = new AddItemToListMove(KEY.STATIONS, 2, station3,
+		testPlayer.getPrincipal());
+        moves[3] = new AddItemToListMove(KEY.STATIONS, 3, station4,
+		testPlayer.getPrincipal());
 
         Move compositeMove = new CompositeMove(moves);
         assertEqualsSurvivesSerialisation(compositeMove);
         assertTryMoveIsOk(compositeMove);
         assertEquals("The stations should not have been add yet.", 0,
-            getWorld().size(KEY.STATIONS));
+            getWorld().size(KEY.STATIONS, testPlayer.getPrincipal()));
         assertDoMoveIsOk(compositeMove);
         assertEquals("The stations should have been add now.", 4,
-            getWorld().size(KEY.STATIONS));
+            getWorld().size(KEY.STATIONS, testPlayer.getPrincipal()));
         assertTryUndoMoveIsOk(compositeMove);
         assertUndoMoveIsOk(compositeMove);
 

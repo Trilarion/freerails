@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import jfreerails.client.model.ModelRoot;
 import jfreerails.client.renderer.TrainImages;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoType;
@@ -32,7 +33,7 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author  lindsal8
  *
  */
-public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
+public class SelectWagonsJPanel extends javax.swing.JPanel {
 
 	private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
@@ -262,10 +263,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 	}
     }
 
-    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
-        this.viewLists = vl;
-	World2ListModelAdapter w2lma = new World2ListModelAdapter(w,
-		KEY.CARGO_TYPES); 
+    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+        this.viewLists = mr.getViewLists();
+	World2ListModelAdapter w2lma = new World2ListModelAdapter(mr.getWorld(),
+		KEY.CARGO_TYPES, mr.getPlayerPrincipal()); 
 	this.wagonTypesJList.setModel(w2lma);
 	TrainImages trainImages = viewLists.getTrainImages();
 	WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma,
