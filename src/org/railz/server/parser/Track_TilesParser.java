@@ -26,6 +26,8 @@ package org.railz.server.parser;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
+import java.util.logging.*;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -44,6 +46,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     private java.lang.StringBuffer buffer;
     private Track_TilesParslet parslet;
     private Track_TilesHandler handler;
+    private static final Logger logger = Logger.getLogger("global");
 
     /**
      *  Object
@@ -198,8 +201,8 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
 	    try {
 		parse(new InputSource(url.toExternalForm()), handler, parslet);
 	    } catch (SAXParseException e) {
-		System.err.println("Parse exception " + e.getMessage() + 
-			" at line " + e.getLineNumber());
+		logger.log(Level.WARNING,"Parse exception " + e.getMessage() + 
+			" at line " + e.getLineNumber(), e);
 		throw e;
 	    }
     }
@@ -222,7 +225,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
                 public void error(org.xml.sax.SAXParseException ex)
                     throws SAXException {
                     if (context.isEmpty()) {
-                        System.err.println("Missing DOCTYPE.");
+                        logger.log(Level.WARNING, "Missing DOCTYPE.");
                     }
 
                     throw ex;

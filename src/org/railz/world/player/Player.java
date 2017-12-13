@@ -146,7 +146,8 @@ public class Player implements FreerailsSerializable {
     }
 
     /**
-     * Used by the client to generate a player with a particular name
+     * Used by the client to generate a player with a particular name.
+     * The player is given a public and private keypair.
      */
     public Player(String name) {
         this.name = name;
@@ -170,8 +171,9 @@ public class Player implements FreerailsSerializable {
 
     /**
      * Used by the server to generate a player with a particular name and public
-     * key.
-     * @param serverPrivateKey the server's private key used to generate the
+     * key. The server does not know the private key of the client.
+     * @param name the name of the player
+     * @param id a unique id for the player
      * @param publicKey the client's public key.
      * certificate.
      */

@@ -141,7 +141,6 @@ public class SelectStationJPanel extends javax.swing.JPanel {
 	 */
 	private void setZoom() {
 	    imageRect = this.getBounds();
-	    System.out.println("size of rect is " + imageRect);
 	    int maxMapX = world.getMapWidth() - 1;
 	    int maxMapY = world.getMapHeight() - 1;
 
@@ -198,10 +197,8 @@ public class SelectStationJPanel extends javax.swing.JPanel {
 		topLeftY = centre - heightInMapCoords / 2;
 		bottomRightY = centre + heightInMapCoords / 2;
 	    }
-	    System.out.println("scaled is " + scale);
 	    visibleMapTiles = new Rectangle(topLeftX, topLeftY, bottomRightX -
 		    topLeftX, bottomRightY - topLeftY);
-	    System.out.println("new mapRect is " + visibleMapTiles);
 	    zomr = new ZoomedOutMapRenderer(world, imageRect.width,
 		    imageRect.height, topLeftX, topLeftY, bottomRightX -
 		    topLeftX, bottomRightY - topLeftY);

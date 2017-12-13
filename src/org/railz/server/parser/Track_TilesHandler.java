@@ -66,7 +66,7 @@ public interface Track_TilesHandler {
 
     /**
      * An empty element event handling method.
-     * @param data value or null
+     * @param meta attributes for the TerrainType element
      */
     void handle_TerrainType(final Attributes meta) throws SAXException;
 

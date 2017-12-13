@@ -18,10 +18,7 @@
 package org.railz.world.train;
 
 import java.awt.Point;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.HashMap;
+import java.util.*;
 
 import org.railz.world.common.*;
 import org.railz.world.player.*;
@@ -170,6 +167,7 @@ public final class TrainPath implements FreerailsSerializable {
 	if ((int) actualLength.getLength() <= newLength) {
 	    assert newLength - (int) actualLength.getLength() < 3;
 	    getTail(p);
+	    length = newLength;
 	    return new TrainPath(new IntLine[]{new IntLine(p.x, p.y, p.x, p.y)});
 	}
 	ListIterator i = segments.listIterator(0);
@@ -187,19 +185,12 @@ public final class TrainPath implements FreerailsSerializable {
 	    int oldX2 = line.x2;
 	    int oldY2 = line.y2;
 	    PathLength segLength = new PathLength(line.getLength());
-	    // System.out.println("stub length = " + l.getLength());
 	    l.subtract(segLength);
 	    segLength.setLength(newLength - l.getLength());
-	    // System.out.println("set segLength to " + (newLength -
-	//		l.getLength()) + ", is actually=" +
-	//	    segLength.getLength());
 	    l.add(segLength);
 	    line.setLength(segLength);
 	    removedSegments.addFirst(new IntLine(line.x2, line.y2, oldX2,
 		       oldY2));
-	    // System.out.println("new actualLength = " + l.getLength() +
-	//	    ", intended length=" + newLength + ", old length=" +
-	//	    length);
 	}
 	length = newLength;
 	actualLength = l;
@@ -233,7 +224,7 @@ public final class TrainPath implements FreerailsSerializable {
 	    segments.addFirst(i.previous());
 	}
 	actualLength.add(l);
-	length = actualLength.getLength();
+	length = Math.max(actualLength.getLength(), length);
     }
 
     /**
@@ -244,7 +235,6 @@ public final class TrainPath implements FreerailsSerializable {
      * @return the portion of the tail removed to maintain constant length
      */
     public TrainPath moveHeadTo(TrainPath additionalPath) {
-	// System.out.println(".");
 	double l = length;
 	prepend(additionalPath);
 	TrainPath tp = truncateTail(l);
@@ -301,6 +291,40 @@ public final class TrainPath implements FreerailsSerializable {
 
     public int hashCode() {
 	return segments.hashCode();
+    }
+
+    public ArrayList getMapCoordArray() {
+	ArrayList mapCoords = new ArrayList();
+	IntLine il;
+	ListIterator i = segments.listIterator(0);
+	Point p = new Point();
+	Point oldP = new Point();
+	Point p2 = new Point();
+	byte direction;
+	int dx;
+	int dy;
+	while (i.hasNext()) {
+	    il = (IntLine) i.next();
+	    p.setLocation(il.x1, il.y1);
+	    p2.setLocation(il.x2, il.y2);
+	    TrackTile.deltasToTileCoords(p);
+	    if (!p.equals(oldP))
+		mapCoords.add(new Point(p));
+	    oldP.setLocation(p);
+	    if (il.x1 == il.x2 && il.y1 == il.y2)
+		continue;
+	    direction = il.getDirection();
+	    dx = CompassPoints.getUnitDeltaX(direction);
+	    dy = CompassPoints.getUnitDeltaY(direction);
+	    TrackTile.deltasToTileCoords(p2); 
+	    
+	    while (!p2.equals(p)) {
+		p.translate(dx, dy);
+		mapCoords.add(new Point(p));
+		oldP.setLocation(p);
+	    }
+	}
+	return mapCoords;
     }
 
     /**

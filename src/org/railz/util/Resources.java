@@ -35,8 +35,8 @@ public final class Resources {
     }
 
     /**
-     * @param string. The localisation key.
-     * @param params. The parameters to be passed into MessageFormat.format()
+     * @param string The localisation key.
+     * @param params The parameters to be passed into MessageFormat.format()
      */
     public static ResourceKey getResourceKey(String string, Serializable[]
 	    params) {

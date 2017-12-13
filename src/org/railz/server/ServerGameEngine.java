@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -35,10 +36,7 @@ import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
 import org.railz.world.station.ProductionAtEngineShop;
 import org.railz.world.station.StationModel;
-import org.railz.world.top.ITEM;
-import org.railz.world.top.KEY;
-import org.railz.world.top.NonNullElements;
-import org.railz.world.top.World;
+import org.railz.world.top.*;
 import org.railz.world.train.*;
 
 
@@ -57,9 +55,11 @@ public class ServerGameEngine implements GameModel, Runnable,
     private final AuthoritativeMoveExecuter moveExecuter;
     private final QueuedMoveReceiver queuedMoveReceiver;
     private ServerCommandReceiver serverCommandReceiver;
-    private World world;
+    private WorldImpl world;
     private Scenario scenario;
     private ScenarioManager scenarioManager;
+    private ScriptingEngine scriptingEngine;
+    private static final Logger logger = Logger.getLogger("global");
 
     /* some stats for monitoring sim speed */
     private int statUpdates = 0;
@@ -125,10 +125,12 @@ public class ServerGameEngine implements GameModel, Runnable,
      * Starts a game with the specified world state
      * @param serverAutomata Vector of ServerAutomaton representing internal
      * clients of this game.
-     * @param p an IdentityProvider which correlates a ConnectionToServer
-     * object with a Principal.
+     * @param scenario a scenario which this game is going to have as an
+     * objective.
+     * @param w a {@link org.railz.world.top.WorldImpl} containing the world
+     * state.
      */
-    private ServerGameEngine(World w,
+    private ServerGameEngine(WorldImpl w,
         Vector serverAutomata, Scenario scenario) {
         this.world = w;
         this.serverAutomata = serverAutomata;
@@ -157,6 +159,7 @@ public class ServerGameEngine implements GameModel, Runnable,
 		moveExecuter);
 	trainMover = new AuthoritativeTrainMover(w, moveExecuter);
 	trainController = new TrainController(w, moveExecuter);
+	scriptingEngine = new ScriptingEngine(w, moveExecuter);
 
         for (int i = 0; i < serverAutomata.size(); i++) {
             ((ServerAutomaton)serverAutomata.get(i)).initAutomaton(moveExecuter);
@@ -177,6 +180,7 @@ public class ServerGameEngine implements GameModel, Runnable,
     }
 
     public void run() {
+	logger.log(Level.INFO, "Railz server thread started.");
         Thread.currentThread().setName("Railz server");
 
         /*
@@ -185,9 +189,14 @@ public class ServerGameEngine implements GameModel, Runnable,
         Thread.currentThread().setPriority(Thread.currentThread().getPriority() +
             1);
 
-        while (keepRunning) {
-            update();
-        }
+	try {
+	    while (keepRunning) {
+		update();
+	    }
+	} catch (Throwable t) {
+	    logger.log(Level.SEVERE, "Caught throwable " + t, t);
+	    return;
+	}
     }
 
     /**
@@ -270,8 +279,8 @@ public class ServerGameEngine implements GameModel, Runnable,
 			    statLastTimestamp));
 
 		if (statLastTimestamp > 0) {
-		    //	System.out.println(
-		    //		"Updates per sec " + updatesPerSec);
+		    logger.log(Level.FINER,
+		    		"Updates per sec " + updatesPerSec);
 		}
 
 		statLastTimestamp = frameStartTime;
@@ -327,6 +336,7 @@ public class ServerGameEngine implements GameModel, Runnable,
 
         CargoAtStationsGenerator cargoAtStationsGenerator = new CargoAtStationsGenerator(moveExecuter);
         cargoAtStationsGenerator.update(world);
+	scriptingEngine.processScripts();
     }
 
     /**
@@ -379,7 +389,7 @@ public class ServerGameEngine implements GameModel, Runnable,
 
     public synchronized void saveGame(File filename) {
         try {
-            System.out.print("Saving game..  ");
+            logger.log(Level.INFO, "Saving game..  ");
 	    NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
                     Player.AUTHORITATIVE);
 	    GameTime t = (GameTime) world.get(ITEM.TIME,
@@ -416,7 +426,7 @@ public class ServerGameEngine implements GameModel, Runnable,
             objectOut.flush();
             objectOut.close();
 
-            System.out.println("done.");
+            logger.log(Level.INFO, "done.");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -435,7 +445,7 @@ public class ServerGameEngine implements GameModel, Runnable,
 		FileInputStream(filename.getCanonicalPath());
             GZIPInputStream zipin = new GZIPInputStream(in);
             ObjectInputStream objectIn = new ObjectInputStream(zipin);
-            World world = (World)objectIn.readObject();
+            WorldImpl world = (WorldImpl) objectIn.readObject();
             Vector serverAutomata = (Vector)objectIn.readObject();
 	    Scenario scenario = (Scenario) objectIn.readObject();
 
@@ -476,7 +486,7 @@ public class ServerGameEngine implements GameModel, Runnable,
      * Returns a reference to the servers world.
      * @return World
      */
-    public World getWorld() {
+    public WorldImpl getWorld() {
         return world;
     }
 

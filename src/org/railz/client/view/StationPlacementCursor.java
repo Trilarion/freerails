@@ -86,7 +86,6 @@ public class StationPlacementCursor extends MouseInputAdapter {
 
     private PropertyChangeListener buildActionListener = new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent e) {
-		System.out.println(">propertyChange");
                 if (e.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
                     /* update the renderer pos */
                     Point p = (Point)e.getNewValue();
@@ -98,17 +97,14 @@ public class StationPlacementCursor extends MouseInputAdapter {
                         stationRadiusRenderer.setBorderColor(StationRadiusRenderer.COLOR_CANNOT_BUILD);
                     }
                 } else if (e.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
-		System.out.println(">propertyChange radius");
                     Integer radius = (Integer)e.getNewValue();
                     stationRadiusRenderer.setRadius(radius.intValue());
-		System.out.println("<propertyChange radius");
                 }
 
                 boolean enabled = stationBuildModel.getStationBuildAction()
                                                    .isEnabled();
 
                 if (buildEnabled != enabled) {
-		System.out.println(">propertyChange showhide");
                     if (enabled) {
                         mapView.addMouseListener(StationPlacementCursor.this);
                         mapView.addMouseMotionListener(StationPlacementCursor.this);
@@ -120,9 +116,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
                     }
 
                     buildEnabled = enabled;
-		System.out.println("<propertyChange showhide");
                 }
-		System.out.println("<propertyChange");
             }
         };
 

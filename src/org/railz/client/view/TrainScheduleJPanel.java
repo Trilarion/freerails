@@ -346,7 +346,6 @@ WorldListListener {
     }
     
     public void display(int trainNumber){
-	System.out.println("TrainScheduleJPanel display");
 	if (wagonSelectionDialog != null &&
 		this.trainNumber != trainNumber) {
 	    /* close the dialog without saving changes */
@@ -488,7 +487,6 @@ WorldListListener {
     private ComponentListener changeConsistListener  = new ComponentAdapter()
 	{
 	    public void componentHidden(ComponentEvent e) {
-		System.out.println("Component hidden!");
 		int[] wagons = wagonSelectionJPanel.getWagons();
 		TrainOrdersModel oldOrder = ((TrainOrdersListElement)
 		       	listModel.getElementAt(wagonSelectionOrderNo)).order;

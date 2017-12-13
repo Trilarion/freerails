@@ -101,4 +101,6 @@ public interface ConnectionToServer extends UncommittedMoveReceiver {
     public ConnectionState getConnectionState();
 
     public void sendCommand(ServerCommand s);
+
+    public void setWorld(World w);
 }

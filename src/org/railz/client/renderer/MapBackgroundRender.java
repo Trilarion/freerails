@@ -26,6 +26,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.logging.*;
+
 import org.railz.world.terrain.TerrainTile;
 import org.railz.world.top.ReadOnlyWorld;
 import org.railz.world.track.*;
@@ -40,6 +42,8 @@ import org.railz.world.track.*;
  * @version 1
  */
 final public class MapBackgroundRender implements MapLayerRenderer {
+    private static final Logger logger = Logger.getLogger("global");
+
     /**
      * The building layer.
      */
@@ -164,7 +168,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
 
                 if (null == tr) {
-                    System.err.println("No tile renderer for " + typeNumber);
+                    logger.log(Level.SEVERE, 
+			    "No tile renderer for " + typeNumber);
                 } else {
                     tr.renderTile(g, screenX, screenY, tile.x, tile.y, w);
                 }

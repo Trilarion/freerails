@@ -34,7 +34,7 @@ import org.railz.world.city.*;
 import org.railz.world.player.Player;
 
 
-public class CitySAXParser extends DefaultHandler {
+class CitySAXParser {
     private Vector cities;
     private World world;
 
@@ -43,7 +43,10 @@ public class CitySAXParser extends DefaultHandler {
         cities = new Vector();
     }
 
-    public void endDocument() throws SAXException {
+    public void endElement(String localName, String qName) throws SAXException {
+	if (! qName.equals("Cities"))
+	    return;
+
         for (int i = 0; i < cities.size(); i++) {
             CityModel tempCity = (CityModel)cities.elementAt(i);
             world.add(KEY.CITIES,
@@ -52,8 +55,11 @@ public class CitySAXParser extends DefaultHandler {
         }
     }
 
-    public void startElement(String namespaceURI, String sName, String qName,
-        Attributes attrs) throws SAXException {
+    public void startElement(String sName, String qName, Attributes attrs)
+	throws SAXException {
+	if ("Cities".equals(sName))
+	    return;
+
         String eName = sName; //element name
 
         String cityName = null;

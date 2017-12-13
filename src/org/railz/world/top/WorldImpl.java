@@ -24,7 +24,14 @@ import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
 import org.railz.world.track.FreerailsTile;
 
-
+/**
+ * Implements storage for the world data. TODO At the moment all world data is
+ * uniformly viewable by all parties. At some point in the future, instead of
+ * a single WorldImpl accessible to all parties, different "Views" will be
+ * made available for each party (server, and each connected client). Each
+ * client will receive different moves according to their view. In this way,
+ * no client will be able to view privileged information about other clients.
+ */
 public class WorldImpl implements World {
     private static final boolean debug = (System.getProperty(
             "org.railz.world.top.WorldImpl.debug") != null);
@@ -49,6 +56,29 @@ public class WorldImpl implements World {
     public WorldImpl(int mapWidth, int mapHeight) {
         this.setupMap(mapWidth, mapHeight);
         this.setupLists();
+    }
+
+    private WorldImpl(WorldImpl wi, FreerailsPrincipal viewer) {
+	setupLists();
+	int pi = wi.getPlayerIndex(viewer);
+	for (int i = 0; i < lists.length; i++) {
+	    ArrayList al = wi.lists[i];
+	    KEY k = KEY.getKey(i);
+	    for (int j = 0; j < al.size(); j++) {
+		if (k.isPrivate && pi != j) {
+		    lists[i].add(null);
+		} else {
+		    lists[i].add(al.get(j));
+		}
+	    }
+	}
+	for (int i = 0; i < wi.items.length; i++)
+	    items[i] = wi.items[i];
+	map = wi.map;
+    }
+
+    synchronized ReadOnlyWorld getReadOnlyView (FreerailsPrincipal viewer) {
+	return new WorldImpl(this, viewer);
     }
 
     public void setupMap(int mapWidth, int mapHeight) {
@@ -319,25 +349,4 @@ public class WorldImpl implements World {
 	IOException, ClassNotFoundException {
 	    in.defaultReadObject();
 	}
-
-    public World defensiveCopy() {
-        try {
-            Object m = this;
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ObjectOutputStream objectOut = new ObjectOutputStream(out);
-            objectOut.writeObject(m);
-            objectOut.flush();
-
-            byte[] bytes = out.toByteArray();
-
-            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-            ObjectInputStream objectIn = new ObjectInputStream(in);
-            Object o = objectIn.readObject();
-
-            return (World)o;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e.getMessage());
-        }
-    }
 }

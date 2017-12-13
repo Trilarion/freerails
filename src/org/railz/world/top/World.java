@@ -97,9 +97,4 @@ public interface World extends ReadOnlyWorld {
      * @deprecated in favour of setTile(int, int, FreerailsSerializable)
      */
     void setTile(int x, int y, FreerailsTile tile);
-
-    /**
-    * Returns a copy of this world object - making changes to this copy will not change this object.
-    */
-    World defensiveCopy();
 }

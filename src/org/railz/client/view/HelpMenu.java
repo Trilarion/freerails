@@ -16,17 +16,19 @@
 
 package org.railz.client.view;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import java.awt.event.*;
+import javax.swing.*;
+
+import org.railz.util.*;
 
 public class HelpMenu extends JMenu {
     GUIRoot guiRoot;
 
     public HelpMenu (GUIRoot gr) {
-        super("Help");
+        super(Resources.get("Help"));
 	guiRoot = gr;
 
-        JMenuItem about = new JMenuItem("About");
+        JMenuItem about = new JMenuItem(Resources.get("About"));
         about.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
 		    DialogueBoxController dbc =
@@ -36,7 +38,7 @@ public class HelpMenu extends JMenu {
                 }
             });
 
-        JMenuItem how2play = new JMenuItem("Getting started");
+        JMenuItem how2play = new JMenuItem(Resources.get("Getting started"));
         how2play.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
 		    DialogueBoxController dbc =
@@ -46,7 +48,8 @@ public class HelpMenu extends JMenu {
                 }
             });
 
-        JMenuItem showControls = new JMenuItem("Show game controls");
+        JMenuItem showControls = new JMenuItem
+	    (Resources.get("Show game controls"));
         showControls.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
 		    DialogueBoxController dbc =
@@ -56,9 +59,22 @@ public class HelpMenu extends JMenu {
                 }
             });
 
+	JMenuItem modInfo = new JMenuItem(Resources.get("Modding Info"));
+	modInfo.addActionListener
+	    (new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    DialogueBoxController dbc =
+		    guiRoot.getDialogueBoxController();
+		    if (dbc != null) {
+			dbc.showContent(new ModInfoPanel(guiRoot));
+		    }
+		}
+	     });
+
         add(showControls);
         add(how2play);
         add(about);
+	add(modInfo);
     }
 
 }

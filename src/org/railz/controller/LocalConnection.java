@@ -80,8 +80,7 @@ public class LocalConnection implements ConnectionToServer {
     /**
      * This constructor is called by the server
      */
-    public LocalConnection(World w) {
-        world = w;
+    public LocalConnection() {
         setState(ConnectionState.WAITING);
     }
 

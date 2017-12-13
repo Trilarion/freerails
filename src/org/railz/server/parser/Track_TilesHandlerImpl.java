@@ -41,6 +41,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     int maxConsequ;
     private long maintenance;
     private long price;
+    private boolean isTunnel;
     private String typeName;
     private boolean doubleTrack;
     public static final boolean DEBUG = false;
@@ -76,6 +77,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void start_TrackType(final Attributes meta)
         throws SAXException {
+	isTunnel = false;
 	doubleTrack =
 	    Boolean.valueOf(meta.getValue("doubleTrack")) .booleanValue();
         typeName = meta.getValue("type");
@@ -87,6 +89,8 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
         String maintenanceString = meta.getValue("maintenance");
         maintenance = Integer.parseInt(maintenanceString);
+	if (meta.getValue("tunnel").equals("true"))
+	    isTunnel = true;
     }
 
     public void end_TrackType() throws SAXException {
@@ -102,7 +106,8 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 	    legalConfigs[i] = ((Byte) legalTemplates.get(i)).byteValue();
 
 	TrackRule tr = new TrackRule(price, typeName, doubleTrack,
-		maintenance, legalConfigs, maxConsequ, buildPermissions);
+		maintenance, legalConfigs, maxConsequ, buildPermissions,
+		isTunnel);
 	world.add(KEY.TRACK_RULES, tr, Player.AUTHORITATIVE);
     }
 
@@ -126,15 +131,9 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void start_Tiles(final Attributes meta) throws SAXException {
-        if (DEBUG) {
-            System.err.println("start_Tiles: " + meta);
-        }
     }
 
     public void end_Tiles() throws SAXException {
-        if (DEBUG) {
-            System.err.println("end_Tiles()");
-        }
     }
 
     public void start_TrackPieceTemplate(final Attributes meta)

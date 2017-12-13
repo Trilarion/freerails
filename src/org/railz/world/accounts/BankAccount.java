@@ -21,7 +21,9 @@
  */
 package org.railz.world.accounts;
 
+import java.io.*;
 import java.util.ArrayList;
+
 import org.railz.world.common.FreerailsSerializable;
 
 /**
@@ -29,26 +31,26 @@ import org.railz.world.common.FreerailsSerializable;
  *
  */
 public class BankAccount implements FreerailsSerializable {
-    private final ArrayList transactions = new ArrayList();
+    private ArrayList transactions = new ArrayList();
     private long currentBalance = 0;
 
     public BankAccount() {
     }
 
-    public long getCurrentBalance() {
+    public synchronized long getCurrentBalance() {
         return currentBalance;
     }
 
-    public int size() {
+    public synchronized int size() {
         return transactions.size();
     }
 
-    public void addTransaction(Transaction t) {
+    public synchronized void addTransaction(Transaction t) {
         transactions.add(t);
         this.currentBalance = currentBalance + t.getValue();
     }
 
-    public Transaction removeLastTransaction() {
+    public synchronized Transaction removeLastTransaction() {
         int last = transactions.size() - 1;
         Transaction t = (Transaction)transactions.remove(last);
         this.currentBalance = currentBalance - t.getValue();
@@ -56,11 +58,16 @@ public class BankAccount implements FreerailsSerializable {
         return t;
     }
 
-    public Transaction getTransaction(int i) {
+    public synchronized Transaction getTransaction(int i) {
         return (Transaction)transactions.get(i);
     }
 
-    public boolean equals(Object o) {
+    public synchronized int hashCode() {
+	return (int) (((currentBalance & 0xffff0000L) >> 32) ^
+	       	(currentBalance & 0xffff));
+    }
+
+    public synchronized boolean equals(Object o) {
         if (o instanceof BankAccount) {
             BankAccount test = (BankAccount)o;
 

@@ -74,9 +74,8 @@ public class InetConnection implements ConnectionToServer {
      * @throws IOException if the socket couldn't be created.
      * @throws SecurityException if we're not allowed to create the socket.
      */
-    public InetConnection(ConnectionListener cl, World w, int port) throws
+    public InetConnection(ConnectionListener cl, int port) throws
 	IOException {
-        world = w;
 	connectionListener = cl;
         System.out.println("Server listening for new connections on port " +
             port);
@@ -92,9 +91,8 @@ public class InetConnection implements ConnectionToServer {
     /**
      * called when an incoming connection is attempted
      */
-    private InetConnection(Socket acceptedConnection, World w)
+    private InetConnection(Socket acceptedConnection)
         throws IOException {
-        world = w;
         socket = acceptedConnection;
         System.out.println("accepted incoming client connection from " +
             socket.getRemoteSocketAddress());
@@ -120,7 +118,7 @@ public class InetConnection implements ConnectionToServer {
      * @return The new connection, or null if the socket is closed.
      */
     private InetConnection accept() throws IOException {
-        return new InetConnection(serverSocket.accept(), world);
+        return new InetConnection(serverSocket.accept());
     }
 
     public void sendCommand(ServerCommand s) {
@@ -159,6 +157,7 @@ public class InetConnection implements ConnectionToServer {
      */
     public World loadWorldFromServer() throws IOException {
         setState(ConnectionState.INITIALISING);
+	dispatcher.reset();
         sendCommand(new LoadWorldCommand());
         sender.flush();
         return dispatcher.receiveWorld();
@@ -229,40 +228,35 @@ public class InetConnection implements ConnectionToServer {
      * connection has been disconnected.
      */
     void disconnect() {
-        /* To allow this method to be called without risk of deadlock from synchronized methods in the dispatcher,
-        * we must acquire the lock on the dispatcher before locking on this object.       
-        */
-        synchronized (dispatcher) {
-            synchronized (this) {
-                try {
-                    System.out.println("disconnecting from remote peer!");
-                    setState(ConnectionState.CLOSED);
+	synchronized (this) {
+	    try {
+		System.out.println("disconnecting from remote peer!");
+		setState(ConnectionState.CLOSED);
 
-                    if (dispatcher != null) {
-                        dispatcher.close();
-                    }
+		if (dispatcher != null) {
+		    dispatcher.close();
+		}
 
-                    if (sender != null) {
-                        sender.close();
-                    }
+		if (sender != null) {
+		    sender.close();
+		}
 
-                    sender = null;
+		sender = null;
 
-                    if (socket != null) {
-                        socket.close();
-                    }
+		if (socket != null) {
+		    socket.close();
+		}
 
-                    socket = null;
-                } catch (IOException e) {
-                    System.out.println("Caught an IOException disconnecting " +
-                        e);
-                }
+		socket = null;
+	    } catch (IOException e) {
+		System.out.println("Caught an IOException disconnecting " +
+			e);
+	    }
 
-                if (connectionListener != null) {
-                    connectionListener.connectionClosed(this);
-                }
-            }
-        }
+	    if (connectionListener != null) {
+		connectionListener.connectionClosed(this);
+	    }
+	}
     }
 
     /**
@@ -318,5 +312,10 @@ public class InetConnection implements ConnectionToServer {
                 /* The socket was probably closed, exit */
             }
         }
+    }
+
+    void reset() {
+	if (sender != null)
+	    sender.reset();
     }
 }

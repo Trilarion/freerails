@@ -24,6 +24,8 @@
  */
 package org.railz.server.parser;
 
+import java.util.logging.*;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
@@ -56,19 +58,22 @@ public class CargoAndTerrainParser implements ContentHandler {
     private String currentSection;
     private EconomyHandler economyHandler;
     private StationImprovementsHandler stationImprovementsHandler;
+    private WagonTypesHandler wagonTypesHandler;
+    private static final Logger logger = Logger.getLogger("global");
 
     /**
      * Creates a parser instance.
-     * @param handler handler interface implementation (never <code>null</code>
+     * @param w the world model to initialise.
      * @param resolver SAX entity resolver implementation or <code>null</code>.
      * It is recommended that it could be able to resolve at least the DTD.
      */
     private CargoAndTerrainParser(World w,
         final EntityResolver resolver) {
-        handler = new CargoAndTerrainHandlerImpl(w);
+        handler = new CargoAndTerrainHandler(w);
 	engineTypesHandler = new EngineTypesHandler(w);
 	economyHandler = new EconomyHandler(w);
 	stationImprovementsHandler = new StationImprovementsHandler(w);
+	wagonTypesHandler = new WagonTypesHandler(w);
         this.resolver = resolver;
 
         buffer = new StringBuffer(111);
@@ -107,45 +112,25 @@ public class CargoAndTerrainParser implements ContentHandler {
                 qname, new org.xml.sax.helpers.AttributesImpl(attrs)
             });
 
-        if ("Converts".equals(name)) {
-            handler.handle_Converts(attrs);
-        } else if ("Tile".equals(name)) {
-            handler.start_Tile(attrs);
-        } else if ("Cargo".equals(name)) {
-            handler.handle_Cargo(attrs);
-        } else if ("Cargo_Types".equals(name)) {
-            handler.start_Cargo_Types(attrs);
-        } else if ("Terrain_Types".equals(name)) {
-            handler.start_Terrain_Types(attrs);
-        } else if ("Types".equals(name)) {
-            handler.start_Types(attrs);
-        } else if ("Consumes".equals(name)) {
-            handler.handle_Consumes(attrs);
-        } else if ("Produces".equals(name)) {
-            handler.handle_Produces(attrs);
-        } else if ("Building_Types".equals(name)) {
-	    handler.handle_Building_Types(attrs);
-	} else if ("Building_Type".equals(name)) {
-	    handler.start_Building_Type(attrs);
-	} else if ("TrackPieceTemplate".equals(name)) {
-	    handler.handle_trackPieceTemplate(attrs);
-	} else if ("NeighbouringTerrainTypes".equals(name)) {
-	    handler.start_NeighbouringTerrainTypes(attrs);
-	} else if ("AcceptableTerrainTypes".equals(name)) {
-	    handler.start_AcceptableTerrainTypes(attrs);
-	} else if ("TerrainType".equals(name)) {
-	    handler.handle_TerrainType(attrs);
-	} else if ("AllTerrainTypes".equals(name)) {
-	    handler.handle_AllTerrainTypes(attrs);
+	if ("Cargo_Types".equals(currentSection) ||
+		"Terrain_Types".equals(currentSection) ||
+		"Building_Types".equals(currentSection)) {
+	   handler.startElement(ns, name, qname, attrs);
 	} else if ("EngineTypes".equals(currentSection)) {
 	    engineTypesHandler.startElement(ns, name, qname, attrs);
 	} else if ("Economy".equals(currentSection)) {
 	   economyHandler.startElement(ns, name, qname, attrs);
 	} else if ("StationImprovements".equals(currentSection)) {
 	    stationImprovementsHandler.startElement(ns, name, qname, attrs);
+	} else if ("WagonTypes".equals(currentSection)) {
+	    wagonTypesHandler.startElement(ns, name, qname, attrs);
 	} else if ("EngineTypes".equals(name) ||
 		"Economy".equals(name) ||
-		"StationImprovements".equals(name)) {
+		"StationImprovements".equals(name) ||
+		"Cargo_Types".equals(name) ||
+		"Terrain_Types".equals(name) ||
+		"Building_Types".equals(name) ||
+		"WagonTypes".equals(name)) {
 	    currentSection = name;
 	    // recurse
 	    startElement(ns, name, qname, attrs);
@@ -161,30 +146,26 @@ public class CargoAndTerrainParser implements ContentHandler {
         dispatch(false);
         context.pop();
 
-        if ("Tile".equals(name)) {
-            handler.end_Tile();
-        } else if ("Cargo_Types".equals(name)) {
-            handler.end_Cargo_Types();
-        } else if ("Terrain_Types".equals(name)) {
-            handler.end_Terrain_Types();
-        } else if ("Types".equals(name)) {
-            handler.end_Types();
-        } else if ("Building_Type".equals(name)) {
-	    handler.end_Building_Type();
-	} else if ("NeighbouringTerrainTypes".equals(name)) {
-	    handler.end_NeighbouringTerrainTypes();
-	} else if ("AcceptableTerrainTypes".equals(name)) {
-	    handler.end_AcceptableTerrainTypes();
+	if ("Cargo_Types".equals(currentSection) ||
+		"Terrain_Types".equals(currentSection) ||
+		"Building_Types".equals(currentSection)) {
+	   handler.endElement(ns, name, qname);
 	} else if ("EngineTypes".equals(currentSection)) {
 	    engineTypesHandler.endElement(ns, name, qname);
 	} else if ("Economy".equals(currentSection)) {
 	    economyHandler.endElement(ns, name, qname);
 	} else if ("StationImprovements".equals(currentSection)) {
 	    stationImprovementsHandler.endElement(ns, name, qname);
+	} else if ("WagonTypes".equals(currentSection)) {
+	    wagonTypesHandler.endElement(ns, name, qname);
 	}
         if ("EngineTypes".equals(name) ||
 		"Economy".equals(name) ||
-		"StationImprovements".equals(name)) {
+		"StationImprovements".equals(name) ||
+		"Cargo_Types".equals(name) ||
+		"Terrain_Types".equals(name) ||
+		"Building_Types".equals(name) ||
+		"WagonTypes".equals(name)) {
 	    currentSection = null;
 	}
     }
@@ -312,7 +293,8 @@ public class CargoAndTerrainParser implements ContentHandler {
 		try {
 		    parse(new InputSource(url.toExternalForm()), w);
 		} catch (SAXParseException e) {
-		    System.out.println("Parse exception " + e.getMessage() +
+		    logger.log(Level.WARNING,
+			    "Parse exception " + e.getMessage() +
 			    " at line " + e.getLineNumber());
 		    if (e.getException() != null)
 			e.getException().printStackTrace();
@@ -349,7 +331,7 @@ public class CargoAndTerrainParser implements ContentHandler {
                 public void error(SAXParseException ex)
                     throws SAXException {
                     if (context.isEmpty()) {
-                        System.err.println("Missing DOCTYPE.");
+                        logger.log(Level.WARNING, "Missing DOCTYPE.");
                     }
 
                     throw ex;

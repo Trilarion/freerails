@@ -24,6 +24,7 @@ package org.railz.move;
 import org.railz.world.station.ProductionAtEngineShop;
 import org.railz.world.station.StationModel;
 import org.railz.world.top.*;
+import org.railz.world.train.*;
 import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
 
@@ -64,6 +65,15 @@ public class ChangeProductionAtEngineShopMove implements Move {
 	
 	if (n < 2)
 	    return MoveStatus.moveFailed("Need at least 2 stations");
+
+	/* new engineType must be available */
+	if (after != null) {
+	    int etIndex = after.getEngineType();
+	    EngineType et = (EngineType) w.get(KEY.ENGINE_TYPES,
+		    etIndex, Player.AUTHORITATIVE);
+	    if (et == null || !et.isAvailable())
+		return MoveStatus.MOVE_FAILED;
+	}
 
         return tryMove(w, before, p);
     }

@@ -74,7 +74,6 @@ WorldListListener {
 
 	public Component getListCellRendererComponent(JList list, Object
 		value, int index, boolean isSelected, boolean cellHasFocus) {
-	    System.out.println ("getting index " + index);
 	    if (index == -1) {
 		trainDetailsJPanel.displayTrain(wi.getIndex());
 		return trainDetailsJPanel;
@@ -221,7 +220,6 @@ WorldListListener {
      * Refreshes the component with the currently selected train
      */
     public void display(){
-	System.out.println("TrainDialogueJPanel display");
 	int tmp = wi.getIndex();
 	try {
 	    wi.reset(); // refresh the iterator code

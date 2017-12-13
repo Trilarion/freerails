@@ -60,7 +60,6 @@ class StationJPanel extends javax.swing.JPanel {
 	smv.setStationModel(sm);
 	impCostJLabel.setText("$" + smv.getImprovementCost(improvementId));
 	purchaseInfoJPanel.repaint();
-	System.out.println("purchase info updated");
     }
 
     private class ImprovementJButton extends JButton {
@@ -80,8 +79,6 @@ class StationJPanel extends javax.swing.JPanel {
 		Move m =
 		    AddRemoveStationImprovementMove.generateAddImprovementMove
 		    (modelRoot.getWorld(), stationKey, improvementKey);
-		System.out.println("sending move for improvement " +
-			improvementKey.index);
 		modelRoot.getReceiver().processMove(m);
 	    }
 	};
@@ -193,7 +190,6 @@ class StationJPanel extends javax.swing.JPanel {
 		    stationKey.principal);
 		improvements = sm.getImprovements();
 		if (improvements.length > oldImprovements.length) {
-		    System.out.println("firing interval added");
 		    fireIntervalAdded(this, oldImprovements.length,
 			    improvements.length - 1);
 		} else if (improvements.length < oldImprovements.length) {
@@ -444,9 +440,8 @@ class StationJPanel extends javax.swing.JPanel {
     
     private class ButtonPanel extends JPanel implements Scrollable {
 	public Dimension getPreferredScrollableViewportSize() {
-	Dimension d = getPreferredSize();
-	System.out.println("preferred size is " + d);
-	return d;
+	    Dimension d = getPreferredSize();
+	    return d;
 	}
 
 	public int getScrollableBlockIncrement(Rectangle visibleRect, int

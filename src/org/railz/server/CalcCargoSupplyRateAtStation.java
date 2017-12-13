@@ -84,7 +84,6 @@ class CalcCargoSupplyRateAtStation {
     Vector scanAdjacentTiles() {
         //Find the station radius.
         FreerailsTile tile = w.getTile(this.x, this.y);
-	System.out.println("scanning tile " + x + ", " + y);
 	BuildingTile bTile = tile.getBuildingTile();
 	if (bTile == null)
 	    throw new IllegalStateException();

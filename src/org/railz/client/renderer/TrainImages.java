@@ -163,18 +163,17 @@ public class TrainImages {
      * @param i a 3-bit CompassPoints vector
      */
     private static String generateOverheadFilename(String name, int i) {
-        return "trains" + File.separator + "overhead" + File.separator + name +
+        return "trains/overhead/" + name +
         "_" + CompassPoints.toAbrvString(i) + ".png";
     }
 
     private static String generateSideOnFilename(String name) {
-        return "trains" + File.separator + "sideon" + File.separator + name +
+        return "trains/sideon/" + name +
         ".png";
     }
 
     private static String generateSideOnEmptyFileName(String name) {
-	return "trains" + File.separator + "sideon" + File.separator + "empty"
-	    + File.separator + name + ".png";
+	return "trains/sideon/empty/" + name + ".png";
     }
     
     public ImageIcon getWagonImage(int cargoType, int height) {

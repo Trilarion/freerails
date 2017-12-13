@@ -58,10 +58,7 @@ public class PopupJButton extends JButton {
 
     private ActionListener buttonListener = new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-	    System.out.println("action performed on popupjbutton");
 	    if (listModel.getSize() > 0 && popup == null) {
-		System.out.println("popped up button, listModel size is " +
-			listModel.getSize());
 		list.setSelectedIndices(new int[] {});
 		list.setMinimumSize(new Dimension(getWidth(), 0));
 		scrollPane.revalidate();
@@ -112,13 +109,11 @@ public class PopupJButton extends JButton {
 	}
 
 	public void paint(Graphics g) {
-	    System.out.println("painting button");
 	    listCellRenderer.getListCellRendererComponent(list, null, -1,
 		    false, false).paint(g);
 	}
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-	    System.out.println("x = " + x + ", y = " + y);
 	    g.translate(x, y);
 	    paint(g);
 	    g.setColor(java.awt.Color.BLACK);

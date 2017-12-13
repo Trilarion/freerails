@@ -39,16 +39,17 @@ public class TrackRule implements FreerailsSerializable {
     private final String name;
     private final long price;
     private final long maintenanceCost;
+    private final boolean isTunnel;
 
     /**
-     * Array describing the allowed track configurations. true indicates the
-     * configuration is allowed.
+     * Array describing the allowed track configurations.
+     * True indicates the configuration is allowed.
      */
     private final boolean legalConfigurations[] = new boolean[256];
 
     private final int maxConsecutivePieces;
     /**
-     * @param the name of this track type.
+     * @param name the name of this track type.
      * @param isDoubleTrack whether this track is twin-track (permits travel
      * in both directions simultaneously)
      * @param maxConsecutivePieces this is the maximum number of consecutive
@@ -63,7 +64,7 @@ public class TrackRule implements FreerailsSerializable {
      */
     public TrackRule(long price, String name, boolean isDoubleTrack, long
 	    maintenanceCost, byte[] lc, int maxConsecutivePieces, boolean[]
-	    buildPermissions) {
+	    buildPermissions, boolean isTunnel) {
         if (null == lc || null == buildPermissions) {
             throw new java.lang.IllegalArgumentException();
         }
@@ -81,6 +82,7 @@ public class TrackRule implements FreerailsSerializable {
 	this.isDoubleTrack = isDoubleTrack;
 	this.name = name;
 	this.price = price;
+	this.isTunnel = isTunnel;
     }
 
     public boolean testTrackPieceLegality(byte trackTemplateToTest) {
@@ -126,5 +128,9 @@ public class TrackRule implements FreerailsSerializable {
 
     public boolean isDoubleTrack() {
 	return isDoubleTrack;
+    }
+
+    public boolean isTunnel() {
+	return isTunnel;
     }
 }

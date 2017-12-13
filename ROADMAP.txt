@@ -23,7 +23,8 @@ P3:
 Ability to place new trains on map
 Better GUI cursor - track laying
 Editable names on trains and stations
-Rationalisation of timer
+Rationalisation of timer and anti-jitter buffering
+Improve launcher for server-only operation. (remote control)
 
 Optional features
 =================

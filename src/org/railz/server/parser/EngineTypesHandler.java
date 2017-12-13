@@ -28,11 +28,16 @@ class EngineTypesHandler {
 
     private String name;
     private long price;
-    private int speed;
     private long maintenance;
     private int annualFuelConsumption;
     private int fuelType;
     private int waterCapacity;
+    private int mass;
+    private int powerOutput;
+    private int maxTractiveForce;
+    private boolean available;
+    private float dragCoeff;
+    private float frictionCoeff;
 
     public EngineTypesHandler(World w) {
 	world = w;
@@ -41,18 +46,23 @@ class EngineTypesHandler {
     public void handleEngineType(Attributes meta) throws SAXException {
 	name = meta.getValue("id");
 	price = Long.parseLong(meta.getValue("price"));
-	speed = Integer.parseInt(meta.getValue("maxSpeed"));
 	maintenance = Long.parseLong(meta.getValue("maintenance"));
 	waterCapacity = Integer.parseInt(meta.getValue("waterCapacity"));
+	mass = Integer.parseInt(meta.getValue("mass"));
+	powerOutput = Integer.parseInt(meta.getValue("powerOutput"));
 	annualFuelConsumption =
 	    Integer.parseInt(meta.getValue("annualFuelConsumption"));
 	String ft = meta.getValue("fuelType");
+	maxTractiveForce = Integer.parseInt(meta.getValue("maxTractiveForce"));
+	dragCoeff = Float.parseFloat(meta.getValue("dragCoeff"));
+	frictionCoeff = Float.parseFloat(meta.getValue("frictionCoeff"));
 	if (ft.equals("Coal"))
 	    fuelType = EngineType.FUEL_TYPE_COAL;
 	else if (ft.equals("Diesel"))
 	    fuelType = EngineType.FUEL_TYPE_DIESEL;
 	else 
 	    fuelType = EngineType.FUEL_TYPE_ELECTRIC;
+	available = "true".equals(meta.getValue("available"));
     }
 
     public void startElement(String ns, String name, String qname, Attributes
@@ -64,9 +74,10 @@ class EngineTypesHandler {
     public void endElement(String ns, String name, String qname) throws
 	SAXException {
 	    if ("EngineType".equals(name)) {
-		EngineType et = new EngineType(this.name, price, speed,
+		EngineType et = new EngineType(this.name, price,
 			maintenance, annualFuelConsumption, fuelType,
-			waterCapacity);
+			waterCapacity, mass, powerOutput, maxTractiveForce,
+			frictionCoeff, dragCoeff, available);
 		world.add(KEY.ENGINE_TYPES, et, Player.AUTHORITATIVE);
 	    }
 	}

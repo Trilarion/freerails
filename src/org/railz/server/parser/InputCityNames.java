@@ -25,35 +25,43 @@ package org.railz.server.parser;
 
 import java.io.*;
 import java.net.URL;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.ParserConfigurationException;
-import org.railz.world.top.World;
+import java.util.logging.*;
+import javax.xml.parsers.*;
 
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
+
+import org.railz.world.top.World;
+import org.railz.util.*;
 
 public class InputCityNames {
     private World world;
+    private static final Logger logger = Logger.getLogger("global");
 
     public InputCityNames(World w, URL filename) throws SAXException {
         world = w;
 
         InputSource is = new InputSource(filename.toString());
 
-        DefaultHandler handler = new CitySAXParser(world);
+        DefaultHandler handler = new MapHandler(world);
         SAXParserFactory factory = SAXParserFactory.newInstance();
+	factory.setValidating(true);
+
+        logger.log(Level.INFO, "\nLoading XML " + filename);
 
         try {
             SAXParser saxParser = factory.newSAXParser();
-            saxParser.parse(is, handler);
+	    EntityResolver er = new WorkaroundResolver
+		(saxParser.getXMLReader().getEntityResolver());
+	    saxParser.getXMLReader().setEntityResolver(er);
+	    // can't use saxParser.parse() as this causes our EntityResolver
+	    // to be ignored
+	    saxParser.getXMLReader().setContentHandler(handler);
+            saxParser.getXMLReader().parse(is);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         }
-
-        System.out.println("\nLoading XML " + filename);
     }
 }

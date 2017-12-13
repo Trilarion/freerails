@@ -21,6 +21,8 @@
   */
 package org.railz.move;
 
+import java.util.logging.*;
+
 import org.railz.world.common.*;
 import org.railz.world.player.*;
 import org.railz.world.top.*;
@@ -33,11 +35,13 @@ import org.railz.world.train.*;
  *
  */
 public class ChangeTrainMove extends ChangeItemInListMove {
+    private static final Logger logger = Logger.getLogger("global");
+
     private ChangeTrainMove(int id, TrainModel before, TrainModel
 	    after, FreerailsPrincipal p) {
 	super(KEY.TRAINS, id, before, after, p);
-	System.out.println("creating ChangeTrainMove for train " + id + ": " +
-		getBefore() + ", " + ", " + getAfter());
+	logger.log(Level.FINE, "creating ChangeTrainMove for train " + id +
+		": " + getBefore() + ", " + ", " + getAfter());
     }
 
     /**
@@ -84,8 +88,10 @@ public class ChangeTrainMove extends ChangeItemInListMove {
      * Change path to destination.
      */
     public static ChangeTrainMove generateMove(int id, FreerailsPrincipal p,
-	    TrainModel before, TrainPath pathToDestination, GameTime now) {
-	TrainModel after = new TrainModel(before, pathToDestination, now);
+	    TrainModel before, TrainPath pathToDestination, TrainPathFunction
+	    pathFunction, GameTime now) {
+	TrainModel after = new TrainModel(before, pathToDestination,
+		pathFunction, now);
 	return new ChangeTrainMove(id, before, after, p);
     }
 
@@ -105,10 +111,8 @@ public class ChangeTrainMove extends ChangeItemInListMove {
     public static ChangeTrainMove generateMove(int id, FreerailsPrincipal p,
 	    TrainPath tp, GameTime t, ReadOnlyWorld w) {
 	TrainModel tm = (TrainModel) w.get(KEY.TRAINS, id, p);
-	int speed = ((EngineType) w.get(KEY.ENGINE_TYPES, tm.getEngineType(),
-		Player.AUTHORITATIVE)).getMaxSpeed();
 
-	TrainModel newTm = tm.setPosition(tp, t, speed);
+	TrainModel newTm = tm.setPosition(tp, t);
 	return new ChangeTrainMove(id, tm, newTm, p);
     }
 
@@ -119,16 +123,34 @@ public class ChangeTrainMove extends ChangeItemInListMove {
     }
 
     public static ChangeTrainMove generateOutOfWaterMove(ObjectKey trainKey,
-	    ReadOnlyWorld w, boolean outOfWater) {
+	    ReadOnlyWorld w, boolean outOfWater, TrainPath pathToDestination,
+	    TrainPathFunction pathFunction) {
 	TrainModel before = (TrainModel) w.get(KEY.TRAINS, trainKey.index,
 		trainKey.principal);
 	GameTime now = (GameTime) w.get(ITEM.TIME, Player.AUTHORITATIVE);
-	TrainModel after = before.loadWater(now, outOfWater);
+	TrainModel after = before.loadWater(now, outOfWater,
+		pathToDestination, pathFunction);
 	return new ChangeTrainMove(trainKey.index, before, after,
 		trainKey.principal);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
+	logger.log(Level.FINE, "Executing ChangeTrainMove:");
+	logger.log(Level.FINE, "before=" + getBefore() + ", after=" +
+	       	getAfter());
+	if (getBefore() != null &&
+		((TrainModel) getBefore()).getTrainMotionModel() != null &&
+		((TrainModel) getBefore()).getTrainMotionModel().getPathFunction() !=
+		null)
+	    logger.log(Level.FINE, "getBefore() PathFunction=" + ((TrainModel)
+			getBefore()).getTrainMotionModel().getPathFunction());
+	if (getAfter() != null &&
+		((TrainModel) getBefore()).getTrainMotionModel() != null &&
+		((TrainModel) getAfter()).getTrainMotionModel().getPathFunction() !=
+		null)
+	    logger.log(Level.FINE, "getAfter() PathFunction=" + ((TrainModel)
+			getAfter()).getTrainMotionModel().getPathFunction());
+
 	return super.doMove(w, p);
     }
 }

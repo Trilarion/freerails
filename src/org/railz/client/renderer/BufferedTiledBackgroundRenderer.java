@@ -132,7 +132,6 @@ public abstract class BufferedTiledBackgroundRenderer
     }
 
     protected void setbackgroundBuffer(int w, int h) {
-        //backgroundBuffer = defaultConfiguration.createCompatibleImage(w, h);
 	if (backgroundBuffer != null) {
 	    backgroundBuffer.flush();
 	}

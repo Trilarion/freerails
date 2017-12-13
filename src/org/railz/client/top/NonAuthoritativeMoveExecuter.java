@@ -22,6 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.logging.*;
 
 import org.railz.client.model.ModelRoot;
 import org.railz.controller.*;
@@ -61,7 +62,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
     private MoveReceiver moveReceiver;
     private World world;
     private final SychronizedQueue sychronizedQueue = new SychronizedQueue();
-    static boolean debug = false;
+    private static final Logger logger = Logger.getLogger("global");
 
     public NonAuthoritativeMoveExecuter(World w, MoveReceiver mr,
         ModelRoot modelRoot) {
@@ -97,8 +98,10 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
 	    if (move instanceof TimeTickMove)
 		timeTickElapsed();
 	    
-	    if (debug && ! (move instanceof TimeTickMove))
-		System.err.println("pending: " + pendingQueue.pendingMoves.size());
+	    if (logger.isLoggable(Level.FINE) &&
+		    ! (move instanceof TimeTickMove))
+		logger.log(Level.FINE, "pending: " +
+		       	pendingQueue.pendingMoves.size());
         }
     }
 
@@ -151,16 +154,14 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
 
                 if (ms == MoveStatus.MOVE_OK) {
 		    attempted.undoMove(world, attempted.getPrincipal());
-		    if (debug)
-			System.err.println("Unrolled precommited move " +
+		    logger.log(Level.INFO, "Unrolled precommited move " +
 			       	attempted.toString());
                     rejectedMoves.remove(i);
                     forwardMove(new UndoneMove(attempted), ms);
                     n++;
                 } else {
-		    if (debug)
-			System.err.println("FAILED to undo move " + attempted
-				+ " because " + ms);
+		    logger.log(Level.WARNING, "FAILED to undo move " +
+			    attempted + " because " + ms);
 		    assert false;
 		}
             }
@@ -192,8 +193,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                      * match*/
                     if (((RejectedMove)move).getAttemptedMove()
 			    .equals(pendingMove)) {
-			if (debug)
-			    System.err.println("Logging rejected move " +
+			logger.log(Level.INFO, "Logging rejected move " +
 				    ((RejectedMove) move).getAttemptedMove());
                         /* Move was one of ours so we add it to the list of
                          * rejected moves and remove it from the list of pending
@@ -217,9 +217,8 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                                     break;
                                 }
 
-				if (debug)
-				    System.err.println("Committed queued move "
-					    + am);
+				logger.log(Level.INFO, "Committed queued move "
+					+ am);
                                 approvedMoves.removeFirst();
                             }
                         } while (!approvedMoves.isEmpty());
@@ -228,17 +227,14 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                     }
 		    // rejected move was submitted  by another client.
                 } else if (move.equals(pendingMove)) {
-		    if (debug)
-			System.err.println("Precommitted move acknowledged "
-				+ "by server:" + move);
+		    logger.log(Level.FINE, "Precommitted move acknowledged "
+			    + "by server:" + move);
                     // move succeeded and we have already executed it
                     return;
                 }
 		// move succeeded but was submitted  by another client
-		if (debug) {
-		    System.err.println("Didn't recognise move: " + move + 
+		logger.log(Level.FINE, "Didn't recognise move: " + move + 
 			    "<=>" + pendingMove);
-		}
             }
 
 	    // Replace our pending move
@@ -250,26 +246,27 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
 
             /* move must be from another client */
             if (!(move instanceof RejectedMove)) {
-		if (debug && !(move instanceof TimeTickMove)) {
-		    System.err.println("committing unknown move " + move);
+		if (logger.isLoggable(Level.FINE) &&
+		       	!(move instanceof TimeTickMove)) {
+		    logger.log(Level.FINE, "committing unknown move " + move);
 		}
 		GameTime t = (GameTime) world.get(ITEM.TIME,
 			Player.AUTHORITATIVE);
 		ms = move.doMove(world, move.getPrincipal());
 
                 if (ms != MoveStatus.MOVE_OK) {
-		    if (move instanceof TimeTickMove &&
-			    ((TimeTickMove) move).getNewTime().getTime() <=
-			    t.getTime()) {
-			// we have already received this TimeTick
-			// this can occur when we load the game initially
+		    if (pendingMoves.isEmpty()) {
+			// there are no pre-committed moves, therefore our 
+			// game-world is in sync with the server.
+			// We have already received the information in this
+			// move, this can occur when we load the game initially
+			logger.log(Level.INFO, "Dropping redundant move " +
+				"received from server:" + move);
 			return;
 		    }
 
-                    if (debug) {
-                        System.out.println("Queueing blocked move " +
-			       move + " - " + ms.toString());
-                    }
+		    logger.log(Level.INFO, "Queueing blocked move " +
+			    move + " - " + ms.toString());
 
                     /* move could not be committed because of
                      * a pre-commited move yet to be rejected by the server */
@@ -280,10 +277,8 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
 
                 return;
             } else {
-		if (debug) {
-		    System.err.println("received unknown rejected move!" +
-			    move);
-		}
+		logger.log(Level.FINE, "received unknown rejected move!" +
+			move);
 	    }
         }
 
@@ -340,7 +335,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
      */
     private void forwardMove(Move move, MoveStatus status) {
         if (status != MoveStatus.MOVE_OK) {
-            System.err.println("Couldn't commit move: " + status.message);
+            logger.log(Level.FINE, "Couldn't commit move: " + status.message);
 
             return;
         }
@@ -359,8 +354,14 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
     private PropertyChangeListener debugChangeListener = new
 	PropertyChangeListener() {
 	    public void propertyChange(PropertyChangeEvent e) {
-		debug =
-		    modelRoot.getDebugModel().getClientMoveDebugModel().isSelected();
+		if (modelRoot.getDebugModel().getClientMoveDebugModel()
+			.isSelected()) {
+		    System.out.println("finer logging");
+		    logger.setLevel(Level.FINER);
+		} else {
+		    System.out.println("info logging");
+		    logger.setLevel(Level.INFO);
+		}
 	    }
 	};
 }

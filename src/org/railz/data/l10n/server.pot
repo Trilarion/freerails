@@ -18,3 +18,11 @@
 # which cannot be picked up by xgettext (Usually because the resource strings
 # are defined in .xml files.
 !WaterTower=
+
+# EngineType names
+
+!Norris=
+
+!Grasshopper=
+
+!Rocket=

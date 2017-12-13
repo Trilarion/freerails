@@ -102,13 +102,14 @@ public class TrainPathFinder {
 
     /**
      * @param start start location measured in Deltas from map origin.
-     * @param target end location measured in Deltas from map origin.
+     * @param dest end location measured in Deltas from map origin.
      * TODO calculate cost from terrain and track layout.
      * TODO improve efficiency of this algorithm (discard paths when the
      * possible minimum is longer than current best, compare current best
      * against theoretical minimum and accept non-optimal solutions if they
      * are within a certain %age. Also it may be more efficient to scan from
      * 45deg A/C from target, rather than 180..)
+     * @return the found path, or null if no path could be found.
      */
     public TrainPath findPath(Point start, Point dest) {
 	Point target = new Point(dest);
@@ -289,12 +290,12 @@ public class TrainPathFinder {
 	}
 
 	/**
+	 * @param direction direction to explore
 	 * @param cost cost factor to traverse this tile
 	 * @param x x coord of tile in tiles
 	 * @param y y coord of tile in tiles
 	 * @param trackLayout CompassPoints mask representing layout of track
 	 * at this point
-	 * @param cost cost factor to traverse the tile.
 	 */
 	public PathElement(int x, int y, byte direction, byte trackLayout, int
 		cost) {
@@ -318,6 +319,7 @@ public class TrainPathFinder {
 	    return true;
 	}
 
+	/** TODO change this method to take into account the terrain */
 	public int getCost() {
 	    return cost * CompassPoints.getLength(direction);
 	}

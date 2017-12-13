@@ -1,11 +1,14 @@
 Release Notes
 =============
 
-These are the release notes for the 0.3.1 Development build of Railz.
+These are the release notes for the 0.3.2 Development build of Railz.
 
 New Features since the last release:
 ====================================
-Station improvements infrastructure and water consumption by trains added.
+More realistic physics model for trains - gradients, power output, air and
+rolling resistance now taken into account.
+Per-map configurable events added - locomotives can now appear at different
+stages in the game.
 
 Outstanding bugs:
 =================

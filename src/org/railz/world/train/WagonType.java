@@ -29,9 +29,13 @@ import org.railz.world.common.FreerailsSerializable;
  *
  */
 public class WagonType implements FreerailsSerializable {
+    static final long serialVersionUID = 8938548220916409842L;
+
     private final String typeName;
 
     private final TransportCategory typeCategory;
+
+    private final int unladenMass;
 
     /**
      * capacity of this wagon type in arbitrary units (tonnes?)
@@ -51,11 +55,12 @@ public class WagonType implements FreerailsSerializable {
      * cargo type
      */
     public WagonType(String name, TransportCategory category, int capacity, int
-	    cargoType) {
+	    cargoType, int unladenMass) {
         typeName = name;
         typeCategory = category;
 	this.cargoType = cargoType;
 	this.capacity = capacity;
+	this.unladenMass = unladenMass;
     }
 
     public String getName() {
@@ -85,4 +90,7 @@ public class WagonType implements FreerailsSerializable {
        ", capacity=" + capacity + ", cargoType=" + cargoType;
     }
 
+    public int getUnladenMass() {
+	return unladenMass;
+    }
 }

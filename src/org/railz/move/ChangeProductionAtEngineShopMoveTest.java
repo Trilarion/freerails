@@ -26,6 +26,7 @@ import org.railz.world.player.Player;
 import org.railz.world.station.ProductionAtEngineShop;
 import org.railz.world.station.StationModel;
 import org.railz.world.top.*;
+import org.railz.world.train.*;
 import org.railz.server.*;
 
 
@@ -54,8 +55,12 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 		new StationModel(0, 0, "No name", 0, 0, gt),
 		testPlayer.getPrincipal());
 
-        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        wetf.addTypesToWorld(getWorld());
+	getWorld().add(KEY.WAGON_TYPES, new WagonType("WagonType1",
+		    TransportCategory.MAIL, 10, 0, 10));
+	getWorld().add(KEY.WAGON_TYPES, new WagonType("WagonType2",
+		    TransportCategory.PASSENGER, 10, 0, 10));
+	getWorld().add(KEY.WAGON_TYPES, new WagonType("WagonType3",
+		    TransportCategory.FAST_FREIGHT, 10, 0, 10));
         engineType = 0;
         wagonType = 0;
         wagons = new int[] {wagonType, wagonType};

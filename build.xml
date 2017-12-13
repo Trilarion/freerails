@@ -8,7 +8,7 @@
       <property location="dist" name="dist"/>
       <property location="javadoc" name="doc"/>
       <property location="temp" name="temp"/>
-      <property classpath="org.railz.build" name="org.railz.build" value="0.3.1"/>
+      <property classpath="org.railz.build" name="org.railz.build" value="0.3.2"/>
         <property location="${basedir}/proto" name="proto"/>
         <property location="build" name="build"/>
     </target>
@@ -35,9 +35,9 @@
       </copy>
       <copy todir="${build}">
          <fileset dir=".">
-            <include name="README"/>
-            <include name="TODO"/>
-            <include name="ChangeLog"/>
+            <include name="README.txt"/>
+            <include name="TODO.txt"/>
+            <include name="ChangeLog.txt"/>
          </fileset>
       </copy>
    </target>
@@ -73,7 +73,7 @@
          </manifest>
       </jar>
        <copy todir="${proto}/railz-${org.railz.build}">
-          <fileset dir="${basedir}" includes="README, COPYING, ReleaseNotes, ChangeLog, ROADMAP"/>
+          <fileset dir="${basedir}" includes="README.txt, COPYING.txt, ReleaseNotes.txt, ChangeLog.txt, ROADMAP.txt, README.l10n"/>
       </copy>
     </target>
    <target depends="proto" description="Generate binary distribution" name="bindist">
@@ -82,7 +82,7 @@
    <target depends="mkdirs" description="Generate source distribution" name="srcdist">
        <!-- Replace current latest with the jar file we have just created. -->
       <tar compression="gzip" defaultexcludes="true" tarfile="${dist}/railz-src-${org.railz.build}.tar.gz">
-            <tarfileset dir="${basedir}" includes="README*, l10n, ChangeLog, COPYING, src/**, ROADMAP, ReleaseNotes,build.xml"/>
+            <tarfileset dir="${basedir}" includes="README*, l10n, ChangeLog.txt, COPYING.txt, src/**, ROADMAP.txt, ReleaseNotes.txt,build.xml"/>
         </tar>      
     </target>
    <target depends="init" description="Clean up build and distribution" name="clean">
@@ -129,7 +129,7 @@
     </target>
    <target depends="javadocdist, bindist, srcdist" description="Create binary, source, and javadoc jars" name="dist">
    </target>
-   <target depends="init" description="removes all distribution f0iles" name="distclean">
+   <target depends="init" description="removes all distribution files" name="distclean">
        <delete dir="${dist}" followsymlinks="false" includeemptydirs="true" verbose="false">
             
         </delete>

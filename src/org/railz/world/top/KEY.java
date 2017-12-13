@@ -28,27 +28,28 @@ import org.railz.world.common.FreerailsSerializable;
  */
 public class KEY implements FreerailsSerializable {
     /** Maps key numbers to KEYs */
-    private static KEY[] keys = new KEY[16];
+    private static KEY[] keys = new KEY[17];
 
     //START OF KEYS
-    public static final KEY TRAINS = new KEY(false);
-    public static final KEY CARGO_TYPES = new KEY(true);
-    public static final KEY CITIES = new KEY(true);
-    public static final KEY ENGINE_TYPES = new KEY(true);
-    public static final KEY TRACK_RULES = new KEY(true);
-    public static final KEY STATIONS = new KEY(false);
-    public static final KEY TERRAIN_TYPES = new KEY(true);
-    public static final KEY WAGON_TYPES = new KEY(true);
-    public static final KEY BANK_ACCOUNTS = new KEY(false);
-    public static final KEY BALANCE_SHEETS = new KEY(false);
+    public static final KEY TRAINS = new KEY(false, false);
+    public static final KEY CARGO_TYPES = new KEY(true, false);
+    public static final KEY CITIES = new KEY(true, false);
+    public static final KEY ENGINE_TYPES = new KEY(true, false);
+    public static final KEY TRACK_RULES = new KEY(true, false);
+    public static final KEY STATIONS = new KEY(false, false);
+    public static final KEY TERRAIN_TYPES = new KEY(true, false);
+    public static final KEY WAGON_TYPES = new KEY(true, false);
+    public static final KEY BANK_ACCOUNTS = new KEY(false, false);
+    public static final KEY BALANCE_SHEETS = new KEY(false, false);
 
     /** The cargo waiting at stations or carried by trains. */
-    public static final KEY CARGO_BUNDLES = new KEY(true);
-    public static final KEY TRAIN_SCHEDULES = new KEY(false);
-    public static final KEY PLAYERS = new KEY(true);
-    public static final KEY BUILDING_TYPES = new KEY(true);
-    public static final KEY STATISTICS = new KEY(false);
-    public static final KEY STATION_IMPROVEMENTS = new KEY(true);
+    public static final KEY CARGO_BUNDLES = new KEY(true, false);
+    public static final KEY TRAIN_SCHEDULES = new KEY(false, false);
+    public static final KEY PLAYERS = new KEY(true, false);
+    public static final KEY BUILDING_TYPES = new KEY(true, false);
+    public static final KEY STATISTICS = new KEY(false, false);
+    public static final KEY STATION_IMPROVEMENTS = new KEY(true, false);
+    public static final KEY SCRIPTING_EVENTS = new KEY(true, true);
 
     //END OF KEYS		
     private static int numberOfKeys;
@@ -61,12 +62,20 @@ public class KEY implements FreerailsSerializable {
     public final boolean shared;
 
     /**
+     * Whether the objects are visible to non-owners. If the owner is
+     * Player.AUTHORITATIVE then the objects are private to the authoritative
+     * server. This will be used in conjunction with World "Views".
+     */
+    public final boolean isPrivate;
+
+    /**
      * @param shared Whether the objects are common to all Principals in the
      * game
      */
-    private KEY(boolean shared) {
+    private KEY(boolean shared, boolean serverPrivate) {
         this.keyNumber = numberOfKeys;
         this.shared = shared;
+	this.isPrivate = serverPrivate;
         keys[keyNumber] = this;
         numberOfKeys++;
     }

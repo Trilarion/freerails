@@ -38,6 +38,8 @@ import org.railz.world.player.FreerailsPrincipal;
  *
  * Code that loops through lists should handle null values gracefully</p>
  *
+ * TODO prune this interface...
+ *
  */
 public interface ReadOnlyWorld extends FreerailsSerializable {
     /**

@@ -17,8 +17,9 @@
 
 package org.railz.move;
 
-import org.railz.world.common.FreerailsSerializable;
+import java.util.logging.*;
 
+import org.railz.world.common.FreerailsSerializable;
 
 /**
  * XXX DO NOT TEST == AGAINST MOVE_FAILED XXX
@@ -26,6 +27,8 @@ import org.railz.world.common.FreerailsSerializable;
  * @author lindsal
  */
 final public class MoveStatus implements FreerailsSerializable {
+    private static final Logger logger = Logger.getLogger("global");
+
     public static final MoveStatus MOVE_OK = new MoveStatus(true,
             "Move accepted");
 
@@ -57,10 +60,7 @@ final public class MoveStatus implements FreerailsSerializable {
     }
 
     public static MoveStatus moveFailed(String reason) {
-	if (debug) {
-	    System.err.println("Move failed becase: " + reason + " in:");
-	    Thread.currentThread().dumpStack();
-	}
+	logger.log(Level.FINE, "Move failed becase: " + reason);
         return new MoveStatus(false, reason);
     }
 

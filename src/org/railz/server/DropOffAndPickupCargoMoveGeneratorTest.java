@@ -78,11 +78,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                    TransportCategory.FAST_FREIGHT, 100, 100, 100));
 
        w.add(KEY.WAGON_TYPES, new WagonType("Mail Wagon",
-                   TransportCategory.MAIL, 40, 0));
+                   TransportCategory.MAIL, 40, 0, 10));
        w.add(KEY.WAGON_TYPES, new WagonType("1at class carriage",
-                   TransportCategory.PASSENGER, 40, 1));
+                   TransportCategory.PASSENGER, 40, 1, 10));
        w.add(KEY.WAGON_TYPES, new WagonType("Goods van",
-                   TransportCategory.FAST_FREIGHT, 40, 1));
+                   TransportCategory.FAST_FREIGHT, 40, 1, 10));
 
 
         //Set up station

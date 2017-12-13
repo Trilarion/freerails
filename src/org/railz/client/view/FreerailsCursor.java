@@ -194,7 +194,7 @@ final public class FreerailsCursor implements KeyListener, MapCursor {
     }
 
     /** Creates a new FreerailsCursor.
-    * @param mapView The view that the curors moves across.
+    * @param mv The view that the curors moves across.
     */
     public FreerailsCursor(MapRenderer mv) {
         this.mapView = mv;

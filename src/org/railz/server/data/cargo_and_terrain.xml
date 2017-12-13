@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8' ?>
 <!DOCTYPE Types SYSTEM "cargo_and_terrain.dtd">
 <Types>
    <Cargo_Types>
@@ -31,14 +32,22 @@
       <Tile id="slums" Category="Urban" rgb="0" right-of-way="0"/>
       <Tile id="Terminal" Category="Country" rgb="1" baseValue="1000" />
 -->
-      <Tile id="Clear" Category="Country" rgb="00b400" baseValue="2000" />
-      <Tile id="Desert" Category="Country" rgb="b42400" baseValue="500" />
-      <Tile id="Ocean" Category="Ocean" rgb="0000b4" baseValue="0" />
-      <Tile id="River" Category="River" rgb="0048d8" baseValue="0" />
-      <Tile id="Jungle" Category="Country" rgb="4890fc" baseValue="1500" />
-      <Tile id="Hills" Category="Hill" rgb="b4b4b4" baseValue="1500" />
-      <Tile id="Foothills" Category="Hill" rgb="90d8fc" baseValue="2000" />
-      <Tile id="Mountain" Category="Hill" rgb="ffffff" baseValue="1000" />
+      <Tile id="Clear" Category="Country" rgb="00b400" baseValue="2000"
+elevation="0" roughness="0"/>
+      <Tile id="Desert" Category="Country" rgb="b42400" baseValue="500"
+elevation="0" roughness="0"/>
+      <Tile id="Ocean" Category="Ocean" rgb="0000b4" baseValue="0"
+elevation="0" roughness="0"/>
+      <Tile id="River" Category="River" rgb="0048d8" baseValue="0"
+elevation="0" roughness="0" />
+      <Tile id="Jungle" Category="Country" rgb="4890fc" baseValue="1500" 
+elevation="0" roughness="0" />
+      <Tile id="Hills" Category="Hill" rgb="b4b4b4" baseValue="1500" 
+elevation="200" roughness="200" />
+      <Tile id="Foothills" Category="Hill" rgb="90d8fc" baseValue="2000" 
+elevation="150" roughness="100" />
+      <Tile id="Mountain" Category="Hill" rgb="ffffff" baseValue="1000"
+elevation="250" roughness="300" />
    </Terrain_Types>
    <Building_Types>
       <Building_Type id="Refinery" category="Industry"
@@ -320,12 +329,19 @@
       </Building_Type>
    </Building_Types>
    <EngineTypes>
-	<EngineType id="Grasshopper" fuelType="Coal" price="10000"
-	maintenance="5000" maxSpeed="30" annualFuelConsumption="600"
-       waterCapacity="1000"	/>
+<!--	<EngineType id="Rocket"	fuelType="Coal" price="10000"
+	maintenance="5000" annualFuelConsumption="600"
+	waterCapacity="1000" mass="40" powerOutput="2000" maxTractiveForce="400"
+	dragCoeff="0.70" frictionCoeff="0.20" available="true" /> -->
+	<EngineType id="Grasshopper" fuelType="Coal" price="6000"
+	maintenance="5000" annualFuelConsumption="600"
+       waterCapacity="1000" mass="40" powerOutput="2000" maxTractiveForce="400"
+       dragCoeff="0.70" frictionCoeff="0.20" available="true" />
 	<EngineType id="Norris" fuelType="Coal" price="10000"
-	maintenance="8000" maxSpeed="35" annualFuelConsumption="700"
-	waterCapacity="1000" />
+	maintenance="8000" annualFuelConsumption="700"
+	waterCapacity="1000" mass="45" powerOutput="2500"
+	maxTractiveForce="400" dragCoeff="0.700" frictionCoeff="0.20"
+	available="false" />
    </EngineTypes>
    <Economy incomeTaxRate="25" baseRate="5.0">
 	<FuelPrice fuelType="Coal" unitPrice="20" />
@@ -334,4 +350,30 @@
 		<StationImprovement id="WaterTower" description=
 	"Provides water for steam engines." basePrice="10000" />
 	</StationImprovements>
+	<WagonTypes>
+	    <WagonType id="Mail_Wagon" category="mail" capacity="40"
+	    unladenMass="10" cargoType="Mail" />
+	    <WagonType id="Passenger_Car" category="passenger" capacity="40"
+	    unladenMass="10" cargoType="Passengers" />
+	    <WagonType id="Food_Wagon" category="fast_freight" capacity="40"
+	    unladenMass="10" cargoType="Food" />
+	    <WagonType id="Livestock_Wagon" category="fast_freight"
+	    capacity="40" unladenMass="10" cargoType="Livestock" />
+	    <WagonType id="Mfg._Goods_Wagon" category="fast_freight"
+	    capacity="40" unladenMass="10" cargoType="Mfg._Goods" />
+	    <WagonType id="Grain_Wagon" category="slow_freight" capacity="40"
+	    unladenMass="10" cargoType="Grain" />
+	    <WagonType id="Coffee_Wagon" category="slow_freight" capacity="40"
+	    unladenMass="10" cargoType="Coffee" />
+	    <WagonType id="Export_Goods_Wagon" category="slow_freight"
+	    capacity="40" unladenMass="10" cargoType="Export_Goods" />
+	    <WagonType id="Petroleum_Wagon" category="bulk_freight"
+	    capacity="40" unladenMass="10" cargoType="Petroleum" />
+	    <WagonType id="Oil_Wagon" category="bulk_freight" capacity="40"
+	    unladenMass="10" cargoType="Oil" />
+	    <WagonType id="Wood_Wagon" category="bulk_freight" capacity="40"
+	    unladenMass="10" cargoType="Wood" />
+	    <WagonType id="Sugar_Wagon" category="bulk_freight" capacity="40"
+	    unladenMass="10" cargoType="Sugar" />
+	</WagonTypes>
 </Types>

@@ -17,6 +17,8 @@
 package org.railz.server;
 
 import java.util.LinkedList;
+import java.util.logging.*;
+
 import org.railz.controller.MoveReceiver;
 import org.railz.controller.UncommittedMoveReceiver;
 import org.railz.move.*;
@@ -38,6 +40,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
     protected final World world;
     protected final MoveReceiver moveReceiver;
     private final LinkedList moveStack = new LinkedList();
+    private static final Logger logger = Logger.getLogger("global");
 
     public AuthoritativeMoveExecuter(World w, MoveReceiver mr) {
         world = w;
@@ -53,7 +56,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
         }
 
         if (status != MoveStatus.MOVE_OK) {
-	    System.err.println("Server rejected move because " + status +
+	    logger.log(Level.INFO, "Server rejected move because " + status +
 		    ": " + move);
             moveReceiver.processMove(new RejectedMove(move, status));
         } else {
@@ -105,7 +108,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
 	    }
 
             if (ms != MoveStatus.MOVE_OK) {
-                System.err.println("Couldn't undo move!");
+                logger.log(Level.INFO, "Couldn't undo move!");
 
                 /* push it back on the stack to prevent further
                  * out-of-order undos */
@@ -114,7 +117,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
 
             forwardMove(m, ms);
         } else {
-            System.err.println("No moves on stack.");
+            logger.log(Level.INFO, "No moves on stack.");
         }
     }
 }

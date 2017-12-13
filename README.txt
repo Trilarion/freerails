@@ -32,8 +32,14 @@ Compilation:
 ============
 
 To compile, either 
-(i) go to the directory src, and type: javac org/railz/launcher/Launcher.java
+(i) go to the directory src, and type:
+ javac -source 1.4 org/railz/launcher/Launcher.java org/railz/server/scripting/*.java
+then type
+java org/railz/launcher/Launcher
+to start. 
+
 or	
+
 (ii) use the build.xml file and Ant version 1.5.
 
 N.B. The source package contains some unit tests.  To compile them you will
@@ -43,7 +49,8 @@ www.junit.org.
 Running It:
 ===========
 
-To run, type: java -jar railz.jar
+To run, type:
+java -jar railz.jar
 				
 Mac OS X users:
 ---------------

@@ -74,7 +74,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     private String generateFilename(byte trackTemplate) {
-        String relativeFileNameBase = "track" + File.separator +
+        String relativeFileNameBase = "track" + "/" +
             this.getTrackTypeName();
         int newTemplate = (int) trackTemplate & 0xFF;
         String fileName = relativeFileNameBase + "_" +

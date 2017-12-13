@@ -25,6 +25,8 @@ package org.railz.client.renderer;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.*;
+
 import org.railz.client.common.ImageManager;
 import org.railz.world.terrain.TerrainType;
 import org.railz.world.top.ReadOnlyWorld;
@@ -35,6 +37,8 @@ import org.railz.world.top.ReadOnlyWorld;
 * @author  Luke Lindsay
 */
 final public class SpecialTileRenderer extends AbstractTileRenderer {
+    private static final Logger logger = Logger.getLogger("global");
+
     final private TileRenderer parentTileView;
 
     public void renderTile(java.awt.Graphics g, int renderX, int renderY,
@@ -42,7 +46,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         if (parentTileView != null) {
             parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
         } else {
-            System.err.println("parent tileView==null");
+            logger.log(Level.WARNING, "parent tileView==null");
         }
 
         BufferedImage icon = this.getIcon(mapX, mapX, w);
@@ -50,7 +54,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         if (null != icon) {
             g.drawImage(icon, renderX, renderY, null);
         } else {
-            System.err.println("special tileView icon==null");
+            logger.log(Level.WARNING, "special tileView icon==null");
         }
     }
 

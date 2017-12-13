@@ -18,8 +18,10 @@
 package org.railz.server;
 
 import java.net.URL;
+import java.util.logging.*;
+
 import org.railz.server.parser.*;
-import org.railz.util.FreerailsProgressMonitor;
+import org.railz.util.*;
 import org.railz.world.common.*;
 import org.railz.world.player.Player;
 import org.railz.world.top.ITEM;
@@ -32,6 +34,8 @@ import org.xml.sax.SAXException;
  * This class sets up a World object. It cannot be instantiated.
  */
 class WorldFactory {
+    private static final Logger logger = Logger.getLogger("global");
+    
     private WorldFactory() {
     }
 
@@ -43,8 +47,11 @@ class WorldFactory {
         return new String[] {"south_america", "small_south_america"};
     }
 
-    public static World createWorldFromMapFile(String mapName,
+    public static WorldImpl createWorldFromMapFile(String mapName,
         FreerailsProgressMonitor pm) {
+	ModdableResourceFinder mrf = new ModdableResourceFinder
+	    ("org/railz/server/data");
+
         pm.setMessage("Setting up world.");
         pm.setValue(0);
         pm.setMax(5);
@@ -56,9 +63,13 @@ class WorldFactory {
         WorldImpl w = new WorldImpl();
         pm.setValue(++progess);
 
+        //Set the time..
+        w.set(ITEM.CALENDAR, new GameCalendar(30, 1840, 0));
+        w.set(ITEM.TIME, new GameTime(0));
+
         try {
-            java.net.URL url = WorldFactory.class.getResource(
-                    "/org/railz/server/data/cargo_and_terrain.xml");
+            java.net.URL url = mrf.getURLForReading
+		("cargo_and_terrain.xml");
 
             CargoAndTerrainParser.parse(url, w);
         } catch (Exception e) {
@@ -67,38 +78,30 @@ class WorldFactory {
         }
         pm.setValue(++progess);
 
-        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        pm.setValue(++progess);
-        wetf.addTypesToWorld(w);
-        pm.setValue(++progess);
-
-        URL track_xml_url = WorldFactory.class.getResource(
-                "/org/railz/server/data/track_tiles.xml");
+        URL track_xml_url = mrf.getURLForReading
+	    ("track_tiles.xml");
 
 	Track_TilesHandlerImpl trackSetFactory = new
 	    Track_TilesHandlerImpl(track_xml_url, w);
         pm.setValue(++progess);
 
         //Load the terrain map
-        URL map_url = WorldFactory.class.getResource("/org/railz/data/" +
-                mapName + ".png");
+        URL map_url = mrf.getURLForReading
+	    ("maps/" + mapName + "/map.png");
         MapFactory.setupMap(map_url, w, pm);
 
         //Load the city names
-        URL cities_xml_url = WorldFactory.class.getResource("/org/railz/data/" +
-                mapName + "_cities.xml");
+	URL cities_xml_url = mrf.getURLForReading
+	    ("maps/" + mapName + "/map.xml");
 
         try {
             InputCityNames r = new InputCityNames(w, cities_xml_url);
         } catch (SAXException e) {
+	    logger.log(Level.WARNING,"Caught exception " + e.getMessage(), e);
         }
 
         //Randomly position the city tiles - no need to assign this object
         new BuildingTilePositioner(w);
-
-        //Set the time..
-        w.set(ITEM.CALENDAR, new GameCalendar(30, 1840, 0));
-        w.set(ITEM.TIME, new GameTime(0));
 
         return w;
     }

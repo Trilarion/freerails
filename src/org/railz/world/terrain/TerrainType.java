@@ -37,6 +37,29 @@ public class TerrainType implements FreerailsSerializable {
     private final String terrainType;
     private final long baseValue;
 
+    /**
+     * A measure of the resistance encountered when entering or leaving a
+     * tile of a different type
+     */
+    private final int elevation;
+
+    /**
+     * A measure of the resistance encountered when entering or leaving a
+     * tile of the same type
+     */
+    private final int roughness;
+
+    /** @return roughness of terrain measured in gradient of 100ths of a % */
+    public int getRoughness() {
+	return roughness;
+    }
+
+    /** @return elevation of terrain from sea-level, measured in required
+     * gradient in 100ths of a % */
+    public int getElevation() {
+	return elevation;
+    }
+
     public String getTerrainTypeName() {
         return terrainType;
     }
@@ -46,14 +69,16 @@ public class TerrainType implements FreerailsSerializable {
     }
 
     /**
-     * @param terrainType The name of the terrain type
+     * @param terrainType Resource key to the name of the terrain type
      */
     public TerrainType(int rgb, int terrainCategory, String terrainType,
-        long baseValue) {
+        long baseValue, int elevation, int roughness) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
 	this.baseValue = baseValue;
+	this.elevation = elevation;
+	this.roughness = roughness;
     }
 
     /**

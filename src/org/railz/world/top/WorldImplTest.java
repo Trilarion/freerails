@@ -44,23 +44,4 @@ public class WorldImplTest extends TestCase {
         assertEquals("The width should be zero", 0, w.getMapWidth());
         assertEquals("The height should be zero", 0, w.getMapHeight());
     }
-
-    /** Tests that changing the object returned by defensiveCopy() does not alter
-     * the world object that was copied.
-     */
-    public void testDefensiveCopy() {
-        World original;
-        World copy;
-        original = new WorldImpl();
-        copy = original.defensiveCopy();
-        assertNotSame("The copies should be different objects.", original, copy);
-        assertEquals("The copies should be logically equal.", original, copy);
-
-        copy.add(KEY.TERRAIN_TYPES, fs);
-
-        assertFalse(original.equals(copy));
-        assertFalse(copy.equals(original));
-        assertEquals(1, copy.size(KEY.TERRAIN_TYPES));
-        assertEquals(0, original.size(KEY.TERRAIN_TYPES));
-    }
 }

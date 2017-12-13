@@ -1,3 +1,39 @@
+January 23, 2005:
+-----------------
+Fixed a bug where an exception could be thrown whilst changing the schedule.
+January 21, 2005:
+-----------------
+Fixed a bug where adding too many wagons to trains caused an exception.
+January 16, 2005:
+-----------------
+Added support for Java logging framework.
+January 15, 2005:
+-----------------
+Fixed a problem with trains getting shorter over time which caused the game to
+throw an exception
+January 11, 2005:
+-----------------
+Fixed problems with TrainPathFunction getting out of control and not homing
+correctly.
+Fixed problem with network play, and server-only mode not working.
+Fixed problems with file-naming conventions on Windows machines.
+January 4, 2005:
+----------------
+Added code for creating files in users home directory for modding the game.
+January 1, 2005:
+----------------
+Added workaround for Crimson XML parser where it was failing to parse DTDs
+referenced via relative URLs in jar files.
+Added configurable start date and simulated time lapse rate.
+December 30, 2004:
+------------------
+Adjusted physics model. Added scripting engine, added configurable EngineType
+availability. Relocated server configuration files to server package.
+Implemented first part of client-specific "views".
+November 26, 2004:
+------------------
+Implemented more realistic physics model. Trains now slow down and speed up on
+gradients.
 October 31, 2004:
 -----------------
 Fixed bug where stations were free to build, added regular updates for water

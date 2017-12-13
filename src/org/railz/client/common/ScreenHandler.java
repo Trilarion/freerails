@@ -28,6 +28,7 @@ import java.awt.BufferCapabilities;
 import java.awt.ImageCapabilities;
 import java.awt.image.BufferStrategy;
 import java.awt.image.VolatileImage;
+import java.util.logging.*;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -70,6 +71,7 @@ final public class ScreenHandler {
     private BufferStrategy bufferStrategy;
     private boolean runningOSX = "Mac OS X".equals
 	(System.getProperty("os.name"));
+    private static final Logger logger = Logger.getLogger("global");
 
     /**
      * Game starts off in WINDOWED_MODE by default
@@ -205,14 +207,17 @@ final public class ScreenHandler {
 	    if (bufferStrategy == null) {
 		frame.createBufferStrategy(2);
 		BufferStrategy bs = frame.getBufferStrategy();
-		System.out.println("Buffer capabilities:");
+		logger.log(Level.INFO, "Buffer capabilities:");
 		BufferCapabilities bc = bs.getCapabilities();
-		System.out.println("isFullScreenRequired = " + bc.isFullScreenRequired());
-		System.out.println("isPageFlipping = " + bc.isPageFlipping());
+		logger.log(Level.INFO, "isFullScreenRequired = " +
+		       	bc.isFullScreenRequired());
+		logger.log(Level.INFO, "isPageFlipping = " +
+		       	bc.isPageFlipping());
 		ImageCapabilities ic = bc.getBackBufferCapabilities();
-		System.out.println("isAccelerated = " + ic.isAccelerated());
-		System.out.println("isTrueVolatile = " + ic.isTrueVolatile());
-		System.out.println("isMultiBufferAvailable = " +
+		logger.log(Level.INFO, "isAccelerated = " + ic.isAccelerated());
+		logger.log(Level.INFO, "isTrueVolatile = " +
+		       	ic.isTrueVolatile());
+		logger.log(Level.INFO, "isMultiBufferAvailable = " +
 			bc.isMultiBufferAvailable());
 		isVolatile = ic.isTrueVolatile();
 		bufferStrategy = bs;

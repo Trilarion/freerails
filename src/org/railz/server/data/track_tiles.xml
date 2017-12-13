@@ -52,7 +52,7 @@
       </TrackType>
       <TrackType type="tunnel" X="9" Y="0"  doubleTrack="false"
       maxConsecutivePieces="0" RGBvalue="000002" price="40000"
-      maintenance="2000">
+      maintenance="2000" tunnel="true">
          <CanOnlyBuildOnTheseTerrainTypes>
             <TerrainType name="Hill" />
          </CanOnlyBuildOnTheseTerrainTypes>

@@ -16,6 +16,8 @@
 
 package org.railz.move;
 
+import java.util.logging.*;
+
 import org.railz.world.player.FreerailsPrincipal;
 import org.railz.world.player.Player;
 import org.railz.world.top.World;
@@ -25,6 +27,8 @@ import org.railz.world.top.ITEM;
 
 
 public class TimeTickMove implements Move {
+    private static final Logger logger = Logger.getLogger("global");
+
     private GameTime oldTime = null;
     private GameTime newTime = null;
 
@@ -48,8 +52,9 @@ public class TimeTickMove implements Move {
         if (((GameTime)w.get(ITEM.TIME)).equals(oldTime)) {
             return MoveStatus.MOVE_OK;
         } else {
-            System.err.println("oldTime = " + oldTime.getTime() + " <=> " +
-                "currentTime " + ((GameTime)w.get(ITEM.TIME)).getTime());
+	    logger.log(Level.FINER, "oldTime = " + oldTime.getTime() +
+		    " <=> " + "currentTime " +
+		    ((GameTime)w.get(ITEM.TIME)).getTime());
 
             return MoveStatus.MOVE_FAILED;
         }

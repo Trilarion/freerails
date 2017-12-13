@@ -24,6 +24,8 @@ package org.railz.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.*;
+
 import org.railz.client.common.ImageManager;
 import org.railz.util.FreerailsProgressMonitor;
 import org.railz.world.top.KEY;
@@ -32,6 +34,8 @@ import org.railz.world.track.TrackRule;
 
 
 final public class TrackPieceRendererList {
+    private static final Logger logger = Logger.getLogger("global");
+
     private final TrackPieceRenderer[] trackPieceViewArray;
 
     public TrackPieceRenderer getTrackPieceView(int i) {
@@ -65,7 +69,7 @@ final public class TrackPieceRendererList {
             TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
 
             if (null == trackPieceView) {
-                System.err.println(
+                logger.log(Level.WARNING,
                     "No track piece view for the following track type: " +
                     trackRule.toString());
 
@@ -76,7 +80,7 @@ final public class TrackPieceRendererList {
 			    continue;
                     Image img = trackPieceView.getTrackPieceIcon(j);
                     if (null == img) {
-                        System.err.println(
+                        logger.log(Level.WARNING, 
                             "No track piece image for the following track type: " +
                             trackRule.toString() + ", with configuration: " +
                             j);

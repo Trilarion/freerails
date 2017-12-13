@@ -27,10 +27,14 @@ import java.io.ObjectStreamException;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 import org.railz.controller.ConnectionToServer.ConnectionState;
-import org.railz.move.Move;
+import org.railz.move.*;
 import org.railz.world.top.World;
 
-
+/**
+ * It may be necessary to call notifyAll() on this object if the associated
+ * connection does not have a connectionListener attached when the thread is
+ * started.
+ */
 class Dispatcher implements Runnable {
     private final InetConnection connection;
 
@@ -40,129 +44,120 @@ class Dispatcher implements Runnable {
 
     private SourcedMoveReceiver moveReceiver;
     private ObjectInputStream objectInputStream;
-    private boolean worldNotYetLoaded = true;
 
-    public synchronized void addMoveReceiver(SourcedMoveReceiver m) {
-        moveReceiver = m;
+    /**
+     * wait() on this object when we need the client to wait for a response
+     */
+    private Object clientSemaphore = new Integer(1);
+
+    public void addMoveReceiver(SourcedMoveReceiver m) {
+	moveReceiver = m;
     }
 
-    public synchronized void removeMoveReceiver(SourcedMoveReceiver m) {
-        moveReceiver = null;
+    public void removeMoveReceiver(SourcedMoveReceiver m) {
+	moveReceiver = null;
     }
 
-    public synchronized World receiveWorld() throws IOException {
+    public World receiveWorld() throws IOException {
 	World w;
-        try {
-            while (true) {
-                Object o = objectInputStream.readObject();
+	synchronized (clientSemaphore) {
+	    while (connection.world == null) {
+		try {
+		    clientSemaphore.wait();
+		} catch (InterruptedException e) {
+		    // do nothing
+		}
+	    }
+	}
 
-                if (o instanceof World) {
-		    w = (World) o;
-                    this.connection.world = (World)o;
-                    this.connection.setState(ConnectionState.READY);
-
-                    break;
-                } else {
-                    System.out.println("Received garbage whilst loading world:" +
-                        o);
-                }
-            }
-        } catch (ObjectStreamException e) {
-            System.out.println("Caught object stream exception whilst loading " +
-                "world");
-            throw new IOException(e.toString());
-        } catch (ClassNotFoundException e) {
-            System.out.println("Received unknown class instead of world " + e);
-            throw new IOException(e.toString());
-        }
-
-        worldNotYetLoaded = false;
-
-        /*
-         * wake up any thread waiting
-         */
-        notifyAll();
         System.out.println("World received from server");
-	return w;
+	return connection.world;
     }
 
     private void processServerCommand(ServerCommand c) {
         if (c instanceof CloseConnectionCommand) {
             System.out.println("CloseConnectionCommand received");
             //Can cause deadlock!
-            this.connection.disconnect();
+            connection.disconnect();
         } else if (c instanceof LoadWorldCommand) {
             System.out.println("LoadWorldCommand received");
-            this.connection.setState(ConnectionState.INITIALISING);
+            connection.setState(ConnectionState.INITIALISING);
 
+	    // purge the ObjectOutputStream of any cached objects
+	    connection.reset();
             /*
              * TODO in the future, queue up moves from the server whilst
              * the client gets a copy of the World, for now just have a
              * crude lock
              */
-	    this.connection.send(this.connection.world);
-	    this.connection.flush();
+	    connection.send(connection.world);
+	    connection.flush();
 
-            this.connection.setState(ConnectionState.READY);
+            connection.setState(ConnectionState.READY);
         } else {
-            synchronized (this) {
-                while (this.connection.connectionListener == null) {
-                    /* if the connectionListener has not yet been added then
-                     * sleep until one has been added to avoid losing the
-                     * event */
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        assert false;
-                    }
-                }
+	    ConnectionListener cl = connection.connectionListener;
 
-                this.connection.connectionListener.processServerCommand(this.connection,
-                    c);
-            }
+            cl.processServerCommand(this.connection, c);
         }
     }
 
-    private synchronized void processNextObject() throws IOException {
-        while ((objectInputStream == null) ||
-                ((this.connection.world == null) && worldNotYetLoaded)) {
-            /*
-             * if we are closed, or if we are open and the world is not yet
-             * loaded, then wait until the world has been
-             * loaded. Test mutex to see if we are in a client + therefore
-             * require the world to be loaded.
-             */
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                /* ignore */
-            }
-        }
+    private void processNextObject() throws IOException {
+	Object o = null;
+	synchronized (this) {
+	    while ((objectInputStream == null) ||
+		    connection.connectionListener == null) {
+		/*
+		 * if we are closed then wait until we are opened.
+		 */
+		try {
+		    wait();
+		} catch (InterruptedException e) {
+		    /* ignore */
+		}
+	    }
 
-        try {
-            Object o;
-            o = objectInputStream.readObject();
+	    try {
+		o = objectInputStream.readObject();
 
-            if (o instanceof ServerCommand) {
-                processServerCommand((ServerCommand)o);
-            } else if (o instanceof Move) {
-		assert moveReceiver != null;
-                moveReceiver.processMove((Move)o, this.connection);
-            } else {
-                System.out.println("Invalid class sent in stream");
-            }
-        } catch (ClassNotFoundException e) {
-            System.out.println("Unrecognisable command received by " +
-                "server!");
-        } catch (InvalidClassException e) {
-            System.out.println("Invalid class exception received " + e);
-        } catch (StreamCorruptedException e) {
-            System.out.println("StreamCorruptedException received " + e);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } catch (OptionalDataException e) {
-            System.out.println("OptionalDataException received " + e);
-        }
+	    } catch (ClassNotFoundException e) {
+		System.out.println("Unrecognisable command received by " +
+			"server!");
+		return;
+	    } catch (InvalidClassException e) {
+		System.out.println("Invalid class exception received " + e);
+		return;
+	    } catch (StreamCorruptedException e) {
+		System.out.println("StreamCorruptedException received " + e);
+		e.printStackTrace();
+		throw new RuntimeException(e);
+	    } catch (OptionalDataException e) {
+		System.out.println("OptionalDataException received " + e);
+		return;
+	    }
+	}
+
+	if (!(o instanceof TimeTickMove)) {
+	    System.out.println ("processing received object " + o);
+	}
+	if (o instanceof ServerCommand) {
+	    processServerCommand((ServerCommand)o);
+	} else if (o instanceof Move) {
+	    if (connection.world == null) {
+		System.out.println("Discarding move");
+	    } else {
+		SourcedMoveReceiver mr = moveReceiver;
+		assert mr != null;
+		mr.processMove((Move)o, this.connection);
+	    }
+	} else if ((o instanceof World) && connection.world == null) {
+	    connection.world = (World)o;
+	    connection.setState(ConnectionState.READY);
+	    synchronized (clientSemaphore) {
+		clientSemaphore.notify();
+	    }
+	} else {
+	    System.out.println("Invalid class sent in stream");
+	}
     }
 
     /**
@@ -185,8 +180,7 @@ class Dispatcher implements Runnable {
     }
 
     public synchronized void open() throws IOException {
-        worldNotYetLoaded = true;
-        objectInputStream = new ObjectInputStream(this.connection.socket.getInputStream());
+        objectInputStream = new ObjectInputStream(connection.socket.getInputStream());
 
         /*
          * wake up the thread if it's waiting for the connection to open
@@ -194,10 +188,7 @@ class Dispatcher implements Runnable {
         notifyAll();
     }
 
-    /** Note, although this method is not synchronized, it is only called from InetConnection.disconnect()
-     * which does synchronized on this object, hence, it is effectively synchronized.
-     */
-    public void close() {
+    public synchronized void close() {
         try {
             if (objectInputStream != null) {
                 objectInputStream.close();
@@ -206,7 +197,15 @@ class Dispatcher implements Runnable {
             System.out.println("Caught an IOException disconnecting " + e);
         }
 
-        worldNotYetLoaded = true;
         objectInputStream = null;
+    }
+
+    synchronized void reset() {
+	try {
+	    objectInputStream.reset();
+	} catch (IOException e) {
+	    System.err.println ("Caught an IOException resetting the " +
+		    "ObjectInputStream:" + e);
+	}
     }
 }

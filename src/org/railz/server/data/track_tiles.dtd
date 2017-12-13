@@ -33,6 +33,7 @@
     X CDATA #REQUIRED
     price CDATA #REQUIRED
     maintenance CDATA #REQUIRED
+    tunnel (true|false) "false"
   >
 
   <!ELEMENT TrackPieceTemplate EMPTY>

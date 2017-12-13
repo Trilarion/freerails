@@ -36,17 +36,7 @@ import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 
 import org.railz.client.common.*;
-import org.railz.client.view.MapViewJComponent;
-import org.railz.client.view.MapViewJComponentConcrete;
-import org.railz.client.view.CashJLabel;
-import org.railz.client.view.DateJLabel;
-import org.railz.client.view.GUIRoot;
-import org.railz.client.view.HelpMenu;
-import org.railz.client.view.DisplayMenu;
-import org.railz.client.view.GameMenu;
-import org.railz.client.view.DebugMenu;
-import org.railz.client.view.OverviewMapJComponent;
-import org.railz.client.view.TrainsJTabPane;
+import org.railz.client.view.*;
 import org.railz.client.model.ModelRoot;
 import org.railz.world.top.KEY;
 import org.railz.world.player.Player;

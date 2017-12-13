@@ -37,13 +37,14 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
+import org.railz.util.*;
 
 /**
  * @author Luke
  *
  */
 public class ImageManagerImpl implements ImageManager {
-    private String pathToReadFrom;
+    private ModdableResourceFinder mrf;
 
     /**
      * HashMap of BufferedImage
@@ -58,22 +59,25 @@ public class ImageManagerImpl implements ImageManager {
                                                                             .getDefaultScreenDevice()
                                                                             .getDefaultConfiguration();
 
+    /**
+     * @param readpath UNIX-style path
+     */
     public ImageManagerImpl(Component c, String readpath) {
+	mrf = new ModdableResourceFinder(readpath);
 	defaultConfiguration = c.getGraphicsConfiguration();
-
-        pathToReadFrom = readpath;
     }
 
     public void setPathToReadFrom(String s) {
-        pathToReadFrom = s;
+	mrf = new ModdableResourceFinder(s);
     }
 
+    /**
+     * @param relativeFilename UNIX-style relative path
+     */
     private BufferedImage loadImage(String relativeFilename) throws IOException {
-        //File f = new File(pathToReadFrom+File.separator+relativeFilename);
-        String read = pathToReadFrom + relativeFilename;
-        read = read.replace(File.separatorChar, '/');
+        String read = relativeFilename;
 
-        URL url = ImageManagerImpl.class.getResource(read);
+        URL url = mrf.getURLForReading(read);
 
         if (null == url) {
             throw new IOException("Couldn't find: " + read);
@@ -94,6 +98,9 @@ public class ImageManagerImpl implements ImageManager {
         return compatibleImage;
     }
 
+    /**
+     * @param relativeFilename UNIX-style relative path
+     */
     public BufferedImage getImage(String relativeFilename) throws IOException {
         relativeFilename = relativeFilename.replace(' ', '_');
 
@@ -126,6 +133,7 @@ public class ImageManagerImpl implements ImageManager {
     /**
      *  Returns the specified image scaled so that its height is equal to the
      * specified height.
+     * @param relativeFilename UNIX-style relative path
      */
     public BufferedImage getScaledImage(String relativeFilename, int height)
         throws IOException {

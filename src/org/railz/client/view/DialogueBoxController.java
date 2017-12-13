@@ -26,12 +26,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.NoSuchElementException;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JInternalFrame;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.*;
 
@@ -42,6 +37,7 @@ import org.railz.controller.MoveChainFork;
 import org.railz.controller.UntriedMoveReceiver;
 import org.railz.move.ChangeProductionAtEngineShopMove;
 import org.railz.move.Move;
+import org.railz.util.*;
 import org.railz.world.building.*;
 import org.railz.world.player.*;
 import org.railz.world.station.ProductionAtEngineShop;
@@ -63,7 +59,6 @@ public class DialogueBoxController {
     private GUIRoot guiRoot;
     private Component dialog;
     private JFrame frame;
-    private JButton closeButton = new JButton("Close");
     private SelectEngineJPanel selectEngine;
     private NewsPaperJPanel newspaper;
     private SelectWagonsJPanel selectWagons;
@@ -90,18 +85,29 @@ public class DialogueBoxController {
      * Use this ActionListener to close a dialogue without performing any
      * other action.
     */
-    private ActionListener closeCurrentDialogue = new ActionListener() {
+    private class CloseButtonListener implements ActionListener {
+	private Component dialog;
+	
+	public CloseButtonListener(Component dialog) {
+	    this.dialog = dialog;
+	}
+
         public void actionPerformed(ActionEvent arg0) {
-            closeContent();
+            closeContent(dialog);
         }
     };
     
+    private ActionListener closeCurrentDialogue =  new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	    closeContent();
+	}
+    };
+
     public DialogueBoxController(JFrame frame, ModelRoot mr,
 	    GUIRoot gr) {
 	guiRoot = gr;
         modelRoot = mr;
 	this.frame = frame;
-        closeButton.addActionListener(closeCurrentDialogue);
         modelRoot.setDialogueBoxController(this);
     }
     
@@ -135,17 +141,6 @@ public class DialogueBoxController {
         
         how2play = new HtmlJPanel(DialogueBoxController.class.getResource("/org/railz/client/view/how_to_play.htm"));
         
-        //Set up select engine dialogue.
-        selectEngine = new SelectEngineJPanel();
-        selectEngine.setCancelButtonActionListener(this.closeCurrentDialogue);
-        selectEngine.setup(modelRoot, new ActionListener() {
-            
-            public void actionPerformed(ActionEvent arg0) {
-                closeContent();
-                showSelectWagons();
-            }
-            
-        });
         newspaper = new NewsPaperJPanel();
         newspaper.setup(w, vl, closeCurrentDialogue);
         
@@ -207,7 +202,15 @@ public class DialogueBoxController {
             modelRoot.getUserMessageLogger().println("Can't" +
             " build train since there are no stations");
         } else {
-            
+	    //Set up select engine dialogue.
+	    selectEngine = new SelectEngineJPanel();
+	    selectEngine.setCancelButtonActionListener(closeCurrentDialogue);
+	    selectEngine.setup(modelRoot, new ActionListener() {
+		    public void actionPerformed(ActionEvent arg0) {
+			closeContent();
+			showSelectWagons();
+		    }
+		    });
             showContent(selectEngine);
         }
     }
@@ -279,8 +282,34 @@ public class DialogueBoxController {
         }
     }
     
+    /**
+     * Shows the JOptionPane. Blocks until the pane is closed.
+     */
+    public void showOptionPane(JOptionPane component) {
+        JComponent contentPanel;
+	boolean addCloseButton = false;
+	contentPanel = component;
+        
+        contentPanel.setBorder(defaultBorder);
+	switch (guiRoot.getScreenHandler().getMode()) {
+	    case ScreenHandler.FULL_SCREEN:
+		JInternalFrame jif = component.createInternalFrame
+			(frame, Resources.get("Railz Dialog"));
+		dialog = jif;
+		jif.show();
+		break;
+	    default:
+		JDialog jd = component.createDialog
+			(frame, Resources.get("Railz Dialog"));
+		dialog = jd;
+		jd.show();
+		break;
+	}
+    }
+
     public void showContent(JComponent component) {
         JComponent contentPanel;
+	boolean addCloseButton = false;
         if (!((component instanceof SelectEngineJPanel) ||
 		    (component instanceof SelectWagonsJPanel) ||
 		    (component instanceof TrainListJPanel))) {
@@ -294,10 +323,7 @@ public class DialogueBoxController {
 	    constraints.fill = GridBagConstraints.BOTH;
             contentPanel.add(component, constraints);
             
-            constraints = new GridBagConstraints();
-            constraints.gridx = 0;
-            constraints.gridy = 1;
-            contentPanel.add(closeButton, constraints);
+	    addCloseButton = true;
         } else {
             contentPanel = component;
         }
@@ -305,8 +331,16 @@ public class DialogueBoxController {
         contentPanel.setBorder(defaultBorder);
 	switch (guiRoot.getScreenHandler().getMode()) {
 	    case ScreenHandler.FULL_SCREEN:
-		JInternalFrame jif = new JInternalFrame("Railz Dialog",
-			true);
+		JInternalFrame jif = new JInternalFrame
+		    (Resources.get("Railz Dialog"), true);
+		if (addCloseButton) {
+		    GridBagConstraints constraints = new GridBagConstraints();
+		    constraints.gridx = 0;
+		    constraints.gridy = 1;
+		    JButton closeButton = new JButton(Resources.get("Close"));
+		    closeButton.addActionListener(new CloseButtonListener(jif));
+		    contentPanel.add(closeButton, constraints);
+		}
 		jif.getContentPane().add(contentPanel);
 		jif.pack();
 		jif.setLocation((frame.getWidth() - jif.getWidth()) / 2,
@@ -317,12 +351,22 @@ public class DialogueBoxController {
 		jif.show();
 		break;
 	    default:
-		JDialog jd = new JDialog(frame, "Railz Dialog", false);
+		JDialog jd = new JDialog(frame, Resources.get("Railz Dialog"),
+			    false);
+		if (addCloseButton) {
+		    GridBagConstraints constraints = new GridBagConstraints
+			();
+		    constraints.gridx = 0;
+		    constraints.gridy = 1;
+		    JButton closeButton = new JButton(Resources.get("Close"));
+		    closeButton.addActionListener(new CloseButtonListener(jd));
+		    contentPanel.add(closeButton, constraints);
+		}
 		jd.getContentPane().add(contentPanel);
 		jd.pack();
 		jd.setLocation(frame.getX() +
 			(frame.getWidth() - jd.getWidth()) / 2,
-		       	frame.getY() +
+			frame.getY() +
 			(frame.getHeight() - jd.getHeight()) / 2);
 		dialog = jd;
 		jd.show();
@@ -330,11 +374,15 @@ public class DialogueBoxController {
 	}
     }
 
-    public void closeContent() {
+    private void closeContent(Component dialog) {
         dialog.setVisible(false);
         if (null != defaultFocusOwner) {
             defaultFocusOwner.requestFocus();
         }
+    }
+
+    public void closeContent() {
+	closeContent(dialog);
     }
     
     public void setDefaultFocusOwner(Component defaultFocusOwner) {

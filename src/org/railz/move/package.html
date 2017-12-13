@@ -5,7 +5,7 @@
 <body bgcolor="white">
 <p>Provides classes that encapsulate changes to the game world. The classes implement 
   the GoF command pattern, and they are referred to as 'moves'. All moves should 
-  implement the interface {@link jfreerails.move.Move}. The javadoc comment for 
+  implement the interface {@link org.railz.move.Move}. The javadoc comment for 
   the interface move sets out the contract they should obey in addition to implementing 
   the methods it defines. </p>
 <p><strong>Guide lines for writing moves</strong></p>
@@ -20,23 +20,23 @@
   </tr>
   <tr> 
     <td>adds an item to a list</td>
-    <td>{@link jfreerails.move.AddItemToListMove}</td>
+    <td>{@link org.railz.move.AddItemToListMove}</td>
   </tr>
   <tr> 
     <td>removes an item from a list</td>
-    <td>{@link jfreerails.move.RemoveItemFromListMove}</td>
+    <td>{@link org.railz.move.RemoveItemFromListMove}</td>
   </tr>
   <tr> 
     <td>changes an item in a list </td>
-    <td>{@link jfreerails.move.ChangeItemInListMove}</td>
+    <td>{@link org.railz.move.ChangeItemInListMove}</td>
   </tr>
   <tr>
     <td>does several things</td>
-    <td>{@link jfreerails.move.CompositeMove}</td>
+    <td>{@link org.railz.move.CompositeMove}</td>
   </tr>
 </table>
 <p>(3) Consider writing a junit testcase for the move, and if you do, make the 
-  testcase a extend {@link jfreerails.move.AbstractMoveTestCase}.</p>
+  testcase a extend {@link org.railz.move.AbstractMoveTestCase}.</p>
 <p>&nbsp;</p>
 </body>
 </html>

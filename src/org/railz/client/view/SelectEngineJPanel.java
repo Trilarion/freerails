@@ -22,20 +22,26 @@
  */
 
 package org.railz.client.view;
+
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.text.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
 
 import org.railz.client.model.ModelRoot;
 import org.railz.client.renderer.ViewLists;
-import org.railz.world.top.KEY;
-import org.railz.world.top.ReadOnlyWorld;
-import org.railz.world.train.EngineType;
+import org.railz.util.*;
+import org.railz.world.common.*;
+import org.railz.world.player.*;
+import org.railz.world.top.*;
+import org.railz.world.train.*;
+import org.railz.world.track.*;
+
 /**
  * This JPanel lets the user select an engine from a list.
  *
@@ -43,11 +49,110 @@ import org.railz.world.train.EngineType;
  *
  */
 public class SelectEngineJPanel extends javax.swing.JPanel {
+    private ModelRoot modelRoot;
+
+    private DefaultTableColumnModel tableColumnModel;
+
+    private static final DecimalFormat decimalFormat = new DecimalFormat
+	("###");
     
+    private class SpeedTableModel extends AbstractTableModel {
+	
+	private EngineType engineType;
+	
+	/** gradient in % */
+	public float[] gradient = new float[] {0, 1, 2, 3, 4, 5};
+	/** mass in tonnes */
+	public int[] mass = new int[] {50, 100, 100, 150, 200};
+
+	public int getRowCount() {
+	    return mass.length;
+	}
+
+	public int getColumnCount() {
+	    return gradient.length + 1;
+	}
+
+	public Object getValueAt(int row, int column) {
+	    if (column == 0)
+		return new Float(mass[row]);
+	    
+	    if (engineType == null)
+		return new Float(0);
+
+	    float maxSpeed = engineType.getMaxSpeed(
+		    (float) gradient[column - 1], mass[row]);
+	    // convert from deltas per tick to miles per hour
+	    maxSpeed *= ((float) GameTime.TICKS_PER_BIG_TICK)
+		/ (TrackTile.DELTAS_PER_TILE *
+			EngineType.TILE_HOURS_PER_MILE_BIGTICKS);
+	    return decimalFormat.format((double) maxSpeed);
+	}
+
+	public SpeedTableModel(EngineType et) {
+	    engineType = et;
+	}
+
+	public String getColumnName(int column) {
+	    if (column == 0)
+		return "Mass \\ gradient";
+	    return  String.valueOf(gradient[column - 1]);
+	}
+    }
+
+    private static class EngineTypeListModel implements ListModel {
+	private ArrayList engineTypes = new ArrayList();
+
+	public EngineTypeListModel (ReadOnlyWorld w) {
+	    NonNullElements i = new NonNullElements
+		(KEY.ENGINE_TYPES, w, Player.AUTHORITATIVE);
+	    while (i.next()) {
+		EngineType et = (EngineType) i.getElement();
+		if (et.isAvailable())
+		    engineTypes.add(et);
+	    }
+	}
+
+	public void addListDataListener(ListDataListener l) {
+	    // do nothing
+	}
+
+	public void removeListDataListener(ListDataListener l) {
+	    // do nothing
+	}
+	
+	public Object getElementAt(int index) {
+	    if (index >= 0 && index < engineTypes.size())
+		return engineTypes.get(index);
+
+	    return null;
+	}
+
+	public int getSize() {
+	    return engineTypes.size();
+	}
+    }
+    
+    private void setEngineType(EngineType et) {
+	jTable1.setModel(new SpeedTableModel(et));
+	TableColumnModel tcm = jTable1.getColumnModel();
+	DefaultTableCellRenderer dtcr = 
+	   ((DefaultTableCellRenderer) jTable1.getDefaultRenderer(Float.class));
+	int width = dtcr.getFontMetrics(dtcr.getFont()).stringWidth("Mass \\ gradient");
+	tcm.getColumn(0).setMinWidth(width);
+	tcm.getColumn(0).setPreferredWidth(width);
+	width = dtcr.getFontMetrics(dtcr.getFont()).charWidth('m') * 3;
+	for (int i = 1; i < tcm.getColumnCount(); i++) {
+	    tcm.getColumn(i).setMinWidth(width);
+	    tcm.getColumn(i).setPreferredWidth(width);
+	}
+    }
+
     /** Creates new form SelectEngineJPanel */
     public SelectEngineJPanel() {
         initComponents();
         jList1ValueChanged(null); //Disable the ok button if no engine type is selected.
+	setEngineType(null);
     }
     
     /** This method is called from within the constructor to
@@ -58,29 +163,21 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        okjButton = new javax.swing.JButton();
-        canceljButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
+        jPanel1 = new javax.swing.JPanel();
+        okjButton = new javax.swing.JButton();
+        canceljButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new org.railz.client.common.StretchableJTable();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new java.awt.BorderLayout(4, 4));
 
-        setPreferredSize(new java.awt.Dimension(400, 350));
-        okjButton.setText("OK");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 9, 10);
-        add(okjButton, gridBagConstraints);
-
-        canceljButton.setText("Cancel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        add(canceljButton, gridBagConstraints);
-
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.setVisibleRowCount(4);
         jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jList1ValueChanged(evt);
@@ -89,15 +186,47 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
 
         jScrollPane1.setViewportView(jList1);
 
+        add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        okjButton.setText("OK");
+        jPanel1.add(okjButton);
+
+        canceljButton.setText("Cancel");
+        jPanel1.add(canceljButton);
+
+        add(jPanel1, java.awt.BorderLayout.SOUTH);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText(org.railz.util.Resources.get("Top Speed / mph"));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        jPanel2.add(jLabel1, gridBagConstraints);
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane2.setViewportView(jTable1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(jScrollPane1, gridBagConstraints);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        jPanel2.add(jScrollPane2, gridBagConstraints);
+
+        add(jPanel2, java.awt.BorderLayout.EAST);
 
     }//GEN-END:initComponents
     
@@ -106,15 +235,22 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
             
             if (-1 == jList1.getSelectedIndex()) {
                 okjButton.setEnabled(false);
+		setEngineType(null);
             } else {
                 okjButton.setEnabled(true);
+		setEngineType((EngineType) jList1.getSelectedValue());
             }
 	} //GEN-LAST:event_jList1ValueChanged
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton canceljButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JButton okjButton;
     // End of variables declaration//GEN-END:variables
     
@@ -143,8 +279,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
             String text =
             "<html><body>"
             + (isSelected ? "<strong>" : "")
-            + engine.getEngineTypeName() + "<br>"
-            + engine.getMaxSpeed() + " m.p.h.<br>"
+            + Resources.get(engine.getEngineTypeName()) + "<br>"
 	    + "price: $" + engine.getPrice() + "<br>" +
 	    "maintenance: $" + engine.getMaintenance() + "/year<br>"
 	    + "fuel consumption: " + engine.getAnnualFuelConsumption() +
@@ -165,9 +300,12 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
     
     public void setup(ModelRoot modelRoot,
 	    ActionListener submitButtonCallBack) {
-        jList1.setModel(new World2ListModelAdapter(modelRoot.getWorld(),
-		    KEY.ENGINE_TYPES, modelRoot.getPlayerPrincipal()));
+	this.modelRoot = modelRoot;
+	ListModel w2lma = new
+	    EngineTypeListModel(modelRoot.getWorld());
+        jList1.setModel(w2lma);
         jList1.setCellRenderer(new TrainCellRenderer(modelRoot.getViewLists()));
+	jList1.setPrototypeCellValue(w2lma.getElementAt(0));
         okjButton.addActionListener(submitButtonCallBack);
     }
     
@@ -186,6 +324,13 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
      *
      */
     public int getEngineType(){
-        return jList1.getSelectedIndex();
+	NonNullElements i = new NonNullElements(KEY.ENGINE_TYPES,
+		modelRoot.getWorld(), Player.AUTHORITATIVE);
+	while (i.next()) {
+	    if (i.getElement().equals(jList1.getSelectedValue()))
+		return i.getIndex();
+	}
+
+        return -1;
     }
 }

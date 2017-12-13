@@ -95,6 +95,9 @@ public class TrainOrdersListModel extends AbstractListModel implements
 
     public Component getListCellRendererComponent(JList list, Object value,
 	    int index, boolean isSelected, boolean cellHasFocus) {
+	if (index < 0 || index >= listCells.size())
+	    return null;
+
 	TrainOrderJPanel toj = (TrainOrderJPanel) listCells.get(index);
 	toj.update((TrainOrdersListModel.TrainOrdersListElement) value,
 		isSelected, index);

@@ -20,7 +20,7 @@
 *
 * Created on 30 July 2001, 06:49
 */
-package org.railz.client.top;
+package org.railz.client.view;
 
 import java.util.Enumeration;
 import javax.swing.Action;

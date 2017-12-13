@@ -73,7 +73,7 @@ public class MapFixtureFactory {
         legalTrackConfigurations[0] = trackTemplates0;
         legalTrackPlacement[0] = new boolean[] { true, true, true, true };
         trackRulesArray[0] = new TrackRule(0, "type0", false, 10,
-		legalTrackConfigurations[0], 0, legalTrackPlacement[0]);
+		legalTrackConfigurations[0], 0, legalTrackPlacement[0], false);
 
         //2nd track type..
         legalTrackConfigurations[1] = new byte[] {
@@ -83,13 +83,13 @@ public class MapFixtureFactory {
 
         legalTrackPlacement[1] = new boolean[] { true, true, true, true };
         trackRulesArray[1] = new TrackRule(0, "type1", false, 20,
-		legalTrackConfigurations[1], 0, legalTrackPlacement[1]);
+		legalTrackConfigurations[1], 0, legalTrackPlacement[1], false);
 
         //3rd track type..
         legalTrackConfigurations[2] = new byte[0];
         legalTrackPlacement[2] = new boolean[] { true, true, true, true };
         trackRulesArray[2] = new TrackRule(0, "type2", false, 30,
-		legalTrackConfigurations[2], 0, legalTrackPlacement[2]);
+		legalTrackConfigurations[2], 0, legalTrackPlacement[2], false);
 
         //Add track rules to world
         for (int i = 0; i < trackRulesArray.length; i++) {
@@ -100,6 +100,6 @@ public class MapFixtureFactory {
         //We need this since when we built track, the terrain type gets check to see if we can
         //built track on it and an exception is thrown if terrain type 0 does not exist.
 	world.add(KEY.TERRAIN_TYPES, new TerrainType(0,
-		    TerrainType.CATEGORY_COUNTRY, "Dummy Terrain", 0L));
+		    TerrainType.CATEGORY_COUNTRY, "Dummy Terrain", 0L, 10, 10));
     }
 }

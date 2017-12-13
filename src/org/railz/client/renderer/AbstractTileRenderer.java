@@ -120,6 +120,9 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     abstract public void dumpImages(ImageManager imageManager);
 
+    /**
+     * @return a '/' separated relative filename
+     */
     protected String generateRelativeFileName(int i) {
 	String dir;
 	if (layer == LAYER_BUILDING)
@@ -129,9 +132,9 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
 	String num = generateFileNameNumber(i);
 	if (num == null) { 
-	    return dir + File.separator + terrainType + ".png";
+	    return dir + "/" + terrainType + ".png";
 	} else {
-	    return dir + File.separator + terrainType + "_" +
+	    return dir + "/" + terrainType + "_" +
         generateFileNameNumber(i) + ".png";
 	}
     }

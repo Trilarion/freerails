@@ -32,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.security.GeneralSecurityException;
+import java.util.logging.*;
 
 import org.railz.client.common.FileUtils;
 import org.railz.client.common.ScreenHandler;
@@ -49,7 +50,9 @@ import org.railz.world.player.Player;
  */
 public class Launcher extends javax.swing.JFrame implements
 FreerailsProgressMonitor {
-    private static final int GAME_SPEED_SLOW = 0;
+    private static final int GAME_SPEED_PAUSED = 0;
+    private static final int GAME_SPEED_SLOW = 10;
+    
 	private Component[] wizardPages = new Component[4];
     int currentPage = 0;
 
@@ -105,7 +108,8 @@ FreerailsProgressMonitor {
 		} else {
 		    sci = gs.getSavedGame(this, 0, msp.getLoadFilename());
 		}
-		sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);  //Set initial game speed to slow.
+		//Set initial game speed to paused.
+		sci.setTargetTicksPerSecond(GAME_SPEED_PAUSED);
 		mode = cop.isWindowed() ? ScreenHandler.WINDOWED_MODE :
 		    ScreenHandler.FULL_SCREEN;
 		try {
@@ -215,7 +219,8 @@ FreerailsProgressMonitor {
 		setNextEnabled(true);
 		currentPage = 3;
 		cl.show(jPanel1, "3");
-		/* TODO start server! */
+		/* TODO additional server control screen including game speed
+		 * controls */
 	}
     }
 
@@ -254,6 +259,20 @@ FreerailsProgressMonitor {
      * Runs the game.
      */
     public static void main (String args[]) {
+	// configure the logging properties
+	LogManager lm = LogManager.getLogManager();
+	try {
+	    lm.readConfiguration(Launcher.class.getResourceAsStream
+		    ("/org/railz/util/logging.properties"));
+	} catch (IOException e) {
+	    System.err.println("Couldn't open logging properties" +
+		    " due to IOException" + e.getMessage());
+	} catch (SecurityException e) {
+	    System.err.println("Couldn't open logging configuration " + 
+		    "due to SecurityException:" + e.getMessage());
+	}
+	Logger.getLogger("global").log(Level.SEVERE, "Logging enabled");
+	
 	Launcher launcher = new Launcher();
 	launcher.show();
     }
@@ -445,6 +464,7 @@ FreerailsProgressMonitor {
 		/* Connection status screen */
 		prevButton.setEnabled(false);
 		sci.setTargetTicksPerSecond(GAME_SPEED_SLOW);
+		setMessage(Resources.get("Game started."));
 		setNextEnabled(false);
 	}
     }//GEN-LAST:event_nextButtonActionPerformed

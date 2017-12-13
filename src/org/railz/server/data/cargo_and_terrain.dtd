@@ -41,11 +41,16 @@
 
 <!ELEMENT Tile EMPTY>
 
+<!--
+  ++ elevation and roughness are in 100ths of % in gradient terms
+  -->
 <!ATTLIST Tile
     Category (River | Ocean | Hill | Country) #REQUIRED
     rgb CDATA #REQUIRED
     id ID #REQUIRED
     baseValue CDATA #REQUIRED
+    elevation CDATA #REQUIRED
+    roughness CDATA #REQUIRED
   >
   
 <!--
@@ -89,9 +94,14 @@
     fuelType (Coal|Diesel|Electric) #REQUIRED
     price CDATA #REQUIRED
     maintenance CDATA #REQUIRED
-    maxSpeed CDATA #REQUIRED
     annualFuelConsumption CDATA #REQUIRED
-    waterCapacity CDATA #REQUIRED>
+    waterCapacity CDATA #REQUIRED
+    mass CDATA #REQUIRED
+    powerOutput CDATA #REQUIRED
+    maxTractiveForce CDATA #REQUIRED
+    dragCoeff CDATA #REQUIRED
+    frictionCoeff CDATA #REQUIRED
+    available (true|false) #REQUIRED>
 
 <!ELEMENT FuelPrice EMPTY>
 <!ATTLIST FuelPrice
@@ -119,5 +129,25 @@
 
 <!ELEMENT StationImprovements (StationImprovement)*>
 
+<!ELEMENT WagonType EMPTY>
+<!ATTLIST WagonType
+    id ID #REQUIRED
+    category (mail|passenger|fast_freight|slow_freight|bulk_freight)
+#REQUIRED
+    capacity CDATA #REQUIRED
+    unladenMass CDATA #REQUIRED
+    cargoType IDREF #REQUIRED
+    >
+    
+<!ELEMENT WagonTypes (WagonType)*>
+
+<!ELEMENT ScriptingParam EMPTY>
+<!ATTLIST ScriptingParam
+    name CDATA #REQUIRED
+    value CDATA #REQUIRED
+>
+
+<!ELEMENT ScriptingEvent (ScriptingParam)*>
+
 <!ELEMENT Types (Cargo_Types, Terrain_Types, Building_Types, EngineTypes,
-	Economy, StationImprovements)>
+	Economy, StationImprovements, WagonTypes)>

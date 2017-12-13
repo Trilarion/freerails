@@ -62,7 +62,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     public static BufferedImage createImageFor(TerrainType t) {
-	System.out.println("Creating QuickRGBImage");
 	BufferedImage image = defaultConfiguration.createCompatibleImage(30,
 		30);
         Color c = new Color(t.getRGB());

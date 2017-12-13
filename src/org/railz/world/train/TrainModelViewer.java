@@ -21,6 +21,7 @@
 package org.railz.world.train;
 
 import java.util.GregorianCalendar;
+import org.railz.world.cargo.*;
 import org.railz.world.common.*;
 import org.railz.world.player.*;
 import org.railz.world.top.*;
@@ -99,5 +100,27 @@ public class TrainModelViewer implements FixedAsset {
 	if (wr < 0)
 	    wr = 0;
 	return wr;
+    }
+
+    public int getTotalMass() {
+	EngineType et = (EngineType) world.get(KEY.ENGINE_TYPES,
+		trainModel.getEngineType(), Player.AUTHORITATIVE);
+	int mass = et.getMass();
+	for (int i = 0; i < trainModel.getNumberOfWagons(); i++) {
+	    int wagonType = trainModel.getWagon(i);
+	    
+	    WagonType wt = (WagonType) world.get(KEY.WAGON_TYPES, wagonType,
+		    Player.AUTHORITATIVE);
+	    mass += wt.getUnladenMass();
+	}
+
+	// add mass of cargo
+	CargoBundle cb = (CargoBundle) world.get(KEY.CARGO_BUNDLES,
+		trainModel.getCargoBundleNumber(), Player.AUTHORITATIVE);
+	for (int i = 0; i < world.size(KEY.CARGO_TYPES, Player.AUTHORITATIVE);
+		    i++) {
+		mass += cb.getAmount(i);
+		}
+	return mass;	
     }
 }

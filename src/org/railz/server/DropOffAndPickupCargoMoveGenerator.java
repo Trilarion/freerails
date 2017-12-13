@@ -19,6 +19,7 @@ package org.railz.server;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.logging.*;
 
 import org.railz.controller.*;
 import org.railz.move.AddTransactionMove;
@@ -48,6 +49,7 @@ import org.railz.world.player.*;
 class DropOffAndPickupCargoMoveGenerator {
     private ReadOnlyWorld w;
     private MoveReceiver moveReceiver;
+    private static final Logger logger = Logger.getLogger("global");
 
     /**
      * Cargo on board the train is unloaded and sold.
@@ -80,7 +82,7 @@ class DropOffAndPickupCargoMoveGenerator {
             //if the cargo is demanded.
             DemandAtStation demand = station.getDemand();
             int cargoType = cb.getCargoType();
-	    System.out.println("Unloading cargo " + cargoType);
+	    logger.log(Level.INFO, "Unloading cargo " + cargoType);
 
             if (demand.isCargoDemanded(cargoType)) {
                 int amount = trainAfter.getAmount(cb);
@@ -114,11 +116,12 @@ class DropOffAndPickupCargoMoveGenerator {
 	ChangeCargoBundleMove changeOnTrain = new
 	    ChangeCargoBundleMove(trainBefore, trainAfter, trainBundleId);
 
-	System.out.println("train " + trainKey.index + ": stationAfter = " + 
-		stationAfter + ", stationBefore = " + stationBefore +
-	       	", trainAfter = " + trainAfter + ", trainBefore = " + trainBefore + ", dropped off = " + cargoDroppedOff);
+	logger.log(Level.FINE, "train " + trainKey.index + ": stationAfter = "
+		+ stationAfter + ", stationBefore = " + stationBefore +
+		", trainAfter = " + trainAfter + ", trainBefore = " +
+		trainBefore + ", dropped off = " + cargoDroppedOff);
 
-	System.out.println("payment = " + payment);
+	logger.log(Level.FINE,"payment = " + payment);
 	moveReceiver.processMove(TransferCargoAtStationMove.generateMove
 		(changeAtStation, changeOnTrain, payment));
     }
@@ -270,7 +273,7 @@ class DropOffAndPickupCargoMoveGenerator {
         //First calculate the train's total capacity.
         for (int j = 0; j < train.getNumberOfWagons(); j++) {
 	    WagonType wagonType = (WagonType) w.get(KEY.WAGON_TYPES,
-		    train.getWagon(j));
+		    train.getWagon(j), Player.AUTHORITATIVE);
 	    int cargoType = wagonType.getCargoType();
 
             spaceAvailable[cargoType] += wagonType.getCapacity();

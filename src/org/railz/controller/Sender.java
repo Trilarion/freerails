@@ -77,4 +77,14 @@ class Sender {
             e.printStackTrace();
         }
     }
+
+    /** Call reset on the Sender's ObjectOutputStream */
+    synchronized void reset() {
+	try {
+	    objectOutputStream.reset();
+	} catch (IOException e) {
+	    System.err.println ("Caught an IOException resetting the " +
+		    "ObjectOutputStream:" + e);
+	}
+    }
 }
