@@ -2,8 +2,12 @@ Railz
 =====
 
 Railz is a GPL'd Railroad Tycoon - style railway strategy management game.
-The source is a fork of the JFreerails project:
-http://sourceforge.net/projects/freerails
+The source initially originated from the JFreerails project, but is now
+developed separately. The Railz website can be found at:
+http://www.majormajor.me.uk/twiki/bin/view.pl/Skyhook/Railz
+
+The source tree and release files are hosted by Belios.de:
+http://developer.berlios.de/projects/railz/
 
 Downloading:
 ============
@@ -28,7 +32,7 @@ Compilation:
 ============
 
 To compile, either 
-(i) go to the directory src, and type: javac jfreerails/launcher/Launcher.java
+(i) go to the directory src, and type: javac org/railz/launcher/Launcher.java
 or	
 (ii) use the build.xml file and Ant version 1.5.
 
@@ -57,7 +61,7 @@ Bug reports and Feature Requests
 --------------------------------
 If you have bugs, or suggestions for enhancement, please submit them to the bug
 report tool at
-http://majormajor.me.uk/bugzilla
+http://www.railz.org/bugzilla/
 
 Please check to see whether your bug has already been filed by someone else in
 the bug database first before filing it.
@@ -69,13 +73,15 @@ http://developer.berlios.de/mail/?group_id=1483
 
 Help Wanted!
 ============
-I will soon be looking for a "stable" branch developer. The stable branch will
-concentrate mostly on GUI enhancements and bug fixes.
+I am currently looking for a "stable" branch developer. The stable branch will
+concentrate mostly on GUI enhancements/features and bug fixes.
 
-Patches, graphics improvements etc. are always welcome.
+Patches, graphics improvements etc. are always welcome, as well as feedback on
+gameplay in general.
 
 Credits
 =======
 Thanks to Berlios.de for hosting the project, and also those who worked on
-JFreerails.
+JFreerails:
+http://sourceforge.net/projects/freerails
 

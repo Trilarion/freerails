@@ -1,0 +1,323 @@
+<!DOCTYPE Types SYSTEM "cargo_and_terrain.dtd">
+<Types>
+   <Cargo_Types>
+      <Cargo id="Mail" Category="Mail" baseValue="50" halfLife="900"
+      expiryTime="1400" />
+      <Cargo id="Passengers" Category="Passengers" baseValue="40"
+      halfLife="900" expiryTime="1400" />
+      <Cargo id="Food" Category="Fast_Freight" baseValue="30" halfLife="1500"
+      expiryTime="2000"/>
+      <Cargo id="Livestock" Category="Fast_Freight" baseValue="30"
+      halfLife="1500" expiryTime="2000" />
+      <Cargo id="Mfg._Goods" Category="Fast_Freight" baseValue="30"
+      halfLife="1500" expiryTime="2000" />
+      <Cargo id="Grain" Category="Slow_Freight" baseValue="20" halfLife="2000"
+      expiryTime="3000" />
+      <Cargo id="Coffee" Category="Slow_Freight" baseValue="25"
+      halfLife="2000" expiryTime="3000" />
+      <Cargo id="Export_Goods" Category="Slow_Freight" baseValue="35"
+      halfLife="1500" expiryTime="2000" />
+      <Cargo id="Petroleum" Category="Bulk_Freight" baseValue="30"
+      halfLife="1500" expiryTime="2500" />
+      <Cargo id="Oil" Category="Bulk_Freight" baseValue="20" halfLife="1800"
+      expiryTime="3000" />
+      <Cargo id="Wood" Category="Bulk_Freight" baseValue="15" halfLife="1800"
+      expiryTime="3000" />
+      <Cargo id="Sugar" Category="Bulk_Freight" baseValue="20" halfLife="1800"
+      expiryTime="3000" />
+   </Cargo_Types>
+   <Terrain_Types>
+<!-- Don't include slums for now, LL
+      <Tile id="slums" Category="Urban" rgb="0" right-of-way="0"/>
+      <Tile id="Terminal" Category="Country" rgb="1" baseValue="1000" />
+-->
+      <Tile id="Clear" Category="Country" rgb="00b400" baseValue="2000" />
+      <Tile id="Desert" Category="Country" rgb="b42400" baseValue="500" />
+      <Tile id="Ocean" Category="Ocean" rgb="0000b4" baseValue="0" />
+      <Tile id="River" Category="River" rgb="0048d8" baseValue="0" />
+      <Tile id="Jungle" Category="Country" rgb="4890fc" baseValue="1500" />
+      <Tile id="Hills" Category="Hill" rgb="b4b4b4" baseValue="1500" />
+      <Tile id="Foothills" Category="Hill" rgb="90d8fc" baseValue="2000" />
+      <Tile id="Mountain" Category="Hill" rgb="ffffff" baseValue="1000" />
+   </Terrain_Types>
+   <Building_Types>
+      <Building_Type id="Refinery" category="Industry"
+      baseValue="6000" maintenance="0">
+      <!-- rgb="7" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" a="1" b="3" />
+	    <TerrainType terrainType="Desert" a="1" b="3"/>
+	    <TerrainType terrainType="Jungle" a="1" b="3" />
+	    <TerrainType terrainType="Hills" a="1" b="3" />
+	    <TerrainType terrainType="Foothills" a="1" b="3" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Converts input="Oil" output="Petroleum" />
+      </Building_Type>
+      <Building_Type id="City" baseValue="10000" category="Urban"
+      maintenance="0">
+      <!-- rgb="ef901e" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" a="2" b="1.5" />
+	    <TerrainType terrainType="Desert" a="2" b="1.5" />
+	    <TerrainType terrainType="Jungle" a="2" b="1.5" />
+	    <TerrainType terrainType="Hills" a="2" b="1.5" />
+	    <TerrainType terrainType="Foothills" a="2" b="1.5" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Mail" Rate="250" />
+         <Produces Cargo="Passengers" Rate="500" />
+         <Consumes Cargo="Mail" Prerequisite="2" />
+	 <Consumes Cargo="Passengers" Prerequisite="2" />
+         <Consumes Cargo="Mfg._Goods" Prerequisite="2" />
+         <Consumes Cargo="Food" Prerequisite="2" />
+      </Building_Type>
+      <Building_Type id="Village" baseValue="3000" category="Urban"
+      maintenance="0">
+      <!-- rgb="d86c48" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" a="0.2" b="1" c="0.005"/>
+	    <TerrainType terrainType="Desert" a="0.2" b="1"/>
+	    <TerrainType terrainType="Jungle" a="0.2" b="1" c="0.002" />
+	    <TerrainType terrainType="Hills" a="0.2" b="1" c="0.005" />
+	    <TerrainType terrainType="Foothills" a="0.2" b="1" c="0.005" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Mail" Rate="120" />
+         <Produces Cargo="Passengers" Rate="250" />
+         <Consumes Cargo="Mfg._Goods" Prerequisite="4" />
+         <Consumes Cargo="Mail" Prerequisite="4" />
+         <Consumes Cargo="Passengers" Prerequisite="4" />
+      </Building_Type>
+      <Building_Type id="Factory" baseValue="6000"
+      category="Industry" maintenance="0">
+	<!--  rgb="0000b7" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" a="1" b="3" />
+	    <TerrainType terrainType="Desert" a="1" b="3" />
+	    <TerrainType terrainType="Jungle" a="1" b="3" />
+	    <TerrainType terrainType="Hills" a="1" b="3" />
+	    <TerrainType terrainType="Foothills" a="1" b="3" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Converts input="Coffee" output="Export_Goods" />
+         <Converts input="Wood" output="Export_Goods" />
+         <Converts input="Sugar" output="Export_Goods" />
+         <Converts input="Petroleum" output="Export_Goods" />
+      </Building_Type>
+      <Building_Type id="Harbour" baseValue="5000"
+      category="Industry" maintenance="0">
+	<!-- Category="Ocean" rgb="1eead2" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" a="0.5" b="0.8" />
+	    <TerrainType terrainType="Desert" a="0.5" b="0.8" />
+	    <TerrainType terrainType="Jungle" a="0.5" b="0.8" />
+	    <TerrainType terrainType="Hills" a="0.5" b="0.8" />
+	    <TerrainType terrainType="Foothills" a="1" b="0.8" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <TerrainType terrainType="Ocean" />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Mail" Rate="120" />
+         <Produces Cargo="Passengers" Rate="250" />
+         <Produces Cargo="Mfg._Goods" Rate="500" />
+         <Converts input="Grain" output="Food" />
+         <Converts input="Export_Goods" output="Export_Goods" />
+         <Consumes Cargo="Grain" />
+         <Consumes Cargo="Coffee" />
+         <Consumes Cargo="Wood" />
+         <Consumes Cargo="Sugar" />
+      </Building_Type>
+      <Building_Type id="Stock-Yard" baseValue="4000"
+      category="Industry" maintenance="0">
+      <!-- rgb="3" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" a="1" b="3" />
+	    <TerrainType terrainType="Desert" a="1" b="3" />
+	    <TerrainType terrainType="Jungle" a="1" b="3" />
+	    <TerrainType terrainType="Hills" a="1" b="3" />
+	    <TerrainType terrainType="Foothills" a="1" b="3" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Converts input="Livestock" output="Food" />
+      </Building_Type>
+      <Building_Type id="Food_Proc._Plant" baseValue="5000" category="Industry"
+      maintenance="0">
+      <!-- rgb="5" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" a="1" b="3" />
+	    <TerrainType terrainType="Desert" a="1" b="3" />
+	    <TerrainType terrainType="Jungle" a="1" b="3" />
+	    <TerrainType terrainType="Hills" a="1" b="3" />
+	    <TerrainType terrainType="Foothills" a="1" b="3" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Converts input="Grain" output="Food"/>
+      </Building_Type>
+      <Building_Type id="Cattle_Ranch" baseValue="3000" category="Resource"
+      maintenance="0">
+      <!-- rgb="4" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" c="0.0025"/>
+	    <TerrainType terrainType="Desert" c="0.0005" />
+	    <TerrainType terrainType="Jungle" c="0.0015" />
+	    <TerrainType terrainType="Hills" c="0.002" />
+	    <TerrainType terrainType="Foothills" c="0.0025" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Livestock" Rate="500" />
+      </Building_Type>
+      <Building_Type id="Farm" baseValue="3000" category="Resource"
+	maintenance="0">
+      <!-- rgb="48fc48" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" c="0.004" />
+	    <TerrainType terrainType="Desert" c="0.00025" />
+	    <TerrainType terrainType="Jungle" c="0.001" />
+	    <TerrainType terrainType="Hills" c="0.0025" />
+	    <TerrainType terrainType="Foothills" c="0.0025" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+	<Produces Cargo="Grain" Rate="500" />
+	</Building_Type>
+      <Building_Type id="Grain_Elevator" baseValue="3000" category="Resource"
+      maintenance="0">
+      <!-- rgb="fcfc48" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" c="0.004"/>
+	    <TerrainType terrainType="Desert" c="0.00025" />
+	    <TerrainType terrainType="Jungle" c="0.001" />
+	    <TerrainType terrainType="Hills" c="0.0025" />
+	    <TerrainType terrainType="Foothills" c="0.0025" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Grain" Rate="500" />
+      </Building_Type>
+      <Building_Type id="Oil_Well" baseValue="3000" category="Resource"
+      maintenance="0">
+      <!-- rgb="ef901d" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" c="0.0015" />
+	    <TerrainType terrainType="Desert" c="0.005" />
+	    <TerrainType terrainType="Jungle" c="0.0015" />
+	    <TerrainType terrainType="Hills" c="0.002" />
+	    <TerrainType terrainType="Foothills"  c="0.002"/>
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Oil" Rate="500" />
+      </Building_Type>
+      <Building_Type id="Lumber_Mill" baseValue="3000" category="Resource"
+      maintenance="0">
+      <!-- rgb="ef901c" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" c="0.001" />
+	    <TerrainType terrainType="Desert" c="0.001" />
+	    <TerrainType terrainType="Jungle" c="0.01" />
+	    <TerrainType terrainType="Hills" c="0.001" />
+	    <TerrainType terrainType="Foothills" c="0.001" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Wood" Rate="500" />
+      </Building_Type>
+      <Building_Type id="Sugar_Plant." baseValue="3000" category="Resource"
+      maintenance="0">
+      <!-- rgb="ef901f" -->
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" c="0.003" />
+	    <TerrainType terrainType="Desert" c="0.001" />
+	    <TerrainType terrainType="Jungle" c="0.005" />
+	    <TerrainType terrainType="Hills" c="0.002" />
+	    <TerrainType terrainType="Foothills" c="0.002" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+         <Produces Cargo="Sugar" Rate="500" />
+      </Building_Type>
+      <!-- Ignore landing for now since gfx is just a blue square ands I don't
+      know what it is...
+      <Building_Type id="Landing" baseValue="3000" category="Industry"
+      maintenance="0">
+      - Category="River" rgb="0048d9" -
+         <Consumes Cargo="Grain" />
+         <Consumes Cargo="Coffee" />
+         <Consumes Cargo="Export_Goods" />
+         <Consumes Cargo="Wood" />
+         <Consumes Cargo="Sugar" />
+      </Building_Type>
+      -->
+      <Building_Type id="Depot" stationRadius="1" baseValue="50000"
+      maintenance="2000" category="Station">
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" />
+	    <TerrainType terrainType="Desert" />
+	    <TerrainType terrainType="Jungle" />
+	    <TerrainType terrainType="Hills" />
+	    <TerrainType terrainType="Foothills" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+	<TrackPieceTemplate trackTemplate="100010001" />
+	<TrackPieceTemplate trackTemplate="100010000" />
+      <!--  X="9" Y="10" doubleTrack="false" RGBvalue="000007" maxConsecutivePieces="0" -->
+      </Building_Type>
+      <Building_Type id="Station" stationRadius="2"
+      baseValue="100000" maintenance="2000" category="Station">
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" />
+	    <TerrainType terrainType="Desert" />
+	    <TerrainType terrainType="Jungle" />
+	    <TerrainType terrainType="Hills" />
+	    <TerrainType terrainType="Foothills" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+	<TrackPieceTemplate trackTemplate="100010001" />
+	<TrackPieceTemplate trackTemplate="100010000" />
+      <!-- X="9" Y="12"  doubleTrack="false" RGBvalue="000008"
+      maxConsecuativePieces="0"-->
+      </Building_Type>
+      <Building_Type id="Terminal" stationRadius="3"
+      baseValue="200000" maintenance="2000" category="Station">
+	<AcceptableTerrainTypes>
+	    <TerrainType terrainType="Clear" />
+	    <TerrainType terrainType="Desert" />
+	    <TerrainType terrainType="Jungle" />
+	    <TerrainType terrainType="Hills" />
+	    <TerrainType terrainType="Foothills" />
+	</AcceptableTerrainTypes>
+	<NeighbouringTerrainTypes>
+	    <AllTerrainTypes />
+	</NeighbouringTerrainTypes>
+	<TrackPieceTemplate trackTemplate="100010001" />
+	<TrackPieceTemplate trackTemplate="100010000" />
+      <!--  X="9" Y="14"  doubleTrack="false" maxConsecuativePieces="0"
+      RGBvalue="000009" -->
+      </Building_Type>
+   </Building_Types>
+</Types>
+

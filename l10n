@@ -1,7 +1,13 @@
 #!/bin/sh
 cd `dirname $0`
 HERE=`pwd`
-L10NDIR=$HERE/src/jfreerails/data/l10n
+DIRS="$HERE/src/org/railz/client \
+    $HERE/src/org/railz/controller \
+    $HERE/src/org/railz/launcher \
+    $HERE/src/org/railz/move \
+    $HERE/src/org/railz/world"
+
+L10NDIR=$HERE/src/org/railz/data/l10n
 
 # define your supported languages here...
 LANGUAGES="en de_DE"
@@ -20,7 +26,9 @@ if [ -z "$MSGMERGE" ]; then
 	MSGMERGE=msgmerge
 fi
 
-JAVAFILES=`find $HERE/src/jfreerails -name \*.java`
+##############################################
+# client-side messages
+JAVAFILES=`find $DIRS -name \*.java`
 
 # create messages.pot
 $XGETTEXT -D $HERE -p $L10NDIR $KEYWORDS \
@@ -36,6 +44,29 @@ for lang in $LANGUAGES ; do
 		$MSGMERGE -p -P \
 			-o $L10NDIR/jfreerails_$lang.properties \
 			$L10NDIR/jfreerails_$lang.properties \
+			$L10NDIR/messages.pot
+	fi
+done
+
+##############################################
+# Server-side messages
+JAVAFILES=`find $HERE/src/org/railz/server -name \*.java`
+
+# create messages.pot
+$XGETTEXT -D $HERE -p $L10NDIR $KEYWORDS \
+	--properties $JAVAFILES
+mv $L10NDIR/messages.po $L10NDIR/messages.pot
+
+
+for lang in $LANGUAGES ; do
+	if [ ! -r $L10NDIR/server_$lang.properties ] ; then
+		$MSGINIT -i $L10NDIR/messages.pot \
+			-o $L10NDIR/server_$lang.properties \
+			-P -l $lang -p
+	else
+		$MSGMERGE -p -P \
+			-o $L10NDIR/server_$lang.properties \
+			$L10NDIR/server_$lang.properties \
 			$L10NDIR/messages.pot
 	fi
 done

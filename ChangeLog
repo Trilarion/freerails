@@ -1,3 +1,82 @@
+October 17, 2004:
+-----------------
+Added PAUSED message when game paused
+October 10, 2004:
+-----------------
+Fixed some more problems with train motion and synchronization
+September 30, 2004:
+-------------------
+Fix load/save problem with train blocking
+September 26, 2004:
+-------------------
+Fix null pointer exception in Schedule changes
+September 25, 2004:
+-------------------
+Fix to bug where player was not being paid for cargo made by factories
+September 24, 2004:
+-------------------
+Adjustments to train schedule pane
+August 15, 2004:
+----------------
+Fixed pathfinder bug
+August 14, 2004:
+----------------
+Added new scenario.
+August 10, 2004:
+----------------
+Added game info dialog showing game objective and statistics for different players.
+August 3, 2004:
+--------------
+Added infrastructure for Bug 28 - Game world objects contain non-internationalised strings
+Clients can now request a resources file from the server containing translations of strings in the client app's locale.
+Added server-side support for statistics gathering, and different game victory scenarios.
+July 30, 2004:
+--------------
+Change to buffering setup.
+Addition of train priority code.
+Rework of train movement.
+July 19, 2004:
+--------------
+Implemented cargo ageing - cargo becomes less valuable over time and each cargo type has a different expiry after which time it is removed from the station.
+Renamed packages from jfreerails.* to org.railz.*
+July 18, 2004:
+--------------
+Fix for bug 3 - Train list button on schedule pane doesn't work
+July 15, 2004:
+--------------
+Fixed bug 40 - terrain info doesn't update when user clicks in build mode
+July 14, 2004:
+--------------
+Fixed bug 32 - Primary resources should be more widely scattered.
+Fixed bug 35 - Buildings should have transparent Backgrounds.
+Fixed bug 36 - Station name is shown as foo (standard track) on station view
+Fixed bug 39 - upgrading track causes "track has been changed" message
+May 21, 2004:
+-------------
+Fixed some bugs with the train schedule dialog
+May 16, 2004:
+-------------
+Improvements to some building graphics
+Fix for bug 37 - track type not shown in terrain info dialog
+May 15, 2004:
+-------------
+Fix for bug 17 - resources don't all fit on station info tab
+May 14, 2004:
+-------------
+Fix for bug 34 - buildings no longer appear on mini map
+Fix for bug 31 - terrain info doesn't show building title
+May 13, 2004:
+-------------
+Fix for bug 33 - harbours should be placed next to sea
+Fix for bug 29 - Blue blobs on map near cities
+Update docs for new domain name
+May 09, 2004:
+-------------
+Rendering bugs and train motion bugs fixed.
+Fix for bug 30 - Can't build stations on end track pieces
+Apr 27, 2004:
+-------------
+Mid-way through the "Great Refactoring"...
 Apr 06, 2004:
 -------------
 Fix for bug 24 - display mode selection now works again

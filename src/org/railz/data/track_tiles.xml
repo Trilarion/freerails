@@ -1,0 +1,140 @@
+<!DOCTYPE Tiles SYSTEM "track_tiles.dtd">
+<!--This file species the track (and station) types, and the legal track configurations for each of these types.-->
+<Tiles>
+      <TrackType type="standard track" X="0" Y="0"  doubleTrack="false"
+      maxConsecutivePieces="0" RGBvalue="000000" price="10000"
+      maintenance="1000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="Country" />
+            <TerrainType name="Hill" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010001">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010011">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010110">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010111010">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010011000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="011010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010111000">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+      <TrackType type="double track" X="0" Y="15"  doubleTrack="true"
+      maxConsecutivePieces="0" RGBvalue="000001" price="20000"
+      maintenance="2000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="Country" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010001">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010011">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010110">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010111010">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+      <TrackType type="tunnel" X="9" Y="0"  doubleTrack="false"
+      maxConsecutivePieces="0" RGBvalue="000002" price="40000"
+      maintenance="2000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="Hill" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+      <TrackType type="wooden trestle bridge" X="9" Y="2"  doubleTrack="false"
+      maxConsecutivePieces="0" RGBvalue="000003" price="50000"
+      maintenance="2000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="River" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+      <TrackType type="steel girder bridge" X="9" Y="4"  doubleTrack="false"
+      maxConsecutivePieces="0" RGBvalue="000004" price="100000"
+      maintenance="2000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="River" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+      <TrackType type="stone masonry bridge" X="9" Y="6"  doubleTrack="false"
+      maxConsecutivePieces="0" RGBvalue="000005" price="200000"
+      maintenance="2000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="River" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+      <TrackType type="signal tower" X="9" Y="8"  doubleTrack="false"
+      maxConsecutivePieces="0" RGBvalue="000006" price="25000"
+      maintenance="2000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="Country" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+      <TrackType type="ferry-boat route" X="0" Y="9"  doubleTrack="false"
+      maxConsecutivePieces="0" RGBvalue="000010" price="15000"
+      maintenance="2000">
+         <CanOnlyBuildOnTheseTerrainTypes>
+            <TerrainType name="Ocean" />
+         </CanOnlyBuildOnTheseTerrainTypes>
+         <ListOfTrackPieceTemplates>
+            <TrackPieceTemplate trackTemplate="010010000">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010010">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010001">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010011">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010010110">
+            </TrackPieceTemplate>
+            <TrackPieceTemplate trackTemplate="010111010">
+            </TrackPieceTemplate>
+         </ListOfTrackPieceTemplates>
+      </TrackType>
+</Tiles>
+

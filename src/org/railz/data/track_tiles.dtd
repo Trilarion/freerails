@@ -1,0 +1,47 @@
+<!--
+    Typical usage:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE Tiles SYSTEM "Track_Tiles.dtd">
+
+    <Tiles>
+    ...
+    </Tiles>
+-->
+
+  <!ELEMENT CanOnlyBuildOnTheseTerrainTypes (TerrainType)*>
+
+  <!ELEMENT ListOfTrackPieceTemplates (TrackPieceTemplate)*>
+
+  <!ELEMENT Tiles (TrackType)*>
+
+  <!ELEMENT TerrainType EMPTY>
+  <!ATTLIST TerrainType
+    name CDATA #REQUIRED
+  >
+
+  <!ELEMENT TrackType (CanOnlyBuildOnTheseTerrainTypes,ListOfTrackPieceTemplates)>
+  <!ATTLIST TrackType
+    RGBvalue CDATA #REQUIRED
+    doubleTrack (true|false)  #REQUIRED
+    maxConsecutivePieces CDATA #REQUIRED
+    type CDATA #REQUIRED
+    Y CDATA #REQUIRED
+    X CDATA #REQUIRED
+    price CDATA #REQUIRED
+    maintenance CDATA #REQUIRED
+  >
+
+  <!ELEMENT TrackPieceTemplate EMPTY>
+  <!--
+    ++ trackTemplate is a 9 bit binary number which encodes a track template.
+    ++ A 1 indicates the presence of track.
+    ++ Bit 8(MSB)   7	6   5	4   3	2   1	0(LSB)
+    ++     NW	    N	NE  W	N/A E	SW  S	SE
+    -->
+
+  <!ATTLIST TrackPieceTemplate
+    trackTemplate CDATA #REQUIRED
+  >
+

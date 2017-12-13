@@ -1,0 +1,85 @@
+
+<!ELEMENT Cargo EMPTY>
+<!ATTLIST Cargo
+    Category (Mail | Passengers | Fast_Freight  | Slow_Freight  | Bulk_Freight  ) #REQUIRED
+    id ID #REQUIRED
+    baseValue CDATA #REQUIRED
+    halfLife CDATA #REQUIRED
+    expiryTime CDATA #REQUIRED
+  >
+
+<!ELEMENT Cargo_Types (Cargo)*>
+
+<!ELEMENT TrackPieceTemplate EMPTY>
+<!--
+  ++ trackTemplate is a 9 bit binary number which encodes a track template.
+  ++ A 1 indicates the presence of track.
+  ++ Bit 8(MSB)   7	6   5	4   3	2   1	0(LSB)
+  ++     NW	    N	NE  W	N/A E	SW  S	SE
+  -->
+<!ATTLIST TrackPieceTemplate trackTemplate CDATA #REQUIRED >
+
+<!ELEMENT Consumes EMPTY>
+<!ATTLIST Consumes
+    Prerequisite ( 1 | 2 | 4 | 8 | 16 )  #IMPLIED
+    Cargo IDREF #REQUIRED
+  >
+
+<!ELEMENT Converts EMPTY>
+<!ATTLIST Converts
+    input IDREF #REQUIRED
+    output IDREF #REQUIRED
+  >
+
+<!ELEMENT Produces EMPTY>
+<!ATTLIST Produces
+    Cargo IDREF #REQUIRED
+    Rate CDATA #REQUIRED
+  >
+
+<!ELEMENT Terrain_Types (Tile)*>
+
+<!ELEMENT Tile EMPTY>
+
+<!ATTLIST Tile
+    Category (River | Ocean | Hill | Country) #REQUIRED
+    rgb CDATA #REQUIRED
+    id ID #REQUIRED
+    baseValue CDATA #REQUIRED
+  >
+  
+<!--
+  ++ Buildings are placed according to two methods:
+  ++ 1. City based distribution
+  ++ p(x, y) = a*exp(-rb)
+  ++ 2. Rural distribution
+  ++ p(x, y) = c
+  -->
+<!ELEMENT TerrainType EMPTY>
+<!ATTLIST TerrainType 
+	terrainType CDATA #REQUIRED
+	a CDATA "0"
+	b CDATA "1"
+	c CDATA "0">
+
+<!ELEMENT AllTerrainTypes EMPTY>
+
+<!ELEMENT AcceptableTerrainTypes (TerrainType*|AllTerrainTypes)>
+
+<!ELEMENT NeighbouringTerrainTypes (TerrainType*|AllTerrainTypes)>
+
+<!ELEMENT Building_Types (Building_Type)*>
+
+<!ELEMENT Building_Type (AcceptableTerrainTypes, NeighbouringTerrainTypes,
+       	(TrackPieceTemplate|Converts|Consumes|Produces)*)>
+
+<!ATTLIST Building_Type
+	id ID #REQUIRED
+	baseValue CDATA #REQUIRED
+	maintenance CDATA #REQUIRED
+	stationRadius CDATA #IMPLIED
+	category (Urban | Resource | Industry | Station) #REQUIRED
+>
+
+<!ELEMENT Types (Cargo_Types, Terrain_Types, Building_Types)>
+
