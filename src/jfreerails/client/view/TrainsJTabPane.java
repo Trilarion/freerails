@@ -1,9 +1,25 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 /**
  * The tabbed panel that sits in the lower right hand corner of the screen
  */
 
 /*
- * $Id: TrainsJTabPane.java,v 1.4 2004/03/15 23:50:24 rtuck99 Exp $
+ * $Id: TrainsJTabPane.java,v 1.6 2004/04/05 22:20:05 rtuck99 Exp $
  */
 
 package jfreerails.client.view;
@@ -38,7 +54,7 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 	buildJPane = new BuildJPane();
     }
     
-    public void setup(ModelRoot modelRoot) {	
+    public void setup(ModelRoot modelRoot, GUIRoot gr) {	
 	world = modelRoot.getWorld();
 	ViewLists vl = modelRoot.getViewLists();
 	
@@ -52,7 +68,7 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
 
 	terrainInfoPanel.setup(world, vl);
 	stationInfoPanel.setup(modelRoot);
-	trainSchedulePanel.setup(world, vl, modelRoot);
+	trainSchedulePanel.setup(modelRoot, gr);
  	buildJPane.setup(vl, modelRoot);
         modelRoot.getCursor().addCursorEventListener(this);
         

@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2002 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.server;
 
 import java.awt.Point;
@@ -8,10 +25,8 @@ import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.world.common.FreerailsPathIterator;
 import jfreerails.move.ChangeTrainPositionMove;
-import jfreerails.world.common.IntLine;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
-import jfreerails.world.top.WorldImpl;
+import jfreerails.world.common.*;
+import jfreerails.world.top.*;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPositionOnMap;
@@ -41,6 +56,8 @@ public class TrainMoverTest extends TestCase {
     protected void setUp() {
 	w = new WorldImpl(0, 0);
 	points = new ArrayList();
+	GameTime now = new GameTime(0);
+	w.set(ITEM.TIME, now, Player.AUTHORITATIVE);
 
 	points.add(new Point(0, 0));
 	points.add(new Point(80, 80));
@@ -48,7 +65,7 @@ public class TrainMoverTest extends TestCase {
 
 	w.add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
 
-	TrainModel train = new TrainModel(0);
+	TrainModel train = new TrainModel(0, new int[0], null, 0, 0, now);
 
 	w.add(KEY.TRAINS, train, testPlayer.getPrincipal());
 

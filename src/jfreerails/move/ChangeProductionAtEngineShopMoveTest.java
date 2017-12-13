@@ -1,13 +1,31 @@
 /*
+ * Copyright (C) 2003 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * Created on 28-Mar-2003
  *
  */
 package jfreerails.move;
 
+import jfreerails.world.common.GameTime;
+import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.WagonAndEngineTypesFactory;
+import jfreerails.world.top.*;
 
 
 /**
@@ -24,11 +42,15 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     protected void setUp() {
         super.setUp();
-        getWorld().add(KEY.STATIONS, new StationModel(),
+	GameTime gt = (GameTime) getWorld().get(ITEM.TIME, Player.AUTHORITATIVE);
+        getWorld().add(KEY.STATIONS,
+	       	new StationModel(0, 0, "No name", 0, 0, gt),
+	       	testPlayer.getPrincipal());
+        getWorld().add(KEY.STATIONS,
+	       	new StationModel(0, 0, "No name", 0, 0, gt),
 		testPlayer.getPrincipal());
-        getWorld().add(KEY.STATIONS, new StationModel(),
-		testPlayer.getPrincipal());
-        getWorld().add(KEY.STATIONS, new StationModel(),
+        getWorld().add(KEY.STATIONS, 
+		new StationModel(0, 0, "No name", 0, 0, gt),
 		testPlayer.getPrincipal());
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();

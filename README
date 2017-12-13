@@ -57,7 +57,7 @@ Bug reports and Feature Requests
 --------------------------------
 If you have bugs, or suggestions for enhancement, please submit them to the bug
 report tool at
-http://developer.berlios.de/bugs/?group_id=1483
+http://majormajor.me.uk/bugzilla
 
 Please check to see whether your bug has already been filed by someone else in
 the bug database first before filing it.
@@ -71,6 +71,8 @@ Help Wanted!
 ============
 I will soon be looking for a "stable" branch developer. The stable branch will
 concentrate mostly on GUI enhancements and bug fixes.
+
+Patches, graphics improvements etc. are always welcome.
 
 Credits
 =======

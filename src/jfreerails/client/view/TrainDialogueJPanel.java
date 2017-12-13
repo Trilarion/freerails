@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2003 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * TrainDialogueJPanel.java
  *
  * Created on 24 August 2003, 17:13
@@ -155,14 +172,12 @@ WorldListListener {
         }
     }//GEN-LAST:event_nextJButtonActionPerformed
     
-    public void setup(jfreerails.world.top.ReadOnlyWorld w,
-	    jfreerails.client.renderer.ViewLists vl, ModelRoot
-	    mr) {
-	wi = new NonNullElements(KEY.TRAINS, w, mr.getPlayerPrincipal());
-        newTrainScheduleJPanel1.setup(mr);
-        trainDetailsJPanel1.setup(mr, null);
-        this.w = w;
+    public void setup(ModelRoot mr, GUIRoot gr) {
 	modelRoot = mr;
+        w = modelRoot.getWorld();
+	wi = new NonNullElements(KEY.TRAINS, w, mr.getPlayerPrincipal());
+        newTrainScheduleJPanel1.setup(mr, gr);
+        trainDetailsJPanel1.setup(mr, null);
 	addComponentListener(componentListener);
     }
     

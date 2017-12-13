@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2002 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.server;
 
 import java.awt.Point;
@@ -9,14 +26,8 @@ import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
-import jfreerails.world.common.FreerailsPathIterator;
-import jfreerails.world.common.PositionOnTrack;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.NonNullElements;
-import jfreerails.world.top.ObjectKey;
-import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.World;
-import jfreerails.world.top.WorldIterator;
+import jfreerails.world.common.*;
+import jfreerails.world.top.*;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackRule;
@@ -92,8 +103,10 @@ class TrainBuilder {
                     cb);
             int scheduleNumber = world.size(KEY.TRAIN_SCHEDULES);
 
+	    GameTime now = (GameTime) world.get(ITEM.TIME,
+		    Player.AUTHORITATIVE);
             TrainModel train = new TrainModel(engineTypeNumber, wagons, null,
-                    scheduleNumber, cargoBundleNumber);
+                    scheduleNumber, cargoBundleNumber, now);
 
             EngineType engineType = (EngineType)world.get(KEY.ENGINE_TYPES,
                     engineTypeNumber);

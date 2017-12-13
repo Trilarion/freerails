@@ -1,11 +1,28 @@
+/*
+ * Copyright (C) 2002 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.move;
 
 import junit.framework.TestCase;
 
+import jfreerails.world.common.*;
 import jfreerails.world.player.Player;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
-import jfreerails.world.top.WorldImpl;
+import jfreerails.world.top.*;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPositionOnMap;
 
@@ -67,8 +84,9 @@ public class ChangeTrainPositionMoveTest extends TestCase {
 
 	w.add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
 
+	GameTime now = (GameTime) w.get(ITEM.TIME, testPlayer.getPrincipal());
         TrainModel train1 = new TrainModel(0, new int[] {},
-                FIXTURE1_BEFORE_MOVE1, 0);
+                FIXTURE1_BEFORE_MOVE1, 0, 0, now);
         w.add(KEY.TRAINS, train1, testPlayer.getPrincipal());
     }
 

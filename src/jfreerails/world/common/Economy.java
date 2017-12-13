@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) Robert Tuck
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.world.common;
 
 /**
@@ -17,6 +34,9 @@ public class Economy implements FreerailsSerializable {
      */
     private int incomeTaxRate;
 
+    /**
+     * @return income tax rate in percent
+     */
     public int getIncomeTaxRate() {
 	return incomeTaxRate;
     }
@@ -29,18 +49,12 @@ public class Economy implements FreerailsSerializable {
 	baseInterestRate = rate;
     }
 
-    private double aerToMonthly(double rate) {
+    public float getBaseInterestRate() {
+	return baseInterestRate;
+    }
+
+    public static double aerToMonthly(double rate) {
 	return (float) ((Math.pow((1 + rate / 100), (1.0 / 12)) - 1.0) *
 		100.0);
-    }
-    /**
-     * @return the monthly interest rate applied to an account in credit
-     */
-    public float getCreditAccountInterestRate() {
-	float creditRate = (float) (baseInterestRate - 2.0);
-	if (creditRate <= 0.0) 
-	    return (float) 0.0;
-	
-	return (float) aerToMonthly(creditRate);
     }
 }

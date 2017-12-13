@@ -1,3 +1,19 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.client.top;
 
 import java.io.IOException;
@@ -6,20 +22,11 @@ import java.security.GeneralSecurityException;
 import jfreerails.client.view.GUIRoot;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.model.ModelRoot;
-import jfreerails.controller.AddPlayerCommand;
-import jfreerails.controller.AddPlayerResponseCommand;
-import jfreerails.controller.ConnectionListener;
-import jfreerails.controller.ConnectionToServer;
-import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.ServerCommand;
-import jfreerails.controller.SourcedMoveReceiver;
-import jfreerails.controller.UncommittedMoveReceiver;
-import jfreerails.controller.UntriedMoveReceiver;
-import jfreerails.controller.WorldChangedCommand;
+import jfreerails.controller.*;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TimeTickMove;
-import jfreerails.util.FreerailsProgressMonitor;
+import jfreerails.util.*;
 import jfreerails.world.player.Player;
 import jfreerails.world.player.PlayerPrincipal;
 import jfreerails.world.top.KEY;
@@ -130,7 +137,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
     private void closeConnection() {
         connection.close();
         connection.removeMoveReceiver(worldUpdater);
-        modelRoot.getUserMessageLogger().println("Connection to server closed");
+        modelRoot.getUserMessageLogger().println
+	    (Resources.get("Connection to server closed"));
     }
 
     public synchronized void setConnection(ConnectionToServer c)
@@ -139,7 +147,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
 
         synchronized (authMutex) {
             if (!authenticated) {
-                System.out.println("Waiting for authentication");
+                modelRoot.getUserMessageLogger().println
+		    (Resources.get("Waiting for authentication"));
 
                 try {
                     authMutex.wait();
@@ -196,8 +205,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
 		moveExecuter);
 
         /* attempt to authenticate the player */
-        modelRoot.getUserMessageLogger().println("Attempting to " +
-            "authenticate " + player.getName() + " with server");
+        modelRoot.getUserMessageLogger().println
+	    (Resources.get("Attempting to authenticate player: ") +
+	     player.getName());
         authenticated = false;
         connection.sendCommand(new AddPlayerCommand(player, player.sign()));
     }
@@ -212,8 +222,11 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
 		    guiRoot, progressMonitor);
 
             if (!viewLists.validate(world)) {
-                modelRoot.getUserMessageLogger().println("Couldn't validate " +
-                    "viewLists!");
+		/* most likely reason for failure is that the server's object
+		 * set is different to what the client is expecting */
+                modelRoot.getUserMessageLogger().println
+		    (Resources.get("Your client is not compatible with " +
+				   "the server."));
             }
 
             /*
@@ -224,8 +237,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             while (!world.boundsContain(KEY.PLAYERS,
                         ((PlayerPrincipal)modelRoot.getPlayerPrincipal()).getId(),
                         modelRoot.getPlayerPrincipal())) {
-                System.out.println("Size of players list is " +
-                    world.size(KEY.PLAYERS));
                 moveExecuter.update();
             }
 
@@ -236,8 +247,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             Thread t = new Thread(gameLoop, threadName);
             t.start();
         } catch (IOException e) {
-            modelRoot.getUserMessageLogger().println("Couldn't set up " +
-                "view Lists");
+            modelRoot.getUserMessageLogger().println
+		(Resources.get("There was a problem reading in the graphics "
+			       + "data"));
         }
     }
 
@@ -266,11 +278,14 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
                 authenticated = !((AddPlayerResponseCommand)s).isRejected();
 
                 if (authenticated) {
-                    System.out.println("Player was authenticated");
+                    modelRoot.getUserMessageLogger().println
+			(Resources.get
+			 ("Player was successfully authenticated"));
                     modelRoot.setPlayerPrincipal(((AddPlayerResponseCommand)s).getPrincipal());
                     playerConfirmed();
                 } else {
-                    System.out.println("Authentication was rejected");
+                    modelRoot.getUserMessageLogger().println
+			(Resources.get("Authentication was rejected"));
                 }
 
                 authMutex.notify();
@@ -279,13 +294,17 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             try {
                 setConnectionImpl(c);
             } catch (IOException e) {
-                modelRoot.getUserMessageLogger().println("Unable to open" +
-                    " remote connection");
+                modelRoot.getUserMessageLogger().println
+		    (Resources.get("Unable to open remote connection"));
                 closeConnection();
             } catch (GeneralSecurityException e) {
-                modelRoot.getUserMessageLogger().println("Unable to " +
-                    "authenticate with server: " + e.toString());
+                modelRoot.getUserMessageLogger().println
+		    (Resources.get("Unable to authenticate with server: ")
+		     + e.toString());
             }
-        }
+        } else if (s instanceof ServerMessageCommand) {
+	    modelRoot.getUserMessageLogger().println
+		(Resources.get(((ServerMessageCommand) s).getMessage()));
+	}
     }
 }

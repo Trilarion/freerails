@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2003 Robert Tuck
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * Launcher.java
  *
  * Created on 20 December 2003, 16:05
@@ -91,6 +108,9 @@ FreerailsProgressMonitor {
 		    ScreenHandler.FULL_SCREEN;
 		try {
 		    p = getPlayer(cop.getPlayerName());
+		    /* hide the form whilst the mode is changed  */
+		    if (mode == ScreenHandler.FULL_SCREEN)
+			hide();
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
 			    cop.getDisplayMode(), Resources.get
 			    ("Railz Client"), this, p);
@@ -123,9 +143,15 @@ FreerailsProgressMonitor {
 		    ScreenHandler.FULL_SCREEN;
 		try {
 		    p = getPlayer(cop.getPlayerName());
+		    if (mode == ScreenHandler.FULL_SCREEN)
+			hide();
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
 			    cop.getDisplayMode(), Resources.get
 			    ("Railz Client"), this, p);
+		    if (mode == ScreenHandler.FULL_SCREEN)
+			gc.getGUIRoot().getDialogueBoxController().
+			    createDialog(contentJPanel, Resources.get
+				    ("Railz Launcher"));
 		} catch (IOException e) {
 		    recover = true;
 		    setInfoText(e.getMessage());
@@ -152,6 +178,8 @@ FreerailsProgressMonitor {
 		    ScreenHandler.FULL_SCREEN;
 		try {
 		    p = getPlayer(cop.getPlayerName());
+		    if (mode == ScreenHandler.FULL_SCREEN)
+			hide();
 		    gc = new
 			GUIClient(lp.getRemoteServerAddress().getAddress(),
 				mode, cop.getDisplayMode(), Resources.get
@@ -259,6 +287,7 @@ FreerailsProgressMonitor {
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
+        contentJPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         nextButton = new javax.swing.JButton();
@@ -266,14 +295,13 @@ FreerailsProgressMonitor {
         prevButton = new javax.swing.JButton();
         infoLabel = new javax.swing.JLabel();
 
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        setTitle(jfreerails.util.Resources.get("Railz Launcher"));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
             }
         });
+
+        contentJPanel.setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setLayout(new java.awt.CardLayout());
 
@@ -283,14 +311,14 @@ FreerailsProgressMonitor {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jPanel1, gridBagConstraints);
+        contentJPanel.add(jPanel1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jSeparator1, gridBagConstraints);
+        contentJPanel.add(jSeparator1, gridBagConstraints);
 
         nextButton.setText(jfreerails.util.Resources.get("Next..."));
         nextButton.addActionListener(new java.awt.event.ActionListener() {
@@ -304,7 +332,7 @@ FreerailsProgressMonitor {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(nextButton, gridBagConstraints);
+        contentJPanel.add(nextButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -313,7 +341,7 @@ FreerailsProgressMonitor {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(jProgressBar1, gridBagConstraints);
+        contentJPanel.add(jProgressBar1, gridBagConstraints);
 
         prevButton.setText(jfreerails.util.Resources.get("Back..."));
         prevButton.setEnabled(false);
@@ -329,7 +357,7 @@ FreerailsProgressMonitor {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(prevButton, gridBagConstraints);
+        contentJPanel.add(prevButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -337,7 +365,9 @@ FreerailsProgressMonitor {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(infoLabel, gridBagConstraints);
+        contentJPanel.add(infoLabel, gridBagConstraints);
+
+        getContentPane().add(contentJPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }//GEN-END:initComponents
@@ -421,6 +451,7 @@ FreerailsProgressMonitor {
     }//GEN-LAST:event_exitForm
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel contentJPanel;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;

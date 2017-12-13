@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2002 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * SelectEngineJPanel.java
  *
  * Created on 25 December 2002, 23:00
@@ -126,13 +143,11 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
             String text =
             "<html><body>"
             + (isSelected ? "<strong>" : "")
-            + engine.getEngineTypeName()
-            + "<br>"
-            + engine.getMaxSpeed()
-            + " m.p.h. "
-            + engine.getPowerAtDrawbar()
-            + " hp $"
-            + engine.getPrice()
+            + engine.getEngineTypeName() + "<br>"
+            + engine.getMaxSpeed() + " m.p.h.<br>"
+            + engine.getPowerAtDrawbar() + " hp<br>" +
+	    "price: $" + engine.getPrice() + "<br>" +
+	    "maintenance: $" + engine.getMaintenance() + "/year"
             + (isSelected ? "</strong>" : "")
             + "</body></html>";
             label.setText(text);

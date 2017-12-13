@@ -1,6 +1,24 @@
+/*
+ * Copyright (C) Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.client.view;
 
 import java.awt.Container;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -17,6 +35,7 @@ import jfreerails.client.renderer.ViewLists;
 import jfreerails.client.model.ModelRoot;
 import jfreerails.move.ChangeTrainScheduleMove;
 import jfreerails.move.Move;
+import jfreerails.util.Resources;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
@@ -30,11 +49,13 @@ import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
 
 /**
- *  This JPanel displays a train's schedule and provides controls that let you edit it.
+ *  This JPanel displays a train's schedule and provides controls that let you
+ *  edit it.
  * @author  Luke Lindsay
  */
 public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldListListener {
     private ModelRoot modelRoot;
+    private GUIRoot guiRoot;
 
     private ReadOnlyWorld w;
     
@@ -45,6 +66,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldList
     private int scheduleID = -1;
     
     private TrainOrdersListModel listModel;
+    private Component selectStationDialog;
     
     /** Creates new form TrainScheduleJPanel */
     public TrainScheduleJPanel() {
@@ -79,9 +101,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldList
         pushDownJMenuItem = new javax.swing.JMenuItem();
         addStationJButton = new javax.swing.JButton();
         priorityOrdersJButton = new javax.swing.JButton();
-        selectStationJPanel1 = new jfreerails.client.view.SelectStationJPanel();
-        selectStationJPopupMenu = new javax.swing.JPopupMenu();
-        this.selectStationJPopupMenu.add(selectStationJPanel1);
         trainOrderJPanel1 = new jfreerails.client.view.TrainOrderJPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         orders = new javax.swing.JList();
@@ -239,16 +258,11 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldList
     
     private void changeStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeStationActionPerformed
         int orderNumber = this.orders.getSelectedIndex();
-        selectStationJPanel1.display(trainNumber, orderNumber);
+        selectStationJPanel.display(trainNumber, orderNumber);
         
         //Show the select station popup in the middle of the window.
-        Container topLevelAncestor = this.getTopLevelAncestor();
-        Dimension d = topLevelAncestor.getSize();
-        Dimension d2 = selectStationJPopupMenu.getPreferredSize();
-        int x = Math.max((d.width - d2.width)/2, 0);
-        int y = Math.max((d.height - d2.height)/2, 0);
-        selectStationJPopupMenu.show(topLevelAncestor, x, y);
-        selectStationJPanel1.requestFocus();
+	selectStationDialog = guiRoot.getDialogueBoxController().createDialog
+	    (selectStationJPanel, Resources.get("Select a Station"));
     }//GEN-LAST:event_changeStationActionPerformed
     
     private void removeAllJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllJMenuItemActionPerformed
@@ -345,7 +359,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldList
         orders.setSelectedIndex(i-1);
     }//GEN-LAST:event_pullUpJMenuItemActionPerformed
     
-    public void setup(ModelRoot mr) {
+    public void setup(ModelRoot mr, GUIRoot gr) {
+	guiRoot = gr;
 	modelRoot = mr;
         this.w = mr.getWorld();
         this.vl = mr.getViewLists();
@@ -354,11 +369,16 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldList
         //This actionListener is fired by the select station popup when a stion is selected.
         ActionListener actionListener =  new ActionListener(){
             public void actionPerformed(ActionEvent evt) {
-                setStationNumber(selectStationJPanel1.getSelectedStationID());
-                selectStationJPopupMenu.setVisible(false);
+                setStationNumber(selectStationJPanel.getSelectedStationID());
+		if(selectStationDialog != null) {
+		    selectStationDialog.setVisible(false);
+		    selectStationDialog = null;
+		}
             }
         };
-        this.selectStationJPanel1.setup(modelRoot, actionListener);
+	selectStationJPanel = new SelectStationJPanel();
+	selectStationJPanel.addActionListener(actionListener);
+        selectStationJPanel.setup(modelRoot);
     }
     
     public void display(int trainNumber){
@@ -538,6 +558,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldList
         //do nothing.
     }
     
+    private SelectStationJPanel selectStationJPanel;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JButton addStationJButton;
     private javax.swing.JMenu addWagonJMenu;
@@ -559,8 +580,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements WorldList
     private javax.swing.JMenuItem removeLastJMenuItem;
     private javax.swing.JMenuItem removeStationJMenuItem;
     private javax.swing.JMenu removeWagonsJMenu;
-    private jfreerails.client.view.SelectStationJPanel selectStationJPanel1;
-    private javax.swing.JPopupMenu selectStationJPopupMenu;
     private jfreerails.client.view.TrainOrderJPanel trainOrderJPanel1;
     private javax.swing.JMenu waitJMenu;
     private javax.swing.JMenuItem waitUntilFullJMenuItem;

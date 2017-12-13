@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2003 Robert Tuck
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * ClientOptionsJPanel.java
  *
  * Created on 20 December 2003, 15:57
@@ -8,7 +25,6 @@ package jfreerails.launcher;
 
 import java.awt.DisplayMode;
 
-import jfreerails.client.view.DisplayModesComboBoxModels;
 import jfreerails.client.view.MyDisplayMode;
 import jfreerails.util.Resources;
 
@@ -24,7 +40,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
     }
 
     DisplayMode getDisplayMode() {
-	return ((MyDisplayMode) listModel.getSelectedItem()).displayMode;
+	return ((MyDisplayMode) listModel.getElementAt
+		(jList1.getSelectedIndex())).displayMode;
     }
 
     boolean isWindowed() {
@@ -52,13 +69,13 @@ class ClientOptionsJPanel extends javax.swing.JPanel {
 	owner.setNextEnabled(isValid);
     }
 
-    private DisplayModesComboBoxModels listModel;
+    private DisplayModeListModel listModel;
 
     /** Creates new form ClientOptionsJPanel */
     public ClientOptionsJPanel(Launcher owner) {
 	this.owner = owner;
         initComponents();
-	listModel = new DisplayModesComboBoxModels();
+	listModel = new DisplayModeListModel();
 	jList1.setModel(listModel);
 	jList1.setSelectedIndex(0);
 	validateSettings();

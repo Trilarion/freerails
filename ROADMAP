@@ -2,11 +2,7 @@
 
 Targeted features before next stable release branch 0.4
 ====================================================
-Move to bugzilla bug database
-Balance sheet
-Income tax
 Ability to place new trains on map
-Cash Flow
 
 Optional 0.4 features
 =====================
@@ -19,10 +15,18 @@ Tile value map overlays
 Launcher/load/save cleanup.
 Network "robustness".
 Sound??
+Cash Flow
+Better GUI cursor - track laying
+Map overlays
+Editable names on trains and stations
 
 Development features for 0.5 or later
 =====================================
-Separate Terrain and building layers
+Separate schedules from trains (assign trains to named routes)
+Per-route earnings/cost stats.
+Client move validation in server.
+Separate Terrain and building layers.
+Separate stations from track layer.
 Rename classe heirarchy from jfreerails.xx.xx.xx
 Rationalisation of package structure (split into client, server and common
 		packages)

@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2001 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * MapViewJComponent.java
  *
  * Created on 31 July 2001, 13:56
@@ -16,7 +33,9 @@ import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.util.StringTokenizer;
+import java.util.LinkedList;
+// import java.util.StringTokenizer;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
@@ -49,14 +68,27 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     
 	private Stats paintStats = new Stats("MapViewJComponent paint");
 	private boolean frameRate;
+	private JTextArea textArea;
+	private int textAreaWidth = -1;
+	private int textAreaHeight = -1;
 
 	/** The length of the array is the number of lines.  
 	 * This is necessary since Graphics.drawString(..)  doesn't know about
 	 * newline characters*/
-	private String[] userMessage = new String[0];
+//	private String[] userMessage = new String[0];
+	private LinkedList messages = new LinkedList();
+	private class UserMessage {
+	    public final String message;
+	    public final long createdOn;
+
+	    public UserMessage(String m) {
+		message = m;
+		createdOn = System.currentTimeMillis();
+	    }
+	}
 
 	/** Time at which to stop displaying the current user message. */
-	private long displayMessageUntil = 0;
+//	private long displayMessageUntil = 0;
 	private FreerailsCursor mapCursor;
 	private FPSCounter fpsCounter = new FPSCounter();
 
@@ -223,15 +255,36 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 			new java.awt.Dimension(30, 30));
 	    }
 
+	    /* display any user messages */
+	    long now = System.currentTimeMillis();
+	    UserMessage m;
+	    // remove all older than 5 seconds
+	    while (!messages.isEmpty() &&
+		    ((UserMessage) messages.get(0)).createdOn + 5000 < now)
+		messages.removeFirst();
+
 	    Rectangle visRect = this.getVisibleRect();
-	    if (System.currentTimeMillis() < this.displayMessageUntil) {
-		myGraphics.setColor(Color.WHITE);
-		myGraphics.setFont(USER_MESSAGE_FONT);
-		for (int i = 0 ; i < userMessage.length ; i++){
-		    myGraphics.drawString(this.userMessage[i], 50+visRect.x,
-			    50+visRect.y+i*20);
+	    synchronized (messages) {
+		if (! messages.isEmpty()) {
+		    if (textAreaWidth != visRect.width ||
+			    textAreaHeight != visRect.height) {
+			textAreaWidth = visRect.width;
+			textAreaHeight = visRect.height;
+			textArea.setSize(textAreaWidth, textAreaHeight);
+		    }
+		    StringBuffer buf = new StringBuffer();
+		    for (int i = 0; i < messages.size() ; i++) {
+			buf.append(((UserMessage) messages.get(i)).message);
+			buf.append("\n");
+		    }
+		    textArea.setText(buf.toString());
+		    myGraphics.translate(visRect.x, visRect.y);
+		    textArea.paint(myGraphics);
+		    myGraphics.translate(-visRect.x, -visRect.y);
 		}
 	    }
+	//	    myGraphics.drawString(this.userMessage[i], 10+visRect.x,
+	//		    10+visRect.y+i*20);
 	    paintStats.exit();
 	    
 	    if (frameRate) {
@@ -251,6 +304,14 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 	    this.addMouseListener(mva);
 	    this.addMouseMotionListener(mva);
 	    stationTypesPopup = new StationTypesPopup();
+	    textArea = new JTextArea();
+	    textArea.setFont(USER_MESSAGE_FONT);
+	    textArea.setLineWrap(true);
+	    textArea.setWrapStyleWord(true);
+	    textArea.setForeground(Color.WHITE);
+	    textArea.setMargin(new java.awt.Insets(10, 10, 10, 10));
+	    textArea.setOpaque(false);
+	    textArea.setVisible(true);
 	}
 
 	public void setup(GUIRoot gr, ModelRoot mr) {
@@ -342,16 +403,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 	}
 
 	public void println(String s) {
-	    StringTokenizer st = new StringTokenizer(s, "\n");
-	    this.userMessage = new String[st.countTokens()];
-	    int i = 0;
-	    while(st.hasMoreTokens()){
-		userMessage[i]=st.nextToken();
-		i++;
+	    synchronized (messages) {
+		messages.add(new UserMessage(s));
 	    }
-
-	    //Display the message for 5 seconds.
-	    displayMessageUntil = System.currentTimeMillis() + 1000 * 5;
 	}
 
 	public void doFrameUpdate(Graphics g) {

@@ -1,3 +1,31 @@
+Apr 06, 2004:
+-------------
+Fix for bug 24 - display mode selection now works again
+Apr 05, 2004:
+-------------
+Addressed some issues in bug 4 - scalable map background in select station
+dialog.
+Fix for bug 18 - default save/load directory on windows machines is now desktop
+Apr 04, 2004:
+-------------
+Fix for bug 20 - servers can now send messsages to clients
+Fix for bug 10 - station build buttons now show prices
+Fix for bug 15 - units in station info dialog now accurate
+Fix for bug 22 - train purchase dialog now shows maintenance cost
+Subtotals on Profit + Loss dialog
+Fix for depreciation bug
+Fix for bug 13 - Added overview map scaling
+Apr 03, 2004:
+-------------
+Bank account interest
+Train maintenance charges
+Fixed some bugs with P+L & Balance sheet calcs
+Mar 31, 2004:
+-------------
+Added GPL copyrights to all .java files
+Mar 30, 2004:
+-------------
+Added balance sheet
 Mar 23, 2004:
 -------------
 Fixed some showstoppers found at the last minute

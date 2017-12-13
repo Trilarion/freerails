@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.0" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
-  <Properties>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[100, 200]"/>
-    </Property>
-  </Properties>
   <AuxValues>
     <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,0,-77,0,0,0,-89"/>
   </AuxValues>
@@ -49,11 +44,8 @@
             </Column>
           </Table>
         </Property>
-        <Property name="autoResizeMode" type="int" value="4"/>
+        <Property name="autoResizeMode" type="int" value="0"/>
         <Property name="focusable" type="boolean" value="false"/>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[30, 32]"/>
-        </Property>
         <Property name="requestFocusEnabled" type="boolean" value="false"/>
         <Property name="rowSelectionAllowed" type="boolean" value="false"/>
         <Property name="showHorizontalLines" type="boolean" value="false"/>

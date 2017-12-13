@@ -1,3 +1,19 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
@@ -5,15 +21,18 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import jfreerails.util.Resources;
+
 public class DisplayMenu extends JMenu {
     private GUIRoot guiRoot;
 
     public DisplayMenu(GUIRoot gcf) {
-        super("Display");
+        super(Resources.get("Display"));
 	guiRoot = gcf;
         setMnemonic(68);
 
-        JMenuItem trainOrdersJMenuItem = new JMenuItem("Train Orders");
+        JMenuItem trainOrdersJMenuItem = new JMenuItem
+	    (Resources.get("Train Orders"));
         trainOrdersJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 		    DialogueBoxController dbc =
@@ -23,7 +42,8 @@ public class DisplayMenu extends JMenu {
                 }
             });
 
-        JMenuItem stationInfoJMenuItem = new JMenuItem("Station Info");
+        JMenuItem stationInfoJMenuItem = new JMenuItem
+	    (Resources.get("Station Info"));
         stationInfoJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 		    DialogueBoxController dbc =
@@ -33,7 +53,8 @@ public class DisplayMenu extends JMenu {
                 }
             });
 
-        JMenuItem trainListJMenuItem = new JMenuItem("Train List");
+        JMenuItem trainListJMenuItem = new JMenuItem
+	    (Resources.get("Train List"));
         trainListJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 		    DialogueBoxController dbc =
@@ -43,8 +64,8 @@ public class DisplayMenu extends JMenu {
                 }
             });
 
-        JMenuItem profitLossJMenuItem = new JMenuItem("Profit and Loss"
-		+ " Statement");
+        JMenuItem profitLossJMenuItem = new JMenuItem
+	    (Resources.get("Profit and Loss Statement"));
         profitLossJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 		    DialogueBoxController dbc =
@@ -54,10 +75,22 @@ public class DisplayMenu extends JMenu {
                 }
             });
 
+        JMenuItem balanceSheetJMenuItem = new JMenuItem
+	    (Resources.get("Balance Sheet"));
+        balanceSheetJMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+		    DialogueBoxController dbc =
+		    guiRoot.getDialogueBoxController();
+		    if (dbc != null)
+			dbc.showBalanceSheet();
+                }
+            });
+
         add(trainOrdersJMenuItem);
         add(stationInfoJMenuItem);
         add(trainListJMenuItem);
 	add(profitLossJMenuItem);
+	add(balanceSheetJMenuItem);
     }
 
 }

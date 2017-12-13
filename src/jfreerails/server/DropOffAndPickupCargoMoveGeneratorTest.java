@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2003 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * Created on 28-Jun-2003
  *
  */
@@ -13,11 +30,10 @@ import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.cargo.CargoType;
+import jfreerails.world.common.GameTime;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.World;
-import jfreerails.world.top.WorldImpl;
+import jfreerails.world.top.*;
 import jfreerails.world.train.TransportCategory;
 import jfreerails.world.train.WagonType;
 import jfreerails.world.train.TrainModel;
@@ -71,8 +87,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int stationCargoBundleId = w.add(KEY.CARGO_BUNDLES,
                 new CargoBundleImpl());
         String stationName = "Station 1";
+	GameTime now = (GameTime) w.get(ITEM.TIME, Player.AUTHORITATIVE);
         StationModel station = new StationModel(x, y, stationName,
-                w.size(KEY.CARGO_TYPES), stationCargoBundleId);
+                w.size(KEY.CARGO_TYPES), stationCargoBundleId, now);
         w.add(KEY.STATIONS, station, testPlayer.getPrincipal());
 
         //Set up train
@@ -80,7 +97,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         //3 wagons to carry cargo type 0.
         int[] wagons = new int[] {0, 0, 0};
-        TrainModel train = new TrainModel(wagons, trainCargoBundleId);
+        TrainModel train = new TrainModel(0, wagons, null, 
+		0, trainCargoBundleId, now);
         w.add(KEY.TRAINS, train, testPlayer.getPrincipal());
 
         w.add(KEY.BANK_ACCOUNTS, new BankAccount(), testPlayer.getPrincipal());

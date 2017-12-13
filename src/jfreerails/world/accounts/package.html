@@ -6,12 +6,11 @@
 </head>
 
 <body>
-Provides classes to record a players assets (for example, real estate, miles-of-track, 
-cash, and shares) and liabilities (for example, outstanding shares and bonds, 
-and any overdraft). Each player has a BankAccount that stores a growing list of 
-Transactions. Transactions are used represent bills and receipts for a player 
-as well as record changes in a players physical assets such as miles-of-track. 
-Totals can be calculated by adding up the relevant transactions in the players 
-account. 
+<h1>Accounts</h1>
+<p>Provides classes to record transactions in a players account. Each player has a BankAccount that stores a growing list of Transactions. Transactions are used represent bills and receipts for a player. Totals can be calculated by adding up the relevant transactions in the players account.</p>
+<p>Transactions are categorised into their appropriate accounting category (operating expense, interest, tax etc.). This allows profit and loss accounts to be prepared, as well as the calculation of any applicable taxes.</p>
+<h1>Asset/Liability tracking</h1>
+<p>Each material asset represented by an object in the game world (trains, track, stations etc.) should have an associated book value. This value should take into account any depreciation. The depreciation can  be calculated from the difference between book and purchase price. They should also instrument any current liabilities (e.g maintenance) that might be incurred.</p>
+<p>Other assets, such as accounts, should be handled on a per class basis.</p>
 </body>
 </html>

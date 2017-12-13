@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2003 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * StationInfoJPanel.java
  *
  * Created on 04 May 2003, 18:56
@@ -62,7 +79,7 @@ implements MoveReceiver {
 
         setMinimumSize(new java.awt.Dimension(250, 177));
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 10));
-        jLabel1.setText("<html>\n<h4 align=\"center\">Supply and Demand at stationName</h4>\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n  <tr>\n    <td>&nbsp;</td>\n    <td>Will pay<br>for</td>\n    <td>Supplies<br>(cars per year)</td>\n    <td>Waiting for pickup<br>(car loads)</td>\n  </tr>\n   <tr>\n    <td>Mail</td>\n    <td>Yes</td>\n    <td>&nbsp;</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Passengers</td>\n    <td>No</td>\n    <td>3</td>\n    <td>2.5</td>\n  </tr>\n \n</table>\n\n</html>");
+        jLabel1.setText("<html>\n<h4 align=\"center\">Supply and Demand at stationName</h4>\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n  <tr>\n    <td>&nbsp;</td>\n    <td>Will pay<br>for</td>\n    <td>Supplies<br>(tonnes/yr)</td>\n    <td>Waiting for pickup<br>(tonnes)</td>\n  </tr>\n   <tr>\n    <td>Mail</td>\n    <td>Yes</td>\n    <td>&nbsp;</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Passengers</td>\n    <td>No</td>\n    <td>3</td>\n    <td>2.5</td>\n  </tr>\n \n</table>\n\n</html>");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setAlignmentY(0.0F);
         jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
@@ -193,7 +210,7 @@ implements MoveReceiver {
             + stationTypeName
             + ")</h2>";
             String table =
-            "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies / cars per year</td><td>Waiting for pickup / car loads</td>  </tr>";
+            "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies<br><em>tonnes/yr</em></td><td>Waiting for pickup<br><em>tonnes</em></td>  </tr>";
             for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
                 
                 //get the values

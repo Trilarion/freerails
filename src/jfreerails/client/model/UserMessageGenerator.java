@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2003 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.client.model;
 
 import java.util.GregorianCalendar;
@@ -5,10 +22,9 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 
 import jfreerails.controller.MoveReceiver;
-import jfreerails.move.AddTransactionMove;
-import jfreerails.move.Move;
-import jfreerails.move.TransferCargoAtStationMove;
-import jfreerails.world.accounts.DeliverCargoReceipt;
+import jfreerails.move.*;
+import jfreerails.util.Resources;
+import jfreerails.world.accounts.*;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.GameCalendar;
@@ -72,7 +88,7 @@ class UserMessageGenerator implements MoveReceiver {
 
                 int trainNumber = -1;
                 int statonNumber = -1;
-                String stationName = "No station";
+                String stationName = Resources.get("No station");
 
                 while (trains.next()) {
                     TrainModel train = (TrainModel)trains.getElement();
@@ -126,6 +142,45 @@ class UserMessageGenerator implements MoveReceiver {
                 message += "$" + formatter.format(revenue);
                 mr.getUserMessageLogger().println(message);
             }
-        }
+        } else if ((move instanceof AddTransactionMove) &&
+		move.getPrincipal().equals(mr.getPlayerPrincipal())) {
+	    Transaction t = (Transaction) ((AddTransactionMove)
+		    move).getTransaction();
+	    switch (t.getCategory()) {
+		case Transaction.CATEGORY_TAX:
+		   if (t.getSubcategory() == Bill.INCOME_TAX) {
+		       mr.getUserMessageLogger().println(Resources.get
+			       ("Income tax charge: $") + (-t.getValue()));
+		   }
+		   break;
+		case Transaction.CATEGORY_OPERATING_EXPENSE:
+		   switch (t.getSubcategory()) {
+		       case Bill.TRACK_MAINTENANCE:
+			   mr.getUserMessageLogger().println(Resources.get
+				   ("Track maintenance charge: $") +
+				   (-t.getValue()));
+			   break;
+		       case Bill.ROLLING_STOCK_MAINTENANCE:
+			   mr.getUserMessageLogger().println(Resources.get
+				   ("Train maintenance charge: $") + 
+				   (-t.getValue()));
+			   break;
+		   }
+		   break;
+		case Transaction.CATEGORY_INTEREST:
+		  switch (t.getSubcategory()) {
+		      case InterestTransaction.SUBCATEGORY_OVERDRAFT:
+			  mr.getUserMessageLogger().println(Resources.get
+				  ("Overdraft interest charge: $") + 
+				  (-t.getValue()));
+			  break;
+		      case InterestTransaction.SUBCATEGORY_ACCOUNT_CREDIT_INTEREST: 
+			  mr.getUserMessageLogger().println(Resources.get
+				  ("Account interest credited: $") +
+				  (t.getValue()));
+			  break;
+		  }
+	    }
+	}
     }
 }

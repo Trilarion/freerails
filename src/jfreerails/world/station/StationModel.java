@@ -1,8 +1,23 @@
+/*
+ * Copyright (C) Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.world.station;
 
-import jfreerails.world.common.FreerailsSerializable;
-
-
+import jfreerails.world.common.*;
 /**
  * This class represents a station.
  *
@@ -17,6 +32,7 @@ public class StationModel implements FreerailsSerializable {
     private final DemandAtStation demand;
     private final ConvertedAtStation converted;
     private final int cargoBundleNumber;
+    private final GameTime creationDate;
 
     /** What this station is building. */
     private final ProductionAtEngineShop production;
@@ -36,30 +52,21 @@ public class StationModel implements FreerailsSerializable {
         this.supply = s.supply;
         this.x = s.x;
         this.y = s.y;
+	creationDate = s.creationDate;
     }
 
     public StationModel(int x, int y, String stationName,
-        int numberOfCargoTypes, int cargoBundle) {
+        int numberOfCargoTypes, int cargoBundle, GameTime now) {
         this.name = stationName;
         this.x = x;
         this.y = y;
         production = null;
+	creationDate = now;
 
         supply = new SupplyAtStation(new int[numberOfCargoTypes]);
         demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
         converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
         cargoBundleNumber = cargoBundle;
-    }
-
-    public StationModel() {
-        this.name = "No name";
-        x = 0;
-        y = 0;
-        this.demand = new DemandAtStation(new boolean[0]);
-        this.supply = new SupplyAtStation(new int[0]);
-        this.converted = new ConvertedAtStation(new int[0]);
-        production = null;
-        this.cargoBundleNumber = 0;
     }
 
     public String getStationName() {
@@ -87,6 +94,7 @@ public class StationModel implements FreerailsSerializable {
         this.supply = s.supply;
         this.x = s.x;
         this.y = s.y;
+	creationDate = s.creationDate;
     }
 
     public DemandAtStation getDemand() {
@@ -108,6 +116,7 @@ public class StationModel implements FreerailsSerializable {
         this.supply = s.supply;
         this.x = s.x;
         this.y = s.y;
+	creationDate = s.creationDate;
     }
 
     public StationModel(StationModel s, SupplyAtStation supply) {
@@ -120,6 +129,7 @@ public class StationModel implements FreerailsSerializable {
         this.production = s.production;
         this.x = s.x;
         this.y = s.y;
+	creationDate = s.creationDate;
     }
 
     public int getCargoBundleNumber() {
@@ -130,39 +140,28 @@ public class StationModel implements FreerailsSerializable {
         if (o instanceof StationModel) {
             StationModel test = (StationModel)o;
 
-            if (this.cargoBundleNumber != test.cargoBundleNumber) {
-                return false;
+	    if (cargoBundleNumber == test.cargoBundleNumber &&
+		    x == test.x &&
+		    y == test.y &&
+		    demand.equals(test.demand) &&
+		    converted.equals(test.converted) &&
+		    name.equals(test.name) &&
+		    (production == null ? test.production == null :
+		     this.production.equals(test.production)) &&
+		    supply.equals(test.supply) &&
+		    creationDate.equals(test.creationDate)) {
+                return true;
             }
-
-            if (!this.demand.equals(test.demand)) {
-                return false;
-            }
-
-            if (!this.converted.equals(test.converted)) {
-                return false;
-            }
-
-            if (!this.name.equals(test.name)) {
-                return false;
-            }
-
-            if (!(this.production == null ? test.production == null
-                                              : this.production.equals(
-                        test.production))) {
-                return false;
-            }
-
-            if (!this.supply.equals(test.supply)) {
-                return false;
-            }
-
-            if (this.x != test.x || this.y != test.y) {
-                return false;
-            }
-
-            return true;
+            return false;
         } else {
             return false;
         }
+    }
+
+    /**
+     * @return the date at which this station was constructed.
+     */
+    public GameTime getCreationDate() {
+	return creationDate;
     }
 }

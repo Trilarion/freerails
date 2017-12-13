@@ -1,4 +1,21 @@
 /*
+ * Copyright (C) 2004 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+/*
  * CargoWaitingAndDemandedJPanel.java
  *
  * Created on 07 February 2004, 12:24
@@ -51,7 +68,6 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        setPreferredSize(new java.awt.Dimension(100, 200));
         stationName.setText("Station Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -76,9 +92,8 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2"
             }
         ));
-        waitingJTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        waitingJTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         waitingJTable.setFocusable(false);
-        waitingJTable.setMinimumSize(new java.awt.Dimension(30, 32));
         waitingJTable.setRequestFocusEnabled(false);
         waitingJTable.setRowSelectionAllowed(false);
         waitingJTable.setShowHorizontalLines(false);

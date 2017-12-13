@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2002 Luke Lindsay
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.server;
 
 import java.awt.Point;
@@ -33,8 +50,8 @@ import jfreerails.world.top.World;
 
 
 /**
- *
- * This class takes care of the world simulation - for instance "non-player" activities.
+ * This class takes care of the world simulation - for instance "non-player"
+ * activities.
  * @author Luke Lindsay 05-Nov-2002
  *
  */
@@ -55,22 +72,16 @@ public class ServerGameEngine implements GameModel, Runnable {
     TrainBuilder tb;
     private int targetTicksPerSecond = 0;
     private IdentityProvider identityProvider;
+    private TaxationMoveFactory taxationMoveFactory;
+    private BalanceSheetMoveFactory balanceSheetMoveFactory;
+    private AccountInterestMoveFactory accountInterestMoveFactory;
+    private TrainMaintenanceMoveFactory trainMaintenanceMoveFactory;
 
     /**
      * List of the ServerAutomaton objects connected to this game
      */
     private Vector serverAutomata;
 
-    /**
-     * Number of ticks which is A Long Time for infrequently updated things.
-     * TODO Ideally we should calculate this from the calendar
-     */
-    private final static int aLongTime = 1000;
-
-    /**
-     * Number of ticks since the last time we did an infrequent update
-     */
-    private int ticksSinceUpdate = 0;
     private long frameStartTime;
     private long nextModelUpdateDue = System.currentTimeMillis();
     private long baseTime = System.currentTimeMillis();
@@ -123,6 +134,13 @@ public class ServerGameEngine implements GameModel, Runnable {
         tb = new TrainBuilder(world, moveExecuter);
         calcSupplyAtStations = new CalcSupplyAtStations(w, moveExecuter);
         moveChainFork.addListListener(calcSupplyAtStations);
+	taxationMoveFactory = new TaxationMoveFactory(w, moveExecuter);
+	balanceSheetMoveFactory = new BalanceSheetMoveFactory(w,
+		moveExecuter);
+	accountInterestMoveFactory = new AccountInterestMoveFactory(w,
+		moveExecuter);
+	trainMaintenanceMoveFactory = new TrainMaintenanceMoveFactory(w,
+		moveExecuter);
 
         for (int i = 0; i < serverAutomata.size(); i++) {
             ((ServerAutomaton)serverAutomata.get(i)).initAutomaton(moveExecuter);
@@ -154,10 +172,6 @@ public class ServerGameEngine implements GameModel, Runnable {
      */
     public void stop() {
         keepRunning = false;
-    }
-
-    public void infrequentUpdate() {
-        calcSupplyAtStations.doProcessing();
     }
 
     /**
@@ -217,11 +231,7 @@ public class ServerGameEngine implements GameModel, Runnable {
 	    }
             if (this.currentYearLastTick != currentYear) {
                 this.currentYearLastTick = currentYear;
-                newYear();
-            }
-
-            if (ticksSinceUpdate % aLongTime == 0) {
-                infrequentUpdate();
+                newYear(currentYear - 1);
             }
 
             /*
@@ -268,8 +278,6 @@ public class ServerGameEngine implements GameModel, Runnable {
             } catch (InterruptedException e) {
                 // do nothing
             }
-
-            ticksSinceUpdate++;
         } else {
             /*
              * even when game is paused, we should still check for moves
@@ -291,15 +299,23 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     private void newMonth() {
+        calcSupplyAtStations.doProcessing();
         TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(moveExecuter);
         tmmg.update(world);
+	accountInterestMoveFactory.generateMoves();
+	trainMaintenanceMoveFactory.generateMoves();
 
         CargoAtStationsGenerator cargoAtStationsGenerator = new CargoAtStationsGenerator(moveExecuter);
         cargoAtStationsGenerator.update(world);
     }
 
-    /** This is called at the start of each new year. */
-    private void newYear() {
+    /**
+     * This is called at the start of each new year.
+     * @param lastYear the year which has just elapsed
+     */
+    private void newYear(int lastYear) {
+	taxationMoveFactory.generateMoves(lastYear);
+	balanceSheetMoveFactory.generateMoves();
     }
 
     /**

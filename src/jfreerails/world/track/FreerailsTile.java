@@ -1,3 +1,19 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
 package jfreerails.world.track;
 
 import jfreerails.world.common.FreerailsSerializable;
@@ -91,21 +107,5 @@ public class FreerailsTile implements TrackPiece, TerrainTile,
 
     public void setOwner(FreerailsPrincipal o) {
 	owner = o;
-    }
-
-    /**
-     * Calculates the value of the tile based on the base value of this tile,
-     * adjusted by an aaverage of the values of the surrounding tiles.
-     * TODO perform the averaging...
-     * @param tile tile for which to calculate value
-     * @param x x coord for the tile for which to calculate the value
-     * @param y y coord for the tile for which to calculate the value
-     * @param w reference to the game world.
-     */
-    public long getTerrainValue(ReadOnlyWorld w, int x, int y) {
-	TerrainType t = (TerrainType) w.get(KEY.TERRAIN_TYPES, terrainType,
-		Player.AUTHORITATIVE);
-
-	return t.getBaseValue();
     }
 }
