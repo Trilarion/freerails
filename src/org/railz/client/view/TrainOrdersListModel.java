@@ -51,6 +51,8 @@ public class TrainOrdersListModel extends AbstractListModel implements
     private Schedule schedule;
     private TrainModel trainModel;
     
+    private GUIRoot guiRoot;
+
     public static final int DONT_GOTO = 0;
     public static final int GOTO_NOW = 1;
     public static final int GOTO_AFTER_PRIORITY_ORDERS = 2;
@@ -72,8 +74,9 @@ public class TrainOrdersListModel extends AbstractListModel implements
     }
     
     /** Creates a new instance of TrainOrdersListModel */
-    public TrainOrdersListModel(ModelRoot mr, int trainNumber) {
+    public TrainOrdersListModel(ModelRoot mr, GUIRoot gr, int trainNumber) {
 	modelRoot = mr;
+	guiRoot = gr;
 	w = mr.getWorld(); 
 	this.trainNumber = trainNumber;
 	trainModel = (TrainModel) w.get(KEY.TRAINS, trainNumber,
@@ -87,8 +90,7 @@ public class TrainOrdersListModel extends AbstractListModel implements
     private void updateCellRenderers() {
 	listCells.clear();
 	for (int i = 0; i < getSize(); i++) {
-	    TrainOrderJPanel toj = new TrainOrderJPanel();
-	    toj.setup(modelRoot, null);
+	    TrainOrderJPanel toj = new TrainOrderJPanel(modelRoot, guiRoot);
 	    listCells.add(toj);
 	}
     }

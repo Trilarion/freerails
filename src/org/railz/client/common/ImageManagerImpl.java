@@ -80,6 +80,20 @@ public class ImageManagerImpl implements ImageManager {
         URL url = mrf.getURLForReading(read);
 
         if (null == url) {
+	    BufferedImage bi;
+	    // see if there is a default graphic we can substitute
+	    if (read.startsWith("trains/overhead/")) {
+		int suffixIndex = read.lastIndexOf("_");
+
+		bi = getImage("trains/overhead/default" +
+			read.substring(suffixIndex));
+		imageHashMap.put(read, bi);
+		return bi;
+	    } else if (read.startsWith("trains/sideon/")) {
+		bi = getImage("trains/sideon/default.png");
+		imageHashMap.put(read, bi);
+		return bi;
+	    }
             throw new IOException("Couldn't find: " + read);
         }
 	// XXX This should improve performance, however uncommenting this line

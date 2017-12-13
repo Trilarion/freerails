@@ -127,12 +127,11 @@ public class DialogueBoxController {
         
         //Setup the various dialogue boxes.
         // setup the terrain info dialogue.
-        terrainInfo = new TerrainInfoJPanel();
-        terrainInfo.setup(w, vl);
+        terrainInfo = new TerrainInfoJPanel(modelRoot, guiRoot);
         
         // setup the supply and demand at station dialogue.
-        stationInfo = new StationInfoJPanel();
-        stationInfo.setup(modelRoot, guiRoot);
+        stationInfo = new StationInfoJPanel(guiRoot);
+        stationInfo.setup(modelRoot);
         
         // setup the 'show controls' dialogue
         showControls = new HtmlJPanel(DialogueBoxController.class.getResource("/org/railz/client/view/game_controls.html"));
@@ -141,7 +140,7 @@ public class DialogueBoxController {
         
         how2play = new HtmlJPanel(DialogueBoxController.class.getResource("/org/railz/client/view/how_to_play.htm"));
         
-        newspaper = new NewsPaperJPanel();
+        newspaper = new NewsPaperJPanel(guiRoot);
         newspaper.setup(w, vl, closeCurrentDialogue);
         
         selectWagons = new SelectWagonsJPanel();
@@ -173,8 +172,7 @@ public class DialogueBoxController {
             
         });
         
-        trainDialogueJPanel = new TrainDialogueJPanel();
-        trainDialogueJPanel.setup(modelRoot, guiRoot);
+        trainDialogueJPanel = new TrainDialogueJPanel(modelRoot, guiRoot);
     }
     
     public void showNewspaper(String headline) {
@@ -216,12 +214,12 @@ public class DialogueBoxController {
     }
 
     public void showBalanceSheet() {
-	BalanceSheetJPanel bs = new BalanceSheetJPanel(modelRoot);
+	BalanceSheetJPanel bs = new BalanceSheetJPanel(modelRoot, guiRoot);
 	showContent(bs);
     }
     
     public void showProfitLoss() {
-	ProfitLossJPanel pl = new ProfitLossJPanel();
+	ProfitLossJPanel pl = new ProfitLossJPanel(guiRoot);
 	pl.setup(modelRoot);
 	showContent(pl);
     }

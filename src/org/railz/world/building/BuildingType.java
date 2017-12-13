@@ -74,8 +74,10 @@ public class BuildingType implements FreerailsSerializable {
 
 	int xmin = (p.x == 0) ? 0 : p.x - 1;
 	int ymin = (p.y == 0) ? 0 : p.y - 1;
-	int xmax = (p.x == w.getMapWidth()) ? w.getMapWidth() : p.x + 1;
-	int ymax = (p.y == w.getMapHeight()) ? w.getMapHeight() : p.y + 1;
+	int xmax = (p.x + 1>= w.getMapWidth()) ?
+	    w.getMapWidth() - 1 : p.x + 1;
+	int ymax = (p.y + 1 >= w.getMapHeight()) ?
+	    w.getMapHeight() - 1 : p.y + 1;
 	for (int x = xmin; x <= xmax; x++) {
 	    for (int y = ymin; y <= ymax; y++) {
 		if (x == p.x && y == p.y)

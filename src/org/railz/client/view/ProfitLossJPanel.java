@@ -26,23 +26,25 @@ package org.railz.client.view;
 import java.awt.Color;
 import java.text.NumberFormat;
 import java.util.Calendar;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 import org.railz.client.model.ModelRoot;
 import org.railz.client.model.ProfitLossModel;
 import org.railz.world.top.ITEM;
 import org.railz.world.common.GameTime;
 import org.railz.world.common.GameCalendar;
-import org.railz.util.Resources;
+import org.railz.util.*;
 
 /**
  *
  * @author  rtuck99@users.berlios.de
  */
 class ProfitLossJPanel extends javax.swing.JPanel {
+    private ModdableResourceFinder graphicsResourceFinder;
     
     /** Creates new form ProfitLossJPanel */
-    ProfitLossJPanel() {
+    ProfitLossJPanel(GUIRoot gr) {
+        graphicsResourceFinder = gr.getGraphicsResourceFinder();
         initComponents();
     }
     
@@ -105,7 +107,7 @@ class ProfitLossJPanel extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 4, 0));
 
-        prevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/previous.png")));
+        prevButton.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/previous.png")));
         prevButton.setToolTipText(org.railz.util.Resources.get("Previous Year"));
         prevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,7 +117,7 @@ class ProfitLossJPanel extends javax.swing.JPanel {
 
         jPanel2.add(prevButton);
 
-        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/next.png")));
+        nextButton.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/next.png")));
         nextButton.setToolTipText(org.railz.util.Resources.get("Next Year"));
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

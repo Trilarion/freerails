@@ -49,15 +49,13 @@ public class NewsPaperJPanel extends javax.swing.JPanel {
 
 	Image pieceOfNewspaper;
 	/** Creates new form NewsPaperJPanel */
-	public NewsPaperJPanel() {
+	public NewsPaperJPanel(GUIRoot gr) {
 		initComponents();
 
-		Image tempImage =
-			(new javax
-				.swing
-				.ImageIcon(
-					getClass().getResource("/org/railz/data/newspaper.png")))
-				.getImage();
+		Image tempImage = (new javax.swing.ImageIcon
+			(gr.getGraphicsResourceFinder()
+			 .getURLForReading("artwork/newspaper.png")))
+		    .getImage();
 
 		pieceOfNewspaper =
 			defaultConfiguration.createCompatibleImage(

@@ -284,17 +284,17 @@ class TrainController {
     }
 
     private TrainPathSegment getNewSegment(Point p1, Point p2,
-	    float t0, float v0, float s0, int mass, float power, EngineType
-	    et) {
+	    float t0, float v0, float s0, int mass, EngineType
+	    et, boolean outOfWater) {
 	float sMax = getSMax(s0, p1, p1);
-	return getNewSegment(p1, p2, t0, v0, s0, mass, power, sMax, et);
+	return getNewSegment(p1, p2, t0, v0, s0, mass, sMax, et, outOfWater);
     }
 
     /** @return the TrainPathSegment for the traversal from the centre of tile
      * at point p1 to centre of tile at point p2 */
     private TrainPathSegment getNewSegment(Point p1, Point p2,
-	    float t0, float v0, float s0, int mass, float power, float sMax,
-	    EngineType et) {
+	    float t0, float v0, float s0, int mass, float sMax,
+	    EngineType et, boolean outOfWater) {
 	float maxTractiveForce = et.getMaxTractiveForce();
 	FreerailsTile ft = world.getTile(p1);
 	int ttn = ft.getTerrainTypeNumber();
@@ -322,7 +322,7 @@ class TrainController {
 			tt2.getRoughness()) / 2;
 	    effectiveIncline /= 100;
 	}
-	float a = et.getAcceleration(effectiveIncline, v0, mass);
+	float a = et.getAcceleration(effectiveIncline, v0, mass, outOfWater);
 	
 	return new TrainPathSegment(t0, v0, a, s0, sMax);
     }
@@ -349,9 +349,6 @@ class TrainController {
 		    tm.getEngineType(), Player.AUTHORITATIVE);
 	float power = et.getPowerOutput();
 	
-	if (outOfWater)
-	    power /= 2;
-	
 	float maxTractiveForce = et.getMaxTractiveForce();
 	float v0 = 0;
        if (tm.getTrainMotionModel().getPathFunction() != null)
@@ -362,7 +359,7 @@ class TrainController {
 	    /* TODO do this in smaller chunks */
 	    // Last segment is from train head to centre of tile
 	    TrainPathSegment seg = getNewSegment(p1, p2, t0, v0, s0, mass,
-		    power, (float) il.getLength().getLength(), et);
+		    (float) il.getLength().getLength(), et, outOfWater);
 	    segList.add(seg);
 	    t0 = seg.getTMax();
 	    if (t0 < 0) {
@@ -383,8 +380,9 @@ class TrainController {
 	    float currentS0 = s0;
 	    do {
 		TrainPathSegment seg = getNewSegment(p1, p2, t0, v0,
-			currentS0, mass, power, s0 + (sMax - s0) *
-			((float) (currentChunk + 1) / maxChunks), et);
+			currentS0, mass, s0 + (sMax - s0) *
+			((float) (currentChunk + 1) / maxChunks), et,
+			outOfWater);
 		float newT0;
 		newT0 = seg.getTMax();
 		float vDiff = Math.abs(seg.getSpeed(newT0) -

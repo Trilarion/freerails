@@ -28,6 +28,7 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
+import org.railz.client.model.*;
 import org.railz.client.renderer.*;
 import org.railz.util.*;
 import org.railz.world.building.*;
@@ -63,9 +64,16 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     
     private MapBackgroundRender mapBgRenderer;
 
+    private ModdableResourceFinder graphicsResourceFinder;
+    
     /** Creates new form TerrainInfoJPanel */
-    public TerrainInfoJPanel() {
+    public TerrainInfoJPanel(ModelRoot mr, GUIRoot gr) {
+	vl = mr.getViewLists();
+	w = mr.getWorld();
+	graphicsResourceFinder = gr.getGraphicsResourceFinder();
         initComponents();
+	terrainTileViewer = new TerrainTileViewer(w);
+	mapBgRenderer = new MapBackgroundRender(w, vl);
     }
     
     /** This method is called from within the constructor to
@@ -82,7 +90,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        terrainImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/terrain/Clear_0000.png")));
+        terrainImage.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("terrain/Clear_0000.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 4);
         add(terrainImage, gridBagConstraints);
@@ -111,13 +119,6 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
         add(terrainDescription, gridBagConstraints);
 
     }//GEN-END:initComponents
-
-    public void setup(ReadOnlyWorld w, ViewLists vl) {
-        this.w = w;
-        this.vl = vl;
-	terrainTileViewer = new TerrainTileViewer(w);
-	mapBgRenderer = new MapBackgroundRender(w, vl);
-    }    
     
     public void setTerrainLocation(Point point) {
 	FreerailsTile tile = w.getTile(point.x, point.y);

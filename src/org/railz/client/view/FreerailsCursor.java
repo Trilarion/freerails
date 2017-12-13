@@ -204,6 +204,10 @@ final public class FreerailsCursor implements KeyListener, MapCursor {
         listeners.addElement(l);
     }
 
+    public void removeCursorEventListener(CursorEventListener l) {
+	listeners.removeElement(l);
+    }
+
     private void moveCursor(byte v) {
         tryMoveCursor(new Point(cursorMapPosition.x +
 		    CompassPoints.getUnitDeltaX(v),

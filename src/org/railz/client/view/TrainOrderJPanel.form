@@ -9,9 +9,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="gotoIcon">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
-          <Image iconType="3" name="/org/railz/client/graphics/selected_arrow.png"/>
-        </Property>
+        <Property name="icon" postCode="gotoIcon.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading(&quot;selected_arrow.png&quot;)));"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

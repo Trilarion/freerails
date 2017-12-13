@@ -8,7 +8,7 @@
       <property location="dist" name="dist"/>
       <property location="javadoc" name="doc"/>
       <property location="temp" name="temp"/>
-      <property classpath="org.railz.build" name="org.railz.build" value="0.3.2"/>
+      <property classpath="org.railz.build" name="org.railz.build" value="0.3.3"/>
         <property location="${basedir}/proto" name="proto"/>
         <property location="build" name="build"/>
     </target>

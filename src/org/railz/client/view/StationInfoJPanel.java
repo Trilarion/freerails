@@ -64,6 +64,7 @@ implements MoveReceiver {
     private ReadOnlyWorld world;
     private StationTableModel stationTableModel;
     private StationTableCellRenderer stationTableCellRenderer;
+    private ModdableResourceFinder graphicsResourceFinder;
     
     /**
      * The index of the cargoBundle associated with this station
@@ -192,7 +193,9 @@ implements MoveReceiver {
     };
 
     /** Creates new form StationInfoJPanel */
-    public StationInfoJPanel() {
+    public StationInfoJPanel(GUIRoot gr) {
+        guiRoot = gr;
+        graphicsResourceFinder = gr.getGraphicsResourceFinder();
         initComponents();
 	jButton1.addActionListener(infoJButtonListener);
     }
@@ -216,7 +219,7 @@ implements MoveReceiver {
 
         setLayout(new java.awt.GridBagLayout());
 
-        nextStation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/next.png")));
+        nextStation.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/next.png")));
         nextStation.setToolTipText(org.railz.util.Resources.get("Next Station"));
         nextStation.setMargin(new java.awt.Insets(0, 0, 0, 0));
         nextStation.addActionListener(new java.awt.event.ActionListener() {
@@ -234,7 +237,7 @@ implements MoveReceiver {
         gridBagConstraints.insets = new java.awt.Insets(2, 2, 4, 4);
         add(nextStation, gridBagConstraints);
 
-        previousStation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/previous.png")));
+        previousStation.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/previous.png")));
         previousStation.setToolTipText(org.railz.util.Resources.get("Previous Station"));
         previousStation.setMargin(new java.awt.Insets(0, 0, 0, 0));
         previousStation.addActionListener(new java.awt.event.ActionListener() {
@@ -309,11 +312,11 @@ implements MoveReceiver {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 2, 4);
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 2, 4);
         jPanel2.add(jLabel1, gridBagConstraints);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/info.png")));
+        jButton1.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/info.png")));
         jPanel2.add(jButton1, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -339,7 +342,7 @@ implements MoveReceiver {
         } else {
             throw new IllegalStateException();
         }
-	} //GEN-LAST:event_previousStationActionPerformed
+	}//GEN-LAST:event_previousStationActionPerformed
     
     private void nextStationActionPerformed(
     java.awt.event.ActionEvent evt) {
@@ -356,10 +359,9 @@ implements MoveReceiver {
             throw new IllegalStateException();
         }
         
-	} //GEN-LAST:event_nextStationActionPerformed
+	}//GEN-LAST:event_nextStationActionPerformed
     
-    public void setup(ModelRoot mr, GUIRoot gr) {
-	guiRoot = gr;
+    public void setup(ModelRoot mr) {
 	modelRoot = mr;
 	this.wi = new NonNullElements(KEY.STATIONS, modelRoot.getWorld(),
 		modelRoot.getPlayerPrincipal());

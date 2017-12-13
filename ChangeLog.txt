@@ -1,6 +1,35 @@
+January 30, 2005:
+-----------------
+Fix for bug 6 - Top-down engine gfx are just black rectangles.
+Updated Grasshopper graphics.  Updated Norris graphics.
+Fix for scripting events not being executed properly.
+Added default fallback graphics for new train types.
+Fixed problems with water supply calculation.
+January 28, 2005:
+-----------------
+Fix for bug 11 - freight and passenger revenues are not separated
+Fix for bug 43 - small_south_america map does not work
+Fix for bug 44 - New game from Game Menu causes extra tabs to be loaded in
+TrainsJTabPane
+January 27, 2005:
+-----------------
+Fix for bug 25 - Station cargo delivery doesn't account for multiple stations
+January 26, 2005:
+-----------------
+Fix for bug 9 - too easy to accidentally build track by clicking on map
+January 25, 2005:
+-----------------
+Fix for bug 41 - ImageManager exposes file locations to rest of client
+January 24, 2005:
+-----------------
+Added status icon to train info panel. Train info panel now picks up icons from ModdableResourceFinder.
+Added server configuration xml file to allow new maps to be added without code
+modifiation.
 January 23, 2005:
 -----------------
 Fixed a bug where an exception could be thrown whilst changing the schedule.
+Wagon selection dialog no longer draws the locomotive facing in the wrong
+direction, and backdrop is now moddable.
 January 21, 2005:
 -----------------
 Fixed a bug where adding too many wagons to trains caused an exception.

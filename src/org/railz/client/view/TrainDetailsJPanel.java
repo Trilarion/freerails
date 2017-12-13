@@ -53,16 +53,15 @@ import org.railz.world.train.*;
  */
 public class TrainDetailsJPanel extends javax.swing.JPanel implements
     WorldListListener, RefreshListener {
-    private ImageIcon stoppedIcon = new ImageIcon(getClass()
-		.getResource("/org/railz/client/graphics/toolbar/stop.png"));
-    
-    private ImageIcon slowIcon = new ImageIcon(getClass()
-		.getResource("/org/railz/client/graphics/toolbar/slow.png"));
-
-    private ImageIcon standardIcon = new ImageIcon(getClass()
-		.getResource("/org/railz/client/graphics/toolbar/standard.png"));
-    private ImageIcon expressIcon = new ImageIcon(getClass()
-		.getResource("/org/railz/client/graphics/toolbar/express.png"));
+	private ImageIcon outOfWaterIcon;
+	private ImageIcon blockedIcon;
+	private ImageIcon loadingIcon;
+	private ImageIcon unloadingIcon;
+	private ImageIcon noRouteIcon;
+	private ImageIcon stoppedIcon;
+	private ImageIcon slowIcon;
+	private ImageIcon standardIcon;
+	private ImageIcon expressIcon;
 
     private ModelRoot modelRoot;
 
@@ -78,11 +77,33 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
      */
     private int bundleID = -1;
     
+    private GUIRoot guiRoot;
+
     /** Creates new form TrainDetailsJPanel */
-    public TrainDetailsJPanel() {
+    public TrainDetailsJPanel(ModelRoot mr, GUIRoot gr) {
+	modelRoot = mr;
+	guiRoot = gr;
         initComponents();
 	statusJButton.setIcon(standardIcon);
 	statusJButton.addActionListener(statusButtonListener);
+
+	ModdableResourceFinder mrf = guiRoot.getGraphicsResourceFinder();
+	stoppedIcon = new ImageIcon(mrf.getURLForReading("toolbar/stop.png"));
+	slowIcon = new ImageIcon(mrf.getURLForReading("toolbar/slow.png"));
+	standardIcon = new ImageIcon(mrf.getURLForReading
+		("toolbar/standard.png"));
+	expressIcon = new ImageIcon(mrf.getURLForReading
+		("toolbar/express.png"));
+	outOfWaterIcon = new ImageIcon(mrf.getURLForReading
+		("toolbar/out_of_water.png"));
+	blockedIcon = new ImageIcon(mrf.getURLForReading
+		("toolbar/yielding.png"));
+	loadingIcon = new ImageIcon(mrf.getURLForReading
+		("toolbar/loading.png"));
+	unloadingIcon = new ImageIcon(mrf.getURLForReading
+		("toolbar/unloading.png"));
+	noRouteIcon = new ImageIcon(mrf.getURLForReading
+		("toolbar/no_route.png"));
     }
     
     /** This method is called from within the constructor to
@@ -97,6 +118,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
         statusJButton = new javax.swing.JButton();
         destinationJLabel = new javax.swing.JLabel();
         waterBar = new WaterBar();
+        statusJLabel = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -111,7 +133,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
         add(nameJLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 4);
         add(statusJButton, gridBagConstraints);
@@ -138,16 +160,20 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
         gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         add(waterBar, gridBagConstraints);
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        add(statusJLabel, gridBagConstraints);
+
     }//GEN-END:initComponents
 
-    public void setup(ModelRoot mr, GUIRoot gr) {
-	modelRoot = mr;
-	ReadOnlyWorld w = mr.getWorld();
+    public void setup() {
+	ReadOnlyWorld w = modelRoot.getWorld();
         this.w = w;
 	trainModelViewer = new TrainModelViewer(w);
 
-	org.railz.client.renderer.ViewLists vl = mr.getViewLists();
-        trainViewJPanel1 = new TrainViewJPanel(mr);
+	org.railz.client.renderer.ViewLists vl = modelRoot.getViewLists();
+        trainViewJPanel1 = new TrainViewJPanel(modelRoot);
         trainViewJPanel1.setHeight(20);
 	trainViewJPanel1.setCenterTrain(true);
 	GridBagConstraints gbc = new GridBagConstraints();
@@ -158,7 +184,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
 	add(trainViewJPanel1, gbc);
 	
 	modelRoot.getMoveChainFork().addListListener(this);
-	gr.addRefreshListener(this);
+	guiRoot.addRefreshListener(this);
     }    
     
     public void displayTrain(int trainNumber){
@@ -188,8 +214,10 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
 	    }
 	    priority = train.getPriority();
 	    state = train.getState();
+	    setStatusLabel(train);
 	} else {
 	    s = "No trains to display";
+	    setStatusLabel(null);
 	}
 	setStatusButton(priority, state);
 	nameJLabel.setText(s);
@@ -221,14 +249,11 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
     private javax.swing.JLabel destinationJLabel;
     private javax.swing.JLabel nameJLabel;
     private javax.swing.JButton statusJButton;
+    private javax.swing.JLabel statusJLabel;
     private javax.swing.JPanel waterBar;
     // End of variables declaration//GEN-END:variables
     
     private TrainViewJPanel trainViewJPanel1;
-
-    public void paint(Graphics g) {
-	super.paint(g);
-    }
 
     private ActionListener statusButtonListener = new ActionListener() {
 	/**
@@ -279,6 +304,46 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements
 	    }
 	}
     };
+
+    private void setStatusLabel(TrainModel trainModel) {
+	if (trainModel == null) {
+	    statusJLabel.setIcon((Icon) null);
+	    statusJLabel.setToolTipText("");
+	    return;
+	}
+
+	switch (trainModel.getState()) {
+	    case TrainModel.STATE_RUNNABLE:
+		if (trainModel.isBlocked()) {
+		    statusJLabel.setIcon(blockedIcon);
+		    statusJLabel.setToolTipText(Resources.get
+			    ("Track blocked"));
+		} else if (trainModel.getTrainMotionModel().isLost()) {
+		    statusJLabel.setIcon(noRouteIcon);
+		    statusJLabel.setToolTipText(Resources.get
+			    ("No route to destination"));
+		} else if (trainModel.getTrainMotionModel().isOutOfWater()) {
+		    statusJLabel.setIcon(outOfWaterIcon);
+		    statusJLabel.setToolTipText(Resources.get("No water"));
+		} else {
+		    statusJLabel.setIcon((Icon) null);
+		    statusJLabel.setToolTipText("");
+		}
+		break;
+	    case TrainModel.STATE_LOADING:
+		statusJLabel.setIcon(loadingIcon);
+		statusJLabel.setToolTipText(Resources.get("Loading"));
+		break;
+	    case TrainModel.STATE_UNLOADING:
+		statusJLabel.setIcon(unloadingIcon);
+		statusJLabel.setToolTipText(Resources.get("Unloading"));
+		break;
+	    default:
+		statusJLabel.setIcon((Icon) null);
+		statusJLabel.setToolTipText("");
+		break;
+	}
+    }
 
     private void setStatusButton(int priority, int state) {
 	String tooltip = Resources.get("Standard Priority");

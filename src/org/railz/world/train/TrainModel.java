@@ -235,7 +235,9 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     * @return train length in Deltas
+     * @return train length in Deltas. The server guarantees to the client
+     * that the length of the train in tiles will not be less than the number
+     * of wagons + 1.
      */
     public int getLength() {
        	//Engine + wagons.
@@ -398,6 +400,7 @@ public class TrainModel implements FreerailsSerializable {
 	return new TrainModel(engineType, wagonTypes, cargoBundleNumber,
 		creationDate, state, scheduleIterator, tmm,
 		priority, isBlocked, stateLastChanged, ticksInService,
-		empty ? costTraversedSinceLoadingWater : 0);
+		empty ? costTraversedSinceLoadingWater +
+		trainMotionModel.getCostTraversed(t0) : 0);
     }
 }

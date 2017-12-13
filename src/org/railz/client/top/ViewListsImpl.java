@@ -47,14 +47,14 @@ public class ViewListsImpl implements ViewLists {
     private final ImageManager imageManager;
     private final HashMap icons = new HashMap();
     private final GUIRoot guiRoot;
-    private final ModdableResourceFinder mrf = new ModdableResourceFinder
-	("org/railz/client/graphics");
+    private final ModdableResourceFinder mrf;
     private static final Logger logger = Logger.getLogger("global");
 
     public ViewListsImpl(ModelRoot mr, GUIRoot gr,
 	    FreerailsProgressMonitor pm)
         throws IOException {
 	    guiRoot = gr;
+	    mrf = guiRoot.getGraphicsResourceFinder();
 	    modelRoot = mr;
 	    ReadOnlyWorld w = mr.getWorld();
 
@@ -66,7 +66,7 @@ public class ViewListsImpl implements ViewLists {
 
         trackPieceViewList = loadTrackViews(w, pm);
 
-        trainImages = new TrainImages(w, imageManager, pm);
+        trainImages = new TrainImages(guiRoot, w, imageManager, pm);
     }
 
     private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
@@ -130,14 +130,15 @@ public class ViewListsImpl implements ViewLists {
         //Setup progress monitor..
         pm.setMessage(Resources.get("Loading terrain graphics."));
 
-        int numberOfTypes = w.size(KEY.TERRAIN_TYPES);
+        int numberOfTypes = w.size(KEY.TERRAIN_TYPES, Player.AUTHORITATIVE);
         pm.setMax(numberOfTypes);
 
         int progress = 0;
         pm.setValue(progress);
 
         for (int i = 0; i < numberOfTypes; i++) {
-            TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
+            TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, i,
+		    Player.AUTHORITATIVE);
             int[] typesTreatedAsTheSame = new int[] {i};
 
             TileRenderer tr = null;
@@ -153,7 +154,8 @@ public class ViewListsImpl implements ViewLists {
                     int count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+			TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES,
+				j, Player.AUTHORITATIVE);
                         int terrainCategory = t2.getTerrainCategory();
 
                         if (terrainCategory == TerrainType.CATEGORY_OCEAN ||
@@ -166,7 +168,8 @@ public class ViewListsImpl implements ViewLists {
                     count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+			TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES,
+				j, Player.AUTHORITATIVE);
                         int terrainCategory = t2.getTerrainCategory();
 
                         if (terrainCategory == TerrainType.CATEGORY_OCEAN ||
@@ -219,7 +222,8 @@ public class ViewListsImpl implements ViewLists {
         TileRenderer occeanTileRenderer = null;
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j,
+		    Player.AUTHORITATIVE);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Ocean")) {
@@ -230,11 +234,13 @@ public class ViewListsImpl implements ViewLists {
         }
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j,
+		    Player.AUTHORITATIVE);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Harbour")) {
-                TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
+                TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, j,
+			Player.AUTHORITATIVE);
                 TileRenderer tr = new SpecialTileRenderer(imageManager,
                         new int[] {j}, t, occeanTileRenderer);
                 tileRenderers.set(j, tr);

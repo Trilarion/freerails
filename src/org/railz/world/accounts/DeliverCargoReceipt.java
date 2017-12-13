@@ -29,11 +29,20 @@ import org.railz.world.common.GameTime;
  *
  */
 public class DeliverCargoReceipt extends Transaction {
-    private final CargoBundle cargoDelivered;
+    public static final int SUBCATEGORY_FREIGHT = 1;
+    public static final int SUBCATEGORY_PASSENGERS = 2;
 
-    public DeliverCargoReceipt(GameTime time, long value, CargoBundle cb) {
+    private final CargoBundle cargoDelivered;
+    private final int subcategory;
+
+    public DeliverCargoReceipt(GameTime time, long value, CargoBundle cb,
+	    int subcat) {
         super(time, value);
         cargoDelivered = cb;
+	if (subcat != SUBCATEGORY_FREIGHT && subcat != SUBCATEGORY_PASSENGERS)
+	    throw new IllegalArgumentException();
+
+	subcategory = subcat;
     }
 
     public CargoBundle getCargoDelivered() {
@@ -45,6 +54,6 @@ public class DeliverCargoReceipt extends Transaction {
     }
 
     public int getSubcategory() {
-	return SUBCATEGORY_NO_SUBCATEGORY;
+	return subcategory;
     }
 }

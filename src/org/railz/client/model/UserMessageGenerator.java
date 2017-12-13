@@ -61,91 +61,101 @@ class UserMessageGenerator implements MoveReceiver {
     public void processMove(Move move) {
         //Check whether it is a train arriving at a station.
         if (move instanceof TransferCargoAtStationMove) {
-	    TransferCargoAtStationMove transferCargoAtStationMove =
-		(TransferCargoAtStationMove)move;
-
-	    AddTransactionMove addTransactionMove =
-		transferCargoAtStationMove.getPayment();
-	    long revenue = 0;
-	    DeliverCargoReceipt deliverCargoReceipt = null;
-	    if (addTransactionMove != null) {
-		deliverCargoReceipt =
-		    (DeliverCargoReceipt)addTransactionMove.getTransaction();
-		revenue = deliverCargoReceipt.getValue();
-	    }
-
 	    // ignore other player's trains
 	    if (! move.getPrincipal().equals(mr.getPlayerPrincipal()))
 		return;
 
-            if (0 < revenue) {
-                int trainCargoBundle =
-		    transferCargoAtStationMove.getChangeOnTrain()
-                                                                 .getIndex();
-                int stationCargoBundle =
-		    transferCargoAtStationMove.getChangeAtStation()
-                                                                   .getIndex();
-                NonNullElements trains = new NonNullElements(KEY.TRAINS, world,
-		       	mr.getPlayerPrincipal());
-		NonNullElements players = new NonNullElements(KEY.PLAYERS,
-			world);
+	    TransferCargoAtStationMove transferCargoAtStationMove =
+		(TransferCargoAtStationMove)move;
 
-                int trainNumber = -1;
-                int statonNumber = -1;
-                String stationName = Resources.get("No station");
+	    int trainCargoBundle =
+		transferCargoAtStationMove.getChangeOnTrain()
+		.getIndex();
+	    int stationCargoBundle =
+		transferCargoAtStationMove.getChangeAtStation()
+		.getIndex();
+	    NonNullElements trains = new NonNullElements(KEY.TRAINS, world,
+		    mr.getPlayerPrincipal());
+	    NonNullElements players = new NonNullElements(KEY.PLAYERS,
+		    world);
 
-                while (trains.next()) {
-                    TrainModel train = (TrainModel)trains.getElement();
+	    int trainNumber = -1;
+	    int statonNumber = -1;
+	    String stationName = Resources.get("No station");
 
-                    if (train.getCargoBundleNumber() == trainCargoBundle) {
-                        trainNumber = trains.getIndex() + 1;
+	    while (trains.next()) {
+		TrainModel train = (TrainModel)trains.getElement();
 
-                        break;
-                    }
-                }
+		if (train.getCargoBundleNumber() == trainCargoBundle) {
+		    trainNumber = trains.getIndex() + 1;
 
-		while (players.next()) {
-		    FreerailsPrincipal p = (FreerailsPrincipal)
-			((Player) players.getElement()).getPrincipal();
-		    NonNullElements stations = new NonNullElements(KEY.STATIONS,
-			    world, p);
-		    while (stations.next()) {
-			StationModel station = (StationModel)stations
-			    .getElement();
+		    break;
+		}
+	    }
 
-			if (station.getCargoBundleNumber() ==
-				stationCargoBundle) {
-			    statonNumber = stations.getRowNumber();
-			    stationName = station.getStationName();
-			    break;
+	    while (players.next()) {
+		FreerailsPrincipal p = (FreerailsPrincipal)
+		    ((Player) players.getElement()).getPrincipal();
+		NonNullElements stations = new NonNullElements(KEY.STATIONS,
+			world, p);
+		while (stations.next()) {
+		    StationModel station = (StationModel)stations
+			.getElement();
+
+		    if (station.getCargoBundleNumber() ==
+			    stationCargoBundle) {
+			statonNumber = stations.getRowNumber();
+			stationName = station.getStationName();
+			break;
+		    }
+		}
+	    }
+
+	    GameTime gt = (GameTime)world.get(ITEM.TIME);
+	    GameCalendar gc = (GameCalendar)world.get(ITEM.CALENDAR);
+	    GregorianCalendar cal = gc.getCalendar(gt);
+	    DateFormat df =
+		DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+			DateFormat.MEDIUM);
+	    String message = df.format(cal.getTime()) + "  Train #" +
+		trainNumber + " arrives at " + stationName;
+	    mr.getUserMessageLogger().println(message);
+
+	    AddTransactionMove[] addTransactionMoves =
+		transferCargoAtStationMove.getPayment();
+
+	    if (addTransactionMoves == null) {
+		// nothing more to report
+		return;
+	    }
+
+	    message = "";
+
+	    for (int j = 0; j < addTransactionMoves.length; j++) {
+		AddTransactionMove addTransactionMove =
+		    addTransactionMoves[j];
+		DeliverCargoReceipt deliverCargoReceipt = 
+		    (DeliverCargoReceipt)addTransactionMove.getTransaction();
+		long revenue = deliverCargoReceipt.getValue();
+
+		if (0 < revenue) {
+		    CargoBundle cb = deliverCargoReceipt.getCargoDelivered();
+
+		    for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
+			int amount = cb.getAmount(i);
+
+			if (amount > 0) {
+			    CargoType ct =
+				(CargoType)world.get(KEY.CARGO_TYPES, i);
+			    message += amount + " " + ct.getDisplayName() +
+				"\n";
 			}
 		    }
-                }
 
-                CargoBundle cb = deliverCargoReceipt.getCargoDelivered();
-
-                GameTime gt = (GameTime)world.get(ITEM.TIME);
-                GameCalendar gc = (GameCalendar)world.get(ITEM.CALENDAR);
-		GregorianCalendar cal = gc.getCalendar(gt);
-		DateFormat df =
-		    DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
-			    DateFormat.MEDIUM);
-
-                String message = df.format(cal.getTime()) + "  Train #" +
-                    trainNumber + " arrives at " + stationName + "\n";
-
-                for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
-                    int amount = cb.getAmount(i);
-
-                    if (amount > 0) {
-                        CargoType ct = (CargoType)world.get(KEY.CARGO_TYPES, i);
-                        message += amount + " " + ct.getDisplayName() + "\n";
-                    }
-                }
-
-                message += "$" + formatter.format(revenue);
-                mr.getUserMessageLogger().println(message);
-            }
+		    message += "$" + formatter.format(revenue) + "\n";
+		}
+	    }
+	    mr.getUserMessageLogger().println(message);
         } else if ((move instanceof AddTransactionMove) &&
 		move.getPrincipal().equals(mr.getPlayerPrincipal())) {
 	    Transaction t = (Transaction) ((AddTransactionMove)

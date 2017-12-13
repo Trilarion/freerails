@@ -33,17 +33,20 @@ class ScriptingEventHandler {
     private GameTime endTime;
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",
 	    Locale.US);
-    private GameCalendar gameCalendar;
+    private GameCalendar gameCalendar = null;
 
     public ScriptingEventHandler(World w) {
 	world = w;
-	gameCalendar = (GameCalendar) world.get(ITEM.CALENDAR,
-		Player.AUTHORITATIVE);
     }
 
     public void startElement(String sName, String qName, Attributes attrs)
 	throws SAXException {
-	if ("ScriptingEvent".equals(qName)) {
+	if ("Events".equals(qName)) {
+	    // don't set the calendar until any previous Calendar elements
+	    // have been parsed
+	    gameCalendar = (GameCalendar) world.get(ITEM.CALENDAR,
+		    Player.AUTHORITATIVE);
+	} else if ("ScriptingEvent".equals(qName)) {
 	    attributes = new HashMap();
 	    eventName=attrs.getValue("name");
 	    Date startDate, endDate;

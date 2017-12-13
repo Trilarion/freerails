@@ -9,9 +9,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="terrainImage">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
-          <Image iconType="3" name="/org/railz/client/graphics/terrain/Clear_0000.png"/>
-        </Property>
+        <Property name="icon" postCode="terrainImage.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading(&quot;terrain/Clear_0000.png&quot;)));"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

@@ -25,7 +25,6 @@
 package org.railz.server;
 
 import java.util.Vector;
-import org.railz.controller.CargoElementObject;
 import org.railz.controller.MoveReceiver;
 import org.railz.move.ChangeStationMove;
 import org.railz.move.Move;
@@ -95,17 +94,10 @@ public class CalcSupplyAtStations implements WorldListListener {
 
         //init vars
         CalcCargoSupplyRateAtStation supplyRate;
-        Vector supply = new Vector();
-        int[] cargoSupplied = new int[w.size(KEY.CARGO_TYPES)];
 
         //calculate the supply rates and put information into a vector
         supplyRate = new CalcCargoSupplyRateAtStation(w, x, y);
-        supply = supplyRate.scanAdjacentTiles();
-
-        //grab the supply rates from the vector
-        for (int i = 0; i < supply.size(); i++) {
-            cargoSupplied[i] = ((CargoElementObject)supply.elementAt(i)).getRate();
-        }
+        int[] cargoSupplied = (int []) supplyRate.scanAdjacentTiles().clone();
 
         //set the supply rates for the current station	
         SupplyAtStation supplyAtStation = new SupplyAtStation(cargoSupplied);

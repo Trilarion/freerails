@@ -9,9 +9,7 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="nextStation">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
-          <Image iconType="3" name="/org/railz/client/graphics/toolbar/next.png"/>
-        </Property>
+        <Property name="icon" postCode="nextStation.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading(&quot;toolbar/next.png&quot;)));"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/railz/data/l10n/jfreerails_en.properties" key="Next Station" replaceFormat="org.railz.util.Resources.get(&quot;{key}&quot;)"/>
         </Property>
@@ -30,9 +28,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="previousStation">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
-          <Image iconType="3" name="/org/railz/client/graphics/toolbar/previous.png"/>
-        </Property>
+        <Property name="icon" postCode="previousStation.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading(&quot;toolbar/previous.png&quot;)));"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/railz/data/l10n/jfreerails_en.properties" key="Previous Station" replaceFormat="org.railz.util.Resources.get(&quot;{key}&quot;)"/>
         </Property>
@@ -116,9 +112,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
-              <Image iconType="3" name="/org/railz/client/graphics/toolbar/info.png"/>
-            </Property>
+            <Property name="icon" postCode="jButton1.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading(&quot;toolbar/info.png&quot;)));"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

@@ -146,8 +146,8 @@ final public class EngineType implements FreerailsSerializable {
      * @param effectiveIncline effectiveIncline in %
      * @return acceleration at the given speed and incline */
     public float getAcceleration(float effectiveIncline, float v, int
-	    totalMass) {
-	float tractiveForce = powerOutput / v;
+	    totalMass, boolean outOfWater) {
+	float tractiveForce = powerOutput / (outOfWater ? 3 * v : v);
 	// at low speeds, acceleration is limited by traction
 	if (tractiveForce > (float) maxTractiveForce)
 	    tractiveForce = (float) maxTractiveForce;
@@ -175,8 +175,8 @@ final public class EngineType implements FreerailsSerializable {
 	do {
 	    vMin = vMax;
 	    vMax += increment;
-	    aMin = getAcceleration(effectiveIncline, vMin, mass);
-	    aMax = getAcceleration(effectiveIncline, vMax, mass);
+	    aMin = getAcceleration(effectiveIncline, vMin, mass, false);
+	    aMax = getAcceleration(effectiveIncline, vMax, mass, false);
 	} while (aMax > 0.0f);
 	if (aMax == 0.0f)
 	    return vMax;
@@ -185,7 +185,7 @@ final public class EngineType implements FreerailsSerializable {
 	// estimate by bisection
 	do {
 	    newV = (vMin + vMax) / 2;
-	    newA = getAcceleration(effectiveIncline, newV, mass);
+	    newA = getAcceleration(effectiveIncline, newV, mass, false);
 	    if (newA == 0.0f)
 		return newV;
 	    if (newA > 0.0f) { 

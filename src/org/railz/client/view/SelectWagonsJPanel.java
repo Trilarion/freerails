@@ -41,9 +41,11 @@ import javax.swing.ListCellRenderer;
 import org.railz.client.model.ModelRoot;
 import org.railz.client.renderer.TrainImages;
 import org.railz.client.renderer.ViewLists;
+import org.railz.util.*;
 import org.railz.world.cargo.CargoType;
 import org.railz.world.top.KEY;
 import org.railz.world.top.ReadOnlyWorld;
+
 /**
  * This JPanel lets the user add wagons to a train.
  * 
@@ -66,7 +68,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
     /** Creates new form SelectWagonsJPanel */
 	public SelectWagonsJPanel() {
 		initComponents();
-		URL url = SelectWagonsJPanel.class.getResource("/org/railz/data/station.gif");
+		ModdableResourceFinder mrf = new ModdableResourceFinder
+		    ("org/railz/client/graphics/");
+		URL url = mrf.getURLForReading("artwork/station.gif");
 		Image tempImage = (new javax.swing.ImageIcon(url)).getImage();
 		
 		stationView = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
@@ -176,13 +180,13 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
 
     private void wagonTypesJListMouseClicked(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_wagonTypesJListMouseClicked
 	// Add your handling code here:
-	addwagon();
+	addWagon();
     } //GEN-LAST:event_wagonTypesJListMouseClicked
 
     private void wagonTypesJListKeyTyped(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_wagonTypesJListKeyTyped
 	// Add your handling code here:
 	if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
-	    addwagon();
+	    addWagon();
 	} else {
 
 	}
@@ -190,7 +194,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
     } //GEN-LAST:event_wagonTypesJListKeyTyped
 
     //Adds the wagon selected in the list to the train consist.
-    private void addwagon() {
+    private void addWagon() {
 	int type = wagonTypesJList.getSelectedIndex();	
 	wagons.add(new Integer(type));
 	this.repaint();
@@ -202,20 +206,43 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
 	this.repaint();
     } //GEN-LAST:event_jButton1ActionPerformed
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
 	//paint the background
 	g.drawImage(this.stationView, 0, 0, null);
 
-	int x = 0;
+	final int SCALED_IMAGE_HEIGHT = 50;
 
+	// calculate the total widthm and therefore where to start drawing
+	// from
+	int totalWidth = 0;
+	if(-1 != engineType){
+		Image image = viewLists.getTrainImages().getSideOnEngineImage
+		    (this.engineType);
+		totalWidth += (image.getWidth(null) * SCALED_IMAGE_HEIGHT)
+		    / image.getHeight(null);			
+	}
+	for (int i = 0; i < this.wagons.size(); i++) {
+	    Integer type = (Integer) wagons.get(i);
+	    Image image = viewLists.getTrainImages().getSideOnWagonImage
+		(type.intValue());
+	    int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT 
+		/ image.getHeight(null);
+	    totalWidth += scaledWidth;			
+	}
+
+	int x = totalWidth > 620 ? 620 - totalWidth : 0;
 	int y = 330;
 
-
-
-	final int SCALED_IMAGE_HEIGHT = 50;
+	//paint the engine		
+	if(-1 != this.engineType){
+		//If an engine is selected.
+		Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
+		int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
+		g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
+		x += scaledWidth;
+	}	
 	//paint the wagons
-	for (int i = this.wagons.size()-1; i >= 0; i--) {  //Count down so we paint the wagon at the end of the train first. 
-
+	for (int i = 0; i < this.wagons.size(); i++) {
 	    Integer type = (Integer)wagons.get(i);
 	    Image image = viewLists.getTrainImages().getSideOnWagonImage(type.intValue());
 	    int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
@@ -223,15 +250,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel {
 	    g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
 	    x += scaledWidth;			
 	}
-
-	//paint the engine		
-	if(-1 != this.engineType){ //If an engine is selected.
-		Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
-		int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
-		g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
-	}	
-		
-	this.paintChildren(g);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

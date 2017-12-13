@@ -35,6 +35,10 @@ import org.xml.sax.SAXException;
  */
 class WorldFactory {
     private static final Logger logger = Logger.getLogger("global");
+    private static ModdableResourceFinder mrf = new ModdableResourceFinder
+	("org/railz/server/data");
+    private static ServerConfigurationParser serverConfigParser = new
+	ServerConfigurationParser(mrf);
     
     private WorldFactory() {
     }
@@ -44,13 +48,11 @@ class WorldFactory {
      * still dynamically determined by scanning the directory.
      */
     public static String[] getMapNames() {
-        return new String[] {"south_america", "small_south_america"};
+        return serverConfigParser.getMapNames();
     }
 
     public static WorldImpl createWorldFromMapFile(String mapName,
         FreerailsProgressMonitor pm) {
-	ModdableResourceFinder mrf = new ModdableResourceFinder
-	    ("org/railz/server/data");
 
         pm.setMessage("Setting up world.");
         pm.setValue(0);

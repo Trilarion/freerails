@@ -50,22 +50,38 @@ public class TrainRenderer {
 	    return;
 
         //renderer engine.
-        renderWagon(g, s, 0, train.getEngineType(), true);
+	int wagonPos = 0;
+	int wagonLength = trainImages.getEngineLength(train.getEngineType());
+        renderWagon(g, s, wagonPos, wagonLength, train.getEngineType(), true);
 
-	int n = train.getNumberOfWagons() + 1;
+	int n = train.getNumberOfWagons();
         //renderer wagons.				
-        for (int i = 1; i < n; i++) {
-            int wagonType = train.getWagon(i - 1);
-            renderWagon(g, s, i, wagonType, false);
+        for (int i = 0; i < n; i++) {
+	    wagonPos += wagonLength;
+            int wagonType = train.getWagon(i);
+	    wagonLength = trainImages.getWagonLength(wagonType);
+            renderWagon(g, s, wagonPos, wagonLength, wagonType, false);
         }
     }
 
-    private void renderWagon(Graphics g, TrainPath s, int n, int type, boolean
-	    engine) {
+    /** @param pos the distance from the start of the train of the front of
+     * the current wagon in pixels.
+     * @param length the length of the current wagon in pixels.
+     * @param type index into the WAGON_TYPES or ENGINE_TYPES table
+     * @param engine true if we render an engine, false if we render a wagon
+     * @param s the TrainPath representing the position of the current train.
+     * @param g graphics context to draw on.
+     */
+    private void renderWagon(Graphics g, TrainPath s, int pos, int length,
+	    int type, boolean engine) {
 	final Point p = new Point();
-	byte direction = s.getDirectionAtDistance(p, (int) ((n + 0.5) *
-		    WAGON_LENGTH * TrackTile.DELTAS_PER_TILE * 0.8 /
-		    TileRenderer.TILE_SIZE.width));
+	int dist = (int) (((pos + length / 2) * TrackTile.DELTAS_PER_TILE) /
+		    TileRenderer.TILE_SIZE.width);
+	byte direction = s.getDirectionAtDistance(p, dist);
+	// direction of TrainPath is head-to-tail, we reverse it to get the
+	// correct orientation for the wagons
+	direction = CompassPoints.invert(direction);
+
         Image image;
         if (engine) {
             image = trainImages.getOverheadEngineImage(type,

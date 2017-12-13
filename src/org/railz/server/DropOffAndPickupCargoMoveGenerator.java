@@ -105,7 +105,7 @@ class DropOffAndPickupCargoMoveGenerator {
             }
         }
 
-	AddTransactionMove payment =
+	AddTransactionMove payment[] =
 	    ProcessCargoAtStationMoveGenerator.processCargo(w,
 		    cargoDroppedOff, trainKey.principal, stationKey.index,
 		    stationKey.principal);
@@ -153,16 +153,21 @@ class DropOffAndPickupCargoMoveGenerator {
 	//of whether the station demands it.
         int[] spaceAvailable = this.getSpaceAvailableOnTrain(train);
 
+	boolean needToDump = false;
         for (int cargoType = 0; cargoType < spaceAvailable.length;
                 cargoType++) {
             if (spaceAvailable[cargoType] < 0) {
                 int amount2transfer = -spaceAvailable[cargoType];
                 transferCargoToStation(cargoType, amount2transfer, trainAfter,
                     stationAfter, cargoDroppedOff, stationKey);
+		needToDump = true;
             }
         }
 
-	AddTransactionMove payment =
+	if (! needToDump)
+	    return;
+
+	AddTransactionMove payment[] =
 	    ProcessCargoAtStationMoveGenerator.processCargo(w,
 		    cargoDroppedOff, trainKey.principal, stationKey.index,
 		    stationKey.principal);

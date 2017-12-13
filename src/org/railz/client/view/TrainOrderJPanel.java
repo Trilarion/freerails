@@ -26,20 +26,23 @@ package org.railz.client.view;
 import javax.swing.*;
 
 import org.railz.client.model.ModelRoot;
+import org.railz.util.*;
 import org.railz.world.top.*;
 import org.railz.world.station.*;
 import java.awt.*;
+
 /**
  *
  * @author  Luke Lindsay
  */
 public class TrainOrderJPanel extends javax.swing.JPanel {
     private ModelRoot modelRoot;
+    private ModdableResourceFinder graphicsResourceFinder;
     
     org.railz.world.top.ReadOnlyWorld w;
     
-    ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource("/org/railz/client/graphics/selected_arrow.png"));
-    ImageIcon gotoAfterPriorityOrders = new ImageIcon(TrainOrderJPanel.class.getResource("/org/railz/client/graphics/deselected_arrow.png"));
+    ImageIcon gotoNow;
+    ImageIcon gotoAfterPriorityOrders;
     ImageIcon dontGoto = null;
     
     private Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
@@ -47,9 +50,20 @@ public class TrainOrderJPanel extends javax.swing.JPanel {
     private Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
     
     /** Creates new form TrainOrderJPanel */
-    public TrainOrderJPanel() {
+    public TrainOrderJPanel(ModelRoot mr, GUIRoot gr) {
+	modelRoot = mr;
+	graphicsResourceFinder = gr.getGraphicsResourceFinder();
+	gotoNow = new ImageIcon(graphicsResourceFinder.getURLForReading
+		("selected_arrow.png"));
+	gotoAfterPriorityOrders = new ImageIcon(graphicsResourceFinder
+		.getURLForReading("deselected_arrow.png"));
         initComponents();
         this.setBackground(backgoundColor);
+	
+        w = mr.getWorld();
+        TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
+        trainViewJPanel.setHeight(15);
+        trainViewJPanel.setup(mr);
     }
     
     /** This method is called from within the constructor to
@@ -68,7 +82,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        gotoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/selected_arrow.png")));
+        gotoIcon.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("selected_arrow.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -108,14 +122,6 @@ public class TrainOrderJPanel extends javax.swing.JPanel {
         add(ordersJLabel, gridBagConstraints);
 
     }//GEN-END:initComponents
-    
-    public void setup(ModelRoot mr, java.awt.event.ActionListener submitButtonCallBack) {
-	modelRoot = mr;
-        w = mr.getWorld();
-        TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
-        trainViewJPanel.setHeight(15);
-        trainViewJPanel.setup(mr);
-    }
     
     public void update(TrainOrdersListModel.TrainOrdersListElement
 	    trainOrders, boolean isSelected, int index) {

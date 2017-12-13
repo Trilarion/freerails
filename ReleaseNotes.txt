@@ -1,27 +1,33 @@
 Release Notes
 =============
 
-These are the release notes for the 0.3.2 Development build of Railz.
+These are the release notes for the 0.3.3 Development build of Railz.
 
 New Features since the last release:
 ====================================
-More realistic physics model for trains - gradients, power output, air and
-rolling resistance now taken into account.
-Per-map configurable events added - locomotives can now appear at different
-stages in the game.
+New graphics for Norris and Grasshopper trains.
+Train status icon. Fixes to "out of water" calculations, Norris not being made
+available in 1837, default engineType graphics for new engineTypes. Code to
+allow new maps to be added without further code changes.
+
+Bug fixes:
+6 P3 FIX Top-down engine gfx are just black rectangles
+11 P3 FIX freight and passenger revenues are not separated
+25 P3 FIX Station cargo delivery doesn't account for multiple stations
+9 P3 FIX too easy to accidentally build track by clicking on map
+41 P2 FIX ImageManager exposes file locations to rest of client
+43 P2 FIX small_south_america map does not work
+44 P2 FIX New game from Game Menu causes extra tabs to be loaded in...
 
 Outstanding bugs:
 =================
-6 P3 ASSI Top-down engine gfx are just black rectangles
-9 P3 NEW too easy to accidentally build track by clicking on map
-11 P3 ASSI freight and passenger revenues are not separated
-25 P3 NEW Station cargo delivery doesn't account for multiple stations
-27 P3 NEW MapLayerRenderer doesn't expose the right methods
-7 P4 NEW Help and Build Menus missing accelerators
-12 P4 NEW tidy up build menu
-14 P4 NEW when in build mode, should be able to see build cost
-23 P4 NEW Select station dialog needs improving
-26 P4 NEW Urban areas should grow over time 
-28 P4 ASSI Game world objects contain non-internationalised strings 
+7 P4 NEW Help and Build Menus missing accelerators 
 8 P5 NEW train schedule dialog doesn't sccale gracefully 
-21 P5 ASSI dialogs no longer need close buttons
+12 P4 NEW tidy up build menu 
+14 P4 NEW when in build mode, should be able to see build cost 
+21 P5 ASSI dialogs no longer need close buttons 
+23 P4 NEW Select station dialog needs improving 
+26 P4 NEW Urban areas should grow over time 
+27 P4 NEW MapLayerRenderer doesn't expose the right methods 
+28 P4 ASSI Game world objects contain non-internationalised strings 
+42 P3 ASSI Memory leak in networking code

@@ -25,15 +25,13 @@
 package org.railz.server;
 
 import java.util.Vector;
-import org.railz.controller.CargoElementObject;
 import org.railz.world.cargo.CargoType;
 import org.railz.world.station.ConvertedAtStation;
 import org.railz.world.station.DemandAtStation;
 import org.railz.world.building.*;
 import org.railz.world.player.*;
 import org.railz.world.terrain.TerrainType;
-import org.railz.world.top.KEY;
-import org.railz.world.top.ReadOnlyWorld;
+import org.railz.world.top.*;
 import org.railz.world.track.FreerailsTile;
 import org.railz.world.track.TrackRule;
 
@@ -47,41 +45,35 @@ class CalcCargoSupplyRateAtStation {
     private ReadOnlyWorld w;
     private int x;
     private int y;
-    Vector supplies;
+    private int[] supplies;
     private int[] demand;
     private int[] converts;
+
+    private static int maxStationRadius = -1;
 
     CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
         w = world;
         x = X;
         y = Y;
 
-        supplies = new Vector();
-        populateSuppliesVector();
+	if (maxStationRadius == -1) {
+	    // initialize maxStationRadius if not already done
+	    NonNullElements i = new NonNullElements(KEY.BUILDING_TYPES, world,
+		    Player.AUTHORITATIVE);
+	    while (i.next()) {
+		BuildingType bt = (BuildingType) i.getElement();
+		if (bt.getStationRadius() > maxStationRadius)
+		    maxStationRadius = bt.getStationRadius();
+	    }
+	}
 
         int numCargoTypes = w.size(KEY.CARGO_TYPES);
+        supplies = new int[numCargoTypes];
         demand = new int[numCargoTypes];
         converts = ConvertedAtStation.emptyConversionArray(numCargoTypes);
     }
 
-    /**
-     * Fill supplies vector with 0 values for all cargo types
-     * get the correct list of cargoes from the world object.
-     */
-    private void populateSuppliesVector() {
-        CargoElementObject tempCargoElement;
-
-        //CargoType cT;
-        int type;
-
-        for (int i = 0; i < w.size(KEY.CARGO_TYPES); i++) {
-            //cT = (CargoType) w.get(KEY.CARGO_TYPES, i);
-            tempCargoElement = new CargoElementObject(0, i);
-            supplies.add(tempCargoElement);
-        }
-    }
-
-    Vector scanAdjacentTiles() {
+    int[] scanAdjacentTiles() {
         //Find the station radius.
         FreerailsTile tile = w.getTile(this.x, this.y);
 	BuildingTile bTile = tile.getBuildingTile();
@@ -91,8 +83,7 @@ class CalcCargoSupplyRateAtStation {
 		bTile.getType(), Player.AUTHORITATIVE);
         int stationRadius = bType.getStationRadius();
 
-        //Look at the terrain type of each tile and retrieve the cargo supplied.
-        //The station radius determines how many tiles each side we look at. 		
+	// xmin/max, ymin/max - boundaries of our station radius
 	int xmin = x < stationRadius ? 0 : x - stationRadius;
 	int xmax = x + stationRadius;
 	if (xmax >= w.getMapWidth())
@@ -101,9 +92,56 @@ class CalcCargoSupplyRateAtStation {
 	int ymax = y + stationRadius;
 	if (ymax >= w.getMapHeight())
 	    ymax = w.getMapHeight();
+	// Build a cache of demand which could be within sufficient distance
+	// to be competing for resources
+	int[][] competingStations = new int[stationRadius * 2 + 1][stationRadius
+	    * 2 + 1];
+	// xxmin/max, yymin/max - bounds of where to find competing stations
+	int xxmin = x - stationRadius - maxStationRadius;
+	int xxmax = x + stationRadius + maxStationRadius;
+	int yymin = y - stationRadius - maxStationRadius;
+	int yymax = y + stationRadius + maxStationRadius;
+	xxmin = xxmin < 0 ? 0 : xxmin;
+	xxmax = xxmax > w.getMapWidth() ? w.getMapWidth() : xxmax;
+	yymin = yymin < 0 ? 0 : yymin;
+	yymax = yymax > w.getMapHeight() ? w.getMapHeight() : yymax;
+	
+	for (int xx = xxmin; xx <= xxmax; xx++) {
+	    for (int yy = yymin; yy <= yymax; yy++) {
+		FreerailsTile ft = w.getTile(xx, yy);
+		BuildingTile bt = ft.getBuildingTile();
+		if (bt == null)
+		    continue;
+
+		bType = (BuildingType) w.get(KEY.BUILDING_TYPES,
+			bt.getType(), Player.AUTHORITATIVE);
+
+		if (bType.getStationRadius() > 0) {
+		    // xxxmin/max, yyymin/max - bounds of competing station
+		    // radius
+		    int xxxmin = xx - bType.getStationRadius();
+		    int yyymin = yy - bType.getStationRadius();
+		    int xxxmax = xx + bType.getStationRadius();
+		    int yyymax = yy + bType.getStationRadius();
+		    xxxmin = xxxmin < xmin ? xmin : xxxmin;
+		    xxxmax = xxxmax > xmax ? xmax : xxxmax;
+		    yyymin = yyymin < ymin ? ymin : yyymin;
+		    yyymax = yyymax > ymax ? ymax : yyymax;
+		    for (int yyy = yyymin; yyy <= yyymax; yyy++) {
+			for (int xxx = xxxmin; xxx <= xxxmax; xxx++) {
+			    competingStations[xxx - xmin][yyy - ymin]++;
+			}
+		    }
+		}
+	    }
+	}
+
+        //Look at the terrain type of each tile and retrieve the cargo supplied.
+        //The station radius determines how many tiles each side we look at. 		
         for (int i = xmin; i <= xmax; i++) {
             for (int j = ymin; j <= ymax; j++) {
-                incrementSupplyAndDemand(i, j);
+                incrementSupplyAndDemand(i, j,
+		       	competingStations[i - xmin][j - ymin]);
             }
         }
 
@@ -127,7 +165,7 @@ class CalcCargoSupplyRateAtStation {
         return new ConvertedAtStation(this.converts);
     }
 
-    private void incrementSupplyAndDemand(int i, int j) {
+    private void incrementSupplyAndDemand(int i, int j, int competingStations) {
 	BuildingTile bTile = w.getTile(i, j).getBuildingTile();
 	if (bTile == null)
 	    return;
@@ -145,9 +183,7 @@ class CalcCargoSupplyRateAtStation {
         for (int m = 0; m < production.length; m++) {
             int type = production[m].getCargoType();
             int rate = production[m].getRate();
-
-            //loop through supplies vector and increment the cargo values as required
-            updateSupplyRate(type, rate);
+	    supplies[type] += rate / competingStations;
         }
 
         //Now calculate demand.
@@ -170,21 +206,6 @@ class CalcCargoSupplyRateAtStation {
             //Only one tile that converts the cargo type is needed for the station to demand the cargo type.				
             demand[type] += PREREQUISITE_FOR_DEMAND;
             converts[type] = conversion[m].getOutput();
-        }
-    }
-
-    private void updateSupplyRate(int type, int rate) {
-        //loop through supplies vector and increment the cargo values as required	
-        for (int n = 0; n < supplies.size(); n++) {
-            CargoElementObject tempElement = (CargoElementObject)supplies.elementAt(n);
-
-            if (tempElement.getType() == type) {
-                //cargo types are the same, so increment the rate in supply
-                //with the rate.
-                tempElement.setRate(tempElement.getRate() + rate);
-
-                break; //no need to go through the rest if we've found a match
-            }
         }
     }
 }

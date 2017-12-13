@@ -47,6 +47,8 @@ public class GUIRoot implements ModelRootListener {
     ClientJFrame clientJFrame;
     private MainMapAndOverviewMapMediator mediator;
     private ScreenHandler screenHandler;
+    private ModdableResourceFinder graphicsResourceFinder = 
+	 new ModdableResourceFinder ("org/railz/client/graphics");
 
     public GUIRoot(ModelRoot mr) {
         modelRoot = mr;
@@ -131,5 +133,11 @@ public class GUIRoot implements ModelRootListener {
      */
     public void removeRefereshListener(RefreshListener l) {
 	refreshListeners.remove(l);
+    }
+
+    /** @return a ModdableResourceFinder that can be used to locate graphics
+     * resources */
+    public ModdableResourceFinder getGraphicsResourceFinder() {
+	return graphicsResourceFinder;
     }
 }

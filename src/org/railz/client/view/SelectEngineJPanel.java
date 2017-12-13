@@ -287,6 +287,14 @@ public class SelectEngineJPanel extends javax.swing.JPanel {
             + (isSelected ? "</strong>" : "")
             + "</body></html>";
             label.setText(text);
+	    NonNullElements i = new NonNullElements(KEY.ENGINE_TYPES,
+		    modelRoot.getWorld(), Player.AUTHORITATIVE);
+	    while (i.next()) {
+		if (((EngineType) i.getElement()).getEngineTypeName().equals
+			(engine.getEngineTypeName())) {
+		    index = i.getIndex();
+		}
+	    }
             Image image = viewLists.getTrainImages().getSideOnEngineImage(index);
             int height = image.getHeight(null);
             int width = image.getWidth(null);

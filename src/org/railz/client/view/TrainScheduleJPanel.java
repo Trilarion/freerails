@@ -32,7 +32,7 @@ import org.railz.client.renderer.ViewLists;
 import org.railz.client.model.ModelRoot;
 import org.railz.client.view.TrainOrdersListModel.TrainOrdersListElement;
 import org.railz.move.*;
-import org.railz.util.Resources;
+import org.railz.util.*;
 import org.railz.world.cargo.CargoType;
 import org.railz.world.common.*;
 import org.railz.world.player.*;
@@ -63,9 +63,13 @@ WorldListListener {
     private WagonSelectionJPanel wagonSelectionJPanel;
     private int wagonSelectionOrderNo;
     
+    private ModdableResourceFinder graphicsResourceFinder;
+    
     /** Creates new form TrainScheduleJPanel */
-    public TrainScheduleJPanel() {
+    public TrainScheduleJPanel(ModelRoot mr, GUIRoot gr) {
+	graphicsResourceFinder = gr.getGraphicsResourceFinder();
         initComponents();
+	setup(mr, gr);
     }
     
     /** This method is called from within the constructor to
@@ -172,7 +176,7 @@ WorldListListener {
 
         editOrderJPopupMenu.add(pushDownJMenuItem);
 
-        addStationJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/add_station.png")));
+        addStationJButton.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/add_station.png")));
         addStationJButton.setToolTipText(org.railz.util.Resources.get("Add station"));
         addStationJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,7 +328,7 @@ WorldListListener {
 	}
     }//GEN-LAST:event_pullUpJMenuItemActionPerformed
     
-    public void setup(ModelRoot mr, GUIRoot gr) {
+    private void setup(ModelRoot mr, GUIRoot gr) {
 	guiRoot = gr;
 	modelRoot = mr;
         this.w = mr.getWorld();
@@ -358,7 +362,8 @@ WorldListListener {
 	    TrainModel train = (TrainModel) w.get(KEY.TRAINS, trainNumber,
 		    modelRoot.getPlayerPrincipal());
 	    scheduleIterator = train.getScheduleIterator();
-	    listModel = new TrainOrdersListModel(modelRoot, trainNumber);
+	    listModel = new TrainOrdersListModel(modelRoot, guiRoot,
+		    trainNumber);
 	    orders.setModel(listModel);
 	    orders.setCellRenderer(listModel);
 	    // orders.setFixedCellWidth(250);

@@ -24,15 +24,20 @@ package org.railz.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.File;
+import java.util.*;
+import java.util.logging.*;
 import javax.swing.*;
+import javax.xml.parsers.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
 
 import org.railz.client.common.ImageManager;
-import org.railz.util.FreerailsProgressMonitor;
+import org.railz.util.*;
+import org.railz.client.view.*;
 import org.railz.world.cargo.CargoType;
 import org.railz.world.common.*;
 import org.railz.world.player.*;
-import org.railz.world.top.KEY;
-import org.railz.world.top.ReadOnlyWorld;
+import org.railz.world.top.*;
 import org.railz.world.train.*;
 
 
@@ -41,7 +46,7 @@ import org.railz.world.train.*;
  * @author Luke
  *
  */
-public class TrainImages {
+public final class TrainImages {
     private final Image[] sideOnWagonImages;
     private final Image[] sideOnEmptyWagonImages;
     private final Image[][] overheadWagonImages;
@@ -49,18 +54,28 @@ public class TrainImages {
     private final Image[][] overheadEngineImages;
     private final ImageManager imageManager;
     private final ReadOnlyWorld w;
+    private final int[] engineLengths;
+    private final int[] wagonLengths;
 
-    public TrainImages(ReadOnlyWorld w, ImageManager imageManager,
+    public TrainImages(GUIRoot gr, ReadOnlyWorld w, ImageManager imageManager,
         FreerailsProgressMonitor pm) throws IOException {
+	Logger logger = Logger.getLogger("global");
         this.w = w;
         this.imageManager = imageManager;
 
-        final int numberOfWagonTypes = w.size(KEY.CARGO_TYPES);
-        final int numberOfEngineTypes = w.size(KEY.ENGINE_TYPES);
+        final int numberOfWagonTypes = w.size(KEY.CARGO_TYPES,
+		Player.AUTHORITATIVE);
+        final int numberOfEngineTypes = w.size(KEY.ENGINE_TYPES,
+		Player.AUTHORITATIVE);
+	engineLengths = new int[numberOfEngineTypes];
+	wagonLengths = new int[numberOfWagonTypes];
+	for (int i = 0; i < numberOfEngineTypes; i++)
+	    engineLengths[i] = TileRenderer.TILE_SIZE.width;
+	for (int i = 0; i < numberOfWagonTypes; i++)
+	    wagonLengths[i] = TileRenderer.TILE_SIZE.width;
 
         //Setup progress monitor..
-        pm.setMessage("Loading train images.");
-        pm.setMax(numberOfWagonTypes + numberOfEngineTypes);
+        pm.setMax(numberOfWagonTypes + numberOfEngineTypes + 1);
 
         int progress = 0;
         pm.setValue(progress);
@@ -71,8 +86,10 @@ public class TrainImages {
         sideOnEngineImages = new Image[numberOfEngineTypes];
         overheadEngineImages = new Image[numberOfEngineTypes][8];
 
+        pm.setMessage(Resources.get("Loading wagon images."));
         for (int i = 0; i < numberOfWagonTypes; i++) {
-            CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, i);
+            CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, i,
+		    Player.AUTHORITATIVE);
             String sideOnFileName = generateSideOnFilename(cargoType.getName());
             sideOnWagonImages[i] = imageManager.getImage(sideOnFileName);
 	    sideOnEmptyWagonImages[i] = imageManager.getImage
@@ -87,8 +104,10 @@ public class TrainImages {
             pm.setValue(++progress);
         }
 
+        pm.setMessage(Resources.get("Loading engine images."));
         for (int i = 0; i < numberOfEngineTypes; i++) {
-            EngineType engineType = (EngineType)w.get(KEY.ENGINE_TYPES, i);
+            EngineType engineType = (EngineType)w.get(KEY.ENGINE_TYPES, i,
+		    Player.AUTHORITATIVE);
             String sideOnFileName = generateSideOnFilename(engineType.getEngineTypeName());
             sideOnEngineImages[i] = imageManager.getImage(sideOnFileName);
 
@@ -100,6 +119,27 @@ public class TrainImages {
 
             pm.setValue(++progress);
         }
+
+	pm.setMessage(Resources.get("Loading train metadata"));
+	try {
+	    SAXParser sp = SAXParserFactory.newInstance().newSAXParser();
+	    DefaultHandler dh = new WagonDataHandler();
+	    sp.parse(gr.getGraphicsResourceFinder().getURLForReading
+		    ("trains/overhead/wagondata.xml").toString(),
+		    dh);
+	} catch (IOException e) {
+	    logger.log(Level.WARNING, "Couldn't read train graphics " +
+		    "metadata.", e);
+	} catch (SAXException e) {
+	    logger.log(Level.WARNING, "Couldn't parse the train graphics " +
+		    "metadata.", e);
+	} catch (Exception e) {
+	    // shouldn't get these!
+	    logger.log(Level.SEVERE, "Unexpected exception caught parsing " +
+		    "train graphics metadata.", e);
+	    assert false;
+	}
+	pm.setValue(++progress);
     }
 
     public Image getSideOnWagonImage(int cargoTypeNumber) {
@@ -108,7 +148,8 @@ public class TrainImages {
 
     public Image getSideOnWagonImage(int cargoTypeNumber, int height, int
 	    percentFull) {
-        CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, cargoTypeNumber);
+	CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES,
+		cargoTypeNumber, Player.AUTHORITATIVE);
         String sideOnFileName;
        if (percentFull >= 50) {
 	   sideOnFileName = generateSideOnFilename(cargoType.getName());
@@ -141,7 +182,7 @@ public class TrainImages {
 
     public Image getSideOnEngineImage(int engineTypeNumber, int height) {
         EngineType engineType = (EngineType)w.get(KEY.ENGINE_TYPES,
-                engineTypeNumber);
+                engineTypeNumber, Player.AUTHORITATIVE);
         String sideOnFileName = generateSideOnFilename(engineType.getEngineTypeName());
 
         try {
@@ -187,5 +228,55 @@ public class TrainImages {
 	    }
 	}
 	throw new IllegalArgumentException();
+    }
+
+    /**
+     * Defines an XML ContentHandler for parsing the wagondata.dtd
+     * which provides information about the graphics, for example
+     * the lengths of the wagons
+     */
+    private class WagonDataHandler extends DefaultHandler {
+	public void startElement(String uri, String localName, String qName,
+		Attributes attributes) throws SAXException {
+	    if ("WagonType".equals(qName)) {
+		NonNullElements i = new NonNullElements(KEY.WAGON_TYPES, w,
+			Player.AUTHORITATIVE);
+		while (i.next()) {
+		    if (((WagonType) i.getElement()).getName().equals
+			    (attributes.getValue("name"))) {
+			wagonLengths[i.getIndex()] = 
+			    Integer.parseInt(attributes.getValue("length"));
+			return;
+		    }
+		}
+		Logger.getLogger("global").log(Level.WARNING,
+			"Unrecognized wagon type " + attributes.getValue
+			("name"));
+	    } else if ("EngineType".equals(qName)) {
+		NonNullElements i = new NonNullElements(KEY.ENGINE_TYPES, w,
+			Player.AUTHORITATIVE);
+		while (i.next()) {
+		    if (((EngineType) i.getElement()).getEngineTypeName()
+			    .equals(attributes.getValue("name"))) {
+			engineLengths[i.getIndex()] =
+			    Integer.parseInt(attributes.getValue("length"));
+			return;
+		    }
+		}
+		Logger.getLogger("global").log(Level.WARNING,
+			"Unrecognized engine type " + attributes.getValue
+			("name"));
+	    }
+	}
+    }
+
+    /** @return the length of the specified engine in pixels */
+    public int getEngineLength(int engineType) {
+	return engineLengths[engineType];
+    }
+
+    /** @return the length of the specified wagon in pixels */
+    public int getWagonLength(int wagonType) {
+	return wagonLengths[wagonType];
     }
 }

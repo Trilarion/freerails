@@ -26,11 +26,10 @@ package org.railz.client.view;
 import java.awt.Color;
 import java.text.NumberFormat;
 import java.util.GregorianCalendar;
-import javax.swing.JLabel;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 import org.railz.client.model.*;
-import org.railz.util.Resources;
+import org.railz.util.*;
 import org.railz.world.accounts.*;
 import org.railz.world.common.*;
 import org.railz.world.player.*;
@@ -46,10 +45,12 @@ class BalanceSheetJPanel extends javax.swing.JPanel {
     private int currentYear;
     private int startYear;
     private int displayedYear;
+    private ModdableResourceFinder graphicsResourceFinder;
     
     /** Creates new form BalanceSheet */
-    public BalanceSheetJPanel(ModelRoot mr) {
+    public BalanceSheetJPanel(ModelRoot mr, GUIRoot gr) {
 	modelRoot = mr;
+        graphicsResourceFinder = gr.getGraphicsResourceFinder();
         initComponents();
 	GameCalendar gc = (GameCalendar) mr.getWorld().get(ITEM.CALENDAR,
 		Player.AUTHORITATIVE);
@@ -581,7 +582,7 @@ class BalanceSheetJPanel extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        prevJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/previous.png")));
+        prevJButton.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/previous.png")));
         prevJButton.setToolTipText(org.railz.util.Resources.get("Previous Year"));
         prevJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -591,7 +592,7 @@ class BalanceSheetJPanel extends javax.swing.JPanel {
 
         jPanel4.add(prevJButton);
 
-        nextJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/next.png")));
+        nextJButton.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading("toolbar/next.png")));
         nextJButton.setToolTipText(org.railz.util.Resources.get("Next Year"));
         nextJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

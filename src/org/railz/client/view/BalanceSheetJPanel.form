@@ -639,9 +639,7 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="prevJButton">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
-                  <Image iconType="3" name="/org/railz/client/graphics/toolbar/previous.png"/>
-                </Property>
+                <Property name="icon" postCode="prevJButton.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading(&quot;toolbar/previous.png&quot;)));"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/railz/data/l10n/jfreerails_en.properties" key="Previous Year" replaceFormat="org.railz.util.Resources.get(&quot;{key}&quot;)"/>
                 </Property>
@@ -652,9 +650,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="nextJButton">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.openide.explorer.propertysheet.editors.IconEditor">
-                  <Image iconType="3" name="/org/railz/client/graphics/toolbar/next.png"/>
-                </Property>
+                <Property name="icon" postCode="nextJButton.setIcon(new ImageIcon(graphicsResourceFinder.getURLForReading(&quot;toolbar/next.png&quot;)));"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="org/railz/data/l10n/jfreerails_en.properties" key="Next Year" replaceFormat="org.railz.util.Resources.get(&quot;{key}&quot;)"/>
                 </Property>

@@ -191,7 +191,7 @@ public final class TrainMotionModel2 implements FreerailsSerializable {
 
     /** @return the path 'cost' expended by time t from t0 */
     int getCostTraversed(GameTime t) {
-	return t.getTime() - t0;
+	return isLost() ? 0 : t.getTime() - t0;
     }
 
     public TrainMotionModel2 setOutOfWater(boolean outOfWater, GameTime t0,

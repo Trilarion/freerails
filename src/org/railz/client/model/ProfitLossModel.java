@@ -101,6 +101,7 @@ public class ProfitLossModel {
 	/* TODO until accounting is changed, all cargo revenue is categorised
 	 * as freight */
 	long _freightRevenue = 0;
+	long _passengerRevenue = 0;
 	long _trackMaintenanceExpense = 0;
 	long _interestPayableExpense = 0;
 	long _rollingStockMaintenanceExpense = 0;
@@ -113,7 +114,14 @@ public class ProfitLossModel {
 			_fuelExpenses -= t.getValue();
 		    break;
 		case Transaction.CATEGORY_REVENUE:
-		    _freightRevenue += t.getValue();
+		    switch (t.getSubcategory()) {
+			case DeliverCargoReceipt.SUBCATEGORY_FREIGHT:
+			    _freightRevenue += t.getValue();
+			    break;
+			case DeliverCargoReceipt.SUBCATEGORY_PASSENGERS:
+			    _passengerRevenue += t.getValue();
+			    break;
+		    }
 		    break;
 		case Transaction.CATEGORY_OPERATING_EXPENSE:
 		    if (t.getSubcategory() == Bill.TRACK_MAINTENANCE)
@@ -133,7 +141,7 @@ public class ProfitLossModel {
 	    interestPayableExpense = _interestPayableExpense;
 	}
 	freightRevenue = _freightRevenue;
-	passengerRevenue = 0;
+	passengerRevenue = _passengerRevenue;
 	fuelExpenses = _fuelExpenses;
 	totalRevenue = freightRevenue + passengerRevenue;
 	grossProfit = totalRevenue - fuelExpenses;

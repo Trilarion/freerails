@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!--
+  ++ This program is free software; you can redistribute it and/or
+  ++ modify it under the terms of the GNU General Public License
+  ++ as published by the Free Software Foundation; either version 2
+  ++ of the License, or (at your option) any later version.
+  ++ 
+  ++ This program is distributed in the hope that it will be useful,
+  ++ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ++ GNU General Public License for more details.
+  ++ 
+  ++ You should have received a copy of the GNU General Public License
+  ++ along with this program; if not, write to the Free Software
+  ++ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+  -->
+<!DOCTYPE TrainTypes SYSTEM "wagondata.dtd" >
+<TrainTypes>
+    <EngineTypes>
+	<EngineType name="Grasshopper" length="18" />
+	<EngineType name="Norris" length="24" />
+    </EngineTypes>
+    <WagonTypes>
+	<WagonType name="Coffee_Wagon" length="24" />
+	<WagonType name="Export_Goods_Wagon" length="24" />
+	<WagonType name="Food_Wagon" length="24" />
+	<WagonType name="Grain_Wagon" length="24" />
+	<WagonType name="Livestock_Wagon" length="24" />
+	<WagonType name="Mail_Wagon" length="24" />
+	<WagonType name="Mfg._Goods_Wagon" length="24" />
+	<WagonType name="Oil_Wagon" length="24" />
+	<WagonType name="Passenger_Car" length="24" />
+	<WagonType name="Petroleum_Wagon" length="24" />
+	<WagonType name="Sugar_Wagon" length="24" />
+	<WagonType name="Wood_Wagon" length="24" />
+    </WagonTypes>
+</TrainTypes>
+
