@@ -151,6 +151,12 @@ class UserMessageGenerator implements MoveReceiver {
 	    Transaction t = (Transaction) ((AddTransactionMove)
 		    move).getTransaction();
 	    switch (t.getCategory()) {
+		case Transaction.CATEGORY_COST_OF_SALES:
+		    if (t.getSubcategory() == Bill.FUEL) {
+			mr.getUserMessageLogger().println(Resources.get
+				("Fuel bill: $") + (-t.getValue()));
+		    }
+		    break;
 		case Transaction.CATEGORY_TAX:
 		   if (t.getSubcategory() == Bill.INCOME_TAX) {
 		       mr.getUserMessageLogger().println(Resources.get

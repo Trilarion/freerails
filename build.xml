@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="Railz">    
+   <description>The aim of the Railz project is to produce a multiplayer train strategy-management game.</description>
+   <target depends="properties" name="init">
+      <tstamp/>
+      <property location="src" name="src"/>
+      
+      <property location="dist" name="dist"/>
+      <property location="javadoc" name="doc"/>
+      <property location="temp" name="temp"/>
+      <property classpath="org.railz.build" name="org.railz.build" value="0.3.1"/>
+        <property location="${basedir}/proto" name="proto"/>
+        <property location="build" name="build"/>
+    </target>
+   <target depends="init" description="Make build directories" name="mkdirs">
+      <tstamp/>
+      <mkdir dir="${build}"/>
+       <mkdir dir="${dist}"/>
+        <mkdir dir="${proto}"/>
+    </target>
+   <target if="eclipse.running" name="properties">
+      <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+   </target>
+   <target depends="init" description="Copy data files" name="copydata">
+      <copy todir="${build}/org/railz">
+         <fileset dir="${src}/org/railz">
+            <include name="**/*.xml"/>
+            <include name="**/*.png"/>
+            <include name="**/*.dtd"/>
+             <include name="**/*.gif"/>
+             <include name="client/view/game_controls.html"/>             
+             <include name="**/*.htm"/>
+             <include name="**/*.properties"/>
+            </fileset>
+      </copy>
+      <copy todir="${build}">
+         <fileset dir=".">
+            <include name="README"/>
+            <include name="TODO"/>
+            <include name="ChangeLog"/>
+         </fileset>
+      </copy>
+   </target>
+   <target depends="copydata" description="Build everything except JUnit test-classes" name="compile">
+      <javac deprecation="false" destdir="${build}" fork="true" source="1.4" srcdir="${src}">
+         <exclude name="**/*Test.java"/>
+         <exclude name="**/*TestCase.java"/>         
+        </javac>
+   </target>
+   <target depends="copydata" description="Build everything including JUnit    test-classes. Include debugging symbols" name="debugcompile">
+      <javac debug="true" deprecation="true" destdir="${build}" fork="true" source="1.4" srcdir="${src}"/>
+   </target>
+   <target depends="debugcompile" description="Run all junit tests" name="runtests">
+      <junit haltonfailure="yes" printsummary="yes">
+         <classpath>
+            <pathelement location="${build}"/>
+            <pathelement path="${java.class.path}"/>
+         </classpath>
+         <formatter type="brief" usefile="no"/>
+         <batchtest fork="yes">
+            <fileset dir="${build}">
+               <include name="**/*Test.class"/>
+            </fileset>
+         </batchtest>
+      </junit>
+   </target>
+   <target depends="debugcompile, mkdirs" description="Generate proto area" name="proto">
+      <!-- Replace current latest with the jar file we have just created. -->
+      	<mkdir dir="${proto}/railz-${org.railz.build}"/>      	      
+      <jar basedir="${build}" destfile="${proto}/railz-${org.railz.build}/railz.jar">
+         <manifest>
+            <attribute name="Main-Class" value="org.railz.launcher.Launcher"/>
+         </manifest>
+      </jar>
+       <copy todir="${proto}/railz-${org.railz.build}">
+          <fileset dir="${basedir}" includes="README, COPYING, ReleaseNotes, ChangeLog, ROADMAP"/>
+      </copy>
+    </target>
+   <target depends="proto" description="Generate binary distribution" name="bindist">
+        <tar basedir="${proto}" compression="gzip" followsymlinks="true" includes="**" longfile="gnu" tarfile="${dist}/railz-bin-${org.railz.build}.tar.gz"/>
+    </target>
+   <target depends="mkdirs" description="Generate source distribution" name="srcdist">
+       <!-- Replace current latest with the jar file we have just created. -->
+      <tar compression="gzip" defaultexcludes="true" tarfile="${dist}/railz-src-${org.railz.build}.tar.gz">
+            <tarfileset dir="${basedir}" includes="README*, l10n, ChangeLog, COPYING, src/**, ROADMAP, ReleaseNotes,build.xml"/>
+        </tar>      
+    </target>
+   <target depends="init" description="Clean up build and distribution" name="clean">
+      <delete dir="${build}"/>
+      <delete dir="${doc}"/>
+      <delete dir="${temp}"/>
+      <!-- also delete any class files under the src directory -->      
+      <delete>
+    	<fileset dir="${src}" includes="**/*.class"/>
+  	 </delete>             
+   </target>
+   <target depends="mkdirs, compile" description="Test run based on compile" name="run">
+      <java classname="org.railz.launcher.Launcher" fork="true">
+         <classpath>
+            <pathelement path="${build}"/>
+         </classpath>
+      </java>
+   </target>
+   <target depends="proto" description="Test run based on bindist" name="rundist">
+      <java fork="true" jar="${proto}/railz.jar"/>
+   </target>
+   <target depends="mkdirs, init" name="javadoc">
+      <javadoc Private="true" author="true" destdir="${doc}" overview="${src}/overview.html" source="1.4" use="true" version="true" windowtitle="JFreerails API - build ${DSTAMP}">
+         <fileset defaultexcludes="yes" dir="${src}">
+            <include name="**/*.java"/>
+            <exclude name="**/*Test.java"/>             
+         </fileset>
+      </javadoc>
+	   <!-- now copy the html	-->
+	  <copy todir="${doc}">
+         <fileset dir="${src}">
+            <include name="**/*.html"/>
+			<include name="**/*.htm"/>
+			<!--Don't copy these since the javadoc tool processes them -->
+            <exclude name="**/overview.html"/> 
+			<exclude name="**/package.html"/>      
+         </fileset>
+      </copy>
+   </target>
+   <target depends="javadoc" description="Jar up javadoc" name="javadocdist">
+      <!-- Replace current latest with the jar file we have just created. -->
+       <tar basedir="javadoc" compression="gzip" longfile="gnu" tarfile="${dist}/railz-javadoc.tar.gz">
+        </tar>
+    </target>
+   <target depends="javadocdist, bindist, srcdist" description="Create binary, source, and javadoc jars" name="dist">
+   </target>
+   <target depends="init" description="removes all distribution f0iles" name="distclean">
+       <delete dir="${dist}" followsymlinks="false" includeemptydirs="true" verbose="false">
+            
+        </delete>
+        <delete dir="${proto}" includeemptydirs="true"/>
+    </target>
+    
+</project>

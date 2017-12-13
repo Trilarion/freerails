@@ -41,8 +41,20 @@ public class StationModelViewer implements FixedAsset {
     }
 
     /**
+     * TODO factor in influences such as current economy state, current year,
+     * size of station, etc.
+     */
+    public long getImprovementCost(int improvementID) {
+	StationImprovement si = (StationImprovement)
+	    world.get(KEY.STATION_IMPROVEMENTS, improvementID,
+		    Player.AUTHORITATIVE);
+	return si.getBasePrice();
+    }
+
+    /**
      * Stations depreciate from their initial value over 25 years to 50% of
      * their initial value.
+     * TODO factor in price of station improvements.
      */
     public long getBookValue() {
 	GameTime now = (GameTime) world.get(ITEM.TIME, Player.AUTHORITATIVE);
@@ -61,5 +73,35 @@ public class StationModelViewer implements FixedAsset {
 	    return (long) (initialPrice * 0.50);
 	}
 	return (long) (initialPrice * (1.0 - (elapsedYears * 0.5 / 25)));
+    }
+
+    public boolean canBuildImprovement(int improvementID) {
+	// does this station already have the improvement 
+	int[]  currentImprovements = stationModel.getImprovements();
+	
+	for (int i = 0; i < currentImprovements.length; i++) {
+	    if (currentImprovements[i] == improvementID)
+		return false;
+	}
+
+	StationImprovement si = (StationImprovement)
+	    world.get(KEY.STATION_IMPROVEMENTS, improvementID,
+		    Player.AUTHORITATIVE);
+
+	// does this station have all necessary prerequisites
+	int[] requiredImprovements = si.getPrerequisites();
+	
+	for (int i = 0; i < requiredImprovements.length; i++) {
+	    boolean found = false;
+	    for (int j = 0; j < currentImprovements.length; j++) {
+		if (currentImprovements[j] == requiredImprovements[i]) {
+		    found = true;
+		    break;
+		}
+	    }
+	    if (! found)
+		return false;
+	}
+	return true;
     }
 }

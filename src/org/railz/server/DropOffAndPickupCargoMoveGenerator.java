@@ -33,8 +33,7 @@ import org.railz.world.station.ConvertedAtStation;
 import org.railz.world.station.DemandAtStation;
 import org.railz.world.station.StationModel;
 import org.railz.world.top.*;
-import org.railz.world.train.TrainModel;
-import org.railz.world.train.WagonType;
+import org.railz.world.train.*;
 import org.railz.world.player.*;
 
 /**
@@ -173,6 +172,38 @@ class DropOffAndPickupCargoMoveGenerator {
 
 	moveReceiver.processMove(TransferCargoAtStationMove.generateMove
 		(changeAtStation, changeOnTrain, payment));
+    }
+
+    /**
+     * @return true if there is enough cargo at this station to load the
+     * train, false otherwise.
+     */
+    public boolean checkCargoAtStation(ObjectKey trainKey, ObjectKey stationKey)
+    {
+	TrainModel tm = (TrainModel) w.get(trainKey.key, trainKey.index,
+		trainKey.principal);
+	
+	TrainOrdersModel tom = tm.getScheduleIterator().getCurrentOrder(w);
+	if (tom == null)
+	    return false;
+
+	if (! tom.getWaitUntilFull())
+	    return true;
+
+	StationModel sm = (StationModel) w.get(stationKey.key,
+		stationKey.index, stationKey.principal);
+	
+	CargoBundle stationBundle = (CargoBundle) w.get(KEY.CARGO_BUNDLES, 
+		sm.getCargoBundleNumber(), Player.AUTHORITATIVE);
+	
+	int[] spaceLeft = getSpaceAvailableOnTrain(tm);
+	for (int cargoType = 0; cargoType < w.size(KEY.CARGO_TYPES);
+		cargoType++) {
+	    if (stationBundle.getAmount(cargoType) < spaceLeft[cargoType])
+		return false;
+	}
+
+	return true;
     }
 
     /**

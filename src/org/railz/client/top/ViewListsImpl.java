@@ -33,10 +33,12 @@ import org.railz.client.renderer.*;
 import org.railz.util.*;
 import org.railz.world.building.*;
 import org.railz.world.player.*;
+import org.railz.world.station.*;
 import org.railz.world.terrain.TerrainType;
 import org.railz.world.top.*;
 
 public class ViewListsImpl implements ViewLists {
+    private final ModelRoot modelRoot;
     private final TileRendererList tiles;
     private final TileRendererList buildingRenderers;
     private final TrackPieceRendererList trackPieceViewList;
@@ -49,6 +51,7 @@ public class ViewListsImpl implements ViewLists {
 	    FreerailsProgressMonitor pm)
         throws IOException {
 	    guiRoot = gr;
+	    modelRoot = mr;
 	    ReadOnlyWorld w = mr.getWorld();
         URL in = ViewListsImpl.class.getResource("/org/railz/client/graphics");
 
@@ -272,12 +275,12 @@ public class ViewListsImpl implements ViewLists {
         return trainImages;
     }
 
-    public ImageIcon getImageIcon(String iconName) {
+    public ImageIcon getImageIconImpl(String iconName) {
 	ImageIcon icon = (ImageIcon) icons.get(iconName);
  	if (icon == null) {
  	    URL iconURL;
  	    iconURL = this.getClass().getClass().getResource
- 		("/org/railz/client/graphics/toolbar/" + iconName +
+ 		("/org/railz/client/graphics/" + iconName +
  		 ".png");
  	    if (iconURL == null) {
  		System.err.println("Couldn't find icon for " + iconName);
@@ -286,5 +289,30 @@ public class ViewListsImpl implements ViewLists {
  	    icons.put(iconName, new ImageIcon(iconURL));
  	}
  	return (ImageIcon) icons.get(iconName);
+    }
+
+    public ImageIcon getImageIcon(String iconName) {
+	return getImageIconImpl("toolbar/" + iconName);
+    }
+
+    public ImageIcon getImageIcon(ObjectKey key, int type) {
+	String path = null;
+	String prefix = null;
+	switch (type) {
+	    case LARGE_ICON:
+		prefix = "48x48_";
+		break;
+	    default:
+		throw new IllegalArgumentException();
+	}
+	if (key.key == KEY.STATION_IMPROVEMENTS) {
+		StationImprovement si = (StationImprovement)
+		    modelRoot.getWorld().get (key.key, key.index,
+			    key.principal);
+		path = "stationImprovements/" + prefix + si.getName();
+	} else {
+		throw new IllegalArgumentException();
+	}
+	return getImageIconImpl(path);
     }
 }

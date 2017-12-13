@@ -1,35 +1,11 @@
 Release Notes
 =============
 
-These are the release notes for the 0.3.0 Development build of Railz.
+These are the release notes for the 0.3.1 Development build of Railz.
 
 New Features since the last release:
 ====================================
-Train motion updated - single and double width track implemented (trains 
-now block each other on single track).
-Train movement no longer eats bandwidth
-New consist selection dialog.
-"Pluggable" Game Scenarios and Stats counters.
-Changes to city tile generation and cargo/tile values.
-Train priorities implemented
-
-Bugs/features fixed since last release:
-=======================================
-3 P2 RESO FIXE Train list button on schedule pane doesn't work 
-17 P2 RESO FIXE resources don't all fit on station info tab 
-29 P2 RESO FIXE Blue blobs on map near cities 
-30 P2 RESO FIXE Can't build stations on end track pieces 
-31 P2 RESO FIXE terrain info doesn't show building title 
-32 P2 RESO FIXE Primary resources should be more widely scattered 
-33 P2 RESO FIXE harbours should be placed next to sea 
-34 P2 RESO FIXE buildings no longer appear on mini map 
-35 P2 RESO FIXE buildings should have transparent backgrounds 
-36 P2 RESO FIXE Station name is shown as foo (standard track) on station view 
-37 P2 RESO FIXE track type not shown in terrain info dialog 
-38 P2 RESO FIXE Lumber mill, sugar plantations have unintuitive appearance 
-39 P2 RESO FIXE upgrading track causes "track has been changed" message 
-40 P2 RESO FIXE terrain info doesn't update when user clicks in build mode 
-5 P5 RESO FIXE Station info tab prev/next buttons don't use icons
+Station improvements infrastructure and water consumption by trains added.
 
 Outstanding bugs:
 =================

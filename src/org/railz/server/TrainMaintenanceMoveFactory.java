@@ -17,14 +17,15 @@
 
 package org.railz.server;
 
-import org.railz.move.AddTransactionMove;
+import org.railz.move.*;
 import org.railz.world.accounts.*;
 import org.railz.world.common.*;
 import org.railz.world.player.*;
 import org.railz.world.top.*;
 import org.railz.world.train.*;
+
 /**
- * Responsible for charging players for train maintenance
+ * Responsible for charging players for train maintenance and fuel
  *
  * @author rtuck99@users.berlios.de
  */
@@ -46,16 +47,24 @@ class TrainMaintenanceMoveFactory {
 	    NonNullElements trains = new NonNullElements(KEY.TRAINS, world,
 		    p);
 	    long totalMaintenance = 0;
+	    long fuelBill = 0;
 	    while (trains.next()) {
 		TrainModel train = (TrainModel) trains.getElement();
 		tmv.setTrainModel(train);
 		totalMaintenance += tmv.getMaintenance();
+		fuelBill += tmv.getOutstandingFuelBill();
+		Move m = ChangeTrainMove.generateResetTicksInServiceMove
+		    (new ObjectKey(KEY.TRAINS, p, trains.getIndex()), world);
+		moveReceiver.processMove(m, p);
 	    }
 	    GameTime now = (GameTime) world.get(ITEM.TIME,
 		    Player.AUTHORITATIVE);
 	    Bill b = new Bill(now, totalMaintenance,
 		    Bill.ROLLING_STOCK_MAINTENANCE);
 	    AddTransactionMove m = new AddTransactionMove(0, b, p);
+	    moveReceiver.processMove(m, p);
+	    b = new Bill(now, fuelBill, Bill.FUEL);
+	    m = new AddTransactionMove(0, b, p);
 	    moveReceiver.processMove(m, p);
 	}
     }

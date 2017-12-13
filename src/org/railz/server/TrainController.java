@@ -54,6 +54,7 @@ class TrainController {
 	moveReceiver = mr;
 	dopucmg = new DropOffAndPickupCargoMoveGenerator(world, moveReceiver);
 	pathFinder = new TrainPathFinder(world);
+	trainModelViewer = new TrainModelViewer(world);
     }
 
     public void updateTrains() {
@@ -103,6 +104,9 @@ class TrainController {
 		}
 		return;
 	    case TrainModel.STATE_RUNNABLE:
+		if (checkWater(new ObjectKey(KEY.TRAINS, p, trainIndex), tm))
+		    tm = (TrainModel) world.get(KEY.TRAINS, trainIndex, p); 
+
 		/* check to see whether the train has reached its destination
 		 */
 		if (tm.getTrainMotionModel().reachedDestination(now)) {
@@ -170,13 +174,19 @@ class TrainController {
 	    int trainIndex) {
 	ObjectKey trainKey = new ObjectKey(KEY.TRAINS, p, trainIndex);
 	ObjectKey stationKey = getStationKey(trainKey, tm);
-	if (stationKey != null)
+
+	/* only load the train if there is sufficient cargo at the station */
+	if (stationKey != null &&
+	       	dopucmg.checkCargoAtStation(trainKey, stationKey)) {
 	    dopucmg.loadTrain(trainKey, stationKey);
 	
-	setState(trainIndex, p, TrainModel.STATE_RUNNABLE);
+	    setState(trainIndex, p, TrainModel.STATE_RUNNABLE);
+	}
+
 	return;
     }
 
+    /** Change wagons and load water if any */
     private void changeWagons(ObjectKey trainKey) {
 	TrainModel tm = (TrainModel) world.get(trainKey.key, trainKey.index,
 		trainKey.principal);
@@ -192,22 +202,37 @@ class TrainController {
 
 	    // dump or sell any surplus cargo
 	    dopucmg.dumpSurplusCargo(trainKey, stationKey);
+
+	    // check to see if there is a water tower
+	    StationModel sm = (StationModel) world.get(KEY.STATIONS,
+		    stationKey.index, stationKey.principal);
+	    if (sm.hasImprovement(WorldConstants.SI_WATER_TOWER)) {
+		m = ChangeTrainMove.generateOutOfWaterMove(trainKey, world,
+			false);
+		moveReceiver.processMove(m);
+	    }
 	}
-
-	// get the updated train model
-	tm = (TrainModel) world.get(trainKey.key, trainKey.index,
-		trainKey.principal);
-
-	// set the trains new destination
-	GameTime t = (GameTime) world.get(ITEM.TIME, Player.AUTHORITATIVE);
-	Move ctdm = ChangeTrainMove.generateMove(trainKey.index,
-		trainKey.principal, tm,
-		tm.getScheduleIterator().nextOrder(world), t);
-	moveReceiver.processMove(ctdm);
     }
 
     private void setState(int trainIndex, FreerailsPrincipal p, int newState) {
 	TrainModel tm = (TrainModel) world.get(KEY.TRAINS, trainIndex, p);
+
+	/* set new destination if current state is anything other than
+	 * STOPPED, and our new state is RUNNABLE */
+	if (tm.getState() != TrainModel.STATE_STOPPED &&
+		newState == TrainModel.STATE_RUNNABLE) {
+	    ObjectKey trainKey = new ObjectKey(KEY.TRAINS, p, trainIndex);
+	    // set the trains new destination
+	    GameTime t = (GameTime) world.get(ITEM.TIME, Player.AUTHORITATIVE);
+	    Move ctdm = ChangeTrainMove.generateMove(trainKey.index,
+		    trainKey.principal, tm,
+		    tm.getScheduleIterator().nextOrder(world), t);
+	    moveReceiver.processMove(ctdm);
+	}
+
+	// get the updated train model
+	tm = (TrainModel) world.get(KEY.TRAINS, trainIndex, p);
+
 	ChangeTrainMove m  = ChangeTrainMove.generateMove(trainIndex, p, tm,
 		newState, (GameTime) world.get(ITEM.TIME,
 		    Player.AUTHORITATIVE));
@@ -256,5 +281,24 @@ class TrainController {
 	moveReceiver.processMove(ctm);
 
 	return TrainModel.STATE_RUNNABLE;
+    }
+
+    private TrainModelViewer trainModelViewer;
+
+    /** @return true if we changed the trains state */
+    private boolean checkWater(ObjectKey trainKey, TrainModel train) {
+	trainModelViewer.setTrainModel(train);
+	// get current water state
+
+	boolean isOutOfWater = train.getTrainMotionModel().isOutOfWater();
+
+	if (!isOutOfWater && trainModelViewer.getWaterRemaining() == 0) {
+	    // send a move to set out of water
+	    Move m = ChangeTrainMove.generateOutOfWaterMove(trainKey, world,
+		    true);
+	    moveReceiver.processMove(m);
+	    return true;
+	}
+	return false;
     }
 }

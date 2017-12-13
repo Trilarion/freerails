@@ -40,7 +40,6 @@ public class StationBuilder {
     private UntriedMoveReceiver moveReceiver;
     private ReadOnlyWorld w;
     private int ruleNumber;
-    private TrackMoveTransactionsGenerator transactionsGenerator;
     private FreerailsPrincipal stationOwner;
 
     public StationBuilder(UntriedMoveReceiver moveReceiver,
@@ -59,7 +58,6 @@ public class StationBuilder {
         } while (bType.getCategory() != BuildingType.CATEGORY_STATION);
 
         ruleNumber = i;
-        transactionsGenerator = new TrackMoveTransactionsGenerator(w, p);
     }
 
     public boolean canBuiltStationHere(Point p) {
@@ -116,8 +114,8 @@ public class StationBuilder {
 		Move m = AddStationMove.generateMove(w, stationName, p,
 			stationOwner, ruleNumber);
 
-		this.moveReceiver.processMove
-		    (transactionsGenerator.addTransactions(m));
+		moveReceiver.processMove(m);
+
 		System.err.println("move done");
 	    } else {
 		//Upgrade an existing station.

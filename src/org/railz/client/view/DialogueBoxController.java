@@ -126,7 +126,7 @@ public class DialogueBoxController {
         
         // setup the supply and demand at station dialogue.
         stationInfo = new StationInfoJPanel();
-        stationInfo.setup(modelRoot);
+        stationInfo.setup(modelRoot, guiRoot);
         
         // setup the 'show controls' dialogue
         showControls = new HtmlJPanel(DialogueBoxController.class.getResource("/org/railz/client/view/game_controls.html"));

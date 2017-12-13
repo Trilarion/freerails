@@ -18,10 +18,13 @@ package org.railz.client.renderer;
 
 import javax.swing.ImageIcon;
 
-import org.railz.world.top.ReadOnlyWorld;
+import org.railz.world.top.*;
 
 
 public interface ViewLists {
+    /** 48x48 pixels */
+    public static final int LARGE_ICON = 0;
+
     TileRendererList getTileViewList();
 
     TileRendererList getBuildingViewList();
@@ -33,7 +36,17 @@ public interface ViewLists {
     boolean validate(ReadOnlyWorld world);
 
     /**
+     * The use of this is to be discouraged in favour of
+     * getImageIcon(ObjectKey, int) for those icons relating to gameworld
+     * objects. Future use of this method is reserved for use with
+     * client-specific toolbar icons etc.
      * @return the ImageIcon corresponding to the specified name
      */
     ImageIcon getImageIcon(String iconName);
+
+    /**
+     * @param key an ObjectKey describing the object associated with the icon
+     * @param type describes the type of icon to retrieve - LARGE_ICON etc.
+     */
+   ImageIcon getImageIcon(ObjectKey key, int type); 
 }

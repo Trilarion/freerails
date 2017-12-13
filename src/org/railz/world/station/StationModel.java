@@ -17,6 +17,8 @@
 
 package org.railz.world.station;
 
+import java.util.*;
+
 import org.railz.world.common.*;
 /**
  * This class represents a station.
@@ -25,34 +27,28 @@ import org.railz.world.common.*;
  *
  */
 public class StationModel implements FreerailsSerializable {
+    static final long serialVersionUID = 5866243529680687772L;
+
     public final int x;
     public final int y;
     private final String name;
-    private final SupplyAtStation supply;
-    private final DemandAtStation demand;
-    private final ConvertedAtStation converted;
+    private SupplyAtStation supply;
+    private DemandAtStation demand;
+    private ConvertedAtStation converted;
     private final int cargoBundleNumber;
     private final GameTime creationDate;
+    private int[] improvements;
 
     /** What this station is building. */
-    private final ProductionAtEngineShop production;
+    private ProductionAtEngineShop production;
 
     public ConvertedAtStation getConverted() {
         return converted;
     }
 
     public StationModel(StationModel s, ConvertedAtStation converted) {
+	this(s);
         this.converted = converted;
-
-        this.cargoBundleNumber = s.cargoBundleNumber;
-
-        this.demand = s.demand;
-        this.name = s.name;
-        this.production = s.production;
-        this.supply = s.supply;
-        this.x = s.x;
-        this.y = s.y;
-	creationDate = s.creationDate;
     }
 
     public StationModel(int x, int y, String stationName,
@@ -67,6 +63,7 @@ public class StationModel implements FreerailsSerializable {
         demand = new DemandAtStation(new boolean[numberOfCargoTypes]);
         converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
         cargoBundleNumber = cargoBundle;
+	improvements = new int[0];
     }
 
     public String getStationName() {
@@ -86,15 +83,8 @@ public class StationModel implements FreerailsSerializable {
     }
 
     public StationModel(StationModel s, ProductionAtEngineShop production) {
+	this(s);
         this.production = production;
-        this.demand = s.demand;
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.converted = s.converted;
-        this.name = s.name;
-        this.supply = s.supply;
-        this.x = s.x;
-        this.y = s.y;
-	creationDate = s.creationDate;
     }
 
     public DemandAtStation getDemand() {
@@ -106,30 +96,26 @@ public class StationModel implements FreerailsSerializable {
     }
 
     public StationModel(StationModel s, DemandAtStation demand) {
+	this(s);
         this.demand = demand;
+    }
 
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.converted = s.converted;
-
-        this.name = s.name;
-        this.production = s.production;
-        this.supply = s.supply;
-        this.x = s.x;
-        this.y = s.y;
+    public StationModel(StationModel s) {
+	x = s.x;
+	y = s.y;
+	name = s.name;
+	supply = s.supply;
+	demand = s.demand;
+	converted = s.converted;
+	cargoBundleNumber = s.cargoBundleNumber;
 	creationDate = s.creationDate;
+	improvements = (int[]) s.improvements.clone();
+	production = s.production;
     }
 
     public StationModel(StationModel s, SupplyAtStation supply) {
+	this(s);
         this.supply = supply;
-        this.demand = s.demand;
-
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.converted = s.converted;
-        this.name = s.name;
-        this.production = s.production;
-        this.x = s.x;
-        this.y = s.y;
-	creationDate = s.creationDate;
     }
 
     public int getCargoBundleNumber() {
@@ -149,7 +135,8 @@ public class StationModel implements FreerailsSerializable {
 		    (production == null ? test.production == null :
 		     this.production.equals(test.production)) &&
 		    supply.equals(test.supply) &&
-		    creationDate.equals(test.creationDate)) {
+		    creationDate.equals(test.creationDate) && 
+		    Arrays.equals(improvements, test.improvements)) {
                 return true;
             }
             return false;
@@ -163,5 +150,36 @@ public class StationModel implements FreerailsSerializable {
      */
     public GameTime getCreationDate() {
 	return creationDate;
+    }
+
+    /** @return A clone of indices into the STATION_IMPROVEMENTS table */
+    public int[] getImprovements() {
+	return (int[]) improvements.clone();
+    }
+
+    public boolean hasImprovement(int improvementId) {
+	for (int i = 0; i < improvements.length; i++)
+	    if (improvements[i] == improvementId)
+		return true;
+	return false;
+    }
+
+    /** @param improvements Indices into the STATION_IMPROVEMENTS table */
+    public StationModel setImprovements(int[] improvements) {
+	StationModel sm = new StationModel(this);
+	sm.improvements = (int[]) improvements.clone();
+	return sm;
+    }
+
+    public String toString() {
+	String s = "StationModel: x=" + x + ", y=" + y + ", name=" + name +
+	    ", supply=" + supply + ", demand=" + demand + ", converted=" +
+	    converted + ", cargoBundleNumber=" + cargoBundleNumber +
+	    ", creationDate=" + creationDate + ", improvements=(";
+	for (int i = 0; i < improvements.length; i++)
+	    s += improvements[i] + ", ";
+
+	s += ")";
+	return s;
     }
 }

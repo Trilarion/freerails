@@ -1,4 +1,6 @@
 <!--
+    TODO merge this with the cargo_and_terrain.dtd to produce a unified
+    configuration file
     Typical usage:
 
     <?xml version="1.0"?>

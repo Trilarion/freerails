@@ -46,7 +46,7 @@ public class DisplayMenu extends JMenu {
             });
 
         JMenuItem stationInfoJMenuItem = new JMenuItem
-	    (Resources.get("Station Info"));
+	    (Resources.get("Station Supply and Demand"));
         stationInfoJMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 		    DialogueBoxController dbc =

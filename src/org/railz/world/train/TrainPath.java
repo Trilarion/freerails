@@ -385,7 +385,8 @@ public final class TrainPath implements FreerailsSerializable {
 	    }
 	}
 	// distance was bigger than length of the TrainPath
-	throw new IllegalArgumentException();
+	throw new IllegalArgumentException("distance " + distance + " > " +
+		this);
     }
 
     public String toString() {

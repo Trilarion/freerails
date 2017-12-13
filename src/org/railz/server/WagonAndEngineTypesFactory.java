@@ -19,16 +19,18 @@
  * Created on 23-Mar-2003
  *
  */
-package org.railz.world.top;
+package org.railz.server;
 
 import org.railz.world.cargo.CargoType;
 import org.railz.world.train.EngineType;
 import org.railz.world.train.WagonType;
 import org.railz.world.player.Player;
+import org.railz.world.top.*;
 
 /**
- * This class adds hard coded wagon and engine types to the World.  Later the wagon
- * and engine types will be defined in an xml file, but this will do for now.
+ * This class adds hard coded wagon types to the World.  Later the
+ * wagon types will be defined in an xml file, but this will do for
+ * now.
  *
  * @author Luke
  *
@@ -53,18 +55,6 @@ public class WagonAndEngineTypesFactory {
 
         for (int i = 0; i < wagonTypes.length; i++) {
             w.add(KEY.WAGON_TYPES, wagonTypes[i], Player.AUTHORITATIVE);
-        }
-
-        //Engine types
-        EngineType[] engineTypes = new EngineType[] {
-                new EngineType("Grasshopper", 1000, 10000, 30,
-                    5000),
-                new EngineType("Norris", 1000, 10000, 35,
-                    8000),
-            };
-
-        for (int i = 0; i < engineTypes.length; i++) {
-            w.add(KEY.ENGINE_TYPES, engineTypes[i], Player.AUTHORITATIVE);
         }
     }
 }

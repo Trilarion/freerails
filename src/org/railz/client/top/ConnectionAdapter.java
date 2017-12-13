@@ -325,6 +325,9 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
 		if (response.isSuccessful()) {
 		    Resources.setExternalResourceBundle
 			(response.getResourceBundle());
+		} else {
+		    System.err.println("Couldn't get resource bundle from " +
+			    "server");
 		}
 	}
     }

@@ -70,4 +70,34 @@ public class TrainModelViewer implements FixedAsset {
 		    trainModel.getEngineType(),
 		    Player.AUTHORITATIVE)).getMaintenance() / 12;
     }
+
+    /**
+     * @return the outstanding fuel bill for this train
+     */
+    public long getOutstandingFuelBill() {
+	EngineType et = (EngineType) world.get(KEY.ENGINE_TYPES,
+		trainModel.getEngineType(), Player.AUTHORITATIVE);
+	Economy e = (Economy) world.get(ITEM.ECONOMY, Player.AUTHORITATIVE);
+
+	long unitsUsed = (trainModel.getTicksInService() *
+	    et.getAnnualFuelConsumption()) /
+	    (calendar.getTicksPerDay() * 365) ;
+	return unitsUsed * e.getFuelUnitPrice(et.getFuelType());
+    }
+
+    /**
+     * @return the remaining water on the train
+     */
+    public int getWaterRemaining() {
+	EngineType et = (EngineType) world.get(KEY.ENGINE_TYPES,
+		trainModel.getEngineType(), Player.AUTHORITATIVE);
+	GameTime now = (GameTime) world.get(ITEM.TIME, Player.AUTHORITATIVE);
+
+	int wr = et.getWaterCapacity() -
+	    trainModel.getCostTraversedSinceLoadingWater(now);
+
+	if (wr < 0)
+	    wr = 0;
+	return wr;
+    }
 }

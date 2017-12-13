@@ -20,6 +20,7 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import java.util.*;
 import org.railz.client.common.ScreenHandler;
 import org.railz.client.renderer.ViewLists;
 import org.railz.client.renderer.ZoomedOutMapRenderer;
@@ -30,6 +31,7 @@ import org.railz.controller.MoveChainFork;
 import org.railz.controller.MoveReceiver;
 import org.railz.controller.StationBuilder;
 import org.railz.controller.UntriedMoveReceiver;
+import org.railz.util.*;
 import org.railz.world.top.ReadOnlyWorld;
 
 /**
@@ -106,6 +108,28 @@ public class GUIRoot implements ModelRootListener {
         setup();
     }
 
+    private WeakRefList refreshListeners = new WeakRefList();
+
+    /**
+     * called by the ClientJFrame periodically to update components which
+     * require regular refreshing.
+     */
     public void update() {
+	Enumeration i = refreshListeners.elements();
+	while (i.hasMoreElements()) {
+	    RefreshListener l = (RefreshListener) i.nextElement();
+	    l.doRefresh();
+	}
+    }
+
+    public void addRefreshListener(RefreshListener l) {
+	refreshListeners.add(l);
+    }
+
+    /**
+     * Weak references are used so not strictly necessary to remove listeners
+     */
+    public void removeRefereshListener(RefreshListener l) {
+	refreshListeners.remove(l);
     }
 }

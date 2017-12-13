@@ -104,9 +104,14 @@ public class ProfitLossModel {
 	long _trackMaintenanceExpense = 0;
 	long _interestPayableExpense = 0;
 	long _rollingStockMaintenanceExpense = 0;
+	long _fuelExpenses = 0;
 	for (i = minIndex; i < maxIndex; i++) {
 	    Transaction t = account.getTransaction(i);
 	    switch (t.getCategory()) {
+		case Transaction.CATEGORY_COST_OF_SALES:
+		    if (t.getSubcategory() == Bill.FUEL)
+			_fuelExpenses -= t.getValue();
+		    break;
 		case Transaction.CATEGORY_REVENUE:
 		    _freightRevenue += t.getValue();
 		    break;
@@ -129,7 +134,7 @@ public class ProfitLossModel {
 	}
 	freightRevenue = _freightRevenue;
 	passengerRevenue = 0;
-	fuelExpenses = 0;
+	fuelExpenses = _fuelExpenses;
 	totalRevenue = freightRevenue + passengerRevenue;
 	grossProfit = totalRevenue - fuelExpenses;
 	trackMaintenanceExpense = _trackMaintenanceExpense;

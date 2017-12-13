@@ -24,7 +24,6 @@ import org.railz.world.common.*;
 import org.railz.world.player.Player;
 import org.railz.world.top.ITEM;
 import org.railz.world.top.KEY;
-import org.railz.world.top.WagonAndEngineTypesFactory;
 import org.railz.world.top.World;
 import org.railz.world.top.WorldImpl;
 import org.xml.sax.SAXException;
@@ -53,18 +52,15 @@ class WorldFactory {
         int progess = 0;
 
         //Load the xml file specifying terrain types.
-        URL tiles_xml_url = WorldFactory.class.getResource(
-                "/org/railz/data/terrain_tiles.xml");
 
-        //	new org.railz.TileSetFactoryImpl(tiles_xml_url);
         WorldImpl w = new WorldImpl();
         pm.setValue(++progess);
 
         try {
-            java.net.URL url = RunTypesParser.class.getResource(
-                    "/org/railz/data/cargo_and_terrain.xml");
+            java.net.URL url = WorldFactory.class.getResource(
+                    "/org/railz/server/data/cargo_and_terrain.xml");
 
-            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(w));
+            CargoAndTerrainParser.parse(url, w);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException();
@@ -77,7 +73,7 @@ class WorldFactory {
         pm.setValue(++progess);
 
         URL track_xml_url = WorldFactory.class.getResource(
-                "/org/railz/data/track_tiles.xml");
+                "/org/railz/server/data/track_tiles.xml");
 
 	Track_TilesHandlerImpl trackSetFactory = new
 	    Track_TilesHandlerImpl(track_xml_url, w);
@@ -103,12 +99,6 @@ class WorldFactory {
         //Set the time..
         w.set(ITEM.CALENDAR, new GameCalendar(30, 1840, 0));
         w.set(ITEM.TIME, new GameTime(0));
-
-	//Create the economy
-	Economy economy = new Economy();
-	economy.setIncomeTaxRate(25);
-	economy.setBaseInterestRate((float) 5.0);
-	w.set(ITEM.ECONOMY, economy, Player.AUTHORITATIVE);
 
         return w;
     }

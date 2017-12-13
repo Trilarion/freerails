@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Luke Lindsay
+ * Copyright (C) 2004 Robert Tuck
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -14,31 +14,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+package org.railz.server;
 
-/*
- * RunTypesParser.java
- *
- * Created on 27 April 2003, 18:40
- */
-package org.railz.server.parser;
+import org.railz.world.station.*;
+import org.railz.world.top.*;
+import org.railz.world.player.*;
 
-import org.railz.world.top.WorldImpl;
+class WorldConstants {
+    public static int SI_WATER_TOWER;
 
-
-/**
- *
- * @author  Luke
- */
-public class RunTypesParser {
-    public static void main(String[] args) {
-        try {
-            java.net.URL url = RunTypesParser.class.getResource(
-                    "/org/railz/data/cargo_and_terrain.xml");
-
-            CargoAndTerrainParser.parse(url,
-                new CargoAndTerrainHandlerImpl(new WorldImpl()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void init(ReadOnlyWorld w) {
+	NonNullElements i = new NonNullElements(KEY.STATION_IMPROVEMENTS, w,
+		Player.AUTHORITATIVE);
+	while (i.next()) {
+	    StationImprovement si = (StationImprovement) i.getElement();
+	    if (si.getName().equals("WaterTower")) {
+		SI_WATER_TOWER = i.getIndex();
+	    }
+	}
     }
+
+
 }

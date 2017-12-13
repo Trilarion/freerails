@@ -19,10 +19,9 @@ package org.railz.client.view;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
+import java.awt.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import org.railz.client.model.ModelRoot;
 import org.railz.move.*;
@@ -52,7 +51,8 @@ import org.railz.world.train.*;
  * **************************************
  * @author  Luke Lindsay
  */
-public class TrainDetailsJPanel extends javax.swing.JPanel implements WorldListListener {
+public class TrainDetailsJPanel extends javax.swing.JPanel implements
+    WorldListListener, RefreshListener {
     private ImageIcon stoppedIcon = new ImageIcon(getClass()
 		.getResource("/org/railz/client/graphics/toolbar/stop.png"));
     
@@ -70,6 +70,8 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements WorldListL
     
     private int trainNumber = -1;
     
+    private TrainModelViewer trainModelViewer;
+
     /**
      * The id of the bundle of cargo that the train is carrying - we need to
      * update the view when the bundle is updated.
@@ -94,6 +96,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements WorldListL
         nameJLabel = new javax.swing.JLabel();
         statusJButton = new javax.swing.JButton();
         destinationJLabel = new javax.swing.JLabel();
+        waterBar = new WaterBar();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -102,26 +105,46 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements WorldListL
         nameJLabel.setText("jLabel1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 2);
         add(nameJLabel, gridBagConstraints);
 
-        add(statusJButton, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 4);
+        add(statusJButton, gridBagConstraints);
 
         destinationJLabel.setFont(new java.awt.Font("Dialog", 1, 10));
         destinationJLabel.setText("jLabel2");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         add(destinationJLabel, gridBagConstraints);
+
+        waterBar.setMaximumSize(new java.awt.Dimension(32767, 4));
+        waterBar.setMinimumSize(new java.awt.Dimension(10, 4));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
+        add(waterBar, gridBagConstraints);
 
     }//GEN-END:initComponents
 
-    public void setup(ModelRoot mr) {
+    public void setup(ModelRoot mr, GUIRoot gr) {
 	modelRoot = mr;
 	ReadOnlyWorld w = mr.getWorld();
         this.w = w;
+	trainModelViewer = new TrainModelViewer(w);
 
 	org.railz.client.renderer.ViewLists vl = mr.getViewLists();
         trainViewJPanel1 = new TrainViewJPanel(mr);
@@ -130,16 +153,17 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements WorldListL
 	GridBagConstraints gbc = new GridBagConstraints();
 	gbc.weightx = 1.0;
 	gbc.gridx = 0;
-	gbc.gridy = 1;
+	gbc.gridy = 2;
 	gbc.gridwidth = 2;
 	add(trainViewJPanel1, gbc);
 	
 	modelRoot.getMoveChainFork().addListListener(this);
+	gr.addRefreshListener(this);
     }    
     
     public void displayTrain(int trainNumber){
     	this.trainNumber = trainNumber;
-        
+
         trainViewJPanel1.display(trainNumber);
 	String s;
 	String destination = "";
@@ -197,6 +221,7 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements WorldListL
     private javax.swing.JLabel destinationJLabel;
     private javax.swing.JLabel nameJLabel;
     private javax.swing.JButton statusJButton;
+    private javax.swing.JPanel waterBar;
     // End of variables declaration//GEN-END:variables
     
     private TrainViewJPanel trainViewJPanel1;
@@ -281,5 +306,33 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements WorldListL
 	}
 	statusJButton.setToolTipText(tooltip);
 	statusJButton.setIcon(icon);
+    }
+
+    public class WaterBar extends JPanel {
+	protected void paintComponent(Graphics g) {
+	    super.paintComponent(g);
+	    Graphics gg = g.create();
+	    if (trainNumber < 0)
+		return;
+
+	    TrainModel tm = (TrainModel) w.get(KEY.TRAINS, trainNumber,
+		    modelRoot.getPlayerPrincipal());
+
+	    trainModelViewer.setTrainModel(tm);
+	    int waterRemaining = trainModelViewer.getWaterRemaining();
+	    
+	    int maxWater = ((EngineType) w.get(KEY.ENGINE_TYPES,
+			tm.getEngineType(),
+			Player.AUTHORITATIVE)).getWaterCapacity();
+
+	    // draw a dark-blue rectangle and a light blue rectangle
+	    gg.setColor(Color.BLUE);
+	    gg.fillRect(0, 0, getWidth() * waterRemaining / maxWater,
+		    getHeight());
+	}
+    }
+
+    public void doRefresh() {
+	waterBar.repaint();
     }
 }

@@ -23,30 +23,35 @@ package org.railz.world.common;
  * @author rtuck99@users.berlios.de
  */
 public class Economy implements FreerailsSerializable {
+    private long[] fuelUnitPrice = new long[3];
+
     /**
      * Interest rates for bonds, loans, overdrafts and accounts in credit will
      * be derived from this. Measured as annual %age rate.
      */
-    private float baseInterestRate;
+    private final float baseInterestRate;
 
     /**
      * Rate at which income tax is applied in %.
      */
-    private int incomeTaxRate;
+    private final int incomeTaxRate;
+
+    public Economy(int incomeTaxRate, float baseInterestRate) {
+	this(incomeTaxRate, baseInterestRate, new long[3]);
+    }
+
+    private Economy(int incomeTaxRate, float baseInterestRate, long
+	    fuelUnitPrice[]) {
+	this.incomeTaxRate = incomeTaxRate;
+	this.baseInterestRate = baseInterestRate;
+	this.fuelUnitPrice = fuelUnitPrice;
+    }
 
     /**
      * @return income tax rate in percent
      */
     public int getIncomeTaxRate() {
 	return incomeTaxRate;
-    }
-
-    public void setIncomeTaxRate(int rate) {
-	incomeTaxRate = rate;
-    }
-
-    public void setBaseInterestRate(float rate) {
-	baseInterestRate = rate;
     }
 
     public float getBaseInterestRate() {
@@ -56,5 +61,22 @@ public class Economy implements FreerailsSerializable {
     public static double aerToMonthly(double rate) {
 	return (float) ((Math.pow((1 + rate / 100), (1.0 / 12)) - 1.0) *
 		100.0);
+    }
+
+    public Economy setFuelUnitPrice(int fuelType, long unitPrice) {
+	long[] unitPrices = (long[]) fuelUnitPrice.clone();
+	unitPrices[fuelType - 1] = unitPrice;
+	return new Economy(incomeTaxRate, baseInterestRate, unitPrices);
+    }
+
+    /**
+     * @param fuelType defined in EngineType.java
+     * @return the unit price of the specified fuel
+     */
+    public long getFuelUnitPrice(int fuelType) {
+	if (fuelType < 1 || fuelType - 1 > fuelUnitPrice.length)
+	    throw new IllegalArgumentException();
+
+	return fuelUnitPrice[fuelType - 1];
     }
 }

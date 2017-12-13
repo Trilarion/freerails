@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
+import org.railz.world.top.*;
 
 /**
  * The class reads XML documents according to specified DTD and
@@ -51,6 +52,10 @@ public class CargoAndTerrainParser implements ContentHandler {
     private CargoAndTerrainHandler handler;
     private java.util.Stack context;
     private EntityResolver resolver;
+    private EngineTypesHandler engineTypesHandler;
+    private String currentSection;
+    private EconomyHandler economyHandler;
+    private StationImprovementsHandler stationImprovementsHandler;
 
     /**
      * Creates a parser instance.
@@ -58,10 +63,14 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @param resolver SAX entity resolver implementation or <code>null</code>.
      * It is recommended that it could be able to resolve at least the DTD.
      */
-    public CargoAndTerrainParser(final CargoAndTerrainHandler handler,
+    private CargoAndTerrainParser(World w,
         final EntityResolver resolver) {
-        this.handler = handler;
+        handler = new CargoAndTerrainHandlerImpl(w);
+	engineTypesHandler = new EngineTypesHandler(w);
+	economyHandler = new EconomyHandler(w);
+	stationImprovementsHandler = new StationImprovementsHandler(w);
         this.resolver = resolver;
+
         buffer = new StringBuffer(111);
         context = new java.util.Stack();
     }
@@ -128,6 +137,18 @@ public class CargoAndTerrainParser implements ContentHandler {
 	    handler.handle_TerrainType(attrs);
 	} else if ("AllTerrainTypes".equals(name)) {
 	    handler.handle_AllTerrainTypes(attrs);
+	} else if ("EngineTypes".equals(currentSection)) {
+	    engineTypesHandler.startElement(ns, name, qname, attrs);
+	} else if ("Economy".equals(currentSection)) {
+	   economyHandler.startElement(ns, name, qname, attrs);
+	} else if ("StationImprovements".equals(currentSection)) {
+	    stationImprovementsHandler.startElement(ns, name, qname, attrs);
+	} else if ("EngineTypes".equals(name) ||
+		"Economy".equals(name) ||
+		"StationImprovements".equals(name)) {
+	    currentSection = name;
+	    // recurse
+	    startElement(ns, name, qname, attrs);
 	}
     }
 
@@ -154,6 +175,17 @@ public class CargoAndTerrainParser implements ContentHandler {
 	    handler.end_NeighbouringTerrainTypes();
 	} else if ("AcceptableTerrainTypes".equals(name)) {
 	    handler.end_AcceptableTerrainTypes();
+	} else if ("EngineTypes".equals(currentSection)) {
+	    engineTypesHandler.endElement(ns, name, qname);
+	} else if ("Economy".equals(currentSection)) {
+	    economyHandler.endElement(ns, name, qname);
+	} else if ("StationImprovements".equals(currentSection)) {
+	    stationImprovementsHandler.endElement(ns, name, qname);
+	}
+        if ("EngineTypes".equals(name) ||
+		"Economy".equals(name) ||
+		"StationImprovements".equals(name)) {
+	    currentSection = null;
 	}
     }
 
@@ -258,10 +290,10 @@ public class CargoAndTerrainParser implements ContentHandler {
      *
      */
     public static void parse(final InputSource input,
-        final CargoAndTerrainHandler handler)
+        World w)
         throws SAXException, javax.xml.parsers.ParserConfigurationException, 
             java.io.IOException {
-        parse(input, new CargoAndTerrainParser(handler, null));
+        parse(input, new CargoAndTerrainParser(w, null));
     }
 
     /**
@@ -274,11 +306,11 @@ public class CargoAndTerrainParser implements ContentHandler {
      *
      */
     public static void parse(final java.net.URL url,
-        final CargoAndTerrainHandler handler)
+        final World w)
         throws SAXException, javax.xml.parsers.ParserConfigurationException, 
             java.io.IOException {
 		try {
-		    parse(new InputSource(url.toExternalForm()), handler);
+		    parse(new InputSource(url.toExternalForm()), w);
 		} catch (SAXParseException e) {
 		    System.out.println("Parse exception " + e.getMessage() +
 			    " at line " + e.getLineNumber());

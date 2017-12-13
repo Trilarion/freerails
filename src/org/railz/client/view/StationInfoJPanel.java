@@ -26,8 +26,7 @@ package org.railz.client.view;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -46,10 +45,7 @@ import org.railz.world.cargo.CargoBundle;
 import org.railz.world.cargo.CargoType;
 import org.railz.world.player.*;
 import org.railz.world.station.StationModel;
-import org.railz.world.top.KEY;
-import org.railz.world.top.NonNullElements;
-import org.railz.world.top.ReadOnlyWorld;
-import org.railz.world.top.WorldIterator;
+import org.railz.world.top.*;
 import org.railz.world.track.*;
 import org.railz.world.train.WagonType;
 
@@ -62,6 +58,7 @@ public class StationInfoJPanel extends javax.swing.JPanel
 implements MoveReceiver {
     private static final int ICON_HEIGHT = 12;
     private ModelRoot modelRoot;
+    private GUIRoot guiRoot;
     private WorldIterator wi;
     private boolean ignoreMoves = true;
     private ReadOnlyWorld world;
@@ -73,21 +70,6 @@ implements MoveReceiver {
      */
     private int cargoBundleIndex;
     
-    private ImageIcon getWagonImage(int cargoType) {
-	for (int i = 0; i < world.size(KEY.WAGON_TYPES,
-		    Player.AUTHORITATIVE); i++) {
-	    if (((WagonType) world.get(KEY.WAGON_TYPES, i,
-			    Player.AUTHORITATIVE)).getCargoType()
-		    == cargoType) {
-		Image icon =
-		    modelRoot.getViewLists().getTrainImages().
-		    getSideOnWagonImage(i, ICON_HEIGHT);
-		return new ImageIcon(icon);
-	    }
-	}
-	throw new IllegalArgumentException();
-    }
-
     private class StationTableCellRenderer implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object
 		value, boolean isSelected, boolean hasFocus, int row, int
@@ -119,7 +101,8 @@ implements MoveReceiver {
 	    cargoWaiting = cw;
 
 	    cargoTypeLabel = new JLabel();
-	    cargoTypeLabel.setIcon(getWagonImage(cargoType));
+	    cargoTypeLabel.setIcon(modelRoot.getViewLists().getTrainImages()
+		    .getWagonImage(cargoType, ICON_HEIGHT));
 	    CargoType cType = (CargoType) world.get(KEY.CARGO_TYPES,
 		    cargoType, Player.AUTHORITATIVE);
 	    cargoTypeLabel.setToolTipText(cType.getDisplayName());
@@ -199,9 +182,19 @@ implements MoveReceiver {
 	}
     }
 
+    ActionListener infoJButtonListener = new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	    StationJPanel sjp = new StationJPanel();
+	    sjp.setup(modelRoot, new ObjectKey(KEY.STATIONS,
+			modelRoot.getPlayerPrincipal(), wi.getIndex()));
+	    guiRoot.getDialogueBoxController().showContent(sjp);
+	}
+    };
+
     /** Creates new form StationInfoJPanel */
     public StationInfoJPanel() {
         initComponents();
+	jButton1.addActionListener(infoJButtonListener);
     }
     
     /** This method is called from within the constructor to
@@ -212,25 +205,16 @@ implements MoveReceiver {
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
         nextStation = new javax.swing.JButton();
         previousStation = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
-
-        jLabel1.setText("Station Name");
-        jLabel1.setAlignmentY(0.0F);
-        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 2, 4);
-        gridBagConstraints.weightx = 1.0;
-        add(jLabel1, gridBagConstraints);
 
         nextStation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/next.png")));
         nextStation.setToolTipText(org.railz.util.Resources.get("Next Station"));
@@ -245,9 +229,9 @@ implements MoveReceiver {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 4, 4);
         add(nextStation, gridBagConstraints);
 
         previousStation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/previous.png")));
@@ -263,9 +247,9 @@ implements MoveReceiver {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 4, 4, 2);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 4, 4, 2);
         add(previousStation, gridBagConstraints);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -301,9 +285,9 @@ implements MoveReceiver {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         add(jScrollPane1, gridBagConstraints);
 
         jPanel1.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), org.railz.util.Resources.get("Cargo Types in Demand")));
@@ -312,9 +296,31 @@ implements MoveReceiver {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 4, 2, 4);
         add(jPanel1, gridBagConstraints);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText("Station Name");
+        jLabel1.setAlignmentY(0.0F);
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 2, 4);
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(jLabel1, gridBagConstraints);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/railz/client/graphics/toolbar/info.png")));
+        jPanel2.add(jButton1, new java.awt.GridBagConstraints());
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 2, 4);
+        add(jPanel2, gridBagConstraints);
 
     }//GEN-END:initComponents
     
@@ -352,7 +358,8 @@ implements MoveReceiver {
         
 	} //GEN-LAST:event_nextStationActionPerformed
     
-    public void setup(ModelRoot mr) {
+    public void setup(ModelRoot mr, GUIRoot gr) {
+	guiRoot = gr;
 	modelRoot = mr;
 	this.wi = new NonNullElements(KEY.STATIONS, modelRoot.getWorld(),
 		modelRoot.getPlayerPrincipal());
@@ -372,6 +379,8 @@ implements MoveReceiver {
     }
     
     public void display() {
+	jButton1.setEnabled(wi.getRowNumber() >= 0);
+
         if (wi.getRowNumber() > 0) {
             this.previousStation.setEnabled(true);
         } else {
@@ -407,7 +416,8 @@ implements MoveReceiver {
 		boolean isDemanded = station.getDemand().isCargoDemanded(i);
 		if (! isDemanded)
 		    continue;
-		JLabel jl = new JLabel(getWagonImage(i));
+		JLabel jl = new JLabel(modelRoot.getViewLists()
+			.getTrainImages().getWagonImage(i, ICON_HEIGHT));
 		CargoType ct = (CargoType) world.get(KEY.CARGO_TYPES,
 			i, Player.AUTHORITATIVE);
 		jl.setToolTipText(ct.getDisplayName());
@@ -478,8 +488,10 @@ implements MoveReceiver {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton nextStation;

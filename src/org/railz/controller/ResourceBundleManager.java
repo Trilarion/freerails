@@ -66,11 +66,35 @@ public class ResourceBundleManager {
 	}
     }
 
-    public static byte[] getResourceByteArray(Locale l, String baseName) {
+    private static InputStream getInputStream(String resourceName) {
+	System.out.println("Attempting to locate resource bundle " +
+		resourceName);
 	try {
-	    baseName = baseName.replace('.', '/');
-	    InputStream is = ResourceBundleManager.class
-		.getResourceAsStream(baseName + "_" + l.toString());
+	    return ResourceBundleManager.class
+		.getResourceAsStream(resourceName);
+	} catch (Exception e) {
+	    return null;
+	}
+    }
+
+    public static byte[] getResourceByteArray(Locale l, String baseName) {
+	if (baseName.charAt(0) != '/')
+	    baseName = "/" + baseName;
+
+	baseName = baseName.replace('.', '/');
+	try {
+	    InputStream is = null;
+	    if ((is = getInputStream(baseName + "_" + l.toString() +
+			    ".properties")) == null)
+	    {
+		// if language_country file is not available, try language
+		// only
+		is = getInputStream(baseName + "_" + l.getLanguage() +
+			".properties"); 
+	    }
+	    if (is == null) 
+		return new byte[0];
+
 	    ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	    int max;
 	    byte buf[] = new byte[1024];

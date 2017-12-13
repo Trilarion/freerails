@@ -28,7 +28,7 @@ import org.railz.world.common.FreerailsSerializable;
  */
 public class KEY implements FreerailsSerializable {
     /** Maps key numbers to KEYs */
-    private static KEY[] keys = new KEY[15];
+    private static KEY[] keys = new KEY[16];
 
     //START OF KEYS
     public static final KEY TRAINS = new KEY(false);
@@ -48,6 +48,7 @@ public class KEY implements FreerailsSerializable {
     public static final KEY PLAYERS = new KEY(true);
     public static final KEY BUILDING_TYPES = new KEY(true);
     public static final KEY STATISTICS = new KEY(false);
+    public static final KEY STATION_IMPROVEMENTS = new KEY(true);
 
     //END OF KEYS		
     private static int numberOfKeys;

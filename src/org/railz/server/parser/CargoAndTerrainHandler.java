@@ -27,8 +27,7 @@ package org.railz.server.parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-
-public interface CargoAndTerrainHandler {
+interface CargoAndTerrainHandler {
     /**
      * An empty element event handling method.
      * @param data value or null

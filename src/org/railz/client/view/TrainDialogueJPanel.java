@@ -196,7 +196,7 @@ WorldListListener {
         newTrainScheduleJPanel1.setup(mr, gr);
 	addComponentListener(componentListener);
 
-	trainDetailsRenderer.trainDetailsJPanel.setup(modelRoot);
+	trainDetailsRenderer.trainDetailsJPanel.setup(modelRoot, guiRoot);
 	trainDetailsRenderer.trainViewJPanel = new TrainViewJPanel(modelRoot);
 
 	if (popupJButton != null)

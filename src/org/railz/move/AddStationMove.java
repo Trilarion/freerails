@@ -22,6 +22,7 @@
 package org.railz.move;
 
 import java.awt.Point;
+import org.railz.world.accounts.*;
 import org.railz.world.building.*;
 import org.railz.world.cargo.CargoBundleImpl;
 import org.railz.world.common.GameTime;
@@ -60,8 +61,17 @@ public class AddStationMove extends CompositeMove {
 	BuildingTile newBuilding = new BuildingTile(buildingType);
 	ChangeBuildingMove cbm = new ChangeBuildingMove(p, oldBuilding,
 		newBuilding, owner);
+
+	BuildingType bt = (BuildingType) w.get(KEY.BUILDING_TYPES,
+		buildingType, Player.AUTHORITATIVE);
+
+	Transaction t = new AddItemTransaction(now,
+		AddItemTransaction.BUILDING, buildingType, 1,
+		-bt.getBaseValue());
+	Move transactionMove = new AddTransactionMove(0, t, owner);
+
         return new AddStationMove(new Move[] {
-                cbm, addCargoBundleMove, addStation
+                cbm, addCargoBundleMove, addStation, transactionMove
             });
     }
 }

@@ -19,7 +19,7 @@
  */
 
 /*
- * $Id: TrainsJTabPane.java,v 1.1 2004/07/19 18:43:47 rtuck99 Exp $
+ * $Id: TrainsJTabPane.java,v 1.2 2004/10/25 20:38:18 rtuck99 Exp $
  */
 
 package org.railz.client.view;
@@ -69,7 +69,7 @@ public class TrainsJTabPane extends JTabbedPane implements CursorEventListener {
  	addTab(null, vl.getImageIcon("build"), buildJPane, "Build");
 
 	terrainInfoPanel.setup(world, vl);
-	stationInfoPanel.setup(modelRoot);
+	stationInfoPanel.setup(modelRoot, gr);
 	trainSchedulePanel.setup(modelRoot, gr);
  	buildJPane.setup(vl, modelRoot);
         modelRoot.getCursor().addCursorEventListener(this);

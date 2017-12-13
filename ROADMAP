@@ -10,13 +10,14 @@ Station status screen
   |_Train maintenance
 Train / terrain track layout speed interaction.
   |_Sand and water
-Fuel consumption
-|_More train types
+More train types
 Player info screen
 |_Victory conditions?
   |_ First player to $xxx
   |_ Statistics - loads hauled / miles track layed / lifetime revenue
 AI Player
+Restructure ImageManager to hide storage location of images from rest of
+client and to allow objects unknown to the client to be handled gracefully.
 
 P3:
 Ability to place new trains on map

@@ -149,6 +149,7 @@ UpdatedComponent {
 	    statusjPanel.paint(g);
 	    RepaintManager.currentManager(statusjPanel).
 		markCompletelyClean(statusjPanel);
+	    guiRoot.update();
 	}
 	if (++frameCount == 4)
 	    frameCount = 0;

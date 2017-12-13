@@ -319,5 +319,19 @@
       RGBvalue="000009" -->
       </Building_Type>
    </Building_Types>
+   <EngineTypes>
+	<EngineType id="Grasshopper" fuelType="Coal" price="10000"
+	maintenance="5000" maxSpeed="30" annualFuelConsumption="600"
+       waterCapacity="1000"	/>
+	<EngineType id="Norris" fuelType="Coal" price="10000"
+	maintenance="8000" maxSpeed="35" annualFuelConsumption="700"
+	waterCapacity="1000" />
+   </EngineTypes>
+   <Economy incomeTaxRate="25" baseRate="5.0">
+	<FuelPrice fuelType="Coal" unitPrice="20" />
+    </Economy>
+	<StationImprovements>
+		<StationImprovement id="WaterTower" description=
+	"Provides water for steam engines." basePrice="10000" />
+	</StationImprovements>
 </Types>
-

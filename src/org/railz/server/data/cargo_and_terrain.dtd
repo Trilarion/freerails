@@ -81,5 +81,43 @@
 	category (Urban | Resource | Industry | Station) #REQUIRED
 >
 
-<!ELEMENT Types (Cargo_Types, Terrain_Types, Building_Types)>
+<!ELEMENT EngineTypes (EngineType)*>
 
+<!ELEMENT EngineType EMPTY>
+<!ATTLIST EngineType
+    id ID #REQUIRED
+    fuelType (Coal|Diesel|Electric) #REQUIRED
+    price CDATA #REQUIRED
+    maintenance CDATA #REQUIRED
+    maxSpeed CDATA #REQUIRED
+    annualFuelConsumption CDATA #REQUIRED
+    waterCapacity CDATA #REQUIRED>
+
+<!ELEMENT FuelPrice EMPTY>
+<!ATTLIST FuelPrice
+    fuelType (Coal|Diesel|Electric) #REQUIRED
+    unitPrice CDATA #REQUIRED>
+
+<!ELEMENT Economy (FuelPrice)*>
+<!ATTLIST Economy
+    incomeTaxRate CDATA #REQUIRED
+    baseRate CDATA #REQUIRED>
+
+<!ELEMENT ReplacedImprovement EMPTY>
+<!ATTLIST ReplacedImprovement
+    id IDREF #REQUIRED>
+
+<!ELEMENT PrerequisiteImprovement EMPTY>
+<!ATTLIST PrerequisiteImprovement
+    id IDREF #REQUIRED>
+
+<!ELEMENT StationImprovement (PrerequisiteImprovement|ReplacedImprovement)*>
+<!ATTLIST StationImprovement
+	id ID #REQUIRED
+	description CDATA #REQUIRED
+	basePrice CDATA #REQUIRED>
+
+<!ELEMENT StationImprovements (StationImprovement)*>
+
+<!ELEMENT Types (Cargo_Types, Terrain_Types, Building_Types, EngineTypes,
+	Economy, StationImprovements)>

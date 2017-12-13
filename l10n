@@ -25,15 +25,17 @@ fi
 if [ -z "$MSGMERGE" ]; then
 	MSGMERGE=msgmerge
 fi
+if [ -z "$MSGCAT" ]; then
+	MSGCAT=msgcat
+fi
 
 ##############################################
 # client-side messages
 JAVAFILES=`find $DIRS -name \*.java`
 
 # create messages.pot
-$XGETTEXT -D $HERE -p $L10NDIR $KEYWORDS \
+$XGETTEXT -o $L10NDIR/messages.pot -D $HERE -p $L10NDIR $KEYWORDS \
 	--properties $JAVAFILES
-mv $L10NDIR/messages.po $L10NDIR/messages.pot
 
 for lang in $LANGUAGES ; do
 	if [ ! -r $L10NDIR/jfreerails_$lang.properties ] ; then
@@ -53,11 +55,12 @@ done
 JAVAFILES=`find $HERE/src/org/railz/server -name \*.java`
 
 # create messages.pot
-$XGETTEXT -D $HERE -p $L10NDIR $KEYWORDS \
+$XGETTEXT -o $L10NDIR/messages.pot -D $HERE -p $L10NDIR $KEYWORDS \
 	--properties $JAVAFILES
-mv $L10NDIR/messages.po $L10NDIR/messages.pot
 
-
+$MSGCAT -p -P $L10NDIR/messages.pot $L10NDIR/server.pot \
+	-o $L10NDIR/messages.pot
+ 
 for lang in $LANGUAGES ; do
 	if [ ! -r $L10NDIR/server_$lang.properties ] ; then
 		$MSGINIT -i $L10NDIR/messages.pot \

@@ -24,13 +24,16 @@ package org.railz.client.renderer;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.File;
+import javax.swing.*;
+
 import org.railz.client.common.ImageManager;
 import org.railz.util.FreerailsProgressMonitor;
 import org.railz.world.cargo.CargoType;
 import org.railz.world.common.*;
+import org.railz.world.player.*;
 import org.railz.world.top.KEY;
 import org.railz.world.top.ReadOnlyWorld;
-import org.railz.world.train.EngineType;
+import org.railz.world.train.*;
 
 
 /**
@@ -172,5 +175,18 @@ public class TrainImages {
     private static String generateSideOnEmptyFileName(String name) {
 	return "trains" + File.separator + "sideon" + File.separator + "empty"
 	    + File.separator + name + ".png";
+    }
+    
+    public ImageIcon getWagonImage(int cargoType, int height) {
+	for (int i = 0; i < w.size(KEY.WAGON_TYPES,
+		    Player.AUTHORITATIVE); i++) {
+	    if (((WagonType) w.get(KEY.WAGON_TYPES, i,
+			    Player.AUTHORITATIVE)).getCargoType()
+		    == cargoType) {
+		Image icon = getSideOnWagonImage(i, height);
+		return new ImageIcon(icon);
+	    }
+	}
+	throw new IllegalArgumentException();
     }
 }

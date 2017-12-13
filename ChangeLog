@@ -1,6 +1,21 @@
+October 31, 2004:
+-----------------
+Fixed bug where stations were free to build, added regular updates for water
+status bar. Fixed bug where server resource files weren't being sent to the
+client.
+October 30, 2004:
+-----------------
+Added water consumption for trains. Tidied station dialog.
+October 25, 2004:
+-----------------
+Added infrastructure for station improvements.
+October 19, 2004:
+-----------------
+Added fuel consumption
 October 17, 2004:
 -----------------
 Added PAUSED message when game paused
+Implemented "Wait until full"
 October 10, 2004:
 -----------------
 Fixed some more problems with train motion and synchronization

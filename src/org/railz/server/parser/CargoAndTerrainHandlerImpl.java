@@ -41,7 +41,7 @@ import org.railz.world.top.World;
 import org.railz.world.train.TransportCategory;
 import org.railz.world.player.Player;
 
-public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
+class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     private final World world;
 
     //ArrayList cargoTypes = new ArrayList();

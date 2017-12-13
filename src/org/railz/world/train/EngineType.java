@@ -27,16 +27,24 @@ import org.railz.world.common.FreerailsSerializable;
  * @author Luke
  */
 final public class EngineType implements FreerailsSerializable {
+    public static final int FUEL_TYPE_COAL = 1;
+    public static final int FUEL_TYPE_DIESEL = 2;
+    public static final int FUEL_TYPE_ELECTRIC = 3;
+
     /**
      * This is the conversion factor between "real" units and game-world ones
      */
     public static final int TILE_HOURS_PER_MILE_BIGTICKS = 25;
 
     private final String engineTypeName;
-    private final int powerAtDrawbar;
+    private final int fuelType;
     private final long price;
     private final long maintenance;
     private final int maxSpeed; //speed in mph
+    private final int waterCapacity; // waterCapacity in units
+
+    /** fuel consumption in units per year */
+    private final int annualFuelConsumption;
 
     /**
      * @return annual maintenance expense
@@ -47,13 +55,6 @@ final public class EngineType implements FreerailsSerializable {
 
     public String getEngineTypeName() {
         return engineTypeName;
-    }
-
-    public void setAvailable(boolean b) {
-    }
-
-    public int getPowerAtDrawbar() {
-        return powerAtDrawbar;
     }
 
     public long getPrice() {
@@ -67,20 +68,27 @@ final public class EngineType implements FreerailsSerializable {
     public void getRatedTrainSpeedAtGrade(int speed, int grade) {
     }
 
-    public EngineType(String name, int power, long m, int speed) {
+    public EngineType(String name, long m, int speed,
+        long maintenance, int annualFuelConsumption, int fuelType,
+	int waterCapacity) {
         engineTypeName = name;
-        powerAtDrawbar = power;
-        price = m;
-        this.maxSpeed = speed;
-        this.maintenance = 0;
-    }
-
-    public EngineType(String name, int power, long m, int speed,
-        long maintenance) {
-        engineTypeName = name;
-        powerAtDrawbar = power;
         price = m;
         this.maxSpeed = speed;
         this.maintenance = maintenance;
+	this.annualFuelConsumption = annualFuelConsumption;
+	this.fuelType = fuelType;
+	this.waterCapacity = waterCapacity;
+    }
+
+    public int getFuelType() {
+	return fuelType;
+    }
+
+    public int getAnnualFuelConsumption() {
+	return annualFuelConsumption;
+    }
+
+    public int getWaterCapacity() {
+	return waterCapacity;
     }
 }

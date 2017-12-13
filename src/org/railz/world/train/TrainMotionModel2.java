@@ -28,6 +28,11 @@ import org.railz.world.track.*;
  * @author rtuck99@users.berlios.de
  */
 public final class TrainMotionModel2 implements FreerailsSerializable {
+    static final long serialVersionUID = 5346946015054030059L;
+
+    /** whether or not we are out of water */
+    private boolean outOfWater;
+
     /**
      * The value of t0 in Ticks
      */
@@ -63,18 +68,18 @@ public final class TrainMotionModel2 implements FreerailsSerializable {
     
     public TrainMotionModel2(TrainMotionModel2 tmm) {
 	this(tmm.pathToDestination, tmm.trainPath, tmm.t0, tmm.speed,
-		tmm.hasLock);
+		tmm.hasLock, tmm.outOfWater);
     }
 
     public TrainMotionModel2 clearPathToDestination(GameTime now) {
 	return new TrainMotionModel2(null, getPosition(now), now.getTime(),
-	       	speed, hasLock);
+	       	speed, hasLock, outOfWater);
     }
 
     public TrainMotionModel2(TrainMotionModel2 tmm, TrainPath
 	    pathToDestination, GameTime t0) {
 	this(pathToDestination, tmm.getPosition(t0), t0.getTime(), tmm.speed,
-		tmm.hasLock);
+		tmm.hasLock, tmm.outOfWater);
     }
 
     /**
@@ -84,17 +89,19 @@ public final class TrainMotionModel2 implements FreerailsSerializable {
 	    GameTime t0, int maxSpeed) {
 	this(pathToDestination, posAtT0, t0.getTime(),
 	       	((float) (maxSpeed / EngineType.TILE_HOURS_PER_MILE_BIGTICKS)) *
-	       	TrackTile.DELTAS_PER_TILE / GameTime.TICKS_PER_BIG_TICK, false);
+	       	TrackTile.DELTAS_PER_TILE / GameTime.TICKS_PER_BIG_TICK, false,
+		false);
     }
 
     private TrainMotionModel2(TrainPath pathToDestination, TrainPath posAtT0,
-	    int t0, float speed, boolean hasLock) {
+	    int t0, float speed, boolean hasLock, boolean outOfWater) {
 	this.t0 = t0;
 	this.pathToDestination = pathToDestination == null ? null : 
 	    new TrainPath(pathToDestination);
 	this.speed =  speed;
 	this.trainPath = new TrainPath(posAtT0);
 	this.hasLock = hasLock;
+	this.outOfWater = outOfWater;
     }
 
     /**
@@ -148,8 +155,9 @@ public final class TrainMotionModel2 implements FreerailsSerializable {
 	/* work out where we should be */
 	int ticksSinceLastSync = t.getTime() - t0;
 
+	float sp = outOfWater ? (speed / 4) : speed;
 	pl.setLength(pathToDestination.getActualLength());
-	int distanceToTarget = (int) (pl.getLength() - speed *
+	int distanceToTarget = (int) (pl.getLength() - sp *
 	    ticksSinceLastSync);
 	if (distanceToTarget < 0)
 	    distanceToTarget = 0;
@@ -163,7 +171,8 @@ public final class TrainMotionModel2 implements FreerailsSerializable {
 
     public String toString() {
 	return "TrainMotionModel2: t0=" + t0 + ", tp=" + trainPath + ", speed="
-	   + speed + ", p2d=" + pathToDestination + ", hasLock=" + hasLock; 
+	   + speed + ", p2d=" + pathToDestination + ", hasLock=" + hasLock +
+	   ", outOfWater=" + outOfWater; 
     }
 
     public boolean equals(Object o) {
@@ -176,7 +185,8 @@ public final class TrainMotionModel2 implements FreerailsSerializable {
 	    (trainPath == null ? tmm.trainPath == null :
 	    trainPath.equals(tmm.trainPath)) &&
 	    (pathToDestination == null ? tmm.pathToDestination == null :
-	    pathToDestination.equals(tmm.pathToDestination));
+	    pathToDestination.equals(tmm.pathToDestination)) &&
+	    outOfWater == tmm.outOfWater;
     }
 
     public int hashCode() {
@@ -187,5 +197,32 @@ public final class TrainMotionModel2 implements FreerailsSerializable {
     ClassNotFoundException {
 	in.defaultReadObject();
 	hasLock = false;
+    }
+
+    /** @return the path 'cost' expended by time t from t0 */
+    int getCostTraversed(GameTime t) {
+	float sp = outOfWater ? (speed / 4) : speed;
+	return (int) (sp * (t.getTime() - t0));
+    }
+
+    public TrainMotionModel2 setOutOfWater(boolean outOfWater, GameTime t0) {
+	TrainPath newP2D;
+	if (pathToDestination != null) {
+	    double newP2DLength = distanceToDestination(t0);
+	    newP2D = new TrainPath(pathToDestination);
+	    newP2D.truncateTail(newP2DLength);
+	} else {
+	    newP2D = null;
+	}
+	TrainPath newTP = getPosition(t0);
+
+	TrainMotionModel2 tmm = new TrainMotionModel2(newP2D, newTP,
+		t0.getTime(), speed, hasLock, outOfWater);
+
+	return tmm;
+    }
+
+    public boolean isOutOfWater() {
+	return outOfWater;
     }
 }
