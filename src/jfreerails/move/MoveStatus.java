@@ -4,12 +4,22 @@ import jfreerails.world.common.FreerailsSerializable;
 
 
 /**
- * Records the success or failure of an attempt to execute a move.
+ * XXX DO NOT TEST == AGAINST MOVE_FAILED XXX
+ *
  * @author lindsal
  */
 final public class MoveStatus implements FreerailsSerializable {
     public static final MoveStatus MOVE_OK = new MoveStatus(true,
             "Move accepted");
+
+    /**
+     * Not public - only instances of Move should need to access this.
+     */
+    static final MoveStatus MOVE_FAILED = new MoveStatus(false, "Move rejected");
+    
+    static final boolean debug =
+	(System.getProperty("jfreerails.move.MoveStatus.debug") != null);
+    
     public final boolean ok;
     public final String message;
 
@@ -30,10 +40,10 @@ final public class MoveStatus implements FreerailsSerializable {
     }
 
     public static MoveStatus moveFailed(String reason) {
-        //Next 2 lines are just for debuging.
-        //It lets us see where moves are failing.
-        //Exception e = new Exception();
-        //e.printStackTrace();
+	if (debug) {
+	    System.err.println("Move failed becase: " + reason + " in:");
+	    Thread.currentThread().dumpStack();
+	}
         return new MoveStatus(false, reason);
     }
 

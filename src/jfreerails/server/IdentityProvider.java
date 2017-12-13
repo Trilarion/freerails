@@ -2,9 +2,17 @@ package jfreerails.server;
 
 import java.util.HashMap;
 import jfreerails.controller.ConnectionToServer;
+import jfreerails.controller.MoveChainFork;
+import jfreerails.controller.MoveReceiver;
+import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.move.AddPlayerMove;
+import jfreerails.move.Move;
+import jfreerails.move.MoveStatus;
+import jfreerails.move.RejectedMove;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 
 
@@ -12,7 +20,58 @@ import jfreerails.world.top.World;
  * Provides a method by which a Principal may be obtained
  */
 class IdentityProvider {
-    private final AuthoritativeMoveExecuter moveExecuter;
+    /**
+     * submits a move to the queue, sleeps until confirmation that a move has
+     * been implemented (un)successfully received
+     */
+    private class MoveConfirmer implements MoveReceiver {
+        boolean confirmed = false;
+        MoveStatus result = MoveStatus.moveFailed("not executed!");
+        SourcedMoveReceiver executer;
+        private Move move;
+        private MoveChainFork moveChainFork;
+
+        public MoveConfirmer(SourcedMoveReceiver me, MoveChainFork mcf) {
+            executer = me;
+            moveChainFork = mcf;
+            mcf.add(this);
+        }
+
+        public synchronized void processMove(Move m) {
+            if (m.equals(move)) {
+                confirmed = true;
+                result = MoveStatus.MOVE_OK;
+                notify();
+            } else if (m instanceof RejectedMove) {
+                RejectedMove rm = (RejectedMove)m;
+
+                if (move.equals(rm.getAttemptedMove())) {
+                    confirmed = true;
+                    result = rm.getMoveStatus();
+                    notify();
+                }
+            }
+        }
+
+	public synchronized MoveStatus confirmMove(Move m,
+	       	ConnectionToServer c) {
+            System.err.println("In thread " + Thread.currentThread().getName());
+            move = m;
+            executer.processMove(m, c);
+
+            while (!confirmed) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    // ignore
+                }
+            }
+
+            moveChainFork.remove(this);
+
+            return result;
+        }
+    }
 
     /**
      * A HashMap in which the keys are instances of ConnectionToServer and the
@@ -21,9 +80,8 @@ class IdentityProvider {
     private HashMap principals = new HashMap();
     private ServerGameEngine serverGameEngine;
 
-    public IdentityProvider(ServerGameEngine s, AuthoritativeMoveExecuter me) {
+    public IdentityProvider(ServerGameEngine s) {
         serverGameEngine = s;
-        moveExecuter = me;
     }
 
     /**
@@ -37,11 +95,12 @@ class IdentityProvider {
         Player player, byte[] signature) {
         System.err.println("Authenticating player " + player.getName());
 
-        World w = serverGameEngine.getWorld();
-
         /* determine whether this identity already exists */
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            Player p = w.getPlayer(i);
+        NonNullElements i = new NonNullElements(KEY.PLAYERS,
+                serverGameEngine.getWorld(), Player.AUTHORITATIVE);
+
+        while (i.next()) {
+            Player p = (Player)i.getElement();
 
             if (p.equals(player)) {
                 /* this player already exists */
@@ -74,19 +133,22 @@ class IdentityProvider {
         System.err.println("Adding player " + player.getName() + " to " +
             serverGameEngine.getWorld());
 
-        AddPlayerMove m = AddPlayerMove.generateMove(serverGameEngine.getWorld(),
-                player);
+	MoveConfirmer mc = new MoveConfirmer(serverGameEngine.getMoveExecuter(),
+		serverGameEngine.getMoveChainFork());
+        AddPlayerMove m = new AddPlayerMove(serverGameEngine.getWorld(), player);
 
-        /* TODO
-        moveExecuter.processMove(m, m.getPrincipal());
-        */
-        moveExecuter.processMove(m);
+        MoveStatus ms = mc.confirmMove(m, null);
+
+	assert ms == MoveStatus.MOVE_OK;
 
         /*
          * get the newly created player-with-principal
          */
+        World w = serverGameEngine.getWorld();
         System.err.println("checking " + w);
-        player = w.getPlayer(w.getNumberOfPlayers() - 1);
+        player = (Player)w.get(KEY.PLAYERS,
+                w.size(KEY.PLAYERS, Player.AUTHORITATIVE) - 1,
+                Player.AUTHORITATIVE);
         assert (w != null);
 
         principals.put(c, player);
@@ -117,14 +179,12 @@ class IdentityProvider {
     }
 
     public synchronized Player getPlayer(FreerailsPrincipal p) {
-        World w = serverGameEngine.getWorld();
+        NonNullElements i = new NonNullElements(KEY.PLAYERS,
+                serverGameEngine.getWorld(), Player.AUTHORITATIVE);
 
-        /* determine whether this identity already exists */
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            Player player = w.getPlayer(i);
-
-            if (player.getPrincipal().equals(p)) {
-                return player;
+        while (i.next()) {
+            if (((Player)i.getElement()).getPrincipal().equals(p)) {
+                return (Player)i.getElement();
             }
         }
 

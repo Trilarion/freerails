@@ -1,9 +1,6 @@
 package jfreerails.client.top;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Toolkit;
-import jfreerails.client.common.RepaintManagerForActiveRendering;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.common.SynchronizedEventQueue;
 import jfreerails.util.GameModel;
@@ -14,12 +11,9 @@ import jfreerails.util.GameModel;
  *
  */
 final public class GameLoop implements Runnable {
-    final static boolean LIMIT_FRAME_RATE = false;
     boolean gameNotDone = false;
     final ScreenHandler screenHandler;
-    final static int TARGET_FPS = 40;
-    FPScounter fPScounter;
-    private long frameStartTime;
+    final static int TARGET_FPS = 60;
     private final GameModel model;
     private Integer loopMonitor = new Integer(0);
 
@@ -40,7 +34,7 @@ final public class GameLoop implements Runnable {
     /**
      * Stops the game loop.
      * Blocks until the loop is stopped.
-     * Do not call this from inside the event loop!
+     * Do not call this from inside the game loop!
      */
     public void stop() {
         synchronized (loopMonitor) {
@@ -71,12 +65,11 @@ final public class GameLoop implements Runnable {
     }
 
     public void run() {
+	long frameStartTime;
+	int currentFrame = 0;
         gameNotDone = true;
-        //SynchronizedEventQueue seq = SynchronizedEventQueue.getInstance();
-        RepaintManagerForActiveRendering.addJFrame(screenHandler.frame);
-        RepaintManagerForActiveRendering.setAsCurrentManager();
 
-        fPScounter = new FPScounter();
+        long baseTime = System.currentTimeMillis();
 
         /*
          * Reduce this threads priority to avoid starvation of the input thread
@@ -89,8 +82,6 @@ final public class GameLoop implements Runnable {
         }
 
         while (true) {
-            frameStartTime = System.currentTimeMillis();
-
             if (!screenHandler.isMinimised()) {
                 /*
                  * Flush all redraws in the underlying toolkit.  This reduces
@@ -99,6 +90,7 @@ final public class GameLoop implements Runnable {
                  */
                 Toolkit.getDefaultToolkit().sync();
 
+		frameStartTime = System.currentTimeMillis();
                 synchronized (SynchronizedEventQueue.MUTEX) {
                     if (!gameNotDone) {
                         SynchronizedEventQueue.MUTEX.notify();
@@ -109,36 +101,32 @@ final public class GameLoop implements Runnable {
                     if (model != null) {
                         model.update();
                     }
-
-                    Graphics g = screenHandler.getDrawGraphics();
-
-                    try {
-                        screenHandler.frame.paintComponents(g);
-
-                        fPScounter.updateFPSCounter(frameStartTime, g);
-                    } finally {
-                        g.dispose();
-                    }
-
-                    screenHandler.swapScreens();
                 }
 
-                if (LIMIT_FRAME_RATE) {
-                    long deltatime = System.currentTimeMillis() -
-                        frameStartTime;
+		/*
+		 * redraw the screen
+		 */
+		screenHandler.update();
 
-                    while (deltatime < (1000 / TARGET_FPS)) {
-                        try {
-                            long sleeptime = (1000 / TARGET_FPS) - deltatime;
-                            Thread.sleep(sleeptime);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+		if (frameStartTime - baseTime > 10000) {
+		    baseTime = frameStartTime;
+		    currentFrame = 0;
+		}
+		currentFrame++;
+		long nextFrameTime = baseTime + (1000 * currentFrame /
+			TARGET_FPS);
+		long timeToSleep = (nextFrameTime - System.currentTimeMillis());
+		if (timeToSleep < 0) {
+		    /* We dropped some frames */
+		    currentFrame -= (timeToSleep * 60 / 1000);
+		    timeToSleep = 1;
+		}
 
-                        deltatime = System.currentTimeMillis() -
-                            frameStartTime;
-                    }
-                }
+		try {
+		    Thread.sleep(timeToSleep);
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
             } else {
                 try {
                     //The window is minimised
@@ -152,45 +140,5 @@ final public class GameLoop implements Runnable {
         synchronized (loopMonitor) {
             loopMonitor.notify();
         }
-    }
-}
-
-final class FPScounter {
-    final long TIME_INTERVAL = 5000;
-    int frameCount = 0;
-    int averageFPS = 0;
-    long averageFPSStartTime = System.currentTimeMillis();
-    String fPSstr = "starting..";
-    boolean dot = true;
-
-    //Display the average number of FPS.
-    void updateFPSCounter(long frameStartTime, Graphics g) {
-        if (frameCount == 0) {
-            averageFPSStartTime = frameStartTime;
-        }
-
-        frameCount++;
-
-        if (averageFPSStartTime + TIME_INTERVAL < frameStartTime) {
-            int time = (int)(frameStartTime - averageFPSStartTime);
-
-            if (0 != time) {
-                averageFPS = frameCount * 1000 / time;
-            }
-
-            if (dot) {
-                fPSstr = averageFPS + " FPS";
-            } else {
-                fPSstr = averageFPS + ":FPS";
-            }
-
-            frameCount = 0;
-            dot = !dot;
-        }
-
-        g.setColor(Color.WHITE);
-        g.fillRect(50, 50, 50, 20);
-        g.setColor(Color.BLACK);
-        g.drawString(fPSstr, 50, 65);
     }
 }

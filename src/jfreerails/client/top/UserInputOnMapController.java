@@ -3,12 +3,13 @@ package jfreerails.client.top;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import jfreerails.client.view.CursorEvent;
-import jfreerails.client.view.CursorEventListener;
+import jfreerails.client.model.CursorEvent;
+import jfreerails.client.model.CursorEventListener;
+import jfreerails.client.model.MapCursor;
+import jfreerails.client.model.ModelRoot;
 import jfreerails.client.view.DialogueBoxController;
-import jfreerails.client.view.MapCursor;
 import jfreerails.client.view.MapViewJComponent;
-import jfreerails.client.view.ModelRoot;
+import jfreerails.client.view.GUIRoot;
 import jfreerails.controller.TrackMoveProducer;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.MoveStatus;
@@ -51,19 +52,18 @@ public class UserInputOnMapController implements CursorEventListener {
         }
     }
 
-    public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
-        StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
-        UncommittedMoveReceiver tx) {
-        trackMoveExecutor = tx;
-        this.dialogueBoxController = dbc;
+    public void setup(GUIRoot gr,
+	    MapViewJComponent mv, StationTypesPopup stp) {
+        trackMoveExecutor = modelRoot.getReceiver();
+        this.dialogueBoxController = gr.getDialogueBoxController();
         this.mapView = mv;
-        this.stationTypesPopup = stPopup;
 
-        this.trackBuilder = trackBuilder;
+        this.trackBuilder = modelRoot.getTrackMoveProducer();
 
-        this.cursor = mr.getCursor();
+        this.cursor = modelRoot.getCursor();
 
         cursor.addCursorEventListener(this);
+	stationTypesPopup = stp;
     }
 
     public void cursorJumped(CursorEvent ce) {

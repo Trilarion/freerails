@@ -8,13 +8,11 @@ import jfreerails.move.TransferCargoAtStationMove;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.ConvertedAtStation;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.WagonType;
 
@@ -39,7 +37,6 @@ public class DropOffAndPickupCargoMoveGenerator {
     private CargoBundle trainAfter;
     private CargoBundle trainBefore;
     private AddTransactionMove payment;
-    private final FreerailsPrincipal principal;
 
     /**
      * Contructor
@@ -48,13 +45,12 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param world The world object
      */
     public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo,
-        ReadOnlyWorld world, FreerailsPrincipal p) {
-        principal = p;
+        ReadOnlyWorld world) {
         trainId = trainNo;
         stationId = stationNo;
         w = world;
 
-        train = (TrainModel)w.get(KEY.TRAINS, trainId, principal);
+        train = (TrainModel)w.get(KEY.TRAINS, trainId);
 
         getBundles();
 
@@ -65,33 +61,27 @@ public class DropOffAndPickupCargoMoveGenerator {
     public Move generateMove() {
         //The methods that calculate the before and after bundles could be called from here.
         ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(stationBefore,
-                stationAfter, stationBundleId, principal);
+                stationAfter, stationBundleId);
         ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(trainBefore,
-                trainAfter, trainBundleId, principal);
+                trainAfter, trainBundleId);
 
         return TransferCargoAtStationMove.generateMove(changeAtStation,
             changeOnTrain, payment);
     }
 
     public void getBundles() {
-        trainBundleId = ((TrainModel)w.get(KEY.TRAINS, trainId, principal)).getCargoBundleNumber();
-        trainBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId,
-                principal)).getCopy();
-        trainAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId,
-                principal)).getCopy();
-        stationBundleId = ((StationModel)w.get(KEY.STATIONS, stationId,
-                principal)).getCargoBundleNumber();
-        stationAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId,
-                principal)).getCopy();
-        stationBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId,
-                principal)).getCopy();
+        trainBundleId = ((TrainModel)w.get(KEY.TRAINS, trainId)).getCargoBundleNumber();
+        trainBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId)).getCopy();
+        trainAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, trainBundleId)).getCopy();
+        stationBundleId = ((StationModel)w.get(KEY.STATIONS, stationId)).getCargoBundleNumber();
+        stationAfter = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId)).getCopy();
+        stationBefore = ((CargoBundle)w.get(KEY.CARGO_BUNDLES, stationBundleId)).getCopy();
     }
 
     public void processTrainBundle() {
         Iterator batches = trainAfter.cargoBatchIterator();
 
-        StationModel station = (StationModel)w.get(KEY.STATIONS, stationId,
-                principal);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, stationId);
 
         CargoBundle cargoDroppedOff = new CargoBundleImpl();
 
@@ -123,7 +113,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
 
         payment = ProcessCargoAtStationMoveGenerator.processCargo(w,
-                cargoDroppedOff, this.stationId, principal);
+                cargoDroppedOff, this.stationId);
 
         //Unload the cargo that there isn't space for on the train regardless of whether the station
         // demands it.
@@ -143,52 +133,32 @@ public class DropOffAndPickupCargoMoveGenerator {
         int[] spaceAvailable = getSpaceAvailableOnTrain();
 
         //Third, transfer cargo from the station to the train subject to the space available on the train.
-        for (int cargoType = 0; cargoType < w.size(SKEY.CARGO_TYPES);
+        for (int cargoType = 0; cargoType < w.size(KEY.CARGO_TYPES);
                 cargoType++) {
             int amount2transfer = Math.min(spaceAvailable[cargoType],
                     stationAfter.getAmount(cargoType));
             transferCargo(cargoType, amount2transfer, stationAfter, trainAfter);
         }
-
-        /*
-        //loop through each wagon, see what can be put in them
-        for (int j=0; j<train.getNumberOfWagons(); j++) {
-                CargoType wagonCargoType = (CargoType)w.get(SKEY.CARGO_TYPES,train.getWagon(j));
-
-
-                //for each cargo type, compare wagon category with cargo waiting at station
-                for (int k=0; k<w.size(SKEY.CARGO_TYPES); k++) {
-                        CargoType cargoType = (CargoType)w.get(SKEY.CARGO_TYPES,k);
-
-                        //compare cargo types wagon can carry, to cargo waiting type
-                        if (wagonCargoType.getCategory().equals(cargoType.getCategory())) {
-
-                                //check if there is any cargo of this type waiting
-                                if (stationBefore.getAmount(k) > 0) {
-
-                                        //transfer cargo to the current wagon
-                                        transferCargo(k);
-                                }
-                        }
-                }
-
-        }
-        */
     }
 
+    /**
+     * @return array indexed by CARGO_TYPE indicating available space
+     */
     private int[] getSpaceAvailableOnTrain() {
-        //This array will store the amount of space available on the train for each cargo type.
-        int[] spaceAvailable = new int[w.size(SKEY.CARGO_TYPES)];
+        //This array will store the amount of space available on the train for each cargo type. 
+        int[] spaceAvailable = new int[w.size(KEY.CARGO_TYPES)];
 
         //First calculate the train's total capacity.
         for (int j = 0; j < train.getNumberOfWagons(); j++) {
-            int cargoType = train.getWagon(j);
+	    WagonType wagonType = (WagonType) w.get(KEY.WAGON_TYPES,
+		    train.getWagon(j));
+	    int cargoType = wagonType.getCargoType();
 
-            spaceAvailable[cargoType] += WagonType.UNITS_OF_CARGO_PER_WAGON;
+            spaceAvailable[cargoType] += wagonType.getCapacity();
         }
 
         //Second, subtract the space taken up by cargo that the train is already carrying.
-        for (int cargoType = 0; cargoType < w.size(SKEY.CARGO_TYPES);
+        for (int cargoType = 0; cargoType < w.size(KEY.CARGO_TYPES);
                 cargoType++) {
             spaceAvailable[cargoType] -= trainAfter.getAmount(cargoType);
         }

@@ -6,10 +6,10 @@
 
 package jfreerails.client.view;
 import java.awt.Point;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import jfreerails.client.model.ModelRoot;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.ListMove;
@@ -20,7 +20,6 @@ import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldIterator;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.train.WagonType;
@@ -29,15 +28,12 @@ import jfreerails.world.train.WagonType;
  *
  * @author  Luke
  */
-public class StationInfoJPanel
-extends javax.swing.JPanel
-implements MoveReceiver, View {
-	
-	private ReadOnlyWorld w;
+public class StationInfoJPanel extends javax.swing.JPanel
+implements MoveReceiver {
     private ModelRoot modelRoot;
     private WorldIterator wi;
     private boolean ignoreMoves = true;
-    private MapCursor mapCursor = MapCursor.NULL_MAP_CURSOR;
+    private ReadOnlyWorld world;
     
     /**
      * The index of the cargoBundle associated with this station
@@ -60,7 +56,6 @@ implements MoveReceiver, View {
         jLabel1 = new javax.swing.JLabel();
         nextStation = new javax.swing.JButton();
         previousStation = new javax.swing.JButton();
-        close = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -73,10 +68,10 @@ implements MoveReceiver, View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 8);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 8);
         add(jLabel1, gridBagConstraints);
 
         nextStation.setText("next ->");
@@ -91,9 +86,9 @@ implements MoveReceiver, View {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 8, 8);
         add(nextStation, gridBagConstraints);
 
         previousStation.setText("<- previous");
@@ -108,22 +103,10 @@ implements MoveReceiver, View {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 8, 8, 4);
         add(previousStation, gridBagConstraints);
-
-        close.setText("close");
-        close.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        close.setMaximumSize(new java.awt.Dimension(65, 22));
-        close.setMinimumSize(new java.awt.Dimension(65, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        gridBagConstraints.weightx = 1.0;
-        add(close, gridBagConstraints);
 
     }//GEN-END:initComponents
     
@@ -136,7 +119,7 @@ implements MoveReceiver, View {
             new Point(
             ((StationModel) wi.getElement()).getStationX(),
             ((StationModel) wi.getElement()).getStationY());
-            getMapCursor().tryMoveCursor(p);
+            modelRoot.getCursor().tryMoveCursor(p);
             
             display();
         } else {
@@ -153,7 +136,7 @@ implements MoveReceiver, View {
             new Point(
             ((StationModel) wi.getElement()).getStationX(),
             ((StationModel) wi.getElement()).getStationY());
-            getMapCursor().tryMoveCursor(p);
+            modelRoot.getCursor().tryMoveCursor(p);
             display();
         } else {
             throw new IllegalStateException();
@@ -161,12 +144,12 @@ implements MoveReceiver, View {
         
 	} //GEN-LAST:event_nextStationActionPerformed
     
-    public void setup(ModelRoot mr, ActionListener al) {        
-        this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr.getPlayerPrincipal());
+    public void setup(ModelRoot mr) {
+	modelRoot = mr;
+        this.wi = new NonNullElements(KEY.STATIONS, modelRoot.getWorld());
         addComponentListener(componentListener);
-        this.w = mr.getWorld();
-        this.modelRoot = mr;
-        this.close.addActionListener(al);
+	modelRoot.getMoveChainFork().addSplitMoveReceiver(this);
+	world = modelRoot.getWorld();
     }
     
     public void setStation(int stationNumber) {
@@ -192,14 +175,14 @@ implements MoveReceiver, View {
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             StationModel station =
-            (StationModel) w.get(KEY.STATIONS, stationNumber, modelRoot.getPlayerPrincipal());
-            FreerailsTile tile = w.getTile(station.x, station.y);
+            (StationModel) world.get(KEY.STATIONS, stationNumber);
+            FreerailsTile tile = world.getTile(station.x, station.y);
             String stationTypeName = tile.getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleNumber();
             CargoBundle cargoWaiting =
-            (CargoBundle) w.get(
+            (CargoBundle) world.get(
             KEY.CARGO_BUNDLES,
-            station.getCargoBundleNumber(), modelRoot.getPlayerPrincipal());
+            station.getCargoBundleNumber());
             String title =
             "<h2 align=\"center\">"
             + station.getStationName()
@@ -208,21 +191,21 @@ implements MoveReceiver, View {
             + ")</h2>";
             String table =
             "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Will pay for</td>\n    <td>Supplies / cars per year</td><td>Waiting for pickup / car loads</td>  </tr>";
-            for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
+            for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
                 
                 //get the values
-                CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+                CargoType cargoType = (CargoType) world.get(KEY.CARGO_TYPES, i);
                 String demanded =
                 (station.getDemand().isCargoDemanded(i) ? "Yes" : "No");
                 int amountSupplied = station.getSupply().getSupply(i);
                 String supply =
                 (amountSupplied > 0)
-                ? String.valueOf(amountSupplied/WagonType.UNITS_OF_CARGO_PER_WAGON)
+                ? String.valueOf(amountSupplied)
                 : "&nbsp;";
                 int amountWaiting = cargoWaiting.getAmount(i);
                 String waiting =
                 (amountWaiting > 0)
-                ? String.valueOf(amountWaiting/WagonType.UNITS_OF_CARGO_PER_WAGON)
+                ? String.valueOf(amountWaiting)
                 : "&nbsp;";
                 
                 //build the html
@@ -302,22 +285,8 @@ implements MoveReceiver, View {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton close;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton nextStation;
     private javax.swing.JButton previousStation;
     // End of variables declaration//GEN-END:variables
-    
-    
-    public MapCursor getMapCursor() {
-        return mapCursor;
-    }
-    
-    public void setMapCursor(MapCursor cursor) {
-        if(null == cursor){
-            throw new NullPointerException();
-        }
-        mapCursor = cursor;
-    }
-    
 }

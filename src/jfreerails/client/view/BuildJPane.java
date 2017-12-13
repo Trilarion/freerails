@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
+import jfreerails.client.model.ModelRoot;
+import jfreerails.client.model.TrackBuildModel;
 import jfreerails.client.renderer.ViewLists;
 
 /**

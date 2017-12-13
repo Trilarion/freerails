@@ -1,35 +1,31 @@
-Mar 6, 2004 12:39:54 PM Luke
-	o Added Scott Bennett's terrain randomisation patch. 
-Mar 6, 2004 12:10:49 AM Luke
-	o Remove 'never read' local variables.
-	o Fixed bug 910135 Trains jump when game un paused 
-	o Fixed bug 891360 Trains don't get built while game is paused 
-Mar 5, 2004 8:16:50 PM Luke
-	o Applied Jan Tozicka's patch for bug 900039 (No clear indication game is paused).
-Mar 4, 2004 7:38:53 PM Luke
-	o Minor changes to coding guidelines.
-	o Fixed stale serialVersionUID problem in jfreerails.world.player.Player
-	o Made ant script insert build id into README and about.htm
-Mar 3, 2004 10:02:11 PM Luke
-	o Apply Scott Bennett's removal_of_Loading_text patch.
-Mar 3, 2004 1:25:27 AM Luke
-	o Implemented Request 905446 Track should be continuous 
-	o Implemented Request 905444 Multi player support: different track 
-Mar 2, 2004 5:21:23 PM Luke
-	o Implemented Request 905443 Multi player support: different trains 
-Mar 1, 2004 10:33:52 PM Luke
-	o Implemented Request 905441 Multi player support: different bank accounts
-	Note, presently some of the dialogue boxes are not working.  This will
-	be fixed as adding multi player support continues.
-Feb 27, 2004 1:03:38 PM Luke
-	o Some fixes for DialogueBoxTester.
-Feb 27, 2004 1:44:54 AM Luke
-	o Refactoring in preparation for multiplayer support.
-Feb 26, 2004 9:48:04 PM Luke
-	o Applied Jan Tozicka's 'Shortcuts for gamespeed' (patch 904903).
-Feb 21, 2004 2:14:47 AM Luke
-	o Fix 891359 - Javadoc package dependencies out of date
-	o Tidy up javadoc
+Mar 9, 2004:
+------------
+Separated view and model client packages.
+Added Debug menu.
+Rendering bugs hopefully mostly fixed.
+Added Release Notes
+Tidied up build.xml
+Removed external references to JFreerails in dialogs etc.
+Added bug reporting link to About dialog.
+Mar 7, 2004
+-----------
+Reworked GUI architecture. Rendering code changed. Still a bit buggy :)
+Added L10N/I18N infrastructure (Thanks Christoph!)
+Feb 28, 2004
+------------
+Railz CVS created from patched JFreerails source
+Added:
+* Overhead wagon graphics
+* Integration of schedule into JTabPane
+* GUI Icons
+* Resizable dialogs
+* Bank account patch
+* Fix to cargo payment calculations
+* GPL License file
+* Load/save fix
+* Removed "experimental" directory
+
+============================================================================
 Feb 20, 2004 6:34:03 PM Luke
 	o Fix 839371 - Goods & livestock wagons appear the same on train orders
 Feb 20, 2004 12:31:15 PM Luke

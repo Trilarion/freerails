@@ -4,29 +4,70 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.image.BufferStrategy;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.*;
+import java.awt.BufferCapabilities;
+import java.awt.ImageCapabilities;
+import java.awt.image.BufferStrategy;
+import java.awt.image.VolatileImage;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-
+import javax.swing.JLayeredPane;
+import javax.swing.RepaintManager;
+import javax.swing.SwingUtilities;
 
 /**
- * @version         1.0
+ * This class manages screen resolution changes, and is the entry point for
+ * synchronous frame updates.
+ *
+ * <h1>Screen redraw operation</h1>
+ * Screen redraws may be caused by the following events:
+ * <h2>periodic frame update</h2>
+ * This occurs when the update() method is called. The main map display is
+ * redrawn, plus any components which may be obscuring it.
+ * <h2>A refresh is caused by the event thread (eg. the user clicks a
+ * button)</h2>
+ * Client code should cause the relevant parts to be redrawn.
+ * <h2>A refresh is caused by a world model change</h2>
+ * Client code should call repaint() for the changed components.
+ *
+ * <p>Note that redraws are inefficient at the moment due to differing platform
+ * behaviour, e.g. OS X provides native double buffering so buffering in Java
+ * is not required. X11 redraws should be double buffered by Java, but there is
+ * as yet no mechanism to sync the two buffers without doing a full redraw
+ * which is wasteful.
  */
 final public class ScreenHandler {
+    public static final int NUM_BUFFERS = 2;
     public static final int FULL_SCREEN = 0;
     public static final int WINDOWED_MODE = 1;
-    public static final int FIXED_SIZE_WINDOWED_MODE = 2;
     public final JFrame frame;
-    BufferStrategy bufferStrategy;
     DisplayMode displayMode;
+    private UpdatedComponent updatedComponent;
+    private boolean isVolatile;
+    private Image backBuffer;
+    private int oldWidth;
+    private int oldHeight;
+    private BufferStrategy bufferStrategy;
+    private GraphicsConfiguration graphicsConfig;
+    private boolean runningOSX = "Mac OS X".equals
+	(System.getProperty("os.name"));
+
+    /**
+     * Game starts off in WINDOWED_MODE by default
+     */
+    private int currentMode = WINDOWED_MODE;
 
     /** Whether the window is minimised */
     private boolean isMinimised = false;
 
-    public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
+    public ScreenHandler(JFrame f, UpdatedComponent uc,
+	    int mode, DisplayMode displayMode) {
+	updatedComponent = uc;
         this.displayMode = displayMode;
         frame = f;
         apply(f, mode);
@@ -37,10 +78,16 @@ final public class ScreenHandler {
         apply(f, mode);
     }
 
+    /**
+     * @return one of FULL_SCREEN, WINDOWED_MODE or FIXED_SIZE_WINDOWED_MODE
+     */
+    public int getMode() {
+	return currentMode;
+    }
+
     public static void goFullScreen(JFrame frame, DisplayMode displayMode) {
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                    .getDefaultScreenDevice();
-        setRepaintOffAndDisableDoubleBuffering(frame);
 
         /* We need to make the frame not displayable before calling
          * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
@@ -68,52 +115,15 @@ final public class ScreenHandler {
 
     public void apply(JFrame f, int mode) {
         switch (mode) {
-        case FULL_SCREEN: {
+	    case FULL_SCREEN:
             goFullScreen(f, displayMode);
-
             break;
-        }
-
-        case WINDOWED_MODE: {
-            //Some of the dialogue boxes do not get layed out properly if they are smaller than their
-            //minimum size.  JFrameMinimumSizeEnforcer increases the size of the Jframe when its size falls
-            //below the specified size.
-            frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 450));
-
-            frame.setSize(640, 450);
+        case WINDOWED_MODE:
             frame.show();
-
             break;
-        }
-
-        case FIXED_SIZE_WINDOWED_MODE: {
-            /* We need to make the frame not displayable before calling
-            * setUndecorated(true) otherwise a java.awt.IllegalComponentStateException
-            * will get thrown.
-            */
-            if (frame.isDisplayable()) {
-                frame.dispose();
-            }
-
-            frame.setUndecorated(true);
-            frame.setResizable(false);
-            frame.setSize(640, 480);
-            frame.show();
-
-            break;
-        }
-
         default:
             throw new IllegalArgumentException(String.valueOf(mode));
         }
-
-        createBufferStrategy();
-
-        f.addComponentListener(new java.awt.event.ComponentAdapter() {
-                public void componentResized(java.awt.event.ComponentEvent evt) {
-                    createBufferStrategy();
-                }
-            });
 
         f.addWindowListener(new WindowAdapter() {
                 public void windowIconified(WindowEvent e) {
@@ -124,47 +134,19 @@ final public class ScreenHandler {
                     isMinimised = false;
                 }
             });
-    }
 
-    private void createBufferStrategy() {
-        //Use 2 backbuffers to avoid using too much VRAM.
-        frame.createBufferStrategy(2);
-        bufferStrategy = frame.getBufferStrategy();
-        setRepaintOffAndDisableDoubleBuffering(frame);
-    }
-
-    public Graphics getDrawGraphics() {
-        return bufferStrategy.getDrawGraphics();
-    }
-
-    public boolean swapScreens() {
-        boolean done = false;
-
-        if (!bufferStrategy.contentsLost()) {
-            bufferStrategy.show();
-            done = true;
-        }
-
-        return done;
-    }
-
-    public static void setRepaintOffAndDisableDoubleBuffering(Component c) {
-        c.setIgnoreRepaint(true);
-
-        //Since we are using a buffer strategy we don't want Swing
-        //to double buffer any JComponents.
-        if (c instanceof JComponent) {
-            JComponent jComponent = (JComponent)c;
-            jComponent.setDoubleBuffered(false);
-        }
-
-        if (c instanceof java.awt.Container) {
-            Component[] children = ((Container)c).getComponents();
-
-            for (int i = 0; i < children.length; i++) {
-                setRepaintOffAndDisableDoubleBuffering(children[i]);
-            }
-        }
+	currentMode = mode;
+	BufferStrategy bs = frame.getBufferStrategy();
+	System.out.println("Buffer capabilities:");
+	BufferCapabilities bc = bs.getCapabilities();
+	System.out.println("isFullScreenRequired = " + bc.isFullScreenRequired());
+	System.out.println("isPageFlipping = " + bc.isPageFlipping());
+	ImageCapabilities ic = bc.getBackBufferCapabilities();
+	System.out.println("isAccelerated = " + ic.isAccelerated());
+	System.out.println("isTrueVolatile = " + ic.isTrueVolatile());
+	isVolatile = ic.isTrueVolatile();
+	bufferStrategy = bs;
+	graphicsConfig = frame.getGraphicsConfiguration();
     }
 
     private static DisplayMode getBestDisplayMode(GraphicsDevice device) {
@@ -190,5 +172,80 @@ final public class ScreenHandler {
 
     public boolean isMinimised() {
         return isMinimised;
+    }
+    
+    /**
+     * Update the display. This draws 1 "frame".
+     */
+    public void update() {
+	try {
+	    SwingUtilities.invokeAndWait(swingWorker);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+
+    private void markLayerDirty(JLayeredPane lp, int layer) {
+	Component dirtyComponents[] = lp.getComponentsInLayer(layer);
+	for (int i = 0; i < dirtyComponents.length; i++) {
+	    if (dirtyComponents[i] instanceof JComponent) {
+		RepaintManager.currentManager(dirtyComponents[i]).
+		    markCompletelyDirty((JComponent) dirtyComponents[i]);
+	    }
+	}
+    }
+
+    private Runnable swingWorker = new Runnable() {
+	public void run() {
+	    if (isMinimised) {
+		return;
+	    }
+
+	    bufferStrategy = frame.getBufferStrategy();
+	    /* OS X rendering appears to be different */
+	    if (runningOSX) {
+		do {
+		    /* mark everything in the layers above as being dirty */
+		    JLayeredPane lp = frame.getLayeredPane();
+		    markLayerDirty(lp, lp.DRAG_LAYER.intValue());
+		    markLayerDirty(lp, lp.MODAL_LAYER.intValue());
+		    markLayerDirty(lp, lp.PALETTE_LAYER.intValue());
+		    markLayerDirty(lp, lp.POPUP_LAYER.intValue());
+
+		    Graphics g = bufferStrategy.getDrawGraphics();
+		    Insets i = frame.getInsets();
+		    g.translate(i.left, i.top);
+		    updatedComponent.doFrameUpdate(g);
+		    /* draw everything in the layers above the main layer */
+		    RepaintManager.currentManager(frame).paintDirtyRegions();
+
+		    g.dispose();
+		} while (bufferStrategy.contentsLost());
+		bufferStrategy.show();
+		return;
+	    }
+
+	    /* non-OS X rendering code */
+            int w = frame.getWidth();
+            int h = frame.getHeight();
+            if (w != oldWidth || h != oldHeight) {
+                oldWidth = w;
+                oldHeight = h;
+                frame.createBufferStrategy(NUM_BUFFERS);
+                bufferStrategy = frame.getBufferStrategy();
+            }
+	    do {
+		/* draw the whole JFrame */
+		Graphics g = bufferStrategy.getDrawGraphics();
+		frame.paint(g);
+		g.dispose();
+	    } while (bufferStrategy.contentsLost());
+	    bufferStrategy.show();
+	    return;
+	}
+    };
+
+    public boolean isVolatile() {
+	return isVolatile;
     }
 }

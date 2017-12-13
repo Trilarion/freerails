@@ -9,8 +9,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
+import jfreerails.client.model.ModelRoot;
+import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.common.Money;
-import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 
 /**
@@ -18,29 +21,30 @@ import jfreerails.world.top.ReadOnlyWorld;
  * @author Luke
  * 
  */
-public class CashJLabel extends JLabel implements View {
+public class CashJLabel extends JLabel {
 
 	private ReadOnlyWorld w;
-	private FreerailsPrincipal principal;
+	private ModelRoot modelRoot;
 
 	public CashJLabel(){
 		this.setText("         ");
 	}
 
-	public void setup(ModelRoot model, ActionListener submitButtonCallBack) {
-		this.w = model.getWorld();
-		principal = model.getPlayerPrincipal();
+	public void setup(ModelRoot mr) {
+		this.w = mr.getWorld();
+		modelRoot = mr;
 	}
 	
-
-	
 	public void paint(Graphics g) {
-		if(null != w){
-			Money m = w.getCurrentBalance(principal);
-			String s = m.toString();			
-			this.setText(s);			
-		}
-		super.paint(g);
+	    if(null != w && w.size(KEY.BANK_ACCOUNTS,
+			modelRoot.getPlayerPrincipal()) > 0){
+		BankAccount account = (BankAccount)w.get
+		    (KEY.BANK_ACCOUNTS, 0, modelRoot.getPlayerPrincipal());
+		Money m = account.getCurrentBalance();
+		String s = m.toString();			
+		this.setText(s);			
+	    }
+	    super.paint(g);
 	}
 
 }

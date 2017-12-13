@@ -60,7 +60,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
 
         for (int i = 0; i < buttonModels.size(); i++) {
             MappedButtonModel bm = (MappedButtonModel)buttonModels.get(i);
-            bm.setSelected(i == selected);
+            ((MappedButtonModel)buttonModels.get(i)).setSelected(i == selected);
         }
     }
 

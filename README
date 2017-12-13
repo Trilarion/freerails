@@ -1,90 +1,74 @@
-Freerails Java - build @version@
+Railz
+=====
 
+Railz is a GPL'd Railroad Tycoon - style railway strategy management game.
+The source is a fork of the JFreerails project:
+http://sourceforge.net/projects/freerails
 
-Bugs Fixed:
+Downloading:
+============
 
-839349 Launcher GUI is unclear
-846841 Launcher needs to provide map list
-863496 Launcher "Start Game" button is redundant in single-player
-891378 Initial game speed shown as moderate when really paused
-880496 User stuck after connection refused
-891371 No help for new users
-891377 No 'About' dialogue box
-891427 Scheduling trains difficult
-868552 'Load game' and 'New game' fail
-891428 Divide by zero exception when window resized
-891431 No link between train list and train orders screens
-891362 Cancel button on select engine dialogue doesn't work
-839361 Several industries of the same type in same city.
-874416 station icon hides after track-ugrade
-891368 Trains don't get built when game is paused
-839331 Game starts frozen
-867473 Intermittent deadlocks
-880450 Deadlocks in InetConnection
-839371 Goods & livestock wagons appear the same on train orders
-891432 Description on train orders doesn’t update properly
-891359 Javadoc package dependencies out of date
-880515 Can go back on launcher after starting game
-910135 Trains jump when game un paused
-891360 Trains don't get built while game is paused
-900039 No clear indication game is paused 
+Chances are you've already downloaded it if you're reading this :)
 
+It's available from public CVS at berlios.de:
 
-Features implemented:
+At the command line -
+$ cvs -d:pserver:anonymous@cvs.railz.berlios.de:/cvsroot/railz co railz
 
-905446 Track should be continuous
-905444 Multi player support: different track
-905443 Multi player support: different trains
-905441 Multi player support: different bank accounts
+More detailed instructions are at
+http://developer.berlios.de/cvs/?group_id=1483
 
+Requirements:
+=============
 
-Changes not in tracker
-
-Shortcuts for gamespeed
-Updated coding guidelines
-Terrain randomisation
-OSX work arounds
-
-Getting it, either:
-
- 	Check-out the jfreerails module from the CVS.
-or
-	Download a package from the sourceforge page.
-
-
-Requires: 
 JDK 1.4.2 or later, which can be downloaded from:
 http://java.sun.com/j2se/
 
-To run the binary distribution
+Compilation:
+============
 
-	type: java -jar jFreeRails-@version@-bin.jar
-
-
-To compile and run the source distribution:
-(1) Extract the source files from the jar
-	jar -xf jFreeRails-@version@-src.jar
-(2)	To compile, either 
-	(i) go to the directory src, and type: javac -source 1.4 jfreerails/launcher/Launcher.java
+To compile, either 
+(i) go to the directory src, and type: javac jfreerails/launcher/Launcher.java
 or	
- 	(ii) use the build.xml file and Ant version 1.5.
-(3)	To run, type: java jfreerails/launcher/Launcher
-				
-For more information, see:
-http://sourceforge.net/projects/freerails/
-or
-http://freerails.sourceforge.net/
+(ii) use the build.xml file and Ant version 1.5.
 
 N.B. The source package contains some unit tests.  To compile them you will
 need to add junit.jar to your classpath, which can be downloaded from 
 www.junit.org.
 
+Running It:
+===========
+
+To run, type: java -jar railz.jar
+				
 Mac OS X users:
-===============
+---------------
 
-There appears to be a bug in Mac OS X Java 1.4.2 which causes problems with map redraws. If this affects you then try running
-java -DOSXWorkaround=true \
-jfreerails/launcher/Launcher
+There appears to be a bug in Mac OS X Java 1.4.2 which causes problems with map
+redraws. If this affects you then try running
+java -DOSXWorkaround=true -jar railz.jar
 
+Contacts:
+=========
 
-	
+Railz is currently maintained by Robert Tuck (rtuck99@users.berlios.de).
+
+Bug reports and Feature Requests
+--------------------------------
+If you have bugs, or suggestions for enhancement, please submit them to the bug
+report tool at
+http://developer.berlios.de/bugs/?group_id=1483
+
+Please check to see whether your bug has already been filed by someone else in
+the bug database first before filing it.
+
+Mailing list
+------------
+There is a mailing list for those interested in Railz, to subscribe, visit
+http://developer.berlios.de/mail/?group_id=1483
+
+Credits
+=======
+Thanks to Berlios.de for hosting the project, and also those who worked on
+JFreerails.
+

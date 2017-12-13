@@ -5,15 +5,15 @@
 package jfreerails.client.renderer;
 
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
+import java.io.File;
 import jfreerails.client.common.ImageManager;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.cargo.CargoType;
-import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.train.EngineType;
+import jfreerails.world.common.OneTileMoveVector;
 
 
 /**
@@ -23,6 +23,7 @@ import jfreerails.world.train.EngineType;
  */
 public class TrainImages {
     private final Image[] sideOnWagonImages;
+    private final Image[] sideOnEmptyWagonImages;
     private final Image[][] overheadWagonImages;
     private final Image[] sideOnEngineImages;
     private final Image[][] overheadEngineImages;
@@ -34,8 +35,8 @@ public class TrainImages {
         this.w = w;
         this.imageManager = imageManager;
 
-        final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
-        final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);
+        final int numberOfWagonTypes = w.size(KEY.CARGO_TYPES);
+        final int numberOfEngineTypes = w.size(KEY.ENGINE_TYPES);
 
         //Setup progress monitor..
         pm.setMessage("Loading train images.");
@@ -45,14 +46,17 @@ public class TrainImages {
         pm.setValue(progress);
 
         sideOnWagonImages = new Image[numberOfWagonTypes];
+	sideOnEmptyWagonImages = new Image[numberOfWagonTypes];
         overheadWagonImages = new Image[numberOfWagonTypes][8];
         sideOnEngineImages = new Image[numberOfEngineTypes];
         overheadEngineImages = new Image[numberOfEngineTypes][8];
 
         for (int i = 0; i < numberOfWagonTypes; i++) {
-            CargoType cargoType = (CargoType)w.get(SKEY.CARGO_TYPES, i);
+            CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, i);
             String sideOnFileName = generateSideOnFilename(cargoType.getName());
             sideOnWagonImages[i] = imageManager.getImage(sideOnFileName);
+	    sideOnEmptyWagonImages[i] = imageManager.getImage
+		(generateSideOnEmptyFileName(cargoType.getName()));
 
             for (int direction = 0; direction < 8; direction++) {
                 String overheadOnFileName = generateOverheadFilename(cargoType.getName(),
@@ -64,7 +68,7 @@ public class TrainImages {
         }
 
         for (int i = 0; i < numberOfEngineTypes; i++) {
-            EngineType engineType = (EngineType)w.get(SKEY.ENGINE_TYPES, i);
+            EngineType engineType = (EngineType)w.get(KEY.ENGINE_TYPES, i);
             String sideOnFileName = generateSideOnFilename(engineType.getEngineTypeName());
             sideOnEngineImages[i] = imageManager.getImage(sideOnFileName);
 
@@ -82,9 +86,15 @@ public class TrainImages {
         return sideOnWagonImages[cargoTypeNumber];
     }
 
-    public Image getSideOnWagonImage(int cargoTypeNumber, int height) {
-        CargoType cargoType = (CargoType)w.get(SKEY.CARGO_TYPES, cargoTypeNumber);
-        String sideOnFileName = generateSideOnFilename(cargoType.getName());
+    public Image getSideOnWagonImage(int cargoTypeNumber, int height, int
+	    percentFull) {
+        CargoType cargoType = (CargoType)w.get(KEY.CARGO_TYPES, cargoTypeNumber);
+        String sideOnFileName;
+       if (percentFull >= 50) {
+	   sideOnFileName = generateSideOnFilename(cargoType.getName());
+       } else {
+	   sideOnFileName = generateSideOnEmptyFileName(cargoType.getName());
+       }
 
         try {
             return imageManager.getScaledImage(sideOnFileName, height);
@@ -92,6 +102,10 @@ public class TrainImages {
             e.printStackTrace();
             throw new IllegalArgumentException(sideOnFileName);
         }
+    }
+
+    public Image getSideOnWagonImage(int cargoTypeNumber, int height) {
+	return getSideOnWagonImage(cargoTypeNumber, height, 100);
     }
 
     public Image getOverheadWagonImage(int cargoTypeNumber, int direction) {
@@ -103,7 +117,7 @@ public class TrainImages {
     }
 
     public Image getSideOnEngineImage(int engineTypeNumber, int height) {
-        EngineType engineType = (EngineType)w.get(SKEY.ENGINE_TYPES,
+        EngineType engineType = (EngineType)w.get(KEY.ENGINE_TYPES,
                 engineTypeNumber);
         String sideOnFileName = generateSideOnFilename(engineType.getEngineTypeName());
 
@@ -119,15 +133,20 @@ public class TrainImages {
         return overheadEngineImages[engineTypeNumber][direction];
     }
 
-    public static String generateOverheadFilename(String name, int i) {
+    private static String generateOverheadFilename(String name, int i) {
         OneTileMoveVector[] vectors = OneTileMoveVector.getList();
 
         return "trains" + File.separator + "overhead" + File.separator + name +
         "_" + vectors[i].toAbrvString() + ".png";
     }
 
-    public static String generateSideOnFilename(String name) {
+    private static String generateSideOnFilename(String name) {
         return "trains" + File.separator + "sideon" + File.separator + name +
         ".png";
+    }
+
+    private static String generateSideOnEmptyFileName(String name) {
+	return "trains" + File.separator + "sideon" + File.separator + "empty"
+	    + File.separator + name + ".png";
     }
 }

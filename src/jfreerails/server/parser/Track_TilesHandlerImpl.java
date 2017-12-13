@@ -8,14 +8,15 @@
 package jfreerails.server.parser;
 
 import java.util.ArrayList;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import jfreerails.server.common.TrackSetFactory;
-import jfreerails.world.top.SKEY;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.LegalTrackPlacement;
 import jfreerails.world.track.TrackRule;
 import jfreerails.world.track.TrackRuleProperties;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
+import jfreerails.world.player.Player;
 
 
 public class Track_TilesHandlerImpl implements Track_TilesHandler,
@@ -183,7 +184,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler,
     public void addTrackRules(World w) {
         for (int i = 0; i < this.ruleList.size(); i++) {
             TrackRule r = (TrackRule)ruleList.get(i);
-            w.add(SKEY.TRACK_RULES, r);
+            w.add(KEY.TRACK_RULES, r, Player.AUTHORITATIVE);
         }
     }
 }

@@ -3,17 +3,21 @@ package jfreerails.server;
 import java.util.LinkedList;
 import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.UncommittedMoveReceiver;
+import jfreerails.move.RejectedMove;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
-import jfreerails.move.RejectedMove;
+import jfreerails.world.top.World;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
-import jfreerails.world.top.World;
 
 
 /**
  * A move executer which has the authority to reject moves
  * outright.
+ *
+ * During processing of moves, we must obtain a lock on the game world in order
+ * to prevent the world changing when other threads are accessing the world (eg
+ * when the world is being sent to a client by the network thread).
  */
 class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
     private static final int MAX_UNDOS = 10;
@@ -42,12 +46,13 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
     }
 
     void processMove(Move move, FreerailsPrincipal p) {
-        /* TODO
-         * if the server is submitting the move, then act on behalf of whoever
+        /*
+	 * if the server is submitting the move, then act on behalf of whoever
          * move was submitted for
+	 */
         if (p.equals(Player.AUTHORITATIVE))
             p = move.getPrincipal();
-         */
+	
         moveStack.add(move);
 
         if (moveStack.size() > MAX_UNDOS) {
@@ -56,10 +61,9 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
 
         MoveStatus ms;
 
-        /* TODO
-         * ms = move.doMove(world, p);
-         */
-        ms = move.doMove(world, Player.AUTHORITATIVE);
+	synchronized (world) {
+	    ms = move.doMove(world, p);
+	}
 
         /* retain mutex since order of forwarded moves is important */
         forwardMove(move, ms);
@@ -69,10 +73,7 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
      * @see MoveReceiver#processMove(Move)
      */
     public void processMove(Move move) {
-        /* TODO
         processMove(move, move.getPrincipal());
-        */
-        processMove(move, Player.AUTHORITATIVE);
     }
 
     /**
@@ -84,10 +85,9 @@ class AuthoritativeMoveExecuter implements UncommittedMoveReceiver {
             Move m = (Move)moveStack.removeLast();
             MoveStatus ms;
 
-            /* TODO
-             * ms = m.undoMove(world, Player.NOBODY);
-             */
-            ms = m.undoMove(world, Player.AUTHORITATIVE);
+	    synchronized (world) {
+		ms = m.undoMove(world, Player.NOBODY);
+	    }
 
             if (ms != MoveStatus.MOVE_OK) {
                 System.err.println("Couldn't undo move!");

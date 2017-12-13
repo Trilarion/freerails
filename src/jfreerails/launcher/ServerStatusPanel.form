@@ -4,10 +4,11 @@
   <Properties>
     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-        <TitledBorder title="Server Status">
+        <TitledBorder title="&lt;Server Status&gt;">
           <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
             <EtchetBorder/>
           </Border>
+          <ResourceString PropertyName="titleX" bundle="jfreerails/data/l10n/jfreerails.properties" key="Server Status" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
         </TitledBorder>
       </Border>
     </Property>

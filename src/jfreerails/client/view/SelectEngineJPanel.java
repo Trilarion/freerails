@@ -15,7 +15,8 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.world.top.SKEY;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.EngineType;
 /**
  * This JPanel lets the user select an engine from a list.
@@ -145,10 +146,10 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         }
     }
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
+    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
         
-        jList1.setModel(new World2ListModelAdapter(mr.getWorld(), SKEY.ENGINE_TYPES));
-        jList1.setCellRenderer(new TrainCellRenderer(mr.getViewLists()));
+        jList1.setModel(new World2ListModelAdapter(w, KEY.ENGINE_TYPES));
+        jList1.setCellRenderer(new TrainCellRenderer(vl));
         okjButton.addActionListener(submitButtonCallBack);
     }
     

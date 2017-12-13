@@ -4,6 +4,7 @@
  */
 package jfreerails.client.common;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -25,24 +26,20 @@ import javax.imageio.ImageIO;
  */
 public class ImageManagerImpl implements ImageManager {
     private String pathToReadFrom;
-    private String pathToWriteTo;
     private HashMap imageHashMap = new HashMap();
     private HashMap scaledImagesHashMap = new HashMap();
     private GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
                                                                             .getDefaultScreenDevice()
                                                                             .getDefaultConfiguration();
 
-    public ImageManagerImpl(String readpath, String writePath) {
+    public ImageManagerImpl(Component c, String readpath) {
+	defaultConfiguration = c.getGraphicsConfiguration();
+
         pathToReadFrom = readpath;
-        pathToWriteTo = writePath;
     }
 
     public void setPathToReadFrom(String s) {
         pathToReadFrom = s;
-    }
-
-    public void setPathToWriteTo(String s) {
-        pathToWriteTo = s;
     }
 
     public Image getImage(String relativeFilename) throws IOException {
@@ -77,16 +74,8 @@ public class ImageManagerImpl implements ImageManager {
 
         if (imageHashMap.containsKey(relativeFilename)) {
             return true;
-        } else {
-            File f = new File(pathToWriteTo + File.separator +
-                    relativeFilename);
-
-            if (f.isFile()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+        } 
+	return false;
     }
 
     public void setImage(String relativeFilename, Image i) {
@@ -99,33 +88,10 @@ public class ImageManagerImpl implements ImageManager {
         imageHashMap.put(relativeFilename, i);
     }
 
-    public void writeImage(String relativeFilename) throws IOException {
-        relativeFilename = relativeFilename.replace(' ', '_');
-
-        File f = new File(pathToWriteTo + File.separator + relativeFilename);
-
-        if (imageHashMap.containsKey(relativeFilename)) {
-            RenderedImage i = (RenderedImage)imageHashMap.get(relativeFilename);
-            String pathName = f.getPath();
-            File path = new File(pathName);
-            path.mkdirs();
-
-            ImageIO.write(i, "png", f);
-        } else {
-            throw new NoSuchElementException(relativeFilename);
-        }
-    }
-
-    public void writeAllImages() throws IOException {
-        Iterator it = imageHashMap.keySet().iterator();
-
-        while (it.hasNext()) {
-            String s = (String)it.next();
-            writeImage(s);
-        }
-    }
-
-    /** Returns the specified image scaled so that its height is equal to the specified height. */
+    /**
+     *  Returns the specified image scaled so that its height is equal to the
+     * specified height.
+     */
     public Image getScaledImage(String relativeFilename, int height)
         throws IOException {
         Image i = getImage(relativeFilename);

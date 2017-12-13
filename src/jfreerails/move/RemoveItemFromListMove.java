@@ -5,10 +5,10 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
+import jfreerails.world.player.Player;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
-
 
 /**
  * All moves that remove an item from a list should extend this class.
@@ -19,7 +19,8 @@ public class RemoveItemFromListMove implements ListMove {
     private final FreerailsSerializable item;
     private final KEY listKey;
     private final int index;
-    private final FreerailsPrincipal principal;
+
+    private FreerailsPrincipal principal;
 
     public int getIndex() {
         return index;
@@ -29,21 +30,29 @@ public class RemoveItemFromListMove implements ListMove {
         return listKey;
     }
 
+    public FreerailsPrincipal getPrincipal() {
+	return principal;
+    }
+
     protected RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item,
-        FreerailsPrincipal p) {
+	    FreerailsPrincipal p) {
         this.item = item;
         this.listKey = k;
         this.index = i;
-        this.principal = p;
+	this.principal = p;
+    }
+
+    protected RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item) {
+	this(k, i, item, Player.NOBODY);
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (w.size(listKey, principal) < (index + 1)) {
-            return MoveStatus.moveFailed("w.size(listKey)=" +
-                w.size(listKey, principal) + " but index =" + index);
+        if (w.size(listKey, p) < (index + 1)) {
+            return MoveStatus.moveFailed("w.size(listKey)=" + w.size(listKey, p) +
+                " but index =" + index);
         }
 
-        FreerailsSerializable item2remove = w.get(listKey, index, principal);
+        FreerailsSerializable item2remove = w.get(listKey, index, p);
 
         if (null == item2remove) {
             return MoveStatus.moveFailed("The item at position " + index +
@@ -62,14 +71,14 @@ public class RemoveItemFromListMove implements ListMove {
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        if (w.size(listKey, principal) < (index + 1)) {
-            return MoveStatus.moveFailed("w.size(listKey)=" +
-                w.size(listKey, principal) + " but index =" + index);
+        if (w.size(listKey, p) < (index + 1)) {
+	    return MoveStatus.moveFailed("w.size(listKey)=" + w.size(listKey,
+			p) + " but index =" + index);
         }
 
-        if (null != w.get(listKey, index, principal)) {
+        if (null != w.get(listKey, index, p)) {
             String reason = "The item at position " + index + " in the list (" +
-                w.get(listKey, index, principal).toString() +
+                w.get(listKey, index, p).toString() +
                 ") is not the expected item (null).";
 
             return MoveStatus.moveFailed(reason);
@@ -82,7 +91,7 @@ public class RemoveItemFromListMove implements ListMove {
         MoveStatus ms = tryDoMove(w, p);
 
         if (ms.isOk()) {
-            w.set(listKey, index, null, principal);
+            w.set(listKey, index, null, p);
         }
 
         return ms;
@@ -92,7 +101,7 @@ public class RemoveItemFromListMove implements ListMove {
         MoveStatus ms = tryUndoMove(w, p);
 
         if (ms.isOk()) {
-            w.set(listKey, index, this.item, principal);
+            w.set(listKey, index, this.item, p);
         }
 
         return ms;
@@ -101,6 +110,10 @@ public class RemoveItemFromListMove implements ListMove {
     public boolean equals(Object o) {
         if (o instanceof RemoveItemFromListMove) {
             RemoveItemFromListMove test = (RemoveItemFromListMove)o;
+
+	    if (! principal.equals(test.principal)) {
+		return false;
+	    }
 
             if (!this.item.equals(test.getBefore())) {
                 return false;

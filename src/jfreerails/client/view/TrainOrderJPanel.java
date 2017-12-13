@@ -5,17 +5,10 @@
  */
 
 package jfreerails.client.view;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-
-import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.station.StationModel;
-import jfreerails.world.top.KEY;
+import javax.swing.*;
+import jfreerails.world.top.*;
+import jfreerails.world.station.*;
+import java.awt.*;
 /**
  *
  * @author  Luke Lindsay
@@ -23,7 +16,6 @@ import jfreerails.world.top.KEY;
 public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCellRenderer{
     
     jfreerails.world.top.ReadOnlyWorld w;
-    private FreerailsPrincipal principal;
     
     ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/selected_arrow.png"));
     ImageIcon gotoAfterPriorityOrders = new ImageIcon(TrainOrderJPanel.class.getResource("/jfreerails/client/graphics/deselected_arrow.png"));
@@ -55,6 +47,8 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
 
         setLayout(new java.awt.GridBagLayout());
 
+        setMinimumSize(new java.awt.Dimension(160, 28));
+        setPreferredSize(new java.awt.Dimension(160, 28));
         gotoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/selected_arrow.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -96,12 +90,11 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
 
     }//GEN-END:initComponents
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
-        this.w = mr.getWorld();
+    public void setup(jfreerails.world.top.ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
+        this.w = w;
         TrainViewJPanel trainViewJPanel = (TrainViewJPanel)consistChangeJPanel;
         trainViewJPanel.setHeight(15);
-        trainViewJPanel.setup(mr, null);
-        this.principal = mr.getPlayerPrincipal();
+        trainViewJPanel.setup(w, vl, null);
         
     }
     
@@ -110,7 +103,7 @@ public class TrainOrderJPanel extends javax.swing.JPanel implements View, ListCe
         
         //Set station name
         int stationNumber = trainOrders.order.station;
-        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber, principal);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, stationNumber);
         String stationName = station.getStationName();
         this.stationNameJLabel.setText(stationName);
         

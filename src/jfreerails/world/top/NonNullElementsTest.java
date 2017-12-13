@@ -4,12 +4,11 @@
  */
 package jfreerails.world.top;
 
-import java.util.NoSuchElementException;
-import jfreerails.world.player.Player;
 import jfreerails.world.station.StationModel;
-import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.Test;
 import junit.framework.TestSuite;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -38,18 +37,16 @@ public class NonNullElementsTest extends TestCase {
         station1 = new StationModel(10, 20, "Station1", 4, 0);
         station2 = new StationModel(15, 16, "Station2", 4, 1);
         station3 = new StationModel(30, 50, "Station3", 4, 2);
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
-        w.add(KEY.STATIONS, station1, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, station2, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, null, MapFixtureFactory.TEST_PRINCIPAL);
-        w.add(KEY.STATIONS, station3, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.STATIONS, station1);
+        w.add(KEY.STATIONS, null);
+        w.add(KEY.STATIONS, station2);
+        w.add(KEY.STATIONS, null);
+        w.add(KEY.STATIONS, null);
+        w.add(KEY.STATIONS, station3);
     }
 
     public void testNext() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
@@ -68,13 +65,12 @@ public class NonNullElementsTest extends TestCase {
         assertEquals(1, wi.getRowNumber());
         assertEquals(station2, wi.getElement());
 
-        WorldIterator wi2 = new NonNullElements(SKEY.TRACK_RULES, w);
+        WorldIterator wi2 = new NonNullElements(KEY.TRACK_RULES, w);
         assertTrue(!wi2.next());
     }
 
     public void testGotoIndex() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowNumber());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 

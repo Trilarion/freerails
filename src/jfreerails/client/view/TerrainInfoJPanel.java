@@ -15,8 +15,8 @@ import jfreerails.world.terrain.Consumption;
 import jfreerails.world.terrain.Conversion;
 import jfreerails.world.terrain.Production;
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.train.WagonType;
 
 /** This JPanel shows information on a terrain type.
@@ -85,7 +85,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     
     public void setTerrainType(int typeNumber){
 
-        TerrainType type = (TerrainType)w.get(SKEY.TERRAIN_TYPES, typeNumber);
+        TerrainType type = (TerrainType)w.get(KEY.TERRAIN_TYPES, typeNumber);
       
         String row = "<p>Right-of-Way costs $"+type.getRightOfWay()+" per mile. </p>";
         String tableString = "";
@@ -99,8 +99,8 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                 tableString += "<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>";
                 for(int i = 0; i < cargosProduced ; i++){
                     Production p = type.getProduction()[i];
-                    CargoType c = (CargoType)w.get(SKEY.CARGO_TYPES, p.getCargoType());
-                    String supply = String.valueOf(p.getRate()/WagonType.UNITS_OF_CARGO_PER_WAGON);
+                    CargoType c = (CargoType)w.get(KEY.CARGO_TYPES, p.getCargoType());
+                    String supply = String.valueOf(p.getRate());
                     tableString += "<tr> <td>"+c.getDisplayName()+" </td><td>"+supply+"</td></tr>";
                 }
             }
@@ -108,7 +108,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                 tableString += "<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>";
                 for(int i = 0; i < cargosConsumed ; i++){
                     Consumption p = type.getConsumption()[i];
-                    CargoType c = (CargoType)w.get(SKEY.CARGO_TYPES, p.getCargoType());
+                    CargoType c = (CargoType)w.get(KEY.CARGO_TYPES, p.getCargoType());
                     tableString += "<tr> <td>"+c.getDisplayName()+" </td><td>&nbsp;</td></tr>";
                 }                
             }
@@ -116,8 +116,8 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
                 tableString += "<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>";
                 for(int i = 0; i < cargosConverted ; i++){
                     Conversion p = type.getConversion()[i];
-                    CargoType input = (CargoType)w.get(SKEY.CARGO_TYPES, p.getInput());
-                    CargoType output = (CargoType)w.get(SKEY.CARGO_TYPES, p.getOutput());
+                    CargoType input = (CargoType)w.get(KEY.CARGO_TYPES, p.getInput());
+                    CargoType output = (CargoType)w.get(KEY.CARGO_TYPES, p.getOutput());
                     tableString += "<tr> <td colspan=\"2\">"+input.getDisplayName()+" to "+output.getDisplayName()+"</td></tr>";
                 }                    
             }

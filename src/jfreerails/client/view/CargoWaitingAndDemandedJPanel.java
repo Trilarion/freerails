@@ -12,13 +12,12 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.train.WagonType;
 /**
  *
@@ -27,7 +26,6 @@ import jfreerails.world.train.WagonType;
 public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements View {
     
     private ReadOnlyWorld world;
-    private FreerailsPrincipal principal;  
 
     /** Creates new form CargoWaitingAndDemandedJPanel */
     public CargoWaitingAndDemandedJPanel() {
@@ -111,30 +109,30 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
     }//GEN-END:initComponents
     
-    public void setup(ModelRoot model, ActionListener submitButtonCallBack) {
-        this.world = model.getWorld();
-        this.principal = model.getPlayerPrincipal();
+    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
+        this.world = w;
     }
     
     public void display(int newStationID){
-        StationModel station = (StationModel)world.get(KEY.STATIONS, newStationID, principal);
+        StationModel station = (StationModel)world.get(KEY.STATIONS, newStationID);
         this.stationName.setText(station.getStationName());
+        int cargoBundleIndex = station.getCargoBundleNumber();
         final CargoBundle cargoWaiting =
         (CargoBundle) world.get(
         KEY.CARGO_BUNDLES,
-        station.getCargoBundleNumber(), principal);
+        station.getCargoBundleNumber());
         
         //count the number of cargo types waiting and demanded.
         final ArrayList typeWaiting = new ArrayList();
         final ArrayList quantityWaiting = new ArrayList();
         final Vector typeDemanded = new Vector();
-        for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
-              CargoType cargoType = (CargoType)world.get(SKEY.CARGO_TYPES, i);
+        for (int i = 0; i < world.size(KEY.CARGO_TYPES); i++) {
+              CargoType cargoType = (CargoType)world.get(KEY.CARGO_TYPES, i);
               int amountWaiting = cargoWaiting.getAmount(i);
               
               if(0 !=amountWaiting){
                    typeWaiting.add(cargoType.getDisplayName());
-                   int carloads = amountWaiting / WagonType.UNITS_OF_CARGO_PER_WAGON;
+                   int carloads = amountWaiting / 40 /* TODO get the proper value */;
                    quantityWaiting.add(new Integer(carloads));
               }
               if(station.getDemand().isCargoDemanded(i)){

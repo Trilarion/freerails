@@ -11,16 +11,15 @@ package jfreerails.controller;
 
 import java.awt.Point;
 import jfreerails.move.AddStationMove;
-import jfreerails.move.ChangeTrackPieceCompositeMove;
 import jfreerails.move.ChangeTrackPieceMove;
 import jfreerails.move.Move;
-import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.track.FreerailsTile;
 import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
+import jfreerails.world.player.FreerailsPrincipal;
 
 
 public class StationBuilder {
@@ -28,12 +27,10 @@ public class StationBuilder {
     private ReadOnlyWorld w;
     private int ruleNumber;
     private TrackMoveTransactionsGenerator transactionsGenerator;
-    private final FreerailsPrincipal principal;
 
     public StationBuilder(UntriedMoveReceiver moveReceiver,
         ReadOnlyWorld world, FreerailsPrincipal p) {
         this.moveReceiver = moveReceiver;
-        this.principal = p;
         w = world;
 
         TrackRule trackRule;
@@ -42,7 +39,7 @@ public class StationBuilder {
 
         do {
             i++;
-            trackRule = (TrackRule)w.get(SKEY.TRACK_RULES, i);
+            trackRule = (TrackRule)w.get(KEY.TRACK_RULES, i);
         } while (!trackRule.isStation());
 
         ruleNumber = i;
@@ -64,12 +61,9 @@ public class StationBuilder {
             String stationName;
 
             TrackPiece before = (TrackPiece)w.getTile(p.x, p.y);
-            TrackRule trackRule = (TrackRule)w.get(SKEY.TRACK_RULES,
+            TrackRule trackRule = (TrackRule)w.get(KEY.TRACK_RULES,
                     this.ruleNumber);
-
-            int owner = ChangeTrackPieceCompositeMove.getOwner(this.principal, w);
-            TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration(),
-                    owner);
+            TrackPiece after = trackRule.getTrackPiece(before.getTrackConfiguration());
             ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(before,
                     after, p);
 
@@ -96,7 +90,7 @@ public class StationBuilder {
 
                 //check the terrain to see if we can build a station on it...
                 Move m = AddStationMove.generateMove(w, stationName, p,
-                        upgradeTrackMove, principal);
+                        upgradeTrackMove);
 
                 this.moveReceiver.processMove(transactionsGenerator.addTransactions(
                         m));

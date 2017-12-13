@@ -5,10 +5,10 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
-
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 
 /**
  * All Moves that replace an item in a list with another should extend this class.
@@ -21,7 +21,11 @@ public abstract class ChangeItemInListMove implements ListMove {
     final int index;
     private final FreerailsSerializable before;
     private final FreerailsSerializable after;
-    final FreerailsPrincipal principal;
+    private final FreerailsPrincipal principal;
+
+    public FreerailsPrincipal getPrincipal() {
+	return principal;
+    }
 
     public int getIndex() {
         return index;
@@ -31,46 +35,53 @@ public abstract class ChangeItemInListMove implements ListMove {
         return listKey;
     }
 
-    protected ChangeItemInListMove(KEY k, int index,
-        FreerailsSerializable before, FreerailsSerializable after,
-        FreerailsPrincipal p) {
+    protected ChangeItemInListMove(KEY k, int index, FreerailsSerializable before, FreerailsSerializable after, FreerailsPrincipal principal) {
         this.before = before;
         this.after = after;
         this.index = index;
         this.listKey = k;
-        this.principal = p;
+	this.principal = principal;
+    }
+
+    /**
+     * @deprecated in favour of ChangItemInListMove(KEY, int,
+     * FreerailsSerializable, FreerailsSerializable, FreerailsPrincipal)
+     */
+    protected ChangeItemInListMove(KEY k, int index,
+        FreerailsSerializable before, FreerailsSerializable after) {
+	this(k, index, before, after, Player.NOBODY);
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return tryMove(this.after, this.before, w);
+        return tryMove(this.after, this.before, w, p);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return tryMove(this.before, this.after, w);
+        return tryMove(this.before, this.after, w, p);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        return move(this.after, this.before, w);
+        return move(this.after, this.before, w, p);
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        return move(this.before, this.after, w);
+        return move(this.before, this.after, w, p);
     }
 
     protected MoveStatus tryMove(FreerailsSerializable to,
-        FreerailsSerializable from, World w) {
-        if (index >= w.size(this.listKey, principal)) {
-            return MoveStatus.moveFailed("w.size(this.listKey) is " +
-                w.size(this.listKey, principal) + " but index is " + index);
+        FreerailsSerializable from, World w, FreerailsPrincipal p) {
+        if (index >= w.size(this.listKey, p)) {
+            return MoveStatus.moveFailed("w.size(this.listKey, p) is " +
+                w.size(this.listKey, p) + " but index is " + index);
         }
 
-        FreerailsSerializable item2change = w.get(listKey, index, principal);
+        FreerailsSerializable item2change = w.get(listKey, index, p);
 
         if (null == item2change) {
             if (null == from) {
                 return MoveStatus.MOVE_OK;
             } else {
-                return MoveStatus.moveFailed("Expected null but found " + from);
+                return MoveStatus.moveFailed("Attempt to change null object");
             }
         } else {
             if (!from.equals(item2change)) {
@@ -83,11 +94,11 @@ public abstract class ChangeItemInListMove implements ListMove {
     }
 
     protected MoveStatus move(FreerailsSerializable to,
-        FreerailsSerializable from, World w) {
-        MoveStatus ms = tryMove(to, from, w);
+        FreerailsSerializable from, World w, FreerailsPrincipal p) {
+        MoveStatus ms = tryMove(to, from, w, p);
 
         if (ms.ok) {
-            w.set(this.listKey, index, to, principal);
+	    w.set(this.listKey, index, to, p);
         }
 
         return ms;
@@ -96,6 +107,10 @@ public abstract class ChangeItemInListMove implements ListMove {
     public boolean equals(Object o) {
         if (o instanceof ChangeItemInListMove) {
             ChangeItemInListMove test = (ChangeItemInListMove)o;
+
+	    if (!principal.equals(test.principal)) {
+		return false;
+	    }
 
             if (!this.before.equals(test.getBefore())) {
                 return false;

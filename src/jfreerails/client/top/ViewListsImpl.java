@@ -1,9 +1,15 @@
 package jfreerails.client.top;
 
+import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+
+import jfreerails.client.model.ModelRoot;
+import jfreerails.client.view.GUIRoot;
 import jfreerails.client.common.ImageManager;
 import jfreerails.client.common.ImageManagerImpl;
 import jfreerails.client.renderer.ChequeredTileRenderer;
@@ -19,8 +25,8 @@ import jfreerails.client.renderer.TrainImages;
 import jfreerails.client.renderer.ViewLists;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 
 
 public class ViewListsImpl implements ViewLists {
@@ -28,18 +34,23 @@ public class ViewListsImpl implements ViewLists {
     private final TrackPieceRendererList trackPieceViewList;
     private final TrainImages trainImages;
     private final ImageManager imageManager;
+    private final HashMap icons = new HashMap();
+    private final GUIRoot guiRoot;
 
-    public ViewListsImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+    public ViewListsImpl(ModelRoot mr, GUIRoot gr,
+	    FreerailsProgressMonitor pm)
         throws IOException {
-        URL out = ViewListsImpl.class.getResource("/experimental");
-        imageManager = new ImageManagerImpl("/jfreerails/client/graphics/",
-                out.getPath());
+	    guiRoot = gr;
+	    ReadOnlyWorld w = mr.getWorld();
+        URL in = ViewListsImpl.class.getResource("/jfreerails/client/graphics");
+
+	imageManager = new
+	    ImageManagerImpl(guiRoot.getClientJFrame(),
+		    "/jfreerails/client/graphics/");
         tiles = loadNewTileViewList(w, pm);
 
         trackPieceViewList = loadTrackViews(w, pm);
 
-        //engine views
-        //sideOnTrainTrainView = addTrainViews(pm);
         trainImages = new TrainImages(w, imageManager, pm);
     }
 
@@ -55,17 +66,18 @@ public class ViewListsImpl implements ViewLists {
         //Setup progress monitor..
         pm.setMessage("Loading terrain graphics.");
 
-        int numberOfTypes = w.size(SKEY.TERRAIN_TYPES);
+        int numberOfTypes = w.size(KEY.TERRAIN_TYPES);
         pm.setMax(numberOfTypes);
 
         int progress = 0;
         pm.setValue(progress);
 
         for (int i = 0; i < numberOfTypes; i++) {
-            TerrainType t = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
+            TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
             int[] typesTreatedAsTheSame = new int[] {i};
 
             TileRenderer tr = null;
+            Integer rgb = new Integer(t.getRGB());
             pm.setValue(++progress);
 
             try {
@@ -79,8 +91,7 @@ public class ViewListsImpl implements ViewLists {
                     int count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
-                                j);
+                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
                         String terrainCategory = t2.getTerrainCategory();
 
                         if (terrainCategory.equalsIgnoreCase("Ocean") ||
@@ -94,8 +105,7 @@ public class ViewListsImpl implements ViewLists {
                     count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES,
-                                j);
+                        TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
                         String terrainCategory = t2.getTerrainCategory();
 
                         if (terrainCategory.equalsIgnoreCase("Ocean") ||
@@ -166,7 +176,7 @@ public class ViewListsImpl implements ViewLists {
         TileRenderer occeanTileRenderer = null;
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Ocean")) {
@@ -177,11 +187,11 @@ public class ViewListsImpl implements ViewLists {
         }
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType)w.get(SKEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Harbour")) {
-                TerrainType t = (TerrainType)w.get(SKEY.TERRAIN_TYPES, j);
+                TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, j);
                 TileRenderer tr = new SpecialTileRenderer(imageManager,
                         new int[] {j}, t, occeanTileRenderer);
                 tileRenderers.set(j, tr);
@@ -219,5 +229,21 @@ public class ViewListsImpl implements ViewLists {
 
     public TrainImages getTrainImages() {
         return trainImages;
+    }
+
+    public ImageIcon getImageIcon(String iconName) {
+	ImageIcon icon = (ImageIcon) icons.get(iconName);
+ 	if (icon == null) {
+ 	    URL iconURL;
+ 	    iconURL = this.getClass().getClass().getResource
+ 		("/jfreerails/client/graphics/toolbar/" + iconName +
+ 		 ".png");
+ 	    if (iconURL == null) {
+ 		System.err.println("Couldn't find icon for " + iconName);
+ 		return null;
+ 	    }
+ 	    icons.put(iconName, new ImageIcon(iconURL));
+ 	}
+ 	return (ImageIcon) icons.get(iconName);
     }
 }

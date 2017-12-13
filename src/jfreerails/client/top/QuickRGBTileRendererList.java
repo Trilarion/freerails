@@ -12,8 +12,8 @@ import jfreerails.client.common.ImageManager;
 import jfreerails.client.renderer.TileRenderer;
 import jfreerails.client.renderer.TileRendererList;
 import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 
 
 /**
@@ -32,12 +32,12 @@ public class QuickRGBTileRendererList implements TileRendererList {
                                                                                                      .getDefaultConfiguration();
 
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
-        int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
+        int numberOfTerrainTypes = w.size(KEY.TERRAIN_TYPES);
         rgbValues = new int[numberOfTerrainTypes];
         images = new Image[numberOfTerrainTypes];
 
         for (int i = 0; i < numberOfTerrainTypes; i++) {
-            TerrainType t = (TerrainType)w.get(SKEY.TERRAIN_TYPES, i);
+            TerrainType t = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
             rgbValues[i] = t.getRGB();
             images[i] = createImageFor(t);
             rgb2index.put(new Integer(t.getRGB()), new Integer(i));
@@ -45,6 +45,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     public static Image createImageFor(TerrainType t) {
+	System.out.println("Creating QuickRGBImage");
         Image image = defaultConfiguration.createCompatibleImage(30, 30);
         Color c = new Color(t.getRGB());
         Graphics g = image.getGraphics();

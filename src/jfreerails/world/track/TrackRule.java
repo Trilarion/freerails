@@ -3,7 +3,6 @@ package jfreerails.world.track;
 import java.util.Iterator;
 import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.common.Money;
-import jfreerails.world.common.OneTileMoveVector;
 
 
 /**
@@ -33,9 +32,10 @@ public interface TrackRule extends FreerailsSerializable {
 
     int getMaximumConsecutivePieces();
 
-    OneTileMoveVector[] getLegalRoutes(OneTileMoveVector directionComingFrom);
+    jfreerails.world.common.OneTileMoveVector[] getLegalRoutes(
+        jfreerails.world.common.OneTileMoveVector directionComingFrom);
 
     Iterator getLegalConfigurationsIterator();
 
-    TrackPiece getTrackPiece(TrackConfiguration config, int owner);
+    TrackPiece getTrackPiece(TrackConfiguration config);
 }

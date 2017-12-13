@@ -15,10 +15,11 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Player Details">
+            <TitledBorder title="&lt;Player Details&gt;">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
+              <ResourceString PropertyName="titleX" bundle="jfreerails/data/l10n/jfreerails.properties" key="Player Details" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -35,13 +36,17 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Player name:"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Player name:" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="playerName">
           <Properties>
             <Property name="columns" type="int" value="12"/>
-            <Property name="text" type="java.lang.String" value="Player1"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Player1" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playerNameActionPerformed"/>
@@ -54,10 +59,11 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Select Display Mode">
+            <TitledBorder title="&lt;Select Display Mode&gt;">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
+              <ResourceString PropertyName="titleX" bundle="jfreerails/data/l10n/jfreerails.properties" key="Select Display Mode" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -108,7 +114,9 @@
             <Component class="javax.swing.JRadioButton" name="windowedButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Windowed"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Windowed" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+                </Property>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup1"/>
                 </Property>
@@ -116,7 +124,9 @@
             </Component>
             <Component class="javax.swing.JRadioButton" name="fullScreenButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Full screen"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Full screen" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+                </Property>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="buttonGroup1"/>
                 </Property>

@@ -5,7 +5,6 @@
 package jfreerails.move;
 
 import jfreerails.world.cargo.CargoBundle;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 
 
@@ -15,7 +14,7 @@ import jfreerails.world.top.KEY;
  *
  */
 public class RemoveCargoBundleMove extends RemoveItemFromListMove {
-    public RemoveCargoBundleMove(int i, CargoBundle item, FreerailsPrincipal p) {
-        super(KEY.CARGO_BUNDLES, i, item, p);
+    public RemoveCargoBundleMove(int i, CargoBundle item) {
+        super(KEY.CARGO_BUNDLES, i, item);
     }
 }

@@ -125,6 +125,9 @@ public abstract class BufferedTiledBackgroundRenderer
 
     protected void setbackgroundBuffer(int w, int h) {
         //backgroundBuffer = defaultConfiguration.createCompatibleImage(w, h);
+	if (backgroundBuffer != null) {
+	    backgroundBuffer.flush();
+	}
         backgroundBuffer = defaultConfiguration.createCompatibleVolatileImage(w,
                 h);
         bufferRect.height = backgroundBuffer.getHeight(null);

@@ -1,0 +1,16 @@
+Release Notes
+=============
+
+These are the release notes for the 0.2.1 Development build of Railz.
+
+Known Bugs
+==========
+
+Bug ID	Summary
+------	-------
+1603	Stations generate too much cargo
+1604	Train Schedule Tab sizes layout is bad
+1605	Train likst button on schedule pane doesn't work
+1609	Top down and side-on train graphics don't match
+1611	Build Station/Track buttons in tab-pane are too big
+

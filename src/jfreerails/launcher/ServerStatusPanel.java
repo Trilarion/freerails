@@ -37,7 +37,7 @@ class ServerStatusPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Server Status"));
+        setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), jfreerails.util.Resources.get("Server Status")));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);

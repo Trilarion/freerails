@@ -20,7 +20,7 @@ public class TrainModel implements FreerailsSerializable {
     /**
      * Constructor for a new train.
      * @param engine type of the engine
-     * @param wagons array of wagon types
+     * @param wagons array of indexes into the WAGON_TYPES table
      * @param p initial position of the train on the map.
      */
     public TrainModel(int engine, int[] wagons, TrainPositionOnMap p,
@@ -62,23 +62,13 @@ public class TrainModel implements FreerailsSerializable {
         return wagonTypes.length;
     }
 
+    /**
+     * @return Index into WAGON_TYPES table of the ith wagon in the train
+     */
     public int getWagon(int i) {
         return wagonTypes[i];
     }
 
-    //	public void addWagon(int wagonType) {
-    //		if (canAddWagon()) {
-    //			int oldlength = wagonTypes.length;
-    //			int[] newWagons = new int[oldlength + 1];
-    //			for (int i = 0; i < oldlength; i++) {
-    //				newWagons[i] = wagonTypes[i];
-    //			}
-    //			newWagons[oldlength] = wagonType;
-    //			wagonTypes = newWagons;
-    //		} else {
-    //			throw new IllegalStateException("Cannot add wagon");
-    //		}
-    //	}
     public TrainPositionOnMap getPosition() {
         return trainposition;
     }

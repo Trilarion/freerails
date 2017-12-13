@@ -5,36 +5,25 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import jfreerails.world.accounts.BankAccount;
-import jfreerails.world.accounts.Transaction;
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.common.Money;
 import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.track.FreerailsTile;
 
 
-/**
- * An implementation of World that uses standard java.util collections internally.
- *  @author Luke
- *
- */
 public class WorldImpl implements World {
     private static final boolean debug = (System.getProperty(
             "jfreerails.world.top.WorldImpl.debug") != null);
 
     /**
- * An array of ArrayList indexed by keyNumber.
- * If the key is shared, then the ArrayList consists of instances of the
- * class corresponding to the KEY type. Otherwise, the ArrayList is
- * indexed by Player index, and contains instances of ArrayList
- * which themselves contain instances of the class corresponding to the
- * KEY type.
- */
-    private final ArrayList players = new ArrayList();
-    private final ArrayList bankAccounts = new ArrayList();
+     * An array of ArrayList indexed by keyNumber.
+     * If the key is shared, then the ArrayList consists of instances of the
+     * class corresponding to the KEY type. Otherwise, the ArrayList is
+     * indexed by Player index, and contains instances of ArrayList
+     * which themselves contain instances of the class corresponding to the
+     * KEY type.
+     */
     private final ArrayList[] lists = new ArrayList[KEY.getNumberOfKeys()];
-    private final ArrayList[] sharedLists = new ArrayList[SKEY.getNumberOfKeys()];
     private final FreerailsSerializable[] items = new FreerailsSerializable[ITEM.getNumberOfKeys()];
     private FreerailsTile[][] map;
 
@@ -62,23 +51,23 @@ public class WorldImpl implements World {
         for (int i = 0; i < lists.length; i++) {
             lists[i] = new ArrayList();
         }
-
-        for (int i = 0; i < sharedLists.length; i++) {
-            sharedLists[i] = new ArrayList();
-        }
     }
 
-    public FreerailsSerializable get(SKEY key, int index) {
-        return (FreerailsSerializable)sharedLists[key.getKeyNumber()].get(index);
+    public FreerailsSerializable get(KEY key, int index) {
+        return get(key, index, Player.NOBODY);
     }
 
     public FreerailsSerializable get(KEY key, int index, FreerailsPrincipal p) {
+        if (key.shared) {
+            return (FreerailsSerializable)lists[key.getKeyNumber()].get(index);
+        }
+
         return (FreerailsSerializable)((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(
                 p))).get(index);
     }
 
-    public void set(SKEY key, int index, FreerailsSerializable element) {
-        sharedLists[key.getKeyNumber()].set(index, element);
+    public void set(KEY key, int index, FreerailsSerializable element) {
+        set(key, index, element, Player.NOBODY);
     }
 
     public void set(KEY key, int index, FreerailsSerializable element,
@@ -88,14 +77,18 @@ public class WorldImpl implements World {
                 " at index " + index + " for " + p);
         }
 
+        if (key.shared) {
+            lists[key.getKeyNumber()].set(index, element);
+
+            return;
+        }
+
         ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).set(index,
             element);
     }
 
-    public int add(SKEY key, FreerailsSerializable element) {
-        sharedLists[key.getKeyNumber()].add(element);
-
-        return size(key) - 1;
+    public int add(KEY key, FreerailsSerializable element) {
+        return add(key, element, Player.NOBODY);
     }
 
     public int add(KEY key, FreerailsSerializable element, FreerailsPrincipal p) {
@@ -104,19 +97,30 @@ public class WorldImpl implements World {
                 p);
         }
 
-        //        if (key == KEY.PLAYERS) {
-        //            return addPlayer((Player)element, p);
-        //        }
+        if (key == KEY.PLAYERS) {
+            return addPlayer((Player)element, p);
+        }
+
+        if (key.shared) {
+            lists[key.getKeyNumber()].add(element);
+
+            return size(key) - 1;
+        }
+
         ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).add(element);
 
         return size(key, p) - 1;
     }
 
-    public int size(SKEY key) {
-        return sharedLists[key.getKeyNumber()].size();
+    public int size(KEY key) {
+        return size(key, Player.NOBODY);
     }
 
     public int size(KEY key, FreerailsPrincipal p) {
+        if (key.shared) {
+            return lists[key.getKeyNumber()].size();
+        }
+
         return ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).size();
     }
 
@@ -127,7 +131,7 @@ public class WorldImpl implements World {
     public int getMapHeight() {
         if (map.length == 0) {
             //When the map size is 0*0 we get a java.lang.ArrayIndexOutOfBoundsException: 0
-            // if we don't have check above.
+            // if we don't have check above.			 	
             return 0;
         } else {
             return map[0].length;
@@ -158,15 +162,12 @@ public class WorldImpl implements World {
         }
     }
 
-    public boolean boundsContain(SKEY k, int index) {
-        return (index >= 0 && index < this.size(k));
+    public boolean boundsContain(KEY k, int index) {
+        return boundsContain(k, index, Player.NOBODY);
     }
 
-    public FreerailsSerializable removeLast(SKEY key) {
-        int size = lists[key.getKeyNumber()].size();
-
-        return (FreerailsSerializable)sharedLists[key.getKeyNumber()].remove(size -
-            1);
+    public FreerailsSerializable removeLast(KEY key) {
+        return removeLast(key, Player.NOBODY);
     }
 
     public FreerailsSerializable removeLast(KEY key, FreerailsPrincipal p) {
@@ -175,9 +176,18 @@ public class WorldImpl implements World {
         }
 
         int size;
-        size = ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).size();
+
+        if (key.shared) {
+            size = lists[key.getKeyNumber()].size();
+        } else {
+            size = ((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(p))).size();
+        }
 
         int index = size - 1;
+
+        if (key.shared) {
+            return (FreerailsSerializable)lists[key.getKeyNumber()].remove(index);
+        }
 
         return (FreerailsSerializable)((ArrayList)lists[key.getKeyNumber()].get(getPlayerIndex(
                 p))).remove(index);
@@ -192,16 +202,6 @@ public class WorldImpl implements World {
             } else {
                 for (int i = 0; i < lists.length; i++) {
                     if (!lists[i].equals(test.lists[i])) {
-                        return false;
-                    }
-                }
-            }
-
-            if (sharedLists.length != test.sharedLists.length) {
-                return false;
-            } else {
-                for (int i = 0; i < sharedLists.length; i++) {
-                    if (!sharedLists[i].equals(test.sharedLists[i])) {
                         return false;
                     }
                 }
@@ -258,26 +258,38 @@ public class WorldImpl implements World {
     }
 
     /**
- * @param player Player to add
- * @param p principal who is adding
- * @return index of the player
- */
-    public int addPlayer(Player player, FreerailsPrincipal p) {
-        players.add(player);
-        bankAccounts.add(new BankAccount());
+     * @param player Player to add
+     * @param p principal who is adding
+     * @return index of the player
+     */
+    private int addPlayer(Player player, FreerailsPrincipal p) {
+	if (p.equals(Player.NOBODY)) {
+	    // Player Nobody attempted to add a player
+	    return -1;
+	}
 
-        int index = players.size() - 1;
+        lists[KEY.PLAYERS.getKeyNumber()].add(player);
+
+        int index = size(KEY.PLAYERS) - 1;
 
         for (int i = 0; i < KEY.getNumberOfKeys(); i++) {
-            lists[i].add(new ArrayList());
+            KEY key = KEY.getKey(i);
+
+            if (key.shared != true) {
+                while (lists[i].size() <= index) {
+                    lists[i].add(new ArrayList());
+                }
+            }
         }
 
         return index;
     }
 
+    private static final int playerKey = KEY.PLAYERS.getKeyNumber();
+
     private int getPlayerIndex(FreerailsPrincipal p) {
-        for (int i = 0; i < players.size(); i++) {
-            if (p.equals(((Player)(players.get(i))).getPrincipal())) {
+        for (int i = 0; i < lists[playerKey].size(); i++) {
+            if (p.equals(((Player)(lists[playerKey].get(i))).getPrincipal())) {
                 return i;
             }
         }
@@ -304,50 +316,6 @@ public class WorldImpl implements World {
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException(e.getMessage());
-        }
-    }
-
-    public int getNumberOfPlayers() {
-        return players.size();
-    }
-
-    public Player getPlayer(int i) {
-        return (Player)players.get(i);
-    }
-
-    public void addTransaction(Transaction t, FreerailsPrincipal p) {
-        getBankAccount(p).addTransaction(t);
-    }
-
-    public Transaction removeLastTransaction(FreerailsPrincipal p) {
-        return getBankAccount(p).removeLastTransaction();
-    }
-
-    public Transaction getTransaction(int i, FreerailsPrincipal p) {
-        return getBankAccount(p).getTransaction(i);
-    }
-
-    public Money getCurrentBalance(FreerailsPrincipal p) {
-        return getBankAccount(p).getCurrentBalance();
-    }
-
-    public int getNumberOfTransactions(FreerailsPrincipal p) {
-        return getBankAccount(p).size();
-    }
-
-    private BankAccount getBankAccount(FreerailsPrincipal p) {
-        int index = this.getPlayerIndex(p);
-
-        return (BankAccount)bankAccounts.get(index);
-    }
-
-    public boolean isPlayer(FreerailsPrincipal p) {
-        try {
-            this.getPlayerIndex(p);
-
-            return true;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
         }
     }
 }

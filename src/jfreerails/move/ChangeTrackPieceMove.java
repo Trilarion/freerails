@@ -4,18 +4,14 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
-import jfreerails.world.top.GameRules;
-import jfreerails.world.top.ITEM;
-import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.NullTrackType;
 import jfreerails.world.track.TrackConfiguration;
 import jfreerails.world.track.TrackPiece;
 import jfreerails.world.track.TrackRule;
-
 
 /**
  * This Move adds, removes, or upgrades the track on a single tile.
@@ -26,6 +22,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     final TrackPiece trackPieceBefore;
     final TrackPiece trackPieceAfter;
     final Point location;
+
+    public FreerailsPrincipal getPrincipal() {
+	return Player.NOBODY;
+    }
 
     public Point getLocation() {
         return location;
@@ -46,39 +46,21 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, this.trackPieceBefore, this.trackPieceAfter);
+        return tryMove(w, this.trackPieceBefore, this.trackPieceAfter, p);
     }
 
     private MoveStatus tryMove(World w, TrackPiece oldTrackPiece,
-        TrackPiece newTrackPiece) {
+        TrackPiece newTrackPiece, FreerailsPrincipal p) {
         //Check that location is on the map.
         if (!w.boundsContain(location.x, location.y)) {
             return MoveStatus.moveFailed(
                 "Tried to build track outside the map.");
         }
 
-        //Check that we are not changing another players track if this is not allowed.
-        if (!canConnect2OtherRRsTrack(w)) {
-            //If either the new or old track piece is null, we are ok.        	
-            int oldRuleNumber = oldTrackPiece.getTrackRule().getRuleNumber();
-            int newRuleNumber = newTrackPiece.getTrackRule().getRuleNumber();
-
-            if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != oldRuleNumber &&
-                    NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER != newRuleNumber) {
-                int oldOwner = oldTrackPiece.getOwnerID();
-                int newOwner = newTrackPiece.getOwnerID();
-
-                if (oldOwner != newOwner) {
-                    return MoveStatus.moveFailed(
-                        "Not allowed to connect to other RR");
-                }
-            }
-        }
-
         //Check that the current track piece at this.location is
         //the same as this.oldTrackPiece.
-        TrackPiece currentTrackPieceAtLocation = ((FreerailsTile)w.getTile(location.x,
-                location.y)).getTrackPiece();
+	TrackPiece currentTrackPieceAtLocation = ((FreerailsTile)w.
+		getTile(location.x, location.y)).getTrackPiece();
 
         TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
         TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();
@@ -119,7 +101,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         int terrainType = w.getTile(location.x, location.y)
                            .getTerrainTypeNumber();
-        TerrainType tt = (TerrainType)w.get(SKEY.TERRAIN_TYPES, terrainType);
+        TerrainType tt = (TerrainType)w.get(KEY.TERRAIN_TYPES, terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getTerrainCategory())) {
             String thisTrackType = newTrackPiece.getTrackRule().getTypeName();
@@ -133,7 +115,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, this.trackPieceAfter, this.trackPieceBefore);
+        return tryMove(w, this.trackPieceAfter, this.trackPieceBefore, p);
     }
 
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
@@ -142,14 +124,14 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if (!moveStatus.isOk()) {
             return moveStatus;
         } else {
-            move(w, this.trackPieceBefore, this.trackPieceAfter);
+            move(w, this.trackPieceBefore, this.trackPieceAfter, p);
 
             return moveStatus;
         }
     }
 
     private void move(World w, TrackPiece oldTrackPiece,
-        TrackPiece newTrackPiece) {
+        TrackPiece newTrackPiece, FreerailsPrincipal p) {
         FreerailsTile oldTile = (FreerailsTile)w.getTile(location.x, location.y);
         int terrain = oldTile.getTerrainTypeNumber();
         FreerailsTile newTile = new FreerailsTile(terrain, newTrackPiece);
@@ -162,7 +144,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if (!moveStatus.isOk()) {
             return moveStatus;
         } else {
-            move(w, this.trackPieceAfter, this.trackPieceBefore);
+            move(w, this.trackPieceAfter, this.trackPieceBefore, p);
 
             return moveStatus;
         }
@@ -241,11 +223,5 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         } else {
             return false;
         }
-    }
-
-    protected static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {
-        GameRules rules = (GameRules)world.get(ITEM.GAME_RULES);
-
-        return rules.isCanConnect2OtherRRTrack();
     }
 }

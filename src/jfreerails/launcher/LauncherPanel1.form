@@ -8,10 +8,11 @@
   <Properties>
     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-        <TitledBorder title="Select Game Type">
+        <TitledBorder title="&lt;Select Game Type&gt;">
           <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
             <EtchetBorder/>
           </Border>
+          <ResourceString PropertyName="titleX" bundle="jfreerails/data/l10n/jfreerails.properties" key="Select Game Type" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
         </TitledBorder>
       </Border>
     </Property>
@@ -25,7 +26,9 @@
     <Component class="javax.swing.JRadioButton" name="singlePlayerButton">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="Single-Player"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Single-Player" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+        </Property>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup1"/>
         </Property>
@@ -41,7 +44,9 @@
     </Component>
     <Component class="javax.swing.JRadioButton" name="startNetworkButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Start a network game"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Start a network game" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+        </Property>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup1"/>
         </Property>
@@ -57,7 +62,9 @@
     </Component>
     <Component class="javax.swing.JRadioButton" name="joinNetworkButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Join a network game"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Join a network game" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+        </Property>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup1"/>
         </Property>
@@ -73,7 +80,9 @@
     </Component>
     <Component class="javax.swing.JRadioButton" name="serverOnlyButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Server only"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Server only" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+        </Property>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup1"/>
         </Property>
@@ -91,10 +100,11 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Remote server address">
+            <TitledBorder title="&lt;Remote server address&gt;">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
+              <ResourceString PropertyName="titleX" bundle="jfreerails/data/l10n/jfreerails.properties" key="Remote server address" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -118,7 +128,9 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="IP Address:"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="IP Address:" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="remoteIP">
@@ -134,7 +146,9 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Port:"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Port:" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="remotePort">
@@ -156,10 +170,11 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Server port">
+            <TitledBorder title="&lt;Server port&gt;">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
+              <ResourceString PropertyName="titleX" bundle="jfreerails/data/l10n/jfreerails.properties" key="Server port" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -176,7 +191,9 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Port:"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Port:" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="serverPort">

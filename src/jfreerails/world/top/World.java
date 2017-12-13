@@ -1,9 +1,7 @@
 package jfreerails.world.top;
 
-import jfreerails.world.accounts.Transaction;
-import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
+import jfreerails.world.common.FreerailsSerializable;
 import jfreerails.world.track.FreerailsTile;
 
 
@@ -14,15 +12,23 @@ import jfreerails.world.track.FreerailsTile;
  * one from their indices).
  * This means that an elements' position in a list can be used as an address
  * space independent way to reference the element.  If you want to remove an
- * element from a list, you should set it to null, e.g. </p>
- * <p><CODE>world.set(KEY.TRAINS, 5, null, player);</CODE></P>
- * <p>Code that loops through lists should handle null values gracefully</p>
+ * element from a list, you should set it to null, e.g. <br>
+ * <CODE>world.set(KEY.TRAINS, 5, null);</CODE><br>
+ * Code that loops through lists should handle null values gracefully</p>
  */
 public interface World extends ReadOnlyWorld {
     /**
      * Replaces the element mapped to the specified item with the specified
      * element.
+     */
+    void set(ITEM item, FreerailsSerializable element,
+        FreerailsPrincipal principal);
+
+    /**
+     * Replaces the element mapped to the specified item with the specified
+     * element.
      *
+     * @deprecated in favour of set(ITEM, FreerailsSerializable, FreerailsPrincipal)
     */
     void set(ITEM item, FreerailsSerializable element);
 
@@ -37,8 +43,10 @@ public interface World extends ReadOnlyWorld {
      * Replaces the element at the specified position in the specified list
      * with the specified element.
      *
+     * @deprecated in favour of set(KEY, int, FreerailsSerializable,
+     * Prinicipal)
      */
-    void set(SKEY key, int index, FreerailsSerializable element);
+    void set(KEY key, int index, FreerailsSerializable element);
 
     /**
      * Appends the specified element to the end of the specifed list and
@@ -50,8 +58,9 @@ public interface World extends ReadOnlyWorld {
      * Appends the specified element to the end of the specifed list and
      * returns the index that can be used to retrieve it.
      *
+     * @deprecated in favour of add(KEY, FreerailsSerializable, FreerailsPrincipal)
      */
-    int add(SKEY key, FreerailsSerializable element);
+    int add(KEY key, FreerailsSerializable element);
 
     /**
      * Removes the last element from the specified list.
@@ -61,28 +70,18 @@ public interface World extends ReadOnlyWorld {
     /**
      * Removes the last element from the specified list.
      *
+     * @deprecated in favour of removeLast(KEY, FreerailsPrincipal)
      */
-    FreerailsSerializable removeLast(SKEY key);
+    FreerailsSerializable removeLast(KEY key);
 
     /**
      * Replaces the tile at the specified position on the map with the
      * specified tile.
      *
+     * @deprecated in favour of setTile(int, int, FreerailsSerializable,
+     * FreerailsPrincipal)
      */
     void setTile(int x, int y, FreerailsTile tile);
-
-    int addPlayer(Player player, FreerailsPrincipal p);
-
-    /**
-     * Adds the specified transaction to the specified principal's bank account.
-     */
-    void addTransaction(Transaction t, FreerailsPrincipal p);
-
-    /**
-     * Removes and returns the last transaction added the the specified principal's bank account.  This method is
-     * only here so that moves that add transactions can be undone.
-     */
-    Transaction removeLastTransaction(FreerailsPrincipal p);
 
     /**
     * Returns a copy of this world object - making changes to this copy will not change this object.

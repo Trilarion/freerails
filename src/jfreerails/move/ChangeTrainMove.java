@@ -5,7 +5,6 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.train.TrainModel;
 
@@ -18,14 +17,14 @@ import jfreerails.world.train.TrainModel;
  */
 public class ChangeTrainMove extends ChangeItemInListMove {
     private ChangeTrainMove(int index, FreerailsSerializable before,
-        FreerailsSerializable after, FreerailsPrincipal p) {
-        super(KEY.TRAINS, index, before, after, p);
+        FreerailsSerializable after) {
+        super(KEY.TRAINS, index, before, after);
     }
 
     public static ChangeTrainMove generateMove(int id, TrainModel before,
-        int newEngine, int[] newWagons, FreerailsPrincipal p) {
+        int newEngine, int[] newWagons) {
         TrainModel after = before.getNewInstance(newEngine, newWagons);
 
-        return new ChangeTrainMove(id, before, after, p);
+        return new ChangeTrainMove(id, before, after);
     }
 }

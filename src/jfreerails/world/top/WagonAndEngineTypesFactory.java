@@ -4,9 +4,11 @@
  */
 package jfreerails.world.top;
 
+import jfreerails.world.cargo.CargoType;
 import jfreerails.world.common.Money;
 import jfreerails.world.train.EngineType;
 import jfreerails.world.train.WagonType;
+import jfreerails.world.player.Player;
 
 
 /**
@@ -17,18 +19,25 @@ import jfreerails.world.train.WagonType;
  *
  */
 public class WagonAndEngineTypesFactory {
+    private static final int UNITS_OF_CARGO_PER_WAGON = 40;
+
     public void addTypesToWorld(World w) {
         //Wagon types
-        WagonType[] wagonTypes = new WagonType[] {
-                new WagonType("Mail", WagonType.MAIL),
-                new WagonType("Passengers", WagonType.PASSENGER),
-                new WagonType("Livestock", WagonType.FAST_FREIGHT),
-                new WagonType("Coffee", WagonType.SLOW_FREIGHT),
-                new WagonType("Wood", WagonType.BULK_FREIGHT),
-            };
+	/*
+	 * Create a wagon type for each cargo type
+	 * XXX correspondence between cargo type and WagonType table index will
+	 * not be guaranteed in future XXX
+	 */
+	int s = w.size(KEY.CARGO_TYPES);
+	WagonType[] wagonTypes = new WagonType[s];
+	for (int i = 0; i < s; i++) {
+	    CargoType ct = (CargoType) w.get(KEY.CARGO_TYPES, i);
+	    wagonTypes[i] = new WagonType(ct.getName(), ct.getCategory(),
+		    UNITS_OF_CARGO_PER_WAGON, i);
+	}
 
         for (int i = 0; i < wagonTypes.length; i++) {
-            w.add(SKEY.WAGON_TYPES, wagonTypes[i]);
+            w.add(KEY.WAGON_TYPES, wagonTypes[i], Player.AUTHORITATIVE);
         }
 
         //Engine types
@@ -40,7 +49,7 @@ public class WagonAndEngineTypesFactory {
             };
 
         for (int i = 0; i < engineTypes.length; i++) {
-            w.add(SKEY.ENGINE_TYPES, engineTypes[i]);
+            w.add(KEY.ENGINE_TYPES, engineTypes[i], Player.AUTHORITATIVE);
         }
     }
 }

@@ -13,9 +13,9 @@ import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
 import jfreerails.controller.MoveChainFork;
+import jfreerails.controller.MoveReceiver;
 import jfreerails.controller.ServerCommand;
 import jfreerails.controller.ServerControlInterface;
-import jfreerails.controller.SpeedChangedCommand;
 import jfreerails.controller.WorldChangedCommand;
 import jfreerails.util.FreerailsProgressMonitor;
 
@@ -42,15 +42,12 @@ class ServerGameController implements ServerControlInterface,
         if (port != 0) {
             /* Open our server socket */
             try {
-                serverSocket = new InetConnection(engine.getWorld(),
+                serverSocket = new InetConnection(this, engine.getWorld(),
                         InetConnection.SERVER_PORT);
             } catch (IOException e) {
                 System.err.println("Couldn't open the server socket!!!" + e);
                 throw new RuntimeException(e);
             }
-
-            Thread thread = new Thread(new InetGameServer(serverSocket, this));
-            thread.start();
         }
     }
 
@@ -58,10 +55,15 @@ class ServerGameController implements ServerControlInterface,
      * return a brand new local connection.
      */
     public synchronized LocalConnection getLocalConnection() {
-        LocalConnection connection = new LocalConnection(gameEngine.getWorld());
-        addConnection(connection);
+	    LocalConnection connection = new
+		LocalConnection(gameEngine.getWorld());
+	    addConnection(connection);
 
-        return connection;
+	    return connection;
+    }
+
+    public void connectionOpened(ConnectionToServer c) {
+	addConnection(c);
     }
 
     public synchronized void connectionClosed(ConnectionToServer c) {
@@ -71,19 +73,19 @@ class ServerGameController implements ServerControlInterface,
          * connection, but the player must re-authenticate themselves
          * in order to play
          */
-        if (!(c instanceof LocalConnection)) {
-            removeConnection(c);
-        } else {
-            gameEngine.getIdentityProvider().removeConnection(c);
-            tableModel.stateChanged(c, connections.indexOf(c));
-        }
+	if (!(c instanceof LocalConnection)) {
+	    removeConnection(c);
+	} else {
+	    gameEngine.getIdentityProvider().removeConnection(c);
+	    tableModel.stateChanged(c, connections.indexOf(c));
+	}
     }
 
     private synchronized void removeConnection(ConnectionToServer c) {
         gameEngine.getIdentityProvider().removeConnection(c);
         tableModel.removeRow(connections.indexOf(c));
         moveChainFork.remove(c);
-        connections.remove(c);
+	connections.remove(c);
         c.removeMoveReceiver(gameEngine.getMoveExecuter());
         c.removeConnectionListener(this);
     }
@@ -108,17 +110,27 @@ class ServerGameController implements ServerControlInterface,
      * this game to the new one.
      */
     public void loadGame() {
-        int ticksPerSec = gameEngine.getTargetTicksPerSecond();
+	Thread t = new Thread() {
+	    public void run() {
+		int ticksPerSec = gameEngine.getTargetTicksPerSecond();
 
-        /* open a new controller */
-        ServerGameEngine newGame = ServerGameEngine.loadGame();
+		/* open a new controller */
+		ServerGameEngine newGame = ServerGameEngine.loadGame();
 
-        transferClients(newGame);
-        setTargetTicksPerSecond(ticksPerSec);
+		transferClients(newGame);
+		setTargetTicksPerSecond(ticksPerSec);
+	    }
+	};
+	t.start();
     }
 
     public void saveGame() {
-        gameEngine.saveGame();
+	Thread t = new Thread() {
+	    public void run() {
+		gameEngine.saveGame();
+	    }
+	};
+	t.start();
     }
 
     public String[] getMapNames() {
@@ -127,81 +139,74 @@ class ServerGameController implements ServerControlInterface,
 
     public void setTargetTicksPerSecond(int ticksPerSecond) {
         gameEngine.setTargetTicksPerSecond(ticksPerSecond);
-        sendToAllConections(new SpeedChangedCommand(ticksPerSecond));
-    }
-
-    /**
-     * Sends a server commamnd to all connections
-     * @param serverCommand
-     */
-    public void sendToAllConections(ServerCommand serverCommand) {
-        for (int i = 0; i < connections.size(); i++) {
-            ConnectionToServer c = (ConnectionToServer)connections.get(i);
-
-            c.sendCommand(serverCommand);
-            c.flush();
-        }
     }
 
     /**
      * stop the current game and transfer the current local connections to a
      * new game running the specified map.
      */
-    public void newGame(String mapName) {
-        int ticksPerSec = gameEngine.getTargetTicksPerSecond();
-        ServerGameEngine newGame = new ServerGameEngine(mapName,
-                FreerailsProgressMonitor.NULL_INSTANCE);
-        transferClients(newGame);
+    public void newGame(String map) {
+	final String mapName = map;
+	Thread t = new Thread() {
+	    public void run() {
+		int ticksPerSec = gameEngine.getTargetTicksPerSecond();
+		ServerGameEngine newGame = new ServerGameEngine(mapName,
+			FreerailsProgressMonitor.NULL_INSTANCE);
+		transferClients(newGame);
 
-        setTargetTicksPerSecond(ticksPerSec);
+		setTargetTicksPerSecond(ticksPerSec);
+	    }
+	};
+	t.start();
     }
 
     /**
      * transfer all clients of this game to the new game
      */
     private synchronized void transferClients(ServerGameEngine newGame) {
-        Vector localConnections = new Vector();
+	Vector localConnections = new Vector();
+	MoveReceiver oldExecuter = gameEngine.getMoveExecuter();
 
-        for (int i = 0; i < connections.size(); i++) {
-            ConnectionToServer c = (ConnectionToServer)connections.get(i);
+	for (int i = 0; i < connections.size(); i++) {
+	    ConnectionToServer c = (ConnectionToServer)connections.get(i);
 
-            /* Local connections must be transferred manually - remote
-             * connections are sent a WorldChangedCommand later */
-            if (c instanceof LocalConnection) {
-                localConnections.add(c);
-                removeConnection(c);
-                i--;
-            }
-        }
+	    /* Local connections must be transferred manually - remote
+	     * connections are sent a WorldChangedCommand later */
+	    if (c instanceof LocalConnection) {
+		localConnections.add(c);
+		removeConnection(c);
+		i--;
+	    }
+	}
 
-        gameEngine.stop();
-        gameEngine = newGame;
-        moveChainFork = newGame.getMoveChainFork();
+	gameEngine.stop();
+	gameEngine = newGame;
+	moveChainFork = newGame.getMoveChainFork();
 
-        if (serverSocket != null) {
-            serverSocket.setWorld(gameEngine.getWorld());
-        }
+	if (serverSocket != null) {
+	    serverSocket.setWorld(gameEngine.getWorld());
+	}
 
-        while (!localConnections.isEmpty()) {
-            LocalConnection lc = (LocalConnection)localConnections.remove(0);
-            addConnection(lc);
-            lc.sendCommand(new WorldChangedCommand());
-        }
+	while (!localConnections.isEmpty()) {
+	    LocalConnection lc = (LocalConnection)localConnections.remove(0);
+	    addConnection(lc);
+	    lc.sendCommand(new WorldChangedCommand());
+	}
 
-        /* send all remaining clients notification that this game is
-         * about to end */
-        for (int i = 0; i < connections.size(); i++) {
-            ConnectionToServer c = (ConnectionToServer)connections.get(i);
+	/* send all remaining clients notification that this game is
+	 * about to end */
+	for (int i = 0; i < connections.size(); i++) {
+	    ConnectionToServer c = (ConnectionToServer)connections.get(i);
 
-            /*
-             * don't send locally connected clients the
-             * WorldChangedCommand as they have already been sent one
-             */
-            if (!(c instanceof LocalConnection)) {
-                c.sendCommand(new WorldChangedCommand());
-                c.flush();
-            }
-        }
+	    /*
+	     * don't send locally connected clients the
+	     * WorldChangedCommand as they have already been sent one
+	     */
+	    if (!(c instanceof LocalConnection)) {
+		c.sendCommand(new WorldChangedCommand());
+		c.flush();
+	    }
+	}
     }
 
     public TableModel getClientConnectionTableModel() {

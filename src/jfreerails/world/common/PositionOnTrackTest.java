@@ -76,7 +76,7 @@ public class PositionOnTrackTest extends TestCase {
 
     private void assertNoException(int x, int y, OneTileMoveVector v) {
         try {
-            new PositionOnTrack(x, y, v);
+            PositionOnTrack p = new PositionOnTrack(x, y, v);
         } catch (Exception e) {
             assertTrue(false);
         }
@@ -84,7 +84,7 @@ public class PositionOnTrackTest extends TestCase {
 
     private void assertException(int x, int y, OneTileMoveVector v) {
         try {
-            new PositionOnTrack(x, y, v);
+            PositionOnTrack p = new PositionOnTrack(x, y, v);
             assertTrue(false);
         } catch (Exception e) {
         }

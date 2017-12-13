@@ -7,50 +7,122 @@
 package jfreerails.client.top;
 
 import java.awt.event.KeyEvent;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.JSplitPane;
+import javax.swing.JViewport;
+import javax.swing.RepaintManager;
+import jfreerails.client.common.UpdatedComponent;
+import jfreerails.client.view.MapViewJComponent;
+import jfreerails.client.view.MapViewJComponentConcrete;
+import jfreerails.client.view.CashJLabel;
+import jfreerails.client.view.DateJLabel;
+import jfreerails.client.view.GUIRoot;
+import jfreerails.client.view.HelpMenu;
+import jfreerails.client.view.DisplayMenu;
+import jfreerails.client.view.GameMenu;
+import jfreerails.client.view.DebugMenu;
+import jfreerails.client.view.OverviewMapJComponent;
+import jfreerails.client.view.TrainsJTabPane;
+import jfreerails.client.model.ModelRoot;
+import jfreerails.world.top.KEY;
+import jfreerails.world.player.Player;
+import jfreerails.world.player.PlayerPrincipal;
 
 /**
  *
  * @author  Luke
  */
-public class ClientJFrame extends javax.swing.JFrame {
+public class ClientJFrame extends javax.swing.JFrame implements
+UpdatedComponent {
+    private boolean debugMenuEnabled = 
+	(System.getProperty("DEBUG") != null);
     
-    private GUIComponentFactory gUIComponentFactory;
+    private GUIRoot guiRoot;
+    private ModelRoot modelRoot;
+    private MapViewJComponentConcrete mapViewJComponent;
+    private int frameCount = 0;
     
-    public ClientJFrame(){
-    	
-    }
-    
-    /** Creates new form ClientJFrame */
-    public ClientJFrame(GUIComponentFactory gcf) {
-       	setup(gcf);
-    }
-
-	public void setup(GUIComponentFactory gcf) {
-		 this.gUIComponentFactory=gcf;
-		    initComponents();
-		    //jSplitPane1.resetToPreferredSizes();
-		    gUIComponentFactory.createDateJLabel();
+    public ClientJFrame(GUIRoot gr, ModelRoot mr) {
+	modelRoot = mr;
+	guiRoot = gr;
+	mapViewJComponent = new MapViewJComponentConcrete();
+	initComponents();
+	if (debugMenuEnabled) {
+	    jMenuBar1.add(new DebugMenu(modelRoot));
 	}
-    
-    public void setup() {
-	jSplitPane1.revalidate();
-        jSplitPane1.resetToPreferredSizes();
 
-    /* Hack to stop F8 grabbing the focus of the SplitPane (see javadoc for
-     * JSplitPane Key assignments */
-    InputMap im = jSplitPane1.getInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW);
-    im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
-    jSplitPane1.setInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW, im);
-    im = jSplitPane1.getInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);   
-    jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
+	jSplitPane1.revalidate();
+	jSplitPane1.resetToPreferredSizes();
+
+	/* Hack to stop F8 grabbing the focus of the SplitPane (see javadoc
+	 * for JSplitPane Key assignments */
+	InputMap im = jSplitPane1.getInputMap
+	    (JSplitPane.WHEN_IN_FOCUSED_WINDOW);
+	im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
+	jSplitPane1.setInputMap(JSplitPane.WHEN_IN_FOCUSED_WINDOW, im);
+	im = jSplitPane1.getInputMap
+	    (JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);   
+	jSplitPane1.setInputMap(JSplitPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+		null);
 	jSplitPane1.revalidate();
 	jSplitPane1.resetToPreferredSizes();
 	
     }
+
+    /**
+     * Calles when the world model has changed and the ViewLists are updated
+     */
+    public void setup() {
+        mainMapView.setViewportView(mapViewJComponent);
+        mapViewJComponent.setup(guiRoot, modelRoot);
+	((OverviewMapJComponent) mapOverview).setup(modelRoot);
+        ((DateJLabel) datejLabel).setup(modelRoot);
+        ((CashJLabel) cashjLabel).setup(modelRoot);
+        ((TrainsJTabPane) trainsJTabPane1).setup(modelRoot);
+	((BuildMenu) buildMenu).setup(modelRoot);
+	setTitle("Railz Client");
+	guiRoot.getMapMediator().setMainMap
+	    (mainMapView.getViewport(), mapViewJComponent);
+    }
     
+    public void doFrameUpdate(Graphics g) {
+	Container cp = getContentPane();
+	g.translate(cp.getX() + jSplitPane1.getX() +
+	       	lhsjPanel.getX() + mainMapView.getX(),
+	       	cp.getY() + jSplitPane1.getY() +
+	       	lhsjPanel.getY() + mainMapView.getY());
+	JViewport vp = mainMapView.getViewport();
+	Point vpLocation = vp.getLocation();
+	g.setClip(vpLocation.x, vpLocation.y, vp.getWidth(), vp.getHeight() );
+	g.translate(vpLocation.x, vpLocation.y);
+	mapViewJComponent.doFrameUpdate(g);
+
+	RepaintManager repaintManager = RepaintManager.currentManager
+	    (mainMapView);
+	repaintManager.markCompletelyClean(mainMapView);
+	if (frameCount % 4 == 0) {
+	    g.translate(- vpLocation.x - mainMapView.getX() +
+		    statusjPanel.getX(),
+		    - vpLocation.y - mainMapView.getY() +
+		   statusjPanel.getY());
+	    g.setClip(0, 0, statusjPanel.getWidth(), statusjPanel.getHeight());
+	    statusjPanel.paint(g);
+	    RepaintManager.currentManager(statusjPanel).
+		markCompletelyClean(statusjPanel);
+	}
+	if (++frameCount == 4)
+	    frameCount = 0;
+    }
+
+    public boolean disDoubleBuffered() {
+	return true;
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -61,19 +133,18 @@ public class ClientJFrame extends javax.swing.JFrame {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         rhsjPanel = new javax.swing.JPanel();
-        mapOverview = gUIComponentFactory.createOverviewMap();
-        trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
-
+        mapOverview = new OverviewMapJComponent(guiRoot);
+        trainsJTabPane1 = new TrainsJTabPane();
         lhsjPanel = new javax.swing.JPanel();
-        mainMapView = gUIComponentFactory.createMainMap();
+        mainMapView = new javax.swing.JScrollPane();
         statusjPanel = new javax.swing.JPanel();
-        datejLabel = gUIComponentFactory.createDateJLabel();
-        cashjLabel = gUIComponentFactory.createCashJLabel();
+        datejLabel = new DateJLabel();
+        cashjLabel = new CashJLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        gameMenu = gUIComponentFactory.createGameMenu();
-        buildMenu = gUIComponentFactory.createBuildMenu();
-        displayMenu = gUIComponentFactory.createDisplayMenu();
-        helpMenu = gUIComponentFactory.createHelpMenu();
+        gameMenu = new GameMenu(modelRoot, guiRoot);
+        buildMenu = new BuildMenu();
+        displayMenu = new DisplayMenu(guiRoot);
+        helpMenu = new HelpMenu(guiRoot);
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -152,14 +223,8 @@ public class ClientJFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitForm
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        new ClientJFrame(new GUIComponentFactoryTestImpl()).show();
-    }
-    
-    
+    private javax.swing.JMenu debugMenu;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu buildMenu;
     private javax.swing.JLabel cashjLabel;

@@ -40,6 +40,9 @@ public class FlatTrackExplorer implements GraphExplorer, FreerailsSerializable {
             throw new NoSuchElementException();
         } else {
             OneTileMoveVector v = this.getFirstVectorToTry();
+            OneTileMoveVector lastToTry = this.currentPosition.getDirection()
+                                                              .getOpposite();
+
             Point p = new Point(currentPosition.getX(), currentPosition.getY());
             TrackPiece tp = (TrackPiece)w.getTile(p.x, p.y);
             TrackConfiguration conf = tp.getTrackConfiguration();

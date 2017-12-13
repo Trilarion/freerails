@@ -3,9 +3,9 @@ package jfreerails.controller;
 import java.util.ArrayList;
 import jfreerails.move.AddItemToListMove;
 import jfreerails.move.ChangeItemInListMove;
+import jfreerails.move.RemoveItemFromListMove;
 import jfreerails.move.CompositeMove;
 import jfreerails.move.Move;
-import jfreerails.move.RemoveItemFromListMove;
 import jfreerails.move.UndoneMove;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.WorldListListener;
@@ -50,12 +50,24 @@ final public class MoveChainFork implements MoveReceiver {
         splitMoveReceivers.add(moveReceiver);
     }
 
+    public void removeSplitMoveReceiver(MoveReceiver moveReceiver) {
+	splitMoveReceivers.remove(moveReceiver);
+    }
+
     public void addListListener(WorldListListener listener) {
         if (null == listener) {
             throw new NullPointerException();
         }
 
         listListeners.add(listener);
+    }
+
+    public void removeListListener(WorldListListener listener) {
+        if (null == listener) {
+            throw new NullPointerException();
+        }
+
+        listListeners.remove(listener);
     }
 
     /*

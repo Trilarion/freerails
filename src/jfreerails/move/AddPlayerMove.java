@@ -1,9 +1,13 @@
 package jfreerails.move;
 
+import jfreerails.world.player.Player;
+import jfreerails.world.player.PlayerPrincipal;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.accounts.Receipt;
 import jfreerails.world.common.Money;
-import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
 
@@ -11,45 +15,74 @@ import jfreerails.world.top.World;
 /**
  * Adds a player to the world
  */
-public class AddPlayerMove implements Move, ServerMove {
-    private final Player player2add;
+public class AddPlayerMove extends CompositeMove implements ServerMove {
+    private static class OpenPlayerBankAccountMove extends AddItemToListMove
+	implements ServerMove {
+	    OpenPlayerBankAccountMove (KEY key, int i, BankAccount item,
+		    FreerailsPrincipal principal) {
+		super(key, i, item, principal);
+	    }
+	}
 
-    private AddPlayerMove(Player p) {
-        this.player2add = p;
+    private static class AddPlayerToListMove extends AddItemToListMove
+        implements ServerMove {
+        AddPlayerToListMove(KEY key, int i, Player p) {
+            super(key, i, p, Player.NOBODY);
+        }
+
+        public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
+            MoveStatus ms;
+
+            if ((ms = super.tryDoMove(w, p)) != MoveStatus.MOVE_OK) {
+                assert false;
+
+                return ms;
+            }
+
+            /* verify that name is free */
+            NonNullElements i = new NonNullElements(KEY.PLAYERS, w,
+                    Player.NOBODY);
+
+            while (i.next()) {
+                Player pl = (Player)i.getElement();
+
+                if (pl.getName().equals(((Player)item).getName())) {
+                    return MoveStatus.moveFailed("Name already in use!");
+                }
+            }
+
+            return MoveStatus.MOVE_OK;
+        }
     }
 
-    public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
+    /**
+     * Amount of money a player gets initially
+     */
+    private static final int INITIAL_MONEY = 1000000;
+
+    private static Move[] generateMove(ReadOnlyWorld w, Player player) {
         /**
          * create a new player with a corresponding Principal
          */
-        Player player2add = new Player(player.getName(), player.getPublicKey(),
-                w.getNumberOfPlayers());
+        Player newPlayer = new Player(player.getName(), player.getPublicKey(),
+                w.size(KEY.PLAYERS, Player.AUTHORITATIVE));
+        PlayerPrincipal tmpPlayer = new PlayerPrincipal(w.size(KEY.PLAYERS,
+                    Player.AUTHORITATIVE));
 
-        return new AddPlayerMove(player2add);
+	BankAccount ba = new BankAccount();
+	Receipt r = new Receipt(new Money(INITIAL_MONEY));
+	ba.addTransaction(r);
+
+        return new Move[] {
+            new AddPlayerToListMove(KEY.PLAYERS,
+                w.size(KEY.PLAYERS, Player.AUTHORITATIVE), newPlayer),
+		new OpenPlayerBankAccountMove(KEY.BANK_ACCOUNTS,
+		    0, ba, tmpPlayer)
+
+        };
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        // TODO Auto-generated method stub
-        return MoveStatus.MOVE_OK;
-    }
-
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        // TODO Auto-generated method stub
-        return MoveStatus.MOVE_OK;
-    }
-
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        w.addPlayer(this.player2add, Player.AUTHORITATIVE);
-
-        //Set up bank account with initial balance of $1000,000.
-        Receipt initialCredit = new Receipt(new Money(1000000));
-        w.addTransaction(initialCredit, player2add.getPrincipal());
-
-        return MoveStatus.MOVE_OK;
-    }
-
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        // TODO Auto-generated method stub
-        return MoveStatus.MOVE_OK;
+    public AddPlayerMove(ReadOnlyWorld w, Player player) {
+        super(generateMove(w, player));
     }
 }

@@ -5,7 +5,6 @@ import jfreerails.move.ChangeTrainPositionMove;
 import jfreerails.move.InitialiseTrainPositionMove;
 import jfreerails.move.Move;
 import jfreerails.world.common.FreerailsPathIterator;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.PathWalker;
@@ -26,22 +25,18 @@ public class TrainMover implements FreerailsServerSerializable {
     final int trainNumber;
     final ReadOnlyWorld w;
     final TrainPathFinder trainPathFinder;
-    final FreerailsPrincipal principal;
 
-    public TrainMover(FreerailsPathIterator to, ReadOnlyWorld world,
-        int trainNo, FreerailsPrincipal p) {
+    public TrainMover(FreerailsPathIterator to, ReadOnlyWorld world, int trainNo) {
         this.trainNumber = trainNo;
         this.w = world;
         walker = new PathWalkerImpl(to);
         trainPathFinder = null;
-        principal = p;
     }
 
     public TrainMover(TrainPathFinder pathFinder, ReadOnlyWorld world,
-        int trainNo, FreerailsPrincipal p) {
+        int trainNo) {
         this.trainNumber = trainNo;
         this.w = world;
-        principal = p;
 
         FreerailsPathIterator to = new TrainPathIterator(pathFinder);
         walker = new PathWalkerImpl(to);
@@ -56,8 +51,7 @@ public class TrainMover implements FreerailsServerSerializable {
 
         TrainPositionOnMap initialPosition = TrainPositionOnMap.createInSameDirectionAsPath(fromPathWalker);
 
-        return new InitialiseTrainPositionMove(trainNumber, initialPosition,
-            principal);
+        return new InitialiseTrainPositionMove(trainNumber, initialPosition);
     }
 
     public PathWalker getWalker() {
@@ -69,12 +63,11 @@ public class TrainMover implements FreerailsServerSerializable {
         double distance = distanceTravelledAsDouble * getTrainSpeed();
         walker.stepForward(distance);
 
-        return ChangeTrainPositionMove.generate(w, walker, trainNumber,
-            principal);
+        return ChangeTrainPositionMove.generate(w, walker, trainNumber);
     }
 
     public double getTrainSpeed() {
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
         int trainLength = train.getNumberOfWagons();
 
         //For now train speeds are hard coded.

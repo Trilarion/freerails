@@ -25,7 +25,6 @@ public class InetConnection implements ConnectionToServer {
     public static final int SERVER_PORT = 55000;
     private ConnectionState state = ConnectionState.CLOSED;
     private InetAddress serverAddress;
-    final Object mutex;
     private ServerSocket serverSocket;
     Socket socket;
     World world;
@@ -59,34 +58,32 @@ public class InetConnection implements ConnectionToServer {
      * @throws IOException if the socket couldn't be created.
      * @throws SecurityException if we're not allowed to create the socket.
      */
-    public InetConnection(World w, int port) throws IOException {
+    public InetConnection(ConnectionListener cl, World w, int port) throws
+	IOException {
         world = w;
-        this.mutex = new Object();
+	connectionListener = cl;
         System.out.println("Server listening for new connections on port " +
             port);
         serverSocket = new ServerSocket();
         serverSocket.setReuseAddress(true);
         serverSocket.bind(new InetSocketAddress(port));
         setState(ConnectionState.WAITING);
+
+	Thread thread = new Thread(new InetGameServer());
+	thread.start();
     }
 
     /**
      * called when an incoming connection is attempted
      */
-    private InetConnection(Socket acceptedConnection, World w, Object mutex)
+    private InetConnection(Socket acceptedConnection, World w)
         throws IOException {
-        this.mutex = mutex;
         world = w;
         socket = acceptedConnection;
         System.out.println("accepted incoming client connection from " +
             socket.getRemoteSocketAddress());
         sender = new Sender(this.socket.getOutputStream());
         dispatcher = new Dispatcher(this);
-
-        Thread receiveThread = new Thread(dispatcher, "InetConnection");
-        receiveThread.start();
-        dispatcher.open();
-        setState(ConnectionState.WAITING);
     }
 
     /**
@@ -94,7 +91,7 @@ public class InetConnection implements ConnectionToServer {
      */
     public InetConnection(InetAddress serverAddress) {
         this.serverAddress = serverAddress;
-        this.mutex = null;
+	world = null;
         dispatcher = new Dispatcher(this);
 
         Thread receiveThread = new Thread(dispatcher, "InetConnection");
@@ -102,12 +99,12 @@ public class InetConnection implements ConnectionToServer {
     }
 
     /**
-     * Called by the server to accept client connections.
+     * Called to accept client connections.
      * @throws IOException if an IO error occurred.
      * @return The new connection, or null if the socket is closed.
      */
-    public ConnectionToServer accept() throws IOException {
-        return new InetConnection(serverSocket.accept(), world, mutex);
+    private InetConnection accept() throws IOException {
+        return new InetConnection(serverSocket.accept(), world);
     }
 
     public void sendCommand(ServerCommand s) {
@@ -148,9 +145,7 @@ public class InetConnection implements ConnectionToServer {
         setState(ConnectionState.INITIALISING);
         sendCommand(new LoadWorldCommand());
         sender.flush();
-        dispatcher.receiveWorld();
-
-        return world;
+        return dispatcher.receiveWorld();
     }
 
     /**
@@ -184,6 +179,7 @@ public class InetConnection implements ConnectionToServer {
     }
 
     void send(FreerailsSerializable s) {
+	assert sender != null;
         if (sender != null) {
             try {
                 sender.send(s);
@@ -218,7 +214,7 @@ public class InetConnection implements ConnectionToServer {
      */
     void disconnect() {
         /* To allow this method to be called without risk of deadlock from synchronized methods in the dispatcher,
-        * we must acquire the lock on the dispatcher before locking on this object.
+        * we must acquire the lock on the dispatcher before locking on this object.       
         */
         synchronized (dispatcher) {
             synchronized (this) {
@@ -269,6 +265,42 @@ public class InetConnection implements ConnectionToServer {
 
         if (connectionListener != null) {
             connectionListener.connectionStateChanged(this);
+        }
+    }
+    
+    /**
+     * Sits in a loop and accepts incoming connections over the network
+     */
+    private class InetGameServer implements Runnable {
+        public void run() {
+            Thread.currentThread().setName("InetGameServer");
+
+            try {
+                while (true) {
+                    try {
+                        InetConnection c = InetConnection.this.accept();
+                        connectionListener.connectionOpened(c);
+
+			/*
+			 * Don't start the receive thread until the server has
+			 * been notified that the connection is being opened
+			 */
+			Thread receiveThread = new Thread(c.dispatcher,
+				"InetConnection");
+			receiveThread.start();
+			c.dispatcher.open();
+			c.setState(ConnectionState.WAITING);
+                    } catch (IOException e) {
+                        if (e instanceof SocketException) {
+                            throw (SocketException)e;
+                        } else {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (SocketException e) {
+                /* The socket was probably closed, exit */
+            }
         }
     }
 }

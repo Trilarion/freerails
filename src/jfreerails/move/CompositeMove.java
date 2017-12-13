@@ -5,9 +5,9 @@
 package jfreerails.move;
 
 import java.util.ArrayList;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.World;
-
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 
 /**
  *
@@ -20,6 +20,18 @@ import jfreerails.world.top.World;
  */
 public class CompositeMove implements Move {
     private Move[] moves;
+
+    /**
+     * @return the first encountered player that is not Player.NOBODY,
+     * otherwise return Player.NOBODY
+     */
+    public final FreerailsPrincipal getPrincipal() {
+	for (int i = 0; i < moves.length; i++) {
+	    if (! moves[i].getPrincipal().equals(Player.NOBODY))
+		return moves[i].getPrincipal();
+	}
+	return Player.NOBODY;
+    }
 
     /**
      * This method lets sub classes look at the moves.
@@ -37,18 +49,21 @@ public class CompositeMove implements Move {
 
         for (int i = 0; i < movesArrayList.size(); i++) {
             moves[i] = (Move)movesArrayList.get(i);
+	    assert moves[i].getPrincipal() != null;
         }
     }
 
     public CompositeMove(Move[] moves) {
         this.moves = moves;
+	for (int i = 0; i < moves.length; i++) 
+	    assert moves[i].getPrincipal() != null;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         //Since whether a move later in the list goes through could
         //depend on whether an ealier move has been executed, we need
         //actually execute moves, then undo them to test whether the 
-        //array of moves can be excuted ok.		    	
+        //array of moves can be excuted ok.
         MoveStatus ms = doMove(w, p);
 
         if (ms.ok) {
@@ -71,16 +86,14 @@ public class CompositeMove implements Move {
     }
 
     public final MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = compositeTest(w, p);
-
-        if (!ms.ok) {
-            return ms;
-        }
+        MoveStatus ms = MoveStatus.MOVE_OK;
 
         for (int i = 0; i < moves.length; i++) {
             ms = moves[i].doMove(w, p);
 
             if (!ms.ok) {
+		System.err.println("Move " + moves[i].toString() + " failed" +
+		" because " + ms.toString());
                 //Undo any moves we have already done.
                 undoMoves(w, i - 1, p);
 
@@ -146,12 +159,6 @@ public class CompositeMove implements Move {
         } else {
             return false;
         }
-    }
-
-    /** Subclasses may override this method to perform tests which pass or fail depending on the
-     * combination of moves making up this composite move. */
-    protected MoveStatus compositeTest(World w, FreerailsPrincipal p) {
-        return MoveStatus.MOVE_OK;
     }
 
     public final String toString() {

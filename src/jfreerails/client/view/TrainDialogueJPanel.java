@@ -7,27 +7,52 @@
 package jfreerails.client.view;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.NoSuchElementException;
 
-import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.client.model.ModelRoot;
+import jfreerails.world.train.MutableSchedule;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.NonNullElements;
-import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.WorldIterator;
 import jfreerails.world.top.WorldListListener;
+import jfreerails.world.top.*;
 
 /**
  *
  * @author  Luke Lindsay
  */
-public class TrainDialogueJPanel extends javax.swing.JPanel implements View, WorldListListener {
+public class TrainDialogueJPanel extends javax.swing.JPanel implements
+WorldListListener {
     
+    /**
+     * stores our current position in the list of trains.
+     */
     private WorldIterator wi;
+
     private ReadOnlyWorld w;
-    private FreerailsPrincipal principal;
+    private ModelRoot modelRoot;
     
     /** Creates new form TrainDialogueJPanel */
     public TrainDialogueJPanel() {
         initComponents();
+	/* add the two buttons from newTrainScheduleJPanel "*/
+	java.awt.GridBagConstraints gridBagConstraints;
+	
+	gridBagConstraints = new java.awt.GridBagConstraints();
+	gridBagConstraints.gridx = 0;
+	gridBagConstraints.gridy = 2;
+	gridBagConstraints.weightx = 1.0;
+	gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        add(newTrainScheduleJPanel1.addStationJButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+	gridBagConstraints.weightx = 1.0;
+	gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+	gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+	add(newTrainScheduleJPanel1.priorityOrdersJButton, gridBagConstraints);
     }
     
     /** This method is called from within the constructor to
@@ -38,14 +63,21 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        newTrainScheduleJPanel1 = new jfreerails.client.view.TrainScheduleJPanel();
         trainDetailsJPanel1 = new jfreerails.client.view.TrainDetailsJPanel();
+        newTrainScheduleJPanel1 = new jfreerails.client.view.TrainScheduleJPanel();
+        jPanel1 = new javax.swing.JPanel();
         previousJButton = new javax.swing.JButton();
         nextJButton = new javax.swing.JButton();
         trainListJButton = new javax.swing.JButton();
-        closeJButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        add(trainDetailsJPanel1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -54,15 +86,15 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         add(newTrainScheduleJPanel1, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        add(trainDetailsJPanel1, gridBagConstraints);
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        previousJButton.setText("last");
+        previousJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/toolbar/previous.png")));
+        previousJButton.setToolTipText("Previous Train");
+        previousJButton.setAlignmentX(1.0F);
+        previousJButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         previousJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 previousJButtonActionPerformed(evt);
@@ -70,12 +102,14 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(previousJButton, gridBagConstraints);
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        jPanel1.add(previousJButton, gridBagConstraints);
 
-        nextJButton.setText("next");
+        nextJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jfreerails/client/graphics/toolbar/next.png")));
+        nextJButton.setToolTipText("Next Train");
+        nextJButton.setAlignmentX(1.0F);
+        nextJButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         nextJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextJButtonActionPerformed(evt);
@@ -83,31 +117,29 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(nextJButton, gridBagConstraints);
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        jPanel1.add(nextJButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.weightx = 1.0;
+        add(jPanel1, gridBagConstraints);
 
         trainListJButton.setText("Train list");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         add(trainListJButton, gridBagConstraints);
-
-        closeJButton.setText("Close");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(closeJButton, gridBagConstraints);
 
     }//GEN-END:initComponents
     
     private void previousJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousJButtonActionPerformed
         // Add your handling code here:
         if(wi.previous()){
-            display(wi.getIndex());
+            display();
         }else{
             System.err.println("Couldn't get previous");
         }
@@ -116,37 +148,52 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     private void nextJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextJButtonActionPerformed
         // Add your handling code here:
         if(wi.next()){
-            display(wi.getIndex());
+            display();
         }else{
             System.err.println("Couldn't get next");
         }
     }//GEN-LAST:event_nextJButtonActionPerformed
     
-    public void setup(ModelRoot mr, ActionListener al) {
-        newTrainScheduleJPanel1.setup(mr, al);
-        trainDetailsJPanel1.setup(mr, al);
-        this.setCancelButtonActionListener(al);
-        this.principal = mr.getPlayerPrincipal();
-        this.w = mr.getWorld();
+    public void setup(jfreerails.world.top.ReadOnlyWorld w,
+	    jfreerails.client.renderer.ViewLists vl, ModelRoot
+	    mr) {
+	wi = new NonNullElements(KEY.TRAINS, w);
+        newTrainScheduleJPanel1.setup(mr);
+        trainDetailsJPanel1.setup(w, vl, null);
+        this.w = w;
+	modelRoot = mr;
+	addComponentListener(componentListener);
     }
     
-    public void display(int trainNumber){
-        wi = new NonNullElements(KEY.TRAINS, w, principal);
-        wi.gotoIndex(trainNumber);
-        if (wi.getRowNumber() > 0) {
+    /**
+     * Refreshes the component with the currently selected train
+     */
+    public void display(){
+	int tmp = wi.getIndex();
+	try {
+	    wi.reset(); // refresh the iterator code
+	    wi.gotoIndex(tmp);
+	} catch (NoSuchElementException e) {
+	    // ignore
+	}
+	/* go to 1st train if current position is undefined */
+	if (wi.getIndex() < 0 && wi.size() > 0) {
+	    wi.next();
+	}
+	if (wi.getIndex() > 0) {
             this.previousJButton.setEnabled(true);
         } else {
             this.previousJButton.setEnabled(false);
         }
         
-        if (wi.getRowNumber() < (wi.size() - 1)) {
+        if (wi.getIndex() < (wi.size() - 1)) {
             this.nextJButton.setEnabled(true);
         } else {
             this.nextJButton.setEnabled(false);
         }
         
-        newTrainScheduleJPanel1.display(trainNumber);
-        trainDetailsJPanel1.displayTrain(trainNumber);
+        newTrainScheduleJPanel1.display(wi.getIndex());
+        trainDetailsJPanel1.displayTrain(wi.getIndex());
     }
     
     public void listUpdated(KEY key, int index) {
@@ -155,11 +202,24 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
     }
     
     public void itemAdded(KEY key, int index) {
+	if (key == KEY.TRAINS) { 
+	    display();
+	}
     }
 
     public void itemRemoved(KEY key, int index) {
     }
     
+    ComponentAdapter componentListener = new ComponentAdapter() {
+	public void componentHidden(ComponentEvent e) {
+	    modelRoot.removeListListener(TrainDialogueJPanel.this);
+	}
+
+	public void componentShown(ComponentEvent e) {
+	    modelRoot.addListListener(TrainDialogueJPanel.this);
+	    display();
+	}
+    };
      
     void setTrainDetailsButtonActionListener(ActionListener l){
         ActionListener[] oldListeners = trainListJButton.getActionListeners();
@@ -169,19 +229,8 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View, Wor
         this.trainListJButton.addActionListener(l);
     }
     
-     /** Removes any existing ActionListener listeners from the cancel button, then 
-     *adds the specifed one.
-     */ 
-    void setCancelButtonActionListener(ActionListener l){
-        ActionListener[] oldListeners = closeJButton.getActionListeners();
-        for(int i = 0; i < oldListeners.length; i++){
-            closeJButton.removeActionListener(oldListeners[i]);
-        }
-        this.closeJButton.addActionListener(l);
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeJButton;
+    private javax.swing.JPanel jPanel1;
     private jfreerails.client.view.TrainScheduleJPanel newTrainScheduleJPanel1;
     private javax.swing.JButton nextJButton;
     private javax.swing.JButton previousJButton;

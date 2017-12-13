@@ -8,9 +8,9 @@
  */
 package jfreerails.controller;
 
-import jfreerails.world.terrain.CityModel;
+import jfreerails.world.city.CityModel;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 
 
 public class CalcNearestCity {
@@ -30,13 +30,13 @@ public class CalcNearestCity {
         double tempDistance;
         CityModel tempCity;
 
-        if (w.size(SKEY.CITIES) > 0) {
-            tempCity = (CityModel)w.get(SKEY.CITIES, 0);
+        if (w.size(KEY.CITIES) > 0) {
+            tempCity = (CityModel)w.get(KEY.CITIES, 0);
             cityDistance = getDistance(tempCity.getCityX(), tempCity.getCityY());
             cityName = tempCity.getCityName();
 
-            for (int i = 1; i < w.size(SKEY.CITIES); i++) {
-                tempCity = (CityModel)w.get(SKEY.CITIES, i);
+            for (int i = 1; i < w.size(KEY.CITIES); i++) {
+                tempCity = (CityModel)w.get(KEY.CITIES, i);
                 tempDistance = getDistance(tempCity.getCityX(),
                         tempCity.getCityY());
 

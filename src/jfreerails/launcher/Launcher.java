@@ -22,6 +22,7 @@ import jfreerails.client.top.GUIClient;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.server.GameServer;
 import jfreerails.util.FreerailsProgressMonitor;
+import jfreerails.util.Resources;
 import jfreerails.world.player.Player;
 
 /**
@@ -54,9 +55,9 @@ FreerailsProgressMonitor {
     void setNextEnabled(boolean enabled) {
 	nextButton.setEnabled(enabled);
 	if (nextIsStart) {
-	    nextButton.setText("Start");
+	    nextButton.setText(Resources.get("Start"));
 	} else {
-	    nextButton.setText("Next...");
+	    nextButton.setText(Resources.get("Next..."));
 	}
     }
 
@@ -73,7 +74,7 @@ FreerailsProgressMonitor {
 	ServerStatusPanel ssp = (ServerStatusPanel) wizardPages[3];
 
 	boolean recover = false;
-	int mode;
+	int port, mode;
 	GameServer gs = new GameServer();
 	GUIClient gc;
 	Player p;
@@ -91,7 +92,8 @@ FreerailsProgressMonitor {
 		try {
 		    p = getPlayer(cop.getPlayerName());
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
-			    cop.getDisplayMode(), "JFreerails Client", this, p);
+			    cop.getDisplayMode(), Resources.get
+			    ("Railz Client"), this, p);
 		} catch (IOException e) {
 		    setInfoText(e.getMessage());
 		    recover = true;
@@ -121,7 +123,8 @@ FreerailsProgressMonitor {
 		try {
 		    p = getPlayer(cop.getPlayerName());
 		    gc = new GUIClient(sci, sci.getLocalConnection(), mode,
-			    cop.getDisplayMode(), "JFreerails Client", this, p);
+			    cop.getDisplayMode(), Resources.get
+			    ("Railz Client"), this, p);
 		} catch (IOException e) {
 		    recover = true;
 		    setInfoText(e.getMessage());
@@ -150,8 +153,8 @@ FreerailsProgressMonitor {
 		    p = getPlayer(cop.getPlayerName());
 		    gc = new
 			GUIClient(lp.getRemoteServerAddress().getAddress(),
-				mode, cop.getDisplayMode(), "JFreerails " +
-				"Client", this, p);
+				mode, cop.getDisplayMode(), Resources.get
+				("Railz Client"), this, p);
 		} catch (IOException e) {
 		    setInfoText(e.getMessage());
 		    recover = true;
@@ -191,7 +194,7 @@ FreerailsProgressMonitor {
 	    FileInputStream fis =
 		FileUtils.openForReading(FileUtils.DATA_TYPE_PLAYER_SPECIFIC,
 			name, "keyPair");
-	    setInfoText("Loading saved player keys");
+	    setInfoText(Resources.get("Loading saved player keys"));
 	    ObjectInputStream ois = new ObjectInputStream(fis);
 	    p = (Player) ois.readObject();
 	    p.loadSession(ois);
@@ -201,15 +204,15 @@ FreerailsProgressMonitor {
 	    FileOutputStream fos =
 		FileUtils.openForWriting(FileUtils.DATA_TYPE_PLAYER_SPECIFIC,
 			name, "keyPair");
-	    setInfoText("Saving player keys");
+	    setInfoText(Resources.get("Saving player keys"));
 	    ObjectOutputStream oos = new ObjectOutputStream(fos);
 	    oos.writeObject(p);
 	    p.saveSession(oos);
 	} catch (ClassNotFoundException e) {
-	    setInfoText("Player KeyPair was corrupted!");
+	    setInfoText(Resources.get("Player KeyPair was corrupted!"));
 	    throw new IOException (e.getMessage());
 	} catch (IOException e) {
-	    setInfoText("Player KeyPair was corrupted!");
+	    setInfoText(Resources.get("Player KeyPair was corrupted!"));
 	    throw e;
 	}
 	return p;
@@ -227,6 +230,10 @@ FreerailsProgressMonitor {
     public Launcher() {
         initComponents();
 
+	/*
+	 * Add the necessary wizard panes
+	 */
+	CardLayout cl = (CardLayout) jPanel1.getLayout();
 	wizardPages[0] = new LauncherPanel1(this);
 	wizardPages[1] = new MapSelectionPanel(this);
 	wizardPages[2] = new ClientOptionsJPanel(this);
@@ -259,7 +266,7 @@ FreerailsProgressMonitor {
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        setTitle("JFreerails Launcher");
+        setTitle(jfreerails.util.Resources.get("Railz Launcher"));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
@@ -283,7 +290,7 @@ FreerailsProgressMonitor {
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(jSeparator1, gridBagConstraints);
 
-        nextButton.setText("Next...");
+        nextButton.setText(jfreerails.util.Resources.get("Next..."));
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -306,7 +313,7 @@ FreerailsProgressMonitor {
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         getContentPane().add(jProgressBar1, gridBagConstraints);
 
-        prevButton.setText("Back...");
+        prevButton.setText(jfreerails.util.Resources.get("Back..."));
         prevButton.setEnabled(false);
         prevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

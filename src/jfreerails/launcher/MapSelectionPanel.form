@@ -24,7 +24,9 @@
       <SubComponents>
         <Component class="javax.swing.JRadioButton" name="loadMapButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Load a saved game"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Load a saved game" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buttonGroup1"/>
             </Property>
@@ -33,7 +35,9 @@
         <Component class="javax.swing.JRadioButton" name="newMapButton">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
-            <Property name="text" type="java.lang.String" value="Start a new map"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="jfreerails/data/l10n/jfreerails.properties" key="Start a new map" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buttonGroup1"/>
             </Property>
@@ -48,10 +52,11 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Select Map">
+            <TitledBorder title="&lt;Select Map&gt;">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
+              <ResourceString PropertyName="titleX" bundle="jfreerails/data/l10n/jfreerails.properties" key="Select Map" replaceFormat="jfreerails.util.Resources.get(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>

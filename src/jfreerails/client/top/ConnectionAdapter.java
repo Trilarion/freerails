@@ -2,8 +2,10 @@ package jfreerails.client.top;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+
+import jfreerails.client.view.GUIRoot;
 import jfreerails.client.renderer.ViewLists;
-import jfreerails.client.view.ModelRoot;
+import jfreerails.client.model.ModelRoot;
 import jfreerails.controller.AddPlayerCommand;
 import jfreerails.controller.AddPlayerResponseCommand;
 import jfreerails.controller.ConnectionListener;
@@ -14,13 +16,13 @@ import jfreerails.controller.SourcedMoveReceiver;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.controller.UntriedMoveReceiver;
 import jfreerails.controller.WorldChangedCommand;
-import jfreerails.controller.SpeedChangedCommand;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.TimeTickMove;
 import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.world.player.Player;
 import jfreerails.world.player.PlayerPrincipal;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
 
 
@@ -51,13 +53,15 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
     MoveReceiver moveReceiver;
     World world;
     private FreerailsProgressMonitor progressMonitor;
+    private GUIRoot guiRoot;
 
-    public ConnectionAdapter(ModelRoot mr, Player player,
-        FreerailsProgressMonitor pm, GUIClient gc) {
+    public ConnectionAdapter(ModelRoot mr, GUIRoot gr, Player
+	    player, FreerailsProgressMonitor pm, GUIClient gc) {
         modelRoot = mr;
         this.player = player;
         this.progressMonitor = pm;
         guiClient = gc;
+	guiRoot = gr;
     }
 
     /**
@@ -116,17 +120,11 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
     }
 
     public synchronized MoveStatus tryDoMove(Move move) {
-        /* TODO
-         * return move.tryDoMove(world, move.getPrincipal());
-         */
-        return move.tryDoMove(world, Player.AUTHORITATIVE);
+	return move.tryDoMove(world, move.getPrincipal());
     }
 
     public synchronized MoveStatus tryUndoMove(Move move) {
-        /* TODO
-         * return move.tryUndoMove(world, move.getPrincipal());
-         */
-        return move.tryUndoMove(world, Player.AUTHORITATIVE);
+	return move.tryUndoMove(world, move.getPrincipal());
     }
 
     private void closeConnection() {
@@ -194,7 +192,8 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
         }
 
         /* start a new game loop */
-        gameLoop = new GameLoop(guiClient.getScreenHandler(), moveExecuter);
+	gameLoop = new GameLoop(guiRoot.getScreenHandler(),
+		moveExecuter);
 
         /* attempt to authenticate the player */
         modelRoot.getUserMessageLogger().println("Attempting to " +
@@ -208,30 +207,32 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             /* create the models */
             assert world != null;
 
-            ViewLists viewLists = new ViewListsImpl(world, progressMonitor);
+            modelRoot.setWorld(world);
+	    ViewLists viewLists = new ViewListsImpl(modelRoot,
+		    guiRoot, progressMonitor);
 
             if (!viewLists.validate(world)) {
                 modelRoot.getUserMessageLogger().println("Couldn't validate " +
                     "viewLists!");
             }
 
-            modelRoot.setWorld(world, this, viewLists);
+            modelRoot.setWorld(this, viewLists);
 
             /*
              * wait until the player the client represents has been created in
              * the model (this may not occur until we process the move creating
              * the player from the server
              */
-            int playerID = ((PlayerPrincipal)modelRoot.getPlayerPrincipal()).getId();
-
-            while (world.getNumberOfPlayers() < playerID) {
+            while (!world.boundsContain(KEY.PLAYERS,
+                        ((PlayerPrincipal)modelRoot.getPlayerPrincipal()).getId(),
+                        modelRoot.getPlayerPrincipal())) {
                 System.out.println("Size of players list is " +
-                    world.getNumberOfPlayers());
+                    world.size(KEY.PLAYERS));
                 moveExecuter.update();
             }
 
             /* start the game loop */
-            String threadName = "JFreerails client: " + guiClient.getTitle();
+            String threadName = "Railz client: " + guiClient.getTitle();
             Thread t = new Thread(gameLoop, threadName);
             t.start();
         } catch (IOException e) {
@@ -249,6 +250,10 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
 
     public void connectionClosed(ConnectionToServer c) {
         // ignore
+    }
+
+    public void connectionOpened(ConnectionToServer c) {
+	// ignore
     }
 
     public void connectionStateChanged(ConnectionToServer c) {
@@ -280,14 +285,6 @@ public class ConnectionAdapter implements UntriedMoveReceiver,
             } catch (GeneralSecurityException e) {
                 modelRoot.getUserMessageLogger().println("Unable to " +
                     "authenticate with server: " + e.toString());
-            }
-        } else if (s instanceof SpeedChangedCommand) {
-            int actTickPerSecond = ((SpeedChangedCommand)s).getTicksPerSecond();
-
-            if (actTickPerSecond == 0) {
-                modelRoot.getUserMessageLogger().showMessage("Game is paused.");
-            } else {
-                modelRoot.getUserMessageLogger().hideMessage();
             }
         }
     }

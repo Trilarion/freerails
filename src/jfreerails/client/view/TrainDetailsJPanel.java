@@ -7,10 +7,8 @@
 package jfreerails.client.view;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoType;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.top.WorldListListener;
 import jfreerails.world.train.TrainModel;
 /**
@@ -22,8 +20,6 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
 
 
     private ReadOnlyWorld w;    
-    
-    private FreerailsPrincipal principal;
     
     private int trainNumber = -1;
     
@@ -51,10 +47,8 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
         setLayout(new java.awt.GridBagLayout());
 
         setBorder(new javax.swing.border.TitledBorder("Current Details"));
-        setPreferredSize(new java.awt.Dimension(250, 97));
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12));
         jLabel1.setText("<html><head></head><body>Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.</body></html>");
-        jLabel1.setMinimumSize(new java.awt.Dimension(250, 17));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -73,16 +67,11 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
 
     }//GEN-END:initComponents
 
-    public void setup(ModelRoot mr, java.awt.event.ActionListener submitButtonCallBack) {
-	
-       // this.sideOnTrainViewJPanel1.setup(w, vl, null);
-       // this.sideOnTrainViewJPanel1.setShowEngine(true);
-       // this.sideOnTrainViewJPanel1.scaledImageHeight=30;
-        this.trainViewJPanel1.setup(mr, submitButtonCallBack);
-        trainViewJPanel1.setHeight(30);
+    public void setup(ReadOnlyWorld w, jfreerails.client.renderer.ViewLists vl, java.awt.event.ActionListener submitButtonCallBack) {
+        this.trainViewJPanel1.setup(w, vl, submitButtonCallBack);
+        trainViewJPanel1.setHeight(20);
          trainViewJPanel1.setCenterTrain(true);
-        this.w = mr.getWorld();
-		principal = mr.getPlayerPrincipal();
+        this.w = w;
     }    
     
     public void displayTrain(int trainNumber){
@@ -90,34 +79,36 @@ public class TrainDetailsJPanel extends javax.swing.JPanel implements View, Worl
     	this.trainNumber = trainNumber;
         
         trainViewJPanel1.display(trainNumber);
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, principal);
-        
-        this.bundleID = train.getCargoBundleNumber();
-        
+	String s;
+	if (trainNumber >= 0) {
+	    TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
 
-        for(int i = 0 ; i < train.getNumberOfWagons() ; i++ ){
-            //this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
-        }
-        CargoBundle cb = (CargoBundle)w.get(KEY.CARGO_BUNDLES, train.getCargoBundleNumber(), principal);
-        String s="Train #"+trainNumber+": ";
-        int numberOfTypesInBundle = 0;
-        for (int i = 0 ; i < w.size(SKEY.CARGO_TYPES) ; i ++){
-            int amount = cb.getAmount(i);
-            if(0 != amount){
-                CargoType ct = (CargoType)w.get(SKEY.CARGO_TYPES, i);
-                String cargoTypeName = ct.getDisplayName();
-                if(0!=numberOfTypesInBundle){
-                    s+="; ";
-                }
-                numberOfTypesInBundle++;
-               
-                s+= cargoTypeName+" ("+amount+")";
-            }
-        }
-        if(0 == numberOfTypesInBundle){
-            s+="no cargo";
-        }
-        s+=".";
+	    this.bundleID = train.getCargoBundleNumber();
+
+	    CargoBundle cb = (CargoBundle)w.get(KEY.CARGO_BUNDLES,
+		    train.getCargoBundleNumber());
+	    s="Train #"+trainNumber+": ";
+	    int numberOfTypesInBundle = 0;
+	    for (int i = 0 ; i < w.size(KEY.CARGO_TYPES) ; i ++){
+		int amount = cb.getAmount(i);
+		if(0 != amount){
+		    CargoType ct = (CargoType)w.get(KEY.CARGO_TYPES, i);
+		    String cargoTypeName = ct.getDisplayName();
+		    if(0!=numberOfTypesInBundle){
+			s+="; ";
+		    }
+		    numberOfTypesInBundle++;
+
+		    s+= cargoTypeName+" ("+amount+")";
+		}
+	    }
+	    if(0 == numberOfTypesInBundle){
+		s+="no cargo";
+	    }
+	    s+=".";
+	} else {
+	    s = "No trains to display";
+	}
         this.jLabel1.setText(s);
     }
         

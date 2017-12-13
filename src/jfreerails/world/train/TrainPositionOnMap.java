@@ -231,6 +231,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             int[] newXpoints = new int[newLength];
             int[] newYpoints = new int[newLength];
 
+            int aLength = this.getLength();
             int bLength = b.getLength();
 
             //copy head from b
@@ -280,6 +281,9 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
             int[] newXpoints = new int[newLength];
             int[] newYpoints = new int[newLength];
+
+            int aLength = this.getLength();
+            int bLength = b.getLength();
 
             //Copy from this
             for (int i = 0; i < newLength - 1; i++) {

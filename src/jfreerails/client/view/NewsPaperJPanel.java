@@ -12,6 +12,9 @@ import java.awt.Image;
 import java.awt.Transparency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import jfreerails.client.renderer.ViewLists;
+import jfreerails.world.top.ReadOnlyWorld;
 /**
  *
  * @author  lindsal8
@@ -111,7 +114,8 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 	}
 
 	public void setup(
-		ModelRoot mr,
+		ReadOnlyWorld w,
+		ViewLists vl,
 		ActionListener submitButtonCallBack) {
 
 		this.callBack = submitButtonCallBack;

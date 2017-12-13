@@ -17,6 +17,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JToggleButton;
 
+import jfreerails.client.model.TrackBuildModel;
+import jfreerails.client.model.ModelRoot;
 import jfreerails.client.renderer.ViewLists;
 
 /**
@@ -64,6 +66,9 @@ class TrackBuildJPanel extends javax.swing.JPanel {
 	    // Stations get built in the station pane
 	    TrackRuleButton button = new TrackRuleButton((Action) e.nextElement());
 	    button.setModel((ButtonModel) enumButtonModels.nextElement());
+	    Dimension d = button.getSize();
+	    Dimension s = trackBuildModesPanel.getSize();
+	    int columns = (int) (s.getWidth() / d.getWidth());
 	    buttonGroup.add(button);
 	    trackBuildModesPanel.add(button);
 	    numberOfButtons++;

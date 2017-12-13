@@ -5,10 +5,12 @@ import jfreerails.server.common.TileSetFactory;
 import jfreerails.server.common.TrackSetFactory;
 import jfreerails.server.parser.Track_TilesHandlerImpl;
 import jfreerails.util.FreerailsProgressMonitor;
+import jfreerails.world.city.CityTilePositioner;
+import jfreerails.world.city.InputCityNames;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
-import jfreerails.world.top.GameRules;
 import jfreerails.world.top.ITEM;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.WagonAndEngineTypesFactory;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
@@ -47,6 +49,10 @@ public class OldWorldImpl {
 
         int progess = 0;
 
+        //Load the xml file specifying terrain types.
+        URL tiles_xml_url = OldWorldImpl.class.getResource(
+                "/jfreerails/data/terrain_tiles.xml");
+
         TileSetFactory tileFactory = new NewTileSetFactoryImpl();
         pm.setValue(++progess);
 
@@ -54,12 +60,12 @@ public class OldWorldImpl {
         WorldImpl w = new WorldImpl();
         pm.setValue(++progess);
 
+        tileFactory.addTerrainTileTypesList(w);
+        pm.setValue(++progess);
+
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         pm.setValue(++progess);
         wetf.addTypesToWorld(w);
-        pm.setValue(++progess);
-
-        tileFactory.addTerrainTileTypesList(w);
         pm.setValue(++progess);
 
         URL track_xml_url = OldWorldImpl.class.getResource(
@@ -81,21 +87,17 @@ public class OldWorldImpl {
                 mapName + "_cities.xml");
 
         try {
-            InputCityNames.readCityNames(w, cities_xml_url);
+            InputCityNames r = new InputCityNames(w, cities_xml_url);
         } catch (SAXException e) {
         }
 
         //Randomly position the city tiles
-        CityTilePositioner.positionCityTiles(w);
+        CityTilePositioner ctp = new CityTilePositioner(w);
 
         //Set the time..
         w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         w.set(ITEM.TIME, new GameTime(0));
-        w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 
-        /* Note, money used to get added to player accounts here, now
-         * it is done when players are added.
-         */
         return w;
     }
 }

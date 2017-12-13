@@ -19,12 +19,12 @@ import jfreerails.util.FreerailsProgressMonitor;
 import jfreerails.util.GameModel;
 import jfreerails.world.common.GameCalendar;
 import jfreerails.world.common.GameTime;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.player.Player;
 import jfreerails.world.station.ProductionAtEngineShop;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.ITEM;
 import jfreerails.world.top.KEY;
+import jfreerails.world.top.NonNullElements;
 import jfreerails.world.top.World;
 
 
@@ -42,6 +42,10 @@ public class ServerGameEngine implements GameModel, Runnable {
     private final AuthoritativeMoveExecuter moveExecuter;
     private final QueuedMoveReceiver queuedMoveReceiver;
     private World world;
+
+    /* some stats for monitoring sim speed */
+    private int statUpdates = 0;
+    private long statLastTimestamp = 0;
     private final MoveChainFork moveChainFork;
     private CalcSupplyAtStations calcSupplyAtStations;
     TrainBuilder tb;
@@ -63,7 +67,14 @@ public class ServerGameEngine implements GameModel, Runnable {
      * Number of ticks since the last time we did an infrequent update
      */
     private int ticksSinceUpdate = 0;
+    private long frameStartTime;
     private long nextModelUpdateDue = System.currentTimeMillis();
+    private long baseTime = System.currentTimeMillis();
+
+    /**
+     * number of ticks since baseTime
+     */
+    private int n;
     ArrayList trainMovers = new ArrayList();
     private int currentYearLastTick = -1;
     private boolean keepRunning = true;
@@ -101,7 +112,7 @@ public class ServerGameEngine implements GameModel, Runnable {
         moveChainFork = new MoveChainFork();
 
         moveExecuter = new AuthoritativeMoveExecuter(world, moveChainFork);
-        identityProvider = new IdentityProvider(this, moveExecuter);
+        identityProvider = new IdentityProvider(this);
         queuedMoveReceiver = new QueuedMoveReceiver(moveExecuter,
                 identityProvider);
         tb = new TrainBuilder(world, moveExecuter);
@@ -120,7 +131,7 @@ public class ServerGameEngine implements GameModel, Runnable {
     }
 
     public void run() {
-        Thread.currentThread().setName("JFreerails server");
+        Thread.currentThread().setName("Railz server");
 
         /*
          * bump this threads priority so we always gain control.
@@ -171,23 +182,23 @@ public class ServerGameEngine implements GameModel, Runnable {
      * </ol>
      */
     public synchronized void update() {
-        long frameStartTime = System.currentTimeMillis();
-
-        /* First do the things that need doing whether or not the game is paused.
-
-                /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
-                * without first calling moveExecuter.executeOutstandingMoves()
-                */
-        buildTrains();
-        queuedMoveReceiver.executeOutstandingMoves();
-
         if (targetTicksPerSecond > 0) {
-            /* Update the time first, since other updates might need
-            to know the current time.*/
+            queuedMoveReceiver.executeOutstandingMoves();
+
+            /*
+             * start of server world update
+             */
+            //update the time first, since other updates might need
+            //to know the current time.
             updateGameTime();
 
             //now do the other updates
             moveTrains();
+
+            /*  Note, an Exception gets thrown if moveTrains() is called after buildTrains()
+             * without first calling moveExecuter.executeOutstandingMoves()
+             */
+            buildTrains();
 
             //Check whether we have just started a new year..
             GameTime time = (GameTime)world.get(ITEM.TIME);
@@ -203,9 +214,34 @@ public class ServerGameEngine implements GameModel, Runnable {
                 infrequentUpdate();
             }
 
+            /*
+             * all world updates done... now schedule next tick
+             */
+            statUpdates++;
+            n++;
+            frameStartTime = System.currentTimeMillis();
+
+            if (statUpdates == 100) {
+                /* every 100 ticks, calculate some stats and reset
+                 * the base time */
+                statUpdates = 0;
+
+                int updatesPerSec = (int)(100000L / (frameStartTime -
+                    statLastTimestamp));
+
+                if (statLastTimestamp > 0) {
+                    //	System.out.println(
+                    //		"Updates per sec " + updatesPerSec);
+                }
+
+                statLastTimestamp = frameStartTime;
+
+                baseTime = frameStartTime;
+                n = 0;
+            }
+
             /* calculate "ideal world" time for next tick */
-            nextModelUpdateDue = nextModelUpdateDue +
-                (1000 / targetTicksPerSecond);
+            nextModelUpdateDue = baseTime + (1000 * n) / targetTicksPerSecond;
 
             int delay = (int)(nextModelUpdateDue - frameStartTime);
 
@@ -225,6 +261,15 @@ public class ServerGameEngine implements GameModel, Runnable {
 
             ticksSinceUpdate++;
         } else {
+            /*
+             * even when game is paused, we should still check for moves
+             * submitted by players due to execution of ServerCommands on the
+             * server
+             */
+            queuedMoveReceiver.executeOutstandingMoves();
+            // desired tick rate was 0
+            nextModelUpdateDue = frameStartTime;
+
             try {
                 //When the game is frozen we don't want to be spinning in a
                 //loop.
@@ -232,8 +277,6 @@ public class ServerGameEngine implements GameModel, Runnable {
             } catch (InterruptedException e) {
                 // do nothing
             }
-
-            nextModelUpdateDue = System.currentTimeMillis();
         }
     }
 
@@ -252,28 +295,21 @@ public class ServerGameEngine implements GameModel, Runnable {
      *
      */
     private void buildTrains() {
-        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
+        for (int i = 0; i < world.size(KEY.STATIONS); i++) {
+            StationModel station = (StationModel)world.get(KEY.STATIONS, i);
 
-            for (int i = 0; i < world.size(KEY.STATIONS, principal); i++) {
-                StationModel station = (StationModel)world.get(KEY.STATIONS, i,
-                        principal);
+            if (null != station && null != station.getProduction()) {
+                ProductionAtEngineShop production = station.getProduction();
+                Point p = new Point(station.x, station.y);
+                TrainMover trainMover = tb.buildTrain(production.getEngineType(),
+                        production.getWagonTypes(), p);
 
-                if (null != station && null != station.getProduction()) {
-                    ProductionAtEngineShop production = station.getProduction();
-                    Point p = new Point(station.x, station.y);
-                    TrainMover trainMover = tb.buildTrain(production.getEngineType(),
-                            production.getWagonTypes(), p, principal);
-
-                    //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
-                    TrainPathFinder tpf = trainMover.getTrainPathFinder();
-                    this.addServerAutomaton(tpf);
-                    this.addTrainMover(trainMover);
-
-                    ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(production,
-                            null, i, principal);
-                    moveExecuter.processMove(move);
-                }
+                //FIXME, at some stage 'ServerAutomaton' and 'trainMovers' should be combined.
+                TrainPathFinder tpf = trainMover.getTrainPathFinder();
+                this.addServerAutomaton(tpf);
+                this.addTrainMover(trainMover);
+                moveExecuter.processMove(new ChangeProductionAtEngineShopMove(
+                        production, null, i));
             }
         }
     }
@@ -317,9 +353,11 @@ public class ServerGameEngine implements GameModel, Runnable {
             /**
              * save player private data
              */
-            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-                Player player = world.getPlayer(i);
-                player.saveSession(objectOut);
+            NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
+                    Player.AUTHORITATIVE);
+
+            while (i.next()) {
+                ((Player)i.getElement()).saveSession(objectOut);
             }
 
             objectOut.flush();
@@ -350,9 +388,11 @@ public class ServerGameEngine implements GameModel, Runnable {
             /**
              * load player private data
              */
-            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-                Player player = world.getPlayer(i);
-                player.loadSession(objectIn);
+            NonNullElements i = new NonNullElements(KEY.PLAYERS, world,
+                    Player.AUTHORITATIVE);
+
+            while (i.next()) {
+                ((Player)i.getElement()).loadSession(objectIn);
             }
 
             engine = new ServerGameEngine(trainMovers, world, serverAutomata);
@@ -368,10 +408,6 @@ public class ServerGameEngine implements GameModel, Runnable {
      * @return World
      */
     public synchronized World getWorld() {
-        /* Nobody in their right minds would expect this to return a clone ...
-         * Would they???
-        return world.defensiveCopy();
-         */
         return world;
     }
 

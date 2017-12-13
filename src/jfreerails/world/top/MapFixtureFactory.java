@@ -1,8 +1,6 @@
 package jfreerails.world.top;
 
 import java.util.HashSet;
-import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
 import jfreerails.world.terrain.TerrainType;
 import jfreerails.world.track.LegalTrackConfigurations;
 import jfreerails.world.track.LegalTrackPlacement;
@@ -20,11 +18,6 @@ public class MapFixtureFactory {
     public int w = 10;
     public int h = 10;
     public World world = new WorldImpl(w, h);
-
-    /** Only subclasses should use these constants.*/
-    public static final Player TEST_PLAYER = new Player("test player",
-            (new Player("test player")).getPublicKey(), 0);
-    public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
 
     public MapFixtureFactory() {
         generateTrackRuleList(world);
@@ -79,12 +72,12 @@ public class MapFixtureFactory {
 
         //Add track rules to world
         for (int i = 0; i < trackRulesArray.length; i++) {
-            world.add(SKEY.TRACK_RULES, trackRulesArray[i]);
+            world.add(KEY.TRACK_RULES, trackRulesArray[i]);
         }
 
-        //Add a single terrain type..
+        //Add a single terrain type..		
         //We need this since when we built track, the terrain type gets check to see if we can
         //built track on it and an exception is thrown if terrain type 0 does not exist.
-        world.add(SKEY.TERRAIN_TYPES, TerrainType.NULL);
+        world.add(KEY.TERRAIN_TYPES, TerrainType.NULL);
     }
 }

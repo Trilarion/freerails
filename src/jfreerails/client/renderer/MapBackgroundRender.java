@@ -13,8 +13,8 @@ import jfreerails.world.terrain.TerrainTile;
 import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.track.TrackPiece;
 
-
-/** This class encapsulates the objects that make-up and paint the background
+/**
+ * This class encapsulates the objects that make-up and paint the background
  * of the map view. At present it is composed of two layers: the terrain layer
  * and the track layer.
  *
@@ -23,11 +23,13 @@ import jfreerails.world.track.TrackPiece;
  * @version 1
  */
 final public class MapBackgroundRender implements MapLayerRenderer {
-    /** The terrain layer.
+    /**
+     * The terrain layer.
      */
     protected TerrainLayer terrainLayer;
 
-    /** The track layer.
+    /**
+     * The track layer.
      */
     protected TrackLayer trackLayer;
     private Dimension tileSize = new Dimension(30, 30);
@@ -41,14 +43,15 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     /**
      *  This innner class represents a view of the track on the map.
      *
-     *@author     Luke Lindsay
+     * @author     Luke Lindsay
      *     21 September 2001
      */
     final public class TrackLayer implements MapLayerRenderer {
         private ReadOnlyWorld w;
         private TrackPieceRendererList trackPieceViewList;
 
-        /** Paints a rectangle of tiles onto the supplied
+        /**
+	 * Paints a rectangle of tiles onto the supplied
          * graphics context.
          * @param g The graphics context on which the tiles
          * get painted.
@@ -56,10 +59,12 @@ final public class MapBackgroundRender implements MapLayerRenderer {
          * paint.
          */
         public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
-            /*  Track can overlap the adjacent terrain tiles by half a tile.  This means
-             *that we need to paint the track from the tiles bordering the specified rectangle
-             *of tiles (tilesToPaint).  To prevent unnecessay painting, we set the clip to expose only the
-             *rectangle of tilesToPaint.
+	    /*
+	     * Track can overlap the adjacent terrain tiles by half a tile.
+	     * This means that we need to paint the track from the tiles
+	     * bordering the specified rectangle *of tiles (tilesToPaint).  To
+	     * prevent unnecessay painting, we set the clip to expose only the
+	     * rectangle of tilesToPaint.
              */
             Graphics tempG = g;
             Point tile = new Point();
@@ -88,8 +93,9 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
         public void paintTile(Graphics g, int tileX, int tileY) {
             /*
-             *  Since track tiles overlap the adjacent terrain tiles, we create a temporary Graphics
-             *  object that only lets us draw on the selected tile.
+	     *  Since track tiles overlap the adjacent terrain tiles, we create
+	     *  a temporary Graphics object that only lets us draw on the
+	     *  selected tile.
              */
             paintRectangleOfTiles(g, new Rectangle(tileX, tileY, 1, 1));
         }
@@ -117,7 +123,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     /**
      *  This inner class represents the terrain of the map.
      *
-     *@author     Luke Lindsay
+     * @author     Luke Lindsay
      *     21 September 2001
      */
     final public class TerrainLayer implements MapLayerRenderer {
@@ -143,10 +149,12 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             }
         }
 
-        /** Paints a rectangle of tiles on the supplied graphics
+        /**
+	 * Paints a rectangle of tiles on the supplied graphics
          * context.
          * @param g The grahics context.
-         * @param tilesToPaint The rectangle, measued in tiles, to paint.
+	 * @param tilesToPaint The rectangle defining the area of the map to
+	 * draw, measured in tile coordinates, to paint.
          */
         public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
             Point tile = new Point();
@@ -170,6 +178,14 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             paintTile(g, new Point(tileX, tileY));
         }
 
+	/**
+	 * @param g graphics context on which to draw, origin at top left of
+	 * map origin
+	 * @param x map coord in tiles of area to draw
+	 * @param y map coord in tiles of area to draw
+	 * @param width width in tiles of area to draw
+	 * @param height height in tiles of area to draw
+	 */
         private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
             int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
@@ -196,20 +212,31 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         trackLayer.paintTile(g, x, y);
     }
 
+    /**
+     * @param g Graphics context with origin pointing to top left corner of
+     * viewport.
+     * @param visibleRect rectangle defining area of map to draw relative to
+     * origin 0,0 at top left of map, measured in pixels.
+     */
     public void paintRect(Graphics g, Rectangle visibleRect) {
         int tileWidth = 30;
         int tileHeight = 30;
 
-        clipRectangle = g.getClipBounds(clipRectangle);
-
-        int x = clipRectangle.x / tileWidth;
-        int y = clipRectangle.y / tileHeight;
-        int width = (clipRectangle.width / tileWidth) + 2;
-        int height = (clipRectangle.height) / tileHeight + 2;
-
+        int x = visibleRect.x / tileWidth;
+        int y = visibleRect.y / tileHeight;
+        int width = visibleRect.width / tileWidth + 2;
+        int height = visibleRect.height / tileHeight + 2;
         paintRectangleOfTiles(g, x, y, width, height);
     }
 
+    /**
+     * @param g graphics context on which to draw, origin at top left of
+     * area to draw
+     * @param x map coord in tiles of area to draw
+     * @param y map coord in tiles of area to draw
+     * @param width width in tiles of area to draw
+     * @param height height in tiles of area to draw
+     */
     private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
         int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);

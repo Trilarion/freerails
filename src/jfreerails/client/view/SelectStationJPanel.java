@@ -13,8 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
 
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -49,8 +49,6 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     private double scale = 1;
     
     private boolean needsUpdating = true;
-    
-    private FreerailsPrincipal principal;
     
     /** Creates new form SelectStationJPanel */
     public SelectStationJPanel() {
@@ -128,9 +126,10 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         try{
+            int lastSelectedStationId = this.selectedStationID;
             OneTileMoveVector v = OneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
             //now find nearest station in direction of the vector.
-            NearestStationFinder stationFinder = new NearestStationFinder(this.world, this.principal);
+            NearestStationFinder stationFinder = new NearestStationFinder(this.world);
             int station = stationFinder.findNearestStationInDirection(this.selectedStationID, v);
             
             if(selectedStationID != station && station != NearestStationFinder.NOT_FOUND){
@@ -159,7 +158,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         double y = evt.getY();
         y = y /scale +  visableMapTiles.y;
         
-        NearestStationFinder stationFinder = new NearestStationFinder(this.world, this.principal);
+        NearestStationFinder stationFinder = new NearestStationFinder(this.world);
         int station = stationFinder.findNearestStation((int)x, (int)y);
         
         if(selectedStationID != station && station != NearestStationFinder.NOT_FOUND){
@@ -176,8 +175,8 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         this.selectedOrderNumber = orderNumber;
         
         //Set the selected station to the current station for the specified order.
-        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainID, this.principal);
-        Schedule schedule = (Schedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), this.principal);
+        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainID);
+        Schedule schedule = (Schedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID());
         TrainOrdersModel order = schedule.getOrder(selectedOrderNumber);
         this.selectedStationID = order.getStationNumber();
         
@@ -200,7 +199,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         int bottomRightY = Integer.MIN_VALUE;
         
         
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world, this.principal);
+        NonNullElements it = new NonNullElements(KEY.STATIONS, world);
         while(it.next()){
             StationModel station = (StationModel)it.getElement();
             if(station.x < topLeftX) topLeftX = station.x;
@@ -234,7 +233,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         super.paintComponent(g);
         
         Graphics2D g2 = (Graphics2D)g;
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world, this.principal);
+        NonNullElements it = new NonNullElements(KEY.STATIONS, world);
         
         //Draw track
         g2.setColor(Color.BLACK);
@@ -251,8 +250,8 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
             }
         }
         
-        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainID, this.principal);
-        Schedule schedule = (Schedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID(), this.principal);
+        TrainModel train = (TrainModel)world.get(KEY.TRAINS, this.trainID);
+        Schedule schedule = (Schedule)world.get(KEY.TRAIN_SCHEDULES, train.getScheduleID());
         
         //Draw stations
         while(it.next()){
@@ -300,11 +299,10 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         }        
     }
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
-        cargoWaitingAndDemandedJPanel1.setup(mr,  null);
-        this.world = mr.getWorld();
+    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
+        cargoWaitingAndDemandedJPanel1.setup(w, vl,  null);
+        this.world = w;
         this.submitButtonCallBack = submitButtonCallBack;
-		principal = mr.getPlayerPrincipal();
     }
     
     public int getSelectedStationID(){

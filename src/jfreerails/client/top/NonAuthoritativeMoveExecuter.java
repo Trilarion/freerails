@@ -3,18 +3,17 @@ package jfreerails.client.top;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import jfreerails.client.view.ModelRoot;
+import jfreerails.client.model.ModelRoot;
 import jfreerails.controller.MoveReceiver;
-import jfreerails.controller.SychronizedQueue;
 import jfreerails.controller.UncommittedMoveReceiver;
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
 import jfreerails.move.RejectedMove;
 import jfreerails.move.UndoneMove;
-import jfreerails.util.GameModel;
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.player.Player;
 import jfreerails.world.top.World;
+import jfreerails.util.GameModel;
+import jfreerails.util.SychronizedQueue;
 
 
 /**
@@ -108,11 +107,12 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                 // rejected
                 Move attempted = rm.getAttemptedMove();
 
-                ms = attempted.tryUndoMove(world, Player.AUTHORITATIVE);
+		ms = attempted.tryUndoMove(world, attempted.getPrincipal());
 
                 if (ms == MoveStatus.MOVE_OK) {
                     System.err.println("undoing " + attempted.toString());
-                    attempted.undoMove(world, Player.AUTHORITATIVE);
+
+		    attempted.undoMove(world, attempted.getPrincipal());
                     rejectedMoves.remove(i);
                     forwardMove(new UndoneMove(attempted), ms);
                     n++;
@@ -156,10 +156,8 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
                             while (!approvedMoves.isEmpty()) {
                                 Move am = (Move)approvedMoves.getFirst();
 
-                                /* TODO
-                                 * if (am.doMove(world, am.getPrincipal()) !=
-                                 */
-                                if (am.doMove(world, Player.AUTHORITATIVE) != MoveStatus.MOVE_OK) {
+				if (am.doMove(world, am.getPrincipal()) !=
+					MoveStatus.MOVE_OK) {
                                     break;
                                 }
 
@@ -179,10 +177,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
 
             /* move must be from another client */
             if (!(move instanceof RejectedMove)) {
-                /* TODO
-                 * ms = move.doMove(world, move.getPrincipal());
-                 */
-                ms = move.doMove(world, Player.AUTHORITATIVE);
+		ms = move.doMove(world, move.getPrincipal());
 
                 if (ms != MoveStatus.MOVE_OK) {
                     if (debug) {
@@ -220,7 +215,7 @@ public class NonAuthoritativeMoveExecuter implements UncommittedMoveReceiver,
             if (moveReceiver != null) {
                 MoveStatus ms;
 
-                ms = move.doMove(world, Player.AUTHORITATIVE);
+		ms = move.doMove(world, move.getPrincipal());
 
                 if (ms == MoveStatus.MOVE_OK) {
                     pendingMoves.add(move);

@@ -29,6 +29,7 @@ public class BankAccount implements FreerailsSerializable {
     }
 
     public void addTransaction(Transaction t) {
+	System.out.println("Added transaction of " + t.getValue().toString());
         transactions.add(t);
         this.currentBalance = new Money(currentBalance.getAmount() +
                 t.getValue().getAmount());
@@ -37,6 +38,7 @@ public class BankAccount implements FreerailsSerializable {
     public Transaction removeLastTransaction() {
         int last = transactions.size() - 1;
         Transaction t = (Transaction)transactions.remove(last);
+	System.out.println("Removed transaction of " + t.getValue().toString());
         this.currentBalance = new Money(currentBalance.getAmount() -
                 t.getValue().getAmount());
 

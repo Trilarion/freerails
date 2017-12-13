@@ -9,7 +9,7 @@
             <Property name="text" type="java.lang.String" value="Game"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createGameMenu();"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new GameMenu(modelRoot, gUIComponentFactory);"/>
           </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="buildMenu">
@@ -17,7 +17,7 @@
             <Property name="text" type="java.lang.String" value="Build"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createBuildMenu();"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new BuildMenu();"/>
           </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="displayMenu">
@@ -25,7 +25,7 @@
             <Property name="text" type="java.lang.String" value="Display"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createDisplayMenu();"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DisplayMenu(gUIComponentFactory);"/>
           </AuxValues>
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
@@ -33,7 +33,7 @@
             <Property name="text" type="java.lang.String" value="Help"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createHelpMenu();"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new HelpMenu(gUIComponentFactory);"/>
           </AuxValues>
         </Menu>
       </SubComponents>
@@ -75,7 +75,7 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="mapOverview">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createOverviewMap();"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new OverviewMapJComponent(gUIComponentFactory);"/>
               </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -87,7 +87,7 @@
             </Container>
             <Container class="javax.swing.JTabbedPane" name="trainsJTabPane1">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createTrainsJTabPane();&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new TrainsJTabPane();"/>
               </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -113,9 +113,6 @@
                 <Property name="alignmentX" type="float" value="0.0"/>
                 <Property name="alignmentY" type="float" value="0.0"/>
               </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createMainMap();"/>
-              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                   <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
@@ -135,12 +132,12 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="datejLabel">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createDateJLabel();"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DateJLabel();"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="cashjLabel">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="gUIComponentFactory.createCashJLabel();"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new CashJLabel();"/>
                   </AuxValues>
                 </Component>
               </SubComponents>

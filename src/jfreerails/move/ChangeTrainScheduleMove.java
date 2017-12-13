@@ -3,7 +3,6 @@
  */
 package jfreerails.move;
 
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.train.ImmutableSchedule;
 
@@ -14,7 +13,7 @@ import jfreerails.world.train.ImmutableSchedule;
 */
 public class ChangeTrainScheduleMove extends ChangeItemInListMove {
     public ChangeTrainScheduleMove(int id, ImmutableSchedule before,
-        ImmutableSchedule after, FreerailsPrincipal p) {
-        super(KEY.TRAIN_SCHEDULES, id, before, after, p);
+        ImmutableSchedule after) {
+        super(KEY.TRAIN_SCHEDULES, id, before, after);
     }
 }

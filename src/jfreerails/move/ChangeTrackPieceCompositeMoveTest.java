@@ -6,23 +6,18 @@
  */
 package jfreerails.move;
 
-import java.awt.Point;
-import jfreerails.controller.TrackMoveTransactionsGenerator;
-import jfreerails.world.common.OneTileMoveVector;
-import jfreerails.world.player.Player;
-import jfreerails.world.top.GameRules;
-import jfreerails.world.top.ITEM;
-import jfreerails.world.top.MapFixtureFactory;
-import jfreerails.world.top.SKEY;
-import jfreerails.world.top.World;
-import jfreerails.world.top.WorldImpl;
-import jfreerails.world.track.FreerailsTile;
-import jfreerails.world.track.NullTrackPiece;
-import jfreerails.world.track.TrackPiece;
-import jfreerails.world.track.TrackPieceImpl;
-import jfreerails.world.track.TrackRule;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import java.awt.Point;
+import jfreerails.world.accounts.BankAccount;
+import jfreerails.world.common.OneTileMoveVector;
+import jfreerails.world.player.Player;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.MapFixtureFactory;
+import jfreerails.world.top.WorldImpl;
+import jfreerails.world.track.NullTrackPiece;
+import jfreerails.world.track.TrackRule;
 
 
 /**
@@ -30,13 +25,6 @@ import junit.framework.TestSuite;
  * @author lindsal
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
-    OneTileMoveVector southeast = OneTileMoveVector.SOUTH_EAST;
-    OneTileMoveVector east = OneTileMoveVector.EAST;
-    OneTileMoveVector northeast = OneTileMoveVector.NORTH_EAST;
-    OneTileMoveVector south = OneTileMoveVector.SOUTH;
-    OneTileMoveVector west = OneTileMoveVector.WEST;
-    TrackMoveTransactionsGenerator transactionsGenerator;
-
     public ChangeTrackPieceCompositeMoveTest(java.lang.String testName) {
         super(testName);
     }
@@ -54,17 +42,17 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     protected void setUp() {
         super.setHasSetupBeenCalled(true);
         setWorld(new WorldImpl(10, 10));
-        getWorld().set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
-        getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+	getWorld().add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
+	getWorld().add(KEY.BANK_ACCOUNTS, new BankAccount(),
+		testPlayer.getPrincipal());
         MapFixtureFactory.generateTrackRuleList(getWorld());
-        transactionsGenerator = new TrackMoveTransactionsGenerator(getWorld(),
-                MapFixtureFactory.TEST_PRINCIPAL);
     }
 
     public void testRemoveTrack() {
-        getWorld().set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
+        OneTileMoveVector east = OneTileMoveVector.EAST;
+        OneTileMoveVector west = OneTileMoveVector.WEST;
 
-        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
 
         assertBuildTrackSuceeds(new Point(0, 5), east, trackRule);
 
@@ -83,59 +71,17 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
             getWorld().getTile(1, 5).getTrackConfiguration());
     }
 
-    /** All track except the first piece built should be connected to existing track.*/
-    public void testMustConnect2ExistingTrack() {
-        World world = getWorld();
-        TrackRule trackRule = (TrackRule)world.get(SKEY.TRACK_RULES, 0);
-
-        int numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(0, numberOfTransactions);
-
-        boolean hasTrackBeenBuilt = ChangeTrackPieceCompositeMove.hasAnyTrackBeenBuilt(world,
-                MapFixtureFactory.TEST_PRINCIPAL);
-        assertFalse("No track has been built yet.", hasTrackBeenBuilt);
-        assertBuildTrackSuceeds(new Point(0, 5), east, trackRule);
-
-        //Building the track should have added a transaction.
-        numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PRINCIPAL);
-        assertTrue(0 < numberOfTransactions);
-
-        hasTrackBeenBuilt = ChangeTrackPieceCompositeMove.hasAnyTrackBeenBuilt(world,
-                MapFixtureFactory.TEST_PRINCIPAL);
-        assertTrue("One track piece has been built.", hasTrackBeenBuilt);
-
-        assertBuildTrackSuceeds(new Point(1, 5), east, trackRule);
-        assertBuildTrackFails(new Point(4, 8), east, trackRule);
-    }
-
-    public void testCannotConnect2OtherRRsTrack() {
-        World world = getWorld();
-        assertFalse(ChangeTrackPieceMove.canConnect2OtherRRsTrack(world));
-
-        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
-
-        assertBuildTrackSuceeds(new Point(0, 6), east, trackRule);
-
-        //Now change the owner of the track piece at  (1, 6);				
-        int anotherPlayer = 999;
-        FreerailsTile oldTile = world.getTile(1, 6);
-        TrackPiece tp = oldTile.getTrackPiece();
-        TrackPiece newTrackPiece = new TrackPieceImpl(tp.getTrackConfiguration(),
-                tp.getTrackRule(), anotherPlayer);
-        FreerailsTile newTile = new FreerailsTile(oldTile.getTerrainTypeNumber(),
-                newTrackPiece);
-        world.setTile(1, 6, newTile);
-        assertBuildTrackFails(new Point(1, 6), east, trackRule);
-        world.setTile(1, 6, oldTile);
-        assertBuildTrackSuceeds(new Point(1, 6), east, trackRule);
-    }
-
     public void testBuildTrack() {
         Point pointA = new Point(0, 0);
         Point pointB = new Point(1, 1);
         Point pointC = new Point(1, 0);
+        OneTileMoveVector southeast = OneTileMoveVector.SOUTH_EAST;
+        OneTileMoveVector east = OneTileMoveVector.EAST;
+        OneTileMoveVector northeast = OneTileMoveVector.NORTH_EAST;
+        OneTileMoveVector south = OneTileMoveVector.SOUTH;
+        OneTileMoveVector west = OneTileMoveVector.WEST;
 
-        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
 
         //First track piece built
         assertBuildTrackSuceeds(pointA, southeast, trackRule);
@@ -144,8 +90,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackSuceeds(pointB, northeast, trackRule);
 
         //Track connected to one existing track piece
-        //This is not going through for soem reason, not sure why.
-        //       assertBuildTrackSuceeds(pointC, west, trackRule);
+        assertBuildTrackSuceeds(pointC, east, trackRule);
+
         //Track connecting two existing track pieces.
         assertBuildTrackSuceeds(pointA, east, trackRule);
 
@@ -166,42 +112,46 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         //Not allowed on this terrain type, from existing track.
         assertBuildTrackFails(new Point(2, 0), northeast,
-            (TrackRule)getWorld().get(SKEY.TRACK_RULES, 1));
+            (TrackRule)getWorld().get(KEY.TRACK_RULES, 1));
     }
 
     private void assertBuildTrackFails(Point p, OneTileMoveVector v,
         TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p,
-                v, rule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
-        MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+                v, rule, getWorld());
+        MoveStatus status = move.doMove(getWorld(), testPlayer.getPrincipal());
         assertEquals(false, status.isOk());
     }
 
     private void assertBuildTrackSuceeds(Point p, OneTileMoveVector v,
         TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p,
-                v, rule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
-
-        Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-        MoveStatus status = moveAndTransaction.doMove(getWorld(),
-                Player.AUTHORITATIVE);
+                v, rule, getWorld());
+        MoveStatus status = move.doMove(getWorld(), testPlayer.getPrincipal());
         assertEquals(true, status.isOk());
     }
 
     private void assertRemoveTrackSuceeds(Point p, OneTileMoveVector v) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(p,
-                v, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
-        MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+                v, getWorld());
+        MoveStatus status = move.doMove(getWorld(), testPlayer.getPrincipal());
         assertEquals(true, status.isOk());
     }
 
     public void testMove() {
         Point pointA = new Point(0, 0);
-        TrackRule trackRule = (TrackRule)getWorld().get(SKEY.TRACK_RULES, 0);
+        Point pointB = new Point(1, 1);
+        Point pointC = new Point(1, 0);
+        OneTileMoveVector southeast = OneTileMoveVector.SOUTH_EAST;
+        OneTileMoveVector east = OneTileMoveVector.EAST;
+        OneTileMoveVector northeast = OneTileMoveVector.NORTH_EAST;
+        OneTileMoveVector south = OneTileMoveVector.SOUTH;
+        OneTileMoveVector west = OneTileMoveVector.WEST;
+
+        TrackRule trackRule = (TrackRule)getWorld().get(KEY.TRACK_RULES, 0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA,
-                southeast, trackRule, getWorld(),
-                MapFixtureFactory.TEST_PRINCIPAL);
+                southeast, trackRule, getWorld());
 
         assertEqualsSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);

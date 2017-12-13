@@ -5,7 +5,6 @@
 package jfreerails.move;
 
 import jfreerails.world.common.Money;
-import jfreerails.world.top.MapFixtureFactory;
 import jfreerails.world.train.ImmutableSchedule;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainOrdersModel;
@@ -24,8 +23,8 @@ public class AddTrainMoveTest extends AbstractMoveTestCase {
                     orders, orders, orders
                 }, 1, true);
         Money price = new Money(100);
-        AddTrainMove move = AddTrainMove.generateMove(0, train, price,
-                schedule, MapFixtureFactory.TEST_PRINCIPAL);
+	AddTrainMove move = AddTrainMove.generateMove(0, train, price,
+		schedule, testPlayer.getPrincipal());
         assertTryMoveIsOk(move);
         assertEqualsSurvivesSerialisation(move);
     }

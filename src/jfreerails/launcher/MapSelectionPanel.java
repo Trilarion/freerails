@@ -67,12 +67,12 @@ class MapSelectionPanel extends javax.swing.JPanel {
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
 
-        loadMapButton.setText("Load a saved game");
+        loadMapButton.setText(jfreerails.util.Resources.get("Load a saved game"));
         buttonGroup1.add(loadMapButton);
         jPanel2.add(loadMapButton);
 
         newMapButton.setSelected(true);
-        newMapButton.setText("Start a new map");
+        newMapButton.setText(jfreerails.util.Resources.get("Start a new map"));
         buttonGroup1.add(newMapButton);
         newMapButton.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -86,7 +86,7 @@ class MapSelectionPanel extends javax.swing.JPanel {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Select Map"));
+        jPanel1.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), jfreerails.util.Resources.get("Select Map")));
         jScrollPane1.setViewportBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.LOWERED));
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jList1);

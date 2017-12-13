@@ -16,6 +16,10 @@ import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.util.Vector;
+
+import jfreerails.client.model.MapCursor;
+import jfreerails.client.model.CursorEvent;
+import jfreerails.client.model.CursorEventListener;
 import jfreerails.client.renderer.MapRenderer;
 import jfreerails.world.common.OneTileMoveVector;
 

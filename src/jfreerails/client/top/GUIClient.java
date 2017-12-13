@@ -7,7 +7,9 @@ import java.security.GeneralSecurityException;
 import javax.swing.JFrame;
 import jfreerails.client.common.ScreenHandler;
 import jfreerails.client.common.SynchronizedEventQueue;
-import jfreerails.client.view.ModelRoot;
+import jfreerails.client.common.UpdatedComponent;
+import jfreerails.client.view.GUIRoot;
+import jfreerails.client.model.ModelRoot;
 import jfreerails.controller.ConnectionToServer;
 import jfreerails.controller.InetConnection;
 import jfreerails.controller.LocalConnection;
@@ -25,7 +27,6 @@ import jfreerails.world.player.Player;
  * the client having access to a ServerControlInterface object
  */
 public class GUIClient extends Client {
-    private ScreenHandler screenHandler;
     private String title;
     private ModelRoot modelRoot;
 
@@ -34,26 +35,29 @@ public class GUIClient extends Client {
         throws IOException, GeneralSecurityException {
         super(player);
         setMoveChainFork(new MoveChainFork());
-        setReceiver(new ConnectionAdapter(mr, player, pm, this));
         modelRoot = mr;
         this.title = title;
         SynchronizedEventQueue.use();
-        getReceiver().setMoveReceiver(getMoveChainFork());
-
-        modelRoot.setMoveReceiver(getReceiver());
+	
         modelRoot.setMoveFork(getMoveChainFork());
 
-        GUIComponentFactoryImpl gUIComponentFactory = new GUIComponentFactoryImpl(modelRoot);
+	/* create the GUIRoot */
+	GUIRoot guiRoot = new
+	    GUIRoot(modelRoot);
 
-        modelRoot.addModelRootListener(gUIComponentFactory);
-
-        JFrame client = gUIComponentFactory.createClientJFrame(title);
+	setReceiver(new ConnectionAdapter(mr, guiRoot, player, pm,
+		    this));
+        modelRoot.setMoveReceiver(getReceiver());
+        getReceiver().setMoveReceiver(getMoveChainFork());
 
         //We want to setup the screen handler before creating the view lists
         //since the ViewListsImpl creates images that are compatible with
         //the current display settings and the screen handler may change the
         //display settings.
-        screenHandler = new ScreenHandler(client, mode, dm);
+	guiRoot.setScreenHandler(new
+		ScreenHandler(guiRoot.getClientJFrame(),
+		    (UpdatedComponent) guiRoot.getClientJFrame(),
+		    mode, dm));
 
         try {
             /* this causes the world to be loaded and the ViewLists to be
@@ -86,10 +90,6 @@ public class GUIClient extends Client {
         this((ConnectionToServer)new LocalConnection(server), mode, dm, title,
             pm, player, new ModelRoot());
         modelRoot.setServerControls(controls);
-    }
-
-    public ScreenHandler getScreenHandler() {
-        return screenHandler;
     }
 
     public String getTitle() {

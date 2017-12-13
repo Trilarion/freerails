@@ -1,0 +1,37 @@
+#!/bin/sh
+cd `dirname $0`
+HERE=`pwd`
+L10NDIR=$HERE/src/jfreerails/data/l10n
+
+# define your supported languages here...
+LANGUAGES="de_DE"
+
+# Allow those of us with more than one xgettext to specify the right one :)
+if [ -z "$XGETTEXT" ]; then
+	XGETTEXT=xgettext
+fi
+if [ -z "$MSGINIT" ]; then
+	MSGINIT=msginit
+fi
+if [ -z "$MSGMERGE" ]; then
+	MSGMERGE=msgmerge
+fi
+
+JAVAFILES=`find $HERE/src/jfreerails -name \*.java`
+
+# create messages.pot
+$XGETTEXT -D $HERE -p $L10NDIR --keyword=Resources.get \
+	--properties $JAVAFILES
+mv $L10NDIR/messages.po $L10NDIR/messages.pot
+
+for lang in $LANGUAGES ; do
+	if [ ! -r $L10NDIR/jfreerails_$lang.properties ] ; then
+		$MSGINIT -i $L10NDIR/messages.pot \
+			-o $L10NDIR/jfreerails_$lang.properties \
+			-P -l $lang -p
+	else
+		$MSGMERGE -p -P -o $L10NDIR/jfreerails_$lang.properties \
+			$L10NDIR/jfreerails_$lang.properties \
+			$L10NDIR/messages.pot
+	fi
+done

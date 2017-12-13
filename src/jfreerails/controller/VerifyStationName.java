@@ -10,7 +10,6 @@
 package jfreerails.controller;
 
 import java.util.Vector;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.NonNullElements;
@@ -41,10 +40,11 @@ public class VerifyStationName {
         boolean found = false;
         String tempName = null;
 
-        //        if (w.size(KEY.STATIONS) <= 0) {
-        //            //if there are no stations, then obviously the name isn't taken
-        //            return appropriateName;
-        //        }
+        if (w.size(KEY.STATIONS) <= 0) {
+            //if there are no stations, then obviously the name isn't taken
+            return appropriateName;
+        }
+
         found = checkStationExists(appropriateName);
 
         if (!found) {
@@ -78,18 +78,14 @@ public class VerifyStationName {
         String testName = name;
         StationModel tempStation;
 
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
+        WorldIterator wi = new NonNullElements(KEY.STATIONS, w);
 
-            WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
+        while (wi.next()) { //loop over non null stations
+            tempStation = (StationModel)wi.getElement();
 
-            while (wi.next()) { //loop over non null stations
-                tempStation = (StationModel)wi.getElement();
-
-                if ((testName).equals(tempStation.getStationName())) {
-                    //station already exists with that name
-                    return true;
-                }
+            if ((testName).equals(tempStation.getStationName())) {
+                //station already exists with that name
+                return true;
             }
         }
 

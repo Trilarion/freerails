@@ -4,22 +4,24 @@
  */
 package jfreerails.server;
 
+import junit.framework.TestCase;
+
 import jfreerails.move.Move;
 import jfreerails.move.MoveStatus;
+import jfreerails.world.accounts.BankAccount;
 import jfreerails.world.cargo.CargoBatch;
 import jfreerails.world.cargo.CargoBundle;
 import jfreerails.world.cargo.CargoBundleImpl;
 import jfreerails.world.cargo.CargoType;
-import jfreerails.world.player.Player;
 import jfreerails.world.station.DemandAtStation;
 import jfreerails.world.station.StationModel;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.MapFixtureFactory;
-import jfreerails.world.top.SKEY;
 import jfreerails.world.top.World;
 import jfreerails.world.top.WorldImpl;
+import jfreerails.world.train.TransportCategory;
+import jfreerails.world.train.WagonType;
 import jfreerails.world.train.TrainModel;
-import junit.framework.TestCase;
+import jfreerails.world.player.Player;
 
 
 /** This Junit TestCase tests whether a train picks up and drops off the right cargo at a station.
@@ -36,54 +38,71 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
             0, 0);
     private CargoBundle emptyCargoBundle;
 
+    private Player testPlayer = new Player ("test player", (new Player ("test"
+		    + " player")).getPublicKey(), 0);
+
     protected void setUp() throws Exception {
         //Set up an empty cargobundle
         emptyCargoBundle = new CargoBundleImpl();
 
-        //Set up the world object with three cargo types, one station, and one train.
+        //Set up the world object with three cargo types, one station, and one train.		
         w = new WorldImpl();
 
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER, Player.AUTHORITATIVE);
+	w.add(KEY.PLAYERS, testPlayer, Player.AUTHORITATIVE);
 
         //set up the cargo types.
-        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", "Mail"));
-        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers", "Passengers"));
-        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods", "Goods"));
+        w.add(KEY.CARGO_TYPES, new CargoType(0, "Mail", TransportCategory.MAIL));
+        w.add(KEY.CARGO_TYPES, new CargoType(0, "Passengers",
+                   TransportCategory.PASSENGER));
+        w.add(KEY.CARGO_TYPES, new CargoType(0, "Goods",
+                   TransportCategory.FAST_FREIGHT));
+
+       w.add(KEY.WAGON_TYPES, new WagonType("Mail Wagon",
+                   TransportCategory.MAIL, 40, 0));
+       w.add(KEY.WAGON_TYPES, new WagonType("1at class carriage",
+                   TransportCategory.PASSENGER, 40, 1));
+       w.add(KEY.WAGON_TYPES, new WagonType("Goods van",
+                   TransportCategory.FAST_FREIGHT, 40, 1));
+
 
         //Set up station
         int x = 10;
         int y = 10;
         int stationCargoBundleId = w.add(KEY.CARGO_BUNDLES,
-                new CargoBundleImpl(), MapFixtureFactory.TEST_PRINCIPAL);
+                new CargoBundleImpl());
         String stationName = "Station 1";
         StationModel station = new StationModel(x, y, stationName,
-                w.size(SKEY.CARGO_TYPES), stationCargoBundleId);
-        w.add(KEY.STATIONS, station, MapFixtureFactory.TEST_PRINCIPAL);
+                w.size(KEY.CARGO_TYPES), stationCargoBundleId);
+        w.add(KEY.STATIONS, station);
 
         //Set up train
-        int trainCargoBundleId = w.add(KEY.CARGO_BUNDLES,
-                new CargoBundleImpl(), MapFixtureFactory.TEST_PRINCIPAL);
+        int trainCargoBundleId = w.add(KEY.CARGO_BUNDLES, new CargoBundleImpl());
 
         //3 wagons to carry cargo type 0.
         int[] wagons = new int[] {0, 0, 0};
         TrainModel train = new TrainModel(wagons, trainCargoBundleId);
-        w.add(KEY.TRAINS, train, MapFixtureFactory.TEST_PRINCIPAL);
+        w.add(KEY.TRAINS, train);
+
+        w.add(KEY.BANK_ACCOUNTS, new BankAccount(), testPlayer.getPrincipal());
     }
 
     /** Tests picking up cargo from a station. */
     public void testPickUpCargo1() {
-        //Set up the variables for this test.
+        //Set up the variables for this test.		
         CargoBundle cargoBundleWith2CarloadsOfCargo0 = new CargoBundleImpl();
 
         //cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 2);
         cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 80);
+
+        //Get the station from the world object.
+        StationModel station = (StationModel)w.get(KEY.STATIONS, 0);
 
         assertEquals("There shouldn't be any cargo at the station yet",
             emptyCargoBundle, getCargoAtStation());
         assertEquals("There shouldn't be any cargo on the train yet",
             emptyCargoBundle, getCargoOnTrain());
 
-        //Now add 2 carloads of cargo type 0 to the station.
+        //Now add 2 carloads of cargo type 0 to the station.				
         //getCargoAtStation().setAmount(cargoType0FromStation2, 2);
         getCargoAtStation().setAmount(cargoType0FromStation2, 80);
 
@@ -121,10 +140,12 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * already has and the type of wagons it has when it is picking up cargo.
      */
     public void testPickUpCargo3() {
+        //Set wagons on train.	
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0);
         int[] wagons = new int[] {0, 0, 2, 2};
 
         //2 wagons for cargo type 0; 2 wagons for cargo type 2.
-        addWagons(wagons);
+        train = addWagons(wagons);
 
         //Set cargo on train.
         getCargoOnTrain().setAmount(this.cargoType0FromStation2, 30);
@@ -133,8 +154,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         getCargoAtStation().setAmount(this.cargoType0FromStation0, 110);
 
         //Check that station does not demand cargo type 0.
-        StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, 0);
         assertFalse(station.getDemand().isCargoDemanded(0));
 
         //Stop at station.
@@ -159,15 +179,14 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      */
     public void testDropOffCargo() {
         //Set the station to demand cargo type 0.
-        StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, 0);
         DemandAtStation demand = new DemandAtStation(new boolean[] {
                     true, false, false, false
                 });
         station = new StationModel(station, demand);
-        w.set(KEY.STATIONS, 0, station, MapFixtureFactory.TEST_PRINCIPAL);
+        w.set(KEY.STATIONS, 0, station);
 
-        //Check that the station demadns what we think it does.
+        //Check that the station demadns what we think it does.		
         assertTrue("The station should demand cargo type 0.",
             station.getDemand().isCargoDemanded(0));
         assertFalse("The station shouldn't demand cargo type 1.",
@@ -175,7 +194,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         //Add 2 wagons for cargo type 0 and 1 for cargo type 1 to train.
         int[] wagons = new int[] {0, 0, 1, 1};
-        addWagons(wagons);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0);
+        train = addWagons(wagons);
 
         //Add quantities of cargo type 0 and 2 to the train.
         getCargoOnTrain().setAmount(this.cargoType0FromStation2, 50);
@@ -211,7 +231,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     /** Tests that a train does not drop cargo off at its station of origin unless it has to*/
     public void testDontDropOffCargo() {
-        //Set station to
+        //Set station to 
         getCargoOnTrain().setAmount(cargoType0FromStation0, 50);
         getCargoOnTrain().setAmount(cargoType0FromStation2, 50);
 
@@ -250,13 +270,12 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         getCargoAtStation().setAmount(this.cargoType0FromStation0, 200);
 
         //Set station to demand cargo 0.
-        StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, 0);
         DemandAtStation demand = new DemandAtStation(new boolean[] {
                     true, false, false, false
                 });
         station = new StationModel(station, demand);
-        w.set(KEY.STATIONS, 0, station, MapFixtureFactory.TEST_PRINCIPAL);
+        w.set(KEY.STATIONS, 0, station);
 
         assertTrue(station.getDemand().isCargoDemanded(0));
         stopAtStation();
@@ -276,38 +295,35 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private TrainModel addWagons(int[] wagons) {
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0);
         TrainModel newTrain = train.getNewInstance(train.getEngineType(), wagons);
-        w.set(KEY.TRAINS, 0, newTrain, MapFixtureFactory.TEST_PRINCIPAL);
+        w.set(KEY.TRAINS, 0, newTrain);
 
         return newTrain;
     }
 
     private void stopAtStation() {
         DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(0,
-                0, w, MapFixtureFactory.TEST_PRINCIPAL);
+                0, w);
         Move m = moveGenerator.generateMove();
-        MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+        MoveStatus ms = m.doMove(w, testPlayer.getPrincipal());
         assertTrue(ms.isOk());
     }
 
     /** Retrieves the cargo bundle that is waiting at the station from the world object.*/
     private CargoBundle getCargoAtStation() {
-        StationModel station = (StationModel)w.get(KEY.STATIONS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        StationModel station = (StationModel)w.get(KEY.STATIONS, 0);
         CargoBundle cargoAtStation = (CargoBundle)w.get(KEY.CARGO_BUNDLES,
-                station.getCargoBundleNumber(), MapFixtureFactory.TEST_PRINCIPAL);
+                station.getCargoBundleNumber());
 
         return cargoAtStation;
     }
 
     /** Retrieves the cargo bundle that the train is carrying from the world object */
     private CargoBundle getCargoOnTrain() {
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, 0);
         CargoBundle cargoOnTrain = (CargoBundle)w.get(KEY.CARGO_BUNDLES,
-                train.getCargoBundleNumber(), MapFixtureFactory.TEST_PRINCIPAL);
+                train.getCargoBundleNumber());
 
         return cargoOnTrain;
     }

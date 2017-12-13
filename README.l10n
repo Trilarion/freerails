@@ -1,0 +1,19 @@
+Help needed!
+============
+Railz requires people to help with internationalisation/localisation.
+
+How To Internationalise
+=======================
+In classes which use internationalised strings, use the API provided by the
+jfreerails.util.Resources class.
+Simply pass the string to be localised as a parameter to the Resources.get()
+method.
+
+How To Localise
+===============
+Run the l10n shell script in the project directory. You will need a recent
+version of gettext (0.14.1 is OK) that supports creation of java .properties
+files. This will create a messages.pot in src/jfreerails/data/l10n, and update
+any existing .properties files in the directory with any new strings which may
+have been added. To add a new supported language, edit LANGUAGES in the l10n
+script and run it.

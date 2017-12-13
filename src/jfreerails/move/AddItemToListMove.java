@@ -5,9 +5,10 @@
 package jfreerails.move;
 
 import jfreerails.world.common.FreerailsSerializable;
-import jfreerails.world.player.FreerailsPrincipal;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.World;
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 
 
 /**
@@ -19,8 +20,12 @@ import jfreerails.world.top.World;
 public class AddItemToListMove implements ListMove {
     final KEY listKey;
     final int index;
-    final FreerailsPrincipal principal;
     protected final FreerailsSerializable item;
+    protected final FreerailsPrincipal principal;
+
+    public FreerailsPrincipal getPrincipal() {
+	return principal;
+    }
 
     public int getIndex() {
         return index;
@@ -30,30 +35,38 @@ public class AddItemToListMove implements ListMove {
         return listKey;
     }
 
+    /**
+     * @deprecated in favour of AddItemToListMove(KEY, int,
+     * FreerailsSerializable, FreerailsPrincipal)
+     */
+    protected AddItemToListMove(KEY key, int i, FreerailsSerializable item) {
+	this(key, i, item, Player.NOBODY);
+    }
+
     protected AddItemToListMove(KEY key, int i, FreerailsSerializable item,
-        FreerailsPrincipal p) {
+	    FreerailsPrincipal principal) {
         this.listKey = key;
         this.index = i;
         this.item = item;
-        this.principal = p;
+	this.principal = principal;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (w.size(listKey, this.principal) != index) {
+        if (w.size(listKey, p) != index) {
             return MoveStatus.moveFailed("Expected size of list is " + index +
-                " but actual size is " + w.size(listKey, this.principal));
-        }
+                " but actual size is " + w.size(listKey, p));
+	}
 
         return MoveStatus.MOVE_OK;
     }
-
+	
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         int expectListSize = index + 1;
 
-        if (w.size(listKey, this.principal) != expectListSize) {
+        if (w.size(listKey, p) != expectListSize) {
             return MoveStatus.moveFailed("Expected size of list is " +
-                expectListSize + " but actual size is " +
-                w.size(listKey, this.principal));
+		    expectListSize + " but actual size is " + w.size(listKey,
+			p));
         }
 
         return MoveStatus.MOVE_OK;
@@ -63,7 +76,7 @@ public class AddItemToListMove implements ListMove {
         MoveStatus ms = tryDoMove(w, p);
 
         if (ms.isOk()) {
-            w.add(listKey, this.item, this.principal);
+	    w.add(listKey, this.item, p);
         }
 
         return ms;
@@ -73,7 +86,7 @@ public class AddItemToListMove implements ListMove {
         MoveStatus ms = tryUndoMove(w, p);
 
         if (ms.isOk()) {
-            w.removeLast(listKey, this.principal);
+	    w.removeLast(listKey, p);
         }
 
         return ms;
@@ -94,6 +107,10 @@ public class AddItemToListMove implements ListMove {
             if (this.listKey != test.listKey) {
                 return false;
             }
+
+	    if (! principal.equals(test.principal)) {
+		return false;
+	    }
 
             return true;
         } else {

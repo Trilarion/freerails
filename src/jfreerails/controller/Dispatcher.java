@@ -34,12 +34,14 @@ class Dispatcher implements Runnable {
         moveReceiver = null;
     }
 
-    public synchronized void receiveWorld() throws IOException {
+    public synchronized World receiveWorld() throws IOException {
+	World w;
         try {
             while (true) {
                 Object o = objectInputStream.readObject();
 
                 if (o instanceof World) {
+		    w = (World) o;
                     this.connection.world = (World)o;
                     this.connection.setState(ConnectionState.READY);
 
@@ -65,6 +67,7 @@ class Dispatcher implements Runnable {
          */
         notifyAll();
         System.out.println("World received from server");
+	return w;
     }
 
     private void processServerCommand(ServerCommand c) {
@@ -81,7 +84,7 @@ class Dispatcher implements Runnable {
              * the client gets a copy of the World, for now just have a
              * crude lock
              */
-            synchronized (this.connection.mutex) {
+            synchronized (this.connection.world) {
                 this.connection.send(this.connection.world);
                 this.connection.flush();
             }
@@ -108,7 +111,7 @@ class Dispatcher implements Runnable {
 
     private synchronized void processNextObject() throws IOException {
         while ((objectInputStream == null) ||
-                ((this.connection.mutex == null) && worldNotYetLoaded)) {
+                ((this.connection.world == null) && worldNotYetLoaded)) {
             /*
              * if we are closed, or if we are open and the world is not yet
              * loaded, then wait until the world has been
@@ -128,7 +131,8 @@ class Dispatcher implements Runnable {
 
             if (o instanceof ServerCommand) {
                 processServerCommand((ServerCommand)o);
-            } else if ((o instanceof Move) && (moveReceiver != null)) {
+            } else if (o instanceof Move) {
+		assert moveReceiver != null;
                 moveReceiver.processMove((Move)o, this.connection);
             } else {
                 System.out.println("Invalid class sent in stream");

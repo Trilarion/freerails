@@ -6,13 +6,15 @@
 package jfreerails.client.renderer;
 
 import java.util.ArrayList;
+import jfreerails.world.terrain.TerrainType;
+import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
-import jfreerails.world.top.SKEY;
 
 
 /**
 *@author           Luke Lindsay
 *           09 October 2001
+* public    class TileViewListImplrsion
 */
 final public class TileRendererListImpl implements TileRendererList {
     private TileRenderer[] tiles;
@@ -30,7 +32,12 @@ final public class TileRendererListImpl implements TileRendererList {
     }
 
     public boolean validate(ReadOnlyWorld w) {
-        //There should a TileRenderer for each terrain type.
-        return w.size(SKEY.TERRAIN_TYPES) == tiles.length;
+        boolean okSoFar = true;
+
+        for (int i = 0; i < w.size(KEY.TERRAIN_TYPES); i++) {
+            TerrainType terrainType = (TerrainType)w.get(KEY.TERRAIN_TYPES, i);
+        }
+
+        return okSoFar;
     }
 }

@@ -46,12 +46,16 @@ class ClientConnectionTableModel extends DefaultTableModel {
     }
 
     synchronized void stateChanged(ConnectionToServer c, int i) {
-        setValueAt(c.getConnectionState().toString(), i, 1);
-        setValueAt(getPlayerName(c), i, 2);
+	if (i >= 0) {
+	    setValueAt(c.getConnectionState().toString(), i, 1);
+	    setValueAt(getPlayerName(c), i, 2);
+	}
     }
 
     public synchronized void removeRow(int i) {
-        super.removeRow(i);
+	if (i >= 0) {
+	    super.removeRow(i);
+	}
     }
 
     public boolean isCellEditable(int r, int c) {

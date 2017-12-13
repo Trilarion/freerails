@@ -36,8 +36,6 @@ public abstract class MapViewJComponent
 
 	}
 
-	
-
 	protected void paintComponent(java.awt.Graphics g) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 		java.awt.Rectangle r = this.getVisibleRect();
@@ -126,4 +124,14 @@ public abstract class MapViewJComponent
 		return mapView;
 	}
 
+	/**
+	 * Override the default for JPanel.
+	 */
+	public boolean isOpaque() {
+	    return false;
+	}
+
+	public boolean isOptimizedDrawingEnabled() {
+	    return true;
+	}
 }

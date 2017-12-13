@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.top.KEY;
 import jfreerails.world.top.ReadOnlyWorld;
 /**
@@ -20,8 +20,6 @@ import jfreerails.world.top.ReadOnlyWorld;
 public class TrainListJPanel extends javax.swing.JPanel implements View {
 	
 	private ReadOnlyWorld world;
-	
-	private FreerailsPrincipal principal;
     
     /** Creates new form TrainListJPanel */
     public TrainListJPanel() {
@@ -58,14 +56,16 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         add(jList1, gridBagConstraints);
 
         closeJButton.setText("Close");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(closeJButton, gridBagConstraints);
 
         showDetails.setText("Show details");
@@ -78,8 +78,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(showDetails, gridBagConstraints);
 
     }//GEN-END:initComponents
@@ -102,11 +102,11 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
     }//GEN-LAST:event_jList1KeyPressed
     
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {  
-		world = mr.getWorld();
-        jList1.setModel(new World2ListModelAdapter(mr.getWorld(), KEY.TRAINS, mr.getPlayerPrincipal()));
+    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {  
+		world = w;
+        jList1.setModel(new World2ListModelAdapter(w, KEY.TRAINS));
         TrainViewJPanel trainView =
-        new TrainViewJPanel(mr);
+        new TrainViewJPanel(w, vl);
         jList1.setCellRenderer(trainView);
         trainView.setHeight(50);               
         ActionListener[] oldListeners = closeJButton.getActionListeners();
@@ -114,7 +114,6 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
             closeJButton.removeActionListener(oldListeners[i]);
         }
         closeJButton.addActionListener(submitButtonCallBack);
-		principal = mr.getPlayerPrincipal();
     }
     
     void setShowTrainDetailsActionListener(ActionListener l){        
@@ -143,7 +142,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 	
 	public void setVisible(boolean aFlag) {
 		if(aFlag){
-			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,principal));
+			jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS));
 		}
 		super.setVisible(aFlag);
 	}

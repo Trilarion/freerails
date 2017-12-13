@@ -4,7 +4,6 @@ import java.util.Vector;
 import jfreerails.controller.ServerControlInterface;
 import jfreerails.util.FreerailsProgressMonitor;
 
-
 /**
  * This implements a game server. A game server may host a number of independent
  * games all being played simultaneously.

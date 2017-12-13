@@ -10,6 +10,4 @@ public interface TrackPiece extends FreerailsSerializable {
     TrackRule getTrackRule();
 
     TrackConfiguration getTrackConfiguration();
-
-    int getOwnerID();
 }

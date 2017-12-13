@@ -22,8 +22,10 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import jfreerails.client.renderer.TrainImages;
+import jfreerails.client.renderer.ViewLists;
 import jfreerails.world.cargo.CargoType;
-import jfreerails.world.top.SKEY;
+import jfreerails.world.top.KEY;
+import jfreerails.world.top.ReadOnlyWorld;
 /**
  * This JPanel lets the user add wagons to a train.
  * 
@@ -41,7 +43,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     private int engineType = 0;
 
-	private ModelRoot modelRoot;
+	private ViewLists viewLists;
 
     /** Creates new form SelectWagonsJPanel */
 	public SelectWagonsJPanel() {
@@ -197,7 +199,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 	for (int i = this.wagons.size()-1; i >= 0; i--) {  //Count down so we paint the wagon at the end of the train first. 
 
 	    Integer type = (Integer)wagons.get(i);
-	    Image image = modelRoot.getViewLists().getTrainImages().getSideOnWagonImage(type.intValue());
+	    Image image = viewLists.getTrainImages().getSideOnWagonImage(type.intValue());
 	    int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
 
 	    g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
@@ -206,7 +208,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
 	//paint the engine		
 	if(-1 != this.engineType){ //If an engine is selected.
-		Image image = modelRoot.getViewLists().getTrainImages().getSideOnEngineImage(this.engineType);
+		Image image = viewLists.getTrainImages().getSideOnEngineImage(this.engineType);
 		int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);			
 		g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
 	}	
@@ -260,12 +262,12 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 	}
     }
 
-    public void setup(ModelRoot mr, ActionListener submitButtonCallBack) {
-        this.modelRoot = mr;
-	World2ListModelAdapter w2lma = new World2ListModelAdapter(mr.getWorld(),
-		SKEY.CARGO_TYPES); 
+    public void setup(ReadOnlyWorld w, ViewLists vl, ActionListener submitButtonCallBack) {
+        this.viewLists = vl;
+	World2ListModelAdapter w2lma = new World2ListModelAdapter(w,
+		KEY.CARGO_TYPES); 
 	this.wagonTypesJList.setModel(w2lma);
-	TrainImages trainImages = mr.getViewLists().getTrainImages();
+	TrainImages trainImages = viewLists.getTrainImages();
 	WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma,
 		trainImages);
 	this.wagonTypesJList.setCellRenderer(wagonCellRenderer);

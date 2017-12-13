@@ -1,0 +1,31 @@
+"Current" branch is 0.2 (JFreerails continuation)
+
+Targeted features before next stable release branch 0.4
+====================================================
+Full multiplayer support - ownership of all appropriate game world objects.
+Ability to place new trains on map
+Profit and loss
+I18N infrastructure
+Move to bugzilla bug database
+
+Optional 0.4 features
+=====================
+UI Improvements
+Schedule in tab pane
+Icons in tab pane tabs
+"Paused" message when paused
+Better graphics
+Sound??
+
+Development features for 0.5 or later
+=====================================
+Rename classe heirarchy from jfreerails.xx.xx.xx
+Rationalisation of package structure (split into client, server and common
+		packages)
+Rationalisation of train movement and timer
+Station improvements
+Train maintenance
+Balance sheet
+Train collision / track contention.
+Train / terrain track layout speed interaction.
+Trading between players

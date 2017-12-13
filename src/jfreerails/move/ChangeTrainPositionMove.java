@@ -1,16 +1,15 @@
 package jfreerails.move;
 
-import jfreerails.world.common.FreerailsPathIterator;
-import jfreerails.world.common.IntLine;
-import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.common.*;
 import jfreerails.world.top.KEY;
-import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.top.World;
+import jfreerails.world.top.ReadOnlyWorld;
 import jfreerails.world.train.PathWalker;
 import jfreerails.world.train.PathWalkerImpl;
 import jfreerails.world.train.TrainModel;
 import jfreerails.world.train.TrainPositionOnMap;
-
+import jfreerails.world.player.FreerailsPrincipal;
+import jfreerails.world.player.Player;
 
 /**
  * This Move changes the position of a train.
@@ -23,23 +22,23 @@ public class ChangeTrainPositionMove implements Move {
     private final boolean addToHead;
     private final boolean addToTail;
     final int trainPositionNumber;
-    private final FreerailsPrincipal principal;
+
+    public FreerailsPrincipal getPrincipal() {
+	return Player.NOBODY;
+    }
 
     public ChangeTrainPositionMove(TrainPositionOnMap pieceToAdd,
         TrainPositionOnMap pieceToRemove, int trainNumber, boolean addToHead,
-        boolean addToTail, FreerailsPrincipal p) {
+        boolean addToTail) {
         this.addToHead = addToHead;
         this.addToTail = addToTail;
         this.changeToHead = pieceToAdd;
         this.changeToTail = pieceToRemove;
         this.trainPositionNumber = trainNumber;
-        this.principal = p;
     }
 
-    public static ChangeTrainPositionMove getNullMove(int trainNumber,
-        FreerailsPrincipal p) {
-        return new ChangeTrainPositionMove(null, null, trainNumber, false,
-            false, p) {
+    public static ChangeTrainPositionMove getNullMove(int trainNumber) {
+        return new ChangeTrainPositionMove(null, null, trainNumber, false, false) {
                 MoveStatus move(World w, boolean updateTrainPosition,
                     boolean isDoMove) {
                     return MoveStatus.MOVE_OK;
@@ -48,18 +47,18 @@ public class ChangeTrainPositionMove implements Move {
     }
 
     public static ChangeTrainPositionMove generate(ReadOnlyWorld w,
-        FreerailsPathIterator nextPathSection, int trainNumber,
-        FreerailsPrincipal p) {
+        FreerailsPathIterator nextPathSection, int trainNumber) {
         if (!nextPathSection.hasNext()) {
-            return getNullMove(trainNumber, p);
+            return getNullMove(trainNumber);
         }
 
-        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber, p);
+        TrainModel train = (TrainModel)w.get(KEY.TRAINS, trainNumber);
 
         TrainPositionOnMap currentPosition = train.getPosition();
 
         TrainPositionOnMap bitToAdd;
         TrainPositionOnMap intermediate;
+        TrainPositionOnMap newPosition;
         TrainPositionOnMap bitToRemove;
 
         bitToAdd = getBitToAdd(nextPathSection);
@@ -91,7 +90,7 @@ public class ChangeTrainPositionMove implements Move {
         bitToRemove = getBitToRemove(intermediate, currentLength);
 
         return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber,
-            true, false, p);
+            true, false);
     }
 
     static TrainPositionOnMap getBitToRemove(TrainPositionOnMap intermediate,
@@ -114,35 +113,81 @@ public class ChangeTrainPositionMove implements Move {
         return TrainPositionOnMap.createInOppositeDirectionToPath(nextPathSection);
     }
 
+    /*
+    public static ChangeTrainPositionMove generate(
+            TrainPosition currentPosition,
+            FreerailsPathIterator nextPathSection,
+            int trainNumber) {
+            TrainPosition bitToAdd, intermediate, newPosition, bitToRemove;
+
+            bitToAdd =
+                    TrainPosition.createInOppositeDirectionToPath(nextPathSection);
+
+
+
+            intermediate = TrainPosition.add(currentPosition, bitToAdd);
+
+            PathWalker pathWalker = new PathWalkerImpl(intermediate.path());
+
+            if (TrainPosition.headsAreEqual(intermediate, currentPosition)) {
+                    //Then we must have added a piece to the tail,
+                    //so we need to remove a piece from the head.
+
+                    double lengthToRemove = bitToAdd.calulateDistance();
+
+                    pathWalker.stepForward((int) lengthToRemove);
+
+                    bitToRemove = TrainPosition.createInSameDirectionAsPath(pathWalker);
+
+            } else {
+                    //We must have added a piece to the head,
+                    //so we need to remove a piece from the tail.
+
+                    double currentLength = currentPosition.calulateDistance();
+
+                    pathWalker.stepForward((int) currentLength);
+
+                    newPosition = TrainPosition.createInSameDirectionAsPath(pathWalker);
+
+                    bitToRemove = TrainPosition.remove(intermediate, newPosition);
+
+            }
+
+
+
+            return new ChangeTrainPositionMove(bitToAdd, bitToRemove, trainNumber);
+    }
+    */
     public MoveStatus doMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = true;
         boolean isDoMove = true;
 
-        return move(w, updateTrainPosition, isDoMove);
+        return move(w, updateTrainPosition, isDoMove, p);
     }
 
     public MoveStatus undoMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = true;
         boolean isDoMove = false;
 
-        return move(w, updateTrainPosition, isDoMove);
+        return move(w, updateTrainPosition, isDoMove, p);
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = false;
         boolean isDoMove = true;
 
-        return move(w, updateTrainPosition, isDoMove);
+        return move(w, updateTrainPosition, isDoMove, p);
     }
 
     public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
         boolean updateTrainPosition = false;
         boolean isDoMove = false;
 
-        return move(w, updateTrainPosition, isDoMove);
+        return move(w, updateTrainPosition, isDoMove, p);
     }
 
-    MoveStatus move(World w, boolean updateTrainPosition, boolean isDoMove) {
+    MoveStatus move(World w, boolean updateTrainPosition, boolean isDoMove,
+	    FreerailsPrincipal p) {
         boolean localAddToHead;
         boolean localAddToTail;
 
@@ -155,30 +200,27 @@ public class ChangeTrainPositionMove implements Move {
         }
 
         TrainModel train = (TrainModel)w.get(KEY.TRAINS,
-                this.trainPositionNumber, principal);
+                this.trainPositionNumber, p);
         TrainPositionOnMap oldTrainPosition = train.getPosition();
         TrainPositionOnMap intermediatePosition;
         TrainPositionOnMap newTrainPosition;
 
         if (localAddToHead) {
             if (!oldTrainPosition.canAddToHead(changeToHead)) {
-                return MoveStatus.moveFailed(
-                    "!oldTrainPosition.canAddToHead(changeToHead)");
+                return MoveStatus.MOVE_FAILED;
             }
 
             intermediatePosition = oldTrainPosition.addToHead(changeToHead);
 
             if (localAddToTail) {
                 if (!intermediatePosition.canAddToTail(changeToTail)) {
-                    return MoveStatus.moveFailed(
-                        "!intermediatePosition.canAddToTail(changeToTail)");
+                    return MoveStatus.MOVE_FAILED;
                 }
 
                 newTrainPosition = intermediatePosition.addToTail(changeToTail);
             } else {
                 if (!intermediatePosition.canRemoveFromTail(changeToTail)) {
-                    return MoveStatus.moveFailed(
-                        "!intermediatePosition.canRemoveFromTail(changeToTail)");
+                    return MoveStatus.MOVE_FAILED;
                 }
 
                 newTrainPosition = intermediatePosition.removeFromTail(changeToTail);
@@ -186,23 +228,20 @@ public class ChangeTrainPositionMove implements Move {
         } else {
             if (localAddToTail) {
                 if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
-                    return MoveStatus.moveFailed(
-                        "!oldTrainPosition.canRemoveFromTail(changeToTail)");
+                    return MoveStatus.MOVE_FAILED;
                 }
 
                 intermediatePosition = oldTrainPosition.addToTail(changeToTail);
             } else {
                 if (!oldTrainPosition.canRemoveFromTail(changeToTail)) {
-                    return MoveStatus.moveFailed(
-                        "!oldTrainPosition.canRemoveFromTail(changeToTail)");
+                    return MoveStatus.MOVE_FAILED;
                 }
 
                 intermediatePosition = oldTrainPosition.removeFromTail(changeToTail);
             }
 
             if (!intermediatePosition.canRemoveFromHead(changeToHead)) {
-                return MoveStatus.moveFailed(
-                    "!intermediatePosition.canRemoveFromHead(changeToHead)");
+                return MoveStatus.MOVE_FAILED;
             }
 
             newTrainPosition = intermediatePosition.removeFromHead(changeToHead);
