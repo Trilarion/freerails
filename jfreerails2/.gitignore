@@ -1,9 +1,0 @@
-/obj/
-.DS_Store
-/dist
-/build
-/target/
-/datafiles
-.settings
-.classpath
-.project
