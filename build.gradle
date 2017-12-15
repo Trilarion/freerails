@@ -1,0 +1,29 @@
+group 'org.freerails'
+version '0.0.4-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'log4j:log4j:1.2.17'
+    compile 'junit:junit:4.12'
+}
+
+mainClassName = 'jfreerails.launcher.Launcher'
+
+jar {
+    manifest {
+        attributes(
+                 'Main-Class': mainClassName
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
