@@ -13,7 +13,7 @@ import freerails.world.top.World;
  * A move that adds an active entity. An active entity is something whose state
  * may be continually changing. An example is a train - it is an active entity
  * since while it is moving its position is continually changing.
- * 
+ *
  * @author Luke
  * @see NextActivityMove
  */
@@ -29,7 +29,7 @@ public class AddActiveEntityMove implements Move {
     private final int index;
 
     public AddActiveEntityMove(Activity activity, int index,
-            FreerailsPrincipal principal) {
+                               FreerailsPrincipal principal) {
         this.activity = activity;
         this.index = index;
 

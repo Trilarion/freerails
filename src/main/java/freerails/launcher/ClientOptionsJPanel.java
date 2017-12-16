@@ -6,25 +6,22 @@
 
 package freerails.launcher;
 
-import java.awt.DisplayMode;
-import java.net.InetSocketAddress;
-
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import freerails.client.view.DisplayModesComboBoxModels;
 import freerails.controller.MyDisplayMode;
 import freerails.controller.ScreenHandler;
 import freerails.launcher.LauncherInterface.MSG_TYPE;
-
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.net.InetSocketAddress;
 
 /**
  * The Launcher panel that lets you choose fullscreen or windowed mode and the
  * screen resolution etc.
- * 
+ *
  * @author rtuck99@users.sourceforge.net
  * @author Luke Lindsay
  */

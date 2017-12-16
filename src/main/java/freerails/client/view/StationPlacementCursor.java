@@ -1,14 +1,13 @@
 package freerails.client.view;
 
-import java.awt.Point;
+import freerails.client.renderer.StationRadiusRenderer;
+
+import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import javax.swing.event.MouseInputAdapter;
-
-import freerails.client.renderer.StationRadiusRenderer;
 
 /**
  * This class implements a cursor which can be used to place a station on the
@@ -26,13 +25,13 @@ import freerails.client.renderer.StationRadiusRenderer;
  * When the StationBuildAction is no longer enabled, the owner reverts to the
  * regular cursor type. TODO scroll the area when the mouse hovers at the edge
  * of the map.
- * 
+ *
  * @author rob
  */
 public class StationPlacementCursor extends MouseInputAdapter {
 
     public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr,
-            MapViewJComponent mapView) {
+                              MapViewJComponent mapView) {
         StationPlacementCursor spc = new StationPlacementCursor(actionRoot,
                 srr, mapView);
         spc.init();
@@ -90,7 +89,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
     private final StationRadiusRenderer stationRadiusRenderer;
 
     private StationPlacementCursor(ActionRoot actionRoot,
-            StationRadiusRenderer srr, MapViewJComponent mapView) {
+                                   StationRadiusRenderer srr, MapViewJComponent mapView) {
         scale = mapView.getScale();
         this.mapView = mapView;
         stationBuildModel = actionRoot.getStationBuildModel();

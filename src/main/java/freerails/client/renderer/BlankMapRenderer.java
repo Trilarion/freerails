@@ -1,13 +1,10 @@
 package freerails.client.renderer;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 
 /**
  * Used for testing the Map view components without setting up any map data.
- * 
+ *
  * @author Luke
  */
 public class BlankMapRenderer implements MapRenderer {

@@ -2,7 +2,7 @@ package freerails.world.track;
 
 /**
  * Represents the track on a tile.
- * 
+ *
  * @author Luke
  */
 final public class TrackPieceImpl implements TrackPiece {
@@ -48,7 +48,7 @@ final public class TrackPieceImpl implements TrackPiece {
     }
 
     public TrackPieceImpl(TrackConfiguration c, TrackRule type, int owner,
-            int rule) {
+                          int rule) {
         configuration = c;
         trackType = type;
         ownerID = owner;

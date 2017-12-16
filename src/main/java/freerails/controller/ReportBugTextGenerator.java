@@ -1,6 +1,6 @@
 package freerails.controller;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import java.io.InputStream;
 import java.util.Properties;
 

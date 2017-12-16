@@ -3,19 +3,12 @@
  */
 package freerails.client.top;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import freerails.client.common.SoundManager;
 import freerails.client.view.ActionRoot;
 import freerails.config.ClientConfig;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.move.AddTransactionMove;
-import freerails.move.ChangeGameSpeedMove;
-import freerails.move.CompositeMove;
-import freerails.move.Move;
-import freerails.move.WorldDiffMove;
+import freerails.move.*;
 import freerails.network.MoveReceiver;
 import freerails.world.accounts.DeliverCargoReceipt;
 import freerails.world.accounts.Transaction;
@@ -29,12 +22,14 @@ import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
 /**
  * This class inspects incoming moves and generates a user message if
  * appropriate. It is also used to trigger sounds.
- * 
+ *
  * @author Luke
- * 
  */
 public class UserMessageGenerator implements MoveReceiver {
     private ModelRoot modelRoot;

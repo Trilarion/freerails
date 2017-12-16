@@ -5,7 +5,7 @@ import freerails.world.top.World;
 
 /**
  * Undoes the Move passed to its constructor.
- * 
+ *
  * @author luke
  */
 public class UndoMove implements Move {
@@ -34,8 +34,7 @@ public class UndoMove implements Move {
     }
 
     /**
-     * @param move
-     *            The move that was undone
+     * @param move The move that was undone
      */
     public UndoMove(Move move) {
         if (move instanceof UndoMove) {

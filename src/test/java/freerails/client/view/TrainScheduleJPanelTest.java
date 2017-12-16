@@ -1,6 +1,6 @@
 /*
  * Created on 18-Apr-2006
- * 
+ *
  */
 package freerails.client.view;
 

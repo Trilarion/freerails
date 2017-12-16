@@ -1,7 +1,5 @@
 package freerails.server;
 
-import java.net.URL;
-
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.server.common.TileSetFactory;
@@ -11,19 +9,15 @@ import freerails.world.common.GameSpeed;
 import freerails.world.common.GameTime;
 import freerails.world.player.Player;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.SKEY;
-import freerails.world.top.WagonAndEngineTypesFactory;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
+import freerails.world.top.*;
 import freerails.world.track.FreerailsTile;
+
+import java.net.URL;
 
 /**
  * Stores a static world object and provides copies to clients.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class MapFixtureFactory2 {
 

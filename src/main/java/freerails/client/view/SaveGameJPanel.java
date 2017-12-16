@@ -6,25 +6,25 @@
 
 package freerails.client.view;
 
-import java.awt.event.ActionListener;
-
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.Message2Server;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.network.SaveGameMessage2Server;
 
+import javax.swing.*;
+import java.awt.event.ActionListener;
+
 /**
- * 
  * @author Luke
  */
 public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 4031907071040752589L;
 
-    /** Creates new form SaveGameJPanel */
+    /**
+     * Creates new form SaveGameJPanel
+     */
     public SaveGameJPanel() {
         initComponents();
     }

@@ -6,28 +6,21 @@
 
 package freerails.client.view;
 
-import java.awt.Component;
-import java.awt.Image;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.top.SKEY;
 import freerails.world.train.EngineType;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This JPanel lets the user select an engine from a list.
- * 
+ *
  * @author lindsal8
- * 
  */
 public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
@@ -119,17 +112,17 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         final RenderersRoot rr;
 
         private Map<String, JLabel> savesJLabels;
-        
+
         public TrainCellRenderer(RenderersRoot vl) {
             rr = vl;
             savesJLabels = new HashMap<String, JLabel>();
         }
 
         public Component getListCellRendererComponent(JList list, Object value,
-        /* value to display */
-        int index, /* cell index */
-        boolean isSelected, /* is the cell selected */
-        boolean cellHasFocus) /* the list and the cell have the focus */{
+                /* value to display */
+                                                      int index, /* cell index */
+                                                      boolean isSelected, /* is the cell selected */
+                                                      boolean cellHasFocus) /* the list and the cell have the focus */ {
 
             EngineType engine = (EngineType) value;
             String text = "<html><body>" + (isSelected ? "<strong>" : "")
@@ -138,9 +131,9 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
                     + engine.getPowerAtDrawbar() + " hp $"
                     + engine.getPrice().toString()
                     + (isSelected ? "</strong>" : "") + "</body></html>";
-            
+
             JLabel label = savesJLabels.get(text);
-            if(label == null) {
+            if (label == null) {
                 label = new JLabel(text);
                 label.setFont(new java.awt.Font("Dialog", 0, 12));
                 Image image = rr.getEngineImages(index).getSideOnImage();
@@ -178,7 +171,6 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     /**
      * Returns the number of the currently selected engine type.
-     * 
      */
     public int getEngineType() {
         return jList1.getSelectedIndex();

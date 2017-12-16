@@ -1,19 +1,18 @@
 package freerails.server;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This class initialises cities and controls their growth. It makes changes to
  * directly to the world object, so if the game has already started, use
  * WorldDifferences and MapDiffMove to pass changes to the clients.
- * 
+ *
  * @author Luke
- * 
  */
 public class CityTilePositioner {
     Random random = new Random();
@@ -33,15 +32,15 @@ public class CityTilePositioner {
         for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
             TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
             switch (type.getCategory().ordinal()) {
-            case 0:
-                urbanTerrainTypes.add(type);
-                break;
-            case 6:
-                industryTerrainTypes.add(type);
-                break;
-            case 7:
-                resourceTerrainTypes.add(type);
-                break;
+                case 0:
+                    urbanTerrainTypes.add(type);
+                    break;
+                case 6:
+                    industryTerrainTypes.add(type);
+                    break;
+                case 7:
+                    resourceTerrainTypes.add(type);
+                    break;
             }
         }
     }
@@ -114,28 +113,28 @@ public class CityTilePositioner {
             // Only increase cities with stations and less than 16 tiles
             if (city.size() < 16 && city.stations > 0) {
                 switch (random.nextInt(10)) {
-                case 0:
-                case 1:
-                    addResourceTile(city); // 20% chance
+                    case 0:
+                    case 1:
+                        addResourceTile(city); // 20% chance
 
-                    break;
+                        break;
 
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                    addUrbanTile(city); // 40% chance
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        addUrbanTile(city); // 40% chance
 
-                    break;
+                        break;
 
-                case 6:
-                    addIndustryTile(city); // 10% chance
+                    case 6:
+                        addIndustryTile(city); // 10% chance
 
-                    break;
+                        break;
 
-                default:
-                    // do nothing, 30% chance
-                    break;
+                    default:
+                        // do nothing, 30% chance
+                        break;
                 }
 
                 city.write2map(w);

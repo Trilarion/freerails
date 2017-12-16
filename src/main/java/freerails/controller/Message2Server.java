@@ -7,9 +7,8 @@ import freerails.world.common.FreerailsSerializable;
 
 /**
  * Defines a command sent from a client to the server.
- * 
+ *
  * @author Luke
- * 
  */
 public interface Message2Server extends FreerailsSerializable {
     int getID();

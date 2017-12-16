@@ -5,7 +5,7 @@ import freerails.world.common.ImInts;
 
 /**
  * This class represents the demand for cargo at a station.
- * 
+ *
  * @author Luke
  */
 public class Demand4Cargo implements FreerailsSerializable {

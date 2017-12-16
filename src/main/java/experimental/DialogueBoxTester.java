@@ -1,21 +1,10 @@
 package experimental;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.top.RenderersRootImpl;
-import freerails.client.view.ActionRoot;
-import freerails.client.view.CargoWaitingAndDemandedJPanel;
-import freerails.client.view.DialogueBoxController;
-import freerails.client.view.HtmlJPanel;
-import freerails.client.view.ShowJavaProperties;
-import freerails.client.view.TrainDialogueJPanel;
+import freerails.client.view.*;
 import freerails.controller.JFrameMinimumSizeEnforcer;
 import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
@@ -29,20 +18,19 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.Demand4Cargo;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.SKEY;
-import freerails.world.top.WagonAndEngineTypesFactory;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
+import freerails.world.top.*;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+
 /**
  * This class lets you test dialogue boxes without running the whole game.
- * 
+ *
  * @author lindsal8
- * 
  */
 public class DialogueBoxTester extends javax.swing.JFrame {
 
@@ -73,7 +61,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
     private TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
 
-    /** Creates new form TestGlassPanelMethod. */
+    /**
+     * Creates new form TestGlassPanelMethod.
+     */
     private DialogueBoxTester() {
 
         w = new WorldImpl(200, 200);
@@ -415,7 +405,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         // dialogueBoxController.showNewspaper("New headline!");
     }// GEN-LAST:event_newspaperActionPerformed
 
-    /** Exit the Application. */
+    /**
+     * Exit the Application.
+     */
     private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
         System.exit(0);
     }// GEN-LAST:event_exitForm

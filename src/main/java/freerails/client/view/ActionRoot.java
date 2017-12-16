@@ -3,13 +3,6 @@
  */
 package freerails.client.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.StationBuilder;
@@ -17,11 +10,14 @@ import freerails.controller.TrackMoveProducer;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
 /**
  * Provides access to Actions change the game state and the GUI.
- * 
+ *
  * @author Luke
- * 
  */
 public class ActionRoot {
 

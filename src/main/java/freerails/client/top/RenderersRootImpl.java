@@ -1,27 +1,9 @@
 package freerails.client.top;
 
-import java.awt.Image;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.common.SoundManager;
-import freerails.client.renderer.ChequeredTileRenderer;
-import freerails.client.renderer.ForestStyleTileRenderer;
-import freerails.client.renderer.RenderersRoot;
-import freerails.client.renderer.RiverStyleTileRenderer;
-import freerails.client.renderer.SpecialTileRenderer;
-import freerails.client.renderer.StandardTileRenderer;
-import freerails.client.renderer.TileRenderer;
-import freerails.client.renderer.TileRendererList;
-import freerails.client.renderer.TileRendererListImpl;
-import freerails.client.renderer.TrackPieceRenderer;
-import freerails.client.renderer.TrackPieceRendererList;
-import freerails.client.renderer.TrainImages;
+import freerails.client.renderer.*;
 import freerails.config.ClientConfig;
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.cargo.CargoType;
@@ -29,13 +11,18 @@ import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.train.EngineType;
-
 import org.apache.log4j.Logger;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Implementation of RenderersRoot whose constructor loads graphics and provides
  * feed back using a FreerailsProgressMonitor.
- * 
+ *
  * @author Luke
  */
 public class RenderersRootImpl implements RenderersRoot {
@@ -119,12 +106,12 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
-            FreerailsProgressMonitor pm) throws IOException {
+                                                  FreerailsProgressMonitor pm) throws IOException {
         return new TrackPieceRendererList(w, imageManager, pm);
     }
 
     private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
-            FreerailsProgressMonitor pm) throws IOException {
+                                                 FreerailsProgressMonitor pm) throws IOException {
         ArrayList<TileRenderer> tileRenderers = new ArrayList<TileRenderer>();
 
         // Setup progress monitor..
@@ -137,7 +124,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
         for (int i = 0; i < numberOfTypes; i++) {
             TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
-            int[] typesTreatedAsTheSame = new int[] { i };
+            int[] typesTreatedAsTheSame = new int[]{i};
 
             TileRenderer tr = null;
             pm.setValue(++progress);
@@ -149,7 +136,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
                 if (thisTerrainCategory.equals(TerrainType.Category.River)
                         || thisTerrainCategory
-                                .equals(TerrainType.Category.Ocean)) {
+                        .equals(TerrainType.Category.Ocean)) {
                     // Count number of types with category "water"
                     int count = 0;
 
@@ -256,7 +243,7 @@ public class RenderersRootImpl implements RenderersRoot {
             if (terrainName.equalsIgnoreCase("Harbour")) {
                 TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
                 TileRenderer tr = new SpecialTileRenderer(imageManager,
-                        new int[] { j }, t, occeanTileRenderer, w);
+                        new int[]{j}, t, occeanTileRenderer, w);
                 tileRenderers.set(j, tr);
                 break;
             }

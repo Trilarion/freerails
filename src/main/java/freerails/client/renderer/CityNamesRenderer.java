@@ -1,15 +1,11 @@
-/**@author Scott Bennett
+/**
+ * @author Scott Bennett
  * Date: 3rd April 2003
- *
+ * <p>
  * Class to render the city names on the game map. Names are retrieved
  * from the KEY.CITIES object.
  */
 package freerails.client.renderer;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 import freerails.client.common.Painter;
 import freerails.world.Constants;
@@ -17,9 +13,11 @@ import freerails.world.terrain.CityModel;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 
+import java.awt.*;
+
 /**
  * Paints the city names on the map.
- * 
+ *
  * @author Scott
  */
 public class CityNamesRenderer implements Painter {

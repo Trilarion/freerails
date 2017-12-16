@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 
 /**
  * Junit test.
- * 
+ *
  * @author Luke
  */
 public class IntLineTest extends TestCase {

@@ -14,9 +14,8 @@ import freerails.world.top.World;
 /**
  * An UntriedMoveReceiver that executes moves on the world object passed to its
  * constructor.
- * 
+ *
  * @author Luke
- * 
  */
 public final class SimpleMoveReciever implements UntriedMoveReceiver {
     private final World w;

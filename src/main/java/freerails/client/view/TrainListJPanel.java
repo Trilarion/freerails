@@ -6,13 +6,6 @@
 
 package freerails.client.view;
 
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.player.FreerailsPrincipal;
@@ -20,10 +13,16 @@ import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
 import freerails.world.top.ReadOnlyWorld;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
 /**
  * JPanel that displays a list of trains, used for the train list window and the
  * train roaster tab.
- * 
+ *
  * @author Luke
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {
@@ -42,7 +41,9 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     // renderer, if not use the
     // trainsummaryjpanel
 
-    /** Creates new form TrainListJPanel. */
+    /**
+     * Creates new form TrainListJPanel.
+     */
     public TrainListJPanel() {
         initComponents();
 
@@ -232,7 +233,9 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         return NonNullElements.row2index(world, KEY.TRAINS, principal, row);
     }
 
-    /** When the train list is shown on a tab we don't want the buttons. */
+    /**
+     * When the train list is shown on a tab we don't want the buttons.
+     */
     void removeButtons() {
         this.removeAll();
 

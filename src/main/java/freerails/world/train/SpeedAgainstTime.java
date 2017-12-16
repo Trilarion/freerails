@@ -17,10 +17,9 @@ public interface SpeedAgainstTime extends FreerailsSerializable {
      * <li>s = 0 if t = 0 </li>
      * <li>s = getS() if t = getT()</li>
      * </ol>
-     * 
-     * @throws IllegalArgumentException
-     *             iff t < 0 or t > getT()
+     *
      * @return s
+     * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
     double calcS(double t);
 
@@ -33,22 +32,19 @@ public interface SpeedAgainstTime extends FreerailsSerializable {
      * <li>t = 0 if s = 0 </li>
      * <li>t = getT() if s = getS()</li>
      * </ol>
-     * 
-     * @throws IllegalArgumentException
-     *             iff s < 0 or s > getS()
+     *
      * @return t
+     * @throws IllegalArgumentException iff s < 0 or s > getS()
      */
     double calcT(double s);
 
     /**
-     * @throws IllegalArgumentException
-     *             iff t < 0 or t > getT()
+     * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
     double calcV(double t);
 
     /**
-     * @throws IllegalArgumentException
-     *             iff t < 0 or t > getT()
+     * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
     double calcA(double t);
 

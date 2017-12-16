@@ -2,9 +2,8 @@ package freerails.launcher;
 
 /**
  * Exposes the methods on the Launcher that the launcher panels may call.
- * 
+ *
  * @author Luke
- * 
  */
 
 public interface LauncherInterface {
@@ -23,7 +22,9 @@ public interface LauncherInterface {
 
     public enum MSG_TYPE {
         INFO, WARNING, ERROR
-    };
+    }
+
+    ;
 
     void setInfoText(String text, MSG_TYPE status);
 

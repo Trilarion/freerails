@@ -8,9 +8,8 @@ import freerails.world.common.FreerailsSerializable;
 
 /**
  * Represents the state of the economy.
- * 
+ *
  * @author Luke
- * 
  */
 public class EconomicClimate implements FreerailsSerializable {
     private static final long serialVersionUID = 3834025840475321136L;

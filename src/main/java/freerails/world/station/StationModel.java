@@ -5,9 +5,8 @@ import freerails.world.common.ImList;
 
 /**
  * This class represents a station.
- * 
+ *
  * @author Luke
- * 
  */
 public class StationModel implements FreerailsSerializable {
     private static final long serialVersionUID = 3256442503979874355L;
@@ -59,7 +58,9 @@ public class StationModel implements FreerailsSerializable {
 
     private final int cargoBundleNumber;
 
-    /** What this station is building. */
+    /**
+     * What this station is building.
+     */
     private final ImList<PlannedTrain> production;
 
     public ConvertedAtStation getConverted() {
@@ -95,7 +96,7 @@ public class StationModel implements FreerailsSerializable {
     }
 
     public StationModel(int x, int y, String stationName,
-            int numberOfCargoTypes, int cargoBundle) {
+                        int numberOfCargoTypes, int cargoBundle) {
         this.name = stationName;
         this.x = x;
         this.y = y;

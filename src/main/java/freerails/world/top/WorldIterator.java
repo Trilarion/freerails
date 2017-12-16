@@ -4,16 +4,15 @@
  */
 package freerails.world.top;
 
-import java.util.NoSuchElementException;
-
 import freerails.world.common.FreerailsSerializable;
+
+import java.util.NoSuchElementException;
 
 /**
  * This interface lets the caller access the results of a search in the
  * gameworld. It is similar in concept to <code>java.sql.ResultSet</code>.
- * 
+ *
  * @author Luke
- * 
  */
 public interface WorldIterator {
     public static final int BEFORE_FIRST = -1;
@@ -34,7 +33,9 @@ public interface WorldIterator {
      */
     void reset();
 
-    /** Returns the element the curor is pointing to. */
+    /**
+     * Returns the element the curor is pointing to.
+     */
     FreerailsSerializable getElement();
 
     /**
@@ -50,18 +51,21 @@ public interface WorldIterator {
      */
     int getRowID();
 
-    /** Returns the number of rows. */
+    /**
+     * Returns the number of rows.
+     */
     int size();
 
     /**
      * Moves the cursor to the specified index.
-     * 
-     * @throws NoSuchElementException
-     *             if index out of range
+     *
+     * @throws NoSuchElementException if index out of range
      */
     void gotoIndex(int i);
 
-    /** Moves the cursor to the specified index. */
+    /**
+     * Moves the cursor to the specified index.
+     */
     void gotoRow(int row);
 
     /**

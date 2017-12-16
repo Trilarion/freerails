@@ -1,31 +1,26 @@
 package freerails.client.top;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.Action;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
 import freerails.client.renderer.StationRadiusRenderer;
 import freerails.client.view.ActionRoot;
 import freerails.client.view.StationBuildModel;
 import freerails.controller.ModelRoot;
 import freerails.world.track.FreerailsTile;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 /**
  * This JPopupMenu displays the list of station types that are available and
  * builds the type that is selected.
- * 
+ *
  * @author Luke Lindsay 08-Nov-2002
- * 
  */
 public class StationTypesPopup extends JPopupMenu {
     private static final long serialVersionUID = 3258415040658093364L;
@@ -62,7 +57,7 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     public void setup(ModelRoot mr, ActionRoot actionRoot,
-            StationRadiusRenderer srr) {
+                      StationRadiusRenderer srr) {
         modelRoot = mr;
         stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;

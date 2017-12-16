@@ -4,21 +4,11 @@
  */
 package freerails.controller;
 
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
-
-import java.util.HashMap;
-
 import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.move.NextActivityMove;
 import freerails.world.cargo.CargoBundle;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.GameTime;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -27,21 +17,19 @@ import freerails.world.top.WorldDiffs;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackSection;
-import freerails.world.train.CompositeSpeedAgainstTime;
-import freerails.world.train.ConstAcc;
-import freerails.world.train.PathOnTiles;
-import freerails.world.train.SpeedAgainstTime;
-import freerails.world.train.SpeedTimeAndStatus;
-import freerails.world.train.TrainMotion;
+import freerails.world.train.*;
 import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
-
 import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+
+import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
+import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 
 /**
  * Generates moves for changes in train position and stops at stations.
- * 
+ *
  * @author Luke
- * 
  */
 public class MoveTrainPreMove implements PreMove {
     private static final long serialVersionUID = 3545516188269491250L;
@@ -58,11 +46,11 @@ public class MoveTrainPreMove implements PreMove {
 
     /**
      * Uses static method to make testing easier.
-     * 
+     *
      * @throws NoTrackException
      */
     public static Step findNextStep(ReadOnlyWorld world,
-            PositionOnTrack currentPosition, ImPoint target) {
+                                    PositionOnTrack currentPosition, ImPoint target) {
         int startPos = PositionOnTrack.toInt(currentPosition.getX(),
                 currentPosition.getY());
         int endPos = PositionOnTrack.toInt(target.x, target.y);
@@ -114,7 +102,7 @@ public class MoveTrainPreMove implements PreMove {
     private OccupiedTracks occupiedTracks;
 
     public MoveTrainPreMove(int id, FreerailsPrincipal p,
-            OccupiedTracks occupiedTracks) {
+                            OccupiedTracks occupiedTracks) {
         trainID = id;
         principal = p;
         this.occupiedTracks = occupiedTracks;
@@ -126,7 +114,6 @@ public class MoveTrainPreMove implements PreMove {
 
     /**
      * Returns true if an updated is due.
-     * 
      */
     public boolean isUpdateDue(ReadOnlyWorld w) {
         GameTime currentTime = w.currentTime();
@@ -203,70 +190,70 @@ public class MoveTrainPreMove implements PreMove {
         SpeedTimeAndStatus.TrainActivity activity = tm.getActivity();
 
         switch (activity) {
-        case STOPPED_AT_STATION:
-            return moveTrain(w, occupiedTracks);
-        case READY: {
-            // Are we at a station?
-            TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
-                    principal, new WorldDiffs(w));
-            ta.getStationId(Integer.MAX_VALUE);
-            PositionOnTrack pot = tm.getFinalPosition();
-            int x = pot.getX();
-            int y = pot.getY();
-            boolean atStation = stopsHandler.getStationID(x, y) >= 0;
+            case STOPPED_AT_STATION:
+                return moveTrain(w, occupiedTracks);
+            case READY: {
+                // Are we at a station?
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
+                        principal, new WorldDiffs(w));
+                ta.getStationId(Integer.MAX_VALUE);
+                PositionOnTrack pot = tm.getFinalPosition();
+                int x = pot.getX();
+                int y = pot.getY();
+                boolean atStation = stopsHandler.getStationID(x, y) >= 0;
 
-            TrainMotion nextMotion;
-            if (atStation) {
-                // We have just arrived at a station.
-                double durationOfStationStop = 10;
+                TrainMotion nextMotion;
+                if (atStation) {
+                    // We have just arrived at a station.
+                    double durationOfStationStop = 10;
 
-                stopsHandler.arrivesAtPoint(x, y);
+                    stopsHandler.arrivesAtPoint(x, y);
 
-                SpeedTimeAndStatus.TrainActivity status = stopsHandler
-                        .isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD
-                        : STOPPED_AT_STATION;
-                PathOnTiles path = tm.getPath();
-                int lastTrainLength = tm.getTrainLength();
-                int currentTrainLength = stopsHandler.getTrainLength();
+                    SpeedTimeAndStatus.TrainActivity status = stopsHandler
+                            .isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD
+                            : STOPPED_AT_STATION;
+                    PathOnTiles path = tm.getPath();
+                    int lastTrainLength = tm.getTrainLength();
+                    int currentTrainLength = stopsHandler.getTrainLength();
 
-                // If we are adding wagons we may need to lengthen the path.
-                if (lastTrainLength < currentTrainLength) {
-                    path = TrainStopsHandler.lengthenPath(w, path,
-                            currentTrainLength);
-                }
+                    // If we are adding wagons we may need to lengthen the path.
+                    if (lastTrainLength < currentTrainLength) {
+                        path = TrainStopsHandler.lengthenPath(w, path,
+                                currentTrainLength);
+                    }
 
-                nextMotion = new TrainMotion(path, currentTrainLength,
-                        durationOfStationStop, status);
+                    nextMotion = new TrainMotion(path, currentTrainLength,
+                            durationOfStationStop, status);
 
-                // Create a new Move object.
-                Move trainMove = new NextActivityMove(nextMotion, trainID,
-                        principal);
+                    // Create a new Move object.
+                    Move trainMove = new NextActivityMove(nextMotion, trainID,
+                            principal);
 
-                Move cargoMove = stopsHandler.getMoves();
-                return new CompositeMove(trainMove, cargoMove);
-            }
-            return moveTrain(w, occupiedTracks);
-        }
-        case WAITING_FOR_FULL_LOAD: {
-            TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
-                    principal, new WorldDiffs(w));
-
-            boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
-            Move cargoMove = stopsHandler.getMoves();
-            if (!waiting4fullLoad) {
-                Move trainMove = moveTrain(w, occupiedTracks);
-                if (null != trainMove) {
+                    Move cargoMove = stopsHandler.getMoves();
                     return new CompositeMove(trainMove, cargoMove);
-                } else {
-                    return cargoMove;
                 }
+                return moveTrain(w, occupiedTracks);
             }
-            stopsHandler.makeTrainWait(30);
-            return cargoMove;
+            case WAITING_FOR_FULL_LOAD: {
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
+                        principal, new WorldDiffs(w));
 
-        }
-        default:
-            throw new UnsupportedOperationException(activity.toString());
+                boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
+                Move cargoMove = stopsHandler.getMoves();
+                if (!waiting4fullLoad) {
+                    Move trainMove = moveTrain(w, occupiedTracks);
+                    if (null != trainMove) {
+                        return new CompositeMove(trainMove, cargoMove);
+                    } else {
+                        return cargoMove;
+                    }
+                }
+                stopsHandler.makeTrainWait(30);
+                return cargoMove;
+
+            }
+            default:
+                throw new UnsupportedOperationException(activity.toString());
         }
     }
 

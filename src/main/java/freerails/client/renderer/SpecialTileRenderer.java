@@ -5,19 +5,18 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
 import freerails.client.common.ImageManager;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
-
 import org.apache.log4j.Logger;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A special tile's icon gets drawn over the icon of a normal tile.
- * 
+ *
  * @author Luke Lindsay
  */
 final public class SpecialTileRenderer extends AbstractTileRenderer {
@@ -28,7 +27,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 
     @Override
     public void renderTile(java.awt.Graphics g, int renderX, int renderY,
-            int mapX, int mapY, ReadOnlyWorld w) {
+                           int mapX, int mapY, ReadOnlyWorld w) {
         if (parentTileView != null) {
             parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
         } else {
@@ -50,7 +49,7 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
+                               TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
             throws IOException {
         super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[1]);

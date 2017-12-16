@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 /**
  * This class converts time measured in ticks since the game began into time
  * represented as <i>Month, Year</i> and <i>hour:minute</i>.
- * 
+ *
  * @author Luke
  */
 final public class GameCalendar implements FreerailsSerializable {
@@ -67,83 +67,85 @@ final public class GameCalendar implements FreerailsSerializable {
         String monthAbrev = null;
 
         switch (month) {
-        case 0: {
-            monthAbrev = "Jan";
+            case 0: {
+                monthAbrev = "Jan";
 
-            break;
-        }
+                break;
+            }
 
-        case 1: {
-            monthAbrev = "Feb";
+            case 1: {
+                monthAbrev = "Feb";
 
-            break;
-        }
+                break;
+            }
 
-        case 2: {
-            monthAbrev = "Mar";
+            case 2: {
+                monthAbrev = "Mar";
 
-            break;
-        }
+                break;
+            }
 
-        case 3: {
-            monthAbrev = "Apr";
+            case 3: {
+                monthAbrev = "Apr";
 
-            break;
-        }
+                break;
+            }
 
-        case 4: {
-            monthAbrev = "May";
+            case 4: {
+                monthAbrev = "May";
 
-            break;
-        }
+                break;
+            }
 
-        case 5: {
-            monthAbrev = "Jun";
+            case 5: {
+                monthAbrev = "Jun";
 
-            break;
-        }
+                break;
+            }
 
-        case 6: {
-            monthAbrev = "Jul";
+            case 6: {
+                monthAbrev = "Jul";
 
-            break;
-        }
+                break;
+            }
 
-        case 7: {
-            monthAbrev = "Aug";
+            case 7: {
+                monthAbrev = "Aug";
 
-            break;
-        }
+                break;
+            }
 
-        case 8: {
-            monthAbrev = "Sep";
+            case 8: {
+                monthAbrev = "Sep";
 
-            break;
-        }
+                break;
+            }
 
-        case 9: {
-            monthAbrev = "Oct";
+            case 9: {
+                monthAbrev = "Oct";
 
-            break;
-        }
+                break;
+            }
 
-        case 10: {
-            monthAbrev = "Nov";
+            case 10: {
+                monthAbrev = "Nov";
 
-            break;
-        }
+                break;
+            }
 
-        case 11: {
-            monthAbrev = "Dec";
+            case 11: {
+                monthAbrev = "Dec";
 
-            break;
-        }
+                break;
+            }
         }
 
         return monthAbrev + " " + getYearAsString(i);
     }
 
-    /** Returns the month, 0=Jan, 1=Feb, etc. */
+    /**
+     * Returns the month, 0=Jan, 1=Feb, etc.
+     */
     public int getMonth(int i) {
         int ticksPerMonth = ticksPerYear / 12;
 

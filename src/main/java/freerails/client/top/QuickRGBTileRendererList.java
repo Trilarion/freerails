@@ -4,11 +4,6 @@
  */
 package freerails.client.top;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.HashMap;
-
 import freerails.client.common.ImageManager;
 import freerails.client.renderer.TileRenderer;
 import freerails.client.renderer.TileRendererList;
@@ -17,11 +12,13 @@ import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 
+import java.awt.*;
+import java.util.HashMap;
+
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
- * 
+ *
  * @author Luke
- * 
  */
 public class QuickRGBTileRendererList implements TileRendererList {
     private final int[] rgbValues;
@@ -91,7 +88,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
         }
 
         public void renderTile(Graphics g, int renderX, int renderY, int mapX,
-                int mapY, ReadOnlyWorld w) {
+                               int mapY, ReadOnlyWorld w) {
             g.drawImage(i, renderX, renderY, null);
         }
 

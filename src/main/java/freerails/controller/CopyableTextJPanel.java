@@ -6,19 +6,21 @@
 
 package freerails.controller;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  * Displays text that can be selected with the mouse and copied to the
  * clipboard.
- * 
+ *
  * @author Luke
  */
 public class CopyableTextJPanel extends javax.swing.JPanel {
 
     private static final long serialVersionUID = 4076159955353400345L;
 
-    /** Creates new form CopyableTextJPanel */
+    /**
+     * Creates new form CopyableTextJPanel
+     */
     public CopyableTextJPanel() {
         initComponents();
     }

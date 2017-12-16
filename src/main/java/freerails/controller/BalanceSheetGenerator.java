@@ -3,33 +3,23 @@
  */
 package freerails.controller;
 
-import static freerails.world.accounts.Transaction.Category.BOND;
-import static freerails.world.accounts.Transaction.Category.INDUSTRIES;
-import static freerails.world.accounts.Transaction.Category.ISSUE_STOCK;
-import static freerails.world.accounts.Transaction.Category.STATIONS;
-import static freerails.world.accounts.Transaction.Category.TRACK;
-import static freerails.world.accounts.Transaction.Category.TRAIN;
-import static freerails.world.accounts.Transaction.Category.TRANSFER_STOCK;
 import freerails.controller.StockPriceCalculator.StockPrice;
 import freerails.world.accounts.Transaction;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ITEM;
-import freerails.world.top.ItemsTransactionAggregator;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.TransactionAggregator;
+import freerails.world.top.*;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
+
+import static freerails.world.accounts.Transaction.Category.*;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so
  * don't change their names.
- * 
+ *
  * @author Luke
- * 
  */
 public class BalanceSheetGenerator {
 
@@ -59,19 +49,19 @@ public class BalanceSheetGenerator {
         year = String.valueOf(startyear);
         GameTime startOfYear = new GameTime(cal.getTicks(startyear));
 
-        GameTime[] totalTimeInteval = new GameTime[] { GameTime.BIG_BANG,
-                GameTime.END_OF_THE_WORLD };
+        GameTime[] totalTimeInteval = new GameTime[]{GameTime.BIG_BANG,
+                GameTime.END_OF_THE_WORLD};
 
         total = new Stats(w, principal, totalTimeInteval);
 
-        GameTime[] ytdTimeInteval = new GameTime[] { startOfYear,
-                GameTime.END_OF_THE_WORLD };
+        GameTime[] ytdTimeInteval = new GameTime[]{startOfYear,
+                GameTime.END_OF_THE_WORLD};
         ytd = new Stats(w, principal, ytdTimeInteval);
 
     }
 
     public static Money calTrackTotal(Transaction.Category category,
-            ReadOnlyWorld w, FreerailsPrincipal principal, GameTime startTime) {
+                                      ReadOnlyWorld w, FreerailsPrincipal principal, GameTime startTime) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
 
@@ -82,8 +72,8 @@ public class BalanceSheetGenerator {
             TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
             long trackValue = trackRule.getPrice().getAmount();
 
-            GameTime[] times = new GameTime[] { startTime,
-                    GameTime.END_OF_THE_WORLD };
+            GameTime[] times = new GameTime[]{startTime,
+                    GameTime.END_OF_THE_WORLD};
 
             aggregator.setType(i);
             aggregator.setTimes(times);
@@ -101,7 +91,7 @@ public class BalanceSheetGenerator {
     public static class Stats {
 
         public Stats(ReadOnlyWorld w, FreerailsPrincipal principal,
-                final GameTime[] totalTimeInteval) {
+                     final GameTime[] totalTimeInteval) {
             TransactionAggregator operatingFundsAggregator = new TransactionAggregator(
                     w, principal) {
                 @Override

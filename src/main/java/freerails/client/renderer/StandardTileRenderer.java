@@ -5,23 +5,23 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
 import freerails.client.common.ImageManager;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Paints a tile for which there only one tile icon.
- * 
+ *
  * @author Luke Lindsay
  */
 final public class StandardTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {
     public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+                                TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[1]);
         this.getTileIcons()[0] = imageManager.getImage(generateFilename());

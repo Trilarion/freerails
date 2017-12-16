@@ -4,21 +4,17 @@
  */
 package freerails.world.top;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import freerails.util.List1DDiff;
-import freerails.util.List2DDiff;
-import freerails.util.List3DDiff;
-import freerails.util.ListKey;
-import freerails.util.Utils;
+import freerails.util.*;
 import freerails.world.accounts.TransactionAndTimeStamp;
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.common.ImPoint;
 import freerails.world.common.Money;
 import freerails.world.player.Player;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * An implemenation of World that only stores differences relative to an
@@ -26,9 +22,9 @@ import freerails.world.player.Player;
  * does. The <code>key</code> object could be a location on the map, a
  * position in a list etc. <code><pre>
  * HashMap underlyingWorldObject;
- * 
+ * <p>
  * HashMap differences;
- * 
+ * <p>
  * public void put(Object key, Object value) {
  *     if (underlyingWorldObject.get(key).equals(value)) {
  *         if (differences.containsKey(key)) {
@@ -38,7 +34,7 @@ import freerails.world.player.Player;
  *         differences.put(key, value);
  *     }
  * }
- * 
+ * <p>
  * public Object get(Object key) {
  *     if (differences.containsKey(key)) {
  *         return differences.get(key);
@@ -47,7 +43,7 @@ import freerails.world.player.Player;
  *     }
  * }
  * </code></pre>
- * 
+ * <p>
  * The advantages of using an instance of this class instead of a copy of the
  * world object are:
  * <ol>
@@ -55,11 +51,9 @@ import freerails.world.player.Player;
  * <li> Lets you pinpoint where differences on the map are, so you don't need to
  * check every tile. </li>
  * </ol>
- * 
- * 
+ *
  * @author Luke
  * @version 2
- * 
  */
 public class WorldDiffs extends WorldImpl {
 
@@ -71,7 +65,9 @@ public class WorldDiffs extends WorldImpl {
 
     private final SortedMap<ListKey, Object> listDiff;
 
-    /** Stores the differences on the map, ImPoint are used as keys. */
+    /**
+     * Stores the differences on the map, ImPoint are used as keys.
+     */
     private final HashMap<ImPoint, Object> mapDiff;
 
     private final WorldImpl underlying;
@@ -137,12 +133,16 @@ public class WorldDiffs extends WorldImpl {
         return underlying.getTile(x, y);
     }
 
-    /** Used by unit tests. */
+    /**
+     * Used by unit tests.
+     */
     public int numberOfMapDifferences() {
         return this.mapDiff.size();
     }
 
-    /** Used by unit tests. */
+    /**
+     * Used by unit tests.
+     */
     public int listDiffs() {
         return listDiff.size();
     }

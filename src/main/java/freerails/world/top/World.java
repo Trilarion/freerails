@@ -22,7 +22,7 @@ import freerails.world.player.Player;
  * <p>
  * Code that loops through lists should handle null values gracefully
  * </p>
- * 
+ *
  * @author Luke
  * @author rob
  */
@@ -40,7 +40,6 @@ public interface World extends ReadOnlyWorld {
     /**
      * Appends the specified element to the end of the specifed list and returns
      * the index that can be used to retrieve it.
-     * 
      */
     int add(SKEY key, FreerailsSerializable element);
 
@@ -68,7 +67,6 @@ public interface World extends ReadOnlyWorld {
 
     /**
      * Removes the last element from the specified list.
-     * 
      */
     FreerailsSerializable removeLast(SKEY key);
 
@@ -84,7 +82,6 @@ public interface World extends ReadOnlyWorld {
     /**
      * Replaces the element mapped to the specified item with the specified
      * element.
-     * 
      */
     void set(ITEM item, FreerailsSerializable element);
 
@@ -93,19 +90,17 @@ public interface World extends ReadOnlyWorld {
      * the specified element.
      */
     void set(FreerailsPrincipal principal, KEY key, int index,
-            FreerailsSerializable element);
+             FreerailsSerializable element);
 
     /**
      * Replaces the element at the specified position in the specified list with
      * the specified element.
-     * 
      */
     void set(SKEY key, int index, FreerailsSerializable element);
 
     /**
      * Replaces the tile at the specified position on the map with the specified
      * tile.
-     * 
      */
     void setTile(int x, int y, FreerailsSerializable tile);
 

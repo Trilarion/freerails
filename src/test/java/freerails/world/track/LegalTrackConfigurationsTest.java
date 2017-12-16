@@ -10,15 +10,15 @@
  */
 package freerails.world.track;
 
-import java.util.ArrayList;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.util.ArrayList;
+
 /**
  * JUnit test.
- * 
+ *
  * @author lindsal
  */
 public class LegalTrackConfigurationsTest extends TestCase {

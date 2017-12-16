@@ -4,14 +4,6 @@
  */
 package freerails.controller;
 
-import static freerails.world.common.Step.EAST;
-import static freerails.world.common.Step.NORTH;
-import static freerails.world.common.Step.NORTH_EAST;
-import static freerails.world.common.Step.NORTH_WEST;
-import static freerails.world.common.Step.SOUTH;
-import static freerails.world.common.Step.SOUTH_EAST;
-import static freerails.world.common.Step.SOUTH_WEST;
-import static freerails.world.common.Step.WEST;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
@@ -22,18 +14,14 @@ import freerails.world.common.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.MutableSchedule;
-import freerails.world.train.PathOnTiles;
-import freerails.world.train.SpeedAgainstTime;
-import freerails.world.train.TrainMotion;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.*;
+
+import static freerails.world.common.Step.*;
 
 /**
  * JUnit test for MoveTrainPreMove, tests moving round a loop of track.
- * 
+ *
  * @author Luke
- * 
  */
 public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
@@ -61,7 +49,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         // Build track.
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
-        Step[] track = { EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST };
+        Step[] track = {EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST};
         stationA = new ImPoint(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.ok);
@@ -200,8 +188,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
-                NORTH_WEST, NORTH, NORTH_EAST };
+        Step[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
+                NORTH_WEST, NORTH, NORTH_EAST};
         ImPoint from = new ImPoint(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
         assertTrue(ms.ok);

@@ -9,25 +9,15 @@ package freerails.move;
 import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.player.Player;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldImpl;
-import freerails.world.track.FreerailsTile;
-import freerails.world.track.NullTrackPiece;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackPieceImpl;
-import freerails.world.track.TrackRule;
+import freerails.world.top.*;
+import freerails.world.track.*;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
  * JUnit test.
- * 
+ *
  * @author Luke
- * 
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     final Step southeast = Step.SOUTH_EAST;

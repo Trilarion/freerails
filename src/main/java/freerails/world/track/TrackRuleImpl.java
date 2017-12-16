@@ -5,11 +5,11 @@
  */
 package freerails.world.track;
 
-import java.util.Iterator;
-
 import freerails.world.common.Money;
 import freerails.world.common.Step;
 import freerails.world.terrain.TerrainType;
+
+import java.util.Iterator;
 
 /**
  * This class encapsulates the rules that apply to a type of track node. They
@@ -17,7 +17,7 @@ import freerails.world.terrain.TerrainType;
  * node's track can be doubled, on which terrain types it can be built, and the
  * maximum number of consecutive nodes of this type (used for bridges and
  * tunnels).
- * 
+ *
  * @author Luke Lindsay 09 October 2001
  */
 final public class TrackRuleImpl implements TrackRule {
@@ -35,7 +35,7 @@ final public class TrackRuleImpl implements TrackRule {
      * 000 111 000 This represents a horizontal straight.
      */
     public TrackRuleImpl(TrackRuleProperties p, LegalTrackConfigurations lc,
-            LegalTrackPlacement ltp) {
+                         LegalTrackPlacement ltp) {
         if (null == p || null == lc || null == ltp) {
             throw new java.lang.IllegalArgumentException();
         }

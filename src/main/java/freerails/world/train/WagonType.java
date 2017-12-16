@@ -6,9 +6,8 @@ import freerails.world.common.FreerailsSerializable;
  * This class represents a wagon type, for example 'goods wagon'. It
  * encapsulates the properties of a wagon that are common to all wagons of the
  * same type.
- * 
+ *
  * @author Luke
- * 
  */
 public class WagonType implements FreerailsSerializable {
     private static final long serialVersionUID = 3906368233710826292L;

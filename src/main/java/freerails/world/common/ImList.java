@@ -4,16 +4,15 @@
  */
 package freerails.world.common;
 
+import freerails.util.Immutable;
+
 import java.util.Arrays;
 import java.util.List;
 
-import freerails.util.Immutable;
-
 /**
  * An immutable List
- * 
+ *
  * @author Luke
- * 
  */
 @Immutable
 public final class ImList<E extends FreerailsSerializable> implements

@@ -3,18 +3,17 @@
  */
 package freerails.network;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.common.Money;
 import junit.framework.TestCase;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 /**
  * JUnit test for NewLocalConnection.
- * 
+ *
  * @author Luke
- * 
  */
 public class LocalConnectionTest extends TestCase {
     private static class Server implements Runnable {
@@ -69,7 +68,7 @@ public class LocalConnectionTest extends TestCase {
             localConnection.writeToServer(m); // From the client.
             objectsRead = localConnection.readFromClient();
 
-            FreerailsSerializable[] expectedArray = { m };
+            FreerailsSerializable[] expectedArray = {m};
             assertTrue(Arrays.equals(expectedArray, objectsRead));
             objectsRead = localConnection.readFromClient();
             assertTrue(Arrays.equals(EmptyArray, objectsRead));

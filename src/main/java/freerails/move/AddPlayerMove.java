@@ -11,7 +11,7 @@ import freerails.world.top.World;
 
 /**
  * Adds a player to the world.
- * 
+ *
  * @author Luke
  */
 public class AddPlayerMove implements Move, ServerMove {

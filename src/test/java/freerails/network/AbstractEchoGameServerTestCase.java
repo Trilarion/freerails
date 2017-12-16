@@ -7,9 +7,8 @@ import junit.framework.TestCase;
 
 /**
  * Test cases that use EchoGameServer should extend this class.
- * 
+ *
  * @author Luke
- * 
  */
 public abstract class AbstractEchoGameServerTestCase extends TestCase {
     InetConnectionAccepter server;

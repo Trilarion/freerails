@@ -4,17 +4,16 @@
  */
 package freerails.world.top;
 
-import java.util.NoSuchElementException;
-
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
+
+import java.util.NoSuchElementException;
 
 /**
  * Iterates over one of the lists on the world object only returning non null
  * elements.
- * 
+ *
  * @author Luke
- * 
  */
 public class NonNullElements implements WorldIterator {
     private final KEY key;
@@ -149,7 +148,9 @@ public class NonNullElements implements WorldIterator {
         return true;
     }
 
-    /** Moves the cursor to the specified index. */
+    /**
+     * Moves the cursor to the specified index.
+     */
     public void gotoIndex(int i) {
         int newRow = -1;
 
@@ -197,7 +198,7 @@ public class NonNullElements implements WorldIterator {
     }
 
     public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p,
-            int row) {
+                                int row) {
         int count = 0;
         for (int i = 0; i < w.size(p, key); i++) {
 

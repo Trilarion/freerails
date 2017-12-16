@@ -1,15 +1,13 @@
 package freerails.client.top;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.util.LinkedList;
 
 /**
  * Provides a method that draws a String showing the average FPS over the last
  * complete 5000ms interval.
- * 
+ *
  * @author Luke
- * 
  */
 public class FPScounter {
 

@@ -5,12 +5,11 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 
 /**
  * Paints a layer of the map which might be buffered.
- * 
+ *
  * @author Luke Lindsay
  */
 public interface MapLayerRenderer {

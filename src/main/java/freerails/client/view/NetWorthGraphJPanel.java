@@ -4,20 +4,6 @@
  */
 package freerails.client.view;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.Action;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
@@ -28,15 +14,19 @@ import freerails.world.player.Player;
 import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.TransactionAggregator;
-
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * A JPanel that displays a graph of the net worth of each of the players
  * against time.
- * 
+ *
  * @author Luke
- * 
  */
 public class NetWorthGraphJPanel extends JPanel implements View {
 
@@ -74,19 +64,24 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     /**
      * Stores the company details that are used to draw a line and title on the
      * graph.
-     * 
+     *
      * @author Luke
-     * 
      */
     static class CompanyDetails {
 
-        /** The company's net worth at the end of each year. */
+        /**
+         * The company's net worth at the end of each year.
+         */
         long[] value = new long[100];
 
-        /** The colour for the line on the graph. */
+        /**
+         * The colour for the line on the graph.
+         */
         final Color color;
 
-        /** The company's name. */
+        /**
+         * The company's name.
+         */
         final String name;
 
         CompanyDetails(String n, Color c) {
@@ -102,7 +97,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
     /**
      * This method initializes
-     * 
      */
     public NetWorthGraphJPanel() {
 
@@ -122,7 +116,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
     /**
      * This method initializes this
-     * 
      */
     private void initialize() {
         yAxisLabel4 = new JLabel();

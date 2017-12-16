@@ -4,7 +4,6 @@
  */
 package freerails.controller;
 
-import static freerails.world.accounts.StockTransaction.STOCK_BUNDLE_SIZE;
 import freerails.world.accounts.AddItemTransaction;
 import freerails.world.accounts.Transaction;
 import freerails.world.common.GameCalendar;
@@ -15,19 +14,20 @@ import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.TransactionAggregator;
 
+import static freerails.world.accounts.StockTransaction.STOCK_BUNDLE_SIZE;
+
 /**
  * Calculates the stock price for each of the players. Stock price = [Net worth +
  * 5 * profit last year] / [ shares owned by public + 0.5 shares owned by other
  * players] Let profit last year = 100,000 in the first year.
- * 
+ *
  * @author Luke
- * 
  */
 public class StockPriceCalculator {
     public static class StockPrice {
 
         public StockPrice(long netWorth, long profitLastyear, int publicShares,
-                int otherRRShares) {
+                          int otherRRShares) {
             currentPrice = calStockPrice(netWorth, profitLastyear,
                     publicShares, otherRRShares);
             sellPrice = calStockPrice(netWorth, profitLastyear, publicShares
@@ -85,7 +85,9 @@ public class StockPriceCalculator {
         return year == currentYear;
     }
 
-    /** Returns the players networth at the start of this year. */
+    /**
+     * Returns the players networth at the start of this year.
+     */
     long netWorth(int playerId) {
         FreerailsPrincipal pr = w.getPlayer(playerId).getPrincipal();
         NetWorthCalculator nwc = new NetWorthCalculator(w, pr);
@@ -95,8 +97,8 @@ public class StockPriceCalculator {
         GameTime currentTime = w.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
-        GameTime[] times = { GameTime.BIG_BANG,
-                new GameTime(ticksAtStartOfyear + 1) };
+        GameTime[] times = {GameTime.BIG_BANG,
+                new GameTime(ticksAtStartOfyear + 1)};
         nwc.setTimes(times);
 
         return nwc.calculateValue().getAmount();
@@ -111,8 +113,8 @@ public class StockPriceCalculator {
         int lastyear = currentYear - 1;
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
         int ticksAtStartOfLastYear = calendar.getTicks(lastyear);
-        GameTime[] inteval = { new GameTime(ticksAtStartOfLastYear),
-                new GameTime(ticksAtStartOfyear) };
+        GameTime[] inteval = {new GameTime(ticksAtStartOfLastYear),
+                new GameTime(ticksAtStartOfyear)};
 
         TransactionAggregator aggregator = new TransactionAggregator(w, pr) {
             @Override
@@ -153,7 +155,7 @@ public class StockPriceCalculator {
     }
 
     static Money calStockPrice(long netWorth, long profitLastyear,
-            int publicShares, int otherRRShares) {
+                               int publicShares, int otherRRShares) {
         if ((publicShares + otherRRShares) == 0)
             return new Money(Long.MAX_VALUE);
         long price = 2 * (5 * profitLastyear + netWorth)

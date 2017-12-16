@@ -1,12 +1,13 @@
 package experimental;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
-import org.apache.log4j.Logger;
 
 /**
  * This class generates an ant script that checks the dependencies between
@@ -17,9 +18,8 @@ import org.apache.log4j.Logger;
  * depend on to a temporary directory, then compiling the contents of the
  * package. If the packaged depends on classes other than those contained in the
  * packages it is allowed to depend on, the compile will fail.
- * 
+ *
  * @author Luke
- * 
  */
 public class GenerateDependenciesXmlAndHtml {
     private static final Logger logger = Logger
@@ -48,7 +48,7 @@ public class GenerateDependenciesXmlAndHtml {
     }
 
     private GenerateDependenciesXmlAndHtml(String xmlFilename,
-            String htmlFilename) throws FileNotFoundException {
+                                           String htmlFilename) throws FileNotFoundException {
 
         Date d = new Date();
         sig = this.getClass().getName() + " on " + d;
@@ -59,7 +59,7 @@ public class GenerateDependenciesXmlAndHtml {
         File htmlFile = new File(htmlFilename);
         htmlWriter = new PrintWriter(new FileOutputStream(htmlFilename));
 
-        String[] basePackages = { "freerails/util/*" };
+        String[] basePackages = {"freerails/util/*"};
         start();
 
         startBlock("All");
@@ -69,7 +69,7 @@ public class GenerateDependenciesXmlAndHtml {
         add("freerails/move/**/*");
         add("freerails/controller/*");
         add("freerails/network/*");
-        add(new String[] { "freerails/server/**/*", "freerails/client/**/*" });
+        add(new String[]{"freerails/server/**/*", "freerails/client/**/*"});
         add("freerails/launcher/**/*");
         add("freerails/experimental/**/*");
 
@@ -78,9 +78,9 @@ public class GenerateDependenciesXmlAndHtml {
         startBlock("World");
         add(basePackages);
         add("freerails/world/common/*");
-        add(new String[] { "freerails/world/terrain/*",
+        add(new String[]{"freerails/world/terrain/*",
                 "freerails/world/cargo/*", "freerails/world/train/*",
-                "freerails/world/station/*" });
+                "freerails/world/station/*"});
         add("freerails/world/track/*");
         add("freerails/world/accounts/*");
         add("freerails/world/player/*");
@@ -197,7 +197,7 @@ public class GenerateDependenciesXmlAndHtml {
     }
 
     private void add(String packageName) {
-        add(new String[] { packageName });
+        add(new String[]{packageName});
     }
 
     private void add(String[] packageNames) {

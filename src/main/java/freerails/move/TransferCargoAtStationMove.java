@@ -1,7 +1,5 @@
 package freerails.move;
 
-import java.util.ArrayList;
-
 import freerails.world.accounts.DeliverCargoReceipt;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.common.ImList;
@@ -9,13 +7,13 @@ import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 
+import java.util.ArrayList;
+
 /**
  * This {@link CompositeMove} transfers cargo from a train to a station and
  * vice-versa.
- * 
+ *
  * @author Luke Lindsay
- * 
- * 
  */
 public class TransferCargoAtStationMove extends CompositeMove {
     private static final long serialVersionUID = 3257291318215456563L;
@@ -35,8 +33,8 @@ public class TransferCargoAtStationMove extends CompositeMove {
             ChangeCargoBundleMove changeAtStation,
             ChangeCargoBundleMove changeOnTrain, CompositeMove payment,
             boolean waiting) {
-        return new TransferCargoAtStationMove(new Move[] { changeAtStation,
-                changeOnTrain, payment }, waiting);
+        return new TransferCargoAtStationMove(new Move[]{changeAtStation,
+                changeOnTrain, payment}, waiting);
     }
 
     public ChangeCargoBundleMove getChangeAtStation() {
@@ -85,7 +83,9 @@ public class TransferCargoAtStationMove extends CompositeMove {
         return quantity;
     }
 
-    /** The player who is getting paid for the delivery. */
+    /**
+     * The player who is getting paid for the delivery.
+     */
     public FreerailsPrincipal getPrincipal() {
         ImList<Move> moves = super.getMoves();
 
@@ -101,7 +101,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     public TransferCargoAtStationMove(ArrayList<Move> movesArrayList,
-            boolean waiting) {
+                                      boolean waiting) {
         super(movesArrayList);
         this.waitingForFullLoad = waiting;
     }

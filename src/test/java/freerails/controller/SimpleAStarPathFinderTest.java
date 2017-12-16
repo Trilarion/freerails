@@ -1,14 +1,13 @@
 package freerails.controller;
 
-import java.util.NoSuchElementException;
-
 import junit.framework.TestCase;
+
+import java.util.NoSuchElementException;
 
 /**
  * JUnit test for SimpleAStarPathFinder. 27-Nov-2002
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class SimpleAStarPathFinderTest extends TestCase {
     private Map map;
@@ -17,7 +16,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
 
     /**
      * Constructor for SimpleAStarPathFinderTest.
-     * 
+     *
      * @param arg0
      */
     public SimpleAStarPathFinderTest(String arg0) {
@@ -33,31 +32,31 @@ public class SimpleAStarPathFinderTest extends TestCase {
     public void testFindpath() {
         setUp();
 
-        int i = pathFinder.findstep(0, new int[] { 1 }, map);
+        int i = pathFinder.findstep(0, new int[]{1}, map);
         assertEquals(1, i);
 
-        i = pathFinder.findstep(0, new int[] { 5 }, map);
+        i = pathFinder.findstep(0, new int[]{5}, map);
         assertEquals(1, i);
 
-        i = pathFinder.findstep(0, new int[] { 4 }, map);
+        i = pathFinder.findstep(0, new int[]{4}, map);
         assertEquals(1, i);
 
-        i = pathFinder.findstep(5, new int[] { 7 }, map);
+        i = pathFinder.findstep(5, new int[]{7}, map);
         assertEquals(6, i);
 
-        i = pathFinder.findstep(4, new int[] { 1 }, map);
+        i = pathFinder.findstep(4, new int[]{1}, map);
         assertEquals(2, i);
 
-        i = pathFinder.findstep(5, new int[] { 0, 7 }, map);
+        i = pathFinder.findstep(5, new int[]{0, 7}, map);
         assertEquals(6, i);
 
-        i = pathFinder.findstep(5, new int[] { 4 }, map);
+        i = pathFinder.findstep(5, new int[]{4}, map);
         assertEquals(2, i);
 
-        i = pathFinder.findstep(4, new int[] { 4 }, map);
+        i = pathFinder.findstep(4, new int[]{4}, map);
         assertEquals(IncrementalPathFinder.PATH_NOT_FOUND, i);
 
-        i = pathFinder.findstep(2, new int[] { 1 }, map);
+        i = pathFinder.findstep(2, new int[]{1}, map);
         assertEquals(1, i);
     }
 
@@ -102,18 +101,18 @@ class Node {
 
 class Map implements GraphExplorer {
     // Look at SimpleAStarPathFinderTest.svg to see it
-    private final Node[] nodes = new Node[] {
-            new Node(new int[] { 1 }, new int[] { 11 }), // 0
-            new Node(new int[] { 0, 5, 2 }, new int[] { 11, 4, 8 }), // 1 //
+    private final Node[] nodes = new Node[]{
+            new Node(new int[]{1}, new int[]{11}), // 0
+            new Node(new int[]{0, 5, 2}, new int[]{11, 4, 8}), // 1 //
             // try
             // {11,4,4}
-            new Node(new int[] { 5, 3, 4, 1 }, new int[] { 5, 10, 12, 8 }), // 2
+            new Node(new int[]{5, 3, 4, 1}, new int[]{5, 10, 12, 8}), // 2
             // //try{5,10,12,4}
-            new Node(new int[] { 2 }, new int[] { 10 }), // 3
-            new Node(new int[] { 5, 2 }, new int[] { 18, 12 }), // 4
-            new Node(new int[] { 1, 6, 4, 2 }, new int[] { 4, 3, 18, 5 }), // 5
-            new Node(new int[] { 5, 7 }, new int[] { 3, 4 }), // 6
-            new Node(new int[] { 6 }, new int[] { 4 }), // 7
+            new Node(new int[]{2}, new int[]{10}), // 3
+            new Node(new int[]{5, 2}, new int[]{18, 12}), // 4
+            new Node(new int[]{1, 6, 4, 2}, new int[]{4, 3, 18, 5}), // 5
+            new Node(new int[]{5, 7}, new int[]{3, 4}), // 6
+            new Node(new int[]{6}, new int[]{4}), // 7
     };
 
     private int position = 0;

@@ -1,18 +1,17 @@
 package freerails.controller;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-
 import freerails.world.common.FreerailsPathIterator;
 import freerails.world.common.IntLine;
 import junit.framework.TestCase;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * JUnit test for ToAndFroPathIteratorTest.
- * 
+ *
  * @author Luke Lindsay 30-Oct-2002
- * 
  */
 public class ToAndFroPathIteratorTest extends TestCase {
     public ToAndFroPathIteratorTest(String arg0) {

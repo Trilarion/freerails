@@ -11,9 +11,8 @@ import freerails.world.top.World;
 /**
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
  * {@link World} object.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class AddTransactionMove implements Move {
     private static final long serialVersionUID = 3976738055925019701L;
@@ -22,7 +21,9 @@ public class AddTransactionMove implements Move {
 
     private final FreerailsPrincipal principal;
 
-    /** Whether the move fails if there is not enough cash. */
+    /**
+     * Whether the move fails if there is not enough cash.
+     */
     private final boolean constrained;
 
     public Transaction getTransaction() {
@@ -50,7 +51,7 @@ public class AddTransactionMove implements Move {
     }
 
     public AddTransactionMove(FreerailsPrincipal account, Transaction t,
-            boolean constrain) {
+                              boolean constrain) {
         principal = account;
         transaction = t;
         constrained = constrain;

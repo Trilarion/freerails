@@ -8,10 +8,9 @@ import java.io.IOException;
 /**
  * Defines the methods that a client can call on the server using a
  * Message2Server.
- * 
- * @see Message2Server
+ *
  * @author Luke
- * 
+ * @see Message2Server
  */
 public interface ServerControlInterface {
     public static final String FREERAILS_SAV = "freerails.sav";

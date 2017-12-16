@@ -6,17 +6,17 @@
 
 package freerails.controller;
 
-import java.util.ArrayList;
-
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.track.TrackRule;
 
+import java.util.ArrayList;
+
 /**
  * A BuildTrackStrategy determines which track types to build (or upgrade to) on
  * different terrains.
- * 
+ *
  * @author Luke
  */
 public class BuildTrackStrategy {
@@ -24,7 +24,7 @@ public class BuildTrackStrategy {
     private final int[] rules;
 
     public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID,
-            ReadOnlyWorld w) {
+                                                           ReadOnlyWorld w) {
         int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
         int[] newRules = new int[noTerrainTypes];
         for (int i = 0; i < noTerrainTypes; i++) {
@@ -50,7 +50,7 @@ public class BuildTrackStrategy {
     }
 
     private static Integer getCheapest(TrackRule.TrackCategories category,
-            ReadOnlyWorld w) {
+                                       ReadOnlyWorld w) {
         TrackRule cheapest = null;
         Integer cheapestID = null;
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
@@ -58,7 +58,7 @@ public class BuildTrackStrategy {
             if (rule.getCategory().equals(category)) {
                 if (null == cheapest
                         || cheapest.getPrice().getAmount() > rule.getPrice()
-                                .getAmount()) {
+                        .getAmount()) {
                     cheapest = rule;
                     cheapestID = new Integer(i);
                 }
@@ -68,7 +68,7 @@ public class BuildTrackStrategy {
     }
 
     private static int[] generateRules(ArrayList<Integer> allowable,
-            ReadOnlyWorld w) {
+                                       ReadOnlyWorld w) {
         int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
         int[] newRules = new int[noTerrainTypes];
         for (int i = 0; i < noTerrainTypes; i++) {
@@ -91,7 +91,9 @@ public class BuildTrackStrategy {
         return newRules;
     }
 
-    /** Creates a new instance of BuildTrackStrategy */
+    /**
+     * Creates a new instance of BuildTrackStrategy
+     */
     private BuildTrackStrategy(int[] r) {
         rules = r;
     }

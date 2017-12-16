@@ -14,9 +14,8 @@ import freerails.world.top.World;
 /**
  * This Move changes what is being built at an engine shop - when a client wants
  * to build a train, it should send an instance of this class to the server.
- * 
+ *
  * @author Luke
- * 
  */
 public class ChangeProductionAtEngineShopMove implements Move {
     private static final long serialVersionUID = 3905519384997737520L;
@@ -65,7 +64,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     }
 
     public ChangeProductionAtEngineShopMove(ImList<PlannedTrain> b,
-            ImList<PlannedTrain> a, int station, FreerailsPrincipal p) {
+                                            ImList<PlannedTrain> a, int station, FreerailsPrincipal p) {
         this.before = b;
         this.after = a;
         this.stationNumber = station;

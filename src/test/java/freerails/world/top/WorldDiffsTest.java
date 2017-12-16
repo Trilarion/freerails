@@ -3,11 +3,6 @@
  */
 package freerails.world.top;
 
-import static freerails.util.ListKey.Type.Element;
-import static freerails.world.top.WorldDiffs.LISTID.SHARED_LISTS;
-
-import java.util.Iterator;
-
 import freerails.util.ListKey;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.CargoType.Categories;
@@ -19,11 +14,15 @@ import freerails.world.terrain.CityModel;
 import freerails.world.track.FreerailsTile;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
+
+import static freerails.util.ListKey.Type.Element;
+import static freerails.world.top.WorldDiffs.LISTID.SHARED_LISTS;
+
 /**
  * JUnit test for WorldDifferences.
- * 
+ *
  * @author Luke
- * 
  */
 public class WorldDiffsTest extends TestCase {
     Player player0 = new Player("player0", 0);

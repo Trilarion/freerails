@@ -20,9 +20,8 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for BalanceSheetGenerator.
- * 
+ *
  * @author Luke
- * 
  */
 public class BalanceSheetGeneratorTest extends TestCase {
 

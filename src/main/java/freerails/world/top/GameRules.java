@@ -8,9 +8,8 @@ import freerails.world.common.FreerailsSerializable;
 /**
  * Stores rules governing what players are allowed to do, for example whether
  * they can connect their track to the track of other players.
- * 
+ *
  * @author Luke
- * 
  */
 public class GameRules implements FreerailsSerializable {
     private static final long serialVersionUID = 3258125847557978416L;

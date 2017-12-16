@@ -10,18 +10,13 @@ import freerails.world.top.MapFixtureFactory;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
 import freerails.world.top.WorldImpl;
-import freerails.world.track.FreerailsTile;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackPieceImpl;
-import freerails.world.track.TrackRule;
+import freerails.world.track.*;
 import junit.framework.TestCase;
 
 /**
  * JUnit test case for TrackMoveTransactionsGenerator.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class TrackMoveTransactionsGeneratorTest extends TestCase {
     private World world;

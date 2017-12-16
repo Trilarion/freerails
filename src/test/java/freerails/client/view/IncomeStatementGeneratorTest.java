@@ -16,9 +16,8 @@ import junit.framework.TestCase;
 
 /**
  * JUnit tsst for IncomeStatementGenerator.
- * 
+ *
  * @author Luke
- * 
  */
 public class IncomeStatementGeneratorTest extends TestCase {
     World w;

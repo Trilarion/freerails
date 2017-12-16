@@ -9,15 +9,12 @@ import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
- * 
  * Adds up the value of transactions. Implements GoF Template Method pattern.
  * Subclasses that aggregate a monetary sum should only override the method
  * <code>condition(int)</code>; subclasses that aggregate a non-monetary sum
  * should override all 4 protected methods.
- * 
- * 
+ *
  * @author Luke
- * 
  */
 public abstract class TransactionAggregator {
     protected final ReadOnlyWorld w;
@@ -28,8 +25,8 @@ public abstract class TransactionAggregator {
 
     protected int runningTotal = 0;
 
-    private final GameTime[] DEFAULT_INTERVAL = new GameTime[] {
-            GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD };
+    private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{
+            GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD};
 
     private GameTime[] timeValues = DEFAULT_INTERVAL;
 
@@ -63,7 +60,9 @@ public abstract class TransactionAggregator {
         this.principal = principal;
     }
 
-    /** Returns the sum of the appropriate transactions. Do not override. */
+    /**
+     * Returns the sum of the appropriate transactions. Do not override.
+     */
     final public Money calculateValue() {
         Money[] values = calculateValues();
 
@@ -144,6 +143,8 @@ public abstract class TransactionAggregator {
         monetaryTotals[timeIndex] = new Money(runningTotal);
     }
 
-    /** Returns true if we should count the specified transactions. */
+    /**
+     * Returns true if we should count the specified transactions.
+     */
     abstract protected boolean condition(int transactionID);
 }

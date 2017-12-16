@@ -1,40 +1,39 @@
-
 <!ELEMENT Cargo EMPTY>
-<!ATTLIST Cargo
-    Category (Mail | Passengers | Fast_Freight  | Slow_Freight  | Bulk_Freight  ) #REQUIRED
-    id ID #REQUIRED
-    unitWeight ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ) #REQUIRED
-  >
+        <!ATTLIST Cargo
+                Category (Mail | Passengers | Fast_Freight  | Slow_Freight  | Bulk_Freight  ) #REQUIRED
+                id ID #REQUIRED
+                unitWeight ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ) #REQUIRED
+                >
 
-<!ELEMENT Cargo_Types (Cargo)*>
+        <!ELEMENT Cargo_Types (Cargo)*>
 
-<!ELEMENT Consumes EMPTY>
-<!ATTLIST Consumes
-    Prerequisite ( 1 | 2 | 4 | 8 | 16 )  #IMPLIED
-    Cargo IDREF #REQUIRED
-  >
+        <!ELEMENT Consumes EMPTY>
+        <!ATTLIST Consumes
+                Prerequisite ( 1 | 2 | 4 | 8 | 16 )  #IMPLIED
+                Cargo IDREF #REQUIRED
+                >
 
-<!ELEMENT Converts EMPTY>
-<!ATTLIST Converts
-    input IDREF #REQUIRED
-    output IDREF #REQUIRED
-  >
+        <!ELEMENT Converts EMPTY>
+        <!ATTLIST Converts
+                input IDREF #REQUIRED
+                output IDREF #REQUIRED
+                >
 
-<!ELEMENT Produces EMPTY>
-<!ATTLIST Produces
-    Cargo IDREF #REQUIRED
-    Rate CDATA #REQUIRED
-  >
+        <!ELEMENT Produces EMPTY>
+        <!ATTLIST Produces
+                Cargo IDREF #REQUIRED
+                Rate CDATA #REQUIRED
+                >
 
-<!ELEMENT Terrain_Types (Tile)*>
+        <!ELEMENT Terrain_Types (Tile)*>
 
-<!ELEMENT Tile (Converts|Consumes|Produces)*>
-<!ATTLIST Tile
-    Category (Urban | River | Ocean | Hill | Country | Special | Industry | Resource) #REQUIRED
-    right-of-way CDATA #REQUIRED
-    build_cost CDATA #IMPLIED
-    rgb CDATA #REQUIRED
-    id ID #REQUIRED
-  >
+        <!ELEMENT Tile (Converts|Consumes|Produces)*>
+        <!ATTLIST Tile
+                Category (Urban | River | Ocean | Hill | Country | Special | Industry | Resource) #REQUIRED
+                right-of-way CDATA #REQUIRED
+                build_cost CDATA #IMPLIED
+                rgb CDATA #REQUIRED
+                id ID #REQUIRED
+                >
 
-<!ELEMENT Types (Cargo_Types, Terrain_Types)>
+        <!ELEMENT Types (Cargo_Types, Terrain_Types)>

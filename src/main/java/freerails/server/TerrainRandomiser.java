@@ -4,18 +4,18 @@ import java.util.Vector;
 
 /**
  * Class to randomly select a terrain type for a terrain tile.
- * 
+ * <p>
  * TerrainRandomiser.java
- * 
+ *
  * @author Scott Bennett <me@scottbennett.net> Created on 23rd Jan 2004 The
- *         Terrain Types are: 0) City (Urban) 1) Refinery (Industry) 2) Village
- *         (Urban) 3) Factory (Industry) 4) Clear (Country) 5) Farm (Country) 6)
- *         Desert (Country) 7) Ocean (Ocean) 8) Harbour (Ocean) 9) Stock-Yard
- *         (Industry) 10) Food_Proc._Plant (Industry) 11) Cattle_Ranch
- *         (Resource) 12) Grain_Elevator (Resource) 13) Oil_Well (Resource) 14)
- *         Lumber_Mill (Resource) 15) Sugar_Plant. (Resource) 16) River (River)
- *         17) Landing (River) 18) Terminal (Special) 19) Jungle (Country) 20)
- *         Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
+ * Terrain Types are: 0) City (Urban) 1) Refinery (Industry) 2) Village
+ * (Urban) 3) Factory (Industry) 4) Clear (Country) 5) Farm (Country) 6)
+ * Desert (Country) 7) Ocean (Ocean) 8) Harbour (Ocean) 9) Stock-Yard
+ * (Industry) 10) Food_Proc._Plant (Industry) 11) Cattle_Ranch
+ * (Resource) 12) Grain_Elevator (Resource) 13) Oil_Well (Resource) 14)
+ * Lumber_Mill (Resource) 15) Sugar_Plant. (Resource) 16) River (River)
+ * 17) Landing (River) 18) Terminal (Special) 19) Jungle (Country) 20)
+ * Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
  */
 public class TerrainRandomiser {
     private final Vector<Integer> terrainTypes;

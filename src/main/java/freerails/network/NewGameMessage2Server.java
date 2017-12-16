@@ -9,9 +9,8 @@ import freerails.controller.ServerControlInterface;
 
 /**
  * Request to start a game on a new map.
- * 
+ *
  * @author Luke
- * 
  */
 public class NewGameMessage2Server implements Message2Server {
     private static final long serialVersionUID = 3256723961743422513L;
@@ -44,7 +43,7 @@ public class NewGameMessage2Server implements Message2Server {
      * dynamically determined by scanning the directory.
      */
     public static String[] getMapNames() {
-        return new String[] { "South America", "Small South America" };
+        return new String[]{"South America", "Small South America"};
     }
 
     @Override

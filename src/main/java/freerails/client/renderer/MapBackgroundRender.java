@@ -5,12 +5,6 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.Constants;
@@ -19,14 +13,15 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
-
 import org.apache.log4j.Logger;
+
+import java.awt.*;
 
 /**
  * This class encapsulates the objects that make-up and paint the background of
  * the map view. At present it is composed of two layers: the terrain layer and
  * the track layer.
- * 
+ *
  * @author Luke Lindsay 21 September 2001
  * @version 1
  */
@@ -61,7 +56,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
     /**
      * This innner class represents a view of the track on the map.
-     * 
+     *
      * @author Luke Lindsay 21 September 2001
      */
     final public class TrackLayer implements MapLayerRenderer {
@@ -71,11 +66,9 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
         /**
          * Paints a rectangle of tiles onto the supplied graphics context.
-         * 
-         * @param g
-         *            The graphics context on which the tiles get painted.
-         * @param tilesToPaint
-         *            The rectangle, measured in tiles, to paint.
+         *
+         * @param g            The graphics context on which the tiles get painted.
+         * @param tilesToPaint The rectangle, measured in tiles, to paint.
          */
         public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
             /*
@@ -123,7 +116,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-                int height) {
+                                           int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
 
@@ -146,7 +139,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
     /**
      * This inner class represents the terrain of the map.
-     * 
+     *
      * @author Luke Lindsay 21 September 2001
      */
     final public class TerrainLayer implements MapLayerRenderer {
@@ -175,11 +168,9 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
         /**
          * Paints a rectangle of tiles on the supplied graphics context.
-         * 
-         * @param g
-         *            The grahics context.
-         * @param tilesToPaint
-         *            The rectangle, measued in tiles, to paint.
+         *
+         * @param g            The grahics context.
+         * @param tilesToPaint The rectangle, measued in tiles, to paint.
          */
         public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
             Point tile = new Point();
@@ -201,7 +192,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-                int height) {
+                                           int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
 
@@ -218,7 +209,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     public MapBackgroundRender(ReadOnlyWorld w, RenderersRoot rr,
-            ModelRoot modelRoot) {
+                               ModelRoot modelRoot) {
         trackLayer = new TrackLayer(w, rr);
         terrainLayer = new TerrainLayer(w, rr);
         mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
@@ -250,7 +241,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-            int height) {
+                                       int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, x, y, width, height);
         Rectangle visibleRectangle = new Rectangle(x * Constants.TILE_SIZE, y

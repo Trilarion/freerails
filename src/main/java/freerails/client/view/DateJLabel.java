@@ -4,11 +4,6 @@
  */
 package freerails.client.view;
 
-import java.awt.Graphics;
-
-import javax.swing.Action;
-import javax.swing.JLabel;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.common.GameCalendar;
@@ -16,11 +11,13 @@ import freerails.world.common.GameTime;
 import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * This JLabel shows the current date.
- * 
+ *
  * @author Luke
- * 
  */
 public class DateJLabel extends JLabel implements View {
     private static final long serialVersionUID = 3689348840578757942L;

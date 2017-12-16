@@ -8,9 +8,8 @@ import freerails.world.common.Money;
 
 /**
  * For example, the cost of buying a trains.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class Bill implements Transaction {
     private static final long serialVersionUID = 3258416144497782835L;

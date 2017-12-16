@@ -5,17 +5,17 @@
  */
 package freerails.world.track;
 
-import java.io.ObjectStreamException;
-import java.util.Iterator;
-
 import freerails.world.common.Money;
 import freerails.world.common.Step;
 import freerails.world.terrain.TerrainType;
 
+import java.io.ObjectStreamException;
+import java.util.Iterator;
+
 /**
  * The type of a Null track piece. TODO maybe it would be simplier to get rid of
  * this and jsut check against null!
- * 
+ *
  * @author lindsal
  */
 final public class NullTrackType implements TrackRule {

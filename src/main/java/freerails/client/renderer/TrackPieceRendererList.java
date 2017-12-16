@@ -5,11 +5,6 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Image;
-import java.io.IOException;
-import java.util.Iterator;
-import org.apache.log4j.Logger;
-
 import freerails.client.common.ImageManager;
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.top.ReadOnlyWorld;
@@ -17,10 +12,15 @@ import freerails.world.top.SKEY;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * A list of TrackPieceRenderers.
- * 
+ *
  * @author Luke
  */
 final public class TrackPieceRendererList {
@@ -37,7 +37,7 @@ final public class TrackPieceRendererList {
     }
 
     public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
-            FreerailsProgressMonitor pm) throws IOException {
+                                  FreerailsProgressMonitor pm) throws IOException {
         // Setup progress monitor..
 
         pm.nextStep(w.size(SKEY.TRACK_RULES));

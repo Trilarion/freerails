@@ -10,7 +10,7 @@ import freerails.world.common.ImInts;
 
 /**
  * This class encapsulates the orders for a train.
- * 
+ *
  * @author Luke
  */
 public class TrainOrdersModel implements FreerailsSerializable {
@@ -22,7 +22,9 @@ public class TrainOrdersModel implements FreerailsSerializable {
 
     public final boolean autoConsist;
 
-    /** The wagon types to add; if null, then no change. */
+    /**
+     * The wagon types to add; if null, then no change.
+     */
     public final ImInts consist;
 
     @Override
@@ -60,7 +62,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
     public final int stationId; // The number of the station to goto.
 
     public TrainOrdersModel(int station, ImInts newConsist, boolean wait,
-            boolean auto) {
+                            boolean auto) {
         // If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
 
@@ -72,7 +74,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
 
     /**
      * @return either (1) an array of cargo type ids or (2) null to represent
-     *         'no change'.
+     * 'no change'.
      */
     public ImInts getConsist() {
         return this.consist;

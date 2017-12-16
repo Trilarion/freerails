@@ -4,15 +4,14 @@
  */
 package freerails.world.common;
 
-import java.util.Arrays;
-
 import freerails.util.Immutable;
+
+import java.util.Arrays;
 
 /**
  * An immutable list of Strings.
- * 
+ *
  * @author Luke
- * 
  */
 @Immutable
 public class ImStringList implements FreerailsSerializable {

@@ -1,14 +1,7 @@
 package freerails.controller;
 
-import java.util.Stack;
-
 import freerails.controller.ModelRoot.Property;
-import freerails.move.ChangeTrackPieceCompositeMove;
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.TrackMoveTransactionsGenerator;
-import freerails.move.UndoMove;
-import freerails.move.UpgradeTrackMove;
+import freerails.move.*;
 import freerails.world.common.GameTime;
 import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
@@ -16,15 +9,13 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
-import freerails.world.track.FreerailsTile;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackPieceImpl;
-import freerails.world.track.TrackRule;
+import freerails.world.track.*;
+
+import java.util.Stack;
 
 /**
  * Provides methods that generate moves that build, upgrade, and remove track.
- * 
+ *
  * @author Luke
  */
 final public class TrackMoveProducer {
@@ -67,40 +58,40 @@ final public class TrackMoveProducer {
         ReadOnlyWorld w = executor.getWorld();
         FreerailsPrincipal principal = executor.getPrincipal();
         switch (getBuildMode()) {
-        case IGNORE_TRACK: {
-            return MoveStatus.MOVE_OK;
-        }
-        case REMOVE_TRACK: {
-            try {
-                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                        .generateRemoveTrackMove(from, trackVector, w,
-                                principal);
-
-                Move moveAndTransaction = transactionsGenerator
-                        .addTransactions(move);
-
-                return sendMove(moveAndTransaction);
-            } catch (Exception e) {
-                // thrown when there is no track to remove.
-                // Fix for bug [ 948670 ] Removing non-existant track
-                return MoveStatus.moveFailed("No track to remove.");
+            case IGNORE_TRACK: {
+                return MoveStatus.MOVE_OK;
             }
-        }
-        case BUILD_TRACK:
-        case UPGRADE_TRACK:
-            /*
-             * Do nothing yet since we need to work out what type of track to
-             * build.
-             */
-            break;
+            case REMOVE_TRACK: {
+                try {
+                    ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
+                            .generateRemoveTrackMove(from, trackVector, w,
+                                    principal);
+
+                    Move moveAndTransaction = transactionsGenerator
+                            .addTransactions(move);
+
+                    return sendMove(moveAndTransaction);
+                } catch (Exception e) {
+                    // thrown when there is no track to remove.
+                    // Fix for bug [ 948670 ] Removing non-existant track
+                    return MoveStatus.moveFailed("No track to remove.");
+                }
+            }
+            case BUILD_TRACK:
+            case UPGRADE_TRACK:
+                /*
+                 * Do nothing yet since we need to work out what type of track to
+                 * build.
+                 */
+                break;
 
         }
         assert (getBuildMode() == BuildMode.BUILD_TRACK || getBuildMode() == BuildMode.UPGRADE_TRACK);
 
         int[] ruleIDs = new int[2];
         TrackRule[] rules = new TrackRule[2];
-        int[] xs = { from.x, from.x + trackVector.deltaX };
-        int[] ys = { from.y, from.y + trackVector.deltaY };
+        int[] xs = {from.x, from.x + trackVector.deltaX};
+        int[] ys = {from.y, from.y + trackVector.deltaY};
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
@@ -119,40 +110,40 @@ final public class TrackMoveProducer {
         }
 
         switch (getBuildMode()) {
-        case UPGRADE_TRACK: {
-            // upgrade the from tile if necessary.
-            FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
-            if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0]
-                    && !isStationHere(from)) {
-                MoveStatus ms = upgradeTrack(from, ruleIDs[0]);
-                if (!ms.ok) {
-                    return ms;
+            case UPGRADE_TRACK: {
+                // upgrade the from tile if necessary.
+                FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
+                if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0]
+                        && !isStationHere(from)) {
+                    MoveStatus ms = upgradeTrack(from, ruleIDs[0]);
+                    if (!ms.ok) {
+                        return ms;
+                    }
                 }
-            }
-            ImPoint point = new ImPoint(from.x + trackVector.getDx(), from.y
-                    + trackVector.getDy());
-            FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
-            if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1]
-                    && !isStationHere(point)) {
-                MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
-                if (!ms.ok) {
-                    return ms;
+                ImPoint point = new ImPoint(from.x + trackVector.getDx(), from.y
+                        + trackVector.getDy());
+                FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
+                if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1]
+                        && !isStationHere(point)) {
+                    MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
+                    if (!ms.ok) {
+                        return ms;
+                    }
                 }
+                return MoveStatus.MOVE_OK;
             }
-            return MoveStatus.MOVE_OK;
-        }
-        case BUILD_TRACK: {
-            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                    .generateBuildTrackMove(from, trackVector, rules[0],
-                            rules[1], w, principal);
+            case BUILD_TRACK: {
+                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
+                        .generateBuildTrackMove(from, trackVector, rules[0],
+                                rules[1], w, principal);
 
-            Move moveAndTransaction = transactionsGenerator
-                    .addTransactions(move);
+                Move moveAndTransaction = transactionsGenerator
+                        .addTransactions(move);
 
-            return sendMove(moveAndTransaction);
-        }
-        default:
-            throw new IllegalArgumentException(String.valueOf(getBuildMode()));
+                return sendMove(moveAndTransaction);
+            }
+            default:
+                throw new IllegalArgumentException(String.valueOf(getBuildMode()));
         }
 
     }
@@ -173,7 +164,7 @@ final public class TrackMoveProducer {
     }
 
     public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world,
-            ModelRoot mr) {
+                             ModelRoot mr) {
         if (null == mr)
             throw new NullPointerException();
         this.executor = executor;

@@ -6,9 +6,8 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.World;
 
 /**
- * 
  * Changes the time item on the world object.
- * 
+ *
  * @author rob
  */
 public class TimeTickMove implements Move {

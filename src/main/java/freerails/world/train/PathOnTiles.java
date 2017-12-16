@@ -4,27 +4,20 @@
  */
 package freerails.world.train;
 
-import static freerails.world.common.Step.TILE_DIAMETER;
+import freerails.util.Pair;
+import freerails.world.common.*;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import freerails.util.Pair;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.FreerailsSerializable;
-import freerails.world.common.ImList;
-import freerails.world.common.ImPoint;
-import freerails.world.common.IntLine;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import static freerails.world.common.Step.TILE_DIAMETER;
 
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
- * 
+ *
  * @author Luke
- * 
  */
 strictfp public class PathOnTiles implements FreerailsSerializable {
 
@@ -35,12 +28,9 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     private final ImList<Step> vectors;
 
     /**
-     * @throws NullPointerException
-     *             if null == start
-     * @throws NullPointerException
-     *             if null == vectorsList
-     * @throws NullPointerException
-     *             if null == vectorsList.get(i) for any i;
+     * @throws NullPointerException if null == start
+     * @throws NullPointerException if null == vectorsList
+     * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
     public PathOnTiles(ImPoint start, List<Step> vectorsList) {
         if (null == start)
@@ -51,12 +41,9 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
-     * @throws NullPointerException
-     *             if null == start
-     * @throws NullPointerException
-     *             if null == vectors
-     * @throws NullPointerException
-     *             if null == vectors[i] for any i;
+     * @throws NullPointerException if null == start
+     * @throws NullPointerException if null == vectors
+     * @throws NullPointerException if null == vectors[i] for any i;
      */
     public PathOnTiles(ImPoint start, Step... vectors) {
         if (null == start)
@@ -103,11 +90,9 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     /**
      * Returns the coordinates of the point you would be standing at if you
      * walked the specified distance along the path from the start point.
-     * 
-     * @throws IllegalArgumentException
-     *             if distance < 0
-     * @throws IllegalArgumentException
-     *             if distance > getLength()
+     *
+     * @throws IllegalArgumentException if distance < 0
+     * @throws IllegalArgumentException if distance > getLength()
      */
     public ImPoint getPoint(double distance) {
         if (0 > distance)
@@ -141,14 +126,12 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     /**
      * Returns the coordinates of the point you would be standing at if you
      * walked the specified distance along the path from the start point.
-     * 
-     * @throws IllegalArgumentException
-     *             if distance < 0
-     * @throws IllegalArgumentException
-     *             if distance > getLength()
+     *
+     * @throws IllegalArgumentException if distance < 0
+     * @throws IllegalArgumentException if distance > getLength()
      */
     public Pair<ImPoint, ImPoint> getPoint(double firstdistance,
-            double lastdistance) {
+                                           double lastdistance) {
         if (0 > firstdistance) {
             throw new IllegalArgumentException("firstdistance:" + firstdistance
                     + " < 0");
@@ -204,7 +187,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
             if (distanceSoFar == lastdistance) {
                 secondPoint = new ImPoint(
                         x * TILE_DIAMETER + TILE_DIAMETER / 2, y
-                                * TILE_DIAMETER + TILE_DIAMETER / 2);
+                        * TILE_DIAMETER + TILE_DIAMETER / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
@@ -261,11 +244,9 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     /**
      * Returns the index of the step that takes the distance travelled over the
      * specified distance.
-     * 
-     * @throws IllegalArgumentException
-     *             if distance < 0
-     * @throws IllegalArgumentException
-     *             if distance > getLength()
+     *
+     * @throws IllegalArgumentException if distance < 0
+     * @throws IllegalArgumentException if distance > getLength()
      */
     public int getStepIndex(int distance) {
         if (0 > distance)
@@ -304,17 +285,13 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     /**
      * Returns a FreerailsPathIterator that exposes a sub section of the path
      * this object represents.
-     * 
-     * @throws IllegalArgumentException
-     *             if offset < 0
-     * @throws IllegalArgumentException
-     *             if length <= 0
-     * @throws IllegalArgumentException
-     *             if offset + length > getLength()
-     * 
+     *
+     * @throws IllegalArgumentException if offset < 0
+     * @throws IllegalArgumentException if length <= 0
+     * @throws IllegalArgumentException if offset + length > getLength()
      */
     public Pair<FreerailsPathIterator, Integer> subPath(double offset,
-            double length) {
+                                                        double length) {
         if (offset < 0)
             throw new IllegalArgumentException();
         if (length <= 0)

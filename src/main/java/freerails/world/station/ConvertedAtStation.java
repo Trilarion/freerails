@@ -5,7 +5,7 @@ import freerails.world.common.ImInts;
 
 /**
  * Records which cargos are converted to other cargos at a station.
- * 
+ *
  * @author Luke
  */
 public class ConvertedAtStation implements FreerailsSerializable {

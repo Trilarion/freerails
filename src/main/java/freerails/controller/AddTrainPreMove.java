@@ -4,36 +4,22 @@
  */
 package freerails.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import freerails.move.AddActiveEntityMove;
-import freerails.move.AddItemToListMove;
-import freerails.move.AddTransactionMove;
-import freerails.move.CompositeMove;
-import freerails.move.Move;
+import freerails.move.*;
 import freerails.world.accounts.AddItemTransaction;
 import freerails.world.accounts.Transaction;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImPoint;
-import freerails.world.common.Money;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
-import freerails.world.train.ConstAcc;
-import freerails.world.train.EngineType;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.PathOnTiles;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainMotion;
+import freerails.world.train.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Luke
- * 
  */
 public class AddTrainPreMove implements PreMove {
 
@@ -83,7 +69,7 @@ public class AddTrainPreMove implements PreMove {
     private final ImmutableSchedule schedule;
 
     public AddTrainPreMove(int e, ImInts wags, ImPoint p,
-            FreerailsPrincipal fp, ImmutableSchedule s) {
+                           FreerailsPrincipal fp, ImmutableSchedule s) {
         engineTypeId = e;
         wagons = wags;
         point = p;
@@ -146,8 +132,6 @@ public class AddTrainPreMove implements PreMove {
      * <li>Adds transaction to pay for the train</li>
      * <li>Init. the trains position and motion</li>
      * </ol>
-     * 
-     * 
      */
     public Move generateMove(ReadOnlyWorld w) {
         // Add cargo bundle.
@@ -176,7 +160,7 @@ public class AddTrainPreMove implements PreMove {
         Money price = engineType.getPrice();
         Transaction transaction = new AddItemTransaction(
                 Transaction.Category.TRAIN, engineTypeId, quantity, new Money(
-                        -price.getAmount()));
+                -price.getAmount()));
         AddTransactionMove transactionMove = new AddTransactionMove(principal,
                 transaction);
 

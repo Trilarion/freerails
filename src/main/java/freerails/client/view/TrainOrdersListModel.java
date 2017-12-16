@@ -5,8 +5,6 @@
  */
 package freerails.client.view;
 
-import javax.swing.AbstractListModel;
-
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
@@ -15,10 +13,12 @@ import freerails.world.train.Schedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
 
+import javax.swing.*;
+
 /**
  * AbstractListModel used by {@link TrainScheduleJPanel} to display the orders
  * making up a train schedule.
- * 
+ *
  * @author Luke Lindsay
  */
 public class TrainOrdersListModel extends AbstractListModel {
@@ -51,7 +51,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         public final int trainNumber;
 
         public TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus,
-                TrainOrdersModel order, int trainNumber) {
+                                      TrainOrdersModel order, int trainNumber) {
             this.isPriorityOrder = isPriorityOrder;
             this.gotoStatus = gotoStatus;
             this.order = order;
@@ -60,7 +60,7 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     public TrainOrdersListModel(ReadOnlyWorld w, int trainNumber,
-            FreerailsPrincipal p) {
+                                FreerailsPrincipal p) {
         this.trainNumber = trainNumber;
         this.w = w;
         this.principal = p;

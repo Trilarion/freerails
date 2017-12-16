@@ -1,27 +1,24 @@
 package freerails.client.view;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
 import freerails.client.common.Painter;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.renderer.TrainRenderer;
 import freerails.config.ClientConfig;
 import freerails.controller.ModelRoot;
-import freerails.controller.TrainAccessor;
 import freerails.controller.ModelRoot.Property;
+import freerails.controller.TrainAccessor;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainPositionOnMap;
 
+import java.awt.*;
+
 /**
  * Draws the trains on the main map.
- * 
+ *
  * @author Luke
  */
 public class OverHeadTrainView implements Painter {

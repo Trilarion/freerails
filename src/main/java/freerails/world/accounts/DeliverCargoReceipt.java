@@ -8,9 +8,8 @@ import freerails.world.common.Money;
 
 /**
  * A credit for delivering cargo.
- * 
+ *
  * @author Luke
- * 
  */
 public class DeliverCargoReceipt extends Receipt {
     private static final long serialVersionUID = 3257009851963160372L;
@@ -24,7 +23,7 @@ public class DeliverCargoReceipt extends Receipt {
     private final int trainId;
 
     public DeliverCargoReceipt(Money m, int quantity, int stationId,
-            CargoBatch cb, int trainId) {
+                               CargoBatch cb, int trainId) {
         super(m, Category.CARGO_DELIVERY);
         this.stationId = stationId;
         this.quantity = quantity;

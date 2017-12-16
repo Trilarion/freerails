@@ -8,11 +8,10 @@ package freerails.world.common;
  * This class represents actual game speed. If the game speed <code>speed</code>
  * is lesser then zero, game is paused. After unpausing, the speed should be
  * <code>-speed</code>.
- * 
+ * <p>
  * I.e. pausing/unpausing is equal to multiply the speed by -1.
- * 
+ *
  * @author MystiqueAgent
- * 
  */
 public class GameSpeed implements FreerailsSerializable {
     private static final long serialVersionUID = 3257562901983081783L;

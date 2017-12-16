@@ -13,13 +13,13 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
     private final List1D<T> underlyingList;
 
     public List1DDiff(SortedMap<ListKey, Object> diffs, List1D<T> list,
-            Enum listID) {
+                      Enum listID) {
         super(diffs, listID);
         underlyingList = list;
     }
 
     public T get(int i) {
-        return get(new int[] { i });
+        return get(new int[]{i});
     }
 
     @Override

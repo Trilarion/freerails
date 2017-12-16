@@ -4,15 +4,14 @@
  */
 package freerails.world.common;
 
-import java.util.Arrays;
-
 import freerails.util.Immutable;
+
+import java.util.Arrays;
 
 /**
  * An immutable list of ints.
- * 
+ *
  * @author Luke
- * 
  */
 @Immutable
 public class ImInts implements FreerailsSerializable {
@@ -87,7 +86,9 @@ public class ImInts implements FreerailsSerializable {
         return sb.toString();
     }
 
-    /** Returns the sum of the ints stored in the list. */
+    /**
+     * Returns the sum of the ints stored in the list.
+     */
     public int sum() {
         int sum = 0;
         for (int i = 0; i < ints.length; i++) {

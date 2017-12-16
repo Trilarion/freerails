@@ -8,7 +8,6 @@ import junit.framework.TestCase;
 
 /**
  * @author Luke
- * 
  */
 public class SharePriceCalculatorTest extends TestCase {
     public void test1() {

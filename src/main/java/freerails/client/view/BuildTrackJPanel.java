@@ -6,26 +6,6 @@
 
 package freerails.client.view;
 
-import static freerails.controller.TrackMoveProducer.BuildMode.BUILD_STATION;
-import static freerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
-import static freerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
-import static freerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
-import static freerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
-
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JToggleButton;
-
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.renderer.RenderersRoot;
@@ -39,11 +19,23 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.track.TrackRule;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+
+import static freerails.controller.TrackMoveProducer.BuildMode.*;
+
 /**
  * A JPanel that presents toggle buttons that let the player select the build
  * mode (build track, upgrade track, build station, bulldoze, and info mode) and
  * select the track/bridge/station type to use.
- * 
+ *
  * @author Luke
  */
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
@@ -61,13 +53,15 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
     private StationBuildModel stationBuildModel;
 
-    /** Creates new form BuildTrackJPanel */
+    /**
+     * Creates new form BuildTrackJPanel
+     */
     public BuildTrackJPanel() {
         initComponents();
     }
 
     public void setup(ModelRoot mr, ActionRoot ar, RenderersRoot vl,
-            ActionListener al) {
+                      ActionListener al) {
 
         modelRoot = mr;
         stationBuildModel = ar.getStationBuildModel();
@@ -98,80 +92,80 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
             TrackRule.TrackCategories category = rule.getCategory();
             Money price = null;
             switch (category) {
-            case track:
-                trackButtonGroup.add(toggleButton);
-                toggleButton.setIcon(getIcon(rule.getTypeName()));
-                toggleButton
-                        .addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(
-                                    java.awt.event.ActionEvent evt) {
-                                selectionSet
-                                        .put(TrackRule.TrackCategories.track,
-                                                ruleID);
-                                setBuildTrackStrategy();
-                            }
-                        });
-                price = rule.getPrice();
-                trackJPanel.add(toggleButton);
+                case track:
+                    trackButtonGroup.add(toggleButton);
+                    toggleButton.setIcon(getIcon(rule.getTypeName()));
+                    toggleButton
+                            .addActionListener(new java.awt.event.ActionListener() {
+                                public void actionPerformed(
+                                        java.awt.event.ActionEvent evt) {
+                                    selectionSet
+                                            .put(TrackRule.TrackCategories.track,
+                                                    ruleID);
+                                    setBuildTrackStrategy();
+                                }
+                            });
+                    price = rule.getPrice();
+                    trackJPanel.add(toggleButton);
 
-                break;
-            case bridge:
-                bridgeButtonGroup.add(toggleButton);
-                toggleButton.setIcon(getIcon(rule.getTypeName()));
-                toggleButton
-                        .addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(
-                                    java.awt.event.ActionEvent evt) {
-                                selectionSet.put(
-                                        TrackRule.TrackCategories.bridge,
-                                        ruleID);
-                                setBuildTrackStrategy();
-                            }
-                        });
+                    break;
+                case bridge:
+                    bridgeButtonGroup.add(toggleButton);
+                    toggleButton.setIcon(getIcon(rule.getTypeName()));
+                    toggleButton
+                            .addActionListener(new java.awt.event.ActionListener() {
+                                public void actionPerformed(
+                                        java.awt.event.ActionEvent evt) {
+                                    selectionSet.put(
+                                            TrackRule.TrackCategories.bridge,
+                                            ruleID);
+                                    setBuildTrackStrategy();
+                                }
+                            });
 
-                bridgesJPanel.add(toggleButton);
-                price = rule.getFixedCost();
-                break;
-            case tunnel:
+                    bridgesJPanel.add(toggleButton);
+                    price = rule.getFixedCost();
+                    break;
+                case tunnel:
 
-                tunnelButtonGroup.add(toggleButton);
-                toggleButton.setIcon(getIcon(rule.getTypeName()));
-                toggleButton
-                        .addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(
-                                    java.awt.event.ActionEvent evt) {
-                                selectionSet.put(
-                                        TrackRule.TrackCategories.tunnel,
-                                        ruleID);
-                                setBuildTrackStrategy();
+                    tunnelButtonGroup.add(toggleButton);
+                    toggleButton.setIcon(getIcon(rule.getTypeName()));
+                    toggleButton
+                            .addActionListener(new java.awt.event.ActionListener() {
+                                public void actionPerformed(
+                                        java.awt.event.ActionEvent evt) {
+                                    selectionSet.put(
+                                            TrackRule.TrackCategories.tunnel,
+                                            ruleID);
+                                    setBuildTrackStrategy();
 
-                            }
-                        });
-                price = rule.getPrice();
-                tunnelsJPanel.add(toggleButton);
-                break;
-            case station:
+                                }
+                            });
+                    price = rule.getPrice();
+                    tunnelsJPanel.add(toggleButton);
+                    break;
+                case station:
 
-                stationButtonGroup.add(toggleButton);
+                    stationButtonGroup.add(toggleButton);
 
-                toggleButton.setAction(stationBuildModel
-                        .getStationChooseAction(ruleID));
+                    toggleButton.setAction(stationBuildModel
+                            .getStationChooseAction(ruleID));
 
-                toggleButton.setIcon(getIcon(rule.getTypeName()));
+                    toggleButton.setIcon(getIcon(rule.getTypeName()));
 
-                toggleButton
-                        .addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(
-                                    java.awt.event.ActionEvent evt) {
-                                selectionSet.put(
-                                        TrackRule.TrackCategories.station,
-                                        ruleID);
-                            }
-                        });
+                    toggleButton
+                            .addActionListener(new java.awt.event.ActionListener() {
+                                public void actionPerformed(
+                                        java.awt.event.ActionEvent evt) {
+                                    selectionSet.put(
+                                            TrackRule.TrackCategories.station,
+                                            ruleID);
+                                }
+                            });
 
-                stationsJPanel.add(toggleButton);
-                price = rule.getFixedCost();
-                break;
+                    stationsJPanel.add(toggleButton);
+                    price = rule.getFixedCost();
+                    break;
             }
             toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
             String tooltip = Utils.capitalizeEveryWord(rule.getTypeName())
@@ -213,10 +207,12 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         // });
     }
 
-    /** Calls setFocusable(false) for each button in the button group. */
+    /**
+     * Calls setFocusable(false) for each button in the button group.
+     */
     private void setFocusableFalse(ButtonGroup bg) {
         for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons
-                .hasMoreElements();) {
+                .hasMoreElements(); ) {
             buttons.nextElement().setFocusable(false);
         }
     }
@@ -504,7 +500,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }// GEN-LAST:event_addTrackActionPerformed
 
     private void setVisible(boolean track, boolean bridges, boolean tunnels,
-            boolean stations) {
+                            boolean stations) {
         trackJPanel.setVisible(bridges);
         bridgesJPanel.setVisible(bridges);
         tunnelsJPanel.setVisible(tunnels);

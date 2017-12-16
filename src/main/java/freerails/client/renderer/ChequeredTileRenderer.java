@@ -5,16 +5,16 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Image;
-import java.io.IOException;
-
 import freerails.client.common.ImageManager;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 
+import java.awt.*;
+import java.io.IOException;
+
 /**
  * Paints 2 variations of a tile icon a chequered pattern.
- * 
+ *
  * @author Luke Lindsay
  */
 final public class ChequeredTileRenderer extends AbstractTileRenderer {
@@ -24,7 +24,7 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
     }
 
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+                                 TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[2]);
         this.getTileIcons()[0] = imageManager

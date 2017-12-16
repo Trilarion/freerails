@@ -1,12 +1,5 @@
 package freerails.client.renderer;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.io.IOException;
-
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.Constants;
@@ -14,16 +7,15 @@ import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldIterator;
+import freerails.world.top.*;
 import freerails.world.train.WagonType;
+
+import java.awt.*;
+import java.io.IOException;
 
 /**
  * Renders box showing the cargo waiting at a station.
- * 
+ *
  * @author Luke
  */
 public class StationBoxRenderer implements Painter {
@@ -47,7 +39,7 @@ public class StationBoxRenderer implements Painter {
     private static final int MAX_HEIGHT = 5 * (WAGON_IMAGE_HEIGHT + SPACING);
 
     public StationBoxRenderer(ReadOnlyWorld world, RenderersRoot vl,
-            ModelRoot modelRoot) {
+                              ModelRoot modelRoot) {
         this.w = world;
         this.bgColor = new Color(0, 0, 200, 60);
         this.modelRoot = modelRoot;

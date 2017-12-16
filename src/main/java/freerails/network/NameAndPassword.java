@@ -8,9 +8,8 @@ import java.io.Serializable;
 
 /**
  * Used by the server to store a player's username and password.
- * 
+ *
  * @author Luke
- * 
  */
 public class NameAndPassword implements Serializable {
     private static final long serialVersionUID = 3258409551740155956L;

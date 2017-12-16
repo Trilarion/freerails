@@ -4,22 +4,19 @@
  */
 package freerails.client.view;
 
-import java.awt.Graphics;
-
-import javax.swing.Action;
-import javax.swing.JLabel;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * This JLabel shows the amount of cash available.
- * 
+ *
  * @author Luke
- * 
  */
 public class CashJLabel extends JLabel implements View {
     private static final long serialVersionUID = 3257853181542412341L;

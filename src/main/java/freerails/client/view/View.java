@@ -4,17 +4,16 @@
  */
 package freerails.client.view;
 
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+
+import javax.swing.*;
 
 /**
  * Defines a standard method to initiate GUI components that need access to the
  * ModelRoot.
- * 
+ *
  * @author Luke
- * 
  */
 public interface View {
     void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction);

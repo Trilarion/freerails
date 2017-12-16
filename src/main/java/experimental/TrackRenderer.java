@@ -1,32 +1,23 @@
 package experimental;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.CubicCurve2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
+import freerails.client.common.ImageManager;
+import freerails.client.common.ImageManagerImpl;
+import freerails.world.common.Step;
+import freerails.world.track.TrackConfiguration;
+
+import java.awt.*;
+import java.awt.geom.*;
 import java.awt.geom.CubicCurve2D.Double;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import freerails.client.common.ImageManager;
-import freerails.client.common.ImageManagerImpl;
-import freerails.world.common.Step;
-import freerails.world.track.TrackConfiguration;
-
 /**
  * Provides methods that render track pieces.
- * 
- * @see experimental.TrackTilesGenerator
+ *
  * @author Luke Lindsay
- * 
+ * @see experimental.TrackTilesGenerator
  */
 public class TrackRenderer {
 
@@ -206,14 +197,14 @@ public class TrackRenderer {
         float sleepers = (float) length / (targetSleeperGap + sleeperWidth);
         float sleeperCount = (int) sleepers;
         float sleeperGap = (float) length / sleeperCount - sleeperWidth;
-        float dash1[] = { sleeperWidth, sleeperGap };
+        float dash1[] = {sleeperWidth, sleeperGap};
         float phase = sleeperWidth + (sleeperGap / 2);
         return new BasicStroke((float) sleeperLength, BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER, 10.0f, dash1, phase);
     }
 
     public static Line2D.Double createParallelLine(Line2D.Double line,
-            double shift) {
+                                                   double shift) {
         Line2D.Double returnValue = new Line2D.Double(line.getP1(), line
                 .getP2());
         double distance = line.getP1().distance(line.getP2());

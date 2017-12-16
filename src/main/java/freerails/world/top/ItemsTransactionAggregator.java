@@ -10,9 +10,8 @@ import freerails.world.player.FreerailsPrincipal;
 
 /**
  * Adds up the number of assets.
- * 
+ *
  * @author Luke
- * 
  */
 public class ItemsTransactionAggregator extends TransactionAggregator {
     public static final int ANY_VALUE = Integer.MIN_VALUE;
@@ -27,9 +26,8 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 
     /**
      * Stores the quantities and monetary values of a series of items.
-     * 
+     *
      * @author Luke
-     * 
      */
     public static class QuantitiesAndValues {
         public int[] quantities;
@@ -38,7 +36,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     public ItemsTransactionAggregator(ReadOnlyWorld w,
-            FreerailsPrincipal principal) {
+                                      FreerailsPrincipal principal) {
         super(w, principal);
     }
 

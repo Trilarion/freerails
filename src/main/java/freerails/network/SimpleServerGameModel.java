@@ -4,18 +4,17 @@
  */
 package freerails.network;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.World;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 /**
  * A ServerGameModel that has a world object but no automation.
- * 
+ *
  * @author Luke
- * 
  */
 public class SimpleServerGameModel implements ServerGameModel {
     private static final long serialVersionUID = 3546074757457131826L;

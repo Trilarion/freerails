@@ -1,9 +1,5 @@
 package freerails.client.renderer;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-
 import freerails.world.common.FreerailsPathIterator;
 import freerails.world.common.IntLine;
 import freerails.world.common.Step;
@@ -12,11 +8,12 @@ import freerails.world.train.PathWalkerImpl;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainPositionOnMap;
 
+import java.awt.*;
+
 /**
  * This class draws a train from an overhead view.
- * 
+ *
  * @author Luke Lindsay 13-Oct-2002
- * 
  */
 public class TrainRenderer {
     private final RenderersRoot rr;

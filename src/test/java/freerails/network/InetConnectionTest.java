@@ -5,9 +5,8 @@ package freerails.network;
 
 /**
  * Junit test for NewInetConnection.
- * 
+ *
  * @author Luke
- * 
  */
 public class InetConnectionTest extends AbstractEchoGameServerTestCase {
     public void testConnecting() {

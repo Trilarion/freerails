@@ -3,18 +3,17 @@
  */
 package freerails.network;
 
+import freerails.world.common.FreerailsSerializable;
+import org.apache.log4j.Logger;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
-import freerails.world.common.FreerailsSerializable;
-
-import org.apache.log4j.Logger;
-
 /**
  * This class has the code that is shared by the client and server versions of
  * InetConnection.
- * 
+ *
  * @author Luke
  */
 abstract class AbstractInetConnection implements Runnable {

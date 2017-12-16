@@ -3,13 +3,7 @@
  */
 package freerails.network;
 
-import freerails.controller.ClientControlInterface;
-import freerails.controller.Message2Client;
-import freerails.controller.Message2Server;
-import freerails.controller.MessageStatus;
-import freerails.controller.PreMove;
-import freerails.controller.PreMoveStatus;
-import freerails.controller.TimeTickPreMove;
+import freerails.controller.*;
 import freerails.controller.ClientControlInterface.ClientProperty;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
@@ -27,7 +21,7 @@ import junit.framework.TestCase;
 /**
  * This test uses clients connected to a local server. This means anything sent
  * to the server arrives instantly, which makes writing the test easier.
- * 
+ *
  * @author Luke
  * @see FreerailsClientTest
  */
@@ -42,7 +36,9 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         server = new FreerailsGameServer(savedGamesManager);
     }
 
-    /** Copy & pasted from FreerailsClientTest, then edited. */
+    /**
+     * Copy & pasted from FreerailsClientTest, then edited.
+     */
     public void testLogon() {
         try {
             /* Test 1 : connecting a client. */
@@ -172,7 +168,9 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
     }
 
-    /** Tests sending moves between client and server. */
+    /**
+     * Tests sending moves between client and server.
+     */
     public void testSendingMoves() {
         try {
             /* Set up and start a game with 2 clients. */
@@ -248,7 +246,9 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         }
     }
 
-    /** Tests sending premoves between client and server. */
+    /**
+     * Tests sending premoves between client and server.
+     */
     public void testSendingPreMoves() {
         try {
             /* Set up and start a game with 2 clients. */

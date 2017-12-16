@@ -1,28 +1,23 @@
 package freerails.controller;
 
-import java.util.HashSet;
-
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.world.common.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.Player;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldImpl;
+import freerails.world.top.*;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
+import java.util.HashSet;
+
 /**
  * JUnit test for FlatTrackExplorer.
- * 
+ * <p>
  * 24-Nov-2002
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class FlatTrackExplorerTest extends TestCase {
     private WorldImpl world;
@@ -42,9 +37,9 @@ public class FlatTrackExplorerTest extends TestCase {
 
         TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
 
-        Step[] vectors = { Step.WEST, Step.EAST, Step.NORTH_EAST };
+        Step[] vectors = {Step.WEST, Step.EAST, Step.NORTH_EAST};
         ImPoint p = new ImPoint(10, 10);
-        ImPoint[] points = { p, p, p };
+        ImPoint[] points = {p, p, p};
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
@@ -68,7 +63,7 @@ public class FlatTrackExplorerTest extends TestCase {
     /**
      * Tests that the track explorer at point 10,10 tells us that we can move
      * west, east, or northeast.
-     * 
+     *
      * @throws NoTrackException
      */
     public void testGetPossibleDirections() throws NoTrackException {
@@ -101,7 +96,7 @@ public class FlatTrackExplorerTest extends TestCase {
     /**
      * Tests that we can move the track explorer at point 10,10 northeast, and
      * that when we have done this, we can move it back again.
-     * 
+     *
      * @throws NoTrackException
      */
     public void testMoveTrackExplorer() throws NoTrackException {

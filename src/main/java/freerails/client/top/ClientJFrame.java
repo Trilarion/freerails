@@ -8,7 +8,7 @@ package freerails.client.top;
 
 /**
  * The JFrame that you see while you are playing the game.
- * 
+ *
  * @author Luke
  */
 public class ClientJFrame extends javax.swing.JFrame {
@@ -17,7 +17,9 @@ public class ClientJFrame extends javax.swing.JFrame {
 
     private GUIComponentFactory gUIComponentFactory;
 
-    /** Creates new form ClientJFrame. */
+    /**
+     * Creates new form ClientJFrame.
+     */
     public ClientJFrame(GUIComponentFactory gcf) {
         setup(gcf);
     }
@@ -134,7 +136,9 @@ public class ClientJFrame extends javax.swing.JFrame {
         pack();
     }// GEN-END:initComponents
 
-    /** Exit the Application. */
+    /**
+     * Exit the Application.
+     */
     private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
         System.exit(0);
     }// GEN-LAST:event_exitForm

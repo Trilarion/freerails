@@ -1,27 +1,16 @@
 package freerails.client.view;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
 import freerails.client.common.Painter;
-import freerails.client.renderer.BuildTrackController;
-import freerails.client.renderer.BuildTrackRenderer;
-import freerails.client.renderer.MapBackgroundRender;
-import freerails.client.renderer.MapLayerRenderer;
-import freerails.client.renderer.MapRenderer;
-import freerails.client.renderer.RenderersRoot;
-import freerails.client.renderer.SquareTileBackgroundRenderer;
-import freerails.client.renderer.StationBoxRenderer;
-import freerails.client.renderer.StationRadiusRenderer;
+import freerails.client.renderer.*;
 import freerails.controller.ModelRoot;
 import freerails.world.Constants;
 import freerails.world.top.ReadOnlyWorld;
 
+import java.awt.*;
+
 /**
  * Draws the main map, that is the terrain, track, trains, station names etc.
- * 
+ *
  * @author Luke
  */
 public class DetailMapRenderer implements MapRenderer {
@@ -43,7 +32,7 @@ public class DetailMapRenderer implements MapRenderer {
     private final Painter stationBoxes;
 
     public DetailMapRenderer(ReadOnlyWorld world, RenderersRoot rr,
-            ModelRoot modelRoot) {
+                             ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rr, modelRoot);
 
         MapBackgroundRender render = new MapBackgroundRender(world, rr,

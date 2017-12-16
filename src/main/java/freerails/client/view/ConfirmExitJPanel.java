@@ -6,22 +6,24 @@
 
 package freerails.client.view;
 
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+
+import javax.swing.*;
 
 /**
  * JPanel that didplays confirmation of exiting, used when the exit menu item is
  * selected or x is pressed.
- * 
+ *
  * @author SonnyZ
  */
 public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3256728398394110517L;
 
-    /** Creates new form ConfirmExitJPanel. */
+    /**
+     * Creates new form ConfirmExitJPanel.
+     */
     public ConfirmExitJPanel() {
         initComponents();
 

@@ -4,19 +4,19 @@
  */
 package experimental;
 
-import java.awt.Point;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import org.apache.log4j.Logger;
 
 /**
  * Experiment to try out reading and writing to a buffer to test serialization
  * code.
- * 
+ *
  * @author Luke
- * 
  */
 public class ExptWriteToBuffer {
     private static final Logger logger = Logger

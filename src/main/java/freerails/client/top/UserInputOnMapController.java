@@ -1,44 +1,34 @@
 package freerails.client.top;
 
-import static freerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
-import static freerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
-import static freerails.controller.TrackMoveProducer.BuildMode.UPGRADE_TRACK;
-
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-
-import org.apache.log4j.Logger;
-
-import javax.swing.SwingUtilities;
-import javax.swing.event.MouseInputAdapter;
-
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.BuildTrackController;
-import freerails.client.view.ActionRoot;
-import freerails.client.view.DialogueBoxController;
-import freerails.client.view.FreerailsCursor;
-import freerails.client.view.MapViewJComponent;
-import freerails.client.view.ServerControlModel;
-import freerails.client.view.StationBuildModel;
+import freerails.client.view.*;
 import freerails.config.ClientConfig;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
-import freerails.controller.TrackMoveProducer;
 import freerails.controller.ModelRoot.Property;
+import freerails.controller.TrackMoveProducer;
 import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.move.MoveStatus;
 import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.top.ReadOnlyWorld;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
+import static freerails.controller.TrackMoveProducer.BuildMode.*;
 
 /**
  * Handles key presses and mouse movements on the map - responsible for moving
  * the cursor etc.
- * 
+ *
  * @author Luke
  */
 public class UserInputOnMapController extends KeyAdapter {
@@ -49,7 +39,7 @@ public class UserInputOnMapController extends KeyAdapter {
     private final ModelRoot modelRoot;
 
     private final ActionRoot actionRoot;
-    
+
     private MapViewJComponent mapView;
 
     private StationTypesPopup stationTypesPopup;
@@ -80,8 +70,8 @@ public class UserInputOnMapController extends KeyAdapter {
     // Inner class was here...
 
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
-            StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
-            FreerailsCursor cursor, BuildTrackController buildTrack) {
+                      StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
+                      FreerailsCursor cursor, BuildTrackController buildTrack) {
         this.dialogueBoxController = dbc;
         this.mapView = mv;
         this.stationTypesPopup = stPopup;
@@ -115,59 +105,59 @@ public class UserInputOnMapController extends KeyAdapter {
         ImPoint cursorPosition = getCursorPosition();
 
         switch (keyCode) {
-            
+
             case KeyEvent.VK_NUMPAD1:
                 moveCursorOneTile(Step.SOUTH_WEST);
                 break;
-    
+
             case KeyEvent.VK_NUMPAD2:
                 moveCursorOneTile(Step.SOUTH);
                 break;
-    
+
             case KeyEvent.VK_DOWN:
                 if (e.getModifiers() == 2)
                     moveCursorOneTile(Step.SOUTH);
                 break;
-    
+
             case KeyEvent.VK_NUMPAD3:
                 moveCursorOneTile(Step.SOUTH_EAST);
                 break;
-    
+
             case KeyEvent.VK_NUMPAD4:
                 moveCursorOneTile(Step.WEST);
                 break;
-    
+
             case KeyEvent.VK_LEFT:
                 if (e.getModifiers() == 2)
                     moveCursorOneTile(Step.WEST);
                 break;
-    
+
             case KeyEvent.VK_NUMPAD6:
                 moveCursorOneTile(Step.EAST);
                 break;
-    
+
             case KeyEvent.VK_RIGHT:
                 if (e.getModifiers() == 2)
                     moveCursorOneTile(Step.EAST);
                 break;
-    
+
             case KeyEvent.VK_NUMPAD7:
                 moveCursorOneTile(Step.NORTH_WEST);
                 break;
-    
+
             case KeyEvent.VK_NUMPAD8:
                 moveCursorOneTile(Step.NORTH);
                 break;
-    
+
             case KeyEvent.VK_UP:
                 if (e.getModifiers() == 2)
                     moveCursorOneTile(Step.NORTH);
                 break;
-    
+
             case KeyEvent.VK_NUMPAD9:
                 moveCursorOneTile(Step.NORTH_EAST);
                 break;
-    
+
             case KeyEvent.VK_F8: {
                 // Check whether we can built a station here before proceeding.
                 if (stationTypesPopup.canBuiltStationHere(cursorPosition.toPoint())) {
@@ -183,28 +173,28 @@ public class UserInputOnMapController extends KeyAdapter {
                 }
                 break;
             }
-    
+
             case KeyEvent.VK_BACK_SPACE:
                 logger.info("Undo building track currently not implemented.");
-                
+
                 // TODO Investigate
                 // MoveStatus ms = trackBuilder.undoLastTrackMove();
                 // if (!ms.isOk()) {
                 // setCursorMessage(ms.message);
                 // }
                 break;
-    
+
             case KeyEvent.VK_I: {
                 dialogueBoxController.showStationOrTerrainInfo(cursorPosition.x,
                         cursorPosition.y);
                 break;
             }
-    
+
             case KeyEvent.VK_C: {
                 mapView.centerOnTile(cursorPosition.toPoint());
                 break;
             }
-    
+
             case KeyEvent.VK_B: {
                 float scale = mapView.getScale();
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
@@ -212,7 +202,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 int y = cursorPosition.y * tileSize.height;
                 buildIndustryJPopupMenu.setCusorLocation(cursorPosition.toPoint());
                 buildIndustryJPopupMenu.show(mapView, x, y);
-    
+
                 break;
             }
             case KeyEvent.VK_ESCAPE: {
@@ -226,10 +216,10 @@ public class UserInputOnMapController extends KeyAdapter {
                 dialogueBoxController.showExitDialog();
                 break;
             }
-    
+
             case KeyEvent.VK_S: {
                 if (e.getModifiers() == 2) {
-    
+
                     ServerControlModel cont = actionRoot.getServerControls();
                     // String name = JOptionPane.showInputDialog(null, "Saved Game
                     // Name:","Save
@@ -239,7 +229,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 }
                 break;
             }
-    
+
             case KeyEvent.VK_L: {
                 if (e.getModifiers() == 2) {
                     ServerControlModel cont = actionRoot.getServerControls();
@@ -247,7 +237,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 }
                 break;
             }
-    
+
             case KeyEvent.VK_M: {
                 // FIXME broker screen bug maybe?
                 // if the screen is not clicked after the broker screen is closed
@@ -256,17 +246,17 @@ public class UserInputOnMapController extends KeyAdapter {
                 dialogueBoxController.showBrokerScreen();
                 break;
             }
-    
+
             case KeyEvent.VK_F12: {
                 System.out.println("Disable keyboard input!");
                 setIgnoreKeyEvents(true);
                 break;
             }
-            
+
         } // End switch
-        
+
     }
-    
+
     private void cursorOneTileMove(ImPoint oldPosition, Step vector) {
         boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 
@@ -299,7 +289,7 @@ public class UserInputOnMapController extends KeyAdapter {
         // }
         // }
     }
-    
+
     private void moveCursorJump(ImPoint tryThisPoint) {
         setCursorMessage("");
 
@@ -326,7 +316,7 @@ public class UserInputOnMapController extends KeyAdapter {
             this.setCursorMessage("Illegal cursor position!");
         }
     }
-    
+
     private void cancelProposedBuild() {
         ignoreDragging = true;
         buildTrack.hide();
@@ -335,21 +325,21 @@ public class UserInputOnMapController extends KeyAdapter {
                 new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         setIgnoreKeyEvents(false);
     }
-    
+
     private void playAppropriateSound() {
         switch (trackBuilder.getTrackBuilderMode()) {
-        case BUILD_TRACK:
-        case UPGRADE_TRACK:
-            soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
-            break;
-        case REMOVE_TRACK:
-            soundManager.playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
-            break;
-        default:
-            // do nothing
+            case BUILD_TRACK:
+            case UPGRADE_TRACK:
+                soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
+                break;
+            case REMOVE_TRACK:
+                soundManager.playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
+                break;
+            default:
+                // do nothing
         }
     }
-    
+
     private BuildTrackStrategy getBts() {
         BuildTrackStrategy bts = (BuildTrackStrategy) modelRoot
                 .getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
@@ -360,9 +350,8 @@ public class UserInputOnMapController extends KeyAdapter {
 
     /**
      * Checks whether specified point is in legal rectangle.
-     * 
-     * @param tryThisPoint
-     *            ImPoint
+     *
+     * @param tryThisPoint ImPoint
      * @return boolean
      */
     private boolean legalRectangleContains(ImPoint tryThisPoint) {
@@ -373,7 +362,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
         return legalRectangle.contains(tryThisPoint.toPoint());
     }
-    
+
     private ImPoint getCursorPosition() {
         ImPoint point = (ImPoint) modelRoot
                 .getProperty(ModelRoot.Property.CURSOR_POSITION);
@@ -401,9 +390,8 @@ public class UserInputOnMapController extends KeyAdapter {
         Boolean b = (Boolean) modelRoot.getProperty(Property.IGNORE_KEY_EVENTS);
         return b.booleanValue();
     }
-    
-    
-    
+
+
     private class CursorMouseAdapter extends MouseInputAdapter {
 
         private boolean pressedInside = false;
@@ -412,9 +400,9 @@ public class UserInputOnMapController extends KeyAdapter {
         public void mousePressed(MouseEvent evt) {
             logger.debug("Mouse pressed");
             if (SwingUtilities.isLeftMouseButton(evt)) {
-                
+
                 ignoreDragging = false;
-                
+
                 Dimension tileSize = new Dimension((int) mapView.getScale(), (int) mapView.getScale());
 
                 // only jump - no track building
@@ -434,7 +422,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 if (isBuildTrackModeSet) {
                     buildTrack.show();
                 }
-                
+
             } else if (SwingUtilities.isRightMouseButton(evt)) {
                 // Cancel building track.
                 buildTrack.hide();
@@ -449,14 +437,14 @@ public class UserInputOnMapController extends KeyAdapter {
 
             logger.debug("Mouse released");
             if (SwingUtilities.isLeftMouseButton(evt)) {
-                
+
                 ignoreDragging = false;
                 setIgnoreKeyEvents(false);
-                
+
                 // build a railroad from x,y to current cursor position
                 if (pressedInside && buildTrack.isBuilding()
                         && buildTrack.isBuildTrackSuccessful()) {
-                    
+
                     // Fix for bug [ 997088 ]
                     // Is current posisition different from original position?
                     float scale = mapView.getScale();
@@ -480,10 +468,10 @@ public class UserInputOnMapController extends KeyAdapter {
 
         @Override
         public void mouseDragged(MouseEvent evt) {
-            
+
             // Called a lot for a small area, not just every square... efficiency questions?
             logger.debug("Mouse dragged");
-            
+
             BuildMode trackBuilderMode = trackBuilder.getTrackBuilderMode();
             /*
              * Fix for bug [ 972866 ] Build track by dragging - only when build
@@ -496,15 +484,15 @@ public class UserInputOnMapController extends KeyAdapter {
                     || (trackBuilderMode == UPGRADE_TRACK);
             trackBuildingOn = trackBuildingOn
                     && (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
-            
+
             if (SwingUtilities.isLeftMouseButton(evt) && pressedInside
                     && trackBuildingOn && !ignoreDragging) {
 
                 setIgnoreKeyEvents(true);
-                
+
                 int x = evt.getX();
                 int y = evt.getY();
-                
+
                 float scale = mapView.getScale();
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
                 int tileX = x / tileSize.width;
@@ -535,7 +523,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 buildTrack.setProposedTrack(to, trackBuilder);
                 mapView.requestFocus();
             }
-            
+
         }
 
     }

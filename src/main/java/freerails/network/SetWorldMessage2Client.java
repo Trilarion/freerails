@@ -12,9 +12,8 @@ import freerails.world.top.World;
 /**
  * Sent from the server to the client when (i) a new game is started, (ii) a
  * game is loaded, or (iii) the client connects to a game in progress.
- * 
+ *
  * @author Luke
- * 
  */
 @Immutable
 public class SetWorldMessage2Client implements Message2Client {

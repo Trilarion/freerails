@@ -3,18 +3,19 @@
  */
 package freerails.network;
 
-import java.io.IOException;
-
 import freerails.world.common.FreerailsSerializable;
+
+import java.io.IOException;
 
 /**
  * Defines the methods the server can use to send messages to the client.
- * 
+ *
  * @author Luke
- * 
  */
 public interface Connection2Client {
-    /** Returns true if this connection is open. */
+    /**
+     * Returns true if this connection is open.
+     */
     boolean isOpen();
 
     /**
@@ -32,17 +33,21 @@ public interface Connection2Client {
     FreerailsSerializable waitForObjectFromClient() throws IOException,
             InterruptedException;
 
-    /** Sends the specified object to the client. */
+    /**
+     * Sends the specified object to the client.
+     */
     void writeToClient(FreerailsSerializable object) throws IOException;
 
-    /** Flush the underlying stream. */
+    /**
+     * Flush the underlying stream.
+     */
     void flush() throws IOException;
 
     /**
      * Disconnect from the client. When this method returns, calling isOpen() on
      * this object returns false <b>and</b> calling isOpen() on the
      * corresponding Connection2Server held by the client also returns false.
-     * 
+     *
      * @throws IOException
      */
     void disconnect() throws IOException;

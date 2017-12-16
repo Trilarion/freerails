@@ -6,24 +6,19 @@
 
 package freerails.client.view;
 
-import java.awt.event.ActionListener;
-import org.apache.log4j.Logger;
-
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldIterator;
-import freerails.world.top.WorldListListener;
+import freerails.world.top.*;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.event.ActionListener;
 
 /**
  * JPanel that displays info on a train; it is composed of a
  * {@link TrainScheduleJPanel} and {@link TrainDescriptionJPanel}.
- * 
+ *
  * @author Luke Lindsay
  */
 public class TrainDialogueJPanel extends javax.swing.JPanel implements View,

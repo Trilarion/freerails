@@ -4,8 +4,6 @@
  */
 package freerails.controller;
 
-import java.util.NoSuchElementException;
-
 import freerails.world.common.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
@@ -16,12 +14,13 @@ import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
+import java.util.NoSuchElementException;
+
 /**
  * GraphExplorer that explorers possible track placements, the ints it returns
  * are encoded PositionOnTrack objects.
- * 
+ *
  * @author Luke
- * 
  */
 public class BuildTrackExplorer implements GraphExplorer {
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration
@@ -52,7 +51,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle,
-            ImPoint start, ImPoint target) {
+                              ImPoint start, ImPoint target) {
         world = w;
         this.principle = principle;
         PositionOnTrack pos;
@@ -75,7 +74,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * Tests whether we can build track in the direction specified by
      * m_direction.
      * </p>
-     * 
+     * <p>
      * <p>
      * If we enter a tile from a given direction, the tiles we can build track
      * to depend on the following. (1) The terrain type of the surrounding tiles -
@@ -85,7 +84,6 @@ public class BuildTrackExplorer implements GraphExplorer {
      * tile - terrain type determines which track types and hence which track
      * configurations can be built.
      * </p>
-     * 
      */
     private boolean canBuildTrack() {
         // Check that we are not doubling back on ourselves.
@@ -233,10 +231,10 @@ public class BuildTrackExplorer implements GraphExplorer {
         int cost = (int) Math.round(DISTANCE_COST * length);
 
         if (!usingExistingTrack) {
-            int[] x = { currentPosition.getX(),
-                    currentPosition.getX() + edgeDirection.deltaX };
-            int[] y = { currentPosition.getY(),
-                    currentPosition.getY() + edgeDirection.deltaY };
+            int[] x = {currentPosition.getX(),
+                    currentPosition.getX() + edgeDirection.deltaX};
+            int[] y = {currentPosition.getY(),
+                    currentPosition.getY() + edgeDirection.deltaY};
             TrackRule ruleA = getAppropriateTrackRule(x[0], y[0]);
             TrackRule ruleB = getAppropriateTrackRule(x[1], y[1]);
             /*

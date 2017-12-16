@@ -5,14 +5,13 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Graphics;
-import java.awt.image.VolatileImage;
+import java.awt.*;
 
 /**
  * This class stores a buffer containing the terrain and track layers of current
  * visible rectangle of the map. It is responsible of painting these layers and
  * updating the buffer when the map scrolls or tiles are updated.
- * 
+ *
  * @author Luke Lindsay 01 November 2001
  * @version 1.0
  */

@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * <p>
  * Make sure <code>logging.properties</code> is in the working directory.
  * </p>
- * 
+ *
  * @author Luke
  */
 public class TestLogging {

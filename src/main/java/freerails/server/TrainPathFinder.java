@@ -1,10 +1,6 @@
 package freerails.server;
 
-import freerails.controller.FlatTrackExplorer;
-import freerails.controller.IncrementalPathFinder;
-import freerails.controller.NoTrackException;
-import freerails.controller.SimpleAStarPathFinder;
-import freerails.controller.TrainStopsHandler;
+import freerails.controller.*;
 import freerails.network.MoveReceiver;
 import freerails.util.FreerailsIntIterator;
 import freerails.world.common.ImPoint;
@@ -17,7 +13,7 @@ import freerails.world.top.WorldDiffs;
  * This class provides methods that generate a path to a target as a series of
  * PositionOnTrack objects encoded as ints, it also deals with stops at
  * stations.
- * 
+ *
  * @author Luke Lindsay 28-Nov-2002
  */
 public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
@@ -39,7 +35,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     ReadOnlyWorld w;
 
     public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
-            int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
+                           int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
         this.trackExplorer = tx;
         this.trainId = trainNumber;
         principal = p;

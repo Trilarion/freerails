@@ -5,17 +5,17 @@
  */
 package freerails.world.track;
 
-import java.util.HashSet;
-import java.util.Iterator;
-
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.common.ImHashSet;
 import freerails.world.terrain.TerrainType;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
 /**
  * This class encapsulates the rules governing where, that is, on what terrain,
  * track of a given type can be built.
- * 
+ *
  * @author lindsal
  */
 public final class LegalTrackPlacement implements FreerailsSerializable {
@@ -37,7 +37,7 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     }
 
     public LegalTrackPlacement(HashSet<TerrainType.Category> types,
-            PlacementRule placementRule) {
+                               PlacementRule placementRule) {
         this.placementRule = placementRule;
 
         Iterator<TerrainType.Category> iterator = types.iterator();

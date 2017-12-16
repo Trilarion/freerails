@@ -1,28 +1,24 @@
 package freerails.world.top;
 
-import java.util.HashSet;
-
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.CargoType.Categories;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.TerrainType;
 import freerails.world.terrain.TileTypeImpl;
-import freerails.world.track.FreerailsTile;
-import freerails.world.track.LegalTrackConfigurations;
-import freerails.world.track.LegalTrackPlacement;
-import freerails.world.track.TrackRule;
-import freerails.world.track.TrackRuleImpl;
-import freerails.world.track.TrackRuleProperties;
+import freerails.world.track.*;
+
+import java.util.HashSet;
 
 /**
  * This class is used to generate fixtures for Junit tests.
- * 
+ *
  * @author Luke
- * 
  */
 public class MapFixtureFactory {
-    /** Only subclasses should use these constants. */
+    /**
+     * Only subclasses should use these constants.
+     */
     public static final Player TEST_PLAYER = new Player("test player", 0);
 
     public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER
@@ -56,8 +52,8 @@ public class MapFixtureFactory {
         cannotBuildOnTheseTerrainTypes.add(TerrainType.Category.Ocean);
 
         // 1st track type..
-        String[] trackTemplates0 = { "000010000", "010010000", "010010010",
-                "100111000", "001111000", "010110000", "100110000", "100011000" };
+        String[] trackTemplates0 = {"000010000", "010010000", "010010010",
+                "100111000", "001111000", "010110000", "100110000", "100011000"};
 
         legalTrackConfigurations[0] = new LegalTrackConfigurations(-1,
                 trackTemplates0);
@@ -70,7 +66,7 @@ public class MapFixtureFactory {
                 legalTrackConfigurations[0], legalTrackPlacement[0]);
 
         // 2nd track type..
-        String[] trackTemplates1 = { "000010000", "010010000", "010010010" };
+        String[] trackTemplates1 = {"000010000", "010010000", "010010010"};
         legalTrackConfigurations[1] = new LegalTrackConfigurations(-1,
                 trackTemplates1);
         trackRuleProperties[1] = new TrackRuleProperties(2, false, "type1",
@@ -86,7 +82,7 @@ public class MapFixtureFactory {
         trackRuleProperties[2] = new TrackRuleProperties(3, false, "type2",
                 TrackRule.TrackCategories.track, 0, 0, 30, 0);
 
-        String[] trackTemplates2 = { "000010000" };
+        String[] trackTemplates2 = {"000010000"};
         legalTrackConfigurations[2] = new LegalTrackConfigurations(-1,
                 trackTemplates2);
         legalTrackPlacement[2] = new LegalTrackPlacement(
@@ -106,7 +102,9 @@ public class MapFixtureFactory {
         }
     }
 
-    /** Adds hard coded cargo types. */
+    /**
+     * Adds hard coded cargo types.
+     */
     public static void generateCargoTypesList(World world) {
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", Categories.Mail));
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers",
@@ -119,7 +117,9 @@ public class MapFixtureFactory {
                 Categories.Bulk_Freight));
     }
 
-    /** Adds hard coded terrain types. */
+    /**
+     * Adds hard coded terrain types.
+     */
     private static void generateTerrainTypesList(World world) {
         world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
                 TerrainType.Category.Country, "Grassland"));

@@ -1,8 +1,5 @@
 package freerails.controller;
 
-import java.awt.Rectangle;
-import java.util.Vector;
-
 import freerails.world.common.ImList;
 import freerails.world.station.ConvertedAtStation;
 import freerails.world.station.Demand4Cargo;
@@ -16,13 +13,15 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackRule;
-
 import org.apache.log4j.Logger;
+
+import java.awt.*;
+import java.util.Vector;
 
 /**
  * This class probes the tiles adjacent to a station for what cargo they supply,
  * demand, and convert and then returns a vector of these rates.
- * 
+ *
  * @author Scott Bennett
  * @author Luke Created: 9th May 2003
  */
@@ -52,12 +51,11 @@ public class CalcCargoSupplyRateAtStation {
 
     /**
      * Call this constructor if the station does not exist yet.
-     * 
-     * @param trackRuleNo
-     *            the station type.
+     *
+     * @param trackRuleNo the station type.
      */
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y,
-            int trackRuleNo) {
+                                        int trackRuleNo) {
         this.w = world;
         this.x = X;
         this.y = Y;
@@ -73,7 +71,9 @@ public class CalcCargoSupplyRateAtStation {
         converts = ConvertedAtStation.emptyConversionArray(numCargoTypes);
     }
 
-    /** Call this constructor if the station already exists. */
+    /**
+     * Call this constructor if the station already exists.
+     */
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
         this(world, X, Y, findTrackRule(X, Y, world));
     }
@@ -207,12 +207,9 @@ public class CalcCargoSupplyRateAtStation {
     }
 
     /**
-     * 
      * Process each existing station, updating what is supplied to it.
-     * 
-     * @param station
-     *            A StationModel object to be processed
-     * 
+     *
+     * @param station A StationModel object to be processed
      */
     public StationModel calculations(StationModel station) {
         int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];

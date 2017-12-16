@@ -3,15 +3,14 @@
  */
 package freerails.network;
 
-import java.io.IOException;
-
 import freerails.world.common.FreerailsSerializable;
+
+import java.io.IOException;
 
 /**
  * A connection between the a client and server in the same JVM.
- * 
+ *
  * @author Luke
- * 
  */
 public class LocalConnection implements Connection2Client, Connection2Server {
     public static final String SERVER_IN_SAME_JVM = "server in same JVM";

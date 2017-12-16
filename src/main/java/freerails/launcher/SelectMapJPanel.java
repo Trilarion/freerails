@@ -6,16 +6,16 @@
 
 package freerails.launcher;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import freerails.launcher.LauncherInterface.MSG_TYPE;
 import freerails.server.SavedGamesManagerImpl;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * The Launcher panel that lets you load a game or start a new game with a
  * choice of maps.
- * 
+ *
  * @author Luke
  */
 public class SelectMapJPanel extends javax.swing.JPanel implements
@@ -30,7 +30,9 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
     public enum Selection {
         NONE, NEW_GAME, LOAD_GAME
-    };
+    }
+
+    ;
 
     Selection getSelection() {
         if (newmapsJList.getSelectedIndex() != -1) {

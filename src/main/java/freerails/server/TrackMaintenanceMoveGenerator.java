@@ -4,9 +4,6 @@
  */
 package freerails.server;
 
-import static freerails.world.accounts.Transaction.Category.STATION_MAINTENANCE;
-import static freerails.world.accounts.Transaction.Category.TRACK;
-import static freerails.world.accounts.Transaction.Category.TRACK_MAINTENANCE;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
@@ -20,12 +17,13 @@ import freerails.world.top.World;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
+import static freerails.world.accounts.Transaction.Category.*;
+
 /**
  * This class iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class TrackMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;
@@ -35,7 +33,7 @@ public class TrackMaintenanceMoveGenerator {
     }
 
     public static AddTransactionMove generateMove(World w,
-            FreerailsPrincipal principal, Transaction.Category category) {
+                                                  FreerailsPrincipal principal, Transaction.Category category) {
         if (TRACK_MAINTENANCE != category && STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }

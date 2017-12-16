@@ -4,28 +4,25 @@
  */
 package freerails.server;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Vector;
-
-import javax.swing.ImageIcon;
-
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.SKEY;
 import freerails.world.top.WorldImpl;
 import freerails.world.track.FreerailsTile;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Vector;
+
 /**
  * This class has a static method that converts an image file into a map.
- * 
+ *
  * @author Luke
  * @author Scott Bennett (Updated 23rd Jan 2004)
- * 
+ * <p>
  * Implemented Terrain Randomisation to randomly position the terrain types for
  * each tile on the map.
  */
@@ -40,7 +37,7 @@ public class MapFactory {
     private static WorldImpl world;
 
     public static void setupMap(URL map_url, WorldImpl w,
-            FreerailsProgressMonitor pm) {
+                                FreerailsProgressMonitor pm) {
         // Setup progress monitor..
         pm.setValue(0);
 
@@ -79,9 +76,9 @@ public class MapFactory {
             if (terrainTypeTile.getCategory()
                     .equals(TerrainType.Category.Ocean)
                     || terrainTypeTile.getCategory().equals(
-                            TerrainType.Category.River)
+                    TerrainType.Category.River)
                     || terrainTypeTile.getCategory().equals(
-                            TerrainType.Category.Hill)) {
+                    TerrainType.Category.Hill)) {
                 non_countryTypes.add(new Integer(c));
             }
         }

@@ -1,13 +1,13 @@
 package freerails.client.renderer;
 
-import java.awt.Image;
-import java.io.IOException;
-
 import freerails.world.top.ReadOnlyWorld;
+
+import java.awt.*;
+import java.io.IOException;
 
 /**
  * Provides access to the objects that render terrain, track, and trains.
- * 
+ *
  * @author Luke
  */
 public interface RenderersRoot extends TileRendererList {

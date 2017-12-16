@@ -5,14 +5,14 @@
  */
 package freerails.world.common;
 
-import java.io.ObjectStreamException;
-
 import freerails.world.Constants;
+
+import java.io.ObjectStreamException;
 
 /**
  * This class represents a movement from a tile to any one of the surrounding
  * eight tiles.
- * 
+ *
  * @author Luke
  */
 @freerails.util.InstanceControlled
@@ -24,28 +24,44 @@ final public class Step implements FlatTrackTemplate {
     public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER,
             TILE_DIAMETER);
 
-    /** North. */
+    /**
+     * North.
+     */
     public static final Step NORTH;
 
-    /** West. */
+    /**
+     * West.
+     */
     public static final Step WEST;
 
-    /** South East. */
+    /**
+     * South East.
+     */
     public static final Step SOUTH_EAST;
 
-    /** North-East. */
+    /**
+     * North-East.
+     */
     public static final Step NORTH_EAST;
 
-    /** East. */
+    /**
+     * East.
+     */
     public static final Step EAST;
 
-    /** South. */
+    /**
+     * South.
+     */
     public static final Step SOUTH;
 
-    /** South West. */
+    /**
+     * South West.
+     */
     public static final Step SOUTH_WEST;
 
-    /** North West. */
+    /**
+     * North West.
+     */
     public static final Step NORTH_WEST;
 
     /**
@@ -111,22 +127,30 @@ final public class Step implements FlatTrackTemplate {
         return new ImPoint(x, y);
     }
 
-    /** The X and Y components of the vector. */
+    /**
+     * The X and Y components of the vector.
+     */
     public final int deltaX;
 
-    /** The X and Y components of the vector. */
+    /**
+     * The X and Y components of the vector.
+     */
     public final int deltaY;
 
     private final int flatTrackTemplate;
 
     private final double length;
 
-    /** Returns the X component of the vector. */
+    /**
+     * Returns the X component of the vector.
+     */
     public int getDx() {
         return deltaX;
     }
 
-    /** Returns the Y component of the vector. */
+    /**
+     * Returns the Y component of the vector.
+     */
     public int getDy() {
         return deltaY;
     }
@@ -134,7 +158,7 @@ final public class Step implements FlatTrackTemplate {
     /**
      * Returns a new oneTileMoveVector whose direction is opposite to that the
      * current one.
-     * 
+     *
      * @return A oneTileMoveVector.
      */
     public Step getOpposite() {
@@ -143,7 +167,7 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * Returns the name of the vector. E.g. "north-east"
-     * 
+     *
      * @return the name.
      */
     @Override
@@ -151,35 +175,35 @@ final public class Step implements FlatTrackTemplate {
         String name;
 
         switch (deltaY) {
-        case 1:
-            name = " south";
+            case 1:
+                name = " south";
 
-            break;
+                break;
 
-        case -1:
-            name = " north";
+            case -1:
+                name = " north";
 
-            break;
+                break;
 
-        default:
-            name = "";
+            default:
+                name = "";
 
-            break;
+                break;
         }
 
         switch (deltaX) {
-        case 1:
-            name += " east";
+            case 1:
+                name += " east";
 
-            break;
+                break;
 
-        case -1:
-            name += " west";
+            case -1:
+                name += " west";
 
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         return name;
@@ -189,35 +213,35 @@ final public class Step implements FlatTrackTemplate {
         String name;
 
         switch (deltaY) {
-        case 1:
-            name = "s";
+            case 1:
+                name = "s";
 
-            break;
+                break;
 
-        case -1:
-            name = "n";
+            case -1:
+                name = "n";
 
-            break;
+                break;
 
-        default:
-            name = "";
+            default:
+                name = "";
 
-            break;
+                break;
         }
 
         switch (deltaX) {
-        case 1:
-            name += "e";
+            case 1:
+                name += "e";
 
-            break;
+                break;
 
-        case -1:
-            name += "w";
+            case -1:
+                name += "w";
 
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         return name;
@@ -227,14 +251,11 @@ final public class Step implements FlatTrackTemplate {
      * Create a new OneTileMoveVector. N.B Private constuctor to enforce enum
      * property, use getInstance(x,y) instead. Pass values for delta X and Y:
      * they must be in the range -1 to 1 and cannot both be equal to 0.
-     * 
-     * @param x
-     *            Tile coordinate.
-     * @param y
-     *            Tile coordinate
-     * @param t
-     *            an integer representing the track template this vector
-     *            corresponds to.
+     *
+     * @param x Tile coordinate.
+     * @param y Tile coordinate
+     * @param t an integer representing the track template this vector
+     *          corresponds to.
      */
     private Step(int x, int y, int t) {
         deltaX = x;
@@ -293,7 +314,7 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * @return a copy of the list of 8 OneTileMoveVectors going clockwise from
-     *         North.
+     * North.
      */
     public static Step[] getList() {
         return list.clone(); // defensive copy.
@@ -318,7 +339,7 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * @return a number representing the compass point this vector indicates,
-     *         with 0 representing North, 1 NorthEast, 2 East and so on.
+     * with 0 representing North, 1 NorthEast, 2 East and so on.
      */
     public int getID() {
         int i = 0;
@@ -336,7 +357,7 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * @return the OneTileMoveVector nearest in orientation to the specified dx,
-     *         dy
+     * dy
      */
     public static Step getNearestVector(int dx, int dy) {
         if (0 == dx * dy) {

@@ -9,9 +9,8 @@ import freerails.world.common.ImInts;
 
 /**
  * This class represents the blue print for what an engine shop is producing.
- * 
+ *
  * @author Luke
- * 
  */
 public class PlannedTrain implements FreerailsSerializable {
     private static final long serialVersionUID = 3545515106038592057L;

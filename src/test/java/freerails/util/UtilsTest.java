@@ -4,10 +4,10 @@
  */
 package freerails.util;
 
-import java.awt.Point;
-import java.io.Serializable;
-
 import junit.framework.TestCase;
+
+import java.awt.*;
+import java.io.Serializable;
 
 public class UtilsTest extends TestCase {
 

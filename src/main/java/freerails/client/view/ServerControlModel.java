@@ -1,13 +1,5 @@
 package freerails.client.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.Enumeration;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
 import freerails.client.common.ActionAdapter;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
@@ -19,9 +11,14 @@ import freerails.world.common.GameSpeed;
 import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.Enumeration;
+
 /**
  * Exposes the ServerControlInterface to client UI implementations.
- * 
+ *
  * @author rob
  * @author Luke
  * @author MystiqueAgent
@@ -39,7 +36,7 @@ public class ServerControlModel implements ModelRootListener {
         public void actionPerformed(ActionEvent e) {
             dbc.showSelectSavedGame2Load();
             /*
-             * 
+             *
              * ImStringList files =
              * (ImStringList)modelRoot.getProperty(Property.SAVED_GAMES_LIST);
              * Object[] saves = new Object[files.size()]; for (int i = 0; i <
@@ -101,7 +98,7 @@ public class ServerControlModel implements ModelRootListener {
              * modelRoot.setProperty(Property.QUICK_MESSAGE, "Saved game " +
              * filename); Message2Server message2 = new
              * SaveGameMessage2Server(1, filename + ".sav");
-             * 
+             *
              * modelRoot.sendCommand(message2); loadGameAction.setEnabled(true); }
              * catch (Exception except) {
              *  }
@@ -119,19 +116,16 @@ public class ServerControlModel implements ModelRootListener {
         /**
          * Same as the constructor above but it enables also to associate a
          * <code>keyEvent</code> with the action.
-         * 
-         * @param name
-         *            action name
-         * @param speed
-         *            speed
-         * @param keyEvent
-         *            associated key event. Use values from
-         *            <code>KeyEvent</class>.
          *
-         * by MystiqueAgent
+         * @param name     action name
+         * @param speed    speed
+         * @param keyEvent associated key event. Use values from
+         *                 <code>KeyEvent</class>.
+         *                 <p>
+         *                 by MystiqueAgent
          */
         public SetTargetTicksPerSecondAction(String name, int speed,
-                int keyEvent) {
+                                             int keyEvent) {
             putValue(NAME, name);
             this.speed = speed;
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));
@@ -159,11 +153,11 @@ public class ServerControlModel implements ModelRootListener {
 
     private ActionAdapter selectMapActions;
 
-    private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[] {
+    private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[]{
             new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),
             new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),
             new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),
-            new SetTargetTicksPerSecondAction("Fast", 70, KeyEvent.VK_3), };
+            new SetTargetTicksPerSecondAction("Fast", 70, KeyEvent.VK_3),};
 
     private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(
             speedActions, 0);
@@ -183,9 +177,8 @@ public class ServerControlModel implements ModelRootListener {
      * number. Looks for <code>tickPerSecond</code> in
      * <code>targetTicksPerSecondActions</code>. If appropriate action is not
      * found returns first greater value or the greatest value.
-     * 
-     * @param tickPerSecond
-     *            int
+     *
+     * @param tickPerSecond int
      * @return String human readable description
      */
     public String getGameSpeedDesc(int tickPerSecond) {
@@ -210,7 +203,7 @@ public class ServerControlModel implements ModelRootListener {
 
     /**
      * @return an ActionAdapter representing a list of actions representing
-     *         valid map names.
+     * valid map names.
      */
     public ActionAdapter getMapNames() {
         return selectMapActions;
@@ -219,7 +212,7 @@ public class ServerControlModel implements ModelRootListener {
     /**
      * When calling this action, set the action command string to the desired
      * map name, or call the appropriate selectMapAction.
-     * 
+     *
      * @return an action to start a new game
      */
     public Action getNewGameAction() {
@@ -228,7 +221,7 @@ public class ServerControlModel implements ModelRootListener {
 
     /**
      * @return an action to save a game TODO The action produces a file selector
-     *         dialog to save the game
+     * dialog to save the game
      */
     public Action getSaveGameAction() {
         return saveGameAction;

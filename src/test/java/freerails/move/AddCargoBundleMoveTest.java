@@ -11,9 +11,8 @@ import freerails.world.top.MapFixtureFactory;
 
 /**
  * JUnit test.
- * 
+ *
  * @author Luke
- * 
  */
 public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
     @Override

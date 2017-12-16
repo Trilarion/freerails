@@ -6,6 +6,11 @@
 
 package freerails.client.view;
 
+import freerails.client.renderer.RenderersRoot;
+import freerails.controller.ModelRoot;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -15,12 +20,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
-
-import javax.swing.Action;
-
-import freerails.client.renderer.RenderersRoot;
-import freerails.controller.ModelRoot;
 
 /**
  * @author smackay
@@ -32,7 +31,9 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
     private static final Logger logger = Logger.getLogger(BrokerJFrame.class
             .getName());
 
-    /** Creates new form BrokerJFrame */
+    /**
+     * Creates new form BrokerJFrame
+     */
     BrokerJFrame() {
         initComponents();
     }
@@ -58,7 +59,9 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
         this.done.setAction(closeAction);
     }
 
-    /** Load the help text from file. */
+    /**
+     * Load the help text from file.
+     */
     String loadText(final URL htmlUrl) {
         try {
             InputStream in = htmlUrl.openStream();

@@ -6,10 +6,10 @@ package freerails.client.renderer;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.controller.BuildTrackStrategy;
+import freerails.controller.ModelRoot.Property;
 import freerails.controller.MoveExecutor;
 import freerails.controller.SimpleMoveExecutor;
 import freerails.controller.TrackMoveProducer;
-import freerails.controller.ModelRoot.Property;
 import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.server.MapFixtureFactory2;
 import freerails.world.common.ImPoint;
@@ -20,7 +20,9 @@ import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
-/** Unit test for BuildTrackController. */
+/**
+ * Unit test for BuildTrackController.
+ */
 
 public class BuildTrackControllerTest extends TestCase {
 

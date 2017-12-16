@@ -4,17 +4,6 @@
  */
 package freerails.client.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
-import javax.swing.Action;
-import javax.swing.JList;
-import javax.swing.JPanel;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
@@ -25,9 +14,17 @@ import freerails.world.top.NonNullElements;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.TransactionAggregator;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 /**
  * A JPanel that displays the details of the players ordered by net worth.
- * 
+ *
  * @author Luke
  */
 public class LeaderBoardJPanel extends JPanel implements View {
@@ -80,7 +77,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
     /**
      * This method initializes jList
-     * 
+     *
      * @return javax.swing.JList
      */
     private JList getPlayersList() {
@@ -120,7 +117,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
     /**
      * Stores the details a player that are shown on the leaderboard.
-     * 
+     *
      * @author Luke
      */
     static class PlayerDetails implements Comparable<PlayerDetails> {

@@ -6,9 +6,8 @@ import junit.framework.TestCase;
 /**
  * This class formats and integer as a binary number with a specified number of
  * digits.
- * 
+ *
  * @author Luke Lindsay 03-Nov-2002
- * 
  */
 public class BinaryNumberFormatterTest extends TestCase {
     public BinaryNumberFormatterTest(String arg0) {

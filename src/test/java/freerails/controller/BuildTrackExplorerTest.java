@@ -13,20 +13,15 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.TerrainType;
 import freerails.world.terrain.TileTypeImpl;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldImpl;
+import freerails.world.top.*;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
 /**
  * JUnit test for BuildTrackExplorer.
- * 
+ *
  * @author Luke
- * 
  */
 public class BuildTrackExplorerTest extends TestCase {
     private WorldImpl world;
@@ -82,7 +77,9 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
     }
 
-    /** Test when we cannot build on some terrain types. */
+    /**
+     * Test when we cannot build on some terrain types.
+     */
     public void test2() {
         // Check the the Ocean type is where we think it is.
         int occeanTypeNumber = 4;
@@ -116,7 +113,9 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
     }
 
-    /** Test for illegal track configurations. */
+    /**
+     * Test for illegal track configurations.
+     */
     public void test3() {
         // Build some track, from 10, 10 diagonally SE.
         int y = 10;
@@ -163,7 +162,7 @@ public class BuildTrackExplorerTest extends TestCase {
     }
 
     private void assertNextVertexIs(Step oneTileMoveVector, int x, int y,
-            BuildTrackExplorer explorer) {
+                                    BuildTrackExplorer explorer) {
         assertTrue(explorer.hasNextEdge());
         explorer.nextEdge();
 

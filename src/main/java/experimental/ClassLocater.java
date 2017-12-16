@@ -1,19 +1,19 @@
 package experimental;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * An essential part of Java - locates any Class, anywhere.
  * </P>
  * This class should have been part of the JDK for the last 7 years, but Sun
  * hasn't added it, so we did it instead :).
- * <P>
+ * <p>
  * No static methods since people are already using this in environments where
  * they need multiple separately configured copies running in parallel. Sun's
  * JVM design (caching classloaders) ensure that cached class data is
@@ -30,21 +30,21 @@ import org.apache.log4j.Logger;
  * are cases where you cannot use the packages this way (though personally I'd
  * recommend you re-think your design in that case), and in those cases you can
  * easily use a class-naming convention instead. So, everyone should be happy.
- * <P>
+ * <p>
  * If you reserve a package for plugins, e.g. declare that all plugins must be
  * in package "org.javagamesfactory.plugins", then you simply pass something
  * like "org\.javagamesfactory\.plugins\..*" in (regex meaning "all things in
  * that package). This class will actually find all things in that pacakge
  * <i>even if they are in different copies of that package, in different JAR
  * files, or different directories</i>.
- * <P>
+ * <p>
  * To use a naming convention, e.g. all plugin class names start with the text
  * "PLUGIN" you would do something like: ".*\.PLUGIN.*".
  * <p>
  * In all cases, note the fact that regex's have special meaning for dot, so you
  * have to escape it when you just mean a full-stop. Read the java API docs for
  * java.util.regex for more information
- * 
+ *
  * @see java.util.regex.Pattern
  */
 public class ClassLocater {
@@ -55,18 +55,16 @@ public class ClassLocater {
     /**
      * Finds all classes that implement or extend a given class name, and
      * instantiates precisely one copy of each
-     * 
-     * @param className
-     *            fully qualified class or interface to find subclasses of, e.g.
-     *            "java.lang.String"
-     * @param skipPrefixes
-     *            prefixes of fully qualified packages or class names to
-     *            completely ignore (i.e. not bother to check), making it
-     *            faster, e.g. "java.", "com.sun"
+     *
+     * @param className    fully qualified class or interface to find subclasses of, e.g.
+     *                     "java.lang.String"
+     * @param skipPrefixes prefixes of fully qualified packages or class names to
+     *                     completely ignore (i.e. not bother to check), making it
+     *                     faster, e.g. "java.", "com.sun"
      * @return instantiated objects
      */
     public static List instantiateOneOfEach(String className,
-            String[] skipPrefixes) {
+                                            String[] skipPrefixes) {
         Class[] classes = null;
         LinkedList<Object> instances = new LinkedList<Object>();
 
@@ -126,13 +124,12 @@ public class ClassLocater {
      * their package + class name.
      * <p>
      * For example, "org.apache.log4j".
-     * <P>
+     * <p>
      * The advantage of this method is that you don't have to bother with regex
      * syntax. Also, it is remembered between calls to getSubclassesOf - so it's
      * useful if you know you never care about certain packages.
-     * 
-     * @param s
-     *            prefix of fully qualified class names to ignore
+     *
+     * @param s prefix of fully qualified class names to ignore
      */
     public void addSkipPrefix(String s) {
         skipPrefixes.add(s);
@@ -141,12 +138,11 @@ public class ClassLocater {
     /**
      * Find all instances of the given <code>Class</code> or interface by
      * loading all classes on the class path.
-     * <P>
+     * <p>
      * Delegates to the other version, but passing in ".*" as the regex, i.e.
      * "anything at all"
-     * 
-     * @param targetType
-     *            the superclass of all returned classes.
+     *
+     * @param targetType the superclass of all returned classes.
      * @return an array of all subclasses of <code>targetType</code>
      */
     public Class[] getSubclassesOf(Class targetType) {
@@ -157,27 +153,25 @@ public class ClassLocater {
      * Find all subclasses of the given <code>Class</code> or interface by
      * loading only those classes with names that match the given regular
      * expression.
-     * <P>
+     * <p>
      * Once all classes have been checked, it will output at WARN a list of all
      * the classes that were referenced by other classes but are not installed
      * in the classpath. This can be incredibly useful - it catches situations
      * where e.g. you thought a class was on the classpath but you put it in the
      * wrong directory etc.
-     * <P>
+     * <p>
      * It can also be very annoying because java uses dynamic linking so it is
      * LEGAL for many classes to be missing, just so long as you never use them
      * at runtime. Because this class tries to use *every* class, it triggers
      * errors on lots that you don't care about - use addSkipPrefix( class or
      * package you dont use even though its on the classpath ) and they will be
      * skipped (i.e. not even examined by this method).
-     * <P>
+     * <p>
      * OR improve your regex so that it is more selective about the packages
      * where your classes could conceivable be located!
-     * 
-     * @param targetType
-     *            the superclass of all returned classes.
-     * @param regex
-     *            a regular expression that will match with every subclass
+     *
+     * @param targetType the superclass of all returned classes.
+     * @param regex      a regular expression that will match with every subclass
      * @return an array of all subclasses of <code>targetType</code>
      */
     @SuppressWarnings("unchecked")
@@ -185,7 +179,7 @@ public class ClassLocater {
         logger.info("Looking for all classes with names matching regex = "
                 + regex + " and which are subtypes of " + targetType.getName());
         StringBuffer sbSkips = new StringBuffer();
-        for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext();) {
+        for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext(); ) {
             sbSkips.append(i2.next().toString() + "*");
             if (i2.hasNext())
                 sbSkips.append(", ");
@@ -206,11 +200,11 @@ public class ClassLocater {
             logger.debug("Iterating through all classes in ClassPath...");
         }
 
-        for (Iterator iter = cp.getAllClassNames().iterator(); iter.hasNext();) {
+        for (Iterator iter = cp.getAllClassNames().iterator(); iter.hasNext(); ) {
             String className = (String) iter.next();
 
             boolean skip = false;
-            for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext();) {
+            for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext(); ) {
                 String prefix = (String) i2.next();
                 if (className.startsWith(prefix)) {
                     if (logger.isDebugEnabled()) {
@@ -237,8 +231,7 @@ public class ClassLocater {
                 }
                 /*
                  * catch (ClassNotFoundException cnfx ) { continue; }
-                 */
-                catch (NoClassDefFoundError cnfx) {
+                 */ catch (NoClassDefFoundError cnfx) {
                     /*
                      * This is ridiculous. Please, everyone, ask sun to add a
                      * "getMissingClass()" method to NoClassDefFoundError: Sun,
@@ -290,13 +283,13 @@ public class ClassLocater {
             logger
                     .warn("If you don't care about some of the classes that used these missing classes, add the users to the skip list and you will get no errors from them");
             for (Iterator<String> iter = missingRequiredClasses.keySet()
-                    .iterator(); iter.hasNext();) {
+                    .iterator(); iter.hasNext(); ) {
                 String className = iter.next();
                 LinkedList<String> neededBy = missingRequiredClasses
                         .get(className);
                 StringBuffer sb = new StringBuffer();
                 for (Iterator<String> iterator = neededBy.iterator(); iterator
-                        .hasNext();) {
+                        .hasNext(); ) {
                     String referencingClass = iterator.next();
                     sb.append(referencingClass);
                     if (iterator.hasNext())

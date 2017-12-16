@@ -11,9 +11,8 @@ import junit.framework.TestCase;
 
 /**
  * JUnit Test for CityEconomic.
- * 
+ *
  * @author Luke
- * 
  */
 public class CityEconomicModelTest extends TestCase {
     /**
@@ -31,7 +30,9 @@ public class CityEconomicModelTest extends TestCase {
         assertEquals("A city is a 7*7 area", 49, city.clearTiles.size());
     }
 
-    /** Tests calculating the utility of a City. */
+    /**
+     * Tests calculating the utility of a City.
+     */
     public void testUtilityCalculation() {
     }
 }

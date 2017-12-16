@@ -5,28 +5,28 @@
  */
 package experimental;
 
-import java.awt.Graphics2D;
-
 import freerails.client.common.ImageManager;
+
+import java.awt.*;
 
 /**
  * This TrackPieceRenderer renders track pieces by drawing lines so avoids the
  * need to load images.
- * 
+ *
  * @author Luke Lindsay
  */
 public class LineDrawTrackPieceView implements
         freerails.client.renderer.TrackPieceRenderer {
-    private int[] xx = { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
+    private int[] xx = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
 
-    private int[] yy = { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
+    private int[] yy = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
 
     public java.awt.Image getTrackPieceIcon(int trackTemplate) {
         return null;
     }
 
     public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g,
-            int x, int y, java.awt.Dimension tileSize) {
+                                   int x, int y, java.awt.Dimension tileSize) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new java.awt.BasicStroke(8.0f));
         g2.setColor(java.awt.Color.red);

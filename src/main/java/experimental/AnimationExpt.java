@@ -1,21 +1,17 @@
 package experimental;
 
-import java.awt.Graphics;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 import freerails.client.top.GameLoop;
 import freerails.controller.ScreenHandler;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * This class tests that the game loop and screen handler are working correctly.
  * All it does is display the current time in ms and display the number of
  * frames per second.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class AnimationExpt extends JComponent {
 

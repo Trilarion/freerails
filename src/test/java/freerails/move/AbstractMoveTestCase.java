@@ -21,9 +21,8 @@ import junit.framework.TestCase;
 
 /**
  * All TestCases for moves should extend this class.
- * 
+ *
  * @author Luke
- * 
  */
 public abstract class AbstractMoveTestCase extends TestCase {
     private boolean hasSetupBeenCalled = false;
@@ -78,7 +77,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * move, the specified move is equal to the deserialised move. The assertion
      * depends on the move being serialisable and the equals method being
      * implemented correctly. Also checks that the hashcode does not change.
-     * 
+     *
      * @param m
      */
     protected void assertSurvivesSerialisation(FreerailsSerializable m) {

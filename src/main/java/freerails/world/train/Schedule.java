@@ -8,9 +8,8 @@ import freerails.world.common.ImInts;
 
 /**
  * Defines methods to access a train's schedule.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public interface Schedule {
     public static int PRIORITY_ORDERS = 0;
@@ -19,7 +18,9 @@ public interface Schedule {
 
     TrainOrdersModel getOrder(int i);
 
-    /** Returns the number of the order the train is currently carry out. */
+    /**
+     * Returns the number of the order the train is currently carry out.
+     */
     int getOrderToGoto();
 
     /**
@@ -28,18 +29,22 @@ public interface Schedule {
      */
     int getStationToGoto();
 
-    /** Returns the wagons to add at the next scheduled stop. */
+    /**
+     * Returns the wagons to add at the next scheduled stop.
+     */
 
     ImInts getWagonsToAdd();
 
-    /** Returns the value for the autoconsist flag at the next scheduled stop. */
+    /**
+     * Returns the value for the autoconsist flag at the next scheduled stop.
+     */
     boolean autoConsist();
 
     boolean hasPriorityOrders();
 
     /**
      * Returns number of non priority orders + number of priority orders.
-     * 
+     *
      * @return Number of orders.
      */
     int getNumOrders();

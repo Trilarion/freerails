@@ -1,18 +1,16 @@
 package freerails.client.top;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
-import org.apache.log4j.Logger;
-
 import freerails.client.common.RepaintManagerForActiveRendering;
 import freerails.controller.ReportBugTextGenerator;
 import freerails.controller.ScreenHandler;
 import freerails.util.GameModel;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
 
 /**
  * This thread updates the GUI Client window.
- * 
+ *
  * @author Luke
  */
 final public class GameLoop implements Runnable {
@@ -157,15 +155,15 @@ final public class GameLoop implements Runnable {
                     }
                 }
                 // remove all events from a event queue (max 5ms)
-                long startEventWaitTime = System.currentTimeMillis()+4;
-                while(SynchronizedEventQueue.getInstance().peekEvent()!= null) {
+                long startEventWaitTime = System.currentTimeMillis() + 4;
+                while (SynchronizedEventQueue.getInstance().peekEvent() != null) {
                     // we have events
                     Thread.yield();
-                    if(startEventWaitTime < System.currentTimeMillis()) {
+                    if (startEventWaitTime < System.currentTimeMillis()) {
                         break;
                     }
                 }
-          //      Thread.sleep(5);
+                //      Thread.sleep(5);
             }
 
             /* signal that we are done */

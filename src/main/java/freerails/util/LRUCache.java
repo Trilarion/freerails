@@ -1,9 +1,9 @@
 package freerails.util;
 
-import java.util.LinkedHashMap;
-import java.util.Collection;
-import java.util.Map;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * An LRU cache, based on <code>LinkedHashMap</code>.<br>
@@ -25,9 +25,8 @@ public class LRUCache<K, V> {
 
     /**
      * Creates a new LRU cache.
-     * 
-     * @param cacheSize
-     *            the maximum number of entries that will be kept in this cache.
+     *
+     * @param cacheSize the maximum number of entries that will be kept in this cache.
      */
     public LRUCache(int cacheSize) {
         this.cacheSize = cacheSize;
@@ -48,11 +47,10 @@ public class LRUCache<K, V> {
     /**
      * Retrieves an entry from the cache.<br>
      * The retrieved entry becomes the MRU (most recently used) entry.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned.
+     *
+     * @param key the key whose associated value is to be returned.
      * @return the value associated to this key, or null if no value with this
-     *         key exists in the cache.
+     * key exists in the cache.
      */
     public synchronized V get(K key) {
         return map.get(key);
@@ -61,11 +59,9 @@ public class LRUCache<K, V> {
     /**
      * Adds an entry to this cache. If the cache is full, the LRU (least
      * recently used) entry is dropped.
-     * 
-     * @param key
-     *            the key with which the specified value is to be associated.
-     * @param value
-     *            a value to be associated with the specified key.
+     *
+     * @param key   the key with which the specified value is to be associated.
+     * @param value a value to be associated with the specified key.
      */
     public synchronized void put(K key, V value) {
         map.put(key, value);
@@ -80,7 +76,7 @@ public class LRUCache<K, V> {
 
     /**
      * Returns the number of used entries in the cache.
-     * 
+     *
      * @return the number of entries currently in the cache.
      */
     public synchronized int usedEntries() {
@@ -90,7 +86,7 @@ public class LRUCache<K, V> {
     /**
      * Returns a <code>Collection</code> that contains a copy of all cache
      * entries.
-     * 
+     *
      * @return a <code>Collection</code> with a copy of the cache content.
      */
     public synchronized Collection<Map.Entry<K, V>> getAll() {

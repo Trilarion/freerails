@@ -6,14 +6,6 @@
 
 package freerails.client.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.Action;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.cargo.CargoType;
@@ -25,10 +17,16 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.train.WagonType;
 
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A JPanel that displays the cargo waiting and demanded at a station - used on
  * the select station popup window.
- * 
+ *
  * @author Luke
  */
 public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
@@ -88,8 +86,8 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
                 .getColor("Button.background"));
         waitingJTable.setFont(new java.awt.Font("Dialog", 0, 10));
         waitingJTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] { { "Mail", "4" }, { "Passengers", null } },
-                new String[] { "Title 1", "Title 2" }));
+                new Object[][]{{"Mail", "4"}, {"Passengers", null}},
+                new String[]{"Title 1", "Title 2"}));
         waitingJTable
                 .setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         waitingJTable.setFocusable(false);

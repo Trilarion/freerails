@@ -4,9 +4,6 @@
  */
 package freerails.move;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
@@ -14,11 +11,12 @@ import freerails.world.top.SKEY;
 import freerails.world.top.World;
 import freerails.world.track.FreerailsTile;
 
+import java.awt.*;
+
 /**
  * Move that changes a single tile.
- * 
+ *
  * @author Luke
- * 
  */
 public class ChangeTileMove implements Move, MapUpdateMove {
     private static final long serialVersionUID = 3256726169272662320L;

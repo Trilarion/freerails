@@ -3,17 +3,7 @@
  */
 package freerails.network;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.HashMap;
-
-import freerails.controller.ClientControlInterface;
-import freerails.controller.Message2Client;
-import freerails.controller.Message2Server;
-import freerails.controller.MessageStatus;
-import freerails.controller.PreMove;
-import freerails.controller.PreMoveStatus;
-import freerails.controller.ReportBugTextGenerator;
+import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.GameModel;
@@ -21,14 +11,16 @@ import freerails.world.common.FreerailsMutableSerializable;
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.player.Player;
 import freerails.world.top.World;
-
 import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * A client for FreerailsGameServer.
- * 
+ *
  * @author Luke
- * 
  */
 public class FreerailsClient implements ClientControlInterface, GameModel,
         UntriedMoveReceiver, ServerCommandReceiver {
@@ -57,7 +49,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      * Connects this client to a remote server.
      */
     public final LogOnResponse connect(String address, int port,
-            String username, String password) {
+                                       String username, String password) {
         if (logger.isDebugEnabled()) {
             logger.debug("Connect to remote server.  " + address + ":" + port);
         }
@@ -92,7 +84,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      * Connects this client to a local server.
      */
     public final LogOnResponse connect(GameServer server, String username,
-            String password) {
+                                       String password) {
         try {
             LogOnRequest request = new LogOnRequest(username, password);
             connection2Server = new LocalConnection();
@@ -174,7 +166,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         }
     }
 
-    /** Reads and deals with all outstanding messages from the server. */
+    /**
+     * Reads and deals with all outstanding messages from the server.
+     */
     final public void update() {
         try {
             FreerailsSerializable[] messages = connection2Server
@@ -195,13 +189,14 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * Empty method called by update(), subclasses should override this method
      * instead of overriding update().
-     * 
      */
     protected void clientUpdates() {
 
     }
 
-    /** Processes a message received from the server. */
+    /**
+     * Processes a message received from the server.
+     */
     final void processMessage(FreerailsSerializable message) throws IOException {
         if (message instanceof Message2Client) {
             Message2Client request = (Message2Client) message;
@@ -235,14 +230,18 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         return world;
     }
 
-    /** Sends move to the server. */
+    /**
+     * Sends move to the server.
+     */
     final public void processMove(Move move) {
         committer.toServer(move);
         moveFork.processMove(move);
         write(move);
     }
 
-    /** Tests a move before sending it to the server. */
+    /**
+     * Tests a move before sending it to the server.
+     */
     final public MoveStatus tryDoMove(Move move) {
         return move.tryDoMove(world, Player.AUTHORITATIVE);
     }

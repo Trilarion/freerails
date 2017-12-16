@@ -13,9 +13,8 @@ import freerails.world.top.WagonAndEngineTypesFactory;
 
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.
- * 
+ *
  * @author Luke
- * 
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     private ImList<PlannedTrain> before;
@@ -42,7 +41,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         wetf.addTypesToWorld(getWorld());
         engineType = 0;
         wagonType = 0;
-        wagons = new int[] { wagonType, wagonType };
+        wagons = new int[]{wagonType, wagonType};
         after = new ImList<PlannedTrain>(new PlannedTrain(engineType, wagons));
     }
 

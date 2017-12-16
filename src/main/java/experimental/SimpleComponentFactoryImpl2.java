@@ -5,26 +5,20 @@
  */
 package experimental;
 
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-
 import freerails.client.renderer.BlankMapRenderer;
 import freerails.client.view.MainMapAndOverviewMapMediator;
 import freerails.client.view.MapViewJComponentConcrete;
 import freerails.client.view.OverviewMapJComponent;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * This GUIComponentFactory creates simple components that can be used to test
  * the layout of the client jFrame without running the whole game.
- * 
+ *
  * @author Luke Lindsay
  */
 public class SimpleComponentFactoryImpl2 implements
@@ -39,7 +33,9 @@ public class SimpleComponentFactoryImpl2 implements
 
     private Rectangle r = new Rectangle();
 
-    /** Creates new SimpleComponentFactoryImpl */
+    /**
+     * Creates new SimpleComponentFactoryImpl
+     */
     public SimpleComponentFactoryImpl2() {
     }
 

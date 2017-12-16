@@ -12,11 +12,11 @@ import freerails.world.common.IntLine;
  * of points. There must be at least two points. The first point is the position
  * of the front of the train; the last point is the position of the end of the
  * train. Any intermediate points are positions of 'kinks' in the track.
- * 
+ * <p>
  * Coordinates are expressed in display coordinates relative to the map origin
  * (as opposed to map squares).
- * 
- * 
+ * <p>
+ * <p>
  * <p>
  * Train positions can be combined and divided as illustrated below (notice what
  * happens to the head and tail that are combined)
@@ -65,10 +65,8 @@ import freerails.world.common.IntLine;
  * <td><code>{(10, 10), (20,20), (30,30), (40,40) }</code></td>
  * </tr>
  * </table>
- * 
- * 
+ *
  * @author Luke Lindsay 26-Oct-2002
- * 
  */
 public class TrainPositionOnMap implements FreerailsSerializable {
     public static final int CRASH_FRAMES_COUNT = 15;
@@ -251,7 +249,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     private TrainPositionOnMap(int[] xs, int[] ys, double speed,
-            double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
+                               double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
         if (xs.length != ys.length) {
             throw new IllegalArgumentException();
         }
@@ -275,7 +273,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     private TrainPositionOnMap addBtoHeadOfA(TrainPositionOnMap b,
-            TrainPositionOnMap a) {
+                                             TrainPositionOnMap a) {
         if (aHeadEqualsBTail(a, b)) {
             int newLength = a.getLength() + b.getLength() - 2;
 
@@ -484,7 +482,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     public static boolean headsAreEqual(TrainPositionOnMap a,
-            TrainPositionOnMap b) {
+                                        TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
         int aHeadY = a.getY(0);
         int bHeadX = b.getX(0);
@@ -497,7 +495,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     public static boolean tailsAreEqual(TrainPositionOnMap a,
-            TrainPositionOnMap b) {
+                                        TrainPositionOnMap b) {
         int aTailX = a.getX(a.getLength() - 1);
         int aTailY = a.getY(a.getLength() - 1);
         int bTailX = b.getX(b.getLength() - 1);
@@ -510,7 +508,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     public static boolean aHeadEqualsBTail(TrainPositionOnMap a,
-            TrainPositionOnMap b) {
+                                           TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
         int aHeadY = a.getY(0);
 
@@ -524,7 +522,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     public static boolean bHeadEqualsATail(TrainPositionOnMap a,
-            TrainPositionOnMap b) {
+                                           TrainPositionOnMap b) {
         return aHeadEqualsBTail(b, a);
     }
 

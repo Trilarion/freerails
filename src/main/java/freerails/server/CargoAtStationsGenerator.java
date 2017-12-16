@@ -4,8 +4,6 @@
  */
 package freerails.server;
 
-import java.util.Iterator;
-
 import freerails.controller.FreerailsServerSerializable;
 import freerails.move.ChangeCargoBundleMove;
 import freerails.move.Move;
@@ -18,18 +16,15 @@ import freerails.world.common.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.station.SupplyAtStation;
-import freerails.world.top.ITEM;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
+import freerails.world.top.*;
+
+import java.util.Iterator;
 
 /**
  * This class loops over the list of stations and adds cargo depending on what
  * the surrounding tiles supply.
- * 
+ *
  * @author Luke
- * 
  */
 public class CargoAtStationsGenerator implements FreerailsServerSerializable {
     private static final long serialVersionUID = 3834596504072959796L;
@@ -37,7 +32,9 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
     public CargoAtStationsGenerator() {
     }
 
-    /** Call this method once a month. */
+    /**
+     * Call this method once a month.
+     */
     public void update(World w, MoveReceiver moveReceiver) {
         for (int k = 0; k < w.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = w.getPlayer(k).getPrincipal();

@@ -3,17 +3,16 @@
  */
 package freerails.network;
 
-import java.io.IOException;
-
-import freerails.controller.Message2Client;
 import freerails.controller.ClientControlInterface.ClientProperty;
+import freerails.controller.Message2Client;
 import freerails.world.common.ImStringList;
+
+import java.io.IOException;
 
 /**
  * Tests FreerailsClient with a network server.
- * 
+ *
  * @author Luke
- * 
  */
 public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     public void testLogon() {
@@ -63,7 +62,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     }
 
     private void assertConnectClientsEquals(FreerailsClient client,
-            ImStringList expectedPlayerNames) throws IOException,
+                                            ImStringList expectedPlayerNames) throws IOException,
             InterruptedException {
         Message2Client message2Client = (Message2Client) client.read();
         message2Client.execute(client);

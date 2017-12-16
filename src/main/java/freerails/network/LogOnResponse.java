@@ -7,9 +7,8 @@ import freerails.world.common.FreerailsSerializable;
 
 /**
  * Stores the result of a request to log onto the server.
- * 
+ *
  * @author Luke
- * 
  */
 public class LogOnResponse implements FreerailsSerializable {
     private static final long serialVersionUID = 3690479099844311344L;

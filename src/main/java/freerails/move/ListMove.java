@@ -7,7 +7,7 @@ import freerails.world.top.KEY;
 /**
  * This interface provides information about changes to the lists in the World
  * database.
- * 
+ *
  * @author rob?
  */
 public interface ListMove extends Move {

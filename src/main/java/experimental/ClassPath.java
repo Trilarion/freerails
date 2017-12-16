@@ -1,13 +1,10 @@
 package experimental;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -15,14 +12,12 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.log4j.Logger;
-
 /**
  * ClassPath finds and records the fully qualified name of every Class on the
  * classpath via the system property "java.class.path".
  * <p>
  * Based on original prototype by duncanIdaho for javagaming.org.
- * 
+ *
  * @author adam@jgf
  */
 public class ClassPath {
@@ -61,7 +56,7 @@ public class ClassPath {
         }
 
         for (Iterator<String> iter = pendingClassPathElements.iterator(); iter
-                .hasNext();) {
+                .hasNext(); ) {
             String pathElement = iter.next();
             LinkedList<String> processPendingElement = processPendingElement(pathElement);
             processedClassPathElements.addAll(processPendingElement);
@@ -72,7 +67,6 @@ public class ClassPath {
 
     /**
      * Clones the supplied list, then goes through it processing every element.
-     * 
      */
     protected LinkedList<String> processPendingElement(String pathElement) {
         LinkedList<String> discoveredClasses = new LinkedList<String>();
@@ -108,7 +102,7 @@ public class ClassPath {
                                 + extraPathElements.size()
                                 + " additional path elements");
                         for (Iterator iter = extraPathElements.iterator(); iter
-                                .hasNext();) {
+                                .hasNext(); ) {
                             String element = (String) iter.next();
                             discoveredClasses
                                     .addAll(processPendingElement(element));
@@ -150,8 +144,7 @@ public class ClassPath {
     }
 
     /**
-     * @param classFile
-     *            a class file listed on the classpath itself.
+     * @param classFile a class file listed on the classpath itself.
      */
     protected String convertToClass(File classFile) {
         return getClassNameFrom(classFile.getName());
@@ -160,11 +153,10 @@ public class ClassPath {
     /**
      * replace ANY slashes with dots and remove the .class at the end of the
      * file name.
-     * 
-     * @param entryName
-     *            a file name relative to the classpath. A class of package org
-     *            found in directory bin would be passed into this method as
-     *            "org/MyClass.class"
+     *
+     * @param entryName a file name relative to the classpath. A class of package org
+     *                  found in directory bin would be passed into this method as
+     *                  "org/MyClass.class"
      * @return a fully qualified Class name.
      */
     private String getClassNameFrom(String entryName) {
@@ -175,14 +167,12 @@ public class ClassPath {
 
     /**
      * Finds all path elements in the supplied JAR and returns them as a list
-     * 
-     * @param man
-     *            the manifest of the given jar
-     * @param jar
-     *            the jar associated with the given manifest.
+     *
+     * @param man the manifest of the given jar
+     * @param jar the jar associated with the given manifest.
      */
     protected LinkedList<String> findPathElementsInJar(Manifest man,
-            JarFile jar, File jarFile) {
+                                                       JarFile jar, File jarFile) {
         LinkedList<String> result = new LinkedList<String>();
         Attributes atts = man.getMainAttributes();
         Set keys = atts.keySet();
@@ -217,7 +207,7 @@ public class ClassPath {
 
     /**
      * Adds all class names found in the zip mentioned
-     * 
+     *
      * @param zipFile
      */
     protected LinkedList<String> getZipContents(File zipFile) {
@@ -243,7 +233,7 @@ public class ClassPath {
 
     /**
      * This method takes a top level classpath dir i.e. 'classes' or bin
-     * 
+     *
      * @param dir
      */
     protected LinkedList<String> getDirectoryContents(File dir) {
@@ -272,11 +262,9 @@ public class ClassPath {
     /**
      * This method does the real directory recursion, passing along the the
      * corresponding package-path to this directory.
-     * 
-     * @param pathTo
-     *            the preceding path to this directory
-     * @param dir
-     *            a directory to search for class files
+     *
+     * @param pathTo the preceding path to this directory
+     * @param dir    a directory to search for class files
      */
     protected LinkedList<String> getDirectoryContents(String pathTo, File dir) {
         LinkedList<String> result = new LinkedList<String>();

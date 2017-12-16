@@ -1,18 +1,15 @@
 package freerails.client.view;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-
-import javax.swing.JPanel;
-
 import freerails.client.renderer.BlankMapRenderer;
 import freerails.client.renderer.MapRenderer;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * JPanel that displays the overview map and a rectangle showing the region of
  * the map currently displayed on the main view.
- * 
+ *
  * @author Luke
  */
 public class OverviewMapJComponent extends JPanel {

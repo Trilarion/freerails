@@ -11,9 +11,8 @@ import freerails.world.top.World;
 
 /**
  * All moves that add an item to a list should extend this class.
- * 
+ *
  * @author Luke
- * 
  */
 public class AddItemToListMove implements ListMove {
     private static final long serialVersionUID = 3256721779916747824L;
@@ -46,7 +45,7 @@ public class AddItemToListMove implements ListMove {
     }
 
     public AddItemToListMove(KEY key, int i, FreerailsSerializable item,
-            FreerailsPrincipal p) {
+                             FreerailsPrincipal p) {
         this.listKey = key;
         this.index = i;
         this.item = item;

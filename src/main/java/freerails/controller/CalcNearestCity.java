@@ -1,17 +1,15 @@
 package freerails.controller;
 
-import java.util.NoSuchElementException;
-
 import freerails.world.terrain.CityModel;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 
+import java.util.NoSuchElementException;
+
 /**
- * 
- * 
  * Class to find the nearest city and return that name, so that a station can be
  * named appropriately. Date: 12th April 2003
- * 
+ *
  * @author Scott Bennett
  */
 public class CalcNearestCity {

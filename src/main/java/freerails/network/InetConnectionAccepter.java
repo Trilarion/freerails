@@ -3,16 +3,16 @@
  */
 package freerails.network;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.apache.log4j.Logger;
-
 /**
  * When this class is run in a thread it accepts new connections to its Server
  * Socket and adds them to the NewGameServer that was passed to its constructor.
- * 
+ *
  * @author Luke
  */
 public class InetConnectionAccepter implements Runnable {

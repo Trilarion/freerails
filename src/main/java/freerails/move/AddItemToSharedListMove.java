@@ -11,9 +11,8 @@ import freerails.world.top.World;
 
 /**
  * All moves that add an item to a shared list should extend this class.
- * 
+ *
  * @author Luke
- * 
  */
 public class AddItemToSharedListMove implements Move {
     private static final long serialVersionUID = 3762256352759722807L;
@@ -43,7 +42,7 @@ public class AddItemToSharedListMove implements Move {
     }
 
     protected AddItemToSharedListMove(SKEY key, int i,
-            FreerailsSerializable item) {
+                                      FreerailsSerializable item) {
         this.listKey = key;
         this.index = i;
         this.item = item;

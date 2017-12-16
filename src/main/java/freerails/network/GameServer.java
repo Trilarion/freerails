@@ -7,9 +7,8 @@ import freerails.util.GameModel;
 
 /**
  * Defines a server that can accept connections to clients.
- * 
+ *
  * @author Luke
- * 
  */
 public interface GameServer extends GameModel {
     void addConnection(Connection2Client connection);

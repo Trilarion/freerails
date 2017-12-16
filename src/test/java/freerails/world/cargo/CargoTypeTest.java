@@ -8,9 +8,8 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for CargoType.
- * 
+ *
  * @author Luke
- * 
  */
 public class CargoTypeTest extends TestCase {
     public void testCargoType() {

@@ -5,14 +5,14 @@
  */
 package freerails.world.train;
 
-import java.util.Vector;
-
 import freerails.world.common.ImInts;
+
+import java.util.Vector;
 
 /**
  * This class represents a train's schedule. That is, which stations that the
  * train should visit and what wagons the engine should pull.
- * 
+ *
  * @author lindsal
  */
 public class MutableSchedule implements Schedule {
@@ -139,7 +139,9 @@ public class MutableSchedule implements Schedule {
         return orders.get(i);
     }
 
-    /** Returns the number of the order the train is currently carry out. */
+    /**
+     * Returns the number of the order the train is currently carry out.
+     */
     public int getOrderToGoto() {
         return nextScheduledOrder;
     }
@@ -160,7 +162,9 @@ public class MutableSchedule implements Schedule {
         return orders.get(nextScheduledOrder).getStationID();
     }
 
-    /** Returns the wagons to add at the next scheduled stop. */
+    /**
+     * Returns the wagons to add at the next scheduled stop.
+     */
     public ImInts getWagonsToAdd() {
         return orders.get(nextScheduledOrder).getConsist();
     }
@@ -193,7 +197,7 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Returns number of non priority orders + number of priority orders.
-     * 
+     *
      * @return Number of orders.
      */
     public int getNumOrders() {

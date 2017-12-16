@@ -1,13 +1,12 @@
 /*
  * Created on 05-Dec-2005
- * 
+ *
  */
 package freerails.client.renderer;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-
 import junit.framework.TestCase;
+
+import java.awt.*;
 
 public class SquareTileBackgroundRendererTest extends TestCase {
 
@@ -31,7 +30,9 @@ public class SquareTileBackgroundRendererTest extends TestCase {
 
     };
 
-    /** Testcase to reproduce bug [ 1303162 ] Unexpected Exception: */
+    /**
+     * Testcase to reproduce bug [ 1303162 ] Unexpected Exception:
+     */
     public void testRefreshBeforeBufferIsSet() {
         SquareTileBackgroundRenderer stbr = new SquareTileBackgroundRenderer(
                 renderer);

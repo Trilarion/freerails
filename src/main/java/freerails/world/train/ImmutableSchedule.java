@@ -10,9 +10,8 @@ import freerails.world.common.ImList;
 
 /**
  * A Schedule that is immutable.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private static final long serialVersionUID = 3977858458324318264L;
@@ -33,7 +32,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private final boolean hasPriorityOrders;
 
     public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
-            boolean hasPriorityOrders) {
+                             boolean hasPriorityOrders) {
         this.orders = new ImList<TrainOrdersModel>(orders);
         this.nextScheduledOrder = gotoStation;
         this.hasPriorityOrders = hasPriorityOrders;

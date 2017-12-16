@@ -5,32 +5,20 @@
  */
 package freerails.move;
 
-import java.awt.Rectangle;
-
 import freerails.controller.PathCacheController;
 import freerails.world.accounts.Transaction;
 import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.ItemsTransactionAggregator;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
-import freerails.world.track.FreerailsTile;
-import freerails.world.track.NullTrackPiece;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackPieceImpl;
-import freerails.world.track.TrackRule;
+import freerails.world.top.*;
+import freerails.world.track.*;
+
+import java.awt.*;
 
 /**
  * This Move changes adds, removes, or upgrades the track between two tiles.
- * 
+ *
  * @author lindsal
- * 
  */
 public final class ChangeTrackPieceCompositeMove extends CompositeMove
         implements TrackMove, MapUpdateMove {
@@ -41,7 +29,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     private final FreerailsPrincipal builder;
 
     private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b,
-            FreerailsPrincipal fp) {
+                                          FreerailsPrincipal fp) {
         super(a, b);
         Rectangle r = a.getUpdatedTiles().union(b.getUpdatedTiles());
         x = r.x;
@@ -59,7 +47,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, w,
                 principal);
         b = getBuildTrackChangeTrackPieceMove(direction
-                .createRelocatedPoint(from), direction.getOpposite(), ruleB, w,
+                        .createRelocatedPoint(from), direction.getOpposite(), ruleB, w,
                 principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
@@ -73,7 +61,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
         a = getRemoveTrackChangeTrackPieceMove(from, direction, w, principal);
         b = getRemoveTrackChangeTrackPieceMove(direction
-                .createRelocatedPoint(from), direction.getOpposite(), w,
+                        .createRelocatedPoint(from), direction.getOpposite(), w,
                 principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
@@ -97,7 +85,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                         oldTrackPiece.getTrackConfiguration(), direction);
                 newTrackPiece = new TrackPieceImpl(trackConfiguration,
                         oldTrackPiece.getTrackRule(), owner, oldTrackPiece
-                                .getTrackTypeID());
+                        .getTrackTypeID());
             } else {
                 newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction,
                         trackRule, owner, findRuleID(trackRule, w));
@@ -113,7 +101,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
     // utility method.
     private static TrackMove getRemoveTrackChangeTrackPieceMove(ImPoint p,
-            Step direction, ReadOnlyWorld w, FreerailsPrincipal principal)
+                                                                Step direction, ReadOnlyWorld w, FreerailsPrincipal principal)
             throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
@@ -132,7 +120,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                     int owner = getOwner(principal, w);
                     newTrackPiece = new TrackPieceImpl(trackConfiguration,
                             oldTrackPiece.getTrackRule(), owner, oldTrackPiece
-                                    .getTrackTypeID());
+                            .getTrackTypeID());
                 } else {
                     newTrackPiece = NullTrackPiece.getInstance();
                 }
@@ -183,9 +171,11 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         throw new IllegalStateException();
     }
 
-    /** Returns true if some track has been built. */
+    /**
+     * Returns true if some track has been built.
+     */
     static boolean hasAnyTrackBeenBuilt(ReadOnlyWorld world,
-            FreerailsPrincipal principal) {
+                                        FreerailsPrincipal principal) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 world, principal);
         aggregator.setCategory(Transaction.Category.TRACK);

@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 public class TrainMotionTest extends TestCase {
     /*
-     * 
+     *
      * this= TrainMotion (id=49) activity= SpeedTimeAndStatus$TrainActivity
      * (id=107) name= "READY" ordinal= 1 distanceEngineWillTravel= 30.0
      * duration= 3.9936298481613424 initialPosition= 42.42640687119285 path=
@@ -24,14 +24,14 @@ public class TrainMotionTest extends TestCase {
      * 6.972888751347389 u= 6.5135556243263055 [1]= ConstAcc (id=121) a= 0.0 dt=
      * 4.0 u= 10.0 trainLength= 24 t= 3.9936298481613424 offset=
      * 48.42640687119287 length= 24.0
-     * 
+     *
      * 72.42640687119285
      */
 
     public void test4Bug1266695() {
         // The figures are copied from the debugger.
         ImPoint start = new ImPoint(14, 5);
-        Step[] vectors = { Step.getInstance(1, 1), Step.getInstance(1, 0) };
+        Step[] vectors = {Step.getInstance(1, 1), Step.getInstance(1, 0)};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
         ConstAcc constAcc0 = ConstAcc.uat(6.5135556243263055d, 0.5d,
@@ -42,7 +42,7 @@ public class TrainMotionTest extends TestCase {
                 constAcc1);
 
         double expectedTotalDistance = 97.57359312880715d; // Copied from
-                                                            // debugger.
+        // debugger.
         double actualTotalDistance = speeds.getS();
 
         assertEquals(expectedTotalDistance, actualTotalDistance, 0d);

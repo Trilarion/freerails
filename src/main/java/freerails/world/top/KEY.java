@@ -1,28 +1,30 @@
 package freerails.world.top;
 
-import java.io.ObjectStreamException;
-
 import freerails.util.Utils;
 import freerails.world.common.FreerailsSerializable;
+
+import java.io.ObjectStreamException;
 
 /**
  * <p>
  * This class provides a set of keys to access the lists of elements in the game
  * world that are indexed by player.
  * </P>
- * 
+ * <p>
  * <p>
  * It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
  * </p>
- * 
+ *
  * @author Luke
  */
 @freerails.util.InstanceControlled
 public class KEY implements FreerailsSerializable {
     private static final long serialVersionUID = 3257572793275987001L;
 
-    /** Maps key numbers to KEYs. */
+    /**
+     * Maps key numbers to KEYs.
+     */
     private static final KEY[] keys = new KEY[15];
 
     // START OF KEYS
@@ -32,7 +34,9 @@ public class KEY implements FreerailsSerializable {
 
     public static final KEY STATIONS = new KEY();
 
-    /** The cargo waiting at stations or carried by trains. */
+    /**
+     * The cargo waiting at stations or carried by trains.
+     */
     public static final KEY CARGO_BUNDLES = new KEY();
 
     public static final KEY TRAIN_SCHEDULES = new KEY();

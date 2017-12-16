@@ -3,24 +3,15 @@
  */
 package freerails.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.StringTokenizer;
 
 /**
  * A bunch of static methods.
- * 
+ *
  * @author Luke
- * 
  */
 strictfp public class Utils {
 
@@ -40,7 +31,9 @@ strictfp public class Utils {
 
     }
 
-    /** Used when debugging. */
+    /**
+     * Used when debugging.
+     */
     public static void write(Serializable m, String fileName) {
         try {
             File f = new File(fileName);
@@ -128,11 +121,9 @@ strictfp public class Utils {
     /**
      * Returns the largest solution of the quadratic equation ax<sup><font
      * size="-1">2</font></sup> + bx + c = 0.
-     * 
-     * @throws IllegalArgumentException
-     *             if <code>a == 0</code>
-     * @throws IllegalArgumentException
-     *             if <code>(b * b - 4 * a * c) < 0</code>
+     *
+     * @throws IllegalArgumentException if <code>a == 0</code>
+     * @throws IllegalArgumentException if <code>(b * b - 4 * a * c) < 0</code>
      */
     public static double solveQuadratic(double a, double b, double c)
             throws IllegalArgumentException {

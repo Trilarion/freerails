@@ -1,14 +1,11 @@
 package freerails.client.common;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 import java.util.Vector;
-
-import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JToggleButton;
 
 /**
  * Provides a mapping from a set of ButtonModels or a ComboBoxModel to a set of
@@ -17,7 +14,7 @@ import javax.swing.JToggleButton;
  * to a ButtonGroup. Listeners should listen for changes to the model and not to
  * any events from UI components, although UI components may call setAction() in
  * order to receive property change updates and to set icons etc.
- * 
+ *
  * @author Rob
  */
 public class ActionAdapter extends DefaultComboBoxModel {
@@ -56,12 +53,10 @@ public class ActionAdapter extends DefaultComboBoxModel {
     }
 
     /**
-     * @param actions
-     *            An array of the actions to be used. The ComboBoxModel objects
-     *            are taken from the NAME property of the Action. The
-     *            ButtonModel icons are obtained from the SMALL_ICON property.
-     * @param selected
-     *            Index of the default selected action.
+     * @param actions  An array of the actions to be used. The ComboBoxModel objects
+     *                 are taken from the NAME property of the Action. The
+     *                 ButtonModel icons are obtained from the SMALL_ICON property.
+     * @param selected Index of the default selected action.
      */
     public ActionAdapter(Action[] actions, int selected) {
         this(actions);
@@ -97,8 +92,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     }
 
     /**
-     * @param item
-     *            The NAME of the Action selected
+     * @param item The NAME of the Action selected
      */
     @Override
     public void setSelectedItem(Object item) {
@@ -127,7 +121,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
                 if (actions[i].getValue(Action.NAME).equals(item)) {
                     actions[i].actionPerformed(new ActionEvent(this,
                             ActionEvent.ACTION_PERFORMED, (String) actions[i]
-                                    .getValue(Action.ACTION_COMMAND_KEY)));
+                            .getValue(Action.ACTION_COMMAND_KEY)));
                 }
             }
         }

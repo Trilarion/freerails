@@ -1,34 +1,28 @@
 package freerails.server;
 
-import java.net.URL;
-
 import freerails.server.common.TileSetFactory;
 import freerails.server.parser.Track_TilesHandlerImpl;
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameSpeed;
 import freerails.world.common.GameTime;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.WagonAndEngineTypesFactory;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
-
+import freerails.world.top.*;
 import org.xml.sax.SAXException;
+
+import java.net.URL;
 
 /**
  * This class sets up a World object.
- * 
+ *
  * @author luke
  */
 public class OldWorldImpl {
     /**
      * Note, the map name is converted to lower case and any spaces are replaced
      * with underscores.
-     * 
      */
     public static World createWorldFromMapFile(String mapName,
-            FreerailsProgressMonitor pm) {
+                                               FreerailsProgressMonitor pm) {
 
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');

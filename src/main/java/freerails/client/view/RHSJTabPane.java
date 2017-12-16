@@ -1,38 +1,29 @@
 package freerails.client.view;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
-
-import org.apache.log4j.Logger;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RenderersRoot;
-import freerails.client.top.UserInputOnMapController;
 import freerails.config.ClientConfig;
 import freerails.controller.ModelRoot;
-import freerails.world.common.FreerailsSerializable;
 import freerails.world.common.ImPoint;
 import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.FreerailsTile;
-import freerails.world.track.TrackRule;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 
 /**
  * The tabbed panel that sits in the lower right hand corner of the screen.
- * 
+ *
  * @author rob
  */
 public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
-    
+
     private static final long serialVersionUID = 3906926798502965297L;
 
     private static final Logger LOGGER = Logger
@@ -49,13 +40,13 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     private ReadOnlyWorld world;
 
     private ModelRoot modelRoot;
-    
+
     private int terrainInfoIndex;
-    
+
     private int trainListIndex;
 
     private int stationInfoIndex;
-    
+
     public RHSJTabPane() {
         /*
          * Dont accept keyboard focus since we want to leave it with the main
@@ -66,7 +57,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         ImageIcon trainListIcon;
         ImageIcon buildTrackIcon;
         ImageIcon stationInfoIcon;
-        
+
         /* set up trainsJTabbedPane */
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         terrainInfoPanel = new TerrainInfoJPanel();
@@ -83,31 +74,31 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         URL buildTrackIconUrl = getClass().getResource(
                 ClientConfig.ICON_NEW_TRACK);
         buildTrackIcon = new ImageIcon(buildTrackIconUrl);
-        
+
         URL trainListIconUrl = getClass().getResource(
                 ClientConfig.ICON_TRAIN_LIST);
         trainListIcon = new ImageIcon(trainListIconUrl);
-        
+
         URL stationListIconUrl = getClass().getResource(
                 ClientConfig.ICON_STATION_LIST);
         stationInfoIcon = new ImageIcon(stationListIconUrl);
-        
+
         // Note titles set to null so only the icon appears at the top of the
         // top.
         JScrollPane terrainInfoJScrollPane = new JScrollPane(terrainInfoPanel);
         terrainInfoJScrollPane
                 .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         addTab(null, terrainInfoIcon, terrainInfoJScrollPane, "Terrain Info");
-        this.terrainInfoIndex = this.getTabCount()-1;
-        
+        this.terrainInfoIndex = this.getTabCount() - 1;
+
         stationInfoPanel = new StationInfoJPanel();
         stationInfoPanel.removeCloseButton();
         // Don't show the station info tab until it has been rewritten to take
         // up less space.
-         JScrollPane stationInfoJScrollPane = new JScrollPane(stationInfoPanel);
-         stationInfoJScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-         addTab(null, stationInfoIcon, stationInfoJScrollPane, "Station Info");
-         this.stationInfoIndex= this.getTabCount()-1;
+        JScrollPane stationInfoJScrollPane = new JScrollPane(stationInfoPanel);
+        stationInfoJScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        addTab(null, stationInfoIcon, stationInfoJScrollPane, "Station Info");
+        this.stationInfoIndex = this.getTabCount() - 1;
 
         trainListPanel.setTrainViewHeight(20);
         addTab(null, buildTrackIcon, buildTrackPanel, "Build Track");
@@ -120,11 +111,11 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     }
 
     public void setup(final ActionRoot actionRoot, RenderersRoot vl,
-            final ModelRootImpl modelRoot) {
-        
+                      final ModelRootImpl modelRoot) {
+
         this.modelRoot = modelRoot;
         world = modelRoot.getWorld();
-        
+
         terrainInfoPanel.setup(world, vl);
         stationInfoPanel.setup(modelRoot, vl, null);
 
@@ -147,14 +138,14 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
      * triggered by the cursor moving.
      */
     public void propertyChange(ModelRoot.Property prop, Object before,
-            Object after) {
+                               Object after) {
         if (prop.equals(ModelRoot.Property.CURSOR_POSITION)) {
-            
+
             ImPoint p = (ImPoint) after;
-            
+
             int x = p.x;
             int y = p.y;
-            
+
             // Select priority element at location
             LOGGER.debug("Let's try to show the station.");
 
@@ -174,31 +165,30 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 //            else {
 //                LOGGER.info("No piece at location.");
 //            }
-            
+
 
             // select station at point and show stat info tab
             // if not, then do terrain info and show that
             int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
             if (stationNumberAtLocation > -1) {
-                LOGGER.info("stationNumber: " + stationNumberAtLocation);   
+                LOGGER.info("stationNumber: " + stationNumberAtLocation);
                 stationInfoPanel.setStation(stationNumberAtLocation);
                 this.setSelectedIndex(stationInfoIndex);
-            }
-            else {
+            } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
                 LOGGER.info("Default behaviour show terrain.");
                 terrainInfoPanel.setTerrainType(((FreerailsTile) world.getTile(p.x,
                         p.y)).getTerrainTypeID());
                 this.setSelectedIndex(terrainInfoIndex);
             }
-            
+
         }
     }
 
     public void setTerrainTabEnabled(boolean enabled) {
         this.setEnabledAt(this.terrainInfoIndex, enabled);
     }
-    
+
     public void setTrainTabEnabled(boolean enabled) {
         this.setEnabledAt(this.trainListIndex, enabled);
     }

@@ -4,9 +4,6 @@
  */
 package freerails.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import freerails.util.IntArray;
 import freerails.world.common.ImPoint;
 import freerails.world.common.PositionOnTrack;
@@ -18,14 +15,15 @@ import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackRule;
-
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Finds the best route to build track between two points.
- * 
+ *
  * @author Luke
- * 
  */
 public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class
@@ -119,7 +117,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     public List generatePath(ImPoint start, ImPoint targetPoint,
-            BuildTrackStrategy bts) throws PathNotFoundException {
+                             BuildTrackStrategy bts) throws PathNotFoundException {
         setupSearch(start, targetPoint, bts);
         pathFinder.search(-1);
 
@@ -165,7 +163,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     public void setupSearch(ImPoint startPoint, ImPoint targetPoint,
-            BuildTrackStrategy bts) throws PathNotFoundException {
+                            BuildTrackStrategy bts) throws PathNotFoundException {
         logger.debug("Find track path from " + startPoint + " to "
                 + targetPoint);
 

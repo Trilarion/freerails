@@ -3,21 +3,20 @@
  */
 package freerails.network;
 
+import freerails.util.Utils;
+import freerails.world.top.WorldImpl;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import freerails.util.Utils;
-import freerails.world.top.WorldImpl;
-
 /**
  * Stores saved games in memory rather than on disk.
- * 
+ *
  * @author Luke
- * 
  */
 public class SavedGamesManager4UnitTests implements SavedGamesManager {
-    private String[] mapsAvailable = { "map1", "map2" };
+    private String[] mapsAvailable = {"map1", "map2"};
 
     private final HashMap<String, Serializable> savedGames = new HashMap<String, Serializable>();
 

@@ -6,7 +6,7 @@ package freerails.world.common;
  * direction the entity as just been moving - the opposite to the direction it
  * came from), it provides methods to encode and decode its field values to and
  * from a single int.
- * 
+ *
  * @author Luke
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
@@ -45,7 +45,9 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return returnValue;
     }
 
-    /** The direction from which we entered the tile. */
+    /**
+     * The direction from which we entered the tile.
+     */
     private Step cameFrom = Step.NORTH;
 
     private int x = 0;

@@ -4,12 +4,9 @@
  */
 package freerails.client.common;
 
-import java.awt.Container;
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashSet;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.RepaintManager;
 
 /**
  * This RepaintManager is intended to be used when we are using active rendering
@@ -21,12 +18,13 @@ import javax.swing.RepaintManager;
  * outside the bounds of their parent window, they have a different top level
  * component to the parent window, so are not painted when paintCompoments is
  * called from the game loop.
- * 
+ *
  * @author Luke
- * 
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {
-    /** The JFrame(s) that are being actively rendered in the game loop(s). */
+    /**
+     * The JFrame(s) that are being actively rendered in the game loop(s).
+     */
     private static final HashSet<JFrame> activelyRendereredComponents = new HashSet<JFrame>();
 
     private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
@@ -49,7 +47,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 
     @Override
     public synchronized void addDirtyRegion(JComponent c, int x, int y, int w,
-            int h) {
+                                            int h) {
         if (hasDifferentAncester(c)) {
             super.addDirtyRegion(c, x, y, w, h);
             numDirtyRequests++;
@@ -105,6 +103,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     public static long getNumRepaintRequests() {
         return numRepaintRequests;
     }
+
     public static long getNumDirtyRequests() {
         return numDirtyRequests;
     }

@@ -4,14 +4,10 @@
  */
 package freerails.world.train;
 
-import java.util.ArrayList;
-
 import freerails.util.Pair;
-import freerails.world.common.Activity;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.common.*;
+
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -19,7 +15,7 @@ import freerails.world.common.Step;
  * speed at any time within an interval. An instance of this class will be
  * stored on the world object for each train rather the train's position. The
  * reasons for this are as follows.
- * 
+ * <p>
  * <ol type="i">
  * <li> It decouples the number of game updates per second and number of frames
  * per second shown by the client. If the train's position were stored on the
@@ -28,12 +24,11 @@ import freerails.world.common.Step;
  * displaying 50 FPS, the train's motion would still appear jerky since its
  * position would only change 10 times per second. </li>
  * <li>
- * 
+ * <p>
  * It makes supporting low bandwidth networks easier since it allows the server
  * to send updates less frequently. </li>
  * </p>
- * 
- * 
+ *
  * @author Luke
  * @see freerails.world.train.PathOnTiles
  * @see freerails.world.train.CompositeSpeedAgainstTime
@@ -56,27 +51,21 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
 
     /**
      * Creates a new TrainMotion instance.
-     * 
-     * @param path
-     *            the path the train will take.
-     * @param engineStep
-     *            the position measured in tiles that trains engine is along the
-     *            path
-     * @param trainLength
-     *            the length of the train, as returned by
-     *            <code>TrainModel.getLength()</code>.
-     * @throws IllegalArgumentException
-     *             if trainLength is out the range
-     *             <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
-     * @throws IllegalArgumentException
-     *             if <code>path.getDistance(engineStep) &lt; trainLength</code>.
-     * @throws IllegalArgumentException
-     *             if
-     *             <code>(path.getLength() - initialPosition) &gt; speeds.getTotalDistance()</code>.
+     *
+     * @param path        the path the train will take.
+     * @param engineStep  the position measured in tiles that trains engine is along the
+     *                    path
+     * @param trainLength the length of the train, as returned by
+     *                    <code>TrainModel.getLength()</code>.
+     * @throws IllegalArgumentException if trainLength is out the range
+     *                                  <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
+     * @throws IllegalArgumentException if <code>path.getDistance(engineStep) &lt; trainLength</code>.
+     * @throws IllegalArgumentException if
+     *                                  <code>(path.getLength() - initialPosition) &gt; speeds.getTotalDistance()</code>.
      */
 
     public TrainMotion(PathOnTiles path, int engineStep, int trainLength,
-            SpeedAgainstTime speeds) {
+                       SpeedAgainstTime speeds) {
         if (trainLength < TrainModel.WAGON_LENGTH
                 || trainLength > TrainModel.MAX_TRAIN_LENGTH)
             throw new IllegalArgumentException();
@@ -127,7 +116,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     public TrainMotion(PathOnTiles path, int trainLength, double duration,
-            SpeedTimeAndStatus.TrainActivity act) {
+                       SpeedTimeAndStatus.TrainActivity act) {
         this.path = path;
         this.trainLength = trainLength;
         this.activity = act;
@@ -174,12 +163,10 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * Returns the train's distance along the track from the point the train was
      * at at time <code>getStart()</code> at the specified time.
-     * 
-     * @param t
-     *            the time.
+     *
+     * @param t the time.
      * @return the distance
-     * @throws IllegalArgumentException
-     *             if t is outside the interval
+     * @throws IllegalArgumentException if t is outside the interval
      */
     public double getDistance(double t) {
         checkT(t);
@@ -198,12 +185,10 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
 
     /**
      * Returns the train's position at the specified time.
-     * 
-     * @param t
-     *            the time.
+     *
+     * @param t the time.
      * @return the train's position.
-     * @throws IllegalArgumentException
-     *             if t is outside the interval
+     * @throws IllegalArgumentException if t is outside the interval
      */
     public TrainPositionOnMap getState(double t) {
         t = Math.min(t, speeds.getT());
@@ -221,12 +206,10 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * Returns a PathOnTiles object that identifies the tiles the train is on at
      * the specified time.
-     * 
-     * @param t
-     *            the time.
+     *
+     * @param t the time.
      * @return an array of the tiles the train is on
-     * @throws IllegalArgumentException
-     *             if t is outside the interval
+     * @throws IllegalArgumentException if t is outside the interval
      */
     public PathOnTiles getTiles(double t) {
         checkT(t);

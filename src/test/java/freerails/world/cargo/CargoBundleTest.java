@@ -4,10 +4,10 @@
  */
 package freerails.world.cargo;
 
-import java.io.Serializable;
-
 import freerails.util.Utils;
 import junit.framework.TestCase;
+
+import java.io.Serializable;
 
 public class CargoBundleTest extends TestCase {
 
@@ -44,7 +44,7 @@ public class CargoBundleTest extends TestCase {
     }
 
     private void assertBundlesNotEqual(MutableCargoBundle a,
-            MutableCargoBundle b) {
+                                       MutableCargoBundle b) {
         assertFalse(a.equals(b));
         assertFalse(b.equals(a));
         assertFalse(a.toImmutableCargoBundle().equals(b));

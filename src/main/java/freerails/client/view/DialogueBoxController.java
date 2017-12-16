@@ -5,24 +5,6 @@
  */
 package freerails.client.view;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.NoSuchElementException;
-
-import org.apache.log4j.Logger;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLayeredPane;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.common.StationHelper;
@@ -30,8 +12,8 @@ import freerails.client.renderer.RenderersRoot;
 import freerails.config.ClientConfig;
 import freerails.controller.CopyableTextJPanel;
 import freerails.controller.Message2Server;
-import freerails.controller.ReportBugTextGenerator;
 import freerails.controller.ModelRoot.Property;
+import freerails.controller.ReportBugTextGenerator;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.RefreshListOfGamesMessage2Server;
@@ -39,13 +21,15 @@ import freerails.world.common.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldIterator;
-import freerails.world.top.WorldListListener;
+import freerails.world.top.*;
 import freerails.world.track.FreerailsTile;
-import freerails.world.track.TrackRule;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.NoSuchElementException;
 
 /**
  * This class is responsible for displaying dialogue boxes, adding borders to
@@ -55,7 +39,7 @@ import freerails.world.track.TrackRule;
  * dialogue boxes are not separate windows. Instead, they are drawn on the modal
  * layer of the main JFrames LayerPlane. This allows dialogue boxes with
  * transparent regions to be used.
- * 
+ *
  * @author lindsal8
  * @author smackay
  */
@@ -100,7 +84,7 @@ public class DialogueBoxController implements WorldListListener {
     private JInternalFrame dialogueJInternalFrame;
 
     private Component lastShownComponent = null;
-    
+
     /**
      * Use this Action to close a dialogue without performing any other action.
      */
@@ -487,7 +471,7 @@ public class DialogueBoxController implements WorldListListener {
             dialogueJInternalFrame.setVisible(false);
             frame.getLayeredPane().remove(dialogueJInternalFrame);
             dialogueJInternalFrame.dispose();
-            if(lastShownComponent != null) {
+            if (lastShownComponent != null) {
                 lastShownComponent.setVisible(false);
                 lastShownComponent = null;
             }
@@ -528,12 +512,11 @@ public class DialogueBoxController implements WorldListListener {
         int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
         if (stationNumberAtLocation > -1) {
             this.showStationInfo(stationNumberAtLocation);
-        }
-        else {
+        } else {
             this.showTerrainInfo(x, y);
         }
-        
-        
+
+
     }
 
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {

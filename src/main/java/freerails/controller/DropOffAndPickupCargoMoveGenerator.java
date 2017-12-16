@@ -1,9 +1,5 @@
 package freerails.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-
 import freerails.move.ChangeCargoBundleMove;
 import freerails.move.ChangeTrainMove;
 import freerails.move.Move;
@@ -25,11 +21,15 @@ import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
 import freerails.world.train.WagonType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
 /**
  * This class generates moves that transfer cargo between train and the stations
  * it stops at - it also handles cargo conversions that occur when cargo is
  * dropped off.
- * 
+ *
  * @author Scott Bennett
  * @author Luke Lindsay Date Created: 4 June 2003
  */
@@ -66,7 +66,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     /**
      * Stores the type and quanity of cargo in a wagon.
-     * 
+     *
      * @author Luke
      */
     private static class WagonLoad implements Comparable<WagonLoad> {
@@ -86,17 +86,14 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     /**
      * Contructor.
-     * 
-     * @param trainNo
-     *            ID of the train
-     * @param stationNo
-     *            ID of the station
-     * @param world
-     *            The world object
+     *
+     * @param trainNo   ID of the train
+     * @param stationNo ID of the station
+     * @param world     The world object
      */
     public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo,
-            ReadOnlyWorld world, FreerailsPrincipal p, boolean waiting,
-            boolean autoConsist) {
+                                              ReadOnlyWorld world, FreerailsPrincipal p, boolean waiting,
+                                              boolean autoConsist) {
         principal = p;
         trainId = trainNo;
         stationId = stationNo;
@@ -163,10 +160,10 @@ public class DropOffAndPickupCargoMoveGenerator {
         // called from here.
         ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(
                 stationBefore.toImmutableCargoBundle(), stationAfter
-                        .toImmutableCargoBundle(), stationBundleId, principal);
+                .toImmutableCargoBundle(), stationBundleId, principal);
         ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(
                 trainBefore.toImmutableCargoBundle(), trainAfter
-                        .toImmutableCargoBundle(), trainBundleId, principal);
+                .toImmutableCargoBundle(), trainBundleId, principal);
 
         moves.add(TransferCargoAtStationMove.CHANGE_AT_STATION_INDEX,
                 changeAtStation);
@@ -300,7 +297,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * another.
      */
     private static void transferCargo(int cargoTypeToTransfer,
-            int amountToTransfer, MutableCargoBundle from, MutableCargoBundle to) {
+                                      int amountToTransfer, MutableCargoBundle from, MutableCargoBundle to) {
         if (0 == amountToTransfer) {
             return;
         }

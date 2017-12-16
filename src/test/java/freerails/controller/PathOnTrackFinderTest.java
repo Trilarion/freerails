@@ -4,12 +4,6 @@
  */
 package freerails.controller;
 
-import static freerails.world.common.Step.EAST;
-import static freerails.world.common.Step.NORTH_EAST;
-import static freerails.world.common.Step.SOUTH_EAST;
-
-import java.util.Arrays;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.server.MapFixtureFactory2;
 import freerails.world.common.ImPoint;
@@ -17,9 +11,12 @@ import freerails.world.common.Step;
 import freerails.world.top.World;
 import junit.framework.TestCase;
 
+import java.util.Arrays;
+
+import static freerails.world.common.Step.*;
+
 /**
  * @author Luke
- * 
  */
 public class PathOnTrackFinderTest extends TestCase {
 
@@ -51,7 +48,7 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     public void testPathAsVectors1() {
-        Step[] path = { EAST, EAST, SOUTH_EAST };
+        Step[] path = {EAST, EAST, SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);
         ImPoint end = Step.move(start, path);
         producer.buildTrack(start, path);
@@ -68,7 +65,7 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     public void testPathAsVectors2() {
-        Step[] path = { EAST, EAST, SOUTH_EAST, EAST, EAST, NORTH_EAST };
+        Step[] path = {EAST, EAST, SOUTH_EAST, EAST, EAST, NORTH_EAST};
         ImPoint start = new ImPoint(5, 5);
         ImPoint end = Step.move(start, path);
         producer.buildTrack(start, path);
@@ -85,7 +82,7 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     public void testSetupSearch() {
-        Step[] path = { EAST, EAST, SOUTH_EAST };
+        Step[] path = {EAST, EAST, SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);
         ImPoint end = Step.move(start, path);
         producer.buildTrack(start, path);

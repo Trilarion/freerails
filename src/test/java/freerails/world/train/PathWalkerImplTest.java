@@ -1,16 +1,16 @@
 package freerails.world.train;
 
-import java.awt.Point;
-import java.util.ArrayList;
-
 import freerails.world.common.FreerailsPathIterator;
 import freerails.world.common.FreerailsPathIteratorImpl;
 import freerails.world.common.IntLine;
 import junit.framework.TestCase;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 /**
  * JUnit test.
- * 
+ *
  * @author Luke
  */
 public class PathWalkerImplTest extends TestCase {
@@ -131,8 +131,8 @@ public class PathWalkerImplTest extends TestCase {
     }
 
     public void setup() {
-        int[] xpoints = { 0, 100, 100 };
-        int[] ypoints = { 0, 0, 100 };
+        int[] xpoints = {0, 100, 100};
+        int[] ypoints = {0, 0, 100};
         it = new SimplePathIteratorImpl(xpoints, ypoints);
         pw = new PathWalkerImpl(it);
     }

@@ -20,7 +20,7 @@ public class NextActivityMove implements Move {
     private final int index;
 
     public NextActivityMove(Activity activity, int index,
-            FreerailsPrincipal principal) {
+                            FreerailsPrincipal principal) {
         this.activity = activity;
         this.index = index;
 

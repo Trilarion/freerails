@@ -29,29 +29,32 @@ import java.lang.reflect.Array;
  * arrays. The underlying array used for storage of items doubles in size each
  * time more space is required, up to an optional maximum growth increment
  * specified by the user.
- * 
+ *
  * @author Dennis M. Sosnoski
  * @version 1.0
  */
 public abstract class GrowableBase implements Serializable {
-    /** Default initial array size. */
+    /**
+     * Default initial array size.
+     */
     public static final int DEFAULT_SIZE = 8;
 
-    /** Size of the current array. */
+    /**
+     * Size of the current array.
+     */
     protected int countLimit;
 
-    /** Maximum size increment for growing array. */
+    /**
+     * Maximum size increment for growing array.
+     */
     protected int maximumGrowth;
 
     /**
      * Constructor with full specification.
-     * 
-     * @param size
-     *            number of elements in initial array
-     * @param growth
-     *            maximum size increment for growing array
-     * @param type
-     *            array element type
+     *
+     * @param size   number of elements in initial array
+     * @param growth maximum size increment for growing array
+     * @param type   array element type
      */
     public GrowableBase(int size, int growth, Class type) {
         Object array = Array.newInstance(type, size);
@@ -62,11 +65,9 @@ public abstract class GrowableBase implements Serializable {
 
     /**
      * Constructor with partial specification.
-     * 
-     * @param size
-     *            number of elements initially allowed in array
-     * @param type
-     *            array element type
+     *
+     * @param size number of elements initially allowed in array
+     * @param type array element type
      */
     public GrowableBase(int size, Class type) {
         this(size, Integer.MAX_VALUE, type);
@@ -74,9 +75,8 @@ public abstract class GrowableBase implements Serializable {
 
     /**
      * Copy (clone) constructor.
-     * 
-     * @param base
-     *            instance being copied
+     *
+     * @param base instance being copied
      */
     public GrowableBase(GrowableBase base) {
         this(base.countLimit, base.maximumGrowth, base.getArray().getClass()
@@ -87,7 +87,7 @@ public abstract class GrowableBase implements Serializable {
      * Get the backing array. This method is used by the type-agnostic base
      * class code to access the array used for type-specific storage by the
      * child class.
-     * 
+     *
      * @return backing array object
      */
     protected abstract Object getArray();
@@ -96,7 +96,6 @@ public abstract class GrowableBase implements Serializable {
      * Set the backing array. This method is used by the type-agnostic base
      * class code to set the array used for type-specific storage by the child
      * class.
-     * 
      */
     protected abstract void setArray(Object array);
 
@@ -105,11 +104,9 @@ public abstract class GrowableBase implements Serializable {
      * entire contents of the old array to the start of the new array. It should
      * be overridden in cases where data needs to be rearranged in the array
      * after a resize.
-     * 
-     * @param base
-     *            original array containing data
-     * @param grown
-     *            resized array for data
+     *
+     * @param base  original array containing data
+     * @param grown resized array for data
      */
     protected void resizeCopy(Object base, Object grown) {
         System.arraycopy(base, 0, grown, 0, Array.getLength(base));
@@ -119,11 +116,9 @@ public abstract class GrowableBase implements Serializable {
      * Discards values for a range of indices in the array. Checks if the values
      * stored in the array are object references, and if so clears them. If the
      * values are primitives, this method does nothing.
-     * 
-     * @param from
-     *            index of first value to be discarded
-     * @param to
-     *            index past last value to be discarded
+     *
+     * @param from index of first value to be discarded
+     * @param to   index past last value to be discarded
      */
     protected void discardValues(int from, int to) {
         Object values = getArray();
@@ -144,9 +139,8 @@ public abstract class GrowableBase implements Serializable {
      * the requested size requires more than the default growth, the requested
      * size overrides the normal growth and determines the size of the
      * replacement array.
-     * 
-     * @param required
-     *            new minimum size required
+     *
+     * @param required new minimum size required
      */
     protected void growArray(int required) {
         Object base = getArray();
@@ -162,9 +156,8 @@ public abstract class GrowableBase implements Serializable {
     /**
      * Ensure that the array has the capacity for at least the specified number
      * of values.
-     * 
-     * @param min
-     *            minimum capacity to be guaranteed
+     *
+     * @param min minimum capacity to be guaranteed
      */
     public final void ensureCapacity(int min) {
         if (min > countLimit) {
@@ -175,13 +168,10 @@ public abstract class GrowableBase implements Serializable {
     /**
      * Constructs and returns a simple array containing the same data as held in
      * a portion of this growable array.
-     * 
-     * @param type
-     *            element type for constructed array
-     * @param offset
-     *            start offset in array
-     * @param length
-     *            number of characters to use
+     *
+     * @param type   element type for constructed array
+     * @param offset start offset in array
+     * @param length number of characters to use
      * @return array containing a copy of the data
      */
     protected Object buildArray(Class type, int offset, int length) {

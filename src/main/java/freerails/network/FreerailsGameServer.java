@@ -3,21 +3,7 @@
  */
 package freerails.network;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-
-import freerails.controller.ClientControlInterface;
-import freerails.controller.Message2Client;
-import freerails.controller.Message2Server;
-import freerails.controller.MessageStatus;
-import freerails.controller.PreMove;
-import freerails.controller.PreMoveStatus;
-import freerails.controller.ServerControlInterface;
+import freerails.controller.*;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -26,23 +12,30 @@ import freerails.world.common.ImStringList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.World;
-
 import org.apache.log4j.Logger;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * When executed by a thread, this class does the following: reads and executes
  * moves and commands received from connected clients; sends moves and commands
  * to connected clients.
- * 
+ *
+ * @author Luke
  * @see InetConnectionAccepter
  * @see Connection2Client
- * 
- * @author Luke
- * 
  */
 public class FreerailsGameServer implements ServerControlInterface, GameServer,
         Runnable {
-    /** Used as a property name for property change events. */
+    /**
+     * Used as a property name for property change events.
+     */
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
 
     private static final Logger logger = Logger
@@ -400,9 +393,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         send2AllExcept(null, message);
     }
 
-    /** Sends the specified message to all connections except the specified one. */
+    /**
+     * Sends the specified message to all connections except the specified one.
+     */
     private void send2AllExcept(Connection2Client dontSend2,
-            FreerailsSerializable message) {
+                                FreerailsSerializable message) {
         Iterator<NameAndPassword> it = acceptedConnections.keySet().iterator();
 
         while (it.hasNext()) {

@@ -7,11 +7,9 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.World;
 
 /**
- * 
  * Changes the game speed item on the world object.
- * 
+ *
  * @author Jan Tozicka
- * 
  */
 public class ChangeGameSpeedMove implements Move {
     private static final long serialVersionUID = 3545794368956086071L;
@@ -21,7 +19,7 @@ public class ChangeGameSpeedMove implements Move {
     private final GameSpeed newSpeed;
 
     public static ChangeGameSpeedMove getMove(ReadOnlyWorld w,
-            GameSpeed newGameSpeed) {
+                                              GameSpeed newGameSpeed) {
         return new ChangeGameSpeedMove((GameSpeed) w.get(ITEM.GAME_SPEED),
                 newGameSpeed);
     }

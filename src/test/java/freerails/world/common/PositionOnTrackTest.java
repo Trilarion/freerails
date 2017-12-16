@@ -4,14 +4,13 @@ import junit.framework.TestCase;
 
 /**
  * Junit test for PositionOnTrack.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class PositionOnTrackTest extends TestCase {
     /**
      * Constructor for PositionOnTrackTest.
-     * 
+     *
      * @param arg0
      */
     public PositionOnTrackTest(String arg0) {

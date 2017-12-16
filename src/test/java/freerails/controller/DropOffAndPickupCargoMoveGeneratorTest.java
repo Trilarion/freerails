@@ -8,27 +8,22 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
+import freerails.world.cargo.CargoType.Categories;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.cargo.CargoType.Categories;
 import freerails.world.common.ImInts;
 import freerails.world.player.Player;
 import freerails.world.station.Demand4Cargo;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
+import freerails.world.top.*;
 import freerails.world.train.TrainModel;
 import junit.framework.TestCase;
 
 /**
  * This Junit TestCase tests whether a train picks up and drops off the right
  * cargo at a station.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private World w;
@@ -77,7 +72,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.TRAINS, train);
     }
 
-    /** Tests picking up cargo from a station. */
+    /**
+     * Tests picking up cargo from a station.
+     */
     public void testPickUpCargo1() {
         // Set up the variables for this test.
         MutableCargoBundle cargoBundleWith2CarloadsOfCargo0 = new MutableCargoBundle();
@@ -182,8 +179,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // Set the station to demand cargo type 0.
         StationModel station = (StationModel) w.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
-        Demand4Cargo demand = new Demand4Cargo(new boolean[] { true, false,
-                false, false });
+        Demand4Cargo demand = new Demand4Cargo(new boolean[]{true, false,
+                false, false});
         station = new StationModel(station, demand);
         w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
 
@@ -283,8 +280,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // Set station to demand cargo 0.
         StationModel station = (StationModel) w.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
-        Demand4Cargo demand = new Demand4Cargo(new boolean[] { true, false,
-                false, false });
+        Demand4Cargo demand = new Demand4Cargo(new boolean[]{true, false,
+                false, false});
         station = new StationModel(station, demand);
         w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
 

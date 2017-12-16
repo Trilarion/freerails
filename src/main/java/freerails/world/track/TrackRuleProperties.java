@@ -5,7 +5,7 @@ import freerails.world.common.Money;
 
 /**
  * Stores some of the properties of a track type.
- * 
+ *
  * @author Luke
  */
 final public class TrackRuleProperties implements FreerailsSerializable {
@@ -28,8 +28,8 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     private final String typeName;
 
     public TrackRuleProperties(int rgb, boolean doubleTrack, String name,
-            TrackRule.TrackCategories c, int radius, int price,
-            int maintenance, int fixedCost) {
+                               TrackRule.TrackCategories c, int radius, int price,
+                               int maintenance, int fixedCost) {
         stationRadius = radius;
         rGBvalue = rgb;
         enableDoubleTrack = doubleTrack;

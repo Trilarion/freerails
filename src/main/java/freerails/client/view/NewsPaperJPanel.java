@@ -5,24 +5,18 @@
  */
 package freerails.client.view;
 
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Transparency;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * A JPanel that displays a newspaper headline.
- * 
+ *
  * @author lindsal8
- * 
  */
 public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     private static final long serialVersionUID = 3258410638366946868L;
@@ -42,7 +36,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
                 "/freerails/data/newspaper.png"))).getImage();
 
         pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage
-                .getWidth(null), tempImage.getHeight(null),
+                        .getWidth(null), tempImage.getHeight(null),
                 Transparency.BITMASK);
 
         Graphics g = pieceOfNewspaper.getGraphics();

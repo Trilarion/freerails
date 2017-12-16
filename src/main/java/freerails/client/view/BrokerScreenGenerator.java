@@ -6,10 +6,6 @@
 
 package freerails.client.view;
 
-import static freerails.world.accounts.Transaction.Category.BOND;
-
-import java.text.DecimalFormat;
-
 import freerails.controller.FinancialDataGatherer;
 import freerails.controller.StockPriceCalculator;
 import freerails.controller.StockPriceCalculator.StockPrice;
@@ -21,8 +17,11 @@ import freerails.world.top.ITEM;
 import freerails.world.top.ItemsTransactionAggregator;
 import freerails.world.top.ReadOnlyWorld;
 
+import java.text.DecimalFormat;
+
+import static freerails.world.accounts.Transaction.Category.BOND;
+
 /**
- * 
  * @author smackay
  * @author Luke
  */
@@ -53,7 +52,9 @@ public class BrokerScreenGenerator {
 
     public String othersRRsStockRows;
 
-    /** Creates a new instance of BrokerScreenGenerator */
+    /**
+     * Creates a new instance of BrokerScreenGenerator
+     */
     public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         dataGatherer = new FinancialDataGatherer(w, principal);
 

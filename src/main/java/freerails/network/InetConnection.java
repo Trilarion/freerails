@@ -3,22 +3,16 @@
  */
 package freerails.network;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-
 import freerails.world.common.FreerailsSerializable;
+
+import java.io.*;
+import java.net.Socket;
 
 /**
  * Provides methods send objects over the Internet, and connect and disconnect
  * gracefully.
- * 
+ *
  * @author Luke
- * 
  */
 class InetConnection {
     private final Socket socket;

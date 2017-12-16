@@ -9,9 +9,8 @@ import freerails.world.player.FreerailsPrincipal;
 /**
  * Classes that need to be notified of changes to the lists on the world object
  * should implement this interface.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public interface WorldListListener {
     void listUpdated(KEY key, int index, FreerailsPrincipal principal);

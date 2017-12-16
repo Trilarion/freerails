@@ -4,39 +4,27 @@
  */
 package freerails.controller;
 
-import static freerails.world.common.Step.TILE_DIAMETER;
-
-import java.awt.Rectangle;
-import java.util.HashSet;
-
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.track.TrackSection;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.PathOnTiles;
-import freerails.world.train.SpeedTimeAndStatus;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainMotion;
-import freerails.world.train.TrainOrdersModel;
-import freerails.world.train.TrainPositionOnMap;
-import freerails.world.train.WagonType;
+import freerails.world.train.*;
 import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
+
+import java.awt.*;
+import java.util.HashSet;
+
+import static freerails.world.common.Step.TILE_DIAMETER;
 
 /**
  * Provides convenience methods to access the properties of a train from the
  * world object.
- * 
+ *
  * @author Luke
- * 
  */
 public class TrainAccessor {
 
@@ -47,7 +35,7 @@ public class TrainAccessor {
     private final int id;
 
     public TrainAccessor(final ReadOnlyWorld w, final FreerailsPrincipal p,
-            final int id) {
+                         final int id) {
         this.w = w;
         this.p = p;
         this.id = id;
@@ -64,8 +52,7 @@ public class TrainAccessor {
 
     /**
      * @return the id of the station the train is currently at, or -1 if no
-     *         current station.
-     * 
+     * current station.
      */
     public int getStationId(double time) {
 
@@ -151,7 +138,6 @@ public class TrainAccessor {
      * <li>The current train order specifies a consist that matches the train's
      * current consist.</li>
      * </ol>
-     * 
      */
     public boolean keepWaiting() {
         double time = w.currentTime().getTicks();
@@ -173,7 +159,7 @@ public class TrainAccessor {
 
     /**
      * @return the location of the station the train is currently heading
-     *         towards.
+     * towards.
      */
     public ImPoint getTarget() {
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
@@ -216,7 +202,9 @@ public class TrainAccessor {
         return speed != 0;
     }
 
-    /** The space available on the train measured in cargo units. */
+    /**
+     * The space available on the train measured in cargo units.
+     */
     public ImInts spaceAvailable() {
 
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
@@ -227,7 +215,7 @@ public class TrainAccessor {
     }
 
     public static ImInts spaceAvailable2(ReadOnlyWorld row,
-            ImmutableCargoBundle onTrain, ImInts consist) {
+                                         ImmutableCargoBundle onTrain, ImInts consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = row.size(SKEY.CARGO_TYPES);

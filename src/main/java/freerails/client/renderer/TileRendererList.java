@@ -4,7 +4,7 @@ import freerails.world.top.ReadOnlyWorld;
 
 /**
  * A list of TileRenderers.
- * 
+ *
  * @author Luke Lindsay 09 October 2001
  */
 public interface TileRendererList {

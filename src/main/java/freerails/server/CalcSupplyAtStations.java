@@ -13,7 +13,7 @@ import freerails.world.top.World;
 /**
  * This class loops through all of the known stations and recalculates the
  * cargoes that they supply, demand, and convert.
- * 
+ *
  * @author Scott Bennett Created: 19th May 2003
  */
 public class CalcSupplyAtStations {
@@ -22,12 +22,9 @@ public class CalcSupplyAtStations {
     private final MoveReceiver moveReceiver;
 
     /**
-     * 
      * Constructor, currently called from GUIComponentFactory.
-     * 
-     * @param world
-     *            The World object that contains all about the game world
-     * 
+     *
+     * @param world The World object that contains all about the game world
      */
     public CalcSupplyAtStations(World world, MoveReceiver mr) {
         this.w = world;
@@ -35,9 +32,7 @@ public class CalcSupplyAtStations {
     }
 
     /**
-     * 
      * Loop through each known station, call calculations method.
-     * 
      */
     public void doProcessing() {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {

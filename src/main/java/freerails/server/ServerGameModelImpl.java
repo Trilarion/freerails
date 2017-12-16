@@ -4,10 +4,6 @@
  */
 package freerails.server;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Vector;
-
 import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
 import freerails.network.MoveReceiver;
@@ -20,11 +16,14 @@ import freerails.world.top.ITEM;
 import freerails.world.top.World;
 import freerails.world.top.WorldDiffs;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.Vector;
+
 /**
  * A ServerGameModel that contains the automations used in the actual game.
- * 
+ *
  * @author Luke
- * 
  */
 public class ServerGameModelImpl implements ServerGameModel {
     private static final long serialVersionUID = 3978144352788820021L;
@@ -62,7 +61,9 @@ public class ServerGameModelImpl implements ServerGameModel {
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
-    /** This is called on the last tick of each year. */
+    /**
+     * This is called on the last tick of each year.
+     */
     private void yearEnd() {
         TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(
                 moveExecuter);
@@ -86,7 +87,9 @@ public class ServerGameModelImpl implements ServerGameModel {
         moveExecuter.processMove(move);
     }
 
-    /** This is called at the start of each new month. */
+    /**
+     * This is called at the start of each new month.
+     */
     private void monthEnd() {
         calcSupplyAtStations.doProcessing();
 
@@ -99,7 +102,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     * 
+     *
      */
     public synchronized void update() {
         long frameStartTime = System.currentTimeMillis();

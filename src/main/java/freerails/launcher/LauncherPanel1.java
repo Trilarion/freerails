@@ -6,12 +6,12 @@
 
 package freerails.launcher;
 
-import javax.swing.ButtonModel;
+import javax.swing.*;
 
 /**
  * The first launcher panel, lets you choose 'single player', 'start network
  * game' etc.
- * 
+ *
  * @author rtuck99@users.sourceforge.net
  */
 final class LauncherPanel1 extends javax.swing.JPanel {
@@ -40,9 +40,9 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     /*
      * private void validateSettings() { boolean isValid = false; String
      * infoText = null;
-     * 
+     *
      * switch (getMode()) {
-     * 
+     *
      * case MODE_SINGLE_PLAYER: isValid = true; break; case
      * MODE_START_NETWORK_GAME: case MODE_SERVER_ONLY: isValid = true; break;
      * case MODE_JOIN_NETWORK_GAME: isValid = true; break; }

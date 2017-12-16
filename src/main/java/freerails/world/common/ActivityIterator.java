@@ -12,10 +12,14 @@ public interface ActivityIterator {
 
     void nextActivity() throws NoSuchElementException;
 
-    /** Returns the time the current activity starts. */
+    /**
+     * Returns the time the current activity starts.
+     */
     double getStartTime();
 
-    /** Returns the time the current activity ends. */
+    /**
+     * Returns the time the current activity ends.
+     */
     double getFinishTime();
 
     double getDuration();

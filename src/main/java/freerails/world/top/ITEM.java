@@ -1,9 +1,9 @@
 package freerails.world.top;
 
-import java.io.ObjectStreamException;
-
 import freerails.util.Utils;
 import freerails.world.common.FreerailsSerializable;
+
+import java.io.ObjectStreamException;
 
 /**
  * <p>
@@ -11,19 +11,21 @@ import freerails.world.common.FreerailsSerializable;
  * be one instance in the game world in the game world (for example, the current
  * time).
  * </P>
- * 
+ * <p>
  * <p>
  * It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
  * </p>
- * 
+ *
  * @author Luke
  */
 @freerails.util.InstanceControlled
 public class ITEM implements FreerailsSerializable {
     private static final long serialVersionUID = 3257846593180151859L;
 
-    /** Maps key numbers to KEYs. */
+    /**
+     * Maps key numbers to KEYs.
+     */
     private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
 
     // START OF KEYS

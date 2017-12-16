@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 /**
  * Represents an amount of Money.
- * 
+ *
  * @author Luke
  */
 final public class Money implements FreerailsSerializable {

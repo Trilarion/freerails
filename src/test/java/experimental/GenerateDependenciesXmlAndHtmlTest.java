@@ -7,9 +7,8 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for GenerateDependenciesXmlAndHtml.
- * 
+ *
  * @author Luke
- * 
  */
 public class GenerateDependenciesXmlAndHtmlTest extends TestCase {
     public void testIsPackageNameOk() {

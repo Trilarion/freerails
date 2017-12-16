@@ -5,18 +5,6 @@
  */
 package freerails.client.view;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.IOException;
-
-import javax.swing.Action;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.common.ImInts;
@@ -29,9 +17,13 @@ import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+
 /**
  * This JPanel displays an engine and a number of wagons.
- * 
+ *
  * @author Luke Lindsay
  */
 public class TrainListCellRenderer extends JPanel implements View,
@@ -168,7 +160,7 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
-            int index, boolean isSelected, boolean cellHasFocus) {
+                                                  int index, boolean isSelected, boolean cellHasFocus) {
 
         int trainID = NonNullElements
                 .row2index(w, KEY.TRAINS, principal, index);

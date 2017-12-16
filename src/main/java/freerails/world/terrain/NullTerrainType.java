@@ -4,11 +4,11 @@
  */
 package freerails.world.terrain;
 
-import java.io.ObjectStreamException;
-
 import freerails.util.InstanceControlled;
 import freerails.world.common.ImList;
 import freerails.world.common.Money;
+
+import java.io.ObjectStreamException;
 
 @InstanceControlled
 public class NullTerrainType implements TerrainType {

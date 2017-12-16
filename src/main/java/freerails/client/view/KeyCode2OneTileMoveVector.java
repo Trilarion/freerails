@@ -1,16 +1,15 @@
 package freerails.client.view;
 
+import freerails.world.common.Step;
+
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-import freerails.world.common.Step;
-
 /**
  * Maps keys to OneTileMoveVectors.
- * 
+ *
  * @author Luke
- * 
  */
 public class KeyCode2OneTileMoveVector {
 
@@ -40,7 +39,9 @@ public class KeyCode2OneTileMoveVector {
 
     }
 
-    /** Returns the OneTileMoveVector that is mapped to the specified keycode. */
+    /**
+     * Returns the OneTileMoveVector that is mapped to the specified keycode.
+     */
     public static Step getInstanceMappedToKey(int keycode)
             throws NoSuchElementException {
         Integer integer = new Integer(keycode);

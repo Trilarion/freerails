@@ -7,7 +7,6 @@
 package freerails.move;
 
 /**
- * 
  * @author mduarte-leon
  */
 public class TrainCrashException extends Exception {

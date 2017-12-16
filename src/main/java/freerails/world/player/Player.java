@@ -1,12 +1,12 @@
 package freerails.world.player;
 
+import freerails.world.common.FreerailsSerializable;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-
-import freerails.world.common.FreerailsSerializable;
 
 /**
  * Represents a player within the game. The player model is such that a user can
@@ -15,19 +15,21 @@ import freerails.world.common.FreerailsSerializable;
  * still active. The server can then save the list of players and be stopped and
  * restarted again, the clients can then authenticate themselves to the server
  * and continue their sessions where they left off.
- * 
+ * <p>
  * XXX the player is only authenticated when the connection is opened, and
  * subsequent exchanges are not authenticated.
- * 
+ * <p>
  * TODO implement a more complete authentication system using certificates
  * rather than public keys.
- * 
+ *
  * @author rtuck99@users.sourceforge.net
  */
 public class Player implements FreerailsSerializable {
     private static final long serialVersionUID = 1;
 
-    /** A FreerailsPrincipal that is not a player. */
+    /**
+     * A FreerailsPrincipal that is not a player.
+     */
     private static class WorldPrincipal extends FreerailsPrincipal {
         private static final long serialVersionUID = 1;
 
@@ -100,7 +102,6 @@ public class Player implements FreerailsSerializable {
     /**
      * Used by the server to generate a player with a particular name and public
      * key.
-     * 
      */
     public Player(String name, int id) {
         this.name = name;

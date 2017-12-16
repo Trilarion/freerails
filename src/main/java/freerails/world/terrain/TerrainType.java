@@ -6,8 +6,7 @@ import freerails.world.common.Money;
 
 /**
  * Defines the methods to access the properties of a type of terrains.
- * 
- * 
+ *
  * @author Luke
  */
 public interface TerrainType extends FreerailsSerializable {

@@ -1,9 +1,5 @@
 package freerails.controller;
 
-import java.awt.Point;
-import java.io.Serializable;
-import java.util.NoSuchElementException;
-
 import freerails.world.common.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
@@ -13,10 +9,14 @@ import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 
+import java.awt.*;
+import java.io.Serializable;
+import java.util.NoSuchElementException;
+
 /**
  * GraphExplorer that explorers track, the ints it returns are encoded
  * PositionOnTrack objects.
- * 
+ *
  * @author Luke
  */
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
@@ -133,14 +133,13 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
+     * @param p location of track to consider.
      * @return an array of PositionOnTrack objects describing the set of
-     *         possible orientations at this position (heading towards the
-     *         center of the tile)
-     * @param p
-     *            location of track to consider.
+     * possible orientations at this position (heading towards the
+     * center of the tile)
      */
     public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
-            ImPoint p) {
+                                                         ImPoint p) {
         TrackPiece tp = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         Step[] vectors = Step.getList();

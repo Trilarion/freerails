@@ -164,7 +164,9 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         throw new IllegalStateException(String.valueOf(t));
     }
 
-    /** Used to enable 2 values to be returned from the method getIndex(double t) */
+    /**
+     * Used to enable 2 values to be returned from the method getIndex(double t)
+     */
     private static class TandI {
         final double offset;
 

@@ -10,7 +10,7 @@ import freerails.world.common.Money;
 
 /**
  * Represents a type of terrain.
- * 
+ *
  * @author Luke Lindsay 16 August 2001
  */
 final public class TileTypeImpl implements TerrainType {
@@ -83,9 +83,9 @@ final public class TileTypeImpl implements TerrainType {
     private final Money tileBuildCost;
 
     public TileTypeImpl(int rgb, TerrainType.Category terrainCategory,
-            String terrainType, int rightOfWay, Production[] production,
-            Consumption[] consumption, Conversion[] conversion,
-            int tileBuildCost) {
+                        String terrainType, int rightOfWay, Production[] production,
+                        Consumption[] consumption, Conversion[] conversion,
+                        int tileBuildCost) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
@@ -132,7 +132,9 @@ final public class TileTypeImpl implements TerrainType {
         return conversion;
     }
 
-    /** Returns the name, replacing any underscores with spaces. */
+    /**
+     * Returns the name, replacing any underscores with spaces.
+     */
     public String getDisplayName() {
         return terrainType.replace('_', ' ');
     }

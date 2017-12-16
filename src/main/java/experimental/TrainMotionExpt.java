@@ -1,60 +1,32 @@
 package experimental;
 
-import static freerails.world.common.Step.EAST;
-import static freerails.world.common.Step.NORTH;
-import static freerails.world.common.Step.NORTH_EAST;
-import static freerails.world.common.Step.NORTH_WEST;
-import static freerails.world.common.Step.SOUTH;
-import static freerails.world.common.Step.SOUTH_EAST;
-import static freerails.world.common.Step.SOUTH_WEST;
-import static freerails.world.common.Step.WEST;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.Iterator;
-import java.util.Random;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.client.top.GameLoop;
-import freerails.controller.AddTrainPreMove;
-import freerails.controller.ModelRoot;
-import freerails.controller.MoveExecutor;
-import freerails.controller.MoveTrainPreMove;
-import freerails.controller.OccupiedTracks;
-import freerails.controller.ScreenHandler;
-import freerails.controller.SimpleMoveExecutor;
-import freerails.controller.TrackMoveProducer;
+import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImPoint;
-import freerails.world.common.IntLine;
-import freerails.world.common.Step;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.World;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackType;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.PathOnTiles;
-import freerails.world.train.TrainMotion;
-import freerails.world.train.TrainOrdersModel;
-import freerails.world.train.TrainPositionOnMap;
+import freerails.world.train.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Iterator;
+import java.util.Random;
+
+import static freerails.world.common.Step.*;
 
 /**
  * This class is a visual test for the train movement code.
- * 
+ * <p>
  * TODO: Update the trains position when necessary. Make the train stop at
  * intevals, and slowly accelerate.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class TrainMotionExpt extends JComponent {
 
@@ -177,8 +149,8 @@ public class TrainMotionExpt extends JComponent {
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        Step[] trackPath = { EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
-                NORTH_WEST, NORTH, NORTH_EAST };
+        Step[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
+                NORTH_WEST, NORTH, NORTH_EAST};
         ImPoint from = new ImPoint(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
         if (!ms.ok)

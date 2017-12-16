@@ -8,9 +8,8 @@ import freerails.world.common.Money;
 
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class AddItemTransaction implements Transaction {
 
@@ -18,17 +17,23 @@ public class AddItemTransaction implements Transaction {
 
     private final Money amount;
 
-    /** For example track. */
+    /**
+     * For example track.
+     */
     private final Category category;
 
-    /** For example, 4 tiles. */
+    /**
+     * For example, 4 tiles.
+     */
     private final int quantity;
 
-    /** For example, standard track. */
+    /**
+     * For example, standard track.
+     */
     private final int type;
 
     public AddItemTransaction(Category category, int type, int quantity,
-            Money amount) {
+                              Money amount) {
         this.category = category;
         this.type = type;
         this.quantity = quantity;

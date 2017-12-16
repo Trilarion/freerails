@@ -6,13 +6,6 @@
 
 package freerails.client.view;
 
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.net.URL;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.config.ClientConfig;
 import freerails.controller.FinancialDataGatherer;
@@ -28,8 +21,12 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.ReadOnlyWorld;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.net.URL;
+
 /**
- * 
  * @author smackay
  * @author Luke
  */
@@ -49,7 +46,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
     private Action[] buyStock, sellStock;
 
-    /** Creates a new instance of BrokerScreenHtmlJPanel */
+    /**
+     * Creates a new instance of BrokerScreenHtmlJPanel
+     */
     public BrokerScreenHtmlJFrame() {
         super();
 
@@ -88,7 +87,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
     @Override
     public void setup(final ModelRoot modelRoot, RenderersRoot vl,
-            Action closeAction) {
+                      Action closeAction) {
         super.setup(modelRoot, vl, closeAction);
         financialDataGatherer = new FinancialDataGatherer(modelRoot.getWorld(),
                 modelRoot.getPrincipal());

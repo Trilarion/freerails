@@ -6,33 +6,22 @@
 
 package freerails.client.view;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Transparency;
-import java.awt.event.KeyEvent;
-import java.net.URL;
-import java.util.ArrayList;
-
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.cargo.CargoType;
 import freerails.world.top.SKEY;
 import freerails.world.train.TrainModel;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * This JPanel lets the user add wagons to a train.
- * 
+ *
  * @author lindsal8
- * 
  */
 public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
@@ -59,7 +48,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         Image tempImage = (new javax.swing.ImageIcon(url)).getImage();
 
         stationView = defaultConfiguration.createCompatibleImage(tempImage
-                .getWidth(null), tempImage.getHeight(null),
+                        .getWidth(null), tempImage.getHeight(null),
                 Transparency.BITMASK);
 
         Graphics g = stationView.getGraphics();
@@ -292,25 +281,25 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         }
 
         public Component getListCellRendererComponent(JList list, Object value, /*
-                                                                                 * value
-                                                                                 * to
-                                                                                 * display
-                                                                                 */
-        int index, /* cell index */
-        boolean isSelected, /* is the cell selected */
-        boolean cellHasFocus) /* the list and the cell have the focus */{
+         * value
+         * to
+         * display
+         */
+                                                      int index, /* cell index */
+                                                      boolean isSelected, /* is the cell selected */
+                                                      boolean cellHasFocus) /* the list and the cell have the focus */ {
             if (index >= 0 && index < labels.length) {
                 CargoType cargoType = (CargoType) value;
                 String text = "<html><body>"
                         + (isSelected ? "<strong>" : "")
                         + cargoType.getDisplayName()
                         + (isSelected ? "</strong>"
-                                : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
-                                                             * padding to stop
-                                                             * word wrap due to
-                                                             * greater wodth of
-                                                             * strong font
-                                                             */) + "</body></html>";
+                        : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
+                 * padding to stop
+                 * word wrap due to
+                 * greater wodth of
+                 * strong font
+                 */) + "</body></html>";
                 ((JLabel) labels[index]).setText(text);
                 return labels[index];
             }

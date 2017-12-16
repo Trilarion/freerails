@@ -6,14 +6,6 @@
 
 package freerails.client.view;
 
-import java.awt.Graphics;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.NoSuchElementException;
-
-import javax.swing.Action;
-import javax.swing.JPanel;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.cargo.CargoType;
@@ -22,20 +14,20 @@ import freerails.world.common.FreerailsSerializable;
 import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldIterator;
-import freerails.world.top.WorldListListener;
+import freerails.world.top.*;
 import freerails.world.track.FreerailsTile;
 import freerails.world.train.WagonType;
-
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.NoSuchElementException;
 
 /**
  * This JPanel displays the supply and demand at a station.
- * 
+ *
  * @author Luke
  */
 public class StationInfoJPanel extends JPanel implements View,
@@ -211,33 +203,33 @@ public class StationInfoJPanel extends JPanel implements View,
             ImmutableCargoBundle cargoWaiting = (ImmutableCargoBundle) w.get(
                     modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station
                             .getCargoBundleID());
-            
-            StringBuilder table1 = new StringBuilder ();
-            
+
+            StringBuilder table1 = new StringBuilder();
+
             table1.append("<html>");
-            
+
             table1.append("<h2 align=\"center\">");
             table1.append(station.getStationName());
             table1.append(" (");
             table1.append(stationTypeName);
             table1.append(")</h2>");
-            
+
             table1.append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>");
-            
+
             for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
 
                 // get the values
                 CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
                 String demanded = (station.getDemand().isCargoDemanded(i) ? "Yes"
                         : "No");
-                
+
                 int amountSupplied = station.getSupply().getSupply(i);
                 boolean isSupplied = (amountSupplied > 0);
                 String supply = isSupplied ? String
                         .valueOf(amountSupplied
                                 / WagonType.UNITS_OF_CARGO_PER_WAGON)
                         : "&nbsp;";
-                        
+
                 int amountWaiting = cargoWaiting.getAmount(i);
                 String waiting = (amountWaiting > 0) ? String
                         .valueOf(amountWaiting
@@ -253,7 +245,7 @@ public class StationInfoJPanel extends JPanel implements View,
                     table1.append("<td align=center>").append(waiting).append("</td>");
                     table1.append("</tr>");
                 }
-                
+
             }
             table1.append("</table>");
             table1.append("</html>");

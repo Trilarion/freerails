@@ -1,11 +1,11 @@
 package freerails.world.cargo;
 
-import java.util.Iterator;
-import java.util.SortedMap;
-
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.common.ImInts;
 import freerails.world.common.ImList;
+
+import java.util.Iterator;
+import java.util.SortedMap;
 
 /**
  * This class represents a bundle of cargo made up of quantities of cargo from
@@ -35,9 +35,8 @@ import freerails.world.common.ImList;
  * <td>10</td>
  * </tr>
  * </table>
- * 
+ *
  * @author Luke
- * 
  */
 public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable {
     public static final ImmutableCargoBundle EMPTY_BUNDLE = new ImmutableCargoBundle();

@@ -4,11 +4,11 @@
  */
 package freerails.world.common;
 
+import freerails.util.Immutable;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-
-import freerails.util.Immutable;
 
 @Immutable
 public class ImHashSet<E extends FreerailsSerializable> implements

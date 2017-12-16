@@ -7,9 +7,8 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for CargoAtStationsGenerator.
- * 
+ *
  * @author Luke
- * 
  */
 public class CargoAtStationsGeneratorTest extends TestCase {
     public void testCalculateAmountToAdd() {

@@ -6,28 +6,21 @@
 
 package freerails.client.view;
 
-import java.awt.Color;
-
-import javax.swing.Action;
-import javax.swing.JLabel;
-import javax.swing.ListCellRenderer;
-
 import freerails.client.renderer.RenderersRoot;
-import freerails.client.view.TrainOrdersListModel.TrainOrdersListElement;
 import freerails.controller.ModelRoot;
 import freerails.util.LRUCache;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
 import freerails.world.top.ITEM;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
-import freerails.world.train.TrainOrdersModel;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * 
  * @author cphillips
  */
 public class TrainSummaryJPanel extends javax.swing.JPanel implements
@@ -40,7 +33,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
     private FreerailsPrincipal principal;
 
     private TrainSummeryModel model;
-    
+
     private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.background");
 
@@ -51,7 +44,9 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 
     private TrainListCellRenderer trainListCellRenderer1;
 
-    /** Creates new form TrainSummaryJPanel */
+    /**
+     * Creates new form TrainSummaryJPanel
+     */
     public TrainSummaryJPanel() {
         jLabels = new LRUCache<String, JLabel>(1000);
         model = new TrainSummeryModel();
@@ -75,9 +70,9 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         Money m = model.findTrainIncome(trainNum);
         return "$" + m.toString();
     }
-    
-    LRUCache<String , JLabel> jLabels;
-    
+
+    LRUCache<String, JLabel> jLabels;
+
     public java.awt.Component getListCellRendererComponent(
             javax.swing.JList list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {
@@ -85,7 +80,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         int trainID = NonNullElements
                 .row2index(w, KEY.TRAINS, principal, index);
         String trainNumText = "#" + (trainID + 1);
-        
+
         trainNumLabel.setText(trainNumText);
         headingLabel.setText(findStationName(trainID));
         trainMaintenanceCostLabel.setText(findMaintenanceCost());

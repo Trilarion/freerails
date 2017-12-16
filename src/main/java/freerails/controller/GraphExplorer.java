@@ -4,15 +4,17 @@ package freerails.controller;
  * This interface lets the caller explorer a graph while hiding the way the
  * graph is stored. Vertices are packed into single ints to avoid the cost of
  * object creation and garbage collection.
- * 
+ * <p>
  * 24-Nov-2002
- * 
+ *
  * @author Luke Lindsay
  */
 public interface GraphExplorer {
     void setPosition(int vertex);
 
-    /** Return the current edge. */
+    /**
+     * Return the current edge.
+     */
     int getPosition();
 
     /**
@@ -27,7 +29,9 @@ public interface GraphExplorer {
      */
     int getVertexConnectedByEdge();
 
-    /** Returns the cost of the current edge. */
+    /**
+     * Returns the cost of the current edge.
+     */
     int getEdgeCost();
 
     boolean hasNextEdge();

@@ -9,7 +9,7 @@ import freerails.world.common.Money;
 /**
  * A transaction that occurs when a new company is founded or when a company
  * issues additional shares.
- * 
+ *
  * @author Luke
  * @author smackay
  */
@@ -18,7 +18,7 @@ public class StockTransaction extends AddItemTransaction {
     public static final int STOCK_BUNDLE_SIZE = 10000;
 
     private StockTransaction(Category category, int playerId, int quantity,
-            Money amount) {
+                             Money amount) {
 
         super(category, playerId, quantity, amount);
         if (playerId < 0)
@@ -26,7 +26,7 @@ public class StockTransaction extends AddItemTransaction {
     }
 
     public static StockTransaction issueStock(int playerId, int quantity,
-            Money pricePerShare) {
+                                              Money pricePerShare) {
         // Issue Stock of the Player
         long temp = (pricePerShare.getAmount() * quantity);
         temp = temp - temp - temp;
@@ -36,7 +36,7 @@ public class StockTransaction extends AddItemTransaction {
     }
 
     public static StockTransaction buyOrSellStock(int playerId, int quantity,
-            Money stockPrice) {
+                                                  Money stockPrice) {
         // Buys another Players Stock, Uses another Category
         Money value = new Money(stockPrice.getAmount() * quantity * -1);
         return new StockTransaction(Transaction.Category.TRANSFER_STOCK,

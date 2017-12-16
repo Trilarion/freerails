@@ -4,16 +4,15 @@
  */
 package freerails.world.common;
 
+import freerails.util.Immutable;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import freerails.util.Immutable;
-
 /**
  * An immutable set.
- * 
+ *
  * @author Luke
- * 
  */
 @Immutable
 public final class ImSet<E extends FreerailsSerializable> implements

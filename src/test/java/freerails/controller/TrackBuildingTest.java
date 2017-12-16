@@ -1,11 +1,5 @@
 package freerails.controller;
 
-import static freerails.world.common.Step.EAST;
-import static freerails.world.common.Step.SOUTH;
-import static freerails.world.common.Step.SOUTH_EAST;
-
-import java.util.Arrays;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
@@ -17,6 +11,10 @@ import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 import junit.framework.TestCase;
+
+import java.util.Arrays;
+
+import static freerails.world.common.Step.*;
 
 public class TrackBuildingTest extends TestCase {
 
@@ -43,7 +41,9 @@ public class TrackBuildingTest extends TestCase {
         bts = BuildTrackStrategy.getDefault(w);
     }
 
-    /** Tests building track from 5,5 to 10,5 */
+    /**
+     * Tests building track from 5,5 to 10,5
+     */
     public void testBuildingStraight() {
 
         ImPoint from = new ImPoint(5, 5);
@@ -79,7 +79,9 @@ public class TrackBuildingTest extends TestCase {
 
     }
 
-    /** Tests building track from 5,5 to 6,5 */
+    /**
+     * Tests building track from 5,5 to 6,5
+     */
     public void testBuildingOneTrackPiece() {
 
         ImPoint from = new ImPoint(5, 5);
@@ -122,12 +124,11 @@ public class TrackBuildingTest extends TestCase {
      * There is a bug where if a section of track has a terminal on the end, you
      * cannot extend the track through the terminal. Instead, the track path
      * finder finds a route that misses out the terminal.
-     * 
      */
     public void testTerminalProblem() {
         try {
             ImPoint from = new ImPoint(5, 5);
-            Step[] path = { EAST, EAST, EAST };
+            Step[] path = {EAST, EAST, EAST};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
@@ -138,7 +139,7 @@ public class TrackBuildingTest extends TestCase {
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);
-            Step[] expectedPath = { EAST, EAST };
+            Step[] expectedPath = {EAST, EAST};
             assertTrue(Arrays.equals(expectedPath, path));
         } catch (PathNotFoundException e) {
             fail();
@@ -150,7 +151,6 @@ public class TrackBuildingTest extends TestCase {
      * going E, then move the curor to the end and attempt to build more double
      * track going SE, the track path finder builds a loop rather than just
      * building track going SE
-     * 
      */
     public void testDoubleTrackProblem() {
         try {
@@ -165,7 +165,7 @@ public class TrackBuildingTest extends TestCase {
             pathFinder.setupSearch(a, b, bts);
             pathFinder.search(-1);
             Step[] path = pathFinder.pathAsVectors();
-            Step[] expectedPath = { EAST };
+            Step[] expectedPath = {EAST};
             assertTrue(Arrays.equals(expectedPath, path));
             MoveStatus ms = producer.buildTrack(a, path);
             assertTrue(ms.ok);
@@ -180,7 +180,7 @@ public class TrackBuildingTest extends TestCase {
             path = pathFinder.pathAsVectors();
             assertEquals(1, path.length);
 
-            expectedPath = new Step[] { SOUTH_EAST };
+            expectedPath = new Step[]{SOUTH_EAST};
             assertTrue(Arrays.equals(expectedPath, path));
         } catch (PathNotFoundException e) {
             fail();
@@ -190,12 +190,11 @@ public class TrackBuildingTest extends TestCase {
     /**
      * There is a bug where if you try to start building track on a 90 degree
      * bend, no track path is found even when one should exist.
-     * 
      */
     public void testStartSearchOnSharpCurve() {
         try {
             ImPoint from = new ImPoint(5, 5);
-            Step[] path = { EAST, SOUTH };
+            Step[] path = {EAST, SOUTH};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
             pathFinder.setupSearch(new ImPoint(6, 5), new ImPoint(6, 7), bts);

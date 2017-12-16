@@ -15,7 +15,7 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
     private final List3D<T> underlyingList;
 
     public List3DDiff(SortedMap<ListKey, Object> diffs, List3D<T> list,
-            Enum listID) {
+                      Enum listID) {
         super(diffs, listID);
         this.underlyingList = list;
     }
@@ -113,7 +113,7 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
 
     public List<T> get(int d1, int d2) {
         List<T> list = new ArrayList<T>();
-        for(int d3 = 0; d3 < sizeD3(d1, d2); d3++) {
+        for (int d3 = 0; d3 < sizeD3(d1, d2); d3++) {
             list.add(get(d1, d2, d3));
         }
         return list;

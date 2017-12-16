@@ -1,20 +1,18 @@
 package freerails.server;
 
-import java.util.Vector;
-
 import freerails.world.terrain.CityModel;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.Vector;
+
 /**
- * 
  * Class to parse an xml file that contains city names and co-ords. Upon reading
  * in the data, its stored in KEY.CITIES.
- * 
+ *
  * @author Scott Bennett Date: 31st March 2003
  */
 public class CitySAXParser extends DefaultHandler {
@@ -38,7 +36,7 @@ public class CitySAXParser extends DefaultHandler {
 
     @Override
     public void startElement(String namespaceURI, String sName, String qName,
-            Attributes attrs) throws SAXException {
+                             Attributes attrs) throws SAXException {
 
         String cityName = null;
         int x = 0;

@@ -5,15 +5,14 @@
  */
 package freerails.server.parser;
 
-import org.apache.log4j.Logger;
-
 import freerails.world.top.WorldImpl;
+import org.apache.log4j.Logger;
 
 /**
  * The main method on this class uses CargoAndTerrainParser to the parse cargo
  * and terrain types xml file - use it to test the parser and xml file work
  * together.
- * 
+ *
  * @author Luke
  */
 public class RunTypesParser {

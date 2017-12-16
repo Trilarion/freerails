@@ -1,23 +1,16 @@
 package freerails.controller;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.DisplayMode;
-import java.awt.Graphics;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-
-import org.apache.log4j.Logger;
-
 /**
  * Handles going into fullscreen mode and setting buffer strategy etc.
- * 
+ *
  * @author Luke
  */
 final public class ScreenHandler {
@@ -40,7 +33,9 @@ final public class ScreenHandler {
 
     private boolean isInUse = false;
 
-    /** Whether the window is minimised. */
+    /**
+     * Whether the window is minimised.
+     */
     private boolean isMinimised = false;
 
     static GraphicsDevice device = GraphicsEnvironment
@@ -88,46 +83,46 @@ final public class ScreenHandler {
 
     public synchronized void apply() {
         switch (mode) {
-        case FULL_SCREEN: {
-            goFullScreen(frame, displayMode);
+            case FULL_SCREEN: {
+                goFullScreen(frame, displayMode);
 
-            break;
-        }
-
-        case WINDOWED_MODE: {
-            // Some of the dialogue boxes do not get layed out properly if they
-            // are smaller than their
-            // minimum size. JFrameMinimumSizeEnforcer increases the size of the
-            // Jframe when its size falls
-            // below the specified size.
-            frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
-
-            frame.setSize(640, 480);
-            frame.setVisible(true);
-
-            break;
-        }
-
-        case FIXED_SIZE_WINDOWED_MODE: {
-            /*
-             * We need to make the frame not displayable before calling
-             * setUndecorated(true) otherwise a
-             * java.awt.IllegalComponentStateException will get thrown.
-             */
-            if (frame.isDisplayable()) {
-                frame.dispose();
+                break;
             }
 
-            frame.setUndecorated(true);
-            frame.setResizable(false);
-            frame.setSize(640, 480);
-            frame.setVisible(true);
+            case WINDOWED_MODE: {
+                // Some of the dialogue boxes do not get layed out properly if they
+                // are smaller than their
+                // minimum size. JFrameMinimumSizeEnforcer increases the size of the
+                // Jframe when its size falls
+                // below the specified size.
+                frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
 
-            break;
-        }
+                frame.setSize(640, 480);
+                frame.setVisible(true);
 
-        default:
-            throw new IllegalArgumentException(String.valueOf(mode));
+                break;
+            }
+
+            case FIXED_SIZE_WINDOWED_MODE: {
+                /*
+                 * We need to make the frame not displayable before calling
+                 * setUndecorated(true) otherwise a
+                 * java.awt.IllegalComponentStateException will get thrown.
+                 */
+                if (frame.isDisplayable()) {
+                    frame.dispose();
+                }
+
+                frame.setUndecorated(true);
+                frame.setResizable(false);
+                frame.setSize(640, 480);
+                frame.setVisible(true);
+
+                break;
+            }
+
+            default:
+                throw new IllegalArgumentException(String.valueOf(mode));
         }
 
         createBufferStrategy();
@@ -198,13 +193,13 @@ final public class ScreenHandler {
             for (int i = 0; i < modes.length; i++) {
                 if (modes[i].getWidth() == BEST_DISPLAY_MODES[x].getWidth()
                         && modes[i].getHeight() == BEST_DISPLAY_MODES[x]
-                                .getHeight()
+                        .getHeight()
                         && modes[i].getBitDepth() == BEST_DISPLAY_MODES[x]
-                                .getBitDepth()) {
+                        .getBitDepth()) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Best display mode is "
                                 + (new MyDisplayMode(BEST_DISPLAY_MODES[x]))
-                                        .toString());
+                                .toString());
                     }
 
                     return BEST_DISPLAY_MODES[x];
@@ -215,11 +210,11 @@ final public class ScreenHandler {
         return null;
     }
 
-    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[] {
+    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{
             new DisplayMode(640, 400, 8, 60),
             new DisplayMode(800, 600, 16, 60),
             new DisplayMode(1024, 768, 8, 60),
-            new DisplayMode(1024, 768, 16, 60), };
+            new DisplayMode(1024, 768, 16, 60),};
 
     public synchronized boolean isMinimised() {
         return isMinimised;

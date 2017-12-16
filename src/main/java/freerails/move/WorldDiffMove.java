@@ -1,13 +1,5 @@
 package freerails.move;
 
-import static freerails.util.ListKey.Type.Element;
-import static freerails.util.ListKey.Type.EndPoint;
-
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import freerails.util.ListKey;
 import freerails.world.accounts.Transaction;
 import freerails.world.common.Activity;
@@ -21,24 +13,32 @@ import freerails.world.top.World;
 import freerails.world.top.WorldDiffs;
 import freerails.world.top.WorldDiffs.LISTID;
 import freerails.world.top.WorldImpl.ActivityAndTime;
-
 import org.apache.log4j.Logger;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static freerails.util.ListKey.Type.Element;
+import static freerails.util.ListKey.Type.EndPoint;
 
 /**
  * A move that makes a number of changes to the map and to the lists.
- * 
+ * <p>
  * WARNING: This class currently only handles the most common cases. A
  * UnsupportedOperationException is thrown if an appropriate move cannot be
  * generated.
- * 
- * 
+ *
  * @author Luke
  */
 public class WorldDiffMove implements Move, MapUpdateMove {
 
     public enum Cause {
         TrainArrives, Other, YearEnd
-    };
+    }
+
+    ;
 
     private final Cause cause;
 
@@ -145,128 +145,128 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
             WorldDiffs.LISTID listId = (LISTID) lkey.getListID();
             switch (listId) {
-            case LISTS: {
-                int playerId = lkey.getIndex()[0];
-                FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
-                        .getPrincipal();
-                KEY k = KEY.getKey(lkey.getIndex()[1]);
-                if (lkey.getType() == Element) {
-                    Move m;
-                    int elementId = lkey.getIndex()[2];
+                case LISTS: {
+                    int playerId = lkey.getIndex()[0];
+                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
+                            .getPrincipal();
+                    KEY k = KEY.getKey(lkey.getIndex()[1]);
+                    if (lkey.getType() == Element) {
+                        Move m;
+                        int elementId = lkey.getIndex()[2];
 
-                    // Are we changing an element?
-                    if (elementId < world.size(fp, k)) {
-                        FreerailsSerializable before = world.get(fp, k,
-                                elementId);
-                        FreerailsSerializable after = worldDiffs.get(fp, k,
-                                elementId);
-                        m = new ChangeItemInListMove(k, elementId, before,
-                                after, fp);
-                    } else {
+                        // Are we changing an element?
+                        if (elementId < world.size(fp, k)) {
+                            FreerailsSerializable before = world.get(fp, k,
+                                    elementId);
+                            FreerailsSerializable after = worldDiffs.get(fp, k,
+                                    elementId);
+                            m = new ChangeItemInListMove(k, elementId, before,
+                                    after, fp);
+                        } else {
 
-                        FreerailsSerializable element = worldDiffs.get(fp, k,
-                                elementId);
-                        m = new AddItemToListMove(k, elementId, element, fp);
-                    }
-                    tempList.add(m);
-
-                } else {
-                    assert (lkey.getType() == EndPoint);
-                    Integer newSize = (Integer) worldDiffs.getDiff(lkey);
-                    int oldSize = world.size(fp, k);
-                    if (newSize < oldSize) {
-                        throw new UnsupportedOperationException();
-                    }
-                }
-                break;
-            }
-
-            case CURRENT_BALANCE:
-                // Do nothing. The transaction moves should take care of
-                // changing
-                // the values of current balance.
-                break;
-            case BANK_ACCOUNTS: {
-                int playerId = lkey.getIndex()[0];
-                FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
-                        .getPrincipal();
-                if (lkey.getType() == Element) {
-                    Move m;
-                    int elementId = lkey.getIndex()[1];
-
-                    // Are we changing an element?
-                    if (elementId < world.getNumberOfTransactions(fp)) {
-                        throw new UnsupportedOperationException();
-                    }
-                    Transaction t = worldDiffs.getTransaction(fp, elementId);
-                    m = new AddTransactionMove(fp, t);
-                    tempList.add(m);
-
-                } else {
-                    assert (lkey.getType() == EndPoint);
-                    Integer newSize = (Integer) worldDiffs.getDiff(lkey);
-                    int oldSize = world.getNumberOfTransactions(fp);
-                    if (newSize < oldSize) {
-                        throw new UnsupportedOperationException();
-                    }
-                }
-                break;
-            }
-            case ACTIVITY_LISTS: {
-                int playerId = lkey.getIndex()[0];
-                FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
-                        .getPrincipal();
-                Object o = worldDiffs.getDiff(lkey);
-                if (logger.isDebugEnabled()) {
-                    logger.debug(lkey.toString() + " --> " + o.toString());
-                }
-
-                switch (lkey.getIndex().length) {
-                case 1: {
-                    assert (lkey.getType() == EndPoint);
-                    // Do nothing. Adding the activities will increase the
-                    // size of the list.
-                    break;
-
-                }
-                case 2:
-                    assert (lkey.getType() == EndPoint);
-                    // Do nothing. Adding the activities will increase the
-                    // size of the list.
-                    break;
-                case 3: {
-                    Move m;
-                    // Do we need to add a new active entity?
-                    int entityId = lkey.getIndex()[1];
-                    ActivityAndTime aat = (ActivityAndTime) worldDiffs
-                            .getDiff(lkey);
-                    Activity act = aat.act;
-                    int activityID = lkey.getIndex()[2];
-                    if (entityId >= world.getNumberOfActiveEntities(fp)
-                            && 0 == activityID) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("AddActiveEntityMove: " + act
-                                    + " entityId=" + entityId);
+                            FreerailsSerializable element = worldDiffs.get(fp, k,
+                                    elementId);
+                            m = new AddItemToListMove(k, elementId, element, fp);
                         }
-                        m = new AddActiveEntityMove(act, entityId, fp);
+                        tempList.add(m);
+
                     } else {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("NextActivityMove: " + act
-                                    + " entityId=" + entityId);
+                        assert (lkey.getType() == EndPoint);
+                        Integer newSize = (Integer) worldDiffs.getDiff(lkey);
+                        int oldSize = world.size(fp, k);
+                        if (newSize < oldSize) {
+                            throw new UnsupportedOperationException();
                         }
-                        m = new NextActivityMove(act, entityId, fp);
                     }
-                    tempList.add(m);
                     break;
+                }
+
+                case CURRENT_BALANCE:
+                    // Do nothing. The transaction moves should take care of
+                    // changing
+                    // the values of current balance.
+                    break;
+                case BANK_ACCOUNTS: {
+                    int playerId = lkey.getIndex()[0];
+                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
+                            .getPrincipal();
+                    if (lkey.getType() == Element) {
+                        Move m;
+                        int elementId = lkey.getIndex()[1];
+
+                        // Are we changing an element?
+                        if (elementId < world.getNumberOfTransactions(fp)) {
+                            throw new UnsupportedOperationException();
+                        }
+                        Transaction t = worldDiffs.getTransaction(fp, elementId);
+                        m = new AddTransactionMove(fp, t);
+                        tempList.add(m);
+
+                    } else {
+                        assert (lkey.getType() == EndPoint);
+                        Integer newSize = (Integer) worldDiffs.getDiff(lkey);
+                        int oldSize = world.getNumberOfTransactions(fp);
+                        if (newSize < oldSize) {
+                            throw new UnsupportedOperationException();
+                        }
+                    }
+                    break;
+                }
+                case ACTIVITY_LISTS: {
+                    int playerId = lkey.getIndex()[0];
+                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
+                            .getPrincipal();
+                    Object o = worldDiffs.getDiff(lkey);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(lkey.toString() + " --> " + o.toString());
+                    }
+
+                    switch (lkey.getIndex().length) {
+                        case 1: {
+                            assert (lkey.getType() == EndPoint);
+                            // Do nothing. Adding the activities will increase the
+                            // size of the list.
+                            break;
+
+                        }
+                        case 2:
+                            assert (lkey.getType() == EndPoint);
+                            // Do nothing. Adding the activities will increase the
+                            // size of the list.
+                            break;
+                        case 3: {
+                            Move m;
+                            // Do we need to add a new active entity?
+                            int entityId = lkey.getIndex()[1];
+                            ActivityAndTime aat = (ActivityAndTime) worldDiffs
+                                    .getDiff(lkey);
+                            Activity act = aat.act;
+                            int activityID = lkey.getIndex()[2];
+                            if (entityId >= world.getNumberOfActiveEntities(fp)
+                                    && 0 == activityID) {
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("AddActiveEntityMove: " + act
+                                            + " entityId=" + entityId);
+                                }
+                                m = new AddActiveEntityMove(act, entityId, fp);
+                            } else {
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("NextActivityMove: " + act
+                                            + " entityId=" + entityId);
+                                }
+                                m = new NextActivityMove(act, entityId, fp);
+                            }
+                            tempList.add(m);
+                            break;
+                        }
+                        default:
+                            throw new UnsupportedOperationException(listId.toString());
+                    }
+                    break;
+
                 }
                 default:
                     throw new UnsupportedOperationException(listId.toString());
-                }
-                break;
-
-            }
-            default:
-                throw new UnsupportedOperationException(listId.toString());
             }
         }
 

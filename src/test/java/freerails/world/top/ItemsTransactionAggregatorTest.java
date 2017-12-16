@@ -4,7 +4,6 @@
  */
 package freerails.world.top;
 
-import static freerails.world.accounts.Transaction.Category.TRACK;
 import freerails.world.accounts.AddItemTransaction;
 import freerails.world.accounts.Transaction;
 import freerails.world.accounts.Transaction.Category;
@@ -12,6 +11,8 @@ import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
+
+import static freerails.world.accounts.Transaction.Category.TRACK;
 
 public class ItemsTransactionAggregatorTest extends TestCase {
 

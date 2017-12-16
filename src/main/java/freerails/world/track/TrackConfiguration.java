@@ -1,18 +1,18 @@
 package freerails.world.track;
 
+import freerails.world.common.FlatTrackTemplate;
+import freerails.world.common.Step;
+
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import freerails.world.common.FlatTrackTemplate;
-import freerails.world.common.Step;
 
 /**
  * An instance of this class represents one of the possible track configurations
  * in a map square - the combinations of directions in which track can be laid.
  * Instances of this class cannot be created and must be obtained via the static
  * methods herein.
- * 
+ *
  * @author Luke
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
@@ -26,7 +26,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
      * @return the superposition of two track templates
      */
     public static TrackConfiguration add(FlatTrackTemplate c,
-            FlatTrackTemplate v) {
+                                         FlatTrackTemplate v) {
         /*
          * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
          * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate | (1 <<
@@ -74,10 +74,10 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 
     /**
      * @return the TrackConfiguration representing the track section c minus the
-     *         track sections represented by v.
+     * track sections represented by v.
      */
     public static TrackConfiguration subtract(FlatTrackTemplate c,
-            FlatTrackTemplate v) {
+                                              FlatTrackTemplate v) {
         /*
          * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
          * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate ^ (1 <<

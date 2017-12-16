@@ -6,10 +6,6 @@
 
 package freerails.client.view;
 
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.world.cargo.CargoType;
 import freerails.world.terrain.Consumption;
@@ -20,9 +16,12 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.train.WagonType;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * This JPanel shows information on a terrain type.
- * 
+ *
  * @author Luke
  */
 public class TerrainInfoJPanel extends javax.swing.JPanel {

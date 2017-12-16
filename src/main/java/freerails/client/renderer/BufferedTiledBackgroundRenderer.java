@@ -5,20 +5,16 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.VolatileImage;
 
 /**
  * This abstract class stores a buffer of the background of the current visible
  * rectangle of the map. Code that is independent of how tiles are represented,
  * e.g. whether they are square or isometric, should go here.
- * 
+ *
  * @author Luke Lindsay 06 October 2001
  * @version 1.0
- * 
  */
 public abstract class BufferedTiledBackgroundRenderer implements
         MapLayerRenderer {
@@ -40,7 +36,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * Used to draw on the backbuffer. It is translated so that to its users, it
      * appears they are drawing on the actual map, not a buffered region of the
      * map.
-     * 
+     * <p>
      * translatedBg equals bg.translate(-bufferRect.x , -bufferRect.y);
      */
     private Graphics translatedBg;
@@ -59,16 +55,14 @@ public abstract class BufferedTiledBackgroundRenderer implements
     /**
      * Updates the backbuffer as necessary, then draws it on to the Graphics
      * object passed.
-     * 
-     * @param outputGraphics
-     *            Once it has been updated, the backbuffer is drawn onto this
-     *            Graphics object.
-     * @param newVisibleRectectangle
-     *            The region of the map that the backbuffer must be updated to
-     *            display.
+     *
+     * @param outputGraphics         Once it has been updated, the backbuffer is drawn onto this
+     *                               Graphics object.
+     * @param newVisibleRectectangle The region of the map that the backbuffer must be updated to
+     *                               display.
      */
     public void paintRect(Graphics outputGraphics,
-            Rectangle newVisibleRectectangle) {
+                          Rectangle newVisibleRectectangle) {
         boolean contentsLost = false;
         do {
             /*
@@ -154,7 +148,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
     }
 
     protected abstract void paintBufferRectangle(int x, int y, int width,
-            int height);
+                                                 int height);
 
     private void scrollbackgroundBuffer(int dx, int dy) {
         int copyWidth = bufferRect.width;

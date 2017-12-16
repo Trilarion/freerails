@@ -4,11 +4,11 @@
  */
 package freerails.move;
 
-import java.awt.Point;
-
 import freerails.server.MapFixtureFactory2;
 import freerails.world.player.Player;
 import freerails.world.terrain.TerrainTile;
+
+import java.awt.*;
 
 public class ChangeTileMoveTest extends AbstractMoveTestCase {
 

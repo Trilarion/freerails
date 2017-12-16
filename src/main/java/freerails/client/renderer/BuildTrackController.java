@@ -1,25 +1,8 @@
 package freerails.client.renderer;
 
-import static freerails.controller.TrackMoveProducer.BuildMode.BUILD_STATION;
-import static freerails.controller.TrackMoveProducer.BuildMode.BUILD_TRACK;
-import static freerails.controller.TrackMoveProducer.BuildMode.IGNORE_TRACK;
-import static freerails.controller.TrackMoveProducer.BuildMode.REMOVE_TRACK;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import freerails.client.common.SoundManager;
 import freerails.config.ClientConfig;
-import freerails.controller.BuildTrackStrategy;
-import freerails.controller.IncrementalPathFinder;
-import freerails.controller.ModelRoot;
-import freerails.controller.PathNotFoundException;
-import freerails.controller.PathOnTrackFinder;
-import freerails.controller.TrackMoveProducer;
-import freerails.controller.TrackPathFinder;
+import freerails.controller.*;
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -35,16 +18,22 @@ import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static freerails.controller.TrackMoveProducer.BuildMode.*;
 
 /**
  * This class provides methods to change the proposed track and save it to the
  * real world.
- * 
+ * <p>
  * TODO freerails.client.renderer is not the most logical place for this class.
- * 
+ *
  * @author MystiqueAgent
  * @author Luke
- * 
  */
 public class BuildTrackController implements GameModel {
 
@@ -81,9 +70,8 @@ public class BuildTrackController implements GameModel {
 
     /**
      * BuildTrackRenderer
-     * 
-     * @param readOnlyWorld
-     *            ReadOnlyWorld
+     *
+     * @param readOnlyWorld ReadOnlyWorld
      */
     public BuildTrackController(ReadOnlyWorld readOnlyWorld, ModelRoot modelRoot) {
         worldDiffs = new WorldDiffs(readOnlyWorld);
@@ -96,7 +84,9 @@ public class BuildTrackController implements GameModel {
         setWorldDiffs(worldDiffs);
     }
 
-    /** Utility method that gets the BuildTrackStrategy from the model root. */
+    /**
+     * Utility method that gets the BuildTrackStrategy from the model root.
+     */
     private BuildTrackStrategy getBts() {
         BuildTrackStrategy btss = (BuildTrackStrategy) modelRoot
                 .getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
@@ -105,7 +95,9 @@ public class BuildTrackController implements GameModel {
         return btss;
     }
 
-    /** Utility method that gets the cursor position from the model root. */
+    /**
+     * Utility method that gets the cursor position from the model root.
+     */
     private ImPoint getCursorPosition() {
         ImPoint point = (ImPoint) modelRoot
                 .getProperty(ModelRoot.Property.CURSOR_POSITION);
@@ -120,7 +112,9 @@ public class BuildTrackController implements GameModel {
         return point;
     }
 
-    /** Hides and cancels any proposed track. */
+    /**
+     * Hides and cancels any proposed track.
+     */
     public void hide() {
         this.setVisible(false);
         setTargetPoint(null);
@@ -130,19 +124,23 @@ public class BuildTrackController implements GameModel {
     /**
      * returns <code>true</code> if the track is being build - it is iff the
      * build track is shown
-     * 
+     *
      * @return boolean
      */
     public boolean isBuilding() {
         return visible;
     }
 
-    /** Returns true if all the track pieces can be successfully built. */
+    /**
+     * Returns true if all the track pieces can be successfully built.
+     */
     public boolean isBuildTrackSuccessful() {
         return isBuildTrackSuccessful;
     }
 
-    /** Moves cursor which causes track to be built on the worldDiff object. */
+    /**
+     * Moves cursor which causes track to be built on the worldDiff object.
+     */
     private void moveCursorMoreTiles(List<ImPoint> track) {
         moveCursorMoreTiles(track, null);
     }
@@ -151,14 +149,12 @@ public class BuildTrackController implements GameModel {
      * uses <code>trackBuilder</code> if not null -- otherwise uses own
      * <code>buildTrack</code> method - that is applied on
      * <code>worldDifferences</code>
-     * 
-     * @param track
-     *            List
-     * @param trackBuilder
-     *            TrackMoveProducer
+     *
+     * @param track        List
+     * @param trackBuilder TrackMoveProducer
      */
     private MoveStatus moveCursorMoreTiles(List<ImPoint> track,
-            TrackMoveProducer trackBuilder) {
+                                           TrackMoveProducer trackBuilder) {
         ImPoint oldPosition = getCursorPosition();
 
         if (!Step.checkValidity(oldPosition, track.get(0))) {
@@ -173,7 +169,7 @@ public class BuildTrackController implements GameModel {
             trackBuilder.setBuildTrackStrategy(getBts());
         }
 
-        for (Iterator<ImPoint> iter = track.iterator(); iter.hasNext();) {
+        for (Iterator<ImPoint> iter = track.iterator(); iter.hasNext(); ) {
             ImPoint point = iter.next();
             LOGGER.debug("point" + point);
             LOGGER.debug("oldPosition" + oldPosition);
@@ -262,7 +258,9 @@ public class BuildTrackController implements GameModel {
         return move.doMove(worldDiffs, principal);
     }
 
-    /** Cancels any proposed track and resets the path finder. */
+    /**
+     * Cancels any proposed track and resets the path finder.
+     */
     private void reset() {
         worldDiffs.reset();
         path4newTrackFinder.abandonSearch();
@@ -277,7 +275,9 @@ public class BuildTrackController implements GameModel {
         return pathOnExistingTrackFinder.getStatus();
     }
 
-    /** Utility method that sets the CURSOR_MESSAGE property on the model root. */
+    /**
+     * Utility method that sets the CURSOR_MESSAGE property on the model root.
+     */
     private void setCursorMessage(String s) {
         modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, s);
     }
@@ -343,8 +343,7 @@ public class BuildTrackController implements GameModel {
     }
 
     /**
-     * @param newTargetPoint
-     *            The m_targetPoint to set.
+     * @param newTargetPoint The m_targetPoint to set.
      */
     private void setTargetPoint(ImPoint newTargetPoint) {
         this.targetPoint = newTargetPoint;
@@ -416,62 +415,63 @@ public class BuildTrackController implements GameModel {
                 FreerailsPrincipal fp = modelRoot.getPrincipal();
                 for (Step v : path) {
                     Move move;
-                    attemptMove: {
+                    attemptMove:
+                    {
 
                         switch (mode) {
-                        case REMOVE_TRACK:
+                            case REMOVE_TRACK:
 
-                            try {
-                                move = ChangeTrackPieceCompositeMove
-                                        .generateRemoveTrackMove(new ImPoint(
-                                                locationX, locationY), v,
-                                                worldDiffs, fp);
+                                try {
+                                    move = ChangeTrackPieceCompositeMove
+                                            .generateRemoveTrackMove(new ImPoint(
+                                                            locationX, locationY), v,
+                                                    worldDiffs, fp);
+                                    break;
+
+                                } catch (Exception e1) {
+                                    e1.printStackTrace();
+                                    break attemptMove;
+                                }
+
+                            case UPGRADE_TRACK:
+
+                                int owner = ChangeTrackPieceCompositeMove.getOwner(
+                                        fp, worldDiffs);
+                                FreerailsTile tile = (FreerailsTile) worldDiffs
+                                        .getTile(locationX, locationY);
+                                int tt = tile.getTerrainTypeID();
+                                int trackRuleID = getBts().getRule(tt);
+
+                                /*
+                                 * Skip tiles that already have the right track
+                                 * type.
+                                 */
+                                if (trackRuleID == tile.getTrackPiece()
+                                        .getTrackTypeID()) {
+                                    break attemptMove;
+                                }
+
+                                TrackRule trackRule = (TrackRule) worldDiffs.get(
+                                        SKEY.TRACK_RULES, trackRuleID);
+                                TrackPiece after = new TrackPieceImpl(tile
+                                        .getTrackPiece().getTrackConfiguration(),
+                                        trackRule, owner, trackRuleID);
+
+                                /*
+                                 * We don't want to 'upgrade' a station to track.
+                                 * See bug 874416.
+                                 */
+                                if (tile.getTrackPiece().getTrackRule().isStation()) {
+                                    break attemptMove;
+                                }
+
+                                move = UpgradeTrackMove.generateMove(tile
+                                        .getTrackPiece(), after, new ImPoint(
+                                        locationX, locationY));
                                 break;
 
-                            } catch (Exception e1) {
-                                e1.printStackTrace();
-                                break attemptMove;
-                            }
-
-                        case UPGRADE_TRACK:
-
-                            int owner = ChangeTrackPieceCompositeMove.getOwner(
-                                    fp, worldDiffs);
-                            FreerailsTile tile = (FreerailsTile) worldDiffs
-                                    .getTile(locationX, locationY);
-                            int tt = tile.getTerrainTypeID();
-                            int trackRuleID = getBts().getRule(tt);
-
-                            /*
-                             * Skip tiles that already have the right track
-                             * type.
-                             */
-                            if (trackRuleID == tile.getTrackPiece()
-                                    .getTrackTypeID()) {
-                                break attemptMove;
-                            }
-
-                            TrackRule trackRule = (TrackRule) worldDiffs.get(
-                                    SKEY.TRACK_RULES, trackRuleID);
-                            TrackPiece after = new TrackPieceImpl(tile
-                                    .getTrackPiece().getTrackConfiguration(),
-                                    trackRule, owner, trackRuleID);
-
-                            /*
-                             * We don't want to 'upgrade' a station to track.
-                             * See bug 874416.
-                             */
-                            if (tile.getTrackPiece().getTrackRule().isStation()) {
-                                break attemptMove;
-                            }
-
-                            move = UpgradeTrackMove.generateMove(tile
-                                    .getTrackPiece(), after, new ImPoint(
-                                    locationX, locationY));
-                            break;
-
-                        default:
-                            throw new IllegalStateException(mode.toString());
+                            default:
+                                throw new IllegalStateException(mode.toString());
 
                         }// end of switch statement
                         MoveStatus ms = move.doMove(worldDiffs, fp);

@@ -4,43 +4,26 @@
  */
 package freerails.controller;
 
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import freerails.move.ChangeTrainMove;
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.NextActivityMove;
-import freerails.move.WorldDiffMove;
-import freerails.world.common.GameTime;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.move.*;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldDiffs;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.MutableSchedule;
-import freerails.world.train.PathOnTiles;
-import freerails.world.train.Schedule;
-import freerails.world.train.SpeedTimeAndStatus;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainMotion;
-import freerails.world.train.TrainOrdersModel;
-
+import freerails.world.train.*;
 import org.apache.log4j.Logger;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
+import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 
 /**
  * @author Luke
- * 
  */
 public class TrainStopsHandler implements Serializable {
 
@@ -51,9 +34,11 @@ public class TrainStopsHandler implements Serializable {
 
     private static final long serialVersionUID = 3257567287094882872L;
 
-    /** If wagons are added to a train, we need to increase its length. */
+    /**
+     * If wagons are added to a train, we need to increase its length.
+     */
     static PathOnTiles lengthenPath(ReadOnlyWorld w, PathOnTiles path,
-            int currentTrainLength) {
+                                    int currentTrainLength) {
         double pathDistance = path.getTotalDistance();
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
@@ -130,7 +115,7 @@ public class TrainStopsHandler implements Serializable {
 
     /**
      * @return the number of the station the train is currently at, or -1 if no
-     *         current station.
+     * current station.
      */
     public int getStationID(int x, int y) {
         // loop thru the station list to check if train is at the same Point

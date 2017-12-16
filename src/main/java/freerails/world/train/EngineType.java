@@ -6,9 +6,8 @@ import freerails.world.common.Money;
 /**
  * This class represents an engine type, for example 'Grass Hopper'. It
  * encapsulates the properties that are common to all engines of the same type.
- * 
+ *
  * @author Luke
- * 
  */
 final public class EngineType implements FreerailsSerializable {
     private static final long serialVersionUID = 3617014130905592630L;
@@ -46,7 +45,7 @@ final public class EngineType implements FreerailsSerializable {
         EngineType other = (EngineType) obj;
         return engineTypeName.equals(other.engineTypeName)
 
-        && powerAtDrawbar == other.powerAtDrawbar && price.equals(other.price)
+                && powerAtDrawbar == other.powerAtDrawbar && price.equals(other.price)
                 && maintenance.equals(other.maintenance)
                 && maxSpeed == other.maxSpeed;
 

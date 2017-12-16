@@ -14,9 +14,8 @@ import freerails.world.train.TrainModel;
 /**
  * This Move removes a train from the list of trains, and the corresponding
  * CargoBundle and Schedule.
- * 
+ *
  * @author Luke
- * 
  */
 public class RemoveTrainMove extends CompositeMove {
     private static final long serialVersionUID = 3979265867567544114L;
@@ -26,7 +25,7 @@ public class RemoveTrainMove extends CompositeMove {
     }
 
     public static RemoveTrainMove getInstance(int index, FreerailsPrincipal p,
-            ReadOnlyWorld world) {
+                                              ReadOnlyWorld world) {
         TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, index);
         int scheduleId = train.getScheduleID();
         ImmutableSchedule schedule = (ImmutableSchedule) world.get(p,
@@ -45,7 +44,7 @@ public class RemoveTrainMove extends CompositeMove {
         // Move removePosition = new RemoveItemFromListMove(KEY.TRAIN_POSITIONS,
         // index, position, p);
 
-        return new RemoveTrainMove(new Move[] { removeTrain, removeCargobundle,
+        return new RemoveTrainMove(new Move[]{removeTrain, removeCargobundle,
                 removeSchedule /* , removePosition */
         });
     }

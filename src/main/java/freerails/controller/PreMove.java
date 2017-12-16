@@ -12,9 +12,8 @@ import freerails.world.top.ReadOnlyWorld;
  * Defines a method that generates a move based on the state of the world
  * object. The state of a move is often a function of the state of the world
  * object and some other input.
- * 
+ *
  * @author Luke
- * 
  */
 public interface PreMove extends FreerailsSerializable {
     Move generateMove(ReadOnlyWorld w);

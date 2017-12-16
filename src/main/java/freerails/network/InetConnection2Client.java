@@ -1,15 +1,14 @@
 package freerails.network;
 
+import freerails.world.common.FreerailsSerializable;
+
 import java.io.IOException;
 import java.net.Socket;
 
-import freerails.world.common.FreerailsSerializable;
-
 /**
  * Lets the server send messages to a client over the Internet.
- * 
+ *
  * @author Luke
- * 
  */
 public class InetConnection2Client extends AbstractInetConnection implements
         Connection2Client {

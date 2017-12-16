@@ -5,7 +5,7 @@ import freerails.world.common.ImInts;
 
 /**
  * This class represents the supply at a station.
- * 
+ *
  * @author Luke
  */
 public class SupplyAtStation implements FreerailsSerializable {

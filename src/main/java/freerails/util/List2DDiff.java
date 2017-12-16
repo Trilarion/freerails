@@ -11,7 +11,7 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     private final List2D<T> underlyingList;
 
     public List2DDiff(SortedMap<ListKey, Object> diffs, List2D<T> list,
-            Enum listID) {
+                      Enum listID) {
         super(diffs, listID);
         underlyingList = list;
     }

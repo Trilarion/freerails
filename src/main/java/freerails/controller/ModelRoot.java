@@ -6,9 +6,8 @@ package freerails.controller;
 
 /**
  * Defines methods and constants that GUI classes can use to access shared data.
- * 
+ *
  * @author Luke
- * 
  */
 public interface ModelRoot extends MoveExecutor {
 
@@ -24,7 +23,9 @@ public interface ModelRoot extends MoveExecutor {
 
     void setProperty(Property property, Object newValue);
 
-    /** Tests whether the specified property has the specified value. */
+    /**
+     * Tests whether the specified property has the specified value.
+     */
     boolean is(Property property, Object value);
 
     Object getProperty(Property property);

@@ -5,14 +5,14 @@
  */
 package freerails.client.renderer;
 
-import java.util.ArrayList;
-
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 
+import java.util.ArrayList;
+
 /**
  * A list of TileRenderers stored in an array and created from an ArrayList.
- * 
+ *
  * @author Luke Lindsay 09 October 2001
  */
 final public class TileRendererListImpl implements TileRendererList {

@@ -3,14 +3,14 @@
 <!--This file specifies the name and co-ordinates of the cities on a map-->
 
 <Cities>
-	
-<City name="Macapa" x="50" y="23"/>
-<City name="Belem" x="63" y="27"/>
-<City name="Sao Luis" x="80" y="35"/>
-<City name="Cuiaba" x="12" y="72"/>
-<City name="Miracema do Norte" x="50" y="50"/>
-<City name="Manaus" x="23" y="35"/>
-<City name="Macapa" x="50" y="23"/>
-<City name="Boa Vista" x="11" y="11"/>
-<City name="Paramaribo" x="48" y="3"/>	
+
+    <City name="Macapa" x="50" y="23"/>
+    <City name="Belem" x="63" y="27"/>
+    <City name="Sao Luis" x="80" y="35"/>
+    <City name="Cuiaba" x="12" y="72"/>
+    <City name="Miracema do Norte" x="50" y="50"/>
+    <City name="Manaus" x="23" y="35"/>
+    <City name="Macapa" x="50" y="23"/>
+    <City name="Boa Vista" x="11" y="11"/>
+    <City name="Paramaribo" x="48" y="3"/>
 </Cities>

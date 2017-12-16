@@ -1,35 +1,22 @@
 package freerails.world.top;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import freerails.util.List1D;
-import freerails.util.List1DImpl;
-import freerails.util.List2D;
-import freerails.util.List2DImpl;
-import freerails.util.List3D;
-import freerails.util.List3DImpl;
-import freerails.util.Pair;
-import freerails.util.Utils;
+import freerails.util.*;
 import freerails.world.accounts.EconomicClimate;
 import freerails.world.accounts.Transaction;
 import freerails.world.accounts.TransactionAndTimeStamp;
-import freerails.world.common.Activity;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.FreerailsSerializable;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.track.FreerailsTile;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 /**
  * An implementation of World that uses standard java.util collections
  * internally.
- * 
+ *
  * @author Luke
- * 
  */
 public class WorldImpl implements World {
 
@@ -151,24 +138,32 @@ public class WorldImpl implements World {
 
     private static final long serialVersionUID = 3544393612684505393L;
 
-    /** A 3D list: D1 is player, D2 is train id, D3 is train position. */
+    /**
+     * A 3D list: D1 is player, D2 is train id, D3 is train position.
+     */
     List3D<ActivityAndTime> activityLists;
 
-    /** A 2D list: D1 is player, D2 is transaction. */
+    /**
+     * A 2D list: D1 is player, D2 is transaction.
+     */
     List2D<TransactionAndTimeStamp> bankAccounts;
 
     List1D<Money> currentBalance;
 
     List1D<FreerailsSerializable> items;
 
-    /** A 3D list: D1 is player, D2 is type, D3 is element. */
+    /**
+     * A 3D list: D1 is player, D2 is type, D3 is element.
+     */
     List3D<FreerailsSerializable> lists;
 
     FreerailsSerializable[][] map;
 
     List1D<Player> players;
 
-    /** A 2D list: D1 is type, D2 is element. */
+    /**
+     * A 2D list: D1 is type, D2 is element.
+     */
     List2D<FreerailsSerializable> sharedLists;
 
     GameTime time = GameTime.BIG_BANG;
@@ -224,8 +219,7 @@ public class WorldImpl implements World {
     }
 
     /**
-     * @param player
-     *            Player to add
+     * @param player Player to add
      * @return index of the player
      */
     public int addPlayer(Player player) {
@@ -458,11 +452,10 @@ public class WorldImpl implements World {
 
     /**
      * Removes the last player to be added.
-     * 
+     *
      * @return the player that was removed.
-     * @throws IllegalStateException
-     *             if any elements belonging to the player have not been
-     *             removed.
+     * @throws IllegalStateException if any elements belonging to the player have not been
+     *                               removed.
      */
     public Player removeLastPlayer() {
 
@@ -488,7 +481,7 @@ public class WorldImpl implements World {
     }
 
     public void set(FreerailsPrincipal p, KEY key, int index,
-            FreerailsSerializable element) {
+                    FreerailsSerializable element) {
         int playerIndex = p.getWorldIndex();
         lists.set(playerIndex, key.getKeyID(), index, element);
     }

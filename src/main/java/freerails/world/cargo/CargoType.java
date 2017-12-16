@@ -4,7 +4,7 @@ import freerails.world.common.FreerailsSerializable;
 
 /**
  * Represents a type of cargo.
- * 
+ *
  * @author luke
  */
 final public class CargoType implements FreerailsSerializable {
@@ -31,7 +31,9 @@ final public class CargoType implements FreerailsSerializable {
             }
             throw new IllegalArgumentException("Category:" + cat + " unknown.");
         }
-    };
+    }
+
+    ;
 
     public static int getNumberOfCategories() {
         return Categories.values().length;
@@ -62,7 +64,9 @@ final public class CargoType implements FreerailsSerializable {
         return category;
     }
 
-    /** Returns the name, replacing any underscores with spaces. */
+    /**
+     * Returns the name, replacing any underscores with spaces.
+     */
     public String getDisplayName() {
         return this.name.replace('_', ' ');
     }

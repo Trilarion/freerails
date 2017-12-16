@@ -18,9 +18,8 @@ import freerails.world.top.SKEY;
 /**
  * Generates the income statement- note, its fields are read using reflection so
  * don't change their names.
- * 
+ *
  * @author Luke
- * 
  */
 public class IncomeStatementGenerator {
     GameTime from;
@@ -138,64 +137,64 @@ public class IncomeStatementGenerator {
                 int cargoType = dcr.getCb().getCargoType();
                 CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
                 switch (ct.getCategory()) {
-                case Bulk_Freight:
-                    bulkFreightTotal += dcr.deltaCash().getAmount();
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        bulkFreightYtd += dcr.deltaCash().getAmount();
-                    }
-                    break;
-                case Fast_Freight:
-                    fastFreightTotal += dcr.deltaCash().getAmount();
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        fastFreightYtd += dcr.deltaCash().getAmount();
-                    }
-                    break;
-                case Mail:
-                    mailTotal += dcr.deltaCash().getAmount();
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        mailYtd += dcr.deltaCash().getAmount();
-                    }
-                    break;
-                case Passengers:
-                    passengersTotal += dcr.deltaCash().getAmount();
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        passengersYtd += dcr.deltaCash().getAmount();
-                    }
-                    break;
-                case Slow_Freight:
-                    slowFreightTotal += dcr.deltaCash().getAmount();
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        slowFreightYtd += dcr.deltaCash().getAmount();
-                    }
-                    break;
+                    case Bulk_Freight:
+                        bulkFreightTotal += dcr.deltaCash().getAmount();
+                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                            bulkFreightYtd += dcr.deltaCash().getAmount();
+                        }
+                        break;
+                    case Fast_Freight:
+                        fastFreightTotal += dcr.deltaCash().getAmount();
+                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                            fastFreightYtd += dcr.deltaCash().getAmount();
+                        }
+                        break;
+                    case Mail:
+                        mailTotal += dcr.deltaCash().getAmount();
+                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                            mailYtd += dcr.deltaCash().getAmount();
+                        }
+                        break;
+                    case Passengers:
+                        passengersTotal += dcr.deltaCash().getAmount();
+                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                            passengersYtd += dcr.deltaCash().getAmount();
+                        }
+                        break;
+                    case Slow_Freight:
+                        slowFreightTotal += dcr.deltaCash().getAmount();
+                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                            slowFreightYtd += dcr.deltaCash().getAmount();
+                        }
+                        break;
                 }
 
             }
             switch (t.getCategory()) {
-            case INTEREST_CHARGE:
-                interestTotal += t.deltaCash().getAmount();
-                if (cal.getYear(time.getTicks()) >= this.startyear) {
-                    interestYtd += t.deltaCash().getAmount();
-                }
-                break;
-            case TRAIN_MAINTENANCE:
-                trainMaintenanceTotal += t.deltaCash().getAmount();
-                if (cal.getYear(time.getTicks()) >= this.startyear) {
-                    trainMaintenanceYtd += t.deltaCash().getAmount();
-                }
-                break;
-            case TRACK_MAINTENANCE:
-                trackMaintenanceTotal += t.deltaCash().getAmount();
-                if (cal.getYear(time.getTicks()) >= this.startyear) {
-                    trackMaintenanceYtd += t.deltaCash().getAmount();
-                }
-                break;
-            case STATION_MAINTENANCE:
-                stationMaintenanceTotal += t.deltaCash().getAmount();
-                if (cal.getYear(time.getTicks()) >= this.startyear) {
-                    stationMaintenanceYtd += t.deltaCash().getAmount();
-                }
-                break;
+                case INTEREST_CHARGE:
+                    interestTotal += t.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        interestYtd += t.deltaCash().getAmount();
+                    }
+                    break;
+                case TRAIN_MAINTENANCE:
+                    trainMaintenanceTotal += t.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        trainMaintenanceYtd += t.deltaCash().getAmount();
+                    }
+                    break;
+                case TRACK_MAINTENANCE:
+                    trackMaintenanceTotal += t.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        trackMaintenanceYtd += t.deltaCash().getAmount();
+                    }
+                    break;
+                case STATION_MAINTENANCE:
+                    stationMaintenanceTotal += t.deltaCash().getAmount();
+                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        stationMaintenanceYtd += t.deltaCash().getAmount();
+                    }
+                    break;
             }
         }
         this.mailTotal = new Money(mailTotal);
@@ -265,7 +264,7 @@ public class IncomeStatementGenerator {
 
     /**
      * returns the revenue for all trains with id from 1 to money.length-1
-     * 
+     *
      * @param money
      */
     public void calTrainRevenue(Money[] money) {

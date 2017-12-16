@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 
 /**
  * Junit test.
- * 
+ *
  * @author Luke
  */
 public class SimplePathIteratorImplTest extends TestCase {
@@ -19,8 +19,8 @@ public class SimplePathIteratorImplTest extends TestCase {
     }
 
     public void testHasNext() {
-        int[] xpoints = { 0, 100 };
-        int[] ypoints = { 0, 0 };
+        int[] xpoints = {0, 100};
+        int[] ypoints = {0, 0};
 
         FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
         assertTrue(it.hasNext());
@@ -29,8 +29,8 @@ public class SimplePathIteratorImplTest extends TestCase {
     }
 
     public void testNextSegment() {
-        int[] xpoints = { 1, 2, 3 };
-        int[] ypoints = { 4, 5, 6 };
+        int[] xpoints = {1, 2, 3};
+        int[] ypoints = {4, 5, 6};
 
         FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
         assertTrue(it.hasNext());

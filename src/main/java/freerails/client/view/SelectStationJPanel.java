@@ -6,16 +6,6 @@
 
 package freerails.client.view;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.util.NoSuchElementException;
-
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.common.Step;
@@ -29,10 +19,16 @@ import freerails.world.track.NullTrackPiece;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainOrdersModel;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.NoSuchElementException;
+
 /**
  * This JPanel lets the user select a station from a map and add it to a train
  * schedule.
- * 
+ *
  * @author Luke
  */
 public class SelectStationJPanel extends javax.swing.JPanel implements View {

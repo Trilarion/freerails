@@ -1,32 +1,19 @@
 package freerails.move;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-
 import freerails.controller.PathCacheController;
 import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
-import freerails.world.top.WorldIterator;
-import freerails.world.track.FreerailsTile;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackRule;
+import freerails.world.top.*;
+import freerails.world.track.*;
+
+import java.awt.*;
 
 /**
  * This Move adds, removes, or upgrades the track on a single tile.
- * 
+ *
  * @author Luke
- * 
  */
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private static final long serialVersionUID = 4120849958418591801L;
@@ -71,7 +58,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     private MoveStatus tryMove(World w, TrackPiece oldTrackPiece,
-            TrackPiece newTrackPiece) {
+                               TrackPiece newTrackPiece) {
         // Check that location is on the map.
         if (!w.boundsContain(location.x, location.y)) {
             return MoveStatus
@@ -123,7 +110,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if ((oldTrackPiece.getTrackConfiguration() == newTrackPiece
                 .getTrackConfiguration())
                 && (oldTrackPiece.getTrackRule() == newTrackPiece
-                        .getTrackRule())) {
+                .getTrackRule())) {
             return MoveStatus.moveFailed("Already track here!");
         }
 
@@ -184,7 +171,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     private void move(World w, TrackPiece oldTrackPiece,
-            TrackPiece newTrackPiece) {
+                      TrackPiece newTrackPiece) {
         // FIXME why is oldTrackPiece not used???
         FreerailsTile oldTile = (FreerailsTile) w.getTile(location.x,
                 location.y);
@@ -207,7 +194,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     private boolean noDiagonalTrackConflicts(ImPoint point, int trackTemplate,
-            World w) {
+                                             World w) {
         /*
          * This method is needs replacing. It only deals with flat track pieces,
          * and is rather hard to make sense of. LL
@@ -316,7 +303,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
      * staton is getting removed.
      */
     protected static MoveStatus check4overlap(World w, ImPoint location,
-            TrackPiece trackPiece) {
+                                              TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.

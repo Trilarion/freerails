@@ -29,5 +29,5 @@ public class Pair<A, B> {
     public B getB() {
         return e2;
     }
-    
+
 }

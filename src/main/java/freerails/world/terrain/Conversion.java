@@ -8,9 +8,8 @@ import freerails.world.common.FreerailsSerializable;
 
 /**
  * This class represents the conversion of one cargo type to another one a tile.
- * 
+ *
  * @author Luke
- * 
  */
 public class Conversion implements FreerailsSerializable {
     private static final long serialVersionUID = 3546356219414853689L;

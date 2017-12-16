@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * This class defines a straight line between two points. Units are arbitrary.
- * 
+ *
  * @author Luke
  */
 public class IntLine implements Serializable {
@@ -44,21 +44,17 @@ public class IntLine implements Serializable {
      */
     public double getLength() {
         int sumOfSquares = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
-        if(sumOfSquares < MAX_SQUAREROOTS) {
+        if (sumOfSquares < MAX_SQUAREROOTS) {
             return squareRoots[sumOfSquares];
         }
         return Math.sqrt(sumOfSquares);
     }
 
     /**
-     * @param xx1
-     *            x of the first point
-     * @param yy1
-     *            y of the first point
-     * @param xx2
-     *            x of the second point
-     * @param yy2
-     *            y of the second point
+     * @param xx1 x of the first point
+     * @param yy1 y of the first point
+     * @param xx2 x of the second point
+     * @param yy2 y of the second point
      */
     public IntLine(int xx1, int yy1, int xx2, int yy2) {
         x1 = xx1;

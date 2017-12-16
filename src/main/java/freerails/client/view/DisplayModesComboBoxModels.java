@@ -5,18 +5,16 @@
  */
 package freerails.client.view;
 
-import java.awt.DisplayMode;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
+import freerails.controller.MyDisplayMode;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import freerails.controller.MyDisplayMode;
 
 /**
  * ComboBoxModel that provides access to the screen resolutions and bit depths
  * available.
- * 
+ *
  * @author Luke Lindsay
  */
 public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {

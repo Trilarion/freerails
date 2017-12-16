@@ -1,17 +1,5 @@
 package freerails.client.view;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.NoSuchElementException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JMenuItem;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.move.ChangeTrainScheduleMove;
@@ -19,23 +7,20 @@ import freerails.move.Move;
 import freerails.world.cargo.CargoType;
 import freerails.world.common.ImInts;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldListListener;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.MutableSchedule;
-import freerails.world.train.Schedule;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrdersModel;
-
+import freerails.world.top.*;
+import freerails.world.train.*;
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.NoSuchElementException;
 
 /**
  * This JPanel displays a train's schedule and provides controls that let you
  * edit it.
- * 
+ *
  * @author Luke Lindsay
  */
 public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
@@ -293,19 +278,19 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
     private void ordersKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_ordersKeyPressed
         switch (evt.getKeyCode()) {
-        case KeyEvent.VK_O: {
-            // Add priority orders
-            priorityOrdersJButtonActionPerformed(null);
-            break;
-        }
-        case KeyEvent.VK_N: {
-            // Add station
-            addStationJButtonActionPerformed(null);
-            break;
-        }
-        default: {
-            // do nothing.
-        }
+            case KeyEvent.VK_O: {
+                // Add priority orders
+                priorityOrdersJButtonActionPerformed(null);
+                break;
+            }
+            case KeyEvent.VK_N: {
+                // Add station
+                addStationJButtonActionPerformed(null);
+                break;
+            }
+            default: {
+                // do nothing.
+            }
         }
 
         int orderNumber = this.orders.getSelectedIndex();
@@ -314,47 +299,47 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
             return;
         }
         switch (evt.getKeyCode()) {
-        case KeyEvent.VK_G: {
-            // Goto station.
-            gotoStationJMenuItemActionPerformed(null);
-            break;
-        }
-        case KeyEvent.VK_S: {
-            // Change station
-            showSelectStation(this.getSchedule(), orderNumber);
-            break;
-        }
-        case KeyEvent.VK_A: {
-            // Auto schedule
-            setAutoConsist();
-            break;
-        }
-        case KeyEvent.VK_C: {
-            // Change add wagon
+            case KeyEvent.VK_G: {
+                // Goto station.
+                gotoStationJMenuItemActionPerformed(null);
+                break;
+            }
+            case KeyEvent.VK_S: {
+                // Change station
+                showSelectStation(this.getSchedule(), orderNumber);
+                break;
+            }
+            case KeyEvent.VK_A: {
+                // Auto schedule
+                setAutoConsist();
+                break;
+            }
+            case KeyEvent.VK_C: {
+                // Change add wagon
 
-            break;
-        }
-        case KeyEvent.VK_DELETE: {
-            // Remove station
-            removeStationJMenuItemActionPerformed(null);
-            break;
-        }
-        case KeyEvent.VK_BACK_SPACE: {
-            // Remove last wagon
-            removeLastWagon();
-            break;
-        }
+                break;
+            }
+            case KeyEvent.VK_DELETE: {
+                // Remove station
+                removeStationJMenuItemActionPerformed(null);
+                break;
+            }
+            case KeyEvent.VK_BACK_SPACE: {
+                // Remove last wagon
+                removeLastWagon();
+                break;
+            }
 
-        case KeyEvent.VK_W: {
-            // toggle wait until full
-            MutableSchedule s = getSchedule();
-            TrainOrdersModel order = s.getOrder(orderNumber);
-            setWaitUntilFull(!order.waitUntilFull);
-            break;
-        }
-        default: {
-            // do nothing.
-        }
+            case KeyEvent.VK_W: {
+                // toggle wait until full
+                MutableSchedule s = getSchedule();
+                TrainOrdersModel order = s.getOrder(orderNumber);
+                setWaitUntilFull(!order.waitUntilFull);
+                break;
+            }
+            default: {
+                // do nothing.
+            }
         }
         listModel.fireRefresh();
 
@@ -532,7 +517,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
     /**
      * Since stations can be removed, we should not assume that station 0
      * exists: this method returns the id of the first station that exists.
-     * 
      */
     private int getFirstStationID() {
         NonNullElements stations = new NonNullElements(KEY.STATIONS, modelRoot
@@ -629,7 +613,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
             // Then add specified wagon.
             newConsist[oldLength] = wagonTypeNumber;
         } else {
-            newConsist = new int[] { wagonTypeNumber };
+            newConsist = new int[]{wagonTypeNumber};
         }
         newOrders = new TrainOrdersModel(oldOrders.getStationID(), new ImInts(
                 newConsist), oldOrders.getWaitUntilFull(), false);

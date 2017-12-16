@@ -3,16 +3,15 @@
  */
 package freerails.network;
 
-import java.util.LinkedList;
-
 import freerails.world.common.FreerailsSerializable;
+
+import java.util.LinkedList;
 
 /**
  * Intended to let objects be safely passed between threads. 666 perhaps an
  * arrayList is better (-> profile it)
- * 
+ *
  * @author Luke
- * 
  */
 public class SychronizedQueue {
     private final LinkedList<FreerailsSerializable> queue = new LinkedList<FreerailsSerializable>();

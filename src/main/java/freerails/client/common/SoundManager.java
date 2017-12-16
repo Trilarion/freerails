@@ -1,5 +1,10 @@
 package freerails.client.common;
 
+import freerails.config.ClientConfig;
+import freerails.controller.ModelRoot;
+import org.apache.log4j.Logger;
+
+import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,35 +13,17 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
-import freerails.config.ClientConfig;
-import freerails.controller.ModelRoot;
-
-import org.apache.log4j.Logger;
-
 /**
  * This class is responsible for loading and playing sounds. Samples are read
  * into a byte arrays so that they don't need to be loaded from disk each time
  * they are played.
- * 
+ *
  * @author Luke
- * 
  */
 public class SoundManager implements ModelRootListener, LineListener {
 
     /**
      * Stores the audio data and properties of a sample.
-     * 
      */
     private static class Sample {
 

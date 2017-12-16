@@ -1,19 +1,7 @@
 package freerails.server;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
-import freerails.controller.AddTrainPreMove;
-import freerails.controller.MoveTrainPreMove;
-import freerails.controller.NoTrackException;
-import freerails.controller.OccupiedTracks;
-import freerails.controller.PreMove;
-import freerails.controller.TrainAccessor;
-import freerails.move.ChangeProductionAtEngineShopMove;
-import freerails.move.ChangeTrainMove;
-import freerails.move.ChangeTrainScheduleMove;
-import freerails.move.CompositeMove;
-import freerails.move.Move;
+import freerails.controller.*;
+import freerails.move.*;
 import freerails.network.MoveReceiver;
 import freerails.world.Constants;
 import freerails.world.common.FreerailsPathIterator;
@@ -27,22 +15,18 @@ import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldIterator;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.MutableSchedule;
-import freerails.world.train.PathWalker;
-import freerails.world.train.PathWalkerImpl;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrdersModel;
-import freerails.world.train.TrainPositionOnMap;
+import freerails.world.train.*;
+
+import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * This class is used by the server to generate moves that add trains, move
  * trains, and handle stops at stations. Note, the client should not use this
  * class to build trains, instead it should request that a train gets built by
  * setting production at an engine shop.
- * 
+ *
  * @author Luke Lindsay 13-Oct-2002
- * 
  */
 public class TrainUpdater implements ServerAutomaton {
 
@@ -52,7 +36,7 @@ public class TrainUpdater implements ServerAutomaton {
      * @return a move that initialises the trains schedule.
      */
     public static Move initTarget(TrainModel train, int trainID,
-            ImmutableSchedule currentSchedule, FreerailsPrincipal principal) {
+                                  ImmutableSchedule currentSchedule, FreerailsPrincipal principal) {
         Vector<Move> moves = new Vector<Move>();
         int scheduleID = train.getScheduleID();
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
@@ -76,7 +60,7 @@ public class TrainUpdater implements ServerAutomaton {
     }
 
     static TrainPositionOnMap setInitialTrainPosition(TrainModel train,
-            FreerailsPathIterator from) {
+                                                      FreerailsPathIterator from) {
         int trainLength = train.getLength();
         PathWalker fromPathWalker = new PathWalkerImpl(from);
         assert fromPathWalker.canStepForward();
@@ -111,7 +95,7 @@ public class TrainUpdater implements ServerAutomaton {
     }
 
     public void buildTrain(int engineTypeId, ImInts wagons, ImPoint p,
-            FreerailsPrincipal principal, ReadOnlyWorld world) {
+                           FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
@@ -207,7 +191,6 @@ public class TrainUpdater implements ServerAutomaton {
     /**
      * Iterator over the stations and build trains at any that have their
      * production field set.
-     * 
      */
     void buildTrains(ReadOnlyWorld world) {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {

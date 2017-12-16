@@ -1,21 +1,18 @@
 package freerails.client.top;
 
-import java.awt.AWTEvent;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
+import freerails.controller.ReportBugTextGenerator;
+
+import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import freerails.controller.ReportBugTextGenerator;
 
 /**
  * This event queue is synchronized on the MUTEX. This lets one control when
  * events can be dispatched.
- * 
+ * <p>
  * Note, changed to be a singleton to get it working on pre 1.4.2 VMs.
- * 
+ *
  * @author Luke
- * 
  */
 final public class SynchronizedEventQueue extends EventQueue {
     public static final Object MUTEX = new Object();
@@ -24,7 +21,9 @@ final public class SynchronizedEventQueue extends EventQueue {
 
     private static boolean alreadyInUse = false;
 
-    /** Enforce singleton property. */
+    /**
+     * Enforce singleton property.
+     */
     private SynchronizedEventQueue() {
         list = new LinkedHashMap<AWTEvent, Throwable>();
     }

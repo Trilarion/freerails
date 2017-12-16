@@ -8,9 +8,8 @@ import freerails.world.common.Money;
 
 /**
  * JUnit test for EchoGameServer.
- * 
+ *
  * @author Luke
- * 
  */
 public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
     /**

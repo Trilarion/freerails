@@ -15,27 +15,19 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackPiece;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
 /**
  * This class draws the overview map.
- * 
+ *
  * @author Luke Lindsay
  * @author Robert Tuck
  */
@@ -68,7 +60,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     private boolean isDirty = true;
 
     public static ZoomedOutMapRenderer getInstance(ReadOnlyWorld world,
-            Dimension maxSize) {
+                                                   Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
         double worldWidth = world.getMapWidth();
         double worldHeight = world.getMapHeight();
@@ -88,7 +80,7 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
-            int mapX, int mapY, int mapWidth, int mapHeight) {
+                                 int mapX, int mapY, int mapWidth, int mapHeight) {
         w = world;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;

@@ -30,23 +30,23 @@ import java.io.Serializable;
  * implemented by a wrapper class or directly by the application in cases where
  * instances are modified in a multithreaded environment. See the base classes
  * for other details of the implementation.
- * 
+ *
  * @author Dennis M. Sosnoski
  * @version 1.0
  */
 public class IntArray extends ArrayBase implements Serializable {
     private static final long serialVersionUID = 3258408426391418681L;
 
-    /** The underlying array used for storing the data. */
+    /**
+     * The underlying array used for storing the data.
+     */
     protected int[] baseArray;
 
     /**
      * Constructor with full specification.
-     * 
-     * @param size
-     *            number of <code>int</code> values initially allowed in array
-     * @param growth
-     *            maximum size increment for growing array
+     *
+     * @param size   number of <code>int</code> values initially allowed in array
+     * @param growth maximum size increment for growing array
      */
     public IntArray(int size, int growth) {
         super(size, growth, int.class);
@@ -54,9 +54,8 @@ public class IntArray extends ArrayBase implements Serializable {
 
     /**
      * Constructor with only initial size specified.
-     * 
-     * @param size
-     *            number of <code>int</code> values initially allowed in array
+     *
+     * @param size number of <code>int</code> values initially allowed in array
      */
     public IntArray(int size) {
         super(size, int.class);
@@ -71,9 +70,8 @@ public class IntArray extends ArrayBase implements Serializable {
 
     /**
      * Copy (clone) constructor.
-     * 
-     * @param base
-     *            instance being copied
+     *
+     * @param base instance being copied
      */
     public IntArray(IntArray base) {
         super(base);
@@ -82,7 +80,7 @@ public class IntArray extends ArrayBase implements Serializable {
     /**
      * Get the backing array. This method is used by the type-agnostic base
      * class code to access the array used for type-specific storage.
-     * 
+     *
      * @return backing array object
      */
     @Override
@@ -93,7 +91,6 @@ public class IntArray extends ArrayBase implements Serializable {
     /**
      * Set the backing array. This method is used by the type-agnostic base
      * class code to set the array used for type-specific storage.
-     * 
      */
     @Override
     protected final void setArray(Object array) {
@@ -102,9 +99,8 @@ public class IntArray extends ArrayBase implements Serializable {
 
     /**
      * Add a value to the array, appending it after the current values.
-     * 
-     * @param value
-     *            value to be added
+     *
+     * @param value value to be added
      * @return index number of added element
      */
     public final int add(int value) {
@@ -116,11 +112,9 @@ public class IntArray extends ArrayBase implements Serializable {
 
     /**
      * Add a value at a specified index in the array.
-     * 
-     * @param index
-     *            index position at which to insert element
-     * @param value
-     *            value to be inserted into array
+     *
+     * @param index index position at which to insert element
+     * @param value value to be inserted into array
      */
     public void add(int index, int value) {
         makeInsertSpace(index);
@@ -129,9 +123,8 @@ public class IntArray extends ArrayBase implements Serializable {
 
     /**
      * Retrieve the value present at an index position in the array.
-     * 
-     * @param index
-     *            index position for value to be retrieved
+     *
+     * @param index index position for value to be retrieved
      * @return value from position in the array
      */
     public final int get(int index) {
@@ -143,11 +136,9 @@ public class IntArray extends ArrayBase implements Serializable {
 
     /**
      * Set the value at an index position in the array.
-     * 
-     * @param index
-     *            index position to be set
-     * @param value
-     *            value to be set
+     *
+     * @param index index position to be set
+     * @param value value to be set
      */
     public final void set(int index, int value) {
         if (index < countPresent) {
@@ -160,7 +151,7 @@ public class IntArray extends ArrayBase implements Serializable {
     /**
      * Constructs and returns a simple array containing the same data as held in
      * this growable array.
-     * 
+     *
      * @return array containing a copy of the data
      */
     public int[] toArray() {
@@ -170,11 +161,9 @@ public class IntArray extends ArrayBase implements Serializable {
     /**
      * Constructs and returns a simple array containing the same data as held in
      * a portion of this growable array.
-     * 
-     * @param offset
-     *            start offset in array
-     * @param length
-     *            number of characters to use
+     *
+     * @param offset start offset in array
+     * @param length number of characters to use
      * @return array containing a copy of the data
      */
     public int[] toArray(int offset, int length) {
@@ -183,7 +172,7 @@ public class IntArray extends ArrayBase implements Serializable {
 
     /**
      * Duplicates the object with the generic call.
-     * 
+     *
      * @return a copy of the object
      */
     @Override

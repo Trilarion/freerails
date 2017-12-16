@@ -1,9 +1,13 @@
 package experimental;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import freerails.client.renderer.TrackPieceRendererImpl;
+import freerails.server.OldWorldImpl;
+import freerails.server.parser.Track_TilesHandlerImpl;
+import freerails.world.track.TrackConfiguration;
+import freerails.world.track.TrackRule;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -11,19 +15,9 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import freerails.client.renderer.TrackPieceRendererImpl;
-import freerails.server.OldWorldImpl;
-import freerails.server.parser.Track_TilesHandlerImpl;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackRule;
-
 /**
  * Generates track graphic image files.
- * 
+ *
  * @author Luke
  */
 public class TrackTilesGenerator extends JPanel {

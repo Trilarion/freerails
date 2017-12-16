@@ -10,9 +10,8 @@ import freerails.world.top.ReadOnlyWorld;
 
 /**
  * Lets the caller try and execute Moves.
- * 
+ *
  * @author Luke
- * 
  */
 public interface MoveExecutor {
     MoveStatus doMove(Move m);

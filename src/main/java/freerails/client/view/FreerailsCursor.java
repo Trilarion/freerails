@@ -1,18 +1,7 @@
 /**
- *
  * Created on 01 August 2001, 06:02
  */
 package freerails.client.view;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.io.IOException;
 
 import freerails.client.renderer.BuildTrackRenderer;
 import freerails.client.renderer.RenderersRoot;
@@ -20,10 +9,15 @@ import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.world.common.ImPoint;
 
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.io.IOException;
+
 /**
  * Paints the cursor on the map, note the cursor's position is stored on the
  * ModelRoot under the key CURSOR_POSITION.
- * 
+ *
  * @author Luke
  */
 final public class FreerailsCursor {
@@ -39,7 +33,7 @@ final public class FreerailsCursor {
 
     /**
      * Creates a new FreerailsCursor.
-     * 
+     *
      * @throws IOException
      */
     public FreerailsCursor(ModelRoot mr, RenderersRoot rr) throws IOException {
@@ -54,7 +48,7 @@ final public class FreerailsCursor {
     /**
      * Paints the cursor. The method calculates position to paint it based on
      * the tile size and the cursor's map position.
-     * 
+     *
      * @param g
      *            The graphics object to paint the cursor on.
      * @param tileSize
@@ -80,21 +74,21 @@ final public class FreerailsCursor {
 
         Image cursor = null;
         switch (buildMode) {
-        case BUILD_TRACK:
-            cursor = buildTrack;
-            break;
-        case REMOVE_TRACK:
-            cursor = removeTrack;
-            break;
-        case UPGRADE_TRACK:
-            cursor = upgradeTrack;
-            break;
-        case IGNORE_TRACK:
-            cursor = infoMode;
-            break;
-        case BUILD_STATION:
-            cursor = buildTrack;
-            break;
+            case BUILD_TRACK:
+                cursor = buildTrack;
+                break;
+            case REMOVE_TRACK:
+                cursor = removeTrack;
+                break;
+            case UPGRADE_TRACK:
+                cursor = upgradeTrack;
+                break;
+            case IGNORE_TRACK:
+                cursor = infoMode;
+                break;
+            case BUILD_STATION:
+                cursor = buildTrack;
+                break;
         }
 
         Boolean b = (Boolean) modelRoot

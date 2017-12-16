@@ -6,15 +6,15 @@
 
 package freerails.launcher;
 
-import java.awt.EventQueue;
+import freerails.network.FreerailsGameServer;
+
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import freerails.network.FreerailsGameServer;
-
 /**
  * A JPanel that shows the players currently logged in to the server.
- * 
+ *
  * @author Luke
  */
 public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
@@ -24,7 +24,9 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
 
     FreerailsGameServer server = null;
 
-    /** Creates new form ConnectedPlayersJPanel */
+    /**
+     * Creates new form ConnectedPlayersJPanel
+     */
     public ConnectedPlayersJPanel() {
         initComponents();
     }
@@ -51,7 +53,7 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
         jList1.setModel(new javax.swing.AbstractListModel() {
 
             private static final long serialVersionUID = 1L;
-            String[] strings = { "No players are logged on!" };
+            String[] strings = {"No players are logged on!"};
 
             public int getSize() {
                 return strings.length;
@@ -76,7 +78,7 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
     void updateListOfPlayers() {
         if (null != server) {
             String[] playerNames = server.getPlayerNames();
-            playerNames = playerNames.length == 0 ? new String[] { "No players are logged on!" }
+            playerNames = playerNames.length == 0 ? new String[]{"No players are logged on!"}
                     : playerNames;
             setListOfPlayers(playerNames);
         }
@@ -86,7 +88,9 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
         jList1.setListData(players);
     }
 
-    /** Called by the server when a player is added or removed. */
+    /**
+     * Called by the server when a player is added or removed.
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(FreerailsGameServer.CONNECTED_PLAYERS)) {
             if (EventQueue.isDispatchThread()) {

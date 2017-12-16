@@ -3,15 +3,14 @@
  */
 package freerails.client.view;
 
-import java.util.HashMap;
-
 import junit.framework.TestCase;
+
+import java.util.HashMap;
 
 /**
  * Tests the populateTokens method on HtmlJPanel.
- * 
+ *
  * @author Luke
- * 
  */
 public class HtmlJPanelTest extends TestCase {
     public void testPopulateTokens() {

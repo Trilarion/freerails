@@ -3,20 +3,18 @@
  */
 package freerails.network;
 
+import freerails.world.common.FreerailsSerializable;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import freerails.world.common.FreerailsSerializable;
-
-import org.apache.log4j.Logger;
-
 /**
  * Implementation of GameServer that simply echoes whatever clients send it.
- * 
+ *
  * @author Luke
- * 
  */
 public class EchoGameServer implements GameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class

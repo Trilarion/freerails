@@ -4,12 +4,12 @@
  */
 package freerails.util;
 
-import static freerails.util.ListKey.Type.EndPoint;
+import junit.framework.TestCase;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import junit.framework.TestCase;
+import static freerails.util.ListKey.Type.EndPoint;
 
 public class List2DDiffTest extends TestCase {
 

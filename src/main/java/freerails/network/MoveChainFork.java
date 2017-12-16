@@ -1,27 +1,19 @@
 package freerails.network;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
-import freerails.move.AddItemToListMove;
-import freerails.move.ChangeItemInListMove;
-import freerails.move.CompositeMove;
-import freerails.move.MapUpdateMove;
-import freerails.move.Move;
-import freerails.move.RemoveItemFromListMove;
-import freerails.move.TimeTickMove;
-import freerails.move.UndoMove;
+import freerails.move.*;
 import freerails.world.common.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.WorldListListener;
 import freerails.world.top.WorldMapListener;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 /**
- * 
  * A central point at which a client may register to receive moves which have
  * been committed.
- * 
+ *
  * @author Luke
  * @author rob
  */

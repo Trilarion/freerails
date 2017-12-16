@@ -9,7 +9,7 @@ import freerails.client.view.ActionRoot;
 
 /**
  * The menu that lets you select a track type.
- * 
+ *
  * @author Luke Lindsay
  */
 final public class BuildMenu extends javax.swing.JMenu {

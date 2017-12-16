@@ -6,11 +6,6 @@
 
 package freerails.client.view;
 
-import java.awt.Graphics;
-import java.awt.event.ActionListener;
-
-import javax.swing.Action;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.Message2Server;
 import freerails.controller.ModelRoot;
@@ -19,8 +14,11 @@ import freerails.network.LoadGameMessage2Server;
 import freerails.network.RefreshListOfGamesMessage2Server;
 import freerails.world.common.ImStringList;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
 /**
- * 
  * @author Luke
  */
 public class LoadGameJPanel extends javax.swing.JPanel implements View {
@@ -29,7 +27,9 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
     private ImStringList lastFiles;
 
-    /** Creates new form LoadGameJPanel */
+    /**
+     * Creates new form LoadGameJPanel
+     */
     public LoadGameJPanel() {
         initComponents();
     }

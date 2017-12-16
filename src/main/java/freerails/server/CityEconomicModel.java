@@ -3,11 +3,6 @@
  */
 package freerails.server;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Random;
-
 import freerails.world.terrain.CityModel;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
@@ -15,14 +10,19 @@ import freerails.world.top.SKEY;
 import freerails.world.top.World;
 import freerails.world.track.FreerailsTile;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * This class is lets the server analyse and alter cities.
- * 
+ *
  * @author Luke
- * 
  */
 class CityEconomicModel {
-    /** Stores a tile type and its location. */
+    /**
+     * Stores a tile type and its location.
+     */
     private class Tile {
         final Point p;
 
@@ -44,7 +44,9 @@ class CityEconomicModel {
 
     final ArrayList<Point> clearTiles = new ArrayList<Point>();
 
-    /** The number of stations within this city's bounds. */
+    /**
+     * The number of stations within this city's bounds.
+     */
     int stations = 0;
 
     void addTile(TerrainType type) {

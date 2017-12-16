@@ -6,16 +6,6 @@
 
 package freerails.client.view;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.config.ClientConfig;
 import freerails.controller.ModelRoot;
@@ -23,9 +13,14 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * ListCellRenderer that displays a train order.
- * 
+ *
  * @author Luke Lindsay
  */
 public class TrainOrderJPanel implements View, ListCellRenderer {
@@ -161,7 +156,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     private Map<TrainOrderModel, TrainOrderJPanelSingle> lines;
 
     /**
-     * 
+     *
      */
     public TrainOrderJPanel() {
         super();
@@ -170,9 +165,12 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
     enum Selection {
         select, selectNoFocus, unselect
-    };
+    }
+
+    ;
 
     // 666 model still not correct ...
+
     /**
      * contains all data which is displayed for one station (order). This is
      * used to find prebuilt Panels
@@ -191,7 +189,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
          * @param gotoStatus
          */
         public TrainOrderModel(String stationName, String waitUntilFull,
-                Selection selected, int gotoStatus, String orderText) {
+                               Selection selected, int gotoStatus, String orderText) {
             super();
             this.stationName = stationName;
             this.waitUntilFull = waitUntilFull;
@@ -241,7 +239,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     }
 
     public java.awt.Component getListCellRendererComponent(JList list,
-            Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                                                           Object value, int index, boolean isSelected, boolean cellHasFocus) {
         TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement) value;
 
         // Set station name
@@ -297,18 +295,18 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
             // Set goto status.
             switch (trainOrders.gotoStatus) {
-            case TrainOrdersListModel.DONT_GOTO:
-                panelSingle.gotoIcon.setIcon(this.dontGoto);
-                break;
-            case TrainOrdersListModel.GOTO_AFTER_PRIORITY_ORDERS:
-                panelSingle.gotoIcon.setIcon(this.gotoAfterPriorityOrders);
-                break;
-            case TrainOrdersListModel.GOTO_NOW:
-                panelSingle.gotoIcon.setIcon(this.gotoNow);
-                break;
-            default:
-                throw new IllegalArgumentException(String
-                        .valueOf(trainOrders.gotoStatus));
+                case TrainOrdersListModel.DONT_GOTO:
+                    panelSingle.gotoIcon.setIcon(this.dontGoto);
+                    break;
+                case TrainOrdersListModel.GOTO_AFTER_PRIORITY_ORDERS:
+                    panelSingle.gotoIcon.setIcon(this.gotoAfterPriorityOrders);
+                    break;
+                case TrainOrdersListModel.GOTO_NOW:
+                    panelSingle.gotoIcon.setIcon(this.gotoNow);
+                    break;
+                default:
+                    throw new IllegalArgumentException(String
+                            .valueOf(trainOrders.gotoStatus));
             }
             panelSingle.gotoIcon.setPreferredSize(new Dimension(20, 20));
 

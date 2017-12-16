@@ -11,9 +11,8 @@ import freerails.world.top.World;
 
 /**
  * All moves that remove an item from a list should extend this class.
- * 
+ *
  * @author Luke
- * 
  */
 public class RemoveItemFromListMove implements ListMove {
     private static final long serialVersionUID = 3906091169698953521L;
@@ -46,7 +45,7 @@ public class RemoveItemFromListMove implements ListMove {
     }
 
     RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item,
-            FreerailsPrincipal p) {
+                           FreerailsPrincipal p) {
         this.item = item;
         this.listKey = k;
         this.index = i;

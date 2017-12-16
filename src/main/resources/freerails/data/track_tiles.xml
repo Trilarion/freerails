@@ -1,296 +1,306 @@
 <!DOCTYPE Tiles SYSTEM "track_tiles.dtd">
 <!--This file species the track and station types, and the legal track configurations for each of these types.-->
 <Tiles>
-   <TrackSet X="0" Y="0" Height="60" Width="60" Class="Track">
-      <TrackType type="standard track" X="0" Y="0" signalTower="false" doubleTrack="false" category="track" maxConsecuativePieces="-1" RGBvalue="000000" price="10000" maintenance="1000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="Urban" />
+    <TrackSet X="0" Y="0" Height="60" Width="60" Class="Track">
+        <TrackType type="standard track" X="0" Y="0" signalTower="false" doubleTrack="false" category="track"
+                   maxConsecuativePieces="-1" RGBvalue="000000" price="10000" maintenance="1000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="Urban"/>
 
-            <TerrainType name="Country" />
-            
-            <TerrainType name="Industry" />
-            
-            <TerrainType name="Resource" />
-            <TerrainType name="Special" />
-         </CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="Country"/>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TerrainType name="Industry"/>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TerrainType name="Resource"/>
+                <TerrainType name="Special"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
 
-            <TrackPieceTemplate trackTemplate="010010001">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="010010011">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="010010110">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-			<!-- 
-            <TrackPieceTemplate trackTemplate="010111010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-            <TrackPieceTemplate trackTemplate="010111000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-            
-            
-            -->
+                <TrackPieceTemplate trackTemplate="010010001">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="010011000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010010011">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="011010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010010110">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+                <!--
+                <TrackPieceTemplate trackTemplate="010111010">
+                   <ListOfLegalRoutesAcrossNode>
+                      <LegalRouteAcrossNode RouteTemplate="010011000" />
+                   </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010111000">
+                   <ListOfLegalRoutesAcrossNode>
+                      <LegalRouteAcrossNode RouteTemplate="010011000" />
+                   </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            
-         </ListOfTrackPieceTemplates>
-      </TrackType>
 
-      <TrackType type="double track" X="0" Y="15" signalTower="false" doubleTrack="true" category="track" maxConsecuativePieces="-1" RGBvalue="000001" price="20000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="Urban" />
+                -->
 
-            <TerrainType name="Country" />
+                <TrackPieceTemplate trackTemplate="010011000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TerrainType name="Special" />
-            <TerrainType name="Industry" />
-            
-            <TerrainType name="Resource" />
-         </CanOnlyBuildOnTheseTerrainTypes>
+                <TrackPieceTemplate trackTemplate="011010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
 
-            <TrackPieceTemplate trackTemplate="010010001">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+        <TrackType type="double track" X="0" Y="15" signalTower="false" doubleTrack="true" category="track"
+                   maxConsecuativePieces="-1" RGBvalue="000001" price="20000" maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="Urban"/>
 
-            <TrackPieceTemplate trackTemplate="010010011">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TerrainType name="Country"/>
 
-            <TrackPieceTemplate trackTemplate="010010110">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TerrainType name="Special"/>
+                <TerrainType name="Industry"/>
 
-            <TrackPieceTemplate trackTemplate="010111010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
+                <TerrainType name="Resource"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
 
-     
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-      <TrackType type="wooden trestle bridge" X="9" Y="2" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000003" price="10000" fixedCost="50000"  maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="River" />
-         </CanOnlyBuildOnTheseTerrainTypes>
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010010001">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
-      
-       <TrackType type="tunnel" X="9" Y="0" signalTower="false" doubleTrack="false" category="tunnel" maxConsecuativePieces="-1" RGBvalue="000002" price="40000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="Hill" />
-         </CanOnlyBuildOnTheseTerrainTypes>
+                <TrackPieceTemplate trackTemplate="010010011">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010010110">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
+                <TrackPieceTemplate trackTemplate="010111010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
 
-      <TrackType type="steel girder bridge" X="9" Y="4" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000004" price="10000" fixedCost="100000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="River" />
-         </CanOnlyBuildOnTheseTerrainTypes>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+        <TrackType type="wooden trestle bridge" X="9" Y="2" signalTower="false" doubleTrack="false" category="bridge"
+                   maxConsecuativePieces="-1" RGBvalue="000003" price="10000" fixedCost="50000" maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="River"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-      <TrackType type="stone masonry bridge" X="9" Y="6" signalTower="false" doubleTrack="false" category="bridge" maxConsecuativePieces="-1" RGBvalue="000005" price="10000" fixedCost="200000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="River" />
-         </CanOnlyBuildOnTheseTerrainTypes>
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+        <TrackType type="tunnel" X="9" Y="0" signalTower="false" doubleTrack="false" category="tunnel"
+                   maxConsecuativePieces="-1" RGBvalue="000002" price="40000" maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="Hill"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
-    
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-      <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" category="station" stationRadius="1" maxConsecuativePieces="-1" RGBvalue="000007" price="10000" fixedCost="50000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="Urban" />
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
 
-            <TerrainType name="Country" />
+        <TrackType type="steel girder bridge" X="9" Y="4" signalTower="false" doubleTrack="false" category="bridge"
+                   maxConsecuativePieces="-1" RGBvalue="000004" price="10000" fixedCost="100000" maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="River"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
 
-            <TerrainType name="Special" />
-            <TerrainType name="Industry" />
-            
-            <TerrainType name="Resource" />
-         </CanOnlyBuildOnTheseTerrainTypes>
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
+        <TrackType type="stone masonry bridge" X="9" Y="6" signalTower="false" doubleTrack="false" category="bridge"
+                   maxConsecuativePieces="-1" RGBvalue="000005" price="10000" fixedCost="200000" maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="River"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
 
-      <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="true" category="station" maxConsecuativePieces="-1"  stationRadius="2" RGBvalue="000008" price="10000" fixedCost="100000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="Urban" />
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-            <TerrainType name="Country" />
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
 
-            <TerrainType name="Special" />
-            <TerrainType name="Industry" />
-            
-            <TerrainType name="Resource" />
-         </CanOnlyBuildOnTheseTerrainTypes>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+        <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" category="station" stationRadius="1"
+                   maxConsecuativePieces="-1" RGBvalue="000007" price="10000" fixedCost="50000" maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="Urban"/>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
+                <TerrainType name="Country"/>
 
-      <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="true" category="station" maxConsecuativePieces="-1"  stationRadius="3" RGBvalue="000009" price="10000" fixedCost="200000" maintenance="2000">
-         <CanOnlyBuildOnTheseTerrainTypes>
-            <TerrainType name="Urban" />
+                <TerrainType name="Special"/>
+                <TerrainType name="Industry"/>
 
-            <TerrainType name="Country" />
+                <TerrainType name="Resource"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
 
-            <TerrainType name="Special" />
-            <TerrainType name="Industry" />
-            
-            <TerrainType name="Resource" />
-         </CanOnlyBuildOnTheseTerrainTypes>
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
 
-         <ListOfTrackPieceTemplates>
-            <TrackPieceTemplate trackTemplate="010010000">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="000111000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
 
-            <TrackPieceTemplate trackTemplate="010010010">
-               <ListOfLegalRoutesAcrossNode>
-                  <LegalRouteAcrossNode RouteTemplate="010011000" />
-               </ListOfLegalRoutesAcrossNode>
-            </TrackPieceTemplate>
-         </ListOfTrackPieceTemplates>
-      </TrackType>
+        <TrackType type="station" X="9" Y="12" signalTower="true" doubleTrack="true" category="station"
+                   maxConsecuativePieces="-1" stationRadius="2" RGBvalue="000008" price="10000" fixedCost="100000"
+                   maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="Urban"/>
 
-      
-   </TrackSet>
+                <TerrainType name="Country"/>
+
+                <TerrainType name="Special"/>
+                <TerrainType name="Industry"/>
+
+                <TerrainType name="Resource"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
+
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
+
+        <TrackType type="terminal" X="9" Y="14" signalTower="true" doubleTrack="true" category="station"
+                   maxConsecuativePieces="-1" stationRadius="3" RGBvalue="000009" price="10000" fixedCost="200000"
+                   maintenance="2000">
+            <CanOnlyBuildOnTheseTerrainTypes>
+                <TerrainType name="Urban"/>
+
+                <TerrainType name="Country"/>
+
+                <TerrainType name="Special"/>
+                <TerrainType name="Industry"/>
+
+                <TerrainType name="Resource"/>
+            </CanOnlyBuildOnTheseTerrainTypes>
+
+            <ListOfTrackPieceTemplates>
+                <TrackPieceTemplate trackTemplate="010010000">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="000111000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+
+                <TrackPieceTemplate trackTemplate="010010010">
+                    <ListOfLegalRoutesAcrossNode>
+                        <LegalRouteAcrossNode RouteTemplate="010011000"/>
+                    </ListOfLegalRoutesAcrossNode>
+                </TrackPieceTemplate>
+            </ListOfTrackPieceTemplates>
+        </TrackType>
+
+
+    </TrackSet>
 </Tiles>
 

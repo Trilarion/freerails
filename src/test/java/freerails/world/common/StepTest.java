@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for OneTileMoveVector.
- * 
+ *
  * @author Luke
  */
 public class StepTest extends TestCase {

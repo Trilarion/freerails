@@ -13,9 +13,8 @@ import freerails.world.top.ReadOnlyWorld;
 /**
  * Provides methods that find the nearest station in a given direction, used by
  * the select station popup window.
- * 
+ *
  * @author Luke
- * 
  */
 public class NearestStationFinder {
     public static final int NOT_FOUND = Integer.MIN_VALUE;

@@ -5,16 +5,12 @@
  */
 package freerails.client.top;
 
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 
 /**
  * Implementation of GUIComponentFactory that returns 'blank' components - used
  * for testing the layout of ClientJFrame.
- * 
+ *
  * @author Luke
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
@@ -40,7 +36,9 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
 
     private final JMenu brokerMenu;
 
-    /** Creates a new instance of GUIComponentFactoryTestImpl. */
+    /**
+     * Creates a new instance of GUIComponentFactoryTestImpl.
+     */
     public GUIComponentFactoryTestImpl() {
         JPanel mainmapjPanel;
 

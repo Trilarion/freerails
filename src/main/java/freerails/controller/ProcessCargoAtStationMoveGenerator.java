@@ -4,9 +4,6 @@
  */
 package freerails.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.world.accounts.DeliverCargoReceipt;
@@ -18,11 +15,13 @@ import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * This class generates Moves that pay the player for delivering the cargo.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class ProcessCargoAtStationMoveGenerator {
     /**
@@ -32,7 +31,7 @@ public class ProcessCargoAtStationMoveGenerator {
     private final static int MAGIC_NUMBER = 75;
 
     public static ArrayList<Move> processCargo(ReadOnlyWorld w,
-            CargoBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
+                                               CargoBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
         StationModel thisStation = (StationModel) w.get(p, KEY.STATIONS,
                 stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();

@@ -10,9 +10,8 @@ import freerails.world.top.ReadOnlyWorld;
 
 /**
  * Not yet implemented
- * 
+ *
  * @author Luke
- * 
  */
 public class FinancialMoveProducer {
     public static final Money IPO_SHARE_PRICE = new Money(5);

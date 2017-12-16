@@ -13,9 +13,8 @@ import freerails.world.top.World;
 /**
  * All Moves that replace an item in a list with another should extend this
  * class.
- * 
+ *
  * @author Luke
- * 
  */
 public class ChangeItemInListMove implements ListMove {
     private static final long serialVersionUID = -4457694821370844051L;
@@ -31,7 +30,7 @@ public class ChangeItemInListMove implements ListMove {
     private final FreerailsPrincipal principal;
 
     public ChangeItemInListMove(KEY k, int index, FreerailsSerializable before,
-            FreerailsSerializable after, FreerailsPrincipal p) {
+                                FreerailsSerializable after, FreerailsPrincipal p) {
         this.before = before;
         this.after = after;
         this.index = index;
@@ -106,7 +105,7 @@ public class ChangeItemInListMove implements ListMove {
     }
 
     protected MoveStatus move(FreerailsSerializable to,
-            FreerailsSerializable from, World w) {
+                              FreerailsSerializable from, World w) {
         MoveStatus ms = tryMove(to, from, w);
 
         if (ms.ok) {
@@ -132,7 +131,7 @@ public class ChangeItemInListMove implements ListMove {
     }
 
     protected MoveStatus tryMove(FreerailsSerializable to,
-            FreerailsSerializable from, World w) {
+                                 FreerailsSerializable from, World w) {
         if (index >= w.size(principal, listKey)) {
             return MoveStatus.moveFailed("w.size(listKey) is "
                     + w.size(principal, listKey) + " but index is " + index);

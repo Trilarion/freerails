@@ -2,11 +2,7 @@ package freerails.world.top;
 
 import freerails.util.Pair;
 import freerails.world.accounts.Transaction;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.FreerailsMutableSerializable;
-import freerails.world.common.FreerailsSerializable;
-import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 
@@ -49,8 +45,7 @@ import freerails.world.player.Player;
  * <p>
  * Code that loops through lists should handle null values gracefully
  * </p>
- * 
- * 
+ *
  * @author Luke
  * @author Rob
  */

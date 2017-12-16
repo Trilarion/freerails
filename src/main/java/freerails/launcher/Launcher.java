@@ -6,17 +6,6 @@
 
 package freerails.launcher;
 
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.BindException;
-import java.net.InetSocketAddress;
-import java.util.Properties;
-
-import javax.swing.ImageIcon;
-
 import freerails.client.top.GameLoop;
 import freerails.config.ClientConfig;
 import freerails.controller.ReportBugTextGenerator;
@@ -29,19 +18,22 @@ import freerails.network.SavedGamesManager;
 import freerails.server.SavedGamesManagerImpl;
 import freerails.server.ServerGameModelImpl;
 import freerails.util.GameModel;
+import org.apache.log4j.*;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.SimpleLayout;
+import javax.swing.*;
+import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.BindException;
+import java.net.InetSocketAddress;
+import java.util.Properties;
 
 /**
  * Launcher GUI for both the server and/or client.
- * 
+ * <p>
  * TODO The code in the switch statements needs reviewing.
- * 
+ *
  * @author rtuck99@users.sourceforge.net
  * @author Luke
  */
@@ -105,118 +97,19 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         int mode;
 
         switch (lp.getMode()) {
-        case LauncherPanel1.MODE_SINGLE_PLAYER:
-            try {
-
-                mode = cop.getScreenMode();
-
-                client = new GUIClient(cop.getPlayerName(), progressPanel,
-                        mode, cop.getDisplayMode());
-                if (isNewGame()) {
-                    initServer();
-                }
-                client.connect(server, cop.getPlayerName(), "password");
-
-                setServerGameModel();
-            } catch (IOException e) {
-                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                recover = true;
-            } finally {
-                if (recover) {
-                    cop.setControlsEnabled(true);
-                    prevButton.setEnabled(true);
-                    setButtonsVisible(true);
-                    currentPage = 1;
-                    cl.show(jPanel1, "1");
-                    return;
-                }
-            }
-            startThread(server, client);
-            break;
-        case LauncherPanel1.MODE_START_NETWORK_GAME:
-            // LL: I don't think this code ever executes now that there is a
-            // connected players screen.
-            try {
-                setServerGameModel();
-                currentPage = 3;
-                String[] playerNames = server.getPlayerNames();
-                playerNames = playerNames.length == 0 ? new String[] { "No players are connected." }
-                        : playerNames;
-                cp.setListOfPlayers(playerNames);
-                cl.show(jPanel1, "3");
-                setNextEnabled(false);
-            } catch (IOException e) {
-                // We end up here if an Exception was thrown when loading a
-                // saved game.
-                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                recover = true;
-            } finally {
-                if (recover) {
-                    cop.setControlsEnabled(true);
-                    prevButton.setEnabled(true);
-                    setNextEnabled(true);
-                    currentPage = 1;
-                    setButtonsVisible(true);
-                    cl.show(jPanel1, "1");
-                    return;
-                }
-            }
-
-            break;
-        case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
-            mode = cop.getScreenMode();
-            try {
-
-                InetSocketAddress serverInetAddress = cop
-                        .getRemoteServerAddress();
-                if (null == serverInetAddress) {
-                    throw new NullPointerException("Couldn't resolve hostname.");
-                }
-                String playerName = cop.getPlayerName();
-                client = new GUIClient(playerName, progressPanel, mode, cop
-                        .getDisplayMode());
-
-                String hostname = serverInetAddress.getHostName();
-                int port = serverInetAddress.getPort();
-                setInfoText("Connecting to server...", MSG_TYPE.INFO);
-                LogOnResponse logOnResponse = client.connect(hostname, port,
-                        playerName, "password");
-                if (logOnResponse.isSuccessful()) {
-                    setInfoText("Logged on and waiting for game to start.",
-                            MSG_TYPE.INFO);
-                    startThread(client);
-                } else {
-                    recover = true;
-                    setInfoText(logOnResponse.getMessage(), MSG_TYPE.WARNING);
-                }
-            } catch (IOException e) {
-                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                recover = true;
-            } catch (NullPointerException e) {
-                setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                recover = true;
-            } finally {
-                if (recover) {
-                    cop.setControlsEnabled(true);
-                    prevButton.setEnabled(true);
-                    setButtonsVisible(true);
-                    cl.show(jPanel1, "2");
-                    return;
-                }
-            }
-
-            break;
-        case LauncherPanel1.MODE_SERVER_ONLY:
-            if (msp.validateInput()) {
-                initServer();
+            case LauncherPanel1.MODE_SINGLE_PLAYER:
                 try {
-                    setServerGameModel();
 
-                    prepare2HostNetworkGame(msp.getServerPort());
-                    setNextEnabled(true);
-                } catch (NullPointerException e) {
-                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                    recover = true;
+                    mode = cop.getScreenMode();
+
+                    client = new GUIClient(cop.getPlayerName(), progressPanel,
+                            mode, cop.getDisplayMode());
+                    if (isNewGame()) {
+                        initServer();
+                    }
+                    client.connect(server, cop.getPlayerName(), "password");
+
+                    setServerGameModel();
                 } catch (IOException e) {
                     setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                     recover = true;
@@ -225,11 +118,110 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setButtonsVisible(true);
+                        currentPage = 1;
+                        cl.show(jPanel1, "1");
+                        return;
+                    }
+                }
+                startThread(server, client);
+                break;
+            case LauncherPanel1.MODE_START_NETWORK_GAME:
+                // LL: I don't think this code ever executes now that there is a
+                // connected players screen.
+                try {
+                    setServerGameModel();
+                    currentPage = 3;
+                    String[] playerNames = server.getPlayerNames();
+                    playerNames = playerNames.length == 0 ? new String[]{"No players are connected."}
+                            : playerNames;
+                    cp.setListOfPlayers(playerNames);
+                    cl.show(jPanel1, "3");
+                    setNextEnabled(false);
+                } catch (IOException e) {
+                    // We end up here if an Exception was thrown when loading a
+                    // saved game.
+                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                    recover = true;
+                } finally {
+                    if (recover) {
+                        cop.setControlsEnabled(true);
+                        prevButton.setEnabled(true);
+                        setNextEnabled(true);
+                        currentPage = 1;
+                        setButtonsVisible(true);
+                        cl.show(jPanel1, "1");
                         return;
                     }
                 }
 
-            }
+                break;
+            case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
+                mode = cop.getScreenMode();
+                try {
+
+                    InetSocketAddress serverInetAddress = cop
+                            .getRemoteServerAddress();
+                    if (null == serverInetAddress) {
+                        throw new NullPointerException("Couldn't resolve hostname.");
+                    }
+                    String playerName = cop.getPlayerName();
+                    client = new GUIClient(playerName, progressPanel, mode, cop
+                            .getDisplayMode());
+
+                    String hostname = serverInetAddress.getHostName();
+                    int port = serverInetAddress.getPort();
+                    setInfoText("Connecting to server...", MSG_TYPE.INFO);
+                    LogOnResponse logOnResponse = client.connect(hostname, port,
+                            playerName, "password");
+                    if (logOnResponse.isSuccessful()) {
+                        setInfoText("Logged on and waiting for game to start.",
+                                MSG_TYPE.INFO);
+                        startThread(client);
+                    } else {
+                        recover = true;
+                        setInfoText(logOnResponse.getMessage(), MSG_TYPE.WARNING);
+                    }
+                } catch (IOException e) {
+                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                    recover = true;
+                } catch (NullPointerException e) {
+                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                    recover = true;
+                } finally {
+                    if (recover) {
+                        cop.setControlsEnabled(true);
+                        prevButton.setEnabled(true);
+                        setButtonsVisible(true);
+                        cl.show(jPanel1, "2");
+                        return;
+                    }
+                }
+
+                break;
+            case LauncherPanel1.MODE_SERVER_ONLY:
+                if (msp.validateInput()) {
+                    initServer();
+                    try {
+                        setServerGameModel();
+
+                        prepare2HostNetworkGame(msp.getServerPort());
+                        setNextEnabled(true);
+                    } catch (NullPointerException e) {
+                        setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                        recover = true;
+                    } catch (IOException e) {
+                        setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                        recover = true;
+                    } finally {
+                        if (recover) {
+                            cop.setControlsEnabled(true);
+                            prevButton.setEnabled(true);
+                            setButtonsVisible(true);
+                            return;
+                        }
+                    }
+
+                }
         }// End of switch statement
     }
 
@@ -251,9 +243,11 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         return msp2.getSelection().equals(SelectMapJPanel.Selection.NEW_GAME);
     }
 
-    /** Starts the client and server in the same thread. */
+    /**
+     * Starts the client and server in the same thread.
+     */
     private static void startThread(final FreerailsGameServer server,
-            final GUIClient client) {
+                                    final GUIClient client) {
         startThread(server);
         try {
             Runnable run = new Runnable() {
@@ -264,7 +258,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         server.update();
                     }
 
-                    GameModel[] models = new GameModel[] { client };
+                    GameModel[] models = new GameModel[]{client};
                     ScreenHandler screenHandler = client.getScreenHandler();
                     GameLoop gameLoop = new GameLoop(screenHandler, models);
                     // screenHandler.apply();
@@ -280,7 +274,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }
     }
 
-    /** Starts the client in a new thread. */
+    /**
+     * Starts the client in a new thread.
+     */
     private void startThread(final GUIClient guiClient) {
         try {
             Runnable run = new Runnable() {
@@ -294,7 +290,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                             // do nothing
                         }
                     }
-                    GameModel[] models = new GameModel[] { guiClient };
+                    GameModel[] models = new GameModel[]{guiClient};
                     ScreenHandler screenHandler = guiClient.getScreenHandler();
                     GameLoop gameLoop = new GameLoop(screenHandler, models);
                     gameLoop.run();
@@ -309,7 +305,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }
     }
 
-    /** Starts the server in a new thread. */
+    /**
+     * Starts the server in a new thread.
+     */
     private static void startThread(final FreerailsGameServer server) {
         try {
             Runnable r = new Runnable() {
@@ -396,9 +394,8 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     /**
      * Shows GUI. If <code>quickstart</code> is <code>true</code> runs the
      * game.
-     * 
-     * @param quickstart
-     *            boolean
+     *
+     * @param quickstart boolean
      */
     public void start(boolean quickstart) {
         setVisible(true);
@@ -407,7 +404,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }
     }
 
-    /** Starts a thread listening for new connections. */
+    /**
+     * Starts a thread listening for new connections.
+     */
     private void prepare2HostNetworkGame(int port) throws IOException {
         loadProps();
         if (isNewGame()) {
@@ -539,21 +538,21 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         nextIsStart = false;
         hideAllMessages();
         switch (currentPage) {
-        case 1:
-            cl.previous(jPanel1);
-            currentPage--;
-            prevButton.setEnabled(false);
-            break;
-        case 2:
-            LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
-            if (panel.getMode() == LauncherPanel1.MODE_JOIN_NETWORK_GAME) {
-                currentPage = 0;
-                cl.show(jPanel1, "0");
-                prevButton.setEnabled(false);
-            } else {
-                currentPage--;
+            case 1:
                 cl.previous(jPanel1);
-            }
+                currentPage--;
+                prevButton.setEnabled(false);
+                break;
+            case 2:
+                LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
+                if (panel.getMode() == LauncherPanel1.MODE_JOIN_NETWORK_GAME) {
+                    currentPage = 0;
+                    cl.show(jPanel1, "0");
+                    prevButton.setEnabled(false);
+                } else {
+                    currentPage--;
+                    cl.previous(jPanel1);
+                }
         }
     }// GEN-LAST:event_prevButtonActionPerformed
 
@@ -566,125 +565,125 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             hideAllMessages();
 
             switch (currentPage) {
-            case 0:
-                msp.validateInput();
-                /* Initial game selection page */
-                switch (panel.getMode()) {
-                case LauncherPanel1.MODE_SERVER_ONLY:
-                    /* go to map selection screen */
-                    cl.next(jPanel1);
-                    msp.setServerPortPanelVisible(true);
+                case 0:
+                    msp.validateInput();
+                    /* Initial game selection page */
+                    switch (panel.getMode()) {
+                        case LauncherPanel1.MODE_SERVER_ONLY:
+                            /* go to map selection screen */
+                            cl.next(jPanel1);
+                            msp.setServerPortPanelVisible(true);
 
-                    currentPage++;
+                            currentPage++;
+                            break;
+                        case LauncherPanel1.MODE_SINGLE_PLAYER:
+                            /* go to map selection screen */
+                            cl.next(jPanel1);
+                            msp.setServerPortPanelVisible(false);
+                            cop.setRemoteServerPanelVisible(false);
+                            currentPage++;
+                            break;
+                        case LauncherPanel1.MODE_START_NETWORK_GAME:
+                            /* go to map selection screen */
+                            msp.setServerPortPanelVisible(true);
+                            cop.setRemoteServerPanelVisible(false);
+                            cl.next(jPanel1);
+                            currentPage++;
+                            break;
+                        case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
+                            /* client display options */
+                            nextIsStart = true;
+                            cl.show(jPanel1, "2");
+                            currentPage = 2;
+                            msp.setServerPortPanelVisible(false);
+                            cop.setRemoteServerPanelVisible(true);
+                            cop.limitPlayerNames(null);
+                            break;
+                    }
+                    prevButton.setEnabled(true);
                     break;
-                case LauncherPanel1.MODE_SINGLE_PLAYER:
-                    /* go to map selection screen */
-                    cl.next(jPanel1);
-                    msp.setServerPortPanelVisible(false);
-                    cop.setRemoteServerPanelVisible(false);
-                    currentPage++;
-                    break;
-                case LauncherPanel1.MODE_START_NETWORK_GAME:
-                    /* go to map selection screen */
-                    msp.setServerPortPanelVisible(true);
-                    cop.setRemoteServerPanelVisible(false);
-                    cl.next(jPanel1);
-                    currentPage++;
-                    break;
-                case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
-                    /* client display options */
-                    nextIsStart = true;
-                    cl.show(jPanel1, "2");
-                    currentPage = 2;
-                    msp.setServerPortPanelVisible(false);
-                    cop.setRemoteServerPanelVisible(true);
-                    cop.limitPlayerNames(null);
-                    break;
-                }
-                prevButton.setEnabled(true);
-                break;
-            case 1:
-                /* map selection page */
-                if (panel.getMode() == LauncherPanel1.MODE_SERVER_ONLY) {
-                    if (msp.validateInput()) {
-                        prevButton.setEnabled(false);
-                        try {
-                            if (!isNewGame()) {
-                                initServer();
-                                server
-                                        .loadgame(ServerControlInterface.FREERAILS_SAV);
+                case 1:
+                    /* map selection page */
+                    if (panel.getMode() == LauncherPanel1.MODE_SERVER_ONLY) {
+                        if (msp.validateInput()) {
+                            prevButton.setEnabled(false);
+                            try {
+                                if (!isNewGame()) {
+                                    initServer();
+                                    server
+                                            .loadgame(ServerControlInterface.FREERAILS_SAV);
+                                }
+                                prepare2HostNetworkGame(msp.getServerPort());
+                            } catch (BindException be) {
+                                // When the port is already in use.
+                                prevButton.setEnabled(true);
+                                setInfoText(be.getMessage(), MSG_TYPE.WARNING);
                             }
-                            prepare2HostNetworkGame(msp.getServerPort());
-                        } catch (BindException be) {
-                            // When the port is already in use.
-                            prevButton.setEnabled(true);
-                            setInfoText(be.getMessage(), MSG_TYPE.WARNING);
                         }
-                    }
-                } else {
-                    if (isNewGame()) {
-                        cop.limitPlayerNames(null);
                     } else {
-                        initServer();
-                        server.loadgame(msp.getSaveGameName());
-                        String[] playernames = server.getPlayerNames();
-                        cop.limitPlayerNames(playernames);
+                        if (isNewGame()) {
+                            cop.limitPlayerNames(null);
+                        } else {
+                            initServer();
+                            server.loadgame(msp.getSaveGameName());
+                            String[] playernames = server.getPlayerNames();
+                            cop.limitPlayerNames(playernames);
+                        }
+
+                        nextIsStart = true;
+                        prevButton.setEnabled(true);
+                        setNextEnabled(true);
+                        currentPage++;
+                        cl.next(jPanel1);
                     }
 
-                    nextIsStart = true;
-                    prevButton.setEnabled(true);
-                    setNextEnabled(true);
-                    currentPage++;
-                    cl.next(jPanel1);
-                }
-
-                break;
-            case 2:
-                /* display mode selection */
-                if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
-                    if (msp.validateInput()) {
-                        prevButton.setEnabled(false);
-                        int mode = cop.getScreenMode();
-
-                        prepare2HostNetworkGame(msp.getServerPort());
-                        client = new GUIClient(cop.getPlayerName(),
-                                progressPanel, mode, cop.getDisplayMode());
-                        client.connect(server, cop.getPlayerName(), "password");
-                    }
-                } else {
-
-                    prevButton.setEnabled(false);
-                    cop.setControlsEnabled(false);
-                    startGame();
-                }
-                break;
-            case 3:
-                try {
-                    /* Connection status screen */
-                    prevButton.setEnabled(false);
-                    setServerGameModel();// TODO catch exception
+                    break;
+                case 2:
+                    /* display mode selection */
                     if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
-                        startThread(server, client);
-                        cl.show(jPanel1, "4");
+                        if (msp.validateInput()) {
+                            prevButton.setEnabled(false);
+                            int mode = cop.getScreenMode();
+
+                            prepare2HostNetworkGame(msp.getServerPort());
+                            client = new GUIClient(cop.getPlayerName(),
+                                    progressPanel, mode, cop.getDisplayMode());
+                            client.connect(server, cop.getPlayerName(), "password");
+                        }
                     } else {
-                        /* Start a stand alone server. */
-                        startThread(server);
-                        setVisible(false);
+
+                        prevButton.setEnabled(false);
+                        cop.setControlsEnabled(false);
+                        startGame();
                     }
-                    setButtonsVisible(false);
-                    setNextEnabled(false);
-                } catch (IOException e) {
-                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                    cop.setControlsEnabled(true);
-                    prevButton.setEnabled(true);
-                    setNextEnabled(true);
-                    currentPage = 1;
-                    cl.show(jPanel1, "1");
-                    return;
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(String.valueOf(currentPage));
+                    break;
+                case 3:
+                    try {
+                        /* Connection status screen */
+                        prevButton.setEnabled(false);
+                        setServerGameModel();// TODO catch exception
+                        if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
+                            startThread(server, client);
+                            cl.show(jPanel1, "4");
+                        } else {
+                            /* Start a stand alone server. */
+                            startThread(server);
+                            setVisible(false);
+                        }
+                        setButtonsVisible(false);
+                        setNextEnabled(false);
+                    } catch (IOException e) {
+                        setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                        cop.setControlsEnabled(true);
+                        prevButton.setEnabled(true);
+                        setNextEnabled(true);
+                        currentPage = 1;
+                        cl.show(jPanel1, "1");
+                        return;
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.valueOf(currentPage));
             }
         } catch (Exception e) {
             exit(e);
@@ -695,7 +694,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         ReportBugTextGenerator.unexpectedException(e);
     }
 
-    /** Exit the Application. */
+    /**
+     * Exit the Application.
+     */
     private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
         System.exit(0);
     }// GEN-LAST:event_exitForm
@@ -714,20 +715,20 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     public void setInfoText(String text, MSG_TYPE status) {
         infoLabel.setText(text);
         switch (status) {
-        case ERROR:
-            infoLabel.setIcon(errorIcon);
-            nextButton.setEnabled(false);
-            break;
-        case INFO:
-            infoLabel.setIcon(infoIcon);
-            nextButton.setEnabled(true);
-            break;
-        case WARNING:
-            infoLabel.setIcon(warningIcon);
-            nextButton.setEnabled(true);
-            break;
-        default:
-            throw new IllegalArgumentException(String.valueOf(status));
+            case ERROR:
+                infoLabel.setIcon(errorIcon);
+                nextButton.setEnabled(false);
+                break;
+            case INFO:
+                infoLabel.setIcon(infoIcon);
+                nextButton.setEnabled(true);
+                break;
+            case WARNING:
+                infoLabel.setIcon(warningIcon);
+                nextButton.setEnabled(true);
+                break;
+            default:
+                throw new IllegalArgumentException(String.valueOf(status));
         }
 
     }

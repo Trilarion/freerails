@@ -1,7 +1,5 @@
 package freerails.controller;
 
-import java.util.LinkedList;
-
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -9,15 +7,16 @@ import freerails.world.top.NonNullElements;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldIterator;
 
+import java.util.LinkedList;
+
 /**
  * Class to verify that the chosen name for a station hasn't already been taken
  * by another station. If the name has been used, a minor alteration in the name
  * is required, by adding perhaps "Junction" or "Siding" to the name.
- * 
+ *
  * @author Scott Bennett
- * 
+ * <p>
  * Date: 12th April 2003
- * 
  */
 public class VerifyStationName {
     private final ReadOnlyWorld w;

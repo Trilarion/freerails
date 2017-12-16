@@ -4,10 +4,10 @@
  */
 package freerails.util;
 
+import junit.framework.TestCase;
+
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import junit.framework.TestCase;
 
 public class List3DDiffTest extends TestCase {
 

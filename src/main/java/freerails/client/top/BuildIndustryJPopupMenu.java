@@ -4,22 +4,10 @@
  */
 package freerails.client.top;
 
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Action;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.view.View;
 import freerails.controller.ModelRoot;
-import freerails.move.AddTransactionMove;
-import freerails.move.ChangeTileMove;
-import freerails.move.CompositeMove;
-import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.*;
 import freerails.world.accounts.AddItemTransaction;
 import freerails.world.accounts.Transaction;
 import freerails.world.common.Money;
@@ -27,13 +15,17 @@ import freerails.world.terrain.TerrainType;
 import freerails.world.top.NonNullElements;
 import freerails.world.top.SKEY;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * A JPopupMenu that displays the list of industries that can be built. This
  * class contains the code that generates and dispatches a ChangeTileMove when
  * the player clicks on the menu.
- * 
+ *
  * @author Luke
- * 
  */
 public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
     private static final long serialVersionUID = 3689636912575165749L;
@@ -46,7 +38,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
     }
 
     public void setup(final ModelRoot modelRoot, RenderersRoot vl,
-            Action closeAction) {
+                      Action closeAction) {
         this.removeAll();
 
         final NonNullElements it = new NonNullElements(SKEY.TERRAIN_TYPES,

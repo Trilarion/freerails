@@ -6,9 +6,8 @@ import freerails.world.common.Step;
 
 /**
  * Represents the track connecting two adjacent tiles.
- * 
+ *
  * @author Luke
- * 
  */
 public class TrackSection implements FreerailsSerializable {
 

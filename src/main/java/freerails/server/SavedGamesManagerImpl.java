@@ -4,30 +4,21 @@
  */
 package freerails.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import org.apache.log4j.Logger;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 import freerails.controller.ServerControlInterface;
 import freerails.network.NewGameMessage2Server;
 import freerails.network.SavedGamesManager;
 import freerails.util.FreerailsProgressMonitor;
+import org.apache.log4j.Logger;
+
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * A SavedGamesManager reads and writes gzipped saved games to the working
  * directory.
- * 
+ *
  * @author Luke
- * 
  */
 class SavFileFilter implements FilenameFilter {
     public boolean accept(File dir, String name) {

@@ -5,13 +5,13 @@
  */
 package freerails.world.common;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * Lets the caller access a series of Points as a series of IntLines.
- * 
+ *
  * @author Luke Lindsay
  */
 public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
@@ -25,7 +25,9 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
         return new FreerailsPathIteratorImpl(l, false);
     }
 
-    /** Creates new FreerailsPathIteratorImpl */
+    /**
+     * Creates new FreerailsPathIteratorImpl
+     */
     public FreerailsPathIteratorImpl(List<Point> l, boolean f) {
         points = l;
         forwards = f;

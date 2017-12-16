@@ -1,19 +1,17 @@
 package freerails.controller;
 
+import freerails.util.IntArray;
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import freerails.util.IntArray;
-
-import org.apache.log4j.Logger;
-
 /**
  * A simple A* pathfinder implementation. It uses int's to avoid the cost of
  * object creation and garbage collection. 26-Nov-2002
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class SimpleAStarPathFinder implements Serializable,
         IncrementalPathFinder {
@@ -32,7 +30,9 @@ public class SimpleAStarPathFinder implements Serializable,
 
     private int status = SEARCH_NOT_STARTED;
 
-    /** Note, IntArray is not Serializable. */
+    /**
+     * Note, IntArray is not Serializable.
+     */
     private transient IntArray path = null;
 
     private int bestPath;
@@ -52,9 +52,9 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     public int findstep(int currentPosition, int[] targets,
-            GraphExplorer tempExplorer) {
+                        GraphExplorer tempExplorer) {
         try {
-            return findpath(new int[] { currentPosition }, targets,
+            return findpath(new int[]{currentPosition}, targets,
                     tempExplorer).get(0);
         } catch (PathNotFoundException e) {
             return PATH_NOT_FOUND;
@@ -62,7 +62,7 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     public IntArray findpath(int[] currentPosition, int[] targets,
-            GraphExplorer e) throws PathNotFoundException {
+                             GraphExplorer e) throws PathNotFoundException {
         if (logger.isDebugEnabled()) {
             logger.debug(currentPosition.length + " starting points; "
                     + targets.length + " targets.");
@@ -199,7 +199,7 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     public void setupSearch(int[] currentPosition, int[] targets,
-            GraphExplorer e) throws PathNotFoundException {
+                            GraphExplorer e) throws PathNotFoundException {
         abandonSearch();
 
         explorer = e;

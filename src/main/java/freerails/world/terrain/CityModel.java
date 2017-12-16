@@ -1,7 +1,7 @@
 /**
  * @author Scott Bennett
  * Date 31st March 2003
- *
+ * <p>
  * Class for a city. Simply storing the city name and x & y co-ords.
  * Possible potential for expansion?? Initial size of city, growth rate etc.???
  */
@@ -11,7 +11,7 @@ import freerails.world.common.FreerailsSerializable;
 
 /**
  * A city.
- * 
+ *
  * @author Luke
  */
 public class CityModel implements FreerailsSerializable {

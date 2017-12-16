@@ -5,17 +5,17 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Image;
-import java.io.File;
-
 import freerails.client.common.ImageManager;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 
+import java.awt.*;
+import java.io.File;
+
 /**
  * This class encapsulates the visible properties of a tile.
- * 
+ *
  * @author Luke Lindsay
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
@@ -45,7 +45,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     public void renderTile(java.awt.Graphics g, int screenX, int screenY,
-            int mapX, int mapY, ReadOnlyWorld w) {
+                           int mapX, int mapY, ReadOnlyWorld w) {
         Image icon = this.getIcon(mapX, mapY, w);
 
         if (null != icon) {

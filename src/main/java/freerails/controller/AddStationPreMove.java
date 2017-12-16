@@ -4,15 +4,7 @@
  */
 package freerails.controller;
 
-import java.util.NoSuchElementException;
-
-import freerails.move.AddItemToListMove;
-import freerails.move.AddStationMove;
-import freerails.move.ChangeTrackPieceCompositeMove;
-import freerails.move.ChangeTrackPieceMove;
-import freerails.move.CompositeMove;
-import freerails.move.Move;
-import freerails.move.TrackMoveTransactionsGenerator;
+import freerails.move.*;
 import freerails.world.common.ImList;
 import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
@@ -25,11 +17,12 @@ import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
 
+import java.util.NoSuchElementException;
+
 /**
  * Generates a move that adds or upgrades a station.
- * 
+ *
  * @author Luke
- * 
  */
 public class AddStationPreMove implements PreMove {
 
@@ -70,19 +63,19 @@ public class AddStationPreMove implements PreMove {
     }
 
     private AddStationPreMove(ImPoint p, int trackRule,
-            FreerailsPrincipal principal) {
+                              FreerailsPrincipal principal) {
         this.p = p;
         this.ruleNumber = trackRule;
         this.principal = principal;
     }
 
     public static AddStationPreMove newStation(ImPoint p, int trackRule,
-            FreerailsPrincipal principal) {
+                                               FreerailsPrincipal principal) {
         return new AddStationPreMove(p, trackRule, principal);
     }
 
     public static AddStationPreMove upgradeStation(ImPoint p, int trackRule,
-            FreerailsPrincipal principal) {
+                                                   FreerailsPrincipal principal) {
         return new AddStationPreMove(p, trackRule, principal);
     }
 

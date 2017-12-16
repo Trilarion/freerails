@@ -1,11 +1,5 @@
 package freerails.client.renderer;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.util.Iterator;
-
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.Constants;
@@ -15,12 +9,14 @@ import freerails.world.top.WorldDiffs;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackPiece;
 
+import java.awt.*;
+import java.util.Iterator;
+
 /**
  * This class draws the track being build.
- * 
+ *
  * @author MystiqueAgent
  * @author Luke
- * 
  */
 public class BuildTrackRenderer implements Painter {
     public static final int BIG_DOT_WIDTH = 12;
@@ -35,7 +31,7 @@ public class BuildTrackRenderer implements Painter {
     private RenderersRoot rr;
 
     public BuildTrackRenderer(RenderersRoot trackPieceViewList,
-            ModelRoot modelRoot) {
+                              ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
         this.rr = trackPieceViewList;
 
@@ -58,7 +54,7 @@ public class BuildTrackRenderer implements Painter {
         WorldDiffs worldDiffs = getWorldDiffs();
         if (null != worldDiffs) {
             for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
-                    .hasNext();) {
+                    .hasNext(); ) {
                 ImPoint point = iter.next();
                 FreerailsTile fp = (FreerailsTile) worldDiffs.getTile(point.x,
                         point.y);
@@ -80,7 +76,7 @@ public class BuildTrackRenderer implements Painter {
              * been removed.
              */
             for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
-                    .hasNext();) {
+                    .hasNext(); ) {
                 ImPoint p = iter.next();
                 int x = p.x * tileSize.width
                         + (tileSize.width - SMALL_DOT_WIDTH) / 2;

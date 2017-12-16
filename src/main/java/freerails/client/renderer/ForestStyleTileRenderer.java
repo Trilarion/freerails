@@ -5,28 +5,28 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Image;
-import java.io.IOException;
-
 import freerails.client.common.BinaryNumberFormatter;
 import freerails.client.common.ImageManager;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 
+import java.awt.*;
+import java.io.IOException;
+
 /**
  * Looks to see whether the tiles to the left and right of the same type when
  * deciding which tile icon to use.
- * 
+ *
  * @author Luke Lindsay
  */
 final public class ForestStyleTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {
-    private static final int[] X_LOOK_AT = { -1, 1 };
+    private static final int[] X_LOOK_AT = {-1, 1};
 
-    private static final int[] Y_LOOK_AT = { 0, 0 };
+    private static final int[] Y_LOOK_AT = {0, 0};
 
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
-            TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+                                   TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
         this.setTileIcons(new Image[4]);
 

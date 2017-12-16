@@ -5,22 +5,6 @@
  */
 package freerails.client.view;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.util.StringTokenizer;
-
-import javax.swing.SwingUtilities;
-import javax.swing.event.MouseInputAdapter;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.renderer.MapRenderer;
@@ -29,12 +13,18 @@ import freerails.controller.ModelRoot;
 import freerails.world.Constants;
 import freerails.world.common.ImPoint;
 
+import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
 /**
  * Displays the map, the cursor, and user messages (which are stored on the
  * ModelRoot under the keys QUICK_MESSAGE and PERMANENT_MESSAGE).
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 final public class MapViewJComponentConcrete extends MapViewJComponent
         implements ModelRootListener {
@@ -56,7 +46,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
      */
     private String message = null;
 
-    /** Time at which to stop displaying the current user message. */
+    /**
+     * Time at which to stop displaying the current user message.
+     */
     private long displayMessageUntil = 0;
 
     private FreerailsCursor mapCursor;

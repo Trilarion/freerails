@@ -4,15 +4,14 @@
  */
 package freerails.client.common;
 
-import java.awt.Image;
+import java.awt.*;
 import java.io.IOException;
 
 /**
  * This interface defines methods for loading and producing
  * scaled images whose quality may be controlled.
- * 
+ *
  * @author Luke
- * 
  */
 public interface ImageManager {
 

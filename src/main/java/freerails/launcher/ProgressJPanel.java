@@ -10,7 +10,7 @@ import freerails.util.FreerailsProgressMonitor;
 
 /**
  * A JPanel that displays a splash screen and a progress bar.
- * 
+ *
  * @author Luke
  */
 public class ProgressJPanel extends javax.swing.JPanel implements
@@ -49,7 +49,9 @@ public class ProgressJPanel extends javax.swing.JPanel implements
         getTopLevelAncestor().setVisible(false);
     }
 
-    /** Creates new form ProgressJPanel */
+    /**
+     * Creates new form ProgressJPanel
+     */
     public ProgressJPanel(LauncherInterface owner) {
         this.owner = owner;
         initComponents();

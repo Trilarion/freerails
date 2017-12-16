@@ -1,19 +1,16 @@
 package freerails.client.renderer;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ModelRoot.Value;
 import freerails.world.Constants;
 
+import java.awt.*;
+
 /**
  * This class draws the radius of a station on the map.
- * 
+ *
  * @author Luke
  */
 public class StationRadiusRenderer implements Painter {

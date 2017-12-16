@@ -4,12 +4,6 @@
  */
 package freerails.launcher;
 
-import java.awt.DisplayMode;
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.swing.JFrame;
-
 import freerails.client.common.ModelRootImpl;
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.top.GUIComponentFactoryImpl;
@@ -17,9 +11,9 @@ import freerails.client.top.GameLoop;
 import freerails.client.top.RenderersRootImpl;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ModelRoot;
+import freerails.controller.ModelRoot.Property;
 import freerails.controller.ReportBugTextGenerator;
 import freerails.controller.ScreenHandler;
-import freerails.controller.ModelRoot.Property;
 import freerails.network.FreerailsClient;
 import freerails.network.FreerailsGameServer;
 import freerails.network.SavedGamesManager;
@@ -34,11 +28,15 @@ import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.World;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.Serializable;
+
 /**
  * A swing freerails client.
- * 
+ *
  * @author Luke
- * 
  */
 public class GUIClient extends FreerailsClient implements
         FreerailsProgressMonitor {
@@ -68,7 +66,7 @@ public class GUIClient extends FreerailsClient implements
     private RenderersRoot vl;
 
     public GUIClient(String name, FreerailsProgressMonitor fm, int screenMode,
-            DisplayMode dm) throws IOException {
+                     DisplayMode dm) throws IOException {
         this.name = name;
         this.monitor = null == fm ? this : fm;
         // Set up model root and action root.
@@ -166,12 +164,12 @@ public class GUIClient extends FreerailsClient implements
     public void setProperty(ClientProperty propertyName, Serializable value) {
         super.setProperty(propertyName, value);
         switch (propertyName) {
-        case SAVED_GAMES:
-            modelRoot.setProperty(Property.SAVED_GAMES_LIST, value);
-            break;
+            case SAVED_GAMES:
+                modelRoot.setProperty(Property.SAVED_GAMES_LIST, value);
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -193,7 +191,7 @@ public class GUIClient extends FreerailsClient implements
             server.update();
         }
 
-        GameModel[] models = new GameModel[] { this, server };
+        GameModel[] models = new GameModel[]{this, server};
 
         // Start the game loop
         GameLoop gameLoop = new GameLoop(screenHandler, models);

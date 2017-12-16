@@ -4,10 +4,6 @@
  */
 package freerails.controller;
 
-import static freerails.world.common.Step.EAST;
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.READY;
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
@@ -17,26 +13,21 @@ import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoBundle;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.GameTime;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Demand4Cargo;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.MutableSchedule;
-import freerails.world.train.Schedule;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainMotion;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.*;
 
-/** Unit test for MoveTrainPreMove, tests stopping at stations. */
+import static freerails.world.common.Step.EAST;
+import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.*;
+
+/**
+ * Unit test for MoveTrainPreMove, tests stopping at stations.
+ */
 public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     TrackMoveProducer trackBuilder;
@@ -126,7 +117,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         return step;
     }
 
-    /** Test that when the train arrives at a non station tile it keeps moving. */
+    /**
+     * Test that when the train arrives at a non station tile it keeps moving.
+     */
     public void testStops1() {
 
         for (int i = 0; i < 5; i++) {
@@ -200,7 +193,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     }
 
-    /** Adds the specified amount of cargo #0 to the specified station. */
+    /**
+     * Adds the specified amount of cargo #0 to the specified station.
+     */
     private void addCargoAtStation(int stationId, int amount) {
 
         CargoBatch cb = new CargoBatch(0, 6, 6, 0, stationId);
@@ -339,7 +334,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     }
 
-    /** Test that a waiting train whose orders change behaves correctly. */
+    /**
+     * Test that a waiting train whose orders change behaves correctly.
+     */
     public void testStops6() {
         PositionOnTrack pot;
         TrainMotion tm;

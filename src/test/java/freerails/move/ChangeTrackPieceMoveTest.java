@@ -8,22 +8,13 @@ package freerails.move;
 
 import freerails.world.common.ImPoint;
 import freerails.world.player.Player;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
-import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldImpl;
-import freerails.world.track.FreerailsTile;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackPieceImpl;
-import freerails.world.track.TrackRule;
+import freerails.world.top.*;
+import freerails.world.track.*;
 
 /**
  * JUnit test.
- * 
+ *
  * @author Luke
- * 
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     public ChangeTrackPieceMoveTest(String testName) {
@@ -130,7 +121,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     protected void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece,
-            TrackPiece newTrackPiece) {
+                                        TrackPiece newTrackPiece) {
         TrackMove move;
         MoveStatus moveStatus;
 

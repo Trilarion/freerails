@@ -3,16 +3,6 @@
  */
 package freerails.client.view;
 
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.renderer.TrackPieceRenderer;
 import freerails.controller.ModelRoot;
@@ -26,6 +16,13 @@ import freerails.world.top.SKEY;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * This class provides the UI model for building a station. The mode of
  * operation is as follows:
@@ -36,7 +33,7 @@ import freerails.world.track.TrackRule;
  * <li>call actionPerformed on the build Action
  * <li> alternatively, call actionPerformed on the cancel Action
  * </ol>
- * 
+ *
  * @author rob
  */
 public class StationBuildModel {

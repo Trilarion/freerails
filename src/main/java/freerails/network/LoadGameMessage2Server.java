@@ -9,9 +9,8 @@ import freerails.controller.ServerControlInterface;
 
 /**
  * Request to load a game.
- * 
+ *
  * @author Luke
- * 
  */
 public class LoadGameMessage2Server implements Message2Server {
     private static final long serialVersionUID = 3256726186552930869L;

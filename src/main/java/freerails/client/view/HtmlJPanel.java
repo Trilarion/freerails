@@ -6,6 +6,11 @@
 
 package freerails.client.view;
 
+import freerails.client.renderer.RenderersRoot;
+import freerails.controller.ModelRoot;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -15,16 +20,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
-
-import javax.swing.Action;
-
-import freerails.client.renderer.RenderersRoot;
-import freerails.controller.ModelRoot;
 
 /**
  * This JPanel displays a HTML document read from a URL.
- * 
+ *
  * @author Luke
  */
 public class HtmlJPanel extends javax.swing.JPanel implements View {
@@ -106,7 +105,9 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         this.done.setAction(closeAction);
     }
 
-    /** Load the help text from file. */
+    /**
+     * Load the help text from file.
+     */
     String loadText(final URL htmlUrl) {
         try {
             InputStream in = htmlUrl.openStream();

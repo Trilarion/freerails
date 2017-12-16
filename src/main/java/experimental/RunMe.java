@@ -5,14 +5,14 @@
  */
 package experimental;
 
-import javax.swing.JFrame;
-
 import freerails.client.top.GameLoop;
 import freerails.controller.ScreenHandler;
 
+import javax.swing.*;
+
 /**
  * Tests that ClientJFrame and ScreenHandler work together.
- * 
+ *
  * @author Luke Lindsay
  */
 public class RunMe {

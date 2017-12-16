@@ -8,9 +8,8 @@ import freerails.world.common.PositionOnTrack;
 
 /**
  * Exposes the path of a train. TODO needs better comment
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class TrainPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256999977816502584L;

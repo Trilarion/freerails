@@ -1,46 +1,13 @@
 package freerails.client.top;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Random;
-
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
 import freerails.client.common.ActionAdapter;
-import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ActionAdapter.MappedButtonModel;
+import freerails.client.common.ModelRootImpl;
 import freerails.client.renderer.BuildTrackController;
 import freerails.client.renderer.MapRenderer;
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.renderer.ZoomedOutMapRenderer;
-import freerails.client.view.ActionRoot;
-import freerails.client.view.CashJLabel;
-import freerails.client.view.DateJLabel;
-import freerails.client.view.DetailMapRenderer;
-import freerails.client.view.DialogueBoxController;
-import freerails.client.view.MainMapAndOverviewMapMediator;
-import freerails.client.view.MapViewJComponentConcrete;
-import freerails.client.view.OverviewMapJComponent;
-import freerails.client.view.RHSJTabPane;
-import freerails.client.view.ServerControlModel;
-import freerails.client.view.StationPlacementCursor;
+import freerails.client.view.*;
 import freerails.controller.ModelRoot;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.move.ChangeProductionAtEngineShopMove;
@@ -53,26 +20,30 @@ import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
-import freerails.world.top.ITEM;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldIterator;
-import freerails.world.top.WorldListListener;
-import freerails.world.top.WorldMapListener;
-
+import freerails.world.top.*;
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Random;
 
 /**
  * Creates and wires up the GUI components.
- * 
+ *
  * @author Luke
  */
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
         WorldMapListener, WorldListListener {
 
-    /** Whether to show certain 'cheat' menus used for testing. */
+    /**
+     * Whether to show certain 'cheat' menus used for testing.
+     */
     private static final boolean CHEAT = (System.getProperty("cheat") != null);
 
     private static final Logger logger = Logger
@@ -175,7 +146,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                     ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
                     for (Enumeration<Action> actionsEnum = speedActions
-                            .getActions(); actionsEnum.hasMoreElements();) {
+                            .getActions(); actionsEnum.hasMoreElements(); ) {
                         Action action = actionsEnum.nextElement();
                         String actionName = (String) action
                                 .getValue(Action.NAME);
@@ -453,10 +424,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
                         for (int i = 0; i < temp.length; i++) {
                             int engineType = randy.nextInt(numberOfEngineTypes);
-                            int[] wagonTypes = new int[] {
+                            int[] wagonTypes = new int[]{
                                     randy.nextInt(numberOfcargoTypes),
                                     randy.nextInt(numberOfcargoTypes),
-                                    randy.nextInt(numberOfcargoTypes) };
+                                    randy.nextInt(numberOfcargoTypes)};
                             PlannedTrain plannedTrain = new PlannedTrain(
                                     engineType, wagonTypes);
                             temp[i] = plannedTrain;
@@ -660,7 +631,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
         userInputOnMapController.setup(mapViewJComponent, actionRoot
-                .getTrackMoveProducer(), stationTypesPopup, this.modelRoot,
+                        .getTrackMoveProducer(), stationTypesPopup, this.modelRoot,
                 dialogueBoxController, mapViewJComponent.getMapCursor(),
                 getBuildTrackController());
 

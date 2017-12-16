@@ -1,6 +1,6 @@
 /*
  * Created on 24 Jul 2006
- * 
+ *
  */
 package freerails.network;
 
@@ -11,7 +11,7 @@ import freerails.controller.ServerControlInterface;
 /**
  * Tells the server to check the filesystem for changes to the available new
  * maps and saved games.
- * 
+ *
  * @author Luke
  */
 public class RefreshListOfGamesMessage2Server implements Message2Server {

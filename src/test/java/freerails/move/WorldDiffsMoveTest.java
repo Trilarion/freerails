@@ -13,12 +13,7 @@ import freerails.world.common.GameCalendar;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.CityModel;
-import freerails.world.top.ITEM;
-import freerails.world.top.KEY;
-import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.World;
-import freerails.world.top.WorldDiffs;
-import freerails.world.top.WorldImpl;
+import freerails.world.top.*;
 import freerails.world.top.WorldImplTest.TestActivity;
 import junit.framework.TestCase;
 

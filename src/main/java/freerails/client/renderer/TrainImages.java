@@ -1,21 +1,20 @@
 /*
  * Created on 19-Apr-2006
- * 
+ *
  */
 package freerails.client.renderer;
-
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 
 import freerails.client.common.ImageManager;
 import freerails.world.common.Step;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Stores side-on and over-head images of a particular wagon or engine type.
- * 
+ *
  * @author Luke
- * 
  */
 public class TrainImages {
 

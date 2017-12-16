@@ -9,9 +9,8 @@ import freerails.controller.ServerControlInterface;
 
 /**
  * A request to save the game.
- * 
+ *
  * @author Luke
- * 
  */
 public class SaveGameMessage2Server implements Message2Server {
     private static final long serialVersionUID = 3257281452725777209L;

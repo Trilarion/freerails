@@ -8,7 +8,7 @@ package freerails.util;
 /**
  * This interface defines callbacks that can be used to let the user know how a
  * slow task is progressing.
- * 
+ *
  * @author Luke Lindsay
  */
 public interface FreerailsProgressMonitor {

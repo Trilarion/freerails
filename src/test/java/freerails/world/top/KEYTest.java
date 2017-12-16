@@ -4,16 +4,15 @@
  */
 package freerails.world.top;
 
+import junit.framework.TestCase;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import junit.framework.TestCase;
-
 /**
  * JUnit test.
- * 
+ *
  * @author Luke
- * 
  */
 public class KEYTest extends TestCase {
     public void testGetNumberOfKeys() {

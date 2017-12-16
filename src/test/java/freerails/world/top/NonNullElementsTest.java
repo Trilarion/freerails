@@ -4,18 +4,17 @@
  */
 package freerails.world.top;
 
-import java.util.NoSuchElementException;
-
 import freerails.world.station.StationModel;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.util.NoSuchElementException;
+
 /**
  * This junit TestCase tests NonNullElements.
- * 
+ *
  * @author Luke
- * 
  */
 public class NonNullElementsTest extends TestCase {
     World w;

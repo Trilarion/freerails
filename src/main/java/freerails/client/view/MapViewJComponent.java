@@ -5,19 +5,15 @@
  */
 package freerails.client.view;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-
-import javax.swing.JPanel;
-import javax.swing.Scrollable;
-
 import freerails.client.renderer.BlankMapRenderer;
 import freerails.client.renderer.MapRenderer;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * JPanel that displays the map and provides methods to handle scrolling.
- * 
+ *
  * @author Luke Lindsay 01 November 2001
  */
 public abstract class MapViewJComponent extends JPanel implements Scrollable,
@@ -40,7 +36,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     }
 
     public int getScrollableUnitIncrement(java.awt.Rectangle rectangle,
-            int orientation, int direction) {
+                                          int orientation, int direction) {
         return (int) getMapView().getScale();
     }
 
@@ -49,7 +45,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     }
 
     public int getScrollableBlockIncrement(java.awt.Rectangle rectangle,
-            int orientation, int direction) {
+                                           int orientation, int direction) {
         if (javax.swing.SwingConstants.VERTICAL == orientation) {
             int best = (int) (((rectangle.height / getMapView().getScale()) - 2) * getMapView()
                     .getScale());
@@ -72,7 +68,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     /**
      * Gets the scrollableTracksViewportHeight attribute of the
      * MapViewJComponent object.
-     * 
+     *
      * @return The scrollableTracksViewportHeight value
      */
     public boolean getScrollableTracksViewportHeight() {
@@ -82,7 +78,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     /**
      * Gets the preferredScrollableViewportSize attribute of the
      * MapViewJComponent object.
-     * 
+     *
      * @return The preferredScrollableViewportSize value
      */
     public java.awt.Dimension getPreferredScrollableViewportSize() {

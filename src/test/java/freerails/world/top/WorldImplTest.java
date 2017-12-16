@@ -18,9 +18,8 @@ import junit.framework.TestCase;
 
 /**
  * Junit test.
- * 
+ *
  * @author Luke
- * 
  */
 public class WorldImplTest extends TestCase {
     private final FreerailsSerializable fs = new TestState(1);

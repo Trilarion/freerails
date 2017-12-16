@@ -4,22 +4,19 @@
  */
 package experimental;
 
+import freerails.util.Immutable;
+import freerails.util.InstanceControlled;
+import freerails.world.common.FreerailsSerializable;
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
-import freerails.util.Immutable;
-import freerails.util.InstanceControlled;
-import freerails.world.common.FreerailsSerializable;
-
-import org.apache.log4j.Logger;
-
 /**
  * Checks that all class that implement FreerailsSerializable are immutable and
  * override equals and hashcode.
- * 
- * 
  */
 public class CheckFreerailsSerializableClasses {
 

@@ -18,7 +18,6 @@ import junit.framework.TestCase;
 
 /**
  * @author Luke
- * 
  */
 public class MovePrecommitterTest extends TestCase {
     private World w;
@@ -31,7 +30,9 @@ public class MovePrecommitterTest extends TestCase {
         committer = new MovePrecommitter(w);
     }
 
-    /** Test simple case of precommitting then fully committing moves. */
+    /**
+     * Test simple case of precommitting then fully committing moves.
+     */
     public void test1() {
         GameTime oldtime = getTime();
         GameTime newTime = oldtime.nextTick();
@@ -58,7 +59,9 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(newTime, getTime());
     }
 
-    /** Test test clash. */
+    /**
+     * Test test clash.
+     */
     public void test2() {
         GameTime oldtime = getTime();
         GameTime newTime = oldtime.nextTick();
@@ -105,7 +108,9 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(0, committer.precomitted.size());
     }
 
-    /** Test test rejection 1. */
+    /**
+     * Test test rejection 1.
+     */
     public void test3() {
         GameTime oldtime = getTime();
         GameTime newTime = oldtime.nextTick();
@@ -132,7 +137,9 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(0, committer.precomitted.size());
     }
 
-    /** Test test rejection 2. */
+    /**
+     * Test test rejection 2.
+     */
     public void test4() {
         GameTime oldtime = getTime();
         GameTime newTime = oldtime.nextTick();

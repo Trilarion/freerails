@@ -4,18 +4,17 @@
  */
 package freerails.client.view;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * Stores a list of colours to use to represent different players.
- * 
+ *
  * @author Luke
- * 
  */
 public class PlayerColors {
 
-    private static final Color[] colors = new Color[] { Color.BLUE,
-            Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW };// Save
+    private static final Color[] colors = new Color[]{Color.BLUE,
+            Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW};// Save
 
     // red
     // for

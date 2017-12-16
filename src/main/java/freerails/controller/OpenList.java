@@ -6,9 +6,8 @@ import java.util.PriorityQueue;
 
 /**
  * An OpenList for SimpleAStarPathFinder.
- * 
+ *
  * @author Luke
- * 
  */
 class OpenList implements Serializable {
 

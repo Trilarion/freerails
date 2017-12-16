@@ -4,16 +4,14 @@
  */
 package freerails.client.renderer;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-
 import freerails.client.common.ImageManager;
+
+import java.awt.*;
 
 /**
  * This class implements the TrackPieceView interface, but intentionally does
  * nothing. Its methods are called when drawing tiles with no track.
- * 
+ *
  * @author Luke
  */
 final public class NullTrackPieceRenderer implements TrackPieceRenderer {
@@ -34,7 +32,7 @@ final public class NullTrackPieceRenderer implements TrackPieceRenderer {
      *      Dimension)
      */
     public void drawTrackPieceIcon(int trackTemplate, Graphics g, int x, int y,
-            Dimension tileSize) {
+                                   Dimension tileSize) {
         // Draw nothing since there no track here.
     }
 

@@ -6,7 +6,6 @@ package freerails.launcher;
 
 /**
  * @author Luke
- * 
  */
 public interface LauncherPanel {
 

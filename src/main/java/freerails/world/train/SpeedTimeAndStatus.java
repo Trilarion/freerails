@@ -8,9 +8,8 @@ import freerails.world.common.FreerailsSerializable;
 
 /**
  * Stores the speed and status of a train immediately after an instant of time.
- * 
+ *
  * @author Luke
- * 
  */
 public class SpeedTimeAndStatus implements FreerailsSerializable {
 
@@ -72,7 +71,7 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
     private final TrainActivity activity;
 
     SpeedTimeAndStatus(double acceleration, TrainActivity activity, double dt,
-            double s, double speed) {
+                       double s, double speed) {
         if (dt < 0)
             throw new IllegalArgumentException(String.valueOf(dt));
         this.acceleration = acceleration;

@@ -4,11 +4,11 @@
  */
 package freerails.util;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import freerails.world.player.Player;
 import junit.framework.TestCase;
+
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class List1DDiffsTest extends TestCase {
 

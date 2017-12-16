@@ -1,13 +1,13 @@
 package freerails.world.train;
 
-import java.util.NoSuchElementException;
-
 import freerails.world.common.FreerailsPathIterator;
 import freerails.world.common.IntLine;
 
+import java.util.NoSuchElementException;
+
 /**
  * PathWalker that walks the path exposed by a FreerailsPathIterator.
- * 
+ *
  * @author Luke
  */
 public class PathWalkerImpl implements PathWalker {
@@ -36,7 +36,7 @@ public class PathWalkerImpl implements PathWalker {
 
     /**
      * @return true if we still have more of the current segment, or more
-     *         segments left.
+     * segments left.
      */
     public boolean canStepForward() {
         if (currentSegment.getLength() > distanceAlongCurrentSegment) {
@@ -96,7 +96,7 @@ public class PathWalkerImpl implements PathWalker {
         /*
          * Sanity check: the first point of the last line should equal the
          * second point of the current line.
-         * 
+         *
          */
         if (!beforeFirst) {
             if (line.x1 != this.lastX) {
@@ -125,7 +125,7 @@ public class PathWalkerImpl implements PathWalker {
     }
 
     private void endAtSegmentEnd(IntLine line,
-            double remainingDistanceAlongCurrentSegment) {
+                                 double remainingDistanceAlongCurrentSegment) {
         line.x2 = this.currentSegment.x2;
         line.y2 = this.currentSegment.y2;
         this.distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
@@ -147,7 +147,7 @@ public class PathWalkerImpl implements PathWalker {
     }
 
     private int getCoorinateOnSegment(double distanceAlongSegment,
-            int coordinate1, int coordinate2) {
+                                      int coordinate1, int coordinate2) {
         double segmentLength = this.currentSegment.getLength();
         double delta = 0;
 

@@ -9,9 +9,8 @@ import freerails.world.common.Money;
 
 /**
  * A Transaction is a change in a player's bank balance and/or assets.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public interface Transaction extends FreerailsSerializable {
 
@@ -21,7 +20,9 @@ public interface Transaction extends FreerailsSerializable {
 
     Money deltaAssets();
 
-    /** Positive means credit. */
+    /**
+     * Positive means credit.
+     */
     Money deltaCash();
 
     Category getCategory();

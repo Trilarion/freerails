@@ -34,11 +34,11 @@ import freerails.world.top.World;
  * (6) The tryDoMove and tryUndoMove methods should test whether the move is
  * valid but leave the gameworld unchanged
  * </p>
- * 
+ *
+ * @author lindsal
  * @see MoveStatus
  * @see freerails.world.top.World
  * @see freerails.controller.PreMove
- * @author lindsal
  */
 public interface Move extends FreerailsSerializable {
     /**

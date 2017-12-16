@@ -4,35 +4,27 @@
  */
 package experimental;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
+import freerails.client.common.ImageManager;
+import org.apache.log4j.Logger;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
-import org.apache.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-
-import freerails.client.common.ImageManager;
 
 /**
  * Implementation of ImageManager that returns images that are compatible with
  * the current graphics configuration and whose transparency is set to
  * TRANSLUCENT, the scaled images it returns are rendered with renderingHints
  * set for quality.
- * 
+ *
  * @author Luke
- * 
  */
 public class ImageManagerImpl implements ImageManager {
     /**
@@ -124,7 +116,7 @@ public class ImageManagerImpl implements ImageManager {
             throw new IOException("Couldn't find: " + read);
         }
         compatibleImage = defaultConfiguration.createCompatibleImage(tempImage
-                .getWidth(null), tempImage.getHeight(null),
+                        .getWidth(null), tempImage.getHeight(null),
                 Transparency.TRANSLUCENT);
         Graphics g = compatibleImage.getGraphics();
         g.drawImage(tempImage, 0, 0, null);

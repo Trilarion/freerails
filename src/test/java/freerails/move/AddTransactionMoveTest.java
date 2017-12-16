@@ -13,9 +13,8 @@ import freerails.world.top.MapFixtureFactory;
 
 /**
  * JUnit test.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
     @Override

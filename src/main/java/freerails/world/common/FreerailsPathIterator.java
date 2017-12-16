@@ -5,7 +5,7 @@ package freerails.world.common;
  * straight lines. E.g. it lets the path a train takes across a section of track
  * be retrieved without revealing the underlying objects that represent the
  * track.
- * 
+ *
  * @author luke
  */
 public interface FreerailsPathIterator extends FreerailsMutableSerializable {
@@ -19,7 +19,7 @@ public interface FreerailsPathIterator extends FreerailsMutableSerializable {
      * specified IntLine; then moves the iterator forwards by one path segment.
      * (The coordinates are placed the passed-in IntLine rather than a new
      * object to avoid the cost of object creation.)
-     * 
+     *
      * @param line
      */
     void nextSegment(IntLine line);

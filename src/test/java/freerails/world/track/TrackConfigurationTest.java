@@ -7,16 +7,16 @@
  */
 package freerails.world.track;
 
-import java.util.HashSet;
-
 import freerails.world.common.Step;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.util.HashSet;
+
 /**
  * JUnit test.
- * 
+ *
  * @author lindsal
  */
 public class TrackConfigurationTest extends TestCase {

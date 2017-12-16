@@ -5,7 +5,7 @@ import freerails.world.common.FreerailsSerializable;
 /**
  * This class represents a cargo batch (cargo of the same batch is cargo of the
  * same type that was produced at the same location at the same time).
- * 
+ *
  * @author Luke
  */
 public class CargoBatch implements FreerailsSerializable,

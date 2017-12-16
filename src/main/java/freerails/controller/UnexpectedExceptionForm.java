@@ -7,14 +7,15 @@
 package freerails.controller;
 
 /**
- * 
  * @author Luke
  */
 public class UnexpectedExceptionForm extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -4348641764811196495L;
 
-    /** Creates new form UnexpectedExceptionForm */
+    /**
+     * Creates new form UnexpectedExceptionForm
+     */
     public UnexpectedExceptionForm() {
         initComponents();
     }
@@ -69,8 +70,7 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
     }// GEN-LAST:event_closebuttonActionPerformed
 
     /**
-     * @param args
-     *            the command line arguments
+     * @param args the command line arguments
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

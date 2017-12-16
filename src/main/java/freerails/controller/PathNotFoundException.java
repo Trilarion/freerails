@@ -6,13 +6,12 @@ package freerails.controller;
 
 /**
  * Thrown when a path cannot be found.
- * 
+ *
  * @author Luke
- * 
  */
 public class PathNotFoundException extends Exception {
     /**
-     * 
+     *
      */
     public PathNotFoundException() {
         super();

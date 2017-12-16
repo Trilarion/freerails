@@ -4,14 +4,6 @@
  */
 package freerails.controller;
 
-import static freerails.world.common.Step.EAST;
-import static freerails.world.common.Step.NORTH;
-import static freerails.world.common.Step.NORTH_EAST;
-import static freerails.world.common.Step.NORTH_WEST;
-import static freerails.world.common.Step.SOUTH;
-import static freerails.world.common.Step.SOUTH_EAST;
-import static freerails.world.common.Step.SOUTH_WEST;
-import static freerails.world.common.Step.WEST;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
@@ -23,7 +15,11 @@ import freerails.world.top.World;
 import freerails.world.track.FreerailsTile;
 import junit.framework.TestCase;
 
-/** Unit test for MoveTrainPreMove, tests pathfinding. */
+import static freerails.world.common.Step.*;
+
+/**
+ * Unit test for MoveTrainPreMove, tests pathfinding.
+ */
 public class MoveTrainPreMove3rdTest extends TestCase {
 
     TrackMoveProducer trackBuilder;
@@ -36,9 +32,9 @@ public class MoveTrainPreMove3rdTest extends TestCase {
 
     World world;
 
-    Step[] line1 = { EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH };
-    Step[] line2 = { WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST };
-    Step[] line3 = { NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST };
+    Step[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
+    Step[] line2 = {WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST};
+    Step[] line3 = {NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST};
 
     @Override
     protected void setUp() throws Exception {

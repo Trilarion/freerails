@@ -4,11 +4,7 @@
  */
 package freerails.controller;
 
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.BondTransaction;
-import freerails.world.accounts.EconomicClimate;
-import freerails.world.accounts.StockTransaction;
-import freerails.world.accounts.Transaction;
+import freerails.world.accounts.*;
 import freerails.world.common.GameTime;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
@@ -19,7 +15,7 @@ import freerails.world.top.TransactionAggregator;
 
 /**
  * Gathers the financial data for a company.
- * 
+ *
  * @author Luke
  * @author smackay
  */
@@ -103,12 +99,16 @@ public class FinancialDataGatherer extends TransactionAggregator {
         return null;
     }
 
-    /** Returns the number of stock in the Treasury */
+    /**
+     * Returns the number of stock in the Treasury
+     */
     public int treasuryStock() {
         return stockInRRs[playerID];
     }
 
-    /** Returns The number of open Shares */
+    /**
+     * Returns The number of open Shares
+     */
     public int totalShares() {
         return totalShares;
     }
@@ -128,7 +128,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     public Money netWorth() {
         NetWorthCalculator nwc = new NetWorthCalculator(w, principal);
-        GameTime[] times = { GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD };
+        GameTime[] times = {GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD};
         nwc.setTimes(times);
         return nwc.calculateValue();
     }

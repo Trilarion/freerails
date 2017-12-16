@@ -4,8 +4,6 @@
  */
 package freerails.network;
 
-import java.util.LinkedList;
-
 import freerails.controller.PreMove;
 import freerails.controller.PreMoveStatus;
 import freerails.move.Move;
@@ -13,8 +11,9 @@ import freerails.move.MoveStatus;
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.player.Player;
 import freerails.world.top.World;
-
 import org.apache.log4j.Logger;
+
+import java.util.LinkedList;
 
 /**
  * The class pre-commits moves we intend to send to the server and either fully
@@ -23,9 +22,8 @@ import org.apache.log4j.Logger;
  * <code>toServer(.)</code> when a move has been sent to the server and
  * <code>fromServer(.)</code> when a Move or MoveStatus has been received from
  * the server.
- * 
+ *
  * @author Luke
- * 
  */
 public class MovePrecommitter {
     private static class PreMoveAndMove implements FreerailsSerializable {
@@ -105,7 +103,9 @@ public class MovePrecommitter {
         }
     }
 
-    /** Indicates that the server has processed a move we sent. */
+    /**
+     * Indicates that the server has processed a move we sent.
+     */
     void fromServer(MoveStatus ms) {
         precommitMoves();
 

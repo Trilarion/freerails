@@ -4,8 +4,6 @@
  */
 package freerails.controller;
 
-import java.util.List;
-
 import freerails.world.common.ImPoint;
 import freerails.world.player.Player;
 import freerails.world.top.GameRules;
@@ -14,11 +12,12 @@ import freerails.world.top.MapFixtureFactory;
 import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
+import java.util.List;
+
 /**
  * JUnit test for TrackPathFinder.
- * 
+ *
  * @author Luke
- * 
  */
 public class TrackPathFinderTest extends TestCase {
     private WorldImpl world;

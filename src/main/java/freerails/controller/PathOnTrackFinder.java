@@ -9,15 +9,13 @@ import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.FreerailsTile;
-
 import org.apache.log4j.Logger;
 
 /**
  * Finds a path along existing track. Used for upgrading or removing track
  * between two points on the track.
- * 
+ *
  * @author Luke
- * 
  */
 public class PathOnTrackFinder implements IncrementalPathFinder {
 

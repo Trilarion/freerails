@@ -4,9 +4,6 @@
  */
 package freerails.move;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -16,11 +13,13 @@ import freerails.world.top.WorldIterator;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.MutableSchedule;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 /**
  * This Move removes a station from the station list and from the map.
- * 
+ *
  * @author Luke
- * 
  */
 public class RemoveStationMove extends CompositeMove implements TrackMove {
     private static final long serialVersionUID = 3760847865429702969L;
@@ -30,7 +29,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
     }
 
     static RemoveStationMove getInstance(ReadOnlyWorld w,
-            ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
+                                         ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
         int stationIndex = -1;
 

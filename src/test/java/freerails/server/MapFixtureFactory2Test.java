@@ -1,6 +1,5 @@
 package freerails.server;
 
-import static freerails.server.MapFixtureFactory2.getCopy;
 import freerails.world.accounts.AddItemTransaction;
 import freerails.world.accounts.Transaction;
 import freerails.world.common.Money;
@@ -9,11 +8,10 @@ import freerails.world.top.SKEY;
 import freerails.world.top.World;
 import junit.framework.TestCase;
 
+import static freerails.server.MapFixtureFactory2.getCopy;
+
 /**
- * 
- * 
  * @author Luke Lindsay
- * 
  */
 public class MapFixtureFactory2Test extends TestCase {
     World w1;

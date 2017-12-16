@@ -54,7 +54,8 @@ public abstract class ListXDDiffs<T> implements Serializable {
         int sizeBefore = size(dim);
         int[] index = add2Array(dim, sizeBefore);
 
-        setElementDiff: {
+        setElementDiff:
+        {
             if (getUnderlyingSize(dim) > sizeBefore) {
                 T uElement = uGet(index);
                 if (Utils.equal(uElement, element)) {

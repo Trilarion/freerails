@@ -18,9 +18,8 @@ import freerails.world.top.World;
 /**
  * This class iterates over the entries in the BankAccount and counts the number
  * of trains, then calculates the cost of maintenance.
- * 
+ *
  * @author Luke Lindsay
- * 
  */
 public class TrainMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;
@@ -30,7 +29,7 @@ public class TrainMaintenanceMoveGenerator {
     }
 
     private static AddTransactionMove generateMove(World w,
-            FreerailsPrincipal principal) {
+                                                   FreerailsPrincipal principal) {
         NonNullElements trains = new NonNullElements(KEY.TRAINS, w, principal);
         int numberOfTrains = trains.size();
         long amount = numberOfTrains * 5000;

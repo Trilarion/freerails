@@ -5,15 +5,11 @@
  */
 package freerails.client.view;
 
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JComponent;
-import javax.swing.JViewport;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 
 /**
  * This class mediates between the main map view and the overview map view. It
@@ -26,7 +22,7 @@ import javax.swing.event.MouseInputAdapter;
  * on the overview map.<br>
  * (4) Changes the mouse cursor to indicate that the rectangle on the overview
  * map is draggable when the mouse moves into the rectangle.
- * 
+ *
  * @author Luke Lindsay
  * @version 1.0
  */
@@ -49,7 +45,7 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
     }
 
     public MainMapAndOverviewMapMediator(JComponent omv, JViewport v,
-            JComponent mm, Rectangle rect) {
+                                         JComponent mm, Rectangle rect) {
         setup(omv, v, mm, rect);
     }
 
@@ -110,7 +106,7 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
              * r.x+=evt.getX()-lastMouseLocation.x;
              * r.y+=evt.getY()-lastMouseLocation.y;
              * lastMouseLocation.x=evt.getX(); lastMouseLocation.y=evt.getY();
-             * 
+             *
              * updateInside(evt); overviewMapJPanel.repaint();
              */
             int deltaX = evt.getX() - lastMouseLocation.x;

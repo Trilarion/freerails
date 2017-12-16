@@ -4,19 +4,18 @@
  */
 package freerails.move;
 
-import java.util.List;
-
 import freerails.world.common.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.World;
 
+import java.util.List;
+
 /**
- * 
  * This Move may be subclassed to create a move composed of a number of
  * component Moves where atomicity of the move is required. This class defines a
  * number of methods which may not be subclassed - all changes must be
  * encapsulated as sub-moves of this move.
- * 
+ *
  * @author Luke
  */
 public class CompositeMove implements Move {

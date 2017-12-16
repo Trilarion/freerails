@@ -1,15 +1,15 @@
 package freerails.world.track;
 
+import freerails.world.common.FreerailsSerializable;
+import freerails.world.common.ImHashSet;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import freerails.world.common.FreerailsSerializable;
-import freerails.world.common.ImHashSet;
-
 /**
  * Stores the legal track configurations for a type of track.
- * 
+ *
  * @author Luke.
  */
 final public class LegalTrackConfigurations implements FreerailsSerializable {
@@ -22,7 +22,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     private final int maximumConsecutivePieces;
 
     public LegalTrackConfigurations(int max,
-            ArrayList<String> legalTrackTemplatesArrayList) {
+                                    ArrayList<String> legalTrackTemplatesArrayList) {
         maximumConsecutivePieces = max;
 
         HashSet<TrackConfiguration> temp = new HashSet<TrackConfiguration>();
@@ -77,7 +77,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     }
 
     static private void processTemplate(String trackTemplateString,
-            HashSet<TrackConfiguration> temp) {
+                                        HashSet<TrackConfiguration> temp) {
         int trackTemplate = Integer.parseInt(trackTemplateString, 2);
 
         // Check for invalid parameters.

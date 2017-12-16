@@ -5,7 +5,7 @@ import freerails.world.common.ImInts;
 
 /**
  * Represents a train.
- * 
+ *
  * @author Luke
  */
 public class TrainModel implements FreerailsSerializable {

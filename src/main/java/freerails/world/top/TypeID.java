@@ -7,7 +7,7 @@ package freerails.world.top;
 
 /**
  * This class stores an SKEY and an item index.
- * 
+ *
  * @author Luke Lindsay
  */
 public class TypeID {
