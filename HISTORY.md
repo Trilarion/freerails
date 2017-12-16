@@ -36,7 +36,7 @@ resources.
 ## Railz (2004-2005)
 
 On 2004-02-23, Railz was registered on now defunct [BerliOS](https://en.wikipedia.org/wiki/BerliOS) as a railway
-strategy/management game based upon the jfreerails source code base. It was created by Robert Tuck. Until the beginning
+strategy/management game based upon the freerails source code base. It was created by Robert Tuck. Until the beginning
 of 2005 it saw several releases and the code was considerably changed from the FreeRails project on Sourceforge.
 An archived version of the [project page](https://web.archive.org/web/20140328214257/http://developer.berlios.de/projects/railz/)
 is available as well as a automated [exported project page](https://sourceforge.net/projects/railz.berlios/). The source

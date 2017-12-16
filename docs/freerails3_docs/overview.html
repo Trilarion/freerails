@@ -3,14 +3,14 @@
 
 
 <body>
-<p>This is an overview of the jfreerails source code. </p>
+<p>This is an overview of the freerails source code. </p>
 <h3>Other documents</h3>
 <ol>
 <li><a href="http://freerails.sourceforge.net/functional_specification.pdf" target="_blank">Functional Specification</a> (PDF)</li>
 
 <li><a href="docs/coding_guidelines.html" target="_blank">Coding guidelines</a></li>
-<li><a href="jfreerails/client/view/about.htm" target="_blank">People</a></li>
-<li><a href="jfreerails/client/view/game_controls.html" target="_blank">Key Map</a></li>
+<li><a href="freerails/client/view/about.htm" target="_blank">People</a></li>
+<li><a href="freerails/client/view/game_controls.html" target="_blank">Key Map</a></li>
 </ol>
 <h3>Brief overview of the architecture</h3>
 <ol>
@@ -19,7 +19,7 @@
     packages. The view classes are in the <code>jfreerails.client.*</code> packages. 
   </li>
   <li> The state of game world is stored by an instance of a class implementing 
-    the interface <a href="jfreerails/world/top/World.html"><code>World</code></a>. 
+    the interface <a href="freerails/world/top/World.html"><code>World</code></a>.
     This class is mutable - one can think of it as a specialised hashmap. All 
     the objects that represent entities in the world - values in the hashmap - 
     are immutable. It follows that changes to the gameworld involve adding, removing or replacing 
@@ -29,19 +29,19 @@
     serialized objects over a network connection. All objects passed between the 
     client and server are immutable and are instances of one of the following: 
     <ul>
-      <li><a href="jfreerails/controller/Message2Server.html"><code>Message2Server</code></a></li>
-      <li><code><a href="jfreerails/controller/Message2Client.html">Message2Client</a></code></li>
-      <li><code><a href="jfreerails/controller/MessageStatus.html">MessageStatus</a></code></li>
-      <li><code><a href="jfreerails/controller/PreMove.html">PreMove</a></code></li>
-	  <li><code><a href="jfreerails/controller/PreMoveStatus.html">PreMoveStatus</a></code></li>
-      <li><code><a href="jfreerails/move/Move.html">Move</a></code></li>
-	  <li><code><a href="jfreerails/move/MoveStatus.html">MoveStatus</a></code></li>
+      <li><a href="freerails/controller/Message2Server.html"><code>Message2Server</code></a></li>
+      <li><code><a href="freerails/controller/Message2Client.html">Message2Client</a></code></li>
+      <li><code><a href="freerails/controller/MessageStatus.html">MessageStatus</a></code></li>
+      <li><code><a href="freerails/controller/PreMove.html">PreMove</a></code></li>
+	  <li><code><a href="freerails/controller/PreMoveStatus.html">PreMoveStatus</a></code></li>
+      <li><code><a href="freerails/move/Move.html">Move</a></code></li>
+	  <li><code><a href="freerails/move/MoveStatus.html">MoveStatus</a></code></li>
     </ul>
   </li>
   <li> When a new game starts or a game is loaded, the server sends the client 
-    a copy of the World object (using an instance of <a href="jfreerails/network/SetWorldMessage2Client.html"><code>SetWorldMessage2Client</code></a>) 
+    a copy of the World object (using an instance of <a href="freerails/network/SetWorldMessage2Client.html"><code>SetWorldMessage2Client</code></a>)
     All changes to the game world that occur after the game has started, referred 
-    to as <em>moves</em>, are done using the classes in the package <a href="jfreerails/move/package-summary.html"><code>jfreerails.move</code></a>. 
+    to as <em>moves</em>, are done using the classes in the package <a href="freerails/move/package-summary.html"><code>jfreerails.move</code></a>.
     Moves are either obtained from a PreMove object or constructed directly. </li>
 </ol>
 <h3>Dependencies between packages</h3>

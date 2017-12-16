@@ -16,10 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jfreerails.client.common.ImageManager;
-import jfreerails.client.common.ImageManagerImpl;
-import jfreerails.world.common.Step;
-import jfreerails.world.track.TrackConfiguration;
+import freerails.client.common.ImageManager;
+import freerails.client.common.ImageManagerImpl;
+import freerails.world.common.Step;
+import freerails.world.track.TrackConfiguration;
 
 /**
  * Provides methods that render track pieces.
@@ -31,7 +31,7 @@ import jfreerails.world.track.TrackConfiguration;
 public class TrackRenderer {
 
     private final ImageManager imageManager = new ImageManagerImpl(
-            "/jfreerails/client/graphics/");
+            "/freerails/client/graphics/");
 
     Color sleepersColor = new Color(118, 54, 36);
 

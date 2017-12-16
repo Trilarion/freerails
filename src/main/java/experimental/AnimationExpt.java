@@ -6,8 +6,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import jfreerails.client.top.GameLoop;
-import jfreerails.controller.ScreenHandler;
+import freerails.client.top.GameLoop;
+import freerails.controller.ScreenHandler;
 
 /**
  * This class tests that the game loop and screen handler are working correctly.

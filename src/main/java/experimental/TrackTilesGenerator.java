@@ -15,11 +15,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import jfreerails.client.renderer.TrackPieceRendererImpl;
-import jfreerails.server.OldWorldImpl;
-import jfreerails.server.parser.Track_TilesHandlerImpl;
-import jfreerails.world.track.TrackConfiguration;
-import jfreerails.world.track.TrackRule;
+import freerails.client.renderer.TrackPieceRendererImpl;
+import freerails.server.OldWorldImpl;
+import freerails.server.parser.Track_TilesHandlerImpl;
+import freerails.world.track.TrackConfiguration;
+import freerails.world.track.TrackRule;
 
 /**
  * Generates track graphic image files.
@@ -69,7 +69,7 @@ public class TrackTilesGenerator extends JPanel {
         track[2] = TrackRenderer.createAdjacentCurve(track[0], -60, -60);
         tr = new TrackRenderer();
         URL track_xml_url = OldWorldImpl.class
-                .getResource("/jfreerails/data/track_tiles.xml");
+                .getResource("/freerails/data/track_tiles.xml");
 
         Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
                 track_xml_url);

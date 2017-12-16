@@ -16,10 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import jfreerails.client.renderer.BlankMapRenderer;
-import jfreerails.client.view.MainMapAndOverviewMapMediator;
-import jfreerails.client.view.MapViewJComponentConcrete;
-import jfreerails.client.view.OverviewMapJComponent;
+import freerails.client.renderer.BlankMapRenderer;
+import freerails.client.view.MainMapAndOverviewMapMediator;
+import freerails.client.view.MapViewJComponentConcrete;
+import freerails.client.view.OverviewMapJComponent;
 
 /**
  * This GUIComponentFactory creates simple components that can be used to test
@@ -28,7 +28,7 @@ import jfreerails.client.view.OverviewMapJComponent;
  * @author Luke Lindsay
  */
 public class SimpleComponentFactoryImpl2 implements
-        jfreerails.client.top.GUIComponentFactory {
+        freerails.client.top.GUIComponentFactory {
     private OverviewMapJComponent overviewMap;
 
     private JScrollPane mainMapScrollPane1;

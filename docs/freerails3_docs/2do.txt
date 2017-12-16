@@ -15,4 +15,3 @@ Legacy Requirements
  - add jnlp cache cleaner http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6566071
  - move icons to one file (slick? tileeditor)
  - write a new readme
- - rename from jfreerails to freerails

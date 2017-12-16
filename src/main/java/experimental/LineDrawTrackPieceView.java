@@ -7,7 +7,7 @@ package experimental;
 
 import java.awt.Graphics2D;
 
-import jfreerails.client.common.ImageManager;
+import freerails.client.common.ImageManager;
 
 /**
  * This TrackPieceRenderer renders track pieces by drawing lines so avoids the
@@ -16,7 +16,7 @@ import jfreerails.client.common.ImageManager;
  * @author Luke Lindsay
  */
 public class LineDrawTrackPieceView implements
-        jfreerails.client.renderer.TrackPieceRenderer {
+        freerails.client.renderer.TrackPieceRenderer {
     private int[] xx = { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
 
     private int[] yy = { -1, -1, -1, 0, 0, 0, 1, 1, 1 };

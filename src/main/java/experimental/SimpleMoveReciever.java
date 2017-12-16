@@ -4,12 +4,12 @@
  */
 package experimental;
 
-import jfreerails.controller.PreMove;
-import jfreerails.move.Move;
-import jfreerails.move.MoveStatus;
-import jfreerails.network.UntriedMoveReceiver;
-import jfreerails.world.player.Player;
-import jfreerails.world.top.World;
+import freerails.controller.PreMove;
+import freerails.move.Move;
+import freerails.move.MoveStatus;
+import freerails.network.UntriedMoveReceiver;
+import freerails.world.player.Player;
+import freerails.world.top.World;
 
 /**
  * An UntriedMoveReceiver that executes moves on the world object passed to its

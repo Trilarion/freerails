@@ -6,37 +6,37 @@ import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import jfreerails.client.common.ModelRootImpl;
-import jfreerails.client.common.MyGlassPanel;
-import jfreerails.client.renderer.RenderersRoot;
-import jfreerails.client.top.RenderersRootImpl;
-import jfreerails.client.view.ActionRoot;
-import jfreerails.client.view.CargoWaitingAndDemandedJPanel;
-import jfreerails.client.view.DialogueBoxController;
-import jfreerails.client.view.HtmlJPanel;
-import jfreerails.client.view.ShowJavaProperties;
-import jfreerails.client.view.TrainDialogueJPanel;
-import jfreerails.controller.JFrameMinimumSizeEnforcer;
-import jfreerails.network.MoveChainFork;
-import jfreerails.network.UntriedMoveReceiver;
-import jfreerails.server.TileSetFactoryImpl;
-import jfreerails.server.common.TileSetFactory;
-import jfreerails.util.FreerailsProgressMonitor;
-import jfreerails.world.cargo.CargoBatch;
-import jfreerails.world.cargo.MutableCargoBundle;
-import jfreerails.world.common.ImInts;
-import jfreerails.world.player.FreerailsPrincipal;
-import jfreerails.world.player.Player;
-import jfreerails.world.station.Demand4Cargo;
-import jfreerails.world.station.StationModel;
-import jfreerails.world.top.KEY;
-import jfreerails.world.top.SKEY;
-import jfreerails.world.top.WagonAndEngineTypesFactory;
-import jfreerails.world.top.World;
-import jfreerails.world.top.WorldImpl;
-import jfreerails.world.train.MutableSchedule;
-import jfreerails.world.train.TrainModel;
-import jfreerails.world.train.TrainOrdersModel;
+import freerails.client.common.ModelRootImpl;
+import freerails.client.common.MyGlassPanel;
+import freerails.client.renderer.RenderersRoot;
+import freerails.client.top.RenderersRootImpl;
+import freerails.client.view.ActionRoot;
+import freerails.client.view.CargoWaitingAndDemandedJPanel;
+import freerails.client.view.DialogueBoxController;
+import freerails.client.view.HtmlJPanel;
+import freerails.client.view.ShowJavaProperties;
+import freerails.client.view.TrainDialogueJPanel;
+import freerails.controller.JFrameMinimumSizeEnforcer;
+import freerails.network.MoveChainFork;
+import freerails.network.UntriedMoveReceiver;
+import freerails.server.TileSetFactoryImpl;
+import freerails.server.common.TileSetFactory;
+import freerails.util.FreerailsProgressMonitor;
+import freerails.world.cargo.CargoBatch;
+import freerails.world.cargo.MutableCargoBundle;
+import freerails.world.common.ImInts;
+import freerails.world.player.FreerailsPrincipal;
+import freerails.world.player.Player;
+import freerails.world.station.Demand4Cargo;
+import freerails.world.station.StationModel;
+import freerails.world.top.KEY;
+import freerails.world.top.SKEY;
+import freerails.world.top.WagonAndEngineTypesFactory;
+import freerails.world.top.World;
+import freerails.world.top.WorldImpl;
+import freerails.world.train.MutableSchedule;
+import freerails.world.train.TrainModel;
+import freerails.world.train.TrainOrdersModel;
 
 /**
  * This class lets you test dialogue boxes without running the whole game.
@@ -208,7 +208,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                "/jfreerails/data/south_america.png")));
+                "/freerails/data/south_america.png")));
         jLabel1.setText("Press Esc to close dialogue boxes");
         jLabel1.setMinimumSize(new java.awt.Dimension(640, 480));
         jLabel1.setPreferredSize(new java.awt.Dimension(640, 480));

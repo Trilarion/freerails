@@ -7,8 +7,8 @@ package experimental;
 
 import javax.swing.JFrame;
 
-import jfreerails.client.top.GameLoop;
-import jfreerails.controller.ScreenHandler;
+import freerails.client.top.GameLoop;
+import freerails.controller.ScreenHandler;
 
 /**
  * Tests that ClientJFrame and ScreenHandler work together.
@@ -17,7 +17,7 @@ import jfreerails.controller.ScreenHandler;
  */
 public class RunMe {
     public static void main(String[] args) {
-        JFrame jFrame = new jfreerails.client.top.ClientJFrame(
+        JFrame jFrame = new freerails.client.top.ClientJFrame(
                 new SimpleComponentFactoryImpl2());
 
         // jFrame.show();

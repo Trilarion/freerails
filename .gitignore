@@ -2,3 +2,5 @@
 /.gradle
 /.idea
 logging.log
+*.iml
+freerails.properties

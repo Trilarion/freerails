@@ -1,1 +1,1 @@
-Main-Class: jfreerails.launcher.Launcher
+Main-Class: freerails.launcher.Launcher

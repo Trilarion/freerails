@@ -241,7 +241,7 @@ Jul 26, 2004 Luke
 Jul 21, 2004 Luke	
 	o Remove some circular dependencies.
 Jul 07, 2004 Luke	
-	o Fixed problem with unit tests in jfreerails.controller.net
+	o Fixed problem with unit tests in freerails.controller.net
 Jul 07, 2004 Luke	
 	Bugs fixed:	
 	o 972866 Build track by dragging - only when build track selected
@@ -249,7 +249,7 @@ Jul 06, 2004 Luke
 	RFEs Implemented:
 	o 915943 Sounds!
 	Bugs fixed:	
-	o 984510 jfreerails.world.player.player; local class incompatible
+	o 984510 freerails.world.player.player; local class incompatible
 Jun 25, 2004 Luke
 	Bugs fixed:	
  	o 979831 Stacktraces printed out when running unit tests 
@@ -306,7 +306,7 @@ May 31, 2004 Luke
 	o 948659 Dialogue Box Behavior not deterministic
 	o 948663 Extra Close Button on Station List tab
 	o 948661 No Formal Specification
-	 see /src/docs/jfreerails_1_0_functional_specification.html
+	 see /src/docs/freerails_1_0_functional_specification.html
 	o 948656 Non Movable Dialogue Boxes
 		-made dialogue boxes movable
 		-added option to show/hide station names, spheres of influence, and cargo waiting.
@@ -325,9 +325,9 @@ May 27, 2004 PM Luke
 	o 948670 Removing non-existant track
 	o 948654 Locomotive graphic backwards
 May 24, 2004 PM Luke
-	o Bug fixes for jfreerails.world.top.WorldDifferences
+	o Bug fixes for freerails.world.top.WorldDifferences
 May 24, 2004 PM Luke
-	o Added class jfreerails.world.top.WorldDifferences  - may be useful for RFE 915957!
+	o Added class freerails.world.top.WorldDifferences  - may be useful for RFE 915957!
 May 10, 2004 11:09:17 PM Luke
 	o Applied Jan Tozicka's first patch for 915957 (Build track by dragging mouse)
 May 5, 2004 5:57:26 PM Luke
@@ -364,7 +364,7 @@ Apr 5, 2004 10:42:20 PM Luke
 	o Implemented 915952 (Boxes showing cargo waiting at stations) 
 Apr 5, 2004 6:04:01 PM Luke
 	o Fixed 910134 Demand for mail and passengers
-	o Updated javadoc comments in jfreerails.server.parser.
+	o Updated javadoc comments in freerails.server.parser.
 Apr 4, 2004 4:16:21 PM Luke
 	o Implemented 927152 Show change station popup when add station is clicked 
 Apr 3, 2004 12:18:18 AM Luke
@@ -378,7 +378,7 @@ Apr 1, 2004 12:38:47 AM Luke
 	o Implemented
 		910138 After building a train display train orders 
 		910143 After building station show supply and demand
-	o Started rewriting jfreerails in C#!
+	o Started rewriting freerails in C#!
 Mar 30, 2004 6:39:20 PM Luke
 	o Implemented 915949 (Balance sheet)
 	o Fixed bug where an exception was thrown if you moved the cursor 
@@ -418,7 +418,7 @@ Mar 5, 2004 8:16:50 PM Luke
 	o Applied Jan Tozicka's patch for bug 900039 (No clear indication game is paused).
 Mar 4, 2004 7:38:53 PM Luke
 	o Minor changes to coding guidelines.
-	o Fixed stale serialVersionUID problem in jfreerails.world.player.Player
+	o Fixed stale serialVersionUID problem in freerails.world.player.Player
 	o Made ant script insert build id into README and about.htm
 Mar 3, 2004 10:02:11 PM Luke
 	o Apply Scott Bennett's removal_of_Loading_text patch.
@@ -477,10 +477,10 @@ Dec 30, 2003 12:00:03 AM Luke
 		(i)  Moves are precommitted on the client's copy of the world 
 		by the thread "AWT_EventQueue."
 		(ii) All moves are now executed on the server's copy of the world 
-		in jfreerails.server.ServerGameEngine.update() by the thread "JFreerails server".		
+		in freerails.server.ServerGameEngine.update() by the thread "freerails server".
 		(iii) Moves received from the server are now executed on the clients copy of the 
-		world in jfreerails.client.top.run() by the client thread by the  thread
-		"JFreerails client: ..."
+		world in freerails.client.top.run() by the client thread by the  thread
+		"freerails client: ..."
 	Moves are passed between threads using queues. 
 	Currently starting new games and loading games does not work.
 	o Removed most of the passing of mutexes between classes.
@@ -618,7 +618,7 @@ Nov 3, 2003 10:02:54 PM Luke
 30-Jul-2003 21:51:56 Luke
 	o The player gets paid for delivering cargo, simply
 	$1,000 per unit of cargo for now.
-	See jfreerails.server.ProcessCargoAtStationMoveGenerator
+	See freerails.server.ProcessCargoAtStationMoveGenerator
 	o Fixed bug where 40 times too much cargo was being
 	produced by changing figues in cargo_and_terrain.xml	
 27-Jul-2003 17:27:19 Luke
@@ -696,9 +696,9 @@ Nov 3, 2003 10:02:54 PM Luke
 		trains currently only pickup cargo. Its playable!
 05-Jun-2003 21:57:45 Luke
 	o Added loadAndUnloadCargo(..) method to 
-	jfreerails.controller.pathfinder.TrainPathFinder
+	freerails.controller.pathfinder.TrainPathFinder
 04-Jun-2003 23:04:47 Luke
-	o Updated jfreerails.world package overview.
+	o Updated freerails.world package overview.
 01-Jun-2003 21:01:14 Luke
 	o The game times passes as real time passes.
 01-Jun-2003 18:45:42 Luke
@@ -804,16 +804,16 @@ Nov 3, 2003 10:02:54 PM Luke
 11-Jan-2003 02:44:16 Luke
 	o Refactoring and removing dead code.
 10-Jan-2003 23:52:01 Luke
-	o Added package.html to jfreerails.moves
+	o Added package.html to freerails.moves
 	o refactoring to simplify the move classes.
 22-Dec-2002 20:47:51 Luke Lindsay
 	o Added 'Newspaper' option to 'game' menu to test drawing on 
 	the glass panel.  The same technique can be used for dialogue boxes.
 04-Dec-2002 21:36:42 Luke Lindsay
 	o The classes from the fastUtils libary that are needed by
-	jfreerails have been added to the jfreerails source tree, so
+	freerails have been added to the freerails source tree, so
 	you no longer need fastUtils.jar on the classpath to compile and
-	run jfreerails.
+	run freerails.
 01-Dec-2002 15:53:02 Luke Lindsay
 	o Prepare for release.
 01-Dec-2002 00:02:25 Luke Lindsay
@@ -871,11 +871,11 @@ Nov 3, 2003 10:02:54 PM Luke
    o Removed cyclic dependencies from the rest of
    the project.
 16-Oct-2002 21:48:24 Luke Lindsay 
-   o Refactored the jfreerails.world.* packages
-   	so that (1) jfreerails.world.* do not depend on any
-   				other jfreerails packages.
+   o Refactored the freerails.world.* packages
+   	so that (1) freerails.world.* do not depend on any
+   				other freerails packages.
    			(2) there are no cyclic dependencies between
-   				any of the jfreerails.world.* packages.
+   				any of the freerails.world.* packages.
    	hopefully this should make it easier to maintain.
 13-Oct-2002 22:30:30 Luke Lindsay 
    o Added trains!  They don't move yet.  Hit F7 when the cursor 
@@ -921,12 +921,12 @@ Nov 3, 2003 10:02:54 PM Luke
 	o Rotate method added to OneTileMoveVector
 21 - Jun - 02 19 : 21 : 08 Luke Lindsay:
 	o Fullscreen mode
-	o GameLoop, jfreerails now uses active, rather than passive, rendering.
+	o GameLoop, freerails now uses active, rather than passive, rendering.
 	o Work on separating the model and view.
 	o Tilesets can be validated against rulesets - ViewLists.validate(Type t)  	
 	o FPS counter added.
 04-Mar-2002 21:57:23 Luke Lindsay :
-	o Rearrange dependancies in jfreerails.world...
+	o Rearrange dependancies in freerails.world...
 02-Mar-2002 19:02:48 Luke Lindsay :
 	o Reorganisation of package structure.
 Sat Feb 16 22:48:00 2002 Luke Lindsay :

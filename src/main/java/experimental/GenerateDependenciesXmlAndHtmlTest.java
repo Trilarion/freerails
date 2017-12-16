@@ -14,19 +14,19 @@ import junit.framework.TestCase;
 public class GenerateDependenciesXmlAndHtmlTest extends TestCase {
     public void testIsPackageNameOk() {
         assertTrue(GenerateDependenciesXmlAndHtml
-                .isPackageNameOk("jfreerails/*"));
+                .isPackageNameOk("freerails/*"));
         assertFalse(GenerateDependenciesXmlAndHtml
-                .isPackageNameOk("jfreerails.*"));
+                .isPackageNameOk("freerails.*"));
         assertTrue(GenerateDependenciesXmlAndHtml
-                .isPackageNameOk("jfreerails/trees/*"));
+                .isPackageNameOk("freerails/trees/*"));
         assertFalse(GenerateDependenciesXmlAndHtml
-                .isPackageNameOk("jfreerails/trees/branches*"));
+                .isPackageNameOk("freerails/trees/branches*"));
         assertTrue(GenerateDependenciesXmlAndHtml
-                .isPackageNameOk("jfreerails/trees/branches/*"));
+                .isPackageNameOk("freerails/trees/branches/*"));
         assertFalse(GenerateDependenciesXmlAndHtml
-                .isPackageNameOk("jfreerails/trees/branches/**/"));
+                .isPackageNameOk("freerails/trees/branches/**/"));
         assertTrue(GenerateDependenciesXmlAndHtml
-                .isPackageNameOk("jfreerails/trees/branches/**/*"));
+                .isPackageNameOk("freerails/trees/branches/**/*"));
         assertTrue(GenerateDependenciesXmlAndHtml
                 .isPackageNameOk("it/unimi/dsi/fastUtil/*")); // note upper
         // case in

@@ -15,7 +15,7 @@ dependencies {
     compile 'junit:junit:4.12'
 }
 
-mainClassName = 'jfreerails.launcher.Launcher'
+mainClassName = 'freerails.launcher.Launcher'
 
 jar {
     manifest {

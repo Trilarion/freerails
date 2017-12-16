@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
-import jfreerails.util.Immutable;
-import jfreerails.util.InstanceControlled;
-import jfreerails.world.common.FreerailsSerializable;
+import freerails.util.Immutable;
+import freerails.util.InstanceControlled;
+import freerails.world.common.FreerailsSerializable;
 
 import org.apache.log4j.Logger;
 

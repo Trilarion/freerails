@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-import jfreerails.client.common.ImageManager;
+import freerails.client.common.ImageManager;
 
 /**
  * Implementation of ImageManager that returns images that are compatible with

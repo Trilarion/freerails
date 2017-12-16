@@ -13,7 +13,7 @@
         Last updated <!--#echo var="LAST_MODIFIED" --></P>
 <P><img src="jfreerails_0_2_6.png" width="640" height="480"></P>
 <P><BR>
-  The screenshot shows one of the new features added to jfreerails 0.2.6. On the 
+  The screenshot shows one of the new features added to freerails 0.2.6. On the
   right hand side is the new build tab. The top row of icons are for selecting 
   the build mode (build track, upgrade track, build station, remove track or view 
   mode). 'Upgrade track' is currently selected. When it is selected, the 2nd and 
