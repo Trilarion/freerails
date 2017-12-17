@@ -37,21 +37,6 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
 
-    private final DocumentListener documentListener = new DocumentListener() {
-        public void insertUpdate(DocumentEvent e) {
-            validateInput();
-        }
-
-        public void removeUpdate(DocumentEvent e) {
-            validateInput();
-        }
-
-        public void changedUpdate(DocumentEvent e) {
-            validateInput();
-        }
-
-    };
-
     /**
      * If the user has opted to load a game, we need to limit the list of
      * players to participants in the game we are loading. Otherwise, any player
@@ -206,8 +191,6 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         }
     }
 
-    private DisplayModesComboBoxModels listModel;
-
     void setRemoteServerPanelVisible(boolean b) {
         this.jPanel4.setVisible(b);
     }
@@ -217,6 +200,20 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         initComponents();
         validateInput();
         // Listen for changes in the server port text box.
+        DocumentListener documentListener = new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                validateInput();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                validateInput();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                validateInput();
+            }
+
+        };
         remotePort.getDocument().addDocumentListener(documentListener);
         remoteIP.getDocument().addDocumentListener(documentListener);
         playerName.getDocument().addDocumentListener(documentListener);
@@ -400,7 +397,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
 
-        listModel = new DisplayModesComboBoxModels();
+        DisplayModesComboBoxModels listModel = new DisplayModesComboBoxModels();
         listModel.removeDisplayModesBelow(640, 480, 16);
         jList1.setModel(listModel);
         int pos = 0;

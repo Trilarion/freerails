@@ -81,12 +81,11 @@ strictfp public class Utils {
             throw new IllegalStateException();
         }
 
-        byte[] bytes = out.toByteArray();
-        return bytes;
+        return out.toByteArray();
     }
 
     public static String capitalizeEveryWord(String str) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         StringTokenizer tok = new StringTokenizer(str);
 
         while (tok.hasMoreTokens()) {
@@ -99,15 +98,15 @@ strictfp public class Utils {
 
     public static String findConstantFieldName(Object o) {
         Field[] fields = o.getClass().getFields();
-        for (int i = 0; i < fields.length; i++) {
-            int modifiers = fields[i].getModifiers();
+        for (Field field : fields) {
+            int modifiers = field.getModifiers();
 
             try {
                 if (Modifier.isStatic(modifiers)
                         && Modifier.isPublic(modifiers)) {
-                    Object o2 = fields[i].get(null);
+                    Object o2 = field.get(null);
                     if (o2.equals(o)) {
-                        return fields[i].getName();
+                        return field.getName();
                     }
                 }
             } catch (IllegalAccessException e) {

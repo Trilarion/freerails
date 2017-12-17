@@ -13,9 +13,9 @@ import java.io.IOException;
  * @see Message2Server
  */
 public interface ServerControlInterface {
-    public static final String FREERAILS_SAV = "freerails.sav";
+    String FREERAILS_SAV = "freerails.sav";
 
-    public static final String VERSION = "CVS";
+    String VERSION = "CVS";
 
     void loadgame(String saveGameName) throws IOException;
 

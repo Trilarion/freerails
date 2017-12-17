@@ -26,9 +26,8 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     public static Test suite() {
-        TestSuite suite = new TestSuite(TrackConfigurationTest.class);
 
-        return suite;
+        return new TestSuite(TrackConfigurationTest.class);
     }
 
     public TrackConfigurationTest(java.lang.String testName) {
@@ -83,7 +82,7 @@ public class TrackConfigurationTest extends TestCase {
 
         // Check that no two track configurations have the same String
         // representation.
-        HashSet<String> strings = new HashSet<String>();
+        HashSet<String> strings = new HashSet<>();
 
         for (int i = 0; i < 512; i++) {
             TrackConfiguration test = TrackConfiguration.from9bitTemplate(i);

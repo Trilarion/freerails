@@ -52,7 +52,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     private static ArrayList<TrackConfiguration> setupConfigurations() {
-        ArrayList<TrackConfiguration> configurations = new ArrayList<TrackConfiguration>(
+        ArrayList<TrackConfiguration> configurations = new ArrayList<>(
                 512);
 
         for (int i = 0; i < 512; i++) {
@@ -99,9 +99,9 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         int tempLength = 0;
         Step[] vectors = Step.getList();
 
-        for (int i = 0; i < vectors.length; i++) {
-            if (this.contains(vectors[i].get9bitTemplate())) {
-                tempLength += vectors[i].getLength();
+        for (Step vector : vectors) {
+            if (this.contains(vector.get9bitTemplate())) {
+                tempLength += vector.getLength();
             }
         }
 
@@ -115,19 +115,16 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     public boolean contains(int trackTemplate) {
-        if ((trackTemplate | this.configuration) == this.configuration) {
-            return true;
-        }
-        return false;
+        return (trackTemplate | this.configuration) == this.configuration;
     }
 
     public int get8bitTemplate() {
         int newTemplate = 0;
         Step[] vectors = Step.getList();
 
-        for (int i = 0; i < vectors.length; i++) {
-            if (this.contains(vectors[i])) {
-                newTemplate = newTemplate | vectors[i].get8bitTemplate();
+        for (Step vector : vectors) {
+            if (this.contains(vector)) {
+                newTemplate = newTemplate | vector.get8bitTemplate();
             }
         }
 
@@ -166,10 +163,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 
         final TrackConfiguration that = (TrackConfiguration) o;
 
-        if (configuration != that.configuration)
-            return false;
-
-        return true;
+        return configuration == that.configuration;
     }
 
     @Override
@@ -187,7 +181,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
      */
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int matches = 0;
 
         if (contains(TrackConfiguration.getFlatInstance("000010000"))) {

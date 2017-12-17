@@ -34,10 +34,7 @@ public class SupplyAtStation implements FreerailsSerializable {
 
         final SupplyAtStation supplyAtStation = (SupplyAtStation) o;
 
-        if (!supply.equals(supplyAtStation.supply))
-            return false;
-
-        return true;
+        return supply.equals(supplyAtStation.supply);
     }
 
     @Override

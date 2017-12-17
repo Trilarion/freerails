@@ -1,5 +1,5 @@
-/**
- * @author Scott Bennett
+/*
+  @author Scott Bennett
  * Date 31st March 2003
  * <p>
  * Class for a city. Simply storing the city name and x & y co-ords.
@@ -42,10 +42,7 @@ public class CityModel implements FreerailsSerializable {
             return false;
         if (y != cityModel.y)
             return false;
-        if (!name.equals(cityModel.name))
-            return false;
-
-        return true;
+        return name.equals(cityModel.name);
     }
 
     @Override

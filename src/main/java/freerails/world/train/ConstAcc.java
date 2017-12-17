@@ -76,10 +76,7 @@ strictfp public class ConstAcc implements FreerailsSerializable,
             return false;
         if (finalT != constAcc.finalT)
             return false;
-        if (u != constAcc.u)
-            return false;
-
-        return true;
+        return !(u != constAcc.u);
     }
 
     public double calcA(double t) {
@@ -99,11 +96,11 @@ strictfp public class ConstAcc implements FreerailsSerializable,
     public int hashCode() {
         int result;
         long temp;
-        temp = u != +0.0d ? Double.doubleToLongBits(u) : 0l;
+        temp = u != +0.0d ? Double.doubleToLongBits(u) : 0L;
         result = (int) (temp ^ (temp >>> 32));
-        temp = a != +0.0d ? Double.doubleToLongBits(a) : 0l;
+        temp = a != +0.0d ? Double.doubleToLongBits(a) : 0L;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
-        temp = finalT != +0.0d ? Double.doubleToLongBits(finalT) : 0l;
+        temp = finalT != +0.0d ? Double.doubleToLongBits(finalT) : 0L;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
@@ -117,8 +114,7 @@ strictfp public class ConstAcc implements FreerailsSerializable,
 
     @Override
     public String toString() {
-        String str = "ConstAcc [a=" + a + ", u=" + u + ", dt=" + finalT + "]";
-        return str;
+        return "ConstAcc [a=" + a + ", u=" + u + ", dt=" + finalT + "]";
     }
 
 }

@@ -29,8 +29,6 @@ import java.awt.event.MouseEvent;
 public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
     private JComponent overviewMapJPanel;
 
-    private JViewport viewport;
-
     private JComponent mainMap;
 
     private Rectangle currentVisRect;
@@ -53,7 +51,7 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         currentVisRect = rect;
 
         overviewMapJPanel = omv;
-        viewport = v;
+        JViewport viewport = v;
         mainMap = mm;
 
         overviewMapJPanel.addMouseMotionListener(this);

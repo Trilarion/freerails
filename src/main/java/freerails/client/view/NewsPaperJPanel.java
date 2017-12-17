@@ -21,10 +21,6 @@ import java.awt.event.ActionListener;
 public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     private static final long serialVersionUID = 3258410638366946868L;
 
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
-
     private ActionListener callBack;
 
     private final Image pieceOfNewspaper;
@@ -35,6 +31,9 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
         Image tempImage = (new javax.swing.ImageIcon(getClass().getResource(
                 "/freerails/data/newspaper.png"))).getImage();
 
+        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
+                .getLocalGraphicsEnvironment().getDefaultScreenDevice()
+                .getDefaultConfiguration();
         pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage
                         .getWidth(null), tempImage.getHeight(null),
                 Transparency.BITMASK);
@@ -57,8 +56,8 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
      */
     private void initComponents() { // GEN-BEGIN:initComponents
         headline = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        anyKeyToContinueJLabel = new javax.swing.JLabel();
+        JPanel jPanel1 = new JPanel();
+        JLabel anyKeyToContinueJLabel = new JLabel();
         setLayout(null);
         setPreferredSize(new java.awt.Dimension(640, 400));
         setMinimumSize(new java.awt.Dimension(640, 400));
@@ -117,10 +116,6 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel headline;
-
-    private javax.swing.JPanel jPanel1;
-
-    private javax.swing.JLabel anyKeyToContinueJLabel;
 
     // End of variables declaration//GEN-END:variables
 }

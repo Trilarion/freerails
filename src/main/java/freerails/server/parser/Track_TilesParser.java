@@ -36,7 +36,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     public Track_TilesParser(final Track_TilesHandler handler) {
         this.handler = handler;
         buffer = new StringBuffer(111);
-        context = new java.util.Stack<Object[]>();
+        context = new java.util.Stack<>();
     }
 
     public void setDocumentLocator(org.xml.sax.Locator locator) {
@@ -55,26 +55,37 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
         context.push(new Object[]{qname,
                 new org.xml.sax.helpers.AttributesImpl(attrs)});
 
-        if ("CanOnlyBuildOnTheseTerrainTypes".equals(qname)) {
-            handler.start_CanOnlyBuildOnTheseTerrainTypes(attrs);
-        } else if ("ListOfTrackPieceTemplates".equals(qname)) {
-            handler.start_ListOfTrackPieceTemplates(attrs);
-        } else if ("ListOfLegalRoutesAcrossNode".equals(qname)) {
-            handler.start_ListOfLegalRoutesAcrossNode(attrs);
-        } else if ("LegalRouteAcrossNode".equals(qname)) {
-            handler.handle_LegalRouteAcrossNode(attrs);
-        } else if ("CannotBuildOnTheseTerrainTypes".equals(qname)) {
-            handler.start_CannotBuildOnTheseTerrainTypes(attrs);
-        } else if ("TrackType".equals(qname)) {
-            handler.start_TrackType(attrs);
-        } else if ("TerrainType".equals(qname)) {
-            handler.handle_TerrainType(attrs);
-        } else if ("Tiles".equals(qname)) {
-            handler.start_Tiles(attrs);
-        } else if ("TrackPieceTemplate".equals(qname)) {
-            handler.start_TrackPieceTemplate(attrs);
-        } else if ("TrackSet".equals(qname)) {
-            handler.start_TrackSet(attrs);
+        switch (qname) {
+            case "CanOnlyBuildOnTheseTerrainTypes":
+                handler.start_CanOnlyBuildOnTheseTerrainTypes(attrs);
+                break;
+            case "ListOfTrackPieceTemplates":
+                handler.start_ListOfTrackPieceTemplates(attrs);
+                break;
+            case "ListOfLegalRoutesAcrossNode":
+                handler.start_ListOfLegalRoutesAcrossNode(attrs);
+                break;
+            case "LegalRouteAcrossNode":
+                handler.handle_LegalRouteAcrossNode(attrs);
+                break;
+            case "CannotBuildOnTheseTerrainTypes":
+                handler.start_CannotBuildOnTheseTerrainTypes(attrs);
+                break;
+            case "TrackType":
+                handler.start_TrackType(attrs);
+                break;
+            case "TerrainType":
+                handler.handle_TerrainType(attrs);
+                break;
+            case "Tiles":
+                handler.start_Tiles(attrs);
+                break;
+            case "TrackPieceTemplate":
+                handler.start_TrackPieceTemplate(attrs);
+                break;
+            case "TrackSet":
+                handler.start_TrackSet(attrs);
+                break;
         }
     }
 
@@ -83,22 +94,31 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
         dispatch(false);
         context.pop();
 
-        if ("CanOnlyBuildOnTheseTerrainTypes".equals(qname)) {
-            handler.end_CanOnlyBuildOnTheseTerrainTypes();
-        } else if ("ListOfTrackPieceTemplates".equals(qname)) {
-            handler.end_ListOfTrackPieceTemplates();
-        } else if ("ListOfLegalRoutesAcrossNode".equals(qname)) {
-            handler.end_ListOfLegalRoutesAcrossNode();
-        } else if ("CannotBuildOnTheseTerrainTypes".equals(qname)) {
-            handler.end_CannotBuildOnTheseTerrainTypes();
-        } else if ("TrackType".equals(qname)) {
-            handler.end_TrackType();
-        } else if ("Tiles".equals(qname)) {
-            handler.end_Tiles();
-        } else if ("TrackPieceTemplate".equals(qname)) {
-            handler.end_TrackPieceTemplate();
-        } else if ("TrackSet".equals(qname)) {
-            handler.end_TrackSet();
+        switch (qname) {
+            case "CanOnlyBuildOnTheseTerrainTypes":
+                handler.end_CanOnlyBuildOnTheseTerrainTypes();
+                break;
+            case "ListOfTrackPieceTemplates":
+                handler.end_ListOfTrackPieceTemplates();
+                break;
+            case "ListOfLegalRoutesAcrossNode":
+                handler.end_ListOfLegalRoutesAcrossNode();
+                break;
+            case "CannotBuildOnTheseTerrainTypes":
+                handler.end_CannotBuildOnTheseTerrainTypes();
+                break;
+            case "TrackType":
+                handler.end_TrackType();
+                break;
+            case "Tiles":
+                handler.end_Tiles();
+                break;
+            case "TrackPieceTemplate":
+                handler.end_TrackPieceTemplate();
+                break;
+            case "TrackSet":
+                handler.end_TrackSet();
+                break;
         }
     }
 

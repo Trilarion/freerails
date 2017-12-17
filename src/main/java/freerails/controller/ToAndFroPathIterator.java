@@ -33,10 +33,7 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
     }
 
     public boolean hasNext() {
-        if (list.size() < 2) {
-            return false;
-        }
-        return true;
+        return list.size() >= 2;
     }
 
     public void nextSegment(IntLine line) {

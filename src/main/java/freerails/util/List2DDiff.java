@@ -78,9 +78,7 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof List2D))
-            return false;
-        return Lists.equals(this, (List2D) obj);
+        return obj instanceof List2D && Lists.equals(this, (List2D) obj);
     }
 
     @Override

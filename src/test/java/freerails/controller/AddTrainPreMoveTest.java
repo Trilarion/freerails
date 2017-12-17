@@ -31,8 +31,6 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
     private ImPoint stationA;
 
-    private ImPoint stationB;
-
     ImmutableSchedule defaultSchedule;
 
     @Override
@@ -55,7 +53,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.ok);
-        stationB = new ImPoint(19, 10);
+        ImPoint stationB = new ImPoint(19, 10);
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.ok);
 

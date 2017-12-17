@@ -45,10 +45,7 @@ public class ImInts implements FreerailsSerializable {
 
         final ImInts other = (ImInts) o;
 
-        if (!Arrays.equals(ints, other.ints))
-            return false;
-
-        return true;
+        return Arrays.equals(ints, other.ints);
     }
 
     @Override
@@ -75,7 +72,7 @@ public class ImInts implements FreerailsSerializable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(getClass().getName());
+        StringBuilder sb = new StringBuilder(getClass().getName());
         sb.append("[");
         for (int i = 0; i < ints.length; i++) {
             sb.append(ints[i]);
@@ -91,8 +88,8 @@ public class ImInts implements FreerailsSerializable {
      */
     public int sum() {
         int sum = 0;
-        for (int i = 0; i < ints.length; i++) {
-            sum += ints[i];
+        for (int anInt : ints) {
+            sum += anInt;
         }
         return sum;
     }

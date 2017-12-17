@@ -59,7 +59,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         }
     }
 
-    private final HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<NameAndPassword, Connection2Client>();
+    private final HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<>();
 
     private int commandID = 0;
 
@@ -76,14 +76,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      * The players who have confirmed that they have received the last copy of
      * the world object sent.
      */
-    private HashSet<NameAndPassword> confirmedPlayers = new HashSet<NameAndPassword>();
+    private HashSet<NameAndPassword> confirmedPlayers = new HashSet<>();
 
     /* Contains the user names of the players who are currently logged on. */
-    private HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<NameAndPassword>();
+    private HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<>();
 
     private boolean newPlayersAllowed = true;
 
-    private ArrayList<NameAndPassword> players = new ArrayList<NameAndPassword>();
+    private ArrayList<NameAndPassword> players = new ArrayList<>();
 
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
             this);
@@ -221,9 +221,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             logger.debug("confirmedPlayers.size()=" + confirmedPlayers.size());
         }
 
-        boolean isConfirmed = confirmedPlayers.contains(players.get(player));
-
-        return isConfirmed;
+        return confirmedPlayers.contains(players.get(player));
     }
 
     public boolean isNewPlayersAllowed() {
@@ -249,7 +247,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         String[] passwords = loadedGame.getPasswords();
         World w = loadedGame.getWorld();
         assert passwords.length == w.getNumberOfPlayers();
-        ArrayList<NameAndPassword> newPlayers = new ArrayList<NameAndPassword>();
+        ArrayList<NameAndPassword> newPlayers = new ArrayList<>();
         for (int i = 0; i < passwords.length; i++) {
             Player player = w.getPlayer(i);
             NameAndPassword nap = new NameAndPassword(player.getName(),
@@ -496,16 +494,16 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                     FreerailsSerializable[] messages = connection
                             .readFromClient();
 
-                    for (int i = 0; i < messages.length; i++) {
-                        if (messages[i] instanceof Message2Server) {
-                            Message2Server message2 = (Message2Server) messages[i];
+                    for (FreerailsSerializable message : messages) {
+                        if (message instanceof Message2Server) {
+                            Message2Server message2 = (Message2Server) message;
                             MessageStatus cStatus = message2.execute(this);
                             if (logger.isDebugEnabled()) {
                                 logger.debug(message2.toString());
                             }
                             connection.writeToClient(cStatus);
-                        } else if (messages[i] instanceof MessageStatus) {
-                            MessageStatus messageStatus = (MessageStatus) messages[i];
+                        } else if (message instanceof MessageStatus) {
+                            MessageStatus messageStatus = (MessageStatus) message;
 
                             if (messageStatus.getId() == this.confirmationID) {
                                 /*
@@ -520,22 +518,22 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                             }
 
                             if (logger.isDebugEnabled()) {
-                                logger.debug(messages[i].toString());
+                                logger.debug(message.toString());
                             }
-                        } else if (messages[i] instanceof Move
-                                || messages[i] instanceof PreMove) {
+                        } else if (message instanceof Move
+                                || message instanceof PreMove) {
                             Player player2 = getWorld().getPlayer(
                                     players.indexOf(player));
                             FreerailsPrincipal principal = player2
                                     .getPrincipal();
 
                             Move move;
-                            boolean isMove = messages[i] instanceof Move;
+                            boolean isMove = message instanceof Move;
 
                             if (isMove) {
-                                move = (Move) messages[i];
+                                move = (Move) message;
                             } else {
-                                PreMove pm = (PreMove) messages[i];
+                                PreMove pm = (PreMove) message;
                                 move = pm.generateMove(getWorld());
                             }
 
@@ -560,7 +558,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                             }
                         } else {
                             if (logger.isDebugEnabled()) {
-                                logger.debug(messages[i].toString());
+                                logger.debug(message.toString());
                             }
                         }
                     }

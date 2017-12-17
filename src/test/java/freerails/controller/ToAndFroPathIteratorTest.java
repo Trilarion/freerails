@@ -19,7 +19,7 @@ public class ToAndFroPathIteratorTest extends TestCase {
     }
 
     public void testNextSegment() {
-        List<Point> l = new ArrayList<Point>();
+        List<Point> l = new ArrayList<>();
         IntLine line = new IntLine();
 
         l.add(new Point(0, 1));

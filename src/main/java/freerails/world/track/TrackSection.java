@@ -50,11 +50,8 @@ public class TrackSection implements FreerailsSerializable {
         } else if (!step.equals(other.step))
             return false;
         if (tile == null) {
-            if (other.tile != null)
-                return false;
-        } else if (!tile.equals(other.tile))
-            return false;
-        return true;
+            return other.tile == null;
+        } else return tile.equals(other.tile);
     }
 
     @Override

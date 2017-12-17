@@ -54,12 +54,7 @@ public class EconomicClimate implements FreerailsSerializable {
             return false;
         }
 
-        if (name != null ? !name.equals(economicClimate.name)
-                : economicClimate.name != null) {
-            return false;
-        }
-
-        return true;
+        return name != null ? name.equals(economicClimate.name) : economicClimate.name == null;
     }
 
     @Override

@@ -35,9 +35,9 @@ public class RenderersRootImpl implements RenderersRoot {
 
     private final ImageManager imageManager;
 
-    private final ArrayList<TrainImages> wagonImages = new ArrayList<TrainImages>();
+    private final ArrayList<TrainImages> wagonImages = new ArrayList<>();
 
-    private final ArrayList<TrainImages> engineImages = new ArrayList<TrainImages>();
+    private final ArrayList<TrainImages> engineImages = new ArrayList<>();
 
     public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
             throws IOException {
@@ -112,7 +112,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
     private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
                                                  FreerailsProgressMonitor pm) throws IOException {
-        ArrayList<TileRenderer> tileRenderers = new ArrayList<TileRenderer>();
+        ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
 
         // Setup progress monitor..
 
@@ -198,7 +198,6 @@ public class RenderersRootImpl implements RenderersRoot {
                         typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
-                continue;
             } catch (IOException io) {
                 // If the image is missing, we generate it.
                 logger.warn("No tile renderer for " + t.getTerrainTypeName());
@@ -214,7 +213,6 @@ public class RenderersRootImpl implements RenderersRoot {
                             typesTreatedAsTheSame, t, w);
                     tileRenderers.add(tr);
 
-                    continue;
                 } catch (IOException io2) {
                     io2.printStackTrace();
                     throw new IllegalStateException();

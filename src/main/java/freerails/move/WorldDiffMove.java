@@ -38,8 +38,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         TrainArrives, Other, YearEnd
     }
 
-    ;
-
     private final Cause cause;
 
     private static final Logger logger = Logger.getLogger(WorldDiffMove.class
@@ -75,10 +73,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                 return false;
             if (!after.equals(diff.after))
                 return false;
-            if (!before.equals(diff.before))
-                return false;
-
-            return true;
+            return before.equals(diff.before);
         }
 
         @Override
@@ -109,7 +104,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         this.cause = cause;
 
         Iterator<ImPoint> mit = worldDiffs.getMapDiffs();
-        ArrayList<MapDiff> diffsArrayList = new ArrayList<MapDiff>();
+        ArrayList<MapDiff> diffsArrayList = new ArrayList<>();
         if (mit.hasNext()) {
             int minx = Integer.MAX_VALUE;
             int miny = Integer.MAX_VALUE;
@@ -136,9 +131,9 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             w = 0;
             h = 0;
         }
-        diffs = new ImList<MapDiff>(diffsArrayList);
+        diffs = new ImList<>(diffsArrayList);
 
-        List<Move> tempList = new ArrayList<Move>();
+        List<Move> tempList = new ArrayList<>();
         Iterator<ListKey> lit = worldDiffs.getListDiffs();
         while (lit.hasNext()) {
             ListKey lkey = lit.next();
@@ -312,10 +307,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             return false;
         if (y != mapDiffMove.y)
             return false;
-        if (!diffs.equals(mapDiffMove.diffs))
-            return false;
-
-        return true;
+        return diffs.equals(mapDiffMove.diffs);
     }
 
     public Rectangle getUpdatedTiles() {

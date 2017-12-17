@@ -24,9 +24,9 @@ public class KEYTest extends TestCase {
     public void testThatAllTheFieldsDefinedInKEYAreInstancesOFKEY() {
         Field[] fields = KEY.class.getFields();
 
-        for (int i = 0; i < fields.length; i++) {
-            String name = fields[i].getName();
-            int modifiers = fields[i].getModifiers();
+        for (Field field : fields) {
+            String name = field.getName();
+            int modifiers = field.getModifiers();
 
             if (!name.equals("shared")) {
                 assertTrue("All the fields of KEY should be static", Modifier
@@ -40,7 +40,7 @@ public class KEYTest extends TestCase {
 
             try {
                 if (Modifier.isStatic(modifiers)) {
-                    Object o = fields[i].get(null);
+                    Object o = field.get(null);
                     assertTrue("All the fields of KEY should be instances of"
                             + " KEY", o instanceof KEY);
                 }

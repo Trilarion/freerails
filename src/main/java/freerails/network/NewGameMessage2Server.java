@@ -57,10 +57,7 @@ public class NewGameMessage2Server implements Message2Server {
 
         if (id != newGameMessage2Server.id)
             return false;
-        if (!mapName.equals(newGameMessage2Server.mapName))
-            return false;
-
-        return true;
+        return mapName.equals(newGameMessage2Server.mapName);
     }
 
     @Override

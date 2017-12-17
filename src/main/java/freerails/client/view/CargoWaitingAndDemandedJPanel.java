@@ -50,14 +50,14 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     private void initComponents() {// GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        JScrollPane jScrollPane1 = new JScrollPane();
+        JPanel jPanel1 = new JPanel();
         stationName = new javax.swing.JLabel();
-        waiting = new javax.swing.JLabel();
+        JLabel waiting = new JLabel();
         waitingJTable = new javax.swing.JTable();
-        demands = new javax.swing.JLabel();
+        JLabel demands = new JLabel();
         demandsJList = new javax.swing.JList();
-        spacer = new javax.swing.JPanel();
+        JPanel spacer = new JPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -155,9 +155,9 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
                 .get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
         // count the number of cargo types waiting and demanded.
-        final ArrayList<String> typeWaiting = new ArrayList<String>();
-        final ArrayList<Integer> quantityWaiting = new ArrayList<Integer>();
-        final List<String> typeDemanded = new ArrayList<String>();
+        final ArrayList<String> typeWaiting = new ArrayList<>();
+        final ArrayList<Integer> quantityWaiting = new ArrayList<>();
+        final List<String> typeDemanded = new ArrayList<>();
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
             CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);
             int amountWaiting = cargoWaiting.getAmount(i);
@@ -166,7 +166,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
                 typeWaiting.add(cargoType.getDisplayName());
                 int carloads = amountWaiting
                         / WagonType.UNITS_OF_CARGO_PER_WAGON;
-                quantityWaiting.add(new Integer(carloads));
+                quantityWaiting.add(carloads);
             }
             if (station.getDemand().isCargoDemanded(i)) {
                 typeDemanded.add(cargoType.getDisplayName());
@@ -204,20 +204,9 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         this.invalidate();
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel demands;
-
     private javax.swing.JList demandsJList;
 
-    private javax.swing.JPanel jPanel1;
-
-    private javax.swing.JScrollPane jScrollPane1;
-
-    private javax.swing.JPanel spacer;
-
     private javax.swing.JLabel stationName;
-
-    private javax.swing.JLabel waiting;
 
     private javax.swing.JTable waitingJTable;
     // End of variables declaration//GEN-END:variables

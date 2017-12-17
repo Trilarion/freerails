@@ -47,10 +47,7 @@ public class AddStationPreMove implements PreMove {
             return false;
         if (!p.equals(addStationPreMove.p))
             return false;
-        if (!principal.equals(addStationPreMove.principal))
-            return false;
-
-        return true;
+        return principal.equals(addStationPreMove.principal);
     }
 
     @Override

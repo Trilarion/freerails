@@ -36,8 +36,6 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
     private String template;
 
-    private int lastNumTransactions = 0;
-
     private ModelRoot modelRoot;
 
     public static BrokerScreenGenerator brokerScreenGenerator;
@@ -213,7 +211,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
         // this is where the Menu get Enable and Disable by if you own any stock
         // or if the TotalShares are 0
 
-        StringBuffer populatedTemplate = new StringBuffer();
+        StringBuilder populatedTemplate = new StringBuilder();
         populatedTemplate.append("<html>");
         populatedTemplate
                 .append(populateTokens(template, brokerScreenGenerator));
@@ -240,6 +238,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
         int currentNumberOfTransactions = world
                 .getNumberOfTransactions(playerPrincipal);
 
+        int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {
             updateHtml();
         }

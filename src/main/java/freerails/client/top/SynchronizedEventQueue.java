@@ -25,7 +25,7 @@ final public class SynchronizedEventQueue extends EventQueue {
      * Enforce singleton property.
      */
     private SynchronizedEventQueue() {
-        list = new LinkedHashMap<AWTEvent, Throwable>();
+        list = new LinkedHashMap<>();
     }
 
     public static synchronized void use() {

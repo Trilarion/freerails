@@ -162,11 +162,8 @@ final public class GameCalendar implements FreerailsSerializable {
         if (o instanceof GameCalendar) {
             GameCalendar test = (GameCalendar) o;
 
-            if (this.startYear != test.startYear
-                    || this.ticksPerYear != test.ticksPerYear) {
-                return false;
-            }
-            return true;
+            return this.startYear == test.startYear
+                    && this.ticksPerYear == test.ticksPerYear;
         }
         return false;
     }

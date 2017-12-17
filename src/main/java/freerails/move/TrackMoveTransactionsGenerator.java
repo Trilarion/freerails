@@ -49,7 +49,7 @@ public class TrackMoveTransactionsGenerator {
      * Note, trackAdded and trackRemoved cannot be combined, since it may cost
      * more to added a unit of track than is refunded when you removed it.
      */
-    private final ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private final ArrayList<Transaction> transactions = new ArrayList<>();
 
     private final ReadOnlyWorld w;
 

@@ -43,8 +43,6 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
     private final DialogueBoxController dialogueBoxController;
 
-    private World w;
-
     private RenderersRoot vl;
 
     private ModelRootImpl modelRoot;
@@ -57,8 +55,6 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         }
     };
 
-    ;
-
     private TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
 
     /**
@@ -66,7 +62,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
      */
     private DialogueBoxTester() {
 
-        w = new WorldImpl(200, 200);
+        World w = new WorldImpl(200, 200);
 
         UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(w);
 

@@ -13,9 +13,7 @@ public class Pair<A, B> {
     public boolean equals(Pair<A, B> other) {
         if (this == other)
             return true;
-        if (null == other)
-            return false;
-        return (e1.equals(other.e1) && e2.equals(other.e2));
+        return null != other && (e1.equals(other.e1) && e2.equals(other.e2));
     }
 
     public String toString() {

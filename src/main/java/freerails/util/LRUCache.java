@@ -90,7 +90,7 @@ public class LRUCache<K, V> {
      * @return a <code>Collection</code> with a copy of the cache content.
      */
     public synchronized Collection<Map.Entry<K, V>> getAll() {
-        return new ArrayList<Map.Entry<K, V>>(map.entrySet());
+        return new ArrayList<>(map.entrySet());
     }
 
 } // end class LRUCache

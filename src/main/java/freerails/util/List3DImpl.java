@@ -11,14 +11,14 @@ public class List3DImpl<T> implements List3D<T> {
 
     private static final long serialVersionUID = 1353309875727204066L;
 
-    private ArrayList<ArrayList<ArrayList<T>>> elementData = new ArrayList<ArrayList<ArrayList<T>>>();
+    private ArrayList<ArrayList<ArrayList<T>>> elementData = new ArrayList<>();
 
     public List3DImpl(int d1, int d2) {
         for (int i = 0; i < d1; i++) {
-            ArrayList<ArrayList<T>> dim2 = new ArrayList<ArrayList<T>>();
+            ArrayList<ArrayList<T>> dim2 = new ArrayList<>();
             elementData.add(dim2);
             for (int j = 0; j < d2; j++) {
-                dim2.add(new ArrayList<T>());
+                dim2.add(new ArrayList<>());
             }
         }
     }
@@ -64,14 +64,14 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     public int addD1() {
-        ArrayList<ArrayList<T>> dim2 = new ArrayList<ArrayList<T>>();
+        ArrayList<ArrayList<T>> dim2 = new ArrayList<>();
         elementData.add(dim2);
         return elementData.size() - 1;
     }
 
     public int addD2(int d1) {
         ArrayList<ArrayList<T>> dim2 = elementData.get(d1);
-        dim2.add(new ArrayList<T>());
+        dim2.add(new ArrayList<>());
         return dim2.size() - 1;
     }
 
@@ -88,9 +88,7 @@ public class List3DImpl<T> implements List3D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof List3D))
-            return false;
-        return Lists.equals(this, (List3D) obj);
+        return obj instanceof List3D && Lists.equals(this, (List3D) obj);
     }
 
     @Override

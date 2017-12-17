@@ -159,13 +159,12 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check for diagonal conflicts.
         if (directionOfNextTile.isDiagonal()) {
-            int x2check = currentX;
             int y2check = currentY + directionOfNextTile.deltaY;
 
             // We did a bounds check above.
-            assert (world.boundsContain(x2check, y2check));
+            assert (world.boundsContain(currentX, y2check));
 
-            FreerailsTile tile2Check = (FreerailsTile) world.getTile(x2check,
+            FreerailsTile tile2Check = (FreerailsTile) world.getTile(currentX,
                     y2check);
             TrackConfiguration config2check = tile2Check.getTrackPiece()
                     .getTrackConfiguration();

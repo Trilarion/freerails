@@ -22,11 +22,11 @@ public class SimpleAStarPathFinder implements Serializable,
 
     private OpenList openList = new OpenList();
 
-    private final HashSet<Integer> startingPositions = new HashSet<Integer>();
+    private final HashSet<Integer> startingPositions = new HashSet<>();
 
-    private final HashMap<Integer, Integer> closedList = new HashMap<Integer, Integer>();
+    private final HashMap<Integer, Integer> closedList = new HashMap<>();
 
-    private final HashMap<Integer, Integer> shortestPath = new HashMap<Integer, Integer>();
+    private final HashMap<Integer, Integer> shortestPath = new HashMap<>();
 
     private int status = SEARCH_NOT_STARTED;
 
@@ -126,13 +126,11 @@ public class SimpleAStarPathFinder implements Serializable,
                     // if a node with the same position as successor is in the
                     // OPEN list \
                     // which has a lower f than successor, skip this successor
-                    continue;
                 } else if (closedList.containsKey(successor)
                         && closedList.get(successor) < successorF) {
                     // if a node with the same position as successor is in the
                     // CLOSED list \
                     // which has a lower f than successor, skip this successor
-                    continue;
                 } else {
                     // otherwise, add the node to the open list
                     openList.add(successor, successorF);
@@ -205,19 +203,19 @@ public class SimpleAStarPathFinder implements Serializable,
         explorer = e;
 
         // put the starting nodes on the open list (you can leave its f at zero)
-        for (int i = 0; i < targets.length; i++) {
-            openList.add(targets[i], 0);
+        for (int target : targets) {
+            openList.add(target, 0);
 
-            for (int j = 0; j < currentPosition.length; j++) {
-                if (targets[i] == currentPosition[j]) {
+            for (int aCurrentPosition : currentPosition) {
+                if (target == aCurrentPosition) {
                     status = PATH_NOT_FOUND;
                     throw new PathNotFoundException("Already at target!");
                 }
             }
         }
 
-        for (int j = 0; j < currentPosition.length; j++) {
-            startingPositions.add(currentPosition[j]);
+        for (int aCurrentPosition : currentPosition) {
+            startingPositions.add(aCurrentPosition);
         }
     }
 

@@ -180,29 +180,29 @@ final public class ScreenHandler {
         if (c instanceof java.awt.Container) {
             Component[] children = ((Container) c).getComponents();
 
-            for (int i = 0; i < children.length; i++) {
-                setRepaintOffAndDisableDoubleBuffering(children[i]);
+            for (Component aChildren : children) {
+                setRepaintOffAndDisableDoubleBuffering(aChildren);
             }
         }
     }
 
     private static DisplayMode getBestDisplayMode() {
-        for (int x = 0; x < BEST_DISPLAY_MODES.length; x++) {
+        for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
             DisplayMode[] modes = device.getDisplayModes();
 
-            for (int i = 0; i < modes.length; i++) {
-                if (modes[i].getWidth() == BEST_DISPLAY_MODES[x].getWidth()
-                        && modes[i].getHeight() == BEST_DISPLAY_MODES[x]
+            for (DisplayMode mode1 : modes) {
+                if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth()
+                        && mode1.getHeight() == BEST_DISPLAY_MODE
                         .getHeight()
-                        && modes[i].getBitDepth() == BEST_DISPLAY_MODES[x]
+                        && mode1.getBitDepth() == BEST_DISPLAY_MODE
                         .getBitDepth()) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Best display mode is "
-                                + (new MyDisplayMode(BEST_DISPLAY_MODES[x]))
+                                + (new MyDisplayMode(BEST_DISPLAY_MODE))
                                 .toString());
                     }
 
-                    return BEST_DISPLAY_MODES[x];
+                    return BEST_DISPLAY_MODE;
                 }
             }
         }

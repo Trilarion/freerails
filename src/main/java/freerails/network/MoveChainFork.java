@@ -18,13 +18,13 @@ import java.util.ArrayList;
  * @author rob
  */
 final public class MoveChainFork implements MoveReceiver {
-    private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<MoveReceiver>();
+    private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<>();
 
-    private final ArrayList<MoveReceiver> splitMoveReceivers = new ArrayList<MoveReceiver>();
+    private final ArrayList<MoveReceiver> splitMoveReceivers = new ArrayList<>();
 
-    private final ArrayList<WorldListListener> listListeners = new ArrayList<WorldListListener>();
+    private final ArrayList<WorldListListener> listListeners = new ArrayList<>();
 
-    private final ArrayList<WorldMapListener> mapListeners = new ArrayList<WorldMapListener>();
+    private final ArrayList<WorldMapListener> mapListeners = new ArrayList<>();
 
     private long lastTickTime = System.currentTimeMillis();
 
@@ -77,8 +77,7 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     public void processMove(Move move) {
-        for (int i = 0; i < moveReceivers.size(); i++) {
-            MoveReceiver m = moveReceivers.get(i);
+        for (MoveReceiver m : moveReceivers) {
             m.processMove(move);
         }
 
@@ -98,8 +97,7 @@ final public class MoveChainFork implements MoveReceiver {
                 splitMove(moves.get(i));
             }
         } else {
-            for (int i = 0; i < splitMoveReceivers.size(); i++) {
-                MoveReceiver m = splitMoveReceivers.get(i);
+            for (MoveReceiver m : splitMoveReceivers) {
                 m.processMove(move);
             }
 
@@ -128,36 +126,31 @@ final public class MoveChainFork implements MoveReceiver {
                     sendMapUpdated(r);
                 }
             } else if (move instanceof TimeTickMove) {
-                long currentTime = System.currentTimeMillis();
-                lastTickTime = currentTime;
+                lastTickTime = System.currentTimeMillis();
             }
         }
     }
 
     private void sendMapUpdated(Rectangle r) {
-        for (int i = 0; i < mapListeners.size(); i++) {
-            WorldMapListener l = mapListeners.get(i);
+        for (WorldMapListener l : mapListeners) {
             l.tilesChanged(r);
         }
     }
 
     private void sendItemAdded(KEY key, int index, FreerailsPrincipal p) {
-        for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = listListeners.get(i);
+        for (WorldListListener l : listListeners) {
             l.itemAdded(key, index, p);
         }
     }
 
     private void sendItemRemoved(KEY key, int index, FreerailsPrincipal p) {
-        for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = listListeners.get(i);
+        for (WorldListListener l : listListeners) {
             l.itemRemoved(key, index, p);
         }
     }
 
     private void sendListUpdated(KEY key, int index, FreerailsPrincipal p) {
-        for (int i = 0; i < listListeners.size(); i++) {
-            WorldListListener l = listListeners.get(i);
+        for (WorldListListener l : listListeners) {
             l.listUpdated(key, index, p);
         }
     }

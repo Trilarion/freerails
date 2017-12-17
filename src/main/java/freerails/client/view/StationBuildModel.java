@@ -1,5 +1,5 @@
-/**
- * provides the models for the TrackMoveProducer build mode
+/*
+  provides the models for the TrackMoveProducer build mode
  */
 package freerails.client.view;
 
@@ -47,7 +47,7 @@ public class StationBuildModel {
      * Vector of StationBuildAction. Actions which represent stations which can
      * be built
      */
-    private final List<Action> stationChooseActions = new ArrayList<Action>();
+    private final List<Action> stationChooseActions = new ArrayList<>();
 
     /**
      * Whether the station's position can should change when the mouse moves.
@@ -62,7 +62,7 @@ public class StationBuildModel {
 
     private final ModelRoot modelRoot;
 
-    private final HashMap<Integer, Action> id2Action = new HashMap<Integer, Action>();
+    private final HashMap<Integer, Action> id2Action = new HashMap<>();
 
     public StationBuildModel(StationBuilder sb, RenderersRoot rr, ModelRoot mr) {
         stationBuilder = sb;
@@ -86,7 +86,7 @@ public class StationBuildModel {
                 action.putValue(Action.SMALL_ICON, new ImageIcon(renderer
                         .getTrackPieceIcon(trackTemplate)));
                 stationChooseActions.add(action);
-                id2Action.put(new Integer(i), action);
+                id2Action.put(i, action);
             }
         }
     }
@@ -119,7 +119,7 @@ public class StationBuildModel {
             // item
             // gets focus.
             stationBuildAction.putValue(StationBuildAction.STATION_RADIUS_KEY,
-                    new Integer(trackRule.getStationRadius()));
+                    trackRule.getStationRadius());
             stationBuildAction.setEnabled(true);
         }
     }

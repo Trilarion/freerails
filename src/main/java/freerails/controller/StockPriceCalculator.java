@@ -121,14 +121,7 @@ public class StockPriceCalculator {
             protected boolean condition(int transactionID) {
                 Transaction t = super.w.getTransaction(super.principal,
                         transactionID);
-                if (t instanceof AddItemTransaction) {
-                    // Since buying something is just converting one asset type
-                    // to
-                    // another.
-                    return false;
-                }
-
-                return true;
+                return !(t instanceof AddItemTransaction);
             }
         };
         aggregator.setTimes(inteval);

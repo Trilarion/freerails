@@ -48,7 +48,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
     private List<ImPoint> convertPath2Points(IntArray path) {
         PositionOnTrack progress = new PositionOnTrack();
-        List<ImPoint> proposedTrack = new ArrayList<ImPoint>();
+        List<ImPoint> proposedTrack = new ArrayList<>();
 
         ImPoint p;
         for (int i = 0; i < path.size(); i++) {
@@ -80,7 +80,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
                     ruleNumber);
 
             /* Count number of possible directions. */
-            ArrayList<Step> possibleDirections = new ArrayList<Step>();
+            ArrayList<Step> possibleDirections = new ArrayList<>();
 
             for (int i = 0; i < 8; i++) {
                 Step direction = Step.getInstance(i);
@@ -123,9 +123,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
         IntArray path = pathFinder.retrievePath();
 
-        List proposedTrack = convertPath2Points(path);
-
-        return proposedTrack;
+        return convertPath2Points(path);
     }
 
     public int getStatus() {

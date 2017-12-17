@@ -22,7 +22,7 @@ public class MutableCargoBundle implements CargoBundle {
     private int updateID = 0;
 
     public MutableCargoBundle() {
-        sortedMap = new TreeMap<CargoBatch, Integer>();
+        sortedMap = new TreeMap<>();
     }
 
     public MutableCargoBundle(ImmutableCargoBundle imcb) {
@@ -95,18 +95,15 @@ public class MutableCargoBundle implements CargoBundle {
             return false;
         }
 
-        if (!(arg0 instanceof CargoBundle)) {
-            return false;
-        }
+        return arg0 instanceof CargoBundle && ImmutableCargoBundle.equals(this, (CargoBundle) arg0);
 
-        return ImmutableCargoBundle.equals(this, (CargoBundle) arg0);
     }
 
     public int getAmount(CargoBatch cb) {
         if (contains(cb)) {
             Integer i = sortedMap.get(cb);
 
-            return i.intValue();
+            return i;
         }
         return 0;
     }
@@ -135,7 +132,7 @@ public class MutableCargoBundle implements CargoBundle {
         if (0 == amount) {
             sortedMap.remove(cb);
         } else {
-            sortedMap.put(cb, new Integer(amount));
+            sortedMap.put(cb, amount);
         }
 
         updateID++;

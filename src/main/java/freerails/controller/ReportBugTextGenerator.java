@@ -23,8 +23,7 @@ public class ReportBugTextGenerator {
     }
 
     private static Exception genException() {
-        Exception e = new Exception();
-        return e;
+        return new Exception();
     }
 
     public static String genText() {

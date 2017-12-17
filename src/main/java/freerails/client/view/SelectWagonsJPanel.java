@@ -27,13 +27,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3905239009449095220L;
 
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
-
     private final Image stationView;
 
-    private final ArrayList<Integer> wagons = new ArrayList<Integer>();
+    private final ArrayList<Integer> wagons = new ArrayList<>();
 
     private int engineType = 0;
 
@@ -47,6 +43,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
                 .getResource("/freerails/data/station.gif");
         Image tempImage = (new javax.swing.ImageIcon(url)).getImage();
 
+        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
+                .getLocalGraphicsEnvironment().getDefaultScreenDevice()
+                .getDefaultConfiguration();
         stationView = defaultConfiguration.createCompatibleImage(tempImage
                         .getWidth(null), tempImage.getHeight(null),
                 Transparency.BITMASK);
@@ -68,11 +67,11 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     private void initComponents() {// GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JPanel jPanel1 = new JPanel();
+        JScrollPane jScrollPane1 = new JScrollPane();
         wagonTypesJList = new javax.swing.JList();
         okjButton = new javax.swing.JButton();
-        clearjButton = new javax.swing.JButton();
+        JButton clearjButton = new JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
@@ -180,7 +179,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     private void addwagon() {
         if (wagons.size() < TrainModel.MAX_NUMBER_OF_WAGONS) {
             int type = wagonTypesJList.getSelectedIndex();
-            wagons.add(new Integer(type));
+            wagons.add(type);
 
             updateMaxWagonsText();
             this.repaint();
@@ -221,7 +220,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
             // train first.
 
             Integer type = wagons.get(i);
-            Image image = rr.getWagonImages(type.intValue()).getSideOnImage();
+            Image image = rr.getWagonImages(type).getSideOnImage();
             int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT
                     / image.getHeight(null);
             x -= scaledWidth;
@@ -242,14 +241,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         this.paintChildren(g);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton clearjButton;
-
     private javax.swing.JLabel jLabel1;
-
-    private javax.swing.JPanel jPanel1;
-
-    private javax.swing.JScrollPane jScrollPane1;
 
     private javax.swing.JButton okjButton;
 
@@ -321,7 +313,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         int[] wagonsArray = new int[wagons.size()];
         for (int i = 0; i < wagons.size(); i++) {
             Integer type = wagons.get(i);
-            wagonsArray[i] = type.intValue();
+            wagonsArray[i] = type;
         }
         return wagonsArray;
     }

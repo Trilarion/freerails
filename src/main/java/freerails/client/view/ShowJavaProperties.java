@@ -28,7 +28,7 @@ public class ShowJavaProperties {
 
     public static String getPropertiesHtmlString() {
         Properties p = System.getProperties();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         /* We set the width of the table so that its text word-wraps. */
         sb.append("<html><h3>Java System Properties</h3><table width =\""
                 + TABLE_WIDTH + "\" align = \"left\" valign = \"top\">\n");
@@ -37,7 +37,7 @@ public class ShowJavaProperties {
 
         // We use an ArrayList so that the keys can be sorted into alphabetical
         // order
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         while (keys.hasMoreElements()) {
             String key = (String) keys.nextElement();
             list.add(key);

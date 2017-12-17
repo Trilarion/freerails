@@ -48,7 +48,7 @@ public class ImageManagerImpl implements ImageManager {
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
 
-    private final HashMap<String, Image> imageHashMap = new HashMap<String, Image>();
+    private final HashMap<String, Image> imageHashMap = new HashMap<>();
 
     private String pathToReadFrom;
 
@@ -56,7 +56,7 @@ public class ImageManagerImpl implements ImageManager {
 
     private final RenderingHints renderingHints;
 
-    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<String, Image>();
+    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<>();
 
     public ImageManagerImpl(String readpath) {
         this(readpath, null);
@@ -83,10 +83,7 @@ public class ImageManagerImpl implements ImageManager {
         }
         File f = new File(pathToWriteTo + File.separator + relativeFilename);
 
-        if (f.isFile()) {
-            return true;
-        }
-        return false;
+        return f.isFile();
     }
 
     public Image getImage(String relativeFilename) throws IOException {
@@ -158,9 +155,8 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     public Image newBlankImage(int height, int width) {
-        Image compatibleImage = defaultConfiguration.createCompatibleImage(
+        return defaultConfiguration.createCompatibleImage(
                 width, height, Transparency.TRANSLUCENT);
-        return compatibleImage;
     }
 
     public void setImage(String relativeFilename, Image i) {

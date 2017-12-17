@@ -36,10 +36,7 @@ public class ConvertedAtStation implements FreerailsSerializable {
     }
 
     public boolean isCargoConverted(int cargoNumber) {
-        if (NOT_CONVERTED == convertedTo.get(cargoNumber)) {
-            return false;
-        }
-        return true;
+        return NOT_CONVERTED != convertedTo.get(cargoNumber);
     }
 
     public int getConversion(int cargoNumber) {

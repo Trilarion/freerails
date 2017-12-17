@@ -48,7 +48,7 @@ public class MapFixtureFactory {
         TrackRuleProperties[] trackRuleProperties = new TrackRuleProperties[3];
         LegalTrackConfigurations[] legalTrackConfigurations = new LegalTrackConfigurations[3];
         LegalTrackPlacement[] legalTrackPlacement = new LegalTrackPlacement[3];
-        HashSet<TerrainType.Category> cannotBuildOnTheseTerrainTypes = new HashSet<TerrainType.Category>();
+        HashSet<TerrainType.Category> cannotBuildOnTheseTerrainTypes = new HashSet<>();
         cannotBuildOnTheseTerrainTypes.add(TerrainType.Category.Ocean);
 
         // 1st track type..
@@ -92,8 +92,8 @@ public class MapFixtureFactory {
                 legalTrackConfigurations[2], legalTrackPlacement[2]);
 
         // Add track rules to world
-        for (int i = 0; i < trackRulesArray.length; i++) {
-            world.add(SKEY.TRACK_RULES, trackRulesArray[i]);
+        for (TrackRule aTrackRulesArray : trackRulesArray) {
+            world.add(SKEY.TRACK_RULES, aTrackRulesArray);
         }
 
         // Add the terrain types if neccesary.

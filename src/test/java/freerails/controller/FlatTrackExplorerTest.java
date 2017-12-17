@@ -163,15 +163,15 @@ public class FlatTrackExplorerTest extends TestCase {
         assertNotNull(positions);
         assertEquals(3, positions.length);
 
-        HashSet<Step> directions = new HashSet<Step>();
+        HashSet<Step> directions = new HashSet<>();
         directions.add(Step.WEST);
         directions.add(Step.EAST);
         directions.add(Step.SOUTH_WEST);
 
-        HashSet<Step> directions2 = new HashSet<Step>();
+        HashSet<Step> directions2 = new HashSet<>();
 
-        for (int i = 0; i < positions.length; i++) {
-            directions2.add(positions[i].cameFrom());
+        for (PositionOnTrack position : positions) {
+            directions2.add(position.cameFrom());
         }
 
         assertEquals(directions, directions2);

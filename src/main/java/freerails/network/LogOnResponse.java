@@ -32,11 +32,7 @@ public class LogOnResponse implements FreerailsSerializable {
             return false;
         if (successful != logOnResponse.successful)
             return false;
-        if (message != null ? !message.equals(logOnResponse.message)
-                : logOnResponse.message != null)
-            return false;
-
-        return true;
+        return message != null ? message.equals(logOnResponse.message) : logOnResponse.message == null;
     }
 
     @Override

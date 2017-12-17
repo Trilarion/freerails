@@ -38,22 +38,22 @@ public class ClientJFrame extends javax.swing.JFrame {
     private void initComponents() {// GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        rhsjPanel = new javax.swing.JPanel();
-        mapOverview = gUIComponentFactory.createOverviewMap();
-        trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
+        javax.swing.JPanel rhsjPanel = new javax.swing.JPanel();
+        javax.swing.JPanel mapOverview = gUIComponentFactory.createOverviewMap();
+        javax.swing.JTabbedPane trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
 
-        lhsjPanel = new javax.swing.JPanel();
-        mainMapView = gUIComponentFactory.createMainMap();
-        statusjPanel = new javax.swing.JPanel();
-        datejLabel = gUIComponentFactory.createDateJLabel();
-        cashjLabel = gUIComponentFactory.createCashJLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        gameMenu = gUIComponentFactory.createGameMenu();
-        buildMenu = gUIComponentFactory.createBuildMenu();
-        BrokerMenu1 = gUIComponentFactory.createBrokerMenu();
-        displayMenu = gUIComponentFactory.createDisplayMenu();
-        reportsMenu = gUIComponentFactory.createReportsMenu();
-        helpMenu = gUIComponentFactory.createHelpMenu();
+        javax.swing.JPanel lhsjPanel = new javax.swing.JPanel();
+        javax.swing.JScrollPane mainMapView = gUIComponentFactory.createMainMap();
+        javax.swing.JPanel statusjPanel = new javax.swing.JPanel();
+        javax.swing.JLabel datejLabel = gUIComponentFactory.createDateJLabel();
+        javax.swing.JLabel cashjLabel = gUIComponentFactory.createCashJLabel();
+        javax.swing.JMenuBar jMenuBar1 = new javax.swing.JMenuBar();
+        javax.swing.JMenu gameMenu = gUIComponentFactory.createGameMenu();
+        javax.swing.JMenu buildMenu = gUIComponentFactory.createBuildMenu();
+        javax.swing.JMenu brokerMenu1 = gUIComponentFactory.createBrokerMenu();
+        javax.swing.JMenu displayMenu = gUIComponentFactory.createDisplayMenu();
+        javax.swing.JMenu reportsMenu = gUIComponentFactory.createReportsMenu();
+        javax.swing.JMenu helpMenu = gUIComponentFactory.createHelpMenu();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -119,8 +119,8 @@ public class ClientJFrame extends javax.swing.JFrame {
         buildMenu.setText("Build");
         jMenuBar1.add(buildMenu);
 
-        BrokerMenu1.setText("Broker");
-        jMenuBar1.add(BrokerMenu1);
+        brokerMenu1.setText("Broker");
+        jMenuBar1.add(brokerMenu1);
 
         displayMenu.setText("Display");
         jMenuBar1.add(displayMenu);
@@ -147,36 +147,6 @@ public class ClientJFrame extends javax.swing.JFrame {
         new ClientJFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu BrokerMenu1;
-
-    private javax.swing.JMenu buildMenu;
-
-    private javax.swing.JLabel cashjLabel;
-
-    private javax.swing.JLabel datejLabel;
-
-    private javax.swing.JMenu displayMenu;
-
-    private javax.swing.JMenu gameMenu;
-
-    private javax.swing.JMenu helpMenu;
-
-    private javax.swing.JMenuBar jMenuBar1;
-
-    private javax.swing.JPanel lhsjPanel;
-
-    private javax.swing.JScrollPane mainMapView;
-
-    private javax.swing.JPanel mapOverview;
-
-    private javax.swing.JMenu reportsMenu;
-
-    private javax.swing.JPanel rhsjPanel;
-
-    private javax.swing.JPanel statusjPanel;
-
-    private javax.swing.JTabbedPane trainsJTabPane1;
     // End of variables declaration//GEN-END:variables
 
 }

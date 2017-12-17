@@ -330,11 +330,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private ImmutableCargoBundle getCargoAtStation() {
         StationModel station = (StationModel) w.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
-        ImmutableCargoBundle cargoAtStation = (ImmutableCargoBundle) w.get(
+
+        return (ImmutableCargoBundle) w.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, station
                         .getCargoBundleID());
-
-        return cargoAtStation;
     }
 
     /**
@@ -344,11 +343,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private ImmutableCargoBundle getCargoOnTrain() {
         TrainModel train = (TrainModel) w.get(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.TRAINS, 0);
-        ImmutableCargoBundle cargoOnTrain = (ImmutableCargoBundle) w.get(
+
+        return (ImmutableCargoBundle) w.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, train
                         .getCargoBundleID());
-
-        return cargoOnTrain;
     }
 
     private void setCargoAtStation(CargoBatch cb, int amount) {
@@ -374,9 +372,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private static junit.framework.Test suite() {
-        junit.framework.TestSuite testSuite = new junit.framework.TestSuite(
-                DropOffAndPickupCargoMoveGeneratorTest.class);
 
-        return testSuite;
+        return new junit.framework.TestSuite(
+                DropOffAndPickupCargoMoveGeneratorTest.class);
     }
 }

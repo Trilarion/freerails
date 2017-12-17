@@ -55,7 +55,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
             } else if (e.getPropertyName().equals(
                     StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
                 Integer radius = (Integer) e.getNewValue();
-                stationRadiusRenderer.setRadius(radius.intValue());
+                stationRadiusRenderer.setRadius(radius);
             }
 
             boolean enabled = stationBuildModel.getStationBuildAction()

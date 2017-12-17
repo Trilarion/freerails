@@ -13,17 +13,17 @@ package freerails.controller;
 public interface IncrementalPathFinder {
 
     // TODO replace with enum.
-    public static final int PATH_NOT_FOUND = Integer.MIN_VALUE;
+    int PATH_NOT_FOUND = Integer.MIN_VALUE;
 
-    public final int PATH_FOUND = Integer.MIN_VALUE + 1;
+    int PATH_FOUND = Integer.MIN_VALUE + 1;
 
-    public static final int SEARCH_PAUSED = Integer.MIN_VALUE + 2;
+    int SEARCH_PAUSED = Integer.MIN_VALUE + 2;
 
-    public static final int SEARCH_NOT_STARTED = Integer.MIN_VALUE + 3;
+    int SEARCH_NOT_STARTED = Integer.MIN_VALUE + 3;
 
-    public abstract int getStatus();
+    int getStatus();
 
-    public abstract void search(long maxDuration) throws PathNotFoundException;
+    void search(long maxDuration) throws PathNotFoundException;
 
-    public abstract void abandonSearch();
+    void abandonSearch();
 }

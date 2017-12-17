@@ -36,8 +36,6 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     FreerailsPrincipal principal;
 
-    private ImPoint station0Location;
-
     private ImPoint station1Location;
 
     private ImPoint station2Location;
@@ -45,15 +43,15 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     ImmutableSchedule defaultSchedule;
 
     @Override
-    /**
-     * <ol>
-     * <li>Obtains a map from MapFixtureFactory2</li>
-     * <li>Builds a track from (10,10) to (30, 10).</li>
-     * <li>Builds stations at (10,10), (20, 10), and (28,10).</li>
-     * <li>Builds a train with two wagons of type #0 and places it at (10, 10)</li>
-     * <li>Schedules the train to move between stations 0 and 2 without
-     * changing consist</li>
-     * </ol>
+    /*
+      <ol>
+      <li>Obtains a map from MapFixtureFactory2</li>
+      <li>Builds a track from (10,10) to (30, 10).</li>
+      <li>Builds stations at (10,10), (20, 10), and (28,10).</li>
+      <li>Builds a train with two wagons of type #0 and places it at (10, 10)</li>
+      <li>Schedules the train to move between stations 0 and 2 without
+      changing consist</li>
+      </ol>
      */
     protected void setUp() throws Exception {
         world = MapFixtureFactory2.getCopy();
@@ -70,7 +68,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         for (int i = 0; i < track.length; i++) {
             track[i] = EAST;
         }
-        station0Location = new ImPoint(10, 10);
+        ImPoint station0Location = new ImPoint(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(station0Location, track);
         assertTrue(ms0.ok);
 
@@ -113,8 +111,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     private Step nextStep() {
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
                 new OccupiedTracks(principal, world));
-        Step step = preMove.nextStep(world);
-        return step;
+        return preMove.nextStep(world);
     }
 
     /**
@@ -139,8 +136,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MoveStatus ms = m.doMove(world, principal);
         assertTrue(ms.message, ms.ok);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
-        TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
-        return tm;
+        return ta.findCurrentMotion(Integer.MAX_VALUE);
     }
 
     /**

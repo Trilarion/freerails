@@ -63,7 +63,7 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     private final ImList<CargoBatch> batches;
 
     private ImmutableCargoBundle() {
-        batches = new ImList<CargoBatch>();
+        batches = new ImList<>();
         amounts = new ImInts();
     }
 
@@ -78,7 +78,7 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
             i++;
         }
 
-        batches = new ImList<CargoBatch>(batchesArray);
+        batches = new ImList<>(batchesArray);
         amounts = new ImInts(amountsArray);
     }
 
@@ -119,11 +119,8 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
             return false;
         }
 
-        if (!(arg0 instanceof CargoBundle)) {
-            return false;
-        }
+        return arg0 instanceof CargoBundle && equals(this, (CargoBundle) arg0);
 
-        return equals(this, (CargoBundle) arg0);
     }
 
     public int getAmount(CargoBatch cb) {
@@ -161,7 +158,7 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("CargoBundle {\n");
 
         for (int i = 0; i < batches.size(); i++) {

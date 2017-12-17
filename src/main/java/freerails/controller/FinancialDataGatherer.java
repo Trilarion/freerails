@@ -116,8 +116,8 @@ public class FinancialDataGatherer extends TransactionAggregator {
     public int sharesHeldByPublic() {
         int[] stock = getStockInThisRRs();
         int returnValue = this.totalShares;
-        for (int i = 0; i < stock.length; i++) {
-            returnValue -= stock[i];
+        for (int aStock : stock) {
+            returnValue -= aStock;
         }
         return returnValue;
     }

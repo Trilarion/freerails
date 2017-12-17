@@ -45,8 +45,6 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 
     private MutableSchedule schedule;
 
-    private Rectangle mapRect = new Rectangle();
-
     private Rectangle visableMapTiles = new Rectangle();
 
     private double scale = 1;
@@ -207,7 +205,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
      * stations.
      */
     private void setZoom() {
-        mapRect = this.getBounds();
+        Rectangle mapRect = this.getBounds();
         Rectangle r = cargoWaitingAndDemandedJPanel1.getBounds();
         mapRect.width -= r.width;
 

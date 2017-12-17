@@ -63,11 +63,7 @@ public class ChangeItemInListMove implements ListMove {
                 return false;
             }
 
-            if (listKey != test.listKey) {
-                return false;
-            }
-
-            return true;
+            return listKey == test.listKey;
         }
         return false;
     }
@@ -117,7 +113,7 @@ public class ChangeItemInListMove implements ListMove {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(getClass().getName());
         sb.append(" before: ");
         sb.append(before.toString());

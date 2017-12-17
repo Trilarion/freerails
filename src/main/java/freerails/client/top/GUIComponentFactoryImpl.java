@@ -61,15 +61,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     private final DialogueBoxController dialogueBoxController;
 
-    private JMenu displayMenu;
-
-    private JMenu helpMenu;
-
-    private JMenu brokerMenu;
-
     private boolean isSetup = false;
-
-    private JMenuItem leaderBoardJMenuItem;
 
     private DetailMapRenderer mainMap;
 
@@ -79,15 +71,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     private final ModelRootImpl modelRoot;
 
-    private JMenuItem networthGraphJMenuItem;
-
     private MapRenderer overviewMap;
 
     private final JPanel overviewMapContainer;
-
-    private final Rectangle r = new Rectangle(10, 10, 10, 10);
-
-    private JMenu reportsMenu;
 
     private ServerControlModel sc;
 
@@ -101,8 +87,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     private JMenuItem trainOrdersJMenuItem;
 
-    private JMenuItem callBrokerJMenuItem;
-
     /**
      * This is the panel at the bottom right of the screen.
      */
@@ -111,8 +95,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private final UserInputOnMapController userInputOnMapController;
 
     private UserMessageGenerator userMessageGenerator;
-
-    private RenderersRoot renderers;
 
     private ReadOnlyWorld world;
 
@@ -123,6 +105,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         buildMenu = new freerails.client.top.BuildMenu();
         mapViewJComponent = new MapViewJComponentConcrete();
         mainMapScrollPane1 = new JScrollPane();
+        Rectangle r = new Rectangle(10, 10, 10, 10);
         overviewMapContainer = new OverviewMapJComponent(r);
         stationTypesPopup = new StationTypesPopup();
 
@@ -172,11 +155,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 .getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
-        if (stations.size() > 0) {
-            enabled = true;
-        } else {
-            enabled = false;
-        }
+        enabled = stations.size() > 0;
 
         this.trainsJTabPane.setStationTabEnabled(enabled);
         this.stationInfoJMenuItem.setEnabled(enabled);
@@ -187,11 +166,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 .getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
-        if (trains.size() > 0) {
-            enabled = true;
-        } else {
-            enabled = false;
-        }
+        enabled = trains.size() > 0;
 
         this.trainsJTabPane.setTrainTabEnabled(enabled);
         this.trainListJMenuItem.setEnabled(enabled);
@@ -217,9 +192,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     public JMenu createBrokerMenu() {
-        brokerMenu = new JMenu("Broker");
+        JMenu brokerMenu = new JMenu("Broker");
 
-        callBrokerJMenuItem = new JMenuItem("Call Broker");
+        JMenuItem callBrokerJMenuItem = new JMenuItem("Call Broker");
         callBrokerJMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dialogueBoxController.showBrokerScreen();
@@ -232,7 +207,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     public JMenu createDisplayMenu() {
-        displayMenu = new JMenu("Display");
+        JMenu displayMenu = new JMenu("Display");
         displayMenu.setMnemonic(68);
 
         trainOrdersJMenuItem = new JMenuItem("Train Orders");
@@ -269,8 +244,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         showCargoMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 modelRoot.setProperty(
-                        ModelRoot.Property.SHOW_CARGO_AT_STATIONS, new Boolean(
-                                showCargoMenuItem.isSelected()));
+                        ModelRoot.Property.SHOW_CARGO_AT_STATIONS, showCargoMenuItem.isSelected());
                 mapViewJComponent.refreshAll();
             }
         });
@@ -281,7 +255,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         showStationNamesMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_NAMES,
-                        new Boolean(showStationNamesMenuItem.isSelected()));
+                        showStationNamesMenuItem.isSelected());
                 mapViewJComponent.refreshAll();
             }
         });
@@ -292,7 +266,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         showStationBordersMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_BORDERS,
-                        new Boolean(showStationBordersMenuItem.isSelected()));
+                        showStationBordersMenuItem.isSelected());
                 mapViewJComponent.refreshAll();
             }
         });
@@ -304,10 +278,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         playSoundsMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS,
-                        new Boolean(playSoundsMenuItem.isSelected()));
+                        playSoundsMenuItem.isSelected());
             }
         });
-        ;
         boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
 
         final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem(
@@ -405,7 +378,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         gameMenu.add(quitJMenuItem);
 
         if (CHEAT) {
-            /** For testing. */
+            /* For testing. */
             final ActionListener build200trains = new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     WorldIterator wi = new NonNullElements(KEY.STATIONS,
@@ -432,7 +405,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                                     engineType, wagonTypes);
                             temp[i] = plannedTrain;
                         }
-                        ImList<PlannedTrain> after = new ImList<PlannedTrain>(
+                        ImList<PlannedTrain> after = new ImList<>(
                                 temp);
                         Move m = new ChangeProductionAtEngineShopMove(before,
                                 after, wi.getIndex(), modelRoot.getPrincipal());
@@ -451,7 +424,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     public JMenu createHelpMenu() {
-        helpMenu = new javax.swing.JMenu("Help");
+        JMenu helpMenu = new JMenu("Help");
 
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(new java.awt.event.ActionListener() {
@@ -507,7 +480,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     public JMenu createReportsMenu() {
-        reportsMenu = new javax.swing.JMenu("Reports");
+        JMenu reportsMenu = new JMenu("Reports");
 
         JMenuItem incomeStatementJMenuItem = new JMenuItem("Income Statement");
         incomeStatementJMenuItem.addActionListener(new ActionListener() {
@@ -522,14 +495,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 dialogueBoxController.showBalanceSheet();
             }
         });
-        leaderBoardJMenuItem = new JMenuItem("Leaderboard");
+        JMenuItem leaderBoardJMenuItem = new JMenuItem("Leaderboard");
         leaderBoardJMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dialogueBoxController.showLeaderBoard();
             }
         });
 
-        networthGraphJMenuItem = new JMenuItem("Networth Graph");
+        JMenuItem networthGraphJMenuItem = new JMenuItem("Networth Graph");
         networthGraphJMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dialogueBoxController.showNetworthGraph();
@@ -605,7 +578,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                         .getProperty(ModelRoot.Property.CURSOR_POSITION);
             }
         }
-        renderers = vl;
+        RenderersRoot renderers = vl;
         world = w;
         modelRoot.addMapListener(this);
         modelRoot.addListListener(this);

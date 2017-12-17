@@ -50,10 +50,8 @@ public class TrainMotionExpt extends JComponent {
             for (int y = 0; y < world.getMapHeight(); y++) {
                 FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                    int w = Step.TILE_DIAMETER;
-                    int h = Step.TILE_DIAMETER;
                     g.drawRect(x * Step.TILE_DIAMETER, y * Step.TILE_DIAMETER,
-                            w, h);
+                            Step.TILE_DIAMETER, Step.TILE_DIAMETER);
 
                 }
             }

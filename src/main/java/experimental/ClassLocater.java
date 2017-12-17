@@ -50,7 +50,7 @@ import java.util.List;
 public class ClassLocater {
     protected static Logger logger = Logger.getLogger("jgf.classlocater");
 
-    protected LinkedList<String> skipPrefixes = new LinkedList<String>();
+    protected LinkedList<String> skipPrefixes = new LinkedList<>();
 
     /**
      * Finds all classes that implement or extend a given class name, and
@@ -66,22 +66,22 @@ public class ClassLocater {
     public static List instantiateOneOfEach(String className,
                                             String[] skipPrefixes) {
         Class[] classes = null;
-        LinkedList<Object> instances = new LinkedList<Object>();
+        LinkedList<Object> instances = new LinkedList<>();
 
         try {
             ClassLocater locater = new ClassLocater();
 
-            for (int i = 0; i < skipPrefixes.length; i++) {
-                locater.addSkipPrefix(skipPrefixes[i]);
+            for (String skipPrefixe : skipPrefixes) {
+                locater.addSkipPrefix(skipPrefixe);
             }
             classes = locater.getSubclassesOf(Class.forName(className));
 
             logger.info("Found " + classes.length + " classes that implement "
                     + className + "...");
             if (logger.getLevel().equals(Level.DEBUG))
-                for (int i = 0; i < classes.length; i++) {
+                for (Class aClass : classes) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("Found " + classes[i].getName()
+                        logger.debug("Found " + aClass.getName()
                                 + " that implements " + className + "...");
                     }
                 }
@@ -95,12 +95,12 @@ public class ClassLocater {
         if (logger.isDebugEnabled()) {
             logger.debug("Instantiating each class");
         }
-        for (int i = 0; i < classes.length; i++) {
+        for (Class aClass : classes) {
             try {
-                Object o = classes[i].newInstance();
+                Object o = aClass.newInstance();
                 instances.add(o);
             } catch (Throwable e) {
-                logger.error("Failed to process: " + classes[i].getName(), e);
+                logger.error("Failed to process: " + aClass.getName(), e);
             }
         }
 
@@ -178,7 +178,7 @@ public class ClassLocater {
     public Class[] getSubclassesOf(Class targetType, String regex) {
         logger.info("Looking for all classes with names matching regex = "
                 + regex + " and which are subtypes of " + targetType.getName());
-        StringBuffer sbSkips = new StringBuffer();
+        StringBuilder sbSkips = new StringBuilder();
         for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext(); ) {
             sbSkips.append(i2.next().toString() + "*");
             if (i2.hasNext())
@@ -186,9 +186,9 @@ public class ClassLocater {
         }
         logger.info("...unless they match: " + sbSkips.toString());
 
-        LinkedList<Class> matches = new LinkedList<Class>();
+        LinkedList<Class> matches = new LinkedList<>();
 
-        HashMap<String, LinkedList<String>> missingRequiredClasses = new HashMap<String, LinkedList<String>>();
+        HashMap<String, LinkedList<String>> missingRequiredClasses = new HashMap<>();
         // maps class name to list of classes that needed it
 
         if (logger.isDebugEnabled()) {
@@ -200,12 +200,11 @@ public class ClassLocater {
             logger.debug("Iterating through all classes in ClassPath...");
         }
 
-        for (Iterator iter = cp.getAllClassNames().iterator(); iter.hasNext(); ) {
-            String className = (String) iter.next();
+        for (Object o : cp.getAllClassNames()) {
+            String className = (String) o;
 
             boolean skip = false;
-            for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext(); ) {
-                String prefix = (String) i2.next();
+            for (String prefix : skipPrefixes) {
                 if (className.startsWith(prefix)) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Skipping class = " + className
@@ -250,19 +249,16 @@ public class ClassLocater {
                     LinkedList<String> misses = missingRequiredClasses
                             .get(missingClassName);
                     if (misses == null) {
-                        misses = new LinkedList<String>();
+                        misses = new LinkedList<>();
                         missingRequiredClasses.put(missingClassName, misses);
                     }
 
                     misses.add(className);
 
-                    continue;
                 } catch (UnsatisfiedLinkError cnfx) {
-                    continue;
                 } catch (Throwable t) {
                     logger.warn("Unexpected error - REMOVING this class ("
                             + className + ") without checking it", t);
-                    continue;
                 } finally {
                     if (clazz != null && targetType.isAssignableFrom(clazz)) {
                         logger
@@ -282,12 +278,10 @@ public class ClassLocater {
                             + "Check you have the required libraries, that they are on the classpath, and that all JAR's are in your manifest as needed");
             logger
                     .warn("If you don't care about some of the classes that used these missing classes, add the users to the skip list and you will get no errors from them");
-            for (Iterator<String> iter = missingRequiredClasses.keySet()
-                    .iterator(); iter.hasNext(); ) {
-                String className = iter.next();
+            for (String className : missingRequiredClasses.keySet()) {
                 LinkedList<String> neededBy = missingRequiredClasses
                         .get(className);
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (Iterator<String> iterator = neededBy.iterator(); iterator
                         .hasNext(); ) {
                     String referencingClass = iterator.next();

@@ -25,10 +25,7 @@ final public class PreMoveStatus implements FreerailsSerializable {
 
         final PreMoveStatus preMoveStatus = (PreMoveStatus) o;
 
-        if (!ms.equals(preMoveStatus.ms))
-            return false;
-
-        return true;
+        return ms.equals(preMoveStatus.ms);
     }
 
     @Override

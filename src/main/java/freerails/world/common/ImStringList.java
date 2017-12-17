@@ -41,10 +41,7 @@ public class ImStringList implements FreerailsSerializable {
 
         final ImStringList imStringList = (ImStringList) o;
 
-        if (!Arrays.equals(strings, imStringList.strings))
-            return false;
-
-        return true;
+        return Arrays.equals(strings, imStringList.strings);
     }
 
     @Override

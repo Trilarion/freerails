@@ -35,11 +35,11 @@ public class ClassPath {
 
     public List getAllClassNames() {
         String path = null;
-        pathElementsThatHaveAlreadyBeenProcessed = new LinkedList<String>();
-        jarsThatHAveAlreadyBeenProcessed = new LinkedList<File>();
+        pathElementsThatHaveAlreadyBeenProcessed = new LinkedList<>();
+        jarsThatHAveAlreadyBeenProcessed = new LinkedList<>();
 
-        LinkedList<String> pendingClassPathElements = new LinkedList<String>();
-        LinkedList<String> processedClassPathElements = new LinkedList<String>();
+        LinkedList<String> pendingClassPathElements = new LinkedList<>();
+        LinkedList<String> processedClassPathElements = new LinkedList<>();
 
         try {
             path = System.getProperty("java.class.path");
@@ -55,9 +55,7 @@ public class ClassPath {
             pendingClassPathElements.add(pathElement);
         }
 
-        for (Iterator<String> iter = pendingClassPathElements.iterator(); iter
-                .hasNext(); ) {
-            String pathElement = iter.next();
+        for (String pathElement : pendingClassPathElements) {
             LinkedList<String> processPendingElement = processPendingElement(pathElement);
             processedClassPathElements.addAll(processPendingElement);
         }
@@ -69,7 +67,7 @@ public class ClassPath {
      * Clones the supplied list, then goes through it processing every element.
      */
     protected LinkedList<String> processPendingElement(String pathElement) {
-        LinkedList<String> discoveredClasses = new LinkedList<String>();
+        LinkedList<String> discoveredClasses = new LinkedList<>();
 
         File elementFile = new File(pathElement);
         String elementName = elementFile.getAbsolutePath();
@@ -101,9 +99,8 @@ public class ClassPath {
                         logger.info("...[" + elementFile + "] contained "
                                 + extraPathElements.size()
                                 + " additional path elements");
-                        for (Iterator iter = extraPathElements.iterator(); iter
-                                .hasNext(); ) {
-                            String element = (String) iter.next();
+                        for (Object extraPathElement : extraPathElements) {
+                            String element = (String) extraPathElement;
                             discoveredClasses
                                     .addAll(processPendingElement(element));
                         }
@@ -173,7 +170,7 @@ public class ClassPath {
      */
     protected LinkedList<String> findPathElementsInJar(Manifest man,
                                                        JarFile jar, File jarFile) {
-        LinkedList<String> result = new LinkedList<String>();
+        LinkedList<String> result = new LinkedList<>();
         Attributes atts = man.getMainAttributes();
         Set keys = atts.keySet();
         Iterator i = keys.iterator();
@@ -211,7 +208,7 @@ public class ClassPath {
      * @param zipFile
      */
     protected LinkedList<String> getZipContents(File zipFile) {
-        LinkedList<String> result = new LinkedList<String>();
+        LinkedList<String> result = new LinkedList<>();
         ZipFile zip = null;
         try {
             zip = new JarFile(zipFile);
@@ -237,7 +234,7 @@ public class ClassPath {
      * @param dir
      */
     protected LinkedList<String> getDirectoryContents(File dir) {
-        LinkedList<String> result = new LinkedList<String>();
+        LinkedList<String> result = new LinkedList<>();
 
         // drill through contained dirs ... this is expected to be the
         // 'classes' or 'bin' dir
@@ -246,8 +243,7 @@ public class ClassPath {
             logger.info("dir.listFiles() returned null for " + dir);
             return result;
         }
-        for (int i = 0; i < files.length; ++i) {
-            File f = files[i];
+        for (File f : files) {
             if (f.isDirectory()) {
                 result.addAll(getDirectoryContents("", f));
             } else {
@@ -267,12 +263,11 @@ public class ClassPath {
      * @param dir    a directory to search for class files
      */
     protected LinkedList<String> getDirectoryContents(String pathTo, File dir) {
-        LinkedList<String> result = new LinkedList<String>();
+        LinkedList<String> result = new LinkedList<>();
 
         String pathToHere = pathTo + dir.getName() + File.separator;
         File files[] = dir.listFiles();
-        for (int i = 0; i < files.length; ++i) {
-            File f = files[i];
+        for (File f : files) {
             if (f.isDirectory()) {
                 result.addAll(getDirectoryContents(pathToHere, f));
             } else {

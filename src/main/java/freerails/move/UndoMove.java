@@ -22,10 +22,7 @@ public class UndoMove implements Move {
 
         final UndoMove undoMove = (UndoMove) o;
 
-        if (!move2undo.equals(undoMove.move2undo))
-            return false;
-
-        return true;
+        return move2undo.equals(undoMove.move2undo);
     }
 
     @Override

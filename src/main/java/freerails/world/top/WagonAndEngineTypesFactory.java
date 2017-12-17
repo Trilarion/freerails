@@ -25,8 +25,8 @@ public class WagonAndEngineTypesFactory {
                 new WagonType("Coffee", WagonType.SLOW_FREIGHT),
                 new WagonType("Wood", WagonType.BULK_FREIGHT),};
 
-        for (int i = 0; i < wagonTypes.length; i++) {
-            w.add(SKEY.WAGON_TYPES, wagonTypes[i]);
+        for (WagonType wagonType : wagonTypes) {
+            w.add(SKEY.WAGON_TYPES, wagonType);
         }
 
         // Engine types
@@ -36,8 +36,8 @@ public class WagonAndEngineTypesFactory {
                 new EngineType("Norris", 1000, new Money(10000), 15, new Money(
                         100)),};
 
-        for (int i = 0; i < engineTypes.length; i++) {
-            w.add(SKEY.ENGINE_TYPES, engineTypes[i]);
+        for (EngineType engineType : engineTypes) {
+            w.add(SKEY.ENGINE_TYPES, engineType);
         }
     }
 }

@@ -28,8 +28,6 @@ public class MoveTrainPreMove3rdTest extends TestCase {
 
     FreerailsPrincipal principal;
 
-    private ImPoint stationA;
-
     World world;
 
     Step[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
@@ -49,7 +47,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
 
-        stationA = new ImPoint(10, 10);
+        ImPoint stationA = new ImPoint(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, line1);
         assertTrue(ms0.ok);
         ms0 = trackBuilder.buildTrack(stationA, line2);

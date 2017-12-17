@@ -18,23 +18,23 @@ import java.util.Iterator;
  * @author Luke Lindsay
  */
 public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
 
-    private final ArrayList<MyDisplayMode> modes = new ArrayList<MyDisplayMode>();
+    private final ArrayList<MyDisplayMode> modes = new ArrayList<>();
 
     private MyDisplayMode selection;
 
     public DisplayModesComboBoxModels() {
+        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
+                .getLocalGraphicsEnvironment().getDefaultScreenDevice()
+                .getDefaultConfiguration();
         DisplayMode currentMode = defaultConfiguration.getDevice()
                 .getDisplayMode();
         selection = new MyDisplayMode(currentMode);
 
         DisplayMode[] displayModes = defaultConfiguration.getDevice()
                 .getDisplayModes();
-        for (int i = 0; i < displayModes.length; i++) {
-            MyDisplayMode mode = new MyDisplayMode(displayModes[i]);
+        for (DisplayMode displayMode : displayModes) {
+            MyDisplayMode mode = new MyDisplayMode(displayMode);
             modes.add(mode);
         }
     }

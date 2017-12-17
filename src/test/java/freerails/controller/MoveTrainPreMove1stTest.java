@@ -31,10 +31,6 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     FreerailsPrincipal principal;
 
-    private ImPoint stationA;
-
-    private ImPoint stationB;
-
     ImmutableSchedule defaultSchedule;
 
     @Override
@@ -50,14 +46,14 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
         Step[] track = {EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST};
-        stationA = new ImPoint(10, 10);
+        ImPoint stationA = new ImPoint(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.ok);
 
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.ok);
-        stationB = new ImPoint(19, 10);
+        ImPoint stationB = new ImPoint(19, 10);
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.ok);
 

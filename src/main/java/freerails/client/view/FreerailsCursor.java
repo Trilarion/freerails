@@ -1,5 +1,5 @@
-/**
- * Created on 01 August 2001, 06:02
+/*
+  Created on 01 August 2001, 06:02
  */
 package freerails.client.view;
 
@@ -95,7 +95,7 @@ final public class FreerailsCursor {
                 .getProperty(ModelRoot.Property.IGNORE_KEY_EVENTS);
         long time = System.currentTimeMillis() - timeArrived;
         boolean show = ((time / 500) % 2) == 0;
-        if (show && !b.booleanValue()) {
+        if (show && !b) {
             g.drawImage(cursor, x, y, null);
         }
 

@@ -53,7 +53,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
 
         StationModel station2remove = (StationModel) w.get(principal,
                 KEY.STATIONS, stationIndex);
-        ArrayList<Move> moves = new ArrayList<Move>();
+        ArrayList<Move> moves = new ArrayList<>();
         moves.add(removeTrackMove);
         moves.add(new RemoveItemFromListMove(KEY.STATIONS, stationIndex,
                 station2remove, principal));

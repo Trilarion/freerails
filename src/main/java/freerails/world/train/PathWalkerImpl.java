@@ -41,11 +41,7 @@ public class PathWalkerImpl implements PathWalker {
     public boolean canStepForward() {
         if (currentSegment.getLength() > distanceAlongCurrentSegment) {
             return true;
-        } else if (it.hasNext()) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return it.hasNext();
     }
 
     /**
@@ -64,11 +60,7 @@ public class PathWalkerImpl implements PathWalker {
             return false;
         } else if (distanceAlongCurrentSegment < currentSegment.getLength()) {
             return true;
-        } else if (it.hasNext()) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return it.hasNext();
     }
 
     public void nextSegment(IntLine line) {
@@ -112,7 +104,6 @@ public class PathWalkerImpl implements PathWalker {
         this.lastY = line.y2;
         beforeFirst = false;
 
-        return;
     }
 
     private void endInMiddleOfSegment(IntLine line) {

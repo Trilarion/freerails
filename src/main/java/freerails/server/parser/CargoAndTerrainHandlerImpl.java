@@ -24,9 +24,9 @@ import java.util.HashSet;
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     private final World world;
 
-    HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<String, Integer>();
+    HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<>();
 
-    HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<Integer>();
+    HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
 
     // Parsing variables for Tile
     String tileID;
@@ -39,11 +39,11 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     int tileBuildCost;
 
-    ArrayList<Consumption> typeConsumes = new ArrayList<Consumption>();
+    ArrayList<Consumption> typeConsumes = new ArrayList<>();
 
-    ArrayList<Production> typeProduces = new ArrayList<Production>();
+    ArrayList<Production> typeProduces = new ArrayList<>();
 
-    ArrayList<Conversion> typeConverts = new ArrayList<Conversion>();
+    ArrayList<Conversion> typeConverts = new ArrayList<>();
 
     public CargoAndTerrainHandlerImpl(World w) {
         world = w;
@@ -79,7 +79,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         }
 
         // Check if another type is already using this rgb value..
-        Integer rgbInteger = new Integer(tileRGB);
+        Integer rgbInteger = tileRGB;
 
         if (rgbValuesAlreadyUsed.contains(rgbInteger)) {
             throw new SAXException(tileID + " can't using rgb value "
@@ -124,7 +124,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
                 .getCategory(cargoCategory));
 
         int cargoNumber = world.size(SKEY.CARGO_TYPES);
-        cargoName2cargoTypeNumber.put(cargoID, new Integer(cargoNumber));
+        cargoName2cargoTypeNumber.put(cargoID, cargoNumber);
         world.add(SKEY.CARGO_TYPES, cargoType);
     }
 
@@ -191,7 +191,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
             Integer integer = cargoName2cargoTypeNumber.get(cargoName);
 
-            return integer.intValue();
+            return integer;
         }
         throw new SAXException("Unknown cargo type: " + cargoName);
     }

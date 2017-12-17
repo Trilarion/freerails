@@ -31,10 +31,7 @@ final public class TrackPieceImpl implements TrackPiece {
             return false;
         if (!configuration.equals(that.configuration))
             return false;
-        if (!trackType.equals(that.trackType))
-            return false;
-
-        return true;
+        return trackType.equals(that.trackType);
     }
 
     @Override

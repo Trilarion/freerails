@@ -39,7 +39,7 @@ public class MoveTrainPreMove implements PreMove {
      * 666 Performance cache must be cleared if track on map is build ! make a
      * change listener!
      */
-    private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<Integer, HashMap<Integer, Step>>();
+    private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<>();
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
@@ -63,7 +63,7 @@ public class MoveTrainPreMove implements PreMove {
                 return nextStep;
             }
         } else {
-            destPaths = new HashMap<Integer, Step>();
+            destPaths = new HashMap<>();
             pathCache.put(endPos, destPaths);
         }
         cacheMiss++;
@@ -170,10 +170,7 @@ public class MoveTrainPreMove implements PreMove {
 
         if (trainID != moveTrainPreMove.trainID)
             return false;
-        if (!principal.equals(moveTrainPreMove.principal))
-            return false;
-
-        return true;
+        return principal.equals(moveTrainPreMove.principal);
     }
 
     // 666 optimize
@@ -274,8 +271,7 @@ public class MoveTrainPreMove implements PreMove {
     private TrainMotion lastMotion(ReadOnlyWorld w) {
         ActivityIterator ai = w.getActivities(principal, trainID);
         ai.gotoLastActivity();
-        TrainMotion lastMotion = (TrainMotion) ai.getActivity();
-        return lastMotion;
+        return (TrainMotion) ai.getActivity();
     }
 
     private Move moveTrain(ReadOnlyWorld w, OccupiedTracks occupiedTracks) {

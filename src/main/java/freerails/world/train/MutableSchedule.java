@@ -19,7 +19,7 @@ public class MutableSchedule implements Schedule {
     /**
      * Vector of TrainOrdersModel.
      */
-    private final Vector<TrainOrdersModel> orders = new Vector<TrainOrdersModel>();
+    private final Vector<TrainOrdersModel> orders = new Vector<>();
 
     private int nextScheduledOrder = -1;
 

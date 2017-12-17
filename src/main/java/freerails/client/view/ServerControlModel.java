@@ -30,7 +30,7 @@ public class ServerControlModel implements ModelRootListener {
 
         public LoadGameAction() {
             putValue(NAME, "Load Game");
-            putValue(MNEMONIC_KEY, new Integer(76));
+            putValue(MNEMONIC_KEY, 76);
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -83,7 +83,7 @@ public class ServerControlModel implements ModelRootListener {
 
         public SaveGameAction() {
             putValue(NAME, "Save Game");
-            putValue(MNEMONIC_KEY, new Integer(83));
+            putValue(MNEMONIC_KEY, 83);
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -184,8 +184,8 @@ public class ServerControlModel implements ModelRootListener {
     public String getGameSpeedDesc(int tickPerSecond) {
         SetTargetTicksPerSecondAction action = null;
 
-        for (int i = 0; i < speedActions.length; i++) {
-            action = speedActions[i];
+        for (SetTargetTicksPerSecondAction speedAction : speedActions) {
+            action = speedAction;
 
             if (action.speed >= tickPerSecond)
                 break;

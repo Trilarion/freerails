@@ -51,8 +51,7 @@ public class WorldImpl implements World {
         }
 
         public double getFinishTime() {
-            double ticks = ant.startTime + ant.act.duration();
-            return ticks;
+            return ant.startTime + ant.act.duration();
         }
 
         public double getStartTime() {
@@ -120,10 +119,7 @@ public class WorldImpl implements World {
 
             if (!act.equals(activityAndTime.act))
                 return false;
-            if (startTime != activityAndTime.startTime)
-                return false;
-
-            return true;
+            return !(startTime != activityAndTime.startTime);
         }
 
         @Override
@@ -173,13 +169,13 @@ public class WorldImpl implements World {
     }
 
     public WorldImpl(int mapWidth, int mapHeight) {
-        activityLists = new List3DImpl<ActivityAndTime>(0, 0);
-        bankAccounts = new List2DImpl<TransactionAndTimeStamp>(0);
-        currentBalance = new List1DImpl<Money>();
-        items = new List1DImpl<FreerailsSerializable>(ITEM.getNumberOfKeys());
-        lists = new List3DImpl<FreerailsSerializable>(0, KEY.getNumberOfKeys());
-        players = new List1DImpl<Player>();
-        sharedLists = new List2DImpl<FreerailsSerializable>(SKEY
+        activityLists = new List3DImpl<>(0, 0);
+        bankAccounts = new List2DImpl<>(0);
+        currentBalance = new List1DImpl<>();
+        items = new List1DImpl<>(ITEM.getNumberOfKeys());
+        lists = new List3DImpl<>(0, KEY.getNumberOfKeys());
+        players = new List1DImpl<>();
+        sharedLists = new List2DImpl<>(SKEY
                 .getNumberOfKeys());
         time = GameTime.BIG_BANG;
         setupItems();
@@ -253,18 +249,11 @@ public class WorldImpl implements World {
     public boolean boundsContain(FreerailsPrincipal p, KEY k, int index) {
         if (!isPlayer(p)) {
             return false;
-        } else if (index >= 0 && index < this.size(p, k)) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return index >= 0 && index < this.size(p, k);
     }
 
     public boolean boundsContain(int x, int y) {
-        if (x >= 0 && x < getMapWidth() && y >= 0 && y < getMapHeight()) {
-            return true;
-        }
-        return false;
+        return x >= 0 && x < getMapWidth() && y >= 0 && y < getMapHeight();
     }
 
     public boolean boundsContain(SKEY k, int index) {
@@ -404,7 +393,7 @@ public class WorldImpl implements World {
             FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
         TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
-        return new Pair<Transaction, GameTime>(tats.getT(), tats.getTimeStamp());
+        return new Pair<>(tats.getT(), tats.getTimeStamp());
     }
 
     @Override
@@ -416,11 +405,7 @@ public class WorldImpl implements World {
     }
 
     public boolean isPlayer(FreerailsPrincipal p) {
-        if (p.getWorldIndex() >= 0 && p.getWorldIndex() < players.size()) {
-            return true;
-        } else {
-            return false;
-        }
+        return p.getWorldIndex() >= 0 && p.getWorldIndex() < players.size();
     }
 
     public FreerailsSerializable removeLast(FreerailsPrincipal p, KEY key) {
@@ -446,8 +431,7 @@ public class WorldImpl implements World {
         if (activityLists.sizeD3(playerIndex, index) < 2)
             throw new IllegalStateException();
 
-        Activity act = activityLists.removeLastD3(playerIndex, index).act;
-        return act;
+        return activityLists.removeLastD3(playerIndex, index).act;
     }
 
     /**

@@ -1,20 +1,20 @@
-/**
- * FreeRails 2 - A railroad strategy game Copyright (C) 2007 Roland Spatzenegger
- * (c@npg.net)
- * <p>
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- * <p>
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * <p>
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+/*
+  FreeRails 2 - A railroad strategy game Copyright (C) 2007 Roland Spatzenegger
+  (c@npg.net)
+  <p>
+  This program is free software; you can redistribute it and/or modify it under
+  the terms of the GNU General Public License as published by the Free Software
+  Foundation; either version 2 of the License, or (at your option) any later
+  version.
+  <p>
+  This program is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+  details.
+  <p>
+  You should have received a copy of the GNU General Public License along with
+  this program; if not, write to the Free Software Foundation, Inc., 51
+  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 package freerails.client.view;
 
@@ -43,9 +43,9 @@ public class TrainSummeryModel {
     private long lastStationUpdate;
 
     public TrainSummeryModel() {
-        lastTrainIncome = new HashMap<Integer, Money>(64);
+        lastTrainIncome = new HashMap<>(64);
         lastUpdate = lastStationUpdate = System.currentTimeMillis();
-        lastStations = new HashMap<Integer, String>(64);
+        lastStations = new HashMap<>(64);
     }
 
     public void setWorld(ReadOnlyWorld world, FreerailsPrincipal principal) {

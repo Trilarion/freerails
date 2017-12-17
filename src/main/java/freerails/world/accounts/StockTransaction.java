@@ -29,7 +29,7 @@ public class StockTransaction extends AddItemTransaction {
                                               Money pricePerShare) {
         // Issue Stock of the Player
         long temp = (pricePerShare.getAmount() * quantity);
-        temp = temp - temp - temp;
+        temp = 0L - temp;
         Money amount = new Money(temp).changeSign();
         return new StockTransaction(Transaction.Category.ISSUE_STOCK, playerId,
                 quantity, amount);

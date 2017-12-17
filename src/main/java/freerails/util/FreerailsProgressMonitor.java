@@ -12,7 +12,7 @@ package freerails.util;
  * @author Luke Lindsay
  */
 public interface FreerailsProgressMonitor {
-    public static final FreerailsProgressMonitor NULL_INSTANCE = new FreerailsProgressMonitor() {
+    FreerailsProgressMonitor NULL_INSTANCE = new FreerailsProgressMonitor() {
 
         public void setValue(int i) {
         }

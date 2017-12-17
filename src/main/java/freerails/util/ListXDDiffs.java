@@ -44,8 +44,8 @@ public abstract class ListXDDiffs<T> implements Serializable {
         int[] subArray = add2Array(dim, i);
         ListKey sizeKeyB = new ListKey(ListKey.Type.EndPoint, listID, subArray);
 
-        diffs.put(sizeKeyA, new Integer(i + 1));
-        diffs.put(sizeKeyB, new Integer(0));
+        diffs.put(sizeKeyA, i + 1);
+        diffs.put(sizeKeyB, 0);
         return i;
     }
 
@@ -152,7 +152,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
         if (getUnderlyingSize(dim) == size) {
             diffs.remove(sizeKey);
         } else {
-            diffs.put(sizeKey, new Integer(size));
+            diffs.put(sizeKey, size);
         }
     }
 
@@ -160,7 +160,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
         ListKey sizeKey = new ListKey(ListKey.Type.EndPoint, listID, i);
         if (diffs.containsKey(sizeKey)) {
             Integer size = (Integer) diffs.get(sizeKey);
-            return size.intValue();
+            return size;
         }
         return getUnderlyingSize(i);
     }

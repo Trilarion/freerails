@@ -44,7 +44,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta)
             throws SAXException {
-        terrainTypes = new HashSet<TerrainType.Category>();
+        terrainTypes = new HashSet<>();
     }
 
     public void end_CanOnlyBuildOnTheseTerrainTypes() throws SAXException {
@@ -55,7 +55,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void start_ListOfTrackPieceTemplates(final Attributes meta)
             throws SAXException {
-        legalTemplates = new ArrayList<String>();
+        legalTemplates = new ArrayList<>();
     }
 
     public void end_ListOfTrackPieceTemplates() throws SAXException {
@@ -77,7 +77,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void start_CannotBuildOnTheseTerrainTypes(final Attributes meta)
             throws SAXException {
-        terrainTypes = new java.util.HashSet<TerrainType.Category>();
+        terrainTypes = new java.util.HashSet<>();
     }
 
     public void end_CannotBuildOnTheseTerrainTypes() throws SAXException {
@@ -102,7 +102,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
                 .valueOf(meta.getValue("category"));
 
         boolean enableDoubleTrack = Boolean.valueOf(
-                meta.getValue("doubleTrack")).booleanValue();
+                meta.getValue("doubleTrack"));
         String typeName = meta.getValue("type");
         maxConsequ = Integer.parseInt(meta.getValue("maxConsecuativePieces"));
 
@@ -170,7 +170,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void start_TrackSet(final Attributes meta) throws SAXException {
-        ruleList = new ArrayList<TrackRule>();
+        ruleList = new ArrayList<>();
     }
 
     public void end_TrackSet() throws SAXException {
@@ -185,8 +185,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void addTrackRules(World w) {
-        for (int i = 0; i < this.ruleList.size(); i++) {
-            TrackRule r = ruleList.get(i);
+        for (TrackRule r : this.ruleList) {
             w.add(SKEY.TRACK_RULES, r);
         }
     }

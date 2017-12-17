@@ -30,10 +30,6 @@ public class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-    private FinancialDataGatherer dataGatherer;
-
-    private GameCalendar cal;
-
     public String playername;
 
     public String year;
@@ -56,12 +52,12 @@ public class BrokerScreenGenerator {
      * Creates a new instance of BrokerScreenGenerator
      */
     public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        dataGatherer = new FinancialDataGatherer(w, principal);
+        FinancialDataGatherer dataGatherer = new FinancialDataGatherer(w, principal);
 
         int playerId = w.getID(principal);
         this.playername = w.getPlayer(playerId).getName();
 
-        this.cal = (GameCalendar) w.get(ITEM.CALENDAR);
+        GameCalendar cal = (GameCalendar) w.get(ITEM.CALENDAR);
         GameTime time = w.currentTime();
         final int startyear = cal.getYear(time.getTicks());
         this.year = String.valueOf(startyear);
@@ -79,7 +75,7 @@ public class BrokerScreenGenerator {
         this.pricePerShare = stockPrices[playerId].currentPrice;
         this.treasuryStock = DC.format(dataGatherer.treasuryStock());
 
-        StringBuffer otherRRsStakes = new StringBuffer();
+        StringBuilder otherRRsStakes = new StringBuilder();
         int[] stockInThisRRs = dataGatherer.getStockInThisRRs();
 
         for (int i = 0; i < stockInThisRRs.length; i++) {

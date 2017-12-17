@@ -32,8 +32,6 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         NONE, NEW_GAME, LOAD_GAME
     }
 
-    ;
-
     Selection getSelection() {
         if (newmapsJList.getSelectedIndex() != -1) {
             savedmapsJList.setSelectedIndex(-1);

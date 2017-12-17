@@ -109,7 +109,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i);
 
-    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(
+    Pair<Transaction, GameTime> getTransactionAndTimeStamp(
             FreerailsPrincipal p, int i);
 
     boolean isPlayer(FreerailsPrincipal p);

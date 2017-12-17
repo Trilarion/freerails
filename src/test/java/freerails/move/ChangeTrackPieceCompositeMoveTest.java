@@ -41,10 +41,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     public static Test suite() {
-        TestSuite testSuite = new TestSuite(
-                ChangeTrackPieceCompositeMoveTest.class);
 
-        return testSuite;
+        return new TestSuite(
+                ChangeTrackPieceCompositeMoveTest.class);
     }
 
     @Override

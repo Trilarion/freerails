@@ -50,9 +50,7 @@ public class RefreshListOfGamesMessage2Server implements Message2Server {
         if (getClass() != obj.getClass())
             return false;
         final RefreshListOfGamesMessage2Server other = (RefreshListOfGamesMessage2Server) obj;
-        if (id != other.id)
-            return false;
-        return true;
+        return id == other.id;
     }
 
 }

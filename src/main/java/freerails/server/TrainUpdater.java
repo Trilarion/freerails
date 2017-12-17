@@ -37,7 +37,7 @@ public class TrainUpdater implements ServerAutomaton {
      */
     public static Move initTarget(TrainModel train, int trainID,
                                   ImmutableSchedule currentSchedule, FreerailsPrincipal principal) {
-        Vector<Move> moves = new Vector<Move>();
+        Vector<Move> moves = new Vector<>();
         int scheduleID = train.getScheduleID();
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         ImInts wagonsToAdd = schedule.getWagonsToAdd();
@@ -66,10 +66,8 @@ public class TrainUpdater implements ServerAutomaton {
         assert fromPathWalker.canStepForward();
         fromPathWalker.stepForward(trainLength);
 
-        TrainPositionOnMap initialPosition = TrainPositionOnMap
+        return TrainPositionOnMap
                 .createInSameDirectionAsPath(fromPathWalker);
-
-        return initialPosition;
     }
 
     public static ImPoint[] trainPos2Tiles(TrainPositionOnMap pos) {
@@ -221,7 +219,7 @@ public class TrainUpdater implements ServerAutomaton {
                         }
 
                         ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(
-                                production, new ImList<PlannedTrain>(), i,
+                                production, new ImList<>(), i,
                                 principal);
                         moveReceiver.processMove(move);
                     }
@@ -246,9 +244,7 @@ public class TrainUpdater implements ServerAutomaton {
 
         s.setOrderToGoto(0);
 
-        ImmutableSchedule is = s.toImmutableSchedule();
-
-        return is;
+        return s.toImmutableSchedule();
     }
 
     public void initAutomaton(MoveReceiver mr) {
@@ -266,8 +262,8 @@ public class TrainUpdater implements ServerAutomaton {
             // to allow an already stationary train to start moving. To achieve
             // this
             // we process moving trains first.
-            ArrayList<MoveTrainPreMove> movingTrains = new ArrayList<MoveTrainPreMove>();
-            ArrayList<MoveTrainPreMove> stoppedTrains = new ArrayList<MoveTrainPreMove>();
+            ArrayList<MoveTrainPreMove> movingTrains = new ArrayList<>();
+            ArrayList<MoveTrainPreMove> stoppedTrains = new ArrayList<>();
             for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
 
                 TrainModel train = (TrainModel) world.get(principal,

@@ -60,8 +60,6 @@ public class TrainListCellRenderer extends JPanel implements View,
 
     private int trainWidth = 0;
 
-    private boolean selected = false;
-
     private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.background");
 
@@ -145,8 +143,8 @@ public class TrainListCellRenderer extends JPanel implements View,
     private void resetPreferredSize() {
         int width = 0;
 
-        for (int i = 0; i < images.length; i++) {
-            width += images[i].getWidth(null);
+        for (Image image : images) {
+            width += image.getWidth(null);
         }
 
         this.trainWidth = width;
@@ -166,7 +164,7 @@ public class TrainListCellRenderer extends JPanel implements View,
                 .row2index(w, KEY.TRAINS, principal, index);
         display(trainID);
 
-        selected = isSelected;
+        boolean selected = isSelected;
 
         if (selected) {
             if (list.isFocusOwner()) {
@@ -200,9 +198,9 @@ public class TrainListCellRenderer extends JPanel implements View,
             x = (this.getWidth() - this.trainWidth) / 2;
         }
 
-        for (int i = 0; i < images.length; i++) {
-            g.drawImage(images[i], x, 0, null);
-            x += images[i].getWidth(null);
+        for (Image image : images) {
+            g.drawImage(image, x, 0, null);
+            x += image.getWidth(null);
         }
     }
 

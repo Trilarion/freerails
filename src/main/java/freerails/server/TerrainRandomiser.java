@@ -22,8 +22,6 @@ public class TerrainRandomiser {
 
     private final Vector<Integer> non_terrainTypes;
 
-    private final double CLEAR_PERCENTAGE = 0.98; // ie. % of map that is
-
     // clear (on avg.)
 
     public TerrainRandomiser(Vector<Integer> num, Vector<Integer> num2) {
@@ -32,13 +30,13 @@ public class TerrainRandomiser {
     }
 
     public int getNewType(int type) {
-        int newType = type;
         double value;
         double divide = 1.0 / terrainTypes.size();
 
         // allow any terrain type to be drawn over except those listed in
         // non_terrainTypes
-        if (!non_terrainTypes.contains(new Integer(newType))) {
+        if (!non_terrainTypes.contains(type)) {
+            double CLEAR_PERCENTAGE = 0.98;
             if (Math.random() < CLEAR_PERCENTAGE) {
                 // make the tile Clear
                 return 4;
@@ -53,11 +51,11 @@ public class TerrainRandomiser {
              */
             for (int i = 0; i < terrainTypes.size(); i++) {
                 if ((value > (i * divide)) && (value <= ((i + 1) * divide))) {
-                    return terrainTypes.elementAt(i).intValue();
+                    return terrainTypes.elementAt(i);
                 }
             }
         }
 
-        return newType;
+        return type;
     }
 }

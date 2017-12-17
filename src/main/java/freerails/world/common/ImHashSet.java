@@ -19,7 +19,7 @@ public class ImHashSet<E extends FreerailsSerializable> implements
     private final HashSet<E> hashSet;
 
     public ImHashSet(HashSet<E> hashSet) {
-        this.hashSet = new HashSet<E>(hashSet);
+        this.hashSet = new HashSet<>(hashSet);
     }
 
     @Override
@@ -31,10 +31,7 @@ public class ImHashSet<E extends FreerailsSerializable> implements
 
         final ImHashSet imHashSet = (ImHashSet) o;
 
-        if (!hashSet.equals(imHashSet.hashSet))
-            return false;
-
-        return true;
+        return hashSet.equals(imHashSet.hashSet);
     }
 
     @Override
@@ -43,14 +40,14 @@ public class ImHashSet<E extends FreerailsSerializable> implements
     }
 
     public ImHashSet(E... values) {
-        this.hashSet = new HashSet<E>();
+        this.hashSet = new HashSet<>();
         for (E e : values) {
             hashSet.add(e);
         }
     }
 
     public ImHashSet(List<E> values) {
-        this.hashSet = new HashSet<E>();
+        this.hashSet = new HashSet<>();
         for (E e : values) {
             hashSet.add(e);
         }

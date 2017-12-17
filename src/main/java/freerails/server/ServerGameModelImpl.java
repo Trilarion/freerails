@@ -51,7 +51,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     private transient MoveReceiver moveExecuter;
 
     public ServerGameModelImpl() {
-        this(null, new Vector<ServerAutomaton>());
+        this(null, new Vector<>());
     }
 
     public ServerGameModelImpl(World w, Vector<ServerAutomaton> serverAutomata) {
@@ -181,8 +181,8 @@ public class ServerGameModelImpl implements ServerGameModel {
         objectOut.writeObject(world);
         objectOut.writeObject(serverAutomata);
 
-        /**
-         * save player private data
+        /*
+          save player private data
          */
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             Player player = world.getPlayer(i);
@@ -195,8 +195,8 @@ public class ServerGameModelImpl implements ServerGameModel {
         tb = new TrainUpdater(newMoveExecuter);
         calcSupplyAtStations = new CalcSupplyAtStations(world, newMoveExecuter);
 
-        for (int i = 0; i < serverAutomata.size(); i++) {
-            serverAutomata.get(i).initAutomaton(newMoveExecuter);
+        for (ServerAutomaton aServerAutomata : serverAutomata) {
+            aServerAutomata.initAutomaton(newMoveExecuter);
         }
 
         tb.initAutomaton(newMoveExecuter);

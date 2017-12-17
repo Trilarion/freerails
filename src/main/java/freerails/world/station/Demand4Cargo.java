@@ -26,10 +26,7 @@ public class Demand4Cargo implements FreerailsSerializable {
 
         final Demand4Cargo demandAtStation = (Demand4Cargo) o;
 
-        if (!demand.equals(demandAtStation.demand))
-            return false;
-
-        return true;
+        return demand.equals(demandAtStation.demand);
     }
 
     @Override

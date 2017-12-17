@@ -31,10 +31,7 @@ public class TransactionAndTimeStamp implements FreerailsSerializable {
 
         if (!t.equals(transactionAndTimeStamp.t))
             return false;
-        if (!timeStamp.equals(transactionAndTimeStamp.timeStamp))
-            return false;
-
-        return true;
+        return timeStamp.equals(transactionAndTimeStamp.timeStamp);
     }
 
     @Override

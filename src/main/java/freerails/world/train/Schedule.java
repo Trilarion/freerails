@@ -12,9 +12,9 @@ import freerails.world.common.ImInts;
  * @author Luke Lindsay
  */
 public interface Schedule {
-    public static int PRIORITY_ORDERS = 0;
+    int PRIORITY_ORDERS = 0;
 
-    public static final int MAXIMUM_NUMBER_OF_ORDER = 6;
+    int MAXIMUM_NUMBER_OF_ORDER = 6;
 
     TrainOrdersModel getOrder(int i);
 

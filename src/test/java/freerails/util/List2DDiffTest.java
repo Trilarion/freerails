@@ -25,9 +25,9 @@ public class List2DDiffTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        underlying = new List2DImpl<Object>(0);
-        map = new TreeMap<ListKey, Object>();
-        diffs = new List2DDiff<Object>(map, underlying, listid.test);
+        underlying = new List2DImpl<>(0);
+        map = new TreeMap<>();
+        diffs = new List2DDiff<>(map, underlying, listid.test);
     }
 
     /*
@@ -101,7 +101,7 @@ public class List2DDiffTest extends TestCase {
         ListKey sizeKey = new ListKey(EndPoint, listid.test);
         assertEquals(2, map.size());
         assertTrue(map.containsKey(sizeKey));
-        assertEquals(new Integer(2), map.get(sizeKey));
+        assertEquals(2, map.get(sizeKey));
         assertEquals(2, diffs.sizeD1());
         diffs.addD1();
         assertEquals(3, diffs.sizeD1());
@@ -155,7 +155,7 @@ public class List2DDiffTest extends TestCase {
                 "There should be two values: EndPoint = 0 and EndPoint[0] = 0",
                 2, map.size());
         assertTrue(map.containsKey(sizeKey));
-        assertEquals(new Integer(1), map.get(sizeKey));
+        assertEquals(1, map.get(sizeKey));
 
         assertEquals(1, diffs.sizeD1());
         assertEquals(0, diffs.sizeD2(0));
@@ -255,9 +255,9 @@ public class List2DDiffTest extends TestCase {
 
     public void testAddingElementAlreadyPresent() {
         underlying.addD1();
-        underlying.addD2(0, new Integer(1));
+        underlying.addD2(0, 1);
         diffs.removeLastD2(0);
-        diffs.addD2(0, new Integer(1));
+        diffs.addD2(0, 1);
         assertEquals(0, map.size());
 
     }
@@ -266,7 +266,7 @@ public class List2DDiffTest extends TestCase {
         underlying.addD1();
         underlying.addD2(0, null);
         diffs.removeLastD2(0);
-        diffs.addD2(0, new Integer(1));
+        diffs.addD2(0, 1);
         assertEquals(1, map.size());
         diffs.removeLastD2(0);
         diffs.addD2(0, null);
@@ -277,11 +277,11 @@ public class List2DDiffTest extends TestCase {
     public void testSettingNullElement() {
         underlying.addD1();
         underlying.addD2(0, null);
-        underlying.addD2(0, new Integer(1));
+        underlying.addD2(0, 1);
         assertEquals(null, diffs.get(0, 0));
-        diffs.set(0, 0, new Integer(0));
-        assertEquals(new Integer(0), diffs.get(0, 0));
-        assertEquals(new Integer(1), diffs.get(0, 1));
+        diffs.set(0, 0, 0);
+        assertEquals(0, diffs.get(0, 0));
+        assertEquals(1, diffs.get(0, 1));
         diffs.set(0, 1, null);
         assertEquals(null, diffs.get(0, 1));
 

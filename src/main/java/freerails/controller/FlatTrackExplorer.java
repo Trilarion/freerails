@@ -113,11 +113,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         Step oppositeToCurrentDirection = this.currentPosition.cameFrom()
                 .getOpposite();
 
-        if (oppositeToCurrentDirection.getID() == currentBranchDirection
-                .getID()) {
-            return false;
-        }
-        return true;
+        return oppositeToCurrentDirection.getID() != currentBranchDirection
+                .getID();
     }
 
     public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p)
@@ -147,8 +144,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         // Count the number of possible positions.
         int n = 0;
 
-        for (int i = 0; i < vectors.length; i++) {
-            if (conf.contains(vectors[i].get9bitTemplate())) {
+        for (Step vector1 : vectors) {
+            if (conf.contains(vector1.get9bitTemplate())) {
                 n++;
             }
         }
@@ -157,10 +154,10 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         n = 0;
 
-        for (int i = 0; i < vectors.length; i++) {
-            if (conf.contains(vectors[i].get9bitTemplate())) {
+        for (Step vector : vectors) {
+            if (conf.contains(vector.get9bitTemplate())) {
                 possiblePositions[n] = PositionOnTrack.createComingFrom(p.x,
-                        p.y, vectors[i].getOpposite());
+                        p.y, vector.getOpposite());
                 n++;
             }
         }

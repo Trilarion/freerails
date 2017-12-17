@@ -48,7 +48,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
      * Creates new form TrainSummaryJPanel
      */
     public TrainSummaryJPanel() {
-        jLabels = new LRUCache<String, JLabel>(1000);
+        jLabels = new LRUCache<>(1000);
         model = new TrainSummeryModel();
         initComponents();
     }

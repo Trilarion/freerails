@@ -43,7 +43,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
     public LeaderBoardJPanel() {
         super();
 
-        values = new ArrayList<PlayerDetails>();
+        values = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i < 5; i++) {
             PlayerDetails p = new PlayerDetails();
@@ -130,7 +130,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
         @Override
         public String toString() {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(name);
             sb.append(", ");
             sb.append(networth.toString());

@@ -37,10 +37,10 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
     private void initComponents() {// GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        confirmExit = new javax.swing.JButton();
+        JPanel jPanel1 = new JPanel();
+        JLabel jLabel1 = new JLabel();
+        JPanel jPanel2 = new JPanel();
+        JButton confirmExit = new JButton();
         closeJButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
@@ -87,13 +87,6 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeJButton;
 
-    private javax.swing.JButton confirmExit;
-
-    private javax.swing.JLabel jLabel1;
-
-    private javax.swing.JPanel jPanel1;
-
-    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 
 }

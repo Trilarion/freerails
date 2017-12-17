@@ -42,11 +42,11 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
 
         Iterator<TerrainType.Category> iterator = types.iterator();
 
-        HashSet<TerrainType.Category> temp = new HashSet<TerrainType.Category>();
+        HashSet<TerrainType.Category> temp = new HashSet<>();
         while (iterator.hasNext()) {
             temp.add(iterator.next());
         }
-        terrainTypes = new ImHashSet<TerrainType.Category>(temp);
+        terrainTypes = new ImHashSet<>(temp);
     }
 
     public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
@@ -61,11 +61,8 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
         if (o instanceof LegalTrackPlacement) {
             LegalTrackPlacement test = (LegalTrackPlacement) o;
 
-            if (this.placementRule.equals(test.getPlacementRule())
-                    && this.terrainTypes.equals(test.terrainTypes)) {
-                return true;
-            }
-            return false;
+            return this.placementRule.equals(test.getPlacementRule())
+                    && this.terrainTypes.equals(test.terrainTypes);
         }
         return false;
     }

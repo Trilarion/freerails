@@ -14,9 +14,9 @@ public class ListXDTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        list1d = new List1DImpl<Object>();
-        list2d = new List2DImpl<Object>(5);
-        list3d = new List3DImpl<Object>(3, 2);
+        list1d = new List1DImpl<>();
+        list2d = new List2DImpl<>(5);
+        list3d = new List3DImpl<>(3, 2);
     }
 
     public void testAdd() {
@@ -26,7 +26,7 @@ public class ListXDTest extends TestCase {
         assertEquals(0, list2d.sizeD2(0));
 
         // Add an object
-        Integer i = new Integer(4);
+        Integer i = 4;
         assertEquals(0, list1d.add(i));
         assertEquals(0, list2d.addD2(2, i));
 
@@ -38,7 +38,7 @@ public class ListXDTest extends TestCase {
     }
 
     public void testRemove() {
-        Integer i = new Integer(4);
+        Integer i = 4;
 
         list2d.addD2(4, i);
         try {
@@ -69,8 +69,8 @@ public class ListXDTest extends TestCase {
     }
 
     public void testHashCodeAndEquals() {
-        Integer i = new Integer(5);
-        Integer ii = new Integer(53);
+        Integer i = 5;
+        Integer ii = 53;
 
         // 1d
         list1d.add(i);
@@ -98,7 +98,7 @@ public class ListXDTest extends TestCase {
     }
 
     public void test3DList() {
-        list3d = new List3DImpl<Object>(0, 0);
+        list3d = new List3DImpl<>(0, 0);
 
         // Add a player
         int playerId = list3d.addD1();

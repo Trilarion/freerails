@@ -105,12 +105,11 @@ public class TrainModel implements FreerailsSerializable {
     public boolean equals(Object obj) {
         if (obj instanceof TrainModel) {
             TrainModel test = (TrainModel) obj;
-            boolean b = this.cargoBundleId == test.cargoBundleId
+
+            return this.cargoBundleId == test.cargoBundleId
                     && this.engineTypeId == test.engineTypeId
                     && this.wagonTypes.equals(test.wagonTypes)
                     && this.scheduleId == test.scheduleId;
-
-            return b;
         }
         return false;
     }

@@ -338,7 +338,6 @@ public class StationInfoJPanel extends JPanel implements View,
                 display();
             }
         }
-        return;
 
     }
 

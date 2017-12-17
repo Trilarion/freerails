@@ -124,11 +124,7 @@ public class RemoveItemFromListMove implements ListMove {
                 return false;
             }
 
-            if (this.listKey != test.listKey) {
-                return false;
-            }
-
-            return true;
+            return this.listKey == test.listKey;
         }
         return false;
     }

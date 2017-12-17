@@ -43,13 +43,13 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 
     private FreerailsPrincipal playerPrincipal;
 
-    private final HashMap<Property, Object> properties = new HashMap<Property, Object>();
+    private final HashMap<Property, Object> properties = new HashMap<>();
 
     private ServerCommandReceiver serverCommandReceiver;
 
     private ReadOnlyWorld world;
 
-    private final ArrayList<ModelRootListener> listeners = new ArrayList<ModelRootListener>();
+    private final ArrayList<ModelRootListener> listeners = new ArrayList<>();
 
     public ModelRootImpl() {
         properties.put(Property.CURSOR_POSITION, new ImPoint());
@@ -62,7 +62,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         properties.put(Property.SERVER, "server details not set!");
         properties.put(Property.PLAY_SOUNDS, Boolean.TRUE);
         properties.put(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
-        properties.put(Property.TIME, new Double(0));
+        properties.put(Property.TIME, 0d);
         properties.put(Property.TRACK_BUILDER_MODE,
                 TrackMoveProducer.BuildMode.BUILD_TRACK);
         properties.put(Property.SAVED_GAMES_LIST, new ImStringList());

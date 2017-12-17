@@ -52,10 +52,7 @@ public class SetWorldMessage2Client implements Message2Client {
 
         if (id != setWorldMessage2Client.id)
             return false;
-        if (!world.equals(setWorldMessage2Client.world))
-            return false;
-
-        return true;
+        return world.equals(setWorldMessage2Client.world);
     }
 
     @Override

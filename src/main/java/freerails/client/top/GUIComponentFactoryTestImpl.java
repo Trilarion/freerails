@@ -32,8 +32,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
 
     private final JMenu helpMenu;
 
-    private final JLabel messageJLabel;
-
     private final JMenu brokerMenu;
 
     /**
@@ -48,7 +46,7 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         cashjLabel = new JLabel();
         mainMapView = new JScrollPane();
         mainmapjPanel = new JPanel();
-        messageJLabel = new JLabel();
+        JLabel messageJLabel = new JLabel();
         gameMenu = new JMenu();
         buildMenu = new JMenu();
         displayMenu = new JMenu();

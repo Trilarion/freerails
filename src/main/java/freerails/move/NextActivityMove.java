@@ -40,10 +40,7 @@ public class NextActivityMove implements Move {
             return false;
         if (!activity.equals(nextActivityMove.activity))
             return false;
-        if (!principal.equals(nextActivityMove.principal))
-            return false;
-
-        return true;
+        return principal.equals(nextActivityMove.principal);
     }
 
     @Override

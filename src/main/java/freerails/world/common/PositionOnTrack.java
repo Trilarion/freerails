@@ -92,12 +92,9 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         if (o instanceof PositionOnTrack) {
             PositionOnTrack other = (PositionOnTrack) o;
 
-            if (other.cameFrom() == this.cameFrom()
+            return other.cameFrom() == this.cameFrom()
                     && other.getX() == this.getX()
-                    && other.getY() == this.getY()) {
-                return true;
-            }
-            return false;
+                    && other.getY() == this.getY();
         }
         return false;
     }
@@ -185,15 +182,13 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     public static int toInt(int x, int y) {
-        int i = x | (y << BITS_FOR_COORDINATE);
-        return i;
+        return x | (y << BITS_FOR_COORDINATE);
     }
 
     @Override
     public String toString() {
-        String s = "PositionOnTrack: " + x + ", " + y + " facing "
-                + cameFrom.getOpposite().toString();
 
-        return s;
+        return "PositionOnTrack: " + x + ", " + y + " facing "
+                + cameFrom.getOpposite().toString();
     }
 }

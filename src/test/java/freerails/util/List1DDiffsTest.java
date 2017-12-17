@@ -22,9 +22,9 @@ public class List1DDiffsTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        list = new List1DImpl<Object>();
-        map = new TreeMap<ListKey, Object>();
-        diffs = new List1DDiff<Object>(map, list, test.test);
+        list = new List1DImpl<>();
+        map = new TreeMap<>();
+        diffs = new List1DDiff<>(map, list, test.test);
     }
 
     public void testChangingValues() {

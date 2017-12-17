@@ -58,9 +58,7 @@ public class FinancialDataGathererTest extends TestCase {
         w.addTransaction(player.getPrincipal(), BondTransaction.issueBond(5));
         fdg = new FinancialDataGatherer(w, player.getPrincipal());
 
-        boolean canIssueBond = fdg.canIssueBond();
-
-        return canIssueBond;
+        return fdg.canIssueBond();
     }
 
     public void testNextBondInterestRate() {

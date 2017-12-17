@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public interface ClientControlInterface {
 
-    public enum ClientProperty {
+    enum ClientProperty {
         CONNECTED_CLIENTS, MAPS_AVAILABLE, SAVED_GAMES
     }
 

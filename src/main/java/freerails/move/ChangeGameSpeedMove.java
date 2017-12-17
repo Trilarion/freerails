@@ -81,10 +81,7 @@ public class ChangeGameSpeedMove implements Move {
 
         if (!newSpeed.equals(changeGameSpeedMove.newSpeed))
             return false;
-        if (!oldSpeed.equals(changeGameSpeedMove.oldSpeed))
-            return false;
-
-        return true;
+        return oldSpeed.equals(changeGameSpeedMove.oldSpeed);
     }
 
     @Override

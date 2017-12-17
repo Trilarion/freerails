@@ -42,11 +42,7 @@ public class TrainOrdersModel implements FreerailsSerializable {
             return false;
         if (waitUntilFull != trainOrdersModel.waitUntilFull)
             return false;
-        if (consist != null ? !consist.equals(trainOrdersModel.consist)
-                : trainOrdersModel.consist != null)
-            return false;
-
-        return true;
+        return consist != null ? consist.equals(trainOrdersModel.consist) : trainOrdersModel.consist == null;
     }
 
     @Override

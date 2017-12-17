@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class List2DImpl<T> implements List2D<T> {
 
     private static final long serialVersionUID = 7614246212629595959L;
-    private final ArrayList<ArrayList<T>> elementData = new ArrayList<ArrayList<T>>();
+    private final ArrayList<ArrayList<T>> elementData = new ArrayList<>();
 
     public List2DImpl(int d1) {
         for (int i = 0; i < d1; i++) {
-            elementData.add(new ArrayList<T>());
+            elementData.add(new ArrayList<>());
         }
     }
 
@@ -46,7 +46,7 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     public int addD1() {
-        elementData.add(new ArrayList<T>());
+        elementData.add(new ArrayList<>());
         return elementData.size() - 1;
     }
 
@@ -63,10 +63,7 @@ public class List2DImpl<T> implements List2D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof List2D)) {
-            return false;
-        }
-        return Lists.equals(this, (List2D) obj);
+        return obj instanceof List2D && Lists.equals(this, (List2D) obj);
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class HtmlJPanelTest extends TestCase {
     public void testPopulateTokens() {
         String template = "test";
-        HashMap<String, String> context = new HashMap<String, String>();
+        HashMap<String, String> context = new HashMap<>();
         String output = HtmlJPanel.populateTokens(template, context);
         assertEquals(template, output);
 

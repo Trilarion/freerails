@@ -22,13 +22,9 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
 
-    private final FreerailsPrincipal principal;
-
     private final TrainStopsHandler stopsHandler;
 
     private final FlatTrackExplorer trackExplorer;
-
-    private final int trainId;
 
     private transient MoveReceiver mr = null;
 
@@ -37,8 +33,8 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
                            int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
         this.trackExplorer = tx;
-        this.trainId = trainNumber;
-        principal = p;
+        int trainId = trainNumber;
+        FreerailsPrincipal principal = p;
         stopsHandler = new TrainStopsHandler(trainId, principal,
                 new WorldDiffs(w));
         this.mr = newMr;

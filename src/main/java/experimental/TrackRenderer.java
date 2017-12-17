@@ -62,7 +62,7 @@ public class TrackRenderer {
         // g.drawString(title, 10, 10);
 
         Step[] directions = Step.getList();
-        List<CubicCurve2D.Double> sections = new ArrayList<CubicCurve2D.Double>();
+        List<CubicCurve2D.Double> sections = new ArrayList<>();
         int matches = 0;
         for (int i = 0; i < directions.length - 2; i++) {
 
@@ -91,10 +91,10 @@ public class TrackRenderer {
             }
         }
         if (matches == 0) {
-            for (int i = 0; i < directions.length; i++) {
+            for (Step direction : directions) {
 
-                if (conf.contains(directions[i])) {
-                    Double toCurve = toCurve(directions[i]);
+                if (conf.contains(direction)) {
+                    Double toCurve = toCurve(direction);
                     if (doubleTrack) {
                         sections.add(createAdjacentCurve(toCurve,
                                 doubleTrackGap, doubleTrackGap));
@@ -244,8 +244,7 @@ public class TrackRenderer {
                     + ".png";
             relativeFileName = relativeFileName.replace(' ', '_');
 
-            Image im = imageManager.getImage(relativeFileName);
-            icon = im;
+            icon = imageManager.getImage(relativeFileName);
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException(e);

@@ -17,11 +17,11 @@ import java.util.Random;
 public class CityTilePositioner {
     Random random = new Random();
 
-    ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<TerrainType>();
+    ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<>();
 
-    ArrayList<TerrainType> industryTerrainTypes = new ArrayList<TerrainType>();
+    ArrayList<TerrainType> industryTerrainTypes = new ArrayList<>();
 
-    ArrayList<TerrainType> resourceTerrainTypes = new ArrayList<TerrainType>();
+    ArrayList<TerrainType> resourceTerrainTypes = new ArrayList<>();
 
     World w;
 

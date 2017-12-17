@@ -23,13 +23,11 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
     private TrackMoveTransactionsGenerator transactionGenerator;
 
-    private Player player;
-
     @Override
     protected void setUp() throws Exception {
         world = new WorldImpl(20, 20);
         MapFixtureFactory.generateTrackRuleList(world);
-        player = new Player("test player", 0);
+        Player player = new Player("test player", 0);
         world.addPlayer(player);
         transactionGenerator = new TrackMoveTransactionsGenerator(world, player
                 .getPrincipal());

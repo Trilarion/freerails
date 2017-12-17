@@ -160,14 +160,12 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
      */
     public TrainOrderJPanel() {
         super();
-        lines = new HashMap<TrainOrderModel, TrainOrderJPanelSingle>();
+        lines = new HashMap<>();
     }
 
     enum Selection {
         select, selectNoFocus, unselect
     }
-
-    ;
 
     // 666 model still not correct ...
 
@@ -223,17 +221,13 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
                     && !waitUntilFull.equals(cmp.waitUntilFull)) {
                 return false;
             }
-            if (orderText != null && !orderText.equals(cmp.orderText)) {
-                return false;
-            }
-            return true;
+            return orderText == null || orderText.equals(cmp.orderText);
         }
 
         @Override
         public int hashCode() {
-            int hashCode = waitUntilFull.hashCode() + stationName.hashCode()
+            return waitUntilFull.hashCode() + stationName.hashCode()
                     + selected.hashCode() + gotoStatus + orderText.hashCode();
-            return hashCode;
         }
 
     }

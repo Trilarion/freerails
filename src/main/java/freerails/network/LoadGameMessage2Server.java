@@ -28,10 +28,7 @@ public class LoadGameMessage2Server implements Message2Server {
 
         if (id != loadGameMessage2Server.id)
             return false;
-        if (!filename.equals(loadGameMessage2Server.filename))
-            return false;
-
-        return true;
+        return filename.equals(loadGameMessage2Server.filename);
     }
 
     @Override

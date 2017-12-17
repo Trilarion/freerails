@@ -143,10 +143,7 @@ public class WorldImplTest extends TestCase {
 
             final TestState testState = (TestState) o;
 
-            if (x != testState.x)
-                return false;
-
-            return true;
+            return x == testState.x;
         }
 
         @Override
@@ -171,10 +168,7 @@ public class WorldImplTest extends TestCase {
 
             final TestActivity testActivity = (TestActivity) o;
 
-            if (duration != testActivity.duration)
-                return false;
-
-            return true;
+            return !(duration != testActivity.duration);
         }
 
         @Override

@@ -36,7 +36,7 @@ public class ProcessCargoAtStationMoveGenerator {
                 stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 
-        ArrayList<Move> moves = new ArrayList<Move>();
+        ArrayList<Move> moves = new ArrayList<>();
 
         while (batches.hasNext()) {
             CargoBatch batch = batches.next();

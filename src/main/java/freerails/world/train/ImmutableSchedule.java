@@ -33,7 +33,7 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
 
     public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
                              boolean hasPriorityOrders) {
-        this.orders = new ImList<TrainOrdersModel>(orders);
+        this.orders = new ImList<>(orders);
         this.nextScheduledOrder = gotoStation;
         this.hasPriorityOrders = hasPriorityOrders;
     }

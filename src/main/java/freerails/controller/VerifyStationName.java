@@ -28,7 +28,7 @@ public class VerifyStationName {
     public VerifyStationName(ReadOnlyWorld world, String name) {
         this.w = world;
         this.nameToVerify = name;
-        this.stationAlternatives = new LinkedList<String>();
+        this.stationAlternatives = new LinkedList<>();
 
         stationAlternatives.add("Junction");
         stationAlternatives.add("Siding");
@@ -70,7 +70,6 @@ public class VerifyStationName {
     }
 
     private boolean checkStationExists(String name) {
-        String testName = name;
         StationModel tempStation;
 
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
@@ -81,7 +80,7 @@ public class VerifyStationName {
             while (wi.next()) { // loop over non null stations
                 tempStation = (StationModel) wi.getElement();
 
-                if ((testName).equals(tempStation.getStationName())) {
+                if ((name).equals(tempStation.getStationName())) {
                     // station already exists with that name
                     return true;
                 }

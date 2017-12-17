@@ -46,10 +46,7 @@ public class AddTrainPreMove implements PreMove {
             return false;
         if (!schedule.equals(addTrainPreMove.schedule))
             return false;
-        if (!wagons.equals(addTrainPreMove.wagons))
-            return false;
-
-        return true;
+        return wagons.equals(addTrainPreMove.wagons);
     }
 
     @Override
@@ -94,7 +91,7 @@ public class AddTrainPreMove implements PreMove {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
 
-        List<Step> steps = new ArrayList<Step>();
+        List<Step> steps = new ArrayList<>();
         int length = calTrainLength();
         int distanceTravelled = 0;
         PositionOnTrack p = new PositionOnTrack();
@@ -112,15 +109,13 @@ public class AddTrainPreMove implements PreMove {
 
     private int calTrainLength() {
         TrainModel train = new TrainModel(engineTypeId, wagons, 0);
-        int length = train.getLength();
-        return length;
+        return train.getLength();
     }
 
     TrainMotion initPositionStep2(PathOnTiles path) {
         // TODO fix code.
-        TrainMotion tm = new TrainMotion(path, path.steps(), calTrainLength(),
+        return new TrainMotion(path, path.steps(), calTrainLength(),
                 ConstAcc.STOPPED);
-        return tm;
     }
 
     /**

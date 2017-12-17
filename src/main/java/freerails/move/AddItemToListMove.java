@@ -111,11 +111,7 @@ public class AddItemToListMove implements ListMove {
                 return false;
             }
 
-            if (this.listKey != test.listKey) {
-                return false;
-            }
-
-            return true;
+            return this.listKey == test.listKey;
         }
         return false;
     }
@@ -130,7 +126,7 @@ public class AddItemToListMove implements ListMove {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(this.getClass().getName());
+        StringBuilder sb = new StringBuilder(this.getClass().getName());
         sb.append("\n list=");
         sb.append(listKey.toString());
         sb.append("\n index =");

@@ -52,9 +52,7 @@ public class StationBuilder {
                 this.ruleNumber, principal);
         Move m = preMove.generateMove(world);
 
-        MoveStatus ms = executor.tryDoMove(m);
-
-        return ms;
+        return executor.tryDoMove(m);
     }
 
     public MoveStatus buildStation(ImPoint p) {

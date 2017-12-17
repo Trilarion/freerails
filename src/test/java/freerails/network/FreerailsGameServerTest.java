@@ -43,8 +43,7 @@ public class FreerailsGameServerTest extends TestCase {
         /* Test 5: When the player has logged off, then trieds to log on. */
         server.logoff(0);
 
-        LogOnRequest request5 = request1;
-        response = server.logon(request5);
+        response = server.logon(request1);
         assertTrue("Player 0 has logged off, so should succeed.", response
                 .isSuccessful());
         assertEquals("Should keep the same player id", 0, response

@@ -23,8 +23,6 @@ public class NearestStationFinder {
 
     private final FreerailsPrincipal principal;
 
-    private final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
-
     public NearestStationFinder(ReadOnlyWorld w, FreerailsPrincipal player) {
         world = w;
         this.principal = player;
@@ -45,6 +43,7 @@ public class NearestStationFinder {
             int deltaY = y - station.y;
             int distanceSquared = deltaX * deltaX + deltaY * deltaY;
 
+            int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
             if (distanceSquared < distanceToClosestSquared
                     && MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
                 distanceToClosestSquared = distanceSquared;

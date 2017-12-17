@@ -75,11 +75,8 @@ final public class TrackRuleImpl implements TrackRule {
             boolean legalTrackPlacementEqual = this.legalTrackPlacement
                     .equals(trackRuleImpl.getLegalTrackPlacement());
 
-            if (propertiesFieldsEqual && legalConfigurationsEqual
-                    && legalTrackPlacementEqual) {
-                return true;
-            }
-            return false;
+            return propertiesFieldsEqual && legalConfigurationsEqual
+                    && legalTrackPlacementEqual;
         }
         return false;
     }

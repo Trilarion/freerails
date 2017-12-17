@@ -45,13 +45,13 @@ public class ImageManagerImpl implements ImageManager {
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
 
-    private final HashMap<String, Image> imageHashMap = new HashMap<String, Image>();
+    private final HashMap<String, Image> imageHashMap = new HashMap<>();
 
     private String pathToReadFrom;
 
     private final RenderingHints renderingHints;
 
-    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<String, Image>();
+    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<>();
 
     public ImageManagerImpl(String readpath) {
         pathToReadFrom = readpath;
@@ -67,10 +67,7 @@ public class ImageManagerImpl implements ImageManager {
 
     public boolean contains(String relativeFilename) {
         relativeFilename = relativeFilename.replace(' ', '_');
-        if (imageHashMap.containsKey(relativeFilename)) {
-            return true;
-        }
-        return false;
+        return imageHashMap.containsKey(relativeFilename);
     }
 
     public Image getImage(String relativeFilename) throws IOException {
@@ -142,9 +139,8 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     public Image newBlankImage(int height, int width) {
-        Image compatibleImage = defaultConfiguration.createCompatibleImage(
+        return defaultConfiguration.createCompatibleImage(
                 width, height, Transparency.TRANSLUCENT);
-        return compatibleImage;
     }
 
     public void setImage(String relativeFilename, Image i) {

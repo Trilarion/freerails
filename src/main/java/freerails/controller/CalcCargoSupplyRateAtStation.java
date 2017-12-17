@@ -63,7 +63,7 @@ public class CalcCargoSupplyRateAtStation {
         TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
 
-        supplies = new Vector<CargoElementObject>();
+        supplies = new Vector<>();
         populateSuppliesVector();
 
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
@@ -185,9 +185,8 @@ public class CalcCargoSupplyRateAtStation {
 
     private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
         FreerailsTile tile = (FreerailsTile) w.getTile(xx, yy);
-        int ruleNumber = tile.getTrackPiece().getTrackTypeID();
 
-        return ruleNumber;
+        return tile.getTrackPiece().getTrackTypeID();
     }
 
     private void updateSupplyRate(int type, int rate) {

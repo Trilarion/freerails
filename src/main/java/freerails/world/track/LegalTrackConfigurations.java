@@ -25,22 +25,21 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
                                     ArrayList<String> legalTrackTemplatesArrayList) {
         maximumConsecutivePieces = max;
 
-        HashSet<TrackConfiguration> temp = new HashSet<TrackConfiguration>();
+        HashSet<TrackConfiguration> temp = new HashSet<>();
         // Iterate over the track templates.
-        for (int i = 0; i < legalTrackTemplatesArrayList.size(); i++) {
-            String trackTemplateString = legalTrackTemplatesArrayList.get(i);
+        for (String trackTemplateString : legalTrackTemplatesArrayList) {
             processTemplate(trackTemplateString, temp);
         }
-        legalConfigs = new ImHashSet<TrackConfiguration>(temp);
+        legalConfigs = new ImHashSet<>(temp);
     }
 
     public LegalTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
         maximumConsecutivePieces = max;
-        HashSet<TrackConfiguration> temp = new HashSet<TrackConfiguration>();
-        for (int i = 0; i < legalTrackTemplatesArray.length; i++) {
-            processTemplate(legalTrackTemplatesArray[i], temp);
+        HashSet<TrackConfiguration> temp = new HashSet<>();
+        for (String aLegalTrackTemplatesArray : legalTrackTemplatesArray) {
+            processTemplate(aLegalTrackTemplatesArray, temp);
         }
-        legalConfigs = new ImHashSet<TrackConfiguration>(temp);
+        legalConfigs = new ImHashSet<>(temp);
     }
 
     @Override
@@ -48,12 +47,9 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         if (o instanceof LegalTrackConfigurations) {
             LegalTrackConfigurations test = (LegalTrackConfigurations) o;
 
-            if (this.maximumConsecutivePieces == test
+            return this.maximumConsecutivePieces == test
                     .getMaximumConsecutivePieces()
-                    && this.legalConfigs.equals(test.legalConfigs)) {
-                return true;
-            }
-            return false;
+                    && this.legalConfigs.equals(test.legalConfigs);
         }
         return false;
     }
@@ -89,8 +85,7 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer
                 .getRotations(trackTemplate);
 
-        for (int k = 0; k < rotationsOfTrackTemplate.length; k++) {
-            int i = rotationsOfTrackTemplate[k];
+        for (int i : rotationsOfTrackTemplate) {
             TrackConfiguration trackConfiguration = TrackConfiguration
                     .from9bitTemplate(i);
 

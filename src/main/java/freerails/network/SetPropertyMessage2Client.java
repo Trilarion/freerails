@@ -46,10 +46,7 @@ public class SetPropertyMessage2Client implements Message2Client {
             return false;
         if (!key.equals(setPropertyMessage2Client.key))
             return false;
-        if (!value.equals(setPropertyMessage2Client.value))
-            return false;
-
-        return true;
+        return value.equals(setPropertyMessage2Client.value);
     }
 
     public MessageStatus execute(ClientControlInterface client) {

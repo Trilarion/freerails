@@ -50,11 +50,7 @@ public class MovePrecommitter {
             if (m != null ? !m.equals(preMoveAndMove.m)
                     : preMoveAndMove.m != null)
                 return false;
-            if (pm != null ? !pm.equals(preMoveAndMove.pm)
-                    : preMoveAndMove.pm != null)
-                return false;
-
-            return true;
+            return pm != null ? pm.equals(preMoveAndMove.pm) : preMoveAndMove.pm == null;
         }
 
         @Override
@@ -79,13 +75,13 @@ public class MovePrecommitter {
      * List of moves and premoves that have been sent to the server and executed
      * on the local world object.
      */
-    final LinkedList<FreerailsSerializable> precomitted = new LinkedList<FreerailsSerializable>();
+    final LinkedList<FreerailsSerializable> precomitted = new LinkedList<>();
 
     /**
      * List of moves and premoves that have been sent to the server but not
      * executed on the local world object.
      */
-    final LinkedList<FreerailsSerializable> uncomitted = new LinkedList<FreerailsSerializable>();
+    final LinkedList<FreerailsSerializable> uncomitted = new LinkedList<>();
 
     private final World w;
 

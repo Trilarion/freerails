@@ -12,11 +12,11 @@ public class List1DImpl<T> implements List1D<T> {
     private final ArrayList<T> elementData;
 
     public List1DImpl() {
-        elementData = new ArrayList<T>();
+        elementData = new ArrayList<>();
     }
 
     public List1DImpl(int initialSize) {
-        elementData = new ArrayList<T>();
+        elementData = new ArrayList<>();
         for (int i = 0; i < initialSize; i++) {
             elementData.add(null);
         }
@@ -28,9 +28,7 @@ public class List1DImpl<T> implements List1D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof List1D))
-            return false;
-        return Lists.equals(this, (List1D) obj);
+        return obj instanceof List1D && Lists.equals(this, (List1D) obj);
     }
 
     @Override

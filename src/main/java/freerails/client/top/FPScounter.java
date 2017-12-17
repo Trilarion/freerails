@@ -28,7 +28,7 @@ public class FPScounter {
     private String[] newFPSstr;
 
     FPScounter() {
-        fpsValues = new LinkedList<Double>();
+        fpsValues = new LinkedList<>();
         for (int i = 0; i < MAX_FPS_VALUES; i++) {
             fpsValues.add(0.0);
         }

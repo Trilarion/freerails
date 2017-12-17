@@ -182,7 +182,7 @@ public class TrainAccessor {
     public HashSet<TrackSection> occupiedTrackSection(double time) {
         TrainMotion tm = findCurrentMotion(time);
         PathOnTiles path = tm.getPath();
-        HashSet<TrackSection> sections = new HashSet<TrackSection>();
+        HashSet<TrackSection> sections = new HashSet<>();
         ImPoint start = path.getStart();
         int x = start.x;
         int y = start.y;

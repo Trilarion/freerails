@@ -47,10 +47,7 @@ public final class ImPoint implements FreerailsSerializable,
 
         if (x != imPoint.x)
             return false;
-        if (y != imPoint.y)
-            return false;
-
-        return true;
+        return y == imPoint.y;
     }
 
     public Point toPoint() {

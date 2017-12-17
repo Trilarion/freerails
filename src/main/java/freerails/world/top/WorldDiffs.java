@@ -74,25 +74,25 @@ public class WorldDiffs extends WorldImpl {
 
     public WorldDiffs(ReadOnlyWorld row) {
 
-        listDiff = new TreeMap<ListKey, Object>();
-        mapDiff = new HashMap<ImPoint, Object>();
+        listDiff = new TreeMap<>();
+        mapDiff = new HashMap<>();
 
         // Bit of a hack but it's not clear there is a better way, LL
         underlying = (WorldImpl) row;
 
-        activityLists = new List3DDiff<ActivityAndTime>(listDiff,
+        activityLists = new List3DDiff<>(listDiff,
                 underlying.activityLists, LISTID.ACTIVITY_LISTS);
-        bankAccounts = new List2DDiff<TransactionAndTimeStamp>(listDiff,
+        bankAccounts = new List2DDiff<>(listDiff,
                 underlying.bankAccounts, LISTID.BANK_ACCOUNTS);
-        currentBalance = new List1DDiff<Money>(listDiff,
+        currentBalance = new List1DDiff<>(listDiff,
                 underlying.currentBalance, LISTID.CURRENT_BALANCE);
-        items = new List1DDiff<FreerailsSerializable>(listDiff,
+        items = new List1DDiff<>(listDiff,
                 underlying.items, LISTID.ITEMS);
-        lists = new List3DDiff<FreerailsSerializable>(listDiff,
+        lists = new List3DDiff<>(listDiff,
                 underlying.lists, LISTID.LISTS);
-        players = new List1DDiff<Player>(listDiff, underlying.players,
+        players = new List1DDiff<>(listDiff, underlying.players,
                 LISTID.PLAYERS);
-        sharedLists = new List2DDiff<FreerailsSerializable>(listDiff,
+        sharedLists = new List2DDiff<>(listDiff,
                 underlying.sharedLists, LISTID.SHARED_LISTS);
         time = underlying.time;
     }
@@ -166,7 +166,6 @@ public class WorldDiffs extends WorldImpl {
             if (this.mapDiff.containsKey(p)) {
                 this.mapDiff.remove(p);
 
-                return;
             }
         } else {
             this.mapDiff.put(p, tile);

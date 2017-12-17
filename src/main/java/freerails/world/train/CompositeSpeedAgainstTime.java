@@ -17,12 +17,12 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     private final double finalT, finalS;
 
     public CompositeSpeedAgainstTime(SpeedAgainstTime... accs) {
-        values = new ImList<SpeedAgainstTime>(accs);
+        values = new ImList<>(accs);
         values.checkForNulls();
         double tempDuration = 0, tempTotalDistance = 0;
-        for (int i = 0; i < accs.length; i++) {
-            tempDuration += accs[i].getT();
-            tempTotalDistance += accs[i].getS();
+        for (SpeedAgainstTime acc : accs) {
+            tempDuration += acc.getT();
+            tempTotalDistance += acc.getS();
         }
         finalT = tempDuration;
         finalS = tempTotalDistance;
@@ -41,10 +41,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
             return false;
         if (finalS != compositeSpeedAgainstTime.finalS)
             return false;
-        if (!values.equals(compositeSpeedAgainstTime.values))
-            return false;
-
-        return true;
+        return values.equals(compositeSpeedAgainstTime.values);
     }
 
     @Override
@@ -52,9 +49,9 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         int result;
         long temp;
         result = values.hashCode();
-        temp = finalT != +0.0d ? Double.doubleToLongBits(finalT) : 0l;
+        temp = finalT != +0.0d ? Double.doubleToLongBits(finalT) : 0L;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
-        temp = finalS != +0.0d ? Double.doubleToLongBits(finalS) : 0l;
+        temp = finalS != +0.0d ? Double.doubleToLongBits(finalS) : 0L;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }

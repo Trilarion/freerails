@@ -32,11 +32,7 @@ final public class MoveStatus implements FreerailsSerializable {
 
         if (ok != moveStatus.ok)
             return false;
-        if (message != null ? !message.equals(moveStatus.message)
-                : moveStatus.message != null)
-            return false;
-
-        return true;
+        return message != null ? message.equals(moveStatus.message) : moveStatus.message == null;
     }
 
     @Override

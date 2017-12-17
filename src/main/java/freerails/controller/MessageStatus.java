@@ -31,11 +31,7 @@ public class MessageStatus implements FreerailsSerializable {
             return false;
         if (successful != messageStatus.successful)
             return false;
-        if (reason != null ? !reason.equals(messageStatus.reason)
-                : messageStatus.reason != null)
-            return false;
-
-        return true;
+        return reason != null ? reason.equals(messageStatus.reason) : messageStatus.reason == null;
     }
 
     @Override

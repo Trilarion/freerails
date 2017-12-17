@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class SavedGamesManager4UnitTests implements SavedGamesManager {
     private String[] mapsAvailable = {"map1", "map2"};
 
-    private final HashMap<String, Serializable> savedGames = new HashMap<String, Serializable>();
+    private final HashMap<String, Serializable> savedGames = new HashMap<>();
 
     public String[] getSaveGameNames() {
         Object[] keys = savedGames.keySet().toArray();

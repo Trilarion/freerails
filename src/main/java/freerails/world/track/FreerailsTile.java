@@ -25,11 +25,7 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
 
         if (terrainType != that.terrainType)
             return false;
-        if (trackPiece != null ? !trackPiece.equals(that.trackPiece)
-                : that.trackPiece != null)
-            return false;
-
-        return true;
+        return trackPiece != null ? trackPiece.equals(that.trackPiece) : that.trackPiece == null;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
 
     private final int terrainType;
 
-    private static HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<FreerailsTile, FreerailsTile>();
+    private static HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<>();
 
     public static FreerailsTile getInstance(int terrainType) {
         FreerailsTile tile = new FreerailsTile(terrainType);

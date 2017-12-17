@@ -74,7 +74,7 @@ public class UserMessageGenerator implements MoveReceiver {
      * cash register sound to indicate that revenue is coming in.
      */
     private void trainArrives(WorldDiffMove wdm) {
-        ArrayList<DeliverCargoReceipt> cargoDelivered = new ArrayList<DeliverCargoReceipt>();
+        ArrayList<DeliverCargoReceipt> cargoDelivered = new ArrayList<>();
         CompositeMove listChanges = wdm.getListChanges();
         for (int i = 0; i < listChanges.size(); i++) {
             Move m = listChanges.getMoves().get(i);
@@ -95,7 +95,7 @@ public class UserMessageGenerator implements MoveReceiver {
         if (cargoDelivered.size() > 0) {
             ReadOnlyWorld world = modelRoot.getWorld();
 
-            StringBuffer message = new StringBuffer();
+            StringBuilder message = new StringBuilder();
             DeliverCargoReceipt first = cargoDelivered.get(0);
             int stationId = first.getStationId();
             int trainId = first.getTrainId();

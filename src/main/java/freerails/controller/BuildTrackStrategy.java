@@ -42,7 +42,7 @@ public class BuildTrackStrategy {
     }
 
     public static BuildTrackStrategy getDefault(ReadOnlyWorld w) {
-        ArrayList<Integer> allowable = new ArrayList<Integer>();
+        ArrayList<Integer> allowable = new ArrayList<>();
         allowable.add(getCheapest(TrackRule.TrackCategories.track, w));
         allowable.add(getCheapest(TrackRule.TrackCategories.bridge, w));
         allowable.add(getCheapest(TrackRule.TrackCategories.tunnel, w));
@@ -60,7 +60,7 @@ public class BuildTrackStrategy {
                         || cheapest.getPrice().getAmount() > rule.getPrice()
                         .getAmount()) {
                     cheapest = rule;
-                    cheapestID = new Integer(i);
+                    cheapestID = i;
                 }
             }
         }
@@ -78,10 +78,10 @@ public class BuildTrackStrategy {
             for (Integer rule : allowable) {
                 if (null != rule) {
                     TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES,
-                            rule.intValue());
+                            rule);
                     if (trackRule.canBuildOnThisTerrainType(terrainType
                             .getCategory())) {
-                        newRules[i] = rule.intValue();
+                        newRules[i] = rule;
                         break;
                     }
                 }

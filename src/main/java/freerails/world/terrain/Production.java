@@ -37,10 +37,7 @@ public class Production implements FreerailsSerializable {
 
         if (cargoType != production.cargoType)
             return false;
-        if (rate != production.rate)
-            return false;
-
-        return true;
+        return rate == production.rate;
     }
 
     @Override

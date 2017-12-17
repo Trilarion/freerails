@@ -105,8 +105,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
         // Note, jan is month 0.
         int totalAtMonthEnd = amountSuppliedPerYear * (month + 1) / 12;
         int totalAtMonthStart = amountSuppliedPerYear * (month) / 12;
-        int amount = totalAtMonthEnd - totalAtMonthStart;
 
-        return amount;
+        return totalAtMonthEnd - totalAtMonthStart;
     }
 }

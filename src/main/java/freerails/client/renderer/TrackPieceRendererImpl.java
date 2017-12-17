@@ -70,11 +70,10 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         String relativeFileNameBase = "track" + File.separator + trackTypeName;
         int newTemplate = TrackConfiguration.from9bitTemplate(i)
                 .get8bitTemplate();
-        String fileName = relativeFileNameBase + "_"
+
+        return relativeFileNameBase + "_"
                 + BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8)
                 + ".png";
-
-        return fileName;
     }
 
     private String getTrackTypeName() {

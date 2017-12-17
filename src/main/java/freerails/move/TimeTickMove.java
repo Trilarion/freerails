@@ -28,10 +28,7 @@ public class TimeTickMove implements Move {
 
         if (!newTime.equals(timeTickMove.newTime))
             return false;
-        if (!oldTime.equals(timeTickMove.oldTime))
-            return false;
-
-        return true;
+        return oldTime.equals(timeTickMove.oldTime);
     }
 
     @Override

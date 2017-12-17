@@ -45,7 +45,7 @@ public class CargoAndTerrainParser implements ContentHandler {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
-        context = new java.util.Stack<Object[]>();
+        context = new java.util.Stack<>();
     }
 
     /**
@@ -75,22 +75,31 @@ public class CargoAndTerrainParser implements ContentHandler {
         context.push(new Object[]{qname,
                 new org.xml.sax.helpers.AttributesImpl(attrs)});
 
-        if ("Converts".equals(name)) {
-            handler.handle_Converts(attrs);
-        } else if ("Tile".equals(name)) {
-            handler.start_Tile(attrs);
-        } else if ("Cargo".equals(name)) {
-            handler.handle_Cargo(attrs);
-        } else if ("Cargo_Types".equals(name)) {
-            handler.start_Cargo_Types(attrs);
-        } else if ("Terrain_Types".equals(name)) {
-            handler.start_Terrain_Types(attrs);
-        } else if ("Types".equals(name)) {
-            handler.start_Types(attrs);
-        } else if ("Consumes".equals(name)) {
-            handler.handle_Consumes(attrs);
-        } else if ("Produces".equals(name)) {
-            handler.handle_Produces(attrs);
+        switch (name) {
+            case "Converts":
+                handler.handle_Converts(attrs);
+                break;
+            case "Tile":
+                handler.start_Tile(attrs);
+                break;
+            case "Cargo":
+                handler.handle_Cargo(attrs);
+                break;
+            case "Cargo_Types":
+                handler.start_Cargo_Types(attrs);
+                break;
+            case "Terrain_Types":
+                handler.start_Terrain_Types(attrs);
+                break;
+            case "Types":
+                handler.start_Types(attrs);
+                break;
+            case "Consumes":
+                handler.handle_Consumes(attrs);
+                break;
+            case "Produces":
+                handler.handle_Produces(attrs);
+                break;
         }
     }
 
@@ -102,14 +111,19 @@ public class CargoAndTerrainParser implements ContentHandler {
         dispatch(false);
         context.pop();
 
-        if ("Tile".equals(name)) {
-            handler.end_Tile();
-        } else if ("Cargo_Types".equals(name)) {
-            handler.end_Cargo_Types();
-        } else if ("Terrain_Types".equals(name)) {
-            handler.end_Terrain_Types();
-        } else if ("Types".equals(name)) {
-            handler.end_Types();
+        switch (name) {
+            case "Tile":
+                handler.end_Tile();
+                break;
+            case "Cargo_Types":
+                handler.end_Cargo_Types();
+                break;
+            case "Terrain_Types":
+                handler.end_Terrain_Types();
+                break;
+            case "Types":
+                handler.end_Types();
+                break;
         }
     }
 

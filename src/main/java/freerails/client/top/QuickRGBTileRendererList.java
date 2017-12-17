@@ -21,11 +21,10 @@ import java.util.HashMap;
  * @author Luke
  */
 public class QuickRGBTileRendererList implements TileRendererList {
-    private final int[] rgbValues;
 
     private final Image[] images;
 
-    private final HashMap<Integer, Integer> rgb2index = new HashMap<Integer, Integer>();
+    private final HashMap<Integer, Integer> rgb2index = new HashMap<>();
 
     private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
 
@@ -35,14 +34,14 @@ public class QuickRGBTileRendererList implements TileRendererList {
 
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
         int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
-        rgbValues = new int[numberOfTerrainTypes];
+        int[] rgbValues = new int[numberOfTerrainTypes];
         images = new Image[numberOfTerrainTypes];
 
         for (int i = 0; i < numberOfTerrainTypes; i++) {
             TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
             rgbValues[i] = t.getRGB();
             images[i] = createImageFor(t);
-            rgb2index.put(new Integer(t.getRGB()), new Integer(i));
+            rgb2index.put(t.getRGB(), i);
         }
     }
 
@@ -63,8 +62,8 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     public TileRenderer getTileViewWithRGBValue(int rgb) {
-        Integer i = rgb2index.get(new Integer(rgb));
-        this.simpleTileRenderer.setImage(images[i.intValue()]);
+        Integer i = rgb2index.get(rgb);
+        this.simpleTileRenderer.setImage(images[i]);
 
         return simpleTileRenderer;
     }

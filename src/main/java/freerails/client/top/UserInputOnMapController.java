@@ -373,8 +373,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
     private void setCursorPosition(ImPoint p) {
         // Make a defensive copy.
-        ImPoint point = p;
-        modelRoot.setProperty(Property.CURSOR_POSITION, point);
+        modelRoot.setProperty(Property.CURSOR_POSITION, p);
     }
 
     private void setCursorMessage(String s) {
@@ -382,13 +381,12 @@ public class UserInputOnMapController extends KeyAdapter {
     }
 
     private void setIgnoreKeyEvents(boolean ignoreKeyEvents) {
-        modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean
-                .valueOf(ignoreKeyEvents));
+        modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, ignoreKeyEvents);
     }
 
     private boolean isIgnoreKeyEvents() {
         Boolean b = (Boolean) modelRoot.getProperty(Property.IGNORE_KEY_EVENTS);
-        return b.booleanValue();
+        return b;
     }
 
 

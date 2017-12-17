@@ -35,7 +35,7 @@ public class LegalTrackConfigurationsTest extends TestCase {
     }
 
     public void testTrackPieceIsLegal() {
-        ArrayList<String> templates = new ArrayList<String>();
+        ArrayList<String> templates = new ArrayList<>();
 
         templates.add("000111000");
 

@@ -31,10 +31,7 @@ public final class ImList<E extends FreerailsSerializable> implements
 
         final ImList imList = (ImList) o;
 
-        if (!Arrays.equals(elementData, imList.elementData))
-            return false;
-
-        return true;
+        return Arrays.equals(elementData, imList.elementData);
     }
 
     @Override
@@ -61,8 +58,8 @@ public final class ImList<E extends FreerailsSerializable> implements
     }
 
     public void checkForNulls() throws NullPointerException {
-        for (int i = 0; i < elementData.length; i++) {
-            if (null == elementData[i])
+        for (E anElementData : elementData) {
+            if (null == anElementData)
                 throw new NullPointerException();
         }
     }

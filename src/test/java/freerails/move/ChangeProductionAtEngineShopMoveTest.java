@@ -17,13 +17,10 @@ import freerails.world.top.WagonAndEngineTypesFactory;
  * @author Luke
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
-    private ImList<PlannedTrain> before;
 
     private ImList<PlannedTrain> after;
 
     private int engineType;
-
-    private int wagonType;
 
     private int[] wagons;
 
@@ -40,14 +37,14 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         wetf.addTypesToWorld(getWorld());
         engineType = 0;
-        wagonType = 0;
+        int wagonType = 0;
         wagons = new int[]{wagonType, wagonType};
-        after = new ImList<PlannedTrain>(new PlannedTrain(engineType, wagons));
+        after = new ImList<>(new PlannedTrain(engineType, wagons));
     }
 
     @Override
     public void testMove() {
-        before = new ImList<PlannedTrain>();
+        ImList<PlannedTrain> before = new ImList<>();
 
         ChangeProductionAtEngineShopMove m;
 

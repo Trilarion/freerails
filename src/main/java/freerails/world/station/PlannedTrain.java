@@ -40,10 +40,7 @@ public class PlannedTrain implements FreerailsSerializable {
 
         if (engineType != productionAtEngineShop.engineType)
             return false;
-        if (!wagonTypes.equals(productionAtEngineShop.wagonTypes))
-            return false;
-
-        return true;
+        return wagonTypes.equals(productionAtEngineShop.wagonTypes);
     }
 
     public int getEngineType() {

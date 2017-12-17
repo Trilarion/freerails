@@ -290,11 +290,8 @@ final public class Step implements FlatTrackTemplate {
      * Returns true if the values passed could be used to create a valid vector.
      */
     public static boolean checkValidity(int x, int y) {
-        if ((((x < -1) || (x > 1)) || ((y < -1) || (y > 1)))
-                || ((x == 0) && (y == 0))) {
-            return false;
-        }
-        return true;
+        return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1)))
+                && ((x != 0) || (y != 0));
     }
 
     public ImPoint createRelocatedPoint(ImPoint from) {
@@ -302,10 +299,7 @@ final public class Step implements FlatTrackTemplate {
     }
 
     public boolean contains(FlatTrackTemplate ftt) {
-        if (ftt.get9bitTemplate() == this.flatTrackTemplate) {
-            return true;
-        }
-        return false;
+        return ftt.get9bitTemplate() == this.flatTrackTemplate;
     }
 
     public int get9bitTemplate() {

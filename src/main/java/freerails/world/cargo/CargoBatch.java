@@ -55,14 +55,11 @@ public class CargoBatch implements FreerailsSerializable,
         if (o instanceof CargoBatch) {
             CargoBatch test = (CargoBatch) o;
 
-            if (test.getCargoType() == this.cargoType
+            return test.getCargoType() == this.cargoType
                     && test.getSourceX() == this.sourceX
                     && test.sourceY == this.sourceY
                     && test.timeCreated == this.timeCreated
-                    && test.stationOfOrigin == this.stationOfOrigin) {
-                return true;
-            }
-            return false;
+                    && test.stationOfOrigin == this.stationOfOrigin;
         }
         return false;
     }

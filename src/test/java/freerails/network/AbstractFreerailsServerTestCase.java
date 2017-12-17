@@ -16,8 +16,6 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
 
     FreerailsGameServer server;
 
-    private final String ipAddress = "127.0.0.1";
-
     @Override
     protected synchronized void setUp() throws Exception {
         server = FreerailsGameServer
@@ -38,6 +36,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     }
 
     String getIpAddress() {
+        String ipAddress = "127.0.0.1";
         return ipAddress;
     }
 }

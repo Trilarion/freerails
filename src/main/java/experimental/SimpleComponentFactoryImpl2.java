@@ -60,8 +60,7 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     public JMenu createBrokerMenu() {
-        JMenu brokerMenu = new JMenu("Broker");
-        return brokerMenu;
+        return new JMenu("Broker");
     }
 
     private void addOverviewmapzoomMenuItem(JMenu displayMenu, final float scale) {

@@ -171,8 +171,8 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
 
     void setTrainDetailsButtonActionListener(ActionListener l) {
         ActionListener[] oldListeners = trainListJButton.getActionListeners();
-        for (int i = 0; i < oldListeners.length; i++) {
-            trainListJButton.removeActionListener(oldListeners[i]);
+        for (ActionListener oldListener : oldListeners) {
+            trainListJButton.removeActionListener(oldListener);
         }
         this.trainListJButton.addActionListener(l);
     }
@@ -183,8 +183,8 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
      */
     void setCancelButtonActionListener(ActionListener l) {
         ActionListener[] oldListeners = closeJButton.getActionListeners();
-        for (int i = 0; i < oldListeners.length; i++) {
-            closeJButton.removeActionListener(oldListeners[i]);
+        for (ActionListener oldListener : oldListeners) {
+            closeJButton.removeActionListener(oldListener);
         }
         this.closeJButton.addActionListener(l);
     }

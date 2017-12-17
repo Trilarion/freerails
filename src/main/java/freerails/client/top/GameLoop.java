@@ -20,19 +20,13 @@ final public class GameLoop implements Runnable {
 
     private final static boolean LIMIT_FRAME_RATE = false;
 
-    private boolean gameNotDone = false;
-
     private final ScreenHandler screenHandler;
 
     private final static int TARGET_FPS = 40;
 
-    private FPScounter fPScounter;
-
-    private long frameStartTime;
-
     private final GameModel[] model;
 
-    private final Integer loopMonitor = new Integer(0);
+    private final Integer loopMonitor = 0;
 
     public GameLoop(ScreenHandler s) {
         screenHandler = s;
@@ -59,9 +53,9 @@ final public class GameLoop implements Runnable {
                 screenHandler.apply();
             }
 
-            gameNotDone = true;
+            boolean gameNotDone = true;
 
-            fPScounter = new FPScounter();
+            FPScounter fPScounter = new FPScounter();
 
             /*
              * Reduce this threads priority to avoid starvation of the input
@@ -75,7 +69,7 @@ final public class GameLoop implements Runnable {
 
             while (true) {
                 // stats.record();
-                frameStartTime = System.currentTimeMillis();
+                long frameStartTime = System.currentTimeMillis();
 
                 /*
                  * Flush all redraws in the underlying toolkit. This reduces X11
@@ -91,8 +85,8 @@ final public class GameLoop implements Runnable {
                         break;
                     }
 
-                    for (int i = 0; i < model.length; i++) {
-                        model[i].update();
+                    for (GameModel aModel : model) {
+                        aModel.update();
                     }
 
                     if (!screenHandler.isMinimised()) {

@@ -39,8 +39,7 @@ public class StepTest extends TestCase {
         // Each vector should be the nearest to itself!
         Step[] vectors = Step.getList();
 
-        for (int i = 0; i < vectors.length; i++) {
-            Step v = vectors[i];
+        for (Step v : vectors) {
             Step v2 = Step.getNearestVector(v.deltaX, v.deltaY);
             assertEquals(v, v2);
         }

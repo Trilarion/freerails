@@ -35,7 +35,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     public PathOnTiles(ImPoint start, List<Step> vectorsList) {
         if (null == start)
             throw new NullPointerException();
-        vectors = new ImList<Step>(vectorsList);
+        vectors = new ImList<>(vectorsList);
         vectors.checkForNulls();
         this.start = start;
     }
@@ -48,7 +48,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     public PathOnTiles(ImPoint start, Step... vectors) {
         if (null == start)
             throw new NullPointerException();
-        this.vectors = new ImList<Step>(vectors);
+        this.vectors = new ImList<>(vectors);
         this.vectors.checkForNulls();
         this.start = start;
     }
@@ -64,10 +64,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
 
         if (!start.equals(pathOnTiles.start))
             return false;
-        if (!vectors.equals(pathOnTiles.vectors))
-            return false;
-
-        return true;
+        return vectors.equals(pathOnTiles.vectors);
     }
 
     /**
@@ -178,7 +175,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
                     + distanceSoFar);
         }
         if (firstdistance == lastdistance) {
-            return new Pair<ImPoint, ImPoint>(firstPoint, firstPoint);
+            return new Pair<>(firstPoint, firstPoint);
         }
         ImPoint secondPoint = null;
 
@@ -216,7 +213,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
                     + distanceSoFar);
         }
 
-        return new Pair<ImPoint, ImPoint>(firstPoint, secondPoint);
+        return new Pair<>(firstPoint, secondPoint);
     }
 
     public ImPoint getStart() {
@@ -237,8 +234,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
         }
         int i = vectors.size() - 1;
         Step finalStep = vectors.get(i);
-        PositionOnTrack p = PositionOnTrack.createFacing(x, y, finalStep);
-        return p;
+        return PositionOnTrack.createFacing(x, y, finalStep);
     }
 
     /**
@@ -300,7 +296,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
             throw new IllegalArgumentException(offset + " + " + length + " > "
                     + getTotalDistance());
 
-        final LinkedList<ImPoint> points = new LinkedList<ImPoint>();
+        final LinkedList<ImPoint> points = new LinkedList<>();
         ImPoint tile = getStart();
         int tileX = tile.x;
         int tileY = tile.y;
@@ -339,7 +335,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
             points.addLast(last);
         }
 
-        return new Pair<FreerailsPathIterator, Integer>(
+        return new Pair<>(
                 new FreerailsPathIterator() {
                     private static final long serialVersionUID = 1L;
 
@@ -406,7 +402,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(getClass().getName());
+        StringBuilder sb = new StringBuilder(getClass().getName());
         sb.append("{");
         sb.append(start.x);
         sb.append(", ");

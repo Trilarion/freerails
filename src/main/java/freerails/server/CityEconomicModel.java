@@ -34,15 +34,15 @@ class CityEconomicModel {
         }
     }
 
-    final ArrayList<Tile> urbanTiles = new ArrayList<Tile>();
+    final ArrayList<Tile> urbanTiles = new ArrayList<>();
 
-    final ArrayList<Tile> industryTiles = new ArrayList<Tile>();
+    final ArrayList<Tile> industryTiles = new ArrayList<>();
 
-    final ArrayList<TerrainType> industriesNotAtCity = new ArrayList<TerrainType>();
+    final ArrayList<TerrainType> industriesNotAtCity = new ArrayList<>();
 
-    final ArrayList<Tile> resourceTiles = new ArrayList<Tile>();
+    final ArrayList<Tile> resourceTiles = new ArrayList<>();
 
-    final ArrayList<Point> clearTiles = new ArrayList<Point>();
+    final ArrayList<Point> clearTiles = new ArrayList<>();
 
     /**
      * The number of stations within this city's bounds.
@@ -136,16 +136,16 @@ class CityEconomicModel {
     }
 
     void write2map(World w) {
-        for (int i = 0; i < urbanTiles.size(); i++) {
-            writeTile(w, urbanTiles.get(i));
+        for (Tile urbanTile : urbanTiles) {
+            writeTile(w, urbanTile);
         }
 
-        for (int i = 0; i < industryTiles.size(); i++) {
-            writeTile(w, industryTiles.get(i));
+        for (Tile industryTile : industryTiles) {
+            writeTile(w, industryTile);
         }
 
-        for (int i = 0; i < resourceTiles.size(); i++) {
-            writeTile(w, resourceTiles.get(i));
+        for (Tile resourceTile : resourceTiles) {
+            writeTile(w, resourceTile);
         }
     }
 

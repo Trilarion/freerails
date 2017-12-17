@@ -45,10 +45,7 @@ class OpenList implements Serializable {
 
             if (f != openListEntry.f)
                 return false;
-            if (node != openListEntry.node)
-                return false;
-
-            return true;
+            return node == openListEntry.node;
         }
 
         @Override
@@ -66,9 +63,9 @@ class OpenList implements Serializable {
 
     }
 
-    private HashMap<Integer, OpenListEntry> map = new HashMap<Integer, OpenListEntry>();
+    private HashMap<Integer, OpenListEntry> map = new HashMap<>();
 
-    private PriorityQueue<OpenListEntry> queue = new PriorityQueue<OpenListEntry>();
+    private PriorityQueue<OpenListEntry> queue = new PriorityQueue<>();
 
     public OpenList() {
     }
@@ -79,8 +76,7 @@ class OpenList implements Serializable {
     }
 
     int getF(int node) {
-        int f = map.get(node).f;
-        return f;
+        return map.get(node).f;
     }
 
     void add(int node, int f) {
@@ -100,8 +96,7 @@ class OpenList implements Serializable {
     }
 
     boolean contains(int node) {
-        boolean containsKey = map.containsKey(node);
-        return containsKey;
+        return map.containsKey(node);
     }
 
     int smallestF() {

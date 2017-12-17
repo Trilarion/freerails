@@ -103,7 +103,7 @@ public class GUIClient extends FreerailsClient implements
                 subTicks = Math.min(dt, 1d);
                 ticks += subTicks;
             }
-            modelRoot.setProperty(Property.TIME, new Double(ticks));
+            modelRoot.setProperty(Property.TIME, ticks);
         }
 
     }

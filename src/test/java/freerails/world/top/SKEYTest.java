@@ -22,9 +22,9 @@ public class SKEYTest extends TestCase {
     public void testThatAllTheFieldsDefinedInSKEYAreInstancesOFSKEY() {
         Field[] fields = SKEY.class.getFields();
 
-        for (int i = 0; i < fields.length; i++) {
-            String name = fields[i].getName();
-            int modifiers = fields[i].getModifiers();
+        for (Field field : fields) {
+            String name = field.getName();
+            int modifiers = field.getModifiers();
 
             if (!name.equals("shared")) {
                 assertTrue("All the fields of SKEY should be static", Modifier
@@ -38,7 +38,7 @@ public class SKEYTest extends TestCase {
 
             try {
                 if (Modifier.isStatic(modifiers)) {
-                    Object o = fields[i].get(null);
+                    Object o = field.get(null);
                     assertTrue("All the fields of SKEY should be instances of"
                             + " SKEY", o instanceof SKEY);
                 }

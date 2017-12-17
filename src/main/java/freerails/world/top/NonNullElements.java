@@ -194,7 +194,6 @@ public class NonNullElements implements WorldIterator {
             }
 
         }
-        return;
     }
 
     public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p,

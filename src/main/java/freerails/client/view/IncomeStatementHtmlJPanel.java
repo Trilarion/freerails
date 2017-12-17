@@ -23,8 +23,6 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
 
     private String template;
 
-    private int lastNumTransactions = 0;
-
     private ModelRoot modelRoot;
 
     public IncomeStatementHtmlJPanel() {
@@ -61,6 +59,7 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
         int currentNumberOfTransactions = world
                 .getNumberOfTransactions(playerPrincipal);
 
+        int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {
             updateHtml();
         }

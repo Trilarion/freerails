@@ -50,10 +50,7 @@ public class AddActiveEntityMove implements Move {
         if (!activity.equals(addActiveEntityMove.activity))
             return false;
 
-        if (!principal.equals(addActiveEntityMove.principal))
-            return false;
-
-        return true;
+        return principal.equals(addActiveEntityMove.principal);
     }
 
     @Override

@@ -26,13 +26,12 @@ public class BinaryNumberFormatter {
         }
 
         String s = Integer.toString(i + maxValue, 2);
-        String number = s.substring(1);
 
-        return number;
+        return s.substring(1);
     }
 
     public static String formatWithLowBitOnLeft(int i, int bits) {
-        StringBuffer buff = new StringBuffer(format(i, bits));
+        StringBuilder buff = new StringBuilder(format(i, bits));
         buff.reverse();
 
         return buff.toString();

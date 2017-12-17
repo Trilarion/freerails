@@ -231,11 +231,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         trackTemplate = trackTemplate
                 & (trackTemplateAbove | trackTemplateBelow);
 
-        if (trackTemplate != 0) {
-            return false;
-            // There is a clash.
-        }
-        return true;
+        return trackTemplate == 0;
         // Things are ok.
     }
 
@@ -282,11 +278,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
             boolean fieldnewTrackPieceEqual = this.trackPieceAfter
                     .equals(m.trackPieceAfter);
 
-            if (fieldPointEqual && fieldoldTrackPieceEqual
-                    && fieldnewTrackPieceEqual) {
-                return true;
-            }
-            return false;
+            return fieldPointEqual && fieldoldTrackPieceEqual
+                    && fieldnewTrackPieceEqual;
         }
         return false;
     }

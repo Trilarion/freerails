@@ -20,9 +20,9 @@ import java.util.HashSet;
  */
 public class CheckFreerailsSerializableClasses {
 
-    static final HashSet<Class> immutableTypes = new HashSet<Class>();
+    static final HashSet<Class> immutableTypes = new HashSet<>();
 
-    static final HashSet<Class> mutableTypes = new HashSet<Class>();
+    static final HashSet<Class> mutableTypes = new HashSet<>();
 
     static Logger logger = Logger
             .getLogger(CheckFreerailsSerializableClasses.class.getName());

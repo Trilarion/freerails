@@ -64,13 +64,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     private final int LINEAR_ACCEL = -1;
 
     /**
-     * Affects the granularity of the map scrolling (the map is scrolled in
-     * tileSize/GRANULARITY intervals). Multiply this value with LINEAR_ACCEL to
-     * be independent of acceleration.
-     */
-    private final int GRANULARITY = 2 * LINEAR_ACCEL;
-
-    /**
      * A {@link Robot} to compensate mouse cursor movement.
      */
     private static Robot robot;
@@ -144,6 +137,12 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
                 sigmadelta.y += evt.getY() - lastMouseLocation.y;
 
                 int tileSize = (int) getScale();
+                /*
+      Affects the granularity of the map scrolling (the map is scrolled in
+      tileSize/GRANULARITY intervals). Multiply this value with LINEAR_ACCEL to
+      be independent of acceleration.
+     */
+                int GRANULARITY = 2 * LINEAR_ACCEL;
                 tiledelta.x = (sigmadelta.x * GRANULARITY) / tileSize;
                 tiledelta.y = (sigmadelta.y * GRANULARITY) / tileSize;
                 tiledelta.x = ((tiledelta.x * tileSize) / GRANULARITY)

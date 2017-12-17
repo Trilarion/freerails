@@ -22,15 +22,15 @@ public class NullTerrainType implements TerrainType {
     private static final long serialVersionUID = 3834874680581369912L;
 
     public ImList<Production> getProduction() {
-        return new ImList<Production>();
+        return new ImList<>();
     }
 
     public ImList<Consumption> getConsumption() {
-        return new ImList<Consumption>();
+        return new ImList<>();
     }
 
     public ImList<Conversion> getConversion() {
-        return new ImList<Conversion>();
+        return new ImList<>();
     }
 
     public String getTerrainTypeName() {

@@ -38,10 +38,7 @@ public class Consumption implements FreerailsSerializable {
 
         if (cargoType != consumption.cargoType)
             return false;
-        if (prerequisite != consumption.prerequisite)
-            return false;
-
-        return true;
+        return prerequisite == consumption.prerequisite;
     }
 
     @Override

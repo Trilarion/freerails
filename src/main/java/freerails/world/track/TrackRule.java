@@ -14,7 +14,7 @@ import java.util.Iterator;
  */
 public interface TrackRule extends FreerailsSerializable, Comparable<TrackRule> {
 
-    public enum TrackCategories {
+    enum TrackCategories {
         track, bridge, tunnel, station, non
     }
 

@@ -42,7 +42,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
         okjButton = new javax.swing.JButton();
         canceljButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JScrollPane jScrollPane1 = new JScrollPane();
         jList1 = new javax.swing.JList();
 
         setLayout(new java.awt.GridBagLayout());
@@ -101,8 +101,6 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     private javax.swing.JList jList1;
 
-    private javax.swing.JScrollPane jScrollPane1;
-
     private javax.swing.JButton okjButton;
 
     // End of variables declaration//GEN-END:variables
@@ -115,7 +113,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
         public TrainCellRenderer(RenderersRoot vl) {
             rr = vl;
-            savesJLabels = new HashMap<String, JLabel>();
+            savesJLabels = new HashMap<>();
         }
 
         public Component getListCellRendererComponent(JList list, Object value,
@@ -163,8 +161,8 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
      */
     void setCancelButtonActionListener(ActionListener l) {
         ActionListener[] oldListeners = canceljButton.getActionListeners();
-        for (int i = 0; i < oldListeners.length; i++) {
-            canceljButton.removeActionListener(oldListeners[i]);
+        for (ActionListener oldListener : oldListeners) {
+            canceljButton.removeActionListener(oldListener);
         }
         this.canceljButton.addActionListener(l);
     }

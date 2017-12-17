@@ -24,11 +24,7 @@ public class LogOnRequest implements FreerailsSerializable {
         if (password != null ? !password.equals(logOnRequest.password)
                 : logOnRequest.password != null)
             return false;
-        if (username != null ? !username.equals(logOnRequest.username)
-                : logOnRequest.username != null)
-            return false;
-
-        return true;
+        return username != null ? username.equals(logOnRequest.username) : logOnRequest.username == null;
     }
 
     @Override

@@ -1,5 +1,5 @@
-/**
- * @author Scott Bennett
+/*
+  @author Scott Bennett
  * Date: 3rd April 2003
  * <p>
  * Class to render the city names on the game map. Names are retrieved

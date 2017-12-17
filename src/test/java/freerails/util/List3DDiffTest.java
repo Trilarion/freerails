@@ -23,9 +23,9 @@ public class List3DDiffTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        underlying = new List3DImpl<Object>(0, 0);
-        map = new TreeMap<ListKey, Object>();
-        diffs = new List3DDiff<Object>(map, underlying, listid.test);
+        underlying = new List3DImpl<>(0, 0);
+        map = new TreeMap<>();
+        diffs = new List3DDiff<>(map, underlying, listid.test);
     }
 
     /*
@@ -60,9 +60,9 @@ public class List3DDiffTest extends TestCase {
         underlying.addD1();
         underlying.addD2(1);
         underlying.addD2(1);
-        diffs.addD3(1, 0, new Integer(5));
+        diffs.addD3(1, 0, 5);
         assertEquals(1, diffs.sizeD3(1, 0));
-        diffs.addD3(1, 1, new Integer(5));
+        diffs.addD3(1, 1, 5);
         assertEquals(1, diffs.sizeD3(1, 1));
     }
 
@@ -74,12 +74,12 @@ public class List3DDiffTest extends TestCase {
         underlying.addD1();
         underlying.addD2(1);
         underlying.addD2(1);
-        underlying.addD3(1, 1, new Integer(1));
-        assertEquals(new Integer(1), diffs.get(1, 1, 0));
-        diffs.addD3(1, 1, new Integer(2));
-        diffs.addD3(1, 1, new Integer(3));
-        assertEquals(new Integer(2), diffs.get(1, 1, 1));
-        assertEquals(new Integer(3), diffs.get(1, 1, 2));
+        underlying.addD3(1, 1, 1);
+        assertEquals(1, diffs.get(1, 1, 0));
+        diffs.addD3(1, 1, 2);
+        diffs.addD3(1, 1, 3);
+        assertEquals(2, diffs.get(1, 1, 1));
+        assertEquals(3, diffs.get(1, 1, 2));
 
     }
 
@@ -149,9 +149,9 @@ public class List3DDiffTest extends TestCase {
     public void testRemoveLastD3() {
         underlying.addD1();
         underlying.addD2(0);
-        underlying.addD3(0, 0, new Integer(1));
-        underlying.addD3(0, 0, new Integer(2));
-        underlying.addD3(0, 0, new Integer(3));
+        underlying.addD3(0, 0, 1);
+        underlying.addD3(0, 0, 2);
+        underlying.addD3(0, 0, 3);
         assertEquals(3, diffs.sizeD3(0, 0));
         diffs.removeLastD3(0, 0);
         assertEquals(2, diffs.sizeD3(0, 0));
@@ -174,14 +174,14 @@ public class List3DDiffTest extends TestCase {
     public void testSetIntIntIntT() {
         underlying.addD1();
         underlying.addD2(0);
-        underlying.addD3(0, 0, new Integer(1));
-        assertEquals(new Integer(1), diffs.get(0, 0, 0));
-        diffs.addD3(0, 0, new Integer(2));
-        assertEquals(new Integer(2), diffs.get(0, 0, 1));
-        diffs.set(0, 0, 0, new Integer(11));
-        assertEquals(new Integer(11), diffs.get(0, 0, 0));
-        diffs.set(0, 0, 1, new Integer(22));
-        assertEquals(new Integer(22), diffs.get(0, 0, 1));
+        underlying.addD3(0, 0, 1);
+        assertEquals(1, diffs.get(0, 0, 0));
+        diffs.addD3(0, 0, 2);
+        assertEquals(2, diffs.get(0, 0, 1));
+        diffs.set(0, 0, 0, 11);
+        assertEquals(11, diffs.get(0, 0, 0));
+        diffs.set(0, 0, 1, 22);
+        assertEquals(22, diffs.get(0, 0, 1));
 
     }
 
@@ -196,8 +196,8 @@ public class List3DDiffTest extends TestCase {
         underlying.addD2(0);
         assertEquals(1, diffs.sizeD2(0));
         assertEquals(0, diffs.sizeD3(0, 0));
-        underlying.addD3(0, 0, new Integer(4));
-        underlying.addD3(0, 0, new Integer(4));
+        underlying.addD3(0, 0, 4);
+        underlying.addD3(0, 0, 4);
         assertEquals(2, diffs.sizeD3(0, 0));
 
     }
@@ -208,8 +208,8 @@ public class List3DDiffTest extends TestCase {
     public void testUGet() {
         underlying.addD1();
         underlying.addD2(0);
-        underlying.addD3(0, 0, new Integer(1));
-        assertEquals(new Integer(1), diffs.uGet(0, 0, 0));
+        underlying.addD3(0, 0, 1);
+        assertEquals(1, diffs.uGet(0, 0, 0));
     }
 
 }

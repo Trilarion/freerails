@@ -94,7 +94,7 @@ public class StationNamesRenderer implements Painter {
                     continue; // station box not visible
                 }
                 // First draw station sphere of influence
-                if (showStationBorders.booleanValue()) {
+                if (showStationBorders) {
                     FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
                     int radius = tile.getTrackPiece().getTrackRule()
                             .getStationRadius();
@@ -109,7 +109,7 @@ public class StationNamesRenderer implements Painter {
                 }
 
                 // Then draw the station name.
-                if (showStationNames.booleanValue()) {
+                if (showStationNames) {
                     stationName = tempStation.getStationName();
 
                     positionX = xdisp + Constants.TILE_SIZE / 2;

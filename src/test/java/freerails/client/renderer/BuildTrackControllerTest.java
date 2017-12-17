@@ -50,7 +50,7 @@ public class BuildTrackControllerTest extends TestCase {
 
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
 
-            final Integer ruleID = new Integer(i);
+            final Integer ruleID = i;
             TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
 
             if (rule.getTypeName().equals("standard track")) {

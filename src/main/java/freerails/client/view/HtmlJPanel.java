@@ -62,7 +62,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     private void initComponents() {// GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JScrollPane jScrollPane1 = new JScrollPane();
         htmlJLabel = new javax.swing.JLabel();
         done = new javax.swing.JButton();
 
@@ -172,7 +172,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
     private javax.swing.JLabel htmlJLabel;
 
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
 }

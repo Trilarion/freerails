@@ -38,10 +38,7 @@ public class Conversion implements FreerailsSerializable {
 
         if (input != conversion.input)
             return false;
-        if (output != conversion.output)
-            return false;
-
-        return true;
+        return output == conversion.output;
     }
 
     @Override

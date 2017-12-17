@@ -54,10 +54,7 @@ final public class NullTrackType implements TrackRule {
     }
 
     public boolean testTrackPieceLegality(int trackTemplateToTest) {
-        if (trackTemplateToTest != 0) {
-            return false;
-        }
-        return true;
+        return trackTemplateToTest == 0;
     }
 
     public boolean trackPieceIsLegal(TrackConfiguration config) {

@@ -162,10 +162,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
                     }
                 }
 
-                if (path1.hasNext() || path2.hasNext()) {
-                    return false;
-                }
-                return true;
+                return !path1.hasNext() && !path2.hasNext();
             }
             return false;
         }
@@ -488,10 +485,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         int bHeadX = b.getX(0);
         int bHeadY = b.getY(0);
 
-        if (aHeadX == bHeadX && aHeadY == bHeadY) {
-            return true;
-        }
-        return false;
+        return aHeadX == bHeadX && aHeadY == bHeadY;
     }
 
     public static boolean tailsAreEqual(TrainPositionOnMap a,
@@ -501,10 +495,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         int bTailX = b.getX(b.getLength() - 1);
         int bTailY = b.getY(b.getLength() - 1);
 
-        if (aTailX == bTailX && aTailY == bTailY) {
-            return true;
-        }
-        return false;
+        return aTailX == bTailX && aTailY == bTailY;
     }
 
     public static boolean aHeadEqualsBTail(TrainPositionOnMap a,
@@ -515,10 +506,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         int bTailX = b.getX(b.getLength() - 1);
         int bTailY = b.getY(b.getLength() - 1);
 
-        if (aHeadX == bTailX && aHeadY == bTailY) {
-            return true;
-        }
-        return false;
+        return aHeadX == bTailX && aHeadY == bTailY;
     }
 
     public static boolean bHeadEqualsATail(TrainPositionOnMap a,
@@ -528,7 +516,7 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("TrainPosition {");
 
         for (int i = 0; i < xpoints.size(); i++) {

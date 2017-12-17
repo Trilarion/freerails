@@ -56,11 +56,8 @@ public class Player implements FreerailsSerializable {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof WorldPrincipal)) {
-                return false;
-            }
+            return o instanceof WorldPrincipal && (principalName.equals(((WorldPrincipal) o).principalName));
 
-            return (principalName.equals(((WorldPrincipal) o).principalName));
         }
     }
 

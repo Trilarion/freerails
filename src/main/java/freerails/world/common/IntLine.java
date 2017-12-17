@@ -82,11 +82,8 @@ public class IntLine implements Serializable {
         if (o instanceof IntLine) {
             IntLine line = (IntLine) o;
 
-            if (line.x1 == this.x1 && line.x2 == this.x2 && line.y1 == this.y1
-                    && line.y2 == this.y2) {
-                return true;
-            }
-            return false;
+            return line.x1 == this.x1 && line.x2 == this.x2 && line.y1 == this.y1
+                    && line.y2 == this.y2;
         }
         return false;
     }

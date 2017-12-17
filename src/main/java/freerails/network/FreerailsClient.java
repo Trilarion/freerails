@@ -29,7 +29,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     protected Connection2Server connection2Server;
 
-    private final HashMap<String, Serializable> properties = new HashMap<String, Serializable>();
+    private final HashMap<String, Serializable> properties = new HashMap<>();
 
     private final MoveChainFork moveFork;
 
@@ -65,10 +65,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             connection2Server.writeToServer(request);
             connection2Server.flush();
 
-            LogOnResponse response = (LogOnResponse) connection2Server
+            return (LogOnResponse) connection2Server
                     .waitForObjectFromServer();
-
-            return response;
         } catch (Exception e) {
             try {
                 connection2Server.disconnect();
@@ -91,10 +89,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             connection2Server.writeToServer(request);
             server.addConnection((LocalConnection) connection2Server);
 
-            LogOnResponse response = (LogOnResponse) connection2Server
+            return (LogOnResponse) connection2Server
                     .waitForObjectFromServer();
-
-            return response;
         } catch (Exception e) {
             try {
                 connection2Server.disconnect();
@@ -174,8 +170,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             FreerailsSerializable[] messages = connection2Server
                     .readFromServer();
 
-            for (int i = 0; i < messages.length; i++) {
-                FreerailsSerializable message = messages[i];
+            for (FreerailsSerializable message : messages) {
                 processMessage(message);
             }
 

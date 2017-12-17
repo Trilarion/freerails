@@ -35,8 +35,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     private static final Logger logger = Logger
             .getLogger(NetWorthGraphJPanel.class.getName());
 
-    private JLabel title = null;
-
     private JLabel yAxisLabel1 = null;
 
     private JLabel yAxisLabel3 = null;
@@ -53,7 +51,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
     private final Font FONT;
 
-    private ArrayList<CompanyDetails> companies = new ArrayList<CompanyDetails>();
+    private ArrayList<CompanyDetails> companies = new ArrayList<>();
 
     private long scaleMax;
 
@@ -124,7 +122,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         xAxisLabel1 = new JLabel();
         xAxisLabel2 = new JLabel();
         xAxisLabel3 = new JLabel();
-        title = new JLabel();
+        JLabel title = new JLabel();
         yAxisLabel1 = new JLabel();
 
         this.setLayout(null);
@@ -230,9 +228,8 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         }
 
         // Draw graphs lines
-        for (int i = 0; i < companies.size(); i++) {
+        for (CompanyDetails company : companies) {
 
-            CompanyDetails company = companies.get(i);
             g2.setColor(company.color);
             for (int year = 1; year < 100; year++) {
                 if (company.value[year] != Integer.MIN_VALUE
@@ -285,8 +282,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     private void setAppropriateScale() {
 
         long max = 0;
-        for (int i = 0; i < companies.size(); i++) {
-            CompanyDetails company = companies.get(i);
+        for (CompanyDetails company : companies) {
             for (int year = 0; year < 100; year++) {
                 long value = company.value[year];
                 if (value > max) {
@@ -321,7 +317,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
                 scaleMax = 12 * increment;
             } else if (scaleMax >= 4 * increment && scaleMax < 8 * increment) {
                 scaleMax = 8 * increment;
-            } else if (scaleMax >= 1 * increment && scaleMax < 4 * increment) {
+            } else if (scaleMax >= increment && scaleMax < 4 * increment) {
                 scaleMax = 4 * increment;
             }
         }
@@ -358,7 +354,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
         this.submitButtonCallBack = closeAction;
         ReadOnlyWorld world = modelRoot.getWorld();
-        companies = new ArrayList<CompanyDetails>();
+        companies = new ArrayList<>();
         GameCalendar calender = (GameCalendar) world.get(ITEM.CALENDAR);
         int startYear = calender.getYear(0);
         int endYear = startYear + 100;

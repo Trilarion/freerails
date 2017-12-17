@@ -29,7 +29,7 @@ public class GenerateDependenciesXmlAndHtml {
 
     private PrintWriter htmlWriter;
 
-    private ArrayList<String> packages = new ArrayList<String>();
+    private ArrayList<String> packages = new ArrayList<>();
 
     private boolean started = false;
 
@@ -251,8 +251,8 @@ public class GenerateDependenciesXmlAndHtml {
         // Copy the files we have just tested to the dependencies directory.
         xmlWriter.write("\t\t<copy todir=\"dependencies\">\n");
         xmlWriter.write("\t\t<fileset dir=\"build\">\n");
-        for (int i = 0; i < packageNames.length; i++) {
-            xmlWriter.write("\t\t\t<include name=\"" + packageNames[i]
+        for (String packageName : packageNames) {
+            xmlWriter.write("\t\t\t<include name=\"" + packageName
                     + ".class\" />\n");
         }
         xmlWriter.write("\t\t\t<exclude name=\"**/*Test.class\" />\n");

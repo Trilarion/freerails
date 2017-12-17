@@ -41,10 +41,7 @@ public class PlayerPrincipal extends FreerailsPrincipal {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof PlayerPrincipal)) {
-            return false;
-        }
+        return o instanceof PlayerPrincipal && id == ((PlayerPrincipal) o).id;
 
-        return id == ((PlayerPrincipal) o).id;
     }
 }

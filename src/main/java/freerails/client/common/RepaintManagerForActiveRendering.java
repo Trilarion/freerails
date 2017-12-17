@@ -25,7 +25,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     /**
      * The JFrame(s) that are being actively rendered in the game loop(s).
      */
-    private static final HashSet<JFrame> activelyRendereredComponents = new HashSet<JFrame>();
+    private static final HashSet<JFrame> activelyRendereredComponents = new HashSet<>();
 
     private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
 
@@ -93,11 +93,8 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     private boolean hasDifferentAncester(JComponent aComponent) {
         Container topLevelAncestor = aComponent.getTopLevelAncestor();
 
-        if (null == topLevelAncestor
-                || activelyRendereredComponents.contains(topLevelAncestor)) {
-            return false;
-        }
-        return true;
+        return null != topLevelAncestor
+                && !activelyRendereredComponents.contains(topLevelAncestor);
     }
 
     public static long getNumRepaintRequests() {

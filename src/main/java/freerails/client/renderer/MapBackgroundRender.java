@@ -78,7 +78,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
              * unnecessay painting, we set the clip to expose only the rectangle
              * of tilesToPaint.
              */
-            Graphics tempG = g;
             Point tile = new Point();
 
             for (tile.x = tilesToPaint.x - 1; tile.x < (tilesToPaint.x
@@ -99,7 +98,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                                     .getTrackPieceView(ruleNumber);
 
                             trackPieceView.drawTrackPieceIcon(graphicsNumber,
-                                    tempG, tile.x, tile.y, tileSize);
+                                    g, tile.x, tile.y, tileSize);
                         }
                     }
                 }

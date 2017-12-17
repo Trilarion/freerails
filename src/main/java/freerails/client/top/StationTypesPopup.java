@@ -121,8 +121,7 @@ public class StationTypesPopup extends JPopupMenu {
                                 .getPropertyName()
                                 .equals(
                                         StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
-                            int newRadius = ((Integer) e.getNewValue())
-                                    .intValue();
+                            int newRadius = (Integer) e.getNewValue();
                             stationRadiusRenderer.setRadius(newRadius);
                         }
 

@@ -31,8 +31,6 @@ public class BalanceSheetGenerator {
 
     final FreerailsPrincipal principal;
 
-    private GameCalendar cal;
-
     public String year;
 
     public Stats total;
@@ -42,7 +40,7 @@ public class BalanceSheetGenerator {
     public BalanceSheetGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         this.w = w;
         this.principal = principal;
-        cal = (GameCalendar) w.get(ITEM.CALENDAR);
+        GameCalendar cal = (GameCalendar) w.get(ITEM.CALENDAR);
         // Calculate totals
         GameTime time = w.currentTime();
         final int startyear = cal.getYear(time.getTicks());

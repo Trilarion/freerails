@@ -107,7 +107,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         processTrainBundle(); // ie. unload train / dropoff cargo
 
         if (autoConsist) {
-            ArrayList<WagonLoad> wagonsAvailable = new ArrayList<WagonLoad>();
+            ArrayList<WagonLoad> wagonsAvailable = new ArrayList<>();
 
             assert (train
                     .equals(world.get(principal, KEY.TRAINS, this.trainId)));

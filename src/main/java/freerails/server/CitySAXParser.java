@@ -22,7 +22,7 @@ public class CitySAXParser extends DefaultHandler {
 
     public CitySAXParser(World w) throws SAXException {
         world = w;
-        cities = new Vector<CityModel>();
+        cities = new Vector<>();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class BuildTrackController implements GameModel {
 
     private boolean buildNewTrack = true;
 
-    private List<ImPoint> builtTrack = new ArrayList<ImPoint>();
+    private List<ImPoint> builtTrack = new ArrayList<>();
 
     private boolean isBuildTrackSuccessful = false;
 
@@ -169,8 +169,7 @@ public class BuildTrackController implements GameModel {
             trackBuilder.setBuildTrackStrategy(getBts());
         }
 
-        for (Iterator<ImPoint> iter = track.iterator(); iter.hasNext(); ) {
-            ImPoint point = iter.next();
+        for (ImPoint point : track) {
             LOGGER.debug("point" + point);
             LOGGER.debug("oldPosition" + oldPosition);
 
@@ -510,7 +509,7 @@ public class BuildTrackController implements GameModel {
                 /* Note, reset() will have been called if ms.ok == false */
                 if (ms.ok) {
                     actPoint = builtTrack.get(builtTrack.size() - 1);
-                    builtTrack = new ArrayList<ImPoint>();
+                    builtTrack = new ArrayList<>();
                 }
             }
         } else {

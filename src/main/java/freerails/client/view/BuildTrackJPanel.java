@@ -69,7 +69,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         if (null == trackMoveProducer)
             throw new NullPointerException();
 
-        selectionSet = new HashMap<TrackRule.TrackCategories, Integer>();
+        selectionSet = new HashMap<>();
 
         trackButtonGroup = new javax.swing.ButtonGroup();
         bridgeButtonGroup = new javax.swing.ButtonGroup();
@@ -87,7 +87,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
         for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
             JToggleButton toggleButton = new JToggleButton();
-            final Integer ruleID = new Integer(i);
+            final Integer ruleID = i;
             TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
             TrackRule.TrackCategories category = rule.getCategory();
             Money price = null;
@@ -172,7 +172,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     + " $" + price.toString();
             toggleButton.setToolTipText(tooltip);
             if (!selectionSet.containsKey(category)) {
-                selectionSet.put(category, new Integer(i));
+                selectionSet.put(category, i);
                 toggleButton.setSelected(true);
             }
 
@@ -275,21 +275,21 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         bridgeButtonGroup = new javax.swing.ButtonGroup();
         stationButtonGroup = new javax.swing.ButtonGroup();
         tunnelButtonGroup = new javax.swing.ButtonGroup();
-        buildModeJPanel = new javax.swing.JPanel();
+        JPanel buildModeJPanel = new JPanel();
         addTrack = new javax.swing.JToggleButton();
-        upgradeTrack = new javax.swing.JToggleButton();
-        addStation = new javax.swing.JToggleButton();
-        bulldoze = new javax.swing.JToggleButton();
+        JToggleButton upgradeTrack = new JToggleButton();
+        JToggleButton addStation = new JToggleButton();
+        JToggleButton bulldoze = new JToggleButton();
         viewMode = new javax.swing.JToggleButton();
         trackJPanel = new javax.swing.JPanel();
-        viewMode1 = new javax.swing.JToggleButton();
+        JToggleButton viewMode1 = new JToggleButton();
         bridgesJPanel = new javax.swing.JPanel();
-        viewMode2 = new javax.swing.JToggleButton();
+        JToggleButton viewMode2 = new JToggleButton();
         tunnelsJPanel = new javax.swing.JPanel();
-        viewMode3 = new javax.swing.JToggleButton();
+        JToggleButton viewMode3 = new JToggleButton();
         stationsJPanel = new javax.swing.JPanel();
-        viewMode4 = new javax.swing.JToggleButton();
-        spacer = new javax.swing.JPanel();
+        JToggleButton viewMode4 = new JToggleButton();
+        JPanel spacer = new JPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -508,7 +508,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
 
     private void setBuildTrackStrategy() {
-        ArrayList<Integer> ruleIDs = new ArrayList<Integer>();
+        ArrayList<Integer> ruleIDs = new ArrayList<>();
         ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.track));
         ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.bridge));
         ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.tunnel));
@@ -528,9 +528,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton addStation;
-
     private javax.swing.JToggleButton addTrack;
 
     private javax.swing.ButtonGroup bridgeButtonGroup;
@@ -538,12 +535,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private javax.swing.JPanel bridgesJPanel;
 
     private javax.swing.ButtonGroup buildModeButtonGroup;
-
-    private javax.swing.JPanel buildModeJPanel;
-
-    private javax.swing.JToggleButton bulldoze;
-
-    private javax.swing.JPanel spacer;
 
     private javax.swing.ButtonGroup stationButtonGroup;
 
@@ -557,17 +548,8 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
     private javax.swing.JPanel tunnelsJPanel;
 
-    private javax.swing.JToggleButton upgradeTrack;
-
     private javax.swing.JToggleButton viewMode;
 
-    private javax.swing.JToggleButton viewMode1;
-
-    private javax.swing.JToggleButton viewMode2;
-
-    private javax.swing.JToggleButton viewMode3;
-
-    private javax.swing.JToggleButton viewMode4;
     // End of variables declaration//GEN-END:variables
 
 }

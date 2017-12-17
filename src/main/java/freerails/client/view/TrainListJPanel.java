@@ -67,10 +67,10 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         showDetails = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        trainNumLabel = new javax.swing.JLabel();
-        trainHeadingLabel = new javax.swing.JLabel();
-        maintenanceLabel = new javax.swing.JLabel();
-        incomeLabel = new javax.swing.JLabel();
+        JLabel trainNumLabel = new JLabel();
+        JLabel trainHeadingLabel = new JLabel();
+        JLabel maintenanceLabel = new JLabel();
+        JLabel incomeLabel = new JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -206,8 +206,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
 
         ActionListener[] oldListeners = closeJButton.getActionListeners();
-        for (int i = 0; i < oldListeners.length; i++) {
-            closeJButton.removeActionListener(oldListeners[i]);
+        for (ActionListener oldListener : oldListeners) {
+            closeJButton.removeActionListener(oldListener);
         }
         closeJButton.addActionListener(closeAction);
         principal = mr.getPrincipal();
@@ -252,19 +252,11 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeJButton;
 
-    private javax.swing.JLabel incomeLabel;
-
     private javax.swing.JList jList1;
 
     private javax.swing.JScrollPane jScrollPane1;
 
-    private javax.swing.JLabel maintenanceLabel;
-
     private javax.swing.JButton showDetails;
-
-    private javax.swing.JLabel trainHeadingLabel;
-
-    private javax.swing.JLabel trainNumLabel;
 
     private freerails.client.view.TrainSummaryJPanel trainSummaryJPanel1;
 

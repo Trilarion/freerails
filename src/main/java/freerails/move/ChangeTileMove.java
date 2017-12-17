@@ -52,10 +52,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
             return false;
         if (!after.equals(changeTileMove.after))
             return false;
-        if (!before.equals(changeTileMove.before))
-            return false;
-
-        return true;
+        return before.equals(changeTileMove.before);
     }
 
     @Override
@@ -115,8 +112,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     }
 
     public Rectangle getUpdatedTiles() {
-        Rectangle r = new Rectangle(x, y, 1, 1);
 
-        return r;
+        return new Rectangle(x, y, 1, 1);
     }
 }

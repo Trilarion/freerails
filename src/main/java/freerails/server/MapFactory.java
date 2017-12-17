@@ -30,9 +30,9 @@ public class MapFactory {
     /*
      * create a vector to keep track of what terrain types to 'clump'
      */
-    private static final Vector<Integer> countryTypes = new Vector<Integer>();
+    private static final Vector<Integer> countryTypes = new Vector<>();
 
-    private static final Vector<Integer> non_countryTypes = new Vector<Integer>();
+    private static final Vector<Integer> non_countryTypes = new Vector<>();
 
     private static WorldImpl world;
 
@@ -54,7 +54,7 @@ public class MapFactory {
 
         pm.nextStep(mapRect.width);
 
-        HashMap<Integer, Integer> rgb2TerrainType = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> rgb2TerrainType = new HashMap<>();
 
         for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
             TerrainType tilemodel = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
@@ -69,7 +69,7 @@ public class MapFactory {
             if (terrainTypeTile.getCategory().equals(
                     TerrainType.Category.Country)) {
                 if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {
-                    countryTypes.add(new Integer(c));
+                    countryTypes.add(c);
                 }
             }
 
@@ -79,7 +79,7 @@ public class MapFactory {
                     TerrainType.Category.River)
                     || terrainTypeTile.getCategory().equals(
                     TerrainType.Category.Hill)) {
-                non_countryTypes.add(new Integer(c));
+                non_countryTypes.add(c);
             }
         }
 
@@ -89,7 +89,7 @@ public class MapFactory {
         /*
          * create vector to keep track of terrain randomisation 'clumping'
          */
-        Vector<RandomTerrainValue> locations = new Vector<RandomTerrainValue>();
+        Vector<RandomTerrainValue> locations = new Vector<>();
 
         for (int x = 0; x < mapRect.width; x++) {
             pm.setValue(x);
@@ -106,7 +106,7 @@ public class MapFactory {
                 }
 
                 tile = FreerailsTile.getInstance(terrainRandomiser
-                        .getNewType(type.intValue()));
+                        .getNewType(type));
 
                 if (countryTypes.contains(tile.getTerrainTypeID())) {
                     locations.add(new RandomTerrainValue(x, y, tile
@@ -141,8 +141,8 @@ public class MapFactory {
     }
 
     private static void setTile(int x, int y, FreerailsTile tile) {
-        if (!non_countryTypes.contains(new Integer(((FreerailsTile) world
-                .getTile(x, y)).getTerrainTypeID()))) {
+        if (!non_countryTypes.contains(((FreerailsTile) world
+                .getTile(x, y)).getTerrainTypeID())) {
             world.setTile(x, y, tile);
         }
     }

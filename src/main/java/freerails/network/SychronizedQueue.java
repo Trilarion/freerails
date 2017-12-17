@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * @author Luke
  */
 public class SychronizedQueue {
-    private final LinkedList<FreerailsSerializable> queue = new LinkedList<FreerailsSerializable>();
+    private final LinkedList<FreerailsSerializable> queue = new LinkedList<>();
 
     public synchronized void write(FreerailsSerializable f) {
         queue.add(f);

@@ -65,9 +65,9 @@ public class SoundManager implements ModelRootListener, LineListener {
 
     private boolean playSounds = true;
 
-    private HashMap<String, Sample> samples = new HashMap<String, Sample>();
+    private HashMap<String, Sample> samples = new HashMap<>();
 
-    private final LinkedList<Clip> voices = new LinkedList<Clip>();
+    private final LinkedList<Clip> voices = new LinkedList<>();
 
     private SoundManager() {
         AudioFormat format2 = new AudioFormat(8000f, 16, 1, true, false);
@@ -157,7 +157,7 @@ public class SoundManager implements ModelRootListener, LineListener {
     public void propertyChange(ModelRoot.Property p, Object before, Object after) {
         if (p.equals(ModelRoot.Property.PLAY_SOUNDS)) {
             Boolean b = (Boolean) after;
-            playSounds = b.booleanValue();
+            playSounds = b;
         }
     }
 

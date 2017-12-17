@@ -30,9 +30,8 @@ public class NonNullElementsTest extends TestCase {
     }
 
     public static Test suite() {
-        TestSuite testSuite = new TestSuite(NonNullElementsTest.class);
 
-        return testSuite;
+        return new TestSuite(NonNullElementsTest.class);
     }
 
     @Override

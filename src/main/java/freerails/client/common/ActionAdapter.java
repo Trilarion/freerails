@@ -42,11 +42,11 @@ public class ActionAdapter extends DefaultComboBoxModel {
     public ActionAdapter(Action[] actions) {
         super();
         this.actions = actions;
-        buttonModels = new Vector<MappedButtonModel>();
+        buttonModels = new Vector<>();
 
-        for (int i = 0; i < actions.length; i++) {
-            buttonModels.add(new MappedButtonModel(actions[i]));
-            addElement(actions[i].getValue(Action.NAME));
+        for (Action action : actions) {
+            buttonModels.add(new MappedButtonModel(action));
+            addElement(action.getValue(Action.NAME));
         }
 
         initialised = true;
@@ -108,19 +108,17 @@ public class ActionAdapter extends DefaultComboBoxModel {
             return;
         }
 
-        for (int i = 0; i < buttonModels.size(); i++) {
-            MappedButtonModel bm = buttonModels.get(i);
-
+        for (MappedButtonModel bm : buttonModels) {
             if (bm.actionName.equals(item)) {
                 bm.setSelected(true);
             }
         }
 
         if (performActionOnSetSelectedItem) {
-            for (int i = 0; i < actions.length; i++) {
-                if (actions[i].getValue(Action.NAME).equals(item)) {
-                    actions[i].actionPerformed(new ActionEvent(this,
-                            ActionEvent.ACTION_PERFORMED, (String) actions[i]
+            for (Action action : actions) {
+                if (action.getValue(Action.NAME).equals(item)) {
+                    action.actionPerformed(new ActionEvent(this,
+                            ActionEvent.ACTION_PERFORMED, (String) action
                             .getValue(Action.ACTION_COMMAND_KEY)));
                 }
             }

@@ -42,7 +42,7 @@ public class TrainStopsHandler implements Serializable {
         double pathDistance = path.getTotalDistance();
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
-        List<Step> steps = new ArrayList<Step>();
+        List<Step> steps = new ArrayList<>();
         ImPoint start = path.getStart();
         Step firstStep = path.getStep(0);
         PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x,

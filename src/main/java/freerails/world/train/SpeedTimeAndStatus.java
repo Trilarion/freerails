@@ -44,25 +44,21 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
             return false;
         if (speed != speedTimeAndStatus.speed)
             return false;
-        if (activity != null ? !activity.equals(speedTimeAndStatus.activity)
-                : speedTimeAndStatus.activity != null)
-            return false;
-
-        return true;
+        return activity != null ? activity.equals(speedTimeAndStatus.activity) : speedTimeAndStatus.activity == null;
     }
 
     @Override
     public int hashCode() {
         int result;
         long temp;
-        temp = dt != +0.0d ? Double.doubleToLongBits(dt) : 0l;
+        temp = dt != +0.0d ? Double.doubleToLongBits(dt) : 0L;
         result = (int) (temp ^ (temp >>> 32));
-        temp = speed != +0.0d ? Double.doubleToLongBits(speed) : 0l;
+        temp = speed != +0.0d ? Double.doubleToLongBits(speed) : 0L;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
         temp = acceleration != +0.0d ? Double.doubleToLongBits(acceleration)
-                : 0l;
+                : 0L;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
-        temp = s != +0.0d ? Double.doubleToLongBits(s) : 0l;
+        temp = s != +0.0d ? Double.doubleToLongBits(s) : 0L;
         result = 29 * result + (int) (temp ^ (temp >>> 32));
         result = 29 * result + (activity != null ? activity.hashCode() : 0);
         return result;

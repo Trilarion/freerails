@@ -26,10 +26,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     public static junit.framework.Test suite() {
-        junit.framework.TestSuite testSuite = new junit.framework.TestSuite(
-                ChangeTrackPieceMoveTest.class);
 
-        return testSuite;
+        return new junit.framework.TestSuite(
+                ChangeTrackPieceMoveTest.class);
     }
 
     @Override

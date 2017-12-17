@@ -32,10 +32,7 @@ public class AddPlayerMove implements Move, ServerMove {
 
         final AddPlayerMove addPlayerMove = (AddPlayerMove) o;
 
-        if (!player2add.equals(addPlayerMove.player2add))
-            return false;
-
-        return true;
+        return player2add.equals(addPlayerMove.player2add);
     }
 
     @Override
@@ -44,8 +41,8 @@ public class AddPlayerMove implements Move, ServerMove {
     }
 
     public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
-        /**
-         * create a new player with a corresponding Principal
+        /*
+          create a new player with a corresponding Principal
          */
         Player player2add = new Player(player.getName(), w.getNumberOfPlayers());
 

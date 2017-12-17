@@ -28,10 +28,7 @@ public class SaveGameMessage2Server implements Message2Server {
 
         if (id != saveGameMessage2Server.id)
             return false;
-        if (!filename.equals(saveGameMessage2Server.filename))
-            return false;
-
-        return true;
+        return filename.equals(saveGameMessage2Server.filename);
     }
 
     @Override

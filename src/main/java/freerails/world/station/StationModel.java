@@ -41,11 +41,7 @@ public class StationModel implements FreerailsSerializable {
         if (production != null ? !production.equals(stationModel.production)
                 : stationModel.production != null)
             return false;
-        if (supply != null ? !supply.equals(stationModel.supply)
-                : stationModel.supply != null)
-            return false;
-
-        return true;
+        return supply != null ? supply.equals(stationModel.supply) : stationModel.supply == null;
     }
 
     private final String name;
@@ -100,7 +96,7 @@ public class StationModel implements FreerailsSerializable {
         this.name = stationName;
         this.x = x;
         this.y = y;
-        production = new ImList<PlannedTrain>();
+        production = new ImList<>();
 
         supply = new SupplyAtStation(new int[numberOfCargoTypes]);
         demand = new Demand4Cargo(new boolean[numberOfCargoTypes]);
@@ -115,7 +111,7 @@ public class StationModel implements FreerailsSerializable {
         this.demand = new Demand4Cargo(new boolean[0]);
         this.supply = new SupplyAtStation(new int[0]);
         this.converted = new ConvertedAtStation(new int[0]);
-        production = new ImList<PlannedTrain>();
+        production = new ImList<>();
         this.cargoBundleNumber = 0;
     }
 

@@ -15,7 +15,7 @@ final public class CargoType implements FreerailsSerializable {
                 4);
         private int nr;
 
-        private Categories(int nr) {
+        Categories(int nr) {
             this.nr = nr;
         }
 
@@ -32,8 +32,6 @@ final public class CargoType implements FreerailsSerializable {
             throw new IllegalArgumentException("Category:" + cat + " unknown.");
         }
     }
-
-    ;
 
     public static int getNumberOfCategories() {
         return Categories.values().length;

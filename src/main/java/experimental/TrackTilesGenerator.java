@@ -91,11 +91,7 @@ public class TrackTilesGenerator extends JPanel {
             } else {
                 icon = null;
             }
-            if (category.equals(TrackRule.TrackCategories.tunnel)) {
-                tr.tunnel = true;
-            } else {
-                tr.tunnel = false;
-            }
+            tr.tunnel = category.equals(TrackRule.TrackCategories.tunnel);
             tr.doubleTrack = rule.isDouble();
 
             for (int i = 0; i < 512; i++) {

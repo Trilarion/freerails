@@ -44,10 +44,7 @@ public class ListKey implements Comparable<ListKey>, Serializable {
             return false;
         if (!listID.equals(listKey.listID))
             return false;
-        if (!type.equals(listKey.type))
-            return false;
-
-        return true;
+        return type.equals(listKey.type);
     }
 
     @Override
@@ -83,14 +80,14 @@ public class ListKey implements Comparable<ListKey>, Serializable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(listID);
         sb.append(" ");
         sb.append(type);
         sb.append(" index ");
-        for (int i = 0; i < index.length; i++) {
+        for (int anIndex : index) {
             sb.append("[");
-            sb.append(index[i]);
+            sb.append(anIndex);
             sb.append("]");
         }
         return sb.toString();

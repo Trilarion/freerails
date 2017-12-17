@@ -20,11 +20,11 @@ public class EchoGameServer implements GameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class
             .getName());
 
-    private final Vector<Connection2Client> connections = new Vector<Connection2Client>();
+    private final Vector<Connection2Client> connections = new Vector<>();
 
     private final SynchronizedFlag status = new SynchronizedFlag(false);
 
-    private final LinkedList<FreerailsSerializable> messsages2send = new LinkedList<FreerailsSerializable>();
+    private final LinkedList<FreerailsSerializable> messsages2send = new LinkedList<>();
 
     private EchoGameServer() {
     }
@@ -80,9 +80,8 @@ public class EchoGameServer implements GameServer, Runnable {
     public synchronized void stop() {
         status.close();
 
-        for (int i = 0; i < connections.size(); i++) {
-            AbstractInetConnection connection = (AbstractInetConnection) connections
-                    .get(i);
+        for (Connection2Client connection1 : connections) {
+            AbstractInetConnection connection = (AbstractInetConnection) connection1;
 
             if (connection.isOpen()) {
                 try {
@@ -111,9 +110,7 @@ public class EchoGameServer implements GameServer, Runnable {
 
     synchronized void sendMessage(FreerailsSerializable m) {
         /* Send messages. */
-        for (int i = 0; i < connections.size(); i++) {
-            Connection2Client connection = connections.get(i);
-
+        for (Connection2Client connection : connections) {
             try {
                 connection.writeToClient(m);
                 connection.flush();
@@ -136,15 +133,13 @@ public class EchoGameServer implements GameServer, Runnable {
     public void update() {
         synchronized (this) {
             /* Read messages. */
-            for (int i = 0; i < connections.size(); i++) {
-                Connection2Client connection = connections.get(i);
-
+            for (Connection2Client connection : connections) {
                 try {
                     FreerailsSerializable[] messages = connection
                             .readFromClient();
 
-                    for (int j = 0; j < messages.length; j++) {
-                        messsages2send.add(messages[j]);
+                    for (FreerailsSerializable message : messages) {
+                        messsages2send.add(message);
                     }
                 } catch (IOException e) {
                     try {

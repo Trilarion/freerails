@@ -8,23 +8,21 @@ package freerails.launcher;
 
 public interface LauncherInterface {
 
-    public static final String PROPERTIES_FILENAME = "freerails.properties";
+    String PROPERTIES_FILENAME = "freerails.properties";
 
-    public static final String SERVER_IP_ADDRESS_PROPERTY = "freerails.server.ip.address";
+    String SERVER_IP_ADDRESS_PROPERTY = "freerails.server.ip.address";
 
-    public static final String PLAYER_NAME_PROPERTY = "freerails.player.name";
+    String PLAYER_NAME_PROPERTY = "freerails.player.name";
 
-    public static final String SERVER_PORT_PROPERTY = "freerails.server.port";
+    String SERVER_PORT_PROPERTY = "freerails.server.port";
 
-    public static final String CLIENT_DISPLAY_PROPERTY = "freerails.client.display";
+    String CLIENT_DISPLAY_PROPERTY = "freerails.client.display";
 
-    public static final String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
+    String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
 
-    public enum MSG_TYPE {
+    enum MSG_TYPE {
         INFO, WARNING, ERROR
     }
-
-    ;
 
     void setInfoText(String text, MSG_TYPE status);
 

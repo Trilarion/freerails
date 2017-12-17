@@ -127,8 +127,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     private double calcOffSet(double t) {
-        double offset = getDistance(t) + initialPosition - trainLength;
-        return offset;
+        return getDistance(t) + initialPosition - trainLength;
     }
 
     void checkT(double t) {
@@ -154,10 +153,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
             return false;
         if (!path.equals(trainMotion.path))
             return false;
-        if (!speeds.equals(trainMotion.speeds))
-            return false;
-
-        return true;
+        return speeds.equals(trainMotion.speeds);
     }
 
     /**
@@ -197,10 +193,9 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
                 trainLength); // 666
         double speed = speeds.calcV(t);
         double acceleration = speeds.calcA(t);
-        TrainPositionOnMap tpom = TrainPositionOnMap
+        return TrainPositionOnMap
                 .createInSameDirectionAsPathReversed(pathIt, speed,
                         acceleration, activity);
-        return tpom;
     }
 
     /**
@@ -216,7 +211,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         t = Math.min(t, speeds.getT());
         double start = calcOffSet(t);
         double end = start + trainLength;
-        ArrayList<Step> steps = new ArrayList<Step>();
+        ArrayList<Step> steps = new ArrayList<>();
         double distanceSoFar = 0;
 
         int stepsBeforeStart = 0;
@@ -256,8 +251,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
 
         ImPoint startPoint = new ImPoint(x, y);
 
-        PathOnTiles pathOnTiles = new PathOnTiles(startPoint, steps);
-        return pathOnTiles;
+        return new PathOnTiles(startPoint, steps);
     }
 
     public int getTrainLength() {

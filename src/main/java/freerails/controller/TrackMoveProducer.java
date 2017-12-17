@@ -28,7 +28,7 @@ final public class TrackMoveProducer {
         BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION
     }
 
-    private final Stack<Move> moveStack = new Stack<Move>();
+    private final Stack<Move> moveStack = new Stack<>();
 
     private GameTime lastMoveTime = GameTime.BIG_BANG;
 
@@ -41,11 +41,11 @@ final public class TrackMoveProducer {
         MoveStatus returnValue = MoveStatus.MOVE_OK;
         int x = from.x;
         int y = from.y;
-        for (int i = 0; i < path.length; i++) {
+        for (Step aPath : path) {
 
-            returnValue = buildTrack(new ImPoint(x, y), path[i]);
-            x += path[i].deltaX;
-            y += path[i].deltaY;
+            returnValue = buildTrack(new ImPoint(x, y), aPath);
+            x += aPath.deltaX;
+            y += aPath.deltaY;
             if (!returnValue.ok) {
                 return returnValue;
             }

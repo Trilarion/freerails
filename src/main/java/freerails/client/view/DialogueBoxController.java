@@ -123,7 +123,7 @@ public class DialogueBoxController implements WorldListListener {
                 ImList<PlannedTrain> before = station.getProduction();
                 int engineType = selectEngine.getEngineType();
                 int[] wagonTypes = selectWagons.getWagons();
-                ImList<PlannedTrain> after = new ImList<PlannedTrain>(
+                ImList<PlannedTrain> after = new ImList<>(
                         new PlannedTrain(engineType, wagonTypes));
 
                 Move m = new ChangeProductionAtEngineShopMove(before, after, wi

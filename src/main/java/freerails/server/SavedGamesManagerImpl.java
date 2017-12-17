@@ -33,8 +33,7 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
     public String[] getSaveGameNames() {
         java.io.File dir = new File("./");
         FilenameFilter filter = new SavFileFilter();
-        String[] files = dir.list(filter);
-        return files;
+        return dir.list(filter);
     }
 
     public String[] getNewMapNames() {
@@ -80,8 +79,8 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
 
             Serializable game = (Serializable) objectIn.readObject();
 
-            /**
-             * load player private data
+            /*
+              load player private data
              */
 
             // for (int i = 0; i < world.getNumberOfPlayers(); i++) {

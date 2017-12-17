@@ -45,14 +45,11 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         if (o instanceof TrackRuleProperties) {
             TrackRuleProperties test = (TrackRuleProperties) o;
 
-            if (rGBvalue == test.getRGBvalue()
+            return rGBvalue == test.getRGBvalue()
                     && enableDoubleTrack == test.isEnableDoubleTrack()
                     && typeName.equals(test.getTypeName())
                     && category == test.category
-                    && stationRadius == test.stationRadius) {
-                return true;
-            }
-            return false;
+                    && stationRadius == test.stationRadius;
         }
         return false;
     }

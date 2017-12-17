@@ -47,10 +47,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
                 .equals(changeProductionAtEngineShopMove.before)
                 : changeProductionAtEngineShopMove.before != null)
             return false;
-        if (!principal.equals(changeProductionAtEngineShopMove.principal))
-            return false;
-
-        return true;
+        return principal.equals(changeProductionAtEngineShopMove.principal);
     }
 
     @Override

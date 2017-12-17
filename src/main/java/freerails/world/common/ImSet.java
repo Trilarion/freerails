@@ -23,7 +23,7 @@ public final class ImSet<E extends FreerailsSerializable> implements
     private final HashSet<E> hashSet;
 
     public ImSet(Set<E> data) {
-        hashSet = new HashSet<E>(data);
+        hashSet = new HashSet<>(data);
     }
 
     @Override
@@ -35,10 +35,7 @@ public final class ImSet<E extends FreerailsSerializable> implements
 
         final ImSet imSet = (ImSet) o;
 
-        if (!hashSet.equals(imSet.hashSet))
-            return false;
-
-        return true;
+        return hashSet.equals(imSet.hashSet);
     }
 
     @Override

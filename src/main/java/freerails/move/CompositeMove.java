@@ -32,10 +32,7 @@ public class CompositeMove implements Move {
 
         final CompositeMove compositeMove = (CompositeMove) o;
 
-        if (!moves.equals(compositeMove.moves))
-            return false;
-
-        return true;
+        return moves.equals(compositeMove.moves);
     }
 
     /**
@@ -57,11 +54,11 @@ public class CompositeMove implements Move {
 
     public CompositeMove(List<Move> movesArrayList) {
 
-        moves = new ImList<Move>(movesArrayList);
+        moves = new ImList<>(movesArrayList);
     }
 
     public CompositeMove(Move... moves) {
-        this.moves = new ImList<Move>(moves);
+        this.moves = new ImList<>(moves);
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

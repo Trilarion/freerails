@@ -145,10 +145,7 @@ class Map implements GraphExplorer {
     }
 
     public boolean hasNextEdge() {
-        if (nodes[position].edges.length > (branch + 1)) {
-            return true;
-        }
-        return false;
+        return nodes[position].edges.length > (branch + 1);
     }
 
     public void moveForward() {
