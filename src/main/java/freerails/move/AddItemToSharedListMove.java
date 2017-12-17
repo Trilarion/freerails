@@ -118,14 +118,13 @@ public class AddItemToSharedListMove implements Move {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(this.getClass().getName());
-        sb.append("\nlist=");
-        sb.append(listKey.toString());
-        sb.append("\n index =");
-        sb.append(this.index);
-        sb.append("\n item =");
-        sb.append(this.item.toString());
+        String sb = this.getClass().getName() + "\nlist=" +
+                listKey.toString() +
+                "\n index =" +
+                this.index +
+                "\n item =" +
+                this.item.toString();
 
-        return sb.toString();
+        return sb;
     }
 }

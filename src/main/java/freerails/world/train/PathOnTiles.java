@@ -272,9 +272,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
         for (int i = 0; i < oldLength; i++) {
             newPath[i] = vectors.get(i);
         }
-        for (int i = 0; i < newSteps.length; i++) {
-            newPath[i + oldLength] = newSteps[i];
-        }
+        System.arraycopy(newSteps, 0, newPath, oldLength, newSteps.length);
         return new PathOnTiles(start, newPath);
     }
 

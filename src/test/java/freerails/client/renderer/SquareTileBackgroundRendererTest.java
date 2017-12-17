@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class SquareTileBackgroundRendererTest extends TestCase {
 
-    MapLayerRenderer renderer = new MapLayerRenderer() {
+    final MapLayerRenderer renderer = new MapLayerRenderer() {
 
         public void paintTile(Graphics g, int tileX, int tileY) {
 

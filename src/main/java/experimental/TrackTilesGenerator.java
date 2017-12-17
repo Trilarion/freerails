@@ -43,11 +43,11 @@ public class TrackTilesGenerator extends JPanel {
     private final ImageManagerImpl imageManager = new ImageManagerImpl(
             "/experimental/", "/experimental/");
 
-    private List<TrackRule> rules;
+    private final List<TrackRule> rules;
 
-    private TrackRenderer tr;
+    private final TrackRenderer tr;
 
-    CubicCurve2D.Double[] track;
+    final CubicCurve2D.Double[] track;
 
     public TrackTilesGenerator() {
         Point2D.Double start, end, one, two;

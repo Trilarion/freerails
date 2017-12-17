@@ -48,7 +48,7 @@ public interface Connection2Client {
      * this object returns false <b>and</b> calling isOpen() on the
      * corresponding Connection2Server held by the client also returns false.
      *
-     * @throws IOException
+     * @throws IOException if
      */
     void disconnect() throws IOException;
 }

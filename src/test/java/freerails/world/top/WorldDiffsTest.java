@@ -25,9 +25,9 @@ import static freerails.world.top.WorldDiffs.LISTID.SHARED_LISTS;
  * @author Luke
  */
 public class WorldDiffsTest extends TestCase {
-    Player player0 = new Player("player0", 0);
+    final Player player0 = new Player("player0", 0);
 
-    Player player1 = new Player("player1", 1);
+    final Player player1 = new Player("player1", 1);
 
     public void testSharedLists() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);

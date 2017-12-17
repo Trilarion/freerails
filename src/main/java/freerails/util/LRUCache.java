@@ -20,8 +20,8 @@ public class LRUCache<K, V> {
 
     private static final float hashTableLoadFactor = 0.75f;
 
-    private LinkedHashMap<K, V> map;
-    private int cacheSize;
+    private final LinkedHashMap<K, V> map;
+    private final int cacheSize;
 
     /**
      * Creates a new LRU cache.

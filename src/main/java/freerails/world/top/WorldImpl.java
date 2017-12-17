@@ -26,9 +26,9 @@ public class WorldImpl implements World {
 
         private ActivityAndTime ant;
 
-        private List<ActivityAndTime> currentList;
+        private final List<ActivityAndTime> currentList;
 
-        public int size;
+        public final int size;
 
         public ActivityIteratorImpl(int playerIndex, int index) {
             currentList = activityLists.get(playerIndex, index);

@@ -28,7 +28,7 @@ public class BuildTrackRenderer implements Painter {
     private final Dimension tileSize = new Dimension(Constants.TILE_SIZE,
             Constants.TILE_SIZE);
 
-    private RenderersRoot rr;
+    private final RenderersRoot rr;
 
     public BuildTrackRenderer(RenderersRoot trackPieceViewList,
                               ModelRoot modelRoot) {

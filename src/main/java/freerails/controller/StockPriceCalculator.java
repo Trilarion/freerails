@@ -40,11 +40,11 @@ public class StockPriceCalculator {
                     publicShares - STOCK_BUNDLE_SIZE, otherRRShares);
         }
 
-        public Money currentPrice;
-        public Money sellPrice;
-        public Money buyPrice;
-        public Money treasuryBuyPrice;
-        public Money treasurySellPrice;
+        public final Money currentPrice;
+        public final Money sellPrice;
+        public final Money buyPrice;
+        public final Money treasuryBuyPrice;
+        public final Money treasurySellPrice;
     }
 
     private final ReadOnlyWorld w;

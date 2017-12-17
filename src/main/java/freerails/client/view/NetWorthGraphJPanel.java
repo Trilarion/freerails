@@ -55,7 +55,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
     private long scaleMax;
 
-    private Rectangle graphRect = new Rectangle(44, 50, 380, 245);
+    private final Rectangle graphRect = new Rectangle(44, 50, 380, 245);
 
     ActionListener submitButtonCallBack = null;
 
@@ -70,7 +70,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         /**
          * The company's net worth at the end of each year.
          */
-        long[] value = new long[100];
+        final long[] value = new long[100];
 
         /**
          * The colour for the line on the graph.

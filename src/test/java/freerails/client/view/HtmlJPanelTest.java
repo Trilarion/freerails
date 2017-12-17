@@ -56,7 +56,7 @@ public class HtmlJPanelTest extends TestCase {
     }
 
     public static class Person {
-        public String name;
+        public final String name;
 
         public Person(String name) {
             this.name = name;

@@ -22,7 +22,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger
             .getLogger(IncrementalPathFinder.class.getName());
 
-    private SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
+    private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
 
     private ImPoint startPoint;
 

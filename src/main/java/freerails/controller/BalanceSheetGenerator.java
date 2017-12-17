@@ -31,11 +31,11 @@ public class BalanceSheetGenerator {
 
     final FreerailsPrincipal principal;
 
-    public String year;
+    public final String year;
 
-    public Stats total;
+    public final Stats total;
 
-    public Stats ytd;
+    public final Stats ytd;
 
     public BalanceSheetGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         this.w = w;
@@ -150,19 +150,19 @@ public class BalanceSheetGenerator {
 
         }
 
-        public Money operatingFunds;
+        public final Money operatingFunds;
 
-        public Money track;
+        public final Money track;
 
-        public Money stations;
+        public final Money stations;
 
-        public Money rollingStock;
+        public final Money rollingStock;
 
-        public Money industries;
+        public final Money industries;
 
-        public Money loans;
+        public final Money loans;
 
-        public Money equity;
+        public final Money equity;
 
         public Money treasuryStock;
 

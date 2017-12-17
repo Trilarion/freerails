@@ -48,9 +48,9 @@ import java.util.List;
  * @see java.util.regex.Pattern
  */
 public class ClassLocater {
-    protected static Logger logger = Logger.getLogger("jgf.classlocater");
+    protected static final Logger logger = Logger.getLogger("jgf.classlocater");
 
-    protected LinkedList<String> skipPrefixes = new LinkedList<>();
+    protected final LinkedList<String> skipPrefixes = new LinkedList<>();
 
     /**
      * Finds all classes that implement or extend a given class name, and

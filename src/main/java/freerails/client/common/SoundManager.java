@@ -65,7 +65,7 @@ public class SoundManager implements ModelRootListener, LineListener {
 
     private boolean playSounds = true;
 
-    private HashMap<String, Sample> samples = new HashMap<>();
+    private final HashMap<String, Sample> samples = new HashMap<>();
 
     private final LinkedList<Clip> voices = new LinkedList<>();
 

@@ -18,15 +18,15 @@ public class PathNotFoundException extends Exception {
     }
 
     /**
-     * @param message
-     * @param cause
+     * @param message message
+     * @param cause cause
      */
     public PathNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * @param cause
+     * @param cause cause
      */
     public PathNotFoundException(Throwable cause) {
         super(cause);

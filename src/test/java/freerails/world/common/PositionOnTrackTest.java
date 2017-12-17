@@ -11,7 +11,7 @@ public class PositionOnTrackTest extends TestCase {
     /**
      * Constructor for PositionOnTrackTest.
      *
-     * @param arg0
+     * @param arg0 arg0
      */
     public PositionOnTrackTest(String arg0) {
         super(arg0);

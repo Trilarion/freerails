@@ -76,10 +76,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      * The players who have confirmed that they have received the last copy of
      * the world object sent.
      */
-    private HashSet<NameAndPassword> confirmedPlayers = new HashSet<>();
+    private final HashSet<NameAndPassword> confirmedPlayers = new HashSet<>();
 
     /* Contains the user names of the players who are currently logged on. */
-    private HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<>();
+    private final HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<>();
 
     private boolean newPlayersAllowed = true;
 
@@ -166,10 +166,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             } else {
                 connection.disconnect();
             }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -396,10 +393,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      */
     private void send2AllExcept(Connection2Client dontSend2,
                                 FreerailsSerializable message) {
-        Iterator<NameAndPassword> it = acceptedConnections.keySet().iterator();
 
-        while (it.hasNext()) {
-            NameAndPassword p = it.next();
+        for (NameAndPassword p : acceptedConnections.keySet()) {
             Connection2Client connection = acceptedConnections.get(p);
 
             if (dontSend2 != connection) {
@@ -484,10 +479,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         }
 
         try {
-            Iterator<NameAndPassword> it = acceptedConnections.keySet()
-                    .iterator();
-            while (it.hasNext()) {
-                NameAndPassword player = it.next();
+            for (NameAndPassword player : acceptedConnections.keySet()) {
                 Connection2Client connection = acceptedConnections.get(player);
 
                 if (connection.isOpen()) {

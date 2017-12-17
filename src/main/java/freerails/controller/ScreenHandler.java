@@ -38,7 +38,7 @@ final public class ScreenHandler {
      */
     private boolean isMinimised = false;
 
-    static GraphicsDevice device = GraphicsEnvironment
+    static final GraphicsDevice device = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
     public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {

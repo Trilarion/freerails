@@ -21,7 +21,6 @@ import freerails.world.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static freerails.controller.TrackMoveProducer.BuildMode.*;
@@ -50,15 +49,15 @@ public class BuildTrackController implements GameModel {
 
     private Step[] path;
 
-    private TrackPathFinder path4newTrackFinder;
+    private final TrackPathFinder path4newTrackFinder;
 
-    private PathOnTrackFinder pathOnExistingTrackFinder;
+    private final PathOnTrackFinder pathOnExistingTrackFinder;
 
-    private FreerailsPrincipal principal;
+    private final FreerailsPrincipal principal;
 
-    private ReadOnlyWorld realWorld;
+    private final ReadOnlyWorld realWorld;
 
-    private SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getSoundManager();
 
     private ImPoint startPoint;
 
@@ -66,7 +65,7 @@ public class BuildTrackController implements GameModel {
 
     private boolean visible = false;
 
-    private WorldDiffs worldDiffs;
+    private final WorldDiffs worldDiffs;
 
     /**
      * BuildTrackRenderer

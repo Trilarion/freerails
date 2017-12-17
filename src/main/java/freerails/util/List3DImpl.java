@@ -11,7 +11,7 @@ public class List3DImpl<T> implements List3D<T> {
 
     private static final long serialVersionUID = 1353309875727204066L;
 
-    private ArrayList<ArrayList<ArrayList<T>>> elementData = new ArrayList<>();
+    private final ArrayList<ArrayList<ArrayList<T>>> elementData = new ArrayList<>();
 
     public List3DImpl(int d1, int d2) {
         for (int i = 0; i < d1; i++) {

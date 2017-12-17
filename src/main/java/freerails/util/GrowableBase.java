@@ -47,7 +47,7 @@ public abstract class GrowableBase implements Serializable {
     /**
      * Maximum size increment for growing array.
      */
-    protected int maximumGrowth;
+    protected final int maximumGrowth;
 
     /**
      * Constructor with full specification.

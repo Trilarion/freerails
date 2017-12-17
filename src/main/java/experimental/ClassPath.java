@@ -21,7 +21,7 @@ import java.util.zip.ZipFile;
  * @author adam@jgf
  */
 public class ClassPath {
-    protected Logger logger = Logger.getLogger("jgf.classlocater.classpath");
+    protected final Logger logger = Logger.getLogger("jgf.classlocater.classpath");
 
     protected LinkedList<String> pathElementsThatHaveAlreadyBeenProcessed;
 
@@ -173,9 +173,7 @@ public class ClassPath {
         LinkedList<String> result = new LinkedList<>();
         Attributes atts = man.getMainAttributes();
         Set keys = atts.keySet();
-        Iterator i = keys.iterator();
-        while (i.hasNext()) {
-            Object key = i.next();
+        for (Object key : keys) {
             String value = (String) atts.get(key);
 
             if (logger.isDebugEnabled()) {
@@ -205,7 +203,7 @@ public class ClassPath {
     /**
      * Adds all class names found in the zip mentioned
      *
-     * @param zipFile
+     * @param zipFile zip file
      */
     protected LinkedList<String> getZipContents(File zipFile) {
         LinkedList<String> result = new LinkedList<>();
@@ -231,7 +229,7 @@ public class ClassPath {
     /**
      * This method takes a top level classpath dir i.e. 'classes' or bin
      *
-     * @param dir
+     * @param dir directory
      */
     protected LinkedList<String> getDirectoryContents(File dir) {
         LinkedList<String> result = new LinkedList<>();

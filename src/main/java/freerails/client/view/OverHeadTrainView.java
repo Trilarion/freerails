@@ -26,9 +26,9 @@ public class OverHeadTrainView implements Painter {
 
     private final ReadOnlyWorld w;
 
-    private SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getSoundManager();
 
-    private ModelRoot mr;
+    private final ModelRoot mr;
 
     public OverHeadTrainView(ReadOnlyWorld world, RenderersRoot rr, ModelRoot mr) {
         this.w = world;

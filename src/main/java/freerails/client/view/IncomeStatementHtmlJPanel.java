@@ -21,7 +21,7 @@ import java.net.URL;
 public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
     private static final long serialVersionUID = 3257846588885120057L;
 
-    private String template;
+    private final String template;
 
     private ModelRoot modelRoot;
 

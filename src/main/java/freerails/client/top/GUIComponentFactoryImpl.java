@@ -94,7 +94,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     private final UserInputOnMapController userInputOnMapController;
 
-    private UserMessageGenerator userMessageGenerator;
+    private final UserMessageGenerator userMessageGenerator;
 
     private ReadOnlyWorld world;
 

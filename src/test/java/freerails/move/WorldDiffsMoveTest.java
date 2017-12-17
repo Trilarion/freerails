@@ -25,9 +25,9 @@ public class WorldDiffsMoveTest extends TestCase {
 
     FreerailsPrincipal fp1;
 
-    CityModel city1 = new CityModel("City 1", 8, 4);
+    final CityModel city1 = new CityModel("City 1", 8, 4);
 
-    CityModel city2 = new CityModel("City 2", 9, 4);
+    final CityModel city2 = new CityModel("City 2", 9, 4);
 
     @Override
     protected void setUp() throws Exception {

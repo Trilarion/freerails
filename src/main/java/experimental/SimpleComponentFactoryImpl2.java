@@ -31,7 +31,7 @@ public class SimpleComponentFactoryImpl2 implements
 
     private MainMapAndOverviewMapMediator mediator;
 
-    private Rectangle r = new Rectangle();
+    private final Rectangle r = new Rectangle();
 
     /**
      * Creates new SimpleComponentFactoryImpl

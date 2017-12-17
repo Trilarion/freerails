@@ -41,11 +41,11 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
     private ModelRoot modelRoot;
 
-    private int terrainInfoIndex;
+    private final int terrainInfoIndex;
 
-    private int trainListIndex;
+    private final int trainListIndex;
 
-    private int stationInfoIndex;
+    private final int stationInfoIndex;
 
     public RHSJTabPane() {
         /*

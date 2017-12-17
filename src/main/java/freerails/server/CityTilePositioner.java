@@ -15,15 +15,15 @@ import java.util.Random;
  * @author Luke
  */
 public class CityTilePositioner {
-    Random random = new Random();
+    final Random random = new Random();
 
-    ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<>();
+    final ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<>();
 
-    ArrayList<TerrainType> industryTerrainTypes = new ArrayList<>();
+    final ArrayList<TerrainType> industryTerrainTypes = new ArrayList<>();
 
-    ArrayList<TerrainType> resourceTerrainTypes = new ArrayList<>();
+    final ArrayList<TerrainType> resourceTerrainTypes = new ArrayList<>();
 
-    World w;
+    final World w;
 
     public CityTilePositioner(World w) {
         this.w = w;

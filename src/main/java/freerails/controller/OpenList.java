@@ -63,9 +63,9 @@ class OpenList implements Serializable {
 
     }
 
-    private HashMap<Integer, OpenListEntry> map = new HashMap<>();
+    private final HashMap<Integer, OpenListEntry> map = new HashMap<>();
 
-    private PriorityQueue<OpenListEntry> queue = new PriorityQueue<>();
+    private final PriorityQueue<OpenListEntry> queue = new PriorityQueue<>();
 
     public OpenList() {
     }

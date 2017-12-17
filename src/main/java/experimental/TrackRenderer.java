@@ -24,25 +24,25 @@ public class TrackRenderer {
     private final ImageManager imageManager = new ImageManagerImpl(
             "/freerails/client/graphics/");
 
-    Color sleepersColor = new Color(118, 54, 36);
+    final Color sleepersColor = new Color(118, 54, 36);
 
-    Color railsColor = new Color(118, 118, 118);
+    final Color railsColor = new Color(118, 118, 118);
 
-    double sleeperLength = 6;
+    final double sleeperLength = 6;
 
-    float sleeperWidth = 2f;
+    final float sleeperWidth = 2f;
 
-    float targetSleeperGap = 2.5f;
+    final float targetSleeperGap = 2.5f;
 
-    float tileWidth = 30f;
+    final float tileWidth = 30f;
 
-    float gauge = 3f;
+    final float gauge = 3f;
 
-    BasicStroke rail = new BasicStroke(1f);
+    final BasicStroke rail = new BasicStroke(1f);
 
     boolean doubleTrack = false;
 
-    float doubleTrackGap = 4f;
+    final float doubleTrackGap = 4f;
 
     Image icon = null;
 

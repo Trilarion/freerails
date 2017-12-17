@@ -74,7 +74,7 @@ final public class Step implements FlatTrackTemplate {
      * Another array of OneTileMoveVectors representing the 8 compass directions
      * going clockwise from North.
      */
-    private static Step[] list;
+    private static final Step[] list;
 
     static {
         vectors = setupVectors();

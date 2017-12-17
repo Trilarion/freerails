@@ -39,7 +39,7 @@ public class MoveTrainPreMove implements PreMove {
      * 666 Performance cache must be cleared if track on map is build ! make a
      * change listener!
      */
-    private static HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<>();
+    private static final HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<>();
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
@@ -47,7 +47,7 @@ public class MoveTrainPreMove implements PreMove {
     /**
      * Uses static method to make testing easier.
      *
-     * @throws NoTrackException
+     * @throws NoTrackException if no track
      */
     public static Step findNextStep(ReadOnlyWorld world,
                                     PositionOnTrack currentPosition, ImPoint target) {
@@ -99,7 +99,7 @@ public class MoveTrainPreMove implements PreMove {
     final FreerailsPrincipal principal;
 
     private final int trainID;
-    private OccupiedTracks occupiedTracks;
+    private final OccupiedTracks occupiedTracks;
 
     public MoveTrainPreMove(int id, FreerailsPrincipal p,
                             OccupiedTracks occupiedTracks) {

@@ -22,7 +22,7 @@ public class ProgressJPanel extends javax.swing.JPanel implements
 
     final int numSteps = 5;
 
-    LauncherInterface owner;
+    final LauncherInterface owner;
 
     public void setValue(int i) {
         int value = i * 100 / stepSize;

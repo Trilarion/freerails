@@ -30,23 +30,23 @@ public class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-    public String playername;
+    public final String playername;
 
-    public String year;
+    public final String year;
 
-    public Money cash;
+    public final Money cash;
 
-    public Money loansTotal;
+    public final Money loansTotal;
 
-    public Money netWorth;
+    public final Money netWorth;
 
-    public Money pricePerShare;
+    public final Money pricePerShare;
 
-    public String publicShares;
+    public final String publicShares;
 
-    public String treasuryStock;
+    public final String treasuryStock;
 
-    public String othersRRsStockRows;
+    public final String othersRRsStockRows;
 
     /**
      * Creates a new instance of BrokerScreenGenerator

@@ -25,10 +25,14 @@ final public class FreerailsCursor {
 
     private final ModelRoot modelRoot;
 
-    /** The location of the cursor last time paintCursor(.) was called. */
+    /**
+     * The location of the cursor last time paintCursor(.) was called.
+     */
     private ImPoint lastCursorPosition = new ImPoint();
 
-    /** The time in ms the cursor arrived at its current position. */
+    /**
+     * The time in ms the cursor arrived at its current position.
+     */
     private long timeArrived = 0;
 
     /**
@@ -49,10 +53,8 @@ final public class FreerailsCursor {
      * Paints the cursor. The method calculates position to paint it based on
      * the tile size and the cursor's map position.
      *
-     * @param g
-     *            The graphics object to paint the cursor on.
-     * @param tileSize
-     *            The dimensions of a tile.
+     * @param g        The graphics object to paint the cursor on.
+     * @param tileSize The dimensions of a tile.
      */
     public void paintCursor(Graphics g, Dimension tileSize) {
         Graphics2D g2 = (Graphics2D) g;

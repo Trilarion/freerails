@@ -23,8 +23,8 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     private Image[] tileIcons;
 
-    private int mapWidth;
-    private int mapHeight;
+    private final int mapWidth;
+    private final int mapHeight;
 
     private final TerrainType tileModel;
 

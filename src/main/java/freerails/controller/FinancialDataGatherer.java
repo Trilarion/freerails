@@ -26,7 +26,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     private int bonds;
 
-    private int[] stockInRRs;
+    private final int[] stockInRRs;
 
     private int[] stockInThisRRs;
 

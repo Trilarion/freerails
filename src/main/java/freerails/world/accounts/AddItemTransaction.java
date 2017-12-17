@@ -84,15 +84,14 @@ public class AddItemTransaction implements Transaction {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("AddItemTransaction ");
-        sb.append(category);
-        sb.append(", type ");
-        sb.append(type);
-        sb.append(", quantity ");
-        sb.append(quantity);
-        sb.append(", amount ");
-        sb.append(amount);
-        return sb.toString();
+        String sb = "AddItemTransaction " +
+                category +
+                ", type " +
+                type +
+                ", quantity " +
+                quantity +
+                ", amount " +
+                amount;
+        return sb;
     }
 }

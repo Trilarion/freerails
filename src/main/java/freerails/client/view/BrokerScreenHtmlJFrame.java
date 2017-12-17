@@ -34,7 +34,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
     private static final long serialVersionUID = 3257003246252800050L;
 
-    private String template;
+    private final String template;
 
     private ModelRoot modelRoot;
 

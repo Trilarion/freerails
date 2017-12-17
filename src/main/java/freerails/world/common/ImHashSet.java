@@ -6,6 +6,7 @@ package freerails.world.common;
 
 import freerails.util.Immutable;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -41,16 +42,12 @@ public class ImHashSet<E extends FreerailsSerializable> implements
 
     public ImHashSet(E... values) {
         this.hashSet = new HashSet<>();
-        for (E e : values) {
-            hashSet.add(e);
-        }
+        Collections.addAll(hashSet, values);
     }
 
     public ImHashSet(List<E> values) {
         this.hashSet = new HashSet<>();
-        for (E e : values) {
-            hashSet.add(e);
-        }
+        hashSet.addAll(values);
     }
 
     public boolean contains(E e) {
@@ -59,7 +56,7 @@ public class ImHashSet<E extends FreerailsSerializable> implements
 
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            Iterator<E> it = hashSet.iterator();
+            final Iterator<E> it = hashSet.iterator();
 
             public boolean hasNext() {
                 return it.hasNext();

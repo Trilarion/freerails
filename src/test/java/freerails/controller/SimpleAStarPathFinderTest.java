@@ -17,7 +17,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
     /**
      * Constructor for SimpleAStarPathFinderTest.
      *
-     * @param arg0
+     * @param arg0 arg0
      */
     public SimpleAStarPathFinderTest(String arg0) {
         super(arg0);

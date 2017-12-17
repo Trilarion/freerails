@@ -35,7 +35,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
     private ActionListener submitButtonCallBack = null;
 
-    private List<PlayerDetails> values;
+    private final List<PlayerDetails> values;
 
     /**
      * This method initializes
@@ -130,14 +130,13 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(name);
-            sb.append(", ");
-            sb.append(networth.toString());
-            sb.append(" net worth, ");
-            sb.append(stations);
-            sb.append("  stations.");
-            return sb.toString();
+            String sb = name +
+                    ", " +
+                    networth.toString() +
+                    " net worth, " +
+                    stations +
+                    "  stations.";
+            return sb;
         }
 
         public int compareTo(PlayerDetails test) {

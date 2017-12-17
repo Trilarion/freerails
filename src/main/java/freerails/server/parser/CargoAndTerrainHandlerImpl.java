@@ -24,9 +24,9 @@ import java.util.HashSet;
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     private final World world;
 
-    HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<>();
+    final HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<>();
 
-    HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
+    final HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
 
     // Parsing variables for Tile
     String tileID;
@@ -39,11 +39,11 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     int tileBuildCost;
 
-    ArrayList<Consumption> typeConsumes = new ArrayList<>();
+    final ArrayList<Consumption> typeConsumes = new ArrayList<>();
 
-    ArrayList<Production> typeProduces = new ArrayList<>();
+    final ArrayList<Production> typeProduces = new ArrayList<>();
 
-    ArrayList<Conversion> typeConverts = new ArrayList<>();
+    final ArrayList<Conversion> typeConverts = new ArrayList<>();
 
     public CargoAndTerrainHandlerImpl(World w) {
         world = w;

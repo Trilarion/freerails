@@ -179,10 +179,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         recover = true;
                         setInfoText(logOnResponse.getMessage(), MSG_TYPE.WARNING);
                     }
-                } catch (IOException e) {
-                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                    recover = true;
-                } catch (NullPointerException e) {
+                } catch (IOException | NullPointerException e) {
                     setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                     recover = true;
                 } finally {
@@ -204,10 +201,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
                         prepare2HostNetworkGame(msp.getServerPort());
                         setNextEnabled(true);
-                    } catch (NullPointerException e) {
-                        setInfoText(e.getMessage(), MSG_TYPE.WARNING);
-                        recover = true;
-                    } catch (IOException e) {
+                    } catch (NullPointerException | IOException e) {
                         setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                         recover = true;
                     } finally {

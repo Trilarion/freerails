@@ -153,7 +153,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
         principal = mr.getPrincipal();
     }
 
-    private Map<TrainOrderModel, TrainOrderJPanelSingle> lines;
+    private final Map<TrainOrderModel, TrainOrderJPanelSingle> lines;
 
     /**
      *
@@ -174,11 +174,11 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
      * used to find prebuilt Panels
      */
     private class TrainOrderModel {
-        String stationName;
-        String waitUntilFull;
-        Selection selected;
-        int gotoStatus;
-        String orderText;
+        final String stationName;
+        final String waitUntilFull;
+        final Selection selected;
+        final int gotoStatus;
+        final String orderText;
 
         /**
          * @param stationName

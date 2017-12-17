@@ -26,8 +26,6 @@ final public class GameLoop implements Runnable {
 
     private final GameModel[] model;
 
-    private final Integer loopMonitor = 0;
-
     public GameLoop(ScreenHandler s) {
         screenHandler = s;
         model = new GameModel[0];
@@ -161,6 +159,7 @@ final public class GameLoop implements Runnable {
             }
 
             /* signal that we are done */
+            Integer loopMonitor = 0;
             synchronized (loopMonitor) {
                 loopMonitor.notify();
             }

@@ -92,9 +92,7 @@ abstract class AbstractInetConnection implements Runnable {
                 }
             }
         } catch (EOFException e) {
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 

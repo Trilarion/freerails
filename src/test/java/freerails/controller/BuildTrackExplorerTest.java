@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 public class BuildTrackExplorerTest extends TestCase {
     private WorldImpl world;
 
-    private Player testPlayer = new Player("test", 0);
+    private final Player testPlayer = new Player("test", 0);
 
     private FreerailsPrincipal principle;
 

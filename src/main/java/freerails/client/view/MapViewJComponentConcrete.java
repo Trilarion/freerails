@@ -87,20 +87,20 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
          * Screen location of the mouse cursor, when the second mouse button was
          * pressed.
          */
-        private Point screenLocation = new Point();
+        private final Point screenLocation = new Point();
 
-        private Point lastMouseLocation = new Point();
+        private final Point lastMouseLocation = new Point();
 
         /**
          * A variable to sum up relative mouse movement.
          */
-        private Point sigmadelta = new Point();
+        private final Point sigmadelta = new Point();
 
         /**
          * Where to scroll - Reflects granularity, scroll direction and
          * acceleration, respects bounds.
          */
-        private Point tiledelta = new Point();
+        private final Point tiledelta = new Point();
 
         @Override
         public void mousePressed(MouseEvent evt) {

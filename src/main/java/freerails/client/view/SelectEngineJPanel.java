@@ -109,7 +109,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
         final RenderersRoot rr;
 
-        private Map<String, JLabel> savesJLabels;
+        private final Map<String, JLabel> savesJLabels;
 
         public TrainCellRenderer(RenderersRoot vl) {
             rr = vl;

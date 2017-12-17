@@ -91,13 +91,7 @@ public class RenderersRootImpl implements RenderersRoot {
         for (int i = 0; i < soundsFiles.length; i++) {
             try {
                 sm.addClip(soundsFiles[i]);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (UnsupportedAudioFileException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (LineUnavailableException e) {
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

@@ -28,7 +28,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
     private transient MoveReceiver mr = null;
 
-    ReadOnlyWorld w;
+    final ReadOnlyWorld w;
 
     public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
                            int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {

@@ -44,7 +44,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
     private StationTypesPopup stationTypesPopup;
 
-    private BuildIndustryJPopupMenu buildIndustryJPopupMenu = new BuildIndustryJPopupMenu();
+    private final BuildIndustryJPopupMenu buildIndustryJPopupMenu = new BuildIndustryJPopupMenu();
 
     private TrackMoveProducer trackBuilder;
 
@@ -54,7 +54,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
     private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
 
-    private SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getSoundManager();
 
     /**
      * Ignores the dragging action for efficiency I think.

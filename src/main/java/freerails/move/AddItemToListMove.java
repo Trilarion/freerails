@@ -126,15 +126,14 @@ public class AddItemToListMove implements ListMove {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(this.getClass().getName());
-        sb.append("\n list=");
-        sb.append(listKey.toString());
-        sb.append("\n index =");
-        sb.append(index);
-        sb.append("\n item =");
-        sb.append(item);
+        String sb = this.getClass().getName() + "\n list=" +
+                listKey.toString() +
+                "\n index =" +
+                index +
+                "\n item =" +
+                item;
 
-        return sb.toString();
+        return sb;
     }
 
     public FreerailsPrincipal getPrincipal() {

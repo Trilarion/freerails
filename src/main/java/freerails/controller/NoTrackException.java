@@ -35,22 +35,22 @@ public class NoTrackException extends RuntimeException {
     }
 
     /**
-     * @param message
-     * @param cause
+     * @param message message
+     * @param cause cause
      */
     public NoTrackException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * @param message
+     * @param message message
      */
     public NoTrackException(String message) {
         super(message);
     }
 
     /**
-     * @param cause
+     * @param cause cause
      */
     public NoTrackException(Throwable cause) {
         super(cause);

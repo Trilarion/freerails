@@ -44,7 +44,7 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
 
     private final int terrainType;
 
-    private static HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<>();
+    private static final HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<>();
 
     public static FreerailsTile getInstance(int terrainType) {
         FreerailsTile tile = new FreerailsTile(terrainType);

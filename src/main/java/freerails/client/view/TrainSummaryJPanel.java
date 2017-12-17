@@ -32,7 +32,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 
     private FreerailsPrincipal principal;
 
-    private TrainSummeryModel model;
+    private final TrainSummeryModel model;
 
     private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.background");
@@ -71,7 +71,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         return "$" + m.toString();
     }
 
-    LRUCache<String, JLabel> jLabels;
+    final LRUCache<String, JLabel> jLabels;
 
     public java.awt.Component getListCellRendererComponent(
             javax.swing.JList list, Object value, int index,

@@ -20,7 +20,7 @@ public class SimpleAStarPathFinder implements Serializable,
     private static final Logger logger = Logger
             .getLogger(SimpleAStarPathFinder.class.getName());
 
-    private OpenList openList = new OpenList();
+    private final OpenList openList = new OpenList();
 
     private final HashSet<Integer> startingPositions = new HashSet<>();
 

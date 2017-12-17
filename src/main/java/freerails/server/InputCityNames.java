@@ -27,10 +27,8 @@ public class InputCityNames {
         try {
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(is, handler);
-        } catch (IOException e) {
+        } catch (IOException | ParserConfigurationException e) {
             e.printStackTrace();
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
         }
     }
 }

@@ -40,7 +40,7 @@ final public class SynchronizedEventQueue extends EventQueue {
 
     private int count;
     private long last;
-    private LinkedHashMap<AWTEvent, Throwable> list;
+    private final LinkedHashMap<AWTEvent, Throwable> list;
 
     public void postEvent(AWTEvent aEvent) {
         synchronized (list) {

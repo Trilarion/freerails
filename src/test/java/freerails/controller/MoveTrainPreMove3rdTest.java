@@ -30,9 +30,9 @@ public class MoveTrainPreMove3rdTest extends TestCase {
 
     World world;
 
-    Step[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
-    Step[] line2 = {WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST};
-    Step[] line3 = {NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST};
+    final Step[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
+    final Step[] line2 = {WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST};
+    final Step[] line3 = {NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST};
 
     @Override
     protected void setUp() throws Exception {

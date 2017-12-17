@@ -113,13 +113,12 @@ public class ChangeItemInListMove implements ListMove {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getName());
-        sb.append(" before: ");
-        sb.append(before.toString());
-        sb.append(" after: ");
-        sb.append(after.toString());
-        return sb.toString();
+        String sb = getClass().getName() +
+                " before: " +
+                before.toString() +
+                " after: " +
+                after.toString();
+        return sb;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

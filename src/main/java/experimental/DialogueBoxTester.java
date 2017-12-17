@@ -45,9 +45,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
     private RenderersRoot vl;
 
-    private ModelRootImpl modelRoot;
+    private final ModelRootImpl modelRoot;
 
-    private Action closeCurrentDialogue = new AbstractAction("Close") {
+    private final Action closeCurrentDialogue = new AbstractAction("Close") {
         private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
@@ -55,7 +55,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         }
     };
 
-    private TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
+    private final TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
 
     /**
      * Creates new form TestGlassPanelMethod.

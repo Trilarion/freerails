@@ -22,7 +22,7 @@ import java.util.List;
 public class TrackPathFinderTest extends TestCase {
     private WorldImpl world;
 
-    private Player testPlayer = new Player("test", 0);
+    private final Player testPlayer = new Player("test", 0);
 
     @Override
     protected void setUp() throws Exception {

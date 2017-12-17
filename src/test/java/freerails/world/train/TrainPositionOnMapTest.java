@@ -352,6 +352,7 @@ public class TrainPositionOnMapTest extends TestCase {
 
         assertTrue(!a.equals(null));
         assertTrue(!a.equals(new Object()));
+        //noinspection EqualsWithItself
         assertTrue(a.equals(a));
         assertTrue(a.equals(b));
         assertTrue(!a.equals(c));

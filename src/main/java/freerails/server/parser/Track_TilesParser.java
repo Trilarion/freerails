@@ -27,11 +27,11 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     private static final Logger logger = Logger
             .getLogger(Track_TilesParser.class.getName());
 
-    private java.lang.StringBuffer buffer;
+    private final java.lang.StringBuffer buffer;
 
-    private Track_TilesHandler handler;
+    private final Track_TilesHandler handler;
 
-    private java.util.Stack<Object[]> context;
+    private final java.util.Stack<Object[]> context;
 
     public Track_TilesParser(final Track_TilesHandler handler) {
         this.handler = handler;

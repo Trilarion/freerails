@@ -43,11 +43,11 @@ public class CalcCargoSupplyRateAtStation {
 
     private final ReadOnlyWorld w;
 
-    private int x;
+    private final int x;
 
-    private int y;
+    private final int y;
 
-    private int stationRadius;
+    private final int stationRadius;
 
     /**
      * Call this constructor if the station does not exist yet.

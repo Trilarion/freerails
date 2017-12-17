@@ -38,7 +38,7 @@ public class UserMessageGenerator implements MoveReceiver {
 
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");
 
-    private SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getSoundManager();
 
     public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
         if (null == mr || null == actionRoot) {

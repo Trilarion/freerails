@@ -29,7 +29,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class
             .getName());
 
-    private SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
+    private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
 
     private final ReadOnlyWorld world;
 

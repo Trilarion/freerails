@@ -1,9 +1,9 @@
 package freerails.util;
 
 public class Pair<A, B> {
-    private A e1;
+    private final A e1;
 
-    private B e2;
+    private final B e2;
 
     public Pair(A e1, B e2) {
         this.e1 = e1;

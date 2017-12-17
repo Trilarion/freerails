@@ -24,7 +24,7 @@ public class CheckFreerailsSerializableClasses {
 
     static final HashSet<Class> mutableTypes = new HashSet<>();
 
-    static Logger logger = Logger
+    static final Logger logger = Logger
             .getLogger(CheckFreerailsSerializableClasses.class.getName());
 
     public static void main(String[] args) {
@@ -147,10 +147,7 @@ public class CheckFreerailsSerializableClasses {
                 okSoFar = false;
             }
             return okSoFar;
-        } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

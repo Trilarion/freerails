@@ -13,7 +13,7 @@ public class FPScounter {
 
     private static final int MAX_FPS_VALUES = 100;
 
-    private LinkedList<Double> fpsValues;
+    private final LinkedList<Double> fpsValues;
 
     private int newFrameCount = 0;
 
@@ -25,7 +25,7 @@ public class FPScounter {
 
     private double mean;
 
-    private String[] newFPSstr;
+    private final String[] newFPSstr;
 
     FPScounter() {
         fpsValues = new LinkedList<>();

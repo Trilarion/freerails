@@ -30,8 +30,8 @@ import java.util.*;
 
 public class OccupiedTracks {
 
-    public Map<TrackSection, Integer> occupiedTrackSections;
-    public Map<Integer, List<TrackSection>> trainToTrackList;
+    public final Map<TrackSection, Integer> occupiedTrackSections;
+    public final Map<Integer, List<TrackSection>> trainToTrackList;
 
     public OccupiedTracks(FreerailsPrincipal principal, ReadOnlyWorld w) {
 

@@ -19,7 +19,7 @@ import java.security.Principal;
  */
 public abstract class FreerailsPrincipal implements Principal,
         FreerailsSerializable {
-    private int worldIndex;
+    private final int worldIndex;
 
     public FreerailsPrincipal(int worldIndex) {
         this.worldIndex = worldIndex;

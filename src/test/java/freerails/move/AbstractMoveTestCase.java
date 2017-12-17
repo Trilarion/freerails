@@ -73,12 +73,12 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * This method asserts that if we serialise then deserialise the specified
-     * move, the specified move is equal to the deserialised move. The assertion
-     * depends on the move being serialisable and the equals method being
+     * This method asserts that if we serialise then deserialize the specified
+     * move, the specified move is equal to the deserialized move. The assertion
+     * depends on the move being serializable and the equals method being
      * implemented correctly. Also checks that the hashcode does not change.
      *
-     * @param m
+     * @param m m
      */
     protected void assertSurvivesSerialisation(FreerailsSerializable m) {
         assertEquals("Reflexivity violated: the move does not equal itself", m,

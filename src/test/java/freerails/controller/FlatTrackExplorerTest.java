@@ -26,7 +26,7 @@ public class FlatTrackExplorerTest extends TestCase {
         super(arg0);
     }
 
-    private Player testPlayer = new Player("test", 0);
+    private final Player testPlayer = new Player("test", 0);
 
     @Override
     protected void setUp() {
@@ -64,7 +64,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * Tests that the track explorer at point 10,10 tells us that we can move
      * west, east, or northeast.
      *
-     * @throws NoTrackException
+     * @throws NoTrackException if no track
      */
     public void testGetPossibleDirections() throws NoTrackException {
         setUp();
@@ -97,7 +97,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * Tests that we can move the track explorer at point 10,10 northeast, and
      * that when we have done this, we can move it back again.
      *
-     * @throws NoTrackException
+     * @throws NoTrackException if no track
      */
     public void testMoveTrackExplorer() throws NoTrackException {
         setUp();

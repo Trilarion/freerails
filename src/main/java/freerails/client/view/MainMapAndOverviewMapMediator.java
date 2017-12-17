@@ -33,7 +33,7 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
 
     private Rectangle currentVisRect;
 
-    private Point lastMouseLocation = new Point();
+    private final Point lastMouseLocation = new Point();
 
     private boolean inside = false;
 

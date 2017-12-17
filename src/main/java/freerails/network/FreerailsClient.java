@@ -142,10 +142,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     final FreerailsSerializable read() {
         try {
             return this.connection2Server.waitForObjectFromServer();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

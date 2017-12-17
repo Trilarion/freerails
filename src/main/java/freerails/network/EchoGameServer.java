@@ -7,6 +7,7 @@ import freerails.world.common.FreerailsSerializable;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
@@ -138,9 +139,7 @@ public class EchoGameServer implements GameServer, Runnable {
                     FreerailsSerializable[] messages = connection
                             .readFromClient();
 
-                    for (FreerailsSerializable message : messages) {
-                        messsages2send.add(message);
-                    }
+                    Collections.addAll(messsages2send, messages);
                 } catch (IOException e) {
                     try {
                         if (connection.isOpen()) {
@@ -154,11 +153,8 @@ public class EchoGameServer implements GameServer, Runnable {
             }
 
             /* Send messages. */
-            Iterator<FreerailsSerializable> messagesIterator = messsages2send
-                    .iterator();
 
-            while (messagesIterator.hasNext()) {
-                FreerailsSerializable message = messagesIterator.next();
+            for (FreerailsSerializable message : messsages2send) {
                 sendMessage(message);
             }
         }

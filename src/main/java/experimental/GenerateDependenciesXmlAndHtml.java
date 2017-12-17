@@ -29,13 +29,13 @@ public class GenerateDependenciesXmlAndHtml {
 
     private PrintWriter htmlWriter;
 
-    private ArrayList<String> packages = new ArrayList<>();
+    private final ArrayList<String> packages = new ArrayList<>();
 
     private boolean started = false;
 
     private boolean startedBlock = false;
 
-    private String sig;
+    private final String sig;
 
     public static void main(String[] args) {
         try {

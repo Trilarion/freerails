@@ -38,7 +38,7 @@ public interface World extends ReadOnlyWorld {
     int add(FreerailsPrincipal principal, KEY key, FreerailsSerializable element);
 
     /**
-     * Appends the specified element to the end of the specifed list and returns
+     * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      */
     int add(SKEY key, FreerailsSerializable element);

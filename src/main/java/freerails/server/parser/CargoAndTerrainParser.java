@@ -24,13 +24,13 @@ public class CargoAndTerrainParser implements ContentHandler {
     private static final Logger logger = Logger
             .getLogger(CargoAndTerrainParser.class.getName());
 
-    private java.lang.StringBuffer buffer;
+    private final java.lang.StringBuffer buffer;
 
-    private CargoAndTerrainHandler handler;
+    private final CargoAndTerrainHandler handler;
 
-    private java.util.Stack<Object[]> context;
+    private final java.util.Stack<Object[]> context;
 
-    private EntityResolver resolver;
+    private final EntityResolver resolver;
 
     /**
      * Creates a parser instance.

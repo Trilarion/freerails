@@ -58,9 +58,9 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     private final FreerailsPrincipal principal;
 
-    private boolean waitingForFullLoad;
+    private final boolean waitingForFullLoad;
 
-    private boolean autoConsist;
+    private final boolean autoConsist;
 
     private ImInts consist = new ImInts();
 

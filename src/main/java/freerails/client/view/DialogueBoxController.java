@@ -49,27 +49,27 @@ public class DialogueBoxController implements WorldListListener {
 
     private final JButton closeButton = new JButton("Close");
 
-    private SelectEngineJPanel selectEngine;
+    private final SelectEngineJPanel selectEngine;
 
     private final MyGlassPanel glassPanel;
 
-    private NewsPaperJPanel newspaper;
+    private final NewsPaperJPanel newspaper;
 
-    private SelectWagonsJPanel selectWagons;
+    private final SelectWagonsJPanel selectWagons;
 
-    private HtmlJPanel showControls;
+    private final HtmlJPanel showControls;
 
-    private HtmlJPanel about;
+    private final HtmlJPanel about;
 
-    private HtmlJPanel how2play;
+    private final HtmlJPanel how2play;
 
-    private HtmlJPanel javaProperties;
+    private final HtmlJPanel javaProperties;
 
-    private TerrainInfoJPanel terrainInfo;
+    private final TerrainInfoJPanel terrainInfo;
 
-    private StationInfoJPanel stationInfo;
+    private final StationInfoJPanel stationInfo;
 
-    private TrainDialogueJPanel trainDialogueJPanel;
+    private final TrainDialogueJPanel trainDialogueJPanel;
 
     private ReadOnlyWorld world;
 

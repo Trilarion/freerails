@@ -13,18 +13,14 @@ public abstract class ListXDDiffs<T> implements Serializable {
 
     static int[] add2Array(int[] dim, int last) {
         int[] array = new int[dim.length + 1];
-        for (int i = 0; i < dim.length; i++) {
-            array[i] = dim[i];
-        }
+        System.arraycopy(dim, 0, array, 0, dim.length);
         array[array.length - 1] = last;
         return array;
     }
 
     static int[] removeFromArray(int[] dim) {
         int[] array = new int[dim.length - 1];
-        for (int i = 0; i < dim.length - 1; i++) {
-            array[i] = dim[i];
-        }
+        System.arraycopy(dim, 0, array, 0, dim.length - 1);
         return array;
     }
 

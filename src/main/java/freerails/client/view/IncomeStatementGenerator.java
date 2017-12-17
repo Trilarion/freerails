@@ -30,7 +30,7 @@ public class IncomeStatementGenerator {
 
     final FreerailsPrincipal principal;
 
-    private GameCalendar cal;
+    private final GameCalendar cal;
 
     public Money mailTotal;
 
@@ -72,9 +72,9 @@ public class IncomeStatementGenerator {
 
     public Money profitYtd;
 
-    public String year;
+    public final String year;
 
-    private int startyear;
+    private final int startyear;
 
     IncomeStatementGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         this.w = w;
