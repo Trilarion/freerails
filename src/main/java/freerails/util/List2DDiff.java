@@ -6,45 +6,96 @@ package freerails.util;
 
 import java.util.SortedMap;
 
+/**
+ *
+ * @author jkeller1
+ * @param <T>
+ */
 public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
 
     private static final long serialVersionUID = 4323585276281406244L;
     private final List2D<T> underlyingList;
 
+    /**
+     *
+     * @param diffs
+     * @param list
+     * @param listID
+     */
     public List2DDiff(SortedMap<ListKey, Object> diffs, List2D<T> list,
                       Enum listID) {
         super(diffs, listID);
         underlyingList = list;
     }
 
+    /**
+     *
+     * @return
+     */
     public int sizeD1() {
         return super.size();
     }
 
+    /**
+     *
+     * @param d1
+     * @return
+     */
     public int sizeD2(int d1) {
         return super.size(d1);
     }
 
+    /**
+     *
+     * @param d1
+     * @param d2
+     * @return
+     */
     public T get(int d1, int d2) {
         return super.get(d1, d2);
     }
 
+    /**
+     *
+     * @param d1
+     * @return
+     */
     public T removeLastD2(int d1) {
         return super.removeLast(d1);
     }
 
+    /**
+     *
+     * @return
+     */
     public int removeLastD1() {
         return super.removeLastList();
     }
 
+    /**
+     *
+     * @return
+     */
     public int addD1() {
         return super.addDimension();
     }
 
+    /**
+     *
+     * @param d1
+     * @param element
+     * @return
+     */
     public int addD2(int d1, T element) {
         return super.addElement(element, d1);
     }
 
+    /**
+     *
+     * @param d1
+     * @param d2
+     * @param element
+     */
     public void set(int d1, int d2, T element) {
         super.set(element, d1, d2);
 

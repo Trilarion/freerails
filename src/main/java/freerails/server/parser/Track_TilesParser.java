@@ -33,6 +33,10 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
 
     private final java.util.Stack<Object[]> context;
 
+    /**
+     *
+     * @param handler
+     */
     public Track_TilesParser(final Track_TilesHandler handler) {
         this.handler = handler;
         buffer = new StringBuffer(111);
@@ -43,6 +47,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * The recognizer entry method taking an Inputsource.
      *
      * @param input InputSource to be parsed.
+     * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
@@ -58,6 +63,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * The recognizer entry method taking a URL.
      *
      * @param url URL source to be parsed.
+     * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be

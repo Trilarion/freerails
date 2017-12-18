@@ -17,20 +17,36 @@ import freerails.world.track.*;
  * @author Luke
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
+
+    /**
+     *
+     * @param testName
+     */
     public ChangeTrackPieceMoveTest(String testName) {
         super(testName);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
 
+    /**
+     *
+     * @return
+     */
     public static junit.framework.Test suite() {
 
         return new junit.framework.TestSuite(
                 ChangeTrackPieceMoveTest.class);
     }
 
+    /**
+     *
+     */
     @Override
     protected void setUp() {
         setHasSetupBeenCalled(true);
@@ -39,6 +55,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }
 
+    /**
+     *
+     */
     public void testTryDoMove() {
         setUp();
 
@@ -97,10 +116,16 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertEquals(false, moveStatus.isOk());
     }
 
+    /**
+     *
+     */
     public void testTryUndoMove() {
         setUp();
     }
 
+    /**
+     *
+     */
     public void testDoMove() {
         setUp();
 
@@ -119,6 +144,11 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
     }
 
+    /**
+     *
+     * @param oldTrackPiece
+     * @param newTrackPiece
+     */
     protected void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece,
                                         TrackPiece newTrackPiece) {
         TrackMove move;
@@ -134,6 +164,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertEquals(newTrackPiece.getTrackConfiguration(), actual);
     }
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         TrackPiece oldTrackPiece;

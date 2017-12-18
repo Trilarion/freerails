@@ -17,6 +17,10 @@ import freerails.world.top.*;
 import freerails.world.top.WorldImplTest.TestActivity;
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class WorldDiffsMoveTest extends TestCase {
 
     final CityModel city1 = new CityModel("City 1", 8, 4);
@@ -25,6 +29,10 @@ public class WorldDiffsMoveTest extends TestCase {
     WorldDiffs diffs;
     FreerailsPrincipal fp1;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         world = new WorldImpl(10, 10);
@@ -35,6 +43,9 @@ public class WorldDiffsMoveTest extends TestCase {
         diffs = new WorldDiffs(world);
     }
 
+    /**
+     *
+     */
     public void testChangingMap() {
 
         diffs.setTile(4, 0, city1);
@@ -43,6 +54,9 @@ public class WorldDiffsMoveTest extends TestCase {
         runTests();
     }
 
+    /**
+     *
+     */
     public void testChangingElementInList1() {
         world.add(fp1, KEY.STATIONS, city1);
         world.add(fp1, KEY.STATIONS, city1);
@@ -52,6 +66,9 @@ public class WorldDiffsMoveTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testChangingElementInList2() {
         world.add(fp1, KEY.STATIONS, city1);
         world.add(fp1, KEY.STATIONS, city1);
@@ -65,6 +82,9 @@ public class WorldDiffsMoveTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testAddingElementToList() {
         world.add(fp1, KEY.STATIONS, city1);
         diffs.add(fp1, KEY.STATIONS, city2);
@@ -73,6 +93,9 @@ public class WorldDiffsMoveTest extends TestCase {
         runTests();
     }
 
+    /**
+     *
+     */
     public void testAddingTransaction() {
         Transaction t1 = new AddItemTransaction(Category.BOND, 1, 1, new Money(
                 100));
@@ -87,6 +110,9 @@ public class WorldDiffsMoveTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testAddingActivity() {
         Activity act = new TestActivity(30);
         int row = world.addActiveEntity(fp1, act);
@@ -97,6 +123,9 @@ public class WorldDiffsMoveTest extends TestCase {
         runTests();
     }
 
+    /**
+     *
+     */
     public void testAddingActiviteEntity() {
         Activity act = new TestActivity(30);
         int row = world.addActiveEntity(fp1, act);

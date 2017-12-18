@@ -18,6 +18,15 @@ import java.io.IOException;
  * @author Luke Lindsay
  */
 final public class ChequeredTileRenderer extends AbstractTileRenderer {
+
+    /**
+     *
+     * @param imageManager
+     * @param rgbValues
+     * @param tileModel
+     * @param w
+     * @throws IOException
+     */
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,
                                  TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
@@ -28,6 +37,13 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
                 .getImage(generateRelativeFileName(1));
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param w
+     * @return
+     */
     @Override
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         return (x + y) % 2;
@@ -41,6 +57,11 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     @Override
     protected String generateFileNameNumber(int i) {
         return String.valueOf(i);

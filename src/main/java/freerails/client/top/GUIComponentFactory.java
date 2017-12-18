@@ -8,25 +8,70 @@ import javax.swing.*;
  * @author Luke
  */
 public interface GUIComponentFactory {
+
+    /**
+     *
+     * @return
+     */
     JPanel createOverviewMap();
 
+    /**
+     *
+     * @return
+     */
     JTabbedPane createTrainsJTabPane();
 
+    /**
+     *
+     * @return
+     */
     JScrollPane createMainMap();
 
+    /**
+     *
+     * @return
+     */
     JLabel createCashJLabel();
 
+    /**
+     *
+     * @return
+     */
     JLabel createDateJLabel();
 
+    /**
+     *
+     * @return
+     */
     JMenu createBuildMenu();
 
+    /**
+     *
+     * @return
+     */
     JMenu createReportsMenu();
 
+    /**
+     *
+     * @return
+     */
     JMenu createGameMenu();
 
+    /**
+     *
+     * @return
+     */
     JMenu createDisplayMenu();
 
+    /**
+     *
+     * @return
+     */
     JMenu createHelpMenu();
 
+    /**
+     *
+     * @return
+     */
     JMenu createBrokerMenu();
 }

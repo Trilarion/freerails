@@ -25,6 +25,7 @@ public class CalcSupplyAtStations {
      * Constructor, currently called from GUIComponentFactory.
      *
      * @param world The World object that contains all about the game world
+     * @param mr
      */
     public CalcSupplyAtStations(World world, MoveReceiver mr) {
         this.w = world;

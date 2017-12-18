@@ -38,6 +38,8 @@ final public class FreerailsCursor {
     /**
      * Creates a new FreerailsCursor.
      *
+     * @param mr
+     * @param rr
      * @throws IOException
      */
     public FreerailsCursor(ModelRoot mr, RenderersRoot rr) throws IOException {

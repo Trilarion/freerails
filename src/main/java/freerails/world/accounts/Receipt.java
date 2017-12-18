@@ -18,11 +18,20 @@ public class Receipt implements Transaction {
 
     private final Category category;
 
+    /**
+     *
+     * @param m
+     * @param category
+     */
     public Receipt(Money m, Category category) {
         this.amount = m;
         this.category = category;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money deltaAssets() {
         return amount.changeSign();
     }
@@ -41,6 +50,10 @@ public class Receipt implements Transaction {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Category getCategory() {
         return category;
     }

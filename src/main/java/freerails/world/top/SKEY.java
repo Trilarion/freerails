@@ -28,16 +28,35 @@ public class SKEY implements FreerailsSerializable {
     private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
 
     // START OF KEYS
+
+    /**
+     *
+     */
     public static final SKEY TERRAIN_TYPES = new SKEY();
 
+    /**
+     *
+     */
     public static final SKEY WAGON_TYPES = new SKEY();
 
+    /**
+     *
+     */
     public static final SKEY CARGO_TYPES = new SKEY();
 
+    /**
+     *
+     */
     public static final SKEY CITIES = new SKEY();
 
+    /**
+     *
+     */
     public static final SKEY ENGINE_TYPES = new SKEY();
 
+    /**
+     *
+     */
     public static final SKEY TRACK_RULES = new SKEY();
 
     // END OF SKEYS

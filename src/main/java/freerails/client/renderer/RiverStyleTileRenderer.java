@@ -25,6 +25,14 @@ final public class RiverStyleTileRenderer extends
 
     private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
 
+    /**
+     *
+     * @param imageManager
+     * @param rgbValues
+     * @param tileModel
+     * @param w
+     * @throws IOException
+     */
     public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
                                   TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
@@ -38,6 +46,10 @@ final public class RiverStyleTileRenderer extends
 
     /**
      * 666 optimize cache
+     * @param x
+     * @param w
+     * @param y
+     * @return 
      */
     @Override
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
@@ -60,6 +72,11 @@ final public class RiverStyleTileRenderer extends
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     @Override
     protected String generateFileNameNumber(int i) {
         return BinaryNumberFormatter.formatWithLowBitOnLeft(i, 4);

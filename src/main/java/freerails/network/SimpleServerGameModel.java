@@ -23,33 +23,76 @@ public class SimpleServerGameModel implements ServerGameModel {
 
     private String[] passwords;
 
+    /**
+     *
+     * @param w
+     * @param passwords
+     */
     public void setWorld(World w, String[] passwords) {
         this.w = w;
         this.passwords = passwords.clone();
     }
 
+    /**
+     *
+     * @return
+     */
     public World getWorld() {
         return w;
     }
 
+    /**
+     *
+     * @param moveExecuter
+     */
     public void init(MoveReceiver moveExecuter) {
     }
 
+    /**
+     *
+     * @param objectOut
+     * @throws IOException
+     */
     public void write(ObjectOutputStream objectOut) throws IOException {
     }
 
+    /**
+     *
+     */
     public void update() {
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getPasswords() {
         return passwords.clone();
     }

@@ -13,12 +13,22 @@ final public class CargoType implements FreerailsSerializable {
     private final String name;
     private final int unitWeight;
 
+    /**
+     *
+     * @param weight
+     * @param s
+     * @param cat
+     */
     public CargoType(int weight, String s, Categories cat) {
         unitWeight = weight;
         category = cat;
         name = s;
     }
 
+    /**
+     *
+     * @return
+     */
     public static int getNumberOfCategories() {
         return Categories.values().length;
     }
@@ -32,21 +42,34 @@ final public class CargoType implements FreerailsSerializable {
                 && other.category.equals(category);
     }
 
+    /**
+     *
+     * @return
+     */
     public Categories getCategory() {
         return category;
     }
 
     /**
      * Returns the name, replacing any underscores with spaces.
+     * @return 
      */
     public String getDisplayName() {
         return this.name.replace('_', ' ');
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getUnitWeight() {
         return unitWeight;
     }
@@ -67,8 +90,35 @@ final public class CargoType implements FreerailsSerializable {
         return name;
     }
 
+    /**
+     *
+     */
     public enum Categories {
-        Mail(0), Passengers(1), Fast_Freight(2), Slow_Freight(3), Bulk_Freight(
+
+        /**
+         *
+         */
+        Mail(0),
+
+        /**
+         *
+         */
+        Passengers(1),
+
+        /**
+         *
+         */
+        Fast_Freight(2),
+
+        /**
+         *
+         */
+        Slow_Freight(3),
+
+        /**
+         *
+         */
+        Bulk_Freight(
                 4);
         private final int nr;
 
@@ -76,6 +126,11 @@ final public class CargoType implements FreerailsSerializable {
             this.nr = nr;
         }
 
+        /**
+         *
+         * @param cat
+         * @return
+         */
         public static Categories getCategory(String cat) {
             for (Categories cmp : values()) {
                 if (cmp.toString().equals(cat)) {
@@ -85,6 +140,10 @@ final public class CargoType implements FreerailsSerializable {
             throw new IllegalArgumentException("Category:" + cat + " unknown.");
         }
 
+        /**
+         *
+         * @return
+         */
         public int getNumber() {
             return nr;
         }

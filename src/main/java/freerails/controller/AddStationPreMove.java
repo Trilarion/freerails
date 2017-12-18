@@ -41,11 +41,25 @@ public class AddStationPreMove implements PreMove {
         this.principal = principal;
     }
 
+    /**
+     *
+     * @param p
+     * @param trackRule
+     * @param principal
+     * @return
+     */
     public static AddStationPreMove newStation(ImPoint p, int trackRule,
                                                FreerailsPrincipal principal) {
         return new AddStationPreMove(p, trackRule, principal);
     }
 
+    /**
+     *
+     * @param p
+     * @param trackRule
+     * @param principal
+     * @return
+     */
     public static AddStationPreMove upgradeStation(ImPoint p, int trackRule,
                                                    FreerailsPrincipal principal) {
         return new AddStationPreMove(p, trackRule, principal);
@@ -76,6 +90,11 @@ public class AddStationPreMove implements PreMove {
         return result;
     }
 
+    /**
+     *
+     * @param world
+     * @return
+     */
     public Move generateMove(ReadOnlyWorld world) {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(
                 world, principal);

@@ -7,6 +7,10 @@ package freerails.world.train;
 import freerails.world.common.Activity;
 import freerails.world.common.ImList;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         SpeedAgainstTime {
 
@@ -16,6 +20,10 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 
     private final double finalT, finalS;
 
+    /**
+     *
+     * @param accs
+     */
     public CompositeSpeedAgainstTime(SpeedAgainstTime... accs) {
         values = new ImList<>(accs);
         values.checkForNulls();
@@ -56,10 +64,19 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public double duration() {
         return finalT;
     }
 
+    /**
+     *
+     * @param dt
+     * @return
+     */
     public SpeedTimeAndStatus getState(final double dt) {
         checkT(dt);
         double acceleration;

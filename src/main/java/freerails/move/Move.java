@@ -44,17 +44,26 @@ public interface Move extends FreerailsSerializable {
     /**
      * Tests whether this Move can be executed on the specifed world object,
      * this method should leave the world object unchanged.
+     * @param w
+     * @param p
+     * @return 
      */
     MoveStatus tryDoMove(World w, FreerailsPrincipal p);
 
     /**
      * Tests whether this Move can be undone on the specifed world object, this
      * method should leave the world object unchanged.
+     * @param w
+     * @param p
+     * @return 
      */
     MoveStatus tryUndoMove(World w, FreerailsPrincipal p);
 
     /**
      * Executes this move on the specifed world object.
+     * @param w
+     * @param p
+     * @return 
      */
     MoveStatus doMove(World w, FreerailsPrincipal p);
 
@@ -62,6 +71,9 @@ public interface Move extends FreerailsSerializable {
      * If <code>doMove</code> has just been executed on the specified world
      * object, calling this method changes the state of the world object back to
      * how it was before <code>doMove</code> was called.
+     * @param w
+     * @param p
+     * @return 
      */
     MoveStatus undoMove(World w, FreerailsPrincipal p);
 }

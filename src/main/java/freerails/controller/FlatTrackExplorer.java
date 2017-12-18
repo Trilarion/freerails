@@ -28,6 +28,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             0, 0, Step.NORTH);
     private boolean beforeFirst = true;
 
+    /**
+     *
+     * @param world
+     * @param p
+     * @throws NoTrackException
+     */
     public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p)
             throws NoTrackException {
         w = world;
@@ -41,6 +47,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
+     * @param w
      * @param p location of track to consider.
      * @return an array of PositionOnTrack objects describing the set of
      * possible orientations at this position (heading towards the
@@ -76,6 +83,10 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return possiblePositions;
     }
 
+    /**
+     *
+     * @return
+     */
     public ReadOnlyWorld getWorld() {
         return w;
     }
@@ -84,6 +95,10 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return this.currentPosition.toInt();
     }
 
+    /**
+     *
+     * @param i
+     */
     public void setPosition(int i) {
         beforeFirst = true;
         currentPosition.setValuesFromInt(i);
@@ -143,6 +158,10 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return (int) Math.round(currentBranch.cameFrom().getLength());
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasNextEdge() {
         if (beforeFirst) {
             // We can always go back the way we have come, so if we are before
@@ -186,6 +205,10 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return v;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getH() {
         // TODO Auto-generated method stub
         return 0;

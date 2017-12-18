@@ -13,11 +13,14 @@ import freerails.world.common.FreerailsSerializable;
 public interface Message2Client extends FreerailsSerializable {
     /**
      * Executes this command on the specified ClientControlInterface.
+     * @param client
+     * @return 
      */
     MessageStatus execute(ClientControlInterface client);
 
     /**
      * Returns the id of this command.
+     * @return 
      */
     int getID();
 }

@@ -28,10 +28,21 @@ import static freerails.world.accounts.Transaction.Category.*;
 public class TrackMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;
 
+    /**
+     *
+     * @param mr
+     */
     public TrackMaintenanceMoveGenerator(MoveReceiver mr) {
         this.moveReceiver = mr;
     }
 
+    /**
+     *
+     * @param w
+     * @param principal
+     * @param category
+     * @return
+     */
     public static AddTransactionMove generateMove(World w,
                                                   FreerailsPrincipal principal, Transaction.Category category) {
         if (TRACK_MAINTENANCE != category && STATION_MAINTENANCE != category) {
@@ -64,6 +75,10 @@ public class TrackMaintenanceMoveGenerator {
         return new AddTransactionMove(principal, t);
     }
 
+    /**
+     *
+     * @param w
+     */
     public void update(World w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();

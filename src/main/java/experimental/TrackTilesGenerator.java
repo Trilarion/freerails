@@ -31,6 +31,9 @@ public class TrackTilesGenerator extends JPanel {
 
     private final TrackRenderer tr;
 
+    /**
+     *
+     */
     public TrackTilesGenerator() {
         Point2D.Double start, end, one, two;
         track = new CubicCurve2D.Double[3];
@@ -54,6 +57,10 @@ public class TrackTilesGenerator extends JPanel {
 
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
         JFrame frame = new JFrame();

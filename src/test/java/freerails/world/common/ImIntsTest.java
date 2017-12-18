@@ -7,11 +7,20 @@ package freerails.world.common;
 import freerails.util.Utils;
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class ImIntsTest extends TestCase {
 
     /*
      * Test method for 'freerails.world.common.ImInts.append(int...)'
      */
+
+    /**
+     *
+     */
+
     public void testAppend() {
 
         int[] a = {1, 2, 3};
@@ -24,6 +33,9 @@ public class ImIntsTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testRemoveLast() {
         // Test method does not change original
         ImInts original = new ImInts(1, 2, 3, 4);
@@ -47,6 +59,9 @@ public class ImIntsTest extends TestCase {
         assertEquals(expected, actual);
     }
 
+    /**
+     *
+     */
     public void testEquals() {
         int[] a = {1, 2, 3};
         int[] b = {1, 2, 3};

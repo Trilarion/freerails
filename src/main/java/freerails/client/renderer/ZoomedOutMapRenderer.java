@@ -70,6 +70,12 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
         refresh();
     }
 
+    /**
+     *
+     * @param world
+     * @param maxSize
+     * @return
+     */
     public static ZoomedOutMapRenderer getInstance(ReadOnlyWorld world,
                                                    Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
@@ -90,10 +96,19 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
                 world.getMapWidth(), world.getMapHeight());
     }
 
+    /**
+     *
+     * @return
+     */
     public float getScale() {
         return (float) imageHeight / (float) mapHeight;
     }
 
+    /**
+     *
+     * @param g
+     * @param visibleRect
+     */
     public void paintRect(Graphics g, Rectangle visibleRect) {
         renderOffScreenImage();
 
@@ -189,18 +204,38 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     /*
      * @see NewMapView#getMapSizeInPixels()
      */
+
+    /**
+     *
+     * @return
+     */
+
     public Dimension getMapSizeInPixels() {
         return new Dimension(imageWidth, imageHeight);
     }
 
+    /**
+     *
+     * @param g
+     * @param tileX
+     * @param tileY
+     */
     public void paintTile(Graphics g, int tileX, int tileY) {
         g.drawImage(mapImage, 0, 0, null);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void refreshTile(int x, int y) {
         refreshTile(new Point(x, y));
     }
 
+    /**
+     *
+     */
     public void refreshAll() {
         refresh();
     }

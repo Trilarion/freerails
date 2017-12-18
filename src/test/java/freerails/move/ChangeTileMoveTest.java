@@ -10,8 +10,15 @@ import freerails.world.terrain.TerrainTile;
 
 import java.awt.*;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class ChangeTileMoveTest extends AbstractMoveTestCase {
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         Point p = new Point(10, 10);
@@ -24,6 +31,9 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
         assertTrue(tile.getTerrainTypeID() == 5);
     }
 
+    /**
+     *
+     */
     public void testMove2() {
         Point p = new Point(10, 10);
         ChangeTileMove move = new ChangeTileMove(world, p, 5);
@@ -31,6 +41,9 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     @Override
     protected void setupWorld() {
         world = MapFixtureFactory2.getCopy();

@@ -14,6 +14,11 @@ import freerails.world.top.TransactionAggregator;
  */
 public class NetWorthCalculator extends TransactionAggregator {
 
+    /**
+     *
+     * @param w
+     * @param principal
+     */
     public NetWorthCalculator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         super(w, principal);
     }

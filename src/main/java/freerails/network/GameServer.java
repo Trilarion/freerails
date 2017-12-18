@@ -11,9 +11,21 @@ import freerails.util.GameModel;
  * @author Luke
  */
 public interface GameServer extends GameModel {
+
+    /**
+     *
+     * @param connection
+     */
     void addConnection(Connection2Client connection);
 
+    /**
+     *
+     * @return
+     */
     int countOpenConnections();
 
+    /**
+     *
+     */
     void stop();
 }

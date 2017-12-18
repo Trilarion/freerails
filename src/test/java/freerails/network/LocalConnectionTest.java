@@ -45,6 +45,9 @@ public class LocalConnectionTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testWait() {
         try {
             Money m = new Money(100);
@@ -65,6 +68,9 @@ public class LocalConnectionTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testReadFromServer() {
         FreerailsSerializable[] objectsRead;
 
@@ -78,6 +84,9 @@ public class LocalConnectionTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testClose() {
         try {
             localConnection.disconnect();
@@ -89,10 +98,17 @@ public class LocalConnectionTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testIsOpen() {
         assertTrue(localConnection.isOpen());
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         localConnection = new LocalConnection();
@@ -102,6 +118,10 @@ public class LocalConnectionTest extends TestCase {
         t.start(); // Start the sever thread.
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void tearDown() throws Exception {
         // TODO Auto-generated method stub

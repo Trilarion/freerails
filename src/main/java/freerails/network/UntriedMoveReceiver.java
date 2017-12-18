@@ -10,7 +10,17 @@ import freerails.move.MoveStatus;
  * @author rob
  */
 public interface UntriedMoveReceiver extends MoveReceiver {
+
+    /**
+     *
+     * @param move
+     * @return
+     */
     MoveStatus tryDoMove(Move move);
 
+    /**
+     *
+     * @param pm
+     */
     void processPreMove(PreMove pm);
 }

@@ -25,6 +25,9 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel headline;
 
+    /**
+     *
+     */
     public NewsPaperJPanel() {
         initComponents();
 
@@ -106,10 +109,20 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
         this.paintChildren(g);
     }
 
+    /**
+     *
+     * @param s
+     */
     public void setHeadline(String s) {
         this.headline.setText(s);
     }
 
+    /**
+     *
+     * @param mr
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
         this.callBack = closeAction;
     }

@@ -23,6 +23,12 @@ public class CityModel implements FreerailsSerializable {
 
     private final int y;
 
+    /**
+     *
+     * @param s
+     * @param xx
+     * @param yy
+     */
     public CityModel(String s, int xx, int yy) {
         name = s;
         x = xx;
@@ -54,14 +60,26 @@ public class CityModel implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCityName() {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCityX() {
         return x;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCityY() {
         return y;
     }

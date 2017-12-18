@@ -28,22 +28,41 @@ final public class MoveChainFork implements MoveReceiver {
 
     private long lastTickTime = System.currentTimeMillis();
 
+    /**
+     *
+     */
     public MoveChainFork() {
         // do nothing
     }
 
+    /**
+     *
+     * @return
+     */
     public long getLastTickTime() {
         return lastTickTime;
     }
 
+    /**
+     *
+     * @param l
+     */
     public void addMapListener(WorldMapListener l) {
         mapListeners.add(l);
     }
 
+    /**
+     *
+     * @param l
+     */
     public void removeMapListener(WorldMapListener l) {
         mapListeners.remove(l);
     }
 
+    /**
+     *
+     * @param moveReceiver
+     */
     public void removeCompleteMoveReceiver(MoveReceiver moveReceiver) {
         if (null == moveReceiver) {
             throw new NullPointerException();
@@ -52,6 +71,10 @@ final public class MoveChainFork implements MoveReceiver {
         moveReceivers.remove(moveReceiver);
     }
 
+    /**
+     *
+     * @param moveReceiver
+     */
     public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
         if (null == moveReceiver) {
             throw new NullPointerException();
@@ -60,6 +83,10 @@ final public class MoveChainFork implements MoveReceiver {
         moveReceivers.add(moveReceiver);
     }
 
+    /**
+     *
+     * @param moveReceiver
+     */
     public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
         if (null == moveReceiver) {
             throw new NullPointerException();
@@ -68,6 +95,10 @@ final public class MoveChainFork implements MoveReceiver {
         splitMoveReceivers.add(moveReceiver);
     }
 
+    /**
+     *
+     * @param listener
+     */
     public void addListListener(WorldListListener listener) {
         if (null == listener) {
             throw new NullPointerException();
@@ -76,6 +107,10 @@ final public class MoveChainFork implements MoveReceiver {
         listListeners.add(listener);
     }
 
+    /**
+     *
+     * @param move
+     */
     public void processMove(Move move) {
         for (MoveReceiver m : moveReceivers) {
             m.processMove(move);

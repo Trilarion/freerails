@@ -53,12 +53,28 @@ public class UserInputOnMapController extends KeyAdapter {
      */
     private boolean ignoreDragging = false;
 
+    /**
+     *
+     * @param mr
+     * @param ar
+     */
     public UserInputOnMapController(ModelRoot mr, ActionRoot ar) {
         modelRoot = mr;
         actionRoot = ar;
     }
 
     // Inner class was here...
+
+    /**
+     *
+     * @param mv
+     * @param trackBuilder
+     * @param stPopup
+     * @param mr
+     * @param dbc
+     * @param cursor
+     * @param buildTrack
+     */
 
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
                       StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,

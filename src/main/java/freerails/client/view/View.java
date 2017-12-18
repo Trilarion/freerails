@@ -16,5 +16,12 @@ import javax.swing.*;
  * @author Luke
  */
 public interface View {
+
+    /**
+     *
+     * @param modelRoot
+     * @param vl
+     * @param closeAction
+     */
     void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction);
 }

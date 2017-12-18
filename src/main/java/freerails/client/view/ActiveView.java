@@ -16,6 +16,14 @@ import java.awt.event.ActionListener;
  * @author Luke
  */
 public interface ActiveView {
+
+    /**
+     *
+     * @param modelRoot
+     * @param ar
+     * @param vl
+     * @param submitButtonCallBack
+     */
     void setup(ModelRoot modelRoot, ActionRoot ar, RenderersRoot vl,
                ActionListener submitButtonCallBack);
 }

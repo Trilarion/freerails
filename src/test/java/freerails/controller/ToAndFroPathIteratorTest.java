@@ -14,10 +14,18 @@ import java.util.List;
  * @author Luke Lindsay 30-Oct-2002
  */
 public class ToAndFroPathIteratorTest extends TestCase {
+
+    /**
+     *
+     * @param arg0
+     */
     public ToAndFroPathIteratorTest(String arg0) {
         super(arg0);
     }
 
+    /**
+     *
+     */
     public void testNextSegment() {
         List<Point> l = new ArrayList<>();
         IntLine line = new IntLine();

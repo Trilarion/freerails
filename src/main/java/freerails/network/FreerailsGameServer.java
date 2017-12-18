@@ -65,10 +65,19 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     private ArrayList<NameAndPassword> players = new ArrayList<>();
     private ServerGameModel serverGameModel = new SimpleServerGameModel();
 
+    /**
+     *
+     * @param gamesManager
+     */
     public FreerailsGameServer(SavedGamesManager gamesManager) {
         this.savedGamesManager = gamesManager;
     }
 
+    /**
+     *
+     * @param gamesManager
+     * @return
+     */
     public static FreerailsGameServer startServer(SavedGamesManager gamesManager) {
         FreerailsGameServer server = new FreerailsGameServer(gamesManager);
         Thread t = new Thread(server);
@@ -87,6 +96,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         }
     }
 
+    /**
+     *
+     * @param connection
+     */
     public synchronized void addConnection(Connection2Client connection) {
         String[] before = getPlayerNames();
         if (logger.isDebugEnabled()) {
@@ -161,10 +174,18 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         }
     }
 
+    /**
+     *
+     * @param l
+     */
     public void addPropertyChangeListener(PropertyChangeListener l) {
         propertyChangeSupport.addPropertyChangeListener(l);
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized int countOpenConnections() {
         Iterator<NameAndPassword> it = acceptedConnections.keySet().iterator();
         int numConnections = 0;
@@ -188,6 +209,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         return commandID++;
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getPlayerNames() {
         String[] playerNames = new String[players.size()];
 
@@ -210,10 +235,18 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         return confirmedPlayers.contains(players.get(player));
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isNewPlayersAllowed() {
         return newPlayersAllowed;
     }
 
+    /**
+     *
+     * @param newPlayersAllowed
+     */
     public void setNewPlayersAllowed(boolean newPlayersAllowed) {
         this.newPlayersAllowed = newPlayersAllowed;
     }
@@ -226,6 +259,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         return false;
     }
 
+    /**
+     *
+     * @param saveGameName
+     * @throws IOException
+     */
     public void loadgame(String saveGameName) throws IOException {
         logger.info("load game " + saveGameName);
         newPlayersAllowed = false;
@@ -258,11 +296,20 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         sendWorldUpdatedCommand();
     }
 
+    /**
+     *
+     * @param player
+     */
     public void logoff(int player) {
         NameAndPassword np = players.get(player);
         currentlyLoggedOn.remove(np);
     }
 
+    /**
+     *
+     * @param lor
+     * @return
+     */
     public LogOnResponse logon(LogOnRequest lor) {
         NameAndPassword p = new NameAndPassword(lor.getUsername(), lor
                 .getPassword());
@@ -287,6 +334,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         return LogOnResponse.accepted(players.indexOf(p));
     }
 
+    /**
+     *
+     * @param mapName
+     * @param numAI
+     */
     public void newGame(String mapName, int numAI) {
         for (int i = 0; i < numAI; ++i) {
             NameAndPassword aiPlayer = new NameAndPassword("AI" + i, null);
@@ -296,6 +348,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         this.newGame(mapName);
     }
 
+    /**
+     *
+     * @param mapName
+     */
     public void newGame(String mapName) {
         newPlayersAllowed = false;
         confirmedPlayers.clear();
@@ -352,6 +408,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 after);
     }
 
+    /**
+     *
+     * @param l
+     */
     public void removePropertyChangeListener(PropertyChangeListener l) {
         propertyChangeSupport.removePropertyChangeListener(l);
     }
@@ -361,6 +421,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         status.close();
     }
 
+    /**
+     *
+     * @param saveGameName
+     */
     public void savegame(String saveGameName) {
         logger.info("save game as " + saveGameName);
         try {
@@ -431,6 +495,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         send2All(command);
     }
 
+    /**
+     *
+     * @param serverGameModel
+     */
     public void setServerGameModel(ServerGameModel serverGameModel) {
         this.serverGameModel = serverGameModel;
 
@@ -449,10 +517,16 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         serverGameModel.init(moveExecuter);
     }
 
+    /**
+     *
+     */
     public void stop() {
         // TODO Auto-generated method stub
     }
 
+    /**
+     *
+     */
     public void stopGame() {
         logger.info("Stop game.");
     }
@@ -555,6 +629,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         }
     }
 
+    /**
+     *
+     */
     public void refreshSavedGames() {
         Message2Client setMaps = new SetPropertyMessage2Client(
                 getNextClientCommandId(),

@@ -23,10 +23,19 @@ import java.awt.*;
 public class CityNamesRenderer implements Painter {
     private final ReadOnlyWorld w;
 
+    /**
+     *
+     * @param world
+     */
     public CityNamesRenderer(ReadOnlyWorld world) {
         this.w = world;
     }
 
+    /**
+     *
+     * @param g
+     * @param newVisibleRectectangle
+     */
     public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", 0, 20));

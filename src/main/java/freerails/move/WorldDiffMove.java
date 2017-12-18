@@ -42,6 +42,13 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     private final CompositeMove listChanges;
     private final int x, y, w, h;
 
+    /**
+     *
+     * @param world
+     * @param worldDiffs
+     * @param cause
+     * @throws UnsupportedOperationException
+     */
     public WorldDiffMove(ReadOnlyWorld world, WorldDiffs worldDiffs, Cause cause)
             throws UnsupportedOperationException {
         this.cause = cause;
@@ -211,6 +218,12 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         listChanges = new CompositeMove(tempList);
     }
 
+    /**
+     *
+     * @param diffs
+     * @param cause
+     * @return
+     */
     public static WorldDiffMove generate(WorldDiffs diffs, Cause cause) {
         return new WorldDiffMove(diffs.getUnderlying(), diffs, cause);
     }
@@ -257,6 +270,10 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return diffs.equals(mapDiffMove.diffs);
     }
 
+    /**
+     *
+     * @return
+     */
     public Rectangle getUpdatedTiles() {
         return new Rectangle(x, y, w, h);
     }
@@ -304,6 +321,10 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return ms = listChanges.tryUndoMove(world, p);
     }
 
+    /**
+     *
+     * @return
+     */
     public int listDiffs() {
         return listChanges.size();
     }
@@ -322,25 +343,66 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return ms;
     }
 
+    /**
+     *
+     * @return
+     */
     public Cause getCause() {
         return cause;
     }
 
+    /**
+     *
+     * @return
+     */
     public CompositeMove getListChanges() {
         return listChanges;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<MapDiff> getDiffs() {
         return diffs;
     }
 
+    /**
+     *
+     */
     public enum Cause {
-        TrainArrives, Other, YearEnd
+
+        /**
+         *
+         */
+        TrainArrives,
+
+        /**
+         *
+         */
+        Other,
+
+        /**
+         *
+         */
+        YearEnd
     }
 
+    /**
+     *
+     */
     public static class MapDiff implements FreerailsSerializable {
         private static final long serialVersionUID = -5935670372745313360L;
-        public final int x, y;
+
+        /**
+         *
+         */
+        public final int x,
+
+        /**
+         *
+         */
+        y;
         final FreerailsSerializable before, after;
 
         MapDiff(FreerailsSerializable before, FreerailsSerializable after,

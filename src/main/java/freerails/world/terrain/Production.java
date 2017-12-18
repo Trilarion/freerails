@@ -21,6 +21,11 @@ public class Production implements FreerailsSerializable {
      */
     private final int rate;
 
+    /**
+     *
+     * @param type
+     * @param r
+     */
     public Production(int type, int r) {
         cargoType = type;
         rate = r;
@@ -48,10 +53,18 @@ public class Production implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCargoType() {
         return cargoType;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRate() {
         return rate;
     }

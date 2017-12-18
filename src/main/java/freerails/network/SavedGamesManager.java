@@ -13,13 +13,40 @@ import java.io.Serializable;
  * @author Luke
  */
 public interface SavedGamesManager {
+
+    /**
+     *
+     * @return
+     */
     String[] getSaveGameNames();
 
+    /**
+     *
+     * @return
+     */
     String[] getNewMapNames();
 
+    /**
+     *
+     * @param w
+     * @param s
+     * @throws IOException
+     */
     void saveGame(Serializable w, String s) throws IOException;
 
+    /**
+     *
+     * @param name
+     * @return
+     * @throws IOException
+     */
     Serializable loadGame(String name) throws IOException;
 
+    /**
+     *
+     * @param name
+     * @return
+     * @throws IOException
+     */
     Serializable newMap(String name) throws IOException;
 }

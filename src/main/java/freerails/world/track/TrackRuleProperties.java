@@ -27,6 +27,17 @@ final public class TrackRuleProperties implements FreerailsSerializable {
 
     private final String typeName;
 
+    /**
+     *
+     * @param rgb
+     * @param doubleTrack
+     * @param name
+     * @param c
+     * @param radius
+     * @param price
+     * @param maintenance
+     * @param fixedCost
+     */
     public TrackRuleProperties(int rgb, boolean doubleTrack, String name,
                                TrackRule.TrackCategories c, int radius, int price,
                                int maintenance, int fixedCost) {
@@ -54,10 +65,18 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getMaintenanceCost() {
         return maintenanceCost;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getPrice() {
         return price;
     }
@@ -66,10 +85,18 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         return rGBvalue;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationRadius() {
         return stationRadius;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTypeName() {
         return typeName;
     }
@@ -89,18 +116,34 @@ final public class TrackRuleProperties implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isEnableDoubleTrack() {
         return enableDoubleTrack;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isStation() {
         return category.equals(TrackRule.TrackCategories.station);
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackRule.TrackCategories getCategory() {
         return category;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getFixedCost() {
         return fixedCost;
     }

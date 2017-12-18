@@ -24,10 +24,17 @@ public class StepTest extends TestCase {
 
     final Step nw = Step.NORTH_WEST;
 
+    /**
+     *
+     * @param arg0
+     */
     public StepTest(String arg0) {
         super(arg0);
     }
 
+    /**
+     *
+     */
     public void testGetDirection() {
         double d = 0;
         assertTrue(d == n.getDirection());
@@ -35,6 +42,9 @@ public class StepTest extends TestCase {
         assertTrue(d == ne.getDirection());
     }
 
+    /**
+     *
+     */
     public void testGetNearestVector() {
         // Each vector should be the nearest to itself!
         Step[] vectors = Step.getList();
@@ -64,6 +74,9 @@ public class StepTest extends TestCase {
         assertEquals(v, v2);
     }
 
+    /**
+     *
+     */
     public void testGetNewTemplateNumber() {
         assertEquals(Step.NORTH.get8bitTemplate(), 1);
         assertEquals(Step.NORTH_EAST.get8bitTemplate(), 2);

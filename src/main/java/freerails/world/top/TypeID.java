@@ -15,15 +15,28 @@ public class TypeID {
 
     private final SKEY key;
 
+    /**
+     *
+     * @param id
+     * @param key
+     */
     public TypeID(int id, SKEY key) {
         this.id = id;
         this.key = key;
     }
 
+    /**
+     *
+     * @return
+     */
     public SKEY getKey() {
         return key;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getID() {
         return id;
     }

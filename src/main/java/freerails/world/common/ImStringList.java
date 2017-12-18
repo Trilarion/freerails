@@ -20,14 +20,27 @@ public class ImStringList implements FreerailsSerializable {
 
     private final String[] strings;
 
+    /**
+     *
+     * @param strings
+     */
     public ImStringList(String... strings) {
         this.strings = strings.clone();
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public String get(int i) {
         return strings[i];
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return strings.length;
     }

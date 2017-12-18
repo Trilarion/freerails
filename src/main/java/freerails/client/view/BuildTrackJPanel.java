@@ -71,6 +71,13 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         initComponents();
     }
 
+    /**
+     *
+     * @param mr
+     * @param ar
+     * @param vl
+     * @param al
+     */
     public void setup(ModelRoot mr, ActionRoot ar, RenderersRoot vl,
                       ActionListener al) {
 
@@ -539,6 +546,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
     }
 
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 
 }

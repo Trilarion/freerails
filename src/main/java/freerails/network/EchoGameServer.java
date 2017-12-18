@@ -33,6 +33,7 @@ public class EchoGameServer implements GameServer, Runnable {
     /**
      * Creates an EchoGameServer, starts it in a new Thread, and waits for its
      * status to change to isOpen before returning.
+     * @return 
      */
     public static EchoGameServer startServer() {
         EchoGameServer server = new EchoGameServer();
@@ -52,6 +53,10 @@ public class EchoGameServer implements GameServer, Runnable {
         }
     }
 
+    /**
+     *
+     * @param connection
+     */
     public synchronized void addConnection(Connection2Client connection) {
         if (null == connection) {
             throw new NullPointerException();
@@ -64,6 +69,10 @@ public class EchoGameServer implements GameServer, Runnable {
         connections.add(connection);
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized int countOpenConnections() {
         Iterator<Connection2Client> it = connections.iterator();
 
@@ -78,6 +87,9 @@ public class EchoGameServer implements GameServer, Runnable {
         return connections.size();
     }
 
+    /**
+     *
+     */
     public synchronized void stop() {
         status.close();
 
@@ -131,6 +143,9 @@ public class EchoGameServer implements GameServer, Runnable {
         }
     }
 
+    /**
+     *
+     */
     public void update() {
         synchronized (this) {
             /* Read messages. */

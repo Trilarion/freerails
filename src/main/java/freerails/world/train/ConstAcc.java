@@ -7,9 +7,16 @@ package freerails.world.train;
 import freerails.util.Utils;
 import freerails.world.common.FreerailsSerializable;
 
+/**
+ *
+ * @author jkeller1
+ */
 strictfp public class ConstAcc implements FreerailsSerializable,
         SpeedAgainstTime {
 
+    /**
+     *
+     */
     public static final ConstAcc STOPPED = new ConstAcc(0, 0, 0, 0);
     private static final long serialVersionUID = -2180666310811530761L;
     private final double u, a, finalS, finalT;
@@ -21,6 +28,13 @@ strictfp public class ConstAcc implements FreerailsSerializable,
         this.finalS = s;
     }
 
+    /**
+     *
+     * @param u
+     * @param a
+     * @param s
+     * @return
+     */
     public static ConstAcc uas(double u, double a, double s) {
         double t = calcT(u, a, s);
         return new ConstAcc(a, t, u, s);
@@ -31,6 +45,13 @@ strictfp public class ConstAcc implements FreerailsSerializable,
         return a == 0 ? s / u : Utils.solveQuadratic(a * 0.5d, u, -s);
     }
 
+    /**
+     *
+     * @param u
+     * @param a
+     * @param t
+     * @return
+     */
     public static ConstAcc uat(double u, double a, double t) {
         double s = u * t + a * t * t / 2;
         return new ConstAcc(a, t, u, s);

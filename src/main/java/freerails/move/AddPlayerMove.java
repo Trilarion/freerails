@@ -23,6 +23,12 @@ public class AddPlayerMove implements Move, ServerMove {
         player2add = p;
     }
 
+    /**
+     *
+     * @param w
+     * @param player
+     * @return
+     */
     public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
         /*
           create a new player with a corresponding Principal

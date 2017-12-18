@@ -24,11 +24,22 @@ public class TerrainRandomiser {
 
     // clear (on avg.)
 
+    /**
+     *
+     * @param num
+     * @param num2
+     */
+
     public TerrainRandomiser(Vector<Integer> num, Vector<Integer> num2) {
         terrainTypes = num;
         non_terrainTypes = num2;
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public int getNewType(int type) {
         double value;
         double divide = 1.0 / terrainTypes.size();

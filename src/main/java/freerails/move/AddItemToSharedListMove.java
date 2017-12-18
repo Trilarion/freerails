@@ -23,6 +23,12 @@ public class AddItemToSharedListMove implements Move {
 
     private final FreerailsSerializable item;
 
+    /**
+     *
+     * @param key
+     * @param i
+     * @param item
+     */
     protected AddItemToSharedListMove(SKEY key, int i,
                                       FreerailsSerializable item) {
         this.listKey = key;
@@ -30,6 +36,10 @@ public class AddItemToSharedListMove implements Move {
         this.item = item;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getIndex() {
         return index;
     }
@@ -44,6 +54,10 @@ public class AddItemToSharedListMove implements Move {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public SKEY getKey() {
         return listKey;
     }
@@ -108,10 +122,18 @@ public class AddItemToSharedListMove implements Move {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsSerializable getBefore() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsSerializable getAfter() {
         return item;
     }

@@ -12,6 +12,12 @@ import java.net.Socket;
  */
 public class InetConnection2Client extends AbstractInetConnection implements
         Connection2Client {
+
+    /**
+     *
+     * @param s
+     * @throws IOException
+     */
     public InetConnection2Client(Socket s) throws IOException {
         super(s);
     }

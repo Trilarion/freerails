@@ -11,8 +11,15 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.World;
 import freerails.world.top.WorldImplTest;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class NextActivityMoveTest extends AbstractMoveTestCase {
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         World w = getWorld();
@@ -27,6 +34,9 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     public void testMove2() {
         World w = getWorld();
         FreerailsPrincipal principal = getPrincipal();
@@ -39,6 +49,9 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     public void testStackingOfActivities() {
         World w = getWorld();
         FreerailsPrincipal principal = getPrincipal();

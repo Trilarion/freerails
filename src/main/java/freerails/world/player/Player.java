@@ -43,6 +43,7 @@ public class Player implements FreerailsSerializable {
 
     /**
      * Used by the client to generate a player with a particular name.
+     * @param name
      */
     public Player(String name) {
         this.name = name;
@@ -61,6 +62,8 @@ public class Player implements FreerailsSerializable {
     /**
      * Used by the server to generate a player with a particular name and public
      * key.
+     * @param name
+     * @param id
      */
     public Player(String name, int id) {
         this.name = name;
@@ -93,6 +96,10 @@ public class Player implements FreerailsSerializable {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -100,6 +107,8 @@ public class Player implements FreerailsSerializable {
     /**
      * TODO save this player's private data so that they can be re-connected to
      * the server at a later point in time.
+     * @param out
+     * @throws java.io.IOException
      */
     public void saveSession(ObjectOutputStream out) throws IOException {
         // out.writeObject(privateData);
@@ -107,6 +116,8 @@ public class Player implements FreerailsSerializable {
 
     /**
      * Called by the client to reconstitute the data from a saved game.
+     * @param in
+     * @throws java.io.IOException
      */
     public void loadSession(ObjectInputStream in) throws IOException {
         // try {
@@ -116,6 +127,10 @@ public class Player implements FreerailsSerializable {
         // }
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPrincipal getPrincipal() {
         return principal;
     }

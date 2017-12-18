@@ -20,6 +20,11 @@ public class SimplePathIteratorImpl implements FreerailsPathIterator {
 
     private int position = 0;
 
+    /**
+     *
+     * @param xpoints
+     * @param ypoints
+     */
     public SimplePathIteratorImpl(ImInts xpoints, ImInts ypoints) {
         x = xpoints;
         y = ypoints;
@@ -30,6 +35,11 @@ public class SimplePathIteratorImpl implements FreerailsPathIterator {
         }
     }
 
+    /**
+     *
+     * @param xpoints
+     * @param ypoints
+     */
     public SimplePathIteratorImpl( /* =const */
             int[] xpoints, /* =const */
             int[] ypoints) {

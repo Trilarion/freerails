@@ -15,12 +15,19 @@ import java.lang.reflect.Modifier;
  * @author Luke
  */
 public class KEYTest extends TestCase {
+
+    /**
+     *
+     */
     public void testGetNumberOfKeys() {
         // There were 4 keys when a wrote this test,
         // but I expect the number to increase.
         assertTrue(KEY.getNumberOfKeys() >= 4);
     }
 
+    /**
+     *
+     */
     public void testThatAllTheFieldsDefinedInKEYAreInstancesOFKEY() {
         Field[] fields = KEY.class.getFields();
 
@@ -50,6 +57,9 @@ public class KEYTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testToString() {
 
         assertEquals("Key.toString() should return the field name", "TRAINS",

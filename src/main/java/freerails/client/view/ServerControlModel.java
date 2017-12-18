@@ -39,6 +39,10 @@ public class ServerControlModel implements ModelRootListener {
     private ActionAdapter selectMapActions;
     private DialogueBoxController dbc;
 
+    /**
+     *
+     * @param mr
+     */
     public ServerControlModel(ModelRootImpl mr) {
         this.modelRoot = mr;
 
@@ -109,11 +113,21 @@ public class ServerControlModel implements ModelRootListener {
         return targetTicksPerSecondActions;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTargetTicksPerSecond() {
         ReadOnlyWorld world = modelRoot.getWorld();
         return ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
     }
 
+    /**
+     *
+     * @param p
+     * @param oldValue
+     * @param newValue
+     */
     public void propertyChange(Property p, Object oldValue, Object newValue) {
         // switch (p) {
         // case SAVED_GAMES_LIST:
@@ -126,12 +140,20 @@ public class ServerControlModel implements ModelRootListener {
 
     }
 
+    /**
+     *
+     * @param modelRoot
+     * @param dbc
+     */
     public void setup(ModelRootImpl modelRoot, DialogueBoxController dbc) {
         this.modelRoot = modelRoot;
         this.dbc = dbc;
         modelRoot.addPropertyChangeListener(this);
     }
 
+    /**
+     *
+     */
     public void setServerControlInterface() {
         // Check that there is a file to load..
         saveGameAction.setEnabled(true);

@@ -70,6 +70,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     private long displayMessageUntil = 0;
     private FreerailsCursor mapCursor;
 
+    /**
+     *
+     */
     public MapViewJComponentConcrete() {
         super();
 
@@ -115,6 +118,13 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         }
     }
 
+    /**
+     *
+     * @param mv
+     * @param mr
+     * @param rr
+     * @throws IOException
+     */
     public void setup(MapRenderer mv, ModelRootImpl mr, RenderersRoot rr)
             throws IOException {
         super.setMapView(mv);
@@ -127,6 +137,10 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
 
     }
 
+    /**
+     *
+     * @param mv
+     */
     public void setup(MapRenderer mv) {
         super.setMapView(mv);
     }
@@ -155,22 +169,45 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
                 * tileSize.height, tileSize.width * 3, tileSize.height * 3);
     }
 
+    /**
+     *
+     * @param g
+     * @param tileX
+     * @param tileY
+     */
     public void paintTile(Graphics g, int tileX, int tileY) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void refreshTile(int x, int y) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     *
+     */
     public void refreshAll() {
         this.getMapView().refreshAll();
     }
 
+    /**
+     *
+     * @param g
+     * @param visibleRect
+     */
     public void paintRect(Graphics g, Rectangle visibleRect) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsCursor getMapCursor() {
         return mapCursor;
     }
@@ -204,6 +241,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
      * (3) If it was ModelRoot.PERMANENT_MESSAGE, display or hide the message as
      * appropriate.
      * </p>
+     * @param p
+     * @param after
+     * @param before
      */
     public void propertyChange(ModelRoot.Property p, Object before, Object after) {
 

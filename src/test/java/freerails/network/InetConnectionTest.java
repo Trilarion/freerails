@@ -9,6 +9,10 @@ package freerails.network;
  * @author Luke
  */
 public class InetConnectionTest extends AbstractEchoGameServerTestCase {
+
+    /**
+     *
+     */
     public void testConnecting() {
         try {
             assertEquals(0, echoGameServer.countOpenConnections());

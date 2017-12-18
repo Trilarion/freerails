@@ -32,20 +32,35 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
     TrackMoveTransactionsGenerator transactionsGenerator;
 
+    /**
+     *
+     * @param testName
+     */
     public ChangeTrackPieceCompositeMoveTest(java.lang.String testName) {
         super(testName);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
 
+    /**
+     *
+     * @return
+     */
     public static Test suite() {
 
         return new TestSuite(
                 ChangeTrackPieceCompositeMoveTest.class);
     }
 
+    /**
+     *
+     */
     @Override
     protected void setUp() {
         super.setHasSetupBeenCalled(true);
@@ -57,6 +72,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
     }
 
+    /**
+     *
+     */
     public void testRemoveTrack() {
         getWorld().set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
 
@@ -113,6 +131,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackFails(new ImPoint(4, 8), east, trackRule);
     }
 
+    /**
+     *
+     */
     public void testCannotConnect2OtherRRsTrack() {
         assertFalse(ChangeTrackPieceMove.canConnect2OtherRRsTrack(world));
 
@@ -137,6 +158,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackSuceeds(new ImPoint(1, 6), east, trackRule);
     }
 
+    /**
+     *
+     */
     public void testBuildTrack() {
         ImPoint pointA = new ImPoint(0, 0);
         ImPoint pointB = new ImPoint(1, 1);
@@ -207,6 +231,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         ImPoint pointA = new ImPoint(0, 0);

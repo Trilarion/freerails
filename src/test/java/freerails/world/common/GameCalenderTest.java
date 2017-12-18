@@ -12,6 +12,10 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public class GameCalenderTest extends TestCase {
+
+    /**
+     *
+     */
     public void testGetYear() {
         GameCalendar gc = new GameCalendar(10, 1900);
         assertEquals("1900", gc.getYearAsString(0));
@@ -20,6 +24,9 @@ public class GameCalenderTest extends TestCase {
         assertEquals("1950", gc.getYearAsString(505));
     }
 
+    /**
+     *
+     */
     public void testGetTimeOfDay() {
         GameCalendar gc = new GameCalendar(24, 1900);
         assertEquals("00:00", gc.getTimeOfDay(0));
@@ -32,6 +39,9 @@ public class GameCalenderTest extends TestCase {
         assertEquals("05:10", gc.getTimeOfDay(310));
     }
 
+    /**
+     *
+     */
     public void testGetYearAndMonth() {
         GameCalendar gc = new GameCalendar(12, 1900);
         assertEquals("Jan 1900", gc.getYearAndMonth(0));

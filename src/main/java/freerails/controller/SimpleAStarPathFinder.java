@@ -43,14 +43,29 @@ public class SimpleAStarPathFinder implements Serializable,
 
     private long searchStartTime = 0;
 
+    /**
+     *
+     * @return
+     */
     public int getStatus() {
         return status;
     }
 
+    /**
+     *
+     * @return
+     */
     public IntArray retrievePath() {
         return path;
     }
 
+    /**
+     *
+     * @param currentPosition
+     * @param targets
+     * @param tempExplorer
+     * @return
+     */
     public int findstep(int currentPosition, int[] targets,
                         GraphExplorer tempExplorer) {
         try {
@@ -61,6 +76,14 @@ public class SimpleAStarPathFinder implements Serializable,
         }
     }
 
+    /**
+     *
+     * @param currentPosition
+     * @param targets
+     * @param e
+     * @return
+     * @throws PathNotFoundException
+     */
     public IntArray findpath(int[] currentPosition, int[] targets,
                              GraphExplorer e) throws PathNotFoundException {
         if (logger.isDebugEnabled()) {
@@ -75,6 +98,11 @@ public class SimpleAStarPathFinder implements Serializable,
         return path;
     }
 
+    /**
+     *
+     * @param maxDuration
+     * @throws PathNotFoundException
+     */
     public void search(long maxDuration) throws PathNotFoundException {
         long iterationStartTime = 0;
         boolean check4timeout = false;
@@ -196,6 +224,13 @@ public class SimpleAStarPathFinder implements Serializable,
         throw new PathNotFoundException("Path not found.");
     }
 
+    /**
+     *
+     * @param currentPosition
+     * @param targets
+     * @param e
+     * @throws PathNotFoundException
+     */
     public void setupSearch(int[] currentPosition, int[] targets,
                             GraphExplorer e) throws PathNotFoundException {
         abandonSearch();
@@ -219,6 +254,9 @@ public class SimpleAStarPathFinder implements Serializable,
         }
     }
 
+    /**
+     *
+     */
     public void abandonSearch() {
         path = new IntArray();
         searchStartTime = 0;

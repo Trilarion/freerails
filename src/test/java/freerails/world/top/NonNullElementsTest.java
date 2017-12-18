@@ -25,15 +25,26 @@ public class NonNullElementsTest extends TestCase {
 
     StationModel station3;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
 
+    /**
+     *
+     * @return
+     */
     public static Test suite() {
 
         return new TestSuite(NonNullElementsTest.class);
     }
 
+    /**
+     *
+     */
     @Override
     protected void setUp() {
         w = new WorldImpl();
@@ -49,6 +60,9 @@ public class NonNullElementsTest extends TestCase {
         w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station3);
     }
 
+    /**
+     *
+     */
     public void testNext() {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
                 MapFixtureFactory.TEST_PRINCIPAL);
@@ -74,6 +88,9 @@ public class NonNullElementsTest extends TestCase {
         assertTrue(!wi2.next());
     }
 
+    /**
+     *
+     */
     public void testGotoIndex() {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, w,
                 MapFixtureFactory.TEST_PRINCIPAL);

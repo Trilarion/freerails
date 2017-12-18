@@ -15,6 +15,12 @@ import java.util.StringTokenizer;
  */
 strictfp public class Utils {
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean equalsBySerialization(Serializable a, Serializable b) {
 
         byte[] bytesA = write2ByteArray(a);
@@ -33,6 +39,8 @@ strictfp public class Utils {
 
     /**
      * Used when debugging.
+     * @param m
+     * @param fileName
      */
     public static void write(Serializable m, String fileName) {
         try {
@@ -47,6 +55,11 @@ strictfp public class Utils {
         }
     }
 
+    /**
+     *
+     * @param m
+     * @return
+     */
     public static Serializable cloneBySerialisation(Serializable m) {
         try {
             byte[] bytes = write2ByteArray(m);
@@ -84,6 +97,11 @@ strictfp public class Utils {
         return out.toByteArray();
     }
 
+    /**
+     *
+     * @param str
+     * @return
+     */
     public static String capitalizeEveryWord(String str) {
         StringBuilder result = new StringBuilder();
         StringTokenizer tok = new StringTokenizer(str);
@@ -96,6 +114,11 @@ strictfp public class Utils {
         return result.toString().trim();
     }
 
+    /**
+     *
+     * @param o
+     * @return
+     */
     public static String findConstantFieldName(Object o) {
         Field[] fields = o.getClass().getFields();
         for (Field field : fields) {
@@ -121,6 +144,10 @@ strictfp public class Utils {
      * Returns the largest solution of the quadratic equation ax<sup><font
      * size="-1">2</font></sup> + bx + c = 0.
      *
+     * @param a
+     * @param b
+     * @param c
+     * @return 
      * @throws IllegalArgumentException if <code>a == 0</code>
      * @throws IllegalArgumentException if <code>(b * b - 4 * a * c) < 0</code>
      */
@@ -136,6 +163,12 @@ strictfp public class Utils {
 
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static int hypotenuse(int a, int b) {
         double d = Math.hypot(a, b);
         return (int) Math.round(d);
@@ -145,6 +178,9 @@ strictfp public class Utils {
      * Returns true if the objects are equal or both null, otherwise returns
      * false. Does not throw null pointer exceptions when either of the objects
      * is null.
+     * @param a
+     * @param b
+     * @return 
      */
     public static boolean equal(Object a, Object b) {
         if (null == a || null == b) {

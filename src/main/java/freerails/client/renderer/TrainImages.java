@@ -18,10 +18,19 @@ import java.io.IOException;
  */
 public class TrainImages {
 
+    /**
+     *
+     */
     public final String sideOnFileName;
     private final Image sideOnImage;
     private final Image[] overheadImages = new Image[8];
 
+    /**
+     *
+     * @param imageManager
+     * @param name
+     * @throws IOException
+     */
     public TrainImages(ImageManager imageManager, String name)
             throws IOException {
         sideOnFileName = TrainImages.generateSideOnFilename(name);
@@ -36,6 +45,12 @@ public class TrainImages {
 
     }
 
+    /**
+     *
+     * @param name
+     * @param i
+     * @return
+     */
     public static String generateOverheadFilename(String name, int i) {
         Step[] vectors = Step.getList();
 
@@ -43,15 +58,29 @@ public class TrainImages {
                 + "_" + vectors[i].toAbrvString() + ".png";
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public static String generateSideOnFilename(String name) {
         return "trains" + File.separator + "sideon" + File.separator + name
                 + ".png";
     }
 
+    /**
+     *
+     * @return
+     */
     public Image getSideOnImage() {
         return sideOnImage;
     }
 
+    /**
+     *
+     * @param direction
+     * @return
+     */
     public Image getOverheadImage(int direction) {
         return overheadImages[direction];
     }

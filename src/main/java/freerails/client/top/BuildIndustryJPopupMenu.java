@@ -32,11 +32,21 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
 
     private final Point cursorLocation = new Point();
 
+    /**
+     *
+     * @param p
+     */
     public void setCusorLocation(Point p) {
         cursorLocation.x = p.x;
         cursorLocation.y = p.y;
     }
 
+    /**
+     *
+     * @param modelRoot
+     * @param vl
+     * @param closeAction
+     */
     public void setup(final ModelRoot modelRoot, RenderersRoot vl,
                       Action closeAction) {
         this.removeAll();

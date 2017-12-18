@@ -18,16 +18,33 @@ public class TrainOrdersModel implements FreerailsSerializable {
 
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
 
+    /**
+     *
+     */
     public final boolean waitUntilFull;
 
+    /**
+     *
+     */
     public final boolean autoConsist;
 
     /**
      * The wagon types to add; if null, then no change.
      */
     public final ImInts consist;
+
+    /**
+     *
+     */
     public final int stationId; // The number of the station to goto.
 
+    /**
+     *
+     * @param station
+     * @param newConsist
+     * @param wait
+     * @param auto
+     */
     public TrainOrdersModel(int station, ImInts newConsist, boolean wait,
                             boolean auto) {
         // If there are no wagons, set wait = false.
@@ -75,26 +92,50 @@ public class TrainOrdersModel implements FreerailsSerializable {
         return this.consist;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationID() {
         return stationId;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isNoConsistChange() {
         return null == consist;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean getWaitUntilFull() {
         return waitUntilFull;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean orderHasWagons() {
         return null != consist && 0 != consist.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasLessThanMaxiumNumberOfWagons() {
         return null == consist || consist.size() < MAXIMUM_NUMBER_OF_WAGONS;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isAutoConsist() {
         return autoConsist;
     }

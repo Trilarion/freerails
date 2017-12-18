@@ -14,8 +14,20 @@ import java.awt.image.BufferStrategy;
  * @author Luke
  */
 final public class ScreenHandler {
+
+    /**
+     *
+     */
     public static final int FULL_SCREEN = 0;
+
+    /**
+     *
+     */
     public static final int WINDOWED_MODE = 1;
+
+    /**
+     *
+     */
     public static final int FIXED_SIZE_WINDOWED_MODE = 2;
     static final GraphicsDevice device = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -26,6 +38,10 @@ final public class ScreenHandler {
             new DisplayMode(800, 600, 16, 60),
             new DisplayMode(1024, 768, 8, 60),
             new DisplayMode(1024, 768, 16, 60),};
+
+    /**
+     *
+     */
     public final JFrame frame;
     private final int mode;
     private BufferStrategy bufferStrategy;
@@ -36,12 +52,23 @@ final public class ScreenHandler {
      */
     private boolean isMinimised = false;
 
+    /**
+     *
+     * @param f
+     * @param mode
+     * @param displayMode
+     */
     public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
         this.displayMode = displayMode;
         frame = f;
         this.mode = mode;
     }
 
+    /**
+     *
+     * @param f
+     * @param mode
+     */
     public ScreenHandler(JFrame f, int mode) {
         frame = f;
         this.mode = mode;
@@ -119,10 +146,16 @@ final public class ScreenHandler {
         return null;
     }
 
+    /**
+     *
+     */
     public synchronized static void exitFullScreenMode() {
         device.setFullScreenWindow(null);
     }
 
+    /**
+     *
+     */
     public synchronized void apply() {
         switch (mode) {
             case FULL_SCREEN: {
@@ -199,24 +232,43 @@ final public class ScreenHandler {
         setRepaintOffAndDisableDoubleBuffering(frame);
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized Graphics getDrawGraphics() {
         return bufferStrategy.getDrawGraphics();
     }
 
+    /**
+     *
+     */
     public synchronized void swapScreens() {
         if (!bufferStrategy.contentsLost()) {
             bufferStrategy.show();
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized boolean isMinimised() {
         return isMinimised;
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized boolean isInUse() {
         return isInUse;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean contentsRestored() {
         return bufferStrategy.contentsRestored();
     }

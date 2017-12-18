@@ -6,7 +6,16 @@ package freerails.util;
  * @author Luke Lindsay
  */
 public interface FreerailsIntIterator {
+
+    /**
+     *
+     * @return
+     */
     boolean hasNextInt();
 
+    /**
+     *
+     * @return
+     */
     int nextInt();
 }

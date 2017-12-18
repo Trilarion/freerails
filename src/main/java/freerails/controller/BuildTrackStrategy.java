@@ -30,6 +30,12 @@ public class BuildTrackStrategy {
         rules = r;
     }
 
+    /**
+     *
+     * @param trackTypeID
+     * @param w
+     * @return
+     */
     public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID,
                                                            ReadOnlyWorld w) {
         int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
@@ -42,12 +48,23 @@ public class BuildTrackStrategy {
 
     }
 
+    /**
+     *
+     * @param ruleIDs
+     * @param w
+     * @return
+     */
     public static BuildTrackStrategy getMultipleRuleInstance(
             ArrayList<Integer> ruleIDs, ReadOnlyWorld w) {
         int[] rulesArray = generateRules(ruleIDs, w);
         return new BuildTrackStrategy(rulesArray);
     }
 
+    /**
+     *
+     * @param w
+     * @return
+     */
     public static BuildTrackStrategy getDefault(ReadOnlyWorld w) {
         ArrayList<Integer> allowable = new ArrayList<>();
         allowable.add(getCheapest(TrackRule.TrackCategories.track, w));
@@ -98,6 +115,11 @@ public class BuildTrackStrategy {
         return newRules;
     }
 
+    /**
+     *
+     * @param terrainType
+     * @return
+     */
     public int getRule(int terrainType) {
         return rules[terrainType];
     }

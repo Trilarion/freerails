@@ -17,11 +17,21 @@ public class TimeTickMove implements Move {
 
     private final GameTime newTime;
 
+    /**
+     *
+     * @param oldTime
+     * @param newTime
+     */
     public TimeTickMove(GameTime oldTime, GameTime newTime) {
         this.oldTime = oldTime;
         this.newTime = newTime;
     }
 
+    /**
+     *
+     * @param w
+     * @return
+     */
     public static TimeTickMove getMove(ReadOnlyWorld w) {
         GameTime oldTime = w.currentTime();
         GameTime newTime = new GameTime(oldTime.getTicks() + 1);

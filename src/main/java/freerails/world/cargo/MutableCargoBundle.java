@@ -21,10 +21,17 @@ public class MutableCargoBundle implements CargoBundle {
 
     private int updateID = 0;
 
+    /**
+     *
+     */
     public MutableCargoBundle() {
         sortedMap = new TreeMap<>();
     }
 
+    /**
+     *
+     * @param imcb
+     */
     public MutableCargoBundle(ImmutableCargoBundle imcb) {
         this();
 
@@ -36,6 +43,11 @@ public class MutableCargoBundle implements CargoBundle {
         }
     }
 
+    /**
+     *
+     * @param cb
+     * @param amount
+     */
     public void addCargo(CargoBatch cb, int amount) {
         int amountAlready = this.getAmount(cb);
         this.setAmount(cb, amount + amountAlready);
@@ -46,6 +58,7 @@ public class MutableCargoBundle implements CargoBundle {
      * Note, calling hasNext() or next() on the returned iterator throws a
      * ConcurrentModificationException if this CargoBundle has changed since the
      * iterator was aquired.
+     * @return 
      */
     public Iterator<CargoBatch> cargoBatchIterator() {
         final Iterator<CargoBatch> it = sortedMap.keySet().iterator();
@@ -85,6 +98,11 @@ public class MutableCargoBundle implements CargoBundle {
         };
     }
 
+    /**
+     *
+     * @param cb
+     * @return
+     */
     public boolean contains(CargoBatch cb) {
         return sortedMap.containsKey(cb);
     }
@@ -99,6 +117,11 @@ public class MutableCargoBundle implements CargoBundle {
 
     }
 
+    /**
+     *
+     * @param cb
+     * @return
+     */
     public int getAmount(CargoBatch cb) {
         if (contains(cb)) {
 
@@ -107,6 +130,11 @@ public class MutableCargoBundle implements CargoBundle {
         return 0;
     }
 
+    /**
+     *
+     * @param cargoType
+     * @return
+     */
     public int getAmount(int cargoType) {
         Iterator<CargoBatch> it = cargoBatchIterator();
         int amount = 0;
@@ -127,6 +155,11 @@ public class MutableCargoBundle implements CargoBundle {
         return sortedMap.size();
     }
 
+    /**
+     *
+     * @param cb
+     * @param amount
+     */
     public void setAmount(CargoBatch cb, int amount) {
         if (0 == amount) {
             sortedMap.remove(cb);
@@ -137,10 +170,18 @@ public class MutableCargoBundle implements CargoBundle {
         updateID++;
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return sortedMap.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public ImmutableCargoBundle toImmutableCargoBundle() {
         return new ImmutableCargoBundle(sortedMap);
     }

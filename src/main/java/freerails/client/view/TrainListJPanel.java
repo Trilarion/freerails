@@ -266,6 +266,10 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         super.setVisible(aFlag);
     }
 
+    /**
+     *
+     * @param trainViewHeight
+     */
     public void setTrainViewHeight(int trainViewHeight) {
         this.trainViewHeight = trainViewHeight;
     }

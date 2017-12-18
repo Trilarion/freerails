@@ -19,6 +19,10 @@ public class RunTypesParser {
     private static final Logger logger = Logger.getLogger(RunTypesParser.class
             .getName());
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             java.net.URL url = RunTypesParser.class

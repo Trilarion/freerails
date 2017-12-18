@@ -22,6 +22,12 @@ public class InetConnectionAccepter implements Runnable {
     private final SynchronizedFlag keepRunning = new SynchronizedFlag(true);
     private final ServerSocket serverSocket;
 
+    /**
+     *
+     * @param port
+     * @param gameServer
+     * @throws IOException
+     */
     public InetConnectionAccepter(int port, GameServer gameServer)
             throws IOException {
         if (null == gameServer)
@@ -30,6 +36,10 @@ public class InetConnectionAccepter implements Runnable {
         serverSocket = new ServerSocket(port);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             GameServer echoGameServer = EchoGameServer.startServer();
@@ -77,6 +87,10 @@ public class InetConnectionAccepter implements Runnable {
         }
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public synchronized void stop() throws IOException {
         this.keepRunning.close();
         serverSocket.close();
@@ -90,6 +104,10 @@ public class InetConnectionAccepter implements Runnable {
         return keepRunning.isOpen();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getLocalPort() {
         return serverSocket.getLocalPort();
     }

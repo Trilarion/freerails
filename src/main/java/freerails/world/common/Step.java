@@ -17,7 +17,15 @@ import java.io.ObjectStreamException;
  */
 @freerails.util.InstanceControlled
 final public class Step implements FlatTrackTemplate {
+
+    /**
+     *
+     */
     public static final int TILE_DIAMETER = Constants.TILE_SIZE;
+
+    /**
+     *
+     */
     public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER,
             TILE_DIAMETER);
     /**
@@ -134,6 +142,12 @@ final public class Step implements FlatTrackTemplate {
         return tvectors;
     }
 
+    /**
+     *
+     * @param p
+     * @param path
+     * @return
+     */
     public static ImPoint move(ImPoint p, Step... path) {
         int x = p.x;
         int y = p.y;
@@ -144,16 +158,33 @@ final public class Step implements FlatTrackTemplate {
         return new ImPoint(x, y);
     }
 
+    /**
+     *
+     * @param number
+     * @return
+     */
     public static Step getInstance(int number) {
         return list[number];
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean checkValidity(ImPoint a, ImPoint b) {
         int dx = b.x - a.x;
         int dy = b.y - a.y;
         return checkValidity(dx, dy);
     }
 
+    /**
+     *
+     * @param dx
+     * @param dy
+     * @return
+     */
     public static Step getInstance(int dx, int dy) {
         if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1)))
                 || ((dx == 0) && (dy == 0))) {
@@ -168,6 +199,9 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * Returns true if the values passed could be used to create a valid vector.
+     * @param x
+     * @param y
+     * @return 
      */
     public static boolean checkValidity(int x, int y) {
         return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1)))
@@ -183,6 +217,8 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
+     * @param dx
+     * @param dy
      * @return the OneTileMoveVector nearest in orientation to the specified dx,
      * dy
      */
@@ -237,6 +273,7 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * Returns the X component of the vector.
+     * @return 
      */
     public int getDx() {
         return deltaX;
@@ -244,6 +281,7 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * Returns the Y component of the vector.
+     * @return 
      */
     public int getDy() {
         return deltaY;
@@ -303,6 +341,10 @@ final public class Step implements FlatTrackTemplate {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String toAbrvString() {
         String name;
 
@@ -341,6 +383,11 @@ final public class Step implements FlatTrackTemplate {
         return name;
     }
 
+    /**
+     *
+     * @param from
+     * @return
+     */
     public ImPoint createRelocatedPoint(ImPoint from) {
         return new ImPoint(from.x + deltaX, from.y + deltaY);
     }
@@ -360,6 +407,10 @@ final public class Step implements FlatTrackTemplate {
         return length;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getDirection() {
         int i = 0;
 
@@ -388,10 +439,18 @@ final public class Step implements FlatTrackTemplate {
         return Step.getInstance(this.deltaX, this.deltaY);
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isDiagonal() {
         return 0 != deltaX * deltaY;
     }
 
+    /**
+     *
+     * @return
+     */
     public int get8bitTemplate() {
         return 1 << this.getID();
     }

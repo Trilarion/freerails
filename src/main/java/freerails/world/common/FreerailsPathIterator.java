@@ -11,6 +11,7 @@ package freerails.world.common;
 public interface FreerailsPathIterator extends FreerailsMutableSerializable {
     /**
      * Tests whether the path has another segment.
+     * @return 
      */
     boolean hasNext();
 

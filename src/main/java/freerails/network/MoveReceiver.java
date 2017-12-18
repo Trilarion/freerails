@@ -9,5 +9,10 @@ import freerails.move.Move;
  * @author Luke
  */
 public interface MoveReceiver {
+
+    /**
+     *
+     * @param move
+     */
     void processMove(Move move);
 }

@@ -34,6 +34,10 @@ public class PathNotFoundException extends Exception {
         super(cause);
     }
 
+    /**
+     *
+     * @param arg0
+     */
     public PathNotFoundException(String arg0) {
         super(arg0);
     }

@@ -28,6 +28,10 @@ public class BuildTrackExplorerTest extends TestCase {
     private WorldImpl world;
     private FreerailsPrincipal principle;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         world = new WorldImpl(20, 20);

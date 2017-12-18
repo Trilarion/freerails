@@ -27,6 +27,10 @@ public class FinancialDataGathererTest extends TestCase {
 
     Player player;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         player = new Player("Player X", 0);
@@ -37,6 +41,9 @@ public class FinancialDataGathererTest extends TestCase {
         assertTrue(ms.ok);
     }
 
+    /**
+     *
+     */
     public void testCanIssueBond() {
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
                 .getPrincipal());
@@ -61,6 +68,9 @@ public class FinancialDataGathererTest extends TestCase {
         return fdg.canIssueBond();
     }
 
+    /**
+     *
+     */
     public void testNextBondInterestRate() {
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
                 .getPrincipal());
@@ -70,6 +80,9 @@ public class FinancialDataGathererTest extends TestCase {
         assertEquals(6, fdg.nextBondInterestRate());
     }
 
+    /**
+     *
+     */
     public void testTreasuryStock() {
         FreerailsPrincipal principal = player.getPrincipal();
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, principal);
@@ -87,6 +100,9 @@ public class FinancialDataGathererTest extends TestCase {
         assertEquals(publicStock, fdg.sharesHeldByPublic());
     }
 
+    /**
+     *
+     */
     public void testBuyingStakesInOtherRRs() {
         w = new WorldImpl();
         Player[] players = new Player[2];
@@ -109,6 +125,9 @@ public class FinancialDataGathererTest extends TestCase {
         assertEquals(quantity, acutal);
     }
 
+    /**
+     *
+     */
     public void testTotalShares() {
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
                 .getPrincipal());

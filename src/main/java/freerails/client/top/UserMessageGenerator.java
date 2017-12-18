@@ -37,6 +37,11 @@ public class UserMessageGenerator implements MoveReceiver {
     private ModelRoot modelRoot;
     private ActionRoot actionRoot;
 
+    /**
+     *
+     * @param mr
+     * @param actionRoot
+     */
     public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
         if (null == mr || null == actionRoot) {
             throw new NullPointerException();
@@ -46,6 +51,10 @@ public class UserMessageGenerator implements MoveReceiver {
         this.modelRoot = mr;
     }
 
+    /**
+     *
+     * @param move
+     */
     public void processMove(Move move) {
         if (move instanceof CompositeMove) {
             ImList<Move> moves = ((CompositeMove) move).getMoves();
@@ -139,6 +148,9 @@ public class UserMessageGenerator implements MoveReceiver {
         }
     }
 
+    /**
+     *
+     */
     public void logSpeed() {
         ReadOnlyWorld world = modelRoot.getWorld();
         GameSpeed speed = ((GameSpeed) world.get(ITEM.GAME_SPEED));

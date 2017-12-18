@@ -21,10 +21,23 @@ public class LineDrawTrackPieceView implements
 
     private final int[] yy = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
 
+    /**
+     *
+     * @param trackTemplate
+     * @return
+     */
     public java.awt.Image getTrackPieceIcon(int trackTemplate) {
         return null;
     }
 
+    /**
+     *
+     * @param trackTemplate
+     * @param g
+     * @param x
+     * @param y
+     * @param tileSize
+     */
     public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g,
                                    int x, int y, java.awt.Dimension tileSize) {
         Graphics2D g2 = (Graphics2D) g;

@@ -17,17 +17,32 @@ import freerails.world.top.ReadOnlyWorld;
  * @author Luke
  */
 public class NearestStationFinder {
+
+    /**
+     *
+     */
     public static final int NOT_FOUND = Integer.MIN_VALUE;
 
     private final ReadOnlyWorld world;
 
     private final FreerailsPrincipal principal;
 
+    /**
+     *
+     * @param w
+     * @param player
+     */
     public NearestStationFinder(ReadOnlyWorld w, FreerailsPrincipal player) {
         world = w;
         this.principal = player;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public int findNearestStation(int x, int y) {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
@@ -54,6 +69,12 @@ public class NearestStationFinder {
         return nearestStation;
     }
 
+    /**
+     *
+     * @param startStation
+     * @param direction
+     * @return
+     */
     public int findNearestStationInDirection(int startStation, Step direction) {
         int distanceToClosestSquared = Integer.MAX_VALUE;
         NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);

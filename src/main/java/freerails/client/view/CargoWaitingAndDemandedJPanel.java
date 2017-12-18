@@ -41,6 +41,9 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     private javax.swing.JLabel stationName;
     private javax.swing.JTable waitingJTable;
 
+    /**
+     *
+     */
     public CargoWaitingAndDemandedJPanel() {
         initComponents();
     }
@@ -145,11 +148,21 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
     }// GEN-END:initComponents
 
+    /**
+     *
+     * @param model
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
         this.world = model.getWorld();
         this.principal = model.getPrincipal();
     }
 
+    /**
+     *
+     * @param newStationID
+     */
     public void display(int newStationID) {
         StationModel station = (StationModel) world.get(principal,
                 KEY.STATIONS, newStationID);
@@ -206,6 +219,6 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
         this.invalidate();
     }
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 
 }

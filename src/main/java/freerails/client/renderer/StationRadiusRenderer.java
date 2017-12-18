@@ -33,23 +33,43 @@ public class StationRadiusRenderer implements Painter {
     private int x;
     private int y;
 
+    /**
+     *
+     * @param mr
+     */
     public StationRadiusRenderer(ModelRoot mr) {
         this.modelRoot = mr;
     }
 
+    /**
+     *
+     * @param c
+     */
     public void setBorderColor(Color c) {
         borderColor = c;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     *
+     * @param radius
+     */
     public void setRadius(int radius) {
         this.radius = radius;
     }
 
+    /**
+     *
+     */
     public void show() {
         if (!modelRoot
                 .is(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE)) {
@@ -61,6 +81,9 @@ public class StationRadiusRenderer implements Painter {
         }
     }
 
+    /**
+     *
+     */
     public void hide() {
         ModelRoot.Value lastCursorMode = (ModelRoot.Value) modelRoot
                 .getProperty(ModelRoot.Property.PREVIOUS_CURSOR_MODE);
@@ -72,6 +95,11 @@ public class StationRadiusRenderer implements Painter {
         modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
     }
 
+    /**
+     *
+     * @param g
+     * @param newVisibleRectectangle
+     */
     public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
         if (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE).equals(
                 Value.PLACE_STATION_CURSOR_MODE)) {

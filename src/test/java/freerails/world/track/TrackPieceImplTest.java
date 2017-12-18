@@ -11,15 +11,26 @@ import freerails.world.top.SKEY;
 import freerails.world.top.World;
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class TrackPieceImplTest extends TestCase {
 
     private World w;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         w = MapFixtureFactory2.getCopy();
     }
 
+    /**
+     *
+     */
     public void testEqualsObject() {
         TrackConfiguration tc1 = TrackConfiguration.getFlatInstance(Step.NORTH);
 

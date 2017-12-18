@@ -17,11 +17,19 @@ public class OverviewMapJComponent extends JPanel {
     private final Rectangle mainMapVisRect;
     private MapRenderer mapView = new BlankMapRenderer(0.4F);
 
+    /**
+     *
+     * @param r
+     */
     public OverviewMapJComponent(Rectangle r) {
         this.setPreferredSize(mapView.getMapSizeInPixels());
         mainMapVisRect = r;
     }
 
+    /**
+     *
+     * @param mv
+     */
     public void setup(MapRenderer mv) {
         mapView = mv;
         this.setPreferredSize(mapView.getMapSizeInPixels());

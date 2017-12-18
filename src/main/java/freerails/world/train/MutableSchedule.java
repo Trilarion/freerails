@@ -29,9 +29,16 @@ public class MutableSchedule implements Schedule {
      */
     private boolean hasPriorityOrders = false;
 
+    /**
+     *
+     */
     public MutableSchedule() {
     }
 
+    /**
+     *
+     * @param s
+     */
     public MutableSchedule(ImmutableSchedule s) {
         nextScheduledOrder = s.getNextScheduledOrder();
         hasPriorityOrders = s.hasPriorityOrders();
@@ -41,6 +48,10 @@ public class MutableSchedule implements Schedule {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public ImmutableSchedule toImmutableSchedule() {
         TrainOrdersModel[] ordersArray = new TrainOrdersModel[orders.size()];
 
@@ -52,6 +63,10 @@ public class MutableSchedule implements Schedule {
                 this.hasPriorityOrders);
     }
 
+    /**
+     *
+     * @param order
+     */
     public void setPriorityOrders(TrainOrdersModel order) {
         if (hasPriorityOrders) {
             // Replace existing priority orders.
@@ -66,6 +81,7 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Removes the order at the specified position.
+     * @param orderNumber
      */
     public void removeOrder(int orderNumber) {
         if (PRIORITY_ORDERS == orderNumber && hasPriorityOrders) {
@@ -103,6 +119,8 @@ public class MutableSchedule implements Schedule {
     /**
      * Inserts an order at the specified position. Note you must call
      * setPriorityOrders() to set the priority orders.
+     * @param orderNumber
+     * @param order
      */
     public void addOrder(int orderNumber, TrainOrdersModel order) {
         orders.add(orderNumber, order);
@@ -116,6 +134,11 @@ public class MutableSchedule implements Schedule {
         }
     }
 
+    /**
+     *
+     * @param order
+     * @return
+     */
     public int addOrder(TrainOrdersModel order) {
         if (!canAddOrder()) {
             throw new IllegalStateException();
@@ -127,6 +150,11 @@ public class MutableSchedule implements Schedule {
         return newOrderNumber;
     }
 
+    /**
+     *
+     * @param orderNumber
+     * @param order
+     */
     public void setOrder(int orderNumber, TrainOrdersModel order) {
         if (orderNumber >= orders.size()) {
             orders.add(order);
@@ -135,17 +163,27 @@ public class MutableSchedule implements Schedule {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public TrainOrdersModel getOrder(int i) {
         return orders.get(i);
     }
 
     /**
      * Returns the number of the order the train is currently carry out.
+     * @return 
      */
     public int getOrderToGoto() {
         return nextScheduledOrder;
     }
 
+    /**
+     *
+     * @param i
+     */
     public void setOrderToGoto(int i) {
         if (i < 0 || i >= orders.size()) {
             throw new IllegalArgumentException(String.valueOf(i));
@@ -157,6 +195,7 @@ public class MutableSchedule implements Schedule {
     /**
      * Returns the station number of the next station the train is scheduled to
      * stop at.
+     * @return 
      */
     public int getStationToGoto() {
         return orders.get(nextScheduledOrder).getStationID();
@@ -164,6 +203,7 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Returns the wagons to add at the next scheduled stop.
+     * @return 
      */
     public ImInts getWagonsToAdd() {
         return orders.get(nextScheduledOrder).getConsist();
@@ -191,6 +231,10 @@ public class MutableSchedule implements Schedule {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasPriorityOrders() {
         return this.hasPriorityOrders;
     }
@@ -204,6 +248,11 @@ public class MutableSchedule implements Schedule {
         return orders.size();
     }
 
+    /**
+     *
+     * @param orderNumber
+     * @return
+     */
     public boolean canPullUp(int orderNumber) {
         boolean isAlreadyAtTop = 0 == orderNumber;
         boolean isPriorityOrdersAbove = (orderNumber == 1 && this.hasPriorityOrders);
@@ -211,6 +260,11 @@ public class MutableSchedule implements Schedule {
         return !isAlreadyAtTop && !isPriorityOrdersAbove;
     }
 
+    /**
+     *
+     * @param orderNumber
+     * @return
+     */
     public boolean canPushDown(int orderNumber) {
         boolean isOrderPriorityOrders = (orderNumber == 0 && this.hasPriorityOrders);
         boolean isAlreadyAtBottom = orderNumber == this.orders.size() - 1;
@@ -218,6 +272,10 @@ public class MutableSchedule implements Schedule {
         return !isOrderPriorityOrders && !isAlreadyAtBottom;
     }
 
+    /**
+     *
+     * @param orderNumber
+     */
     public void pullUp(int orderNumber) {
         if (!canPullUp(orderNumber)) {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
@@ -233,6 +291,10 @@ public class MutableSchedule implements Schedule {
         }
     }
 
+    /**
+     *
+     * @param orderNumber
+     */
     public void pushDown(int orderNumber) {
         if (!canPushDown(orderNumber)) {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
@@ -248,6 +310,10 @@ public class MutableSchedule implements Schedule {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean canAddOrder() {
         int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1
                 : MAXIMUM_NUMBER_OF_ORDER;
@@ -255,14 +321,27 @@ public class MutableSchedule implements Schedule {
         return max > getNumOrders();
     }
 
+    /**
+     *
+     * @param orderNumber
+     * @return
+     */
     public boolean canSetGotoStation(int orderNumber) {
         return !(orderNumber == 0 && hasPriorityOrders);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNextScheduledOrder() {
         return this.nextScheduledOrder;
     }
 
+    /**
+     *
+     * @param stationNumber
+     */
     public void removeAllStopsAtStation(int stationNumber) {
         int i = 0;
 

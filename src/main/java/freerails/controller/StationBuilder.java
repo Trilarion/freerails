@@ -25,6 +25,10 @@ public class StationBuilder {
     private final MoveExecutor executor;
     private int ruleNumber;
 
+    /**
+     *
+     * @param executor
+     */
     public StationBuilder(MoveExecutor executor) {
         this.executor = executor;
 
@@ -42,6 +46,11 @@ public class StationBuilder {
         ruleNumber = i;
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public MoveStatus tryBuildingStation(ImPoint p) {
         ReadOnlyWorld world = executor.getWorld();
 
@@ -53,6 +62,11 @@ public class StationBuilder {
         return executor.tryDoMove(m);
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public MoveStatus buildStation(ImPoint p) {
         // Only build a station if there is track at the specified point.
         MoveStatus status = tryBuildingStation(p);
@@ -68,6 +82,10 @@ public class StationBuilder {
         return status;
     }
 
+    /**
+     *
+     * @param ruleNumber
+     */
     public void setStationType(int ruleNumber) {
         this.ruleNumber = ruleNumber;
     }

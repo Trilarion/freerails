@@ -18,10 +18,18 @@ public class PathWalkerImplTest extends TestCase {
 
     PathWalker pw;
 
+    /**
+     *
+     * @param arg0
+     */
     public PathWalkerImplTest(String arg0) {
         super(arg0);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(PathWalkerImplTest.class);
     }
@@ -29,6 +37,11 @@ public class PathWalkerImplTest extends TestCase {
     /*
      * Test for boolean canStepForward()
      */
+
+    /**
+     *
+     */
+
     public void testCanStepForward() {
         setup();
 
@@ -69,6 +82,9 @@ public class PathWalkerImplTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testHasNext() {
         IntLine line = new IntLine();
 
@@ -130,6 +146,9 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(!pw.hasNext());
     }
 
+    /**
+     *
+     */
     public void setup() {
         int[] xpoints = {0, 100, 100};
         int[] ypoints = {0, 0, 100};

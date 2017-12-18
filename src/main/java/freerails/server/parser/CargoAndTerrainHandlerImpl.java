@@ -35,6 +35,10 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
     int tileROW;
     int tileBuildCost;
 
+    /**
+     *
+     * @param w
+     */
     public CargoAndTerrainHandlerImpl(World w) {
         world = w;
     }

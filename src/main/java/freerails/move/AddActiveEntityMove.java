@@ -28,6 +28,12 @@ public class AddActiveEntityMove implements Move {
 
     private final int index;
 
+    /**
+     *
+     * @param activity
+     * @param index
+     * @param principal
+     */
     public AddActiveEntityMove(Activity activity, int index,
                                FreerailsPrincipal principal) {
         this.activity = activity;

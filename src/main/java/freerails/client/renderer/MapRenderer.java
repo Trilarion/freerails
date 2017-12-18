@@ -9,7 +9,16 @@ import java.awt.*;
  * @author Luke
  */
 public interface MapRenderer extends MapLayerRenderer {
+
+    /**
+     *
+     * @return
+     */
     float getScale();
 
+    /**
+     *
+     * @return
+     */
     Dimension getMapSizeInPixels();
 }

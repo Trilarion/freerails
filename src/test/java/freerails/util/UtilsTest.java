@@ -9,8 +9,15 @@ import junit.framework.TestCase;
 import java.awt.*;
 import java.io.Serializable;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class UtilsTest extends TestCase {
 
+    /**
+     *
+     */
     public void testEqualsBySerialization() {
 
         Serializable a = new Point(10, 10);

@@ -13,6 +13,7 @@ import java.util.Set;
  * An immutable set.
  *
  * @author Luke
+ * @param <E>
  */
 @Immutable
 public final class ImSet<E extends FreerailsSerializable> implements
@@ -22,6 +23,10 @@ public final class ImSet<E extends FreerailsSerializable> implements
 
     private final HashSet<E> hashSet;
 
+    /**
+     *
+     * @param data
+     */
     public ImSet(Set<E> data) {
         hashSet = new HashSet<>(data);
     }
@@ -43,6 +48,11 @@ public final class ImSet<E extends FreerailsSerializable> implements
         return hashSet.hashCode();
     }
 
+    /**
+     *
+     * @param element
+     * @return
+     */
     public boolean contains(E element) {
         return hashSet.contains(element);
     }

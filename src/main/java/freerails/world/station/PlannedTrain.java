@@ -19,6 +19,11 @@ public class PlannedTrain implements FreerailsSerializable {
 
     private final ImInts wagonTypes;
 
+    /**
+     *
+     * @param e
+     * @param wagons
+     */
     public PlannedTrain(int e, int[] wagons) {
         engineType = e;
         wagonTypes = new ImInts(wagons);
@@ -43,10 +48,18 @@ public class PlannedTrain implements FreerailsSerializable {
         return wagonTypes.equals(productionAtEngineShop.wagonTypes);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getEngineType() {
         return engineType;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImInts getWagonTypes() {
         return wagonTypes;
     }

@@ -34,6 +34,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
             0, 0);
     private World w;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -44,6 +48,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 DropOffAndPickupCargoMoveGeneratorTest.class);
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         // Set up the world object with three cargo types, one station, and one

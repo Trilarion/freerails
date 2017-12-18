@@ -48,10 +48,18 @@ public class SoundManager implements ModelRootListener, LineListener {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public static SoundManager getSoundManager() {
         return soundManager;
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
         SoundManager soundPlayer = getSoundManager();
@@ -66,6 +74,13 @@ public class SoundManager implements ModelRootListener, LineListener {
         }
     }
 
+    /**
+     *
+     * @param s
+     * @throws IOException
+     * @throws UnsupportedAudioFileException
+     * @throws LineUnavailableException
+     */
     public void addClip(String s) throws IOException,
             UnsupportedAudioFileException, LineUnavailableException {
         if (samples.containsKey(s)) {
@@ -104,6 +119,11 @@ public class SoundManager implements ModelRootListener, LineListener {
         return new ByteArrayInputStream(data);
     }
 
+    /**
+     *
+     * @param s
+     * @param loops
+     */
     public void playSound(String s, int loops) {
         if (playSounds) {
             try {
@@ -134,6 +154,12 @@ public class SoundManager implements ModelRootListener, LineListener {
         }
     }
 
+    /**
+     *
+     * @param p
+     * @param before
+     * @param after
+     */
     public void propertyChange(ModelRoot.Property p, Object before, Object after) {
         if (p.equals(ModelRoot.Property.PLAY_SOUNDS)) {
             playSounds = (Boolean) after;

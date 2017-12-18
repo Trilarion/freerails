@@ -13,6 +13,10 @@ import java.io.IOException;
  * @author Luke
  */
 public class LocalConnection implements Connection2Client, Connection2Server {
+
+    /**
+     *
+     */
     public static final String SERVER_IN_SAME_JVM = "server in same JVM";
 
     private final SychronizedQueue fromServer = new SychronizedQueue();
@@ -97,6 +101,10 @@ public class LocalConnection implements Connection2Client, Connection2Server {
         status.close();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getServerDetails() {
         return SERVER_IN_SAME_JVM;
     }

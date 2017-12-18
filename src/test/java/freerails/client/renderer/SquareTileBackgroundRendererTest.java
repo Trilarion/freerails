@@ -8,6 +8,10 @@ import junit.framework.TestCase;
 
 import java.awt.*;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class SquareTileBackgroundRendererTest extends TestCase {
 
     final MapLayerRenderer renderer = new MapLayerRenderer() {

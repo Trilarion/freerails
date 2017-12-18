@@ -15,6 +15,10 @@ import java.util.Map;
  * @author Luke
  */
 final public class SynchronizedEventQueue extends EventQueue {
+
+    /**
+     *
+     */
     public static final Object MUTEX = new Object();
 
     private static final SynchronizedEventQueue instance = new SynchronizedEventQueue();
@@ -31,6 +35,9 @@ final public class SynchronizedEventQueue extends EventQueue {
         list = new LinkedHashMap<>();
     }
 
+    /**
+     *
+     */
     public static synchronized void use() {
         if (!alreadyInUse) {
             /* set up the synchronized event queue */
@@ -41,6 +48,10 @@ final public class SynchronizedEventQueue extends EventQueue {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static SynchronizedEventQueue getInstance() {
         return instance;
     }

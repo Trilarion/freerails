@@ -57,6 +57,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
      *                    path
      * @param trainLength the length of the train, as returned by
      *                    <code>TrainModel.getLength()</code>.
+     * @param speeds
      * @throws IllegalArgumentException if trainLength is out the range
      *                                  <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
      * @throws IllegalArgumentException if <code>path.getDistance(engineStep) &lt; trainLength</code>.
@@ -101,6 +102,13 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         sanityCheck();
     }
 
+    /**
+     *
+     * @param path
+     * @param trainLength
+     * @param duration
+     * @param act
+     */
     public TrainMotion(PathOnTiles path, int trainLength, double duration,
                        SpeedTimeAndStatus.TrainActivity act) {
         this.path = path;
@@ -136,6 +144,10 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
                     + duration);
     }
 
+    /**
+     *
+     * @return
+     */
     public double duration() {
         return duration;
     }
@@ -170,10 +182,18 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         return speeds.calcS(t);
     }
 
+    /**
+     *
+     * @return
+     */
     public PositionOnTrack getFinalPosition() {
         return path.getFinalPosition();
     }
 
+    /**
+     *
+     * @return
+     */
     public double getSpeedAtEnd() {
         double finalT = speeds.getT();
         return speeds.calcV(finalT);
@@ -254,6 +274,10 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         return new PathOnTiles(startPoint, steps);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrainLength() {
         return trainLength;
     }
@@ -267,14 +291,26 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public PathOnTiles getPath() {
         return path;
     }
 
+    /**
+     *
+     * @return
+     */
     public SpeedTimeAndStatus.TrainActivity getActivity() {
         return activity;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getInitialPosition() {
         return initialPosition;
     }

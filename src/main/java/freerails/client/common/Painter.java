@@ -8,5 +8,11 @@ import java.awt.*;
  * @author Luke
  */
 public interface Painter {
+
+    /**
+     *
+     * @param g
+     * @param newVisibleRectectangle
+     */
     void paint(Graphics2D g, Rectangle newVisibleRectectangle);
 }

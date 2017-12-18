@@ -8,8 +8,15 @@ import junit.framework.TestCase;
 
 import java.util.Random;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class CompositeSpeedAgainstTimeTest extends TestCase {
 
+    /**
+     *
+     */
     public void testBounds() {
         SpeedAgainstTime sat = ConstAcc.uas(10, 2, 400d);
         CompositeSpeedAgainstTime csat = new CompositeSpeedAgainstTime(sat);
@@ -22,6 +29,9 @@ public class CompositeSpeedAgainstTimeTest extends TestCase {
         assertEquals(0d, t3);
     }
 
+    /**
+     *
+     */
     public void testContract() {
         Random r = new Random(123);
         for (int i = 0; i < 1000; i++) {

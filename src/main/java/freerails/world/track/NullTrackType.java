@@ -19,6 +19,10 @@ import java.util.Iterator;
  * @author lindsal
  */
 final public class NullTrackType implements TrackRule {
+
+    /**
+     *
+     */
     public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
     private static final long serialVersionUID = 3257849891614306614L;
     private static final NullTrackType nullTrackType = new NullTrackType();
@@ -26,6 +30,10 @@ final public class NullTrackType implements TrackRule {
     private NullTrackType() {
     }
 
+    /**
+     *
+     * @return
+     */
     public static NullTrackType getInstance() {
         return nullTrackType;
     }
@@ -34,39 +42,81 @@ final public class NullTrackType implements TrackRule {
         return nullTrackType;
     }
 
+    /**
+     *
+     * @param TerrainType
+     * @return
+     */
     public boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType) {
         return true; // No track is possible anywhere.
     }
 
+    /**
+     *
+     * @param directionComingFrom
+     * @return
+     */
     public Step[] getLegalRoutes(
             freerails.world.common.Step directionComingFrom) {
         return new Step[0];
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMaximumConsecutivePieces() {
         return -1;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTypeName() {
         return "NullTrackType";
     }
 
+    /**
+     *
+     * @param trackTemplateToTest
+     * @return
+     */
     public boolean testTrackPieceLegality(int trackTemplateToTest) {
         return trackTemplateToTest == 0;
     }
 
+    /**
+     *
+     * @param config
+     * @return
+     */
     public boolean trackPieceIsLegal(TrackConfiguration config) {
         return testTrackPieceLegality(config.getTrackGraphicsID());
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
         throw new UnsupportedOperationException("Method not implemented yet!");
     }
 
+    /**
+     *
+     * @param config
+     * @param owner
+     * @return
+     */
     public TrackPiece getTrackPiece(TrackConfiguration config, int owner) {
         throw new UnsupportedOperationException("Method not implemented yet!");
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isStation() {
         return false;
     }
@@ -81,18 +131,34 @@ final public class NullTrackType implements TrackRule {
         return 666;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationRadius() {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getPrice() {
         return new Money(0);
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getMaintenanceCost() {
         return new Money(0);
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackCategories getCategory() {
         return TrackCategories.non;
     }
@@ -102,11 +168,19 @@ final public class NullTrackType implements TrackRule {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isDouble() {
 
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getFixedCost() {
         return Money.ZERO;
     }

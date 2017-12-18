@@ -17,6 +17,10 @@ import java.io.ObjectStreamException;
  */
 @freerails.util.InstanceControlled
 public class TimeTickPreMove implements PreMove {
+
+    /**
+     *
+     */
     public static final TimeTickPreMove INSTANCE = new TimeTickPreMove();
     private static final long serialVersionUID = 3690479125647208760L;
 
@@ -24,6 +28,11 @@ public class TimeTickPreMove implements PreMove {
 
     }
 
+    /**
+     *
+     * @param w
+     * @return
+     */
     public Move generateMove(ReadOnlyWorld w) {
         return TimeTickMove.getMove(w);
     }

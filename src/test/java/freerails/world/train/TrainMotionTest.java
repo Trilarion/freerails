@@ -8,6 +8,10 @@ import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class TrainMotionTest extends TestCase {
     /*
      *
@@ -27,6 +31,11 @@ public class TrainMotionTest extends TestCase {
      *
      * 72.42640687119285
      */
+
+    /**
+     *
+     */
+
 
     public void test4Bug1266695() {
         // The figures are copied from the debugger.

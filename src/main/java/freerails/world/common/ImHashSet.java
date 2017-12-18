@@ -11,6 +11,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ *
+ * @author jkeller1
+ * @param <E>
+ */
 @Immutable
 public class ImHashSet<E extends FreerailsSerializable> implements
         FreerailsSerializable {
@@ -19,15 +24,27 @@ public class ImHashSet<E extends FreerailsSerializable> implements
 
     private final HashSet<E> hashSet;
 
+    /**
+     *
+     * @param hashSet
+     */
     public ImHashSet(HashSet<E> hashSet) {
         this.hashSet = new HashSet<>(hashSet);
     }
 
+    /**
+     *
+     * @param values
+     */
     public ImHashSet(E... values) {
         this.hashSet = new HashSet<>();
         Collections.addAll(hashSet, values);
     }
 
+    /**
+     *
+     * @param values
+     */
     public ImHashSet(List<E> values) {
         this.hashSet = new HashSet<>();
         hashSet.addAll(values);
@@ -50,10 +67,19 @@ public class ImHashSet<E extends FreerailsSerializable> implements
         return hashSet.hashCode();
     }
 
+    /**
+     *
+     * @param e
+     * @return
+     */
     public boolean contains(E e) {
         return hashSet.contains(e);
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             final Iterator<E> it = hashSet.iterator();

@@ -30,26 +30,55 @@ public class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
+    /**
+     *
+     */
     public final String playername;
 
+    /**
+     *
+     */
     public final String year;
 
+    /**
+     *
+     */
     public final Money cash;
 
+    /**
+     *
+     */
     public final Money loansTotal;
 
+    /**
+     *
+     */
     public final Money netWorth;
 
+    /**
+     *
+     */
     public final Money pricePerShare;
 
+    /**
+     *
+     */
     public final String publicShares;
 
+    /**
+     *
+     */
     public final String treasuryStock;
 
+    /**
+     *
+     */
     public final String othersRRsStockRows;
 
     /**
      * Creates a new instance of BrokerScreenGenerator
+     * @param w
+     * @param principal
      */
     public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         FinancialDataGatherer dataGatherer = new FinancialDataGatherer(w, principal);

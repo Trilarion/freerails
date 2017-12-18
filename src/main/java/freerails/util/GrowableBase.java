@@ -94,6 +94,7 @@ public abstract class GrowableBase implements Serializable {
      * Set the backing array. This method is used by the type-agnostic base
      * class code to set the array used for type-specific storage by the child
      * class.
+     * @param array
      */
     protected abstract void setArray(Object array);
 

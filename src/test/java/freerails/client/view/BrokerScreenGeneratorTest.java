@@ -21,12 +21,20 @@ import freerails.world.top.World;
 import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class BrokerScreenGeneratorTest extends TestCase {
 
     int playerID;
     FreerailsPrincipal principal;
     private World world;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         // TODO Auto-generated method stub

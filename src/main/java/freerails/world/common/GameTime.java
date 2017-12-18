@@ -22,6 +22,10 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
     private static final long serialVersionUID = 3691035461301055541L;
     private final int ticks;
 
+    /**
+     *
+     * @param l
+     */
     public GameTime(int l) {
         this.ticks = l;
     }
@@ -36,10 +40,18 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
         return ticks;
     }
 
+    /**
+     *
+     * @return
+     */
     public GameTime nextTick() {
         return new GameTime(ticks + 1);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTicks() {
         return ticks;
     }

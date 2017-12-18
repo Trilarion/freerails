@@ -6,11 +6,21 @@ package freerails.controller;
 
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class OpenListTest extends TestCase {
 
+    /**
+     *
+     */
     public void testGetF() {
     }
 
+    /**
+     *
+     */
     public void testContains() {
         OpenList openList = new OpenList();
         assertFalse(openList.contains(0));
@@ -21,6 +31,9 @@ public class OpenListTest extends TestCase {
         assertFalse(openList.contains(0));
     }
 
+    /**
+     *
+     */
     public void testSmallestF() {
         OpenList openList = new OpenList();
         openList.add(0, 4);
@@ -36,6 +49,9 @@ public class OpenListTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testSize() {
         OpenList openList = new OpenList();
         assertEquals(0, openList.size());
@@ -45,6 +61,9 @@ public class OpenListTest extends TestCase {
         assertEquals(0, openList.size());
     }
 
+    /**
+     *
+     */
     public void testAdd() {
         OpenList openList = new OpenList();
         openList.add(1, 4);

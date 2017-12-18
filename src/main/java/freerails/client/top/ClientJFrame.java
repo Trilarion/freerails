@@ -19,11 +19,16 @@ public class ClientJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form ClientJFrame.
+     * @param gcf
      */
     public ClientJFrame(GUIComponentFactory gcf) {
         setup(gcf);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String args[]) {
         new ClientJFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
     }
@@ -147,6 +152,6 @@ public class ClientJFrame extends javax.swing.JFrame {
         System.exit(0);
     }// GEN-LAST:event_exitForm
 
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 
 }

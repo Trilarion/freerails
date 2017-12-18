@@ -91,6 +91,12 @@ public class LeaderBoardJPanel extends JPanel implements View {
         return playersList;
     }
 
+    /**
+     *
+     * @param modelRoot
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
         ReadOnlyWorld w = modelRoot.getWorld();
         values.clear();

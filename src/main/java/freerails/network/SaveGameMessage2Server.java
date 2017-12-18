@@ -18,6 +18,11 @@ public class SaveGameMessage2Server implements Message2Server {
     private final int id;
     private final String filename;
 
+    /**
+     *
+     * @param id
+     * @param s
+     */
     public SaveGameMessage2Server(int id, String s) {
         this.id = id;
         this.filename = s;
@@ -45,10 +50,19 @@ public class SaveGameMessage2Server implements Message2Server {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     *
+     * @param server
+     * @return
+     */
     public MessageStatus execute(ServerControlInterface server) {
         try {
             server.savegame(filename);

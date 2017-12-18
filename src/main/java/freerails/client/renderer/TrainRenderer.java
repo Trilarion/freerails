@@ -18,10 +18,20 @@ import java.awt.*;
 public class TrainRenderer {
     private final RenderersRoot rr;
 
+    /**
+     *
+     * @param trainImages
+     */
     public TrainRenderer(RenderersRoot trainImages) {
         this.rr = trainImages;
     }
 
+    /**
+     *
+     * @param g
+     * @param train
+     * @param s
+     */
     public void paintTrain(Graphics g, TrainModel train, TrainPositionOnMap s) {
         // If the train has been removed, it will be null!
         if (train == null) {
@@ -53,6 +63,12 @@ public class TrainRenderer {
     // @SonnyZ
     // This code renders the explosion that occurs when 2 trains crash on the
     // map
+
+    /**
+     *
+     * @param g
+     * @param s
+     */
     public void paintTrainCrash(Graphics g, TrainPositionOnMap s) {
         // check to see if there is a train
         // if (s == null) {

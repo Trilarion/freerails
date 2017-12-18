@@ -17,6 +17,10 @@ public class AnimationExpt extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         System.setProperty("SHOWFPS", "true");
 

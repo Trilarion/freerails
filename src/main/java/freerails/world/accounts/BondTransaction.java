@@ -11,7 +11,15 @@ import freerails.world.common.Money;
  * @author Luke
  */
 public class BondTransaction extends AddItemTransaction {
+
+    /**
+     *
+     */
     public static final Money BOND_VALUE_ISSUE = new Money(500000);
+
+    /**
+     *
+     */
     public static final Money BOND_VALUE_REPAY = new Money(-500000);
     private static final long serialVersionUID = 3257562923491473465L;
 
@@ -20,11 +28,21 @@ public class BondTransaction extends AddItemTransaction {
         super(category, type, quantity, amount);
     }
 
+    /**
+     *
+     * @param interestRate
+     * @return
+     */
     public static BondTransaction issueBond(int interestRate) {
         return new BondTransaction(Category.BOND, interestRate, 1,
                 BOND_VALUE_ISSUE);
     }
 
+    /**
+     *
+     * @param interestRate
+     * @return
+     */
     public static BondTransaction repayBond(int interestRate) {
         return new BondTransaction(Category.BOND, interestRate, -1,
                 BOND_VALUE_REPAY);

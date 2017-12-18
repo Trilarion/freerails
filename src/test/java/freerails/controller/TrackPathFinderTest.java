@@ -23,6 +23,10 @@ public class TrackPathFinderTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
     private WorldImpl world;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         world = new WorldImpl(20, 20);
@@ -31,6 +35,9 @@ public class TrackPathFinderTest extends TestCase {
         MapFixtureFactory.generateTrackRuleList(world);
     }
 
+    /**
+     *
+     */
     public void testGeneratePath() {
         try {
             BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(

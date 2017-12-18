@@ -58,6 +58,9 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param trainNo   ID of the train
      * @param stationNo ID of the station
      * @param world     The world object
+     * @param p
+     * @param waiting
+     * @param autoConsist
      */
     public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo,
                                               ReadOnlyWorld world, FreerailsPrincipal p, boolean waiting,
@@ -158,6 +161,10 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Move generateMove() {
         // The methods that calculate the before and after bundles could be
         // called from here.
@@ -282,6 +289,10 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isCargo2Transfer() {
         ImInts spaceAvailable = train.spaceAvailable();
 

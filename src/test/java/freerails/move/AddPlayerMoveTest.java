@@ -7,8 +7,15 @@ package freerails.move;
 import freerails.util.Utils;
 import freerails.world.player.Player;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class AddPlayerMoveTest extends AbstractMoveTestCase {
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         Player newPlayer = new Player("New Player");
@@ -20,6 +27,9 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     public void testMove2() {
         Player newPlayer = new Player("New Player");
 

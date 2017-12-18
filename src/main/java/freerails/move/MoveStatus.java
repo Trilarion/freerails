@@ -10,11 +10,22 @@ import freerails.world.common.FreerailsSerializable;
  */
 @Immutable
 final public class MoveStatus implements FreerailsSerializable {
+
+    /**
+     *
+     */
     public static final MoveStatus MOVE_OK = new MoveStatus(true,
             "Move accepted");
     private static final long serialVersionUID = 3258129171879309624L;
+
+    /**
+     *
+     */
     public final boolean ok;
 
+    /**
+     *
+     */
     public final String message;
 
     private final Throwable t;
@@ -30,6 +41,11 @@ final public class MoveStatus implements FreerailsSerializable {
         this.message = mess;
     }
 
+    /**
+     *
+     * @param reason
+     * @return
+     */
     public static MoveStatus moveFailed(String reason) {
         return new MoveStatus(false, reason);
     }
@@ -66,10 +82,17 @@ final public class MoveStatus implements FreerailsSerializable {
         return this;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isOk() {
         return ok;
     }
 
+    /**
+     *
+     */
     public void printStackTrack() {
         if (null != t)
             t.printStackTrace();

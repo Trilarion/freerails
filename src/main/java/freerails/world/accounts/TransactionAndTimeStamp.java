@@ -7,6 +7,10 @@ package freerails.world.accounts;
 import freerails.world.common.FreerailsSerializable;
 import freerails.world.common.GameTime;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class TransactionAndTimeStamp implements FreerailsSerializable {
 
     private static final long serialVersionUID = 1540065347606694456L;
@@ -15,6 +19,11 @@ public class TransactionAndTimeStamp implements FreerailsSerializable {
 
     private final GameTime timeStamp;
 
+    /**
+     *
+     * @param t
+     * @param stamp
+     */
     public TransactionAndTimeStamp(Transaction t, GameTime stamp) {
         this.t = t;
         timeStamp = stamp;
@@ -42,10 +51,18 @@ public class TransactionAndTimeStamp implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public Transaction getT() {
         return t;
     }
 
+    /**
+     *
+     * @return
+     */
     public GameTime getTimeStamp() {
         return timeStamp;
     }

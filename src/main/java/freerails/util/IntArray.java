@@ -91,6 +91,7 @@ public class IntArray extends ArrayBase implements Serializable {
     /**
      * Set the backing array. This method is used by the type-agnostic base
      * class code to set the array used for type-specific storage.
+     * @param array
      */
     @Override
     protected final void setArray(Object array) {

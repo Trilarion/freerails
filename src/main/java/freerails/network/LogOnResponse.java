@@ -25,10 +25,20 @@ public class LogOnResponse implements FreerailsSerializable {
         this.message = s;
     }
 
+    /**
+     *
+     * @param playerNumber
+     * @return
+     */
     public static LogOnResponse accepted(int playerNumber) {
         return new LogOnResponse(true, playerNumber, null);
     }
 
+    /**
+     *
+     * @param reason
+     * @return
+     */
     public static LogOnResponse rejected(String reason) {
         return new LogOnResponse(false, -1, reason);
     }
@@ -58,14 +68,26 @@ public class LogOnResponse implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPlayerID() {
         return playerNumber;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isSuccessful() {
         return successful;
     }

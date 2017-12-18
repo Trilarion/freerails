@@ -9,8 +9,15 @@ import junit.framework.TestCase;
 
 import java.io.Serializable;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class CargoBundleTest extends TestCase {
 
+    /**
+     *
+     */
     public void testEquals() {
         MutableCargoBundle bundle1 = new MutableCargoBundle();
         MutableCargoBundle bundle2 = new MutableCargoBundle();

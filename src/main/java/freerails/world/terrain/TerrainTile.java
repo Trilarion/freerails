@@ -8,5 +8,10 @@ import freerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public interface TerrainTile extends FreerailsSerializable {
+
+    /**
+     *
+     * @return
+     */
     int getTerrainTypeID();
 }

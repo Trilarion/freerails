@@ -7,8 +7,16 @@ package freerails.util;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class ListXDDiffsTest extends ListXDTest {
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();

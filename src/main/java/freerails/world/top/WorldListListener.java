@@ -13,9 +13,28 @@ import freerails.world.player.FreerailsPrincipal;
  * @author Luke Lindsay
  */
 public interface WorldListListener {
+
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     void listUpdated(KEY key, int index, FreerailsPrincipal principal);
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     void itemAdded(KEY key, int index, FreerailsPrincipal principal);
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     void itemRemoved(KEY key, int index, FreerailsPrincipal principal);
 }

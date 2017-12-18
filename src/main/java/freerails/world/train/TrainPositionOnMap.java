@@ -69,6 +69,10 @@ import freerails.world.common.IntLine;
  * @author Luke Lindsay 26-Oct-2002
  */
 public class TrainPositionOnMap implements FreerailsSerializable {
+
+    /**
+     *
+     */
     public static final int CRASH_FRAMES_COUNT = 15;
 
     private static final long serialVersionUID = 3979269144611010865L;
@@ -85,6 +89,11 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     private int frameCt = 1;
     private int frame = 0;
 
+    /**
+     *
+     * @param xs
+     * @param ys
+     */
     public TrainPositionOnMap(ImInts xs, ImInts ys) {
         this.xpoints = xs;
         this.ypoints = ys;
@@ -107,17 +116,36 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         this.activity = activity;
     }
 
+    /**
+     *
+     * @param xpoints
+     * @param ypoints
+     * @return
+     */
     public static TrainPositionOnMap createInstance(int[] xpoints, int[] ypoints) {
         return new TrainPositionOnMap(xpoints, ypoints, 0d, 0d,
                 SpeedTimeAndStatus.TrainActivity.READY);
     }
 
+    /**
+     *
+     * @param path
+     * @return
+     */
     public static TrainPositionOnMap createInSameDirectionAsPath(
             FreerailsPathIterator path) {
         return createInSameDirectionAsPath(path, 0d, 0d,
                 SpeedTimeAndStatus.TrainActivity.READY);
     }
 
+    /**
+     *
+     * @param path
+     * @param speed
+     * @param acceleration
+     * @param activity
+     * @return
+     */
     public static TrainPositionOnMap createInSameDirectionAsPathReversed(
             Pair<FreerailsPathIterator, Integer> path, double speed,
             double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
@@ -151,6 +179,14 @@ public class TrainPositionOnMap implements FreerailsSerializable {
                 activity);
     }
 
+    /**
+     *
+     * @param path
+     * @param speed
+     * @param acceleration
+     * @param activity
+     * @return
+     */
     public static TrainPositionOnMap createInSameDirectionAsPath(
             FreerailsPathIterator path, double speed, double acceleration,
             SpeedTimeAndStatus.TrainActivity activity) {
@@ -184,6 +220,12 @@ public class TrainPositionOnMap implements FreerailsSerializable {
                 activity);
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean headsAreEqual(TrainPositionOnMap a,
                                         TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
@@ -194,6 +236,12 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return aHeadX == bHeadX && aHeadY == bHeadY;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean tailsAreEqual(TrainPositionOnMap a,
                                         TrainPositionOnMap b) {
         int aTailX = a.getX(a.getLength() - 1);
@@ -204,6 +252,12 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return aTailX == bTailX && aTailY == bTailY;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean aHeadEqualsBTail(TrainPositionOnMap a,
                                            TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
@@ -215,23 +269,44 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return aHeadX == bTailX && aHeadY == bTailY;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean bHeadEqualsATail(TrainPositionOnMap a,
                                            TrainPositionOnMap b) {
         return aHeadEqualsBTail(b, a);
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isCrashSite() {
         return crashSite;
     }
 
+    /**
+     *
+     * @param isCrash
+     */
     public void setCrashSite(boolean isCrash) {
         crashSite = isCrash;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getFrameCt() {
         return frameCt;
     }
 
+    /**
+     *
+     */
     public void incrementFramCt() {
         if (frame > 0) {
             incrementFrame();
@@ -241,6 +316,9 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         }
     }
 
+    /**
+     *
+     */
     public void incrementFrame() {
         frameCt++;
     }
@@ -302,6 +380,10 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public double calulateDistance() {
         double distance = 0;
         IntLine line = new IntLine();
@@ -318,30 +400,60 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return distance;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getLength() {
         return xpoints.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public ImInts getXPoints() {
         return xpoints;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImInts getYPoints() {
         return ypoints;
     }
 
+    /**
+     *
+     * @param position
+     * @return
+     */
     public int getX(int position) {
         return xpoints.get(position);
     }
 
+    /**
+     *
+     * @param position
+     * @return
+     */
     public int getY(int position) {
         return ypoints.get(position);
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPathIterator path() {
         return new SimplePathIteratorImpl(this.xpoints, this.ypoints);
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPathIterator reversePath() {
         int length = xpoints.size();
         int[] reversed_xpoints = new int[length];
@@ -355,6 +467,10 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return new SimplePathIteratorImpl(reversed_xpoints, reversed_ypoints);
     }
 
+    /**
+     *
+     * @return
+     */
     public TrainPositionOnMap reverse() {
         int length = xpoints.size();
         int[] reversed_xpoints = new int[length];
@@ -369,6 +485,11 @@ public class TrainPositionOnMap implements FreerailsSerializable {
                 speed, acceleration, activity);
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public TrainPositionOnMap addToHead(TrainPositionOnMap b) {
         TrainPositionOnMap a = this;
 
@@ -405,20 +526,40 @@ public class TrainPositionOnMap implements FreerailsSerializable {
                 + " to the head of " + a.toString());
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public boolean canAddToHead(TrainPositionOnMap b) {
         return aHeadEqualsBTail(this, b);
     }
 
+    /**
+     *
+     * @param a
+     * @return
+     */
     public TrainPositionOnMap addToTail(TrainPositionOnMap a) {
         TrainPositionOnMap b = this;
 
         return addBtoHeadOfA(b, a);
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public boolean canAddToTail(TrainPositionOnMap b) {
         return aHeadEqualsBTail(b, this);
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public TrainPositionOnMap removeFromHead(TrainPositionOnMap b) {
         if (headsAreEqual(this, b)) {
             int newLength = this.getLength() - b.getLength() + 2;
@@ -447,6 +588,11 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         throw new IllegalArgumentException();
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public boolean canRemoveFromHead(TrainPositionOnMap b) {
         if (headsAreEqual(this, b)) {
             FreerailsPathIterator path = b.path();
@@ -468,6 +614,11 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return false;
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public TrainPositionOnMap removeFromTail(TrainPositionOnMap b) {
         if (tailsAreEqual(this, b)) {
             int newLength = this.getLength() - b.getLength() + 2;
@@ -491,6 +642,11 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         throw new IllegalArgumentException();
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public boolean canRemoveFromTail(TrainPositionOnMap b) {
         if (tailsAreEqual(this, b)) {
             FreerailsPathIterator path = b.reversePath();
@@ -530,14 +686,26 @@ public class TrainPositionOnMap implements FreerailsSerializable {
         return sb.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public double getAcceleration() {
         return acceleration;
     }
 
+    /**
+     *
+     * @return
+     */
     public SpeedTimeAndStatus.TrainActivity getActivity() {
         return activity;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getSpeed() {
         return speed;
     }

@@ -41,6 +41,15 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         }
     }
 
+    /**
+     *
+     * @param g
+     * @param screenX
+     * @param screenY
+     * @param mapX
+     * @param mapY
+     * @param w
+     */
     public void renderTile(java.awt.Graphics g, int screenX, int screenY,
                            int mapX, int mapY, ReadOnlyWorld w) {
         Image icon = this.getIcon(mapX, mapY, w);
@@ -50,6 +59,10 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Image getDefaultIcon() {
         return getTileIcons()[0];
     }
@@ -106,6 +119,11 @@ public abstract class AbstractTileRenderer implements TileRenderer {
                 + generateFileNameNumber(i) + ".png";
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     protected abstract String generateFileNameNumber(int i);
 
     Image[] getTileIcons() {

@@ -16,6 +16,10 @@ import java.util.Arrays;
 
 import static freerails.world.common.Step.*;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class TrackBuildingTest extends TestCase {
 
     World w;
@@ -28,6 +32,10 @@ public class TrackBuildingTest extends TestCase {
 
     BuildTrackStrategy bts;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();

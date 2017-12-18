@@ -34,6 +34,12 @@ public class TrainAccessor {
 
     private final int id;
 
+    /**
+     *
+     * @param w
+     * @param p
+     * @param id
+     */
     public TrainAccessor(final ReadOnlyWorld w, final FreerailsPrincipal p,
                          final int id) {
         this.w = w;
@@ -41,6 +47,13 @@ public class TrainAccessor {
         this.id = id;
     }
 
+    /**
+     *
+     * @param row
+     * @param onTrain
+     * @param consist
+     * @return
+     */
     public static ImInts spaceAvailable2(ReadOnlyWorld row,
                                          ImmutableCargoBundle onTrain, ImInts consist) {
         // This array will store the amount of space available on the train for
@@ -62,16 +75,26 @@ public class TrainAccessor {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param time
+     * @return
+     */
     public SpeedTimeAndStatus.TrainActivity getStatus(double time) {
         TrainMotion tm = findCurrentMotion(time);
         return tm.getActivity();
     }
 
     /**
+     * @param time
      * @return the id of the station the train is currently at, or -1 if no
      * current station.
      */
@@ -96,6 +119,12 @@ public class TrainAccessor {
         return -1;
     }
 
+    /**
+     *
+     * @param time
+     * @param view
+     * @return
+     */
     public TrainPositionOnMap findPosition(double time, Rectangle view) {
         ActivityIterator ai = w.getActivities(p, id);
 
@@ -125,6 +154,11 @@ public class TrainAccessor {
         return tm.getState(dt);
     }
 
+    /**
+     *
+     * @param time
+     * @return
+     */
     public TrainMotion findCurrentMotion(double time) {
         ActivityIterator ai = w.getActivities(p, id);
         boolean afterFinish = ai.getFinishTime() < time;
@@ -134,16 +168,28 @@ public class TrainAccessor {
         return (TrainMotion) ai.getActivity();
     }
 
+    /**
+     *
+     * @return
+     */
     public TrainModel getTrain() {
         return (TrainModel) w.get(p, KEY.TRAINS, id);
     }
 
+    /**
+     *
+     * @return
+     */
     public ImmutableSchedule getSchedule() {
         TrainModel train = getTrain();
         return (ImmutableSchedule) w.get(p, KEY.TRAIN_SCHEDULES, train
                 .getScheduleID());
     }
 
+    /**
+     *
+     * @return
+     */
     public ImmutableCargoBundle getCargoBundle() {
         TrainModel train = getTrain();
         return (ImmutableCargoBundle) w.get(p, KEY.CARGO_BUNDLES, train
@@ -159,6 +205,7 @@ public class TrainAccessor {
      * <li>The current train order specifies a consist that matches the train's
      * current consist.</li>
      * </ol>
+     * @return 
      */
     public boolean keepWaiting() {
         double time = w.currentTime().getTicks();
@@ -200,6 +247,11 @@ public class TrainAccessor {
         return new ImPoint(station.x, station.y);
     }
 
+    /**
+     *
+     * @param time
+     * @return
+     */
     public HashSet<TrackSection> occupiedTrackSection(double time) {
         TrainMotion tm = findCurrentMotion(time);
         PathOnTiles path = tm.getPath();
@@ -217,6 +269,11 @@ public class TrainAccessor {
         return sections;
     }
 
+    /**
+     *
+     * @param time
+     * @return
+     */
     public boolean isMoving(double time) {
         TrainMotion tm = findCurrentMotion(time);
         double speed = tm.getSpeedAtEnd();
@@ -225,6 +282,7 @@ public class TrainAccessor {
 
     /**
      * The space available on the train measured in cargo units.
+     * @return 
      */
     public ImInts spaceAvailable() {
 

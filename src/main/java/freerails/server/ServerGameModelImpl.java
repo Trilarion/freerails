@@ -31,6 +31,10 @@ public class ServerGameModelImpl implements ServerGameModel {
      * List of the ServerAutomaton objects connected to this game.
      */
     private final Vector<ServerAutomaton> serverAutomata;
+
+    /**
+     *
+     */
     public World world;
     private transient CalcSupplyAtStations calcSupplyAtStations;
     private TrainUpdater tb;
@@ -44,10 +48,18 @@ public class ServerGameModelImpl implements ServerGameModel {
 
     private transient MoveReceiver moveExecuter;
 
+    /**
+     *
+     */
     public ServerGameModelImpl() {
         this(null, new Vector<>());
     }
 
+    /**
+     *
+     * @param w
+     * @param serverAutomata
+     */
     public ServerGameModelImpl(World w, Vector<ServerAutomaton> serverAutomata) {
         this.world = w;
         this.serverAutomata = serverAutomata;
@@ -170,6 +182,11 @@ public class ServerGameModelImpl implements ServerGameModel {
         }
     }
 
+    /**
+     *
+     * @param objectOut
+     * @throws IOException
+     */
     public void write(ObjectOutputStream objectOut) throws IOException {
 
         objectOut.writeObject(world);
@@ -184,6 +201,10 @@ public class ServerGameModelImpl implements ServerGameModel {
         }
     }
 
+    /**
+     *
+     * @param newMoveExecuter
+     */
     public void init(MoveReceiver newMoveExecuter) {
         this.moveExecuter = newMoveExecuter;
         tb = new TrainUpdater(newMoveExecuter);
@@ -197,16 +218,29 @@ public class ServerGameModelImpl implements ServerGameModel {
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
+    /**
+     *
+     * @return
+     */
     public World getWorld() {
         return world;
     }
 
+    /**
+     *
+     * @param w
+     * @param passwords
+     */
     public void setWorld(World w, String[] passwords) {
         this.world = w;
         this.serverAutomata.clear();
         this.passwords = passwords.clone();
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getPasswords() {
         return passwords.clone();
     }

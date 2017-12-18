@@ -21,6 +21,12 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private final int nextScheduledOrder;
     private final boolean hasPriorityOrders;
 
+    /**
+     *
+     * @param orders
+     * @param gotoStation
+     * @param hasPriorityOrders
+     */
     public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
                              boolean hasPriorityOrders) {
         this.orders = new ImList<>(orders);
@@ -37,6 +43,11 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public TrainOrdersModel getOrder(int i) {
         return orders.get(i);
     }
@@ -60,6 +71,10 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         return order.consist;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasPriorityOrders() {
         return hasPriorityOrders;
     }
@@ -68,10 +83,19 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         return orders.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNextScheduledOrder() {
         return this.nextScheduledOrder;
     }
 
+    /**
+     *
+     * @param stationNumber
+     * @return
+     */
     public boolean stopsAtStation(int stationNumber) {
         for (int i = 0; i < this.getNumOrders(); i++) {
             TrainOrdersModel order = this.getOrder(i);

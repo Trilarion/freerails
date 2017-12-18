@@ -11,6 +11,10 @@ import java.util.TreeMap;
 
 import static freerails.util.ListKey.Type.EndPoint;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class List2DDiffTest extends TestCase {
 
     List2D<Object> underlying;
@@ -19,6 +23,10 @@ public class List2DDiffTest extends TestCase {
 
     SortedMap<ListKey, Object> map;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         underlying = new List2DImpl<>(0);
@@ -29,6 +37,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.sizeD1()'
      */
+
+    /**
+     *
+     */
+
     public void testSizeD1() {
         assertEquals(0, diffs.sizeD1());
         underlying.addD1();
@@ -38,6 +51,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.sizeD2(int)'
      */
+
+    /**
+     *
+     */
+
     public void testSizeD2() {
         underlying.addD1();
         assertEquals(1, diffs.sizeD1());
@@ -49,6 +67,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.get(int, int)'
      */
+
+    /**
+     *
+     */
+
     public void testGetIntInt() {
         underlying.addD1();
         underlying.addD2(0, String.valueOf(1));
@@ -60,6 +83,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.removeLastD2(int)'
      */
+
+    /**
+     *
+     */
+
     public void testRemoveLastD2() {
         underlying.addD1();
         underlying.addD2(0, String.valueOf(1));
@@ -75,6 +103,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.removeLastD1()'
      */
+
+    /**
+     *
+     */
+
     public void testRemoveLastD1() {
         underlying.addD1();
         underlying.addD1();
@@ -87,6 +120,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.addD1()'
      */
+
+    /**
+     *
+     */
+
     public void testAddD1() {
         underlying.addD1();
         assertEquals(1, diffs.sizeD1());
@@ -106,6 +144,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.addD2(int, T)'
      */
+
+    /**
+     *
+     */
+
     public void testAddD2() {
         underlying.addD1();
         underlying.addD2(0, String.valueOf(1));
@@ -125,6 +168,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List2DDiff.set(int, int, T)'
      */
+
+    /**
+     *
+     */
+
     public void testSetIntIntT() {
         underlying.addD1();
         underlying.addD2(0, String.valueOf(1));
@@ -141,6 +189,11 @@ public class List2DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.ListXDDiffs.add(int...)'
      */
+
+    /**
+     *
+     */
+
     public void testAddIntArray() {
         assertEquals(0, diffs.sizeD1());
         diffs.addDimension();
@@ -160,6 +213,9 @@ public class List2DDiffTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testBoundsOnSet1() {
         underlying.addD1();
         underlying.addD2(0, String.valueOf(1));
@@ -172,6 +228,9 @@ public class List2DDiffTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testBoundsOnSet2() {
         underlying.addD1();
         underlying.addD2(0, String.valueOf(1));
@@ -188,6 +247,9 @@ public class List2DDiffTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testBoundsOnGet() {
         underlying.addD1();
         underlying.addD2(0, String.valueOf(1));
@@ -205,6 +267,9 @@ public class List2DDiffTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testReverting2OriginalState1() {
         underlying.addD1();
         underlying.addD1();
@@ -220,6 +285,9 @@ public class List2DDiffTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testReverting2OriginalState2() {
         underlying.addD1();
         underlying.addD1();
@@ -249,6 +317,9 @@ public class List2DDiffTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testAddingElementAlreadyPresent() {
         underlying.addD1();
         underlying.addD2(0, 1);
@@ -258,6 +329,9 @@ public class List2DDiffTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testAddingNullElement() {
         underlying.addD1();
         underlying.addD2(0, null);
@@ -270,6 +344,9 @@ public class List2DDiffTest extends TestCase {
         diffs.addD2(0, null);
     }
 
+    /**
+     *
+     */
     public void testSettingNullElement() {
         underlying.addD1();
         underlying.addD2(0, null);

@@ -32,6 +32,13 @@ public class AddItemTransaction implements Transaction {
      */
     private final int type;
 
+    /**
+     *
+     * @param category
+     * @param type
+     * @param quantity
+     * @param amount
+     */
     public AddItemTransaction(Category category, int type, int quantity,
                               Money amount) {
         this.category = category;
@@ -40,6 +47,10 @@ public class AddItemTransaction implements Transaction {
         this.amount = amount;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money deltaAssets() {
         return amount.changeSign();
     }
@@ -59,14 +70,26 @@ public class AddItemTransaction implements Transaction {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Category getCategory() {
         return category;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getType() {
         return type;
     }

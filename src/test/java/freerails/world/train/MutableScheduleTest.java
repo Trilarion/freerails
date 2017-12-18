@@ -6,8 +6,15 @@ package freerails.world.train;
 
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class MutableScheduleTest extends TestCase {
 
+    /**
+     *
+     */
     public void test1() {
         TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
         TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);

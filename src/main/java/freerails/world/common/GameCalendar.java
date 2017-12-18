@@ -17,6 +17,11 @@ final public class GameCalendar implements FreerailsSerializable {
 
     private final int startYear;
 
+    /**
+     *
+     * @param ticksPerYear
+     * @param startYear
+     */
     public GameCalendar(int ticksPerYear, int startYear) {
         this.ticksPerYear = ticksPerYear;
         this.startYear = startYear;
@@ -31,6 +36,11 @@ final public class GameCalendar implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @param t
+     * @return
+     */
     public GameTime getStartOfYear(GameTime t) {
         int year = getYear(t.getTicks());
         int ticks = getTicks(year);
@@ -38,16 +48,31 @@ final public class GameCalendar implements FreerailsSerializable {
         return new GameTime(ticks);
     }
 
+    /**
+     *
+     * @param ticks
+     * @return
+     */
     public String getYearAsString(int ticks) {
         int i = getYear(ticks);
 
         return String.valueOf(i);
     }
 
+    /**
+     *
+     * @param ticks
+     * @return
+     */
     public int getYear(int ticks) {
         return startYear + (ticks / ticksPerYear);
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     public int getTicks(int year) {
         int deltaYear = year - startYear;
 
@@ -57,6 +82,8 @@ final public class GameCalendar implements FreerailsSerializable {
     /**
      * Returns the time of day as a string, note that a year is made up of a
      * representative day, so 1st June is equilavent to 12 noon.
+     * @param i
+     * @return 
      */
     public String getTimeOfDay(int i) {
         int ticksPerHour = ticksPerYear / 24;
@@ -67,6 +94,11 @@ final public class GameCalendar implements FreerailsSerializable {
         return decimalFormat.format(hour) + ":" + decimalFormat.format(minute);
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public String getYearAndMonth(int i) {
         int month = getMonth(i);
         String monthAbrev = null;
@@ -150,6 +182,8 @@ final public class GameCalendar implements FreerailsSerializable {
 
     /**
      * Returns the month, 0=Jan, 1=Feb, etc.
+     * @param i
+     * @return 
      */
     public int getMonth(int i) {
         int ticksPerMonth = ticksPerYear / 12;
@@ -168,6 +202,10 @@ final public class GameCalendar implements FreerailsSerializable {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTicksPerYear() {
         return ticksPerYear;
     }

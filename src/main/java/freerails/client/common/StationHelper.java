@@ -8,7 +8,10 @@ import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackRule;
 
-
+/**
+ *
+ * @author jkeller1
+ */
 public class StationHelper {
 
     /**

@@ -13,6 +13,12 @@ public class InetConnection2Server extends AbstractInetConnection implements
         Connection2Server {
     final String serverDetails;
 
+    /**
+     *
+     * @param ip
+     * @param port
+     * @throws IOException
+     */
     public InetConnection2Server(String ip, int port) throws IOException {
         super(ip, port);
         serverDetails = "server at " + ip + ":" + port;
@@ -36,6 +42,10 @@ public class InetConnection2Server extends AbstractInetConnection implements
         return "InetConnection2Server";
     }
 
+    /**
+     *
+     * @return
+     */
     public String getServerDetails() {
         return serverDetails;
     }

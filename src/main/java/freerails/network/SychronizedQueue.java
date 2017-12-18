@@ -16,10 +16,18 @@ import java.util.LinkedList;
 public class SychronizedQueue {
     private final LinkedList<FreerailsSerializable> queue = new LinkedList<>();
 
+    /**
+     *
+     * @param f
+     */
     public synchronized void write(FreerailsSerializable f) {
         queue.add(f);
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized FreerailsSerializable[] read() {
         int length = queue.size();
         FreerailsSerializable[] read = new FreerailsSerializable[length];
@@ -31,10 +39,18 @@ public class SychronizedQueue {
         return read;
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized int size() {
         return queue.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized FreerailsSerializable getFirst() {
         return queue.removeFirst();
     }

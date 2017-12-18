@@ -6,6 +6,10 @@ package freerails.world.train;
 
 import freerails.world.common.FreerailsSerializable;
 
+/**
+ *
+ * @author jkeller1
+ */
 public interface SpeedAgainstTime extends FreerailsSerializable {
 
     /**
@@ -18,6 +22,7 @@ public interface SpeedAgainstTime extends FreerailsSerializable {
      * <li>s = getS() if t = getT()</li>
      * </ol>
      *
+     * @param t
      * @return s
      * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
@@ -33,17 +38,22 @@ public interface SpeedAgainstTime extends FreerailsSerializable {
      * <li>t = getT() if s = getS()</li>
      * </ol>
      *
+     * @param s
      * @return t
      * @throws IllegalArgumentException iff s < 0 or s > getS()
      */
     double calcT(double s);
 
     /**
+     * @param t
+     * @return 
      * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
     double calcV(double t);
 
     /**
+     * @param t
+     * @return 
      * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
     double calcA(double t);

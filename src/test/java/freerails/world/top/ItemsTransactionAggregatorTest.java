@@ -14,8 +14,15 @@ import junit.framework.TestCase;
 
 import static freerails.world.accounts.Transaction.Category.TRACK;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class ItemsTransactionAggregatorTest extends TestCase {
 
+    /**
+     *
+     */
     public void test1() {
         World w = new WorldImpl();
         Player player = new Player("name", 0);

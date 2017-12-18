@@ -25,6 +25,11 @@ public class VerifyStationName {
 
     private final LinkedList<String> stationAlternatives;
 
+    /**
+     *
+     * @param world
+     * @param name
+     */
     public VerifyStationName(ReadOnlyWorld world, String name) {
         this.w = world;
         this.nameToVerify = name;
@@ -38,6 +43,10 @@ public class VerifyStationName {
         stationAlternatives.add("West");
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         String appropriateName = nameToVerify;
         boolean found = false;

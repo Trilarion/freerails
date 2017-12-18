@@ -8,11 +8,16 @@ import junit.framework.TestCase;
 
 import java.util.Random;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class ConstAccTest extends TestCase {
 
     /**
      * Checks the specified object satisfies the contract defined by the
      * interface SpeedAgainstTime.
+     * @param sat
      */
     public static void checkContract(SpeedAgainstTime sat) {
         double s = sat.getS();
@@ -87,6 +92,9 @@ public class ConstAccTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testTandS() {
         SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 5);
         double s = acc1.getS();
@@ -100,12 +108,18 @@ public class ConstAccTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testEquals() {
         SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 4);
         SpeedAgainstTime acc2 = ConstAcc.uat(0, 10, 4);
         assertEquals(acc1, acc2);
     }
 
+    /**
+     *
+     */
     public void testContract() {
         Random r = new Random(88);
         for (int i = 0; i < 1000; i++) {

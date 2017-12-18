@@ -10,12 +10,25 @@ package freerails.world.common;
  * @author Luke
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
+
+    /**
+     *
+     */
     public static final int BITS_FOR_COORDINATE = 14;
 
+    /**
+     *
+     */
     public static final int BITS_FOR_DIRECTION = 3;
 
+    /**
+     *
+     */
     public static final int MAX_COORDINATE = (1 << BITS_FOR_COORDINATE) - 1;
 
+    /**
+     *
+     */
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;
 
     private static final long serialVersionUID = 3257853198755707184L;
@@ -26,9 +39,16 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     private int x = 0;
     private int y = 0;
 
+    /**
+     *
+     */
     public PositionOnTrack() {
     }
 
+    /**
+     *
+     * @param i
+     */
     public PositionOnTrack(int i) {
         this.setValuesFromInt(i);
     }
@@ -48,14 +68,33 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         this.cameFrom = direction;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param direction
+     * @return
+     */
     public static PositionOnTrack createComingFrom(int x, int y, Step direction) {
         return new PositionOnTrack(x, y, direction);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param direction
+     * @return
+     */
     public static PositionOnTrack createFacing(int x, int y, Step direction) {
         return new PositionOnTrack(x, y, direction.getOpposite());
     }
 
+    /**
+     *
+     * @param ints
+     * @return
+     */
     public static PositionOnTrack[] fromInts(int[] ints) {
         PositionOnTrack[] returnValue = new PositionOnTrack[ints.length];
         for (int i = 0; i < ints.length; i++) {
@@ -65,6 +104,11 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return returnValue;
     }
 
+    /**
+     *
+     * @param pos
+     * @return
+     */
     public static int[] toInts(PositionOnTrack[] pos) {
         int[] returnValue = new int[pos.length];
         for (int i = 0; i < pos.length; i++) {
@@ -73,6 +117,12 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return returnValue;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public static int toInt(int x, int y) {
         return x | (y << BITS_FOR_COORDINATE);
     }
@@ -118,18 +168,34 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return createComingFrom(newX, newY, newDirection);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     *
+     * @param x
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     *
+     * @param y
+     */
     public void setY(int y) {
         this.y = y;
     }
@@ -144,14 +210,26 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return result;
     }
 
+    /**
+     *
+     * @param v
+     */
     public void setCameFrom(Step v) {
         this.cameFrom = v;
     }
 
+    /**
+     *
+     * @param v
+     */
     public void setFacing(Step v) {
         this.cameFrom = v.getOpposite();
     }
 
+    /**
+     *
+     * @param i
+     */
     public void setValuesFromInt(int i) {
         x = i & MAX_COORDINATE;
 
@@ -163,6 +241,10 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         cameFrom = Step.getInstance(directionAsInt);
     }
 
+    /**
+     *
+     * @param step
+     */
     public void move(Step step) {
         this.x += step.deltaX;
         this.y += step.deltaY;

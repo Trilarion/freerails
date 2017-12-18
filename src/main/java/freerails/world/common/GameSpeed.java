@@ -18,6 +18,10 @@ public class GameSpeed implements FreerailsSerializable {
 
     private final int speed;
 
+    /**
+     *
+     * @param speed
+     */
     public GameSpeed(int speed) {
         this.speed = speed;
     }
@@ -27,10 +31,18 @@ public class GameSpeed implements FreerailsSerializable {
         return "GameSpeed:" + String.valueOf(speed);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSpeed() {
         return speed;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isPaused() {
         return speed < 1;
     }

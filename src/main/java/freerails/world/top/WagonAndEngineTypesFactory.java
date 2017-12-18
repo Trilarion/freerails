@@ -16,6 +16,11 @@ import freerails.world.train.WagonType;
  * @author Luke
  */
 public class WagonAndEngineTypesFactory {
+
+    /**
+     *
+     * @param w
+     */
     public void addTypesToWorld(World w) {
         // Wagon types
         WagonType[] wagonTypes = new WagonType[]{

@@ -23,11 +23,19 @@ public class CompositeMove implements Move {
 
     private final ImList<Move> moves;
 
+    /**
+     *
+     * @param movesArrayList
+     */
     public CompositeMove(List<Move> movesArrayList) {
 
         moves = new ImList<>(movesArrayList);
     }
 
+    /**
+     *
+     * @param moves
+     */
     public CompositeMove(Move... moves) {
         this.moves = new ImList<>(moves);
     }
@@ -57,6 +65,10 @@ public class CompositeMove implements Move {
         return moves.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public final ImList<Move> getMoves() {
         return moves;
     }
@@ -154,6 +166,10 @@ public class CompositeMove implements Move {
         return MoveStatus.MOVE_OK;
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return moves.size();
     }

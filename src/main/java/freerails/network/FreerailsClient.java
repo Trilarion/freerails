@@ -28,21 +28,37 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             .getName());
     private final HashMap<String, Serializable> properties = new HashMap<>();
     private final MoveChainFork moveFork;
+
+    /**
+     *
+     */
     protected Connection2Server connection2Server;
     private World world;
 
     private MovePrecommitter committer;
 
+    /**
+     *
+     */
     public FreerailsClient() {
         moveFork = new MoveChainFork();
     }
 
+    /**
+     *
+     * @return
+     */
     public final MoveChainFork getMoveFork() {
         return moveFork;
     }
 
     /**
      * Connects this client to a remote server.
+     * @param address
+     * @param port
+     * @param password
+     * @param username
+     * @return 
      */
     public final LogOnResponse connect(String address, int port,
                                        String username, String password) {
@@ -76,6 +92,10 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Connects this client to a local server.
+     * @param server
+     * @param username
+     * @param password
+     * @return 
      */
     public final LogOnResponse connect(GameServer server, String username,
                                        String password) {
@@ -118,6 +138,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * Subclasses should override this method if they need to respond the the
      * world being changed.
+     * @param w
      */
     protected void newWorld(World w) {
     }
@@ -126,10 +147,19 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         properties.put(propertyName.name(), value);
     }
 
+    /**
+     *
+     * @param propertyName
+     * @return
+     */
     public final Serializable getProperty(ClientProperty propertyName) {
         return properties.get(propertyName.name());
     }
 
+    /**
+     *
+     * @param newProperties
+     */
     public final void resetProperties(HashMap newProperties) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
@@ -214,12 +244,17 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         }
     }
 
+    /**
+     *
+     * @return
+     */
     final public World getWorld() {
         return world;
     }
 
     /**
      * Sends move to the server.
+     * @param move
      */
     final public void processMove(Move move) {
         committer.toServer(move);
@@ -229,21 +264,35 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Tests a move before sending it to the server.
+     * @param move
+     * @return 
      */
     final public MoveStatus tryDoMove(Move move) {
         return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 
+    /**
+     *
+     * @param c
+     */
     public void sendCommand(Message2Server c) {
         write(c);
     }
 
+    /**
+     *
+     * @param pm
+     */
     public void processPreMove(PreMove pm) {
         Move m = committer.toServer(pm);
         moveFork.processMove(m);
         write(pm);
     }
 
+    /**
+     *
+     * @return
+     */
     protected long getLastTickTime() {
         return moveFork.getLastTickTime();
     }

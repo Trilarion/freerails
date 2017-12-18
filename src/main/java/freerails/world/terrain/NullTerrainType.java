@@ -10,9 +10,16 @@ import freerails.world.common.Money;
 
 import java.io.ObjectStreamException;
 
+/**
+ *
+ * @author jkeller1
+ */
 @InstanceControlled
 public class NullTerrainType implements TerrainType {
 
+    /**
+     *
+     */
     public static final TerrainType INSTANCE = new NullTerrainType();
     private static final long serialVersionUID = 3834874680581369912L;
 
@@ -20,34 +27,66 @@ public class NullTerrainType implements TerrainType {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<Production> getProduction() {
         return new ImList<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<Consumption> getConsumption() {
         return new ImList<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<Conversion> getConversion() {
         return new ImList<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTerrainTypeName() {
         return "null";
     }
 
+    /**
+     *
+     * @return
+     */
     public Category getCategory() {
         return Category.Country;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRGB() {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRightOfWay() {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDisplayName() {
         return "";
     }
@@ -56,6 +95,10 @@ public class NullTerrainType implements TerrainType {
         return INSTANCE;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getBuildCost() {
         return new Money(0);
     }

@@ -52,6 +52,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      * The recognizer entry method taking an Inputsource.
      *
      * @param input InputSource to be parsed.
+     * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
@@ -67,6 +68,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      * The recognizer entry method taking a URL.
      *
      * @param url URL source to be parsed.
+     * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
@@ -118,6 +120,10 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     * @param ns
+     * @param name
+     * @param qname
+     * @param attrs
      */
     public final void startElement(java.lang.String ns, java.lang.String name,
                                    java.lang.String qname, Attributes attrs) throws SAXException {
@@ -155,6 +161,9 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     * @param ns
+     * @param name
+     * @param qname
      */
     public final void endElement(java.lang.String ns, java.lang.String name,
                                  java.lang.String qname) throws SAXException {
@@ -179,6 +188,8 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     * @param chars
+     * @param len
      */
     public final void characters(char[] chars, int start, int len)
             throws SAXException {
@@ -187,6 +198,8 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     * @param chars
+     * @param len
      */
     public final void ignorableWhitespace(char[] chars, int start, int len)
             throws SAXException {

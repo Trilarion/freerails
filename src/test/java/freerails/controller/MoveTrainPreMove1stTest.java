@@ -33,6 +33,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     ImmutableSchedule defaultSchedule;
 
+    /**
+     *
+     */
     @Override
     protected void setupWorld() {
         world = MapFixtureFactory2.getCopy();
@@ -72,6 +75,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         assertTrue(ms.ok);
     }
 
+    /**
+     *
+     */
     public void testNextVector() {
 
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
@@ -82,6 +88,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         assertEquals(EAST, actual);
     }
 
+    /**
+     *
+     */
     public void testNextSpeeds() {
 
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
@@ -95,6 +104,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         assertTrue(speeds.calcV(t) > 0);
     }
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
@@ -105,6 +117,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     public void testMove2() {
         MoveStatus ms;
         Move m;
@@ -208,6 +223,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     public void testMovingRoundLoop() {
         setupLoopOfTrack();
 
@@ -218,6 +236,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     public void testGetTiles() {
         setupLoopOfTrack();
 
@@ -241,6 +262,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testFindNextVector() {
         setupLoopOfTrack();
         PositionOnTrack pot = PositionOnTrack.createFacing(4, 6, SOUTH_WEST);

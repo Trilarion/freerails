@@ -63,46 +63,90 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         messageJLabel.setText("message");
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createReportsMenu() {
         return new JMenu("Reports");
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createBuildMenu() {
         return buildMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JLabel createCashJLabel() {
         return cashjLabel;
     }
 
+    /**
+     *
+     * @return
+     */
     public JLabel createDateJLabel() {
         return datejLabel;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createDisplayMenu() {
         return displayMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createGameMenu() {
         return gameMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createHelpMenu() {
         return helpMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JScrollPane createMainMap() {
         return mainMapView;
     }
 
+    /**
+     *
+     * @return
+     */
     public JPanel createOverviewMap() {
         return mapOverview;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTabbedPane createTrainsJTabPane() {
         return trainsJPanel;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createBrokerMenu() {
         return brokerMenu;
     }

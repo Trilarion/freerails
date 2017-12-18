@@ -12,6 +12,10 @@ package freerails.util;
  * @author Luke Lindsay
  */
 public interface FreerailsProgressMonitor {
+
+    /**
+     *
+     */
     FreerailsProgressMonitor NULL_INSTANCE = new FreerailsProgressMonitor() {
 
         public void setValue(int i) {
@@ -24,9 +28,20 @@ public interface FreerailsProgressMonitor {
         }
     };
 
+    /**
+     *
+     * @param i
+     */
     void setValue(int i);
 
+    /**
+     *
+     * @param max
+     */
     void nextStep(int max);
 
+    /**
+     *
+     */
     void finished();
 }

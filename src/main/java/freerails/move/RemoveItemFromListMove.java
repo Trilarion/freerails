@@ -137,6 +137,10 @@ public class RemoveItemFromListMove implements ListMove {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPrincipal getPrincipal() {
         return principal;
     }

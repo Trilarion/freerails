@@ -9,10 +9,20 @@ import java.util.Properties;
  *
  */
 
+/**
+ *
+ * @author jkeller1
+ */
+
+
 public class ReportBugTextGenerator {
 
     private static final String TRACKER_URL = "http://sourceforge.net/tracker/?func=add&group_id=209321&atid=1009246";
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         Exception e = genException();
 
@@ -26,6 +36,10 @@ public class ReportBugTextGenerator {
         return new Exception();
     }
 
+    /**
+     *
+     * @return
+     */
     public static String genText() {
         StringBuffer sb = new StringBuffer();
         sb.append("How to report a bug\n");
@@ -49,6 +63,11 @@ public class ReportBugTextGenerator {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param e
+     * @return
+     */
     public static String genText(Exception e) {
         StackTraceElement[] s = e.getStackTrace();
 
@@ -127,6 +146,10 @@ public class ReportBugTextGenerator {
         sb.append(versionnumber);
     }
 
+    /**
+     *
+     * @param e
+     */
     @SuppressWarnings("deprecation")
     public static void unexpectedException(Exception e) {
         ScreenHandler.exitFullScreenMode();

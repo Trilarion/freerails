@@ -9,6 +9,10 @@ package freerails.launcher;
  */
 public interface LauncherPanel {
 
+    /**
+     *
+     * @return
+     */
     boolean validateInput();
 
 }

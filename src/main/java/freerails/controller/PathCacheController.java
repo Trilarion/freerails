@@ -8,6 +8,10 @@ package freerails.controller;
  * @version $Revision 1.1$
  */
 public class PathCacheController {
+
+    /**
+     *
+     */
     public static void clearTrackCache() {
         MoveTrainPreMove.clearCache();
     }

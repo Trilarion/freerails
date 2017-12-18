@@ -15,6 +15,10 @@ import freerails.world.top.MapFixtureFactory;
  * @author Luke
  */
 public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
+
+    /**
+     *
+     */
     @Override
     public void testMove() {
         MutableCargoBundle bundleA;

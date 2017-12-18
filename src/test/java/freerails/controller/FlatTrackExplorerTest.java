@@ -23,10 +23,17 @@ public class FlatTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
     private WorldImpl world;
 
+    /**
+     *
+     * @param arg0
+     */
     public FlatTrackExplorerTest(String arg0) {
         super(arg0);
     }
 
+    /**
+     *
+     */
     @Override
     protected void setUp() {
         world = new WorldImpl(20, 20);
@@ -49,6 +56,10 @@ public class FlatTrackExplorerTest extends TestCase {
         }
     }
 
+    /**
+     *
+     * @throws NoTrackException
+     */
     public void testGetFirstVectorToTry() throws NoTrackException {
         setUp();
 
@@ -134,6 +145,10 @@ public class FlatTrackExplorerTest extends TestCase {
         assertEquals(10, pos.getY());
     }
 
+    /**
+     *
+     * @throws NoTrackException
+     */
     public void testHasNext() throws NoTrackException {
         setUp();
 
@@ -142,6 +157,9 @@ public class FlatTrackExplorerTest extends TestCase {
         assertTrue(explorer.hasNextEdge());
     }
 
+    /**
+     *
+     */
     public void testNoTrack() {
         setUp();
 
@@ -154,6 +172,9 @@ public class FlatTrackExplorerTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testGetPossiblePositions() {
         setUp();
 

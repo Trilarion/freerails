@@ -15,6 +15,10 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     FreerailsGameServer server;
     private InetConnectionAccepter connectionAccepter;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected synchronized void setUp() throws Exception {
         server = FreerailsGameServer
@@ -25,6 +29,10 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
         serverThread.start();
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected synchronized void tearDown() throws Exception {
         connectionAccepter.stop();

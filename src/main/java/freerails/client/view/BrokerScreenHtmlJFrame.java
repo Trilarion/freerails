@@ -33,6 +33,10 @@ import java.net.URL;
 public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
     private static final long serialVersionUID = 3257003246252800050L;
+
+    /**
+     *
+     */
     public static BrokerScreenGenerator brokerScreenGenerator;
     private final String template;
     private ModelRoot modelRoot;
@@ -76,6 +80,12 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
     }
 
+    /**
+     *
+     * @param modelRoot
+     * @param vl
+     * @param closeAction
+     */
     @Override
     public void setup(final ModelRoot modelRoot, RenderersRoot vl,
                       Action closeAction) {

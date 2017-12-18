@@ -24,6 +24,9 @@ public class DateJLabel extends JLabel implements View {
 
     private ReadOnlyWorld w;
 
+    /**
+     *
+     */
     public DateJLabel() {
         this.setText("          ");
     }
@@ -40,6 +43,12 @@ public class DateJLabel extends JLabel implements View {
         super.paintComponent(g);
     }
 
+    /**
+     *
+     * @param model
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
         this.w = model.getWorld();
     }

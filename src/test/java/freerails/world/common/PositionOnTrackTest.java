@@ -17,6 +17,9 @@ public class PositionOnTrackTest extends TestCase {
         super(arg0);
     }
 
+    /**
+     *
+     */
     public void testValidation() {
         assertTrue(PositionOnTrack.MAX_COORDINATE < 70000);
         assertTrue(PositionOnTrack.MAX_COORDINATE > 10000);
@@ -36,6 +39,9 @@ public class PositionOnTrackTest extends TestCase {
                 PositionOnTrack.MAX_COORDINATE + 1, Step.NORTH_WEST);
     }
 
+    /**
+     *
+     */
     public void testToInt() {
         PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
                 Step.NORTH);
@@ -45,6 +51,9 @@ public class PositionOnTrackTest extends TestCase {
         assertTrue(p1.toInt() != p2.toInt());
     }
 
+    /**
+     *
+     */
     public void testSetValuesFromInt() {
         PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
                 Step.NORTH);
@@ -71,6 +80,11 @@ public class PositionOnTrackTest extends TestCase {
     /*
      * Test for boolean equals(Object)
      */
+
+    /**
+     *
+     */
+
     public void testEqualsObject() {
         PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
                 Step.NORTH);
@@ -100,6 +114,9 @@ public class PositionOnTrackTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testGetOpposite() {
         PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 10,
                 Step.NORTH);

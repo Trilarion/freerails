@@ -8,5 +8,10 @@ import freerails.world.top.World;
  * @author Luke Lindsay 09 October 2001
  */
 public interface TileSetFactory {
+
+    /**
+     *
+     * @param w
+     */
     void addTerrainTileTypesList(World w);
 }

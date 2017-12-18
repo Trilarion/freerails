@@ -6,5 +6,9 @@ package freerails.util;
  * @author Luke
  */
 public interface GameModel {
+
+    /**
+     *
+     */
     void update();
 }

@@ -23,12 +23,18 @@ public class SimpleAStarPathFinderTest extends TestCase {
         super(arg0);
     }
 
+    /**
+     *
+     */
     @Override
     protected void setUp() {
         this.map = new Map();
         pathFinder = new SimpleAStarPathFinder();
     }
 
+    /**
+     *
+     */
     public void testFindpath() {
         setUp();
 
@@ -60,6 +66,9 @@ public class SimpleAStarPathFinderTest extends TestCase {
         assertEquals(1, i);
     }
 
+    /**
+     *
+     */
     public void testExplorer() {
         setUp();
         assertEquals(0, map.getPosition());

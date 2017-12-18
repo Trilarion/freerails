@@ -27,6 +27,7 @@ public class MapFixtureFactory2 {
      * Returns a world object with a map of size 50*50, 4 players, and track,
      * terrain and cargo types as specifed in the xml files used by the actual
      * game.
+     * @return 
      */
     synchronized public static World getCopy() {
         if (null == w) {

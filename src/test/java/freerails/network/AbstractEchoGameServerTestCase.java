@@ -15,6 +15,10 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
     InetConnectionAccepter server;
     EchoGameServer echoGameServer;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected synchronized void setUp() throws Exception {
         echoGameServer = EchoGameServer.startServer();
@@ -32,6 +36,10 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
         serverThread.start();
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected synchronized void tearDown() throws Exception {
         server.stop();

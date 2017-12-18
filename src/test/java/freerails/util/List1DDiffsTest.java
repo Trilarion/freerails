@@ -10,12 +10,20 @@ import junit.framework.TestCase;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class List1DDiffsTest extends TestCase {
 
     private List1D<Object> list;
     private List1DDiff<Object> diffs;
     private SortedMap<ListKey, Object> map;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         list = new List1DImpl<>();
@@ -23,6 +31,9 @@ public class List1DDiffsTest extends TestCase {
         diffs = new List1DDiff<>(map, list, test.test);
     }
 
+    /**
+     *
+     */
     public void testChangingValues() {
 
         list.add(String.valueOf(1));
@@ -37,6 +48,9 @@ public class List1DDiffsTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testAdd() {
         Player player0 = new Player("player0", 0);
 
@@ -52,6 +66,9 @@ public class List1DDiffsTest extends TestCase {
         assertEquals(player1, diffs.get(1));
     }
 
+    /**
+     *
+     */
     public void testAddAndRemove() {
         list.add(String.valueOf(1));
         assertEquals(String.valueOf(1), diffs.get(0));
@@ -73,6 +90,9 @@ public class List1DDiffsTest extends TestCase {
         assertEquals(1, map.size());
     }
 
+    /**
+     *
+     */
     public void testAddAndRemove2() {
         list.add(String.valueOf(1));
         list.add(String.valueOf(1));
@@ -123,6 +143,9 @@ public class List1DDiffsTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testSortedMap() {
         ListKey elementKey1 = new ListKey(ListKey.Type.Element, test.test, 0);
         ListKey elementKey2 = new ListKey(ListKey.Type.Element, test.test, 1);

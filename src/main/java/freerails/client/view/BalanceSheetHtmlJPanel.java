@@ -27,6 +27,9 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
 
     private ModelRoot modelRoot;
 
+    /**
+     *
+     */
     public BalanceSheetHtmlJPanel() {
         super();
 
@@ -35,6 +38,12 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
         template = loadText(url);
     }
 
+    /**
+     *
+     * @param modelRoot
+     * @param vl
+     * @param closeAction
+     */
     @Override
     public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
         super.setup(modelRoot, vl, closeAction);

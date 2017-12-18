@@ -38,6 +38,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     private javax.swing.JButton okjButton;
     private javax.swing.JList wagonTypesJList;
 
+    /**
+     *
+     */
     public SelectWagonsJPanel() {
         initComponents();
         updateMaxWagonsText();
@@ -58,6 +61,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         g.drawImage(tempImage, 0, 0, null);
     }
 
+    /**
+     *
+     */
     public void resetSelectedWagons() {
         this.wagons.clear();
     }
@@ -244,6 +250,12 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         this.paintChildren(g);
     }
 
+    /**
+     *
+     * @param mr
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
         World2ListModelAdapter w2lma = new World2ListModelAdapter(
                 mr.getWorld(), SKEY.CARGO_TYPES);
@@ -254,6 +266,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         this.okjButton.addActionListener(closeAction);
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] getWagons() {
         int[] wagonsArray = new int[wagons.size()];
         for (int i = 0; i < wagons.size(); i++) {
@@ -263,11 +279,15 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         return wagonsArray;
     }
 
+    /**
+     *
+     * @param engineType
+     */
     public void setEngineType(int engineType) {
         this.engineType = engineType;
     }
 
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
     final private class WagonCellRenderer implements ListCellRenderer {
         final RenderersRoot rr;
         private final Component[] labels;

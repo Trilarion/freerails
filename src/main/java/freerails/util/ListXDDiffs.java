@@ -7,12 +7,22 @@ package freerails.util;
 import java.io.Serializable;
 import java.util.SortedMap;
 
+/**
+ *
+ * @author jkeller1
+ * @param <T>
+ */
 public abstract class ListXDDiffs<T> implements Serializable {
 
     private static final long serialVersionUID = 127789045793369316L;
     private final SortedMap<ListKey, Object> diffs;
     private final Enum listID;
 
+    /**
+     *
+     * @param diffs
+     * @param listID
+     */
     public ListXDDiffs(SortedMap<ListKey, Object> diffs, Enum listID) {
         this.diffs = diffs;
         this.listID = listID;
@@ -31,6 +41,11 @@ public abstract class ListXDDiffs<T> implements Serializable {
         return array;
     }
 
+    /**
+     *
+     * @param dim
+     * @return
+     */
     public int addDimension(int... dim) {
         int i = size(dim);
         ListKey sizeKeyA = new ListKey(ListKey.Type.EndPoint, listID, dim);
@@ -43,6 +58,12 @@ public abstract class ListXDDiffs<T> implements Serializable {
         return i;
     }
 
+    /**
+     *
+     * @param element
+     * @param dim
+     * @return
+     */
     public int addElement(T element, int... dim) {
 
         int sizeBefore = size(dim);
@@ -67,6 +88,11 @@ public abstract class ListXDDiffs<T> implements Serializable {
         return sizeBefore;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public T get(int... i) {
         checkBounds(i);
@@ -85,6 +111,11 @@ public abstract class ListXDDiffs<T> implements Serializable {
      */
     abstract int getUnderlyingSize(int... dim);
 
+    /**
+     *
+     * @param dim
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public T removeLast(int... dim) {
 
@@ -116,6 +147,11 @@ public abstract class ListXDDiffs<T> implements Serializable {
         return last;
     }
 
+    /**
+     *
+     * @param element
+     * @param i
+     */
     public void set(T element, int... i) {
         // Check bounds..
         checkBounds(i);
@@ -150,6 +186,11 @@ public abstract class ListXDDiffs<T> implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public int size(int... i) {
         ListKey sizeKey = new ListKey(ListKey.Type.EndPoint, listID, i);
         if (diffs.containsKey(sizeKey)) {

@@ -24,6 +24,10 @@ import freerails.world.top.World;
 public class TrainMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;
 
+    /**
+     *
+     * @param mr
+     */
     public TrainMaintenanceMoveGenerator(MoveReceiver mr) {
         this.moveReceiver = mr;
     }
@@ -39,6 +43,10 @@ public class TrainMaintenanceMoveGenerator {
         return new AddTransactionMove(principal, t);
     }
 
+    /**
+     *
+     * @param w
+     */
     public void update(World w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();

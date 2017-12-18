@@ -25,6 +25,8 @@ public class SetWorldMessage2Client implements Message2Client {
 
     /**
      * Note, makes a defensive copy of the world object passed to it.
+     * @param id
+     * @param world
      */
     public SetWorldMessage2Client(int id, World world) {
         this.id = id;

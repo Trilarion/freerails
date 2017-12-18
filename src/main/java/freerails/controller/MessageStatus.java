@@ -20,12 +20,23 @@ public class MessageStatus implements FreerailsSerializable {
     private final String reason;
     private final boolean successful;
 
+    /**
+     *
+     * @param id
+     * @param successful
+     * @param reason
+     */
     public MessageStatus(int id, boolean successful, String reason) {
         this.id = id;
         this.reason = reason;
         this.successful = successful;
     }
 
+    /**
+     *
+     * @param id
+     * @param successful
+     */
     public MessageStatus(int id, boolean successful) {
         this.id = id;
         this.reason = null;
@@ -59,6 +70,7 @@ public class MessageStatus implements FreerailsSerializable {
 
     /**
      * Returns the id of the command whose status this object stores.
+     * @return 
      */
     public int getId() {
         return id;
@@ -66,6 +78,7 @@ public class MessageStatus implements FreerailsSerializable {
 
     /**
      * Returns the reason the command failed, may be null.
+     * @return 
      */
     public String getReason() {
         return reason;
@@ -73,6 +86,7 @@ public class MessageStatus implements FreerailsSerializable {
 
     /**
      * True if the command was successfully executed.
+     * @return 
      */
     public boolean isSuccessful() {
         return successful;

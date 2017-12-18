@@ -305,6 +305,12 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         return "$" + String.valueOf(value) + abv;
     }
 
+    /**
+     *
+     * @param modelRoot
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
         this.submitButtonCallBack = closeAction;
         ReadOnlyWorld world = modelRoot.getWorld();

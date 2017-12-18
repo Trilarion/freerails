@@ -39,6 +39,12 @@ public class RenderersRootImpl implements RenderersRoot {
 
     private final ArrayList<TrainImages> engineImages = new ArrayList<>();
 
+    /**
+     *
+     * @param w
+     * @param pm
+     * @throws IOException
+     */
     public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
             throws IOException {
         imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
@@ -244,10 +250,18 @@ public class RenderersRootImpl implements RenderersRoot {
         return new TileRendererListImpl(tileRenderers);
     }
 
+    /**
+     *
+     * @return
+     */
     public TileRendererList getTileViewList() {
         return this.tiles;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackPieceRendererList getTrackPieceViewList() {
         return this.trackPieceViewList;
     }
@@ -270,30 +284,68 @@ public class RenderersRootImpl implements RenderersRoot {
     // return rr;
     // }
 
+    /**
+     *
+     * @return
+     */
+
     public ImageManager getImageManager() {
         return imageManager;
     }
 
+    /**
+     *
+     * @param relativeFilename
+     * @return
+     * @throws IOException
+     */
     public Image getImage(String relativeFilename) throws IOException {
         return imageManager.getImage(relativeFilename);
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public TileRenderer getTileViewWithNumber(int i) {
         return tiles.getTileViewWithNumber(i);
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public TrackPieceRenderer getTrackPieceView(int i) {
         return trackPieceViewList.getTrackPieceView(i);
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public TrainImages getWagonImages(int type) {
         return wagonImages.get(type);
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public TrainImages getEngineImages(int type) {
         return engineImages.get(type);
     }
 
+    /**
+     *
+     * @param relativeFilename
+     * @param height
+     * @return
+     * @throws IOException
+     */
     public Image getScaledImage(String relativeFilename, int height)
             throws IOException {
         return imageManager.getScaledImage(relativeFilename, height);

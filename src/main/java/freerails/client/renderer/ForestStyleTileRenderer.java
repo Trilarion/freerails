@@ -25,6 +25,14 @@ final public class ForestStyleTileRenderer extends
 
     private static final int[] Y_LOOK_AT = {0, 0};
 
+    /**
+     *
+     * @param imageManager
+     * @param rgbValues
+     * @param tileModel
+     * @param w
+     * @throws IOException
+     */
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
                                    TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
@@ -36,6 +44,13 @@ final public class ForestStyleTileRenderer extends
         }
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param w
+     * @return
+     */
     @Override
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         int iconNumber = 0;
@@ -59,6 +74,11 @@ final public class ForestStyleTileRenderer extends
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     @Override
     protected String generateFileNameNumber(int i) {
         return BinaryNumberFormatter.format(i, 2);

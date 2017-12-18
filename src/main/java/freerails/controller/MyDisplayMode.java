@@ -14,8 +14,16 @@ import java.awt.*;
  * @author Luke Lindsay
  */
 public class MyDisplayMode {
+
+    /**
+     *
+     */
     public final DisplayMode displayMode;
 
+    /**
+     *
+     * @param displayMode
+     */
     public MyDisplayMode(DisplayMode displayMode) {
         this.displayMode = displayMode;
     }

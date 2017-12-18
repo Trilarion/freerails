@@ -11,6 +11,10 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public class CargoAtStationsGeneratorTest extends TestCase {
+
+    /**
+     *
+     */
     public void testCalculateAmountToAdd() {
         CargoAtStationsGenerator cargoGenerator = new CargoAtStationsGenerator();
 

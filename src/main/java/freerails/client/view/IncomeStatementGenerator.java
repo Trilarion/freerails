@@ -22,49 +22,114 @@ import freerails.world.top.SKEY;
  * @author Luke
  */
 public class IncomeStatementGenerator {
+
+    /**
+     *
+     */
     public final String year;
     final ReadOnlyWorld w;
     final FreerailsPrincipal principal;
     private final GameCalendar cal;
     private final int startyear;
+
+    /**
+     *
+     */
     public Money mailTotal;
 
+    /**
+     *
+     */
     public Money passengersTotal;
 
+    /**
+     *
+     */
     public Money fastFreightTotal;
 
+    /**
+     *
+     */
     public Money slowFreightTotal;
 
+    /**
+     *
+     */
     public Money bulkFreightTotal;
 
+    /**
+     *
+     */
     public Money interestTotal;
 
+    /**
+     *
+     */
     public Money trainMaintenanceTotal;
 
+    /**
+     *
+     */
     public Money trackMaintenanceTotal;
 
+    /**
+     *
+     */
     public Money stationMaintenanceTotal;
 
+    /**
+     *
+     */
     public Money profitTotal;
 
+    /**
+     *
+     */
     public Money mailYtd;
 
+    /**
+     *
+     */
     public Money passengersYtd;
 
+    /**
+     *
+     */
     public Money fastFreightYtd;
 
+    /**
+     *
+     */
     public Money slowFreightYtd;
 
+    /**
+     *
+     */
     public Money bulkFreightYtd;
 
+    /**
+     *
+     */
     public Money interestYtd;
 
+    /**
+     *
+     */
     public Money trainMaintenanceYtd;
 
+    /**
+     *
+     */
     public Money trackMaintenanceYtd;
 
+    /**
+     *
+     */
     public Money stationMaintenanceYtd;
 
+    /**
+     *
+     */
     public Money profitYtd;
     GameTime from;
     GameTime to;
@@ -235,6 +300,12 @@ public class IncomeStatementGenerator {
     }
 
     // 666 save old values -> if numberOfTransactions not changed -> do nothing
+
+    /**
+     *
+     * @param trainId
+     * @return
+     */
     public Money calTrainRevenue(int trainId) {
         long amount = 0;
 

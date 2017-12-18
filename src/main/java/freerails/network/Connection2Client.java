@@ -15,6 +15,7 @@ import java.io.IOException;
 public interface Connection2Client {
     /**
      * Returns true if this connection is open.
+     * @return 
      */
     boolean isOpen();
 
@@ -23,23 +24,31 @@ public interface Connection2Client {
      * the last time this method or waitForObjectFromClient() was called, if no
      * objects have been received, it returns an empty array rather than
      * blocking.
+     * @return 
+     * @throws java.io.IOException
      */
     FreerailsSerializable[] readFromClient() throws IOException;
 
     /**
      * Returns the next object read from the client, blocking if non is
      * available.
+     * @return 
+     * @throws java.io.IOException 
+     * @throws java.lang.InterruptedException 
      */
     FreerailsSerializable waitForObjectFromClient() throws IOException,
             InterruptedException;
 
     /**
      * Sends the specified object to the client.
+     * @param object
+     * @throws java.io.IOException
      */
     void writeToClient(FreerailsSerializable object) throws IOException;
 
     /**
      * Flush the underlying stream.
+     * @throws java.io.IOException
      */
     void flush() throws IOException;
 

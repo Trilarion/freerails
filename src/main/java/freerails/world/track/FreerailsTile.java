@@ -14,6 +14,10 @@ import java.util.HashMap;
  * @author Luke
  */
 public class FreerailsTile implements TerrainTile, FreerailsSerializable {
+
+    /**
+     *
+     */
     public static final FreerailsTile NULL = new FreerailsTile(0);
     private static final long serialVersionUID = 3617574907538847544L;
     private static final HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<>();
@@ -30,6 +34,11 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
         this.trackPiece = trackPiece;
     }
 
+    /**
+     *
+     * @param terrainType
+     * @return
+     */
     public static FreerailsTile getInstance(int terrainType) {
         FreerailsTile tile = new FreerailsTile(terrainType);
         FreerailsTile storedTile = instances.get(tile);
@@ -41,6 +50,12 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
         return tile;
     }
 
+    /**
+     *
+     * @param terrainType
+     * @param trackPiece
+     * @return
+     */
     public static FreerailsTile getInstance(int terrainType,
                                             TrackPiece trackPiece) {
         FreerailsTile tile = new FreerailsTile(terrainType, trackPiece);
@@ -85,6 +100,10 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
         return this;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTerrainTypeID() {
         return terrainType;
     }
@@ -95,10 +114,18 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
                 + terrainType;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackPiece getTrackPiece() {
         return trackPiece;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasTrack() {
         return trackPiece.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
     }

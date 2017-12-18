@@ -24,6 +24,10 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     private int[] wagons;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -42,6 +46,9 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         after = new ImList<>(new PlannedTrain(engineType, wagons));
     }
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         ImList<PlannedTrain> before = new ImList<>();
@@ -74,6 +81,9 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         assertSurvivesSerialisation(m);
     }
 
+    /**
+     *
+     */
     public void testProductionAtEngineShopEquals() {
         PlannedTrain b;
         PlannedTrain c;

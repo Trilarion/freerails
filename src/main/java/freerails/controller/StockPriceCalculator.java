@@ -26,6 +26,10 @@ import static freerails.world.accounts.StockTransaction.STOCK_BUNDLE_SIZE;
 public class StockPriceCalculator {
     private final ReadOnlyWorld w;
 
+    /**
+     *
+     * @param w
+     */
     public StockPriceCalculator(ReadOnlyWorld w) {
         this.w = w;
     }
@@ -39,6 +43,10 @@ public class StockPriceCalculator {
         return new Money(price);
     }
 
+    /**
+     *
+     * @return
+     */
     public StockPrice[] calculate() {
         StockPrice[] stockPrices = new StockPrice[w.getNumberOfPlayers()];
         for (int playerId = 0; playerId < stockPrices.length; playerId++) {
@@ -133,14 +141,43 @@ public class StockPriceCalculator {
         return total;
     }
 
+    /**
+     *
+     */
     public static class StockPrice {
 
+        /**
+         *
+         */
         public final Money currentPrice;
+
+        /**
+         *
+         */
         public final Money sellPrice;
+
+        /**
+         *
+         */
         public final Money buyPrice;
+
+        /**
+         *
+         */
         public final Money treasuryBuyPrice;
+
+        /**
+         *
+         */
         public final Money treasurySellPrice;
 
+        /**
+         *
+         * @param netWorth
+         * @param profitLastyear
+         * @param publicShares
+         * @param otherRRShares
+         */
         public StockPrice(long netWorth, long profitLastyear, int publicShares,
                           int otherRRShares) {
             currentPrice = calStockPrice(netWorth, profitLastyear,

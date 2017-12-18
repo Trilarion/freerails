@@ -23,6 +23,15 @@ public class ChangeTrainMove extends ChangeItemInListMove {
         super(KEY.TRAINS, index, before, after, p);
     }
 
+    /**
+     *
+     * @param id
+     * @param before
+     * @param newEngine
+     * @param newWagons
+     * @param p
+     * @return
+     */
     public static ChangeTrainMove generateMove(int id, TrainModel before,
                                                int newEngine, ImInts newWagons, FreerailsPrincipal p) {
         TrainModel after = before.getNewInstance(newEngine, newWagons);

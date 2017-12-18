@@ -102,6 +102,13 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     // End of variables declaration//GEN-END:variables
 
+    /**
+     *
+     * @param mr
+     * @param vl
+     * @param closeAction
+     */
+
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
 
         jList1.setModel(new World2ListModelAdapter(mr.getWorld(),
@@ -124,6 +131,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     /**
      * Returns the number of the currently selected engine type.
+     * @return 
      */
     public int getEngineType() {
         return jList1.getSelectedIndex();

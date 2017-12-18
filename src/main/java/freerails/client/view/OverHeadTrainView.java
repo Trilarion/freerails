@@ -30,12 +30,23 @@ public class OverHeadTrainView implements Painter {
 
     private final ModelRoot mr;
 
+    /**
+     *
+     * @param world
+     * @param rr
+     * @param mr
+     */
     public OverHeadTrainView(ReadOnlyWorld world, RenderersRoot rr, ModelRoot mr) {
         this.w = world;
         trainPainter = new TrainRenderer(rr);
         this.mr = mr;
     }
 
+    /**
+     *
+     * @param g
+     * @param newVisibleRectectangle
+     */
     public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
         g.setColor(Color.BLUE);
         g.setStroke(new BasicStroke(10));

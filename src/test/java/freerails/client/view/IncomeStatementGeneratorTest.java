@@ -24,6 +24,9 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
     IncomeStatementGenerator balanceSheetGenerator;
 
+    /**
+     *
+     */
     public void testCalExpense() {
         balanceSheetGenerator.calculateAll();
         Money m = balanceSheetGenerator.mailTotal;
@@ -55,6 +58,10 @@ public class IncomeStatementGeneratorTest extends TestCase {
         throw new IllegalArgumentException(category.toString());
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         w = new WorldImpl();

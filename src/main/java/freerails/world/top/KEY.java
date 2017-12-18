@@ -28,9 +28,17 @@ public class KEY implements FreerailsSerializable {
     private static final KEY[] keys = new KEY[15];
 
     // START OF KEYS
+
+    /**
+     *
+     */
     public static final KEY TRAINS = new KEY();
 
     // public static final KEY TRAIN_POSITIONS = new KEY();
+
+    /**
+     *
+     */
 
     public static final KEY STATIONS = new KEY();
 
@@ -39,6 +47,9 @@ public class KEY implements FreerailsSerializable {
      */
     public static final KEY CARGO_BUNDLES = new KEY();
 
+    /**
+     *
+     */
     public static final KEY TRAIN_SCHEDULES = new KEY();
 
     // END OF KEYS
@@ -69,6 +80,11 @@ public class KEY implements FreerailsSerializable {
         return Utils.findConstantFieldName(this);
     }
 
+    /**
+     *
+     * @param keyNum
+     * @return
+     */
     public static KEY getKey(int keyNum) {
         return keys[keyNum];
     }

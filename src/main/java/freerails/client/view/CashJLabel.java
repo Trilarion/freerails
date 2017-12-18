@@ -25,10 +25,19 @@ public class CashJLabel extends JLabel implements View {
 
     private FreerailsPrincipal principal;
 
+    /**
+     *
+     */
     public CashJLabel() {
         this.setText("          ");
     }
 
+    /**
+     *
+     * @param model
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
         this.w = model.getWorld();
         principal = model.getPrincipal();

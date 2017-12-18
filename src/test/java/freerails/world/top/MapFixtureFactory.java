@@ -21,12 +21,18 @@ public class MapFixtureFactory {
      */
     public static final Player TEST_PLAYER = new Player("test player", 0);
 
+    /**
+     *
+     */
     public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER
             .getPrincipal();
 
     /**
      * Returns a world object with a map of the specifed size with the terrain
      * and cargo types setup.
+     * @param w
+     * @param h
+     * @return 
      */
     public static World getWorld(int w, int h) {
         FreerailsTile tile = FreerailsTile.getInstance(0);
@@ -43,6 +49,10 @@ public class MapFixtureFactory {
         return world;
     }
 
+    /**
+     *
+     * @param world
+     */
     public static void generateTrackRuleList(World world) {
         TrackRule[] trackRulesArray = new TrackRule[3];
         TrackRuleProperties[] trackRuleProperties = new TrackRuleProperties[3];
@@ -104,6 +114,7 @@ public class MapFixtureFactory {
 
     /**
      * Adds hard coded cargo types.
+     * @param world
      */
     public static void generateCargoTypesList(World world) {
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", Categories.Mail));

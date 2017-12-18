@@ -103,6 +103,10 @@ public class GenerateDependenciesXmlAndHtml {
         logger.info("Wrote " + htmlFile);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             new GenerateDependenciesXmlAndHtml("checkdep.xml", "src"

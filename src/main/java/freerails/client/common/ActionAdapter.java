@@ -35,6 +35,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * An array of the actions to be used. The ComboBoxModel objects are taken
      * from the NAME property of the Action. The ButtonModel icons are obtained
      * from the SMALL_ICON property.
+     * @param actions
      */
     public ActionAdapter(Action[] actions) {
         super();
@@ -122,11 +123,18 @@ public class ActionAdapter extends DefaultComboBoxModel {
         }
     }
 
+    /**
+     *
+     * @param performActionOnSetSelectedItem
+     */
     public void setPerformActionOnSetSelectedItem(
             boolean performActionOnSetSelectedItem) {
         this.performActionOnSetSelectedItem = performActionOnSetSelectedItem;
     }
 
+    /**
+     *
+     */
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel
             implements PropertyChangeListener {
         private static final long serialVersionUID = 3834589889856353845L;
@@ -136,6 +144,10 @@ public class ActionAdapter extends DefaultComboBoxModel {
          */
         public final String actionName;
 
+        /**
+         *
+         * @param action
+         */
         public MappedButtonModel(Action action) {
             actionName = (String) action.getValue(Action.NAME);
             action.addPropertyChangeListener(this);

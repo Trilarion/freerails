@@ -25,6 +25,14 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     private final FlatTrackExplorer trackExplorer;
     private transient MoveReceiver mr = null;
 
+    /**
+     *
+     * @param tx
+     * @param w
+     * @param trainNumber
+     * @param newMr
+     * @param p
+     */
     public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
                            int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
         this.trackExplorer = tx;
@@ -34,6 +42,10 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         this.w = w;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasNextInt() {
 
         boolean moving = stopsHandler.isTrainMoving();

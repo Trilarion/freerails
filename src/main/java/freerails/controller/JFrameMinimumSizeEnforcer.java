@@ -15,6 +15,11 @@ public class JFrameMinimumSizeEnforcer implements ComponentListener {
 
     private final int minHeight;
 
+    /**
+     *
+     * @param w
+     * @param h
+     */
     public JFrameMinimumSizeEnforcer(int w, int h) {
         this.minHeight = h;
         this.minWidth = w;

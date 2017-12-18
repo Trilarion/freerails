@@ -19,8 +19,15 @@ import java.util.Iterator;
  * @author Luke
  */
 public class BuildTrackRenderer implements Painter {
+
+    /**
+     *
+     */
     public static final int BIG_DOT_WIDTH = 12;
 
+    /**
+     *
+     */
     public static final int SMALL_DOT_WIDTH = 6;
 
     private final ModelRoot modelRoot;
@@ -30,6 +37,11 @@ public class BuildTrackRenderer implements Painter {
 
     private final RenderersRoot rr;
 
+    /**
+     *
+     * @param trackPieceViewList
+     * @param modelRoot
+     */
     public BuildTrackRenderer(RenderersRoot trackPieceViewList,
                               ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
@@ -48,6 +60,8 @@ public class BuildTrackRenderer implements Painter {
     /**
      * Paints the proposed track and dots to distinguish the proposed track from
      * any existing track.
+     * @param g
+     * @param newVisibleRectectangle
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
 

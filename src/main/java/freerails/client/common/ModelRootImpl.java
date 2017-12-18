@@ -27,6 +27,10 @@ import java.util.HashMap;
 public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private final HashMap<Property, Object> properties = new HashMap<>();
     private final ArrayList<ModelRootListener> listeners = new ArrayList<>();
+
+    /**
+     *
+     */
     public boolean hasBeenSetup = false;
     private MoveChainFork moveFork = new MoveChainFork();
     private UntriedMoveReceiver moveReceiver = new UntriedMoveReceiver() {
@@ -44,6 +48,9 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private ServerCommandReceiver serverCommandReceiver;
     private ReadOnlyWorld world;
 
+    /**
+     *
+     */
     public ModelRootImpl() {
         properties.put(Property.CURSOR_POSITION, new ImPoint());
         properties.put(Property.SHOW_STATION_NAMES, Boolean.TRUE);
@@ -62,26 +69,51 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         addPropertyChangeListener(SoundManager.getSoundManager());
     }
 
+    /**
+     *
+     * @param l
+     */
     public void addCompleteMoveReceiver(MoveReceiver l) {
         this.moveFork.addCompleteMoveReceiver(l);
     }
 
+    /**
+     *
+     * @param listener
+     */
     public void addListListener(WorldListListener listener) {
         this.moveFork.addListListener(listener);
     }
 
+    /**
+     *
+     * @param l
+     */
     public void addMapListener(WorldMapListener l) {
         this.moveFork.addMapListener(l);
     }
 
+    /**
+     *
+     * @param l
+     */
     public void addPropertyChangeListener(ModelRootListener l) {
         listeners.add(l);
     }
 
+    /**
+     *
+     * @param l
+     */
     public void addSplitMoveReceiver(MoveReceiver l) {
         this.moveFork.addSplitMoveReceiver(l);
     }
 
+    /**
+     *
+     * @param m
+     * @return
+     */
     public MoveStatus doMove(Move m) {
         MoveStatus ms = this.moveReceiver.tryDoMove(m);
         this.moveReceiver.processMove(m);
@@ -89,6 +121,11 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         return ms;
     }
 
+    /**
+     *
+     * @param pm
+     * @return
+     */
     public MoveStatus doPreMove(PreMove pm) {
         Move m = pm.generateMove(world);
         MoveStatus ms = moveReceiver.tryDoMove(m);
@@ -97,6 +134,10 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         return ms;
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPrincipal getPrincipal() {
         if (null == playerPrincipal) {
             throw new NullPointerException();
@@ -105,14 +146,27 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         return playerPrincipal;
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public Object getProperty(Property p) {
         return properties.get(p);
     }
 
+    /**
+     *
+     * @return
+     */
     public ReadOnlyWorld getWorld() {
         return world;
     }
 
+    /**
+     *
+     * @param c
+     */
     public void sendCommand(Message2Server c) {
         if (null != serverCommandReceiver) {
             serverCommandReceiver.sendCommand(c);
@@ -121,14 +175,27 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         }
     }
 
+    /**
+     *
+     * @param moveFork
+     */
     public void setMoveFork(MoveChainFork moveFork) {
         this.moveFork = moveFork;
     }
 
+    /**
+     *
+     * @param moveReceiver
+     */
     public void setMoveReceiver(UntriedMoveReceiver moveReceiver) {
         this.moveReceiver = moveReceiver;
     }
 
+    /**
+     *
+     * @param p
+     * @param newValue
+     */
     public void setProperty(Property p, Object newValue) {
         Object oldValue = properties.get(p);
         properties.put(p, newValue);
@@ -138,6 +205,10 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 
     }
 
+    /**
+     *
+     * @param serverCommandReceiver
+     */
     public void setServerCommandReceiver(
             ServerCommandReceiver serverCommandReceiver) {
         this.serverCommandReceiver = serverCommandReceiver;
@@ -147,6 +218,8 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * Updates the ModelRoot with those properties which are dependent upon the
      * world model. Call this when the world model is changed (e.g. new map is
      * loaded)
+     * @param world
+     * @param p
      */
     public void setup(ReadOnlyWorld world, FreerailsPrincipal p) {
         this.world = world;
@@ -165,6 +238,11 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 
     }
 
+    /**
+     *
+     * @param m
+     * @return
+     */
     public MoveStatus tryDoMove(Move m) {
         return this.moveReceiver.tryDoMove(m);
     }

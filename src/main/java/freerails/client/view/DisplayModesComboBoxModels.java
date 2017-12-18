@@ -23,6 +23,9 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
 
     private MyDisplayMode selection;
 
+    /**
+     *
+     */
     public DisplayModesComboBoxModels() {
         GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
                 .getLocalGraphicsEnvironment().getDefaultScreenDevice()
@@ -42,6 +45,9 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
     /**
      * Permanently removes from the list in this object any display modes with
      * width, height, or bitdepth below the specified values.
+     * @param width
+     * @param height
+     * @param bitdepth
      */
     public void removeDisplayModesBelow(int width, int height, int bitdepth) {
         Iterator<MyDisplayMode> it = modes.iterator();

@@ -35,18 +35,33 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     private RepaintManagerForActiveRendering() {
     }
 
+    /**
+     *
+     */
     public static void setAsCurrentManager() {
         RepaintManager.setCurrentManager(instance);
     }
 
+    /**
+     *
+     * @param f
+     */
     public static synchronized void addJFrame(JFrame f) {
         activelyRendereredComponents.add(f);
     }
 
+    /**
+     *
+     * @return
+     */
     public static long getNumRepaintRequests() {
         return numRepaintRequests;
     }
 
+    /**
+     *
+     * @return
+     */
     public static long getNumDirtyRequests() {
         return numDirtyRequests;
     }

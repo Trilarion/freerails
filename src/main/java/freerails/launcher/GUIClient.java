@@ -49,6 +49,14 @@ public class GUIClient extends FreerailsClient implements
     private final ScreenHandler screenHandler;
     private RenderersRoot vl;
 
+    /**
+     *
+     * @param name
+     * @param fm
+     * @param screenMode
+     * @param dm
+     * @throws IOException
+     */
     public GUIClient(String name, FreerailsProgressMonitor fm, int screenMode,
                      DisplayMode dm) throws IOException {
         this.name = name;
@@ -69,6 +77,10 @@ public class GUIClient extends FreerailsClient implements
 
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             GUIClient client = new GUIClient("Test", null,
@@ -102,10 +114,17 @@ public class GUIClient extends FreerailsClient implements
 
     }
 
+    /**
+     *
+     */
     public void finished() {
         // TODO Auto-generated method stub
     }
 
+    /**
+     *
+     * @return
+     */
     public ScreenHandler getScreenHandler() {
         return screenHandler;
     }
@@ -142,14 +161,26 @@ public class GUIClient extends FreerailsClient implements
         }
     }
 
+    /**
+     *
+     * @param max
+     */
     public void nextStep(int max) {
         // TODO Auto-generated method stub
     }
 
+    /**
+     *
+     * @param s
+     */
     public void setMessage(String s) {
         System.out.println(s);
     }
 
+    /**
+     *
+     * @param i
+     */
     public void setValue(int i) {
         // TODO Auto-generated method stub
     }

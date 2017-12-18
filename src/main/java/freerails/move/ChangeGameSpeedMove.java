@@ -23,6 +23,12 @@ public class ChangeGameSpeedMove implements Move {
         newSpeed = after;
     }
 
+    /**
+     *
+     * @param w
+     * @param newGameSpeed
+     * @return
+     */
     public static ChangeGameSpeedMove getMove(ReadOnlyWorld w,
                                               GameSpeed newGameSpeed) {
         return new ChangeGameSpeedMove((GameSpeed) w.get(ITEM.GAME_SPEED),
@@ -92,6 +98,10 @@ public class ChangeGameSpeedMove implements Move {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNewSpeed() {
         return newSpeed.getSpeed();
     }

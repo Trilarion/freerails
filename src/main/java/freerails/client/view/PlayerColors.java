@@ -27,6 +27,12 @@ public class PlayerColors {
     // player's
     // attention!
 
+    /**
+     *
+     * @param playerNumber
+     * @return
+     */
+
     public static Color getColor(int playerNumber) {
         return colors[playerNumber % colors.length];
     }

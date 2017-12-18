@@ -32,6 +32,12 @@ public class StationBoxRenderer implements Painter {
     private final ModelRoot modelRoot;
     private final Image[] cargoImages;
 
+    /**
+     *
+     * @param world
+     * @param vl
+     * @param modelRoot
+     */
     public StationBoxRenderer(ReadOnlyWorld world, RenderersRoot vl,
                               ModelRoot modelRoot) {
         this.w = world;
@@ -58,6 +64,11 @@ public class StationBoxRenderer implements Painter {
         }
     }
 
+    /**
+     *
+     * @param g
+     * @param newVisibleRectectangle
+     */
     public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
         Boolean showCargoWaiting = (Boolean) modelRoot
                 .getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);

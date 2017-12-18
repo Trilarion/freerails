@@ -22,18 +22,34 @@ import java.util.ArrayList;
  * @author lindsal
  */
 public class LegalTrackConfigurationsTest extends TestCase {
+
+    /**
+     *
+     * @param testName
+     */
     public LegalTrackConfigurationsTest(java.lang.String testName) {
         super(testName);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
 
+    /**
+     *
+     * @return
+     */
     public static Test suite() {
         return new TestSuite(LegalTrackConfigurationsTest.class);
     }
 
+    /**
+     *
+     */
     public void testTrackPieceIsLegal() {
         ArrayList<String> templates = new ArrayList<>();
 

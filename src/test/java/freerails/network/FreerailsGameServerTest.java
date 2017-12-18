@@ -13,6 +13,9 @@ import junit.framework.TestCase;
 public class FreerailsGameServerTest extends TestCase {
     private FreerailsGameServer server;
 
+    /**
+     *
+     */
     public void testLogon() {
         LogOnResponse response;
 
@@ -61,6 +64,10 @@ public class FreerailsGameServerTest extends TestCase {
                 response.isSuccessful());
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         server = new FreerailsGameServer(new SavedGamesManager4UnitTests());

@@ -11,6 +11,12 @@ import freerails.controller.ModelRoot;
  */
 public interface ModelRootListener {
 
+    /**
+     *
+     * @param p
+     * @param oldValue
+     * @param newValue
+     */
     void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue);
 
 }

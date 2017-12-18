@@ -16,6 +16,11 @@ import javax.swing.*;
  * @author Luke Lindsay
  */
 public class RunMe {
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         JFrame jFrame = new freerails.client.top.ClientJFrame(
                 new SimpleComponentFactoryImpl2());

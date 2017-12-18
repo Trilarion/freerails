@@ -21,6 +21,11 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
 
     private final int maximumConsecutivePieces;
 
+    /**
+     *
+     * @param max
+     * @param legalTrackTemplatesArrayList
+     */
     public LegalTrackConfigurations(int max,
                                     ArrayList<String> legalTrackTemplatesArrayList) {
         maximumConsecutivePieces = max;
@@ -33,6 +38,11 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         legalConfigs = new ImHashSet<>(temp);
     }
 
+    /**
+     *
+     * @param max
+     * @param legalTrackTemplatesArray
+     */
     public LegalTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
         maximumConsecutivePieces = max;
         HashSet<TrackConfiguration> temp = new HashSet<>();
@@ -77,10 +87,18 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
         return legalConfigs.iterator();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMaximumConsecutivePieces() {
         return maximumConsecutivePieces;
     }
@@ -95,6 +113,11 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @param trackConfiguration
+     * @return
+     */
     public boolean trackConfigurationIsLegal(
             TrackConfiguration trackConfiguration) {
         return legalConfigs.contains(trackConfiguration);

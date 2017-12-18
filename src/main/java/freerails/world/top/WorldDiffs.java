@@ -62,6 +62,10 @@ public class WorldDiffs extends WorldImpl {
     private final HashMap<ImPoint, Object> mapDiff;
     private final WorldImpl underlying;
 
+    /**
+     *
+     * @param row
+     */
     public WorldDiffs(ReadOnlyWorld row) {
 
         listDiff = new TreeMap<>();
@@ -90,15 +94,25 @@ public class WorldDiffs extends WorldImpl {
     /**
      * The iterator returns instances of java.awt.Point that store the
      * coordinates of tiles that are different to the underlying world object.
+     * @return 
      */
     public Iterator<ImPoint> getMapDiffs() {
         return mapDiff.keySet().iterator();
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterator<ListKey> getListDiffs() {
         return listDiff.keySet().iterator();
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public Object getDiff(ListKey key) {
         return listDiff.get(key);
     }
@@ -125,6 +139,7 @@ public class WorldDiffs extends WorldImpl {
 
     /**
      * Used by unit tests.
+     * @return 
      */
     public int numberOfMapDifferences() {
         return this.mapDiff.size();
@@ -132,6 +147,7 @@ public class WorldDiffs extends WorldImpl {
 
     /**
      * Used by unit tests.
+     * @return 
      */
     public int listDiffs() {
         return listDiff.size();
@@ -162,16 +178,61 @@ public class WorldDiffs extends WorldImpl {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isDifferent() {
         return (mapDiff.size() != 0) || (listDiff.size() != 0);
     }
 
+    /**
+     *
+     * @return
+     */
     public ReadOnlyWorld getUnderlying() {
         return underlying;
     }
 
+    /**
+     *
+     */
     public enum LISTID {
-        ACTIVITY_LISTS, BANK_ACCOUNTS, CURRENT_BALANCE, ITEMS, LISTS, PLAYERS, SHARED_LISTS
+
+        /**
+         *
+         */
+        ACTIVITY_LISTS,
+
+        /**
+         *
+         */
+        BANK_ACCOUNTS,
+
+        /**
+         *
+         */
+        CURRENT_BALANCE,
+
+        /**
+         *
+         */
+        ITEMS,
+
+        /**
+         *
+         */
+        LISTS,
+
+        /**
+         *
+         */
+        PLAYERS,
+
+        /**
+         *
+         */
+        SHARED_LISTS
     }
 
 }

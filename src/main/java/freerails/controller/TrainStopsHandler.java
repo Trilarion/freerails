@@ -38,6 +38,12 @@ public class TrainStopsHandler implements Serializable {
     private final WorldDiffs worldDiffs;
     private GameTime timeLoadingFinished = new GameTime(0);
 
+    /**
+     *
+     * @param id
+     * @param p
+     * @param w
+     */
     public TrainStopsHandler(int id, FreerailsPrincipal p, WorldDiffs w) {
         trainId = id;
         principal = p;
@@ -85,6 +91,12 @@ public class TrainStopsHandler implements Serializable {
         return path;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public ImPoint arrivesAtPoint(int x, int y) {
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);
 
@@ -102,6 +114,10 @@ public class TrainStopsHandler implements Serializable {
         return targetPoint;
     }
 
+    /**
+     *
+     * @return
+     */
     public Move getMoves() {
         Move m = WorldDiffMove.generate(worldDiffs,
                 WorldDiffMove.Cause.TrainArrives);
@@ -110,6 +126,8 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
+     * @param x
+     * @param y
      * @return the number of the station the train is currently at, or -1 if no
      * current station.
      */
@@ -130,17 +148,29 @@ public class TrainStopsHandler implements Serializable {
         // there are no stations that exist where the train is currently
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrainLength() {
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);
         return ta.getTrain().getLength();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isTrainFull() {
         TrainAccessor train = new TrainAccessor(worldDiffs, principal, trainId);
         ImInts spaceAvailable = train.spaceAvailable();
         return spaceAvailable.sum() == 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isTrainMoving() {
         if (refreshWaitingForFullLoad()) {
             return false;
@@ -150,6 +180,10 @@ public class TrainStopsHandler implements Serializable {
         return time.getTicks() > this.timeLoadingFinished.getTicks();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isWaiting4FullLoad() {
         TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
                 this.trainId);
@@ -183,6 +217,10 @@ public class TrainStopsHandler implements Serializable {
         timeLoadingFinished = new GameTime(currentTime.getTicks() + ticks);
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean refreshWaitingForFullLoad() {
 
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);

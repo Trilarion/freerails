@@ -13,6 +13,10 @@ public class Demand4Cargo implements FreerailsSerializable {
 
     private final ImInts demand;
 
+    /**
+     *
+     * @param demandArray
+     */
     public Demand4Cargo(boolean[] demandArray) {
         demand = ImInts.fromBoolean(demandArray);
     }
@@ -40,6 +44,11 @@ public class Demand4Cargo implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @param cargoNumber
+     * @return
+     */
     public boolean isCargoDemanded(int cargoNumber) {
         return demand.get(cargoNumber) == 1;
     }

@@ -28,6 +28,8 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     private final ImList<Step> vectors;
 
     /**
+     * @param start
+     * @param vectorsList
      * @throws NullPointerException if null == start
      * @throws NullPointerException if null == vectorsList
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
@@ -41,6 +43,8 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
+     * @param start
+     * @param vectors
      * @throws NullPointerException if null == start
      * @throws NullPointerException if null == vectors
      * @throws NullPointerException if null == vectors[i] for any i;
@@ -70,11 +74,17 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     /**
      * Returns the distance you would travel if you walked the all the way along
      * the path.
+     * @return 
      */
     public double getTotalDistance() {
         return getDistance(vectors.size());
     }
 
+    /**
+     *
+     * @param steps
+     * @return
+     */
     public double getDistance(int steps) {
         double distanceSoFar = 0;
         for (int i = 0; i < steps; i++) {
@@ -88,6 +98,8 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      * Returns the coordinates of the point you would be standing at if you
      * walked the specified distance along the path from the start point.
      *
+     * @param distance
+     * @return 
      * @throws IllegalArgumentException if distance < 0
      * @throws IllegalArgumentException if distance > getLength()
      */
@@ -124,6 +136,9 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      * Returns the coordinates of the point you would be standing at if you
      * walked the specified distance along the path from the start point.
      *
+     * @param firstdistance
+     * @param lastdistance
+     * @return 
      * @throws IllegalArgumentException if distance < 0
      * @throws IllegalArgumentException if distance > getLength()
      */
@@ -216,14 +231,27 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
         return new Pair<>(firstPoint, secondPoint);
     }
 
+    /**
+     *
+     * @return
+     */
     public ImPoint getStart() {
         return start;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public Step getStep(int i) {
         return vectors.get(i);
     }
 
+    /**
+     *
+     * @return
+     */
     public PositionOnTrack getFinalPosition() {
         int x = start.x;
         int y = start.y;
@@ -241,6 +269,8 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      * Returns the index of the step that takes the distance travelled over the
      * specified distance.
      *
+     * @param distance
+     * @return 
      * @throws IllegalArgumentException if distance < 0
      * @throws IllegalArgumentException if distance > getLength()
      */
@@ -262,10 +292,19 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
         return start.hashCode();
     }
 
+    /**
+     *
+     * @return
+     */
     public int steps() {
         return vectors.size();
     }
 
+    /**
+     *
+     * @param newSteps
+     * @return
+     */
     public PathOnTiles addSteps(Step... newSteps) {
         int oldLength = vectors.size();
         Step[] newPath = new Step[oldLength + newSteps.length];
@@ -280,6 +319,9 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      * Returns a FreerailsPathIterator that exposes a sub section of the path
      * this object represents.
      *
+     * @param offset
+     * @param length
+     * @return 
      * @throws IllegalArgumentException if offset < 0
      * @throws IllegalArgumentException if length <= 0
      * @throws IllegalArgumentException if offset + length > getLength()
@@ -361,6 +403,10 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
                 }, points.size());
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterator<ImPoint> tiles() {
         return new Iterator<ImPoint>() {
             int index = 0;

@@ -17,15 +17,26 @@ import java.util.Properties;
  */
 public class ShowJavaProperties {
 
+    /**
+     *
+     */
     public static final int TABLE_WIDTH = 500;
 
     private static final Logger logger = Logger
             .getLogger(ShowJavaProperties.class.getName());
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         logger.info(getPropertiesHtmlString());
     }
 
+    /**
+     *
+     * @return
+     */
     public static String getPropertiesHtmlString() {
         Properties p = System.getProperties();
         StringBuilder sb = new StringBuilder();

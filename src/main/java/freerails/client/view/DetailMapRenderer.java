@@ -31,6 +31,12 @@ public class DetailMapRenderer implements MapRenderer {
 
     private final Painter stationBoxes;
 
+    /**
+     *
+     * @param world
+     * @param rr
+     * @param modelRoot
+     */
     public DetailMapRenderer(ReadOnlyWorld world, RenderersRoot rr,
                              ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rr, modelRoot);
@@ -55,22 +61,44 @@ public class DetailMapRenderer implements MapRenderer {
         stationBoxes = new StationBoxRenderer(world, rr, modelRoot);
     }
 
+    /**
+     *
+     * @return
+     */
     public StationRadiusRenderer getStationRadius() {
         return stationRadius;
     }
 
+    /**
+     *
+     * @return
+     */
     public BuildTrackController getBuildTrackController() {
         return buildTrackController;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getScale() {
         return Constants.TILE_SIZE;
     }
 
+    /**
+     *
+     * @return
+     */
     public Dimension getMapSizeInPixels() {
         return mapSizeInPixels;
     }
 
+    /**
+     *
+     * @param g
+     * @param tileX
+     * @param tileY
+     */
     public void paintTile(Graphics g, int tileX, int tileY) {
         background.paintTile(g, tileX, tileY);
         trainsview.paint((Graphics2D) g, null);
@@ -80,10 +108,20 @@ public class DetailMapRenderer implements MapRenderer {
         buildTrackRenderer.paint((Graphics2D) g, null);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void refreshTile(int x, int y) {
         background.refreshTile(x, y);
     }
 
+    /**
+     *
+     * @param g
+     * @param visibleRect
+     */
     public void paintRect(Graphics g, Rectangle visibleRect) {
         background.paintRect(g, visibleRect);
         trainsview.paint((Graphics2D) g, visibleRect);
@@ -92,6 +130,9 @@ public class DetailMapRenderer implements MapRenderer {
         buildTrackRenderer.paint((Graphics2D) g, null);
     }
 
+    /**
+     *
+     */
     public void refreshAll() {
         background.refreshAll();
     }

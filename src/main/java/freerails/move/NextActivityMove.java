@@ -9,6 +9,10 @@ import freerails.world.common.ActivityIterator;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.World;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class NextActivityMove implements Move {
 
     private static final long serialVersionUID = -1783556069173689661L;
@@ -19,6 +23,12 @@ public class NextActivityMove implements Move {
 
     private final int index;
 
+    /**
+     *
+     * @param activity
+     * @param index
+     * @param principal
+     */
     public NextActivityMove(Activity activity, int index,
                             FreerailsPrincipal principal) {
         this.activity = activity;

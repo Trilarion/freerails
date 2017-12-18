@@ -11,8 +11,14 @@ import freerails.world.common.ImList;
 public class StationModel implements FreerailsSerializable {
     private static final long serialVersionUID = 3256442503979874355L;
 
+    /**
+     *
+     */
     public final int x;
 
+    /**
+     *
+     */
     public final int y;
     private final String name;
     private final SupplyAtStation supply;
@@ -24,6 +30,11 @@ public class StationModel implements FreerailsSerializable {
      */
     private final ImList<PlannedTrain> production;
 
+    /**
+     *
+     * @param s
+     * @param converted
+     */
     public StationModel(StationModel s, ConvertedAtStation converted) {
         this.converted = converted;
 
@@ -37,6 +48,14 @@ public class StationModel implements FreerailsSerializable {
         this.y = s.y;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param stationName
+     * @param numberOfCargoTypes
+     * @param cargoBundle
+     */
     public StationModel(int x, int y, String stationName,
                         int numberOfCargoTypes, int cargoBundle) {
         this.name = stationName;
@@ -50,6 +69,9 @@ public class StationModel implements FreerailsSerializable {
         cargoBundleNumber = cargoBundle;
     }
 
+    /**
+     *
+     */
     public StationModel() {
         this.name = "No name";
         x = 0;
@@ -61,6 +83,11 @@ public class StationModel implements FreerailsSerializable {
         this.cargoBundleNumber = 0;
     }
 
+    /**
+     *
+     * @param s
+     * @param production
+     */
     public StationModel(StationModel s, ImList<PlannedTrain> production) {
         this.production = production;
         this.demand = s.demand;
@@ -72,6 +99,11 @@ public class StationModel implements FreerailsSerializable {
         this.y = s.y;
     }
 
+    /**
+     *
+     * @param s
+     * @param demand
+     */
     public StationModel(StationModel s, Demand4Cargo demand) {
         this.demand = demand;
 
@@ -85,6 +117,11 @@ public class StationModel implements FreerailsSerializable {
         this.y = s.y;
     }
 
+    /**
+     *
+     * @param s
+     * @param supply
+     */
     public StationModel(StationModel s, SupplyAtStation supply) {
         this.supply = supply;
         this.demand = s.demand;
@@ -126,6 +163,10 @@ public class StationModel implements FreerailsSerializable {
         return supply != null ? supply.equals(stationModel.supply) : stationModel.supply == null;
     }
 
+    /**
+     *
+     * @return
+     */
     public ConvertedAtStation getConverted() {
         return converted;
     }
@@ -145,30 +186,58 @@ public class StationModel implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getStationName() {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationX() {
         return x;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationY() {
         return y;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<PlannedTrain> getProduction() {
         return production;
     }
 
+    /**
+     *
+     * @return
+     */
     public Demand4Cargo getDemand() {
         return demand;
     }
 
+    /**
+     *
+     * @return
+     */
     public SupplyAtStation getSupply() {
         return supply;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCargoBundleID() {
         return cargoBundleNumber;
     }

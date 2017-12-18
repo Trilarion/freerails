@@ -23,6 +23,10 @@ import java.util.Arrays;
 public class TrackMaintenanceMoveGeneratorTest extends TestCase {
     private World w;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         w = new WorldImpl(20, 20);
@@ -30,6 +34,9 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         MapFixtureFactory.generateTrackRuleList(w);
     }
 
+    /**
+     *
+     */
     public void testCalulateNumberOfEachTrackType() {
         int[] actual;
         int[] expected;

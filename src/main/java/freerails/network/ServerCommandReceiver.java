@@ -12,5 +12,10 @@ import freerails.controller.Message2Server;
  * @author Luke
  */
 public interface ServerCommandReceiver {
+
+    /**
+     *
+     * @param c
+     */
     void sendCommand(Message2Server c);
 }

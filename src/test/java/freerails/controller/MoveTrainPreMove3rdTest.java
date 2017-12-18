@@ -30,6 +30,10 @@ public class MoveTrainPreMove3rdTest extends TestCase {
     FreerailsPrincipal principal;
     World world;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         world = MapFixtureFactory2.getCopy();
@@ -53,6 +57,9 @@ public class MoveTrainPreMove3rdTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testFindingPath() {
         findPath2Target(new ImPoint(14, 7), line1);
         findPath2Target(new ImPoint(9, 13), line2);

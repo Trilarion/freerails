@@ -23,11 +23,20 @@ final public class GameLoop implements Runnable {
     private final ScreenHandler screenHandler;
     private final GameModel[] model;
 
+    /**
+     *
+     * @param s
+     */
     public GameLoop(ScreenHandler s) {
         screenHandler = s;
         model = new GameModel[0];
     }
 
+    /**
+     *
+     * @param s
+     * @param gm
+     */
     public GameLoop(ScreenHandler s, GameModel[] gm) {
         screenHandler = s;
         model = gm;

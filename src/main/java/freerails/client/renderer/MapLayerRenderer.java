@@ -13,11 +13,31 @@ import java.awt.*;
  * @author Luke Lindsay
  */
 public interface MapLayerRenderer {
+
+    /**
+     *
+     * @param g
+     * @param tileX
+     * @param tileY
+     */
     void paintTile(Graphics g, int tileX, int tileY);
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     void refreshTile(int x, int y);
 
+    /**
+     *
+     */
     void refreshAll();
 
+    /**
+     *
+     * @param g
+     * @param visibleRect
+     */
     void paintRect(Graphics g, Rectangle visibleRect);
 }

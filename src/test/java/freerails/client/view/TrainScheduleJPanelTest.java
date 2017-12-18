@@ -6,10 +6,18 @@ package freerails.client.view;
 
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class TrainScheduleJPanelTest extends TestCase {
 
     TrainScheduleJPanel jpanel;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         // jpanel = new TrainScheduleJPanel();
@@ -19,6 +27,11 @@ public class TrainScheduleJPanelTest extends TestCase {
     /*
      * [ 1384249 ] Unexpected Exception: TrainScheduleJPanel.java line 661
      */
+
+    /**
+     *
+     */
+
     public void testBug1384249() {
 
     }

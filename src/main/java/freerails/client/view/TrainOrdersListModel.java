@@ -22,14 +22,32 @@ import javax.swing.*;
  * @author Luke Lindsay
  */
 public class TrainOrdersListModel extends AbstractListModel {
+
+    /**
+     *
+     */
     public static final int DONT_GOTO = 0;
+
+    /**
+     *
+     */
     public static final int GOTO_NOW = 1;
+
+    /**
+     *
+     */
     public static final int GOTO_AFTER_PRIORITY_ORDERS = 2;
     private static final long serialVersionUID = 3762537827703009847L;
     private final int trainNumber;
     private final ReadOnlyWorld w;
     private final FreerailsPrincipal principal;
 
+    /**
+     *
+     * @param w
+     * @param trainNumber
+     * @param p
+     */
     public TrainOrdersListModel(ReadOnlyWorld w, int trainNumber,
                                 FreerailsPrincipal p) {
         this.trainNumber = trainNumber;
@@ -73,6 +91,9 @@ public class TrainOrdersListModel extends AbstractListModel {
         return size;
     }
 
+    /**
+     *
+     */
     public void fireRefresh() {
         super.fireContentsChanged(this, 0, getSize());
     }
@@ -94,14 +115,34 @@ public class TrainOrdersListModel extends AbstractListModel {
      * class.
      */
     public static class TrainOrdersListElement {
+
+        /**
+         *
+         */
         public final boolean isPriorityOrder;
 
+        /**
+         *
+         */
         public final int gotoStatus;
 
+        /**
+         *
+         */
         public final TrainOrdersModel order;
 
+        /**
+         *
+         */
         public final int trainNumber;
 
+        /**
+         *
+         * @param isPriorityOrder
+         * @param gotoStatus
+         * @param order
+         * @param trainNumber
+         */
         public TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus,
                                       TrainOrdersModel order, int trainNumber) {
             this.isPriorityOrder = isPriorityOrder;

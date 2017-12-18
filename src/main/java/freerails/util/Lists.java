@@ -4,8 +4,18 @@
  */
 package freerails.util;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class Lists {
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static boolean equals(List1D a, List1D b) {
         if (a.size() != b.size())
@@ -17,6 +27,12 @@ public class Lists {
         return true;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static boolean equals(List2D a, List2D b) {
         if (a.sizeD1() != b.sizeD1())
@@ -32,6 +48,12 @@ public class Lists {
         return true;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static boolean equals(List3D a, List3D b) {
         if (a.sizeD1() != b.sizeD1())

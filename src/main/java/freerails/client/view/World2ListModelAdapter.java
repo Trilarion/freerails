@@ -26,6 +26,11 @@ public class World2ListModelAdapter implements ListModel {
 
     private final NonNullElements elements;
 
+    /**
+     *
+     * @param world
+     * @param key
+     */
     public World2ListModelAdapter(ReadOnlyWorld world, SKEY key) {
 
         this.w = world;
@@ -39,6 +44,12 @@ public class World2ListModelAdapter implements ListModel {
         elements = new NonNullElements(key, world);
     }
 
+    /**
+     *
+     * @param world
+     * @param key
+     * @param p
+     */
     public World2ListModelAdapter(ReadOnlyWorld world, KEY key,
                                   FreerailsPrincipal p) {
 

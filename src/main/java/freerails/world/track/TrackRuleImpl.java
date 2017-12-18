@@ -34,6 +34,14 @@ final public class TrackRuleImpl implements TrackRule {
      * legalTrackTemplate[x]==true, then x is a legal track-template. Example:
      * 000 111 000 This represents a horizontal straight.
      */
+
+    /**
+     *
+     * @param p
+     * @param lc
+     * @param ltp
+     */
+
     public TrackRuleImpl(TrackRuleProperties p, LegalTrackConfigurations lc,
                          LegalTrackPlacement ltp) {
         if (null == p || null == lc || null == ltp) {
@@ -44,6 +52,11 @@ final public class TrackRuleImpl implements TrackRule {
         legalTrackPlacement = ltp;
     }
 
+    /**
+     *
+     * @param TerrainType
+     * @return
+     */
     public boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType) {
         return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
     }
@@ -51,6 +64,7 @@ final public class TrackRuleImpl implements TrackRule {
     /**
      * If the specified object is a track rule, comparison is by category then
      * price.
+     * @param otherRule
      */
     public int compareTo(TrackRule otherRule) {
 
@@ -81,47 +95,92 @@ final public class TrackRuleImpl implements TrackRule {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackRule.TrackCategories getCategory() {
         return properties.getCategory();
     }
 
+    /**
+     *
+     * @return
+     */
     public LegalTrackConfigurations getLegalConfigurations() {
         return legalConfigurations;
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
         return legalConfigurations.getLegalConfigurationsIterator();
     }
 
+    /**
+     *
+     * @param directionComingFrom
+     * @return
+     */
     public Step[] getLegalRoutes(Step directionComingFrom) {
         // TODO add code..
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public LegalTrackPlacement getLegalTrackPlacement() {
         return legalTrackPlacement;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getMaintenanceCost() {
         return properties.getMaintenanceCost();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMaximumConsecutivePieces() {
         return legalConfigurations.getMaximumConsecutivePieces();
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getPrice() {
         return this.properties.getPrice();
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackRuleProperties getProperties() {
         return properties;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationRadius() {
         return this.properties.getStationRadius();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTypeName() {
         return properties.getTypeName();
     }
@@ -136,10 +195,19 @@ final public class TrackRuleImpl implements TrackRule {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isStation() {
         return properties.isStation();
     }
 
+    /**
+     *
+     * @param trackTemplateToTest
+     * @return
+     */
     public boolean testTrackPieceLegality(int trackTemplateToTest) {
         TrackConfiguration trackConfiguration = TrackConfiguration
                 .from9bitTemplate(trackTemplateToTest);
@@ -153,15 +221,28 @@ final public class TrackRuleImpl implements TrackRule {
         return getTypeName();
     }
 
+    /**
+     *
+     * @param config
+     * @return
+     */
     public boolean trackPieceIsLegal(TrackConfiguration config) {
         return legalConfigurations.trackConfigurationIsLegal(config);
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isDouble() {
 
         return properties.isEnableDoubleTrack();
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getFixedCost() {
         return properties.getFixedCost();
     }

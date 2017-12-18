@@ -22,6 +22,9 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
 
     final StationModel station4 = new StationModel(4, 4, "station4", 10, 0);
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         Move[] moves = new Move[4];

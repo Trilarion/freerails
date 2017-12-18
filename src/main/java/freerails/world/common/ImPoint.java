@@ -19,18 +19,38 @@ public final class ImPoint implements FreerailsSerializable,
 
     private static final long serialVersionUID = -3053020239886388576L;
 
-    public final int x, y;
+    /**
+     *
+     */
+    public final int x,
 
+    /**
+     *
+     */
+    y;
+
+    /**
+     *
+     */
     public ImPoint() {
         x = 0;
         y = 0;
     }
 
+    /**
+     *
+     * @param p
+     */
     public ImPoint(Point p) {
         x = p.x;
         y = p.y;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public ImPoint(int x, int y) {
         this.x = x;
         this.y = y;
@@ -50,6 +70,10 @@ public final class ImPoint implements FreerailsSerializable,
         return y == imPoint.y;
     }
 
+    /**
+     *
+     * @return
+     */
     public Point toPoint() {
         return new Point(x, y);
     }

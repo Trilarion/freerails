@@ -112,6 +112,9 @@ public abstract class BufferedTiledBackgroundRenderer implements
         paintBufferRectangle(0, 0, bufferRect.width, bufferRect.height);
     }
 
+    /**
+     *
+     */
     public void refreshAll() {
         refreshBackground();
     }
@@ -143,6 +146,13 @@ public abstract class BufferedTiledBackgroundRenderer implements
         refreshBackground();
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
     protected abstract void paintBufferRectangle(int x, int y, int width,
                                                  int height);
 

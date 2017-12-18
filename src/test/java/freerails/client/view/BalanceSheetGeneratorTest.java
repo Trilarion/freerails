@@ -29,6 +29,9 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
     World world;
 
+    /**
+     *
+     */
     public void testBondsFigure() {
 
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
@@ -39,6 +42,9 @@ public class BalanceSheetGeneratorTest extends TestCase {
         assertEquals(expectedBondValue.changeSign(), generator.ytd.loans);
     }
 
+    /**
+     *
+     */
     public void testStochHolderEquityFigure() {
 
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
@@ -50,6 +56,10 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
 

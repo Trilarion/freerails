@@ -22,6 +22,8 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
 
     /**
      * Creates new FreerailsPathIteratorImpl
+     * @param l
+     * @param f
      */
     public FreerailsPathIteratorImpl(List<Point> l, boolean f) {
         points = l;
@@ -35,10 +37,20 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
         }
     }
 
+    /**
+     *
+     * @param l
+     * @return
+     */
     public static FreerailsPathIterator forwardsIterator(List<Point> l) {
         return new FreerailsPathIteratorImpl(l, true);
     }
 
+    /**
+     *
+     * @param l
+     * @return
+     */
     public static FreerailsPathIterator backwardsIterator(List<Point> l) {
         return new FreerailsPathIteratorImpl(l, false);
     }

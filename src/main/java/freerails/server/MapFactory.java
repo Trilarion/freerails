@@ -36,6 +36,12 @@ public class MapFactory {
 
     private static WorldImpl world;
 
+    /**
+     *
+     * @param map_url
+     * @param w
+     * @param pm
+     */
     public static void setupMap(URL map_url, WorldImpl w,
                                 FreerailsProgressMonitor pm) {
         // Setup progress monitor..

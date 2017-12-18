@@ -11,6 +11,10 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public class GenerateDependenciesXmlAndHtmlTest extends TestCase {
+
+    /**
+     *
+     */
     public void testIsPackageNameOk() {
         assertTrue(GenerateDependenciesXmlAndHtml
                 .isPackageNameOk("freerails/*"));

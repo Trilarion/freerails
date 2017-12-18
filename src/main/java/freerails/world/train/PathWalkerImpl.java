@@ -30,6 +30,10 @@ public class PathWalkerImpl implements PathWalker {
 
     private int lastY;
 
+    /**
+     *
+     * @param i
+     */
     public PathWalkerImpl(FreerailsPathIterator i) {
         it = i;
     }
@@ -47,6 +51,7 @@ public class PathWalkerImpl implements PathWalker {
     /**
      * Specify the distance this PathWalker is to progress along the current
      * step.
+     * @param distance
      */
     public void stepForward(double distance) {
         distanceOfThisStepRemaining += distance;

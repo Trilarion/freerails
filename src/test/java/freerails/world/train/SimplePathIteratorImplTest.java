@@ -10,14 +10,26 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public class SimplePathIteratorImplTest extends TestCase {
+
+    /**
+     *
+     * @param arg0
+     */
     public SimplePathIteratorImplTest(String arg0) {
         super(arg0);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(SimplePathIteratorImplTest.class);
     }
 
+    /**
+     *
+     */
     public void testHasNext() {
         int[] xpoints = {0, 100};
         int[] ypoints = {0, 0};
@@ -28,6 +40,9 @@ public class SimplePathIteratorImplTest extends TestCase {
         assertTrue(!it.hasNext());
     }
 
+    /**
+     *
+     */
     public void testNextSegment() {
         int[] xpoints = {1, 2, 3};
         int[] ypoints = {4, 5, 6};

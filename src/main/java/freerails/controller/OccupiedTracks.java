@@ -28,11 +28,27 @@ import freerails.world.train.TrainModel;
 
 import java.util.*;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class OccupiedTracks {
 
+    /**
+     *
+     */
     public final Map<TrackSection, Integer> occupiedTrackSections;
+
+    /**
+     *
+     */
     public final Map<Integer, List<TrackSection>> trainToTrackList;
 
+    /**
+     *
+     * @param principal
+     * @param w
+     */
     public OccupiedTracks(FreerailsPrincipal principal, ReadOnlyWorld w) {
 
         occupiedTrackSections = new HashMap<>();
@@ -66,6 +82,10 @@ public class OccupiedTracks {
         }
     }
 
+    /**
+     *
+     * @param i
+     */
     public void stopTrain(int i) {
         List<TrackSection> trackList = trainToTrackList.remove(i);
         if (trackList == null) {

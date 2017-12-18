@@ -6,15 +6,27 @@ package freerails.util;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * @author jkeller1
+ * @param <T>
+ */
 public class List1DImpl<T> implements List1D<T> {
 
     private static final long serialVersionUID = 8285123045287237133L;
     private final ArrayList<T> elementData;
 
+    /**
+     *
+     */
     public List1DImpl() {
         elementData = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param initialSize
+     */
     public List1DImpl(int initialSize) {
         elementData = new ArrayList<>();
         for (int i = 0; i < initialSize; i++) {
@@ -22,6 +34,10 @@ public class List1DImpl<T> implements List1D<T> {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return elementData.size();
     }
@@ -36,20 +52,39 @@ public class List1DImpl<T> implements List1D<T> {
         return size();
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public T get(int i) {
         return elementData.get(i);
     }
 
+    /**
+     *
+     * @return
+     */
     public T removeLast() {
         int last = elementData.size() - 1;
         return elementData.remove(last);
     }
 
+    /**
+     *
+     * @param element
+     * @return
+     */
     public int add(T element) {
         elementData.add(element);
         return elementData.size() - 1;
     }
 
+    /**
+     *
+     * @param i
+     * @param element
+     */
     public void set(int i, T element) {
         elementData.set(i, element);
     }

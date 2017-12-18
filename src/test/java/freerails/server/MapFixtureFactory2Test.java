@@ -16,6 +16,9 @@ import static freerails.server.MapFixtureFactory2.getCopy;
 public class MapFixtureFactory2Test extends TestCase {
     World w1;
 
+    /**
+     *
+     */
     public void testGetCopy() {
         World w2;
         w1 = getCopy();
@@ -27,6 +30,9 @@ public class MapFixtureFactory2Test extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testLists() {
 
         assertTrue(w1.size(SKEY.CARGO_TYPES) > 0);
@@ -35,6 +41,9 @@ public class MapFixtureFactory2Test extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testMap() {
 
         assertEquals(w1.getMapWidth(), 50);
@@ -42,11 +51,17 @@ public class MapFixtureFactory2Test extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testPlayers() {
 
         assertEquals(4, w1.getNumberOfPlayers());
     }
 
+    /**
+     *
+     */
     public void testThatStockIsIssued() {
         FreerailsPrincipal p = w1.getPlayer(0).getPrincipal();
         int stock = 0;
@@ -64,6 +79,10 @@ public class MapFixtureFactory2Test extends TestCase {
         assertEquals(100000, stock);
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         // TODO Auto-generated method stub

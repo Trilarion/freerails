@@ -29,6 +29,10 @@ public class QuickRGBTileRendererList implements TileRendererList {
     private final HashMap<Integer, Integer> rgb2index = new HashMap<>();
     private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
 
+    /**
+     *
+     * @param w
+     */
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
         int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
         int[] rgbValues = new int[numberOfTerrainTypes];
@@ -42,6 +46,11 @@ public class QuickRGBTileRendererList implements TileRendererList {
         }
     }
 
+    /**
+     *
+     * @param t
+     * @return
+     */
     public static Image createImageFor(TerrainType t) {
         Image image = defaultConfiguration.createCompatibleImage(
                 Constants.TILE_SIZE, Constants.TILE_SIZE);
@@ -54,10 +63,20 @@ public class QuickRGBTileRendererList implements TileRendererList {
         return image;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public TileRenderer getTileViewWithNumber(int i) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     *
+     * @param rgb
+     * @return
+     */
     public TileRenderer getTileViewWithRGBValue(int rgb) {
         Integer i = rgb2index.get(rgb);
         this.simpleTileRenderer.setImage(images[i]);

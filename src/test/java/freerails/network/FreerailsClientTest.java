@@ -15,6 +15,10 @@ import java.io.IOException;
  * @author Luke
  */
 public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
+
+    /**
+     *
+     */
     public void testLogon() {
         try {
             /* Test 1 : connecting a client. */

@@ -20,6 +20,15 @@ import java.io.IOException;
  */
 final public class StandardTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {
+
+    /**
+     *
+     * @param imageManager
+     * @param rgbValues
+     * @param tileModel
+     * @param w
+     * @throws IOException
+     */
     public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
                                 TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
@@ -27,6 +36,11 @@ final public class StandardTileRenderer extends
         this.getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
 
+    /**
+     *
+     * @param typeName
+     * @return
+     */
     public static String generateFilename(String typeName) {
         return "terrain" + File.separator + typeName + ".png";
     }
@@ -40,6 +54,11 @@ final public class StandardTileRenderer extends
         return generateFilename(this.getTerrainType());
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     @Override
     protected String generateFileNameNumber(int i) {
         throw new UnsupportedOperationException();

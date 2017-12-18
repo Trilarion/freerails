@@ -22,6 +22,13 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
         super(trackMove);
     }
 
+    /**
+     *
+     * @param before
+     * @param after
+     * @param p
+     * @return
+     */
     public static UpgradeTrackMove generateMove(TrackPiece before,
                                                 TrackPiece after, ImPoint p) {
         ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
@@ -29,6 +36,10 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
         return new UpgradeTrackMove(m);
     }
 
+    /**
+     *
+     * @return
+     */
     public Rectangle getUpdatedTiles() {
         ChangeTrackPieceMove m = (ChangeTrackPieceMove) this.getMove(0);
 

@@ -21,10 +21,20 @@ import java.util.zip.ZipFile;
  * @author adam@jgf
  */
 public class ClassPath {
+
+    /**
+     *
+     */
     protected final Logger logger = Logger.getLogger("jgf.classlocater.classpath");
 
+    /**
+     *
+     */
     protected LinkedList<String> pathElementsThatHaveAlreadyBeenProcessed;
 
+    /**
+     *
+     */
     protected LinkedList<File> jarsThatHAveAlreadyBeenProcessed;
 
     /**
@@ -33,6 +43,10 @@ public class ClassPath {
     public ClassPath() {
     }
 
+    /**
+     *
+     * @return
+     */
     public List getAllClassNames() {
         String path = null;
         pathElementsThatHaveAlreadyBeenProcessed = new LinkedList<>();
@@ -65,6 +79,8 @@ public class ClassPath {
 
     /**
      * Clones the supplied list, then goes through it processing every element.
+     * @param pathElement
+     * @return 
      */
     protected LinkedList<String> processPendingElement(String pathElement) {
         LinkedList<String> discoveredClasses = new LinkedList<>();
@@ -142,6 +158,7 @@ public class ClassPath {
 
     /**
      * @param classFile a class file listed on the classpath itself.
+     * @return 
      */
     protected String convertToClass(File classFile) {
         return getClassNameFrom(classFile.getName());
@@ -167,6 +184,8 @@ public class ClassPath {
      *
      * @param man the manifest of the given jar
      * @param jar the jar associated with the given manifest.
+     * @param jarFile
+     * @return 
      */
     protected LinkedList<String> findPathElementsInJar(Manifest man,
                                                        JarFile jar, File jarFile) {
@@ -204,6 +223,7 @@ public class ClassPath {
      * Adds all class names found in the zip mentioned
      *
      * @param zipFile zip file
+     * @return 
      */
     protected LinkedList<String> getZipContents(File zipFile) {
         LinkedList<String> result = new LinkedList<>();
@@ -230,6 +250,7 @@ public class ClassPath {
      * This method takes a top level classpath dir i.e. 'classes' or bin
      *
      * @param dir directory
+     * @return 
      */
     protected LinkedList<String> getDirectoryContents(File dir) {
         LinkedList<String> result = new LinkedList<>();
@@ -259,6 +280,7 @@ public class ClassPath {
      *
      * @param pathTo the preceding path to this directory
      * @param dir    a directory to search for class files
+     * @return 
      */
     protected LinkedList<String> getDirectoryContents(String pathTo, File dir) {
         LinkedList<String> result = new LinkedList<>();

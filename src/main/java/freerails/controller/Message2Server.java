@@ -11,7 +11,17 @@ import freerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public interface Message2Server extends FreerailsSerializable {
+
+    /**
+     *
+     * @return
+     */
     int getID();
 
+    /**
+     *
+     * @param server
+     * @return
+     */
     MessageStatus execute(ServerControlInterface server);
 }

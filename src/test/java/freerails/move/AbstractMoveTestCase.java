@@ -25,16 +25,31 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public abstract class AbstractMoveTestCase extends TestCase {
+
+    /**
+     *
+     */
     protected World world;
     private boolean hasSetupBeenCalled = false;
 
+    /**
+     *
+     */
     protected AbstractMoveTestCase() {
     }
 
+    /**
+     *
+     * @param str
+     */
     public AbstractMoveTestCase(String str) {
         super(str);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertDoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
@@ -43,6 +58,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertDoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
@@ -51,6 +70,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertEquals(MoveStatus.MOVE_OK, ms);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
         try {
             World w = getWorld();
@@ -94,6 +117,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
         }
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertOkAndRepeatable(Move m) {
         assertSetupHasBeenCalled();
 
@@ -115,6 +142,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * Generally moves should not be repeatable. For example, if we have just
      * removed a piece of track, that piece of track is gone, so we cannot
      * remove it again.
+     * @param m
      */
     protected void assertOkButNotRepeatable(Move m) {
         assertSetupHasBeenCalled();
@@ -135,6 +163,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
                 hasSetupBeenCalled());
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertTryMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
@@ -143,6 +175,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertTryMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
@@ -157,6 +193,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
                 MoveStatus.MOVE_OK, ms);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertTryUndoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
@@ -165,6 +205,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertTryUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
@@ -179,6 +223,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
                 MoveStatus.MOVE_OK, ms);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertUndoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
@@ -187,6 +235,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
 
+    /**
+     *
+     * @param m
+     */
     protected void assertUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
@@ -207,20 +259,35 @@ public abstract class AbstractMoveTestCase extends TestCase {
         this.world = world;
     }
 
+    /**
+     *
+     * @return
+     */
     protected boolean hasSetupBeenCalled() {
         return hasSetupBeenCalled;
     }
 
+    /**
+     *
+     * @param hasSetupBeenCalled
+     */
     protected void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
         this.hasSetupBeenCalled = hasSetupBeenCalled;
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         setHasSetupBeenCalled(true);
         setupWorld();
     }
 
+    /**
+     *
+     */
     protected void setupWorld() {
         setWorld(new WorldImpl(10, 10));
         // Set the time..
@@ -228,15 +295,27 @@ public abstract class AbstractMoveTestCase extends TestCase {
         getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
     }
 
+    /**
+     *
+     */
     public void testMove() {
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     protected void assertTrackHere(int x, int y) {
 
         FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
         assertTrue(tile.hasTrack());
     }
 
+    /**
+     *
+     * @param path
+     */
     protected void assertTrackHere(PathOnTiles path) {
         ImPoint start = path.getStart();
         int x = start.x;

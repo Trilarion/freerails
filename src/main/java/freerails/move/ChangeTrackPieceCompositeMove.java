@@ -39,6 +39,16 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         builder = fp;
     }
 
+    /**
+     *
+     * @param from
+     * @param direction
+     * @param ruleA
+     * @param ruleB
+     * @param w
+     * @param principal
+     * @return
+     */
     public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
             ImPoint from, Step direction, TrackRule ruleA, TrackRule ruleB,
             ReadOnlyWorld w, FreerailsPrincipal principal) {
@@ -53,6 +63,15 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
 
+    /**
+     *
+     * @param from
+     * @param direction
+     * @param w
+     * @param principal
+     * @return
+     * @throws Exception
+     */
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
             ImPoint from, Step direction, ReadOnlyWorld w,
             FreerailsPrincipal principal) throws Exception {
@@ -157,6 +176,12 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                 ruleNumber);
     }
 
+    /**
+     *
+     * @param p
+     * @param w
+     * @return
+     */
     public static int getOwner(FreerailsPrincipal p, ReadOnlyWorld w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             if (w.getPlayer(i).getPrincipal().equals(p)) {
@@ -185,6 +210,12 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         return rules.isMustConnect2ExistingTrack();
     }
 
+    /**
+     *
+     * @param r
+     * @param w
+     * @return
+     */
     public static int findRuleID(TrackRule r, ReadOnlyWorld w) {
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
             Object o = w.get(SKEY.TRACK_RULES, i);
@@ -195,6 +226,10 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         throw new IllegalStateException();
     }
 
+    /**
+     *
+     * @return
+     */
     public Rectangle getUpdatedTiles() {
         return new Rectangle(x, y, w, h);
     }

@@ -12,7 +12,15 @@ import freerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class GameRules implements FreerailsSerializable {
+
+    /**
+     *
+     */
     public static final GameRules DEFAULT_RULES = new GameRules(true, false);
+
+    /**
+     *
+     */
     public static final GameRules NO_RESTRICTIONS = new GameRules(false, true);
     private static final long serialVersionUID = 3258125847557978416L;
     private final boolean canConnect2OtherRRTrack;
@@ -32,10 +40,18 @@ public class GameRules implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized boolean isCanConnect2OtherRRTrack() {
         return canConnect2OtherRRTrack;
     }
 
+    /**
+     *
+     * @return
+     */
     public synchronized boolean isMustConnect2ExistingTrack() {
         return mustConnect2ExistingTrack;
     }

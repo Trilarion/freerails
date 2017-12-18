@@ -14,6 +14,10 @@ import freerails.world.player.FreerailsPrincipal;
  * @author Luke
  */
 public class ItemsTransactionAggregator extends TransactionAggregator {
+
+    /**
+     *
+     */
     public static final int ANY_VALUE = Integer.MIN_VALUE;
 
     private int type = ANY_VALUE;
@@ -24,6 +28,11 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 
     private int quantityRunningTotal;
 
+    /**
+     *
+     * @param w
+     * @param principal
+     */
     public ItemsTransactionAggregator(ReadOnlyWorld w,
                                       FreerailsPrincipal principal) {
         super(w, principal);
@@ -32,6 +41,8 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     /**
      * Returns true if the transaction with the specified ID has an acceptable
      * type and category.
+     * @param transactionID
+     * @return 
      */
     @Override
     protected boolean condition(int transactionID) {
@@ -50,12 +61,20 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         return isCategoryAcceptable && isTypeAcceptable;
     }
 
+    /**
+     *
+     * @return
+     */
     public int calculateQuantity() {
         QuantitiesAndValues qnv = calculateQuantitiesAndValues();
 
         return qnv.quantities[0];
     }
 
+    /**
+     *
+     * @return
+     */
     public QuantitiesAndValues calculateQuantitiesAndValues() {
         QuantitiesAndValues returnValue = new QuantitiesAndValues();
         returnValue.values = super.calculateValues();
@@ -64,6 +83,10 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         return returnValue;
     }
 
+    /**
+     *
+     * @param transactionID
+     */
     @Override
     protected void incrementRunningTotal(int transactionID) {
         super.incrementRunningTotal(transactionID);
@@ -90,18 +113,34 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         quantities[timeIndex] = quantityRunningTotal;
     }
 
+    /**
+     *
+     * @return
+     */
     public Transaction.Category getCategory() {
         return category;
     }
 
+    /**
+     *
+     * @param category
+     */
     public void setCategory(Transaction.Category category) {
         this.category = category;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getType() {
         return type;
     }
 
+    /**
+     *
+     * @param type
+     */
     public void setType(int type) {
         this.type = type;
     }
@@ -112,8 +151,15 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      * @author Luke
      */
     public static class QuantitiesAndValues {
+
+        /**
+         *
+         */
         public int[] quantities;
 
+        /**
+         *
+         */
         public Money[] values;
     }
 }

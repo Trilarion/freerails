@@ -16,5 +16,11 @@ import freerails.world.top.ReadOnlyWorld;
  * @author Luke
  */
 public interface PreMove extends FreerailsSerializable {
+
+    /**
+     *
+     * @param w
+     * @return
+     */
     Move generateMove(ReadOnlyWorld w);
 }

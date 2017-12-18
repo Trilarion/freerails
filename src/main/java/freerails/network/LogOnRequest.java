@@ -16,6 +16,11 @@ public class LogOnRequest implements FreerailsSerializable {
     private final String username;
     private final String password;
 
+    /**
+     *
+     * @param username
+     * @param password
+     */
     public LogOnRequest(String username, String password) {
         this.username = username;
         this.password = password;
@@ -44,10 +49,18 @@ public class LogOnRequest implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUsername() {
         return username;
     }

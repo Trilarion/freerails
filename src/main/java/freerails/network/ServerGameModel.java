@@ -18,14 +18,37 @@ import java.io.Serializable;
  * @author Luke
  */
 public interface ServerGameModel extends GameModel, Serializable {
+
+    /**
+     *
+     * @param w
+     * @param passwords
+     */
     void setWorld(World w, String[] passwords);
 
+    /**
+     *
+     * @return
+     */
     World getWorld();
 
+    /**
+     *
+     * @return
+     */
     String[] getPasswords();
 
+    /**
+     *
+     * @param moveExecuter
+     */
     void init(MoveReceiver moveExecuter);
 
+    /**
+     *
+     * @param objectOut
+     * @throws IOException
+     */
     void write(ObjectOutputStream objectOut) throws IOException;
 
 }

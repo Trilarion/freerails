@@ -29,6 +29,14 @@ public class ChangeItemInListMove implements ListMove {
 
     private final FreerailsPrincipal principal;
 
+    /**
+     *
+     * @param k
+     * @param index
+     * @param before
+     * @param after
+     * @param p
+     */
     public ChangeItemInListMove(KEY k, int index, FreerailsSerializable before,
                                 FreerailsSerializable after, FreerailsPrincipal p) {
         this.before = before;
@@ -38,6 +46,10 @@ public class ChangeItemInListMove implements ListMove {
         this.principal = p;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean beforeEqualsAfter() {
         return Utils.equal(this.before, this.after);
     }
@@ -84,6 +96,10 @@ public class ChangeItemInListMove implements ListMove {
         return listKey;
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPrincipal getPrincipal() {
         return principal;
     }
@@ -100,6 +116,13 @@ public class ChangeItemInListMove implements ListMove {
         return result;
     }
 
+    /**
+     *
+     * @param to
+     * @param from
+     * @param w
+     * @return
+     */
     protected MoveStatus move(FreerailsSerializable to,
                               FreerailsSerializable from, World w) {
         MoveStatus ms = tryMove(to, from, w);
@@ -124,6 +147,13 @@ public class ChangeItemInListMove implements ListMove {
         return tryMove(after, before, w);
     }
 
+    /**
+     *
+     * @param to
+     * @param from
+     * @param w
+     * @return
+     */
     protected MoveStatus tryMove(FreerailsSerializable to,
                                  FreerailsSerializable from, World w) {
         if (index >= w.size(principal, listKey)) {

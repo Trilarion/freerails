@@ -35,14 +35,31 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
 
     private boolean draggingAndStartedInside = false;
 
+    /**
+     *
+     */
     public MainMapAndOverviewMapMediator() {
     }
 
+    /**
+     *
+     * @param omv
+     * @param v
+     * @param mm
+     * @param rect
+     */
     public MainMapAndOverviewMapMediator(JComponent omv, JViewport v,
                                          JComponent mm, Rectangle rect) {
         setup(omv, v, mm, rect);
     }
 
+    /**
+     *
+     * @param omv
+     * @param v
+     * @param mm
+     * @param rect
+     */
     public void setup(JComponent omv, JViewport v, JComponent mm, Rectangle rect) {
         currentVisRect = rect;
 

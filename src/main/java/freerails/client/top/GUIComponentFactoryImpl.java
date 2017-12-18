@@ -81,6 +81,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private JMenuItem trainOrdersJMenuItem;
     private ReadOnlyWorld world;
 
+    /**
+     *
+     * @param mr
+     * @param ar
+     */
     public GUIComponentFactoryImpl(ModelRootImpl mr, ActionRoot ar) {
         modelRoot = mr;
         actionRoot = ar;
@@ -156,24 +161,45 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         this.trainOrdersJMenuItem.setEnabled(enabled);
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createBuildMenu() {
         return buildMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JLabel createCashJLabel() {
         return cashjLabel;
     }
 
+    /**
+     *
+     * @param title
+     * @return
+     */
     public JFrame createClientJFrame(String title) {
         clientJFrame.setTitle(title);
 
         return clientJFrame;
     }
 
+    /**
+     *
+     * @return
+     */
     public JLabel createDateJLabel() {
         return datejLabel;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createBrokerMenu() {
         JMenu brokerMenu = new JMenu("Broker");
 
@@ -189,6 +215,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         return brokerMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createDisplayMenu() {
         JMenu displayMenu = new JMenu("Display");
         displayMenu.setMnemonic(68);
@@ -279,6 +309,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         return displayMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createGameMenu() {
         sc = actionRoot.getServerControls();
 
@@ -406,6 +440,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         return gameMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createHelpMenu() {
         JMenu helpMenu = new JMenu("Help");
 
@@ -454,14 +492,26 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         return helpMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JScrollPane createMainMap() {
         return mainMapScrollPane1;
     }
 
+    /**
+     *
+     * @return
+     */
     public JPanel createOverviewMap() {
         return overviewMapContainer;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createReportsMenu() {
         JMenu reportsMenu = new JMenu("Reports");
 
@@ -500,18 +550,36 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         return reportsMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTabbedPane createTrainsJTabPane() {
         return trainsJTabPane;
     }
 
+    /**
+     *
+     * @return
+     */
     public BuildTrackController getBuildTrackController() {
         return mainMap.getBuildTrackController();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isSetup() {
         return isSetup;
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal
                 .equals(this.modelRoot.getPrincipal());
@@ -523,10 +591,22 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         }
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
         // do nothing
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal
                 .equals(this.modelRoot.getPrincipal());
@@ -545,6 +625,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
      * </p>
+     * @param vl
+     * @param w
+     * @throws java.io.IOException
      */
     public void setup(RenderersRoot vl, ReadOnlyWorld w) throws IOException {
         /*

@@ -43,10 +43,18 @@ public class WorldImpl implements World {
     List2D<FreerailsSerializable> sharedLists;
     GameTime time = GameTime.BIG_BANG;
 
+    /**
+     *
+     */
     public WorldImpl() {
         this(0, 0);
     }
 
+    /**
+     *
+     * @param mapWidth
+     * @param mapHeight
+     */
     public WorldImpl(int mapWidth, int mapHeight) {
         activityLists = new List3DImpl<>(0, 0);
         bankAccounts = new List2DImpl<>(0);
@@ -62,6 +70,12 @@ public class WorldImpl implements World {
 
     }
 
+    /**
+     *
+     * @param p
+     * @param index
+     * @param element
+     */
     @SuppressWarnings("unchecked")
     public void add(FreerailsPrincipal p, int index, Activity element) {
         int playerIndex = p.getWorldIndex();
@@ -84,6 +98,12 @@ public class WorldImpl implements World {
         return sharedLists.addD2(key.getKeyID(), element);
     }
 
+    /**
+     *
+     * @param p
+     * @param element
+     * @return
+     */
     public int addActiveEntity(FreerailsPrincipal p, Activity element) {
         int playerIndex = p.getWorldIndex();
         int index = activityLists.addD2(playerIndex);
@@ -125,20 +145,43 @@ public class WorldImpl implements World {
         currentBalance.set(playerIndex, newBalance);
     }
 
+    /**
+     *
+     * @param p
+     * @param k
+     * @param index
+     * @return
+     */
     public boolean boundsContain(FreerailsPrincipal p, KEY k, int index) {
         if (!isPlayer(p)) {
             return false;
         } else return index >= 0 && index < this.size(p, k);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean boundsContain(int x, int y) {
         return x >= 0 && x < getMapWidth() && y >= 0 && y < getMapHeight();
     }
 
+    /**
+     *
+     * @param k
+     * @param index
+     * @return
+     */
     public boolean boundsContain(SKEY k, int index) {
         return (index >= 0 && index < this.size(k));
     }
 
+    /**
+     *
+     * @return
+     */
     public GameTime currentTime() {
         return time;
     }
@@ -211,16 +254,32 @@ public class WorldImpl implements World {
         return sharedLists.get(key.getKeyID(), index);
     }
 
+    /**
+     *
+     * @param p
+     * @param index
+     * @return
+     */
     public ActivityIterator getActivities(final FreerailsPrincipal p, int index) {
         final int playerIndex = p.getWorldIndex();
         return new ActivityIteratorImpl(playerIndex, index);
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public Money getCurrentBalance(FreerailsPrincipal p) {
         int playerIndex = p.getWorldIndex();
         return currentBalance.get(playerIndex);
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public int getID(FreerailsPrincipal p) {
         return p.getWorldIndex();
     }
@@ -239,15 +298,29 @@ public class WorldImpl implements World {
         return map.length;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNumberOfPlayers() {
         return players.size();
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public int getNumberOfTransactions(FreerailsPrincipal p) {
         int playerIndex = p.getWorldIndex();
         return bankAccounts.sizeD2(playerIndex);
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public Player getPlayer(int i) {
         return players.get(i);
     }
@@ -256,18 +329,36 @@ public class WorldImpl implements World {
         return map[x][y];
     }
 
+    /**
+     *
+     * @param p
+     * @param i
+     * @return
+     */
     public Transaction getTransaction(FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
         TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
         return tats.getT();
     }
 
+    /**
+     *
+     * @param p
+     * @param i
+     * @return
+     */
     public GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
         TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
         return tats.getTimeStamp();
     }
 
+    /**
+     *
+     * @param p
+     * @param i
+     * @return
+     */
     public Pair<Transaction, GameTime> getTransactionAndTimeStamp(
             FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
@@ -283,6 +374,11 @@ public class WorldImpl implements World {
         return result;
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public boolean isPlayer(FreerailsPrincipal p) {
         return p.getWorldIndex() >= 0 && p.getWorldIndex() < players.size();
     }
@@ -297,6 +393,11 @@ public class WorldImpl implements World {
         return sharedLists.removeLastD2(key.getKeyID());
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public Activity removeLastActiveEntity(FreerailsPrincipal p) {
         int playerIndex = p.getWorldIndex();
         int lastID = activityLists.sizeD2(playerIndex) - 1;
@@ -305,6 +406,12 @@ public class WorldImpl implements World {
         return act;
     }
 
+    /**
+     *
+     * @param p
+     * @param index
+     * @return
+     */
     public Activity removeLastActivity(FreerailsPrincipal p, int index) {
         int playerIndex = p.getWorldIndex();
         if (activityLists.sizeD3(playerIndex, index) < 2)
@@ -361,6 +468,10 @@ public class WorldImpl implements World {
         map[x][y] = element;
     }
 
+    /**
+     *
+     * @param t
+     */
     public void setTime(GameTime t) {
         time = t;
 
@@ -372,6 +483,11 @@ public class WorldImpl implements World {
         this.set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
     }
 
+    /**
+     *
+     * @param mapWidth
+     * @param mapHeight
+     */
     public void setupMap(int mapWidth, int mapHeight) {
         map = new FreerailsSerializable[mapWidth][mapHeight];
 
@@ -396,17 +512,31 @@ public class WorldImpl implements World {
         return sharedLists.sizeD2(key.getKeyID());
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public int getNumberOfActiveEntities(FreerailsPrincipal p) {
         int playerIndex = p.getWorldIndex();
         return activityLists.sizeD2(playerIndex);
     }
 
+    /**
+     *
+     */
     public static class ActivityAndTime implements FreerailsSerializable {
 
         private static final long serialVersionUID = -5149207279086814649L;
 
+        /**
+         *
+         */
         public final Activity act;
 
+        /**
+         *
+         */
         public final double startTime;
 
         ActivityAndTime(Activity act, double time) {
@@ -438,13 +568,28 @@ public class WorldImpl implements World {
 
     }
 
+    /**
+     *
+     */
     public class ActivityIteratorImpl implements ActivityIterator {
 
+        /**
+         *
+         */
         public final int size;
         private final List<ActivityAndTime> currentList;
+
+        /**
+         *
+         */
         public int activityIndex = 0;
         private ActivityAndTime ant;
 
+        /**
+         *
+         * @param playerIndex
+         * @param index
+         */
         public ActivityIteratorImpl(int playerIndex, int index) {
             currentList = activityLists.get(playerIndex, index);
             size = currentList.size();
@@ -457,10 +602,18 @@ public class WorldImpl implements World {
             return dt;
         }
 
+        /**
+         *
+         * @return
+         */
         public Activity getActivity() {
             return ant.act;
         }
 
+        /**
+         *
+         * @return
+         */
         public double getDuration() {
             return ant.act.duration();
         }
@@ -473,15 +626,27 @@ public class WorldImpl implements World {
             return ant.startTime;
         }
 
+        /**
+         *
+         * @param t
+         * @return
+         */
         public FreerailsSerializable getState(double t) {
             double dt = absolute2relativeTime(t);
             return ant.act.getState(dt);
         }
 
+        /**
+         *
+         * @return
+         */
         public boolean hasNext() {
             return (activityIndex + 1) < size;
         }
 
+        /**
+         *
+         */
         public void nextActivity() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
@@ -490,15 +655,26 @@ public class WorldImpl implements World {
             ant = currentList.get(activityIndex);
         }
 
+        /**
+         *
+         */
         public void gotoLastActivity() {
             activityIndex = size - 1;
             ant = currentList.get(activityIndex);
         }
 
+        /**
+         *
+         * @return
+         */
         public boolean hasPrevious() {
             return activityIndex >= 1;
         }
 
+        /**
+         *
+         * @throws NoSuchElementException
+         */
         public void previousActivity() throws NoSuchElementException {
             if (!hasPrevious()) {
                 throw new NoSuchElementException();

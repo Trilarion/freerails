@@ -52,7 +52,10 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * Call this constructor if the station does not exist yet.
      *
+     * @param world
+     * @param X
      * @param trackRuleNo the station type.
+     * @param Y
      */
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y,
                                         int trackRuleNo) {
@@ -73,6 +76,9 @@ public class CalcCargoSupplyRateAtStation {
 
     /**
      * Call this constructor if the station already exists.
+     * @param world
+     * @param X
+     * @param Y
      */
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
         this(world, X, Y, findTrackRule(X, Y, world));
@@ -84,10 +90,18 @@ public class CalcCargoSupplyRateAtStation {
         return tile.getTrackPiece().getTrackTypeID();
     }
 
+    /**
+     *
+     * @return
+     */
     public ConvertedAtStation getConversion() {
         return new ConvertedAtStation(this.converts);
     }
 
+    /**
+     *
+     * @return
+     */
     public Demand4Cargo getDemand() {
         boolean[] demandboolean = new boolean[w.size(SKEY.CARGO_TYPES)];
 
@@ -158,6 +172,10 @@ public class CalcCargoSupplyRateAtStation {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Vector<CargoElementObject> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
@@ -209,6 +227,7 @@ public class CalcCargoSupplyRateAtStation {
      * Process each existing station, updating what is supplied to it.
      *
      * @param station A StationModel object to be processed
+     * @return 
      */
     public StationModel calculations(StationModel station) {
         int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];

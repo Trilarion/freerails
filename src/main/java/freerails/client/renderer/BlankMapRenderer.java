@@ -10,14 +10,26 @@ import java.awt.*;
 public class BlankMapRenderer implements MapRenderer {
     private final float scale;
 
+    /**
+     *
+     * @param s
+     */
     public BlankMapRenderer(float s) {
         scale = s;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getScale() {
         return scale;
     }
 
+    /**
+     *
+     * @return
+     */
     public Dimension getMapSizeInPixels() {
         int height = (int) (400 * scale);
         int width = (int) (400 * scale);
@@ -25,13 +37,29 @@ public class BlankMapRenderer implements MapRenderer {
         return new Dimension(height, width);
     }
 
+    /**
+     *
+     * @param g
+     * @param tileX
+     * @param tileY
+     */
     public void paintTile(Graphics g, int tileX, int tileY) {
         paintRect(g, null);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void refreshTile(int x, int y) {
     }
 
+    /**
+     *
+     * @param g
+     * @param visibleRect
+     */
     public void paintRect(Graphics g, Rectangle visibleRect) {
         g.setColor(Color.darkGray);
         g.fillRect(0, 0, (int) (scale * 400), (int) (scale * 400));
@@ -44,6 +72,9 @@ public class BlankMapRenderer implements MapRenderer {
         g.fillRect(x, y, height, width);
     }
 
+    /**
+     *
+     */
     public void refreshAll() {
         // do nothing
     }

@@ -57,6 +57,7 @@ public class BuildTrackController implements GameModel {
      * BuildTrackRenderer
      *
      * @param readOnlyWorld ReadOnlyWorld
+     * @param modelRoot
      */
     public BuildTrackController(ReadOnlyWorld readOnlyWorld, ModelRoot modelRoot) {
         worldDiffs = new WorldDiffs(readOnlyWorld);
@@ -118,6 +119,7 @@ public class BuildTrackController implements GameModel {
 
     /**
      * Returns true if all the track pieces can be successfully built.
+     * @return 
      */
     public boolean isBuildTrackSuccessful() {
         return isBuildTrackSuccessful;
@@ -269,6 +271,8 @@ public class BuildTrackController implements GameModel {
     /**
      * Sets the proposed track: from the current cursor position to the
      * specified point.
+     * @param to
+     * @param trackBuilder
      */
     public void setProposedTrack(ImPoint to, TrackMoveProducer trackBuilder) {
 
@@ -351,10 +355,16 @@ public class BuildTrackController implements GameModel {
         modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);
     }
 
+    /**
+     *
+     */
     public void show() {
         this.setVisible(true);
     }
 
+    /**
+     *
+     */
     public void update() {
         // update search for path if necessary.
         if (searchStatus() == IncrementalPathFinder.SEARCH_PAUSED) {
@@ -362,6 +372,9 @@ public class BuildTrackController implements GameModel {
         }
     }
 
+    /**
+     *
+     */
     public void updateUntilComplete() {
         while (searchStatus() != IncrementalPathFinder.PATH_FOUND) {
             updateSearch();
@@ -483,6 +496,8 @@ public class BuildTrackController implements GameModel {
 
     /**
      * Saves track into real world
+     * @param trackBuilder
+     * @return 
      */
     public ImPoint updateWorld(TrackMoveProducer trackBuilder) {
         ImPoint actPoint = getCursorPosition();

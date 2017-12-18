@@ -54,19 +54,35 @@ public class TrainListCellRenderer extends JPanel implements View,
     private boolean centerTrain = false;
     private int trainWidth = 0;
 
+    /**
+     *
+     */
     public TrainListCellRenderer() {
         this.setOpaque(false);
     }
 
+    /**
+     *
+     * @param mr
+     * @param vl
+     */
     public TrainListCellRenderer(ModelRoot mr, RenderersRoot vl) {
         setup(mr, vl, null);
         this.setBackground(backgoundColor);
     }
 
+    /**
+     *
+     * @param b
+     */
     public void setCenterTrain(boolean b) {
         this.centerTrain = b;
     }
 
+    /**
+     *
+     * @param newTrainNumber
+     */
     public void display(int newTrainNumber) {
         showingOrder = false;
         this.trainNumber = newTrainNumber;
@@ -103,6 +119,11 @@ public class TrainListCellRenderer extends JPanel implements View,
         }
     }
 
+    /**
+     *
+     * @param newTrainNumber
+     * @param newScheduleOrderID
+     */
     public void display(int newTrainNumber, int newScheduleOrderID) {
         showingOrder = true;
         this.trainNumber = newTrainNumber;
@@ -137,6 +158,12 @@ public class TrainListCellRenderer extends JPanel implements View,
         this.setPreferredSize(new Dimension(width, height));
     }
 
+    /**
+     *
+     * @param mr
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
         this.w = mr.getWorld();
         this.vl = vl;
@@ -168,6 +195,10 @@ public class TrainListCellRenderer extends JPanel implements View,
         return height;
     }
 
+    /**
+     *
+     * @param i
+     */
     public void setHeight(int i) {
         height = i;
     }
@@ -188,6 +219,12 @@ public class TrainListCellRenderer extends JPanel implements View,
         }
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param p
+     */
     public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         if (showingOrder) {
             if (KEY.TRAIN_SCHEDULES == key && this.scheduleID == index) {
@@ -200,9 +237,21 @@ public class TrainListCellRenderer extends JPanel implements View,
         }
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param p
+     */
     public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param p
+     */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
     }
 }

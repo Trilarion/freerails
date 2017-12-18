@@ -25,6 +25,9 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
 
     private ModelRoot modelRoot;
 
+    /**
+     *
+     */
     public IncomeStatementHtmlJPanel() {
         super();
 
@@ -33,6 +36,12 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
         template = loadText(url);
     }
 
+    /**
+     *
+     * @param modelRoot
+     * @param vl
+     * @param closeAction
+     */
     @Override
     public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
         super.setup(modelRoot, vl, closeAction);

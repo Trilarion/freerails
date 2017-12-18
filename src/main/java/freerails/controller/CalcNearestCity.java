@@ -19,12 +19,22 @@ public class CalcNearestCity {
 
     private final ReadOnlyWorld w;
 
+    /**
+     *
+     * @param world
+     * @param x
+     * @param y
+     */
     public CalcNearestCity(ReadOnlyWorld world, int x, int y) {
         this.w = world;
         this.x = x;
         this.y = y;
     }
 
+    /**
+     *
+     * @return
+     */
     public String findNearestCity() {
         double cityDistance;
         String cityName = null;

@@ -26,18 +26,33 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     private final ReadOnlyWorld world;
     private ImPoint startPoint;
 
+    /**
+     *
+     * @param world
+     */
     public PathOnTrackFinder(ReadOnlyWorld world) {
         this.world = world;
     }
 
+    /**
+     *
+     */
     public void abandonSearch() {
         pathFinder.abandonSearch();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStatus() {
         return pathFinder.getStatus();
     }
 
+    /**
+     *
+     * @return
+     */
     public Step[] pathAsVectors() {
         int[] pathAsInts = pathFinder.retrievePath().toArray();
         Step[] vectors = new Step[pathAsInts.length];
@@ -52,14 +67,29 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         return vectors;
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] pathAsInts() {
         return pathFinder.retrievePath().toArray();
     }
 
+    /**
+     *
+     * @param maxDuration
+     * @throws PathNotFoundException
+     */
     public void search(long maxDuration) throws PathNotFoundException {
         pathFinder.search(maxDuration);
     }
 
+    /**
+     *
+     * @param from
+     * @param target
+     * @throws PathNotFoundException
+     */
     public void setupSearch(ImPoint from, ImPoint target)
             throws PathNotFoundException {
         startPoint = from;

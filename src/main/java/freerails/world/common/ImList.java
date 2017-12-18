@@ -13,6 +13,7 @@ import java.util.List;
  * An immutable List
  *
  * @author Luke
+ * @param <E>
  */
 @Immutable
 public final class ImList<E extends FreerailsSerializable> implements
@@ -22,6 +23,10 @@ public final class ImList<E extends FreerailsSerializable> implements
 
     private final E[] elementData;
 
+    /**
+     *
+     * @param items
+     */
     @SuppressWarnings("unchecked")
     public ImList(E... items) {
         elementData = items.clone();
@@ -31,6 +36,10 @@ public final class ImList<E extends FreerailsSerializable> implements
 //        }
     }
 
+    /**
+     *
+     * @param list
+     */
     @SuppressWarnings("unchecked")
     public ImList(List<E> list) {
         elementData = list.toArray((E[]) new FreerailsSerializable[list.size()]);
@@ -57,6 +66,10 @@ public final class ImList<E extends FreerailsSerializable> implements
         return elementData.length;
     }
 
+    /**
+     *
+     * @throws NullPointerException
+     */
     public void checkForNulls() throws NullPointerException {
         for (E anElementData : elementData) {
             if (null == anElementData)
@@ -64,10 +77,19 @@ public final class ImList<E extends FreerailsSerializable> implements
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return elementData.length;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public E get(int i) {
         return elementData[i];
     }

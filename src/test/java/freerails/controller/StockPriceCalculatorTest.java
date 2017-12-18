@@ -16,12 +16,20 @@ import freerails.world.top.ITEM;
 import freerails.world.top.World;
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class StockPriceCalculatorTest extends TestCase {
 
     World w;
 
     StockPriceCalculator calc;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -33,6 +41,11 @@ public class StockPriceCalculatorTest extends TestCase {
      * Test method for
      * 'freerails.controller.StockPriceCalculator.isFirstYear(int)'
      */
+
+    /**
+     *
+     */
+
     public void testIsFirstYear() {
         assertTrue(calc.isFirstYear(0));
         GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
@@ -50,6 +63,11 @@ public class StockPriceCalculatorTest extends TestCase {
      * Test method for
      * 'freerails.controller.StockPriceCalculator.netWorth(int)'
      */
+
+    /**
+     *
+     */
+
     public void testNetWorth() {
         long initialNetworth = 500000;
         assertEquals(initialNetworth, calc.netWorth(0));
@@ -95,6 +113,11 @@ public class StockPriceCalculatorTest extends TestCase {
      * Test method for
      * 'freerails.controller.StockPriceCalculator.profitsLastYear(int)'
      */
+
+    /**
+     *
+     */
+
     public void testProfitsLastYear() {
         assertEquals(0, calc.profitsLastYear(0));
         int currentTicks = w.currentTime().getTicks();
@@ -119,6 +142,9 @@ public class StockPriceCalculatorTest extends TestCase {
         w.addTransaction(princ, t);
     }
 
+    /**
+     *
+     */
     public void testCalculate() {
         Money stockPrice = calc.calculate()[0].currentPrice;
         assertEquals(new Money(10), stockPrice);

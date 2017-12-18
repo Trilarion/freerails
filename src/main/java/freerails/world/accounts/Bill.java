@@ -18,11 +18,20 @@ public class Bill implements Transaction {
 
     private final Category category;
 
+    /**
+     *
+     * @param amount
+     * @param category
+     */
     public Bill(Money amount, Category category) {
         this.amount = new Money(-amount.getAmount());
         this.category = category;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money deltaAssets() {
         return amount.changeSign();
     }
@@ -41,6 +50,10 @@ public class Bill implements Transaction {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Category getCategory() {
         return category;
     }

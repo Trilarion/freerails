@@ -31,5 +31,9 @@ public interface ListMove extends Move {
      */
     int getIndex();
 
+    /**
+     *
+     * @return
+     */
     FreerailsPrincipal getPrincipal();
 }

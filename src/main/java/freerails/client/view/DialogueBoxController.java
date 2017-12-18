@@ -128,6 +128,11 @@ public class DialogueBoxController implements WorldListListener {
         }
     };
 
+    /**
+     *
+     * @param frame
+     * @param mr
+     */
     public DialogueBoxController(JFrame frame, ModelRootImpl mr) {
         this.frame = frame;
         modelRoot = mr;
@@ -185,6 +190,8 @@ public class DialogueBoxController implements WorldListListener {
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
      * </p>
+     * @param mr
+     * @param vl
      */
     public void setup(ModelRootImpl mr, RenderersRoot vl) {
         this.modelRoot = mr;
@@ -237,12 +244,18 @@ public class DialogueBoxController implements WorldListListener {
                 .setCancelButtonActionListener(this.closeCurrentDialogue);
     }
 
+    /**
+     *
+     */
     public void showSaveGame() {
         SaveGameJPanel saveGameJPanel = new SaveGameJPanel();
         saveGameJPanel.setup(modelRoot, vl, this.closeCurrentDialogue);
         showContent(saveGameJPanel);
     }
 
+    /**
+     *
+     */
     public void showSelectSavedGame2Load() {
         Message2Server refreshGames = new RefreshListOfGamesMessage2Server(2);
         modelRoot.sendCommand(refreshGames);
@@ -251,6 +264,9 @@ public class DialogueBoxController implements WorldListListener {
         showContent(loadGameJPane);
     }
 
+    /**
+     *
+     */
     public void showTrainOrders() {
         WorldIterator wi = new NonNullElements(KEY.TRAINS, world, modelRoot
                 .getPrincipal());
@@ -264,6 +280,9 @@ public class DialogueBoxController implements WorldListListener {
         }
     }
 
+    /**
+     *
+     */
     public void showSelectEngine() {
         WorldIterator wi = new NonNullElements(KEY.STATIONS, world, modelRoot
                 .getPrincipal());
@@ -276,28 +295,43 @@ public class DialogueBoxController implements WorldListListener {
         }
     }
 
+    /**
+     *
+     */
     public void showGameControls() {
         showContent(this.showControls);
     }
 
+    /**
+     *
+     */
     public void showIncomeStatement() {
         IncomeStatementHtmlJPanel bs = new IncomeStatementHtmlJPanel();
         bs.setup(this.modelRoot, vl, this.closeCurrentDialogue);
         this.showContent(bs);
     }
 
+    /**
+     *
+     */
     public void showBalanceSheet() {
         BalanceSheetHtmlJPanel bs = new BalanceSheetHtmlJPanel();
         bs.setup(this.modelRoot, vl, this.closeCurrentDialogue);
         this.showContent(bs);
     }
 
+    /**
+     *
+     */
     public void showReportBug() {
         CopyableTextJPanel ct = new CopyableTextJPanel();
         ct.setText(ReportBugTextGenerator.genText());
         showContent(ct);
     }
 
+    /**
+     *
+     */
     public void showBrokerScreen() {
         // this is Creating a BrokerScreen Internal Frame in the Main Frame
         BrokerScreenHtmlJFrame brokerScreenHtmlJFrame = new BrokerScreenHtmlJFrame();
@@ -309,41 +343,70 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     // Shows the Exit Dialog -- @author SonnyZ
+
+    /**
+     *
+     */
     public void showExitDialog() {
         ConfirmExitJPanel bs = new ConfirmExitJPanel();
         bs.setup(this.modelRoot, vl, this.closeCurrentDialogue);
         this.showContent(bs);
     }
 
+    /**
+     *
+     */
     public void showAbout() {
         showContent(this.about);
     }
 
+    /**
+     *
+     */
     public void showHow2Play() {
         showContent(this.how2play);
     }
 
+    /**
+     *
+     */
     public void showJavaProperties() {
         showContent(javaProperties);
     }
 
+    /**
+     *
+     */
     public void showSelectWagons() {
         selectWagons.resetSelectedWagons();
         selectWagons.setEngineType(selectEngine.getEngineType());
         showContent(selectWagons);
     }
 
+    /**
+     *
+     * @param terrainType
+     */
     public void showTerrainInfo(int terrainType) {
         this.terrainInfo.setTerrainType(terrainType);
         showContent(terrainInfo);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void showTerrainInfo(int x, int y) {
         FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
         int terrainType = tile.getTerrainTypeID();
         showTerrainInfo(terrainType);
     }
 
+    /**
+     *
+     * @param stationNumber
+     */
     public void showStationInfo(int stationNumber) {
         try {
             stationInfo.setStation(stationNumber);
@@ -353,6 +416,10 @@ public class DialogueBoxController implements WorldListListener {
         }
     }
 
+    /**
+     *
+     * @param trainId
+     */
     public void showTrainOrders(int trainId) {
         closeContent();
 
@@ -362,6 +429,9 @@ public class DialogueBoxController implements WorldListListener {
         }
     }
 
+    /**
+     *
+     */
     public void showTrainList() {
         if (world.size(modelRoot.getPrincipal(), KEY.TRAINS) > 0) {
             final TrainListJPanel trainList = new TrainListJPanel();
@@ -380,6 +450,9 @@ public class DialogueBoxController implements WorldListListener {
         }
     }
 
+    /**
+     *
+     */
     public void showNetworthGraph() {
 
         final NetWorthGraphJPanel worthGraph = new NetWorthGraphJPanel();
@@ -388,6 +461,9 @@ public class DialogueBoxController implements WorldListListener {
 
     }
 
+    /**
+     *
+     */
     public void showLeaderBoard() {
 
         LeaderBoardJPanel leaderBoardJPanel = new LeaderBoardJPanel();
@@ -396,6 +472,10 @@ public class DialogueBoxController implements WorldListListener {
 
     }
 
+    /**
+     *
+     * @param component
+     */
     public void showContent(JComponent component) {
         closeContent();
         JComponent contentPanel;
@@ -460,6 +540,9 @@ public class DialogueBoxController implements WorldListListener {
         dialogueJInternalFrame.setVisible(true);
     }
 
+    /**
+     *
+     */
     public void closeContent() {
         if (null != dialogueJInternalFrame) {
             dialogueJInternalFrame.setVisible(false);
@@ -477,10 +560,19 @@ public class DialogueBoxController implements WorldListListener {
         }
     }
 
+    /**
+     *
+     * @param defaultFocusOwner
+     */
     public void setDefaultFocusOwner(Component defaultFocusOwner) {
         this.defaultFocusOwner = defaultFocusOwner;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void showStationOrTerrainInfo(int x, int y) {
 //        FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
 //
@@ -513,10 +605,22 @@ public class DialogueBoxController implements WorldListListener {
 
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
         // do nothing
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
@@ -532,6 +636,12 @@ public class DialogueBoxController implements WorldListListener {
         }
     }
 
+    /**
+     *
+     * @param key
+     * @param index
+     * @param principal
+     */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
         // do nothing
     }

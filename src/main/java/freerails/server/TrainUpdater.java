@@ -33,6 +33,10 @@ public class TrainUpdater implements ServerAutomaton {
     private static final long serialVersionUID = 3258410646839243577L;
     private transient MoveReceiver moveReceiver;
 
+    /**
+     *
+     * @param mr
+     */
     public TrainUpdater(MoveReceiver mr) {
         moveReceiver = mr;
 
@@ -43,6 +47,10 @@ public class TrainUpdater implements ServerAutomaton {
     }
 
     /**
+     * @param train
+     * @param principal
+     * @param currentSchedule
+     * @param trainID
      * @return a move that initialises the trains schedule.
      */
     public static Move initTarget(TrainModel train, int trainID,
@@ -80,6 +88,11 @@ public class TrainUpdater implements ServerAutomaton {
                 .createInSameDirectionAsPath(fromPathWalker);
     }
 
+    /**
+     *
+     * @param pos
+     * @return
+     */
     public static ImPoint[] trainPos2Tiles(TrainPositionOnMap pos) {
         ImPoint[] returnValue = new ImPoint[pos.getLength()];
         final int TILE_WIDTH = Constants.TILE_SIZE;
@@ -91,6 +104,14 @@ public class TrainUpdater implements ServerAutomaton {
         return returnValue;
     }
 
+    /**
+     *
+     * @param engineTypeId
+     * @param wagons
+     * @param p
+     * @param principal
+     * @param world
+     */
     public void buildTrain(int engineTypeId, ImInts wagons, ImPoint p,
                            FreerailsPrincipal principal, ReadOnlyWorld world) {
 

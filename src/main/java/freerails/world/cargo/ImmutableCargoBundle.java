@@ -39,6 +39,10 @@ import java.util.SortedMap;
  * @author Luke
  */
 public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable {
+
+    /**
+     *
+     */
     public static final ImmutableCargoBundle EMPTY_BUNDLE = new ImmutableCargoBundle();
 
     private static final long serialVersionUID = 3257566187666814009L;
@@ -50,6 +54,10 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
         amounts = new ImInts();
     }
 
+    /**
+     *
+     * @param sortedMap
+     */
     public ImmutableCargoBundle(SortedMap<CargoBatch, Integer> sortedMap) {
         int size = sortedMap.size();
         int[] amountsArray = new int[size];
@@ -65,6 +73,12 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
         amounts = new ImInts(amountsArray);
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean equals(CargoBundle a, CargoBundle b) {
         Iterator<CargoBatch> it = a.cargoBatchIterator();
         if (a.size() != b.size())
@@ -101,6 +115,11 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
         };
     }
 
+    /**
+     *
+     * @param cb
+     * @return
+     */
     public boolean contains(CargoBatch cb) {
         for (int i = 0; i < batches.size(); i++) {
             if (batches.get(i).equals(cb)) {
@@ -121,6 +140,11 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
 
     }
 
+    /**
+     *
+     * @param cb
+     * @return
+     */
     public int getAmount(CargoBatch cb) {
         int amount = 0;
 
@@ -134,6 +158,12 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     }
 
     // 666 use dynamic cache (growing arraylist)->breaks save games
+
+    /**
+     *
+     * @param cargoType
+     * @return
+     */
     public int getAmount(int cargoType) {
         int amount = 0;
         for (int i = 0; i < batches.size(); i++) {
@@ -150,6 +180,10 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
         return amounts.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return batches.size();
     }

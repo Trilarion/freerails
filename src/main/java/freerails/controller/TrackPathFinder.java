@@ -35,11 +35,19 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private final FreerailsPrincipal principal;
     private ImPoint startPoint;
 
+    /**
+     *
+     * @param world
+     * @param principal
+     */
     public TrackPathFinder(ReadOnlyWorld world, FreerailsPrincipal principal) {
         this.world = world;
         this.principal = principal;
     }
 
+    /**
+     *
+     */
     public void abandonSearch() {
         pathFinder.abandonSearch();
     }
@@ -114,6 +122,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
         return targetInts;
     }
 
+    /**
+     *
+     * @param start
+     * @param targetPoint
+     * @param bts
+     * @return
+     * @throws PathNotFoundException
+     */
     public List generatePath(ImPoint start, ImPoint targetPoint,
                              BuildTrackStrategy bts) throws PathNotFoundException {
         setupSearch(start, targetPoint, bts);
@@ -124,16 +140,28 @@ public class TrackPathFinder implements IncrementalPathFinder {
         return convertPath2Points(path);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStatus() {
         return pathFinder.getStatus();
     }
 
+    /**
+     *
+     * @return
+     */
     public List<ImPoint> pathAsPoints() {
         IntArray path = pathFinder.retrievePath();
 
         return convertPath2Points(path);
     }
 
+    /**
+     *
+     * @return
+     */
     public Step[] pathAsVectors() {
         IntArray path = pathFinder.retrievePath();
         int size = path.size();
@@ -154,10 +182,22 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
     }
 
+    /**
+     *
+     * @param maxDuration
+     * @throws PathNotFoundException
+     */
     public void search(long maxDuration) throws PathNotFoundException {
         pathFinder.search(maxDuration);
     }
 
+    /**
+     *
+     * @param startPoint
+     * @param targetPoint
+     * @param bts
+     * @throws PathNotFoundException
+     */
     public void setupSearch(ImPoint startPoint, ImPoint targetPoint,
                             BuildTrackStrategy bts) throws PathNotFoundException {
         logger.debug("Find track path from " + startPoint + " to "

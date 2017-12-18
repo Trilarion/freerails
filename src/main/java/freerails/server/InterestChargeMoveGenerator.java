@@ -19,6 +19,10 @@ import freerails.world.top.World;
 public class InterestChargeMoveGenerator {
     private final MoveReceiver moveReceiver;
 
+    /**
+     *
+     * @param mr
+     */
     public InterestChargeMoveGenerator(MoveReceiver mr) {
         this.moveReceiver = mr;
     }
@@ -45,6 +49,10 @@ public class InterestChargeMoveGenerator {
         return new AddTransactionMove(principal, t);
     }
 
+    /**
+     *
+     * @param w
+     */
     public void update(World w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();

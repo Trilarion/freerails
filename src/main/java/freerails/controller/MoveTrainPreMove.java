@@ -47,6 +47,12 @@ public class MoveTrainPreMove implements PreMove {
     private final int trainID;
     private final OccupiedTracks occupiedTracks;
 
+    /**
+     *
+     * @param id
+     * @param p
+     * @param occupiedTracks
+     */
     public MoveTrainPreMove(int id, FreerailsPrincipal p,
                             OccupiedTracks occupiedTracks) {
         trainID = id;
@@ -57,6 +63,10 @@ public class MoveTrainPreMove implements PreMove {
     /**
      * Uses static method to make testing easier.
      *
+     * @param world
+     * @param currentPosition
+     * @param target
+     * @return 
      * @throws NoTrackException if no track
      */
     public static Step findNextStep(ReadOnlyWorld world,
@@ -106,6 +116,9 @@ public class MoveTrainPreMove implements PreMove {
 
     }
 
+    /**
+     *
+     */
     public static void clearCache() {
         pathCache.clear();
         cacheCleared++;
@@ -119,6 +132,8 @@ public class MoveTrainPreMove implements PreMove {
 
     /**
      * Returns true if an updated is due.
+     * @param w
+     * @return 
      */
     public boolean isUpdateDue(ReadOnlyWorld w) {
         GameTime currentTime = w.currentTime();
@@ -179,6 +194,12 @@ public class MoveTrainPreMove implements PreMove {
     }
 
     // 666 optimize
+
+    /**
+     *
+     * @param w
+     * @return
+     */
     public Move generateMove(ReadOnlyWorld w) {
 
         // Check that we can generate a move.
@@ -259,6 +280,11 @@ public class MoveTrainPreMove implements PreMove {
         }
     }
 
+    /**
+     *
+     * @param w
+     * @return
+     */
     public SpeedTimeAndStatus.TrainActivity getActivity(ReadOnlyWorld w) {
         TrainAccessor ta = new TrainAccessor(w, principal, trainID);
         TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
@@ -361,6 +387,11 @@ public class MoveTrainPreMove implements PreMove {
         return findNextStep(w, currentPosition, targetPoint);
     }
 
+    /**
+     *
+     * @param w
+     * @return
+     */
     public Move stopTrain(ReadOnlyWorld w) {
         TrainMotion motion = lastMotion(w);
         SpeedAgainstTime stopped = ConstAcc.STOPPED;

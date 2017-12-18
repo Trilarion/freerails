@@ -29,12 +29,25 @@ public class ITEM implements FreerailsSerializable {
     private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
 
     // START OF KEYS
+
+    /**
+     *
+     */
     public static final ITEM CALENDAR = new ITEM();
 
+    /**
+     *
+     */
     public static final ITEM GAME_RULES = new ITEM();
 
+    /**
+     *
+     */
     public static final ITEM GAME_SPEED = new ITEM();
 
+    /**
+     *
+     */
     public static final ITEM ECONOMIC_CLIMATE = new ITEM();
 
     // END OF KEYS

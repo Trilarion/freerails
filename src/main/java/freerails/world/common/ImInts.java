@@ -20,10 +20,19 @@ public class ImInts implements FreerailsSerializable {
 
     private final int ints[];
 
+    /**
+     *
+     * @param i
+     */
     public ImInts(int... i) {
         this.ints = i.clone();
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public static ImInts fromBoolean(boolean... i) {
         int[] ii = new int[i.length];
         for (int j = 0; j < i.length; j++) {
@@ -32,6 +41,10 @@ public class ImInts implements FreerailsSerializable {
         return new ImInts(ii);
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return ints.length;
     }
@@ -53,16 +66,30 @@ public class ImInts implements FreerailsSerializable {
         return ints.length;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public int get(int i) {
         return ints[i];
     }
 
+    /**
+     *
+     * @return
+     */
     public ImInts removeLast() {
         int[] newInts = new int[ints.length - 1];
         System.arraycopy(ints, 0, newInts, 0, newInts.length);
         return new ImInts(newInts);
     }
 
+    /**
+     *
+     * @param extra
+     * @return
+     */
     public ImInts append(int... extra) {
         int[] newInts = new int[ints.length + extra.length];
         System.arraycopy(ints, 0, newInts, 0, ints.length);
@@ -85,6 +112,7 @@ public class ImInts implements FreerailsSerializable {
 
     /**
      * Returns the sum of the ints stored in the list.
+     * @return 
      */
     public int sum() {
         int sum = 0;

@@ -10,10 +10,18 @@ import junit.framework.TestCase;
  * @author Luke Lindsay 26-Oct-2002
  */
 public class TrainPositionOnMapTest extends TestCase {
+
+    /**
+     *
+     * @param arg0
+     */
     public TrainPositionOnMapTest(String arg0) {
         super(arg0);
     }
 
+    /**
+     *
+     */
     public void testGetLength() {
         TrainPositionOnMap a;
         a = TrainPositionOnMap.createInstance(new int[]{10, 20, 30, 40},
@@ -21,6 +29,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertEquals(4, a.getLength());
     }
 
+    /**
+     *
+     */
     public void testGetPoint() {
         TrainPositionOnMap a;
         a = TrainPositionOnMap.createInstance(new int[]{10, 20}, new int[]{
@@ -33,6 +44,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertEquals(a.getY(1), 22);
     }
 
+    /**
+     *
+     */
     public void testPath() {
         TrainPositionOnMap a;
         a = TrainPositionOnMap.createInstance(new int[]{10, 20, 30, 40},
@@ -52,6 +66,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(!path.hasNext());
     }
 
+    /**
+     *
+     */
     public void testReversePath() {
         TrainPositionOnMap a;
         a = TrainPositionOnMap.createInstance(new int[]{40, 30, 20, 10},
@@ -71,7 +88,7 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(!path.hasNext());
     }
 
-    /*
+    /**
      * Test for TrainPosition createInstance(int[], int[])
      */
     public void testCreateInstanceIArrayIArray() {
@@ -177,6 +194,11 @@ public class TrainPositionOnMapTest extends TestCase {
      * assertTrue(!TrainPosition.canBeRemoved(b, b));
      * assertTrue(!TrainPosition.canBeRemoved(c, c)); }
      */
+
+    /**
+     *
+     */
+
     public void testAddToHead() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
@@ -207,6 +229,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertEquals(i, j);
     }
 
+    /**
+     *
+     */
     public void testCanAddToHead() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
@@ -228,6 +253,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(!a.canAddToHead(c));
     }
 
+    /**
+     *
+     */
     public void testAddToTail() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
@@ -258,6 +286,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertEquals(i, j);
     }
 
+    /**
+     *
+     */
     public void testCanAddToTail() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
@@ -279,6 +310,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(!a.canAddToTail(c));
     }
 
+    /**
+     *
+     */
     public void testCanRemoveFromHead() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
@@ -300,6 +334,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(!a.canRemoveFromHead(c));
     }
 
+    /**
+     *
+     */
     public void testRemoveFromTail() {
         TrainPositionOnMap a;
         TrainPositionOnMap c;
@@ -318,6 +355,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertEquals(e, f);
     }
 
+    /**
+     *
+     */
     public void testCanRemoveFromTail() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
@@ -339,6 +379,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(a.canRemoveFromTail(c));
     }
 
+    /**
+     *
+     */
     public void testEquals() {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
@@ -358,7 +401,7 @@ public class TrainPositionOnMapTest extends TestCase {
         assertTrue(!a.equals(c));
     }
 
-    /*
+    /**
      * Test for TrainPosition createInstance(FreerailsPathIterator)
      */
     public void testCreateInstanceFreerailsPathIterator() {
@@ -382,6 +425,9 @@ public class TrainPositionOnMapTest extends TestCase {
         assertEquals(a.getY(3), 11);
     }
 
+    /**
+     *
+     */
     public void testCreateInOppositeDirectionToPath() {
         FreerailsPathIterator path = new SimplePathIteratorImpl(new int[]{40,
                 30, 20, 10}, new int[]{44, 33, 22, 11});

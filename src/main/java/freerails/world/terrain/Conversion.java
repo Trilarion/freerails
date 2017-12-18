@@ -18,11 +18,20 @@ public class Conversion implements FreerailsSerializable {
 
     private final int output;
 
+    /**
+     *
+     * @param in
+     * @param out
+     */
     public Conversion(int in, int out) {
         input = in;
         output = out;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getInput() {
         return input;
     }
@@ -49,6 +58,10 @@ public class Conversion implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getOutput() {
         return output;
     }

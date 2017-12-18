@@ -10,5 +10,10 @@ import java.awt.*;
  * @author Luke
  */
 public interface MapUpdateMove extends Move {
+
+    /**
+     *
+     * @return
+     */
     Rectangle getUpdatedTiles();
 }

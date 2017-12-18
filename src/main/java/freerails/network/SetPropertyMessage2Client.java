@@ -24,6 +24,12 @@ public class SetPropertyMessage2Client implements Message2Client {
 
     private final FreerailsSerializable value;
 
+    /**
+     *
+     * @param id
+     * @param key
+     * @param value
+     */
     public SetPropertyMessage2Client(int id, ClientProperty key,
                                      FreerailsSerializable value) {
         if (null == key || null == value)

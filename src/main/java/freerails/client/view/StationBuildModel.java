@@ -58,6 +58,12 @@ public class StationBuildModel {
      */
     private boolean positionFollowsMouse = true;
 
+    /**
+     *
+     * @param sb
+     * @param rr
+     * @param mr
+     */
     public StationBuildModel(StationBuilder sb, RenderersRoot rr, ModelRoot mr) {
         stationBuilder = sb;
         modelRoot = mr;
@@ -85,15 +91,28 @@ public class StationBuildModel {
         }
     }
 
+    /**
+     *
+     * @param ruleID
+     * @return
+     */
     public Action getStationChooseAction(Integer ruleID) {
         return id2Action.get(ruleID);
     }
 
+    /**
+     *
+     * @return
+     */
     public Action[] getStationChooseActions() {
         return stationChooseActions.toArray(new Action[stationChooseActions
                 .size()]);
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean canBuildStationHere() {
         Point p = (Point) stationBuildAction
                 .getValue(StationBuildAction.STATION_POSITION_KEY);
@@ -101,18 +120,34 @@ public class StationBuildModel {
         return stationBuilder.tryBuildingStation(new ImPoint(p.x, p.y)).ok;
     }
 
+    /**
+     *
+     * @return
+     */
     public Action getStationCancelAction() {
         return stationCancelAction;
     }
 
+    /**
+     *
+     * @return
+     */
     public StationBuildAction getStationBuildAction() {
         return stationBuildAction;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isPositionFollowsMouse() {
         return positionFollowsMouse;
     }
 
+    /**
+     *
+     * @param positionFollowsMouse
+     */
     public void setPositionFollowsMouse(boolean positionFollowsMouse) {
         this.positionFollowsMouse = positionFollowsMouse;
     }

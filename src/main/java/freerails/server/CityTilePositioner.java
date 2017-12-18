@@ -25,6 +25,10 @@ public class CityTilePositioner {
 
     final World w;
 
+    /**
+     *
+     * @param w
+     */
     public CityTilePositioner(World w) {
         this.w = w;
 

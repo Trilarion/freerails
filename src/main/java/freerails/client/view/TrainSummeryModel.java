@@ -29,6 +29,10 @@ import freerails.world.train.TrainOrdersModel;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class TrainSummeryModel {
 
     private static final long MINIMUM_WAIT_TIME = 250;
@@ -41,12 +45,20 @@ public class TrainSummeryModel {
     private long lastUpdate;
     private long lastStationUpdate;
 
+    /**
+     *
+     */
     public TrainSummeryModel() {
         lastTrainIncome = new HashMap<>(64);
         lastUpdate = lastStationUpdate = System.currentTimeMillis();
         lastStations = new HashMap<>(64);
     }
 
+    /**
+     *
+     * @param world
+     * @param principal
+     */
     public void setWorld(ReadOnlyWorld world, FreerailsPrincipal principal) {
         if (this.world != world) {
             this.world = world;
@@ -56,6 +68,11 @@ public class TrainSummeryModel {
         }
     }
 
+    /**
+     *
+     * @param trainNum
+     * @return
+     */
     public Money findTrainIncome(int trainNum) {
         int numberOfTransactions = world.getNumberOfTransactions(principal);
         long currentTime = System.currentTimeMillis();
@@ -82,6 +99,11 @@ public class TrainSummeryModel {
         return m[trainNum];
     }
 
+    /**
+     *
+     * @param trainNum
+     * @return
+     */
     public String getStationName(int trainNum) {
         long currentTime = System.currentTimeMillis();
         if (lastStationUpdate + MINIMUM_WAIT_TIME > currentTime) {

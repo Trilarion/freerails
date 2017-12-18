@@ -14,6 +14,7 @@ public interface PathWalker extends FreerailsPathIterator,
         FreerailsMutableSerializable {
     /**
      * Returns true if we have not reached the end of the path.
+     * @return 
      */
     boolean canStepForward();
 
@@ -21,6 +22,7 @@ public interface PathWalker extends FreerailsPathIterator,
      * Moves this path walker forward by the specified distance along the path
      * and returns a path iterator to retrieve the section of the path travelled
      * during this move.
+     * @param distance
      */
     void stepForward(double distance);
 }

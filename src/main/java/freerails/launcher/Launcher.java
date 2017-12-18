@@ -692,6 +692,12 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
     // End of variables declaration//GEN-END:variables
 
+    /**
+     *
+     * @param text
+     * @param status
+     */
+
     public void setInfoText(String text, MSG_TYPE status) {
         infoLabel.setText(text);
         switch (status) {
@@ -713,6 +719,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
     }
 
+    /**
+     *
+     */
     public void hideAllMessages() {
         infoLabel.setText(null);
         infoLabel.setIcon(null);
@@ -720,11 +729,18 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
     }
 
+    /**
+     *
+     * @param b
+     */
     public void setButtonsVisible(boolean b) {
         nextButton.setVisible(b);
         prevButton.setVisible(b);
     }
 
+    /**
+     *
+     */
     public void hideErrorMessages() {
         if (infoLabel.getIcon() == errorIcon) {
             infoLabel.setText(null);
@@ -753,6 +769,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }
     }
 
+    /**
+     *
+     */
     public void saveProps() {
         try {
             FileOutputStream out = new FileOutputStream(PROPERTIES_FILENAME);
@@ -769,10 +788,20 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     public void setProperty(String key, String value) {
         props.setProperty(key, value);
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public String getProperty(String key) {
         return props.getProperty(key);
     }

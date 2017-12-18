@@ -7,6 +7,10 @@ package freerails.util;
 import java.io.Serializable;
 import java.util.Arrays;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class ListKey implements Comparable<ListKey>, Serializable {
 
     private static final long serialVersionUID = -4939641035786937927L;
@@ -14,12 +18,22 @@ public class ListKey implements Comparable<ListKey>, Serializable {
     private final int[] index;
     private final Enum listID;
 
+    /**
+     *
+     * @param t
+     * @param listID
+     * @param i
+     */
     public ListKey(Type t, Enum listID, int... i) {
         type = t;
         index = i.clone();
         this.listID = listID;
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] getIndex() {
         return index.clone();
     }
@@ -48,6 +62,10 @@ public class ListKey implements Comparable<ListKey>, Serializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public Type getType() {
         return type;
     }
@@ -86,12 +104,28 @@ public class ListKey implements Comparable<ListKey>, Serializable {
         return sb.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public Enum getListID() {
         return listID;
     }
 
+    /**
+     *
+     */
     public enum Type {
-        Element, EndPoint
+
+        /**
+         *
+         */
+        Element,
+
+        /**
+         *
+         */
+        EndPoint
     }
 
 }

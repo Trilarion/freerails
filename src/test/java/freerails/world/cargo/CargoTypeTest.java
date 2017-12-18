@@ -12,6 +12,10 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public class CargoTypeTest extends TestCase {
+
+    /**
+     *
+     */
     public void testCargoType() {
         // Test that invalid categories get rejected.
         try {

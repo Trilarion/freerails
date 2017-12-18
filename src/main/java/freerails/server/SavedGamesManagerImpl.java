@@ -26,20 +26,38 @@ class SavFileFilter implements FilenameFilter {
     }
 }
 
+/**
+ *
+ * @author jkeller1
+ */
 public class SavedGamesManagerImpl implements SavedGamesManager {
     private static final Logger logger = Logger
             .getLogger(SavedGamesManagerImpl.class.getName());
 
+    /**
+     *
+     * @return
+     */
     public String[] getSaveGameNames() {
         java.io.File dir = new File("./");
         FilenameFilter filter = new SavFileFilter();
         return dir.list(filter);
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getNewMapNames() {
         return NewGameMessage2Server.getMapNames();
     }
 
+    /**
+     *
+     * @param w
+     * @param s
+     * @throws IOException
+     */
     public void saveGame(Serializable w, String s) throws IOException {
         long startTime = System.currentTimeMillis();
         logger.info("Saving game..  " + s);
@@ -61,6 +79,12 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
         logger.info("done, " + deltaTime + "ms");
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     * @throws IOException
+     */
     public Serializable loadGame(String name) throws IOException {
         long startTime = System.currentTimeMillis();
         logger.info("Loading game..  " + name);
@@ -101,6 +125,12 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
         }
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     * @throws IOException
+     */
     public Serializable newMap(String name) throws IOException {
         return OldWorldImpl.createWorldFromMapFile(name,
                 FreerailsProgressMonitor.NULL_INSTANCE);

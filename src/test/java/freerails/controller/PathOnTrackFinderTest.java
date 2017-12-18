@@ -30,6 +30,10 @@ public class PathOnTrackFinderTest extends TestCase {
 
     BuildTrackStrategy bts;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -42,11 +46,18 @@ public class PathOnTrackFinderTest extends TestCase {
         bts = BuildTrackStrategy.getDefault(w);
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }
 
+    /**
+     *
+     */
     public void testPathAsVectors1() {
         Step[] path = {EAST, EAST, SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);
@@ -64,6 +75,9 @@ public class PathOnTrackFinderTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testPathAsVectors2() {
         Step[] path = {EAST, EAST, SOUTH_EAST, EAST, EAST, NORTH_EAST};
         ImPoint start = new ImPoint(5, 5);
@@ -81,6 +95,9 @@ public class PathOnTrackFinderTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testSetupSearch() {
         Step[] path = {EAST, EAST, SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);

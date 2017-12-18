@@ -11,6 +11,13 @@ package freerails.client.common;
  * @author Luke
  */
 public class BinaryNumberFormatter {
+
+    /**
+     *
+     * @param i
+     * @param bits
+     * @return
+     */
     public static String format(int i, int bits) {
         int maxValue = 1 << (bits);
 
@@ -30,6 +37,12 @@ public class BinaryNumberFormatter {
         return s.substring(1);
     }
 
+    /**
+     *
+     * @param i
+     * @param bits
+     * @return
+     */
     public static String formatWithLowBitOnLeft(int i, int bits) {
         StringBuilder buff = new StringBuilder(format(i, bits));
         buff.reverse();

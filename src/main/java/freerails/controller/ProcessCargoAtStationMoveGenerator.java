@@ -30,6 +30,15 @@ public class ProcessCargoAtStationMoveGenerator {
      */
     private final static int MAGIC_NUMBER = 75;
 
+    /**
+     *
+     * @param w
+     * @param bundle
+     * @param stationID
+     * @param p
+     * @param trainId
+     * @return
+     */
     public static ArrayList<Move> processCargo(ReadOnlyWorld w,
                                                CargoBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
         StationModel thisStation = (StationModel) w.get(p, KEY.STATIONS,

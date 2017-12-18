@@ -21,19 +21,34 @@ import java.util.HashSet;
  */
 public class TrackConfigurationTest extends TestCase {
 
+    /**
+     *
+     * @param testName
+     */
     public TrackConfigurationTest(java.lang.String testName) {
         super(testName);
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
 
+    /**
+     *
+     * @return
+     */
     public static Test suite() {
 
         return new TestSuite(TrackConfigurationTest.class);
     }
 
+    /**
+     *
+     */
     public void testAdd() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
         TrackConfiguration b = TrackConfiguration.add(a, Step.NORTH_WEST);
@@ -41,6 +56,9 @@ public class TrackConfigurationTest extends TestCase {
         assertEquals(false, a == b);
     }
 
+    /**
+     *
+     */
     public void testGet8And9bitTemplate() {
         for (int i = 0; i < 512; i++) {
             TrackConfiguration tc = TrackConfiguration.from9bitTemplate(i);
@@ -57,6 +75,9 @@ public class TrackConfigurationTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testGetLength() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("010010000");
         TrackConfiguration b = TrackConfiguration.getFlatInstance("010010010");
@@ -64,12 +85,18 @@ public class TrackConfigurationTest extends TestCase {
         assertEquals(60, b.getLength());
     }
 
+    /**
+     *
+     */
     public void testSubtract() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
         TrackConfiguration b = TrackConfiguration.subtract(a, Step.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("000010000"), b);
     }
 
+    /**
+     *
+     */
     public void testToString() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
         assertEquals("tile center, north west", a.toString());

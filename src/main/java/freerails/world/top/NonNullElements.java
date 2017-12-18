@@ -30,6 +30,11 @@ public class NonNullElements implements WorldIterator {
 
     private int size = -1;
 
+    /**
+     *
+     * @param k
+     * @param world
+     */
     public NonNullElements(SKEY k, ReadOnlyWorld world) {
         if (null == k) {
             throw new NullPointerException();
@@ -45,6 +50,12 @@ public class NonNullElements implements WorldIterator {
         w = world;
     }
 
+    /**
+     *
+     * @param k
+     * @param world
+     * @param p
+     */
     public NonNullElements(KEY k, ReadOnlyWorld world, FreerailsPrincipal p) {
         key = k;
         w = world;
@@ -64,6 +75,14 @@ public class NonNullElements implements WorldIterator {
         }
     }
 
+    /**
+     *
+     * @param w
+     * @param key
+     * @param p
+     * @param row
+     * @return
+     */
     public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p,
                                 int row) {
         int count = 0;
@@ -166,6 +185,7 @@ public class NonNullElements implements WorldIterator {
 
     /**
      * Moves the cursor to the specified index.
+     * @param i
      */
     public void gotoIndex(int i) {
         int newRow = -1;
@@ -188,6 +208,11 @@ public class NonNullElements implements WorldIterator {
                 + " Size:" + listSize() + " Row:" + newRow);
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     protected boolean testCondition(int i) {
         return null != listGet(i);
     }

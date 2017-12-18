@@ -48,8 +48,15 @@ import java.util.List;
  * @see java.util.regex.Pattern
  */
 public class ClassLocater {
+
+    /**
+     *
+     */
     protected static final Logger logger = Logger.getLogger("jgf.classlocater");
 
+    /**
+     *
+     */
     protected final LinkedList<String> skipPrefixes = new LinkedList<>();
 
     /**

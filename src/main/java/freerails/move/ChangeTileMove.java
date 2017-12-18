@@ -29,6 +29,12 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 
     private final FreerailsTile after;
 
+    /**
+     *
+     * @param w
+     * @param p
+     * @param terrainTypeAfter
+     */
     public ChangeTileMove(ReadOnlyWorld w, Point p, int terrainTypeAfter) {
         this.x = p.x;
         this.y = p.y;
@@ -111,6 +117,10 @@ public class ChangeTileMove implements Move, MapUpdateMove {
         return ms;
     }
 
+    /**
+     *
+     * @return
+     */
     public Rectangle getUpdatedTiles() {
 
         return new Rectangle(x, y, 1, 1);

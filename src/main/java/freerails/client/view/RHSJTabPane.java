@@ -42,6 +42,9 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     private ReadOnlyWorld world;
     private ModelRoot modelRoot;
 
+    /**
+     *
+     */
     public RHSJTabPane() {
         /*
          * Dont accept keyboard focus since we want to leave it with the main
@@ -105,6 +108,12 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
     }
 
+    /**
+     *
+     * @param actionRoot
+     * @param vl
+     * @param modelRoot
+     */
     public void setup(final ActionRoot actionRoot, RenderersRoot vl,
                       final ModelRootImpl modelRoot) {
 
@@ -131,6 +140,9 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     /**
      * Updates the Terrain Info Panel if the specfied PropertyChangeEvent was
      * triggered by the cursor moving.
+     * @param prop
+     * @param before
+     * @param after
      */
     public void propertyChange(ModelRoot.Property prop, Object before,
                                Object after) {
@@ -180,15 +192,28 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         }
     }
 
+    /**
+     *
+     * @param enabled
+     */
     public void setTerrainTabEnabled(boolean enabled) {
         this.setEnabledAt(this.terrainInfoIndex, enabled);
     }
 
+    /**
+     *
+     * @param enabled
+     */
     public void setTrainTabEnabled(boolean enabled) {
         this.setEnabledAt(this.trainListIndex, enabled);
     }
 
     // FIXME surely this is something?
+
+    /**
+     *
+     * @param enabled
+     */
     public void setStationTabEnabled(boolean enabled) {
         this.setEnabledAt(this.stationInfoIndex, enabled);
     }

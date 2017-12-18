@@ -6,29 +6,58 @@ package freerails.util;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * @author jkeller1
+ * @param <T>
+ */
 public class List2DImpl<T> implements List2D<T> {
 
     private static final long serialVersionUID = 7614246212629595959L;
     private final ArrayList<ArrayList<T>> elementData = new ArrayList<>();
 
+    /**
+     *
+     * @param d1
+     */
     public List2DImpl(int d1) {
         for (int i = 0; i < d1; i++) {
             elementData.add(new ArrayList<>());
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int sizeD1() {
         return elementData.size();
     }
 
+    /**
+     *
+     * @param d1
+     * @return
+     */
     public int sizeD2(int d1) {
         return elementData.get(d1).size();
     }
 
+    /**
+     *
+     * @param d1
+     * @param d2
+     * @return
+     */
     public T get(int d1, int d2) {
         return elementData.get(d1).get(d2);
     }
 
+    /**
+     *
+     * @param d1
+     * @return
+     */
     public T removeLastD2(int d1) {
 
         int last = elementData.get(d1).size() - 1;
@@ -37,6 +66,10 @@ public class List2DImpl<T> implements List2D<T> {
         return element;
     }
 
+    /**
+     *
+     * @return
+     */
     public int removeLastD1() {
         int last = elementData.size() - 1;
         if (sizeD2(last) != 0)
@@ -45,11 +78,21 @@ public class List2DImpl<T> implements List2D<T> {
         return last;
     }
 
+    /**
+     *
+     * @return
+     */
     public int addD1() {
         elementData.add(new ArrayList<>());
         return elementData.size() - 1;
     }
 
+    /**
+     *
+     * @param d1
+     * @param element
+     * @return
+     */
     public int addD2(int d1, T element) {
         ArrayList<T> d2 = elementData.get(d1);
         int index = d2.size();
@@ -57,6 +100,12 @@ public class List2DImpl<T> implements List2D<T> {
         return index;
     }
 
+    /**
+     *
+     * @param d1
+     * @param d2
+     * @param element
+     */
     public void set(int d1, int d2, T element) {
         elementData.get(d1).set(d2, element);
     }

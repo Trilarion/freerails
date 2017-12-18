@@ -16,7 +16,15 @@ import java.util.ArrayList;
  * @author Luke Lindsay
  */
 public class TransferCargoAtStationMove extends CompositeMove {
+
+    /**
+     *
+     */
     public static final int CHANGE_ON_TRAIN_INDEX = 1;
+
+    /**
+     *
+     */
     public static final int CHANGE_AT_STATION_INDEX = 0;
     private static final long serialVersionUID = 3257291318215456563L;
     private final boolean waitingForFullLoad;
@@ -26,12 +34,25 @@ public class TransferCargoAtStationMove extends CompositeMove {
         waitingForFullLoad = waiting;
     }
 
+    /**
+     *
+     * @param movesArrayList
+     * @param waiting
+     */
     public TransferCargoAtStationMove(ArrayList<Move> movesArrayList,
                                       boolean waiting) {
         super(movesArrayList);
         this.waitingForFullLoad = waiting;
     }
 
+    /**
+     *
+     * @param changeAtStation
+     * @param changeOnTrain
+     * @param payment
+     * @param waiting
+     * @return
+     */
     public static TransferCargoAtStationMove generateMove(
             ChangeCargoBundleMove changeAtStation,
             ChangeCargoBundleMove changeOnTrain, CompositeMove payment,
@@ -40,16 +61,28 @@ public class TransferCargoAtStationMove extends CompositeMove {
                 changeOnTrain, payment}, waiting);
     }
 
+    /**
+     *
+     * @return
+     */
     public ChangeCargoBundleMove getChangeAtStation() {
         return (ChangeCargoBundleMove) super.getMoves().get(
                 CHANGE_AT_STATION_INDEX);
     }
 
+    /**
+     *
+     * @return
+     */
     public ChangeCargoBundleMove getChangeOnTrain() {
         return (ChangeCargoBundleMove) super.getMoves().get(
                 CHANGE_ON_TRAIN_INDEX);
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getRevenue() {
         ImList<Move> moves = super.getMoves();
         long amount = CHANGE_AT_STATION_INDEX;
@@ -66,6 +99,11 @@ public class TransferCargoAtStationMove extends CompositeMove {
         return new Money(amount);
     }
 
+    /**
+     *
+     * @param cargoType
+     * @return
+     */
     public int getQuantityOfCargo(int cargoType) {
         ImList<Move> moves = super.getMoves();
         int quantity = CHANGE_AT_STATION_INDEX;
@@ -88,6 +126,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
 
     /**
      * The player who is getting paid for the delivery.
+     * @return 
      */
     public FreerailsPrincipal getPrincipal() {
         ImList<Move> moves = super.getMoves();
@@ -103,6 +142,10 @@ public class TransferCargoAtStationMove extends CompositeMove {
         return Player.NOBODY;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isWaitingForFullLoad() {
         return waitingForFullLoad;
     }

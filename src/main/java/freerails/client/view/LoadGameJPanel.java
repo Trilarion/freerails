@@ -26,7 +26,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     private static final long serialVersionUID = -6810248272441137826L;
     ModelRoot modelRoot;
     ActionListener close;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     javax.swing.JButton cancelButton;
     javax.swing.JLabel jLabel1;
     javax.swing.JList jList1;
@@ -166,6 +166,12 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         okButton.setEnabled(jList1.getSelectedIndex() != -1);
     }// GEN-LAST:event_jList1ValueChanged
 
+    /**
+     *
+     * @param m
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot m, RenderersRoot vl, Action closeAction) {
         this.close = closeAction;
         modelRoot = m;
@@ -193,6 +199,6 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         }
         super.paintComponent(g);
     }
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 
 }

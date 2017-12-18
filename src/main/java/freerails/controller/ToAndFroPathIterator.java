@@ -20,6 +20,10 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
     private FreerailsPathIterator path;
     private boolean forwards = true;
 
+    /**
+     *
+     * @param l
+     */
     public ToAndFroPathIterator(List<Point> l) {
         list = l;
         nextIterator();

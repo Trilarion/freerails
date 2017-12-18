@@ -86,6 +86,12 @@ public class StationPlacementCursor extends MouseInputAdapter {
 
     }
 
+    /**
+     *
+     * @param actionRoot
+     * @param srr
+     * @param mapView
+     */
     public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr,
                               MapViewJComponent mapView) {
         StationPlacementCursor spc = new StationPlacementCursor(actionRoot,

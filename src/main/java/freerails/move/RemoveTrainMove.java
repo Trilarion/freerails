@@ -24,6 +24,13 @@ public class RemoveTrainMove extends CompositeMove {
         super(moves);
     }
 
+    /**
+     *
+     * @param index
+     * @param p
+     * @param world
+     * @return
+     */
     public static RemoveTrainMove getInstance(int index, FreerailsPrincipal p,
                                               ReadOnlyWorld world) {
         TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, index);

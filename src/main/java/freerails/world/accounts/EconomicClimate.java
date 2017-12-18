@@ -15,13 +15,33 @@ public class EconomicClimate implements FreerailsSerializable {
     private static final long serialVersionUID = 3834025840475321136L;
 
     private static int i = 2;
+
+    /**
+     *
+     */
     public static final EconomicClimate BOOM = new EconomicClimate(i++, "BOOM");
+
+    /**
+     *
+     */
     public static final EconomicClimate PROSPERITY = new EconomicClimate(i++,
             "PROSPERITY");
+
+    /**
+     *
+     */
     public static final EconomicClimate MODERATION = new EconomicClimate(i++,
             "MODERATION");
+
+    /**
+     *
+     */
     public static final EconomicClimate RECESSION = new EconomicClimate(i++,
             "RECESSION");
+
+    /**
+     *
+     */
     public static final EconomicClimate PANIC = new EconomicClimate(i++,
             "PANIC");
     private final String name;
@@ -32,6 +52,10 @@ public class EconomicClimate implements FreerailsSerializable {
         name = s;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getBaseInterestRate() {
         return baseInterestRate;
     }

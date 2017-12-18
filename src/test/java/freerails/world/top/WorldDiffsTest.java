@@ -29,6 +29,9 @@ public class WorldDiffsTest extends TestCase {
 
     final Player player1 = new Player("player1", 1);
 
+    /**
+     *
+     */
     public void testSharedLists() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         CargoType mailCT = new CargoType(10, "Mail", Categories.Mail);
@@ -61,6 +64,9 @@ public class WorldDiffsTest extends TestCase {
         assertEquals("1 Diff: element 0", 1, worldDiff.listDiffs());
     }
 
+    /**
+     *
+     */
     public void testPlayers() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
@@ -84,6 +90,9 @@ public class WorldDiffsTest extends TestCase {
         assertTrue(worldDiff.isPlayer(player1.getPrincipal()));
     }
 
+    /**
+     *
+     */
     public void testNonSharedLists() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
@@ -141,6 +150,9 @@ public class WorldDiffsTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testUsingNullElements() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
@@ -157,6 +169,9 @@ public class WorldDiffsTest extends TestCase {
         worldDiff.set(player0.getPrincipal(), KEY.STATIONS, 1, station0);
     }
 
+    /**
+     *
+     */
     public void testItem() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         StationModel station0 = new StationModel();
@@ -169,6 +184,9 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(station1, worldDiff.get(ITEM.GAME_RULES));
     }
 
+    /**
+     *
+     */
     public void testMap() {
         WorldImpl underlyingWorld = new WorldImpl(21, 8);
         WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
@@ -187,6 +205,9 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(new ImPoint(3, 5), it.next());
     }
 
+    /**
+     *
+     */
     public void testAccount() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
@@ -197,6 +218,9 @@ public class WorldDiffsTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testEquals() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
@@ -208,6 +232,9 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(underlyingWorld, a);
     }
 
+    /**
+     *
+     */
     public void testGetListDiffs() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);

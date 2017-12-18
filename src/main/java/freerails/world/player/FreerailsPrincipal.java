@@ -21,6 +21,10 @@ public abstract class FreerailsPrincipal implements Principal,
         FreerailsSerializable {
     private final int worldIndex;
 
+    /**
+     *
+     * @param worldIndex
+     */
     public FreerailsPrincipal(int worldIndex) {
         this.worldIndex = worldIndex;
     }

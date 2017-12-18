@@ -20,6 +20,11 @@ import org.apache.log4j.Logger;
  * @author Luke
  */
 public class TestLogging {
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         Logger logger1 = Logger.getLogger(TestLogging.class.getName());
         logger1.info("Logging properties file: "

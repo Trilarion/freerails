@@ -17,6 +17,10 @@ import freerails.world.top.MapFixtureFactory;
  * @author Luke Lindsay
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
+
+    /**
+     *
+     */
     @Override
     public void testMove() {
         Money currentBalance = getWorld().getCurrentBalance(
@@ -45,6 +49,9 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         assertOkAndRepeatable(m);
     }
 
+    /**
+     *
+     */
     public void testConstrainedMove() {
         Money currentBalance = getWorld().getCurrentBalance(
                 MapFixtureFactory.TEST_PRINCIPAL);

@@ -28,6 +28,13 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
     private final FreerailsPrincipal principal;
 
+    /**
+     *
+     * @param b
+     * @param a
+     * @param station
+     * @param p
+     */
     public ChangeProductionAtEngineShopMove(ImList<PlannedTrain> b,
                                             ImList<PlannedTrain> a, int station, FreerailsPrincipal p) {
         this.before = b;

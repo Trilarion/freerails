@@ -32,6 +32,14 @@ public class AddTrainPreMove implements PreMove {
     private final FreerailsPrincipal principal;
     private final ImmutableSchedule schedule;
 
+    /**
+     *
+     * @param e
+     * @param wags
+     * @param p
+     * @param fp
+     * @param s
+     */
     public AddTrainPreMove(int e, ImInts wags, ImPoint p,
                            FreerailsPrincipal fp, ImmutableSchedule s) {
         engineTypeId = e;
@@ -124,6 +132,8 @@ public class AddTrainPreMove implements PreMove {
      * <li>Adds transaction to pay for the train</li>
      * <li>Init. the trains position and motion</li>
      * </ol>
+     * @param w
+     * @return 
      */
     public Move generateMove(ReadOnlyWorld w) {
         // Add cargo bundle.

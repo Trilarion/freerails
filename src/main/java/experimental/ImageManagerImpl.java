@@ -47,10 +47,19 @@ public class ImageManagerImpl implements ImageManager {
     private String pathToReadFrom;
     private String pathToWriteTo;
 
+    /**
+     *
+     * @param readpath
+     */
     public ImageManagerImpl(String readpath) {
         this(readpath, null);
     }
 
+    /**
+     *
+     * @param readpath
+     * @param writePath
+     */
     public ImageManagerImpl(String readpath, String writePath) {
         pathToReadFrom = readpath;
         pathToWriteTo = writePath;
@@ -64,11 +73,21 @@ public class ImageManagerImpl implements ImageManager {
                 RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     }
 
+    /**
+     *
+     * @param s
+     * @return
+     */
     public static boolean isValid(String s) {
         Matcher m = pattern.matcher(s);
         return m.matches();
     }
 
+    /**
+     *
+     * @param relativeFilename
+     * @return
+     */
     public boolean contains(String relativeFilename) {
         relativeFilename = relativeFilename.replace(' ', '_');
 
@@ -80,6 +99,12 @@ public class ImageManagerImpl implements ImageManager {
         return f.isFile();
     }
 
+    /**
+     *
+     * @param relativeFilename
+     * @return
+     * @throws IOException
+     */
     public Image getImage(String relativeFilename) throws IOException {
         String hashKey = relativeFilename;
         Image compatibleImage = imageHashMap.get(hashKey);
@@ -119,6 +144,10 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * Returns the specified image scaled so that its height is equal to the
      * specified height.
+     * @param relativeFilename
+     * @param height
+     * @return 
+     * @throws java.io.IOException
      */
     public Image getScaledImage(String relativeFilename, int height)
             throws IOException {
@@ -148,11 +177,22 @@ public class ImageManagerImpl implements ImageManager {
         return compatibleImage;
     }
 
+    /**
+     *
+     * @param height
+     * @param width
+     * @return
+     */
     public Image newBlankImage(int height, int width) {
         return defaultConfiguration.createCompatibleImage(
                 width, height, Transparency.TRANSLUCENT);
     }
 
+    /**
+     *
+     * @param relativeFilename
+     * @param i
+     */
     public void setImage(String relativeFilename, Image i) {
         relativeFilename = relativeFilename.replace(' ', '_');
 
@@ -163,14 +203,26 @@ public class ImageManagerImpl implements ImageManager {
         imageHashMap.put(relativeFilename, i);
     }
 
+    /**
+     *
+     * @param s
+     */
     public void setPathToReadFrom(String s) {
         pathToReadFrom = s;
     }
 
+    /**
+     *
+     * @param s
+     */
     public void setPathToWriteTo(String s) {
         pathToWriteTo = s;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void writeAllImages() throws IOException {
 
         for (String s : imageHashMap.keySet()) {
@@ -178,6 +230,11 @@ public class ImageManagerImpl implements ImageManager {
         }
     }
 
+    /**
+     *
+     * @param relativeFilename
+     * @throws IOException
+     */
     public void writeImage(String relativeFilename) throws IOException {
 
         if (null == pathToWriteTo)

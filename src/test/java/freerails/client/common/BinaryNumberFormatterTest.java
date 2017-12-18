@@ -10,10 +10,18 @@ import junit.framework.TestCase;
  * @author Luke Lindsay 03-Nov-2002
  */
 public class BinaryNumberFormatterTest extends TestCase {
+
+    /**
+     *
+     * @param arg0
+     */
     public BinaryNumberFormatterTest(String arg0) {
         super(arg0);
     }
 
+    /**
+     *
+     */
     public void testBinaryFormat() {
         assertEquals("0", BinaryNumberFormatter.format(0, 1));
         assertEquals("1", BinaryNumberFormatter.format(1, 1));

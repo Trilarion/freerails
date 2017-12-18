@@ -15,16 +15,30 @@ public class ConvertedAtStation implements FreerailsSerializable {
 
     private final ImInts convertedTo;
 
+    /**
+     *
+     * @param convertedTo
+     */
     public ConvertedAtStation(int[] convertedTo) {
         this.convertedTo = new ImInts(convertedTo);
     }
 
+    /**
+     *
+     * @param numberOfCargoTypes
+     * @return
+     */
     public static ConvertedAtStation emptyInstance(int numberOfCargoTypes) {
         int[] convertedTo = emptyConversionArray(numberOfCargoTypes);
 
         return new ConvertedAtStation(convertedTo);
     }
 
+    /**
+     *
+     * @param numberOfCargoTypes
+     * @return
+     */
     public static int[] emptyConversionArray(int numberOfCargoTypes) {
         int[] convertedTo = new int[numberOfCargoTypes];
 
@@ -35,10 +49,20 @@ public class ConvertedAtStation implements FreerailsSerializable {
         return convertedTo;
     }
 
+    /**
+     *
+     * @param cargoNumber
+     * @return
+     */
     public boolean isCargoConverted(int cargoNumber) {
         return NOT_CONVERTED != convertedTo.get(cargoNumber);
     }
 
+    /**
+     *
+     * @param cargoNumber
+     * @return
+     */
     public int getConversion(int cargoNumber) {
         return convertedTo.get(cargoNumber);
     }

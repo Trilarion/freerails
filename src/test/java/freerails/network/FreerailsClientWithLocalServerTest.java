@@ -30,6 +30,10 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
     private SavedGamesManager4UnitTests savedGamesManager;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         savedGamesManager = new SavedGamesManager4UnitTests();
@@ -81,6 +85,9 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testNewGame() {
         assertEquals(0, server.countOpenConnections());
 
@@ -303,6 +310,9 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testLoadingGame() {
         try {
             int commandID = 0;

@@ -10,8 +10,15 @@ import junit.framework.TestCase;
 
 import java.io.Serializable;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class MiscTest extends TestCase {
 
+    /**
+     *
+     */
     public void testCityModel() {
         CityModel cm1 = new CityModel("London", 20, 70);
         CityModel cm2 = new CityModel("Cardiff", 20, 70);
@@ -20,6 +27,9 @@ public class MiscTest extends TestCase {
         assertDifferent(cm1, cm2);
     }
 
+    /**
+     *
+     */
     public void testTileTypeImpl() {
         Production[] prod = {new Production(69, 10)};
         Consumption[] cons = {new Consumption(4, 4), new Consumption(4, 5)};

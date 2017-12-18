@@ -23,6 +23,10 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
     private TrackMoveTransactionsGenerator transactionGenerator;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         world = new WorldImpl(20, 20);
@@ -33,6 +37,9 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
                 .getPrincipal());
     }
 
+    /**
+     *
+     */
     public void testAddTrackMove() {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;

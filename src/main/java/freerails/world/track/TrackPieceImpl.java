@@ -16,6 +16,13 @@ final public class TrackPieceImpl implements TrackPiece {
 
     private final int ruleNumber;
 
+    /**
+     *
+     * @param c
+     * @param type
+     * @param owner
+     * @param rule
+     */
     public TrackPieceImpl(TrackConfiguration c, TrackRule type, int owner,
                           int rule) {
         configuration = c;
@@ -52,22 +59,42 @@ final public class TrackPieceImpl implements TrackPiece {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrackGraphicID() {
         return configuration.getTrackGraphicsID();
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackRule getTrackRule() {
         return trackType;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackConfiguration getTrackConfiguration() {
         return configuration;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getOwnerID() {
         return ownerID;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrackTypeID() {
         return ruleNumber;
     }

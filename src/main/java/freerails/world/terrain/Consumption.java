@@ -22,6 +22,11 @@ public class Consumption implements FreerailsSerializable {
      */
     private final int prerequisite;
 
+    /**
+     *
+     * @param ct
+     * @param pq
+     */
     public Consumption(int ct, int pq) {
         cargoType = ct;
         prerequisite = pq; // default value.
@@ -49,10 +54,18 @@ public class Consumption implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCargoType() {
         return cargoType;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPrerequisite() {
         return prerequisite;
     }

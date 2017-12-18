@@ -48,6 +48,7 @@ public class TrackMoveTransactionsGenerator {
     private int[] trackRemoved;
 
     /**
+     * @param world
      * @param p the Principal on behalf of which this object generates
      *          transactions for
      */
@@ -57,6 +58,11 @@ public class TrackMoveTransactionsGenerator {
         principal = p;
     }
 
+    /**
+     *
+     * @param move
+     * @return
+     */
     public CompositeMove addTransactions(Move move) {
         int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
         trackAdded = new int[numberOfTrackTypes];

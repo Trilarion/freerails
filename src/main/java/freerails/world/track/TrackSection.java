@@ -15,6 +15,11 @@ public class TrackSection implements FreerailsSerializable {
     private final Step step;
     private final ImPoint tile;
 
+    /**
+     *
+     * @param step
+     * @param tile
+     */
     public TrackSection(final Step step, final ImPoint tile) {
         ImPoint otherTile = Step.move(tile, step);
         if (tile.compareTo(otherTile) > 0) {
@@ -59,10 +64,18 @@ public class TrackSection implements FreerailsSerializable {
         return tile.toString() + " " + step.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public ImPoint tileA() {
         return tile;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImPoint tileB() {
         return Step.move(tile, step);
     }

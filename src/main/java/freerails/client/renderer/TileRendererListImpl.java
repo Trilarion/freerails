@@ -18,6 +18,10 @@ import java.util.ArrayList;
 final public class TileRendererListImpl implements TileRendererList {
     private final TileRenderer[] tiles;
 
+    /**
+     *
+     * @param t
+     */
     public TileRendererListImpl(ArrayList<TileRenderer> t) {
         tiles = new TileRenderer[t.size()];
 
@@ -26,6 +30,11 @@ final public class TileRendererListImpl implements TileRendererList {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public TileRenderer getTileViewWithNumber(int i) {
         return tiles[i];
     }

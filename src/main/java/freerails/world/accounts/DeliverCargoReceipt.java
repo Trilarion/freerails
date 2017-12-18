@@ -22,6 +22,14 @@ public class DeliverCargoReceipt extends Receipt {
 
     private final int trainId;
 
+    /**
+     *
+     * @param m
+     * @param quantity
+     * @param stationId
+     * @param cb
+     * @param trainId
+     */
     public DeliverCargoReceipt(Money m, int quantity, int stationId,
                                CargoBatch cb, int trainId) {
         super(m, Category.CARGO_DELIVERY);
@@ -31,18 +39,34 @@ public class DeliverCargoReceipt extends Receipt {
         this.trainId = trainId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrainId() {
         return trainId;
     }
 
+    /**
+     *
+     * @return
+     */
     public CargoBatch getCb() {
         return cb;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationId() {
         return stationId;
     }

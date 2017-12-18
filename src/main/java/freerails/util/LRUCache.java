@@ -15,6 +15,8 @@ import java.util.Map;
  * Author: Christian d'Heureuse (<a
  * href="http://www.source-code.biz">www.source-code.biz</a>)<br>
  * License: <a href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.
+ * @param <K>
+ * @param <V>
  */
 public class LRUCache<K, V> {
 

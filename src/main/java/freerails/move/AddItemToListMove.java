@@ -25,6 +25,13 @@ public class AddItemToListMove implements ListMove {
 
     private final FreerailsSerializable item;
 
+    /**
+     *
+     * @param key
+     * @param i
+     * @param item
+     * @param p
+     */
     public AddItemToListMove(KEY key, int i, FreerailsSerializable item,
                              FreerailsPrincipal p) {
         this.listKey = key;
@@ -135,6 +142,10 @@ public class AddItemToListMove implements ListMove {
                 item;
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPrincipal getPrincipal() {
         return principal;
     }

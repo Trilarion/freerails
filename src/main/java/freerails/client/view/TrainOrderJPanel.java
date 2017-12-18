@@ -52,6 +52,12 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
         lines = new HashMap<>();
     }
 
+    /**
+     *
+     * @param mr
+     * @param vl
+     * @param closeAction
+     */
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
         this.mr = mr;
         this.vl = vl;

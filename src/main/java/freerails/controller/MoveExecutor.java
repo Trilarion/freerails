@@ -14,13 +14,37 @@ import freerails.world.top.ReadOnlyWorld;
  * @author Luke
  */
 public interface MoveExecutor {
+
+    /**
+     *
+     * @param m
+     * @return
+     */
     MoveStatus doMove(Move m);
 
+    /**
+     *
+     * @param pm
+     * @return
+     */
     MoveStatus doPreMove(PreMove pm);
 
+    /**
+     *
+     * @param m
+     * @return
+     */
     MoveStatus tryDoMove(Move m);
 
+    /**
+     *
+     * @return
+     */
     ReadOnlyWorld getWorld();
 
+    /**
+     *
+     * @return
+     */
     FreerailsPrincipal getPrincipal();
 }

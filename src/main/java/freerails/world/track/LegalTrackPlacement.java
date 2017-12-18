@@ -26,6 +26,11 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     // HashSet<TerrainType.Category>();
     private final PlacementRule placementRule;
 
+    /**
+     *
+     * @param types
+     * @param placementRule
+     */
     public LegalTrackPlacement(HashSet<TerrainType.Category> types,
                                PlacementRule placementRule) {
         this.placementRule = placementRule;
@@ -44,6 +49,11 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
         return (placementRule != null ? placementRule.hashCode() : 0);
     }
 
+    /**
+     *
+     * @param terrainType
+     * @return
+     */
     public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
         if (PlacementRule.ONLY_ON_THESE == placementRule) {
             return terrainTypes.contains(terrainType);
@@ -62,11 +72,27 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public PlacementRule getPlacementRule() {
         return placementRule;
     }
 
+    /**
+     *
+     */
     public enum PlacementRule {
-        ONLY_ON_THESE, ANYWHERE_EXCEPT_ON_THESE
+
+        /**
+         *
+         */
+        ONLY_ON_THESE,
+
+        /**
+         *
+         */
+        ANYWHERE_EXCEPT_ON_THESE
     }
 }

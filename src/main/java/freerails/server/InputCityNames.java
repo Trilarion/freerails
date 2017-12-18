@@ -18,6 +18,13 @@ import java.net.URL;
  * @author Scott Bennett Date: 31st March 2003
  */
 public class InputCityNames {
+
+    /**
+     *
+     * @param w
+     * @param filename
+     * @throws SAXException
+     */
     public static void readCityNames(World w, URL filename) throws SAXException {
         InputSource is = new InputSource(filename.toString());
 

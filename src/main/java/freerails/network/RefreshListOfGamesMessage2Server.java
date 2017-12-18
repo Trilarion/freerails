@@ -19,16 +19,29 @@ public class RefreshListOfGamesMessage2Server implements Message2Server {
     private static final long serialVersionUID = -8745171955732354168L;
     private final int id;
 
+    /**
+     *
+     * @param id
+     */
     public RefreshListOfGamesMessage2Server(final int id) {
         super();
         this.id = id;
     }
 
+    /**
+     *
+     * @param server
+     * @return
+     */
     public MessageStatus execute(ServerControlInterface server) {
         server.refreshSavedGames();
         return new MessageStatus(id, true);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getID() {
         return id;
     }

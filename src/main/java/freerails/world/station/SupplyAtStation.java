@@ -13,6 +13,10 @@ public class SupplyAtStation implements FreerailsSerializable {
 
     private final ImInts supply;
 
+    /**
+     *
+     * @param cargoWaiting
+     */
     public SupplyAtStation(int[] cargoWaiting) {
         supply = new ImInts(cargoWaiting);
     }
@@ -20,6 +24,8 @@ public class SupplyAtStation implements FreerailsSerializable {
     /**
      * Returns the number of car loads of the specified cargo that the station
      * supplies per year.
+     * @param cargoType
+     * @return 
      */
     public int getSupply(int cargoType) {
         return supply.get(cargoType);

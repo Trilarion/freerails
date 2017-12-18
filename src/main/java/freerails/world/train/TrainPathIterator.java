@@ -18,6 +18,10 @@ public class TrainPathIterator implements FreerailsPathIterator {
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();
 
+    /**
+     *
+     * @param i
+     */
     public TrainPathIterator(FreerailsIntIterator i) {
         intIterator = i;
         p2.setValuesFromInt(intIterator.nextInt());

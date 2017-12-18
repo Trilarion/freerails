@@ -80,6 +80,10 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         return new RemoveStationMove(moves);
     }
 
+    /**
+     *
+     * @return
+     */
     public Rectangle getUpdatedTiles() {
         TrackMove tm = (TrackMove) getMove(0);
 

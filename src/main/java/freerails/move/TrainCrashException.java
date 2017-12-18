@@ -16,19 +16,35 @@ public class TrainCrashException extends Exception {
 
     private int trainB;
 
+    /**
+     *
+     */
     public TrainCrashException() {
 
     }
 
+    /**
+     *
+     * @param aTrain
+     * @param bTrain
+     */
     public TrainCrashException(int aTrain, int bTrain) {
         trainA = aTrain;
         trainB = bTrain;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrainA() {
         return trainA;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrainB() {
         return trainB;
     }

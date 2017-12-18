@@ -26,6 +26,11 @@ public class FinancialDataGatherer extends TransactionAggregator {
     private int bonds;
     private int[] stockInThisRRs;
 
+    /**
+     *
+     * @param w
+     * @param principal
+     */
     public FinancialDataGatherer(ReadOnlyWorld w, FreerailsPrincipal principal) {
         super(w, principal);
         stockInRRs = new int[w.getNumberOfPlayers()];
@@ -33,6 +38,10 @@ public class FinancialDataGatherer extends TransactionAggregator {
         this.playerID = w.getID(principal);
     }
 
+    /**
+     *
+     * @param transactionID
+     */
     @Override
     protected void incrementRunningTotal(int transactionID) {
         Transaction t = super.w.getTransaction(super.principal, transactionID);
@@ -72,31 +81,57 @@ public class FinancialDataGatherer extends TransactionAggregator {
         super.storeRunningTotal(timeIndex);
     }
 
+    /**
+     *
+     * @param deltaStock
+     */
     public void changeTreasuryStock(int deltaStock) {
     }
 
+    /**
+     *
+     * @param stakeHolder
+     * @param deltaStock
+     */
     public void changeStake(int stakeHolder, int deltaStock) {
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean canIssueBond() {
         return nextBondInterestRate() <= 7;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean canBuyStock() {
         return totalShares > 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public int nextBondInterestRate() {
         EconomicClimate ec = (EconomicClimate) w.get(ITEM.ECONOMIC_CLIMATE);
         return bonds + ec.getBaseInterestRate();
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] bondInterestRates() {
         return null;
     }
 
     /**
      * Returns the number of stock in the Treasury
+     * @return 
      */
     public int treasuryStock() {
         return stockInRRs[playerID];
@@ -104,11 +139,16 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     /**
      * Returns The number of open Shares
+     * @return 
      */
     public int totalShares() {
         return totalShares;
     }
 
+    /**
+     *
+     * @return
+     */
     public int sharesHeldByPublic() {
         int[] stock = getStockInThisRRs();
         int returnValue = this.totalShares;
@@ -118,10 +158,19 @@ public class FinancialDataGatherer extends TransactionAggregator {
         return returnValue;
     }
 
+    /**
+     *
+     * @param otherReId
+     * @return
+     */
     public boolean thisRRHasStakeIn(int otherReId) {
         return stockInRRs[otherReId] > 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money netWorth() {
         NetWorthCalculator nwc = new NetWorthCalculator(w, principal);
         GameTime[] times = {GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD};
@@ -135,6 +184,10 @@ public class FinancialDataGatherer extends TransactionAggregator {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] getStockInThisRRs() {
         if (null == stockInThisRRs) {
             stockInThisRRs = new int[w.getNumberOfPlayers()];
@@ -149,10 +202,18 @@ public class FinancialDataGatherer extends TransactionAggregator {
         return stockInThisRRs;
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] getStockInRRs() {
         return stockInRRs;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getBonds() {
         return bonds;
     }

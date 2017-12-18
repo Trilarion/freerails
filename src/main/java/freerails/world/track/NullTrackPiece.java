@@ -23,18 +23,34 @@ final public class NullTrackPiece implements TrackPiece {
     private NullTrackPiece() {
     }
 
+    /**
+     *
+     * @return
+     */
     public static TrackPiece getInstance() {
         return nullTrackPiece;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrackGraphicID() {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackRule getTrackRule() {
         return NullTrackType.getInstance();
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackConfiguration getTrackConfiguration() {
         return TrackConfiguration.from9bitTemplate(0);
     }
@@ -53,10 +69,18 @@ final public class NullTrackPiece implements TrackPiece {
         return 777;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getOwnerID() {
         return NO_OWNER;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrackTypeID() {
         return NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
     }

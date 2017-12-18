@@ -24,12 +24,18 @@ import junit.framework.TestCase;
 public class WorldImplTest extends TestCase {
     private final FreerailsSerializable fs = new TestState(1);
 
+    /**
+     *
+     */
     public void testGet() {
         WorldImpl w = new WorldImpl();
         w.add(SKEY.TERRAIN_TYPES, fs);
         assertEquals(w.get(SKEY.TERRAIN_TYPES, 0), fs);
     }
 
+    /**
+     *
+     */
     public void testConstructor() {
         World w = new WorldImpl();
         assertEquals("The width should be zero", 0, w.getMapWidth());
@@ -56,6 +62,9 @@ public class WorldImplTest extends TestCase {
         assertEquals(0, original.size(SKEY.TERRAIN_TYPES));
     }
 
+    /**
+     *
+     */
     public void testEquals() {
         World original;
         World copy;
@@ -80,6 +89,9 @@ public class WorldImplTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testEquals2() {
         World original;
         World copy, copy2;
@@ -99,6 +111,9 @@ public class WorldImplTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testActivityLists() {
         World w = new WorldImpl();
         Player player = new Player("Name", 0);
@@ -124,6 +139,9 @@ public class WorldImplTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testBoundsContain() {
         World w = new WorldImpl();
         assertFalse(w.boundsContain(1, 1));
@@ -136,6 +154,9 @@ public class WorldImplTest extends TestCase {
         assertFalse(w.boundsContain(5, 10));
     }
 
+    /**
+     *
+     */
     public void testBankAccount() {
         WorldImpl world = new WorldImpl();
         Player p = new Player("Test", 0);
@@ -156,12 +177,22 @@ public class WorldImplTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public static class TestState implements FreerailsSerializable {
 
         private static final long serialVersionUID = 5122023949873919060L;
 
+        /**
+         *
+         */
         public final int x;
 
+        /**
+         *
+         * @param x
+         */
         public TestState(int x) {
             this.x = x;
         }
@@ -185,12 +216,19 @@ public class WorldImplTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public static class TestActivity implements Activity {
 
         private static final long serialVersionUID = 1298936498785131183L;
 
         private final double duration;
 
+        /**
+         *
+         * @param duration
+         */
         public TestActivity(int duration) {
             this.duration = duration;
         }
@@ -212,10 +250,19 @@ public class WorldImplTest extends TestCase {
             return (int) duration;
         }
 
+        /**
+         *
+         * @return
+         */
         public double duration() {
             return duration;
         }
 
+        /**
+         *
+         * @param dt
+         * @return
+         */
         public FreerailsSerializable getState(double dt) {
             return new TestState((int) dt);
         }

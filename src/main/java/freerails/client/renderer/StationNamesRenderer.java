@@ -35,6 +35,11 @@ public class StationNamesRenderer implements Painter {
     private final Color textColor;
     private final Font font;
 
+    /**
+     *
+     * @param world
+     * @param modelRoot
+     */
     public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {
         this.w = world;
         this.modelRoot = modelRoot;
@@ -44,6 +49,11 @@ public class StationNamesRenderer implements Painter {
         font = new Font("Arial", 0, fontSize);
     }
 
+    /**
+     *
+     * @param g
+     * @param newVisibleRectectangle
+     */
     public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
         int rectWidth;
         int rectHeight;

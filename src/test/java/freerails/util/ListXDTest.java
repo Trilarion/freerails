@@ -6,12 +6,20 @@ package freerails.util;
 
 import junit.framework.TestCase;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class ListXDTest extends TestCase {
 
     List1D<Object> list1d;
     List2D<Object> list2d;
     List3D<Object> list3d;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         list1d = new List1DImpl<>();
@@ -19,6 +27,9 @@ public class ListXDTest extends TestCase {
         list3d = new List3DImpl<>(3, 2);
     }
 
+    /**
+     *
+     */
     public void testAdd() {
         // Test initial size.
         assertEquals(0, list1d.size());
@@ -37,6 +48,9 @@ public class ListXDTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testRemove() {
         Integer i = 4;
 
@@ -68,6 +82,9 @@ public class ListXDTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testHashCodeAndEquals() {
         Integer i = 5;
         Integer ii = 53;
@@ -97,6 +114,9 @@ public class ListXDTest extends TestCase {
         assertFalse(copy.equals(list3d));
     }
 
+    /**
+     *
+     */
     public void test3DList() {
         list3d = new List3DImpl<>(0, 0);
 

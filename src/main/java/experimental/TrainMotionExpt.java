@@ -40,6 +40,9 @@ public class TrainMotionExpt extends JComponent {
 
     private long startTime;
 
+    /**
+     *
+     */
     public TrainMotionExpt() {
         world = MapFixtureFactory2.getCopy();
         MoveExecutor me = new SimpleMoveExecutor(world, 0);
@@ -66,6 +69,10 @@ public class TrainMotionExpt extends JComponent {
         startTime = System.currentTimeMillis();
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         System.setProperty("SHOWFPS", "true");
 

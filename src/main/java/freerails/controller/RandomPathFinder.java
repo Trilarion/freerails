@@ -17,6 +17,10 @@ public class RandomPathFinder implements FreerailsPathIterator {
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();
 
+    /**
+     *
+     * @param tx
+     */
     public RandomPathFinder(FlatTrackExplorer tx) {
         trackExplorer = tx;
     }

@@ -22,6 +22,9 @@ import static freerails.world.common.Step.*;
  */
 public class PathOnTilesTest extends TestCase {
 
+    /**
+     *
+     */
     public void testPathOnTiles() {
         ImPoint start = null;
         Step[] vectors = null;
@@ -35,6 +38,9 @@ public class PathOnTilesTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testGetStepIndex() {
         ImPoint start = new ImPoint();
         Step[] vectors = new Step[]{SOUTH_EAST, EAST, EAST};
@@ -46,6 +52,9 @@ public class PathOnTilesTest extends TestCase {
         assertEquals(2, path.getStepIndex(90));
     }
 
+    /**
+     *
+     */
     public void testGetLength() {
         ImPoint start = new ImPoint();
         Step[] vectors = new Step[]{EAST, EAST, EAST};
@@ -54,6 +63,9 @@ public class PathOnTilesTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testGetPoint() {
         ImPoint start = new ImPoint();
         Step[] vectors = new Step[]{EAST, EAST, EAST};
@@ -71,6 +83,9 @@ public class PathOnTilesTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testGetPointPair() {
         ImPoint start = new ImPoint();
         Step[] vectors = new Step[]{EAST, EAST, EAST};
@@ -91,6 +106,9 @@ public class PathOnTilesTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testSubPath() {
         ImPoint start = new ImPoint();
         Step[] vectors = new Step[]{EAST, EAST, EAST};
@@ -175,6 +193,9 @@ public class PathOnTilesTest extends TestCase {
         }
     }
 
+    /**
+     *
+     */
     public void testTiles() {
         PathOnTiles path = new PathOnTiles(new ImPoint(5, 5), SOUTH_WEST,
                 NORTH_EAST);

@@ -8,13 +8,34 @@ import freerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public interface TrackPiece extends FreerailsSerializable {
+
+    /**
+     *
+     * @return
+     */
     int getTrackGraphicID();
 
+    /**
+     *
+     * @return
+     */
     int getTrackTypeID();
 
+    /**
+     *
+     * @return
+     */
     TrackRule getTrackRule();
 
+    /**
+     *
+     * @return
+     */
     TrackConfiguration getTrackConfiguration();
 
+    /**
+     *
+     * @return
+     */
     int getOwnerID();
 }

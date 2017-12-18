@@ -22,6 +22,10 @@ public class ExptWriteToBuffer {
     private static final Logger logger = Logger
             .getLogger(ExptWriteToBuffer.class.getName());
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             Point p = new Point(10, 10);

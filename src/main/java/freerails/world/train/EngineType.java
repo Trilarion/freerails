@@ -22,6 +22,13 @@ final public class EngineType implements FreerailsSerializable {
 
     private final Money price;
 
+    /**
+     *
+     * @param name
+     * @param power
+     * @param m
+     * @param speed
+     */
     public EngineType(String name, int power, Money m, int speed) {
         engineTypeName = name;
         powerAtDrawbar = power;
@@ -30,6 +37,14 @@ final public class EngineType implements FreerailsSerializable {
         maintenance = new Money(0);
     }
 
+    /**
+     *
+     * @param name
+     * @param power
+     * @param m
+     * @param speed
+     * @param maint
+     */
     public EngineType(String name, int power, Money m, int speed, Money maint) {
         engineTypeName = name;
         powerAtDrawbar = power;
@@ -51,22 +66,42 @@ final public class EngineType implements FreerailsSerializable {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getEngineTypeName() {
         return engineTypeName;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getMaintenance() {
         return maintenance;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMaxSpeed() {
         return maxSpeed;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPowerAtDrawbar() {
         return powerAtDrawbar;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getPrice() {
         return price;
     }

@@ -6,18 +6,34 @@ package freerails.util;
 
 import java.util.SortedMap;
 
+/**
+ *
+ * @author jkeller1
+ * @param <T>
+ */
 public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
 
     private static final long serialVersionUID = -6058018396890452219L;
 
     private final List1D<T> underlyingList;
 
+    /**
+     *
+     * @param diffs
+     * @param list
+     * @param listID
+     */
     public List1DDiff(SortedMap<ListKey, Object> diffs, List1D<T> list,
                       Enum listID) {
         super(diffs, listID);
         underlyingList = list;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public T get(int i) {
         return get(new int[]{i});
     }
@@ -27,6 +43,10 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
         return underlyingList;
     }
 
+    /**
+     *
+     * @return
+     */
     public int size() {
         return super.size(new int[0]);
     }
@@ -38,14 +58,28 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
         return underlyingList.get(i[0]);
     }
 
+    /**
+     *
+     * @param element
+     * @return
+     */
     public int add(T element) {
         return super.addElement(element);
     }
 
+    /**
+     *
+     * @return
+     */
     public T removeLast() {
         return super.removeLast();
     }
 
+    /**
+     *
+     * @param i
+     * @param element
+     */
     public void set(int i, T element) {
         super.set(element, i);
 

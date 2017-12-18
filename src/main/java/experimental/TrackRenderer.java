@@ -37,6 +37,12 @@ public class TrackRenderer {
 
     boolean tunnel = false;
 
+    /**
+     *
+     * @param line
+     * @param shift
+     * @return
+     */
     public static Line2D.Double createParallelLine(Line2D.Double line,
                                                    double shift) {
         Line2D.Double returnValue = new Line2D.Double(line.getP1(), line
@@ -52,6 +58,13 @@ public class TrackRenderer {
         return returnValue;
     }
 
+    /**
+     *
+     * @param c
+     * @param shift1
+     * @param shift2
+     * @return
+     */
     public static CubicCurve2D.Double createAdjacentCurve(
             CubicCurve2D.Double c, double shift1, double shift2) {
         Line2D.Double line1 = new Line2D.Double(c.getX1(), c.getY1(), c
@@ -190,6 +203,8 @@ public class TrackRenderer {
     /**
      * Generates the Stroke used to draw the sleepers for track section
      * represented by the specified curve.
+     * @param curve
+     * @return 
      */
     public BasicStroke getStroke4Curve(CubicCurve2D.Double curve) {
         PathIterator fpt = curve.getPathIterator(new AffineTransform(), 0.01);

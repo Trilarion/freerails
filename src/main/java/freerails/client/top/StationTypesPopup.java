@@ -35,9 +35,17 @@ public class StationTypesPopup extends JPopupMenu {
 
     private ModelRoot modelRoot;
 
+    /**
+     *
+     */
     public StationTypesPopup() {
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public boolean canBuiltStationHere(Point p) {
         stationBuildModel.getStationBuildAction().putValue(
                 StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
@@ -47,6 +55,12 @@ public class StationTypesPopup extends JPopupMenu {
         return tile.hasTrack();
     }
 
+    /**
+     *
+     * @param mr
+     * @param actionRoot
+     * @param srr
+     */
     public void setup(ModelRoot mr, ActionRoot actionRoot,
                       StationRadiusRenderer srr) {
         modelRoot = mr;
@@ -126,6 +140,13 @@ public class StationTypesPopup extends JPopupMenu {
                 });
     }
 
+    /**
+     *
+     * @param invoker
+     * @param x
+     * @param y
+     * @param tile
+     */
     public void showMenu(Component invoker, int x, int y, Point tile) {
         tileToBuildStationOn = tile;
 

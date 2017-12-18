@@ -35,14 +35,26 @@ public class SimpleComponentFactoryImpl2 implements
     public SimpleComponentFactoryImpl2() {
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createBuildMenu() {
         return new JMenu("Build");
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createGameMenu() {
         return new JMenu("Game");
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createDisplayMenu() {
         JMenu displayMenu = new JMenu("Display");
 
@@ -55,6 +67,10 @@ public class SimpleComponentFactoryImpl2 implements
         return displayMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createBrokerMenu() {
         return new JMenu("Broker");
     }
@@ -106,6 +122,10 @@ public class SimpleComponentFactoryImpl2 implements
         displayMenu.add(menuItem);
     }
 
+    /**
+     *
+     * @return
+     */
     public JScrollPane createMainMap() {
         if (null == this.mainMap) {
             // this.mainMap = new MapJPanel();
@@ -118,6 +138,10 @@ public class SimpleComponentFactoryImpl2 implements
         return mainMapScrollPane1;
     }
 
+    /**
+     *
+     * @return
+     */
     public JPanel createOverviewMap() {
         if (null == this.overviewMap) {
             // this.overviewMap = new OverviewMapJPanel();
@@ -139,22 +163,42 @@ public class SimpleComponentFactoryImpl2 implements
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public JLabel createCashJLabel() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public JLabel createDateJLabel() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createHelpMenu() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTabbedPane createTrainsJTabPane() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public JMenu createReportsMenu() {
         // TODO Auto-generated method stub
         return null;

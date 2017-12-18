@@ -27,6 +27,10 @@ public class StationBuilderTest extends TestCase {
 
     StationBuilder stationBuilder;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -37,10 +41,16 @@ public class StationBuilderTest extends TestCase {
         stationBuilder = new StationBuilder(me);
     }
 
+    /**
+     *
+     */
     public void testCanBuiltStationHere() {
 
     }
 
+    /**
+     *
+     */
     public void testBuildStation() {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));

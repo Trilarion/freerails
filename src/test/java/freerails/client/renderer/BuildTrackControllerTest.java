@@ -38,6 +38,10 @@ public class BuildTrackControllerTest extends TestCase {
 
     int doubleTrackRuleID = -1;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         w = MapFixtureFactory2.getCopy();
@@ -68,6 +72,9 @@ public class BuildTrackControllerTest extends TestCase {
         modelRoot.setProperty(Property.PLAY_SOUNDS, false);
     }
 
+    /**
+     *
+     */
     public void testBuildTrack() {
         ImPoint from = new ImPoint(10, 10);
         modelRoot.setProperty(Property.CURSOR_POSITION, from);
@@ -89,6 +96,9 @@ public class BuildTrackControllerTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testUpgradeTrack() {
         // Build the track.
         testBuildTrack();
@@ -128,6 +138,9 @@ public class BuildTrackControllerTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     public void testRemoveTrack() {
         // Build the track.
         testBuildTrack();

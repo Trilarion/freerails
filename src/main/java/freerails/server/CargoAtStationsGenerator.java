@@ -29,11 +29,16 @@ import java.util.Iterator;
 public class CargoAtStationsGenerator implements FreerailsServerSerializable {
     private static final long serialVersionUID = 3834596504072959796L;
 
+    /**
+     *
+     */
     public CargoAtStationsGenerator() {
     }
 
     /**
      * Call this method once a month.
+     * @param w
+     * @param moveReceiver
      */
     public void update(World w, MoveReceiver moveReceiver) {
         for (int k = 0; k < w.getNumberOfPlayers(); k++) {

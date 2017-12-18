@@ -9,6 +9,10 @@ import junit.framework.TestCase;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class List3DDiffTest extends TestCase {
 
     List3DDiff<Object> diffs;
@@ -17,6 +21,10 @@ public class List3DDiffTest extends TestCase {
 
     List3D<Object> underlying;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         underlying = new List3DImpl<>(0, 0);
@@ -27,6 +35,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.addD1()'
      */
+
+    /**
+     *
+     */
+
     public void testAddD1() {
         diffs.addD1();
         assertEquals(1, diffs.sizeD1());
@@ -37,6 +50,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.addD2(int)'
      */
+
+    /**
+     *
+     */
+
     public void testAddD2() {
         underlying.addD1();
         underlying.addD1();
@@ -51,6 +69,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.addD3(int, int, T)'
      */
+
+    /**
+     *
+     */
+
     public void testAddD3() {
         underlying.addD1();
         underlying.addD1();
@@ -65,6 +88,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.get(int, int, int)'
      */
+
+    /**
+     *
+     */
+
     public void testGetIntIntInt() {
         underlying.addD1();
         underlying.addD1();
@@ -82,6 +110,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.getUnderlyingSize(int...)'
      */
+
+    /**
+     *
+     */
+
     public void testGetUnderlyingSize() {
         assertEquals(-1, diffs.getUnderlyingSize(0, 0));
         assertEquals(-1, diffs.getUnderlyingSize(0));
@@ -99,6 +132,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.removeLastD1()'
      */
+
+    /**
+     *
+     */
+
     public void testRemoveLastD1() {
         underlying.addD1();
         underlying.addD1();
@@ -119,6 +157,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.removeLastD2(int)'
      */
+
+    /**
+     *
+     */
+
     public void testRemoveLastD2() {
         underlying.addD1();
         underlying.addD2(0);
@@ -142,6 +185,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.removeLastD3(int, int)'
      */
+
+    /**
+     *
+     */
+
     public void testRemoveLastD3() {
         underlying.addD1();
         underlying.addD2(0);
@@ -167,6 +215,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.set(int, int, int, T)'
      */
+
+    /**
+     *
+     */
+
     public void testSetIntIntIntT() {
         underlying.addD1();
         underlying.addD2(0);
@@ -184,6 +237,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.sizeD1()'
      */
+
+    /**
+     *
+     */
+
     public void testSizeDx() {
         assertEquals(0, diffs.sizeD1());
         underlying.addD1();
@@ -201,6 +259,11 @@ public class List3DDiffTest extends TestCase {
     /*
      * Test method for 'freerails.util.List3DDiff.uGet(int...)'
      */
+
+    /**
+     *
+     */
+
     public void testUGet() {
         underlying.addD1();
         underlying.addD2(0);

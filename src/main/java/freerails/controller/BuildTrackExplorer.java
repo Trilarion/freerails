@@ -37,10 +37,22 @@ public class BuildTrackExplorer implements GraphExplorer {
     private BuildTrackStrategy buildTrackStrategy;
     private boolean usingExistingTrack = false;
 
+    /**
+     *
+     * @param w
+     * @param principle
+     */
     public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle) {
         this(w, principle, null, new ImPoint(0, 0));
     }
 
+    /**
+     *
+     * @param w
+     * @param principle
+     * @param start
+     * @param target
+     */
     public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle,
                               ImPoint start, ImPoint target) {
         world = w;
@@ -209,6 +221,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * Calculates a cost figure incorporating the distance and the cost of any
      * new track.
+     * @return 
      */
     public int getEdgeCost() {
         if (beforeFirst) {
@@ -247,6 +260,10 @@ public class BuildTrackExplorer implements GraphExplorer {
         return cost;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getH() {
         int xDistance = (target.x - currentPosition.getX())
                 * Step.TILE_DIAMETER;
@@ -261,6 +278,10 @@ public class BuildTrackExplorer implements GraphExplorer {
         return currentPosition.toInt();
     }
 
+    /**
+     *
+     * @param vertex
+     */
     public void setPosition(int vertex) {
         currentPosition.setValuesFromInt(vertex);
         directionInt = 0;
@@ -273,6 +294,10 @@ public class BuildTrackExplorer implements GraphExplorer {
         return currentBranch.toInt();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasNextEdge() {
         while (directionInt < 8) {
             if (canBuildTrack()) {
@@ -307,6 +332,10 @@ public class BuildTrackExplorer implements GraphExplorer {
         beforeFirst = false;
     }
 
+    /**
+     *
+     * @param trackStrategy
+     */
     public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
         if (null == trackStrategy)
             throw new NullPointerException();

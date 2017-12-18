@@ -20,6 +20,11 @@ public class CitySAXParser extends DefaultHandler {
 
     private final World world;
 
+    /**
+     *
+     * @param w
+     * @throws SAXException
+     */
     public CitySAXParser(World w) throws SAXException {
         world = w;
         cities = new Vector<>();

@@ -49,6 +49,10 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         w.setTime(newTime);
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     /*
       <ol>
@@ -104,6 +108,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertTrue(ms.ok);
     }
 
+    /**
+     *
+     */
     public void testPathFinding() {
         // setTargetAsStation2();
         Step step = nextStep();
@@ -436,6 +443,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     }
 
+    /**
+     *
+     */
     public void testCanGenerateMove() {
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
                 new OccupiedTracks(principal, world));

@@ -27,37 +27,67 @@ public class ActionRoot {
     private StationBuildModel stationBuildModel;
     private TrackMoveProducer trackMoveProducer;
 
+    /**
+     *
+     * @param mr
+     */
     public ActionRoot(ModelRootImpl mr) {
         this.serverControls = new ServerControlModel(mr);
     }
 
+    /**
+     *
+     * @return
+     */
     public Action getBuildTrainDialogAction() {
         return buildTrainDialogAction;
     }
 
+    /**
+     *
+     * @return
+     */
     public DialogueBoxController getDialogueBoxController() {
         return dialogueBoxController;
     }
 
+    /**
+     *
+     * @param dialogueBoxController
+     */
     public void setDialogueBoxController(
             DialogueBoxController dialogueBoxController) {
         this.dialogueBoxController = dialogueBoxController;
     }
 
+    /**
+     *
+     * @return
+     */
     public ServerControlModel getServerControls() {
         return serverControls;
     }
 
+    /**
+     *
+     * @return
+     */
     public StationBuildModel getStationBuildModel() {
         return stationBuildModel;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackMoveProducer getTrackMoveProducer() {
         return trackMoveProducer;
     }
 
     /**
      * Call this method when a new game is started or a game is loaded.
+     * @param modelRoot
+     * @param vl
      */
     public void setup(ModelRootImpl modelRoot, RenderersRoot vl) {
         serverControls.setup(modelRoot, dialogueBoxController);

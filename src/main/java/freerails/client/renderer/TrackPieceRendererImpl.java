@@ -21,6 +21,13 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
     private final String typeName;
 
+    /**
+     *
+     * @param w
+     * @param imageManager
+     * @param typeNumber
+     * @throws IOException
+     */
     public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
                                   int typeNumber) throws IOException {
         TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, typeNumber);
@@ -34,6 +41,12 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @param trackTypeName
+     * @return
+     */
     public static String generateFilename(int i, String trackTypeName) {
         String relativeFileNameBase = "track" + File.separator + trackTypeName;
         int newTemplate = TrackConfiguration.from9bitTemplate(i)
@@ -44,6 +57,14 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
                 + ".png";
     }
 
+    /**
+     *
+     * @param trackTemplate
+     * @param g
+     * @param x
+     * @param y
+     * @param tileSize
+     */
     public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g,
                                    int x, int y, java.awt.Dimension tileSize) {
         if ((trackTemplate > 511) || (trackTemplate < 0)) {
@@ -58,6 +79,11 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         }
     }
 
+    /**
+     *
+     * @param trackTemplate
+     * @return
+     */
     public Image getTrackPieceIcon(int trackTemplate) {
         if ((trackTemplate > 511) || (trackTemplate < 0)) {
             throw new java.lang.IllegalArgumentException("trackTemplate = "

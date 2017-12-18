@@ -14,9 +14,25 @@ import freerails.world.common.FreerailsSerializable;
 public class SpeedTimeAndStatus implements FreerailsSerializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     *
+     */
     public final double dt;
+
+    /**
+     *
+     */
     public final double speed;
+
+    /**
+     *
+     */
     public final double acceleration;
+
+    /**
+     *
+     */
     public final double s;
     private final TrainActivity activity;
 
@@ -68,12 +84,48 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrainActivity getActivity() {
         return activity;
     }
 
+    /**
+     *
+     */
     public enum TrainActivity {
-        STOPPED_AT_STATION, READY, WAITING_FOR_FULL_LOAD, STOPPED_AT_SIGNAL, CRASHED, NEEDS_UPDATING
+
+        /**
+         *
+         */
+        STOPPED_AT_STATION,
+
+        /**
+         *
+         */
+        READY,
+
+        /**
+         *
+         */
+        WAITING_FOR_FULL_LOAD,
+
+        /**
+         *
+         */
+        STOPPED_AT_SIGNAL,
+
+        /**
+         *
+         */
+        CRASHED,
+
+        /**
+         *
+         */
+        NEEDS_UPDATING
     }
 
 }

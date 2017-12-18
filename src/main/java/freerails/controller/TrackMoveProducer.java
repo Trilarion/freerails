@@ -30,6 +30,12 @@ final public class TrackMoveProducer {
     private final TrackMoveTransactionsGenerator transactionsGenerator;
     private GameTime lastMoveTime = GameTime.BIG_BANG;
 
+    /**
+     *
+     * @param executor
+     * @param world
+     * @param mr
+     */
     public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world,
                              ModelRoot mr) {
         if (null == mr)
@@ -43,6 +49,10 @@ final public class TrackMoveProducer {
 
     }
 
+    /**
+     *
+     * @param mr
+     */
     public TrackMoveProducer(ModelRoot mr) {
         this.executor = mr;
         if (null == mr)
@@ -58,6 +68,12 @@ final public class TrackMoveProducer {
 
     }
 
+    /**
+     *
+     * @param from
+     * @param path
+     * @return
+     */
     public MoveStatus buildTrack(ImPoint from, Step[] path) {
         MoveStatus returnValue = MoveStatus.MOVE_OK;
         int x = from.x;
@@ -74,6 +90,12 @@ final public class TrackMoveProducer {
         return returnValue;
     }
 
+    /**
+     *
+     * @param from
+     * @param trackVector
+     * @return
+     */
     public MoveStatus buildTrack(ImPoint from, Step trackVector) {
 
         ReadOnlyWorld w = executor.getWorld();
@@ -169,6 +191,11 @@ final public class TrackMoveProducer {
 
     }
 
+    /**
+     *
+     * @param point
+     * @return
+     */
     public MoveStatus upgradeTrack(ImPoint point) {
         if (getBuildMode() == BuildMode.UPGRADE_TRACK) {
             ReadOnlyWorld w = executor.getWorld();
@@ -207,6 +234,10 @@ final public class TrackMoveProducer {
         return sendMove(move2);
     }
 
+    /**
+     *
+     * @return
+     */
     public MoveStatus undoLastTrackMove() {
         clearStackIfStale();
 
@@ -238,10 +269,18 @@ final public class TrackMoveProducer {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public BuildMode getTrackBuilderMode() {
         return getBuildMode();
     }
 
+    /**
+     *
+     * @param i
+     */
     public void setTrackBuilderMode(BuildMode i) {
         setBuildMode(i);
     }
@@ -272,26 +311,70 @@ final public class TrackMoveProducer {
     // this.buildTrackStrategy = buildTrackStrategy;
     // }
 
+    /**
+     *
+     * @return
+     */
+
     public BuildTrackStrategy getBuildTrackStrategy() {
         return (BuildTrackStrategy) mr
                 .getProperty(Property.BUILD_TRACK_STRATEGY);
     }
 
+    /**
+     *
+     * @param buildTrackStrategy
+     */
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
 
         mr.setProperty(Property.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }
 
+    /**
+     *
+     * @return
+     */
     public BuildMode getBuildMode() {
         return (BuildMode) mr.getProperty(Property.TRACK_BUILDER_MODE);
     }
 
+    /**
+     *
+     * @param buildMode
+     */
     public void setBuildMode(BuildMode buildMode) {
         mr.setProperty(Property.TRACK_BUILDER_MODE, buildMode);
     }
 
+    /**
+     *
+     */
     public enum BuildMode {
-        BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION
+
+        /**
+         *
+         */
+        BUILD_TRACK,
+
+        /**
+         *
+         */
+        REMOVE_TRACK,
+
+        /**
+         *
+         */
+        UPGRADE_TRACK,
+
+        /**
+         *
+         */
+        IGNORE_TRACK,
+
+        /**
+         *
+         */
+        BUILD_STATION
     }
 
 }

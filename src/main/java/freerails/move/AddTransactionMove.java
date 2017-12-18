@@ -26,6 +26,11 @@ public class AddTransactionMove implements Move {
      */
     private final boolean constrained;
 
+    /**
+     *
+     * @param account
+     * @param t
+     */
     public AddTransactionMove(FreerailsPrincipal account, Transaction t) {
         if (null == t) {
             throw new NullPointerException();
@@ -36,6 +41,12 @@ public class AddTransactionMove implements Move {
         constrained = false;
     }
 
+    /**
+     *
+     * @param account
+     * @param t
+     * @param constrain
+     */
     public AddTransactionMove(FreerailsPrincipal account, Transaction t,
                               boolean constrain) {
         principal = account;
@@ -47,6 +58,10 @@ public class AddTransactionMove implements Move {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Transaction getTransaction() {
         return transaction;
     }
@@ -128,6 +143,10 @@ public class AddTransactionMove implements Move {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public FreerailsPrincipal getPrincipal() {
         return principal;
     }

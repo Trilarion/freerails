@@ -9,19 +9,37 @@ import freerails.world.common.FreerailsSerializable;
  * @author lindsal
  */
 final public class PreMoveStatus implements FreerailsSerializable {
+
+    /**
+     *
+     */
     public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(
             MoveStatus.MOVE_OK);
     private static final long serialVersionUID = 3978145456646009140L;
+
+    /**
+     *
+     */
     public final MoveStatus ms;
 
     private PreMoveStatus(MoveStatus ms) {
         this.ms = ms;
     }
 
+    /**
+     *
+     * @param reason
+     * @return
+     */
     public static PreMoveStatus failed(String reason) {
         return new PreMoveStatus(MoveStatus.moveFailed(reason));
     }
 
+    /**
+     *
+     * @param ms
+     * @return
+     */
     public static PreMoveStatus fromMoveStatus(MoveStatus ms) {
         if (ms.ok) {
             return PRE_MOVE_OK;

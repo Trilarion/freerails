@@ -13,6 +13,10 @@ import java.util.HashMap;
  * @author Luke
  */
 public class HtmlJPanelTest extends TestCase {
+
+    /**
+     *
+     */
     public void testPopulateTokens() {
         String template = "test";
         HashMap<String, String> context = new HashMap<>();
@@ -39,6 +43,9 @@ public class HtmlJPanelTest extends TestCase {
         assertEquals(expectedOutput, output);
     }
 
+    /**
+     *
+     */
     public void testPopulateTokens2() {
         String template = "Hey $a.name$ I would like you to meet $b.name$";
         String expectedOutput = "Hey Tom I would like you to meet Claire";
@@ -55,9 +62,20 @@ public class HtmlJPanelTest extends TestCase {
         assertEquals(expectedOutput, output);
     }
 
+    /**
+     *
+     */
     public static class Person {
+
+        /**
+         *
+         */
         public final String name;
 
+        /**
+         *
+         * @param name
+         */
         public Person(String name) {
             this.name = name;
         }

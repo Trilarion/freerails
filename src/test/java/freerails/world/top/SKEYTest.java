@@ -15,10 +15,17 @@ import java.lang.reflect.Modifier;
  * @author Luke
  */
 public class SKEYTest extends TestCase {
+
+    /**
+     *
+     */
     public void testGetNumberOfKeys() {
         assertTrue(SKEY.getNumberOfKeys() > 5);
     }
 
+    /**
+     *
+     */
     public void testThatAllTheFieldsDefinedInSKEYAreInstancesOFSKEY() {
         Field[] fields = SKEY.class.getFields();
 

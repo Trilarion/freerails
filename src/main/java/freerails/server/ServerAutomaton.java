@@ -15,6 +15,7 @@ import java.io.Serializable;
 public interface ServerAutomaton extends Serializable {
     /**
      * Initializes the automaton with a connection to the MoveExecuter.
+     * @param mr
      */
     void initAutomaton(MoveReceiver mr);
 }

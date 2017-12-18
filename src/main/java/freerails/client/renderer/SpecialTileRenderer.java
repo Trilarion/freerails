@@ -25,6 +25,15 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 
     final private TileRenderer parentTileView;
 
+    /**
+     *
+     * @param imageManager
+     * @param rgbValues
+     * @param tileModel
+     * @param parentTileView
+     * @param w
+     * @throws IOException
+     */
     public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
                                TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
             throws IOException {
@@ -34,6 +43,15 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         this.parentTileView = parentTileView;
     }
 
+    /**
+     *
+     * @param g
+     * @param renderX
+     * @param renderY
+     * @param mapX
+     * @param mapY
+     * @param w
+     */
     @Override
     public void renderTile(java.awt.Graphics g, int renderX, int renderY,
                            int mapX, int mapY, ReadOnlyWorld w) {
@@ -52,6 +70,13 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         }
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param w
+     * @return
+     */
     @Override
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         return 0;
@@ -66,6 +91,11 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         return "terrain" + File.separator + this.getTerrainType() + ".png";
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     @Override
     protected String generateFileNameNumber(int i) {
         throw new UnsupportedOperationException();

@@ -8,8 +8,15 @@ import freerails.world.common.Activity;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.WorldImplTest;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class AddActiveEntityMoveTest extends AbstractMoveTestCase {
 
+    /**
+     *
+     */
     @Override
     public void testMove() {
         FreerailsPrincipal p = getPrincipal();

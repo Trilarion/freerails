@@ -41,6 +41,8 @@ public class KeyCode2OneTileMoveVector {
 
     /**
      * Returns the OneTileMoveVector that is mapped to the specified keycode.
+     * @param keycode
+     * @return 
      */
     public static Step getInstanceMappedToKey(int keycode)
             throws NoSuchElementException {

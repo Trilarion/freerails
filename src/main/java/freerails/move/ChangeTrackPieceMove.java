@@ -24,12 +24,23 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
     private final ImPoint location;
 
+    /**
+     *
+     * @param before
+     * @param after
+     * @param p
+     */
     public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, ImPoint p) {
         trackPieceBefore = before;
         trackPieceAfter = after;
         location = p;
     }
 
+    /**
+     *
+     * @param world
+     * @return
+     */
     protected static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {
         GameRules rules = (GameRules) world.get(ITEM.GAME_RULES);
 
@@ -40,6 +51,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
      * This method may be called under 3 possible conditions: (1) when a station
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * staton is getting removed.
+     * @param w
+     * @param location
+     * @param trackPiece
+     * @return 
      */
     protected static MoveStatus check4overlap(World w, ImPoint location,
                                               TrackPiece trackPiece) {
@@ -94,6 +109,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return MoveStatus.MOVE_OK;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImPoint getLocation() {
         return location;
     }
@@ -109,10 +128,18 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackPiece getOldTrackPiece() {
         return trackPieceBefore;
     }
 
+    /**
+     *
+     * @return
+     */
     public TrackPiece getNewTrackPiece() {
         return trackPieceAfter;
     }
@@ -299,6 +326,10 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         // Things are ok.
     }
 
+    /**
+     *
+     * @return
+     */
     public Rectangle getUpdatedTiles() {
         // If we are building or removing a station,
         // we need to repaint/remove the station radius

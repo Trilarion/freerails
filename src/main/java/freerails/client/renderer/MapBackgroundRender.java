@@ -54,6 +54,12 @@ final public class MapBackgroundRender implements MapLayerRenderer {
      */
     private Rectangle clipRectangle = new Rectangle();
 
+    /**
+     *
+     * @param w
+     * @param rr
+     * @param modelRoot
+     */
     public MapBackgroundRender(ReadOnlyWorld w, RenderersRoot rr,
                                ModelRoot modelRoot) {
         trackLayer = new TrackLayer(w, rr);
@@ -63,6 +69,12 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         stationNames = new StationNamesRenderer(w, modelRoot);
     }
 
+    /**
+     *
+     * @param g
+     * @param x
+     * @param y
+     */
     public void paintTile(Graphics g, int x, int y) {
         terrainLayer.paintTile(g, x, y);
         trackLayer.paintTile(g, x, y);
@@ -70,6 +82,11 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         stationNames.paint((Graphics2D) g, null);
     }
 
+    /**
+     *
+     * @param g
+     * @param visibleRect
+     */
     public void paintRect(Graphics g, Rectangle visibleRect) {
         int tileWidth = Constants.TILE_SIZE;
         int tileHeight = Constants.TILE_SIZE;
@@ -97,10 +114,18 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         stationNames.paint((Graphics2D) g, visibleRectangle);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void refreshTile(int x, int y) {
         // Do nothing
     }
 
+    /**
+     *
+     */
     public void refreshAll() {
         // Do nothing
     }
@@ -115,6 +140,11 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
         private final RenderersRoot rr;
 
+        /**
+         *
+         * @param world
+         * @param trackPieceViewList
+         */
         public TrackLayer(ReadOnlyWorld world, RenderersRoot trackPieceViewList) {
             this.rr = trackPieceViewList;
             this.w = world;
@@ -161,6 +191,12 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             }
         }
 
+        /**
+         *
+         * @param g
+         * @param tileX
+         * @param tileY
+         */
         public void paintTile(Graphics g, int tileX, int tileY) {
             /*
              * Since track tiles overlap the adjacent terrain tiles, we create a
@@ -175,14 +211,27 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
 
+        /**
+         *
+         * @param x
+         * @param y
+         */
         public void refreshTile(int x, int y) {
         }
 
+        /**
+         *
+         * @param g
+         * @param visibleRect
+         */
         public void paintRect(Graphics g, Rectangle visibleRect) {
             throw new UnsupportedOperationException(
                     "Method not yet implemented.");
         }
 
+        /**
+         *
+         */
         public void refreshAll() {
         }
     }
@@ -197,11 +246,21 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
         private final ReadOnlyWorld w;
 
+        /**
+         *
+         * @param world
+         * @param tiles
+         */
         public TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
             this.w = world;
             this.tiles = tiles;
         }
 
+        /**
+         *
+         * @param g
+         * @param tile
+         */
         public void paintTile(Graphics g, Point tile) {
             int screenX = tileSize.width * tile.x;
             int screenY = tileSize.height * tile.y;
@@ -237,11 +296,22 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             }
         }
 
+        /**
+         *
+         * @param g
+         * @param visibleRect
+         */
         public void paintRect(Graphics g, Rectangle visibleRect) {
             throw new UnsupportedOperationException(
                     "Method not yet implemented.");
         }
 
+        /**
+         *
+         * @param g
+         * @param tileX
+         * @param tileY
+         */
         public void paintTile(Graphics g, int tileX, int tileY) {
             paintTile(g, new Point(tileX, tileY));
         }
@@ -251,9 +321,17 @@ final public class MapBackgroundRender implements MapLayerRenderer {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
 
+        /**
+         *
+         * @param x
+         * @param y
+         */
         public void refreshTile(int x, int y) {
         }
 
+        /**
+         *
+         */
         public void refreshAll() {
         }
     }

@@ -15,10 +15,17 @@ import freerails.client.view.ActionRoot;
 final public class BuildMenu extends javax.swing.JMenu {
     private static final long serialVersionUID = 3617850859305055542L;
 
+    /**
+     *
+     */
     public BuildMenu() {
         super();
     }
 
+    /**
+     *
+     * @param actionRoot
+     */
     public void setup(ActionRoot actionRoot) {
         this.removeAll();
         this.setText("Build");

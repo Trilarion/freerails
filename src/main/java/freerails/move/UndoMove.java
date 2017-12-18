@@ -57,6 +57,10 @@ public class UndoMove implements Move {
         return move2undo.undoMove(w, p);
     }
 
+    /**
+     *
+     * @return
+     */
     public Move getUndoneMove() {
         return move2undo;
     }

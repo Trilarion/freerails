@@ -16,6 +16,10 @@ import java.util.Iterator;
  * @author Luke
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
+
+    /**
+     *
+     */
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
     private static final long serialVersionUID = 3618695301330974512L;
     private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
@@ -39,6 +43,8 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
+     * @param c
+     * @param v
      * @return the superposition of two track templates
      */
     public static TrackConfiguration add(FlatTrackTemplate c,
@@ -53,14 +59,29 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return from9bitTemplate(newTemplate);
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public static TrackConfiguration from9bitTemplate(int i) {
         return flatTrackConfigurations.get(i);
     }
 
+    /**
+     *
+     * @param v
+     * @return
+     */
     public static TrackConfiguration getFlatInstance(Step v) {
         return from9bitTemplate(v.get9bitTemplate());
     }
 
+    /**
+     *
+     * @param trackTemplate
+     * @return
+     */
     public static TrackConfiguration getFlatInstance(String trackTemplate) {
         int i = TrackConfiguration.stringTemplate2Int(trackTemplate);
 
@@ -78,6 +99,11 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return configurations;
     }
 
+    /**
+     *
+     * @param templateString
+     * @return
+     */
     public static int stringTemplate2Int(String templateString) {
         // Hack - so that result is as expected by earlier written code.
         StringBuffer strb = new StringBuffer(templateString);
@@ -89,6 +115,8 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
+     * @param c
+     * @param v
      * @return the TrackConfiguration representing the track section c minus the
      * track sections represented by v.
      */
@@ -110,10 +138,19 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return contains(trackTemplate);
     }
 
+    /**
+     *
+     * @param trackTemplate
+     * @return
+     */
     public boolean contains(int trackTemplate) {
         return (trackTemplate | this.configuration) == this.configuration;
     }
 
+    /**
+     *
+     * @return
+     */
     public int get8bitTemplate() {
         int newTemplate = 0;
         Step[] vectors = Step.getList();
@@ -137,15 +174,24 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     /**
      * Returns the length of track used in this configuration. Used to calculate
      * the cost of building track.
+     * @return 
      */
     public int getLength() {
         return length;
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterator getPossibleConfigurationsIterator() {
         return flatTrackConfigurations.iterator();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrackGraphicsID() {
         return configuration;
     }

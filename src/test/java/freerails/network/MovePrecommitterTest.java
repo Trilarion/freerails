@@ -24,6 +24,10 @@ public class MovePrecommitterTest extends TestCase {
 
     private MovePrecommitter committer;
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     protected void setUp() throws Exception {
         w = new WorldImpl(10, 10);
@@ -161,6 +165,9 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(0, committer.precomitted.size());
     }
 
+    /**
+     *
+     */
     public void testPreMoves1() {
         PreMove pm = TimeTickPreMove.INSTANCE;
         GameTime oldtime = getTime();
@@ -169,6 +176,9 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(newTime, getTime());
     }
 
+    /**
+     *
+     */
     public void testPreMoves2() {
         PreMove pm = TimeTickPreMove.INSTANCE;
         GameTime oldtime = getTime();
@@ -187,6 +197,9 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(newTime, getTime());
     }
 
+    /**
+     *
+     */
     public void testPreMoves3() {
         PreMove pm = TimeTickPreMove.INSTANCE;
         GameTime oldtime = getTime();

@@ -12,6 +12,13 @@ import freerails.world.top.KEY;
 final public class ChangeStationMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3833469496064160307L;
 
+    /**
+     *
+     * @param index
+     * @param before
+     * @param after
+     * @param p
+     */
     public ChangeStationMove(int index, StationModel before,
                              StationModel after, FreerailsPrincipal p) {
         super(KEY.STATIONS, index, before, after, p);

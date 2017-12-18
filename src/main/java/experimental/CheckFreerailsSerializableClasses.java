@@ -27,6 +27,10 @@ public class CheckFreerailsSerializableClasses {
     static final Logger logger = Logger
             .getLogger(CheckFreerailsSerializableClasses.class.getName());
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         immutableTypes.clear();
         mutableTypes.clear();

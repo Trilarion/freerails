@@ -20,10 +20,17 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         MapRenderer {
     private MapRenderer mapView = new BlankMapRenderer(10);
 
+    /**
+     *
+     */
     public MapViewJComponent() {
         this.setAutoscrolls(true);
     }
 
+    /**
+     *
+     * @return
+     */
     public float getScale() {
         return getMapView().getScale();
     }
@@ -85,6 +92,10 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         return this.getPreferredSize();
     }
 
+    /**
+     *
+     * @param tile
+     */
     public void centerOnTile(Point tile) {
         float scale = getMapView().getScale();
         Rectangle visRect = new Rectangle(this.getVisibleRect());
@@ -93,6 +104,10 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         this.scrollRectToVisible(visRect);
     }
 
+    /**
+     *
+     * @return
+     */
     public Dimension getMapSizeInPixels() {
         return getMapView().getMapSizeInPixels();
     }

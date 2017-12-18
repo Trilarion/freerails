@@ -14,10 +14,21 @@ import java.io.Serializable;
 public class NameAndPassword implements Serializable {
     private static final long serialVersionUID = 3258409551740155956L;
 
+    /**
+     *
+     */
     public final String password;
 
+    /**
+     *
+     */
     public final String username;
 
+    /**
+     *
+     * @param u
+     * @param p
+     */
     public NameAndPassword(String u, String p) {
         username = u;
         password = p;

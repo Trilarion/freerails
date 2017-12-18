@@ -20,6 +20,9 @@ public class OldWorldImpl {
     /**
      * Note, the map name is converted to lower case and any spaces are replaced
      * with underscores.
+     * @param mapName
+     * @param pm
+     * @return 
      */
     public static World createWorldFromMapFile(String mapName,
                                                FreerailsProgressMonitor pm) {

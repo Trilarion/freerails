@@ -22,6 +22,14 @@ public class CargoBatch implements FreerailsSerializable,
 
     private final long timeCreated;
 
+    /**
+     *
+     * @param type
+     * @param x
+     * @param y
+     * @param time
+     * @param origin
+     */
     public CargoBatch(int type, int x, int y, long time, int origin) {
         cargoType = type;
         sourceX = x;
@@ -30,22 +38,42 @@ public class CargoBatch implements FreerailsSerializable,
         stationOfOrigin = origin;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getStationOfOrigin() {
         return stationOfOrigin;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCargoType() {
         return cargoType;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSourceX() {
         return sourceX;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSourceY() {
         return sourceY;
     }
 
+    /**
+     *
+     * @return
+     */
     public long getTimeCreated() {
         return timeCreated;
     }

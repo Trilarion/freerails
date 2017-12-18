@@ -19,6 +19,11 @@ public class NewGameMessage2Server implements Message2Server {
 
     private final String mapName;
 
+    /**
+     *
+     * @param id
+     * @param s
+     */
     public NewGameMessage2Server(int id, String s) {
         this.id = id;
         this.mapName = s;
@@ -27,15 +32,25 @@ public class NewGameMessage2Server implements Message2Server {
     /**
      * TODO This would be better implemented in a config file, or better still
      * dynamically determined by scanning the directory.
+     * @return 
      */
     public static String[] getMapNames() {
         return new String[]{"South America", "Small South America"};
     }
 
+    /**
+     *
+     * @return
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     *
+     * @param server
+     * @return
+     */
     public MessageStatus execute(ServerControlInterface server) {
         try {
             server.newGame(mapName);

@@ -32,6 +32,17 @@ final public class TileTypeImpl implements TerrainType {
      */
     private final Money tileBuildCost;
 
+    /**
+     *
+     * @param rgb
+     * @param terrainCategory
+     * @param terrainType
+     * @param rightOfWay
+     * @param production
+     * @param consumption
+     * @param conversion
+     * @param tileBuildCost
+     */
     public TileTypeImpl(int rgb, TerrainType.Category terrainCategory,
                         String terrainType, int rightOfWay, Production[] production,
                         Consumption[] consumption, Conversion[] conversion,
@@ -54,6 +65,8 @@ final public class TileTypeImpl implements TerrainType {
     /**
      * Lets unit tests create terrain types without bothering with all the
      * details.
+     * @param terrainCategory
+     * @param terrainType
      */
     public TileTypeImpl(TerrainType.Category terrainCategory, String terrainType) {
         this.terrainType = terrainType;
@@ -108,29 +121,50 @@ final public class TileTypeImpl implements TerrainType {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public Money getBuildCost() {
         return tileBuildCost;
     }
 
+    /**
+     *
+     * @return
+     */
     public Category getCategory() {
         return terrainCategory;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<Consumption> getConsumption() {
         return consumption;
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<Conversion> getConversion() {
         return conversion;
     }
 
     /**
      * Returns the name, replacing any underscores with spaces.
+     * @return 
      */
     public String getDisplayName() {
         return terrainType.replace('_', ' ');
     }
 
+    /**
+     *
+     * @return
+     */
     public ImList<Production> getProduction() {
         return production;
     }
@@ -142,10 +176,18 @@ final public class TileTypeImpl implements TerrainType {
         return rgb;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRightOfWay() {
         return rightOfWay;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTerrainTypeName() {
         return terrainType;
     }

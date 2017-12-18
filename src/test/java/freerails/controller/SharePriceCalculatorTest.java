@@ -10,6 +10,10 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public class SharePriceCalculatorTest extends TestCase {
+
+    /**
+     *
+     */
     public void test1() {
         SharePriceCalculator cal = new SharePriceCalculator();
         cal.networth = 100000;
