@@ -31,7 +31,6 @@ import java.lang.reflect.Array;
  * specified by the user.
  *
  * @author Dennis M. Sosnoski
- * @version 1.0
  */
 public abstract class GrowableBase implements Serializable {
     /**

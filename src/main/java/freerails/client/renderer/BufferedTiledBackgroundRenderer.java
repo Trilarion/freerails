@@ -14,7 +14,6 @@ import java.awt.image.VolatileImage;
  * e.g. whether they are square or isometric, should go here.
  *
  * @author Luke Lindsay 06 October 2001
- * @version 1.0
  */
 public abstract class BufferedTiledBackgroundRenderer implements
         MapLayerRenderer {

@@ -5,7 +5,7 @@ package freerails.client.top;
 
 import freerails.client.common.SoundManager;
 import freerails.client.view.ActionRoot;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;

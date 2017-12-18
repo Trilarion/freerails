@@ -13,7 +13,6 @@ import java.awt.*;
  * 100 000 etc.
  *
  * @author Luke Lindsay
- * @version 1.0
  */
 public class EightRotationsOfTrackPieceProducer {
     /**

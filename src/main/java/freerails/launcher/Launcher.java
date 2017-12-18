@@ -7,7 +7,7 @@
 package freerails.launcher;
 
 import freerails.client.top.GameLoop;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.ReportBugTextGenerator;
 import freerails.controller.ScreenHandler;
 import freerails.controller.ServerControlInterface;
@@ -409,7 +409,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
 
     /**
-     * Shows GUI. If <code>quickstart</code> is <code>true</code> runs the
+     * Shows GUI. If {@code quickstart} is <code>true</code> runs the
      * game.
      *
      * @param quickstart boolean

@@ -6,8 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * An LRU cache, based on <code>LinkedHashMap</code>.<br>
- * This cache has a fixed maximum number of elements (<code>cacheSize</code>).
+ * An LRU cache, based on {@code LinkedHashMap}.<br>
+ * This cache has a fixed maximum number of elements ({@code cacheSize}).
  * If the cache is full and another entry is added, the LRU (least recently
  * used) entry is dropped.
  * <p>
@@ -86,10 +86,10 @@ public class LRUCache<K, V> {
     }
 
     /**
-     * Returns a <code>Collection</code> that contains a copy of all cache
+     * Returns a {@code Collection} that contains a copy of all cache
      * entries.
      *
-     * @return a <code>Collection</code> with a copy of the cache content.
+     * @return a {@code Collection} with a copy of the cache content.
      */
     public synchronized Collection<Map.Entry<K, V>> getAll() {
         return new ArrayList<>(map.entrySet());

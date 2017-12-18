@@ -24,7 +24,6 @@ import java.awt.event.MouseEvent;
  * map is draggable when the mouse moves into the rectangle.
  *
  * @author Luke Lindsay
- * @version 1.0
  */
 public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
     private final Point lastMouseLocation = new Point();

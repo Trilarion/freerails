@@ -4,7 +4,7 @@ import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RenderersRoot;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.ModelRoot;
 import freerails.world.common.ImPoint;
 import freerails.world.top.ReadOnlyWorld;

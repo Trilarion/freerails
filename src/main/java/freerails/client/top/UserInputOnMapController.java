@@ -3,7 +3,7 @@ package freerails.client.top;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.BuildTrackController;
 import freerails.client.view.*;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;

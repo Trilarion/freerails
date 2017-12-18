@@ -39,15 +39,15 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
+
 
 # The master toctree document.
 master_doc = 'index'
 
 # General information about the project.
 project = 'FreeRails'
-copyright = '2017, The FreeRails team'
+copyright = 'The FreeRails community'
 author = 'The FreeRails team'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -115,7 +115,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'FreeRailsdoc'
+htmlhelp_basename = 'FreeRails'
 
 
 # -- Options for LaTeX output ---------------------------------------------

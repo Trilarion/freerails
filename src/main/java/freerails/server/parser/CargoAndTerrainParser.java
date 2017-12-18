@@ -35,8 +35,8 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * Creates a parser instance.
      *
-     * @param handler  handler interface implementation (never <code>null</code>
-     * @param resolver SAX entity resolver implementation or <code>null</code>. It
+     * @param handler  handler interface implementation (never {@code null}
+     * @param resolver SAX entity resolver implementation or {@code null}. It
      *                 is recommended that it could be able to resolve at least the
      *                 DTD.
      */

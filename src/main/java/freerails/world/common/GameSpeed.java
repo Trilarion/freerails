@@ -5,9 +5,9 @@
 package freerails.world.common;
 
 /**
- * This class represents actual game speed. If the game speed <code>speed</code>
+ * This class represents actual game speed. If the game speed {@code speed}
  * is lesser then zero, game is paused. After unpausing, the speed should be
- * <code>-speed</code>.
+ * {@code -speed}.
  * <p>
  * I.e. pausing/unpausing is equal to multiply the speed by -1.
  *

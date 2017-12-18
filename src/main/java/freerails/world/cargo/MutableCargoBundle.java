@@ -10,7 +10,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * This CargoBundle implementation uses a <code>java.util.SortedMap</code> to
+ * This CargoBundle implementation uses a {@code java.util.SortedMap} to
  * map quantities to cargo batches.
  *
  * @author Luke

@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 
 /**
  * This interface lets the caller access the results of a search in the
- * gameworld. It is similar in concept to <code>java.sql.ResultSet</code>.
+ * gameworld. It is similar in concept to {@code java.sql.ResultSet}.
  *
  * @author Luke
  */
@@ -48,8 +48,8 @@ public interface WorldIterator {
     /**
      * Returns the index of the element the cursor is pointing to. The value
      * returned is index you would need to use in
-     * <code>World.get(KEY key, int index)</code> to retrieve the same element
-     * as is returned by <code>getElement()</code>
+     * {@code World.get(KEY key, int index)} to retrieve the same element
+     * as is returned by {@code getElement()}
      * @return 
      */
     int getIndex();

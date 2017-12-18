@@ -16,7 +16,7 @@ import java.util.TreeMap;
 /**
  * An implemenation of World that only stores differences relative to an
  * underlying world object. Below is some stylised code showing what this class
- * does. The <code>key</code> object could be a location on the map, a
+ * does. The {@code key} object could be a location on the map, a
  * position in a list etc. <code><pre>
  * HashMap underlyingWorldObject;
  * <p>
@@ -50,7 +50,6 @@ import java.util.TreeMap;
  * </ol>
  *
  * @author Luke
- * @version 2
  */
 public class WorldDiffs extends WorldImpl {
 

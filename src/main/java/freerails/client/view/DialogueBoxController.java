@@ -9,7 +9,7 @@ import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RenderersRoot;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.CopyableTextJPanel;
 import freerails.controller.Message2Server;
 import freerails.controller.ModelRoot.Property;

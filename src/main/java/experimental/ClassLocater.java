@@ -143,21 +143,21 @@ public class ClassLocater {
     }
 
     /**
-     * Find all instances of the given <code>Class</code> or interface by
+     * Find all instances of the given {@code Class} or interface by
      * loading all classes on the class path.
      * <p>
      * Delegates to the other version, but passing in ".*" as the regex, i.e.
      * "anything at all"
      *
      * @param targetType the superclass of all returned classes.
-     * @return an array of all subclasses of <code>targetType</code>
+     * @return an array of all subclasses of {@code targetType}
      */
     public Class[] getSubclassesOf(Class targetType) {
         return getSubclassesOf(targetType, ".*");
     }
 
     /**
-     * Find all subclasses of the given <code>Class</code> or interface by
+     * Find all subclasses of the given {@code Class} or interface by
      * loading only those classes with names that match the given regular
      * expression.
      * <p>
@@ -179,7 +179,7 @@ public class ClassLocater {
      *
      * @param targetType the superclass of all returned classes.
      * @param regex      a regular expression that will match with every subclass
-     * @return an array of all subclasses of <code>targetType</code>
+     * @return an array of all subclasses of {@code targetType}
      */
     @SuppressWarnings("unchecked")
     public Class[] getSubclassesOf(Class targetType, String regex) {

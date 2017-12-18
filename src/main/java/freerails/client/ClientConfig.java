@@ -1,4 +1,4 @@
-package freerails.config;
+package freerails.client;
 
 /**
  *

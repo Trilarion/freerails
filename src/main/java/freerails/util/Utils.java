@@ -148,8 +148,8 @@ strictfp public class Utils {
      * @param b
      * @param c
      * @return 
-     * @throws IllegalArgumentException if <code>a == 0</code>
-     * @throws IllegalArgumentException if <code>(b * b - 4 * a * c) < 0</code>
+     * @throws IllegalArgumentException if {@code a == 0}
+     * @throws IllegalArgumentException if {@code (b * b - 4 * a * c) < 0}
      */
     public static double solveQuadratic(double a, double b, double c)
             throws IllegalArgumentException {

@@ -6,7 +6,7 @@
 package freerails.client.common;
 
 /**
- * Used to generate filenames for track and terrain images.
+ * Used to generate file names for track and terrain images.
  *
  * @author Luke
  */

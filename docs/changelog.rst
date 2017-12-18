@@ -1,3 +1,7 @@
+************************
+Changelog
+************************
+
 Dec 25, 2016, lukeyj
 	Re-added station info panel
 	Only show good supplied or demanded

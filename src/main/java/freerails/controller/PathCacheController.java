@@ -5,7 +5,6 @@ package freerails.controller;
  * changes the result of the path finding algorithm
  *
  * @author cymric
- * @version $Revision 1.1$
  */
 public class PathCacheController {
 

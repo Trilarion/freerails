@@ -28,8 +28,8 @@ import java.util.regex.Pattern;
  */
 public class ImageManagerImpl implements ImageManager {
     /**
-     * Matches anying but a string beginning with a "/"*. The reason for this
-     * check is that relative filenames such as "/cursor/removetrack.png" work
+     * Matches anything but a string beginning with a "/"*. The reason for this
+     * check is that relative file names such as "/cursor/removetrack.png" work
      * from with files but not from within jars, which lets bugs slip in.
      */
     private static final String A_REGEX = "^[^///].*";

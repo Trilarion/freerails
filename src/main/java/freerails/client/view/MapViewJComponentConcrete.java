@@ -61,7 +61,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     private String[] userMessage = new String[0];
     /**
      * Message that will appear in the middle of the screen in
-     * <code>LARGE_MESSAGE_FONT</code>.
+     * {@code LARGE_MESSAGE_FONT}.
      */
     private String message = null;
     /**

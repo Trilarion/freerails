@@ -35,7 +35,7 @@ import freerails.world.player.Player;
  * Example: the following code gets player1's train #5.
  * </p>
  * <p>
- * <CODE>TrainModel t = (TrainModel)world.get(KEY.TRAINS, 5, player1);</CODE>
+ * {@code TrainModel t = (TrainModel)world.get(KEY.TRAINS, 5, player1);}
  * </p>
  * <p>
  * The motivation for accessing lists using keys is that one does not need to

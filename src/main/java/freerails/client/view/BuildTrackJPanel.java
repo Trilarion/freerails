@@ -9,7 +9,7 @@ package freerails.client.view;
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.renderer.RenderersRoot;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;

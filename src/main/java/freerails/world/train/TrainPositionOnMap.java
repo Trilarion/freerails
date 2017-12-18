@@ -24,45 +24,45 @@ import freerails.world.common.IntLine;
  * <table width="100%" border="0">
  * <tr>
  * <td>if</td>
- * <td><code> a</code></td>
- * <td><code>=</code></td>
+ * <td>{@code a}</td>
+ * <td>{@code =}</td>
  * <td><code>{<strong>(10, 10)</strong>, (20,20), (30,30), (40,40) }</code></td>
  * </tr>
  * <tr>
  * <td>and</td>
- * <td><code> b</code></td>
- * <td><code>=</code></td>
+ * <td>{@code b}</td>
+ * <td>{@code =}</td>
  * <td><code>{(1,1), (4,4), (5,5), <strong>(10, 10)</strong>}</code></td>
  * </tr>
  * <tr>
  * <td>then</td>
- * <td><code>a.addToHead(b)</code></td>
- * <td><code>=</code></td>
- * <td><code>{(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }</code></td>
+ * <td>{@code a.addToHead(b)}</td>
+ * <td>{@code =}</td>
+ * <td>{@code {(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }}</td>
  * </tr>
  * <tr>
  * <td>and</td>
- * <td><code>b.addToTail(a)</code></td>
- * <td><code>=</code></td>
- * <td><code>{(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }</code></td>
+ * <td>{@code b.addToTail(a)}</td>
+ * <td>{@code =}</td>
+ * <td>{@code {(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }}</td>
  * </tr>
  * <tr>
  * <td>and if</td>
- * <td><code> c</code></td>
- * <td><code>=</code></td>
- * <td><code>{(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }</code></td>
+ * <td>{@code c}</td>
+ * <td>{@code =}</td>
+ * <td>{@code {(1,1), (4,4), (5,5), (20,20), (30,30), (40,40) }}</td>
  * </tr>
  * <tr>
  * <td>then</td>
- * <td><code>c.removeFromTail(a)</code></td>
- * <td><code>=</code></td>
- * <td><code>{(1,1), (4,4), (5,5), (10, 10)}</code></td>
+ * <td>{@code c.removeFromTail(a)}</td>
+ * <td>{@code =}</td>
+ * <td>{@code {(1,1), (4,4), (5,5), (10, 10)}}</td>
  * </tr>
  * <tr>
  * <td>and</td>
- * <td><code>c.removeFromHead(b)</code></td>
- * <td><code>=</code></td>
- * <td><code>{(10, 10), (20,20), (30,30), (40,40) }</code></td>
+ * <td>{@code c.removeFromHead(b)}</td>
+ * <td>{@code =}</td>
+ * <td>{@code {(10, 10), (20,20), (30,30), (40,40) }}</td>
  * </tr>
  * </table>
  *

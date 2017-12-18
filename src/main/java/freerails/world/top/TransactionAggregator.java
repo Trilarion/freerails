@@ -11,7 +11,7 @@ import freerails.world.player.FreerailsPrincipal;
 /**
  * Adds up the value of transactions. Implements GoF Template Method pattern.
  * Subclasses that aggregate a monetary sum should only override the method
- * <code>condition(int)</code>; subclasses that aggregate a non-monetary sum
+ * {@code condition(int)}; subclasses that aggregate a non-monetary sum
  * should override all 4 protected methods.
  *
  * @author Luke

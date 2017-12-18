@@ -10,14 +10,14 @@ import freerails.world.player.Player;
 /**
  * <p>
  * This class implements methods which can be used to alter the world. Notice
- * that incontrast to, say, <CODE>java.util.List</CODE> there is no remove()
+ * that incontrast to, say, {@code java.util.List} there is no remove()
  * method that shifts any subsequent elements to the left (subtracts one from
  * their indices). This means that an elements' position in a list can be used
  * as an address space independent way to reference the element. If you want to
  * remove an element from a list, you should set it to null, e.g.
  * </p>
  * <p>
- * <CODE>world.set(KEY.TRAINS, 5, null, player);</CODE>
+ * {@code world.set(KEY.TRAINS, 5, null, player);}
  * </P>
  * <p>
  * Code that loops through lists should handle null values gracefully

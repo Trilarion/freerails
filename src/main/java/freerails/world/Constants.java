@@ -23,7 +23,6 @@ package freerails.world;
  * game constants
  *
  * @author Roland Spatzenegger
- * @version $Revision 1.1$
  */
 public final class Constants {
     /**

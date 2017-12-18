@@ -11,7 +11,7 @@ import freerails.world.top.World;
  * (1) They should be immutable.
  * </P>
  * <p>
- * (2) They should overide <code>Object.equals()</code> to test for logical
+ * (2) They should overide {@code Object.equals()} to test for logical
  * equality.
  * </P>
  * <p>
@@ -68,9 +68,9 @@ public interface Move extends FreerailsSerializable {
     MoveStatus doMove(World w, FreerailsPrincipal p);
 
     /**
-     * If <code>doMove</code> has just been executed on the specified world
+     * If {@code doMove} has just been executed on the specified world
      * object, calling this method changes the state of the world object back to
-     * how it was before <code>doMove</code> was called.
+     * how it was before {@code doMove} was called.
      * @param w
      * @param p
      * @return 

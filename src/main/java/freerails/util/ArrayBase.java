@@ -26,7 +26,7 @@ import java.io.Serializable;
 /**
  * Base class for type-specific growable array classes with any type of values
  * (including primitive types). This class builds on the basic structure
- * provided by <code>GrowableBase</code>, specializing it for usage as a
+ * provided by {@code GrowableBase}, specializing it for usage as a
  * growable array. See the base class description for details of the
  * implementation.
  * <p>
@@ -39,11 +39,10 @@ import java.io.Serializable;
  * <p>
  * Subclasses need to implement the abstract methods defined by the base class
  * for working with the data array, as well as the actual data access methods
- * (at least the basic <code>add()</code>, <code>get()</code>,
- * <code>set()</code>, and <code>toArray()</code> methods).
+ * (at least the basic {@code add()}, <code>get()</code>,
+ * {@code set()}, and <code>toArray()</code> methods).
  *
  * @author Dennis M. Sosnoski
- * @version 1.0
  */
 public abstract class ArrayBase extends GrowableBase implements Serializable {
     /**

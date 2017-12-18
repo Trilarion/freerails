@@ -1,7 +1,7 @@
 package freerails.client.renderer;
 
 import freerails.client.common.SoundManager;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.*;
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
@@ -108,7 +108,7 @@ public class BuildTrackController implements GameModel {
     }
 
     /**
-     * returns <code>true</code> if the track is being build - it is iff the
+     * returns {@code true} if the track is being build - it is iff the
      * build track is shown
      *
      * @return boolean
@@ -133,9 +133,9 @@ public class BuildTrackController implements GameModel {
     }
 
     /**
-     * uses <code>trackBuilder</code> if not null -- otherwise uses own
-     * <code>buildTrack</code> method - that is applied on
-     * <code>worldDifferences</code>
+     * uses {@code trackBuilder} if not null -- otherwise uses own
+     * {@code buildTrack} method - that is applied on
+     * {@code worldDifferences}
      *
      * @param track        List
      * @param trackBuilder TrackMoveProducer

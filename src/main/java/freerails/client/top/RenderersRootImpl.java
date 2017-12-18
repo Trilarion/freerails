@@ -4,7 +4,7 @@ import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.*;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.cargo.CargoType;
 import freerails.world.terrain.TerrainType;

@@ -23,7 +23,6 @@ import java.awt.*;
  * the track layer.
  *
  * @author Luke Lindsay 21 September 2001
- * @version 1
  */
 final public class MapBackgroundRender implements MapLayerRenderer {
     private static final Logger logger = Logger

@@ -2,23 +2,23 @@ package freerails.util;
 
 /**
  *
- * @author jkeller1
+ * @author FreeRails team
  * @param <A>
  * @param <B>
  */
 public class Pair<A, B> {
-    private final A e1;
 
-    private final B e2;
+    private final A a;
+    private final B b;
 
     /**
      *
-     * @param e1
-     * @param e2
+     * @param a
+     * @param b
      */
-    public Pair(A e1, B e2) {
-        this.e1 = e1;
-        this.e2 = e2;
+    public Pair(A a, B b) {
+        this.a = a;
+        this.b = b;
     }
 
     /**
@@ -27,13 +27,11 @@ public class Pair<A, B> {
      * @return
      */
     public boolean equals(Pair<A, B> other) {
-        if (this == other)
-            return true;
-        return null != other && (e1.equals(other.e1) && e2.equals(other.e2));
+        return this == other || null != other && (a.equals(other.a) && b.equals(other.b));
     }
 
     public String toString() {
-        return "(" + e1.toString() + ", " + e2.toString() + ")";
+        return "(" + a.toString() + ", " + b.toString() + ")";
     }
 
     /**
@@ -41,7 +39,7 @@ public class Pair<A, B> {
      * @return
      */
     public A getA() {
-        return e1;
+        return a;
     }
 
     /**
@@ -49,7 +47,7 @@ public class Pair<A, B> {
      * @return
      */
     public B getB() {
-        return e2;
+        return b;
     }
 
 }

@@ -52,9 +52,9 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     * Returns human readable string description of <code>tickPerSecond</code>
-     * number. Looks for <code>tickPerSecond</code> in
-     * <code>targetTicksPerSecondActions</code>. If appropriate action is not
+     * Returns human readable string description of {@code tickPerSecond}
+     * number. Looks for {@code tickPerSecond} in
+     * {@code targetTicksPerSecondActions}. If appropriate action is not
      * found returns first greater value or the greatest value.
      *
      * @param tickPerSecond int
@@ -269,7 +269,7 @@ public class ServerControlModel implements ModelRootListener {
 
         /**
          * Same as the constructor above but it enables also to associate a
-         * <code>keyEvent</code> with the action.
+         * {@code keyEvent} with the action.
          *
          * @param name     action name
          * @param speed    speed

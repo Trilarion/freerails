@@ -24,7 +24,7 @@ package freerails.util;
 import java.io.Serializable;
 
 /**
- * Growable <code>int</code> array with type specific access methods. This
+ * Growable {@code int} array with type specific access methods. This
  * implementation is unsynchronized in order to provide the best possible
  * performance for typical usage scenarios, so explicit synchronization must be
  * implemented by a wrapper class or directly by the application in cases where
@@ -32,7 +32,6 @@ import java.io.Serializable;
  * for other details of the implementation.
  *
  * @author Dennis M. Sosnoski
- * @version 1.0
  */
 public class IntArray extends ArrayBase implements Serializable {
     private static final long serialVersionUID = 3258408426391418681L;
@@ -45,7 +44,7 @@ public class IntArray extends ArrayBase implements Serializable {
     /**
      * Constructor with full specification.
      *
-     * @param size   number of <code>int</code> values initially allowed in array
+     * @param size   number of {@code int} values initially allowed in array
      * @param growth maximum size increment for growing array
      */
     public IntArray(int size, int growth) {
@@ -55,7 +54,7 @@ public class IntArray extends ArrayBase implements Serializable {
     /**
      * Constructor with only initial size specified.
      *
-     * @param size number of <code>int</code> values initially allowed in array
+     * @param size number of {@code int} values initially allowed in array
      */
     public IntArray(int size) {
         super(size, int.class);

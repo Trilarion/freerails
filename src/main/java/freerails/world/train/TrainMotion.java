@@ -56,13 +56,13 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
      * @param engineStep  the position measured in tiles that trains engine is along the
      *                    path
      * @param trainLength the length of the train, as returned by
-     *                    <code>TrainModel.getLength()</code>.
+     *                    {@code TrainModel.getLength()}.
      * @param speeds
      * @throws IllegalArgumentException if trainLength is out the range
-     *                                  <code>trainLength &gt; TrainModel.WAGON_LENGTH || trainLength &lt; TrainModel.MAX_TRAIN_LENGTH</code>
-     * @throws IllegalArgumentException if <code>path.getDistance(engineStep) &lt; trainLength</code>.
+     *                                  {@code trainLength > TrainModel.WAGON_LENGTH || trainLength < TrainModel.MAX_TRAIN_LENGTH}
+     * @throws IllegalArgumentException if {@code path.getDistance(engineStep) < trainLength}.
      * @throws IllegalArgumentException if
-     *                                  <code>(path.getLength() - initialPosition) &gt; speeds.getTotalDistance()</code>.
+     *                                  {@code (path.getLength() - initialPosition) > speeds.getTotalDistance()}.
      */
 
     public TrainMotion(PathOnTiles path, int engineStep, int trainLength,
@@ -170,7 +170,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
 
     /**
      * Returns the train's distance along the track from the point the train was
-     * at at time <code>getStart()</code> at the specified time.
+     * at at time {@code getStart()} at the specified time.
      *
      * @param t the time.
      * @return the distance

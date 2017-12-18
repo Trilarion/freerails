@@ -4,7 +4,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
-import freerails.config.ClientConfig;
+import freerails.client.ClientConfig;
 import freerails.controller.ModelRoot;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
