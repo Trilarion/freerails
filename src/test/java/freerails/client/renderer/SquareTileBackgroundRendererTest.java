@@ -34,6 +34,12 @@ public class SquareTileBackgroundRendererTest extends TestCase {
      * Testcase to reproduce bug [ 1303162 ] Unexpected Exception:
      */
     public void testRefreshBeforeBufferIsSet() {
+
+        // do not perform the test in a headless environment
+        if (GraphicsEnvironment.isHeadless()) {
+            return;
+        }
+
         SquareTileBackgroundRenderer stbr = new SquareTileBackgroundRenderer(
                 renderer);
         stbr.refreshAll();
